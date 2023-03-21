@@ -8,9 +8,8 @@ describe('PhaseBannerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PhaseBannerComponent ]
-    })
-    .compileComponents();
+      declarations: [PhaseBannerComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(PhaseBannerComponent);
     component = fixture.componentInstance;

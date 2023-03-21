@@ -22,8 +22,6 @@ describe('InboxComponent', () => {
 
   it('should have title', () => {
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.govuk-heading-s')?.textContent).toContain(
-      'Inbox'
-    );
+    expect(compiled.querySelector('.govuk-heading-s')?.textContent).toContain('Inbox');
   });
 });

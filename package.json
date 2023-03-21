@@ -6,10 +6,15 @@
     "start": "node server.js",
     "dev:ng": "ng serve",
     "dev:node": "nodemon server.js",
-    "dev": "concurrently --names \"NODE,ANGULAR\" -c \"bgBlue.bold,bgGreen.bold\" \"npm run dev:node\" \"npm run watch\"",
+    "dev": "concurrently --names \"NODE,ANGULAR\" -c \"bgBlue.bold,bgGreen.bold\" \"yarn dev:node\" \"yarn watch\"",
     "build": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "lint": "yarn prettier && yarn lint:ng",
+    "lint:ng": "ng lint",
+    "check": "yarn prettier && yarn lint",
+    "prettier": "prettier --check \"./**/*.{ts,js,html,scss}\"",
+    "prettier:fix": "prettier --write \"./**/*.{ts,js,html,scss}\""
   },
   "private": true,
   "dependencies": {
@@ -31,10 +36,19 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^15.2.3",
+    "@angular-eslint/builder": "15.2.1",
+    "@angular-eslint/eslint-plugin": "15.2.1",
+    "@angular-eslint/eslint-plugin-template": "15.2.1",
+    "@angular-eslint/schematics": "15.2.1",
+    "@angular-eslint/template-parser": "15.2.1",
     "@angular/cli": "~15.2.3",
     "@angular/compiler-cli": "^15.2.0",
     "@types/jasmine": "~4.3.0",
+    "@typescript-eslint/eslint-plugin": "5.48.2",
+    "@typescript-eslint/parser": "5.48.2",
     "concurrently": "^7.6.0",
+    "eslint": "^8.33.0",
+    "husky": "^8.0.3",
     "jasmine-core": "~4.5.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.1.0",
@@ -42,6 +56,7 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
     "nodemon": "^2.0.21",
+    "prettier": "^2.8.6",
     "typescript": "~4.9.4"
   }
 }

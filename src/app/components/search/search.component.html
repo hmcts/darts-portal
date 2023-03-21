@@ -1,11 +1,8 @@
 <div class="govuk-button-group search">
   <div class="govuk-form-group">
-    <input
-      class="govuk-input"
-      type="text"
-      placeholder="Search case..."
-      [formControl]="searchTerm"
-    />
+    <input class="govuk-input" type="text" placeholder="Search case..." [formControl]="searchTerm" />
   </div>
-  <button [disabled]="!searchTerm.value" class="govuk-button" data-module="govuk-button" (click)="search()"><mat-icon>search</mat-icon></button>
+  <button [disabled]="!searchTerm.value" class="govuk-button" data-module="govuk-button" (click)="search()">
+    <mat-icon>search</mat-icon>
+  </button>
 </div>
