@@ -28,12 +28,7 @@ import { SearchComponent } from './search/search.component';
     TranscriptionsComponent,
     SearchComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    ReactiveFormsModule,
-    MatIconModule,
-  ],
+  imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule, MatIconModule],
   providers: [],
   bootstrap: [AppComponent],
 })

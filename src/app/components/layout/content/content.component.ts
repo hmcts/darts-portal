@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { initAll } from 'govuk-frontend';
 
 @Component({
@@ -6,7 +6,7 @@ import { initAll } from 'govuk-frontend';
   templateUrl: './content.component.html',
   styleUrls: ['./content.component.css'],
 })
-export class ContentComponent {
+export class ContentComponent implements OnInit {
   public ngOnInit() {
     // initialize javascript for accordion component to enable open/close button
     setTimeout(() => initAll(), 500);
