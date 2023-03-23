@@ -10,7 +10,7 @@
     "build": "ng build --configuration production",
     "build:ssr": "yarn build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test --watch=false",
+    "test": "ng test --watch=false --browsers=ChromeHeadless",
     "test:watch": "ng test",
     "test:coverage": "ng test --watch=false --code-coverage",
     "test:a11y": "echo TODO",

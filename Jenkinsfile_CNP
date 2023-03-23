@@ -11,6 +11,11 @@ def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 withPipeline(type, product, component) {
   enableSlackNotifications('#darts-builds')
 
+  afterAlways('build') {
+    yarnBuilder.yarn('rebuild puppeteer')
+    yarnBuilder.yarn('build')
+  }
+
   afterAlways('checkout') {
     sh "yarn install"
     echo 'Yarn install complete'
