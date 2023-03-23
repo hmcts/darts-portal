@@ -3,8 +3,8 @@ COPY package.json yarn.lock /app/
 
 FROM base as build
 WORKDIR /app
-RUN yarn
 COPY . .
+RUN yarn install
 RUN yarn build
 
 FROM base as runtime
