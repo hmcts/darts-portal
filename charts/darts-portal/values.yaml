@@ -1,0 +1,12 @@
+nodejs:
+  applicationPort: 3000
+  image: 'hmctspublic.azurecr.io/darts/portal:latest'
+  ingressHost: darts-portal-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+  aadIdentityName: darts
+  #  Uncomment once the vault containing the app insights key has been set up
+  #  keyVaults:
+  #    darts:
+  #      secrets:
+  #        - name: AppInsightsInstrumentationKey
+  #          alias: azure.application-insights.instrumentation-key
+  environment:
