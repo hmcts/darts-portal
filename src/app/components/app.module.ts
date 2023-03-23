@@ -14,6 +14,8 @@ import { HomeComponent } from './home/home.component';
 import { AudiosComponent } from './audios/audios.component';
 import { TranscriptionsComponent } from './transcriptions/transcriptions.component';
 import { SearchComponent } from './search/search.component';
+import { HttpClientModule } from '@angular/common/http';
+import { AudioSamplesComponent } from './audio-samples/audio-samples.component';
 
 @NgModule({
   declarations: [
@@ -27,8 +29,9 @@ import { SearchComponent } from './search/search.component';
     AudiosComponent,
     TranscriptionsComponent,
     SearchComponent,
+    AudioSamplesComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule, MatIconModule],
+  imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule, MatIconModule, HttpClientModule],
   providers: [],
   bootstrap: [AppComponent],
 })

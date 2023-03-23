@@ -1,0 +1,25 @@
+<table class="govuk-table">
+  <caption class="govuk-table__caption govuk-table__caption--m">
+    POC for playing MP2 audio files in the browser
+  </caption>
+  <thead class="govuk-table__head">
+    <tr class="govuk-table__row">
+      <th scope="col" class="govuk-table__header">Sample name</th>
+      <th scope="col" class="govuk-table__header">Player</th>
+    </tr>
+  </thead>
+  <tbody class="govuk-table__body">
+    <tr *ngFor="let sample of sampleList" class="govuk-table__row">
+      <th scope="row" class="govuk-table__header">
+        <span>{{ sample.name }}</span>
+        <br />
+        <span class="govuk-body-s">
+          <a [href]="sample.downloadSource">Download</a>
+        </span>
+      </th>
+      <td class="govuk-table__cell">
+        <audio controls preload [src]="sample.sampleSource"></audio>
+      </td>
+    </tr>
+  </tbody>
+</table>

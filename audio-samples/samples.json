@@ -1,0 +1,27 @@
+[
+  {
+    "name": "Symphony No.6 (1st movement).mp2",
+    "sampleSource": "/media/samples/Symphony No.6 (1st movement).mp2",
+    "downloadSource": "/media/downloads/Symphony No.6 (1st movement).mp2"
+  },
+  {
+    "name": "sample1.mp2",
+    "sampleSource": "/media/samples/sample1.mp2",
+    "downloadSource": "/media/downloads/sample1.mp2"
+  },
+  {
+    "name": "sample2.mp2",
+    "sampleSource": "/media/samples/sample2.mp2",
+    "downloadSource": "/media/downloads/sample2.mp2"
+  },
+  {
+    "name": "sample3.mp2",
+    "sampleSource": "/media/samples/sample3.mp2",
+    "downloadSource": "/media/downloads/sample3.mp2"
+  },
+  {
+    "name": "sample4.mp2",
+    "sampleSource": "/media/samples/sample4.mp2",
+    "downloadSource": "/media/downloads/sample4.mp2"
+  }
+]

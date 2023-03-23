@@ -4858,6 +4858,7 @@ __metadata:
     karma-coverage: ~2.2.0
     karma-jasmine: ~5.1.0
     karma-jasmine-html-reporter: ~2.0.0
+    node-lame: ^1.3.2
     nodemon: ^2.0.21
     prettier: ^2.8.6
     rxjs: ~7.8.0
@@ -7898,6 +7899,13 @@ __metadata:
   bin:
     node-gyp: bin/node-gyp.js
   checksum: b860e9976fa645ca0789c69e25387401b4396b93c8375489b5151a6c55cf2640a3b6183c212b38625ef7c508994930b72198338e3d09b9d7ade5acc4aaf51ea7
+  languageName: node
+  linkType: hard
+
+"node-lame@npm:^1.3.2":
+  version: 1.3.2
+  resolution: "node-lame@npm:1.3.2"
+  checksum: 108bddab3a8600898bf03dd9f7db7c0d395b347eded105d197d53b34f9af03b481aeb576be814518dddb26e58b127c24682ef7fe56b1d8dbda330f87a5a6d4dc
   languageName: node
   linkType: hard
 
