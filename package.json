@@ -12,7 +12,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test --watch=false --browsers=ChromeHeadless",
     "test:watch": "ng test",
-    "test:coverage": "ng test --watch=false --code-coverage",
+    "test:coverage": "yarn test --code-coverage",
     "test:a11y": "echo TODO",
     "test:smoke": "echo TODO",
     "test:functional": "echo TODO",
