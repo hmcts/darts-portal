@@ -15,7 +15,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular-devkit/architect@npm:0.1502.4":
+"@angular-devkit/architect@npm:0.1502.4, @angular-devkit/architect@npm:^0.1502.4":
   version: 0.1502.4
   resolution: "@angular-devkit/architect@npm:0.1502.4"
   dependencies:
@@ -4906,6 +4906,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "darts-portal@workspace:."
   dependencies:
+    "@angular-devkit/architect": ^0.1502.4
     "@angular-devkit/build-angular": ^15.2.3
     "@angular-eslint/builder": 15.2.1
     "@angular-eslint/eslint-plugin": 15.2.1
