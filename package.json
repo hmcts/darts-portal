@@ -8,6 +8,7 @@
     "dev:node": "nodemon server.js",
     "dev": "concurrently --names \"NODE,ANGULAR\" -c \"bgBlue.bold,bgGreen.bold\" \"yarn dev:node\" \"yarn watch\"",
     "build": "ng build --configuration production",
+    "build:ssr": "yarn build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test:coverage": "ng test --code-coverage",
