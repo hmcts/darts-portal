@@ -8,15 +8,17 @@
     "dev:node": "nodemon server.js",
     "dev": "concurrently --names \"NODE,ANGULAR\" -c \"bgBlue.bold,bgGreen.bold\" \"yarn dev:node\" \"yarn watch\"",
     "build": "ng build --configuration production",
+    "build:ssr": "yarn build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "test:coverage": "ng test --code-coverage",
+    "test": "ng test --watch=false --browsers=ChromeHeadless",
+    "test:watch": "ng test",
+    "test:coverage": "yarn test --code-coverage",
     "test:a11y": "echo TODO",
     "test:smoke": "echo TODO",
     "test:functional": "echo TODO",
     "lint": "yarn prettier && yarn lint:ng",
     "lint:ng": "ng lint",
-    "precommit": "yarn prettier && yarn lint",
+    "precommit": "yarn prettier && yarn lint:ng",
     "prettier": "prettier --check \"./**/*.{ts,js,html,scss}\"",
     "prettier:fix": "prettier --write \"./**/*.{ts,js,html,scss}\"",
     "fortifyScan": "./test/java/gradlew -p test/java fortifyScan"
@@ -63,5 +65,6 @@
     "nodemon": "^2.0.21",
     "prettier": "^2.8.6",
     "typescript": "~4.9.4"
-  }
+  },
+  "packageManager": "yarn@3.5.0"
 }
