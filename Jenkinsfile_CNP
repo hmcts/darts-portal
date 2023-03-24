@@ -7,12 +7,13 @@ def product = "darts"
 def component = "portal"
 
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
+def branchesToSync = ['demo']
 
 withPipeline(type, product, component) {
   afterAlways('build') {
     yarnBuilder.yarn('build')
   }
-
+  syncBranchesWithMaster(branchesToSync)
   enableSlackNotifications('#darts-builds')
 
 }
