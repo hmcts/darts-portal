@@ -11,6 +11,8 @@ def type = "angular"
 def product = "darts"
 def component = "portal"
 
+def branchesToSync = ['demo']
+
 withNightlyPipeline(type, product, component) {
 
 }
