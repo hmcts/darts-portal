@@ -1,0 +1,25 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base"
+  ],
+  "labels": ["dependencies"],
+  "helmv3": {
+    "bumpVersion": "patch"
+  },
+  "packageRules": [
+    {
+      "matchUpdateTypes": [
+        "minor", "patch"
+      ],
+      "groupName": "all non major dependencies",
+      "groupSlug": "all-minor-patch"
+    }
+  ],
+  "vulnerabilityAlerts": {
+    "labels": [
+      "security"
+    ]
+  },
+  "rebaseWhen": "behind-base-branch"
+}
