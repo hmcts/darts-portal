@@ -21,7 +21,9 @@
     "precommit": "yarn prettier && yarn lint:ng",
     "prettier": "prettier --check \"./**/*.{ts,js,html,scss}\"",
     "prettier:fix": "prettier --write \"./**/*.{ts,js,html,scss}\"",
-    "fortifyScan": "./test/java/gradlew -p test/java fortifyScan"
+    "fortifyScan": "./test/java/gradlew -p test/java fortifyScan",
+    "docker:build": "docker build -t darts-portal .",
+    "docker:run": "docker run -it -p 3000:3000 darts-portal"
   },
   "private": true,
   "dependencies": {
