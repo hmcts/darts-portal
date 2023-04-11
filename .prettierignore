@@ -3,6 +3,7 @@ node_modules
 dist
 .angular
 yarn.lock
+.yarn/
 
 .vscode
 coverage

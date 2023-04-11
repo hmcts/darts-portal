@@ -15,7 +15,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular-devkit/architect@npm:0.1502.4":
+"@angular-devkit/architect@npm:0.1502.4, @angular-devkit/architect@npm:^0.1502.4":
   version: 0.1502.4
   resolution: "@angular-devkit/architect@npm:0.1502.4"
   dependencies:
@@ -4906,6 +4906,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "darts-portal@workspace:."
   dependencies:
+    "@angular-devkit/architect": ^0.1502.4
     "@angular-devkit/build-angular": ^15.2.3
     "@angular-eslint/builder": 15.2.1
     "@angular-eslint/eslint-plugin": 15.2.1
@@ -4943,7 +4944,7 @@ __metadata:
     prettier: ^2.8.6
     rxjs: ~7.8.0
     tslib: ^2.3.0
-    typescript: ~4.9.4
+    typescript: ^4.9.5
     zone.js: ~0.13.0
   languageName: unknown
   linkType: soft
@@ -10038,7 +10039,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:~4.9.4":
+"typescript@npm:^4.9.5":
   version: 4.9.5
   resolution: "typescript@npm:4.9.5"
   bin:
@@ -10048,7 +10049,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@~4.9.4#~builtin<compat/typescript>":
+"typescript@patch:typescript@^4.9.5#~builtin<compat/typescript>":
   version: 4.9.5
   resolution: "typescript@patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=23ec76"
   bin:
