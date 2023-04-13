@@ -14,7 +14,7 @@
     "test:watch": "ng test",
     "test:coverage": "yarn test --code-coverage",
     "test:a11y": "echo TODO",
-    "test:smoke": "echo TODO",
+    "test:smoke": "npx cypress run --config baseUrl=http://localhost:4200 --spec tests/smoke-spec.js",
     "test:functional": "echo TODO",
     "lint": "yarn prettier && yarn lint:ng",
     "lint:ng": "ng lint",
@@ -42,6 +42,7 @@
     "govuk-frontend": "^4.5.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
+    "yarn": "^1.22.19",
     "zone.js": "~0.13.0"
   },
   "devDependencies": {
@@ -58,6 +59,7 @@
     "@typescript-eslint/eslint-plugin": "5.58.0",
     "@typescript-eslint/parser": "5.58.0",
     "concurrently": "^8.0.0",
+    "cypress": "^12.9.0",
     "eslint": "^8.33.0",
     "husky": "^8.0.3",
     "jasmine-core": "~4.6.0",
