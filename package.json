@@ -14,7 +14,7 @@
     "test:watch": "ng test",
     "test:coverage": "yarn test --code-coverage",
     "test:a11y": "echo TODO",
-    "test:smoke": "npx cypress run --config baseUrl=http://localhost:4200 --spec tests/smoke-spec.js",
+    "test:smoke": "cypress run",
     "test:functional": "echo TODO",
     "lint": "yarn prettier && yarn lint:ng",
     "lint:ng": "ng lint",
@@ -68,6 +68,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
+    "lodash": "^4.17.21",
     "nodemon": "^2.0.21",
     "prettier": "^2.8.6",
     "typescript": "^4.9.5"
