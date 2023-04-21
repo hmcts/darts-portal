@@ -1,8 +1,6 @@
-describe('An example', () => {
-  it('Should load', () => {
-    cy.visit(`${Cypress.env('HOST')}`);
-    // (or,  if your H1 doesn't appear, it will fail after a timeout).
-    cy.get('.govuk-header__service-name').should('contain', 'DARTS portal');
-    // Let's also confirm that we are on the right URL.
+describe('Smoke test', () => {
+  it('should load portal', () => {
+    cy.visit('/');
+    cy.get('h1').should('contain', 'Welcome to DARTS');
   });
 });

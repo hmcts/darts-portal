@@ -1,0 +1,6 @@
+{
+  "ignore": [],
+  "watch": ["./server"],
+  "exec": "yarn ts-node -P ./server/tsconfig.json ./server/server.ts",
+  "ext": "ts"
+}
