@@ -9,7 +9,6 @@ const allowedUrlPath = '/api';
 
 async function callApi<T extends unknown>(apiUrlPath: string, method: HTTPMethod, req: Request): Promise<T> {
   const m = method.toLowerCase();
-  console.log('CALLING API:', `${dartsApiUrl}${apiUrlPath}`);
   const result = await axios({
     method: m,
     url: `${dartsApiUrl}${apiUrlPath}`,
@@ -26,7 +25,6 @@ function apiProxy(): (req: Request, res: Response, next: NextFunction) => Promis
       return next(`Not allowed to call apiPath = ${apiPath}, allowed path "${allowedUrlPath}"`);
     }
     try {
-      console.log('TRYING TO CALL API:', apiPath);
       const result = await callApi(apiPath.replace(allowedUrlPath, ''), req.method as HTTPMethod, req);
       return res.json(result);
     } catch (err) {
