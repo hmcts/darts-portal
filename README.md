@@ -1,27 +1,74 @@
-# DartsPortalProto
+# DARTS portal
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.3.
+This is primarily an Angular app, but runs through a node.js server. There are two main reasons for the node.js server
 
-## Development server
+- the web server for when the app is deployed in Kubernetes
+- to proxy API requests to internally-facing backend API services, such as the DARTS API
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Getting Started
 
-## Code scaffolding
+### Prerequisites
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Running the application requires the following tools to be installed in your environment:
+
+- [Node.js](https://nodejs.org/) v18.0.0 or later
+- [yarn](https://yarnpkg.com/) v3
+- [Docker](https://www.docker.com)
+
+### Running the application
+
+Install dependencies by executing the following command:
+
+```bash
+yarn install
+```
+
+```bash
+yarn dev
+```
+
+The applications's home page will be available at https://localhost:3000.
+
+This is running both node.js and Angular, if you do not require API calls and you wish to use only Angular you can use the following command:
+
+```bash
+yarn dev:ng
+```
+
+Then, the applications's home page will be available at https://localhost:4200.
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Run `yarn:build` to build the project. The build artifacts will be stored in the `dist/` directory. This compiles both the node.js server-side code and angular code.
 
-## Running unit tests
+## Code style
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+We use [ESLint](https://github.com/typescript-eslint/typescript-eslint) and [Prettier](https://prettier.io/)
+
+Running the linting:
+
+```bash
+yarn lint
+```
+
+You can fix prettier formatting issues using:
+
+```bash
+yarn prettier:fix
+```
+
+## Running unit/integration tests
+
+Run `yarn test` or `yarn test:watch` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
 ## Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Run `yarn test:functional` to execute the end-to-end tests using Cypress.
 
-## Further help
+Run `yarn cypress` to open the cypress console, very useful for debugging tests.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Angular code scaffolding
+
+Run `yarn ng generate component component-name` to generate a new component. You can also use `yarn ng generate directive|pipe|service|class|guard|interface|enum|module`.
+
+Note the requirement for prefixing the `ng` commands with `yarn`, this is because we are using yarn's plug'n'play functionality.
