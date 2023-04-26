@@ -11,3 +11,4 @@ nodejs:
   #          alias: azure.application-insights.instrumentation-key
   environment:
     DARTS_API_URL: https://darts-api.{{ .Values.global.environment }}.platform.hmcts.net
+    SOME_CONFIG_ITEM: "theValue"
