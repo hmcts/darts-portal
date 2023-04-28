@@ -21,6 +21,7 @@
     "test:a11y": "echo TODO",
     "test:smoke": "cypress run",
     "test:functional": "echo TODO",
+    "cypress": "cypress open",
     "lint": "yarn prettier && yarn lint:ng",
     "lint:ng": "ng lint",
     "precommit": "yarn prettier && yarn lint:ng",

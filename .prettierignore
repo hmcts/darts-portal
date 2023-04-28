@@ -1,5 +1,4 @@
 # third party
-node_modules
 dist
 .angular
 yarn.lock
@@ -7,3 +6,4 @@ yarn.lock
 
 .vscode
 coverage
+charts

@@ -47,3 +47,7 @@ Thumbs.db
 # Others
 .github
 README.md
+
+# Testing
+cypress/videos
+cypress/screenshots
