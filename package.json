@@ -6,7 +6,7 @@
   },
   "scripts": {
     "ng": "ng",
-    "start": "NODE_ENV=production node dist/server/server.js",
+    "start": "NODE_ENV=production node dist/server/index.js",
     "dev:ng": "ng serve",
     "dev:node": "nodemon",
     "dev": "concurrently --names \"NODE,ANGULAR\" -c \"bgBlue.bold,bgGreen.bold\" \"yarn dev:node\" \"yarn watch\"",

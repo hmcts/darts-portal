@@ -1,6 +1,10 @@
 import pa11y from 'pa11y';
+import { startServer } from '../server/server';
+import * as config from '../server/config';
 
-import { testUrl, pathsToTest } from './config';
+import { testUrl } from './config';
+
+export const pathsToTest = ['/', '/inbox', '/audios', '/transcriptions'];
 
 async function runPa11y() {
   try {
@@ -21,4 +25,13 @@ async function runPa11y() {
   }
 }
 
-runPa11y();
+const PORT = config.port;
+const READY_MESSAGE = `> Ready on http://localhost:${PORT}`;
+
+const server = startServer();
+
+server.listen(PORT, () => {
+  console.log(READY_MESSAGE);
+  console.log('--');
+  runPa11y();
+});
