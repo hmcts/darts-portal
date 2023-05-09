@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, ErrorHandler, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { BrowserModule } from '@angular/platform-browser';
@@ -14,6 +14,13 @@ import { HomeComponent } from './home/home.component';
 import { AudiosComponent } from './audios/audios.component';
 import { TranscriptionsComponent } from './transcriptions/transcriptions.component';
 import { SearchComponent } from './search/search.component';
+import { ErrorHandlerService } from '../services/error/error-handler.service';
+import { AppConfigService } from '../services/app-config/app-config.service';
+import { HttpClientModule } from '@angular/common/http';
+
+export function initAppFn(envService: AppConfigService) {
+  return () => envService.loadAppConfig();
+}
 
 @NgModule({
   declarations: [
@@ -28,8 +35,16 @@ import { SearchComponent } from './search/search.component';
     TranscriptionsComponent,
     SearchComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule, MatIconModule],
-  providers: [],
+  imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule, MatIconModule, HttpClientModule],
+  providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initAppFn,
+      multi: true,
+      deps: [AppConfigService],
+    },
+    { provide: ErrorHandler, useClass: ErrorHandlerService, deps: [AppConfigService] },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

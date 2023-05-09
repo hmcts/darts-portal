@@ -7,7 +7,7 @@ type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'OPTIONS' | 'HEA
 
 const allowedUrlPath = '/api';
 
-async function callApi<T extends unknown>(apiUrlPath: string, method: HTTPMethod, req: Request): Promise<T> {
+async function callApi<T>(apiUrlPath: string, method: HTTPMethod, req: Request): Promise<T> {
   const m = method.toLowerCase();
   const result = await axios({
     method: m,

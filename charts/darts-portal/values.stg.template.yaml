@@ -2,3 +2,9 @@
 nodejs:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
+  keyVaults:
+    darts:
+      secrets:
+        - name: AppInsightsInstrumentationKey
+          alias: APP_INSIGHTS_KEY
+

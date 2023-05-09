@@ -3,11 +3,10 @@ nodejs:
   image: 'sdshmctspublic.azurecr.io/darts/portal:latest'
   ingressHost: darts-portal.{{ .Values.global.environment }}.platform.hmcts.net
   aadIdentityName: darts
-  #  Uncomment once the vault containing the app insights key has been set up
-  #  keyVaults:
-  #    darts:
-  #      secrets:
-  #        - name: AppInsightsInstrumentationKey
-  #          alias: azure.application-insights.instrumentation-key
+  keyVaults:
+    darts:
+      secrets:
+        - name: AppInsightsInstrumentationKey
+          alias: APP_INSIGHTS_KEY
   environment:
     DARTS_API_URL: https://darts-api.{{ .Values.global.environment }}.platform.hmcts.net
