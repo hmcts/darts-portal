@@ -6,7 +6,7 @@ nodejs:
   keyVaults:
     darts:
       secrets:
-        - name: AppInsightsInstrumentationKey
-          alias: APP_INSIGHTS_KEY
+        - AppInsightsInstrumentationKey
   environment:
+    ALLOW_CONFIG_MUTATIONS: true
     DARTS_API_URL: https://darts-api.{{ .Values.global.environment }}.platform.hmcts.net
