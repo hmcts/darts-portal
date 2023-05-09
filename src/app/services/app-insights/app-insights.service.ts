@@ -1,14 +1,15 @@
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 import { Injectable } from '@angular/core';
+import { AppConfigService } from '../app-config/app-config.service';
 
 @Injectable({ providedIn: 'root' })
 export class AppInsightsService {
   appInsights: ApplicationInsights;
 
-  constructor() {
+  constructor(private readonly appConfigService: AppConfigService) {
     this.appInsights = new ApplicationInsights({
       config: {
-        instrumentationKey: 'XXXXXXXXXXXXXXXXXX',
+        instrumentationKey: this.appConfigService.getAppConfig()?.appInsightsKey,
         enableAutoRouteTracking: true, // option to log all route changes
       },
     });
@@ -22,11 +23,11 @@ export class AppInsightsService {
     });
   }
 
-  logEvent(name: string, properties?: { [key: string]: any }) {
+  logEvent(name: string, properties?: { [key: string]: unknown }) {
     this.appInsights.trackEvent({ name: name }, properties);
   }
 
-  logMetric(name: string, average: number, properties?: { [key: string]: any }) {
+  logMetric(name: string, average: number, properties?: { [key: string]: unknown }) {
     this.appInsights.trackMetric({ name: name, average: average }, properties);
   }
 
@@ -34,7 +35,7 @@ export class AppInsightsService {
     this.appInsights.trackException({ exception: exception, severityLevel: severityLevel });
   }
 
-  logTrace(message: string, properties?: { [key: string]: any }) {
+  logTrace(message: string, properties?: { [key: string]: unknown }) {
     this.appInsights.trackTrace({ message: message }, properties);
   }
 }

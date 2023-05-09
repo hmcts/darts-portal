@@ -8,12 +8,15 @@ import { SearchComponent } from './search.component';
 describe('SearchComponent', () => {
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
+  let appInsightsServiceSpy: jasmine.SpyObj<AppInsightsService>;
 
   beforeEach(async () => {
+    appInsightsServiceSpy = jasmine.createSpyObj('AppInsightsService', ['logEvent']);
+
     await TestBed.configureTestingModule({
       imports: [MatIconModule, ReactiveFormsModule],
       declarations: [SearchComponent],
-      providers: [AppInsightsService],
+      providers: [{ provide: AppInsightsService, useValue: appInsightsServiceSpy }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SearchComponent);
@@ -33,11 +36,10 @@ describe('SearchComponent', () => {
   });
 
   it('logs app insights event on search', () => {
-    const spy = spyOn(AppInsightsService.prototype, 'logEvent');
     component.searchTerm.setValue('CASE1001');
     component.search();
 
-    expect(spy.calls.count()).withContext('spy method was called once').toBe(1);
-    expect(spy.calls.first().args).toEqual(['CASE_SEARCH', { searchTerm: 'CASE1001' }]);
+    expect(appInsightsServiceSpy.logEvent.calls.count()).withContext('spy method was called once').toBe(1);
+    expect(appInsightsServiceSpy.logEvent.calls.first().args).toEqual(['CASE_SEARCH', { searchTerm: 'CASE1001' }]);
   });
 });

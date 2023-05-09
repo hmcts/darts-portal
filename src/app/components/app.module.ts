@@ -1,4 +1,4 @@
-import { ErrorHandler, NgModule } from '@angular/core';
+import { APP_INITIALIZER, ErrorHandler, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { BrowserModule } from '@angular/platform-browser';
@@ -15,6 +15,12 @@ import { AudiosComponent } from './audios/audios.component';
 import { TranscriptionsComponent } from './transcriptions/transcriptions.component';
 import { SearchComponent } from './search/search.component';
 import { ErrorHandlerService } from '../services/error/error-handler.service';
+import { AppConfigService } from '../services/app-config/app-config.service';
+import { HttpClientModule } from '@angular/common/http';
+
+export function initAppFn(envService: AppConfigService) {
+  return () => envService.loadAppConfig('/app/config');
+}
 
 @NgModule({
   declarations: [
@@ -29,8 +35,16 @@ import { ErrorHandlerService } from '../services/error/error-handler.service';
     TranscriptionsComponent,
     SearchComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule, MatIconModule],
-  providers: [{ provide: ErrorHandler, useClass: ErrorHandlerService }],
+  imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule, MatIconModule, HttpClientModule],
+  providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initAppFn,
+      multi: true,
+      deps: [AppConfigService],
+    },
+    { provide: ErrorHandler, useClass: ErrorHandlerService, deps: [AppConfigService] },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -1,19 +1,18 @@
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
+import { AppConfigService } from '../app-config/app-config.service';
 import { AppInsightsService } from './app-insights.service';
 
 describe('AppInsightsService', () => {
-  it('loads Application Insights', () => {
-    const spy = spyOn(ApplicationInsights.prototype, 'loadAppInsights');
-
-    new AppInsightsService();
-
-    expect(spy.calls.count()).withContext('spy method was called once').toBe(1);
-  });
+  const fakeAppConfigService = {
+    getAppConfig: () => ({
+      appInsightsKey: 'XXXXXXXX',
+    }),
+  } as AppConfigService;
 
   it('logs a page view', () => {
+    const appInsightsService = new AppInsightsService(fakeAppConfigService);
     const spy = spyOn(ApplicationInsights.prototype, 'trackPageView');
 
-    const appInsightsService = new AppInsightsService();
     appInsightsService.logPageView('TEST_PAGE', 'http://localhost:3000/test-page');
 
     expect(spy.calls.count()).withContext('spy method was called once').toBe(1);
@@ -21,9 +20,9 @@ describe('AppInsightsService', () => {
   });
 
   it('logs an event', () => {
+    const appInsightsService = new AppInsightsService(fakeAppConfigService);
     const spy = spyOn(ApplicationInsights.prototype, 'trackEvent');
 
-    const appInsightsService = new AppInsightsService();
     const eventProps = { caseId: 'CASE1001', eventId: 'TRANSCRIPTION_APPROVED' };
     appInsightsService.logEvent('TEST_EVENT', eventProps);
 
@@ -32,9 +31,9 @@ describe('AppInsightsService', () => {
   });
 
   it('logs a metric', () => {
+    const appInsightsService = new AppInsightsService(fakeAppConfigService);
     const spy = spyOn(ApplicationInsights.prototype, 'trackMetric');
 
-    const appInsightsService = new AppInsightsService();
     const metricProps = { caseId: 'CASE1001' };
     appInsightsService.logMetric('ACCEPT_TRANSCRIPTION_REQUEST', 60, metricProps);
 
@@ -43,9 +42,9 @@ describe('AppInsightsService', () => {
   });
 
   it('logs an exception', () => {
+    const appInsightsService = new AppInsightsService(fakeAppConfigService);
     const spy = spyOn(ApplicationInsights.prototype, 'trackException');
 
-    const appInsightsService = new AppInsightsService();
     const err = new Error('BAD_ERROR');
     appInsightsService.logException(err, 1);
 
@@ -54,9 +53,9 @@ describe('AppInsightsService', () => {
   });
 
   it('logs a trace', () => {
+    const appInsightsService = new AppInsightsService(fakeAppConfigService);
     const spy = spyOn(ApplicationInsights.prototype, 'trackTrace');
 
-    const appInsightsService = new AppInsightsService();
     const traceProps = { caseId: 'CASE1001' };
     appInsightsService.logTrace('SOME_TRACE', traceProps);
 

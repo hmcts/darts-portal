@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterTestingModule } from '@angular/router/testing';
+import { AppInsightsService } from '../services/app-insights/app-insights.service';
 import { AppComponent } from './app.component';
 import { ContentComponent } from './layout/content/content.component';
 import { FooterComponent } from './layout/footer/footer.component';
@@ -11,6 +12,8 @@ import { SearchComponent } from './search/search.component';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
+    const fakeAppInsightsService = {};
+
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, MatIconModule, ReactiveFormsModule],
       declarations: [
@@ -21,6 +24,7 @@ describe('AppComponent', () => {
         ContentComponent,
         FooterComponent,
       ],
+      providers: [{ provide: AppInsightsService, useValue: fakeAppInsightsService }],
     }).compileComponents();
   });
 
