@@ -19,7 +19,7 @@ import { AppConfigService } from '../services/app-config/app-config.service';
 import { HttpClientModule } from '@angular/common/http';
 
 export function initAppFn(envService: AppConfigService) {
-  return () => envService.loadAppConfig('/app/config');
+  return () => envService.loadAppConfig();
 }
 
 @NgModule({

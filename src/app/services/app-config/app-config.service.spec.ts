@@ -1,19 +1,26 @@
-import { HttpClientModule } from '@angular/common/http';
-import { TestBed } from '@angular/core/testing';
+import { HttpClient } from '@angular/common/http';
+import { of } from 'rxjs';
 
-import { AppConfigService } from './app-config.service';
+import { AppConfig, AppConfigService } from './app-config.service';
 
 describe('AppConfigService', () => {
-  let service: AppConfigService;
+  let httpClientSpy: jasmine.SpyObj<HttpClient>;
+  let appConfigService: AppConfigService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientModule],
-    });
-    service = TestBed.inject(AppConfigService);
+    httpClientSpy = jasmine.createSpyObj('HttpClient', ['get']);
+    appConfigService = new AppConfigService(httpClientSpy);
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(appConfigService).toBeTruthy();
+  });
+
+  it('loads app config', async () => {
+    const testData: AppConfig = { appInsightsKey: 'Test Data' };
+    httpClientSpy.get.and.returnValue(of(testData));
+    await appConfigService.loadAppConfig();
+
+    expect(appConfigService.getAppConfig()).toEqual(testData);
   });
 });
