@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { dartsApiUrl } from '../config';
+import config from 'config';
 import { Router, Request, Response, NextFunction } from 'express';
 import axios from 'axios';
 
@@ -11,7 +11,7 @@ async function callApi<T>(apiUrlPath: string, method: HTTPMethod, req: Request):
   const m = method.toLowerCase();
   const result = await axios({
     method: m,
-    url: `${dartsApiUrl}${apiUrlPath}`,
+    url: `${config.get('darts-api.url')}${apiUrlPath}`,
     data: ['get', 'delete'].includes(m) ? undefined : req.body,
     validateStatus: () => true,
   });

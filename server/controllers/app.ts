@@ -1,15 +1,15 @@
 import * as express from 'express';
-import { appInsightsKey } from '../config';
+import appConfig from '../app-config';
 import { Router, Request, Response } from 'express';
 
-function appConfig(): (req: Request, res: Response) => void {
+function getAppConfig(): (req: Request, res: Response) => void {
   return (req: Request, res: Response) => {
-    res.json({ appInsightsKey });
+    res.json({ ...appConfig() });
   };
 }
 
 export function init(): Router {
   const router = express.Router();
-  router.use('/app/config', appConfig());
+  router.use('/app/config', getAppConfig());
   return router;
 }

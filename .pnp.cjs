@@ -48,8 +48,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@angular/platform-browser-dynamic", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:15.2.8"],\
             ["@angular/router", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:15.2.8"],\
             ["@hmcts/nodejs-healthcheck", "npm:1.8.0"],\
+            ["@hmcts/properties-volume", "npm:0.0.14"],\
             ["@microsoft/applicationinsights-web", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:3.0.1"],\
             ["@types/body-parser", "npm:1.19.2"],\
+            ["@types/config", "npm:3.3.0"],\
             ["@types/express", "npm:4.17.17"],\
             ["@types/jasmine", "npm:4.3.1"],\
             ["@types/node", "npm:18.16.0"],\
@@ -60,6 +62,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["bluebird", "npm:3.7.2"],\
             ["body-parser", "npm:1.20.2"],\
             ["concurrently", "npm:8.0.1"],\
+            ["config", "npm:3.3.9"],\
             ["cypress", "npm:12.10.0"],\
             ["eslint", "npm:8.39.0"],\
             ["express", "npm:4.18.2"],\
@@ -3601,6 +3604,18 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@hmcts/properties-volume", [\
+        ["npm:0.0.14", {\
+          "packageLocation": "./.yarn/cache/@hmcts-properties-volume-npm-0.0.14-6d0ff04d5a-3859effd7c.zip/node_modules/@hmcts/properties-volume/",\
+          "packageDependencies": [\
+            ["@hmcts/properties-volume", "npm:0.0.14"],\
+            ["@hmcts/nodejs-logging", "npm:4.0.4"],\
+            ["lodash", "npm:4.17.21"],\
+            ["path", "npm:0.12.7"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@humanwhocodes/config-array", [\
         ["npm:0.11.8", {\
           "packageLocation": "./.yarn/cache/@humanwhocodes-config-array-npm-0.11.8-7955bfecc2-0fd6b3c54f.zip/node_modules/@humanwhocodes/config-array/",\
@@ -5114,6 +5129,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@types/bonjour", "npm:3.5.10"],\
             ["@types/node", "npm:18.16.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/config", [\
+        ["npm:3.3.0", {\
+          "packageLocation": "./.yarn/cache/@types-config-npm-3.3.0-bdb6fd80cb-d9485041cf.zip/node_modules/@types/config/",\
+          "packageDependencies": [\
+            ["@types/config", "npm:3.3.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -7389,6 +7413,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["config", [\
+        ["npm:3.3.9", {\
+          "packageLocation": "./.yarn/cache/config-npm-3.3.9-7e0be6fe2e-2c29e40be2.zip/node_modules/config/",\
+          "packageDependencies": [\
+            ["config", "npm:3.3.9"],\
+            ["json5", "npm:2.2.3"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["connect", [\
         ["npm:3.7.0", {\
           "packageLocation": "./.yarn/cache/connect-npm-3.7.0-25ccb085cc-96e1c4effc.zip/node_modules/connect/",\
@@ -7763,8 +7797,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@angular/platform-browser-dynamic", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:15.2.8"],\
             ["@angular/router", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:15.2.8"],\
             ["@hmcts/nodejs-healthcheck", "npm:1.8.0"],\
+            ["@hmcts/properties-volume", "npm:0.0.14"],\
             ["@microsoft/applicationinsights-web", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:3.0.1"],\
             ["@types/body-parser", "npm:1.19.2"],\
+            ["@types/config", "npm:3.3.0"],\
             ["@types/express", "npm:4.17.17"],\
             ["@types/jasmine", "npm:4.3.1"],\
             ["@types/node", "npm:18.16.0"],\
@@ -7775,6 +7811,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["bluebird", "npm:3.7.2"],\
             ["body-parser", "npm:1.20.2"],\
             ["concurrently", "npm:8.0.1"],\
+            ["config", "npm:3.3.9"],\
             ["cypress", "npm:12.10.0"],\
             ["eslint", "npm:8.39.0"],\
             ["express", "npm:4.18.2"],\
@@ -12390,6 +12427,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["path", [\
+        ["npm:0.12.7", {\
+          "packageLocation": "./.yarn/cache/path-npm-0.12.7-bddabe2e86-5dedb71e78.zip/node_modules/path/",\
+          "packageDependencies": [\
+            ["path", "npm:0.12.7"],\
+            ["process", "npm:0.11.10"],\
+            ["util", "npm:0.10.4"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["path-exists", [\
         ["npm:4.0.0", {\
           "packageLocation": "./.yarn/cache/path-exists-npm-4.0.0-e9e4f63eb0-505807199d.zip/node_modules/path-exists/",\
@@ -12705,6 +12753,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/proc-log-npm-3.0.0-a8c21c2f0f-02b64e1b39.zip/node_modules/proc-log/",\
           "packageDependencies": [\
             ["proc-log", "npm:3.0.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["process", [\
+        ["npm:0.11.10", {\
+          "packageLocation": "./.yarn/cache/process-npm-0.11.10-aeb3b641ae-bfcce49814.zip/node_modules/process/",\
+          "packageDependencies": [\
+            ["process", "npm:0.11.10"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -14686,6 +14743,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["uri-js", "npm:4.4.1"],\
             ["punycode", "npm:2.3.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["util", [\
+        ["npm:0.10.4", {\
+          "packageLocation": "./.yarn/cache/util-npm-0.10.4-7c577db41a-913f9a90d0.zip/node_modules/util/",\
+          "packageDependencies": [\
+            ["util", "npm:0.10.4"],\
+            ["inherits", "npm:2.0.3"]\
           ],\
           "linkType": "HARD"\
         }]\
