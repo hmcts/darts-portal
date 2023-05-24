@@ -4258,6 +4258,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@typescript-eslint/types@npm:^5.59.7":
+  version: 5.59.7
+  resolution: "@typescript-eslint/types@npm:5.59.7"
+  checksum: 52eccec9e2d631eb2808e48b5dc33a837b5e242fa9eddace89fc707c9f2283b5364f1d38b33d418a08d64f45f6c22f051800898e1881a912f8aac0c3ae300d0a
+  languageName: node
+  linkType: hard
+
 "@typescript-eslint/typescript-estree@npm:5.59.1":
   version: 5.59.1
   resolution: "@typescript-eslint/typescript-estree@npm:5.59.1"
@@ -6103,6 +6110,7 @@ __metadata:
     "@types/pa11y": ^5.3.5
     "@typescript-eslint/eslint-plugin": 5.59.1
     "@typescript-eslint/parser": 5.59.1
+    "@typescript-eslint/types": ^5.59.7
     axios: ^1.3.6
     bluebird: ^3.7.2
     body-parser: ^1.20.2
