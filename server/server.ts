@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import nunjucks from 'nunjucks';
 
 import * as bodyParser from 'body-parser';
 
@@ -22,6 +23,11 @@ export const startServer = () => {
 
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
+
+  nunjucks.configure('server/views', {
+    autoescape: true,
+    express: app,
+  });
 
   app.use(appHealth);
   app.use(routes());
