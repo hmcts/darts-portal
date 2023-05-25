@@ -6,6 +6,7 @@ import { Router, Request, Response } from 'express';
   an HTML page from the portal.
 */
 function getAzureAdLogin(req: Request, res: Response): void {
+  res.header('Access-Control-Allow-Origin', '*');
   res.render('azuread-login.html');
 }
 
