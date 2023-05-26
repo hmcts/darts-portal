@@ -2,5 +2,8 @@
   "port": "DARTS_PORTAL_PORT",
   "darts-api": {
     "url": "DARTS_API_URL"
+  },
+  "authentication": {
+    "azureAdB2cOriginHost": "DARTS_AZUREAD_B2C_ORIGIN_HOST"
   }
 }
