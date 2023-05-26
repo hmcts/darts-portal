@@ -3,6 +3,9 @@
   "darts-api": {
     "url": "http://localhost:4550"
   },
+  "authentication": {
+    "azureAdB2cOriginHost": "*"
+  },
   "secrets": {
     "darts": {
       "AppInsightsInstrumentationKey": "00000000-0000-0000-0000-000000000000"
