@@ -9,11 +9,13 @@ import config from 'config';
 function getAzureAdLogin(req: Request, res: Response): void {
   res.header('Access-Control-Allow-Origin', config.get('authentication.azureAdB2cOriginHost'));
   res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
-  res.render('azuread-login.html');
+  // do this whilst the page is being developed to prevent caching on the platform
+  res.header('Cache-Control', 'no-store, must-revalidate');
+  res.render('azuread-b2c-login.html');
 }
 
 export function init(): Router {
   const router = express.Router();
-  router.use('/auth/azuread-login', getAzureAdLogin);
+  router.use('/auth/azuread-b2c-login', getAzureAdLogin);
   return router;
 }
