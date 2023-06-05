@@ -63,7 +63,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["axios", "npm:1.4.0"],\
             ["bluebird", "npm:3.7.2"],\
             ["body-parser", "npm:1.20.2"],\
-            ["concurrently", "npm:8.0.1"],\
+            ["concurrently", "npm:8.1.0"],\
             ["config", "npm:3.3.9"],\
             ["cypress", "npm:12.13.0"],\
             ["eslint", "npm:8.41.0"],\
@@ -8057,10 +8057,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["concurrently", [\
-        ["npm:8.0.1", {\
-          "packageLocation": "./.yarn/cache/concurrently-npm-8.0.1-67a3307bfd-cce10ab1bb.zip/node_modules/concurrently/",\
+        ["npm:8.1.0", {\
+          "packageLocation": "./.yarn/cache/concurrently-npm-8.1.0-3ea86b9cbf-f767345c6e.zip/node_modules/concurrently/",\
           "packageDependencies": [\
-            ["concurrently", "npm:8.0.1"],\
+            ["concurrently", "npm:8.1.0"],\
             ["chalk", "npm:4.1.2"],\
             ["date-fns", "npm:2.29.3"],\
             ["lodash", "npm:4.17.21"],\
@@ -8504,7 +8504,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["axios", "npm:1.4.0"],\
             ["bluebird", "npm:3.7.2"],\
             ["body-parser", "npm:1.20.2"],\
-            ["concurrently", "npm:8.0.1"],\
+            ["concurrently", "npm:8.1.0"],\
             ["config", "npm:3.3.9"],\
             ["cypress", "npm:12.13.0"],\
             ["eslint", "npm:8.41.0"],\
