@@ -17,6 +17,7 @@ import { SearchComponent } from './search/search.component';
 import { ErrorHandlerService } from '../services/error/error-handler.service';
 import { AppConfigService } from '../services/app-config/app-config.service';
 import { HttpClientModule } from '@angular/common/http';
+import { ForbiddenComponent } from '../forbidden/forbidden.component';
 
 export function initAppFn(envService: AppConfigService) {
   return () => envService.loadAppConfig();
@@ -34,6 +35,7 @@ export function initAppFn(envService: AppConfigService) {
     AudiosComponent,
     TranscriptionsComponent,
     SearchComponent,
+    ForbiddenComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule, MatIconModule, HttpClientModule],
   providers: [
