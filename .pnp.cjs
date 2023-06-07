@@ -75,7 +75,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["karma-chrome-launcher", "npm:3.2.0"],\
             ["karma-coverage", "npm:2.2.0"],\
             ["karma-jasmine", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:5.1.0"],\
-            ["karma-jasmine-html-reporter", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:2.0.0"],\
+            ["karma-jasmine-html-reporter", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:2.1.0"],\
             ["lodash", "npm:4.17.21"],\
             ["nodemon", "npm:2.0.22"],\
             ["nunjucks", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:3.2.4"],\
@@ -8516,7 +8516,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["karma-chrome-launcher", "npm:3.2.0"],\
             ["karma-coverage", "npm:2.2.0"],\
             ["karma-jasmine", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:5.1.0"],\
-            ["karma-jasmine-html-reporter", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:2.0.0"],\
+            ["karma-jasmine-html-reporter", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:2.1.0"],\
             ["lodash", "npm:4.17.21"],\
             ["nodemon", "npm:2.0.22"],\
             ["nunjucks", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:3.2.4"],\
@@ -11707,17 +11707,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["karma-jasmine-html-reporter", [\
-        ["npm:2.0.0", {\
-          "packageLocation": "./.yarn/cache/karma-jasmine-html-reporter-npm-2.0.0-8578822d66-ddc79c4bd7.zip/node_modules/karma-jasmine-html-reporter/",\
+        ["npm:2.1.0", {\
+          "packageLocation": "./.yarn/cache/karma-jasmine-html-reporter-npm-2.1.0-7fd65aeb10-1c3906c8ed.zip/node_modules/karma-jasmine-html-reporter/",\
           "packageDependencies": [\
-            ["karma-jasmine-html-reporter", "npm:2.0.0"]\
+            ["karma-jasmine-html-reporter", "npm:2.1.0"]\
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:2.0.0", {\
-          "packageLocation": "./.yarn/__virtual__/karma-jasmine-html-reporter-virtual-fe1f2c1fa4/0/cache/karma-jasmine-html-reporter-npm-2.0.0-8578822d66-ddc79c4bd7.zip/node_modules/karma-jasmine-html-reporter/",\
+        ["virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:2.1.0", {\
+          "packageLocation": "./.yarn/__virtual__/karma-jasmine-html-reporter-virtual-1eec218640/0/cache/karma-jasmine-html-reporter-npm-2.1.0-7fd65aeb10-1c3906c8ed.zip/node_modules/karma-jasmine-html-reporter/",\
           "packageDependencies": [\
-            ["karma-jasmine-html-reporter", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:2.0.0"],\
+            ["karma-jasmine-html-reporter", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:2.1.0"],\
             ["@types/jasmine-core", null],\
             ["@types/karma", null],\
             ["@types/karma-jasmine", null],\
