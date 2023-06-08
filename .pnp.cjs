@@ -50,6 +50,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@hmcts/nodejs-healthcheck", "npm:1.8.0"],\
             ["@hmcts/properties-volume", "npm:0.0.14"],\
             ["@microsoft/applicationinsights-web", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:3.0.2"],\
+            ["@ministryofjustice/frontend", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:1.8.0"],\
             ["@types/body-parser", "npm:1.19.2"],\
             ["@types/config", "npm:3.3.0"],\
             ["@types/express", "npm:4.17.17"],\
@@ -5197,6 +5198,30 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@ministryofjustice/frontend", [\
+        ["npm:1.8.0", {\
+          "packageLocation": "./.yarn/cache/@ministryofjustice-frontend-npm-1.8.0-fa7888d4a5-d24c2ac86a.zip/node_modules/@ministryofjustice/frontend/",\
+          "packageDependencies": [\
+            ["@ministryofjustice/frontend", "npm:1.8.0"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:1.8.0", {\
+          "packageLocation": "./.yarn/__virtual__/@ministryofjustice-frontend-virtual-ba75c850d7/0/cache/@ministryofjustice-frontend-npm-1.8.0-fa7888d4a5-d24c2ac86a.zip/node_modules/@ministryofjustice/frontend/",\
+          "packageDependencies": [\
+            ["@ministryofjustice/frontend", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:1.8.0"],\
+            ["@types/jquery", null],\
+            ["govuk-frontend", "npm:4.6.0"],\
+            ["jquery", null],\
+            ["moment", "npm:2.29.4"]\
+          ],\
+          "packagePeers": [\
+            "@types/jquery",\
+            "jquery"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@nevware21/ts-async", [\
         ["npm:0.2.4", {\
           "packageLocation": "./.yarn/cache/@nevware21-ts-async-npm-0.2.4-d627acadb3-06a0c5679b.zip/node_modules/@nevware21/ts-async/",\
@@ -8491,6 +8516,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@hmcts/nodejs-healthcheck", "npm:1.8.0"],\
             ["@hmcts/properties-volume", "npm:0.0.14"],\
             ["@microsoft/applicationinsights-web", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:3.0.2"],\
+            ["@ministryofjustice/frontend", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:1.8.0"],\
             ["@types/body-parser", "npm:1.19.2"],\
             ["@types/config", "npm:3.3.0"],\
             ["@types/express", "npm:4.17.17"],\

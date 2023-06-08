@@ -3527,6 +3527,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ministryofjustice/frontend@npm:^1.8.0":
+  version: 1.8.0
+  resolution: "@ministryofjustice/frontend@npm:1.8.0"
+  dependencies:
+    govuk-frontend: ^3.0.0 || ^4.0.0
+    moment: ^2.27.0
+  peerDependencies:
+    jquery: ^3.6.0
+  checksum: d24c2ac86aa11440152a290bff78de4d33e3e39154d1a2df193bbf0e680542602027c373a762b4fbc5a70c88fd6145e904ec267d9f2d27778a899ab16c1910c9
+  languageName: node
+  linkType: hard
+
 "@nevware21/ts-async@npm:>= 0.2.4 < 2.x":
   version: 0.2.4
   resolution: "@nevware21/ts-async@npm:0.2.4"
@@ -6108,6 +6120,7 @@ __metadata:
     "@hmcts/nodejs-healthcheck": ^1.8.0
     "@hmcts/properties-volume": ^0.0.14
     "@microsoft/applicationinsights-web": ^3.0.1
+    "@ministryofjustice/frontend": ^1.8.0
     "@types/body-parser": ^1.19.2
     "@types/config": ^3.3.0
     "@types/express": ^4.17.17
@@ -7807,7 +7820,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"govuk-frontend@npm:^4.5.0":
+"govuk-frontend@npm:^3.0.0 || ^4.0.0, govuk-frontend@npm:^4.5.0":
   version: 4.6.0
   resolution: "govuk-frontend@npm:4.6.0"
   checksum: 025a5b99f59aa84586a221b227c66c9ccf48d1b71e6df69ebd39e055b181328dd59ba392cef9f6a38b108c0b1276ba888619cc51343b2e2f35c668772f2ec472
@@ -9728,7 +9741,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"moment@npm:^2.29.4":
+"moment@npm:^2.27.0, moment@npm:^2.29.4":
   version: 2.29.4
   resolution: "moment@npm:2.29.4"
   checksum: 0ec3f9c2bcba38dc2451b1daed5daded747f17610b92427bebe1d08d48d8b7bdd8d9197500b072d14e326dd0ccf3e326b9e3d07c5895d3d49e39b6803b76e80e
