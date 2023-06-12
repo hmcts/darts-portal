@@ -16,6 +16,6 @@ function getAzureAdLogin(req: Request, res: Response): void {
 
 export function init(): Router {
   const router = express.Router();
-  router.use('/auth/azuread-b2c-login', getAzureAdLogin);
+  router.get('/auth/azuread-b2c-login', getAzureAdLogin);
   return router;
 }
