@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { AppInsightsService } from 'src/app/services/app-insights/app-insights.service';
-import { SearchComponent } from '../../search/search.component';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 import { HeaderComponent } from './header.component';
 
@@ -12,11 +12,15 @@ describe('HeaderComponent', () => {
 
   beforeEach(async () => {
     const fakeAppInsightsService = {};
+    const fakeAuthService = {};
 
     await TestBed.configureTestingModule({
       imports: [MatIconModule, ReactiveFormsModule],
-      declarations: [HeaderComponent, SearchComponent],
-      providers: [{ provide: AppInsightsService, useValue: fakeAppInsightsService }],
+      declarations: [HeaderComponent],
+      providers: [
+        { provide: AppInsightsService, useValue: fakeAppInsightsService },
+        { provide: AuthService, useValue: fakeAuthService },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HeaderComponent);

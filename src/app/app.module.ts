@@ -4,19 +4,19 @@ import { MatIconModule } from '@angular/material/icon';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { HeaderComponent } from './layout/header/header.component';
-import { PhaseBannerComponent } from './layout/phase-banner/phase-banner.component';
-import { FooterComponent } from './layout/footer/footer.component';
-import { ContentComponent } from './layout/content/content.component';
-import { InboxComponent } from './inbox/inbox.component';
-import { HomeComponent } from './home/home.component';
-import { AudiosComponent } from './audios/audios.component';
-import { TranscriptionsComponent } from './transcriptions/transcriptions.component';
-import { SearchComponent } from './search/search.component';
-import { ErrorHandlerService } from '../services/error/error-handler.service';
-import { AppConfigService } from '../services/app-config/app-config.service';
+import { AppComponent } from './components/app.component';
+import { HeaderComponent } from './components/layout/header/header.component';
+import { PhaseBannerComponent } from './components/layout/phase-banner/phase-banner.component';
+import { FooterComponent } from './components/layout/footer/footer.component';
+import { ContentComponent } from './components/layout/content/content.component';
+import { InboxComponent } from './components/inbox/inbox.component';
+import { HomeComponent } from './components/home/home.component';
+import { AudiosComponent } from './components/audios/audios.component';
+import { TranscriptionsComponent } from './components/transcriptions/transcriptions.component';
+import { ErrorHandlerService } from './services/error/error-handler.service';
+import { AppConfigService } from './services/app-config/app-config.service';
 import { HttpClientModule } from '@angular/common/http';
+import { LoginComponent } from './components/login/login.component';
 
 export function initAppFn(envService: AppConfigService) {
   return () => envService.loadAppConfig();
@@ -33,7 +33,7 @@ export function initAppFn(envService: AppConfigService) {
     HomeComponent,
     AudiosComponent,
     TranscriptionsComponent,
-    SearchComponent,
+    LoginComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule, MatIconModule, HttpClientModule],
   providers: [
