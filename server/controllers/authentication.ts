@@ -47,19 +47,21 @@ function getLogout(req: Request, res: Response, next: NextFunction) {
   });
 }
 
-function getIsAuthenticated(req: Request, res: Response) {
-  if (req.session.authenticated) {
-    res.status(200).send();
-  } else {
-    res.status(401).send();
-  }
+function getIsAuthenticated(disableAuthentication = false): (req: Request, res: Response) => void {
+  return (req: Request, res: Response) => {
+    if (req.session.authenticated || disableAuthentication) {
+      res.status(200).send();
+    } else {
+      res.status(401).send();
+    }
+  };
 }
 
-export function init(): Router {
+export function init(disableAuthentication = false): Router {
   const router = express.Router();
   router.get('/login', getLogin());
   router.post('/callback', postAuthCallback());
   router.get('/logout', getLogout);
-  router.get('/is-authenticated', getIsAuthenticated);
+  router.get('/is-authenticated', getIsAuthenticated(disableAuthentication));
   return router;
 }

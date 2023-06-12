@@ -2,14 +2,21 @@ import express, { Request, Response } from 'express';
 import session from 'express-session';
 import nunjucks from 'nunjucks';
 
-// import * as bodyParser from 'body-parser';
-
 import * as path from 'path';
 import healthCheck from '@hmcts/nodejs-healthcheck';
 
 import routes from './routes';
 
-export const startServer = () => {
+/**
+ * Options for starting the express server
+ *
+ * `disableAuthentication`: should be used for testing purposes only, defaults to false.
+ */
+type StartServerOptions = {
+  disableAuthentication: boolean;
+};
+
+export const startServer = ({ disableAuthentication }: StartServerOptions = { disableAuthentication: false }) => {
   const app = express();
   const appHealth = express();
 
@@ -27,6 +34,7 @@ export const startServer = () => {
     // TODO: https://tools.hmcts.net/jira/browse/DMP-434
     secret: 'supersecret',
     resave: false,
+    saveUninitialized: true,
     cookie: {},
   };
 
@@ -45,7 +53,7 @@ export const startServer = () => {
   });
 
   app.use(appHealth);
-  app.use(routes());
+  app.use(routes(disableAuthentication));
 
   // if routes not handles above, they should be handled by angular
   app.get('*', (_: Request, res: Response) => {

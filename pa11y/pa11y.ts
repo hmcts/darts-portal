@@ -31,7 +31,7 @@ async function runPa11y() {
 const PORT = config.get('port');
 const READY_MESSAGE = `> Ready on http://localhost:${PORT}`;
 
-const server = startServer();
+const server = startServer({ disableAuthentication: true });
 
 server.listen(PORT, () => {
   console.log(READY_MESSAGE);
