@@ -5,9 +5,12 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
+  let fakeAuthService: Partial<AuthService>;
 
   beforeEach(() => {
-    const fakeAuthService = {};
+    fakeAuthService = {
+      isAuthenticated: jasmine.createSpy().and.resolveTo(true),
+    };
 
     TestBed.configureTestingModule({
       declarations: [LoginComponent],

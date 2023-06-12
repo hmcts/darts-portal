@@ -9,10 +9,14 @@ import { HeaderComponent } from './header.component';
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
+  let fakeAuthService: Partial<AuthService>;
 
   beforeEach(async () => {
     const fakeAppInsightsService = {};
-    const fakeAuthService = {};
+    fakeAuthService = {
+      isAuthenticated: jasmine.createSpy().and.resolveTo(true),
+      logout: jasmine.createSpy().and.resolveTo(),
+    };
 
     await TestBed.configureTestingModule({
       imports: [MatIconModule, ReactiveFormsModule],
@@ -30,5 +34,12 @@ describe('HeaderComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    expect(fakeAuthService.isAuthenticated).toHaveBeenCalled();
+  });
+
+  it('logout', () => {
+    expect(component).toBeTruthy();
+    component.logout();
+    expect(fakeAuthService.logout).toHaveBeenCalledTimes(1);
   });
 });
