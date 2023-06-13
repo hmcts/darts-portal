@@ -2,6 +2,7 @@ import * as express from 'express';
 import { Router, Request, Response, NextFunction } from 'express';
 import axios from 'axios';
 import config from 'config';
+import bodyParser from 'body-parser';
 
 const EXTERNAL_USER_LOGIN = `${config.get('darts-api.url')}/external-user/login-or-refresh`;
 const EXTERNAL_USER_CALLBACK = `${config.get('darts-api.url')}/external-user/handle-oauth-code`;
@@ -26,9 +27,9 @@ function getLogin(): (_: Request, res: Response, next: NextFunction) => Promise<
 function postAuthCallback(): (req: Request, res: Response, next: NextFunction) => Promise<void> {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const result = axios.post(EXTERNAL_USER_CALLBACK, req.body);
-      // TODO: result should contain the access token, store this in the session
-      req.session.authenticated = true;
+      const result = await axios.post<string>(EXTERNAL_USER_CALLBACK, req.body, { headers: req.headers });
+      const accessToken = result.data;
+      req.session.accessToken = accessToken;
       res.redirect('/');
     } catch (err) {
       console.error('Error on authentication callback', err);
@@ -49,7 +50,7 @@ function getLogout(req: Request, res: Response, next: NextFunction) {
 
 function getIsAuthenticated(disableAuthentication = false): (req: Request, res: Response) => void {
   return (req: Request, res: Response) => {
-    if (req.session.authenticated || disableAuthentication) {
+    if (req.session.accessToken || disableAuthentication) {
       res.status(200).send();
     } else {
       res.status(401).send();
@@ -59,6 +60,8 @@ function getIsAuthenticated(disableAuthentication = false): (req: Request, res: 
 
 export function init(disableAuthentication = false): Router {
   const router = express.Router();
+  router.use(bodyParser.json());
+  router.use(bodyParser.urlencoded({ extended: false }));
   router.get('/login', getLogin());
   router.post('/callback', postAuthCallback());
   router.get('/logout', getLogout);

@@ -5,7 +5,6 @@ import { Router } from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 
 function proxyMiddleware() {
-  // TODO: add Authorization header using req.session.accessToken as value
   return createProxyMiddleware({
     target: config.get('darts-api.url'),
     changeOrigin: true,
@@ -13,6 +12,10 @@ function proxyMiddleware() {
       '^/api': '',
     },
     logLevel: 'debug',
+    onProxyRes: (proxyRes, req) => {
+      proxyRes.headers['Authorization'] = `Bearer: ${req.session.accessToken}`;
+      console.log(proxyRes.headers);
+    },
   });
 }
 
