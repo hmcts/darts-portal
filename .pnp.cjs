@@ -86,7 +86,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["ts-node", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:10.9.1"],\
             ["tslib", "npm:2.5.3"],\
             ["typescript", "patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=289587"],\
-            ["zone.js", "npm:0.13.0"]\
+            ["zone.js", "npm:0.13.1"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -761,7 +761,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/zone.js", null],\
             ["rxjs", "npm:7.8.1"],\
             ["tslib", "npm:2.5.3"],\
-            ["zone.js", "npm:0.13.0"]\
+            ["zone.js", "npm:0.13.1"]\
           ],\
           "packagePeers": [\
             "@types/rxjs",\
@@ -8560,7 +8560,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["ts-node", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:10.9.1"],\
             ["tslib", "npm:2.5.3"],\
             ["typescript", "patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=289587"],\
-            ["zone.js", "npm:0.13.0"]\
+            ["zone.js", "npm:0.13.1"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -16674,10 +16674,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["zone.js", [\
-        ["npm:0.13.0", {\
-          "packageLocation": "./.yarn/cache/zone.js-npm-0.13.0-c28454f1f0-1889a915dc.zip/node_modules/zone.js/",\
+        ["npm:0.13.1", {\
+          "packageLocation": "./.yarn/cache/zone.js-npm-0.13.1-8364a77a9f-35d18f7a30.zip/node_modules/zone.js/",\
           "packageDependencies": [\
-            ["zone.js", "npm:0.13.0"],\
+            ["zone.js", "npm:0.13.1"],\
             ["tslib", "npm:2.5.3"]\
           ],\
           "linkType": "HARD"\
