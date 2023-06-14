@@ -1,6 +1,6 @@
 describe('Smoke test', () => {
-  it('should load portal', () => {
+  it('should load portal login page', () => {
     cy.visit('/');
-    cy.get('h1').should('contain', 'Welcome to DARTS');
+    cy.get('a').should('contain', 'External user Login');
   });
 });
