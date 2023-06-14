@@ -1,6 +1,4 @@
 import pa11y from 'pa11y';
-import { startServer } from '../server/server';
-import config from 'config';
 
 import { testUrl } from './config';
 
@@ -28,13 +26,4 @@ async function runPa11y() {
   }
 }
 
-const PORT = config.get('port');
-const READY_MESSAGE = `> Ready on http://localhost:${PORT}`;
-
-const server = startServer({ disableAuthentication: true });
-
-server.listen(PORT, () => {
-  console.log(READY_MESSAGE);
-  console.log('--');
-  runPa11y();
-});
+runPa11y();
