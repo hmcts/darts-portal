@@ -21,7 +21,9 @@
     "test:a11y": "yarn ts-node -P ./pa11y/tsconfig.json ./pa11y/pa11y.ts",
     "cypress": "cypress open",
     "test:smoke": "cypress run --spec 'cypress/e2e/smoke/*-spec.cy.js'",
-    "test:functional": "cypress run --spec 'cypress/e2e/functional/*-spec.cy.js'",
+    "test:up": "yarn build && ts-node -P ./scripts/tsconfig.json scripts/start-app-disable-auth.ts",
+    "test:functional:cypress": "cypress run --spec 'cypress/e2e/functional/*-spec.cy.js'",
+    "test:functional": "TEST_URL=http://localhost:3000 start-test 'test:up' 3000 'test:functional:cypress'",
     "lint": "yarn prettier && yarn lint:ng",
     "lint:ng": "ng lint",
     "precommit": "yarn prettier && yarn lint:ng",
@@ -97,6 +99,7 @@
     "nodemon": "^2.0.21",
     "pa11y": "^6.2.3",
     "prettier": "^2.8.6",
+    "start-server-and-test": "^2.0.0",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.5"
   },
