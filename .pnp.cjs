@@ -29,6 +29,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",\
           "packageDependencies": [\
             ["@angular-builders/custom-webpack", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:16.0.0"],\
+            ["@angular-builders/dev-server", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:7.3.3"],\
             ["@angular-devkit/architect", "npm:0.1600.5"],\
             ["@angular-devkit/build-angular", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:16.0.5"],\
             ["@angular-eslint/builder", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:16.0.3"],\
@@ -137,6 +138,28 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packagePeers": [\
             "@angular/compiler-cli",\
             "@types/angular__compiler-cli"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@angular-builders/dev-server", [\
+        ["npm:7.3.3", {\
+          "packageLocation": "./.yarn/cache/@angular-builders-dev-server-npm-7.3.3-d0c1733abd-91857a12ce.zip/node_modules/@angular-builders/dev-server/",\
+          "packageDependencies": [\
+            ["@angular-builders/dev-server", "npm:7.3.3"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:7.3.3", {\
+          "packageLocation": "./.yarn/__virtual__/@angular-builders-dev-server-virtual-de5ac692f2/0/cache/@angular-builders-dev-server-npm-7.3.3-d0c1733abd-91857a12ce.zip/node_modules/@angular-builders/dev-server/",\
+          "packageDependencies": [\
+            ["@angular-builders/dev-server", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:7.3.3"],\
+            ["@angular-devkit/build-angular", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:16.0.5"],\
+            ["@types/angular-devkit__build-angular", null]\
+          ],\
+          "packagePeers": [\
+            "@angular-devkit/build-angular",\
+            "@types/angular-devkit__build-angular"\
           ],\
           "linkType": "HARD"\
         }]\
@@ -8729,6 +8752,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["darts-portal", "workspace:."],\
             ["@angular-builders/custom-webpack", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:16.0.0"],\
+            ["@angular-builders/dev-server", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:7.3.3"],\
             ["@angular-devkit/architect", "npm:0.1600.5"],\
             ["@angular-devkit/build-angular", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:16.0.5"],\
             ["@angular-eslint/builder", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:16.0.3"],\

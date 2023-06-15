@@ -42,6 +42,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@angular-builders/dev-server@npm:^7.3.1":
+  version: 7.3.3
+  resolution: "@angular-builders/dev-server@npm:7.3.3"
+  peerDependencies:
+    "@angular-devkit/build-angular": ">=0.13.2"
+  checksum: 91857a12ce7b2044988b038dc05496d19a4825f87d1be5e9dcf48ced7f1751fcc76a5ea3a4c92b1265bcbc9ce2a0bf1d305c323149b7d9229c773274bea87569
+  languageName: node
+  linkType: hard
+
 "@angular-devkit/architect@npm:0.1600.5, @angular-devkit/architect@npm:^0.1600.0":
   version: 0.1600.5
   resolution: "@angular-devkit/architect@npm:0.1600.5"
@@ -6153,6 +6162,7 @@ __metadata:
   resolution: "darts-portal@workspace:."
   dependencies:
     "@angular-builders/custom-webpack": ^16.0.0
+    "@angular-builders/dev-server": ^7.3.1
     "@angular-devkit/architect": ^0.1600.0
     "@angular-devkit/build-angular": ^16.0.0
     "@angular-eslint/builder": 16.0.3
