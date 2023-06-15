@@ -66,12 +66,7 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular-builders/dev-server:generic",
-          "options": {
-            "customWebpackConfig": {
-              "path": "./webpack.config.js"
-            }
-          },
+          "builder": "@angular-builders/custom-webpack:dev-server",
           "configurations": {
             "production": {
               "browserTarget": "darts-portal:build:production"
@@ -85,9 +80,6 @@
         "extract-i18n": {
           "builder": "@angular-builders/custom-webpack:extract-i18n",
           "options": {
-            "customWebpackConfig": {
-              "path": "./webpack.config.js"
-            },
             "browserTarget": "darts-portal:build"
           }
         },
