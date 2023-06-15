@@ -67,6 +67,11 @@
         },
         "serve": {
           "builder": "@angular-builders/dev-server:generic",
+          "options": {
+            "customWebpackConfig": {
+              "path": "./webpack.config.js"
+            }
+          },
           "configurations": {
             "production": {
               "browserTarget": "darts-portal:build:production"
