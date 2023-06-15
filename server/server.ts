@@ -19,6 +19,7 @@ export const startServer = () => {
 
   healthCheck.addTo(appHealth, healthConfig);
 
+  app.use('/assets', express.static(path.join(__dirname, './assets')));
   app.use(express.static(path.resolve(process.cwd(), 'dist/darts-portal')));
 
   app.use(bodyParser.json());
