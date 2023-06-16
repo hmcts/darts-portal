@@ -23,21 +23,21 @@
           height="40"
         ></image>
       </svg>
-      <a class="moj-header__link moj-header__link--organisation-name" href="#">HMCTS</a>
-      <a class="moj-header__link moj-header__link--service-name" href="#">DARTS</a>
+      <a class="moj-header__link moj-header__link--organisation-name" href="/">HMCTS</a>
+      <a class="moj-header__link moj-header__link--service-name" href="/">DARTS</a>
     </div>
-    <div class="moj-header__content">
+    <div *ngIf="isAuthenticated" class="moj-header__content">
       <nav class="moj-header__navigation" aria-label="Account navigation">
         <ul class="moj-header__navigation-list">
           <li class="moj-header__navigation-item">
-            <a class="moj-header__navigation-link" href="#">Sign out</a>
+            <a class="moj-header__navigation-link" (click)="logout()">Sign out</a>
           </li>
         </ul>
       </nav>
     </div>
   </div>
 </header>
-<div class="moj-primary-navigation">
+<div *ngIf="isAuthenticated" class="moj-primary-navigation">
   <div class="moj-primary-navigation__container">
     <div class="moj-primary-navigation__nav">
       <nav class="moj-primary-navigation" aria-label="Primary navigation">

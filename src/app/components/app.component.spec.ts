@@ -3,28 +3,25 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppInsightsService } from '../services/app-insights/app-insights.service';
+import { AuthService } from '../services/auth/auth.service';
 import { AppComponent } from './app.component';
 import { ContentComponent } from './layout/content/content.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { PhaseBannerComponent } from './layout/phase-banner/phase-banner.component';
-import { SearchComponent } from './search/search.component';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     const fakeAppInsightsService = {};
+    const fakeAuthService = {};
 
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, MatIconModule, ReactiveFormsModule],
-      declarations: [
-        AppComponent,
-        HeaderComponent,
-        SearchComponent,
-        PhaseBannerComponent,
-        ContentComponent,
-        FooterComponent,
+      declarations: [AppComponent, HeaderComponent, PhaseBannerComponent, ContentComponent, FooterComponent],
+      providers: [
+        { provide: AppInsightsService, useValue: fakeAppInsightsService },
+        { provide: AuthService, useValue: fakeAuthService },
       ],
-      providers: [{ provide: AppInsightsService, useValue: fakeAppInsightsService }],
     }).compileComponents();
   });
 
