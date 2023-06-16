@@ -24,7 +24,9 @@ export class AuthService {
   async logout(): Promise<void> {
     try {
       await lastValueFrom(this.http.get(LOGOUT_PATH));
-      this.router.navigateByUrl('/login');
+      await this.router.navigateByUrl('/login');
+      // reload to ensure path does not include anything from when the user was authenticated
+      window.location.reload();
     } catch (err) {
       console.error('Failed to logout', err);
     }
