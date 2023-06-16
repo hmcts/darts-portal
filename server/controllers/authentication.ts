@@ -26,6 +26,10 @@ function getLogin(): (_: Request, res: Response, next: NextFunction) => Promise<
 
 function postAuthCallback(): (req: Request, res: Response, next: NextFunction) => Promise<void> {
   return async (req: Request, res: Response, next: NextFunction) => {
+    if (req.body.error) {
+      console.error('Error received from Azure callback', req.body);
+      return res.redirect('/login');
+    }
     try {
       const result = await axios.post<string>(EXTERNAL_USER_CALLBACK, req.body, { headers: req.headers });
       const accessToken = result.data;
