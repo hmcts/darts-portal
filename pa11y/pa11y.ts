@@ -13,6 +13,9 @@ async function runPa11y() {
     results.forEach((result) => {
       console.log(`URL: ${result.pageUrl}`);
       console.log(`Number of issues: ${result.issues.length}`);
+      if (result.issues.length > 0) {
+        console.log(result.issues);
+      }
       console.log('--');
     });
 
