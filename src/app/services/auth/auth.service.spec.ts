@@ -8,11 +8,18 @@ describe('AuthService', () => {
   let httpClientSpy: jasmine.SpyObj<HttpClient>;
   let authService: AuthService;
   let routerSpy: jasmine.SpyObj<Router>;
+  let windowSpy: Window;
 
   beforeEach(() => {
     httpClientSpy = jasmine.createSpyObj('HttpClient', ['get']);
     routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
-    authService = new AuthService(httpClientSpy, routerSpy);
+    windowSpy = {
+      location: {
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        reload: () => {},
+      },
+    } as Window;
+    authService = new AuthService(httpClientSpy, routerSpy, windowSpy as Window);
   });
 
   it('should be created', () => {
@@ -33,15 +40,19 @@ describe('AuthService', () => {
 
   describe('#logout', () => {
     it('redirects to login page', async () => {
+      const spy = spyOn(windowSpy.location, 'reload');
       httpClientSpy.get.and.returnValue(of({}));
       await authService.logout();
       expect(routerSpy.navigateByUrl).toHaveBeenCalledWith('/login');
+      expect(spy).toHaveBeenCalled();
     });
 
     it('does not redirect to login page if it fails', async () => {
+      const spy = spyOn(windowSpy.location, 'reload');
       httpClientSpy.get.and.returnValue(of());
       await authService.logout();
       expect(routerSpy.navigateByUrl).not.toHaveBeenCalledWith('/login');
+      expect(spy).not.toHaveBeenCalled();
     });
   });
 });

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 
@@ -10,7 +10,7 @@ const LOGOUT_PATH = '/auth/logout';
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private readonly http: HttpClient, private router: Router) {}
+  constructor(private readonly http: HttpClient, private router: Router, @Inject('Window') private window: Window) {}
 
   async isAuthenticated(): Promise<boolean> {
     try {
@@ -26,7 +26,7 @@ export class AuthService {
       await lastValueFrom(this.http.get(LOGOUT_PATH));
       await this.router.navigateByUrl('/login');
       // reload to ensure path does not include anything from when the user was authenticated
-      window.location.reload();
+      this.window.location.reload();
     } catch (err) {
       console.error('Failed to logout', err);
     }

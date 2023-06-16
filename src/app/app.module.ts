@@ -44,6 +44,7 @@ export function initAppFn(envService: AppConfigService) {
       deps: [AppConfigService],
     },
     { provide: ErrorHandler, useClass: ErrorHandlerService, deps: [AppConfigService] },
+    { provide: 'Window', useValue: window },
   ],
   bootstrap: [AppComponent],
 })

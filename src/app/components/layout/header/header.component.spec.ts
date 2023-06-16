@@ -37,9 +37,9 @@ describe('HeaderComponent', () => {
     expect(fakeAuthService.isAuthenticated).toHaveBeenCalled();
   });
 
-  it('logout', () => {
+  it('logout', async () => {
     expect(component).toBeTruthy();
-    component.logout();
+    await component.logout();
     expect(fakeAuthService.logout).toHaveBeenCalledTimes(1);
   });
 });
