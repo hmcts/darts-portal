@@ -31,7 +31,9 @@ function postAuthCallback(): (req: Request, res: Response, next: NextFunction) =
       return res.redirect('/login');
     }
     try {
-      const result = await axios.post<string>(EXTERNAL_USER_CALLBACK, req.body, { headers: req.headers });
+      const result = await axios.post<string>(EXTERNAL_USER_CALLBACK, req.body, {
+        headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      });
       const accessToken = result.data;
       req.session.accessToken = accessToken;
       res.redirect('/');
