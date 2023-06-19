@@ -13,8 +13,9 @@ function proxyMiddleware() {
     },
     logLevel: 'debug',
     onProxyRes: (proxyRes, req) => {
-      proxyRes.headers['Authorization'] = `Bearer: ${req.session.accessToken}`;
-      console.log(proxyRes.headers);
+      if (req.session.accessToken) {
+        proxyRes.headers['Authorization'] = `Bearer: ${req.session.accessToken}`;
+      }
     },
   });
 }
