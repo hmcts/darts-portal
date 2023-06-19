@@ -10,7 +10,7 @@
     "dev:ng": "ng serve",
     "dev:node": "nodemon",
     "dev": "concurrently --names \"NODE,ANGULAR\" -c \"bgBlue.bold,bgGreen.bold\" \"yarn dev:node\" \"yarn watch\"",
-    "build:node": "yarn tsc -p ./server/tsconfig.json",
+    "build:node": "yarn tsc -p ./server/tsconfig.json && cp -R ./server/assets ./dist/server",
     "build:ng": "ng build --configuration production",
     "build": "yarn build:node && yarn build:ng",
     "build:ssr": "yarn build",
