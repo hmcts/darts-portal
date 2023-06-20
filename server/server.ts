@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import session from 'express-session';
 import nunjucks from 'nunjucks';
 
+import config from 'config';
 import * as path from 'path';
 import healthCheck from '@hmcts/nodejs-healthcheck';
 
@@ -27,7 +28,16 @@ export const startServer = ({ disableAuthentication }: StartServerOptions = { di
 
   healthCheck.addTo(appHealth, healthConfig);
 
-  app.use('/assets', express.static(path.join(__dirname, './assets')));
+  app.use(
+    '/assets',
+    express.static(path.join(__dirname, './assets'), {
+      setHeaders: function (res) {
+        // set CORS headers for assets so that they can be fetched from the Azure AD B2C login screen
+        res.set('Access-Control-Allow-Origin', config.get('authentication.azureAdB2cOriginHost'));
+        res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+      },
+    })
+  );
   app.use(express.static(path.resolve(process.cwd(), 'dist/darts-portal')));
 
   const sessionMiddleware: session.SessionOptions = {
