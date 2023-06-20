@@ -18,7 +18,7 @@ function getLogin(): (_: Request, res: Response, next: NextFunction) => Promise<
         next(new Error('Error trying to fetch login page'));
       }
     } catch (err) {
-      console.error('Error on authentication callback', err);
+      console.error('Error on get login-or-refresh call', err);
       next(err);
     }
   };
@@ -56,6 +56,8 @@ function getLogout(req: Request, res: Response, next: NextFunction) {
 
 function getIsAuthenticated(disableAuthentication = false): (req: Request, res: Response) => void {
   return (req: Request, res: Response) => {
+    // don't allow caching of this endpoint
+    res.header('Cache-Control', 'no-store, must-revalidate');
     if (req.session.accessToken || disableAuthentication) {
       res.status(200).send();
     } else {
