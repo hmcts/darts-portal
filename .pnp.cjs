@@ -70,6 +70,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["concurrently", "npm:8.2.0"],\
             ["config", "npm:3.3.9"],\
             ["cypress", "npm:12.15.0"],\
+            ["ejs", "npm:3.1.9"],\
             ["eslint", "npm:8.43.0"],\
             ["express", "npm:4.18.2"],\
             ["express-session", "npm:1.17.3"],\
@@ -8870,6 +8871,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["concurrently", "npm:8.2.0"],\
             ["config", "npm:3.3.9"],\
             ["cypress", "npm:12.15.0"],\
+            ["ejs", "npm:3.1.9"],\
             ["eslint", "npm:8.43.0"],\
             ["express", "npm:4.18.2"],\
             ["express-session", "npm:1.17.3"],\
