@@ -1,6 +1,6 @@
 {
   "port": "DARTS_PORTAL_PORT",
-  "hostname": "DARTS_PORTAL_HOSTNAME",
+  "hostname": "DARTS_PORTAL_URL",
   "darts-api": {
     "url": "DARTS_API_URL"
   },

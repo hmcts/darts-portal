@@ -9,6 +9,6 @@ nodejs:
         - AppInsightsInstrumentationKey
   environment:
     ALLOW_CONFIG_MUTATIONS: true
-    DARTS_PORTAL_HOSTNAME: https://darts-portal.{{ .Values.global.environment }}.platform.hmcts.net
+    DARTS_PORTAL_URL: https://darts-portal.{{ .Values.global.environment }}.platform.hmcts.net
     DARTS_API_URL: https://darts-api.{{ .Values.global.environment }}.platform.hmcts.net
     DARTS_AZUREAD_B2C_ORIGIN_HOST: https://hmctsdartsb2csbox.b2clogin.com
