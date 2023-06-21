@@ -16,6 +16,7 @@
             "customWebpackConfig": {
               "path": "./webpack.config.js"
             },
+            "allowedCommonJsDependencies": ["moment"],
             "outputPath": "dist/darts-portal",
             "index": "src/index.html",
             "main": "src/main.ts",
