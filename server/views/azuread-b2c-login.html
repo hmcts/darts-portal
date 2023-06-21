@@ -18,6 +18,34 @@
     <link rel="apple-touch-icon" sizes="152x152" href="{{hostname}}/assets/images/govuk-apple-touch-icon-152x152.png" />
     <link rel="apple-touch-icon" href="{{hostname}}/assets/images/govuk-apple-touch-icon.png" />
     <link href="{{hostname}}/assets/stylesheets/govuk-frontend-4.6.0.min.css" rel="stylesheet" />
+    <style>
+      .govuk-width-container {
+        font-family: "GDS Transport";
+      }
+      .intro {
+        font-family: "GDS Transport", arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        font-weight: 400;
+        line-height: 1.25;
+        color: #0b0c0c;
+        display: block;
+        margin-bottom: 5px;
+      }
+      .entry-item label {
+        font-family: "GDS Transport", arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        font-weight: 400;
+        line-height: 1.25;
+        color: #0b0c0c;
+        display: block;
+        margin-bottom: 5px;
+      }
+      .buttons {
+
+      }
+    </style>
   </head>
 
   <body class="govuk-template__body">
@@ -64,7 +92,58 @@
     </header>
     <div class="govuk-width-container">
       <!-- Azure API -->
-      <div id="api"></div>
+      <!-- <div id="api"></div> -->
+
+      <div class="govuk-width-container">
+
+        <div id="api" data-name="Unified">
+          <div class="heading">
+            <h1 role="heading">Sign in to the DARTS portal</h1>
+          </div>
+          <form id="localAccountForm" action="JavaScript:void(0);" class="localAccount" aria-label="This sign in page is for users who do not work for HMCTS.
+ There is a dedicated page for HMCTS employees to sign into the portal.">
+            <div class="intro">
+                This sign in page is for users who do not work for HMCTS.<br />
+              There is a <a href="/">dedicated page for HMCTS employees to sign into the portal.</a>
+
+            </div>
+            <div class="error pageLevel" aria-hidden="true" role="alert" style="display: none;">
+              <p></p>
+            </div>
+            
+            <div class="entry">
+              <div class="entry-item">
+                <label for="logonIdentifier">
+                  Enter your email
+                </label>
+                <div class="error itemLevel" aria-hidden="true" role="alert" style="display: none;">
+                  <p></p>
+                </div>
+                  <input type="text" id="logonIdentifier" name="Username or email address" title="Please enter a valid username or email address" autofocus="" aria-label="Username or email address">
+              </div>
+              <div class="entry-item">
+                <div class="password-label">
+                  <label for="password">Enter your password</label>
+                </div>
+                <div class="error itemLevel" aria-hidden="true" style="display: none;">
+                  <p role="alert"></p>
+                </div>
+                <input type="password" id="password" name="Password" placeholder="Password" aria-label="Password" autocomplete="current-password" aria-required="true">
+              </div>
+              <div class="working"></div>
+              <a id="forgotPassword" href="/hmctsdartsb2csbox.onmicrosoft.com/B2C_1_This_is_a_Test_Policy_TBD/api/CombinedSigninAndSignup/forgotPassword?csrf_token=WUxFYXhFWHZ3VEtlNDg0Y01uc0kxQ2gvY3Q5V25pL1NIZGlRbHhCaFZIRXUyTGpGZ0graWRrUlJDcVl5MEZGZWxNcnIveEp5b1pyUzAydDVMdFBqaWc9PTsyMDIzLTA2LTIwVDEyOjQxOjM0LjMzMDU4OTFaO2lib1dueHNSVUplbFBGSmtKbEZMTXc9PTt7Ik9yY2hlc3RyYXRpb25TdGVwIjoxfQ==&amp;tx=StateProperties=eyJUSUQiOiIyZjM5M2M5OS02MDE4LTQ3OTQtOTNhYS0xZWI3ZjUyN2M4M2EifQ&amp;p=B2C_1_This_is_a_Test_Policy_TBD">Forgotten your password?</a>
+
+
+
+              <div class="buttons">
+                <button id="next" type="submit" form="localAccountForm">Continue</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- End Azure API -->
+
     </div>
     <footer class="govuk-footer" role="contentinfo">
       <div class="govuk-width-container">
