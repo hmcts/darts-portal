@@ -19,32 +19,53 @@
     <link rel="apple-touch-icon" href="{{hostname}}/assets/images/govuk-apple-touch-icon.png" />
     <link href="{{hostname}}/assets/stylesheets/govuk-frontend-4.6.0.min.css" rel="stylesheet" />
     <style>
-      .govuk-width-container {
+      h1 {
         font-family: "GDS Transport";
       }
+      .heading {
+        margin-top: 50px;
+      }
+      .entry-item {
+        font-family: "GDS Transport";
+        margin-bottom: 30px;
+      }
+      .email-label {
+        font-size: 1.1875rem;
+        padding-bottom: 5px;
+      }
       .intro {
-        font-family: "GDS Transport", arial, sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        font-weight: 400;
-        line-height: 1.25;
-        color: #0b0c0c;
-        display: block;
-        margin-bottom: 5px;
+        font-family: "GDS Transport";
+        font-size: 1.1875rem;
+        margin-bottom: 30px;
       }
-      .entry-item label {
-        font-family: "GDS Transport", arial, sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        font-weight: 400;
-        line-height: 1.25;
-        color: #0b0c0c;
-        display: block;
-        margin-bottom: 5px;
+      #forgotPassword {
+        font-family: "GDS Transport";
+        font-size: 1.1875rem;
+        margin-bottom: 20px;
       }
-      .buttons {
+      .govuk-button {
+        margin-bottom: 200px;
+      }
+      #logonIdentifier {
+        border: 2px solid;
+        font-size: 1rem;
+        width: 40%;
+        height: 30px;
+      }
+      #next {
+        margin-top: 32px;
+      }
+      #password {
+        border: 2px solid;
+        font-size: 1rem;
+        width: 40%;
+        height: 30px;
+      }
+      .password-label {
+        padding-bottom: 5px;
+        font-size: 1.1875rem;
+      }
 
-      }
     </style>
   </head>
 
@@ -92,56 +113,51 @@
     </header>
     <div class="govuk-width-container">
       <!-- Azure API -->
-      <!-- <div id="api"></div> -->
-
-      <div class="govuk-width-container">
-
-        <div id="api" data-name="Unified">
-          <div class="heading">
-            <h1 role="heading">Sign in to the DARTS portal</h1>
-          </div>
-          <form id="localAccountForm" action="JavaScript:void(0);" class="localAccount" aria-label="This sign in page is for users who do not work for HMCTS.
- There is a dedicated page for HMCTS employees to sign into the portal.">
-            <div class="intro">
-                This sign in page is for users who do not work for HMCTS.<br />
-              There is a <a href="/">dedicated page for HMCTS employees to sign into the portal.</a>
-
-            </div>
-            <div class="error pageLevel" aria-hidden="true" role="alert" style="display: none;">
-              <p></p>
-            </div>
-            
-            <div class="entry">
-              <div class="entry-item">
-                <label for="logonIdentifier">
-                  Enter your email
-                </label>
-                <div class="error itemLevel" aria-hidden="true" role="alert" style="display: none;">
-                  <p></p>
-                </div>
-                  <input type="text" id="logonIdentifier" name="Username or email address" title="Please enter a valid username or email address" autofocus="" aria-label="Username or email address">
-              </div>
-              <div class="entry-item">
-                <div class="password-label">
-                  <label for="password">Enter your password</label>
-                </div>
-                <div class="error itemLevel" aria-hidden="true" style="display: none;">
-                  <p role="alert"></p>
-                </div>
-                <input type="password" id="password" name="Password" placeholder="Password" aria-label="Password" autocomplete="current-password" aria-required="true">
-              </div>
-              <div class="working"></div>
-              <a id="forgotPassword" href="/hmctsdartsb2csbox.onmicrosoft.com/B2C_1_This_is_a_Test_Policy_TBD/api/CombinedSigninAndSignup/forgotPassword?csrf_token=WUxFYXhFWHZ3VEtlNDg0Y01uc0kxQ2gvY3Q5V25pL1NIZGlRbHhCaFZIRXUyTGpGZ0graWRrUlJDcVl5MEZGZWxNcnIveEp5b1pyUzAydDVMdFBqaWc9PTsyMDIzLTA2LTIwVDEyOjQxOjM0LjMzMDU4OTFaO2lib1dueHNSVUplbFBGSmtKbEZMTXc9PTt7Ik9yY2hlc3RyYXRpb25TdGVwIjoxfQ==&amp;tx=StateProperties=eyJUSUQiOiIyZjM5M2M5OS02MDE4LTQ3OTQtOTNhYS0xZWI3ZjUyN2M4M2EifQ&amp;p=B2C_1_This_is_a_Test_Policy_TBD">Forgotten your password?</a>
-
-
-
-              <div class="buttons">
-                <button id="next" type="submit" form="localAccountForm">Continue</button>
-              </div>
-            </div>
-          </form>
+      <div id="api" data-name="Unified">
+        <div class="heading">
+          <h1 role="heading">Sign in to the DARTS portal</h1>
         </div>
+        <form id="localAccountForm" action="JavaScript:void(0);" class="localAccount" aria-label="This sign in page is for users who do not work for HMCTS.
+ There is a dedicated page for HMCTS employees to sign into the portal.">
+          <div class="intro">
+              This sign in page is for users who do not work for HMCTS.<br />
+              There is a <a href="/">dedicated page for HMCTS employees to sign into the portal.</a>
+          </div>
+          <div class="error pageLevel" aria-hidden="true" role="alert" style="display: none;">
+            <p></p>
+          </div>
+          <div class="entry">
+            <div class="entry-item">
+              <div class="email-label">
+              <label for="logonIdentifier">
+                Enter your email
+              </label>
+              </div>
+              <div class="error itemLevel" aria-hidden="true" role="alert" style="display: none;">
+                <p></p>
+              </div>
+              <input type="text" id="logonIdentifier" name="Username or email address" title="Please enter a valid username or email address" autofocus="" aria-label="Username or email address">
+            </div>
+            <div class="entry-item">
+              <div class="password-label">
+                <label for="password">Enter your password</label>
+              </div>
+              <div class="error itemLevel" aria-hidden="true" style="display: none;">
+                <p role="alert"></p>
+              </div>
+              <input type="password" id="password" name="Password" aria-label="Password" autocomplete="current-password" aria-required="true">
+            </div>
+            <a id="forgotPassword" href="/hmctsdartsb2csbox.onmicrosoft.com/B2C_1_This_is_a_Test_Policy_TBD/api/CombinedSigninAndSignup/forgotPassword?csrf_token=TlJuMlI5Ky9BZUl4YVI5SkNGdnRHVTBCNkI1aDQ4amZrNjJPOFpwWWkrSHdhZ1dvQnh5dlltUGVBYzViMzFvRkZCOVFheTM1SlB0UjZIeVdveWU1b3c9PTsyMDIzLTA2LTIyVDA5OjA5OjU5Ljg4MTY5MTZaO1VNK1ZhYXJ5MS81UEhZcFp0di9sd1E9PTt7Ik9yY2hlc3RyYXRpb25TdGVwIjoxfQ==&amp;tx=StateProperties=eyJUSUQiOiJiYmFkZWNjYy0wZmE3LTQxNjktYTQ2Ni01ZjUyZTJkODMzN2IifQ&amp;p=B2C_1_This_is_a_Test_Policy_TBD">Forgotten your password?</a>
+
+            <div class="working"></div>
+
+            <div class="buttons">
+              <button id="next" class="govuk-button" data-module="govuk-button" type="submit" form="localAccountForm">Continue</button>
+            </div>
+          </div>
+        </form>
       </div>
+
       <!-- End Azure API -->
 
     </div>
