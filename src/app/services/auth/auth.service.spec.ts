@@ -29,12 +29,12 @@ describe('AuthService', () => {
   describe('#isAuthenticated', () => {
     it('true', async () => {
       httpClientSpy.get.and.returnValue(of({}));
-      expect(await authService.isAuthenticated()).toBeTrue();
+      expect(await authService.checkAuthenticated()).toBeTrue();
     });
 
     it('false', async () => {
       httpClientSpy.get.and.returnValue(of());
-      expect(await authService.isAuthenticated()).toBeFalsy();
+      expect(await authService.checkAuthenticated()).toBeFalsy();
     });
   });
 
