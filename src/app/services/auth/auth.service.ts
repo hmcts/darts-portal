@@ -11,16 +11,23 @@ const LOGOUT_PATH = '/auth/logout';
   providedIn: 'root',
 })
 export class AuthService {
+  private authenticated = false;
+
   constructor(private readonly http: HttpClient, private router: Router, @Inject('Window') private window: Window) {}
 
-  async isAuthenticated(): Promise<boolean> {
+  getAuthenticated(): boolean {
+    return this.authenticated;
+  }
+
+  async checkAuthenticated(): Promise<boolean> {
     try {
       // add timestamp to the second to be doubly-sure we are preventing caching
       await lastValueFrom(this.http.get(`${IS_AUTH_PATH}?t=${moment().format('YYYYMMDDHHmmss')}`));
-      return true;
+      this.authenticated = true;
     } catch (err) {
-      return false;
+      this.authenticated = false;
     }
+    return this.authenticated;
   }
 
   async logout(): Promise<void> {

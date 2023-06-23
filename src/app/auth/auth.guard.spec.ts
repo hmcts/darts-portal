@@ -11,7 +11,7 @@ describe('authGuard', () => {
   const executeGuard: CanActivateFn = (...guardParameters) =>
     TestBed.runInInjectionContext(() => authGuard(...guardParameters));
 
-  const prepareGuard = (isAuthenticated: boolean) => {
+  const prepareGuard = (checkAuthenticated: boolean) => {
     TestBed.configureTestingModule({
       providers: [
         {
@@ -20,7 +20,7 @@ describe('authGuard', () => {
         },
         {
           provide: AuthService,
-          useValue: { isAuthenticated: async () => Promise.resolve(isAuthenticated) },
+          useValue: { checkAuthenticated: async () => Promise.resolve(checkAuthenticated) },
         },
       ],
     });
