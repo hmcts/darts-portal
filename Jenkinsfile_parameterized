@@ -1,0 +1,21 @@
+#!groovy
+
+@Library("Infrastructure")
+
+def type = "angular"
+def product = "darts"
+def component = "portal"
+
+withParameterizedPipeline(type, product, component, 'sbox', 'sbox') {
+  enableSlackNotifications('#darts-builds')
+  
+  afterAlways('build') {
+    yarnBuilder.yarn('rebuild puppeteer')
+    yarnBuilder.yarn('build')
+  }
+
+  afterAlways('checkout') {
+    sh "yarn install"
+    echo 'Yarn install complete'
+  }
+}
