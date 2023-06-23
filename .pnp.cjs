@@ -80,7 +80,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jasmine-core", "npm:5.0.1"],\
             ["karma", "npm:6.4.2"],\
             ["karma-chrome-launcher", "npm:3.2.0"],\
-            ["karma-coverage", "npm:2.2.0"],\
+            ["karma-coverage", "npm:2.2.1"],\
             ["karma-jasmine", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:5.1.0"],\
             ["karma-jasmine-html-reporter", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:2.1.0"],\
             ["lodash", "npm:4.17.21"],\
@@ -9109,7 +9109,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jasmine-core", "npm:5.0.1"],\
             ["karma", "npm:6.4.2"],\
             ["karma-chrome-launcher", "npm:3.2.0"],\
-            ["karma-coverage", "npm:2.2.0"],\
+            ["karma-coverage", "npm:2.2.1"],\
             ["karma-jasmine", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:5.1.0"],\
             ["karma-jasmine-html-reporter", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:2.1.0"],\
             ["lodash", "npm:4.17.21"],\
@@ -12316,10 +12316,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["karma-coverage", [\
-        ["npm:2.2.0", {\
-          "packageLocation": "./.yarn/cache/karma-coverage-npm-2.2.0-9be8e7d1a3-79c9df27c2.zip/node_modules/karma-coverage/",\
+        ["npm:2.2.1", {\
+          "packageLocation": "./.yarn/cache/karma-coverage-npm-2.2.1-c317dc44cd-72ba436350.zip/node_modules/karma-coverage/",\
           "packageDependencies": [\
-            ["karma-coverage", "npm:2.2.0"],\
+            ["karma-coverage", "npm:2.2.1"],\
             ["istanbul-lib-coverage", "npm:3.2.0"],\
             ["istanbul-lib-instrument", "npm:5.2.1"],\
             ["istanbul-lib-report", "npm:3.0.0"],\
