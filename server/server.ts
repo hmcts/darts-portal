@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import session from 'express-session';
+import cookieParser from 'cookie-parser';
 import nunjucks from 'nunjucks';
 
 import config from 'config';
@@ -40,6 +41,8 @@ export const startServer = ({ disableAuthentication }: StartServerOptions = { di
   );
   app.use(express.static(path.resolve(process.cwd(), 'dist/darts-portal')));
 
+  app.use(cookieParser());
+
   const sessionMiddleware: session.SessionOptions = {
     // TODO: https://tools.hmcts.net/jira/browse/DMP-434
     secret: 'supersecret',
@@ -56,6 +59,11 @@ export const startServer = ({ disableAuthentication }: StartServerOptions = { di
   }
 
   app.use(session(sessionMiddleware));
+  app.use((req, res, next) => {
+    console.log('SESSION ID', req.sessionID);
+    console.log('REQUEST COOKIES', req.cookies);
+    next();
+  });
 
   nunjucks.configure('server/views', {
     autoescape: true,
@@ -69,6 +77,5 @@ export const startServer = ({ disableAuthentication }: StartServerOptions = { di
   app.get('*', (_: Request, res: Response) => {
     res.sendFile(path.resolve('dist/darts-portal/index.html'));
   });
-
   return app;
 };

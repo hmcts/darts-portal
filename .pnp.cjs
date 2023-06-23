@@ -55,6 +55,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@ministryofjustice/frontend", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:1.8.0"],\
             ["@types/body-parser", "npm:1.19.2"],\
             ["@types/config", "npm:3.3.0"],\
+            ["@types/cookie-parser", "npm:1.4.3"],\
             ["@types/express", "npm:4.17.17"],\
             ["@types/express-session", "npm:1.17.7"],\
             ["@types/jasmine", "npm:4.3.4"],\
@@ -69,6 +70,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["body-parser", "npm:1.20.2"],\
             ["concurrently", "npm:8.2.0"],\
             ["config", "npm:3.3.9"],\
+            ["cookie-parser", "npm:1.4.6"],\
             ["cypress", "npm:12.15.0"],\
             ["ejs", "npm:3.1.9"],\
             ["eslint", "npm:8.43.0"],\
@@ -6306,6 +6308,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@types/cookie-parser", [\
+        ["npm:1.4.3", {\
+          "packageLocation": "./.yarn/cache/@types-cookie-parser-npm-1.4.3-4bda65954a-f390f3af1b.zip/node_modules/@types/cookie-parser/",\
+          "packageDependencies": [\
+            ["@types/cookie-parser", "npm:1.4.3"],\
+            ["@types/express", "npm:4.17.17"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@types/cors", [\
         ["npm:2.8.13", {\
           "packageLocation": "./.yarn/cache/@types-cors-npm-2.8.13-4b8ac1068f-7ef197ea19.zip/node_modules/@types/cors/",\
@@ -8763,6 +8775,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["cookie", [\
+        ["npm:0.4.1", {\
+          "packageLocation": "./.yarn/cache/cookie-npm-0.4.1-cc5e2ebb42-bd7c47f5d9.zip/node_modules/cookie/",\
+          "packageDependencies": [\
+            ["cookie", "npm:0.4.1"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
         ["npm:0.4.2", {\
           "packageLocation": "./.yarn/cache/cookie-npm-0.4.2-7761894d5f-a00833c998.zip/node_modules/cookie/",\
           "packageDependencies": [\
@@ -8774,6 +8793,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/cookie-npm-0.5.0-e2d58a161a-1f4bd2ca57.zip/node_modules/cookie/",\
           "packageDependencies": [\
             ["cookie", "npm:0.5.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["cookie-parser", [\
+        ["npm:1.4.6", {\
+          "packageLocation": "./.yarn/cache/cookie-parser-npm-1.4.6-a68f84d02a-1e5a63aa82.zip/node_modules/cookie-parser/",\
+          "packageDependencies": [\
+            ["cookie-parser", "npm:1.4.6"],\
+            ["cookie", "npm:0.4.1"],\
+            ["cookie-signature", "npm:1.0.6"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -9084,6 +9114,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@ministryofjustice/frontend", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:1.8.0"],\
             ["@types/body-parser", "npm:1.19.2"],\
             ["@types/config", "npm:3.3.0"],\
+            ["@types/cookie-parser", "npm:1.4.3"],\
             ["@types/express", "npm:4.17.17"],\
             ["@types/express-session", "npm:1.17.7"],\
             ["@types/jasmine", "npm:4.3.4"],\
@@ -9098,6 +9129,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["body-parser", "npm:1.20.2"],\
             ["concurrently", "npm:8.2.0"],\
             ["config", "npm:3.3.9"],\
+            ["cookie-parser", "npm:1.4.6"],\
             ["cypress", "npm:12.15.0"],\
             ["ejs", "npm:3.1.9"],\
             ["eslint", "npm:8.43.0"],\
