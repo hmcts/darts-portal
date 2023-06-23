@@ -6,7 +6,7 @@
   },
   "scripts": {
     "ng": "ng",
-    "start": "NODE_ENV=production node dist/server/index.js",
+    "start": "node dist/server",
     "dev:ng": "ng serve",
     "dev:node": "nodemon",
     "dev": "concurrently --names \"NODE,ANGULAR\" -c \"bgBlue.bold,bgGreen.bold\" \"yarn dev:node\" \"yarn watch\"",
@@ -60,6 +60,7 @@
     "express-session": "^1.17.3",
     "govuk-frontend": "^4.5.0",
     "http-proxy-middleware": "^2.0.6",
+    "moment": "^2.29.4",
     "nunjucks": "^3.2.4",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
