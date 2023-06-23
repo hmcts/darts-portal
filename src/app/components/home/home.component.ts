@@ -12,7 +12,7 @@ export class HomeComponent implements OnInit {
   public redirect() {
     if (localStorage.getItem('redirectUrl') !== null) {
       this.router.navigateByUrl(`${localStorage.getItem('redirectUrl')}`);
-      localStorage.clear();
+      localStorage.removeItem('redirectUrl');
     }
   }
 
