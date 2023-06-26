@@ -36,7 +36,12 @@ function postAuthCallback(): (req: Request, res: Response, next: NextFunction) =
       });
       const accessToken = result.data;
       req.session.accessToken = accessToken;
-      res.redirect('/');
+      req.session.save((err) => {
+        if (err) {
+          return next(err);
+        }
+        res.redirect('/');
+      });
     } catch (err) {
       console.error('Error on authentication callback', err);
       next(err);
@@ -47,10 +52,9 @@ function postAuthCallback(): (req: Request, res: Response, next: NextFunction) =
 function getLogout(req: Request, res: Response, next: NextFunction) {
   req.session.destroy((err) => {
     if (err) {
-      next(err);
-    } else {
-      res.status(200).send();
+      return next(err);
     }
+    res.status(200).send();
   });
 }
 

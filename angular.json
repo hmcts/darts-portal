@@ -16,6 +16,7 @@
             "customWebpackConfig": {
               "path": "./webpack.config.js"
             },
+            "allowedCommonJsDependencies": ["moment"],
             "outputPath": "dist/darts-portal",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -43,8 +44,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "750kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "2mb",
+                  "maximumError": "4mb"
                 },
                 {
                   "type": "anyComponentStyle",

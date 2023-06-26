@@ -11,7 +11,7 @@ describe('LoginComponent', () => {
 
   beforeEach(() => {
     fakeAuthService = {
-      isAuthenticated: jasmine.createSpy().and.resolveTo(true),
+      checkAuthenticated: jasmine.createSpy().and.resolveTo(true),
     };
 
     window = {

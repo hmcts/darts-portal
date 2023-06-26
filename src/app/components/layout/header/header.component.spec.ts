@@ -14,7 +14,7 @@ describe('HeaderComponent', () => {
   beforeEach(async () => {
     const fakeAppInsightsService = {};
     fakeAuthService = {
-      isAuthenticated: jasmine.createSpy().and.resolveTo(true),
+      getAuthenticated: jasmine.createSpy().and.returnValue(true),
       logout: jasmine.createSpy().and.resolveTo(),
     };
 
@@ -34,7 +34,7 @@ describe('HeaderComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    expect(fakeAuthService.isAuthenticated).toHaveBeenCalled();
+    expect(fakeAuthService.getAuthenticated).toHaveBeenCalled();
   });
 
   it('logout', async () => {
