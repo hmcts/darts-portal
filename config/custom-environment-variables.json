@@ -1,4 +1,5 @@
 {
+  "node-env": "NODE_ENV",
   "port": "DARTS_PORTAL_PORT",
   "hostname": "DARTS_PORTAL_URL",
   "darts-api": {

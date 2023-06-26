@@ -1,4 +1,5 @@
 {
+  "node-env": "development",
   "port": 3000,
   "hostname": "http://localhost:3000",
   "darts-api": {
@@ -9,7 +10,8 @@
   },
   "secrets": {
     "darts": {
-      "AppInsightsInstrumentationKey": "00000000-0000-0000-0000-000000000000"
+      "AppInsightsInstrumentationKey": "00000000-0000-0000-0000-000000000000",
+      "redis-connection-string": "redis://localhost:6379"
     }
   }
 }
