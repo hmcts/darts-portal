@@ -1,1 +1,45 @@
-<a href="/auth/login" class="govuk-button">External user Login</a>
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <div class="govuk-form-group">
+    <fieldset class="govuk-fieldset">
+      <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+        <h1 class="govuk-fieldset__heading">Sign in to the DARTS Portal</h1>
+      </legend>
+      <div class="govuk-radios" data-module="govuk-radios">
+        <div class="govuk-radios__item">
+          <input
+            class="govuk-radios__input"
+            id="user-type"
+            name="userType"
+            formControlName="userType"
+            type="radio"
+            value="internal"
+          />
+          <label class="govuk-label govuk-radios__label" for="user-type">
+            I'm an employee of HM Courts and Tribunals Service
+          </label>
+          <div id="sign-in-item-hint" class="govuk-hint govuk-radios__hint">
+            For users with a justice.gov.uk account.
+          </div>
+        </div>
+        <div class="govuk-radios__item">
+          <input
+            class="govuk-radios__input"
+            id="user-type-2"
+            name="userType"
+            formControlName="userType"
+            type="radio"
+            value="external"
+          />
+          <label class="govuk-label govuk-radios__label" for="user-type-2">
+            I work with the HM Courts and Tribunals Service
+          </label>
+          <div id="sign-in-item-hint" class="govuk-hint govuk-radios__hint">
+            I have an account for DARTS through my organisation.
+          </div>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+  <button class="govuk-button" data-module="govuk-button" type="submit">Continue</button>
+</form>
+<!-- <a href="/auth/login" class="govuk-button">Continue</a> -->
