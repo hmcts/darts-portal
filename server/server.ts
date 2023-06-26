@@ -58,10 +58,14 @@ export const startServer = ({ disableAuthentication }: StartServerOptions = { di
     }
   }
 
+  console.log(`${app.get('env')} sessionMiddleware`, sessionMiddleware, app.get('trust proxy'));
+
   app.use(session(sessionMiddleware));
   app.use((req, res, next) => {
+    console.log(req.originalUrl);
     console.log('SESSION ID', req.sessionID);
     console.log('REQUEST COOKIES', req.cookies);
+    console.log('REQUEST HEADERS', req.headers);
     next();
   });
 
