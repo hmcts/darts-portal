@@ -46,6 +46,7 @@ export const startServer = ({ disableAuthentication }: StartServerOptions = { di
   const sessionMiddleware: session.SessionOptions = {
     // TODO: https://tools.hmcts.net/jira/browse/DMP-434
     secret: 'supersecret',
+    name: 'dp_session',
     resave: false,
     saveUninitialized: true,
     cookie: {},
