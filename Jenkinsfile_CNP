@@ -23,5 +23,4 @@ withPipeline(type, product, component) {
   }
 
   syncBranchesWithMaster(branchesToSync)
-  enableSlackNotifications('#darts-builds')
 }
