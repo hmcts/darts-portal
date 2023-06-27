@@ -35,7 +35,7 @@ export function initAppFn(envService: AppConfigService) {
     TranscriptionsComponent,
     LoginComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule, MatIconModule, HttpClientModule, ReactiveFormsModule],
+  imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule, MatIconModule, HttpClientModule],
   providers: [
     {
       provide: APP_INITIALIZER,
