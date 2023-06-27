@@ -39,22 +39,11 @@ export const startServer = ({ disableAuthentication }: StartServerOptions = { di
     })
   );
   app.use(express.static(path.resolve(process.cwd(), 'dist/darts-portal')));
-
   app.use(cookieParser());
-
   if (app.get('env') === 'production') {
     app.set('trust proxy', 1); // trust first proxy
   }
-
   app.use(session());
-
-  app.use((req, res, next) => {
-    console.log(req.originalUrl);
-    console.log('SESSION ID', req.sessionID);
-    console.log('REQUEST COOKIES', req.cookies);
-    console.log('REQUEST HEADERS', req.headers);
-    next();
-  });
 
   nunjucks.configure('server/views', {
     autoescape: true,
