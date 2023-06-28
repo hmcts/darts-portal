@@ -1,12 +1,11 @@
 import express, { Request, Response } from 'express';
-import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import nunjucks from 'nunjucks';
-
 import config from 'config';
 import * as path from 'path';
 import healthCheck from '@hmcts/nodejs-healthcheck';
 
+import { session } from './middleware';
 import routes from './routes';
 
 /**
@@ -40,34 +39,11 @@ export const startServer = ({ disableAuthentication }: StartServerOptions = { di
     })
   );
   app.use(express.static(path.resolve(process.cwd(), 'dist/darts-portal')));
-
   app.use(cookieParser());
-
-  const sessionMiddleware: session.SessionOptions = {
-    // TODO: https://tools.hmcts.net/jira/browse/DMP-434
-    secret: 'supersecret',
-    resave: false,
-    saveUninitialized: true,
-    cookie: {},
-  };
-
   if (app.get('env') === 'production') {
     app.set('trust proxy', 1); // trust first proxy
-    if (sessionMiddleware.cookie) {
-      sessionMiddleware.cookie.secure = true; // serve secure cookies
-    }
   }
-
-  console.log(`${app.get('env')} sessionMiddleware`, sessionMiddleware, app.get('trust proxy'));
-
-  app.use(session(sessionMiddleware));
-  app.use((req, res, next) => {
-    console.log(req.originalUrl);
-    console.log('SESSION ID', req.sessionID);
-    console.log('REQUEST COOKIES', req.cookies);
-    console.log('REQUEST HEADERS', req.headers);
-    next();
-  });
+  app.use(session());
 
   nunjucks.configure('server/views', {
     autoescape: true,
