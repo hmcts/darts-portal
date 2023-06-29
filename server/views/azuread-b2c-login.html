@@ -24,9 +24,8 @@
         margin-bottom: 30px;
       }
       #forgotPassword {
+        color: #d4351c;
         font-size: 1.1875rem;
-        margin-top: 75px;
-        margin-bottom: 30px;
       }
       .govuk-width-container {
         font-family: 'GDS Transport';
@@ -42,17 +41,22 @@
       input::placeholder {
         color: transparent;
       }
+      input[type='checkbox'] {
+        margin-left: 5px;
+        line-height: normal;
+        width: 25px;
+        height: 25px;
+        outline: 2px solid;
+      }
       .intro {
         font-size: 1.1875rem;
         margin-bottom: 30px;
-      }
-      label {
-        display: block;
       }
       .localAccount {
         font-size: 1.1875rem;
       }
       #logonIdentifier {
+        display: block;
         margin-top: 5px;
         border: 2px solid;
         font-size: 1rem;
@@ -71,7 +75,6 @@
         line-height: 1.1875;
         box-sizing: border-box;
         display: inline-block;
-        width: 85px;
         padding: 8px 10px 7px;
         text-align: center;
         vertical-align: top;
@@ -92,14 +95,8 @@
       }
       #rememberMe {
         font-size: 1.1875rem;
-        margin-top: 5px;
-        margin-bottom: 30px;
-      }
-      input[type='checkbox'] {
-        margin: 4px 0 0;
-        line-height: normal;
-        width: 20px;
-        height: 20px;
+        padding-left: 5px;
+        margin-bottom: 50px;
       }
     </style>
   </head>
@@ -149,6 +146,91 @@
     <div class="govuk-width-container">
       <!-- Azure API -->
       <div id="api"></div>
+
+      <!-- START: Azure HTML for testing purposes, remove me -->
+      <div class="heading">
+        <h1 role="heading">Sign in</h1>
+      </div>
+      <form
+        id="localAccountForm"
+        action="JavaScript:void(0);"
+        class="localAccount"
+        aria-label="Sign in with your username or email address"
+      >
+        <div class="intro">
+          <h2 aria-level="1">Sign in with your username or email address</h2>
+        </div>
+        <div class="error pageLevel" aria-hidden="true" role="alert" style="display: none">
+          <p></p>
+        </div>
+        <div class="entry">
+          <div class="entry-item">
+            <label for="logonIdentifier"> Username or email address </label>
+            <div class="error itemLevel" aria-hidden="true" role="alert" style="display: none">
+              <p></p>
+            </div>
+            <input
+              type="text"
+              id="logonIdentifier"
+              name="Username or email address"
+              title="Please enter a valid username or email address"
+              autofocus=""
+              placeholder="Username or email address"
+              aria-label="Username or email address"
+            />
+            <div
+              data-lastpass-icon-root="true"
+              style="
+                position: relative !important;
+                height: 0px !important;
+                width: 0px !important;
+                float: left !important;
+              "
+            ></div>
+          </div>
+          <div class="entry-item">
+            <div class="password-label">
+              <label for="password">Password</label>
+              <a
+                id="forgotPassword"
+                href="/hmctsdartsb2csbox.onmicrosoft.com/B2C_1_darts_externaluser_signin/api/CombinedSigninAndSignup/forgotPassword?csrf_token=SFBEZm4rYS9RZi9EOVEvS3VTc2tLZnRCR0k2QmNnNVZ2eDIvc1F2TVNTRVM1d2VBeXBTNXBUbnhwVG5wNm1TbDlsblhLMnBMT21rZ25mSmdpYzRQYmc9PTsyMDIzLTA2LTI4VDEzOjEwOjQ5LjE1MzM0NTZaO05EUnlTMHArSVk2OEtCRUl0VnhYNHc9PTt7Ik9yY2hlc3RyYXRpb25TdGVwIjoxfQ==&amp;tx=StateProperties=eyJUSUQiOiIxYjZkMTFlZi1kOWJjLTRjYzgtOTVhYy01NWMyYzdkYWFlYTAifQ&amp;p=B2C_1_darts_externaluser_signin"
+                >Forgot your password?</a
+              >
+            </div>
+            <div class="error itemLevel" aria-hidden="true" style="display: none">
+              <p role="alert"></p>
+            </div>
+            <input
+              type="password"
+              id="password"
+              name="Password"
+              placeholder="Password"
+              aria-label="Password"
+              autocomplete="current-password"
+              aria-required="true"
+            />
+            <div
+              data-lastpass-icon-root="true"
+              style="
+                position: relative !important;
+                height: 0px !important;
+                width: 0px !important;
+                float: left !important;
+              "
+            ></div>
+          </div>
+          <div class="working"></div>
+          <div class="rememberMe">
+            <input id="rememberMe" type="checkbox" name="rememberMe" />
+            <label for="rememberMe">Keep me signed in</label>
+          </div>
+
+          <div class="buttons">
+            <button id="next" type="submit" form="localAccountForm">Sign in</button>
+          </div>
+        </div>
+      </form>
+      <!-- END: Azure HTML for testing purposes, remove me -->
     </div>
 
     <footer class="govuk-footer" role="contentinfo">
