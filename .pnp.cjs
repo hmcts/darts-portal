@@ -61,7 +61,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/express-session", "npm:1.17.7"],\
             ["@types/jasmine", "npm:4.3.4"],\
             ["@types/node", "npm:18.16.18"],\
-            ["@types/nunjucks", "npm:3.2.2"],\
+            ["@types/nunjucks", "npm:3.2.3"],\
             ["@types/pa11y", "npm:5.3.5"],\
             ["@types/redis", "npm:4.0.11"],\
             ["@typescript-eslint/eslint-plugin", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:5.60.0"],\
@@ -6430,10 +6430,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@types/nunjucks", [\
-        ["npm:3.2.2", {\
-          "packageLocation": "./.yarn/cache/@types-nunjucks-npm-3.2.2-23e29b7301-e0fdc68f01.zip/node_modules/@types/nunjucks/",\
+        ["npm:3.2.3", {\
+          "packageLocation": "./.yarn/cache/@types-nunjucks-npm-3.2.3-84984528cc-f4263a39f0.zip/node_modules/@types/nunjucks/",\
           "packageDependencies": [\
-            ["@types/nunjucks", "npm:3.2.2"]\
+            ["@types/nunjucks", "npm:3.2.3"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -9144,7 +9144,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/express-session", "npm:1.17.7"],\
             ["@types/jasmine", "npm:4.3.4"],\
             ["@types/node", "npm:18.16.18"],\
-            ["@types/nunjucks", "npm:3.2.2"],\
+            ["@types/nunjucks", "npm:3.2.3"],\
             ["@types/pa11y", "npm:5.3.5"],\
             ["@types/redis", "npm:4.0.11"],\
             ["@typescript-eslint/eslint-plugin", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:5.60.0"],\
