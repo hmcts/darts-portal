@@ -59,7 +59,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/cookie-parser", "npm:1.4.3"],\
             ["@types/express", "npm:4.17.17"],\
             ["@types/express-session", "npm:1.17.7"],\
-            ["@types/jasmine", "npm:4.3.4"],\
+            ["@types/jasmine", "npm:4.3.5"],\
             ["@types/node", "npm:18.16.18"],\
             ["@types/nunjucks", "npm:3.2.2"],\
             ["@types/pa11y", "npm:5.3.5"],\
@@ -6380,10 +6380,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@types/jasmine", [\
-        ["npm:4.3.4", {\
-          "packageLocation": "./.yarn/cache/@types-jasmine-npm-4.3.4-f56d71f721-da714ca319.zip/node_modules/@types/jasmine/",\
+        ["npm:4.3.5", {\
+          "packageLocation": "./.yarn/cache/@types-jasmine-npm-4.3.5-a2541d2400-33839af6ef.zip/node_modules/@types/jasmine/",\
           "packageDependencies": [\
-            ["@types/jasmine", "npm:4.3.4"]\
+            ["@types/jasmine", "npm:4.3.5"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -9142,7 +9142,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/cookie-parser", "npm:1.4.3"],\
             ["@types/express", "npm:4.17.17"],\
             ["@types/express-session", "npm:1.17.7"],\
-            ["@types/jasmine", "npm:4.3.4"],\
+            ["@types/jasmine", "npm:4.3.5"],\
             ["@types/node", "npm:18.16.18"],\
             ["@types/nunjucks", "npm:3.2.2"],\
             ["@types/pa11y", "npm:5.3.5"],\
