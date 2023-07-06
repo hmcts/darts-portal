@@ -93,7 +93,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["nodemon", "npm:2.0.22"],\
             ["nunjucks", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:3.2.4"],\
             ["pa11y", "npm:6.2.3"],\
-            ["prettier", "npm:2.8.8"],\
+            ["prettier", "npm:3.0.0"],\
             ["redis", "npm:4.6.7"],\
             ["rxjs", "npm:7.8.1"],\
             ["start-server-and-test", "npm:2.0.0"],\
@@ -9185,7 +9185,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["nodemon", "npm:2.0.22"],\
             ["nunjucks", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:3.2.4"],\
             ["pa11y", "npm:6.2.3"],\
-            ["prettier", "npm:2.8.8"],\
+            ["prettier", "npm:3.0.0"],\
             ["redis", "npm:4.6.7"],\
             ["rxjs", "npm:7.8.1"],\
             ["start-server-and-test", "npm:2.0.0"],\
@@ -14517,10 +14517,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["prettier", [\
-        ["npm:2.8.8", {\
-          "packageLocation": "./.yarn/cache/prettier-npm-2.8.8-430828a36c-b49e409431.zip/node_modules/prettier/",\
+        ["npm:3.0.0", {\
+          "packageLocation": "./.yarn/cache/prettier-npm-3.0.0-7ffbcce680-6a832876a1.zip/node_modules/prettier/",\
           "packageDependencies": [\
-            ["prettier", "npm:2.8.8"]\
+            ["prettier", "npm:3.0.0"]\
           ],\
           "linkType": "HARD"\
         }]\
