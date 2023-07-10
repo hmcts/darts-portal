@@ -79,7 +79,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint", "npm:8.44.0"],\
             ["express", "npm:4.18.2"],\
             ["express-session", "npm:1.17.3"],\
-            ["govuk-frontend", "npm:4.6.0"],\
+            ["govuk-frontend", "npm:4.7.0"],\
             ["http-proxy-middleware", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:2.0.6"],\
             ["husky", "npm:8.0.3"],\
             ["jasmine-core", "npm:5.0.1"],\
@@ -5579,7 +5579,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@ministryofjustice/frontend", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:1.8.0"],\
             ["@types/jquery", null],\
-            ["govuk-frontend", "npm:4.6.0"],\
+            ["govuk-frontend", "npm:4.7.0"],\
             ["jquery", null],\
             ["moment", "npm:2.29.4"]\
           ],\
@@ -9182,7 +9182,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint", "npm:8.44.0"],\
             ["express", "npm:4.18.2"],\
             ["express-session", "npm:1.17.3"],\
-            ["govuk-frontend", "npm:4.6.0"],\
+            ["govuk-frontend", "npm:4.7.0"],\
             ["http-proxy-middleware", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:2.0.6"],\
             ["husky", "npm:8.0.3"],\
             ["jasmine-core", "npm:5.0.1"],\
@@ -11028,10 +11028,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["govuk-frontend", [\
-        ["npm:4.6.0", {\
-          "packageLocation": "./.yarn/cache/govuk-frontend-npm-4.6.0-c1b6541d8c-025a5b99f5.zip/node_modules/govuk-frontend/",\
+        ["npm:4.7.0", {\
+          "packageLocation": "./.yarn/cache/govuk-frontend-npm-4.7.0-36712acdef-0e246dd2c7.zip/node_modules/govuk-frontend/",\
           "packageDependencies": [\
-            ["govuk-frontend", "npm:4.6.0"]\
+            ["govuk-frontend", "npm:4.7.0"]\
           ],\
           "linkType": "HARD"\
         }]\
