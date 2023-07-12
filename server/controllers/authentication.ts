@@ -6,6 +6,8 @@ import bodyParser from 'body-parser';
 
 const EXTERNAL_USER_LOGIN = `${config.get('darts-api.url')}/external-user/login-or-refresh`;
 const EXTERNAL_USER_CALLBACK = `${config.get('darts-api.url')}/external-user/handle-oauth-code`;
+const EXTERNAL_USER_LOGOUT = `${config.get('darts-api.url')}/external-user/logout`;
+const EXTERNAL_USER_INVALIDATE_SESSION = `${config.get('darts-api.url')}/external-user/invalidate-session`;
 
 function getLogin(): (_: Request, res: Response, next: NextFunction) => Promise<void> {
   return async (_: Request, res: Response, next: NextFunction) => {
@@ -27,7 +29,7 @@ function getLogin(): (_: Request, res: Response, next: NextFunction) => Promise<
 function postAuthCallback(): (req: Request, res: Response, next: NextFunction) => Promise<void> {
   return async (req: Request, res: Response, next: NextFunction) => {
     if (req.body.error) {
-      console.error('Error received from Azure callback', req.body);
+      console.error('Error received from Azure login callback', req.body);
       return res.redirect('/login');
     }
     try {
@@ -49,13 +51,43 @@ function postAuthCallback(): (req: Request, res: Response, next: NextFunction) =
   };
 }
 
-function getLogout(req: Request, res: Response, next: NextFunction) {
-  req.session.destroy((err) => {
-    if (err) {
-      return next(err);
+function getLogout(): (_: Request, res: Response, next: NextFunction) => Promise<void> {
+  return async (_: Request, res: Response, next: NextFunction) => {
+    try {
+      const result = await axios(EXTERNAL_USER_LOGOUT);
+      console.log('result.request.res.responseUrl', result.request.res.responseUrl);
+      const logoutRedirect = result.request.res.responseUrl;
+      if (logoutRedirect) {
+        res.redirect(logoutRedirect);
+      } else {
+        next(new Error('Error trying to fetch logout page'));
+      }
+    } catch (err) {
+      console.error('Error on get logout call', err);
+      next(err);
     }
-    res.status(200).send();
-  });
+  };
+}
+
+function postLogoutCallback(): (req: Request, res: Response, next: NextFunction) => Promise<void> {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    if (req.body.error) {
+      console.error('Error received from Azure logout callback', req.body);
+      return res.redirect('/login');
+    }
+    try {
+      await axios(EXTERNAL_USER_INVALIDATE_SESSION);
+      req.session.destroy((err) => {
+        if (err) {
+          return next(err);
+        }
+        res.redirect('/login');
+      });
+    } catch (err) {
+      console.error('Error on logout callback', err);
+      next(err);
+    }
+  };
 }
 
 function getIsAuthenticated(disableAuthentication = false): (req: Request, res: Response) => void {
@@ -76,7 +108,8 @@ export function init(disableAuthentication = false): Router {
   router.use(bodyParser.urlencoded({ extended: false }));
   router.get('/login', getLogin());
   router.post('/callback', postAuthCallback());
-  router.get('/logout', getLogout);
+  router.get('/logout', getLogout());
+  router.post('/logout-callback', postLogoutCallback());
   router.get('/is-authenticated', getIsAuthenticated(disableAuthentication));
   return router;
 }
