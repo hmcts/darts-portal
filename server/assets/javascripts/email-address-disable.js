@@ -3,11 +3,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     button = document.getElementById('emailVerificationControl_but_verify_code');
 
-    button.addEventListener("click", () => {
+    if (button !== false) {
         if (input.value !== '') {
             input.disabled = true;
         }
-    })
+    }
+
 
 });
 
