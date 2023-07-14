@@ -394,7 +394,7 @@ input#email.textInput__suffix {
 
 button#cancel {
     position: absolute;
-    top: -416px;
+    top: 60px;
     border: none;
     background: none;
     padding: 0;
@@ -408,7 +408,6 @@ button#cancel {
     -moz-osx-font-smoothing: grayscale;
     text-decoration: underline;
     display: inline-block;
-    position: relative;
     margin-top: 15px;
     margin-bottom: 15px;
     padding-left: 0.875em;
@@ -509,6 +508,12 @@ button#cancel:after {
 }
 
 /* Forgot Password Verify Code */
+
+div#emailVerificationControl_success_message {
+    font-size: 19px;
+    display: block !important;
+    padding: 20px 0px;
+}
 
 label#emailVerificationCode_label {
     display: inline-block;
