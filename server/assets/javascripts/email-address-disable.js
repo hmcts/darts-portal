@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
         XMLHttpRequest.prototype.open = function () {
             const requestURL = arguments[1]
             this.addEventListener('load', function (event) {
-                console.log('request completed!', this.readyState, this.responseText);
 
                 const isForSendCode = requestURL.indexOf('SendCode') > 0
                 const isSuccessful = this.readyState === 4 && this.responseText === `{"status":"200"}`

@@ -15,7 +15,6 @@ describe('HeaderComponent', () => {
     const fakeAppInsightsService = {};
     fakeAuthService = {
       getAuthenticated: jasmine.createSpy().and.returnValue(true),
-      logout: jasmine.createSpy().and.resolveTo(),
     };
 
     await TestBed.configureTestingModule({
@@ -35,11 +34,5 @@ describe('HeaderComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
     expect(fakeAuthService.getAuthenticated).toHaveBeenCalled();
-  });
-
-  it('logout', async () => {
-    expect(component).toBeTruthy();
-    await component.logout();
-    expect(fakeAuthService.logout).toHaveBeenCalledTimes(1);
   });
 });
