@@ -37,22 +37,4 @@ describe('AuthService', () => {
       expect(await authService.checkAuthenticated()).toBeFalsy();
     });
   });
-
-  describe('#logout', () => {
-    it('redirects to login page', async () => {
-      const spy = spyOn(windowSpy.location, 'reload');
-      httpClientSpy.get.and.returnValue(of({}));
-      await authService.logout();
-      expect(routerSpy.navigateByUrl).toHaveBeenCalledWith('/login');
-      expect(spy).toHaveBeenCalled();
-    });
-
-    it('does not redirect to login page if it fails', async () => {
-      const spy = spyOn(windowSpy.location, 'reload');
-      httpClientSpy.get.and.returnValue(of());
-      await authService.logout();
-      expect(routerSpy.navigateByUrl).not.toHaveBeenCalledWith('/login');
-      expect(spy).not.toHaveBeenCalled();
-    });
-  });
 });

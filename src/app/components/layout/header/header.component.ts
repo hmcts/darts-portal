@@ -14,8 +14,4 @@ export class HeaderComponent implements DoCheck {
   ngDoCheck() {
     this.isAuthenticated = this.authService.getAuthenticated();
   }
-
-  async logout() {
-    await this.authService.logout();
-  }
 }

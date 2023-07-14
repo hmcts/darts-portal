@@ -5,7 +5,6 @@ import { lastValueFrom } from 'rxjs';
 import moment from 'moment';
 
 const IS_AUTH_PATH = '/auth/is-authenticated';
-const LOGOUT_PATH = '/auth/logout';
 
 @Injectable({
   providedIn: 'root',
@@ -28,16 +27,5 @@ export class AuthService {
       this.authenticated = false;
     }
     return this.authenticated;
-  }
-
-  async logout(): Promise<void> {
-    try {
-      await lastValueFrom(this.http.get(LOGOUT_PATH));
-      await this.router.navigateByUrl('/login');
-      // reload to ensure path does not include anything from when the user was authenticated
-      this.window.location.reload();
-    } catch (err) {
-      console.error('Failed to logout', err);
-    }
   }
 }

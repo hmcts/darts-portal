@@ -12,9 +12,9 @@ function proxyMiddleware() {
       '^/api': '',
     },
     logLevel: 'debug',
-    onProxyRes: (proxyRes, req) => {
+    onProxyReq: (proxyReq, req) => {
       if (req.session.accessToken) {
-        proxyRes.headers['Authorization'] = `Bearer: ${req.session.accessToken}`;
+        proxyReq.setHeader('Authorization', `Bearer ${req.session.accessToken}`);
       }
     },
   });
