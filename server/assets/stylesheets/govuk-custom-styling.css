@@ -515,6 +515,10 @@ div#emailVerificationControl_success_message {
     padding: 20px 0px;
 }
 
+div#emailVerificationControl_success_message[style*="display: none"] {
+    padding: 0px;
+}
+
 label#emailVerificationCode_label {
     display: inline-block;
     margin: 10px 0px;
