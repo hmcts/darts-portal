@@ -166,11 +166,21 @@
     </div>
 
     <div class="govuk-width-container">
-      <div class="outro">
+      <p id="outroText" class="outro">
         This sign in page is for users who do not work for HMCTS.<br />
         <a id="dedicatedPage" href="#">There is a dedicated page for HMCTS employees to sign into the portal.</a>
-      </div>
+      </p>
     </div>
+    <script>
+      window.onload = function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const screenName = urlParams.get('screenName');
+
+        if (screenName !== 'loginScreen') {
+          document.getElementById('outroText').style.display = 'none';
+        }
+      };
+    </script>
 
     <footer class="govuk-footer" role="contentinfo">
       <div class="govuk-width-container">
@@ -205,12 +215,14 @@
     <script src="{{hostname}}/assets/javascripts/govuk-frontend-4.6.0.min.js"></script>
     <script>
       window.GOVUKFrontend.initAll();
-      document.getElementById('logonIdentifier').tabIndex = 1;
-      document.getElementById('password').tabIndex = 2;
-      document.getElementById('forgotPassword').tabIndex = 3;
-      document.getElementById('rememberMe').tabIndex = 4;
-      document.getElementById('next').tabIndex = 5;
-      document.getElementById('dedicatedPage').tabIndex = 6;
     </script>
   </body>
+  <script>
+    document.getElementById('logonIdentifier').tabIndex = 1;
+    document.getElementById('password').tabIndex = 2;
+    document.getElementById('forgotPassword').tabIndex = 3;
+    document.getElementById('rememberMe').tabIndex = 4;
+    document.getElementById('next').tabIndex = 5;
+    document.getElementById('dedicatedPage').tabIndex = 6;
+  </script>
 </html>
