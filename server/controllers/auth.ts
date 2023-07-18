@@ -19,4 +19,3 @@ export function init(): Router {
   router.get('/auth/azuread-b2c-login', getAzureAdLogin);
   return router;
 }
-
