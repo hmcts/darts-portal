@@ -1,0 +1,111 @@
+.error {
+  color: #d4351c;
+}
+.entry-item {
+  font-size: 1.1875rem;
+  margin-bottom: 30px;
+}
+#forgotPassword {
+  color: #1d70b8;
+  font-size: 1.1875rem;
+  position: relative;
+  top: 85px;
+  left: -168px;
+}
+.govuk-footer {
+  padding-bottom: 80px;
+}
+.govuk-width-container {
+  font-family: 'GDS Transport';
+}
+h2 {
+  font-size: 1.1875rem;
+  font-weight: normal;
+  margin-bottom: 30px;
+}
+.heading {
+  margin-top: 50px;
+}
+input::placeholder {
+  color: transparent;
+}
+input[type='checkbox'] {
+  accent-color: #ffffff;
+  background-color: initial;
+  margin-left: 5px;
+  line-height: normal;
+  width: 25px;
+  height: 25px;
+  outline: 2px solid;
+}
+.intro {
+  font-size: 1.1875rem;
+  margin-bottom: 30px;
+}
+.localAccount {
+  font-size: 1.1875rem;
+}
+#email {
+  display: block;
+  margin-top: 5px;
+  border: 2px solid;
+  font-size: 1rem;
+  width: 45%;
+  height: 30px;
+}
+#next {
+  font-family: 'GDS Transport';
+  margin-top: 40px;
+  margin-bottom: 60px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #00703c;
+  color: #fff;
+  font-size: 1.1875rem;
+  line-height: 1.1875rem;
+  box-sizing: border-box;
+  display: inline-block;
+  padding: 8px 10px 7px;
+  text-align: center;
+  vertical-align: top;
+  cursor: pointer;
+  position: relative;
+  box-shadow: 0 1px 0 #002d18;
+  border-radius: 0;
+}
+.outro {
+  font-family: 'GDS Transport';
+  font-size: 1.1875rem;
+  display: block;
+  max-width: 960px;
+  margin-bottom: 40px;
+}
+.outro a {
+  color: #1d70b8;
+}
+#password {
+  border: 2px solid;
+  font-size: 1rem;
+  width: 45%;
+  height: 30px;
+  margin-bottom: 40px;
+}
+.password-label {
+  padding-bottom: 5px;
+  font-size: 1.1875rem;
+}
+.rememberMe {
+  display: flex;
+  align-items: normal;
+}
+.rememberMe label {
+  margin-left: 5px;
+  padding-bottom: 5px;
+  margin-top: 22px;
+}
+#rememberMe {
+  cursor: pointer;
+  font-size: 1.1875rem;
+  padding-left: 5px;
+  margin-top: 20px;
+}
