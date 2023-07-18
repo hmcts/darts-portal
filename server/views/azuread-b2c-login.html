@@ -165,22 +165,14 @@
       <div id="api"></div>
     </div>
 
+    {% if screen === 'loginScreen' %}
     <div class="govuk-width-container">
       <p id="outroText" class="outro">
         This sign in page is for users who do not work for HMCTS.<br />
         <a id="dedicatedPage" href="#">There is a dedicated page for HMCTS employees to sign into the portal.</a>
       </p>
     </div>
-    <script>
-      window.onload = function () {
-        const urlParams = new URLSearchParams(window.location.search);
-        const screenName = urlParams.get('screenName');
-
-        if (screenName !== 'loginScreen') {
-          document.getElementById('outroText').style.display = 'none';
-        }
-      };
-    </script>
+    {% endif %}
 
     <footer class="govuk-footer" role="contentinfo">
       <div class="govuk-width-container">
