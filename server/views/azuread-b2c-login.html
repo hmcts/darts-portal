@@ -18,129 +18,19 @@
     <link rel="apple-touch-icon" sizes="152x152" href="{{hostname}}/assets/images/govuk-apple-touch-icon-152x152.png" />
     <link rel="apple-touch-icon" href="{{hostname}}/assets/images/govuk-apple-touch-icon.png" />
     <link href="{{hostname}}/assets/stylesheets/govuk-frontend-4.6.0.min.css" rel="stylesheet" />
-    <link href="{{hostname}}/assets/stylesheets/govuk-custom-styling.css" rel="stylesheet" />
+    {% if screen === 'loginScreen' %}
+    <link href="{{hostname}}/assets/stylesheets/login.css" rel="stylesheet" />
+    {% endif %} {% if screen === 'resetPassword' %}
+    <link href="{{hostname}}/assets/stylesheets/reset-password.css" rel="stylesheet" />
+    {% endif %}
     <style>
       body {
         margin: 0;
-      }
-      .error {
-        color: #d4351c;
-      }
-      .entry-item {
-        font-size: 1.1875rem;
-        margin-bottom: 30px;
-      }
-      #forgotPassword {
-        color: #1d70b8;
-        font-size: 1.1875rem;
-        position: relative;
-        top: 85px;
-        left: -168px;
-      }
-      .govuk-footer {
-        padding-bottom: 80px;
-      }
-      .govuk-width-container {
-        font-family: 'GDS Transport';
-      }
-      h2 {
-        font-size: 1.1875rem;
-        font-weight: normal;
-        margin-bottom: 30px;
-      }
-      .heading {
-        margin-top: 50px;
-      }
-      input::placeholder {
-        color: transparent;
-      }
-      input[type='checkbox'] {
-        accent-color: #ffffff;
-        background-color: initial;
-        margin-left: 5px;
-        line-height: normal;
-        width: 25px;
-        height: 25px;
-        outline: 2px solid;
-      }
-      .intro {
-        font-size: 1.1875rem;
-        margin-bottom: 30px;
-      }
-      .localAccount {
-        font-size: 1.1875rem;
-      }
-      #email {
-        display: block;
-        margin-top: 5px;
-        border: 2px solid;
-        font-size: 1rem;
-        width: 45%;
-        height: 30px;
-      }
-      #next {
-        font-family: 'GDS Transport';
-        margin-top: 40px;
-        margin-bottom: 60px;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        background-color: #00703c;
-        color: #fff;
-        font-size: 1.1875rem;
-        line-height: 1.1875rem;
-        box-sizing: border-box;
-        display: inline-block;
-        padding: 8px 10px 7px;
-        text-align: center;
-        vertical-align: top;
-        cursor: pointer;
-        position: relative;
-        box-shadow: 0 1px 0 #002d18;
-        border-radius: 0;
-      }
-      .outro {
-        font-family: 'GDS Transport';
-        font-size: 1.1875rem;
-        display: block;
-        max-width: 960px;
-        margin-bottom: 40px;
-      }
-      .outro a {
-        color: #1d70b8;
-      }
-      #password {
-        border: 2px solid;
-        font-size: 1rem;
-        width: 45%;
-        height: 30px;
-        margin-bottom: 40px;
-      }
-      .password-label {
-        padding-bottom: 5px;
-        font-size: 1.1875rem;
-      }
-      .rememberMe {
-        display: flex;
-        align-items: normal;
-      }
-      .rememberMe label {
-        margin-left: 5px;
-        padding-bottom: 5px;
-        margin-top: 22px;
-      }
-      #rememberMe {
-        cursor: pointer;
-        font-size: 1.1875rem;
-        padding-left: 5px;
-        margin-top: 20px;
       }
     </style>
   </head>
 
   <body class="govuk-template__body">
-    <script>
-      document.body.className = document.body.className ? document.body.className + ' js-enabled' : 'js-enabled';
-    </script>
     <a href="#main-content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
     <header class="govuk-header" role="banner" data-module="govuk-header">
       <div class="govuk-header__container govuk-width-container">
@@ -164,12 +54,14 @@
       <div id="api"></div>
     </div>
 
+    {% if screen === 'loginScreen' %}
     <div class="govuk-width-container">
-      <div class="outro">
+      <p id="outroText" class="outro">
         This sign in page is for users who do not work for HMCTS.<br />
         <a id="dedicatedPage" href="#">There is a dedicated page for HMCTS employees to sign into the portal.</a>
-      </div>
+      </p>
     </div>
+    {% endif %}
 
     <footer class="govuk-footer" role="contentinfo">
       <div class="govuk-width-container">
@@ -201,16 +93,11 @@
         </div>
       </div>
     </footer>
-    <script src="{{hostname}}/assets/javascripts/govuk-frontend-4.6.0.min.js"></script>
-    <script>
-      window.GOVUKFrontend.initAll();
-      document.getElementById('logonIdentifier').tabIndex = 1;
-      document.getElementById('password').tabIndex = 2;
-      document.getElementById('forgotPassword').tabIndex = 3;
-      document.getElementById('rememberMe').tabIndex = 4;
-      document.getElementById('next').tabIndex = 5;
-      document.getElementById('dedicatedPage').tabIndex = 6;
-    </script>
-    <script src="{{hostname}}/assets/javascripts/email-address-disable.js"></script>
+    {% if screen === 'loginScreen' %}
+    <script src="{{hostname}}/assets/javascripts/login.js"></script>
+    {% endif %}
+    {% if screen === 'resetPassword' %}
+    <script src="{{hostname}}/assets/javascripts/reset-password.js"></script>
+    {% endif %}
   </body>
 </html>
