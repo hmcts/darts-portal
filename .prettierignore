@@ -9,3 +9,4 @@ coverage
 charts
 
 server/assets/*
+server/views/azuread-b2c-login.html
