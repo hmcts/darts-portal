@@ -1,9 +1,28 @@
+<div *ngIf="errors" class="govuk-error-summary" data-module="govuk-error-summary">
+  <div role="alert">
+    <h2 class="govuk-error-summary__title">There is a problem</h2>
+    <div class="govuk-error-summary__body">
+      <ul class="govuk-list govuk-error-summary__list">
+        <li>
+          <a routerLink="" fragment="user-type"
+            >Select whether you are an employee of HM Courts and Tribunals Service or you work with HM Courts and
+            Tribunals Service</a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
 <form [formGroup]="form" (ngSubmit)="submit()">
-  <div class="govuk-form-group">
+  <div class="govuk-form-group" [ngClass]="{ 'govuk-form-group--error': errors }">
     <fieldset class="govuk-fieldset">
       <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
         <h1 class="govuk-fieldset__heading">Sign in to the DARTS Portal</h1>
       </legend>
+      <p *ngIf="errors" class="govuk-error-message">
+        <span class="govuk-visually-hidden">Error:</span> Select whether you are an employee of HM Courts and Tribunals
+        Service or you work with HM Courts and Tribunals Service
+      </p>
       <div class="govuk-radios" data-module="govuk-radios">
         <div class="govuk-radios__item">
           <input

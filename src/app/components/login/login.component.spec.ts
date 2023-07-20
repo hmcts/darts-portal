@@ -38,9 +38,15 @@ describe('LoginComponent', () => {
   });
 
   describe('#submit', () => {
-    it('should change url to /auth/login', () => {
+    it('should change url to /auth/login if the user has selected an option', () => {
+      component.form.get('userType')?.setValue('internal');
       component.submit();
       expect(window.location.href).toBe('/auth/login');
+    });
+    it('should set errors flag to true if the user has not selected an option', () => {
+      component.form.get('userType')?.setValue('');
+      component.submit();
+      expect(component.errors).toBe(true);
     });
   });
 });

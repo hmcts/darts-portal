@@ -12,13 +12,19 @@ export class LoginComponent implements OnInit {
   form = new FormGroup({
     userType: new FormControl('', Validators.required),
   });
+  errors = false;
 
   constructor(private router: Router, public authService: AuthService, @Inject('Window') private window: Window) {}
 
   submit() {
     // preliminary code for internal vs external routing
     // if (this.form.value['userType'] == 'external') {
-    this.window.location.href = '/auth/login';
+    if (this.form.get('userType')?.value === '') {
+      this.errors = true;
+    } else {
+      this.errors = false;
+      this.window.location.href = '/auth/login';
+    }
     // }
   }
 
