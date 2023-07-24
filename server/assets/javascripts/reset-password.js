@@ -1,4 +1,5 @@
 $('#email_label').text($('#email_label').text().replace('*', ''));
+document.getElementById('email').placeholder = '';
 (function () {
     var origOpen = XMLHttpRequest.prototype.open;
     XMLHttpRequest.prototype.open = function () {
