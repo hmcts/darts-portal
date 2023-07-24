@@ -1,3 +1,4 @@
+$('#email_label').text($('#email_label').text().replace('*', ''));
 (function () {
     var origOpen = XMLHttpRequest.prototype.open;
     XMLHttpRequest.prototype.open = function () {
