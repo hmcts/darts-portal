@@ -82,7 +82,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["govuk-frontend", "npm:4.7.0"],\
             ["http-proxy-middleware", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:2.0.6"],\
             ["husky", "npm:8.0.3"],\
-            ["jasmine-core", "npm:5.0.1"],\
+            ["jasmine-core", "npm:5.1.0"],\
             ["karma", "npm:6.4.2"],\
             ["karma-chrome-launcher", "npm:3.2.0"],\
             ["karma-coverage", "npm:2.2.1"],\
@@ -9194,7 +9194,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["govuk-frontend", "npm:4.7.0"],\
             ["http-proxy-middleware", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:2.0.6"],\
             ["husky", "npm:8.0.3"],\
-            ["jasmine-core", "npm:5.0.1"],\
+            ["jasmine-core", "npm:5.1.0"],\
             ["karma", "npm:6.4.2"],\
             ["karma-chrome-launcher", "npm:3.2.0"],\
             ["karma-coverage", "npm:2.2.1"],\
@@ -12190,10 +12190,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "HARD"\
         }],\
-        ["npm:5.0.1", {\
-          "packageLocation": "./.yarn/cache/jasmine-core-npm-5.0.1-d5bbbbc358-2e1783e19b.zip/node_modules/jasmine-core/",\
+        ["npm:5.1.0", {\
+          "packageLocation": "./.yarn/cache/jasmine-core-npm-5.1.0-11f191a679-4517cd0f31.zip/node_modules/jasmine-core/",\
           "packageDependencies": [\
-            ["jasmine-core", "npm:5.0.1"]\
+            ["jasmine-core", "npm:5.1.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -12500,7 +12500,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/jasmine-core", null],\
             ["@types/karma", null],\
             ["@types/karma-jasmine", null],\
-            ["jasmine-core", "npm:5.0.1"],\
+            ["jasmine-core", "npm:5.1.0"],\
             ["karma", "npm:6.4.2"],\
             ["karma-jasmine", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:5.1.0"]\
           ],\
