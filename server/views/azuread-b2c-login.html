@@ -23,6 +23,7 @@
     {% endif %} {% if screen === 'resetPassword' %}
     <link href="{{hostname}}/assets/stylesheets/reset-password.css" rel="stylesheet" />
     {% endif %}
+    <link href="{{hostname}}/assets/stylesheets/create-new-password.css" rel="stylesheet" />
     <style>
       body {
         margin: 0;
@@ -56,8 +57,36 @@
     </header>
     <div class="govuk-width-container">
       <!-- Azure API -->
-      <div id="api"></div>
+<div id="api" data-name="SelfAsserted">
+      <div class="heading">
+        <h1 role="heading">User Details</h1>
+      </div>
+    <div class="buttons">
     </div>
+    <div class="intro">
+      <p>Please provide the following details.</p>
+    </div>
+    <form id="attributeVerification" action="JavaScript:void(0);">
+        <div id="requiredFieldMissing" class="error pageLevel" style="display: none;" aria-hidden="true">A required field is missing. Please fill out all required fields and try again.</div>
+        <div id="fieldIncorrect" class="error pageLevel" style="display: none;" aria-hidden="true">One or more fields are filled out incorrectly. Please check your entries and try again.</div>
+        <div id="claimVerificationServerError" class="error pageLevel" style="display: none;" aria-hidden="true"></div>
+        <div id="attributeList" class="attr">
+            <ul>
+                <li class="Password newPassword_li"><div class="attrEntry"><label id="newPassword_label" for="newPassword">New Password*</label><div class="error itemLevel" role="alert"></div><input id="newPassword" class="textInput" type="password" placeholder="New Password" title="Enter new password" autocomplete="new-password" aria-required="true" autofocus="autofocus"><a class="helpLink tiny" href="javascript:void(0)" data-help="Enter new password">What is this?</a></div></li>
+                <li class="Password reenterPassword_li"><div class="attrEntry"><label id="reenterPassword_label" for="reenterPassword">Confirm New Password*</label><div class="error itemLevel" role="alert"></div><input id="reenterPassword" class="textInput" type="password" placeholder="Confirm New Password" title="Confirm new password" autocomplete="new-password" aria-required="true"><a class="helpLink tiny" href="javascript:void(0)" data-help="Confirm new password">What is this?</a></div></li>
+            </ul>
+        </div>
+        <div class="buttons">
+            <button id="continue" type="submit" form="attributeVerification" aria-disabled="false" aria-label="Continue">Continue</button><button id="cancel" aria-label="Cancel" formnovalidate="">Cancel</button>
+        </div>
+
+        <div class="verifying-modal" aria-live="assertive" aria-labelledby="verifying_blurb">
+            <div id="verifying_blurb"></div>
+        </div>
+    </form>
+    
+  </div>    
+</div>
 
     {% if screen === 'loginScreen' %}
     <div class="govuk-width-container">
