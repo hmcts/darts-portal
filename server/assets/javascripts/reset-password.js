@@ -1,5 +1,8 @@
+// removing placeholder text and "*" from email label
 $('#email_label').text($('#email_label').text().replace('*', ''));
 document.getElementById('email').placeholder = '';
+
+// hook into XHR functions and apply changes on success
 (function () {
     var origOpen = XMLHttpRequest.prototype.open;
     XMLHttpRequest.prototype.open = function () {
@@ -18,7 +21,7 @@ document.getElementById('email').placeholder = '';
                     // disable email input
                     document.getElementById('email').style.display = 'none';
                     // remove asterisk from Verification code
-                    document.getElementById('emailVerificationCode_label').innerHTML.replace('*', '');
+                    $('#emailVerificationCode_label').text($('#emailVerificationCode_label').text().replace('*', ''));
                     // remove placeholder from Input box
                     document.getElementById('emailVerificationCode').placeholder = '';
                 }, 0)
@@ -40,3 +43,15 @@ document.getElementById('email').placeholder = '';
         origOpen.apply(this, arguments);
     };
 })();
+
+// when clicking "Use a different account", reset some changes made after VerifyCode is completed
+$('#emailVerificationControl_but_change_claims.changeClaims').click(function() {
+    // change heading
+    $('.heading h1').text('Reset your password');
+    // hide continue button
+    $('button#continue').css('display', 'none');
+    // undo moving back button, not required if the continue button is hidden
+    $('button#cancel').css('margin-left', '0');
+    // hide verification success message
+    $('#emailVerificationControl_success_message').css('display', 'none');
+});
