@@ -21,7 +21,7 @@ document.getElementById('email').placeholder = '';
                     // disable email input
                     document.getElementById('email').style.display = 'none';
                     // remove asterisk from Verification code
-                    document.getElementById('emailVerificationCode_label').innerHTML.replace('*', '');
+                    $('#emailVerificationCode_label').text($('#emailVerificationCode_label').text().replace('*', ''));
                     // remove placeholder from Input box
                     document.getElementById('emailVerificationCode').placeholder = '';
                 }, 0)
