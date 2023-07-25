@@ -52,6 +52,4 @@ $('#emailVerificationControl_but_change_claims.changeClaims').click(function() {
     $('button#continue').css('display', 'none');
     // undo moving back button, not required if the continue button is hidden
     $('button#cancel').css('margin-left', '0');
-    // hide verification success message
-    $('#emailVerificationControl_success_message').css('display', 'none');
 });
