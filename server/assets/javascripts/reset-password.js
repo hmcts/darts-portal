@@ -16,6 +16,10 @@ document.getElementById('email').placeholder = '';
                     document.getElementById('email_label').style.display = 'none'
                     // disable email input
                     document.getElementById('email').style.display = 'none';
+                    // remove asterisk from Verification code
+                    document.getElementById('emailVerificationCode_label').innerHTML.replace('*', '');
+                    // remove placeholder from Input box
+                    document.getElementById('emailVerificationCode').placeholder = '';
                 }, 0)
             }
         });
