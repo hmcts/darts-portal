@@ -10,7 +10,6 @@ document.getElementById('email').placeholder = '';
         this.addEventListener('load', function () {
             const isForSendCode = requestURL.indexOf('SendCode') > 0;
             const isForVerifyCode = requestURL.indexOf('VerifyCode') > 0;
-            const isForVerifyMFA = requestURL.indexOf('Verify') > 0;
             const isSuccessful = this.readyState === 4 && this.responseText === `{"status":"200"}`;
 
             if (isForSendCode && isSuccessful) {
