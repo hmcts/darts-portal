@@ -10,6 +10,7 @@ document.getElementById('email').placeholder = '';
         this.addEventListener('load', function (event) {
             const isForSendCode = requestURL.indexOf('SendCode') > 0;
             const isForVerifyCode = requestURL.indexOf('VerifyCode') > 0;
+            const isForVerifyMFA = requestURL.indexOf('Verify') > 0;
             const isSuccessful = this.readyState === 4 && this.responseText === `{"status":"200"}`;
 
             if (isForSendCode && isSuccessful) {
@@ -39,13 +40,32 @@ document.getElementById('email').placeholder = '';
                     $('button#cancel').css('margin-left', '-88px');
                 }, 0)
             }
+
+            if (isForVerifyMFA && isSuccessful) {
+                setTimeout(() => {
+                    // change heading
+                    $('.heading h1').text('Create a new password');
+                    // hide div intro text
+                    $('.intro p').css('display', 'none');
+                    // show continue button
+                    $('button#continue').css('display', 'inline-block');
+                    // change button text to Create New Password
+                    $('button#continue').text('Create new password');
+                    // remove asterisks
+                    $('#newPassword_label').text($('#newPassword_label').text().replace('*', ''));
+                    $('#reenterPassword_label').text($('#reenterPassword_label').text().replace('*', ''));
+                    // remove placeholders
+                    document.getElementById('newPassword').placeholder = '';
+                    document.getElementById('reenterPassword').placeholder = '';
+                }, 0);
+            }
         });
         origOpen.apply(this, arguments);
     };
 })();
 
 // when clicking "Use a different account", reset some changes made after VerifyCode is completed
-$('#emailVerificationControl_but_change_claims.changeClaims').click(function() {
+$('#emailVerificationControl_but_change_claims.changeClaims').click(function () {
     // change heading
     $('.heading h1').text('Reset your password');
     // hide continue button
