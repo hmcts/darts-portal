@@ -7,7 +7,7 @@ document.getElementById('email').placeholder = '';
     var origOpen = XMLHttpRequest.prototype.open;
     XMLHttpRequest.prototype.open = function () {
         const requestURL = arguments[1];
-        this.addEventListener('load', function (event) {
+        this.addEventListener('load', function () {
             const isForSendCode = requestURL.indexOf('SendCode') > 0;
             const isForVerifyCode = requestURL.indexOf('VerifyCode') > 0;
             const isSuccessful = this.readyState === 4 && this.responseText === `{"status":"200"}`;
@@ -36,7 +36,7 @@ document.getElementById('email').placeholder = '';
                     // show continue button
                     $('button#continue').css('display', 'unset');
                     // move back button to correct position, due to continue button now being shown
-                    $('button#cancel').css('margin-left', '-88px');
+                    $('button#cancel').css('margin-left', '-98px');
                 }, 0)
             }
         });
