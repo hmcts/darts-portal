@@ -45,7 +45,7 @@ document.getElementById('email').placeholder = '';
 })();
 
 // when clicking "Use a different account", reset some changes made after VerifyCode is completed
-$('#emailVerificationControl_but_change_claims.changeClaims').click(function() {
+$('#emailVerificationControl_but_change_claims.changeClaims').click(function () {
     // change heading
     $('.heading h1').text('Reset your password');
     // hide continue button
