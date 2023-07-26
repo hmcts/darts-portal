@@ -20,10 +20,13 @@
     <link href="{{hostname}}/assets/stylesheets/govuk-frontend-4.6.0.min.css" rel="stylesheet" />
     {% if screen === 'loginScreen' %}
     <link href="{{hostname}}/assets/stylesheets/login.css" rel="stylesheet" />
-    {% endif %} {% if screen === 'resetPassword' %}
+    {% endif %} 
+    {% if screen === 'resetPassword' %}
     <link href="{{hostname}}/assets/stylesheets/reset-password.css" rel="stylesheet" />
     {% endif %}
-    <link href="{{hostname}}/assets/stylesheets/create-new-password.css" rel="stylesheet" />
+    {% if screen === 'changePassword' %}
+    <link href="{{hostname}}/assets/stylesheets/change-password.css" rel="stylesheet" />
+    {% endif %}
     <style>
       body {
         margin: 0;
@@ -39,26 +42,28 @@
   <body>
     <a href="#main-content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
     <header class="govuk-header" role="banner" data-module="govuk-header">
-      <div class="govuk-header__container govuk-width-container">
-        <div class="govuk-header__logo">
-          <a href="/" class="govuk-header__link govuk-header__link--homepage">
-            <span class="govuk-header__logotype">
-              <img
-                src="{{hostname}}/assets/images/govuk-crest-white.png"
-                height="30"
-                width="36"
-                class="govuk-header__logotype-crown-fallback-image"
-              />
-              <span class="govuk-header__logotype-text"> HMCTS <span style="font-weight: normal">DARTS</span></span>
-            </span>
-          </a>
+      <div class="govuk-header__container">
+        <div class="govuk-width-container">
+          <div class="govuk-header__logo">
+            <a href="/" class="govuk-header__link govuk-header__link--homepage">
+              <span class="govuk-header__logotype">
+                <img
+                  src="{{hostname}}/assets/images/govuk-crest-white.png"
+                  height="30"
+                  width="36"
+                  class="govuk-header__logotype-crown-fallback-image"
+                />
+                <span class="govuk-header__logotype-text"> HMCTS <span style="font-weight: normal">DARTS</span></span>
+              </span>
+            </a>
+          </div>
         </div>
       </div>
     </header>
     <div class="govuk-width-container">
       <!-- Azure API -->
-    <div id="api"></div>
-  </div>
+      <div id="api"></div>
+    </div>
 
     {% if screen === 'loginScreen' %}
     <div class="govuk-width-container">
@@ -104,6 +109,9 @@
     {% endif %}
     {% if screen === 'resetPassword' %}
     <script src="{{hostname}}/assets/javascripts/reset-password.js"></script>
+    {% endif %}
+    {% if screen === 'changePassword' %}
+    <script src="{{hostname}}/assets/javascripts/change-password.js"></script>
     {% endif %}
   </body>
 </html>
