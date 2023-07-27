@@ -109,3 +109,11 @@ input[type='checkbox'] {
   padding-left: 5px;
   margin-top: 20px;
 }
+.govuk-error-summary {
+  margin-top: 25px;
+  margin-bottom: -40px;
+}
+.darts-error {
+  border-left: 5px solid #D4351C;
+  padding-left: 15px;
+}

@@ -60,20 +60,16 @@
         </div>
       </div>
     </header>
-    <div class="govuk-width-container">
+    <div id="darts-container" class="govuk-width-container">
       <!-- Azure API -->
       <div id="api"></div>
+      {% if screen === 'loginScreen' %}
+        <p id="outroText" class="outro">
+          This sign in page is for users who do not work for HMCTS.<br />
+          <a id="dedicatedPage" href="#">There is a dedicated page for HMCTS employees to sign into the portal.</a>
+        </p>
+      {% endif %}
     </div>
-
-    {% if screen === 'loginScreen' %}
-    <div class="govuk-width-container">
-      <p id="outroText" class="outro">
-        This sign in page is for users who do not work for HMCTS.<br />
-        <a id="dedicatedPage" href="#">There is a dedicated page for HMCTS employees to sign into the portal.</a>
-      </p>
-    </div>
-    {% endif %}
-
     <footer class="govuk-footer" role="contentinfo">
       <div class="govuk-width-container">
         <div class="govuk-footer__meta">

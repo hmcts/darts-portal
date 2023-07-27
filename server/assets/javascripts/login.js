@@ -19,4 +19,76 @@ function tabOrder() {
   }
 }
 
+function addGovukErrorSummary(headingErrors) {
+  const errorTitle = document.createElement('h2');
+  errorTitle.className = 'govuk-error-summary__title';
+  const titleText = document.createTextNode('There is a problem');
+  errorTitle.appendChild(titleText);
+
+  const errorBodyDiv = document.createElement('div');
+  errorBodyDiv.className = 'govuk-error-summary__body';
+  const errorCount = headingErrors.length;
+
+  // The appendChild() method move the element after appending, hence we always use element index zero when accessing the next element.
+  const errorList = document.createElement('ul')
+  errorList.className = 'govuk-list govuk-error-summary__list';
+  for (let i = 0; i < errorCount; i++) {
+    const errorListItem = document.createElement('li');
+    const errorListItemA = document.createElement('a');
+    errorListItemA.href = '#';
+    errorListItemA.innerText = headingErrors[i];
+    errorListItem.appendChild(errorListItemA);
+    errorList.appendChild(errorListItem);
+  }
+  errorBodyDiv.appendChild(errorList);
+
+  const roleAlertDiv = document.createElement('div');
+  roleAlertDiv.setAttribute("role", "alert");
+  roleAlertDiv.appendChild(errorTitle);
+  roleAlertDiv.appendChild(errorBodyDiv);
+
+  const errorSummaryDiv = document.createElement('div');
+  errorSummaryDiv.className = 'govuk-error-summary';
+  errorSummaryDiv.appendChild(roleAlertDiv);
+
+  const mainForm = document.getElementById('darts-container');
+  mainForm.prepend(errorSummaryDiv);
+}
+
+function createErrorSummaryBox() {
+  const itemLevelErrorElems = document.getElementsByClassName("error itemLevel");
+  const itemLevelErrors = [];
+
+  for (let i = 0; i < itemLevelErrorElems.length; i++) {
+    if (window.getComputedStyle(itemLevelErrorElems[i]).display !== 'none') {
+      itemLevelErrors.push(itemLevelErrorElems[i].innerText);
+      localStorage.setItem('errorDisplayed', 'yes');
+    }
+  }
+
+  if (itemLevelErrors.length > 0) {
+    addGovukErrorSummary(itemLevelErrors);
+  }
+}
+
+function addItemLevelErrorClasses() {
+  $('.error.itemLevel').each(function() {
+    if ($(this).css('display') !== 'none') {
+      $(this).parent().addClass('darts-error');
+    }
+  });
+}
+
+function removeErrors() {
+  $('.error.itemLevel').parent().removeClass('darts-error');
+  $('.govuk-error-summary').remove();
+  localStorage.setItem('errorDisplayed', 'no');
+}
+
 tabOrder();
+
+$('button#next').click(function() {
+  removeErrors();
+  addItemLevelErrorClasses();
+  createErrorSummaryBox();
+})
