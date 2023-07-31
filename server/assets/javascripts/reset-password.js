@@ -52,4 +52,8 @@ $('#emailVerificationControl_but_change_claims.changeClaims').click(function () 
     $('button#continue').css('display', 'none');
     // undo moving back button, not required if the continue button is hidden
     $('button#cancel').css('margin-left', '0');
+    // show intro message
+    document.getElementsByClassName('intro').item(0).style.display = 'block';
+    // show email address label
+    document.getElementById('email_label').style.display = 'inline-block';
 });
