@@ -10,7 +10,7 @@
   <div id="case-search-hint" class="govuk-hint">
     Also known as a case reference or court reference. There should be no spaces.
   </div>
-  <input class="govuk-input" id="case-search" name="case-search" type="text" aria-describedby="case-search-hint">
+  <input class="govuk-input govuk-input--width-10" id="case-search" name="case-search" type="text" aria-describedby="case-search-hint">
 </div>
 <details class="govuk-details" data-module="govuk-details">
   <summary class="govuk-details__summary">
@@ -19,15 +19,16 @@
     </span>
   </summary>
   <div class="govuk-details__text">
-    <i>Placeholder for advanced search</i>
   </div>
 </details>
 <div class="govuk-button-group">
   <button class="govuk-button" data-module="govuk-button">
-    Continue
+    Search
   </button>
-  <a class="govuk-link" href="#">Clear search</a>
+  <a class="govuk-link" a href="/search"  onclick="document.getElementById('case-search').value = '';">Clear search</a>
 </div>
+
+
 
 
 
