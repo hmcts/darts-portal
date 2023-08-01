@@ -18,7 +18,60 @@
   <summary class="govuk-details__summary">
     <span class="govuk-details__summary-text"> Advanced search </span>
   </summary>
-  <div class="govuk-details__text"></div>
+  <div class="govuk-form-group govuk-details__text">
+
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="advanced-case-search"> Courthouse </label>
+      <input class="govuk-input govuk-input--width-20" id="courthouse" name="courthouse" type="text"/>
+    </div>
+
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="advanced-case-search"> Courtroom </label>
+      <div id="courtroom-search-hint" class="govuk-hint">
+        For example, 3
+      </div>
+      <input class="govuk-input govuk-input--width-2" id="courtroom-search" name="courtroom-search" type="text" aria-describedby="courtroom-search-hint"/>  
+    </div>
+
+    <div class="govuk-form-group">
+      <label class="govuk-label govuk-!-font-weight-bold" for="advanced-case-search"> Hearing date </label>
+      <div id="hearingdate-search-hint" class="govuk-hint">
+        There is limited data pre-2012
+      </div>
+      <div class="govuk-radios" data-module="govuk-radios">
+        <div class="govuk-radios__item">
+          <input class="govuk-radios__input" id="specific-date" name="specific-date-radio" type="radio" value="Specific date">
+          <label class="govuk-label govuk-radios__label" for="advanced-case-search">
+            Specific date
+          </label>
+        </div>
+        <div class="govuk-radios__item">
+          <input class="govuk-radios__input" id="date-range" name="date-range-radio" type="radio" value="Date range">
+          <label class="govuk-label govuk-radios__label" for="advanced-case-search">
+            Date range
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="advanced-case-search"> Defendant's name </label>
+      <input class="govuk-input govuk-input--width-20" id="defendant" name="defendant" type="text"/>
+    </div>
+
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="advanced-case-search"> Judge's name </label>
+      <input class="govuk-input govuk-input--width-20" id="judge" name="judge" type="text"/>
+    </div>
+
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="advanced-case-search"> Keywords </label>
+      <input class="govuk-input govuk-input--width-20" id="keywords" name="keywords" type="text"/>
+    </div>
+
+    
+   
+  </div>
 </details>
 <div class="govuk-button-group">
   <button class="govuk-button" data-module="govuk-button">Search</button>
