@@ -16,8 +16,6 @@ function tabOrder() {
     }
 }
 
-tabOrder();
-
 document.getElementsByClassName('govuk-skip-link')[0].addEventListener("focusin", (event) => {
     document.getElementById('cancel').style.top = "100px";
 })
@@ -65,6 +63,8 @@ document.getElementById('email').placeholder = '';
                     $('button#continue').css('display', 'unset');
                     // move back button to correct position, due to continue button now being shown
                     $('button#cancel').css('margin-left', '-98px');
+                    // change tab order
+                    tabOrder();
                 }, 0)
             }
         });
