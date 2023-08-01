@@ -1,3 +1,31 @@
+function tabOrder() {
+    if (document.getElementsByClassName('govuk-skip-link')[0]) {
+        document.getElementsByClassName('govuk-skip-link')[0].tabIndex = 1;
+    }
+    if (document.getElementsByClassName('govuk-header__link govuk-header__link--homepage')[0]) {
+        document.getElementsByClassName('govuk-header__link govuk-header__link--homepage')[0].tabIndex = 2;
+    }
+    if (document.getElementById('cancel')) {
+        document.getElementById('cancel').tabIndex = 3;
+    }
+    if (document.getElementById('continue')) {
+        document.getElementById('continue').tabIndex = 4;
+    }
+    if (document.getElementById('emailVerificationControl_but_change_claims')) {
+        document.getElementById('emailVerificationControl_but_change_claims').tabIndex = 5;
+    }
+}
+
+tabOrder();
+
+document.getElementsByClassName('govuk-skip-link')[0].addEventListener("focusin", (event) => {
+    document.getElementById('cancel').style.top = "100px";
+})
+
+document.getElementsByClassName('govuk-skip-link')[0].addEventListener("focusout", (event) => {
+    document.getElementById('cancel').style.top = "60px";
+})
+
 // removing placeholder text and "*" from email label
 $('#email_label').text($('#email_label').text().replace('*', ''));
 document.getElementById('email').placeholder = '';
