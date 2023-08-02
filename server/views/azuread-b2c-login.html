@@ -20,13 +20,14 @@
     <link href="{{hostname}}/assets/stylesheets/govuk-frontend-4.6.0.min.css" rel="stylesheet" />
     {% if screen === 'loginScreen' %}
     <link href="{{hostname}}/assets/stylesheets/login.css" rel="stylesheet" />
-    {% endif %} 
+    {% endif %}
     {% if screen === 'resetPassword' %}
     <link href="{{hostname}}/assets/stylesheets/reset-password.css" rel="stylesheet" />
     {% endif %}
     {% if screen === 'changePassword' %}
     <link href="{{hostname}}/assets/stylesheets/change-password.css" rel="stylesheet" />
     {% endif %}
+    <link href="{{hostname}}/assets/stylesheets/login.css" rel="stylesheet" />
     <style>
       body {
         margin: 0;
@@ -62,7 +63,71 @@
     </header>
     <div class="govuk-width-container">
       <!-- Azure API -->
-      <div id="api"></div>
+      <!-- <div id="api"></div> -->
+
+      <!-- start of mock Azure API remember to remove stylesheet in header -->
+
+      <div id="api" data-name="Unified">
+        <div class="heading">
+          <h1 role="heading">Sign in to the DARTS portal</h1>
+        </div>
+        <form id="localAccountForm" action="JavaScript:void(0);" class="localAccount" aria-label="">
+          <div class="intro">
+            <h2 aria-level="1">
+
+            </h2>
+          </div>
+          <div class="error pageLevel" aria-hidden="true" role="alert" style="display: none;">
+            <p></p>
+          </div>
+          <div class="entry">
+            <div class="entry-item">
+              <label for="email">
+                Email Address
+              </label>
+              <div class="error itemLevel" aria-hidden="true" role="alert" style="display: none;">
+                <p></p>
+              </div>
+              <input type="email" id="email" name="Email Address" title="Please enter a valid email address" pattern="^[a-zA-Z0-9!#$%&amp;'+^_`{}~-]+(?:\.[a-zA-Z0-9!#$%&amp;'+^_`{}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$" autofocus="" placeholder="Email Address" aria-label="Email Address" tabindex="1">
+            </div>
+            <div class="entry-item">
+              <div class="password-label">
+                <label for="password">Enter your password</label>
+                <a id="forgotPassword" href="/hmctsdartsb2csbox.onmicrosoft.com/B2C_1_darts_externaluser_signin/api/CombinedSigninAndSignup/unified?claimsexchange=ForgotPassword&amp;csrf_token=ZlJJYWlWTWt6ekhSRVcxWWUwa291RHVXaTU5Y0NncU9PNVlPQjJjY1MwdXA5cWFnQ0pQWTZBZExka1U1UW8xWVJhb21ieXgvb0pGTWU1RFNtNERqYWc9PTsyMDIzLTA3LTMxVDA5OjU1OjA2LjQ3NzQxMjNaO2RIeTRhNTJld1hWdXJOQ000VndTWUE9PTt7Ik9yY2hlc3RyYXRpb25TdGVwIjoxfQ==&amp;tx=StateProperties=eyJUSUQiOiJlMjg2OWIwNC1mMDA3LTRmMmUtOGI2OS02MGUwOGM5MWUzMjgifQ&amp;p=B2C_1_darts_externaluser_signin" tabindex="3">Forgotten your password?</a>
+              </div>
+              <p class="govuk-body">Jump to <a href="#" class="govuk-link">Forgotten your password?</a></p>
+              <div class="error itemLevel" aria-hidden="true" style="display: none;">
+                <p role="alert"></p>
+              </div>
+              <input type="password" id="password" name="Enter your password" placeholder="Enter your password" aria-label="Enter your password" autocomplete="current-password" aria-required="true" tabindex="2">
+            </div>
+            <div class="working"></div>
+
+
+            <div class="govuk-form-group">
+              <fieldset class="govuk-fieldset">
+                <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                  <div class="govuk-checkboxes__item">
+                    <input class="govuk-checkboxes__input" id="rememberMe" name="rememberMe" type="checkbox" value="rememberMe">
+                    <label class="govuk-label govuk-checkboxes__label" for="rememberMe">
+                      Keep me signed in
+                    </label>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+
+
+            <div class="govuk-button-group">
+              <button class="govuk-button" data-module="govuk-button">
+                Continue
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- end of mock Azure API -->
     </div>
 
     {% if screen === 'loginScreen' %}

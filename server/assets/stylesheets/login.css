@@ -1,3 +1,7 @@
+a.govuk-link {
+
+}
+
 .error {
   color: #d4351c;
 }
@@ -11,6 +15,10 @@
   position: relative;
   top: 85px;
   left: -168px;
+}
+
+.govuk-button {
+  margin-top: 40px;
 }
 .govuk-footer {
   padding-bottom: 80px;
