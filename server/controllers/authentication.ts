@@ -3,6 +3,7 @@ import { Router, Request, Response, NextFunction } from 'express';
 import axios from 'axios';
 import config from 'config';
 import bodyParser from 'body-parser';
+import SecurityToken from 'server/types/classes/securityToken';
 
 const EXTERNAL_USER_LOGIN = `${config.get('darts-api.url')}/external-user/login-or-refresh`;
 const EXTERNAL_USER_CALLBACK = `${config.get('darts-api.url')}/external-user/handle-oauth-code`;
@@ -32,11 +33,12 @@ function postAuthCallback(): (req: Request, res: Response, next: NextFunction) =
       return res.redirect('/login');
     }
     try {
-      const result = await axios.post<string>(EXTERNAL_USER_CALLBACK, req.body, {
+      const result = await axios.post<SecurityToken>(EXTERNAL_USER_CALLBACK, req.body, {
         headers: { 'content-type': 'application/x-www-form-urlencoded' },
       });
-      const accessToken = result.data;
-      req.session.accessToken = accessToken;
+      const securityToken = result.data;
+
+      req.session.securityToken = securityToken;
       req.session.save((err) => {
         if (err) {
           return next(err);
@@ -53,8 +55,14 @@ function postAuthCallback(): (req: Request, res: Response, next: NextFunction) =
 function getLogout(): (_: Request, res: Response, next: NextFunction) => Promise<void> {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
+
+      let accessToken;
+      if (req.session.securityToken){
+        accessToken = req.session.securityToken.accessToken
+      }
+
       const result = await axios(EXTERNAL_USER_LOGOUT, {
-        headers: { Authorization: `Bearer ${req.session.accessToken}` },
+        headers: { Authorization: `Bearer ${accessToken}` },
       });
       const logoutRedirect = result.request.res.responseUrl;
       if (logoutRedirect) {
@@ -88,7 +96,12 @@ function getIsAuthenticated(disableAuthentication = false): (req: Request, res: 
   return (req: Request, res: Response) => {
     // don't allow caching of this endpoint
     res.header('Cache-Control', 'no-store, must-revalidate');
-    if (req.session.accessToken || disableAuthentication) {
+    let accessToken;
+    if (req.session.securityToken){
+      accessToken = req.session.securityToken.accessToken
+    }
+
+    if (accessToken || disableAuthentication) {
       res.status(200).send();
     } else {
       res.status(401).send();
