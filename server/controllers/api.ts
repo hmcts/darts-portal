@@ -14,7 +14,7 @@ function proxyMiddleware() {
     logLevel: 'debug',
     onProxyReq: (proxyReq, req) => {
       if (req.session.securityToken) {
-        if (req.session.securityToken.accessToken){
+        if (req.session.securityToken.accessToken) {
           proxyReq.setHeader('Authorization', `Bearer ${req.session.securityToken.accessToken}`);
         }
       }

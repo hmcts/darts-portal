@@ -55,10 +55,9 @@ function postAuthCallback(): (req: Request, res: Response, next: NextFunction) =
 function getLogout(): (_: Request, res: Response, next: NextFunction) => Promise<void> {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-
       let accessToken;
-      if (req.session.securityToken){
-        accessToken = req.session.securityToken.accessToken
+      if (req.session.securityToken) {
+        accessToken = req.session.securityToken.accessToken;
       }
 
       const result = await axios(EXTERNAL_USER_LOGOUT, {
@@ -97,8 +96,8 @@ function getIsAuthenticated(disableAuthentication = false): (req: Request, res: 
     // don't allow caching of this endpoint
     res.header('Cache-Control', 'no-store, must-revalidate');
     let accessToken;
-    if (req.session.securityToken){
-      accessToken = req.session.securityToken.accessToken
+    if (req.session.securityToken) {
+      accessToken = req.session.securityToken.accessToken;
     }
 
     if (accessToken || disableAuthentication) {
