@@ -49,14 +49,18 @@
               id="specific-date"
               name="specific-date-radio"
               type="radio"
-              [checked]="isRadioSelected('specific')"
+              [checked]="specificShow"
               (change)="onItemChange('specific', $event)"
             />
 
             <label class="govuk-label govuk-radios__label" for="advanced-case-search"> Specific date </label>
           </div>
 
-          <div class="govuk-form-group govuk-details__text input-group-indent-1" id="specific-date-items">
+          <div
+            *ngIf="specificShow"
+            class="govuk-form-group govuk-details__text input-group-indent-1"
+            id="specific-date-items"
+          >
             <div class="govuk-date-input">
               <p class="govuk-hint">For example, 31/01/2023.</p>
               <div class="govuk-input__wrapper">
@@ -73,12 +77,13 @@
               id="date-range"
               name="date-range-radio"
               type="radio"
-              value="Date range"
+              [checked]="rangeShow"
+              (change)="onItemChange('range', $event)"
             />
             <label class="govuk-label govuk-radios__label" for="advanced-case-search"> Date range </label>
           </div>
 
-          <div id="date-range-items">
+          <div *ngIf="rangeShow" id="date-range-items">
             <div class="govuk-form-group govuk-details__text input-group-indent-1" id="range-date-items">
               <div class="govuk-date-input">
                 <label class="govuk-label govuk-!-font-weight-bold" for="start-date">From</label>
