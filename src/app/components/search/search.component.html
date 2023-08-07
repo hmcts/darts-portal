@@ -1,79 +1,126 @@
-<div class="govuk-form-group">
-  <h1 class="govuk-label-wrapper">
-    <label class="govuk-label govuk-label--l" for="case-search"> Search for a case </label>
-  </h1>
-  <label class="govuk-label" for="case-search"> Case number </label>
-  <div id="case-search-hint" class="govuk-hint">
-    Also known as a case reference or court reference. There should be no spaces.
+<!-- Start of form -->
+<form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+  <div class="govuk-form-group">
+    <h1 class="govuk-label-wrapper">
+      <label class="govuk-label govuk-label--l" for="case-search"> Search for a case </label>
+    </h1>
+    <label class="govuk-label" for="case-search"> Case number </label>
+    <div id="case-search-hint" class="govuk-hint">
+      Also known as a case reference or court reference. There should be no spaces.
+    </div>
+    <input
+      class="govuk-input govuk-input--width-10"
+      id="case-search"
+      name="case-search"
+      type="text"
+      aria-describedby="case-search-hint"
+    />
   </div>
-  <input
-    class="govuk-input govuk-input--width-10"
-    id="case-search"
-    name="case-search"
-    type="text"
-    aria-describedby="case-search-hint"
-  />
-</div>
-<details class="govuk-details" data-module="govuk-details">
-  <summary class="govuk-details__summary">
-    <span class="govuk-details__summary-text"> Advanced search </span>
-  </summary>
-  <div class="govuk-form-group govuk-details__text">
-
-    <div class="govuk-form-group">
-      <label class="govuk-label" for="advanced-case-search"> Courthouse </label>
-      <input class="govuk-input govuk-input--width-20" id="courthouse" name="courthouse" type="text"/>
-    </div>
-
-    <div class="govuk-form-group">
-      <label class="govuk-label" for="advanced-case-search"> Courtroom </label>
-      <div id="courtroom-search-hint" class="govuk-hint">
-        For example, 3
+  <details class="govuk-details" data-module="govuk-details">
+    <summary class="govuk-details__summary">
+      <span class="govuk-details__summary-text"> Advanced search </span>
+    </summary>
+    <div class="govuk-form-group govuk-details__text">
+      <div class="govuk-form-group">
+        <label class="govuk-label" for="advanced-case-search"> Courthouse </label>
+        <input class="govuk-input govuk-input--width-20" id="courthouse" name="courthouse" type="text" />
       </div>
-      <input class="govuk-input govuk-input--width-2" id="courtroom-search" name="courtroom-search" type="text" aria-describedby="courtroom-search-hint"/>  
-    </div>
 
-    <div class="govuk-form-group">
-      <label class="govuk-label govuk-!-font-weight-bold" for="advanced-case-search"> Hearing date </label>
-      <div id="hearingdate-search-hint" class="govuk-hint">
-        There is limited data pre-2012
+      <div class="govuk-form-group">
+        <label class="govuk-label" for="advanced-case-search"> Courtroom </label>
+        <div id="courtroom-search-hint" class="govuk-hint">For example, 3</div>
+        <input
+          class="govuk-input govuk-input--width-2"
+          id="courtroom-search"
+          name="courtroom-search"
+          type="text"
+          aria-describedby="courtroom-search-hint"
+        />
       </div>
-      <div class="govuk-radios" data-module="govuk-radios">
-        <div class="govuk-radios__item">
-          <input class="govuk-radios__input" id="specific-date" name="specific-date-radio" type="radio" value="Specific date">
-          <label class="govuk-label govuk-radios__label" for="advanced-case-search">
-            Specific date
-          </label>
+
+      <div class="govuk-form-group">
+        <label class="govuk-label govuk-!-font-weight-bold" for="advanced-case-search"> Hearing date </label>
+        <div id="hearingdate-search-hint" class="govuk-hint">There is limited data pre-2012.</div>
+        <div class="govuk-radios" data-module="govuk-radios">
+          <!-- Specific date -->
+          <div class="govuk-radios__item">
+            <input
+              class="govuk-radios__input"
+              id="specific-date"
+              name="specific-date-radio"
+              type="radio"
+              [checked]="isRadioSelected('specific')"
+              (change)="onItemChange('specific', $event)"
+            />
+
+            <label class="govuk-label govuk-radios__label" for="advanced-case-search"> Specific date </label>
+          </div>
+
+          <div class="govuk-form-group govuk-details__text input-group-indent-1" id="specific-date-items">
+            <div class="govuk-date-input">
+              <p class="govuk-hint">For example, 31/01/2023.</p>
+              <div class="govuk-input__wrapper">
+                <input id="specific-start-date" type="text" class="govuk-input govuk-date-input__fixed-10" />
+              </div>
+            </div>
+          </div>
+          <!-- End of specific date -->
+
+          <!-- Date range -->
+          <div class="govuk-radios__item">
+            <input
+              class="govuk-radios__input"
+              id="date-range"
+              name="date-range-radio"
+              type="radio"
+              value="Date range"
+            />
+            <label class="govuk-label govuk-radios__label" for="advanced-case-search"> Date range </label>
+          </div>
+
+          <div id="date-range-items">
+            <div class="govuk-form-group govuk-details__text input-group-indent-1" id="range-date-items">
+              <div class="govuk-date-input">
+                <label class="govuk-label govuk-!-font-weight-bold" for="start-date">From</label>
+                <p class="govuk-hint">For example, 31/01/2023.</p>
+                <div class="govuk-input__wrapper">
+                  <input id="range-start-date" type="text" class="govuk-input govuk-input--fixed-10" />
+                </div>
+              </div>
+            </div>
+
+            <div class="govuk-form-group govuk-details__text input-group-indent-1">
+              <div class="govuk-date-input">
+                <label class="govuk-label govuk-!-font-weight-bold" for="start-date">To</label>
+                <p class="govuk-hint">For example, 31/01/2023.</p>
+                <div class="govuk-input__wrapper">
+                  <input id="range-end-date" type="text" class="govuk-input govuk-input--fixed-10" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End of date range -->
         </div>
-        <div class="govuk-radios__item">
-          <input class="govuk-radios__input" id="date-range" name="date-range-radio" type="radio" value="Date range">
-          <label class="govuk-label govuk-radios__label" for="advanced-case-search">
-            Date range
-          </label>
-        </div>
+      </div>
+
+      <div class="govuk-form-group">
+        <label class="govuk-label" for="advanced-case-search"> Defendant's name </label>
+        <input class="govuk-input govuk-input--width-20" id="defendant" name="defendant" type="text" />
+      </div>
+
+      <div class="govuk-form-group">
+        <label class="govuk-label" for="advanced-case-search"> Judge's name </label>
+        <input class="govuk-input govuk-input--width-20" id="judge" name="judge" type="text" />
+      </div>
+
+      <div class="govuk-form-group">
+        <label class="govuk-label" for="advanced-case-search"> Keywords </label>
+        <input class="govuk-input govuk-input--width-20" id="keywords" name="keywords" type="text" />
       </div>
     </div>
-
-    <div class="govuk-form-group">
-      <label class="govuk-label" for="advanced-case-search"> Defendant's name </label>
-      <input class="govuk-input govuk-input--width-20" id="defendant" name="defendant" type="text"/>
-    </div>
-
-    <div class="govuk-form-group">
-      <label class="govuk-label" for="advanced-case-search"> Judge's name </label>
-      <input class="govuk-input govuk-input--width-20" id="judge" name="judge" type="text"/>
-    </div>
-
-    <div class="govuk-form-group">
-      <label class="govuk-label" for="advanced-case-search"> Keywords </label>
-      <input class="govuk-input govuk-input--width-20" id="keywords" name="keywords" type="text"/>
-    </div>
-
-    
-   
+  </details>
+  <div class="govuk-button-group">
+    <button class="govuk-button" data-module="govuk-button">Search</button>
+    <a class="govuk-link" a href="/search" onclick="document.getElementById('case-search').value = '';">Clear search</a>
   </div>
-</details>
-<div class="govuk-button-group">
-  <button class="govuk-button" data-module="govuk-button">Search</button>
-  <a class="govuk-link" a href="/search" onclick="document.getElementById('case-search').value = '';">Clear search</a>
-</div>
+</form>
