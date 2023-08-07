@@ -1,3 +1,29 @@
+function tabOrder() {
+    if (document.getElementsByClassName('govuk-skip-link')[0]) {
+        document.getElementsByClassName('govuk-skip-link')[0].tabIndex = 1;
+    }
+    if (document.getElementsByClassName('govuk-header__link govuk-header__link--homepage')[0]) {
+        document.getElementsByClassName('govuk-header__link govuk-header__link--homepage')[0].tabIndex = 2;
+    }
+    if (document.getElementById('cancel')) {
+        document.getElementById('cancel').tabIndex = 3;
+    }
+    if (document.getElementById('continue')) {
+        document.getElementById('continue').tabIndex = 4;
+    }
+    if (document.getElementById('emailVerificationControl_but_change_claims')) {
+        document.getElementById('emailVerificationControl_but_change_claims').tabIndex = 5;
+    }
+}
+
+document.getElementsByClassName('govuk-skip-link')[0].addEventListener("focusin", (event) => {
+    document.getElementById('cancel').style.top = "100px";
+})
+
+document.getElementsByClassName('govuk-skip-link')[0].addEventListener("focusout", (event) => {
+    document.getElementById('cancel').style.top = "60px";
+})
+
 // removing placeholder text and "*" from email label
 $('#email_label').text($('#email_label').text().replace('*', ''));
 document.getElementById('email').placeholder = '';
@@ -37,6 +63,8 @@ document.getElementById('email').placeholder = '';
                     $('button#continue').css('display', 'unset');
                     // move back button to correct position, due to continue button now being shown
                     $('button#cancel').css('margin-left', '-98px');
+                    // change tab order
+                    tabOrder();
                 }, 0)
             }
         });
@@ -52,4 +80,8 @@ $('#emailVerificationControl_but_change_claims.changeClaims').click(function () 
     $('button#continue').css('display', 'none');
     // undo moving back button, not required if the continue button is hidden
     $('button#cancel').css('margin-left', '0');
+    // show intro message
+    document.getElementsByClassName('intro').item(0).style.display = 'block';
+    // show email address label
+    document.getElementById('email_label').style.display = 'inline-block';
 });

@@ -341,9 +341,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/cdk@npm:16.1.5":
-  version: 16.1.5
-  resolution: "@angular/cdk@npm:16.1.5"
+"@angular/cdk@npm:16.1.6":
+  version: 16.1.6
+  resolution: "@angular/cdk@npm:16.1.6"
   dependencies:
     parse5: ^7.1.2
     tslib: ^2.3.0
@@ -354,7 +354,7 @@ __metadata:
   dependenciesMeta:
     parse5:
       optional: true
-  checksum: 5aedfc41ba9d52b623935c4e02f3cfab565fa8d51edb41e61de54ca38f9eebdc574f901a6300be8748e94c794e8d12423cbad1d7c4521f05f3d51e4c0e8f5ee4
+  checksum: f5c06468d24839d3853a39a8a5d1bf8e5ce4eed2e8ae06d63b27175096dac75856a1e255b2c04815da8f1290e041c0a49124de886ea41346f89ef5ec143babf8
   languageName: node
   linkType: hard
 
@@ -461,9 +461,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/material@npm:16.1.5":
-  version: 16.1.5
-  resolution: "@angular/material@npm:16.1.5"
+"@angular/material@npm:16.1.6":
+  version: 16.1.6
+  resolution: "@angular/material@npm:16.1.6"
   dependencies:
     "@material/animation": 15.0.0-canary.b994146f6.0
     "@material/auto-init": 15.0.0-canary.b994146f6.0
@@ -515,13 +515,13 @@ __metadata:
     tslib: ^2.3.0
   peerDependencies:
     "@angular/animations": ^16.0.0 || ^17.0.0
-    "@angular/cdk": 16.1.5
+    "@angular/cdk": 16.1.6
     "@angular/common": ^16.0.0 || ^17.0.0
     "@angular/core": ^16.0.0 || ^17.0.0
     "@angular/forms": ^16.0.0 || ^17.0.0
     "@angular/platform-browser": ^16.0.0 || ^17.0.0
     rxjs: ^6.5.3 || ^7.4.0
-  checksum: aaa827124ca17a34f4c8c591b61faf0f658f96e5af407f82ce0c289da80b0051f13453d88b0043e6b9b7c3e83563e5ec8cac48b683482973d5a8b01d56b9328c
+  checksum: 8eb0de15315b244c62ca62080d36c91b889e008e9aafb1c7036a9806d0b43f15ad427d54affeb0084a52cfb4bff4dedbe785553794826b922525ffcd3c00de15
   languageName: node
   linkType: hard
 
@@ -4447,10 +4447,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^14.14.31":
-  version: 14.18.54
-  resolution: "@types/node@npm:14.18.54"
-  checksum: 9fd66f91fcd8e9b25067f784a9c60bd710ef86a89c838c131ab2b1921398adc53b1c70d741bceed48bb2403b75c434b1bbbb255240773819cde36295c4b6abf1
+"@types/node@npm:^16.18.39":
+  version: 16.18.39
+  resolution: "@types/node@npm:16.18.39"
+  checksum: eac9b202b76013256cb517ca8d3e3f61df206edb1615ca8d8df4c80616e92879fe4d3f8570a11d60f4216a82724a3265d5888b24c6994c80b057a0423c9ff1d2
   languageName: node
   linkType: hard
 
@@ -6449,12 +6449,12 @@ __metadata:
   linkType: hard
 
 "cypress@npm:^12.9.0":
-  version: 12.17.2
-  resolution: "cypress@npm:12.17.2"
+  version: 12.17.3
+  resolution: "cypress@npm:12.17.3"
   dependencies:
     "@cypress/request": ^2.88.11
     "@cypress/xvfb": ^1.2.4
-    "@types/node": ^14.14.31
+    "@types/node": ^16.18.39
     "@types/sinonjs__fake-timers": 8.1.1
     "@types/sizzle": ^2.3.2
     arch: ^2.2.0
@@ -6496,7 +6496,7 @@ __metadata:
     yauzl: ^2.10.0
   bin:
     cypress: bin/cypress
-  checksum: 19144db1fe02d92270de71f69ece324affd2f60bafa2f7018440c00907f837b1f8556926206df8b6e7b1c9890d250435730656ccb4a5a31e7872b24dd79c0af8
+  checksum: 1da3922cac45c35ee282116fe2af2278e92cc08bd2d8586e0f2346cbe5c9f62129cec567bc9274c585e8c2e887341fa4e5c8623cfaa41dba87331cfb5a023721
   languageName: node
   linkType: hard
 
@@ -6514,14 +6514,14 @@ __metadata:
     "@angular-eslint/schematics": 16.1.0
     "@angular-eslint/template-parser": 16.1.0
     "@angular/animations": ^16.0.0
-    "@angular/cdk": 16.1.5
+    "@angular/cdk": 16.1.6
     "@angular/cli": ~16.1.0
     "@angular/common": ^16.0.0
     "@angular/compiler": ^16.0.0
     "@angular/compiler-cli": ^16.0.0
     "@angular/core": ^16.0.0
     "@angular/forms": ^16.0.0
-    "@angular/material": 16.1.5
+    "@angular/material": 16.1.6
     "@angular/platform-browser": ^16.0.0
     "@angular/platform-browser-dynamic": ^16.0.0
     "@angular/router": ^16.0.0
