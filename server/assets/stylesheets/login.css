@@ -3,14 +3,16 @@
 }
 .entry-item {
   font-size: 1.1875rem;
-  margin-bottom: 30px;
+}
+.entry-item:first-child {
+	margin-bottom: 30px;
 }
 #forgotPassword {
   color: #1d70b8;
   font-size: 1.1875rem;
-  position: relative;
-  top: 85px;
-  left: -168px;
+	display: block;
+	margin-top: 25px;
+	margin-bottom: 25px;
 }
 .govuk-footer {
   padding-bottom: 80px;
@@ -87,8 +89,6 @@ input[type='checkbox'] {
   border: 2px solid;
   font-size: 1rem;
   width: 45%;
-  height: 30px;
-  margin-bottom: 40px;
 }
 .password-label {
   padding-bottom: 5px;
