@@ -21,8 +21,6 @@ export class SearchComponent {
   }
 
   onItemChange(type: String, evt: any) {
-    console.log('type', type);
-    console.log(' Event checked is : ', evt.target.checked);
     if (evt.target) {
       if (evt.target.checked) {
         this.toggleRadioSelected(true, type);
