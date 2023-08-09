@@ -81,6 +81,7 @@
     "@angular-eslint/template-parser": "16.1.0",
     "@angular/cli": "~16.1.0",
     "@angular/compiler-cli": "^16.0.0",
+    "@scottish-government/pattern-library": "^0.0.357",
     "@types/body-parser": "^1.19.2",
     "@types/connect-redis": "^0.0.20",
     "@types/cookie-parser": "^1.4.3",

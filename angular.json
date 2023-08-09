@@ -34,6 +34,11 @@
                 "glob": "**/*",
                 "input": "./node_modules/govuk-frontend/govuk/assets/fonts",
                 "output": "./assets/fonts"
+              },
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@scottish-government/pattern-library/dist/images",
+                "output": "./assets/images"
               }
             ],
             "styles": ["@angular/material/prebuilt-themes/indigo-pink.css", "src/styles.scss"],

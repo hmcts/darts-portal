@@ -1,6 +1,5 @@
-import { Component, Injectable } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',

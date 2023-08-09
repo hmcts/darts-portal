@@ -53,6 +53,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@hmcts/properties-volume", "npm:1.0.0"],\
             ["@microsoft/applicationinsights-web", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:3.0.2"],\
             ["@ministryofjustice/frontend", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:1.8.0"],\
+            ["@scottish-government/pattern-library", "npm:0.0.357"],\
             ["@types/body-parser", "npm:1.19.2"],\
             ["@types/config", "npm:3.3.0"],\
             ["@types/connect-redis", "npm:0.0.20"],\
@@ -6327,6 +6328,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@scottish-government/pattern-library", [\
+        ["npm:0.0.357", {\
+          "packageLocation": "./.yarn/cache/@scottish-government-pattern-library-npm-0.0.357-cefb0f671c-bc15890468.zip/node_modules/@scottish-government/pattern-library/",\
+          "packageDependencies": [\
+            ["@scottish-government/pattern-library", "npm:0.0.357"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@sideway/address", [\
         ["npm:4.1.4", {\
           "packageLocation": "./.yarn/cache/@sideway-address-npm-4.1.4-32f94bc9f5-b9fca2a93a.zip/node_modules/@sideway/address/",\
@@ -9245,6 +9255,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@hmcts/properties-volume", "npm:1.0.0"],\
             ["@microsoft/applicationinsights-web", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:3.0.2"],\
             ["@ministryofjustice/frontend", "virtual:a5fe13a14e3fa0d2e77e628cc201cebd8041f1e2be1ed7cc8c4903c83bc58066bf5634cbcedce50a5424907a43e3900e7e2f634bffe05ef189b47d99aba650b2#npm:1.8.0"],\
+            ["@scottish-government/pattern-library", "npm:0.0.357"],\
             ["@types/body-parser", "npm:1.19.2"],\
             ["@types/config", "npm:3.3.0"],\
             ["@types/connect-redis", "npm:0.0.20"],\

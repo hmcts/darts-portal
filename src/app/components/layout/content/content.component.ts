@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { initAll } from 'govuk-frontend';
+import { initAll as initallAllScotland } from '@scottish-government/pattern-library/src/all';
 
 @Component({
   selector: 'app-content',
@@ -9,6 +10,9 @@ import { initAll } from 'govuk-frontend';
 export class ContentComponent implements OnInit {
   public ngOnInit() {
     // initialize javascript for accordion component to enable open/close button
-    setTimeout(() => initAll(), 500);
+    setTimeout(() => {
+      initAll();
+      initallAllScotland();
+    }, 500);
   }
 }
