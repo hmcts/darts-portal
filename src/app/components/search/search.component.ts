@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-search',
@@ -7,17 +7,13 @@ import { FormBuilder } from '@angular/forms';
   styleUrls: ['./search.component.css'],
 })
 export class SearchComponent {
-  constructor(public fb: FormBuilder) {}
-
   specificShow = false;
   rangeShow = false;
-  /*########### Template Driven Form ###########*/
-  searchForm = this.fb.group({
-    property: 'example',
-  });
+  form = new FormGroup({});
+
   // Submit Registration Form
   onSubmit() {
-    alert(JSON.stringify(this.searchForm.value));
+    alert(JSON.stringify(this.form.value));
   }
 
   //Fires on radio input checked change
