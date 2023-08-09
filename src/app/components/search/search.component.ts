@@ -7,8 +7,10 @@ import { FormGroup } from '@angular/forms';
   styleUrls: ['./search.component.css'],
 })
 export class SearchComponent {
+  
   specificShow = false;
   rangeShow = false;
+  searchText = '';
   form = new FormGroup({});
 
   // Submit Registration Form
@@ -40,5 +42,9 @@ export class SearchComponent {
       this.rangeShow = selected;
       this.specificShow = false;
     }
+    
+
+  clearSearch() {
+    this.searchText = '';
   }
 }

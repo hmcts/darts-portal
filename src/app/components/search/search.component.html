@@ -9,6 +9,7 @@
       Also known as a case reference or court reference. There should be no spaces.
     </div>
     <input
+      [(ngModel)]="searchText"
       class="govuk-input govuk-input--width-10"
       id="case-search"
       name="case-search"
@@ -128,4 +129,9 @@
     <button class="govuk-button" data-module="govuk-button">Search</button>
     <a class="govuk-link" a href="/search" onclick="document.getElementById('case-search').value = '';">Clear search</a>
   </div>
-</form>
+</form>  
+
+<div class="govuk-button-group">
+  <button class="govuk-button" data-module="govuk-button">Search</button>
+  <a class="govuk-link" (click)="clearSearch()">Clear search</a>
+</div>
