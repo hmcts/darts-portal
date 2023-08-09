@@ -1,5 +1,5 @@
 import { APP_INITIALIZER, ErrorHandler, NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -37,7 +37,7 @@ export function initAppFn(envService: AppConfigService) {
     LoginComponent,
     SearchComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule, MatIconModule, HttpClientModule],
+  imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule, MatIconModule, HttpClientModule, FormsModule],
   providers: [
     {
       provide: APP_INITIALIZER,
