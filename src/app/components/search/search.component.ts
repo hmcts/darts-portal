@@ -7,11 +7,15 @@ import { FormGroup, FormControl } from '@angular/forms';
   styleUrls: ['./search.component.css'],
 })
 export class SearchComponent {
-  specificShow = false;
-  rangeShow = false;
+  dateInputType!: 'specific' | 'range';
 
   form = new FormGroup({
     searchText: new FormControl(),
+    courthouseText: new FormControl(),
+    courtroomText: new FormControl(),
+    defendantNameText: new FormControl(),
+    judgeNameText: new FormControl(),
+    keywordsText: new FormControl(),
   });
 
   // Submit Registration Form
@@ -19,30 +23,8 @@ export class SearchComponent {
     alert(JSON.stringify(this.form.value));
   }
 
-  //Fires on radio input checked change
-  onItemChange(type: string, evt: Event) {
-    console.log(evt);
-    const radio = evt.target as HTMLInputElement;
-    if (evt.target) {
-      if (radio.checked) {
-        this.toggleRadioSelected(true, type);
-      } else {
-        this.toggleRadioSelected(false, type);
-      }
-    }
-  }
-
-  toggleRadioSelected(selected: boolean, type: string) {
-    if (type == 'specific') {
-      //Show specific datepicker
-      this.specificShow = selected;
-      this.rangeShow = false;
-    }
-    if (type == 'range') {
-      //show range datepickers
-      this.rangeShow = selected;
-      this.specificShow = false;
-    }
+  toggleRadioSelected(type: 'specific' | 'range') {
+    this.dateInputType = type;
   }
 
   clearSearch() {

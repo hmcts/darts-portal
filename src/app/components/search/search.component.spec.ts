@@ -23,7 +23,6 @@ describe('SearchComponent', () => {
   });
 
   it('should change visibility of specific datepicker to true, and date range datepicker to false.', fakeAsync(() => {
-    spyOn(component, 'onItemChange').and.callThrough();
     spyOn(component, 'toggleRadioSelected').and.callThrough();
     const radio: HTMLInputElement = fixture.debugElement.query(
       By.css('input[name="specific-date-radio"]')
@@ -31,23 +30,18 @@ describe('SearchComponent', () => {
     radio.click();
     tick();
 
-    expect(component.onItemChange).toHaveBeenCalled();
     expect(component.toggleRadioSelected).toHaveBeenCalled();
-    expect(component.specificShow).toBe(true);
-    expect(component.rangeShow).toBe(false);
+    expect(component.dateInputType).toBe('specific');
   }));
 
   it('should change visibility of range datepicker to true, and specific datepicker to false', fakeAsync(() => {
-    spyOn(component, 'onItemChange').and.callThrough();
     spyOn(component, 'toggleRadioSelected').and.callThrough();
     const radio: HTMLInputElement = fixture.debugElement.query(By.css('input[name="date-range-radio"]')).nativeElement;
     radio.click();
     tick();
 
-    expect(component.onItemChange).toHaveBeenCalled();
     expect(component.toggleRadioSelected).toHaveBeenCalled();
-    expect(component.specificShow).toBe(false);
-    expect(component.rangeShow).toBe(true);
+    expect(component.dateInputType).toBe('range');
   }));
 
   it('should clear search text', () => {

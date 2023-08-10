@@ -24,13 +24,20 @@
     <div class="govuk-form-group govuk-details__text">
       <div class="govuk-form-group">
         <label class="govuk-label" for="advanced-case-search"> Courthouse </label>
-        <input class="govuk-input govuk-input--width-20" id="courthouse" name="courthouse" type="text" />
+        <input
+          formControlName="courthouseText"
+          class="govuk-input govuk-input--width-20"
+          id="courthouse"
+          name="courthouse"
+          type="text"
+        />
       </div>
 
       <div class="govuk-form-group">
         <label class="govuk-label" for="advanced-case-search"> Courtroom </label>
         <div id="courtroom-search-hint" class="govuk-hint">For example, 3</div>
         <input
+          formControlName="courtroomText"
           class="govuk-input govuk-input--width-2"
           id="courtroom-search"
           name="courtroom-search"
@@ -50,15 +57,15 @@
               id="specific-date"
               name="specific-date-radio"
               type="radio"
-              [checked]="specificShow"
-              (change)="onItemChange('specific', $event)"
+              [checked]="dateInputType === 'specific'"
+              (change)="toggleRadioSelected('specific')"
             />
 
             <label class="govuk-label govuk-radios__label" for="advanced-case-search"> Specific date </label>
           </div>
 
           <div
-            *ngIf="specificShow"
+            *ngIf="dateInputType === 'specific'"
             class="govuk-form-group govuk-details__text input-group-indent-1"
             id="specific-date-items"
           >
@@ -78,13 +85,13 @@
               id="date-range"
               name="date-range-radio"
               type="radio"
-              [checked]="rangeShow"
-              (change)="onItemChange('range', $event)"
+              [checked]="dateInputType === 'range'"
+              (change)="toggleRadioSelected('range')"
             />
             <label class="govuk-label govuk-radios__label" for="advanced-case-search"> Date range </label>
           </div>
 
-          <div *ngIf="rangeShow" id="date-range-items">
+          <div *ngIf="dateInputType === 'range'" id="date-range-items">
             <div class="govuk-form-group govuk-details__text input-group-indent-1" id="range-date-items">
               <div class="govuk-date-input">
                 <label class="govuk-label govuk-!-font-weight-bold" for="start-date">From</label>
@@ -111,17 +118,35 @@
 
       <div class="govuk-form-group">
         <label class="govuk-label" for="advanced-case-search"> Defendant's name </label>
-        <input class="govuk-input govuk-input--width-20" id="defendant" name="defendant" type="text" />
+        <input
+          formControlName="defendantNameText"
+          class="govuk-input govuk-input--width-20"
+          id="defendant"
+          name="defendant"
+          type="text"
+        />
       </div>
 
       <div class="govuk-form-group">
         <label class="govuk-label" for="advanced-case-search"> Judge's name </label>
-        <input class="govuk-input govuk-input--width-20" id="judge" name="judge" type="text" />
+        <input
+          formControlName="judgeNameText"
+          class="govuk-input govuk-input--width-20"
+          id="judge"
+          name="judge"
+          type="text"
+        />
       </div>
 
       <div class="govuk-form-group">
         <label class="govuk-label" for="advanced-case-search"> Keywords </label>
-        <input class="govuk-input govuk-input--width-20" id="keywords" name="keywords" type="text" />
+        <input
+          formControlName="keywordsText"
+          class="govuk-input govuk-input--width-20"
+          id="keywords"
+          name="keywords"
+          type="text"
+        />
       </div>
     </div>
   </details>
