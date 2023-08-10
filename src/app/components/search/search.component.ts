@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-search',
@@ -9,8 +9,10 @@ import { FormGroup } from '@angular/forms';
 export class SearchComponent {
   specificShow = false;
   rangeShow = false;
-  searchText = '';
-  form = new FormGroup({});
+
+  form = new FormGroup({
+    searchText: new FormControl(),
+  });
 
   // Submit Registration Form
   onSubmit() {
@@ -44,6 +46,6 @@ export class SearchComponent {
   }
 
   clearSearch() {
-    this.searchText = '';
+    this.form.reset();
   }
 }

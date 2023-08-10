@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SearchComponent } from './search.component';
 import { FormsModule } from '@angular/forms';
 
@@ -52,8 +51,10 @@ describe('SearchComponent', () => {
   }));
 
   it('should clear search text', () => {
-    component.searchText = 'test search';
+    const search = component.form.controls['searchText'];
+    search.setValue('search example text');
+
     component.clearSearch();
-    expect(component.searchText).toBe('');
+    expect(search.value).toBeFalsy();
   });
 });
