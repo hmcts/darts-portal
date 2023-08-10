@@ -13,8 +13,10 @@ function proxyMiddleware() {
     },
     logLevel: 'debug',
     onProxyReq: (proxyReq, req) => {
-      if (req.session.accessToken) {
-        proxyReq.setHeader('Authorization', `Bearer ${req.session.accessToken}`);
+      if (req.session.securityToken) {
+        if (req.session.securityToken.accessToken) {
+          proxyReq.setHeader('Authorization', `Bearer ${req.session.securityToken.accessToken}`);
+        }
       }
     },
   });

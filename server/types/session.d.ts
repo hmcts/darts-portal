@@ -1,6 +1,8 @@
+import SecurityToken from './classes/securityToken';
+
 declare module 'express-session' {
   interface SessionData {
-    accessToken?: string;
+    securityToken: SecurityToken | undefined;
   }
 }
 

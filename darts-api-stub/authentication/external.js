@@ -8,7 +8,25 @@ router.get('/login-or-refresh', (_, res) => {
 });
 
 router.post('/handle-oauth-code', (_, res) => {
-  res.send('fake-jwt');
+  //Objects which reflect express-session module
+  const permissions = [{ permissionId: 1, permissionName: 'local dev permissions' }];
+  const roles = [
+    {
+      roleId: 123,
+      roleName: 'local dev',
+      permissions: permissions,
+    },
+  ];
+  const userState = {
+    userId: 123,
+    userName: 'localdev01',
+    roles: roles,
+  };
+  const securityToken = {
+    userState: userState,
+    accessToken: 'fake-jwt',
+  };
+  res.send(securityToken);
 });
 
 router.get('/logout', (_, res) => {
