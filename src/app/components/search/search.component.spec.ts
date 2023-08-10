@@ -44,6 +44,14 @@ describe('SearchComponent', () => {
     expect(component.dateInputType).toBe('range');
   }));
 
+  it('should submit when search button is clicked', () => {
+    spyOn(component, 'onSubmit').and.callThrough();
+    fixture.debugElement.query(By.css('form')).triggerEventHandler('ngSubmit', null);
+    fixture.detectChanges();
+
+    expect(component.onSubmit).toHaveBeenCalled();
+  });
+
   it('should clear search text', () => {
     const search = component.form.controls['searchText'];
     search.setValue('search example text');
