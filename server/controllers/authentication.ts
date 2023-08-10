@@ -5,14 +5,19 @@ import config from 'config';
 import bodyParser from 'body-parser';
 import SecurityToken from 'server/types/classes/securityToken';
 
+const ERROR_CODES = {
+  RESET_PWD: 'AADB2C90118',
+};
+
 const EXTERNAL_USER_LOGIN = `${config.get('darts-api.url')}/external-user/login-or-refresh`;
 const EXTERNAL_USER_CALLBACK = `${config.get('darts-api.url')}/external-user/handle-oauth-code`;
+const EXTERNAL_USER_RESET_PWD = `${config.get('darts-api.url')}/external-user/reset-password`;
 const EXTERNAL_USER_LOGOUT = `${config.get('darts-api.url')}/external-user/logout`;
 
 function getLogin(): (_: Request, res: Response, next: NextFunction) => Promise<void> {
   return async (_: Request, res: Response, next: NextFunction) => {
     try {
-      const result = await axios(EXTERNAL_USER_LOGIN);
+      const result = await axios(`${EXTERNAL_USER_LOGIN}?redirect_uri=${config.get('hostname')}/auth/callback`);
       const loginRedirect = result.request.res.responseUrl;
       if (loginRedirect) {
         res.redirect(loginRedirect);
@@ -26,11 +31,40 @@ function getLogin(): (_: Request, res: Response, next: NextFunction) => Promise<
   };
 }
 
+async function handleResetPassword(req: Request): Promise<string> {
+  if (req.body.error_description.startsWith(ERROR_CODES.RESET_PWD)) {
+    try {
+      let accessToken;
+      if (req.session.securityToken) {
+        accessToken = req.session.securityToken.accessToken;
+      }
+      const result = await axios(EXTERNAL_USER_RESET_PWD, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      const resetPwdRedirect = result.request.res.responseUrl;
+      if (resetPwdRedirect) {
+        return resetPwdRedirect;
+      }
+      throw new Error('Reset password redirect not found');
+    } catch (err) {
+      console.error('Error on get reset-password call', err);
+      throw err;
+    }
+  }
+  throw new Error(req.body);
+}
+
 function postAuthCallback(): (req: Request, res: Response, next: NextFunction) => Promise<void> {
   return async (req: Request, res: Response, next: NextFunction) => {
+    console.log('postAuthCallback', req.body);
     if (req.body.error) {
-      console.error('Error received from Azure login callback', req.body);
-      return res.redirect('/login');
+      try {
+        const resetPwdRedirect = await handleResetPassword(req);
+        return res.redirect(resetPwdRedirect);
+      } catch (err) {
+        console.error('Error received from Azure login callback', req.body);
+        return res.redirect('/login');
+      }
     }
     try {
       const result = await axios.post<SecurityToken>(EXTERNAL_USER_CALLBACK, req.body, {
@@ -50,6 +84,10 @@ function postAuthCallback(): (req: Request, res: Response, next: NextFunction) =
       next(err);
     }
   };
+}
+
+function getAuthCallback(req: Request, res: Response) {
+  res.redirect('/');
 }
 
 function getLogout(): (_: Request, res: Response, next: NextFunction) => Promise<void> {
@@ -113,6 +151,8 @@ export function init(disableAuthentication = false): Router {
   router.use(bodyParser.json());
   router.use(bodyParser.urlencoded({ extended: false }));
   router.get('/login', getLogin());
+  // this is used when cancelling a password reset
+  router.get('/callback', getAuthCallback);
   router.post('/callback', postAuthCallback());
   router.get('/logout', getLogout());
   router.get('/logout-callback', logoutCallback());
