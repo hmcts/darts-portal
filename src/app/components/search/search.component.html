@@ -9,7 +9,9 @@
       Also known as a case reference or court reference. There should be no spaces.
     </div>
     <input
-      formControlName="searchText"
+      formControlName="case_number"
+      required
+      minlength="1"
       class="govuk-input govuk-input--width-10"
       id="case-search"
       name="case-search"
@@ -25,7 +27,7 @@
       <div class="govuk-form-group">
         <label class="govuk-label" for="advanced-case-search"> Courthouse </label>
         <input
-          formControlName="courthouseText"
+          formControlName="courthouse"
           class="govuk-input govuk-input--width-20"
           id="courthouse"
           name="courthouse"
@@ -37,7 +39,7 @@
         <label class="govuk-label" for="advanced-case-search"> Courtroom </label>
         <div id="courtroom-search-hint" class="govuk-hint">For example, 3</div>
         <input
-          formControlName="courtroomText"
+          formControlName="courtroom"
           class="govuk-input govuk-input--width-2"
           id="courtroom-search"
           name="courtroom-search"
@@ -119,7 +121,7 @@
       <div class="govuk-form-group">
         <label class="govuk-label" for="advanced-case-search"> Defendant's name </label>
         <input
-          formControlName="defendantNameText"
+          formControlName="defendant_name"
           class="govuk-input govuk-input--width-20"
           id="defendant"
           name="defendant"
@@ -130,7 +132,7 @@
       <div class="govuk-form-group">
         <label class="govuk-label" for="advanced-case-search"> Judge's name </label>
         <input
-          formControlName="judgeNameText"
+          formControlName="judge_name"
           class="govuk-input govuk-input--width-20"
           id="judge"
           name="judge"
@@ -141,7 +143,7 @@
       <div class="govuk-form-group">
         <label class="govuk-label" for="advanced-case-search"> Keywords </label>
         <input
-          formControlName="keywordsText"
+          formControlName="event_text_contains"
           class="govuk-input govuk-input--width-20"
           id="keywords"
           name="keywords"
