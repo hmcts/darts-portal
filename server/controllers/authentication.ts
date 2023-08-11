@@ -38,7 +38,7 @@ async function handleResetPassword(req: Request): Promise<string> {
       if (req.session.securityToken) {
         accessToken = req.session.securityToken.accessToken;
       }
-      const result = await axios(EXTERNAL_USER_RESET_PWD, {
+      const result = await axios(`${EXTERNAL_USER_RESET_PWD}?redirect_uri=${config.get('hostname')}/auth/callback`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
       const resetPwdRedirect = result.request.res.responseUrl;
@@ -86,7 +86,7 @@ function postAuthCallback(): (req: Request, res: Response, next: NextFunction) =
   };
 }
 
-function getAuthCallback(req: Request, res: Response) {
+function getAuthCallback(_: Request, res: Response) {
   res.redirect('/');
 }
 
@@ -98,9 +98,12 @@ function getLogout(): (_: Request, res: Response, next: NextFunction) => Promise
         accessToken = req.session.securityToken.accessToken;
       }
 
-      const result = await axios(EXTERNAL_USER_LOGOUT, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
+      const result = await axios(
+        `${EXTERNAL_USER_LOGOUT}?redirect_uri=${config.get('hostname')}/auth/logout-callback`,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      );
       const logoutRedirect = result.request.res.responseUrl;
       if (logoutRedirect) {
         res.redirect(logoutRedirect);
