@@ -2,9 +2,6 @@ function moveForgotPasswordLink() {
 	$('.entry-item:nth-child(2)').after($('#forgotPassword'))
 }
 
-wrapXhrOpen('SelfAsserted', '"status":"400"', displayErrors);
-moveForgotPasswordLink();
-
 function displayErrors() {
   removeErrors();
   addItemLevelErrorClasses();
@@ -12,4 +9,9 @@ function displayErrors() {
   hidePageLevelErrors();
 }
 
+moveForgotPasswordLink();
 $('button#next').click(displayErrors);
+
+setTimeout(function() {
+  wrapXhrOpen('SelfAsserted', '"status":"400"', displayErrors);
+}, 0);
