@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
 import { CaseService } from '../../services/case/case.service';
-declare type CaseData = typeof import('../../types/case');
+import { CaseData } from '../../../app/types/case';
 
 @Component({
   selector: 'app-search',
@@ -10,7 +11,9 @@ declare type CaseData = typeof import('../../types/case');
 })
 export class SearchComponent {
   dateInputType!: 'specific' | 'range';
-  private cases: CaseData[] = [];
+  cases: CaseData[] = [];
+  loaded: boolean = false;
+  msg: string = '';
 
   constructor(private caseService: CaseService) {}
 
@@ -26,6 +29,8 @@ export class SearchComponent {
 
   // Submit Registration Form
   onSubmit() {
+    this.cases = [];
+
     this.caseService
       .getCasesAdvanced(
         this.form.get('case_number')?.value!,
@@ -35,23 +40,24 @@ export class SearchComponent {
         this.form.get('defendant_name')?.value,
         this.form.get('event_text_contains')?.value
       )
-      .subscribe((result: CaseData[]) => {
-        if (result) {
-          this.cases.push(result);
+      .subscribe(
+        (result: CaseData[]) => {
+          if (result) {
+            this.cases = this.cases.concat(result);
+            this.loaded = true;
+            this.msg = 'ok';
+          }
+        },
+        (error: HttpErrorResponse) => {
+          console.log(error);
+          // Handle error
+          // Use if conditions to check error code, this depends on your api, how it sends error messages
+          //HANDLE ERROR RESPONSES
+          //Check if not ok, show appropriate message based on response
+          //If http status and inspect statusText e.g. HttpStatus.BAD_REQUEST
+          //https://angular.io/api/common/http/HttpResponse
         }
-
-        console.log(this.cases);
-
-        //GOT THE DATA
-
-        //SEND DATA TO A SEARCH-RESULTS COMPONENT
-
-        //LOOK AT FIGMA SEE WHERE NEW COMPONENT WILL BE INTEGRATED
-
-        //HANDLE ERROR RESPONSES
-
-        //STILL NEED TO INTEGRATE ERROR HANDLING IN SERVICE
-      });
+      );
   }
 
   toggleRadioSelected(type: 'specific' | 'range') {
@@ -60,5 +66,6 @@ export class SearchComponent {
 
   clearSearch() {
     this.form.reset();
+    this.cases = [];
   }
 }

@@ -5,12 +5,12 @@ const router = express.Router();
 //CASES Mock objects
 const singleCase = {
   case_id: 1,
-  courthouse: 'SWANSEA',
+  courthouse: 'Swansea',
   case_number: 'CASE1001',
   defendants: ['Defendant Dave', 'Defendant Debbie'],
   judges: ['Judge Judy', 'Judge Jones'],
-  prosecutors: ['Polly Prosecutor', 'Pipp Prosecutor'],
-  defenders: ['Derek Defender', 'Dingo Defender'],
+  prosecutors: ['Polly Prosecutor'],
+  defenders: ['Derek Defender'],
   retain_until: '2023-08-10T11:23:24.858Z',
 };
 
@@ -18,9 +18,9 @@ const multipleCases = [
   {
     caseID: 1,
     caseNumber: 'C20220620001',
-    courthouse: 'SWANSEA',
-    defendants: ['Defendant Dave', 'Defendant Debbie'],
-    judges: ['Judge Judy', 'Judge Jones'],
+    courthouse: 'Swansea',
+    defendants: ['Defendant Dave'],
+    judges: ['Judge Judy'],
     reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
     hearings: [
       {
@@ -34,31 +34,44 @@ const multipleCases = [
   {
     caseID: 2,
     caseNumber: 'C20220620002',
-    courthouse: 'SLOUGH',
-    defendants: ['Defendant Dave', 'Defendant Debbie'],
-    judges: ['Judge Judy', 'Judge Jones'],
+    courthouse: 'Slough',
+    defendants: ['Defendant Derren'],
+    judges: ['Judge Juniper'],
+    hearings: [],
+  },
+  {
+    caseID: 3,
+    caseNumber: 'C20220620003',
+    courthouse: 'Reading',
+    defendants: ['Defendant Darran', 'Defendant Daniel'],
+    judges: ['Judge Julie'],
     reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
     hearings: [
       {
         id: 1,
         date: '2023-08-10',
-        courtroom: '1',
+        courtroom: '3',
         judges: ['Judge Judy'],
       },
     ],
   },
   {
-    caseID: 3,
-    caseNumber: 'C20220620003',
-    courthouse: 'READING',
-    defendants: ['Defendant Dave', 'Defendant Debbie'],
-    judges: ['Judge Judy', 'Judge Jones'],
-    reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
+    caseID: 4,
+    caseNumber: 'C20220620004',
+    courthouse: 'Windsor',
+    defendants: ['Defendant Dileep', 'Defendant Debs'],
+    judges: ['Judge Josephine', 'Judge Jackie'],
     hearings: [
       {
         id: 1,
         date: '2023-08-10',
-        courtroom: '1',
+        courtroom: '3',
+        judges: ['Judge Judy'],
+      },
+      {
+        id: 2,
+        date: '2033-09-10',
+        courtroom: '5',
         judges: ['Judge Judy'],
       },
     ],
