@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { initAll as initallAllScotland } from '@scottish-government/pattern-library/src/all';
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -36,11 +37,13 @@ export class SearchComponent {
       //Show specific datepicker
       this.specificShow = selected;
       this.rangeShow = false;
+      setTimeout(initallAllScotland, 0);
     }
     if (type == 'range') {
       //show range datepickers
       this.rangeShow = selected;
       this.specificShow = false;
+      setTimeout(initallAllScotland, 0);
     }
   }
 }
