@@ -53,7 +53,7 @@ describe('SearchComponent', () => {
   });
 
   it('should clear search text', () => {
-    const search = component.form.controls['searchText'];
+    const search = component.form.controls['case_number'];
     search.setValue('search example text');
 
     component.clearSearch();

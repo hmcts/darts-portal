@@ -12,8 +12,9 @@ import { CaseData } from '../../../app/types/case';
 export class SearchComponent {
   dateInputType!: 'specific' | 'range';
   cases: CaseData[] = [];
-  loaded: boolean = false;
-  msg: string = '';
+  loaded = false;
+  statusText = '';
+  status = 0;
 
   constructor(private caseService: CaseService) {}
 
@@ -33,7 +34,7 @@ export class SearchComponent {
 
     this.caseService
       .getCasesAdvanced(
-        this.form.get('case_number')?.value!,
+        this.form.get('case_number')?.value,
         this.form.get('courthouse')?.value,
         this.form.get('courtroom')?.value,
         this.form.get('judge_name')?.value,
@@ -45,17 +46,15 @@ export class SearchComponent {
           if (result) {
             this.cases = this.cases.concat(result);
             this.loaded = true;
-            this.msg = 'ok';
+            this.statusText = 'ok';
           }
         },
         (error: HttpErrorResponse) => {
-          console.log(error);
-          // Handle error
-          // Use if conditions to check error code, this depends on your api, how it sends error messages
-          //HANDLE ERROR RESPONSES
-          //Check if not ok, show appropriate message based on response
-          //If http status and inspect statusText e.g. HttpStatus.BAD_REQUEST
-          //https://angular.io/api/common/http/HttpResponse
+          if (error.status && error.statusText) {
+            this.status = error.status;
+            this.statusText = error.statusText;
+            this.loaded = true;
+          }
         }
       );
   }
@@ -67,5 +66,6 @@ export class SearchComponent {
   clearSearch() {
     this.form.reset();
     this.cases = [];
+    this.loaded = false;
   }
 }

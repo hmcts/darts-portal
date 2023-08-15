@@ -1,9 +1,19 @@
 <!-- Results -->
 <div>
   <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
-  <div *ngIf="responseMsg == 'max-results'">Too many results guy</div>
-  <div *ngIf="responseMsg == 'no-results'">No results guy</div>
-  <div *ngIf="responseMsg == 'ok' && loaded">
+  <div *ngIf="statusText.toLowerCase() === 'bad request' && statusCode === 100">
+    <h2 class="govuk-heading-m">There are more than 500 results</h2>
+    <p class="govuk-body">Refine your search by:</p>
+    <ul class="govuk-list govuk-list--bullet">
+      <li>adding more information to your search</li>
+      <li>using filters to restrict the number of results</li>
+    </ul>
+  </div>
+  <div *ngIf="statusText.toLowerCase() === 'not found' || (casesInput.length === 0 && loaded)">
+    <h2 class="govuk-heading-m">No search results</h2>
+    <p class="govuk-body">Review the case number, case reference or court reference you entered and try again.</p>
+  </div>
+  <div *ngIf="casesInput.length > 0 && statusText === 'ok' && loaded">
     <table class="govuk-table">
       <caption class="govuk-table__caption govuk-table__caption--m">
         {{

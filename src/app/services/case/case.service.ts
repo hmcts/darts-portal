@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { Observable, throwError, lastValueFrom } from 'rxjs';
-import { catchError, tap, map } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { ErrorHandlerService } from '../error/error-handler.service';
 import { CaseData } from '../../../app/types/case';
 
@@ -12,7 +12,7 @@ const ADVANCED_SEARCH_CASE_PATH = '/api/cases/search';
   providedIn: 'root',
 })
 export class CaseService {
-  constructor(private readonly http: HttpClient, private ErrorHandler: ErrorHandlerService) {} //
+  constructor(private readonly http: HttpClient, private ErrorHandler: ErrorHandlerService) {}
 
   //Single get case API
   getCase(caseId: string): Observable<CaseData> {
@@ -27,7 +27,7 @@ export class CaseService {
 
   //Advanced search API fetching multiple cases
   getCasesAdvanced(
-    case_number: string,
+    case_number?: string | null,
     courthouse?: string | null,
     courtroom?: string | null,
     judge_name?: string | null,
@@ -36,9 +36,12 @@ export class CaseService {
     date_to?: string | null,
     event_text_contains?: string | null
   ): Observable<CaseData[]> {
-    let params = new HttpParams().set('case_number', case_number);
+    let params = new HttpParams();
 
     //Process optional parameters to form HttpParams
+    if (case_number) {
+      params = params.set('case_number', case_number);
+    }
     if (courthouse) {
       params = params.set('courthouse', courthouse);
     }

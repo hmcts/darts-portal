@@ -5,8 +5,6 @@ import moment from 'moment';
   providedIn: 'root',
 })
 export class DateTimeService {
-  constructor() {}
-
   //e.g. Mon 26 Sep 2023
   getdddDMMMYYYY(date: string) {
     if (date) {

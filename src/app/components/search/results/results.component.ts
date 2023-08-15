@@ -9,8 +9,9 @@ import { DateTimeService } from '../../../services/datetime/datetime.service';
 })
 export class ResultsComponent {
   @Input() casesInput: CaseData[] = [];
-  @Input() loaded: boolean = false;
-  @Input() responseMsg: string = '';
+  @Input() loaded = false;
+  @Input() statusCode = 0;
+  @Input() statusText = '';
 
   constructor(private dateTimeService: DateTimeService) {}
 

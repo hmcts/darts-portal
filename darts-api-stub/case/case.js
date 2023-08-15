@@ -95,6 +95,7 @@ router.get('/search', (req, res) => {
   console.log('hitting stub');
   console.log(req.query);
 
+  //Response codes not sent properly due to 504 proxy error gateway timeout, test with stg or local darts-api
   switch (req.query.case_number) {
     case '501':
       res.status(100).send('TOO_MANY_RESULTS');
