@@ -13,4 +13,13 @@ describe('DatetimeService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+
+  it('should return correct date formats when passing in YYYY-MM-DD', () => {
+    spyOn(service, 'getdddDMMMYYYY').and.callThrough();
+
+    const date = service.getdddDMMMYYYY('2023-08-16');
+
+    expect(service.getdddDMMMYYYY).toHaveBeenCalled();
+    expect(date).toBe('Wed 16 Aug 2023');
+  });
 });

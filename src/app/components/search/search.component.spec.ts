@@ -3,15 +3,20 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { SearchComponent } from './search.component';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { AppInsightsService } from '../../services/app-insights/app-insights.service';
+import { ResultsComponent } from './results/results.component';
 
 describe('SearchComponent', () => {
+  const fakeAppInsightsService = {};
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [SearchComponent],
-      imports: [ReactiveFormsModule, FormsModule],
+      declarations: [SearchComponent, ResultsComponent],
+      imports: [ReactiveFormsModule, FormsModule, HttpClientModule],
+      providers: [{ provide: AppInsightsService, useValue: fakeAppInsightsService }],
     });
     fixture = TestBed.createComponent(SearchComponent);
     component = fixture.componentInstance;
@@ -52,11 +57,24 @@ describe('SearchComponent', () => {
     expect(component.onSubmit).toHaveBeenCalled();
   });
 
-  it('should clear search text', () => {
+  it('should call submit function when search button is clicked and case number is filled', () => {
+    spyOn(component, 'onSubmit').and.callThrough();
+
+    const search = component.form.controls['case_number'];
+    search.setValue('1');
+
+    fixture.debugElement.query(By.css('form')).triggerEventHandler('ngSubmit', null);
+    fixture.detectChanges();
+
+    expect(component.onSubmit).toHaveBeenCalled();
+  });
+
+  it('should clear search text and results', () => {
     const search = component.form.controls['case_number'];
     search.setValue('search example text');
 
     component.clearSearch();
     expect(search.value).toBeFalsy();
+    expect(component.cases.length).toBe(0);
   });
 });

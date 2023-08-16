@@ -20,12 +20,12 @@ export class ResultsComponent {
   }
 
   //Fetches correct display value for defendants and judges
-  getNameValue(c: CaseData, key: string = 'defendants' || 'judges') {
-    if (!c[key] || c[key].length == 0) {
+  getNameValue(arr: string[]) {
+    if (arr.length == 0) {
       return '';
     } else {
-      if (c[key].length < 2) {
-        return c[key][0];
+      if (arr.length < 2) {
+        return arr[0];
       } else {
         return 'Multiple';
       }
@@ -38,7 +38,11 @@ export class ResultsComponent {
       return '';
     } else {
       if (c.hearings.length < 2) {
-        return this.getDateFormat(c.hearings[0][key]);
+        if (key === 'date') {
+          return this.getDateFormat(c.hearings[0][key]);
+        } else {
+          return c.hearings[0][key];
+        }
       } else {
         return 'Multiple';
       }
