@@ -12,6 +12,7 @@ describe('CaseService', () => {
   let service: CaseService;
 
   const mockCases: CaseData[] = [];
+  const mockCase = {} as CaseData;
 
   beforeEach(() => {
     const spy = jasmine.createSpyObj('CaseService', {
@@ -36,7 +37,7 @@ describe('CaseService', () => {
   //Temporary tests for time being
 
   //Need fake endpoints to be reachable to test Custom Type responses
-  it('get cases advanced search function should be run and return 404 response', () => {
+  it('should run cases advanced search function and return 404 response', () => {
     const errorResponse = new HttpErrorResponse({
       error: { code: `some code`, message: `some message.` },
       status: 404,
@@ -60,14 +61,55 @@ describe('CaseService', () => {
     );
   });
 
-  it('get cases advanced search function should be run and return mock case', () => {
+  it('should run cases advanced search function and return mock case', () => {
     spyOn(service, 'getCasesAdvanced').and.returnValue(of(mockCases));
 
     let cases: CaseData[] = [];
-    service.getCasesAdvanced('C20220620001').subscribe((result: CaseData[]) => {
+    service
+      .getCasesAdvanced('C20220620001', 'Reading', '1', 'Judy', 'Dave', null, null, 'keyword')
+      .subscribe((result: CaseData[]) => {
+        if (result) {
+          cases = cases.concat(result);
+          expect(cases).toEqual(mockCases);
+        }
+      });
+  });
+
+  //TODO
+  //Need fake endpoints to be reachable to test Custom Type responses
+  it('should run specific get case function and return 404 response', () => {
+    const errorResponse = new HttpErrorResponse({
+      error: { code: `some code`, message: `some message.` },
+      status: 404,
+      statusText: 'Not Found',
+    });
+
+    spyOn(service, 'getCase').and.returnValue(throwError(errorResponse));
+
+    let cases: CaseData;
+    service.getCase('zzzz').subscribe(
+      (result: CaseData) => {
+        if (result) {
+          cases = result;
+        }
+      },
+      (error: HttpErrorResponse) => {
+        if (error.status) {
+          expect(error.status).toEqual(404);
+        }
+      }
+    );
+  });
+
+  //TODO UPDATE TITLE
+  it('should run specific get case function and return mock case', () => {
+    spyOn(service, 'getCase').and.returnValue(of(mockCase));
+
+    let cases: CaseData;
+    service.getCase(1).subscribe((result: CaseData) => {
       if (result) {
-        cases = cases.concat(result);
-        expect(cases).toEqual(mockCases);
+        cases = result;
+        expect(cases).toEqual(mockCase);
       }
     });
   });

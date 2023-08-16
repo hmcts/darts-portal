@@ -15,7 +15,7 @@ export class CaseService {
   constructor(private readonly http: HttpClient, private ErrorHandler: ErrorHandlerService) {}
 
   //Single get case API
-  getCase(caseId: string): Observable<CaseData> {
+  getCase(caseId: string | number): Observable<CaseData> {
     const apiURL = `${GET_CASE_PATH}?caseId=${caseId}`;
     return this.http.get<CaseData>(apiURL).pipe(
       catchError((err: Error) => {
