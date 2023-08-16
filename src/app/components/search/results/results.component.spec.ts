@@ -72,4 +72,22 @@ describe('ResultsComponent', () => {
     expect(dValue).toBe('Fri 18 Aug 2023');
     expect(cValue).toBe('1');
   });
+
+  it('should return correct value if there is no hearings or defendants or judges', () => {
+    const caseData = {} as CaseData;
+    spyOn(component, 'getNameValue').and.callThrough();
+    spyOn(component, 'getHearingsValue').and.callThrough();
+
+    const eValue = component.getNameValue([]);
+    const emValue = component.getNameValue([]);
+    const dValue = component.getHearingsValue(caseData, 'date');
+    const cValue = component.getHearingsValue(caseData, 'courtroom');
+
+    expect(component.getNameValue).toHaveBeenCalled();
+    expect(component.getHearingsValue).toHaveBeenCalled();
+    expect(eValue).toBe('');
+    expect(emValue).toBe('');
+    expect(dValue).toBe('');
+    expect(cValue).toBe('');
+  });
 });

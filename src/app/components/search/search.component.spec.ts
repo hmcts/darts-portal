@@ -57,11 +57,21 @@ describe('SearchComponent', () => {
     expect(component.onSubmit).toHaveBeenCalled();
   });
 
-  it('should call submit function when search button is clicked and case number is filled', () => {
+  it('should call submit function when search button is clicked and fields are filled', () => {
     spyOn(component, 'onSubmit').and.callThrough();
 
     const search = component.form.controls['case_number'];
     search.setValue('1');
+    const ch = component.form.controls['courthouse'];
+    ch.setValue('Reading');
+    const cr = component.form.controls['courtroom'];
+    cr.setValue('2');
+    const jn = component.form.controls['judge_name'];
+    jn.setValue('Judy');
+    const dn = component.form.controls['defendant_name'];
+    dn.setValue('Dave');
+    const kw = component.form.controls['event_text_contains'];
+    kw.setValue('Keywords');
 
     fixture.debugElement.query(By.css('form')).triggerEventHandler('ngSubmit', null);
     fixture.detectChanges();
