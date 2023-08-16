@@ -70,6 +70,10 @@ describe('SearchComponent', () => {
     jn.setValue('Judy');
     const dn = component.form.controls['defendant_name'];
     dn.setValue('Dave');
+    const dt = component.form.controls['date_to'];
+    dt.setValue('18/09/2023');
+    const df = component.form.controls['date_from'];
+    df.setValue('19/09/2023');
     const kw = component.form.controls['event_text_contains'];
     kw.setValue('Keywords');
 
