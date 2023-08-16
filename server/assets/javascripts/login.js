@@ -12,6 +12,7 @@ function displayErrors() {
 moveForgotPasswordLink();
 $('button#next').click(displayErrors);
 
+// wait a second before trying to do this, in case the JS in head isn't loaded yet
 setTimeout(function() {
   wrapXhrOpen('SelfAsserted', '"status":"400"', displayErrors);
-}, 0);
+}, 1000);
