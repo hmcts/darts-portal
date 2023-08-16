@@ -25,7 +25,8 @@ export class SearchComponent {
     judge_name: new FormControl(),
     defendant_name: new FormControl(),
     event_text_contains: new FormControl(),
-    //NEED DATE TO AND FROM FROM DMP-515
+    date_from: new FormControl(),
+    date_to: new FormControl(),
   });
 
   // Submit Registration Form
@@ -39,6 +40,8 @@ export class SearchComponent {
         this.form.get('courtroom')?.value,
         this.form.get('judge_name')?.value,
         this.form.get('defendant_name')?.value,
+        this.form.get('date_from')?.value,
+        this.form.get('date_to')?.value,
         this.form.get('event_text_contains')?.value
       )
       .subscribe(
