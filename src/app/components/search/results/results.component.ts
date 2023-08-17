@@ -19,15 +19,19 @@ export class ResultsComponent {
   }
 
   //Fetches correct display value for defendants and judges
-  getNameValue(arr: string[]) {
-    if (arr.length === 0) {
-      return '';
-    } else {
-      if (arr.length < 2) {
-        return arr[0];
+  getNameValue(arr: string[] | undefined) {
+    if (arr) {
+      if (arr.length === 0) {
+        return '';
       } else {
-        return 'Multiple';
+        if (arr.length < 2) {
+          return arr[0];
+        } else {
+          return 'Multiple';
+        }
       }
+    } else {
+      return '';
     }
   }
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CaseService } from '../../services/case/case.service';
@@ -15,7 +15,7 @@ export class SearchComponent {
   loaded = false;
   errorType = '';
 
-  constructor(private caseService: CaseService) {}
+  constructor(private caseService: CaseService, private changeDetectorRef: ChangeDetectorRef) {}
 
   form = new FormGroup({
     case_number: new FormControl('', Validators.required),
@@ -30,8 +30,6 @@ export class SearchComponent {
 
   // Submit Registration Form
   onSubmit() {
-    this.cases = [];
-
     this.caseService
       .getCasesAdvanced(
         this.form.get('case_number')?.value,
@@ -46,16 +44,12 @@ export class SearchComponent {
       .subscribe(
         (result: CaseData[]) => {
           if (result) {
-            this.cases = this.cases.concat(result);
+            this.cases = result;
             this.loaded = true;
             this.errorType = 'ok';
-            console.log('result');
-            console.log(result);
           }
         },
         (error: HttpErrorResponse) => {
-          console.log('error');
-          console.log(error);
           if (error.error) {
             this.errorType = error.error.type;
             this.loaded = true;

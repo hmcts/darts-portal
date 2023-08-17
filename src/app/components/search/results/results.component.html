@@ -1,7 +1,7 @@
 <!-- Results -->
 <div>
   <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
-  <div *ngIf="errorType !== 'CASE_100' && errorType !== 'CASE_104' && loaded">
+  <div *ngIf="errorType !== 'CASE_100' && errorType !== 'ok' && loaded">
     <!-- This will slowly be replaced/updated as more 'cases' are handled -->
     <h2 class="govuk-heading-m">An error has occurred. Please try again later.</h2>
   </div>
@@ -13,7 +13,9 @@
       <li>using filters to restrict the number of results</li>
     </ul>
   </div>
-  <div *ngIf="errorType === 'CASE_104'">
+
+  <!-- No search results returns empty array rather than error code -->
+  <div *ngIf="casesInput.length === 0 && errorType === 'ok' && loaded">
     <h2 class="govuk-heading-m">No search results</h2>
     <p class="govuk-body">Review the case number, case reference or court reference you entered and try again.</p>
   </div>

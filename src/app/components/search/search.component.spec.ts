@@ -100,6 +100,7 @@ describe('SearchComponent', () => {
       const dt = component.form.controls['date_to'];
       const date_to = '18/09/2023';
       dt.setValue(date_to);
+      expect(dt.value).toBe(date_to);
       const df = component.form.controls['date_from'];
       const date_from = '19/09/2023';
       df.setValue(date_from);
@@ -107,8 +108,19 @@ describe('SearchComponent', () => {
       const event_text_contains = 'Keywords';
       kw.setValue(event_text_contains);
 
+      //Check form control values
+      expect(search.value).toBe(case_number);
+      expect(ch.value).toBe(courthouse);
+      expect(cr.value).toBe(courtroom);
+      expect(jn.value).toBe(judge_name);
+      expect(dn.value).toBe(defendant_name);
+      expect(df.value).toBe(date_from);
+      expect(kw.value).toBe(event_text_contains);
+
       fixture.debugElement.query(By.css('form')).triggerEventHandler('ngSubmit', null);
       fixture.detectChanges();
+
+      //Can check case data once mock controller is implemented
 
       //HttpParams check in case service
       expect(caseService.getHttpParams().get('case_number')).toBe(case_number);

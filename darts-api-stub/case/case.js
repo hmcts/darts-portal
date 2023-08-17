@@ -76,6 +76,189 @@ const multipleCases = [
       },
     ],
   },
+  {
+    caseID: 1,
+    caseNumber: 'C20220620001',
+    courthouse: 'Swansea',
+    defendants: ['Defendant Dave'],
+    judges: ['Judge Judy'],
+    reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
+    hearings: [
+      {
+        id: 1,
+        date: '2023-08-10',
+        courtroom: '1',
+        judges: ['Judge Judy'],
+      },
+    ],
+  },
+  {
+    caseID: 2,
+    caseNumber: 'C20220620002',
+    courthouse: 'Slough',
+    defendants: ['Defendant Derren'],
+    judges: ['Judge Juniper'],
+    hearings: [],
+  },
+  {
+    caseID: 3,
+    caseNumber: 'C20220620003',
+    courthouse: 'Reading',
+    defendants: ['Defendant Darran', 'Defendant Daniel'],
+    judges: ['Judge Julie'],
+    reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
+    hearings: [
+      {
+        id: 1,
+        date: '2023-08-10',
+        courtroom: '3',
+        judges: ['Judge Judy'],
+      },
+    ],
+  },
+  {
+    caseID: 4,
+    caseNumber: 'C20220620004',
+    courthouse: 'Windsor',
+    defendants: ['Defendant Dileep', 'Defendant Debs'],
+    judges: ['Judge Josephine', 'Judge Jackie'],
+    hearings: [
+      {
+        id: 1,
+        date: '2023-08-10',
+        courtroom: '3',
+        judges: ['Judge Judy'],
+      },
+      {
+        id: 2,
+        date: '2033-09-10',
+        courtroom: '5',
+        judges: ['Judge Judy'],
+      },
+    ],
+  },
+  {
+    caseID: 1,
+    caseNumber: 'C20220620001',
+    courthouse: 'Swansea',
+    defendants: ['Defendant Dave'],
+    judges: ['Judge Judy'],
+    reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
+    hearings: [
+      {
+        id: 1,
+        date: '2023-08-10',
+        courtroom: '1',
+        judges: ['Judge Judy'],
+      },
+    ],
+  },
+  {
+    caseID: 2,
+    caseNumber: 'C20220620002',
+    courthouse: 'Slough',
+    defendants: ['Defendant Derren'],
+    judges: ['Judge Juniper'],
+    hearings: [],
+  },
+  {
+    caseID: 3,
+    caseNumber: 'C20220620003',
+    courthouse: 'Reading',
+    defendants: ['Defendant Darran', 'Defendant Daniel'],
+    judges: ['Judge Julie'],
+    reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
+    hearings: [
+      {
+        id: 1,
+        date: '2023-08-10',
+        courtroom: '3',
+        judges: ['Judge Judy'],
+      },
+    ],
+  },
+  {
+    caseID: 4,
+    caseNumber: 'C20220620004',
+    courthouse: 'Windsor',
+    defendants: ['Defendant Dileep', 'Defendant Debs'],
+    judges: ['Judge Josephine', 'Judge Jackie'],
+    hearings: [
+      {
+        id: 1,
+        date: '2023-08-10',
+        courtroom: '3',
+        judges: ['Judge Judy'],
+      },
+      {
+        id: 2,
+        date: '2033-09-10',
+        courtroom: '5',
+        judges: ['Judge Judy'],
+      },
+    ],
+  },
+  {
+    caseID: 1,
+    caseNumber: 'C20220620001',
+    courthouse: 'Swansea',
+    defendants: ['Defendant Dave'],
+    judges: ['Judge Judy'],
+    reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
+    hearings: [
+      {
+        id: 1,
+        date: '2023-08-10',
+        courtroom: '1',
+        judges: ['Judge Judy'],
+      },
+    ],
+  },
+  {
+    caseID: 2,
+    caseNumber: 'C20220620002',
+    courthouse: 'Slough',
+    defendants: ['Defendant Derren'],
+    judges: ['Judge Juniper'],
+    hearings: [],
+  },
+  {
+    caseID: 3,
+    caseNumber: 'C20220620003',
+    courthouse: 'Reading',
+    defendants: ['Defendant Darran', 'Defendant Daniel'],
+    judges: ['Judge Julie'],
+    reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
+    hearings: [
+      {
+        id: 1,
+        date: '2023-08-10',
+        courtroom: '3',
+        judges: ['Judge Judy'],
+      },
+    ],
+  },
+  {
+    caseID: 4,
+    caseNumber: 'C20220620004',
+    courthouse: 'Windsor',
+    defendants: ['Defendant Dileep', 'Defendant Debs'],
+    judges: ['Judge Josephine', 'Judge Jackie'],
+    hearings: [
+      {
+        id: 1,
+        date: '2023-08-10',
+        courtroom: '3',
+        judges: ['Judge Judy'],
+      },
+      {
+        id: 2,
+        date: '2033-09-10',
+        courtroom: '5',
+        judges: ['Judge Judy'],
+      },
+    ],
+  },
 ];
 
 // CASES STUB APIs
@@ -84,6 +267,14 @@ router.get('/{caseId}', (req, res) => {
   singleCase.case_id = req.params.caseId;
 
   switch (req.params.caseId) {
+    case 'CASE_104':
+      const resBody104 = {
+        type: 'CASE_104',
+        title: 'The requested case cannot be found',
+        status: 404,
+      };
+      res.status(400).send(resBody104);
+      break;
     default:
       res.send(singleCase);
       break;
@@ -124,14 +315,6 @@ router.get('/search', (req, res) => {
         status: 400,
       };
       res.status(400).send(resBody103);
-      break;
-    case 'CASE_104':
-      const resBody104 = {
-        type: 'CASE_104',
-        title: 'The requested case cannot be found',
-        status: 404,
-      };
-      res.status(400).send(resBody104);
       break;
     case 'CASE_105':
       const resBody105 = {
