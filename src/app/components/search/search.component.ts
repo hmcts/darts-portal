@@ -13,8 +13,7 @@ export class SearchComponent {
   dateInputType!: 'specific' | 'range';
   cases: CaseData[] = [];
   loaded = false;
-  statusText = '';
-  status = 0;
+  errorType = '';
 
   constructor(private caseService: CaseService) {}
 
@@ -49,13 +48,16 @@ export class SearchComponent {
           if (result) {
             this.cases = this.cases.concat(result);
             this.loaded = true;
-            this.statusText = 'ok';
+            this.errorType = 'ok';
+            console.log('result');
+            console.log(result);
           }
         },
         (error: HttpErrorResponse) => {
-          if (error.status && error.statusText) {
-            this.status = error.status;
-            this.statusText = error.statusText;
+          console.log('error');
+          console.log(error);
+          if (error.error) {
+            this.errorType = error.error.type;
             this.loaded = true;
           }
         }

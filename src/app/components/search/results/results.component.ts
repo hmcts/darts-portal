@@ -10,8 +10,7 @@ import { DateTimeService } from '../../../services/datetime/datetime.service';
 export class ResultsComponent {
   @Input() casesInput: CaseData[] = [];
   @Input() loaded = false;
-  @Input() statusCode = 0;
-  @Input() statusText = '';
+  @Input() errorType = '';
 
   constructor(private dateTimeService: DateTimeService) {}
 
@@ -21,7 +20,7 @@ export class ResultsComponent {
 
   //Fetches correct display value for defendants and judges
   getNameValue(arr: string[]) {
-    if (arr.length == 0) {
+    if (arr.length === 0) {
       return '';
     } else {
       if (arr.length < 2) {
@@ -34,7 +33,7 @@ export class ResultsComponent {
 
   //Fetches correct display value for dates and courtrooms
   getHearingsValue(c: CaseData, key: string) {
-    if (!c.hearings || c.hearings.length == 0) {
+    if (!c.hearings || c.hearings.length === 0) {
       return '';
     } else {
       if (c.hearings.length < 2) {

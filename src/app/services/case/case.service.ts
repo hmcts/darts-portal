@@ -13,6 +13,7 @@ const ADVANCED_SEARCH_CASE_PATH = '/api/cases/search';
 })
 export class CaseService {
   constructor(private readonly http: HttpClient, private ErrorHandler: ErrorHandlerService) {}
+  private params: HttpParams = new HttpParams();
 
   //Single get case API
   getCase(caseId: string | number): Observable<CaseData> {
@@ -36,36 +37,36 @@ export class CaseService {
     date_to?: string | null,
     event_text_contains?: string | null
   ): Observable<CaseData[]> {
-    let params = new HttpParams();
-
     //Process optional parameters to form HttpParams
+    this.params = new HttpParams();
+
     if (case_number) {
-      params = params.set('case_number', case_number);
+      this.params = this.params.set('case_number', case_number);
     }
     if (courthouse) {
-      params = params.set('courthouse', courthouse);
+      this.params = this.params.set('courthouse', courthouse);
     }
     if (courtroom) {
-      params = params.set('courtroom', courtroom);
+      this.params = this.params.set('courtroom', courtroom);
     }
     if (judge_name) {
-      params = params.set('judge_name', judge_name);
+      this.params = this.params.set('judge_name', judge_name);
     }
     if (defendant_name) {
-      params = params.set('defendant_name', defendant_name);
+      this.params = this.params.set('defendant_name', defendant_name);
     }
     if (date_from) {
-      params = params.set('date_from', date_from);
+      this.params = this.params.set('date_from', date_from);
     }
     if (date_to) {
-      params = params.set('date_to', date_to);
+      this.params = this.params.set('date_to', date_to);
     }
     if (event_text_contains) {
-      params = params.set('event_text_contains', event_text_contains);
+      this.params = this.params.set('event_text_contains', event_text_contains);
     }
 
-    const options = { params: params };
-    const apiURL = `${ADVANCED_SEARCH_CASE_PATH}`;
+    const options = { params: this.params };
+    const apiURL = ADVANCED_SEARCH_CASE_PATH;
 
     //Make API call out to advanced search case API, return Observable to Case Component, catch any errors and pass to ErrorHandler service
     return this.http.get<CaseData[]>(apiURL, options).pipe(
@@ -74,5 +75,9 @@ export class CaseService {
         return throwError(() => err);
       })
     );
+  }
+
+  public getHttpParams(): HttpParams {
+    return this.params;
   }
 }

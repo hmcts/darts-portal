@@ -92,59 +92,62 @@ router.get('/{caseId}', (req, res) => {
 
 // Advanced search stub API
 router.get('/search', (req, res) => {
-  console.log('hitting stub');
-  console.log(req.query);
-
-  //Response codes not sent properly due to 504 proxy error gateway timeout, test with stg or local darts-api
   switch (req.query.case_number) {
-    case '501':
-      res.status(100).send('TOO_MANY_RESULTS');
+    case 'CASE_100':
+      const resBody100 = {
+        type: 'CASE_100',
+        title: 'Too many results have been returned. Please change search criteria.',
+        status: 400,
+      };
+      res.status(400).send(resBody100);
       break;
-    case 'INVALID_REQUEST':
-      res.status(103).send('INVALID_REQUEST');
+    case 'CASE_101':
+      const resBody101 = {
+        type: 'CASE_101',
+        title: 'No search criteria has been specified, please add at least 1 criteria to search for.',
+        status: 400,
+      };
+      res.status(400).send(resBody101);
       break;
-    case '0':
-      res.status(104).send('CASE_NOT_FOUND');
+    case 'CASE_102':
+      const resBody102 = {
+        type: 'CASE_102',
+        title: 'Search criteria is too broad, please add at least 1 more criteria to search for.',
+        status: 400,
+      };
+      res.status(400).send(resBody102);
       break;
-    case 'INVALID_COURTHOUSE':
-      res.status(105).send('COURTHOUSE_PROVIDED_DOES_NOT_EXIST');
+    case 'CASE_103':
+      const resBody103 = {
+        type: 'CASE_103',
+        title: 'The request is not valid..',
+        status: 400,
+      };
+      res.status(400).send(resBody103);
+      break;
+    case 'CASE_104':
+      const resBody104 = {
+        type: 'CASE_104',
+        title: 'The requested case cannot be found',
+        status: 404,
+      };
+      res.status(400).send(resBody104);
+      break;
+    case 'CASE_105':
+      const resBody105 = {
+        type: 'CASE_105',
+        title: 'Provided courthouse does not exist',
+        status: 400,
+      };
+      res.status(400).send(resBody105);
+      break;
+    case 'SINGLE':
+      res.status(200).send([multipleCases[0]]);
       break;
     default:
-      res.send(multipleCases);
+      res.status(200).send(multipleCases);
       break;
   }
 });
-
-//case api error returns
-// TOO_MANY_RESULTS(
-// "100",
-// HttpStatus.BAD_REQUEST,
-// "Too many results have been returned. Please change search criteria."
-// ),
-// NO_CRITERIA_SPECIFIED(
-// "101",
-// HttpStatus.BAD_REQUEST,
-// "No search criteria has been specified, please add at least 1 criteria to search for."
-// ),
-// CRITERIA_TOO_BROAD(
-// "102",
-// HttpStatus.BAD_REQUEST,
-// "Search criteria is too broad, please add at least 1 more criteria to search for."
-// ),
-// INVALID_REQUEST(
-// "103",
-// HttpStatus.BAD_REQUEST,
-// "The request is not valid.."
-// ),
-// CASE_NOT_FOUND(
-// "104",
-// HttpStatus.NOT_FOUND,
-// "The requested case cannot be found"
-// ),
-// COURTHOUSE_PROVIDED_DOES_NOT_EXIST(
-// "105",
-// HttpStatus.BAD_REQUEST,
-// "Provided courthouse does not exist"
-// );
 
 module.exports = router;
