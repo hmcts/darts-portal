@@ -6,3 +6,482 @@
 .ds_datepicker {
   box-sizing: border-box;
 }
+
+/*------------------------------------*\
+    DS Components
+\*------------------------------------*/
+.ds_link,
+a {
+  color: #1d70b8;
+  text-decoration: underline;
+  outline: 0 solid transparent;
+  text-underline-offset: 1px;
+  /* // transition: color .2s,background-color .2s,outline-color .2s */
+}
+
+.visually-hidden {
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  overflow: hidden;
+  position: absolute !important;
+  width: 1px;
+}
+
+.fully-hidden {
+  display: none !important;
+}
+
+.ds_hint-text {
+  color: #727272;
+  margin-bottom: 16px;
+}
+
+.ds_label {
+  color: #333;
+  display: inline-block;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.ds_input {
+  border: 2px solid #0b0c0c;
+  border-radius: 0;
+  display: block;
+  margin-bottom: 24px;
+  /*min-height: 40px;*/
+  padding: 5px;
+  width: 100%;
+}
+
+.ds_input--error {
+  border-color: #d4351c;
+}
+
+.ds_input:focus {
+  border: 2px solid #0b0c0c;
+  outline: 2px solid #ffdd00;
+  outline-offset: 0;
+  box-shadow: inset 0 0 0 2px;
+}
+
+.ds_input--fixed-10 {
+  max-width: calc(16px + 10em);
+}
+
+.ds_input__wrapper {
+  display: block;
+  margin-bottom: 24px;
+  overflow: auto;
+}
+
+.ds_input__wrapper .ds_input {
+  float: left;
+  margin-bottom: 0;
+  margin-right: -40px;
+  padding-right: 56px;
+}
+
+.ds_input__wrapper .ds_icon {
+  height: 32px;
+  padding: 8px;
+  width: 32px;
+}
+
+.ds_input__wrapper > .ds_button {
+  margin: 0;
+  min-height: 40px;
+  min-width: 40px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.ds_input__wrapper > .ds_button > .ds_icon {
+  height: 32px;
+  padding: 4px;
+  width: 32px;
+}
+
+@supports (display: flex) {
+  .ds_input__wrapper {
+    display: flex;
+    overflow: visible;
+  }
+}
+
+.ds_button {
+  /*font-size: .875rem;*/
+  min-height: 40px;
+  min-width: 56px;
+  padding: 8px;
+  background: #1d70b8;
+  border: 0;
+  border-radius: 0;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 700;
+  line-height: 24px;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  /* // transition: background-color .2s; */
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .ds_button {
+    /*font-size:1rem;*/
+    line-height: 1.5;
+  }
+}
+
+.ds_button > .ds_icon {
+  height: 40px;
+  padding: 8px;
+  width: 40px;
+}
+
+@media (min-width: 768px) {
+  .ds_button {
+    margin-top: 2rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .ds_button {
+    margin-bottom: 2rem;
+  }
+}
+
+.ds_button:focus {
+  background-color: #ffdd00;
+  box-shadow: 0 3px #333;
+  color: #333;
+  outline: 0;
+  /* // transition-duration: 0s */
+}
+
+.ds_button--select {
+  background-color: #00703c;
+}
+
+.ds_button--cancel {
+  background-color: transparent;
+  color: #1d70b8;
+  text-decoration: underline;
+  /*outline: 2px solid currentColor;*/
+  /*outline-offset: -2px*/
+}
+
+.ds_button--small {
+  font-size: 0.875rem;
+  line-height: 1.7142857143;
+  min-height: 48px;
+  min-width: 48px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+@media (min-width: 768px) {
+  .ds_button--small {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+}
+
+.ds_button .ds_icon {
+  bottom: 0;
+  box-sizing: content-box;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+/*------------------------------------*\
+    DS Date-Picker
+\*------------------------------------*/
+
+.ds_datepicker {
+  position: relative;
+}
+
+.ds_datepicker__dialog {
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.15);
+  background-color: #fff;
+  clear: both;
+  display: none;
+  padding: 8px;
+  outline: 1px solid #b3b3b3;
+  outline-offset: -1px;
+  position: static;
+  top: 0;
+  transition: background-color 0.2s, outline-color 0.2s;
+  width: 296px;
+  z-index: 2;
+}
+
+.ds_datepicker__dialog__header {
+  position: relative;
+  text-align: center;
+}
+
+.ds_datepicker__dialog__header > :nth-child(1) {
+  position: absolute;
+  left: 0;
+  top: -2px;
+}
+
+.ds_datepicker__dialog__header > :nth-child(3) {
+  position: absolute;
+  right: 0;
+  top: -2px;
+}
+
+.ds_datepicker__dialog__title {
+  font-size: 0.875rem;
+  line-height: 1.7142857143;
+  line-height: 2.2857142857;
+  margin: 0 !important;
+  text-transform: uppercase;
+}
+
+@media (min-width: 768px) {
+  .ds_datepicker__dialog__title {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+}
+
+.ds_datepicker__dialog__navbuttons button {
+  background-color: transparent;
+  color: #333 !important;
+  font-weight: 400;
+  min-height: 40px;
+  margin: 0;
+  padding: 4px;
+  min-width: 32px;
+  position: relative;
+  transition: background-color 0.2s, outline-color 0.2s;
+  z-index: 1;
+  outline: 0 !important;
+  display: inline-block;
+}
+
+.ds_datepicker__dialog__navbuttons button:focus {
+  background-color: #ffdd00;
+  box-shadow: inset 0 -3px #333, inset 0 -3px #333;
+  color: #333;
+}
+
+@media screen and (forced-colors: active) and (prefers-contrast: more) {
+  .ds_datepicker__dialog__navbuttons button:focus {
+    outline-color: highlight !important;
+    outline-style: solid !important;
+    outline-width: 2px !important;
+  }
+}
+
+.ds_datepicker__dialog__navbuttons button:hover:not(:focus) {
+  background-color: #d9effc;
+}
+
+.ds_datepicker__dialog__navbuttons button .ds_icon {
+  height: 32px;
+  padding: 0;
+  position: static;
+  width: 24px;
+}
+
+.ds_datepicker__dialog__table tbody:focus-within {
+  outline: 2px solid #ffdd00;
+}
+
+.ds_datepicker__dialog__table td {
+  border: 0;
+  margin: 0;
+  outline: 0;
+  padding: 0;
+}
+
+.ds_datepicker__dialog__table th {
+  font-size: 0.875rem;
+  line-height: 1.7142857143;
+  color: #727272;
+  font-weight: 400;
+}
+
+@media (min-width: 768px) {
+  .ds_datepicker__dialog__table th {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+}
+
+.ds_datepicker__dialog__table button {
+  background-color: transparent;
+  border-width: 0;
+  color: #333;
+  font-weight: 400;
+  min-height: 40px;
+  margin: 0;
+  padding: 0;
+  min-width: 40px;
+  font-size: 0.875rem;
+  line-height: 1.7142857143;
+  display: block;
+  position: relative;
+  transition: background-color 0.2s, outline-color 0.2s;
+  z-index: 1;
+  outline: 0 !important;
+}
+
+@media (min-width: 768px) {
+  .ds_datepicker__dialog__table button {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+}
+
+.ds_datepicker__dialog__table button:focus {
+  background-color: #ffdd00;
+  box-shadow: inset 0 -3px #333, inset 0 -3px #333;
+  color: #333;
+}
+
+@media screen and (forced-colors: active) and (prefers-contrast: more) {
+  .ds_datepicker__dialog__table button:focus {
+    outline-color: highlight !important;
+    outline-style: solid !important;
+    outline-width: 2px !important;
+  }
+}
+
+.ds_datepicker__dialog__table button:hover:not(:focus) {
+  background-color: #d9effc;
+}
+
+.ds_datepicker__dialog__table button[disabled='true'] {
+  background-color: #ebebeb;
+  color: #333;
+}
+
+.ds_datepicker__dialog__table button.ds_datepicker__current {
+  outline: 2px solid #333 !important;
+  outline-offset: -2px;
+}
+
+.ds_datepicker__dialog__table button.ds_datepicker__current[tabindex='-1'] {
+  background: #f8f8f8;
+  color: currentColor;
+}
+
+.ds_datepicker__dialog__table button.ds_datepicker__today {
+  font-weight: 700;
+}
+
+.ds_datepicker__dialog__table button.ds_datepicker__today::after {
+  background-color: currentColor;
+  border-radius: 4px;
+  bottom: 6px;
+  content: '';
+  height: 4px;
+  left: 50%;
+  margin-left: -2px;
+  position: absolute;
+  width: 4px;
+}
+
+.ds_datepicker__dialog__table button.ds_selected:not(:focus) {
+  background-color: #333;
+  color: #fff;
+}
+
+.ds_datepicker__dialog__table-caption {
+  /*font-size: .75rem;*/
+  caption-side: bottom;
+  line-height: 2;
+  margin-top: 8px;
+}
+
+@media (min-width: 768px) {
+  .ds_datepicker__dialog__table-caption {
+    font-size: 0.875rem;
+    line-height: 1.7142857143;
+  }
+}
+
+.ds_datepicker__dialog__buttongroup {
+  margin-right: -8px;
+  overflow: hidden;
+  overflow: visible;
+}
+
+.ds_datepicker__dialog__buttongroup > * {
+  margin-right: 8px;
+}
+
+@supports (display: grid) {
+  .ds_datepicker__dialog__buttongroup {
+    display: grid;
+    grid-gap: 0 8px;
+    margin-right: 0;
+    overflow: visible;
+  }
+
+  .ds_datepicker__dialog__buttongroup > * {
+    margin-left: 0;
+    margin-right: 0;
+    width: auto !important;
+  }
+}
+
+.ds_datepicker__dialog__buttongroup button {
+  width: calc(100% * 0.5 - 8px);
+  display: block;
+  float: left;
+  margin: 0;
+}
+
+@supports (display: grid) {
+  .ds_datepicker__dialog__buttongroup {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 768px) {
+  .ds_datepicker__dialog {
+    position: absolute;
+  }
+
+  .ds_datepicker__dialog__title {
+    line-height: 1.5;
+    padding: 8px 0;
+  }
+
+  .ds_datepicker__dialog__header > :nth-child(1) {
+    top: 0;
+  }
+
+  .ds_datepicker__dialog__header > :nth-child(3) {
+    top: 0;
+  }
+
+  .ds_datepicker__dialog__table th {
+    line-height: 2;
+  }
+
+  .ds_datepicker__dialog__table-caption {
+    line-height: 2.2857142857;
+  }
+}
+
+.ds_icon {
+  fill: currentColor;
+  height: 1.5em;
+  vertical-align: middle;
+  width: 1.5em;
+}
