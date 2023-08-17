@@ -3,6 +3,11 @@
   padding-left: 30px;
 }
 
+.input-group-indent-1 {
+  margin-left: 15px;
+  padding-left: 30px;
+}
+
 .ds_datepicker {
   box-sizing: border-box;
 }

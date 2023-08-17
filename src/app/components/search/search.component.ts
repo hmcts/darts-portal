@@ -1,49 +1,36 @@
 import { Component } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { initAll as initallAllScotland } from '@scottish-government/pattern-library/src/all';
+import { FormGroup, FormControl } from '@angular/forms';
+
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css'],
 })
 export class SearchComponent {
-  constructor(public fb: FormBuilder) {}
+  dateInputType!: 'specific' | 'range';
 
-  specificShow: boolean = false;
-  rangeShow: boolean = false;
-  /*########### Template Driven Form ###########*/
-  searchForm = this.fb.group({
-    property: 'example',
+  form = new FormGroup({
+    searchText: new FormControl(),
+    courthouseText: new FormControl(),
+    courtroomText: new FormControl(),
+    defendantNameText: new FormControl(),
+    judgeNameText: new FormControl(),
+    keywordsText: new FormControl(),
   });
+
   // Submit Registration Form
   onSubmit() {
-    alert(JSON.stringify(this.searchForm.value));
+    alert(JSON.stringify(this.form.value));
   }
 
-  onItemChange(type: String, evt: any) {
-    console.log('type', type);
-    console.log(' Event checked is : ', evt.target.checked);
-    if (evt.target) {
-      if (evt.target.checked) {
-        this.toggleRadioSelected(true, type);
-      } else {
-        this.toggleRadioSelected(false, type);
-      }
-    }
+  toggleRadioSelected(type: 'specific' | 'range') {
+    this.dateInputType = type;
+    setTimeout(initallAllScotland, 0);
   }
 
-  toggleRadioSelected(selected: boolean, type: String) {
-    if (type == 'specific') {
-      //Show specific datepicker
-      this.specificShow = selected;
-      this.rangeShow = false;
-      setTimeout(initallAllScotland, 0);
-    }
-    if (type == 'range') {
-      //show range datepickers
-      this.rangeShow = selected;
-      this.specificShow = false;
-      setTimeout(initallAllScotland, 0);
-    }
+  clearSearch() {
+    this.form.reset();
   }
 }
