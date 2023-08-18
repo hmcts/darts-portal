@@ -64,62 +64,7 @@
     </header>
     <div id="darts-container" class="govuk-width-container">
       <!-- Azure API -->
-      <!-- <div id="api"></div> -->
-
-      <!-- start of mock Azure API -->
-      <div id="api" data-name="Unified">
-        <div class="heading">
-          <h1 role="heading">Sign in to the DARTS portal</h1>
-        </div>
-        <form id="localAccountForm" action="JavaScript:void(0);" class="localAccount" aria-label="">
-          <div class="intro">
-            <h2 aria-level="1">
-
-            </h2>
-          </div>
-          <div class="error pageLevel" aria-hidden="true" role="alert" style="display: none;">
-            <p></p>
-          </div>
-          <div class="entry">
-            <div class="entry-item">
-              <label for="email">
-                Enter your email
-              </label>
-              <div class="error itemLevel" aria-hidden="true" role="alert" style="display: none;">
-                <p></p>
-              </div>
-              <input type="email" id="email" name="Enter your email" title="Please enter a valid enter your email" pattern="^[a-zA-Z0-9!#$%&amp;'+^_`{}~-]+(?:\.[a-zA-Z0-9!#$%&amp;'+^_`{}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$" autofocus="" placeholder="Enter your email" aria-label="Enter your email">
-            </div>
-            <div class="entry-item">
-              <div class="password-label">
-                <label for="password">Enter your password</label>
-                <a id="forgotPassword" href="/hmctsdartsb2csbox.onmicrosoft.com/B2C_1_darts_externaluser_signin/api/CombinedSigninAndSignup/forgotPassword?csrf_token=K3kxc09RVVN5M3N6TmVPQm85ODl4MWxkZHBsaXpMY0FDUXd2Q3JFajBPd3RObUlDeGVzL0hFelJJL0VObFZ0NzQ2Qy9sTkdpRytqQnQ5bWxlR1R5VXc9PTsyMDIzLTA4LTEwVDE1OjMwOjA3LjIzMTc0OTlaO0ptZXI4Zk53REd6dDFnTFR2UUtRSUE9PTt7Ik9yY2hlc3RyYXRpb25TdGVwIjoxfQ==&amp;tx=StateProperties=eyJUSUQiOiJhOTJiZjdlMy1mY2UzLTQ3ZDctODM5ZS0wZDY4MmIzOWVhMmYifQ&amp;p=B2C_1_darts_externaluser_signin">Forgotten your password?</a>
-              </div>
-              <div class="error itemLevel" aria-hidden="true" style="display: none;">
-                <p role="alert"></p>
-              </div>
-              <input type="password" id="password" name="Enter your password" placeholder="Enter your password" aria-label="Enter your password" autocomplete="current-password" aria-required="true">
-            </div>
-            <div class="working"></div>
-            <div class="rememberMe">
-              <input id="rememberMe" type="checkbox" name="rememberMe">
-              <label for="rememberMe">Keep me signed in</label>
-            </div>
-
-
-            <div class="buttons">
-              <button id="next" type="submit" form="localAccountForm">Continue</button>
-            </div>
-          </div>
-        </form>
-      </div>
-
-
-
-
-      <!-- end of mock Azure API -->
-
-
+      <div id="api"></div>
 
       {% if screen === 'loginScreen' %}
         <p id="outroText" class="outro">
