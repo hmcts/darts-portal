@@ -370,7 +370,7 @@ $ds_breakpoints: (
 }
 
 @mixin ds_colwidth($columns: 1, $total: 12, $gutter: $grid-gap-x) {
-  width: calc(100% * #{$columns/$total} - #{$gutter});
+  width: calc(100% * #{calc($columns / $total)} - #{$gutter});
 }
 
 @mixin ds_layout($gutter: $grid-gap-x, $sub: false) {
