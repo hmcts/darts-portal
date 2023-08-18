@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CaseService } from '../../services/case/case.service';
@@ -15,7 +15,7 @@ export class SearchComponent {
   loaded = false;
   errorType = '';
 
-  constructor(private caseService: CaseService, private changeDetectorRef: ChangeDetectorRef) {}
+  constructor(private caseService: CaseService) {}
 
   form = new FormGroup({
     case_number: new FormControl('', Validators.required),

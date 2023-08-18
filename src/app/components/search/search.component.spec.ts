@@ -100,7 +100,6 @@ describe('SearchComponent', () => {
       const dt = component.form.controls['date_to'];
       const date_to = '18/09/2023';
       dt.setValue(date_to);
-      expect(dt.value).toBe(date_to);
       const df = component.form.controls['date_from'];
       const date_from = '19/09/2023';
       df.setValue(date_from);
@@ -114,6 +113,7 @@ describe('SearchComponent', () => {
       expect(cr.value).toBe(courtroom);
       expect(jn.value).toBe(judge_name);
       expect(dn.value).toBe(defendant_name);
+      expect(dt.value).toBe(date_to);
       expect(df.value).toBe(date_from);
       expect(kw.value).toBe(event_text_contains);
 
@@ -138,10 +138,39 @@ describe('SearchComponent', () => {
   describe('#clearSearch', () => {
     it('should clear search text and results', () => {
       const search = component.form.controls['case_number'];
-      search.setValue('search example text');
+      const case_number = '1';
+      search.setValue(case_number);
+      const ch = component.form.controls['courthouse'];
+      const courthouse = 'Reading';
+      ch.setValue(courthouse);
+      const cr = component.form.controls['courtroom'];
+      const courtroom = '2';
+      cr.setValue(courtroom);
+      const jn = component.form.controls['judge_name'];
+      const judge_name = 'Judy';
+      jn.setValue(judge_name);
+      const dn = component.form.controls['defendant_name'];
+      const defendant_name = 'Dave';
+      dn.setValue(defendant_name);
+      const dt = component.form.controls['date_to'];
+      const date_to = '18/09/2023';
+      dt.setValue(date_to);
+      const df = component.form.controls['date_from'];
+      const date_from = '19/09/2023';
+      df.setValue(date_from);
+      const kw = component.form.controls['event_text_contains'];
+      const event_text_contains = 'Keywords';
+      kw.setValue(event_text_contains);
 
       component.clearSearch();
       expect(search.value).toBeFalsy();
+      expect(ch.value).toBeFalsy();
+      expect(cr.value).toBeFalsy();
+      expect(jn.value).toBeFalsy();
+      expect(dn.value).toBeFalsy();
+      expect(dt.value).toBeFalsy();
+      expect(df.value).toBeFalsy();
+      expect(kw.value).toBeFalsy();
       expect(component.cases.length).toBe(0);
     });
   });
