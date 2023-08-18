@@ -1,5 +1,53 @@
-.error {
-  color: #d4351c;
+a {
+  font-family: GDS Transport, arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-decoration: underline
+}
+h2 {
+  font-size: 1.1875rem;
+  font-weight: normal;
+  margin-bottom: 30px;
+}
+.buttons {
+
+}
+.darts-error {
+  border-left: 5px solid #D4351C;
+  padding-left: 15px;
+}
+
+#dedicatedPage {
+  font-family: GDS Transport, arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-decoration: underline
+}
+
+#dedicatedPage:focus {
+  outline: 3px solid transparent;
+  background-color: #fd0;
+  box-shadow: 0 -2px #fd0, 0 4px #0b0c0c;
+  text-decoration: none;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone
+}
+
+#dedicatedPage:link {
+  color: #1d70b8
+}
+
+#dedicatedPage:visited {
+  color: #4c2c92
+}
+
+#dedicatedPage:hover {
+  color: #003078
+}
+
+#dedicatedPage:active,
+#dedicatedPage:focus {
+  color: #0b0c0c
 }
 .entry-item {
   font-size: 1.1875rem;
@@ -7,12 +55,95 @@
 .entry-item:first-child {
 	margin-bottom: 30px;
 }
+
+
+
+#email {
+  font-family: GDS Transport, arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  font-size: 16px;
+  font-size: 1rem;
+  line-height: 1.25;
+  box-sizing: border-box;
+  width: 40%;
+  display: block;
+  margin-top: 5px;
+  height: 40px;
+  height: 2.5rem;
+  border: 2px solid #0b0c0c;
+  border-radius: 0;
+  -webkit-appearance: none;
+  appearance: none
+}
+#email:focus {
+  outline: 3px solid #fd0;
+  outline-offset: 0;
+  box-shadow: inset 0 0 0 2px
+}
+#email:disabled {
+  opacity: .5;
+  color: inherit;
+  background-color: transparent;
+  cursor: not-allowed
+}
+#email[type=number] {
+  -moz-appearance: textfield
+}
+#email--error {
+  border-color: #d4351c
+}
+#email--error:focus {
+  border-color: #0b0c0c
+}
+#email--width-5 {
+  max-width: 11.5em
+}
+#email__wrapper {
+  display: -ms-flexbox;
+  display: flex
+}
+
 #forgotPassword {
-  color: #1d70b8;
-  font-size: 1.1875rem;
-	display: block;
-	margin-top: 25px;
-	margin-bottom: 25px;
+  margin-top: 30px;
+  display: inline-block;
+}
+
+#forgotPassword:focus {
+  outline: 3px solid transparent;
+  background-color: #fd0;
+  box-shadow: 0 -2px #fd0, 0 4px #0b0c0c;
+  text-decoration: none;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone
+}
+
+#forgotPassword:link {
+  color: #1d70b8
+}
+
+#forgotPassword:visited {
+  color: #4c2c92
+}
+
+#forgotPassword:hover {
+  color: #003078
+}
+
+#forgotPassword:active,
+#forgotPassword:focus {
+  outline: 3px solid transparent;
+  background-color: #fd0;
+  box-shadow: 0 -2px #fd0, 0 4px #0b0c0c;
+  text-decoration: none;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone
+}
+
+.govuk-error-summary {
+  margin-top: 25px;
+  margin-bottom: -40px;
 }
 .govuk-footer {
   padding-bottom: 80px;
@@ -20,26 +151,35 @@
 .govuk-width-container {
   font-family: 'GDS Transport';
 }
-h2 {
-  font-size: 1.1875rem;
-  font-weight: normal;
-  margin-bottom: 30px;
-}
 .heading {
   margin-top: 50px;
 }
+
 input::placeholder {
   color: transparent;
 }
 input[type='checkbox'] {
   accent-color: #ffffff;
   background-color: initial;
-  margin-left: 5px;
+  margin-left: -35px;
   line-height: normal;
+  vertical-align: middle;
   width: 25px;
   height: 25px;
   outline: 2px solid;
 }
+
+label[for="checkbox"] {
+  margin-top: 10px;
+  padding-top: 10px;
+}
+
+input:active {
+  border-color: #fd0;
+  outline: 3px solid transparent;
+  box-shadow: inset 0 0 0 1px #fd0
+}
+
 .intro {
   font-size: 1.1875rem;
   margin-bottom: 30px;
@@ -47,14 +187,120 @@ input[type='checkbox'] {
 .localAccount {
   font-size: 1.1875rem;
 }
-#email {
-  display: block;
-  margin-top: 5px;
-  border: 2px solid;
-  font-size: 1rem;
-  width: 45%;
-  height: 30px;
+
+
+
+.buttons #next {
+  font-family: "GDS Transport",arial,sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 500;
+  font-size: 16px;
+  font-size: 1.20rem;
+  line-height: 1.1875;
+  box-sizing: border-box;
+  display: inline-block;
+  position: relative;
+  width: 10%;
+  margin: 20px 0 22px;
+  padding: 6px 5px 6px 5px;
+  border: 2px solid transparent;
+  border-radius: 0;
+  color: #fff;
+  background-color: #00703c;
+  box-shadow: 0 2px 0 #002d18;
+  text-align: center;
+  vertical-align: top;
+  cursor: pointer;
+  -webkit-appearance: none
+
 }
+#next:active,
+#next:hover,
+#next:link,
+#next:visited {
+  color: #fff;
+  text-decoration: none
+}
+#next::-moz-focus-inner {
+  padding: 0;
+  border: 0
+}
+#next:hover {
+  background-color: #005a30
+}
+#next:active {
+  top: 2px
+}
+#next:focus {
+  border-color: #fd0;
+  outline: 3px solid transparent;
+  box-shadow: inset 0 0 0 1px #fd0
+}
+#next:focus:not(:active):not(:hover) {
+  border-color: #fd0;
+  color: #0b0c0c;
+  background-color: #fd0;
+  box-shadow: 0 2px 0 #0b0c0c
+}
+
+#password {
+  font-family: GDS Transport, arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  font-size: 16px;
+  font-size: 1rem;
+  line-height: 1.25;
+  box-sizing: border-box;
+  width: 40%;
+  height: 40px;
+  height: 2.5rem;
+  padding: 5px;
+  border: 2px solid #0b0c0c;
+  border-radius: 0;
+  -webkit-appearance: none;
+  appearance: none
+}
+#password:focus {
+  outline: 3px solid #fd0;
+  outline-offset: 0;
+  box-shadow: inset 0 0 0 2px
+}
+#password:disabled {
+  opacity: .5;
+  color: inherit;
+  background-color: transparent;
+  cursor: not-allowed
+}
+#password[type=number] {
+  -moz-appearance: textfield
+}
+#password--error {
+  border-color: #d4351c
+}
+#password--error:focus {
+  border-color: #0b0c0c
+}
+#password--width-5 {
+  max-width: 11.5em
+}
+#password__wrapper {
+  display: -ms-flexbox;
+  display: flex
+}
+#password__wrapper #email {
+  -ms-flex: 0 1 auto;
+  flex: 0 1 auto
+}
+#password__wrapper #email:focus {
+  z-index: 1
+}
+.password-label {
+  font-size: 1.1875rem;
+}
+
+
 #next {
   font-family: 'GDS Transport';
   margin-top: 40px;
@@ -85,35 +331,36 @@ input[type='checkbox'] {
 .outro a {
   color: #1d70b8;
 }
-#password {
-  border: 2px solid;
-  font-size: 1rem;
-  width: 45%;
-}
 .password-label {
   padding-bottom: 5px;
   font-size: 1.1875rem;
 }
 .rememberMe {
-  display: flex;
-  align-items: normal;
+  cursor: pointer;
+  position: relative;
+  margin-bottom: 20px;
+  margin-top: 35px;
+  margin-left: 37px;
 }
+
 .rememberMe label {
-  margin-left: 5px;
-  padding-bottom: 5px;
-  margin-top: 22px;
+  display: inline-block;
+  padding: 5px;
 }
+
 #rememberMe {
   cursor: pointer;
-  font-size: 1.1875rem;
-  padding-left: 5px;
-  margin-top: 20px;
+  min-height: 0;
+  margin-bottom: 0;
+  float: left;
+  outline: none;
+  -webkit-box-shadow: inset 0px 0px 0px 2px #fff, 0px 0px 0px 2px #000;
+  -moz-box-shadow: inset 0px 0px 0px 2px #fff, 0px 0px 0px 2px #000;
+  box-shadow: inset 0px 0px 0px 2px #fff, 0px 0px 0px 2px #000;
 }
-.govuk-error-summary {
-  margin-top: 25px;
-  margin-bottom: -40px;
-}
-.darts-error {
-  border-left: 5px solid #D4351C;
-  padding-left: 15px;
+
+#rememberMe:focus {
+  -webkit-box-shadow: inset 0px 0px 0px 2px #fff, 0px 0px 0px 2px #000, 0px 0px 0px 5px #fd0;
+  -moz-box-shadow: inset 0px 0px 0px 2px #fff, 0px 0px 0px 2px #000, 0px 0px 0px 5px #fd0;
+  box-shadow: inset 0px 0px 0px 2px #fff, 0px 0px 0px 2px #000, 0px 0px 0px 5px #fd0;
 }

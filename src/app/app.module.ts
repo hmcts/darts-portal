@@ -18,6 +18,7 @@ import { AppConfigService } from './services/app-config/app-config.service';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './components/login/login.component';
 import { SearchComponent } from './components/search/search.component';
+import { ResultsComponent } from './components/search/results/results.component';
 
 export function initAppFn(envService: AppConfigService) {
   return () => envService.loadAppConfig();
@@ -36,6 +37,7 @@ export function initAppFn(envService: AppConfigService) {
     TranscriptionsComponent,
     LoginComponent,
     SearchComponent,
+    ResultsComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule, MatIconModule, HttpClientModule, FormsModule],
   providers: [
