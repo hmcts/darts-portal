@@ -105,16 +105,9 @@ h2 {
   display: flex
 }
 
-
 #forgotPassword {
-  font-family: GDS Transport, arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-decoration: underline;
-  padding-top: 20px;
-  display: block;
-  margin-top: -65px;
-  transform: translateY(110px);
+  margin-top: 30px;
+  display: inline-block;
 }
 
 #forgotPassword:focus {
@@ -263,7 +256,6 @@ input:active {
   width: 40%;
   height: 40px;
   height: 2.5rem;
-  margin-top: 20px;
   padding: 5px;
   border: 2px solid #0b0c0c;
   border-radius: 0;
@@ -346,30 +338,29 @@ input:active {
 .rememberMe {
   cursor: pointer;
   position: relative;
-  z-index: 3;
-  top: 85px;
-  left: 35px;
-  height: 140px;
-  margin: 0;
-  opacity: 100
+  margin-bottom: 20px;
+  margin-top: 35px;
+  margin-left: 37px;
 }
 
 .rememberMe label {
-  margin-top:80px;
+  display: inline-block;
+  padding: 5px;
 }
+
 #rememberMe {
   cursor: pointer;
   min-height: 0;
   margin-bottom: 0;
-  padding-left: 34px;
-  float: left
+  float: left;
+  outline: none;
+  -webkit-box-shadow: inset 0px 0px 0px 2px #fff, 0px 0px 0px 2px #000;
+  -moz-box-shadow: inset 0px 0px 0px 2px #fff, 0px 0px 0px 2px #000;
+  box-shadow: inset 0px 0px 0px 2px #fff, 0px 0px 0px 2px #000;
 }
 
-#rememberMe--small #rememberMe__item:hover #rememberMe__input:focus+#rememberMe__label:before {
-  box-shadow: 0 0 0 3px #fd0, 0 0 0 10px #b1b4b6
+#rememberMe:focus {
+  -webkit-box-shadow: inset 0px 0px 0px 2px #fff, 0px 0px 0px 2px #000, 0px 0px 0px 5px #fd0;
+  -moz-box-shadow: inset 0px 0px 0px 2px #fff, 0px 0px 0px 2px #000, 0px 0px 0px 5px #fd0;
+  box-shadow: inset 0px 0px 0px 2px #fff, 0px 0px 0px 2px #000, 0px 0px 0px 5px #fd0;
 }
-
-
-
-
-
