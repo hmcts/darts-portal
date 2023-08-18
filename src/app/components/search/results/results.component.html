@@ -1,0 +1,56 @@
+<!-- Results -->
+<div>
+  <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
+  <div *ngIf="errorType !== 'CASE_100' && errorType !== 'ok' && loaded">
+    <!-- This will slowly be replaced/updated as more 'cases' are handled -->
+    <h2 class="govuk-heading-m">An error has occurred. Please try again later.</h2>
+  </div>
+  <div *ngIf="errorType === 'CASE_100'">
+    <h2 class="govuk-heading-m">There are more than 500 results</h2>
+    <p class="govuk-body">Refine your search by:</p>
+    <ul class="govuk-list govuk-list--bullet">
+      <li>adding more information to your search</li>
+      <li>using filters to restrict the number of results</li>
+    </ul>
+  </div>
+
+  <!-- No search results returns empty array rather than error code -->
+  <div *ngIf="casesInput.length === 0 && errorType === 'ok' && loaded">
+    <h2 class="govuk-heading-m">No search results</h2>
+    <p class="govuk-body">Review the case number, case reference or court reference you entered and try again.</p>
+  </div>
+  <div *ngIf="casesInput.length > 0 && errorType === 'ok' && loaded">
+    <table class="govuk-table">
+      <caption class="govuk-table__caption govuk-table__caption--m">
+        {{
+          casesInput.length
+        }}
+        {{
+          casesInput.length > 1 ? 'results' : 'result'
+        }}
+      </caption>
+      <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+          <th scope="col" class="govuk-table__header">Case Number</th>
+          <th scope="col" class="govuk-table__header">Courthouse</th>
+          <th scope="col" class="govuk-table__header">Courtroom</th>
+          <th scope="col" class="govuk-table__header">Judge(s)</th>
+          <th scope="col" class="govuk-table__header">Defendant(s)</th>
+          <th scope="col" class="govuk-table__header">Hearing Date</th>
+        </tr>
+      </thead>
+      <tbody class="govuk-table__body">
+        <tr *ngFor="let c of casesInput" class="govuk-table__row">
+          <td class="govuk-table__cell">{{ c.caseNumber }}</td>
+          <td class="govuk-table__cell">{{ c.courthouse }}</td>
+          <td class="govuk-table__cell">{{ getHearingsValue(c, 'courtroom') }}</td>
+          <td class="govuk-table__cell">{{ getNameValue(c.judges) }}</td>
+          <td class="govuk-table__cell">{{ getNameValue(c.defendants) }}</td>
+          <td class="govuk-table__cell">{{ getHearingsValue(c, 'date') }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Pagination to go here-->
+  </div>
+</div>
