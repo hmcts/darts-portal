@@ -19,9 +19,6 @@ describe('SearchComponent', () => {
   let caseService: CaseService;
 
   beforeEach(() => {
-    // const spy = jasmine.createSpyObj('CaseService', {
-    //   getCasesAdvanced: mockCases,
-    // });
     httpClientSpy = jasmine.createSpyObj('HttpClient', ['get']);
     errorHandlerSpy = jasmine.createSpyObj('ErrorHandlerService', ['err']);
     caseService = new CaseService(httpClientSpy, errorHandlerSpy);

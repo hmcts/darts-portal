@@ -78,7 +78,7 @@ describe('CaseService', () => {
   });
 
   describe('#getCase', () => {
-    //TODO
+    //Ticket raised to support this, DMP-774
     //Need fake endpoints to be reachable to test Custom Type responses
     it('should run specific get case function and return 404 response', () => {
       const errorResponse = new HttpErrorResponse({
@@ -105,7 +105,6 @@ describe('CaseService', () => {
       );
     });
 
-    //TODO UPDATE TITLE
     it('should run specific get case function and return mock case', () => {
       spyOn(service, 'getCase').and.returnValue(of(mockCase));
 
