@@ -20,7 +20,7 @@
     <link href="{{hostname}}/assets/stylesheets/govuk-frontend-4.6.0.min.css" rel="stylesheet" />
     {% if screen === 'loginScreen' %}
     <link href="{{hostname}}/assets/stylesheets/login.css" rel="stylesheet" />
-    {% endif %} 
+    {% endif %}
     {% if screen === 'resetPassword' %}
     <link href="{{hostname}}/assets/stylesheets/reset-password.css" rel="stylesheet" />
     {% endif %}
@@ -83,6 +83,7 @@
     <div id="darts-container" class="govuk-width-container">
       <!-- Azure API -->
       <div id="api"></div>
+
       {% if screen === 'loginScreen' %}
         <p id="outroText" class="outro">
           This sign in page is for users who do not work for HMCTS.<br />
