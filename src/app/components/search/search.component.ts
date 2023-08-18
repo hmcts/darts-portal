@@ -32,14 +32,14 @@ export class SearchComponent {
   onSubmit() {
     this.caseService
       .getCasesAdvanced(
-        this.form.get('case_number')?.value,
-        this.form.get('courthouse')?.value,
-        this.form.get('courtroom')?.value,
-        this.form.get('judge_name')?.value,
-        this.form.get('defendant_name')?.value,
-        this.form.get('date_from')?.value,
-        this.form.get('date_to')?.value,
-        this.form.get('event_text_contains')?.value
+        this.form.get('case_number')?.value || '',
+        this.form.get('courthouse')?.value || '',
+        this.form.get('courtroom')?.value || '',
+        this.form.get('judge_name')?.value || '',
+        this.form.get('defendant_name')?.value || '',
+        this.form.get('date_from')?.value || '',
+        this.form.get('date_to')?.value || '',
+        this.form.get('event_text_contains')?.value || ''
       )
       .subscribe(
         (result: CaseData[]) => {

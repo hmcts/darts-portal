@@ -28,14 +28,14 @@ export class CaseService {
 
   //Advanced search API fetching multiple cases
   getCasesAdvanced(
-    case_number?: string | null,
-    courthouse?: string | null,
-    courtroom?: string | null,
-    judge_name?: string | null,
-    defendant_name?: string | null,
-    date_from?: string | null,
-    date_to?: string | null,
-    event_text_contains?: string | null
+    case_number?: string,
+    courthouse?: string,
+    courtroom?: string,
+    judge_name?: string,
+    defendant_name?: string,
+    date_from?: string,
+    date_to?: string,
+    event_text_contains?: string
   ): Observable<CaseData[]> {
     //Process optional parameters to form HttpParams
     this.params = new HttpParams();

@@ -67,7 +67,7 @@ describe('CaseService', () => {
 
       let cases: CaseData[] = [];
       service
-        .getCasesAdvanced('C20220620001', 'Reading', '1', 'Judy', 'Dave', null, null, 'keyword')
+        .getCasesAdvanced('C20220620001', 'Reading', '1', 'Judy', 'Dave', '', '', 'keyword')
         .subscribe((result: CaseData[]) => {
           if (result) {
             cases = cases.concat(result);
