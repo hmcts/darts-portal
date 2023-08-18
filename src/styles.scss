@@ -19,7 +19,6 @@ a {
   text-decoration: underline;
   outline: 0 solid transparent;
   text-underline-offset: 1px;
-  // transition: color .2s,background-color .2s,outline-color .2s
 }
 
 .visually-hidden {
@@ -46,16 +45,6 @@ a {
   margin-bottom: 8px;
 }
 
-.ds_input {
-  border: 2px solid #0b0c0c;
-  border-radius: 0;
-  display: block;
-  margin-bottom: 24px;
-  /*min-height: 40px;*/
-  padding: 5px;
-  width: 100%;
-}
-
 .ds_input--error {
   border-color: #d4351c;
 }
@@ -67,21 +56,10 @@ a {
   box-shadow: inset 0 0 0 2px;
 }
 
-.ds_input--fixed-10 {
-  max-width: calc(16px + 10em);
-}
-
 .ds_input__wrapper {
   display: block;
   margin-bottom: 24px;
   overflow: auto;
-}
-
-.ds_input__wrapper .ds_input {
-  float: left;
-  margin-bottom: 0;
-  margin-right: -40px;
-  padding-right: 56px;
 }
 
 .ds_input__wrapper .ds_icon {
@@ -147,18 +125,6 @@ a {
   width: 40px;
 }
 
-@media (min-width: 768px) {
-  .ds_button {
-    margin-top: 2rem;
-  }
-}
-
-@media (min-width: 768px) {
-  .ds_button {
-    margin-bottom: 2rem;
-  }
-}
-
 .ds_button:focus {
   background-color: #ffdd00;
   box-shadow: 0 3px #333;
@@ -212,21 +178,6 @@ a {
   position: relative;
 }
 
-.ds_datepicker__dialog {
-  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.15);
-  background-color: #fff;
-  clear: both;
-  display: none;
-  padding: 8px;
-  outline: 1px solid #b3b3b3;
-  outline-offset: -1px;
-  position: static;
-  top: 0;
-  transition: background-color 0.2s, outline-color 0.2s;
-  width: 296px;
-  z-index: 2;
-}
-
 .ds_datepicker__dialog__header {
   position: relative;
   text-align: center;
@@ -242,36 +193,6 @@ a {
   position: absolute;
   right: 0;
   top: -2px;
-}
-
-.ds_datepicker__dialog__title {
-  font-size: 0.875rem;
-  line-height: 1.7142857143;
-  line-height: 2.2857142857;
-  margin: 0 !important;
-  text-transform: uppercase;
-}
-
-@media (min-width: 768px) {
-  .ds_datepicker__dialog__title {
-    font-size: 1rem;
-    line-height: 1.5;
-  }
-}
-
-.ds_datepicker__dialog__navbuttons button {
-  background-color: transparent;
-  color: #333 !important;
-  font-weight: 400;
-  min-height: 40px;
-  margin: 0;
-  padding: 4px;
-  min-width: 32px;
-  position: relative;
-  transition: background-color 0.2s, outline-color 0.2s;
-  z-index: 1;
-  outline: 0 !important;
-  display: inline-block;
 }
 
 .ds_datepicker__dialog__navbuttons button:focus {
@@ -308,38 +229,6 @@ a {
   margin: 0;
   outline: 0;
   padding: 0;
-}
-
-.ds_datepicker__dialog__table th {
-  font-size: 0.875rem;
-  line-height: 1.7142857143;
-  color: #727272;
-  font-weight: 400;
-}
-
-@media (min-width: 768px) {
-  .ds_datepicker__dialog__table th {
-    font-size: 1rem;
-    line-height: 1.5;
-  }
-}
-
-.ds_datepicker__dialog__table button {
-  background-color: transparent;
-  border-width: 0;
-  color: #333;
-  font-weight: 400;
-  min-height: 40px;
-  margin: 0;
-  padding: 0;
-  min-width: 40px;
-  font-size: 0.875rem;
-  line-height: 1.7142857143;
-  display: block;
-  position: relative;
-  transition: background-color 0.2s, outline-color 0.2s;
-  z-index: 1;
-  outline: 0 !important;
 }
 
 @media (min-width: 768px) {
@@ -403,28 +292,10 @@ a {
   color: #fff;
 }
 
-.ds_datepicker__dialog__table-caption {
-  /*font-size: .75rem;*/
-  caption-side: bottom;
-  line-height: 2;
-  margin-top: 8px;
-}
-
-@media (min-width: 768px) {
-  .ds_datepicker__dialog__table-caption {
-    font-size: 0.875rem;
-    line-height: 1.7142857143;
-  }
-}
-
 .ds_datepicker__dialog__buttongroup {
   margin-right: -8px;
   overflow: hidden;
   overflow: visible;
-}
-
-.ds_datepicker__dialog__buttongroup > * {
-  margin-right: 8px;
 }
 
 @supports (display: grid) {
@@ -434,19 +305,6 @@ a {
     margin-right: 0;
     overflow: visible;
   }
-
-  .ds_datepicker__dialog__buttongroup > * {
-    margin-left: 0;
-    margin-right: 0;
-    width: auto !important;
-  }
-}
-
-.ds_datepicker__dialog__buttongroup button {
-  width: calc(100% * 0.5 - 8px);
-  display: block;
-  float: left;
-  margin: 0;
 }
 
 @supports (display: grid) {
@@ -456,10 +314,6 @@ a {
 }
 
 @media (min-width: 768px) {
-  .ds_datepicker__dialog {
-    position: absolute;
-  }
-
   .ds_datepicker__dialog__title {
     line-height: 1.5;
     padding: 8px 0;
@@ -475,10 +329,6 @@ a {
 
   .ds_datepicker__dialog__table th {
     line-height: 2;
-  }
-
-  .ds_datepicker__dialog__table-caption {
-    line-height: 2.2857142857;
   }
 }
 
@@ -529,10 +379,6 @@ $ds_breakpoints: (
     margin-right: #{$gutter * -1};
   }
   overflow: hidden;
-
-  > * {
-    margin-right: $gutter;
-  }
 
   @supports (display: grid) {
     display: grid;
@@ -614,14 +460,6 @@ $ds_breakpoints: (
 
   outline: 0 !important;
 
-  // &:focus {
-  //   background-color: #333333;
-  //   box-shadow: inset #{0 * -1} #{0 + 3px * -1} #333333, inset 0 #{0 + 3px * -1} #333333;
-  //   color: #333333;
-
-  //   @include ds_high-contrast-focus;
-  // }
-
   @if $hover {
     &:hover:not(:focus) {
       background-color: #d9effc;
@@ -686,10 +524,6 @@ $ds_breakpoints: (
   position: relative;
   margin-bottom: 24px;
 
-  .ds_input {
-    margin-bottom: 0;
-  }
-
   &__input-wrapper {
     display: flex;
     gap: 1rem;
@@ -732,22 +566,7 @@ $ds_breakpoints: (
     }
 
     &__title {
-      // @mixin ds_small-size($type-grid: 8px) {
-      //   font-size: px-to-rem($small-size);
-      //   line-height: line-height-on-grid($small-size, $grid: $type-grid);
-
-      //   @include ds_media-query(medium) {
-      //     font-size: px-to-rem($small-size--medium);
-      //     line-height: line-height-on-grid($small-size--medium, $grid: $type-grid);
-      //   }
-      // }
-
-      // @include ds_small-size;
-
-      // actual code
       font-size: px-to-rem(14px);
-
-      // end of actual code
       line-height: line-height-on-grid(14px, 2);
       margin: 0 !important;
       text-transform: uppercase;
@@ -778,13 +597,6 @@ $ds_breakpoints: (
     &__table {
       tbody:focus-within {
         outline: 2px solid #fdd522;
-      }
-
-      td {
-        border: 0;
-        margin: 0;
-        outline: 0;
-        padding: 0;
       }
 
       th {
@@ -868,13 +680,6 @@ $ds_breakpoints: (
         grid-template-columns: 1fr 1fr;
       }
     }
-  }
-
-  &__button {
-    @include ds_small-size;
-    @include ds_button-sizing--small;
-
-    align-self: end;
   }
 }
 
