@@ -9,7 +9,9 @@
       Also known as a case reference or court reference. There should be no spaces.
     </div>
     <input
-      formControlName="searchText"
+      formControlName="case_number"
+      required
+      minlength="1"
       class="govuk-input govuk-input--width-10"
       id="case-search"
       name="case-search"
@@ -25,7 +27,7 @@
       <div class="govuk-form-group">
         <label class="govuk-label" for="advanced-case-search"> Courthouse </label>
         <input
-          formControlName="courthouseText"
+          formControlName="courthouse"
           class="govuk-input govuk-input--width-20"
           id="courthouse"
           name="courthouse"
@@ -37,7 +39,7 @@
         <label class="govuk-label" for="advanced-case-search"> Courtroom </label>
         <div id="courtroom-search-hint" class="govuk-hint">For example, 3</div>
         <input
-          formControlName="courtroomText"
+          formControlName="courtroom"
           class="govuk-input govuk-input--width-2"
           id="courtroom-search"
           name="courtroom-search"
@@ -97,7 +99,12 @@
                 <label class="govuk-label govuk-!-font-weight-bold" for="start-date">From</label>
                 <p class="govuk-hint">For example, 31/01/2023.</p>
                 <div class="govuk-input__wrapper">
-                  <input id="range-start-date" type="text" class="govuk-input govuk-input--fixed-10" />
+                  <input
+                    formControlName="date_from"
+                    id="range-start-date"
+                    type="text"
+                    class="govuk-input govuk-input--fixed-10"
+                  />
                 </div>
               </div>
             </div>
@@ -107,7 +114,12 @@
                 <label class="govuk-label govuk-!-font-weight-bold" for="start-date">To</label>
                 <p class="govuk-hint">For example, 31/01/2023.</p>
                 <div class="govuk-input__wrapper">
-                  <input id="range-end-date" type="text" class="govuk-input govuk-input--fixed-10" />
+                  <input
+                    formControlName="date_to"
+                    id="range-end-date"
+                    type="text"
+                    class="govuk-input govuk-input--fixed-10"
+                  />
                 </div>
               </div>
             </div>
@@ -119,7 +131,7 @@
       <div class="govuk-form-group">
         <label class="govuk-label" for="advanced-case-search"> Defendant's name </label>
         <input
-          formControlName="defendantNameText"
+          formControlName="defendant_name"
           class="govuk-input govuk-input--width-20"
           id="defendant"
           name="defendant"
@@ -130,7 +142,7 @@
       <div class="govuk-form-group">
         <label class="govuk-label" for="advanced-case-search"> Judge's name </label>
         <input
-          formControlName="judgeNameText"
+          formControlName="judge_name"
           class="govuk-input govuk-input--width-20"
           id="judge"
           name="judge"
@@ -141,7 +153,7 @@
       <div class="govuk-form-group">
         <label class="govuk-label" for="advanced-case-search"> Keywords </label>
         <input
-          formControlName="keywordsText"
+          formControlName="event_text_contains"
           class="govuk-input govuk-input--width-20"
           id="keywords"
           name="keywords"
@@ -155,3 +167,5 @@
     <a class="govuk-link" href="javascript:void(0)" (click)="clearSearch()">Clear search</a>
   </div>
 </form>
+
+<app-results [casesInput]="cases" [loaded]="loaded" [errorType]="errorType"> </app-results>
