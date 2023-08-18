@@ -366,7 +366,7 @@ $ds_breakpoints: (
 }
 
 @function px-to-rem($px, $base: 16px) {
-  @return (calc($px / $base)) * 1rem;
+  @return calc($px / $base) * 1rem;
 }
 
 @mixin ds_colwidth($columns: 1, $total: 12, $gutter: $grid-gap-x) {
