@@ -9,8 +9,6 @@ import { initAll } from 'govuk-frontend';
 export class ContentComponent implements OnInit {
   public ngOnInit() {
     // initialize javascript for accordion component to enable open/close button
-    setTimeout(() => {
-      initAll();
-    }, 500);
+    setTimeout(() => initAll(), 500);
   }
 }
