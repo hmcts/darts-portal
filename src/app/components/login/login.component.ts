@@ -1,12 +1,15 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { NgIf, NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
+  standalone: true,
+  imports: [NgIf, RouterLink, ReactiveFormsModule, NgClass],
 })
 export class LoginComponent implements OnInit {
   form = new FormGroup({

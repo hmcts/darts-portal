@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css'],
+  standalone: true,
+  imports: [ReactiveFormsModule, NgIf],
 })
 export class SearchComponent {
   dateInputType!: 'specific' | 'range';

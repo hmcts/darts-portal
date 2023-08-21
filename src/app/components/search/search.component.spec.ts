@@ -10,8 +10,7 @@ describe('SearchComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [SearchComponent],
-      imports: [ReactiveFormsModule, FormsModule],
+      imports: [ReactiveFormsModule, FormsModule, SearchComponent],
     });
     fixture = TestBed.createComponent(SearchComponent);
     component = fixture.componentInstance;
