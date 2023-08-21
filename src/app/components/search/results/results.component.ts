@@ -8,7 +8,7 @@ import { DateTimeService } from '../../../services/datetime/datetime.service';
   templateUrl: './results.component.html',
   styleUrls: ['./results.component.css'],
   imports: [NgIf, NgFor],
-  standalone: true
+  standalone: true,
 })
 export class ResultsComponent {
   @Input() casesInput: CaseData[] = [];
