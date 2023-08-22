@@ -4,5 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-inbox',
   templateUrl: './inbox.component.html',
   styleUrls: ['./inbox.component.scss'],
+  standalone: true,
 })
 export class InboxComponent {}

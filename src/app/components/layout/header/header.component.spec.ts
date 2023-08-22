@@ -1,6 +1,5 @@
+import { RouterTestingModule } from '@angular/router/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatIconModule } from '@angular/material/icon';
 import { AppInsightsService } from 'src/app/services/app-insights/app-insights.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 
@@ -18,8 +17,7 @@ describe('HeaderComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [MatIconModule, ReactiveFormsModule],
-      declarations: [HeaderComponent],
+      imports: [RouterTestingModule, HeaderComponent],
       providers: [
         { provide: AppInsightsService, useValue: fakeAppInsightsService },
         { provide: AuthService, useValue: fakeAuthService },

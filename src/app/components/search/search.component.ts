@@ -1,14 +1,18 @@
-import { AfterViewChecked, AfterViewInit, Component } from '@angular/core';
+import { AfterViewChecked, Component } from '@angular/core';
 import { initAll } from '@scottish-government/pattern-library/src/all';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NgIf } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CaseService } from '../../services/case/case.service';
 import { CaseData } from '../../../app/types/case';
+import { ResultsComponent } from './results/results.component';
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css'],
+  standalone: true,
+  imports: [ReactiveFormsModule, NgIf, ResultsComponent],
 })
 export class SearchComponent implements AfterViewChecked {
   dateInputType!: 'specific' | 'range';

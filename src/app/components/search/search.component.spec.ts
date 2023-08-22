@@ -24,8 +24,7 @@ describe('SearchComponent', () => {
     caseService = new CaseService(httpClientSpy, errorHandlerSpy);
 
     TestBed.configureTestingModule({
-      declarations: [SearchComponent, ResultsComponent],
-      imports: [ReactiveFormsModule, FormsModule, HttpClientModule],
+      imports: [ReactiveFormsModule, FormsModule, HttpClientModule, SearchComponent, ResultsComponent],
       providers: [
         { provide: AppInsightsService, useValue: fakeAppInsightsService },
         { provide: CaseService, useValue: caseService },

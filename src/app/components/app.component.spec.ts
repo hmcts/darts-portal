@@ -1,7 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatIconModule } from '@angular/material/icon';
-import { RouterTestingModule } from '@angular/router/testing';
 import { AppInsightsService } from '../services/app-insights/app-insights.service';
 import { AuthService } from '../services/auth/auth.service';
 import { AppComponent } from './app.component';
@@ -16,8 +13,7 @@ describe('AppComponent', () => {
     const fakeAuthService = {};
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, MatIconModule, ReactiveFormsModule],
-      declarations: [AppComponent, HeaderComponent, PhaseBannerComponent, ContentComponent, FooterComponent],
+      imports: [HeaderComponent, PhaseBannerComponent, ContentComponent, FooterComponent, AppComponent],
       providers: [
         { provide: AppInsightsService, useValue: fakeAppInsightsService },
         { provide: AuthService, useValue: fakeAuthService },
