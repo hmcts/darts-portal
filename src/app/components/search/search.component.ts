@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { AfterViewChecked, Component } from '@angular/core';
+import { initAll } from '@scottish-government/pattern-library/src/all';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIf } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -13,7 +14,7 @@ import { ResultsComponent } from './results/results.component';
   standalone: true,
   imports: [ReactiveFormsModule, NgIf, ResultsComponent],
 })
-export class SearchComponent {
+export class SearchComponent implements AfterViewChecked {
   dateInputType!: 'specific' | 'range';
   cases: CaseData[] = [];
   loaded = false;
@@ -64,6 +65,10 @@ export class SearchComponent {
 
   toggleRadioSelected(type: 'specific' | 'range') {
     this.dateInputType = type;
+  }
+
+  ngAfterViewChecked(): void {
+    initAll();
   }
 
   clearSearch() {

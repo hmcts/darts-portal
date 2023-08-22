@@ -16,11 +16,8 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-builders/custom-webpack:browser",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "customWebpackConfig": {
-              "path": "./webpack.config.js"
-            },
             "allowedCommonJsDependencies": ["moment"],
             "outputPath": "dist/darts-portal",
             "index": "src/index.html",
@@ -39,6 +36,11 @@
                 "glob": "**/*",
                 "input": "./node_modules/govuk-frontend/govuk/assets/fonts",
                 "output": "./assets/fonts"
+              },
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@scottish-government/pattern-library/dist/images/icons",
+                "output": "./assets/images/icons"
               }
             ],
             "styles": ["@angular/material/prebuilt-themes/indigo-pink.css", "src/styles.scss"],
@@ -72,7 +74,7 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular-builders/custom-webpack:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
               "browserTarget": "darts-portal:build:production"
@@ -90,11 +92,8 @@
           }
         },
         "test": {
-          "builder": "@angular-builders/custom-webpack:karma",
+          "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "customWebpackConfig": {
-              "path": "./webpack.config.js"
-            },
             "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "tsconfig.spec.json",
             "assets": [
