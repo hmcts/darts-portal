@@ -1,7 +1,3 @@
-/*------------------------------------*\
-    DS Components
-\*------------------------------------*/
-
 .ds_input.ds_input--fixed-10 {
   font-size: 19px;
 }
@@ -103,7 +99,6 @@ a {
   position: relative;
   text-align: center;
   text-decoration: none;
-  // transition: background-color .2s;
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
 }
@@ -125,7 +120,6 @@ a {
   box-shadow: 0 3px #333;
   color: #333;
   outline: 0;
-  // transition-duration: 0s
 }
 
 .ds_button--select {
@@ -332,10 +326,6 @@ a {
   width: 1.5em;
 }
 
-// /*------------------------------------*\
-//     DATE PICKER
-// \*------------------------------------*/
-
 $ds_breakpoints: (
   small: '(min-width: 480px)',
   medium: '(min-width: 768px)',
@@ -388,7 +378,6 @@ $ds_breakpoints: (
 }
 
 @mixin ds_media-query($breakpoint) {
-  // validate param
   @if not map-has-key($ds_breakpoints, $breakpoint) {
     @error 'Breakpoint "#{$breakpoint}" not defined.';
   }
@@ -658,7 +647,6 @@ $ds_breakpoints: (
       @include ds_layout(8px);
       overflow: visible;
 
-      // non-grid
       button {
         @include ds_colwidth(1, 2, 8px);
         display: block;
@@ -685,12 +673,10 @@ $ds_breakpoints: (
 
       &__header {
         > :nth-child(1) {
-          // left: 8px;
           top: 0;
         }
 
         > :nth-child(3) {
-          // right: 8px;
           top: 0;
         }
       }
