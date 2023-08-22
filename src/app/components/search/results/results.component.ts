@@ -1,3 +1,4 @@
+import { NgFor, NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { CaseData } from '../../../../app/types/case';
 import { DateTimeService } from '../../../services/datetime/datetime.service';
@@ -6,6 +7,8 @@ import { DateTimeService } from '../../../services/datetime/datetime.service';
   selector: 'app-results',
   templateUrl: './results.component.html',
   styleUrls: ['./results.component.scss'],
+  imports: [NgIf, NgFor],
+  standalone: true,
 })
 export class ResultsComponent {
   @Input() casesInput: CaseData[] = [];

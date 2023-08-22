@@ -1,8 +1,12 @@
-import { Component, AfterViewInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+
+import { AfterViewChecked, AfterViewInit, Component } from '@angular/core';
+import { initAll } from '@scottish-government/pattern-library/src/all';
+import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NgIf } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CaseService } from '../../services/case/case.service';
 import { CaseData } from '../../../app/types/case';
+import { ResultsComponent } from './results/results.component';
 import { CourthouseData } from '../../../app/types/courthouse';
 import accessibleAutocomplete, { AccessibleAutocompleteProps } from 'accessible-autocomplete';
 
@@ -10,8 +14,10 @@ import accessibleAutocomplete, { AccessibleAutocompleteProps } from 'accessible-
   selector: 'app-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],
+  standalone: true,
+  imports: [ReactiveFormsModule, NgIf, ResultsComponent],
 })
-export class SearchComponent implements AfterViewInit {
+export class SearchComponent implements AfterViewChecked, AfterViewInit {
   dateInputType!: 'specific' | 'range';
   cases: CaseData[] = [];
   courthouses: CourthouseData[] = [];
@@ -104,6 +110,10 @@ export class SearchComponent implements AfterViewInit {
 
   toggleRadioSelected(type: 'specific' | 'range') {
     this.dateInputType = type;
+  }
+
+  ngAfterViewChecked(): void {
+    initAll();
   }
 
   clearSearch() {

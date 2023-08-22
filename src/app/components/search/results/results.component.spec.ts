@@ -9,7 +9,7 @@ describe('ResultsComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ResultsComponent],
+      imports: [ResultsComponent],
     });
     fixture = TestBed.createComponent(ResultsComponent);
     component = fixture.componentInstance;
