@@ -1,0 +1,787 @@
+/*------------------------------------*\
+    DS Components
+\*------------------------------------*/
+
+.ds_input.ds_input--fixed-10 {
+  font-size: 19px;
+}
+
+button {
+  cursor: pointer;
+}
+
+.ds_link,
+a {
+  color: #1d70b8;
+  text-decoration: underline;
+  outline: 0 solid transparent;
+  text-underline-offset: 1px;
+}
+
+.visually-hidden {
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  overflow: hidden;
+  position: absolute !important;
+  width: 1px;
+}
+
+.fully-hidden {
+  display: none !important;
+}
+
+.ds_hint-text {
+  color: #727272;
+  margin-bottom: 16px;
+}
+
+.ds_label {
+  color: #333;
+  display: inline-block;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.ds_input--error {
+  border-color: #d4351c;
+}
+
+.ds_input:focus {
+  border: 2px solid #0b0c0c;
+  outline: 2px solid #ffdd00;
+  outline-offset: 0;
+  box-shadow: inset 0 0 0 2px;
+}
+
+.ds_input__wrapper {
+  display: block;
+  margin-bottom: 24px;
+  overflow: auto;
+}
+
+.ds_input__wrapper .ds_icon {
+  height: 32px;
+  padding: 8px;
+  width: 32px;
+}
+
+.ds_input__wrapper > .ds_button {
+  margin: 0;
+  min-height: 40px;
+  min-width: 40px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.ds_input__wrapper > .ds_button > .ds_icon {
+  height: 32px;
+  padding: 4px;
+  width: 32px;
+}
+
+@supports (display: flex) {
+  .ds_input__wrapper {
+    display: flex;
+    overflow: visible;
+  }
+}
+
+.ds_button {
+  min-height: 40px;
+  min-width: 56px;
+  padding: 8px;
+  background: #1d70b8;
+  border: 0;
+  border-radius: 0;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 700;
+  line-height: 24px;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  // transition: background-color .2s;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .ds_button {
+    line-height: 1.5;
+  }
+}
+
+.ds_button > .ds_icon {
+  height: 40px;
+  padding: 8px;
+  width: 40px;
+}
+
+.ds_button:focus {
+  background-color: #ffdd00;
+  box-shadow: 0 3px #333;
+  color: #333;
+  outline: 0;
+  // transition-duration: 0s
+}
+
+.ds_button--select {
+  background-color: #00703c;
+}
+
+.ds_button--cancel {
+  background-color: transparent;
+  color: #1d70b8;
+  text-decoration: underline;
+}
+
+.ds_button--small {
+  font-size: 0.875rem;
+  line-height: 1.7142857143;
+  min-height: 48px;
+  min-width: 48px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+@media (min-width: 768px) {
+  .ds_button--small {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+}
+
+.ds_button .ds_icon {
+  bottom: 0;
+  box-sizing: content-box;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+/*------------------------------------*\
+    DS Date-Picker
+\*------------------------------------*/
+
+.ds_datepicker {
+  position: relative;
+}
+
+.ds_datepicker__dialog__header {
+  position: relative;
+  text-align: center;
+}
+
+.ds_datepicker__dialog__header > :nth-child(1) {
+  position: absolute;
+  left: 0;
+  top: -2px;
+}
+
+.ds_datepicker__dialog__header > :nth-child(3) {
+  position: absolute;
+  right: 0;
+  top: -2px;
+}
+
+.ds_datepicker__dialog__navbuttons button:focus {
+  background-color: #ffdd00;
+  box-shadow: inset 0 -3px #333, inset 0 -3px #333;
+  color: #333;
+}
+
+@media screen and (forced-colors: active) and (prefers-contrast: more) {
+  .ds_datepicker__dialog__navbuttons button:focus {
+    outline-color: highlight !important;
+    outline-style: solid !important;
+    outline-width: 2px !important;
+  }
+}
+
+.ds_datepicker__dialog__navbuttons button:hover:not(:focus) {
+  background-color: #d9effc;
+}
+
+.ds_datepicker__dialog__navbuttons button .ds_icon {
+  height: 32px;
+  padding: 0;
+  position: static;
+  width: 24px;
+}
+
+.ds_datepicker__dialog__table tbody:focus-within {
+  outline: 2px solid #ffdd00;
+}
+
+.ds_datepicker__dialog__table td {
+  border: 0;
+  margin: 0;
+  outline: 0;
+  padding: 0;
+}
+
+@media (min-width: 768px) {
+  .ds_datepicker__dialog__table button {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+}
+
+.ds_datepicker__dialog__table button:focus {
+  background-color: #ffdd00;
+  box-shadow: inset 0 -3px #333, inset 0 -3px #333;
+  color: #333;
+}
+
+@media screen and (forced-colors: active) and (prefers-contrast: more) {
+  .ds_datepicker__dialog__table button:focus {
+    outline-color: highlight !important;
+    outline-style: solid !important;
+    outline-width: 2px !important;
+  }
+}
+
+.ds_datepicker__dialog__table button:hover:not(:focus) {
+  background-color: #d9effc;
+}
+
+.ds_datepicker__dialog__table button[disabled='true'] {
+  background-color: #ebebeb;
+  color: #333;
+}
+
+.ds_datepicker__dialog__table button.ds_datepicker__current {
+  outline: 2px solid #333 !important;
+  outline-offset: -2px;
+}
+
+.ds_datepicker__dialog__table button.ds_datepicker__current[tabindex='-1'] {
+  background: #f8f8f8;
+  color: currentColor;
+}
+
+.ds_datepicker__dialog__table button.ds_datepicker__today {
+  font-weight: 700;
+}
+
+.ds_datepicker__dialog__table button.ds_datepicker__today::after {
+  background-color: currentColor;
+  border-radius: 4px;
+  bottom: 6px;
+  content: '';
+  height: 4px;
+  left: 50%;
+  margin-left: -2px;
+  position: absolute;
+  width: 4px;
+}
+
+.ds_datepicker__dialog__table button.ds_selected:not(:focus) {
+  background-color: #333;
+  color: #fff;
+}
+
+.ds_datepicker__dialog__buttongroup {
+  margin-right: -8px;
+  overflow: hidden;
+  overflow: visible;
+}
+
+@supports (display: grid) {
+  .ds_datepicker__dialog__buttongroup {
+    display: grid;
+    grid-gap: 0 8px;
+    margin-right: 0;
+    overflow: visible;
+  }
+}
+
+@supports (display: grid) {
+  .ds_datepicker__dialog__buttongroup {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 768px) {
+  .ds_datepicker__dialog__title {
+    line-height: 1.5;
+    padding: 8px 0;
+  }
+
+  .ds_datepicker__dialog__header > :nth-child(1) {
+    top: 0;
+  }
+
+  .ds_datepicker__dialog__header > :nth-child(3) {
+    top: 0;
+  }
+
+  .ds_datepicker__dialog__table th {
+    line-height: 2;
+  }
+}
+
+.ds_icon {
+  fill: currentColor;
+  height: 1.5em;
+  vertical-align: middle;
+  width: 1.5em;
+}
+
+// /*------------------------------------*\
+//     DATE PICKER
+// \*------------------------------------*/
+
+$ds_breakpoints: (
+  small: '(min-width: 480px)',
+  medium: '(min-width: 768px)',
+  large: '(min-width: 992px)',
+  xlarge: '(min-width: 1200px)',
+
+  small-down: '(max-width: 479px)',
+  medium-down: '(max-width: 767px)',
+  large-down: '(max-width: 991px)',
+  small-to-medium: '(min-width: 480px) and (max-width: 767px)',
+  medium-to-large: '(min-width: 768px) and (max-width: 991px)',
+  large-to-xlarge: '(min-width: 992px) and (max-width: 1199px)',
+  xlarge-up: '(min-width: 1200px)',
+
+  medium-portrait: '(min-width: 768px) and (orientation: portrait) and (max-width : 1024px)',
+  medium-landscape: '(min-width: 768px) and (orientation: landscape)  and (max-width : 1024px)',
+) !default;
+
+@function line-height-on-grid($font-size, $line-height: 1.5, $grid: 8px) {
+  @return nearest-grid-size($font-size * $line-height, $grid) / $font-size;
+}
+
+@function px-to-rem($px, $base: 16px) {
+  @return calc($px / $base) * 1rem;
+}
+
+@mixin ds_colwidth($columns: 1, $total: 12, $gutter: $grid-gap-x) {
+  width: calc(100% * #{calc($columns / $total)} - #{$gutter});
+}
+
+@mixin ds_layout($gutter: $grid-gap-x, $sub: false) {
+  @if $sub {
+  } @else {
+    margin-right: #{$gutter * -1};
+  }
+  overflow: hidden;
+
+  @supports (display: grid) {
+    display: grid;
+    grid-gap: 0 $gutter;
+    margin-right: 0;
+    overflow: visible;
+
+    > * {
+      margin-left: 0;
+      margin-right: 0;
+      width: auto !important;
+    }
+  }
+}
+
+@mixin ds_media-query($breakpoint) {
+  // validate param
+  @if not map-has-key($ds_breakpoints, $breakpoint) {
+    @error 'Breakpoint "#{$breakpoint}" not defined.';
+  }
+
+  $condition: map-get($ds_breakpoints, $breakpoint);
+
+  @media #{$condition} {
+    @content;
+  }
+}
+
+@mixin ds_small-size($type-grid: 8px) {
+  font-size: px-to-rem(14px);
+  line-height: line-height-on-grid(14px, $grid: $type-grid);
+
+  @include ds_media-query(medium) {
+    font-size: px-to-rem(16px);
+    line-height: line-height-on-grid(16px, $grid: $type-grid);
+  }
+}
+
+@mixin ds_tiny-size($type-grid: 8px) {
+  font-size: px-to-rem(12px);
+  line-height: line-height-on-grid(12px, $grid: $type-grid);
+
+  @include ds_media-query(medium) {
+    font-size: px-to-rem(14px);
+    line-height: line-height-on-grid(14px, $grid: $type-grid);
+  }
+}
+
+@mixin ds_button-sizing--small($icon: true) {
+  min-height: 48px;
+  min-width: 48px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+
+  @if $icon {
+    > .ds_icon {
+      height: 32px;
+      padding: 8px;
+      width: 32px;
+    }
+  }
+}
+
+@mixin ds_high-contrast-focus($width: 2px) {
+  @media screen and (forced-colors: active) and (prefers-contrast: more) {
+    outline-color: highlight !important;
+    outline-style: solid !important;
+    outline-width: $width !important;
+
+    @content;
+  }
+}
+
+@mixin ds_blocklink($link-selector: null, $hover: true) {
+  display: block;
+  position: relative;
+  transition: background-color 0.2s, outline-color 0.2s;
+  z-index: 1;
+
+  outline: 0 !important;
+
+  @if $hover {
+    &:hover:not(:focus) {
+      background-color: #d9effc;
+    }
+  }
+
+  @if $link-selector {
+    #{$link-selector} {
+      &:focus:hover {
+        text-decoration: none;
+      }
+    }
+
+    @supports (display: grid) {
+      #{$link-selector} {
+        background-color: transparent;
+        outline: none;
+
+        &::after {
+          content: '';
+          height: 100%;
+          left: 0px;
+          position: absolute;
+          top: 0px;
+          width: 100%;
+          z-index: 0;
+
+          @media screen and (forced-colors: active) and (prefers-contrast: more) {
+            content: none;
+          }
+        }
+
+        &:focus {
+          &::after {
+            transition-duration: 0s;
+          }
+        }
+      }
+
+      &:focus-within {
+        background-color: $ds_colour__blocklink-bg--focus !important;
+        box-shadow: inset 0 -3px #333333, inset 0 -3px #333333;
+        transition-duration: 0s;
+
+        #{$link-selector} {
+          &:focus {
+            box-shadow: none;
+            background-color: transparent;
+
+            @include ds_high-contrast-focus;
+          }
+        }
+      }
+    }
+  }
+}
+
+.ds_datepicker {
+  position: relative;
+  margin-bottom: 24px;
+
+  &__input-wrapper {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  &__dialog {
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.15);
+    background-color: #ffffff;
+    clear: both;
+    display: none;
+    padding: 8px;
+    outline: 1px solid #b3b3b3;
+    outline-offset: -1px;
+    position: static;
+    top: 0;
+    transition: background-color 0.2s, outline-color 0.2s;
+    width: 296px;
+    z-index: 2;
+
+    &--open {
+      display: block;
+    }
+
+    &__header {
+      position: relative;
+      text-align: center;
+
+      > :nth-child(1) {
+        position: absolute;
+        left: 0;
+        top: -2px;
+      }
+
+      > :nth-child(3) {
+        position: absolute;
+        right: 0;
+        top: -2px;
+      }
+    }
+
+    &__title {
+      font-size: px-to-rem(14px);
+      line-height: line-height-on-grid(14px, 2);
+      margin: 0 !important;
+      text-transform: uppercase;
+    }
+
+    &__navbuttons {
+      button {
+        background-color: transparent;
+        color: #333333;
+        font-weight: 400;
+        min-height: 40px;
+        margin: 0;
+        padding: 4px;
+        min-width: 32px;
+
+        @include ds_blocklink;
+        display: inline-block;
+
+        .ds_icon {
+          height: 32px;
+          padding: 0;
+          position: static;
+          width: 24px;
+        }
+      }
+    }
+
+    &__table {
+      tbody:focus-within {
+        outline: 2px solid #fdd522;
+      }
+
+      th {
+        @include ds_small-size;
+        color: #727272;
+        font-weight: 400;
+      }
+
+      button {
+        background-color: transparent;
+        border-width: 0;
+        color: #333333;
+        font-weight: 400;
+        min-height: 40px;
+        margin: 0;
+        padding: 0;
+        min-width: 40px;
+
+        @include ds_small-size;
+        @include ds_blocklink;
+
+        &[disabled='true'] {
+          background-color: #ebebeb;
+          color: #333333;
+        }
+
+        &.ds_datepicker__current {
+          $dp-current-outline-width: 2px;
+          outline: $dp-current-outline-width solid #333333 !important;
+          outline-offset: #{$dp-current-outline-width * -1};
+        }
+
+        &.ds_datepicker__current[tabindex='-1'] {
+          background: #f8f8f8;
+          color: currentColor;
+        }
+
+        &.ds_datepicker__today {
+          font-weight: 700;
+
+          &::after {
+            background-color: currentColor;
+            border-radius: 4px;
+            bottom: 6px;
+            content: '';
+            height: 4px;
+            left: 50%;
+            margin-left: -2px;
+            position: absolute;
+            width: 4px;
+          }
+        }
+
+        &.ds_selected:not(:focus) {
+          background-color: #333333;
+          color: #ffffff;
+        }
+      }
+    }
+
+    &__table-caption {
+      @include ds_tiny-size;
+      caption-side: bottom;
+      line-height: 2;
+      margin-top: 8px;
+    }
+
+    &__buttongroup {
+      @include ds_layout(8px);
+      overflow: visible;
+
+      // non-grid
+      button {
+        @include ds_colwidth(1, 2, 8px);
+        display: block;
+        float: left;
+        margin: 0;
+      }
+
+      @supports (display: grid) {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  }
+}
+
+@include ds_media-query(medium) {
+  .ds_datepicker {
+    &__dialog {
+      position: absolute;
+
+      &__title {
+        line-height: line-height-on-grid(16px, 1.5);
+        padding: 8px 0;
+      }
+
+      &__header {
+        > :nth-child(1) {
+          // left: 8px;
+          top: 0;
+        }
+
+        > :nth-child(3) {
+          // right: 8px;
+          top: 0;
+        }
+      }
+
+      &__table th {
+        line-height: line-height-on-grid(16px, 2);
+      }
+
+      &__table-caption {
+        line-height: line-height-on-grid(14px, 2);
+      }
+    }
+  }
+}
+
+.moj-header__navigation-link {
+  text-decoration: none;
+  &:hover {
+    color: govuk-colour('white');
+    cursor: pointer;
+  }
+}
+
+a.govuk-link {
+  cursor: pointer;
+}
+
+.ds_datepicker {
+  box-sizing: border-box;
+}
+
+.ds_input {
+  border: 2px solid #0b0c0c;
+  border-radius: 0;
+  display: block;
+  margin-bottom: 24px;
+  padding: 5px;
+  width: 100%;
+}
+
+.ds_input--error {
+  border-color: #d4351c;
+}
+
+.ds_input:focus {
+  border: 2px solid #0b0c0c;
+  outline: 2px solid #ffdd00;
+  outline-offset: 0;
+  box-shadow: inset 0 0 0 2px;
+}
+
+.ds_input--fixed-10 {
+  max-width: calc(16px + 10em);
+}
+
+.ds_input__wrapper {
+  display: block;
+  margin-bottom: 24px;
+  overflow: auto;
+}
+
+.ds_input__wrapper .ds_input {
+  float: left;
+  margin-bottom: 0;
+  margin-right: -40px;
+  padding-right: 56px;
+}
+
+.ds_input__wrapper .ds_icon {
+  height: 32px;
+  padding: 8px;
+  width: 32px;
+}
+
+.ds_input__wrapper > .ds_button {
+  margin: 0;
+  min-height: 40px;
+  min-width: 40px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.ds_input__wrapper > .ds_button > .ds_icon {
+  height: 32px;
+  padding: 4px;
+  width: 32px;
+}
+
+@supports (display: flex) {
+  .ds_input__wrapper {
+    display: flex;
+    overflow: visible;
+  }
+}

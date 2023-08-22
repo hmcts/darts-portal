@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { initAll as initallAllScotland } from '@scottish-government/pattern-library/src/all';
+import { AfterViewChecked, AfterViewInit, Component } from '@angular/core';
+import { initAll } from '@scottish-government/pattern-library/src/all';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CaseService } from '../../services/case/case.service';
@@ -10,7 +10,7 @@ import { CaseData } from '../../../app/types/case';
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css'],
 })
-export class SearchComponent {
+export class SearchComponent implements AfterViewChecked {
   dateInputType!: 'specific' | 'range';
   cases: CaseData[] = [];
   loaded = false;
@@ -61,7 +61,10 @@ export class SearchComponent {
 
   toggleRadioSelected(type: 'specific' | 'range') {
     this.dateInputType = type;
-    setTimeout(initallAllScotland, 0);
+  }
+
+  ngAfterViewChecked(): void {
+    initAll();
   }
 
   clearSearch() {
