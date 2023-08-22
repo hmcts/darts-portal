@@ -4,4 +4,4 @@ nodejs:
   ingressHost: ${SERVICE_FQDN}
   environment:
     DARTS_API_URL: https://darts-api.staging.platform.hmcts.net
-    DARTS_PORTAL_URL: https://darts-portal.staging.platform.hmcts.net
+    DARTS_PORTAL_URL: https://darts-portal.{{ .Values.global.environment }}.platform.hmcts.net
