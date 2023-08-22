@@ -5,6 +5,7 @@ import { CaseData } from '../../../app/types/case';
 import { TestBed } from '@angular/core/testing';
 import { HttpErrorResponse } from '@angular/common/http';
 import { of, throwError } from 'rxjs';
+import { CourthouseData } from 'src/app/types/courthouse';
 
 describe('CaseService', () => {
   let httpClientSpy: jasmine.SpyObj<HttpClient>;
@@ -12,6 +13,7 @@ describe('CaseService', () => {
   let service: CaseService;
 
   const mockCases: CaseData[] = [];
+  const courthouses: CourthouseData[] = [];
   const mockCase = {} as CaseData;
 
   beforeEach(() => {
@@ -113,6 +115,45 @@ describe('CaseService', () => {
         if (result) {
           cases = result;
           expect(cases).toEqual(mockCase);
+        }
+      });
+    });
+  });
+
+  describe('#getCourthouses', () => {
+    it('should run get courthouses function and return 404 response', () => {
+      const errorResponse = new HttpErrorResponse({
+        error: { code: `some code`, message: `some message.` },
+        status: 404,
+        statusText: 'Not Found',
+      });
+
+      spyOn(service, 'getCourthouses').and.returnValue(throwError(errorResponse));
+
+      let courts: CourthouseData[];
+      service.getCourthouses().subscribe(
+        (result: CourthouseData[]) => {
+          if (result) {
+            courts = result;
+            expect(courts).toBeFalsy();
+          }
+        },
+        (error: HttpErrorResponse) => {
+          if (error.status) {
+            expect(error.status).toEqual(404);
+          }
+        }
+      );
+    });
+
+    it('should run specific get case function and return mock case', () => {
+      spyOn(service, 'getCourthouses').and.returnValue(of(courthouses));
+
+      let courts: CourthouseData[];
+      service.getCourthouses().subscribe((result: CourthouseData[]) => {
+        if (result) {
+          courts = result;
+          expect(courts).toEqual(courthouses);
         }
       });
     });

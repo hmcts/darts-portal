@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import 'govuk-frontend/govuk/all';
 @import '@ministryofjustice/frontend/moj/all';
+@import 'accessible-autocomplete';
 
 .moj-header__navigation-link {
   text-decoration: none;

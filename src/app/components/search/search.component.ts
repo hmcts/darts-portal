@@ -1,17 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CaseService } from '../../services/case/case.service';
 import { CaseData } from '../../../app/types/case';
+import { CourthouseData } from '../../../app/types/courthouse';
+import accessibleAutocomplete, { AccessibleAutocompleteProps } from 'accessible-autocomplete';
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
-  styleUrls: ['./search.component.css'],
+  styleUrls: ['./search.component.scss'],
 })
-export class SearchComponent {
+export class SearchComponent implements AfterViewInit {
   dateInputType!: 'specific' | 'range';
   cases: CaseData[] = [];
+  courthouses: CourthouseData[] = [];
   loaded = false;
   errorType = '';
 
@@ -19,7 +22,6 @@ export class SearchComponent {
 
   form = new FormGroup({
     case_number: new FormControl('', Validators.required),
-    courthouse: new FormControl(),
     courtroom: new FormControl(),
     judge_name: new FormControl(),
     defendant_name: new FormControl(),
@@ -28,12 +30,54 @@ export class SearchComponent {
     date_to: new FormControl(),
   });
 
+  props: AccessibleAutocompleteProps = {
+    id: 'advanced-case-search',
+    source: [],
+    minLength: 1,
+    name: 'courthouse',
+  };
+
+  getCourthouses() {
+    this.caseService.getCourthouses().subscribe(
+      (result: CourthouseData[]) => {
+        if (result) {
+          this.courthouses = result;
+          //Populate autocomplete once returned
+          this.assignAutocompleteProps();
+          accessibleAutocomplete(this.props);
+        }
+      },
+      (error: HttpErrorResponse) => {
+        if (error.error) {
+          this.errorType = error.error.type;
+          this.loaded = true;
+        }
+      }
+    );
+  }
+
+  assignAutocompleteProps() {
+    //Assign element and courthouses from API
+    this.props.element = document.querySelector('#courthouse-autocomplete-container') || undefined;
+    this.props.source = this.returnCourthouseNames(this.courthouses);
+  }
+
+  ngAfterViewInit() {
+    this.getCourthouses();
+  }
+
+  returnCourthouseNames(courthouses: CourthouseData[]) {
+    return courthouses.map(function (court) {
+      return court.courthouse_name;
+    });
+  }
+
   // Submit Registration Form
   onSubmit() {
     this.caseService
       .getCasesAdvanced(
         this.form.get('case_number')?.value || '',
-        this.form.get('courthouse')?.value || '',
+        (document.querySelector('input[name=courthouse]') as HTMLInputElement).value || '',
         this.form.get('courtroom')?.value || '',
         this.form.get('judge_name')?.value || '',
         this.form.get('defendant_name')?.value || '',
@@ -63,6 +107,7 @@ export class SearchComponent {
   }
 
   clearSearch() {
+    (document.querySelector("[name='courthouse']") as HTMLInputElement).value = '';
     this.form.reset();
     this.cases = [];
     this.loaded = false;

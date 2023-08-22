@@ -4,7 +4,9 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ErrorHandlerService } from '../error/error-handler.service';
 import { CaseData } from '../../../app/types/case';
+import { CourthouseData } from '../../../app/types/courthouse';
 
+const GET_COURTHOUSES_PATH = '/api/courthouses';
 const GET_CASE_PATH = '/api/cases/';
 const ADVANCED_SEARCH_CASE_PATH = '/api/cases/search';
 
@@ -14,6 +16,17 @@ const ADVANCED_SEARCH_CASE_PATH = '/api/cases/search';
 export class CaseService {
   constructor(private readonly http: HttpClient, private ErrorHandler: ErrorHandlerService) {}
   private params: HttpParams = new HttpParams();
+
+  //Fetches all courthouses
+  getCourthouses(): Observable<CourthouseData[]> {
+    const apiURL = GET_COURTHOUSES_PATH;
+    return this.http.get<CourthouseData[]>(apiURL).pipe(
+      catchError((err: Error) => {
+        this.ErrorHandler.handleError(err);
+        return throwError(() => err);
+      })
+    );
+  }
 
   //Single get case API
   getCase(caseId: string | number): Observable<CaseData> {

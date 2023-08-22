@@ -126,6 +126,8 @@ const courthouses = [
 ];
 
 // Advanced search stub API
-router.get('/search', (req, res) => {
+router.get('', (req, res) => {
   res.send(courthouses);
 });
+
+module.exports = router;
