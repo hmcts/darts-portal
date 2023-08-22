@@ -8,7 +8,7 @@ describe('InboxComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [InboxComponent],
+      imports: [InboxComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(InboxComponent);

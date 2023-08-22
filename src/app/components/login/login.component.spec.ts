@@ -21,12 +21,11 @@ describe('LoginComponent', () => {
     } as Window;
 
     TestBed.configureTestingModule({
-      declarations: [LoginComponent],
       providers: [
         { provide: AuthService, useValue: fakeAuthService },
         { provide: 'Window', useValue: window },
       ],
-      imports: [ReactiveFormsModule],
+      imports: [ReactiveFormsModule, LoginComponent],
     });
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
