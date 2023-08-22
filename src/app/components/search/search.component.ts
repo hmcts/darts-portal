@@ -1,4 +1,3 @@
-
 import { AfterViewChecked, AfterViewInit, Component } from '@angular/core';
 import { initAll } from '@scottish-government/pattern-library/src/all';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
