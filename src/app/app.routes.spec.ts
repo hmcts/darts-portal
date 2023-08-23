@@ -1,4 +1,4 @@
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Location } from '@angular/common';
 import { Route, Router } from '@angular/router';
@@ -12,8 +12,7 @@ describe('App Routes', () => {
   let mockAuthService: AuthService;
 
   beforeEach(() => {
-
-    mockAuthService = { 'checkAuthenticated': jest.fn() } as unknown as AuthService;
+    mockAuthService = { checkAuthenticated: jest.fn() } as unknown as AuthService;
     jest.spyOn(mockAuthService, 'checkAuthenticated').mockResolvedValue(true);
 
     TestBed.configureTestingModule({

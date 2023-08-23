@@ -12,10 +12,10 @@ describe('AuthService', () => {
 
   beforeEach(() => {
     httpClientSpy = {
-      get: jest.fn()
+      get: jest.fn(),
     } as unknown as HttpClient;
     routerSpy = {
-      'navigateByUrl': jest.fn()
+      navigateByUrl: jest.fn(),
     } as unknown as Router;
     windowSpy = {
       location: {

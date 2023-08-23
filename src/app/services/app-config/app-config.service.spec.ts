@@ -9,7 +9,7 @@ describe('AppConfigService', () => {
 
   beforeEach(() => {
     httpClientSpy = {
-      'get': jest.fn()
+      get: jest.fn(),
     } as unknown as HttpClient;
     appConfigService = new AppConfigService(httpClientSpy);
   });

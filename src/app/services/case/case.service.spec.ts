@@ -18,7 +18,7 @@ describe('CaseService', () => {
       get: jest.fn(),
     } as unknown as HttpClient;
     errorHandlerSpy = {
-      'err': jest.fn()
+      err: jest.fn(),
     } as unknown as ErrorHandlerService;
 
     service = new CaseService(httpClientSpy, errorHandlerSpy);

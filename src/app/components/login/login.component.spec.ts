@@ -11,7 +11,7 @@ describe('LoginComponent', () => {
 
   beforeEach(() => {
     fakeAuthService = {
-      checkAuthenticated: jest.fn().mockReturnValue(true)
+      checkAuthenticated: jest.fn().mockReturnValue(true),
     };
 
     window = {

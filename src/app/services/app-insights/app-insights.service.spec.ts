@@ -15,8 +15,8 @@ describe('AppInsightsService', () => {
 
     appInsightsService.logPageView('TEST_PAGE', 'http://localhost:3000/test-page');
 
-    expect(spy).toBeCalledTimes(1)
-    expect(spy).toBeCalledWith({ name: 'TEST_PAGE', "refUri": "", uri: 'http://localhost:3000/test-page' })
+    expect(spy).toBeCalledTimes(1);
+    expect(spy).toBeCalledWith({ name: 'TEST_PAGE', refUri: '', uri: 'http://localhost:3000/test-page' });
   });
 
   it('logs an event', () => {
@@ -26,7 +26,7 @@ describe('AppInsightsService', () => {
     const eventProps = { caseId: 'CASE1001', eventId: 'TRANSCRIPTION_APPROVED' };
     appInsightsService.logEvent('TEST_EVENT', eventProps);
 
-    expect(spy).toBeCalledTimes(1)
+    expect(spy).toBeCalledTimes(1);
     expect(spy).toBeCalledWith({ name: 'TEST_EVENT' }, eventProps);
   });
 
@@ -37,7 +37,7 @@ describe('AppInsightsService', () => {
     const metricProps = { caseId: 'CASE1001' };
     appInsightsService.logMetric('ACCEPT_TRANSCRIPTION_REQUEST', 60, metricProps);
 
-    expect(spy).toBeCalledTimes(1)
+    expect(spy).toBeCalledTimes(1);
     expect(spy).toBeCalledWith({ name: 'ACCEPT_TRANSCRIPTION_REQUEST', average: 60 }, metricProps);
   });
 
@@ -48,7 +48,7 @@ describe('AppInsightsService', () => {
     const err = new Error('BAD_ERROR');
     appInsightsService.logException(err, 1);
 
-    expect(spy).toBeCalledTimes(1)
+    expect(spy).toBeCalledTimes(1);
     expect(spy).toBeCalledWith({ exception: err, severityLevel: 1 });
   });
 
@@ -59,7 +59,7 @@ describe('AppInsightsService', () => {
     const traceProps = { caseId: 'CASE1001' };
     appInsightsService.logTrace('SOME_TRACE', traceProps);
 
-    expect(spy).toBeCalledTimes(1)
+    expect(spy).toBeCalledTimes(1);
     expect(spy).toBeCalledWith({ message: 'SOME_TRACE' }, traceProps);
   });
 });
