@@ -10,6 +10,11 @@ import { CaseService } from '../../services/case/case.service';
 import { HttpClient } from '@angular/common/http';
 import { ErrorHandlerService } from '../../services/error/error-handler.service';
 
+// Mock the initAll function
+jest.mock('@scottish-government/pattern-library/src/all', () => ({
+  initAll: jest.fn(),
+}));
+
 describe('SearchComponent', () => {
   const fakeAppInsightsService = {};
   let httpClientSpy: HttpClient;
