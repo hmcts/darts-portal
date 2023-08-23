@@ -19,8 +19,7 @@ export class CaseService {
 
   //Fetches all courthouses
   getCourthouses(): Observable<CourthouseData[]> {
-    const apiURL = GET_COURTHOUSES_PATH;
-    return this.http.get<CourthouseData[]>(apiURL).pipe(
+    return this.http.get<CourthouseData[]>(GET_COURTHOUSES_PATH).pipe(
       catchError((err: Error) => {
         this.ErrorHandler.handleError(err);
         return throwError(() => err);
@@ -30,8 +29,7 @@ export class CaseService {
 
   //Single get case API
   getCase(caseId: string | number): Observable<CaseData> {
-    const apiURL = `${GET_CASE_PATH}?caseId=${caseId}`;
-    return this.http.get<CaseData>(apiURL).pipe(
+    return this.http.get<CaseData>(`${GET_CASE_PATH}?caseId=${caseId}`).pipe(
       catchError((err: Error) => {
         this.ErrorHandler.handleError(err);
         return throwError(() => err);

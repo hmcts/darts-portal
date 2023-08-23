@@ -3,20 +3,19 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { SearchComponent } from './search.component';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { AppInsightsService } from '../../services/app-insights/app-insights.service';
 import { ResultsComponent } from './results/results.component';
 import { CaseService } from '../../services/case/case.service';
 import { HttpClient } from '@angular/common/http';
 import { ErrorHandlerService } from '../../services/error/error-handler.service';
 import { CourthouseData } from 'src/app/types/courthouse';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 
 describe('SearchComponent', () => {
   const fakeAppInsightsService = {};
   let httpClientSpy: jasmine.SpyObj<HttpClient>;
   let errorHandlerSpy: jasmine.SpyObj<ErrorHandlerService>;
-  // let courthouses: CourthouseData[] = [];
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
   let caseService: CaseService;
@@ -127,8 +126,6 @@ describe('SearchComponent', () => {
       fixture.debugElement.query(By.css('form')).triggerEventHandler('ngSubmit', null);
       fixture.detectChanges();
 
-      //Can check case data once mock controller is implemented
-
       //HttpParams check in case service
       expect(caseService.getHttpParams().get('case_number')).toBe(case_number);
       expect(caseService.getHttpParams().get('courthouse')).toBe(courthouse);
@@ -213,6 +210,21 @@ describe('SearchComponent', () => {
       expect(component.courthouses).toEqual(courts);
 
       expect(getCourthousesSpy).toHaveBeenCalled();
+    });
+
+    it('should run get courthouses function and return 404 response and errorType should be CASE_TEST and loaded', () => {
+      const errorResponse = new HttpErrorResponse({
+        error: { code: `some code`, message: `some message.`, type: 'type' },
+        status: 404,
+        statusText: 'Not Found',
+      });
+
+      caseService.getCourthouses = jasmine.createSpy().and.returnValue(throwError(() => errorResponse));
+
+      component.getCourthouses();
+
+      expect(component.errorType).toEqual(errorResponse.error.type);
+      expect(component.loaded).toBeTruthy();
     });
   });
 });
