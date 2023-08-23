@@ -13,7 +13,7 @@ describe('HeaderComponent', () => {
   beforeEach(async () => {
     const fakeAppInsightsService = {};
     fakeAuthService = {
-      getAuthenticated: jasmine.createSpy().and.returnValue(true),
+      getAuthenticated: jest.fn(() => true),
     };
 
     await TestBed.configureTestingModule({

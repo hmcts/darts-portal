@@ -11,7 +11,7 @@ describe('LoginComponent', () => {
 
   beforeEach(() => {
     fakeAuthService = {
-      checkAuthenticated: jasmine.createSpy().and.resolveTo(true),
+      checkAuthenticated: jest.fn().mockReturnValue(true)
     };
 
     window = {

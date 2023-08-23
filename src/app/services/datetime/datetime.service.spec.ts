@@ -15,7 +15,7 @@ describe('DatetimeService', () => {
   });
 
   it('should return correct date formats when passing in YYYY-MM-DD', () => {
-    spyOn(service, 'getdddDMMMYYYY').and.callThrough();
+    jest.spyOn(service, 'getdddDMMMYYYY');
 
     const date = service.getdddDMMMYYYY('2023-08-16');
 

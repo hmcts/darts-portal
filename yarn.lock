@@ -7702,6 +7702,7 @@ __metadata:
     redis: ^4.6.7
     rxjs: ~7.8.0
     start-server-and-test: ^2.0.0
+    ts-jest: ^29.1.1
     ts-node: ^10.9.1
     tslib: ^2.3.0
     typescript: ^4.9.5
@@ -15088,7 +15089,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-jest@npm:^29.0.0":
+"ts-jest@npm:^29.0.0, ts-jest@npm:^29.1.1":
   version: 29.1.1
   resolution: "ts-jest@npm:29.1.1"
   dependencies:

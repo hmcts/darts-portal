@@ -4,11 +4,13 @@ import { of } from 'rxjs';
 import { AppConfig, AppConfigService } from './app-config.service';
 
 describe('AppConfigService', () => {
-  let httpClientSpy: jasmine.SpyObj<HttpClient>;
+  let httpClientSpy: HttpClient;
   let appConfigService: AppConfigService;
 
   beforeEach(() => {
-    httpClientSpy = jasmine.createSpyObj('HttpClient', ['get']);
+    httpClientSpy = {
+      'get': jest.fn()
+    } as unknown as HttpClient;
     appConfigService = new AppConfigService(httpClientSpy);
   });
 
@@ -18,7 +20,7 @@ describe('AppConfigService', () => {
 
   it('loads app config', async () => {
     const testData: AppConfig = { appInsightsKey: 'Test Data' };
-    httpClientSpy.get.and.returnValue(of(testData));
+    jest.spyOn(httpClientSpy, 'get').mockReturnValue(of(testData));
     await appConfigService.loadAppConfig();
 
     expect(appConfigService.getAppConfig()).toEqual(testData);
