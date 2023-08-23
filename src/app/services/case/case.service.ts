@@ -56,9 +56,11 @@ export class CaseService {
       this.params = this.params.set('defendant_name', defendant_name);
     }
     if (date_from) {
+      date_from = date_from.split('/').reverse().join('-');
       this.params = this.params.set('date_from', date_from);
     }
     if (date_to) {
+      date_to = date_to.split('/').reverse().join('-');
       this.params = this.params.set('date_to', date_to);
     }
     if (event_text_contains) {
