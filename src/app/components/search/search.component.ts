@@ -1,4 +1,12 @@
-import { AfterViewChecked, AfterViewInit, Component } from '@angular/core';
+import {
+  AfterViewChecked,
+  AfterViewInit,
+  Component,
+  ElementRef,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
 import { initAll } from '@scottish-government/pattern-library/src/all';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIf } from '@angular/common';
@@ -17,6 +25,7 @@ import accessibleAutocomplete, { AccessibleAutocompleteProps } from 'accessible-
   imports: [ReactiveFormsModule, NgIf, ResultsComponent],
 })
 export class SearchComponent implements AfterViewChecked, AfterViewInit {
+  @ViewChild('courthouseAutocomplete', { static: false }) autocomplete!: ElementRef<HTMLElement>;
   dateInputType!: 'specific' | 'range';
   cases: CaseData[] = [];
   courthouses: CourthouseData[] = [];
@@ -63,7 +72,7 @@ export class SearchComponent implements AfterViewChecked, AfterViewInit {
 
   assignAutocompleteProps() {
     //Assign element and courthouses from API
-    this.props.element = document.querySelector('#courthouse-autocomplete-container') || undefined;
+    this.props.element = this.autocomplete.nativeElement as HTMLElement;
     this.props.source = this.returnCourthouseNames(this.courthouses);
   }
 
