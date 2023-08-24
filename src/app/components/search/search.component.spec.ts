@@ -71,9 +71,9 @@ describe('SearchComponent', () => {
 
       fixture.detectChanges();
 
-      let specificDateInput = fixture.debugElement.query(By.css('#specific-date'));
+      const specificDateInput = fixture.debugElement.query(By.css('#specific-date'));
       specificDateInput.triggerEventHandler('change', { target: { value: '23/08/2023' } });
-      let el = specificDateInput.nativeElement;
+      const el = specificDateInput.nativeElement;
 
       fixture.detectChanges();
 
@@ -93,9 +93,9 @@ describe('SearchComponent', () => {
 
       fixture.detectChanges();
 
-      let rangeDateInput = fixture.debugElement.query(By.css('#range-date-to'));
+      const rangeDateInput = fixture.debugElement.query(By.css('#range-date-to'));
       rangeDateInput.triggerEventHandler('change', { target: { value: '23/08/2023' } });
-      let el = rangeDateInput.nativeElement;
+      const el = rangeDateInput.nativeElement;
 
       fixture.detectChanges();
 
