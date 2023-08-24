@@ -3,12 +3,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { SearchComponent } from './search.component';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { AppInsightsService } from '../../services/app-insights/app-insights.service';
 import { ResultsComponent } from './results/results.component';
 import { CaseService } from '../../services/case/case.service';
 import { HttpClient } from '@angular/common/http';
 import { ErrorHandlerService } from '../../services/error/error-handler.service';
+import { CourthouseData } from 'src/app/types/courthouse';
+import { of, throwError } from 'rxjs';
 
 // Mock the initAll function
 jest.mock('@scottish-government/pattern-library/src/all', () => ({
@@ -22,6 +24,11 @@ describe('SearchComponent', () => {
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
   let caseService: CaseService;
+  const courts = [
+    { courthouse_name: 'Reading', id: 0, created_date_time: 'mock' },
+    { courthouse_name: 'Slough', id: 1, created_date_time: 'mock' },
+    { courthouse_name: 'Ascot', id: 2, created_date_time: 'mock' },
+  ] as CourthouseData[];
 
   beforeEach(() => {
     httpClientSpy = {
@@ -31,6 +38,8 @@ describe('SearchComponent', () => {
       err: jest.fn(),
     } as unknown as ErrorHandlerService;
     caseService = new CaseService(httpClientSpy, errorHandlerSpy);
+    //Stub getCourthouses as it runs on load
+    jest.spyOn(caseService, 'getCourthouses').mockReturnValue(of(courts));
 
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, FormsModule, HttpClientModule, SearchComponent, ResultsComponent],
@@ -90,9 +99,10 @@ describe('SearchComponent', () => {
       const search = component.form.controls['case_number'];
       const case_number = '1';
       search.setValue(case_number);
-      const ch = component.form.controls['courthouse'];
       const courthouse = 'Reading';
-      ch.setValue(courthouse);
+      const ch = fixture.debugElement.query(By.css('input[name="courthouse"]'));
+      ch.nativeElement.value = courthouse;
+      ch.nativeElement.dispatchEvent(new Event('input'));
       const cr = component.form.controls['courtroom'];
       const courtroom = '2';
       cr.setValue(courtroom);
@@ -114,7 +124,7 @@ describe('SearchComponent', () => {
 
       //Check form control values
       expect(search.value).toBe(case_number);
-      expect(ch.value).toBe(courthouse);
+      expect(ch.nativeElement.value).toBe(courthouse);
       expect(cr.value).toBe(courtroom);
       expect(jn.value).toBe(judge_name);
       expect(dn.value).toBe(defendant_name);
@@ -124,8 +134,6 @@ describe('SearchComponent', () => {
 
       fixture.debugElement.query(By.css('form')).triggerEventHandler('ngSubmit', null);
       fixture.detectChanges();
-
-      //Can check case data once mock controller is implemented
 
       //HttpParams check in case service
       expect(caseService.getHttpParams().get('case_number')).toBe(case_number);
@@ -145,9 +153,10 @@ describe('SearchComponent', () => {
       const search = component.form.controls['case_number'];
       const case_number = '1';
       search.setValue(case_number);
-      const ch = component.form.controls['courthouse'];
       const courthouse = 'Reading';
-      ch.setValue(courthouse);
+      const ch = fixture.debugElement.query(By.css('input[name="courthouse"]'));
+      ch.nativeElement.value = courthouse;
+      ch.nativeElement.dispatchEvent(new Event('input'));
       const cr = component.form.controls['courtroom'];
       const courtroom = '2';
       cr.setValue(courtroom);
@@ -169,7 +178,7 @@ describe('SearchComponent', () => {
 
       component.clearSearch();
       expect(search.value).toBeFalsy();
-      expect(ch.value).toBeFalsy();
+      expect(ch.nativeElement.value).toBeFalsy();
       expect(cr.value).toBeFalsy();
       expect(jn.value).toBeFalsy();
       expect(dn.value).toBeFalsy();
@@ -177,6 +186,54 @@ describe('SearchComponent', () => {
       expect(df.value).toBeFalsy();
       expect(kw.value).toBeFalsy();
       expect(component.cases.length).toBe(0);
+    });
+  });
+
+  describe('#returnCourthouseNames', () => {
+    it('should return courthouse_name array from object array', () => {
+      const namesArr = component.returnCourthouseNames(courts);
+      const equalArr = ['Reading', 'Slough', 'Ascot'];
+      expect(namesArr).toEqual(equalArr);
+    });
+  });
+
+  describe('#AccessibleAutocompleteProps', () => {
+    it('should have correct default properties', () => {
+      const id = 'advanced-case-search';
+      const minLength = 1;
+      const name = 'courthouse';
+
+      expect(component.props.id).toBe(id);
+      expect(component.props.minLength).toBe(minLength);
+      expect(component.props.name).toBe(name);
+    });
+  });
+
+  describe('#getCourthouses', () => {
+    it('should load courthouses and set autocomplete element', () => {
+      const getCourthousesSpy = jest.spyOn(component, 'getCourthouses');
+      component.ngAfterViewInit();
+
+      expect(component.props.element).toBeTruthy();
+      expect(component.props.source).toBeTruthy();
+      expect(component.courthouses).toEqual(courts);
+
+      expect(getCourthousesSpy).toHaveBeenCalled();
+    });
+
+    it('should run get courthouses function and return 404 response and errorType should be CASE_TEST and loaded', () => {
+      const errorResponse = new HttpErrorResponse({
+        error: { code: `some code`, message: `some message.`, type: 'type' },
+        status: 404,
+        statusText: 'Not Found',
+      });
+
+      caseService.getCourthouses = jest.fn().mockReturnValue(throwError(() => errorResponse));
+
+      component.getCourthouses();
+
+      expect(component.errorType).toEqual(errorResponse.error.type);
+      expect(component.loaded).toBeTruthy();
     });
   });
 });

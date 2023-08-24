@@ -14,6 +14,8 @@ app.set('views', 'darts-api-stub/views');
 
 // stub out external user authentication
 app.use('/external-user', require('./authentication/external'));
+// stub out courthouses api
+app.use('/courthouses', require('./courthouses/courthouses'));
 // stub out certain case APIs
 app.use('/cases', require('./case/case'));
 // proxy non-stubbed routes to the actual API
