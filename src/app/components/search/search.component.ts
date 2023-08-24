@@ -36,17 +36,17 @@ export class SearchComponent implements AfterViewChecked, AfterViewInit {
     date_to: new FormControl(),
   });
 
-  onChange(event: Event, control: string) {
-    const value = (event.target as HTMLInputElement).value;
-    this.form.controls[`${control}`].patchValue(value);
-  }
-
   props: AccessibleAutocompleteProps = {
     id: 'advanced-case-search',
     source: [],
     minLength: 1,
     name: 'courthouse',
   };
+
+  onChange(event: Event, control: string) {
+    const value = (event.target as HTMLInputElement).value;
+    this.form.controls[`${control}`].patchValue(value);
+  }
 
   getCourthouses() {
     this.caseService.getCourthouses().subscribe(
