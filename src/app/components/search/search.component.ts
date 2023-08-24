@@ -43,8 +43,7 @@ export class SearchComponent implements AfterViewChecked, AfterViewInit {
     name: 'courthouse',
   };
 
-  onChange(event: Event, control: string) {
-    const value = (event.target as HTMLInputElement).value;
+  setInputValue(value: string, control: string) {
     this.form.controls[`${control}`].patchValue(value);
   }
 
@@ -115,6 +114,7 @@ export class SearchComponent implements AfterViewChecked, AfterViewInit {
 
   toggleRadioSelected(type: 'specific' | 'range') {
     this.form.controls['date_from'].reset();
+    this.form.controls['date_to'].reset();
     this.dateInputType = type;
   }
 

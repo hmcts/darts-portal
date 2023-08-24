@@ -74,7 +74,7 @@
                   id="specific-date"
                   type="text"
                   class="ds_input ds_input--fixed-10"
-                  (change)="onChange($event, 'date_from')"
+                  (change)="setInputValue($any($event).target.value, 'date_from')"
                 />
               </div>
             </div>
@@ -105,7 +105,7 @@
                     id="range-date-from"
                     type="text"
                     class="ds_input ds_input--fixed-10"
-                    (change)="onChange($event, 'date_from')"
+                    (change)="setInputValue($any($event).target.value, 'date_from')"
                   />
                 </div>
               </div>
@@ -122,7 +122,7 @@
                     name="range-date-to"
                     type="text"
                     class="ds_input ds_input--fixed-10"
-                    (change)="onChange($event, 'date_to')"
+                    (change)="setInputValue($any($event).target.value, 'date_to')"
                   />
                 </div>
               </div>
