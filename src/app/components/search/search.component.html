@@ -51,7 +51,7 @@
           <div class="govuk-radios__item">
             <input
               class="govuk-radios__input"
-              id="specific-date"
+              id="specific-date-radio"
               name="specific-date-radio"
               type="radio"
               [checked]="dateInputType === 'specific'"
@@ -69,7 +69,13 @@
             <div data-module="ds-datepicker" class="ds_datepicker">
               <p class="ds_hint-text">For example, 31/01/2023.</p>
               <div class="ds_input__wrapper">
-                <input id="specific-date" type="text" class="ds_input ds_input--fixed-10" />
+                <input
+                  formControlName="date_from"
+                  id="specific-date"
+                  type="text"
+                  class="ds_input ds_input--fixed-10"
+                  (change)="setInputValue($any($event).target.value, 'date_from')"
+                />
               </div>
             </div>
           </div>
@@ -99,6 +105,7 @@
                     id="range-date-from"
                     type="text"
                     class="ds_input ds_input--fixed-10"
+                    (change)="setInputValue($any($event).target.value, 'date_from')"
                   />
                 </div>
               </div>
@@ -109,7 +116,14 @@
                 <label class="ds_label" for="range-date-to">To</label>
                 <p class="ds_hint-text">For example, 31/01/2023.</p>
                 <div class="ds_input__wrapper">
-                  <input formControlName="date_to" id="range-date-to" type="text" class="ds_input ds_input--fixed-10" />
+                  <input
+                    formControlName="date_to"
+                    id="range-date-to"
+                    name="range-date-to"
+                    type="text"
+                    class="ds_input ds_input--fixed-10"
+                    (change)="setInputValue($any($event).target.value, 'date_to')"
+                  />
                 </div>
               </div>
             </div>

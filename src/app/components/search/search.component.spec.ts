@@ -57,6 +57,52 @@ describe('SearchComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  describe('#assignValue', () => {
+    it('should assign the value from the specific date picker to the input box, for Angular change detection', async () => {
+      const fixture = TestBed.createComponent(SearchComponent);
+      fixture.detectChanges();
+
+      // click on the specific radio button
+      jest.spyOn(component, 'toggleRadioSelected');
+      const radio: HTMLInputElement = fixture.debugElement.query(
+        By.css('input[name="specific-date-radio"]')
+      ).nativeElement;
+      radio.click();
+
+      fixture.detectChanges();
+
+      const specificDateInput = fixture.debugElement.query(By.css('#specific-date'));
+      specificDateInput.triggerEventHandler('change', { target: { value: '23/08/2023' } });
+      const el = specificDateInput.nativeElement;
+
+      fixture.detectChanges();
+
+      expect(el.value).toEqual('23/08/2023');
+    });
+
+    it('should assign the value from the range date picker in the date_to input to the input box, for Angular change detection', async () => {
+      const fixture = TestBed.createComponent(SearchComponent);
+      fixture.detectChanges();
+
+      // click on the range radio button
+      jest.spyOn(component, 'toggleRadioSelected');
+      const radio: HTMLInputElement = fixture.debugElement.query(
+        By.css('input[name="date-range-radio"]')
+      ).nativeElement;
+      radio.click();
+
+      fixture.detectChanges();
+
+      const rangeDateInput = fixture.debugElement.query(By.css('#range-date-to'));
+      rangeDateInput.triggerEventHandler('change', { target: { value: '23/08/2023' } });
+      const el = rangeDateInput.nativeElement;
+
+      fixture.detectChanges();
+
+      expect(el.value).toEqual('23/08/2023');
+    });
+  });
+
   describe('#toggleRadioSelected', () => {
     it('should change visibility of specific datepicker to true, and date range datepicker to false.', fakeAsync(() => {
       jest.spyOn(component, 'toggleRadioSelected');
@@ -64,7 +110,6 @@ describe('SearchComponent', () => {
         By.css('input[name="specific-date-radio"]')
       ).nativeElement;
       radio.click();
-      tick();
 
       expect(component.toggleRadioSelected).toHaveBeenCalled();
       expect(component.dateInputType).toBe('specific');
@@ -141,7 +186,7 @@ describe('SearchComponent', () => {
       expect(caseService.getHttpParams().get('courtroom')).toBe(courtroom);
       expect(caseService.getHttpParams().get('judge_name')).toBe(judge_name);
       expect(caseService.getHttpParams().get('defendant_name')).toBe(defendant_name);
-      expect(caseService.getHttpParams().get('date_to')).toBe(date_to);
+      expect(caseService.getHttpParams().get('date_to')).toBe('2023-09-18');
       expect(caseService.getHttpParams().get('event_text_contains')).toBe(event_text_contains);
 
       expect(component.onSubmit).toHaveBeenCalled();
