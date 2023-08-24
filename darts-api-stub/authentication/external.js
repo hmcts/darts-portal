@@ -22,9 +22,11 @@ router.post('/handle-oauth-code', (_, res) => {
     userName: 'localdev01',
     roles: roles,
   };
+  //Token expires 2034-08-23
   const securityToken = {
     userState: userState,
-    accessToken: 'fake-jwt',
+    accessToken:
+      'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJEYXZpZE1hbm4iLCJpYXQiOjE2OTI4NzQ5MzAsImV4cCI6MjAzOTk0MzczMCwiYXVkIjoiZGFydHMtbG9jYWwtZGV2Iiwic3ViIjoiZGFydHMtbG9jYWwtand0In0.6wJo9geKWacjA-FR67waVRsNuS6uP5X-JJRlTOpwGhI',
   };
   res.send(securityToken);
 });
