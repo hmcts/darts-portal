@@ -23,19 +23,21 @@ Install dependencies by executing the following command:
 yarn install
 ```
 
+To run darts-portal Angular & node.js frontend with [darts-api](https://github.com/hmcts/darts-api):
+
 ```bash
 yarn dev
 ```
 
-The applications's home page will be available at https://localhost:3000.
+The applications's home page will be available at https://localhost:3000. 
 
-This is running both node.js and Angular, if you do not require API calls and you wish to use only Angular you can use the following command:
+Note this is running both node.js and Angular and expects the ([darts-api](https://github.com/hmcts/darts-api)) to also be running locally to function correctly
+
+To run darts-portal with API stub:
 
 ```bash
-yarn dev:ng
+yarn dev:darts-api-stub
 ```
-
-Then, the applications's home page will be available at https://localhost:4200.
 
 ## Build
 
@@ -59,7 +61,7 @@ yarn prettier:fix
 
 ## Running unit/integration tests
 
-Run `yarn test` or `yarn test:watch` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run `yarn test` or `yarn test:watch` to execute the unit tests via [Jest](https://karma-runner.github.io](https://jestjs.io/).
 
 ## Running end-to-end tests
 
@@ -71,6 +73,6 @@ Run `yarn cypress` to open the cypress console, very useful for debugging tests.
 
 Run `yarn ng generate component component-name` to generate a new component. You can also use `yarn ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-Note the requirement for prefixing the `ng` commands with `yarn`, this is because we are using yarn's plug'n'play functionality.
+Note the requirement for prefixing the `ng` commands with `yarn`
 
 
