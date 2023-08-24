@@ -2,30 +2,28 @@ import { HttpClient } from '@angular/common/http';
 import { ErrorHandlerService } from '../../services/error/error-handler.service';
 import { CaseService } from './case.service';
 import { CaseData } from '../../../app/types/case';
-import { TestBed } from '@angular/core/testing';
 import { HttpErrorResponse } from '@angular/common/http';
 import { of, throwError } from 'rxjs';
+import { CourthouseData } from 'src/app/types/courthouse';
 
 describe('CaseService', () => {
-  let httpClientSpy: jasmine.SpyObj<HttpClient>;
-  let errorHandlerSpy: jasmine.SpyObj<ErrorHandlerService>;
+  let httpClientSpy: HttpClient;
+  let errorHandlerSpy: ErrorHandlerService;
   let service: CaseService;
 
   const mockCases: CaseData[] = [];
+  const courthouses: CourthouseData[] = [];
   const mockCase = {} as CaseData;
 
   beforeEach(() => {
-    const spy = jasmine.createSpyObj('CaseService', {
-      getCasesAdvanced: mockCases,
-    });
-    httpClientSpy = jasmine.createSpyObj('HttpClient', ['get']);
-    errorHandlerSpy = jasmine.createSpyObj('ErrorHandlerService', ['err']);
+    httpClientSpy = {
+      get: jest.fn(),
+    } as unknown as HttpClient;
+    errorHandlerSpy = {
+      err: jest.fn(),
+    } as unknown as ErrorHandlerService;
 
     service = new CaseService(httpClientSpy, errorHandlerSpy);
-
-    TestBed.configureTestingModule({
-      providers: [{ provide: CaseService, useValue: spy }],
-    }).compileComponents();
   });
 
   it('should be created', () => {
@@ -34,8 +32,6 @@ describe('CaseService', () => {
 
   //Need to create a mock testing controller to test API properly
   //Raise separate ticket for this
-  //Temporary tests for time being
-
   describe('#getCasesAdvanced', () => {
     //Need fake endpoints to be reachable to test Custom Type responses
     it('should run cases advanced search function and return 404 response', () => {
@@ -45,7 +41,7 @@ describe('CaseService', () => {
         statusText: 'Not Found',
       });
 
-      spyOn(service, 'getCasesAdvanced').and.returnValue(throwError(errorResponse));
+      jest.spyOn(service, 'getCasesAdvanced').mockReturnValue(throwError(() => errorResponse));
 
       let cases: CaseData[] = [];
       service.getCasesAdvanced('zzzz').subscribe(
@@ -55,7 +51,10 @@ describe('CaseService', () => {
           }
         },
         (error: HttpErrorResponse) => {
+          expect(error).toBeTruthy();
           if (error.status) {
+            service['ErrorHandler'].handleError(errorResponse);
+            expect(service['ErrorHandler'].handleError).toHaveBeenCalledWith(errorResponse);
             expect(error.status).toEqual(404);
           }
         }
@@ -63,14 +62,15 @@ describe('CaseService', () => {
     });
 
     it('should run cases advanced search function and return mock case', () => {
-      spyOn(service, 'getCasesAdvanced').and.returnValue(of(mockCases));
+      jest.spyOn(service, 'getCasesAdvanced').mockReturnValue(of(mockCases));
 
       let cases: CaseData[] = [];
       service
         .getCasesAdvanced('C20220620001', 'Reading', '1', 'Judy', 'Dave', '', '', 'keyword')
         .subscribe((result: CaseData[]) => {
           if (result) {
-            cases = cases.concat(result);
+            cases = result;
+            expect(cases).toBeTruthy();
             expect(cases).toEqual(mockCases);
           }
         });
@@ -87,7 +87,7 @@ describe('CaseService', () => {
         statusText: 'Not Found',
       });
 
-      spyOn(service, 'getCase').and.returnValue(throwError(errorResponse));
+      jest.spyOn(service, 'getCase').mockReturnValue(throwError(() => errorResponse));
 
       let cases: CaseData;
       service.getCase('zzzz').subscribe(
@@ -98,7 +98,10 @@ describe('CaseService', () => {
           }
         },
         (error: HttpErrorResponse) => {
+          expect(error).toBeTruthy();
           if (error.status) {
+            service['ErrorHandler'].handleError(errorResponse);
+            expect(service['ErrorHandler'].handleError).toHaveBeenCalledWith(errorResponse);
             expect(error.status).toEqual(404);
           }
         }
@@ -106,13 +109,56 @@ describe('CaseService', () => {
     });
 
     it('should run specific get case function and return mock case', () => {
-      spyOn(service, 'getCase').and.returnValue(of(mockCase));
+      jest.spyOn(service, 'getCase').mockReturnValue(of(mockCase));
 
       let cases: CaseData;
       service.getCase(1).subscribe((result: CaseData) => {
         if (result) {
           cases = result;
+          expect(cases).toBeTruthy();
           expect(cases).toEqual(mockCase);
+        }
+      });
+    });
+  });
+
+  describe('#getCourthouses', () => {
+    it('should run get courthouses function and return 404 response', () => {
+      const errorResponse = new HttpErrorResponse({
+        error: { code: `some code`, message: `some message.` },
+        status: 404,
+        statusText: 'Not Found',
+      });
+
+      jest.spyOn(service, 'getCourthouses').mockReturnValue(throwError(() => errorResponse));
+
+      let courts: CourthouseData[];
+      service.getCourthouses().subscribe(
+        (result: CourthouseData[]) => {
+          if (result) {
+            courts = result;
+            expect(courts).toBeFalsy();
+          }
+        },
+        (error: HttpErrorResponse) => {
+          expect(error).toBeTruthy();
+          if (error.status) {
+            service['ErrorHandler'].handleError(errorResponse);
+            expect(service['ErrorHandler'].handleError).toHaveBeenCalledWith(errorResponse);
+            expect(error.status).toEqual(404);
+          }
+        }
+      );
+    });
+
+    it('should run specific get case function and return mock case', () => {
+      jest.spyOn(service, 'getCourthouses').mockReturnValue(of(courthouses));
+      let courts: CourthouseData[];
+      service.getCourthouses().subscribe((result: CourthouseData[]) => {
+        if (result) {
+          courts = result;
+          expect(courts).toBeTruthy();
+          expect(courts).toEqual(courthouses);
         }
       });
     });

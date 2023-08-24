@@ -1,3 +1,16 @@
 @import 'govuk-frontend/govuk/all';
 @import '@ministryofjustice/frontend/moj/all';
+@import 'accessible-autocomplete';
 @import 'src/assets/datepicker.scss';
+
+.moj-header__navigation-link {
+  text-decoration: none;
+  &:hover {
+    color: govuk-colour('white');
+    cursor: pointer;
+  }
+}
+
+a.govuk-link {
+  cursor: pointer;
+}
