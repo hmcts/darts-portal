@@ -15,13 +15,19 @@ Running the application requires the following tools to be installed in your env
 - [yarn](https://yarnpkg.com/) v3
 - [Docker](https://www.docker.com)
 
-### Running the application
+### Install Dependencies
 
 Install dependencies by executing the following command:
 
 ```bash
-yarn install
+yarn
 ```
+
+### Local Development Strategies
+
+There are three different approaches to develop locally:
+
+## 1. darts-portal with darts-api
 
 To run darts-portal Angular & node.js frontend with [darts-api](https://github.com/hmcts/darts-api):
 
@@ -33,12 +39,20 @@ The applications's home page will be available at https://localhost:3000.
 
 Note this is running both node.js and Angular and expects the ([darts-api](https://github.com/hmcts/darts-api)) to also be running locally to function correctly
 
-## Alternative stub setup
+## 2. darts-portal with stub API
 
-To run darts-portal with API stub:
+To run darts-portal against node.js API stub:
 
 ```bash
 yarn dev:darts-api-stub
+```
+
+## 3. darts-portal with staging API
+
+To run darts-portal against staging API:
+
+```bash
+yarn dev:dev:darts-api-stg
 ```
 
 ## Build
@@ -64,6 +78,8 @@ yarn prettier:fix
 ## Running unit/integration tests
 
 Run `yarn test` or `yarn test:watch` to execute the unit tests via [Jest](https://jestjs.io/).
+
+`--silent` flag reduces noise in console when running tests.
 
 ## Running end-to-end tests
 
