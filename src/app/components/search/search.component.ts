@@ -6,19 +6,23 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { CaseService } from '../../services/case/case.service';
 import { CaseData } from '../../../app/types/case';
 import { ResultsComponent } from './results/results.component';
+import { RouterLink } from "@angular/router";
+//import { error } from ./enums/error.enums.ts;
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css'],
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf, ResultsComponent],
+  imports: [ReactiveFormsModule, NgIf, ResultsComponent, RouterLink],
 })
 export class SearchComponent implements AfterViewChecked {
   dateInputType!: 'specific' | 'range';
   cases: CaseData[] = [];
   loaded = false;
   errorType = '';
+  errors: Array<{field: string, message: string}> = [];
+
 
   constructor(private caseService: CaseService) {}
 
@@ -44,8 +48,10 @@ export class SearchComponent implements AfterViewChecked {
         this.form.get('defendant_name')?.value || '',
         this.form.get('date_from')?.value || '',
         this.form.get('date_to')?.value || '',
-        this.form.get('event_text_contains')?.value || ''
+        this.form.get('event_text_contains')?.value || '',
+
       )
+
       .subscribe(
         (result: CaseData[]) => {
           if (result) {
@@ -59,8 +65,13 @@ export class SearchComponent implements AfterViewChecked {
             this.errorType = error.error.type;
             this.loaded = true;
           }
-        }
+        },
       );
+    if (this.form.get('courthouse')?.value === 'false') {
+      console.log('courthouse is false');
+    } else {
+      console.log('courthouse is true');
+    }
   }
 
   toggleRadioSelected(type: 'specific' | 'range') {
