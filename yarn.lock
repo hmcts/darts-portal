@@ -33,8 +33,8 @@ __metadata:
   linkType: hard
 
 "@angular-builders/custom-webpack@npm:^16.0.0":
-  version: 16.0.0
-  resolution: "@angular-builders/custom-webpack@npm:16.0.0"
+  version: 16.0.1
+  resolution: "@angular-builders/custom-webpack@npm:16.0.1"
   dependencies:
     "@angular-devkit/architect": ">=0.1600.0 < 0.1700.0"
     "@angular-devkit/build-angular": ^16.0.0
@@ -45,7 +45,7 @@ __metadata:
     webpack-merge: ^5.7.3
   peerDependencies:
     "@angular/compiler-cli": ^16.0.0
-  checksum: 6fcc13f76f07823f5dcb49ec4c548210676dfea399287237b751393b31a7e2832756d9b2e6041dec5619b21d06eb4e392765b437c88788d1283c5cb45155c039
+  checksum: de2d6e450fdd563f1632c440c1c311366741b905a0634557a297c881d34e9827a9fa11c35e6a63e6e47bb5ab3a3006468ebc17ee8ebd31540171393891986190
   languageName: node
   linkType: hard
 
