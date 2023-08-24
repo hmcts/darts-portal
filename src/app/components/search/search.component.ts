@@ -22,7 +22,7 @@ export class SearchComponent implements AfterViewChecked {
 
   constructor(private caseService: CaseService) {}
 
-  form = new FormGroup({
+  form: FormGroup = new FormGroup({
     case_number: new FormControl('', Validators.required),
     courthouse: new FormControl(),
     courtroom: new FormControl(),
@@ -32,6 +32,11 @@ export class SearchComponent implements AfterViewChecked {
     date_from: new FormControl(),
     date_to: new FormControl(),
   });
+
+  onChange(event: Event, control: string) {
+    const value = (event.target as HTMLInputElement).value;
+    this.form.controls[`${control}`].patchValue(value);
+  }
 
   // Submit Registration Form
   onSubmit() {
@@ -64,6 +69,7 @@ export class SearchComponent implements AfterViewChecked {
   }
 
   toggleRadioSelected(type: 'specific' | 'range') {
+    this.form.controls['date_from'].reset();
     this.dateInputType = type;
   }
 
