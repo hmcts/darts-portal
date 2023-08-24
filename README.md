@@ -29,9 +29,11 @@ To run darts-portal Angular & node.js frontend with [darts-api](https://github.c
 yarn dev
 ```
 
-The applications's home page will be available at https://localhost:3000. 
+The applications's home page will be available at https://localhost:3000.
 
 Note this is running both node.js and Angular and expects the ([darts-api](https://github.com/hmcts/darts-api)) to also be running locally to function correctly
+
+## Alternative stub setup
 
 To run darts-portal with API stub:
 
@@ -61,7 +63,7 @@ yarn prettier:fix
 
 ## Running unit/integration tests
 
-Run `yarn test` or `yarn test:watch` to execute the unit tests via [Jest](https://karma-runner.github.io](https://jestjs.io/).
+Run `yarn test` or `yarn test:watch` to execute the unit tests via [Jest](https://jestjs.io/).
 
 ## Running end-to-end tests
 
@@ -74,5 +76,3 @@ Run `yarn cypress` to open the cypress console, very useful for debugging tests.
 Run `yarn ng generate component component-name` to generate a new component. You can also use `yarn ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
 Note the requirement for prefixing the `ng` commands with `yarn`
-
-
