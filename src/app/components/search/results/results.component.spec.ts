@@ -22,7 +22,7 @@ describe('ResultsComponent', () => {
 
   describe('#getNameValue', () => {
     it('should return Multiple if there are multiple defendants or judge', () => {
-      spyOn(component, 'getNameValue').and.callThrough();
+      jest.spyOn(component, 'getNameValue');
       const def = ['Defendant 1', 'Defendant 2'];
       const dValue = component.getNameValue(def);
       const judges = ['Judge 1', 'Judge 2'];
@@ -34,7 +34,7 @@ describe('ResultsComponent', () => {
     });
 
     it('should return single name if there is a single defendant or judge', () => {
-      spyOn(component, 'getNameValue').and.callThrough();
+      jest.spyOn(component, 'getNameValue');
       const def = ['Defendant 1'];
       const dValue = component.getNameValue(def);
       const judges = ['Judge 1'];
@@ -46,7 +46,7 @@ describe('ResultsComponent', () => {
     });
 
     it('should return correct value if there is no defendants or judges', () => {
-      spyOn(component, 'getNameValue').and.callThrough();
+      jest.spyOn(component, 'getNameValue');
 
       const eValue = component.getNameValue([]);
       const emValue = component.getNameValue([]);
@@ -63,7 +63,7 @@ describe('ResultsComponent', () => {
       const hearing1 = { courtroom: '1', date: '2023-08-18' } as HearingData;
       const hearing2 = { courtroom: '2', date: '2023-08-19' } as HearingData;
       caseData.hearings = [hearing1, hearing2];
-      spyOn(component, 'getHearingsValue').and.callThrough();
+      jest.spyOn(component, 'getHearingsValue');
 
       const dValue = component.getHearingsValue(caseData, 'date');
       const cValue = component.getHearingsValue(caseData, 'courtroom');
@@ -77,7 +77,7 @@ describe('ResultsComponent', () => {
       const caseData = {} as CaseData;
       const hearing1 = { courtroom: '1', date: '2023-08-18' } as HearingData;
       caseData.hearings = [hearing1];
-      spyOn(component, 'getHearingsValue').and.callThrough();
+      jest.spyOn(component, 'getHearingsValue');
 
       const dValue = component.getHearingsValue(caseData, 'date');
       const cValue = component.getHearingsValue(caseData, 'courtroom');
@@ -89,7 +89,7 @@ describe('ResultsComponent', () => {
 
     it('should return correct value if there is no hearings', () => {
       const caseData = {} as CaseData;
-      spyOn(component, 'getHearingsValue').and.callThrough();
+      jest.spyOn(component, 'getHearingsValue');
 
       const dValue = component.getHearingsValue(caseData, 'date');
       const cValue = component.getHearingsValue(caseData, 'courtroom');

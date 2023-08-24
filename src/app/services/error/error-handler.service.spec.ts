@@ -10,7 +10,7 @@ describe('ErrorHandlerService', () => {
   };
 
   it('logs an exception', () => {
-    const spy = spyOn(AppInsightsService.prototype, 'logException');
+    const spy = jest.spyOn(AppInsightsService.prototype, 'logException');
 
     const errorHandlerService = new ErrorHandlerService(
       new AppInsightsService(fakeAppConfigService as AppConfigService)
@@ -18,7 +18,6 @@ describe('ErrorHandlerService', () => {
     const err = new Error('Something bad happened');
     errorHandlerService.handleError(err);
 
-    expect(spy.calls.count()).withContext('spy method was called once').toBe(1);
-    expect(spy.calls.first().args).toEqual([err]);
+    expect(spy).toHaveBeenCalledWith(err);
   });
 });

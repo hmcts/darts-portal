@@ -12,10 +12,15 @@ import { ErrorHandlerService } from '../../services/error/error-handler.service'
 import { CourthouseData } from 'src/app/types/courthouse';
 import { of, throwError } from 'rxjs';
 
+// Mock the initAll function
+jest.mock('@scottish-government/pattern-library/src/all', () => ({
+  initAll: jest.fn(),
+}));
+
 describe('SearchComponent', () => {
   const fakeAppInsightsService = {};
-  let httpClientSpy: jasmine.SpyObj<HttpClient>;
-  let errorHandlerSpy: jasmine.SpyObj<ErrorHandlerService>;
+  let httpClientSpy: HttpClient;
+  let errorHandlerSpy: ErrorHandlerService;
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
   let caseService: CaseService;
@@ -26,11 +31,15 @@ describe('SearchComponent', () => {
   ] as CourthouseData[];
 
   beforeEach(() => {
-    httpClientSpy = jasmine.createSpyObj('HttpClient', ['get']);
-    errorHandlerSpy = jasmine.createSpyObj('ErrorHandlerService', ['err']);
+    httpClientSpy = {
+      get: jest.fn(),
+    } as unknown as HttpClient;
+    errorHandlerSpy = {
+      err: jest.fn(),
+    } as unknown as ErrorHandlerService;
     caseService = new CaseService(httpClientSpy, errorHandlerSpy);
     //Stub getCourthouses as it runs on load
-    spyOn(caseService, 'getCourthouses').and.returnValue(of(courts));
+    jest.spyOn(caseService, 'getCourthouses').mockReturnValue(of(courts));
 
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, FormsModule, HttpClientModule, SearchComponent, ResultsComponent],
@@ -50,7 +59,7 @@ describe('SearchComponent', () => {
 
   describe('#toggleRadioSelected', () => {
     it('should change visibility of specific datepicker to true, and date range datepicker to false.', fakeAsync(() => {
-      spyOn(component, 'toggleRadioSelected').and.callThrough();
+      jest.spyOn(component, 'toggleRadioSelected');
       const radio: HTMLInputElement = fixture.debugElement.query(
         By.css('input[name="specific-date-radio"]')
       ).nativeElement;
@@ -62,7 +71,7 @@ describe('SearchComponent', () => {
     }));
 
     it('should change visibility of range datepicker to true, and specific datepicker to false', fakeAsync(() => {
-      spyOn(component, 'toggleRadioSelected').and.callThrough();
+      jest.spyOn(component, 'toggleRadioSelected');
       const radio: HTMLInputElement = fixture.debugElement.query(
         By.css('input[name="date-range-radio"]')
       ).nativeElement;
@@ -77,7 +86,7 @@ describe('SearchComponent', () => {
   describe('#submit', () => {
     //Below can be amended appropriately as part of validation ticket
     it('should submit when search button is clicked', () => {
-      spyOn(component, 'onSubmit').and.callThrough();
+      jest.spyOn(component, 'onSubmit');
       fixture.debugElement.query(By.css('form')).triggerEventHandler('ngSubmit', null);
       fixture.detectChanges();
 
@@ -85,7 +94,7 @@ describe('SearchComponent', () => {
     });
 
     it('should call submit function when search button is clicked and fields are filled', () => {
-      spyOn(component, 'onSubmit').and.callThrough();
+      jest.spyOn(component, 'onSubmit');
 
       const search = component.form.controls['case_number'];
       const case_number = '1';
@@ -202,7 +211,7 @@ describe('SearchComponent', () => {
 
   describe('#getCourthouses', () => {
     it('should load courthouses and set autocomplete element', () => {
-      const getCourthousesSpy = spyOn(component, 'getCourthouses');
+      const getCourthousesSpy = jest.spyOn(component, 'getCourthouses');
       component.ngAfterViewInit();
 
       expect(component.props.element).toBeTruthy();
@@ -219,7 +228,7 @@ describe('SearchComponent', () => {
         statusText: 'Not Found',
       });
 
-      caseService.getCourthouses = jasmine.createSpy().and.returnValue(throwError(() => errorResponse));
+      caseService.getCourthouses = jest.fn().mockReturnValue(throwError(() => errorResponse));
 
       component.getCourthouses();
 
