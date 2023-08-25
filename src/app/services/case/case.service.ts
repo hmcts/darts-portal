@@ -14,14 +14,14 @@ const ADVANCED_SEARCH_CASE_PATH = '/api/cases/search';
   providedIn: 'root',
 })
 export class CaseService {
-  constructor(private readonly http: HttpClient, private ErrorHandler: ErrorHandlerService) {}
+  constructor(private readonly http: HttpClient, private ErrorHandlerService: ErrorHandlerService) {}
   private params: HttpParams = new HttpParams();
 
   //Fetches all courthouses
   getCourthouses(): Observable<CourthouseData[]> {
     return this.http.get<CourthouseData[]>(GET_COURTHOUSES_PATH).pipe(
       catchError((err: Error) => {
-        this.ErrorHandler.handleError(err);
+        this.ErrorHandlerService.handleError(err);
         return throwError(() => err);
       })
     );
@@ -31,7 +31,7 @@ export class CaseService {
   getCase(caseId: string | number): Observable<CaseData> {
     return this.http.get<CaseData>(`${GET_CASE_PATH}?caseId=${caseId}`).pipe(
       catchError((err: Error) => {
-        this.ErrorHandler.handleError(err);
+        this.ErrorHandlerService.handleError(err);
         return throwError(() => err);
       })
     );
@@ -82,7 +82,7 @@ export class CaseService {
     //Make API call out to advanced search case API, return Observable to Case Component, catch any errors and pass to ErrorHandler service
     return this.http.get<CaseData[]>(apiURL, options).pipe(
       catchError((err: Error) => {
-        this.ErrorHandler.handleError(err);
+        this.ErrorHandlerService.handleError(err);
         return throwError(() => err);
       })
     );

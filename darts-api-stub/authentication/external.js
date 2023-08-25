@@ -23,8 +23,7 @@ router.post('/handle-oauth-code', (_, res) => {
     roles: roles,
   };
 //   const token = 
-// 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE2OTI5NTMzMTgsImV4cCI6MTY5Mjk1NTcxOCwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSJ9.2iEJxPDL8E5fr2FycrHaIsRdVOZjripNhqdxxK9o4EY'
-
+// 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE2OTI5NTMzMTgsImV4cCI6MTY5Mjk1OTE5OCwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSJ9.v9Ps6mn4pYAwiQBaaXhDv2Oplojo9N8TqaRLInnevW8'
 
   //Token expires 2034-08-23
   const securityToken = {

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import {
   HttpRequest,
   HttpHandler,
@@ -8,13 +8,13 @@ import {
 } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import {Router} from '@angular/router';
-import { ErrorHandlerService } from 'src/app/services/error/error-handler.service';
+// import { ErrorHandlerService } from 'src/app/services/error/error-handler.service';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 
-  constructor(private router: Router, private ErrorHandler: ErrorHandlerService) {}
-
+  constructor(private router: Router) {}
+//@Inject('Window') private window: Window
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
       tap({
@@ -22,7 +22,8 @@ export class ErrorInterceptor implements HttpInterceptor {
           if (event instanceof HttpResponse) {
             if(event.status == 401) {
               console.log('Unauthorized access: redirecting to login')
-              this.router.navigate(['login']);
+              // this.window.location.href = '/auth/logout';
+              this.router.navigateByUrl('login');
             }
           }
           return event;
@@ -30,8 +31,9 @@ export class ErrorInterceptor implements HttpInterceptor {
         error: (error) => {
           if(error.status === 401) {
             console.log('Unauthorized access: redirecting to login')
-            this.router.navigate(['login']);
-            this.ErrorHandler.handleError(error);
+            // this.window.location.href = '/auth/logout';
+            this.router.navigateByUrl('login');
+            // this.errorHandlerService.handleError(error);
           }
           else if(error.status === 404) {
             console.log('Page Not Found!')
