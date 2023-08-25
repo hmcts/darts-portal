@@ -22,9 +22,15 @@ router.post('/handle-oauth-code', (_, res) => {
     userName: 'localdev01',
     roles: roles,
   };
+//   const token = 
+// 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE2OTI5NTMzMTgsImV4cCI6MTY5Mjk1NTcxOCwiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSJ9.2iEJxPDL8E5fr2FycrHaIsRdVOZjripNhqdxxK9o4EY'
+
+
   //Token expires 2034-08-23
   const securityToken = {
     userState: userState,
+//     accessToken:
+// token
     accessToken:
       'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJEYXZpZE1hbm4iLCJpYXQiOjE2OTI4NzQ5MzAsImV4cCI6MjAzOTk0MzczMCwiYXVkIjoiZGFydHMtbG9jYWwtZGV2Iiwic3ViIjoiZGFydHMtbG9jYWwtand0In0.6wJo9geKWacjA-FR67waVRsNuS6uP5X-JJRlTOpwGhI',
   };

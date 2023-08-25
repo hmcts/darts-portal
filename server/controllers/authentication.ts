@@ -4,6 +4,7 @@ import axios from 'axios';
 import config from 'config';
 import bodyParser from 'body-parser';
 import SecurityToken from 'server/types/classes/securityToken';
+import { AuthenticationUtils } from '../utils/authentication-utils'
 
 const ERROR_CODES = {
   RESET_PWD: 'AADB2C90118',
@@ -13,28 +14,6 @@ const EXTERNAL_USER_LOGIN = `${config.get('darts-api.url')}/external-user/login-
 const EXTERNAL_USER_CALLBACK = `${config.get('darts-api.url')}/external-user/handle-oauth-code`;
 const EXTERNAL_USER_RESET_PWD = `${config.get('darts-api.url')}/external-user/reset-password`;
 const EXTERNAL_USER_LOGOUT = `${config.get('darts-api.url')}/external-user/logout`;
-
-//Returns payload of JWT
-function parseJwt(token: string) {
-  return JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
-}
-
-function jwtExpired(token: string) {
-  try {
-    const payload = parseJwt(token);
-    if (payload.exp) {
-      //Create date from expiry, argument must be in ms so multiply by 1000
-      const jwtExpiry = new Date(payload.exp * 1000);
-      //If JWT expiry is after now, then return as valid
-      if (jwtExpiry > new Date()) {
-        return false;
-      }
-    }
-    return true;
-  } catch {
-    return true;
-  }
-}
 
 function getLogin(): (_: Request, res: Response, next: NextFunction) => Promise<void> {
   return async (_: Request, res: Response, next: NextFunction) => {
@@ -158,15 +137,8 @@ function getIsAuthenticated(disableAuthentication = false): (req: Request, res: 
   return (req: Request, res: Response) => {
     // don't allow caching of this endpoint
     res.header('Cache-Control', 'no-store, must-revalidate');
-    let accessToken;
-    if (req.session.securityToken) {
-      accessToken = req.session.securityToken.accessToken;
-      if (jwtExpired(accessToken)) {
-        accessToken = false;
-      }
-    }
 
-    if (accessToken || disableAuthentication) {
+    if (!AuthenticationUtils.redirectLogin(req.session?.securityToken?.accessToken) || disableAuthentication) {
       res.status(200).send();
     } else {
       res.status(401).send();
@@ -188,3 +160,5 @@ export function init(disableAuthentication = false): Router {
   router.get('/is-authenticated', getIsAuthenticated(disableAuthentication));
   return router;
 }
+export { AuthenticationUtils };
+
