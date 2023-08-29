@@ -26,7 +26,7 @@ export class SearchComponent implements AfterViewChecked, AfterViewInit {
 
   constructor(private caseService: CaseService) {}
 
-  form = new FormGroup({
+  form: FormGroup = new FormGroup({
     case_number: new FormControl('', Validators.required),
     courtroom: new FormControl(),
     judge_name: new FormControl(),
@@ -42,6 +42,10 @@ export class SearchComponent implements AfterViewChecked, AfterViewInit {
     minLength: 1,
     name: 'courthouse',
   };
+
+  setInputValue(value: string, control: string) {
+    this.form.controls[`${control}`].patchValue(value);
+  }
 
   getCourthouses() {
     this.caseService.getCourthouses().subscribe(
@@ -109,6 +113,8 @@ export class SearchComponent implements AfterViewChecked, AfterViewInit {
   }
 
   toggleRadioSelected(type: 'specific' | 'range') {
+    this.form.controls['date_from'].reset();
+    this.form.controls['date_to'].reset();
     this.dateInputType = type;
   }
 
