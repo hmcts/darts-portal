@@ -5,9 +5,8 @@ import { ErrorHandlerService } from './app/services/error/error-handler.service'
 import { ErrorInterceptor } from './app/interceptor/error/error.interceptor';
 import { AppConfigService } from './app/services/app-config/app-config.service';
 import { APP_INITIALIZER } from '@angular/core';
-import { Router, provideRouter } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { APP_ROUTES } from './app/app.routes';
-import { AuthService } from './app/services/auth/auth.service';
 
 export function initAppFn(envService: AppConfigService) {
   return () => envService.loadAppConfig();
@@ -15,7 +14,6 @@ export function initAppFn(envService: AppConfigService) {
 
 bootstrapApplication(AppComponent, {
   providers: [
-    provideHttpClient(withInterceptorsFromDi()),
     provideRouter(APP_ROUTES),
     {
       provide: APP_INITIALIZER,
@@ -24,8 +22,8 @@ bootstrapApplication(AppComponent, {
       deps: [AppConfigService],
     },
     { provide: ErrorHandlerService, useClass: ErrorHandlerService, deps: [AppConfigService] },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true, deps: [Router, AuthService, 'location'] },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true, deps: [ErrorHandlerService, 'Window'] },
     { provide: 'Window', useValue: window },
-    { provide: 'location', useValue: location },
+    provideHttpClient(withInterceptorsFromDi()),
   ],
 }).catch((err) => console.error(err));

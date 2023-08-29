@@ -4,7 +4,7 @@ import axios from 'axios';
 import config from 'config';
 import bodyParser from 'body-parser';
 import SecurityToken from 'server/types/classes/securityToken';
-import { AuthenticationUtils } from '../utils/authentication-utils'
+import { AuthenticationUtils } from '../utils/authentication-utils';
 
 const ERROR_CODES = {
   RESET_PWD: 'AADB2C90118',
@@ -161,4 +161,3 @@ export function init(disableAuthentication = false): Router {
   return router;
 }
 export { AuthenticationUtils };
-
