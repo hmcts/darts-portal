@@ -1,14 +1,18 @@
-import { HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpRequest, HttpResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ErrorHandlerService } from '../../services/error/error-handler.service';
 import { ErrorInterceptor } from './error.interceptor';
 import { TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
+import { CaseData } from 'src/app/types/case';
+import { CaseService } from 'src/app/services/case/case.service';
 
 describe('ErrorInterceptor', () => {
+  let httpClientSpy: HttpClient;
   let errorHandlerSpy: ErrorHandlerService;
   let interceptor: ErrorInterceptor;
   let window: Window;
+  let service: CaseService;
 
   beforeEach(() => {
     window = {
@@ -19,8 +23,12 @@ describe('ErrorInterceptor', () => {
     errorHandlerSpy = {
       err: jest.fn(),
     } as unknown as ErrorHandlerService;
+    httpClientSpy = {
+      get: jest.fn(),
+    } as unknown as HttpClient;
 
     interceptor = new ErrorInterceptor(errorHandlerSpy, window);
+    service = new CaseService(httpClientSpy, errorHandlerSpy);
 
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
@@ -42,6 +50,32 @@ describe('ErrorInterceptor', () => {
       interceptor.intercept(reqMock, mockHandler).subscribe();
 
       expect(window.location.href).toBe('/auth/logout');
+    });
+
+    it('should redirect to /auth/logout on 401 status errors', async () => {
+      jest.spyOn(service, 'getCasesAdvanced').mockReturnValue(throwError(() => errorResponse));
+
+      const errorResponse = new HttpErrorResponse({
+        error: { code: `some code`, message: `some message.` },
+        status: 401,
+        statusText: 'Not Authorised',
+      });
+
+      let cases: CaseData[] = [];
+      service.getCasesAdvanced('zzzz').subscribe(
+        (result: CaseData[]) => {
+          if (result) {
+            cases = result;
+          }
+        },
+        (error: HttpErrorResponse) => {
+          expect(error).toBeTruthy();
+          if (error.status) {
+            expect(error.status).toEqual(401);
+            expect(window.location.href).toBe('/auth/logout');
+          }
+        }
+      );
     });
   });
 });
