@@ -1,18 +1,15 @@
-import { HttpClient, HttpErrorResponse, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ErrorHandlerService } from '../../services/error/error-handler.service';
 import { ErrorInterceptor } from './error.interceptor';
 import { TestBed } from '@angular/core/testing';
 import { of, throwError } from 'rxjs';
-import { CaseData } from 'src/app/types/case';
-import { CaseService } from 'src/app/services/case/case.service';
 
 describe('ErrorInterceptor', () => {
-  let httpClientSpy: HttpClient;
+  let httpHandlerSpy: HttpHandler;
   let errorHandlerSpy: ErrorHandlerService;
   let interceptor: ErrorInterceptor;
   let window: Window;
-  let service: CaseService;
 
   beforeEach(() => {
     window = {
@@ -23,12 +20,11 @@ describe('ErrorInterceptor', () => {
     errorHandlerSpy = {
       err: jest.fn(),
     } as unknown as ErrorHandlerService;
-    httpClientSpy = {
-      get: jest.fn(),
-    } as unknown as HttpClient;
+    httpHandlerSpy = {
+      handle: jest.fn(),
+    } as unknown as HttpHandler;
 
     interceptor = new ErrorInterceptor(errorHandlerSpy, window);
-    service = new CaseService(httpClientSpy, errorHandlerSpy);
 
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
@@ -52,28 +48,20 @@ describe('ErrorInterceptor', () => {
       expect(window.location.href).toBe('/auth/logout');
     });
 
-    it('should redirect to /auth/logout on 401 status errors', async () => {
-      jest.spyOn(service, 'getCasesAdvanced').mockReturnValue(throwError(() => errorResponse));
-
+    it('should redirect to /auth/logout on 401 error response', () => {
       const errorResponse = new HttpErrorResponse({
         error: { code: `some code`, message: `some message.` },
         status: 401,
         statusText: 'Not Authorised',
       });
+      jest.spyOn(httpHandlerSpy, 'handle').mockReturnValue(throwError(() => errorResponse));
 
-      let cases: CaseData[] = [];
-      service.getCasesAdvanced('zzzz').subscribe(
-        (result: CaseData[]) => {
-          if (result) {
-            cases = result;
-          }
-        },
-        (error: HttpErrorResponse) => {
-          expect(error).toBeTruthy();
-          if (error.status) {
-            expect(error.status).toEqual(401);
-            expect(window.location.href).toBe('/auth/logout');
-          }
+      const reqMock = new HttpRequest<any>('GET', '/api');
+      interceptor.intercept(reqMock, httpHandlerSpy).subscribe(
+        (result) => console.log('good', result),
+        (err) => {
+          expect(err).toEqual(errorResponse);
+          expect(window.location.href).toBe('/auth/logout');
         }
       );
     });
