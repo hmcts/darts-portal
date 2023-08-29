@@ -32,8 +32,8 @@ export class LoginComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    if (await this.authService.checkAuthenticated()) {
-      this.router.navigateByUrl('');
-    }
+    // if (await this.authService.checkAuthenticated()) {
+    //   this.router.navigateByUrl('');
+    // }
   }
 }
