@@ -1,15 +1,14 @@
-import { TestBed } from '@angular/core/testing';
-import { HttpClient } from '@angular/common/http';
+import { HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ErrorHandlerService } from '../../services/error/error-handler.service';
 import { ErrorInterceptor } from './error.interceptor';
+import { TestBed } from '@angular/core/testing';
+import { of } from 'rxjs';
 
 describe('ErrorInterceptor', () => {
-  let httpClientSpy: HttpClient;
   let errorHandlerSpy: ErrorHandlerService;
   let interceptor: ErrorInterceptor;
   let window: Window;
-  
-
 
   beforeEach(() => {
     window = {
@@ -17,21 +16,32 @@ describe('ErrorInterceptor', () => {
         href: '',
       },
     } as unknown as Window;
-
-    httpClientSpy = {
-      get: jest.fn(),
-    } as unknown as HttpClient;
     errorHandlerSpy = {
       err: jest.fn(),
     } as unknown as ErrorHandlerService;
 
-
     interceptor = new ErrorInterceptor(errorHandlerSpy, window);
+
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [{ provide: 'Window', useValue: window }],
+    });
   });
 
-
   it('should be created', () => {
-    const interceptor: ErrorInterceptor = TestBed.inject(ErrorInterceptor);
     expect(interceptor).toBeTruthy();
+  });
+
+  describe('ErrorInterceptor 401 status', () => {
+    it('should redirect to /auth/logout on 401 status', async () => {
+      const mockHandler = {
+        handle: jest.fn(() => of(new HttpResponse({ status: 401, body: { data: 'unauthorised' } }))),
+      };
+
+      const reqMock = new HttpRequest<any>('GET', '/api');
+      interceptor.intercept(reqMock, mockHandler).subscribe();
+
+      expect(window.location.href).toBe('/auth/logout');
+    });
   });
 });
