@@ -1,0 +1,20 @@
+.govuk-button {
+  margin-bottom: 0;
+}
+
+.govuk-table__cell,
+.govuk-table__header {
+  vertical-align: middle;
+}
+
+.govuk-checkboxes--small .govuk-checkboxes__item {
+  min-height: 40px;
+}
+
+tr:has(button) {
+  background-color: aliceblue;
+}
+
+.govuk-table__cell:last-child {
+  max-width: 300px;
+}
