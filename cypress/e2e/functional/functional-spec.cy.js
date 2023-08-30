@@ -4,11 +4,6 @@ describe('functional test', () => {
     cy.get('h1').should('contain', 'Welcome to DARTS');
   });
 
-  it('shows inbox', () => {
-    cy.visit('/inbox');
-    cy.get('h3').should('contain', 'Inbox');
-  });
-
   it('shows audios', () => {
     cy.visit('/audios');
     cy.get('h3').should('contain', 'My Audios');
@@ -17,5 +12,10 @@ describe('functional test', () => {
   it('shows transcriptions', () => {
     cy.visit('/transcriptions');
     cy.get('h3').should('contain', 'My Transcriptions');
+  });
+
+  it('shows search', () => {
+    cy.visit('/search');
+    cy.get('h1').should('contain', 'Search for a case');
   });
 });
