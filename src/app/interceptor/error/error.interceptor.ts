@@ -5,7 +5,7 @@ import { ErrorHandlerService } from 'src/app/services/error/error-handler.servic
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private ErrorHandlerService: ErrorHandlerService, @Inject('Window') private window: Window) {}
+  constructor(private errorHandlerService: ErrorHandlerService, @Inject('Window') private window: Window) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
@@ -23,7 +23,7 @@ export class ErrorInterceptor implements HttpInterceptor {
           if (error.status === 401) {
             console.log('Unauthorized access error: redirecting to login');
             this.window.location.href = '/auth/logout';
-            this.ErrorHandlerService.handleError(error);
+            this.errorHandlerService.handleError(error);
           }
         },
       })

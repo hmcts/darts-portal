@@ -138,7 +138,7 @@ function getIsAuthenticated(disableAuthentication = false): (req: Request, res: 
     // don't allow caching of this endpoint
     res.header('Cache-Control', 'no-store, must-revalidate');
 
-    if (!AuthenticationUtils.redirectLogin(req.session?.securityToken?.accessToken) || disableAuthentication) {
+    if (!AuthenticationUtils.isJwtExpired(req.session?.securityToken?.accessToken) || disableAuthentication) {
       res.status(200).send();
     } else {
       res.status(401).send();

@@ -53,8 +53,8 @@ describe('CaseService', () => {
         (error: HttpErrorResponse) => {
           expect(error).toBeTruthy();
           if (error.status) {
-            service['ErrorHandlerService'].handleError(errorResponse);
-            expect(service['ErrorHandlerService'].handleError).toHaveBeenCalledWith(errorResponse);
+            service['errorHandlerService'].handleError(errorResponse);
+            expect(service['errorHandlerService'].handleError).toHaveBeenCalledWith(errorResponse);
             expect(error.status).toEqual(404);
           }
         }
@@ -100,8 +100,8 @@ describe('CaseService', () => {
         (error: HttpErrorResponse) => {
           expect(error).toBeTruthy();
           if (error.status) {
-            service['ErrorHandlerService'].handleError(errorResponse);
-            expect(service['ErrorHandlerService'].handleError).toHaveBeenCalledWith(errorResponse);
+            service['errorHandlerService'].handleError(errorResponse);
+            expect(service['errorHandlerService'].handleError).toHaveBeenCalledWith(errorResponse);
             expect(error.status).toEqual(404);
           }
         }
@@ -143,8 +143,8 @@ describe('CaseService', () => {
         (error: HttpErrorResponse) => {
           expect(error).toBeTruthy();
           if (error.status) {
-            service['ErrorHandlerService'].handleError(errorResponse);
-            expect(service['ErrorHandlerService'].handleError).toHaveBeenCalledWith(errorResponse);
+            service['errorHandlerService'].handleError(errorResponse);
+            expect(service['errorHandlerService'].handleError).toHaveBeenCalledWith(errorResponse);
             expect(error.status).toEqual(404);
           }
         }

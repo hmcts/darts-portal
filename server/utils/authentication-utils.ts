@@ -5,7 +5,7 @@ export class AuthenticationUtils {
   }
 
   //If token doesn't exist, or is expired, return as invalid
-  static jwtExpired(token: string | undefined) {
+  static isJwtExpired(token: string | undefined) {
     try {
       if (token) {
         const payload = this.parseJwt(token);
@@ -22,14 +22,5 @@ export class AuthenticationUtils {
     } catch {
       return true;
     }
-  }
-
-  static redirectLogin(token: string | undefined) {
-    if (token) {
-      if (!this.jwtExpired(token)) {
-        return false;
-      }
-    }
-    return true;
   }
 }

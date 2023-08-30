@@ -42,7 +42,7 @@ describe('ErrorInterceptor', () => {
         handle: jest.fn(() => of(new HttpResponse({ status: 401, body: { data: 'unauthorised' } }))),
       };
 
-      const reqMock = new HttpRequest<any>('GET', '/api');
+      const reqMock = new HttpRequest<unknown>('GET', '/api');
       interceptor.intercept(reqMock, mockHandler).subscribe();
 
       expect(window.location.href).toBe('/auth/logout');
@@ -56,7 +56,7 @@ describe('ErrorInterceptor', () => {
       });
       jest.spyOn(httpHandlerSpy, 'handle').mockReturnValue(throwError(() => errorResponse));
 
-      const reqMock = new HttpRequest<any>('GET', '/api');
+      const reqMock = new HttpRequest<unknown>('GET', '/api');
       interceptor.intercept(reqMock, httpHandlerSpy).subscribe(
         (result) => console.log('good', result),
         (err) => {
