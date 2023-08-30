@@ -290,7 +290,7 @@ router.get('/search', (req, res) => {
         title: 'Too many results have been returned. Please change search criteria.',
         status: 400,
       };
-      res.status(401).send(resBody100);
+      res.status(400).send(resBody100);
       break;
     case 'CASE_101':
       const resBody101 = {
