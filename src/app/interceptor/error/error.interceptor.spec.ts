@@ -57,13 +57,13 @@ describe('ErrorInterceptor', () => {
       jest.spyOn(httpHandlerSpy, 'handle').mockReturnValue(throwError(() => errorResponse));
 
       const reqMock = new HttpRequest<unknown>('GET', '/api');
-      interceptor.intercept(reqMock, httpHandlerSpy).subscribe(
-        (result) => console.log('good', result),
-        (err) => {
+      interceptor.intercept(reqMock, httpHandlerSpy).subscribe({
+        next: (result) => console.log('good', result),
+        error: (err) => {
           expect(err).toEqual(errorResponse);
           expect(window.location.href).toBe('/login');
-        }
-      );
+        },
+      });
     });
   });
 });
