@@ -48,8 +48,8 @@ export class SearchComponent implements AfterViewChecked, AfterViewInit {
   }
 
   getCourthouses() {
-    this.caseService.getCourthouses().subscribe(
-      (result: CourthouseData[]) => {
+    this.caseService.getCourthouses().subscribe({
+      next: (result: CourthouseData[]) => {
         if (result) {
           this.courthouses = result;
           //Populate autocomplete once returned
@@ -57,13 +57,13 @@ export class SearchComponent implements AfterViewChecked, AfterViewInit {
           accessibleAutocomplete(this.props);
         }
       },
-      (error: HttpErrorResponse) => {
+      error: (error: HttpErrorResponse) => {
         if (error.error) {
           this.errorType = error.error.type;
           this.loaded = true;
         }
-      }
-    );
+      },
+    });
   }
 
   assignAutocompleteProps() {
@@ -95,21 +95,21 @@ export class SearchComponent implements AfterViewChecked, AfterViewInit {
         this.form.get('date_to')?.value || '',
         this.form.get('event_text_contains')?.value || ''
       )
-      .subscribe(
-        (result: CaseData[]) => {
+      .subscribe({
+        next: (result: CaseData[]) => {
           if (result) {
             this.cases = result;
             this.loaded = true;
             this.errorType = 'ok';
           }
         },
-        (error: HttpErrorResponse) => {
+        error: (error: HttpErrorResponse) => {
           if (error.error) {
             this.errorType = error.error.type;
             this.loaded = true;
           }
-        }
-      );
+        },
+      });
   }
 
   toggleRadioSelected(type: 'specific' | 'range') {

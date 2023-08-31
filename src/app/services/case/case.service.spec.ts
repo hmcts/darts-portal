@@ -44,21 +44,22 @@ describe('CaseService', () => {
       jest.spyOn(service, 'getCasesAdvanced').mockReturnValue(throwError(() => errorResponse));
 
       let cases: CaseData[] = [];
-      service.getCasesAdvanced('zzzz').subscribe(
-        (result: CaseData[]) => {
+
+      service.getCasesAdvanced('zzzz').subscribe({
+        next: (result: CaseData[]) => {
           if (result) {
-            cases = cases.concat(result);
+            cases = result;
           }
         },
-        (error: HttpErrorResponse) => {
+        error: (error: HttpErrorResponse) => {
           expect(error).toBeTruthy();
           if (error.status) {
             service['ErrorHandler'].handleError(errorResponse);
             expect(service['ErrorHandler'].handleError).toHaveBeenCalledWith(errorResponse);
             expect(error.status).toEqual(404);
           }
-        }
-      );
+        },
+      });
     });
 
     it('should run cases advanced search function and return mock case', () => {
