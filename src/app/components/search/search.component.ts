@@ -6,8 +6,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { CaseService } from '../../services/case/case.service';
 import { CaseData } from '../../../app/types/case';
 import { ResultsComponent } from './results/results.component';
-import { RouterLink } from "@angular/router";
-//import { error } from ./enums/error.enums.ts;
+import { RouterLink } from '@angular/router';
+import { ERROR_MESSAGES } from './enums/error.enum';
 
 @Component({
   selector: 'app-search',
@@ -21,8 +21,7 @@ export class SearchComponent implements AfterViewChecked {
   cases: CaseData[] = [];
   loaded = false;
   errorType = '';
-  errors: Array<{field: string, message: string}> = [];
-
+  hasErrors = false;
 
   constructor(private caseService: CaseService) {}
 
@@ -48,8 +47,7 @@ export class SearchComponent implements AfterViewChecked {
         this.form.get('defendant_name')?.value || '',
         this.form.get('date_from')?.value || '',
         this.form.get('date_to')?.value || '',
-        this.form.get('event_text_contains')?.value || '',
-
+        this.form.get('event_text_contains')?.value || ''
       )
 
       .subscribe(
@@ -65,12 +63,34 @@ export class SearchComponent implements AfterViewChecked {
             this.errorType = error.error.type;
             this.loaded = true;
           }
-        },
+        }
       );
-    if (this.form.get('courthouse')?.value === 'false') {
-      console.log('courthouse is false');
-    } else {
-      console.log('courthouse is true');
+
+    //AC2 - Searching a courtroom without courthouse
+    if (this.form.get('courtroom')?.value !== '' && this.form.get('courthouse')?.value === '') {
+      this.hasErrors = true;
+      console.log(ERROR_MESSAGES.COURTROOM);
+    }
+
+    //AC3 - Entering a date that's in the future
+    const TODAY = new Date();
+    // if (this.form.get('specific-date')?.value > TODAY) {
+    //   this.hasErrors = true;
+    //   console.log(ERROR_MESSAGES.FUTURE_DATE)
+    // }
+
+    //AC4 - Date range: start date is blank
+    if (this.form.get('date_from')?.value !== Date && this.form.get('date_to')?.value === Date) this.hasErrors = true;
+    console.log(ERROR_MESSAGES.START_DATE_MISSING);
+
+    //AC5 - Date range: end date is blank
+    if (this.form.get('date_from')?.value === Date && this.form.get('date_to')?.value !== Date) this.hasErrors = true;
+    console.log(ERROR_MESSAGES.END_DATE_MISSING);
+
+    //AC6 - Invalid Date Format
+    if (this.form.get('specific')?.value !== Date) {
+      this.hasErrors = true;
+      console.log(ERROR_MESSAGES.INVALID_DATE);
     }
   }
 
