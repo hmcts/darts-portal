@@ -11,6 +11,7 @@ const singleCase = {
   judges: ['Judge Judy', 'Judge Jones'],
   prosecutors: ['Polly Prosecutor'],
   defenders: ['Derek Defender'],
+  reporting_restriction: ['Section 4(2) of the Contempt of Court Act 1981'],
   retain_until: '2023-08-10T11:23:24.858Z',
 };
 
@@ -261,26 +262,6 @@ const multipleCases = [
   },
 ];
 
-// CASES STUB APIs
-// Simple search
-router.get('/{caseId}', (req, res) => {
-  singleCase.case_id = req.params.caseId;
-
-  switch (req.params.caseId) {
-    case 'CASE_104':
-      const resBody104 = {
-        type: 'CASE_104',
-        title: 'The requested case cannot be found',
-        status: 404,
-      };
-      res.status(400).send(resBody104);
-      break;
-    default:
-      res.send(singleCase);
-      break;
-  }
-});
-
 // Advanced search stub API
 router.get('/search', (req, res) => {
   switch (req.query.case_number) {
@@ -329,6 +310,26 @@ router.get('/search', (req, res) => {
       break;
     default:
       res.status(200).send(multipleCases);
+      break;
+  }
+});
+
+// CASES STUB APIs
+// Simple search
+router.get('/:caseId', (req, res) => {
+  singleCase.case_id = req.params.caseId;
+
+  switch (req.params.caseId) {
+    case 'CASE_104':
+      const resBody104 = {
+        type: 'CASE_104',
+        title: 'The requested case cannot be found',
+        status: 404,
+      };
+      res.status(400).send(resBody104);
+      break;
+    default:
+      res.send(singleCase);
       break;
   }
 });

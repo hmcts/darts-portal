@@ -41,7 +41,9 @@
       </thead>
       <tbody class="govuk-table__body">
         <tr *ngFor="let c of casesInput" class="govuk-table__row">
-          <td class="govuk-table__cell">{{ c.caseNumber }}</td>
+          <td class="govuk-table__cell">
+            <a [routerLink]="['/case', c.caseID]" routerLinkActive="router-link-active">{{ c.caseNumber }}</a>
+          </td>
           <td class="govuk-table__cell">{{ c.courthouse }}</td>
           <td class="govuk-table__cell">{{ getHearingsValue(c, 'courtroom') }}</td>
           <td class="govuk-table__cell">{{ getNameValue(c.judges) }}</td>
