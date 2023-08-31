@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -8,30 +8,18 @@ import { CommonModule } from '@angular/common';
   templateUrl: './pagination.component.html',
   styleUrls: ['./pagination.component.scss'],
 })
-export class PaginationComponent implements OnInit {
-  constructor() {
-    this._currentPage = 1;
-  }
-
-  private _currentPage: number;
-  @Input() set currentPage(value) {
-    this._currentPage = value;
-    this.calculatePages();
-  }
-  get currentPage(): number {
-    return this._currentPage;
-  }
-
+export class PaginationComponent implements OnChanges {
+  @Input() currentPage = 1;
   @Input() total = 0;
-  @Input() limit = 20;
+  @Input() limit = 25;
   @Output() changePage = new EventEmitter<number>();
 
   pages: number[] = [];
   elipsedPages: (number | string)[] = [];
   ELIPSIS = '...';
 
-  ngOnInit(): void {
-    this.calculatePages();
+  ngOnChanges(): void {
+    if (this.total > this.limit) this.calculatePages();
   }
 
   onPageChanged($event: MouseEvent, page: number) {
@@ -53,13 +41,15 @@ export class PaginationComponent implements OnInit {
     pages = [...pages];
 
     if (currentPage < pages.length - 2) {
+      // Add elipses to the right of current page
       pages.splice(currentPage + 1, pages.length - currentPage - 2, this.ELIPSIS);
     }
 
     if (currentPage >= 5) {
+      // Add elipses to the left of current page
       pages.splice(1, currentPage - 3, this.ELIPSIS);
     }
-    console.log(pages);
+
     return [...pages];
   }
 }

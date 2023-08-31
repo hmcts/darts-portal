@@ -15,18 +15,18 @@
   </div>
 
   <!-- No search results returns empty array rather than error code -->
-  <div *ngIf="casesInput.length === 0 && errorType === 'ok' && loaded">
+  <div *ngIf="cases.length === 0 && errorType === 'ok' && loaded">
     <h2 class="govuk-heading-m">No search results</h2>
     <p class="govuk-body">Review the case number, case reference or court reference you entered and try again.</p>
   </div>
-  <div *ngIf="casesInput.length > 0 && errorType === 'ok' && loaded">
+  <div *ngIf="cases.length > 0 && errorType === 'ok' && loaded">
     <table class="govuk-table">
       <caption class="govuk-table__caption govuk-table__caption--m">
         {{
-          casesInput.length
+          cases.length
         }}
         {{
-          casesInput.length > 1 ? 'results' : 'result'
+          cases.length > 1 ? 'results' : 'result'
         }}
       </caption>
       <thead class="govuk-table__head">
@@ -40,7 +40,7 @@
         </tr>
       </thead>
       <tbody class="govuk-table__body">
-        <tr *ngFor="let c of casesInput" class="govuk-table__row">
+        <tr *ngFor="let c of pagedCases" class="govuk-table__row">
           <td class="govuk-table__cell">{{ c.caseNumber }}</td>
           <td class="govuk-table__cell">{{ c.courthouse }}</td>
           <td class="govuk-table__cell">{{ getHearingsValue(c, 'courtroom') }}</td>
@@ -51,6 +51,11 @@
       </tbody>
     </table>
 
-    <!-- Pagination to go here-->
+    <app-pagination
+      [currentPage]="currentPage"
+      [limit]="pageLimit"
+      [total]="cases.length"
+      (changePage)="changePage($event)"
+    ></app-pagination>
   </div>
 </div>

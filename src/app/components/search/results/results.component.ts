@@ -1,21 +1,35 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { CaseData } from '../../../../app/types/case';
 import { DateTimeService } from '../../../services/datetime/datetime.service';
+import { PaginationComponent } from '../../shared/pagination/pagination.component';
 
 @Component({
   selector: 'app-results',
   templateUrl: './results.component.html',
   styleUrls: ['./results.component.scss'],
-  imports: [NgIf, NgFor],
+  imports: [NgIf, NgFor, PaginationComponent],
   standalone: true,
 })
-export class ResultsComponent {
-  @Input() casesInput: CaseData[] = [];
+export class ResultsComponent implements OnChanges {
+  constructor(private dateTimeService: DateTimeService) {}
+
+  @Input() cases: CaseData[] = [];
   @Input() loaded = false;
   @Input() errorType = '';
 
-  constructor(private dateTimeService: DateTimeService) {}
+  pagedCases: CaseData[] = [];
+  currentPage = 1;
+  pageLimit = 25;
+
+  ngOnChanges(): void {
+    this.pagedCases = this.paginate(this.cases, this.pageLimit, this.currentPage);
+  }
+
+  changePage(page: number) {
+    this.currentPage = page;
+    this.pagedCases = this.paginate(this.cases, this.pageLimit, this.currentPage);
+  }
 
   getDateFormat(d: string) {
     return this.dateTimeService.getdddDMMMYYYY(d);
@@ -53,5 +67,9 @@ export class ResultsComponent {
         return 'Multiple';
       }
     }
+  }
+
+  private paginate(array: CaseData[], pageSize: number, currentPage: number) {
+    return array.slice((currentPage - 1) * pageSize, currentPage * pageSize);
   }
 }

@@ -28,10 +28,10 @@
       <a
         *ngIf="page !== ELIPSIS"
         class="govuk-link govuk-pagination__link"
-        role="button"
         href="#"
         (click)="onPageChanged($event, +page)"
         [attr.aria-label]="'Page ' + page"
+        data-test-page-button
         >{{ page }}</a
       >
     </li>
