@@ -15,6 +15,18 @@ const singleCase = {
   retain_until: '2023-08-10T11:23:24.858Z',
 };
 
+//CASES Mock objects
+const singleCaseTwo = {
+  case_id: 2,
+  courthouse: 'Reading',
+  case_number: 'CASE1001',
+  defendants: ['Defendant Dave'],
+  judges: ['Judge Judy'],
+  prosecutors: ['Patrick Prosecutor'],
+  defenders: ['Derek Defender'],
+  retain_until: '2023-08-10T11:23:24.858Z',
+};
+
 const multipleCases = [
   {
     caseID: 1,
@@ -327,6 +339,9 @@ router.get('/:caseId', (req, res) => {
         status: 404,
       };
       res.status(400).send(resBody104);
+      break;
+    case '2':
+      res.send(singleCaseTwo);
       break;
     default:
       res.send(singleCase);
