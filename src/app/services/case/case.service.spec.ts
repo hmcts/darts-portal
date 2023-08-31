@@ -49,6 +49,7 @@ describe('CaseService', () => {
         next: (result: CaseData[]) => {
           if (result) {
             cases = result;
+            expect(cases).toBeFalsy();
           }
         },
         error: (error: HttpErrorResponse) => {
