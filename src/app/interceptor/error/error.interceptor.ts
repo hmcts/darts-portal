@@ -14,7 +14,7 @@ export class ErrorInterceptor implements HttpInterceptor {
           if (event instanceof HttpResponse) {
             if (event.status == 401) {
               console.log('Unauthorized access: redirecting to login');
-              this.window.location.href = '/auth/logout';
+              this.window.location.href = '/login';
             }
           }
           return event;
@@ -22,7 +22,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         error: (error) => {
           if (error.status === 401) {
             console.log('Unauthorized access error: redirecting to login');
-            this.window.location.href = '/auth/logout';
+            this.window.location.href = '/login';
             this.errorHandlerService.handleError(error);
           }
         },
