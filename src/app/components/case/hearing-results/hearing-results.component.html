@@ -9,5 +9,26 @@
     </li>
   </ul>
 </nav>
-
-<p>hearing-results works!</p>
+<table class="govuk-table">
+  <caption class="govuk-table__caption govuk-table__caption--m">
+    Hearings
+  </caption>
+  <thead class="govuk-table__head">
+    <tr class="govuk-table__row">
+      <th scope="col" class="govuk-table__header">Hearing date</th>
+      <th scope="col" class="govuk-table__header">Judge</th>
+      <th scope="col" class="govuk-table__header">Courtroom</th>
+      <th scope="col" class="govuk-table__header">No. of transcripts</th>
+    </tr>
+  </thead>
+  <tbody class="govuk-table__body">
+    <ng-container *ngFor="let h of hearings">
+      <tr class="govuk-table__row">
+        <td class="govuk-table__cell">{{ h.date | date : 'd MMM y' }}</td>
+        <td class="govuk-table__cell">{{ h.judges }}</td>
+        <td class="govuk-table__cell">{{ h.courtroom }}</td>
+        <td class="govuk-table__cell">{{ h.transcript_count }}</td>
+      </tr>
+    </ng-container>
+  </tbody>
+</table>

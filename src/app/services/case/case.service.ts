@@ -6,6 +6,7 @@ import { ErrorHandlerService } from '../error/error-handler.service';
 import { CaseData } from '../../../app/types/case';
 import { CaseFile } from 'src/app/types/case-file';
 import { CourthouseData } from '../../../app/types/courthouse';
+import { HearingData } from 'src/app/types/hearing';
 
 const GET_COURTHOUSES_PATH = '/api/courthouses';
 const GET_CASE_PATH = '/api/cases/';
@@ -42,6 +43,17 @@ export class CaseService {
   getCaseFile(caseId: string | number): Observable<CaseFile> {
     const apiURL = `${GET_CASE_PATH}/${caseId}`;
     return this.http.get<CaseFile>(apiURL).pipe();
+  }
+
+  // Single get case hearings
+  getCaseHearings(caseId: number): Observable<HearingData[]> {
+    const apiURL = `${GET_CASE_PATH}/${caseId}/hearings`;
+    return this.http.get<HearingData[]>(apiURL).pipe(
+      catchError((err: Error) => {
+        this.errorHandlerService.handleError(err);
+        return throwError(() => err);
+      })
+    );
   }
 
   //Advanced search API fetching multiple cases

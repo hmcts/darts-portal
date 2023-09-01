@@ -30,9 +30,6 @@ export class CaseFileComponent implements OnInit {
       error: (error: HttpErrorResponse) => {
         console.log(error.error.type);
       },
-      complete: () => {
-        console.log('complete');
-      },
     });
   }
 

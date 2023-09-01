@@ -1,6 +1,7 @@
 export interface HearingData {
-  id: 1;
+  id: number;
   date: string;
+  judges: string[] = [];
   courtroom: string;
-  judges: string[];
+  transcript_count: number;
 }

@@ -27,6 +27,39 @@ const singleCaseTwo = {
   retain_until: '2023-08-10T11:23:24.858Z',
 };
 
+const singleCaseHearings = [
+  {
+    "id": 2,
+    "date": "2023-09-01",
+    "judges": [
+      "Bob Ross"
+    ],
+    "courtroom": "4",
+    "transcript_count": 0
+  },
+  {
+    "id": 2,
+    "date": "2023-03-01",
+    "judges": [
+      "Defender Dave"
+    ],
+    "courtroom": "2",
+    "transcript_count": 2
+  }
+];
+
+const singleCaseTwoHearings = [
+  {
+    "id": 1,
+    "date": "2023-09-01",
+    "judges": [
+      "HHJ M. Hussain KC"
+    ],
+    "courtroom": "3",
+    "transcript_count": 1
+  }
+];
+
 const multipleCases = [
   {
     caseID: 1,
@@ -348,5 +381,27 @@ router.get('/:caseId', (req, res) => {
       break;
   }
 });
+
+// CASES STUB APIs
+// hearings
+router.get('/:caseId/hearings', (req, res) => {
+  switch (req.params.caseId) {
+    case 'CASE_104':
+      const resBody104 = {
+        type: 'CASE_104',
+        title: 'The requested case cannot be found',
+        status: 404,
+      };
+      res.status(400).send(resBody104);
+      break;
+    case '2':
+      res.send(singleCaseHearings);
+      break;
+    default:
+      res.send(singleCaseTwoHearings);
+      break;
+  }
+})
+
 
 module.exports = router;
