@@ -18,7 +18,7 @@ import { ERROR_MESSAGES } from './enums/error.enum';
   imports: [ReactiveFormsModule, NgIf, ResultsComponent],
 })
 export class SearchComponent implements AfterViewChecked, AfterViewInit {
-  @ViewChild('courthouseAutocomplete', { static: false }) autocomplete!: ElementRef<HTMLElement>;
+  @ViewChild('courthouseAutocomplete', {static: false}) autocomplete!: ElementRef<HTMLElement>;
   dateInputType!: 'specific' | 'range';
   cases: CaseData[] = [];
   courthouses: CourthouseData[] = [];
@@ -26,7 +26,8 @@ export class SearchComponent implements AfterViewChecked, AfterViewInit {
   errorType = '';
   error = '';
 
-  constructor(private caseService: CaseService) {}
+  constructor(private caseService: CaseService) {
+  }
 
   form: FormGroup = new FormGroup({
     case_number: new FormControl('', Validators.required),
@@ -86,46 +87,67 @@ export class SearchComponent implements AfterViewChecked, AfterViewInit {
 
   // Submit Registration Form
   onSubmit() {
-    const selectedDateInput = this.dateInputType.valueOf();
+
+    let valid = true;
 
     // //AC2 - Searching a courtroom without courthouse
-    // if (this.form.get('courtroom')?.value !== '' || this.form.get('courthouse')?.value === '') {
+    //  if (this.form.get('courtroom')?.value !== '' && this.form.get('courthouse')?.value === '') {
     //   this.error = ERROR_MESSAGES.COURTROOM;
+    //   this.errorType = 'COURTROOM';
     //   console.log(ERROR_MESSAGES.COURTROOM);
+    //   valid = false;
     // }
 
-    //AC4 - Date range: start date is blank (same as AC5)
-    if (selectedDateInput === 'range') {
-      if (this.form.get('date_from')?.value === '' || this.form.get('date_to')?.value !== '') {
-        this.error = ERROR_MESSAGES.START_DATE_MISSING;
-        console.log(ERROR_MESSAGES.START_DATE_MISSING);
-      }
-    }
+    const selectedDateInput = this.dateInputType.valueOf();
+
+    // //AC4 - Date range: start date is blank (same as AC5)
+    // if (selectedDateInput === 'range') {
+    //   if (this.form.get('date_from')?.value === '' || this.form.get('date_to')?.value !== '') {
+    //     this.errorType = 'START_DATE_MISSING';
+    //     this.error = ERROR_MESSAGES.START_DATE_MISSING;
+    //     console.log(ERROR_MESSAGES.START_DATE_MISSING);
+    //     valid = false;
+    //   }
+    // }
 
     //AC5 - Date range: end date is blank
     // if (selectedDateInput === 'range') {
     //   if (this.form.get('date_from')?.value !== '' || this.form.get('date_to')?.value === '') {
     //     console.log(ERROR_MESSAGES.END_DATE_MISSING);
+    //     this.errorType = 'END_DATE_MISSING';
     //     this.error = ERROR_MESSAGES.END_DATE_MISSING;
+    //     valid = false;
     //   }
     // }
 
     //If manual input, verify format, i.e. expects 08/08/2023
     //AC6 - Invalid Date Format
     // if (this.form.get('specific')?.value !== Date) {
+    //   this.errorType = 'INVALID_DATE';
     //   this.error = ERROR_MESSAGES.INVALID_DATE;
     //   console.log(ERROR_MESSAGES.INVALID_DATE);
+    //   valid = false;
     // }
 
     //AC3 - Entering a date that's in the future
-    // if (selectedDateInput === 'specific') {
-    //   const DATE_FROM = new Date(this.form.get('date_from')?.value);
-    //   const TODAY = new Date();
-    //   if (DATE_FROM < TODAY) {
-    //     console.log(ERROR_MESSAGES.FUTURE_DATE)
-    //     this.error = ERROR_MESSAGES.FUTURE_DATE;
-    //   }
-    // }
+  //   if (selectedDateInput === 'specific') {
+  //   const DATE_FROM = new Date(this.form.get('date_from')?.value).toString()
+  //   console.log(DATE_FROM);
+  //   const TODAY = new Date().toString();
+  //   console.log(TODAY);
+  //   if (DATE_FROM > TODAY) {
+  //     console.log(ERROR_MESSAGES.FUTURE_DATE)
+  //     this.errorType = 'FUTURE_DATE';
+  //     this.error = ERROR_MESSAGES.FUTURE_DATE;
+  //     valid = false;
+  //   }
+  // }
+
+
+
+    if(!valid) {
+      return;
+    }
 
     this.caseService
       .getCasesAdvanced(
@@ -170,6 +192,8 @@ export class SearchComponent implements AfterViewChecked, AfterViewInit {
     this.form.reset();
     this.cases = [];
     this.loaded = false;
+    this.error = '';
+    this.errorType = '';
   }
 
   protected readonly ERROR_MESSAGES = ERROR_MESSAGES;

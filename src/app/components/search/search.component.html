@@ -46,6 +46,9 @@
       <div class="govuk-form-group">
         <label class="govuk-label" for="advanced-case-search"> Courtroom </label>
         <div id="courtroom-search-hint" class="govuk-hint">For example, 3</div>
+        <p *ngIf="errorType === 'COURTROOM'" class="govuk-error-message">
+          <span class="govuk-visually-hidden">Error:</span> {{ error }}
+        </p>
         <input
           formControlName="courtroom"
           class="govuk-input govuk-input--width-2"
@@ -81,6 +84,12 @@
           >
             <div data-module="ds-datepicker" class="ds_datepicker">
               <p class="ds_hint-text">For example, 31/01/2023.</p>
+              <p *ngIf="errorType === 'FUTURE_DATE'" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span> {{ error }}
+              </p>
+              <p *ngIf="errorType === 'INVALID_DATE'" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span> {{ error }}
+              </p>
               <div class="ds_input__wrapper">
                 <input
                   formControlName="date_from"
@@ -111,7 +120,7 @@
               <div data-module="ds-datepicker" class="ds_datepicker">
                 <label class="ds_label" for="range-date-from">From</label>
                 <p class="ds_hint-text">For example, 31/01/2023.</p>
-                <p *ngIf="error" class="govuk-error-message">
+                <p *ngIf="errorType === 'START_DATE_MISSING'" class="govuk-error-message">
                   <span class="govuk-visually-hidden">Error:</span> {{ error }}
                 </p>
                 <div class="ds_input__wrapper">
@@ -130,6 +139,9 @@
               <div data-module="ds-datepicker" class="ds_datepicker">
                 <label class="ds_label" for="range-date-to">To</label>
                 <p class="ds_hint-text">For example, 31/01/2023.</p>
+                <p *ngIf="errorType === 'END_DATE_MISSING'" class="govuk-error-message">
+                  <span class="govuk-visually-hidden">Error:</span> {{ error }}
+                </p>
                 <div class="ds_input__wrapper">
                   <input
                     formControlName="date_to"
