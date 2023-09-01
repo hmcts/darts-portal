@@ -29,12 +29,12 @@ const singleCaseTwo = {
 
 const multipleCases = [
   {
-    caseID: 1,
-    caseNumber: 'C20220620001',
+    case_id: 1,
+    case_number: 'C20220620001',
     courthouse: 'Swansea',
     defendants: ['Defendant Dave'],
     judges: ['Judge Judy'],
-    reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
+    reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
     hearings: [
       {
         id: 1,
@@ -45,20 +45,20 @@ const multipleCases = [
     ],
   },
   {
-    caseID: 2,
-    caseNumber: 'C20220620002',
+    case_id: 2,
+    case_number: 'C20220620002',
     courthouse: 'Slough',
     defendants: ['Defendant Derren'],
     judges: ['Judge Juniper'],
     hearings: [],
   },
   {
-    caseID: 3,
-    caseNumber: 'C20220620003',
+    case_id: 3,
+    case_number: 'C20220620003',
     courthouse: 'Reading',
     defendants: ['Defendant Darran', 'Defendant Daniel'],
     judges: ['Judge Julie'],
-    reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
+    reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
     hearings: [
       {
         id: 1,
@@ -69,8 +69,8 @@ const multipleCases = [
     ],
   },
   {
-    caseID: 4,
-    caseNumber: 'C20220620004',
+    case_id: 4,
+    case_number: 'C20220620004',
     courthouse: 'Windsor',
     defendants: ['Defendant Dileep', 'Defendant Debs'],
     judges: ['Judge Josephine', 'Judge Jackie'],
@@ -90,12 +90,12 @@ const multipleCases = [
     ],
   },
   {
-    caseID: 1,
-    caseNumber: 'C20220620001',
+    case_id: 1,
+    case_number: 'C20220620001',
     courthouse: 'Swansea',
     defendants: ['Defendant Dave'],
     judges: ['Judge Judy'],
-    reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
+    reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
     hearings: [
       {
         id: 1,
@@ -106,20 +106,20 @@ const multipleCases = [
     ],
   },
   {
-    caseID: 2,
-    caseNumber: 'C20220620002',
+    case_id: 2,
+    case_number: 'C20220620002',
     courthouse: 'Slough',
     defendants: ['Defendant Derren'],
     judges: ['Judge Juniper'],
     hearings: [],
   },
   {
-    caseID: 3,
-    caseNumber: 'C20220620003',
+    case_id: 3,
+    case_number: 'C20220620003',
     courthouse: 'Reading',
     defendants: ['Defendant Darran', 'Defendant Daniel'],
     judges: ['Judge Julie'],
-    reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
+    reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
     hearings: [
       {
         id: 1,
@@ -130,8 +130,8 @@ const multipleCases = [
     ],
   },
   {
-    caseID: 4,
-    caseNumber: 'C20220620004',
+    case_id: 4,
+    case_number: 'C20220620004',
     courthouse: 'Windsor',
     defendants: ['Defendant Dileep', 'Defendant Debs'],
     judges: ['Judge Josephine', 'Judge Jackie'],
@@ -151,12 +151,12 @@ const multipleCases = [
     ],
   },
   {
-    caseID: 1,
-    caseNumber: 'C20220620001',
+    case_id: 1,
+    case_number: 'C20220620001',
     courthouse: 'Swansea',
     defendants: ['Defendant Dave'],
     judges: ['Judge Judy'],
-    reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
+    reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
     hearings: [
       {
         id: 1,
@@ -167,20 +167,20 @@ const multipleCases = [
     ],
   },
   {
-    caseID: 2,
-    caseNumber: 'C20220620002',
+    case_id: 2,
+    case_number: 'C20220620002',
     courthouse: 'Slough',
     defendants: ['Defendant Derren'],
     judges: ['Judge Juniper'],
     hearings: [],
   },
   {
-    caseID: 3,
-    caseNumber: 'C20220620003',
+    case_id: 3,
+    case_number: 'C20220620003',
     courthouse: 'Reading',
     defendants: ['Defendant Darran', 'Defendant Daniel'],
     judges: ['Judge Julie'],
-    reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
+    reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
     hearings: [
       {
         id: 1,
@@ -191,8 +191,8 @@ const multipleCases = [
     ],
   },
   {
-    caseID: 4,
-    caseNumber: 'C20220620004',
+    case_id: 4,
+    case_number: 'C20220620004',
     courthouse: 'Windsor',
     defendants: ['Defendant Dileep', 'Defendant Debs'],
     judges: ['Judge Josephine', 'Judge Jackie'],
@@ -212,12 +212,12 @@ const multipleCases = [
     ],
   },
   {
-    caseID: 1,
-    caseNumber: 'C20220620001',
+    case_id: 1,
+    case_number: 'C20220620001',
     courthouse: 'Swansea',
     defendants: ['Defendant Dave'],
     judges: ['Judge Judy'],
-    reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
+    reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
     hearings: [
       {
         id: 1,
@@ -228,20 +228,20 @@ const multipleCases = [
     ],
   },
   {
-    caseID: 2,
-    caseNumber: 'C20220620002',
+    case_id: 2,
+    case_number: 'C20220620002',
     courthouse: 'Slough',
     defendants: ['Defendant Derren'],
     judges: ['Judge Juniper'],
     hearings: [],
   },
   {
-    caseID: 3,
-    caseNumber: 'C20220620003',
+    case_id: 3,
+    case_number: 'C20220620003',
     courthouse: 'Reading',
     defendants: ['Defendant Darran', 'Defendant Daniel'],
     judges: ['Judge Julie'],
-    reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
+    reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
     hearings: [
       {
         id: 1,
@@ -252,8 +252,8 @@ const multipleCases = [
     ],
   },
   {
-    caseID: 4,
-    caseNumber: 'C20220620004',
+    case_id: 4,
+    case_number: 'C20220620004',
     courthouse: 'Windsor',
     defendants: ['Defendant Dileep', 'Defendant Debs'],
     judges: ['Judge Josephine', 'Judge Jackie'],

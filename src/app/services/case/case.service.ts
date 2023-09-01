@@ -7,6 +7,7 @@ import { CaseData } from '../../../app/types/case';
 import { CaseFile } from 'src/app/types/case-file';
 import { CourthouseData } from '../../../app/types/courthouse';
 
+//API Endpoints
 const GET_COURTHOUSES_PATH = '/api/courthouses';
 const GET_CASE_PATH = '/api/cases/';
 const ADVANCED_SEARCH_CASE_PATH = '/api/cases/search';
@@ -14,6 +15,7 @@ const ADVANCED_SEARCH_CASE_PATH = '/api/cases/search';
 @Injectable({
   providedIn: 'root',
 })
+//Class containing API requests for data fetching
 export class CaseService {
   constructor(private readonly http: HttpClient, private errorHandlerService: ErrorHandlerService) {}
   private params: HttpParams = new HttpParams();

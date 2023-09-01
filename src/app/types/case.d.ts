@@ -1,11 +1,13 @@
 import Hearing from './hearing';
 
 export interface CaseData {
-  caseID: number;
-  caseNumber: string;
+  case_id: number;
+  case_number: string;
   courthouse?: string;
   defendants?: string[] = [];
+  defenders?: string[] = [];
   judges?: string[] = [];
-  reportingRestriction?: string;
+  reporting_restriction?: string;
   hearings?: Hearing[];
+  retain_until?: string;
 }

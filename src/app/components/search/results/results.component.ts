@@ -16,10 +16,8 @@ export class ResultsComponent {
   @Input() loaded = false;
   @Input() errorType = '';
 
-  constructor(private dateTimeService: DateTimeService) {}
-
   getDateFormat(d: string) {
-    return this.dateTimeService.getdddDMMMYYYY(d);
+    return DateTimeService.getdddDMMMYYYY(d);
   }
 
   //Fetches correct display value for defendants and judges
