@@ -8,6 +8,7 @@ import { CaseData } from '../../../app/types/case';
 import { ResultsComponent } from './results/results.component';
 import { CourthouseData } from '../../../app/types/courthouse';
 import accessibleAutocomplete, { AccessibleAutocompleteProps } from 'accessible-autocomplete';
+import { ERROR_MESSAGES } from './enums/error.enum';
 
 @Component({
   selector: 'app-search',
@@ -23,6 +24,7 @@ export class SearchComponent implements AfterViewChecked, AfterViewInit {
   courthouses: CourthouseData[] = [];
   loaded = false;
   errorType = '';
+  error = '';
 
   constructor(private caseService: CaseService) {}
 
@@ -84,6 +86,47 @@ export class SearchComponent implements AfterViewChecked, AfterViewInit {
 
   // Submit Registration Form
   onSubmit() {
+    const selectedDateInput = this.dateInputType.valueOf();
+
+    // //AC2 - Searching a courtroom without courthouse
+    // if (this.form.get('courtroom')?.value !== '' || this.form.get('courthouse')?.value === '') {
+    //   this.error = ERROR_MESSAGES.COURTROOM;
+    //   console.log(ERROR_MESSAGES.COURTROOM);
+    // }
+
+    //AC4 - Date range: start date is blank (same as AC5)
+    if (selectedDateInput === 'range') {
+      if (this.form.get('date_from')?.value === '' || this.form.get('date_to')?.value !== '') {
+        this.error = ERROR_MESSAGES.START_DATE_MISSING;
+        console.log(ERROR_MESSAGES.START_DATE_MISSING);
+      }
+    }
+
+    //AC5 - Date range: end date is blank
+    // if (selectedDateInput === 'range') {
+    //   if (this.form.get('date_from')?.value !== '' || this.form.get('date_to')?.value === '') {
+    //     console.log(ERROR_MESSAGES.END_DATE_MISSING);
+    //     this.error = ERROR_MESSAGES.END_DATE_MISSING;
+    //   }
+    // }
+
+    //If manual input, verify format, i.e. expects 08/08/2023
+    //AC6 - Invalid Date Format
+    // if (this.form.get('specific')?.value !== Date) {
+    //   this.error = ERROR_MESSAGES.INVALID_DATE;
+    //   console.log(ERROR_MESSAGES.INVALID_DATE);
+    // }
+
+    //AC3 - Entering a date that's in the future
+    // if (selectedDateInput === 'specific') {
+    //   const DATE_FROM = new Date(this.form.get('date_from')?.value);
+    //   const TODAY = new Date();
+    //   if (DATE_FROM < TODAY) {
+    //     console.log(ERROR_MESSAGES.FUTURE_DATE)
+    //     this.error = ERROR_MESSAGES.FUTURE_DATE;
+    //   }
+    // }
+
     this.caseService
       .getCasesAdvanced(
         this.form.get('case_number')?.value || '',
@@ -128,4 +171,6 @@ export class SearchComponent implements AfterViewChecked, AfterViewInit {
     this.cases = [];
     this.loaded = false;
   }
+
+  protected readonly ERROR_MESSAGES = ERROR_MESSAGES;
 }

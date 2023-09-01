@@ -1,3 +1,16 @@
+<div *ngIf="error" class="govuk-error-summary" data-module="govuk-error-summary">
+  <div role="alert">
+    <h2 class="govuk-error-summary__title">There is a problem</h2>
+    <div class="govuk-error-summary__body">
+      <ul class="govuk-list govuk-error-summary__list">
+        <li>
+          <a routerLink="" fragment="user-type">{{ error }}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
 <!-- Start of form -->
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="govuk-form-group">
@@ -93,12 +106,14 @@
             />
             <label class="govuk-label govuk-radios__label" for="advanced-case-search"> Date range </label>
           </div>
-
           <div *ngIf="dateInputType === 'range'" id="date-range-items">
             <div class="govuk-form-group govuk-details__text input-group-indent-1" id="range-date-items">
               <div data-module="ds-datepicker" class="ds_datepicker">
                 <label class="ds_label" for="range-date-from">From</label>
                 <p class="ds_hint-text">For example, 31/01/2023.</p>
+                <p *ngIf="error" class="govuk-error-message">
+                  <span class="govuk-visually-hidden">Error:</span> {{ error }}
+                </p>
                 <div class="ds_input__wrapper">
                   <input
                     formControlName="date_from"
