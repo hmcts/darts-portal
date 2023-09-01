@@ -6,6 +6,69 @@ import { HearingData } from 'src/app/types/hearing';
 describe('ResultsComponent', () => {
   let component: ResultsComponent;
   let fixture: ComponentFixture<ResultsComponent>;
+  const MOCK_CASES: CaseData[] = [
+    {
+      caseID: 1,
+      caseNumber: 'C20220620001',
+      courthouse: 'Swansea',
+      defendants: ['Defendant Dave'],
+      judges: ['Judge Judy'],
+      reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
+      hearings: [
+        {
+          id: 1,
+          date: '2023-08-10',
+          courtroom: '1',
+          judges: ['Judge Judy'],
+        },
+      ],
+    },
+    {
+      caseID: 2,
+      caseNumber: 'C20220620002',
+      courthouse: 'Slough',
+      defendants: ['Defendant Derren'],
+      judges: ['Judge Juniper'],
+      hearings: [],
+    },
+    {
+      caseID: 3,
+      caseNumber: 'C20220620003',
+      courthouse: 'Reading',
+      defendants: ['Defendant Darran', 'Defendant Daniel'],
+      judges: ['Judge Julie'],
+      reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
+      hearings: [
+        {
+          id: 1,
+          date: '2023-08-10',
+          courtroom: '3',
+          judges: ['Judge Judy'],
+        },
+      ],
+    },
+    {
+      caseID: 4,
+      caseNumber: 'C20220620004',
+      courthouse: 'Windsor',
+      defendants: ['Defendant Dileep', 'Defendant Debs'],
+      judges: ['Judge Josephine', 'Judge Jackie'],
+      hearings: [
+        {
+          id: 1,
+          date: '2023-08-10',
+          courtroom: '3',
+          judges: ['Judge Judy'],
+        },
+        {
+          id: 2,
+          date: '2033-09-10',
+          courtroom: '5',
+          judges: ['Judge Judy'],
+        },
+      ],
+    },
+  ];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -97,6 +160,30 @@ describe('ResultsComponent', () => {
       expect(component.getHearingsValue).toHaveBeenCalled();
       expect(dValue).toBe('');
       expect(cValue).toBe('');
+    });
+  });
+
+  describe('Pagination', () => {
+    it('pages cases based on page limit', () => {
+      component.cases = MOCK_CASES;
+      component.currentPage = 1;
+      component.pageLimit = 1;
+
+      component.ngOnChanges();
+
+      expect(component.pagedCases.length).toEqual(1);
+    });
+
+    it('pages cases based on current page', () => {
+      // Given 4 cases and a page limit of 3
+      component.cases = MOCK_CASES;
+      component.currentPage = 2;
+      component.pageLimit = 3;
+
+      component.ngOnChanges();
+
+      expect(component.pagedCases.length).toEqual(1);
+      expect(component.pagedCases[0]).toEqual(MOCK_CASES[3]);
     });
   });
 });

@@ -23,20 +23,16 @@ export class ResultsComponent implements OnChanges {
   pageLimit = 25;
 
   ngOnChanges(): void {
-    this.pagedCases = this.paginate(this.cases, this.pageLimit, this.currentPage);
+    this.updatePagedCases();
   }
 
-  changePage(page: number) {
+  onPageChanged(page: number): void {
     this.currentPage = page;
-    this.pagedCases = this.paginate(this.cases, this.pageLimit, this.currentPage);
-  }
-
-  getDateFormat(d: string) {
-    return this.dateTimeService.getdddDMMMYYYY(d);
+    this.updatePagedCases();
   }
 
   //Fetches correct display value for defendants and judges
-  getNameValue(arr: string[] | undefined) {
+  getNameValue(arr: string[] | undefined): string {
     if (arr) {
       if (arr.length === 0) {
         return '';
@@ -53,7 +49,7 @@ export class ResultsComponent implements OnChanges {
   }
 
   //Fetches correct display value for dates and courtrooms
-  getHearingsValue(c: CaseData, key: string) {
+  getHearingsValue(c: CaseData, key: string): string {
     if (!c.hearings || c.hearings.length === 0) {
       return '';
     } else {
@@ -67,6 +63,14 @@ export class ResultsComponent implements OnChanges {
         return 'Multiple';
       }
     }
+  }
+
+  private getDateFormat(d: string): string {
+    return this.dateTimeService.getdddDMMMYYYY(d);
+  }
+
+  private updatePagedCases(): void {
+    this.pagedCases = this.paginate(this.cases, this.pageLimit, this.currentPage);
   }
 
   private paginate(array: CaseData[], pageSize: number, currentPage: number) {
