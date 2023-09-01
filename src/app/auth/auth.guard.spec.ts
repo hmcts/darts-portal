@@ -6,7 +6,7 @@ import { authGuard } from './auth.guard';
 
 describe('authGuard', () => {
   const mockRouter = {
-    navigateByUrl: jasmine.createSpy('navigateByUrl'),
+    navigateByUrl: jest.fn(),
   };
   const executeGuard: CanActivateFn = (...guardParameters) =>
     TestBed.runInInjectionContext(() => authGuard(...guardParameters));

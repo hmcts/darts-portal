@@ -4,6 +4,7 @@ import axios from 'axios';
 import config from 'config';
 import bodyParser from 'body-parser';
 import SecurityToken from 'server/types/classes/securityToken';
+import { AuthenticationUtils } from '../utils/authentication-utils';
 
 const ERROR_CODES = {
   RESET_PWD: 'AADB2C90118',
@@ -136,12 +137,8 @@ function getIsAuthenticated(disableAuthentication = false): (req: Request, res: 
   return (req: Request, res: Response) => {
     // don't allow caching of this endpoint
     res.header('Cache-Control', 'no-store, must-revalidate');
-    let accessToken;
-    if (req.session.securityToken) {
-      accessToken = req.session.securityToken.accessToken;
-    }
 
-    if (accessToken || disableAuthentication) {
+    if (!AuthenticationUtils.isJwtExpired(req.session?.securityToken?.accessToken) || disableAuthentication) {
       res.status(200).send();
     } else {
       res.status(401).send();
@@ -163,3 +160,4 @@ export function init(disableAuthentication = false): Router {
   router.get('/is-authenticated', getIsAuthenticated(disableAuthentication));
   return router;
 }
+export { AuthenticationUtils };

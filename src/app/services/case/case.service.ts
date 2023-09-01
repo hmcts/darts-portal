@@ -5,23 +5,34 @@ import { catchError } from 'rxjs/operators';
 import { ErrorHandlerService } from '../error/error-handler.service';
 import { CaseData } from '../../../app/types/case';
 import { CaseFile } from 'src/app/types/case-file';
+import { CourthouseData } from '../../../app/types/courthouse';
 
-const GET_CASE_PATH = '/api/cases';
+const GET_COURTHOUSES_PATH = '/api/courthouses';
+const GET_CASE_PATH = '/api/cases/';
 const ADVANCED_SEARCH_CASE_PATH = '/api/cases/search';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CaseService {
-  constructor(private readonly http: HttpClient, private ErrorHandler: ErrorHandlerService) {}
+  constructor(private readonly http: HttpClient, private errorHandlerService: ErrorHandlerService) {}
   private params: HttpParams = new HttpParams();
+
+  //Fetches all courthouses
+  getCourthouses(): Observable<CourthouseData[]> {
+    return this.http.get<CourthouseData[]>(GET_COURTHOUSES_PATH).pipe(
+      catchError((err: Error) => {
+        this.errorHandlerService.handleError(err);
+        return throwError(() => err);
+      })
+    );
+  }
 
   //Single get case API
   getCase(caseId: string | number): Observable<CaseData> {
-    const apiURL = `${GET_CASE_PATH}?caseId=${caseId}`;
-    return this.http.get<CaseData>(apiURL).pipe(
+    return this.http.get<CaseData>(`${GET_CASE_PATH}?caseId=${caseId}`).pipe(
       catchError((err: Error) => {
-        this.ErrorHandler.handleError(err);
+        this.errorHandlerService.handleError(err);
         return throwError(() => err);
       })
     );
@@ -63,9 +74,11 @@ export class CaseService {
       this.params = this.params.set('defendant_name', defendant_name);
     }
     if (date_from) {
+      date_from = date_from.split('/').reverse().join('-');
       this.params = this.params.set('date_from', date_from);
     }
     if (date_to) {
+      date_to = date_to.split('/').reverse().join('-');
       this.params = this.params.set('date_to', date_to);
     }
     if (event_text_contains) {
@@ -78,7 +91,7 @@ export class CaseService {
     //Make API call out to advanced search case API, return Observable to Case Component, catch any errors and pass to ErrorHandler service
     return this.http.get<CaseData[]>(apiURL, options).pipe(
       catchError((err: Error) => {
-        this.ErrorHandler.handleError(err);
+        this.errorHandlerService.handleError(err);
         return throwError(() => err);
       })
     );

@@ -7,7 +7,7 @@ import { DateTimeService } from '../../../services/datetime/datetime.service';
 @Component({
   selector: 'app-results',
   templateUrl: './results.component.html',
-  styleUrls: ['./results.component.css'],
+  styleUrls: ['./results.component.scss'],
   imports: [NgIf, NgFor, RouterLink],
   standalone: true,
 })
