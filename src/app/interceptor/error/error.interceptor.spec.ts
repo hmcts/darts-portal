@@ -45,7 +45,7 @@ describe('ErrorInterceptor', () => {
       const reqMock = new HttpRequest<unknown>('GET', '/api');
       interceptor.intercept(reqMock, mockHandler).subscribe();
 
-      expect(window.location.href).toBe('/auth/logout');
+      expect(window.location.href).toBe('/login');
     });
 
     it('should redirect to /auth/logout on 401 error response', () => {
@@ -61,7 +61,7 @@ describe('ErrorInterceptor', () => {
         (result) => console.log('good', result),
         (err) => {
           expect(err).toEqual(errorResponse);
-          expect(window.location.href).toBe('/auth/logout');
+          expect(window.location.href).toBe('/login');
         }
       );
     });
