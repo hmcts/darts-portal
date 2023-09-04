@@ -1,6 +1,17 @@
-<p>Breadcrumb trail to-do...</p>
+<div class="govuk-breadcrumbs">
+  <ol class="govuk-breadcrumbs__list">
+    <li class="govuk-breadcrumbs__list-item">
+      <a routerLink="../.." class="govuk-breadcrumbs__link">{{ case.case_number }}</a>
+    </li>
+    <li class="govuk-breadcrumbs__list-item">
+      <a [routerLink]="['/case/', case.case_id, 'hearing', hearing.id]" class="govuk-breadcrumbs__link">{{
+        hearing.date | date : 'd MMM y'
+      }}</a>
+    </li>
+  </ol>
+</div>
 
-<div *ngIf="reporting_restriction" class="moj-banner" role="region" aria-label="information">
+<div *ngIf="case.reporting_restriction" class="moj-banner" role="region" aria-label="information">
   <svg
     class="moj-banner__icon"
     fill="currentColor"
@@ -23,7 +34,7 @@
 </div>
 <div>
   <h1 class="govuk-caption-l">Hearing</h1>
-  <h1 class="govuk-heading-l">{{ displayHearingDate(hearing.date) }}</h1>
+  <h1 class="govuk-heading-l">{{ hearing.date | date : 'd MMM y' }}</h1>
   <h3 class="govuk-heading-s">Courthouse</h3>
   <p class="govuk-body">{{ case.courthouse }}</p>
   <h3 class="govuk-heading-s">Courtroom</h3>

@@ -42,12 +42,12 @@ export class CaseService {
   }
 
   // Single get case file
-  getCaseFile(caseId: string | number): Observable<CaseFile> {
+  getCaseFile(caseId: string | number): Observable<CaseData> {
     const apiURL = `${GET_CASE_PATH}/${caseId}`;
-    return this.http.get<CaseFile>(apiURL).pipe();
+    return this.http.get<CaseData>(apiURL).pipe();
   }
 
-  // Single get case hearings
+  // Get hearings for a single case
   getCaseHearings(caseId: number): Observable<HearingData[]> {
     const apiURL = `${GET_CASE_PATH}/${caseId}/hearings`;
     return this.http.get<HearingData[]>(apiURL).pipe(

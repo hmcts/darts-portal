@@ -4,6 +4,9 @@ import { HearingFileComponent } from './hearing-file/hearing-file.component';
 import { CaseDataService } from 'src/app/services/case/data/case-data.service';
 import { CaseData } from 'src/app/types/case';
 import { HearingData } from 'src/app/types/hearing';
+import { ActivatedRoute } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+import { CaseService } from 'src/app/services/case/case.service';
 
 @Component({
   selector: 'app-hearing',
@@ -13,15 +16,65 @@ import { HearingData } from 'src/app/types/hearing';
   styleUrls: ['./hearing.component.scss'],
 })
 export class HearingComponent implements OnInit {
-  constructor(private caseDataService: CaseDataService) {}
   case!: CaseData;
   hearing!: HearingData;
+  caseId: number;
+  hearingId: number;
 
-  ngOnInit(): void {
-    //Load single case data & hearing from shared service
-    this.case = this.caseDataService.getCase();
-    this.hearing = this.caseDataService.getHearing();
+  constructor(
+    private route: ActivatedRoute,
+    private caseDataService: CaseDataService,
+    private caseService: CaseService
+  ) {
+    this.hearingId = this.route.snapshot.params.hearing_id;
+    this.caseId = this.route.snapshot.params.caseId;
   }
 
-  //Add logic to say if refreshed, fetch same data based off id in param
+  ngOnInit(): void {
+    this.loadData();
+  }
+
+  //Loads single case and hearing from either shared service or API
+  loadData(): void {
+    const c = this.caseDataService.getCase();
+    if (c) {
+      this.case = c;
+    }
+    const hearing = this.caseDataService.getHearingById(this.hearingId);
+    if (hearing) {
+      this.hearing = hearing;
+    }
+
+    if (!c || !hearing) {
+      this.loadFromApi();
+    }
+  }
+
+  //Loads case and hearing data from API to persist data, e.g. after refresh
+  loadFromApi(): void {
+    console.log('loading case and hearing data directly from api due to events such as refresh');
+    this.getCaseFileApi();
+    this.getHearingsApi();
+  }
+
+  //Executes API request for getting hearings and assigns to hearings variable
+  getHearingsApi(): void {
+    this.caseService.getCaseHearings(this.caseId).subscribe({
+      next: (hearings: HearingData[]) => {
+        const hearing = this.caseDataService.getHearingById(this.hearingId, hearings);
+        if (hearing) {
+          this.hearing = hearing;
+        }
+      },
+    });
+  }
+
+  //Executes API request for specific case file and assigns to case variable
+  getCaseFileApi(): void {
+    this.caseService.getCaseFile(this.caseId).subscribe({
+      next: (result: CaseData) => {
+        this.case = result;
+      },
+    });
+  }
 }
