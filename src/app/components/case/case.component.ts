@@ -26,7 +26,6 @@ export class CaseComponent implements OnInit {
     this.caseId = this.route.snapshot.params.caseId;
     this.caseService.getCaseFile(this.caseId).subscribe({
       next: (result: CaseFile) => {
-        console.log(result);
         this.caseFile = result;
       },
       error: (error: HttpErrorResponse) => {
