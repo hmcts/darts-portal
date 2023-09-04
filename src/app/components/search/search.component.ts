@@ -1,7 +1,7 @@
 import { AfterViewChecked, AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { initAll } from '@scottish-government/pattern-library/src/all';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NgIf } from '@angular/common';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CaseService } from '../../services/case/case.service';
 import { CaseData } from '../../../app/types/case';
@@ -9,12 +9,23 @@ import { ResultsComponent } from './results/results.component';
 import { CourthouseData } from '../../../app/types/courthouse';
 import accessibleAutocomplete, { AccessibleAutocompleteProps } from 'accessible-autocomplete';
 
+interface ErrorSummaryEntry {
+  fieldId: string;
+  message: string;
+}
+
+const FieldErrors: { [key: string]: { [key: string]: string } } = {
+  case_number: {
+    required: 'You must enter a case number.',
+  },
+};
+
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf, ResultsComponent],
+  imports: [ReactiveFormsModule, NgIf, ResultsComponent, NgClass, NgFor],
 })
 export class SearchComponent implements AfterViewChecked, AfterViewInit {
   @ViewChild('courthouseAutocomplete', { static: false }) autocomplete!: ElementRef<HTMLElement>;
@@ -22,6 +33,8 @@ export class SearchComponent implements AfterViewChecked, AfterViewInit {
   cases: CaseData[] = [];
   courthouses: CourthouseData[] = [];
   loaded = false;
+  submitted = false;
+  errorSummary: ErrorSummaryEntry[] = [];
   errorType = '';
 
   constructor(private caseService: CaseService) {}
@@ -84,6 +97,13 @@ export class SearchComponent implements AfterViewChecked, AfterViewInit {
 
   // Submit Registration Form
   onSubmit() {
+    this.submitted = true;
+    this.errorSummary = [];
+    if (this.form.invalid) {
+      this.errorSummary = this.generateErrorSummary();
+      return;
+    }
+
     this.caseService
       .getCasesAdvanced(
         this.form.get('case_number')?.value || '',
@@ -122,10 +142,33 @@ export class SearchComponent implements AfterViewChecked, AfterViewInit {
     initAll();
   }
 
+  // convenience getter for easy access to form fields
+  get f() {
+    return this.form.controls;
+  }
+
+  getFieldErrorMessages(fieldName: string): string[] {
+    const errors = this.f[fieldName].errors;
+    if (!errors) {
+      return [];
+    }
+    return Object.keys(errors).map((errorType) => FieldErrors[fieldName][errorType]);
+  }
+
+  private generateErrorSummary(): ErrorSummaryEntry[] {
+    const formControls = this.f;
+    return Object.keys(formControls)
+      .filter((fieldId) => formControls[fieldId].errors)
+      .map((fieldId) => this.getFieldErrorMessages(fieldId).map((message) => ({ fieldId, message })))
+      .flat();
+  }
+
   clearSearch() {
     (document.querySelector("[name='courthouse']") as HTMLInputElement).value = '';
     this.form.reset();
     this.cases = [];
     this.loaded = false;
+    this.submitted = false;
+    this.errorSummary = [];
   }
 }
