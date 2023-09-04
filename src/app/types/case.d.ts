@@ -6,6 +6,6 @@ export interface CaseData {
   courthouse?: string;
   defendants?: string[] = [];
   judges?: string[] = [];
-  reportingRestriction?: string;
+  reporting_restriction?: string;
   hearings?: Hearing[];
 }

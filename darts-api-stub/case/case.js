@@ -67,7 +67,7 @@ const multipleCases = [
     courthouse: 'Swansea',
     defendants: ['Defendant Dave'],
     judges: ['Judge Judy'],
-    reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
+    reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
     hearings: [
       {
         id: 1,
@@ -91,7 +91,7 @@ const multipleCases = [
     courthouse: 'Reading',
     defendants: ['Defendant Darran', 'Defendant Daniel'],
     judges: ['Judge Julie'],
-    reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
+    reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
     hearings: [
       {
         id: 1,
@@ -128,7 +128,7 @@ const multipleCases = [
     courthouse: 'Swansea',
     defendants: ['Defendant Dave'],
     judges: ['Judge Judy'],
-    reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
+    reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
     hearings: [
       {
         id: 1,
@@ -152,7 +152,7 @@ const multipleCases = [
     courthouse: 'Reading',
     defendants: ['Defendant Darran', 'Defendant Daniel'],
     judges: ['Judge Julie'],
-    reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
+    reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
     hearings: [
       {
         id: 1,
@@ -189,7 +189,7 @@ const multipleCases = [
     courthouse: 'Swansea',
     defendants: ['Defendant Dave'],
     judges: ['Judge Judy'],
-    reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
+    reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
     hearings: [
       {
         id: 1,
@@ -213,7 +213,7 @@ const multipleCases = [
     courthouse: 'Reading',
     defendants: ['Defendant Darran', 'Defendant Daniel'],
     judges: ['Judge Julie'],
-    reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
+    reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
     hearings: [
       {
         id: 1,
@@ -250,7 +250,7 @@ const multipleCases = [
     courthouse: 'Swansea',
     defendants: ['Defendant Dave'],
     judges: ['Judge Judy'],
-    reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
+    reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
     hearings: [
       {
         id: 1,
@@ -274,7 +274,7 @@ const multipleCases = [
     courthouse: 'Reading',
     defendants: ['Defendant Darran', 'Defendant Daniel'],
     judges: ['Judge Julie'],
-    reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
+    reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
     hearings: [
       {
         id: 1,
