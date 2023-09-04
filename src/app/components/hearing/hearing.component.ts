@@ -22,4 +22,6 @@ export class HearingComponent implements OnInit {
     this.case = this.caseDataService.getCase();
     this.hearing = this.caseDataService.getHearing();
   }
+
+  //Add logic to say if refreshed, fetch same data based off id in param
 }
