@@ -1,8 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { ErrorHandlerService } from '../error/error-handler.service';
+import { ErrorHandler, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { CaseData } from '../../../app/types/case';
 import { CourthouseData } from '../../../app/types/courthouse';
 
@@ -14,27 +12,17 @@ const ADVANCED_SEARCH_CASE_PATH = '/api/cases/search';
   providedIn: 'root',
 })
 export class CaseService {
-  constructor(private readonly http: HttpClient, private errorHandlerService: ErrorHandlerService) {}
+  constructor(private readonly http: HttpClient, private errorHandlerService: ErrorHandler) {}
   private params: HttpParams = new HttpParams();
 
   //Fetches all courthouses
   getCourthouses(): Observable<CourthouseData[]> {
-    return this.http.get<CourthouseData[]>(GET_COURTHOUSES_PATH).pipe(
-      catchError((err: Error) => {
-        this.errorHandlerService.handleError(err);
-        return throwError(() => err);
-      })
-    );
+    return this.http.get<CourthouseData[]>(GET_COURTHOUSES_PATH);
   }
 
   //Single get case API
   getCase(caseId: string | number): Observable<CaseData> {
-    return this.http.get<CaseData>(`${GET_CASE_PATH}?caseId=${caseId}`).pipe(
-      catchError((err: Error) => {
-        this.errorHandlerService.handleError(err);
-        return throwError(() => err);
-      })
-    );
+    return this.http.get<CaseData>(`${GET_CASE_PATH}?caseId=${caseId}`);
   }
 
   //Advanced search API fetching multiple cases
@@ -82,12 +70,7 @@ export class CaseService {
     const apiURL = ADVANCED_SEARCH_CASE_PATH;
 
     //Make API call out to advanced search case API, return Observable to Case Component, catch any errors and pass to ErrorHandler service
-    return this.http.get<CaseData[]>(apiURL, options).pipe(
-      catchError((err: Error) => {
-        this.errorHandlerService.handleError(err);
-        return throwError(() => err);
-      })
-    );
+    return this.http.get<CaseData[]>(apiURL, options);
   }
 
   public getHttpParams(): HttpParams {

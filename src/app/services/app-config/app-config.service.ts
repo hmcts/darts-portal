@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
+import { HttpBackendClient } from 'src/app/extensions/HttpBackendClient';
 
 export interface AppConfig {
   appInsightsKey: string;
@@ -8,13 +8,11 @@ export interface AppConfig {
 
 const CONFIG_PATH = '/app/config';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class AppConfigService {
   private appConfig: AppConfig | undefined;
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(private http: HttpBackendClient) {}
 
   async loadAppConfig(): Promise<void> {
     console.log('loading app config');

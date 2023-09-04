@@ -1,69 +1,71 @@
-import { HttpErrorResponse, HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ErrorHandlerService } from '../../services/error/error-handler.service';
-import { ErrorInterceptor } from './error.interceptor';
+import { HttpErrorResponse, HttpRequest, HttpHandler } from '@angular/common/http';
+import { ErrorHandler } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { of, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
+import { ErrorInterceptor } from './error.interceptor';
+
+class MockWindow {
+  location = {
+    href: '',
+  };
+}
 
 describe('ErrorInterceptor', () => {
-  let httpHandlerSpy: HttpHandler;
-  let errorHandlerSpy: ErrorHandlerService;
   let interceptor: ErrorInterceptor;
-  let window: Window;
+  let errorHandler: ErrorHandler;
+  let mockWindow: MockWindow;
 
   beforeEach(() => {
-    window = {
-      location: {
-        href: '',
-      },
-    } as unknown as Window;
-    errorHandlerSpy = {
-      err: jest.fn(),
-    } as unknown as ErrorHandlerService;
-    httpHandlerSpy = {
-      handle: jest.fn(),
-    } as unknown as HttpHandler;
-
-    interceptor = new ErrorInterceptor(errorHandlerSpy, window);
-
+    mockWindow = new MockWindow();
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [{ provide: 'Window', useValue: window }],
+      providers: [
+        ErrorInterceptor,
+        { provide: ErrorHandler, useValue: { handleError: jest.fn() } },
+        { provide: 'Window', useValue: mockWindow },
+      ],
     });
+    interceptor = TestBed.inject(ErrorInterceptor);
+    errorHandler = TestBed.inject(ErrorHandler);
   });
 
   it('should be created', () => {
     expect(interceptor).toBeTruthy();
   });
 
-  describe('ErrorInterceptor 401 status', () => {
-    it('should redirect to /auth/logout on 401 status', async () => {
-      const mockHandler = {
-        handle: jest.fn(() => of(new HttpResponse({ status: 401, body: { data: 'unauthorised' } }))),
-      };
+  it('should handle 401 error', (done) => {
+    const errorResponse = new HttpErrorResponse({ status: 401 });
+    const request = new HttpRequest('GET', '/test');
+    const next: HttpHandler = {
+      handle: () => throwError(() => errorResponse),
+    };
 
-      const reqMock = new HttpRequest<unknown>('GET', '/api');
-      interceptor.intercept(reqMock, mockHandler).subscribe();
-
-      expect(window.location.href).toBe('/login');
+    interceptor.intercept(request, next).subscribe({
+      error: (error) => {
+        expect(error).toBe(errorResponse);
+        console.log(mockWindow.location.href);
+        expect(mockWindow.location.href).toEqual('/login');
+        expect(false);
+        done();
+      },
     });
+  });
 
-    it('should redirect to /auth/logout on 401 error response', () => {
-      const errorResponse = new HttpErrorResponse({
-        error: { code: `some code`, message: `some message.` },
-        status: 401,
-        statusText: 'Not Authorised',
-      });
-      jest.spyOn(httpHandlerSpy, 'handle').mockReturnValue(throwError(() => errorResponse));
+  it('should not handle non-401 errors', (done) => {
+    const errorResponse = new HttpErrorResponse({ status: 500 });
+    const request = new HttpRequest('GET', '/test');
+    const next: HttpHandler = {
+      handle: () => throwError(() => errorResponse),
+    };
+    const handleErrorSpy = jest.spyOn(errorHandler, 'handleError');
 
-      const reqMock = new HttpRequest<unknown>('GET', '/api');
-      interceptor.intercept(reqMock, httpHandlerSpy).subscribe(
-        (result) => console.log('good', result),
-        (err) => {
-          expect(err).toEqual(errorResponse);
-          expect(window.location.href).toBe('/login');
-        }
-      );
+    interceptor.intercept(request, next).subscribe({
+      error: (error) => {
+        expect(error).toBe(errorResponse);
+        console.log(mockWindow.location.href);
+        expect(mockWindow.location.href).toBe('');
+        expect(handleErrorSpy).toHaveBeenCalledWith(error);
+        done();
+      },
     });
   });
 });
