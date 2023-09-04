@@ -8,7 +8,7 @@ describe('CaseFileComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CaseFileComponent]
+      imports: [CaseFileComponent],
     });
     fixture = TestBed.createComponent(CaseFileComponent);
     component = fixture.componentInstance;
