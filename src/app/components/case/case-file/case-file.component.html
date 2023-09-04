@@ -1,37 +1,39 @@
 <a routerLink="../../search" routerLinkActive="router-link-active" class="govuk-back-link">Back</a>
-<div *ngIf="caseFile.reporting_restriction" class="moj-banner" role="region" aria-label="information">
-  <svg
-    class="moj-banner__icon"
-    fill="currentColor"
-    role="presentation"
-    focusable="false"
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 25 25"
-    height="25"
-    width="25"
-  >
-    <path
-      d="M13.7,18.5h-2.4v-2.4h2.4V18.5z M12.5,13.7c-0.7,0-1.2-0.5-1.2-1.2V7.7c0-0.7,0.5-1.2,1.2-1.2s1.2,0.5,1.2,1.2v4.8
-	C13.7,13.2,13.2,13.7,12.5,13.7z M12.5,0.5c-6.6,0-12,5.4-12,12s5.4,12,12,12s12-5.4,12-12S19.1,0.5,12.5,0.5z"
-    />
-  </svg>
-  <div class="moj-banner__message">
-    <h2 class="govuk-heading-m">Restriction:&nbsp;</h2>
-    <p class="govuk-body-m">{{ caseFile.reporting_restriction }}</p>
+<ng-container *ngIf="caseFile">
+  <div *ngIf="caseFile.reporting_restriction" class="moj-banner" role="region" aria-label="information">
+    <svg
+      class="moj-banner__icon"
+      fill="currentColor"
+      role="presentation"
+      focusable="false"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 25 25"
+      height="25"
+      width="25"
+    >
+      <path
+        d="M13.7,18.5h-2.4v-2.4h2.4V18.5z M12.5,13.7c-0.7,0-1.2-0.5-1.2-1.2V7.7c0-0.7,0.5-1.2,1.2-1.2s1.2,0.5,1.2,1.2v4.8
+    C13.7,13.2,13.2,13.7,12.5,13.7z M12.5,0.5c-6.6,0-12,5.4-12,12s5.4,12,12,12s12-5.4,12-12S19.1,0.5,12.5,0.5z"
+      />
+    </svg>
+    <div class="moj-banner__message">
+      <h2 class="govuk-heading-m">Restriction:&nbsp;</h2>
+      <p class="govuk-body-m">{{ caseFile.reporting_restriction }}</p>
+    </div>
   </div>
-</div>
-<h1 class="govuk-caption-l">Case ID</h1>
-<h1 class="govuk-heading-l">{{ caseFile.case_number }}</h1>
-<h3 class="govuk-heading-s">Courthouse</h3>
-<p class="govuk-body">{{ caseFile.courthouse }}</p>
-<h3 class="govuk-heading-s">Prosecutor(s)</h3>
-<p class="govuk-body">{{ caseFile.prosecutors }}</p>
-<h3 class="govuk-heading-s">Defence(s)</h3>
-<p class="govuk-body">{{ caseFile.defenders }}</p>
-<h3 class="govuk-heading-s">Defendant(s)</h3>
-<p class="govuk-body">{{ caseFile.defendants }}</p>
-<h3 class="govuk-heading-s">Retained until</h3>
-<p class="govuk-body">
-  {{ caseFile.retain_until | date : 'd MMM y' }} &nbsp;&nbsp;
-  <a routerLink="#" routerLinkActive="router-link-active" class="govuk-link">Change</a>
-</p>
+  <h1 class="govuk-caption-l">Case ID</h1>
+  <h1 class="govuk-heading-l">{{ caseFile.case_number }}</h1>
+  <h3 class="govuk-heading-s">Courthouse</h3>
+  <p class="govuk-body">{{ caseFile.courthouse }}</p>
+  <h3 class="govuk-heading-s">Prosecutor(s)</h3>
+  <p class="govuk-body">{{ caseFile.prosecutors }}</p>
+  <h3 class="govuk-heading-s">Defence(s)</h3>
+  <p class="govuk-body">{{ caseFile.defenders }}</p>
+  <h3 class="govuk-heading-s">Defendant(s)</h3>
+  <p class="govuk-body">{{ caseFile.defendants }}</p>
+  <h3 class="govuk-heading-s">Retained until</h3>
+  <p class="govuk-body">
+    {{ caseFile.retain_until | date : 'd MMM y' }} &nbsp;&nbsp;
+    <a routerLink="#" routerLinkActive="router-link-active" class="govuk-link">Change</a>
+  </p>
+</ng-container>
