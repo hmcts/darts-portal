@@ -15,12 +15,13 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class HearingResultsComponent implements OnInit {
   hearings: HearingData[] = [];
+  caseId = 0;
 
   constructor(private route: ActivatedRoute, private caseService: CaseService) {}
 
   getCaseHearings(): void {
-    const caseId = this.route.snapshot.params.caseId;
-    this.caseService.getCaseHearings(caseId).subscribe({
+    this.caseId = this.route.snapshot.params.caseId;
+    this.caseService.getCaseHearings(this.caseId).subscribe({
       next: (result: HearingData[]) => {
         this.hearings = result;
       },

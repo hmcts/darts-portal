@@ -13,7 +13,7 @@ import { HearingData } from 'src/app/types/hearing';
   styleUrls: ['./hearing.component.scss'],
 })
 export class HearingComponent implements OnInit {
-  caseDataService: CaseDataService = new CaseDataService();
+  constructor(private caseDataService: CaseDataService) {}
   case!: CaseData;
   hearing!: HearingData;
 

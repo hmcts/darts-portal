@@ -24,7 +24,7 @@ const protectedRoutes: Routes = [
     loadComponent: () => import('./components/case/case.component').then((c) => c.CaseComponent),
   },
   {
-    path: 'hearing/:hearing_id',
+    path: 'case/:caseId/hearing/:hearing_id',
     loadComponent: () => import('./components/hearing/hearing.component').then((c) => c.HearingComponent),
   },
 ].map((route) => ({ ...route, canActivate: [authGuard] }));

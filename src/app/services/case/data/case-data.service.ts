@@ -11,13 +11,7 @@ export class CaseDataService {
   case!: CaseData;
   hearing!: HearingData;
 
-  setCase(c: CaseData) {
-    c = {
-      case_id: 1,
-      case_number: '12342',
-      reporting_restriction: 'Section 39, Children and Young Persons Act 1933',
-      courthouse: 'Reading'
-    }
+  setCase(c: CaseData) {    
     this.case = c;
   }
 
@@ -25,15 +19,7 @@ export class CaseDataService {
     return this.case;    
   }
 
-  setHearing(h: HearingData) {
-    h = {
-      id: 1,
-      date: '2023-09-01',
-      judges: ['judge judy', 'judge jeffrey', 'judge jose'],
-      courtroom: '99',
-      transcript_count: 100,
-    };
-    
+  setHearing(h: HearingData) {    
     this.hearing = h;
   }
 

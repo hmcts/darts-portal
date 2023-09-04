@@ -18,14 +18,14 @@
   </svg>
   <div class="moj-banner__message">
     <h2 class="govuk-heading-m">Restriction:&nbsp;</h2>
-    <p class="govuk-body-m">{{ reporting_restriction }}</p>
+    <p class="govuk-body-m">{{ case.reporting_restriction }}</p>
   </div>
 </div>
 <div>
   <h1 class="govuk-caption-l">Hearing</h1>
   <h1 class="govuk-heading-l">{{ displayHearingDate(hearing.date) }}</h1>
   <h3 class="govuk-heading-s">Courthouse</h3>
-  <p class="govuk-body">{{ courthouse }}</p>
+  <p class="govuk-body">{{ case.courthouse }}</p>
   <h3 class="govuk-heading-s">Courtroom</h3>
   <p class="govuk-body">{{ hearing.courtroom }}</p>
   <h3 class="govuk-heading-s">Judge(s)</h3>
