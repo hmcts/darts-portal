@@ -12,7 +12,5 @@ import { CaseDataService } from 'src/app/services/case/data/case-data.service';
   styleUrls: ['./case.component.scss'],
 })
 export class CaseComponent {
-  caseDataService: CaseDataService = new CaseDataService;
-  
-  
+  caseDataService: CaseDataService = new CaseDataService();
 }
