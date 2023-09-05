@@ -10,5 +10,5 @@ import { HearingData } from 'src/app/types/hearing';
   styleUrls: ['./hearing-results.component.scss'],
 })
 export class HearingResultsComponent {
-  @Input() hearings!: HearingData[] | null;
+  @Input() hearings!: HearingData[];
 }

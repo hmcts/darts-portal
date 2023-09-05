@@ -10,5 +10,5 @@ import { CaseFile } from 'src/app/types/case-file';
   styleUrls: ['./case-file.component.scss'],
 })
 export class CaseFileComponent {
-  @Input() public caseFile!: CaseFile | null;
+  @Input() public caseFile!: CaseFile;
 }
