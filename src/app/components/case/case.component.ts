@@ -16,7 +16,7 @@ export class CaseComponent {
   private route = inject(ActivatedRoute);
   private caseService = inject(CaseService);
 
-  private caseId = this.route.snapshot.params.caseId;
+  public caseId = this.route.snapshot.params.caseId;
   public caseFile$ = this.caseService.getCaseFile(this.caseId);
   public hearings$ = this.caseService.getCaseHearings(this.caseId);
 }
