@@ -5172,15 +5172,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/connect-redis@npm:^0.0.20":
-  version: 0.0.20
-  resolution: "@types/connect-redis@npm:0.0.20"
+"@types/connect-redis@npm:^0.0.21":
+  version: 0.0.21
+  resolution: "@types/connect-redis@npm:0.0.21"
   dependencies:
     "@types/express": "*"
     "@types/express-session": "*"
     "@types/redis": ^2.8.0
     ioredis: ^5.3.0
-  checksum: 11e22b06b2338ab651e819902467292765bd24a11a0b0fd251b8226c0e0962c048106e715d2f71ebef53f161709c81df1e7b153c81388e51a9a8ca60b78d8886
+  checksum: edd9158f37b2e6aed30946b6e166a311cb7c4bd12dcdd3b41b9a9e1176bf48a59d601be980d11c0e04aab817dd71172a57a49b0d3a95cd0f1cdbdd474c2eabb1
   languageName: node
   linkType: hard
 
@@ -7655,7 +7655,7 @@ __metadata:
     "@scottish-government/pattern-library": ^0.0.368
     "@types/body-parser": ^1.19.2
     "@types/config": ^3.3.0
-    "@types/connect-redis": ^0.0.20
+    "@types/connect-redis": ^0.0.21
     "@types/cookie-parser": ^1.4.3
     "@types/express": ^4.17.17
     "@types/express-session": ^1.17.7
