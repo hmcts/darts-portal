@@ -1,14 +1,9 @@
-import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { RouterLink, ActivatedRoute } from '@angular/router';
+import { CaseService } from 'src/app/services/case/case.service';
 import { CaseFileComponent } from './case-file/case-file.component';
 import { HearingResultsComponent } from './hearing-results/hearing-results.component';
-import { CaseDataService } from 'src/app/services/case/data/case-data.service';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { CaseService } from 'src/app/services/case/case.service';
-import { HearingData } from 'src/app/types/hearing';
-import { HttpErrorResponse } from '@angular/common/http';
-import { CaseFile } from 'src/app/types/case-file';
-import { CaseData } from 'src/app/types/case';
 
 @Component({
   selector: 'app-case',
@@ -17,42 +12,11 @@ import { CaseData } from 'src/app/types/case';
   templateUrl: './case.component.html',
   styleUrls: ['./case.component.scss'],
 })
-export class CaseComponent implements OnInit {
-  public caseId!: string;
-  public caseFile!: CaseFile;
-  public hearings: HearingData[] = [];
+export class CaseComponent {
+  private route = inject(ActivatedRoute);
+  private caseService = inject(CaseService);
 
-  constructor(private route: ActivatedRoute, private caseService: CaseService, private caseDataService: CaseDataService) {}
-
-  getCaseFile(): void {
-    this.caseId = this.route.snapshot.params.caseId;
-    this.caseService.getCaseFile(this.caseId).subscribe({
-      next: (result: CaseData) => {
-        console.log(result);
-        this.caseFile = result;
-        this.caseDataService.setCase(this.caseFile);
-      },
-      error: (error: HttpErrorResponse) => {
-        console.log(error.error.type);
-      },
-    });
-  }
-
-  getCaseHearings(): void {
-    const caseId = this.route.snapshot.params.caseId;
-    this.caseService.getCaseHearings(caseId).subscribe({
-      next: (result: HearingData[]) => {
-        this.hearings = result;
-        this.caseDataService.setHearings(this.hearings);
-      },
-      error: (error: HttpErrorResponse) => {
-        console.log(error.error.type);
-      },
-    });
-  }
-
-  ngOnInit(): void {
-    this.getCaseFile();
-    this.getCaseHearings();
-  }
+  public caseId = this.route.snapshot.params.caseId;
+  public caseFile$ = this.caseService.getCaseFile(this.caseId);
+  public hearings$ = this.caseService.getCaseHearings(this.caseId);
 }

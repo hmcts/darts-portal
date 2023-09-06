@@ -10,7 +10,7 @@ import { HearingData } from 'src/app/types/hearing';
 
 //API Endpoints
 const GET_COURTHOUSES_PATH = '/api/courthouses';
-const GET_CASE_PATH = '/api/cases/';
+const GET_CASE_PATH = '/api/cases';
 const ADVANCED_SEARCH_CASE_PATH = '/api/cases/search';
 
 @Injectable({
@@ -33,12 +33,19 @@ export class CaseService {
 
   //Single get case API
   getCase(caseId: string | number): Observable<CaseData> {
-    return this.http.get<CaseData>(`${GET_CASE_PATH}?caseId=${caseId}`).pipe(
-      catchError((err: Error) => {
-        this.errorHandlerService.handleError(err);
-        return throwError(() => err);
-      })
-    );
+    return this.http.get<CaseData>(`${GET_CASE_PATH}?caseId=${caseId}`);
+  }
+
+  // Single get case file
+  getCaseFile(caseId: string | number): Observable<CaseFile> {
+    const apiURL = `${GET_CASE_PATH}/${caseId}`;
+    return this.http.get<CaseFile>(apiURL);
+  }
+
+  // Single get case hearings
+  getCaseHearings(caseId: number): Observable<HearingData[]> {
+    const apiURL = `${GET_CASE_PATH}/${caseId}/hearings`;
+    return this.http.get<HearingData[]>(apiURL);
   }
 
   // Single get case file
