@@ -30,7 +30,7 @@ describe('CaseService', () => {
     retain_until: '2023-08-10T11:23:24.858Z',
   });
 
-  const mockSingleCaseTwoHearings: Observable<HearingData[]> = of([
+  const mockSingleCaseHearings: Observable<HearingData[]> = of([
     {
       id: 1,
       date: '2023-09-01',
@@ -56,22 +56,32 @@ describe('CaseService', () => {
   });
 
   describe('#getCaseFile', () => {
-    it('should return value from observable', async () => {
-      jest.spyOn(service, 'getCaseFile').mockReturnValue(mockCaseFile);
+    it('should call the correct api url', () => {
+      service.getCaseFile(1);
 
-      const returnValue = service.getCaseFile(1);
-      expect(returnValue).toBe(mockCaseFile);
+      expect(httpClientSpy.get).toHaveBeenCalledWith('/api/cases/1');
+    });
+
+    it('should return value from an observable', () => {
+      jest.spyOn(service, 'getCaseFile').mockReturnValue(mockCaseFile);
+      const caseFile$ = service.getCaseFile(1);
+
+      expect(caseFile$).toEqual(mockCaseFile);
     });
   });
 
   describe('#getCaseHearings', () => {
-    it('should return value from observable', async () => {
-      jest.spyOn(service, 'getCaseHearings').mockReturnValue(mockSingleCaseTwoHearings);
+    it('should call the correct api url', () => {
+      service.getCaseHearings(1);
 
-      service.getCaseHearings(1).subscribe((value) => {
-        console.log(value);
-        expect(value).toBe(mockSingleCaseTwoHearings);
-      });
+      expect(httpClientSpy.get).toHaveBeenCalledWith('/api/cases/1/hearings');
+    });
+
+    it('should return value from an observable', () => {
+      jest.spyOn(service, 'getCaseHearings').mockReturnValue(mockSingleCaseHearings);
+      const hearings$ = service.getCaseHearings(1);
+
+      expect(hearings$).toEqual(mockSingleCaseHearings);
     });
   });
 
