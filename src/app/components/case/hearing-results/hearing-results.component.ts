@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { RouterLink, ActivatedRoute } from '@angular/router';
-import { CaseDataService } from 'src/app/services/case/data/case-data.service';
 import { HearingData } from 'src/app/types/hearing';
 
 @Component({
@@ -15,7 +14,7 @@ export class HearingResultsComponent {
   caseId: number;
   @Input() hearings: HearingData[] = [];
 
-  constructor(private route: ActivatedRoute, private caseDataService: CaseDataService) {
+  constructor(private route: ActivatedRoute) {
     this.caseId = this.route.snapshot.params.caseId;
   }
 }
