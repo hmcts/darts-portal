@@ -6,12 +6,12 @@ import moment from 'moment';
 })
 export class DateTimeService {
   //e.g. Mon 26 Sep 2023
-  static getdddDMMMYYYY(date: string) {
+  getdddDMMMYYYY(date: string) {
     return moment(date, 'YYYY-MM-DD', true).format('ddd D MMM YYYY');
   }
 
   //e.g. 26 Jun 2022
-  static getDMMMYYYY(date: string) {
+  getDMMMYYYY(date: string) {
     return moment(date, 'YYYY-MM-DD', true).format('D MMM YYYY');
   }
 }

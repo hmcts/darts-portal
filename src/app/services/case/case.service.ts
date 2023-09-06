@@ -48,23 +48,6 @@ export class CaseService {
     return this.http.get<HearingData[]>(apiURL);
   }
 
-  // Single get case file
-  getCaseFile(caseId: string | number): Observable<CaseData> {
-    const apiURL = `${GET_CASE_PATH}/${caseId}`;
-    return this.http.get<CaseData>(apiURL).pipe();
-  }
-
-  // Get hearings for a single case
-  getCaseHearings(caseId: number): Observable<HearingData[]> {
-    const apiURL = `${GET_CASE_PATH}/${caseId}/hearings`;
-    return this.http.get<HearingData[]>(apiURL).pipe(
-      catchError((err: Error) => {
-        this.errorHandlerService.handleError(err);
-        return throwError(() => err);
-      })
-    );
-  }
-
   //Advanced search API fetching multiple cases
   getCasesAdvanced(
     case_number?: string,
