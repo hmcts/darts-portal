@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HearingFileComponent } from './hearing-file/hearing-file.component';
 import { CaseDataService } from 'src/app/services/case/data/case-data.service';
@@ -7,6 +7,8 @@ import { HearingData } from 'src/app/types/hearing';
 import { ActivatedRoute } from '@angular/router';
 import { CaseService } from 'src/app/services/case/case.service';
 import { EventsAndAudioComponent } from './events-and-audio/events-and-audio.component';
+import { HearingService } from 'src/app/services/hearing/hearing.service';
+import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-hearing',
@@ -18,17 +20,21 @@ import { EventsAndAudioComponent } from './events-and-audio/events-and-audio.com
 export class HearingComponent implements OnInit {
   case!: CaseData;
   hearing!: HearingData;
-  caseId: number;
-  hearingId: number;
 
   constructor(
     private route: ActivatedRoute,
     private caseDataService: CaseDataService,
     private caseService: CaseService
-  ) {
-    this.hearingId = this.route.snapshot.params.hearing_id;
-    this.caseId = this.route.snapshot.params.caseId;
-  }
+  ) {}
+
+  hearingService = inject(HearingService);
+
+  hearingId = this.route.snapshot.params.hearing_id;
+  caseId = this.route.snapshot.params.caseId;
+
+  audio$ = this.hearingService.getAudio(this.hearingId);
+  events$ = this.hearingService.getEvents(this.hearingId);
+  audioAndEvents$ = combineLatest({ audio: this.audio$, events: this.events$ });
 
   ngOnInit(): void {
     this.loadData();

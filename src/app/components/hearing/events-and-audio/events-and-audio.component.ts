@@ -1,8 +1,7 @@
-import { HearingService } from './../../../services/hearing/hearing.service';
-import { Component, inject } from '@angular/core';
+import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs';
+import { HearingAudio, HearingEvent, HearingAudioEventViewModel } from 'src/app/types/hearing-audio-event';
+import { HearingEventTypeEnum } from 'src/app/types/enums';
 
 @Component({
   selector: 'app-events-and-audio',
@@ -11,15 +10,35 @@ import { map } from 'rxjs';
   templateUrl: './events-and-audio.component.html',
   styleUrls: ['./events-and-audio.component.scss'],
 })
-export class EventsAndAudioComponent {
-  hearingService = inject(HearingService);
-  route = inject(ActivatedRoute);
+export class EventsAndAudioComponent implements OnInit {
+  @Input() audio: HearingAudio[] = [];
+  @Input() events: HearingEvent[] = [];
 
-  // hearingId$ = this.route.params.pipe(map(params => params['hearingId']))
-  // caseId$ = this.route.snapshot.params.caseId;
-  hearingId = this.route.snapshot.params.hearing_id;
-  caseId = this.route.snapshot.params.caseId;
+  @Output() eventsSelect = new EventEmitter<HearingAudioEventViewModel[]>();
 
-  audio$ = this.hearingService.getAudio(this.hearingId);
-  events$ = this.hearingService.getEvents(this.hearingId);
+  table: HearingAudioEventViewModel[] = [];
+  selectedRows: HearingAudioEventViewModel[] = [];
+
+  ngOnInit(): void {
+    this.table = [
+      ...this.audio.map((audio) => ({ ...audio, type: HearingEventTypeEnum.Audio })),
+      ...this.events.map((event) => ({ ...event, type: HearingEventTypeEnum.Event })),
+    ];
+  }
+
+  toggleRowSelection(row: HearingAudioEventViewModel) {
+    const index = this.selectedRows.indexOf(row);
+    if (index === -1) {
+      // Row not selected, add it to the selection
+      this.selectedRows.push(row);
+    } else {
+      // Row already selected, remove it from the selection
+      this.selectedRows.splice(index, 1);
+    }
+    console.log(this.selectedRows);
+  }
+
+  isRowSelected(row: HearingAudioEventViewModel) {
+    return this.selectedRows.includes(row);
+  }
 }

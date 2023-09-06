@@ -1,8 +1,66 @@
-<h2 class="govuk-heading-m">Events and audo recordings</h2>
-
-<pre
-  >{{ audio$ | async | json }}
-</pre>
-<pre
-  >{{ events$ | async | json }}
-</pre>
+<h2 class="govuk-heading-m">Events and audio recordings</h2>
+<div class="govuk-form-group">
+  <fieldset class="govuk-fieldset" aria-describedby="changedName-hint">
+    <div class="govuk-radios govuk-radios--inline govuk-radios--small" data-module="govuk-radios">
+      <div class="govuk-radios__item">
+        <input class="govuk-radios__input" id="changedName" name="changedName" type="radio" value="yes" />
+        <label class="govuk-label govuk-radios__label" for="changedName"> Audio preview and events </label>
+      </div>
+      <div class="govuk-radios__item">
+        <input class="govuk-radios__input" id="changedName-2" name="changedName" type="radio" value="no" />
+        <label class="govuk-label govuk-radios__label" for="changedName-2"> Events only </label>
+      </div>
+    </div>
+    <div id="changedName-hint" class="govuk-hint">Select events to include in requests</div>
+  </fieldset>
+</div>
+<table class="govuk-table">
+  <thead class="govuk-table__head">
+    <tr class="govuk-table__row">
+      <th scope="col" class="govuk-table__header">
+        <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+          <div class="govuk-checkboxes__item">
+            <input class="govuk-checkboxes__input" id="" name="" type="checkbox" value="" />
+            <label class="govuk-label govuk-checkboxes__label" for=""></label>
+          </div>
+        </div>
+      </th>
+      <th scope="col" class="govuk-table__header">Time</th>
+      <th scope="col" class="govuk-table__header">Event</th>
+      <th scope="col" class="govuk-table__header">Text</th>
+    </tr>
+  </thead>
+  <tbody class="govuk-table__body">
+    <tr *ngFor="let row of table; let i = index" [tabindex]="i" class="govuk-table__row">
+      <td scope="row" class="govuk-table__header">
+        <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+          <div class="govuk-checkboxes__item">
+            <input
+              [tabindex]="i + 1"
+              class="govuk-checkboxes__input"
+              [id]="row.id"
+              [name]="row.id"
+              type="checkbox"
+              [value]="row.id"
+              [checked]="isRowSelected(row)"
+              (change)="toggleRowSelection(row)"
+            />
+            <label class="govuk-label govuk-checkboxes__label" [for]="row.id"></label>
+          </div>
+        </div>
+      </td>
+      <ng-container *ngIf="row.type === 'audio'">
+        <td class="govuk-table__cell">
+          <button class="govuk-button govuk-button--secondary" data-module="govuk-button">Preview Audio</button>
+        </td>
+        <td class="govuk-table__cell">Start time: {{ row.media_start_timestamp | date : 'HH:mm:ss' }}</td>
+        <td class="govuk-table__cell">End time: {{ row.media_end_timestamp | date : 'HH:mm:ss' }}</td>
+      </ng-container>
+      <ng-container *ngIf="row.type === 'event'">
+        <td class="govuk-table__cell">{{ row.timestamp | date : 'HH:mm:ss' }}</td>
+        <td class="govuk-table__cell">{{ row.name }}</td>
+        <td class="govuk-table__cell">{{ row.text }}</td>
+      </ng-container>
+    </tr>
+  </tbody>
+</table>

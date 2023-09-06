@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HearingAudio } from 'src/app/types/hearing-audio';
-import { HearingEvent } from 'src/app/types/hearing-event';
+import { HearingAudio, HearingEvent } from 'src/app/types/hearing-audio-event';
 
 @Injectable({
   providedIn: 'root',
