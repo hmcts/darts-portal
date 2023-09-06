@@ -29,35 +29,29 @@ const singleCaseTwo = {
 
 const singleCaseHearings = [
   {
-    "id": 2,
-    "date": "2023-09-01",
-    "judges": [
-      "Bob Ross"
-    ],
-    "courtroom": "4",
-    "transcript_count": 0
+    id: 2,
+    date: '2023-09-01',
+    judges: ['Bob Ross'],
+    courtroom: '4',
+    transcript_count: 0,
   },
   {
-    "id": 2,
-    "date": "2023-03-01",
-    "judges": [
-      "Defender Dave"
-    ],
-    "courtroom": "2",
-    "transcript_count": 2
-  }
+    id: 2,
+    date: '2023-03-01',
+    judges: ['Defender Dave'],
+    courtroom: '2',
+    transcript_count: 2,
+  },
 ];
 
 const singleCaseTwoHearings = [
   {
-    "id": 1,
-    "date": "2023-09-01",
-    "judges": [
-      "HHJ M. Hussain KC"
-    ],
-    "courtroom": "3",
-    "transcript_count": 1
-  }
+    id: 1,
+    date: '2023-09-01',
+    judges: ['HHJ M. Hussain KC'],
+    courtroom: '3',
+    transcript_count: 1,
+  },
 ];
 
 const multipleCases = [
@@ -401,7 +395,86 @@ router.get('/:caseId/hearings', (req, res) => {
       res.send(singleCaseTwoHearings);
       break;
   }
-})
+});
 
+router.get('/hearings/:hearingId/audios', (req, res) => {
+  switch (req.params.hearingId) {
+    case '1':
+      const body1 = [
+        {
+          id: 1,
+          media_start_timestamp: '2023-07-31T14:32:24.620Z',
+          media_end_timestamp: '2023-07-31T14:32:24.620Z',
+        },
+        {
+          id: 2,
+          media_start_timestamp: '2022-07-31T14:32:24.620Z',
+          media_end_timestamp: '2022-07-31T14:32:24.620Z',
+        },
+        {
+          id: 3,
+          media_start_timestamp: '2023-07-31T14:32:24.620Z',
+          media_end_timestamp: '2023-07-31T14:32:24.620Z',
+        },
+      ];
+      res.send(body1);
+      break;
+    case '2':
+      const body2 = [
+        {
+          id: 4,
+          media_start_timestamp: '2021-07-31T14:32:24.620Z',
+          media_end_timestamp: '2021-07-31T14:32:24.620Z',
+        },
+      ];
+      res.send(body2);
+      break;
+    default:
+      res.send([]);
+      break;
+  }
+});
+
+router.get('/hearings/:hearingId/events', (req, res) => {
+  switch (req.params.hearingId) {
+    case '1':
+      const body1 = [
+        {
+          id: 1,
+          timestamp: '2023-07-31T14:32:24.620Z',
+          name: 'Case called on',
+          text: 'Record: New Case',
+        },
+        {
+          id: 2,
+          timestamp: '2023-07-31T14:32:24.620Z',
+          name: 'Case called on',
+          text: 'Record: New Case',
+        },
+        {
+          id: 3,
+          timestamp: '2023-07-31T14:32:24.620Z',
+          name: 'Case called on',
+          text: 'Record: New Case',
+        },
+      ];
+      res.send(body1);
+      break;
+    case '2':
+      const body2 = [
+        {
+          id: 4,
+          timestamp: '2023-07-31T14:32:24.620Z',
+          name: 'Case called on',
+          text: 'Record:New Case',
+        },
+      ];
+      res.send(body2);
+      break;
+    default:
+      res.send([]);
+      break;
+  }
+});
 
 module.exports = router;
