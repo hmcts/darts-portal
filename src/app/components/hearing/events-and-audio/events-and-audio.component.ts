@@ -35,7 +35,7 @@ export class EventsAndAudioComponent implements OnInit {
       // Row already selected, remove it from the selection
       this.selectedRows.splice(index, 1);
     }
-    console.log(this.selectedRows);
+    this.eventsSelect.emit(this.selectedRows);
   }
 
   isRowSelected(row: HearingAudioEventViewModel) {

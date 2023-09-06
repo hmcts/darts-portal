@@ -9,6 +9,7 @@ import { CaseService } from 'src/app/services/case/case.service';
 import { EventsAndAudioComponent } from './events-and-audio/events-and-audio.component';
 import { HearingService } from 'src/app/services/hearing/hearing.service';
 import { combineLatest } from 'rxjs';
+import { HearingAudioEventViewModel } from 'src/app/types/hearing-audio-event';
 
 @Component({
   selector: 'app-hearing',
@@ -82,5 +83,9 @@ export class HearingComponent implements OnInit {
         this.case = result;
       },
     });
+  }
+
+  onEventsSelected(audioAndEvents: HearingAudioEventViewModel[]) {
+    console.log(audioAndEvents);
   }
 }
