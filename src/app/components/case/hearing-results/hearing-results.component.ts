@@ -1,8 +1,7 @@
-import { Component, EventEmitter, Input, Output,  } from '@angular/core';
-import { CommonModule} from '@angular/common';
+import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { HearingData } from 'src/app/types/hearing';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { CaseDataService } from 'src/app/services/case/data/case-data.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-hearing-results',
@@ -12,10 +11,5 @@ import { CaseDataService } from 'src/app/services/case/data/case-data.service';
   styleUrls: ['./hearing-results.component.scss'],
 })
 export class HearingResultsComponent {
-  caseId: number; 
-  @Input() hearings: HearingData[] = [];
-
-  constructor(private route: ActivatedRoute, private caseDataService: CaseDataService) {
-    this.caseId = this.route.snapshot.params.caseId;
-  }
+  @Input() hearings!: HearingData[];
 }

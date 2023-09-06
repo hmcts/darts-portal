@@ -3,8 +3,11 @@ import { ErrorHandlerService } from '../../services/error/error-handler.service'
 import { CaseService } from './case.service';
 import { CaseData } from '../../../app/types/case';
 import { HttpErrorResponse } from '@angular/common/http';
-import { of, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { CourthouseData } from 'src/app/types/courthouse';
+import { CaseFile } from 'src/app/types/case-file';
+import { HearingData } from 'src/app/types/hearing';
+import { Component } from '@angular/core';
 
 describe('CaseService', () => {
   let httpClientSpy: HttpClient;
@@ -14,6 +17,28 @@ describe('CaseService', () => {
   const mockCases: CaseData[] = [];
   const courthouses: CourthouseData[] = [];
   const mockCase = {} as CaseData;
+
+  const mockCaseFile: Observable<CaseFile> = of({
+    case_id: 1,
+    courthouse: 'Swansea',
+    case_number: 'CASE1001',
+    defendants: ['Defendant Dave', 'Defendant Debbie'],
+    judges: ['Judge Judy', 'Judge Jones'],
+    prosecutors: ['Polly Prosecutor'],
+    defenders: ['Derek Defender'],
+    reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
+    retain_until: '2023-08-10T11:23:24.858Z',
+  });
+
+  const mockSingleCaseHearings: Observable<HearingData[]> = of([
+    {
+      id: 1,
+      date: '2023-09-01',
+      judges: ['HHJ M. Hussain KC'],
+      courtroom: '3',
+      transcript_count: 1,
+    },
+  ]);
 
   beforeEach(() => {
     httpClientSpy = {
@@ -28,6 +53,36 @@ describe('CaseService', () => {
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  describe('#getCaseFile', () => {
+    it('should call the correct api url', () => {
+      service.getCaseFile(1);
+
+      expect(httpClientSpy.get).toHaveBeenCalledWith('/api/cases/1');
+    });
+
+    it('should return value from an observable', () => {
+      jest.spyOn(service, 'getCaseFile').mockReturnValue(mockCaseFile);
+      const caseFile$ = service.getCaseFile(1);
+
+      expect(caseFile$).toEqual(mockCaseFile);
+    });
+  });
+
+  describe('#getCaseHearings', () => {
+    it('should call the correct api url', () => {
+      service.getCaseHearings(1);
+
+      expect(httpClientSpy.get).toHaveBeenCalledWith('/api/cases/1/hearings');
+    });
+
+    it('should return value from an observable', () => {
+      jest.spyOn(service, 'getCaseHearings').mockReturnValue(mockSingleCaseHearings);
+      const hearings$ = service.getCaseHearings(1);
+
+      expect(hearings$).toEqual(mockSingleCaseHearings);
+    });
   });
 
   //Need to create a mock testing controller to test API properly
