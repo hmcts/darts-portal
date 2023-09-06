@@ -30,7 +30,7 @@ export class CaseComponent implements OnInit {
       next: (result: CaseData) => {
         console.log(result);
         this.caseFile = result;
-        this.caseDataService.setCase(this.caseFile);
+        // this.caseDataService.setCase(this.caseFile);
       },
       error: (error: HttpErrorResponse) => {
         console.log(error.error.type);
@@ -43,7 +43,7 @@ export class CaseComponent implements OnInit {
     this.caseService.getCaseHearings(caseId).subscribe({
       next: (result: HearingData[]) => {
         this.hearings = result;
-        this.caseDataService.setHearings(this.hearings);
+        // this.caseDataService.setHearings(this.hearings);
       },
       error: (error: HttpErrorResponse) => {
         console.log(error.error.type);

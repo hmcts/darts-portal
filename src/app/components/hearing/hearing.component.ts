@@ -5,7 +5,6 @@ import { CaseDataService } from 'src/app/services/case/data/case-data.service';
 import { CaseData } from 'src/app/types/case';
 import { HearingData } from 'src/app/types/hearing';
 import { ActivatedRoute } from '@angular/router';
-import { HttpErrorResponse } from '@angular/common/http';
 import { CaseService } from 'src/app/services/case/case.service';
 
 @Component({
@@ -37,15 +36,18 @@ export class HearingComponent implements OnInit {
   //Loads single case and hearing from either shared service or API
   loadData(): void {
     const c = this.caseDataService.getCase();
+    const hearing = this.caseDataService.getHearingById(this.hearingId);
+    
     if (c) {
       this.case = c;
     }
-    const hearing = this.caseDataService.getHearingById(this.hearingId);
     if (hearing) {
       this.hearing = hearing;
     }
 
-    if (!c || !hearing) {
+    console.log('loading case', c); //remove me
+    console.log('loading data hearing',hearing); //remove me
+    if (!this.case || !this.hearing) {
       this.loadFromApi();
     }
   }
@@ -59,11 +61,13 @@ export class HearingComponent implements OnInit {
 
   //Executes API request for getting hearings and assigns to hearings variable
   getHearingsApi(): void {
+    console.log('in hearings api')//remove me
     this.caseService.getCaseHearings(this.caseId).subscribe({
       next: (hearings: HearingData[]) => {
         const hearing = this.caseDataService.getHearingById(this.hearingId, hearings);
         if (hearing) {
           this.hearing = hearing;
+          console.log('setting hearings ', hearing)
         }
       },
     });
