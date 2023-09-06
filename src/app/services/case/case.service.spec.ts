@@ -7,7 +7,6 @@ import { Observable, of, throwError } from 'rxjs';
 import { CourthouseData } from 'src/app/types/courthouse';
 import { CaseFile } from 'src/app/types/case-file';
 import { HearingData } from 'src/app/types/hearing';
-import { Component } from '@angular/core';
 
 describe('CaseService', () => {
   let httpClientSpy: HttpClient;

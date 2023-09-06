@@ -8,7 +8,7 @@ describe('EventsAndAudioComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [EventsAndAudioComponent]
+      imports: [EventsAndAudioComponent],
     });
     fixture = TestBed.createComponent(EventsAndAudioComponent);
     component = fixture.componentInstance;
