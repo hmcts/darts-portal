@@ -1,5 +1,6 @@
 import { NgFor, NgIf } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { CaseData } from '../../../../app/types/case';
 import { DateTimeService } from '../../../services/datetime/datetime.service';
 import { PaginationComponent } from '../../shared/pagination/pagination.component';
@@ -8,7 +9,7 @@ import { PaginationComponent } from '../../shared/pagination/pagination.componen
   selector: 'app-results',
   templateUrl: './results.component.html',
   styleUrls: ['./results.component.scss'],
-  imports: [NgIf, NgFor, PaginationComponent],
+  imports: [NgIf, NgFor, RouterLink, PaginationComponent],
   standalone: true,
 })
 export class ResultsComponent implements OnChanges {

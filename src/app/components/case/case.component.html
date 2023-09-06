@@ -1,0 +1,5 @@
+<div class="back-link">
+  <a routerLink="../../search" routerLinkActive="router-link-active" class="govuk-back-link">Back</a>
+</div>
+<app-case-file *ngIf="caseFile$ | async as caseFile" [caseFile]="caseFile"></app-case-file>
+<app-hearing-results *ngIf="hearings$ | async as hearings" [hearings]="hearings"></app-hearing-results>
