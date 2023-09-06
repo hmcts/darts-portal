@@ -11,8 +11,48 @@ const singleCase = {
   judges: ['Judge Judy', 'Judge Jones'],
   prosecutors: ['Polly Prosecutor'],
   defenders: ['Derek Defender'],
+  reporting_restriction: ['Section 4(2) of the Contempt of Court Act 1981'],
   retain_until: '2023-08-10T11:23:24.858Z',
 };
+
+//CASES Mock objects
+const singleCaseTwo = {
+  case_id: 2,
+  courthouse: 'Reading',
+  case_number: 'CASE1001',
+  defendants: ['Defendant Dave'],
+  judges: ['Judge Judy'],
+  prosecutors: ['Patrick Prosecutor'],
+  defenders: ['Derek Defender'],
+  retain_until: '2023-08-10T11:23:24.858Z',
+};
+
+const singleCaseHearings = [
+  {
+    id: 2,
+    date: '2023-09-01',
+    judges: ['Bob Ross'],
+    courtroom: '4',
+    transcript_count: 0,
+  },
+  {
+    id: 2,
+    date: '2023-03-01',
+    judges: ['Defender Dave'],
+    courtroom: '2',
+    transcript_count: 2,
+  },
+];
+
+const singleCaseTwoHearings = [
+  {
+    id: 1,
+    date: '2023-09-01',
+    judges: ['HHJ M. Hussain KC'],
+    courtroom: '3',
+    transcript_count: 1,
+  },
+];
 
 const multipleCases = [
   {
@@ -261,26 +301,6 @@ const multipleCases = [
   },
 ];
 
-// CASES STUB APIs
-// Simple search
-router.get('/{caseId}', (req, res) => {
-  singleCase.case_id = req.params.caseId;
-
-  switch (req.params.caseId) {
-    case 'CASE_104':
-      const resBody104 = {
-        type: 'CASE_104',
-        title: 'The requested case cannot be found',
-        status: 404,
-      };
-      res.status(400).send(resBody104);
-      break;
-    default:
-      res.send(singleCase);
-      break;
-  }
-});
-
 // Advanced search stub API
 router.get('/search', (req, res) => {
   switch (req.query.case_number) {
@@ -329,6 +349,50 @@ router.get('/search', (req, res) => {
       break;
     default:
       res.status(200).send(multipleCases);
+      break;
+  }
+});
+
+// CASES STUB APIs
+// Simple search
+router.get('/:caseId', (req, res) => {
+  singleCase.case_id = req.params.caseId;
+
+  switch (req.params.caseId) {
+    case 'CASE_104':
+      const resBody104 = {
+        type: 'CASE_104',
+        title: 'The requested case cannot be found',
+        status: 404,
+      };
+      res.status(400).send(resBody104);
+      break;
+    case '2':
+      res.send(singleCaseTwo);
+      break;
+    default:
+      res.send(singleCase);
+      break;
+  }
+});
+
+// CASES STUB APIs
+// hearings
+router.get('/:caseId/hearings', (req, res) => {
+  switch (req.params.caseId) {
+    case 'CASE_104':
+      const resBody104 = {
+        type: 'CASE_104',
+        title: 'The requested case cannot be found',
+        status: 404,
+      };
+      res.status(400).send(resBody104);
+      break;
+    case '2':
+      res.send(singleCaseHearings);
+      break;
+    default:
+      res.send(singleCaseTwoHearings);
       break;
   }
 });

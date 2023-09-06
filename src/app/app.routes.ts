@@ -19,6 +19,10 @@ const protectedRoutes: Routes = [
     path: 'search',
     loadComponent: () => import('./components/search/search.component').then((c) => c.SearchComponent),
   },
+  {
+    path: 'case/:caseId',
+    loadComponent: () => import('./components/case/case.component').then((c) => c.CaseComponent),
+  },
 ].map((route) => ({ ...route, canActivate: [authGuard] }));
 
 export const APP_ROUTES = [...openRoutes, ...protectedRoutes];

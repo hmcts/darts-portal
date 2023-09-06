@@ -42,7 +42,9 @@
       <tbody class="govuk-table__body">
         <ng-container *ngFor="let c of pagedCases">
           <tr class="govuk-table__row" [class.remove-bottom-border]="c.reporting_restriction">
-            <td class="govuk-table__cell">{{ c.case_number }}</td>
+            <td class="govuk-table__cell">
+              <a [routerLink]="['/case', c.case_id]" routerLinkActive="router-link-active">{{ c.case_number }}</a>
+            </td>
             <td class="govuk-table__cell">{{ c.courthouse }}</td>
             <td class="govuk-table__cell">{{ getHearingsValue(c, 'courtroom') }}</td>
             <td class="govuk-table__cell">{{ getNameValue(c.judges) }}</td>
