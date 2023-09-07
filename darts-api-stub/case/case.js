@@ -397,4 +397,84 @@ router.get('/:caseId/hearings', (req, res) => {
   }
 });
 
+router.get('/hearings/:hearingId/audios', (req, res) => {
+  switch (req.params.hearingId) {
+    case '1':
+      const body1 = [
+        {
+          id: 1,
+          media_start_timestamp: '2023-07-31T14:32:24.620Z',
+          media_end_timestamp: '2023-07-31T14:32:24.620Z',
+        },
+        {
+          id: 2,
+          media_start_timestamp: '2022-07-31T14:32:24.620Z',
+          media_end_timestamp: '2022-07-31T14:32:24.620Z',
+        },
+        {
+          id: 3,
+          media_start_timestamp: '2023-07-31T14:32:24.620Z',
+          media_end_timestamp: '2023-07-31T14:32:24.620Z',
+        },
+      ];
+      res.send(body1);
+      break;
+    case '2':
+      const body2 = [
+        {
+          id: 4,
+          media_start_timestamp: '2021-07-31T14:32:24.620Z',
+          media_end_timestamp: '2021-07-31T14:32:24.620Z',
+        },
+      ];
+      res.send(body2);
+      break;
+    default:
+      res.send([]);
+      break;
+  }
+});
+
+router.get('/hearings/:hearingId/events', (req, res) => {
+  switch (req.params.hearingId) {
+    case '1':
+      const body1 = [
+        {
+          id: 1,
+          timestamp: '2023-07-31T14:32:24.620Z',
+          name: 'Case called on',
+          text: 'Record: New Case',
+        },
+        {
+          id: 2,
+          timestamp: '2023-07-31T14:32:24.620Z',
+          name: 'Case called on',
+          text: 'Record: New Case',
+        },
+        {
+          id: 3,
+          timestamp: '2023-07-31T14:32:24.620Z',
+          name: 'Case called on',
+          text: 'Record: New Case',
+        },
+      ];
+      res.send(body1);
+      break;
+    case '2':
+      const body2 = [
+        {
+          id: 4,
+          timestamp: '2023-07-31T14:32:24.620Z',
+          name: 'Case called on',
+          text: 'Record:New Case',
+        },
+      ];
+      res.send(body2);
+      break;
+    default:
+      res.send([]);
+      break;
+  }
+});
+
 module.exports = router;

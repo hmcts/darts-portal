@@ -1,9 +1,9 @@
-import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { RouterLink, ActivatedRoute } from '@angular/router';
+import { CaseService } from 'src/app/services/case/case.service';
 import { CaseFileComponent } from './case-file/case-file.component';
 import { HearingResultsComponent } from './hearing-results/hearing-results.component';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { CaseService } from 'src/app/services/case/case.service';
 
 @Component({
   selector: 'app-case',

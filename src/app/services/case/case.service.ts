@@ -14,6 +14,7 @@ const ADVANCED_SEARCH_CASE_PATH = '/api/cases/search';
 @Injectable({
   providedIn: 'root',
 })
+//Class containing API requests for data fetching
 export class CaseService {
   constructor(private readonly http: HttpClient) {}
   private params: HttpParams = new HttpParams();
