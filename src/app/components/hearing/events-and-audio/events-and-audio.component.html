@@ -1,6 +1,7 @@
-<h2 class="govuk-heading-m">Events and audio recordings</h2>
+<h2 id="events-audio-heading" class="govuk-heading-m">Events and audio recordings</h2>
 <div class="govuk-form-group">
   <fieldset class="govuk-fieldset" aria-describedby="changedName-hint">
+    <legend id="changedName-hint" class="govuk-hint">Select events to include in requests</legend>
     <div class="govuk-radios govuk-radios--inline govuk-radios--small" data-module="govuk-radios">
       <div class="govuk-radios__item">
         <input class="govuk-radios__input" id="changedName" name="changedName" type="radio" value="yes" />
@@ -11,10 +12,9 @@
         <label class="govuk-label govuk-radios__label" for="changedName-2"> Events only </label>
       </div>
     </div>
-    <div id="changedName-hint" class="govuk-hint">Select events to include in requests</div>
   </fieldset>
 </div>
-<table class="govuk-table">
+<table class="govuk-table" aria-describedby="events-audio-heading">
   <thead class="govuk-table__head">
     <tr class="govuk-table__row">
       <th scope="col" class="govuk-table__header">
