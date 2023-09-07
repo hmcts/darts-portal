@@ -2,16 +2,15 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { CaseService } from 'src/app/services/case/case.service';
-import { CaseFile } from 'src/app/types/case-file';
 import { HearingData } from 'src/app/types/hearing';
-
 import { CaseComponent } from './case.component';
+import { CaseData } from 'src/app/types/case';
 
 describe('CaseComponent', () => {
   let component: CaseComponent;
   let fixture: ComponentFixture<CaseComponent>;
 
-  const mockCaseFile: Observable<CaseFile> = of({
+  const mockCaseFile: Observable<CaseData> = of({
     case_id: 1,
     courthouse: 'Swansea',
     case_number: 'CASE1001',
@@ -34,7 +33,7 @@ describe('CaseComponent', () => {
   ]);
 
   const caseServiceMock = {
-    getCaseFile: jest.fn(),
+    getCase: jest.fn(),
     getCaseHearings: jest.fn(),
   };
 
@@ -55,7 +54,7 @@ describe('CaseComponent', () => {
       ],
     });
 
-    jest.spyOn(caseServiceMock, 'getCaseFile').mockReturnValue(mockCaseFile);
+    jest.spyOn(caseServiceMock, 'getCase').mockReturnValue(mockCaseFile);
     jest.spyOn(caseServiceMock, 'getCaseHearings').mockReturnValue(mockSingleCaseTwoHearings);
 
     fixture = TestBed.createComponent(CaseComponent);
