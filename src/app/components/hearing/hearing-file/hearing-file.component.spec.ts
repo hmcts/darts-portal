@@ -7,7 +7,7 @@ describe('HearingFileComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HearingFileComponent]
+      imports: [HearingFileComponent],
     });
     fixture = TestBed.createComponent(HearingFileComponent);
     component = fixture.componentInstance;

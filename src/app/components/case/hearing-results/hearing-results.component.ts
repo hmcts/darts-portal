@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HearingData } from 'src/app/types/hearing';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-hearing-results',
@@ -11,5 +11,10 @@ import { RouterLink } from '@angular/router';
   styleUrls: ['./hearing-results.component.scss'],
 })
 export class HearingResultsComponent {
-  @Input() hearings!: HearingData[];
+  caseId: number;
+  @Input() hearings: HearingData[] = [];
+
+  constructor(private route: ActivatedRoute) {
+    this.caseId = this.route.snapshot.params.caseId;
+  }
 }

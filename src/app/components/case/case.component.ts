@@ -15,8 +15,12 @@ import { CaseService } from 'src/app/services/case/case.service';
 export class CaseComponent {
   private route = inject(ActivatedRoute);
   private caseService = inject(CaseService);
-
   public caseId = this.route.snapshot.params.caseId;
-  public caseFile$ = this.caseService.getCaseFile(this.caseId);
-  public hearings$ = this.caseService.getCaseHearings(this.caseId);
+  public caseFile$;
+  public hearings$;
+
+  constructor() {
+    this.caseFile$ = this.caseService.getCase(this.caseId);
+    this.hearings$ = this.caseService.getCaseHearings(this.caseId);
+  }
 }

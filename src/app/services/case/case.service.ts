@@ -1,10 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ErrorHandlerService } from '../error/error-handler.service';
 import { CaseData } from '../../../app/types/case';
-import { CaseFile } from 'src/app/types/case-file';
 import { CourthouseData } from '../../../app/types/courthouse';
 import { HearingData } from 'src/app/types/hearing';
 
@@ -16,53 +15,25 @@ const ADVANCED_SEARCH_CASE_PATH = '/api/cases/search';
 @Injectable({
   providedIn: 'root',
 })
-//Class containing API requests for data fetching
 export class CaseService {
   constructor(private readonly http: HttpClient, private errorHandlerService: ErrorHandlerService) {}
   private params: HttpParams = new HttpParams();
 
   //Fetches all courthouses
   getCourthouses(): Observable<CourthouseData[]> {
-    return this.http.get<CourthouseData[]>(GET_COURTHOUSES_PATH).pipe(
-      catchError((err: Error) => {
-        this.errorHandlerService.handleError(err);
-        return throwError(() => err);
-      })
-    );
-  }
-
-  //Single get case API
-  getCase(caseId: string | number): Observable<CaseData> {
-    return this.http.get<CaseData>(`${GET_CASE_PATH}?caseId=${caseId}`);
+    return this.http.get<CourthouseData[]>(GET_COURTHOUSES_PATH);
   }
 
   // Single get case file
-  getCaseFile(caseId: string | number): Observable<CaseFile> {
+  getCase(caseId: number): Observable<CaseData> {
     const apiURL = `${GET_CASE_PATH}/${caseId}`;
-    return this.http.get<CaseFile>(apiURL);
+    return this.http.get<CaseData>(apiURL);
   }
 
   // Single get case hearings
   getCaseHearings(caseId: number): Observable<HearingData[]> {
     const apiURL = `${GET_CASE_PATH}/${caseId}/hearings`;
     return this.http.get<HearingData[]>(apiURL);
-  }
-
-  // Single get case file
-  getCaseFile(caseId: string | number): Observable<CaseData> {
-    const apiURL = `${GET_CASE_PATH}/${caseId}`;
-    return this.http.get<CaseData>(apiURL).pipe();
-  }
-
-  // Get hearings for a single case
-  getCaseHearings(caseId: number): Observable<HearingData[]> {
-    const apiURL = `${GET_CASE_PATH}/${caseId}/hearings`;
-    return this.http.get<HearingData[]>(apiURL).pipe(
-      catchError((err: Error) => {
-        this.errorHandlerService.handleError(err);
-        return throwError(() => err);
-      })
-    );
   }
 
   //Advanced search API fetching multiple cases
@@ -110,15 +81,20 @@ export class CaseService {
     const apiURL = ADVANCED_SEARCH_CASE_PATH;
 
     //Make API call out to advanced search case API, return Observable to Case Component, catch any errors and pass to ErrorHandler service
-    return this.http.get<CaseData[]>(apiURL, options).pipe(
-      catchError((err: Error) => {
-        this.errorHandlerService.handleError(err);
-        return throwError(() => err);
-      })
-    );
+    return this.http.get<CaseData[]>(apiURL, options);
   }
 
   public getHttpParams(): HttpParams {
     return this.params;
+  }
+
+  /**
+   *
+   * @param {number} cId Required parameter, representing the case id to look for
+   * @param {number} hId Required parameter, representing the hearing id to look for
+   * @returns {Observable<HearingData | undefined> | undefined} Returns either a Observable of HearingData, or undefined
+   */
+  getHearingById(cId: number, hId: number): Observable<HearingData | undefined> {
+    return this.getCaseHearings(cId).pipe(map((h) => h.find((x) => x.id == hId)));
   }
 }

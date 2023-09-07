@@ -8,26 +8,30 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CaseService } from 'src/app/services/case/case.service';
 import { ErrorHandlerService } from 'src/app/services/error/error-handler.service';
-import { CaseDataService } from 'src/app/services/case/data/case-data.service';
 import { HearingData } from 'src/app/types/hearing';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 describe('HearingComponent', () => {
-  let c!: CaseData;
-  let h!: HearingData;
   const fakeAppInsightsService = {};
   let httpClientSpy: HttpClient;
   let errorHandlerSpy: ErrorHandlerService;
   let caseService: CaseService;
   let component: HearingComponent;
   let fixture: ComponentFixture<HearingComponent>;
-  const caseDataService: CaseDataService = new CaseDataService();
 
-  const cd = { case_id: 1, case_number: '12345', courthouse: 'Reading', judges: ['Judy'] } as CaseData;
-  const hd = [
+  const cd = of({ case_id: 1, case_number: '12345', courthouse: 'Reading', judges: ['Judy'] }) as Observable<CaseData>;
+  const hd = of([
     { id: 1, date: '2023-02-21', judges: ['Joseph', 'Judy'], courtroom: '3', transcript_count: 99 },
     { id: 2, date: '2023-03-21', judges: ['Joseph', 'Kennedy'], courtroom: '1', transcript_count: 12 },
-  ] as HearingData[];
+  ]) as Observable<HearingData[]>;
+
+  const shd = of({
+    id: 1,
+    date: '2023-02-21',
+    judges: ['Joseph', 'Judy'],
+    courtroom: '3',
+    transcript_count: 99,
+  }) as Observable<HearingData>;
 
   beforeEach(() => {
     httpClientSpy = {
@@ -38,17 +42,15 @@ describe('HearingComponent', () => {
     } as unknown as ErrorHandlerService;
     caseService = new CaseService(httpClientSpy, errorHandlerSpy);
 
-    jest.spyOn(caseService, 'getCaseFile').mockReturnValue(of(cd));
-    jest.spyOn(caseService, 'getCaseHearings').mockReturnValue(of(hd));
-    jest.spyOn(caseDataService, 'getCase').mockReturnValue(cd);
-    jest.spyOn(caseDataService, 'getHearingById').mockReturnValue(hd[0]);
+    jest.spyOn(caseService, 'getCase').mockReturnValue(cd);
+    jest.spyOn(caseService, 'getCaseHearings').mockReturnValue(hd);
+    jest.spyOn(caseService, 'getHearingById').mockReturnValue(shd);
 
     TestBed.configureTestingModule({
       imports: [HearingComponent, HearingFileComponent, RouterTestingModule, HttpClientModule],
       providers: [
         { provide: AppInsightsService, useValue: fakeAppInsightsService },
         { provide: CaseService, useValue: caseService },
-        { provide: CaseDataService, useValue: caseDataService },
       ],
     });
     fixture = TestBed.createComponent(HearingComponent);
@@ -72,8 +74,9 @@ describe('HearingComponent', () => {
       fixture = TestBed.createComponent(HearingComponent);
       parentComponent = fixture.componentInstance;
 
-      parentComponent.case = cd;
-      parentComponent.hearing = hd[0];
+      parentComponent.case$ = cd;
+      parentComponent.hearing$ = caseService.getHearingById(1, 1);
+      fixture.detectChanges();
       childComponent = fixture.debugElement.query(
         // get the child component instance
         By.css('app-hearing-file')
@@ -81,49 +84,31 @@ describe('HearingComponent', () => {
       fixture.detectChanges();
     });
 
-    it('should set case to the case parameter', () => {
-      expect(childComponent.case).toEqual(parentComponent.case);
-      expect(childComponent.hearing).toEqual(parentComponent.hearing);
+    it('should set case and hearing child variables correctly', () => {
+      let c;
+      parentComponent.case$.subscribe({
+        next: (data: CaseData) => {
+          c = data;
+          expect(childComponent.case).toEqual(c);
+        },
+      });
+
+      let h;
+      if (parentComponent.hearing$) {
+        parentComponent.hearing$.subscribe({
+          next: (data: HearingData | undefined) => {
+            h = data;
+            expect(childComponent.hearing).toEqual(h);
+          },
+        });
+      }
     });
   });
 
   describe('Parent case and hearings', () => {
-    // beforeEach(() => {
-    //   component.case = c;
-    //   component.hearing = h;
-    // });
-
-    it('should load via shared service on init during normal use', () => {
-      expect(component.case).toEqual(cd);
-      expect(component.hearing).toEqual(hd[0]);
+    it('should load via api', () => {
+      expect(component.case$).toEqual(cd);
+      expect(component.hearing$).toEqual(shd);
     });
-
-    // it('should load via api on init during events like refresh', () => {
-    //   // component.ngOnInit()
-
-    //   jest.spyOn(component, 'loadFromApi');
-    //   jest.spyOn(component, 'loadData');
-    //   // component.hearing = hd[0];
-
-    //   jest.spyOn(caseService, 'getCaseFile').mockReturnValue(of(cd));
-    //   jest.spyOn(caseService, 'getCaseHearings').mockReturnValue(of(hd));
-    //   jest.spyOn(caseDataService, 'getHearingById').mockReturnValue(hd[0]);
-
-    //   //Prevent shared service returning hearing data so it's forced to use API
-    //   //Reset to undefined
-
-    //   // caseDataService.setCase(c);
-    //   // caseDataService.setHearings([h]);
-    //   // component.case = caseDataService.z;
-    //   // component.hearing = h;
-    //   // jest.restoreAllMocks();
-    //   // jest.spyOn(caseDataService, 'getHearingById').mockReturnValue(undefined);
-    //   //Now return hearings as expected
-
-    //   expect(component.case).toEqual(cd);
-    //   expect(component.hearing).toEqual(hd[0]);
-    //   // expect(component.loadFromApi).toHaveBeenCalled();
-    //   expect(component.loadData).toHaveBeenCalled();
-    // });
   });
 });

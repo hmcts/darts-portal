@@ -13,7 +13,6 @@ import { PaginationComponent } from '../../shared/pagination/pagination.componen
   standalone: true,
 })
 export class ResultsComponent implements OnChanges {
-
   @Input() cases: CaseData[] = [];
   @Input() loaded = false;
   @Input() errorType = '';

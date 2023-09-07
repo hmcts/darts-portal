@@ -9,9 +9,4 @@ export class DateTimeService {
   static getdddDMMMYYYY(date: string) {
     return moment(date, 'YYYY-MM-DD', true).format('ddd D MMM YYYY');
   }
-
-  //e.g. 26 Jun 2022
-  static getDMMMYYYY(date: string) {
-    return moment(date, 'YYYY-MM-DD', true).format('D MMM YYYY');
-  }
 }
