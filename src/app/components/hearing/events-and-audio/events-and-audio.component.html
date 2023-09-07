@@ -1,19 +1,33 @@
 <h2 class="govuk-heading-m">Events and audio recordings</h2>
-<div class="govuk-form-group">
+<form [formGroup]="form" class="govuk-form-group">
   <fieldset class="govuk-fieldset" aria-describedby="changedName-hint">
     <div class="govuk-radios govuk-radios--inline govuk-radios--small" data-module="govuk-radios">
       <div class="govuk-radios__item">
-        <input class="govuk-radios__input" id="changedName" name="changedName" type="radio" value="yes" />
-        <label class="govuk-label govuk-radios__label" for="changedName"> Audio preview and events </label>
+        <input
+          class="govuk-radios__input"
+          id="filterAll"
+          name="selectedOption"
+          type="radio"
+          value="all"
+          formControlName="selectedOption"
+        />
+        <label class="govuk-label govuk-radios__label" for="selectedOption"> Audio preview and events </label>
       </div>
       <div class="govuk-radios__item">
-        <input class="govuk-radios__input" id="changedName-2" name="changedName" type="radio" value="no" />
-        <label class="govuk-label govuk-radios__label" for="changedName-2"> Events only </label>
+        <input
+          class="govuk-radios__input"
+          id="filterEvents"
+          name="selectedOption"
+          type="radio"
+          value="events"
+          formControlName="selectedOption"
+        />
+        <label class="govuk-label govuk-radios__label" for="selectedOption"> Events only </label>
       </div>
     </div>
     <div id="changedName-hint" class="govuk-hint">Select events to include in requests</div>
   </fieldset>
-</div>
+</form>
 <table class="govuk-table">
   <thead class="govuk-table__head">
     <tr class="govuk-table__row">
@@ -31,7 +45,7 @@
     </tr>
   </thead>
   <tbody class="govuk-table__body">
-    <tr *ngFor="let row of table; let i = index" [tabindex]="i" class="govuk-table__row">
+    <tr *ngFor="let row of filteredTable; let i = index" [tabindex]="i" class="govuk-table__row">
       <td scope="row" class="govuk-table__header">
         <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
           <div class="govuk-checkboxes__item">
