@@ -1,23 +1,42 @@
+import { Injector } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 import { AppInsightsService } from '../app-insights/app-insights.service';
-import { AppConfigService } from '../app-config/app-config.service';
 import { ErrorHandlerService } from './error-handler.service';
 
 describe('ErrorHandlerService', () => {
-  const fakeAppConfigService = {
-    getAppConfig: () => ({
-      appInsightsKey: 'KEY',
-    }),
-  };
+  let errorHandlerService: ErrorHandlerService;
+  let mockAppInsightsService: AppInsightsService;
 
-  it('logs an exception', () => {
-    const spy = jest.spyOn(AppInsightsService.prototype, 'logException');
+  beforeEach(() => {
+    // Create a TestBed configuration with the ErrorHandlerService
+    TestBed.configureTestingModule({
+      providers: [
+        ErrorHandlerService,
+        {
+          provide: AppInsightsService,
+          useValue: {
+            logException: jest.fn(),
+          },
+        },
+        Injector,
+      ],
+    });
 
-    const errorHandlerService = new ErrorHandlerService(
-      new AppInsightsService(fakeAppConfigService as AppConfigService)
-    );
-    const err = new Error('Something bad happened');
-    errorHandlerService.handleError(err);
+    // Get instances of the services and injector
+    errorHandlerService = TestBed.inject(ErrorHandlerService);
+    mockAppInsightsService = TestBed.inject(AppInsightsService);
+  });
 
-    expect(spy).toHaveBeenCalledWith(err);
+  it('should be created', () => {
+    expect(errorHandlerService).toBeTruthy();
+  });
+
+  it('should log an exception', () => {
+    const error = new Error('Test Error');
+    const logExceptionSpy = jest.spyOn(mockAppInsightsService, 'logException');
+
+    errorHandlerService.handleError(error);
+
+    expect(logExceptionSpy).toHaveBeenCalledWith(error);
   });
 });

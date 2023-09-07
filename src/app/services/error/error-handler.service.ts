@@ -1,17 +1,17 @@
-import { ErrorHandler, Injectable } from '@angular/core';
+import { ErrorHandler, Injectable, Injector } from '@angular/core';
 import { AppInsightsService } from '../app-insights/app-insights.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ErrorHandlerService extends ErrorHandler {
-  constructor(private appInsightsService: AppInsightsService) {
+  constructor(private injector: Injector) {
     super();
   }
 
   override handleError(error: Error) {
-    // Manually log exception
+    const appInsightsService = this.injector.get(AppInsightsService);
     console.error('Exception', error);
-    this.appInsightsService.logException(error);
+    appInsightsService.logException(error);
   }
 }

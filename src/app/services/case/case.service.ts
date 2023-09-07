@@ -2,7 +2,6 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ErrorHandlerService } from '../error/error-handler.service';
 import { CaseData } from '../../../app/types/case';
 import { CourthouseData } from '../../../app/types/courthouse';
 import { HearingData } from 'src/app/types/hearing';
@@ -17,7 +16,7 @@ const ADVANCED_SEARCH_CASE_PATH = '/api/cases/search';
 })
 //Class containing API requests for data fetching
 export class CaseService {
-  constructor(private readonly http: HttpClient, private errorHandlerService: ErrorHandlerService) {}
+  constructor(private readonly http: HttpClient) {}
   private params: HttpParams = new HttpParams();
 
   //Fetches all courthouses
