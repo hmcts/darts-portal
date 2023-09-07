@@ -1,5 +1,6 @@
 import { NgFor, NgIf } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { CaseData } from '../../../../app/types/case';
 import { DateTimeService } from '../../../services/datetime/datetime.service';
 import { PaginationComponent } from '../../shared/pagination/pagination.component';
@@ -8,12 +9,10 @@ import { PaginationComponent } from '../../shared/pagination/pagination.componen
   selector: 'app-results',
   templateUrl: './results.component.html',
   styleUrls: ['./results.component.scss'],
-  imports: [NgIf, NgFor, PaginationComponent],
+  imports: [NgIf, NgFor, RouterLink, PaginationComponent],
   standalone: true,
 })
 export class ResultsComponent implements OnChanges {
-  constructor(private dateTimeService: DateTimeService) {}
-
   @Input() cases: CaseData[] = [];
   @Input() loaded = false;
   @Input() errorType = '';
@@ -67,7 +66,7 @@ export class ResultsComponent implements OnChanges {
   }
 
   private getDateFormat(d: string): string {
-    return this.dateTimeService.getdddDMMMYYYY(d);
+    return DateTimeService.getdddDMMMYYYY(d);
   }
 
   private updatePagedCases(): void {
