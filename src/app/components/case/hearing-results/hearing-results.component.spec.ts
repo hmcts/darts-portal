@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HearingData } from 'src/app/types/hearing';
-
+import { RouterTestingModule } from '@angular/router/testing';
 import { HearingResultsComponent } from './hearing-results.component';
 
 describe('HearingResultsComponent', () => {
@@ -19,7 +19,7 @@ describe('HearingResultsComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HearingResultsComponent],
+      imports: [HearingResultsComponent, RouterTestingModule],
     });
     fixture = TestBed.createComponent(HearingResultsComponent);
     component = fixture.componentInstance;

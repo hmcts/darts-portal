@@ -1,11 +1,12 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { ErrorHandler, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { CaseData } from '../../../app/types/case';
-import { CaseFile } from 'src/app/types/case-file';
 import { CourthouseData } from '../../../app/types/courthouse';
 import { HearingData } from 'src/app/types/hearing';
 
+//API Endpoints
 const GET_COURTHOUSES_PATH = '/api/courthouses';
 const GET_CASE_PATH = '/api/cases';
 const ADVANCED_SEARCH_CASE_PATH = '/api/cases/search';
@@ -14,7 +15,7 @@ const ADVANCED_SEARCH_CASE_PATH = '/api/cases/search';
   providedIn: 'root',
 })
 export class CaseService {
-  constructor(private readonly http: HttpClient, private errorHandlerService: ErrorHandler) {}
+  constructor(private readonly http: HttpClient) {}
   private params: HttpParams = new HttpParams();
 
   //Fetches all courthouses
@@ -22,15 +23,10 @@ export class CaseService {
     return this.http.get<CourthouseData[]>(GET_COURTHOUSES_PATH);
   }
 
-  //Single get case API
-  getCase(caseId: string | number): Observable<CaseData> {
-    return this.http.get<CaseData>(`${GET_CASE_PATH}?caseId=${caseId}`);
-  }
-
   // Single get case file
-  getCaseFile(caseId: string | number): Observable<CaseFile> {
+  getCase(caseId: number): Observable<CaseData> {
     const apiURL = `${GET_CASE_PATH}/${caseId}`;
-    return this.http.get<CaseFile>(apiURL);
+    return this.http.get<CaseData>(apiURL);
   }
 
   // Single get case hearings
@@ -89,5 +85,15 @@ export class CaseService {
 
   public getHttpParams(): HttpParams {
     return this.params;
+  }
+
+  /**
+   *
+   * @param {number} cId Required parameter, representing the case id to look for
+   * @param {number} hId Required parameter, representing the hearing id to look for
+   * @returns {Observable<HearingData | undefined> | undefined} Returns either a Observable of HearingData, or undefined
+   */
+  getHearingById(cId: number, hId: number): Observable<HearingData | undefined> {
+    return this.getCaseHearings(cId).pipe(map((h) => h.find((x) => x.id == hId)));
   }
 }

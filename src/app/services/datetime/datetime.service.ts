@@ -6,7 +6,7 @@ import moment from 'moment';
 })
 export class DateTimeService {
   //e.g. Mon 26 Sep 2023
-  getdddDMMMYYYY(date: string) {
+  static getdddDMMMYYYY(date: string) {
     return moment(date, 'YYYY-MM-DD', true).format('ddd D MMM YYYY');
   }
 }
