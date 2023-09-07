@@ -45,6 +45,8 @@ export class SearchComponent implements AfterViewChecked, AfterViewInit {
 
   setInputValue(value: string, control: string) {
     this.form.controls[`${control}`].patchValue(value);
+    //If specific type, set date_to to same value as date_from
+    this.dateInputType === 'specific' && control == 'date_from' && this.form.controls[`date_to`].patchValue(value);
   }
 
   getCourthouses() {
