@@ -118,36 +118,38 @@ describe('CaseService', () => {
       jest.spyOn(service, 'getCasesAdvanced').mockReturnValue(throwError(() => errorResponse));
 
       let cases: CaseData[] = [];
-      service.getCasesAdvanced('zzzz').subscribe(
-        (result: CaseData[]) => {
+
+      service.getCasesAdvanced('zzzz').subscribe({
+        next: (result: CaseData[]) => {
           if (result) {
-            cases = cases.concat(result);
+            cases = result;
+            expect(cases).toBeFalsy();
           }
         },
-        (error: HttpErrorResponse) => {
+        error: (error: HttpErrorResponse) => {
           expect(error).toBeTruthy();
           if (error.status) {
             service['errorHandlerService'].handleError(errorResponse);
             expect(service['errorHandlerService'].handleError).toHaveBeenCalledWith(errorResponse);
             expect(error.status).toEqual(404);
           }
-        }
-      );
+        },
+      });
     });
 
     it('should run cases advanced search function and return mock case', () => {
       jest.spyOn(service, 'getCasesAdvanced').mockReturnValue(of(mockCases));
 
       let cases: CaseData[] = [];
-      service
-        .getCasesAdvanced('C20220620001', 'Reading', '1', 'Judy', 'Dave', '', '', 'keyword')
-        .subscribe((result: CaseData[]) => {
+      service.getCasesAdvanced('C20220620001', 'Reading', '1', 'Judy', 'Dave', '', '', 'keyword').subscribe({
+        next: (result: CaseData[]) => {
           if (result) {
             cases = result;
             expect(cases).toBeTruthy();
             expect(cases).toEqual(mockCases);
           }
-        });
+        },
+      });
     });
   });
 
@@ -162,22 +164,22 @@ describe('CaseService', () => {
       jest.spyOn(service, 'getCourthouses').mockReturnValue(throwError(() => errorResponse));
 
       let courts: CourthouseData[];
-      service.getCourthouses().subscribe(
-        (result: CourthouseData[]) => {
+      service.getCourthouses().subscribe({
+        next: (result: CourthouseData[]) => {
           if (result) {
             courts = result;
             expect(courts).toBeFalsy();
           }
         },
-        (error: HttpErrorResponse) => {
+        error: (error: HttpErrorResponse) => {
           expect(error).toBeTruthy();
           if (error.status) {
             service['errorHandlerService'].handleError(errorResponse);
             expect(service['errorHandlerService'].handleError).toHaveBeenCalledWith(errorResponse);
             expect(error.status).toEqual(404);
           }
-        }
-      );
+        },
+      });
     });
 
     it('should call the correct api url', () => {
@@ -189,12 +191,14 @@ describe('CaseService', () => {
     it('should run specific get case function and return mock case', () => {
       jest.spyOn(service, 'getCourthouses').mockReturnValue(of(courthouses));
       let courts: CourthouseData[];
-      service.getCourthouses().subscribe((result: CourthouseData[]) => {
-        if (result) {
-          courts = result;
-          expect(courts).toBeTruthy();
-          expect(courts).toEqual(courthouses);
-        }
+      service.getCourthouses().subscribe({
+        next: (result: CourthouseData[]) => {
+          if (result) {
+            courts = result;
+            expect(courts).toBeTruthy();
+            expect(courts).toEqual(courthouses);
+          }
+        },
       });
     });
   });
