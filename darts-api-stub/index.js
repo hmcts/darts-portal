@@ -12,6 +12,8 @@ const defaultApiPort = 4550;
 app.set('view engine', 'ejs');
 app.set('views', 'darts-api-stub/views');
 
+app.get('/', (req, res) => res.send('Welcome to the DARTS API stub'));
+
 // stub out external user authentication
 app.use('/external-user', require('./authentication/external'));
 // stub out courthouses api
