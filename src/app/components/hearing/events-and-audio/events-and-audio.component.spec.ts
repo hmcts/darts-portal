@@ -38,40 +38,40 @@ describe('EventsAndAudioComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should initialize the table by combining audio and events', () => {
+  it('should construct the table by combining audio and events in order of timestamp', () => {
     const audio: HearingAudio[] = [
       {
         id: 1,
-        media_start_timestamp: '2023-07-31T14:32:24.620Z',
+        media_start_timestamp: '2023-07-31T10:00:01.620Z',
         media_end_timestamp: '2023-07-31T14:32:24.620Z',
       },
       {
         id: 2,
-        media_start_timestamp: '2022-07-31T14:32:24.620Z',
+        media_start_timestamp: '2023-07-31T10:00:04.620Z',
         media_end_timestamp: '2022-07-31T14:32:24.620Z',
       },
       {
         id: 3,
-        media_start_timestamp: '2023-07-31T14:32:24.620Z',
+        media_start_timestamp: '2023-07-31T10:00:06.620Z',
         media_end_timestamp: '2023-07-31T14:32:24.620Z',
       },
     ];
     const events: HearingEvent[] = [
       {
-        id: 1,
-        timestamp: '2023-07-31T14:32:24.620Z',
+        id: 8,
+        timestamp: '2023-07-31T10:00:02.620Z',
         name: 'Case called on',
         text: 'Record: New Case',
       },
       {
-        id: 2,
-        timestamp: '2023-07-31T14:32:24.620Z',
+        id: 9,
+        timestamp: '2023-07-31T10:00:03.620Z',
         name: 'Case called on',
         text: 'Record: New Case',
       },
       {
-        id: 3,
-        timestamp: '2023-07-31T14:32:24.620Z',
+        id: 10,
+        timestamp: '2023-07-31T10:00:07.620Z',
         name: 'Case called on',
         text: 'Record: New Case',
       },
@@ -80,47 +80,50 @@ describe('EventsAndAudioComponent', () => {
     component.audio = audio;
     component.events = events;
 
-    component.ngOnInit();
+    component.ngOnChanges();
 
     const expectedTable: HearingAudioEventViewModel[] = [
       {
-        id: 1,
-        media_start_timestamp: '2023-07-31T14:32:24.620Z',
+        id: 10,
+        timestamp: '2023-07-31T10:00:07.620Z',
+        name: 'Case called on',
+        text: 'Record: New Case',
+        type: 'event',
+      },
+      {
+        id: 3,
+        media_start_timestamp: '2023-07-31T10:00:06.620Z',
         media_end_timestamp: '2023-07-31T14:32:24.620Z',
+        timestamp: '2023-07-31T10:00:06.620Z',
         type: 'audio',
       },
       {
         id: 2,
-        media_start_timestamp: '2022-07-31T14:32:24.620Z',
+        media_start_timestamp: '2023-07-31T10:00:04.620Z',
         media_end_timestamp: '2022-07-31T14:32:24.620Z',
+        timestamp: '2023-07-31T10:00:04.620Z',
         type: 'audio',
       },
       {
-        id: 3,
-        media_start_timestamp: '2023-07-31T14:32:24.620Z',
-        media_end_timestamp: '2023-07-31T14:32:24.620Z',
-        type: 'audio',
+        id: 9,
+        timestamp: '2023-07-31T10:00:03.620Z',
+        name: 'Case called on',
+        text: 'Record: New Case',
+        type: 'event',
+      },
+      {
+        id: 8,
+        timestamp: '2023-07-31T10:00:02.620Z',
+        name: 'Case called on',
+        text: 'Record: New Case',
+        type: 'event',
       },
       {
         id: 1,
-        timestamp: '2023-07-31T14:32:24.620Z',
-        name: 'Case called on',
-        text: 'Record: New Case',
-        type: 'event',
-      },
-      {
-        id: 2,
-        timestamp: '2023-07-31T14:32:24.620Z',
-        name: 'Case called on',
-        text: 'Record: New Case',
-        type: 'event',
-      },
-      {
-        id: 3,
-        timestamp: '2023-07-31T14:32:24.620Z',
-        name: 'Case called on',
-        text: 'Record: New Case',
-        type: 'event',
+        media_start_timestamp: '2023-07-31T10:00:01.620Z',
+        media_end_timestamp: '2023-07-31T14:32:24.620Z',
+        timestamp: '2023-07-31T10:00:01.620Z',
+        type: 'audio',
       },
     ];
 

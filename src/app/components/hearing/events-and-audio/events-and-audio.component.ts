@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, EventEmitter, Output, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, EventEmitter, Output, OnDestroy, OnChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HearingAudio, HearingEvent, HearingAudioEventViewModel } from 'src/app/types/hearing-audio-event';
 import { HearingEventTypeEnum } from 'src/app/types/enums';
@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './events-and-audio.component.html',
   styleUrls: ['./events-and-audio.component.scss'],
 })
-export class EventsAndAudioComponent implements OnInit, OnDestroy {
+export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
   @Input() audio: HearingAudio[] = [];
   @Input() events: HearingEvent[] = [];
 
@@ -29,18 +29,15 @@ export class EventsAndAudioComponent implements OnInit, OnDestroy {
   subs: Subscription[] = [];
 
   ngOnInit(): void {
-    this.table = [
-      ...this.audio.map((audio) => ({ ...audio, type: HearingEventTypeEnum.Audio })),
-      ...this.events.map((event) => ({ ...event, type: HearingEventTypeEnum.Event })),
-    ];
-
-    this.filteredTable = [...this.table];
-
     this.subs.push(
       this.formChanges$.subscribe((valueChanges) => {
         this.onFilterChanged(valueChanges.selectedOption as string);
       })
     );
+  }
+
+  ngOnChanges(): void {
+    this.constructTable();
   }
 
   toggleRowSelection(row: HearingAudioEventViewModel) {
@@ -65,6 +62,32 @@ export class EventsAndAudioComponent implements OnInit, OnDestroy {
     } else {
       this.filteredTable = this.table.filter((row) => row.type === HearingEventTypeEnum.Event);
     }
+  }
+
+  private constructTable() {
+    this.mapEventsAndAudioToTable();
+    this.sortTableByTimeStamp(this.table);
+    this.filteredTable = [...this.table];
+  }
+
+  private mapEventsAndAudioToTable() {
+    this.table = [
+      ...this.audio.map((audio) => ({
+        ...audio,
+        type: HearingEventTypeEnum.Audio,
+        timestamp: audio.media_start_timestamp,
+      })),
+      ...this.events.map((event) => ({ ...event, type: HearingEventTypeEnum.Event })),
+    ];
+  }
+
+  private sortTableByTimeStamp(table: HearingAudioEventViewModel[]) {
+    table.sort((a, b) => {
+      const timestampA = new Date(a.timestamp || '').getTime();
+      const timestampB = new Date(b.timestamp || '').getTime();
+
+      return timestampB - timestampA;
+    });
   }
 
   ngOnDestroy(): void {

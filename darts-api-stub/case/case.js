@@ -403,17 +403,17 @@ router.get('/hearings/:hearingId/audios', (req, res) => {
       const body1 = [
         {
           id: 1,
-          media_start_timestamp: '2023-07-31T14:32:24.620Z',
+          media_start_timestamp: '2023-07-31T02:32:24.620Z',
           media_end_timestamp: '2023-07-31T14:32:24.620Z',
         },
         {
           id: 2,
-          media_start_timestamp: '2022-07-31T14:32:24.620Z',
+          media_start_timestamp: '2023-07-31T04:30:24.620Z',
           media_end_timestamp: '2022-07-31T14:32:24.620Z',
         },
         {
           id: 3,
-          media_start_timestamp: '2023-07-31T14:32:24.620Z',
+          media_start_timestamp: '2023-07-31T05:32:24.620Z',
           media_end_timestamp: '2023-07-31T14:32:24.620Z',
         },
       ];
@@ -423,8 +423,8 @@ router.get('/hearings/:hearingId/audios', (req, res) => {
       const body2 = [
         {
           id: 4,
-          media_start_timestamp: '2021-07-31T14:32:24.620Z',
-          media_end_timestamp: '2021-07-31T14:32:24.620Z',
+          media_start_timestamp: '2023-07-31T14:32:24.620Z',
+          media_end_timestamp: '2023-07-31T14:32:24.620Z',
         },
       ];
       res.send(body2);
@@ -441,19 +441,19 @@ router.get('/hearings/:hearingId/events', (req, res) => {
       const body1 = [
         {
           id: 1,
-          timestamp: '2023-07-31T14:32:24.620Z',
+          timestamp: '2023-07-31T01:00:00.620Z',
           name: 'Case called on',
           text: 'Record: New Case',
         },
         {
           id: 2,
-          timestamp: '2023-07-31T14:32:24.620Z',
+          timestamp: '2023-07-31T03:00:00.620Z',
           name: 'Case called on',
           text: 'Record: New Case',
         },
         {
           id: 3,
-          timestamp: '2023-07-31T14:32:24.620Z',
+          timestamp: '2023-07-31T08:00:24.620Z',
           name: 'Case called on',
           text: 'Record: New Case',
         },
