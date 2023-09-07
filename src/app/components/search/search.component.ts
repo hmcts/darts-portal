@@ -30,7 +30,7 @@ const FieldErrors: { [key: string]: { [key: string]: string } } = {
   imports: [ReactiveFormsModule, NgIf, ResultsComponent, NgClass, NgFor],
 })
 export class SearchComponent implements AfterViewChecked, AfterViewInit {
-  @ViewChild('courthouseAutocomplete', {static: false}) autocomplete!: ElementRef<HTMLElement>;
+  @ViewChild('courthouseAutocomplete', { static: false }) autocomplete!: ElementRef<HTMLElement>;
   dateInputType!: 'specific' | 'range';
   cases: CaseData[] = [];
   courthouses: CourthouseData[] = [];
@@ -40,8 +40,7 @@ export class SearchComponent implements AfterViewChecked, AfterViewInit {
   errorType = '';
   error = '';
 
-  constructor(private caseService: CaseService) {
-  }
+  constructor(private caseService: CaseService) {}
 
   form: FormGroup = new FormGroup({
     case_number: new FormControl('', Validators.required),
@@ -108,7 +107,6 @@ export class SearchComponent implements AfterViewChecked, AfterViewInit {
       return;
     }
 
-
     // let valid = true;
 
     // //AC2 - Searching a courtroom without courthouse
@@ -158,7 +156,6 @@ export class SearchComponent implements AfterViewChecked, AfterViewInit {
 
     //AC3 - Entering a date that's in the future
 
-
     // if (selectedDateInput === 'specific') {
     //     const DATE_FROM = new Date(this.form.get('date_from')?.value).toLocaleString('en-GB');
     //   console.log(DATE_FROM);
@@ -181,7 +178,6 @@ export class SearchComponent implements AfterViewChecked, AfterViewInit {
     //   return inputDate > currentDate;
     // }
 
-
     // isDateInFuture(DATE_FROM);
 
     //AC3 - Entering a date that's in the future
@@ -193,9 +189,7 @@ export class SearchComponent implements AfterViewChecked, AfterViewInit {
     //   console.log('Test date 2 is later in the year than test date 1')
     // }
 
-
-  //const DATE_FROM_AGAIN = new Date(this.form.get('date_from')?.value);
-
+    //const DATE_FROM_AGAIN = new Date(this.form.get('date_from')?.value);
 
     // if(!valid) {
     //   return;
@@ -259,7 +253,6 @@ export class SearchComponent implements AfterViewChecked, AfterViewInit {
       .map((fieldId) => this.getFieldErrorMessages(fieldId).map((message) => ({ fieldId, message })))
       .flat();
   }
-
 
   clearSearch() {
     (document.querySelector("[name='courthouse']") as HTMLInputElement).value = '';
