@@ -1,7 +1,7 @@
 import { AfterViewChecked, AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { initAll } from '@scottish-government/pattern-library/src/all';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NgIf } from '@angular/common';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CaseService } from '../../services/case/case.service';
 import { CaseData } from '../../../app/types/case';
@@ -9,13 +9,25 @@ import { ResultsComponent } from './results/results.component';
 import { CourthouseData } from '../../../app/types/courthouse';
 import accessibleAutocomplete, { AccessibleAutocompleteProps } from 'accessible-autocomplete';
 import { ERROR_MESSAGES } from './enums/error.enum';
+//import { moment }  from 'moment';
+
+interface ErrorSummaryEntry {
+  fieldId: string;
+  message: string;
+}
+
+const FieldErrors: { [key: string]: { [key: string]: string } } = {
+  case_number: {
+    required: 'You must enter a case number.',
+  },
+};
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf, ResultsComponent],
+  imports: [ReactiveFormsModule, NgIf, ResultsComponent, NgClass, NgFor],
 })
 export class SearchComponent implements AfterViewChecked, AfterViewInit {
   @ViewChild('courthouseAutocomplete', {static: false}) autocomplete!: ElementRef<HTMLElement>;
@@ -23,6 +35,8 @@ export class SearchComponent implements AfterViewChecked, AfterViewInit {
   cases: CaseData[] = [];
   courthouses: CourthouseData[] = [];
   loaded = false;
+  submitted = false;
+  errorSummary: ErrorSummaryEntry[] = [];
   errorType = '';
   error = '';
 
@@ -87,18 +101,31 @@ export class SearchComponent implements AfterViewChecked, AfterViewInit {
 
   // Submit Registration Form
   onSubmit() {
+    this.submitted = true;
+    this.errorSummary = [];
+    if (this.form.invalid) {
+      this.errorSummary = this.generateErrorSummary();
+      return;
+    }
 
-    let valid = true;
+
+    // let valid = true;
 
     // //AC2 - Searching a courtroom without courthouse
-    //  if (this.form.get('courtroom')?.value !== '' && this.form.get('courthouse')?.value === '') {
+    //  if (this.form.get('courtroom')?.value !== '') {
     //   this.error = ERROR_MESSAGES.COURTROOM;
     //   this.errorType = 'COURTROOM';
     //   console.log(ERROR_MESSAGES.COURTROOM);
     //   valid = false;
     // }
 
-    const selectedDateInput = this.dateInputType.valueOf();
+    // if (this.form.get('courthouse')?.value === undefined) {
+    //   const temp = this.form.get('courthouse')?.value;
+    //   console.log('courthouse is ' + temp)
+    //   valid = false;
+    // }
+
+    // const selectedDateInput = this.dateInputType.valueOf();
 
     // //AC4 - Date range: start date is blank (same as AC5)
     // if (selectedDateInput === 'range') {
@@ -130,24 +157,49 @@ export class SearchComponent implements AfterViewChecked, AfterViewInit {
     // }
 
     //AC3 - Entering a date that's in the future
-  //   if (selectedDateInput === 'specific') {
-  //   const DATE_FROM = new Date(this.form.get('date_from')?.value).toString()
-  //   console.log(DATE_FROM);
-  //   const TODAY = new Date().toString();
-  //   console.log(TODAY);
-  //   if (DATE_FROM > TODAY) {
-  //     console.log(ERROR_MESSAGES.FUTURE_DATE)
-  //     this.errorType = 'FUTURE_DATE';
-  //     this.error = ERROR_MESSAGES.FUTURE_DATE;
-  //     valid = false;
-  //   }
-  // }
 
 
+    // if (selectedDateInput === 'specific') {
+    //     const DATE_FROM = new Date(this.form.get('date_from')?.value).toLocaleString('en-GB');
+    //   console.log(DATE_FROM);
+    //   const DATE_TODAY = new Date().toLocaleString('en-GB');
+    //   console.log(DATE_TODAY);
+    //   if (DATE_FROM > DATE_TODAY) {
+    //     console.log(ERROR_MESSAGES.FUTURE_DATE)
+    //     this.errorType = 'FUTURE_DATE';
+    //     this.error = ERROR_MESSAGES.FUTURE_DATE;
+    //     } else {
+    //     valid = false;
+    //     return;
+    //   }
+    // }
+    //
+    // const DATE_FROM = new Date(this.form.get('date_from')?.value).toLocaleString('en-GB');
+    // function isDateInFuture(DATE_FROM: string): boolean {
+    //   const inputDate = new Date(DATE_FROM).toLocaleString('en-GB');
+    //   const currentDate = new Date().toLocaleString('en-GB');
+    //   return inputDate > currentDate;
+    // }
 
-    if(!valid) {
-      return;
-    }
+
+    // isDateInFuture(DATE_FROM);
+
+    //AC3 - Entering a date that's in the future
+    // const TEST_DATE1 = new Date('02/09/2023').toLocaleString('en-GB');
+    // const TEST_DATE2 = new Date('02/11/2023').toLocaleString('en-GB');
+    // if (TEST_DATE1 > TEST_DATE2) {
+    //   console.log('Test date 1 is later in the year than test date 2');
+    //   } else {
+    //   console.log('Test date 2 is later in the year than test date 1')
+    // }
+
+
+  //const DATE_FROM_AGAIN = new Date(this.form.get('date_from')?.value);
+
+
+    // if(!valid) {
+    //   return;
+    // }
 
     this.caseService
       .getCasesAdvanced(
@@ -187,13 +239,35 @@ export class SearchComponent implements AfterViewChecked, AfterViewInit {
     initAll();
   }
 
+  // convenience getter for easy access to form fields
+  get f() {
+    return this.form.controls;
+  }
+
+  getFieldErrorMessages(fieldName: string): string[] {
+    const errors = this.f[fieldName].errors;
+    if (!errors) {
+      return [];
+    }
+    return Object.keys(errors).map((errorType) => FieldErrors[fieldName][errorType]);
+  }
+
+  private generateErrorSummary(): ErrorSummaryEntry[] {
+    const formControls = this.f;
+    return Object.keys(formControls)
+      .filter((fieldId) => formControls[fieldId].errors)
+      .map((fieldId) => this.getFieldErrorMessages(fieldId).map((message) => ({ fieldId, message })))
+      .flat();
+  }
+
+
   clearSearch() {
     (document.querySelector("[name='courthouse']") as HTMLInputElement).value = '';
     this.form.reset();
     this.cases = [];
     this.loaded = false;
-    this.error = '';
-    this.errorType = '';
+    this.submitted = false;
+    this.errorSummary = [];
   }
 
   protected readonly ERROR_MESSAGES = ERROR_MESSAGES;
