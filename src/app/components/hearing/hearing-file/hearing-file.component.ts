@@ -12,6 +12,6 @@ import { CaseData } from 'src/app/types/case';
   styleUrls: ['./hearing-file.component.scss'],
 })
 export class HearingFileComponent {
-  @Input() case!: CaseData;
-  @Input() hearing!: HearingData;
+  @Input() case!: CaseData | null;
+  @Input() hearing!: HearingData | null | undefined;
 }
