@@ -1,5 +1,4 @@
 import { HttpClient } from '@angular/common/http';
-import { ErrorHandlerService } from '../../services/error/error-handler.service';
 import { CaseService } from './case.service';
 import { CaseData } from '../../../app/types/case';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -10,7 +9,6 @@ import { HearingData } from 'src/app/types/hearing';
 
 describe('CaseService', () => {
   let httpClientSpy: HttpClient;
-  let errorHandlerSpy: ErrorHandlerService;
   let service: CaseService;
 
   const mockCases: CaseData[] = [];
@@ -57,11 +55,8 @@ describe('CaseService', () => {
     httpClientSpy = {
       get: jest.fn(),
     } as unknown as HttpClient;
-    errorHandlerSpy = {
-      err: jest.fn(),
-    } as unknown as ErrorHandlerService;
 
-    service = new CaseService(httpClientSpy, errorHandlerSpy);
+    service = new CaseService(httpClientSpy);
   });
 
   it('should be created', () => {
@@ -129,8 +124,6 @@ describe('CaseService', () => {
         error: (error: HttpErrorResponse) => {
           expect(error).toBeTruthy();
           if (error.status) {
-            service['errorHandlerService'].handleError(errorResponse);
-            expect(service['errorHandlerService'].handleError).toHaveBeenCalledWith(errorResponse);
             expect(error.status).toEqual(404);
           }
         },
@@ -174,8 +167,6 @@ describe('CaseService', () => {
         error: (error: HttpErrorResponse) => {
           expect(error).toBeTruthy();
           if (error.status) {
-            service['errorHandlerService'].handleError(errorResponse);
-            expect(service['errorHandlerService'].handleError).toHaveBeenCalledWith(errorResponse);
             expect(error.status).toEqual(404);
           }
         },
