@@ -1,8 +1,9 @@
-import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, Input, OnInit, EventEmitter, Output, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HearingAudio, HearingEvent, HearingAudioEventViewModel } from 'src/app/types/hearing-audio-event';
 import { HearingEventTypeEnum } from 'src/app/types/enums';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-events-and-audio',
@@ -11,7 +12,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
   templateUrl: './events-and-audio.component.html',
   styleUrls: ['./events-and-audio.component.scss'],
 })
-export class EventsAndAudioComponent implements OnInit {
+export class EventsAndAudioComponent implements OnInit, OnDestroy {
   @Input() audio: HearingAudio[] = [];
   @Input() events: HearingEvent[] = [];
 
@@ -25,17 +26,21 @@ export class EventsAndAudioComponent implements OnInit {
   form = new FormGroup({ selectedOption: new FormControl('all') });
   formChanges$ = this.form.valueChanges;
 
+  subs: Subscription[] = [];
+
   ngOnInit(): void {
     this.table = [
       ...this.audio.map((audio) => ({ ...audio, type: HearingEventTypeEnum.Audio })),
       ...this.events.map((event) => ({ ...event, type: HearingEventTypeEnum.Event })),
     ];
 
-    // TO DO: SORT BY TIMESTAMPS?
-
     this.filteredTable = [...this.table];
 
-    this.form.valueChanges.subscribe(console.log);
+    this.subs.push(
+      this.formChanges$.subscribe((valueChanges) => {
+        this.onFilterChanged(valueChanges.selectedOption as string);
+      })
+    );
   }
 
   toggleRowSelection(row: HearingAudioEventViewModel) {
@@ -54,16 +59,15 @@ export class EventsAndAudioComponent implements OnInit {
     return this.selectedRows.includes(row);
   }
 
-  get selectedOptionValue(): string | null | undefined {
-    return this.form.get('selectedOption')?.value;
-  }
-
   onFilterChanged(selectedOption: string) {
     if (selectedOption === 'all') {
       this.filteredTable = [...this.table];
     } else {
       this.filteredTable = this.table.filter((row) => row.type === HearingEventTypeEnum.Event);
     }
-    console.log(this.filteredTable);
+  }
+
+  ngOnDestroy(): void {
+    this.subs.forEach((s) => s.unsubscribe());
   }
 }
