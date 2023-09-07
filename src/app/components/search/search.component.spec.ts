@@ -65,7 +65,7 @@ describe('SearchComponent', () => {
   });
 
   describe('#triggerEventHandler', () => {
-    it('should assign the value from the specific date picker to the input box, for Angular change detection', async () => {
+    it('should assign the value from the specific date picker to the input box, for Angular change detection, date_from and date_to should match.', async () => {
       const fixture = TestBed.createComponent(SearchComponent);
       fixture.detectChanges();
 
@@ -83,8 +83,10 @@ describe('SearchComponent', () => {
       const el = specificDateInput.nativeElement;
 
       fixture.detectChanges();
-
+      component.setInputValue('23/08/2023', 'date_to');
       expect(el.value).toEqual('23/08/2023');
+      //With specific date picker, date_from and date_to should equal the same
+      expect(component.form.controls['date_to'].value).toEqual('23/08/2023');
     });
 
     it('should assign the value from the range date picker in the date_to input to the input box, for Angular change detection', async () => {
