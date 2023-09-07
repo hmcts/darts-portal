@@ -8,7 +8,6 @@ import { AppInsightsService } from '../../services/app-insights/app-insights.ser
 import { ResultsComponent } from './results/results.component';
 import { CaseService } from '../../services/case/case.service';
 import { HttpClient } from '@angular/common/http';
-import { ErrorHandlerService } from '../../services/error/error-handler.service';
 import { CourthouseData } from 'src/app/types/courthouse';
 import { of, throwError } from 'rxjs';
 
@@ -20,7 +19,6 @@ jest.mock('@scottish-government/pattern-library/src/all', () => ({
 describe('SearchComponent', () => {
   const fakeAppInsightsService = {};
   let httpClientSpy: HttpClient;
-  let errorHandlerSpy: ErrorHandlerService;
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
   let caseService: CaseService;
@@ -34,10 +32,8 @@ describe('SearchComponent', () => {
     httpClientSpy = {
       get: jest.fn(),
     } as unknown as HttpClient;
-    errorHandlerSpy = {
-      err: jest.fn(),
-    } as unknown as ErrorHandlerService;
-    caseService = new CaseService(httpClientSpy, errorHandlerSpy);
+
+    caseService = new CaseService(httpClientSpy);
     //Stub getCourthouses as it runs on load
     jest.spyOn(caseService, 'getCourthouses').mockReturnValue(of(courts));
 

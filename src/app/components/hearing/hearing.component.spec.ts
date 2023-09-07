@@ -7,14 +7,12 @@ import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CaseService } from 'src/app/services/case/case.service';
-import { ErrorHandlerService } from 'src/app/services/error/error-handler.service';
 import { HearingData } from 'src/app/types/hearing';
 import { Observable, of } from 'rxjs';
 
 describe('HearingComponent', () => {
   const fakeAppInsightsService = {};
   let httpClientSpy: HttpClient;
-  let errorHandlerSpy: ErrorHandlerService;
   let caseService: CaseService;
   let component: HearingComponent;
   let fixture: ComponentFixture<HearingComponent>;
@@ -37,10 +35,8 @@ describe('HearingComponent', () => {
     httpClientSpy = {
       get: jest.fn(),
     } as unknown as HttpClient;
-    errorHandlerSpy = {
-      err: jest.fn(),
-    } as unknown as ErrorHandlerService;
-    caseService = new CaseService(httpClientSpy, errorHandlerSpy);
+
+    caseService = new CaseService(httpClientSpy);
 
     jest.spyOn(caseService, 'getCase').mockReturnValue(cd);
     jest.spyOn(caseService, 'getCaseHearings').mockReturnValue(hd);
