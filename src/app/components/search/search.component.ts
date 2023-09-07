@@ -20,6 +20,12 @@ const FieldErrors: { [key: string]: { [key: string]: string } } = {
   case_number: {
     required: 'You must enter a case number.',
   },
+  courthouse: {
+    required: 'You must enter a courthouse.',
+  },
+  courtroom: {
+    required: 'You must enter a courtroom.', //example
+  }
 };
 
 @Component({
@@ -252,6 +258,8 @@ export class SearchComponent implements AfterViewChecked, AfterViewInit {
       .filter((fieldId) => formControls[fieldId].errors)
       .map((fieldId) => this.getFieldErrorMessages(fieldId).map((message) => ({ fieldId, message })))
       .flat();
+
+    //Need custom block for non-formcontrol Courtrooms element
   }
 
   clearSearch() {

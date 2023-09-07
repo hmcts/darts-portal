@@ -23,11 +23,7 @@
       Also known as a case reference or court reference. There should be no spaces.
     </div>
     <div *ngIf="submitted && f.case_number.errors">
-      <p
-        *ngFor="let error of getFieldErrorMessages('case_number')"
-        id="national-insurance-number-error"
-        class="govuk-error-message"
-      >
+      <p *ngFor="let error of getFieldErrorMessages('case_number')" id="casenumber-error" class="govuk-error-message">
         <span class="govuk-visually-hidden">Error:</span> {{ error }}
       </p>
     </div>
@@ -54,22 +50,38 @@
       <div class="govuk-form-group">
         <!-- autocomplete -->
         <label class="govuk-label" for="advanced-case-search">Courthouse</label>
+        <!-- Error message courthouse -->
+        <!-- <div *ngIf="submitted && f.courthouse.errors">
+          <p
+            *ngFor="let error of getFieldErrorMessages('courthouse')"
+            id="courthouse-error"
+            class="govuk-error-message"
+          >
+            <span class="govuk-visually-hidden">Error:</span> {{ error }}
+          </p>
+        </div> -->
         <div #courthouseAutocomplete id="courthouse-autocomplete-container" class="govuk-input--width-20"></div>
       </div>
 
-      <div class="govuk-form-group">
+      <div class="govuk-form-group" [ngClass]="{ 'govuk-form-group--error': submitted && f.courtroom.errors }">
         <label class="govuk-label" for="advanced-case-search"> Courtroom </label>
         <div id="courtroom-search-hint" class="govuk-hint">For example, 3</div>
-        <p *ngIf="errorType === 'COURTROOM'" class="govuk-error-message">
-          <span class="govuk-visually-hidden">Error:</span> {{ error }}
-        </p>
+        <!-- Error message courtroom -->
+        <div *ngIf="submitted && f.courtroom.errors">
+          <p *ngFor="let error of getFieldErrorMessages('courtroom')" id="courthouse-error" class="govuk-error-message">
+            <span class="govuk-visually-hidden">Error:</span> {{ error }}
+          </p>
+        </div>
         <input
+          required
+          minlength="1"
           formControlName="courtroom"
           class="govuk-input govuk-input--width-2"
           id="courtroom-search"
           name="courtroom-search"
           type="text"
           aria-describedby="courtroom-search-hint"
+          [ngClass]="{ 'govuk-input--error': submitted && f.courtroom.errors }"
         />
       </div>
 
