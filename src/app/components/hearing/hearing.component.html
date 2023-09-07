@@ -1,0 +1,3 @@
+<ng-container *ngIf="{ case: case$ | async, hearing: hearing$ | async } as vm">
+  <app-hearing-file [case]="vm.case" [hearing]="vm.hearing"></app-hearing-file>
+</ng-container>
