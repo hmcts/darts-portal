@@ -41,6 +41,6 @@
     <h3 class="govuk-heading-s">Courtroom</h3>
     <p class="govuk-body">{{ hearing.courtroom }}</p>
     <h3 class="govuk-heading-s">Judge(s)</h3>
-    <p class="govuk-body">{{ hearing.judges.join(', ') }}</p>
+    <p *ngIf="hearing.judges" class="govuk-body">{{ hearing.judges.join(', ') }}</p>
   </div>
 </ng-container>

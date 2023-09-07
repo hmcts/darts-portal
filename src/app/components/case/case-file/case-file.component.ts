@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CaseFile } from 'src/app/types/case-file';
+import { CaseData } from 'src/app/types/case';
 
 @Component({
   selector: 'app-case-file',
@@ -10,5 +10,5 @@ import { CaseFile } from 'src/app/types/case-file';
   styleUrls: ['./case-file.component.scss'],
 })
 export class CaseFileComponent {
-  @Input() public caseFile!: CaseFile;
+  @Input() public caseFile!: CaseData;
 }

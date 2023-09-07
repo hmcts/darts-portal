@@ -15,11 +15,11 @@ describe('DatetimeService', () => {
   });
 
   it('should return correct date formats when passing in YYYY-MM-DD', () => {
-    jest.spyOn(service, 'getdddDMMMYYYY');
+    jest.spyOn(DateTimeService, 'getdddDMMMYYYY');
 
-    const date = service.getdddDMMMYYYY('2023-08-16');
+    const date = DateTimeService.getdddDMMMYYYY('2023-08-16');
 
-    expect(service.getdddDMMMYYYY).toHaveBeenCalled();
+    expect(DateTimeService.getdddDMMMYYYY).toHaveBeenCalled();
     expect(date).toBe('Wed 16 Aug 2023');
   });
 });

@@ -13,8 +13,6 @@ import { PaginationComponent } from '../../shared/pagination/pagination.componen
   standalone: true,
 })
 export class ResultsComponent implements OnChanges {
-  constructor(private dateTimeService: DateTimeService) {}
-
   @Input() cases: CaseData[] = [];
   @Input() loaded = false;
   @Input() errorType = '';
@@ -67,7 +65,7 @@ export class ResultsComponent implements OnChanges {
   }
 
   private getDateFormat(d: string): string {
-    return this.dateTimeService.getdddDMMMYYYY(d);
+    return DateTimeService.getdddDMMMYYYY(d);
   }
 
   private updatePagedCases(): void {

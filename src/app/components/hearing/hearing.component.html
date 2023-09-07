@@ -1,4 +1,7 @@
-<app-hearing-file [case]="case" [hearing]="hearing"></app-hearing-file>
+<ng-container *ngIf="{ case: case$ | async, hearing: hearing$ | async } as vm">
+  <app-hearing-file [case]="vm.case" [hearing]="vm.hearing"></app-hearing-file>
+</ng-container>
+
 <ng-container *ngIf="audioAndEvents$ | async as vm; else loading">
   <app-events-and-audio
     [audio]="vm.audio"
@@ -6,4 +9,5 @@
     (eventsSelect)="onEventsSelected($event)"
   ></app-events-and-audio>
 </ng-container>
+
 <ng-template #loading>Loading...</ng-template>

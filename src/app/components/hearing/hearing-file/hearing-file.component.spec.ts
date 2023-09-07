@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { HearingFileComponent } from './hearing-file.component';
 
 describe('HearingFileComponent', () => {

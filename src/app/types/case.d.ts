@@ -10,4 +10,5 @@ export interface CaseData {
   reporting_restriction?: string;
   hearings?: Hearing[];
   retain_until?: string;
+  prosecutors?: string[] = [];
 }
