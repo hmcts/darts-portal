@@ -1,5 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, OnChanges, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnChanges,
+  OnDestroy,
+  Input,
+  Output,
+  EventEmitter,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { HearingEventTypeEnum } from 'src/app/types/enums';
@@ -11,6 +20,7 @@ import { HearingAudio, HearingEvent, HearingAudioEventViewModel } from 'src/app/
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './events-and-audio.component.html',
   styleUrls: ['./events-and-audio.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
   @Input() audio: HearingAudio[] = [];
