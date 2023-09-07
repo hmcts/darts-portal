@@ -1,9 +1,9 @@
-import { Component, Input, OnInit, EventEmitter, Output, OnDestroy, OnChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HearingAudio, HearingEvent, HearingAudioEventViewModel } from 'src/app/types/hearing-audio-event';
-import { HearingEventTypeEnum } from 'src/app/types/enums';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, OnInit, OnChanges, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { HearingEventTypeEnum } from 'src/app/types/enums';
+import { HearingAudio, HearingEvent, HearingAudioEventViewModel } from 'src/app/types/hearing-audio-event';
 
 @Component({
   selector: 'app-events-and-audio',
