@@ -22,6 +22,7 @@ export class ResultsComponent implements OnChanges {
   pageLimit = 25;
 
   ngOnChanges(): void {
+    this.currentPage = 1;
     this.updatePagedCases();
   }
 

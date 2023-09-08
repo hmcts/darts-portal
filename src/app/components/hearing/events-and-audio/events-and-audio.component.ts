@@ -1,29 +1,53 @@
-import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HearingAudio, HearingEvent, HearingAudioEventViewModel } from 'src/app/types/hearing-audio-event';
+import {
+  Component,
+  OnInit,
+  OnChanges,
+  OnDestroy,
+  Input,
+  Output,
+  EventEmitter,
+  ChangeDetectionStrategy,
+} from '@angular/core';
+import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { HearingEventTypeEnum } from 'src/app/types/enums';
+import { HearingAudio, HearingEvent, HearingAudioEventViewModel } from 'src/app/types/hearing-audio-event';
 
 @Component({
   selector: 'app-events-and-audio',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './events-and-audio.component.html',
   styleUrls: ['./events-and-audio.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EventsAndAudioComponent implements OnInit {
+export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
   @Input() audio: HearingAudio[] = [];
   @Input() events: HearingEvent[] = [];
 
   @Output() eventsSelect = new EventEmitter<HearingAudioEventViewModel[]>();
 
   table: HearingAudioEventViewModel[] = [];
+  filteredTable: HearingAudioEventViewModel[] = [];
+
   selectedRows: HearingAudioEventViewModel[] = [];
 
+  form = new FormGroup({ selectedOption: new FormControl('all') });
+  formChanges$ = this.form.valueChanges;
+
+  subs: Subscription[] = [];
+
   ngOnInit(): void {
-    this.table = [
-      ...this.audio.map((audio) => ({ ...audio, type: HearingEventTypeEnum.Audio })),
-      ...this.events.map((event) => ({ ...event, type: HearingEventTypeEnum.Event })),
-    ];
+    this.subs.push(
+      this.formChanges$.subscribe((valueChanges) => {
+        this.onFilterChanged(valueChanges.selectedOption as string);
+      })
+    );
+  }
+
+  ngOnChanges(): void {
+    this.constructTable();
   }
 
   toggleRowSelection(row: HearingAudioEventViewModel) {
@@ -40,5 +64,43 @@ export class EventsAndAudioComponent implements OnInit {
 
   isRowSelected(row: HearingAudioEventViewModel) {
     return this.selectedRows.includes(row);
+  }
+
+  onFilterChanged(selectedOption: string) {
+    if (selectedOption === 'all') {
+      this.filteredTable = [...this.table];
+    } else {
+      this.filteredTable = this.table.filter((row) => row.type === HearingEventTypeEnum.Event);
+    }
+  }
+
+  private constructTable() {
+    this.mapEventsAndAudioToTable();
+    this.sortTableByTimeStamp(this.table);
+    this.filteredTable = [...this.table];
+  }
+
+  private mapEventsAndAudioToTable() {
+    this.table = [
+      ...this.audio.map((audio) => ({
+        ...audio,
+        type: HearingEventTypeEnum.Audio,
+        timestamp: audio.media_start_timestamp,
+      })),
+      ...this.events.map((event) => ({ ...event, type: HearingEventTypeEnum.Event })),
+    ];
+  }
+
+  private sortTableByTimeStamp(table: HearingAudioEventViewModel[]) {
+    table.sort((a, b) => {
+      const timestampA = new Date(a.timestamp || '').getTime();
+      const timestampB = new Date(b.timestamp || '').getTime();
+
+      return timestampB - timestampA;
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.subs.forEach((s) => s.unsubscribe());
   }
 }

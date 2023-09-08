@@ -19,7 +19,7 @@ export class PaginationComponent implements OnChanges {
   ELIPSIS = '...';
 
   ngOnChanges(): void {
-    if (this.total > this.limit) this.calculatePages();
+    this.calculatePages();
   }
 
   onPageChanged($event: MouseEvent, page: number) {
