@@ -116,9 +116,12 @@
                   <span class="govuk-visually-hidden">Error:</span> {{ error }}
                 </p>
               </div>
+
+              <!-- pattern="/^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/" -->
               <div class="ds_input__wrapper">
                 <input
                   required
+                  pattern="\d{1,2}/\d{1,2}/\d{4}"
                   formControlName="date_from"
                   id="specific-date"
                   type="text"

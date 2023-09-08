@@ -29,12 +29,11 @@ const FieldErrors: { [key: string]: { [key: string]: string } } = {
   },
   date_from: {
     required: 'You have not selected a start date. Select a start date to define your search', //this must be filled
+    pattern: 'You have not entered a recognised date in the correct format (for example 31/01/2023)',
   },
   date_to: {
     required: 'You have not selected an end date. Select an end date to define your search', //this must be filled
-  },
-  specific_date: {
-    required: 'You have not entered a recognised date in the correct format (for example 31/01/2023)', //If date_from or date_to exist, Check date format is dd/mm/yyyy moment.format(dd/mm/yyyy)
+    pattern: 'You have not entered a recognised date in the correct format (for example 31/01/2023)', //If date_from or date_to exist, Check date format is dd/mm/yyyy moment.format(dd/mm/yyyy)
   },
 };
 
@@ -65,7 +64,7 @@ export class SearchComponent implements AfterViewChecked, AfterViewInit {
     judge_name: new FormControl(),
     defendant_name: new FormControl(),
     event_text_contains: new FormControl(),
-    date_from: new FormControl(),
+    date_from: new FormControl(), //'', [Validators.required, Validators.pattern(/^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$/)]
     date_to: new FormControl(),
   });
 
@@ -192,6 +191,7 @@ export class SearchComponent implements AfterViewChecked, AfterViewInit {
   private generateErrorSummary(): ErrorSummaryEntry[] {
     this.getCourthouseErrors();
 
+    console.log(this.f); //remove me
     const formControls = this.f;
     return Object.keys(formControls)
       .filter((fieldId) => formControls[fieldId].errors)
