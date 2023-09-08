@@ -101,7 +101,7 @@
     "@typescript-eslint/types": "^5.59.7",
     "bluebird": "^3.7.2",
     "concurrently": "^8.0.0",
-    "cypress": "^12.9.0",
+    "cypress": "^13.0.0",
     "ejs": "^3.1.9",
     "eslint": "^8.33.0",
     "husky": "^8.0.3",
