@@ -1,4 +1,4 @@
-<nav class="govuk-pagination" role="navigation" aria-label="results">
+<nav *ngIf="pages.length > 1" class="govuk-pagination" role="navigation" aria-label="results">
   <div *ngIf="currentPage > 1" class="govuk-pagination__prev">
     <a class="govuk-link govuk-pagination__link" href="#" rel="prev" (click)="onPageChanged($event, currentPage - 1)">
       <svg
