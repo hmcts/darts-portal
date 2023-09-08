@@ -52,11 +52,7 @@
         <label class="govuk-label" for="advanced-case-search">Courthouse</label>
         <!-- Error message courthouse -->
         <div *ngIf="submitted && f.courthouse.errors">
-          <p
-            *ngFor="let error of getCourthouseErrors()"
-            id="courthouse-error"
-            class="govuk-error-message"
-          >
+          <p *ngFor="let error of getCourthouseErrors()" id="courthouse-error" class="govuk-error-message">
             <span class="govuk-visually-hidden">Error:</span> {{ error }}
           </p>
         </div>
@@ -85,7 +81,7 @@
         />
       </div>
 
-      <div class="govuk-form-group">
+      <div class="govuk-form-group" [ngClass]="{ 'govuk-form-group--error': submitted && f.date_from.errors }">
         <label class="govuk-label govuk-!-font-weight-bold" for="advanced-case-search"> Hearing date </label>
         <div id="hearingdate-search-hint" class="govuk-hint">There is limited data pre-2012.</div>
         <div class="govuk-radios" data-module="govuk-radios">
@@ -110,19 +106,25 @@
           >
             <div data-module="ds-datepicker" class="ds_datepicker">
               <p class="ds_hint-text">For example, 31/01/2023.</p>
-              <p *ngIf="errorType === 'FUTURE_DATE'" class="govuk-error-message">
-                <span class="govuk-visually-hidden">Error:</span> {{ error }}
-              </p>
-              <p *ngIf="errorType === 'INVALID_DATE'" class="govuk-error-message">
-                <span class="govuk-visually-hidden">Error:</span> {{ error }}
-              </p>
+              <!-- Error message date range date_from -->
+              <div *ngIf="submitted && f.date_from.errors">
+                <p
+                  *ngFor="let error of getFieldErrorMessages('date_from')"
+                  id="datefrom-error"
+                  class="govuk-error-message"
+                >
+                  <span class="govuk-visually-hidden">Error:</span> {{ error }}
+                </p>
+              </div>
               <div class="ds_input__wrapper">
                 <input
+                  required
                   formControlName="date_from"
                   id="specific-date"
                   type="text"
                   class="ds_input ds_input--fixed-10"
                   (change)="setInputValue($any($event).target.value, 'date_from')"
+                  [ngClass]="{ 'govuk-input--error': submitted && f.date_from.errors }"
                 />
               </div>
             </div>
@@ -147,20 +149,26 @@
                 <label class="ds_label" for="range-date-from">From</label>
                 <p class="ds_hint-text">For example, 31/01/2023.</p>
 
-                <!-- Error message date range -->
+                <!-- Error message date range date_from -->
                 <div *ngIf="submitted && f.date_from.errors">
-                  <p *ngFor="let error of getFieldErrorMessages('date_from')" id="datefrom-error" class="govuk-error-message">
+                  <p
+                    *ngFor="let error of getFieldErrorMessages('date_from')"
+                    id="datefrom-error"
+                    class="govuk-error-message"
+                  >
                     <span class="govuk-visually-hidden">Error:</span> {{ error }}
                   </p>
                 </div>
 
                 <div class="ds_input__wrapper">
                   <input
+                    required
                     formControlName="date_from"
                     id="range-date-from"
                     type="text"
                     class="ds_input ds_input--fixed-10"
                     (change)="setInputValue($any($event).target.value, 'date_from')"
+                    [ngClass]="{ 'govuk-input--error': submitted && f.date_from.errors }"
                   />
                 </div>
               </div>
@@ -170,17 +178,28 @@
               <div data-module="ds-datepicker" class="ds_datepicker">
                 <label class="ds_label" for="range-date-to">To</label>
                 <p class="ds_hint-text">For example, 31/01/2023.</p>
-                <p *ngIf="errorType === 'END_DATE_MISSING'" class="govuk-error-message">
-                  <span class="govuk-visually-hidden">Error:</span> {{ error }}
-                </p>
+
+                <!-- Error message date range date_to -->
+                <div *ngIf="submitted && f.date_to.errors">
+                  <p
+                    *ngFor="let error of getFieldErrorMessages('date_to')"
+                    id="datefrom-error"
+                    class="govuk-error-message"
+                  >
+                    <span class="govuk-visually-hidden">Error:</span> {{ error }}
+                  </p>
+                </div>
+
                 <div class="ds_input__wrapper">
                   <input
+                    required
                     formControlName="date_to"
                     id="range-date-to"
                     name="range-date-to"
                     type="text"
                     class="ds_input ds_input--fixed-10"
                     (change)="setInputValue($any($event).target.value, 'date_to')"
+                    [ngClass]="{ 'govuk-input--error': submitted && f.date_to.errors }"
                   />
                 </div>
               </div>

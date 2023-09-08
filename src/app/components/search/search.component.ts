@@ -18,22 +18,23 @@ interface ErrorSummaryEntry {
 
 const FieldErrors: { [key: string]: { [key: string]: string } } = {
   case_number: {
-    required: 'You must enter a case number.',
+    required: 'You must enter a case number.', //Figma indicates this is not required
   },
   courthouse: {
     required: 'You must enter a courthouse, if courtroom is filled.',
   },
   courtroom: {
-    required: 'The courtroom number you have entered is not a recognised number for this courthouse. Check and try again',
+    required:
+      'The courtroom number you have entered is not a recognised number for this courthouse. Check and try again', //If courthouse is not empty, this is required
   },
   date_from: {
-    required: 'You have not selected a start date. Select a start date to define your search',
+    required: 'You have not selected a start date. Select a start date to define your search', //this must be filled
   },
   date_to: {
-    required: 'You have not selected an end date. Select an end date to define your search',
+    required: 'You have not selected an end date. Select an end date to define your search', //this must be filled
   },
   specific_date: {
-    required: 'You have not entered a recognised date in the correct format (for example 31/01/2023)',
+    required: 'You have not entered a recognised date in the correct format (for example 31/01/2023)', //If date_from or date_to exist, Check date format is dd/mm/yyyy moment.format(dd/mm/yyyy)
   },
 };
 
