@@ -51,15 +51,15 @@
         <!-- autocomplete -->
         <label class="govuk-label" for="advanced-case-search">Courthouse</label>
         <!-- Error message courthouse -->
-        <!-- <div *ngIf="submitted && f.courthouse.errors">
+        <div *ngIf="submitted && f.courthouse.errors">
           <p
-            *ngFor="let error of getFieldErrorMessages('courthouse')"
+            *ngFor="let error of getCourthouseErrors()"
             id="courthouse-error"
             class="govuk-error-message"
           >
             <span class="govuk-visually-hidden">Error:</span> {{ error }}
           </p>
-        </div> -->
+        </div>
         <div #courthouseAutocomplete id="courthouse-autocomplete-container" class="govuk-input--width-20"></div>
       </div>
 
