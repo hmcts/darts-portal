@@ -24,7 +24,16 @@ const FieldErrors: { [key: string]: { [key: string]: string } } = {
     required: 'You must enter a courthouse, if courtroom is filled.',
   },
   courtroom: {
-    required: 'You must enter a courtroom.', //example
+    required: 'The courtroom number you have entered is not a recognised number for this courthouse. Check and try again',
+  },
+  date_from: {
+    required: 'You have not selected a start date. Select a start date to define your search',
+  },
+  date_to: {
+    required: 'You have not selected an end date. Select an end date to define your search',
+  },
+  specific_date: {
+    required: 'You have not entered a recognised date in the correct format (for example 31/01/2023)',
   },
 };
 

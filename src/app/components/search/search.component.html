@@ -146,9 +146,14 @@
               <div data-module="ds-datepicker" class="ds_datepicker">
                 <label class="ds_label" for="range-date-from">From</label>
                 <p class="ds_hint-text">For example, 31/01/2023.</p>
-                <p *ngIf="errorType === 'START_DATE_MISSING'" class="govuk-error-message">
-                  <span class="govuk-visually-hidden">Error:</span> {{ error }}
-                </p>
+
+                <!-- Error message date range -->
+                <div *ngIf="submitted && f.date_from.errors">
+                  <p *ngFor="let error of getFieldErrorMessages('date_from')" id="datefrom-error" class="govuk-error-message">
+                    <span class="govuk-visually-hidden">Error:</span> {{ error }}
+                  </p>
+                </div>
+
                 <div class="ds_input__wrapper">
                   <input
                     formControlName="date_from"
