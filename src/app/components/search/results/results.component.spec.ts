@@ -175,12 +175,11 @@ describe('ResultsComponent', () => {
     });
 
     it('pages cases based on current page', () => {
-      // Given 4 cases and a page limit of 3
+      // Given 4 cases and a page limit of 3 and on page 2
       component.cases = MOCK_CASES;
-      component.currentPage = 2;
       component.pageLimit = 3;
 
-      component.ngOnChanges();
+      component.onPageChanged(2);
 
       expect(component.pagedCases.length).toEqual(1);
       expect(component.pagedCases[0]).toEqual(MOCK_CASES[3]);
