@@ -13,7 +13,8 @@ describe('Login', () => {
     cy.get('#login').click();
     cy.get('h1').should('contain', 'Welcome to DARTS');
 
-    cy.contains('Sign out').click();
+    cy.contains('Sign out').should('be.visible').click();
+
     cy.url().should('include', '/login');
 
     // try to visit an authenticated route
