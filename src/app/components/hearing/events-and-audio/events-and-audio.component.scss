@@ -18,3 +18,7 @@ tr:has(button) {
 .govuk-table__cell:last-child {
   max-width: 300px;
 }
+
+.govuk-body.colon {
+  display: inline-block;
+}

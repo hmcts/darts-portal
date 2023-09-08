@@ -3,6 +3,66 @@
   <h2 class="govuk-heading-m">There are no events or audio for this hearing</h2>
 </ng-container>
 <ng-container *ngIf="table.length">
+  <div id="request-audio-playback-hint" class="govuk-hint">
+    Select events or audio to set the recording start and end times. You can also manually adjust the times for a custom
+    recording.
+  </div>
+  <article class="moj-ticket-panel" aria-label="Request Playback Audio">
+    <section class="moj-ticket-panel__content" aria-label="Request Playback Audio Section">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-one-third">
+          <h3 class="govuk-heading-s">Start Time</h3>
+          <div class="govuk-date-input" id="passport-issued">
+            <div class="govuk-date-input__item">
+              <div class="govuk-form-group">
+                <label class="govuk-label govuk-date-input__label" for="passport-issued-day"> Hour </label>
+                <input
+                  class="govuk-input govuk-date-input__input govuk-input--width-2"
+                  id="passport-issued-day"
+                  name="passport-issued-day"
+                  type="text"
+                  inputmode="numeric"
+                />
+              </div>
+            </div>
+            <span class="govuk-body colon">:</span>
+            <div class="govuk-date-input__item">
+              <div class="govuk-form-group">
+                <label class="govuk-label govuk-date-input__label" for="passport-issued-month"> Minutes </label>
+                <input
+                  class="govuk-input govuk-date-input__input govuk-input--width-2"
+                  id="passport-issued-month"
+                  name="passport-issued-month"
+                  type="text"
+                  inputmode="numeric"
+                />
+              </div>
+            </div>
+            <span class="govuk-body colon">:</span>
+            <div class="govuk-date-input__item">
+              <div class="govuk-form-group">
+                <label class="govuk-label govuk-date-input__label" for="passport-issued-month"> Seconds </label>
+                <input
+                  class="govuk-input govuk-date-input__input govuk-input--width-2"
+                  id="passport-issued-month"
+                  name="passport-issued-month"
+                  type="text"
+                  inputmode="numeric"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="govuk-grid-column-one-third">
+          <h3 class="govuk-heading-s">End Time</h3>
+        </div>
+        <div class="govuk-grid-column-one-third">
+          <h3 class="govuk-heading-s">Request Type</h3>
+          <button class="govuk-button" data-module="govuk-button">Get Audio</button>
+        </div>
+      </div>
+    </section>
+  </article>
   <div class="govuk-form-group">
     <fieldset class="govuk-fieldset" aria-describedby="changedName-hint">
       <legend id="changedName-hint" class="govuk-hint">Select events to include in requests</legend>
