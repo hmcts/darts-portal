@@ -13,11 +13,12 @@ import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { HearingEventTypeEnum } from 'src/app/types/enums';
 import { HearingAudio, HearingEvent, HearingAudioEventViewModel } from 'src/app/types/hearing-audio-event';
+import { TimeInputComponent } from './time-input/time-input.component';
 
 @Component({
   selector: 'app-events-and-audio',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, TimeInputComponent],
   templateUrl: './events-and-audio.component.html',
   styleUrls: ['./events-and-audio.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

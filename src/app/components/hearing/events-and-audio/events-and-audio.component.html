@@ -10,54 +10,34 @@
   <article class="moj-ticket-panel" aria-label="Request Playback Audio">
     <section class="moj-ticket-panel__content" aria-label="Request Playback Audio Section">
       <div class="govuk-grid-row">
-        <div class="govuk-grid-column-one-third">
+        <div class="govuk-grid-column-one-quarter">
           <h3 class="govuk-heading-s">Start Time</h3>
-          <div class="govuk-date-input" id="passport-issued">
-            <div class="govuk-date-input__item">
-              <div class="govuk-form-group">
-                <label class="govuk-label govuk-date-input__label" for="passport-issued-day"> Hour </label>
-                <input
-                  class="govuk-input govuk-date-input__input govuk-input--width-2"
-                  id="passport-issued-day"
-                  name="passport-issued-day"
-                  type="text"
-                  inputmode="numeric"
-                />
+          <app-time-input></app-time-input>
+        </div>
+        <div class="govuk-grid-column-one-quarter">
+          <h3 class="govuk-heading-s">End Time</h3>
+          <app-time-input></app-time-input>
+        </div>
+        <div class="govuk-grid-column-one-quarter">
+          <div class="govuk-form-group">
+            <fieldset class="govuk-fieldset">
+              <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                <h3 class="govuk-heading-s">Request Type</h3>
+              </legend>
+              <div class="govuk-radios govuk-radios--small" data-module="govuk-radios">
+                <div class="govuk-radios__item">
+                  <input class="govuk-radios__input" id="changedName" name="changedName" type="radio" value="month" />
+                  <label class="govuk-label govuk-radios__label" for="changedName"> Playback Only </label>
+                </div>
+                <div class="govuk-radios__item">
+                  <input class="govuk-radios__input" id="changedName-2" name="changedName" type="radio" value="year" />
+                  <label class="govuk-label govuk-radios__label" for="changedName-2"> Download </label>
+                </div>
               </div>
-            </div>
-            <span class="govuk-body colon">:</span>
-            <div class="govuk-date-input__item">
-              <div class="govuk-form-group">
-                <label class="govuk-label govuk-date-input__label" for="passport-issued-month"> Minutes </label>
-                <input
-                  class="govuk-input govuk-date-input__input govuk-input--width-2"
-                  id="passport-issued-month"
-                  name="passport-issued-month"
-                  type="text"
-                  inputmode="numeric"
-                />
-              </div>
-            </div>
-            <span class="govuk-body colon">:</span>
-            <div class="govuk-date-input__item">
-              <div class="govuk-form-group">
-                <label class="govuk-label govuk-date-input__label" for="passport-issued-month"> Seconds </label>
-                <input
-                  class="govuk-input govuk-date-input__input govuk-input--width-2"
-                  id="passport-issued-month"
-                  name="passport-issued-month"
-                  type="text"
-                  inputmode="numeric"
-                />
-              </div>
-            </div>
+            </fieldset>
           </div>
         </div>
-        <div class="govuk-grid-column-one-third">
-          <h3 class="govuk-heading-s">End Time</h3>
-        </div>
-        <div class="govuk-grid-column-one-third">
-          <h3 class="govuk-heading-s">Request Type</h3>
+        <div class="govuk-grid-column-one-quarter">
           <button class="govuk-button" data-module="govuk-button">Get Audio</button>
         </div>
       </div>
