@@ -43,14 +43,14 @@
     />
   </div>
   <details class="govuk-details" data-module="govuk-details">
-    <summary class="govuk-details__summary">
+    <summary class="govuk-details__summary" (click)="toggleAdvancedSearch()">
       <span class="govuk-details__summary-text"> Advanced search </span>
     </summary>
     <div class="govuk-form-group govuk-details__text">
       <div class="govuk-form-group">
         <!-- autocomplete -->
         <label class="govuk-label" for="advanced-case-search">Courthouse</label>
-        <!-- Error message courthouse -->
+        <div #courthouseAutocomplete id="courthouse-autocomplete-container" class="govuk-input--width-20"></div>
         <div *ngIf="submitted && f.courthouse.errors">
           <p *ngFor="let error of getCourthouseErrors()" id="courthouse-error" class="govuk-error-message">
             <span class="govuk-visually-hidden">Error:</span> {{ error }}
@@ -69,7 +69,6 @@
           </p>
         </div>
         <input
-          required
           minlength="1"
           formControlName="courtroom"
           class="govuk-input govuk-input--width-2"
@@ -116,8 +115,6 @@
                   <span class="govuk-visually-hidden">Error:</span> {{ error }}
                 </p>
               </div>
-
-              <!-- pattern="/^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/" -->
               <div class="ds_input__wrapper">
                 <input
                   required
@@ -251,5 +248,9 @@
     <a class="govuk-link" href="javascript:void(0)" (click)="clearSearch()">Clear search</a>
   </div>
 </form>
+
+<pre
+  >{{ form.value | json }}
+</pre>
 
 <app-results [casesInput]="cases" [loaded]="loaded" [errorType]="errorType"> </app-results>

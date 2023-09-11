@@ -1,7 +1,14 @@
-import { AfterViewChecked, AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { initAll } from '@scottish-government/pattern-library/src/all';
-import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import {
+  FormGroup,
+  FormControl,
+  ReactiveFormsModule,
+  Validators,
+  AbstractControl,
+  ValidationErrors,
+} from '@angular/forms';
+import { NgClass, NgFor, NgIf, CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CaseService } from '../../services/case/case.service';
 import { CaseData } from '../../../app/types/case';
@@ -18,22 +25,24 @@ interface ErrorSummaryEntry {
 
 const FieldErrors: { [key: string]: { [key: string]: string } } = {
   case_number: {
-    required: 'You must enter a case number.', //Figma indicates this is not required
+    required: 'You must enter a case number.',
   },
   courthouse: {
     required: 'You must enter a courthouse, if courtroom is filled.',
   },
   courtroom: {
     required:
-      'The courtroom number you have entered is not a recognised number for this courthouse. Check and try again', //If courthouse is not empty, this is required
+      'The courtroom number you have entered is not a recognised number for this courthouse. Check and try again',
   },
   date_from: {
-    required: 'You have not selected a start date. Select a start date to define your search', //this must be filled
+    required: 'You have not selected a start date. Select a start date to define your search',
     pattern: 'You have not entered a recognised date in the correct format (for example 31/01/2023)',
+    futureDate: 'You have selected a date in the future. The hearing date must be in the past',
   },
   date_to: {
-    required: 'You have not selected an end date. Select an end date to define your search', //this must be filled
-    pattern: 'You have not entered a recognised date in the correct format (for example 31/01/2023)', //If date_from or date_to exist, Check date format is dd/mm/yyyy moment.format(dd/mm/yyyy)
+    required: 'You have not selected an end date. Select an end date to define your search',
+    pattern: 'You have not entered a recognised date in the correct format (for example 31/01/2023)',
+    futureDate: 'You have selected a date in the future. The hearing date must be in the past',
   },
 };
 
@@ -42,9 +51,9 @@ const FieldErrors: { [key: string]: { [key: string]: string } } = {
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf, ResultsComponent, NgClass, NgFor],
+  imports: [CommonModule, ReactiveFormsModule, NgIf, ResultsComponent, NgClass, NgFor],
 })
-export class SearchComponent implements AfterViewChecked, AfterViewInit {
+export class SearchComponent implements OnInit, AfterViewChecked, AfterViewInit {
   @ViewChild('courthouseAutocomplete', { static: false }) autocomplete!: ElementRef<HTMLElement>;
   dateInputType!: 'specific' | 'range';
   cases: CaseData[] = [];
@@ -54,6 +63,9 @@ export class SearchComponent implements AfterViewChecked, AfterViewInit {
   errorSummary: ErrorSummaryEntry[] = [];
   errorType = '';
   error = '';
+  isAdvancedSearch = false;
+  datePatternValidator = Validators.pattern(/^\d{2}\/\d{2}\/\d{4}$/);
+  dateValidators = [Validators.required, this.datePatternValidator, this.futureDateValidator];
 
   constructor(private caseService: CaseService) {}
 
@@ -64,9 +76,31 @@ export class SearchComponent implements AfterViewChecked, AfterViewInit {
     judge_name: new FormControl(),
     defendant_name: new FormControl(),
     event_text_contains: new FormControl(),
-    date_from: new FormControl(), //'', [Validators.required, Validators.pattern(/^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$/)]
+    date_from: new FormControl(),
     date_to: new FormControl(),
   });
+
+  ngOnInit() {
+    this.form.get('courtroom')?.valueChanges.subscribe((courtroom) => {
+      if (courtroom) {
+        this.form.get('courthouse')?.setValidators([Validators.required]);
+      } else {
+        this.form.get('courthouse')?.clearValidators();
+      }
+      this.form.get('courthouse')?.updateValueAndValidity();
+    });
+  }
+
+  toggleAdvancedSearch() {
+    this.isAdvancedSearch = !this.isAdvancedSearch;
+
+    if (this.isAdvancedSearch) {
+      this.form.get('case_number')?.clearValidators();
+    } else {
+      this.form.get('case_number')?.setValidators([Validators.required]);
+    }
+    this.form.get('case_number')?.updateValueAndValidity();
+  }
 
   props: AccessibleAutocompleteProps = {
     id: 'advanced-case-search',
@@ -154,6 +188,16 @@ export class SearchComponent implements AfterViewChecked, AfterViewInit {
   toggleRadioSelected(type: 'specific' | 'range') {
     this.form.controls['date_from'].reset();
     this.form.controls['date_to'].reset();
+
+    this.form.get('date_from')?.setValidators(this.dateValidators);
+    if (type === 'range') {
+      this.form.get('date_to')?.setValidators(this.dateValidators);
+    } else {
+      this.form.get('date_to')?.clearValidators();
+    }
+    this.form.get('date_from')?.updateValueAndValidity();
+    this.form.get('date_to')?.updateValueAndValidity();
+
     this.dateInputType = type;
   }
 
@@ -206,6 +250,34 @@ export class SearchComponent implements AfterViewChecked, AfterViewInit {
     this.loaded = false;
     this.submitted = false;
     this.errorSummary = [];
+  }
+
+  futureDateValidator(control: AbstractControl): ValidationErrors | null {
+    const dateValue = control.value;
+
+    if (!dateValue) {
+      return null; // Don't perform validation if the field is empty
+    }
+
+    // Split the input date string into day, month, and year components
+    const dateParts = dateValue.split('/');
+    if (dateParts.length !== 3) {
+      return { invalidDate: true };
+    }
+
+    const day = parseInt(dateParts[0], 10);
+    const month = parseInt(dateParts[1], 10);
+    const year = parseInt(dateParts[2], 10);
+
+    // Create a Date object using the parsed components
+    const inputDate = new Date(year, month - 1, day); // Subtract 1 from month since months are zero-based
+
+    const currentDate = new Date();
+
+    if (inputDate > currentDate) {
+      return { futureDate: true };
+    }
+    return null;
   }
 
   protected readonly ERROR_MESSAGES = ERROR_MESSAGES;
