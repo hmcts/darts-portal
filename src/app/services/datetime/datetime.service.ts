@@ -14,4 +14,9 @@ export class DateTimeService {
   getDMMMYYYY(date: string) {
     return moment(date, 'YYYY-MM-DD', true).format('D MMM YYYY');
   }
+
+  //e.g. 2023-05-31T12:00:00Z
+  getIsoStringWithoutMilliseconds(date: string) {
+    return date.split('.')[0] + 'Z';
+  }
 }

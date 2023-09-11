@@ -19,7 +19,7 @@
             <h3 class="govuk-heading-s">End Time</h3>
             <app-time-input formGroupName="endTime"></app-time-input>
           </div>
-          <div class="govuk-grid-column-one-quarter">
+          <div class="govuk-grid-column-one-quarter requestType">
             <div class="govuk-form-group">
               <fieldset class="govuk-fieldset">
                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
@@ -29,30 +29,28 @@
                   <div class="govuk-radios__item">
                     <input
                       class="govuk-radios__input"
-                      id="changedName"
-                      name="changedName"
+                      id="playback-radio"
                       formControlName="requestType"
                       type="radio"
-                      value="playback"
+                      value="PLAYBACK"
                     />
-                    <label class="govuk-label govuk-radios__label" for="changedName"> Playback Only </label>
+                    <label class="govuk-label govuk-radios__label" for="playback-radio"> Playback Only </label>
                   </div>
                   <div class="govuk-radios__item">
                     <input
                       class="govuk-radios__input"
-                      id="changedName-2"
-                      name="changedName"
+                      id="download-radio"
                       formControlName="requestType"
                       type="radio"
-                      value="download"
+                      value="DOWNLOAD"
                     />
-                    <label class="govuk-label govuk-radios__label" for="changedName-2"> Download </label>
+                    <label class="govuk-label govuk-radios__label" for="download-radio"> Download </label>
                   </div>
                 </div>
               </fieldset>
             </div>
           </div>
-          <div class="govuk-grid-column-one-quarter">
+          <div class="govuk-grid-column-one-quarter button">
             <button type="submit" class="govuk-button" data-module="govuk-button">Get Audio</button>
           </div>
         </div>
@@ -142,3 +140,4 @@
 
 <pre>{{ audioRequestForm.value | json }}</pre>
 Touched? {{ audioRequestForm.touched }} <br />Valid? {{ audioRequestForm.valid }}
+<pre>{{ requestObj | json }}</pre>

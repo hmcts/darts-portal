@@ -27,7 +27,12 @@ export class HearingComponent {
   hearing$ = this.caseService.getHearingById(this.caseId, this.hearingId);
   audio$ = this.hearingService.getAudio(this.hearingId);
   events$ = this.hearingService.getEvents(this.hearingId);
-  audioAndEvents$ = combineLatest({ audio: this.audio$, events: this.events$ });
+  data$ = combineLatest({
+    case: this.case$,
+    hearing: this.hearing$,
+    audios: this.audio$,
+    events: this.events$,
+  });
 
   onEventsSelected(audioAndEvents: HearingAudioEventViewModel[]) {
     console.log(audioAndEvents);
