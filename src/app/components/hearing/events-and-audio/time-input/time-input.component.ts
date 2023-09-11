@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ControlContainer, FormGroup, FormGroupDirective, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ControlContainer, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-time-input',

@@ -124,4 +124,8 @@ export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
 
     this.audioRequestForm.valueChanges.subscribe(console.log);
   }
+
+  onSubmit() {
+    console.log(this.audioRequestForm.value);
+  }
 }

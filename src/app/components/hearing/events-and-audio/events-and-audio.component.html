@@ -9,7 +9,7 @@
   </div>
   <article class="moj-ticket-panel" aria-label="Request Playback Audio">
     <section class="moj-ticket-panel__content" aria-label="Request Playback Audio Section">
-      <form [formGroup]="audioRequestForm">
+      <form [formGroup]="audioRequestForm" (ngSubmit)="onSubmit()">
         <div class="govuk-grid-row">
           <div class="govuk-grid-column-one-quarter">
             <h3 class="govuk-heading-s">Start Time</h3>
@@ -27,7 +27,14 @@
                 </legend>
                 <div class="govuk-radios govuk-radios--small" data-module="govuk-radios">
                   <div class="govuk-radios__item">
-                    <input class="govuk-radios__input" id="changedName" name="changedName" type="radio" value="month" />
+                    <input
+                      class="govuk-radios__input"
+                      id="changedName"
+                      name="changedName"
+                      formControlName="requestType"
+                      type="radio"
+                      value="playback"
+                    />
                     <label class="govuk-label govuk-radios__label" for="changedName"> Playback Only </label>
                   </div>
                   <div class="govuk-radios__item">
@@ -35,8 +42,9 @@
                       class="govuk-radios__input"
                       id="changedName-2"
                       name="changedName"
+                      formControlName="requestType"
                       type="radio"
-                      value="year"
+                      value="download"
                     />
                     <label class="govuk-label govuk-radios__label" for="changedName-2"> Download </label>
                   </div>
@@ -45,7 +53,7 @@
             </div>
           </div>
           <div class="govuk-grid-column-one-quarter">
-            <button class="govuk-button" data-module="govuk-button">Get Audio</button>
+            <button type="submit" class="govuk-button" data-module="govuk-button">Get Audio</button>
           </div>
         </div>
       </form>
