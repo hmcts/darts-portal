@@ -12,12 +12,15 @@ const defaultApiPort = 4550;
 app.set('view engine', 'ejs');
 app.set('views', 'darts-api-stub/views');
 
+app.get('/', (req, res) => res.send('Welcome to the DARTS API stub'));
+
 // stub out external user authentication
 app.use('/external-user', require('./authentication/external'));
 // stub out courthouses api
 app.use('/courthouses', require('./courthouses/courthouses'));
 // stub out certain case APIs
 app.use('/cases', require('./case/case'));
+app.use('/audio', require('./case/case'));
 // proxy non-stubbed routes to the actual API
 app.use(
   createProxyMiddleware({

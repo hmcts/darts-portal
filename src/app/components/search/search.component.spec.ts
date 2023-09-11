@@ -3,44 +3,51 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { SearchComponent } from './search.component';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { AppInsightsService } from '../../services/app-insights/app-insights.service';
 import { ResultsComponent } from './results/results.component';
 import { CaseService } from '../../services/case/case.service';
 import { HttpClient } from '@angular/common/http';
-import { ErrorHandlerService } from '../../services/error/error-handler.service';
-import { CourthouseData } from 'src/app/types/courthouse';
-import { of, throwError } from 'rxjs';
+import { of } from 'rxjs';
+import { CourthouseComponent } from '../common/courthouse/courthouse.component';
+import { Component } from '@angular/core';
 
 // Mock the initAll function
 jest.mock('@scottish-government/pattern-library/src/all', () => ({
   initAll: jest.fn(),
 }));
 
+// Stub Courthouse field component
+@Component({
+  selector: 'app-courthouse-field',
+  template: `<input id="courthouse" name="courthouse" type="text" />`,
+  standalone: true,
+})
+class CourthouseStubComponent {}
+
 describe('SearchComponent', () => {
   const fakeAppInsightsService = {};
   let httpClientSpy: HttpClient;
-  let errorHandlerSpy: ErrorHandlerService;
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
   let caseService: CaseService;
-  const courts = [
-    { courthouse_name: 'Reading', id: 0, created_date_time: 'mock' },
-    { courthouse_name: 'Slough', id: 1, created_date_time: 'mock' },
-    { courthouse_name: 'Ascot', id: 2, created_date_time: 'mock' },
-  ] as CourthouseData[];
 
   beforeEach(() => {
     httpClientSpy = {
       get: jest.fn(),
     } as unknown as HttpClient;
-    errorHandlerSpy = {
-      err: jest.fn(),
-    } as unknown as ErrorHandlerService;
-    caseService = new CaseService(httpClientSpy, errorHandlerSpy);
-    //Stub getCourthouses as it runs on load
-    jest.spyOn(caseService, 'getCourthouses').mockReturnValue(of(courts));
 
+    caseService = new CaseService(httpClientSpy);
+    jest.spyOn(caseService, 'getCasesAdvanced').mockReturnValue(of([]));
+
+    TestBed.overrideComponent(SearchComponent, {
+      add: {
+        imports: [CourthouseStubComponent],
+      },
+      remove: {
+        imports: [CourthouseComponent],
+      },
+    });
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, FormsModule, HttpClientModule, SearchComponent, ResultsComponent],
       providers: [
@@ -57,8 +64,8 @@ describe('SearchComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('#assignValue', () => {
-    it('should assign the value from the specific date picker to the input box, for Angular change detection', async () => {
+  describe('#triggerEventHandler', () => {
+    it('should assign the value from the specific date picker to the input box, for Angular change detection, date_from and date_to should match.', async () => {
       const fixture = TestBed.createComponent(SearchComponent);
       fixture.detectChanges();
 
@@ -76,8 +83,10 @@ describe('SearchComponent', () => {
       const el = specificDateInput.nativeElement;
 
       fixture.detectChanges();
-
+      component.setInputValue('23/08/2023', 'date_to');
       expect(el.value).toEqual('23/08/2023');
+      //With specific date picker, date_from and date_to should equal the same
+      expect(component.form.controls['date_to'].value).toEqual('23/08/2023');
     });
 
     it('should assign the value from the range date picker in the date_to input to the input box, for Angular change detection', async () => {
@@ -141,53 +150,40 @@ describe('SearchComponent', () => {
     it('should call submit function when search button is clicked and fields are filled', () => {
       jest.spyOn(component, 'onSubmit');
 
-      const search = component.form.controls['case_number'];
-      const case_number = '1';
-      search.setValue(case_number);
-      const courthouse = 'Reading';
+      component.form.controls['case_number'].setValue('1');
       const ch = fixture.debugElement.query(By.css('input[name="courthouse"]'));
-      ch.nativeElement.value = courthouse;
+      ch.nativeElement.value = 'Reading';
       ch.nativeElement.dispatchEvent(new Event('input'));
-      const cr = component.form.controls['courtroom'];
-      const courtroom = '2';
-      cr.setValue(courtroom);
-      const jn = component.form.controls['judge_name'];
-      const judge_name = 'Judy';
-      jn.setValue(judge_name);
-      const dn = component.form.controls['defendant_name'];
-      const defendant_name = 'Dave';
-      dn.setValue(defendant_name);
-      const dt = component.form.controls['date_to'];
-      const date_to = '18/09/2023';
-      dt.setValue(date_to);
-      const df = component.form.controls['date_from'];
-      const date_from = '19/09/2023';
-      df.setValue(date_from);
-      const kw = component.form.controls['event_text_contains'];
-      const event_text_contains = 'Keywords';
-      kw.setValue(event_text_contains);
+      component.form.controls['courtroom'].setValue('2');
+      component.form.controls['judge_name'].setValue('Judy');
+      component.form.controls['defendant_name'].setValue('Dave');
+      component.form.controls['date_to'].setValue('18/09/2023');
+      component.form.controls['date_from'].setValue('19/09/2023');
+      component.form.controls['event_text_contains'].setValue('Keywords');
 
       //Check form control values
-      expect(search.value).toBe(case_number);
-      expect(ch.nativeElement.value).toBe(courthouse);
-      expect(cr.value).toBe(courtroom);
-      expect(jn.value).toBe(judge_name);
-      expect(dn.value).toBe(defendant_name);
-      expect(dt.value).toBe(date_to);
-      expect(df.value).toBe(date_from);
-      expect(kw.value).toBe(event_text_contains);
+      expect(component.form.get('case_number')?.value).toBe('1');
+      expect(ch.nativeElement.value).toBe('Reading');
+      expect(component.form.get('courtroom')?.value).toBe('2');
+      expect(component.form.get('judge_name')?.value).toBe('Judy');
+      expect(component.form.get('defendant_name')?.value).toBe('Dave');
+      expect(component.form.get('date_to')?.value).toBe('18/09/2023');
+      expect(component.form.get('date_from')?.value).toBe('19/09/2023');
+      expect(component.form.get('event_text_contains')?.value).toBe('Keywords');
 
       fixture.debugElement.query(By.css('form')).triggerEventHandler('ngSubmit', null);
       fixture.detectChanges();
 
-      //HttpParams check in case service
-      expect(caseService.getHttpParams().get('case_number')).toBe(case_number);
-      expect(caseService.getHttpParams().get('courthouse')).toBe(courthouse);
-      expect(caseService.getHttpParams().get('courtroom')).toBe(courtroom);
-      expect(caseService.getHttpParams().get('judge_name')).toBe(judge_name);
-      expect(caseService.getHttpParams().get('defendant_name')).toBe(defendant_name);
-      expect(caseService.getHttpParams().get('date_to')).toBe('2023-09-18');
-      expect(caseService.getHttpParams().get('event_text_contains')).toBe(event_text_contains);
+      expect(caseService.getCasesAdvanced).toHaveBeenCalledTimes(1);
+      const params = (caseService.getCasesAdvanced as jest.Mock).mock.calls[0];
+      expect(params[0]).toBe('1');
+      expect(params[1]).toBe('Reading');
+      expect(params[2]).toBe('2');
+      expect(params[3]).toBe('Judy');
+      expect(params[4]).toBe('Dave');
+      expect(params[5]).toBe('19/09/2023');
+      expect(params[6]).toBe('18/09/2023');
+      expect(params[7]).toBe('Keywords');
 
       expect(component.onSubmit).toHaveBeenCalled();
     });
@@ -195,90 +191,28 @@ describe('SearchComponent', () => {
 
   describe('#clearSearch', () => {
     it('should clear search text and results', () => {
-      const search = component.form.controls['case_number'];
-      const case_number = '1';
-      search.setValue(case_number);
-      const courthouse = 'Reading';
+      component.form.controls['case_number'].setValue('1');
       const ch = fixture.debugElement.query(By.css('input[name="courthouse"]'));
-      ch.nativeElement.value = courthouse;
+      ch.nativeElement.value = 'Reading';
       ch.nativeElement.dispatchEvent(new Event('input'));
-      const cr = component.form.controls['courtroom'];
-      const courtroom = '2';
-      cr.setValue(courtroom);
-      const jn = component.form.controls['judge_name'];
-      const judge_name = 'Judy';
-      jn.setValue(judge_name);
-      const dn = component.form.controls['defendant_name'];
-      const defendant_name = 'Dave';
-      dn.setValue(defendant_name);
-      const dt = component.form.controls['date_to'];
-      const date_to = '18/09/2023';
-      dt.setValue(date_to);
-      const df = component.form.controls['date_from'];
-      const date_from = '19/09/2023';
-      df.setValue(date_from);
-      const kw = component.form.controls['event_text_contains'];
-      const event_text_contains = 'Keywords';
-      kw.setValue(event_text_contains);
+      component.form.controls['courtroom'].setValue('2');
+      component.form.controls['judge_name'].setValue('Judy');
+      component.form.controls['defendant_name'].setValue('Dave');
+      component.form.controls['date_to'].setValue('18/09/2023');
+      component.form.controls['date_from'].setValue('19/09/2023');
+      component.form.controls['event_text_contains'].setValue('Keywords');
 
       component.clearSearch();
-      expect(search.value).toBeFalsy();
+
+      expect(component.form.get('case_number')?.value).toBeFalsy();
       expect(ch.nativeElement.value).toBeFalsy();
-      expect(cr.value).toBeFalsy();
-      expect(jn.value).toBeFalsy();
-      expect(dn.value).toBeFalsy();
-      expect(dt.value).toBeFalsy();
-      expect(df.value).toBeFalsy();
-      expect(kw.value).toBeFalsy();
+      expect(component.form.get('courtroom')?.value).toBeFalsy();
+      expect(component.form.get('judge_name')?.value).toBeFalsy();
+      expect(component.form.get('defendant_name')?.value).toBeFalsy();
+      expect(component.form.get('date_to')?.value).toBeFalsy();
+      expect(component.form.get('date_from')?.value).toBeFalsy();
+      expect(component.form.get('event_text_contains')?.value).toBeFalsy();
       expect(component.cases.length).toBe(0);
-    });
-  });
-
-  describe('#returnCourthouseNames', () => {
-    it('should return courthouse_name array from object array', () => {
-      const namesArr = component.returnCourthouseNames(courts);
-      const equalArr = ['Reading', 'Slough', 'Ascot'];
-      expect(namesArr).toEqual(equalArr);
-    });
-  });
-
-  describe('#AccessibleAutocompleteProps', () => {
-    it('should have correct default properties', () => {
-      const id = 'advanced-case-search';
-      const minLength = 1;
-      const name = 'courthouse';
-
-      expect(component.props.id).toBe(id);
-      expect(component.props.minLength).toBe(minLength);
-      expect(component.props.name).toBe(name);
-    });
-  });
-
-  describe('#getCourthouses', () => {
-    it('should load courthouses and set autocomplete element', () => {
-      const getCourthousesSpy = jest.spyOn(component, 'getCourthouses');
-      component.ngAfterViewInit();
-
-      expect(component.props.element).toBeTruthy();
-      expect(component.props.source).toBeTruthy();
-      expect(component.courthouses).toEqual(courts);
-
-      expect(getCourthousesSpy).toHaveBeenCalled();
-    });
-
-    it('should run get courthouses function and return 404 response and errorType should be CASE_TEST and loaded', () => {
-      const errorResponse = new HttpErrorResponse({
-        error: { code: `some code`, message: `some message.`, type: 'type' },
-        status: 404,
-        statusText: 'Not Found',
-      });
-
-      caseService.getCourthouses = jest.fn().mockReturnValue(throwError(() => errorResponse));
-
-      component.getCourthouses();
-
-      expect(component.errorType).toEqual(errorResponse.error.type);
-      expect(component.loaded).toBeTruthy();
     });
   });
 });
