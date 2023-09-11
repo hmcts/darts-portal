@@ -1,15 +1,21 @@
-import { Component, Input } from '@angular/core';
+/* eslint-disable @typescript-eslint/no-empty-function */
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ControlContainer, FormGroup, FormGroupDirective, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-time-input',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './time-input.component.html',
   styleUrls: ['./time-input.component.scss'],
 })
-export class TimeInputComponent {
-  @Input() hours = 0;
-  @Input() minutes = 0;
-  @Input() seconds = 0;
+export class TimeInputComponent implements OnInit {
+  form!: FormGroup;
+
+  constructor(private controlContainer: ControlContainer) {}
+
+  ngOnInit() {
+    this.form = <FormGroup>this.controlContainer.control;
+  }
 }
