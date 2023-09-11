@@ -19,7 +19,7 @@ export class HearingService {
   }
 
   getAudio(hearingId: string | number): Observable<HearingAudio[]> {
-    return this.http.get<HearingAudio[]>(`api/cases/hearings/${hearingId}/audios`).pipe(
+    return this.http.get<HearingAudio[]>(`api/audio/hearings/${hearingId}/audios`).pipe(
       catchError((error) => {
         if (error.status === 404) return of([]);
         return throwError(() => error);
