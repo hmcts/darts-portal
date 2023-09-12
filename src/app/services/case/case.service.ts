@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { CaseData } from '../../../app/types/case';
 import { CourthouseData } from '../../../app/types/courthouse';
 import { HearingData } from 'src/app/types/hearing';
@@ -21,7 +21,11 @@ export class CaseService {
 
   //Fetches all courthouses
   getCourthouses(): Observable<CourthouseData[]> {
-    return this.http.get<CourthouseData[]>(GET_COURTHOUSES_PATH);
+    return this.http.get<CourthouseData[]>(GET_COURTHOUSES_PATH).pipe(
+      catchError(() => {
+        return of([]);
+      })
+    );
   }
 
   // Single get case file

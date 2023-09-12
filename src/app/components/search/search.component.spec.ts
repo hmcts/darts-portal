@@ -11,6 +11,7 @@ import { HttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
 import { CourthouseComponent } from '../common/courthouse/courthouse.component';
 import { Component } from '@angular/core';
+import { CourthouseData } from 'src/app/types/courthouse';
 
 // Mock the initAll function
 jest.mock('@scottish-government/pattern-library/src/all', () => ({
@@ -32,6 +33,12 @@ describe('SearchComponent', () => {
   let fixture: ComponentFixture<SearchComponent>;
   let caseService: CaseService;
 
+  const courts = [
+    { courthouse_name: 'Reading', id: 0, created_date_time: 'mock' },
+    { courthouse_name: 'Slough', id: 1, created_date_time: 'mock' },
+    { courthouse_name: 'Ascot', id: 2, created_date_time: 'mock' },
+  ] as CourthouseData[];
+
   beforeEach(() => {
     httpClientSpy = {
       get: jest.fn(),
@@ -39,6 +46,7 @@ describe('SearchComponent', () => {
 
     caseService = new CaseService(httpClientSpy);
     jest.spyOn(caseService, 'getCasesAdvanced').mockReturnValue(of([]));
+    jest.spyOn(caseService, 'getCourthouses').mockReturnValue(of(courts));
 
     TestBed.overrideComponent(SearchComponent, {
       add: {
@@ -151,9 +159,7 @@ describe('SearchComponent', () => {
       jest.spyOn(component, 'onSubmit');
 
       component.form.controls['case_number'].setValue('1');
-      const ch = fixture.debugElement.query(By.css('input[name="courthouse"]'));
-      ch.nativeElement.value = 'Reading';
-      ch.nativeElement.dispatchEvent(new Event('input'));
+      component.form.controls['courthouse'].setValue('Reading');
       component.form.controls['courtroom'].setValue('2');
       component.form.controls['judge_name'].setValue('Judy');
       component.form.controls['defendant_name'].setValue('Dave');
@@ -163,7 +169,7 @@ describe('SearchComponent', () => {
 
       //Check form control values
       expect(component.form.get('case_number')?.value).toBe('1');
-      expect(ch.nativeElement.value).toBe('Reading');
+      expect(component.form.get('courthouse')?.value).toBe('Reading');
       expect(component.form.get('courtroom')?.value).toBe('2');
       expect(component.form.get('judge_name')?.value).toBe('Judy');
       expect(component.form.get('defendant_name')?.value).toBe('Dave');
@@ -192,9 +198,7 @@ describe('SearchComponent', () => {
   describe('#clearSearch', () => {
     it('should clear search text and results', () => {
       component.form.controls['case_number'].setValue('1');
-      const ch = fixture.debugElement.query(By.css('input[name="courthouse"]'));
-      ch.nativeElement.value = 'Reading';
-      ch.nativeElement.dispatchEvent(new Event('input'));
+      component.form.controls['courthouse'].setValue('Reading');
       component.form.controls['courtroom'].setValue('2');
       component.form.controls['judge_name'].setValue('Judy');
       component.form.controls['defendant_name'].setValue('Dave');
@@ -205,7 +209,7 @@ describe('SearchComponent', () => {
       component.clearSearch();
 
       expect(component.form.get('case_number')?.value).toBeFalsy();
-      expect(ch.nativeElement.value).toBeFalsy();
+      expect(component.form.get('courthouse')?.value).toBeFalsy();
       expect(component.form.get('courtroom')?.value).toBeFalsy();
       expect(component.form.get('judge_name')?.value).toBeFalsy();
       expect(component.form.get('defendant_name')?.value).toBeFalsy();

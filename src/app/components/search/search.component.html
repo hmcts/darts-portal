@@ -17,12 +17,12 @@
     </div>
   </div>
 
-  <div class="govuk-form-group" [ngClass]="{ 'govuk-form-group--error': submitted && f.case_number.errors }">
+  <div class="govuk-form-group" [ngClass]="{ 'govuk-form-group--error': isSubmitted && f.case_number.errors }">
     <label class="govuk-label" for="case_number"> Case number </label>
     <div id="case_number-hint" class="govuk-hint">
       Also known as a case reference or court reference. There should be no spaces.
     </div>
-    <div *ngIf="submitted && f.case_number.errors">
+    <div *ngIf="isSubmitted && f.case_number.errors">
       <p *ngFor="let error of getFieldErrorMessages('case_number')" id="casenumber-error" class="govuk-error-message">
         <span class="govuk-visually-hidden">Error:</span> {{ error }}
       </p>
@@ -39,7 +39,7 @@
       type="text"
       aria-describedby="case-search-hint"
       aria-describedby="case_number-hint"
-      [ngClass]="{ 'govuk-input--error': submitted && f.case_number.errors }"
+      [ngClass]="{ 'govuk-input--error': isSubmitted && f.case_number.errors }"
     />
   </div>
   <details class="govuk-details" data-module="govuk-details">
@@ -48,14 +48,28 @@
     </summary>
     <div class="govuk-form-group govuk-details__text">
       <div class="govuk-form-group">
-        <app-courthouse-field></app-courthouse-field>
+        <app-courthouse-field
+          *ngIf="courthouses$ | async as courthouses"
+          [courthouses]="courthouses"
+          (courthouseSelect)="onCourthouseSelected($event)"
+          [isInvalid]="isSubmitted && !!f.courthouse.errors"
+        ></app-courthouse-field>
+        <div *ngIf="isSubmitted && f.courthouse.errors">
+          <p
+            *ngFor="let error of getFieldErrorMessages('courthouse')"
+            id="courthouse-error"
+            class="govuk-error-message"
+          >
+            <span class="govuk-visually-hidden">Error:</span> {{ error }}
+          </p>
+        </div>
       </div>
 
       <div class="govuk-form-group">
         <label class="govuk-label" for="courtroom-search"> Courtroom </label>
         <div id="courtroom-search-hint" class="govuk-hint">For example, 3</div>
         <!-- Error message courtroom -->
-        <div *ngIf="submitted && f.courtroom.errors">
+        <div *ngIf="isSubmitted && f.courtroom.errors">
           <p *ngFor="let error of getFieldErrorMessages('courtroom')" id="courthouse-error" class="govuk-error-message">
             <span class="govuk-visually-hidden">Error:</span> {{ error }}
           </p>
@@ -68,11 +82,11 @@
           name="courtroom-search"
           type="text"
           aria-describedby="courtroom-search-hint"
-          [ngClass]="{ 'govuk-input--error': submitted && f.courtroom.errors }"
+          [ngClass]="{ 'govuk-input--error': isSubmitted && f.courtroom.errors }"
         />
       </div>
 
-      <div class="govuk-form-group" [ngClass]="{ 'govuk-form-group--error': submitted && f.date_from.errors }">
+      <div class="govuk-form-group" [ngClass]="{ 'govuk-form-group--error': isSubmitted && f.date_from.errors }">
         <label class="govuk-label govuk-!-font-weight-bold" for="advanced-case-search"> Hearing date </label>
         <div id="hearingdate-search-hint" class="govuk-hint">There is limited data pre-2012.</div>
         <div class="govuk-radios" data-module="govuk-radios">
@@ -98,7 +112,7 @@
             <div data-module="ds-datepicker" class="ds_datepicker">
               <p class="ds_hint-text">For example, 31/01/2023.</p>
               <!-- Error message date range date_from -->
-              <div *ngIf="submitted && f.date_from.errors">
+              <div *ngIf="isSubmitted && f.date_from.errors">
                 <p
                   *ngFor="let error of getFieldErrorMessages('date_from')"
                   id="datefrom-error"
@@ -116,7 +130,7 @@
                   type="text"
                   class="ds_input ds_input--fixed-10"
                   (change)="setInputValue($any($event).target.value, 'date_from')"
-                  [ngClass]="{ 'govuk-input--error': submitted && f.date_from.errors }"
+                  [ngClass]="{ 'govuk-input--error': isSubmitted && f.date_from.errors }"
                 />
               </div>
             </div>
@@ -143,7 +157,7 @@
                 <p class="ds_hint-text">For example, 31/01/2023.</p>
 
                 <!-- Error message date range date_from -->
-                <div *ngIf="submitted && f.date_from.errors">
+                <div *ngIf="isSubmitted && f.date_from.errors">
                   <p
                     *ngFor="let error of getFieldErrorMessages('date_from')"
                     id="datefrom-error"
@@ -161,7 +175,7 @@
                     type="text"
                     class="ds_input ds_input--fixed-10"
                     (change)="setInputValue($any($event).target.value, 'date_from')"
-                    [ngClass]="{ 'govuk-input--error': submitted && f.date_from.errors }"
+                    [ngClass]="{ 'govuk-input--error': isSubmitted && f.date_from.errors }"
                   />
                 </div>
               </div>
@@ -173,7 +187,7 @@
                 <p class="ds_hint-text">For example, 31/01/2023.</p>
 
                 <!-- Error message date range date_to -->
-                <div *ngIf="submitted && f.date_to.errors">
+                <div *ngIf="isSubmitted && f.date_to.errors">
                   <p
                     *ngFor="let error of getFieldErrorMessages('date_to')"
                     id="datefrom-error"
@@ -192,7 +206,7 @@
                     type="text"
                     class="ds_input ds_input--fixed-10"
                     (change)="setInputValue($any($event).target.value, 'date_to')"
-                    [ngClass]="{ 'govuk-input--error': submitted && f.date_to.errors }"
+                    [ngClass]="{ 'govuk-input--error': isSubmitted && f.date_to.errors }"
                   />
                 </div>
               </div>
@@ -245,5 +259,7 @@
 <pre
   >{{ form.value | json }}
 </pre>
+<pre>Valid? {{ form.valid }}</pre>
+<pre>Valid? {{ form.status }}</pre>
 
 <app-results [cases]="cases" [loaded]="loaded" [errorType]="errorType"> </app-results>

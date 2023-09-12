@@ -174,6 +174,8 @@ describe('CaseService', () => {
     });
 
     it('should call the correct api url', () => {
+      jest.spyOn(httpClientSpy, 'get').mockReturnValue(of([]));
+
       service.getCourthouses();
 
       expect(httpClientSpy.get).toHaveBeenCalledWith('/api/courthouses');

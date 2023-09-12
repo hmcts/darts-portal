@@ -1,5 +1,4 @@
-import { AfterViewChecked, Component, OnInit } from '@angular/core';
-import { initAll } from '@scottish-government/pattern-library/src/all';
+import { Component, OnInit } from '@angular/core';
 import {
   FormGroup,
   FormControl,
@@ -13,9 +12,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { CaseService } from '../../services/case/case.service';
 import { CaseData } from '../../../app/types/case';
 import { ResultsComponent } from './results/results.component';
-import { AccessibleAutocompleteProps } from 'accessible-autocomplete';
 import { ERROR_MESSAGES } from './enums/error.enum';
 import { CourthouseComponent } from '../common/courthouse/courthouse.component';
+import { initAll } from '@scottish-government/pattern-library/src/all';
 //import { moment }  from 'moment';
 
 interface ErrorSummaryEntry {
@@ -53,17 +52,18 @@ const FieldErrors: { [key: string]: { [key: string]: string } } = {
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, NgIf, ResultsComponent, NgClass, NgFor, CourthouseComponent],
 })
-export class SearchComponent implements OnInit, AfterViewChecked {
+export class SearchComponent implements OnInit {
   dateInputType!: 'specific' | 'range';
   cases: CaseData[] = [];
   loaded = false;
-  submitted = false;
+  isSubmitted = false;
   errorSummary: ErrorSummaryEntry[] = [];
   errorType = '';
   error = '';
   isAdvancedSearch = false;
   datePatternValidator = Validators.pattern(/^\d{2}\/\d{2}\/\d{4}$/);
   dateValidators = [Validators.required, this.datePatternValidator, this.futureDateValidator];
+  courthouses$ = this.caseService.getCourthouses();
 
   constructor(private caseService: CaseService) {}
 
@@ -100,13 +100,6 @@ export class SearchComponent implements OnInit, AfterViewChecked {
     this.form.get('case_number')?.updateValueAndValidity();
   }
 
-  props: AccessibleAutocompleteProps = {
-    id: 'advanced-case-search',
-    source: [],
-    minLength: 1,
-    name: 'courthouse',
-  };
-
   setInputValue(value: string, control: string) {
     this.form.controls[`${control}`].patchValue(value);
     //If specific type, set date_to to same value as date_from
@@ -115,7 +108,7 @@ export class SearchComponent implements OnInit, AfterViewChecked {
 
   // Submit Registration Form
   onSubmit() {
-    this.submitted = true;
+    this.isSubmitted = true;
     this.errorSummary = [];
     if (this.form.invalid) {
       this.errorSummary = this.generateErrorSummary();
@@ -125,7 +118,7 @@ export class SearchComponent implements OnInit, AfterViewChecked {
     this.caseService
       .getCasesAdvanced(
         this.form.get('case_number')?.value || '',
-        (document.querySelector('input[name=courthouse]') as HTMLInputElement).value || '',
+        this.form.get('courthouse')?.value || '',
         this.form.get('courtroom')?.value || '',
         this.form.get('judge_name')?.value || '',
         this.form.get('defendant_name')?.value || '',
@@ -166,6 +159,10 @@ export class SearchComponent implements OnInit, AfterViewChecked {
     this.dateInputType = type;
   }
 
+  onCourthouseSelected(courthouse: string) {
+    this.form.get('courthouse')?.setValue(courthouse);
+  }
+
   ngAfterViewChecked(): void {
     initAll();
   }
@@ -183,24 +180,7 @@ export class SearchComponent implements OnInit, AfterViewChecked {
     return Object.keys(errors).map((errorType) => FieldErrors[fieldName][errorType]);
   }
 
-  //Gets courthouse errors, must be done in component as HTML input is dynamically generated
-  //via accessible-autocomplete module
-  getCourthouseErrors(): string[] {
-    //If courtroom is not empty, then courthouse must be filled
-    const courtroom = this.f['courtroom'].value;
-    const courthouse = (document.querySelector('input[name=courthouse]') as HTMLInputElement).value;
-
-    if (courtroom && courtroom !== '' && courthouse === '') {
-      this.f['courthouse'].setErrors({ required: true });
-      return [FieldErrors['courtroom']['required']];
-    }
-    return [];
-  }
-
   private generateErrorSummary(): ErrorSummaryEntry[] {
-    this.getCourthouseErrors();
-
-    console.log(this.f); //remove me
     const formControls = this.f;
     return Object.keys(formControls)
       .filter((fieldId) => formControls[fieldId].errors)
@@ -209,11 +189,10 @@ export class SearchComponent implements OnInit, AfterViewChecked {
   }
 
   clearSearch() {
-    (document.querySelector("[name='courthouse']") as HTMLInputElement).value = '';
     this.form.reset();
     this.cases = [];
     this.loaded = false;
-    this.submitted = false;
+    this.isSubmitted = false;
     this.errorSummary = [];
   }
 
