@@ -7,9 +7,9 @@ import { CourthouseData } from '../../../app/types/courthouse';
 import { HearingData } from 'src/app/types/hearing';
 import { SearchFormValues } from 'src/app/types/search-form.interface';
 
-const GET_COURTHOUSES_PATH = '/api/courthouses';
-const GET_CASE_PATH = '/api/cases';
-const ADVANCED_SEARCH_CASE_PATH = '/api/cases/search';
+export const GET_COURTHOUSES_PATH = '/api/courthouses';
+export const GET_CASE_PATH = '/api/cases';
+export const ADVANCED_SEARCH_CASE_PATH = '/api/cases/search';
 
 @Injectable({
   providedIn: 'root',

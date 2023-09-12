@@ -1,20 +1,17 @@
-import { HttpClient } from '@angular/common/http';
-import { CaseService } from './case.service';
-import { CaseData } from '../../../app/types/case';
-import { HttpErrorResponse } from '@angular/common/http';
-import { Observable, of, throwError } from 'rxjs';
-import { CourthouseData } from 'src/app/types/courthouse';
+import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
+import { TestBed } from '@angular/core/testing';
+import { CaseData } from 'src/app/types/case';
 import { CaseFile } from 'src/app/types/case-file';
+import { CourthouseData } from 'src/app/types/courthouse';
 import { HearingData } from 'src/app/types/hearing';
+import { SearchFormValues } from 'src/app/types/search-form.interface';
+import { ADVANCED_SEARCH_CASE_PATH, CaseService, GET_CASE_PATH, GET_COURTHOUSES_PATH } from './case.service';
 
 describe('CaseService', () => {
-  let httpClientSpy: HttpClient;
   let service: CaseService;
+  let httpMock: HttpTestingController;
 
-  const mockCases: CaseData[] = [];
-  const courthouses: CourthouseData[] = [];
-
-  const mockCaseFile: Observable<CaseFile> = of({
+  const mockCaseFile: CaseFile = {
     case_id: 1,
     courthouse: 'Swansea',
     case_number: 'CASE1001',
@@ -24,9 +21,9 @@ describe('CaseService', () => {
     defenders: ['Derek Defender'],
     reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
     retain_until: '2023-08-10T11:23:24.858Z',
-  });
+  };
 
-  const mockCaseHearings: Observable<HearingData[]> = of([
+  const multipleMockHearings: HearingData[] = [
     {
       id: 1,
       date: '2023-09-01',
@@ -41,169 +38,101 @@ describe('CaseService', () => {
       courtroom: '9',
       transcript_count: 300,
     },
-  ]);
+  ];
 
-  const mockSingleHearing: Observable<HearingData> = of({
+  const mockHearing: HearingData = {
     id: 2,
     date: '2024-09-01',
     judges: ['HHJ M. David KC'],
     courtroom: '9',
     transcript_count: 300,
-  });
+  };
 
   beforeEach(() => {
-    httpClientSpy = {
-      get: jest.fn(),
-    } as unknown as HttpClient;
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [CaseService], // Replace with your actual service
+    });
 
-    service = new CaseService(httpClientSpy);
+    service = TestBed.inject(CaseService);
+    httpMock = TestBed.inject(HttpTestingController);
+  });
+
+  afterEach(() => {
+    httpMock.verify();
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('#getHearingById', () => {
-    it('should return specific hearing off id', () => {
-      jest.spyOn(service, 'getHearingById').mockReturnValue(mockSingleHearing);
-      const hearing$ = service.getHearingById(1, 2);
+  it('#getCourthouses', () => {
+    const mockCourthouses: CourthouseData[] = [];
 
-      expect(hearing$).toEqual(mockSingleHearing);
+    service.getCourthouses().subscribe((courthouses) => {
+      expect(courthouses).toEqual(mockCourthouses);
     });
+
+    const req = httpMock.expectOne(GET_COURTHOUSES_PATH);
+    expect(req.request.method).toBe('GET');
+
+    req.flush(mockCourthouses);
   });
 
-  describe('#getCase', () => {
-    it('should call the correct api url', () => {
-      service.getCase(1);
+  it('#getCase', () => {
+    const mockCaseId = 123;
+    const mockCase: CaseData = mockCaseFile;
 
-      expect(httpClientSpy.get).toHaveBeenCalledWith('/api/cases/1');
+    service.getCase(mockCaseId).subscribe((c) => {
+      expect(c).toEqual(mockCase);
     });
 
-    it('should return value from an observable', () => {
-      jest.spyOn(service, 'getCase').mockReturnValue(mockCaseFile);
-      const caseFile$ = service.getCase(1);
+    const req = httpMock.expectOne(`${GET_CASE_PATH}/${mockCaseId}`);
+    expect(req.request.method).toBe('GET');
 
-      expect(caseFile$).toEqual(mockCaseFile);
-    });
+    req.flush(mockCase);
   });
 
-  describe('#getCaseHearings', () => {
-    it('should call the correct api url', () => {
-      service.getCaseHearings(1);
+  it('#getCaseHearings', () => {
+    const mockCaseId = 123;
+    const mockHearings: HearingData[] = multipleMockHearings;
 
-      expect(httpClientSpy.get).toHaveBeenCalledWith('/api/cases/1/hearings');
+    service.getCaseHearings(mockCaseId).subscribe((hearings) => {
+      expect(hearings).toEqual(mockHearings);
     });
 
-    it('should return value from an observable', () => {
-      jest.spyOn(service, 'getCaseHearings').mockReturnValue(mockCaseHearings);
-      const hearings$ = service.getCaseHearings(1);
+    const req = httpMock.expectOne(`${GET_CASE_PATH}/${mockCaseId}/hearings`);
+    expect(req.request.method).toBe('GET');
 
-      expect(hearings$).toEqual(mockCaseHearings);
-    });
+    req.flush(mockHearings);
   });
 
-  describe('#getCasesAdvanced', () => {
-    it('should run cases advanced search function and return 404 response', () => {
-      const errorResponse = new HttpErrorResponse({
-        error: { code: `some code`, message: `some message.` },
-        status: 404,
-        statusText: 'Not Found',
-      });
+  it('#getCasesAdvanced', () => {
+    const mockSearchForm: SearchFormValues = {};
+    const mockCases: CaseData[] = [];
 
-      jest.spyOn(service, 'getCasesAdvanced').mockReturnValue(throwError(() => errorResponse));
-
-      let cases: CaseData[] = [];
-
-      service.getCasesAdvanced({}).subscribe({
-        next: (result: CaseData[]) => {
-          if (result) {
-            cases = result;
-            expect(cases).toBeFalsy();
-          }
-        },
-        error: (error: HttpErrorResponse) => {
-          expect(error).toBeTruthy();
-          if (error.status) {
-            expect(error.status).toEqual(404);
-          }
-        },
-      });
+    service.getCasesAdvanced(mockSearchForm).subscribe((cases) => {
+      expect(cases).toEqual(mockCases);
     });
 
-    it('should run cases advanced search function and return mock case', () => {
-      jest.spyOn(service, 'getCasesAdvanced').mockReturnValue(of(mockCases));
+    const req = httpMock.expectOne(ADVANCED_SEARCH_CASE_PATH);
+    expect(req.request.method).toBe('GET');
 
-      let cases: CaseData[] = [];
-      service
-        .getCasesAdvanced({
-          case_number: 'C20220620001',
-          courthouse: 'Reading',
-          courtroom: '1',
-          judge_name: 'Judy',
-          defendant_name: 'Dave',
-          date_from: '',
-          date_to: '',
-          event_text_contains: 'keyword',
-        })
-        .subscribe({
-          next: (result: CaseData[]) => {
-            if (result) {
-              cases = result;
-              expect(cases).toBeTruthy();
-              expect(cases).toEqual(mockCases);
-            }
-          },
-        });
-    });
+    req.flush(mockCases);
   });
 
-  describe('#getCourthouses', () => {
-    it('should run get courthouses function and return 404 response', () => {
-      const errorResponse = new HttpErrorResponse({
-        error: { code: `some code`, message: `some message.` },
-        status: 404,
-        statusText: 'Not Found',
-      });
+  it('#getHearingById', () => {
+    const mockCaseId = 123;
+    const mockHearingId = 456;
+    const mockHearings: HearingData[] = [mockHearing];
 
-      jest.spyOn(service, 'getCourthouses').mockReturnValue(throwError(() => errorResponse));
-
-      let courts: CourthouseData[];
-      service.getCourthouses().subscribe({
-        next: (result: CourthouseData[]) => {
-          if (result) {
-            courts = result;
-            expect(courts).toBeFalsy();
-          }
-        },
-        error: (error: HttpErrorResponse) => {
-          expect(error).toBeTruthy();
-          if (error.status) {
-            expect(error.status).toEqual(404);
-          }
-        },
-      });
+    service.getHearingById(mockCaseId, mockHearingId).subscribe((hearing) => {
+      expect(hearing).toBeDefined();
     });
 
-    it('should call the correct api url', () => {
-      jest.spyOn(httpClientSpy, 'get').mockReturnValue(of([]));
+    const req = httpMock.expectOne(`${GET_CASE_PATH}/${mockCaseId}/hearings`);
+    expect(req.request.method).toBe('GET');
 
-      service.getCourthouses();
-
-      expect(httpClientSpy.get).toHaveBeenCalledWith('/api/courthouses');
-    });
-
-    it('should run specific get case function and return mock case', () => {
-      jest.spyOn(service, 'getCourthouses').mockReturnValue(of(courthouses));
-      let courts: CourthouseData[];
-      service.getCourthouses().subscribe({
-        next: (result: CourthouseData[]) => {
-          if (result) {
-            courts = result;
-            expect(courts).toBeTruthy();
-            expect(courts).toEqual(courthouses);
-          }
-        },
-      });
-    });
+    req.flush(mockHearings);
   });
 });
