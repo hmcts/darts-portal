@@ -3,7 +3,7 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CaseData } from '../../../../app/types/case';
 import { DateTimeService } from '../../../services/datetime/datetime.service';
-import { PaginationComponent } from '../../shared/pagination/pagination.component';
+import { PaginationComponent } from '../../common/pagination/pagination.component';
 
 @Component({
   selector: 'app-results',

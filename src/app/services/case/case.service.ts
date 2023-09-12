@@ -7,7 +7,6 @@ import { CourthouseData } from '../../../app/types/courthouse';
 import { HearingData } from 'src/app/types/hearing';
 import { SearchFormValues } from 'src/app/types/search-form.interface';
 
-//API Endpoints
 const GET_COURTHOUSES_PATH = '/api/courthouses';
 const GET_CASE_PATH = '/api/cases';
 const ADVANCED_SEARCH_CASE_PATH = '/api/cases/search';
@@ -15,11 +14,9 @@ const ADVANCED_SEARCH_CASE_PATH = '/api/cases/search';
 @Injectable({
   providedIn: 'root',
 })
-//Class containing API requests for data fetching
 export class CaseService {
   constructor(private readonly http: HttpClient) {}
 
-  //Fetches all courthouses
   getCourthouses(): Observable<CourthouseData[]> {
     return this.http.get<CourthouseData[]>(GET_COURTHOUSES_PATH).pipe(
       catchError(() => {
@@ -28,13 +25,11 @@ export class CaseService {
     );
   }
 
-  // Single get case file
   getCase(caseId: number): Observable<CaseData> {
     const apiURL = `${GET_CASE_PATH}/${caseId}`;
     return this.http.get<CaseData>(apiURL);
   }
 
-  // Single get case hearings
   getCaseHearings(caseId: number): Observable<HearingData[]> {
     return this.http.get<HearingData[]>(`${GET_CASE_PATH}/${caseId}/hearings`);
   }
@@ -62,7 +57,6 @@ export class CaseService {
   }
 
   /**
-   *
    * @param {number} cId Required parameter, representing the case id to look for
    * @param {number} hId Required parameter, representing the hearing id to look for
    * @returns {Observable<HearingData | undefined> | undefined} Returns either a Observable of HearingData, or undefined
