@@ -143,7 +143,8 @@ export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
 
     this.requestObj = {
       hearing_id: this.hearing.id,
-      requestor: 1234,
+      // TO DO: Replace with user/Requestor ID when requesting audio
+      requestor: 1,
       start_time: this.datetimeService.getIsoStringWithoutMilliseconds(startDateTime.toISOString()),
       end_time: this.datetimeService.getIsoStringWithoutMilliseconds(endDateTime.toISOString()),
       request_type: this.audioRequestForm.get('requestType')?.value,
