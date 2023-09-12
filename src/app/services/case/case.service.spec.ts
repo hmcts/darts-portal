@@ -51,7 +51,7 @@ describe('CaseService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [CaseService], // Replace with your actual service
+      providers: [CaseService],
     });
 
     service = TestBed.inject(CaseService);
