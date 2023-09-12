@@ -41,8 +41,8 @@ export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
   audioRequestForm: FormGroup;
   requestObj!: requestPlaybackAudioDTO;
 
-  form = new FormGroup({ selectedOption: new FormControl('all') });
-  formChanges$ = this.form.valueChanges;
+  eventsFilterForm = new FormGroup({ selectedOption: new FormControl('all') });
+  formChanges$ = this.eventsFilterForm.valueChanges;
 
   subs: Subscription[] = [];
 
@@ -72,6 +72,15 @@ export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
 
   isRowSelected(row: HearingAudioEventViewModel) {
     return this.selectedRows.includes(row);
+  }
+
+  onSelectAllChanged(checked: boolean) {
+    if (checked) {
+      this.selectedRows = [...this.filteredTable];
+    } else {
+      this.selectedRows = [];
+    }
+    this.eventsSelect.emit(this.selectedRows);
   }
 
   onFilterChanged(selectedOption: string) {
