@@ -42,8 +42,8 @@
       [ngClass]="{ 'govuk-input--error': isSubmitted && f.case_number.errors }"
     />
   </div>
-  <details class="govuk-details" data-module="govuk-details">
-    <summary class="govuk-details__summary" (click)="toggleAdvancedSearch()">
+  <details class="govuk-details" data-module="govuk-details" [open]="isAdvancedSearch">
+    <summary class="govuk-details__summary" (click)="toggleAdvancedSearch($event)">
       <span class="govuk-details__summary-text"> Advanced search </span>
     </summary>
     <div class="govuk-form-group govuk-details__text">

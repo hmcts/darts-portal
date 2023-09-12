@@ -10,21 +10,12 @@ import { CaseService } from '../../services/case/case.service';
 import { HttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
 import { CourthouseComponent } from '../common/courthouse/courthouse.component';
-import { Component } from '@angular/core';
 import { CourthouseData } from 'src/app/types/courthouse';
 
 // Mock the initAll function
 jest.mock('@scottish-government/pattern-library/src/all', () => ({
   initAll: jest.fn(),
 }));
-
-// Stub Courthouse field component
-@Component({
-  selector: 'app-courthouse-field',
-  template: `<input id="courthouse" name="courthouse" type="text" />`,
-  standalone: true,
-})
-class CourthouseStubComponent {}
 
 describe('SearchComponent', () => {
   const fakeAppInsightsService = {};
@@ -48,16 +39,15 @@ describe('SearchComponent', () => {
     jest.spyOn(caseService, 'getCasesAdvanced').mockReturnValue(of([]));
     jest.spyOn(caseService, 'getCourthouses').mockReturnValue(of(courts));
 
-    TestBed.overrideComponent(SearchComponent, {
-      add: {
-        imports: [CourthouseStubComponent],
-      },
-      remove: {
-        imports: [CourthouseComponent],
-      },
-    });
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, FormsModule, HttpClientModule, SearchComponent, ResultsComponent],
+      imports: [
+        ReactiveFormsModule,
+        FormsModule,
+        HttpClientModule,
+        SearchComponent,
+        ResultsComponent,
+        CourthouseComponent,
+      ],
       providers: [
         { provide: AppInsightsService, useValue: fakeAppInsightsService },
         { provide: CaseService, useValue: caseService },
@@ -197,6 +187,7 @@ describe('SearchComponent', () => {
 
   describe('#clearSearch', () => {
     it('should clear search text and results', () => {
+      const courthouseComponentSpy = jest.spyOn(component.courthouseComponent, 'reset');
       component.form.controls['case_number'].setValue('1');
       component.form.controls['courthouse'].setValue('Reading');
       component.form.controls['courtroom'].setValue('2');
@@ -217,6 +208,7 @@ describe('SearchComponent', () => {
       expect(component.form.get('date_from')?.value).toBeFalsy();
       expect(component.form.get('event_text_contains')?.value).toBeFalsy();
       expect(component.cases.length).toBe(0);
+      expect(courthouseComponentSpy).toHaveBeenCalled();
     });
   });
 });

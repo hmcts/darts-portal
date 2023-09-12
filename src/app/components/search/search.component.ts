@@ -1,4 +1,5 @@
-import { AfterViewChecked, Component, OnInit } from '@angular/core';
+import { CourthouseComponent } from './../common/courthouse/courthouse.component';
+import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
   FormGroup,
   FormControl,
@@ -12,9 +13,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { CaseService } from '../../services/case/case.service';
 import { CaseData } from '../../../app/types/case';
 import { ResultsComponent } from './results/results.component';
-import { ERROR_MESSAGES } from './enums/error.enum';
-import { CourthouseComponent } from '../common/courthouse/courthouse.component';
 import { initAll } from '@scottish-government/pattern-library/src/all';
+import { Subscription } from 'rxjs';
 //import { moment }  from 'moment';
 
 interface ErrorSummaryEntry {
@@ -52,8 +52,10 @@ const FieldErrors: { [key: string]: { [key: string]: string } } = {
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, NgIf, ResultsComponent, NgClass, NgFor, CourthouseComponent],
 })
-export class SearchComponent implements OnInit, AfterViewChecked {
-  dateInputType!: 'specific' | 'range';
+export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
+  @ViewChild(CourthouseComponent) courthouseComponent!: CourthouseComponent;
+
+  dateInputType: 'specific' | 'range' | undefined;
   cases: CaseData[] = [];
   loaded = false;
   isSubmitted = false;
@@ -64,6 +66,7 @@ export class SearchComponent implements OnInit, AfterViewChecked {
   datePatternValidator = Validators.pattern(/^\d{2}\/\d{2}\/\d{4}$/);
   dateValidators = [Validators.required, this.datePatternValidator, this.futureDateValidator];
   courthouses$ = this.caseService.getCourthouses();
+  subs: Subscription[] = [];
 
   constructor(private caseService: CaseService) {}
 
@@ -79,25 +82,15 @@ export class SearchComponent implements OnInit, AfterViewChecked {
   });
 
   ngOnInit() {
-    this.form.get('courtroom')?.valueChanges.subscribe((courtroom) => {
-      if (courtroom) {
-        this.form.get('courthouse')?.setValidators([Validators.required]);
-      } else {
-        this.form.get('courthouse')?.clearValidators();
-      }
-      this.form.get('courthouse')?.updateValueAndValidity();
-    });
+    this.subs.push(
+      this.form.controls.courtroom.valueChanges.subscribe((courtroom) => this.setCourtRoomValidation(courtroom))
+    );
   }
 
-  toggleAdvancedSearch() {
+  toggleAdvancedSearch(event: Event) {
+    event.preventDefault();
     this.isAdvancedSearch = !this.isAdvancedSearch;
-
-    if (this.isAdvancedSearch) {
-      this.form.get('case_number')?.clearValidators();
-    } else {
-      this.form.get('case_number')?.setValidators([Validators.required]);
-    }
-    this.form.get('case_number')?.updateValueAndValidity();
+    this.setAdvancedSearchValidation(this.isAdvancedSearch);
   }
 
   setInputValue(value: string, control: string) {
@@ -112,6 +105,7 @@ export class SearchComponent implements OnInit, AfterViewChecked {
     this.errorSummary = [];
     if (this.form.invalid) {
       this.errorSummary = this.generateErrorSummary();
+      this.isAdvancedSearch = true;
       return;
     }
 
@@ -147,14 +141,7 @@ export class SearchComponent implements OnInit, AfterViewChecked {
     this.form.controls['date_from'].reset();
     this.form.controls['date_to'].reset();
 
-    this.form.get('date_from')?.setValidators(this.dateValidators);
-    if (type === 'range') {
-      this.form.get('date_to')?.setValidators(this.dateValidators);
-    } else {
-      this.form.get('date_to')?.clearValidators();
-    }
-    this.form.get('date_from')?.updateValueAndValidity();
-    this.form.get('date_to')?.updateValueAndValidity();
+    this.setDateValidators(type);
 
     this.dateInputType = type;
   }
@@ -194,6 +181,9 @@ export class SearchComponent implements OnInit, AfterViewChecked {
     this.loaded = false;
     this.isSubmitted = false;
     this.errorSummary = [];
+    this.courthouseComponent.reset();
+    this.dateInputType = undefined;
+    this.setDateValidators(this.dateInputType);
   }
 
   futureDateValidator(control: AbstractControl): ValidationErrors | null {
@@ -224,5 +214,48 @@ export class SearchComponent implements OnInit, AfterViewChecked {
     return null;
   }
 
-  protected readonly ERROR_MESSAGES = ERROR_MESSAGES;
+  private setDateValidators(type: string | undefined) {
+    const dateFromFormControl = this.form.get('date_from');
+    const dateToFormControl = this.form.get('date_to');
+
+    if (type === undefined) {
+      dateFromFormControl?.clearValidators();
+      dateToFormControl?.clearValidators();
+    } else {
+      dateFromFormControl?.setValidators(this.dateValidators);
+      if (type === 'range') {
+        dateToFormControl?.setValidators(this.dateValidators);
+      } else {
+        dateToFormControl?.clearValidators();
+      }
+    }
+    dateFromFormControl?.updateValueAndValidity();
+    dateToFormControl?.updateValueAndValidity();
+  }
+
+  private setCourtRoomValidation(courtroom: string) {
+    const courtHouseFormControl = this.form.get('courthouse');
+
+    if (courtroom) {
+      courtHouseFormControl?.setValidators([Validators.required]);
+    } else {
+      courtHouseFormControl?.clearValidators();
+    }
+    courtHouseFormControl?.updateValueAndValidity();
+  }
+
+  private setAdvancedSearchValidation(isAdvancedSearch: boolean) {
+    const caseNumberFormControl = this.form.get('case_number');
+
+    if (isAdvancedSearch) {
+      caseNumberFormControl?.clearValidators();
+    } else {
+      caseNumberFormControl?.setValidators([Validators.required]);
+    }
+    caseNumberFormControl?.updateValueAndValidity();
+  }
+
+  ngOnDestroy(): void {
+    this.subs.forEach((s) => s.unsubscribe());
+  }
 }

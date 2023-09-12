@@ -29,6 +29,10 @@ export class CourthouseComponent implements AfterViewInit {
     },
   };
 
+  reset() {
+    (document.querySelector('input[name=courthouse]') as HTMLInputElement).value = '';
+  }
+
   ngAfterViewInit(): void {
     if (this.courthouses.length) {
       this.props.element = this.autocompleteContainer.nativeElement as HTMLElement;
