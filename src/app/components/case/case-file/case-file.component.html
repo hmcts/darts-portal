@@ -32,5 +32,5 @@
 <h3 class="govuk-heading-s">Retained until</h3>
 <p class="govuk-body">
   {{ caseFile.retain_until | date : 'd MMM y' }} &nbsp;&nbsp;
-  <a routerLink="#" routerLinkActive="router-link-active" class="govuk-link">Change</a>
+  <a *ngIf="caseFile.retain_until" routerLink="#" routerLinkActive="router-link-active" class="govuk-link">Change</a>
 </p>
