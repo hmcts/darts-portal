@@ -83,14 +83,14 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   ngOnInit() {
     this.subs.push(
-      this.form.controls.courtroom.valueChanges.subscribe((courtroom) => this.setCourtRoomValidation(courtroom))
+      this.form.controls.courtroom.valueChanges.subscribe((courtroom) => this.setCourtRoomValidators(courtroom))
     );
   }
 
   toggleAdvancedSearch(event: Event) {
     event.preventDefault();
     this.isAdvancedSearch = !this.isAdvancedSearch;
-    this.setAdvancedSearchValidation(this.isAdvancedSearch);
+    this.setAdvancedSearchValidators(this.isAdvancedSearch);
   }
 
   setInputValue(value: string, control: string) {
@@ -233,7 +233,7 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
     dateToFormControl?.updateValueAndValidity();
   }
 
-  private setCourtRoomValidation(courtroom: string) {
+  private setCourtRoomValidators(courtroom: string) {
     const courtHouseFormControl = this.form.get('courthouse');
 
     if (courtroom) {
@@ -244,7 +244,7 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
     courtHouseFormControl?.updateValueAndValidity();
   }
 
-  private setAdvancedSearchValidation(isAdvancedSearch: boolean) {
+  private setAdvancedSearchValidators(isAdvancedSearch: boolean) {
     const caseNumberFormControl = this.form.get('case_number');
 
     if (isAdvancedSearch) {
