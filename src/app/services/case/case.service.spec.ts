@@ -114,7 +114,7 @@ describe('CaseService', () => {
 
       let cases: CaseData[] = [];
 
-      service.getCasesAdvanced('zzzz').subscribe({
+      service.getCasesAdvanced({}).subscribe({
         next: (result: CaseData[]) => {
           if (result) {
             cases = result;
@@ -134,15 +134,26 @@ describe('CaseService', () => {
       jest.spyOn(service, 'getCasesAdvanced').mockReturnValue(of(mockCases));
 
       let cases: CaseData[] = [];
-      service.getCasesAdvanced('C20220620001', 'Reading', '1', 'Judy', 'Dave', '', '', 'keyword').subscribe({
-        next: (result: CaseData[]) => {
-          if (result) {
-            cases = result;
-            expect(cases).toBeTruthy();
-            expect(cases).toEqual(mockCases);
-          }
-        },
-      });
+      service
+        .getCasesAdvanced({
+          case_number: 'C20220620001',
+          courthouse: 'Reading',
+          courtroom: '1',
+          judge_name: 'Judy',
+          defendant_name: 'Dave',
+          date_from: '',
+          date_to: '',
+          event_text_contains: 'keyword',
+        })
+        .subscribe({
+          next: (result: CaseData[]) => {
+            if (result) {
+              cases = result;
+              expect(cases).toBeTruthy();
+              expect(cases).toEqual(mockCases);
+            }
+          },
+        });
     });
   });
 

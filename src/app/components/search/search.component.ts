@@ -109,32 +109,21 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
       return;
     }
 
-    this.caseService
-      .getCasesAdvanced(
-        this.form.get('case_number')?.value || '',
-        this.form.get('courthouse')?.value || '',
-        this.form.get('courtroom')?.value || '',
-        this.form.get('judge_name')?.value || '',
-        this.form.get('defendant_name')?.value || '',
-        this.form.get('date_from')?.value || '',
-        this.form.get('date_to')?.value || '',
-        this.form.get('event_text_contains')?.value || ''
-      )
-      .subscribe({
-        next: (result: CaseData[]) => {
-          if (result) {
-            this.cases = result;
-            this.loaded = true;
-            this.errorType = 'ok';
-          }
-        },
-        error: (error: HttpErrorResponse) => {
-          if (error.error) {
-            this.errorType = error.error.type;
-            this.loaded = true;
-          }
-        },
-      });
+    this.caseService.getCasesAdvanced(this.form.value).subscribe({
+      next: (result: CaseData[]) => {
+        if (result) {
+          this.cases = result;
+          this.loaded = true;
+          this.errorType = 'ok';
+        }
+      },
+      error: (error: HttpErrorResponse) => {
+        if (error.error) {
+          this.errorType = error.error.type;
+          this.loaded = true;
+        }
+      },
+    });
   }
 
   toggleRadioSelected(type: 'specific' | 'range') {

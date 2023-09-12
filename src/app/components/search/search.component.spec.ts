@@ -171,15 +171,17 @@ describe('SearchComponent', () => {
       fixture.detectChanges();
 
       expect(caseService.getCasesAdvanced).toHaveBeenCalledTimes(1);
-      const params = (caseService.getCasesAdvanced as jest.Mock).mock.calls[0];
-      expect(params[0]).toBe('1');
-      expect(params[1]).toBe('Reading');
-      expect(params[2]).toBe('2');
-      expect(params[3]).toBe('Judy');
-      expect(params[4]).toBe('Dave');
-      expect(params[5]).toBe('19/09/2023');
-      expect(params[6]).toBe('18/09/2023');
-      expect(params[7]).toBe('Keywords');
+      const getCasesSpy = jest.spyOn(caseService, 'getCasesAdvanced');
+      expect(getCasesSpy).toBeCalledWith({
+        case_number: '1',
+        courthouse: 'Reading',
+        courtroom: '2',
+        date_from: '19/09/2023',
+        date_to: '18/09/2023',
+        defendant_name: 'Dave',
+        event_text_contains: 'Keywords',
+        judge_name: 'Judy',
+      });
 
       expect(component.onSubmit).toHaveBeenCalled();
     });

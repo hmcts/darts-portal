@@ -5,6 +5,7 @@ import { catchError, map } from 'rxjs/operators';
 import { CaseData } from '../../../app/types/case';
 import { CourthouseData } from '../../../app/types/courthouse';
 import { HearingData } from 'src/app/types/hearing';
+import { SearchFormValues } from 'src/app/types/search-form.interface';
 
 //API Endpoints
 const GET_COURTHOUSES_PATH = '/api/courthouses';
@@ -17,7 +18,6 @@ const ADVANCED_SEARCH_CASE_PATH = '/api/cases/search';
 //Class containing API requests for data fetching
 export class CaseService {
   constructor(private readonly http: HttpClient) {}
-  private params: HttpParams = new HttpParams();
 
   //Fetches all courthouses
   getCourthouses(): Observable<CourthouseData[]> {
@@ -36,60 +36,29 @@ export class CaseService {
 
   // Single get case hearings
   getCaseHearings(caseId: number): Observable<HearingData[]> {
-    const apiURL = `${GET_CASE_PATH}/${caseId}/hearings`;
-    return this.http.get<HearingData[]>(apiURL);
+    return this.http.get<HearingData[]>(`${GET_CASE_PATH}/${caseId}/hearings`);
   }
 
-  //Advanced search API fetching multiple cases
-  getCasesAdvanced(
-    case_number?: string,
-    courthouse?: string,
-    courtroom?: string,
-    judge_name?: string,
-    defendant_name?: string,
-    date_from?: string,
-    date_to?: string,
-    event_text_contains?: string
-  ): Observable<CaseData[]> {
-    //Process optional parameters to form HttpParams
-    this.params = new HttpParams();
+  getCasesAdvanced(searchForm: SearchFormValues): Observable<CaseData[]> {
+    let params = new HttpParams();
 
-    if (case_number) {
-      this.params = this.params.set('case_number', case_number);
-    }
-    if (courthouse) {
-      this.params = this.params.set('courthouse', courthouse);
-    }
-    if (courtroom) {
-      this.params = this.params.set('courtroom', courtroom);
-    }
-    if (judge_name) {
-      this.params = this.params.set('judge_name', judge_name);
-    }
-    if (defendant_name) {
-      this.params = this.params.set('defendant_name', defendant_name);
-    }
-    if (date_from) {
-      date_from = date_from.split('/').reverse().join('-');
-      this.params = this.params.set('date_from', date_from);
-    }
-    if (date_to) {
-      date_to = date_to.split('/').reverse().join('-');
-      this.params = this.params.set('date_to', date_to);
-    }
-    if (event_text_contains) {
-      this.params = this.params.set('event_text_contains', event_text_contains);
-    }
+    if (searchForm.case_number) params = params.set('case_number', searchForm.case_number);
 
-    const options = { params: this.params };
-    const apiURL = ADVANCED_SEARCH_CASE_PATH;
+    if (searchForm.courthouse) params = params.set('courthouse', searchForm.courthouse);
 
-    //Make API call out to advanced search case API, return Observable to Case Component, catch any errors and pass to ErrorHandler service
-    return this.http.get<CaseData[]>(apiURL, options);
-  }
+    if (searchForm.courtroom) params = params.set('courtroom', searchForm.courtroom);
 
-  public getHttpParams(): HttpParams {
-    return this.params;
+    if (searchForm.judge_name) params = params.set('judge_name', searchForm.judge_name);
+
+    if (searchForm.defendant_name) params = params.set('defendant_name', searchForm.defendant_name);
+
+    if (searchForm.date_from) params = params.set('date_from', searchForm.date_from.split('/').reverse().join('-'));
+
+    if (searchForm.date_to) params = params.set('date_to', searchForm.date_to.split('/').reverse().join('-'));
+
+    if (searchForm.event_text_contains) params = params.set('event_text_contains', searchForm.event_text_contains);
+
+    return this.http.get<CaseData[]>(ADVANCED_SEARCH_CASE_PATH, { params });
   }
 
   /**
