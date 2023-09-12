@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewChecked, Component, OnInit } from '@angular/core';
 import {
   FormGroup,
   FormControl,
@@ -52,7 +52,7 @@ const FieldErrors: { [key: string]: { [key: string]: string } } = {
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, NgIf, ResultsComponent, NgClass, NgFor, CourthouseComponent],
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnInit, AfterViewChecked {
   dateInputType!: 'specific' | 'range';
   cases: CaseData[] = [];
   loaded = false;

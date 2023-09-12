@@ -1,11 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClient, HttpClientModule, HttpErrorResponse } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { CourthouseData } from 'src/app/types/courthouse';
 
 import { CourthouseComponent } from './courthouse.component';
-import { CaseService } from 'src/app/services/case/case.service';
-import { AppInsightsService } from 'src/app/services/app-insights/app-insights.service';
-import { of, throwError } from 'rxjs';
 
 describe('CourthouseComponent', () => {
   let component: CourthouseComponent;
