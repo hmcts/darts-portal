@@ -4406,10 +4406,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@scottish-government/pattern-library@npm:^0.0.372":
-  version: 0.0.372
-  resolution: "@scottish-government/pattern-library@npm:0.0.372"
-  checksum: c9f15d602b394b279c34f75273297eba263e46c55f898fa0ab967f6f2a552e8e4a8349b6b368667d07e344c53267577c58b70193e1a77e7b7db3281bae41c7fb
+"@scottish-government/pattern-library@npm:^0.0.375":
+  version: 0.0.375
+  resolution: "@scottish-government/pattern-library@npm:0.0.375"
+  checksum: 21e5b5ab66b3ceefab466575efde28e29743bcab1f0e89eb55d776f5bf38d24e59b91a19750b512cc6f4c3110f4bdacc6c82aa92598a49f1bc1f9f2358b1faf6
   languageName: node
   linkType: hard
 
@@ -7075,7 +7075,7 @@ __metadata:
     "@hmcts/properties-volume": ^1.0.0
     "@microsoft/applicationinsights-web": ^3.0.1
     "@ministryofjustice/frontend": ^1.8.0
-    "@scottish-government/pattern-library": ^0.0.372
+    "@scottish-government/pattern-library": ^0.0.375
     "@types/body-parser": ^1.19.2
     "@types/config": ^3.3.0
     "@types/connect-redis": ^0.0.21
