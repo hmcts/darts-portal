@@ -108,14 +108,37 @@ describe('CaseService', () => {
   });
 
   it('#getCasesAdvanced', () => {
-    const mockSearchForm: SearchFormValues = {};
+    const mockSearchForm: SearchFormValues = {
+      case_number: '123',
+      courthouse: 'Court A',
+      courtroom: 'Room B',
+      judge_name: 'Judge C',
+      defendant_name: 'Defendant D',
+      date_from: '01/01/2023',
+      date_to: '31/12/2023',
+      event_text_contains: 'Event Text',
+    };
     const mockCases: CaseData[] = [];
 
     service.getCasesAdvanced(mockSearchForm).subscribe((cases) => {
       expect(cases).toEqual(mockCases);
     });
 
-    const req = httpMock.expectOne(ADVANCED_SEARCH_CASE_PATH);
+    const req = httpMock.expectOne((request) => {
+      return (
+        request.url === ADVANCED_SEARCH_CASE_PATH &&
+        request.method === 'GET' &&
+        request.params.get('case_number') === '123' &&
+        request.params.get('courthouse') === 'Court A' &&
+        request.params.get('courtroom') === 'Room B' &&
+        request.params.get('judge_name') === 'Judge C' &&
+        request.params.get('defendant_name') === 'Defendant D' &&
+        request.params.get('date_from') === '2023-01-01' &&
+        request.params.get('date_to') === '2023-12-31' &&
+        request.params.get('event_text_contains') === 'Event Text'
+      );
+    });
+
     expect(req.request.method).toBe('GET');
 
     req.flush(mockCases);
