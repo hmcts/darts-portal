@@ -37,19 +37,19 @@ export class HearingComponent {
   });
 
   onEventsSelected(audioAndEvents: HearingAudioEventViewModel[]) {
-    const timestamps: any[] = [];
+    const timestamps: number[] = [];
     const requestAudioTimes = new Map<string, Date>();
 
     if (audioAndEvents.length) {
       audioAndEvents.forEach((val: HearingAudioEventViewModel) => {
         if (val.timestamp) {
-          timestamps.push(new Date(val.timestamp));
+          timestamps.push(new Date(val.timestamp).getTime());
         }
         if (val.media_start_timestamp) {
-          timestamps.push(new Date(val.media_start_timestamp));
+          timestamps.push(new Date(val.media_start_timestamp).getTime());
         }
         if (val.media_end_timestamp) {
-          timestamps.push(new Date(val.media_end_timestamp));
+          timestamps.push(new Date(val.media_end_timestamp).getTime());
         }
       });
       const startDateTimeStamp = new Date(Math.min(...timestamps));
