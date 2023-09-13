@@ -8,7 +8,7 @@ describe('RequestPlaybackAudioComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RequestPlaybackAudioComponent]
+      imports: [RequestPlaybackAudioComponent],
     });
     fixture = TestBed.createComponent(RequestPlaybackAudioComponent);
     component = fixture.componentInstance;

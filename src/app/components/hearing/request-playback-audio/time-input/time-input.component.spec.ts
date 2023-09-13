@@ -8,7 +8,7 @@ describe('TimeInputComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [TimeInputComponent]
+      imports: [TimeInputComponent],
     });
     fixture = TestBed.createComponent(TimeInputComponent);
     component = fixture.componentInstance;
