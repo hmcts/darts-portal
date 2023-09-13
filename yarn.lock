@@ -4406,10 +4406,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@scottish-government/pattern-library@npm:^0.0.375":
-  version: 0.0.375
-  resolution: "@scottish-government/pattern-library@npm:0.0.375"
-  checksum: 21e5b5ab66b3ceefab466575efde28e29743bcab1f0e89eb55d776f5bf38d24e59b91a19750b512cc6f4c3110f4bdacc6c82aa92598a49f1bc1f9f2358b1faf6
+"@scottish-government/pattern-library@npm:^0.0.377":
+  version: 0.0.377
+  resolution: "@scottish-government/pattern-library@npm:0.0.377"
+  checksum: ade6f48640bbd8687f417fcb0a567a2e1f48072555e5cd06f64c07dcd45a68d6576b025184c4c8fbc70a6d2cd7b494f787865c3a3f682e89afdf1f977e523b32
   languageName: node
   linkType: hard
 
@@ -4823,14 +4823,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^16.18.39":
-  version: 16.18.50
-  resolution: "@types/node@npm:16.18.50"
-  checksum: 8aec1eaf83407197ec2fe947182c238f49b82a7aace867cee1f81f72eb8a76c3c8b2adb1fd356e7443317cffb2546708da8934299a579edd25e3160bf7af30a1
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:^18.15.12":
+"@types/node@npm:^18.15.12, @types/node@npm:^18.17.5":
   version: 18.17.15
   resolution: "@types/node@npm:18.17.15"
   checksum: eed11d4398ccdb999a4c65658ee75de621a4ad57aece48ed2fb8803b1e2711fadf58d8aefbdb0a447d69cf3cba602ca32fe0fc92077575950a796e1dc13baa0f
@@ -6994,12 +6987,12 @@ __metadata:
   linkType: hard
 
 "cypress@npm:^13.0.0":
-  version: 13.1.0
-  resolution: "cypress@npm:13.1.0"
+  version: 13.2.0
+  resolution: "cypress@npm:13.2.0"
   dependencies:
     "@cypress/request": ^3.0.0
     "@cypress/xvfb": ^1.2.4
-    "@types/node": ^16.18.39
+    "@types/node": ^18.17.5
     "@types/sinonjs__fake-timers": 8.1.1
     "@types/sizzle": ^2.3.2
     arch: ^2.2.0
@@ -7042,7 +7035,7 @@ __metadata:
     yauzl: ^2.10.0
   bin:
     cypress: bin/cypress
-  checksum: 238057b288f54401ad3fa8693c31ec08eef2d98a7fc93ce7f60bc009fcae18539e84be4c1cd41526816603f642f63444a7adce9d914b1338a53c0bf756bdb762
+  checksum: 7647814f07626bd63e7b8dc4d066179fa40bf492c588bbc2626d983a2baab6cb77c29958dc92442f277e0a8e94866decc51c4de306021739c47e32baf5970219
   languageName: node
   linkType: hard
 
@@ -7075,7 +7068,7 @@ __metadata:
     "@hmcts/properties-volume": ^1.0.0
     "@microsoft/applicationinsights-web": ^3.0.1
     "@ministryofjustice/frontend": ^1.8.0
-    "@scottish-government/pattern-library": ^0.0.375
+    "@scottish-government/pattern-library": ^0.0.377
     "@types/body-parser": ^1.19.2
     "@types/config": ^3.3.0
     "@types/connect-redis": ^0.0.21
@@ -15517,10 +15510,10 @@ __metadata:
   linkType: hard
 
 "zone.js@npm:~0.13.0":
-  version: 0.13.1
-  resolution: "zone.js@npm:0.13.1"
+  version: 0.13.3
+  resolution: "zone.js@npm:0.13.3"
   dependencies:
     tslib: ^2.3.0
-  checksum: 35d18f7a3016c5c98d793ef7dd78acd53da7df38f45dc4739c562ff04189682ee8d2f9ee25faf1ac756d97fdb19bbaa73f3dc0acb192e5c56786ff33a31db56f
+  checksum: 73888a51b0299b4b56c56b97c71fe4a3548a9bdb9e4b4c49dd0e110a4487fbe7f141c08d3e3acff875a6fbb6d581750209ac767ae5d82dca0636ede41aebd436
   languageName: node
   linkType: hard
