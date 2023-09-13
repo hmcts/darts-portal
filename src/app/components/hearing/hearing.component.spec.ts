@@ -107,4 +107,35 @@ describe('HearingComponent', () => {
       expect(component.hearing$).toEqual(shd);
     });
   });
+
+  describe('#onEventsSelected', () => {
+    it('should set the start and end times from selected entries', () => {
+      const mockAudioAndEvents = [
+        {
+          id: 1,
+          timestamp: '2023-07-31T01:00:00.620Z',
+          name: 'Case called on',
+          text: 'Record: New Case',
+          type: 'event',
+        },
+        {
+          id: 1,
+          media_start_timestamp: '2023-07-31T02:32:24.620Z',
+          media_end_timestamp: '2023-07-31T14:32:24.620Z',
+          type: 'audio',
+          timestamp: '2023-07-31T02:32:24.620Z',
+        },
+        {
+          id: 2,
+          timestamp: '2023-07-31T03:00:00.620Z',
+          name: 'Case called on',
+          text: 'Record: New Case',
+          type: 'event',
+        },
+      ];
+      component.onEventsSelected(mockAudioAndEvents);
+      console.log(component.requestAudioTimes);
+      expect(component.requestAudioTimes);
+    });
+  });
 });
