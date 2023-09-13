@@ -1,8 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HearingData } from 'src/app/types/hearing';
 import { RouterLink } from '@angular/router';
-import { CaseData } from 'src/app/types/case';
+import { CaseData, HearingData } from '@darts-types/index';
 
 @Component({
   selector: 'app-hearing-file',

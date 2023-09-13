@@ -1,9 +1,9 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NgIf } from '@angular/common';
-import { CaseService } from '../../../services/case/case.service';
-import accessibleAutocomplete, { AccessibleAutocompleteProps } from 'accessible-autocomplete';
-import { CourthouseData } from '../../../../app/types/courthouse';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { CourthouseData } from '@darts-types/index';
+import { CaseService } from '@services/case/case.service';
+import accessibleAutocomplete, { AccessibleAutocompleteProps } from 'accessible-autocomplete';
 
 @Component({
   selector: 'app-courthouse-field',

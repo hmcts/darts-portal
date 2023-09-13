@@ -3,6 +3,13 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
+    "paths": {
+      "@services/*": ["src/app/services/*"],
+      "@common/*": ["src/app/components/common/*"],
+      "@components/*": ["src/app/components/*"],
+      "@darts-types/*": ["src/app/types/*"],
+      "@validators/*": ["src/app/validators/*"]
+    },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
@@ -20,10 +27,7 @@
     "useDefineForClassFields": false,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
-    "lib": [
-      "ES2022",
-      "dom"
-    ]
+    "lib": ["ES2022", "dom"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

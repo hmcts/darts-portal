@@ -1,10 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { CaseData, CourthouseData, HearingData } from '@darts-types/index';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { CaseData } from '../../../app/types/case';
-import { CourthouseData } from '../../../app/types/courthouse';
-import { HearingData } from 'src/app/types/hearing';
 
 //API Endpoints
 const GET_COURTHOUSES_PATH = '/api/courthouses';
