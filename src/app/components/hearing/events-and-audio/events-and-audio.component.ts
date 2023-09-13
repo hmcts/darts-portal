@@ -9,19 +9,15 @@ import {
   EventEmitter,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { ReactiveFormsModule, FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { DateTimeService } from 'src/app/services/datetime/datetime.service';
 import { HearingEventTypeEnum } from 'src/app/types/enums';
-import { HearingData } from 'src/app/types/hearing';
 import { HearingAudio, HearingEvent, HearingAudioEventViewModel } from 'src/app/types/hearing-audio-event';
-import { requestPlaybackAudioDTO } from 'src/app/types/requestPlaybackAudioDTO';
-import { TimeInputComponent } from './time-input/time-input.component';
 
 @Component({
   selector: 'app-events-and-audio',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, TimeInputComponent],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './events-and-audio.component.html',
   styleUrls: ['./events-and-audio.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -29,7 +25,6 @@ import { TimeInputComponent } from './time-input/time-input.component';
 export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
   @Input() audio: HearingAudio[] = [];
   @Input() events: HearingEvent[] = [];
-  @Input() hearing!: HearingData;
 
   @Output() eventsSelect = new EventEmitter<HearingAudioEventViewModel[]>();
 
@@ -37,9 +32,6 @@ export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
   filteredTable: HearingAudioEventViewModel[] = [];
 
   selectedRows: HearingAudioEventViewModel[] = [];
-
-  audioRequestForm: FormGroup;
-  requestObj!: requestPlaybackAudioDTO;
 
   eventsFilterForm = new FormGroup({ selectedOption: new FormControl('all') });
   formChanges$ = this.eventsFilterForm.valueChanges;
@@ -113,50 +105,11 @@ export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
       const timestampA = new Date(a.timestamp || '').getTime();
       const timestampB = new Date(b.timestamp || '').getTime();
 
-      return timestampB - timestampA;
+      return timestampA - timestampB;
     });
   }
 
   ngOnDestroy(): void {
     this.subs.forEach((s) => s.unsubscribe());
-  }
-
-  constructor(private fb: FormBuilder, public datetimeService: DateTimeService) {
-    this.audioRequestForm = this.fb.group({
-      startTime: this.fb.group({
-        hours: [null, [Validators.required, Validators.min(0), Validators.max(23), Validators.pattern(/^\d{2}$/)]],
-        minutes: [null, [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
-        seconds: [null, [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
-      }),
-      endTime: this.fb.group({
-        hours: [null, [Validators.required, Validators.min(0), Validators.max(23), Validators.pattern(/^\d{2}$/)]],
-        minutes: [null, [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
-        seconds: [null, [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
-      }),
-      requestType: '',
-    });
-  }
-
-  onSubmit() {
-    const startTimeHours = this.audioRequestForm.get('startTime.hours')?.value;
-    const startTimeMinutes = this.audioRequestForm.get('startTime.minutes')?.value;
-    const startTimeSeconds = this.audioRequestForm.get('startTime.seconds')?.value;
-    const endTimeHours = this.audioRequestForm.get('endTime.hours')?.value;
-    const endTimeMinutes = this.audioRequestForm.get('endTime.minutes')?.value;
-    const endTimeSeconds = this.audioRequestForm.get('endTime.seconds')?.value;
-
-    const startDateTime: Date = new Date(
-      `${this.hearing.date}T${startTimeHours}:${startTimeMinutes}:${startTimeSeconds}`
-    );
-    const endDateTime: Date = new Date(`${this.hearing.date}T${endTimeHours}:${endTimeMinutes}:${endTimeSeconds}`);
-
-    this.requestObj = {
-      hearing_id: this.hearing.id,
-      // TO DO: Replace with user/Requestor ID when requesting audio
-      requestor: 1,
-      start_time: this.datetimeService.getIsoStringWithoutMilliseconds(startDateTime.toISOString()),
-      end_time: this.datetimeService.getIsoStringWithoutMilliseconds(endDateTime.toISOString()),
-      request_type: this.audioRequestForm.get('requestType')?.value,
-    };
   }
 }

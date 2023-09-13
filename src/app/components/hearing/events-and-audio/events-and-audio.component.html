@@ -1,62 +1,7 @@
-<h2 id="events-audio-heading" class="govuk-heading-m">Events and audio recordings</h2>
 <ng-container *ngIf="!table.length">
   <h2 class="govuk-heading-m">There are no events or audio for this hearing</h2>
 </ng-container>
 <ng-container *ngIf="table.length">
-  <div id="request-audio-playback-hint" class="govuk-hint">
-    Select events or audio to set the recording start and end times. You can also manually adjust the times for a custom
-    recording.
-  </div>
-  <article class="moj-ticket-panel" aria-label="Request Playback Audio">
-    <section class="moj-ticket-panel__content" aria-label="Request Playback Audio Section">
-      <form [formGroup]="audioRequestForm" (ngSubmit)="onSubmit()">
-        <div class="govuk-grid-row">
-          <div class="govuk-grid-column-one-quarter">
-            <h3 class="govuk-heading-s">Start Time</h3>
-            <app-time-input formGroupName="startTime"></app-time-input>
-          </div>
-          <div class="govuk-grid-column-one-quarter">
-            <h3 class="govuk-heading-s">End Time</h3>
-            <app-time-input formGroupName="endTime"></app-time-input>
-          </div>
-          <div class="govuk-grid-column-one-quarter requestType">
-            <div class="govuk-form-group">
-              <fieldset class="govuk-fieldset">
-                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                  <h3 class="govuk-heading-s">Request Type</h3>
-                </legend>
-                <div class="govuk-radios govuk-radios--small" data-module="govuk-radios">
-                  <div class="govuk-radios__item">
-                    <input
-                      class="govuk-radios__input"
-                      id="playback-radio"
-                      formControlName="requestType"
-                      type="radio"
-                      value="PLAYBACK"
-                    />
-                    <label class="govuk-label govuk-radios__label" for="playback-radio"> Playback Only </label>
-                  </div>
-                  <div class="govuk-radios__item">
-                    <input
-                      class="govuk-radios__input"
-                      id="download-radio"
-                      formControlName="requestType"
-                      type="radio"
-                      value="DOWNLOAD"
-                    />
-                    <label class="govuk-label govuk-radios__label" for="download-radio"> Download </label>
-                  </div>
-                </div>
-              </fieldset>
-            </div>
-          </div>
-          <div class="govuk-grid-column-one-quarter button">
-            <button type="submit" class="govuk-button" data-module="govuk-button">Get Audio</button>
-          </div>
-        </div>
-      </form>
-    </section>
-  </article>
   <form [formGroup]="eventsFilterForm" class="govuk-form-group">
     <fieldset class="govuk-fieldset" aria-describedby="changedName-hint">
       <legend id="changedName-hint" class="govuk-hint">Select events to include in requests</legend>
@@ -144,7 +89,3 @@
     </tbody>
   </table>
 </ng-container>
-
-<pre>{{ audioRequestForm.value | json }}</pre>
-Touched? {{ audioRequestForm.touched }} <br />Valid? {{ audioRequestForm.valid }}
-<pre>{{ requestObj | json }}</pre>

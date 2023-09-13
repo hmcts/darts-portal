@@ -1,9 +1,13 @@
 <ng-container *ngIf="data$ | async as vm; else loading">
   <app-hearing-file [case]="vm.case" [hearing]="vm.hearing"></app-hearing-file>
+  <h2 id="events-audio-heading" class="govuk-heading-m">Events and audio recordings</h2>
+  <app-request-playback-audio
+    [hearing]="vm.hearing!"
+    [requestAudioTimes]="requestAudioTimes"
+  ></app-request-playback-audio>
   <app-events-and-audio
     [audio]="vm.audios"
     [events]="vm.events"
-    [hearing]="vm.hearing!"
     (eventsSelect)="onEventsSelected($event)"
   ></app-events-and-audio>
 </ng-container>
