@@ -160,6 +160,38 @@ describe('EventsAndAudioComponent', () => {
     expect(component.isRowSelected(row)).toBeTruthy();
   });
 
+  describe('#onSelectAllChanged', () => {
+    it('should check all the rows on the table', () => {
+      const eventsSelectSpy = jest.spyOn(component.eventsSelect, 'emit');
+      const filteredTable = [
+        {
+          id: 1,
+          timestamp: '2023-07-31T01:00:00.620Z',
+          name: 'Case called on',
+          text: 'Record: New Case',
+          type: 'event',
+        },
+        {
+          id: 1,
+          media_start_timestamp: '2023-07-31T02:32:24.620Z',
+          media_end_timestamp: '2023-07-31T14:32:24.620Z',
+          type: 'audio',
+          timestamp: '2023-07-31T02:32:24.620Z',
+        },
+      ];
+      component.filteredTable = filteredTable;
+      component.onSelectAllChanged(true);
+      expect(component.selectedRows).toEqual(filteredTable);
+      expect(eventsSelectSpy).toHaveBeenCalledWith(component.selectedRows);
+    });
+    it('should uncheck all the rows on the table', () => {
+      const eventsSelectSpy = jest.spyOn(component.eventsSelect, 'emit');
+      component.onSelectAllChanged(false);
+      expect(component.selectedRows).toEqual([]);
+      expect(eventsSelectSpy).toHaveBeenCalledWith(component.selectedRows);
+    });
+  });
+
   it('should filter rows correctly', () => {
     const eventRow: HearingAudioEventViewModel = { id: 1, type: HearingEventTypeEnum.Event };
     component.table = [

@@ -7,7 +7,7 @@ import { HearingAudio, HearingEvent } from 'src/app/types/hearing-audio-event';
   providedIn: 'root',
 })
 export class HearingService {
-  http = inject(HttpClient);
+  constructor(private readonly http: HttpClient) {}
 
   getEvents(hearingId: string | number): Observable<HearingEvent[]> {
     return this.http.get<HearingEvent[]>(`api/cases/hearings/${hearingId}/events`).pipe(
