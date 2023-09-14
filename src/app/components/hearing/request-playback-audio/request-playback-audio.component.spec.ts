@@ -23,8 +23,8 @@ describe('RequestPlaybackAudioComponent', () => {
   describe('#setTimes', () => {
     it('should set the times for the input form', () => {
       const requestAudioTimes = new Map<string, Date>([
-        ['startDateTime', new Date('2023-07-31T01:00:00.620Z')],
-        ['endDateTime', new Date('2023-07-31T14:32:24.620Z')],
+        ['startDateTime', new Date('2023-07-31T02:00:00.620Z')],
+        ['endDateTime', new Date('2023-07-31T15:32:24.620Z')],
       ]);
       const expectedResult = {
         startTime: { hours: '02', minutes: '00', seconds: '00' },
