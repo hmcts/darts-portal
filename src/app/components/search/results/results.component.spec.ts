@@ -188,6 +188,7 @@ describe('ResultsComponent', () => {
 
   describe('Sorting', () => {
     it('should set sorting to ascending order for the given column', () => {
+      component.cases = MOCK_CASES;
       const column: SortableColumn = 'case_id';
 
       component.sorting = {
@@ -203,9 +204,11 @@ describe('ResultsComponent', () => {
       };
 
       expect(component.sorting).toEqual(expectedSorting);
+      expect(component.cases).toEqual(component.cases.reverse());
     });
 
     it('should set sorting to descending order for the given column', () => {
+      component.cases = MOCK_CASES;
       const column: SortableColumn = 'case_id';
       component.sorting = {
         column,
@@ -220,6 +223,7 @@ describe('ResultsComponent', () => {
       };
 
       expect(component.sorting).toEqual(expectedSorting);
+      expect(component.cases).toEqual(component.cases);
     });
 
     it('should compare two strings in ascending order', () => {
