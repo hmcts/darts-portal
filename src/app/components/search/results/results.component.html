@@ -44,7 +44,6 @@
           <th scope="col" class="govuk-table__header">Courtroom</th>
           <th scope="col" class="govuk-table__header">Judge(s)</th>
           <th scope="col" class="govuk-table__header">Defendant(s)</th>
-          <th scope="col" class="govuk-table__header">Hearing Date</th>
         </tr>
       </thead>
       <tbody class="govuk-table__body">
@@ -57,7 +56,6 @@
             <td class="govuk-table__cell">{{ getHearingsValue(c, 'courtroom') }}</td>
             <td class="govuk-table__cell">{{ getNameValue(c.judges) }}</td>
             <td class="govuk-table__cell">{{ getNameValue(c.defendants) }}</td>
-            <td class="govuk-table__cell">{{ getHearingsValue(c, 'date') }}</td>
           </tr>
           <tr *ngIf="c.reporting_restriction" class="restriction-row govuk-table__row">
             <td class="govuk-table__cell" colspan="6">
