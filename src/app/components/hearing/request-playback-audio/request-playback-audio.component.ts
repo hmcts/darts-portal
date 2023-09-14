@@ -35,7 +35,7 @@ export class RequestPlaybackAudioComponent implements OnChanges {
     });
   }
 
-  private setTimes(): void {
+  public setTimes(): void {
     this.audioRequestForm.patchValue({
       startTime: {
         hours: this.requestAudioTimes?.get('startDateTime')?.getHours().toString().padStart(2, '0'),

@@ -134,7 +134,6 @@ describe('HearingComponent', () => {
         },
       ];
       component.onEventsSelected(mockAudioAndEvents);
-      console.log(component.requestAudioTimes);
       expect(component.requestAudioTimes);
     });
   });
