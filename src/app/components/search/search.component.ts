@@ -15,7 +15,7 @@ import { CaseData } from '../../../app/types/case';
 import { ResultsComponent } from './results/results.component';
 import { initAll } from '@scottish-government/pattern-library/src/all';
 import { Subscription } from 'rxjs';
-//import { moment }  from 'moment';
+import { futureDateValidator } from 'src/app/validators/future-date.validator';
 
 interface ErrorSummaryEntry {
   fieldId: string;
@@ -24,7 +24,7 @@ interface ErrorSummaryEntry {
 
 const FieldErrors: { [key: string]: { [key: string]: string } } = {
   case_number: {
-    required: 'You must enter a case number.',
+    required: 'You must enter a case number or perform an Advanced search.',
   },
   courthouse: {
     required: 'You must enter a courthouse, if courtroom is filled.',
@@ -64,7 +64,7 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
   error = '';
   isAdvancedSearch = false;
   datePatternValidator = Validators.pattern(/^\d{2}\/\d{2}\/\d{4}$/);
-  dateValidators = [Validators.required, this.datePatternValidator, this.futureDateValidator];
+  dateValidators = [this.datePatternValidator, futureDateValidator];
   courthouses$ = this.caseService.getCourthouses();
   subs: Subscription[] = [];
 
@@ -85,6 +85,40 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.subs.push(
       this.form.controls.courtroom.valueChanges.subscribe((courtroom) => this.setCourtRoomValidators(courtroom))
     );
+
+    this.subs.push(
+      this.form.valueChanges.subscribe(() => {
+        if (this.form.invalid && this.isSubmitted) {
+          this.errorSummary = this.generateErrorSummary();
+        } else {
+          this.errorSummary = [];
+        }
+      })
+    );
+
+    // If date range, if date_from has value then date_to is required
+    this.subs.push(
+      this.form.controls.date_from.valueChanges.subscribe(() => {
+        if (this.form.controls.date_from.value && this.dateInputType === 'range') {
+          this.form.controls.date_to.setValidators([Validators.required, ...this.dateValidators]);
+        } else {
+          this.form.controls.date_to.setValidators(this.dateValidators);
+        }
+        this.form.controls.date_to.updateValueAndValidity({ onlySelf: true, emitEvent: false });
+      })
+    );
+
+    // If date range, if date_to has value then date_from is required
+    this.subs.push(
+      this.form.controls.date_to.valueChanges.subscribe(() => {
+        if (this.form.controls.date_to.value && this.dateInputType === 'range') {
+          this.form.controls.date_from.setValidators([Validators.required, ...this.dateValidators]);
+        } else {
+          this.form.controls.date_from.setValidators(this.dateValidators);
+        }
+        this.form.controls.date_from.updateValueAndValidity({ onlySelf: true, emitEvent: false });
+      })
+    );
   }
 
   toggleAdvancedSearch(event: Event) {
@@ -102,12 +136,9 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
   // Submit Registration Form
   onSubmit() {
     this.isSubmitted = true;
-    this.errorSummary = [];
-    if (this.form.invalid) {
-      this.errorSummary = this.generateErrorSummary();
-      this.isAdvancedSearch = true;
-      return;
-    }
+    this.form.updateValueAndValidity();
+
+    if (this.form.invalid) return;
 
     this.caseService.getCasesAdvanced(this.form.value).subscribe({
       next: (result: CaseData[]) => {
@@ -173,34 +204,6 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.courthouseComponent.reset();
     this.dateInputType = undefined;
     this.setDateValidators(this.dateInputType);
-  }
-
-  futureDateValidator(control: AbstractControl): ValidationErrors | null {
-    const dateValue = control.value;
-
-    if (!dateValue) {
-      return null; // Don't perform validation if the field is empty
-    }
-
-    // Split the input date string into day, month, and year components
-    const dateParts = dateValue.split('/');
-    if (dateParts.length !== 3) {
-      return { invalidDate: true };
-    }
-
-    const day = parseInt(dateParts[0], 10);
-    const month = parseInt(dateParts[1], 10);
-    const year = parseInt(dateParts[2], 10);
-
-    // Create a Date object using the parsed components
-    const inputDate = new Date(year, month - 1, day); // Subtract 1 from month since months are zero-based
-
-    const currentDate = new Date();
-
-    if (inputDate > currentDate) {
-      return { futureDate: true };
-    }
-    return null;
   }
 
   private setDateValidators(type: string | undefined) {

@@ -29,11 +29,8 @@
     </div>
     <input
       formControlName="case_number"
-      required
       minlength="1"
       class="govuk-input govuk-input--width-10"
-      id="case-search"
-      name="case-search"
       id="case_number"
       name="case_number"
       type="text"
@@ -78,8 +75,8 @@
           minlength="1"
           formControlName="courtroom"
           class="govuk-input govuk-input--width-2"
-          id="courtroom-search"
-          name="courtroom-search"
+          id="courtroom"
+          name="courtroom"
           type="text"
           aria-describedby="courtroom-search-hint"
           [ngClass]="{ 'govuk-input--error': isSubmitted && f.courthouse.errors }"
@@ -123,10 +120,10 @@
               </div>
               <div class="ds_input__wrapper">
                 <input
-                  required
                   pattern="\d{1,2}/\d{1,2}/\d{4}"
                   formControlName="date_from"
-                  id="specific-date"
+                  name="date_from"
+                  id="date_from"
                   type="text"
                   class="ds_input ds_input--fixed-10"
                   (change)="setInputValue($any($event).target.value, 'date_from')"
@@ -169,9 +166,9 @@
 
                 <div class="ds_input__wrapper">
                   <input
-                    required
                     formControlName="date_from"
-                    id="range-date-from"
+                    name="date_from"
+                    id="date_from"
                     type="text"
                     class="ds_input ds_input--fixed-10"
                     (change)="setInputValue($any($event).target.value, 'date_from')"
@@ -199,10 +196,9 @@
 
                 <div class="ds_input__wrapper">
                   <input
-                    required
                     formControlName="date_to"
-                    id="range-date-to"
-                    name="range-date-to"
+                    id="date_to"
+                    name="date_to"
                     type="text"
                     class="ds_input ds_input--fixed-10"
                     (change)="setInputValue($any($event).target.value, 'date_to')"
