@@ -4,7 +4,10 @@ import { RouterLink } from '@angular/router';
 import { CaseData } from '../../../../app/types/case';
 import { DateTimeService } from '../../../services/datetime/datetime.service';
 import { PaginationComponent } from '../../shared/pagination/pagination.component';
-
+export interface SortingInterface {
+  column: string;
+  order: 'asc' | 'desc';
+}
 @Component({
   selector: 'app-results',
   templateUrl: './results.component.html',
@@ -21,6 +24,11 @@ export class ResultsComponent implements OnChanges {
   currentPage = 1;
   pageLimit = 25;
 
+  sorting: SortingInterface = {
+    column: 'id',
+    order: 'asc',
+  };
+
   ngOnChanges(): void {
     this.currentPage = 1;
     this.updatePagedCases();
@@ -29,6 +37,46 @@ export class ResultsComponent implements OnChanges {
   onPageChanged(page: number): void {
     this.currentPage = page;
     this.updatePagedCases();
+  }
+
+  sortTable(column: 'case_id' | 'courthouse'): void {
+    this.cases.sort((a, b) => {
+      const valueA: string | number | undefined = a[column];
+      const valueB: string | number | undefined = b[column];
+
+      if (typeof valueA === 'string' && typeof valueB === 'string') {
+        // Both values are strings, use localeCompare
+        return this.compareStrings(column, valueA, valueB);
+      } else if (typeof valueA === 'number' && typeof valueB === 'number') {
+        // Both values are numbers, compare numerically
+        return this.compareNumbers(column, valueA, valueB);
+      } else {
+        return 0;
+      }
+    });
+
+    this.sorting = {
+      column,
+      order: this.isDescSorting(column) ? 'asc' : 'desc',
+    };
+
+    this.updatePagedCases();
+  }
+
+  compareStrings(column: string, a: string, b: string): number {
+    return this.isAscSorting(column) ? a.localeCompare(b) : b.localeCompare(a);
+  }
+
+  compareNumbers(column: string, a: number, b: number): number {
+    return this.isAscSorting(column) ? a - b : b - a;
+  }
+
+  isDescSorting(column: string): boolean {
+    return this.sorting.column === column && this.sorting.order === 'desc';
+  }
+
+  isAscSorting(column: string): boolean {
+    return this.sorting.column === column && this.sorting.order === 'asc';
   }
 
   //Fetches correct display value for defendants and judges

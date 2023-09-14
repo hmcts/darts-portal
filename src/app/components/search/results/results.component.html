@@ -31,8 +31,16 @@
       </caption>
       <thead class="govuk-table__head">
         <tr class="govuk-table__row">
-          <th scope="col" class="govuk-table__header">Case Number</th>
-          <th scope="col" class="govuk-table__header">Courthouse</th>
+          <th scope="col" class="govuk-table__header" (click)="sortTable('case_id')">
+            Case ID
+            <span *ngIf="isDescSorting('case_id')">▼</span>
+            <span *ngIf="isAscSorting('case_id')">▲</span>
+          </th>
+          <th scope="col" class="govuk-table__header" (click)="sortTable('courthouse')">
+            Courthouse
+            <span *ngIf="isDescSorting('courthouse')">▼</span>
+            <span *ngIf="isAscSorting('courthouse')">▲</span>
+          </th>
           <th scope="col" class="govuk-table__header">Courtroom</th>
           <th scope="col" class="govuk-table__header">Judge(s)</th>
           <th scope="col" class="govuk-table__header">Defendant(s)</th>
