@@ -76,7 +76,7 @@ describe('SearchComponent', () => {
 
       fixture.detectChanges();
 
-      const specificDateInput = fixture.debugElement.query(By.css('#specific-date'));
+      const specificDateInput = fixture.debugElement.query(By.css('#date_from'));
       specificDateInput.triggerEventHandler('change', { target: { value: '23/08/2023' } });
       const el = specificDateInput.nativeElement;
 
@@ -100,7 +100,7 @@ describe('SearchComponent', () => {
 
       fixture.detectChanges();
 
-      const rangeDateInput = fixture.debugElement.query(By.css('#range-date-to'));
+      const rangeDateInput = fixture.debugElement.query(By.css('#date_to'));
       rangeDateInput.triggerEventHandler('change', { target: { value: '23/08/2023' } });
       const el = rangeDateInput.nativeElement;
 
@@ -153,8 +153,8 @@ describe('SearchComponent', () => {
       component.form.controls['courtroom'].setValue('2');
       component.form.controls['judge_name'].setValue('Judy');
       component.form.controls['defendant_name'].setValue('Dave');
-      component.form.controls['date_to'].setValue('18/09/2023');
-      component.form.controls['date_from'].setValue('19/09/2023');
+      component.form.controls['date_to'].setValue('18/09/2022');
+      component.form.controls['date_from'].setValue('19/09/2022');
       component.form.controls['event_text_contains'].setValue('Keywords');
 
       //Check form control values
@@ -163,8 +163,8 @@ describe('SearchComponent', () => {
       expect(component.form.get('courtroom')?.value).toBe('2');
       expect(component.form.get('judge_name')?.value).toBe('Judy');
       expect(component.form.get('defendant_name')?.value).toBe('Dave');
-      expect(component.form.get('date_to')?.value).toBe('18/09/2023');
-      expect(component.form.get('date_from')?.value).toBe('19/09/2023');
+      expect(component.form.get('date_to')?.value).toBe('18/09/2022');
+      expect(component.form.get('date_from')?.value).toBe('19/09/2022');
       expect(component.form.get('event_text_contains')?.value).toBe('Keywords');
 
       fixture.debugElement.query(By.css('form')).triggerEventHandler('ngSubmit', null);
@@ -176,8 +176,8 @@ describe('SearchComponent', () => {
         case_number: '1',
         courthouse: 'Reading',
         courtroom: '2',
-        date_from: '19/09/2023',
-        date_to: '18/09/2023',
+        date_from: '19/09/2022',
+        date_to: '18/09/2022',
         defendant_name: 'Dave',
         event_text_contains: 'Keywords',
         judge_name: 'Judy',
@@ -212,5 +212,45 @@ describe('SearchComponent', () => {
       expect(component.cases.length).toBe(0);
       expect(courthouseComponentSpy).toHaveBeenCalled();
     });
+  });
+
+  it('should update error summary when form is invalid and submitted', () => {
+    component.form.markAllAsTouched();
+    component.isSubmitted = true;
+    component.form.updateValueAndValidity();
+
+    expect(component.errorSummary.length).toBeGreaterThan(0);
+  });
+
+  it('should set date_to as required when date_from has a value in range mode', () => {
+    component.dateInputType = 'range';
+
+    component.form.controls.date_from.setValue('2023-09-01');
+
+    expect(component.form.controls.date_to.hasError('required')).toBe(true);
+  });
+
+  it('should not set date_to as required when date_from is empty in range mode', () => {
+    component.dateInputType = 'range';
+
+    component.form.controls.date_from.setValue(null);
+
+    expect(component.form.controls.date_to.hasError('required')).toBe(false);
+  });
+
+  it('should set date_from as required when date_to has a value in range mode', () => {
+    component.dateInputType = 'range';
+
+    component.form.controls.date_to.setValue('2023-09-10');
+
+    expect(component.form.controls.date_from.hasError('required')).toBe(true);
+  });
+
+  it('should not set date_from as required when date_to is empty in range mode', () => {
+    component.dateInputType = 'range';
+
+    component.form.controls.date_to.setValue(null);
+
+    expect(component.form.controls.date_from.hasError('required')).toBe(false);
   });
 });
