@@ -31,19 +31,16 @@
       </caption>
       <thead class="govuk-table__head">
         <tr class="govuk-table__row">
-          <th scope="col" class="govuk-table__header" (click)="sortTable('case_id')">
-            Case ID
-            <span *ngIf="isDescSorting('case_id')">▼</span>
-            <span *ngIf="isAscSorting('case_id')">▲</span>
+          <th scope="col" class="govuk-table__header" [attr.aria-sort]="getAriaSort('case_id')">
+            <button type="button" (click)="sortTable('case_id')">Case ID</button>
           </th>
-          <th scope="col" class="govuk-table__header" (click)="sortTable('courthouse')">
-            Courthouse
-            <span *ngIf="isDescSorting('courthouse')">▼</span>
-            <span *ngIf="isAscSorting('courthouse')">▲</span>
+          <th scope="col" class="govuk-table__header" [attr.aria-sort]="getAriaSort('courthouse')">
+            <button type="button" (click)="sortTable('courthouse')">Courthouse</button>
           </th>
           <th scope="col" class="govuk-table__header">Courtroom</th>
           <th scope="col" class="govuk-table__header">Judge(s)</th>
           <th scope="col" class="govuk-table__header">Defendant(s)</th>
+          <th scope="col" class="govuk-table__header">Hearing Date</th>
         </tr>
       </thead>
       <tbody class="govuk-table__body">
@@ -56,6 +53,7 @@
             <td class="govuk-table__cell">{{ getHearingsValue(c, 'courtroom') }}</td>
             <td class="govuk-table__cell">{{ getNameValue(c.judges) }}</td>
             <td class="govuk-table__cell">{{ getNameValue(c.defendants) }}</td>
+            <td class="govuk-table__cell">{{ getHearingsValue(c, 'date') }}</td>
           </tr>
           <tr *ngIf="c.reporting_restriction" class="restriction-row govuk-table__row">
             <td class="govuk-table__cell" colspan="6">
@@ -80,3 +78,9 @@
     ></app-pagination>
   </div>
 </div>
+
+<!--   <th scope="col" class="govuk-table__header" (click)="sortTable('case_id')">
+            Case ID
+            <span *ngIf="isDescSorting('case_id')">▼</span>
+            <span *ngIf="isAscSorting('case_id')">▲</span>
+          </th> -->
