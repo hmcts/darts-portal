@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ResultsComponent } from './results.component';
+import { ResultsComponent, SortableColumn, SortingInterface } from './results.component';
 import { CaseData } from '../../../types/case';
 import { HearingData } from 'src/app/types/hearing';
 
@@ -183,6 +183,137 @@ describe('ResultsComponent', () => {
 
       expect(component.pagedCases.length).toEqual(1);
       expect(component.pagedCases[0]).toEqual(MOCK_CASES[3]);
+    });
+  });
+
+  describe('Sorting', () => {
+    it('should set sorting to ascending order for the given column', () => {
+      const column: SortableColumn = 'case_id';
+
+      component.sorting = {
+        column,
+        order: 'desc',
+      };
+
+      component.sortTable(column);
+
+      const expectedSorting: SortingInterface = {
+        column,
+        order: 'asc',
+      };
+
+      expect(component.sorting).toEqual(expectedSorting);
+    });
+
+    it('should set sorting to descending order for the given column', () => {
+      const column: SortableColumn = 'case_id';
+      component.sorting = {
+        column,
+        order: 'asc',
+      };
+
+      component.sortTable(column);
+
+      const expectedSorting: SortingInterface = {
+        column,
+        order: 'desc',
+      };
+
+      expect(component.sorting).toEqual(expectedSorting);
+    });
+
+    it('should compare two strings in ascending order', () => {
+      const column: SortableColumn = 'case_id';
+      const result = component.compareStrings(column, 'abc', 'def');
+      expect(result).toBe(1); // 'abc' comes before 'def'
+    });
+
+    it('should compare two strings in descending order', () => {
+      const column: SortableColumn = 'case_id';
+      const result = component.compareStrings(column, 'def', 'abc');
+      expect(result).toBe(-1); // 'def' comes after 'abc'
+    });
+
+    it('should compare two numbers in ascending order', () => {
+      const column: SortableColumn = 'case_id';
+      const result = component.compareNumbers(column, 10, 20);
+      expect(result).toBe(10); // 10 comes before 20
+    });
+
+    it('should compare two numbers in descending order', () => {
+      const column: SortableColumn = 'case_id';
+      const result = component.compareNumbers(column, 20, 10);
+      expect(result).toBe(-10); // 20 comes after 10
+    });
+
+    it('should return true for isDescSorting when sorting in descending order', () => {
+      const column: SortableColumn = 'case_id';
+      component.sorting = {
+        column,
+        order: 'desc',
+      };
+      const isDesc = component.isDescSorting(column);
+      expect(isDesc).toBe(true);
+    });
+
+    it('should return false for isDescSorting when sorting in ascending order', () => {
+      const column: SortableColumn = 'case_id';
+      component.sorting = {
+        column,
+        order: 'asc',
+      };
+      const isDesc = component.isDescSorting(column);
+      expect(isDesc).toBe(false);
+    });
+
+    it('should return true for isAscSorting when sorting in ascending order', () => {
+      const column: SortableColumn = 'case_id';
+      component.sorting = {
+        column,
+        order: 'asc',
+      };
+      const isAsc = component.isAscSorting(column);
+      expect(isAsc).toBe(true);
+    });
+
+    it('should return false for isAscSorting when sorting in descending order', () => {
+      const column: SortableColumn = 'case_id';
+      component.sorting = {
+        column,
+        order: 'desc',
+      };
+      const isAsc = component.isAscSorting(column);
+      expect(isAsc).toBe(false);
+    });
+
+    it('should return "ascending" for getAriaSort when sorting in ascending order', () => {
+      const column: SortableColumn = 'case_id';
+      component.sorting = {
+        column,
+        order: 'asc',
+      };
+      const ariaSort = component.getAriaSort(column);
+      expect(ariaSort).toBe('ascending');
+    });
+
+    it('should return "descending" for getAriaSort when sorting in descending order', () => {
+      const column: SortableColumn = 'case_id';
+      component.sorting = {
+        column,
+        order: 'desc',
+      };
+      const ariaSort = component.getAriaSort(column);
+      expect(ariaSort).toBe('descending');
+    });
+
+    it('should return "none" for getAriaSort when not sorting the column', () => {
+      const column: SortableColumn = 'case_id';
+      component.sorting = {
+        column: 'other_column', // A different column
+        order: 'asc',
+      };
+      const ariaSort = component.getAriaSort(column);
+      expect(ariaSort).toBe('none');
     });
   });
 });
