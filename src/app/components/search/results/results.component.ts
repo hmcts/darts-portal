@@ -4,12 +4,12 @@ import { RouterLink } from '@angular/router';
 import { CaseData } from '../../../../app/types/case';
 import { DateTimeService } from '../../../services/datetime/datetime.service';
 import { PaginationComponent } from '../../shared/pagination/pagination.component';
-interface SortingInterface {
+export interface SortingInterface {
   column: string;
   order: 'asc' | 'desc';
 }
 
-type SortableColumn = 'case_id' | 'courthouse';
+export type SortableColumn = 'case_id' | 'courthouse';
 
 @Component({
   selector: 'app-results',
@@ -28,7 +28,7 @@ export class ResultsComponent implements OnChanges {
   pageLimit = 25;
 
   sorting: SortingInterface = {
-    column: 'id',
+    column: '',
     order: 'asc',
   };
 
@@ -81,7 +81,10 @@ export class ResultsComponent implements OnChanges {
   }
 
   getAriaSort(column: SortableColumn): 'ascending' | 'descending' | 'none' {
-    return this.sorting.column === column ? (this.isAscSorting(column) ? 'ascending' : 'descending') : 'none';
+    if (this.sorting.column === column) {
+      return this.isAscSorting(column) ? 'ascending' : 'descending';
+    }
+    return 'none';
   }
 
   //Fetches correct display value for defendants and judges
