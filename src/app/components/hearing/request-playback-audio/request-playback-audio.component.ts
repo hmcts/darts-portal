@@ -5,6 +5,7 @@ import { DateTimeService } from 'src/app/services/datetime/datetime.service';
 import { HearingData } from 'src/app/types/hearing';
 import { requestPlaybackAudioDTO } from 'src/app/types/requestPlaybackAudioDTO';
 import { TimeInputComponent } from './time-input/time-input.component';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-request-playback-audio',
@@ -67,10 +68,13 @@ export class RequestPlaybackAudioComponent implements OnChanges {
     const endTimeMinutes = this.audioRequestForm.get('endTime.minutes')?.value;
     const endTimeSeconds = this.audioRequestForm.get('endTime.seconds')?.value;
 
-    const startDateTime: Date = new Date(
-      `${this.hearing.date}T${startTimeHours}:${startTimeMinutes}:${startTimeSeconds}`
-    );
-    const endDateTime: Date = new Date(`${this.hearing.date}T${endTimeHours}:${endTimeMinutes}:${endTimeSeconds}`);
+    const startDateTime = moment.utc(`${this.hearing.date}T${startTimeHours}:${startTimeMinutes}:${startTimeSeconds}`);
+    const endDateTime = moment.utc(`${this.hearing.date}T${endTimeHours}:${endTimeMinutes}:${endTimeSeconds}`);
+
+    // const startDateTime2: Date = new Date(
+    //   `${this.hearing.date}T${startTimeHours}:${startTimeMinutes}:${startTimeSeconds}`
+    // );
+    // const endDateTime: Date = new Date(`${this.hearing.date}T${endTimeHours}:${endTimeMinutes}:${endTimeSeconds}`);
 
     this.requestObj = {
       hearing_id: this.hearing.id,

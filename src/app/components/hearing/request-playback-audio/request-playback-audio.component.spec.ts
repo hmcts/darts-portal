@@ -89,8 +89,8 @@ describe('RequestPlaybackAudioComponent', () => {
       const expectedResult = {
         hearing_id: 1,
         requestor: 1,
-        start_time: '2023-09-01T01:00:00Z',
-        end_time: '2023-09-01T14:32:24Z',
+        start_time: '2023-09-01T02:00:00Z',
+        end_time: '2023-09-01T15:32:24Z',
         request_type: 'DOWNLOAD',
       };
       component.audioRequestForm.setValue(audioRequestForm);
