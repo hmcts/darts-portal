@@ -9,6 +9,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CaseService } from 'src/app/services/case/case.service';
 import { HearingData } from 'src/app/types/hearing';
 import { Observable, of } from 'rxjs';
+import { HearingAudioEventViewModel } from 'src/app/types/hearing-audio-event';
 
 describe('HearingComponent', () => {
   const fakeAppInsightsService = {};
@@ -135,6 +136,11 @@ describe('HearingComponent', () => {
       ];
       component.onEventsSelected(mockAudioAndEvents);
       expect(component.requestAudioTimes);
+    });
+    it('should set request Audio times to undefined if audio and Events are empty', () => {
+      const mockAudioAndEvents: HearingAudioEventViewModel[] = [];
+      component.onEventsSelected(mockAudioAndEvents);
+      expect(component.requestAudioTimes).toEqual(undefined);
     });
   });
 });
