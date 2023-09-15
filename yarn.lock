@@ -333,9 +333,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/cdk@npm:16.2.3":
-  version: 16.2.3
-  resolution: "@angular/cdk@npm:16.2.3"
+"@angular/cdk@npm:16.2.4":
+  version: 16.2.4
+  resolution: "@angular/cdk@npm:16.2.4"
   dependencies:
     parse5: ^7.1.2
     tslib: ^2.3.0
@@ -346,7 +346,7 @@ __metadata:
   dependenciesMeta:
     parse5:
       optional: true
-  checksum: fbbf28c2c3bca335639d1fee19118e96267598de442ca7cd0b2ecf5bd12850f0fd994fc01aacbfbfb499bc35423312666507811cc494c384641eef6925c8ff45
+  checksum: b78dd786a74a6e49cabb36a8f93ef7f844b9247b5003efd6ea6a2a7ef703cb9648150f015e56ea39281a29c8507367d822545a03a96b1db89c78f87ceb74dea8
   languageName: node
   linkType: hard
 
@@ -453,9 +453,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/material@npm:16.2.3":
-  version: 16.2.3
-  resolution: "@angular/material@npm:16.2.3"
+"@angular/material@npm:16.2.4":
+  version: 16.2.4
+  resolution: "@angular/material@npm:16.2.4"
   dependencies:
     "@material/animation": 15.0.0-canary.bc9ae6c9c.0
     "@material/auto-init": 15.0.0-canary.bc9ae6c9c.0
@@ -507,13 +507,13 @@ __metadata:
     tslib: ^2.3.0
   peerDependencies:
     "@angular/animations": ^16.0.0 || ^17.0.0
-    "@angular/cdk": 16.2.3
+    "@angular/cdk": 16.2.4
     "@angular/common": ^16.0.0 || ^17.0.0
     "@angular/core": ^16.0.0 || ^17.0.0
     "@angular/forms": ^16.0.0 || ^17.0.0
     "@angular/platform-browser": ^16.0.0 || ^17.0.0
     rxjs: ^6.5.3 || ^7.4.0
-  checksum: 863e07636ebed098cf59dc32c0abadfa244bf0b91ebffc27547ce228fe371d3f38360c0afa538632831c1141ca8bb50f2d0c34e4cd2819c3fbf8a6644c4ca861
+  checksum: 7b190e54f75267a63960f981dae369c4787967f464c970012da30b3368b804ce5fdfdb4d05521b2913d7acd5fbc7e31e2f7a515dbe3adfd4a53c9d78b258f1f5
   languageName: node
   linkType: hard
 
@@ -7098,14 +7098,14 @@ __metadata:
     "@angular-eslint/schematics": 16.1.2
     "@angular-eslint/template-parser": 16.1.2
     "@angular/animations": ^16.0.0
-    "@angular/cdk": 16.2.3
+    "@angular/cdk": 16.2.4
     "@angular/cli": ~16.2.0
     "@angular/common": ^16.0.0
     "@angular/compiler": ^16.0.0
     "@angular/compiler-cli": ^16.0.0
     "@angular/core": ^16.0.0
     "@angular/forms": ^16.0.0
-    "@angular/material": 16.2.3
+    "@angular/material": 16.2.4
     "@angular/platform-browser": ^16.0.0
     "@angular/platform-browser-dynamic": ^16.0.0
     "@angular/router": ^16.0.0
