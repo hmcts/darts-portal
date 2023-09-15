@@ -10,7 +10,7 @@ export class HearingService {
   constructor(private readonly http: HttpClient) {}
 
   getEvents(hearingId: string | number): Observable<HearingEvent[]> {
-    return this.http.get<HearingEvent[]>(`api/cases/hearings/${hearingId}/events`).pipe(
+    return this.http.get<HearingEvent[]>(`api/hearings/${hearingId}/events`).pipe(
       catchError((error) => {
         if (error.status === 404) return of([]);
         return throwError(() => error);

@@ -21,6 +21,7 @@ app.use('/courthouses', require('./courthouses/courthouses'));
 // stub out certain case APIs
 app.use('/cases', require('./case/case'));
 app.use('/audio', require('./case/case'));
+app.use('/hearings', require('./hearings/hearings'));
 // proxy non-stubbed routes to the actual API
 app.use(
   createProxyMiddleware({
