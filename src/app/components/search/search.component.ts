@@ -16,9 +16,6 @@ interface ErrorSummaryEntry {
 }
 
 const FieldErrors: { [key: string]: { [key: string]: string } } = {
-  case_number: {
-    required: 'You must enter a case number or perform an Advanced search.',
-  },
   courthouse: {
     required: 'You must enter a courthouse, if courtroom is filled.',
   },
@@ -64,7 +61,7 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
   constructor(private caseService: CaseService) {}
 
   form: FormGroup = new FormGroup({
-    case_number: new FormControl('', Validators.required),
+    case_number: new FormControl(),
     courthouse: new FormControl(),
     courtroom: new FormControl(),
     judge_name: new FormControl(),
@@ -117,7 +114,6 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
   toggleAdvancedSearch(event: Event) {
     event.preventDefault();
     this.isAdvancedSearch = !this.isAdvancedSearch;
-    this.setAdvancedSearchValidators(this.isAdvancedSearch);
   }
 
   setInputValue(value: string, control: string) {
@@ -131,7 +127,16 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.isSubmitted = true;
     this.form.updateValueAndValidity();
 
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      this.isAdvancedSearch = true;
+      return;
+    }
+
+    // Prevent service call being spammed with no form values
+    if (!this.form.dirty || !this.form.touched) {
+      this.errorType = 'CASE_101';
+      return;
+    }
 
     this.caseService.getCasesAdvanced(this.form.value).subscribe({
       next: (result: CaseData[]) => {
@@ -227,17 +232,6 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
       courtHouseFormControl?.clearValidators();
     }
     courtHouseFormControl?.updateValueAndValidity();
-  }
-
-  private setAdvancedSearchValidators(isAdvancedSearch: boolean) {
-    const caseNumberFormControl = this.form.get('case_number');
-
-    if (isAdvancedSearch) {
-      caseNumberFormControl?.clearValidators();
-    } else {
-      caseNumberFormControl?.setValidators([Validators.required]);
-    }
-    caseNumberFormControl?.updateValueAndValidity();
   }
 
   ngOnDestroy(): void {
