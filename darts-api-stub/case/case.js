@@ -409,7 +409,7 @@ router.get('/hearings/:hearingId/audios', (req, res) => {
         {
           id: 2,
           media_start_timestamp: '2023-07-31T04:30:24.620Z',
-          media_end_timestamp: '2022-07-31T14:32:24.620Z',
+          media_end_timestamp: '2023-07-31T14:32:24.620Z',
         },
         {
           id: 3,

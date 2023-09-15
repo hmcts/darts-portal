@@ -47,9 +47,14 @@ export class CaseService {
 
     if (searchForm.defendant_name) params = params.set('defendant_name', searchForm.defendant_name);
 
-    if (searchForm.date_from) params = params.set('date_from', searchForm.date_from.split('/').reverse().join('-'));
-
-    if (searchForm.date_to) params = params.set('date_to', searchForm.date_to.split('/').reverse().join('-'));
+    if (searchForm.specific_date) {
+      const dateParameter = searchForm.specific_date.split('/').reverse().join('-');
+      params = params.set('date_from', dateParameter);
+      params = params.set('date_to', dateParameter);
+    } else {
+      if (searchForm.date_from) params = params.set('date_from', searchForm.date_from.split('/').reverse().join('-'));
+      if (searchForm.date_to) params = params.set('date_to', searchForm.date_to.split('/').reverse().join('-'));
+    }
 
     if (searchForm.event_text_contains) params = params.set('event_text_contains', searchForm.event_text_contains);
 

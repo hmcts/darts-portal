@@ -22,4 +22,11 @@ describe('DatetimeService', () => {
     expect(DateTimeService.getdddDMMMYYYY).toHaveBeenCalled();
     expect(date).toBe('Wed 16 Aug 2023');
   });
+
+  it('should format ISO Strings to remove milliseconds', () => {
+    const date = '2023-09-01T01:00:00.000Z';
+    const expectedDate = '2023-09-01T01:00:00Z';
+    const result = service.getIsoStringWithoutMilliseconds(date);
+    expect(result).toEqual(expectedDate);
+  });
 });

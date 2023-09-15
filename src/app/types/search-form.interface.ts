@@ -4,6 +4,7 @@ export interface SearchFormValues {
   courtroom?: string;
   judge_name?: string;
   defendant_name?: string;
+  specific_date?: string;
   date_from?: string;
   date_to?: string;
   event_text_contains?: string;

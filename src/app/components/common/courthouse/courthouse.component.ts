@@ -1,5 +1,5 @@
 import { CourthouseData } from 'src/app/types/courthouse';
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, Output, ViewChild } from '@angular/core';
 import { NgIf } from '@angular/common';
 import accessibleAutocomplete, { AccessibleAutocompleteProps } from 'accessible-autocomplete';
 
@@ -10,7 +10,7 @@ import accessibleAutocomplete, { AccessibleAutocompleteProps } from 'accessible-
   templateUrl: './courthouse.component.html',
   styleUrls: ['./courthouse.component.scss'],
 })
-export class CourthouseComponent implements AfterViewInit {
+export class CourthouseComponent implements AfterViewInit, OnChanges {
   @ViewChild('courthouseAutocomplete') autocompleteContainer!: ElementRef<HTMLElement>;
 
   @Input() courthouses: CourthouseData[] = [];
@@ -28,6 +28,16 @@ export class CourthouseComponent implements AfterViewInit {
       this.courthouseSelect.emit(inputValue);
     },
   };
+
+  ngOnChanges(): void {
+    if (document.querySelector('input[name=courthouse]')) {
+      if (this.isInvalid) {
+        (document.querySelector('input[name=courthouse]') as HTMLInputElement).style.borderColor = '#d4351c';
+      } else {
+        (document.querySelector('input[name=courthouse]') as HTMLInputElement).style.borderColor = '';
+      }
+    }
+  }
 
   reset() {
     (document.querySelector('input[name=courthouse]') as HTMLInputElement).value = '';

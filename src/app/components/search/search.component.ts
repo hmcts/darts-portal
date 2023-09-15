@@ -9,6 +9,7 @@ import { ResultsComponent } from './results/results.component';
 import { initAll } from '@scottish-government/pattern-library/src/all';
 import { Subscription } from 'rxjs';
 import { futureDateValidator } from 'src/app/validators/future-date.validator';
+import { SearchFormValues } from 'src/app/types/search-form.interface';
 
 interface ErrorSummaryEntry {
   fieldId: string;
@@ -22,6 +23,10 @@ const FieldErrors: { [key: string]: { [key: string]: string } } = {
   courtroom: {
     required:
       'The courtroom number you have entered is not a recognised number for this courthouse. Check and try again',
+  },
+  specific_date: {
+    pattern: 'You have not entered a recognised date in the correct format (for example 31/01/2023)',
+    futureDate: 'You have selected a date in the future. The hearing date must be in the past',
   },
   date_from: {
     required: 'You have not selected a start date. Select a start date to define your search',
@@ -67,13 +72,14 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
     judge_name: new FormControl(),
     defendant_name: new FormControl(),
     event_text_contains: new FormControl(),
+    specific_date: new FormControl(),
     date_from: new FormControl(),
     date_to: new FormControl(),
   });
 
   ngOnInit() {
     this.subs.push(
-      this.form.controls.courtroom.valueChanges.subscribe((courtroom) => this.setCourtRoomValidators(courtroom))
+      this.form.controls.courtroom.valueChanges.subscribe((courtroom) => this.setCourthouseValidators(courtroom))
     );
 
     this.subs.push(
@@ -86,29 +92,8 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
       })
     );
 
-    // If date range, if date_from has value then date_to is required
-    this.subs.push(
-      this.form.controls.date_from.valueChanges.subscribe(() => {
-        if (this.form.controls.date_from.value && this.dateInputType === 'range') {
-          this.form.controls.date_to.setValidators([Validators.required, ...this.dateValidators]);
-        } else {
-          this.form.controls.date_to.setValidators(this.dateValidators);
-        }
-        this.form.controls.date_to.updateValueAndValidity({ onlySelf: true, emitEvent: false });
-      })
-    );
-
-    // If date range, if date_to has value then date_from is required
-    this.subs.push(
-      this.form.controls.date_to.valueChanges.subscribe(() => {
-        if (this.form.controls.date_to.value && this.dateInputType === 'range') {
-          this.form.controls.date_from.setValidators([Validators.required, ...this.dateValidators]);
-        } else {
-          this.form.controls.date_from.setValidators(this.dateValidators);
-        }
-        this.form.controls.date_from.updateValueAndValidity({ onlySelf: true, emitEvent: false });
-      })
-    );
+    this.setSpecificDateValidators();
+    this.setDateRangeValidators();
   }
 
   toggleAdvancedSearch(event: Event) {
@@ -118,11 +103,12 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   setInputValue(value: string, control: string) {
     this.form.controls[`${control}`].patchValue(value);
-    //If specific type, set date_to to same value as date_from
-    this.dateInputType === 'specific' && control == 'date_from' && this.form.controls[`date_to`].patchValue(value);
   }
 
-  // Submit Registration Form
+  isControlInvalid(control: keyof SearchFormValues): boolean {
+    return this.isSubmitted && !!this.f[control].errors;
+  }
+
   onSubmit() {
     this.isSubmitted = true;
     this.form.updateValueAndValidity();
@@ -156,11 +142,9 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   toggleRadioSelected(type: 'specific' | 'range') {
-    this.form.controls['date_from'].reset();
-    this.form.controls['date_to'].reset();
-
-    this.setDateValidators(type);
-
+    this.form.get('specific_date')?.reset();
+    this.form.get('date_from')?.reset();
+    this.form.get('date_to')?.reset();
     this.dateInputType = type;
   }
 
@@ -172,7 +156,6 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
     initAll();
   }
 
-  // convenience getter for easy access to form fields
   get f() {
     return this.form.controls;
   }
@@ -201,29 +184,54 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.errorSummary = [];
     this.courthouseComponent.reset();
     this.dateInputType = undefined;
-    this.setDateValidators(this.dateInputType);
   }
 
-  private setDateValidators(type: string | undefined) {
-    const dateFromFormControl = this.form.get('date_from');
-    const dateToFormControl = this.form.get('date_to');
-
-    if (type === undefined) {
-      dateFromFormControl?.clearValidators();
-      dateToFormControl?.clearValidators();
-    } else {
-      dateFromFormControl?.setValidators(this.dateValidators);
-      if (type === 'range') {
-        dateToFormControl?.setValidators(this.dateValidators);
+  private setSpecificDateValidators() {
+    const specificDateControl = this.form.controls.specific_date;
+    specificDateControl.valueChanges.subscribe((value) => {
+      if (value) {
+        specificDateControl.setValidators(this.dateValidators);
       } else {
-        dateToFormControl?.clearValidators();
+        specificDateControl.clearValidators();
       }
-    }
-    dateFromFormControl?.updateValueAndValidity();
-    dateToFormControl?.updateValueAndValidity();
+      specificDateControl.updateValueAndValidity({ onlySelf: true, emitEvent: false });
+    });
   }
 
-  private setCourtRoomValidators(courtroom: string) {
+  private setDateRangeValidators() {
+    const dateFromControl = this.form.controls.date_from;
+    const dateToControl = this.form.controls.date_to;
+
+    // If date_from has value then date_to is required
+    this.subs.push(
+      dateFromControl.valueChanges.subscribe((value) => {
+        if (value) {
+          dateToControl.setValidators([Validators.required, ...this.dateValidators]);
+          dateFromControl.setValidators(this.dateValidators);
+          dateFromControl.updateValueAndValidity({ onlySelf: true, emitEvent: false });
+        } else {
+          dateToControl.clearValidators();
+        }
+        dateToControl.updateValueAndValidity({ onlySelf: true, emitEvent: false });
+      })
+    );
+
+    // If date_to has value then date_from is required
+    this.subs.push(
+      dateToControl.valueChanges.subscribe((value) => {
+        if (value) {
+          dateFromControl.setValidators([Validators.required, ...this.dateValidators]);
+          dateToControl.setValidators(this.dateValidators);
+          dateToControl.updateValueAndValidity({ onlySelf: true, emitEvent: false });
+        } else {
+          dateFromControl.clearValidators();
+        }
+        dateFromControl.updateValueAndValidity({ onlySelf: true, emitEvent: false });
+      })
+    );
+  }
+
+  private setCourthouseValidators(courtroom: string) {
     const courtHouseFormControl = this.form.get('courthouse');
 
     if (courtroom) {
