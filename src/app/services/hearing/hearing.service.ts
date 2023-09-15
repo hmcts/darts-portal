@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { catchError, Observable, of, throwError } from 'rxjs';
 import { HearingAudio, HearingEvent } from 'src/app/types/hearing-audio-event';
 
@@ -7,7 +7,7 @@ import { HearingAudio, HearingEvent } from 'src/app/types/hearing-audio-event';
   providedIn: 'root',
 })
 export class HearingService {
-  http = inject(HttpClient);
+  constructor(private readonly http: HttpClient) {}
 
   getEvents(hearingId: string | number): Observable<HearingEvent[]> {
     return this.http.get<HearingEvent[]>(`api/cases/hearings/${hearingId}/events`).pipe(
