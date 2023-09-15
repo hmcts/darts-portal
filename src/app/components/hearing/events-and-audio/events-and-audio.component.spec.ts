@@ -84,32 +84,11 @@ describe('EventsAndAudioComponent', () => {
 
     const expectedTable: HearingAudioEventViewModel[] = [
       {
-        id: 10,
-        timestamp: '2023-07-31T10:00:07.620Z',
-        name: 'Case called on',
-        text: 'Record: New Case',
-        type: 'event',
-      },
-      {
-        id: 3,
-        media_start_timestamp: '2023-07-31T10:00:06.620Z',
+        id: 1,
+        media_start_timestamp: '2023-07-31T10:00:01.620Z',
         media_end_timestamp: '2023-07-31T14:32:24.620Z',
-        timestamp: '2023-07-31T10:00:06.620Z',
+        timestamp: '2023-07-31T10:00:01.620Z',
         type: 'audio',
-      },
-      {
-        id: 2,
-        media_start_timestamp: '2023-07-31T10:00:04.620Z',
-        media_end_timestamp: '2022-07-31T14:32:24.620Z',
-        timestamp: '2023-07-31T10:00:04.620Z',
-        type: 'audio',
-      },
-      {
-        id: 9,
-        timestamp: '2023-07-31T10:00:03.620Z',
-        name: 'Case called on',
-        text: 'Record: New Case',
-        type: 'event',
       },
       {
         id: 8,
@@ -119,11 +98,32 @@ describe('EventsAndAudioComponent', () => {
         type: 'event',
       },
       {
-        id: 1,
-        media_start_timestamp: '2023-07-31T10:00:01.620Z',
-        media_end_timestamp: '2023-07-31T14:32:24.620Z',
-        timestamp: '2023-07-31T10:00:01.620Z',
+        id: 9,
+        timestamp: '2023-07-31T10:00:03.620Z',
+        name: 'Case called on',
+        text: 'Record: New Case',
+        type: 'event',
+      },
+      {
+        id: 2,
+        media_start_timestamp: '2023-07-31T10:00:04.620Z',
+        media_end_timestamp: '2022-07-31T14:32:24.620Z',
+        timestamp: '2023-07-31T10:00:04.620Z',
         type: 'audio',
+      },
+      {
+        id: 3,
+        media_start_timestamp: '2023-07-31T10:00:06.620Z',
+        media_end_timestamp: '2023-07-31T14:32:24.620Z',
+        timestamp: '2023-07-31T10:00:06.620Z',
+        type: 'audio',
+      },
+      {
+        id: 10,
+        timestamp: '2023-07-31T10:00:07.620Z',
+        name: 'Case called on',
+        text: 'Record: New Case',
+        type: 'event',
       },
     ];
 
@@ -160,6 +160,38 @@ describe('EventsAndAudioComponent', () => {
     expect(component.isRowSelected(row)).toBeTruthy();
   });
 
+  describe('#onSelectAllChanged', () => {
+    it('should check all the rows on the table', () => {
+      const eventsSelectSpy = jest.spyOn(component.eventsSelect, 'emit');
+      const filteredTable = [
+        {
+          id: 1,
+          timestamp: '2023-07-31T01:00:00.620Z',
+          name: 'Case called on',
+          text: 'Record: New Case',
+          type: 'event',
+        },
+        {
+          id: 1,
+          media_start_timestamp: '2023-07-31T02:32:24.620Z',
+          media_end_timestamp: '2023-07-31T14:32:24.620Z',
+          type: 'audio',
+          timestamp: '2023-07-31T02:32:24.620Z',
+        },
+      ];
+      component.filteredTable = filteredTable;
+      component.onSelectAllChanged(true);
+      expect(component.selectedRows).toEqual(filteredTable);
+      expect(eventsSelectSpy).toHaveBeenCalledWith(component.selectedRows);
+    });
+    it('should uncheck all the rows on the table', () => {
+      const eventsSelectSpy = jest.spyOn(component.eventsSelect, 'emit');
+      component.onSelectAllChanged(false);
+      expect(component.selectedRows).toEqual([]);
+      expect(eventsSelectSpy).toHaveBeenCalledWith(component.selectedRows);
+    });
+  });
+
   it('should filter rows correctly', () => {
     const eventRow: HearingAudioEventViewModel = { id: 1, type: HearingEventTypeEnum.Event };
     component.table = [
@@ -186,7 +218,7 @@ describe('EventsAndAudioComponent', () => {
   });
 
   it('should filter by events', () => {
-    component.form.get('selectedOption')?.setValue('event');
+    component.eventsFilterForm.get('selectedOption')?.setValue('event');
 
     fixture.detectChanges();
 
@@ -194,7 +226,7 @@ describe('EventsAndAudioComponent', () => {
   });
 
   it('should filter by all', () => {
-    component.form.get('selectedOption')?.setValue('all');
+    component.eventsFilterForm.get('selectedOption')?.setValue('all');
 
     fixture.detectChanges();
 
