@@ -119,7 +119,7 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
     }
 
     // Prevent service call being spammed with no form values
-    if (!this.form.dirty || !this.form.touched) {
+    if (!this.form.dirty && !this.form.touched) {
       this.errorType = 'CASE_101';
       return;
     }
