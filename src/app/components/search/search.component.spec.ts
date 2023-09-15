@@ -76,15 +76,15 @@ describe('SearchComponent', () => {
 
       fixture.detectChanges();
 
-      const specificDateInput = fixture.debugElement.query(By.css('#date_from'));
+      const specificDateInput = fixture.debugElement.query(By.css('#specific_date'));
       specificDateInput.triggerEventHandler('change', { target: { value: '23/08/2023' } });
       const el = specificDateInput.nativeElement;
 
       fixture.detectChanges();
-      component.setInputValue('23/08/2023', 'date_to');
+      component.setInputValue('23/08/2023', 'specific_date');
       expect(el.value).toEqual('23/08/2023');
       //With specific date picker, date_from and date_to should equal the same
-      expect(component.form.controls['date_to'].value).toEqual('23/08/2023');
+      expect(component.form.controls['specific_date'].value).toEqual('23/08/2023');
     });
 
     it('should assign the value from the range date picker in the date_to input to the input box, for Angular change detection', async () => {
@@ -153,6 +153,7 @@ describe('SearchComponent', () => {
       component.form.controls['courtroom'].setValue('2');
       component.form.controls['judge_name'].setValue('Judy');
       component.form.controls['defendant_name'].setValue('Dave');
+      component.form.controls['specific_date'].setValue('');
       component.form.controls['date_to'].setValue('18/09/2022');
       component.form.controls['date_from'].setValue('19/09/2022');
       component.form.controls['event_text_contains'].setValue('Keywords');
@@ -176,6 +177,7 @@ describe('SearchComponent', () => {
         case_number: '1',
         courthouse: 'Reading',
         courtroom: '2',
+        specific_date: '',
         date_from: '19/09/2022',
         date_to: '18/09/2022',
         defendant_name: 'Dave',

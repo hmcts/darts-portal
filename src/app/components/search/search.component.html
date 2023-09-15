@@ -22,7 +22,7 @@
     <div id="case_number-hint" class="govuk-hint">
       Also known as a case reference or court reference. There should be no spaces.
     </div>
-    <div *ngIf="isSubmitted && f.case_number.errors">
+    <div *ngIf="isControlInvalid('case_number')">
       <p *ngFor="let error of getFieldErrorMessages('case_number')" id="casenumber-error" class="govuk-error-message">
         <span class="govuk-visually-hidden">Error:</span> {{ error }}
       </p>
@@ -44,14 +44,14 @@
       <span class="govuk-details__summary-text"> Advanced search </span>
     </summary>
     <div class="govuk-form-group govuk-details__text">
-      <div class="govuk-form-group">
+      <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('courthouse')">
         <app-courthouse-field
           *ngIf="courthouses$ | async as courthouses"
           [courthouses]="courthouses"
           (courthouseSelect)="onCourthouseSelected($event)"
-          [isInvalid]="isSubmitted && !!f.courthouse.errors"
+          [isInvalid]="isControlInvalid('courthouse')"
         ></app-courthouse-field>
-        <div *ngIf="isSubmitted && f.courthouse.errors">
+        <div *ngIf="isControlInvalid('courthouse')">
           <p
             *ngFor="let error of getFieldErrorMessages('courthouse')"
             id="courthouse-error"
@@ -62,11 +62,11 @@
         </div>
       </div>
 
-      <div class="govuk-form-group">
+      <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('courthouse')">
         <label class="govuk-label" for="courtroom"> Courtroom </label>
         <div id="courtroom-search-hint" class="govuk-hint">For example, 3</div>
         <!-- Error message courtroom -->
-        <div *ngIf="isSubmitted && f.courtroom.errors">
+        <div *ngIf="isControlInvalid('courtroom')">
           <p *ngFor="let error of getFieldErrorMessages('courtroom')" id="courthouse-error" class="govuk-error-message">
             <span class="govuk-visually-hidden">Error:</span> {{ error }}
           </p>
@@ -79,11 +79,11 @@
           name="courtroom"
           type="text"
           aria-describedby="courtroom-search-hint"
-          [ngClass]="{ 'govuk-input--error': isSubmitted && f.courthouse.errors }"
+          [class.govuk-input--error]="isControlInvalid('courthouse')"
         />
       </div>
 
-      <div class="govuk-form-group" [ngClass]="{ 'govuk-form-group--error': isSubmitted && f.date_from.errors }">
+      <div class="govuk-form-group">
         <label class="govuk-label govuk-!-font-weight-bold" for="advanced-case-search"> Hearing date </label>
         <div id="hearingdate-search-hint" class="govuk-hint">There is limited data pre-2012.</div>
         <div class="govuk-radios" data-module="govuk-radios">
@@ -103,15 +103,17 @@
 
           <div
             *ngIf="dateInputType === 'specific'"
-            class="govuk-form-group govuk-details__text input-group-indent-1"
+            class="govuk-form-group input-group-indent-1"
+            [class.govuk-details__text]="!isControlInvalid('specific_date')"
+            [class.govuk-form-group--error]="isControlInvalid('specific_date')"
             id="specific-date-items"
           >
             <div data-module="ds-datepicker" class="ds_datepicker">
               <p class="ds_hint-text">For example, 31/01/2023.</p>
               <!-- Error message date range date_from -->
-              <div *ngIf="isSubmitted && f.date_from.errors">
+              <div *ngIf="isControlInvalid('specific_date')">
                 <p
-                  *ngFor="let error of getFieldErrorMessages('date_from')"
+                  *ngFor="let error of getFieldErrorMessages('specific_date')"
                   id="datefrom-error"
                   class="govuk-error-message"
                 >
@@ -120,14 +122,13 @@
               </div>
               <div class="ds_input__wrapper">
                 <input
-                  pattern="\d{1,2}/\d{1,2}/\d{4}"
-                  formControlName="date_from"
-                  name="date_from"
-                  id="date_from"
+                  formControlName="specific_date"
+                  name="specific_date"
+                  id="specific_date"
                   type="text"
                   class="ds_input ds_input--fixed-10"
-                  (change)="setInputValue($any($event).target.value, 'date_from')"
-                  [ngClass]="{ 'govuk-input--error': isSubmitted && f.date_from.errors }"
+                  (change)="setInputValue($any($event).target.value, 'specific_date')"
+                  [class.govuk-input--error]="isControlInvalid('specific_date')"
                 />
               </div>
             </div>
@@ -148,13 +149,18 @@
             <label class="govuk-label govuk-radios__label" for="date-range-radio"> Date range </label>
           </div>
           <div *ngIf="dateInputType === 'range'" id="date-range-items">
-            <div class="govuk-form-group govuk-details__text input-group-indent-1" id="range-date-items">
+            <div
+              class="govuk-form-group input-group-indent-1"
+              [class.govuk-details__text]="!isControlInvalid('date_from')"
+              [class.govuk-form-group--error]="isControlInvalid('date_from')"
+              id="range-date-items"
+            >
               <div data-module="ds-datepicker" class="ds_datepicker">
                 <label class="ds_label" for="range-date-from">From</label>
                 <p class="ds_hint-text">For example, 31/01/2023.</p>
 
                 <!-- Error message date range date_from -->
-                <div *ngIf="isSubmitted && f.date_from.errors">
+                <div *ngIf="isControlInvalid('date_from')">
                   <p
                     *ngFor="let error of getFieldErrorMessages('date_from')"
                     id="datefrom-error"
@@ -172,19 +178,23 @@
                     type="text"
                     class="ds_input ds_input--fixed-10"
                     (change)="setInputValue($any($event).target.value, 'date_from')"
-                    [ngClass]="{ 'govuk-input--error': isSubmitted && f.date_from.errors }"
+                    [class.govuk-input--error]="isControlInvalid('date_from')"
                   />
                 </div>
               </div>
             </div>
 
-            <div class="govuk-form-group govuk-details__text input-group-indent-1">
+            <div
+              class="govuk-form-group input-group-indent-1"
+              [class.govuk-details__text]="!isControlInvalid('date_to')"
+              [class.govuk-form-group--error]="isControlInvalid('date_to')"
+            >
               <div data-module="ds-datepicker" class="ds_datepicker">
                 <label class="ds_label" for="range-date-to">To</label>
                 <p class="ds_hint-text">For example, 31/01/2023.</p>
 
                 <!-- Error message date range date_to -->
-                <div *ngIf="isSubmitted && f.date_to.errors">
+                <div *ngIf="isControlInvalid('date_to')">
                   <p
                     *ngFor="let error of getFieldErrorMessages('date_to')"
                     id="datefrom-error"
@@ -202,7 +212,7 @@
                     type="text"
                     class="ds_input ds_input--fixed-10"
                     (change)="setInputValue($any($event).target.value, 'date_to')"
-                    [ngClass]="{ 'govuk-input--error': isSubmitted && f.date_to.errors }"
+                    [class.govuk-input--error]="isControlInvalid('date_to')"
                   />
                 </div>
               </div>
