@@ -48,7 +48,7 @@ const FieldErrors: { [key: string]: { [key: string]: string } } = {
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, NgIf, ResultsComponent, NgClass, NgFor, CourthouseComponent],
+  imports: [CommonModule, ReactiveFormsModule, ResultsComponent, CourthouseComponent],
 })
 export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
   @ViewChild(CourthouseComponent) courthouseComponent!: CourthouseComponent;
