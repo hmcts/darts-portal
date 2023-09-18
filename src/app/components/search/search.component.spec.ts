@@ -10,20 +10,12 @@ import { CaseService } from '../../services/case/case.service';
 import { HttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
 import { CourthouseComponent } from '../common/courthouse/courthouse.component';
-import { Component } from '@angular/core';
+import { CourthouseData } from 'src/app/types/courthouse';
 
 // Mock the initAll function
 jest.mock('@scottish-government/pattern-library/src/all', () => ({
   initAll: jest.fn(),
 }));
-
-// Stub Courthouse field component
-@Component({
-  selector: 'app-courthouse-field',
-  template: `<input id="courthouse" name="courthouse" type="text" />`,
-  standalone: true,
-})
-class CourthouseStubComponent {}
 
 describe('SearchComponent', () => {
   const fakeAppInsightsService = {};
@@ -32,6 +24,12 @@ describe('SearchComponent', () => {
   let fixture: ComponentFixture<SearchComponent>;
   let caseService: CaseService;
 
+  const courts = [
+    { courthouse_name: 'Reading', id: 0, created_date_time: 'mock' },
+    { courthouse_name: 'Slough', id: 1, created_date_time: 'mock' },
+    { courthouse_name: 'Ascot', id: 2, created_date_time: 'mock' },
+  ] as CourthouseData[];
+
   beforeEach(() => {
     httpClientSpy = {
       get: jest.fn(),
@@ -39,17 +37,17 @@ describe('SearchComponent', () => {
 
     caseService = new CaseService(httpClientSpy);
     jest.spyOn(caseService, 'getCasesAdvanced').mockReturnValue(of([]));
+    jest.spyOn(caseService, 'getCourthouses').mockReturnValue(of(courts));
 
-    TestBed.overrideComponent(SearchComponent, {
-      add: {
-        imports: [CourthouseStubComponent],
-      },
-      remove: {
-        imports: [CourthouseComponent],
-      },
-    });
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, FormsModule, HttpClientModule, SearchComponent, ResultsComponent],
+      imports: [
+        ReactiveFormsModule,
+        FormsModule,
+        HttpClientModule,
+        SearchComponent,
+        ResultsComponent,
+        CourthouseComponent,
+      ],
       providers: [
         { provide: AppInsightsService, useValue: fakeAppInsightsService },
         { provide: CaseService, useValue: caseService },
@@ -78,15 +76,15 @@ describe('SearchComponent', () => {
 
       fixture.detectChanges();
 
-      const specificDateInput = fixture.debugElement.query(By.css('#specific-date'));
+      const specificDateInput = fixture.debugElement.query(By.css('#specific_date'));
       specificDateInput.triggerEventHandler('change', { target: { value: '23/08/2023' } });
       const el = specificDateInput.nativeElement;
 
       fixture.detectChanges();
-      component.setInputValue('23/08/2023', 'date_to');
+      component.setInputValue('23/08/2023', 'specific_date');
       expect(el.value).toEqual('23/08/2023');
       //With specific date picker, date_from and date_to should equal the same
-      expect(component.form.controls['date_to'].value).toEqual('23/08/2023');
+      expect(component.form.controls['specific_date'].value).toEqual('23/08/2023');
     });
 
     it('should assign the value from the range date picker in the date_to input to the input box, for Angular change detection', async () => {
@@ -102,7 +100,7 @@ describe('SearchComponent', () => {
 
       fixture.detectChanges();
 
-      const rangeDateInput = fixture.debugElement.query(By.css('#range-date-to'));
+      const rangeDateInput = fixture.debugElement.query(By.css('#date_to'));
       rangeDateInput.triggerEventHandler('change', { target: { value: '23/08/2023' } });
       const el = rangeDateInput.nativeElement;
 
@@ -151,39 +149,41 @@ describe('SearchComponent', () => {
       jest.spyOn(component, 'onSubmit');
 
       component.form.controls['case_number'].setValue('1');
-      const ch = fixture.debugElement.query(By.css('input[name="courthouse"]'));
-      ch.nativeElement.value = 'Reading';
-      ch.nativeElement.dispatchEvent(new Event('input'));
+      component.form.controls['courthouse'].setValue('Reading');
       component.form.controls['courtroom'].setValue('2');
       component.form.controls['judge_name'].setValue('Judy');
       component.form.controls['defendant_name'].setValue('Dave');
-      component.form.controls['date_to'].setValue('18/09/2023');
-      component.form.controls['date_from'].setValue('19/09/2023');
+      component.form.controls['specific_date'].setValue('');
+      component.form.controls['date_to'].setValue('18/09/2022');
+      component.form.controls['date_from'].setValue('19/09/2022');
       component.form.controls['event_text_contains'].setValue('Keywords');
 
       //Check form control values
       expect(component.form.get('case_number')?.value).toBe('1');
-      expect(ch.nativeElement.value).toBe('Reading');
+      expect(component.form.get('courthouse')?.value).toBe('Reading');
       expect(component.form.get('courtroom')?.value).toBe('2');
       expect(component.form.get('judge_name')?.value).toBe('Judy');
       expect(component.form.get('defendant_name')?.value).toBe('Dave');
-      expect(component.form.get('date_to')?.value).toBe('18/09/2023');
-      expect(component.form.get('date_from')?.value).toBe('19/09/2023');
+      expect(component.form.get('date_to')?.value).toBe('18/09/2022');
+      expect(component.form.get('date_from')?.value).toBe('19/09/2022');
       expect(component.form.get('event_text_contains')?.value).toBe('Keywords');
 
       fixture.debugElement.query(By.css('form')).triggerEventHandler('ngSubmit', null);
       fixture.detectChanges();
 
       expect(caseService.getCasesAdvanced).toHaveBeenCalledTimes(1);
-      const params = (caseService.getCasesAdvanced as jest.Mock).mock.calls[0];
-      expect(params[0]).toBe('1');
-      expect(params[1]).toBe('Reading');
-      expect(params[2]).toBe('2');
-      expect(params[3]).toBe('Judy');
-      expect(params[4]).toBe('Dave');
-      expect(params[5]).toBe('19/09/2023');
-      expect(params[6]).toBe('18/09/2023');
-      expect(params[7]).toBe('Keywords');
+      const getCasesSpy = jest.spyOn(caseService, 'getCasesAdvanced');
+      expect(getCasesSpy).toBeCalledWith({
+        case_number: '1',
+        courthouse: 'Reading',
+        courtroom: '2',
+        specific_date: '',
+        date_from: '19/09/2022',
+        date_to: '18/09/2022',
+        defendant_name: 'Dave',
+        event_text_contains: 'Keywords',
+        judge_name: 'Judy',
+      });
 
       expect(component.onSubmit).toHaveBeenCalled();
     });
@@ -191,10 +191,9 @@ describe('SearchComponent', () => {
 
   describe('#clearSearch', () => {
     it('should clear search text and results', () => {
+      const courthouseComponentSpy = jest.spyOn(component.courthouseComponent, 'reset');
       component.form.controls['case_number'].setValue('1');
-      const ch = fixture.debugElement.query(By.css('input[name="courthouse"]'));
-      ch.nativeElement.value = 'Reading';
-      ch.nativeElement.dispatchEvent(new Event('input'));
+      component.form.controls['courthouse'].setValue('Reading');
       component.form.controls['courtroom'].setValue('2');
       component.form.controls['judge_name'].setValue('Judy');
       component.form.controls['defendant_name'].setValue('Dave');
@@ -205,7 +204,7 @@ describe('SearchComponent', () => {
       component.clearSearch();
 
       expect(component.form.get('case_number')?.value).toBeFalsy();
-      expect(ch.nativeElement.value).toBeFalsy();
+      expect(component.form.get('courthouse')?.value).toBeFalsy();
       expect(component.form.get('courtroom')?.value).toBeFalsy();
       expect(component.form.get('judge_name')?.value).toBeFalsy();
       expect(component.form.get('defendant_name')?.value).toBeFalsy();
@@ -213,6 +212,47 @@ describe('SearchComponent', () => {
       expect(component.form.get('date_from')?.value).toBeFalsy();
       expect(component.form.get('event_text_contains')?.value).toBeFalsy();
       expect(component.cases.length).toBe(0);
+      expect(courthouseComponentSpy).toHaveBeenCalled();
     });
+  });
+
+  it('should update error summary when form is invalid and submitted', () => {
+    component.form.markAllAsTouched();
+    component.isSubmitted = true;
+    component.form.updateValueAndValidity();
+
+    expect(component.errorSummary.length).toBeGreaterThan(0);
+  });
+
+  it('should set date_to as required when date_from has a value in range mode', () => {
+    component.dateInputType = 'range';
+
+    component.form.controls.date_from.setValue('2023-09-01');
+
+    expect(component.form.controls.date_to.hasError('required')).toBe(true);
+  });
+
+  it('should not set date_to as required when date_from is empty in range mode', () => {
+    component.dateInputType = 'range';
+
+    component.form.controls.date_from.setValue(null);
+
+    expect(component.form.controls.date_to.hasError('required')).toBe(false);
+  });
+
+  it('should set date_from as required when date_to has a value in range mode', () => {
+    component.dateInputType = 'range';
+
+    component.form.controls.date_to.setValue('2023-09-10');
+
+    expect(component.form.controls.date_from.hasError('required')).toBe(true);
+  });
+
+  it('should not set date_from as required when date_to is empty in range mode', () => {
+    component.dateInputType = 'range';
+
+    component.form.controls.date_to.setValue(null);
+
+    expect(component.form.controls.date_from.hasError('required')).toBe(false);
   });
 });
