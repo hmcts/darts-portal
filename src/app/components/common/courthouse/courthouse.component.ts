@@ -1,9 +1,7 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { CourthouseData } from 'src/app/types/courthouse';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, Output, ViewChild } from '@angular/core';
 import { NgIf } from '@angular/common';
-import { CaseService } from '../../../services/case/case.service';
 import accessibleAutocomplete, { AccessibleAutocompleteProps } from 'accessible-autocomplete';
-import { CourthouseData } from '../../../../app/types/courthouse';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-courthouse-field',
@@ -12,43 +10,44 @@ import { HttpErrorResponse } from '@angular/common/http';
   templateUrl: './courthouse.component.html',
   styleUrls: ['./courthouse.component.scss'],
 })
-export class CourthouseComponent implements OnInit {
-  @ViewChild('courthouseAutocomplete', { static: false }) autocomplete!: ElementRef<HTMLElement>;
-  loaded = false;
-  loadError = false;
-  courthouses: CourthouseData[] = [];
+export class CourthouseComponent implements AfterViewInit, OnChanges {
+  @ViewChild('courthouseAutocomplete') autocompleteContainer!: ElementRef<HTMLElement>;
+
+  @Input() courthouses: CourthouseData[] = [];
+  @Input() isInvalid = false;
+  @Output() courthouseSelect = new EventEmitter<string>();
 
   props: AccessibleAutocompleteProps = {
     id: 'courthouse',
     source: [],
     minLength: 1,
     name: 'courthouse',
+    onConfirm: () => {
+      // have to grab input value like this due to onConfirm(courthouse) emitting undefined onBlur
+      const inputValue = (document.querySelector('input[name=courthouse]') as HTMLInputElement).value;
+      this.courthouseSelect.emit(inputValue);
+    },
   };
 
-  constructor(private caseService: CaseService) {}
-
-  getCourthouses() {
-    this.caseService.getCourthouses().subscribe({
-      next: (result: CourthouseData[]) => {
-        if (result) {
-          this.courthouses = result;
-          // populate autocomplete once returned
-          this.props.element = this.autocomplete.nativeElement as HTMLElement;
-          this.props.source = this.courthouses.map((ch) => ch.courthouse_name);
-          accessibleAutocomplete(this.props);
-          this.loaded = true;
-        }
-      },
-      error: (error: HttpErrorResponse) => {
-        if (error.error) {
-          this.loaded = true;
-          this.loadError = true;
-        }
-      },
-    });
+  ngOnChanges(): void {
+    if (document.querySelector('input[name=courthouse]')) {
+      if (this.isInvalid) {
+        (document.querySelector('input[name=courthouse]') as HTMLInputElement).style.borderColor = '#d4351c';
+      } else {
+        (document.querySelector('input[name=courthouse]') as HTMLInputElement).style.borderColor = '';
+      }
+    }
   }
 
-  ngOnInit(): void {
-    this.getCourthouses();
+  reset() {
+    (document.querySelector('input[name=courthouse]') as HTMLInputElement).value = '';
+  }
+
+  ngAfterViewInit(): void {
+    if (this.courthouses.length) {
+      this.props.element = this.autocompleteContainer.nativeElement as HTMLElement;
+      this.props.source = this.courthouses.map((ch) => ch.courthouse_name);
+      accessibleAutocomplete(this.props);
+    }
   }
 }
