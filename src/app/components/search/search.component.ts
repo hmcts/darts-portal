@@ -214,14 +214,19 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     // If date_from has value then date_to is required
     this.subs.push(
-      dateFromControl.valueChanges.subscribe((value) => {
-        if (value) {
+      dateFromControl.valueChanges.subscribe((dateFromValue) => {
+        if (dateFromValue) {
           dateToControl.setValidators([Validators.required, ...this.dateValidators]);
           dateFromControl.setValidators(this.dateValidators);
-          dateFromControl.updateValueAndValidity({ onlySelf: true, emitEvent: false });
         } else {
           dateToControl.clearValidators();
         }
+
+        if (dateToControl.value) {
+          dateFromControl.setValidators([Validators.required, ...this.dateValidators]);
+        }
+
+        dateFromControl.updateValueAndValidity({ onlySelf: true, emitEvent: false });
         dateToControl.updateValueAndValidity({ onlySelf: true, emitEvent: false });
       })
     );
@@ -232,10 +237,15 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
         if (value) {
           dateFromControl.setValidators([Validators.required, ...this.dateValidators]);
           dateToControl.setValidators(this.dateValidators);
-          dateToControl.updateValueAndValidity({ onlySelf: true, emitEvent: false });
         } else {
           dateFromControl.clearValidators();
         }
+
+        if (dateFromControl.value) {
+          dateToControl.setValidators([Validators.required, ...this.dateValidators]);
+        }
+
+        dateToControl.updateValueAndValidity({ onlySelf: true, emitEvent: false });
         dateFromControl.updateValueAndValidity({ onlySelf: true, emitEvent: false });
       })
     );

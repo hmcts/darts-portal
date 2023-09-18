@@ -267,4 +267,7 @@
   </div>
 </form>
 
+<pre>{{ form.value | json }}</pre>
+<pre>{{ form.get('date_from')?.valid }}</pre>
+
 <app-results [cases]="cases" [loaded]="loaded" [errorType]="errorType"> </app-results>
