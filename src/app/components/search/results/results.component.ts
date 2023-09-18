@@ -66,10 +66,6 @@ export class ResultsComponent implements OnChanges {
     return this.isAscSorting(column) ? a.localeCompare(b) : b.localeCompare(a);
   }
 
-  compareNumbers(column: SortableColumn, a: number, b: number): number {
-    return this.isAscSorting(column) ? a - b : b - a;
-  }
-
   isDescSorting(column: SortableColumn): boolean {
     return this.sorting.column === column && this.sorting.order === 'desc';
   }
