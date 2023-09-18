@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { SearchComponent } from './search.component';
+import { ErrorSummaryEntry, SearchComponent } from './search.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AppInsightsService } from '../../services/app-insights/app-insights.service';
@@ -254,5 +254,40 @@ describe('SearchComponent', () => {
     component.form.controls.date_to.setValue(null);
 
     expect(component.form.controls.date_from.hasError('required')).toBe(false);
+  });
+
+  it('should generate error summary correctly', () => {
+    component.form.controls.courthouse.setErrors({ required: true });
+    component.form.controls.courtroom.setErrors({ required: true });
+
+    const errorSummary: ErrorSummaryEntry[] = component.generateErrorSummary();
+
+    expect(errorSummary).toEqual([
+      { fieldId: 'courthouse', message: 'You must enter a courthouse, if courtroom is filled.' },
+      {
+        fieldId: 'courtroom',
+        message:
+          'The courtroom number you have entered is not a recognised number for this courthouse. Check and try again',
+      },
+    ]);
+  });
+
+  it('should get field error messages correctly', () => {
+    const fieldName = 'courthouse';
+
+    component.form.controls[fieldName].setErrors({ required: true });
+
+    const errorMessages: string[] = component.getFieldErrorMessages(fieldName);
+
+    expect(errorMessages).toEqual(['You must enter a courthouse, if courtroom is filled.']);
+  });
+
+  it('should handle courthouse selection correctly', () => {
+    const courthouse = 'Test Courthouse';
+    component.onCourthouseSelected(courthouse);
+
+    const courthouseControl = component.form.get('courthouse');
+    expect(courthouseControl?.value).toBe(courthouse);
+    expect(courthouseControl?.dirty).toBe(true);
   });
 });

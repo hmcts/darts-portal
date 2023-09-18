@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
 import { futureDateValidator } from 'src/app/validators/future-date.validator';
 import { SearchFormValues } from 'src/app/types/search-form.interface';
 
-interface ErrorSummaryEntry {
+export interface ErrorSummaryEntry {
   fieldId: string;
   message: string;
 }
@@ -178,7 +178,7 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
     return Object.keys(errors).map((errorType) => FieldErrors[fieldName][errorType]);
   }
 
-  private generateErrorSummary(): ErrorSummaryEntry[] {
+  generateErrorSummary(): ErrorSummaryEntry[] {
     const formControls = this.f;
     return Object.keys(formControls)
       .filter((fieldId) => formControls[fieldId].errors)
