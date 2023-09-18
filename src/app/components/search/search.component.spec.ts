@@ -258,18 +258,10 @@ describe('SearchComponent', () => {
 
   it('should generate error summary correctly', () => {
     component.form.controls.courthouse.setErrors({ required: true });
-    component.form.controls.courtroom.setErrors({ required: true });
 
     const errorSummary: ErrorSummaryEntry[] = component.generateErrorSummary();
 
-    expect(errorSummary).toEqual([
-      { fieldId: 'courthouse', message: 'You must enter a courthouse, if courtroom is filled.' },
-      {
-        fieldId: 'courtroom',
-        message:
-          'The courtroom number you have entered is not a recognised number for this courthouse. Check and try again',
-      },
-    ]);
+    expect(errorSummary).toEqual([{ fieldId: 'courthouse', message: 'You must also enter a courthouse' }]);
   });
 
   it('should get field error messages correctly', () => {
@@ -279,7 +271,7 @@ describe('SearchComponent', () => {
 
     const errorMessages: string[] = component.getFieldErrorMessages(fieldName);
 
-    expect(errorMessages).toEqual(['You must enter a courthouse, if courtroom is filled.']);
+    expect(errorMessages).toEqual(['You must also enter a courthouse']);
   });
 
   it('should handle courthouse selection correctly', () => {
