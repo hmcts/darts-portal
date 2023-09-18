@@ -49,13 +49,11 @@ export class ResultsComponent implements OnChanges {
     };
 
     this.cases.sort((a, b) => {
-      const valueA: string | number | undefined = a[column];
-      const valueB: string | number | undefined = b[column];
+      const valueA: string | undefined = a[column];
+      const valueB: string | undefined = b[column];
 
       if (typeof valueA === 'string' && typeof valueB === 'string') {
         return this.compareStrings(column, valueA, valueB);
-      } else if (typeof valueA === 'number' && typeof valueB === 'number') {
-        return this.compareNumbers(column, valueA, valueB);
       } else {
         return 0;
       }
