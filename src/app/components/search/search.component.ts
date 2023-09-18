@@ -78,10 +78,14 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
   });
 
   ngOnInit() {
+    // Set validation based on values entered in the form
+
+    // [DMP-691] AC 2 - Listening for when courtroom has value, if so, then courthouse is required
     this.subs.push(
       this.form.controls.courtroom.valueChanges.subscribe((courtroom) => this.setCourthouseValidators(courtroom))
     );
 
+    // Listen to form value changes, if the form is invalid and submitted, generate error summary
     this.subs.push(
       this.form.valueChanges.subscribe(() => {
         if (this.form.invalid && this.isSubmitted) {
@@ -92,7 +96,12 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
       })
     );
 
+    // [DMP-691] AC3 & AC6 - Add date validators if specific_date field has value
+    // Validators: required, future & pattern
     this.setSpecificDateValidators();
+
+    // [DMP-691] AC3, AC4, AC5, AC6 - Add date range validators if either date_from or date_to field has a value.
+    // Validators: required, future & pattern
     this.setDateRangeValidators();
   }
 
