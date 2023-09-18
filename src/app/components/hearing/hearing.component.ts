@@ -5,6 +5,8 @@ import { combineLatest } from 'rxjs';
 import { CaseService } from 'src/app/services/case/case.service';
 import { HearingService } from 'src/app/services/hearing/hearing.service';
 import { HearingAudioEventViewModel } from 'src/app/types/hearing-audio-event';
+import { HearingPageState } from 'src/app/types/hearing-state';
+import { requestPlaybackAudioDTO } from 'src/app/types/requestPlaybackAudioDTO';
 import { EventsAndAudioComponent } from './events-and-audio/events-and-audio.component';
 import { HearingFileComponent } from './hearing-file/hearing-file.component';
 import { RequestPlaybackAudioComponent } from './request-playback-audio/request-playback-audio.component';
@@ -21,6 +23,8 @@ export class HearingComponent {
   private caseService = inject(CaseService);
   hearingService = inject(HearingService);
   requestAudioTimes: Map<string, Date> | undefined;
+  state: HearingPageState = 'Default';
+  requestObject!: requestPlaybackAudioDTO;
 
   hearingId = this.route.snapshot.params.hearing_id;
   caseId = this.route.snapshot.params.caseId;
@@ -60,5 +64,11 @@ export class HearingComponent {
     } else {
       this.requestAudioTimes = undefined;
     }
+  }
+
+  onAudioRequest(requestObject: requestPlaybackAudioDTO) {
+    this.requestObject = requestObject;
+    console.log(this.requestObject);
+    this.state = 'OrderSummary';
   }
 }

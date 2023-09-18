@@ -1,15 +1,70 @@
 <ng-container *ngIf="data$ | async as vm; else loading">
-  <app-hearing-file [case]="vm.case" [hearing]="vm.hearing"></app-hearing-file>
-  <h2 id="events-audio-heading" class="govuk-heading-m">Events and audio recordings</h2>
-  <app-request-playback-audio
-    [hearing]="vm.hearing!"
-    [requestAudioTimes]="requestAudioTimes"
-  ></app-request-playback-audio>
-  <app-events-and-audio
-    [audio]="vm.audios"
-    [events]="vm.events"
-    (eventsSelect)="onEventsSelected($event)"
-  ></app-events-and-audio>
+  <div [hidden]="state !== 'Default'">
+    <app-hearing-file [case]="vm.case" [hearing]="vm.hearing"></app-hearing-file>
+    <h2 id="events-audio-heading" class="govuk-heading-m">Events and audio recordings</h2>
+    <app-request-playback-audio
+      [hearing]="vm.hearing!"
+      [requestAudioTimes]="requestAudioTimes"
+      (audioRequest)="onAudioRequest($event)"
+    ></app-request-playback-audio>
+    <app-events-and-audio
+      [audio]="vm.audios"
+      [events]="vm.events"
+      (eventsSelect)="onEventsSelected($event)"
+    ></app-events-and-audio>
+  </div>
+  <div [hidden]="state !== 'OrderSummary'">
+    <a routerLink="./" (click)="state = 'Default'" class="govuk-back-link">Back</a>
+    <div *ngIf="vm.case.reporting_restriction" class="moj-banner" role="region" aria-label="information">
+      <svg
+        class="moj-banner__icon"
+        fill="currentColor"
+        role="presentation"
+        focusable="false"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 25 25"
+        height="25"
+        width="25"
+      >
+        <path
+          d="M13.7,18.5h-2.4v-2.4h2.4V18.5z M12.5,13.7c-0.7,0-1.2-0.5-1.2-1.2V7.7c0-0.7,0.5-1.2,1.2-1.2s1.2,0.5,1.2,1.2v4.8
+    C13.7,13.2,13.2,13.7,12.5,13.7z M12.5,0.5c-6.6,0-12,5.4-12,12s5.4,12,12,12s12-5.4,12-12S19.1,0.5,12.5,0.5z"
+        />
+      </svg>
+      <div class="moj-banner__message">
+        <h2 class="govuk-heading-m">Restriction:&nbsp;</h2>
+        <p class="govuk-body-m">{{ vm.case.reporting_restriction }}</p>
+      </div>
+    </div>
+    <div>
+      <h1 class="govuk-heading-l">Confirm your Order</h1>
+      <h2 class="govuk-heading-m">Case details</h2>
+      <h1 class="govuk-heading-s">Case ID</h1>
+      <h1 class="govuk-body">{{ vm.case.case_number }}</h1>
+      <h3 class="govuk-heading-s">Courthouse</h3>
+      <p class="govuk-body">{{ vm.case.courthouse }}</p>
+      <h3 class="govuk-heading-s">Defendant(s)</h3>
+      <p class="govuk-body">{{ vm.case.defendants }}</p>
+      <h2 class="govuk-heading-m">Audio details</h2>
+      <h1 class="govuk-heading-s">Hearing date</h1>
+      <h1 class="govuk-body">{{ vm.hearing?.date }}</h1>
+      <ng-container *ngIf="requestObject">
+        <h3 class="govuk-heading-s">Start Time</h3>
+        <p class="govuk-body">{{ requestObject.start_time | date : 'HH:mm:ss' : 'UTC' }}</p>
+        <h3 class="govuk-heading-s">End Time</h3>
+        <p class="govuk-body">{{ requestObject.end_time | date : 'HH:mm:ss' : 'UTC' }}</p>
+      </ng-container>
+      <div class="govuk-button-group">
+        <button class="govuk-button" data-module="govuk-button">Confirm</button>
+        <a href="#" (click)="state = 'Default'" class="govuk-link">Cancel</a>
+      </div>
+    </div>
+  </div>
+  <div [hidden]="state !== 'OrderConfirmation'">
+    <div>
+      <h1>ORDER Confirmation</h1>
+    </div>
+  </div>
 </ng-container>
 
 <ng-template #loading>Loading...</ng-template>
