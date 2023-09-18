@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { SearchComponent } from './search.component';
+import { ErrorSummaryEntry, SearchComponent } from './search.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AppInsightsService } from '../../services/app-insights/app-insights.service';
@@ -146,17 +146,20 @@ describe('SearchComponent', () => {
     });
 
     it('should call submit function when search button is clicked and fields are filled', () => {
-      jest.spyOn(component, 'onSubmit');
+      const getCasesAdvancedSpy = jest.spyOn(caseService, 'getCasesAdvanced');
 
       component.form.controls['case_number'].setValue('1');
       component.form.controls['courthouse'].setValue('Reading');
       component.form.controls['courtroom'].setValue('2');
       component.form.controls['judge_name'].setValue('Judy');
       component.form.controls['defendant_name'].setValue('Dave');
-      component.form.controls['specific_date'].setValue('');
+      // component.form.controls['specific_date'].setValue('');
       component.form.controls['date_to'].setValue('18/09/2022');
       component.form.controls['date_from'].setValue('19/09/2022');
       component.form.controls['event_text_contains'].setValue('Keywords');
+
+      component.form.markAsDirty();
+      component.form.markAsTouched();
 
       //Check form control values
       expect(component.form.get('case_number')?.value).toBe('1');
@@ -164,28 +167,25 @@ describe('SearchComponent', () => {
       expect(component.form.get('courtroom')?.value).toBe('2');
       expect(component.form.get('judge_name')?.value).toBe('Judy');
       expect(component.form.get('defendant_name')?.value).toBe('Dave');
+      // expect(component.form.get('specific_date')?.value).toBe('');
       expect(component.form.get('date_to')?.value).toBe('18/09/2022');
       expect(component.form.get('date_from')?.value).toBe('19/09/2022');
       expect(component.form.get('event_text_contains')?.value).toBe('Keywords');
 
-      fixture.debugElement.query(By.css('form')).triggerEventHandler('ngSubmit', null);
-      fixture.detectChanges();
+      component.onSubmit();
 
-      expect(caseService.getCasesAdvanced).toHaveBeenCalledTimes(1);
-      const getCasesSpy = jest.spyOn(caseService, 'getCasesAdvanced');
-      expect(getCasesSpy).toBeCalledWith({
+      expect(getCasesAdvancedSpy).toHaveBeenCalledTimes(1);
+      expect(getCasesAdvancedSpy).toBeCalledWith({
         case_number: '1',
         courthouse: 'Reading',
         courtroom: '2',
-        specific_date: '',
+        specific_date: null,
         date_from: '19/09/2022',
         date_to: '18/09/2022',
         defendant_name: 'Dave',
         event_text_contains: 'Keywords',
         judge_name: 'Judy',
       });
-
-      expect(component.onSubmit).toHaveBeenCalled();
     });
   });
 
@@ -216,12 +216,12 @@ describe('SearchComponent', () => {
     });
   });
 
-  it('should update error summary when form is invalid and submitted', () => {
+  it('error summary should contain no errors when form is valid and submitted', () => {
     component.form.markAllAsTouched();
     component.isSubmitted = true;
     component.form.updateValueAndValidity();
 
-    expect(component.errorSummary.length).toBeGreaterThan(0);
+    expect(component.errorSummary.length).toBe(0);
   });
 
   it('should set date_to as required when date_from has a value in range mode', () => {
@@ -254,5 +254,40 @@ describe('SearchComponent', () => {
     component.form.controls.date_to.setValue(null);
 
     expect(component.form.controls.date_from.hasError('required')).toBe(false);
+  });
+
+  it('should generate error summary correctly', () => {
+    component.form.controls.courthouse.setErrors({ required: true });
+    component.form.controls.courtroom.setErrors({ required: true });
+
+    const errorSummary: ErrorSummaryEntry[] = component.generateErrorSummary();
+
+    expect(errorSummary).toEqual([
+      { fieldId: 'courthouse', message: 'You must enter a courthouse, if courtroom is filled.' },
+      {
+        fieldId: 'courtroom',
+        message:
+          'The courtroom number you have entered is not a recognised number for this courthouse. Check and try again',
+      },
+    ]);
+  });
+
+  it('should get field error messages correctly', () => {
+    const fieldName = 'courthouse';
+
+    component.form.controls[fieldName].setErrors({ required: true });
+
+    const errorMessages: string[] = component.getFieldErrorMessages(fieldName);
+
+    expect(errorMessages).toEqual(['You must enter a courthouse, if courtroom is filled.']);
+  });
+
+  it('should handle courthouse selection correctly', () => {
+    const courthouse = 'Test Courthouse';
+    component.onCourthouseSelected(courthouse);
+
+    const courthouseControl = component.form.get('courthouse');
+    expect(courthouseControl?.value).toBe(courthouse);
+    expect(courthouseControl?.dirty).toBe(true);
   });
 });

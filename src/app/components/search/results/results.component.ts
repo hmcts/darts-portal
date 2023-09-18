@@ -115,6 +115,15 @@ export class ResultsComponent implements OnChanges {
     }
   }
 
+  isErrorHandledInTemplate() {
+    return (
+      this.errorType !== 'CASE_100' &&
+      this.errorType !== 'CASE_101' &&
+      this.errorType !== 'CASE_102' &&
+      this.errorType !== 'ok'
+    );
+  }
+
   private getDateFormat(d: string): string {
     return DateTimeService.getdddDMMMYYYY(d);
   }

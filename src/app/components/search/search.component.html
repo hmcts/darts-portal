@@ -44,6 +44,11 @@
       <span class="govuk-details__summary-text"> Advanced search </span>
     </summary>
     <div class="govuk-form-group govuk-details__text">
+      <div *ngIf="isControlInvalid('courthouse')">
+        <p *ngFor="let error of getFieldErrorMessages('courthouse')" id="courthouse-error" class="govuk-error-message">
+          <span class="govuk-visually-hidden">Error:</span> {{ error }}
+        </p>
+      </div>
       <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('courthouse')">
         <app-courthouse-field
           *ngIf="courthouses$ | async as courthouses"
@@ -51,15 +56,6 @@
           (courthouseSelect)="onCourthouseSelected($event)"
           [isInvalid]="isControlInvalid('courthouse')"
         ></app-courthouse-field>
-        <div *ngIf="isControlInvalid('courthouse')">
-          <p
-            *ngFor="let error of getFieldErrorMessages('courthouse')"
-            id="courthouse-error"
-            class="govuk-error-message"
-          >
-            <span class="govuk-visually-hidden">Error:</span> {{ error }}
-          </p>
-        </div>
       </div>
 
       <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('courthouse')">
