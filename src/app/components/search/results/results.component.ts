@@ -9,7 +9,7 @@ export interface SortingInterface {
   order: 'asc' | 'desc';
 }
 
-export type SortableColumn = 'case_id' | 'courthouse';
+export type SortableColumn = 'case_number' | 'courthouse';
 
 @Component({
   selector: 'app-results',
