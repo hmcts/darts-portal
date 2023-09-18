@@ -1,5 +1,6 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import moment from 'moment';
 
 import { RequestPlaybackAudioComponent } from './request-playback-audio.component';
 
@@ -23,8 +24,8 @@ describe('RequestPlaybackAudioComponent', () => {
   describe('#setTimes', () => {
     it('should set the times for the input form', () => {
       const requestAudioTimes = new Map<string, Date>([
-        ['startDateTime', new Date('2023-07-31T02:00:00.620Z')],
-        ['endDateTime', new Date('2023-07-31T15:32:24.620Z')],
+        ['startDateTime', moment('2023-07-31T02:00:00.620').toDate()],
+        ['endDateTime', moment('2023-07-31T15:32:24.620').toDate()],
       ]);
       const expectedResult = {
         startTime: { hours: '02', minutes: '00', seconds: '00' },
@@ -41,8 +42,8 @@ describe('RequestPlaybackAudioComponent', () => {
   describe('#ngOnChanges', () =>
     it('should call setTimes if requestAudioTimes has been set', () => {
       const requestAudioTimes = new Map<string, Date>([
-        ['startDateTime', new Date('2023-07-31T01:00:00.620Z')],
-        ['endDateTime', new Date('2023-07-31T14:32:24.620Z')],
+        ['startDateTime', moment('2023-07-31T02:00:00.620').toDate()],
+        ['endDateTime', moment('2023-07-31T15:32:24.620').toDate()],
       ]);
       const setTimesSpy = jest.spyOn(component, 'setTimes');
       component.ngOnChanges({ requestAudioTimes: new SimpleChange(null, requestAudioTimes, false) });
