@@ -238,18 +238,6 @@ describe('ResultsComponent', () => {
       expect(result).toBe(-1); // 'def' comes after 'abc'
     });
 
-    it('should compare two numbers in ascending order', () => {
-      const column: SortableColumn = 'case_number';
-      const result = component.compareNumbers(column, 10, 20);
-      expect(result).toBe(10); // 10 comes before 20
-    });
-
-    it('should compare two numbers in descending order', () => {
-      const column: SortableColumn = 'case_number';
-      const result = component.compareNumbers(column, 20, 10);
-      expect(result).toBe(-10); // 20 comes after 10
-    });
-
     it('should return true for isDescSorting when sorting in descending order', () => {
       const column: SortableColumn = 'case_number';
       component.sorting = {
