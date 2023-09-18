@@ -68,7 +68,6 @@ export class HearingComponent {
 
   onAudioRequest(requestObject: requestPlaybackAudioDTO) {
     this.requestObject = requestObject;
-    console.log(this.requestObject);
     this.state = 'OrderSummary';
   }
 }
