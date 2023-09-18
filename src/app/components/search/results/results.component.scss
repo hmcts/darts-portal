@@ -32,3 +32,39 @@
   left: 7px;
   padding-left: 1px;
 }
+
+[aria-sort] button {
+  color: #1d70b8;
+}
+
+[aria-sort='none'] button:before {
+  content: ' ▼';
+  position: absolute;
+  right: -1px;
+  top: 9px;
+  font-size: 0.5em;
+}
+
+[aria-sort='none'] button:after {
+  content: ' ▲';
+  position: absolute;
+  right: -1px;
+  top: 1px;
+  font-size: 0.5em;
+}
+
+[aria-sort='descending'] button:after {
+  content: ' ▼';
+  font-size: 0.8em;
+  position: absolute;
+  right: -5px;
+  top: 2px;
+}
+
+[aria-sort='ascending'] button:after {
+  content: ' ▲';
+  font-size: 0.8em;
+  position: absolute;
+  right: -5px;
+  top: 2px;
+}
