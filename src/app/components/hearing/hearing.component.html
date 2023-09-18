@@ -14,7 +14,7 @@
     ></app-events-and-audio>
   </div>
   <div [hidden]="state !== 'OrderSummary'">
-    <a routerLink="./" (click)="state = 'Default'" class="govuk-back-link">Back</a>
+    <a href="#" (click)="$event.preventDefault(); state = 'Default'" class="govuk-back-link">Back</a>
     <div *ngIf="vm.case.reporting_restriction" class="moj-banner" role="region" aria-label="information">
       <svg
         class="moj-banner__icon"
@@ -56,7 +56,7 @@
       </ng-container>
       <div class="govuk-button-group">
         <button class="govuk-button" data-module="govuk-button">Confirm</button>
-        <a href="#" (click)="state = 'Default'" class="govuk-link">Cancel</a>
+        <a href="#" (click)="$event.preventDefault(); state = 'Default'" class="govuk-link">Cancel</a>
       </div>
     </div>
   </div>
