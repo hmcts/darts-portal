@@ -4,6 +4,12 @@ import { RouterLink } from '@angular/router';
 import { CaseData } from '../../../../app/types/case';
 import { DateTimeService } from '../../../services/datetime/datetime.service';
 import { PaginationComponent } from '../../shared/pagination/pagination.component';
+export interface SortingInterface {
+  column: string;
+  order: 'asc' | 'desc';
+}
+
+export type SortableColumn = 'case_number' | 'courthouse';
 
 @Component({
   selector: 'app-results',
@@ -21,6 +27,11 @@ export class ResultsComponent implements OnChanges {
   currentPage = 1;
   pageLimit = 25;
 
+  sorting: SortingInterface = {
+    column: '',
+    order: 'asc',
+  };
+
   ngOnChanges(): void {
     this.currentPage = 1;
     this.updatePagedCases();
@@ -29,6 +40,45 @@ export class ResultsComponent implements OnChanges {
   onPageChanged(page: number): void {
     this.currentPage = page;
     this.updatePagedCases();
+  }
+
+  sortTable(column: SortableColumn): void {
+    this.sorting = {
+      column: column,
+      order: this.isDescSorting(column) ? 'asc' : 'desc',
+    };
+
+    this.cases.sort((a, b) => {
+      const valueA: string | undefined = a[column];
+      const valueB: string | undefined = b[column];
+
+      if (typeof valueA === 'string' && typeof valueB === 'string') {
+        return this.compareStrings(column, valueA, valueB);
+      } else {
+        return 0;
+      }
+    });
+
+    this.updatePagedCases();
+  }
+
+  compareStrings(column: SortableColumn, a: string, b: string): number {
+    return this.isAscSorting(column) ? a.localeCompare(b) : b.localeCompare(a);
+  }
+
+  isDescSorting(column: SortableColumn): boolean {
+    return this.sorting.column === column && this.sorting.order === 'desc';
+  }
+
+  isAscSorting(column: SortableColumn): boolean {
+    return this.sorting.column === column && this.sorting.order === 'asc';
+  }
+
+  getAriaSort(column: SortableColumn): 'ascending' | 'descending' | 'none' {
+    if (this.sorting.column === column) {
+      return this.isAscSorting(column) ? 'ascending' : 'descending';
+    }
+    return 'none';
   }
 
   //Fetches correct display value for defendants and judges

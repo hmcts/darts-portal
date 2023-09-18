@@ -31,8 +31,12 @@
       </caption>
       <thead class="govuk-table__head">
         <tr class="govuk-table__row">
-          <th scope="col" class="govuk-table__header">Case ID</th>
-          <th scope="col" class="govuk-table__header">Courthouse</th>
+          <th scope="col" class="govuk-table__header" [attr.aria-sort]="getAriaSort('case_number')">
+            <button type="button" (click)="sortTable('case_number')">Case ID</button>
+          </th>
+          <th scope="col" class="govuk-table__header" [attr.aria-sort]="getAriaSort('courthouse')">
+            <button type="button" (click)="sortTable('courthouse')">Courthouse</button>
+          </th>
           <th scope="col" class="govuk-table__header">Courtroom</th>
           <th scope="col" class="govuk-table__header">Judge(s)</th>
           <th scope="col" class="govuk-table__header">Defendant(s)</th>
