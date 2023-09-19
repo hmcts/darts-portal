@@ -16,6 +16,8 @@ app.get('/', (req, res) => res.send('Welcome to the DARTS API stub'));
 
 // stub out external user authentication
 app.use('/external-user', require('./authentication/external'));
+// stub out internal user authentication
+app.use('/internal-user', require('./authentication/internal'));
 // stub out courthouses api
 app.use('/courthouses', require('./courthouses/courthouses'));
 // stub out certain case APIs

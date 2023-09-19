@@ -1,0 +1,39 @@
+const express = require('express');
+
+const router = express.Router();
+
+router.get('/login-or-refresh', (_, res) => {
+  res.header('Location', 'http://localhost:4551/internal-user/login');
+  res.status(302).send();
+});
+
+router.get('/login', (_, res) => {
+  res.render('internal-login');
+});
+
+router.post('/handle-oauth-code', (_, res) => {
+  //Objects which reflect express-session module
+  const permissions = [{ permissionId: 1, permissionName: 'local dev permissions' }];
+  const roles = [
+    {
+      roleId: 123,
+      roleName: 'local dev',
+      permissions: permissions,
+    },
+  ];
+  const userState = {
+    userId: 123,
+    userName: 'localdev01',
+    roles: roles,
+  };
+
+  //Token expires 2034-08-23
+  const securityToken = {
+    userState: userState,
+    accessToken:
+      'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJEYXZpZE1hbm4iLCJpYXQiOjE2OTI4NzQ5MzAsImV4cCI6MjAzOTk0MzczMCwiYXVkIjoiZGFydHMtbG9jYWwtZGV2Iiwic3ViIjoiZGFydHMtbG9jYWwtand0In0.6wJo9geKWacjA-FR67waVRsNuS6uP5X-JJRlTOpwGhI',
+  };
+  res.send(securityToken);
+});
+
+module.exports = router;

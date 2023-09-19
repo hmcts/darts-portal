@@ -21,13 +21,17 @@ export class LoginComponent {
 
   submit() {
     // preliminary code for internal vs external routing
-    // if (this.form.value['userType'] == 'external') {
-    if (this.form.get('userType')?.value === '') {
-      this.errors = true;
+
+    if (this.form.get('userType')?.value !== '') {
+      if (this.form.value['userType'] == 'external') {
+        this.errors = false;
+        this.window.location.href = '/auth/login';
+      } else {
+        this.errors = false;
+        this.window.location.href = '/auth/internal/login';
+      }
     } else {
-      this.errors = false;
-      this.window.location.href = '/auth/login';
+      this.errors = true;
     }
-    // }
   }
 }

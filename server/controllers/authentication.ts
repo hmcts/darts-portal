@@ -15,10 +15,17 @@ const EXTERNAL_USER_CALLBACK = `${config.get('darts-api.url')}/external-user/han
 const EXTERNAL_USER_RESET_PWD = `${config.get('darts-api.url')}/external-user/reset-password`;
 const EXTERNAL_USER_LOGOUT = `${config.get('darts-api.url')}/external-user/logout`;
 
-function getLogin(): (_: Request, res: Response, next: NextFunction) => Promise<void> {
+const INTERNAL_USER_LOGIN = `${config.get('darts-api.url')}/internal-user/login-or-refresh`;
+const INTERNAL_USER_CALLBACK = `${config.get('darts-api.url')}/internal-user/handle-oauth-code`;
+
+function getLogin(type: 'internal' | 'external'): (_: Request, res: Response, next: NextFunction) => Promise<void> {
   return async (_: Request, res: Response, next: NextFunction) => {
     try {
-      const result = await axios(`${EXTERNAL_USER_LOGIN}?redirect_uri=${config.get('hostname')}/auth/callback`);
+      let url;
+      type == 'internal'
+        ? (url = `${INTERNAL_USER_LOGIN}?redirect_uri=${config.get('hostname')}/auth/internal/callback`)
+        : (url = `${EXTERNAL_USER_LOGIN}?redirect_uri=${config.get('hostname')}/auth/callback`);
+      const result = await axios(url);
       const loginRedirect = result.request.res.responseUrl;
       if (loginRedirect) {
         res.redirect(loginRedirect);
@@ -26,7 +33,7 @@ function getLogin(): (_: Request, res: Response, next: NextFunction) => Promise<
         next(new Error('Error trying to fetch login page'));
       }
     } catch (err) {
-      console.error('Error on get login-or-refresh call', err);
+      console.error(`Error on get ${type} login-or-refresh call`, err);
       next(err);
     }
   };
@@ -55,7 +62,9 @@ async function handleResetPassword(req: Request): Promise<string> {
   throw new Error(req.body);
 }
 
-function postAuthCallback(): (req: Request, res: Response, next: NextFunction) => Promise<void> {
+function postAuthCallback(
+  type: 'internal' | 'external'
+): (req: Request, res: Response, next: NextFunction) => Promise<void> {
   return async (req: Request, res: Response, next: NextFunction) => {
     console.log('postAuthCallback', req.body);
     if (req.body.error) {
@@ -68,7 +77,9 @@ function postAuthCallback(): (req: Request, res: Response, next: NextFunction) =
       }
     }
     try {
-      const result = await axios.post<SecurityToken>(EXTERNAL_USER_CALLBACK, req.body, {
+      let url;
+      type === 'internal' ? (url = INTERNAL_USER_CALLBACK) : (url = EXTERNAL_USER_CALLBACK);
+      const result = await axios.post<SecurityToken>(url, req.body, {
         headers: { 'content-type': 'application/x-www-form-urlencoded' },
       });
       const securityToken = result.data;
@@ -150,10 +161,13 @@ export function init(disableAuthentication = false): Router {
   const router = express.Router();
   router.use(bodyParser.json());
   router.use(bodyParser.urlencoded({ extended: false }));
-  router.get('/login', getLogin());
+  router.get('/internal/login', getLogin('internal'));
+  router.get('/internal/callback', getAuthCallback);
+  router.post('/internal/callback', postAuthCallback('internal'));
+  router.get('/login', getLogin('external'));
   // this is used when cancelling a password reset
   router.get('/callback', getAuthCallback);
-  router.post('/callback', postAuthCallback());
+  router.post('/callback', postAuthCallback('external'));
   router.get('/logout', getLogout());
   router.get('/logout-callback', logoutCallback());
   router.post('/logout-callback', logoutCallback());
