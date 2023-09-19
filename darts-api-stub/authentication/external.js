@@ -38,7 +38,7 @@ router.get('/logout', (_, res) => {
 });
 
 router.get('/login', (_, res) => {
-  res.render('external-login');
+  res.render('external-login', { callbackUrl: 'http://localhost:3000/auth/internal/callback' });
 });
 
 router.get('/handle-logout', (_, res) => {

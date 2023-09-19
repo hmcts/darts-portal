@@ -67,7 +67,6 @@ function postAuthCallback(
   type: 'internal' | 'external'
 ): (req: Request, res: Response, next: NextFunction) => Promise<void> {
   return async (req: Request, res: Response, next: NextFunction) => {
-    console.log('postAuthCallback', req.body);
     if (req.body.error) {
       try {
         const resetPwdRedirect = await handleResetPassword(req);

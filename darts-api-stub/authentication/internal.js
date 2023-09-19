@@ -8,7 +8,7 @@ router.get('/login-or-refresh', (_, res) => {
 });
 
 router.get('/login', (_, res) => {
-  res.render('internal-login');
+  res.render('external-login', {callbackUrl: 'http://localhost:3000/auth/internal/callback'});
 });
 
 router.post('/handle-oauth-code', (_, res) => {
