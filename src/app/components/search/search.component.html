@@ -44,11 +44,6 @@
       <span class="govuk-details__summary-text"> Advanced search </span>
     </summary>
     <div class="govuk-form-group govuk-details__text">
-      <div *ngIf="isControlInvalid('courthouse')">
-        <p *ngFor="let error of getFieldErrorMessages('courthouse')" id="courthouse-error" class="govuk-error-message">
-          <span class="govuk-visually-hidden">Error:</span> {{ error }}
-        </p>
-      </div>
       <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('courthouse')">
         <app-courthouse-field
           *ngIf="courthouses$ | async as courthouses"
@@ -261,8 +256,5 @@
     <a class="govuk-link" href="javascript:void(0)" (click)="clearSearch()">Clear search</a>
   </div>
 </form>
-
-<pre>{{ form.value | json }}</pre>
-<pre>{{ form.get('date_from')?.valid }}</pre>
 
 <app-results [cases]="cases" [loaded]="loaded" [errorType]="errorType"> </app-results>
