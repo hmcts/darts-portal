@@ -67,6 +67,7 @@ describe('RequestPlaybackAudioComponent', () => {
 
   describe('#onSubmit', () => {
     it('should create the request object when values are submitted', () => {
+      const audioRequestSpy = jest.spyOn(component.audioRequest, 'emit');
       component.hearing = {
         id: 1,
         date: '2023-09-01',
@@ -97,6 +98,7 @@ describe('RequestPlaybackAudioComponent', () => {
       component.audioRequestForm.setValue(audioRequestForm);
       component.onSubmit();
       expect(component.requestObj).toEqual(expectedResult);
+      expect(audioRequestSpy).toHaveBeenCalledWith(component.requestObj);
     });
   });
 });
