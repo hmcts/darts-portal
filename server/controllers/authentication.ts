@@ -78,8 +78,7 @@ function postAuthCallback(
       }
     }
     try {
-      let url;
-      type === 'internal' ? (url = INTERNAL_USER_CALLBACK) : (url = EXTERNAL_USER_CALLBACK);
+      const url = type === 'internal' ? INTERNAL_USER_CALLBACK) : EXTERNAL_USER_CALLBACK;
       const result = await axios.post<SecurityToken>(url, req.body, {
         headers: { 'content-type': 'application/x-www-form-urlencoded' },
       });
