@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HearingData } from 'src/app/types/hearing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { HearingData } from '@darts-types/index';
 import { HearingResultsComponent } from './hearing-results.component';
 
 describe('HearingResultsComponent', () => {

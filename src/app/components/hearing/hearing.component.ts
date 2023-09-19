@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { HearingAudioEventViewModel } from '@darts-types/hearing-audio-event';
+import { HearingPageState } from '@darts-types/hearing-state';
+import { requestPlaybackAudioDTO } from '@darts-types/requestPlaybackAudioDTO';
+import { CaseService } from '@services/case/case.service';
+import { HearingService } from '@services/hearing/hearing.service';
 import { combineLatest } from 'rxjs';
-import { CaseService } from 'src/app/services/case/case.service';
-import { HearingService } from 'src/app/services/hearing/hearing.service';
-import { HearingAudioEventViewModel } from 'src/app/types/hearing-audio-event';
-import { HearingPageState } from 'src/app/types/hearing-state';
-import { requestPlaybackAudioDTO } from 'src/app/types/requestPlaybackAudioDTO';
 import { EventsAndAudioComponent } from './events-and-audio/events-and-audio.component';
 import { HearingFileComponent } from './hearing-file/hearing-file.component';
 import { RequestPlaybackAudioComponent } from './request-playback-audio/request-playback-audio.component';

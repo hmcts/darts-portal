@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ResultsComponent, SortableColumn, SortingInterface } from './results.component';
-import { CaseData } from '../../../types/case';
-import { HearingData } from 'src/app/types/hearing';
+import { CaseData, HearingData } from '@darts-types/index';
 
 describe('ResultsComponent', () => {
   let component: ResultsComponent;
@@ -20,6 +19,7 @@ describe('ResultsComponent', () => {
           date: '2023-08-10',
           courtroom: '1',
           judges: ['Judge Judy'],
+          transcript_count: 0,
         },
       ],
     },
@@ -44,6 +44,7 @@ describe('ResultsComponent', () => {
           date: '2023-08-10',
           courtroom: '3',
           judges: ['Judge Judy'],
+          transcript_count: 0,
         },
       ],
     },
@@ -59,12 +60,14 @@ describe('ResultsComponent', () => {
           date: '2023-08-10',
           courtroom: '3',
           judges: ['Judge Judy'],
+          transcript_count: 0,
         },
         {
           id: 2,
           date: '2033-09-10',
           courtroom: '5',
           judges: ['Judge Judy'],
+          transcript_count: 0,
         },
       ],
     },

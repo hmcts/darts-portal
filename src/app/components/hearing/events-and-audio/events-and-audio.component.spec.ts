@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HearingAudio, HearingAudioEventViewModel, HearingEvent, HearingEventTypeEnum } from '@darts-types/index';
 import { Subscription } from 'rxjs';
-import { HearingEventTypeEnum } from 'src/app/types/enums';
-import { HearingAudio, HearingEvent, HearingAudioEventViewModel } from 'src/app/types/hearing-audio-event';
 import { EventsAndAudioComponent } from './events-and-audio.component';
 
 describe('EventsAndAudioComponent', () => {
@@ -88,42 +87,42 @@ describe('EventsAndAudioComponent', () => {
         media_start_timestamp: '2023-07-31T10:00:01.620Z',
         media_end_timestamp: '2023-07-31T14:32:24.620Z',
         timestamp: '2023-07-31T10:00:01.620Z',
-        type: 'audio',
+        type: HearingEventTypeEnum.Audio,
       },
       {
         id: 8,
         timestamp: '2023-07-31T10:00:02.620Z',
         name: 'Case called on',
         text: 'Record: New Case',
-        type: 'event',
+        type: HearingEventTypeEnum.Event,
       },
       {
         id: 9,
         timestamp: '2023-07-31T10:00:03.620Z',
         name: 'Case called on',
         text: 'Record: New Case',
-        type: 'event',
+        type: HearingEventTypeEnum.Event,
       },
       {
         id: 2,
         media_start_timestamp: '2023-07-31T10:00:04.620Z',
         media_end_timestamp: '2022-07-31T14:32:24.620Z',
         timestamp: '2023-07-31T10:00:04.620Z',
-        type: 'audio',
+        type: HearingEventTypeEnum.Audio,
       },
       {
         id: 3,
         media_start_timestamp: '2023-07-31T10:00:06.620Z',
         media_end_timestamp: '2023-07-31T14:32:24.620Z',
         timestamp: '2023-07-31T10:00:06.620Z',
-        type: 'audio',
+        type: HearingEventTypeEnum.Audio,
       },
       {
         id: 10,
         timestamp: '2023-07-31T10:00:07.620Z',
         name: 'Case called on',
         text: 'Record: New Case',
-        type: 'event',
+        type: HearingEventTypeEnum.Event,
       },
     ];
 
@@ -135,7 +134,7 @@ describe('EventsAndAudioComponent', () => {
       id: 1,
       media_start_timestamp: '2023-07-31T14:32:24.620Z',
       media_end_timestamp: '2023-07-31T14:32:24.620Z',
-      type: 'audio',
+      type: HearingEventTypeEnum.Audio,
     };
 
     component.toggleRowSelection(row);
@@ -152,7 +151,7 @@ describe('EventsAndAudioComponent', () => {
       id: 1,
       media_start_timestamp: '2023-07-31T14:32:24.620Z',
       media_end_timestamp: '2023-07-31T14:32:24.620Z',
-      type: 'audio',
+      type: HearingEventTypeEnum.Audio,
     };
 
     component.selectedRows.push(row);
@@ -169,13 +168,13 @@ describe('EventsAndAudioComponent', () => {
           timestamp: '2023-07-31T01:00:00.620Z',
           name: 'Case called on',
           text: 'Record: New Case',
-          type: 'event',
+          type: HearingEventTypeEnum.Event,
         },
         {
           id: 1,
           media_start_timestamp: '2023-07-31T02:32:24.620Z',
           media_end_timestamp: '2023-07-31T14:32:24.620Z',
-          type: 'audio',
+          type: HearingEventTypeEnum.Audio,
           timestamp: '2023-07-31T02:32:24.620Z',
         },
       ];

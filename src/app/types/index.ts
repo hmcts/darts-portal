@@ -4,3 +4,6 @@ export * from './hearing-audio-event';
 export * from './enums';
 export * from './courthouse';
 export * from './case-file';
+export * from './search-form.interface';
+export * from './requestPlaybackAudioDTO';
+export * from './hearing-state';

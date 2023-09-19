@@ -1,10 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { CaseData, CourthouseData, HearingData } from '@darts-types/index';
-import { SearchFormValues } from '@darts-types/search-form.interface';
+import { CaseData, CourthouseData, HearingData, SearchFormValues } from '@darts-types/index';
 import { of } from 'rxjs';
 import { Observable } from 'rxjs';
-import { catchError, map, of } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 export const GET_COURTHOUSES_PATH = '/api/courthouses';
 export const GET_CASE_PATH = '/api/cases';

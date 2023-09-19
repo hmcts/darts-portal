@@ -8,7 +8,10 @@
       "@common/*": ["src/app/components/common/*"],
       "@components/*": ["src/app/components/*"],
       "@darts-types/*": ["src/app/types/*"],
-      "@validators/*": ["src/app/validators/*"]
+      "@validators/*": ["src/app/validators/*"],
+      "@pipes/*": ["src/app/pipes/*"],
+      "@interceptors/*": ["src/app/interceptors/*"],
+      "@extensions/*": ["src/app/extensions/*"]
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,

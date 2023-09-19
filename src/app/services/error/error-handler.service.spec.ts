@@ -1,6 +1,6 @@
 import { Injector } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { AppInsightsService } from '../app-insights/app-insights.service';
+import { AppInsightsService } from '@services/app-insights/app-insights.service';
 import { ErrorHandlerService } from './error-handler.service';
 
 describe('ErrorHandlerService', () => {

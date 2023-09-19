@@ -9,11 +9,11 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { DateTimeService } from 'src/app/services/datetime/datetime.service';
-import { HearingData } from 'src/app/types/hearing';
-import { requestPlaybackAudioDTO } from 'src/app/types/requestPlaybackAudioDTO';
 import { TimeInputComponent } from './time-input/time-input.component';
 import * as moment from 'moment';
+import { HearingData } from '@darts-types/index';
+import { requestPlaybackAudioDTO } from '@darts-types/requestPlaybackAudioDTO';
+import { DateTimeService } from '@services/datetime/datetime.service';
 
 @Component({
   selector: 'app-request-playback-audio',

@@ -1,15 +1,15 @@
-import { CourthouseComponent } from './../common/courthouse/courthouse.component';
 import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { CaseService } from '../../services/case/case.service';
-import { CaseData } from '../../../app/types/case';
 import { ResultsComponent } from './results/results.component';
 import { initAll } from '@scottish-government/pattern-library/src/all';
 import { Subscription } from 'rxjs';
-import { futureDateValidator } from 'src/app/validators/future-date.validator';
-import { SearchFormValues } from 'src/app/types/search-form.interface';
+import { CourthouseComponent } from '@common/courthouse/courthouse.component';
+import { CaseData } from '@darts-types/case';
+import { CaseService } from '@services/case/case.service';
+import { SearchFormValues } from '@darts-types/search-form.interface';
+import { futureDateValidator } from '@validators/future-date.validator';
 
 export interface ErrorSummaryEntry {
   fieldId: string;

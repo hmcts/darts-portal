@@ -4,13 +4,13 @@ import { By } from '@angular/platform-browser';
 import { ErrorSummaryEntry, SearchComponent } from './search.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { AppInsightsService } from '../../services/app-insights/app-insights.service';
 import { ResultsComponent } from './results/results.component';
-import { CaseService } from '../../services/case/case.service';
 import { HttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
-import { CourthouseComponent } from '../common/courthouse/courthouse.component';
-import { CourthouseData } from 'src/app/types/courthouse';
+import { CaseService } from '@services/case/case.service';
+import { CourthouseComponent } from '@common/courthouse/courthouse.component';
+import { CourthouseData } from '@darts-types/courthouse';
+import { AppInsightsService } from '@services/app-insights/app-insights.service';
 
 // Mock the initAll function
 jest.mock('@scottish-government/pattern-library/src/all', () => ({

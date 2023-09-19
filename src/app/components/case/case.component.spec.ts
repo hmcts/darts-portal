@@ -1,10 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
+import { CaseData, HearingData } from '@darts-types/index';
+import { CaseService } from '@services/case/case.service';
 import { Observable, of } from 'rxjs';
-import { CaseService } from 'src/app/services/case/case.service';
-import { HearingData } from 'src/app/types/hearing';
 import { CaseComponent } from './case.component';
-import { CaseData } from 'src/app/types/case';
 
 describe('CaseComponent', () => {
   let component: CaseComponent;
