@@ -15,6 +15,8 @@ const EXTERNAL_USER_CALLBACK = `${config.get('darts-api.url')}/external-user/han
 const EXTERNAL_USER_RESET_PWD = `${config.get('darts-api.url')}/external-user/reset-password`;
 const EXTERNAL_USER_LOGOUT = `${config.get('darts-api.url')}/external-user/logout`;
 
+const INTERNAL_USER_LOGOUT = `${config.get('darts-api.url')}/internal-user/logout`;
+
 function getLogin(): (_: Request, res: Response, next: NextFunction) => Promise<void> {
   return async (_: Request, res: Response, next: NextFunction) => {
     try {
@@ -99,12 +101,16 @@ function getLogout(): (_: Request, res: Response, next: NextFunction) => Promise
         accessToken = req.session.securityToken.accessToken;
       }
 
-      const result = await axios(
-        `${EXTERNAL_USER_LOGOUT}?redirect_uri=${config.get('hostname')}/auth/logout-callback`,
-        {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        }
-      );
+      let logoutUrl: string;
+      if (req.session.userType === 'internal') {
+        logoutUrl = INTERNAL_USER_LOGOUT;
+      } else {
+        logoutUrl = EXTERNAL_USER_LOGOUT;
+      }
+
+      const result = await axios(`${logoutUrl}?redirect_uri=${config.get('hostname')}/auth/logout-callback`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
       const logoutRedirect = result.request.res.responseUrl;
       if (logoutRedirect) {
         res.redirect(logoutRedirect);
