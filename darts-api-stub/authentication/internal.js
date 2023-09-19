@@ -36,4 +36,14 @@ router.post('/handle-oauth-code', (_, res) => {
   res.send(securityToken);
 });
 
+router.get('/logout', (_, res) => {
+  //References external but there is no difference to internal for logout
+  res.header('Location', 'http://localhost:4551/external-user/handle-logout');
+  res.status(302).send();
+});
+
+router.get('/handle-logout', (_, res) => {
+  res.render('external-logout');
+});
+
 module.exports = router;

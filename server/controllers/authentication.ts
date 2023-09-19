@@ -19,7 +19,6 @@ const INTERNAL_USER_LOGIN = `${config.get('darts-api.url')}/internal-user/login-
 const INTERNAL_USER_LOGOUT = `${config.get('darts-api.url')}/internal-user/logout`;
 const INTERNAL_USER_CALLBACK = `${config.get('darts-api.url')}/internal-user/handle-oauth-code`;
 
-
 function getLogin(type: 'internal' | 'external'): (_: Request, res: Response, next: NextFunction) => Promise<void> {
   return async (_: Request, res: Response, next: NextFunction) => {
     try {
