@@ -111,12 +111,7 @@ function getLogout(): (_: Request, res: Response, next: NextFunction) => Promise
         accessToken = req.session.securityToken.accessToken;
       }
 
-      let logoutUrl: string;
-      if (req.session.userType === 'internal') {
-        logoutUrl = INTERNAL_USER_LOGOUT;
-      } else {
-        logoutUrl = EXTERNAL_USER_LOGOUT;
-      }
+      const logoutUrl = req.session.userType === 'internal' ? INTERNAL_USER_LOGOUT : EXTERNAL_USER_LOGOUT;
 
       const result = await axios(`${logoutUrl}?redirect_uri=${config.get('hostname')}/auth/logout-callback`, {
         headers: { Authorization: `Bearer ${accessToken}` },
