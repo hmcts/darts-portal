@@ -81,7 +81,7 @@ describe('Case search', () => {
     cy.get('#specific-date-radio').click();
     cy.get('#specific_date').type('blah');
     cy.get('button').contains('Search').click();
-    cy.get('#specific_date-error').should('contain', DATE_INVALID);
+    cy.get('#specific_date-errors').should('contain', DATE_INVALID);
     cy.get('.govuk-error-summary').should('contain', DATE_INVALID);
     cy.get('a').contains('Clear search').click();
 
@@ -89,7 +89,7 @@ describe('Case search', () => {
     cy.get('#specific-date-radio').click();
     cy.get('#specific_date').type(TOMORROW);
     cy.get('button').contains('Search').click();
-    cy.get('#specific_date-error').should('contain', DATE_FUTURE);
+    cy.get('#specific_date-errors').should('contain', DATE_FUTURE);
     cy.get('.govuk-error-summary').should('contain', DATE_FUTURE);
     cy.get('a').contains('Clear search').click();
 
@@ -97,8 +97,8 @@ describe('Case search', () => {
     cy.get('#date-range-radio').click();
     cy.get('#date_from').type('blah');
     cy.get('button').contains('Search').click();
-    cy.get('#date_from-error').should('contain', DATE_INVALID);
-    cy.get('#date_to-error').should(
+    cy.get('#date_from-errors').should('contain', DATE_INVALID);
+    cy.get('#date_to-errors').should(
       'contain',
       'You have not selected an end date. Select an end date to define your search'
     );
@@ -111,7 +111,7 @@ describe('Case search', () => {
     cy.get('#date-range-radio').click();
     cy.get('#date_from').type(TOMORROW);
     cy.get('button').contains('Search').click();
-    cy.get('#date_from-error').should('contain', DATE_FUTURE);
+    cy.get('#date_from-errors').should('contain', DATE_FUTURE);
     cy.get('.govuk-error-summary').should('contain', DATE_FUTURE);
     cy.get('a').contains('Clear search').click();
 
@@ -119,7 +119,7 @@ describe('Case search', () => {
     cy.get('#date-range-radio').click();
     cy.get('#date_to').type('blah');
     cy.get('button').contains('Search').click();
-    cy.get('#date_to-error').should('contain', DATE_INVALID);
+    cy.get('#date_to-errors').should('contain', DATE_INVALID);
     cy.get('.govuk-error-summary')
       .should('contain', DATE_INVALID)
       .should('contain', 'You have not selected a start date. Select a start date to define your search');
@@ -129,7 +129,7 @@ describe('Case search', () => {
     cy.get('#date-range-radio').click();
     cy.get('#date_to').type(TOMORROW);
     cy.get('button').contains('Search').click();
-    cy.get('#date_to-error').should('contain', DATE_FUTURE);
+    cy.get('#date_to-errors').should('contain', DATE_FUTURE);
     cy.get('.govuk-error-summary').should('contain', DATE_FUTURE);
     cy.get('a').contains('Clear search').click();
   });

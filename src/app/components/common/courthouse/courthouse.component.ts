@@ -1,12 +1,12 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, Output, ViewChild } from '@angular/core';
-import { NgIf } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import accessibleAutocomplete, { AccessibleAutocompleteProps } from 'accessible-autocomplete';
 import { CourthouseData } from '@darts-types/index';
 
 @Component({
   selector: 'app-courthouse-field',
   standalone: true,
-  imports: [NgIf],
+  imports: [NgIf, NgFor],
   templateUrl: './courthouse.component.html',
   styleUrls: ['./courthouse.component.scss'],
 })
@@ -15,6 +15,7 @@ export class CourthouseComponent implements AfterViewInit, OnChanges {
 
   @Input() courthouses: CourthouseData[] = [];
   @Input() isInvalid = false;
+  @Input() errors: string[] = [];
   @Output() courthouseSelect = new EventEmitter<string>();
 
   props: AccessibleAutocompleteProps = {
