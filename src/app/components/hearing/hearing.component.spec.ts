@@ -11,6 +11,7 @@ import { HearingData } from 'src/app/types/hearing';
 import { Observable, of } from 'rxjs';
 import { HearingAudioEventViewModel } from 'src/app/types/hearing-audio-event';
 import { HearingService } from 'src/app/services/hearing/hearing.service';
+import { requestPlaybackAudioDTO } from 'src/app/types/requestPlaybackAudioDTO';
 
 describe('HearingComponent', () => {
   const fakeAppInsightsService = {};
@@ -162,6 +163,21 @@ describe('HearingComponent', () => {
       const mockAudioAndEvents: HearingAudioEventViewModel[] = [];
       component.onEventsSelected(mockAudioAndEvents);
       expect(component.requestAudioTimes).toEqual(undefined);
+    });
+  });
+
+  describe('#onAudioRequest', () => {
+    it('should set the request object and set the state variable', () => {
+      const mockRequestObject: requestPlaybackAudioDTO = {
+        hearing_id: 1,
+        requestor: 1,
+        start_time: '2023-09-01T02:00:00Z',
+        end_time: '2023-09-01T15:32:24Z',
+        request_type: 'DOWNLOAD',
+      };
+      component.onAudioRequest(mockRequestObject);
+      expect(component.requestObject).toEqual(mockRequestObject);
+      expect(component.state).toEqual('OrderSummary');
     });
   });
 });
