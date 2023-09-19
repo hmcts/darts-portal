@@ -19,9 +19,11 @@ app.use('/external-user', require('./authentication/external'));
 // stub out courthouses api
 app.use('/courthouses', require('./courthouses/courthouses'));
 // stub out certain case APIs
-app.use('/cases', require('./case/case'));
-app.use('/audio', require('./case/case'));
+app.use('/cases', require('./cases/case'));
+// hearing APIs
 app.use('/hearings', require('./hearings/hearings'));
+// audio APIs
+app.use('/audio', require('./audios'));
 // proxy non-stubbed routes to the actual API
 app.use(
   createProxyMiddleware({
