@@ -22,6 +22,11 @@ withPipeline(type, product, component) {
     echo 'Yarn install complete'
   }
 
+  afterAlways('functionalTest:dev') {
+    yarnBuilder.yarn('test:functional:combine:reports')
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
+  }
+
   afterAlways('functionalTest:stg') {
     yarnBuilder.yarn('test:functional:combine:reports')
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
