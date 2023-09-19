@@ -1,4 +1,12 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DateTimeService } from 'src/app/services/datetime/datetime.service';
@@ -13,12 +21,14 @@ import * as moment from 'moment';
   imports: [CommonModule, ReactiveFormsModule, TimeInputComponent],
   templateUrl: './request-playback-audio.component.html',
   styleUrls: ['./request-playback-audio.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RequestPlaybackAudioComponent implements OnChanges {
   @Input() hearing!: HearingData;
   @Input() requestAudioTimes!: Map<string, Date> | undefined;
   audioRequestForm: FormGroup;
   requestObj!: requestPlaybackAudioDTO;
+  @Output() audioRequest = new EventEmitter<requestPlaybackAudioDTO>();
 
   constructor(private fb: FormBuilder, public datetimeService: DateTimeService) {
     this.audioRequestForm = this.fb.group({
@@ -79,5 +89,6 @@ export class RequestPlaybackAudioComponent implements OnChanges {
       end_time: this.datetimeService.getIsoStringWithoutMilliseconds(endDateTime.toISOString()),
       request_type: this.audioRequestForm.get('requestType')?.value,
     };
+    this.audioRequest.emit(this.requestObj);
   }
 }

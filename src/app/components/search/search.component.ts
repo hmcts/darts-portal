@@ -1,7 +1,7 @@
 import { CourthouseComponent } from './../common/courthouse/courthouse.component';
 import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NgClass, NgFor, NgIf, CommonModule } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CaseService } from '../../services/case/case.service';
 import { CaseData } from '../../../app/types/case';
@@ -11,21 +11,14 @@ import { Subscription } from 'rxjs';
 import { futureDateValidator } from 'src/app/validators/future-date.validator';
 import { SearchFormValues } from 'src/app/types/search-form.interface';
 
-interface ErrorSummaryEntry {
+export interface ErrorSummaryEntry {
   fieldId: string;
   message: string;
 }
 
 const FieldErrors: { [key: string]: { [key: string]: string } } = {
-  case_number: {
-    required: 'You must enter a case number or perform an Advanced search.',
-  },
   courthouse: {
-    required: 'You must enter a courthouse, if courtroom is filled.',
-  },
-  courtroom: {
-    required:
-      'The courtroom number you have entered is not a recognised number for this courthouse. Check and try again',
+    required: 'You must also enter a courthouse',
   },
   specific_date: {
     pattern: 'You have not entered a recognised date in the correct format (for example 31/01/2023)',
@@ -61,7 +54,7 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
   errorType = '';
   error = '';
   isAdvancedSearch = false;
-  datePatternValidator = Validators.pattern(/^\d{2}\/\d{2}\/\d{4}$/);
+  datePatternValidator = Validators.pattern(/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/);
   dateValidators = [this.datePatternValidator, futureDateValidator];
   courthouses$ = this.caseService.getCourthouses();
   subs: Subscription[] = [];
@@ -69,7 +62,7 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
   constructor(private caseService: CaseService) {}
 
   form: FormGroup = new FormGroup({
-    case_number: new FormControl('', Validators.required),
+    case_number: new FormControl(),
     courthouse: new FormControl(),
     courtroom: new FormControl(),
     judge_name: new FormControl(),
@@ -81,10 +74,14 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
   });
 
   ngOnInit() {
+    // Set validation based on values entered in the form
+
+    // [DMP-691] AC 2 - Listening for when courtroom has value, if so, then courthouse is required
     this.subs.push(
       this.form.controls.courtroom.valueChanges.subscribe((courtroom) => this.setCourthouseValidators(courtroom))
     );
 
+    // Listen to form value changes, if the form is invalid and submitted, generate error summary
     this.subs.push(
       this.form.valueChanges.subscribe(() => {
         if (this.form.invalid && this.isSubmitted) {
@@ -95,14 +92,18 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
       })
     );
 
+    // [DMP-691] AC3 & AC6 - Add date validators if specific_date field has value
+    // Validators: required, future & pattern
     this.setSpecificDateValidators();
+
+    // [DMP-691] AC3, AC4, AC5, AC6 - Add date range validators if either date_from or date_to field has a value.
+    // Validators: required, future & pattern
     this.setDateRangeValidators();
   }
 
   toggleAdvancedSearch(event: Event) {
     event.preventDefault();
     this.isAdvancedSearch = !this.isAdvancedSearch;
-    this.setAdvancedSearchValidators(this.isAdvancedSearch);
   }
 
   setInputValue(value: string, control: string) {
@@ -117,7 +118,16 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.isSubmitted = true;
     this.form.updateValueAndValidity();
 
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      this.isAdvancedSearch = true;
+      return;
+    }
+
+    // Prevent service call being spammed with no form values
+    if (!this.form.dirty && !this.form.touched) {
+      this.errorType = 'CASE_101';
+      return;
+    }
 
     this.caseService.getCasesAdvanced(this.form.value).subscribe({
       next: (result: CaseData[]) => {
@@ -145,6 +155,7 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   onCourthouseSelected(courthouse: string) {
     this.form.get('courthouse')?.setValue(courthouse);
+    this.form.get('courthouse')?.markAsDirty();
   }
 
   ngAfterViewChecked(): void {
@@ -163,7 +174,7 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
     return Object.keys(errors).map((errorType) => FieldErrors[fieldName][errorType]);
   }
 
-  private generateErrorSummary(): ErrorSummaryEntry[] {
+  generateErrorSummary(): ErrorSummaryEntry[] {
     const formControls = this.f;
     return Object.keys(formControls)
       .filter((fieldId) => formControls[fieldId].errors)
@@ -199,14 +210,19 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     // If date_from has value then date_to is required
     this.subs.push(
-      dateFromControl.valueChanges.subscribe((value) => {
-        if (value) {
+      dateFromControl.valueChanges.subscribe((dateFromValue) => {
+        if (dateFromValue) {
           dateToControl.setValidators([Validators.required, ...this.dateValidators]);
           dateFromControl.setValidators(this.dateValidators);
-          dateFromControl.updateValueAndValidity({ onlySelf: true, emitEvent: false });
         } else {
           dateToControl.clearValidators();
         }
+
+        if (dateToControl.value) {
+          dateFromControl.setValidators([Validators.required, ...this.dateValidators]);
+        }
+
+        dateFromControl.updateValueAndValidity({ onlySelf: true, emitEvent: false });
         dateToControl.updateValueAndValidity({ onlySelf: true, emitEvent: false });
       })
     );
@@ -217,10 +233,15 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
         if (value) {
           dateFromControl.setValidators([Validators.required, ...this.dateValidators]);
           dateToControl.setValidators(this.dateValidators);
-          dateToControl.updateValueAndValidity({ onlySelf: true, emitEvent: false });
         } else {
           dateFromControl.clearValidators();
         }
+
+        if (dateFromControl.value) {
+          dateToControl.setValidators([Validators.required, ...this.dateValidators]);
+        }
+
+        dateToControl.updateValueAndValidity({ onlySelf: true, emitEvent: false });
         dateFromControl.updateValueAndValidity({ onlySelf: true, emitEvent: false });
       })
     );
@@ -235,17 +256,6 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
       courtHouseFormControl?.clearValidators();
     }
     courtHouseFormControl?.updateValueAndValidity();
-  }
-
-  private setAdvancedSearchValidators(isAdvancedSearch: boolean) {
-    const caseNumberFormControl = this.form.get('case_number');
-
-    if (isAdvancedSearch) {
-      caseNumberFormControl?.clearValidators();
-    } else {
-      caseNumberFormControl?.setValidators([Validators.required]);
-    }
-    caseNumberFormControl?.updateValueAndValidity();
   }
 
   ngOnDestroy(): void {
