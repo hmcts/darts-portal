@@ -1,7 +1,7 @@
 import { CourthouseComponent } from './../common/courthouse/courthouse.component';
 import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NgClass, NgFor, NgIf, CommonModule } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CaseService } from '../../services/case/case.service';
 import { CaseData } from '../../../app/types/case';
@@ -18,11 +18,7 @@ export interface ErrorSummaryEntry {
 
 const FieldErrors: { [key: string]: { [key: string]: string } } = {
   courthouse: {
-    required: 'You must enter a courthouse, if courtroom is filled.',
-  },
-  courtroom: {
-    required:
-      'The courtroom number you have entered is not a recognised number for this courthouse. Check and try again',
+    required: 'You must also enter a courthouse',
   },
   specific_date: {
     pattern: 'You have not entered a recognised date in the correct format (for example 31/01/2023)',
@@ -58,7 +54,7 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
   errorType = '';
   error = '';
   isAdvancedSearch = false;
-  datePatternValidator = Validators.pattern(/^\d{2}\/\d{2}\/\d{4}$/);
+  datePatternValidator = Validators.pattern(/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/);
   dateValidators = [this.datePatternValidator, futureDateValidator];
   courthouses$ = this.caseService.getCourthouses();
   subs: Subscription[] = [];
