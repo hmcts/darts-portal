@@ -1,0 +1,48 @@
+<ng-container [formGroup]="form">
+  <div class="govuk-date-input" id="time-picker">
+    <div class="govuk-date-input__item">
+      <div class="govuk-form-group">
+        <label class="govuk-label govuk-date-input__label hour small-text" for="passport-issued-day"> Hour </label>
+        <input
+          class="govuk-input govuk-date-input__input govuk-input--width-2"
+          id="passport-issued-day"
+          name="passport-issued-day"
+          formControlName="hours"
+          type="text"
+          inputmode="numeric"
+          maxlength="2"
+        />
+      </div>
+    </div>
+    <span class="govuk-body colon">:</span>
+    <div class="govuk-date-input__item">
+      <div class="govuk-form-group">
+        <label class="govuk-label govuk-date-input__label small-text" for="passport-issued-month"> Minutes </label>
+        <input
+          class="govuk-input govuk-date-input__input govuk-input--width-2"
+          id="passport-issued-month"
+          name="passport-issued-month"
+          formControlName="minutes"
+          type="text"
+          inputmode="numeric"
+          maxlength="2"
+        />
+      </div>
+    </div>
+    <span class="govuk-body colon">:</span>
+    <div class="govuk-date-input__item">
+      <div class="govuk-form-group">
+        <label class="govuk-label govuk-date-input__label small-text" for="passport-issued-month"> Seconds </label>
+        <input
+          class="govuk-input govuk-date-input__input govuk-input--width-2"
+          id="passport-issued-month"
+          name="passport-issued-month"
+          formControlName="seconds"
+          type="text"
+          inputmode="numeric"
+          maxlength="2"
+        />
+      </div>
+    </div>
+  </div>
+</ng-container>

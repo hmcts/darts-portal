@@ -5,15 +5,19 @@ import { AppInsightsService } from '../../services/app-insights/app-insights.ser
 import { CaseData } from 'src/app/types/case';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { CaseService } from 'src/app/services/case/case.service';
 import { HearingData } from 'src/app/types/hearing';
 import { Observable, of } from 'rxjs';
+import { HearingAudioEventViewModel } from 'src/app/types/hearing-audio-event';
+import { HearingService } from 'src/app/services/hearing/hearing.service';
+import { requestPlaybackAudioDTO } from 'src/app/types/requestPlaybackAudioDTO';
 
 describe('HearingComponent', () => {
   const fakeAppInsightsService = {};
   let httpClientSpy: HttpClient;
   let caseService: CaseService;
+  let hearingService: HearingService;
   let component: HearingComponent;
   let fixture: ComponentFixture<HearingComponent>;
 
@@ -22,6 +26,21 @@ describe('HearingComponent', () => {
     { id: 1, date: '2023-02-21', judges: ['Joseph', 'Judy'], courtroom: '3', transcript_count: 99 },
     { id: 2, date: '2023-03-21', judges: ['Joseph', 'Kennedy'], courtroom: '1', transcript_count: 12 },
   ]) as Observable<HearingData[]>;
+  const ad = of([
+    {
+      id: 1,
+      media_start_timestamp: '2023-09-14T12:05:08.563Z',
+      media_end_timestamp: '2023-09-14T12:05:08.563Z',
+    },
+  ]);
+  const ed = of([
+    {
+      id: 1,
+      timestamp: '2023-07-31T14:32:24.62Z',
+      name: 'Case called on',
+      text: 'Record:New Case',
+    },
+  ]);
 
   const shd = of({
     id: 1,
@@ -37,16 +56,20 @@ describe('HearingComponent', () => {
     } as unknown as HttpClient;
 
     caseService = new CaseService(httpClientSpy);
+    hearingService = new HearingService(httpClientSpy);
 
     jest.spyOn(caseService, 'getCase').mockReturnValue(cd);
     jest.spyOn(caseService, 'getCaseHearings').mockReturnValue(hd);
     jest.spyOn(caseService, 'getHearingById').mockReturnValue(shd);
+    jest.spyOn(hearingService, 'getAudio').mockReturnValue(ad);
+    jest.spyOn(hearingService, 'getEvents').mockReturnValue(ed);
 
     TestBed.configureTestingModule({
-      imports: [HearingComponent, HearingFileComponent, RouterTestingModule, HttpClientModule],
+      imports: [HearingComponent, HearingFileComponent, RouterTestingModule],
       providers: [
         { provide: AppInsightsService, useValue: fakeAppInsightsService },
         { provide: CaseService, useValue: caseService },
+        { provide: HearingService, useValue: hearingService },
       ],
     });
     fixture = TestBed.createComponent(HearingComponent);
@@ -105,6 +128,56 @@ describe('HearingComponent', () => {
     it('should load via api', () => {
       expect(component.case$).toEqual(cd);
       expect(component.hearing$).toEqual(shd);
+    });
+  });
+
+  describe('#onEventsSelected', () => {
+    it('should set the start and end times from selected entries', () => {
+      const mockAudioAndEvents = [
+        {
+          id: 1,
+          timestamp: '2023-07-31T01:00:00.620Z',
+          name: 'Case called on',
+          text: 'Record: New Case',
+          type: 'event',
+        },
+        {
+          id: 1,
+          media_start_timestamp: '2023-07-31T02:32:24.620Z',
+          media_end_timestamp: '2023-07-31T14:32:24.620Z',
+          type: 'audio',
+          timestamp: '2023-07-31T02:32:24.620Z',
+        },
+        {
+          id: 2,
+          timestamp: '2023-07-31T03:00:00.620Z',
+          name: 'Case called on',
+          text: 'Record: New Case',
+          type: 'event',
+        },
+      ];
+      component.onEventsSelected(mockAudioAndEvents);
+      expect(component.requestAudioTimes);
+    });
+    it('should set request Audio times to undefined if audio and Events are empty', () => {
+      const mockAudioAndEvents: HearingAudioEventViewModel[] = [];
+      component.onEventsSelected(mockAudioAndEvents);
+      expect(component.requestAudioTimes).toEqual(undefined);
+    });
+  });
+
+  describe('#onAudioRequest', () => {
+    it('should set the request object and set the state variable', () => {
+      const mockRequestObject: requestPlaybackAudioDTO = {
+        hearing_id: 1,
+        requestor: 1,
+        start_time: '2023-09-01T02:00:00Z',
+        end_time: '2023-09-01T15:32:24Z',
+        request_type: 'DOWNLOAD',
+      };
+      component.onAudioRequest(mockRequestObject);
+      expect(component.requestObject).toEqual(mockRequestObject);
+      expect(component.state).toEqual('OrderSummary');
     });
   });
 });

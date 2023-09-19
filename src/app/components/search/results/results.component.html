@@ -1,11 +1,12 @@
 <!-- Results -->
 <div>
   <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
-  <div *ngIf="errorType !== 'CASE_100' && errorType !== 'ok' && loaded">
+  <div *ngIf="isErrorHandledInTemplate() && loaded">
     <!-- This will slowly be replaced/updated as more 'cases' are handled -->
     <h2 class="govuk-heading-m">An error has occurred. Please try again later.</h2>
   </div>
-  <div *ngIf="errorType === 'CASE_100'">
+
+  <div *ngIf="errorType === 'CASE_100' || errorType === 'CASE_102'">
     <h2 class="govuk-heading-m">There are more than 500 results</h2>
     <p class="govuk-body">Refine your search by:</p>
     <ul class="govuk-list govuk-list--bullet">
@@ -14,10 +15,15 @@
     </ul>
   </div>
 
+  <div *ngIf="errorType === 'CASE_101'">
+    <h2 class="govuk-heading-m">No search results</h2>
+    <p class="govuk-body">You need to enter some search terms and try again</p>
+  </div>
+
   <!-- No search results returns empty array rather than error code -->
   <div *ngIf="cases.length === 0 && errorType === 'ok' && loaded">
     <h2 class="govuk-heading-m">No search results</h2>
-    <p class="govuk-body">Review the case number, case reference or court reference you entered and try again.</p>
+    <p class="govuk-body">Review the case ID, case reference or court reference you entered and try again.</p>
   </div>
   <div *ngIf="cases.length > 0 && errorType === 'ok' && loaded">
     <table class="govuk-table">
@@ -31,12 +37,15 @@
       </caption>
       <thead class="govuk-table__head">
         <tr class="govuk-table__row">
-          <th scope="col" class="govuk-table__header">Case Number</th>
-          <th scope="col" class="govuk-table__header">Courthouse</th>
+          <th scope="col" class="govuk-table__header" [attr.aria-sort]="getAriaSort('case_number')">
+            <button type="button" (click)="sortTable('case_number')">Case ID</button>
+          </th>
+          <th scope="col" class="govuk-table__header" [attr.aria-sort]="getAriaSort('courthouse')">
+            <button type="button" (click)="sortTable('courthouse')">Courthouse</button>
+          </th>
           <th scope="col" class="govuk-table__header">Courtroom</th>
           <th scope="col" class="govuk-table__header">Judge(s)</th>
           <th scope="col" class="govuk-table__header">Defendant(s)</th>
-          <th scope="col" class="govuk-table__header">Hearing Date</th>
         </tr>
       </thead>
       <tbody class="govuk-table__body">
@@ -49,7 +58,6 @@
             <td class="govuk-table__cell">{{ getHearingsValue(c, 'courtroom') }}</td>
             <td class="govuk-table__cell">{{ getNameValue(c.judges) }}</td>
             <td class="govuk-table__cell">{{ getNameValue(c.defendants) }}</td>
-            <td class="govuk-table__cell">{{ getHearingsValue(c, 'date') }}</td>
           </tr>
           <tr *ngIf="c.reporting_restriction" class="restriction-row govuk-table__row">
             <td class="govuk-table__cell" colspan="6">
