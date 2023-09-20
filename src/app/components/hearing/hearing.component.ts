@@ -10,12 +10,21 @@ import { HearingService } from '@services/hearing/hearing.service';
 import { combineLatest } from 'rxjs';
 import { EventsAndAudioComponent } from './events-and-audio/events-and-audio.component';
 import { HearingFileComponent } from './hearing-file/hearing-file.component';
+import { OrderConfirmationComponent } from './order-confirmation/order-confirmation.component';
+import { OrderSummaryComponent } from './order-summary/order-summary.component';
 import { RequestPlaybackAudioComponent } from './request-playback-audio/request-playback-audio.component';
 
 @Component({
   selector: 'app-hearing',
   standalone: true,
-  imports: [CommonModule, HearingFileComponent, EventsAndAudioComponent, RequestPlaybackAudioComponent],
+  imports: [
+    CommonModule,
+    HearingFileComponent,
+    EventsAndAudioComponent,
+    RequestPlaybackAudioComponent,
+    OrderConfirmationComponent,
+    OrderSummaryComponent,
+  ],
   templateUrl: './hearing.component.html',
   styleUrls: ['./hearing.component.scss'],
 })
@@ -87,5 +96,9 @@ export class HearingComponent {
   onAudioRequest(requestObject: requestPlaybackAudioDTO) {
     this.requestObject = requestObject;
     this.state = 'OrderSummary';
+  }
+
+  onStateChanged(state: HearingPageState) {
+    this.state = state;
   }
 }
