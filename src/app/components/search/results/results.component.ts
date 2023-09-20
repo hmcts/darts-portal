@@ -33,6 +33,7 @@ export class ResultsComponent implements OnChanges {
   };
 
   ngOnChanges(): void {
+    this.sorting.column = '';
     this.currentPage = 1;
     this.updatePagedCases();
   }
