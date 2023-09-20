@@ -15,6 +15,7 @@ export class OrderConfirmationComponent {
   @Input() case!: CaseData;
   @Input() hearing!: HearingData | undefined;
   @Input() audioRequest!: requestPlaybackAudioDTO;
+  @Input() requestId!: number;
   @Output() stateChange = new EventEmitter<HearingPageState>();
 
   headerService = inject(HeaderService);

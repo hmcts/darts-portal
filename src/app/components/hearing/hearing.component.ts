@@ -54,6 +54,8 @@ export class HearingComponent {
     this._state = value;
   }
 
+  requestId!: number;
+
   requestObject!: requestPlaybackAudioDTO;
 
   hearingId = this.route.snapshot.params.hearing_id;
@@ -111,8 +113,9 @@ export class HearingComponent {
   }
 
   onOrderConfirm(requestObject: requestPlaybackAudioDTO) {
-    this.hearingService.requestAudio(requestObject).subscribe(() => {
+    this.hearingService.requestAudio(requestObject).subscribe((val: any) => {
       this.state = 'OrderConfirmation';
+      this.requestId = val.request_id;
     });
   }
 }
