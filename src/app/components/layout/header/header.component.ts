@@ -1,8 +1,8 @@
 import { Component, DoCheck } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule, NgIf } from '@angular/common';
-import { HeaderService } from 'src/app/services/header.service';
 import { AuthService } from '@services/auth/auth.service';
+import { HeaderService } from '@services/header/header.service';
 
 @Component({
   selector: 'app-header',
