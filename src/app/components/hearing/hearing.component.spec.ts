@@ -12,12 +12,15 @@ import { Observable, of } from 'rxjs';
 import { HearingAudioEventViewModel } from 'src/app/types/hearing-audio-event';
 import { HearingService } from 'src/app/services/hearing/hearing.service';
 import { requestPlaybackAudioDTO } from 'src/app/types/requestPlaybackAudioDTO';
+import { HeaderService } from 'src/app/services/header.service';
+import { HearingPageState } from 'src/app/types/hearing-state';
 
 describe('HearingComponent', () => {
   const fakeAppInsightsService = {};
   let httpClientSpy: HttpClient;
   let caseService: CaseService;
   let hearingService: HearingService;
+  let headerService: HeaderService;
   let component: HearingComponent;
   let fixture: ComponentFixture<HearingComponent>;
 
@@ -70,6 +73,7 @@ describe('HearingComponent', () => {
         { provide: AppInsightsService, useValue: fakeAppInsightsService },
         { provide: CaseService, useValue: caseService },
         { provide: HearingService, useValue: hearingService },
+        { provide: HeaderService },
       ],
     });
     fixture = TestBed.createComponent(HearingComponent);
@@ -178,6 +182,29 @@ describe('HearingComponent', () => {
       component.onAudioRequest(mockRequestObject);
       expect(component.requestObject).toEqual(mockRequestObject);
       expect(component.state).toEqual('OrderSummary');
+    });
+  });
+
+  describe('state setter', () => {
+    it('should call the header service with true when the state is default', () => {
+      const headerServiceSpy = jest.spyOn(component.headerService, 'showPrimaryNavigation');
+      const value: HearingPageState = 'Default';
+      component.state = value;
+      expect(headerServiceSpy).toHaveBeenCalledWith(true);
+    });
+    describe('should call the header service with false when ', () => {
+      it('state is Order Summary', () => {
+        const headerServiceSpy = jest.spyOn(component.headerService, 'showPrimaryNavigation');
+        const value: HearingPageState = 'OrderSummary';
+        component.state = value;
+        expect(headerServiceSpy).toHaveBeenCalledWith(false);
+      });
+      it('state is Order Confirmation', () => {
+        const headerServiceSpy = jest.spyOn(component.headerService, 'showPrimaryNavigation');
+        const value: HearingPageState = 'OrderConfirmation';
+        component.state = value;
+        expect(headerServiceSpy).toHaveBeenCalledWith(false);
+      });
     });
   });
 });
