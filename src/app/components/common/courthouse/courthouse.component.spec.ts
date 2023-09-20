@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
-import { CourthouseData } from 'src/app/types/courthouse';
-
 import { CourthouseComponent } from './courthouse.component';
+import { CourthouseData } from '@darts-types/index';
 
 describe('CourthouseComponent', () => {
   let component: CourthouseComponent;

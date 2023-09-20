@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CaseData } from 'src/app/types/case';
+import { CaseData } from '@darts-types/index';
 
 @Component({
   selector: 'app-case-file',

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { RouterLink, ActivatedRoute } from '@angular/router';
-import { HearingData } from 'src/app/types/hearing';
+import { HearingData } from '@darts-types/index';
 
 @Component({
   selector: 'app-hearing-results',

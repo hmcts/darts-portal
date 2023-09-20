@@ -1,6 +1,6 @@
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 import { Injectable } from '@angular/core';
-import { AppConfigService } from '../app-config/app-config.service';
+import { AppConfigService } from '@services/app-config/app-config.service';
 
 @Injectable()
 export class AppInsightsService {

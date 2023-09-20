@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HearingEvent, HearingAudio } from '@darts-types/index';
 import { catchError, Observable, of, throwError } from 'rxjs';
-import { HearingAudio, HearingEvent } from 'src/app/types/hearing-audio-event';
 
 @Injectable({
   providedIn: 'root',

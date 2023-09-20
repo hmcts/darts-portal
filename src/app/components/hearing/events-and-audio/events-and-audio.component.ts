@@ -10,9 +10,9 @@ import {
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
+import { HearingEventTypeEnum } from '@darts-types/enums';
+import { HearingAudio, HearingEvent, HearingAudioEventViewModel } from '@darts-types/hearing-audio-event';
 import { Subscription } from 'rxjs';
-import { HearingEventTypeEnum } from 'src/app/types/enums';
-import { HearingAudio, HearingEvent, HearingAudioEventViewModel } from 'src/app/types/hearing-audio-event';
 
 @Component({
   selector: 'app-events-and-audio',

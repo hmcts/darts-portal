@@ -1,9 +1,10 @@
 import { NgFor, NgIf } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { CaseData } from '../../../../app/types/case';
-import { DateTimeService } from '../../../services/datetime/datetime.service';
-import { PaginationComponent } from '../../common/pagination/pagination.component';
+import { PaginationComponent } from '@common/pagination/pagination.component';
+import { CaseData, HearingData } from '@darts-types/index';
+import { DateTimeService } from '@services/datetime/datetime.service';
+
 export interface SortingInterface {
   column: string;
   order: 'asc' | 'desc';
@@ -99,7 +100,7 @@ export class ResultsComponent implements OnChanges {
   }
 
   //Fetches correct display value for dates and courtrooms
-  getHearingsValue(c: CaseData, key: string): string {
+  getHearingsValue(c: CaseData, key: keyof HearingData): string {
     if (!c.hearings || c.hearings.length === 0) {
       return '';
     } else {
@@ -107,7 +108,7 @@ export class ResultsComponent implements OnChanges {
         if (key === 'date') {
           return this.getDateFormat(c.hearings[0][key]);
         } else {
-          return c.hearings[0][key];
+          return c.hearings[0][key] as string;
         }
       } else {
         return 'Multiple';

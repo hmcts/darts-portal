@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { AppInsightsService } from '../services/app-insights/app-insights.service';
-import { AuthService } from '../services/auth/auth.service';
+import { AppInsightsService } from '@services/app-insights/app-insights.service';
+import { AuthService } from '@services/auth/auth.service';
 import { AppComponent } from './app.component';
 import { ContentComponent } from './layout/content/content.component';
 import { FooterComponent } from './layout/footer/footer.component';

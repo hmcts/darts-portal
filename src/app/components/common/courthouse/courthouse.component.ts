@@ -1,7 +1,7 @@
-import { CourthouseData } from 'src/app/types/courthouse';
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, Output, ViewChild } from '@angular/core';
 import { NgIf } from '@angular/common';
 import accessibleAutocomplete, { AccessibleAutocompleteProps } from 'accessible-autocomplete';
+import { CourthouseData } from '@darts-types/index';
 
 @Component({
   selector: 'app-courthouse-field',

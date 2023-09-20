@@ -1,17 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HearingComponent } from './hearing.component';
-import { HearingFileComponent } from './hearing-file/hearing-file.component';
-import { AppInsightsService } from '../../services/app-insights/app-insights.service';
-import { CaseData } from 'src/app/types/case';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClient } from '@angular/common/http';
-import { CaseService } from 'src/app/services/case/case.service';
-import { HearingData } from 'src/app/types/hearing';
 import { Observable, of } from 'rxjs';
-import { HearingAudioEventViewModel } from 'src/app/types/hearing-audio-event';
-import { HearingService } from 'src/app/services/hearing/hearing.service';
-import { requestPlaybackAudioDTO } from 'src/app/types/requestPlaybackAudioDTO';
+import { AppInsightsService } from '@services/app-insights/app-insights.service';
+import { CaseData } from '@darts-types/case';
+import { HearingData } from '@darts-types/hearing';
+import { CaseService } from '@services/case/case.service';
+import { HearingAudioEventViewModel } from '@darts-types/hearing-audio-event';
+import { requestPlaybackAudioDTO } from '@darts-types/requestPlaybackAudioDTO';
+import { HearingService } from '@services/hearing/hearing.service';
+import { HearingFileComponent } from './hearing-file/hearing-file.component';
+import { HearingEventTypeEnum } from '@darts-types/index';
 
 describe('HearingComponent', () => {
   const fakeAppInsightsService = {};
@@ -139,13 +140,13 @@ describe('HearingComponent', () => {
           timestamp: '2023-07-31T01:00:00.620Z',
           name: 'Case called on',
           text: 'Record: New Case',
-          type: 'event',
+          type: HearingEventTypeEnum.Event,
         },
         {
           id: 1,
           media_start_timestamp: '2023-07-31T02:32:24.620Z',
           media_end_timestamp: '2023-07-31T14:32:24.620Z',
-          type: 'audio',
+          type: HearingEventTypeEnum.Audio,
           timestamp: '2023-07-31T02:32:24.620Z',
         },
         {
@@ -153,7 +154,7 @@ describe('HearingComponent', () => {
           timestamp: '2023-07-31T03:00:00.620Z',
           name: 'Case called on',
           text: 'Record: New Case',
-          type: 'event',
+          type: HearingEventTypeEnum.Event,
         },
       ];
       component.onEventsSelected(mockAudioAndEvents);
