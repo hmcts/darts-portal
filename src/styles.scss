@@ -22,3 +22,10 @@ a.govuk-link {
 .govuk-error-summary__body a {
   color: #d4351c;
 }
+
+a.govuk-link:hover,
+a.govuk-back-link:hover {
+  text-decoration-thickness: max(3px, 0.1875rem, 0.12em);
+  -webkit-text-decoration-skip-ink: none;
+  text-decoration-skip-ink: none;
+}
