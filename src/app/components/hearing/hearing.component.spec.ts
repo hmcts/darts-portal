@@ -13,7 +13,7 @@ import { requestPlaybackAudioDTO } from '@darts-types/requestPlaybackAudioDTO';
 import { HearingService } from '@services/hearing/hearing.service';
 import { HearingFileComponent } from './hearing-file/hearing-file.component';
 import { HearingEventTypeEnum, HearingPageState } from '@darts-types/index';
-import { HeaderService } from '@services/header.service';
+import { HeaderService } from '@services/header/header.service';
 
 describe('HearingComponent', () => {
   const fakeAppInsightsService = {};
