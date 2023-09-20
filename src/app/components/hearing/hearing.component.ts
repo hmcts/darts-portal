@@ -5,6 +5,7 @@ import { HearingAudioEventViewModel } from '@darts-types/hearing-audio-event';
 import { HearingPageState } from '@darts-types/hearing-state';
 import { requestPlaybackAudioDTO } from '@darts-types/requestPlaybackAudioDTO';
 import { CaseService } from '@services/case/case.service';
+import { HeaderService } from '@services/header.service';
 import { HearingService } from '@services/hearing/hearing.service';
 import { combineLatest } from 'rxjs';
 import { EventsAndAudioComponent } from './events-and-audio/events-and-audio.component';
