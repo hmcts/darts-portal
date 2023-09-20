@@ -11,7 +11,7 @@
   </style>
   <body>
     <h1>Stub login page</h1>
-    <form method="post" action="http://localhost:3000/auth/callback">
+    <form method="post" action="<%=callbackUrl%>">
       <input type="hidden" name="code" value="fake-openid-code" />
       <input id="login" type="submit" value="Login" />
     </form>

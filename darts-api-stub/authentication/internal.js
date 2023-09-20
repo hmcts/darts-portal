@@ -3,8 +3,12 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/login-or-refresh', (_, res) => {
-  res.header('Location', 'http://localhost:4551/external-user/login');
+  res.header('Location', 'http://localhost:4551/internal-user/login');
   res.status(302).send();
+});
+
+router.get('/login', (_, res) => {
+  res.render('external-login', { callbackUrl: 'http://localhost:3000/auth/internal/callback' });
 });
 
 router.post('/handle-oauth-code', (_, res) => {
@@ -33,12 +37,9 @@ router.post('/handle-oauth-code', (_, res) => {
 });
 
 router.get('/logout', (_, res) => {
+  //References external but there is no difference to internal for logout
   res.header('Location', 'http://localhost:4551/external-user/handle-logout');
   res.status(302).send();
-});
-
-router.get('/login', (_, res) => {
-  res.render('external-login', { callbackUrl: 'http://localhost:3000/auth/callback' });
 });
 
 router.get('/handle-logout', (_, res) => {
