@@ -22,5 +22,29 @@ withPipeline(type, product, component) {
     echo 'Yarn install complete'
   }
 
+  afterAlways('smokeTest:dev') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'smoke-output/**/*'
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/screenshots'
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/videos'
+  }
+
+  afterAlways('smokeTest:stg') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'smoke-output/**/*'
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/screenshots'
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/videos'
+  }
+
+  afterAlways('functionalTest:dev') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/screenshots'
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/videos'
+  }
+
+  afterAlways('functionalTest:stg') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/screenshots'
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/videos'
+  }
+
   syncBranchesWithMaster(branchesToSync)
 }
