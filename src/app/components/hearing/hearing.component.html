@@ -1,18 +1,24 @@
 <ng-container *ngIf="data$ | async as vm; else loading">
   <div [hidden]="state !== 'Default'">
     <app-hearing-file [case]="vm.case" [hearing]="vm.hearing"></app-hearing-file>
+
     <h2 id="events-audio-heading" class="govuk-heading-m">Events and audio recordings</h2>
+
     <app-request-playback-audio
       [hearing]="vm.hearing!"
       [requestAudioTimes]="requestAudioTimes"
       (audioRequest)="onAudioRequest($event)"
     ></app-request-playback-audio>
+
+    <!-- Events & Audio Table-->
     <app-events-and-audio
       [audio]="vm.audios"
       [events]="vm.events"
       (eventsSelect)="onEventsSelected($event)"
     ></app-events-and-audio>
   </div>
+
+  <!-- Summary Screen -->
   <div [hidden]="state !== 'OrderSummary'">
     <app-order-summary
       [case]="vm.case"
@@ -21,6 +27,8 @@
       (stateChange)="onStateChanged($event)"
     ></app-order-summary>
   </div>
+
+  <!-- Confirmation Screen -->
   <div [hidden]="state !== 'OrderConfirmation'" class="order-confirmation">
     <app-order-confirmation
       [case]="vm.case"
