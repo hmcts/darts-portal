@@ -109,4 +109,10 @@ export class HearingComponent {
     event.preventDefault();
     this.state = 'Default';
   }
+
+  onOrderConfirm(requestObject: requestPlaybackAudioDTO) {
+    this.hearingService.requestAudio(requestObject).subscribe(() => {
+      this.state = 'OrderConfirmation';
+    });
+  }
 }

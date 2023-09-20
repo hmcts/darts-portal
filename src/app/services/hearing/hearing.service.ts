@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HearingEvent, HearingAudio } from '@darts-types/index';
+import { HearingEvent, HearingAudio, requestPlaybackAudioDTO } from '@darts-types/index';
 import { catchError, Observable, of, throwError } from 'rxjs';
 
 @Injectable({
@@ -25,5 +25,9 @@ export class HearingService {
         return throwError(() => error);
       })
     );
+  }
+
+  requestAudio(audioRequest: requestPlaybackAudioDTO): Observable<any> {
+    return this.http.post<any>('api/audio-requests', audioRequest);
   }
 }

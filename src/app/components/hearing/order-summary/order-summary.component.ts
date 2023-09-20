@@ -14,9 +14,10 @@ export class OrderSummaryComponent {
   @Input() hearing!: HearingData | undefined;
   @Input() audioRequest!: requestPlaybackAudioDTO;
   @Output() stateChange = new EventEmitter<HearingPageState>();
+  @Output() orderConfirm = new EventEmitter<requestPlaybackAudioDTO>();
 
   onConfirm() {
-    this.stateChange.emit('OrderConfirmation');
+    this.orderConfirm.emit(this.audioRequest);
   }
 
   onCancel(event: Event) {
