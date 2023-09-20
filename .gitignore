@@ -45,3 +45,4 @@ Thumbs.db
 cypress/videos
 cypress/screenshots
 functional-output
+smoke-output
