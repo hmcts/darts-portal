@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
 import { HearingAudioEventViewModel } from '@darts-types/hearing-audio-event';
 import { HearingPageState } from '@darts-types/hearing-state';
 import { requestPlaybackAudioDTO } from '@darts-types/requestPlaybackAudioDTO';
@@ -24,6 +25,8 @@ import { RequestPlaybackAudioComponent } from './request-playback-audio/request-
     RequestPlaybackAudioComponent,
     OrderConfirmationComponent,
     OrderSummaryComponent,
+    ReportingRestrictionComponent,
+    RouterLink,
   ],
   templateUrl: './hearing.component.html',
   styleUrls: ['./hearing.component.scss'],
@@ -100,5 +103,10 @@ export class HearingComponent {
 
   onStateChanged(state: HearingPageState) {
     this.state = state;
+  }
+
+  onBack(event: Event) {
+    event.preventDefault();
+    this.state = 'Default';
   }
 }

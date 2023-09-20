@@ -1,4 +1,25 @@
 <ng-container *ngIf="data$ | async as vm; else loading">
+  <div [hidden]="state !== 'Default'" class="govuk-breadcrumbs">
+    <ol class="govuk-breadcrumbs__list">
+      <li class="govuk-breadcrumbs__list-item">
+        <a routerLink="../.." class="govuk-breadcrumbs__link">{{ vm.case.case_number }}</a>
+      </li>
+      <li class="govuk-breadcrumbs__list-item">
+        <a [routerLink]="['/case/', vm.case.case_id, 'hearing', vm.hearing?.id]" class="govuk-breadcrumbs__link">{{
+          vm.hearing?.date | date : 'd MMM y'
+        }}</a>
+      </li>
+    </ol>
+  </div>
+
+  <a href="#" *ngIf="state === 'OrderSummary'" (click)="onBack($event)" class="govuk-back-link">Back</a>
+
+  <app-reporting-restriction
+    *ngIf="vm.case.reporting_restriction"
+    [reportingRestriction]="vm.case.reporting_restriction"
+    [class.pad-top]="state === 'OrderConfirmation'"
+  ></app-reporting-restriction>
+
   <div [hidden]="state !== 'Default'">
     <app-hearing-file [case]="vm.case" [hearing]="vm.hearing"></app-hearing-file>
 
