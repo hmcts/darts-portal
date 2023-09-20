@@ -1,3 +1,5 @@
+import { HearingEventTypeEnum } from './enums';
+
 export interface HearingAudio {
   id: number;
   media_start_timestamp: string;

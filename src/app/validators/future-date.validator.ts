@@ -1,28 +1,21 @@
 import { AbstractControl, ValidationErrors } from '@angular/forms';
+import moment from 'moment';
 
 export const futureDateValidator = (control: AbstractControl): ValidationErrors | null => {
   const dateValue = control.value;
 
-  if (!dateValue) {
-    return null; // Don't perform validation if the field is empty
-  }
+  if (!dateValue) return null;
 
-  // Split the input date string into day, month, and year components
-  const dateParts = dateValue.split('/');
-  if (dateParts.length !== 3) {
+  const dateFormat = 'DD/MM/YYYY';
+
+  if (!moment(dateValue, dateFormat, true).isValid()) {
     return { invalidDate: true };
   }
 
-  const day = parseInt(dateParts[0], 10);
-  const month = parseInt(dateParts[1], 10);
-  const year = parseInt(dateParts[2], 10);
+  const inputDate = moment(dateValue, dateFormat);
+  const currentDate = moment();
 
-  // Create a Date object using the parsed components
-  const inputDate = new Date(year, month - 1, day); // Subtract 1 from month since months are zero-based
-
-  const currentDate = new Date();
-
-  if (inputDate > currentDate) {
+  if (inputDate.isAfter(currentDate)) {
     return { futureDate: true };
   }
   return null;

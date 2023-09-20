@@ -1,8 +1,8 @@
 import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { AuthService } from 'src/app/services/auth/auth.service';
 import { NgIf, NgClass } from '@angular/common';
+import { AuthService } from '@services/auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -21,13 +21,17 @@ export class LoginComponent {
 
   submit() {
     // preliminary code for internal vs external routing
-    // if (this.form.value['userType'] == 'external') {
-    if (this.form.get('userType')?.value === '') {
-      this.errors = true;
+
+    if (this.form.get('userType')?.value !== '') {
+      if (this.form.value['userType'] == 'external') {
+        this.errors = false;
+        this.window.location.href = '/auth/login';
+      } else {
+        this.errors = false;
+        this.window.location.href = '/auth/internal/login';
+      }
     } else {
-      this.errors = false;
-      this.window.location.href = '/auth/login';
+      this.errors = true;
     }
-    // }
   }
 }

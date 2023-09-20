@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CaseFile } from 'src/app/types/case-file';
-
+import { CaseFile } from '@darts-types/index';
 import { CaseFileComponent } from './case-file.component';
 
 describe('CaseFileComponent', () => {

@@ -1,10 +1,6 @@
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { CaseData } from 'src/app/types/case';
-import { CaseFile } from 'src/app/types/case-file';
-import { CourthouseData } from 'src/app/types/courthouse';
-import { HearingData } from 'src/app/types/hearing';
-import { SearchFormValues } from 'src/app/types/search-form.interface';
+import { CaseData, CaseFile, CourthouseData, HearingData, SearchFormValues } from '@darts-types/index';
 import { ADVANCED_SEARCH_CASE_PATH, CaseService, GET_CASE_PATH, GET_COURTHOUSES_PATH } from './case.service';
 
 describe('CaseService', () => {
