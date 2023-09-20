@@ -1,4 +1,12 @@
 <label class="govuk-label" for="courthouse">Courthouse</label>
+
+<!-- validation errors -->
+<div *ngIf="isInvalid" id="courthouse-errors">
+  <p *ngFor="let error of errors" class="govuk-error-message">
+    <span class="govuk-visually-hidden">Error:</span> {{ error }}
+  </p>
+</div>
+
 <!-- autocomplete -->
 <div
   *ngIf="courthouses.length"

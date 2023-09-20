@@ -22,8 +22,8 @@
     <div id="case_number-hint" class="govuk-hint">
       Also known as a case reference or court reference. There should be no spaces.
     </div>
-    <div *ngIf="isControlInvalid('case_number')">
-      <p *ngFor="let error of getFieldErrorMessages('case_number')" id="casenumber-error" class="govuk-error-message">
+    <div *ngIf="isControlInvalid('case_number')" id="casenumber-errors">
+      <p *ngFor="let error of getFieldErrorMessages('case_number')" class="govuk-error-message">
         <span class="govuk-visually-hidden">Error:</span> {{ error }}
       </p>
     </div>
@@ -50,6 +50,7 @@
           [courthouses]="courthouses"
           (courthouseSelect)="onCourthouseSelected($event)"
           [isInvalid]="isControlInvalid('courthouse')"
+          [errors]="getFieldErrorMessages('courthouse')"
         ></app-courthouse-field>
       </div>
 
@@ -57,12 +58,8 @@
         <label class="govuk-label" for="courtroom"> Courtroom </label>
         <div id="courtroom-search-hint" class="govuk-hint">For example, 3</div>
         <!-- Error message courtroom -->
-        <div *ngIf="isControlInvalid('courthouse')">
-          <p
-            *ngFor="let error of getFieldErrorMessages('courthouse')"
-            id="courthouse-error"
-            class="govuk-error-message"
-          >
+        <div *ngIf="isControlInvalid('courtroom')" id="courtroom-errors">
+          <p *ngFor="let error of getFieldErrorMessages('courtroom')" class="govuk-error-message">
             <span class="govuk-visually-hidden">Error:</span> {{ error }}
           </p>
         </div>
@@ -106,12 +103,8 @@
             <div data-module="ds-datepicker" class="ds_datepicker">
               <p class="ds_hint-text">For example, 31/01/2023.</p>
               <!-- Error message date range date_from -->
-              <div *ngIf="isControlInvalid('specific_date')">
-                <p
-                  *ngFor="let error of getFieldErrorMessages('specific_date')"
-                  id="datefrom-error"
-                  class="govuk-error-message"
-                >
+              <div *ngIf="isControlInvalid('specific_date')" id="specific_date-errors">
+                <p *ngFor="let error of getFieldErrorMessages('specific_date')" class="govuk-error-message">
                   <span class="govuk-visually-hidden">Error:</span> {{ error }}
                 </p>
               </div>
@@ -134,7 +127,7 @@
           <div class="govuk-radios__item">
             <input
               class="govuk-radios__input"
-              id="date-range"
+              id="date-range-radio"
               name="date-range-radio"
               type="radio"
               [checked]="dateInputType === 'range'"
@@ -155,12 +148,8 @@
                 <p class="ds_hint-text">For example, 31/01/2023.</p>
 
                 <!-- Error message date range date_from -->
-                <div *ngIf="isControlInvalid('date_from')">
-                  <p
-                    *ngFor="let error of getFieldErrorMessages('date_from')"
-                    id="datefrom-error"
-                    class="govuk-error-message"
-                  >
+                <div *ngIf="isControlInvalid('date_from')" id="date_from-errors">
+                  <p *ngFor="let error of getFieldErrorMessages('date_from')" class="govuk-error-message">
                     <span class="govuk-visually-hidden">Error:</span> {{ error }}
                   </p>
                 </div>
@@ -189,12 +178,8 @@
                 <p class="ds_hint-text">For example, 31/01/2023.</p>
 
                 <!-- Error message date range date_to -->
-                <div *ngIf="isControlInvalid('date_to')">
-                  <p
-                    *ngFor="let error of getFieldErrorMessages('date_to')"
-                    id="datefrom-error"
-                    class="govuk-error-message"
-                  >
+                <div *ngIf="isControlInvalid('date_to')" id="date_to-errors">
+                  <p *ngFor="let error of getFieldErrorMessages('date_to')" class="govuk-error-message">
                     <span class="govuk-visually-hidden">Error:</span> {{ error }}
                   </p>
                 </div>

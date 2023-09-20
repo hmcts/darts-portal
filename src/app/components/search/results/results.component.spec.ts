@@ -310,5 +310,18 @@ describe('ResultsComponent', () => {
       const ariaSort = component.getAriaSort(column);
       expect(ariaSort).toBe('none');
     });
+
+    it('should reset column sorting state on cases changed', () => {
+      component.cases = MOCK_CASES;
+      const column: SortableColumn = 'case_number';
+      component.sorting = {
+        column,
+        order: 'asc',
+      };
+
+      component.ngOnChanges();
+
+      expect(component.sorting.column).toBe('');
+    });
   });
 });

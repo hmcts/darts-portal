@@ -44,3 +44,5 @@ Thumbs.db
 # Testing
 cypress/videos
 cypress/screenshots
+functional-output
+smoke-output
