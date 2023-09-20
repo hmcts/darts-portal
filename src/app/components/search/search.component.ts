@@ -186,6 +186,7 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.form.reset();
     this.cases = [];
     this.loaded = false;
+    this.errorType = '';
     this.isSubmitted = false;
     this.errorSummary = [];
     this.courthouseComponent.reset();
