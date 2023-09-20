@@ -8,7 +8,7 @@ describe('ReportingRestrictionComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ReportingRestrictionComponent]
+      imports: [ReportingRestrictionComponent],
     });
     fixture = TestBed.createComponent(ReportingRestrictionComponent);
     component = fixture.componentInstance;
