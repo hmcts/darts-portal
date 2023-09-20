@@ -3,6 +3,7 @@ import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { combineLatest } from 'rxjs';
 import { CaseService } from 'src/app/services/case/case.service';
+import { HeaderService } from 'src/app/services/header.service';
 import { HearingService } from 'src/app/services/hearing/hearing.service';
 import { HearingAudioEventViewModel } from 'src/app/types/hearing-audio-event';
 import { HearingPageState } from 'src/app/types/hearing-state';
@@ -22,8 +23,25 @@ export class HearingComponent {
   private route = inject(ActivatedRoute);
   private caseService = inject(CaseService);
   hearingService = inject(HearingService);
+  headerService = inject(HeaderService);
   requestAudioTimes: Map<string, Date> | undefined;
-  state: HearingPageState = 'Default';
+  private _state: HearingPageState = 'Default';
+
+  // getter for state variable
+  public get state() {
+    return this._state;
+  }
+
+  // overriding state setter to call show/hide navigation
+  public set state(value: HearingPageState) {
+    if (value === 'Default') {
+      this.headerService.showPrimaryNavigation(true);
+    } else {
+      this.headerService.showPrimaryNavigation(false);
+    }
+    this._state = value;
+  }
+
   requestObject!: requestPlaybackAudioDTO;
 
   hearingId = this.route.snapshot.params.hearing_id;
