@@ -22,10 +22,10 @@ const INTERNAL_USER_CALLBACK = `${config.get('darts-api.url')}/internal-user/han
 function getLogin(type: 'internal' | 'external'): (_: Request, res: Response, next: NextFunction) => Promise<void> {
   return async (_: Request, res: Response, next: NextFunction) => {
     try {
-      let url;
-      type == 'internal'
-        ? (url = `${INTERNAL_USER_LOGIN}?redirect_uri=${config.get('hostname')}/auth/internal/callback`)
-        : (url = `${EXTERNAL_USER_LOGIN}?redirect_uri=${config.get('hostname')}/auth/callback`);
+      const url =
+        type === 'internal'
+          ? `${INTERNAL_USER_LOGIN}?redirect_uri=${config.get('hostname')}/auth/internal/callback`
+          : `${EXTERNAL_USER_LOGIN}?redirect_uri=${config.get('hostname')}/auth/callback`;
       const result = await axios(url);
       const loginRedirect = result.request.res.responseUrl;
       if (loginRedirect) {
@@ -110,7 +110,6 @@ function getLogout(): (_: Request, res: Response, next: NextFunction) => Promise
       }
 
       const logoutUrl = req.session.userType === 'internal' ? INTERNAL_USER_LOGOUT : EXTERNAL_USER_LOGOUT;
-
       const result = await axios(`${logoutUrl}?redirect_uri=${config.get('hostname')}/auth/logout-callback`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
