@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { CaseData } from '@darts-types/index';
+import { HeaderService } from '@services/header/header.service';
 
 import { OrderConfirmationComponent } from './order-confirmation.component';
 
@@ -27,6 +29,7 @@ describe('OrderConfirmationComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [OrderConfirmationComponent],
+      providers: [HeaderService, RouterTestingModule],
     });
     fixture = TestBed.createComponent(OrderConfirmationComponent);
     component = fixture.componentInstance;
@@ -36,5 +39,42 @@ describe('OrderConfirmationComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('#onReturnToHearing', () => {
+    it('should emit a stateChange event', () => {
+      const event = new MouseEvent('click');
+      const eventSpy = jest.spyOn(event, 'preventDefault');
+      const stateChangeSpy = jest.spyOn(component.stateChange, 'emit');
+
+      component.onReturnToHearing(event);
+
+      expect(eventSpy).toHaveBeenCalled();
+      expect(stateChangeSpy).toHaveBeenCalledWith('Default');
+    });
+  });
+
+  describe('#onReturnToSearch', () => {
+    it('should navigate back to search screen', () => {
+      const event = new MouseEvent('click');
+      const eventSpy = jest.spyOn(event, 'preventDefault');
+      const routerSpy = jest.spyOn(component.router, 'navigate');
+
+      component.onReturnToSearch(event);
+
+      expect(eventSpy).toHaveBeenCalled();
+      expect(routerSpy).toHaveBeenCalledWith(['/search']);
+    });
+
+    it('should call headerService to show nav', () => {
+      const event = new MouseEvent('click');
+      const eventSpy = jest.spyOn(event, 'preventDefault');
+      const showPrimaryNavigationSpy = jest.spyOn(component.headerService, 'showPrimaryNavigation');
+
+      component.onReturnToSearch(event);
+
+      expect(eventSpy).toHaveBeenCalled();
+      expect(showPrimaryNavigationSpy).toBeCalledWith(true);
+    });
   });
 });
