@@ -23,13 +23,15 @@ withPipeline(type, product, component) {
   }
 
   afterAlways('functionalTest:dev') {
-    yarnBuilder.yarn('test:functional:combine:reports')
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/screenshots'
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/videos'
   }
 
   afterAlways('functionalTest:stg') {
-    yarnBuilder.yarn('test:functional:combine:reports')
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/screenshots'
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/videos'
   }
 
   syncBranchesWithMaster(branchesToSync)
