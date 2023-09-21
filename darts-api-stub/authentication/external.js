@@ -19,7 +19,7 @@ router.post('/handle-oauth-code', (_, res) => {
   ];
   const userState = {
     userId: 123,
-    userName: 'localdev01',
+    userName: 'dev@local',
     roles: roles,
   };
 
