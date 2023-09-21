@@ -43,7 +43,7 @@
     ></app-events-and-audio>
   </div>
 
-  <!-- Confirmation Screen -->
+  <!-- Summary / Confirmation Screen -->
   <div [hidden]="state !== 'OrderConfirmation' && state !== 'OrderSummary'" class="order-confirmation">
     <app-order-confirmation
       [case]="vm.case"
