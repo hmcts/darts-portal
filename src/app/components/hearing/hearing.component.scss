@@ -3,6 +3,11 @@
   display: block;
 }
 
+.pad-top {
+  margin-top: 40px;
+  display: block;
+}
+
 .moj-banner__message {
   .govuk-heading-m,
   .govuk-body-m {
@@ -12,4 +17,8 @@
 
 .govuk-heading-s {
   margin: 0;
+}
+
+.order-confirmation {
+  margin-top: 40px;
 }

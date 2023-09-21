@@ -206,4 +206,52 @@ describe('HearingComponent', () => {
       });
     });
   });
+
+  describe('#onStageChanged', () => {
+    it('should set the state to orderSummary', () => {
+      component.onStateChanged('OrderSummary');
+      expect(component.state).toEqual('OrderSummary');
+    });
+    it('should set the state to orderConfirmation', () => {
+      component.onStateChanged('OrderConfirmation');
+      expect(component.state).toEqual('OrderConfirmation');
+    });
+  });
+
+  describe('#onBack', () => {
+    it('should change state to Default', () => {
+      const event = new MouseEvent('click');
+      const eventSpy = jest.spyOn(event, 'preventDefault');
+      component.onBack(event);
+
+      expect(eventSpy).toHaveBeenCalled();
+      expect(component.state).toEqual('Default');
+    });
+  });
+
+  describe('#onOrderConfirm', () => {
+    it('should set the values of state and requestId', () => {
+      jest.spyOn(hearingService, 'requestAudio').mockReturnValue(
+        of({
+          request_id: 1234,
+          case_id: 'T4565443',
+          courthouse_name: 'Swansea',
+          defendants: ['Derek Defender'],
+          hearing_date: '2023-09-20',
+          start_time: '2023-09-01T02:00:00Z',
+          end_time: '2023-09-01T15:32:24Z',
+        })
+      );
+      const mockRequestObject: requestPlaybackAudioDTO = {
+        hearing_id: 1,
+        requestor: 1,
+        start_time: '2023-09-01T02:00:00Z',
+        end_time: '2023-09-01T15:32:24Z',
+        request_type: 'DOWNLOAD',
+      };
+      component.onOrderConfirm(mockRequestObject);
+      expect(component.state).toEqual('OrderConfirmation');
+      expect(component.requestId).toEqual(1234);
+    });
+  });
 });

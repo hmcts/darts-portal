@@ -100,5 +100,30 @@ describe('RequestPlaybackAudioComponent', () => {
       expect(component.requestObj).toEqual(expectedResult);
       expect(audioRequestSpy).toHaveBeenCalledWith(component.requestObj);
     });
+    it('should return null when nothing is submitted', () => {
+      component.hearing = {
+        id: 1,
+        date: '2023-09-01',
+        judges: ['HHJ M. Hussain KC'],
+        courtroom: '3',
+        transcript_count: 1,
+      };
+      const audioRequestForm = {
+        startTime: {
+          hours: '',
+          minutes: '',
+          seconds: '',
+        },
+        endTime: {
+          hours: '',
+          minutes: '',
+          seconds: '',
+        },
+        requestType: 'DOWNLOAD',
+      };
+      component.audioRequestForm.setValue(audioRequestForm);
+      component.onSubmit();
+      expect(component.requestObj).toEqual(undefined);
+    });
   });
 });
