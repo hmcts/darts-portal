@@ -5,6 +5,7 @@ import { ReportingRestrictionComponent } from '@common/reporting-restriction/rep
 import { HearingAudioEventViewModel } from '@darts-types/hearing-audio-event';
 import { HearingPageState } from '@darts-types/hearing-state';
 import { requestPlaybackAudioDTO } from '@darts-types/requestPlaybackAudioDTO';
+import { responsePlaybackAudioDTO } from '@darts-types/responsePlaybackAudioDTO';
 import { CaseService } from '@services/case/case.service';
 import { HeaderService } from '@services/header/header.service';
 import { HearingService } from '@services/hearing/hearing.service';
@@ -111,7 +112,7 @@ export class HearingComponent {
   }
 
   onOrderConfirm(requestObject: requestPlaybackAudioDTO) {
-    this.hearingService.requestAudio(requestObject).subscribe((val: any) => {
+    this.hearingService.requestAudio(requestObject).subscribe((val: responsePlaybackAudioDTO) => {
       this.state = 'OrderConfirmation';
       this.requestId = val.request_id;
     });
