@@ -69,6 +69,7 @@
             <a href="/" class="govuk-header__link govuk-header__link--homepage">
               <span class="govuk-header__logotype">
                 <img
+                  alt="UK Government crest in white"
                   src="{{hostname}}/assets/images/govuk-crest-white.png"
                   height="30"
                   width="36"
@@ -81,22 +82,26 @@
         </div>
       </div>
     </header>
-    <div id="darts-container" class="govuk-width-container">
-      <!-- Azure API -->
-      <div id="api"></div>
+    <main id="main-content">
 
-      {% if screen === 'loginScreen' %}
-        <p id="outroText" class="outro">
-          This sign in page is for users who do not work for HMCTS.<br />
-          <a id="dedicatedPage" href="#">There is a dedicated page for HMCTS employees to sign into the portal.</a>
-        </p>
-      {% endif %}
-    </div>
+      <div id="darts-container" class="govuk-width-container">
+        <!-- Azure API -->
+        <div id="api"></div>
+
+        {% if screen === 'loginScreen' %}
+          <p id="outroText" class="outro">
+            This sign in page is for users who do not work for HMCTS.<br />
+            <a id="dedicatedPage" href="#">There is a dedicated page for HMCTS employees to sign into the portal.</a>
+          </p>
+        {% endif %}
+      </div>
+    </main>
     <footer class="govuk-footer" role="contentinfo">
       <div class="govuk-width-container">
         <div class="govuk-footer__meta">
           <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
             <img
+              alt="Open Government Licence logo"
               src="{{hostname}}/assets/images/licence-logo.png"
               height="17"
               width="41"
