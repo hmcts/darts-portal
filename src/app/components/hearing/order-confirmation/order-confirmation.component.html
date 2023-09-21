@@ -1,11 +1,12 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <div class="govuk-panel govuk-panel--confirmation">
+    <div *ngIf="state === 'OrderConfirmation'" class="govuk-panel govuk-panel--confirmation">
       <h1 class="govuk-panel__title">Your order is complete</h1>
       <div class="govuk-panel__body">
         Your request ID<br /><strong>{{ requestId }}</strong>
       </div>
     </div>
+    <h1 *ngIf="state === 'OrderSummary'" class="govuk-heading-l">Confirm your Order</h1>
     <h2 class="govuk-heading-m">Case details</h2>
     <h1 class="govuk-heading-s">Case ID</h1>
     <h1 class="govuk-body">{{ case.case_number }}</h1>
@@ -22,14 +23,23 @@
       <h3 class="govuk-heading-s">End Time</h3>
       <p class="govuk-body">{{ audioRequest.end_time | date : 'HH:mm:ss' : 'UTC' }}</p>
     </ng-container>
-    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
-    <p class="govuk-body">We are preparing your audio.</p>
-    <p class="govuk-body">
-      When it is ready we will send an email to <strong>abc@123.co.uk</strong> and notify you in the DARTS application.
-    </p>
-    <div class="govuk-button-group">
-      <a href="#" (click)="onReturnToHearing($event)" class="govuk-link">Return to hearing date</a>
-      <a href="#" (click)="onReturnToSearch($event)" class="govuk-link">Back to search results</a>
+
+    <div *ngIf="state === 'OrderSummary'" class="govuk-button-group">
+      <button class="govuk-button" (click)="onConfirm()" data-module="govuk-button">Confirm</button>
+      <a href="#" (click)="onCancel($event)" class="govuk-link">Cancel</a>
     </div>
+
+    <ng-container *ngIf="state === 'OrderConfirmation'">
+      <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
+      <p class="govuk-body">We are preparing your audio.</p>
+      <p class="govuk-body">
+        When it is ready we will send an email to <strong>abc@123.co.uk</strong> and notify you in the DARTS
+        application.
+      </p>
+      <div class="govuk-button-group">
+        <a href="#" (click)="onReturnToHearing($event)" class="govuk-link">Return to hearing date</a>
+        <a href="#" (click)="onReturnToSearch($event)" class="govuk-link">Back to search results</a>
+      </div>
+    </ng-container>
   </div>
 </div>

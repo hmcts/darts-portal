@@ -12,7 +12,6 @@ import { combineLatest } from 'rxjs';
 import { EventsAndAudioComponent } from './events-and-audio/events-and-audio.component';
 import { HearingFileComponent } from './hearing-file/hearing-file.component';
 import { OrderConfirmationComponent } from './order-confirmation/order-confirmation.component';
-import { OrderSummaryComponent } from './order-summary/order-summary.component';
 import { RequestPlaybackAudioComponent } from './request-playback-audio/request-playback-audio.component';
 
 @Component({
@@ -24,7 +23,6 @@ import { RequestPlaybackAudioComponent } from './request-playback-audio/request-
     EventsAndAudioComponent,
     RequestPlaybackAudioComponent,
     OrderConfirmationComponent,
-    OrderSummaryComponent,
     ReportingRestrictionComponent,
     RouterLink,
   ],

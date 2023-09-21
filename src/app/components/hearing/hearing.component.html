@@ -43,25 +43,16 @@
     ></app-events-and-audio>
   </div>
 
-  <!-- Summary Screen -->
-  <div [hidden]="state !== 'OrderSummary'">
-    <app-order-summary
-      [case]="vm.case"
-      [hearing]="vm.hearing"
-      [audioRequest]="requestObject"
-      (stateChange)="onStateChanged($event)"
-      (orderConfirm)="onOrderConfirm($event)"
-    ></app-order-summary>
-  </div>
-
   <!-- Confirmation Screen -->
-  <div [hidden]="state !== 'OrderConfirmation'" class="order-confirmation">
+  <div [hidden]="state !== 'OrderConfirmation' && state !== 'OrderSummary'" class="order-confirmation">
     <app-order-confirmation
       [case]="vm.case"
       [hearing]="vm.hearing"
       [audioRequest]="requestObject"
       [requestId]="requestId"
+      [state]="state"
       (stateChange)="onStateChanged($event)"
+      (orderConfirm)="onOrderConfirm($event)"
     ></app-order-confirmation>
   </div>
 </ng-container>
