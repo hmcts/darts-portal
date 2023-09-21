@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { CaseData, HearingData } from '@darts-types/index';
+import { Case, Hearing } from '@darts-types/index';
 import { CaseService } from '@services/case/case.service';
 import { Observable, of } from 'rxjs';
 import { CaseComponent } from './case.component';
@@ -9,7 +9,7 @@ describe('CaseComponent', () => {
   let component: CaseComponent;
   let fixture: ComponentFixture<CaseComponent>;
 
-  const mockCaseFile: Observable<CaseData> = of({
+  const mockCaseFile: Observable<Case> = of({
     case_id: 1,
     courthouse: 'Swansea',
     case_number: 'CASE1001',
@@ -21,7 +21,7 @@ describe('CaseComponent', () => {
     retain_until: '2023-08-10T11:23:24.858Z',
   });
 
-  const mockSingleCaseTwoHearings: Observable<HearingData[]> = of([
+  const mockSingleCaseTwoHearings: Observable<Hearing[]> = of([
     {
       id: 1,
       date: '2023-09-01',

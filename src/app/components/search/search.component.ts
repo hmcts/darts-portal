@@ -6,7 +6,7 @@ import { ResultsComponent } from './results/results.component';
 import { initAll } from '@scottish-government/pattern-library/src/all';
 import { Subscription } from 'rxjs';
 import { CourthouseComponent } from '@common/courthouse/courthouse.component';
-import { CaseData } from '@darts-types/case';
+import { Case } from '@darts-types/case.interface';
 import { CaseService } from '@services/case/case.service';
 import { SearchFormValues } from '@darts-types/search-form.interface';
 import { futureDateValidator } from '@validators/future-date.validator';
@@ -47,7 +47,7 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
   @ViewChild(CourthouseComponent) courthouseComponent!: CourthouseComponent;
 
   dateInputType: 'specific' | 'range' | undefined;
-  cases: CaseData[] = [];
+  cases: Case[] = [];
   loaded = false;
   isSubmitted = false;
   errorSummary: ErrorSummaryEntry[] = [];
@@ -130,7 +130,7 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
     }
 
     this.caseService.getCasesAdvanced(this.form.value).subscribe({
-      next: (result: CaseData[]) => {
+      next: (result: Case[]) => {
         if (result) {
           this.cases = result;
           this.loaded = true;

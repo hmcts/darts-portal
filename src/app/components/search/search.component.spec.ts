@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
 import { CaseService } from '@services/case/case.service';
 import { CourthouseComponent } from '@common/courthouse/courthouse.component';
-import { CourthouseData } from '@darts-types/courthouse';
+import { Courthouse } from '@darts-types/courthouse.interface';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
 
 // Mock the initAll function
@@ -28,7 +28,7 @@ describe('SearchComponent', () => {
     { courthouse_name: 'Reading', id: 0, created_date_time: 'mock' },
     { courthouse_name: 'Slough', id: 1, created_date_time: 'mock' },
     { courthouse_name: 'Ascot', id: 2, created_date_time: 'mock' },
-  ] as CourthouseData[];
+  ] as Courthouse[];
 
   beforeEach(() => {
     httpClientSpy = {

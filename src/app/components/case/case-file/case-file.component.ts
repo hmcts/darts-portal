@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CaseData } from '@darts-types/index';
+import { Case } from '@darts-types/index';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
 import { JoinPipe } from '@pipes/join';
 
@@ -12,5 +12,5 @@ import { JoinPipe } from '@pipes/join';
   styleUrls: ['./case-file.component.scss'],
 })
 export class CaseFileComponent {
-  @Input() public caseFile!: CaseData;
+  @Input() public caseFile!: Case;
 }

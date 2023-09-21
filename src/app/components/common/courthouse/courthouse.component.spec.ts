@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { By } from '@angular/platform-browser';
 import { CourthouseComponent } from './courthouse.component';
-import { CourthouseData } from '@darts-types/index';
+import { Courthouse } from '@darts-types/index';
 
 describe('CourthouseComponent', () => {
   let component: CourthouseComponent;
@@ -12,7 +12,7 @@ describe('CourthouseComponent', () => {
     { courthouse_name: 'Reading', id: 0, created_date_time: 'mock' },
     { courthouse_name: 'Slough', id: 1, created_date_time: 'mock' },
     { courthouse_name: 'Ascot', id: 2, created_date_time: 'mock' },
-  ] as CourthouseData[];
+  ] as Courthouse[];
 
   beforeEach(() => {
     TestBed.configureTestingModule({

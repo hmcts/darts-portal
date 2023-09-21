@@ -5,14 +5,11 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
-import { CaseData } from '@darts-types/case';
-import { HearingData } from '@darts-types/hearing';
 import { CaseService } from '@services/case/case.service';
-import { HearingAudioEventViewModel } from '@darts-types/hearing-audio-event';
-import { requestPlaybackAudioDTO } from '@darts-types/requestPlaybackAudioDTO';
+import { HearingAudioEventViewModel } from '@darts-types/hearing-audio-event.interface';
 import { HearingService } from '@services/hearing/hearing.service';
 import { HearingFileComponent } from './hearing-file/hearing-file.component';
-import { HearingEventTypeEnum, HearingPageState } from '@darts-types/index';
+import { AudioRequest, Case, Hearing, HearingEventTypeEnum, HearingPageState } from '@darts-types/index';
 import { HeaderService } from '@services/header/header.service';
 
 describe('HearingComponent', () => {
@@ -23,11 +20,11 @@ describe('HearingComponent', () => {
   let component: HearingComponent;
   let fixture: ComponentFixture<HearingComponent>;
 
-  const cd = of({ case_id: 1, case_number: '12345', courthouse: 'Reading', judges: ['Judy'] }) as Observable<CaseData>;
+  const cd = of({ case_id: 1, case_number: '12345', courthouse: 'Reading', judges: ['Judy'] }) as Observable<Case>;
   const hd = of([
     { id: 1, date: '2023-02-21', judges: ['Joseph', 'Judy'], courtroom: '3', transcript_count: 99 },
     { id: 2, date: '2023-03-21', judges: ['Joseph', 'Kennedy'], courtroom: '1', transcript_count: 12 },
-  ]) as Observable<HearingData[]>;
+  ]) as Observable<Hearing[]>;
   const ad = of([
     {
       id: 1,
@@ -50,7 +47,7 @@ describe('HearingComponent', () => {
     judges: ['Joseph', 'Judy'],
     courtroom: '3',
     transcript_count: 99,
-  }) as Observable<HearingData>;
+  }) as Observable<Hearing>;
 
   beforeEach(() => {
     httpClientSpy = {
@@ -109,7 +106,7 @@ describe('HearingComponent', () => {
     it('should set case and hearing child variables correctly', () => {
       let c;
       parentComponent.case$.subscribe({
-        next: (data: CaseData) => {
+        next: (data: Case) => {
           c = data;
           expect(childComponent.case).toEqual(c);
         },
@@ -118,7 +115,7 @@ describe('HearingComponent', () => {
       let h;
       if (parentComponent.hearing$) {
         parentComponent.hearing$.subscribe({
-          next: (data: HearingData | undefined) => {
+          next: (data: Hearing | undefined) => {
             h = data;
             expect(childComponent.hearing).toEqual(h);
           },
@@ -171,7 +168,7 @@ describe('HearingComponent', () => {
 
   describe('#onAudioRequest', () => {
     it('should set the request object and set the state variable', () => {
-      const mockRequestObject: requestPlaybackAudioDTO = {
+      const mockRequestObject: AudioRequest = {
         hearing_id: 1,
         requestor: 1,
         start_time: '2023-09-01T02:00:00Z',
@@ -242,7 +239,7 @@ describe('HearingComponent', () => {
           end_time: '2023-09-01T15:32:24Z',
         })
       );
-      const mockRequestObject: requestPlaybackAudioDTO = {
+      const mockRequestObject: AudioRequest = {
         hearing_id: 1,
         requestor: 1,
         start_time: '2023-09-01T02:00:00Z',

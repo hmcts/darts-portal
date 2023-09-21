@@ -2,7 +2,7 @@ import { NgFor, NgIf } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { PaginationComponent } from '@common/pagination/pagination.component';
-import { CaseData, HearingData } from '@darts-types/index';
+import { Case, Hearing } from '@darts-types/index';
 import { DateTimeService } from '@services/datetime/datetime.service';
 
 export interface SortingInterface {
@@ -20,11 +20,11 @@ export type SortableColumn = 'case_number' | 'courthouse';
   standalone: true,
 })
 export class ResultsComponent implements OnChanges {
-  @Input() cases: CaseData[] = [];
+  @Input() cases: Case[] = [];
   @Input() loaded = false;
   @Input() errorType = '';
 
-  pagedCases: CaseData[] = [];
+  pagedCases: Case[] = [];
   currentPage = 1;
   pageLimit = 25;
 
@@ -101,7 +101,7 @@ export class ResultsComponent implements OnChanges {
   }
 
   //Fetches correct display value for dates and courtrooms
-  getHearingsValue(c: CaseData, key: keyof HearingData): string {
+  getHearingsValue(c: Case, key: keyof Hearing): string {
     if (!c.hearings || c.hearings.length === 0) {
       return '';
     } else {
@@ -134,7 +134,7 @@ export class ResultsComponent implements OnChanges {
     this.pagedCases = this.paginate(this.cases, this.pageLimit, this.currentPage);
   }
 
-  private paginate(array: CaseData[], pageSize: number, currentPage: number) {
+  private paginate(array: Case[], pageSize: number, currentPage: number) {
     return array.slice((currentPage - 1) * pageSize, currentPage * pageSize);
   }
 }
