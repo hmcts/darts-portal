@@ -29,6 +29,7 @@
     {% endif %}
     <script src="{{hostname}}/assets/javascripts/xhr.js"></script>
     <script src="{{hostname}}/assets/javascripts/errors.js"></script>
+    <script src="{{hostname}}/assets/javascripts/accessibility.js"></script>
     <style>
       body {
         margin: 0;
@@ -82,17 +83,20 @@
         </div>
       </div>
     </header>
-    <div id="darts-container" class="govuk-width-container">
-      <!-- Azure API -->
-      <div id="api"></div>
+    <main id="main-content">
 
-      {% if screen === 'loginScreen' %}
-        <p id="outroText" class="outro">
-          This sign in page is for users who do not work for HMCTS.<br />
-          <a id="dedicatedPage" href="#">There is a dedicated page for HMCTS employees to sign into the portal.</a>
-        </p>
-      {% endif %}
-    </div>
+      <div id="darts-container" class="govuk-width-container">
+        <!-- Azure API -->
+        <div id="api"></div>
+
+        {% if screen === 'loginScreen' %}
+          <p id="outroText" class="outro">
+            This sign in page is for users who do not work for HMCTS.<br />
+            <a id="dedicatedPage" href="#">There is a dedicated page for HMCTS employees to sign into the portal.</a>
+          </p>
+        {% endif %}
+      </div>
+    </main>
     <footer class="govuk-footer" role="contentinfo">
       <div class="govuk-width-container">
         <div class="govuk-footer__meta">

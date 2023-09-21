@@ -9,10 +9,15 @@ function displayErrors() {
   hidePageLevelErrors();
 }
 
+function onLoad(){
+  displayErrors();
+  loginAccessibility();
+}
+
 moveForgotPasswordLink();
 $('button#next').click(displayErrors);
 
 // wait a second before trying to do this, in case the JS in head isn't loaded yet
 setTimeout(function() {
-  wrapXhrOpen('SelfAsserted', '"status":"400"', displayErrors);
+  wrapXhrOpen('SelfAsserted', '"status":"400"', onLoad);
 }, 1000);
