@@ -1,18 +1,18 @@
 class UserState {
-  userId: number = 0;
-  userName: string = '';
+  userId!: number;
+  userName!: string;
   roles?: Role[];
 }
 
 class Role {
-  roleId: number = 0;
-  roleName: string = '';
+  roleId!: number;
+  roleName!: string;
   permissions?: Permissions[];
 }
 
 class Permissions {
-  permissionId: number = 0;
-  permissionName: string = '';
+  permissionId!: number;
+  permissionName!: string;
 }
 
-export = UserState;
+export default UserState;
