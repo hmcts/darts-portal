@@ -51,6 +51,7 @@
       [audioRequest]="requestObject"
       [requestId]="requestId"
       [state]="state"
+      [userProfile]="userProfile$ | async"
       (stateChange)="onStateChanged($event)"
       (orderConfirm)="onOrderConfirm($event)"
     ></app-order-confirmation>
