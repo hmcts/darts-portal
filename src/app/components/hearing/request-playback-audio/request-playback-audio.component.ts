@@ -81,6 +81,8 @@ export class RequestPlaybackAudioComponent implements OnChanges {
     const startDateTime = moment.utc(`${this.hearing.date}T${startTimeHours}:${startTimeMinutes}:${startTimeSeconds}`);
     const endDateTime = moment.utc(`${this.hearing.date}T${endTimeHours}:${endTimeMinutes}:${endTimeSeconds}`);
 
+    if (!startDateTime.isValid() && !endDateTime.isValid()) return;
+
     this.requestObj = {
       hearing_id: this.hearing.id,
       // TO DO: Replace with user/Requestor ID when requesting audio

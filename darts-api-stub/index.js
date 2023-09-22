@@ -22,6 +22,8 @@ app.use('/internal-user', require('./authentication/internal'));
 app.use('/courthouses', require('./courthouses/courthouses'));
 // stub out certain case APIs
 app.use('/cases', require('./cases/case'));
+// audio request API
+app.use('/audio-requests', require('./audios/audios'));
 // hearing APIs
 app.use('/hearings', require('./hearings/hearings'));
 // audio APIs

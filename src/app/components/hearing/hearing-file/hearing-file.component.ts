@@ -1,13 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
 import { CaseData, HearingData } from '@darts-types/index';
 import { JoinPipe } from '@pipes/join';
 
 @Component({
   selector: 'app-hearing-file',
   standalone: true,
-  imports: [CommonModule, RouterLink, JoinPipe],
+  imports: [CommonModule, JoinPipe],
   templateUrl: './hearing-file.component.html',
   styleUrls: ['./hearing-file.component.scss'],
 })
