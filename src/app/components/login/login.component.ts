@@ -17,7 +17,10 @@ export class LoginComponent {
   });
   errors = false;
 
-  constructor(public authService: AuthService, @Inject('Window') private window: Window) {}
+  constructor(
+    public authService: AuthService,
+    @Inject('Window') private window: Window
+  ) {}
 
   submit() {
     // preliminary code for internal vs external routing

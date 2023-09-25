@@ -30,7 +30,10 @@ export class RequestPlaybackAudioComponent implements OnChanges {
   requestObj!: requestPlaybackAudioDTO;
   @Output() audioRequest = new EventEmitter<requestPlaybackAudioDTO>();
 
-  constructor(private fb: FormBuilder, public datetimeService: DateTimeService) {
+  constructor(
+    private fb: FormBuilder,
+    public datetimeService: DateTimeService
+  ) {
     this.audioRequestForm = this.fb.group({
       startTime: this.fb.group({
         hours: [null, [Validators.required, Validators.min(0), Validators.max(23), Validators.pattern(/^\d{2}$/)]],
