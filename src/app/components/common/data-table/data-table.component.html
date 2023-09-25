@@ -1,0 +1,51 @@
+<table class="govuk-table" data-module="moj-sortable-table">
+  <caption class="govuk-table__caption govuk-table__caption--m">
+    {{
+      caption
+    }}
+  </caption>
+  <thead class="govuk-table__head">
+    <tr class="govuk-table__row">
+      <ng-container *ngFor="let column of columns">
+        <th *ngIf="column.sortable" scope="col" class="govuk-table__header" [attr.aria-sort]="getAriaSort(column.prop)">
+          <button type="button" (click)="sortTable(column.prop)">{{ column.name }}</button>
+        </th>
+        <th *ngIf="!column.sortable" scope="col" class="govuk-table__header">
+          {{ column.name }}
+        </th>
+      </ng-container>
+    </tr>
+  </thead>
+  <tbody class="govuk-table__body">
+    <ng-container *ngFor="let row of pagedRows; let i = index">
+      <tr class="govuk-table__row">
+        <td *ngFor="let column of columns" class="govuk-table__cell">
+          <ng-container *ngIf="column.link">
+            <a [routerLink]="[column.link, row.id]"> {{ row[column.prop] }}</a>
+          </ng-container>
+          <ng-container *ngIf="!column.link">
+            {{ row[column.prop] }}
+          </ng-container>
+        </td>
+      </tr>
+      <tr *ngIf="row.reporting_restriction" class="restriction-row govuk-table__row">
+        <td class="govuk-table__cell" colspan="6">
+          <div class="govuk-warning-text">
+            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+            <span class="govuk-warning-text__text">
+              <span class="govuk-warning-text__assistive">Restriction</span>
+              <strong>Restriction:</strong> {{ row.reporting_restriction }}
+            </span>
+          </div>
+        </td>
+      </tr>
+    </ng-container>
+  </tbody>
+</table>
+
+<app-pagination
+  [currentPage]="currentPage"
+  [limit]="pageLimit"
+  [total]="rows.length"
+  (changePage)="onPageChanged($event)"
+></app-pagination>

@@ -1,1 +1,1 @@
-<h1 class="govuk-heading-l">Welcome to DARTS</h1>
+<app-data-table *ngIf="caseRows$ | async as rows" [rows]="rows" [columns]="columns"></app-data-table>
