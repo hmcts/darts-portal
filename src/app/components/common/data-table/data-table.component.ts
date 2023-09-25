@@ -25,7 +25,7 @@ export class DataTableComponent implements OnChanges {
 
   currentPage = 1;
   itemsPerPage = 10;
-  pageLimit = 5;
+  @Input() pageLimit = 25;
 
   sorting: SortingInterface = {
     column: '',
