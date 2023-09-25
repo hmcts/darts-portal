@@ -1,86 +1,49 @@
 import { NgFor, NgIf } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { DataTableComponent } from '@common/data-table/data-table.component';
 import { PaginationComponent } from '@common/pagination/pagination.component';
 import { CaseData, HearingData } from '@darts-types/index';
 import { DateTimeService } from '@services/datetime/datetime.service';
-
-export interface SortingInterface {
-  column: string;
-  order: 'asc' | 'desc';
-}
-
-export type SortableColumn = 'case_number' | 'courthouse';
 
 @Component({
   selector: 'app-results',
   templateUrl: './results.component.html',
   styleUrls: ['./results.component.scss'],
-  imports: [NgIf, NgFor, RouterLink, PaginationComponent],
+  imports: [NgIf, NgFor, RouterLink, PaginationComponent, DataTableComponent],
   standalone: true,
 })
 export class ResultsComponent implements OnChanges {
   @Input() cases: CaseData[] = [];
   @Input() loaded = false;
   @Input() errorType = '';
-
-  pagedCases: CaseData[] = [];
-  currentPage = 1;
-  pageLimit = 25;
-
-  sorting: SortingInterface = {
-    column: '',
-    order: 'asc',
-  };
+  caption = '';
+  rows: any[] = [];
+  columns = [
+    { name: 'Case ID', prop: 'caseNumber', sortable: true, link: '/case' },
+    { name: 'Courthouse', prop: 'courthouse', sortable: true },
+    { name: 'Courtroom', prop: 'courtroom', sortable: false },
+    { name: 'Judge(s)', prop: 'judges', sortable: false },
+    { name: 'Defendants(s)', prop: 'defendants', sortable: false },
+  ];
 
   ngOnChanges(): void {
-    this.sorting.column = '';
-    this.currentPage = 1;
-    this.updatePagedCases();
+    this.rows = this.mapCasesToRows(this.cases);
+    this.caption = `${this.cases.length} result${this.cases.length > 0 ? 's' : ''}`;
   }
 
-  onPageChanged(page: number): void {
-    this.currentPage = page;
-    this.updatePagedCases();
-  }
-
-  sortTable(column: SortableColumn): void {
-    this.sorting = {
-      column: column,
-      order: this.isDescSorting(column) ? 'asc' : 'desc',
-    };
-
-    this.cases.sort((a, b) => {
-      const valueA: string | undefined = a[column];
-      const valueB: string | undefined = b[column];
-
-      if (typeof valueA === 'string' && typeof valueB === 'string') {
-        return this.compareStrings(column, valueA, valueB);
-      } else {
-        return 0;
-      }
+  mapCasesToRows(cases: CaseData[]) {
+    return cases.map((c) => {
+      return {
+        id: c.case_id,
+        caseNumber: c.case_number,
+        courthouse: c.courthouse,
+        courtroom: this.getHearingsValue(c, 'courtroom'),
+        judges: this.getNameValue(c.judges),
+        defendants: this.getNameValue(c.defendants),
+        reporting_restriction: c.reporting_restriction,
+      };
     });
-
-    this.updatePagedCases();
-  }
-
-  compareStrings(column: SortableColumn, a: string, b: string): number {
-    return this.isAscSorting(column) ? a.localeCompare(b) : b.localeCompare(a);
-  }
-
-  isDescSorting(column: SortableColumn): boolean {
-    return this.sorting.column === column && this.sorting.order === 'desc';
-  }
-
-  isAscSorting(column: SortableColumn): boolean {
-    return this.sorting.column === column && this.sorting.order === 'asc';
-  }
-
-  getAriaSort(column: SortableColumn): 'ascending' | 'descending' | 'none' {
-    if (this.sorting.column === column) {
-      return this.isAscSorting(column) ? 'ascending' : 'descending';
-    }
-    return 'none';
   }
 
   //Fetches correct display value for defendants and judges
@@ -128,13 +91,5 @@ export class ResultsComponent implements OnChanges {
 
   private getDateFormat(d: string): string {
     return DateTimeService.getdddDMMMYYYY(d);
-  }
-
-  private updatePagedCases(): void {
-    this.pagedCases = this.paginate(this.cases, this.pageLimit, this.currentPage);
-  }
-
-  private paginate(array: CaseData[], pageSize: number, currentPage: number) {
-    return array.slice((currentPage - 1) * pageSize, currentPage * pageSize);
   }
 }

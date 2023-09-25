@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SortingInterface } from '@components/search/results/results.component';
 import { PaginationComponent } from '@common/pagination/pagination.component';
 import { RouterLink } from '@angular/router';
 
@@ -32,10 +31,6 @@ export class DataTableComponent implements OnChanges {
     column: '',
     order: 'asc',
   };
-
-  sortNull() {
-    return 0;
-  }
 
   ngOnChanges(): void {
     this.sorting.column = '';
@@ -94,4 +89,9 @@ export class DataTableComponent implements OnChanges {
   private paginate(array: any[], pageSize: number, currentPage: number) {
     return array.slice((currentPage - 1) * pageSize, currentPage * pageSize);
   }
+}
+
+export interface SortingInterface {
+  column: string;
+  order: 'asc' | 'desc';
 }
