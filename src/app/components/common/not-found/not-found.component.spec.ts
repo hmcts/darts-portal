@@ -8,7 +8,7 @@ describe('NotFoundComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [NotFoundComponent]
+      imports: [NotFoundComponent],
     });
     fixture = TestBed.createComponent(NotFoundComponent);
     component = fixture.componentInstance;
