@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { HearingEventTypeEnum } from '@darts-types/enums';
-import { HearingAudio, HearingEvent, HearingAudioEventViewModel } from '@darts-types/hearing-audio-event';
+import { HearingAudio, HearingAudioEventViewModel, HearingEvent } from '@darts-types/index';
 import { Subscription } from 'rxjs';
 
 @Component({

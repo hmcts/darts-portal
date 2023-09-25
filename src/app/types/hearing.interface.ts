@@ -1,4 +1,4 @@
-export interface HearingData {
+export interface Hearing {
   id: number;
   date: string;
   judges: string[];

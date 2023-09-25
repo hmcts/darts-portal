@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CaseData, requestPlaybackAudioDTO } from '@darts-types/index';
+import { Case, AudioRequest } from '@darts-types/index';
 import { HeaderService } from '@services/header/header.service';
 
 import { OrderConfirmationComponent } from './order-confirmation.component';
@@ -8,7 +8,7 @@ import { OrderConfirmationComponent } from './order-confirmation.component';
 describe('OrderConfirmationComponent', () => {
   let component: OrderConfirmationComponent;
   let fixture: ComponentFixture<OrderConfirmationComponent>;
-  const MOCK_CASE: CaseData = {
+  const MOCK_CASE: Case = {
     case_id: 1,
     case_number: 'C20220620001',
     courthouse: 'Swansea',
@@ -81,7 +81,7 @@ describe('OrderConfirmationComponent', () => {
   describe('#onConfirm', () => {
     it('should emit an orderConfirm event', () => {
       const orderConfirmSpy = jest.spyOn(component.orderConfirm, 'emit');
-      const mockAudioRequest: requestPlaybackAudioDTO = {
+      const mockAudioRequest: AudioRequest = {
         hearing_id: 1,
         requestor: 1,
         start_time: '2023-09-01T02:00:00Z',

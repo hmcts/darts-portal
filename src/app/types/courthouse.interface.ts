@@ -1,4 +1,4 @@
-export interface CourthouseData {
+export interface Courthouse {
   courthouse_name: string;
   code: number;
   id: number;

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { RouterLink, ActivatedRoute } from '@angular/router';
-import { HearingData } from '@darts-types/index';
+import { Hearing } from '@darts-types/index';
 
 @Component({
   selector: 'app-hearing-results',
@@ -12,7 +12,7 @@ import { HearingData } from '@darts-types/index';
 })
 export class HearingResultsComponent {
   caseId: number;
-  @Input() hearings: HearingData[] = [];
+  @Input() hearings: Hearing[] = [];
 
   constructor(private route: ActivatedRoute) {
     this.caseId = this.route.snapshot.params.caseId;

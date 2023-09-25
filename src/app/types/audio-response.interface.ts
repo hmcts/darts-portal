@@ -1,4 +1,4 @@
-export interface responsePlaybackAudioDTO {
+export interface AudioResponse {
   request_id: number;
   case_id: string;
   courthouse_name: string;

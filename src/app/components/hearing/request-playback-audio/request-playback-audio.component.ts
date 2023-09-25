@@ -11,9 +11,8 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TimeInputComponent } from './time-input/time-input.component';
 import * as moment from 'moment';
-import { HearingData } from '@darts-types/index';
-import { requestPlaybackAudioDTO } from '@darts-types/requestPlaybackAudioDTO';
 import { DateTimeService } from '@services/datetime/datetime.service';
+import { AudioRequest, Hearing } from '@darts-types/index';
 
 @Component({
   selector: 'app-request-playback-audio',
@@ -24,11 +23,11 @@ import { DateTimeService } from '@services/datetime/datetime.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RequestPlaybackAudioComponent implements OnChanges {
-  @Input() hearing!: HearingData;
+  @Input() hearing!: Hearing;
   @Input() requestAudioTimes!: Map<string, Date> | undefined;
   audioRequestForm: FormGroup;
-  requestObj!: requestPlaybackAudioDTO;
-  @Output() audioRequest = new EventEmitter<requestPlaybackAudioDTO>();
+  requestObj!: AudioRequest;
+  @Output() audioRequest = new EventEmitter<AudioRequest>();
 
   constructor(private fb: FormBuilder, public datetimeService: DateTimeService) {
     this.audioRequestForm = this.fb.group({

@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ResultsComponent, SortableColumn, SortingInterface } from './results.component';
-import { CaseData, HearingData } from '@darts-types/index';
+import { Case, Hearing } from '@darts-types/index';
 
 describe('ResultsComponent', () => {
   let component: ResultsComponent;
   let fixture: ComponentFixture<ResultsComponent>;
-  const MOCK_CASES: CaseData[] = [
+  const MOCK_CASES: Case[] = [
     {
       case_id: 1,
       case_number: 'C20220620001',
@@ -125,9 +125,9 @@ describe('ResultsComponent', () => {
 
   describe('#getHearingsValue', () => {
     it('should return Multiple if there are multiple hearings for dates or courtrooms', () => {
-      const caseData = {} as CaseData;
-      const hearing1 = { courtroom: '1', date: '2023-08-18' } as HearingData;
-      const hearing2 = { courtroom: '2', date: '2023-08-19' } as HearingData;
+      const caseData = {} as Case;
+      const hearing1 = { courtroom: '1', date: '2023-08-18' } as Hearing;
+      const hearing2 = { courtroom: '2', date: '2023-08-19' } as Hearing;
       caseData.hearings = [hearing1, hearing2];
       jest.spyOn(component, 'getHearingsValue');
 
@@ -140,8 +140,8 @@ describe('ResultsComponent', () => {
     });
 
     it('should return correct value if there is a single hearings for dates or courtrooms', () => {
-      const caseData = {} as CaseData;
-      const hearing1 = { courtroom: '1', date: '2023-08-18' } as HearingData;
+      const caseData = {} as Case;
+      const hearing1 = { courtroom: '1', date: '2023-08-18' } as Hearing;
       caseData.hearings = [hearing1];
       jest.spyOn(component, 'getHearingsValue');
 
@@ -154,7 +154,7 @@ describe('ResultsComponent', () => {
     });
 
     it('should return correct value if there is no hearings', () => {
-      const caseData = {} as CaseData;
+      const caseData = {} as Case;
       jest.spyOn(component, 'getHearingsValue');
 
       const dValue = component.getHearingsValue(caseData, 'date');

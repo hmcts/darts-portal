@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HearingData } from '@darts-types/index';
+import { Hearing } from '@darts-types/index';
 import { HearingResultsComponent } from './hearing-results.component';
 
 describe('HearingResultsComponent', () => {
   let component: HearingResultsComponent;
   let fixture: ComponentFixture<HearingResultsComponent>;
 
-  const mockSingleCaseTwoHearings: HearingData[] = [
+  const mockSingleCaseTwoHearings: Hearing[] = [
     {
       id: 1,
       date: '2023-09-01',
