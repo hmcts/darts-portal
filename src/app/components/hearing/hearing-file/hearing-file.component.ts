@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CaseData, HearingData } from '@darts-types/index';
+import { Case, Hearing } from '@darts-types/index';
 import { JoinPipe } from '@pipes/join';
 
 @Component({
@@ -11,6 +11,6 @@ import { JoinPipe } from '@pipes/join';
   styleUrls: ['./hearing-file.component.scss'],
 })
 export class HearingFileComponent {
-  @Input() case!: CaseData | null;
-  @Input() hearing!: HearingData | null | undefined;
+  @Input() case!: Case | null;
+  @Input() hearing!: Hearing | null | undefined;
 }

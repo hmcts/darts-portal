@@ -1,4 +1,4 @@
-export interface requestPlaybackAudioDTO {
+export interface AudioRequest {
   hearing_id: number;
   requestor: number;
   start_time: string;

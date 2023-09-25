@@ -3,7 +3,7 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { PaginationComponent } from '@common/pagination/pagination.component';
-import { CaseData, HearingData } from '@darts-types/index';
+import { Case, Hearing } from '@darts-types/index';
 import { DateTimeService } from '@services/datetime/datetime.service';
 
 @Component({
@@ -14,7 +14,7 @@ import { DateTimeService } from '@services/datetime/datetime.service';
   standalone: true,
 })
 export class ResultsComponent implements OnChanges {
-  @Input() cases: CaseData[] = [];
+  @Input() cases: Case[] = [];
   @Input() loaded = false;
   @Input() errorType = '';
   caption = '';
@@ -32,7 +32,7 @@ export class ResultsComponent implements OnChanges {
     this.caption = `${this.cases.length} result${this.cases.length > 0 ? 's' : ''}`;
   }
 
-  mapCasesToRows(cases: CaseData[]) {
+  mapCasesToRows(cases: Case[]) {
     return cases.map((c) => {
       return {
         id: c.case_id,
@@ -64,7 +64,7 @@ export class ResultsComponent implements OnChanges {
   }
 
   //Fetches correct display value for dates and courtrooms
-  getHearingsValue(c: CaseData, key: keyof HearingData): string {
+  getHearingsValue(c: Case, key: keyof Hearing): string {
     if (!c.hearings || c.hearings.length === 0) {
       return '';
     } else {
