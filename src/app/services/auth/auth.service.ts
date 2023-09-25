@@ -12,7 +12,11 @@ const IS_AUTH_PATH = '/auth/is-authenticated';
 export class AuthService {
   private authenticated = false;
 
-  constructor(private readonly http: HttpClient, private router: Router, @Inject('Window') private window: Window) {}
+  constructor(
+    private readonly http: HttpClient,
+    private router: Router,
+    @Inject('Window') private window: Window
+  ) {}
 
   getAuthenticated(): boolean {
     return this.authenticated;

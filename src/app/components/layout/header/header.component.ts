@@ -15,7 +15,10 @@ export class HeaderComponent implements DoCheck {
   isAuthenticated = false;
   isVisible$ = this.headerService.isVisible$;
 
-  constructor(private authService: AuthService, private headerService: HeaderService) {}
+  constructor(
+    private authService: AuthService,
+    private headerService: HeaderService
+  ) {}
 
   ngDoCheck() {
     this.isAuthenticated = this.authService.getAuthenticated();
