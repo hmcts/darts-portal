@@ -183,7 +183,9 @@ button {
 
 .ds_datepicker__dialog__navbuttons button:focus {
   background-color: #ffdd00;
-  box-shadow: inset 0 -3px #333, inset 0 -3px #333;
+  box-shadow:
+    inset 0 -3px #333,
+    inset 0 -3px #333;
   color: #333;
 }
 
@@ -226,7 +228,9 @@ button {
 
 .ds_datepicker__dialog__table button:focus {
   background-color: #ffdd00;
-  box-shadow: inset 0 -3px #333, inset 0 -3px #333;
+  box-shadow:
+    inset 0 -3px #333,
+    inset 0 -3px #333;
   color: #333;
 }
 
@@ -436,7 +440,9 @@ $ds_breakpoints: (
 @mixin ds_blocklink($link-selector: null, $hover: true) {
   display: block;
   position: relative;
-  transition: background-color 0.2s, outline-color 0.2s;
+  transition:
+    background-color 0.2s,
+    outline-color 0.2s;
   z-index: 1;
 
   outline: 0 !important;
@@ -482,7 +488,9 @@ $ds_breakpoints: (
 
       &:focus-within {
         background-color: $ds_colour__blocklink-bg--focus !important;
-        box-shadow: inset 0 -3px #333333, inset 0 -3px #333333;
+        box-shadow:
+          inset 0 -3px #333333,
+          inset 0 -3px #333333;
         transition-duration: 0s;
 
         #{$link-selector} {
@@ -518,7 +526,9 @@ $ds_breakpoints: (
     outline-offset: -1px;
     position: static;
     top: 0;
-    transition: background-color 0.2s, outline-color 0.2s;
+    transition:
+      background-color 0.2s,
+      outline-color 0.2s;
     width: 296px;
     z-index: 2;
 
