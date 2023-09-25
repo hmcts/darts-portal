@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AudioRequest, Case, Hearing, HearingPageState } from '@darts-types/index';
 import { HeaderService } from '@services/header/header.service';
 import { Router } from '@angular/router';
+import UserState from 'server/types/classes/userState';
 
 @Component({
   selector: 'app-order-confirmation',
@@ -17,6 +18,7 @@ export class OrderConfirmationComponent {
   @Input() audioRequest!: AudioRequest;
   @Input() requestId!: number;
   @Input() state!: HearingPageState;
+  @Input() userProfile?: UserState | null | undefined;
 
   @Output() stateChange = new EventEmitter<HearingPageState>();
   @Output() orderConfirm = new EventEmitter<AudioRequest>();

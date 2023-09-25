@@ -6,6 +6,7 @@ import { AudioRequest, AudioResponse, HearingAudioEventViewModel, HearingPageSta
 import { CaseService } from '@services/case/case.service';
 import { HeaderService } from '@services/header/header.service';
 import { HearingService } from '@services/hearing/hearing.service';
+import { UserService } from '@services/user/user.service';
 import { combineLatest } from 'rxjs';
 import { EventsAndAudioComponent } from './events-and-audio/events-and-audio.component';
 import { HearingFileComponent } from './hearing-file/hearing-file.component';
@@ -32,6 +33,7 @@ export class HearingComponent {
   private caseService = inject(CaseService);
   hearingService = inject(HearingService);
   headerService = inject(HeaderService);
+  userService = inject(UserService);
   requestAudioTimes: Map<string, Date> | undefined;
   private _state: HearingPageState = 'Default';
 
@@ -56,6 +58,8 @@ export class HearingComponent {
 
   hearingId = this.route.snapshot.params.hearing_id;
   caseId = this.route.snapshot.params.caseId;
+
+  userProfile$ = this.userService.getUserProfile();
 
   case$ = this.caseService.getCase(this.caseId);
   hearing$ = this.caseService.getHearingById(this.caseId, this.hearingId);

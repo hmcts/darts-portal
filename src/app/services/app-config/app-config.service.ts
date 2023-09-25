@@ -15,9 +15,7 @@ export class AppConfigService {
   constructor(private http: HttpBackendClient) {}
 
   async loadAppConfig(): Promise<void> {
-    console.log('loading app config');
     this.appConfig = await lastValueFrom(this.http.get<AppConfig>(CONFIG_PATH));
-    console.log('loading app config', this.appConfig);
   }
 
   getAppConfig(): AppConfig | undefined {
