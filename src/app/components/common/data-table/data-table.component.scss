@@ -9,6 +9,7 @@
 .govuk-table__header,
 .govuk-table__cell {
   padding: 10px;
+  vertical-align: middle;
 }
 
 .govuk-warning-text {
@@ -31,4 +32,21 @@
   top: 7px;
   left: 7px;
   padding-left: 1px;
+}
+
+.govuk-button {
+  margin-bottom: 0;
+}
+
+.govuk-checkboxes--small .govuk-checkboxes__item {
+  min-height: 40px;
+  margin-left: 10px;
+}
+
+.govuk-table__cell:last-child {
+  max-width: 300px;
+}
+
+.govuk-heading-s {
+  display: inline-block;
 }

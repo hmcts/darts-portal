@@ -6,6 +6,21 @@
   </caption>
   <thead class="govuk-table__head">
     <tr class="govuk-table__row">
+      <th *ngIf="rowSelectable" scope="col" class="govuk-table__header">
+        <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+          <div class="govuk-checkboxes__item">
+            <input
+              class="govuk-checkboxes__input"
+              id="selectAll"
+              name="selectAll"
+              type="checkbox"
+              value="selectAll"
+              (change)="onSelectAllChanged($any($event.target).checked)"
+            />
+            <label class="govuk-label govuk-checkboxes__label" for=""></label>
+          </div>
+        </div>
+      </th>
       <ng-container *ngFor="let column of columns">
         <th *ngIf="column.sortable" scope="col" class="govuk-table__header" [attr.aria-sort]="getAriaSort(column.prop)">
           <button type="button" (click)="sortTable(column.prop)">{{ column.name }}</button>
@@ -19,6 +34,23 @@
   <tbody class="govuk-table__body">
     <ng-container *ngFor="let row of pagedRows; let i = index">
       <tr class="govuk-table__row">
+        <td *ngIf="rowSelectable" scope="row" class="govuk-table__header">
+          <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+            <div class="govuk-checkboxes__item">
+              <input
+                [tabindex]="i"
+                class="govuk-checkboxes__input"
+                [id]="row.id"
+                [name]="row.id"
+                type="checkbox"
+                [value]="row.id"
+                [checked]="isRowSelected(row)"
+                (change)="toggleRowSelection(row)"
+              />
+              <label class="govuk-label govuk-checkboxes__label" [for]="row.id"></label>
+            </div>
+          </div>
+        </td>
         <td *ngFor="let column of columns" class="govuk-table__cell">
           <ng-container *ngIf="column.link">
             <a [routerLink]="[column.link, row.id]"> {{ row[column.prop] }}</a>

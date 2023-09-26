@@ -14,18 +14,14 @@ export class DataTableComponent implements OnChanges {
   @Input() rows: any[] = [];
   @Input() columns: any[] = [];
   @Input() caption = '';
-
-  // TO DO:
-  @Input() showCheckboxColumn = false;
-  @Input() showPagination = true;
-  @Output() rowSelectionChanged = new EventEmitter<any[]>();
-  selectedRows: boolean[] = [];
-
-  pagedRows: any[] = [];
-
-  currentPage = 1;
-  itemsPerPage = 10;
+  @Input() rowSelectable = false;
+  @Input() pagination = true;
   @Input() pageLimit = 25;
+  @Output() rowSelect = new EventEmitter<any[]>();
+
+  selectedRows: any[] = [];
+  pagedRows: any[] = [];
+  currentPage = 1;
 
   sorting: SortingInterface = {
     column: '',
@@ -61,6 +57,31 @@ export class DataTableComponent implements OnChanges {
     });
 
     this.updatePagedData();
+  }
+
+  isRowSelected(row: any) {
+    return this.selectedRows.includes(row);
+  }
+
+  toggleRowSelection(row: any) {
+    const index = this.selectedRows.indexOf(row);
+    if (index === -1) {
+      // Row not selected, add it to the selection
+      this.selectedRows.push(row);
+    } else {
+      // Row already selected, remove it from the selection
+      this.selectedRows.splice(index, 1);
+    }
+    this.rowSelect.emit(this.selectedRows);
+  }
+
+  onSelectAllChanged(checked: boolean) {
+    if (checked) {
+      this.selectedRows = [...this.rows];
+    } else {
+      this.selectedRows = [];
+    }
+    this.rowSelect.emit(this.selectedRows);
   }
 
   compareStrings(column: any, a: string, b: string): number {
