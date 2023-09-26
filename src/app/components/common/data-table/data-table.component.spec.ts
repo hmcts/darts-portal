@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HearingEventTypeEnum } from '@darts-types/enums';
+import { HearingAudioEventViewModel } from '@darts-types/hearing-audio-event.interface';
 
 import { DataTableComponent, SortingInterface } from './data-table.component';
 
@@ -203,6 +205,38 @@ describe('DataTableComponent', () => {
       component.ngOnChanges();
 
       expect(component.sorting.column).toBe('');
+    });
+  });
+
+  it('should toggle row selection', () => {
+    component.toggleRowSelection(MOCK_ROWS[0]);
+
+    expect(component.selectedRows).toContain(MOCK_ROWS[0]);
+
+    component.toggleRowSelection(MOCK_ROWS[0]);
+
+    expect(component.selectedRows).not.toContain(MOCK_ROWS[0]);
+  });
+
+  it('should check if a row is selected', () => {
+    component.selectedRows.push(MOCK_ROWS[0]);
+
+    expect(component.isRowSelected(MOCK_ROWS[0])).toBeTruthy();
+  });
+
+  describe('#onSelectAllChanged', () => {
+    it('should check all the rows on the table', () => {
+      const eventsSelectSpy = jest.spyOn(component.rowSelect, 'emit');
+
+      component.onSelectAllChanged(true);
+      expect(component.selectedRows).toEqual(component.rows);
+      expect(eventsSelectSpy).toHaveBeenCalledWith(component.selectedRows);
+    });
+    it('should uncheck all the rows on the table', () => {
+      const eventsSelectSpy = jest.spyOn(component.rowSelect, 'emit');
+      component.onSelectAllChanged(false);
+      expect(component.selectedRows).toEqual([]);
+      expect(eventsSelectSpy).toHaveBeenCalledWith(component.selectedRows);
     });
   });
 });
