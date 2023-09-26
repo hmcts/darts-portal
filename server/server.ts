@@ -43,6 +43,10 @@ export const startServer = ({ disableAuthentication }: StartServerOptions = { di
   if (app.get('env') === 'production') {
     app.set('trust proxy', 1); // trust first proxy
   }
+  app.use((req, res, next) => {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+    next();
+  });
   app.use(session());
 
   nunjucks.configure('server/views', {
