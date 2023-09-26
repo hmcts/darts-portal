@@ -2,7 +2,6 @@ import { NgFor, NgIf } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
-import { PaginationComponent } from '@common/pagination/pagination.component';
 import { Case, Hearing } from '@darts-types/index';
 import { DateTimeService } from '@services/datetime/datetime.service';
 
@@ -10,7 +9,7 @@ import { DateTimeService } from '@services/datetime/datetime.service';
   selector: 'app-results',
   templateUrl: './results.component.html',
   styleUrls: ['./results.component.scss'],
-  imports: [NgIf, NgFor, RouterLink, PaginationComponent, DataTableComponent],
+  imports: [NgIf, NgFor, RouterLink, DataTableComponent],
   standalone: true,
 })
 export class ResultsComponent implements OnChanges {
