@@ -3990,93 +3990,109 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@microsoft/applicationinsights-analytics-js@npm:3.0.2":
-  version: 3.0.2
-  resolution: "@microsoft/applicationinsights-analytics-js@npm:3.0.2"
+"@microsoft/applicationinsights-analytics-js@npm:3.0.3":
+  version: 3.0.3
+  resolution: "@microsoft/applicationinsights-analytics-js@npm:3.0.3"
   dependencies:
-    "@microsoft/applicationinsights-common": 3.0.2
-    "@microsoft/applicationinsights-core-js": 3.0.2
+    "@microsoft/applicationinsights-common": 3.0.3
+    "@microsoft/applicationinsights-core-js": 3.0.3
     "@microsoft/applicationinsights-shims": 3.0.1
     "@microsoft/dynamicproto-js": ^2.0.2
-    "@nevware21/ts-utils": ">= 0.9.5 < 2.x"
+    "@nevware21/ts-utils": ">= 0.10.1 < 2.x"
   peerDependencies:
     tslib: "*"
-  checksum: 0aeaabb024a6ec0504a376dcb03b9a5e9ff524a8af215a9898b7608689bdc2747bb743e24af96b284ef5a18e19dc79dbeade48d0495db9760949891816a67054
+  checksum: 855bdf116fd3d83eb8b693f50b4c6a4fb5f8aaf6e497571606d5d062772509253f335a1664ae1ef366f32c8aaeafb340d69f356ad8e9f11de35fc7f93b73fa13
   languageName: node
   linkType: hard
 
-"@microsoft/applicationinsights-channel-js@npm:3.0.2":
-  version: 3.0.2
-  resolution: "@microsoft/applicationinsights-channel-js@npm:3.0.2"
+"@microsoft/applicationinsights-cfgsync-js@npm:0.0.2":
+  version: 0.0.2
+  resolution: "@microsoft/applicationinsights-cfgsync-js@npm:0.0.2"
   dependencies:
-    "@microsoft/applicationinsights-common": 3.0.2
-    "@microsoft/applicationinsights-core-js": 3.0.2
+    "@microsoft/applicationinsights-common": 3.0.3
+    "@microsoft/applicationinsights-core-js": 3.0.3
     "@microsoft/applicationinsights-shims": 3.0.1
     "@microsoft/dynamicproto-js": ^2.0.2
-    "@nevware21/ts-async": ">= 0.2.4 < 2.x"
-    "@nevware21/ts-utils": ">= 0.9.5 < 2.x"
+    "@nevware21/ts-async": ">= 0.3.0 < 2.x"
+    "@nevware21/ts-utils": ">= 0.10.1 < 2.x"
   peerDependencies:
     tslib: "*"
-  checksum: 10f05d2ede56770a993b9e5b80c8f0f1ff763c2da8efe5356fb7290a5e992c921a5d2a034a5769cdc0c9791f1a21d8d48d5c7cfdaf82b702a0afdec691f26599
+  checksum: 48205970f74a3541b02532294fd04e143ccf3d57ae69b3d85020dd8adbfdbb0ff84b7654920bfc7aff23458d989e971b457ee233c052fe809d991518617d4b12
   languageName: node
   linkType: hard
 
-"@microsoft/applicationinsights-common@npm:3.0.2":
-  version: 3.0.2
-  resolution: "@microsoft/applicationinsights-common@npm:3.0.2"
+"@microsoft/applicationinsights-channel-js@npm:3.0.3":
+  version: 3.0.3
+  resolution: "@microsoft/applicationinsights-channel-js@npm:3.0.3"
   dependencies:
-    "@microsoft/applicationinsights-core-js": 3.0.2
+    "@microsoft/applicationinsights-common": 3.0.3
+    "@microsoft/applicationinsights-core-js": 3.0.3
     "@microsoft/applicationinsights-shims": 3.0.1
     "@microsoft/dynamicproto-js": ^2.0.2
-    "@nevware21/ts-utils": ">= 0.9.5 < 2.x"
+    "@nevware21/ts-async": ">= 0.3.0 < 2.x"
+    "@nevware21/ts-utils": ">= 0.10.1 < 2.x"
   peerDependencies:
     tslib: "*"
-  checksum: 220925c456717346e65bf4706aab0abed7f09df9bebaab863f1a05a7ba862957d8c5d3b002cee27747c6b57c4850fdd9610cadb18889b17e8a25f7246540e82c
+  checksum: 9a42a611a4ca7915cef3b084b7efd1abd3073404495bee6ea859bfae1fcd55e3cbad135347454ef8cf8b0385571354af59fac51ac177489d9817981ce523dafe
   languageName: node
   linkType: hard
 
-"@microsoft/applicationinsights-core-js@npm:3.0.2":
-  version: 3.0.2
-  resolution: "@microsoft/applicationinsights-core-js@npm:3.0.2"
+"@microsoft/applicationinsights-common@npm:3.0.3":
+  version: 3.0.3
+  resolution: "@microsoft/applicationinsights-common@npm:3.0.3"
   dependencies:
+    "@microsoft/applicationinsights-core-js": 3.0.3
     "@microsoft/applicationinsights-shims": 3.0.1
     "@microsoft/dynamicproto-js": ^2.0.2
-    "@nevware21/ts-async": ">= 0.2.4 < 2.x"
-    "@nevware21/ts-utils": ">= 0.9.5 < 2.x"
+    "@nevware21/ts-utils": ">= 0.10.1 < 2.x"
   peerDependencies:
     tslib: "*"
-  checksum: 979856ae14dda0227721cea746422701dde69d8a4a32b619f47ab1672b77a4a4031beda8b5c17a1e5a94cecfb6059d7b45df5f75a85835ef3bde6740ed91f4bc
+  checksum: ff3633f976dd7ecf062f28bed214ab31b41ce090c4695275f97019640a6217b7ad7fdf03f3842609ad252205861d3ffa13f58ee482aea82a4075d47263b3c9cb
   languageName: node
   linkType: hard
 
-"@microsoft/applicationinsights-dependencies-js@npm:3.0.2":
-  version: 3.0.2
-  resolution: "@microsoft/applicationinsights-dependencies-js@npm:3.0.2"
+"@microsoft/applicationinsights-core-js@npm:3.0.3":
+  version: 3.0.3
+  resolution: "@microsoft/applicationinsights-core-js@npm:3.0.3"
   dependencies:
-    "@microsoft/applicationinsights-common": 3.0.2
-    "@microsoft/applicationinsights-core-js": 3.0.2
     "@microsoft/applicationinsights-shims": 3.0.1
     "@microsoft/dynamicproto-js": ^2.0.2
-    "@nevware21/ts-async": ">= 0.2.4 < 2.x"
-    "@nevware21/ts-utils": ">= 0.9.5 < 2.x"
+    "@nevware21/ts-async": ">= 0.3.0 < 2.x"
+    "@nevware21/ts-utils": ">= 0.10.1 < 2.x"
   peerDependencies:
     tslib: "*"
-  checksum: a5485de68e17e5731703c42f82374c998d4e250220da98e837415920ee5eef6510a5d1141796a0ffc1f6de6037185db54fc10f21393c3d6d0894a080e45b488d
+  checksum: 03534c3cf3faef87bae0b148f9a6fc83e58209b8ff3b0b7f0c028fb52d9e7b1023e1cc5c33ce0d7fbf35638145f1709053bc13db439060ec93a698fd3a533e85
   languageName: node
   linkType: hard
 
-"@microsoft/applicationinsights-properties-js@npm:3.0.2":
-  version: 3.0.2
-  resolution: "@microsoft/applicationinsights-properties-js@npm:3.0.2"
+"@microsoft/applicationinsights-dependencies-js@npm:3.0.3":
+  version: 3.0.3
+  resolution: "@microsoft/applicationinsights-dependencies-js@npm:3.0.3"
   dependencies:
-    "@microsoft/applicationinsights-common": 3.0.2
-    "@microsoft/applicationinsights-core-js": 3.0.2
+    "@microsoft/applicationinsights-common": 3.0.3
+    "@microsoft/applicationinsights-core-js": 3.0.3
     "@microsoft/applicationinsights-shims": 3.0.1
     "@microsoft/dynamicproto-js": ^2.0.2
-    "@nevware21/ts-utils": ">= 0.9.5 < 2.x"
+    "@nevware21/ts-async": ">= 0.3.0 < 2.x"
+    "@nevware21/ts-utils": ">= 0.10.1 < 2.x"
   peerDependencies:
     tslib: "*"
-  checksum: d84d341335a977dcd59904cad50e76bc79045c3521dbcc3b0808b5f545788e4d8d7b52f36a82cc0833938a45e288ee0e7cdd7e126ab98c8836e65d22b5203ad5
+  checksum: 38645acadedfe2155152b0b121aeddd8b8b5dc931f19ef53ef114b3926800e4709c9baf90662035c8aa8657e1d2fea5d24b49ab5cf036c3594b08145d2b0a2e0
+  languageName: node
+  linkType: hard
+
+"@microsoft/applicationinsights-properties-js@npm:3.0.3":
+  version: 3.0.3
+  resolution: "@microsoft/applicationinsights-properties-js@npm:3.0.3"
+  dependencies:
+    "@microsoft/applicationinsights-common": 3.0.3
+    "@microsoft/applicationinsights-core-js": 3.0.3
+    "@microsoft/applicationinsights-shims": 3.0.1
+    "@microsoft/dynamicproto-js": ^2.0.2
+    "@nevware21/ts-utils": ">= 0.10.1 < 2.x"
+  peerDependencies:
+    tslib: "*"
+  checksum: 463b150ed359d133ca9db6fb5c43cc5670694072761c68ec4228c36e02be9d8ea65d7015a17706feb2bb4eec7e49301a632bfb92c2ccb67788ee15f301400ab9
   languageName: node
   linkType: hard
 
@@ -4090,22 +4106,23 @@ __metadata:
   linkType: hard
 
 "@microsoft/applicationinsights-web@npm:^3.0.1":
-  version: 3.0.2
-  resolution: "@microsoft/applicationinsights-web@npm:3.0.2"
+  version: 3.0.3
+  resolution: "@microsoft/applicationinsights-web@npm:3.0.3"
   dependencies:
-    "@microsoft/applicationinsights-analytics-js": 3.0.2
-    "@microsoft/applicationinsights-channel-js": 3.0.2
-    "@microsoft/applicationinsights-common": 3.0.2
-    "@microsoft/applicationinsights-core-js": 3.0.2
-    "@microsoft/applicationinsights-dependencies-js": 3.0.2
-    "@microsoft/applicationinsights-properties-js": 3.0.2
+    "@microsoft/applicationinsights-analytics-js": 3.0.3
+    "@microsoft/applicationinsights-cfgsync-js": 0.0.2
+    "@microsoft/applicationinsights-channel-js": 3.0.3
+    "@microsoft/applicationinsights-common": 3.0.3
+    "@microsoft/applicationinsights-core-js": 3.0.3
+    "@microsoft/applicationinsights-dependencies-js": 3.0.3
+    "@microsoft/applicationinsights-properties-js": 3.0.3
     "@microsoft/applicationinsights-shims": 3.0.1
     "@microsoft/dynamicproto-js": ^2.0.2
-    "@nevware21/ts-async": ">= 0.2.4 < 2.x"
-    "@nevware21/ts-utils": ">= 0.9.5 < 2.x"
+    "@nevware21/ts-async": ">= 0.3.0 < 2.x"
+    "@nevware21/ts-utils": ">= 0.10.1 < 2.x"
   peerDependencies:
     tslib: "*"
-  checksum: 2627237954f9d3001898332b9a59bdfeb761879ba7a5efe267f5328978f71f4a2727de8873412feb20f994c4fde969ab58e9a91136ff0e2bc093235eedc5b223
+  checksum: 3e17b2e7f8f157d5203cc8e48954635c15d830ea36fe59f032d7e53a8ba20e6e00f5fc090b2a5cf9ad0c54ed4d4908975e1d933461268af79888a46c66074381
   languageName: node
   linkType: hard
 
@@ -4130,7 +4147,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nevware21/ts-async@npm:>= 0.2.4 < 2.x":
+"@nevware21/ts-async@npm:>= 0.3.0 < 2.x":
   version: 0.3.0
   resolution: "@nevware21/ts-async@npm:0.3.0"
   dependencies:
@@ -4139,7 +4156,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nevware21/ts-utils@npm:>= 0.10.0 < 2.x, @nevware21/ts-utils@npm:>= 0.9.4 < 2.x, @nevware21/ts-utils@npm:>= 0.9.5 < 2.x":
+"@nevware21/ts-utils@npm:>= 0.10.0 < 2.x, @nevware21/ts-utils@npm:>= 0.10.1 < 2.x, @nevware21/ts-utils@npm:>= 0.9.4 < 2.x":
   version: 0.10.1
   resolution: "@nevware21/ts-utils@npm:0.10.1"
   checksum: 4603bd42d44e842c6332761e98f27c8136e2284de25693d08c86711c77d187d1289452ed66eee57ffc6a0f9fc434d5768c6c838678baf102f4e0152c718a00e1
@@ -4593,14 +4610,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@redis/client@npm:1.5.10":
-  version: 1.5.10
-  resolution: "@redis/client@npm:1.5.10"
+"@redis/client@npm:1.5.11":
+  version: 1.5.11
+  resolution: "@redis/client@npm:1.5.11"
   dependencies:
     cluster-key-slot: 1.1.2
     generic-pool: 3.9.0
     yallist: 4.0.0
-  checksum: 114379a3731eaf59485a42db4890924619c09df3c3d3b77cff1300a1a76d63a9ce39330609eb194526cf3316c56f405499807eb9f45cc8dfac9449e2b6d9a342
+  checksum: 10f25a74f18b4e87299c11c014840895f387d217f1309a5208939e8bab8c95abecf2ca824f1cd0fe935b8972a18e0c4d6dd25640e742f4b30d38208515cf3a42
   languageName: node
   linkType: hard
 
@@ -4613,21 +4630,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@redis/json@npm:1.0.5":
-  version: 1.0.5
-  resolution: "@redis/json@npm:1.0.5"
+"@redis/json@npm:1.0.6":
+  version: 1.0.6
+  resolution: "@redis/json@npm:1.0.6"
   peerDependencies:
     "@redis/client": ^1.0.0
-  checksum: 522a569dfbbc1a7baa89d8381a885da900e79cc1dd84f8415716ac3a5d1a1eadd6f025893de1378ba7e092fa1d0cc1f4a63b8bda9a0fb395851b3591577c1902
+  checksum: 9fda29abc339c72593f34a23f8023b715c1f8f3d73f7c59889af02f25589bac2ad57073ad08d0b8da42cd8c258665a7b38d39e761e92945cc27aca651c8a93a5
   languageName: node
   linkType: hard
 
-"@redis/search@npm:1.1.4":
-  version: 1.1.4
-  resolution: "@redis/search@npm:1.1.4"
+"@redis/search@npm:1.1.5":
+  version: 1.1.5
+  resolution: "@redis/search@npm:1.1.5"
   peerDependencies:
     "@redis/client": ^1.0.0
-  checksum: 472bcf9b98c8f34a872bccdd7236374cda488990ebce9974e4ac5dc4e56516c8b519321e782ca43f33d335ef8dcbbfca4db4b23d7fe32bb86b84ac7518a732b9
+  checksum: f81771a712957334029f75b4a68f54b0c78abe17d78546f6da9cd5c7e8f768c69f2f9d3c25840053dbe3c1931038f924403fc3f1bb359ac3defdae85e86fd26b
   languageName: node
   linkType: hard
 
@@ -4996,23 +5013,23 @@ __metadata:
   linkType: hard
 
 "@types/express-session@npm:*, @types/express-session@npm:^1.17.7":
-  version: 1.17.7
-  resolution: "@types/express-session@npm:1.17.7"
+  version: 1.17.8
+  resolution: "@types/express-session@npm:1.17.8"
   dependencies:
     "@types/express": "*"
-  checksum: 4764eafaf4e26842e891e83fa9fee30b92cc3724d91987aac3a658322f9a69fb544dae24fc3aba6e15fe9575ed862760ebecd7ff97a947afb695284967434a65
+  checksum: e1af8797b321ce05e0732c58aa982f00ab34b6edb337c289092e66c789ae1bbb4ca14d2caa0e0ff02522047402bcff828873b035e2785fb92f2381a0eb34240c
   languageName: node
   linkType: hard
 
 "@types/express@npm:*, @types/express@npm:^4.17.13, @types/express@npm:^4.17.17":
-  version: 4.17.17
-  resolution: "@types/express@npm:4.17.17"
+  version: 4.17.18
+  resolution: "@types/express@npm:4.17.18"
   dependencies:
     "@types/body-parser": "*"
     "@types/express-serve-static-core": ^4.17.33
     "@types/qs": "*"
     "@types/serve-static": "*"
-  checksum: 0196dacc275ac3ce89d7364885cb08e7fb61f53ca101f65886dbf1daf9b7eb05c0943e2e4bbd01b0cc5e50f37e0eea7e4cbe97d0304094411ac73e1b7998f4da
+  checksum: 8c178da4f0edff1f006d871fbdc3f849620986ff10bad252f3dfd45b57554e26aaa28c602285df028930d5216e257a06fbaf795070f8bb42f7d87e3b689cba50
   languageName: node
   linkType: hard
 
@@ -5109,23 +5126,23 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:*":
-  version: 20.6.3
-  resolution: "@types/node@npm:20.6.3"
-  checksum: 444a6f1f41cfa8d3e20ce0108e6e43960fb2ae0e481f233bb1c14d6252aa63a92e021de561cd317d9fdb411688f871065f40175a1f18763282dee2613a08f8a3
+  version: 20.7.0
+  resolution: "@types/node@npm:20.7.0"
+  checksum: 1b2919925c213f4d2039ada7a8354c998e144f7291db8d719ef58ea9924ab636c113690073b0ec3b82ba62907385f7e0f51e9d1583c1a818776daa5156d3a590
   languageName: node
   linkType: hard
 
 "@types/node@npm:^18.15.12, @types/node@npm:^18.17.5":
-  version: 18.17.18
-  resolution: "@types/node@npm:18.17.18"
-  checksum: 59cbd906363d37017fe9ba0c08c1446e440d4d977459609c5f90b8fb7eb41f273ce8af30c5a5b5d599d7de934c1b3702bc9fc27caf8d2270e5cdb659c5232991
+  version: 18.18.0
+  resolution: "@types/node@npm:18.18.0"
+  checksum: 61bcffa28eb713e7a4c66fd369df603369c3f834a783faeced95fe3e78903faa25f1a704d49e054f41d71b7915eeb066d10a37cc699421fcf5dd267f96ad5808
   languageName: node
   linkType: hard
 
 "@types/nunjucks@npm:^3.2.2":
-  version: 3.2.3
-  resolution: "@types/nunjucks@npm:3.2.3"
-  checksum: f4263a39f0bafb701fe75a088cf2100f0fe717ab29c53d13eb60fea77e945f8cfdabfb84bd6ce85fd11586f90aa36539cf5bd489166edcf56a189a0407d481a2
+  version: 3.2.4
+  resolution: "@types/nunjucks@npm:3.2.4"
+  checksum: d154c6cc98320b6b9f48892eb4238f961b0196e24eb98252f9dceaa0b17bf70cd480a11d4ffda9f419d2570abf6d96524ebd3193b101f0fcf73c65af3e56d064
   languageName: node
   linkType: hard
 
@@ -7540,11 +7557,11 @@ __metadata:
     junit-report-merger: ^6.0.2
     lodash: ^4.17.21
     moment: ^2.29.4
-    nodemon: ^2.0.21
+    nodemon: ^3.0.0
     npm: ^10.1.0
     nunjucks: ^3.2.4
     pa11y: ^6.2.3
-    prettier: ^2.8.6
+    prettier: ^3.0.0
     redis: ^4.6.7
     rxjs: ~7.8.0
     start-server-and-test: ^2.0.0
@@ -12324,23 +12341,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nodemon@npm:^2.0.21":
-  version: 2.0.22
-  resolution: "nodemon@npm:2.0.22"
+"nodemon@npm:^3.0.0":
+  version: 3.0.1
+  resolution: "nodemon@npm:3.0.1"
   dependencies:
     chokidar: ^3.5.2
     debug: ^3.2.7
     ignore-by-default: ^1.0.1
     minimatch: ^3.1.2
     pstree.remy: ^1.1.8
-    semver: ^5.7.1
-    simple-update-notifier: ^1.0.7
+    semver: ^7.5.3
+    simple-update-notifier: ^2.0.0
     supports-color: ^5.5.0
     touch: ^3.1.0
     undefsafe: ^2.0.5
   bin:
     nodemon: bin/nodemon.js
-  checksum: 9c987e139748f5b5c480c6c9080bdc97304ee7d29172b7b3da1a7db590b1323ad57b96346304e9b522b0e445c336dc393ccd3f9f45c73b20d476d2347890dcd0
+  checksum: 6a5d81855760d6617049eccce10ccf02bddb482dab13ceea5280ae595ec7004eee13e7b934368e3f46c37fe4d970342a8c38c99cae7e93e4d7a3ed1c1ecb6acf
   languageName: node
   linkType: hard
 
@@ -13426,12 +13443,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^2.8.6":
-  version: 2.8.8
-  resolution: "prettier@npm:2.8.8"
+"prettier@npm:^3.0.0":
+  version: 3.0.3
+  resolution: "prettier@npm:3.0.3"
   bin:
-    prettier: bin-prettier.js
-  checksum: b49e409431bf129dd89238d64299ba80717b57ff5a6d1c1a8b1a28b590d998a34e083fa13573bc732bb8d2305becb4c9a4407f8486c81fa7d55100eb08263cf8
+    prettier: bin/prettier.cjs
+  checksum: e10b9af02b281f6c617362ebd2571b1d7fc9fb8a3bd17e371754428cda992e5e8d8b7a046e8f7d3e2da1dcd21aa001e2e3c797402ebb6111b5cd19609dd228e0
   languageName: node
   linkType: hard
 
@@ -13861,16 +13878,16 @@ __metadata:
   linkType: hard
 
 "redis@npm:*, redis@npm:^4.6.7":
-  version: 4.6.9
-  resolution: "redis@npm:4.6.9"
+  version: 4.6.10
+  resolution: "redis@npm:4.6.10"
   dependencies:
     "@redis/bloom": 1.2.0
-    "@redis/client": 1.5.10
+    "@redis/client": 1.5.11
     "@redis/graph": 1.1.0
-    "@redis/json": 1.0.5
-    "@redis/search": 1.1.4
+    "@redis/json": 1.0.6
+    "@redis/search": 1.1.5
     "@redis/time-series": 1.0.5
-  checksum: ec4d16258b35be7a36205bfbe88d9b8d7b3a7538d84e0d5340b7fd9cbce943b296c8edba39565953e23b947b39e6854ad345702a0ed45699ba097013677fb79c
+  checksum: eae6e10f6ec8d5c6d6dea04a1ee6f6497319113e07dbf272a2b4b3c461c34d6fda152791f443c93c538ad6477741a6b157886b60d06f5fce2abbf403e6568a2f
   languageName: node
   linkType: hard
 
@@ -14316,7 +14333,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:^5.6.0, semver@npm:^5.7.1":
+"semver@npm:^5.6.0":
   version: 5.7.2
   resolution: "semver@npm:5.7.2"
   bin:
@@ -14331,15 +14348,6 @@ __metadata:
   bin:
     semver: bin/semver.js
   checksum: ae47d06de28836adb9d3e25f22a92943477371292d9b665fb023fae278d345d508ca1958232af086d85e0155aee22e313e100971898bbb8d5d89b8b1d4054ca2
-  languageName: node
-  linkType: hard
-
-"semver@npm:~7.0.0":
-  version: 7.0.0
-  resolution: "semver@npm:7.0.0"
-  bin:
-    semver: bin/semver.js
-  checksum: 272c11bf8d083274ef79fe40a81c55c184dff84dd58e3c325299d0927ba48cece1f020793d138382b85f89bab5002a35a5ba59a3a68a7eebbb597eb733838778
   languageName: node
   linkType: hard
 
@@ -14516,12 +14524,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"simple-update-notifier@npm:^1.0.7":
-  version: 1.1.0
-  resolution: "simple-update-notifier@npm:1.1.0"
+"simple-update-notifier@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "simple-update-notifier@npm:2.0.0"
   dependencies:
-    semver: ~7.0.0
-  checksum: 1012e9b6c504e559a948078177b3eedbb9d7e4d15878e2bda56314d08db609ca5da485be4ac9f838759faae8057935ee0246fcdf63f1233c86bd9fecb2a5544b
+    semver: ^7.5.3
+  checksum: 9ba00d38ce6a29682f64a46213834e4eb01634c2f52c813a9a7b8873ca49cdbb703696f3290f3b27dc067de6d9418b0b84bef22c3eb074acf352529b2d6c27fd
   languageName: node
   linkType: hard
 

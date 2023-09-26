@@ -7,7 +7,7 @@
       </li>
       <li class="govuk-breadcrumbs__list-item">
         <a [routerLink]="['/case/', vm.case.case_id, 'hearing', vm.hearing?.id]" class="govuk-breadcrumbs__link">{{
-          vm.hearing?.date | date : 'd MMM y'
+          vm.hearing?.date | date: 'd MMM y'
         }}</a>
       </li>
     </ol>
@@ -51,6 +51,7 @@
       [audioRequest]="requestObject"
       [requestId]="requestId"
       [state]="state"
+      [userProfile]="userProfile$ | async"
       (stateChange)="onStateChanged($event)"
       (orderConfirm)="onOrderConfirm($event)"
     ></app-order-confirmation>

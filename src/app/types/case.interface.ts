@@ -1,6 +1,6 @@
-import { HearingData } from './hearing';
+import { Hearing } from './hearing.interface';
 
-export interface CaseData {
+export interface Case {
   case_id: number;
   case_number: string;
   courthouse?: string;
@@ -8,7 +8,7 @@ export interface CaseData {
   defenders?: string[];
   judges?: string[];
   reporting_restriction?: string;
-  hearings?: HearingData[];
+  hearings?: Hearing[];
   retain_until?: string;
   prosecutors?: string[];
 }

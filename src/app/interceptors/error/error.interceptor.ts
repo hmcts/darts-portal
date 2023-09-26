@@ -4,7 +4,10 @@ import { catchError, Observable, throwError } from 'rxjs';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private errorHandlerService: ErrorHandler, @Inject('Window') private window: Window) {}
+  constructor(
+    private errorHandlerService: ErrorHandler,
+    @Inject('Window') private window: Window
+  ) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(

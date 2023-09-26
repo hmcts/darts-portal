@@ -1,8 +1,9 @@
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CaseData, HearingData, HearingPageState, requestPlaybackAudioDTO } from '@darts-types/index';
+import { AudioRequest, Case, Hearing, HearingPageState } from '@darts-types/index';
 import { HeaderService } from '@services/header/header.service';
 import { Router } from '@angular/router';
+import UserState from 'server/types/classes/userState';
 
 @Component({
   selector: 'app-order-confirmation',
@@ -12,14 +13,15 @@ import { Router } from '@angular/router';
   styleUrls: ['./order-confirmation.component.scss'],
 })
 export class OrderConfirmationComponent {
-  @Input() case!: CaseData;
-  @Input() hearing!: HearingData | undefined;
-  @Input() audioRequest!: requestPlaybackAudioDTO;
+  @Input() case!: Case;
+  @Input() hearing!: Hearing | undefined;
+  @Input() audioRequest!: AudioRequest;
   @Input() requestId!: number;
   @Input() state!: HearingPageState;
+  @Input() userProfile?: UserState | null | undefined;
 
   @Output() stateChange = new EventEmitter<HearingPageState>();
-  @Output() orderConfirm = new EventEmitter<requestPlaybackAudioDTO>();
+  @Output() orderConfirm = new EventEmitter<AudioRequest>();
 
   headerService = inject(HeaderService);
   router = inject(Router);

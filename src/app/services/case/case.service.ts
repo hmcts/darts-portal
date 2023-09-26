@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { CaseData, CourthouseData, HearingData, SearchFormValues } from '@darts-types/index';
+import { Case, Courthouse, Hearing, SearchFormValues } from '@darts-types/index';
 import { of } from 'rxjs';
 import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -15,24 +15,24 @@ export const ADVANCED_SEARCH_CASE_PATH = '/api/cases/search';
 export class CaseService {
   constructor(private readonly http: HttpClient) {}
 
-  getCourthouses(): Observable<CourthouseData[]> {
-    return this.http.get<CourthouseData[]>(GET_COURTHOUSES_PATH).pipe(
+  getCourthouses(): Observable<Courthouse[]> {
+    return this.http.get<Courthouse[]>(GET_COURTHOUSES_PATH).pipe(
       catchError(() => {
         return of([]);
       })
     );
   }
 
-  getCase(caseId: number): Observable<CaseData> {
+  getCase(caseId: number): Observable<Case> {
     const apiURL = `${GET_CASE_PATH}/${caseId}`;
-    return this.http.get<CaseData>(apiURL);
+    return this.http.get<Case>(apiURL);
   }
 
-  getCaseHearings(caseId: number): Observable<HearingData[]> {
-    return this.http.get<HearingData[]>(`${GET_CASE_PATH}/${caseId}/hearings`);
+  getCaseHearings(caseId: number): Observable<Hearing[]> {
+    return this.http.get<Hearing[]>(`${GET_CASE_PATH}/${caseId}/hearings`);
   }
 
-  getCasesAdvanced(searchForm: SearchFormValues): Observable<CaseData[]> {
+  getCasesAdvanced(searchForm: SearchFormValues): Observable<Case[]> {
     let params = new HttpParams();
 
     if (searchForm.case_number) params = params.set('case_number', searchForm.case_number);
@@ -56,15 +56,15 @@ export class CaseService {
 
     if (searchForm.event_text_contains) params = params.set('event_text_contains', searchForm.event_text_contains);
 
-    return this.http.get<CaseData[]>(ADVANCED_SEARCH_CASE_PATH, { params });
+    return this.http.get<Case[]>(ADVANCED_SEARCH_CASE_PATH, { params });
   }
 
   /**
    * @param {number} cId Required parameter, representing the case id to look for
    * @param {number} hId Required parameter, representing the hearing id to look for
-   * @returns {Observable<HearingData | undefined> | undefined} Returns either a Observable of HearingData, or undefined
+   * @returns {Observable<Hearing | undefined> | undefined} Returns either a Observable of Hearing, or undefined
    */
-  getHearingById(cId: number, hId: number): Observable<HearingData | undefined> {
+  getHearingById(cId: number, hId: number): Observable<Hearing | undefined> {
     return this.getCaseHearings(cId).pipe(map((h) => h.find((x) => x.id == hId)));
   }
 }

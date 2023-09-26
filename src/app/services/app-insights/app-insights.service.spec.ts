@@ -16,7 +16,11 @@ describe('AppInsightsService', () => {
     appInsightsService.logPageView('TEST_PAGE', 'http://localhost:3000/test-page');
 
     expect(spy).toBeCalledTimes(1);
-    expect(spy).toBeCalledWith({ name: 'TEST_PAGE', refUri: '', uri: 'http://localhost:3000/test-page' });
+    const pageViewParams = spy.mock.calls[0][0];
+    expect(pageViewParams).toHaveProperty('name', 'TEST_PAGE');
+    expect(pageViewParams).toHaveProperty('uri', 'http://localhost:3000/test-page');
+    expect(pageViewParams).toHaveProperty('refUri');
+    expect(pageViewParams).toHaveProperty('startTime');
   });
 
   it('logs an event', () => {

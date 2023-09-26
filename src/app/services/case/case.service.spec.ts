@@ -1,6 +1,6 @@
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { CaseData, CaseFile, CourthouseData, HearingData, SearchFormValues } from '@darts-types/index';
+import { Case, CaseFile, Courthouse, Hearing, SearchFormValues } from '@darts-types/index';
 import { ADVANCED_SEARCH_CASE_PATH, CaseService, GET_CASE_PATH, GET_COURTHOUSES_PATH } from './case.service';
 
 describe('CaseService', () => {
@@ -19,7 +19,7 @@ describe('CaseService', () => {
     retain_until: '2023-08-10T11:23:24.858Z',
   };
 
-  const multipleMockHearings: HearingData[] = [
+  const multipleMockHearings: Hearing[] = [
     {
       id: 1,
       date: '2023-09-01',
@@ -36,7 +36,7 @@ describe('CaseService', () => {
     },
   ];
 
-  const mockHearing: HearingData = {
+  const mockHearing: Hearing = {
     id: 2,
     date: '2024-09-01',
     judges: ['HHJ M. David KC'],
@@ -63,7 +63,7 @@ describe('CaseService', () => {
   });
 
   it('#getCourthouses', () => {
-    const mockCourthouses: CourthouseData[] = [];
+    const mockCourthouses: Courthouse[] = [];
 
     service.getCourthouses().subscribe((courthouses) => {
       expect(courthouses).toEqual(mockCourthouses);
@@ -77,7 +77,7 @@ describe('CaseService', () => {
 
   it('#getCase', () => {
     const mockCaseId = 123;
-    const mockCase: CaseData = mockCaseFile;
+    const mockCase: Case = mockCaseFile;
 
     service.getCase(mockCaseId).subscribe((c) => {
       expect(c).toEqual(mockCase);
@@ -91,7 +91,7 @@ describe('CaseService', () => {
 
   it('#getCaseHearings', () => {
     const mockCaseId = 123;
-    const mockHearings: HearingData[] = multipleMockHearings;
+    const mockHearings: Hearing[] = multipleMockHearings;
 
     service.getCaseHearings(mockCaseId).subscribe((hearings) => {
       expect(hearings).toEqual(mockHearings);
@@ -114,7 +114,7 @@ describe('CaseService', () => {
       date_to: '31/12/2023',
       event_text_contains: 'Event Text',
     };
-    const mockCases: CaseData[] = [];
+    const mockCases: Case[] = [];
 
     service.getCasesAdvanced(mockSearchForm).subscribe((cases) => {
       expect(cases).toEqual(mockCases);
@@ -143,7 +143,7 @@ describe('CaseService', () => {
   it('#getHearingById', () => {
     const mockCaseId = 123;
     const mockHearingId = 456;
-    const mockHearings: HearingData[] = [mockHearing];
+    const mockHearings: Hearing[] = [mockHearing];
 
     service.getHearingById(mockCaseId, mockHearingId).subscribe((hearing) => {
       expect(hearing).toBeDefined();
