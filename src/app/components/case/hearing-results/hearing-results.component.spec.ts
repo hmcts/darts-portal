@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Hearing } from '@darts-types/index';
@@ -20,6 +21,7 @@ describe('HearingResultsComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HearingResultsComponent, RouterTestingModule],
+      providers: [{ provide: DatePipe }],
     });
     fixture = TestBed.createComponent(HearingResultsComponent);
     component = fixture.componentInstance;
