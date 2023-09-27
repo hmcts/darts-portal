@@ -7,10 +7,26 @@
       </li>
       <li class="govuk-breadcrumbs__list-item">
         <a [routerLink]="['/case/', vm.case.case_id, 'hearing', vm.hearing?.id]" class="govuk-breadcrumbs__link">{{
-          vm.hearing?.date | date: 'd MMM y'
+          vm.hearing?.date | date : 'd MMM y'
         }}</a>
       </li>
     </ol>
+  </div>
+  <!-- Error Summary Box -->
+  <div *ngIf="errors" class="govuk-error-summary" data-module="govuk-error-summary">
+    <div role="alert">
+      <h2 class="govuk-error-summary__title">There is a problem</h2>
+      <div class="govuk-error-summary__body">
+        <ul class="govuk-list govuk-error-summary__list">
+          <li>
+            <a routerLink="" fragment="user-type"
+              >Select whether you are an employee of HM Courts and Tribunals Service or you work with HM Courts and
+              Tribunals Service.</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 
   <!-- Back Button -->
@@ -33,6 +49,7 @@
       [hearing]="vm.hearing!"
       [requestAudioTimes]="requestAudioTimes"
       (audioRequest)="onAudioRequest($event)"
+      (validationErrorEvent)="onValidationError($event)"
     ></app-request-playback-audio>
 
     <!-- Events & Audio Table-->

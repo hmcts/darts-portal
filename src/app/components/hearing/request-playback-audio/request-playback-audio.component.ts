@@ -28,6 +28,8 @@ export class RequestPlaybackAudioComponent implements OnChanges {
   audioRequestForm: FormGroup;
   requestObj!: AudioRequest;
   @Output() audioRequest = new EventEmitter<AudioRequest>();
+  @Output() validationErrorEvent = new EventEmitter<boolean>();
+  public isSubmitted = false
 
   constructor(
     private fb: FormBuilder,
@@ -44,8 +46,12 @@ export class RequestPlaybackAudioComponent implements OnChanges {
         minutes: [null, [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
         seconds: [null, [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
       }),
-      requestType: '',
+      requestType: ['', [Validators.required]],
     });
+  }
+  
+  public onValidationError(){
+    this.validationErrorEvent.emit(this.audioRequestForm.invalid);
   }
 
   public setTimes(): void {
@@ -73,6 +79,8 @@ export class RequestPlaybackAudioComponent implements OnChanges {
   }
 
   onSubmit() {
+    this.isSubmitted = true;
+    this.onValidationError();
     const startTimeHours = this.audioRequestForm.get('startTime.hours')?.value;
     const startTimeMinutes = this.audioRequestForm.get('startTime.minutes')?.value;
     const startTimeSeconds = this.audioRequestForm.get('startTime.seconds')?.value;

@@ -36,6 +36,7 @@ export class HearingComponent {
   userService = inject(UserService);
   requestAudioTimes: Map<string, Date> | undefined;
   private _state: HearingPageState = 'Default';
+  public errors = false;
 
   // getter for state variable
   public get state() {
@@ -105,6 +106,10 @@ export class HearingComponent {
 
   onStateChanged(state: HearingPageState) {
     this.state = state;
+  }
+
+  onValidationError(error: boolean){
+    this.errors = error;
   }
 
   onBack(event: Event) {
