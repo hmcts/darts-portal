@@ -8,7 +8,7 @@ describe('SearchErrorComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [SearchErrorComponent]
+      imports: [SearchErrorComponent],
     });
     fixture = TestBed.createComponent(SearchErrorComponent);
     component = fixture.componentInstance;

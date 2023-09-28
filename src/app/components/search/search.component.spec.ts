@@ -36,7 +36,7 @@ describe('SearchComponent', () => {
     } as unknown as HttpClient;
 
     caseService = new CaseService(httpClientSpy);
-    jest.spyOn(caseService, 'getCasesAdvanced').mockReturnValue(of([]));
+    jest.spyOn(caseService, 'searchCases').mockReturnValue(of([]));
     jest.spyOn(caseService, 'getCourthouses').mockReturnValue(of(courts));
 
     TestBed.configureTestingModule({
@@ -146,7 +146,7 @@ describe('SearchComponent', () => {
     });
 
     it('should call submit function when search button is clicked and fields are filled', () => {
-      const getCasesAdvancedSpy = jest.spyOn(caseService, 'getCasesAdvanced');
+      const getCasesAdvancedSpy = jest.spyOn(caseService, 'searchCases');
 
       component.form.controls['case_number'].setValue('1');
       component.form.controls['courthouse'].setValue('Reading');
@@ -211,7 +211,7 @@ describe('SearchComponent', () => {
       expect(component.form.get('date_to')?.value).toBeFalsy();
       expect(component.form.get('date_from')?.value).toBeFalsy();
       expect(component.form.get('event_text_contains')?.value).toBeFalsy();
-      expect(component.cases.length).toBe(0);
+
       expect(courthouseComponentSpy).toHaveBeenCalled();
     });
   });

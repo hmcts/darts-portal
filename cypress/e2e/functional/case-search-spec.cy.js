@@ -17,8 +17,8 @@ describe('Case search', () => {
     cy.get('h1').should('contain', 'Search for a case');
     cy.get('button').contains('Search').click();
 
-    cy.get('#search-results').should('contain', 'No search results');
-    cy.get('#search-results').should('contain', 'You need to enter some search terms');
+    cy.get('app-search-error').should('contain', 'No search results');
+    cy.get('app-search-error').should('contain', 'You need to enter some search terms');
   });
 
   it('single case', () => {
@@ -62,7 +62,7 @@ describe('Case search', () => {
     cy.get('#courthouse').type('Reading');
     cy.get('button').contains('Search').click();
 
-    cy.get('#search-results').should('contain', 'There are more than 500 results');
+    cy.get('app-search-error').should('contain', 'There are more than 500 results');
   });
 
   it('validation', () => {
@@ -140,7 +140,7 @@ describe('Case search', () => {
     cy.get('#case_number').type('UNKNOWN_ERROR');
     cy.get('button').contains('Search').click();
 
-    cy.get('#search-results').should('contain', 'An error has occurred. Please try again later.');
+    cy.get('app-search-error').should('contain', 'An error has occurred. Please try again later.');
   });
 
   it('too many results', () => {
@@ -149,6 +149,48 @@ describe('Case search', () => {
     cy.get('#case_number').type('TOO_MANY_RESULTS');
     cy.get('button').contains('Search').click();
 
-    cy.get('#search-results').should('contain', 'There are more than 500 results');
+    cy.get('app-search-error').should('contain', 'There are more than 500 results');
+  });
+
+  it('restore form values from previous search', () => {
+    cy.contains('Search').click();
+    cy.get('h1').should('contain', 'Search for a case');
+    cy.contains('Advanced search').click();
+    cy.get('#case_number').type('C20220620001');
+    cy.get('#courthouse').type('Cardiff');
+    cy.get('#courtroom').type('2');
+    cy.get('#specific-date-radio').click();
+    cy.get('#specific_date').type('03/07/2021');
+    cy.get('#defendant').type('Dean');
+    cy.get('#judge').type('Judge Dredd');
+    cy.get('#keywords').type('Daffy duck');
+    cy.get('button').contains('Search').click();
+
+    cy.get('#search-results').should('contain', '1 result');
+
+    // >> Click into a case
+    cy.get('[data-test-id=case-link]').click();
+
+    // Check case file page
+    cy.get('h1').should('contain', 'C20220620001');
+
+    // << Go Back
+    cy.get('.govuk-back-link').click();
+
+    // Check for Search page
+    cy.get('h1').should('contain', 'Search for a case');
+
+    cy.contains('Advanced search').click();
+
+    // Should have previous form values and search results
+    cy.get('#case_number').should('have.value', 'C20220620001');
+    cy.get('#courthouse').should('have.value', 'Cardiff');
+    cy.get('#courtroom').should('have.value', '2');
+    cy.get('#specific_date').should('have.value', '03/07/2021');
+    cy.get('#defendant').should('have.value', 'Dean');
+    cy.get('#judge').should('have.value', 'Judge Dredd');
+    cy.get('#keywords').should('have.value', 'Daffy duck');
+
+    cy.get('#search-results').should('contain', '1 result');
   });
 });
