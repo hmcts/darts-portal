@@ -5,7 +5,7 @@
         <label class="govuk-label govuk-date-input__label hour small-text" for="hour-input"> Hour </label>
         <input
           class="govuk-input govuk-date-input__input govuk-input--width-2"
-          id="hour-input"
+          [id]="idStringPrepend + '-hour-input'"
           name="hour-input"
           formControlName="hours"
           type="text"
@@ -21,7 +21,7 @@
         <label class="govuk-label govuk-date-input__label small-text" for="minutes-input"> Minutes </label>
         <input
           class="govuk-input govuk-date-input__input govuk-input--width-2"
-          id="minutes-input"
+          [id]="idStringPrepend + '-minutes-input'"
           name="minutes-input"
           formControlName="minutes"
           type="text"
@@ -37,7 +37,7 @@
         <label class="govuk-label govuk-date-input__label small-text" for="seconds-input"> Seconds </label>
         <input
           class="govuk-input govuk-date-input__input govuk-input--width-2"
-          id="seconds-input"
+          [id]="idStringPrepend + '-seconds-input'"
           name="seconds-input"
           formControlName="seconds"
           type="text"

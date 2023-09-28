@@ -14,6 +14,7 @@ export class TimeInputComponent implements OnInit {
   form!: FormGroup;
   @Input() errors!: boolean;
   @Input() isSubmitted = false;
+  @Input() idStringPrepend!: string;
 
   constructor(private controlContainer: ControlContainer) {}
 
