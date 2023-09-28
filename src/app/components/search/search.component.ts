@@ -12,7 +12,7 @@ import { SearchFormValues } from '@darts-types/search-form.interface';
 import { futureDateValidator } from '@validators/future-date.validator';
 import { ErrorSummaryEntry, FieldErrors } from '@darts-types/index';
 
-const FieldErrors: FieldErrors = {
+const fieldErrors: FieldErrors = {
   courthouse: {
     required: 'You must also enter a courthouse',
   },
@@ -167,7 +167,7 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
     if (!errors) {
       return [];
     }
-    return Object.keys(errors).map((errorType) => FieldErrors[fieldName][errorType]);
+    return Object.keys(errors).map((errorType) => fieldErrors[fieldName][errorType]);
   }
 
   generateErrorSummary(): ErrorSummaryEntry[] {
