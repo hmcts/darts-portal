@@ -10,9 +10,9 @@ import { Case } from '@darts-types/case.interface';
 import { CaseService } from '@services/case/case.service';
 import { SearchFormValues } from '@darts-types/search-form.interface';
 import { futureDateValidator } from '@validators/future-date.validator';
-import { ErrorSummaryEntry } from '@darts-types/index';
+import { ErrorSummaryEntry, FieldErrors } from '@darts-types/index';
 
-const FieldErrors: { [key: string]: { [key: string]: string } } = {
+const FieldErrors: FieldErrors = {
   courthouse: {
     required: 'You must also enter a courthouse',
   },
