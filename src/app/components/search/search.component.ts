@@ -115,7 +115,7 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
     return this.isSubmitted && !!this.f[control].errors;
   }
 
-  async onSubmit() {
+  onSubmit() {
     this.isSubmitted = true;
     this.form.updateValueAndValidity();
 

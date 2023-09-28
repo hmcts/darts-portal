@@ -3,10 +3,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ErrorSummaryEntry, SearchComponent } from './search.component';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { ResultsComponent } from './results/results.component';
 import { HttpClient } from '@angular/common/http';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { CaseService } from '@services/case/case.service';
 import { CourthouseComponent } from '@common/courthouse/courthouse.component';
 import { Courthouse } from '@darts-types/courthouse.interface';
@@ -224,6 +224,18 @@ describe('SearchComponent', () => {
     expect(component.errorSummary.length).toBe(0);
   });
 
+  it('should generate error summary when form is invalid and submitted', () => {
+    // Simulate a form submission and set the form to be invalid
+    component.isSubmitted = true;
+    component.form.get('specific_date')?.setValue('bla');
+
+    // Trigger the valueChanges subscription
+    component.form.updateValueAndValidity();
+
+    // Expect the errorSummary to be generated
+    expect(component.errorSummary).toEqual(component.generateErrorSummary());
+  });
+
   it('should set date_to as required when date_from has a value in range mode', () => {
     component.dateInputType = 'range';
 
@@ -281,5 +293,33 @@ describe('SearchComponent', () => {
     const courthouseControl = component.form.get('courthouse');
     expect(courthouseControl?.value).toBe(courthouse);
     expect(courthouseControl?.dirty).toBe(true);
+  });
+
+  it('should toggle advanced search flag', () => {
+    expect(component.isAdvancedSearch).toBeFalsy();
+
+    const event = new MouseEvent('click');
+
+    component.toggleAdvancedSearch(event);
+
+    expect(component.isAdvancedSearch).toBeTruthy();
+
+    component.toggleAdvancedSearch(event);
+
+    expect(component.isAdvancedSearch).toBeFalsy();
+  });
+
+  it('should handle errors and clear search form and results', () => {
+    const errorResponse = new HttpErrorResponse({ error: { type: 'CASE_100' } });
+    jest.spyOn(component.caseService, 'searchCases').mockReturnValue(throwError(() => errorResponse));
+    let error = '';
+
+    component.form.markAsDirty();
+    component.onSubmit();
+    component.searchError$?.subscribe((errorType) => (error = errorType));
+
+    expect(error).toEqual('CASE_100');
+    expect(component.caseService.searchFormValues).toBeNull();
+    expect(component.caseService.searchResults$).toBeNull();
   });
 });
