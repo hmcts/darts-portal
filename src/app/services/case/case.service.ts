@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Case, Courthouse, Hearing, SearchFormValues } from '@darts-types/index';
 import { of } from 'rxjs';
 import { Observable } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, shareReplay } from 'rxjs/operators';
 
 export const GET_COURTHOUSES_PATH = '/api/courthouses';
 export const GET_CASE_PATH = '/api/cases';
@@ -14,6 +14,10 @@ export const ADVANCED_SEARCH_CASE_PATH = '/api/cases/search';
 })
 export class CaseService {
   constructor(private readonly http: HttpClient) {}
+
+  // Store for previous search results and form values
+  searchResults$: Observable<Case[]> | null = null;
+  searchFormValues: SearchFormValues | null = null;
 
   getCourthouses(): Observable<Courthouse[]> {
     return this.http.get<Courthouse[]>(GET_COURTHOUSES_PATH).pipe(
@@ -32,7 +36,10 @@ export class CaseService {
     return this.http.get<Hearing[]>(`${GET_CASE_PATH}/${caseId}/hearings`);
   }
 
-  getCasesAdvanced(searchForm: SearchFormValues): Observable<Case[]> {
+  searchCases(searchForm: SearchFormValues): Observable<Case[]> {
+    // Save search form values
+    this.searchFormValues = searchForm;
+
     let params = new HttpParams();
 
     if (searchForm.case_number) params = params.set('case_number', searchForm.case_number);
@@ -56,7 +63,9 @@ export class CaseService {
 
     if (searchForm.event_text_contains) params = params.set('event_text_contains', searchForm.event_text_contains);
 
-    return this.http.get<Case[]>(ADVANCED_SEARCH_CASE_PATH, { params });
+    // Store results in service for retrieval
+    this.searchResults$ = this.http.get<Case[]>(ADVANCED_SEARCH_CASE_PATH, { params }).pipe(shareReplay(1));
+    return this.searchResults$;
   }
 
   /**

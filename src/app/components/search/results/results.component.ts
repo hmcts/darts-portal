@@ -21,8 +21,6 @@ export type SortableColumn = 'case_number' | 'courthouse';
 })
 export class ResultsComponent implements OnChanges {
   @Input() cases: Case[] = [];
-  @Input() loaded = false;
-  @Input() errorType = '';
 
   pagedCases: Case[] = [];
   currentPage = 1;
@@ -115,15 +113,6 @@ export class ResultsComponent implements OnChanges {
         return 'Multiple';
       }
     }
-  }
-
-  isErrorHandledInTemplate() {
-    return (
-      this.errorType !== 'CASE_100' &&
-      this.errorType !== 'CASE_101' &&
-      this.errorType !== 'CASE_102' &&
-      this.errorType !== 'ok'
-    );
   }
 
   private getDateFormat(d: string): string {
