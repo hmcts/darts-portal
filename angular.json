@@ -43,7 +43,7 @@
                 "output": "./assets/images/icons"
               }
             ],
-            "styles": ["@angular/material/prebuilt-themes/indigo-pink.css", "src/styles.scss"],
+            "styles": ["src/styles.scss"],
             "scripts": []
           },
           "configurations": {
