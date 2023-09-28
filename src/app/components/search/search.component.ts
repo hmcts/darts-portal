@@ -180,6 +180,7 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   clearSearch() {
     this.form.reset();
+    this.searchResults$ = null;
     this.caseService.searchResults$ = null;
     this.caseService.searchFormValues = null;
     this.searchError$ = null;
