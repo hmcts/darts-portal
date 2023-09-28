@@ -256,7 +256,7 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
     courtHouseFormControl?.updateValueAndValidity();
   }
 
-  private restoreForm() {
+  restoreForm() {
     const previousFormValues = this.caseService.searchFormValues;
     if (previousFormValues) {
       if (previousFormValues?.specific_date) {
@@ -269,7 +269,7 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
 
       if (previousFormValues.courthouse) this.courthouse = previousFormValues.courthouse;
 
-      this.form.setValue(previousFormValues);
+      this.form.patchValue(previousFormValues);
 
       this.form.markAsDirty();
       this.isSubmitted = true;

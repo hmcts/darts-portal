@@ -322,4 +322,29 @@ describe('SearchComponent', () => {
     expect(component.caseService.searchFormValues).toBeNull();
     expect(component.caseService.searchResults$).toBeNull();
   });
+
+  it('should restore form values when previousFormValues is defined', () => {
+    // Mock previousFormValues
+    const previousFormValues = {
+      case_number: '',
+      courthouse: 'Cardiff',
+      courtroom: '',
+      date_from: '2022-09-01',
+      date_to: '2022-09-30',
+      defendant_name: '',
+      event_text_contains: '',
+      judge_name: '',
+      specific_date: '',
+    };
+
+    caseService.searchFormValues = previousFormValues;
+
+    component.restoreForm();
+
+    expect(component.dateInputType).toEqual('range');
+    expect(component.courthouse).toEqual(previousFormValues.courthouse);
+    expect(component.form.value).toEqual(previousFormValues);
+    expect(component.form.dirty).toBeTruthy();
+    expect(component.isSubmitted).toBeTruthy();
+  });
 });
