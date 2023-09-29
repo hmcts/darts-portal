@@ -13,6 +13,7 @@ import { TimeInputComponent } from './time-input/time-input.component';
 import * as moment from 'moment';
 import { DateTimeService } from '@services/datetime/datetime.service';
 import { AudioRequest, Hearing } from '@darts-types/index';
+import { UserState } from '@darts-types/user-state';
 
 @Component({
   selector: 'app-request-playback-audio',
@@ -25,14 +26,12 @@ import { AudioRequest, Hearing } from '@darts-types/index';
 export class RequestPlaybackAudioComponent implements OnChanges {
   @Input() hearing!: Hearing;
   @Input() requestAudioTimes!: Map<string, Date> | undefined;
+  @Input() userState!: UserState;
   audioRequestForm: FormGroup;
   requestObj!: AudioRequest;
   @Output() audioRequest = new EventEmitter<AudioRequest>();
 
-  constructor(
-    private fb: FormBuilder,
-    public datetimeService: DateTimeService
-  ) {
+  constructor(private fb: FormBuilder, public datetimeService: DateTimeService) {
     this.audioRequestForm = this.fb.group({
       startTime: this.fb.group({
         hours: [null, [Validators.required, Validators.min(0), Validators.max(23), Validators.pattern(/^\d{2}$/)]],
@@ -87,8 +86,7 @@ export class RequestPlaybackAudioComponent implements OnChanges {
 
     this.requestObj = {
       hearing_id: this.hearing.id,
-      // TO DO: Replace with user/Requestor ID when requesting audio
-      requestor: 1,
+      requestor: this.userState.userId,
       start_time: this.datetimeService.getIsoStringWithoutMilliseconds(startDateTime.toISOString()),
       end_time: this.datetimeService.getIsoStringWithoutMilliseconds(endDateTime.toISOString()),
       request_type: this.audioRequestForm.get('requestType')?.value,
