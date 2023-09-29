@@ -1,5 +1,7 @@
+import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
 import { NotFoundComponent } from '@common/not-found/not-found.component';
+import { UserService } from '@services/user/user.service';
 import { authGuard } from './auth/auth.guard';
 import { LoginComponent } from './components/login/login.component';
 
@@ -32,6 +34,10 @@ const protectedRoutes: Routes = [
     path: 'case/:caseId/hearing/:hearing_id',
     loadComponent: () => import('./components/hearing/hearing.component').then((c) => c.HearingComponent),
   },
-].map((route) => ({ ...route, canActivate: [authGuard] }));
+].map((route) => ({
+  ...route,
+  canActivate: [authGuard],
+  resolve: { userState: () => inject(UserService).getUserProfile() },
+}));
 
 export const APP_ROUTES = [...protectedRoutes, ...openRoutes];
