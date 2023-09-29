@@ -76,6 +76,7 @@
 </table>
 
 <app-pagination
+  *ngIf="pagination"
   [currentPage]="currentPage"
   [limit]="pageLimit"
   [total]="rows.length"
