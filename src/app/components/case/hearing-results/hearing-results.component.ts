@@ -19,7 +19,10 @@ export class HearingResultsComponent implements OnChanges {
   rows: any[] = [];
   columns: any[] = [];
 
-  constructor(private route: ActivatedRoute, private datePipe: DatePipe) {
+  constructor(
+    private route: ActivatedRoute,
+    private datePipe: DatePipe
+  ) {
     this.caseId = this.route.snapshot.params.caseId;
     this.tabs = ['Hearings', 'Transcripts'];
 
