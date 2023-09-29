@@ -258,7 +258,14 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   restoreForm() {
     const previousFormValues = this.caseService.searchFormValues;
+
     if (previousFormValues) {
+      // If we have any values for advanced search fields, open advanced search form
+      this.isAdvancedSearch = Object.entries(previousFormValues).some(([key, value]) => {
+        if (key === 'case_number') return false; // skip case_number
+        return value;
+      });
+
       if (previousFormValues?.specific_date) {
         this.dateInputType = 'specific';
       }

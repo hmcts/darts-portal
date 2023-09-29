@@ -180,7 +180,8 @@ describe('Case search', () => {
     // Check for Search page
     cy.get('h1').should('contain', 'Search for a case');
 
-    cy.contains('Advanced search').click();
+    // check advanced search is open
+    cy.get('details').should('have.attr', 'open');
 
     // Should have previous form values and search results
     cy.get('#case_number').should('have.value', 'C20220620001');

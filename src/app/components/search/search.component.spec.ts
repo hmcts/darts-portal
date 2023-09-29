@@ -341,6 +341,7 @@ describe('SearchComponent', () => {
 
     component.restoreForm();
 
+    expect(component.isAdvancedSearch).toBeTruthy();
     expect(component.dateInputType).toEqual('range');
     expect(component.courthouse).toEqual(previousFormValues.courthouse);
     expect(component.form.value).toEqual(previousFormValues);
