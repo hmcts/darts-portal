@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
-import { AudioRequest, AudioResponse, HearingAudioEventViewModel, HearingPageState } from '@darts-types/index';
+import { AudioRequest, AudioResponse, ErrorSummaryEntry, HearingAudioEventViewModel, HearingPageState } from '@darts-types/index';
 import { CaseService } from '@services/case/case.service';
 import { HeaderService } from '@services/header/header.service';
 import { HearingService } from '@services/hearing/hearing.service';
@@ -38,7 +38,7 @@ export class HearingComponent {
   userService = inject(UserService);
   requestAudioTimes: Map<string, Date> | undefined;
   private _state: HearingPageState = 'Default';
-  public errors = false;
+  public errorSummary: ErrorSummaryEntry[] = [];
 
   // getter for state variable
   public get state() {
@@ -110,8 +110,8 @@ export class HearingComponent {
     this.state = state;
   }
 
-  onValidationError(error: boolean){
-    this.errors = error;
+  onValidationError(errorSummary: ErrorSummaryEntry[]){
+    this.errorSummary = errorSummary;
   }
 
   onBack(event: Event) {
