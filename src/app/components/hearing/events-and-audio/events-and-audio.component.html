@@ -87,11 +87,11 @@
                 Preview Audio
               </button>
             </td>
-            <td class="govuk-table__cell">Start time: {{ row.media_start_timestamp | date : 'HH:mm:ss' }}</td>
-            <td class="govuk-table__cell">End time: {{ row.media_end_timestamp | date : 'HH:mm:ss' }}</td>
+            <td class="govuk-table__cell">Start time: {{ row.media_start_timestamp | date: 'HH:mm:ss' }}</td>
+            <td class="govuk-table__cell">End time: {{ row.media_end_timestamp | date: 'HH:mm:ss' }}</td>
           </ng-container>
           <ng-container *ngIf="row.type === 'event'">
-            <td class="govuk-table__cell">{{ row.timestamp | date : 'HH:mm:ss' }}</td>
+            <td class="govuk-table__cell">{{ row.timestamp | date: 'HH:mm:ss' }}</td>
             <td class="govuk-table__cell">{{ row.name }}</td>
             <td class="govuk-table__cell">{{ row.text }}</td>
           </ng-container>
