@@ -12,7 +12,8 @@
   margin-left: 10px;
 }
 
-tr:has(button) {
+tr:has(button),
+tr:has(app-audio-player) {
   background-color: aliceblue;
 }
 
@@ -22,4 +23,12 @@ tr:has(button) {
 
 .govuk-heading-s {
   display: inline-block;
+}
+
+.no-top-border td {
+  border-top: none;
+}
+
+.no-bottom-border td {
+  border-bottom: none;
 }

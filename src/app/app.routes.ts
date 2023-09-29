@@ -1,8 +1,13 @@
 import { Routes } from '@angular/router';
+import { NotFoundComponent } from '@common/not-found/not-found.component';
 import { authGuard } from './auth/auth.guard';
 import { LoginComponent } from './components/login/login.component';
 
-const openRoutes: Routes = [{ path: 'login', component: LoginComponent }];
+const openRoutes: Routes = [
+  { path: 'login', component: LoginComponent },
+  { path: 'page-not-found', component: NotFoundComponent },
+  { path: '**', redirectTo: '/page-not-found' },
+];
 const protectedRoutes: Routes = [
   { path: '', loadComponent: () => import('./components/home/home.component').then((c) => c.HomeComponent) },
   { path: 'inbox', loadComponent: () => import('./components/inbox/inbox.component').then((c) => c.InboxComponent) },
@@ -29,4 +34,4 @@ const protectedRoutes: Routes = [
   },
 ].map((route) => ({ ...route, canActivate: [authGuard] }));
 
-export const APP_ROUTES = [...openRoutes, ...protectedRoutes];
+export const APP_ROUTES = [...protectedRoutes, ...openRoutes];
