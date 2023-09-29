@@ -3,3 +3,22 @@
 </h1>
 
 <app-tabs [tabs]="tabs"></app-tabs>
+
+<ng-container *ngIf="data$ | async as data">
+  <ng-container *ngIf="data.completedRows.length">
+    <h2 class="govuk-heading-m">In Progress</h2>
+    <app-data-table [rows]="data.inProgessRows" [columns]="columns" [pagination]="false"></app-data-table>
+  </ng-container>
+
+  <ng-container *ngIf="data.completedRows.length">
+    <h2 class="govuk-heading-m">Ready</h2>
+    <div class="govuk-hint">Select to apply actions</div>
+    <app-data-table [rows]="data.completedRows" [columns]="columns"></app-data-table>
+  </ng-container>
+
+  <!-- <ng-container *ngIf="data.expiredRows.length">
+    <h2 class="govuk-heading-m">Ready</h2>
+    <div class="govuk-hint">Select to apply actions</div>
+    <app-data-table [rows]="data.completedRows" [columns]="columns"></app-data-table>
+  </ng-container> -->
+</ng-container>
