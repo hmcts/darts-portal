@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { Case, Hearing } from '@darts-types/index';
@@ -50,6 +51,7 @@ describe('CaseComponent', () => {
       providers: [
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
         { provide: CaseService, useValue: caseServiceMock },
+        { provide: DatePipe },
       ],
     });
 
