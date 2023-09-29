@@ -10,6 +10,7 @@ import {
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
+import { AudioPlayerComponent } from '@common/audio-player/audio-player.component';
 import { HearingEventTypeEnum } from '@darts-types/enums';
 import { HearingAudio, HearingAudioEventViewModel, HearingEvent } from '@darts-types/index';
 import { Subscription } from 'rxjs';
@@ -17,7 +18,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-events-and-audio',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, AudioPlayerComponent],
   templateUrl: './events-and-audio.component.html',
   styleUrls: ['./events-and-audio.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -37,6 +38,7 @@ export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
   formChanges$ = this.eventsFilterForm.valueChanges;
 
   subs: Subscription[] = [];
+  audioInPreview: number[] = [];
 
   ngOnInit(): void {
     this.subs.push(
@@ -81,6 +83,16 @@ export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
     } else {
       this.filteredTable = this.table.filter((row) => row.type === HearingEventTypeEnum.Event);
     }
+  }
+
+  onPreviewAudio(id: number) {
+    if (!this.isAudioInPreview(id)) {
+      this.audioInPreview = [...this.audioInPreview, id];
+    }
+  }
+
+  isAudioInPreview(id: number): boolean {
+    return !!this.audioInPreview.find((audioId) => audioId === id);
   }
 
   private constructTable() {
