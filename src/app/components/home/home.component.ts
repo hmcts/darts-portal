@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { DateTimeService } from '@services/datetime/datetime.service';
 
 @Component({
   selector: 'app-home',
@@ -20,5 +21,9 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.redirect();
+  }
+
+  private getDateFormat(d: string): string {
+    return DateTimeService.getdddDMMMYYYY(d);
   }
 }
