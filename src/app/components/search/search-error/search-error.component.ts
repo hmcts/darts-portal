@@ -1,10 +1,10 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 
 @Component({
   selector: 'app-search-error',
   standalone: true,
-  imports: [CommonModule],
+  imports: [NgSwitchCase, NgSwitchDefault, NgSwitch],
   templateUrl: './search-error.component.html',
   styleUrls: ['./search-error.component.scss'],
 })
