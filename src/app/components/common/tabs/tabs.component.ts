@@ -10,8 +10,9 @@ import { CommonModule } from '@angular/common';
 })
 export class TabsComponent implements OnInit {
   @Input({ required: true }) tabs: string[] = [];
-  @Output() tabChange = new EventEmitter<string>();
   @Input() activeTab!: string;
+
+  @Output() tabChange = new EventEmitter<string>();
 
   ngOnInit(): void {
     if (!this.activeTab) {
