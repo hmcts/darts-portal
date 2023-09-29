@@ -1,4 +1,4 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AudioPlayerComponent } from './audio-player.component';
 import { By } from '@angular/platform-browser';
 
