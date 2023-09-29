@@ -16,7 +16,7 @@
       <tr class="govuk-table__row">
         <td class="govuk-table__cell">
           <a [routerLink]="['/case/', caseId, 'hearing', h.id]" routerLinkActive="router-link-active">{{
-            h.date | date : 'd MMM y'
+            h.date | date: 'd MMM y'
           }}</a>
         </td>
         <td class="govuk-table__cell">{{ h.judges }}</td>
