@@ -75,7 +75,6 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
   });
 
   ngOnInit() {
-    this.restoreForm();
     // Set validation based on values entered in the form
     // [DMP-691] AC 2 - Listening for when courtroom has value, if so, then courthouse is required
     this.subs.push(
@@ -100,6 +99,8 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
     // [DMP-691] AC3, AC4, AC5, AC6 - Add date range validators if either date_from or date_to field has a value.
     // Validators: required, future & pattern
     this.setDateRangeValidators();
+
+    this.restoreForm();
   }
 
   toggleAdvancedSearch(event: Event) {
