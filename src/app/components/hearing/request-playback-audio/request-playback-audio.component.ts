@@ -78,16 +78,17 @@ export class RequestPlaybackAudioComponent implements OnChanges {
 
   public onValidationError(){
     const formControls = this.f;    
+    const idHashMap = new Map<string, string>();
     
-    // const idHashMap = new Map<string, string>();
-    // idHashMap.set('startTime', 'start-time-hour-input');
-    // idHashMap.set('endTime', 'end-time-hour-input');
+    idHashMap.set('startTime', 'start-time-hour-input');
+    idHashMap.set('endTime', 'end-time-hour-input');
+    idHashMap.set('requestType', 'download-radio');
 
     const errorMessages: ErrorSummaryEntry[] = Object.keys(formControls)
       .filter((fieldId) => formControls[fieldId].errors)
-      .map((fieldId) => this.getFieldErrorMessages(fieldId).map((message) => ({ fieldId, message })))
-      .flat();
-      
+      .map((fieldId) => this.getFieldErrorMessages(fieldId).map((message) => ({ fieldId :idHashMap.get(fieldId) ?? '', message })))
+      .flat();        
+
     this.validationErrorEvent.emit(errorMessages);
   }
   
