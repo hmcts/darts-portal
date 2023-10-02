@@ -118,6 +118,9 @@ export class HearingComponent {
 
   onValidationError(errorSummary: ErrorSummaryEntry[]) {
     this.errorSummary = errorSummary;
+    setTimeout(() => {
+      document.getElementById('error-' + this.errorSummary[0].fieldId)?.focus();
+    });
   }
 
   onBack(event: Event) {
@@ -127,7 +130,6 @@ export class HearingComponent {
 
   focus(id: string) {
     document.getElementById(id)?.focus();
-    console.log(document.getElementsByClassName('govuk-error-summary'));
   }
 
   onOrderConfirm(requestObject: AudioRequest) {
