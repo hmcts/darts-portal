@@ -207,7 +207,6 @@ describe('DataTableComponent', () => {
       expect(component.rows).toEqual(component.rows);
     });
 
-
     it('should set string sorting to ascending order for the judges array column', () => {
       component.rows = MOCK_ROWS;
       const column = 'judge';
@@ -266,7 +265,6 @@ describe('DataTableComponent', () => {
       expect(component.sorting).toEqual(expectedSorting);
       expect(component.rows).toEqual(component.rows.reverse());
     });
-    
 
     it('should set numeric sorting to descending order for the transcription count numeric column', () => {
       component.rows = MOCK_ROWS;
