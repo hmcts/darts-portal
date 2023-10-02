@@ -102,7 +102,8 @@
             id="specific-date-items"
           >
             <div data-module="ds-datepicker" class="ds_datepicker">
-              <p class="ds_hint-text">For example, 31/01/2023.</p>
+              <label class="ds_label" for="range-date-from">Enter a date</label>
+              <p class="ds_hint-text">Use dd/mm/yyyy format.</p>
               <!-- Error message date range date_from -->
               <div *ngIf="isControlInvalid('specific_date')" id="specific_date-errors">
                 <p *ngFor="let error of getFieldErrorMessages('specific_date')" class="govuk-error-message">
@@ -111,6 +112,7 @@
               </div>
               <div class="ds_input__wrapper">
                 <input
+                  aria-label="Enter a date in dd/mm/yyyy format"
                   formControlName="specific_date"
                   name="specific_date"
                   id="specific_date"
@@ -145,8 +147,8 @@
               id="range-date-items"
             >
               <div data-module="ds-datepicker" class="ds_datepicker">
-                <label class="ds_label" for="range-date-from">From</label>
-                <p class="ds_hint-text">For example, 31/01/2023.</p>
+                <label class="ds_label" for="range-date-from">Enter date from</label>
+                <p class="ds_hint-text">Use dd/mm/yyyy format.</p>
 
                 <!-- Error message date range date_from -->
                 <div *ngIf="isControlInvalid('date_from')" id="date_from-errors">
@@ -157,6 +159,7 @@
 
                 <div class="ds_input__wrapper">
                   <input
+                    aria-label="Enter date from in dd/mm/yyyy format"
                     formControlName="date_from"
                     name="date_from"
                     id="date_from"
@@ -175,8 +178,8 @@
               [class.govuk-form-group--error]="isControlInvalid('date_to')"
             >
               <div data-module="ds-datepicker" class="ds_datepicker">
-                <label class="ds_label" for="range-date-to">To</label>
-                <p class="ds_hint-text">For example, 31/01/2023.</p>
+                <label class="ds_label" for="range-date-to">Enter date to</label>
+                <p class="ds_hint-text">Use dd/mm/yyyy format.</p>
 
                 <!-- Error message date range date_to -->
                 <div *ngIf="isControlInvalid('date_to')" id="date_to-errors">
@@ -187,6 +190,7 @@
 
                 <div class="ds_input__wrapper">
                   <input
+                    aria-label="Enter date to in dd/mm/yyyy format"
                     formControlName="date_to"
                     id="date_to"
                     name="date_to"

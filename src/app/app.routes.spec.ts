@@ -31,10 +31,15 @@ describe('App Routes', () => {
     router.initialNavigation();
   });
 
-  APP_ROUTES.forEach((route: Route) => {
+  APP_ROUTES.filter((route) => route.path !== '**').forEach((route: Route) => {
     it(`navigate to "${route.path}" takes you to "/${route.path}"`, async () => {
       await router.navigate([route.path]);
       expect(location.path()).toEqual(`/${route.path}`);
     });
+  });
+
+  it(`404 should navigate to page not found`, async () => {
+    await router.navigate(['asdasdfsdfs']);
+    expect(location.path()).toEqual('/page-not-found');
   });
 });

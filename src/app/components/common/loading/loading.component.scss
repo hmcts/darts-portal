@@ -1,0 +1,42 @@
+.loading-container {
+  text-align: center;
+  padding-top: 40px;
+
+  .govuk-spinner {
+    margin: 0 auto;
+    border: 12px solid #dee0e2;
+    border-radius: 50%;
+    border-top-color: #1d70b8;
+    width: 80px;
+    height: 80px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+
+    &.small {
+      width: 40px;
+      height: 40px;
+      border-width: 6px;
+    }
+  }
+
+  @-webkit-keyframes spin {
+    0% {
+      -webkit-transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .govuk-heading-m {
+    padding-top: 20px;
+  }
+}

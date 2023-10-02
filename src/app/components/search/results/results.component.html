@@ -6,63 +6,7 @@
     <h2 class="govuk-heading-m">No search results</h2>
     <p class="govuk-body">Review the case ID, case reference or court reference you entered and try again.</p>
   </div>
-
-  <div *ngIf="cases.length > 0">
-    <table class="govuk-table">
-      <caption class="govuk-table__caption govuk-table__caption--m">
-        {{
-          cases.length
-        }}
-        {{
-          cases.length > 1 ? 'results' : 'result'
-        }}
-      </caption>
-      <thead class="govuk-table__head">
-        <tr class="govuk-table__row">
-          <th scope="col" class="govuk-table__header" [attr.aria-sort]="getAriaSort('case_number')">
-            <button type="button" (click)="sortTable('case_number')">Case ID</button>
-          </th>
-          <th scope="col" class="govuk-table__header" [attr.aria-sort]="getAriaSort('courthouse')">
-            <button type="button" (click)="sortTable('courthouse')">Courthouse</button>
-          </th>
-          <th scope="col" class="govuk-table__header">Courtroom</th>
-          <th scope="col" class="govuk-table__header">Judge(s)</th>
-          <th scope="col" class="govuk-table__header">Defendant(s)</th>
-        </tr>
-      </thead>
-      <tbody class="govuk-table__body">
-        <ng-container *ngFor="let c of pagedCases">
-          <tr class="govuk-table__row" [class.remove-bottom-border]="c.reporting_restriction">
-            <td class="govuk-table__cell">
-              <a data-test-id="case-link" [routerLink]="['/case', c.case_id]" routerLinkActive="router-link-active">
-                {{ c.case_number }}
-              </a>
-            </td>
-            <td class="govuk-table__cell">{{ c.courthouse }}</td>
-            <td class="govuk-table__cell">{{ getHearingsValue(c, 'courtroom') }}</td>
-            <td class="govuk-table__cell">{{ getNameValue(c.judges) }}</td>
-            <td class="govuk-table__cell">{{ getNameValue(c.defendants) }}</td>
-          </tr>
-          <tr *ngIf="c.reporting_restriction" class="restriction-row govuk-table__row">
-            <td class="govuk-table__cell" colspan="6">
-              <div class="govuk-warning-text">
-                <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-                <span class="govuk-warning-text__text">
-                  <span class="govuk-warning-text__assistive">Restriction</span>
-                  <strong>Restriction:</strong> {{ c.reporting_restriction }}
-                </span>
-              </div>
-            </td>
-          </tr>
-        </ng-container>
-      </tbody>
-    </table>
-
-    <app-pagination
-      [currentPage]="currentPage"
-      [limit]="pageLimit"
-      [total]="cases.length"
-      (changePage)="onPageChanged($event)"
-    ></app-pagination>
+  <div *ngIf="cases.length > 0 && errorType === 'ok' && loaded">
+    <app-data-table [rows]="rows" [columns]="columns" [caption]="caption"></app-data-table>
   </div>
 </div>

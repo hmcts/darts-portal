@@ -12,10 +12,13 @@ import { EventsAndAudioComponent } from './events-and-audio/events-and-audio.com
 import { HearingFileComponent } from './hearing-file/hearing-file.component';
 import { OrderConfirmationComponent } from './order-confirmation/order-confirmation.component';
 import { RequestPlaybackAudioComponent } from './request-playback-audio/request-playback-audio.component';
+import { LoadingComponent } from '../common/loading/loading.component';
 
 @Component({
   selector: 'app-hearing',
   standalone: true,
+  templateUrl: './hearing.component.html',
+  styleUrls: ['./hearing.component.scss'],
   imports: [
     CommonModule,
     HearingFileComponent,
@@ -24,9 +27,8 @@ import { RequestPlaybackAudioComponent } from './request-playback-audio/request-
     OrderConfirmationComponent,
     ReportingRestrictionComponent,
     RouterLink,
+    LoadingComponent,
   ],
-  templateUrl: './hearing.component.html',
-  styleUrls: ['./hearing.component.scss'],
 })
 export class HearingComponent {
   private route = inject(ActivatedRoute);
