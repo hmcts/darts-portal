@@ -28,10 +28,11 @@ export class HearingResultsComponent implements OnChanges {
         name: 'Hearing date',
         prop: 'date',
         link: '/case/' + this.caseId + '/hearing/',
+        sortable: true,
       },
-      { name: 'Judge', prop: 'judges' },
-      { name: 'Courtroom', prop: 'courtroom' },
-      { name: 'No. of transcripts', prop: 'transcript_count' },
+      { name: 'Judge', prop: 'judges', sortable: true },
+      { name: 'Courtroom', prop: 'courtroom', sortable: true },
+      { name: 'No. of transcripts', prop: 'transcript_count', sortable: true },
     ];
   }
 

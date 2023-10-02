@@ -99,7 +99,7 @@
         <tr *ngIf="row.type === 'audio' && isAudioInPreview(row.id)" class="govuk-table__row no-top-border">
           <td class="govuk-table__cell"></td>
           <td class="govuk-table__cell" colspan="3">
-            <app-audio-player></app-audio-player>
+            <app-audio-player [mediaId]="row.id"></app-audio-player>
           </td>
         </tr>
       </ng-container>
