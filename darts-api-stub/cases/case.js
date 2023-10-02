@@ -44,13 +44,48 @@ const singleCaseHearings = [
   },
 ];
 
-const singleCaseTwoHearings = [
+const singleCaseMultiHearings = [
   {
     id: 1,
     date: '2023-09-01',
     judges: ['HHJ M. Hussain KC'],
     courtroom: '3',
     transcript_count: 1,
+  },
+  {
+    id: 2,
+    date: '2023-10-10',
+    courtroom: '4',
+    judges: ['Judge Jonny'],
+    transcript_count: 2,
+  },
+  {
+    id: 3,
+    date: '2023-10-11',
+    courtroom: '9',
+    judges: ['Alex Jonny'],
+    transcript_count: 3,
+  },
+  {
+    id: 4,
+    date: '2023-12-01',
+    courtroom: '9',
+    judges: ['Zach Malik'],
+    transcript_count: 50,
+  },
+  {
+    id: 5,
+    date: '2024-01-05',
+    courtroom: '9',
+    judges: ['Fred Masey'],
+    transcript_count: 53,
+  },
+  {
+    id: 6,
+    date: '2024-03-10',
+    courtroom: '11',
+    judges: ['Zach Attack'],
+    transcript_count: 51,
   },
 ];
 
@@ -390,7 +425,7 @@ router.get('/:caseId/hearings', (req, res) => {
       res.send(singleCaseHearings);
       break;
     default:
-      res.send(singleCaseTwoHearings);
+      res.send(singleCaseMultiHearings);
       break;
   }
 });
