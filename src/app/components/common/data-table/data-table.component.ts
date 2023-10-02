@@ -60,11 +60,31 @@ export class DataTableComponent implements OnChanges {
     };
 
     this.rows.sort((a, b) => {
-      const valueA: string | undefined = a[column];
-      const valueB: string | undefined = b[column];
+      const valueA: string | number | undefined = a[column];
+      const valueB: string | number | undefined = b[column];
 
-      if (typeof valueA === 'string' && typeof valueB === 'string') {
+      if (column === 'date' && typeof valueA === 'string' && typeof valueB === 'string') {
+        //Date sorting
+        return this.compareDates(column, new Date(valueA), new Date(valueB));
+      }
+      if (
+        column === 'courtroom' &&
+        typeof valueA === 'string' &&
+        typeof valueB === 'string' &&
+        this.isNumeric(valueA) &&
+        this.isNumeric(valueB)
+      ) {
+        //Courtroom convert to number if numeric parseable
+        return this.compareNumbers(column, +valueA, +valueB);
+      } else if (typeof valueA === 'string' && typeof valueB === 'string') {
+        //String sorting
         return this.compareStrings(column, valueA, valueB);
+      } else if (typeof valueA === 'number' && typeof valueB === 'number') {
+        //Number sorting
+        return this.compareNumbers(column, valueA, valueB);
+      } else if (Array.isArray(valueA) && Array.isArray(valueB)) {
+        //Array sorting
+        return this.compareStrings(column, valueA[0], valueB[0]);
       } else {
         return 0;
       }
@@ -100,6 +120,18 @@ export class DataTableComponent implements OnChanges {
 
   compareStrings(column: any, a: string, b: string): number {
     return this.isAscSorting(column) ? a.localeCompare(b) : b.localeCompare(a);
+  }
+
+  compareNumbers(column: any, a: number, b: number): number {
+    return this.isAscSorting(column) ? a - b : b - a;
+  }
+
+  compareDates(column: any, a: Date, b: Date): number {
+    return this.isAscSorting(column) ? a.getTime() - b.getTime() : b.getTime() - a.getTime();
+  }
+
+  isNumeric(num: string) {
+    return !isNaN(parseFloat(String(num)));
   }
 
   isDescSorting(column: any): boolean {
