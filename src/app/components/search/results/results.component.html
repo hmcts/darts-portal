@@ -6,7 +6,7 @@
     <h2 class="govuk-heading-m">No search results</h2>
     <p class="govuk-body">Review the case ID, case reference or court reference you entered and try again.</p>
   </div>
-  <div *ngIf="cases.length > 0 && errorType === 'ok' && loaded">
+  <div *ngIf="cases.length">
     <app-data-table [rows]="rows" [columns]="columns" [caption]="caption"></app-data-table>
   </div>
 </div>

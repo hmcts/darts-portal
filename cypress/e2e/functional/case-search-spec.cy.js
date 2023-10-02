@@ -169,7 +169,7 @@ describe('Case search', () => {
     cy.get('#search-results').should('contain', '1 result');
 
     // >> Click into a case
-    cy.get('[data-test-id=case-link]').click();
+    cy.get('#search-results a').click();
 
     // Check case file page
     cy.get('h1').should('contain', 'C20220620001');
