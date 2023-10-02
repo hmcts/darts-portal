@@ -2,7 +2,13 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
-import { AudioRequest, AudioResponse, ErrorSummaryEntry, HearingAudioEventViewModel, HearingPageState } from '@darts-types/index';
+import {
+  AudioRequest,
+  AudioResponse,
+  ErrorSummaryEntry,
+  HearingAudioEventViewModel,
+  HearingPageState,
+} from '@darts-types/index';
 import { CaseService } from '@services/case/case.service';
 import { HeaderService } from '@services/header/header.service';
 import { HearingService } from '@services/hearing/hearing.service';
@@ -40,21 +46,6 @@ export class HearingComponent {
   private _state: HearingPageState = 'Default';
   public errorSummary: ErrorSummaryEntry[] = [];
 
-  // getter for state variable
-  public get state() {
-    return this._state;
-  }
-
-  // overriding state setter to call show/hide navigation
-  public set state(value: HearingPageState) {
-    if (value === 'Default') {
-      this.headerService.showPrimaryNavigation(true);
-    } else {
-      this.headerService.showPrimaryNavigation(false);
-    }
-    this._state = value;
-  }
-
   requestId!: number;
 
   requestObject!: AudioRequest;
@@ -74,6 +65,21 @@ export class HearingComponent {
     audios: this.audio$,
     events: this.events$,
   });
+
+  // getter for state variable
+  public get state() {
+    return this._state;
+  }
+
+  // overriding state setter to call show/hide navigation
+  public set state(value: HearingPageState) {
+    if (value === 'Default') {
+      this.headerService.showPrimaryNavigation(true);
+    } else {
+      this.headerService.showPrimaryNavigation(false);
+    }
+    this._state = value;
+  }
 
   onEventsSelected(audioAndEvents: HearingAudioEventViewModel[]) {
     const timestamps: number[] = [];
@@ -110,13 +116,18 @@ export class HearingComponent {
     this.state = state;
   }
 
-  onValidationError(errorSummary: ErrorSummaryEntry[]){
+  onValidationError(errorSummary: ErrorSummaryEntry[]) {
     this.errorSummary = errorSummary;
   }
 
   onBack(event: Event) {
     event.preventDefault();
     this.state = 'Default';
+  }
+
+  focus(id: string) {
+    document.getElementById(id)?.focus();
+    console.log(document.getElementsByClassName('govuk-error-summary'));
   }
 
   onOrderConfirm(requestObject: AudioRequest) {

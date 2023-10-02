@@ -15,7 +15,12 @@
           >
             <h3 class="govuk-heading-s">Start Time</h3>
             <p
-              *ngIf="(audioRequestForm.get('startTime.hours')?.hasError('required') || audioRequestForm.get('startTime.minutes')?.hasError('required') || audioRequestForm.get('startTime.seconds')?.hasError('required')) && isSubmitted"
+              *ngIf="
+                (audioRequestForm.get('startTime.hours')?.hasError('required') ||
+                  audioRequestForm.get('startTime.minutes')?.hasError('required') ||
+                  audioRequestForm.get('startTime.seconds')?.hasError('required')) &&
+                isSubmitted
+              "
               id="start-time-error"
               class="govuk-error-message"
             >
@@ -28,7 +33,11 @@
             >
               <span class="govuk-visually-hidden">Error:</span> Pattern Error
             </p>
-            <app-time-input formGroupName="startTime" [isSubmitted]="isSubmitted" [idStringPrepend]="'start-time'" ></app-time-input>
+            <app-time-input
+              formGroupName="startTime"
+              [isSubmitted]="isSubmitted"
+              [idStringPrepend]="'start-time'"
+            ></app-time-input>
           </div>
         </div>
         <div class="govuk-grid-column-one-quarter">
@@ -38,13 +47,22 @@
           >
             <h3 class="govuk-heading-s">End Time</h3>
             <p
-              *ngIf="(audioRequestForm.get('endTime.hours')?.hasError('required') || audioRequestForm.get('endTime.minutes')?.hasError('required') || audioRequestForm.get('endTime.seconds')?.hasError('required')) && isSubmitted"
+              *ngIf="
+                (audioRequestForm.get('endTime.hours')?.hasError('required') ||
+                  audioRequestForm.get('endTime.minutes')?.hasError('required') ||
+                  audioRequestForm.get('endTime.seconds')?.hasError('required')) &&
+                isSubmitted
+              "
               class="end-time-error"
               class="govuk-error-message"
             >
               <span class="govuk-visually-hidden">Error:</span> You must include an end time for your audio recording
             </p>
-            <app-time-input formGroupName="endTime" [isSubmitted]="isSubmitted" [idStringPrepend]="'end-time'"></app-time-input>
+            <app-time-input
+              formGroupName="endTime"
+              [isSubmitted]="isSubmitted"
+              [idStringPrepend]="'end-time'"
+            ></app-time-input>
           </div>
         </div>
         <div class="govuk-grid-column-one-quarter requestType">
