@@ -60,7 +60,7 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
   searchError$: Observable<string> | null = null;
   subs: Subscription[] = [];
 
-  constructor(public caseService: CaseService) {}
+  constructor(private caseService: CaseService) {}
 
   form: FormGroup = new FormGroup({
     case_number: new FormControl(),
