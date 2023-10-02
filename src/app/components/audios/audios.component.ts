@@ -8,13 +8,22 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
 import { TableRowTemplateDirective } from 'src/app/directives/table-row-template.directive';
 import { LoadingComponent } from '@common/loading/loading.component';
+import { TabDirective } from 'src/app/directives/tab.directive';
 
 @Component({
   selector: 'app-audios',
   templateUrl: './audios.component.html',
   styleUrls: ['./audios.component.scss'],
   standalone: true,
-  imports: [DataTableComponent, LoadingComponent, TabsComponent, CommonModule, TableRowTemplateDirective, RouterLink],
+  imports: [
+    DataTableComponent,
+    LoadingComponent,
+    TabsComponent,
+    CommonModule,
+    TableRowTemplateDirective,
+    RouterLink,
+    TabDirective,
+  ],
 })
 export class AudiosComponent {
   audioService = inject(AudioService);
@@ -29,7 +38,7 @@ export class AudiosComponent {
   completedRows$: Observable<any[]>;
   expiredRows$: Observable<any[]>;
 
-  data$: Observable<{ inProgessRows: any[]; completedRows: any[] }>;
+  data$: Observable<{ inProgessRows: any[]; completedRows: any[]; expiredRows: any[] }>;
 
   tabs = ['Current', 'Expired'];
 

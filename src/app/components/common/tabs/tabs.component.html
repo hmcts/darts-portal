@@ -3,11 +3,15 @@
     <li *ngFor="let tab of tabs" class="moj-sub-navigation__item">
       <a
         class="moj-sub-navigation__link"
-        [attr.aria-current]="tab === activeTab ? 'page' : null"
+        [attr.aria-current]="tab.template === currentTab ? 'page' : null"
         href="#"
-        (click)="onTabClick($event, tab)"
-        >{{ tab }}</a
+        (click)="$event.preventDefault(); currentTab = tab.template"
+        >{{ tab.name }}</a
       >
     </li>
   </ul>
 </nav>
+
+<div class="tab-container">
+  <ng-container [ngTemplateOutlet]="currentTab"></ng-container>
+</div>

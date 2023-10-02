@@ -1,2 +1,6 @@
-<app-tabs [tabs]="tabs"></app-tabs>
-<app-data-table [rows]="rows" [columns]="columns"></app-data-table>
+<app-tabs>
+  <div *tab="'Hearings'">
+    <app-data-table [rows]="rows" [columns]="columns"></app-data-table>
+  </div>
+  <div *tab="'Transcripts'"></div>
+</app-tabs>

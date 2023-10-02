@@ -1,28 +1,20 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, ContentChildren, OnInit, QueryList, TemplateRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TabDirective } from 'src/app/directives/tab.directive';
 
 @Component({
   selector: 'app-tabs',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TabDirective],
   templateUrl: './tabs.component.html',
   styleUrls: ['./tabs.component.scss'],
 })
-export class TabsComponent implements OnInit {
-  @Input({ required: true }) tabs: string[] = [];
-  @Input() activeTab!: string;
+export class TabsComponent implements AfterViewInit {
+  @ContentChildren(TabDirective) tabs!: QueryList<TabDirective>;
+  currentTab!: TemplateRef<any>;
 
-  @Output() tabChange = new EventEmitter<string>();
-
-  ngOnInit(): void {
-    if (!this.activeTab) {
-      this.activeTab = this.tabs[0];
-    }
-  }
-
-  onTabClick(event: Event, tab: string) {
-    event.preventDefault();
-    this.activeTab = tab;
-    this.tabChange.emit(tab);
+  ngAfterViewInit(): void {
+    const firstTab = this.tabs.get(0)?.template;
+    if (firstTab) this.currentTab = firstTab;
   }
 }
