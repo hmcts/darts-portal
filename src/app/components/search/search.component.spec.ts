@@ -311,7 +311,7 @@ describe('SearchComponent', () => {
 
   it('should handle errors and clear search form and results', () => {
     const errorResponse = new HttpErrorResponse({ error: { type: 'CASE_100' } });
-    jest.spyOn(component.caseService, 'searchCases').mockReturnValue(throwError(() => errorResponse));
+    jest.spyOn(caseService, 'searchCases').mockReturnValue(throwError(() => errorResponse));
     let error = '';
 
     component.form.markAsDirty();
@@ -319,8 +319,8 @@ describe('SearchComponent', () => {
     component.searchError$?.subscribe((errorType) => (error = errorType));
 
     expect(error).toEqual('CASE_100');
-    expect(component.caseService.searchFormValues).toBeNull();
-    expect(component.caseService.searchResults$).toBeNull();
+    expect(caseService.searchFormValues).toBeNull();
+    expect(caseService.searchResults$).toBeNull();
   });
 
   it('should restore form values when previousFormValues is defined', () => {
