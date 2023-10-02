@@ -28,7 +28,7 @@ export class ResultsComponent implements OnChanges {
 
   ngOnChanges(): void {
     this.rows = this.mapCasesToRows(this.cases);
-    this.caption = `${this.cases.length} result${this.cases.length > 0 ? 's' : ''}`;
+    this.caption = `${this.cases.length} result${this.cases.length > 1 ? 's' : ''}`;
   }
 
   mapCasesToRows(cases: Case[]) {
