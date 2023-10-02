@@ -16,7 +16,6 @@ describe('DataTableComponent', () => {
       courtroom: '123',
       transcription_count: 12,
       date: '11 Oct 2023',
-      invalid: null,
     },
     {
       case_id: 2,
@@ -26,7 +25,6 @@ describe('DataTableComponent', () => {
       courtroom: '122',
       transcription_count: 101,
       date: '1 Sep 2023',
-      invalid: undefined,
     },
     {
       case_id: 3,
@@ -36,7 +34,6 @@ describe('DataTableComponent', () => {
       courtroom: '28',
       transcription_count: 55,
       date: '10 Mar 2024',
-      invalid: null,
     },
     {
       case_id: 4,
@@ -46,7 +43,6 @@ describe('DataTableComponent', () => {
       courtroom: '87',
       transcription_count: 8,
       date: '5 Jan 2024',
-      invalid: undefined,
     },
   ];
 
