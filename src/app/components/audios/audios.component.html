@@ -4,16 +4,49 @@
 
 <app-tabs [tabs]="tabs"></app-tabs>
 
-<ng-container *ngIf="data$ | async as data">
-  <ng-container *ngIf="data.completedRows.length">
+<ng-container *ngIf="data$ | async as data; else loading">
+  <p *ngIf="!data.inProgessRows.length && !data.completedRows.length">There are no audio files in progress or ready</p>
+
+  <ng-container *ngIf="data.inProgessRows.length">
     <h2 class="govuk-heading-m">In Progress</h2>
-    <app-data-table [rows]="data.inProgessRows" [columns]="columns" [pagination]="false"></app-data-table>
+    <app-data-table [rows]="data.inProgessRows" [columns]="columns" [pagination]="false">
+      <ng-template [tableRowTemplate] let-row>
+        <td class="govuk-table__cell">
+          <a [routerLink]="['/case', row.caseNumber]">{{ row.caseNumber }}</a>
+        </td>
+        <td class="govuk-table__cell">{{ row.courthouse }}</td>
+        <td class="govuk-table__cell">{{ row.hearingDate }}</td>
+        <td class="govuk-table__cell">{{ row.startTime }}</td>
+        <td class="govuk-table__cell">{{ row.endTime }}</td>
+        <td class="govuk-table__cell">{{ row.requestId }}</td>
+        <td class="govuk-table__cell">{{ row.expiry }}</td>
+        <td class="govuk-table__cell">
+          <strong class="govuk-tag govuk-tag--yellow"> {{ row.status }} </strong>
+        </td>
+      </ng-template>
+    </app-data-table>
   </ng-container>
 
   <ng-container *ngIf="data.completedRows.length">
     <h2 class="govuk-heading-m">Ready</h2>
     <div class="govuk-hint">Select to apply actions</div>
-    <app-data-table [rows]="data.completedRows" [columns]="columns"></app-data-table>
+    <app-data-table [rows]="data.completedRows" [columns]="columns">
+      <ng-template [tableRowTemplate] let-row>
+        <td class="govuk-table__cell">
+          <a [routerLink]="['case', row.caseNumber]">{{ row.caseNumber }}</a>
+        </td>
+        <td class="govuk-table__cell">{{ row.courthouse }}</td>
+        <td class="govuk-table__cell">{{ row.hearingDate }}</td>
+        <td class="govuk-table__cell">{{ row.startTime }}</td>
+        <td class="govuk-table__cell">{{ row.endTime }}</td>
+        <td class="govuk-table__cell">{{ row.requestId }}</td>
+        <td class="govuk-table__cell">{{ row.expiry }}</td>
+        <td class="govuk-table__cell status-cell">
+          <strong class="govuk-tag govuk-tag--green"> {{ row.status }} </strong>
+          <a [routerLink]="['view', row.requestId]">View</a>
+        </td>
+      </ng-template>
+    </app-data-table>
   </ng-container>
 
   <!-- <ng-container *ngIf="data.expiredRows.length">
@@ -22,3 +55,7 @@
     <app-data-table [rows]="data.completedRows" [columns]="columns"></app-data-table>
   </ng-container> -->
 </ng-container>
+
+<ng-template #loading>
+  <app-loading text="Loading audio requests..."></app-loading>
+</ng-template>

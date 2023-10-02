@@ -2,17 +2,19 @@ import { DataTableComponent } from '@common/data-table/data-table.component';
 import { Component, inject } from '@angular/core';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { AudioService } from '@services/audio/audio.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { combineLatest, map, Observable } from 'rxjs';
-import { AsyncPipe, DatePipe, JsonPipe, NgIf } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
+import { TableRowTemplateDirective } from 'src/app/directives/table-row-template.directive';
+import { LoadingComponent } from '@common/loading/loading.component';
 
 @Component({
   selector: 'app-audios',
   templateUrl: './audios.component.html',
   styleUrls: ['./audios.component.scss'],
   standalone: true,
-  imports: [DataTableComponent, TabsComponent, AsyncPipe, JsonPipe, NgIf],
+  imports: [DataTableComponent, LoadingComponent, TabsComponent, CommonModule, TableRowTemplateDirective, RouterLink],
 })
 export class AudiosComponent {
   audioService = inject(AudioService);
@@ -25,14 +27,14 @@ export class AudiosComponent {
 
   inProgessRows$: Observable<any[]>;
   completedRows$: Observable<any[]>;
-  // expiredRows$: Observable<any[]>;
+  expiredRows$: Observable<any[]>;
 
   data$: Observable<{ inProgessRows: any[]; completedRows: any[] }>;
 
   tabs = ['Current', 'Expired'];
 
   columns = [
-    { name: 'Case ID', prop: 'caseNumber', sortable: true, link: '/case' },
+    { name: 'Case ID', prop: 'caseNumber', sortable: true },
     { name: 'Court', prop: 'courthouse', sortable: true },
     { name: 'Hearing date', prop: 'hearingDate', sortable: true },
     { name: 'Start time', prop: 'startTime', sortable: true },
@@ -58,12 +60,15 @@ export class AudiosComponent {
       map((audioRequests) => this.mapAudioRequestToRows(audioRequests))
     );
 
-    this.completedRows$ = this.expiredAudioRequests$.pipe(
-      map((audioRequests) => this.filterCompletedRequests(audioRequests)),
+    this.expiredRows$ = this.expiredAudioRequests$.pipe(
       map((audioRequests) => this.mapAudioRequestToRows(audioRequests))
     );
 
-    this.data$ = combineLatest({ inProgessRows: this.inProgessRows$, completedRows: this.completedRows$ });
+    this.data$ = combineLatest({
+      inProgessRows: this.inProgessRows$,
+      completedRows: this.completedRows$,
+      expiredRows: this.expiredRows$,
+    });
   }
 
   mapAudioRequestToRows(audioRequests: UserAudioRequest[]): any[] {
