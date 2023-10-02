@@ -174,8 +174,8 @@ describe('Case search', () => {
     // Check case file page
     cy.get('h1').should('contain', 'C20220620001');
 
-    // << Go Back
-    cy.get('.govuk-back-link').click();
+    // << Breadcrumb back to search
+    cy.get('.govuk-breadcrumbs__link').contains('Search').click();
 
     // Check for Search page
     cy.get('h1').should('contain', 'Search for a case');
