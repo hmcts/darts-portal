@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ContentChildren, OnInit, QueryList, TemplateRef } from '@angular/core';
+import { AfterContentInit, Component, ContentChildren, QueryList, TemplateRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TabDirective } from 'src/app/directives/tab.directive';
 
@@ -9,12 +9,12 @@ import { TabDirective } from 'src/app/directives/tab.directive';
   templateUrl: './tabs.component.html',
   styleUrls: ['./tabs.component.scss'],
 })
-export class TabsComponent implements AfterViewInit {
+export class TabsComponent implements AfterContentInit {
   @ContentChildren(TabDirective) tabs!: QueryList<TabDirective>;
   currentTab!: TemplateRef<any>;
 
-  ngAfterViewInit(): void {
-    const firstTab = this.tabs.get(0)?.template;
+  ngAfterContentInit(): void {
+    const firstTab = this.tabs.first.template;
     if (firstTab) this.currentTab = firstTab;
   }
 }

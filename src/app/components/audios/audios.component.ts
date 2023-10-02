@@ -97,7 +97,12 @@ export class AudiosComponent {
   }
 
   filterInProgressRequests(audioRequests: UserAudioRequest[]): UserAudioRequest[] {
-    return audioRequests.filter((ar) => ar.media_request_status === 'OPEN' || ar.media_request_status === 'PROCESSING');
+    return audioRequests.filter(
+      (ar) =>
+        ar.media_request_status === 'OPEN' ||
+        ar.media_request_status === 'PROCESSING' ||
+        ar.media_request_status === 'FAILED'
+    );
   }
 
   filterCompletedRequests(audioRequests: UserAudioRequest[]): UserAudioRequest[] {

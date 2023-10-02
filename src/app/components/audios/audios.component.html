@@ -13,7 +13,7 @@
         <app-data-table [rows]="data.inProgessRows" [columns]="columns" [pagination]="false">
           <ng-template [tableRowTemplate] let-row>
             <td class="govuk-table__cell">
-              <a [routerLink]="['/case', row.caseNumber]">{{ row.caseNumber }}</a>
+              <a [routerLink]="['.']">{{ row.caseNumber }}</a>
             </td>
             <td class="govuk-table__cell">{{ row.courthouse }}</td>
             <td class="govuk-table__cell">{{ row.hearingDate }}</td>
@@ -22,7 +22,8 @@
             <td class="govuk-table__cell">{{ row.requestId }}</td>
             <td class="govuk-table__cell">{{ row.expiry }}</td>
             <td class="govuk-table__cell">
-              <strong class="govuk-tag govuk-tag--yellow"> {{ row.status }} </strong>
+              <strong *ngIf="row.status === 'FAILED'" class="govuk-tag govuk-tag--red"> {{ row.status }} </strong>
+              <strong *ngIf="row.status !== 'FAILED'" class="govuk-tag govuk-tag--yellow"> {{ row.status }} </strong>
             </td>
           </ng-template>
         </app-data-table>
@@ -34,7 +35,7 @@
         <app-data-table [rows]="data.completedRows" [columns]="columns">
           <ng-template [tableRowTemplate] let-row>
             <td class="govuk-table__cell">
-              <a [routerLink]="['case', row.caseNumber]">{{ row.caseNumber }}</a>
+              <a [routerLink]="['.']">{{ row.caseNumber }}</a>
             </td>
             <td class="govuk-table__cell">{{ row.courthouse }}</td>
             <td class="govuk-table__cell">{{ row.hearingDate }}</td>
@@ -42,17 +43,18 @@
             <td class="govuk-table__cell">{{ row.endTime }}</td>
             <td class="govuk-table__cell">{{ row.requestId }}</td>
             <td class="govuk-table__cell">{{ row.expiry }}</td>
-            <td class="govuk-table__cell status-cell">
-              <strong class="govuk-tag govuk-tag--green"> {{ row.status }} </strong>
-              <a [routerLink]="['view', row.requestId]">View</a>
+            <td class="govuk-table__cell">
+              <div class="status-cell">
+                <strong class="govuk-tag govuk-tag--green"> READY </strong>
+                <a [routerLink]="['.']">View</a>
+              </div>
             </td>
           </ng-template>
         </app-data-table>
       </ng-container>
     </div>
     <div *tab="'Expired'">
-      <ng-container *ngIf="data.expiredRows.length">
-        <div class="govuk-hint">Select to apply actions</div>
+      <ng-container *ngIf="false">
         <app-data-table [rows]="data.expiredRows" [columns]="columns"></app-data-table>
       </ng-container>
     </div>
