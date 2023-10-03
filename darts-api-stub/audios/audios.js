@@ -54,9 +54,6 @@ const audioRequestMulti = [
     media_request_expiry_ts: '2023-11-23T09:00:00Z',
     media_request_status: 'FAILED',
   },
-];
-
-const audioRequestMultiReady = [
   {
     media_request_id: 12377,
     case_number: 'T20200333',
@@ -65,7 +62,7 @@ const audioRequestMultiReady = [
     media_request_start_ts: '2023-08-21T09:00:00Z',
     media_request_end_ts: '2023-08-21T10:00:00Z',
     media_request_expiry_ts: '2023-08-23T09:00:00Z',
-    media_request_status: 'READY',
+    media_request_status: 'COMPLETED',
   },
   {
     media_request_id: 12342,
@@ -75,7 +72,7 @@ const audioRequestMultiReady = [
     media_request_start_ts: '2023-08-21T09:08:00Z',
     media_request_end_ts: '2023-08-21T10:14:00Z',
     media_request_expiry_ts: '2023-08-23T09:00:00Z',
-    media_request_status: 'READY',
+    media_request_status: 'COMPLETED',
   },
   {
     media_request_id: 12341,
@@ -85,7 +82,7 @@ const audioRequestMultiReady = [
     media_request_start_ts: '2023-08-21T09:57:00Z',
     media_request_end_ts: '2023-08-21T10:43:00Z',
     media_request_expiry_ts: '2023-11-23T09:00:00Z',
-    media_request_status: 'READY',
+    media_request_status: 'COMPLETED',
   },
 
   {
@@ -96,7 +93,7 @@ const audioRequestMultiReady = [
     media_request_start_ts: '2023-08-21T09:57:00Z',
     media_request_end_ts: '2023-08-21T10:43:00Z',
     media_request_expiry_ts: '2023-11-23T09:00:00Z',
-    media_request_status: 'READY',
+    media_request_status: 'COMPLETED',
   },
 ];
 
