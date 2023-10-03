@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { ErrorSummaryEntry, SearchComponent } from './search.component';
+import { SearchComponent } from './search.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ResultsComponent } from './results/results.component';
@@ -11,6 +11,7 @@ import { CaseService } from '@services/case/case.service';
 import { CourthouseComponent } from '@common/courthouse/courthouse.component';
 import { Courthouse } from '@darts-types/courthouse.interface';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
+import { ErrorSummaryEntry } from '@darts-types/index';
 
 // Mock the initAll function
 jest.mock('@scottish-government/pattern-library/src/all', () => ({
