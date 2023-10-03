@@ -7,5 +7,5 @@ import { Directive, inject, Input, TemplateRef } from '@angular/core';
 })
 export class TabDirective {
   @Input('tab') name!: string;
-  template = inject(TemplateRef);
+  constructor(public template: TemplateRef<any>) {}
 }

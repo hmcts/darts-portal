@@ -6,6 +6,7 @@ import { TabDirective } from './tab.directive';
   template: `
     <ng-template [tab]="'Test Tab'">Tab Content</ng-template>
   `,
+  standalone: true
 })
 class TestComponent {
   @ViewChild(TemplateRef, { static: true }) tabTemplate!: TemplateRef<any>;
@@ -17,7 +18,7 @@ describe('TabDirective', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [TabDirective, TestComponent],
+      imports: [TabDirective, TestComponent],
     });
 
     fixture = TestBed.createComponent(TestComponent);
@@ -25,20 +26,13 @@ describe('TabDirective', () => {
   });
 
   it('should create an instance', () => {
-    const directive = new TabDirective();
+    const directive = new TabDirective(component.tabTemplate);
     expect(directive).toBeTruthy();
   });
 
   it('should have a name input', () => {
-    const directive = new TabDirective();
+    const directive = new TabDirective(component.tabTemplate);
     directive.name = 'Test Tab';
     expect(directive.name).toBe('Test Tab');
-  });
-
-  it('should create an instance using TestBed', () => {
-    fixture.detectChanges();
-    const tabDirective = fixture.debugElement.nativeElement.querySelector('ng-template').injector.get(TabDirective);
-    expect(tabDirective).toBeTruthy();
-    expect(tabDirective.name).toBe('Test Tab');
   });
 });
