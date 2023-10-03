@@ -3,7 +3,7 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { RouterLink, ActivatedRoute } from '@angular/router';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { DataTableComponent } from '@common/data-table/data-table.component';
-import { Hearing } from '@darts-types/index';
+import { DatatableColumn, DatatableRow, Hearing } from '@darts-types/index';
 import { TabDirective } from 'src/app/directives/tab.directive';
 
 @Component({
@@ -16,8 +16,8 @@ import { TabDirective } from 'src/app/directives/tab.directive';
 export class HearingResultsComponent implements OnChanges {
   @Input() hearings: Hearing[] = [];
   caseId: number;
-  rows: any[] = [];
-  columns: any[] = [];
+  rows: DatatableRow[] = [];
+  columns: DatatableColumn[] = [];
 
   constructor(
     private route: ActivatedRoute,

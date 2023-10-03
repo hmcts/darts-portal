@@ -1,4 +1,6 @@
-export interface UserAudioRequestRow {
+import { DatatableRow } from './data-table-row.interface';
+
+export interface UserAudioRequestRow extends DatatableRow {
   caseNumber: string;
   courthouse: string;
   hearingDate: string | null;

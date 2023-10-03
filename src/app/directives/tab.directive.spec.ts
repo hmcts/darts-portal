@@ -7,7 +7,7 @@ import { TabDirective } from './tab.directive';
   standalone: true,
 })
 class TestComponent {
-  @ViewChild(TemplateRef, { static: true }) tabTemplate!: TemplateRef<any>;
+  @ViewChild(TemplateRef, { static: true }) tabTemplate!: TemplateRef<unknown>;
 }
 
 describe('TabDirective', () => {

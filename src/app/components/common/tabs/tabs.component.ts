@@ -11,7 +11,7 @@ import { TabDirective } from 'src/app/directives/tab.directive';
 })
 export class TabsComponent implements AfterContentInit {
   @ContentChildren(TabDirective) tabs!: QueryList<TabDirective>;
-  currentTab!: TemplateRef<any>;
+  currentTab!: TemplateRef<unknown>;
 
   ngAfterContentInit(): void {
     const firstTab = this.tabs.first.template;
