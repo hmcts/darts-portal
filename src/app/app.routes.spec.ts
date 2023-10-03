@@ -4,16 +4,21 @@ import { Location } from '@angular/common';
 import { Route, Router } from '@angular/router';
 import { APP_ROUTES } from './app.routes';
 import { AuthService } from './services/auth/auth.service';
+import { UserService } from '@services/user/user.service';
 
 describe('App Routes', () => {
   let router: Router;
   let location: Location;
 
   let mockAuthService: AuthService;
+  let mockUserService: UserService;
 
   beforeEach(() => {
     mockAuthService = { checkAuthenticated: jest.fn() } as unknown as AuthService;
     jest.spyOn(mockAuthService, 'checkAuthenticated').mockResolvedValue(true);
+
+    mockUserService = { getUserProfile: jest.fn() } as unknown as UserService;
+    jest.spyOn(mockUserService, 'getUserProfile').mockResolvedValue({ userId: 123, userName: 'Dean', roles: [] });
 
     TestBed.configureTestingModule({
       imports: [RouterTestingModule.withRoutes(APP_ROUTES)],
@@ -22,6 +27,10 @@ describe('App Routes', () => {
           provide: AuthService,
           useValue: mockAuthService,
         },
+        {
+          provide: UserService,
+          useValue: mockUserService,
+        }
       ],
     });
 

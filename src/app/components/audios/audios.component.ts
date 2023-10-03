@@ -9,6 +9,7 @@ import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
 import { TableRowTemplateDirective } from 'src/app/directives/table-row-template.directive';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabDirective } from 'src/app/directives/tab.directive';
+import { UserAudioRequestRow } from '@darts-types/index';
 
 @Component({
   selector: 'app-audios',
@@ -34,13 +35,11 @@ export class AudiosComponent {
   audioRequests$: Observable<UserAudioRequest[]>;
   expiredAudioRequests$: Observable<UserAudioRequest[]>;
 
-  inProgessRows$: Observable<any[]>;
-  completedRows$: Observable<any[]>;
-  expiredRows$: Observable<any[]>;
+  inProgessRows$: Observable<UserAudioRequestRow[]>;
+  completedRows$: Observable<UserAudioRequestRow[]>;
+  expiredRows$: Observable<UserAudioRequestRow[]>;
 
-  data$: Observable<{ inProgessRows: any[]; completedRows: any[]; expiredRows: any[] }>;
-
-  tabs = ['Current', 'Expired'];
+  data$: Observable<{ inProgessRows: UserAudioRequestRow[], completedRows: UserAudioRequestRow[], expiredRows: UserAudioRequestRow[] }>;
 
   columns = [
     { name: 'Case ID', prop: 'caseNumber', sortable: true },
@@ -80,7 +79,7 @@ export class AudiosComponent {
     });
   }
 
-  mapAudioRequestToRows(audioRequests: UserAudioRequest[]): any[] {
+  mapAudioRequestToRows(audioRequests: UserAudioRequest[]): UserAudioRequestRow[] {
     return audioRequests.map((ar) => {
       return {
         // id: ar.case_id,
