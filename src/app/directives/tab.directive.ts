@@ -1,4 +1,4 @@
-import { Directive, inject, Input, TemplateRef } from '@angular/core';
+import { Directive, Input, TemplateRef } from '@angular/core';
 
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector

@@ -1,6 +1,5 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute } from '@angular/router';
 import moment from 'moment';
 
 import { RequestPlaybackAudioComponent } from './request-playback-audio.component';
