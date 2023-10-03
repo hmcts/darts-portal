@@ -32,6 +32,7 @@
     <app-request-playback-audio
       [hearing]="vm.hearing!"
       [requestAudioTimes]="requestAudioTimes"
+      [userState]="userState"
       (audioRequest)="onAudioRequest($event)"
     ></app-request-playback-audio>
 
@@ -51,7 +52,7 @@
       [audioRequest]="requestObject"
       [requestId]="requestId"
       [state]="state"
-      [userProfile]="userProfile$ | async"
+      [userProfile]="userState"
       (stateChange)="onStateChanged($event)"
       (orderConfirm)="onOrderConfirm($event)"
     ></app-order-confirmation>

@@ -1,12 +1,6 @@
-<nav class="moj-sub-navigation" aria-label="Sub navigation">
-  <ul class="moj-sub-navigation__list">
-    <li class="moj-sub-navigation__item">
-      <a class="moj-sub-navigation__link" aria-current="page" href="#1">Hearings</a>
-    </li>
-
-    <li class="moj-sub-navigation__item">
-      <a class="moj-sub-navigation__link" href="#2">Transcripts</a>
-    </li>
-  </ul>
-</nav>
-<app-data-table [rows]="rows" [columns]="columns"></app-data-table>
+<app-tabs>
+  <div *tab="'Hearings'">
+    <app-data-table [rows]="rows" [columns]="columns"></app-data-table>
+  </div>
+  <div *tab="'Transcripts'"></div>
+</app-tabs>

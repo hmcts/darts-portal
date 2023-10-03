@@ -1,0 +1,10 @@
+.govuk-table__header,
+.govuk-table__cell {
+  padding: 10px;
+  vertical-align: middle;
+}
+
+.status-cell {
+  display: flex;
+  gap: 1rem;
+}
