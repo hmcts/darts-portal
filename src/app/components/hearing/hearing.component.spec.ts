@@ -296,4 +296,12 @@ describe('HearingComponent', () => {
       expect(component.errorSummary).toEqual(mockErrorSummary);
     });
   });
+
+  describe('#focus', () => {
+    it('should focus on the correct element', () => {
+      const hourInputElement = document.getElementById('start-time-hour-input');
+      component.focus('start-time-hour-input');
+      expect(document.activeElement).toBe(hourInputElement);
+    });
+  });
 });
