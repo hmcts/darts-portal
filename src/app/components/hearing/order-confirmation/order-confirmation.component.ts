@@ -5,7 +5,6 @@ import { HeaderService } from '@services/header/header.service';
 import { Router } from '@angular/router';
 import { UserState } from '@darts-types/user-state';
 
-
 @Component({
   selector: 'app-order-confirmation',
   standalone: true,
