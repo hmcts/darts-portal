@@ -6,6 +6,6 @@ describe('Your audio', () => {
 
   it('shows your audio', () => {
     cy.contains('Your Audio').click();
-    cy.get('h3').should('contain', 'Your Audio');
+    cy.get('h1').should('contain', 'Your Audio');
   });
 });
