@@ -48,6 +48,7 @@
         <app-courthouse-field
           *ngIf="courthouses$ | async as courthouses"
           [courthouses]="courthouses"
+          [courthouse]="courthouse"
           (courthouseSelect)="onCourthouseSelected($event)"
           [isInvalid]="isControlInvalid('courthouse')"
           [errors]="getFieldErrorMessages('courthouse')"
@@ -246,4 +247,6 @@
   </div>
 </form>
 
-<app-results [cases]="cases" [loaded]="loaded" [errorType]="errorType"> </app-results>
+<app-results *ngIf="searchResults$ | async as cases" [cases]="cases"></app-results>
+
+<app-search-error *ngIf="searchError$ | async as error" [error]="error"></app-search-error>

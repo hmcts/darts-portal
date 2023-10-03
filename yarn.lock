@@ -3802,10 +3802,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@scottish-government/pattern-library@npm:^0.0.379":
-  version: 0.0.379
-  resolution: "@scottish-government/pattern-library@npm:0.0.379"
-  checksum: 7f95274d290d3d7d3dd3d14b469f7076be742d10173718b0aafe5fb05f3d761b97c70b19dae54ffc980c675c40af2adc01c172dbf963d81763f69df8975846ee
+"@scottish-government/pattern-library@npm:^0.0.380":
+  version: 0.0.380
+  resolution: "@scottish-government/pattern-library@npm:0.0.380"
+  checksum: 36109b811cdc862f2581384bf377856b6124dbf7d0700472d5b2abc815389a53abf4c233b956269b016ab3f6dd671ed17d52b774ccccc4779be083f3565ba98d
   languageName: node
   linkType: hard
 
@@ -4260,16 +4260,16 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:*":
-  version: 20.8.0
-  resolution: "@types/node@npm:20.8.0"
-  checksum: ebad6342d54238a24bf980d7750117a5d67749c9b72cbb7a974a1e932c39034aa3a810d669e007e8a5071782a253aa069a187b614407a382403c9826e837c849
+  version: 20.8.2
+  resolution: "@types/node@npm:20.8.2"
+  checksum: 3da73e25d821bfcdb7de98589027e08bb4848e55408671c4a83ec0341e124b5313a0b20e1e4b4eff1168ea17a86f622ad73fcb04b761abd77496b9a27cbd5de5
   languageName: node
   linkType: hard
 
 "@types/node@npm:^18.15.12, @types/node@npm:^18.17.5":
-  version: 18.18.1
-  resolution: "@types/node@npm:18.18.1"
-  checksum: 079085afc8615b91727900628410a2077f7fff51c5c3e20c4ab2d9caae4010b035aac13dae1221155e9d6ca46084aebf68121642140527b4009eee17b716d339
+  version: 18.18.3
+  resolution: "@types/node@npm:18.18.3"
+  checksum: ed97a832179e0cfbb93738021fe16d0bc5c0f34bea35269c23c9dd5f0ecc8be93dbe5efd51630189a099b31786a47c1bde115508831a7245613a55c3ad1a7d6b
   languageName: node
   linkType: hard
 
@@ -6651,7 +6651,7 @@ __metadata:
     "@hmcts/properties-volume": ^1.0.0
     "@microsoft/applicationinsights-web": ^3.0.1
     "@ministryofjustice/frontend": ^1.8.0
-    "@scottish-government/pattern-library": ^0.0.379
+    "@scottish-government/pattern-library": ^0.0.380
     "@types/body-parser": ^1.19.2
     "@types/config": ^3.3.0
     "@types/connect-redis": ^0.0.21

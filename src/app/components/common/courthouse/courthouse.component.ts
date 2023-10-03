@@ -14,6 +14,7 @@ export class CourthouseComponent implements AfterViewInit, OnChanges {
   @ViewChild('courthouseAutocomplete') autocompleteContainer!: ElementRef<HTMLElement>;
 
   @Input() courthouses: Courthouse[] = [];
+  @Input() courthouse = '';
   @Input() isInvalid = false;
   @Input() errors: string[] = [];
   @Output() courthouseSelect = new EventEmitter<string>();
@@ -48,6 +49,7 @@ export class CourthouseComponent implements AfterViewInit, OnChanges {
     if (this.courthouses.length) {
       this.props.element = this.autocompleteContainer.nativeElement as HTMLElement;
       this.props.source = this.courthouses.map((ch) => ch.courthouse_name);
+      this.props.defaultValue = this.courthouse;
       accessibleAutocomplete(this.props);
     }
   }

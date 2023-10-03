@@ -1,31 +1,12 @@
 <!-- Results -->
 <div id="search-results">
   <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
-  <div *ngIf="isErrorHandledInTemplate() && loaded">
-    <!-- This will slowly be replaced/updated as more 'cases' are handled -->
-    <h2 class="govuk-heading-m">An error has occurred. Please try again later.</h2>
-  </div>
 
-  <div *ngIf="errorType === 'CASE_100' || errorType === 'CASE_102'">
-    <h2 class="govuk-heading-m">There are more than 500 results</h2>
-    <p class="govuk-body">Refine your search by:</p>
-    <ul class="govuk-list govuk-list--bullet">
-      <li>adding more information to your search</li>
-      <li>using filters to restrict the number of results</li>
-    </ul>
-  </div>
-
-  <div *ngIf="errorType === 'CASE_101'">
-    <h2 class="govuk-heading-m">No search results</h2>
-    <p class="govuk-body">You need to enter some search terms and try again</p>
-  </div>
-
-  <!-- No search results returns empty array rather than error code -->
-  <div *ngIf="cases.length === 0 && errorType === 'ok' && loaded">
+  <div *ngIf="cases.length === 0">
     <h2 class="govuk-heading-m">No search results</h2>
     <p class="govuk-body">Review the case ID, case reference or court reference you entered and try again.</p>
   </div>
-  <div *ngIf="cases.length > 0 && errorType === 'ok' && loaded">
+  <div *ngIf="cases.length">
     <app-data-table [rows]="rows" [columns]="columns" [caption]="caption"></app-data-table>
   </div>
 </div>
