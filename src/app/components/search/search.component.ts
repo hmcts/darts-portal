@@ -1,4 +1,4 @@
-import { AfterViewChecked, AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -10,13 +10,9 @@ import { CaseService } from '@services/case/case.service';
 import { SearchFormValues } from '@darts-types/search-form.interface';
 import { futureDateValidator } from '@validators/future-date.validator';
 import { SearchErrorComponent } from './search-error/search-error.component';
+import { ErrorSummaryEntry, FieldErrors } from '@darts-types/index';
 
-export interface ErrorSummaryEntry {
-  fieldId: string;
-  message: string;
-}
-
-const FieldErrors: { [key: string]: { [key: string]: string } } = {
+const fieldErrors: FieldErrors = {
   courthouse: {
     required: 'You must also enter a courthouse',
   },
@@ -168,7 +164,7 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
     if (!errors) {
       return [];
     }
-    return Object.keys(errors).map((errorType) => FieldErrors[fieldName][errorType]);
+    return Object.keys(errors).map((errorType) => fieldErrors[fieldName][errorType]);
   }
 
   generateErrorSummary(): ErrorSummaryEntry[] {

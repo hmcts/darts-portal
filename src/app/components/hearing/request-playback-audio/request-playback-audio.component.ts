@@ -12,8 +12,21 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { TimeInputComponent } from './time-input/time-input.component';
 import * as moment from 'moment';
 import { DateTimeService } from '@services/datetime/datetime.service';
-import { AudioRequest, Hearing } from '@darts-types/index';
+import { AudioRequest, ErrorSummaryEntry, FieldErrors, Hearing } from '@darts-types/index';
+import { timeGroupValidator } from '@validators/time-group.validator';
 import { UserState } from '@darts-types/user-state';
+
+const fieldErrors: FieldErrors = {
+  startTime: {
+    required: 'You must include a start time for your audio recording',
+  },
+  endTime: {
+    required: 'You must include an end time for your audio recording',
+  },
+  requestType: {
+    required: 'You must select a request type',
+  },
+};
 
 @Component({
   selector: 'app-request-playback-audio',
@@ -30,24 +43,63 @@ export class RequestPlaybackAudioComponent implements OnChanges {
   audioRequestForm: FormGroup;
   requestObj!: AudioRequest;
   @Output() audioRequest = new EventEmitter<AudioRequest>();
+  @Output() validationErrorEvent = new EventEmitter<ErrorSummaryEntry[]>();
+  public isSubmitted = false;
+  errorSummary: ErrorSummaryEntry[] = [];
 
   constructor(
     private fb: FormBuilder,
     public datetimeService: DateTimeService
   ) {
     this.audioRequestForm = this.fb.group({
-      startTime: this.fb.group({
-        hours: [null, [Validators.required, Validators.min(0), Validators.max(23), Validators.pattern(/^\d{2}$/)]],
-        minutes: [null, [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
-        seconds: [null, [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
-      }),
-      endTime: this.fb.group({
-        hours: [null, [Validators.required, Validators.min(0), Validators.max(23), Validators.pattern(/^\d{2}$/)]],
-        minutes: [null, [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
-        seconds: [null, [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
-      }),
-      requestType: '',
+      startTime: this.fb.group(
+        {
+          hours: [null, [Validators.required, Validators.min(0), Validators.max(23), Validators.pattern(/^\d{2}$/)]],
+          minutes: [null, [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
+          seconds: [null, [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
+        },
+        { validators: timeGroupValidator }
+      ),
+      endTime: this.fb.group(
+        {
+          hours: [null, [Validators.required, Validators.min(0), Validators.max(23), Validators.pattern(/^\d{2}$/)]],
+          minutes: [null, [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
+          seconds: [null, [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
+        },
+        { validators: timeGroupValidator }
+      ),
+      requestType: ['', [Validators.required]],
     });
+  }
+
+  get f() {
+    return this.audioRequestForm.controls;
+  }
+
+  getFieldErrorMessages(fieldName: string): string[] {
+    const errors = this.f[fieldName].errors;
+    if (!errors) {
+      return [];
+    }
+    return Object.keys(errors).map((errorType) => fieldErrors[fieldName][errorType]);
+  }
+
+  public onValidationError() {
+    const formControls = this.f;
+    const idHashMap = new Map<string, string>();
+
+    idHashMap.set('startTime', 'start-time-hour-input');
+    idHashMap.set('endTime', 'end-time-hour-input');
+    idHashMap.set('requestType', 'playback-radio');
+
+    const errorMessages: ErrorSummaryEntry[] = Object.keys(formControls)
+      .filter((fieldId) => formControls[fieldId].errors)
+      .map((fieldId) =>
+        this.getFieldErrorMessages(fieldId).map((message) => ({ fieldId: idHashMap.get(fieldId) ?? '', message }))
+      )
+      .flat();
+
+    this.validationErrorEvent.emit(errorMessages);
   }
 
   public setTimes(): void {
@@ -75,6 +127,8 @@ export class RequestPlaybackAudioComponent implements OnChanges {
   }
 
   onSubmit() {
+    this.isSubmitted = true;
+    this.onValidationError();
     const startTimeHours = this.audioRequestForm.get('startTime.hours')?.value;
     const startTimeMinutes = this.audioRequestForm.get('startTime.minutes')?.value;
     const startTimeSeconds = this.audioRequestForm.get('startTime.seconds')?.value;

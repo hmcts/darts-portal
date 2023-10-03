@@ -2,45 +2,48 @@
   <div class="govuk-date-input" id="time-picker">
     <div class="govuk-date-input__item">
       <div class="govuk-form-group">
-        <label class="govuk-label govuk-date-input__label hour small-text" for="passport-issued-day"> Hour </label>
+        <label class="govuk-label govuk-date-input__label hour small-text" for="hour-input"> Hour </label>
         <input
           class="govuk-input govuk-date-input__input govuk-input--width-2"
-          id="passport-issued-day"
-          name="passport-issued-day"
+          [id]="idStringPrepend + '-hour-input'"
+          name="hour-input"
           formControlName="hours"
           type="text"
           inputmode="numeric"
           maxlength="2"
+          [ngClass]="{ 'govuk-input--error': form.controls['hours'].invalid && isSubmitted }"
         />
       </div>
     </div>
     <span class="govuk-body colon">:</span>
     <div class="govuk-date-input__item">
       <div class="govuk-form-group">
-        <label class="govuk-label govuk-date-input__label small-text" for="passport-issued-month"> Minutes </label>
+        <label class="govuk-label govuk-date-input__label small-text" for="minutes-input"> Minutes </label>
         <input
           class="govuk-input govuk-date-input__input govuk-input--width-2"
-          id="passport-issued-month"
-          name="passport-issued-month"
+          [id]="idStringPrepend + '-minutes-input'"
+          name="minutes-input"
           formControlName="minutes"
           type="text"
           inputmode="numeric"
           maxlength="2"
+          [ngClass]="{ 'govuk-input--error': form.controls['minutes'].invalid && isSubmitted }"
         />
       </div>
     </div>
     <span class="govuk-body colon">:</span>
     <div class="govuk-date-input__item">
       <div class="govuk-form-group">
-        <label class="govuk-label govuk-date-input__label small-text" for="passport-issued-month"> Seconds </label>
+        <label class="govuk-label govuk-date-input__label small-text" for="seconds-input"> Seconds </label>
         <input
           class="govuk-input govuk-date-input__input govuk-input--width-2"
-          id="passport-issued-month"
-          name="passport-issued-month"
+          [id]="idStringPrepend + '-seconds-input'"
+          name="seconds-input"
           formControlName="seconds"
           type="text"
           inputmode="numeric"
           maxlength="2"
+          [ngClass]="{ 'govuk-input--error': form.controls['seconds'].invalid && isSubmitted }"
         />
       </div>
     </div>

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ControlContainer, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -12,6 +12,9 @@ import { ControlContainer, FormGroup, FormsModule, ReactiveFormsModule } from '@
 })
 export class TimeInputComponent implements OnInit {
   form!: FormGroup;
+  @Input() errors!: boolean;
+  @Input() isSubmitted = false;
+  @Input() idStringPrepend!: string;
 
   constructor(private controlContainer: ControlContainer) {}
 
