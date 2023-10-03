@@ -1,6 +1,5 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute } from '@angular/router';
 import moment from 'moment';
 
 import { RequestPlaybackAudioComponent } from './request-playback-audio.component';
@@ -15,7 +14,7 @@ describe('RequestPlaybackAudioComponent', () => {
     });
     fixture = TestBed.createComponent(RequestPlaybackAudioComponent);
     component = fixture.componentInstance;
-    component.userState = {userId: 1, userName: 'Dean', roles:[]}
+    component.userState = { userId: 1, userName: 'Dean', roles: [] };
     fixture.detectChanges();
   });
 

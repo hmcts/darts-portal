@@ -1,4 +1,4 @@
-import { Directive, inject, Input, TemplateRef } from '@angular/core';
+import { Directive, Input, TemplateRef } from '@angular/core';
 
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector
@@ -7,5 +7,5 @@ import { Directive, inject, Input, TemplateRef } from '@angular/core';
 })
 export class TabDirective {
   @Input('tab') name!: string;
-  template = inject(TemplateRef);
+  constructor(public template: TemplateRef<any>) {}
 }

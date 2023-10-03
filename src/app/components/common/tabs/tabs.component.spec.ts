@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { TabDirective } from '@directives/tab.directive';
 import { TabsComponent } from './tabs.component';
-
 
 @Component({
   template: `
@@ -11,8 +11,8 @@ import { TabsComponent } from './tabs.component';
       <div *tab="'Tab 2'">Content for Tab 2</div>
     </app-tabs>
   `,
-  standalone:true,
-  imports:[TabsComponent, TabDirective]
+  standalone: true,
+  imports: [TabsComponent, TabDirective],
 })
 class TestHostComponent {}
 
@@ -25,7 +25,7 @@ describe('TabsComponent', () => {
       imports: [TabsComponent, TestHostComponent, TabDirective],
     });
     fixture = TestBed.createComponent(TestHostComponent);
-    component = fixture.debugElement.componentInstance;
+    component = fixture.debugElement.query(By.directive(TabsComponent)).componentInstance;
     fixture.detectChanges();
   });
 
@@ -38,7 +38,6 @@ describe('TabsComponent', () => {
     const firstTabTemplate = component.tabs.first.template;
 
     expect(component.currentTab).toBe(firstTabTemplate);
-    console.log(component.currentTab)
 
     const renderedContent = fixture.nativeElement.querySelector('.tab-container').textContent.trim();
     expect(renderedContent).toBe(firstTabContent);

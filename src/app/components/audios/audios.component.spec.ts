@@ -13,7 +13,7 @@ describe('AudiosComponent', () => {
   const mockActivatedRoute = {
     snapshot: {
       data: {
-        userState: { userId: 123 }
+        userState: { userId: 123 },
       },
     },
   };
@@ -21,10 +21,7 @@ describe('AudiosComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AudiosComponent, RouterTestingModule, HttpClientTestingModule],
-      providers:[
-        DatePipe, 
-        { provide: ActivatedRoute, useValue: mockActivatedRoute }
-    ]
+      providers: [DatePipe, { provide: ActivatedRoute, useValue: mockActivatedRoute }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AudiosComponent);

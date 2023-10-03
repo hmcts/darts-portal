@@ -30,7 +30,7 @@ describe('App Routes', () => {
         {
           provide: UserService,
           useValue: mockUserService,
-        }
+        },
       ],
     });
 
