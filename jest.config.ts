@@ -14,6 +14,7 @@ const config: Config = {
     '^@pipes/(.*)$': '<rootDir>/src/app/pipes/$1',
     '^@interceptors/(.*)$': '<rootDir>/src/app/interceptors/$1',
     '^@extensions/(.*)$': '<rootDir>/src/app/extensions/$1',
+    '^@directives/(.*)$': '<rootDir>/src/app/directives/$1',
   },
 };
 

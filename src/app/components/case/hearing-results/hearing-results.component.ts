@@ -15,14 +15,12 @@ import { TabDirective } from 'src/app/directives/tab.directive';
 })
 export class HearingResultsComponent implements OnChanges {
   @Input() hearings: Hearing[] = [];
-  tabs: string[];
   caseId: number;
   rows: any[] = [];
   columns: any[] = [];
 
   constructor(private route: ActivatedRoute, private datePipe: DatePipe) {
     this.caseId = this.route.snapshot.params.caseId;
-    this.tabs = ['Hearings', 'Transcripts'];
 
     this.columns = [
       {
