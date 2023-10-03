@@ -3,6 +3,13 @@
 @import 'accessible-autocomplete';
 @import 'src/assets/datepicker.scss';
 
+
+// Override global container widths
+.govuk-width-container, .moj-header__container, .moj-primary-navigation__container {
+    max-width: 1280px; 
+}
+
+
 .moj-header__navigation-link {
   text-decoration: none;
   &:hover {
