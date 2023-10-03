@@ -15,7 +15,7 @@ describe('RequestPlaybackAudioComponent', () => {
     });
     fixture = TestBed.createComponent(RequestPlaybackAudioComponent);
     component = fixture.componentInstance;
-    component.userState = {userId: 1, userName: 'Dean', roles:[]}
+    component.userState = { userId: 1, userName: 'Dean', roles: [] };
     fixture.detectChanges();
   });
 

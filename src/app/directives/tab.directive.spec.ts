@@ -3,10 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TabDirective } from './tab.directive';
 
 @Component({
-  template: `
-    <ng-template [tab]="'Test Tab'">Tab Content</ng-template>
-  `,
-  standalone: true
+  template: ` <ng-template [tab]="'Test Tab'">Tab Content</ng-template> `,
+  standalone: true,
 })
 class TestComponent {
   @ViewChild(TemplateRef, { static: true }) tabTemplate!: TemplateRef<any>;

@@ -39,7 +39,11 @@ export class AudiosComponent {
   completedRows$: Observable<UserAudioRequestRow[]>;
   expiredRows$: Observable<UserAudioRequestRow[]>;
 
-  data$: Observable<{ inProgessRows: UserAudioRequestRow[], completedRows: UserAudioRequestRow[], expiredRows: UserAudioRequestRow[] }>;
+  data$: Observable<{
+    inProgessRows: UserAudioRequestRow[];
+    completedRows: UserAudioRequestRow[];
+    expiredRows: UserAudioRequestRow[];
+  }>;
 
   columns = [
     { name: 'Case ID', prop: 'caseNumber', sortable: true },

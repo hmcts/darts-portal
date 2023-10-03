@@ -4,7 +4,6 @@ import { By } from '@angular/platform-browser';
 import { TabDirective } from '@directives/tab.directive';
 import { TabsComponent } from './tabs.component';
 
-
 @Component({
   template: `
     <app-tabs>
@@ -12,8 +11,8 @@ import { TabsComponent } from './tabs.component';
       <div *tab="'Tab 2'">Content for Tab 2</div>
     </app-tabs>
   `,
-  standalone:true,
-  imports:[TabsComponent, TabDirective]
+  standalone: true,
+  imports: [TabsComponent, TabDirective],
 })
 class TestHostComponent {}
 
