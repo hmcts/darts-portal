@@ -23,6 +23,7 @@
   id="courthouse"
   name="courthouse"
   type="text"
+  [value]="courthouse"
   aria-describedby="courthouse-hint"
   (keyup)="courthouseSelect.emit($any($event).target.value)"
 />
