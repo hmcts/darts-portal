@@ -1,3 +1,15 @@
+<ng-template #tableTemplatePartial let-row>
+  <td class="govuk-table__cell">
+    <a [routerLink]="['.']"> {{ row.caseNumber }}</a>
+  </td>
+  <td class="govuk-table__cell">{{ row.courthouse }}</td>
+  <td class="govuk-table__cell">{{ row.hearingDate }}</td>
+  <td class="govuk-table__cell">{{ row.startTime }}</td>
+  <td class="govuk-table__cell">{{ row.endTime }}</td>
+  <td class="govuk-table__cell">{{ row.requestId }}</td>
+  <td class="govuk-table__cell">{{ row.expiry }}</td>
+</ng-template>
+
 <h1 class="govuk-label-wrapper">
   <label class="govuk-label govuk-label--l" for="case-search">Your Audio</label>
 </h1>
@@ -12,15 +24,9 @@
         <h2 class="govuk-heading-m">In Progress</h2>
         <app-data-table [rows]="data.inProgessRows" [columns]="columns" [pagination]="false">
           <ng-template [tableRowTemplate] let-row>
-            <td class="govuk-table__cell">
-              <a [routerLink]="['.']">{{ row.caseNumber }}</a>
-            </td>
-            <td class="govuk-table__cell">{{ row.courthouse }}</td>
-            <td class="govuk-table__cell">{{ row.hearingDate }}</td>
-            <td class="govuk-table__cell">{{ row.startTime }}</td>
-            <td class="govuk-table__cell">{{ row.endTime }}</td>
-            <td class="govuk-table__cell">{{ row.requestId }}</td>
-            <td class="govuk-table__cell">{{ row.expiry }}</td>
+            <!-- Partial template for duplicated cells -->
+            <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
+
             <td class="govuk-table__cell">
               <strong *ngIf="row.status === 'FAILED'" class="govuk-tag govuk-tag--red"> {{ row.status }} </strong>
               <strong *ngIf="row.status !== 'FAILED'" class="govuk-tag govuk-tag--yellow"> {{ row.status }} </strong>
@@ -32,17 +38,11 @@
       <ng-container *ngIf="data.completedRows.length">
         <h2 class="govuk-heading-m">Ready</h2>
         <div class="govuk-hint">Select to apply actions</div>
-        <app-data-table [rows]="data.completedRows" [columns]="columns">
+        <app-data-table [rows]="data.completedRows" [columns]="columns" [rowSelectable]="true">
           <ng-template [tableRowTemplate] let-row>
-            <td class="govuk-table__cell">
-              <a [routerLink]="['.']">{{ row.caseNumber }}</a>
-            </td>
-            <td class="govuk-table__cell">{{ row.courthouse }}</td>
-            <td class="govuk-table__cell">{{ row.hearingDate }}</td>
-            <td class="govuk-table__cell">{{ row.startTime }}</td>
-            <td class="govuk-table__cell">{{ row.endTime }}</td>
-            <td class="govuk-table__cell">{{ row.requestId }}</td>
-            <td class="govuk-table__cell">{{ row.expiry }}</td>
+            <!-- Partial template for duplicated cells -->
+            <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
+
             <td class="govuk-table__cell">
               <div class="status-cell">
                 <strong class="govuk-tag govuk-tag--green"> READY </strong>
