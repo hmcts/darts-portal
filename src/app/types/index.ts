@@ -12,3 +12,5 @@ export * from './hearing.interface';
 export * from './search-form.interface';
 export * from './user-audio-request.interface';
 export * from './user-audio-request-row.interface';
+export * from './error-summary-entry.interface';
+export * from './field-errors.interface';
