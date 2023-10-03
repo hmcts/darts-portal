@@ -56,6 +56,50 @@ const audioRequestMulti = [
   },
 ];
 
+const audioRequestMultiReady = [
+  {
+    media_request_id: 12377,
+    case_number: 'T20200333',
+    courthouse_name: 'Liverpool',
+    hearing_date: '2023-10-04',
+    media_request_start_ts: '2023-08-21T09:00:00Z',
+    media_request_end_ts: '2023-08-21T10:00:00Z',
+    media_request_expiry_ts: '2023-08-23T09:00:00Z',
+    media_request_status: 'READY',
+  },
+  {
+    media_request_id: 12342,
+    case_number: 'T2020011820',
+    courthouse_name: 'Ascot',
+    hearing_date: '2023-11-13',
+    media_request_start_ts: '2023-08-21T09:08:00Z',
+    media_request_end_ts: '2023-08-21T10:14:00Z',
+    media_request_expiry_ts: '2023-08-23T09:00:00Z',
+    media_request_status: 'READY',
+  },
+  {
+    media_request_id: 12341,
+    case_number: 'T2023453422',
+    courthouse_name: 'Bournemouth',
+    hearing_date: '2023-11-15',
+    media_request_start_ts: '2023-08-21T09:57:00Z',
+    media_request_end_ts: '2023-08-21T10:43:00Z',
+    media_request_expiry_ts: '2023-11-23T09:00:00Z',
+    media_request_status: 'READY',
+  },
+
+  {
+    media_request_id: 123443,
+    case_number: 'T20200192231',
+    courthouse_name: 'Brighton',
+    hearing_date: '2023-11-13',
+    media_request_start_ts: '2023-08-21T09:57:00Z',
+    media_request_end_ts: '2023-08-21T10:43:00Z',
+    media_request_expiry_ts: '2023-11-23T09:00:00Z',
+    media_request_status: 'READY',
+  },
+];
+
 const audioRequestMultiExpired = [
   {
     media_request_id: 12311,
