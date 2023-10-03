@@ -275,4 +275,25 @@ describe('HearingComponent', () => {
       expect(component.requestId).toEqual(1234);
     });
   });
+
+  describe('#onValidationError', () => {
+    it('should set the error summary and focus on the first error summary message', () => {
+      const mockErrorSummary = [
+        {
+          fieldId: 'start-time-hour-input',
+          message: 'You must include a start time for your audio recording',
+        },
+        {
+          fieldId: 'end-time-hour-input',
+          message: 'You must include an end time for your audio recording',
+        },
+        {
+          fieldId: 'playback-radio',
+          message: 'You must select a request type',
+        },
+      ];
+      component.onValidationError(mockErrorSummary);
+      expect(component.errorSummary).toEqual(mockErrorSummary);
+    });
+  });
 });
