@@ -13,6 +13,7 @@ import { TimeInputComponent } from './time-input/time-input.component';
 import * as moment from 'moment';
 import { DateTimeService } from '@services/datetime/datetime.service';
 import { AudioRequest, Hearing } from '@darts-types/index';
+import { UserState } from '@darts-types/user-state';
 
 @Component({
   selector: 'app-request-playback-audio',
@@ -25,6 +26,7 @@ import { AudioRequest, Hearing } from '@darts-types/index';
 export class RequestPlaybackAudioComponent implements OnChanges {
   @Input() hearing!: Hearing;
   @Input() requestAudioTimes!: Map<string, Date> | undefined;
+  @Input() userProfile!: UserState | undefined | null;
   audioRequestForm: FormGroup;
   requestObj!: AudioRequest;
   @Output() audioRequest = new EventEmitter<AudioRequest>();
@@ -87,8 +89,7 @@ export class RequestPlaybackAudioComponent implements OnChanges {
 
     this.requestObj = {
       hearing_id: this.hearing.id,
-      // TO DO: Replace with user/Requestor ID when requesting audio
-      requestor: 1,
+      requestor: this.userProfile?.userId as number,
       start_time: this.datetimeService.getIsoStringWithoutMilliseconds(startDateTime.toISOString()),
       end_time: this.datetimeService.getIsoStringWithoutMilliseconds(endDateTime.toISOString()),
       request_type: this.audioRequestForm.get('requestType')?.value,

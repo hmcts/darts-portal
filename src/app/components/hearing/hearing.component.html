@@ -33,6 +33,7 @@
       [hearing]="vm.hearing!"
       [requestAudioTimes]="requestAudioTimes"
       (audioRequest)="onAudioRequest($event)"
+      [userProfile]="userProfile$ | async"
     ></app-request-playback-audio>
 
     <!-- Events & Audio Table-->

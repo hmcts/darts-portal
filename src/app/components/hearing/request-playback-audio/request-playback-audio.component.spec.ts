@@ -75,6 +75,11 @@ describe('RequestPlaybackAudioComponent', () => {
         courtroom: '3',
         transcript_count: 1,
       };
+      component.userProfile = {
+        userId: 100,
+        userName: 'test@test.com',
+        roles: [],
+      };
       const audioRequestForm = {
         startTime: {
           hours: '02',
@@ -90,7 +95,7 @@ describe('RequestPlaybackAudioComponent', () => {
       };
       const expectedResult = {
         hearing_id: 1,
-        requestor: 1,
+        requestor: 100,
         start_time: '2023-09-01T02:00:00Z',
         end_time: '2023-09-01T15:32:24Z',
         request_type: 'DOWNLOAD',
