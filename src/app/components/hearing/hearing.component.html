@@ -55,6 +55,7 @@
       [requestAudioTimes]="requestAudioTimes"
       (audioRequest)="onAudioRequest($event)"
       (validationErrorEvent)="onValidationError($event)"
+      [userProfile]="userProfile$ | async"
     ></app-request-playback-audio>
 
     <!-- Events & Audio Table-->
