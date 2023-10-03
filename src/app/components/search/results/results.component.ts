@@ -4,12 +4,13 @@ import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { Case, Hearing } from '@darts-types/index';
 import { DateTimeService } from '@services/datetime/datetime.service';
+import { TableBodyTemplateDirective } from 'src/app/directives/table-body-template.directive';
 
 @Component({
   selector: 'app-results',
   templateUrl: './results.component.html',
   styleUrls: ['./results.component.scss'],
-  imports: [NgIf, NgFor, RouterLink, DataTableComponent],
+  imports: [NgIf, NgFor, RouterLink, DataTableComponent, TableBodyTemplateDirective],
   standalone: true,
 })
 export class ResultsComponent implements OnChanges {
