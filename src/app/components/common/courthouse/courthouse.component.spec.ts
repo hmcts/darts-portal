@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClientModule } from '@angular/common/http';
 import { By } from '@angular/platform-browser';
 import { CourthouseComponent } from './courthouse.component';
 import { Courthouse } from '@darts-types/index';
@@ -16,23 +15,30 @@ describe('CourthouseComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CourthouseComponent, HttpClientModule],
+      imports: [CourthouseComponent],
     });
     fixture = TestBed.createComponent(CourthouseComponent);
     component = fixture.componentInstance;
     component.courthouses = courts;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
+    fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 
   describe('AccessibleAutocomplete props', () => {
     it('should have correct default properties', () => {
+      fixture.detectChanges();
       expect(component.props.id).toBe('courthouse');
       expect(component.props.name).toBe('courthouse');
       expect(component.props.minLength).toBe(1);
+    });
+
+    it('has correct default value if courthouse is pre-populated', () => {
+      component.courthouse = 'Swansea';
+      fixture.detectChanges();
+      expect(component.props.defaultValue).toBe('Swansea');
     });
   });
 

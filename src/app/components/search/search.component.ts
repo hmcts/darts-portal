@@ -1,15 +1,15 @@
-import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ResultsComponent } from './results/results.component';
 import { initAll } from '@scottish-government/pattern-library/src/all';
-import { Subscription } from 'rxjs';
+import { catchError, ignoreElements, Observable, of, Subscription } from 'rxjs';
 import { CourthouseComponent } from '@common/courthouse/courthouse.component';
-import { Case } from '@darts-types/case.interface';
 import { CaseService } from '@services/case/case.service';
 import { SearchFormValues } from '@darts-types/search-form.interface';
 import { futureDateValidator } from '@validators/future-date.validator';
+import { SearchErrorComponent } from './search-error/search-error.component';
 
 export interface ErrorSummaryEntry {
   fieldId: string;
@@ -41,22 +41,23 @@ const FieldErrors: { [key: string]: { [key: string]: string } } = {
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ResultsComponent, CourthouseComponent],
+  imports: [CommonModule, ReactiveFormsModule, ResultsComponent, CourthouseComponent, SearchErrorComponent],
 })
 export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
   @ViewChild(CourthouseComponent) courthouseComponent!: CourthouseComponent;
 
   dateInputType: 'specific' | 'range' | undefined;
-  cases: Case[] = [];
-  loaded = false;
   isSubmitted = false;
   errorSummary: ErrorSummaryEntry[] = [];
-  errorType = '';
-  error = '';
   isAdvancedSearch = false;
   datePatternValidator = Validators.pattern(/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/);
   dateValidators = [this.datePatternValidator, futureDateValidator];
   courthouses$ = this.caseService.getCourthouses();
+  courthouse = '';
+
+  // Retrieve Previous Search Results
+  searchResults$ = this.caseService.searchResults$;
+  searchError$: Observable<string> | null = null;
   subs: Subscription[] = [];
 
   constructor(private caseService: CaseService) {}
@@ -75,7 +76,6 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   ngOnInit() {
     // Set validation based on values entered in the form
-
     // [DMP-691] AC 2 - Listening for when courtroom has value, if so, then courthouse is required
     this.subs.push(
       this.form.controls.courtroom.valueChanges.subscribe((courtroom) => this.setCourthouseValidators(courtroom))
@@ -99,6 +99,8 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
     // [DMP-691] AC3, AC4, AC5, AC6 - Add date range validators if either date_from or date_to field has a value.
     // Validators: required, future & pattern
     this.setDateRangeValidators();
+
+    this.restoreForm();
   }
 
   toggleAdvancedSearch(event: Event) {
@@ -114,7 +116,7 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
     return this.isSubmitted && !!this.f[control].errors;
   }
 
-  async onSubmit() {
+  onSubmit() {
     this.isSubmitted = true;
     this.form.updateValueAndValidity();
 
@@ -125,25 +127,20 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     // Prevent service call being spammed with no form values
     if (!this.form.dirty && !this.form.touched) {
-      this.errorType = 'CASE_101';
+      this.searchError$ = of('CASE_101');
       return;
     }
 
-    this.caseService.getCasesAdvanced(this.form.value).subscribe({
-      next: (result: Case[]) => {
-        if (result) {
-          this.cases = result;
-          this.loaded = true;
-          this.errorType = 'ok';
-        }
-      },
-      error: (error: HttpErrorResponse) => {
-        if (error.error) {
-          this.errorType = error.error.type;
-          this.loaded = true;
-        }
-      },
-    });
+    this.searchResults$ = this.caseService.searchCases(this.form.value);
+    this.searchError$ = this.searchResults$.pipe(
+      ignoreElements(),
+      catchError((error: HttpErrorResponse) => {
+        // clear search form and results or error state will be cached in service
+        this.caseService.searchFormValues = null;
+        this.caseService.searchResults$ = null;
+        return of(error.error.type);
+      })
+    );
   }
 
   toggleRadioSelected(type: 'specific' | 'range') {
@@ -184,9 +181,10 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   clearSearch() {
     this.form.reset();
-    this.cases = [];
-    this.loaded = false;
-    this.errorType = '';
+    this.searchResults$ = null;
+    this.caseService.searchResults$ = null;
+    this.caseService.searchFormValues = null;
+    this.searchError$ = null;
     this.isSubmitted = false;
     this.errorSummary = [];
     this.courthouseComponent.reset();
@@ -259,6 +257,32 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
     courtHouseFormControl?.updateValueAndValidity();
   }
 
+  restoreForm() {
+    const previousFormValues = this.caseService.searchFormValues;
+
+    if (previousFormValues) {
+      // If we have any values for advanced search fields, open advanced search form
+      this.isAdvancedSearch = Object.entries(previousFormValues).some(([key, value]) => {
+        if (key === 'case_number') return false; // skip case_number
+        return value;
+      });
+
+      if (previousFormValues?.specific_date) {
+        this.dateInputType = 'specific';
+      }
+
+      if (previousFormValues?.date_from && previousFormValues?.date_to) {
+        this.dateInputType = 'range';
+      }
+
+      if (previousFormValues.courthouse) this.courthouse = previousFormValues.courthouse;
+
+      this.form.patchValue(previousFormValues);
+
+      this.form.markAsDirty();
+      this.isSubmitted = true;
+    }
+  }
   ngOnDestroy(): void {
     this.subs.forEach((s) => s.unsubscribe());
   }

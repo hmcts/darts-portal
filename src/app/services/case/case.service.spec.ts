@@ -103,7 +103,7 @@ describe('CaseService', () => {
     req.flush(mockHearings);
   });
 
-  it('#getCasesAdvanced', () => {
+  it('#searchCases', () => {
     const mockSearchForm: SearchFormValues = {
       case_number: '123',
       courthouse: 'Court A',
@@ -116,7 +116,7 @@ describe('CaseService', () => {
     };
     const mockCases: Case[] = [];
 
-    service.getCasesAdvanced(mockSearchForm).subscribe((cases) => {
+    service.searchCases(mockSearchForm).subscribe((cases) => {
       expect(cases).toEqual(mockCases);
     });
 
