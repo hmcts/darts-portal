@@ -22,7 +22,7 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "pa11y": "yarn ts-node -P ./pa11y/tsconfig.json ./pa11y/pa11y.ts",
-    "test:a11y": "start-test 'test:up-disable-auth' 3000 'pa11y'",
+    "test:a11y": "DARTS_API_URL=http://localhost:4551 TEST_URL=http://localhost:3000 start-test 'darts-api-stub' 4551 'test:up-disable-auth' 3000  'pa11y'",
     "cypress": "cypress open",
     "verify-stg-access": "ts-node -P ./scripts/tsconfig.json scripts/verify-stg-access.ts",
     "test:smoke": "cypress run --spec 'cypress/e2e/smoke/*-spec.cy.js' --reporter-options 'mochaFile=smoke-output/smoke/test-output-[hash].xml' && yarn test:smoke:combine:reports",
