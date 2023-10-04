@@ -3347,9 +3347,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@npmcli/arborist@npm:^7.1.0":
-  version: 7.1.0
-  resolution: "@npmcli/arborist@npm:7.1.0"
+"@npmcli/arborist@npm:^7.2.0":
+  version: 7.2.0
+  resolution: "@npmcli/arborist@npm:7.2.0"
   dependencies:
     "@isaacs/string-locale-compare": ^1.1.0
     "@npmcli/fs": ^3.1.0
@@ -3359,18 +3359,18 @@ __metadata:
     "@npmcli/name-from-folder": ^2.0.0
     "@npmcli/node-gyp": ^3.0.0
     "@npmcli/package-json": ^5.0.0
-    "@npmcli/query": ^3.0.0
+    "@npmcli/query": ^3.0.1
     "@npmcli/run-script": ^7.0.1
     bin-links: ^4.0.1
     cacache: ^18.0.0
     common-ancestor-path: ^1.0.1
-    hosted-git-info: ^7.0.0
+    hosted-git-info: ^7.0.1
     json-parse-even-better-errors: ^3.0.0
     json-stringify-nice: ^1.1.4
     minimatch: ^9.0.0
     nopt: ^7.0.0
     npm-install-checks: ^6.2.0
-    npm-package-arg: ^11.0.0
+    npm-package-arg: ^11.0.1
     npm-pick-manifest: ^9.0.0
     npm-registry-fetch: ^16.0.0
     npmlog: ^7.0.1
@@ -3386,13 +3386,13 @@ __metadata:
     walk-up-path: ^3.0.1
   bin:
     arborist: bin/index.js
-  checksum: 7a5661ca8152200e0debb3b51333d25c2a211e92a6dde5f8b03143c14cbc4785f5ed7ab09a06aa4d8453506adf88505675f537ebab97af38e7976a6327a9fff4
+  checksum: b2ff7e438a2a1959a72a5b43685e27cf9bd4cbf4080053b5836036148e1df7b89c84e0ed842c62bb5228d7c48aec267961274b089309a825087c6b4ce7572a47
   languageName: node
   linkType: hard
 
-"@npmcli/config@npm:^7.2.0":
-  version: 7.2.0
-  resolution: "@npmcli/config@npm:7.2.0"
+"@npmcli/config@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "@npmcli/config@npm:8.0.0"
   dependencies:
     "@npmcli/map-workspaces": ^3.0.2
     ci-info: ^3.8.0
@@ -3402,7 +3402,7 @@ __metadata:
     read-package-json-fast: ^3.0.2
     semver: ^7.3.5
     walk-up-path: ^3.0.1
-  checksum: 9dc0b6aa725f2440eef200c7a13e5d2de2636673732beca847399348db1107aef780b5a1b3a931f9c7c015478167ce7fc4f521789dda1487fa7b43891d2da79d
+  checksum: 13867ad19690d4b389bdaa56c1714d73291c9eb59c147ef08ff82ccddb0cd836eed0fe3c50ec268c3963e4e3fe2a7ebbb3c6e867864727cf1f28f82833d89fb9
   languageName: node
   linkType: hard
 
@@ -3539,7 +3539,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@npmcli/query@npm:^3.0.0":
+"@npmcli/query@npm:^3.0.1":
   version: 3.0.1
   resolution: "@npmcli/query@npm:3.0.1"
   dependencies:
@@ -8484,7 +8484,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:^10.2.2, glob@npm:^10.3.3":
+"glob@npm:^10.2.2":
   version: 10.3.4
   resolution: "glob@npm:10.3.4"
   dependencies:
@@ -8496,6 +8496,21 @@ __metadata:
   bin:
     glob: dist/cjs/src/bin.js
   checksum: 176b97c124414401cb51329a93d2ba112cef8814adbed10348481916b9521b677773eee2691cb6b24d66632d8c8bb8913533f5ac4bfb2d0ef5454a1856082361
+  languageName: node
+  linkType: hard
+
+"glob@npm:^10.3.10":
+  version: 10.3.10
+  resolution: "glob@npm:10.3.10"
+  dependencies:
+    foreground-child: ^3.1.0
+    jackspeak: ^2.3.5
+    minimatch: ^9.0.1
+    minipass: ^5.0.0 || ^6.0.2 || ^7.0.0
+    path-scurry: ^1.10.1
+  bin:
+    glob: dist/esm/bin.mjs
+  checksum: 4f2fe2511e157b5a3f525a54092169a5f92405f24d2aed3142f4411df328baca13059f4182f1db1bf933e2c69c0bd89e57ae87edd8950cba8c7ccbe84f721cf3
   languageName: node
   linkType: hard
 
@@ -8689,7 +8704,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hosted-git-info@npm:^7.0.0":
+"hosted-git-info@npm:^7.0.0, hosted-git-info@npm:^7.0.1":
   version: 7.0.1
   resolution: "hosted-git-info@npm:7.0.1"
   dependencies:
@@ -9467,6 +9482,19 @@ __metadata:
     "@pkgjs/parseargs":
       optional: true
   checksum: 34ea4d618d8d36ac104fe1053c85dfb6a63306cfe87e157ef42f18a7aa30027887370a4e163dd4993e45c6bf8a8ae003bf8476fdb8538e8ee5cd1938c27b15d0
+  languageName: node
+  linkType: hard
+
+"jackspeak@npm:^2.3.5":
+  version: 2.3.6
+  resolution: "jackspeak@npm:2.3.6"
+  dependencies:
+    "@isaacs/cliui": ^8.0.2
+    "@pkgjs/parseargs": ^0.11.0
+  dependenciesMeta:
+    "@pkgjs/parseargs":
+      optional: true
+  checksum: 57d43ad11eadc98cdfe7496612f6bbb5255ea69fe51ea431162db302c2a11011642f50cfad57288bd0aea78384a0612b16e131944ad8ecd09d619041c8531b54
   languageName: node
   linkType: hard
 
@@ -10517,41 +10545,41 @@ __metadata:
   languageName: node
   linkType: hard
 
-"libnpmaccess@npm:^8.0.0":
-  version: 8.0.0
-  resolution: "libnpmaccess@npm:8.0.0"
+"libnpmaccess@npm:^8.0.1":
+  version: 8.0.1
+  resolution: "libnpmaccess@npm:8.0.1"
   dependencies:
-    npm-package-arg: ^11.0.0
+    npm-package-arg: ^11.0.1
     npm-registry-fetch: ^16.0.0
-  checksum: a9514acfe35e55bff55da535c296c8e24549eeba6f9391e20337a0272a0e13ac4fe56ebe29667c411c422c8d7d6607fe7b2b367a13aec8064295315960dbaa7c
+  checksum: 3b122b307d93e478a74df82c3e372f2e5b02256124f8b08469ee40514bc95a416df6639a9badd456d7ff4cb24bd6bcc2245d17e45d8e0cf0262b5a9ded276ea1
   languageName: node
   linkType: hard
 
-"libnpmdiff@npm:^6.0.1":
-  version: 6.0.1
-  resolution: "libnpmdiff@npm:6.0.1"
+"libnpmdiff@npm:^6.0.2":
+  version: 6.0.2
+  resolution: "libnpmdiff@npm:6.0.2"
   dependencies:
-    "@npmcli/arborist": ^7.1.0
+    "@npmcli/arborist": ^7.2.0
     "@npmcli/disparity-colors": ^3.0.0
     "@npmcli/installed-package-contents": ^2.0.2
     binary-extensions: ^2.2.0
     diff: ^5.1.0
     minimatch: ^9.0.0
-    npm-package-arg: ^11.0.0
+    npm-package-arg: ^11.0.1
     pacote: ^17.0.4
-    tar: ^6.1.13
-  checksum: d566345e0caa714f1c3528a2ab59103b180055cc5cd1427602e0f661a8022ac0720b231351b178e625645a708d500ff6483a4219d19b2672dfc9076334219cbf
+    tar: ^6.2.0
+  checksum: d31349d5468ebbd3dc3e3494c73f79185e8cc46ab152426d8798f3b4cca8caa7009313dcb412374cfc59944b1eb0c8752fa6ce95311fdd44977367d7376d880d
   languageName: node
   linkType: hard
 
-"libnpmexec@npm:^7.0.1":
-  version: 7.0.1
-  resolution: "libnpmexec@npm:7.0.1"
+"libnpmexec@npm:^7.0.2":
+  version: 7.0.2
+  resolution: "libnpmexec@npm:7.0.2"
   dependencies:
-    "@npmcli/arborist": ^7.1.0
+    "@npmcli/arborist": ^7.2.0
     "@npmcli/run-script": ^7.0.1
     ci-info: ^3.7.1
-    npm-package-arg: ^11.0.0
+    npm-package-arg: ^11.0.1
     npmlog: ^7.0.1
     pacote: ^17.0.4
     proc-log: ^3.0.0
@@ -10559,16 +10587,16 @@ __metadata:
     read-package-json-fast: ^3.0.2
     semver: ^7.3.7
     walk-up-path: ^3.0.1
-  checksum: e3178873c2b6d3a0f4045e94b1ab4867d0518bff6a25822e69eee37eb926a7b388cdca5941d58280896b171cd9186bad4d8ab2ad98caca72b173f65680c4e7dd
+  checksum: dd4fdf249be4ba318884fd81782b446cff52dc27f255fb1b64b9aff3dd693644e4d59de122677dbba54ad39955fa6a626738b7e8b44106768e01a811d0e0897e
   languageName: node
   linkType: hard
 
-"libnpmfund@npm:^4.1.1":
-  version: 4.1.1
-  resolution: "libnpmfund@npm:4.1.1"
+"libnpmfund@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "libnpmfund@npm:5.0.0"
   dependencies:
-    "@npmcli/arborist": ^7.1.0
-  checksum: 958da8ee4623920b9a1aea78e6a39b57b83652328720e315babcc7720d14822ebd2c53c4e0283b4ae25f661475fcc2119af41dfbd13425c045d55b017ab71327
+    "@npmcli/arborist": ^7.2.0
+  checksum: 4d7956af493a1e8be435d70647dc0f377f7a47c5d5417d3da7a5392399587e0dd69418bd0d431651ca6b727cafdcbcf5aca57ad7328dee8ac72abfe17894af97
   languageName: node
   linkType: hard
 
@@ -10582,41 +10610,41 @@ __metadata:
   languageName: node
   linkType: hard
 
-"libnpmorg@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "libnpmorg@npm:6.0.0"
+"libnpmorg@npm:^6.0.1":
+  version: 6.0.1
+  resolution: "libnpmorg@npm:6.0.1"
   dependencies:
     aproba: ^2.0.0
     npm-registry-fetch: ^16.0.0
-  checksum: c5e2625ca1db1acc34ff6ce649d2a310e7135ee83e8503a76dcf2390b2552e9bdb38a768cef07a337019ac3aa53fbb7441b13ca1494f6efec058bf0842b3bba0
+  checksum: 2f4f5d698a38ab57d1289aa6a4bf0067b12703ed014a227c5edf91a81f1d8282de7d45774d85de410d97aa84ddaa5ec72e58666763cbe250e1d8666f95052a0e
   languageName: node
   linkType: hard
 
-"libnpmpack@npm:^6.0.1":
-  version: 6.0.1
-  resolution: "libnpmpack@npm:6.0.1"
+"libnpmpack@npm:^6.0.2":
+  version: 6.0.2
+  resolution: "libnpmpack@npm:6.0.2"
   dependencies:
-    "@npmcli/arborist": ^7.1.0
+    "@npmcli/arborist": ^7.2.0
     "@npmcli/run-script": ^7.0.1
-    npm-package-arg: ^11.0.0
+    npm-package-arg: ^11.0.1
     pacote: ^17.0.4
-  checksum: 270c5a5979b75fbcb2013116f31586bcd8d6d5523647f77a980becf40e766d5abeaff99be6a5d3e59ad6ea3aada2d043f0b1ebff5589bd9bd39b0d7837ae99a9
+  checksum: b94c7c8cf197348505439131ab47ca6f2caf87a6727123f1953ae3defccce1b2efa643950b0ab7b58777c698f7a0a4da8dc57689340738b6b14edacc0c415fe5
   languageName: node
   linkType: hard
 
-"libnpmpublish@npm:^9.0.0":
-  version: 9.0.0
-  resolution: "libnpmpublish@npm:9.0.0"
+"libnpmpublish@npm:^9.0.1":
+  version: 9.0.1
+  resolution: "libnpmpublish@npm:9.0.1"
   dependencies:
     ci-info: ^3.6.1
     normalize-package-data: ^6.0.0
-    npm-package-arg: ^11.0.0
+    npm-package-arg: ^11.0.1
     npm-registry-fetch: ^16.0.0
     proc-log: ^3.0.0
     semver: ^7.3.7
     sigstore: ^2.1.0
     ssri: ^10.0.5
-  checksum: 5c5b483601eafdd59307f7a7bea40c3340b034b031cbe2bf2086d88bb39d04f0a1ac2dbb9386eb9a06bc6bb7aef9b1d3ed57cf30733f008785e800f9439832ad
+  checksum: a7a0bb31d12674cca8b713d6206b5588d01e8d0b2fcbeae424c4f86a2d40c9527094ba957c783513f5a57daa2f8cd8d3bb268c61e0c1d9d07e6c76cde1a9eeb0
   languageName: node
   linkType: hard
 
@@ -11231,6 +11259,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"minipass@npm:^7.0.4":
+  version: 7.0.4
+  resolution: "minipass@npm:7.0.4"
+  checksum: 87585e258b9488caf2e7acea242fd7856bbe9a2c84a7807643513a338d66f368c7d518200ad7b70a508664d408aa000517647b2930c259a8b1f9f0984f344a21
+  languageName: node
+  linkType: hard
+
 "minizlib@npm:^2.1.1, minizlib@npm:^2.1.2":
   version: 2.1.2
   resolution: "minizlib@npm:2.1.2"
@@ -11609,7 +11644,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"npm-package-arg@npm:^11.0.0":
+"npm-package-arg@npm:^11.0.0, npm-package-arg@npm:^11.0.1":
   version: 11.0.1
   resolution: "npm-package-arg@npm:11.0.1"
   dependencies:
@@ -11732,12 +11767,12 @@ __metadata:
   linkType: hard
 
 "npm@npm:^10.1.0":
-  version: 10.1.0
-  resolution: "npm@npm:10.1.0"
+  version: 10.2.0
+  resolution: "npm@npm:10.2.0"
   dependencies:
     "@isaacs/string-locale-compare": ^1.1.0
-    "@npmcli/arborist": ^7.1.0
-    "@npmcli/config": ^7.2.0
+    "@npmcli/arborist": ^7.2.0
+    "@npmcli/config": ^8.0.0
     "@npmcli/fs": ^3.1.0
     "@npmcli/map-workspaces": ^3.0.4
     "@npmcli/package-json": ^5.0.0
@@ -11754,34 +11789,35 @@ __metadata:
     columnify: ^1.6.0
     fastest-levenshtein: ^1.0.16
     fs-minipass: ^3.0.3
-    glob: ^10.3.3
+    glob: ^10.3.10
     graceful-fs: ^4.2.11
-    hosted-git-info: ^7.0.0
+    hosted-git-info: ^7.0.1
     ini: ^4.1.1
     init-package-json: ^6.0.0
     is-cidr: ^4.0.2
     json-parse-even-better-errors: ^3.0.0
-    libnpmaccess: ^8.0.0
-    libnpmdiff: ^6.0.1
-    libnpmexec: ^7.0.1
-    libnpmfund: ^4.1.1
+    libnpmaccess: ^8.0.1
+    libnpmdiff: ^6.0.2
+    libnpmexec: ^7.0.2
+    libnpmfund: ^5.0.0
     libnpmhook: ^10.0.0
-    libnpmorg: ^6.0.0
-    libnpmpack: ^6.0.1
-    libnpmpublish: ^9.0.0
+    libnpmorg: ^6.0.1
+    libnpmpack: ^6.0.2
+    libnpmpublish: ^9.0.1
     libnpmsearch: ^7.0.0
     libnpmteam: ^6.0.0
     libnpmversion: ^5.0.0
     make-fetch-happen: ^13.0.0
     minimatch: ^9.0.3
-    minipass: ^7.0.3
+    minipass: ^7.0.4
     minipass-pipeline: ^1.2.4
     ms: ^2.1.2
     node-gyp: ^9.4.0
     nopt: ^7.2.0
+    normalize-package-data: ^6.0.0
     npm-audit-report: ^5.0.0
     npm-install-checks: ^6.2.0
-    npm-package-arg: ^11.0.0
+    npm-package-arg: ^11.0.1
     npm-pick-manifest: ^9.0.0
     npm-profile: ^9.0.0
     npm-registry-fetch: ^16.0.0
@@ -11794,9 +11830,11 @@ __metadata:
     qrcode-terminal: ^0.12.0
     read: ^2.1.0
     semver: ^7.5.4
+    spdx-expression-parse: ^3.0.1
     ssri: ^10.0.5
+    strip-ansi: ^6.0.1
     supports-color: ^9.4.0
-    tar: ^6.1.15
+    tar: ^6.2.0
     text-table: ~0.2.0
     tiny-relative-date: ^1.3.0
     treeverse: ^3.0.0
@@ -11806,7 +11844,7 @@ __metadata:
   bin:
     npm: bin/npm-cli.js
     npx: bin/npx-cli.js
-  checksum: 64a04aec8e5cf7885fb899daaaed4a835e840f7c1c28d154cc1b0c1de19930c51b478d8b5585af197f81ef5e40e1fa0a72d88d33ba979a0380b21676a95caea4
+  checksum: af3d5f37f4a42367f027b10ef27cadcb2406217d92f433a43730f7e3817de40490cc9edceb0220e8b6f27c211a1e77598cf386756729fc28ed26b80d4bae7d3e
   languageName: node
   linkType: hard
 
@@ -13830,7 +13868,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"spdx-expression-parse@npm:^3.0.0":
+"spdx-expression-parse@npm:^3.0.0, spdx-expression-parse@npm:^3.0.1":
   version: 3.0.1
   resolution: "spdx-expression-parse@npm:3.0.1"
   dependencies:
@@ -14222,7 +14260,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tar@npm:^6.1.13, tar@npm:^6.1.15":
+"tar@npm:^6.2.0":
   version: 6.2.0
   resolution: "tar@npm:6.2.0"
   dependencies:
