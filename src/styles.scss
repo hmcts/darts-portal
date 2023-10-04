@@ -29,3 +29,12 @@ a.govuk-back-link:hover {
   -webkit-text-decoration-skip-ink: none;
   text-decoration-skip-ink: none;
 }
+
+.unread {
+  height: 15px;
+  width: 15px;
+  background-color: #1f70b8;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 5px;
+}

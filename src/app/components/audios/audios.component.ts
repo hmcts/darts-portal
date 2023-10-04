@@ -10,6 +10,7 @@ import { TableRowTemplateDirective } from 'src/app/directives/table-row-template
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabDirective } from 'src/app/directives/tab.directive';
 import { UserAudioRequestRow } from '@darts-types/index';
+import { UnreadIconDirective } from '@directives/unread-icon.directive';
 
 @Component({
   selector: 'app-audios',
@@ -22,6 +23,7 @@ import { UserAudioRequestRow } from '@darts-types/index';
     TabsComponent,
     CommonModule,
     TableRowTemplateDirective,
+    UnreadIconDirective,
     RouterLink,
     TabDirective,
   ],
@@ -31,6 +33,7 @@ export class AudiosComponent {
   datePipe = inject(DatePipe);
 
   userId: number;
+  unreadCount$: Observable<number>;
 
   audioRequests$: Observable<UserAudioRequest[]>;
   expiredAudioRequests$: Observable<UserAudioRequest[]>;
@@ -81,6 +84,8 @@ export class AudiosComponent {
       completedRows: this.completedRows$,
       expiredRows: this.expiredRows$,
     });
+
+    this.unreadCount$ = this.completedRows$.pipe(map((audioRequests) => this.getUnreadCount(audioRequests)));
   }
 
   mapAudioRequestToRows(audioRequests: UserAudioRequest[]): UserAudioRequestRow[] {
@@ -95,6 +100,7 @@ export class AudiosComponent {
         requestId: ar.media_request_id,
         expiry: this.datePipe.transform(ar.media_request_expiry_ts, 'hh:mm:ss dd/mm/yyyy', 'utc'),
         status: ar.media_request_status,
+        last_accessed_ts: ar.last_accessed_ts,
       };
     });
   }
@@ -110,5 +116,10 @@ export class AudiosComponent {
 
   filterCompletedRequests(audioRequests: UserAudioRequest[]): UserAudioRequest[] {
     return audioRequests.filter((ar) => ar.media_request_status === 'COMPLETED');
+  }
+
+  getUnreadCount(audioRequests: UserAudioRequestRow[]): number {
+    //Return count of completed rows which contain last_accessed_ts property
+    return audioRequests.filter((ar) => Boolean(!ar.last_accessed_ts)).length;
   }
 }

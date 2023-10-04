@@ -7,4 +7,5 @@ export interface UserAudioRequest {
   media_request_end_ts: string;
   media_request_expiry_ts?: string;
   media_request_status: 'OPEN' | 'PROCESSING' | 'FAILED' | 'COMPLETED';
+  last_accessed_ts?: string;
 }

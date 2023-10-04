@@ -1,5 +1,8 @@
 <h1 class="govuk-label-wrapper">
   <label class="govuk-label govuk-label--l" for="case-search">Your Audio</label>
+  <span id="notifications" *ngIf="unreadCount$ | async as unreadCount" class="moj-notification-badge">{{
+    unreadCount
+  }}</span>
 </h1>
 <ng-container *ngIf="data$ | async as data; else loading">
   <app-tabs>
@@ -7,6 +10,8 @@
       <p *ngIf="!data.inProgessRows.length && !data.completedRows.length">
         There are no audio files in progress or ready
       </p>
+
+      <pre>{{ data.completedRows | json }}</pre>
 
       <ng-container *ngIf="data.inProgessRows.length">
         <h2 class="govuk-heading-m">In Progress</h2>
@@ -35,6 +40,7 @@
         <app-data-table [rows]="data.completedRows" [columns]="columns">
           <ng-template [tableRowTemplate] let-row>
             <td class="govuk-table__cell">
+              <span unreadIcon [class.unread]='!row.last_accessed_ts' *ngIf="!row.last_accessed_ts"> </span>
               <a [routerLink]="['.']">{{ row.caseNumber }}</a>
             </td>
             <td class="govuk-table__cell">{{ row.courthouse }}</td>
@@ -46,7 +52,7 @@
             <td class="govuk-table__cell">
               <div class="status-cell">
                 <strong class="govuk-tag govuk-tag--green"> READY </strong>
-                <a [routerLink]="['.']">View</a>
+                <a [routerLink]="['/audios/', row.requestId]">View</a>
               </div>
             </td>
           </ng-template>

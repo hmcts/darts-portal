@@ -22,6 +22,7 @@ const audioRequestMulti = [
     media_request_end_ts: '2023-08-21T10:00:00Z',
     media_request_expiry_ts: '2023-08-23T09:00:00Z',
     media_request_status: 'OPEN',
+    last_accessed_ts: '2023-08-23T09:00:00Z',
   },
   {
     media_request_id: 12346,
@@ -32,6 +33,7 @@ const audioRequestMulti = [
     media_request_end_ts: '2023-08-21T10:14:00Z',
     media_request_expiry_ts: '2023-08-23T09:00:00Z',
     media_request_status: 'PROCESSING',
+    last_accessed_ts: '2023-08-23T09:00:00Z',
   },
   {
     media_request_id: 12347,
@@ -42,6 +44,7 @@ const audioRequestMulti = [
     media_request_end_ts: '2023-08-21T10:43:00Z',
     media_request_expiry_ts: '2023-11-23T09:00:00Z',
     media_request_status: 'OPEN',
+    last_accessed_ts: '2023-08-23T09:00:00Z',
   },
 
   {
@@ -63,6 +66,7 @@ const audioRequestMulti = [
     media_request_end_ts: '2023-08-21T10:00:00Z',
     media_request_expiry_ts: '2023-08-23T09:00:00Z',
     media_request_status: 'COMPLETED',
+    last_accessed_ts: '2023-08-23T09:00:00Z',
   },
   {
     media_request_id: 12342,
@@ -84,11 +88,20 @@ const audioRequestMulti = [
     media_request_expiry_ts: '2023-11-23T09:00:00Z',
     media_request_status: 'COMPLETED',
   },
-
   {
     media_request_id: 123443,
     case_number: 'T20200192231',
     courthouse_name: 'Brighton',
+    hearing_date: '2023-11-13',
+    media_request_start_ts: '2023-08-21T09:57:00Z',
+    media_request_end_ts: '2023-08-21T10:43:00Z',
+    media_request_expiry_ts: '2023-11-23T09:00:00Z',
+    media_request_status: 'COMPLETED',
+  },
+  {
+    media_request_id: 123449,
+    case_number: 'T202001922310202',
+    courthouse_name: 'Swindon',
     hearing_date: '2023-11-13',
     media_request_start_ts: '2023-08-21T09:57:00Z',
     media_request_end_ts: '2023-08-21T10:43:00Z',
@@ -129,6 +142,13 @@ const audioRequestMultiExpired = [
     media_request_status: 'EXPIRED',
   },
 ];
+
+router.patch('/:requestId', (req, res) => {
+  //Set specific media request last_accessed_ts value
+  let id = req.params.requestId;
+  audioRequestMulti.find((x) => x.media_request_id == id).last_accessed_ts = new Date().toISOString();
+  res.sendStatus(204);
+});
 
 router.post('', (req, res) => {
   res.send(audioRequestOne);

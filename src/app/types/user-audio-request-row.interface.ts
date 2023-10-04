@@ -7,4 +7,5 @@ export interface UserAudioRequestRow {
   requestId: number;
   expiry: string | null;
   status: 'OPEN' | 'PROCESSING' | 'FAILED' | 'COMPLETED';
+  last_accessed_ts?: string;
 }
