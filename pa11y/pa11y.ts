@@ -2,7 +2,16 @@ import pa11y from 'pa11y';
 
 import { testUrl } from './config';
 
-export const pathsToTest = ['/', '/login', '/search', '/audios', '/transcriptions', '/case/1', '/case/1/hearing/1', '/page-not-found'];
+export const pathsToTest = [
+  '/',
+  '/login',
+  '/search',
+  '/audios',
+  '/transcriptions',
+  '/case/1',
+  '/case/1/hearing/1',
+  '/page-not-found',
+];
 
 async function runPa11y() {
   try {
