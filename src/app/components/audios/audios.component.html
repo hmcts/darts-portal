@@ -28,8 +28,7 @@
             <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
 
             <td class="govuk-table__cell">
-              <strong *ngIf="row.status === 'FAILED'" class="govuk-tag govuk-tag--red"> {{ row.status }} </strong>
-              <strong *ngIf="row.status !== 'FAILED'" class="govuk-tag govuk-tag--yellow"> {{ row.status }} </strong>
+              <strong class="govuk-tag" [ngClass]="row.status === 'FAILED' ? 'govuk-tag--red' : 'govuk-tag--yellow'"> {{ row.status }} </strong>
             </td>
           </ng-template>
         </app-data-table>
