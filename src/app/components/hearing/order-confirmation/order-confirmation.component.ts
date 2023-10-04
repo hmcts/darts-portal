@@ -18,7 +18,7 @@ export class OrderConfirmationComponent {
   @Input() audioRequest!: AudioRequest;
   @Input() requestId!: number;
   @Input() state!: HearingPageState;
-  @Input() userProfile!: UserState | null | undefined;
+  @Input() userState!: UserState | null | undefined;
 
   @Output() stateChange = new EventEmitter<HearingPageState>();
   @Output() orderConfirm = new EventEmitter<AudioRequest>();
