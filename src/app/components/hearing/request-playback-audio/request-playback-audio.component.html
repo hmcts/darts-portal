@@ -7,19 +7,83 @@
     <form [formGroup]="audioRequestForm" (ngSubmit)="onSubmit()">
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-one-quarter">
-          <h3 class="govuk-heading-s">Start Time</h3>
-          <app-time-input formGroupName="startTime"></app-time-input>
+          <div
+            class="govuk-form-group"
+            [ngClass]="{
+              'govuk-form-group--error': audioRequestForm.controls['startTime'].invalid && isSubmitted
+            }"
+          >
+            <h3 class="govuk-heading-s">Start Time</h3>
+            <p
+              *ngIf="
+                (audioRequestForm.get('startTime.hours')?.hasError('required') ||
+                  audioRequestForm.get('startTime.minutes')?.hasError('required') ||
+                  audioRequestForm.get('startTime.seconds')?.hasError('required')) &&
+                isSubmitted
+              "
+              id="start-time-error"
+              class="govuk-error-message"
+            >
+              <span class="govuk-visually-hidden">Error:</span> You must include a start time for your audio recording
+            </p>
+            <p
+              *ngIf="audioRequestForm.get('startTime.minutes')?.getError('pattern') && isSubmitted"
+              id="start-time-error"
+              class="govuk-error-message"
+            >
+              <span class="govuk-visually-hidden">Error:</span> Pattern Error
+            </p>
+            <app-time-input
+              formGroupName="startTime"
+              [isSubmitted]="isSubmitted"
+              [idStringPrepend]="'start-time'"
+            ></app-time-input>
+          </div>
         </div>
         <div class="govuk-grid-column-one-quarter">
-          <h3 class="govuk-heading-s">End Time</h3>
-          <app-time-input formGroupName="endTime"></app-time-input>
+          <div
+            class="govuk-form-group"
+            [ngClass]="{ 'govuk-form-group--error': audioRequestForm.controls['endTime'].invalid && isSubmitted }"
+          >
+            <h3 class="govuk-heading-s">End Time</h3>
+            <p
+              *ngIf="
+                (audioRequestForm.get('endTime.hours')?.hasError('required') ||
+                  audioRequestForm.get('endTime.minutes')?.hasError('required') ||
+                  audioRequestForm.get('endTime.seconds')?.hasError('required')) &&
+                isSubmitted
+              "
+              class="end-time-error"
+              class="govuk-error-message"
+            >
+              <span class="govuk-visually-hidden">Error:</span> You must include an end time for your audio recording
+            </p>
+            <app-time-input
+              formGroupName="endTime"
+              [isSubmitted]="isSubmitted"
+              [idStringPrepend]="'end-time'"
+            ></app-time-input>
+          </div>
         </div>
         <div class="govuk-grid-column-one-quarter requestType">
-          <div class="govuk-form-group">
+          <div
+            class="govuk-form-group"
+            [ngClass]="{
+              'govuk-form-group--error error-box-height':
+                audioRequestForm.controls['requestType'].invalid && isSubmitted
+            }"
+          >
             <fieldset class="govuk-fieldset">
               <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                 <h3 class="govuk-heading-s">Request Type</h3>
               </legend>
+              <p
+                *ngIf="audioRequestForm.get('requestType')?.hasError('required') && isSubmitted"
+                id="request-type-error"
+                class="govuk-error-message"
+              >
+                <span class="govuk-visually-hidden">Error:</span> You must select a request type
+              </p>
               <div class="govuk-radios govuk-radios--small" data-module="govuk-radios">
                 <div class="govuk-radios__item">
                   <input
@@ -45,7 +109,10 @@
             </fieldset>
           </div>
         </div>
-        <div class="govuk-grid-column-one-quarter button">
+        <div
+          class="govuk-grid-column-one-quarter button"
+          [ngClass]="{ 'error-box-button': audioRequestForm.invalid && isSubmitted }"
+        >
           <button type="submit" class="govuk-button" data-module="govuk-button">Get Audio</button>
         </div>
       </div>
