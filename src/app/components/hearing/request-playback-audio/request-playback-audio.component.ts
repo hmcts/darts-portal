@@ -15,6 +15,7 @@ import { DateTimeService } from '@services/datetime/datetime.service';
 import { AudioRequest, ErrorSummaryEntry, FieldErrors, Hearing } from '@darts-types/index';
 import { timeGroupValidator } from '@validators/time-group.validator';
 import { UserState } from '@darts-types/user-state';
+import { ActivatedRoute } from '@angular/router';
 
 const fieldErrors: FieldErrors = {
   startTime: {
@@ -46,11 +47,14 @@ export class RequestPlaybackAudioComponent implements OnChanges {
   @Output() validationErrorEvent = new EventEmitter<ErrorSummaryEntry[]>();
   public isSubmitted = false;
   errorSummary: ErrorSummaryEntry[] = [];
+  public userState!: UserState;
 
   constructor(
     private fb: FormBuilder,
-    public datetimeService: DateTimeService
+    public datetimeService: DateTimeService,
+    private route: ActivatedRoute
   ) {
+    this.userState = this.route.snapshot.data.userState;
     this.audioRequestForm = this.fb.group({
       startTime: this.fb.group(
         {
@@ -82,6 +86,10 @@ export class RequestPlaybackAudioComponent implements OnChanges {
       return [];
     }
     return Object.keys(errors).map((errorType) => fieldErrors[fieldName][errorType]);
+  }
+
+  public isTranscriber(): boolean {
+    return this.userState.roles.some((x) => x.roleName === 'TRANSCRIBER');
   }
 
   public onValidationError() {
@@ -128,6 +136,9 @@ export class RequestPlaybackAudioComponent implements OnChanges {
 
   onSubmit() {
     this.isSubmitted = true;
+    this.isTranscriber()
+      ? this.audioRequestForm.get('requestType')?.value
+      : this.audioRequestForm.get('requestType')?.patchValue('PLAYBACK');
     this.onValidationError();
     const startTimeHours = this.audioRequestForm.get('startTime.hours')?.value;
     const startTimeMinutes = this.audioRequestForm.get('startTime.minutes')?.value;

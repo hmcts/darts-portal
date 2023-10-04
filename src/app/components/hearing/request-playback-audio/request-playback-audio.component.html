@@ -65,7 +65,7 @@
             ></app-time-input>
           </div>
         </div>
-        <div class="govuk-grid-column-one-quarter requestType">
+        <div class="govuk-grid-column-one-quarter requestType" [ngClass]="isTranscriber() ? '' : 'hidden'">
           <div
             class="govuk-form-group"
             [ngClass]="{
