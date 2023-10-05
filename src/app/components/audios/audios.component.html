@@ -16,20 +16,21 @@
 <ng-container *ngIf="data$ | async as data; else loading">
   <app-tabs>
     <div *tab="'Current'">
-      <p *ngIf="!data.inProgessRows.length && !data.completedRows.length">
+      <p *ngIf="!data.inProgessRows.length && !data.completedRows.length" class="govuk-body">
         There are no audio files in progress or ready
       </p>
 
       <ng-container *ngIf="data.inProgessRows.length">
         <h2 class="govuk-heading-m">In Progress</h2>
-        <app-data-table [rows]="data.inProgessRows" [columns]="columns" [pagination]="false">
+        <app-data-table id="inProgressTable" [rows]="data.inProgessRows" [columns]="columns" [pagination]="false">
           <ng-template [tableRowTemplate] let-row>
             <!-- Partial template for duplicated cells -->
             <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
 
             <td class="govuk-table__cell">
-              <strong *ngIf="row.status === 'FAILED'" class="govuk-tag govuk-tag--red"> {{ row.status }} </strong>
-              <strong *ngIf="row.status !== 'FAILED'" class="govuk-tag govuk-tag--yellow"> {{ row.status }} </strong>
+              <strong class="govuk-tag" [ngClass]="row.status === 'FAILED' ? 'govuk-tag--red' : 'govuk-tag--yellow'">
+                {{ row.status }}
+              </strong>
             </td>
           </ng-template>
         </app-data-table>
@@ -38,7 +39,7 @@
       <ng-container *ngIf="data.completedRows.length">
         <h2 class="govuk-heading-m">Ready</h2>
         <div class="govuk-hint">Select to apply actions</div>
-        <app-data-table [rows]="data.completedRows" [columns]="columns" [rowSelectable]="true">
+        <app-data-table id="readyTable" [rows]="data.completedRows" [columns]="columns" [rowSelectable]="true" [pageLimit]="15">
           <ng-template [tableRowTemplate] let-row>
             <!-- Partial template for duplicated cells -->
             <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>

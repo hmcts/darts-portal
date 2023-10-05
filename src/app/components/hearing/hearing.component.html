@@ -14,20 +14,13 @@
   </div>
 
   <!-- Error Summary Box -->
-  <div
-    *ngIf="errorSummary.length > 0"
-    class="govuk-error-summary"
-    data-module="govuk-error-summary"
-    id="error-summary-box"
-  >
+  <div *ngIf="errorSummary.length > 0" class="govuk-error-summary" data-module="govuk-error-summary" id="error-summary-box">
     <div role="alert">
       <h2 class="govuk-error-summary__title">There is a problem</h2>
       <div class="govuk-error-summary__body">
         <ul class="govuk-list govuk-error-summary__list">
           <li *ngFor="let error of errorSummary">
-            <a [id]="'error-' + error.fieldId" [routerLink]="['.']" (click)="focus(error.fieldId)">{{
-              error.message
-            }}</a>
+            <a [id]="'error-' + error.fieldId" [routerLink]="['.']" (click)="focus(error.fieldId)">{{ error.message }}</a>
           </li>
         </ul>
       </div>
@@ -59,11 +52,7 @@
     ></app-request-playback-audio>
 
     <!-- Events & Audio Table-->
-    <app-events-and-audio
-      [audio]="vm.audios"
-      [events]="vm.events"
-      (eventsSelect)="onEventsSelected($event)"
-    ></app-events-and-audio>
+    <app-events-and-audio [audio]="vm.audios" [events]="vm.events" (eventsSelect)="onEventsSelected($event)"></app-events-and-audio>
   </div>
 
   <!-- Summary / Confirmation Screen -->
@@ -74,7 +63,7 @@
       [audioRequest]="requestObject"
       [requestId]="requestId"
       [state]="state"
-      [userProfile]="userState"
+      [userState]="userState"
       (stateChange)="onStateChanged($event)"
       (orderConfirm)="onOrderConfirm($event)"
     ></app-order-confirmation>
