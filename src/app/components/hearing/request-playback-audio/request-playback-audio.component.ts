@@ -4,6 +4,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnInit,
   Output,
   SimpleChanges,
 } from '@angular/core';
@@ -37,7 +38,7 @@ const fieldErrors: FieldErrors = {
   styleUrls: ['./request-playback-audio.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RequestPlaybackAudioComponent implements OnChanges {
+export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
   @Input() hearing!: Hearing;
   @Input() requestAudioTimes!: Map<string, Date> | undefined;
   @Input() userState!: UserState;
@@ -47,6 +48,7 @@ export class RequestPlaybackAudioComponent implements OnChanges {
   @Output() validationErrorEvent = new EventEmitter<ErrorSummaryEntry[]>();
   public isSubmitted = false;
   errorSummary: ErrorSummaryEntry[] = [];
+  isTranscriber = false;
 
   constructor(
     private fb: FormBuilder,
@@ -72,6 +74,9 @@ export class RequestPlaybackAudioComponent implements OnChanges {
       ),
       requestType: ['', [Validators.required]],
     });
+  }
+  ngOnInit(): void {
+    this.isTranscriber = this.userService.isTranscriber(this.userState);
   }
 
   get f() {
@@ -130,7 +135,7 @@ export class RequestPlaybackAudioComponent implements OnChanges {
 
   onSubmit() {
     this.isSubmitted = true;
-    if (!this.userService.isTranscriber()) {
+    if (!this.isTranscriber) {
       this.audioRequestForm.get('requestType')?.patchValue('PLAYBACK');
     }
     this.onValidationError();
