@@ -5,6 +5,7 @@ import { Route, Router } from '@angular/router';
 import { APP_ROUTES } from './app.routes';
 import { AuthService } from './services/auth/auth.service';
 import { UserService } from '@services/user/user.service';
+import { of } from 'rxjs';
 
 describe('App Routes', () => {
   let router: Router;
@@ -18,7 +19,7 @@ describe('App Routes', () => {
     jest.spyOn(mockAuthService, 'checkAuthenticated').mockResolvedValue(true);
 
     mockUserService = { getUserProfile: jest.fn() } as unknown as UserService;
-    jest.spyOn(mockUserService, 'getUserProfile').mockResolvedValue({ userId: 123, userName: 'Dean', roles: [] });
+    jest.spyOn(mockUserService, 'getUserProfile').mockReturnValue(of({ userId: 123, userName: 'Dean', roles: [] }));
 
     TestBed.configureTestingModule({
       imports: [RouterTestingModule.withRoutes(APP_ROUTES)],
