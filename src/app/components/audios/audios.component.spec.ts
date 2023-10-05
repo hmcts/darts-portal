@@ -118,7 +118,7 @@ describe('AudiosComponent', () => {
     }
   ];
 
-  const MOCK_AUDIO_REQUESTS: UserAudioRequest[] = [
+  const MOCK_EXPIRED_AUDIO_REQUESTS: UserAudioRequest[] = [
     {
       media_request_id: 12311,
       case_number: 'T20202110',

@@ -9,9 +9,9 @@ import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
 import { TableRowTemplateDirective } from 'src/app/directives/table-row-template.directive';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabDirective } from 'src/app/directives/tab.directive';
-import { UserAudioRequestRow } from '@darts-types/index';
 import { UnreadIconDirective } from '@directives/unread-icon.directive';
 import { HeaderService } from '@services/header/header.service';
+import { DatatableColumn, UserAudioRequestRow } from '@darts-types/index';
 
 @Component({
   selector: 'app-audios',
@@ -49,7 +49,7 @@ export class AudiosComponent {
     expiredRows: UserAudioRequestRow[];
   }>;
 
-  columns = [
+  columns: DatatableColumn[] = [
     { name: 'Case ID', prop: 'caseNumber', sortable: true },
     { name: 'Court', prop: 'courthouse', sortable: true },
     { name: 'Hearing date', prop: 'hearingDate', sortable: true },
