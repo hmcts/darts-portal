@@ -68,7 +68,7 @@ export class AudiosComponent {
     //Same data used for in progress & completed tables so share replay
     this.audioRequests$ = this.audioService.audioRequests$.pipe(shareReplay(1));
     this.expiredAudioRequests$ = this.audioService.expiredAudioRequests$;
-
+    
     this.inProgessRows$ = this.audioRequests$.pipe(
       map((audioRequests) => this.filterInProgressRequests(audioRequests)),
       map((audioRequests) => this.mapAudioRequestToRows(audioRequests))
