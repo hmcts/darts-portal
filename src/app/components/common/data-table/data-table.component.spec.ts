@@ -5,7 +5,7 @@ import { DataTableComponent, SortingInterface } from './data-table.component';
 describe('DataTableComponent', () => {
   let component: DataTableComponent;
   let fixture: ComponentFixture<DataTableComponent>;
-  const MOCK_ROWS: any[] = [
+  const MOCK_ROWS: unknown[] = [
     {
       case_id: 1,
       case_number: 'C20220620001',

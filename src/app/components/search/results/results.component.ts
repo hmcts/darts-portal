@@ -2,7 +2,7 @@ import { NgFor, NgIf } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
-import { Case, Hearing } from '@darts-types/index';
+import { Case, Hearing, CaseSearchResult } from '@darts-types/index';
 import { DateTimeService } from '@services/datetime/datetime.service';
 import { TableBodyTemplateDirective } from 'src/app/directives/table-body-template.directive';
 
@@ -18,7 +18,7 @@ export class ResultsComponent implements OnChanges {
   @Input() loaded = false;
   @Input() errorType = '';
   caption = '';
-  rows: any[] = [];
+  rows: CaseSearchResult[] = [];
   columns = [
     { name: 'Case ID', prop: 'caseNumber', sortable: true, link: '/case' },
     { name: 'Courthouse', prop: 'courthouse', sortable: true },
@@ -70,7 +70,7 @@ export class ResultsComponent implements OnChanges {
     } else {
       if (c.hearings.length < 2) {
         if (key === 'date') {
-          return this.getDateFormat(c.hearings[0][key]);
+          return DateTimeService.getdddDMMMYYYY(c.hearings[0][key] as string);
         } else {
           return c.hearings[0][key] as string;
         }
@@ -78,9 +78,5 @@ export class ResultsComponent implements OnChanges {
         return 'Multiple';
       }
     }
-  }
-
-  private getDateFormat(d: string): string {
-    return DateTimeService.getdddDMMMYYYY(d);
   }
 }

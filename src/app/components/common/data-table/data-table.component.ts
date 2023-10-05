@@ -23,22 +23,22 @@ import { TableBodyTemplateDirective } from 'src/app/directives/table-body-templa
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataTableComponent implements OnChanges {
-  @Input() rows: any[] = [];
-  @Input() columns: any[] = [];
+  @Input() rows: unknown[] = [];
+  @Input() columns: DataTableColumn[] = [];
   @Input() caption = '';
   @Input() rowSelectable = false;
   @Input() pagination = true;
   @Input() pageLimit = 25;
-  @Output() rowSelect = new EventEmitter<any[]>();
+  @Output() rowSelect = new EventEmitter<unknown[]>();
 
   @ContentChild(TableBodyTemplateDirective, { read: TemplateRef })
-  bodyTemplate?: TemplateRef<any>;
+  bodyTemplate?: TemplateRef<unknown>;
 
   @ContentChild(TableRowTemplateDirective, { read: TemplateRef })
-  rowTemplate?: TemplateRef<any>;
+  rowTemplate?: TemplateRef<unknown>;
 
-  selectedRows: any[] = [];
-  pagedRows: any[] = [];
+  selectedRows: unknown[] = [];
+  pagedRows: unknown[] = [];
   currentPage = 1;
 
   sorting: SortingInterface = {
@@ -57,13 +57,14 @@ export class DataTableComponent implements OnChanges {
     this.updatePagedData();
   }
 
-  sortTable(column: any): void {
+  sortTable(column: string | number): void {
     this.sorting = {
       column: column,
       order: this.isDescSorting(column) ? 'asc' : 'desc',
     };
 
-    this.rows.sort((a, b) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    this.rows.sort((a: any, b: any) => {
       const valueA: string | number | undefined = a[column];
       const valueB: string | number | undefined = b[column];
 
@@ -97,11 +98,11 @@ export class DataTableComponent implements OnChanges {
     this.updatePagedData();
   }
 
-  isRowSelected(row: any) {
+  isRowSelected(row: unknown) {
     return this.selectedRows.includes(row);
   }
 
-  toggleRowSelection(row: any) {
+  toggleRowSelection(row: unknown) {
     const index = this.selectedRows.indexOf(row);
     if (index === -1) {
       // Row not selected, add it to the selection
@@ -122,15 +123,15 @@ export class DataTableComponent implements OnChanges {
     this.rowSelect.emit(this.selectedRows);
   }
 
-  compareStrings(column: any, a: string, b: string): number {
+  compareStrings(column: unknown, a: string, b: string): number {
     return this.isAscSorting(column) ? a.localeCompare(b) : b.localeCompare(a);
   }
 
-  compareNumbers(column: any, a: number, b: number): number {
+  compareNumbers(column: unknown, a: number, b: number): number {
     return this.isAscSorting(column) ? a - b : b - a;
   }
 
-  compareDates(column: any, a: Date, b: Date): number {
+  compareDates(column: unknown, a: Date, b: Date): number {
     return this.isAscSorting(column) ? a.getTime() - b.getTime() : b.getTime() - a.getTime();
   }
 
@@ -138,15 +139,15 @@ export class DataTableComponent implements OnChanges {
     return !isNaN(parseFloat(String(num)));
   }
 
-  isDescSorting(column: any): boolean {
+  isDescSorting(column: unknown): boolean {
     return this.sorting.column === column && this.sorting.order === 'desc';
   }
 
-  isAscSorting(column: any): boolean {
+  isAscSorting(column: unknown): boolean {
     return this.sorting.column === column && this.sorting.order === 'asc';
   }
 
-  getAriaSort(column: any): 'ascending' | 'descending' | 'none' {
+  getAriaSort(column: unknown): 'ascending' | 'descending' | 'none' {
     if (this.sorting.column === column) {
       return this.isAscSorting(column) ? 'ascending' : 'descending';
     }
@@ -157,12 +158,19 @@ export class DataTableComponent implements OnChanges {
     this.pagedRows = this.paginate(this.rows, this.pageLimit, this.currentPage);
   }
 
-  private paginate(array: any[], pageSize: number, currentPage: number) {
+  private paginate(array: unknown[], pageSize: number, currentPage: number) {
     return array.slice((currentPage - 1) * pageSize, currentPage * pageSize);
   }
 }
 
+export interface DataTableColumn {
+  name: string;
+  link?: string;
+  prop: string;
+  sortable: boolean;
+}
+
 export interface SortingInterface {
-  column: string;
+  column: string | number | undefined;
   order: 'asc' | 'desc';
 }

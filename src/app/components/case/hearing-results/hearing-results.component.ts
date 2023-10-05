@@ -2,7 +2,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
 import { RouterLink, ActivatedRoute } from '@angular/router';
 import { TabsComponent } from '@common/tabs/tabs.component';
-import { DataTableComponent } from '@common/data-table/data-table.component';
+import { DataTableColumn, DataTableComponent } from '@common/data-table/data-table.component';
 import { Hearing } from '@darts-types/index';
 import { TabDirective } from 'src/app/directives/tab.directive';
 
@@ -16,8 +16,8 @@ import { TabDirective } from 'src/app/directives/tab.directive';
 export class HearingResultsComponent implements OnChanges {
   @Input() hearings: Hearing[] = [];
   caseId: number;
-  rows: any[] = [];
-  columns: any[] = [];
+  rows: Hearing[] = [];
+  columns: DataTableColumn[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -42,7 +42,7 @@ export class HearingResultsComponent implements OnChanges {
     this.rows = this.hearings.map((hearing: Hearing) => {
       return {
         id: hearing.id,
-        date: this.datePipe.transform(hearing.date, 'd MMM y'),
+        date: this.datePipe.transform(hearing.date, 'd MMM y') as string,
         judges: hearing.judges,
         courtroom: hearing.courtroom,
         transcript_count: hearing.transcript_count,

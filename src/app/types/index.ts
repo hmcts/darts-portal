@@ -2,6 +2,7 @@ export * from './audio-response.interface';
 export * from './audio-request.interface';
 export * from './case-file.interface';
 export * from './case.interface';
+export * from './search-case-result.interface';
 export * from './courthouse.interface';
 export * from './enums';
 export * from './hearing-audio-event.interface';

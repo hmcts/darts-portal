@@ -3,7 +3,7 @@ import { HearingComponent } from './hearing.component';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClient } from '@angular/common/http';
-import { lastValueFrom, Observable, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
 import { CaseService } from '@services/case/case.service';
 import { HearingAudioEventViewModel } from '@darts-types/hearing-audio-event.interface';
