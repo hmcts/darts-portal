@@ -130,9 +130,11 @@ export class RequestPlaybackAudioComponent implements OnChanges {
 
   onSubmit() {
     this.isSubmitted = true;
-    this.userService.isTranscriber()
-      ? this.audioRequestForm.get('requestType')?.value
-      : this.audioRequestForm.get('requestType')?.patchValue('PLAYBACK');
+    if (this.userService.isTranscriber()) {
+      this.audioRequestForm.get('requestType')?.value;
+    } else {
+      this.audioRequestForm.get('requestType')?.patchValue('PLAYBACK');
+    }
     this.onValidationError();
     const startTimeHours = this.audioRequestForm.get('startTime.hours')?.value;
     const startTimeMinutes = this.audioRequestForm.get('startTime.minutes')?.value;
