@@ -11,8 +11,8 @@ describe('Your audio', () => {
 
   it('has tabs', () => {
     cy.contains('Your Audio').click();
-    cy.get('app-tabs').should('contain', 'Current');
-    cy.get('app-tabs').should('contain', 'Expired');
+    cy.get('.moj-sub-navigation__list').should('contain', 'Current');
+    cy.get('.moj-sub-navigation__list').should('contain', 'Expired');
   });
 
   it('has "In progress" table', () => {
@@ -23,6 +23,12 @@ describe('Your audio', () => {
   it('has "Ready" table', () => {
     cy.contains('Your Audio').click();
     cy.get('#readyTable').should('contain', 'T20200333');
+  });
+
+  it('has "Expired" table', () => {
+    cy.contains('Your Audio').click();
+    cy.contains('Expired').click();
+    cy.get('#expiredTable').should('contain', 'T20202110');
   });
 
   it('shows no audio requests message', () => {
