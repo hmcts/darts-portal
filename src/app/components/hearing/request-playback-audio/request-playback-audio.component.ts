@@ -54,7 +54,7 @@ export class RequestPlaybackAudioComponent implements OnChanges {
     public datetimeService: DateTimeService,
     private route: ActivatedRoute
   ) {
-    this.user = this.route.snapshot.data.user;
+    this.user = this.route.snapshot.data.userState;
     this.audioRequestForm = this.fb.group({
       startTime: this.fb.group(
         {
