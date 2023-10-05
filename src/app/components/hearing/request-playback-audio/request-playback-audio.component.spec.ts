@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '@services/user/user.service';
 import moment from 'moment';
@@ -104,6 +105,34 @@ describe('RequestPlaybackAudioComponent', () => {
     component.audioRequestForm.setValue(initialForm);
     component.ngOnChanges({ requestAudioTimes: new SimpleChange(null, undefined, false) });
     expect(component.audioRequestForm.value).toEqual(expectedResult);
+  });
+
+  describe('#ngOnInit', () => {
+    it('should set request type as required if the user is a transcriber', () => {
+      const permissions = [{ permissionId: 1, permissionName: 'local dev permissions' }];
+      component.userState = {
+        userId: 1,
+        userName: 'Dean',
+        roles: [
+          {
+            roleId: 123,
+            roleName: 'TRANSCRIBER',
+            permissions: permissions,
+          },
+        ],
+      };
+      component.ngOnInit();
+      expect(component.audioRequestForm.get('requestType')?.hasValidator(Validators.required)).toBeTruthy();
+    });
+    it('should not set any validators on request type if the user is not a transcriber', () => {
+      component.userState = {
+        userId: 1,
+        userName: 'Dean',
+        roles: [],
+      };
+      component.ngOnInit();
+      expect(component.audioRequestForm.get('requestType')?.hasValidator(Validators.required)).toBeFalsy();
+    });
   });
 
   describe('#onSubmit', () => {
