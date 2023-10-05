@@ -47,14 +47,14 @@ export class RequestPlaybackAudioComponent implements OnChanges {
   @Output() validationErrorEvent = new EventEmitter<ErrorSummaryEntry[]>();
   public isSubmitted = false;
   errorSummary: ErrorSummaryEntry[] = [];
-  public userState!: UserState;
+  public user!: UserState;
 
   constructor(
     private fb: FormBuilder,
     public datetimeService: DateTimeService,
     private route: ActivatedRoute
   ) {
-    this.userState = this.route.snapshot.data.userState;
+    this.user = this.route.snapshot.data.user;
     this.audioRequestForm = this.fb.group({
       startTime: this.fb.group(
         {
@@ -89,7 +89,7 @@ export class RequestPlaybackAudioComponent implements OnChanges {
   }
 
   public isTranscriber(): boolean {
-    const roles = this.userState.roles;
+    const roles = this.user.roles;
     return roles.some((x) => x.roleName === 'TRANSCRIBER');
   }
 
