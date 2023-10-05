@@ -51,24 +51,22 @@ describe('HearingComponent', () => {
     transcript_count: 99,
   }) as Observable<Hearing>;
 
-  const mockUser = lastValueFrom(
-    of({
-      userId: 123,
-      userName: 'localdev01',
-      roles: [
-        {
-          roleId: 123,
-          roleName: 'local dev',
-          permissions: [
-            {
-              permissionId: 1,
-              permissionName: 'local dev permissions',
-            },
-          ],
-        },
-      ],
-    })
-  );
+  const mockUser = of({
+    userId: 123,
+    userName: 'localdev01',
+    roles: [
+      {
+        roleId: 123,
+        roleName: 'local dev',
+        permissions: [
+          {
+            permissionId: 1,
+            permissionName: 'local dev permissions',
+          },
+        ],
+      },
+    ],
+  });
 
   beforeEach(() => {
     httpClientSpy = {

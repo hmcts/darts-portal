@@ -1,38 +1,54 @@
-import { HttpClient } from '@angular/common/http';
-import { of } from 'rxjs';
-import UserState from 'server/types/classes/userState';
-
-import { UserService } from './user.service';
+import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { UserService, USER_PROFILE_PATH } from './user.service';
+import { UserState } from '@darts-types/user-state';
 
 describe('UserService', () => {
-  let httpClientSpy: HttpClient;
-  let userService: UserService;
-  let getSpy: jest.SpyInstance<unknown>;
+  let service: UserService;
+  let httpMock: HttpTestingController;
 
-  const testData: UserState = { userName: 'test@test.com', userId: 1, roles: [] };
+  const mockUserState: UserState = { userName: 'test@test.com', userId: 1, roles: [] };
 
   beforeEach(() => {
-    httpClientSpy = {
-      get: jest.fn(),
-    } as unknown as HttpClient;
-    userService = new UserService(httpClientSpy);
-    getSpy = jest.spyOn(httpClientSpy, 'get').mockReturnValue(of(testData));
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [UserService],
+    });
+
+    service = TestBed.inject(UserService);
+    httpMock = TestBed.inject(HttpTestingController);
+  });
+
+  afterEach(() => {
+    httpMock.verify();
   });
 
   it('should be created', () => {
-    expect(userService).toBeTruthy();
+    expect(service).toBeTruthy();
   });
 
-  it('loads user profile', async () => {
-    const userProfile = await userService.getUserProfile();
-    expect(userProfile).toEqual(testData);
+  it('should load user profile data from the API via HTTP', () => {
+    let result!: UserState;
+
+    service.getUserProfile().subscribe((userProfile) => {
+      result = userProfile;
+    });
+
+    const req = httpMock.expectOne(USER_PROFILE_PATH);
+    expect(req.request.method).toBe('GET');
+
+    req.flush(mockUserState);
+
+    expect(result).toEqual(mockUserState);
   });
 
-  it('only loads the user profile the first time', async () => {
-    await userService.getUserProfile();
-    expect(httpClientSpy.get).toHaveBeenCalledTimes(1);
-    // get the profile again
-    await userService.getUserProfile();
-    expect(getSpy).toHaveBeenCalledTimes(1);
+  it('should cache user profile data after loading', () => {
+    service.getUserProfile().subscribe();
+
+    httpMock.expectOne(USER_PROFILE_PATH).flush(mockUserState);
+
+    service.getUserProfile().subscribe();
+
+    httpMock.expectNone(USER_PROFILE_PATH);
   });
 });
