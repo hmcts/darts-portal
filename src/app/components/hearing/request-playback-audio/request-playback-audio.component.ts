@@ -72,11 +72,17 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
         },
         { validators: timeGroupValidator }
       ),
-      requestType: ['', [Validators.required]],
+      requestType: [''],
     });
   }
   ngOnInit(): void {
     this.isTranscriber = this.userService.isTranscriber(this.userState);
+    if (this.isTranscriber) {
+      this.audioRequestForm.get('requestType')?.setValidators(Validators.required);
+    } else {
+      this.audioRequestForm.get('requestType')?.patchValue('PLAYBACK');
+    }
+    this.audioRequestForm.get('requestType')?.updateValueAndValidity();
   }
 
   get f() {
@@ -135,9 +141,6 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
 
   onSubmit() {
     this.isSubmitted = true;
-    if (!this.isTranscriber) {
-      this.audioRequestForm.get('requestType')?.patchValue('PLAYBACK');
-    }
     this.onValidationError();
     const startTimeHours = this.audioRequestForm.get('startTime.hours')?.value;
     const startTimeMinutes = this.audioRequestForm.get('startTime.minutes')?.value;
@@ -149,7 +152,7 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
     const startDateTime = moment.utc(`${this.hearing.date}T${startTimeHours}:${startTimeMinutes}:${startTimeSeconds}`);
     const endDateTime = moment.utc(`${this.hearing.date}T${endTimeHours}:${endTimeMinutes}:${endTimeSeconds}`);
 
-    if (!startDateTime.isValid() && !endDateTime.isValid() && this.audioRequestForm.get('requestType')?.invalid) return;
+    if (!startDateTime.isValid() || !endDateTime.isValid() || this.audioRequestForm.get('requestType')?.invalid) return;
 
     this.requestObj = {
       hearing_id: this.hearing.id,

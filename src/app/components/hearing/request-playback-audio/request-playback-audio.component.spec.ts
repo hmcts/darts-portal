@@ -71,7 +71,7 @@ describe('RequestPlaybackAudioComponent', () => {
       const expectedResult = {
         startTime: { hours: '02', minutes: '00', seconds: '00' },
         endTime: { hours: '15', minutes: '32', seconds: '24' },
-        requestType: '',
+        requestType: 'PLAYBACK',
       };
 
       component.requestAudioTimes = requestAudioTimes;
@@ -127,7 +127,7 @@ describe('RequestPlaybackAudioComponent', () => {
           minutes: '32',
           seconds: '24',
         },
-        requestType: 'DOWNLOAD',
+        requestType: 'PLAYBACK',
       };
       const expectedResult = {
         hearing_id: 1,
