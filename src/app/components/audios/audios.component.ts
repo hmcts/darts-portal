@@ -16,7 +16,15 @@ import { DatatableColumn, UserAudioRequestRow } from '@darts-types/index';
   templateUrl: './audios.component.html',
   styleUrls: ['./audios.component.scss'],
   standalone: true,
-  imports: [DataTableComponent, LoadingComponent, TabsComponent, CommonModule, TableRowTemplateDirective, RouterLink, TabDirective],
+  imports: [
+    DataTableComponent,
+    LoadingComponent,
+    TabsComponent,
+    CommonModule,
+    TableRowTemplateDirective,
+    RouterLink,
+    TabDirective,
+  ],
 })
 export class AudiosComponent {
   audioService = inject(AudioService);
@@ -64,7 +72,9 @@ export class AudiosComponent {
       map((audioRequests) => this.mapAudioRequestToRows(audioRequests))
     );
 
-    this.expiredRows$ = this.expiredAudioRequests$.pipe(map((audioRequests) => this.mapAudioRequestToRows(audioRequests)));
+    this.expiredRows$ = this.expiredAudioRequests$.pipe(
+      map((audioRequests) => this.mapAudioRequestToRows(audioRequests))
+    );
 
     this.data$ = combineLatest({
       inProgessRows: this.inProgessRows$,
@@ -91,7 +101,10 @@ export class AudiosComponent {
 
   filterInProgressRequests(audioRequests: UserAudioRequest[]): UserAudioRequest[] {
     return audioRequests.filter(
-      (ar) => ar.media_request_status === 'OPEN' || ar.media_request_status === 'PROCESSING' || ar.media_request_status === 'FAILED'
+      (ar) =>
+        ar.media_request_status === 'OPEN' ||
+        ar.media_request_status === 'PROCESSING' ||
+        ar.media_request_status === 'FAILED'
     );
   }
 

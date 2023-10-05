@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, ContentChild, EventEmitter, Input, OnChanges, Output, TemplateRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ContentChild,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  TemplateRef,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PaginationComponent } from '@common/pagination/pagination.component';
 import { RouterLink } from '@angular/router';
