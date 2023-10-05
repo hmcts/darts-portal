@@ -14,33 +14,6 @@ describe('RequestPlaybackAudioComponent', () => {
   let userService: UserService;
   let httpClientSpy: HttpClient;
 
-  const mockActivatedRoute = {
-    snapshot: {
-      data: {
-        userState: {
-          userId: 123,
-          userName: 'dev@local',
-          roles: [
-            {
-              roleId: 123,
-              roleName: 'local dev',
-              permissions: [
-                {
-                  permissionId: 1,
-                  permissionName: 'local dev permissions',
-                },
-              ],
-            },
-          ],
-        },
-      },
-      params: {
-        caseId: '1',
-        hearing_id: '1',
-      },
-    },
-  };
-
   beforeEach(() => {
     httpClientSpy = { get: jest.fn() } as unknown as HttpClient;
 
@@ -48,10 +21,7 @@ describe('RequestPlaybackAudioComponent', () => {
 
     TestBed.configureTestingModule({
       imports: [RequestPlaybackAudioComponent],
-      providers: [
-        { provide: ActivatedRoute, useValue: mockActivatedRoute },
-        { provide: UserService, useValue: userService },
-      ],
+      providers: [{ provide: UserService, useValue: userService }],
     });
     fixture = TestBed.createComponent(RequestPlaybackAudioComponent);
     component = fixture.componentInstance;
