@@ -1,6 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
+import { UserService } from '@services/user/user.service';
 import moment from 'moment';
 
 import { RequestPlaybackAudioComponent } from './request-playback-audio.component';
@@ -8,6 +10,8 @@ import { RequestPlaybackAudioComponent } from './request-playback-audio.componen
 describe('RequestPlaybackAudioComponent', () => {
   let component: RequestPlaybackAudioComponent;
   let fixture: ComponentFixture<RequestPlaybackAudioComponent>;
+  let userService: UserService;
+  let httpClientSpy: HttpClient;
 
   const mockActivatedRoute = {
     snapshot: {
@@ -37,9 +41,16 @@ describe('RequestPlaybackAudioComponent', () => {
   };
 
   beforeEach(() => {
+    httpClientSpy = { get: jest.fn() } as unknown as HttpClient;
+
+    userService = new UserService(httpClientSpy);
+
     TestBed.configureTestingModule({
       imports: [RequestPlaybackAudioComponent],
-      providers: [{ provide: ActivatedRoute, useValue: mockActivatedRoute }],
+      providers: [
+        { provide: ActivatedRoute, useValue: mockActivatedRoute },
+        { provide: UserService, useValue: userService },
+      ],
     });
     fixture = TestBed.createComponent(RequestPlaybackAudioComponent);
     component = fixture.componentInstance;
