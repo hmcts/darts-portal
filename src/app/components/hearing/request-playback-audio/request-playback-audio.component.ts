@@ -89,7 +89,8 @@ export class RequestPlaybackAudioComponent implements OnChanges {
   }
 
   public isTranscriber(): boolean {
-    return this.userState.roles.some((x) => x.roleName === 'TRANSCRIBER');
+    const roles = this.userState.roles;
+    return roles.some((x) => x.roleName === 'TRANSCRIBER');
   }
 
   public onValidationError() {

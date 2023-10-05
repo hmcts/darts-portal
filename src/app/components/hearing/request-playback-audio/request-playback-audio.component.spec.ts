@@ -1,5 +1,6 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
 import moment from 'moment';
 
 import { RequestPlaybackAudioComponent } from './request-playback-audio.component';
@@ -8,9 +9,37 @@ describe('RequestPlaybackAudioComponent', () => {
   let component: RequestPlaybackAudioComponent;
   let fixture: ComponentFixture<RequestPlaybackAudioComponent>;
 
+  const mockActivatedRoute = {
+    snapshot: {
+      data: {
+        userState: {
+          userId: 123,
+          userName: 'dev@local',
+          roles: [
+            {
+              roleId: 123,
+              roleName: 'local dev',
+              permissions: [
+                {
+                  permissionId: 1,
+                  permissionName: 'local dev permissions',
+                },
+              ],
+            },
+          ],
+        },
+      },
+      params: {
+        caseId: '1',
+        hearing_id: '1',
+      },
+    },
+  };
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [RequestPlaybackAudioComponent],
+      providers: [{ provide: ActivatedRoute, useValue: mockActivatedRoute }],
     });
     fixture = TestBed.createComponent(RequestPlaybackAudioComponent);
     component = fixture.componentInstance;
@@ -98,7 +127,7 @@ describe('RequestPlaybackAudioComponent', () => {
         requestor: 100,
         start_time: '2023-09-01T02:00:00Z',
         end_time: '2023-09-01T15:32:24Z',
-        request_type: 'DOWNLOAD',
+        request_type: 'PLAYBACK',
       };
       component.audioRequestForm.setValue(audioRequestForm);
       component.onSubmit();
@@ -124,7 +153,7 @@ describe('RequestPlaybackAudioComponent', () => {
           minutes: '',
           seconds: '',
         },
-        requestType: 'DOWNLOAD',
+        requestType: 'PLAYBACK',
       };
       component.audioRequestForm.setValue(audioRequestForm);
       component.onSubmit();
