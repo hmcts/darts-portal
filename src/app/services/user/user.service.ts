@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UserState } from '@darts-types/user-state';
-import { lastValueFrom } from 'rxjs';
+import { Observable, of, take } from 'rxjs';
 
 const USER_PROFILE_PATH = '/user/profile';
 
@@ -13,14 +13,18 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  private async loadUserProfile(): Promise<void> {
-    this.userProfile = await lastValueFrom(this.http.get<UserState>(USER_PROFILE_PATH));
+  private loadUserProfile(): Observable<UserState> {
+    const ob = this.http.get<UserState>(USER_PROFILE_PATH);
+    ob.subscribe({
+      next: (userProfile) => (this.userProfile = userProfile),
+    });
+    return ob;
   }
 
-  async getUserProfile(): Promise<UserState | undefined> {
-    if (!this.userProfile) {
-      await this.loadUserProfile();
+  getUserProfile(): Observable<UserState> {
+    if (this.userProfile) {
+      return of(this.userProfile);
     }
-    return this.userProfile;
+    return this.loadUserProfile().pipe(take(1));
   }
 }
