@@ -19,7 +19,8 @@ const protectedRoutes: Routes = [
   },
   {
     path: 'audios/:requestId',
-    loadComponent: () => import('./components/audios/audio-view/audio-view.component').then((c) => c.AudioViewComponent),
+    loadComponent: () =>
+      import('./components/audios/audio-view/audio-view.component').then((c) => c.AudioViewComponent),
   },
   {
     path: 'transcriptions',

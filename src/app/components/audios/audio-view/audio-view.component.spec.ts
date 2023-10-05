@@ -8,7 +8,7 @@ describe('AudioViewComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [AudioViewComponent]
+      imports: [AudioViewComponent],
     });
     fixture = TestBed.createComponent(AudioViewComponent);
     component = fixture.componentInstance;

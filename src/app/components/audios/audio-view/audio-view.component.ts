@@ -16,13 +16,16 @@ export class AudioViewComponent {
   audioService = inject(AudioService);
   patchResponse$: Observable<HttpResponse<Response>>;
 
-  constructor(private router: Router, private route: ActivatedRoute) {
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
     //Send request to update last accessed time of audio
     this.patchResponse$ = this.audioService.patchAudioRequest(this.route.snapshot.params.requestId);
     //////////
     //Temporary code to go back to audios, observe: 'response' can be removed from audio service call when below is removed
     this.patchResponse$.subscribe((response: HttpResponse<Response>) => {
-      if (response.status === 204){
+      if (response.status === 204) {
         router.navigateByUrl('audios');
       }
     });
