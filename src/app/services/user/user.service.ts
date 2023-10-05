@@ -23,4 +23,11 @@ export class UserService {
     }
     return this.userProfile;
   }
+
+  public isTranscriber(): boolean {
+    if (this.userProfile) {
+      return this.userProfile.roles.some((x) => x.roleName === 'TRANSCRIBER');
+    }
+    return false;
+  }
 }
