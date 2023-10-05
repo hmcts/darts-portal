@@ -11,7 +11,8 @@
       "@validators/*": ["src/app/validators/*"],
       "@pipes/*": ["src/app/pipes/*"],
       "@interceptors/*": ["src/app/interceptors/*"],
-      "@extensions/*": ["src/app/extensions/*"]
+      "@extensions/*": ["src/app/extensions/*"],
+      "@directives/*": ["src/app/directives/*"],
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,

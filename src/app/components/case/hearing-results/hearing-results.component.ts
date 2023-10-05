@@ -1,21 +1,23 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
 import { RouterLink, ActivatedRoute } from '@angular/router';
+import { TabsComponent } from '@common/tabs/tabs.component';
 import { DataTableComponent } from '@common/data-table/data-table.component';
-import { Hearing } from '@darts-types/index';
+import { DatatableColumn, DatatableRow, Hearing } from '@darts-types/index';
+import { TabDirective } from 'src/app/directives/tab.directive';
 
 @Component({
   selector: 'app-hearing-results',
   standalone: true,
-  imports: [CommonModule, RouterLink, DataTableComponent],
+  imports: [CommonModule, RouterLink, DataTableComponent, TabsComponent, TabDirective],
   templateUrl: './hearing-results.component.html',
   styleUrls: ['./hearing-results.component.scss'],
 })
 export class HearingResultsComponent implements OnChanges {
   @Input() hearings: Hearing[] = [];
   caseId: number;
-  rows: any[] = [];
-  columns: any[] = [];
+  rows: DatatableRow[] = [];
+  columns: DatatableColumn[] = [];
 
   constructor(
     private route: ActivatedRoute,

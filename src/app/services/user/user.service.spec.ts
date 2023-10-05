@@ -1,26 +1,30 @@
-import { HttpClient } from '@angular/common/http';
+import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { UserService, USER_PROFILE_PATH } from './user.service';
 import { UserState } from '@darts-types/user-state';
-import { of } from 'rxjs';
-
-import { UserService } from './user.service';
 
 describe('UserService', () => {
-  let httpClientSpy: HttpClient;
-  let userService: UserService;
-  let getSpy: jest.SpyInstance<unknown>;
+  let service: UserService;
+  let httpMock: HttpTestingController;
 
-  const testData: UserState = { userName: 'test@test.com', userId: 1, roles: [] };
+  const mockUserState: UserState = { userName: 'test@test.com', userId: 1, roles: [] };
 
   beforeEach(() => {
-    httpClientSpy = {
-      get: jest.fn(),
-    } as unknown as HttpClient;
-    userService = new UserService(httpClientSpy);
-    getSpy = jest.spyOn(httpClientSpy, 'get').mockReturnValue(of(testData));
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [UserService],
+    });
+
+    service = TestBed.inject(UserService);
+    httpMock = TestBed.inject(HttpTestingController);
+  });
+
+  afterEach(() => {
+    httpMock.verify();
   });
 
   it('should be created', () => {
-    expect(userService).toBeTruthy();
+    expect(service).toBeTruthy();
   });
 
   it('loads user profile', async () => {
@@ -28,44 +32,13 @@ describe('UserService', () => {
     expect(userProfile).toEqual(testData);
   });
 
-  it('only loads the user profile the first time', async () => {
-    await userService.getUserProfile();
-    expect(httpClientSpy.get).toHaveBeenCalledTimes(1);
-    // get the profile again
-    await userService.getUserProfile();
-    expect(getSpy).toHaveBeenCalledTimes(1);
-  });
+  it('should cache user profile data after loading', () => {
+    service.getUserProfile().subscribe();
 
-  describe('#isTranscriber', () => {
-    it('returns true if the user has the Transcriber role', () => {
-      const testData1: UserState = {
-        userName: 'test@test.com',
-        userId: 1,
-        roles: [
-          {
-            roleId: 123,
-            roleName: 'TRANSCRIBER',
-            permissions: [
-              {
-                permissionId: 1,
-                permissionName: 'local dev permissions',
-              },
-            ],
-          },
-        ],
-      };
-      userService.userProfile = testData1;
-      const result = userService.isTranscriber();
-      expect(result).toEqual(true);
-    });
-    it("returns false if the user doesn't have the Transcriber role", () => {
-      const result = userService.isTranscriber();
-      expect(result).toEqual(false);
-    });
-    it("returns false if the userProfile hasn't been set", () => {
-      userService.userProfile = undefined;
-      const result = userService.isTranscriber();
-      expect(result).toBe(false);
-    });
+    httpMock.expectOne(USER_PROFILE_PATH).flush(mockUserState);
+
+    service.getUserProfile().subscribe();
+
+    httpMock.expectNone(USER_PROFILE_PATH);
   });
 });

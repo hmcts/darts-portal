@@ -1,13 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HearingEventTypeEnum } from '@darts-types/enums';
-import { HearingAudioEventViewModel } from '@darts-types/hearing-audio-event.interface';
+import { DatatableRow } from '@darts-types/data-table-row.interface';
 
 import { DataTableComponent, SortingInterface } from './data-table.component';
 
 describe('DataTableComponent', () => {
   let component: DataTableComponent;
   let fixture: ComponentFixture<DataTableComponent>;
-  const MOCK_ROWS: any[] = [
+  const MOCK_ROWS: DatatableRow[] = [
     {
       case_id: 1,
       case_number: 'C20220620001',

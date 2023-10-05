@@ -12,7 +12,6 @@ const openRoutes: Routes = [
 ];
 const protectedRoutes: Routes = [
   { path: '', loadComponent: () => import('./components/home/home.component').then((c) => c.HomeComponent) },
-  { path: 'inbox', loadComponent: () => import('./components/inbox/inbox.component').then((c) => c.InboxComponent) },
   {
     path: 'audios',
     loadComponent: () => import('./components/audios/audios.component').then((c) => c.AudiosComponent),

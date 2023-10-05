@@ -7,6 +7,29 @@
     <p class="govuk-body">Review the case ID, case reference or court reference you entered and try again.</p>
   </div>
   <div *ngIf="cases.length">
-    <app-data-table [rows]="rows" [columns]="columns" [caption]="caption"></app-data-table>
+    <app-data-table [rows]="rows" [columns]="columns" [caption]="caption">
+      <ng-template [tableBodyTemplate] let-row>
+        <tr class="govuk-table__row">
+          <td class="govuk-table__cell">
+            <a [routerLink]="['/case', row.id]">{{ row.caseNumber }}</a>
+          </td>
+          <td class="govuk-table__cell">{{ row.courthouse }}</td>
+          <td class="govuk-table__cell">{{ row.courtroom }}</td>
+          <td class="govuk-table__cell">{{ row.judges }}</td>
+          <td class="govuk-table__cell">{{ row.defendants }}</td>
+        </tr>
+        <tr *ngIf="row.reporting_restriction" class="restriction-row govuk-table__row">
+          <td class="govuk-table__cell" colspan="6">
+            <div class="govuk-warning-text">
+              <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+              <span class="govuk-warning-text__text">
+                <span class="govuk-warning-text__assistive">Restriction</span>
+                <strong>Restriction:</strong> {{ row.reporting_restriction }}
+              </span>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </app-data-table>
   </div>
 </div>
