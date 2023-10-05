@@ -2,7 +2,7 @@ import { NgFor, NgIf } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
-import { Case, Hearing } from '@darts-types/index';
+import { Case, DatatableColumn, DatatableRow, Hearing } from '@darts-types/index';
 import { DateTimeService } from '@services/datetime/datetime.service';
 import { TableBodyTemplateDirective } from 'src/app/directives/table-body-template.directive';
 
@@ -18,8 +18,8 @@ export class ResultsComponent implements OnChanges {
   @Input() loaded = false;
   @Input() errorType = '';
   caption = '';
-  rows: any[] = [];
-  columns = [
+  rows: DatatableRow[] = [];
+  columns: DatatableColumn[] = [
     { name: 'Case ID', prop: 'caseNumber', sortable: true, link: '/case' },
     { name: 'Courthouse', prop: 'courthouse', sortable: true },
     { name: 'Courtroom', prop: 'courtroom', sortable: false },

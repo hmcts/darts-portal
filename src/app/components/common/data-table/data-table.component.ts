@@ -13,6 +13,7 @@ import { PaginationComponent } from '@common/pagination/pagination.component';
 import { RouterLink } from '@angular/router';
 import { TableRowTemplateDirective } from 'src/app/directives/table-row-template.directive';
 import { TableBodyTemplateDirective } from 'src/app/directives/table-body-template.directive';
+import { DatatableColumn, DatatableRow } from '@darts-types/index';
 
 @Component({
   selector: 'app-data-table',
@@ -23,22 +24,22 @@ import { TableBodyTemplateDirective } from 'src/app/directives/table-body-templa
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataTableComponent implements OnChanges {
-  @Input() rows: any[] = [];
-  @Input() columns: any[] = [];
+  @Input() rows: DatatableRow[] = [];
+  @Input() columns: DatatableColumn[] = [];
   @Input() caption = '';
   @Input() rowSelectable = false;
   @Input() pagination = true;
   @Input() pageLimit = 25;
-  @Output() rowSelect = new EventEmitter<any[]>();
+  @Output() rowSelect = new EventEmitter<DatatableRow[]>();
 
   @ContentChild(TableBodyTemplateDirective, { read: TemplateRef })
-  bodyTemplate?: TemplateRef<any>;
+  bodyTemplate?: TemplateRef<unknown>;
 
   @ContentChild(TableRowTemplateDirective, { read: TemplateRef })
-  rowTemplate?: TemplateRef<any>;
+  rowTemplate?: TemplateRef<unknown>;
 
-  selectedRows: any[] = [];
-  pagedRows: any[] = [];
+  selectedRows: DatatableRow[] = [];
+  pagedRows: DatatableRow[] = [];
   currentPage = 1;
 
   sorting: SortingInterface = {
@@ -57,15 +58,15 @@ export class DataTableComponent implements OnChanges {
     this.updatePagedData();
   }
 
-  sortTable(column: any): void {
+  sortTable(column: string): void {
     this.sorting = {
       column: column,
       order: this.isDescSorting(column) ? 'asc' : 'desc',
     };
 
-    this.rows.sort((a, b) => {
-      const valueA: string | number | undefined = a[column];
-      const valueB: string | number | undefined = b[column];
+    this.rows.sort((a: DatatableRow, b: DatatableRow) => {
+      const valueA = a[column];
+      const valueB = b[column];
 
       if (column === 'date' && typeof valueA === 'string' && typeof valueB === 'string') {
         //Date sorting
@@ -97,11 +98,11 @@ export class DataTableComponent implements OnChanges {
     this.updatePagedData();
   }
 
-  isRowSelected(row: any) {
+  isRowSelected(row: DatatableRow) {
     return this.selectedRows.includes(row);
   }
 
-  toggleRowSelection(row: any) {
+  toggleRowSelection(row: DatatableRow) {
     const index = this.selectedRows.indexOf(row);
     if (index === -1) {
       // Row not selected, add it to the selection
@@ -122,15 +123,15 @@ export class DataTableComponent implements OnChanges {
     this.rowSelect.emit(this.selectedRows);
   }
 
-  compareStrings(column: any, a: string, b: string): number {
+  compareStrings(column: string, a: string, b: string): number {
     return this.isAscSorting(column) ? a.localeCompare(b) : b.localeCompare(a);
   }
 
-  compareNumbers(column: any, a: number, b: number): number {
+  compareNumbers(column: string, a: number, b: number): number {
     return this.isAscSorting(column) ? a - b : b - a;
   }
 
-  compareDates(column: any, a: Date, b: Date): number {
+  compareDates(column: string, a: Date, b: Date): number {
     return this.isAscSorting(column) ? a.getTime() - b.getTime() : b.getTime() - a.getTime();
   }
 
@@ -138,15 +139,15 @@ export class DataTableComponent implements OnChanges {
     return !isNaN(parseFloat(String(num)));
   }
 
-  isDescSorting(column: any): boolean {
+  isDescSorting(column: string): boolean {
     return this.sorting.column === column && this.sorting.order === 'desc';
   }
 
-  isAscSorting(column: any): boolean {
+  isAscSorting(column: string): boolean {
     return this.sorting.column === column && this.sorting.order === 'asc';
   }
 
-  getAriaSort(column: any): 'ascending' | 'descending' | 'none' {
+  getAriaSort(column: string): 'ascending' | 'descending' | 'none' {
     if (this.sorting.column === column) {
       return this.isAscSorting(column) ? 'ascending' : 'descending';
     }
@@ -157,7 +158,7 @@ export class DataTableComponent implements OnChanges {
     this.pagedRows = this.paginate(this.rows, this.pageLimit, this.currentPage);
   }
 
-  private paginate(array: any[], pageSize: number, currentPage: number) {
+  private paginate(array: DatatableRow[], pageSize: number, currentPage: number) {
     return array.slice((currentPage - 1) * pageSize, currentPage * pageSize);
   }
 }
