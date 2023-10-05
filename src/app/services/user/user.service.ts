@@ -9,7 +9,7 @@ const USER_PROFILE_PATH = '/user/profile';
   providedIn: 'root',
 })
 export class UserService {
-  private userProfile: UserState | undefined;
+  public userProfile: UserState | undefined;
 
   constructor(private http: HttpClient) {}
 
