@@ -52,8 +52,7 @@ export class HearingComponent {
 
   hearingId = this.route.snapshot.params.hearing_id;
   caseId = this.route.snapshot.params.caseId;
-
-  userProfile$ = this.userService.getUserProfile();
+  userState = this.route.snapshot.data.userState;
 
   case$ = this.caseService.getCase(this.caseId);
   hearing$ = this.caseService.getHearingById(this.caseId, this.hearingId);

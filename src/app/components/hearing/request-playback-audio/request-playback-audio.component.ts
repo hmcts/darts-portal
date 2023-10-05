@@ -39,7 +39,7 @@ const fieldErrors: FieldErrors = {
 export class RequestPlaybackAudioComponent implements OnChanges {
   @Input() hearing!: Hearing;
   @Input() requestAudioTimes!: Map<string, Date> | undefined;
-  @Input() userProfile!: UserState | undefined | null;
+  @Input() userState!: UserState;
   audioRequestForm: FormGroup;
   requestObj!: AudioRequest;
   @Output() audioRequest = new EventEmitter<AudioRequest>();
@@ -143,7 +143,7 @@ export class RequestPlaybackAudioComponent implements OnChanges {
 
     this.requestObj = {
       hearing_id: this.hearing.id,
-      requestor: this.userProfile?.userId as number,
+      requestor: this.userState.userId,
       start_time: this.datetimeService.getIsoStringWithoutMilliseconds(startDateTime.toISOString()),
       end_time: this.datetimeService.getIsoStringWithoutMilliseconds(endDateTime.toISOString()),
       request_type: this.audioRequestForm.get('requestType')?.value,

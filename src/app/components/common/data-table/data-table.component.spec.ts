@@ -1,6 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HearingEventTypeEnum } from '@darts-types/enums';
-import { HearingAudioEventViewModel } from '@darts-types/hearing-audio-event.interface';
 
 import { DataTableComponent, SortingInterface } from './data-table.component';
 

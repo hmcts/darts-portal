@@ -1,12 +1,23 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ContentChild,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  TemplateRef,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PaginationComponent } from '@common/pagination/pagination.component';
 import { RouterLink } from '@angular/router';
+import { TableRowTemplateDirective } from 'src/app/directives/table-row-template.directive';
+import { TableBodyTemplateDirective } from 'src/app/directives/table-body-template.directive';
 
 @Component({
   selector: 'app-data-table',
   standalone: true,
-  imports: [CommonModule, PaginationComponent, RouterLink],
+  imports: [CommonModule, PaginationComponent, RouterLink, TableRowTemplateDirective, TableBodyTemplateDirective],
   templateUrl: './data-table.component.html',
   styleUrls: ['./data-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -19,6 +30,12 @@ export class DataTableComponent implements OnChanges {
   @Input() pagination = true;
   @Input() pageLimit = 25;
   @Output() rowSelect = new EventEmitter<any[]>();
+
+  @ContentChild(TableBodyTemplateDirective, { read: TemplateRef })
+  bodyTemplate?: TemplateRef<any>;
+
+  @ContentChild(TableRowTemplateDirective, { read: TemplateRef })
+  rowTemplate?: TemplateRef<any>;
 
   selectedRows: any[] = [];
   pagedRows: any[] = [];

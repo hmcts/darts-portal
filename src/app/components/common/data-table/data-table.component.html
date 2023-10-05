@@ -33,45 +33,44 @@
   </thead>
   <tbody class="govuk-table__body">
     <ng-container *ngFor="let row of pagedRows; let i = index">
-      <tr class="govuk-table__row">
-        <td *ngIf="rowSelectable" scope="row" class="govuk-table__header">
-          <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
-            <div class="govuk-checkboxes__item">
-              <input
-                [tabindex]="i"
-                class="govuk-checkboxes__input"
-                [id]="row.id"
-                [name]="row.id"
-                type="checkbox"
-                [value]="row.id"
-                [checked]="isRowSelected(row)"
-                (change)="toggleRowSelection(row)"
-              />
-              <label class="govuk-label govuk-checkboxes__label" [for]="row.id"></label>
+      <ng-container
+        *ngTemplateOutlet="bodyTemplate || defaultBodyTemplate; context: { $implicit: row, index: i }"
+      ></ng-container>
+      <ng-template #defaultBodyTemplate let-row let-index>
+        <tr class="govuk-table__row">
+          <td *ngIf="rowSelectable" scope="row" class="govuk-table__cell">
+            <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+              <div class="govuk-checkboxes__item">
+                <input
+                  [tabindex]="i"
+                  class="govuk-checkboxes__input"
+                  [id]="row.id"
+                  [name]="row.id"
+                  type="checkbox"
+                  [value]="row.id"
+                  [checked]="isRowSelected(row)"
+                  (change)="toggleRowSelection(row)"
+                />
+                <label class="govuk-label govuk-checkboxes__label" [for]="row.id"></label>
+              </div>
             </div>
-          </div>
-        </td>
-        <td *ngFor="let column of columns" class="govuk-table__cell">
-          <ng-container *ngIf="column.link">
-            <a [routerLink]="[column.link, row.id]"> {{ row[column.prop] }}</a>
-          </ng-container>
-          <ng-container *ngIf="!column.link">
-            {{ row[column.prop] }}
-          </ng-container>
-        </td>
-      </tr>
-      <tr *ngIf="row.reporting_restriction" class="restriction-row govuk-table__row">
-        <td class="govuk-table__cell" colspan="6">
-          <div class="govuk-warning-text">
-            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-            <span class="govuk-warning-text__text">
-              <span class="govuk-warning-text__assistive">Restriction</span>
-              <strong>Restriction:</strong> {{ row.reporting_restriction }}
-            </span>
-          </div>
-        </td>
-      </tr>
+          </td>
+          <ng-container
+            *ngTemplateOutlet="rowTemplate || defaultRowTemplate; context: { $implicit: row, index: i }"
+          ></ng-container>
+        </tr>
+      </ng-template>
     </ng-container>
+    <ng-template #defaultRowTemplate let-row let-index>
+      <td *ngFor="let column of columns" class="govuk-table__cell">
+        <ng-container *ngIf="column.link">
+          <a [routerLink]="[column.link, row.id]"> {{ row[column.prop] }}</a>
+        </ng-container>
+        <ng-container *ngIf="!column.link">
+          {{ row[column.prop] }}
+        </ng-container>
+      </td>
+    </ng-template>
   </tbody>
 </table>
 
