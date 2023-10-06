@@ -102,7 +102,7 @@
             id="specific-date-items"
           >
             <div data-module="ds-datepicker" class="ds_datepicker">
-              <label class="ds_label" for="range-date-from">Enter a date</label>
+              <label class="ds_label" for="specific_date">Enter a date</label>
               <p class="ds_hint-text">Use dd/mm/yyyy format.</p>
               <!-- Error message date range date_from -->
               <div *ngIf="isControlInvalid('specific_date')" id="specific_date-errors">
@@ -161,8 +161,8 @@
                   <input
                     aria-label="Enter date from in dd/mm/yyyy format"
                     formControlName="date_from"
-                    name="date_from"
-                    id="date_from"
+                    name="range-date-from"
+                    id="range-date-from"
                     type="text"
                     class="ds_input ds_input--fixed-10"
                     (change)="setInputValue($any($event).target.value, 'date_from')"
@@ -192,8 +192,8 @@
                   <input
                     aria-label="Enter date to in dd/mm/yyyy format"
                     formControlName="date_to"
-                    id="date_to"
-                    name="date_to"
+                    id="range-date-to"
+                    name="range-date-to"
                     type="text"
                     class="ds_input ds_input--fixed-10"
                     (change)="setInputValue($any($event).target.value, 'date_to')"
