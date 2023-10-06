@@ -24,4 +24,8 @@ export class UserService {
     }
     return this.loadUserProfile().pipe(take(1));
   }
+
+  public isTranscriber(userState: UserState): boolean {
+    return userState.roles.some((x) => x.roleName === 'TRANSCRIBER');
+  }
 }

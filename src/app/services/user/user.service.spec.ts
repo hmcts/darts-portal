@@ -51,4 +51,32 @@ describe('UserService', () => {
 
     httpMock.expectNone(USER_PROFILE_PATH);
   });
+
+  describe('#isTranscriber', () => {
+    it('returns true if the user has the Transcriber role', () => {
+      const transcriber: UserState = {
+        userName: 'test@test.com',
+        userId: 1,
+        roles: [
+          {
+            roleId: 123,
+            roleName: 'TRANSCRIBER',
+            permissions: [
+              {
+                permissionId: 1,
+                permissionName: 'local dev permissions',
+              },
+            ],
+          },
+        ],
+      };
+      const result = service.isTranscriber(transcriber);
+      expect(result).toEqual(true);
+    });
+    it("returns false if the user doesn't have the Transcriber role", () => {
+      const nonTranscriber = mockUserState;
+      const result = service.isTranscriber(nonTranscriber);
+      expect(result).toEqual(false);
+    });
+  });
 });

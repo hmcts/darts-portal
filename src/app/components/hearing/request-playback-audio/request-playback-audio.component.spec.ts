@@ -1,5 +1,9 @@
+import { HttpClient } from '@angular/common/http';
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { UserService } from '@services/user/user.service';
 import moment from 'moment';
 
 import { RequestPlaybackAudioComponent } from './request-playback-audio.component';
@@ -7,10 +11,17 @@ import { RequestPlaybackAudioComponent } from './request-playback-audio.componen
 describe('RequestPlaybackAudioComponent', () => {
   let component: RequestPlaybackAudioComponent;
   let fixture: ComponentFixture<RequestPlaybackAudioComponent>;
+  let userService: UserService;
+  let httpClientSpy: HttpClient;
 
   beforeEach(() => {
+    httpClientSpy = { get: jest.fn() } as unknown as HttpClient;
+
+    userService = new UserService(httpClientSpy);
+
     TestBed.configureTestingModule({
       imports: [RequestPlaybackAudioComponent],
+      providers: [{ provide: UserService, useValue: userService }],
     });
     fixture = TestBed.createComponent(RequestPlaybackAudioComponent);
     component = fixture.componentInstance;
@@ -31,7 +42,7 @@ describe('RequestPlaybackAudioComponent', () => {
       const expectedResult = {
         startTime: { hours: '02', minutes: '00', seconds: '00' },
         endTime: { hours: '15', minutes: '32', seconds: '24' },
-        requestType: '',
+        requestType: 'PLAYBACK',
       };
 
       component.requestAudioTimes = requestAudioTimes;
@@ -66,6 +77,34 @@ describe('RequestPlaybackAudioComponent', () => {
     expect(component.audioRequestForm.value).toEqual(expectedResult);
   });
 
+  describe('#ngOnInit', () => {
+    it('should set request type as required if the user is a transcriber', () => {
+      const permissions = [{ permissionId: 1, permissionName: 'local dev permissions' }];
+      component.userState = {
+        userId: 1,
+        userName: 'Dean',
+        roles: [
+          {
+            roleId: 123,
+            roleName: 'TRANSCRIBER',
+            permissions: permissions,
+          },
+        ],
+      };
+      component.ngOnInit();
+      expect(component.audioRequestForm.get('requestType')?.hasValidator(Validators.required)).toBeTruthy();
+    });
+    it('should not set any validators on request type if the user is not a transcriber', () => {
+      component.userState = {
+        userId: 1,
+        userName: 'Dean',
+        roles: [],
+      };
+      component.ngOnInit();
+      expect(component.audioRequestForm.get('requestType')?.hasValidator(Validators.required)).toBeFalsy();
+    });
+  });
+
   describe('#onSubmit', () => {
     it('should create the request object when values are submitted', () => {
       const audioRequestSpy = jest.spyOn(component.audioRequest, 'emit');
@@ -87,14 +126,14 @@ describe('RequestPlaybackAudioComponent', () => {
           minutes: '32',
           seconds: '24',
         },
-        requestType: 'DOWNLOAD',
+        requestType: 'PLAYBACK',
       };
       const expectedResult = {
         hearing_id: 1,
         requestor: 1,
         start_time: '2023-09-01T02:00:00Z',
         end_time: '2023-09-01T15:32:24Z',
-        request_type: 'DOWNLOAD',
+        request_type: 'PLAYBACK',
       };
       component.audioRequestForm.setValue(audioRequestForm);
       component.onSubmit();
@@ -120,7 +159,7 @@ describe('RequestPlaybackAudioComponent', () => {
           minutes: '',
           seconds: '',
         },
-        requestType: 'DOWNLOAD',
+        requestType: 'PLAYBACK',
       };
       component.audioRequestForm.setValue(audioRequestForm);
       component.onSubmit();
