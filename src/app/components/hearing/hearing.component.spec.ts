@@ -3,7 +3,7 @@ import { HearingComponent } from './hearing.component';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClient } from '@angular/common/http';
-import { lastValueFrom, Observable, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
 import { CaseService } from '@services/case/case.service';
 import { HearingAudioEventViewModel } from '@darts-types/hearing-audio-event.interface';
@@ -12,6 +12,7 @@ import { HearingFileComponent } from './hearing-file/hearing-file.component';
 import { AudioRequest, Case, Hearing, HearingEventTypeEnum, HearingPageState } from '@darts-types/index';
 import { HeaderService } from '@services/header/header.service';
 import { UserService } from '@services/user/user.service';
+import { ActivatedRoute } from '@angular/router';
 
 describe('HearingComponent', () => {
   const fakeAppInsightsService = {};
@@ -21,6 +22,33 @@ describe('HearingComponent', () => {
   let userService: UserService;
   let component: HearingComponent;
   let fixture: ComponentFixture<HearingComponent>;
+
+  const mockActivatedRoute = {
+    snapshot: {
+      data: {
+        userState: {
+          userId: 123,
+          userName: 'dev@local',
+          roles: [
+            {
+              roleId: 123,
+              roleName: 'local dev',
+              permissions: [
+                {
+                  permissionId: 1,
+                  permissionName: 'local dev permissions',
+                },
+              ],
+            },
+          ],
+        },
+      },
+      params: {
+        caseId: '1',
+        hearing_id: '1',
+      },
+    },
+  };
 
   const cd = of({ case_id: 1, case_number: '12345', courthouse: 'Reading', judges: ['Judy'] }) as Observable<Case>;
   const hd = of([
@@ -51,24 +79,22 @@ describe('HearingComponent', () => {
     transcript_count: 99,
   }) as Observable<Hearing>;
 
-  const mockUser = lastValueFrom(
-    of({
-      userId: 123,
-      userName: 'localdev01',
-      roles: [
-        {
-          roleId: 123,
-          roleName: 'local dev',
-          permissions: [
-            {
-              permissionId: 1,
-              permissionName: 'local dev permissions',
-            },
-          ],
-        },
-      ],
-    })
-  );
+  const mockUser = of({
+    userId: 123,
+    userName: 'localdev01',
+    roles: [
+      {
+        roleId: 123,
+        roleName: 'local dev',
+        permissions: [
+          {
+            permissionId: 1,
+            permissionName: 'local dev permissions',
+          },
+        ],
+      },
+    ],
+  });
 
   beforeEach(() => {
     httpClientSpy = {
@@ -94,6 +120,7 @@ describe('HearingComponent', () => {
         { provide: HearingService, useValue: hearingService },
         { provide: HeaderService },
         { provide: UserService, useValue: userService },
+        { provide: ActivatedRoute, useValue: mockActivatedRoute },
       ],
     });
     fixture = TestBed.createComponent(HearingComponent);

@@ -4,6 +4,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnInit,
   Output,
   SimpleChanges,
 } from '@angular/core';
@@ -15,6 +16,7 @@ import { DateTimeService } from '@services/datetime/datetime.service';
 import { AudioRequest, ErrorSummaryEntry, FieldErrors, Hearing } from '@darts-types/index';
 import { timeGroupValidator } from '@validators/time-group.validator';
 import { UserState } from '@darts-types/user-state';
+import { UserService } from '@services/user/user.service';
 
 const fieldErrors: FieldErrors = {
   startTime: {
@@ -36,7 +38,7 @@ const fieldErrors: FieldErrors = {
   styleUrls: ['./request-playback-audio.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RequestPlaybackAudioComponent implements OnChanges {
+export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
   @Input() hearing!: Hearing;
   @Input() requestAudioTimes!: Map<string, Date> | undefined;
   @Input() userState!: UserState;
@@ -46,10 +48,12 @@ export class RequestPlaybackAudioComponent implements OnChanges {
   @Output() validationErrorEvent = new EventEmitter<ErrorSummaryEntry[]>();
   public isSubmitted = false;
   errorSummary: ErrorSummaryEntry[] = [];
+  isTranscriber = false;
 
   constructor(
     private fb: FormBuilder,
-    public datetimeService: DateTimeService
+    public datetimeService: DateTimeService,
+    public userService: UserService
   ) {
     this.audioRequestForm = this.fb.group({
       startTime: this.fb.group(
@@ -68,8 +72,17 @@ export class RequestPlaybackAudioComponent implements OnChanges {
         },
         { validators: timeGroupValidator }
       ),
-      requestType: ['', [Validators.required]],
+      requestType: [''],
     });
+  }
+  ngOnInit(): void {
+    this.isTranscriber = this.userService.isTranscriber(this.userState);
+    if (this.isTranscriber) {
+      this.audioRequestForm.get('requestType')?.setValidators(Validators.required);
+    } else {
+      this.audioRequestForm.get('requestType')?.patchValue('PLAYBACK');
+    }
+    this.audioRequestForm.get('requestType')?.updateValueAndValidity();
   }
 
   get f() {
@@ -139,7 +152,7 @@ export class RequestPlaybackAudioComponent implements OnChanges {
     const startDateTime = moment.utc(`${this.hearing.date}T${startTimeHours}:${startTimeMinutes}:${startTimeSeconds}`);
     const endDateTime = moment.utc(`${this.hearing.date}T${endTimeHours}:${endTimeMinutes}:${endTimeSeconds}`);
 
-    if (!startDateTime.isValid() && !endDateTime.isValid()) return;
+    if (!startDateTime.isValid() || !endDateTime.isValid() || this.audioRequestForm.get('requestType')?.invalid) return;
 
     this.requestObj = {
       hearing_id: this.hearing.id,
