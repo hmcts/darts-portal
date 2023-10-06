@@ -101,7 +101,7 @@ describe('SearchComponent', () => {
 
       fixture.detectChanges();
 
-      const rangeDateInput = fixture.debugElement.query(By.css('#date_to'));
+      const rangeDateInput = fixture.debugElement.query(By.css('#range-date-to'));
       rangeDateInput.triggerEventHandler('change', { target: { value: '23/08/2023' } });
       const el = rangeDateInput.nativeElement;
 
