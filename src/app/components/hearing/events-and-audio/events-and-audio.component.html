@@ -1,7 +1,7 @@
-<ng-container *ngIf="!table.length">
+<ng-container *ngIf="!rows.length">
   <h2 class="govuk-heading-m">There are no events or audio for this hearing</h2>
 </ng-container>
-<ng-container *ngIf="table.length">
+<ng-container *ngIf="rows.length">
   <form [formGroup]="eventsFilterForm" class="govuk-form-group">
     <fieldset class="govuk-fieldset" aria-describedby="changedName-hint">
       <legend id="changedName-hint" class="govuk-hint">Select events to include in requests</legend>
@@ -31,78 +31,30 @@
       </div>
     </fieldset>
   </form>
-  <table class="govuk-table" aria-describedby="events-audio-heading">
-    <thead class="govuk-table__head">
-      <tr class="govuk-table__row">
-        <th scope="col" class="govuk-table__header">
-          <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
-            <div class="govuk-checkboxes__item">
-              <input
-                class="govuk-checkboxes__input"
-                id="selectAll"
-                name="selectAll"
-                type="checkbox"
-                value="selectAll"
-                (change)="onSelectAllChanged($any($event.target).checked)"
-              />
-              <label class="govuk-label govuk-checkboxes__label" for=""></label>
-            </div>
-          </div>
-        </th>
-        <th scope="col" class="govuk-table__header">Time</th>
-        <th scope="col" class="govuk-table__header">Event</th>
-        <th scope="col" class="govuk-table__header">Text</th>
-      </tr>
-    </thead>
-    <tbody class="govuk-table__body">
-      <ng-container *ngFor="let row of filteredTable; let i = index">
-        <tr
-          [tabindex]="i"
-          class="govuk-table__row"
-          [class.no-bottom-border]="row.type === 'audio' && isAudioInPreview(row.id)"
-        >
-          <td scope="row" class="govuk-table__header">
-            <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
-              <div class="govuk-checkboxes__item">
-                <input
-                  class="govuk-checkboxes__input"
-                  [id]="row.id"
-                  [name]="row.id"
-                  type="checkbox"
-                  [value]="row.id"
-                  [checked]="isRowSelected(row)"
-                  (change)="toggleRowSelection(row)"
-                />
-                <label class="govuk-label govuk-checkboxes__label" [for]="row.id"></label>
-              </div>
-            </div>
-          </td>
-          <ng-container *ngIf="row.type === 'audio'">
-            <td class="govuk-table__cell">
-              <button
-                class="govuk-button govuk-button--secondary"
-                data-module="govuk-button"
-                (click)="onPreviewAudio(row.id)"
-              >
-                Preview Audio
-              </button>
-            </td>
-            <td class="govuk-table__cell">Start time: {{ row.media_start_timestamp | date: 'HH:mm:ss' }}</td>
-            <td class="govuk-table__cell">End time: {{ row.media_end_timestamp | date: 'HH:mm:ss' }}</td>
-          </ng-container>
-          <ng-container *ngIf="row.type === 'event'">
-            <td class="govuk-table__cell">{{ row.timestamp | date: 'HH:mm:ss' }}</td>
-            <td class="govuk-table__cell">{{ row.name }}</td>
-            <td class="govuk-table__cell">{{ row.text }}</td>
-          </ng-container>
-        </tr>
-        <tr *ngIf="row.type === 'audio' && isAudioInPreview(row.id)" class="govuk-table__row no-top-border">
-          <td class="govuk-table__cell"></td>
-          <td class="govuk-table__cell" colspan="3">
-            <app-audio-player [mediaId]="row.id"></app-audio-player>
-          </td>
-        </tr>
+
+  <app-data-table [rows]="filteredRows" [columns]="columns" [rowSelectable]="true" (rowSelect)="onRowSelect($event)">
+    <ng-template [tableRowTemplate] let-row let-index>
+      <ng-container *ngIf="row.type === 'audio'">
+        <td class="govuk-table__cell">
+          <div>Start time: {{ row.timestamp | date: 'HH:mm:ss' }}</div>
+        </td>
+        <td class="govuk-table__cell">
+          <button
+            *ngIf="!isAudioInPreview(row.id)"
+            class="govuk-button govuk-button--secondary"
+            (click)="onPreviewAudio(row.id)"
+          >
+            Preview Audio
+          </button>
+          <app-audio-player *ngIf="isAudioInPreview(row.id)" [mediaId]="row.id"></app-audio-player>
+        </td>
+        <td class="govuk-table__cell">End time: {{ row.media_end_timestamp | date: 'HH:mm:ss' }}</td>
       </ng-container>
-    </tbody>
-  </table>
+      <ng-container *ngIf="row.type === 'event'">
+        <td class="govuk-table__cell">{{ row.timestamp | date: 'HH:mm:ss' }}</td>
+        <td class="govuk-table__cell">{{ row.name }}</td>
+        <td class="govuk-table__cell">{{ row.text }}</td>
+      </ng-container>
+    </ng-template>
+  </app-data-table>
 </ng-container>

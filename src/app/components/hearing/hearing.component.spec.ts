@@ -3,10 +3,10 @@ import { HearingComponent } from './hearing.component';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClient } from '@angular/common/http';
-import { lastValueFrom, Observable, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
 import { CaseService } from '@services/case/case.service';
-import { HearingAudioEventViewModel } from '@darts-types/hearing-audio-event.interface';
+import { AudioEventRow } from '@darts-types/hearing-audio-event.interface';
 import { HearingService } from '@services/hearing/hearing.service';
 import { HearingFileComponent } from './hearing-file/hearing-file.component';
 import { AudioRequest, Case, Hearing, HearingEventTypeEnum, HearingPageState } from '@darts-types/index';
@@ -182,7 +182,7 @@ describe('HearingComponent', () => {
       expect(component.requestAudioTimes);
     });
     it('should set request Audio times to undefined if audio and Events are empty', () => {
-      const mockAudioAndEvents: HearingAudioEventViewModel[] = [];
+      const mockAudioAndEvents: AudioEventRow[] = [];
       component.onEventsSelected(mockAudioAndEvents);
       expect(component.requestAudioTimes).toEqual(undefined);
     });

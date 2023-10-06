@@ -23,14 +23,14 @@ import { DatatableColumn, DatatableRow } from '@darts-types/index';
   styleUrls: ['./data-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DataTableComponent implements OnChanges {
-  @Input() rows: DatatableRow[] = [];
+export class DataTableComponent<TRow extends DatatableRow> implements OnChanges {
+  @Input() rows: TRow[] = [];
   @Input() columns: DatatableColumn[] = [];
   @Input() caption = '';
   @Input() rowSelectable = false;
   @Input() pagination = true;
   @Input() pageLimit = 25;
-  @Output() rowSelect = new EventEmitter<DatatableRow[]>();
+  @Output() rowSelect = new EventEmitter<TRow[]>();
 
   @ContentChild(TableBodyTemplateDirective, { read: TemplateRef })
   bodyTemplate?: TemplateRef<unknown>;
@@ -38,8 +38,8 @@ export class DataTableComponent implements OnChanges {
   @ContentChild(TableRowTemplateDirective, { read: TemplateRef })
   rowTemplate?: TemplateRef<unknown>;
 
-  selectedRows: DatatableRow[] = [];
-  pagedRows: DatatableRow[] = [];
+  selectedRows: TRow[] = [];
+  pagedRows: TRow[] = [];
   currentPage = 1;
 
   sorting: SortingInterface = {
@@ -64,7 +64,7 @@ export class DataTableComponent implements OnChanges {
       order: this.isDescSorting(column) ? 'asc' : 'desc',
     };
 
-    this.rows.sort((a: DatatableRow, b: DatatableRow) => {
+    this.rows.sort((a: TRow, b: TRow) => {
       const valueA = a[column];
       const valueB = b[column];
 
@@ -98,11 +98,11 @@ export class DataTableComponent implements OnChanges {
     this.updatePagedData();
   }
 
-  isRowSelected(row: DatatableRow) {
+  isRowSelected(row: TRow) {
     return this.selectedRows.includes(row);
   }
 
-  toggleRowSelection(row: DatatableRow) {
+  toggleRowSelection(row: TRow) {
     const index = this.selectedRows.indexOf(row);
     if (index === -1) {
       // Row not selected, add it to the selection
@@ -121,6 +121,12 @@ export class DataTableComponent implements OnChanges {
       this.selectedRows = [];
     }
     this.rowSelect.emit(this.selectedRows);
+  }
+
+  isAllSelected() {
+    const numSelected = this.selectedRows.length;
+    const numRows = this.pagedRows.length;
+    return numSelected == numRows;
   }
 
   compareStrings(column: string, a: string, b: string): number {
@@ -158,7 +164,7 @@ export class DataTableComponent implements OnChanges {
     this.pagedRows = this.paginate(this.rows, this.pageLimit, this.currentPage);
   }
 
-  private paginate(array: DatatableRow[], pageSize: number, currentPage: number) {
+  private paginate(array: TRow[], pageSize: number, currentPage: number) {
     return array.slice((currentPage - 1) * pageSize, currentPage * pageSize);
   }
 }

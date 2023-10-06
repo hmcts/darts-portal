@@ -2,13 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
-import {
-  AudioRequest,
-  AudioResponse,
-  ErrorSummaryEntry,
-  HearingAudioEventViewModel,
-  HearingPageState,
-} from '@darts-types/index';
+import { AudioRequest, AudioResponse, ErrorSummaryEntry, AudioEventRow, HearingPageState } from '@darts-types/index';
 import { CaseService } from '@services/case/case.service';
 import { HeaderService } from '@services/header/header.service';
 import { HearingService } from '@services/hearing/hearing.service';
@@ -80,12 +74,12 @@ export class HearingComponent {
     this._state = value;
   }
 
-  onEventsSelected(audioAndEvents: HearingAudioEventViewModel[]) {
+  onEventsSelected(audioAndEvents: AudioEventRow[]) {
     const timestamps: number[] = [];
     const requestAudioTimes = new Map<string, Date>();
 
     if (audioAndEvents.length) {
-      audioAndEvents.forEach((val: HearingAudioEventViewModel) => {
+      audioAndEvents.forEach((val: AudioEventRow) => {
         if (val.timestamp) {
           timestamps.push(new Date(val.timestamp).getTime());
         }
