@@ -14,7 +14,14 @@ describe('AppComponent', () => {
     const fakeAuthService = {};
 
     await TestBed.configureTestingModule({
-      imports: [HeaderComponent, PhaseBannerComponent, ContentComponent, FooterComponent, AppComponent, HttpClientTestingModule],
+      imports: [
+        HeaderComponent,
+        PhaseBannerComponent,
+        ContentComponent,
+        FooterComponent,
+        AppComponent,
+        HttpClientTestingModule,
+      ],
       providers: [
         { provide: AppInsightsService, useValue: fakeAppInsightsService },
         { provide: AuthService, useValue: fakeAuthService },

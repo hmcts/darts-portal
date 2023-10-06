@@ -16,7 +16,10 @@ export class AudioViewComponent {
   audioService = inject(AudioService);
   patchResponse$: Observable<HttpResponse<Response>>;
 
-  constructor(private router: Router, private route: ActivatedRoute) {
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
     //Send request to update last accessed time of audio
     this.patchResponse$ = this.audioService.patchAudioRequest(this.route.snapshot.params.requestId);
     //////////

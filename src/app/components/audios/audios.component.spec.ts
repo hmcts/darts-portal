@@ -44,7 +44,7 @@ describe('AudiosComponent', () => {
       media_request_expiry_ts: '2023-11-23T09:00:00Z',
       media_request_status: 'OPEN',
       last_accessed_ts: '2023-08-23T09:00:00Z',
-    },  
+    },
     {
       media_request_id: 12347,
       case_number: 'T20200192231',
@@ -54,7 +54,7 @@ describe('AudiosComponent', () => {
       media_request_end_ts: '2023-08-21T10:43:00Z',
       media_request_expiry_ts: '2023-11-23T09:00:00Z',
       media_request_status: 'FAILED',
-    },  
+    },
     {
       media_request_id: 12378,
       case_number: 'T20200331',
@@ -115,7 +115,7 @@ describe('AudiosComponent', () => {
       media_request_end_ts: '2023-08-21T10:43:00Z',
       media_request_expiry_ts: '2023-11-23T09:00:00Z',
       media_request_status: 'COMPLETED',
-    }
+    },
   ];
 
   const MOCK_EXPIRED_AUDIO_REQUESTS: UserAudioRequest[] = [
@@ -149,7 +149,7 @@ describe('AudiosComponent', () => {
       media_request_expiry_ts: '2023-11-23T09:00:00Z',
       media_request_status: 'EXPIRED',
     },
-  ]
+  ];
 
   const mockActivatedRoute = {
     snapshot: {
@@ -161,7 +161,7 @@ describe('AudiosComponent', () => {
 
   const audioServiceStub = {
     audioRequests$: of(MOCK_AUDIO_REQUESTS),
-    expiredAudioRequests$: of(MOCK_EXPIRED_AUDIO_REQUESTS)
+    expiredAudioRequests$: of(MOCK_EXPIRED_AUDIO_REQUESTS),
   };
 
   beforeEach(async () => {

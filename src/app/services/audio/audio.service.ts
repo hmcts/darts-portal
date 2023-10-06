@@ -22,12 +22,17 @@ export class AudioService {
     unreadCount: number;
   }>;
 
-  constructor(private http: HttpClient, userService: UserService) {
+  constructor(
+    private http: HttpClient,
+    userService: UserService
+  ) {
     this.audioRequests$ = userService.getUserProfile().pipe(
       switchMap((d) => this.getAudioRequestsForUser(d.userId, false)),
       tap((d) => this.updateUnread(d))
     );
-    this.expiredAudioRequests$ = userService.getUserProfile().pipe(switchMap((d) => this.getAudioRequestsForUser(d.userId, true)));
+    this.expiredAudioRequests$ = userService
+      .getUserProfile()
+      .pipe(switchMap((d) => this.getAudioRequestsForUser(d.userId, true)));
     //Polling logic
     this.headerData$ = timer(0, this.POLL_INTERVAL * 1000).pipe(
       switchMap(() =>
