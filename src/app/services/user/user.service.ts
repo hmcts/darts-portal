@@ -9,7 +9,7 @@ export const USER_PROFILE_PATH = '/user/profile';
   providedIn: 'root',
 })
 export class UserService {
-  public userProfile$!: Observable<UserState>;
+  private userProfile$!: Observable<UserState>;
 
   constructor(private http: HttpClient) {}
 
