@@ -102,7 +102,7 @@
             id="specific-date-items"
           >
             <div data-module="ds-datepicker" class="ds_datepicker">
-              <label class="ds_label" for="range-date-from">Enter a date</label>
+              <label class="ds_label" for="specific_date">Enter a date</label>
               <p class="ds_hint-text">Use dd/mm/yyyy format.</p>
               <!-- Error message date range date_from -->
               <div *ngIf="isControlInvalid('specific_date')" id="specific_date-errors">
@@ -147,7 +147,7 @@
               id="range-date-items"
             >
               <div data-module="ds-datepicker" class="ds_datepicker">
-                <label class="ds_label" for="range-date-from">Enter date from</label>
+                <label class="ds_label" for="date_from">Enter date from</label>
                 <p class="ds_hint-text">Use dd/mm/yyyy format.</p>
 
                 <!-- Error message date range date_from -->
@@ -178,7 +178,7 @@
               [class.govuk-form-group--error]="isControlInvalid('date_to')"
             >
               <div data-module="ds-datepicker" class="ds_datepicker">
-                <label class="ds_label" for="range-date-to">Enter date to</label>
+                <label class="ds_label" for="date_to">Enter date to</label>
                 <p class="ds_hint-text">Use dd/mm/yyyy format.</p>
 
                 <!-- Error message date range date_to -->
