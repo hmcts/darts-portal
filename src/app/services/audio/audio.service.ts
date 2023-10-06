@@ -23,11 +23,11 @@ export class AudioService {
   }>;
 
   constructor(private http: HttpClient, userService: UserService) {
-    this.audioRequests$ = userService.req$.pipe(
+    this.audioRequests$ = userService.getUserProfile().pipe(
       switchMap((d) => this.getAudioRequestsForUser(d.userId, false)),
       tap((d) => this.updateUnread(d))
     );
-    this.expiredAudioRequests$ = userService.req$.pipe(switchMap((d) => this.getAudioRequestsForUser(d.userId, true)));
+    this.expiredAudioRequests$ = userService.getUserProfile().pipe(switchMap((d) => this.getAudioRequestsForUser(d.userId, true)));
     //Polling logic
     this.headerData$ = timer(0, this.POLL_INTERVAL * 1000).pipe(
       switchMap(() =>

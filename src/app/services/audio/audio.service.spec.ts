@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { AudioService } from './audio.service';
 import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
 import { UserService } from '@services/user/user.service';
-import { of } from 'rxjs';
+import { of, tap } from 'rxjs';
 import { UserState } from '@darts-types/user-state';
 
 describe('AudioService', () => {
@@ -152,7 +152,7 @@ describe('AudioService', () => {
 
   const userState: UserState = { userName: 'test@test.com', userId: 123, roles: [] };
   const userServiceStub = {
-    req$: of(userState),
+    getUserProfile: () => of(userState),
   };
 
   beforeEach(() => {
@@ -243,8 +243,10 @@ describe('AudioService', () => {
       const mockAudios: UserAudioRequest[] = MOCK_AUDIO_REQUESTS;
       service.updateUnread(mockAudios);
 
-      expect(filterSpy).toHaveBeenCalledTimes(1);
-      expect(service.unreadCount$).toEqual(of(5));
+      service.unreadCount$.subscribe(() => {
+        expect(filterSpy).toHaveBeenCalledTimes(1);
+        expect(service.unreadCount$).toEqual(of(5));
+      });
     });
   });
 

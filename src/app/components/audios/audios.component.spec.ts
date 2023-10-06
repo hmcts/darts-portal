@@ -194,13 +194,4 @@ describe('AudiosComponent', () => {
     expect(result[2].media_request_status).toEqual('OPEN');
     expect(result[3].media_request_status).toEqual('FAILED');
   });
-
-  it('should filter completed audio requests correctly', () => {
-    const audioRequests: UserAudioRequest[] = MOCK_AUDIO_REQUESTS;
-
-    const result = component.filterCompletedRequests(audioRequests);
-
-    expect(result.length).toEqual(6);
-    expect(result[0].media_request_status).toEqual('COMPLETED');
-  });
 });

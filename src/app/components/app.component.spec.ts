@@ -6,6 +6,7 @@ import { ContentComponent } from './layout/content/content.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { PhaseBannerComponent } from './layout/phase-banner/phase-banner.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -13,7 +14,7 @@ describe('AppComponent', () => {
     const fakeAuthService = {};
 
     await TestBed.configureTestingModule({
-      imports: [HeaderComponent, PhaseBannerComponent, ContentComponent, FooterComponent, AppComponent],
+      imports: [HeaderComponent, PhaseBannerComponent, ContentComponent, FooterComponent, AppComponent, HttpClientTestingModule],
       providers: [
         { provide: AppInsightsService, useValue: fakeAppInsightsService },
         { provide: AuthService, useValue: fakeAuthService },
