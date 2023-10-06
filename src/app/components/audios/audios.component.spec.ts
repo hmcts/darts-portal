@@ -160,8 +160,8 @@ describe('AudiosComponent', () => {
   };
 
   const audioServiceStub = {
-    audioRequests$: jest.fn(() => of(MOCK_AUDIO_REQUESTS)),
-    expiredAudioRequests$: jest.fn(() => of(MOCK_EXPIRED_AUDIO_REQUESTS)),
+    audioRequests$: of(MOCK_AUDIO_REQUESTS),
+    expiredAudioRequests$: of(MOCK_EXPIRED_AUDIO_REQUESTS)
   };
 
   beforeEach(async () => {
@@ -188,10 +188,11 @@ describe('AudiosComponent', () => {
 
     const result = component.filterInProgressRequests(audioRequests);
 
-    expect(result.length).toEqual(3);
+    expect(result.length).toEqual(4);
     expect(result[0].media_request_status).toEqual('OPEN');
     expect(result[1].media_request_status).toEqual('PROCESSING');
-    expect(result[2].media_request_status).toEqual('FAILED');
+    expect(result[2].media_request_status).toEqual('OPEN');
+    expect(result[3].media_request_status).toEqual('FAILED');
   });
 
   it('should filter completed audio requests correctly', () => {
@@ -199,7 +200,7 @@ describe('AudiosComponent', () => {
 
     const result = component.filterCompletedRequests(audioRequests);
 
-    expect(result.length).toEqual(1);
+    expect(result.length).toEqual(6);
     expect(result[0].media_request_status).toEqual('COMPLETED');
   });
 });

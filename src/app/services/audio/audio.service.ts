@@ -1,32 +1,41 @@
-import { DatePipe } from '@angular/common';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
-import { HeaderService } from '@services/header/header.service';
 import { UserService } from '@services/user/user.service';
-import { BehaviorSubject, Observable, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest, switchMap, tap, timer } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AudioService {
-  headerService = inject(HeaderService);
-  datePipe = inject(DatePipe);
-  userService = inject(UserService);
-
   audioRequests$: Observable<UserAudioRequest[]>;
   expiredAudioRequests$: Observable<UserAudioRequest[]>;
+
+  //Defined in seconds
+  private POLL_INTERVAL = 60;
 
   private unreadCount: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   readonly unreadCount$: Observable<number> = this.unreadCount.asObservable();
 
-  constructor(private http: HttpClient) {
-    this.audioRequests$ = this.userService.req$.pipe(
+  headerData$: Observable<{
+    audioRequest: UserAudioRequest[];
+    unreadCount: number;
+  }>;
+
+  constructor(private http: HttpClient, userService: UserService) {
+    this.audioRequests$ = userService.req$.pipe(
       switchMap((d) => this.getAudioRequestsForUser(d.userId, false)),
       tap((d) => this.updateUnread(d))
     );
-    this.expiredAudioRequests$ = this.userService.req$.pipe(
-      switchMap((d) => this.getAudioRequestsForUser(d.userId, true))
+    this.expiredAudioRequests$ = userService.req$.pipe(switchMap((d) => this.getAudioRequestsForUser(d.userId, true)));
+    //Polling logic
+    this.headerData$ = timer(0, this.POLL_INTERVAL * 1000).pipe(
+      switchMap(() =>
+        combineLatest({
+          audioRequest: this.audioRequests$,
+          unreadCount: this.unreadCount$,
+        })
+      )
     );
   }
 

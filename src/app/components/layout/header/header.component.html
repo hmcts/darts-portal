@@ -61,9 +61,9 @@
               <span
                 aria-label="Audio notification count"
                 id="notifications"
-                *ngIf="unreadCount$ | async as unreadCount"
+                *ngIf="headerData$ | async as data"
                 class="moj-notification-badge"
-                >{{ unreadCount }}</span
+                >{{ data.unreadCount }}</span
               >
             </a>
           </li>

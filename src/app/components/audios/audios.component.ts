@@ -60,7 +60,7 @@ export class AudiosComponent {
     { name: 'Status', prop: 'status', sortable: true },
   ];
 
-  readyColumns = [{}, ...this.columns]; //Empty column for unread icon
+  readyColumns = [{ name: '', prop: '' }, ...this.columns]; //Empty column for unread icon
 
   constructor(private route: ActivatedRoute) {
     this.userId = this.route.snapshot.data.userState.userId;
@@ -68,13 +68,13 @@ export class AudiosComponent {
     //Same data used for in progress & completed tables so share replay
     this.audioRequests$ = this.audioService.audioRequests$.pipe(shareReplay(1));
     this.expiredAudioRequests$ = this.audioService.expiredAudioRequests$;
-    
+
     this.inProgessRows$ = this.audioRequests$.pipe(
       map((audioRequests) => this.filterInProgressRequests(audioRequests)),
       map((audioRequests) => this.mapAudioRequestToRows(audioRequests))
     );
     this.completedRows$ = this.audioRequests$.pipe(
-      map((audioRequests) => this.filterCompletedRequests(audioRequests)),
+      map((audioRequests) => this.audioService.filterCompletedRequests(audioRequests)),
       map((audioRequests) => this.mapAudioRequestToRows(audioRequests))
     );
     this.expiredRows$ = this.expiredAudioRequests$.pipe(
@@ -112,9 +112,5 @@ export class AudiosComponent {
         ar.media_request_status === 'PROCESSING' ||
         ar.media_request_status === 'FAILED'
     );
-  }
-
-  filterCompletedRequests(audioRequests: UserAudioRequest[]): UserAudioRequest[] {
-    return audioRequests.filter((ar) => ar.media_request_status === 'COMPLETED');
   }
 }
