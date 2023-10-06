@@ -2,7 +2,9 @@
   <div class="govuk-date-input" id="time-picker">
     <div class="govuk-date-input__item">
       <div class="govuk-form-group">
-        <label class="govuk-label govuk-date-input__label hour small-text" for="hour-input"> Hour </label>
+        <label class="govuk-label govuk-date-input__label hour small-text" [for]="idStringPrepend + '-hour-input'">
+          Hour
+        </label>
         <input
           class="govuk-input govuk-date-input__input govuk-input--width-2"
           [id]="idStringPrepend + '-hour-input'"
@@ -18,7 +20,9 @@
     <span class="govuk-body colon">:</span>
     <div class="govuk-date-input__item">
       <div class="govuk-form-group">
-        <label class="govuk-label govuk-date-input__label small-text" for="minutes-input"> Minutes </label>
+        <label class="govuk-label govuk-date-input__label small-text" [for]="idStringPrepend + '-minutes-input'">
+          Minutes
+        </label>
         <input
           class="govuk-input govuk-date-input__input govuk-input--width-2"
           [id]="idStringPrepend + '-minutes-input'"
@@ -34,7 +38,9 @@
     <span class="govuk-body colon">:</span>
     <div class="govuk-date-input__item">
       <div class="govuk-form-group">
-        <label class="govuk-label govuk-date-input__label small-text" for="seconds-input"> Seconds </label>
+        <label class="govuk-label govuk-date-input__label small-text" [for]="idStringPrepend + '-seconds-input'">
+          Seconds
+        </label>
         <input
           class="govuk-input govuk-date-input__input govuk-input--width-2"
           [id]="idStringPrepend + '-seconds-input'"
