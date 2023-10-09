@@ -1,7 +1,7 @@
 import './commands';
-import { format, add } from 'date-fns';
+import { DateTime } from 'luxon';
 
-const TOMORROW = format(add(new Date(), { days: 1 }), 'dd/MM/yyyy');
+const TOMORROW = DateTime.now().plus({ days: 1 }).startOf('day').toFormat('dd/MM/yyyy');
 
 const COURTHOUSE_MISSING = 'You must also enter a courthouse';
 const DATE_INVALID = 'You have not entered a recognised date in the correct format (for example 31/01/2023)';

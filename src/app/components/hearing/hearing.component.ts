@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
@@ -19,6 +19,7 @@ import { HearingFileComponent } from './hearing-file/hearing-file.component';
 import { OrderConfirmationComponent } from './order-confirmation/order-confirmation.component';
 import { RequestPlaybackAudioComponent } from './request-playback-audio/request-playback-audio.component';
 import { LoadingComponent } from '../common/loading/loading.component';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-hearing',
@@ -42,7 +43,7 @@ export class HearingComponent {
   hearingService = inject(HearingService);
   headerService = inject(HeaderService);
   userService = inject(UserService);
-  requestAudioTimes: Map<string, Date> | undefined;
+  audioTimes: { startTime: DateTime; endTime: DateTime } | null = null;
   private _state: HearingPageState = 'Default';
   public errorSummary: ErrorSummaryEntry[] = [];
 
@@ -58,6 +59,7 @@ export class HearingComponent {
   hearing$ = this.caseService.getHearingById(this.caseId, this.hearingId);
   audio$ = this.hearingService.getAudio(this.hearingId);
   events$ = this.hearingService.getEvents(this.hearingId);
+
   data$ = combineLatest({
     case: this.case$,
     hearing: this.hearing$,
@@ -82,27 +84,26 @@ export class HearingComponent {
 
   onEventsSelected(audioAndEvents: HearingAudioEventViewModel[]) {
     const timestamps: number[] = [];
-    const requestAudioTimes = new Map<string, Date>();
 
     if (audioAndEvents.length) {
-      audioAndEvents.forEach((val: HearingAudioEventViewModel) => {
-        if (val.timestamp) {
-          timestamps.push(new Date(val.timestamp).getTime());
+      audioAndEvents.forEach((audioAndEvent: HearingAudioEventViewModel) => {
+        if (audioAndEvent.timestamp) {
+          timestamps.push(DateTime.fromISO(audioAndEvent.timestamp).toUTC().toUnixInteger());
         }
-        if (val.media_start_timestamp) {
-          timestamps.push(new Date(val.media_start_timestamp).getTime());
+        if (audioAndEvent.media_start_timestamp) {
+          timestamps.push(DateTime.fromISO(audioAndEvent.media_start_timestamp).toUTC().toUnixInteger());
         }
-        if (val.media_end_timestamp) {
-          timestamps.push(new Date(val.media_end_timestamp).getTime());
+        if (audioAndEvent.media_end_timestamp) {
+          timestamps.push(DateTime.fromISO(audioAndEvent.media_end_timestamp).toUTC().toUnixInteger());
         }
       });
-      const startDateTimeStamp = new Date(Math.min(...timestamps));
-      const endDateTimeStamp = new Date(Math.max(...timestamps));
-      requestAudioTimes.set('startDateTime', startDateTimeStamp);
-      requestAudioTimes.set('endDateTime', endDateTimeStamp);
-      this.requestAudioTimes = requestAudioTimes;
+
+      const startDateTime = DateTime.fromSeconds(Math.min(...timestamps)).toUTC();
+      const endDateTime = DateTime.fromSeconds(Math.max(...timestamps)).toUTC();
+
+      this.audioTimes = { startTime: startDateTime, endTime: endDateTime };
     } else {
-      this.requestAudioTimes = undefined;
+      this.audioTimes = null;
     }
   }
 

@@ -1,9 +1,8 @@
-import { NgFor, NgIf } from '@angular/common';
-import { Component, Input, OnChanges } from '@angular/core';
+import { NgFor, NgIf, DatePipe } from '@angular/common';
+import { Component, inject, Input, OnChanges } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { Case, DatatableColumn, DatatableRow, Hearing } from '@darts-types/index';
-import { DateTimeService } from '@services/datetime/datetime.service';
 import { TableBodyTemplateDirective } from 'src/app/directives/table-body-template.directive';
 
 @Component({
@@ -14,6 +13,7 @@ import { TableBodyTemplateDirective } from 'src/app/directives/table-body-templa
   standalone: true,
 })
 export class ResultsComponent implements OnChanges {
+  datePipe = inject(DatePipe);
   @Input() cases: Case[] = [];
   @Input() loaded = false;
   @Input() errorType = '';
@@ -70,7 +70,7 @@ export class ResultsComponent implements OnChanges {
     } else {
       if (c.hearings.length < 2) {
         if (key === 'date') {
-          return this.getDateFormat(c.hearings[0][key]);
+          return this.datePipe.transform(c.hearings[0][key], 'EEE dd MMM YYYY') ?? '';
         } else {
           return c.hearings[0][key] as string;
         }
@@ -78,9 +78,5 @@ export class ResultsComponent implements OnChanges {
         return 'Multiple';
       }
     }
-  }
-
-  private getDateFormat(d: string): string {
-    return DateTimeService.getdddDMMMYYYY(d);
   }
 }

@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DatatableRow } from '@darts-types/data-table-row.interface';
 
@@ -310,13 +311,21 @@ describe('DataTableComponent', () => {
 
     it('should compare two dates in ascending order', () => {
       const column = 'date';
-      const result = component.compareDates(column, new Date('1 Sep 2023'), new Date('5 Jan 2024'));
+      const result = component.compareDates(
+        column,
+        DateTime.fromJSDate(new Date('1 Sep 2023')),
+        DateTime.fromJSDate(new Date('5 Jan 2024'))
+      );
       expect(result).toBeGreaterThan(0); // 1 Sep 2023 comes before 5 Jan 2024
     });
 
     it('should compare two dates in descending order', () => {
       const column = 'date';
-      const result = component.compareDates(column, new Date('5 Jan 2024'), new Date('1 Sep 2023'));
+      const result = component.compareDates(
+        column,
+        DateTime.fromJSDate(new Date('5 Jan 2024')),
+        DateTime.fromJSDate(new Date('1 Sep 2023'))
+      );
       expect(result).toBeLessThan(0); // 5 Jan 2024 comes after 1 Sep 2023
     });
 
