@@ -91,7 +91,7 @@
         {% if screen === 'loginScreen' %}
           <p id="outroText" class="outro">
             This sign in page is for users who do not work for HMCTS.<br />
-            <a id="dedicatedPage" href="#">There is a dedicated page for HMCTS employees to sign into the portal.</a>
+            <a id="dedicatedPage" href="{{hostname}}/auth/internal/login">There is a dedicated page for HMCTS employees to sign into the portal.</a>
           </p>
         {% endif %}
       </div>
