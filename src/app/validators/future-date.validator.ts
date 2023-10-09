@@ -1,21 +1,21 @@
 import { AbstractControl, ValidationErrors } from '@angular/forms';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 
 export const futureDateValidator = (control: AbstractControl): ValidationErrors | null => {
   const dateValue = control.value;
 
   if (!dateValue) return null;
 
-  const dateFormat = 'DD/MM/YYYY';
+  const dateFormat = 'dd/MM/yyyy';
 
-  if (!moment(dateValue, dateFormat, true).isValid()) {
-    return { invalidDate: true };
+  if (!DateTime.fromFormat(dateValue, dateFormat).isValid) {
+    return { pattern: true };
   }
 
-  const inputDate = moment(dateValue, dateFormat);
-  const currentDate = moment();
+  const inputDate = DateTime.fromFormat(dateValue, dateFormat);
+  const currentDate = DateTime.now();
 
-  if (inputDate.isAfter(currentDate)) {
+  if (currentDate.startOf('day') < inputDate.startOf('day')) {
     return { futureDate: true };
   }
   return null;

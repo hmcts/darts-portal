@@ -208,12 +208,12 @@ describe('HearingComponent', () => {
         },
       ];
       component.onEventsSelected(mockAudioAndEvents);
-      expect(component.requestAudioTimes);
+      expect(component.audioTimes);
     });
     it('should set request Audio times to undefined if audio and Events are empty', () => {
       const mockAudioAndEvents: AudioEventRow[] = [];
       component.onEventsSelected(mockAudioAndEvents);
-      expect(component.requestAudioTimes).toEqual(undefined);
+      expect(component.audioTimes).toEqual(null);
     });
   });
 

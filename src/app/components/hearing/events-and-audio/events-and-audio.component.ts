@@ -13,6 +13,7 @@ import {
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { AudioPlayerComponent } from '@common/audio-player/audio-player.component';
 import { HearingEventTypeEnum } from '@darts-types/enums';
+import { DateTime } from 'luxon';
 import { HearingAudio, AudioEventRow, HearingEvent, DatatableColumn } from '@darts-types/index';
 import { Subscription } from 'rxjs';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
@@ -126,8 +127,12 @@ export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
 
   private sortTableByTimeStamp(table: AudioEventRow[]) {
     table.sort((a, b) => {
-      const timestampA = new Date(a.timestamp ?? '').getTime();
-      const timestampB = new Date(b.timestamp ?? '').getTime();
+      const timestampA = DateTime.fromISO(a.timestamp ?? '')
+        .toUTC()
+        .toUnixInteger();
+      const timestampB = DateTime.fromISO(b.timestamp ?? '')
+        .toUTC()
+        .toUnixInteger();
 
       return timestampA - timestampB;
     });

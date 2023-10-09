@@ -14,6 +14,7 @@ import { RouterLink } from '@angular/router';
 import { TableRowTemplateDirective } from 'src/app/directives/table-row-template.directive';
 import { TableBodyTemplateDirective } from 'src/app/directives/table-body-template.directive';
 import { DatatableColumn, DatatableRow } from '@darts-types/index';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-data-table',
@@ -70,7 +71,7 @@ export class DataTableComponent<TRow extends DatatableRow> implements OnChanges 
 
       if (column === 'date' && typeof valueA === 'string' && typeof valueB === 'string') {
         //Date sorting
-        return this.compareDates(column, new Date(valueA), new Date(valueB));
+        return this.compareDates(column, DateTime.fromISO(valueA).toUTC(), DateTime.fromISO(valueB).toUTC());
       }
       if (
         column === 'courtroom' &&
@@ -137,8 +138,8 @@ export class DataTableComponent<TRow extends DatatableRow> implements OnChanges 
     return this.isAscSorting(column) ? a - b : b - a;
   }
 
-  compareDates(column: string, a: Date, b: Date): number {
-    return this.isAscSorting(column) ? a.getTime() - b.getTime() : b.getTime() - a.getTime();
+  compareDates(column: string, a: DateTime, b: DateTime): number {
+    return this.isAscSorting(column) ? a.toUnixInteger() - b.toUnixInteger() : b.toUnixInteger() - a.toUnixInteger();
   }
 
   isNumeric(num: string) {

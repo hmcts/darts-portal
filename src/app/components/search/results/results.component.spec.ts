@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ResultsComponent } from './results.component';
 import { Case, Hearing } from '@darts-types/index';
+import { DatePipe } from '@angular/common';
 
 describe('ResultsComponent', () => {
   let component: ResultsComponent;
@@ -9,6 +10,7 @@ describe('ResultsComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ResultsComponent],
+      providers: [DatePipe],
     });
     fixture = TestBed.createComponent(ResultsComponent);
     component = fixture.componentInstance;

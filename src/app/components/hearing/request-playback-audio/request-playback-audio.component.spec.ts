@@ -2,9 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
 import { UserService } from '@services/user/user.service';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 
 import { RequestPlaybackAudioComponent } from './request-playback-audio.component';
 
@@ -35,17 +34,17 @@ describe('RequestPlaybackAudioComponent', () => {
 
   describe('#setTimes', () => {
     it('should set the times for the input form', () => {
-      const requestAudioTimes = new Map<string, Date>([
-        ['startDateTime', moment('2023-07-31T02:00:00.620').toDate()],
-        ['endDateTime', moment('2023-07-31T15:32:24.620').toDate()],
-      ]);
+      const audioTimes = {
+        startTime: DateTime.fromISO('2023-07-31T02:00:00.620'),
+        endTime: DateTime.fromISO('2023-07-31T15:32:24.620'),
+      };
       const expectedResult = {
         startTime: { hours: '02', minutes: '00', seconds: '00' },
         endTime: { hours: '15', minutes: '32', seconds: '24' },
         requestType: 'PLAYBACK',
       };
 
-      component.requestAudioTimes = requestAudioTimes;
+      component.audioTimes = audioTimes;
       component.setTimes();
       expect(component.audioRequestForm.value).toEqual(expectedResult);
     });
@@ -53,12 +52,12 @@ describe('RequestPlaybackAudioComponent', () => {
 
   describe('#ngOnChanges', () =>
     it('should call setTimes if requestAudioTimes has been set', () => {
-      const requestAudioTimes = new Map<string, Date>([
-        ['startDateTime', moment('2023-07-31T02:00:00.620').toDate()],
-        ['endDateTime', moment('2023-07-31T15:32:24.620').toDate()],
-      ]);
+      const audioTimes = {
+        startTime: DateTime.fromISO('2023-07-31T02:00:00.620').toUTC(),
+        endTime: DateTime.fromISO('2023-07-31T15:32:24.620').toUTC(),
+      };
       const setTimesSpy = jest.spyOn(component, 'setTimes');
-      component.ngOnChanges({ requestAudioTimes: new SimpleChange(null, requestAudioTimes, false) });
+      component.ngOnChanges({ audioTimes: new SimpleChange(null, audioTimes, false) });
       expect(setTimesSpy).toHaveBeenCalled();
     }));
   it('should reset the start and end times on the form if requestAudioTimes is empty', () => {
@@ -73,7 +72,7 @@ describe('RequestPlaybackAudioComponent', () => {
       requestType: 'PLAYBACK',
     };
     component.audioRequestForm.setValue(initialForm);
-    component.ngOnChanges({ requestAudioTimes: new SimpleChange(null, undefined, false) });
+    component.ngOnChanges({ audioTimes: new SimpleChange(null, null, false) });
     expect(component.audioRequestForm.value).toEqual(expectedResult);
   });
 

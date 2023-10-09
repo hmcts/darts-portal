@@ -11,12 +11,11 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TimeInputComponent } from './time-input/time-input.component';
-import * as moment from 'moment';
-import { DateTimeService } from '@services/datetime/datetime.service';
 import { AudioRequest, ErrorSummaryEntry, FieldErrors, Hearing } from '@darts-types/index';
 import { timeGroupValidator } from '@validators/time-group.validator';
 import { UserState } from '@darts-types/user-state';
 import { UserService } from '@services/user/user.service';
+import { DateTime } from 'luxon';
 
 const fieldErrors: FieldErrors = {
   startTime: {
@@ -40,7 +39,7 @@ const fieldErrors: FieldErrors = {
 })
 export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
   @Input() hearing!: Hearing;
-  @Input() requestAudioTimes!: Map<string, Date> | undefined;
+  @Input() audioTimes: { startTime: DateTime; endTime: DateTime } | null = null;
   @Input() userState!: UserState;
   audioRequestForm: FormGroup;
   requestObj!: AudioRequest;
@@ -52,7 +51,6 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
 
   constructor(
     private fb: FormBuilder,
-    public datetimeService: DateTimeService,
     public userService: UserService
   ) {
     this.audioRequestForm = this.fb.group({
@@ -118,20 +116,20 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
   public setTimes(): void {
     this.audioRequestForm.patchValue({
       startTime: {
-        hours: this.requestAudioTimes?.get('startDateTime')?.getHours().toString().padStart(2, '0'),
-        minutes: this.requestAudioTimes?.get('startDateTime')?.getMinutes().toString().padStart(2, '0'),
-        seconds: this.requestAudioTimes?.get('startDateTime')?.getSeconds().toString().padStart(2, '0'),
+        hours: this.audioTimes?.startTime.hour.toString().padStart(2, '0'),
+        minutes: this.audioTimes?.startTime.minute.toString().padStart(2, '0'),
+        seconds: this.audioTimes?.startTime.second.toString().padStart(2, '0'),
       },
       endTime: {
-        hours: this.requestAudioTimes?.get('endDateTime')?.getHours().toString().padStart(2, '0'),
-        minutes: this.requestAudioTimes?.get('endDateTime')?.getMinutes().toString().padStart(2, '0'),
-        seconds: this.requestAudioTimes?.get('endDateTime')?.getSeconds().toString().padStart(2, '0'),
+        hours: this.audioTimes?.endTime.hour.toString().padStart(2, '0'),
+        minutes: this.audioTimes?.endTime.minute.toString().padStart(2, '0'),
+        seconds: this.audioTimes?.endTime.second.toString().padStart(2, '0'),
       },
     });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.requestAudioTimes.currentValue !== undefined) {
+    if (changes.audioTimes?.currentValue !== null) {
       this.setTimes();
     } else {
       this.audioRequestForm.get('startTime')?.reset();
@@ -149,18 +147,23 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
     const endTimeMinutes = this.audioRequestForm.get('endTime.minutes')?.value;
     const endTimeSeconds = this.audioRequestForm.get('endTime.seconds')?.value;
 
-    const startDateTime = moment.utc(`${this.hearing.date}T${startTimeHours}:${startTimeMinutes}:${startTimeSeconds}`);
-    const endDateTime = moment.utc(`${this.hearing.date}T${endTimeHours}:${endTimeMinutes}:${endTimeSeconds}`);
+    const startDateTime = DateTime.fromISO(
+      `${this.hearing.date}T${startTimeHours}:${startTimeMinutes}:${startTimeSeconds}`
+    );
 
-    if (!startDateTime.isValid() || !endDateTime.isValid() || this.audioRequestForm.get('requestType')?.invalid) return;
+    const endDateTime = DateTime.fromISO(`${this.hearing.date}T${endTimeHours}:${endTimeMinutes}:${endTimeSeconds}`);
+
+    if (!startDateTime.isValid || !endDateTime.isValid || this.audioRequestForm.get('requestType')?.invalid) return;
 
     this.requestObj = {
       hearing_id: this.hearing.id,
       requestor: this.userState.userId,
-      start_time: this.datetimeService.getIsoStringWithoutMilliseconds(startDateTime.toISOString()),
-      end_time: this.datetimeService.getIsoStringWithoutMilliseconds(endDateTime.toISOString()),
+      // Remove milliseconds from ISO string e.g. 2023-05-31T12:00:00Z
+      start_time: startDateTime.toISO()?.split('.')[0] + 'Z',
+      end_time: endDateTime.toISO()?.split('.')[0] + 'Z',
       request_type: this.audioRequestForm.get('requestType')?.value,
     };
+
     this.audioRequest.emit(this.requestObj);
   }
 }
