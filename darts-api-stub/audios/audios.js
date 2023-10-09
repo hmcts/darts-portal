@@ -158,7 +158,7 @@ router.patch('/:requestId', (req, res) => {
   //Set specific media request last_accessed_ts value
   let id = req.params.requestId;
   audioRequestMulti.find((x) => x.media_request_id == id).last_accessed_ts = new Date().toISOString();
-  res.sendStatus(204);
+  res.sendStatus(200);
 });
 
 router.post('', (req, res) => {
