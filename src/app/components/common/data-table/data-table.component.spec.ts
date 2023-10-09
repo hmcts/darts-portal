@@ -4,8 +4,8 @@ import { DatatableRow } from '@darts-types/data-table-row.interface';
 import { DataTableComponent, SortingInterface } from './data-table.component';
 
 describe('DataTableComponent', () => {
-  let component: DataTableComponent;
-  let fixture: ComponentFixture<DataTableComponent>;
+  let component: DataTableComponent<DatatableRow>;
+  let fixture: ComponentFixture<DataTableComponent<DatatableRow>>;
   const MOCK_ROWS: DatatableRow[] = [
     {
       case_id: 1,

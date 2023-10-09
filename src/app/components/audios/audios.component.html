@@ -64,7 +64,7 @@
     <div *tab="'Expired'">
       <ng-container *ngIf="data.expiredRows.length">
         <h2 class="govuk-heading-m">Expired</h2>
-        <app-data-table id="expiredTable" [rows]="data.expiredRows" [columns]="columns">
+        <app-data-table id="expiredTable" [rows]="data.expiredRows" [columns]="columns" [rowSelectable]="true">
           <ng-template [tableRowTemplate] let-row>
             <!-- Partial template for duplicated cells -->
             <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
