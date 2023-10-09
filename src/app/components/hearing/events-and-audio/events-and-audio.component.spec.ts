@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HearingAudio, HearingAudioEventViewModel, HearingEvent, HearingEventTypeEnum } from '@darts-types/index';
+import { HearingAudio, AudioEventRow, HearingEvent, HearingEventTypeEnum } from '@darts-types/index';
 import { Subscription } from 'rxjs';
 import { EventsAndAudioComponent } from './events-and-audio.component';
 
@@ -81,7 +81,7 @@ describe('EventsAndAudioComponent', () => {
 
     component.ngOnChanges();
 
-    const expectedTable: HearingAudioEventViewModel[] = [
+    const expectedTable: AudioEventRow[] = [
       {
         id: 1,
         media_start_timestamp: '2023-07-31T10:00:01.620Z',
@@ -126,11 +126,11 @@ describe('EventsAndAudioComponent', () => {
       },
     ];
 
-    expect(component.table).toEqual(expectedTable);
+    expect(component.rows).toEqual(expectedTable);
   });
 
   it('should toggle row selection', () => {
-    const row: HearingAudioEventViewModel = {
+    const row: AudioEventRow = {
       id: 1,
       media_start_timestamp: '2023-07-31T14:32:24.620Z',
       media_end_timestamp: '2023-07-31T14:32:24.620Z',
@@ -147,7 +147,7 @@ describe('EventsAndAudioComponent', () => {
   });
 
   it('should check if a row is selected', () => {
-    const row: HearingAudioEventViewModel = {
+    const row: AudioEventRow = {
       id: 1,
       media_start_timestamp: '2023-07-31T14:32:24.620Z',
       media_end_timestamp: '2023-07-31T14:32:24.620Z',
@@ -178,7 +178,7 @@ describe('EventsAndAudioComponent', () => {
           timestamp: '2023-07-31T02:32:24.620Z',
         },
       ];
-      component.filteredTable = filteredTable;
+      component.filteredRows = filteredTable;
       component.onSelectAllChanged(true);
       expect(component.selectedRows).toEqual(filteredTable);
       expect(eventsSelectSpy).toHaveBeenCalledWith(component.selectedRows);
@@ -192,18 +192,18 @@ describe('EventsAndAudioComponent', () => {
   });
 
   it('should filter rows correctly', () => {
-    const eventRow: HearingAudioEventViewModel = { id: 1, type: HearingEventTypeEnum.Event };
-    component.table = [
+    const eventRow: AudioEventRow = { id: 1, type: HearingEventTypeEnum.Event };
+    component.rows = [
       { id: 2, type: HearingEventTypeEnum.Audio },
       eventRow,
       { id: 3, type: HearingEventTypeEnum.Audio },
     ];
 
     component.onFilterChanged('event');
-    expect(component.filteredTable).toEqual([eventRow]);
+    expect(component.filteredRows).toEqual([eventRow]);
 
     component.onFilterChanged('all');
-    expect(component.filteredTable).toEqual(component.table);
+    expect(component.filteredRows).toEqual(component.rows);
   });
 
   it('should unsubscribe on ngOnDestroy', () => {
@@ -221,7 +221,7 @@ describe('EventsAndAudioComponent', () => {
 
     fixture.detectChanges();
 
-    expect(component.filteredTable).toEqual(component.table.filter((row) => row.type === HearingEventTypeEnum.Event));
+    expect(component.filteredRows).toEqual(component.rows.filter((row) => row.type === HearingEventTypeEnum.Event));
   });
 
   it('should filter by all', () => {
@@ -229,7 +229,7 @@ describe('EventsAndAudioComponent', () => {
 
     fixture.detectChanges();
 
-    expect(component.filteredTable).toEqual(component.table);
+    expect(component.filteredRows).toEqual(component.rows);
   });
 
   describe('#onPreviewAudio', () => {

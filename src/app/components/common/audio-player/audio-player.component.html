@@ -1,4 +1,4 @@
-<audio *ngIf="mediaId && audioSource" controls autoplay (canplay)="canPlay = true" [hidden]="!canPlay">
+<audio *ngIf="mediaId && audioSource" controls (canplay)="canPlay = true" [hidden]="!canPlay">
   <source type="audio/mpeg" [src]="audioSource" />
 </audio>
 

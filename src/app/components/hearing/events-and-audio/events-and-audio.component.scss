@@ -2,7 +2,11 @@
   margin-bottom: 0;
 }
 
-.govuk-table__cell,
+.govuk-table__cell {
+  vertical-align: middle;
+  padding: 10px;
+}
+
 .govuk-table__header {
   vertical-align: middle;
 }
@@ -12,9 +16,8 @@
   margin-left: 10px;
 }
 
-tr:has(button),
-tr:has(app-audio-player) {
-  background-color: aliceblue;
+.preview-audio-container {
+  display: flex;
 }
 
 .govuk-table__cell:last-child {
