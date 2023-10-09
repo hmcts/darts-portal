@@ -65,8 +65,7 @@ export class AudiosComponent {
   constructor(private route: ActivatedRoute) {
     this.userId = this.route.snapshot.data.userState.userId;
 
-    //Same data used for in progress & completed tables so share replay
-    this.audioRequests$ = this.audioService.audioRequests$.pipe(shareReplay(1));
+    this.audioRequests$ = this.audioService.audioRequests$;
     this.expiredAudioRequests$ = this.audioService.expiredAudioRequests$;
 
     this.inProgessRows$ = this.audioRequests$.pipe(
