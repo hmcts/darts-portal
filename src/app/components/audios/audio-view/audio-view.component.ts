@@ -24,8 +24,9 @@ export class AudioViewComponent {
     this.patchResponse$ = this.audioService.patchAudioRequest(this.route.snapshot.params.requestId);
     //////////
     //Temporary code to go back to audios, observe: 'response' can be removed from audio service call when below is removed
+    //Expects 204 as there is no content response
     this.patchResponse$.subscribe((response: HttpResponse<Response>) => {
-      if (response.status === 200) {
+      if (response.status === 204) {
         router.navigateByUrl('audios');
       }
     });
