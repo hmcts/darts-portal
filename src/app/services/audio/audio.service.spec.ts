@@ -1,9 +1,9 @@
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
-import { TestBed } from '@angular/core/testing';
+import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { AudioService } from './audio.service';
 import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
 import { UserService } from '@services/user/user.service';
-import { of, tap } from 'rxjs';
+import { of } from 'rxjs';
 import { UserState } from '@darts-types/user-state';
 
 describe('AudioService', () => {
@@ -190,64 +190,81 @@ describe('AudioService', () => {
       it('gets audio requests that are expired', () => {
         const mockAudios: UserAudioRequest[] = MOCK_EXPIRED_AUDIO_REQUESTS;
 
-        service.getAudioRequestsForUser(123, true).subscribe((audios) => {
-          expect(audios).toEqual(mockAudios);
+        let audios;
+
+        service.getAudioRequestsForUser(123, true).subscribe((result) => {
+          audios = result;
         });
 
         const req = httpMock.expectOne('api/audio-requests?expired=true');
         expect(req.request.method).toBe('GET');
 
         req.flush(mockAudios);
+
+        expect(audios).toEqual(mockAudios);
       });
     });
 
     describe('#patchAudioRequest', () => {
       it('sends patch request', () => {
         const reqId = 123449;
+        let responseStatus;
         service.patchAudioRequest(reqId).subscribe((res) => {
-          expect(res.status).toEqual(204);
+          responseStatus = res.status;
         });
 
         const req = httpMock.expectOne(`api/audio-requests/${reqId}`);
         expect(req.request.method).toBe('PATCH');
+
+        req.flush(null, { status: 204, statusText: '' });
+
+        expect(responseStatus).toEqual(204);
       });
     });
   });
 
   describe('constructor', () => {
-    it('audioRequests$ subscribe should call getAudioRequestsForUser and update unread count', () => {
+    it('audioRequests$ subscribe should call getAudioRequestsForUser and update unread count', fakeAsync(() => {
       const audioSpy = jest.spyOn(service, 'getAudioRequestsForUser');
       const unreadSpy = jest.spyOn(service, 'updateUnread');
 
-      service.audioRequests$.subscribe(() => {
-        expect(audioSpy).toHaveBeenCalledTimes(1);
-        expect(unreadSpy).toHaveBeenCalledTimes(1);
-        expect(audioSpy).toHaveBeenCalledWith(123, false);
-        expect(service.unreadCount$).toEqual(of(5));
-      });
-    });
+      service.audioRequests$.subscribe();
 
-    it('expiredAudioRequests$ subscribe should call getAudioRequestsForUser once', () => {
+      tick();
+
+      expect(audioSpy).toHaveBeenCalledTimes(1);
+      expect(audioSpy).toHaveBeenCalledWith(123, false);
+      discardPeriodicTasks();
+    }));
+
+    it('expiredAudioRequests$ subscribe should call getAudioRequestsForUser once', fakeAsync(() => {
       const audioSpy = jest.spyOn(service, 'getAudioRequestsForUser');
 
-      service.expiredAudioRequests$.subscribe(() => {
-        expect(audioSpy).toHaveBeenCalledTimes(1);
-        expect(audioSpy).toHaveBeenCalledWith(123, true);
-      });
-    });
+      service.expiredAudioRequests$.subscribe();
+
+      tick();
+
+      expect(audioSpy).toHaveBeenCalledTimes(1);
+      expect(audioSpy).toHaveBeenCalledWith(123, true);
+      discardPeriodicTasks();
+    }));
   });
 
   describe('#updateUnread', () => {
-    it('should filter only complete requests', () => {
+    it('should filter only complete requests', fakeAsync(() => {
       const filterSpy = jest.spyOn(service, 'filterCompletedRequests');
       const mockAudios: UserAudioRequest[] = MOCK_AUDIO_REQUESTS;
+      let count!: number;
       service.updateUnread(mockAudios);
 
-      service.unreadCount$.subscribe(() => {
-        expect(filterSpy).toHaveBeenCalledTimes(1);
-        expect(service.unreadCount$).toEqual(of(5));
-      });
-    });
+      service.unreadCount$.subscribe((result) => (count = result));
+
+      tick();
+
+      expect(filterSpy).toHaveBeenCalledWith(mockAudios);
+      expect(count).toEqual(5);
+      discardPeriodicTasks();
+    }));
   });
 
   describe('#filterCompletedRequests', () => {
