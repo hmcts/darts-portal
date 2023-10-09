@@ -26,22 +26,23 @@ export class AudioService {
     private http: HttpClient,
     userService: UserService
   ) {
-    this.audioRequests$ = userService.getUserProfile().pipe(
-      switchMap((d) => this.getAudioRequestsForUser(d.userId, false)),
-      tap((d) => this.updateUnread(d))
-    );
-    this.expiredAudioRequests$ = userService
-      .getUserProfile()
-      .pipe(switchMap((d) => this.getAudioRequestsForUser(d.userId, true)));
-    //Polling logic
-    this.headerData$ = timer(0, this.POLL_INTERVAL * 1000).pipe(
+    this.audioRequests$ = timer(0, this.POLL_INTERVAL * 1000).pipe(
       switchMap(() =>
-        combineLatest({
-          audioRequest: this.audioRequests$,
-          unreadCount: this.unreadCount$,
-        })
+        userService.getUserProfile().pipe(
+          switchMap((d) => this.getAudioRequestsForUser(d.userId, false)),
+          tap((d) => this.updateUnread(d))
+        )
       )
     );
+
+    this.expiredAudioRequests$ = timer(0, this.POLL_INTERVAL * 1000).pipe(
+      switchMap(() => userService.getUserProfile().pipe(switchMap((d) => this.getAudioRequestsForUser(d.userId, true))))
+    );
+
+    this.headerData$ = combineLatest({
+      audioRequest: this.audioRequests$,
+      unreadCount: this.unreadCount$,
+    });
   }
 
   getAudioRequestsForUser(userId: number, expired: boolean): Observable<UserAudioRequest[]> {
