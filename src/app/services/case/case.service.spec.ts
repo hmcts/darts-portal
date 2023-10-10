@@ -1,5 +1,5 @@
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { Case, CaseFile, Courthouse, Hearing, SearchFormValues } from '@darts-types/index';
 import { ADVANCED_SEARCH_CASE_PATH, CaseService, GET_CASE_PATH, GET_COURTHOUSES_PATH } from './case.service';
 
@@ -104,7 +104,7 @@ describe('CaseService', () => {
 
     req.flush(mockHearings);
 
-    expect(hearingsResponse).toEqual(mockHearings);
+    expect(hearingsResponse).toEqual(mockHearings.map((h) => ({ ...h, date: h.date + 'Z' })));
   });
 
   it('#searchCases', () => {
