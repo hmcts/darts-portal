@@ -36,7 +36,7 @@ describe('Request audio', () => {
     cy.get('.govuk-grid-column-two-thirds > :nth-child(4)').should('contain', 'C20220620001');
     cy.get('.govuk-grid-column-two-thirds > :nth-child(6)').should('contain', 'Swansea');
     cy.get('.govuk-grid-column-two-thirds > :nth-child(8)').should('contain', 'Defendant Dave');
-    cy.get('.govuk-grid-column-two-thirds > :nth-child(11)').should('contain', '2023-09-01');
+    cy.get('.govuk-grid-column-two-thirds > :nth-child(11)').should('contain', '1 Sep 2023');
     cy.get('.govuk-grid-column-two-thirds > :nth-child(13)').should('contain', '02:32:24');
     cy.get('.govuk-grid-column-two-thirds > :nth-child(15)').should('contain', '14:32:24');
 
@@ -46,7 +46,7 @@ describe('Request audio', () => {
     cy.get('.govuk-grid-column-two-thirds > :nth-child(4)').should('contain', 'C20220620001');
     cy.get('.govuk-grid-column-two-thirds > :nth-child(6)').should('contain', 'Swansea');
     cy.get('.govuk-grid-column-two-thirds > :nth-child(8)').should('contain', 'Defendant Dave');
-    cy.get('.govuk-grid-column-two-thirds > :nth-child(11)').should('contain', '2023-09-01');
+    cy.get('.govuk-grid-column-two-thirds > :nth-child(11)').should('contain', '1 Sep 2023');
     cy.get('.govuk-grid-column-two-thirds > :nth-child(13)').should('contain', '02:32:24');
     cy.get('.govuk-grid-column-two-thirds > :nth-child(15)').should('contain', '14:32:24');
     cy.get(':nth-child(18) > strong').should('contain', 'dev@local');
