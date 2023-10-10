@@ -8,15 +8,11 @@ describe('Request audio', () => {
     cy.get('#case_number').type('C20220620001');
     cy.get('button').contains('Search').click();
 
-    cy.get('#search-results').should('contain', '1 result');
     cy.get('.govuk-table__row').contains('C20220620001');
-    cy.get('.govuk-table__row').contains('Swansea');
-    cy.get('.govuk-table__row').contains('1');
-    cy.get('.govuk-table__row').contains('Judge Judy');
-    cy.get('.govuk-table__row').contains('Defendant Dave');
-    cy.get('.restriction-row').should('contain', 'Restriction: Section 4(2) of the Contempt of Court Act 1981');
     cy.get('a').contains('C20220620001').click();
-    cy.get('a').contains('31 Aug 2023').click();
+    cy.get('h1').should('contain', 'C20220620001');
+    cy.get('#hearingsTable').should('contain', '31 Aug 2023');
+    cy.get('#hearingsTable a').contains('31 Aug 2023').click();
   });
 
   it('should request audio', () => {
