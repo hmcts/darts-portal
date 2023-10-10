@@ -11,8 +11,8 @@ describe('Request audio', () => {
     cy.get('.govuk-table__row').contains('C20220620001');
     cy.get('a').contains('C20220620001').click();
     cy.get('h1').should('contain', 'C20220620001');
-    cy.get('#hearingsTable').should('contain', '31 Aug 2023');
-    cy.get('#hearingsTable a').contains('31 Aug 2023').click();
+    cy.get('#hearingsTable').should('contain', '1 Sep 2023');
+    cy.get('#hearingsTable a').contains('1 Sep 2023').click();
   });
 
   it('should request audio', () => {
@@ -31,7 +31,7 @@ describe('Request audio', () => {
 
     cy.get('#download-radio').click();
 
-    cy.get('.button').contains('Get Audio').click();
+    cy.get('.button > .govuk-button').contains('Get Audio').click();
 
     cy.get('.govuk-grid-column-two-thirds > :nth-child(4)').should('contain', 'C20220620001');
     cy.get('.govuk-grid-column-two-thirds > :nth-child(6)').should('contain', 'Swansea');
