@@ -3,12 +3,14 @@ import { Component, inject } from '@angular/core';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { AudioService } from '@services/audio/audio.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { combineLatest, map, Observable } from 'rxjs';
+import { combineLatest, map, Observable, shareReplay, tap } from 'rxjs';
 import { CommonModule, DatePipe } from '@angular/common';
 import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
 import { TableRowTemplateDirective } from 'src/app/directives/table-row-template.directive';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabDirective } from 'src/app/directives/tab.directive';
+import { UnreadIconDirective } from '@directives/unread-icon.directive';
+import { HeaderService } from '@services/header/header.service';
 import { DatatableColumn, UserAudioRequestRow } from '@darts-types/index';
 
 @Component({
@@ -22,11 +24,13 @@ import { DatatableColumn, UserAudioRequestRow } from '@darts-types/index';
     TabsComponent,
     CommonModule,
     TableRowTemplateDirective,
+    UnreadIconDirective,
     RouterLink,
     TabDirective,
   ],
 })
 export class AudiosComponent {
+  headerService = inject(HeaderService);
   audioService = inject(AudioService);
   datePipe = inject(DatePipe);
 
@@ -35,9 +39,9 @@ export class AudiosComponent {
   audioRequests$: Observable<UserAudioRequest[]>;
   expiredAudioRequests$: Observable<UserAudioRequest[]>;
 
-  inProgessRows$: Observable<UserAudioRequestRow[]>;
-  completedRows$: Observable<UserAudioRequestRow[]>;
-  expiredRows$: Observable<UserAudioRequestRow[]>;
+  inProgessRows$!: Observable<UserAudioRequestRow[]>;
+  completedRows$!: Observable<UserAudioRequestRow[]>;
+  expiredRows$!: Observable<UserAudioRequestRow[]>;
 
   data$: Observable<{
     inProgessRows: UserAudioRequestRow[];
@@ -56,22 +60,22 @@ export class AudiosComponent {
     { name: 'Status', prop: 'status', sortable: true },
   ];
 
+  readyColumns = [{ name: '', prop: '' }, ...this.columns]; //Empty column for unread icon
+
   constructor(private route: ActivatedRoute) {
     this.userId = this.route.snapshot.data.userState.userId;
 
-    this.audioRequests$ = this.audioService.getAudioRequestsForUser(this.userId, false);
-    this.expiredAudioRequests$ = this.audioService.getAudioRequestsForUser(this.userId, true);
+    this.audioRequests$ = this.audioService.audioRequests$;
+    this.expiredAudioRequests$ = this.audioService.expiredAudioRequests$;
 
     this.inProgessRows$ = this.audioRequests$.pipe(
       map((audioRequests) => this.filterInProgressRequests(audioRequests)),
       map((audioRequests) => this.mapAudioRequestToRows(audioRequests))
     );
-
     this.completedRows$ = this.audioRequests$.pipe(
-      map((audioRequests) => this.filterCompletedRequests(audioRequests)),
+      map((audioRequests) => this.audioService.filterCompletedRequests(audioRequests)),
       map((audioRequests) => this.mapAudioRequestToRows(audioRequests))
     );
-
     this.expiredRows$ = this.expiredAudioRequests$.pipe(
       map((audioRequests) => this.mapAudioRequestToRows(audioRequests))
     );
@@ -95,6 +99,7 @@ export class AudiosComponent {
         requestId: ar.media_request_id,
         expiry: this.datePipe.transform(ar.media_request_expiry_ts, 'hh:mm:ss dd/mm/yyyy', 'utc'),
         status: ar.media_request_status,
+        last_accessed_ts: ar.last_accessed_ts,
       };
     });
   }
@@ -106,9 +111,5 @@ export class AudiosComponent {
         ar.media_request_status === 'PROCESSING' ||
         ar.media_request_status === 'FAILED'
     );
-  }
-
-  filterCompletedRequests(audioRequests: UserAudioRequest[]): UserAudioRequest[] {
-    return audioRequests.filter((ar) => ar.media_request_status === 'COMPLETED');
   }
 }

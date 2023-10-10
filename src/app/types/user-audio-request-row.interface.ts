@@ -8,5 +8,6 @@ export interface UserAudioRequestRow extends DatatableRow {
   endTime: string | null;
   requestId: number;
   expiry: string | null;
-  status: 'OPEN' | 'PROCESSING' | 'FAILED' | 'COMPLETED';
+  status: 'OPEN' | 'PROCESSING' | 'FAILED' | 'COMPLETED' | 'EXPIRED';
+  last_accessed_ts?: string;
 }

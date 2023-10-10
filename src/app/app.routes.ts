@@ -17,6 +17,11 @@ const protectedRoutes: Routes = [
     loadComponent: () => import('./components/audios/audios.component').then((c) => c.AudiosComponent),
   },
   {
+    path: 'audios/:requestId',
+    loadComponent: () =>
+      import('./components/audios/audio-view/audio-view.component').then((c) => c.AudioViewComponent),
+  },
+  {
     path: 'transcriptions',
     loadComponent: () =>
       import('./components/transcriptions/transcriptions.component').then((c) => c.TranscriptionsComponent),

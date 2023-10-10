@@ -1,8 +1,10 @@
-import { Component, DoCheck } from '@angular/core';
+import { Component, DoCheck, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule, NgIf } from '@angular/common';
 import { AuthService } from '@services/auth/auth.service';
 import { HeaderService } from '@services/header/header.service';
+import { AudioService } from '@services/audio/audio.service';
+import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -14,10 +16,12 @@ import { HeaderService } from '@services/header/header.service';
 export class HeaderComponent implements DoCheck {
   isAuthenticated = false;
   isVisible$ = this.headerService.isVisible$;
+  headerData$ = this.audioService.headerData$;
 
   constructor(
     private authService: AuthService,
-    private headerService: HeaderService
+    private headerService: HeaderService,
+    private audioService: AudioService
   ) {}
 
   ngDoCheck() {
