@@ -2,7 +2,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
 import { UserService } from '@services/user/user.service';
-import { BehaviorSubject, Observable, combineLatest, switchMap, tap, timer } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest, switchMap, tap, timer, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -46,10 +46,12 @@ export class AudioService {
   }
 
   getAudioRequestsForUser(userId: number, expired: boolean): Observable<UserAudioRequest[]> {
-    return this.http.get<UserAudioRequest[]>(`api/audio-requests`, {
-      headers: { user_id: userId.toString() },
-      params: { expired },
-    });
+    return this.http
+      .get<UserAudioRequest[]>(`api/audio-requests`, {
+        headers: { user_id: userId.toString() },
+        params: { expired },
+      })
+      .pipe(map((requests) => requests.map((r) => ({ ...r, hearing_date: r.hearing_date + 'Z' }))));
   }
 
   updateUnread(audioRequests: UserAudioRequest[]) {
