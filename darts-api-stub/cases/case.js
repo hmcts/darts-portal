@@ -30,14 +30,14 @@ const singleCaseTwo = {
 const singleCaseHearings = [
   {
     id: 2,
-    date: '2023-09-01',
+    date: '2023-09-01T00:00:00Z',
     judges: ['Bob Ross'],
     courtroom: '4',
     transcript_count: 0,
   },
   {
     id: 2,
-    date: '2023-03-01',
+    date: '2023-03-01T00:00:00Z',
     judges: ['Defender Dave'],
     courtroom: '2',
     transcript_count: 2,
@@ -47,42 +47,42 @@ const singleCaseHearings = [
 const singleCaseMultiHearings = [
   {
     id: 1,
-    date: '2023-09-01',
+    date: '2023-09-01T00:00:00Z',
     judges: ['HHJ M. Hussain KC'],
     courtroom: '3',
     transcript_count: 1,
   },
   {
     id: 2,
-    date: '2023-10-10',
+    date: '2023-10-10T00:00:00Z',
     courtroom: '4',
     judges: ['Judge Jonny'],
     transcript_count: 2,
   },
   {
     id: 3,
-    date: '2023-10-11',
+    date: '2023-10-11T00:00:00Z',
     courtroom: '9',
     judges: ['Alex Jonny'],
     transcript_count: 3,
   },
   {
     id: 4,
-    date: '2023-12-01',
+    date: '2023-12-01T00:00:00Z',
     courtroom: '9',
     judges: ['Zach Malik'],
     transcript_count: 50,
   },
   {
     id: 5,
-    date: '2024-01-05',
+    date: '2024-01-05T00:00:00Z',
     courtroom: '9',
     judges: ['Fred Masey'],
     transcript_count: 53,
   },
   {
     id: 6,
-    date: '2024-03-10',
+    date: '2024-03-10T00:00:00Z',
     courtroom: '11',
     judges: ['Zach Attack'],
     transcript_count: 51,
@@ -100,7 +100,7 @@ const multipleCases = [
     hearings: [
       {
         id: 1,
-        date: '2023-08-10',
+        date: '2023-08-10T00:00:00Z',
         courtroom: '3',
         judges: ['Judge Judy'],
       },
@@ -139,13 +139,13 @@ const multipleCases = [
     hearings: [
       {
         id: 3,
-        date: '2023-08-10',
+        date: '2023-08-10T00:00:00Z',
         courtroom: '3',
         judges: ['Judge Judy'],
       },
       {
         id: 4,
-        date: '2033-09-10',
+        date: '2033-09-10T00:00:00Z',
         courtroom: '5',
         judges: ['Judge Judy'],
       },
@@ -161,7 +161,7 @@ const multipleCases = [
     hearings: [
       {
         id: 5,
-        date: '2023-08-10',
+        date: '2023-08-10T00:00:00Z',
         courtroom: '1',
         judges: ['Judge Judy'],
       },
@@ -185,7 +185,7 @@ const multipleCases = [
     hearings: [
       {
         id: 6,
-        date: '2023-08-10',
+        date: '2023-08-10T00:00:00Z',
         courtroom: '3',
         judges: ['Judge Judy'],
       },
@@ -200,13 +200,13 @@ const multipleCases = [
     hearings: [
       {
         id: 7,
-        date: '2023-08-10',
+        date: '2023-08-10T00:00:00Z',
         courtroom: '3',
         judges: ['Judge Judy'],
       },
       {
         id: 8,
-        date: '2033-09-10',
+        date: '2033-09-10T00:00:00Z',
         courtroom: '5',
         judges: ['Judge Judy'],
       },
@@ -222,7 +222,7 @@ const multipleCases = [
     hearings: [
       {
         id: 9,
-        date: '2023-08-10',
+        date: '2023-08-10T00:00:00Z',
         courtroom: '1',
         judges: ['Judge Judy'],
       },
@@ -246,7 +246,7 @@ const multipleCases = [
     hearings: [
       {
         id: 10,
-        date: '2023-08-10',
+        date: '2023-08-10T00:00:00Z',
         courtroom: '3',
         judges: ['Judge Judy'],
       },
@@ -261,13 +261,13 @@ const multipleCases = [
     hearings: [
       {
         id: 11,
-        date: '2023-08-10',
+        date: '2023-08-10T00:00:00Z',
         courtroom: '3',
         judges: ['Judge Judy'],
       },
       {
         id: 12,
-        date: '2033-09-10',
+        date: '2033-09-10T00:00:00Z',
         courtroom: '5',
         judges: ['Judge Judy'],
       },
@@ -283,7 +283,7 @@ const multipleCases = [
     hearings: [
       {
         id: 13,
-        date: '2023-08-10',
+        date: '2023-08-10T00:00:00Z',
         courtroom: '1',
         judges: ['Judge Judy'],
       },
@@ -307,7 +307,7 @@ const multipleCases = [
     hearings: [
       {
         id: 14,
-        date: '2023-08-10',
+        date: '2023-08-10T00:00:00Z',
         courtroom: '3',
         judges: ['Judge Judy'],
       },
@@ -322,13 +322,13 @@ const multipleCases = [
     hearings: [
       {
         id: 15,
-        date: '2023-08-10',
+        date: '2023-08-10T00:00:00Z',
         courtroom: '3',
         judges: ['Judge Judy'],
       },
       {
         id: 16,
-        date: '2033-09-10',
+        date: '2033-09-10T00:00:00Z',
         courtroom: '5',
         judges: ['Judge Judy'],
       },
