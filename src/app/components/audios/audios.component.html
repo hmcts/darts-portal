@@ -3,11 +3,11 @@
     <a [routerLink]="['.']"> {{ row.caseNumber }}</a>
   </td>
   <td class="govuk-table__cell">{{ row.courthouse }}</td>
-  <td class="govuk-table__cell">{{ row.hearingDate }}</td>
-  <td class="govuk-table__cell">{{ row.startTime }}</td>
-  <td class="govuk-table__cell">{{ row.endTime }}</td>
+  <td class="govuk-table__cell">{{ row.hearingDate | date: 'dd MMM yyyy' }}</td>
+  <td class="govuk-table__cell">{{ row.startTime | date: 'hh:mm:ss' }}</td>
+  <td class="govuk-table__cell">{{ row.endTime | date: 'hh:mm:ss' }}</td>
   <td class="govuk-table__cell">{{ row.requestId }}</td>
-  <td class="govuk-table__cell">{{ row.expiry }}</td>
+  <td class="govuk-table__cell">{{ row.expiry | date: 'hh:mm:ss dd/MM/yyyy' }}</td>
 </ng-template>
 
 <h1 class="govuk-label-wrapper">

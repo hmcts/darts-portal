@@ -69,9 +69,10 @@ export class DataTableComponent<TRow extends DatatableRow> implements OnChanges 
       const valueA = a[column];
       const valueB = b[column];
 
-      if (column === 'date' && typeof valueA === 'string' && typeof valueB === 'string') {
-        //Date sorting
-        return this.compareDates(column, DateTime.fromISO(valueA).toUTC(), DateTime.fromISO(valueB).toUTC());
+      if (typeof valueA === 'string' && typeof valueB === 'string') {
+        if (this.isDateTime(valueA) && this.isDateTime(valueB)) {
+          return this.compareDates(column, DateTime.fromISO(valueA).toUTC(), DateTime.fromISO(valueB).toUTC());
+        }
       }
       if (
         column === 'courtroom' &&
@@ -128,6 +129,10 @@ export class DataTableComponent<TRow extends DatatableRow> implements OnChanges 
     const numSelected = this.selectedRows.length;
     const numRows = this.pagedRows.length;
     return numSelected == numRows;
+  }
+
+  isDateTime(value: string): boolean {
+    return DateTime.fromISO(value).toUTC().isValid;
   }
 
   compareStrings(column: string, a: string, b: string): number {
