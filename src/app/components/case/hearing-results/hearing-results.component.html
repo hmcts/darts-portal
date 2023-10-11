@@ -1,6 +1,6 @@
 <app-tabs>
   <div *tab="'Hearings'">
-    <app-data-table [rows]="rows" [columns]="columns">
+    <app-data-table id="hearingsTable" [rows]="rows" [columns]="columns">
       <ng-template [tableRowTemplate] let-row>
         <td class="govuk-table__cell">
           <a [routerLink]="['/case', caseId, 'hearing', row.id]">{{ row.date | date: 'd MMM y' }}</a>
