@@ -3,7 +3,7 @@ import { Component, inject } from '@angular/core';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { AudioService } from '@services/audio/audio.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { combineLatest, map, Observable, shareReplay, tap } from 'rxjs';
+import { combineLatest, map, Observable } from 'rxjs';
 import { CommonModule, DatePipe } from '@angular/common';
 import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
 import { TableRowTemplateDirective } from 'src/app/directives/table-row-template.directive';
