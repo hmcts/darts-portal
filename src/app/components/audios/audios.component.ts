@@ -2,8 +2,8 @@ import { DataTableComponent } from '@common/data-table/data-table.component';
 import { Component, inject } from '@angular/core';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { AudioService } from '@services/audio/audio.service';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { combineLatest, map, Observable, shareReplay, tap } from 'rxjs';
+import { RouterLink } from '@angular/router';
+import { combineLatest, map, Observable } from 'rxjs';
 import { CommonModule, DatePipe } from '@angular/common';
 import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
 import { TableRowTemplateDirective } from 'src/app/directives/table-row-template.directive';
@@ -34,8 +34,6 @@ export class AudiosComponent {
   audioService = inject(AudioService);
   datePipe = inject(DatePipe);
 
-  userId: number;
-
   audioRequests$: Observable<UserAudioRequest[]>;
   expiredAudioRequests$: Observable<UserAudioRequest[]>;
 
@@ -62,9 +60,7 @@ export class AudiosComponent {
 
   readyColumns = [{ name: '', prop: '' }, ...this.columns]; //Empty column for unread icon
 
-  constructor(private route: ActivatedRoute) {
-    this.userId = this.route.snapshot.data.userState.userId;
-
+  constructor() {
     this.audioRequests$ = this.audioService.audioRequests$;
     this.expiredAudioRequests$ = this.audioService.expiredAudioRequests$;
 
