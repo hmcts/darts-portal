@@ -1,6 +1,15 @@
 <app-tabs>
   <div *tab="'Hearings'">
-    <app-data-table [rows]="rows" [columns]="columns"></app-data-table>
+    <app-data-table [rows]="rows" [columns]="columns">
+      <ng-template [tableRowTemplate] let-row>
+        <td class="govuk-table__cell">
+          <a [routerLink]="['/case', caseId, 'hearing', row.id]">{{ row.date | date: 'd MMM y' }}</a>
+        </td>
+        <td class="govuk-table__cell">{{ row.judges }}</td>
+        <td class="govuk-table__cell">{{ row.courtroom }}</td>
+        <td class="govuk-table__cell">{{ row.transcripts }}</td>
+      </ng-template>
+    </app-data-table>
   </div>
   <div *tab="'Transcripts'"></div>
 </app-tabs>
