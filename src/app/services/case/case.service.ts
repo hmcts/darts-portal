@@ -37,7 +37,6 @@ export class CaseService {
       .get<Hearing[]>(`${GET_CASE_PATH}/${caseId}/hearings`)
       .pipe(map((hearings) => hearings.map((h) => ({ ...h, date: h.date + 'Z' }))));
   }
-
   searchCases(searchForm: SearchFormValues): Observable<Case[]> {
     // Save search form values
     this.searchFormValues = searchForm;
