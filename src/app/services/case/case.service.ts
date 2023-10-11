@@ -33,9 +33,10 @@ export class CaseService {
   }
 
   getCaseHearings(caseId: number): Observable<Hearing[]> {
-    return this.http.get<Hearing[]>(`${GET_CASE_PATH}/${caseId}/hearings`);
+    return this.http
+      .get<Hearing[]>(`${GET_CASE_PATH}/${caseId}/hearings`)
+      .pipe(map((hearings) => hearings.map((h) => ({ ...h, date: h.date + 'Z' }))));
   }
-
   searchCases(searchForm: SearchFormValues): Observable<Case[]> {
     // Save search form values
     this.searchFormValues = searchForm;
