@@ -66,10 +66,14 @@
               <td class="govuk-table__cell">
                 <div class="status-cell">
                   <strong class="govuk-tag govuk-tag--green"> READY </strong>
-                  <a [routerLink]="['/audios/', row.requestId]">View</a>
                 </div>
               </td>
-            </ng-template>
+              <td class="govuk-table__cell">
+                <div class="status-cell">
+                  <a [routerLink]="['/audios/', row.requestId]">View</a>
+                </div>
+              </td></ng-template
+            >
           </app-data-table>
         </ng-container>
       </div>

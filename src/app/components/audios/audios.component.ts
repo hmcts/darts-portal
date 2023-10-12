@@ -70,7 +70,7 @@ export class AudiosComponent {
 
   unSortableColumns = this.columns.map((col) => ({ ...col, sortable: false }));
 
-  readyColumns = [{ name: '', prop: '' }, ...this.columns]; //Empty column for unread icon
+  readyColumns = [{ name: '', prop: '' }, ...this.columns, { name: '', prop: '' }]; //Empty columns for unread icon and view link
 
   constructor() {
     this.audioRequests$ = this.audioService.audioRequests$;
@@ -98,7 +98,7 @@ export class AudiosComponent {
   mapAudioRequestToRows(audioRequests: UserAudioRequest[]): UserAudioRequestRow[] {
     return audioRequests.map((ar) => {
       return {
-        // id: ar.case_id,
+        caseId: ar.case_id,
         caseNumber: ar.case_number,
         courthouse: ar.courthouse_name,
         hearingDate: ar.hearing_date,

@@ -1,4 +1,5 @@
 export interface UserAudioRequest {
+  case_id: number;
   media_request_id: number;
   case_number: string;
   courthouse_name: string;
