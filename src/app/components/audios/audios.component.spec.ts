@@ -1,6 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
+import { UserAudioRequestRow } from '@darts-types/user-audio-request-row.interface';
 import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
 import { AudioService } from '@services/audio/audio.service';
 import { of } from 'rxjs';
@@ -162,6 +163,7 @@ describe('AudiosComponent', () => {
   const audioServiceStub = {
     audioRequests$: of(MOCK_AUDIO_REQUESTS),
     expiredAudioRequests$: of(MOCK_EXPIRED_AUDIO_REQUESTS),
+    deleteAudioRequests: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -193,5 +195,66 @@ describe('AudiosComponent', () => {
     expect(result[1].media_request_status).toEqual('PROCESSING');
     expect(result[2].media_request_status).toEqual('OPEN');
     expect(result[3].media_request_status).toEqual('FAILED');
+  });
+
+  describe('#onSelectedAudio', () => {
+    it('should set selectedAudioRequests array', () => {
+      const selectedAudioRequests = [{} as UserAudioRequestRow];
+
+      component.onSelectedAudio(selectedAudioRequests);
+
+      expect(component.selectedAudioRequests.length).toBe(1);
+    });
+  });
+
+  describe('#onDeleteClicked', () => {
+    it('should set isDeleting to true if audio requests are selected', () => {
+      component.selectedAudioRequests = [{} as UserAudioRequestRow];
+
+      component.onDeleteClicked();
+
+      expect(component.isDeleting).toBeTruthy();
+    });
+
+    it('should not set isDeleting to true if audio requests are not selected', () => {
+      component.onDeleteClicked();
+
+      expect(component.isDeleting).toBeFalsy();
+    });
+  });
+
+  describe('#onDeleteConfirmed', () => {
+    it('should set isDeleting to true if audio requests are selected', () => {
+      const deleteSpy = jest.spyOn(audioServiceStub, 'deleteAudioRequests');
+
+      component.selectedAudioRequests = [
+        { requestId: 1 } as UserAudioRequestRow,
+        { requestId: 2 } as UserAudioRequestRow,
+        { requestId: 3 } as UserAudioRequestRow,
+      ];
+
+      component.onDeleteConfirmed();
+
+      expect(deleteSpy).toBeCalledTimes(3);
+      expect(deleteSpy).toHaveBeenCalledWith(1);
+      expect(deleteSpy).toHaveBeenCalledWith(2);
+      expect(deleteSpy).toHaveBeenCalledWith(3);
+    });
+
+    it('should not set isDeleting to true if audio requests are not selected', () => {
+      component.onDeleteClicked();
+
+      expect(component.isDeleting).toBeFalsy();
+    });
+  });
+
+  describe('#onTabChanged', () => {
+    it('should set selectedAudioRequests to empty []', () => {
+      component.selectedAudioRequests = [{} as UserAudioRequestRow];
+
+      component.onTabChanged();
+
+      expect(component.selectedAudioRequests.length).toBe(0);
+    });
   });
 });

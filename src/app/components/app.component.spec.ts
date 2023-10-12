@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
 import { AuthService } from '@services/auth/auth.service';
 import { AppComponent } from './app.component';
@@ -7,13 +7,22 @@ import { FooterComponent } from './layout/footer/footer.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { PhaseBannerComponent } from './layout/phase-banner/phase-banner.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NavigationEnd, Router } from '@angular/router';
+import { HeaderService } from '@services/header/header.service';
+import { Subject } from 'rxjs';
 
 describe('AppComponent', () => {
-  beforeEach(async () => {
-    const fakeAppInsightsService = {};
-    const fakeAuthService = {};
+  const fakeAppInsightsService = {};
+  const fakeAuthService = {};
+  const fakeHeaderService = { showPrimaryNavigation: jest.fn() } as unknown as HeaderService;
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+  let routerEventsSubject: Subject<NavigationEnd>;
 
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    routerEventsSubject = new Subject<NavigationEnd>();
+
+    TestBed.configureTestingModule({
       imports: [
         HeaderComponent,
         PhaseBannerComponent,
@@ -25,19 +34,29 @@ describe('AppComponent', () => {
       providers: [
         { provide: AppInsightsService, useValue: fakeAppInsightsService },
         { provide: AuthService, useValue: fakeAuthService },
+        { provide: HeaderService, useValue: fakeHeaderService },
+        { provide: Router, useValue: { events: routerEventsSubject } },
       ],
-    }).compileComponents();
+    });
+
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
   });
 
   it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+    expect(component).toBeTruthy();
   });
 
   it(`should have as title 'DARTS portal'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('DARTS portal');
+    expect(component.title).toEqual('DARTS portal');
+  });
+
+  it('should show primary navigation on NavigationEnd event', () => {
+    const navigationEndEvent = new NavigationEnd(1, '/', '/');
+    jest.spyOn(fakeHeaderService, 'showPrimaryNavigation');
+
+    routerEventsSubject.next(navigationEndEvent);
+
+    expect(fakeHeaderService.showPrimaryNavigation).toHaveBeenCalledWith(true);
   });
 });

@@ -46,9 +46,8 @@ const audioRequestMulti = [
     media_request_status: 'OPEN',
     last_accessed_ts: '2023-08-23T09:00:00Z',
   },
-
   {
-    media_request_id: 12347,
+    media_request_id: 12348,
     case_number: 'T20200192231',
     courthouse_name: 'Brighton',
     hearing_date: '2023-11-13',
@@ -120,8 +119,8 @@ const audioRequestMulti = [
     media_request_status: 'COMPLETED',
   },
   {
-    media_request_id: 123449,
-    case_number: 'T202001922310202',
+    media_request_id: 8080,
+    case_number: 'C22334455',
     courthouse_name: 'Swindon',
     hearing_date: '2023-12-18',
     media_request_start_ts: '2023-08-21T09:57:00Z',
@@ -133,7 +132,7 @@ const audioRequestMulti = [
 
 const audioRequestMultiExpired = [
   {
-    media_request_id: 12311,
+    media_request_id: 444,
     case_number: 'T20202110',
     courthouse_name: 'Manchester Minshull Street',
     hearing_date: '2023-10-13',
@@ -143,7 +142,7 @@ const audioRequestMultiExpired = [
     media_request_status: 'EXPIRED',
   },
   {
-    media_request_id: 123123,
+    media_request_id: 555,
     case_number: 'T202001232',
     courthouse_name: 'Reading',
     hearing_date: '2023-11-21',
@@ -153,7 +152,7 @@ const audioRequestMultiExpired = [
     media_request_status: 'EXPIRED',
   },
   {
-    media_request_id: 4321,
+    media_request_id: 666,
     case_number: 'T20200192772',
     courthouse_name: 'Slough',
     hearing_date: '2023-11-28',
@@ -163,6 +162,14 @@ const audioRequestMultiExpired = [
     media_request_status: 'EXPIRED',
   },
 ];
+
+router.delete('/:requestId', (req, res) => {
+  const index = audioRequestMulti.findIndex((x) => x.media_request_id == req.params.requestId);
+  if (index >= 0) {
+    audioRequestMulti.splice(index, 1);
+  }
+  res.sendStatus(204);
+});
 
 router.patch('/:requestId', (req, res) => {
   //Set specific media request last_accessed_ts value

@@ -5,6 +5,7 @@ import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
 import { UserService } from '@services/user/user.service';
 import { of } from 'rxjs';
 import { UserState } from '@darts-types/user-state';
+import { HttpResponse } from '@angular/common/http';
 
 describe('AudioService', () => {
   let service: AudioService;
@@ -202,6 +203,23 @@ describe('AudioService', () => {
         req.flush(mockAudios);
 
         expect(audios).toEqual(mockAudios.map((ar) => ({ ...ar, hearing_date: ar.hearing_date + 'Z' })));
+      });
+    });
+
+    describe('#deleteAudioRequest', () => {
+      it('sends delete request', () => {
+        const reqId = 123449;
+        let responseStatus;
+        service.deleteAudioRequests(reqId).subscribe((res) => {
+          responseStatus = res.status;
+        });
+
+        const req = httpMock.expectOne(`api/audio-requests/${reqId}`);
+        expect(req.request.method).toBe('DELETE');
+
+        req.flush(null, { status: 204, statusText: '' });
+
+        expect(responseStatus).toEqual(204);
       });
     });
 

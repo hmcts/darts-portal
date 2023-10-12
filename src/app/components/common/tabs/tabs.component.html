@@ -5,8 +5,8 @@
         class="moj-sub-navigation__link"
         [attr.aria-current]="tab.template === currentTab ? 'page' : null"
         href="#"
-        (click)="$event.preventDefault(); currentTab = tab.template"
-        >{{ tab.name }}</a
+        (click)="onTabClick($event, tab)"
+        >{{ tab.name }} <ng-container *ngIf="tab.count">{{ tab.count }}</ng-container></a
       >
     </li>
   </ul>

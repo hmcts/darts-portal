@@ -56,4 +56,12 @@ describe('TabsComponent', () => {
     const renderedContent = fixture.nativeElement.querySelector('.tab-container').textContent.trim();
     expect(renderedContent).toBe(secondTabContent);
   });
+
+  it('should emit a tabChange event when clicked', () => {
+    const tabChangeSpy = jest.spyOn(component.tabChange, 'emit');
+    const secondTabLink = fixture.nativeElement.querySelectorAll('.moj-sub-navigation__link')[1];
+    secondTabLink.click();
+    fixture.detectChanges();
+    expect(tabChangeSpy).toBeCalled();
+  });
 });

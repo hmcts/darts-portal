@@ -3,8 +3,8 @@ import { Component, inject } from '@angular/core';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { AudioService } from '@services/audio/audio.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { combineLatest, map, Observable } from 'rxjs';
-import { CommonModule, DatePipe } from '@angular/common';
+import { combineLatest, forkJoin, map, Observable } from 'rxjs';
+import { CommonModule } from '@angular/common';
 import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
 import { TableRowTemplateDirective } from 'src/app/directives/table-row-template.directive';
 import { LoadingComponent } from '@common/loading/loading.component';
@@ -32,9 +32,19 @@ import { DatatableColumn, UserAudioRequestRow } from '@darts-types/index';
 export class AudiosComponent {
   headerService = inject(HeaderService);
   audioService = inject(AudioService);
-  datePipe = inject(DatePipe);
 
   userId: number;
+
+  selectedAudioRequests: UserAudioRequestRow[] = [];
+
+  private _isDeleting = false;
+  public get isDeleting() {
+    return this._isDeleting;
+  }
+  public set isDeleting(value) {
+    this._isDeleting = value;
+    this.headerService.showPrimaryNavigation(!this._isDeleting);
+  }
 
   audioRequests$: Observable<UserAudioRequest[]>;
   expiredAudioRequests$: Observable<UserAudioRequest[]>;
@@ -59,6 +69,8 @@ export class AudiosComponent {
     { name: 'Expiry date', prop: 'expiry', sortable: true },
     { name: 'Status', prop: 'status', sortable: true },
   ];
+
+  unSortableColumns = this.columns.map((col) => ({ ...col, sortable: false }));
 
   readyColumns = [{ name: '', prop: '' }, ...this.columns]; //Empty column for unread icon
 
@@ -111,5 +123,35 @@ export class AudiosComponent {
         ar.media_request_status === 'PROCESSING' ||
         ar.media_request_status === 'FAILED'
     );
+  }
+
+  onSelectedAudio(selectedAudio: UserAudioRequestRow[]) {
+    this.selectedAudioRequests = selectedAudio;
+  }
+
+  onDeleteClicked() {
+    if (this.selectedAudioRequests.length) {
+      this.isDeleting = true;
+    }
+  }
+
+  onDeleteConfirmed() {
+    const deleteRequests: Observable<unknown>[] = this.selectedAudioRequests.map((s) =>
+      this.audioService.deleteAudioRequests(s.requestId)
+    );
+
+    forkJoin(deleteRequests).subscribe({
+      next: () => (this.isDeleting = false),
+      error: () => (this.isDeleting = false),
+    });
+  }
+
+  onDeleteCancelled(event: MouseEvent) {
+    event.preventDefault();
+    this.isDeleting = false;
+  }
+
+  onTabChanged() {
+    this.selectedAudioRequests = [];
   }
 }
