@@ -1,10 +1,11 @@
-import { ApplicationInsights } from '@microsoft/applicationinsights-web';
+import { ApplicationInsights, ITelemetryItem } from '@microsoft/applicationinsights-web';
 import { Injectable } from '@angular/core';
 import { AppConfigService } from '@services/app-config/app-config.service';
 
 @Injectable()
 export class AppInsightsService {
   appInsights: ApplicationInsights;
+  private readonly cloudRoleName = 'DARTS portal';
 
   constructor(private readonly appConfigService: AppConfigService) {
     this.appInsights = new ApplicationInsights({
@@ -13,6 +14,18 @@ export class AppInsightsService {
         enableAutoRouteTracking: true, // option to log all route changes
       },
     });
+    const telemetryInitializer = (envelope: ITelemetryItem) => {
+      if (envelope.tags && envelope.tags['ai.cloud.role']) {
+        envelope.tags['ai.cloud.role'] = this.cloudRoleName;
+      } else {
+        envelope.tags = [
+          {
+            'ai.cloud.role': this.cloudRoleName,
+          },
+        ];
+      }
+    };
+    this.appInsights.addTelemetryInitializer(telemetryInitializer);
     this.appInsights.loadAppInsights();
   }
 

@@ -33,8 +33,6 @@ export class AudiosComponent {
   headerService = inject(HeaderService);
   audioService = inject(AudioService);
 
-  userId: number;
-
   selectedAudioRequests: UserAudioRequestRow[] = [];
 
   private _isDeleting = false;
@@ -74,9 +72,7 @@ export class AudiosComponent {
 
   readyColumns = [{ name: '', prop: '' }, ...this.columns]; //Empty column for unread icon
 
-  constructor(private route: ActivatedRoute) {
-    this.userId = this.route.snapshot.data.userState.userId;
-
+  constructor() {
     this.audioRequests$ = this.audioService.audioRequests$;
     this.expiredAudioRequests$ = this.audioService.expiredAudioRequests$;
 

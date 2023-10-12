@@ -11,6 +11,7 @@ def branchesToSync = ['demo']
 
 withPipeline(type, product, component) {
   enableSlackNotifications('#darts-builds')
+  disableCleanupOfHelmReleaseOnFailure()
 
   afterAlways('build') {
     yarnBuilder.yarn('rebuild puppeteer')

@@ -217,7 +217,7 @@ describe('EventsAndAudioComponent', () => {
   });
 
   it('should filter by events', () => {
-    component.eventsFilterForm.get('selectedOption')?.setValue('event');
+    component.selectedOption.setValue('event');
 
     fixture.detectChanges();
 
@@ -225,7 +225,7 @@ describe('EventsAndAudioComponent', () => {
   });
 
   it('should filter by all', () => {
-    component.eventsFilterForm.get('selectedOption')?.setValue('all');
+    component.selectedOption.setValue('all');
 
     fixture.detectChanges();
 
