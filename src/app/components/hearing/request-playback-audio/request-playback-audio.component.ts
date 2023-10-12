@@ -147,11 +147,11 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
     const endTimeMinutes = this.audioRequestForm.get('endTime.minutes')?.value;
     const endTimeSeconds = this.audioRequestForm.get('endTime.seconds')?.value;
 
-    const startDateTime = DateTime.fromISO(
-      `${this.hearing.date}T${startTimeHours}:${startTimeMinutes}:${startTimeSeconds}`
-    );
+    const hearingDate = this.hearing.date.replace('Z', '');
 
-    const endDateTime = DateTime.fromISO(`${this.hearing.date}T${endTimeHours}:${endTimeMinutes}:${endTimeSeconds}`);
+    const startDateTime = DateTime.fromISO(`${hearingDate}T${startTimeHours}:${startTimeMinutes}:${startTimeSeconds}`);
+
+    const endDateTime = DateTime.fromISO(`${hearingDate}T${endTimeHours}:${endTimeMinutes}:${endTimeSeconds}`);
 
     if (!startDateTime.isValid || !endDateTime.isValid || this.audioRequestForm.get('requestType')?.invalid) return;
 

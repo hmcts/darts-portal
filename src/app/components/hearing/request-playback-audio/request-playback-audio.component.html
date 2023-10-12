@@ -26,13 +26,6 @@
             >
               <span class="govuk-visually-hidden">Error:</span> You must include a start time for your audio recording
             </p>
-            <p
-              *ngIf="audioRequestForm.get('startTime.minutes')?.getError('pattern') && isSubmitted"
-              id="start-time-error"
-              class="govuk-error-message"
-            >
-              <span class="govuk-visually-hidden">Error:</span> Pattern Error
-            </p>
             <app-time-input
               formGroupName="startTime"
               [isSubmitted]="isSubmitted"

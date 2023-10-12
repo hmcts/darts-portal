@@ -11,6 +11,7 @@ import { SearchFormValues } from '@darts-types/search-form.interface';
 import { futureDateValidator } from '@validators/future-date.validator';
 import { SearchErrorComponent } from './search-error/search-error.component';
 import { ErrorSummaryEntry, FieldErrors } from '@darts-types/index';
+import { LoadingComponent } from '@common/loading/loading.component';
 
 const fieldErrors: FieldErrors = {
   courthouse: {
@@ -37,7 +38,14 @@ const fieldErrors: FieldErrors = {
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ResultsComponent, CourthouseComponent, SearchErrorComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    ResultsComponent,
+    CourthouseComponent,
+    SearchErrorComponent,
+    LoadingComponent,
+  ],
 })
 export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
   @ViewChild(CourthouseComponent) courthouseComponent!: CourthouseComponent;
