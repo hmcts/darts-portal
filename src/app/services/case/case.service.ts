@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Case, Courthouse, Hearing, SearchFormValues } from '@darts-types/index';
+import { Case, Courthouse, Hearing, SearchFormValues, transcript } from '@darts-types/index';
 import { of } from 'rxjs';
 import { Observable } from 'rxjs';
 import { catchError, map, shareReplay } from 'rxjs/operators';
@@ -25,6 +25,11 @@ export class CaseService {
         return of([]);
       })
     );
+  }
+
+  getAllCaseTranscripts(caseId: number): Observable<transcript[]> {
+    const apiURL = `${GET_CASE_PATH}/${caseId}/transcripts`;
+    return this.http.get<transcript[]>(apiURL);
   }
 
   getCase(caseId: number): Observable<Case> {
