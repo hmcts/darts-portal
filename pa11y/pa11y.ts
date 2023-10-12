@@ -15,7 +15,13 @@ export const pathsToTest = [
 
 async function runPa11y() {
   try {
-    const results = await Promise.all(pathsToTest.map((path) => pa11y(`${testUrl}${path}`)));
+    const results = await Promise.all(
+      pathsToTest.map((path) =>
+        pa11y(`${testUrl}${path}`, {
+          runners: ['axe', 'htmlcs'],
+        })
+      )
+    );
 
     results.forEach((result) => {
       console.log(`URL: ${result.pageUrl}`);

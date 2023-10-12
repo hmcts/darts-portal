@@ -34,8 +34,6 @@ export class AudiosComponent {
   audioService = inject(AudioService);
   datePipe = inject(DatePipe);
 
-  userId: number;
-
   audioRequests$: Observable<UserAudioRequest[]>;
   expiredAudioRequests$: Observable<UserAudioRequest[]>;
 
@@ -62,9 +60,7 @@ export class AudiosComponent {
 
   readyColumns = [{ name: '', prop: '' }, ...this.columns]; //Empty column for unread icon
 
-  constructor(private route: ActivatedRoute) {
-    this.userId = this.route.snapshot.data.userState.userId;
-
+  constructor() {
     this.audioRequests$ = this.audioService.audioRequests$;
     this.expiredAudioRequests$ = this.audioService.expiredAudioRequests$;
 
