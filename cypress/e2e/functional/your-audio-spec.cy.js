@@ -59,6 +59,15 @@ describe('Your audio', () => {
     cy.contains('Search').click();
     cy.get('#notifications').should('contain', '3');
   });
+
+  it('should delete selected audio requests', () => {
+    cy.contains('Your Audio').click();
+    cy.get('#readyTable tbody input[type="checkbox"]').first().click();
+    cy.get('#delete-button').click();
+    cy.contains('Are you sure you want to delete this item');
+    cy.get('button.govuk-button--warning').click();
+    cy.contains('T20200331').should('not.exist');
+  });
 });
 
 describe('Request Intercept tests', () => {

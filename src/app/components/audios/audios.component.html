@@ -44,7 +44,9 @@
           <h2 class="govuk-heading-m">Ready</h2>
           <div class="action-container">
             <div class="govuk-hint">Select to apply actions</div>
-            <button class="govuk-button govuk-button--secondary" (click)="onDeleteClicked()">Delete</button>
+            <button id="delete-button" class="govuk-button govuk-button--secondary" (click)="onDeleteClicked()">
+              Delete
+            </button>
           </div>
           <app-data-table
             id="readyTable"
