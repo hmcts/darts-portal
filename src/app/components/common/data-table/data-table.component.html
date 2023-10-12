@@ -10,6 +10,7 @@
         <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
           <div class="govuk-checkboxes__item">
             <input
+              aria-label="Select all checkboxes"
               class="govuk-checkboxes__input"
               id="selectAll"
               name="selectAll"
@@ -43,10 +44,10 @@
             <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
               <div class="govuk-checkboxes__item">
                 <input
-                  [tabindex]="i"
+                  [attr.aria-label]="'Select checkbox ' + row.id"
                   class="govuk-checkboxes__input"
-                  [id]="row.id"
-                  [name]="row.id"
+                  [id]="i"
+                  [name]="i"
                   type="checkbox"
                   [value]="row.id"
                   [checked]="isRowSelected(row)"

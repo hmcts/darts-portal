@@ -2,41 +2,39 @@
   <h2 class="govuk-heading-m">There are no events or audio for this hearing</h2>
 </ng-container>
 <ng-container *ngIf="rows.length">
-  <form [formGroup]="eventsFilterForm" class="govuk-form-group">
-    <fieldset class="govuk-fieldset" aria-describedby="changedName-hint">
-      <legend id="changedName-hint" class="govuk-hint">Select events to include in requests</legend>
-      <div class="govuk-radios govuk-radios--inline govuk-radios--small" data-module="govuk-radios">
-        <div class="govuk-radios__item">
-          <input
-            class="govuk-radios__input"
-            id="filterAll"
-            name="selectedOption"
-            type="radio"
-            value="all"
-            formControlName="selectedOption"
-          />
-          <label class="govuk-label govuk-radios__label" for="filterAll"> Audio preview and events </label>
-        </div>
-        <div class="govuk-radios__item">
-          <input
-            class="govuk-radios__input"
-            id="filterEvents"
-            name="selectedOption"
-            type="radio"
-            value="events"
-            formControlName="selectedOption"
-          />
-          <label class="govuk-label govuk-radios__label" for="filterEvents"> Events only </label>
-        </div>
+  <fieldset class="govuk-fieldset" aria-describedby="changedName-hint">
+    <legend id="changedName-hint" class="govuk-hint">Select events to include in requests</legend>
+    <div class="govuk-radios govuk-radios--inline govuk-radios--small" data-module="govuk-radios">
+      <div class="govuk-radios__item">
+        <input
+          class="govuk-radios__input"
+          id="filterAll"
+          name="selectedOption"
+          type="radio"
+          value="all"
+          [formControl]="selectedOption"
+        />
+        <label class="govuk-label govuk-radios__label" for="filterAll"> Audio preview and events </label>
       </div>
-    </fieldset>
-  </form>
+      <div class="govuk-radios__item">
+        <input
+          class="govuk-radios__input"
+          id="filterEvents"
+          name="selectedOption"
+          type="radio"
+          value="events"
+          [formControl]="selectedOption"
+        />
+        <label class="govuk-label govuk-radios__label" for="filterEvents"> Events only </label>
+      </div>
+    </div>
+  </fieldset>
 
   <app-data-table [rows]="filteredRows" [columns]="columns" [rowSelectable]="true" (rowSelect)="onRowSelect($event)">
     <ng-template [tableRowTemplate] let-row let-index>
       <ng-container *ngIf="row.type === 'audio'">
         <td class="govuk-table__cell">
-          <div>Start time: {{ row.timestamp | date: 'HH:mm:ss' }}</div>
+          <div>Start time: {{ row.timestamp | date : 'HH:mm:ss' }}</div>
         </td>
         <td class="govuk-table__cell">
           <button
@@ -48,10 +46,10 @@
           </button>
           <app-audio-player *ngIf="isAudioInPreview(row.id)" [mediaId]="row.id"></app-audio-player>
         </td>
-        <td class="govuk-table__cell">End time: {{ row.media_end_timestamp | date: 'HH:mm:ss' }}</td>
+        <td class="govuk-table__cell">End time: {{ row.media_end_timestamp | date : 'HH:mm:ss' }}</td>
       </ng-container>
       <ng-container *ngIf="row.type === 'event'">
-        <td class="govuk-table__cell">{{ row.timestamp | date: 'HH:mm:ss' }}</td>
+        <td class="govuk-table__cell">{{ row.timestamp | date : 'HH:mm:ss' }}</td>
         <td class="govuk-table__cell">{{ row.name }}</td>
         <td class="govuk-table__cell">{{ row.text }}</td>
       </ng-container>

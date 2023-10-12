@@ -42,9 +42,8 @@ export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
   filteredRows: AudioEventRow[] = [];
 
   selectedRows: AudioEventRow[] = [];
-
-  eventsFilterForm = new FormGroup({ selectedOption: new FormControl('all') });
-  formChanges$ = this.eventsFilterForm.valueChanges;
+  selectedOption = new FormControl('all');
+  formChanges$ = this.selectedOption.valueChanges;
 
   subs: Subscription[] = [];
   audioInPreview: number[] = [];
@@ -52,7 +51,7 @@ export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit(): void {
     this.subs.push(
       this.formChanges$.subscribe((valueChanges) => {
-        this.onFilterChanged(valueChanges.selectedOption as string);
+        this.onFilterChanged(valueChanges as string);
       })
     );
   }
