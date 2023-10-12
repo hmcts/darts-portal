@@ -18,16 +18,26 @@ export class HearingResultsComponent implements OnChanges {
   @Input() hearings: Hearing[] = [];
   caseId: number;
   rows: DatatableRow[] = [];
-  columns: DatatableColumn[] = [];
+  hearingsColumns: DatatableColumn[] = [];
+  transcriptColumns: DatatableColumn[] = [];
 
   constructor(private route: ActivatedRoute) {
     this.caseId = this.route.snapshot.params.caseId;
 
-    this.columns = [
+    this.hearingsColumns = [
       { name: 'Hearing date', prop: 'date', sortable: true },
       { name: 'Judge', prop: 'judges', sortable: true },
       { name: 'Courtroom', prop: 'courtroom', sortable: true },
       { name: 'No. of transcripts', prop: 'transcripts', sortable: true },
+    ];
+
+    this.transcriptColumns = [
+      { name: 'Hearing date', prop: 'date', sortable: true },
+      { name: 'Type', prop: 'type', sortable: true },
+      { name: 'Requested on', prop: 'requestedOn', sortable: true },
+      { name: 'Requested by', prop: 'requestedBy', sortable: true },
+      { name: 'Status', prop: 'status', sortable: true },
+      { name: '', prop: '' },
     ];
   }
 

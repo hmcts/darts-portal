@@ -6,7 +6,12 @@
         [attr.aria-current]="tab.template === currentTab ? 'page' : null"
         href="#"
         (click)="$event.preventDefault(); currentTab = tab.template"
-        >{{ tab.name }}</a
+        >{{ tab.name }}
+        <ng-container *ngIf="tab.count">
+          <span aria-label="Audio notification count" id="notifications" class="moj-notification-badge blue">{{
+            tab.count
+          }}</span>
+        </ng-container></a
       >
     </li>
   </ul>
