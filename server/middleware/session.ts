@@ -5,7 +5,7 @@ import config from 'config';
 
 export default () => {
   const sessionMiddleware: session.SessionOptions = {
-    secret: config.get('secrets.darts.middleware-secret'),
+    secret: config.get('secrets.darts.darts-portal-session-secret'),
     resave: false,
     saveUninitialized: true,
     cookie: {},
