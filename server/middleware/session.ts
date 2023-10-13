@@ -5,8 +5,7 @@ import config from 'config';
 
 export default () => {
   const sessionMiddleware: session.SessionOptions = {
-    // TODO: https://tools.hmcts.net/jira/browse/DMP-434
-    secret: 'supersecret',
+    secret: config.get('secrets.darts.darts-portal-session-secret'),
     resave: false,
     saveUninitialized: true,
     cookie: {},

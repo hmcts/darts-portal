@@ -11,6 +11,7 @@ def branchesToSync = ['demo']
 
 withPipeline(type, product, component) {
   enableSlackNotifications('#darts-builds')
+  disableCleanupOfHelmReleaseOnFailure()
 
   afterAlways('build') {
     yarnBuilder.yarn('rebuild puppeteer')
@@ -24,26 +25,26 @@ withPipeline(type, product, component) {
 
   afterAlways('smokeTest:dev') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'smoke-output/**/*'
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/screenshots'
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/videos'
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/screenshots/**/*'
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/videos/**/*'
   }
 
   afterAlways('smokeTest:stg') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'smoke-output/**/*'
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/screenshots'
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/videos'
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/screenshots/**/*'
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/videos/**/*'
   }
 
   afterAlways('functionalTest:dev') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/screenshots'
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/videos'
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/screenshots/**/*'
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/videos/**/*'
   }
 
   afterAlways('functionalTest:stg') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/screenshots'
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/videos'
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/screenshots/**/*'
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/videos/**/*'
   }
 
   syncBranchesWithMaster(branchesToSync)

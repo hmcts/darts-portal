@@ -16,7 +16,7 @@
     <p class="govuk-body">{{ case.defendants }}</p>
     <h2 class="govuk-heading-m">Audio details</h2>
     <h1 class="govuk-heading-s">Hearing date</h1>
-    <h1 class="govuk-body">{{ hearing?.date }}</h1>
+    <h1 class="govuk-body">{{ hearing?.date | date: 'd MMM y' }}</h1>
     <ng-container *ngIf="audioRequest">
       <h3 class="govuk-heading-s">Start Time</h3>
       <p class="govuk-body">{{ audioRequest.start_time | date: 'HH:mm:ss' }}</p>
