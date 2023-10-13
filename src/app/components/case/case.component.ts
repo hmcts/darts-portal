@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterLink, ActivatedRoute } from '@angular/router';
+import { transcript, TranscriptsRow } from '@darts-types/index';
 import { CaseService } from '@services/case/case.service';
-import { combineLatest } from 'rxjs';
+import { combineLatest, map } from 'rxjs';
 import { CaseFileComponent } from './case-file/case-file.component';
 import { HearingResultsComponent } from './hearing-results/hearing-results.component';
 
@@ -19,12 +20,26 @@ export class CaseComponent {
   public caseId = this.route.snapshot.params.caseId;
   public caseFile$;
   public hearings$ = this.caseService.getCaseHearings(this.caseId);
-  public transcripts$ = this.caseService.getAllCaseTranscripts(this.caseId);
+  public transcripts$ = this.caseService
+    .getAllCaseTranscripts(this.caseId)
+    .pipe(map((transcript) => this.mapTranscriptRequestToRows(transcript)));
 
   data$ = combineLatest({
     hearings: this.hearings$,
     transcripts: this.transcripts$,
   });
+
+  mapTranscriptRequestToRows(transcript: transcript[]): TranscriptsRow[] {
+    return transcript.map((ar) => {
+      return {
+        hearingDate: ar.hearing_date,
+        type: ar.type,
+        requestedOn: ar.requested_on,
+        requestedBy: ar.requested_by_name,
+        status: ar.status,
+      };
+    });
+  }
 
   constructor() {
     this.caseFile$ = this.caseService.getCase(this.caseId);

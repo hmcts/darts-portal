@@ -3,7 +3,7 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { RouterLink, ActivatedRoute } from '@angular/router';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { DataTableComponent } from '@common/data-table/data-table.component';
-import { DatatableColumn, DatatableRow, Hearing, transcript } from '@darts-types/index';
+import { DatatableColumn, DatatableRow, Hearing, TranscriptsRow } from '@darts-types/index';
 import { TabDirective } from 'src/app/directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 
@@ -16,7 +16,7 @@ import { TableRowTemplateDirective } from '@directives/table-row-template.direct
 })
 export class HearingResultsComponent implements OnChanges {
   @Input() hearings: Hearing[] = [];
-  @Input() transcripts: transcript[] = [];
+  @Input() transcripts: TranscriptsRow[] = [];
   caseId: number;
   rows: DatatableRow[] = [];
   hearingsColumns: DatatableColumn[] = [];
@@ -33,7 +33,7 @@ export class HearingResultsComponent implements OnChanges {
     ];
 
     this.transcriptColumns = [
-      { name: 'Hearing date', prop: 'date', sortable: true },
+      { name: 'Hearing date', prop: 'hearingDate', sortable: true },
       { name: 'Type', prop: 'type', sortable: true },
       { name: 'Requested on', prop: 'requestedOn', sortable: true },
       { name: 'Requested by', prop: 'requestedBy', sortable: true },
