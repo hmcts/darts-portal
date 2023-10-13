@@ -10,7 +10,7 @@ export default () => {
     saveUninitialized: true,
     cookie: {},
   };
-  
+
   if (config.get('node-env') === 'production') {
     const redisClient = createClient({ url: config.get('secrets.darts.redis-connection-string') });
     redisClient.connect().catch(console.error);
