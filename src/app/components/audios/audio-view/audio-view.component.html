@@ -1,5 +1,5 @@
 <!-- Breadcrumbs -->
-<ng-container *ngIf="case$ | async as vm">
+<ng-container *ngIf="case$ | async as case">
   <div class="govuk-breadcrumbs">
     <ol class="govuk-breadcrumbs__list">
       <li class="govuk-breadcrumbs__list-item">
@@ -13,8 +13,8 @@
   </div>
 
   <app-reporting-restriction
-    *ngIf="vm.reporting_restriction"
-    [reportingRestriction]="vm.reporting_restriction"
+    *ngIf="case.reporting_restriction"
+    [reportingRestriction]="case.reporting_restriction"
   ></app-reporting-restriction>
 
   <h1 class="govuk-caption-l">Audio File</h1>
@@ -23,20 +23,20 @@
 
   <h2 class="govuk-heading-m">Case details</h2>
   <h1 class="govuk-heading-s">Case ID</h1>
-  <h1 class="govuk-body">{{ vm.case_number }}</h1>
+  <h1 class="govuk-body">{{ case.case_number }}</h1>
   <h3 class="govuk-heading-s">Courthouse</h3>
-  <p class="govuk-body">{{ vm.courthouse }}</p>
+  <p class="govuk-body">{{ case.courthouse }}</p>
   <h3 class="govuk-heading-s">Defendant(s)</h3>
-  <p class="govuk-body">{{ vm.defendants }}</p>
-  <!-- <ng-container *ngIf="vm.audioRequest">
+  <p class="govuk-body">{{ case.defendants }}</p>
+  <ng-container *ngIf="audioRequest">
     <h2 class="govuk-heading-m">Audio details</h2>
     <h1 class="govuk-heading-s">Hearing date</h1>
-    <h1 class="govuk-body">{{ vm.audioRequest.hearingDate | date: 'd MMM y' }}</h1>
+    <h1 class="govuk-body">{{ audioRequest.hearingDate | date: 'd MMM y' }}</h1>
     <h3 class="govuk-heading-s">Start Time</h3>
-    <p class="govuk-body">{{ vm.audioRequest.startTime | date: 'HH:mm:ss' }}</p>
+    <p class="govuk-body">{{ audioRequest.startTime | date: 'HH:mm:ss' }}</p>
     <h3 class="govuk-heading-s">End Time</h3>
-    <p class="govuk-body">{{ vm.audioRequest.endTime | date: 'HH:mm:ss' }}</p>
-  </ng-container> -->
+    <p class="govuk-body">{{ audioRequest.endTime | date: 'HH:mm:ss' }}</p>
+  </ng-container>
 
   <div class="govuk-button-group">
     <button class="govuk-button" routerLink="audios" data-module="govuk-button">Download audio file</button>

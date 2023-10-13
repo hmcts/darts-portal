@@ -122,9 +122,11 @@ export class AudiosComponent {
     );
   }
 
-  onViewAudioRequest(audioRequestRow: UserAudioRequestRow) {
+  onViewAudioRequest(event: MouseEvent, audioRequestRow: UserAudioRequestRow) {
+    event.preventDefault();
+    // Store audio request in service for retrieval on view screen
     this.audioService.setAudioRequest(audioRequestRow);
-    this.router.navigate(['.', audioRequestRow.requestId]);
+    this.router.navigate(['./audios', audioRequestRow.requestId]);
   }
 
   onSelectedAudio(selectedAudio: UserAudioRequestRow[]) {
