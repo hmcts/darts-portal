@@ -36,7 +36,7 @@ export class CaseComponent {
         type: ar.type,
         requestedOn: ar.requested_on,
         requestedBy: ar.requested_by_name,
-        status: ar.status,
+        status: ar.status.toUpperCase(),
       };
     });
   }

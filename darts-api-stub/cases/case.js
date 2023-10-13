@@ -383,6 +383,15 @@ const transcriptTwo = [
     "type": "Sentencing remarks",
     "requested_on": "2023-10-12",
     "requested_by_name": "Joe Bloggs",
+    "status": "Available"
+  },
+  {
+    "tra_id": 1,
+    "hea_id": 2,
+    "hearing_date": "2023-10-12",
+    "type": "Sentencing remarks",
+    "requested_on": "2023-10-12",
+    "requested_by_name": "Joe Bloggs",
     "status": "In Progress"
   },
   {
