@@ -29,6 +29,9 @@
             {{ row.status }}
           </strong>
         </td>
+        <td class="govuk-table__cell">
+          <a *ngIf="row.status === 'AVAILABLE'" [routerLink]="['.']">View</a>
+        </td>
       </ng-template>
     </app-data-table>
   </ng-template>
