@@ -14,6 +14,7 @@ describe('AudiosComponent', () => {
 
   const MOCK_AUDIO_REQUESTS: UserAudioRequest[] = [
     {
+      case_id: 2,
       media_request_id: 12345,
       case_number: 'T20200190',
       courthouse_name: 'Manchester Minshull Street',
@@ -25,6 +26,7 @@ describe('AudiosComponent', () => {
       last_accessed_ts: '2023-08-23T09:00:00Z',
     },
     {
+      case_id: 3,
       media_request_id: 12346,
       case_number: 'T2020019210',
       courthouse_name: 'Reading',
@@ -36,6 +38,7 @@ describe('AudiosComponent', () => {
       last_accessed_ts: '2023-08-23T09:00:00Z',
     },
     {
+      case_id: 4,
       media_request_id: 12347,
       case_number: 'T20200192222',
       courthouse_name: 'Slough',
@@ -47,6 +50,7 @@ describe('AudiosComponent', () => {
       last_accessed_ts: '2023-08-23T09:00:00Z',
     },
     {
+      case_id: 5,
       media_request_id: 12347,
       case_number: 'T20200192231',
       courthouse_name: 'Brighton',
@@ -57,6 +61,7 @@ describe('AudiosComponent', () => {
       media_request_status: 'FAILED',
     },
     {
+      case_id: 6,
       media_request_id: 12378,
       case_number: 'T20200331',
       courthouse_name: 'Liverpool',
@@ -67,6 +72,7 @@ describe('AudiosComponent', () => {
       media_request_status: 'COMPLETED',
     },
     {
+      case_id: 7,
       media_request_id: 12377,
       case_number: 'T20200333',
       courthouse_name: 'Liverpool',
@@ -78,6 +84,7 @@ describe('AudiosComponent', () => {
       last_accessed_ts: '2023-08-23T09:00:00Z',
     },
     {
+      case_id: 8,
       media_request_id: 12342,
       case_number: 'T2020011820',
       courthouse_name: 'Ascot',
@@ -88,6 +95,7 @@ describe('AudiosComponent', () => {
       media_request_status: 'COMPLETED',
     },
     {
+      case_id: 9,
       media_request_id: 12341,
       case_number: 'T2023453422',
       courthouse_name: 'Bournemouth',
@@ -98,6 +106,7 @@ describe('AudiosComponent', () => {
       media_request_status: 'COMPLETED',
     },
     {
+      case_id: 10,
       media_request_id: 123443,
       case_number: 'T20200192231',
       courthouse_name: 'Brighton',
@@ -108,6 +117,7 @@ describe('AudiosComponent', () => {
       media_request_status: 'COMPLETED',
     },
     {
+      case_id: 11,
       media_request_id: 123449,
       case_number: 'T202001922310202',
       courthouse_name: 'Swindon',
@@ -121,6 +131,7 @@ describe('AudiosComponent', () => {
 
   const MOCK_EXPIRED_AUDIO_REQUESTS: UserAudioRequest[] = [
     {
+      case_id: 12,
       media_request_id: 12311,
       case_number: 'T20202110',
       courthouse_name: 'Manchester Minshull Street',
@@ -131,6 +142,7 @@ describe('AudiosComponent', () => {
       media_request_status: 'EXPIRED',
     },
     {
+      case_id: 13,
       media_request_id: 123123,
       case_number: 'T202001232',
       courthouse_name: 'Reading',
@@ -141,6 +153,7 @@ describe('AudiosComponent', () => {
       media_request_status: 'EXPIRED',
     },
     {
+      case_id: 14,
       media_request_id: 4321,
       case_number: 'T20200192772',
       courthouse_name: 'Slough',

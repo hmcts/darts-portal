@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 const audioRequestOne = {
+  case_id: 1,
   request_id: 1234,
   case_id: 'T4565443',
   courthouse_name: 'Swansea',
@@ -14,6 +15,7 @@ const audioRequestOne = {
 
 const audioRequestMulti = [
   {
+    case_id: 2,
     media_request_id: 12345,
     case_number: 'T20200190',
     courthouse_name: 'Manchester Minshull Street',
@@ -25,6 +27,7 @@ const audioRequestMulti = [
     last_accessed_ts: '2023-08-23T09:00:00Z',
   },
   {
+    case_id: 3,
     media_request_id: 12346,
     case_number: 'T2020019210',
     courthouse_name: 'Reading',
@@ -36,6 +39,7 @@ const audioRequestMulti = [
     last_accessed_ts: '2023-08-23T09:00:00Z',
   },
   {
+    case_id: 4,
     media_request_id: 12347,
     case_number: 'T20200192222',
     courthouse_name: 'Slough',
@@ -47,6 +51,7 @@ const audioRequestMulti = [
     last_accessed_ts: '2023-08-23T09:00:00Z',
   },
   {
+    case_id: 5,
     media_request_id: 12348,
     case_number: 'T20200192231',
     courthouse_name: 'Brighton',
@@ -58,6 +63,7 @@ const audioRequestMulti = [
   },
 
   {
+    case_id: 6,
     media_request_id: 12378,
     case_number: 'T20200331',
     courthouse_name: 'Liverpool',
@@ -68,6 +74,7 @@ const audioRequestMulti = [
     media_request_status: 'COMPLETED',
   },
   {
+    case_id: 7,
     media_request_id: 12377,
     case_number: 'T20200333',
     courthouse_name: 'Liverpool',
@@ -79,6 +86,7 @@ const audioRequestMulti = [
     last_accessed_ts: '2023-08-23T09:00:00Z',
   },
   {
+    case_id: 8,
     media_request_id: 12342,
     case_number: 'T2020011820',
     courthouse_name: 'Ascot',
@@ -89,6 +97,7 @@ const audioRequestMulti = [
     media_request_status: 'COMPLETED',
   },
   {
+    case_id: 9,
     media_request_id: 12341,
     case_number: 'T2023453422',
     courthouse_name: 'Bournemouth',
@@ -99,6 +108,7 @@ const audioRequestMulti = [
     media_request_status: 'COMPLETED',
   },
   {
+    case_id: 10,
     media_request_id: 123443,
     case_number: 'T20200192231',
     courthouse_name: 'Brighton',
@@ -109,6 +119,7 @@ const audioRequestMulti = [
     media_request_status: 'COMPLETED',
   },
   {
+    case_id: 11,
     media_request_id: 123449,
     case_number: 'T202001922310202',
     courthouse_name: 'Swindon',
@@ -119,6 +130,7 @@ const audioRequestMulti = [
     media_request_status: 'COMPLETED',
   },
   {
+    case_id: 12,
     media_request_id: 8080,
     case_number: 'C22334455',
     courthouse_name: 'Swindon',

@@ -1,6 +1,6 @@
 <ng-template #tableTemplatePartial let-row>
   <td *ngIf="!isDeleting" class="govuk-table__cell">
-    <a [routerLink]="['/case', row.id]"> {{ row.caseNumber }}</a>
+    <a [routerLink]="['/case', row.caseId]"> {{ row.caseNumber }}</a>
   </td>
   <td *ngIf="isDeleting" class="govuk-table__cell">
     {{ row.caseNumber }}

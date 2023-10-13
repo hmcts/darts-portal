@@ -68,6 +68,12 @@ describe('Your audio', () => {
     cy.get('button.govuk-button--warning').click();
     cy.contains('T20200331').should('not.exist');
   });
+
+  it('link back to case via audio request', () => {
+    cy.contains('Your Audio').click();
+    cy.contains('T20200190').click();
+    cy.get('h1.govuk-heading-l').contains('CASE1001');
+  });
 });
 
 describe('Request Intercept tests', () => {
