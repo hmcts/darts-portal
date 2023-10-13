@@ -120,7 +120,7 @@
 
       <td class="govuk-table__cell">
         <strong class="govuk-tag" [ngClass]="row.status === 'COMPLETED' ? 'govuk-tag--green' : 'govuk-tag--grey'">
-          {{ row.status }}
+          {{ row.status === 'COMPLETED' ? 'READY' : row.status }}
         </strong>
       </td>
     </ng-template>
