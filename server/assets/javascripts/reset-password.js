@@ -89,11 +89,11 @@ $('#emailVerificationControl_but_change_claims.changeClaims').click(function () 
 function displayErrors() {
     removeErrors();
     addItemLevelErrorClasses();
-    createErrorSummaryBox();
+    createErrorSummaryBox('reset');
     hidePageLevelErrors();
 }
 
 // wait a second before trying to do this, in case the JS in head isn't loaded yet
 setTimeout(function() {
-    wrapXhrOpen('SelfAsserted', '"status":"400"', displayErrors);
+    wrapXhrOpen('VerifyCode', '"status":"400"', displayErrors);
 }, 1000);
