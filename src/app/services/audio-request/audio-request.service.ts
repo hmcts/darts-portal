@@ -3,7 +3,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
 import { UserService } from '@services/user/user.service';
-import { BehaviorSubject, Observable, combineLatest, switchMap, tap, timer, map } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest, switchMap, tap, timer, map, shareReplay } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -75,7 +75,6 @@ export class AudioRequestService {
   }
 
   setAudioRequest(audioRequestRow: UserAudioRequestRow) {
-    console.log(audioRequestRow);
     this.audioRequestView = audioRequestRow;
   }
 

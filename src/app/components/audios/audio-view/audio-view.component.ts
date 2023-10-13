@@ -31,6 +31,7 @@ export class AudioViewComponent {
     if (!this.audioRequest) {
       this.router.navigate(['../']);
     }
+
     //Send request to update last accessed time of audio
     this.audioRequestService.patchAudioRequest(this.route.snapshot.params.requestId).subscribe();
 
