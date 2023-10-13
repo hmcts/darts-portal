@@ -59,6 +59,21 @@ describe('Your audio', () => {
     cy.contains('Search').click();
     cy.get('#notifications').should('contain', '3');
   });
+
+  it('should delete selected audio requests', () => {
+    cy.contains('Your Audio').click();
+    cy.get('#readyTable tbody input[type="checkbox"]').first().click();
+    cy.get('#delete-button').click();
+    cy.contains('Are you sure you want to delete this item');
+    cy.get('button.govuk-button--warning').click();
+    cy.contains('T20200331').should('not.exist');
+  });
+
+  it('link back to case via audio request', () => {
+    cy.contains('Your Audio').click();
+    cy.contains('T20200190').click();
+    cy.get('h1.govuk-heading-l').contains('CASE1001');
+  });
 });
 
 describe('Request Intercept tests', () => {

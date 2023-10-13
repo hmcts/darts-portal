@@ -1,6 +1,7 @@
 import { DatatableRow } from './data-table-row.interface';
 
 export interface UserAudioRequestRow extends DatatableRow {
+  caseId: number;
   caseNumber: string;
   courthouse: string;
   hearingDate: string | null;

@@ -16,6 +16,7 @@ describe('HeaderComponent', () => {
 
   const MOCK_AUDIO_REQUESTS: UserAudioRequest[] = [
     {
+      case_id: 12,
       media_request_id: 12311,
       case_number: 'T20202110',
       courthouse_name: 'Manchester Minshull Street',

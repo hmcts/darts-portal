@@ -12,6 +12,7 @@ describe('AudioService', () => {
 
   const MOCK_AUDIO_REQUESTS: UserAudioRequest[] = [
     {
+      case_id: 2,
       media_request_id: 12345,
       case_number: 'T20200190',
       courthouse_name: 'Manchester Minshull Street',
@@ -23,6 +24,7 @@ describe('AudioService', () => {
       last_accessed_ts: '2023-08-23T09:00:00Z',
     },
     {
+      case_id: 3,
       media_request_id: 12346,
       case_number: 'T2020019210',
       courthouse_name: 'Reading',
@@ -34,6 +36,7 @@ describe('AudioService', () => {
       last_accessed_ts: '2023-08-23T09:00:00Z',
     },
     {
+      case_id: 4,
       media_request_id: 12347,
       case_number: 'T20200192222',
       courthouse_name: 'Slough',
@@ -45,6 +48,7 @@ describe('AudioService', () => {
       last_accessed_ts: '2023-08-23T09:00:00Z',
     },
     {
+      case_id: 5,
       media_request_id: 12347,
       case_number: 'T20200192231',
       courthouse_name: 'Brighton',
@@ -55,6 +59,7 @@ describe('AudioService', () => {
       media_request_status: 'FAILED',
     },
     {
+      case_id: 6,
       media_request_id: 12378,
       case_number: 'T20200331',
       courthouse_name: 'Liverpool',
@@ -65,6 +70,7 @@ describe('AudioService', () => {
       media_request_status: 'COMPLETED',
     },
     {
+      case_id: 7,
       media_request_id: 12377,
       case_number: 'T20200333',
       courthouse_name: 'Liverpool',
@@ -76,6 +82,7 @@ describe('AudioService', () => {
       last_accessed_ts: '2023-08-23T09:00:00Z',
     },
     {
+      case_id: 8,
       media_request_id: 12342,
       case_number: 'T2020011820',
       courthouse_name: 'Ascot',
@@ -86,6 +93,7 @@ describe('AudioService', () => {
       media_request_status: 'COMPLETED',
     },
     {
+      case_id: 9,
       media_request_id: 12341,
       case_number: 'T2023453422',
       courthouse_name: 'Bournemouth',
@@ -96,6 +104,7 @@ describe('AudioService', () => {
       media_request_status: 'COMPLETED',
     },
     {
+      case_id: 10,
       media_request_id: 123443,
       case_number: 'T20200192231',
       courthouse_name: 'Brighton',
@@ -106,6 +115,7 @@ describe('AudioService', () => {
       media_request_status: 'COMPLETED',
     },
     {
+      case_id: 11,
       media_request_id: 123449,
       case_number: 'T202001922310202',
       courthouse_name: 'Swindon',
@@ -119,6 +129,7 @@ describe('AudioService', () => {
 
   const MOCK_EXPIRED_AUDIO_REQUESTS: UserAudioRequest[] = [
     {
+      case_id: 12,
       media_request_id: 12311,
       case_number: 'T20202110',
       courthouse_name: 'Manchester Minshull Street',
@@ -129,6 +140,7 @@ describe('AudioService', () => {
       media_request_status: 'EXPIRED',
     },
     {
+      case_id: 13,
       media_request_id: 123123,
       case_number: 'T202001232',
       courthouse_name: 'Reading',
@@ -139,6 +151,7 @@ describe('AudioService', () => {
       media_request_status: 'EXPIRED',
     },
     {
+      case_id: 14,
       media_request_id: 4321,
       case_number: 'T20200192772',
       courthouse_name: 'Slough',
@@ -202,6 +215,23 @@ describe('AudioService', () => {
         req.flush(mockAudios);
 
         expect(audios).toEqual(mockAudios.map((ar) => ({ ...ar, hearing_date: ar.hearing_date + 'Z' })));
+      });
+    });
+
+    describe('#deleteAudioRequest', () => {
+      it('sends delete request', () => {
+        const reqId = 123449;
+        let responseStatus;
+        service.deleteAudioRequests(reqId).subscribe((res) => {
+          responseStatus = res.status;
+        });
+
+        const req = httpMock.expectOne(`api/audio-requests/${reqId}`);
+        expect(req.request.method).toBe('DELETE');
+
+        req.flush(null, { status: 204, statusText: '' });
+
+        expect(responseStatus).toEqual(204);
       });
     });
 
