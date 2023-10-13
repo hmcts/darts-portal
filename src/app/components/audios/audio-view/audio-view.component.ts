@@ -1,35 +1,33 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { AudioService } from '@services/audio/audio.service';
-import { Observable } from 'rxjs';
-import { HttpResponse } from '@angular/common/http';
+import { Case } from '@darts-types/case.interface';
+import { Hearing } from '@darts-types/hearing.interface';
+import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
 
 @Component({
   selector: 'app-audio-view',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink, ReportingRestrictionComponent],
   templateUrl: './audio-view.component.html',
   styleUrls: ['./audio-view.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AudioViewComponent {
   audioService = inject(AudioService);
-  patchResponse$: Observable<HttpResponse<Response>>;
+  route = inject(ActivatedRoute);
 
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
+  case!: Case;
+  hearing!: Hearing;
+  audio!: { id: number; startTime: string; endTime: string };
+
+  constructor() {
     //Send request to update last accessed time of audio
-    this.patchResponse$ = this.audioService.patchAudioRequest(this.route.snapshot.params.requestId);
-    //////////
-    //Temporary code to go back to audios, observe: 'response' can be removed from audio service call when below is removed
-    //Expects 204 as there is no content response
-    this.patchResponse$.subscribe((response: HttpResponse<Response>) => {
-      if (response.status === 204) {
-        router.navigateByUrl('audios');
-      }
-    });
-    /////////
+    this.audioService.patchAudioRequest(this.route.snapshot.params.requestId).subscribe();
+  }
+
+  onDeleteClicked(event: MouseEvent) {
+    event.preventDefault();
   }
 }

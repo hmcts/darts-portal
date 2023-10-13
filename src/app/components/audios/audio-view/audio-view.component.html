@@ -1,5 +1,40 @@
-<p>audio view</p>
+<!-- Breadcrumbs -->
+<div class="govuk-breadcrumbs">
+  <ol class="govuk-breadcrumbs__list">
+    <li class="govuk-breadcrumbs__list-item">
+      <a routerLink="../" class="govuk-breadcrumbs__link">Your Audio</a>
+    </li>
+    <li class="govuk-breadcrumbs__list-item">
+      <a [routerLink]="['.']" class="govuk-breadcrumbs__link">[audio ID]</a>
+    </li>
+  </ol>
+</div>
+
+<app-reporting-restriction *ngIf="true" [reportingRestriction]="'Restriction'"></app-reporting-restriction>
+
+<h1 class="govuk-caption-l">Audio File</h1>
+<h1 class="govuk-heading-l">case_audio.zip</h1>
+
+<h2 class="govuk-heading-m">Case details</h2>
+<h1 class="govuk-heading-s">Case ID</h1>
+<h1 class="govuk-body">{{ case.case_number }}</h1>
+<h3 class="govuk-heading-s">Courthouse</h3>
+<p class="govuk-body">{{ case.courthouse }}</p>
+<h3 class="govuk-heading-s">Defendant(s)</h3>
+<p class="govuk-body">{{ case.defendants }}</p>
+<h2 class="govuk-heading-m">Audio details</h2>
+<h1 class="govuk-heading-s">Hearing date</h1>
+<h1 class="govuk-body">{{ hearing.date | date: 'd MMM y' }}</h1>
+
+<h3 class="govuk-heading-s">Start Time</h3>
+<p class="govuk-body">{{ audio.startTime | date: 'HH:mm:ss' }}</p>
+<h3 class="govuk-heading-s">End Time</h3>
+<p class="govuk-body">{{ audio.endTime | date: 'HH:mm:ss' }}</p>
 
 <div class="govuk-button-group">
-  <button class="govuk-button" routerLink="audios" data-module="govuk-button">Go back</button>
+  <button class="govuk-button" routerLink="audios" data-module="govuk-button">Download audio file</button>
 </div>
+
+<hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
+
+<a href="#" (click)="onDeleteClicked($event)" class="govuk-link">Delete audio file</a>
