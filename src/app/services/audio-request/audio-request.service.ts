@@ -1,15 +1,17 @@
+import { UserAudioRequestRow } from '@darts-types/index';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
 import { UserService } from '@services/user/user.service';
-import { BehaviorSubject, Observable, combineLatest, switchMap, tap, timer, map } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest, switchMap, tap, timer, map, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AudioService {
+export class AudioRequestService {
   audioRequests$: Observable<UserAudioRequest[]>;
   expiredAudioRequests$: Observable<UserAudioRequest[]>;
+  audioRequestView$!: Observable<UserAudioRequestRow>;
 
   //Defined in seconds
   private POLL_INTERVAL = 60;
@@ -62,6 +64,15 @@ export class AudioService {
   //Sends request to update last accessed timestamp
   patchAudioRequest(requestId: number): Observable<HttpResponse<Response>> {
     return this.http.patch<Response>(`api/audio-requests/${requestId}`, {}, { observe: 'response' });
+  }
+
+  downloadAudio(requestId: number) {
+    return this.http.get(`api/audio-requests/download`, { params: { media_request_id: requestId } });
+  }
+
+  setAudioRequest(audioRequestRow: UserAudioRequestRow) {
+    console.log(audioRequestRow);
+    this.audioRequestView$ = of(audioRequestRow);
   }
 
   filterCompletedRequests(audioRequests: UserAudioRequest[]): UserAudioRequest[] {

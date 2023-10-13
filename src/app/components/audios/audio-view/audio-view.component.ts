@@ -1,10 +1,12 @@
+import { combineLatest, Observable } from 'rxjs';
+import { CaseService } from '@services/case/case.service';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { AudioService } from '@services/audio/audio.service';
+import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { Case } from '@darts-types/case.interface';
-import { Hearing } from '@darts-types/hearing.interface';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
+import { UserAudioRequestRow } from '@darts-types/index';
 
 @Component({
   selector: 'app-audio-view',
@@ -15,19 +17,30 @@ import { ReportingRestrictionComponent } from '@common/reporting-restriction/rep
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AudioViewComponent {
-  audioService = inject(AudioService);
+  audioRequestService = inject(AudioRequestService);
+  caseService = inject(CaseService);
   route = inject(ActivatedRoute);
 
-  case!: Case;
-  hearing!: Hearing;
-  audio!: { id: number; startTime: string; endTime: string };
+  case$!: Observable<Case>;
+  audioRequest$!: Observable<UserAudioRequestRow>;
+  data$: Observable<{ case: Case; audioRequest: UserAudioRequestRow }>;
 
   constructor() {
     //Send request to update last accessed time of audio
-    this.audioService.patchAudioRequest(this.route.snapshot.params.requestId).subscribe();
+    this.audioRequestService.patchAudioRequest(this.route.snapshot.params.requestId).subscribe();
+
+    this.case$ = this.caseService.getCase(1);
+    this.audioRequest$ = this.audioRequestService.audioRequestView$;
+    this.data$ = combineLatest({ case: this.case$, audioRequest: this.audioRequest$ });
   }
 
   onDeleteClicked(event: MouseEvent) {
     event.preventDefault();
+  }
+
+  onDownloadClicked() {
+    this.audioRequestService.downloadAudio(this.route.snapshot.params.requestId).subscribe((data) => {
+      console.log(data);
+    });
   }
 }

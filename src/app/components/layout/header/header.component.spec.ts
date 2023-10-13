@@ -4,15 +4,15 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HeaderComponent } from './header.component';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
 import { AuthService } from '@services/auth/auth.service';
-import { AudioService } from '@services/audio/audio.service';
-import { Observable, combineLatest, of } from 'rxjs';
+import { AudioRequestService } from '@services/audio-request/audio-request.service';
+import { combineLatest, of } from 'rxjs';
 import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
   let fakeAuthService: Partial<AuthService>;
-  let fakeAudioService: Partial<AudioService>;
+  let fakeAudioService: Partial<AudioRequestService>;
 
   const MOCK_AUDIO_REQUESTS: UserAudioRequest[] = [
     {
@@ -44,7 +44,7 @@ describe('HeaderComponent', () => {
       providers: [
         { provide: AppInsightsService, useValue: fakeAppInsightsService },
         { provide: AuthService, useValue: fakeAuthService },
-        { provide: AudioService, useValue: fakeAudioService },
+        { provide: AudioRequestService, useValue: fakeAudioService },
       ],
     }).compileComponents();
 
