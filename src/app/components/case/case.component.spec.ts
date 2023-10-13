@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { Case, Hearing } from '@darts-types/index';
+import { Case, Hearing, transcript } from '@darts-types/index';
 import { CaseService } from '@services/case/case.service';
 import { Observable, of } from 'rxjs';
 import { CaseComponent } from './case.component';
@@ -32,9 +32,40 @@ describe('CaseComponent', () => {
     },
   ]);
 
+  const mockTranscript: Observable<transcript[]> = of([
+    {
+      tra_id: 1,
+      hea_id: 2,
+      hearing_date: '2023-10-12',
+      type: 'Sentencing remarks',
+      requested_on: '2023-10-12',
+      requested_by_name: 'Joe Bloggs',
+      status: 'Available',
+    },
+    {
+      tra_id: 1,
+      hea_id: 2,
+      hearing_date: '2023-10-12',
+      type: 'Sentencing remarks',
+      requested_on: '2023-10-12',
+      requested_by_name: 'Joe Bloggs',
+      status: 'Available',
+    },
+    {
+      tra_id: 1,
+      hea_id: 2,
+      hearing_date: '2023-10-12',
+      type: 'Sentencing remarks',
+      requested_on: '2023-10-12',
+      requested_by_name: 'Joe Bloggs',
+      status: 'In Progress',
+    },
+  ]);
+
   const caseServiceMock = {
     getCase: jest.fn(),
     getCaseHearings: jest.fn(),
+    getAllCaseTranscripts: jest.fn(),
   };
 
   const mockActivatedRoute = {
@@ -57,6 +88,7 @@ describe('CaseComponent', () => {
 
     jest.spyOn(caseServiceMock, 'getCase').mockReturnValue(mockCaseFile);
     jest.spyOn(caseServiceMock, 'getCaseHearings').mockReturnValue(mockSingleCaseTwoHearings);
+    jest.spyOn(caseServiceMock, 'getAllCaseTranscripts').mockReturnValue(mockTranscript);
 
     fixture = TestBed.createComponent(CaseComponent);
     component = fixture.componentInstance;
