@@ -8,6 +8,7 @@ nodejs:
       secrets:
         - AppInsightsInstrumentationKey
         - redis-connection-string
+        - darts-portal-session-secret
   environment:
     ALLOW_CONFIG_MUTATIONS: true
     DARTS_PORTAL_URL: https://darts-portal.{{ .Values.global.environment }}.platform.hmcts.net
