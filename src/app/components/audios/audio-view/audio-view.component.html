@@ -6,7 +6,7 @@
         <a routerLink="../" class="govuk-breadcrumbs__link">Your Audio</a>
       </li>
       <li class="govuk-breadcrumbs__list-item">
-        <a [routerLink]="['.']" class="govuk-breadcrumbs__link">{{ case.case_number }}.zip</a>
+        <a [routerLink]="['.']" class="govuk-breadcrumbs__link">{{ fileName }}</a>
       </li>
     </ol>
   </div>
@@ -17,7 +17,7 @@
   ></app-reporting-restriction>
 
   <h1 class="govuk-caption-l">Audio File</h1>
-  <h1 class="govuk-heading-l">{{ case.case_number }}.zip</h1>
+  <h1 class="govuk-heading-l">{{ fileName }}</h1>
 
   <h2 class="govuk-heading-m">Case details</h2>
   <h1 class="govuk-heading-s">Case ID</h1>

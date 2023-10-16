@@ -1,10 +1,10 @@
-import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { AudioRequestService } from './audio-request.service';
 import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
+import { UserState } from '@darts-types/user-state';
 import { UserService } from '@services/user/user.service';
 import { of } from 'rxjs';
-import { UserState } from '@darts-types/user-state';
+import { AudioRequestService } from './audio-request.service';
 
 describe('AudioService', () => {
   let service: AudioRequestService;
@@ -239,7 +239,7 @@ describe('AudioService', () => {
       it('sends patch request', () => {
         const reqId = 123449;
         let responseStatus;
-        service.patchAudioRequest(reqId).subscribe((res) => {
+        service.patchAudioRequestLastAccess(reqId, true).subscribe((res) => {
           responseStatus = res.status;
         });
 

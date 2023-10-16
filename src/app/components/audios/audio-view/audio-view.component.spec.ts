@@ -29,8 +29,8 @@ describe('AudioViewComponent', () => {
       expiry: '2023-08-23T09:00:00Z',
       status: 'COMPLETED',
     },
-    patchAudioRequest: () => of(),
-    getDownloadUrl: (id: number) => 'api/download',
+    patchAudioRequestLastAccess: () => of(),
+    getDownloadUrl: () => 'api/download',
   };
 
   beforeEach(() => {

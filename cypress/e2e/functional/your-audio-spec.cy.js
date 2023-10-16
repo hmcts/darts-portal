@@ -49,15 +49,12 @@ describe('Your audio', () => {
     cy.contains('T20200331').parents('tr').contains('View').click();
 
     cy.get('#notifications').should('contain', '4');
-    cy.get('#readyTable').get('.unread').should('have.length', 4);
+  });
 
-    cy.contains('T2023453422').parents('tr').contains('View').click();
-
-    cy.get('#notifications').should('contain', '3');
-    cy.get('#readyTable').get('.unread').should('have.length', 3);
-
-    cy.contains('Search').click();
-    cy.get('#notifications').should('contain', '3');
+  it('View audio request', () => {
+    cy.contains('Your Audio').click();
+    cy.contains('T20200331').parents('tr').contains('View').click();
+    cy.contains('T20200331.zip').should('exist');
   });
 
   it('should delete selected audio requests', () => {

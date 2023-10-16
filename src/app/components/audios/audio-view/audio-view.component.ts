@@ -1,12 +1,12 @@
-import { Observable } from 'rxjs';
-import { CaseService } from '@services/case/case.service';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { AudioRequestService } from '@services/audio-request/audio-request.service';
-import { Case } from '@darts-types/case.interface';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
+import { Case } from '@darts-types/case.interface';
 import { UserAudioRequestRow } from '@darts-types/index';
+import { AudioRequestService } from '@services/audio-request/audio-request.service';
+import { CaseService } from '@services/case/case.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-audio-view',
@@ -30,13 +30,14 @@ export class AudioViewComponent {
   constructor() {
     this.audioRequest = this.audioRequestService.audioRequestView;
     const { requestId } = this.audioRequest;
+    const isUnread = this.audioRequest.last_accessed_ts ? false : true;
 
     if (!this.audioRequest) {
       this.router.navigate(['../']);
     }
 
     //Send request to update last accessed time of audio
-    this.audioRequestService.patchAudioRequest(requestId).subscribe();
+    this.audioRequestService.patchAudioRequestLastAccess(requestId, isUnread).subscribe();
 
     this.case$ = this.caseService.getCase(this.audioRequest.caseId);
 
