@@ -1,9 +1,9 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { AudioViewComponent } from './audio-view.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { of } from 'rxjs';
+import { AudioViewComponent } from './audio-view.component';
 
 describe('AudioViewComponent', () => {
   let component: AudioViewComponent;
@@ -30,6 +30,7 @@ describe('AudioViewComponent', () => {
       status: 'COMPLETED',
     },
     patchAudioRequest: () => of(),
+    getDownloadUrl: (id: number) => 'api/download',
   };
 
   beforeEach(() => {

@@ -1,6 +1,5 @@
-import { DatePipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserAudioRequestRow } from '@darts-types/user-audio-request-row.interface';
 import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
 import { AudioRequestService } from '@services/audio-request/audio-request.service';
@@ -179,11 +178,15 @@ describe('AudiosComponent', () => {
     deleteAudioRequests: jest.fn(),
   };
 
+  const mockRouter = {
+    navigate: jest.fn(),
+  };
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AudiosComponent],
       providers: [
-        DatePipe,
+        { provide: Router, useValue: mockRouter },
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
         { provide: AudioRequestService, useValue: audioServiceStub },
       ],
