@@ -333,9 +333,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/cdk@npm:16.2.7":
-  version: 16.2.7
-  resolution: "@angular/cdk@npm:16.2.7"
+"@angular/cdk@npm:16.2.8":
+  version: 16.2.8
+  resolution: "@angular/cdk@npm:16.2.8"
   dependencies:
     parse5: ^7.1.2
     tslib: ^2.3.0
@@ -346,7 +346,7 @@ __metadata:
   dependenciesMeta:
     parse5:
       optional: true
-  checksum: b228f5dc87407fd6916b2c6d4ee7ac9d65255da2169eced54c74f6b3f03631a485c6ae568880ef86b37322fc9f93c42cd82c53d3c54a577c70a225333a1c56f9
+  checksum: 407ffa75782eaa951a1181231031fd199ece6f195e4fc44519080126737e089c125cf35ce646b20cc3d6c8e300eff0b37ef30ccdd05ac65871896a8cd1f6bd7a
   languageName: node
   linkType: hard
 
@@ -4270,16 +4270,18 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:*":
-  version: 20.8.3
-  resolution: "@types/node@npm:20.8.3"
-  checksum: bfb88b341faeb19f8fd37306a3bf433721b876c6491d10fcb0b13fd26601fa36ee45113dd82b1e1c23e3c957dff5b99f81a16493cefa03abe797e41a2487a4f7
+  version: 20.8.5
+  resolution: "@types/node@npm:20.8.5"
+  dependencies:
+    undici-types: ~5.25.1
+  checksum: 4bca4e4f6307a6f5dc78812015eca9c5a998b35fcf3ba4058c9851d3dde2b22c914fa25a85b804eab5af2ab95375d15943dce8e9ba5e01d15f4bf516ca0d2816
   languageName: node
   linkType: hard
 
 "@types/node@npm:^18.15.12, @types/node@npm:^18.17.5":
-  version: 18.18.4
-  resolution: "@types/node@npm:18.18.4"
-  checksum: 4901e91c4cc479bb58acbcd79236a97a0ad6db4a53cb1f4ba4cf32af15324c61b16faa6e31c1b09bf538a20feb5f5274239157ce5237f5741db0b9ab71e69c52
+  version: 18.18.5
+  resolution: "@types/node@npm:18.18.5"
+  checksum: fc8c9b2bf226270cf9085a7dac76ce09dd7c3519ec9b687ee2b50385954ab3709c45ca82d002d1536e24286803cd194d7ab7008acebdcd6681b8b19d4277fa5c
   languageName: node
   linkType: hard
 
@@ -6586,8 +6588,8 @@ __metadata:
   linkType: hard
 
 "cypress@npm:^13.0.0":
-  version: 13.3.0
-  resolution: "cypress@npm:13.3.0"
+  version: 13.3.1
+  resolution: "cypress@npm:13.3.1"
   dependencies:
     "@cypress/request": ^3.0.0
     "@cypress/xvfb": ^1.2.4
@@ -6634,7 +6636,7 @@ __metadata:
     yauzl: ^2.10.0
   bin:
     cypress: bin/cypress
-  checksum: 6ad11bd6aabccfaf8be78afff0e854c9c8ccc935704c41efe4d8e9412ccfcb652f23791931c3aa26fc41068eeeb739a51563308670c9dada91cb272d08227caf
+  checksum: 51798ecc6c5a33860012ecf39c428540911c3cf4df6ee63ea950cafea4a6c415d18da87951721f45b8601637e9731af4cf1464d37d62a36ce7243f8bfc8a59d2
   languageName: node
   linkType: hard
 
@@ -6652,7 +6654,7 @@ __metadata:
     "@angular-eslint/schematics": 16.2.0
     "@angular-eslint/template-parser": 16.2.0
     "@angular/animations": ^16.0.0
-    "@angular/cdk": 16.2.7
+    "@angular/cdk": 16.2.8
     "@angular/cli": ~16.2.0
     "@angular/common": ^16.0.0
     "@angular/compiler": ^16.0.0
@@ -14612,6 +14614,13 @@ __metadata:
   version: 2.0.5
   resolution: "undefsafe@npm:2.0.5"
   checksum: f42ab3b5770fedd4ada175fc1b2eb775b78f609156f7c389106aafd231bfc210813ee49f54483d7191d7b76e483bc7f537b5d92d19ded27156baf57592eb02cc
+  languageName: node
+  linkType: hard
+
+"undici-types@npm:~5.25.1":
+  version: 5.25.3
+  resolution: "undici-types@npm:5.25.3"
+  checksum: ec9d2cc36520cbd9fbe3b3b6c682a87fe5be214699e1f57d1e3d9a2cb5be422e62735f06e0067dc325fd3dd7404c697e4d479f9147dc8a804e049e29f357f2ff
   languageName: node
   linkType: hard
 

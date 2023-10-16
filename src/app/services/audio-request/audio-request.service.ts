@@ -56,8 +56,8 @@ export class AudioRequestService {
       .pipe(map((requests) => requests.map((r) => ({ ...r, hearing_date: r.hearing_date + 'Z' }))));
   }
 
-  deleteAudioRequests(mediaRequestId: number): Observable<HttpResponse<object>> {
-    return this.http.delete(`api/audio-requests/${mediaRequestId}`, { observe: 'response' });
+  deleteAudioRequests(mediaRequestId: number): Observable<HttpResponse<Response>> {
+    return this.http.delete<Response>(`api/audio-requests/${mediaRequestId}`, { observe: 'response' });
   }
 
   updateUnread(audioRequests: UserAudioRequest[]) {

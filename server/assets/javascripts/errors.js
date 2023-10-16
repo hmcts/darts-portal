@@ -1,3 +1,4 @@
+
 function addGovukErrorSummary(headingErrors) {
   const errorTitle = document.createElement('h2');
   errorTitle.className = 'govuk-error-summary__title';
@@ -34,10 +35,19 @@ function addGovukErrorSummary(headingErrors) {
   mainForm.prepend(errorSummaryDiv);
 }
 
-function createErrorSummaryBox() {
-  const pageLevelErrorElems = document.getElementsByClassName("error pageLevel");
-  const itemLevelErrorElems = document.getElementsByClassName("error itemLevel");
-  const errorElems = [...pageLevelErrorElems, ...itemLevelErrorElems];
+function createErrorSummaryBox(screen) {
+  let errorElems;
+  if (screen === 'reset') {
+    //Verification input errors
+    const verifErrorElems = document.getElementsByClassName("verificationErrorText error");
+    errorElems = [...verifErrorElems];
+  } else {
+    //Login page errors
+    const pageLevelErrorElems = document.getElementsByClassName("error pageLevel");
+    const itemLevelErrorElems = document.getElementsByClassName("error itemLevel");
+    errorElems = [...pageLevelErrorElems, ...itemLevelErrorElems];
+
+  }
   const errors = [];
 
   for (let i = 0; i < errorElems.length; i++) {
