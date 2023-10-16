@@ -41,7 +41,7 @@ export class AudioViewComponent {
     this.case$ = this.caseService.getCase(this.audioRequest.caseId);
 
     this.downloadUrl = this.audioRequestService.getDownloadUrl(requestId);
-    this.fileName = `${this.audioRequest.case_number}'.zip'`;
+    this.fileName = `${this.audioRequest.caseNumber}.zip`;
   }
 
   onDeleteClicked(event: MouseEvent) {
