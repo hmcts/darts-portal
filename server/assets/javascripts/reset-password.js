@@ -88,7 +88,7 @@ $('#emailVerificationControl_but_change_claims.changeClaims').click(function () 
 
 function displayErrors() {
     removeErrors();
-    addItemLevelErrorClasses();
+    addItemLevelErrorClasses('reset');
     createErrorSummaryBox('reset');
     hidePageLevelErrors();
 }
