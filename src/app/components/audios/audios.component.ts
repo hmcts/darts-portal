@@ -3,8 +3,8 @@ import { Component, inject } from '@angular/core';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { AudioService } from '@services/audio/audio.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { combineLatest, map, Observable } from 'rxjs';
-import { CommonModule, DatePipe } from '@angular/common';
+import { combineLatest, forkJoin, map, Observable } from 'rxjs';
+import { CommonModule } from '@angular/common';
 import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
 import { TableRowTemplateDirective } from 'src/app/directives/table-row-template.directive';
 import { LoadingComponent } from '@common/loading/loading.component';
@@ -32,7 +32,17 @@ import { DatatableColumn, UserAudioRequestRow } from '@darts-types/index';
 export class AudiosComponent {
   headerService = inject(HeaderService);
   audioService = inject(AudioService);
-  datePipe = inject(DatePipe);
+
+  selectedAudioRequests: UserAudioRequestRow[] = [];
+
+  private _isDeleting = false;
+  public get isDeleting() {
+    return this._isDeleting;
+  }
+  public set isDeleting(value) {
+    this._isDeleting = value;
+    this.headerService.showPrimaryNavigation(!this._isDeleting);
+  }
 
   audioRequests$: Observable<UserAudioRequest[]>;
   expiredAudioRequests$: Observable<UserAudioRequest[]>;
@@ -58,7 +68,9 @@ export class AudiosComponent {
     { name: 'Status', prop: 'status', sortable: true },
   ];
 
-  readyColumns = [{ name: '', prop: '' }, ...this.columns]; //Empty column for unread icon
+  unSortableColumns = this.columns.map((col) => ({ ...col, sortable: false }));
+
+  readyColumns = [{ name: '', prop: '' }, ...this.columns, { name: '', prop: '' }]; //Empty columns for unread icon and view link
 
   constructor() {
     this.audioRequests$ = this.audioService.audioRequests$;
@@ -86,7 +98,7 @@ export class AudiosComponent {
   mapAudioRequestToRows(audioRequests: UserAudioRequest[]): UserAudioRequestRow[] {
     return audioRequests.map((ar) => {
       return {
-        // id: ar.case_id,
+        caseId: ar.case_id,
         caseNumber: ar.case_number,
         courthouse: ar.courthouse_name,
         hearingDate: ar.hearing_date,
@@ -107,5 +119,35 @@ export class AudiosComponent {
         ar.media_request_status === 'PROCESSING' ||
         ar.media_request_status === 'FAILED'
     );
+  }
+
+  onSelectedAudio(selectedAudio: UserAudioRequestRow[]) {
+    this.selectedAudioRequests = selectedAudio;
+  }
+
+  onDeleteClicked() {
+    if (this.selectedAudioRequests.length) {
+      this.isDeleting = true;
+    }
+  }
+
+  onDeleteConfirmed() {
+    const deleteRequests: Observable<unknown>[] = this.selectedAudioRequests.map((s) =>
+      this.audioService.deleteAudioRequests(s.requestId)
+    );
+
+    forkJoin(deleteRequests).subscribe({
+      next: () => (this.isDeleting = false),
+      error: () => (this.isDeleting = false),
+    });
+  }
+
+  onDeleteCancelled(event: MouseEvent) {
+    event.preventDefault();
+    this.isDeleting = false;
+  }
+
+  onTabChanged() {
+    this.selectedAudioRequests = [];
   }
 }
