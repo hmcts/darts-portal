@@ -5,7 +5,7 @@ import { HeaderComponent } from './header.component';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
 import { AuthService } from '@services/auth/auth.service';
 import { AudioService } from '@services/audio/audio.service';
-import { Observable, combineLatest, of } from 'rxjs';
+import { combineLatest, of } from 'rxjs';
 import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
 
 describe('HeaderComponent', () => {
@@ -16,6 +16,7 @@ describe('HeaderComponent', () => {
 
   const MOCK_AUDIO_REQUESTS: UserAudioRequest[] = [
     {
+      case_id: 12,
       media_request_id: 12311,
       case_number: 'T20202110',
       courthouse_name: 'Manchester Minshull Street',
