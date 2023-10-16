@@ -37,7 +37,7 @@
   </ng-container>
 
   <div class="govuk-button-group">
-    <button class="govuk-button" (click)="onDownloadClicked()">Download audio file</button>
+    <a class="govuk-button" [href]="downloadUrl" [download]="fileName">Download audio file</a>
   </div>
 
   <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />

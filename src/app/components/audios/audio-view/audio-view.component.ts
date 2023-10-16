@@ -24,38 +24,27 @@ export class AudioViewComponent {
 
   case$!: Observable<Case>;
   audioRequest!: UserAudioRequestRow;
+  downloadUrl = '';
+  fileName = '';
 
   constructor() {
     this.audioRequest = this.audioRequestService.audioRequestView;
+    const { requestId } = this.audioRequest;
 
     if (!this.audioRequest) {
       this.router.navigate(['../']);
     }
 
     //Send request to update last accessed time of audio
-    this.audioRequestService.patchAudioRequest(this.route.snapshot.params.requestId).subscribe();
+    this.audioRequestService.patchAudioRequest(requestId).subscribe();
 
     this.case$ = this.caseService.getCase(this.audioRequest.caseId);
+
+    this.downloadUrl = this.audioRequestService.getDownloadUrl(requestId);
+    this.fileName = `${this.audioRequest.case_number}'.zip'`;
   }
 
   onDeleteClicked(event: MouseEvent) {
     event.preventDefault();
-  }
-
-  onDownloadClicked() {
-    this.audioRequestService.downloadAudio(this.route.snapshot.params.requestId).subscribe((blob: Blob) => {
-      this.saveAs(blob, `${this.audioRequest.caseNumber.toString()}.zip`);
-    });
-  }
-
-  private saveAs(blob: Blob, fileName: string) {
-    const downloadLink = document.createElement('a');
-    const url = window.URL.createObjectURL(blob);
-    downloadLink.href = url;
-    downloadLink.download = fileName;
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    window.URL.revokeObjectURL(url);
-    document.body.removeChild(downloadLink);
   }
 }

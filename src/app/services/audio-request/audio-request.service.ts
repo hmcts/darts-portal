@@ -70,11 +70,8 @@ export class AudioRequestService {
     return this.http.patch<Response>(`api/audio-requests/${requestId}`, {}, { observe: 'response' });
   }
 
-  downloadAudio(requestId: number): Observable<Blob> {
-    return this.http.get(`api/audio-requests/download`, {
-      params: { media_request_id: requestId },
-      responseType: 'blob',
-    });
+  getDownloadUrl(requestId: number): string {
+    return `/api/audio-requests/download?media_request_id=${requestId}`;
   }
 
   setAudioRequest(audioRequestRow: UserAudioRequestRow) {
