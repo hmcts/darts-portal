@@ -1,4 +1,4 @@
-import { combineLatest, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { CaseService } from '@services/case/case.service';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -43,8 +43,19 @@ export class AudioViewComponent {
   }
 
   onDownloadClicked() {
-    this.audioRequestService.downloadAudio(this.route.snapshot.params.requestId).subscribe((data) => {
-      console.log(data);
+    this.audioRequestService.downloadAudio(this.route.snapshot.params.requestId).subscribe((blob: Blob) => {
+      this.saveAs(blob, `${this.audioRequest.caseNumber.toString()}.zip`);
     });
+  }
+
+  private saveAs(blob: Blob, fileName: string) {
+    const downloadLink = document.createElement('a');
+    const url = window.URL.createObjectURL(blob);
+    downloadLink.href = url;
+    downloadLink.download = fileName;
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(downloadLink);
   }
 }
