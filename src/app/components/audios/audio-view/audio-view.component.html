@@ -42,5 +42,11 @@
 
   <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
 
-  <a href="#" (click)="onDeleteClicked($event)" class="govuk-link">Delete audio file</a>
+  <a href="#" (click)="$event.preventDefault(); isDeleting = true" class="govuk-link">Delete audio file</a>
 </ng-container>
+<app-audio-delete
+  *ngIf="isDeleting"
+  [rowsToDelete]="[audioRequest]"
+  (confirm)="onDeleteConfirmed()"
+  (cancel)="isDeleting = false"
+></app-audio-delete>
