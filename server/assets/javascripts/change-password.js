@@ -15,3 +15,5 @@ function displayErrors() {
 }
 
 $('button#continue').click(displayErrors);
+$('#newPassword').on('input blur', displayErrors);
+$('#reenterPassword').on('input blur', displayErrors);

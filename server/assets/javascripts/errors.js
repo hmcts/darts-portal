@@ -23,7 +23,7 @@ function addGovukErrorSummary(headingErrors) {
   errorBodyDiv.appendChild(errorList);
 
   const roleAlertDiv = document.createElement('div');
-  roleAlertDiv.setAttribute("role", "alert");
+  roleAlertDiv.setAttribute('role', 'alert');
   roleAlertDiv.appendChild(errorTitle);
   roleAlertDiv.appendChild(errorBodyDiv);
 
@@ -39,15 +39,18 @@ function createErrorSummaryBox(screen) {
   let errorElems;
   if (screen === 'reset') {
     //Verification input errors
-    const verifErrorElems = document.getElementsByClassName("verificationErrorText error");
+    const verifErrorElems = document.getElementsByClassName('verificationErrorText error');
     errorElems = [...verifErrorElems];
   }
   if (screen === 'login' || screen === 'change_password') {
-    //Login page errors
-    const pageLevelErrorElems = document.getElementsByClassName("error pageLevel");
-    const itemLevelErrorElems = document.getElementsByClassName("error itemLevel");
+    // login and change password page errors
+    let itemLevelSelector = 'error itemLevel';
+    if (screen === 'change_password') {
+      itemLevelSelector += ' show';
+    }
+    const pageLevelErrorElems = document.getElementsByClassName('error pageLevel');
+    const itemLevelErrorElems = document.getElementsByClassName(itemLevelSelector);
     errorElems = [...pageLevelErrorElems, ...itemLevelErrorElems];
-
   }
   const errors = [];
 
@@ -85,7 +88,11 @@ function addItemLevelErrorClasses(screen) {
     $('#emailVerificationControl_error_message').hide();
   }
   if (screen === 'login' || screen === 'change_password') {
-    $('.error.itemLevel').each(function() {
+    let selector = '.error.itemLevel';
+    if (screen === 'change_password') {
+      selector += '.show';
+    }
+    $(selector).each(function() {
       if ($(this).css('display') !== 'none') {
         $(this).parent().addClass('darts-error');
       }
