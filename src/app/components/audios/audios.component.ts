@@ -4,14 +4,14 @@ import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
-import { DatatableColumn, UserAudioRequestRow } from '@darts-types/index';
-import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
+import { DatatableColumn, UserAudioRequest, UserAudioRequestRow } from '@darts-types/index';
+import { TabDirective } from '@directives/tab.directive';
+import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { UnreadIconDirective } from '@directives/unread-icon.directive';
-import { AudioService } from '@services/audio/audio.service';
+import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { HeaderService } from '@services/header/header.service';
+import { Router } from 'express';
 import { combineLatest, forkJoin, map, Observable } from 'rxjs';
-import { TabDirective } from 'src/app/directives/tab.directive';
-import { TableRowTemplateDirective } from 'src/app/directives/table-row-template.directive';
 import { AudioDeleteComponent } from './audio-delete/audio-delete.component';
 
 @Component({
@@ -33,7 +33,8 @@ import { AudioDeleteComponent } from './audio-delete/audio-delete.component';
 })
 export class AudiosComponent {
   headerService = inject(HeaderService);
-  audioService = inject(AudioService);
+  audioService = inject(AudioRequestService);
+  router = inject(Router);
 
   selectedAudioRequests: UserAudioRequestRow[] = [];
 
@@ -119,6 +120,13 @@ export class AudiosComponent {
         ar.media_request_status === 'PROCESSING' ||
         ar.media_request_status === 'FAILED'
     );
+  }
+
+  onViewAudioRequest(event: MouseEvent, audioRequestRow: UserAudioRequestRow) {
+    event.preventDefault();
+    // Store audio request in service for retrieval on view screen
+    this.audioService.setAudioRequest(audioRequestRow);
+    this.router.navigate(['./audios', audioRequestRow.requestId]);
   }
 
   onSelectedAudio(selectedAudio: UserAudioRequestRow[]) {
