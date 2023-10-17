@@ -91,14 +91,14 @@ function displayErrors() {
     createErrorSummaryBox('reset');
     addItemLevelErrorClasses('reset');
     hidePageLevelErrors();
+
+    // when clicking "Request a new verification code"
+    $('#emailVerificationControl_but_send_new_code').click(function () {
+       removeErrors();
+    });
 }
 
 // wait a second before trying to do this, in case the JS in head isn't loaded yet
 setTimeout(function() {
     wrapXhrOpen('VerifyCode', '"status":"400"', displayErrors);
-}, 1000);
-
-//Atempt to clear errors
-setTimeout(function() {
-    wrapXhrOpen('SendCode', '"status":"200"', removeErrors);
 }, 1000);
