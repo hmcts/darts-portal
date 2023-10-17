@@ -88,12 +88,17 @@ $('#emailVerificationControl_but_change_claims.changeClaims').click(function () 
 
 function displayErrors() {
     removeErrors();
-    addItemLevelErrorClasses('reset');
     createErrorSummaryBox('reset');
+    addItemLevelErrorClasses('reset');
     hidePageLevelErrors();
 }
 
 // wait a second before trying to do this, in case the JS in head isn't loaded yet
 setTimeout(function() {
     wrapXhrOpen('VerifyCode', '"status":"400"', displayErrors);
+}, 1000);
+
+//Atempt to clear errors
+setTimeout(function() {
+    wrapXhrOpen('SendCode', '"status":"200"', removeErrors);
 }, 1000);
