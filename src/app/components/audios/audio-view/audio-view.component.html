@@ -1,15 +1,9 @@
 <!-- Breadcrumbs -->
-<ng-container *ngIf="case$ | async as case">
-  <div class="govuk-breadcrumbs">
-    <ol class="govuk-breadcrumbs__list">
-      <li class="govuk-breadcrumbs__list-item">
-        <a routerLink="../" class="govuk-breadcrumbs__link">Your Audio</a>
-      </li>
-      <li class="govuk-breadcrumbs__list-item">
-        <a [routerLink]="['.']" class="govuk-breadcrumbs__link">{{ fileName }}</a>
-      </li>
-    </ol>
-  </div>
+<ng-container *ngIf="!isDeleting && (case$ | async) as case">
+  <app-breadcrumb>
+    <a *breadcrumb="['../']">Your Audio</a>
+    <a *breadcrumb>{{ fileName }}</a>
+  </app-breadcrumb>
 
   <app-reporting-restriction
     *ngIf="case.reporting_restriction"
@@ -44,6 +38,7 @@
 
   <a href="#" (click)="$event.preventDefault(); isDeleting = true" class="govuk-link">Delete audio file</a>
 </ng-container>
+
 <app-audio-delete
   *ngIf="isDeleting"
   [rowsToDelete]="[audioRequest]"

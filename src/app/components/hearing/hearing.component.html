@@ -1,17 +1,8 @@
 <ng-container *ngIf="data$ | async as vm; else loading">
-  <!-- Breadcrumbs -->
-  <div [hidden]="state !== 'Default'" class="govuk-breadcrumbs">
-    <ol class="govuk-breadcrumbs__list">
-      <li class="govuk-breadcrumbs__list-item">
-        <a routerLink="../.." class="govuk-breadcrumbs__link">{{ vm.case.case_number }}</a>
-      </li>
-      <li class="govuk-breadcrumbs__list-item">
-        <a [routerLink]="['/case/', vm.case.case_id, 'hearing', vm.hearing?.id]" class="govuk-breadcrumbs__link">{{
-          vm.hearing?.date | date: 'd MMM y'
-        }}</a>
-      </li>
-    </ol>
-  </div>
+  <app-breadcrumb [hidden]="state !== 'Default'">
+    <a *breadcrumb="['/case', vm.case.case_id]">{{ vm.case.case_number }}</a>
+    <a *breadcrumb>{{ vm.hearing?.date | date: 'd MMM y' }}</a>
+  </app-breadcrumb>
 
   <!-- Error Summary Box -->
   <div
