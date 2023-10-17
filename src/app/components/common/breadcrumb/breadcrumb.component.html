@@ -1,0 +1,9 @@
+<div class="govuk-breadcrumbs">
+  <ol class="govuk-breadcrumbs__list">
+    <li *ngFor="let breadcrumb of breadcrumbs" class="govuk-breadcrumbs__list-item">
+      <a [routerLink]="breadcrumb.link" class="govuk-breadcrumbs__link">
+        <ng-container [ngTemplateOutlet]="breadcrumb.template"></ng-container>
+      </a>
+    </li>
+  </ol>
+</div>
