@@ -41,7 +41,8 @@ function createErrorSummaryBox(screen) {
     //Verification input errors
     const verifErrorElems = document.getElementsByClassName("verificationErrorText error");
     errorElems = [...verifErrorElems];
-  } else {
+  }
+  if (screen === 'login' || screen === 'change_password') {
     //Login page errors
     const pageLevelErrorElems = document.getElementsByClassName("error pageLevel");
     const itemLevelErrorElems = document.getElementsByClassName("error itemLevel");
@@ -50,9 +51,11 @@ function createErrorSummaryBox(screen) {
   }
   const errors = [];
 
-  for (let i = 0; i < errorElems.length; i++) {
-    if (window.getComputedStyle(errorElems[i]).display !== 'none') {
-      errors.push(errorElems[i].innerText);
+  if (errorElems && errorElems.length > 0) {
+    for (let i = 0; i < errorElems.length; i++) {
+      if (window.getComputedStyle(errorElems[i]).display !== 'none') {
+        errors.push(errorElems[i].innerText);
+      }
     }
   }
 
@@ -62,7 +65,7 @@ function createErrorSummaryBox(screen) {
 }
 
 function addItemLevelErrorClasses(screen) {
-  if (screen === 'reset'){
+  if (screen === 'reset') {
     $('#emailVerificationCode_label').parent().addClass('darts-error');
 
     //Loop round error message if to be displayed, clone in correct place
@@ -80,7 +83,8 @@ function addItemLevelErrorClasses(screen) {
     });
     //Set old error message to hidden 
     $('#emailVerificationControl_error_message').hide();
-  } else {
+  }
+  if (screen === 'login' || screen === 'change_password') {
     $('.error.itemLevel').each(function() {
       if ($(this).css('display') !== 'none') {
         $(this).parent().addClass('darts-error');
