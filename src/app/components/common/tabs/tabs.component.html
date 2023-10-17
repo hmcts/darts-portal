@@ -5,12 +5,12 @@
         class="moj-sub-navigation__link"
         [attr.aria-current]="tab.template === currentTab ? 'page' : null"
         href="#"
-        (click)="$event.preventDefault(); currentTab = tab.template"
+        (click)="onTabClick($event, tab)"
         >{{ tab.name }}
         <ng-container *ngIf="tab.count">
-          <span aria-label="Audio notification count" id="notifications" class="moj-notification-badge blue">{{
-            tab.count
-          }}</span>
+          <span aria-label="Audio notification count" id="notifications" class="moj-notification-badge blue">
+            {{ tab.count }}
+          </span>
         </ng-container>
       </a>
     </li>

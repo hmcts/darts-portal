@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
-import { RouterLink, ActivatedRoute } from '@angular/router';
-import { TabsComponent } from '@common/tabs/tabs.component';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
+import { TabsComponent } from '@common/tabs/tabs.component';
 import { DatatableColumn, DatatableRow, Hearing, TranscriptsRow } from '@darts-types/index';
-import { TabDirective } from 'src/app/directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
+import { TabDirective } from 'src/app/directives/tab.directive';
 
 @Component({
   selector: 'app-hearing-results',
