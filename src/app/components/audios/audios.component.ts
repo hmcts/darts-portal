@@ -1,17 +1,18 @@
-import { DataTableComponent } from '@common/data-table/data-table.component';
-import { Component, inject } from '@angular/core';
-import { TabsComponent } from '@common/tabs/tabs.component';
-import { AudioService } from '@services/audio/audio.service';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { combineLatest, forkJoin, map, Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
-import { TableRowTemplateDirective } from 'src/app/directives/table-row-template.directive';
+import { Component, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { DataTableComponent } from '@common/data-table/data-table.component';
 import { LoadingComponent } from '@common/loading/loading.component';
-import { TabDirective } from 'src/app/directives/tab.directive';
-import { UnreadIconDirective } from '@directives/unread-icon.directive';
-import { HeaderService } from '@services/header/header.service';
+import { TabsComponent } from '@common/tabs/tabs.component';
 import { DatatableColumn, UserAudioRequestRow } from '@darts-types/index';
+import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
+import { UnreadIconDirective } from '@directives/unread-icon.directive';
+import { AudioService } from '@services/audio/audio.service';
+import { HeaderService } from '@services/header/header.service';
+import { combineLatest, forkJoin, map, Observable } from 'rxjs';
+import { TabDirective } from 'src/app/directives/tab.directive';
+import { TableRowTemplateDirective } from 'src/app/directives/table-row-template.directive';
+import { AudioDeleteComponent } from './audio-delete/audio-delete.component';
 
 @Component({
   selector: 'app-audios',
@@ -27,6 +28,7 @@ import { DatatableColumn, UserAudioRequestRow } from '@darts-types/index';
     UnreadIconDirective,
     RouterLink,
     TabDirective,
+    AudioDeleteComponent,
   ],
 })
 export class AudiosComponent {
@@ -67,8 +69,6 @@ export class AudiosComponent {
     { name: 'Expiry date', prop: 'expiry', sortable: true },
     { name: 'Status', prop: 'status', sortable: true },
   ];
-
-  unSortableColumns = this.columns.map((col) => ({ ...col, sortable: false }));
 
   readyColumns = [{ name: '', prop: '' }, ...this.columns, { name: '', prop: '' }]; //Empty columns for unread icon and view link
 
@@ -142,8 +142,7 @@ export class AudiosComponent {
     });
   }
 
-  onDeleteCancelled(event: MouseEvent) {
-    event.preventDefault();
+  onDeleteCancelled() {
     this.isDeleting = false;
   }
 
