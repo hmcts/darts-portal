@@ -55,6 +55,8 @@ document.getElementById('email').placeholder = '';
 
             if (isForVerifyCode && isSuccessful) {
                 setTimeout(() => {
+                    //Remove errors if they exist
+                    removeErrors();
                     // show email
                     $('#email').css('display', 'unset');
                     // change heading
