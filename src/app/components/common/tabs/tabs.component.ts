@@ -1,4 +1,12 @@
-import { AfterContentInit, Component, ContentChildren, QueryList, TemplateRef } from '@angular/core';
+import {
+  AfterContentInit,
+  Component,
+  ContentChildren,
+  EventEmitter,
+  Output,
+  QueryList,
+  TemplateRef,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TabDirective } from 'src/app/directives/tab.directive';
 
@@ -12,9 +20,16 @@ import { TabDirective } from 'src/app/directives/tab.directive';
 export class TabsComponent implements AfterContentInit {
   @ContentChildren(TabDirective) tabs!: QueryList<TabDirective>;
   currentTab!: TemplateRef<unknown>;
+  @Output() tabChange = new EventEmitter();
 
   ngAfterContentInit(): void {
     const firstTab = this.tabs.first.template;
     if (firstTab) this.currentTab = firstTab;
+  }
+
+  onTabClick(event: MouseEvent, tab: TabDirective) {
+    event.preventDefault();
+    this.currentTab = tab.template;
+    this.tabChange.emit();
   }
 }

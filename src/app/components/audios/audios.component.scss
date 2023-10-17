@@ -9,3 +9,13 @@
   display: flex;
   gap: 1rem;
 }
+
+.action-container {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+
+  button {
+    margin-bottom: 0;
+  }
+}
