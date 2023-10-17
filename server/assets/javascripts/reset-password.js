@@ -40,6 +40,8 @@ document.getElementById('email').placeholder = '';
 
             if (isForSendCode && isSuccessful) {
                 setTimeout(() => {
+                    //Remove errors if they exist
+                    removeErrors();
                     // hide intro
                     document.getElementsByClassName('intro').item(0).style.display = 'none';
                     // hide email label
@@ -93,11 +95,6 @@ function displayErrors() {
     createErrorSummaryBox('reset');
     addItemLevelErrorClasses('reset');
     hidePageLevelErrors();
-
-    // when clicking "Request a new verification code"
-    $('#emailVerificationControl_but_send_new_code').click(function () {
-       removeErrors();
-    });
 }
 
 // wait a second before trying to do this, in case the JS in head isn't loaded yet
