@@ -64,9 +64,20 @@ function createErrorSummaryBox(screen) {
 function addItemLevelErrorClasses(screen) {
   if (screen === 'reset'){
     $('#emailVerificationCode_label').parent().addClass('darts-error');
-    //Copy error message
-    var $errorMsg = $('#emailVerificationControl_error_message').clone().insertAfter('#emailVerificationCode_label');
-    $errorMsg.addClass('errorText');
+
+    //Loop round error message if to be displayed, clone in correct place
+    $('#emailVerificationControl_error_message').each(function() {
+      if ($(this).css('display') !== 'none') {
+        const err = $(this).clone().addClass('errorText').css('display', 'block')
+        //Replace if error already exists otherwise insert after
+        const verifErrMsg = $('#emailVerificationCode_label').parent().children('#emailVerificationControl_error_message')
+        if (verifErrMsg.length){
+          verifErrMsg.replaceWith(err);
+        } else {
+          err.insertAfter('#emailVerificationCode_label');
+        }
+      }
+    });
     //Set old error message to hidden 
     $('#emailVerificationControl_error_message').hide();
   } else {
@@ -81,6 +92,7 @@ function addItemLevelErrorClasses(screen) {
 function removeErrors() {
   $('.error.itemLevel').parent().removeClass('darts-error');
   $('.govuk-error-summary').remove();
+
 }
 
 function hidePageLevelErrors() {

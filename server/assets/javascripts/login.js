@@ -12,8 +12,8 @@ function loginAccessibility(){
 
 function displayErrors() {
   removeErrors();
-  addItemLevelErrorClasses('login');
   createErrorSummaryBox('login');
+  addItemLevelErrorClasses('login');
   hidePageLevelErrors();
 }
 
