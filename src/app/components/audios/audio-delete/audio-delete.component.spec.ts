@@ -8,7 +8,7 @@ describe('AudioDeleteComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [AudioDeleteComponent]
+      imports: [AudioDeleteComponent],
     });
     fixture = TestBed.createComponent(AudioDeleteComponent);
     component = fixture.componentInstance;
