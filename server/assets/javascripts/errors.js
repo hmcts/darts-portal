@@ -61,12 +61,21 @@ function createErrorSummaryBox(screen) {
   }
 }
 
-function addItemLevelErrorClasses() {
-  $('.error.itemLevel').each(function() {
-    if ($(this).css('display') !== 'none') {
-      $(this).parent().addClass('darts-error');
-    }
-  });
+function addItemLevelErrorClasses(screen) {
+  if (screen === 'reset'){
+    $('#emailVerificationCode_label').parent().addClass('darts-error');
+    //Copy error message
+    var $errorMsg = $('#emailVerificationControl_error_message').clone().insertAfter('#emailVerificationCode_label');
+    $errorMsg.addClass('errorText');
+    //Set old error message to hidden 
+    $('#emailVerificationControl_error_message').hide();
+  } else {
+    $('.error.itemLevel').each(function() {
+      if ($(this).css('display') !== 'none') {
+        $(this).parent().addClass('darts-error');
+      }
+    });
+  }
 }
 
 function removeErrors() {
