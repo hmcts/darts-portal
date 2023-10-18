@@ -95,6 +95,11 @@ function displayErrors() {
     createErrorSummaryBox('reset');
     addItemLevelErrorClasses('reset');
     hidePageLevelErrors();
+
+    // when clicking "Request a new verification code"
+    $('#emailVerificationControl_but_send_new_code').click(function () {
+       removeErrors();
+    });
 }
 
 //Used for 'Verification code is required.' message

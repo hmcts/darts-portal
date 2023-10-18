@@ -57,20 +57,26 @@ function createErrorSummaryBox(screen) {
   let errorElems;
   if (screen === 'reset') {
     //Verification input errors
-    const verifErrorElems = document.getElementsByClassName("verificationErrorText error");
+    const verifErrorElems = document.getElementsByClassName('verificationErrorText error');
     errorElems = [...verifErrorElems];
-  } else {
-    //Login page errors
-    const pageLevelErrorElems = document.getElementsByClassName("error pageLevel");
-    const itemLevelErrorElems = document.getElementsByClassName("error itemLevel");
+  }
+  if (screen === 'login' || screen === 'change_password') {
+    // login and change password page errors
+    let itemLevelSelector = 'error itemLevel';
+    if (screen === 'change_password') {
+      itemLevelSelector += ' show';
+    }
+    const pageLevelErrorElems = document.getElementsByClassName('error pageLevel');
+    const itemLevelErrorElems = document.getElementsByClassName(itemLevelSelector);
     errorElems = [...pageLevelErrorElems, ...itemLevelErrorElems];
-
   }
   const errors = [];
 
-  for (let i = 0; i < errorElems.length; i++) {
-    if (window.getComputedStyle(errorElems[i]).display !== 'none') {
-      errors.push(errorElems[i].innerText);
+  if (errorElems && errorElems.length > 0) {
+    for (let i = 0; i < errorElems.length; i++) {
+      if (window.getComputedStyle(errorElems[i]).display !== 'none') {
+        errors.push(errorElems[i].innerText);
+      }
     }
   }
 
@@ -80,7 +86,7 @@ function createErrorSummaryBox(screen) {
 }
 
 function addItemLevelErrorClasses(screen) {
-  if (screen === 'reset'){
+  if (screen === 'reset') {
     $('#emailVerificationCode_label').parent().addClass('darts-error');
 
     //Loop round error message if to be displayed, clone in correct place
@@ -98,8 +104,13 @@ function addItemLevelErrorClasses(screen) {
     });
     //Set old error message to hidden 
     $('#emailVerificationControl_error_message').hide();
-  } else {
-    $('.error.itemLevel').each(function() {
+  }
+  if (screen === 'login' || screen === 'change_password') {
+    let selector = '.error.itemLevel';
+    if (screen === 'change_password') {
+      selector += '.show';
+    }
+    $(selector).each(function() {
       if ($(this).css('display') !== 'none') {
         $(this).parent().addClass('darts-error');
       }
