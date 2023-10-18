@@ -1,4 +1,7 @@
 import './commands';
+const path = require('path');
+const downloadsFolder = Cypress.config('downloadsFolder');
+
 describe('Your audio', () => {
   beforeEach(() => {
     cy.login();
@@ -51,10 +54,12 @@ describe('Your audio', () => {
     cy.get('#notifications').should('contain', '4');
   });
 
-  it('View audio request', () => {
+  it('View audio request and download', () => {
     cy.contains('Your Audio').click();
     cy.contains('T20200331').parents('tr').contains('View').click();
     cy.contains('T20200331.zip').should('exist');
+    cy.contains('Download audio file').click();
+    cy.readFile(path.join(downloadsFolder, 'T20200331.zip')).should('exist');
   });
 
   it('should delete selected audio requests', () => {
