@@ -60,7 +60,10 @@ export class AudioViewComponent {
 
   onDeleteConfirmed() {
     this.audioRequestService.deleteAudioRequests(this.requestId).subscribe({
-      next: async () => await this.router.navigate(['/audios']),
+      next: () => {
+        this.router.navigate(['/audios']);
+        return;
+      },
       error: () => (this.isDeleting = false),
     });
   }
