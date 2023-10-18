@@ -47,7 +47,7 @@ export class AudioViewComponent {
     }
 
     this.requestId = this.audioRequest.requestId;
-    const isUnread = this.audioRequest.last_accessed_ts ? false : true;
+    const isUnread = !this.audioRequest.last_accessed_ts;
 
     //Send request to update last accessed time of audio
     this.audioRequestService.patchAudioRequestLastAccess(this.requestId, isUnread).subscribe();
