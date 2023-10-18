@@ -1,9 +1,7 @@
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { Component, inject } from '@angular/core';
 import { TabsComponent } from '@common/tabs/tabs.component';
-import { AudioService } from '@services/audio/audio.service';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { combineLatest, forkJoin, map, Observable } from 'rxjs';
+import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { CommonModule } from '@angular/common';
 import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
 import { TableRowTemplateDirective } from 'src/app/directives/table-row-template.directive';
@@ -12,6 +10,8 @@ import { TabDirective } from 'src/app/directives/tab.directive';
 import { UnreadIconDirective } from '@directives/unread-icon.directive';
 import { HeaderService } from '@services/header/header.service';
 import { DatatableColumn, UserAudioRequestRow } from '@darts-types/index';
+import { Router, RouterLink } from '@angular/router';
+import { Observable, map, combineLatest, forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-audios',
@@ -31,7 +31,8 @@ import { DatatableColumn, UserAudioRequestRow } from '@darts-types/index';
 })
 export class AudiosComponent {
   headerService = inject(HeaderService);
-  audioService = inject(AudioService);
+  audioService = inject(AudioRequestService);
+  router = inject(Router);
 
   selectedAudioRequests: UserAudioRequestRow[] = [];
 
@@ -119,6 +120,13 @@ export class AudiosComponent {
         ar.media_request_status === 'PROCESSING' ||
         ar.media_request_status === 'FAILED'
     );
+  }
+
+  onViewAudioRequest(event: MouseEvent, audioRequestRow: UserAudioRequestRow) {
+    event.preventDefault();
+    // Store audio request in service for retrieval on view screen
+    this.audioService.setAudioRequest(audioRequestRow);
+    this.router.navigate(['./audios', audioRequestRow.requestId]);
   }
 
   onSelectedAudio(selectedAudio: UserAudioRequestRow[]) {

@@ -1,15 +1,17 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { UserAudioRequestRow } from '@darts-types/index';
 import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
 import { UserService } from '@services/user/user.service';
-import { BehaviorSubject, Observable, combineLatest, switchMap, tap, timer, map } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable, switchMap, tap, timer } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AudioService {
+export class AudioRequestService {
   audioRequests$: Observable<UserAudioRequest[]>;
   expiredAudioRequests$: Observable<UserAudioRequest[]>;
+  audioRequestView!: UserAudioRequestRow;
 
   //Defined in seconds
   private POLL_INTERVAL = 60;
@@ -64,8 +66,23 @@ export class AudioService {
   }
 
   //Sends request to update last accessed timestamp
-  patchAudioRequest(requestId: number): Observable<HttpResponse<Response>> {
-    return this.http.patch<Response>(`api/audio-requests/${requestId}`, {}, { observe: 'response' });
+  patchAudioRequestLastAccess(requestId: number, isUnread = false): Observable<HttpResponse<Response>> {
+    return this.http.patch<Response>(`api/audio-requests/${requestId}`, {}, { observe: 'response' }).pipe(
+      tap(() => {
+        if (isUnread) {
+          // Optimistically update the unread count before next polling interval
+          this.unreadCount.next(this.unreadCount.getValue() - 1);
+        }
+      })
+    );
+  }
+
+  getDownloadUrl(requestId: number): string {
+    return `/api/audio-requests/download?media_request_id=${requestId}`;
+  }
+
+  setAudioRequest(audioRequestRow: UserAudioRequestRow) {
+    this.audioRequestView = audioRequestRow;
   }
 
   filterCompletedRequests(audioRequests: UserAudioRequest[]): UserAudioRequest[] {

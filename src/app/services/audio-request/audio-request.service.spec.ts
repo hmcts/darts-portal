@@ -1,13 +1,13 @@
-import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { AudioService } from './audio.service';
 import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
+import { UserState } from '@darts-types/user-state';
 import { UserService } from '@services/user/user.service';
 import { of } from 'rxjs';
-import { UserState } from '@darts-types/user-state';
+import { AudioRequestService } from './audio-request.service';
 
 describe('AudioService', () => {
-  let service: AudioService;
+  let service: AudioRequestService;
   let httpMock: HttpTestingController;
 
   const MOCK_AUDIO_REQUESTS: UserAudioRequest[] = [
@@ -171,10 +171,10 @@ describe('AudioService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [AudioService, { provide: UserService, useValue: userServiceStub }],
+      providers: [AudioRequestService, { provide: UserService, useValue: userServiceStub }],
     });
 
-    service = TestBed.inject(AudioService);
+    service = TestBed.inject(AudioRequestService);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -239,7 +239,7 @@ describe('AudioService', () => {
       it('sends patch request', () => {
         const reqId = 123449;
         let responseStatus;
-        service.patchAudioRequest(reqId).subscribe((res) => {
+        service.patchAudioRequestLastAccess(reqId, true).subscribe((res) => {
           responseStatus = res.status;
         });
 
