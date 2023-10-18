@@ -39,18 +39,17 @@ async function runPa11y() {
     results.forEach((result) => {
       console.log(`URL: ${result.pageUrl}`);
       if (result.issues.length > 0) {
-        for (const x in result.issues) {
-          const issue = result.issues[x];
+        result.issues.forEach((issue) => {
           if (knownIssues.indexOf(issue.code) == -1) {
             //Issue is unknown
-            newIssueCount = newIssueCount + 1;
-            issuesArr.push(result.issues[x]);
+            newIssueCount = newIssueCount++;
+            issuesArr.push(issue);
             error = true;
           } else if (!ignoreKnownIssues) {
             //Adds known issues
-            issuesArr.push(result.issues[x]);
+            issuesArr.push(issue);
           }
-        }
+        });
       }
       console.log(`Number of total issues (including known): ${result.issues.length}`);
       console.log('Number of NEW issues: ', newIssueCount);
