@@ -8,7 +8,7 @@
         (click)="onTabClick($event, tab)"
         >{{ tab.name }}
         <ng-container *ngIf="tab.count">
-          <span aria-label="Audio notification count" id="notifications" class="moj-notification-badge blue">
+          <span id="transcription-count" class="moj-notification-badge blue">
             {{ tab.count }}
           </span>
         </ng-container>
