@@ -6,3 +6,14 @@ $('#reenterPassword_label').text($('#reenterPassword_label').text().replace('*',
 // remove placeholders
 document.getElementById('newPassword').placeholder = '';
 document.getElementById('reenterPassword').placeholder = '';
+
+function displayErrors() {
+  removeErrors();
+  createErrorSummaryBox('change_password');
+  addItemLevelErrorClasses('change_password');
+  hidePageLevelErrors();
+}
+
+$('button#continue').click(displayErrors);
+$('#newPassword').on('input blur', displayErrors);
+$('#reenterPassword').on('input blur', displayErrors);

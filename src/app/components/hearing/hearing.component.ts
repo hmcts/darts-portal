@@ -116,9 +116,11 @@ export class HearingComponent {
 
   onValidationError(errorSummary: ErrorSummaryEntry[]) {
     this.errorSummary = errorSummary;
-    setTimeout(() => {
-      document.getElementById('error-' + this.errorSummary[0].fieldId)?.focus();
-    });
+    if (this.errorSummary.length) {
+      setTimeout(() => {
+        document.getElementById('error-' + this.errorSummary[0].fieldId)?.focus();
+      });
+    }
   }
 
   onBack(event: Event) {
