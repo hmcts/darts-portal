@@ -40,6 +40,8 @@ document.getElementById('email').placeholder = '';
 
             if (isForSendCode && isSuccessful) {
                 setTimeout(() => {
+                    //Remove errors if they exist
+                    removeErrors();
                     // hide intro
                     document.getElementsByClassName('intro').item(0).style.display = 'none';
                     // hide email label
@@ -55,6 +57,8 @@ document.getElementById('email').placeholder = '';
 
             if (isForVerifyCode && isSuccessful) {
                 setTimeout(() => {
+                    //Remove errors if they exist
+                    removeErrors();
                     // show email
                     $('#email').css('display', 'unset');
                     // change heading
@@ -97,6 +101,15 @@ function displayErrors() {
        removeErrors();
     });
 }
+
+//Used for 'Verification code is required.' message
+$('#main-content').on('click', '#emailVerificationControl_but_verify_code', function() {
+    const infoElem = $('.error.itemLevel.show');
+    if (infoElem.length > 0){
+        infoElem.addClass('errorText').css('display', 'block').css('margin-bottom', '15px');
+        addGovukErrorSummary([infoElem.text()]);
+    }
+});
 
 // wait a second before trying to do this, in case the JS in head isn't loaded yet
 setTimeout(function() {
