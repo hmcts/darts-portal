@@ -1,38 +1,56 @@
 
 function addGovukErrorSummary(headingErrors) {
-  const errorTitle = document.createElement('h2');
-  errorTitle.className = 'govuk-error-summary__title';
-  const titleText = document.createTextNode('There is a problem');
-  errorTitle.appendChild(titleText);
 
-  const errorBodyDiv = document.createElement('div');
-  errorBodyDiv.className = 'govuk-error-summary__body';
-  const errorCount = headingErrors.length;
+  //If heading already exists, append to existing list of errors
+  if ($('.govuk-error-summary').length){
+    const list = document.getElementById("error-summary-list");
+    const errorCount = headingErrors.length;
 
-  // The appendChild() method move the element after appending, hence we always use element index zero when accessing the next element.
-  const errorList = document.createElement('ul')
-  errorList.className = 'govuk-list govuk-error-summary__list';
-  for (let i = 0; i < errorCount; i++) {
-    const errorListItem = document.createElement('li');
-    const errorListItemA = document.createElement('a');
-    errorListItemA.href = '#';
-    errorListItemA.innerText = headingErrors[i];
-    errorListItem.appendChild(errorListItemA);
-    errorList.appendChild(errorListItem);
+    for (let i = 0; i < errorCount; i++) {
+      const errorListItem = document.createElement('li');
+      const errorListItemA = document.createElement('a');
+      errorListItemA.href = '#';
+      errorListItemA.innerText = headingErrors[i];
+      errorListItem.appendChild(errorListItemA);
+      list.appendChild(errorListItem);
+    }
+
+  } else {
+    const errorTitle = document.createElement('h2');
+    errorTitle.className = 'govuk-error-summary__title';
+    const titleText = document.createTextNode('There is a problem');
+    errorTitle.appendChild(titleText);
+  
+    const errorBodyDiv = document.createElement('div');
+    errorBodyDiv.className = 'govuk-error-summary__body';
+    const errorCount = headingErrors.length;
+  
+    // The appendChild() method move the element after appending, hence we always use element index zero when accessing the next element.
+    const errorList = document.createElement('ul')
+    errorList.className = 'govuk-list govuk-error-summary__list';
+    errorList.id = 'error-summary-list'
+    for (let i = 0; i < errorCount; i++) {
+      const errorListItem = document.createElement('li');
+      const errorListItemA = document.createElement('a');
+      errorListItemA.href = '#';
+      errorListItemA.innerText = headingErrors[i];
+      errorListItem.appendChild(errorListItemA);
+      errorList.appendChild(errorListItem);
+    }
+    errorBodyDiv.appendChild(errorList);
+  
+    const roleAlertDiv = document.createElement('div');
+    roleAlertDiv.setAttribute("role", "alert");
+    roleAlertDiv.appendChild(errorTitle);
+    roleAlertDiv.appendChild(errorBodyDiv);
+  
+    const errorSummaryDiv = document.createElement('div');
+    errorSummaryDiv.className = 'govuk-error-summary';
+    errorSummaryDiv.appendChild(roleAlertDiv);
+  
+    const mainForm = document.getElementById('darts-container');
+    mainForm.prepend(errorSummaryDiv);
   }
-  errorBodyDiv.appendChild(errorList);
-
-  const roleAlertDiv = document.createElement('div');
-  roleAlertDiv.setAttribute("role", "alert");
-  roleAlertDiv.appendChild(errorTitle);
-  roleAlertDiv.appendChild(errorBodyDiv);
-
-  const errorSummaryDiv = document.createElement('div');
-  errorSummaryDiv.className = 'govuk-error-summary';
-  errorSummaryDiv.appendChild(roleAlertDiv);
-
-  const mainForm = document.getElementById('darts-container');
-  mainForm.prepend(errorSummaryDiv);
 }
 
 function createErrorSummaryBox(screen) {

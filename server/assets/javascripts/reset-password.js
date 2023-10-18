@@ -97,6 +97,15 @@ function displayErrors() {
     hidePageLevelErrors();
 }
 
+//Used for 'Verification code is required.' message
+$('#main-content').on('click', '#emailVerificationControl_but_verify_code', function() {
+    const infoElem = $('.error.itemLevel.show');
+    if (infoElem.length > 0){
+        infoElem.addClass('errorText').css('display', 'block').css('margin-bottom', '15px');
+        addGovukErrorSummary([infoElem.text()]);
+    }
+});
+
 // wait a second before trying to do this, in case the JS in head isn't loaded yet
 setTimeout(function() {
     wrapXhrOpen('VerifyCode', '"status":"400"', displayErrors);
