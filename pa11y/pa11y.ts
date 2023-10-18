@@ -32,17 +32,16 @@ async function runPa11y() {
       )
     );
 
-    let newIssueCount = 0;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let issuesArr: any = [];
-
     results.forEach((result) => {
+      let newIssueCount = 0;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const issuesArr: any = [];
       console.log(`URL: ${result.pageUrl}`);
       if (result.issues.length > 0) {
         result.issues.forEach((issue) => {
           if (knownIssues.indexOf(issue.code) == -1) {
             //Issue is unknown
-            newIssueCount = newIssueCount++;
+            newIssueCount++;
             issuesArr.push(issue);
             error = true;
           } else if (!ignoreKnownIssues) {
@@ -66,9 +65,6 @@ async function runPa11y() {
       }
 
       console.log('--');
-      //Clear for next page
-      newIssueCount = 0;
-      issuesArr = [];
     });
 
     const aggregatedResultCount = results.reduce((aggregated, r) => aggregated + r.issues.length, 0);
