@@ -62,6 +62,16 @@ describe('Your audio', () => {
     cy.readFile(path.join(downloadsFolder, 'T20200331.zip')).should('exist');
   });
 
+  it('View audio request and delete', () => {
+    cy.contains('Your Audio').click();
+    cy.contains('T20200333').parents('tr').contains('View').click();
+    cy.contains('T20200333.zip').should('exist');
+    cy.contains('Delete audio file').click();
+    cy.contains('Are you sure you want to delete this item');
+    cy.get('button.govuk-button--warning').click();
+    cy.contains('T20200333').should('not.exist');
+  });
+
   it('should delete selected audio requests', () => {
     cy.contains('Your Audio').click();
     cy.get('#readyTable tbody input[type="checkbox"]').first().click();
