@@ -344,7 +344,7 @@ const transcriptOne = [
     type: 'Sentencing remarks',
     requested_on: '2023-10-12',
     requested_by_name: 'Joe Bloggs',
-    status: 'Available',
+    status: 'REQUESTED',
   },
   {
     tra_id: 1,
@@ -353,7 +353,7 @@ const transcriptOne = [
     type: 'Sentencing remarks',
     requested_on: '2023-10-12',
     requested_by_name: 'Joe Bloggs',
-    status: 'Available',
+    status: 'AWAITING_AUTHORISATION',
   },
   {
     tra_id: 1,
@@ -362,7 +362,25 @@ const transcriptOne = [
     type: 'Sentencing remarks',
     requested_on: '2023-10-12',
     requested_by_name: 'Joe Bloggs',
-    status: 'In Progress',
+    status: 'WITH_TRANSCRIBER',
+  },
+  {
+    tra_id: 1,
+    hea_id: 2,
+    hearing_date: '2023-10-12',
+    type: 'Sentencing remarks',
+    requested_on: '2023-10-12',
+    requested_by_name: 'Joe Bloggs',
+    status: 'COMPLETE',
+  },
+  {
+    tra_id: 1,
+    hea_id: 2,
+    hearing_date: '2023-10-12',
+    type: 'Sentencing remarks',
+    requested_on: '2023-10-12',
+    requested_by_name: 'Joe Bloggs',
+    status: 'REJECTED',
   },
 ];
 

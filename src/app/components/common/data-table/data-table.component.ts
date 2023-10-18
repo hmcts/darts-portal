@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -8,13 +9,12 @@ import {
   Output,
   TemplateRef,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { PaginationComponent } from '@common/pagination/pagination.component';
 import { RouterLink } from '@angular/router';
-import { TableRowTemplateDirective } from 'src/app/directives/table-row-template.directive';
-import { TableBodyTemplateDirective } from 'src/app/directives/table-body-template.directive';
+import { PaginationComponent } from '@common/pagination/pagination.component';
 import { DatatableColumn, DatatableRow } from '@darts-types/index';
 import { DateTime } from 'luxon';
+import { TableBodyTemplateDirective } from 'src/app/directives/table-body-template.directive';
+import { TableRowTemplateDirective } from 'src/app/directives/table-row-template.directive';
 
 @Component({
   selector: 'app-data-table',
@@ -37,7 +37,7 @@ export class DataTableComponent<TRow extends DatatableRow> implements OnChanges 
   bodyTemplate?: TemplateRef<unknown>;
 
   @ContentChild(TableRowTemplateDirective, { read: TemplateRef })
-  rowTemplate?: TemplateRef<unknown>;
+  rowTemplate?: TemplateRef<TRow>;
 
   selectedRows: TRow[] = [];
   pagedRows: TRow[] = [];

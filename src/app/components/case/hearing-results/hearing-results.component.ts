@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
@@ -13,6 +13,7 @@ import { TabDirective } from 'src/app/directives/tab.directive';
   imports: [CommonModule, RouterLink, DataTableComponent, TabsComponent, TabDirective, TableRowTemplateDirective],
   templateUrl: './hearing-results.component.html',
   styleUrls: ['./hearing-results.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HearingResultsComponent implements OnChanges {
   @Input() hearings: Hearing[] = [];
@@ -21,6 +22,14 @@ export class HearingResultsComponent implements OnChanges {
   rows: DatatableRow[] = [];
   hearingsColumns: DatatableColumn[] = [];
   transcriptColumns: DatatableColumn[] = [];
+
+  statusTagStyleMap: { [key: string]: string } = {
+    REQUESTED: 'govuk-tag--blue',
+    AWAITING_AUTHORISATION: 'govuk-tag--yellow',
+    WITH_TRANSCRIBER: 'govuk-tag--purple',
+    COMPLETE: 'govuk-tag--green',
+    REJECTED: 'govuk-tag--red',
+  };
 
   constructor(private route: ActivatedRoute) {
     this.caseId = this.route.snapshot.params.caseId;

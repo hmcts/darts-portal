@@ -27,7 +27,7 @@
         <ng-container *ngIf="data.inProgessRows.length">
           <h2 class="govuk-heading-m">In Progress</h2>
           <app-data-table id="inProgressTable" [rows]="data.inProgessRows" [columns]="columns" [pagination]="false">
-            <ng-template [tableRowTemplate] let-row>
+            <ng-template [tableRowTemplate]="data.inProgessRows" let-row>
               <!-- Partial template for duplicated cells -->
               <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
 
@@ -56,7 +56,7 @@
             [pageLimit]="15"
             (rowSelect)="onSelectedAudio($event)"
           >
-            <ng-template [tableRowTemplate] let-row>
+            <ng-template [tableRowTemplate]="data.completedRows" let-row>
               <td class="govuk-table__cell">
                 <span unreadIcon [class.unread]="!row.last_accessed_ts" *ngIf="!row.last_accessed_ts"> </span>
               </td>
@@ -92,7 +92,7 @@
             [rowSelectable]="true"
             (rowSelect)="onSelectedAudio($event)"
           >
-            <ng-template [tableRowTemplate] let-row>
+            <ng-template [tableRowTemplate]="data.expiredRows" let-row>
               <!-- Partial template for duplicated cells -->
               <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
 
@@ -114,7 +114,7 @@
     Are you sure you want to delete {{ selectedAudioRequests.length > 1 ? 'these items' : 'this item' }}?
   </p>
   <app-data-table id="inProgressTable" [rows]="selectedAudioRequests" [columns]="unSortableColumns">
-    <ng-template [tableRowTemplate] let-row>
+    <ng-template [tableRowTemplate]="selectedAudioRequests" let-row>
       <!-- Partial template for duplicated cells -->
       <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
 
