@@ -104,6 +104,7 @@ function displayErrors() {
 
 //Used for 'Verification code is required.' message
 $('#main-content').on('click', '#emailVerificationControl_but_verify_code', function() {
+    removeErrors();
     const errs = [];
     const infoElem = $('.error.itemLevel.show').each(function(){
         errs.push($(this).text());        
