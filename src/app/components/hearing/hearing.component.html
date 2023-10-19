@@ -1,5 +1,5 @@
 <ng-container *ngIf="data$ | async as vm; else loading">
-  <app-breadcrumb [hidden]="state !== 'Default'">
+  <app-breadcrumb *ngIf="state === 'Default'">
     <a *breadcrumb="['/case', vm.case.case_id]">{{ vm.case.case_number }}</a>
     <a *breadcrumb>{{ vm.hearing?.date | date: 'd MMM y' }}</a>
   </app-breadcrumb>
@@ -32,7 +32,6 @@
   <app-reporting-restriction
     *ngIf="vm.case.reporting_restriction"
     [reportingRestriction]="vm.case.reporting_restriction"
-    [class.pad-top]="state === 'OrderConfirmation'"
   ></app-reporting-restriction>
 
   <!-- Hearing Screen -->

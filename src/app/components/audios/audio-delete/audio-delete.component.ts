@@ -1,9 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { DataTableComponent } from '@common/data-table/data-table.component';
-import { DatatableColumn } from '@darts-types/data-table-column.interface';
-import { UserAudioRequestRow } from '@darts-types/user-audio-request-row.interface';
+import { DatatableColumn, UserAudioRequestRow } from '@darts-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
+import { HeaderService } from '@services/header/header.service';
 
 @Component({
   selector: 'app-audio-delete',
@@ -13,10 +22,12 @@ import { TableRowTemplateDirective } from '@directives/table-row-template.direct
   styleUrls: ['./audio-delete.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AudioDeleteComponent {
+export class AudioDeleteComponent implements OnInit, OnDestroy {
   @Input() rowsToDelete: UserAudioRequestRow[] = [];
   @Output() confirm = new EventEmitter();
   @Output() cancel = new EventEmitter();
+
+  headerService = inject(HeaderService);
 
   columns: DatatableColumn[] = [
     { name: 'Case ID', prop: 'caseNumber' },
@@ -28,4 +39,12 @@ export class AudioDeleteComponent {
     { name: 'Expiry date', prop: 'expiry' },
     { name: 'Status', prop: 'status' },
   ];
+
+  ngOnInit(): void {
+    setTimeout(() => this.headerService.hideNavigation(), 0);
+  }
+
+  ngOnDestroy(): void {
+    setTimeout(() => this.headerService.showNavigation(), 0);
+  }
 }

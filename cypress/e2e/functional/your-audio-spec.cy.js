@@ -67,18 +67,32 @@ describe('Your audio', () => {
     cy.contains('T20200333').parents('tr').contains('View').click();
     cy.contains('T20200333.zip').should('exist');
     cy.contains('Delete audio file').click();
+    cy.get('moj-primary-navigation').should('not.exist');
     cy.contains('Are you sure you want to delete this item');
     cy.get('button.govuk-button--warning').click();
     cy.contains('T20200333').should('not.exist');
+    cy.get('moj-primary-navigation').should('exist');
   });
 
   it('should delete selected audio requests', () => {
     cy.contains('Your Audio').click();
     cy.get('#readyTable tbody input[type="checkbox"]').first().click();
     cy.get('#delete-button').click();
+    cy.get('moj-primary-navigation').should('not.exist');
     cy.contains('Are you sure you want to delete this item');
     cy.get('button.govuk-button--warning').click();
     cy.contains('T20200331').should('not.exist');
+    cy.get('moj-primary-navigation').should('exist');
+  });
+
+  it('should clear failed audio requests', () => {
+    cy.contains('Your Audio').click();
+    cy.contains('Clear').click();
+    cy.get('moj-primary-navigation').should('not.exist');
+    cy.contains('Are you sure you want to delete this item');
+    cy.get('button.govuk-button--warning').click();
+    cy.contains('T20200192231').should('not.exist');
+    cy.get('moj-primary-navigation').should('exist');
   });
 
   it('link back to case via audio request', () => {

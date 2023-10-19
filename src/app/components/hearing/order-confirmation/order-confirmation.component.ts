@@ -1,9 +1,9 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AudioRequest, Case, Hearing, HearingPageState } from '@darts-types/index';
-import { HeaderService } from '@services/header/header.service';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { AudioRequest, Case, Hearing, HearingPageState } from '@darts-types/index';
 import { UserState } from '@darts-types/user-state';
+import { HeaderService } from '@services/header/header.service';
 
 @Component({
   selector: 'app-order-confirmation',
@@ -42,7 +42,7 @@ export class OrderConfirmationComponent {
 
   onReturnToSearch(event: Event) {
     event.preventDefault();
-    this.headerService.showPrimaryNavigation(true);
+    this.headerService.showNavigation();
     this.router.navigate(['/search']);
   }
 }
