@@ -85,10 +85,9 @@ function createErrorSummaryBox(screen) {
   }
 }
 
-function addItemLevelErrorClasses(screen) {
+function addVerificationControlErrors(screen){
   if (screen === 'reset') {
     $('#emailVerificationCode_label').parent().addClass('darts-error');
-
     //Loop round error message if to be displayed, clone in correct place
     $('#emailVerificationControl_error_message').each(function() {
       if ($(this).css('display') !== 'none') {
@@ -104,6 +103,20 @@ function addItemLevelErrorClasses(screen) {
     });
     //Set old error message to hidden 
     $('#emailVerificationControl_error_message').hide();
+  }
+}
+
+function addItemLevelErrorClasses(screen) {
+  if (screen === 'reset') {
+    const errs = [];
+    const infoElem = $('.error.itemLevel.show').each(function(){
+        errs.push($(this).text());        
+    });
+    if (infoElem.length > 0){
+        infoElem.parent().addClass('darts-error');
+        infoElem.addClass('errorText').css('display', 'block').css('margin-bottom', '15px');
+        addGovukErrorSummary(errs);
+    }
   }
   if (screen === 'login' || screen === 'change_password') {
     let selector = '.error.itemLevel';
@@ -121,7 +134,6 @@ function addItemLevelErrorClasses(screen) {
 function removeErrors() {
   $('.error.itemLevel').parent().removeClass('darts-error');
   $('.govuk-error-summary').remove();
-
 }
 
 function hidePageLevelErrors() {
