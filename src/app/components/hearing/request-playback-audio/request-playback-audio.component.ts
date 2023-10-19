@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -8,14 +9,13 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { TimeInputComponent } from './time-input/time-input.component';
 import { AudioRequest, ErrorSummaryEntry, FieldErrors, Hearing } from '@darts-types/index';
-import { timeGroupValidator } from '@validators/time-group.validator';
 import { UserState } from '@darts-types/user-state';
 import { UserService } from '@services/user/user.service';
+import { timeGroupValidator } from '@validators/time-group.validator';
 import { DateTime } from 'luxon';
+import { TimeInputComponent } from './time-input/time-input.component';
 
 const fieldErrors: FieldErrors = {
   startTime: {
@@ -147,7 +147,7 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
     const endTimeMinutes = this.audioRequestForm.get('endTime.minutes')?.value;
     const endTimeSeconds = this.audioRequestForm.get('endTime.seconds')?.value;
 
-    const hearingDate = this.hearing.date.replace('Z', '');
+    const hearingDate = this.hearing.date.replace('T00:00:00Z', '');
 
     const startDateTime = DateTime.fromISO(`${hearingDate}T${startTimeHours}:${startTimeMinutes}:${startTimeSeconds}`);
 
