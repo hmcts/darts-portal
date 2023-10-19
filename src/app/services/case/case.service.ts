@@ -1,8 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Case, Courthouse, Hearing, SearchFormValues } from '@darts-types/index';
-import { of } from 'rxjs';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { catchError, map, shareReplay } from 'rxjs/operators';
 
 export const GET_COURTHOUSES_PATH = '/api/courthouses';
@@ -35,7 +34,7 @@ export class CaseService {
   getCaseHearings(caseId: number): Observable<Hearing[]> {
     return this.http
       .get<Hearing[]>(`${GET_CASE_PATH}/${caseId}/hearings`)
-      .pipe(map((hearings) => hearings.map((h) => ({ ...h, date: h.date + 'Z' }))));
+      .pipe(map((hearings) => hearings.map((h) => ({ ...h, date: h.date + 'T00:00:00Z' }))));
   }
   searchCases(searchForm: SearchFormValues): Observable<Case[]> {
     // Save search form values
