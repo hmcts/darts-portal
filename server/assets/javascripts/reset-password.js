@@ -104,10 +104,14 @@ function displayErrors() {
 
 //Used for 'Verification code is required.' message
 $('#main-content').on('click', '#emailVerificationControl_but_verify_code', function() {
-    const infoElem = $('.error.itemLevel.show');
+    const errs = [];
+    const infoElem = $('.error.itemLevel.show').each(function(){
+        errs.push($(this).text());        
+    });
     if (infoElem.length > 0){
+        infoElem.parent().addClass('darts-error');
         infoElem.addClass('errorText').css('display', 'block').css('margin-bottom', '15px');
-        addGovukErrorSummary([infoElem.text()]);
+        addGovukErrorSummary(errs);
     }
 });
 
