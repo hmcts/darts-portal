@@ -4323,11 +4323,11 @@ __metadata:
   linkType: hard
 
 "@types/pa11y@npm:^5.3.5":
-  version: 5.3.5
-  resolution: "@types/pa11y@npm:5.3.5"
+  version: 5.3.6
+  resolution: "@types/pa11y@npm:5.3.6"
   dependencies:
     "@types/puppeteer": ^5.4.0
-  checksum: 7bd3695b586663fba27f046c7ed41fb03fa18cef2cf7d997e2eb7b44a587c452abc3a93cc798194ff7f77cdbae14adb9671fcd88c524eb8797883c0e0a0023f6
+  checksum: 8e107958329e3dc5f590f74990fd97cc2457bdf79abceeacaf0f90de7c7ad6be3192837e95c1edbce746c5c2efc3982046d9d5eac4b31fc6440075f3867d687c
   languageName: node
   linkType: hard
 
