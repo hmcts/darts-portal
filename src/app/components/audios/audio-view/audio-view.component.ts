@@ -1,35 +1,70 @@
-import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AudioService } from '@services/audio/audio.service';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
+import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
+import { Case } from '@darts-types/case.interface';
+import { UserAudioRequestRow } from '@darts-types/index';
+import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
+import { AudioRequestService } from '@services/audio-request/audio-request.service';
+import { CaseService } from '@services/case/case.service';
 import { Observable } from 'rxjs';
-import { HttpResponse } from '@angular/common/http';
+import { AudioDeleteComponent } from '../audio-delete/audio-delete.component';
 
 @Component({
   selector: 'app-audio-view',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    RouterLink,
+    ReportingRestrictionComponent,
+    AudioDeleteComponent,
+    BreadcrumbComponent,
+    BreadcrumbDirective,
+  ],
   templateUrl: './audio-view.component.html',
   styleUrls: ['./audio-view.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AudioViewComponent {
-  audioService = inject(AudioService);
-  patchResponse$: Observable<HttpResponse<Response>>;
+  audioRequestService = inject(AudioRequestService);
+  caseService = inject(CaseService);
+  route = inject(ActivatedRoute);
+  router = inject(Router);
 
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
+  case$!: Observable<Case>;
+  audioRequest!: UserAudioRequestRow;
+  downloadUrl = '';
+  fileName = '';
+  isDeleting = false;
+  requestId: number;
+
+  constructor() {
+    this.audioRequest = this.audioRequestService.audioRequestView;
+
+    if (!this.audioRequest) {
+      this.router.navigate(['/audios']);
+    }
+
+    this.requestId = this.audioRequest.requestId;
+    const isUnread = !this.audioRequest.last_accessed_ts;
+
     //Send request to update last accessed time of audio
-    this.patchResponse$ = this.audioService.patchAudioRequest(this.route.snapshot.params.requestId);
-    //////////
-    //Temporary code to go back to audios, observe: 'response' can be removed from audio service call when below is removed
-    //Expects 204 as there is no content response
-    this.patchResponse$.subscribe((response: HttpResponse<Response>) => {
-      if (response.status === 204) {
-        router.navigateByUrl('audios');
-      }
+    this.audioRequestService.patchAudioRequestLastAccess(this.requestId, isUnread).subscribe();
+
+    this.case$ = this.caseService.getCase(this.audioRequest.caseId);
+
+    this.downloadUrl = this.audioRequestService.getDownloadUrl(this.requestId);
+    this.fileName = `${this.audioRequest.caseNumber}.zip`;
+  }
+
+  onDeleteConfirmed() {
+    this.audioRequestService.deleteAudioRequests(this.requestId).subscribe({
+      next: () => {
+        this.router.navigate(['/audios']);
+        return;
+      },
+      error: () => (this.isDeleting = false),
     });
-    /////////
   }
 }

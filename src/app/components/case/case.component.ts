@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { RouterLink, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
 import { transcript, TranscriptsRow } from '@darts-types/index';
+import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { CaseService } from '@services/case/case.service';
 import { combineLatest, map } from 'rxjs';
 import { CaseFileComponent } from './case-file/case-file.component';
@@ -10,7 +12,7 @@ import { HearingResultsComponent } from './hearing-results/hearing-results.compo
 @Component({
   selector: 'app-case',
   standalone: true,
-  imports: [CommonModule, CaseFileComponent, HearingResultsComponent, RouterLink],
+  imports: [CommonModule, CaseFileComponent, HearingResultsComponent, BreadcrumbComponent, BreadcrumbDirective],
   templateUrl: './case.component.html',
   styleUrls: ['./case.component.scss'],
 })

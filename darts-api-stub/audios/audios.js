@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 
 const router = express.Router();
 
@@ -188,6 +189,10 @@ router.patch('/:requestId', (req, res) => {
   let id = req.params.requestId;
   audioRequestMulti.find((x) => x.media_request_id == id).last_accessed_ts = new Date().toISOString();
   res.sendStatus(204);
+});
+
+router.get('/download', (req, res) => {
+  res.sendFile(path.join(__dirname, './preview', 'preview.mp3.zip'));
 });
 
 router.post('', (req, res) => {

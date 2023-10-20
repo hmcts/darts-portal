@@ -1,4 +1,7 @@
 import './commands';
+const path = require('path');
+const downloadsFolder = Cypress.config('downloadsFolder');
+
 describe('Your audio', () => {
   beforeEach(() => {
     cy.login();
@@ -49,15 +52,24 @@ describe('Your audio', () => {
     cy.contains('T20200331').parents('tr').contains('View').click();
 
     cy.get('#notifications').should('contain', '4');
-    cy.get('#readyTable').get('.unread').should('have.length', 4);
+  });
 
-    cy.contains('T2023453422').parents('tr').contains('View').click();
+  it('View audio request and download', () => {
+    cy.contains('Your Audio').click();
+    cy.contains('T20200331').parents('tr').contains('View').click();
+    cy.contains('T20200331.zip').should('exist');
+    cy.contains('Download audio file').click();
+    cy.readFile(path.join(downloadsFolder, 'T20200331.zip')).should('exist');
+  });
 
-    cy.get('#notifications').should('contain', '3');
-    cy.get('#readyTable').get('.unread').should('have.length', 3);
-
-    cy.contains('Search').click();
-    cy.get('#notifications').should('contain', '3');
+  it('View audio request and delete', () => {
+    cy.contains('Your Audio').click();
+    cy.contains('T20200333').parents('tr').contains('View').click();
+    cy.contains('T20200333.zip').should('exist');
+    cy.contains('Delete audio file').click();
+    cy.contains('Are you sure you want to delete this item');
+    cy.get('button.govuk-button--warning').click();
+    cy.contains('T20200333').should('not.exist');
   });
 
   it('should delete selected audio requests', () => {

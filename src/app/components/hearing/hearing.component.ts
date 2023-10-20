@@ -1,19 +1,21 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
-import { AudioRequest, AudioResponse, ErrorSummaryEntry, AudioEventRow, HearingPageState } from '@darts-types/index';
+import { AudioEventRow, AudioRequest, AudioResponse, ErrorSummaryEntry, HearingPageState } from '@darts-types/index';
+import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { CaseService } from '@services/case/case.service';
 import { HeaderService } from '@services/header/header.service';
 import { HearingService } from '@services/hearing/hearing.service';
 import { UserService } from '@services/user/user.service';
+import { DateTime } from 'luxon';
 import { combineLatest } from 'rxjs';
+import { LoadingComponent } from '../common/loading/loading.component';
 import { EventsAndAudioComponent } from './events-and-audio/events-and-audio.component';
 import { HearingFileComponent } from './hearing-file/hearing-file.component';
 import { OrderConfirmationComponent } from './order-confirmation/order-confirmation.component';
 import { RequestPlaybackAudioComponent } from './request-playback-audio/request-playback-audio.component';
-import { LoadingComponent } from '../common/loading/loading.component';
-import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-hearing',
@@ -29,6 +31,8 @@ import { DateTime } from 'luxon';
     ReportingRestrictionComponent,
     RouterLink,
     LoadingComponent,
+    BreadcrumbComponent,
+    BreadcrumbDirective,
   ],
 })
 export class HearingComponent {
@@ -112,9 +116,11 @@ export class HearingComponent {
 
   onValidationError(errorSummary: ErrorSummaryEntry[]) {
     this.errorSummary = errorSummary;
-    setTimeout(() => {
-      document.getElementById('error-' + this.errorSummary[0].fieldId)?.focus();
-    });
+    if (this.errorSummary.length) {
+      setTimeout(() => {
+        document.getElementById('error-' + this.errorSummary[0].fieldId)?.focus();
+      });
+    }
   }
 
   onBack(event: Event) {

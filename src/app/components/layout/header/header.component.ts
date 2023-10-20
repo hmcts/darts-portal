@@ -1,10 +1,9 @@
-import { Component, DoCheck, inject } from '@angular/core';
+import { Component, DoCheck } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule, NgIf } from '@angular/common';
 import { AuthService } from '@services/auth/auth.service';
 import { HeaderService } from '@services/header/header.service';
-import { AudioService } from '@services/audio/audio.service';
-import { combineLatest } from 'rxjs';
+import { AudioRequestService } from '@services/audio-request/audio-request.service';
 
 @Component({
   selector: 'app-header',
@@ -21,7 +20,7 @@ export class HeaderComponent implements DoCheck {
   constructor(
     private authService: AuthService,
     private headerService: HeaderService,
-    private audioService: AudioService
+    private audioService: AudioRequestService
   ) {}
 
   ngDoCheck() {

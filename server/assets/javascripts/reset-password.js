@@ -40,6 +40,8 @@ document.getElementById('email').placeholder = '';
 
             if (isForSendCode && isSuccessful) {
                 setTimeout(() => {
+                    //Remove errors if they exist
+                    removeErrors();
                     // hide intro
                     document.getElementsByClassName('intro').item(0).style.display = 'none';
                     // hide email label
@@ -55,6 +57,8 @@ document.getElementById('email').placeholder = '';
 
             if (isForVerifyCode && isSuccessful) {
                 setTimeout(() => {
+                    //Remove errors if they exist
+                    removeErrors();
                     // show email
                     $('#email').css('display', 'unset');
                     // change heading
@@ -88,10 +92,33 @@ $('#emailVerificationControl_but_change_claims.changeClaims').click(function () 
 
 function displayErrors() {
     removeErrors();
-    addItemLevelErrorClasses('reset');
     createErrorSummaryBox('reset');
+    addVerificationControlErrors('reset');
     hidePageLevelErrors();
+
+    // when clicking "Request a new verification code"
+    $('#emailVerificationControl_but_send_new_code').click(function () {
+       removeErrors();
+    });
 }
+
+//Used for Email address input
+$('#main-content').on('input', '#email', function() {
+    removeErrors();    
+    addItemLevelErrorClasses('reset');
+});
+
+//Used for 'Email address is required.' message
+$('#main-content').on('click', '#emailVerificationControl_but_send_code', function() {
+    removeErrors();    
+    addItemLevelErrorClasses('reset');
+});
+
+//Used for 'Verification code is required.' message
+$('#main-content').on('click', '#emailVerificationControl_but_verify_code', function() {
+    removeErrors();
+    addItemLevelErrorClasses('reset');
+});
 
 // wait a second before trying to do this, in case the JS in head isn't loaded yet
 setTimeout(function() {

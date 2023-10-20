@@ -1,17 +1,17 @@
-import { DataTableComponent } from '@common/data-table/data-table.component';
-import { Component, inject } from '@angular/core';
-import { TabsComponent } from '@common/tabs/tabs.component';
-import { AudioService } from '@services/audio/audio.service';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { combineLatest, forkJoin, map, Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
-import { TableRowTemplateDirective } from 'src/app/directives/table-row-template.directive';
+import { Component, inject } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+import { DataTableComponent } from '@common/data-table/data-table.component';
 import { LoadingComponent } from '@common/loading/loading.component';
-import { TabDirective } from 'src/app/directives/tab.directive';
+import { TabsComponent } from '@common/tabs/tabs.component';
+import { DatatableColumn, UserAudioRequest, UserAudioRequestRow } from '@darts-types/index';
+import { TabDirective } from '@directives/tab.directive';
+import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { UnreadIconDirective } from '@directives/unread-icon.directive';
+import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { HeaderService } from '@services/header/header.service';
-import { DatatableColumn, UserAudioRequestRow } from '@darts-types/index';
+import { combineLatest, forkJoin, map, Observable } from 'rxjs';
+import { AudioDeleteComponent } from './audio-delete/audio-delete.component';
 
 @Component({
   selector: 'app-audios',
@@ -27,11 +27,13 @@ import { DatatableColumn, UserAudioRequestRow } from '@darts-types/index';
     UnreadIconDirective,
     RouterLink,
     TabDirective,
+    AudioDeleteComponent,
   ],
 })
 export class AudiosComponent {
   headerService = inject(HeaderService);
-  audioService = inject(AudioService);
+  audioService = inject(AudioRequestService);
+  router = inject(Router);
 
   selectedAudioRequests: UserAudioRequestRow[] = [];
 
@@ -67,8 +69,6 @@ export class AudiosComponent {
     { name: 'Expiry date', prop: 'expiry', sortable: true },
     { name: 'Status', prop: 'status', sortable: true },
   ];
-
-  unSortableColumns = this.columns.map((col) => ({ ...col, sortable: false }));
 
   readyColumns = [{ name: '', prop: '' }, ...this.columns, { name: '', prop: '' }]; //Empty columns for unread icon and view link
 
@@ -121,6 +121,13 @@ export class AudiosComponent {
     );
   }
 
+  onViewAudioRequest(event: MouseEvent, audioRequestRow: UserAudioRequestRow) {
+    event.preventDefault();
+    // Store audio request in service for retrieval on view screen
+    this.audioService.setAudioRequest(audioRequestRow);
+    this.router.navigate(['./audios', audioRequestRow.requestId]);
+  }
+
   onSelectedAudio(selectedAudio: UserAudioRequestRow[]) {
     this.selectedAudioRequests = selectedAudio;
   }
@@ -142,8 +149,7 @@ export class AudiosComponent {
     });
   }
 
-  onDeleteCancelled(event: MouseEvent) {
-    event.preventDefault();
+  onDeleteCancelled() {
     this.isDeleting = false;
   }
 

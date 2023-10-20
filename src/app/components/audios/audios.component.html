@@ -1,9 +1,6 @@
 <ng-template #tableTemplatePartial let-row>
-  <td *ngIf="!isDeleting" class="govuk-table__cell">
+  <td class="govuk-table__cell">
     <a [routerLink]="['/case', row.caseId]"> {{ row.caseNumber }}</a>
-  </td>
-  <td *ngIf="isDeleting" class="govuk-table__cell">
-    {{ row.caseNumber }}
   </td>
   <td class="govuk-table__cell">{{ row.courthouse }}</td>
   <td class="govuk-table__cell">{{ row.hearingDate | date: 'dd MMM yyyy' }}</td>
@@ -70,7 +67,7 @@
               </td>
               <td class="govuk-table__cell">
                 <div class="status-cell">
-                  <a [routerLink]="['/audios/', row.requestId]">View</a>
+                  <a href="#" (click)="onViewAudioRequest($event, row)">View</a>
                 </div>
               </td></ng-template
             >
@@ -109,28 +106,12 @@
   </ng-container>
 </ng-container>
 
-<ng-container *ngIf="isDeleting">
-  <p class="govuk-body">
-    Are you sure you want to delete {{ selectedAudioRequests.length > 1 ? 'these items' : 'this item' }}?
-  </p>
-  <app-data-table id="inProgressTable" [rows]="selectedAudioRequests" [columns]="unSortableColumns">
-    <ng-template [tableRowTemplate]="selectedAudioRequests" let-row>
-      <!-- Partial template for duplicated cells -->
-      <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
-
-      <td class="govuk-table__cell">
-        <strong class="govuk-tag" [ngClass]="row.status === 'COMPLETED' ? 'govuk-tag--green' : 'govuk-tag--grey'">
-          {{ row.status === 'COMPLETED' ? 'READY' : row.status }}
-        </strong>
-      </td>
-    </ng-template>
-  </app-data-table>
-
-  <div class="govuk-button-group">
-    <button class="govuk-button govuk-button--warning" (click)="onDeleteConfirmed()">Yes - delete</button>
-    <a href="#" (click)="onDeleteCancelled($event)" class="govuk-link">Cancel</a>
-  </div>
-</ng-container>
+<app-audio-delete
+  *ngIf="isDeleting"
+  [rowsToDelete]="selectedAudioRequests"
+  (confirm)="onDeleteConfirmed()"
+  (cancel)="onDeleteCancelled()"
+></app-audio-delete>
 
 <ng-template #loading>
   <app-loading text="Loading audio requests..."></app-loading>

@@ -1,15 +1,9 @@
 <ng-container *ngIf="caseFile$ | async as caseFile">
-  <!-- Breadcrumbs -->
-  <div class="govuk-breadcrumbs">
-    <ol class="govuk-breadcrumbs__list">
-      <li class="govuk-breadcrumbs__list-item">
-        <a routerLink="../../search" class="govuk-breadcrumbs__link">Search</a>
-      </li>
-      <li class="govuk-breadcrumbs__list-item">
-        <a [routerLink]="['/case/', caseFile.case_id]" class="govuk-breadcrumbs__link">{{ caseFile.case_number }}</a>
-      </li>
-    </ol>
-  </div>
+  <app-breadcrumb>
+    <a *breadcrumb="['/search']">Search</a>
+    <a *breadcrumb>{{ caseFile.case_number }}</a>
+  </app-breadcrumb>
+
   <app-case-file [caseFile]="caseFile"></app-case-file>
   <app-hearing-results
     *ngIf="data$ | async as data"
