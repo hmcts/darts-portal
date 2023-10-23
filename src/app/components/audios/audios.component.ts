@@ -37,14 +37,7 @@ export class AudiosComponent {
 
   selectedAudioRequests: UserAudioRequestRow[] = [];
 
-  private _isDeleting = false;
-  public get isDeleting() {
-    return this._isDeleting;
-  }
-  public set isDeleting(value) {
-    this._isDeleting = value;
-    this.headerService.showPrimaryNavigation(!this._isDeleting);
-  }
+  isDeleting = false;
 
   audioRequests$: Observable<UserAudioRequest[]>;
   expiredAudioRequests$: Observable<UserAudioRequest[]>;
@@ -155,5 +148,11 @@ export class AudiosComponent {
 
   onTabChanged() {
     this.selectedAudioRequests = [];
+  }
+
+  onClearClicked(event: MouseEvent, row: UserAudioRequestRow) {
+    event.preventDefault();
+    this.selectedAudioRequests = [row];
+    this.isDeleting = true;
   }
 }

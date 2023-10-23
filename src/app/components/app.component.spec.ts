@@ -1,20 +1,20 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NavigationEnd, Router } from '@angular/router';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
 import { AuthService } from '@services/auth/auth.service';
+import { HeaderService } from '@services/header/header.service';
+import { Subject } from 'rxjs';
 import { AppComponent } from './app.component';
 import { ContentComponent } from './layout/content/content.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { PhaseBannerComponent } from './layout/phase-banner/phase-banner.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { NavigationEnd, Router } from '@angular/router';
-import { HeaderService } from '@services/header/header.service';
-import { Subject } from 'rxjs';
 
 describe('AppComponent', () => {
   const fakeAppInsightsService = {};
   const fakeAuthService = {};
-  const fakeHeaderService = { showPrimaryNavigation: jest.fn() } as unknown as HeaderService;
+  const fakeHeaderService = { showNavigation: jest.fn() } as unknown as HeaderService;
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
   let routerEventsSubject: Subject<NavigationEnd>;
@@ -53,10 +53,10 @@ describe('AppComponent', () => {
 
   it('should show primary navigation on NavigationEnd event', () => {
     const navigationEndEvent = new NavigationEnd(1, '/', '/');
-    jest.spyOn(fakeHeaderService, 'showPrimaryNavigation');
+    jest.spyOn(fakeHeaderService, 'showNavigation');
 
     routerEventsSubject.next(navigationEndEvent);
 
-    expect(fakeHeaderService.showPrimaryNavigation).toHaveBeenCalledWith(true);
+    expect(fakeHeaderService.showNavigation).toHaveBeenCalled();
   });
 });

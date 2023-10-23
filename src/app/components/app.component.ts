@@ -27,6 +27,6 @@ export class AppComponent {
     // via the browser back button, for example.
     router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe(() => this.headerService.showPrimaryNavigation(true));
+      .subscribe(() => this.headerService.showNavigation());
   }
 }
