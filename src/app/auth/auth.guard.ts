@@ -7,6 +7,10 @@ export const authGuard: CanActivateFn = async (route: ActivatedRouteSnapshot, st
   const router: Router = inject(Router);
 
   if (await authService.checkAuthenticated()) {
+    if (localStorage.getItem('redirectUrl') !== null) {
+      router.navigateByUrl(`${localStorage.getItem('redirectUrl')}`);
+      localStorage.removeItem('redirectUrl');
+    }
     return true;
   }
 
