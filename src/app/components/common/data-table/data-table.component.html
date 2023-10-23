@@ -65,12 +65,7 @@
     </ng-container>
     <ng-template #defaultRowTemplate let-row let-index>
       <td *ngFor="let column of columns" class="govuk-table__cell">
-        <ng-container *ngIf="column.link">
-          <a [routerLink]="[column.link, row.id]"> {{ row[column.prop] }}</a>
-        </ng-container>
-        <ng-container *ngIf="!column.link">
-          {{ row[column.prop] }}
-        </ng-container>
+        {{ row[column.prop] }}
       </td>
     </ng-template>
   </tbody>

@@ -31,7 +31,7 @@
   </fieldset>
 
   <app-data-table [rows]="filteredRows" [columns]="columns" [rowSelectable]="true" (rowSelect)="onRowSelect($event)">
-    <ng-template [tableRowTemplate] let-row let-index>
+    <ng-template [tableRowTemplate]="filteredRows" let-row let-index>
       <ng-container *ngIf="row.type === 'audio'">
         <td class="govuk-table__cell">
           <div>Start time: {{ row.timestamp | date: 'HH:mm:ss' }}</div>

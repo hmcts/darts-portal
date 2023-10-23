@@ -1,6 +1,6 @@
-import { DateTime } from 'luxon';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DatatableRow } from '@darts-types/data-table-row.interface';
+import { DateTime } from 'luxon';
 
 import { DataTableComponent, SortingInterface } from './data-table.component';
 
@@ -53,7 +53,7 @@ describe('DataTableComponent', () => {
     fixture = TestBed.createComponent(DataTableComponent);
     component = fixture.componentInstance;
     component.columns = [
-      { name: 'Case ID', prop: 'caseNumber', sortable: true, link: '/case' },
+      { name: 'Case ID', prop: 'caseNumber', sortable: true },
       { name: 'Courthouse', prop: 'courthouse', sortable: true },
       { name: 'Courtroom', prop: 'courtroom', sortable: true },
       { name: 'No. of transcripts', prop: 'transcript_count', sortable: true },

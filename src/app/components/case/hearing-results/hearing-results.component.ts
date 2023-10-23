@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnChanges } from '@angular/core';
-import { RouterLink, ActivatedRoute } from '@angular/router';
-import { TabsComponent } from '@common/tabs/tabs.component';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
-import { DatatableColumn, DatatableRow, Hearing } from '@darts-types/index';
-import { TabDirective } from 'src/app/directives/tab.directive';
+import { TabsComponent } from '@common/tabs/tabs.component';
+import { DatatableColumn, DatatableRow, Hearing, TranscriptsRow } from '@darts-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
+import { TabDirective } from 'src/app/directives/tab.directive';
 
 @Component({
   selector: 'app-hearing-results',
@@ -13,21 +13,41 @@ import { TableRowTemplateDirective } from '@directives/table-row-template.direct
   imports: [CommonModule, RouterLink, DataTableComponent, TabsComponent, TabDirective, TableRowTemplateDirective],
   templateUrl: './hearing-results.component.html',
   styleUrls: ['./hearing-results.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HearingResultsComponent implements OnChanges {
   @Input() hearings: Hearing[] = [];
+  @Input() transcripts: TranscriptsRow[] = [];
   caseId: number;
   rows: DatatableRow[] = [];
-  columns: DatatableColumn[] = [];
+  hearingsColumns: DatatableColumn[] = [];
+  transcriptColumns: DatatableColumn[] = [];
+
+  statusTagStyleMap: { [key: string]: string } = {
+    REQUESTED: 'govuk-tag--blue',
+    AWAITING_AUTHORISATION: 'govuk-tag--yellow',
+    WITH_TRANSCRIBER: 'govuk-tag--purple',
+    COMPLETE: 'govuk-tag--green',
+    REJECTED: 'govuk-tag--red',
+  };
 
   constructor(private route: ActivatedRoute) {
     this.caseId = this.route.snapshot.params.caseId;
 
-    this.columns = [
+    this.hearingsColumns = [
       { name: 'Hearing date', prop: 'date', sortable: true },
       { name: 'Judge', prop: 'judges', sortable: true },
       { name: 'Courtroom', prop: 'courtroom', sortable: true },
       { name: 'No. of transcripts', prop: 'transcripts', sortable: true },
+    ];
+
+    this.transcriptColumns = [
+      { name: 'Hearing date', prop: 'hearingDate', sortable: true },
+      { name: 'Type', prop: 'type', sortable: true },
+      { name: 'Requested on', prop: 'requestedOn', sortable: true },
+      { name: 'Requested by', prop: 'requestedBy', sortable: true },
+      { name: 'Status', prop: 'status', sortable: true },
+      { name: '', prop: '' },
     ];
   }
 
