@@ -1,18 +1,18 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HearingComponent } from './hearing.component';
-import { By } from '@angular/platform-browser';
-import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { AudioEventRow } from '@darts-types/hearing-audio-event.interface';
+import { AudioRequest, Case, Hearing, HearingEventTypeEnum, HearingPageState } from '@darts-types/index';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
 import { CaseService } from '@services/case/case.service';
-import { AudioEventRow } from '@darts-types/hearing-audio-event.interface';
-import { HearingService } from '@services/hearing/hearing.service';
-import { HearingFileComponent } from './hearing-file/hearing-file.component';
-import { AudioRequest, Case, Hearing, HearingEventTypeEnum, HearingPageState } from '@darts-types/index';
 import { HeaderService } from '@services/header/header.service';
+import { HearingService } from '@services/hearing/hearing.service';
 import { UserService } from '@services/user/user.service';
-import { ActivatedRoute } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { HearingFileComponent } from './hearing-file/hearing-file.component';
+import { HearingComponent } from './hearing.component';
 
 describe('HearingComponent', () => {
   const fakeAppInsightsService = {};
@@ -234,23 +234,23 @@ describe('HearingComponent', () => {
 
   describe('state setter', () => {
     it('should call the header service with true when the state is default', () => {
-      const headerServiceSpy = jest.spyOn(component.headerService, 'showPrimaryNavigation');
+      const headerServiceSpy = jest.spyOn(component.headerService, 'showNavigation');
       const value: HearingPageState = 'Default';
       component.state = value;
-      expect(headerServiceSpy).toHaveBeenCalledWith(true);
+      expect(headerServiceSpy).toHaveBeenCalled();
     });
-    describe('should call the header service with false when ', () => {
+    describe('should hide navigation when ', () => {
       it('state is Order Summary', () => {
-        const headerServiceSpy = jest.spyOn(component.headerService, 'showPrimaryNavigation');
+        const headerServiceSpy = jest.spyOn(component.headerService, 'hideNavigation');
         const value: HearingPageState = 'OrderSummary';
         component.state = value;
-        expect(headerServiceSpy).toHaveBeenCalledWith(false);
+        expect(headerServiceSpy).toHaveBeenCalled();
       });
       it('state is Order Confirmation', () => {
-        const headerServiceSpy = jest.spyOn(component.headerService, 'showPrimaryNavigation');
+        const headerServiceSpy = jest.spyOn(component.headerService, 'hideNavigation');
         const value: HearingPageState = 'OrderConfirmation';
         component.state = value;
-        expect(headerServiceSpy).toHaveBeenCalledWith(false);
+        expect(headerServiceSpy).toHaveBeenCalled();
       });
     });
   });

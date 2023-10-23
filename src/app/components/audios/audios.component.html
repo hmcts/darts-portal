@@ -29,9 +29,17 @@
               <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
 
               <td class="govuk-table__cell">
-                <strong class="govuk-tag" [ngClass]="row.status === 'FAILED' ? 'govuk-tag--red' : 'govuk-tag--yellow'">
-                  {{ row.status }}
-                </strong>
+                <div class="status-cell">
+                  <strong
+                    class="govuk-tag"
+                    [ngClass]="row.status === 'FAILED' ? 'govuk-tag--red' : 'govuk-tag--yellow'"
+                  >
+                    {{ row.status }}
+                  </strong>
+                  <a *ngIf="row.status === 'FAILED'" href="#" (click)="onClearClicked($event, row)" class="govuk-link">
+                    Clear
+                  </a>
+                </div>
               </td>
             </ng-template>
           </app-data-table>
@@ -61,16 +69,12 @@
               <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
 
               <td class="govuk-table__cell">
-                <div class="status-cell">
-                  <strong class="govuk-tag govuk-tag--green"> READY </strong>
-                </div>
+                <strong class="govuk-tag govuk-tag--green"> READY </strong>
               </td>
               <td class="govuk-table__cell">
-                <div class="status-cell">
-                  <a href="#" (click)="onViewAudioRequest($event, row)">View</a>
-                </div>
-              </td></ng-template
-            >
+                <a href="#" (click)="onViewAudioRequest($event, row)" class="govuk-link">View</a>
+              </td>
+            </ng-template>
           </app-data-table>
         </ng-container>
       </div>

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Case, AudioRequest } from '@darts-types/index';
+import { AudioRequest, Case } from '@darts-types/index';
 import { HeaderService } from '@services/header/header.service';
 
 import { OrderConfirmationComponent } from './order-confirmation.component';
@@ -69,12 +69,12 @@ describe('OrderConfirmationComponent', () => {
     it('should call headerService to show nav', () => {
       const event = new MouseEvent('click');
       const eventSpy = jest.spyOn(event, 'preventDefault');
-      const showPrimaryNavigationSpy = jest.spyOn(component.headerService, 'showPrimaryNavigation');
+      const showPrimaryNavigationSpy = jest.spyOn(component.headerService, 'showNavigation');
 
       component.onReturnToSearch(event);
 
       expect(eventSpy).toHaveBeenCalled();
-      expect(showPrimaryNavigationSpy).toBeCalledWith(true);
+      expect(showPrimaryNavigationSpy).toBeCalled();
     });
   });
 
