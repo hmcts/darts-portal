@@ -1,7 +1,7 @@
-import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { UserService, USER_PROFILE_PATH } from './user.service';
+import { TestBed } from '@angular/core/testing';
 import { UserState } from '@darts-types/user-state';
+import { UserService, USER_PROFILE_PATH } from './user.service';
 
 describe('UserService', () => {
   let service: UserService;
@@ -30,7 +30,7 @@ describe('UserService', () => {
   it('should load user profile data from the API via HTTP', () => {
     let result!: UserState;
 
-    service.getUserProfile().subscribe((userProfile) => {
+    service.userProfile$.subscribe((userProfile) => {
       result = userProfile;
     });
 
@@ -43,11 +43,11 @@ describe('UserService', () => {
   });
 
   it('should cache user profile data after loading', () => {
-    service.getUserProfile().subscribe();
+    service.userProfile$.subscribe();
 
     httpMock.expectOne(USER_PROFILE_PATH).flush(mockUserState);
 
-    service.getUserProfile().subscribe();
+    service.userProfile$.subscribe();
 
     httpMock.expectNone(USER_PROFILE_PATH);
   });

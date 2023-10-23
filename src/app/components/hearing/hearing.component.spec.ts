@@ -1,25 +1,25 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HearingComponent } from './hearing.component';
-import { By } from '@angular/platform-browser';
-import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { AudioEventRow } from '@darts-types/hearing-audio-event.interface';
+import { AudioRequest, Case, Hearing, HearingEventTypeEnum, HearingPageState } from '@darts-types/index';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
 import { CaseService } from '@services/case/case.service';
-import { AudioEventRow } from '@darts-types/hearing-audio-event.interface';
-import { HearingService } from '@services/hearing/hearing.service';
-import { HearingFileComponent } from './hearing-file/hearing-file.component';
-import { AudioRequest, Case, Hearing, HearingEventTypeEnum, HearingPageState } from '@darts-types/index';
 import { HeaderService } from '@services/header/header.service';
+import { HearingService } from '@services/hearing/hearing.service';
 import { UserService } from '@services/user/user.service';
-import { ActivatedRoute } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { HearingFileComponent } from './hearing-file/hearing-file.component';
+import { HearingComponent } from './hearing.component';
 
 describe('HearingComponent', () => {
   const fakeAppInsightsService = {};
   let httpClientSpy: HttpClient;
   let caseService: CaseService;
   let hearingService: HearingService;
-  let userService: UserService;
+  let fakeUserService: Partial<UserService>;
   let component: HearingComponent;
   let fixture: ComponentFixture<HearingComponent>;
 
@@ -103,14 +103,14 @@ describe('HearingComponent', () => {
 
     caseService = new CaseService(httpClientSpy);
     hearingService = new HearingService(httpClientSpy);
-    userService = new UserService(httpClientSpy);
 
     jest.spyOn(caseService, 'getCase').mockReturnValue(cd);
     jest.spyOn(caseService, 'getCaseHearings').mockReturnValue(hd);
     jest.spyOn(caseService, 'getHearingById').mockReturnValue(shd);
     jest.spyOn(hearingService, 'getAudio').mockReturnValue(ad);
     jest.spyOn(hearingService, 'getEvents').mockReturnValue(ed);
-    jest.spyOn(userService, 'getUserProfile').mockReturnValue(mockUser);
+
+    fakeUserService = { userProfile$: mockUser, isTranscriber: (userState) => true };
 
     TestBed.configureTestingModule({
       imports: [HearingComponent, HearingFileComponent, RouterTestingModule],
@@ -119,7 +119,7 @@ describe('HearingComponent', () => {
         { provide: CaseService, useValue: caseService },
         { provide: HearingService, useValue: hearingService },
         { provide: HeaderService },
-        { provide: UserService, useValue: userService },
+        { provide: UserService, useValue: fakeUserService },
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
       ],
     });

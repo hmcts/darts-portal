@@ -3,14 +3,15 @@ import { inject, Injectable } from '@angular/core';
 import { UserAudioRequestRow } from '@darts-types/index';
 import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
 import { UserService } from '@services/user/user.service';
-import { BehaviorSubject, map, merge, Observable, shareReplay, switchMap, tap, timer } from 'rxjs';
+import { BehaviorSubject, map, merge, Observable, switchMap, tap, timer } from 'rxjs';
 
+const UNREAD_AUDIO_COUNT_PATH = 'api/audio-requests/not-accessed-count';
 @Injectable({
   providedIn: 'root',
 })
 export class AudioRequestService {
   http = inject(HttpClient);
-  userService = inject(UserService);
+  userProfile$ = inject(UserService).userProfile$;
 
   // Defined in seconds
   private readonly POLL_INTERVAL = 60;
@@ -23,25 +24,14 @@ export class AudioRequestService {
   // Store audio request when clicking 'View' on 'Your Audio' screen
   audioRequestView!: UserAudioRequestRow;
 
-  audioRequests$ = timer(0, this.POLL_INTERVAL * 1000)
-    .pipe(
-      switchMap(() =>
-        this.userService.userProfile$.pipe(
-          switchMap((userState) => this.getAudioRequests(userState.userId, false)),
-          // Refresh unread count
-          tap((audioRequests) => this.updateUnread(audioRequests))
-        )
-      )
-    )
-    .pipe(shareReplay(undefined, 1000));
-
-  expiredAudioRequests$ = timer(0, this.POLL_INTERVAL * 1000).pipe(
-    switchMap(() => this.userService.userProfile$.pipe(switchMap((d) => this.getAudioRequests(d.userId, true))))
+  audioRequests$ = timer(0, this.POLL_INTERVAL * 1000).pipe(
+    switchMap(() => this.getAudioRequests(false)),
+    tap((audioRequests) => this.updateUnread(audioRequests))
   );
 
-  pollUnreadCount$ = timer(0, this.UNREAD_COUNT_POLL_INTERVAL * 1000).pipe(
-    switchMap(() => this.userService.userProfile$.pipe(switchMap((d) => this.getUnreadCount(d.userId))))
-  );
+  expiredAudioRequests$ = timer(0, this.POLL_INTERVAL * 1000).pipe(switchMap(() => this.getAudioRequests(true)));
+
+  pollUnreadCount$ = timer(0, this.UNREAD_COUNT_POLL_INTERVAL * 1000).pipe(switchMap(() => this.getUnreadCount()));
 
   // Merge both unread count observables into one
   unreadAudioCount$ = merge(
@@ -49,13 +39,17 @@ export class AudioRequestService {
     this.unreadCount$ // In memory count / manual update
   );
 
-  getAudioRequests(userId: number, expired: boolean): Observable<UserAudioRequest[]> {
-    return this.http
-      .get<UserAudioRequest[]>(`api/audio-requests`, {
-        headers: { user_id: userId.toString() },
-        params: { expired },
+  getAudioRequests(expired: boolean): Observable<UserAudioRequest[]> {
+    return this.userProfile$.pipe(
+      switchMap((userState) => {
+        return this.http
+          .get<UserAudioRequest[]>(`api/audio-requests`, {
+            headers: { user_id: userState.userId.toString() },
+            params: { expired },
+          })
+          .pipe(map((requests) => requests.map((r) => ({ ...r, hearing_date: r.hearing_date + 'Z' }))));
       })
-      .pipe(map((requests) => requests.map((r) => ({ ...r, hearing_date: r.hearing_date + 'Z' }))));
+    );
   }
 
   deleteAudioRequests(mediaRequestId: number): Observable<HttpResponse<Response>> {
@@ -86,10 +80,16 @@ export class AudioRequestService {
     return audioRequests.filter((ar) => ar.media_request_status === 'COMPLETED');
   }
 
-  getUnreadCount(userId: number): Observable<number> {
-    return this.http
-      .get<{ count: number }>('api/audio-requests/not-accessed-count', { headers: { user_id: userId.toString() } })
-      .pipe(map((res) => res.count));
+  getUnreadCount(): Observable<number> {
+    return this.userProfile$.pipe(
+      switchMap((userState) =>
+        this.http
+          .get<{ count: number }>(UNREAD_AUDIO_COUNT_PATH, {
+            headers: { user_id: userState.userId.toString() },
+          })
+          .pipe(map((res) => res.count))
+      )
+    );
   }
 
   private updateUnread(audioRequests: UserAudioRequest[]) {
