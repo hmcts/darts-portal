@@ -24,11 +24,13 @@ export class HearingResultsComponent implements OnChanges {
   transcriptColumns: DatatableColumn[] = [];
 
   statusTagStyleMap: { [key: string]: string } = {
-    REQUESTED: 'govuk-tag--blue',
-    AWAITING_AUTHORISATION: 'govuk-tag--yellow',
-    WITH_TRANSCRIBER: 'govuk-tag--purple',
-    COMPLETE: 'govuk-tag--green',
-    REJECTED: 'govuk-tag--red',
+    Requested: 'govuk-tag--blue',
+    'Awaiting Authorisation': 'govuk-tag--yellow',
+    Approved: 'govuk-tag--turquoise',
+    Rejected: 'govuk-tag--red',
+    'With Transcriber': 'govuk-tag--purple',
+    Complete: 'govuk-tag--green',
+    Closed: 'govuk-tag--grey',
   };
 
   constructor(private route: ActivatedRoute) {

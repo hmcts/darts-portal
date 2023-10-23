@@ -1,3 +1,5 @@
+import { TranscriptStatus } from './transcripts-row.interface';
+
 export interface Transcript {
   tra_id: number;
   hea_id: number;
@@ -5,5 +7,5 @@ export interface Transcript {
   type: string;
   requested_on: string;
   requested_by_name: string;
-  status: string;
+  status: TranscriptStatus;
 }

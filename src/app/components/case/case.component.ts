@@ -31,14 +31,14 @@ export class CaseComponent {
     transcripts: this.transcripts$,
   });
 
-  mapTranscriptRequestToRows(transcript: Transcript[]): TranscriptsRow[] {
-    return transcript.map((ar) => {
+  mapTranscriptRequestToRows(transcripts: Transcript[]): TranscriptsRow[] {
+    return transcripts.map((transcript) => {
       return {
-        hearingDate: ar.hearing_date,
-        type: ar.type,
-        requestedOn: ar.requested_on,
-        requestedBy: ar.requested_by_name,
-        status: ar.status.toUpperCase(),
+        hearingDate: transcript.hearing_date,
+        type: transcript.type,
+        requestedOn: transcript.requested_on,
+        requestedBy: transcript.requested_by_name,
+        status: transcript.status,
       };
     });
   }

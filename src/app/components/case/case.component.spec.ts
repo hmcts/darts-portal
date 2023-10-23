@@ -40,7 +40,7 @@ describe('CaseComponent', () => {
       type: 'Sentencing remarks',
       requested_on: '2023-10-12',
       requested_by_name: 'Joe Bloggs',
-      status: 'Available',
+      status: 'Rejected',
     },
     {
       tra_id: 1,
@@ -49,7 +49,7 @@ describe('CaseComponent', () => {
       type: 'Sentencing remarks',
       requested_on: '2023-10-12',
       requested_by_name: 'Joe Bloggs',
-      status: 'Available',
+      status: 'Requested',
     },
     {
       tra_id: 1,
@@ -58,7 +58,7 @@ describe('CaseComponent', () => {
       type: 'Sentencing remarks',
       requested_on: '2023-10-12',
       requested_by_name: 'Joe Bloggs',
-      status: 'In Progress',
+      status: 'Complete',
     },
   ]);
 
