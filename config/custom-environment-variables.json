@@ -6,6 +6,7 @@
     "url": "DARTS_API_URL"
   },
   "authentication": {
-    "azureAdB2cOriginHost": "DARTS_AZUREAD_B2C_ORIGIN_HOST"
+    "azureAdB2cOriginHost": "DARTS_AZUREAD_B2C_ORIGIN_HOST",
+    "allowAuthBootstrapping": "DARTS_ALLOW_AUTH_BOOTSTRAPPING"
   }
 }

@@ -88,7 +88,11 @@ function postAuthCallback(
         if (err) {
           return next(err);
         }
-        res.redirect('/');
+        if (req.session?.bootstrapAuthOrigin && config.get('authentication.allowAuthBootstrapping') === 'true') {
+          axios.post<void>(req.session?.bootstrapAuthOrigin + '/bootstrap-auth', result.data);
+        } else {
+          res.redirect('/');
+        }
       });
     } catch (err) {
       console.error('Error on authentication callback', err);
