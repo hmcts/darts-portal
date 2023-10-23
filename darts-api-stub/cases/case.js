@@ -344,7 +344,7 @@ const transcriptOne = [
     type: 'Sentencing remarks',
     requested_on: '2023-10-12',
     requested_by_name: 'Joe Bloggs',
-    status: 'REQUESTED',
+    status: 'Requested',
   },
   {
     tra_id: 1,
@@ -353,7 +353,7 @@ const transcriptOne = [
     type: 'Sentencing remarks',
     requested_on: '2023-10-12',
     requested_by_name: 'Joe Bloggs',
-    status: 'AWAITING_AUTHORISATION',
+    status: 'Awaiting Authorisation',
   },
   {
     tra_id: 1,
@@ -362,7 +362,7 @@ const transcriptOne = [
     type: 'Sentencing remarks',
     requested_on: '2023-10-12',
     requested_by_name: 'Joe Bloggs',
-    status: 'WITH_TRANSCRIBER',
+    status: 'Approved',
   },
   {
     tra_id: 1,
@@ -371,7 +371,7 @@ const transcriptOne = [
     type: 'Sentencing remarks',
     requested_on: '2023-10-12',
     requested_by_name: 'Joe Bloggs',
-    status: 'COMPLETE',
+    status: 'Rejected',
   },
   {
     tra_id: 1,
@@ -380,7 +380,25 @@ const transcriptOne = [
     type: 'Sentencing remarks',
     requested_on: '2023-10-12',
     requested_by_name: 'Joe Bloggs',
-    status: 'REJECTED',
+    status: 'With Transcriber',
+  },
+  {
+    tra_id: 1,
+    hea_id: 2,
+    hearing_date: '2023-10-12',
+    type: 'Sentencing remarks',
+    requested_on: '2023-10-12',
+    requested_by_name: 'Joe Bloggs',
+    status: 'Complete',
+  },
+  {
+    tra_id: 1,
+    hea_id: 2,
+    hearing_date: '2023-10-12',
+    type: 'Sentencing remarks',
+    requested_on: '2023-10-12',
+    requested_by_name: 'Joe Bloggs',
+    status: 'Closed',
   },
 ];
 
@@ -392,7 +410,7 @@ const transcriptTwo = [
     type: 'Sentencing remarks',
     requested_on: '2023-10-12',
     requested_by_name: 'Joe Bloggs',
-    status: 'Available',
+    status: 'Requested',
   },
   {
     tra_id: 1,
@@ -401,7 +419,7 @@ const transcriptTwo = [
     type: 'Sentencing remarks',
     requested_on: '2023-10-12',
     requested_by_name: 'Joe Bloggs',
-    status: 'Available',
+    status: 'Awaiting Authorisation',
   },
   {
     tra_id: 1,
@@ -410,7 +428,7 @@ const transcriptTwo = [
     type: 'Sentencing remarks',
     requested_on: '2023-10-12',
     requested_by_name: 'Joe Bloggs',
-    status: 'In Progress',
+    status: 'Complete',
   },
   {
     tra_id: 1,
@@ -419,7 +437,7 @@ const transcriptTwo = [
     type: 'Sentencing remarks',
     requested_on: '2023-10-12',
     requested_by_name: 'Joe Bloggs',
-    status: 'In Progress',
+    status: 'Rejected',
   },
 ];
 

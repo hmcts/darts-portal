@@ -27,7 +27,7 @@ describe('CaseService', () => {
       type: 'Sentencing remarks',
       requested_on: '2023-10-12',
       requested_by_name: 'Joe Bloggs',
-      status: 'Available',
+      status: 'Complete',
     },
     {
       tra_id: 1,
@@ -36,7 +36,7 @@ describe('CaseService', () => {
       type: 'Sentencing remarks',
       requested_on: '2023-10-12',
       requested_by_name: 'Joe Bloggs',
-      status: 'In Progress',
+      status: 'Approved',
     },
   ];
 
@@ -123,7 +123,13 @@ describe('CaseService', () => {
     expect(req.request.method).toBe('GET');
 
     req.flush(mockTranscript);
-    expect(result).toEqual(mockTranscripts);
+    expect(result).toEqual(
+      mockTranscripts.map((t) => ({
+        ...t,
+        date: t.hearing_date + 'T00:00:00Z',
+        requested_on: t.requested_on + 'T00:00:00Z',
+      }))
+    );
   });
 
   it('#getCaseHearings', () => {

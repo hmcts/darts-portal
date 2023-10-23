@@ -28,7 +28,15 @@ export class CaseService {
 
   getAllCaseTranscripts(caseId: number): Observable<Transcript[]> {
     const apiURL = `${GET_CASE_PATH}/${caseId}/transcripts`;
-    return this.http.get<Transcript[]>(apiURL);
+    return this.http.get<Transcript[]>(apiURL).pipe(
+      map((transcripts) =>
+        transcripts.map((t) => ({
+          ...t,
+          date: t.hearing_date + 'T00:00:00Z',
+          requested_on: t.requested_on + 'T00:00:00Z',
+        }))
+      )
+    );
   }
 
   getCase(caseId: number): Observable<Case> {

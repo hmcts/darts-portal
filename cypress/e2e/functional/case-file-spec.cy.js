@@ -29,7 +29,7 @@ describe('Case file screen', () => {
     });
 
     it('Transcript count', () => {
-      cy.get('#transcription-count').should('contain', '5');
+      cy.get('#transcription-count').should('contain', '7');
     });
 
     it('Displays table of transcripts', () => {
@@ -37,7 +37,7 @@ describe('Case file screen', () => {
       cy.get('#transcriptsTable')
         .find('tr')
         .then((rows) => {
-          expect(rows.length).equal(6);
+          expect(rows.length).equal(8); // 8 including header row
         });
     });
   });

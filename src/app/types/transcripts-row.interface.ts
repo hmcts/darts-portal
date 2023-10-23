@@ -5,5 +5,14 @@ export interface TranscriptsRow extends DatatableRow {
   type: string;
   requestedOn: string;
   requestedBy: string;
-  status: string;
+  status: TranscriptStatus;
 }
+
+export type TranscriptStatus =
+  | 'Requested'
+  | 'Awaiting Authorisation'
+  | 'Approved'
+  | 'Rejected'
+  | 'With Transcriber'
+  | 'Complete'
+  | 'Closed';
