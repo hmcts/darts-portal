@@ -104,8 +104,11 @@ function displayErrors() {
 
 //Used for Email address input
 $('#main-content').on('input', '#email', function() {
-    removeErrors();    
-    addItemLevelErrorClasses('reset');
+    //Input runs before DOM is updated so use setTimeout to give enough time for DOM to appear
+    setTimeout(() => {
+        removeErrors();    
+        addItemLevelErrorClasses('reset');
+    }, 50);
 });
 
 //Used for 'Email address is required.' message
