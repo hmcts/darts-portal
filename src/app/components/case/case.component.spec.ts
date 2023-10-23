@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { Case, Hearing, transcript } from '@darts-types/index';
+import { Case, Hearing, Transcript } from '@darts-types/index';
 import { CaseService } from '@services/case/case.service';
 import { Observable, of } from 'rxjs';
 import { CaseComponent } from './case.component';
@@ -32,7 +32,7 @@ describe('CaseComponent', () => {
     },
   ]);
 
-  const mockTranscript: Observable<transcript[]> = of([
+  const mockTranscript: Observable<Transcript[]> = of([
     {
       tra_id: 1,
       hea_id: 2,

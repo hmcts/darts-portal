@@ -1,6 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { Case, CaseFile, Courthouse, Hearing, SearchFormValues, transcript } from '@darts-types/index';
+import { Case, CaseFile, Courthouse, Hearing, SearchFormValues, Transcript } from '@darts-types/index';
 import { ADVANCED_SEARCH_CASE_PATH, CaseService, GET_CASE_PATH, GET_COURTHOUSES_PATH } from './case.service';
 
 describe('CaseService', () => {
@@ -19,7 +19,7 @@ describe('CaseService', () => {
     retain_until: '2023-08-10T11:23:24.858Z',
   };
 
-  const mockTranscripts: transcript[] = [
+  const mockTranscripts: Transcript[] = [
     {
       tra_id: 1,
       hea_id: 2,
@@ -112,8 +112,8 @@ describe('CaseService', () => {
 
   it('#getAllCaseTranscripts', () => {
     const mockCaseId = 1;
-    const mockTranscript: transcript[] = mockTranscripts;
-    let result!: transcript[];
+    const mockTranscript: Transcript[] = mockTranscripts;
+    let result!: Transcript[];
 
     service.getAllCaseTranscripts(mockCaseId).subscribe((c) => {
       result = c;

@@ -1,4 +1,4 @@
-export interface transcript {
+export interface Transcript {
   tra_id: number;
   hea_id: number;
   hearing_date: string;

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
-import { transcript, TranscriptsRow } from '@darts-types/index';
+import { Transcript, TranscriptsRow } from '@darts-types/index';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { CaseService } from '@services/case/case.service';
 import { combineLatest, map } from 'rxjs';
@@ -31,7 +31,7 @@ export class CaseComponent {
     transcripts: this.transcripts$,
   });
 
-  mapTranscriptRequestToRows(transcript: transcript[]): TranscriptsRow[] {
+  mapTranscriptRequestToRows(transcript: Transcript[]): TranscriptsRow[] {
     return transcript.map((ar) => {
       return {
         hearingDate: ar.hearing_date,
