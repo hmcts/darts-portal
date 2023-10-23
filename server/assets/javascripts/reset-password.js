@@ -93,7 +93,7 @@ $('#emailVerificationControl_but_change_claims.changeClaims').click(function () 
 function displayErrors() {
     removeErrors();
     createErrorSummaryBox('reset');
-    addItemLevelErrorClasses('reset');
+    addVerificationControlErrors('reset');
     hidePageLevelErrors();
 
     // when clicking "Request a new verification code"
@@ -102,18 +102,25 @@ function displayErrors() {
     });
 }
 
+//Used for Email address input
+$('#main-content').on('input', '#email', function() {
+    //Input runs before DOM is updated so use setTimeout to give enough time for DOM to appear
+    setTimeout(() => {
+        removeErrors();    
+        addItemLevelErrorClasses('reset');
+    }, 50);
+});
+
+//Used for 'Email address is required.' message
+$('#main-content').on('click', '#emailVerificationControl_but_send_code', function() {
+    removeErrors();    
+    addItemLevelErrorClasses('reset');
+});
+
 //Used for 'Verification code is required.' message
 $('#main-content').on('click', '#emailVerificationControl_but_verify_code', function() {
     removeErrors();
-    const errs = [];
-    const infoElem = $('.error.itemLevel.show').each(function(){
-        errs.push($(this).text());        
-    });
-    if (infoElem.length > 0){
-        infoElem.parent().addClass('darts-error');
-        infoElem.addClass('errorText').css('display', 'block').css('margin-bottom', '15px');
-        addGovukErrorSummary(errs);
-    }
+    addItemLevelErrorClasses('reset');
 });
 
 // wait a second before trying to do this, in case the JS in head isn't loaded yet

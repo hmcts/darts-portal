@@ -47,7 +47,7 @@ export class AudioRequestService {
             headers: { user_id: userState.userId.toString() },
             params: { expired },
           })
-          .pipe(map((requests) => requests.map((r) => ({ ...r, hearing_date: r.hearing_date + 'Z' }))));
+          .pipe(map((requests) => requests.map((r) => ({ ...r, hearing_date: r.hearing_date + 'T00:00:00Z' }))));
       })
     );
   }

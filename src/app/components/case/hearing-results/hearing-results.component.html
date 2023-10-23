@@ -1,9 +1,9 @@
 <app-tabs>
   <div *tab="'Hearings'">
-    <app-data-table id="hearingsTable" [rows]="rows" [columns]="columns">
-      <ng-template [tableRowTemplate] let-row>
+    <app-data-table id="hearingsTable" [rows]="rows" [columns]="hearingsColumns">
+      <ng-template [tableRowTemplate]="rows" let-row>
         <td class="govuk-table__cell">
-          <a [routerLink]="['/case', caseId, 'hearing', row.id]">{{ row.date | date: 'd MMM y' }}</a>
+          <a [routerLink]="['/case', caseId, 'hearing', row.id]">{{ row.date?.toString() | date: 'd MMM y' }}</a>
         </td>
         <td class="govuk-table__cell">{{ row.judges }}</td>
         <td class="govuk-table__cell">{{ row.courtroom }}</td>
@@ -11,5 +11,25 @@
       </ng-template>
     </app-data-table>
   </div>
-  <ng-template tab="Transcripts"> </ng-template>
+
+  <div *tab="'All Transcripts'; count: transcripts.length">
+    <h2 class="govuk-heading-m">All transcripts for this case</h2>
+
+    <app-data-table id="transcriptsTable" [rows]="transcripts" [columns]="transcriptColumns">
+      <ng-template [tableRowTemplate]="transcripts" let-row>
+        <td class="govuk-table__cell">{{ row.hearingDate | date: 'dd MMM yyyy' }}</td>
+        <td class="govuk-table__cell">{{ row.type }}</td>
+        <td class="govuk-table__cell">{{ row.requestedOn | date: 'dd MMM yyyy HH:mm:ss' }}</td>
+        <td class="govuk-table__cell">{{ row.requestedBy }}</td>
+        <td class="govuk-table__cell">
+          <strong class="govuk-tag" [ngClass]="statusTagStyleMap[row.status]">
+            {{ row.status }}
+          </strong>
+        </td>
+        <td class="govuk-table__cell">
+          <a *ngIf="row.status === 'Complete'" [routerLink]="['.']">View</a>
+        </td>
+      </ng-template>
+    </app-data-table>
+  </div>
 </app-tabs>

@@ -13,17 +13,26 @@ function proxyMiddleware() {
     },
     logLevel: 'debug',
     onProxyReq: (proxyReq, req) => {
-      console.log('onProxyReq::proxyReq', req.path, proxyReq);
-      console.log('onProxyReq::req', req.path, req);
       if (req.session.securityToken) {
         if (req.session.securityToken.accessToken) {
           proxyReq.setHeader('Authorization', `Bearer ${req.session.securityToken.accessToken}`);
         }
       }
+      if (req.path.startsWith('/audio/preview')) {
+        console.log('onProxyReq::proxyReq', req.path, proxyReq.getHeaders());
+        console.log('onProxyReq::req', req.path, req.headers);
+      }
     },
     onProxyRes: (proxyRes, req, res) => {
-      console.log('onProxyRes::proxyRes', req.path, proxyRes);
-      console.log('onProxyRes::res', req.path, res);
+      if (req.path.startsWith('/audio/preview')) {
+        console.log('onProxyRes::proxyRes', req.path, proxyRes.headers);
+        console.log('onProxyRes::res', req.path, res);
+      }
+    },
+    onError: (err, req) => {
+      if (req.path.startsWith('/audio/preview')) {
+        console.error('onError::err', req.path, err);
+      }
     },
   });
 }

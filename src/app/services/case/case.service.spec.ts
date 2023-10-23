@@ -1,6 +1,6 @@
-import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { Case, CaseFile, Courthouse, Hearing, SearchFormValues } from '@darts-types/index';
+import { Case, CaseFile, Courthouse, Hearing, SearchFormValues, Transcript } from '@darts-types/index';
 import { ADVANCED_SEARCH_CASE_PATH, CaseService, GET_CASE_PATH, GET_COURTHOUSES_PATH } from './case.service';
 
 describe('CaseService', () => {
@@ -18,6 +18,27 @@ describe('CaseService', () => {
     reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
     retain_until: '2023-08-10T11:23:24.858Z',
   };
+
+  const mockTranscripts: Transcript[] = [
+    {
+      tra_id: 1,
+      hea_id: 2,
+      hearing_date: '2023-10-12',
+      type: 'Sentencing remarks',
+      requested_on: '2023-10-12',
+      requested_by_name: 'Joe Bloggs',
+      status: 'Complete',
+    },
+    {
+      tra_id: 1,
+      hea_id: 2,
+      hearing_date: '2023-10-12',
+      type: 'Sentencing remarks',
+      requested_on: '2023-10-12',
+      requested_by_name: 'Joe Bloggs',
+      status: 'Approved',
+    },
+  ];
 
   const multipleMockHearings: Hearing[] = [
     {
@@ -89,6 +110,28 @@ describe('CaseService', () => {
     req.flush(mockCase);
   });
 
+  it('#getAllCaseTranscripts', () => {
+    const mockCaseId = 1;
+    const mockTranscript: Transcript[] = mockTranscripts;
+    let result!: Transcript[];
+
+    service.getAllCaseTranscripts(mockCaseId).subscribe((c) => {
+      result = c;
+    });
+
+    const req = httpMock.expectOne(`${GET_CASE_PATH}/${mockCaseId}/transcripts`);
+    expect(req.request.method).toBe('GET');
+
+    req.flush(mockTranscript);
+    expect(result).toEqual(
+      mockTranscripts.map((t) => ({
+        ...t,
+        date: t.hearing_date + 'T00:00:00Z',
+        requested_on: t.requested_on + 'T00:00:00Z',
+      }))
+    );
+  });
+
   it('#getCaseHearings', () => {
     const mockCaseId = 123;
     const mockHearings: Hearing[] = multipleMockHearings;
@@ -104,7 +147,7 @@ describe('CaseService', () => {
 
     req.flush(mockHearings);
 
-    expect(hearingsResponse).toEqual(mockHearings.map((h) => ({ ...h, date: h.date + 'Z' })));
+    expect(hearingsResponse).toEqual(mockHearings.map((h) => ({ ...h, date: h.date + 'T00:00:00Z' })));
   });
 
   it('#searchCases', () => {

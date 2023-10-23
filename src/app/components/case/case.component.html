@@ -5,5 +5,9 @@
   </app-breadcrumb>
 
   <app-case-file [caseFile]="caseFile"></app-case-file>
-  <app-hearing-results *ngIf="hearings$ | async as hearings" [hearings]="hearings"></app-hearing-results>
+  <app-hearing-results
+    *ngIf="data$ | async as data"
+    [hearings]="data.hearings"
+    [transcripts]="data.transcripts"
+  ></app-hearing-results>
 </ng-container>

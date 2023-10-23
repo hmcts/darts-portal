@@ -16,3 +16,5 @@ export * from './error-summary-entry.interface';
 export * from './field-errors.interface';
 export * from './data-table-column.interface';
 export * from './data-table-row.interface';
+export * from './transcript.interface';
+export * from './transcripts-row.interface';

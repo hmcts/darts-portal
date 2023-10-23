@@ -234,23 +234,23 @@ describe('HearingComponent', () => {
 
   describe('state setter', () => {
     it('should call the header service with true when the state is default', () => {
-      const headerServiceSpy = jest.spyOn(component.headerService, 'showPrimaryNavigation');
+      const headerServiceSpy = jest.spyOn(component.headerService, 'showNavigation');
       const value: HearingPageState = 'Default';
       component.state = value;
-      expect(headerServiceSpy).toHaveBeenCalledWith(true);
+      expect(headerServiceSpy).toHaveBeenCalled();
     });
-    describe('should call the header service with false when ', () => {
+    describe('should hide navigation when ', () => {
       it('state is Order Summary', () => {
-        const headerServiceSpy = jest.spyOn(component.headerService, 'showPrimaryNavigation');
+        const headerServiceSpy = jest.spyOn(component.headerService, 'hideNavigation');
         const value: HearingPageState = 'OrderSummary';
         component.state = value;
-        expect(headerServiceSpy).toHaveBeenCalledWith(false);
+        expect(headerServiceSpy).toHaveBeenCalled();
       });
       it('state is Order Confirmation', () => {
-        const headerServiceSpy = jest.spyOn(component.headerService, 'showPrimaryNavigation');
+        const headerServiceSpy = jest.spyOn(component.headerService, 'hideNavigation');
         const value: HearingPageState = 'OrderConfirmation';
         component.state = value;
-        expect(headerServiceSpy).toHaveBeenCalledWith(false);
+        expect(headerServiceSpy).toHaveBeenCalled();
       });
     });
   });

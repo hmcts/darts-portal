@@ -1,8 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Case, Courthouse, Hearing, SearchFormValues } from '@darts-types/index';
-import { of } from 'rxjs';
-import { Observable } from 'rxjs';
+import { Case, Courthouse, Hearing, SearchFormValues, Transcript } from '@darts-types/index';
+import { Observable, of } from 'rxjs';
 import { catchError, map, shareReplay } from 'rxjs/operators';
 
 export const GET_COURTHOUSES_PATH = '/api/courthouses';
@@ -27,6 +26,19 @@ export class CaseService {
     );
   }
 
+  getAllCaseTranscripts(caseId: number): Observable<Transcript[]> {
+    const apiURL = `${GET_CASE_PATH}/${caseId}/transcripts`;
+    return this.http.get<Transcript[]>(apiURL).pipe(
+      map((transcripts) =>
+        transcripts.map((t) => ({
+          ...t,
+          date: t.hearing_date + 'T00:00:00Z',
+          requested_on: t.requested_on + 'T00:00:00Z',
+        }))
+      )
+    );
+  }
+
   getCase(caseId: number): Observable<Case> {
     const apiURL = `${GET_CASE_PATH}/${caseId}`;
     return this.http.get<Case>(apiURL);
@@ -35,7 +47,7 @@ export class CaseService {
   getCaseHearings(caseId: number): Observable<Hearing[]> {
     return this.http
       .get<Hearing[]>(`${GET_CASE_PATH}/${caseId}/hearings`)
-      .pipe(map((hearings) => hearings.map((h) => ({ ...h, date: h.date + 'Z' }))));
+      .pipe(map((hearings) => hearings.map((h) => ({ ...h, date: h.date + 'T00:00:00Z' }))));
   }
   searchCases(searchForm: SearchFormValues): Observable<Case[]> {
     // Save search form values

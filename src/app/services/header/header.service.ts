@@ -9,7 +9,11 @@ export class HeaderService {
 
   readonly isVisible$: Observable<boolean> = this.isVisible.asObservable();
 
-  showPrimaryNavigation(toggle: boolean) {
-    this.isVisible.next(toggle);
+  showNavigation() {
+    this.isVisible.next(true);
+  }
+
+  hideNavigation() {
+    this.isVisible.next(false);
   }
 }

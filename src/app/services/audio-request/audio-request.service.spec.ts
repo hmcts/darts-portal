@@ -214,7 +214,7 @@ describe('AudioService', () => {
 
         req.flush(mockAudios);
 
-        expect(audios).toEqual(mockAudios.map((ar) => ({ ...ar, hearing_date: ar.hearing_date + 'Z' })));
+        expect(audios).toEqual(mockAudios.map((ar) => ({ ...ar, hearing_date: ar.hearing_date + 'T00:00:00Z' })));
       });
     });
 

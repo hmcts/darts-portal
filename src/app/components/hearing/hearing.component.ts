@@ -73,9 +73,9 @@ export class HearingComponent {
   // overriding state setter to call show/hide navigation
   public set state(value: HearingPageState) {
     if (value === 'Default') {
-      this.headerService.showPrimaryNavigation(true);
+      this.headerService.showNavigation();
     } else {
-      this.headerService.showPrimaryNavigation(false);
+      this.headerService.hideNavigation();
     }
     this._state = value;
   }

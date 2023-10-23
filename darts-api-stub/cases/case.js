@@ -336,6 +336,111 @@ const multipleCases = [
   },
 ];
 
+const transcriptOne = [
+  {
+    tra_id: 1,
+    hea_id: 2,
+    hearing_date: '2023-10-12',
+    type: 'Sentencing remarks',
+    requested_on: '2023-10-12',
+    requested_by_name: 'Joe Bloggs',
+    status: 'Requested',
+  },
+  {
+    tra_id: 1,
+    hea_id: 2,
+    hearing_date: '2023-10-12',
+    type: 'Sentencing remarks',
+    requested_on: '2023-10-12',
+    requested_by_name: 'Joe Bloggs',
+    status: 'Awaiting Authorisation',
+  },
+  {
+    tra_id: 1,
+    hea_id: 2,
+    hearing_date: '2023-10-12',
+    type: 'Sentencing remarks',
+    requested_on: '2023-10-12',
+    requested_by_name: 'Joe Bloggs',
+    status: 'Approved',
+  },
+  {
+    tra_id: 1,
+    hea_id: 2,
+    hearing_date: '2023-10-12',
+    type: 'Sentencing remarks',
+    requested_on: '2023-10-12',
+    requested_by_name: 'Joe Bloggs',
+    status: 'Rejected',
+  },
+  {
+    tra_id: 1,
+    hea_id: 2,
+    hearing_date: '2023-10-12',
+    type: 'Sentencing remarks',
+    requested_on: '2023-10-12',
+    requested_by_name: 'Joe Bloggs',
+    status: 'With Transcriber',
+  },
+  {
+    tra_id: 1,
+    hea_id: 2,
+    hearing_date: '2023-10-12',
+    type: 'Sentencing remarks',
+    requested_on: '2023-10-12',
+    requested_by_name: 'Joe Bloggs',
+    status: 'Complete',
+  },
+  {
+    tra_id: 1,
+    hea_id: 2,
+    hearing_date: '2023-10-12',
+    type: 'Sentencing remarks',
+    requested_on: '2023-10-12',
+    requested_by_name: 'Joe Bloggs',
+    status: 'Closed',
+  },
+];
+
+const transcriptTwo = [
+  {
+    tra_id: 1,
+    hea_id: 2,
+    hearing_date: '2023-10-12',
+    type: 'Sentencing remarks',
+    requested_on: '2023-10-12',
+    requested_by_name: 'Joe Bloggs',
+    status: 'Requested',
+  },
+  {
+    tra_id: 1,
+    hea_id: 2,
+    hearing_date: '2023-10-12',
+    type: 'Sentencing remarks',
+    requested_on: '2023-10-12',
+    requested_by_name: 'Joe Bloggs',
+    status: 'Awaiting Authorisation',
+  },
+  {
+    tra_id: 1,
+    hea_id: 2,
+    hearing_date: '2023-10-12',
+    type: 'Sentencing remarks',
+    requested_on: '2023-10-12',
+    requested_by_name: 'Joe Bloggs',
+    status: 'Complete',
+  },
+  {
+    tra_id: 1,
+    hea_id: 2,
+    hearing_date: '2023-10-12',
+    type: 'Sentencing remarks',
+    requested_on: '2023-10-12',
+    requested_by_name: 'Joe Bloggs',
+    status: 'Rejected',
+  },
+];
+
 // Advanced search stub API
 router.get('/search', (req, res) => {
   const searchTerms = req.query;
@@ -405,6 +510,29 @@ router.get('/:caseId', (req, res) => {
       break;
     default:
       res.send(singleCase);
+      break;
+  }
+});
+
+// CASES STUB APIs
+// transcripts stub data
+router.get('/:caseId/transcripts', (req, res) => {
+  singleCase.case_id = req.params.caseId;
+
+  switch (req.params.caseId) {
+    case '404':
+      const resBody104 = {
+        type: 'CASE_104',
+        title: 'The requested case cannot be found',
+        status: 404,
+      };
+      res.status(404).send(resBody104);
+      break;
+    case '1':
+      res.send(transcriptOne);
+      break;
+    default:
+      res.send(transcriptTwo);
       break;
   }
 });

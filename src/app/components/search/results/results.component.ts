@@ -1,4 +1,4 @@
-import { NgFor, NgIf, DatePipe } from '@angular/common';
+import { DatePipe, NgFor, NgIf } from '@angular/common';
 import { Component, inject, Input, OnChanges } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
@@ -20,7 +20,7 @@ export class ResultsComponent implements OnChanges {
   caption = '';
   rows: DatatableRow[] = [];
   columns: DatatableColumn[] = [
-    { name: 'Case ID', prop: 'caseNumber', sortable: true, link: '/case' },
+    { name: 'Case ID', prop: 'caseNumber', sortable: true },
     { name: 'Courthouse', prop: 'courthouse', sortable: true },
     { name: 'Courtroom', prop: 'courtroom', sortable: false },
     { name: 'Judge(s)', prop: 'judges', sortable: false },

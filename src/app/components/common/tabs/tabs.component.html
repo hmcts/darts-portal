@@ -6,8 +6,13 @@
         [attr.aria-current]="tab.template === currentTab ? 'page' : null"
         href="#"
         (click)="onTabClick($event, tab)"
-        >{{ tab.name }} <ng-container *ngIf="tab.count">{{ tab.count }}</ng-container></a
-      >
+        >{{ tab.name }}
+        <ng-container *ngIf="tab.count">
+          <span id="transcription-count" class="moj-notification-badge blue">
+            {{ tab.count }}
+          </span>
+        </ng-container>
+      </a>
     </li>
   </ul>
 </nav>

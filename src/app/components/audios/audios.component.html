@@ -24,14 +24,22 @@
         <ng-container *ngIf="data.inProgessRows.length">
           <h2 class="govuk-heading-m">In Progress</h2>
           <app-data-table id="inProgressTable" [rows]="data.inProgessRows" [columns]="columns" [pagination]="false">
-            <ng-template [tableRowTemplate] let-row>
+            <ng-template [tableRowTemplate]="data.inProgessRows" let-row>
               <!-- Partial template for duplicated cells -->
               <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
 
               <td class="govuk-table__cell">
-                <strong class="govuk-tag" [ngClass]="row.status === 'FAILED' ? 'govuk-tag--red' : 'govuk-tag--yellow'">
-                  {{ row.status }}
-                </strong>
+                <div class="status-cell">
+                  <strong
+                    class="govuk-tag"
+                    [ngClass]="row.status === 'FAILED' ? 'govuk-tag--red' : 'govuk-tag--yellow'"
+                  >
+                    {{ row.status }}
+                  </strong>
+                  <a *ngIf="row.status === 'FAILED'" href="#" (click)="onClearClicked($event, row)" class="govuk-link">
+                    Clear
+                  </a>
+                </div>
               </td>
             </ng-template>
           </app-data-table>
@@ -53,7 +61,7 @@
             [pageLimit]="15"
             (rowSelect)="onSelectedAudio($event)"
           >
-            <ng-template [tableRowTemplate] let-row>
+            <ng-template [tableRowTemplate]="data.completedRows" let-row>
               <td class="govuk-table__cell">
                 <span unreadIcon [class.unread]="!row.last_accessed_ts" *ngIf="!row.last_accessed_ts"> </span>
               </td>
@@ -61,16 +69,12 @@
               <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
 
               <td class="govuk-table__cell">
-                <div class="status-cell">
-                  <strong class="govuk-tag govuk-tag--green"> READY </strong>
-                </div>
+                <strong class="govuk-tag govuk-tag--green"> READY </strong>
               </td>
               <td class="govuk-table__cell">
-                <div class="status-cell">
-                  <a href="#" (click)="onViewAudioRequest($event, row)">View</a>
-                </div>
-              </td></ng-template
-            >
+                <a href="#" (click)="onViewAudioRequest($event, row)" class="govuk-link">View</a>
+              </td>
+            </ng-template>
           </app-data-table>
         </ng-container>
       </div>
@@ -89,7 +93,7 @@
             [rowSelectable]="true"
             (rowSelect)="onSelectedAudio($event)"
           >
-            <ng-template [tableRowTemplate] let-row>
+            <ng-template [tableRowTemplate]="data.expiredRows" let-row>
               <!-- Partial template for duplicated cells -->
               <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
 
