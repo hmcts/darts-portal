@@ -28,14 +28,14 @@ function getLogin(type: 'internal' | 'external'): (_: Request, res: Response, ne
     console.log('BOOTSTRAP_AUTH', BOOTSTRAP_AUTH);
     console.log('BOOTSTRAP_AUTH_URL', BOOTSTRAP_AUTH_URL);
     if (BOOTSTRAP_AUTH) {
-      console.log('Logging in via', EXTERNAL_USER_LOGIN);
+      console.log('Logging in via', BOOTSTRAP_AUTH_URL);
       console.log('Setting bootstrap auth origin', config.get('hostname'));
       return res.redirect(`${BOOTSTRAP_AUTH_URL}/auth/login?bootstrapAuthOrigin=${config.get('hostname')}`);
     }
 
     console.log('req.query', req.query);
     if (req.query.bootstrapAuthOrigin) {
-      console.log('Setting bootstrapAuthOrigin in session', req.query.bootstrapAuthOrigin);
+      console.log('Setting bootstrapAuthOrigin in session', req.sessionID, req.query.bootstrapAuthOrigin);
       req.session.bootstrapAuthOrigin = req.query.bootstrapAuthOrigin as string;
     }
 
@@ -99,7 +99,7 @@ function postAuthCallback(
       const result = await axios.post<SecurityToken>(url, req.body, {
         headers: { 'content-type': 'application/x-www-form-urlencoded' },
       });
-      console.log('req.session', req.session);
+      console.log('req.session', req.sessionID, req.session);
       if (req.session?.bootstrapAuthOrigin && ALLOW_BOOTSTRAP_AUTH) {
         const encoded = Buffer.from(JSON.stringify(result.data)).toString('base64');
         console.log('Bootstrap auth is redirecting with d=', encoded);
