@@ -5,7 +5,7 @@ Cypress.Commands.add('login', () => {
 
   cy.get('h1').should('contain', 'Stub login page');
   cy.get('#login').click();
-  cy.get('h1').should('contain', 'Welcome to DARTS');
+  cy.get('.govuk-label-wrapper > .govuk-label').should('contain', 'Search for a case');
 });
 
 Cypress.Commands.add('logout', () => {
