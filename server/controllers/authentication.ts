@@ -104,8 +104,11 @@ function postAuthCallback(
         if (err) {
           return next(err);
         }
+        console.log('req.session?.bootstrapAuthOrigin', req.session?.bootstrapAuthOrigin);
         if (req.session?.bootstrapAuthOrigin && ALLOW_BOOTSTRAP_AUTH) {
-          axios.post<void>(req.session?.bootstrapAuthOrigin + '/bootstrap-auth', result.data);
+          const encoded = Buffer.from(JSON.stringify(result.data)).toString('base64');
+          console.log('Bootstrap auth is redirecting with d=', encoded);
+          res.redirect(`${req.session?.bootstrapAuthOrigin}/bootstrap-auth?d=${encoded}`);
         } else {
           res.redirect('/');
         }
@@ -117,10 +120,11 @@ function postAuthCallback(
   };
 }
 
-function postBootstrapAuth(): (req: Request, res: Response, next: NextFunction) => Promise<void> {
+function getBootstrapAuth(): (req: Request, res: Response, next: NextFunction) => Promise<void> {
   return async (req: Request, res: Response, next: NextFunction) => {
-    console.log('Bootstrap auth', req.body);
-    const securityToken = req.body;
+    console.log('Bootstrap auth', req.query);
+    const securityToken = JSON.parse(Buffer.from(req.query.d as string, 'base64').toString());
+    console.log('Bootstrap auth securityToken', securityToken);
     req.session.userType = 'external';
     req.session.securityToken = securityToken;
     req.session.save((err) => {
@@ -200,7 +204,7 @@ export function init(disableAuthentication = false): Router {
   // this is used when cancelling a password reset
   router.get('/callback', getAuthCallback);
   router.post('/callback', postAuthCallback('external'));
-  router.post('/bootstrap-auth', postBootstrapAuth());
+  router.get('/bootstrap-auth', getBootstrapAuth());
   router.get('/logout', getLogout());
   router.get('/logout-callback', logoutCallback());
   router.post('/logout-callback', logoutCallback());
