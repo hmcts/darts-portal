@@ -33,7 +33,9 @@ function getLogin(type: 'internal' | 'external'): (_: Request, res: Response, ne
       return res.redirect(`${BOOTSTRAP_AUTH_URL}/auth/login?bootstrapAuthOrigin=${config.get('hostname')}`);
     }
 
+    console.log('req.query', req.query);
     if (req.query.bootstrapAuthOrigin) {
+      console.log('Setting bootstrapAuthOrigin in session', req.query.bootstrapAuthOrigin);
       req.session.bootstrapAuthOrigin = req.query.bootstrapAuthOrigin as string;
     }
 
@@ -97,22 +99,22 @@ function postAuthCallback(
       const result = await axios.post<SecurityToken>(url, req.body, {
         headers: { 'content-type': 'application/x-www-form-urlencoded' },
       });
-      const securityToken = result.data;
-      req.session.userType = type;
-      req.session.securityToken = securityToken;
-      req.session.save((err) => {
-        if (err) {
-          return next(err);
-        }
-        console.log('req.session?.bootstrapAuthOrigin', req.session?.bootstrapAuthOrigin);
-        if (req.session?.bootstrapAuthOrigin && ALLOW_BOOTSTRAP_AUTH) {
-          const encoded = Buffer.from(JSON.stringify(result.data)).toString('base64');
-          console.log('Bootstrap auth is redirecting with d=', encoded);
-          res.redirect(`${req.session?.bootstrapAuthOrigin}/bootstrap-auth?d=${encoded}`);
-        } else {
+      console.log('req.session', req.session);
+      if (req.session?.bootstrapAuthOrigin && ALLOW_BOOTSTRAP_AUTH) {
+        const encoded = Buffer.from(JSON.stringify(result.data)).toString('base64');
+        console.log('Bootstrap auth is redirecting with d=', encoded);
+        res.redirect(`${req.session?.bootstrapAuthOrigin}/bootstrap-auth?d=${encoded}`);
+      } else {
+        const securityToken = result.data;
+        req.session.userType = type;
+        req.session.securityToken = securityToken;
+        req.session.save((err) => {
+          if (err) {
+            return next(err);
+          }
           res.redirect('/');
-        }
-      });
+        });
+      }
     } catch (err) {
       console.error('Error on authentication callback', err);
       next(err);
