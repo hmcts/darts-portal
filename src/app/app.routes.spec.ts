@@ -39,12 +39,19 @@ describe('App Routes', () => {
     location = TestBed.inject(Location);
     router.initialNavigation();
   });
-  APP_ROUTES.filter((route) => route.path !== '**').forEach((route: Route) => {
+  APP_ROUTES.filter((route) => !route.redirectTo).forEach((route: Route) => {
     it(`navigate to "${route.path}" takes you to "/${route.path}"`, async () => {
       await router.navigate([route.path]);
       expect(location.path()).toEqual(`/${route.path}`);
     });
   });
+
+  it(`navigate to "" takes you to "/search"`, async () => {
+    const emptyPath = APP_ROUTES.find((route) => route.path === '');
+    await router.navigate([emptyPath?.path]);
+    expect(location.path()).toEqual(`/search`);
+  });
+
   it(`404 should navigate to page not found`, async () => {
     await router.navigate(['asdasdfsdfs']);
     expect(location.path()).toEqual('/page-not-found');
