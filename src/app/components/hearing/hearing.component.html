@@ -1,7 +1,7 @@
 <ng-container *ngIf="data$ | async as vm; else loading">
   <app-breadcrumb *ngIf="state === 'Default'">
-    <a *breadcrumb="['/case', vm.case.case_id]">{{ vm.case.case_number }}</a>
-    <a *breadcrumb>{{ vm.hearing?.date | date: 'd MMM y' }}</a>
+    <ng-container *breadcrumb="['/case', vm.case.case_id]">{{ vm.case.case_number }}</ng-container>
+    <ng-container *breadcrumb>{{ vm.hearing?.date | date: 'd MMM y' }}</ng-container>
   </app-breadcrumb>
 
   <!-- Error Summary Box -->

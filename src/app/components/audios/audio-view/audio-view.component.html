@@ -1,7 +1,7 @@
 <ng-container *ngIf="!isDeleting && (case$ | async) as case">
   <app-breadcrumb>
-    <a *breadcrumb="['../']">Your Audio</a>
-    <a *breadcrumb>{{ fileName }}</a>
+    <ng-container *breadcrumb="['../']">Your Audio</ng-container>
+    <ng-container *breadcrumb>{{ fileName }}</ng-container>
   </app-breadcrumb>
 
   <app-reporting-restriction
