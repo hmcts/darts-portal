@@ -13,16 +13,6 @@ withPipeline(type, product, component) {
   enableSlackNotifications('#darts-builds')
   disableCleanupOfHelmReleaseOnFailure()
 
-  afterAlways('build') {
-    yarnBuilder.yarn('rebuild puppeteer')
-    yarnBuilder.yarn('build')
-  }
-
-  afterAlways('checkout') {
-    sh "yarn install"
-    echo 'Yarn install complete'
-  }
-
   afterAlways('smokeTest:dev') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'smoke-output/**/*'
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/screenshots/**/*'
