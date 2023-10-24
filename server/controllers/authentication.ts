@@ -103,7 +103,7 @@ function postAuthCallback(
       if (req.session?.bootstrapAuthOrigin && ALLOW_BOOTSTRAP_AUTH) {
         const encoded = Buffer.from(JSON.stringify(result.data)).toString('base64');
         console.log('Bootstrap auth is redirecting with d=', encoded);
-        res.redirect(`${req.session?.bootstrapAuthOrigin}/bootstrap-auth?d=${encoded}`);
+        res.redirect(`${req.session?.bootstrapAuthOrigin}/auth/bootstrap-auth?d=${encoded}`);
       } else {
         const securityToken = result.data;
         req.session.userType = type;
