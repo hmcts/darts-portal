@@ -29,7 +29,7 @@ function getLogin(type: 'internal' | 'external'): (_: Request, res: Response, ne
   return async (req: Request, res: Response, next: NextFunction) => {
     // this app is requesting to authenticate via another running instance
     if (BOOTSTRAP_AUTH) {
-      console.info('Bootstrap authentication via ', BOOTSTRAP_AUTH_URL);
+      console.info('Bootstrap authentication via', BOOTSTRAP_AUTH_URL);
       req.session.userType = type;
       req.session.save();
       const redirectTo = `${BOOTSTRAP_AUTH_URL}/auth${
@@ -41,7 +41,7 @@ function getLogin(type: 'internal' | 'external'): (_: Request, res: Response, ne
     // this instance is being used to authenticate another instance
     // TODO: pattern match allowed URLs provided in config
     if (ALLOW_BOOTSTRAP_AUTH && req.query.bootstrapAuthOrigin) {
-      console.log('Setting bootstrapAuthOrigin in session', req.sessionID, req.query.bootstrapAuthOrigin);
+      console.info('Setting bootstrapAuthOrigin in session', req.sessionID, req.query.bootstrapAuthOrigin);
       req.session.bootstrapAuthOrigin = req.query.bootstrapAuthOrigin as string;
       req.session.save();
     }
@@ -106,11 +106,15 @@ function postAuthCallback(
       const result = await axios.post<SecurityToken>(url, req.body, {
         headers: { 'content-type': 'application/x-www-form-urlencoded' },
       });
-      console.log('req.session', req.sessionID, req.session);
       if (req.session?.bootstrapAuthOrigin && ALLOW_BOOTSTRAP_AUTH) {
         const encoded = Base64.encode<SecurityToken>(result.data);
-        console.log('Bootstrap auth is redirecting with d=', encoded);
-        res.redirect(`${req.session?.bootstrapAuthOrigin}/auth/bootstrap-auth?d=${encoded}`);
+        console.info(
+          'Bootstrap authentication active for',
+          req.sessionID,
+          req.session.bootstrapAuthOrigin,
+          'redirecting'
+        );
+        res.redirect(`${req.session.bootstrapAuthOrigin}/auth/bootstrap-auth?d=${encoded}`);
       } else {
         const securityToken = result.data;
         req.session.userType = type;
@@ -144,7 +148,7 @@ function getBootstrapAuth(): (req: Request, res: Response, next: NextFunction) =
       }
       res.redirect('/');
     });
-    console.log('Bootstrap authentication complete');
+    console.info('Bootstrap authentication complete');
   };
 }
 
