@@ -10,6 +10,10 @@ const ERROR_CODES = {
   RESET_PWD: 'AADB2C90118',
 };
 
+const ALLOW_BOOTSTRAP_AUTH = config.get('authentication.allowAuthBootstrap') === 'true';
+const BOOTSTRAP_AUTH_URL = config.get('authentication.bootstrapAuthUrl');
+const BOOTSTRAP_AUTH = Boolean(ALLOW_BOOTSTRAP_AUTH && BOOTSTRAP_AUTH_URL);
+
 const EXTERNAL_USER_LOGIN = `${config.get('darts-api.url')}/external-user/login-or-refresh`;
 const EXTERNAL_USER_CALLBACK = `${config.get('darts-api.url')}/external-user/handle-oauth-code`;
 const EXTERNAL_USER_RESET_PWD = `${config.get('darts-api.url')}/external-user/reset-password`;
@@ -20,7 +24,19 @@ const INTERNAL_USER_LOGOUT = `${config.get('darts-api.url')}/internal-user/logou
 const INTERNAL_USER_CALLBACK = `${config.get('darts-api.url')}/internal-user/handle-oauth-code`;
 
 function getLogin(type: 'internal' | 'external'): (_: Request, res: Response, next: NextFunction) => Promise<void> {
-  return async (_: Request, res: Response, next: NextFunction) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    console.log('BOOTSTRAP_AUTH', BOOTSTRAP_AUTH);
+    console.log('BOOTSTRAP_AUTH_URL', BOOTSTRAP_AUTH_URL);
+    if (BOOTSTRAP_AUTH) {
+      console.log('Logging in via', EXTERNAL_USER_LOGIN);
+      console.log('Setting bootstrap auth origin', config.get('hostname'));
+      return res.redirect(`${BOOTSTRAP_AUTH_URL}/auth/login?bootstrapAuthOrigin=${config.get('hostname')}`);
+    }
+
+    if (req.query.bootstrapAuthOrigin) {
+      req.session.bootstrapAuthOrigin = req.query.bootstrapAuthOrigin as string;
+    }
+
     try {
       const url =
         type === 'internal'
@@ -88,7 +104,7 @@ function postAuthCallback(
         if (err) {
           return next(err);
         }
-        if (req.session?.bootstrapAuthOrigin && config.get('authentication.allowAuthBootstrapping') === 'true') {
+        if (req.session?.bootstrapAuthOrigin && ALLOW_BOOTSTRAP_AUTH) {
           axios.post<void>(req.session?.bootstrapAuthOrigin + '/bootstrap-auth', result.data);
         } else {
           res.redirect('/');
@@ -98,6 +114,21 @@ function postAuthCallback(
       console.error('Error on authentication callback', err);
       next(err);
     }
+  };
+}
+
+function postBootstrapAuth(): (req: Request, res: Response, next: NextFunction) => Promise<void> {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    console.log('Bootstrap auth', req.body);
+    const securityToken = req.body;
+    req.session.userType = 'external';
+    req.session.securityToken = securityToken;
+    req.session.save((err) => {
+      if (err) {
+        return next(err);
+      }
+      res.redirect('/');
+    });
   };
 }
 
@@ -169,6 +200,7 @@ export function init(disableAuthentication = false): Router {
   // this is used when cancelling a password reset
   router.get('/callback', getAuthCallback);
   router.post('/callback', postAuthCallback('external'));
+  router.post('/bootstrap-auth', postBootstrapAuth());
   router.get('/logout', getLogout());
   router.get('/logout-callback', logoutCallback());
   router.post('/logout-callback', logoutCallback());

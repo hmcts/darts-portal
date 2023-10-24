@@ -7,7 +7,8 @@
   },
   "authentication": {
     "azureAdB2cOriginHost": "*",
-    "allowAuthBootstrapping": false
+    "allowAuthBootstrap": "true",
+    "bootstrapAuthUrl": "https://darts-portal-pr-460.dev.platform.hmcts.net"
   },
   "secrets": {
     "darts": {

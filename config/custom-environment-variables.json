@@ -7,6 +7,7 @@
   },
   "authentication": {
     "azureAdB2cOriginHost": "DARTS_AZUREAD_B2C_ORIGIN_HOST",
-    "allowAuthBootstrapping": "DARTS_ALLOW_AUTH_BOOTSTRAPPING"
+    "allowAuthBootstrap": "DARTS_ALLOW_AUTH_BOOTSTRAP",
+    "bootstrapAuthUrl": "DARTS_BOOTSTRAP_AUTH_URL"
   }
 }

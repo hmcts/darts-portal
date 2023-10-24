@@ -5,4 +5,4 @@ nodejs:
   environment:
     DARTS_API_URL: https://darts-api.staging.platform.hmcts.net
     DARTS_PORTAL_URL: https://${SERVICE_FQDN}
-    DARTS_ALLOW_AUTH_BOOTSTRAPPING: true
+    DARTS_ALLOW_AUTH_BOOTSTRAP: true
