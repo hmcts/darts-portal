@@ -5,6 +5,7 @@ import config from 'config';
 import bodyParser from 'body-parser';
 import SecurityToken from 'server/types/classes/securityToken';
 import { AuthenticationUtils } from '../utils/authentication-utils';
+import * as Base64 from '../utils/base64';
 
 const ERROR_CODES = {
   RESET_PWD: 'AADB2C90118',
@@ -14,29 +15,35 @@ const ALLOW_BOOTSTRAP_AUTH = config.get('authentication.allowAuthBootstrap') ===
 const BOOTSTRAP_AUTH_URL = config.get('authentication.bootstrapAuthUrl');
 const BOOTSTRAP_AUTH = Boolean(ALLOW_BOOTSTRAP_AUTH && BOOTSTRAP_AUTH_URL);
 
-const EXTERNAL_USER_LOGIN = `${config.get('darts-api.url')}/external-user/login-or-refresh`;
-const EXTERNAL_USER_CALLBACK = `${config.get('darts-api.url')}/external-user/handle-oauth-code`;
-const EXTERNAL_USER_RESET_PWD = `${config.get('darts-api.url')}/external-user/reset-password`;
-const EXTERNAL_USER_LOGOUT = `${config.get('darts-api.url')}/external-user/logout`;
+const BASE_URL = config.get('darts-api.url');
+const EXTERNAL_USER_LOGIN = `${BASE_URL}/external-user/login-or-refresh`;
+const EXTERNAL_USER_CALLBACK = `${BASE_URL}/external-user/handle-oauth-code`;
+const EXTERNAL_USER_RESET_PWD = `${BASE_URL}/external-user/reset-password`;
+const EXTERNAL_USER_LOGOUT = `${BASE_URL}/external-user/logout`;
 
-const INTERNAL_USER_LOGIN = `${config.get('darts-api.url')}/internal-user/login-or-refresh`;
-const INTERNAL_USER_LOGOUT = `${config.get('darts-api.url')}/internal-user/logout`;
-const INTERNAL_USER_CALLBACK = `${config.get('darts-api.url')}/internal-user/handle-oauth-code`;
+const INTERNAL_USER_LOGIN = `${BASE_URL}/internal-user/login-or-refresh`;
+const INTERNAL_USER_LOGOUT = `${BASE_URL}/internal-user/logout`;
+const INTERNAL_USER_CALLBACK = `${BASE_URL}/internal-user/handle-oauth-code`;
 
 function getLogin(type: 'internal' | 'external'): (_: Request, res: Response, next: NextFunction) => Promise<void> {
   return async (req: Request, res: Response, next: NextFunction) => {
-    console.log('BOOTSTRAP_AUTH', BOOTSTRAP_AUTH);
-    console.log('BOOTSTRAP_AUTH_URL', BOOTSTRAP_AUTH_URL);
+    // this app is requesting to authenticate via another running instance
     if (BOOTSTRAP_AUTH) {
-      console.log('Logging in via', BOOTSTRAP_AUTH_URL);
-      console.log('Setting bootstrap auth origin', config.get('hostname'));
-      return res.redirect(`${BOOTSTRAP_AUTH_URL}/auth/login?bootstrapAuthOrigin=${config.get('hostname')}`);
+      console.info('Bootstrap authentication via ', BOOTSTRAP_AUTH_URL);
+      req.session.userType = type;
+      req.session.save();
+      const redirectTo = `${BOOTSTRAP_AUTH_URL}/auth${
+        type === 'internal' ? '/internal' : ''
+      }/login?bootstrapAuthOrigin=${config.get('hostname')}`;
+      return res.redirect(redirectTo);
     }
 
-    console.log('req.query', req.query);
-    if (req.query.bootstrapAuthOrigin) {
+    // this instance is being used to authenticate another instance
+    // TODO: pattern match allowed URLs provided in config
+    if (ALLOW_BOOTSTRAP_AUTH && req.query.bootstrapAuthOrigin) {
       console.log('Setting bootstrapAuthOrigin in session', req.sessionID, req.query.bootstrapAuthOrigin);
       req.session.bootstrapAuthOrigin = req.query.bootstrapAuthOrigin as string;
+      req.session.save();
     }
 
     try {
@@ -101,7 +108,7 @@ function postAuthCallback(
       });
       console.log('req.session', req.sessionID, req.session);
       if (req.session?.bootstrapAuthOrigin && ALLOW_BOOTSTRAP_AUTH) {
-        const encoded = Buffer.from(JSON.stringify(result.data)).toString('base64');
+        const encoded = Base64.encode<SecurityToken>(result.data);
         console.log('Bootstrap auth is redirecting with d=', encoded);
         res.redirect(`${req.session?.bootstrapAuthOrigin}/auth/bootstrap-auth?d=${encoded}`);
       } else {
@@ -124,10 +131,12 @@ function postAuthCallback(
 
 function getBootstrapAuth(): (req: Request, res: Response, next: NextFunction) => Promise<void> {
   return async (req: Request, res: Response, next: NextFunction) => {
-    console.log('Bootstrap auth', req.query);
-    const securityToken = JSON.parse(Buffer.from(req.query.d as string, 'base64').toString());
-    console.log('Bootstrap auth securityToken', securityToken);
-    req.session.userType = 'external';
+    if (!req.query.d) {
+      const err = new Error('Cannot bootstrap auth, "d" not found in query parameters');
+      console.error(err);
+      return next(err);
+    }
+    const securityToken = Base64.decodeObject<SecurityToken>(req.query.d as string);
     req.session.securityToken = securityToken;
     req.session.save((err) => {
       if (err) {
@@ -135,6 +144,7 @@ function getBootstrapAuth(): (req: Request, res: Response, next: NextFunction) =
       }
       res.redirect('/');
     });
+    console.log('Bootstrap authentication complete');
   };
 }
 
