@@ -40,7 +40,7 @@ const transcriptTwo = [
     type: 'Sentencing remarks',
     requested_on: '2023-10-12',
     requested_by_name: 'Joe Bloggs',
-    status: 'Awaiting Authorisation',
+    status: 'Requested',
   },
   {
     tra_id: 1,
@@ -58,8 +58,9 @@ const transcriptTwo = [
     type: 'Sentencing remarks',
     requested_on: '2023-10-12',
     requested_by_name: 'Joe Bloggs',
-    status: 'Rejected',
+    status: 'Complete',
   },
+
 ];
 
 router.get('/:hearingId/events', (req, res) => {
