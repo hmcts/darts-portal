@@ -466,6 +466,9 @@ router.get('/search', (req, res) => {
       );
   }
   switch (req.query.case_number) {
+    case 'INTERNAL_SERVER_ERROR':
+      res.sendStatus(500);
+      break;
     case 'TOO_MANY_RESULTS':
       const resBody100 = {
         type: 'CASE_100',
