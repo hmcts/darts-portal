@@ -41,7 +41,7 @@ const protectedRoutes: Routes = [
 ].map((route) => ({
   ...route,
   canActivate: [authGuard],
-  resolve: { userState: () => inject(UserService).getUserProfile() },
+  resolve: { userState: () => inject(UserService).userProfile$ },
 }));
 
 export const APP_ROUTES = [...protectedRoutes, ...openRoutes];

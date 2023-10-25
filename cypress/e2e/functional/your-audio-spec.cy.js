@@ -103,8 +103,16 @@ describe('Your audio', () => {
   });
 });
 
-describe('Request Intercept tests', () => {
+describe('No audio requests', () => {
   beforeEach(() => {
+    cy.intercept(
+      {
+        method: 'GET',
+        url: 'api/audio-requests/not-accessed-count',
+      },
+      { count: 0 }
+    ).as('not-accessed-count');
+
     cy.intercept(
       {
         method: 'GET',

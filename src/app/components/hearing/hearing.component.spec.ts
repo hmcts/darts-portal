@@ -19,7 +19,7 @@ describe('HearingComponent', () => {
   let httpClientSpy: HttpClient;
   let caseService: CaseService;
   let hearingService: HearingService;
-  let userService: UserService;
+  let fakeUserService: Partial<UserService>;
   let component: HearingComponent;
   let fixture: ComponentFixture<HearingComponent>;
 
@@ -103,14 +103,14 @@ describe('HearingComponent', () => {
 
     caseService = new CaseService(httpClientSpy);
     hearingService = new HearingService(httpClientSpy);
-    userService = new UserService(httpClientSpy);
 
     jest.spyOn(caseService, 'getCase').mockReturnValue(cd);
     jest.spyOn(caseService, 'getCaseHearings').mockReturnValue(hd);
     jest.spyOn(caseService, 'getHearingById').mockReturnValue(shd);
     jest.spyOn(hearingService, 'getAudio').mockReturnValue(ad);
     jest.spyOn(hearingService, 'getEvents').mockReturnValue(ed);
-    jest.spyOn(userService, 'getUserProfile').mockReturnValue(mockUser);
+
+    fakeUserService = { userProfile$: mockUser, isTranscriber: (userState) => true };
 
     TestBed.configureTestingModule({
       imports: [HearingComponent, HearingFileComponent, RouterTestingModule],
@@ -119,7 +119,7 @@ describe('HearingComponent', () => {
         { provide: CaseService, useValue: caseService },
         { provide: HearingService, useValue: hearingService },
         { provide: HeaderService },
-        { provide: UserService, useValue: userService },
+        { provide: UserService, useValue: fakeUserService },
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
       ],
     });

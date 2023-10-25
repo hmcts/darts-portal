@@ -1,25 +1,24 @@
-import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { Location } from '@angular/common';
+import { TestBed } from '@angular/core/testing';
 import { Route, Router } from '@angular/router';
-import { APP_ROUTES } from './app.routes';
-import { AuthService } from './services/auth/auth.service';
+import { RouterTestingModule } from '@angular/router/testing';
 import { UserService } from '@services/user/user.service';
 import { of } from 'rxjs';
+import { APP_ROUTES } from './app.routes';
+import { AuthService } from './services/auth/auth.service';
 
 describe('App Routes', () => {
   let router: Router;
   let location: Location;
 
   let mockAuthService: AuthService;
-  let mockUserService: UserService;
+  let mockUserService: Partial<UserService>;
 
   beforeEach(() => {
     mockAuthService = { checkAuthenticated: jest.fn() } as unknown as AuthService;
     jest.spyOn(mockAuthService, 'checkAuthenticated').mockResolvedValue(true);
 
-    mockUserService = { getUserProfile: jest.fn() } as unknown as UserService;
-    jest.spyOn(mockUserService, 'getUserProfile').mockReturnValue(of({ userId: 123, userName: 'Dean', roles: [] }));
+    mockUserService = { userProfile$: of({ userId: 123, userName: 'Dean', roles: [] }) };
 
     TestBed.configureTestingModule({
       imports: [RouterTestingModule.withRoutes(APP_ROUTES)],

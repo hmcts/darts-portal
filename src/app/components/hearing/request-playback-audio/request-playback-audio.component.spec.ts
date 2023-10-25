@@ -1,26 +1,27 @@
-import { HttpClient } from '@angular/common/http';
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Validators } from '@angular/forms';
+import { UserState } from '@darts-types/user-state';
 import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
+import { of } from 'rxjs';
 
 import { RequestPlaybackAudioComponent } from './request-playback-audio.component';
 
 describe('RequestPlaybackAudioComponent', () => {
   let component: RequestPlaybackAudioComponent;
   let fixture: ComponentFixture<RequestPlaybackAudioComponent>;
-  let userService: UserService;
-  let httpClientSpy: HttpClient;
 
   beforeEach(() => {
-    httpClientSpy = { get: jest.fn() } as unknown as HttpClient;
-
-    userService = new UserService(httpClientSpy);
+    const userState: UserState = { userName: 'test@test.com', userId: 123, roles: [] };
+    const userServiceStub = {
+      userProfile$: of(userState),
+      isTranscriber: jest.fn(),
+    };
 
     TestBed.configureTestingModule({
       imports: [RequestPlaybackAudioComponent],
-      providers: [{ provide: UserService, useValue: userService }],
+      providers: [{ provide: UserService, useValue: userServiceStub }],
     });
     fixture = TestBed.createComponent(RequestPlaybackAudioComponent);
     component = fixture.componentInstance;
@@ -78,27 +79,12 @@ describe('RequestPlaybackAudioComponent', () => {
 
   describe('#ngOnInit', () => {
     it('should set request type as required if the user is a transcriber', () => {
-      const permissions = [{ permissionId: 1, permissionName: 'local dev permissions' }];
-      component.userState = {
-        userId: 1,
-        userName: 'Dean',
-        roles: [
-          {
-            roleId: 123,
-            roleName: 'TRANSCRIBER',
-            permissions: permissions,
-          },
-        ],
-      };
+      jest.spyOn(component.userService, 'isTranscriber').mockReturnValue(true);
       component.ngOnInit();
       expect(component.audioRequestForm.get('requestType')?.hasValidator(Validators.required)).toBeTruthy();
     });
     it('should not set any validators on request type if the user is not a transcriber', () => {
-      component.userState = {
-        userId: 1,
-        userName: 'Dean',
-        roles: [],
-      };
+      jest.spyOn(component.userService, 'isTranscriber').mockReturnValue(false);
       component.ngOnInit();
       expect(component.audioRequestForm.get('requestType')?.hasValidator(Validators.required)).toBeFalsy();
     });

@@ -6,7 +6,8 @@
     "url": "http://localhost:4550"
   },
   "authentication": {
-    "azureAdB2cOriginHost": "*"
+    "azureAdB2cOriginHost": "*",
+    "allowAuthBootstrap": "false"
   },
   "secrets": {
     "darts": {

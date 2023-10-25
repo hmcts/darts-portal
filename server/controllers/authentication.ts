@@ -5,10 +5,13 @@ import config from 'config';
 import bodyParser from 'body-parser';
 import SecurityToken from 'server/types/classes/securityToken';
 import { AuthenticationUtils } from '../utils/authentication-utils';
+import * as Base64 from '../utils/base64';
 
 const ERROR_CODES = {
   RESET_PWD: 'AADB2C90118',
 };
+
+const ALLOW_BOOTSTRAP_AUTH = config.get('authentication.allowAuthBootstrap') === 'true';
 
 const EXTERNAL_USER_LOGIN = `${config.get('darts-api.url')}/external-user/login-or-refresh`;
 const EXTERNAL_USER_CALLBACK = `${config.get('darts-api.url')}/external-user/handle-oauth-code`;
@@ -82,6 +85,13 @@ function postAuthCallback(
         headers: { 'content-type': 'application/x-www-form-urlencoded' },
       });
       const securityToken = result.data;
+      if (ALLOW_BOOTSTRAP_AUTH) {
+        console.log(
+          'Base64 encoded security token for auth bootstrap',
+          securityToken.userState?.userName,
+          Base64.encode<SecurityToken>(securityToken)
+        );
+      }
       req.session.userType = type;
       req.session.securityToken = securityToken;
       req.session.save((err) => {
@@ -126,8 +136,8 @@ function getLogout(): (_: Request, res: Response, next: NextFunction) => Promise
   };
 }
 
-function logoutCallback(): (req: Request, res: Response, next: NextFunction) => Promise<void> {
-  return async (req: Request, res: Response, next: NextFunction) => {
+function logoutCallback(): (req: Request, res: Response, next: NextFunction) => void {
+  return (req: Request, res: Response, next: NextFunction) => {
     if (req.body.error) {
       console.error('Error received from Azure logout callback', req.body);
       return res.redirect('/login');
@@ -154,6 +164,30 @@ function getIsAuthenticated(disableAuthentication = false): (req: Request, res: 
   };
 }
 
+function getBootstrapAuth(): (req: Request, res: Response, next: NextFunction) => void {
+  return (req: Request, res: Response, next: NextFunction) => {
+    if (!req.query.d) {
+      console.error('Cannot bootstrap auth, "d" not found in query parameters');
+      return next('Cannot bootstrap auth, "d" not found in query parameters');
+    }
+    let securityToken;
+    try {
+      securityToken = Base64.decodeObject<SecurityToken>(req.query.d as string);
+    } catch (err) {
+      console.error('Could not decode auth data', err);
+      return next('Could not decode auth data');
+    }
+    req.session.securityToken = securityToken;
+    req.session.save((err) => {
+      if (err) {
+        return next(err);
+      }
+      console.info('Bootstrap authentication complete');
+      res.redirect('/');
+    });
+  };
+}
+
 export function init(disableAuthentication = false): Router {
   const router = express.Router();
   router.use(bodyParser.json());
@@ -169,6 +203,11 @@ export function init(disableAuthentication = false): Router {
   router.get('/logout-callback', logoutCallback());
   router.post('/logout-callback', logoutCallback());
   router.get('/is-authenticated', getIsAuthenticated(disableAuthentication));
+  // this should be used for testing only
+  // it allows the app to be authenticated using a base64 encoded SecurityToken object
+  if (ALLOW_BOOTSTRAP_AUTH) {
+    router.get('/bootstrap', getBootstrapAuth());
+  }
   return router;
 }
 export { AuthenticationUtils };
