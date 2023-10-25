@@ -98,6 +98,9 @@ function postAuthCallback(
         return res.redirect(resetPwdRedirect);
       } catch (err) {
         console.error('Error received from Azure login callback', req.body);
+        if (ALLOW_BOOTSTRAP_AUTH && req.session?.bootstrapAuthOrigin) {
+          return res.redirect(req.session.bootstrapAuthOrigin);
+        }
         return res.redirect('/login');
       }
     }
@@ -106,7 +109,7 @@ function postAuthCallback(
       const result = await axios.post<SecurityToken>(url, req.body, {
         headers: { 'content-type': 'application/x-www-form-urlencoded' },
       });
-      if (req.session?.bootstrapAuthOrigin && ALLOW_BOOTSTRAP_AUTH) {
+      if (ALLOW_BOOTSTRAP_AUTH && req.session?.bootstrapAuthOrigin) {
         const encoded = Base64.encode<SecurityToken>(result.data);
         console.info(
           'Bootstrap authentication active for',
@@ -152,10 +155,14 @@ function getBootstrapAuth(): (req: Request, res: Response, next: NextFunction) =
   };
 }
 
-function getAuthCallback(_: Request, res: Response) {
+function getAuthCallback(req: Request, res: Response) {
+  if (ALLOW_BOOTSTRAP_AUTH && req.session?.bootstrapAuthOrigin) {
+    return res.redirect(req.session.bootstrapAuthOrigin);
+  }
   res.redirect('/');
 }
 
+// TODO: check logout
 function getLogout(): (_: Request, res: Response, next: NextFunction) => Promise<void> {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
