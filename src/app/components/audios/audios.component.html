@@ -63,7 +63,7 @@
           >
             <ng-template [tableRowTemplate]="data.completedRows" let-row>
               <td class="govuk-table__cell">
-                <span unreadIcon [class.unread]="!row.last_accessed_ts" *ngIf="!row.last_accessed_ts"> </span>
+                <span unreadIcon [class.unread]="!row.lastAccessed" *ngIf="!row.lastAccessed"> </span>
               </td>
               <!-- Partial template for duplicated cells -->
               <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>

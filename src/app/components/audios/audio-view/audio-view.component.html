@@ -29,6 +29,12 @@
     <p class="govuk-body">{{ audioRequest.endTime | date: 'HH:mm:ss' }}</p>
   </ng-container>
 
+  <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
+
+  <ng-container *ngIf="audioRequest.requestType === 'PLAYBACK'">
+    <p class="govuk-body">PLAYBACK PLACEHOLDER</p>
+  </ng-container>
+
   <div class="govuk-button-group">
     <a class="govuk-button" [href]="downloadUrl" [download]="fileName">Download audio file</a>
   </div>

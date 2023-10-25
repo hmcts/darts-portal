@@ -1,4 +1,5 @@
 import { DatatableRow } from './data-table-row.interface';
+import { AudioRequestStatus, AudioRequestType } from './user-audio-request.interface';
 
 export interface UserAudioRequestRow extends DatatableRow {
   caseId: number;
@@ -9,6 +10,7 @@ export interface UserAudioRequestRow extends DatatableRow {
   endTime: string | null;
   requestId: number;
   expiry: string | null;
-  status: 'OPEN' | 'PROCESSING' | 'FAILED' | 'COMPLETED' | 'EXPIRED';
-  last_accessed_ts?: string;
+  status: AudioRequestStatus;
+  requestType: AudioRequestType;
+  lastAccessed?: string;
 }

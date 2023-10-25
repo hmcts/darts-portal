@@ -100,7 +100,8 @@ export class AudiosComponent {
         requestId: ar.media_request_id,
         expiry: ar.media_request_expiry_ts ?? null,
         status: ar.media_request_status,
-        last_accessed_ts: ar.last_accessed_ts,
+        lastAccessed: ar.last_accessed_ts,
+        requestType: ar.request_type,
       };
     });
   }

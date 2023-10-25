@@ -1,12 +1,12 @@
-import { RouterTestingModule } from '@angular/router/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
-import { HeaderComponent } from './header.component';
-import { AppInsightsService } from '@services/app-insights/app-insights.service';
-import { AuthService } from '@services/auth/auth.service';
-import { AudioRequestService } from '@services/audio-request/audio-request.service';
-import { combineLatest, of } from 'rxjs';
 import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
+import { AppInsightsService } from '@services/app-insights/app-insights.service';
+import { AudioRequestService } from '@services/audio-request/audio-request.service';
+import { AuthService } from '@services/auth/auth.service';
+import { combineLatest, of } from 'rxjs';
+import { HeaderComponent } from './header.component';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -25,6 +25,7 @@ describe('HeaderComponent', () => {
       media_request_end_ts: '2023-08-21T10:00:00Z',
       media_request_expiry_ts: '2023-08-23T09:00:00Z',
       media_request_status: 'COMPLETED',
+      request_type: 'DOWNLOAD',
     },
   ];
 
