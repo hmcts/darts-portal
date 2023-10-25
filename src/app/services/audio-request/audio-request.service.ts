@@ -1,68 +1,59 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { UserAudioRequestRow } from '@darts-types/index';
 import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
 import { UserService } from '@services/user/user.service';
-import { BehaviorSubject, combineLatest, map, Observable, switchMap, tap, timer } from 'rxjs';
+import { BehaviorSubject, map, merge, Observable, switchMap, tap, timer } from 'rxjs';
 
+export const UNREAD_AUDIO_COUNT_PATH = 'api/audio-requests/not-accessed-count';
 @Injectable({
   providedIn: 'root',
 })
 export class AudioRequestService {
-  audioRequests$: Observable<UserAudioRequest[]>;
-  expiredAudioRequests$: Observable<UserAudioRequest[]>;
-  audioRequestView!: UserAudioRequestRow;
+  http = inject(HttpClient);
+  userProfile$ = inject(UserService).userProfile$;
 
-  //Defined in seconds
-  private POLL_INTERVAL = 60;
+  // Defined in seconds
+  private readonly POLL_INTERVAL = 60;
+  private readonly UNREAD_COUNT_POLL_INTERVAL = 30;
 
+  // Save unread count in memory
   private unreadCount: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   readonly unreadCount$: Observable<number> = this.unreadCount.asObservable();
 
-  headerData$: Observable<{
-    audioRequest: UserAudioRequest[];
-    unreadCount: number;
-  }>;
+  // Store audio request when clicking 'View' on 'Your Audio' screen
+  audioRequestView!: UserAudioRequestRow;
 
-  constructor(
-    private http: HttpClient,
-    userService: UserService
-  ) {
-    this.audioRequests$ = timer(0, this.POLL_INTERVAL * 1000).pipe(
-      switchMap(() =>
-        userService.getUserProfile().pipe(
-          switchMap((d) => this.getAudioRequestsForUser(d.userId, false)),
-          tap((d) => this.updateUnread(d))
-        )
-      )
-    );
+  audioRequests$ = timer(0, this.POLL_INTERVAL * 1000).pipe(
+    switchMap(() => this.getAudioRequests(false)),
+    tap((audioRequests) => this.updateUnread(audioRequests))
+  );
 
-    this.expiredAudioRequests$ = timer(0, this.POLL_INTERVAL * 1000).pipe(
-      switchMap(() => userService.getUserProfile().pipe(switchMap((d) => this.getAudioRequestsForUser(d.userId, true))))
-    );
+  expiredAudioRequests$ = timer(0, this.POLL_INTERVAL * 1000).pipe(switchMap(() => this.getAudioRequests(true)));
 
-    this.headerData$ = combineLatest({
-      audioRequest: this.audioRequests$,
-      unreadCount: this.unreadCount$,
-    });
-  }
+  pollUnreadCount$ = timer(0, this.UNREAD_COUNT_POLL_INTERVAL * 1000).pipe(switchMap(() => this.getUnreadCount()));
 
-  getAudioRequestsForUser(userId: number, expired: boolean): Observable<UserAudioRequest[]> {
-    return this.http
-      .get<UserAudioRequest[]>(`api/audio-requests`, {
-        headers: { user_id: userId.toString() },
-        params: { expired },
+  // Merge both unread count observables into one
+  unreadAudioCount$ = merge(
+    this.pollUnreadCount$, // Fetches count from server
+    this.unreadCount$ // In memory count / manual update
+  );
+
+  getAudioRequests(expired: boolean): Observable<UserAudioRequest[]> {
+    return this.userProfile$.pipe(
+      switchMap((userState) => {
+        return this.http
+          .get<UserAudioRequest[]>(`api/audio-requests`, {
+            headers: { user_id: userState.userId.toString() },
+            params: { expired },
+          })
+          .pipe(map((requests) => requests.map((r) => ({ ...r, hearing_date: r.hearing_date + 'T00:00:00Z' }))));
       })
-      .pipe(map((requests) => requests.map((r) => ({ ...r, hearing_date: r.hearing_date + 'T00:00:00Z' }))));
+    );
   }
 
   deleteAudioRequests(mediaRequestId: number): Observable<HttpResponse<Response>> {
     return this.http.delete<Response>(`api/audio-requests/${mediaRequestId}`, { observe: 'response' });
-  }
-
-  updateUnread(audioRequests: UserAudioRequest[]) {
-    const completed = this.filterCompletedRequests(audioRequests);
-    this.unreadCount.next(this.getUnreadCount(completed));
   }
 
   //Sends request to update last accessed timestamp
@@ -71,7 +62,7 @@ export class AudioRequestService {
       tap(() => {
         if (isUnread) {
           // Optimistically update the unread count before next polling interval
-          this.unreadCount.next(this.unreadCount.getValue() - 1);
+          this.decrementUnreadAudioCount();
         }
       })
     );
@@ -89,8 +80,29 @@ export class AudioRequestService {
     return audioRequests.filter((ar) => ar.media_request_status === 'COMPLETED');
   }
 
-  getUnreadCount(audioRequests: UserAudioRequest[]): number {
+  getUnreadCount(): Observable<number> {
+    return this.userProfile$.pipe(
+      switchMap((userState) =>
+        this.http
+          .get<{ count: number }>(UNREAD_AUDIO_COUNT_PATH, {
+            headers: { user_id: userState.userId.toString() },
+          })
+          .pipe(map((res) => res.count))
+      )
+    );
+  }
+
+  private updateUnread(audioRequests: UserAudioRequest[]) {
+    const completedRequests = this.filterCompletedRequests(audioRequests);
+    this.unreadCount.next(this.getUnreadCountFromAudioRequests(completedRequests));
+  }
+
+  private getUnreadCountFromAudioRequests(audioRequests: UserAudioRequest[]): number {
     //Return count of completed rows which contain last_accessed_ts property
     return audioRequests.filter((ar) => Boolean(!ar.last_accessed_ts)).length;
+  }
+
+  private decrementUnreadAudioCount() {
+    this.unreadCount.next(this.unreadCount.getValue() - 1);
   }
 }
