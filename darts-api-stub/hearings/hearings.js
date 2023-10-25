@@ -60,7 +60,6 @@ const transcriptTwo = [
     requested_by_name: 'Joe Bloggs',
     status: 'Complete',
   },
-
 ];
 
 router.get('/:hearingId/events', (req, res) => {
