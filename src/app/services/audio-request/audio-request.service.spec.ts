@@ -253,7 +253,7 @@ describe('AudioService', () => {
       });
     });
 
-    describe('#getUreadCount', () => {
+    describe('#getUnreadCount', () => {
       it('gets unread count', () => {
         const mockUnreadCount = { count: 5 };
         let unreadCount;

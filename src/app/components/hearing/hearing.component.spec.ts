@@ -110,7 +110,7 @@ describe('HearingComponent', () => {
     jest.spyOn(hearingService, 'getAudio').mockReturnValue(ad);
     jest.spyOn(hearingService, 'getEvents').mockReturnValue(ed);
 
-    fakeUserService = { userProfile$: mockUser, isTranscriber: (userState) => true };
+    fakeUserService = { userProfile$: mockUser, isTranscriber: () => true };
 
     TestBed.configureTestingModule({
       imports: [HearingComponent, HearingFileComponent, RouterTestingModule],

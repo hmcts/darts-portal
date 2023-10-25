@@ -10,7 +10,7 @@ import {
   EventEmitter,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
+import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { AudioPlayerComponent } from '@common/audio-player/audio-player.component';
 import { HearingEventTypeEnum } from '@darts-types/enums';
 import { DateTime } from 'luxon';
