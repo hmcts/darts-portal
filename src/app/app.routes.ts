@@ -7,11 +7,11 @@ import { LoginComponent } from './components/login/login.component';
 
 const openRoutes: Routes = [
   { path: 'login', component: LoginComponent },
+  { path: '', redirectTo: '/search', pathMatch: 'full' },
   { path: 'page-not-found', component: NotFoundComponent },
   { path: '**', redirectTo: '/page-not-found' },
 ];
 const protectedRoutes: Routes = [
-  { path: '', loadComponent: () => import('./components/home/home.component').then((c) => c.HomeComponent) },
   {
     path: 'audios',
     loadComponent: () => import('./components/audios/audios.component').then((c) => c.AudiosComponent),
