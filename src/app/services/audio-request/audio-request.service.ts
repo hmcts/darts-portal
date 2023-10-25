@@ -5,7 +5,7 @@ import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
 import { UserService } from '@services/user/user.service';
 import { BehaviorSubject, map, merge, Observable, switchMap, tap, timer } from 'rxjs';
 
-const UNREAD_AUDIO_COUNT_PATH = 'api/audio-requests/not-accessed-count';
+export const UNREAD_AUDIO_COUNT_PATH = 'api/audio-requests/not-accessed-count';
 @Injectable({
   providedIn: 'root',
 })
