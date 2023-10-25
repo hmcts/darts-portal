@@ -202,7 +202,6 @@ describe('Case search', () => {
     cy.get('button').contains('Search').click();
     cy.get('h1').should('contain', 'Internal Server Error');
     cy.get('.govuk-body').should('contain', 'There was an error during operation.');
-    cy.get('.govuk-body').should('contain', 'There was an error during operation.');
     cy.get('.moj-primary-navigation').should('not.exist');
   });
 });
