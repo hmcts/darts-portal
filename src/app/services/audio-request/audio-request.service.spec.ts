@@ -267,9 +267,8 @@ describe('AudioService', () => {
   });
 
   describe('constructor', () => {
-    it('audioRequests$ subscribe should call getAudioRequestsForUser and update unread count', fakeAsync(() => {
+    it('audioRequests$ subscribe should call getAudioRequestsForUser', fakeAsync(() => {
       const audioSpy = jest.spyOn(service, 'getAudioRequestsForUser');
-      const unreadSpy = jest.spyOn(service, 'updateUnread');
 
       service.audioRequests$.subscribe();
 

@@ -2,7 +2,7 @@ import { DatePipe, NgFor, NgIf } from '@angular/common';
 import { Component, inject, Input, OnChanges } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
-import { Case, DatatableColumn, DatatableRow, Hearing } from '@darts-types/index';
+import { Case, CaseRow, DatatableColumn, Hearing } from '@darts-types/index';
 import { TableBodyTemplateDirective } from 'src/app/directives/table-body-template.directive';
 
 @Component({
@@ -18,7 +18,7 @@ export class ResultsComponent implements OnChanges {
   @Input() loaded = false;
   @Input() errorType = '';
   caption = '';
-  rows: DatatableRow[] = [];
+  rows: CaseRow[] = [];
   columns: DatatableColumn[] = [
     { name: 'Case ID', prop: 'caseNumber', sortable: true },
     { name: 'Courthouse', prop: 'courthouse', sortable: true },
@@ -32,7 +32,7 @@ export class ResultsComponent implements OnChanges {
     this.caption = `${this.cases.length} result${this.cases.length > 1 ? 's' : ''}`;
   }
 
-  mapCasesToRows(cases: Case[]) {
+  mapCasesToRows(cases: Case[]): CaseRow[] {
     return cases.map((c) => {
       return {
         id: c.case_id,

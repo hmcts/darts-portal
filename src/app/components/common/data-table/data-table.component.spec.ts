@@ -1,13 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DatatableRow } from '@darts-types/data-table-row.interface';
 import { DateTime } from 'luxon';
 
 import { DataTableComponent, SortingInterface } from './data-table.component';
 
 describe('DataTableComponent', () => {
-  let component: DataTableComponent<DatatableRow>;
-  let fixture: ComponentFixture<DataTableComponent<DatatableRow>>;
-  const MOCK_ROWS: DatatableRow[] = [
+  let component: DataTableComponent<unknown>;
+  let fixture: ComponentFixture<DataTableComponent<unknown>>;
+  const MOCK_ROWS: unknown[] = [
     {
       case_id: 1,
       case_number: 'C20220620001',
