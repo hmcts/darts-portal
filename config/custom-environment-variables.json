@@ -8,5 +8,8 @@
   "authentication": {
     "azureAdB2cOriginHost": "DARTS_AZUREAD_B2C_ORIGIN_HOST",
     "allowAuthBootstrap": "DARTS_ALLOW_AUTH_BOOTSTRAP"
+  },
+  "session": {
+    "useSecureCookies": "DARTS_SESSION_USE_SECURE_COOKIES"
   }
 }
