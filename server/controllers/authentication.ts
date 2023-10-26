@@ -183,7 +183,7 @@ function getBootstrapAuth(): (req: Request, res: Response, next: NextFunction) =
         return next(err);
       }
       console.info('Bootstrap authentication complete');
-      res.redirect('/');
+      res.send('Bootstrap authentication complete');
     });
   };
 }
