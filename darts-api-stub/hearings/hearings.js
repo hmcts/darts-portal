@@ -118,8 +118,11 @@ router.get('/:hearingId/transcripts', (req, res) => {
     case '1':
       res.send(transcriptOne);
       break;
-    default:
+    case '2':
       res.send(transcriptTwo);
+      break;
+    default:
+      res.send([]);
       break;
   }
 });

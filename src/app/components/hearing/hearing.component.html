@@ -59,8 +59,12 @@
       </div>
       <ng-container *ngIf="transcripts$ | async as transcripts">
         <div *tab="'Transcripts'; count: transcripts.length">
-          <h2 class="govuk-heading-m">Transcripts for this hearing</h2>
-
+          <div class="flex-space-between">
+            <h2 class="govuk-heading-m">Transcripts for this hearing</h2>
+            <button *ngIf="transcripts.length" class="govuk-button govuk-button--secondary" data-module="govuk-button">
+              Request a new transcript
+            </button>
+          </div>
           <ng-container *ngIf="transcripts.length">
             <app-data-table id="transcriptsTable" [rows]="transcripts" [columns]="transcriptColumns">
               <ng-template [tableRowTemplate]="transcripts" let-row>
