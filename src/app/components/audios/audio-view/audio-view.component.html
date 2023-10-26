@@ -32,7 +32,23 @@
   <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
 
   <ng-container *ngIf="audioRequest.requestType === 'PLAYBACK'">
-    <p class="govuk-body">PLAYBACK PLACEHOLDER</p>
+    <h2 class="govuk-heading-l">Play all audio</h2>
+
+    <p class="govuk-body">Skip to event</p>
+    <p class="govuk-body">Jump to a specific audio events within the audio file</p>
+    <app-data-table [rows]="rows" [columns]="columns">
+      <ng-template [tableRowTemplate]="rows" let-row let-index>
+        <td class="govuk-table__cell"></td>
+        <td class="govuk-table__cell">
+          {{ row.eventType }}
+          <app-audio-player *ngIf="false" [mediaId]="41"></app-audio-player>
+        </td>
+        <td class="govuk-table__cell">
+          <div>{{ row.eventTime | date: 'HH:mm:ss' }}</div>
+        </td>
+        <td class="govuk-table__cell">{{ row.audioTime | date: 'hh:mm:ss' }}</td>
+      </ng-template>
+    </app-data-table>
   </ng-container>
 
   <div class="govuk-button-group">
