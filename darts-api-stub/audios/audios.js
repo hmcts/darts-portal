@@ -192,7 +192,12 @@ router.patch('/:requestId', (req, res) => {
 });
 
 router.get('/download', (req, res) => {
-  res.sendFile(path.join(__dirname, './preview', 'preview.mp3.zip'));
+  const mediaReqId = req.query.media_request_id;
+  if (mediaReqId !== '12377') {
+    res.sendFile(path.join(__dirname, './preview', 'preview.mp3.zip'));
+  } else {
+    res.sendStatus(403);
+  }
 });
 
 router.post('', (req, res) => {
