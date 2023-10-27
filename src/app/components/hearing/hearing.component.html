@@ -34,26 +34,60 @@
     [reportingRestriction]="vm.case.reporting_restriction"
   ></app-reporting-restriction>
 
-  <!-- Hearing Screen -->
   <div [hidden]="state !== 'Default'">
     <app-hearing-file [case]="vm.case" [hearing]="vm.hearing"></app-hearing-file>
+    <app-tabs>
+      <div *tab="'Events and Audio'">
+        <!-- Hearing Screen -->
 
-    <h2 id="events-audio-heading" class="govuk-heading-m">Events and audio recordings</h2>
+        <h2 id="events-audio-heading" class="govuk-heading-m">Events and audio recordings</h2>
 
-    <app-request-playback-audio
-      [hearing]="vm.hearing!"
-      [audioTimes]="audioTimes"
-      [userState]="userState"
-      (audioRequest)="onAudioRequest($event)"
-      (validationErrorEvent)="onValidationError($event)"
-    ></app-request-playback-audio>
+        <app-request-playback-audio
+          [hearing]="vm.hearing!"
+          [audioTimes]="audioTimes"
+          [userState]="userState"
+          (audioRequest)="onAudioRequest($event)"
+          (validationErrorEvent)="onValidationError($event)"
+        ></app-request-playback-audio>
 
-    <!-- Events & Audio Table-->
-    <app-events-and-audio
-      [audio]="vm.audios"
-      [events]="vm.events"
-      (eventsSelect)="onEventsSelected($event)"
-    ></app-events-and-audio>
+        <!-- Events & Audio Table-->
+        <app-events-and-audio
+          [audio]="vm.audios"
+          [events]="vm.events"
+          (eventsSelect)="onEventsSelected($event)"
+        ></app-events-and-audio>
+      </div>
+      <ng-container *ngIf="transcripts$ | async as transcripts">
+        <div *tab="'Transcripts'; count: transcripts.length">
+          <div class="flex-space-between">
+            <h2 class="govuk-heading-m">Transcripts for this hearing</h2>
+            <button *ngIf="transcripts.length" class="govuk-button govuk-button--secondary" data-module="govuk-button">
+              Request a new transcript
+            </button>
+          </div>
+          <ng-container *ngIf="transcripts.length">
+            <app-data-table id="transcriptsTable" [rows]="transcripts" [columns]="transcriptColumns">
+              <ng-template [tableRowTemplate]="transcripts" let-row>
+                <td class="govuk-table__cell">{{ row.type }}</td>
+                <td class="govuk-table__cell">{{ row.requestedOn | date: 'dd MMM yyyy HH:mm:ss' }}</td>
+                <td class="govuk-table__cell">{{ row.requestedBy }}</td>
+                <td class="govuk-table__cell">
+                  <strong class="govuk-tag" [ngClass]="statusTagStyleMap[row.status]">
+                    {{ row.status }}
+                  </strong>
+                </td>
+                <td class="govuk-table__cell">
+                  <a *ngIf="row.status === 'Complete'" [routerLink]="['.']">View</a>
+                </td>
+              </ng-template>
+            </app-data-table>
+          </ng-container>
+          <ng-container *ngIf="!transcripts.length">
+            <p class="govuk-body">There are no transcripts for this hearing.</p>
+          </ng-container>
+        </div>
+      </ng-container>
+    </app-tabs>
   </div>
 
   <!-- Summary / Confirmation Screen -->
