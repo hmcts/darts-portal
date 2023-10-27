@@ -85,7 +85,7 @@ export class AudioViewComponent {
     this.data$ = combineLatest({ case: this.case$, rows: this.eventRows$ });
 
     this.downloadUrl = this.audioRequestService.getDownloadUrl(this.requestId);
-    this.fileName = `${this.audioRequest.caseNumber}.zip`;
+    this.fileName = `${this.audioRequest.output_filename}.${this.audioRequest.output_format}`;
   }
 
   filterEvents(events: HearingEvent[]): HearingEvent[] {

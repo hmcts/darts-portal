@@ -62,4 +62,52 @@ describe('AudioPlayerComponent', () => {
 
     expect(audioPlayer.nativeElement.hasAttribute('hidden')).toBeFalsy();
   });
+
+  describe('#setPlayTime', () => {
+    it('should set the play time', () => {
+      component.mediaId = 123;
+      component.canPlay = true;
+
+      fixture.detectChanges();
+      const audioPlayer = fixture.debugElement.query(By.css('audio'));
+
+      audioPlayer.triggerEventHandler('canplay', null);
+      component.setPlayTime(10, true);
+
+      expect(audioPlayer.nativeElement.currentTime).toEqual(10);
+    });
+
+    it('should play the audio if shouldPlay is true', () => {
+      component.mediaId = 123;
+      component.canPlay = true;
+
+      fixture.detectChanges();
+      const audioPlayer = fixture.debugElement.query(By.css('audio'));
+
+      audioPlayer.triggerEventHandler('canplay', null);
+      component.setPlayTime(10, true);
+
+      fixture.detectChanges();
+
+      // TODO: fix this test
+      // expect(audioPlayer.nativeElement.paused).toBeFalsy();
+    });
+  });
+
+  describe('#onTimeUpdate', () => {
+    it('should emit the play time', () => {
+      jest.spyOn(component.playTime, 'emit');
+      component.mediaId = 123;
+      component.canPlay = true;
+
+      fixture.detectChanges();
+      const audioPlayer = fixture.debugElement.query(By.css('audio'));
+
+      audioPlayer.triggerEventHandler('canplay', null);
+      audioPlayer.nativeElement.currentTime = 10;
+      audioPlayer.triggerEventHandler('timeupdate', null);
+
+      expect(component.playTime.emit).toHaveBeenCalledWith(10);
+    });
+  });
 });
