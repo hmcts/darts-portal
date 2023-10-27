@@ -26,6 +26,7 @@ describe('HeaderComponent', () => {
       media_request_expiry_ts: '2023-08-23T09:00:00Z',
       media_request_status: 'COMPLETED',
       request_type: 'DOWNLOAD',
+      hearing_id: 123,
     },
   ];
 

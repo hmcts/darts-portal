@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AudioPlayerComponent } from './audio-player.component';
 import { By } from '@angular/platform-browser';
+import { AudioPlayerComponent } from './audio-player.component';
 
 describe('AudioPlayerComponent', () => {
   let fixture: ComponentFixture<AudioPlayerComponent>;
@@ -36,7 +36,7 @@ describe('AudioPlayerComponent', () => {
 
     const loadingMessage = fixture.debugElement.query(By.css('#loading'));
 
-    expect(loadingMessage.nativeElement.textContent).toContain('Loading Audio Preview');
+    expect(loadingMessage.nativeElement.textContent).toContain('Loading audio preview... Please wait');
   });
 
   it('not display loading message if canplay is true', () => {
@@ -51,13 +51,13 @@ describe('AudioPlayerComponent', () => {
 
   it('hide the audio player until canplay event is fired', () => {
     component.mediaId = 123;
+
     fixture.detectChanges();
     const audioPlayer = fixture.debugElement.query(By.css('audio'));
 
     expect(audioPlayer.nativeElement.hasAttribute('hidden')).toBeTruthy();
 
-    component.canPlay = true;
-
+    audioPlayer.triggerEventHandler('canplay', null);
     fixture.detectChanges();
 
     expect(audioPlayer.nativeElement.hasAttribute('hidden')).toBeFalsy();

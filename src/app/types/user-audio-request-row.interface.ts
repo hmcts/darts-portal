@@ -4,12 +4,15 @@ export interface UserAudioRequestRow {
   caseId: number;
   caseNumber: string;
   courthouse: string;
-  hearingDate: string | null;
-  startTime: string | null;
-  endTime: string | null;
+  hearingId: number;
+  hearingDate: string;
+  startTime: string;
+  endTime: string;
   requestId: number;
-  expiry: string | null;
+  expiry: string;
   status: AudioRequestStatus;
   requestType: AudioRequestType;
-  lastAccessed?: string;
+  lastAccessed: string | undefined;
+  output_filename: string | undefined;
+  output_format: string | undefined;
 }

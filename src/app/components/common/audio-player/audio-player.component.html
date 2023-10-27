@@ -1,7 +1,16 @@
-<audio *ngIf="mediaId && audioSource" controls (canplay)="canPlay = true" [hidden]="!canPlay">
+<audio
+  #audioPlayer
+  *ngIf="mediaId && audioSource"
+  controls
+  (canplay)="canPlay = true"
+  (pause)="pause.emit()"
+  (play)="play.emit()"
+  [hidden]="!canPlay"
+  (timeupdate)="onTimeUpdate()"
+>
   <source type="audio/mpeg" [src]="audioSource" />
 </audio>
 
-<p id="loading" *ngIf="!canPlay">Loading Audio Preview... Please Wait</p>
+<p id="loading" *ngIf="!canPlay">Loading audio preview... Please wait</p>
 
 <p id="no-id-error" *ngIf="!mediaId">No media ID provided</p>

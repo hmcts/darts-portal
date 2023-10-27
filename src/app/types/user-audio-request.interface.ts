@@ -6,11 +6,14 @@ export interface UserAudioRequest {
   media_request_id: number;
   case_number: string;
   courthouse_name: string;
+  hearing_id: number;
   hearing_date: string;
   media_request_start_ts: string;
   media_request_end_ts: string;
-  media_request_expiry_ts?: string;
+  media_request_expiry_ts: string;
   media_request_status: AudioRequestStatus;
   request_type: AudioRequestType;
   last_accessed_ts?: string;
+  output_filename?: string;
+  output_format?: string;
 }

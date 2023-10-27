@@ -24,6 +24,7 @@ describe('AudiosComponent', () => {
       media_request_status: 'OPEN',
       last_accessed_ts: '2023-08-23T09:00:00Z',
       request_type: 'DOWNLOAD',
+      hearing_id: 123,
     },
     {
       case_id: 3,
@@ -37,6 +38,7 @@ describe('AudiosComponent', () => {
       media_request_status: 'PROCESSING',
       last_accessed_ts: '2023-08-23T09:00:00Z',
       request_type: 'DOWNLOAD',
+      hearing_id: 123,
     },
     {
       case_id: 4,
@@ -50,6 +52,7 @@ describe('AudiosComponent', () => {
       media_request_status: 'OPEN',
       last_accessed_ts: '2023-08-23T09:00:00Z',
       request_type: 'DOWNLOAD',
+      hearing_id: 123,
     },
     {
       case_id: 5,
@@ -62,6 +65,7 @@ describe('AudiosComponent', () => {
       media_request_expiry_ts: '2023-11-23T09:00:00Z',
       media_request_status: 'FAILED',
       request_type: 'DOWNLOAD',
+      hearing_id: 123,
     },
     {
       case_id: 6,
@@ -74,6 +78,7 @@ describe('AudiosComponent', () => {
       media_request_expiry_ts: '2023-08-23T09:00:00Z',
       media_request_status: 'COMPLETED',
       request_type: 'DOWNLOAD',
+      hearing_id: 123,
     },
     {
       case_id: 7,
@@ -87,6 +92,7 @@ describe('AudiosComponent', () => {
       media_request_status: 'COMPLETED',
       last_accessed_ts: '2023-08-23T09:00:00Z',
       request_type: 'DOWNLOAD',
+      hearing_id: 123,
     },
     {
       case_id: 8,
@@ -99,6 +105,7 @@ describe('AudiosComponent', () => {
       media_request_expiry_ts: '2023-08-23T09:00:00Z',
       media_request_status: 'COMPLETED',
       request_type: 'DOWNLOAD',
+      hearing_id: 123,
     },
     {
       case_id: 9,
@@ -111,6 +118,7 @@ describe('AudiosComponent', () => {
       media_request_expiry_ts: '2023-11-23T09:00:00Z',
       media_request_status: 'COMPLETED',
       request_type: 'DOWNLOAD',
+      hearing_id: 123,
     },
     {
       case_id: 10,
@@ -123,6 +131,7 @@ describe('AudiosComponent', () => {
       media_request_expiry_ts: '2023-11-23T09:00:00Z',
       media_request_status: 'COMPLETED',
       request_type: 'DOWNLOAD',
+      hearing_id: 123,
     },
     {
       case_id: 11,
@@ -135,6 +144,7 @@ describe('AudiosComponent', () => {
       media_request_expiry_ts: '2023-11-23T09:00:00Z',
       media_request_status: 'COMPLETED',
       request_type: 'DOWNLOAD',
+      hearing_id: 123,
     },
   ];
 
@@ -150,6 +160,7 @@ describe('AudiosComponent', () => {
       media_request_expiry_ts: '2023-08-23T09:00:00Z',
       media_request_status: 'EXPIRED',
       request_type: 'DOWNLOAD',
+      hearing_id: 123,
     },
     {
       case_id: 13,
@@ -162,6 +173,7 @@ describe('AudiosComponent', () => {
       media_request_expiry_ts: '2023-08-23T09:00:00Z',
       media_request_status: 'EXPIRED',
       request_type: 'DOWNLOAD',
+      hearing_id: 123,
     },
     {
       case_id: 14,
@@ -174,6 +186,7 @@ describe('AudiosComponent', () => {
       media_request_expiry_ts: '2023-11-23T09:00:00Z',
       media_request_status: 'EXPIRED',
       request_type: 'DOWNLOAD',
+      hearing_id: 123,
     },
   ];
 

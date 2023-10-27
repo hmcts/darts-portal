@@ -37,22 +37,22 @@ describe('Your audio', () => {
 
   it('should show correct Notification badge count', () => {
     //On landing page
-    cy.get('#notifications').should('contain', '5');
+    cy.get('#notifications').should('contain', '6');
     cy.contains('Your Audio').click();
     //On specific Your Audio page
-    cy.get('#notifications').should('contain', '5');
+    cy.get('#notifications').should('contain', '6');
   });
 
   it('should show correct number of Unread icons', () => {
     cy.contains('Your Audio').click();
-    cy.get('#readyTable').get('.unread').should('have.length', 5);
+    cy.get('#readyTable').get('.unread').should('have.length', 6);
   });
 
   it('should reduce Notification count and unread icons when View is clicked', () => {
     cy.contains('Your Audio').click();
     cy.contains('T20200331').parents('tr').contains('View').click();
 
-    cy.get('#notifications').should('contain', '4');
+    cy.get('#notifications').should('contain', '5');
   });
 
   it('View audio request and download', () => {
@@ -73,6 +73,28 @@ describe('Your audio', () => {
     cy.get('button.govuk-button--warning').click();
     cy.contains('T20200333').should('not.exist');
     cy.get(navigationSelector).should('exist');
+  });
+
+  it('View audio request and playback audio', () => {
+    cy.contains('Your Audio').click();
+    cy.contains('T20200192233').parents('tr').contains('View').click();
+    cy.contains('T20200192233.zip').should('exist');
+
+    cy.get('audio').then(([audioEl]) => {
+      expect(audioEl.paused).to.equal(true);
+    });
+
+    cy.get('app-play-button').should('have.length', 5);
+    cy.get('app-play-button').first().click();
+
+    cy.get('audio').then(([audioEl]) => {
+      expect(audioEl.paused).to.equal(false);
+    });
+
+    //click third play button to skip to 20 seconds
+    cy.get('app-play-button').eq(2).click();
+    //get current play time
+    cy.get('audio').invoke('prop', 'currentTime').should('be.gt', 20);
   });
 
   it('should delete selected audio requests', () => {

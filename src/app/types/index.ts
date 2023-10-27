@@ -10,6 +10,7 @@ export * from './error-summary-entry.interface';
 export * from './field-errors.interface';
 export * from './hearing-audio-event.interface';
 export * from './hearing-audio.interface';
+export * from './hearing-event-row.interface';
 export * from './hearing-event.interface';
 export * from './hearing-page-state.type';
 export * from './hearing-row.interface';
