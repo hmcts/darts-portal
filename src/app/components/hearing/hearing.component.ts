@@ -12,7 +12,6 @@ import {
   DatatableColumn,
   ErrorSummaryEntry,
   HearingPageState,
-  Transcript,
   TranscriptsRow,
 } from '@darts-types/index';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
@@ -21,6 +20,7 @@ import { TableRowTemplateDirective } from '@directives/table-row-template.direct
 import { CaseService } from '@services/case/case.service';
 import { HeaderService } from '@services/header/header.service';
 import { HearingService } from '@services/hearing/hearing.service';
+import { MappingService } from '@services/mapping/mapping.service';
 import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
 import { combineLatest, map } from 'rxjs';
@@ -58,6 +58,7 @@ export class HearingComponent {
   hearingService = inject(HearingService);
   headerService = inject(HeaderService);
   userService = inject(UserService);
+  mappingService = inject(MappingService);
   audioTimes: { startTime: DateTime; endTime: DateTime } | null = null;
   private _state: HearingPageState = 'Default';
   public errorSummary: ErrorSummaryEntry[] = [];
@@ -68,7 +69,7 @@ export class HearingComponent {
 
   public transcripts$ = this.caseService
     .getAllHearingTranscripts(this.hearingId)
-    .pipe(map((transcript) => this.mapTranscriptRequestToRows(transcript)));
+    .pipe(map((transcript) => this.mappingService.mapTranscriptRequestToRows(transcript)));
 
   transcriptColumns: DatatableColumn[] = [
     { name: 'Type', prop: 'type', sortable: true },
@@ -117,18 +118,6 @@ export class HearingComponent {
       this.headerService.hideNavigation();
     }
     this._state = value;
-  }
-
-  mapTranscriptRequestToRows(transcripts: Transcript[]): TranscriptsRow[] {
-    return transcripts.map((transcript) => {
-      return {
-        hearingDate: transcript.hearing_date,
-        type: transcript.type,
-        requestedOn: transcript.requested_on,
-        requestedBy: transcript.requested_by_name,
-        status: transcript.status,
-      };
-    });
   }
 
   onEventsSelected(audioAndEvents: AudioEventRow[]) {
