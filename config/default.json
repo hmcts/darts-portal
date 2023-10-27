@@ -11,6 +11,7 @@
   },
   "session": {
     "useSecureCookies": "true",
+    "prefix": "darts-portal-session",
     "ttlInSeconds": 1200
   },
   "secrets": {

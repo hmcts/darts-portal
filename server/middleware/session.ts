@@ -14,9 +14,11 @@ export default () => {
   if (config.get('node-env') === 'production') {
     const redisClient = createClient({ url: config.get('secrets.darts.redis-connection-string') });
     redisClient.connect().catch(console.error);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const redisStore = new (RedisStore as any)({
       client: redisClient,
-      prefix: 'darts-portal-session:',
+      prefix: config.get('session.prefix') + ':',
+      ttl: config.get('session.ttlInSeconds'),
     });
     sessionMiddleware.store = redisStore;
 
