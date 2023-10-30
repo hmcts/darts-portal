@@ -1,22 +1,22 @@
-import { DataTableComponent } from '@common/data-table/data-table.component';
 import { CommonModule } from '@angular/common';
 import {
+  ChangeDetectionStrategy,
   Component,
-  OnInit,
+  EventEmitter,
+  Input,
   OnChanges,
   OnDestroy,
-  Input,
+  OnInit,
   Output,
-  EventEmitter,
-  ChangeDetectionStrategy,
 } from '@angular/core';
-import { ReactiveFormsModule, FormControl } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { AudioPlayerComponent } from '@common/audio-player/audio-player.component';
+import { DataTableComponent } from '@common/data-table/data-table.component';
 import { HearingEventTypeEnum } from '@darts-types/enums';
-import { DateTime } from 'luxon';
-import { HearingAudio, AudioEventRow, HearingEvent, DatatableColumn } from '@darts-types/index';
-import { Subscription } from 'rxjs';
+import { AudioEventRow, DatatableColumn, HearingAudio, HearingEvent } from '@darts-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
+import { DateTime } from 'luxon';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-events-and-audio',
