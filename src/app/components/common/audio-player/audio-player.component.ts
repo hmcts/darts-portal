@@ -1,3 +1,4 @@
+/* eslint-disable @angular-eslint/no-output-native */
 import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,

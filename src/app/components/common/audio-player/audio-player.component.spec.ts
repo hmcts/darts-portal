@@ -84,13 +84,14 @@ describe('AudioPlayerComponent', () => {
       fixture.detectChanges();
       const audioPlayer = fixture.debugElement.query(By.css('audio'));
 
+      jest.spyOn(audioPlayer.nativeElement, 'play');
+
       audioPlayer.triggerEventHandler('canplay', null);
       component.setPlayTime(10, true);
 
       fixture.detectChanges();
 
-      // TODO: fix this test
-      // expect(audioPlayer.nativeElement.paused).toBeFalsy();
+      expect(audioPlayer.nativeElement.play).toBeCalled();
     });
   });
 
