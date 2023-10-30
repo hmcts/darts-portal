@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UserState } from '@darts-types/user-state';
-import { Observable, shareReplay, take } from 'rxjs';
+import { shareReplay } from 'rxjs';
 
 export const USER_PROFILE_PATH = '/user/profile';
 
@@ -9,21 +9,9 @@ export const USER_PROFILE_PATH = '/user/profile';
   providedIn: 'root',
 })
 export class UserService {
-  private userProfile$!: Observable<UserState>;
-
   constructor(private http: HttpClient) {}
 
-  private loadUserProfile(): Observable<UserState> {
-    this.userProfile$ = this.http.get<UserState>(USER_PROFILE_PATH).pipe(shareReplay(1));
-    return this.userProfile$;
-  }
-
-  getUserProfile(): Observable<UserState> {
-    if (this.userProfile$) {
-      return this.userProfile$;
-    }
-    return this.loadUserProfile().pipe(take(1));
-  }
+  userProfile$ = this.http.get<UserState>(USER_PROFILE_PATH).pipe(shareReplay(1));
 
   public isTranscriber(userState: UserState): boolean {
     return userState.roles.some((x) => x.roleName === 'TRANSCRIBER');

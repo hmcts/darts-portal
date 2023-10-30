@@ -6,6 +6,6 @@ import { Directive, Input, TemplateRef } from '@angular/core';
   standalone: true,
 })
 export class BreadcrumbDirective {
-  @Input('breadcrumb') link: string | any[] | null | undefined = ['.'];
+  @Input('breadcrumb') link: string | string[] | null | undefined = ['.'];
   constructor(public template: TemplateRef<unknown>) {}
 }
