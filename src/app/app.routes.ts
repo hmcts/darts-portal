@@ -1,6 +1,7 @@
 import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
 import { NotFoundComponent } from '@common/not-found/not-found.component';
+import { InternalErrorComponent } from '@components/error/internal-server/internal-error.component';
 import { UserService } from '@services/user/user.service';
 import { authGuard } from './auth/auth.guard';
 import { LoginComponent } from './components/login/login.component';
@@ -9,6 +10,7 @@ const openRoutes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: '', redirectTo: '/search', pathMatch: 'full' },
   { path: 'page-not-found', component: NotFoundComponent },
+  { path: 'internal-error', component: InternalErrorComponent },
   { path: '**', redirectTo: '/page-not-found' },
 ];
 const protectedRoutes: Routes = [
@@ -41,7 +43,7 @@ const protectedRoutes: Routes = [
 ].map((route) => ({
   ...route,
   canActivate: [authGuard],
-  resolve: { userState: () => inject(UserService).getUserProfile() },
+  resolve: { userState: () => inject(UserService).userProfile$ },
 }));
 
 export const APP_ROUTES = [...protectedRoutes, ...openRoutes];

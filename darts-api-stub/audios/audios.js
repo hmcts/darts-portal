@@ -212,6 +212,14 @@ router.get('/download', (req, res) => {
   }
 });
 
+router.get('/not-accessed-count', (req, res) => {
+  let count = 0;
+  audioRequestMulti.forEach((request) => {
+    if (request.media_request_status === 'COMPLETED' && !request.last_accessed_ts) count++;
+  });
+  res.send({ count });
+});
+
 router.post('', (req, res) => {
   res.send(audioRequestOne);
 });

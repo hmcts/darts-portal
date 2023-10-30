@@ -5,10 +5,20 @@
   }
 }
 
+.govuk-table__cell {
+  padding: 10px;
+}
+
 .govuk-heading-s {
   margin: 0;
 }
 
 .govuk-back-link {
   margin-top: -25px;
+}
+
+.flex-space-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

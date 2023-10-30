@@ -1,7 +1,13 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Case, CaseFile, Courthouse, Hearing, SearchFormValues, Transcript } from '@darts-types/index';
-import { ADVANCED_SEARCH_CASE_PATH, CaseService, GET_CASE_PATH, GET_COURTHOUSES_PATH } from './case.service';
+import {
+  ADVANCED_SEARCH_CASE_PATH,
+  CaseService,
+  GET_CASE_PATH,
+  GET_COURTHOUSES_PATH,
+  GET_HEARINGS_PATH,
+} from './case.service';
 
 describe('CaseService', () => {
   let service: CaseService;
@@ -120,6 +126,28 @@ describe('CaseService', () => {
     });
 
     const req = httpMock.expectOne(`${GET_CASE_PATH}/${mockCaseId}/transcripts`);
+    expect(req.request.method).toBe('GET');
+
+    req.flush(mockTranscript);
+    expect(result).toEqual(
+      mockTranscripts.map((t) => ({
+        ...t,
+        date: t.hearing_date + 'T00:00:00Z',
+        requested_on: t.requested_on + 'T00:00:00Z',
+      }))
+    );
+  });
+
+  it('#getAllHearingTranscripts', () => {
+    const mockHearingId = 1;
+    const mockTranscript: Transcript[] = mockTranscripts;
+    let result!: Transcript[];
+
+    service.getAllHearingTranscripts(mockHearingId).subscribe((c) => {
+      result = c;
+    });
+
+    const req = httpMock.expectOne(`${GET_HEARINGS_PATH}/${mockHearingId}/transcripts`);
     expect(req.request.method).toBe('GET');
 
     req.flush(mockTranscript);

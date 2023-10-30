@@ -1,9 +1,9 @@
+import { CommonModule, NgIf } from '@angular/common';
 import { Component, DoCheck } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { CommonModule, NgIf } from '@angular/common';
+import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { AuthService } from '@services/auth/auth.service';
 import { HeaderService } from '@services/header/header.service';
-import { AudioRequestService } from '@services/audio-request/audio-request.service';
 
 @Component({
   selector: 'app-header',
@@ -15,7 +15,7 @@ import { AudioRequestService } from '@services/audio-request/audio-request.servi
 export class HeaderComponent implements DoCheck {
   isAuthenticated = false;
   isVisible$ = this.headerService.isVisible$;
-  headerData$ = this.audioService.headerData$;
+  unreadAudioCount$ = this.audioService.unreadAudioCount$;
 
   constructor(
     private authService: AuthService,

@@ -9,6 +9,11 @@
     "azureAdB2cOriginHost": "*",
     "allowAuthBootstrap": "false"
   },
+  "session": {
+    "useSecureCookies": "true",
+    "prefix": "darts-portal-session",
+    "ttlInSeconds": 1200
+  },
   "secrets": {
     "darts": {
       "AppInsightsInstrumentationKey": "00000000-0000-0000-0000-000000000000",

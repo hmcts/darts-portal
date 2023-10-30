@@ -1,10 +1,11 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed, discardPeriodicTasks, fakeAsync, tick } from '@angular/core/testing';
+import { UserAudioRequestRow } from '@darts-types/user-audio-request-row.interface';
 import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
 import { UserState } from '@darts-types/user-state';
 import { UserService } from '@services/user/user.service';
 import { of } from 'rxjs';
-import { AudioRequestService } from './audio-request.service';
+import { AudioRequestService, UNREAD_AUDIO_COUNT_PATH } from './audio-request.service';
 
 describe('AudioService', () => {
   let service: AudioRequestService;
@@ -165,7 +166,7 @@ describe('AudioService', () => {
 
   const userState: UserState = { userName: 'test@test.com', userId: 123, roles: [] };
   const userServiceStub = {
-    getUserProfile: () => of(userState),
+    userProfile$: of(userState),
   };
 
   beforeEach(() => {
@@ -190,7 +191,7 @@ describe('AudioService', () => {
       it('gets audio requests that are not expired', () => {
         const mockAudios: UserAudioRequest[] = MOCK_AUDIO_REQUESTS;
 
-        service.getAudioRequestsForUser(123, false).subscribe((audios) => {
+        service.getAudioRequests(false).subscribe((audios) => {
           expect(audios).toEqual(mockAudios);
         });
 
@@ -205,7 +206,7 @@ describe('AudioService', () => {
 
         let audios;
 
-        service.getAudioRequestsForUser(123, true).subscribe((result) => {
+        service.getAudioRequests(true).subscribe((result) => {
           audios = result;
         });
 
@@ -251,66 +252,82 @@ describe('AudioService', () => {
         expect(responseStatus).toEqual(204);
       });
     });
-  });
 
-  describe('constructor', () => {
-    it('audioRequests$ subscribe should call getAudioRequestsForUser and update unread count', fakeAsync(() => {
-      const audioSpy = jest.spyOn(service, 'getAudioRequestsForUser');
-      const unreadSpy = jest.spyOn(service, 'updateUnread');
+    describe('#getUnreadCount', () => {
+      it('gets unread count', () => {
+        const mockUnreadCount = { count: 5 };
+        let unreadCount;
 
-      service.audioRequests$.subscribe();
+        service.getUnreadCount().subscribe((count) => {
+          unreadCount = count;
+        });
 
-      tick();
+        const req = httpMock.expectOne(UNREAD_AUDIO_COUNT_PATH);
+        expect(req.request.method).toBe('GET');
 
-      expect(audioSpy).toHaveBeenCalledTimes(1);
-      expect(audioSpy).toHaveBeenCalledWith(123, false);
-      discardPeriodicTasks();
-    }));
+        req.flush(mockUnreadCount);
 
-    it('expiredAudioRequests$ subscribe should call getAudioRequestsForUser once', fakeAsync(() => {
-      const audioSpy = jest.spyOn(service, 'getAudioRequestsForUser');
-
-      service.expiredAudioRequests$.subscribe();
-
-      tick();
-
-      expect(audioSpy).toHaveBeenCalledTimes(1);
-      expect(audioSpy).toHaveBeenCalledWith(123, true);
-      discardPeriodicTasks();
-    }));
-  });
-
-  describe('#updateUnread', () => {
-    it('should filter only complete requests', fakeAsync(() => {
-      const filterSpy = jest.spyOn(service, 'filterCompletedRequests');
-      const mockAudios: UserAudioRequest[] = MOCK_AUDIO_REQUESTS;
-      let count!: number;
-      service.updateUnread(mockAudios);
-
-      service.unreadCount$.subscribe((result) => (count = result));
-
-      tick();
-
-      expect(filterSpy).toHaveBeenCalledWith(mockAudios);
-      expect(count).toEqual(5);
-      discardPeriodicTasks();
-    }));
-  });
-
-  describe('#filterCompletedRequests', () => {
-    it('should filter only complete requests', () => {
-      const mockAudios: UserAudioRequest[] = MOCK_AUDIO_REQUESTS;
-      const completeAudios = service.filterCompletedRequests(mockAudios);
-      expect(completeAudios.length).toBe(6);
+        expect(unreadCount).toEqual(mockUnreadCount.count);
+      });
     });
   });
 
-  describe('#getUnreadCount', () => {
-    it('should return number of unread count', () => {
-      const mockAudios: UserAudioRequest[] = MOCK_AUDIO_REQUESTS;
-      const completeAudios = service.filterCompletedRequests(mockAudios);
-      const unreadCount = service.getUnreadCount(completeAudios);
-      expect(unreadCount).toBe(5);
+  it('audioRequests$ should getAudioRequests and update unread count', fakeAsync(() => {
+    const getAudioRequestsSpy = jest.spyOn(service, 'getAudioRequests').mockReturnValue(of(MOCK_AUDIO_REQUESTS));
+
+    let result = 0;
+    service.audioRequests$.subscribe();
+
+    tick();
+
+    service.unreadAudioCount$.subscribe((count) => {
+      result = count;
     });
+
+    expect(result).toBe(5);
+    expect(getAudioRequestsSpy).toHaveBeenCalledTimes(1);
+    expect(getAudioRequestsSpy).toHaveBeenCalledWith(false);
+    discardPeriodicTasks();
+  }));
+
+  it('expiredAudioRequests$ should call getAudioRequests', fakeAsync(() => {
+    const audioSpy = jest.spyOn(service, 'getAudioRequests');
+
+    service.expiredAudioRequests$.subscribe();
+
+    tick();
+
+    expect(audioSpy).toHaveBeenCalledTimes(1);
+    expect(audioSpy).toHaveBeenCalledWith(true);
+    discardPeriodicTasks();
+  }));
+
+  it('#filterCompletedRequests', () => {
+    const mockAudios: UserAudioRequest[] = MOCK_AUDIO_REQUESTS;
+    const completeAudios = service.filterCompletedRequests(mockAudios);
+    expect(completeAudios.length).toBe(6);
+  });
+
+  it('#getDownloadUrl', () => {
+    const reqId = 123449;
+    const url = service.getDownloadUrl(reqId);
+    expect(url).toEqual(`/api/audio-requests/download?media_request_id=${reqId}`);
+  });
+
+  it('#setAudioRequest', () => {
+    const mockAudioRequest: UserAudioRequestRow = {
+      caseId: 123,
+      caseNumber: 'T20200190',
+      courthouse: 'Manchester Minshull Street',
+      hearingDate: '2023-10-03',
+      last_accessed_ts: '2023-08-23T09:00:00Z',
+      startTime: '2023-08-21T09:00:00Z',
+      endTime: '2023-08-21T10:00:00Z',
+      requestId: 123,
+      expiry: '2023-08-23T09:00:00Z',
+      status: 'OPEN',
+    };
+    service.setAudioRequest(mockAudioRequest);
+    expect(service.audioRequestView).toEqual(mockAudioRequest);
   });
 });

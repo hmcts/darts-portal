@@ -58,10 +58,8 @@
               routerLinkActive="active"
               ariaCurrentWhenActive="page"
               >Your Audio
-              <ng-container *ngIf="headerData$ | async as data">
-                <span *ngIf="data.unreadCount > 0" id="notifications" class="moj-notification-badge">{{
-                  data.unreadCount
-                }}</span>
+              <ng-container *ngIf="unreadAudioCount$ | async as count">
+                <span *ngIf="count > 0" id="notifications" class="moj-notification-badge">{{ count }}</span>
               </ng-container>
             </a>
           </li>
