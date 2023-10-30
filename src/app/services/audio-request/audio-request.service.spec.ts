@@ -1,5 +1,5 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed, discardPeriodicTasks, fakeAsync, tick } from '@angular/core/testing';
 import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
 import { UserState } from '@darts-types/user-state';
 import { UserService } from '@services/user/user.service';
@@ -254,9 +254,8 @@ describe('AudioService', () => {
   });
 
   describe('constructor', () => {
-    it('audioRequests$ subscribe should call getAudioRequestsForUser and update unread count', fakeAsync(() => {
+    it('audioRequests$ subscribe should call getAudioRequestsForUser', fakeAsync(() => {
       const audioSpy = jest.spyOn(service, 'getAudioRequestsForUser');
-      const unreadSpy = jest.spyOn(service, 'updateUnread');
 
       service.audioRequests$.subscribe();
 

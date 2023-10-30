@@ -1,15 +1,36 @@
-<div class="govuk-width-container">
-  <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-l">Internal Server Error</h1>
-        <!-- We should add unique identification for support requests later on -->
-        <p class="govuk-body">There was an error during operation.</p>
-        <p class="govuk-body">
-          Please try again later,
-          <a href="#" class="govuk-link">or contact the support team.</a>
-        </p>
+<ng-container *ngIf="error$ | async as error; else defaultContent">
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 *ngIf="!error.display || error.display === 'PAGE'" class="govuk-heading-l">
+            There is a problem with the service
+          </h1>
+          <h2 *ngIf="error.display === 'COMPONENT'" class="govuk-heading-l">An error has occurred.</h2>
+          <!-- We should add unique identification for support requests later on -->
+          <p class="govuk-body">
+            Try again or
+            <a href="mailto:crownITsupport@justice.gov.uk" class="govuk-link">contact Crown IT Support</a> if the
+            problem persists
+          </p>
+        </div>
       </div>
-    </div>
-  </main>
-</div>
+    </main>
+  </div>
+</ng-container>
+<ng-template #defaultContent>
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">There is a problem with the service</h1>
+          <p class="govuk-body">
+            Try again or
+            <a href="mailto:crownITsupport@justice.gov.uk" class="govuk-link">contact Crown IT Support</a> if the
+            problem persists
+          </p>
+        </div>
+      </div>
+    </main>
+  </div>
+</ng-template>

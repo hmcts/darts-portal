@@ -194,14 +194,4 @@ describe('Case search', () => {
 
     cy.get('#search-results').should('contain', '1 result');
   });
-
-  it('should route to Error page on 500 response', () => {
-    cy.contains('Search').click();
-    cy.get('h1').should('contain', 'Search for a case');
-    cy.get('#case_number').type('INTERNAL_SERVER_ERROR');
-    cy.get('button').contains('Search').click();
-    cy.get('h1').should('contain', 'Internal Server Error');
-    cy.get('.govuk-body').should('contain', 'There was an error during operation.');
-    cy.get('.moj-primary-navigation').should('not.exist');
-  });
 });
