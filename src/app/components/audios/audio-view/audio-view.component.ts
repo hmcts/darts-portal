@@ -54,6 +54,7 @@ export class AudioViewComponent {
   isDeleting = false;
   requestId: number;
   isAudioPlaying = false;
+  isAudioTouched = false;
   currentPlayTime = 0;
   mediaId: number;
 
@@ -139,6 +140,7 @@ export class AudioViewComponent {
 
   onPlayTimeChaged(playTime: number) {
     this.currentPlayTime = playTime;
+    this.isAudioTouched = true;
   }
 
   isRowPlaying(row: HearingEventRow): boolean {

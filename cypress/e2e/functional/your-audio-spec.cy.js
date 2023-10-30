@@ -66,7 +66,7 @@ describe('Your audio', () => {
   it('View audio request and delete', () => {
     cy.contains('Your Audio').click();
     cy.contains('T20200333').parents('tr').contains('View').click();
-    cy.contains('T20200333.zip').should('exist');
+    cy.contains('T20200333.mp3').should('exist');
     cy.contains('Delete audio file').click();
     cy.get(navigationSelector).should('not.exist');
     cy.contains('Are you sure you want to delete this item');
@@ -78,7 +78,7 @@ describe('Your audio', () => {
   it('View audio request and playback audio', () => {
     cy.contains('Your Audio').click();
     cy.contains('T20200192233').parents('tr').contains('View').click();
-    cy.contains('T20200192233.zip').should('exist');
+    cy.contains('T20200192233.mp3').should('exist');
 
     cy.get('audio').then(([audioEl]) => {
       expect(audioEl.paused).to.equal(true);
