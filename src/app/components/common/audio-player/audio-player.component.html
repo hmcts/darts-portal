@@ -11,6 +11,6 @@
   <source type="audio/mpeg" [src]="audioSource" />
 </audio>
 
-<p id="loading" *ngIf="!canPlay">Loading audio preview... Please wait</p>
+<p class="govuk-body" id="loading" *ngIf="!canPlay">Loading audio preview... Please wait</p>
 
-<p id="no-id-error" *ngIf="!mediaId">No media ID provided</p>
+<p class="govuk-body" id="no-id-error" *ngIf="!mediaId">No media ID provided</p>
