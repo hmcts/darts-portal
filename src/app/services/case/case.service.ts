@@ -6,6 +6,7 @@ import { catchError, map, shareReplay } from 'rxjs/operators';
 
 export const GET_COURTHOUSES_PATH = '/api/courthouses';
 export const GET_CASE_PATH = '/api/cases';
+export const GET_HEARINGS_PATH = 'api/hearings';
 export const ADVANCED_SEARCH_CASE_PATH = '/api/cases/search';
 
 @Injectable({
@@ -23,6 +24,19 @@ export class CaseService {
       catchError(() => {
         return of([]);
       })
+    );
+  }
+
+  getAllHearingTranscripts(hearingId: number): Observable<Transcript[]> {
+    const apiURL = `${GET_HEARINGS_PATH}/${hearingId}/transcripts`;
+    return this.http.get<Transcript[]>(apiURL).pipe(
+      map((transcripts) =>
+        transcripts.map((t) => ({
+          ...t,
+          date: t.hearing_date + 'T00:00:00Z',
+          requested_on: t.requested_on + 'T00:00:00Z',
+        }))
+      )
     );
   }
 

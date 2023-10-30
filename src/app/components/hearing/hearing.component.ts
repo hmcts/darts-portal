@@ -2,15 +2,28 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
+import { DataTableComponent } from '@common/data-table/data-table.component';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
-import { AudioEventRow, AudioRequest, AudioResponse, ErrorSummaryEntry, HearingPageState } from '@darts-types/index';
+import { TabsComponent } from '@common/tabs/tabs.component';
+import {
+  AudioEventRow,
+  AudioRequest,
+  AudioResponse,
+  DatatableColumn,
+  ErrorSummaryEntry,
+  HearingPageState,
+  TranscriptsRow,
+} from '@darts-types/index';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
+import { TabDirective } from '@directives/tab.directive';
+import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { CaseService } from '@services/case/case.service';
 import { HeaderService } from '@services/header/header.service';
 import { HearingService } from '@services/hearing/hearing.service';
+import { MappingService } from '@services/mapping/mapping.service';
 import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
-import { combineLatest } from 'rxjs';
+import { combineLatest, map } from 'rxjs';
 import { LoadingComponent } from '../common/loading/loading.component';
 import { EventsAndAudioComponent } from './events-and-audio/events-and-audio.component';
 import { HearingFileComponent } from './hearing-file/hearing-file.component';
@@ -33,6 +46,10 @@ import { RequestPlaybackAudioComponent } from './request-playback-audio/request-
     LoadingComponent,
     BreadcrumbComponent,
     BreadcrumbDirective,
+    TabsComponent,
+    TabDirective,
+    DataTableComponent,
+    TableRowTemplateDirective,
   ],
 })
 export class HearingComponent {
@@ -41,17 +58,40 @@ export class HearingComponent {
   hearingService = inject(HearingService);
   headerService = inject(HeaderService);
   userService = inject(UserService);
+  mappingService = inject(MappingService);
   audioTimes: { startTime: DateTime; endTime: DateTime } | null = null;
   private _state: HearingPageState = 'Default';
   public errorSummary: ErrorSummaryEntry[] = [];
+  hearingId = this.route.snapshot.params.hearing_id;
+  caseId = this.route.snapshot.params.caseId;
+  userState = this.route.snapshot.data.userState;
+  transcripts: TranscriptsRow[] = [];
+
+  public transcripts$ = this.caseService
+    .getAllHearingTranscripts(this.hearingId)
+    .pipe(map((transcript) => this.mappingService.mapTranscriptRequestToRows(transcript)));
+
+  transcriptColumns: DatatableColumn[] = [
+    { name: 'Type', prop: 'type', sortable: true },
+    { name: 'Requested on', prop: 'requestedOn', sortable: true },
+    { name: 'Requested by', prop: 'requestedBy', sortable: true },
+    { name: 'Status', prop: 'status', sortable: true },
+    { name: '', prop: '' },
+  ];
+
+  statusTagStyleMap: { [key: string]: string } = {
+    Requested: 'govuk-tag--blue',
+    'Awaiting Authorisation': 'govuk-tag--yellow',
+    Approved: 'govuk-tag--turquoise',
+    Rejected: 'govuk-tag--red',
+    'With Transcriber': 'govuk-tag--purple',
+    Complete: 'govuk-tag--green',
+    Closed: 'govuk-tag--grey',
+  };
 
   requestId!: number;
 
   requestObject!: AudioRequest;
-
-  hearingId = this.route.snapshot.params.hearing_id;
-  caseId = this.route.snapshot.params.caseId;
-  userState = this.route.snapshot.data.userState;
 
   case$ = this.caseService.getCase(this.caseId);
   hearing$ = this.caseService.getHearingById(this.caseId, this.hearingId);

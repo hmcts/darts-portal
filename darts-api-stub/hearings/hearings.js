@@ -2,6 +2,66 @@ const express = require('express');
 
 const router = express.Router();
 
+const transcriptOne = [
+  {
+    tra_id: 1,
+    hea_id: 2,
+    hearing_date: '2023-10-12',
+    type: 'Sentencing remarks',
+    requested_on: '2023-10-12',
+    requested_by_name: 'Joe Bloggs',
+    status: 'With Transcriber',
+  },
+  {
+    tra_id: 1,
+    hea_id: 2,
+    hearing_date: '2023-10-12',
+    type: 'Sentencing remarks',
+    requested_on: '2023-10-12',
+    requested_by_name: 'Joe Bloggs',
+    status: 'Complete',
+  },
+];
+
+const transcriptTwo = [
+  {
+    tra_id: 1,
+    hea_id: 2,
+    hearing_date: '2023-10-12',
+    type: 'Sentencing remarks',
+    requested_on: '2023-10-12',
+    requested_by_name: 'Joe Bloggs',
+    status: 'Requested',
+  },
+  {
+    tra_id: 1,
+    hea_id: 2,
+    hearing_date: '2023-10-12',
+    type: 'Sentencing remarks',
+    requested_on: '2023-10-12',
+    requested_by_name: 'Joe Bloggs',
+    status: 'Requested',
+  },
+  {
+    tra_id: 1,
+    hea_id: 2,
+    hearing_date: '2023-10-12',
+    type: 'Sentencing remarks',
+    requested_on: '2023-10-12',
+    requested_by_name: 'Joe Bloggs',
+    status: 'Complete',
+  },
+  {
+    tra_id: 1,
+    hea_id: 2,
+    hearing_date: '2023-10-12',
+    type: 'Sentencing remarks',
+    requested_on: '2023-10-12',
+    requested_by_name: 'Joe Bloggs',
+    status: 'Complete',
+  },
+];
+
 router.get('/:hearingId/events', (req, res) => {
   switch (req.params.hearingId) {
     case '1':
@@ -84,6 +144,29 @@ router.get('/:hearingId/events', (req, res) => {
         },
       ];
       res.send(body3);
+      break;
+    default:
+      res.send([]);
+      break;
+  }
+});
+
+// transcripts stub data
+router.get('/:hearingId/transcripts', (req, res) => {
+  switch (req.params.hearingId) {
+    case '404':
+      const resBody104 = {
+        type: 'CASE_104',
+        title: 'The requested case cannot be found',
+        status: 404,
+      };
+      res.status(404).send(resBody104);
+      break;
+    case '1':
+      res.send(transcriptOne);
+      break;
+    case '2':
+      res.send(transcriptTwo);
       break;
     default:
       res.send([]);

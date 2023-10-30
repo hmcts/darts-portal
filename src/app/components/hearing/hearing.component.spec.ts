@@ -4,7 +4,7 @@ import { By } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AudioEventRow } from '@darts-types/hearing-audio-event.interface';
-import { AudioRequest, Case, Hearing, HearingEventTypeEnum, HearingPageState } from '@darts-types/index';
+import { AudioRequest, Case, Hearing, HearingEventTypeEnum, HearingPageState, Transcript } from '@darts-types/index';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
 import { CaseService } from '@services/case/case.service';
 import { HeaderService } from '@services/header/header.service';
@@ -19,7 +19,7 @@ describe('HearingComponent', () => {
   let httpClientSpy: HttpClient;
   let caseService: CaseService;
   let hearingService: HearingService;
-  let userService: UserService;
+  let fakeUserService: Partial<UserService>;
   let component: HearingComponent;
   let fixture: ComponentFixture<HearingComponent>;
 
@@ -71,6 +71,27 @@ describe('HearingComponent', () => {
     },
   ]);
 
+  const mockTranscript: Observable<Transcript[]> = of([
+    {
+      tra_id: 1,
+      hea_id: 2,
+      hearing_date: '2023-10-12',
+      type: 'Sentencing remarks',
+      requested_on: '2023-10-12',
+      requested_by_name: 'Joe Bloggs',
+      status: 'With Transcriber',
+    },
+    {
+      tra_id: 1,
+      hea_id: 2,
+      hearing_date: '2023-10-12',
+      type: 'Sentencing remarks',
+      requested_on: '2023-10-12',
+      requested_by_name: 'Joe Bloggs',
+      status: 'Complete',
+    },
+  ]);
+
   const shd = of({
     id: 1,
     date: '2023-02-21',
@@ -103,14 +124,15 @@ describe('HearingComponent', () => {
 
     caseService = new CaseService(httpClientSpy);
     hearingService = new HearingService(httpClientSpy);
-    userService = new UserService(httpClientSpy);
 
     jest.spyOn(caseService, 'getCase').mockReturnValue(cd);
     jest.spyOn(caseService, 'getCaseHearings').mockReturnValue(hd);
+    jest.spyOn(caseService, 'getAllHearingTranscripts').mockReturnValue(mockTranscript);
     jest.spyOn(caseService, 'getHearingById').mockReturnValue(shd);
     jest.spyOn(hearingService, 'getAudio').mockReturnValue(ad);
     jest.spyOn(hearingService, 'getEvents').mockReturnValue(ed);
-    jest.spyOn(userService, 'getUserProfile').mockReturnValue(mockUser);
+
+    fakeUserService = { userProfile$: mockUser, isTranscriber: () => true };
 
     TestBed.configureTestingModule({
       imports: [HearingComponent, HearingFileComponent, RouterTestingModule],
@@ -119,7 +141,7 @@ describe('HearingComponent', () => {
         { provide: CaseService, useValue: caseService },
         { provide: HearingService, useValue: hearingService },
         { provide: HeaderService },
-        { provide: UserService, useValue: userService },
+        { provide: UserService, useValue: fakeUserService },
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
       ],
     });
