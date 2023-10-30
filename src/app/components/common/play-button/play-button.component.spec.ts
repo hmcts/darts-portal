@@ -8,7 +8,7 @@ describe('PlayButtonComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [PlayButtonComponent]
+      imports: [PlayButtonComponent],
     });
     fixture = TestBed.createComponent(PlayButtonComponent);
     component = fixture.componentInstance;

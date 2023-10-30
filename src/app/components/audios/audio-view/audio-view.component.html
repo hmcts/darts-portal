@@ -54,16 +54,17 @@
       (pause)="isAudioPlaying = false"
       (play)="isAudioPlaying = true"
       (playTime)="onPlayTimeChaged($event)"
-      [mediaId]="41"
+      [mediaId]="mediaId"
     ></app-audio-player>
 
-    <h3 class="govuk-heading-m">Skip to event</h3>
-    <p class="govuk-hint">Jump to a specific audio events within the audio file</p>
+    <h3 class="govuk-heading-m no-magin-bottom">Skip to event</h3>
+    <p class="govuk-hint no-magin-top">Jump to a specific audio events within the audio file</p>
 
     <app-data-table [rows]="data.rows" [columns]="columns" [pagination]="true">
       <ng-template [tableRowTemplate]="data.rows" let-row let-index>
         <td class="govuk-table__cell">
           <app-play-button
+            [class.isPlaying]="isRowPlaying(row)"
             [isPlaying]="isRowPlaying(row)"
             [isPaused]="isAudioPlaying && isRowPlaying(row)"
             (click)="onSkip(row.startTime, isRowPlaying(row))"

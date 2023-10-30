@@ -55,6 +55,7 @@ export class AudioViewComponent {
   requestId: number;
   isAudioPlaying = false;
   currentPlayTime = 0;
+  mediaId: number;
 
   columns: DatatableColumn[] = [
     { name: '', prop: '' },
@@ -70,6 +71,8 @@ export class AudioViewComponent {
       this.router.navigate(['/audios']);
     }
 
+    // this.mediaId = this.audioRequest.mediaId;
+    this.mediaId = 41; // Hardcoded for now until we can get the mediaId from the audioRequest
     this.requestId = this.audioRequest.requestId;
     const isUnread = !this.audioRequest.lastAccessed;
 
