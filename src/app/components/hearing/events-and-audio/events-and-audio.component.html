@@ -46,7 +46,7 @@
           </button>
           <app-audio-player
             *ngIf="isAudioInPreview(row.id)"
-            [audioSource]="'audioPreviewPath' + row.id"
+            [audioSource]="audioPreviewPath + row.id"
           ></app-audio-player>
           <a
             class="test-audio-download"
