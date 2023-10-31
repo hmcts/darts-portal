@@ -249,8 +249,6 @@ describe('AudioService', () => {
 
         req.flush(null, { status: 204, statusText: '' });
 
-        tick();
-
         expect(responseStatus).toEqual(204);
       });
     });
