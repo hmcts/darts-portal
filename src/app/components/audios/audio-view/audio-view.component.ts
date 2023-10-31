@@ -50,6 +50,7 @@ export class AudioViewComponent {
 
   audioRequest!: UserAudioRequestRow;
   downloadUrl = '';
+  audioSource = '';
   fileName = '';
   isDeleting = false;
   requestId: number;
@@ -75,6 +76,7 @@ export class AudioViewComponent {
     // this.mediaId = this.audioRequest.mediaId;
     this.mediaId = 41; // Hardcoded for now until we can get the mediaId from the audioRequest
     this.requestId = this.audioRequest.requestId;
+    this.audioSource = `/api/audio-requests/playback?media_request_id=${this.requestId}`;
     const isUnread = !this.audioRequest.lastAccessed;
 
     //Send request to update last accessed time of audio

@@ -44,7 +44,10 @@
           >
             Preview Audio
           </button>
-          <app-audio-player *ngIf="isAudioInPreview(row.id)" [mediaId]="row.id"></app-audio-player>
+          <app-audio-player
+            *ngIf="isAudioInPreview(row.id)"
+            [audioSource]="'audioPreviewPath' + row.id"
+          ></app-audio-player>
           <a
             class="test-audio-download"
             style="display: none"

@@ -1,6 +1,7 @@
 <audio
   #audioPlayer
-  *ngIf="mediaId && audioSource"
+  *ngIf="audioSource"
+  preload="auto"
   controls
   (canplay)="canPlay = true"
   (pause)="pause.emit()"
@@ -11,6 +12,6 @@
   <source type="audio/mpeg" [src]="audioSource" />
 </audio>
 
-<p class="govuk-body" id="loading" *ngIf="!canPlay">Loading audio preview... Please wait</p>
+<p class="govuk-body" id="loading" *ngIf="!canPlay">Loading audio... Please wait</p>
 
-<p class="govuk-body" id="no-id-error" *ngIf="!mediaId">No media ID provided</p>
+<p class="govuk-body" id="no-id-error" *ngIf="!audioSource">No audio source provided</p>

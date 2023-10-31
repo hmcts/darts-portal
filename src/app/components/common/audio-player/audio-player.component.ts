@@ -1,15 +1,6 @@
 /* eslint-disable @angular-eslint/no-output-native */
 import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-audio-player',
@@ -19,20 +10,15 @@ import {
   styleUrls: ['./audio-player.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AudioPlayerComponent implements OnInit {
+export class AudioPlayerComponent {
   @ViewChild('audioPlayer', { static: false }) audioPlayer!: ElementRef<HTMLAudioElement>;
 
-  @Input() mediaId: number | null = null;
+  @Input() audioSource: string | null = null;
   @Output() playTime = new EventEmitter<number>();
   @Output() pause = new EventEmitter<void>();
   @Output() play = new EventEmitter<void>();
 
-  audioSource: string | null = null;
   canPlay = false;
-
-  ngOnInit(): void {
-    this.audioSource = `/api/audio/preview/${this.mediaId}`;
-  }
 
   setPlayTime(time: number, shouldPlay: boolean): void {
     if (this.canPlay) {
