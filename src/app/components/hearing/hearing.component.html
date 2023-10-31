@@ -61,7 +61,12 @@
         <div *tab="'Transcripts'; count: transcripts.length">
           <div class="flex-space-between">
             <h2 class="govuk-heading-m">Transcripts for this hearing</h2>
-            <button *ngIf="transcripts.length" class="govuk-button govuk-button--secondary" data-module="govuk-button">
+            <button
+              *ngIf="transcripts.length"
+              class="govuk-button govuk-button--secondary"
+              data-module="govuk-button"
+              routerLink="./request-transcript"
+            >
               Request a new transcript
             </button>
           </div>

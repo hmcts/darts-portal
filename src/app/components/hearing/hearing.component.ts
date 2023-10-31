@@ -17,6 +17,7 @@ import {
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
+import { JoinPipe } from '@pipes/join';
 import { CaseService } from '@services/case/case.service';
 import { HeaderService } from '@services/header/header.service';
 import { HearingService } from '@services/hearing/hearing.service';
@@ -50,6 +51,7 @@ import { RequestPlaybackAudioComponent } from './request-playback-audio/request-
     TabDirective,
     DataTableComponent,
     TableRowTemplateDirective,
+    JoinPipe,
   ],
 })
 export class HearingComponent {
@@ -66,6 +68,7 @@ export class HearingComponent {
   caseId = this.route.snapshot.params.caseId;
   userState = this.route.snapshot.data.userState;
   transcripts: TranscriptsRow[] = [];
+  rows: AudioEventRow[] = [];
 
   public transcripts$ = this.caseService
     .getAllHearingTranscripts(this.hearingId)

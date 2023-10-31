@@ -38,6 +38,13 @@ const protectedRoutes: Routes = [
     path: 'case/:caseId/hearing/:hearing_id',
     loadComponent: () => import('./components/hearing/hearing.component').then((c) => c.HearingComponent),
   },
+  {
+    path: 'case/:caseId/hearing/:hearing_id/request-transcript',
+    loadComponent: () =>
+      import('./components/hearing/request-transcript/request-transcript.component').then(
+        (c) => c.RequestTranscriptComponent
+      ),
+  },
 ].map((route) => ({
   ...route,
   canActivate: [authGuard],

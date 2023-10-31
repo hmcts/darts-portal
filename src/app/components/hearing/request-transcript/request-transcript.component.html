@@ -1,0 +1,68 @@
+<ng-container *ngIf="data$ | async as vm; else loading">
+  <!-- Reporting Restriction Banner -->
+  <app-reporting-restriction
+    *ngIf="vm.case.reporting_restriction"
+    [reportingRestriction]="vm.case.reporting_restriction"
+  ></app-reporting-restriction>
+
+  <h1 class="govuk-heading-l">Request a new transcript</h1>
+  <h1 class="govuk-heading-s">Case ID</h1>
+  <h1 class="govuk-body">{{ vm.case.case_number }}</h1>
+  <h3 class="govuk-heading-s">Courthouse</h3>
+  <p class="govuk-body">{{ vm.case.courthouse }}</p>
+  <h3 class="govuk-heading-s">Defendant(s)</h3>
+  <p class="govuk-body">{{ vm.case.defendants | join }}</p>
+  <h3 class="govuk-heading-s">Hearing Date</h3>
+  <p class="govuk-body">{{ vm.hearing?.date | date: 'd MMM y' }}</p>
+
+  <div class="govuk-form-group">
+    <label class="govuk-label" for="request-type"> Request Type </label>
+    <select class="govuk-select" id="request-type" name="request-type">
+      <option value="" disabled selected>Please select</option>
+      <option value="sentencingRemarks">Sentencing Remarks</option>
+      <option value="summingUp">Summing up (inc. verdict)</option>
+      <option value="Antecedents">Antecedents</option>
+      <option value="argumentAndSubmissionOfRuling">Argument and submission of ruling</option>
+      <option value="courtLog">Court log</option>
+      <option value="mitigation">Mitigation</option>
+      <option value="proceedingsAfterVerdict">Proceedings after verdict</option>
+      <option value="proposedOpeningOfFacts">Proposed opening of facts</option>
+      <option value="specifiedTimes">Specified times</option>
+      <option value="other">Other</option>
+    </select>
+  </div>
+  <div class="govuk-form-group">
+    <label class="govuk-label" for="urgency"> Urgency </label>
+    <select class="govuk-select" id="urgency" name="urgency">
+      <option value="" disabled selected>Please select</option>
+      <option value="overnight">Overnight</option>
+      <option value="threeWorkingDays">3 working days</option>
+      <option value="sevenWorkingDays">7 working days</option>
+      <option value="twelveWorkingDays">12 working days</option>
+    </select>
+  </div>
+  <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
+  <h2 class="govuk-heading-m">Audio list</h2>
+  <!-- insert table here -->
+  <app-data-table
+    id="requestTranscriptTable"
+    [rows]="mapEventsAndAudioToTable(vm.audios)"
+    [columns]="transcriptRequestColumns"
+    [pagination]="false"
+  >
+    <ng-template [tableRowTemplate]="mapEventsAndAudioToTable(vm.audios)" let-row>
+      <td class="govuk-table__cell">{{ row.media_start_timestamp | date: 'HH:mm:ss' }}</td>
+      <td class="govuk-table__cell">{{ row.media_end_timestamp | date: 'HH:mm:ss' }}</td>
+      <td class="govuk-table__cell">{{ row.event }}</td>
+    </ng-template>
+  </app-data-table>
+  <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
+  <div class="govuk-button-group">
+    <button class="govuk-button" data-module="govuk-button">Continue</button>
+    <a class="govuk-link" routerLink="../" routerLinkActive="router-link-active">Cancel</a>
+  </div>
+</ng-container>
+
+<ng-template #loading>
+  <app-loading text="Loading hearing details..."></app-loading>
+</ng-template>
