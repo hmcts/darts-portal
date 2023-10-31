@@ -236,7 +236,7 @@ describe('AudioService', () => {
       });
     });
 
-    describe('#patchAudioRequest', () => {
+    describe('#patchAudioRequestLastAccess', () => {
       it('sends patch request', () => {
         const reqId = 123449;
         let responseStatus;
@@ -248,6 +248,8 @@ describe('AudioService', () => {
         expect(req.request.method).toBe('PATCH');
 
         req.flush(null, { status: 204, statusText: '' });
+
+        tick();
 
         expect(responseStatus).toEqual(204);
       });
