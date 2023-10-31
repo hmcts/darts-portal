@@ -22,7 +22,7 @@ export class AudioRequestService {
   readonly unreadCount$: Observable<number> = this.unreadCount.asObservable();
 
   // Store audio request when clicking 'View' on 'Your Audio' screen
-  audioRequestView!: UserAudioRequestRow;
+  audioRequestView: UserAudioRequestRow | null = null;
 
   audioRequests$ = timer(0, this.POLL_INTERVAL * 1000).pipe(
     switchMap(() => this.getAudioRequests(false)),

@@ -9,18 +9,20 @@
     [reportingRestriction]="data.case.reporting_restriction"
   ></app-reporting-restriction>
 
-  <div *ngIf="data.errorCode === 403" class="govuk-error-summary" data-module="govuk-error-summary">
-    <div role="alert">
-      <h2 class="govuk-error-summary__title">There is a problem</h2>
-      <div class="govuk-error-summary__body">
-        <ul class="govuk-list govuk-error-summary__list">
-          <li *ngFor="let error of permissionErrors">
-            <a [routerLink]="['.']">{{ error }}</a>
-          </li>
-        </ul>
+  <ng-container *ngIf="data.error">
+    <div *ngIf="data.error.status === 403" class="govuk-error-summary" data-module="govuk-error-summary">
+      <div role="alert">
+        <h2 class="govuk-error-summary__title">There is a problem</h2>
+        <div class="govuk-error-summary__body">
+          <ul class="govuk-list govuk-error-summary__list">
+            <li *ngFor="let error of permissionErrors">
+              <a [routerLink]="['.']">{{ error }}</a>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
-  </div>
+  </ng-container>
 
   <h1 class="govuk-caption-l">Audio File</h1>
   <h1 class="govuk-heading-l">{{ fileName }}</h1>
@@ -43,9 +45,7 @@
   </ng-container>
 
   <div class="govuk-button-group">
-    <button class="govuk-button" (click)="onDownloadClicked()" [disabled]="data.errorCode !== 200">
-      Download audio file
-    </button>
+    <button class="govuk-button" (click)="onDownloadClicked()" [disabled]="data.error">Download audio file</button>
   </div>
 
   <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
@@ -54,7 +54,7 @@
 </ng-container>
 
 <app-audio-delete
-  *ngIf="isDeleting"
+  *ngIf="isDeleting && audioRequest"
   [rowsToDelete]="[audioRequest]"
   (confirm)="onDeleteConfirmed()"
   (cancel)="isDeleting = false"
