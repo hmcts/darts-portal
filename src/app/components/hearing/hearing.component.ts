@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
 import { DataTableComponent } from '@common/data-table/data-table.component';
@@ -54,7 +54,7 @@ import { RequestPlaybackAudioComponent } from './request-playback-audio/request-
     JoinPipe,
   ],
 })
-export class HearingComponent {
+export class HearingComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private caseService = inject(CaseService);
   hearingService = inject(HearingService);
@@ -69,6 +69,7 @@ export class HearingComponent {
   userState = this.route.snapshot.data.userState;
   transcripts: TranscriptsRow[] = [];
   rows: AudioEventRow[] = [];
+  defaultTab = 'Events and Audio';
 
   public transcripts$ = this.caseService
     .getAllHearingTranscripts(this.hearingId)
@@ -121,6 +122,12 @@ export class HearingComponent {
       this.headerService.hideNavigation();
     }
     this._state = value;
+  }
+
+  ngOnInit(): void {
+    if (this.route.snapshot.queryParams.tab) {
+      this.defaultTab = this.route.snapshot.queryParams.tab;
+    }
   }
 
   onEventsSelected(audioAndEvents: AudioEventRow[]) {

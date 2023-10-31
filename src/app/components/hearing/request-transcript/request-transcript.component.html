@@ -59,7 +59,9 @@
   <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
   <div class="govuk-button-group">
     <button class="govuk-button" data-module="govuk-button">Continue</button>
-    <a class="govuk-link" routerLink="../" routerLinkActive="router-link-active">Cancel</a>
+    <a class="govuk-link" routerLink="../" [queryParams]="{ tab: 'Transcripts' }" routerLinkActive="router-link-active"
+      >Cancel</a
+    >
   </div>
 </ng-container>
 

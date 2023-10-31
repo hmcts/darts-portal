@@ -36,7 +36,7 @@
 
   <div [hidden]="state !== 'Default'">
     <app-hearing-file [case]="vm.case" [hearing]="vm.hearing"></app-hearing-file>
-    <app-tabs>
+    <app-tabs [default]="defaultTab">
       <div *tab="'Events and Audio'">
         <!-- Hearing Screen -->
 

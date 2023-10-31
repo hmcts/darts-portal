@@ -29,7 +29,9 @@ import { TableRowTemplateDirective } from '@directives/table-row-template.direct
 })
 export class RequestTranscriptComponent implements OnInit {
   ngOnInit(): void {
-    this.headerService.hideNavigation();
+    setTimeout(() => {
+      this.headerService.hideNavigation();
+    }, 0);
   }
   route = inject(ActivatedRoute);
   caseService = inject(CaseService);
