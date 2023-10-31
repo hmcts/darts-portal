@@ -91,6 +91,25 @@ describe('AudioViewComponent', () => {
 
       expect(saveAsSpy).toHaveBeenCalledWith(mockBlob, 'T20200331.zip');
     });
+
+    it('should call saveAs with the correct arguments', () => {
+      const mockBlob = new Blob(['test data'], { type: 'text/plain' });
+      Object.defineProperty(window.URL, 'createObjectURL', { value: jest.fn() });
+      Object.defineProperty(window.URL, 'revokeObjectURL', { value: jest.fn() });
+
+      const createObjectURLSpy = jest.spyOn(window.URL, 'createObjectURL').mockReturnValue('mock-url');
+      const createElementSpy = jest.spyOn(document, 'createElement').mockReturnValue(document.createElement('a'));
+      const appendChildSpy = jest.spyOn(document.body, 'appendChild');
+      const revokeObjectURLMock = jest.spyOn(window.URL, 'revokeObjectURL');
+
+      component['saveAs'](mockBlob, 'test.zip');
+
+      expect(createObjectURLSpy).toHaveBeenCalledWith(mockBlob);
+      expect(createElementSpy).toHaveBeenCalledWith('a');
+      expect(appendChildSpy).toHaveBeenCalled();
+      expect(appendChildSpy).toHaveBeenCalledWith(expect.any(HTMLAnchorElement));
+      expect(revokeObjectURLMock).toHaveBeenCalledWith('mock-url');
+    });
   });
 
   describe('With audioRequestView set to null', () => {
