@@ -1,5 +1,7 @@
-tr.govuk-table__row {
-  background-color: aliceblue;
+::ng-deep {
+  .govuk-table__body {
+    background-color: aliceblue;
+  }
 }
 
 .govuk-table__cell {
