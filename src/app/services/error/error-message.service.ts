@@ -29,6 +29,10 @@ export class ErrorMessageService {
     this.errorMessage.next(error);
   }
 
+  clearErrorMessage() {
+    this.errorMessage.next(null);
+  }
+
   updateDisplayType(type: 'PAGE' | 'COMPONENT'): void {
     const currentError: ErrorMessage | null = this.errorMessage.getValue();
     if (currentError) {

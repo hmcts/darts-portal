@@ -13,8 +13,6 @@ class MockWindow {
 
 describe('ErrorInterceptor', () => {
   let interceptor: ErrorInterceptor;
-  let errorMsgService: ErrorMessageService;
-  let errorHandler: ErrorHandler;
   let mockWindow: MockWindow;
 
   beforeEach(() => {
@@ -28,8 +26,6 @@ describe('ErrorInterceptor', () => {
       ],
     });
     interceptor = TestBed.inject(ErrorInterceptor);
-    errorHandler = TestBed.inject(ErrorHandler);
-    errorMsgService = TestBed.inject(ErrorMessageService);
   });
 
   it('should be created', () => {

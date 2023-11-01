@@ -236,7 +236,7 @@ describe('AudioService', () => {
       });
     });
 
-    describe('#patchAudioRequest', () => {
+    describe('#patchAudioRequestLastAccess', () => {
       it('sends patch request', () => {
         const reqId = 123449;
         let responseStatus;
@@ -308,10 +308,23 @@ describe('AudioService', () => {
     expect(completeAudios.length).toBe(6);
   });
 
-  it('#getDownloadUrl', () => {
-    const reqId = 123449;
-    const url = service.getDownloadUrl(reqId);
-    expect(url).toEqual(`/api/audio-requests/download?media_request_id=${reqId}`);
+  it('#downloadAudio', () => {
+    const requestId = 123449;
+    const mockBlob = new Blob(['mock audio data'], { type: 'audio/wav' });
+    jest.spyOn(service['http'], 'get').mockReturnValueOnce(of(mockBlob));
+
+    let receivedBlob: Blob | undefined;
+    service.downloadAudio(requestId).subscribe((blob: Blob) => {
+      receivedBlob = blob;
+    });
+
+    const expectedUrl = `api/audio-requests/download`;
+    expect(service['http'].get).toHaveBeenCalledWith(expectedUrl, {
+      params: { media_request_id: requestId },
+      responseType: 'blob',
+    });
+
+    expect(receivedBlob).toBeInstanceOf(Blob);
   });
 
   it('#setAudioRequest', () => {
