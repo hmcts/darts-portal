@@ -6,6 +6,8 @@
       [reportingRestriction]="vm.case.reporting_restriction"
     ></app-reporting-restriction>
 
+    <app-validation-error-summary [errors]="validationErrors"></app-validation-error-summary>
+
     <h1 class="govuk-heading-l">Request a new transcript</h1>
     <h1 class="govuk-heading-s">Case ID</h1>
     <h1 class="govuk-body">{{ vm.case.case_number }}</h1>
@@ -16,30 +18,36 @@
     <h3 class="govuk-heading-s">Hearing Date</h3>
     <p class="govuk-body">{{ vm.hearing?.date | date: 'd MMM y' }}</p>
 
-    <div class="govuk-form-group">
-      <label class="govuk-label" for="request-type"> Request Type </label>
-      <select class="govuk-select" id="request-type" name="request-type">
+    <div class="govuk-form-group" [class.govuk-form-group--error]="isSubmitted && transcriptionTypeFormControl.invalid">
+      <label class="govuk-label" for="transcription-type"> Request Type </label>
+      <p *ngIf="isSubmitted && transcriptionTypeFormControl.invalid" id="subject-error" class="govuk-error-message">
+        <span class="govuk-visually-hidden">Error:</span> {{ getValidationMessage('transcription-type') }}
+      </p>
+      <select
+        class="govuk-select"
+        id="transcription-type"
+        name="transcription-type"
+        [formControl]="transcriptionTypeFormControl"
+        [class.govuk-select--error]="isSubmitted && transcriptionTypeFormControl.invalid"
+      >
         <option value="" disabled selected>Please select</option>
-        <option value="sentencingRemarks">Sentencing Remarks</option>
-        <option value="summingUp">Summing up (inc. verdict)</option>
-        <option value="Antecedents">Antecedents</option>
-        <option value="argumentAndSubmissionOfRuling">Argument and submission of ruling</option>
-        <option value="courtLog">Court log</option>
-        <option value="mitigation">Mitigation</option>
-        <option value="proceedingsAfterVerdict">Proceedings after verdict</option>
-        <option value="proposedOpeningOfFacts">Proposed opening of facts</option>
-        <option value="specifiedTimes">Specified times</option>
-        <option value="other">Other</option>
+        <option *ngFor="let type of vm.transcriptionTypes" [value]="type.trt_id">{{ type.description }}</option>
       </select>
     </div>
-    <div class="govuk-form-group">
+    <div class="govuk-form-group" [class.govuk-form-group--error]="isSubmitted && urgencyFormControl.invalid">
       <label class="govuk-label" for="urgency"> Urgency </label>
-      <select class="govuk-select" id="urgency" name="urgency">
+      <p *ngIf="isSubmitted && urgencyFormControl.invalid" id="subject-error" class="govuk-error-message">
+        <span class="govuk-visually-hidden">Error:</span> {{ getValidationMessage('urgency') }}
+      </p>
+      <select
+        class="govuk-select"
+        id="urgency"
+        name="urgency"
+        [formControl]="urgencyFormControl"
+        [class.govuk-select--error]="isSubmitted && urgencyFormControl.invalid"
+      >
         <option value="" disabled selected>Please select</option>
-        <option value="overnight">Overnight</option>
-        <option value="threeWorkingDays">3 working days</option>
-        <option value="sevenWorkingDays">7 working days</option>
-        <option value="twelveWorkingDays">12 working days</option>
+        <option *ngFor="let urgency of vm.urgencies" [value]="urgency.tru_id">{{ urgency.description }}</option>
       </select>
     </div>
     <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
@@ -59,7 +67,7 @@
     </app-data-table>
     <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
     <div class="govuk-button-group">
-      <button class="govuk-button" data-module="govuk-button" (click)="step = step + 1">Continue</button>
+      <button class="govuk-button" data-module="govuk-button" (click)="onNextStep()">Continue</button>
       <a
         class="govuk-link"
         routerLink="../"
@@ -71,6 +79,10 @@
   </ng-container>
   <ng-container *ngIf="step === 2">
     <p>Events, audio and specific times requests</p>
+  </ng-container>
+
+  <ng-container *ngIf="step === 3">
+    <p>Confirmation</p>
   </ng-container>
 </ng-container>
 

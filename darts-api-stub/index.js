@@ -26,6 +26,8 @@ app.use('/cases', require('./cases/case'));
 app.use('/audio-requests', require('./audios/audios'));
 // hearing APIs
 app.use('/hearings', require('./hearings/hearings'));
+// transcription APIs
+app.use('/transcriptions', require('./transcriptions/transcriptions'));
 // audio APIs
 app.use('/audio', require('./audios'));
 // proxy non-stubbed routes to the actual API
