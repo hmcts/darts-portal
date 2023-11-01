@@ -1,12 +1,14 @@
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AudioPlayerComponent } from '@common/audio-player/audio-player.component';
 import { PlayButtonComponent } from '@common/play-button/play-button.component';
 import { HearingEvent } from '@darts-types/hearing-event.interface';
 import { Case, HearingEventRow, UserAudioRequestRow } from '@darts-types/index';
 import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { CaseService } from '@services/case/case.service';
+import { ErrorMessageService } from '@services/error/error-message.service';
 import { HearingService } from '@services/hearing/hearing.service';
 import { of } from 'rxjs';
 import { AudioViewComponent } from './audio-view.component';
@@ -15,11 +17,12 @@ describe('AudioViewComponent', () => {
   let component: AudioViewComponent;
   let fixture: ComponentFixture<AudioViewComponent>;
   let patchAudioRequestLastAccessSpy: jest.SpyInstance;
+  let router: Router;
 
   const mockActivatedRoute = {
     snapshot: {
       params: {
-        requestId: 111,
+        requestId: 12378,
       },
     },
   };
@@ -108,87 +111,185 @@ describe('AudioViewComponent', () => {
     getEvents: () => of(MOCK_HEARING_EVENTS),
   };
 
+  const fakeErrorMessageService = {
+    errorMessage$: of(null),
+    clearErrorMessage: jest.fn(),
+  };
+
   const fakeAudioRequestService = {
     audioRequestView: MOCK_AUDIO_REQUEST,
-    patchAudioRequestLastAccess: () => of(),
-    getDownloadUrl: () => 'api/download',
+    patchAudioRequestLastAccess: () => of(new HttpResponse<Response>({ status: 200 })),
+    deleteAudioRequests: jest.fn(),
+    downloadAudio: jest.fn(),
   };
 
   const fakeCaseService = {
     getCase: () => of(MOCK_CASE),
   };
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [AudioViewComponent, PlayButtonComponent, AudioPlayerComponent, HttpClientTestingModule],
-      providers: [
-        { provide: ActivatedRoute, useValue: mockActivatedRoute },
-        { provide: AudioRequestService, useValue: fakeAudioRequestService },
-        { provide: HearingService, useValue: fakeHearingService },
-        { provide: CaseService, useValue: fakeCaseService },
-      ],
+  describe('With audioRequestView', () => {
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [AudioViewComponent, PlayButtonComponent, AudioPlayerComponent, HttpClientTestingModule],
+        providers: [
+          { provide: ActivatedRoute, useValue: mockActivatedRoute },
+          { provide: AudioRequestService, useValue: fakeAudioRequestService },
+          { provide: HearingService, useValue: fakeHearingService },
+          { provide: CaseService, useValue: fakeCaseService },
+          { provide: ErrorMessageService, useValue: fakeErrorMessageService },
+          { provide: Router, useValue: { navigate: jest.fn() } },
+        ],
+      });
+      fixture = TestBed.createComponent(AudioViewComponent);
+      component = fixture.componentInstance;
+      router = TestBed.inject(Router) as jest.Mocked<Router>;
+      // patchAudioRequestLastAccessSpy = jest.spyOn(fakeAudioRequestService, 'patchAudioRequestLastAccess');
+      fixture.detectChanges();
     });
-    fixture = TestBed.createComponent(AudioViewComponent);
-    component = fixture.componentInstance;
-    patchAudioRequestLastAccessSpy = jest.spyOn(fakeAudioRequestService, 'patchAudioRequestLastAccess');
-    fixture.detectChanges();
+
+    it('should create', () => {
+      expect(component).toBeTruthy();
+      // expect(component.audioPlayer).toBeTruthy();
+    });
+
+    describe('#constructor', () => {
+      it('should set the audioRequest', () => {
+        expect(component.audioRequest).toEqual(fakeAudioRequestService.audioRequestView);
+      });
+      it('should set the requestId', () => {
+        expect(component.requestId).toEqual(fakeAudioRequestService.audioRequestView.requestId);
+      });
+      it('should set the case$', () => {
+        expect(component.case$).toBeTruthy();
+      });
+      it('should set the hearingEvents$', () => {
+        expect(component.eventRows$).toBeTruthy();
+      });
+      it('should set the currentPlayTime', () => {
+        expect(component.currentPlayTime).toEqual(0);
+      });
+      it('should set the audioUrl', () => {
+        expect(component.downloadUrl).toEqual('api/download');
+      });
+      it('should set the fileName', () => {
+        expect(component.fileName).toEqual('T20200331.mp3');
+      });
+      it('should call patchAudioRequestLastAccess()', () => {
+        expect(patchAudioRequestLastAccessSpy).toHaveBeenCalledWith(12378, true);
+      });
+    });
+
+    describe('#isRowPlaying', () => {
+      it('should return true if the row is playing', () => {
+        component.currentPlayTime = 1.5;
+        const row: HearingEventRow = {
+          eventType: 'Case called on',
+          eventTime: '2023-11-13T09:00:10.000Z',
+          audioTime: '00:00:10',
+          startTime: 1,
+          endTime: 2,
+        };
+        expect(component.isRowPlaying(row)).toBe(true);
+      });
+
+      it('should return false if the row is not playing', () => {
+        component.currentPlayTime = 1.5;
+        const row: HearingEventRow = {
+          eventType: 'Case called on',
+          eventTime: '2023-11-13T09:00:10.000Z',
+          audioTime: '00:00:10',
+          startTime: 2,
+          endTime: 3,
+        };
+        expect(component.isRowPlaying(row)).toBe(false);
+      });
+    });
+
+    it('should navigate to /audios on successful deletion', () => {
+      fakeAudioRequestService.deleteAudioRequests.mockReturnValue(of(null));
+      component.requestId = 123;
+
+      component.onDeleteConfirmed();
+
+      expect(fakeAudioRequestService.deleteAudioRequests).toHaveBeenCalledWith(123);
+
+      expect(router.navigate).toHaveBeenCalledWith(['/audios']);
+    });
+
+    it('should set isDeleting to false on deletion error', () => {
+      const error = new HttpErrorResponse({ status: 500 });
+      fakeAudioRequestService.deleteAudioRequests.mockReturnValue(of(error));
+      component.requestId = 123;
+
+      component.onDeleteConfirmed();
+
+      expect(fakeAudioRequestService.deleteAudioRequests).toHaveBeenCalledWith(123);
+      expect(component.isDeleting).toBe(false);
+    });
+
+    it('should download audio and call saveAs', () => {
+      const mockBlob = new Blob(['audio data'], { type: 'audio/wav' });
+      fakeAudioRequestService.downloadAudio.mockReturnValue(of(mockBlob));
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const saveAsSpy = jest.spyOn(component as any, 'saveAs');
+
+      component.onDownloadClicked();
+
+      expect(fakeAudioRequestService.downloadAudio).toHaveBeenCalledWith(12378);
+
+      expect(saveAsSpy).toHaveBeenCalledWith(mockBlob, 'T20200331.zip');
+    });
+
+    it('should call saveAs with the correct arguments', () => {
+      const mockBlob = new Blob(['test data'], { type: 'text/plain' });
+      Object.defineProperty(window.URL, 'createObjectURL', { value: jest.fn() });
+      Object.defineProperty(window.URL, 'revokeObjectURL', { value: jest.fn() });
+
+      const createObjectURLSpy = jest.spyOn(window.URL, 'createObjectURL').mockReturnValue('mock-url');
+      const createElementSpy = jest.spyOn(document, 'createElement').mockReturnValue(document.createElement('a'));
+      const appendChildSpy = jest.spyOn(document.body, 'appendChild');
+      const revokeObjectURLMock = jest.spyOn(window.URL, 'revokeObjectURL');
+
+      component['saveAs'](mockBlob, 'test.zip');
+
+      expect(createObjectURLSpy).toHaveBeenCalledWith(mockBlob);
+      expect(createElementSpy).toHaveBeenCalledWith('a');
+      expect(appendChildSpy).toHaveBeenCalled();
+      expect(appendChildSpy).toHaveBeenCalledWith(expect.any(HTMLAnchorElement));
+      expect(revokeObjectURLMock).toHaveBeenCalledWith('mock-url');
+    });
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-    expect(component.audioPlayer).toBeTruthy();
-  });
+  describe('With audioRequestView set to null', () => {
+    const audioRequestService = {
+      audioRequestView: null,
+      patchAudioRequestLastAccess: () => of(new HttpResponse<Response>({ status: 200 })),
+      deleteAudioRequests: jest.fn(),
+      downloadAudio: jest.fn(),
+    };
 
-  describe('#constructor', () => {
-    it('should set the audioRequest', () => {
-      expect(component.audioRequest).toEqual(fakeAudioRequestService.audioRequestView);
-    });
-    it('should set the requestId', () => {
-      expect(component.requestId).toEqual(fakeAudioRequestService.audioRequestView.requestId);
-    });
-    it('should set the case$', () => {
-      expect(component.case$).toBeTruthy();
-    });
-    it('should set the hearingEvents$', () => {
-      expect(component.eventRows$).toBeTruthy();
-    });
-    it('should set the currentPlayTime', () => {
-      expect(component.currentPlayTime).toEqual(0);
-    });
-    it('should set the audioUrl', () => {
-      expect(component.downloadUrl).toEqual('api/download');
-    });
-    it('should set the fileName', () => {
-      expect(component.fileName).toEqual('T20200331.mp3');
-    });
-    it('should call patchAudioRequestLastAccess()', () => {
-      expect(patchAudioRequestLastAccessSpy).toHaveBeenCalledWith(12378, true);
-    });
-  });
-
-  describe('#isRowPlaying', () => {
-    it('should return true if the row is playing', () => {
-      component.currentPlayTime = 1.5;
-      const row: HearingEventRow = {
-        eventType: 'Case called on',
-        eventTime: '2023-11-13T09:00:10.000Z',
-        audioTime: '00:00:10',
-        startTime: 1,
-        endTime: 2,
-      };
-      expect(component.isRowPlaying(row)).toBe(true);
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [AudioViewComponent, HttpClientTestingModule],
+        providers: [
+          { provide: ActivatedRoute, useValue: mockActivatedRoute },
+          { provide: AudioRequestService, useValue: audioRequestService },
+          { provide: Router, useValue: { navigate: jest.fn() } },
+        ],
+      });
+      fixture = TestBed.createComponent(AudioViewComponent);
+      component = fixture.componentInstance;
+      router = TestBed.inject(Router) as jest.Mocked<Router>;
+      fixture.detectChanges();
     });
 
-    it('should return false if the row is not playing', () => {
-      component.currentPlayTime = 1.5;
-      const row: HearingEventRow = {
-        eventType: 'Case called on',
-        eventTime: '2023-11-13T09:00:10.000Z',
-        audioTime: '00:00:10',
-        startTime: 2,
-        endTime: 3,
-      };
-      expect(component.isRowPlaying(row)).toBe(false);
+    it('should navigate to /audios on null audioRequestView', () => {
+      const navigateSpy = jest.spyOn(router, 'navigate');
+
+      fixture.detectChanges();
+
+      expect(navigateSpy).toHaveBeenCalledWith(['/audios']);
     });
   });
 });

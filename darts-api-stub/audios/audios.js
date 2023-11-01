@@ -104,6 +104,18 @@ const audioRequestMulti = [
     output_format: 'mp3',
   },
   {
+    case_id: 7,
+    media_request_id: 12376,
+    case_number: 'T20200334',
+    courthouse_name: 'Manchester',
+    hearing_date: '2023-10-04',
+    media_request_start_ts: '2023-08-21T09:00:00Z',
+    media_request_end_ts: '2023-08-21T10:00:00Z',
+    media_request_expiry_ts: '2023-08-23T09:00:00Z',
+    media_request_status: 'COMPLETED',
+    last_accessed_ts: '2023-08-23T09:00:00Z',
+  },
+  {
     case_id: 8,
     media_request_id: 12342,
     case_number: 'T2020011820',
@@ -259,7 +271,12 @@ router.get('/playback', (req, res) => {
 });
 
 router.get('/download', (req, res) => {
-  res.sendFile(path.join(__dirname, './preview', 'preview.mp3.zip'));
+  const mediaReqId = req.query.media_request_id;
+  if (mediaReqId !== '12377') {
+    res.sendFile(path.join(__dirname, './preview', 'preview.mp3.zip'));
+  } else {
+    res.sendStatus(403);
+  }
 });
 
 router.get('/not-accessed-count', (req, res) => {

@@ -1,17 +1,16 @@
-import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
-import { ResultsComponent } from './results/results.component';
-import { initAll } from '@scottish-government/pattern-library/src/all';
-import { catchError, ignoreElements, Observable, of, Subscription } from 'rxjs';
+import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CourthouseComponent } from '@common/courthouse/courthouse.component';
-import { CaseService } from '@services/case/case.service';
-import { SearchFormValues } from '@darts-types/search-form.interface';
-import { futureDateValidator } from '@validators/future-date.validator';
-import { SearchErrorComponent } from './search-error/search-error.component';
-import { ErrorSummaryEntry, FieldErrors } from '@darts-types/index';
 import { LoadingComponent } from '@common/loading/loading.component';
+import { ErrorSummaryEntry, FieldErrors, SearchFormValues } from '@darts-types/index';
+import { initAll } from '@scottish-government/pattern-library/src/all';
+import { CaseService } from '@services/case/case.service';
+import { ErrorMessageService } from '@services/error/error-message.service';
+import { futureDateValidator } from '@validators/future-date.validator';
+import { Subscription, catchError, ignoreElements, of } from 'rxjs';
+import { ResultsComponent } from './results/results.component';
+import { SearchErrorComponent } from './search-error/search-error.component';
 
 const fieldErrors: FieldErrors = {
   courthouse: {
@@ -61,10 +60,13 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   // Retrieve Previous Search Results
   searchResults$ = this.caseService.searchResults$;
-  searchError$: Observable<string> | null = null;
+  searchError$ = this.errorMsgService.errorMessage$;
   subs: Subscription[] = [];
 
-  constructor(private caseService: CaseService) {}
+  constructor(
+    private caseService: CaseService,
+    private errorMsgService: ErrorMessageService
+  ) {}
 
   form: FormGroup = new FormGroup({
     case_number: new FormControl(),
@@ -131,18 +133,20 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     // Prevent service call being spammed with no form values
     if (!this.form.dirty && !this.form.touched) {
-      this.searchError$ = of('CASE_101');
+      //Manually set ErrorMessage for this case
+      this.errorMsgService.setErrorMessage({ type: 'CASE_101', status: 204, display: 'COMPONENT' });
       return;
     }
 
     this.searchResults$ = this.caseService.searchCases(this.form.value);
     this.searchError$ = this.searchResults$.pipe(
       ignoreElements(),
-      catchError((error: HttpErrorResponse) => {
+      catchError(() => {
         // clear search form and results or error state will be cached in service
         this.caseService.searchFormValues = null;
         this.caseService.searchResults$ = null;
-        return of(error.error.type);
+        this.errorMsgService.updateDisplayType('COMPONENT');
+        return this.errorMsgService.errorMessage$;
       })
     );
   }
@@ -188,7 +192,7 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.searchResults$ = null;
     this.caseService.searchResults$ = null;
     this.caseService.searchFormValues = null;
-    this.searchError$ = null;
+    this.searchError$ = of(null);
     this.isSubmitted = false;
     this.errorSummary = [];
     this.courthouseComponent.reset();

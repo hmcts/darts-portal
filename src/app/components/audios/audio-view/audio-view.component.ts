@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AudioPlayerComponent } from '@common/audio-player/audio-player.component';
 import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
@@ -7,11 +7,13 @@ import { DataTableComponent } from '@common/data-table/data-table.component';
 import { PlayButtonComponent } from '@common/play-button/play-button.component';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
 import { Case } from '@darts-types/case.interface';
+import { ErrorMessage } from '@darts-types/error-message.interface';
 import { DatatableColumn, HearingEvent, HearingEventRow, UserAudioRequestRow } from '@darts-types/index';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { CaseService } from '@services/case/case.service';
+import { ErrorMessageService } from '@services/error/error-message.service';
 import { HearingService } from '@services/hearing/hearing.service';
 import { DateTime } from 'luxon';
 import { combineLatest, map, Observable } from 'rxjs';
@@ -36,8 +38,9 @@ import { AudioDeleteComponent } from '../audio-delete/audio-delete.component';
   styleUrls: ['./audio-view.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AudioViewComponent {
+export class AudioViewComponent implements OnDestroy {
   @ViewChild(AudioPlayerComponent) audioPlayer!: AudioPlayerComponent;
+
   audioRequestService = inject(AudioRequestService);
   caseService = inject(CaseService);
   hearingService = inject(HearingService);
@@ -46,18 +49,17 @@ export class AudioViewComponent {
 
   case$!: Observable<Case>;
   eventRows$!: Observable<HearingEventRow[]>;
-  data$: Observable<{ case: Case; rows: HearingEventRow[] }>;
+  data$: Observable<{ case: Case; rows: HearingEventRow[]; error: ErrorMessage | null }> | undefined;
 
   audioRequest!: UserAudioRequestRow;
   downloadUrl = '';
   audioSource = '';
   fileName = '';
   isDeleting = false;
-  requestId: number;
+  requestId: number | undefined;
   isAudioPlaying = false;
   isAudioTouched = false;
   currentPlayTime = 0;
-  mediaId: number;
 
   columns: DatatableColumn[] = [
     { name: '', prop: '' },
@@ -66,32 +68,39 @@ export class AudioViewComponent {
     { name: 'Audio file time', prop: 'audioTime', sortable: true },
   ];
 
-  constructor() {
+  error$ = this.errorMsgService.errorMessage$;
+
+  permissionErrors = [
+    'You do not have permission to view this file',
+    'Email crownITsupport@justice.gov.uk to request access',
+  ];
+
+  constructor(private errorMsgService: ErrorMessageService) {
     this.audioRequest = this.audioRequestService.audioRequestView;
 
     if (!this.audioRequest) {
       this.router.navigate(['/audios']);
+    } else {
+      this.requestId = this.audioRequest.requestId;
+      const isUnread = !this.audioRequest.lastAccessed;
+
+      //Send request to update last accessed time of audio
+      this.audioRequestService.patchAudioRequestLastAccess(this.requestId, isUnread).subscribe();
+
+      this.case$ = this.caseService.getCase(this.audioRequest.caseId);
+      this.fileName = `${this.audioRequest.caseNumber}.zip`;
+
+      this.audioSource = `/api/audio-requests/playback?media_request_id=${this.requestId}`;
+
+      this.eventRows$ = this.hearingService.getEvents(this.audioRequest.hearingId).pipe(
+        map((events) => this.filterEvents(events)), // Remove events outside of audio start and end time
+        map((events) => this.mapEventRows(events)) // Map hearing events to rows for data table
+      );
+
+      this.data$ = combineLatest({ case: this.case$, rows: this.eventRows$, error: this.error$ });
+
+      this.fileName = `${this.audioRequest?.output_filename}.${this.audioRequest?.output_format}`;
     }
-
-    // this.mediaId = this.audioRequest.mediaId;
-    this.mediaId = 41; // Hardcoded for now until we can get the mediaId from the audioRequest
-    this.requestId = this.audioRequest.requestId;
-    this.audioSource = `/api/audio-requests/playback?media_request_id=${this.requestId}`;
-    const isUnread = !this.audioRequest.lastAccessed;
-
-    //Send request to update last accessed time of audio
-    this.audioRequestService.patchAudioRequestLastAccess(this.requestId, isUnread).subscribe();
-
-    this.case$ = this.caseService.getCase(this.audioRequest.caseId);
-    this.eventRows$ = this.hearingService.getEvents(this.audioRequest.hearingId).pipe(
-      map((events) => this.filterEvents(events)), // Remove events outside of audio start and end time
-      map((events) => this.mapEventRows(events)) // Map hearing events to rows for data table
-    );
-
-    this.data$ = combineLatest({ case: this.case$, rows: this.eventRows$ });
-
-    this.downloadUrl = this.audioRequestService.getDownloadUrl(this.requestId);
-    this.fileName = `${this.audioRequest.output_filename}.${this.audioRequest.output_format}`;
   }
 
   filterEvents(events: HearingEvent[]): HearingEvent[] {
@@ -123,12 +132,21 @@ export class AudioViewComponent {
   }
 
   onDeleteConfirmed() {
-    this.audioRequestService.deleteAudioRequests(this.requestId).subscribe({
-      next: () => {
-        this.router.navigate(['/audios']);
-        return;
+    this.requestId &&
+      this.audioRequestService.deleteAudioRequests(this.requestId).subscribe({
+        next: () => {
+          this.router.navigate(['/audios']);
+          return;
+        },
+        error: () => (this.isDeleting = false),
+      });
+  }
+
+  onDownloadClicked() {
+    this.audioRequestService.downloadAudio(this.route.snapshot.params.requestId).subscribe({
+      next: (blob: Blob) => {
+        this.saveAs(blob, `${this.audioRequest?.caseNumber.toString()}.zip`);
       },
-      error: () => (this.isDeleting = false),
     });
   }
 
@@ -147,5 +165,20 @@ export class AudioViewComponent {
 
   isRowPlaying(row: HearingEventRow): boolean {
     return this.currentPlayTime > row.startTime && this.currentPlayTime < row.endTime;
+  }
+
+  private saveAs(blob: Blob, fileName: string) {
+    const downloadLink = document.createElement('a');
+    const url = window.URL.createObjectURL(blob);
+    downloadLink.href = url;
+    downloadLink.download = fileName;
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(downloadLink);
+  }
+
+  ngOnDestroy(): void {
+    this.errorMsgService.clearErrorMessage();
   }
 }
