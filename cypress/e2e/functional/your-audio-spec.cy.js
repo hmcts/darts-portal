@@ -67,7 +67,7 @@ describe('Your audio', () => {
     //T20200333 hardcoded in stub to return 403
     cy.contains('Your Audio').click();
     cy.contains('T20200333').parents('tr').contains('View').click();
-    cy.contains('T20200333.zip').should('exist');
+    cy.contains('T20200333.mp3').should('exist');
     cy.contains('Download audio file').click();
     cy.get('.govuk-error-summary').contains('You do not have permission to view this file');
     cy.get('.govuk-error-summary').contains('Email crownITsupport@justice.gov.uk to request access');
@@ -77,7 +77,7 @@ describe('Your audio', () => {
   it('View audio request and delete', () => {
     cy.contains('Your Audio').click();
     cy.contains('T20200334').parents('tr').contains('View').click();
-    cy.contains('T20200334.zip').should('exist');
+    cy.contains('T20200334.mp3').should('exist');
     cy.contains('Delete audio file').click();
     cy.get(navigationSelector).should('not.exist');
     cy.contains('Are you sure you want to delete this item');

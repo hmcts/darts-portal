@@ -114,6 +114,10 @@ const audioRequestMulti = [
     media_request_expiry_ts: '2023-08-23T09:00:00Z',
     media_request_status: 'COMPLETED',
     last_accessed_ts: '2023-08-23T09:00:00Z',
+    hearing_id: 3,
+    output_filename: 'T20200334',
+    output_format: 'mp3',
+    request_type: 'PLAYBACK',
   },
   {
     case_id: 8,

@@ -137,13 +137,12 @@ describe('AudioViewComponent', () => {
           { provide: HearingService, useValue: fakeHearingService },
           { provide: CaseService, useValue: fakeCaseService },
           { provide: ErrorMessageService, useValue: fakeErrorMessageService },
-          { provide: Router, useValue: { navigate: jest.fn() } },
         ],
       });
       fixture = TestBed.createComponent(AudioViewComponent);
       component = fixture.componentInstance;
       router = TestBed.inject(Router) as jest.Mocked<Router>;
-      // patchAudioRequestLastAccessSpy = jest.spyOn(fakeAudioRequestService, 'patchAudioRequestLastAccess');
+      patchAudioRequestLastAccessSpy = jest.spyOn(fakeAudioRequestService, 'patchAudioRequestLastAccess');
       fixture.detectChanges();
     });
 
@@ -167,9 +166,6 @@ describe('AudioViewComponent', () => {
       });
       it('should set the currentPlayTime', () => {
         expect(component.currentPlayTime).toEqual(0);
-      });
-      it('should set the audioUrl', () => {
-        expect(component.downloadUrl).toEqual('api/download');
       });
       it('should set the fileName', () => {
         expect(component.fileName).toEqual('T20200331.mp3');
@@ -206,6 +202,7 @@ describe('AudioViewComponent', () => {
     });
 
     it('should navigate to /audios on successful deletion', () => {
+      const routerSpy = jest.spyOn(component.router, 'navigate');
       fakeAudioRequestService.deleteAudioRequests.mockReturnValue(of(null));
       component.requestId = 123;
 
@@ -213,7 +210,7 @@ describe('AudioViewComponent', () => {
 
       expect(fakeAudioRequestService.deleteAudioRequests).toHaveBeenCalledWith(123);
 
-      expect(router.navigate).toHaveBeenCalledWith(['/audios']);
+      expect(routerSpy).toHaveBeenCalledWith(['/audios']);
     });
 
     it('should set isDeleting to false on deletion error', () => {
