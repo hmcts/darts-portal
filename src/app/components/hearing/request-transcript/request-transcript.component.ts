@@ -8,7 +8,7 @@ import { CaseService } from '@services/case/case.service';
 import { HeaderService } from '@services/header/header.service';
 import { HearingService } from '@services/hearing/hearing.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { combineLatest } from 'rxjs';
+import { combineLatest, map, Observable } from 'rxjs';
 import { AudioEventRow, DatatableColumn, HearingAudio } from '@darts-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 
@@ -43,12 +43,15 @@ export class RequestTranscriptComponent implements OnInit {
 
   case$ = this.caseService.getCase(this.caseId);
   hearing$ = this.caseService.getHearingById(this.caseId, this.hearingId);
-  audio$ = this.hearingService.getAudio(this.hearingId);
+  private audio$ = this.hearingService.getAudio(this.hearingId);
+  transcriptRequestRows$: Observable<AudioEventRow[]> = this.audio$.pipe(map((x) => this.mapEventsAndAudioToTable(x)));
+
+  step = 1;
 
   data$ = combineLatest({
     case: this.case$,
     hearing: this.hearing$,
-    audios: this.audio$,
+    audioRows: this.transcriptRequestRows$,
   });
 
   transcriptRequestColumns: DatatableColumn[] = [
