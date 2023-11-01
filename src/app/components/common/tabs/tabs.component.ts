@@ -22,13 +22,18 @@ export class TabsComponent implements AfterContentInit {
   @ContentChildren(TabDirective) tabs!: QueryList<TabDirective>;
   currentTab!: TemplateRef<unknown>;
   @Output() tabChange = new EventEmitter();
-  @Input() default = '';
+  @Input() default?: string;
 
   ngAfterContentInit(): void {
-    this.tabs.changes.subscribe((tabs) => {
-      const firstTab = this.default ? tabs.find((t: any) => t.name === this.default)?.template : tabs.first.template;
+    if (this.default) {
+      this.tabs.changes.subscribe((tabs) => {
+        const firstTab = tabs.find((t: any) => t.name === this.default)?.template;
+        if (firstTab) this.currentTab = firstTab;
+      });
+    } else {
+      const firstTab = this.tabs.first.template;
       if (firstTab) this.currentTab = firstTab;
-    });
+    }
   }
 
   onTabClick(event: MouseEvent, tab: TabDirective) {
