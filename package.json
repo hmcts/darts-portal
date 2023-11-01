@@ -94,7 +94,7 @@
     "@types/express-session": "^1.17.7",
     "@types/jest": "^29.5.3",
     "@types/luxon": "^3.3.2",
-    "@types/node": "^18.15.12",
+    "@types/node": "^20.0.0",
     "@types/nunjucks": "^3.2.2",
     "@types/pa11y": "^5.3.5",
     "@types/redis": "^4.0.11",
