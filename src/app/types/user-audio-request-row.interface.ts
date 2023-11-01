@@ -1,14 +1,18 @@
-import { DatatableRow } from './data-table-row.interface';
+import { AudioRequestStatus, AudioRequestType } from './user-audio-request.interface';
 
-export interface UserAudioRequestRow extends DatatableRow {
+export interface UserAudioRequestRow {
   caseId: number;
   caseNumber: string;
   courthouse: string;
-  hearingDate: string | null;
-  startTime: string | null;
-  endTime: string | null;
+  hearingId: number;
+  hearingDate: string;
+  startTime: string;
+  endTime: string;
   requestId: number;
-  expiry: string | null;
-  status: 'OPEN' | 'PROCESSING' | 'FAILED' | 'COMPLETED' | 'EXPIRED';
-  last_accessed_ts?: string;
+  expiry: string;
+  status: AudioRequestStatus;
+  requestType: AudioRequestType;
+  lastAccessed: string | undefined;
+  output_filename: string | undefined;
+  output_format: string | undefined;
 }

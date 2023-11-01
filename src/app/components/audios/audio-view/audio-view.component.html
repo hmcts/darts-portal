@@ -28,27 +28,79 @@
   <h1 class="govuk-heading-l">{{ fileName }}</h1>
 
   <h2 class="govuk-heading-m">Case details</h2>
-  <h1 class="govuk-heading-s">Case ID</h1>
-  <h1 class="govuk-body">{{ data.case.case_number }}</h1>
-  <h3 class="govuk-heading-s">Courthouse</h3>
-  <p class="govuk-body">{{ data.case.courthouse }}</p>
-  <h3 class="govuk-heading-s">Defendant(s)</h3>
-  <p class="govuk-body">{{ data.case.defendants }}</p>
+  <div class="details-container">
+    <div class="label-text-container">
+      <h3 class="govuk-heading-s">Case ID</h3>
+      <p class="govuk-body">{{ data.case.case_number }}</p>
+    </div>
+    <div class="label-text-container">
+      <h3 class="govuk-heading-s">Courthouse</h3>
+      <p class="govuk-body">{{ data.case.courthouse }}</p>
+    </div>
+    <div class="label-text-container">
+      <h3 class="govuk-heading-s">Defendant(s)</h3>
+      <p class="govuk-body">{{ data.case.defendants }}</p>
+    </div>
+  </div>
+
   <ng-container *ngIf="audioRequest">
     <h2 class="govuk-heading-m">Audio details</h2>
-    <h1 class="govuk-heading-s">Hearing date</h1>
-    <h1 class="govuk-body">{{ audioRequest.hearingDate | date: 'd MMM y' }}</h1>
-    <h3 class="govuk-heading-s">Start Time</h3>
-    <p class="govuk-body">{{ audioRequest.startTime | date: 'HH:mm:ss' }}</p>
-    <h3 class="govuk-heading-s">End Time</h3>
-    <p class="govuk-body">{{ audioRequest.endTime | date: 'HH:mm:ss' }}</p>
+    <div class="details-container">
+      <div class="label-text-container">
+        <h3 class="govuk-heading-s">Hearing date</h3>
+        <p class="govuk-body">{{ audioRequest.hearingDate | date: 'd MMM y' }}</p>
+      </div>
+      <div class="label-text-container">
+        <h3 class="govuk-heading-s">Start Time</h3>
+        <p class="govuk-body">{{ audioRequest.startTime | date: 'HH:mm:ss' }}</p>
+      </div>
+      <div class="label-text-container">
+        <h3 class="govuk-heading-s">End Time</h3>
+        <p class="govuk-body">{{ audioRequest.endTime | date: 'HH:mm:ss' }}</p>
+      </div>
+    </div>
+  </ng-container>
+
+  <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible" />
+
+  <ng-container *ngIf="audioRequest.requestType === 'PLAYBACK'">
+    <h2 class="govuk-heading-l">Play all audio</h2>
+    <app-audio-player
+      (pause)="isAudioPlaying = false"
+      (play)="isAudioPlaying = true"
+      (playTime)="onPlayTimeChaged($event)"
+      [audioSource]="audioSource"
+    ></app-audio-player>
+
+    <h3 class="govuk-heading-m no-magin-bottom">Skip to event</h3>
+    <p class="govuk-hint no-magin-top">Jump to a specific audio events within the audio file</p>
+
+    <app-data-table [rows]="data.rows" [columns]="columns" [pagination]="true">
+      <ng-template [tableRowTemplate]="data.rows" let-row let-index>
+        <td class="govuk-table__cell play-cell">
+          <app-play-button
+            [class.isPlaying]="isAudioTouched && isRowPlaying(row)"
+            [isPlaying]="isAudioTouched && isRowPlaying(row)"
+            [isPaused]="isAudioPlaying && isRowPlaying(row)"
+            (click)="onSkip(row.startTime, isRowPlaying(row))"
+          ></app-play-button>
+        </td>
+        <td class="govuk-table__cell">{{ row.eventType }}</td>
+        <td class="govuk-table__cell">{{ row.eventTime | date: 'HH:mm:ss' }}</td>
+        <td class="govuk-table__cell">
+          <a href="#" (click)="$event.preventDefault(); onSkip(row.startTime, false)" class="govuk-link">
+            {{ row.audioTime }}
+          </a>
+        </td>
+      </ng-template>
+    </app-data-table>
   </ng-container>
 
   <div class="govuk-button-group">
     <button class="govuk-button" (click)="onDownloadClicked()" [disabled]="data.error">Download audio file</button>
   </div>
 
-  <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
+  <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
 
   <a href="#" (click)="$event.preventDefault(); isDeleting = true" class="govuk-link">Delete audio file</a>
 </ng-container>

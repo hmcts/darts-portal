@@ -1,15 +1,14 @@
 import { Directive, Input } from '@angular/core';
-import { DatatableRow } from '@darts-types/data-table-row.interface';
 
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector
   selector: 'ng-template[tableRowTemplate]',
   standalone: true,
 })
-export class TableRowTemplateDirective<TRow extends DatatableRow> {
+export class TableRowTemplateDirective<TRow> {
   @Input('tableRowTemplate') rows!: TRow[];
 
-  static ngTemplateContextGuard<TContextRow extends DatatableRow>(
+  static ngTemplateContextGuard<TContextRow>(
     directive: TableRowTemplateDirective<TContextRow>,
     context: unknown
   ): context is TableRowTemplateContext<TContextRow> {
@@ -17,6 +16,6 @@ export class TableRowTemplateDirective<TRow extends DatatableRow> {
   }
 }
 
-interface TableRowTemplateContext<TRow extends DatatableRow> {
+interface TableRowTemplateContext<TRow> {
   $implicit: TRow;
 }

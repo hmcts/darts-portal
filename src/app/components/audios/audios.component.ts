@@ -94,13 +94,17 @@ export class AudiosComponent {
         caseId: ar.case_id,
         caseNumber: ar.case_number,
         courthouse: ar.courthouse_name,
+        hearingId: ar.hearing_id,
         hearingDate: ar.hearing_date,
         startTime: ar.media_request_start_ts,
         endTime: ar.media_request_end_ts,
         requestId: ar.media_request_id,
-        expiry: ar.media_request_expiry_ts ?? null,
+        expiry: ar.media_request_expiry_ts,
         status: ar.media_request_status,
-        last_accessed_ts: ar.last_accessed_ts,
+        lastAccessed: ar.last_accessed_ts,
+        requestType: ar.request_type,
+        output_filename: ar.output_filename,
+        output_format: ar.output_format,
       };
     });
   }

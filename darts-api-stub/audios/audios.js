@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 
 const router = express.Router();
 
@@ -26,6 +27,8 @@ const audioRequestMulti = [
     media_request_expiry_ts: '2023-08-23T09:00:00Z',
     media_request_status: 'OPEN',
     last_accessed_ts: '2023-08-23T09:00:00Z',
+    request_type: 'PLAYBACK',
+    hearing_id: 1,
   },
   {
     case_id: 3,
@@ -38,6 +41,8 @@ const audioRequestMulti = [
     media_request_expiry_ts: '2023-08-23T09:00:00Z',
     media_request_status: 'PROCESSING',
     last_accessed_ts: '2023-08-23T09:00:00Z',
+    request_type: 'PLAYBACK',
+    hearing_id: 3,
   },
   {
     case_id: 4,
@@ -50,6 +55,8 @@ const audioRequestMulti = [
     media_request_expiry_ts: '2023-11-23T09:00:00Z',
     media_request_status: 'OPEN',
     last_accessed_ts: '2023-08-23T09:00:00Z',
+    request_type: 'PLAYBACK',
+    hearing_id: 3,
   },
   {
     case_id: 5,
@@ -61,6 +68,8 @@ const audioRequestMulti = [
     media_request_end_ts: '2023-08-21T10:43:00Z',
     media_request_expiry_ts: '2023-11-23T09:00:00Z',
     media_request_status: 'FAILED',
+    request_type: 'PLAYBACK',
+    hearing_id: 3,
   },
 
   {
@@ -73,6 +82,10 @@ const audioRequestMulti = [
     media_request_end_ts: '2023-08-21T10:00:00Z',
     media_request_expiry_ts: '2023-08-23T09:00:00Z',
     media_request_status: 'COMPLETED',
+    request_type: 'DOWNLOAD',
+    hearing_id: 3,
+    output_filename: 'T20200331',
+    output_format: 'zip',
   },
   {
     case_id: 7,
@@ -85,6 +98,10 @@ const audioRequestMulti = [
     media_request_expiry_ts: '2023-08-23T09:00:00Z',
     media_request_status: 'COMPLETED',
     last_accessed_ts: '2023-08-23T09:00:00Z',
+    request_type: 'PLAYBACK',
+    hearing_id: 3,
+    output_filename: 'T20200333',
+    output_format: 'mp3',
   },
   {
     case_id: 7,
@@ -97,6 +114,10 @@ const audioRequestMulti = [
     media_request_expiry_ts: '2023-08-23T09:00:00Z',
     media_request_status: 'COMPLETED',
     last_accessed_ts: '2023-08-23T09:00:00Z',
+    hearing_id: 3,
+    output_filename: 'T20200334',
+    output_format: 'mp3',
+    request_type: 'PLAYBACK',
   },
   {
     case_id: 8,
@@ -108,17 +129,25 @@ const audioRequestMulti = [
     media_request_end_ts: '2023-08-21T10:14:00Z',
     media_request_expiry_ts: '2023-08-23T09:00:00Z',
     media_request_status: 'COMPLETED',
+    request_type: 'PLAYBACK',
+    hearing_id: 3,
+    output_filename: 'T2020011820',
+    output_format: 'mp3',
   },
   {
     case_id: 9,
     media_request_id: 12341,
     case_number: 'T2023453422',
     courthouse_name: 'Bournemouth',
-    hearing_date: '2023-11-15',
-    media_request_start_ts: '2023-08-21T09:57:00Z',
-    media_request_end_ts: '2023-08-21T10:43:00Z',
+    hearing_date: '2023-11-13',
+    media_request_start_ts: '2023-11-13T09:00:00Z',
+    media_request_end_ts: '2023-11-13T09:01:00Z',
     media_request_expiry_ts: '2023-11-23T09:00:00Z',
     media_request_status: 'COMPLETED',
+    request_type: 'PLAYBACK',
+    hearing_id: 3,
+    output_filename: 'T2023453422',
+    output_format: 'mp3',
   },
   {
     case_id: 10,
@@ -126,10 +155,14 @@ const audioRequestMulti = [
     case_number: 'T20200192232',
     courthouse_name: 'Brighton',
     hearing_date: '2023-11-13',
-    media_request_start_ts: '2023-08-21T09:57:00Z',
-    media_request_end_ts: '2023-08-21T10:43:00Z',
+    media_request_start_ts: '2023-11-13T09:00:00Z',
+    media_request_end_ts: '2023-11-13T09:01:00Z',
     media_request_expiry_ts: '2023-11-23T09:00:00Z',
     media_request_status: 'COMPLETED',
+    request_type: 'PLAYBACK',
+    hearing_id: 3,
+    output_filename: 'T20200192232',
+    output_format: 'mp3',
   },
   {
     case_id: 11,
@@ -137,10 +170,14 @@ const audioRequestMulti = [
     case_number: 'T20200192233',
     courthouse_name: 'Swindon',
     hearing_date: '2023-11-13',
-    media_request_start_ts: '2023-08-21T09:57:00Z',
-    media_request_end_ts: '2023-08-21T10:43:00Z',
+    media_request_start_ts: '2023-11-13T09:00:00Z',
+    media_request_end_ts: '2023-11-13T09:01:00Z',
     media_request_expiry_ts: '2023-11-23T09:00:00Z',
     media_request_status: 'COMPLETED',
+    request_type: 'PLAYBACK',
+    hearing_id: 3,
+    output_filename: 'T20200192233',
+    output_format: 'mp3',
   },
   {
     case_id: 12,
@@ -151,7 +188,11 @@ const audioRequestMulti = [
     media_request_start_ts: '2023-08-21T09:57:00Z',
     media_request_end_ts: '2023-08-21T10:43:00Z',
     media_request_expiry_ts: '2023-11-23T09:00:00Z',
-    media_request_status: 'PROCESSING',
+    media_request_status: 'COMPLETED',
+    request_type: 'DOWNLOAD',
+    hearing_id: 3,
+    output_filename: 'C22334455',
+    output_format: 'zip',
   },
 ];
 
@@ -160,6 +201,7 @@ const audioRequestMultiExpired = [
     media_request_id: 444,
     case_number: 'T20202110',
     courthouse_name: 'Manchester Minshull Street',
+    hearing_id: 3,
     hearing_date: '2023-10-13',
     media_request_start_ts: '2023-08-21T09:00:00Z',
     media_request_end_ts: '2023-08-21T10:00:00Z',
@@ -170,6 +212,7 @@ const audioRequestMultiExpired = [
     media_request_id: 555,
     case_number: 'T202001232',
     courthouse_name: 'Reading',
+    hearing_id: 3,
     hearing_date: '2023-11-21',
     media_request_start_ts: '2023-08-21T09:08:00Z',
     media_request_end_ts: '2023-08-21T10:14:00Z',
@@ -180,6 +223,7 @@ const audioRequestMultiExpired = [
     media_request_id: 666,
     case_number: 'T20200192772',
     courthouse_name: 'Slough',
+    hearing_id: 3,
     hearing_date: '2023-11-28',
     media_request_start_ts: '2023-08-21T09:57:00Z',
     media_request_end_ts: '2023-08-21T10:43:00Z',
@@ -201,6 +245,33 @@ router.patch('/:requestId', (req, res) => {
   let id = req.params.requestId;
   audioRequestMulti.find((x) => x.media_request_id == id).last_accessed_ts = new Date().toISOString();
   res.sendStatus(204);
+});
+
+router.get('/playback', (req, res) => {
+  var filePath = __dirname + '/preview/preview.mp3';
+  var stat = fs.statSync(filePath);
+  var total = stat.size;
+  if (req.headers.range) {
+    var range = req.headers.range;
+    var parts = range.replace(/bytes=/, '').split('-');
+    var partialstart = parts[0];
+    var partialend = parts[1];
+
+    var start = parseInt(partialstart, 10);
+    var end = partialend ? parseInt(partialend, 10) : total - 1;
+    var chunksize = end - start + 1;
+    var readStream = fs.createReadStream(filePath, { start: start, end: end });
+    res.writeHead(206, {
+      'Content-Range': 'bytes ' + start + '-' + end + '/' + total,
+      'Accept-Ranges': 'bytes',
+      'Content-Length': chunksize,
+      'Content-Type': 'audio/mpeg',
+    });
+    readStream.pipe(res);
+  } else {
+    res.writeHead(200, { 'Content-Length': total, 'Content-Type': 'audio/mpeg' });
+    fs.createReadStream(filePath).pipe(res);
+  }
 });
 
 router.get('/download', (req, res) => {

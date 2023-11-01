@@ -41,39 +41,30 @@ router.get('/hearings/:hearingId/audios', (req, res) => {
 });
 
 router.get('/preview/:mediaId', (req, res) => {
-  const mp3 = __dirname + '/preview/preview.mp3';
-  const filestream = fs.createReadStream(mp3);
-  const range = req.headers.range.replace('bytes=', '').split('-');
+  var filePath = __dirname + '/preview/preview.mp3';
+  var stat = fs.statSync(filePath);
+  var total = stat.size;
+  if (req.headers.range) {
+    var range = req.headers.range;
+    var parts = range.replace(/bytes=/, '').split('-');
+    var partialstart = parts[0];
+    var partialend = parts[1];
 
-  filestream.on('open', function () {
-    const stats = fs.statSync(mp3);
-    const fileSizeInBytes = stats['size'];
-
-    // If the start or end of the range is empty, replace with 0 or filesize respectively
-    const bytes_start = range[0] ? parseInt(range[0], 10) : 0;
-    const bytes_end = range[1] ? parseInt(range[1], 10) : fileSizeInBytes;
-
-    const chunk_size = bytes_end - bytes_start;
-
-    if (chunk_size == fileSizeInBytes) {
-      // Serve the whole file as before
-      res.writeHead(200, {
-        'Accept-Ranges': 'bytes',
-        'Content-Type': 'audio/mpeg',
-        'Content-Length': fileSizeInBytes,
-      });
-      filestream.pipe(res);
-    } else {
-      // HTTP/1.1 206 is the partial content response code
-      res.writeHead(206, {
-        'Content-Range': 'bytes ' + bytes_start + '-' + bytes_end + '/' + fileSizeInBytes,
-        'Accept-Ranges': 'bytes',
-        'Content-Type': 'audio/mpeg',
-        'Content-Length': fileSizeInBytes,
-      });
-      filestream.pipe(response.slice(bytes_start, bytes_end));
-    }
-  });
+    var start = parseInt(partialstart, 10);
+    var end = partialend ? parseInt(partialend, 10) : total - 1;
+    var chunksize = end - start + 1;
+    var readStream = fs.createReadStream(filePath, { start: start, end: end });
+    res.writeHead(206, {
+      'Content-Range': 'bytes ' + start + '-' + end + '/' + total,
+      'Accept-Ranges': 'bytes',
+      'Content-Length': chunksize,
+      'Content-Type': 'audio/mpeg',
+    });
+    readStream.pipe(res);
+  } else {
+    res.writeHead(200, { 'Content-Length': total, 'Content-Type': 'audio/mpeg' });
+    fs.createReadStream(filePath).pipe(res);
+  }
 });
 
 module.exports = router;

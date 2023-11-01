@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { PaginationComponent } from '@common/pagination/pagination.component';
-import { DatatableColumn, DatatableRow } from '@darts-types/index';
+import { DatatableColumn } from '@darts-types/index';
 import { DateTime } from 'luxon';
 import { TableBodyTemplateDirective } from 'src/app/directives/table-body-template.directive';
 import { TableRowTemplateDirective } from 'src/app/directives/table-row-template.directive';
@@ -24,7 +24,7 @@ import { TableRowTemplateDirective } from 'src/app/directives/table-row-template
   styleUrls: ['./data-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DataTableComponent<TRow extends DatatableRow> implements OnChanges {
+export class DataTableComponent<TRow> implements OnChanges {
   @Input() rows: TRow[] = [];
   @Input() columns: DatatableColumn[] = [];
   @Input() caption = '';
@@ -66,8 +66,8 @@ export class DataTableComponent<TRow extends DatatableRow> implements OnChanges 
     };
 
     this.rows.sort((a: TRow, b: TRow) => {
-      const valueA = a[column];
-      const valueB = b[column];
+      const valueA = (a as { [key: string]: unknown })[column];
+      const valueB = (b as { [key: string]: unknown })[column];
 
       if (typeof valueA === 'string' && typeof valueB === 'string') {
         if (this.isDateTime(valueA) && this.isDateTime(valueB)) {
