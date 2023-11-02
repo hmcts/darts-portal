@@ -10,10 +10,14 @@ export class HeaderService {
   readonly isVisible$: Observable<boolean> = this.isVisible.asObservable();
 
   showNavigation() {
-    this.isVisible.next(true);
+    setTimeout(() => {
+      this.isVisible.next(true);
+    });
   }
 
   hideNavigation() {
-    this.isVisible.next(false);
+    setTimeout(() => {
+      this.isVisible.next(false);
+    }, 0);
   }
 }

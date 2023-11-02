@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
 import { DataTableComponent } from '@common/data-table/data-table.component';
@@ -17,6 +17,7 @@ import {
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
+import { JoinPipe } from '@pipes/join';
 import { CaseService } from '@services/case/case.service';
 import { HeaderService } from '@services/header/header.service';
 import { HearingService } from '@services/hearing/hearing.service';
@@ -50,9 +51,10 @@ import { RequestPlaybackAudioComponent } from './request-playback-audio/request-
     TabDirective,
     DataTableComponent,
     TableRowTemplateDirective,
+    JoinPipe,
   ],
 })
-export class HearingComponent {
+export class HearingComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private caseService = inject(CaseService);
   hearingService = inject(HearingService);
@@ -66,6 +68,8 @@ export class HearingComponent {
   caseId = this.route.snapshot.params.caseId;
   userState = this.route.snapshot.data.userState;
   transcripts: TranscriptsRow[] = [];
+  rows: AudioEventRow[] = [];
+  defaultTab = 'Events and Audio';
 
   public transcripts$ = this.caseService
     .getAllHearingTranscripts(this.hearingId)
@@ -120,6 +124,12 @@ export class HearingComponent {
     this._state = value;
   }
 
+  ngOnInit(): void {
+    if (this.route.snapshot.queryParams.tab === 'Transcripts') {
+      this.defaultTab = this.route.snapshot.queryParams.tab;
+    }
+  }
+
   onEventsSelected(audioAndEvents: AudioEventRow[]) {
     const timestamps: number[] = [];
 
@@ -166,10 +176,6 @@ export class HearingComponent {
   onBack(event: Event) {
     event.preventDefault();
     this.state = 'Default';
-  }
-
-  focus(id: string) {
-    document.getElementById(id)?.focus();
   }
 
   onOrderConfirm(requestObject: AudioRequest) {

@@ -1,0 +1,91 @@
+<ng-container *ngIf="data$ | async as vm; else loading">
+  <ng-container *ngIf="step === 1">
+    <!-- Reporting Restriction Banner -->
+    <app-reporting-restriction
+      *ngIf="vm.case.reporting_restriction"
+      [reportingRestriction]="vm.case.reporting_restriction"
+    ></app-reporting-restriction>
+
+    <app-validation-error-summary [errors]="validationErrors"></app-validation-error-summary>
+
+    <h1 class="govuk-heading-l">Request a new transcript</h1>
+    <h1 class="govuk-heading-s">Case ID</h1>
+    <h1 class="govuk-body">{{ vm.case.case_number }}</h1>
+    <h3 class="govuk-heading-s">Courthouse</h3>
+    <p class="govuk-body">{{ vm.case.courthouse }}</p>
+    <h3 class="govuk-heading-s">Defendant(s)</h3>
+    <p class="govuk-body">{{ vm.case.defendants | join }}</p>
+    <h3 class="govuk-heading-s">Hearing Date</h3>
+    <p class="govuk-body">{{ vm.hearing?.date | date: 'd MMM y' }}</p>
+
+    <div class="govuk-form-group" [class.govuk-form-group--error]="isSubmitted && transcriptionTypeFormControl.invalid">
+      <label class="govuk-label" for="transcription-type"> Request Type </label>
+      <p *ngIf="isSubmitted && transcriptionTypeFormControl.invalid" id="subject-error" class="govuk-error-message">
+        <span class="govuk-visually-hidden">Error:</span> {{ getValidationMessage('transcription-type') }}
+      </p>
+      <select
+        class="govuk-select"
+        id="transcription-type"
+        name="transcription-type"
+        [formControl]="transcriptionTypeFormControl"
+        [class.govuk-select--error]="isSubmitted && transcriptionTypeFormControl.invalid"
+      >
+        <option value="" disabled selected>Please select</option>
+        <option *ngFor="let type of vm.transcriptionTypes" [value]="type.trt_id">{{ type.description }}</option>
+      </select>
+    </div>
+    <div class="govuk-form-group" [class.govuk-form-group--error]="isSubmitted && urgencyFormControl.invalid">
+      <label class="govuk-label" for="urgency"> Urgency </label>
+      <p *ngIf="isSubmitted && urgencyFormControl.invalid" id="subject-error" class="govuk-error-message">
+        <span class="govuk-visually-hidden">Error:</span> {{ getValidationMessage('urgency') }}
+      </p>
+      <select
+        class="govuk-select"
+        id="urgency"
+        name="urgency"
+        [formControl]="urgencyFormControl"
+        [class.govuk-select--error]="isSubmitted && urgencyFormControl.invalid"
+      >
+        <option value="" disabled selected>Please select</option>
+        <option *ngFor="let urgency of vm.urgencies" [value]="urgency.tru_id">{{ urgency.description }}</option>
+      </select>
+    </div>
+    <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
+    <h2 class="govuk-heading-m">Audio list</h2>
+    <!-- insert table here -->
+    <app-data-table
+      id="requestTranscriptTable"
+      [rows]="vm.audioRows"
+      [columns]="transcriptRequestColumns"
+      [pagination]="false"
+    >
+      <ng-template [tableRowTemplate]="vm.audioRows" let-row>
+        <td class="govuk-table__cell">{{ row.media_start_timestamp | date: 'HH:mm:ss' }}</td>
+        <td class="govuk-table__cell">{{ row.media_end_timestamp | date: 'HH:mm:ss' }}</td>
+        <td class="govuk-table__cell">{{ row.name }}</td>
+      </ng-template>
+    </app-data-table>
+    <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
+    <div class="govuk-button-group">
+      <button class="govuk-button" data-module="govuk-button" (click)="onNextStep()">Continue</button>
+      <a
+        class="govuk-link"
+        routerLink="../"
+        [queryParams]="{ tab: 'Transcripts' }"
+        routerLinkActive="router-link-active"
+        >Cancel</a
+      >
+    </div>
+  </ng-container>
+  <ng-container *ngIf="step === 2">
+    <p>Events, audio and specific times requests</p>
+  </ng-container>
+
+  <ng-container *ngIf="step === 3">
+    <p>Confirmation</p>
+  </ng-container>
+</ng-container>
+
+<ng-template #loading>
+  <app-loading text="Loading hearing details..."></app-loading>
+</ng-template>

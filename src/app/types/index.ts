@@ -17,6 +17,7 @@ export * from './hearing-row.interface';
 export * from './hearing.interface';
 export * from './search-form.interface';
 export * from './transcript.interface';
+export * from './transcription-type.interface';
 export * from './transcripts-row.interface';
 export * from './user-audio-request-row.interface';
 export * from './user-audio-request.interface';

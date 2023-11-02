@@ -1,14 +1,14 @@
-import { AppComponent } from './app/components/app.component';
-import { withInterceptorsFromDi, provideHttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { bootstrapApplication } from '@angular/platform-browser';
+import { DatePipe, DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { APP_INITIALIZER, ErrorHandler } from '@angular/core';
-import { provideRouter } from '@angular/router';
-import { APP_ROUTES } from './app/app.routes';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { provideRouter, withInMemoryScrolling } from '@angular/router';
 import { ErrorInterceptor } from '@interceptors/error/error.interceptor';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
 import { ErrorHandlerService } from '@services/error/error-handler.service';
-import { DatePipe, DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
+import { APP_ROUTES } from './app/app.routes';
+import { AppComponent } from './app/components/app.component';
 
 export function initAppFn(envService: AppConfigService) {
   return () => envService.loadAppConfig();
@@ -23,7 +23,10 @@ bootstrapApplication(AppComponent, {
       multi: true,
       deps: [AppConfigService],
     },
-    provideRouter(APP_ROUTES),
+    provideRouter(
+      APP_ROUTES,
+      withInMemoryScrolling({ anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled' })
+    ),
     AppInsightsService,
     { provide: ErrorHandler, useClass: ErrorHandlerService },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

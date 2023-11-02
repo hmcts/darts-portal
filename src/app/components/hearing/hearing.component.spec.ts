@@ -47,6 +47,7 @@ describe('HearingComponent', () => {
         caseId: '1',
         hearing_id: '1',
       },
+      queryParams: { tab: 'Transcripts' },
     },
   };
 
@@ -346,11 +347,10 @@ describe('HearingComponent', () => {
     });
   });
 
-  describe('#focus', () => {
-    it('should focus on the correct element', () => {
-      const hourInputElement = document.getElementById('start-time-hour-input');
-      component.focus('start-time-hour-input');
-      expect(document.activeElement).toBe(hourInputElement);
+  describe('#ngOnInit', () => {
+    it('should set the tab to transcripts if the url contains ?tab=Transcripts', () => {
+      component.ngOnInit();
+      expect(component.defaultTab).toEqual('Transcripts');
     });
   });
 });
