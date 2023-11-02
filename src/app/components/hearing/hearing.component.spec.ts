@@ -47,7 +47,7 @@ describe('HearingComponent', () => {
         caseId: '1',
         hearing_id: '1',
       },
-      queryParams: { tab: '' },
+      queryParams: { tab: 'Transcripts' },
     },
   };
 
@@ -344,6 +344,13 @@ describe('HearingComponent', () => {
       ];
       component.onValidationError(mockErrorSummary);
       expect(component.errorSummary).toEqual(mockErrorSummary);
+    });
+  });
+
+  describe('#ngOnInit', () => {
+    it('should set the tab to transcripts if the url contains ?tab=Transcripts', () => {
+      component.ngOnInit();
+      expect(component.defaultTab).toEqual('Transcripts');
     });
   });
 });
