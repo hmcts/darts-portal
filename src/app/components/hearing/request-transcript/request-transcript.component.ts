@@ -14,6 +14,7 @@ import { HearingService } from '@services/hearing/hearing.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { combineLatest, map, merge, Observable } from 'rxjs';
 import { ValidationErrorSummaryComponent } from './../../common/validation-error-summary/validation-error-summary.component';
+import { RequestTimesComponent } from './request-times/request-times.component';
 
 @Component({
   selector: 'app-request-transcript',
@@ -28,6 +29,7 @@ import { ValidationErrorSummaryComponent } from './../../common/validation-error
     RouterLink,
     ReactiveFormsModule,
     ValidationErrorSummaryComponent,
+    RequestTimesComponent,
   ],
   templateUrl: './request-transcript.component.html',
   styleUrls: ['./request-transcript.component.scss'],

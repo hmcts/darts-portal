@@ -77,9 +77,8 @@
       >
     </div>
   </ng-container>
-  <ng-container *ngIf="step === 2">
-    <p>Events, audio and specific times requests</p>
-  </ng-container>
+
+  <app-request-times *ngIf="step === 2"></app-request-times>
 
   <ng-container *ngIf="step === 3">
     <p>Confirmation</p>
