@@ -1,6 +1,6 @@
 import './commands';
 
-describe('Request audio', () => {
+describe('Request Transcript', () => {
   beforeEach(() => {
     cy.login();
     cy.contains('Search').click();
@@ -108,5 +108,59 @@ describe('Request audio', () => {
     cy.get('.govuk-list > :nth-child(2) > a').should('contain', 'Please select an urgency');
     cy.get(':nth-child(12) > #subject-error').should('contain', 'Please select a transcription type');
     cy.get(':nth-child(13) > #subject-error').should('contain', 'Please select an urgency');
+  });
+
+  it('open the request times page if "court log" is selected', () => {
+    // Get to the request transcript page
+    cy.get('#hearingsTable a').contains('1 Sep 2023').click();
+    cy.get(':nth-child(2) > .moj-sub-navigation__link').click();
+    cy.get('.govuk-button').click();
+
+    // Confirm we are in the right place
+    cy.get('h1.govuk-heading-l').should('contain', 'Request a new transcript');
+
+    // Fill in the form
+    cy.get('#transcrption-type').select('Court log');
+    cy.get('#urgency').select('Overnight');
+    cy.get('.govuk-button').click();
+
+    // Confirm we are in the right place
+    cy.get('h1.govuk-heading-m').should('contain', 'Events, audio and specific times requests');
+  });
+
+  it('open the request times page if "specified times" is selected', () => {
+    // Get to the request transcript page
+    cy.get('#hearingsTable a').contains('1 Sep 2023').click();
+    cy.get(':nth-child(2) > .moj-sub-navigation__link').click();
+    cy.get('.govuk-button').click();
+
+    // Confirm we are in the right place
+    cy.get('h1.govuk-heading-l').should('contain', 'Request a new transcript');
+
+    // Fill in the form
+    cy.get('#transcrption-type').select('Specified times');
+    cy.get('#urgency').select('Overnight');
+    cy.get('.govuk-button').click();
+
+    // Confirm we are in the right place
+    cy.get('h1.govuk-heading-m').should('contain', 'Events, audio and specific times requests');
+  });
+
+  it('open the confirmation page if neither "court log" or "specified times" is selected', () => {
+    // Get to the request transcript page
+    cy.get('#hearingsTable a').contains('1 Sep 2023').click();
+    cy.get(':nth-child(2) > .moj-sub-navigation__link').click();
+    cy.get('.govuk-button').click();
+
+    // Confirm we are in the right place
+    cy.get('h1.govuk-heading-l').should('contain', 'Request a new transcript');
+
+    // Fill in the form
+    cy.get('#transcrption-type').select('Mitigation');
+    cy.get('#urgency').select('Overnight');
+    cy.get('.govuk-button').click();
+
+    // Confirm we are in the right place
+    cy.contains('Events, audio and specific times requests').should('not.exist');
   });
 });

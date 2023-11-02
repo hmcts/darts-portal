@@ -124,7 +124,7 @@ export class RequestTimesComponent {
     this.continue.emit({ startTime, endTime });
   }
 
-  private getStartEndTimeFromForm() {
+  getStartEndTimeFromForm() {
     const startTimeHours = this.form.get('startTime.hours')?.value;
     const startTimeMinutes = this.form.get('startTime.minutes')?.value;
     const startTimeSeconds = this.form.get('startTime.seconds')?.value;
