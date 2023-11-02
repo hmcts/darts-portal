@@ -178,10 +178,6 @@ export class HearingComponent implements OnInit {
     this.state = 'Default';
   }
 
-  focus(id: string) {
-    document.getElementById(id)?.focus();
-  }
-
   onOrderConfirm(requestObject: AudioRequest) {
     this.hearingService.requestAudio(requestObject).subscribe((response: AudioResponse) => {
       this.state = 'OrderConfirmation';

@@ -16,9 +16,7 @@
       <div class="govuk-error-summary__body">
         <ul class="govuk-list govuk-error-summary__list">
           <li *ngFor="let error of errorSummary">
-            <a [id]="'error-' + error.fieldId" [routerLink]="['.']" (click)="focus(error.fieldId)">{{
-              error.message
-            }}</a>
+            <a [id]="'error-' + error.fieldId" [routerLink]="['.']" [fragment]="error.fieldId">{{ error.message }}</a>
           </li>
         </ul>
       </div>
