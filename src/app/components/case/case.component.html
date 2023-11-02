@@ -1,4 +1,4 @@
-<ng-container *ngIf="caseFile$ | async as caseFile">
+<ng-container *ngIf="caseFile$ | async as caseFile; else loadingOrError">
   <app-breadcrumb>
     <ng-container *breadcrumb="['/search']">Search</ng-container>
     <ng-container *breadcrumb>{{ caseFile.case_number }}</ng-container>
@@ -11,3 +11,22 @@
     [transcripts]="data.transcripts"
   ></app-hearing-results>
 </ng-container>
+
+<ng-template #loadingOrError>
+  <ng-container *ngIf="$caseLoadError | async as error; else loading">
+    <div [ngSwitch]="error.type">
+      <div *ngSwitchCase="'AUTHORISATION_100'">
+        <app-forbidden></app-forbidden>
+      </div>
+      <div *ngSwitchCase="'CASE_104'">
+        <app-not-found></app-not-found>
+      </div>
+      <div *ngSwitchDefault>
+        <app-internal-error></app-internal-error>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #loading>
+    <app-loading text="Loading case details..."></app-loading>
+  </ng-template>
+</ng-template>
