@@ -8,7 +8,7 @@ describe('ValidationErrorSummaryComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ValidationErrorSummaryComponent]
+      imports: [ValidationErrorSummaryComponent],
     });
     fixture = TestBed.createComponent(ValidationErrorSummaryComponent);
     component = fixture.componentInstance;

@@ -8,7 +8,7 @@ describe('RequestTranscriptComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RequestTranscriptComponent]
+      imports: [RequestTranscriptComponent],
     });
     fixture = TestBed.createComponent(RequestTranscriptComponent);
     component = fixture.componentInstance;
