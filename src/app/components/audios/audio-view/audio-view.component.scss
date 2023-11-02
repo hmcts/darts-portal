@@ -1,3 +1,44 @@
 .govuk-heading-s {
   margin: 0;
 }
+
+.govuk-table__cell {
+  padding: 10px;
+  vertical-align: middle;
+}
+
+.play-button {
+  max-width: 2.25rem;
+  display: block;
+  cursor: pointer;
+}
+
+h3 {
+  margin-top: 2rem;
+}
+
+.details-container {
+  display: flex;
+  column-gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.label-text-container {
+  min-width: 140px;
+}
+
+app-data-table {
+  margin-bottom: 2rem;
+}
+
+.no-magin-top {
+  margin-top: 0;
+}
+
+.no-magin-bottom {
+  margin-bottom: 0;
+}
+
+.play-cell {
+  width: 1rem;
+}

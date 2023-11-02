@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/c
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
-import { DatatableColumn, DatatableRow, Hearing, TranscriptsRow } from '@darts-types/index';
+import { DatatableColumn, Hearing, HearingRow, TranscriptsRow } from '@darts-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { TabDirective } from 'src/app/directives/tab.directive';
 
@@ -19,7 +19,7 @@ export class HearingResultsComponent implements OnChanges {
   @Input() hearings: Hearing[] = [];
   @Input() transcripts: TranscriptsRow[] = [];
   caseId: number;
-  rows: DatatableRow[] = [];
+  rows: HearingRow[] = [];
   hearingsColumns: DatatableColumn[] = [];
   transcriptColumns: DatatableColumn[] = [];
 

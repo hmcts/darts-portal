@@ -1,6 +1,4 @@
-import { DatatableRow } from './data-table-row.interface';
-
-export interface TranscriptsRow extends DatatableRow {
+export interface TranscriptsRow {
   hearingDate: string;
   type: string;
   requestedOn: string;

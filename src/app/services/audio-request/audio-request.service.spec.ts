@@ -1,5 +1,5 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed, discardPeriodicTasks, fakeAsync, tick } from '@angular/core/testing';
 import { UserAudioRequestRow } from '@darts-types/user-audio-request-row.interface';
 import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
 import { UserState } from '@darts-types/user-state';
@@ -23,6 +23,8 @@ describe('AudioService', () => {
       media_request_expiry_ts: '2023-08-23T09:00:00Z',
       media_request_status: 'OPEN',
       last_accessed_ts: '2023-08-23T09:00:00Z',
+      request_type: 'DOWNLOAD',
+      hearing_id: 123,
     },
     {
       case_id: 3,
@@ -35,6 +37,8 @@ describe('AudioService', () => {
       media_request_expiry_ts: '2023-08-23T09:00:00Z',
       media_request_status: 'PROCESSING',
       last_accessed_ts: '2023-08-23T09:00:00Z',
+      request_type: 'DOWNLOAD',
+      hearing_id: 123,
     },
     {
       case_id: 4,
@@ -47,6 +51,8 @@ describe('AudioService', () => {
       media_request_expiry_ts: '2023-11-23T09:00:00Z',
       media_request_status: 'OPEN',
       last_accessed_ts: '2023-08-23T09:00:00Z',
+      request_type: 'DOWNLOAD',
+      hearing_id: 123,
     },
     {
       case_id: 5,
@@ -58,6 +64,8 @@ describe('AudioService', () => {
       media_request_end_ts: '2023-08-21T10:43:00Z',
       media_request_expiry_ts: '2023-11-23T09:00:00Z',
       media_request_status: 'FAILED',
+      request_type: 'DOWNLOAD',
+      hearing_id: 123,
     },
     {
       case_id: 6,
@@ -69,6 +77,8 @@ describe('AudioService', () => {
       media_request_end_ts: '2023-08-21T10:00:00Z',
       media_request_expiry_ts: '2023-08-23T09:00:00Z',
       media_request_status: 'COMPLETED',
+      request_type: 'DOWNLOAD',
+      hearing_id: 123,
     },
     {
       case_id: 7,
@@ -81,6 +91,8 @@ describe('AudioService', () => {
       media_request_expiry_ts: '2023-08-23T09:00:00Z',
       media_request_status: 'COMPLETED',
       last_accessed_ts: '2023-08-23T09:00:00Z',
+      request_type: 'DOWNLOAD',
+      hearing_id: 123,
     },
     {
       case_id: 8,
@@ -92,6 +104,8 @@ describe('AudioService', () => {
       media_request_end_ts: '2023-08-21T10:14:00Z',
       media_request_expiry_ts: '2023-08-23T09:00:00Z',
       media_request_status: 'COMPLETED',
+      request_type: 'DOWNLOAD',
+      hearing_id: 123,
     },
     {
       case_id: 9,
@@ -103,6 +117,8 @@ describe('AudioService', () => {
       media_request_end_ts: '2023-08-21T10:43:00Z',
       media_request_expiry_ts: '2023-11-23T09:00:00Z',
       media_request_status: 'COMPLETED',
+      request_type: 'DOWNLOAD',
+      hearing_id: 123,
     },
     {
       case_id: 10,
@@ -114,6 +130,8 @@ describe('AudioService', () => {
       media_request_end_ts: '2023-08-21T10:43:00Z',
       media_request_expiry_ts: '2023-11-23T09:00:00Z',
       media_request_status: 'COMPLETED',
+      request_type: 'DOWNLOAD',
+      hearing_id: 123,
     },
     {
       case_id: 11,
@@ -125,6 +143,8 @@ describe('AudioService', () => {
       media_request_end_ts: '2023-08-21T10:43:00Z',
       media_request_expiry_ts: '2023-11-23T09:00:00Z',
       media_request_status: 'COMPLETED',
+      request_type: 'DOWNLOAD',
+      hearing_id: 123,
     },
   ];
 
@@ -139,6 +159,8 @@ describe('AudioService', () => {
       media_request_end_ts: '2023-08-21T10:00:00Z',
       media_request_expiry_ts: '2023-08-23T09:00:00Z',
       media_request_status: 'EXPIRED',
+      request_type: 'DOWNLOAD',
+      hearing_id: 123,
     },
     {
       case_id: 13,
@@ -150,6 +172,8 @@ describe('AudioService', () => {
       media_request_end_ts: '2023-08-21T10:14:00Z',
       media_request_expiry_ts: '2023-08-23T09:00:00Z',
       media_request_status: 'EXPIRED',
+      request_type: 'DOWNLOAD',
+      hearing_id: 123,
     },
     {
       case_id: 14,
@@ -161,6 +185,8 @@ describe('AudioService', () => {
       media_request_end_ts: '2023-08-21T10:43:00Z',
       media_request_expiry_ts: '2023-11-23T09:00:00Z',
       media_request_status: 'EXPIRED',
+      request_type: 'DOWNLOAD',
+      hearing_id: 123,
     },
   ];
 
@@ -236,7 +262,7 @@ describe('AudioService', () => {
       });
     });
 
-    describe('#patchAudioRequest', () => {
+    describe('#patchAudioRequestLastAccess', () => {
       it('sends patch request', () => {
         const reqId = 123449;
         let responseStatus;
@@ -308,10 +334,23 @@ describe('AudioService', () => {
     expect(completeAudios.length).toBe(6);
   });
 
-  it('#getDownloadUrl', () => {
-    const reqId = 123449;
-    const url = service.getDownloadUrl(reqId);
-    expect(url).toEqual(`/api/audio-requests/download?media_request_id=${reqId}`);
+  it('#downloadAudio', () => {
+    const requestId = 123449;
+    const mockBlob = new Blob(['mock audio data'], { type: 'audio/wav' });
+    jest.spyOn(service['http'], 'get').mockReturnValueOnce(of(mockBlob));
+
+    let receivedBlob: Blob | undefined;
+    service.downloadAudio(requestId).subscribe((blob: Blob) => {
+      receivedBlob = blob;
+    });
+
+    const expectedUrl = `api/audio-requests/download`;
+    expect(service['http'].get).toHaveBeenCalledWith(expectedUrl, {
+      params: { media_request_id: requestId },
+      responseType: 'blob',
+    });
+
+    expect(receivedBlob).toBeInstanceOf(Blob);
   });
 
   it('#setAudioRequest', () => {
@@ -319,13 +358,17 @@ describe('AudioService', () => {
       caseId: 123,
       caseNumber: 'T20200190',
       courthouse: 'Manchester Minshull Street',
+      hearingId: 123,
       hearingDate: '2023-10-03',
-      last_accessed_ts: '2023-08-23T09:00:00Z',
+      lastAccessed: '2023-08-23T09:00:00Z',
       startTime: '2023-08-21T09:00:00Z',
       endTime: '2023-08-21T10:00:00Z',
       requestId: 123,
       expiry: '2023-08-23T09:00:00Z',
       status: 'OPEN',
+      requestType: 'DOWNLOAD',
+      output_filename: 'T20200190',
+      output_format: 'zip',
     };
     service.setAudioRequest(mockAudioRequest);
     expect(service.audioRequestView).toEqual(mockAudioRequest);

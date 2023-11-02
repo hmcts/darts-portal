@@ -62,7 +62,7 @@
       <ng-template [tableRowTemplate]="vm.audioRows" let-row>
         <td class="govuk-table__cell">{{ row.media_start_timestamp | date: 'HH:mm:ss' }}</td>
         <td class="govuk-table__cell">{{ row.media_end_timestamp | date: 'HH:mm:ss' }}</td>
-        <td class="govuk-table__cell">{{ row.event }}</td>
+        <td class="govuk-table__cell">{{ row.name }}</td>
       </ng-template>
     </app-data-table>
     <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />

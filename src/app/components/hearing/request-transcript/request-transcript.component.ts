@@ -72,7 +72,7 @@ export class RequestTranscriptComponent implements OnInit {
   transcriptRequestColumns: DatatableColumn[] = [
     { name: 'Start Time', prop: 'media_start_timestamp', sortable: true },
     { name: 'End Time', prop: 'media_end_timestamp', sortable: true },
-    { name: '', prop: 'event' },
+    { name: '', prop: 'name' },
   ];
 
   step = 1;
@@ -114,7 +114,7 @@ export class RequestTranscriptComponent implements OnInit {
   mapEventsAndAudioToTable(audio: HearingAudio[]): AudioEventRow[] {
     return audio.map((audio) => ({
       ...audio,
-      event: 'Audio Recording',
+      name: 'Audio Recording',
     }));
   }
 }

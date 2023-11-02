@@ -1,0 +1,11 @@
+svg {
+  display: block;
+  height: 2rem;
+  width: 2rem;
+  cursor: pointer;
+  border-radius: 100%;
+  background-color: #1d70b8;
+  &.playing {
+    background-color: #ffdd00;
+  }
+}

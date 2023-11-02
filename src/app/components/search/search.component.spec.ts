@@ -1,17 +1,19 @@
-import { ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClient, HttpClientModule, HttpErrorResponse } from '@angular/common/http';
+import { ComponentFixture, TestBed, fakeAsync, flush, tick } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { SearchComponent } from './search.component';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
-import { ResultsComponent } from './results/results.component';
-import { HttpClient } from '@angular/common/http';
-import { of, throwError } from 'rxjs';
-import { CaseService } from '@services/case/case.service';
+import { Router } from '@angular/router';
 import { CourthouseComponent } from '@common/courthouse/courthouse.component';
 import { Courthouse } from '@darts-types/courthouse.interface';
-import { AppInsightsService } from '@services/app-insights/app-insights.service';
+import { ErrorMessage } from '@darts-types/error-message.interface';
 import { ErrorSummaryEntry } from '@darts-types/index';
+import { AppInsightsService } from '@services/app-insights/app-insights.service';
+import { CaseService } from '@services/case/case.service';
+import { ErrorMessageService } from '@services/error/error-message.service';
+import { HeaderService } from '@services/header/header.service';
+import { of, throwError } from 'rxjs';
+import { ResultsComponent } from './results/results.component';
+import { SearchComponent } from './search.component';
 
 // Mock the initAll function
 jest.mock('@scottish-government/pattern-library/src/all', () => ({
@@ -24,7 +26,9 @@ describe('SearchComponent', () => {
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
   let caseService: CaseService;
-
+  let errorMsgService: ErrorMessageService;
+  let headerService: HeaderService;
+  let router: Router;
   const courts = [
     { courthouse_name: 'Reading', id: 0, created_date_time: 'mock' },
     { courthouse_name: 'Slough', id: 1, created_date_time: 'mock' },
@@ -36,6 +40,8 @@ describe('SearchComponent', () => {
       get: jest.fn(),
     } as unknown as HttpClient;
 
+    headerService = new HeaderService();
+    errorMsgService = new ErrorMessageService(headerService, router);
     caseService = new CaseService(httpClientSpy);
     jest.spyOn(caseService, 'searchCases').mockReturnValue(of([]));
     jest.spyOn(caseService, 'getCourthouses').mockReturnValue(of(courts));
@@ -52,6 +58,7 @@ describe('SearchComponent', () => {
       providers: [
         { provide: AppInsightsService, useValue: fakeAppInsightsService },
         { provide: CaseService, useValue: caseService },
+        { provide: ErrorMessageService, useValue: errorMsgService },
       ],
     });
     fixture = TestBed.createComponent(SearchComponent);
@@ -310,19 +317,25 @@ describe('SearchComponent', () => {
     expect(component.isAdvancedSearch).toBeFalsy();
   });
 
-  it('should handle errors and clear search form and results', () => {
-    const errorResponse = new HttpErrorResponse({ error: { type: 'CASE_100' } });
+  it('should handle errors and clear search form and results', fakeAsync(() => {
+    const errorResponse = new HttpErrorResponse({ error: { type: 'CASE_100' }, status: 400 });
     jest.spyOn(caseService, 'searchCases').mockReturnValue(throwError(() => errorResponse));
-    let error = '';
+    errorMsgService.handleErrorMessage(errorResponse);
+
+    const errorMessageMock = { type: 'CASE_100', display: 'COMPONENT', status: 400 } as ErrorMessage;
 
     component.form.markAsDirty();
     component.onSubmit();
+
+    flush();
+
+    let error: ErrorMessage | null = null;
     component.searchError$?.subscribe((errorType) => (error = errorType));
 
-    expect(error).toEqual('CASE_100');
+    expect(error).toEqual(errorMessageMock);
     expect(caseService.searchFormValues).toBeNull();
     expect(caseService.searchResults$).toBeNull();
-  });
+  }));
 
   it('should restore form values when previousFormValues is defined', () => {
     // Mock previousFormValues

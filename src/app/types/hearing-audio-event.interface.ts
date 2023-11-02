@@ -1,6 +1,5 @@
-import { DatatableRow } from './data-table-row.interface';
 import { HearingEventTypeEnum } from './enums';
-export interface AudioEventRow extends DatatableRow {
+export interface AudioEventRow {
   id: number;
   type?: HearingEventTypeEnum;
 
