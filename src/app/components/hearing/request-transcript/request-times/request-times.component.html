@@ -1,1 +1,45 @@
-<p>request-times works!</p>
+<h2 class="govuk-heading-m">Events, audio and specific times requests</h2>
+<p class="govuk-body">Select events or specify start and end times to request a transcript.</p>
+<p class="govuk-body">Specific times requests cover all events and audio between the transcript start and end time.</p>
+
+<hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
+
+<h2 class="govuk-heading-m">Audio list</h2>
+<app-data-table id="audio-table" [rows]="audioRows" [columns]="audioColumns" [pagination]="true">
+  <ng-template [tableRowTemplate]="audioRows" let-row>
+    <td class="govuk-table__cell">{{ row.media_start_timestamp | date: 'HH:mm:ss' }}</td>
+    <td class="govuk-table__cell">{{ row.media_end_timestamp | date: 'HH:mm:ss' }}</td>
+    <td class="govuk-table__cell">{{ row.name }}</td>
+  </ng-template>
+</app-data-table>
+
+<hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
+<form [formGroup]="form">
+  <p class="govuk-body">Start time</p>
+  <app-time-input formGroupName="startTime" idStringPrepend="start" [isSubmitted]="isSubmitted"></app-time-input>
+
+  <p class="govuk-body">End time</p>
+  <app-time-input formGroupName="endTime" idStringPrepend="end" [isSubmitted]="isSubmitted"></app-time-input>
+</form>
+
+<hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
+
+<app-data-table
+  id="event-table"
+  [rows]="events"
+  [columns]="eventColumns"
+  [pagination]="true"
+  [rowSelectable]="true"
+  (rowSelect)="onEventRowSelected($event)"
+>
+  <ng-template [tableRowTemplate]="events" let-row>
+    <td class="govuk-table__cell">{{ row.timestamp | date: 'HH:mm:ss' }}</td>
+    <td class="govuk-table__cell">{{ row.name }}</td>
+    <td class="govuk-table__cell">{{ row.text }}</td>
+  </ng-template>
+</app-data-table>
+
+<div class="govuk-button-group">
+  <button class="govuk-button" data-module="govuk-button" (click)="onContinue()">Continue</button>
+  <a class="govuk-link" (click)="onCancel()">Cancel</a>
+</div>
