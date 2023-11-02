@@ -47,6 +47,7 @@ describe('HearingComponent', () => {
         caseId: '1',
         hearing_id: '1',
       },
+      queryParams: { tab: '' },
     },
   };
 
