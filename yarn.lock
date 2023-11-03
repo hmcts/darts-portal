@@ -314,9 +314,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/cdk@npm:16.2.10":
-  version: 16.2.10
-  resolution: "@angular/cdk@npm:16.2.10"
+"@angular/cdk@npm:16.2.11":
+  version: 16.2.11
+  resolution: "@angular/cdk@npm:16.2.11"
   dependencies:
     parse5: ^7.1.2
     tslib: ^2.3.0
@@ -327,7 +327,7 @@ __metadata:
   dependenciesMeta:
     parse5:
       optional: true
-  checksum: c1d16079295499449b38f7c16c4baedb66898ea5a7158fab89f19f234ca94be350a1cfc5b20238097bbcbd1311f5d45e1d708cb010aef00bf53b697586eac782
+  checksum: 109304dbe86f2f6a806ed8df13526b9cc46165085a6a92bb0d438ccb186cebe1719b2ff08c73471cdeee03377627ec60e0cd37aca9f3b1eb2a9cedc8089eb774
   languageName: node
   linkType: hard
 
@@ -6683,7 +6683,7 @@ __metadata:
     "@angular-eslint/schematics": 16.2.0
     "@angular-eslint/template-parser": 16.2.0
     "@angular/animations": ^16.0.0
-    "@angular/cdk": 16.2.10
+    "@angular/cdk": 16.2.11
     "@angular/cli": ~16.2.0
     "@angular/common": ^16.0.0
     "@angular/compiler": ^16.0.0
@@ -11523,6 +11523,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"node-gyp@npm:^10.0.1":
+  version: 10.0.1
+  resolution: "node-gyp@npm:10.0.1"
+  dependencies:
+    env-paths: ^2.2.0
+    exponential-backoff: ^3.1.1
+    glob: ^10.3.10
+    graceful-fs: ^4.2.6
+    make-fetch-happen: ^13.0.0
+    nopt: ^7.0.0
+    proc-log: ^3.0.0
+    semver: ^7.3.5
+    tar: ^6.1.2
+    which: ^4.0.0
+  bin:
+    node-gyp: bin/node-gyp.js
+  checksum: 60a74e66d364903ce02049966303a57f898521d139860ac82744a5fdd9f7b7b3b61f75f284f3bfe6e6add3b8f1871ce305a1d41f775c7482de837b50c792223f
+  languageName: node
+  linkType: hard
+
 "node-gyp@npm:^9.0.0":
   version: 9.4.1
   resolution: "node-gyp@npm:9.4.1"
@@ -11826,8 +11846,8 @@ __metadata:
   linkType: hard
 
 "npm@npm:^10.1.0":
-  version: 10.2.2
-  resolution: "npm@npm:10.2.2"
+  version: 10.2.3
+  resolution: "npm@npm:10.2.3"
   dependencies:
     "@isaacs/string-locale-compare": ^1.1.0
     "@npmcli/arborist": ^7.2.1
@@ -11871,7 +11891,7 @@ __metadata:
     minipass: ^7.0.4
     minipass-pipeline: ^1.2.4
     ms: ^2.1.2
-    node-gyp: ^10.0.0
+    node-gyp: ^10.0.1
     nopt: ^7.2.0
     normalize-package-data: ^6.0.0
     npm-audit-report: ^5.0.0
@@ -11903,7 +11923,7 @@ __metadata:
   bin:
     npm: bin/npm-cli.js
     npx: bin/npx-cli.js
-  checksum: 6112dc72ad68d8e50e370e3757d1383f9f35048684bd14e3012c7588c641db0edf244dc657db3aa1d3a9cc831b2adb5af6331d4d2d118e3d729a60f04ad1b310
+  checksum: 8f27eac1e9fd57cadc571aa155539802e01f4d7c5f4de5b0031aea556a79b25a9e7a08f5647c8404018bd1c9735ca4dd2fba48f2dc36b0fbc18e48c5d2cce0d0
   languageName: node
   linkType: hard
 

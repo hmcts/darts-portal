@@ -27,9 +27,10 @@
         <th *ngIf="column.sortable" scope="col" class="govuk-table__header" [attr.aria-sort]="getAriaSort(column.prop)">
           <button type="button" (click)="sortTable(column.prop)">{{ column.name }}</button>
         </th>
-        <th *ngIf="!column.sortable" scope="col" class="govuk-table__header">
+        <th *ngIf="!column.sortable && column.name" scope="col" class="govuk-table__header">
           {{ column.name }}
         </th>
+        <td *ngIf="!column.sortable && !column.name" class="govuk-table__header"></td>
       </ng-container>
     </tr>
   </thead>
