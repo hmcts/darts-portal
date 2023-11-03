@@ -1,0 +1,18 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-panel govuk-panel--confirmation">
+      <h1 class="govuk-panel__title">Transcript request submitted</h1>
+      <div class="govuk-panel__body">
+        Your request ID<br /><strong>{{ transcriptRequestId }}</strong>
+      </div>
+    </div>
+    <h2 class="govuk-heading-m">What happens next?</h2>
+    <p class="govuk-body">
+      We’ll review it and notify you of our decision to approve or reject your request by email and through the DARTS
+      portal.
+    </p>
+    <a class="govuk-link" routerLink="../" [queryParams]="{ tab: 'Transcripts' }" routerLinkActive="router-link-active"
+      >Return to hearing date</a
+    >
+  </div>
+</div>

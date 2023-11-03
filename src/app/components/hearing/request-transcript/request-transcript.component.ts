@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
-import { AudioEventRow, DatatableColumn, HearingAudio } from '@darts-types/index';
+import { AudioEventRow, DatatableColumn, HearingAudio, TranscriptionRequest } from '@darts-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { JoinPipe } from '@pipes/join';
 import { CaseService } from '@services/case/case.service';
@@ -17,6 +17,7 @@ import { combineLatest, map, Observable } from 'rxjs';
 import { ValidationErrorSummaryComponent } from './../../common/validation-error-summary/validation-error-summary.component';
 import { RequestTimesComponent } from './request-times/request-times.component';
 import { RequestTranscriptConfirmationComponent } from './request-transcript-confirmation/request-transcript-confirmation.component';
+import { RequestTranscriptSuccessComponent } from './request-transcript-success/request-transcript-success.component';
 
 enum TranscriptionType {
   COURT_LOG = '5',
@@ -37,10 +38,10 @@ enum TranscriptionType {
     ValidationErrorSummaryComponent,
     RequestTimesComponent,
     RequestTranscriptConfirmationComponent,
+    RequestTranscriptSuccessComponent,
   ],
   templateUrl: './request-transcript.component.html',
   styleUrls: ['./request-transcript.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RequestTranscriptComponent implements OnInit {
   route = inject(ActivatedRoute);
@@ -84,6 +85,7 @@ export class RequestTranscriptComponent implements OnInit {
   ];
 
   step = 1;
+  transcriptRequestId: any;
 
   ngOnInit(): void {
     this.headerService.hideNavigation();
@@ -149,5 +151,24 @@ export class RequestTranscriptComponent implements OnInit {
 
   onConfirmationCancel() {
     this.isSpecifiedTimesOrCourtLog() ? (this.step = 2) : (this.step = 1);
+  }
+
+  onConfirm(moreDetail: string) {
+    const transcriptionRequest: TranscriptionRequest = {
+      case_id: this.caseId,
+      hearing_id: this.hearingId,
+      transcription_type_id: this.transcriptionTypeFormControl.value ? +this.transcriptionTypeFormControl.value : 0,
+      urgency_id: this.urgencyFormControl.value ? +this.urgencyFormControl.value : 0,
+      comment: moreDetail,
+      start_date_time: this.audioTimes?.startTime?.toISO() ?? '',
+      end_date_time: this.audioTimes?.endTime?.toISO() ?? '',
+    };
+
+    this.transcriptionService
+      .postTranscriptionRequest(transcriptionRequest)
+      .subscribe((response: { transcription_id: number }) => {
+        this.transcriptRequestId = response.transcription_id;
+        this.step = 4;
+      });
   }
 }

@@ -97,8 +97,14 @@
     [audioTimes]="audioTimes"
     (errors)="validationErrors = $event"
     (cancel)="onConfirmationCancel()"
+    (confirm)="onConfirm($event)"
     [hidden]="!(step === 3)"
   ></app-request-transcript-confirmation>
+
+  <app-request-transcript-success
+    [transcriptRequestId]="transcriptRequestId"
+    [hidden]="!(step === 4)"
+  ></app-request-transcript-success>
 </ng-container>
 
 <ng-template #loading>
