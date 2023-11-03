@@ -92,10 +92,6 @@ export class RequestTranscriptComponent implements OnInit {
     this.headerService.hideNavigation();
   }
 
-  ngOnInit(): void {
-    this.headerService.hideNavigation();
-  }
-
   onNextStep() {
     this.isSubmitted = true;
 

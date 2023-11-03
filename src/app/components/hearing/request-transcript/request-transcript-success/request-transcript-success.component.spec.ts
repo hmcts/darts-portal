@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { RequestTranscriptSuccessComponent } from './request-transcript-success.component';
 
@@ -8,7 +9,7 @@ describe('RequestTranscriptSuccessComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RequestTranscriptSuccessComponent]
+      imports: [RequestTranscriptSuccessComponent, RouterTestingModule],
     });
     fixture = TestBed.createComponent(RequestTranscriptSuccessComponent);
     component = fixture.componentInstance;
