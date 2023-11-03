@@ -33,7 +33,6 @@ export class RequestTranscriptConfirmationComponent {
 
   isSubmitted = false;
 
-  // get remaining character count from 2000 for more detail text area
   get remainingCharacterCount() {
     return 2000 - (this.moreDetailFormControl.value?.length || 0);
   }
