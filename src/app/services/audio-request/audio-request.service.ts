@@ -84,12 +84,7 @@ export class AudioRequestService {
 
   getUnreadCount(): Observable<number> {
     return this.userProfile$.pipe(
-      switchMap(() =>
-        this.http
-          .get<{ count: number }>(UNREAD_AUDIO_COUNT_PATH, {
-          })
-          .pipe(map((res) => res.count))
-      )
+      switchMap(() => this.http.get<{ count: number }>(UNREAD_AUDIO_COUNT_PATH, {}).pipe(map((res) => res.count)))
     );
   }
 
