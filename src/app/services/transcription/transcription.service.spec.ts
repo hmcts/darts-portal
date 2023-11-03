@@ -1,4 +1,4 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { TranscriptionType } from '@darts-types/transcription-type.interface';
 import { TranscriptionUrgency } from '@darts-types/transcription-urgency.interface';

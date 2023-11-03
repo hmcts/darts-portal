@@ -12,8 +12,10 @@ import { CaseService } from '@services/case/case.service';
 import { HeaderService } from '@services/header/header.service';
 import { HearingService } from '@services/hearing/hearing.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
-import { combineLatest, map, merge, Observable } from 'rxjs';
+import { DateTime } from 'luxon';
+import { combineLatest, map, Observable } from 'rxjs';
 import { ValidationErrorSummaryComponent } from './../../common/validation-error-summary/validation-error-summary.component';
+import { RequestTimesComponent } from './request-times/request-times.component';
 
 @Component({
   selector: 'app-request-transcript',
@@ -28,15 +30,12 @@ import { ValidationErrorSummaryComponent } from './../../common/validation-error
     RouterLink,
     ReactiveFormsModule,
     ValidationErrorSummaryComponent,
+    RequestTimesComponent,
   ],
   templateUrl: './request-transcript.component.html',
   styleUrls: ['./request-transcript.component.scss'],
 })
 export class RequestTranscriptComponent implements OnInit {
-  ngOnInit(): void {
-    this.headerService.hideNavigation();
-  }
-
   route = inject(ActivatedRoute);
   caseService = inject(CaseService);
   hearingService = inject(HearingService);
@@ -48,7 +47,7 @@ export class RequestTranscriptComponent implements OnInit {
 
   urgencyFormControl = new FormControl('', [Validators.required]);
   transcriptionTypeFormControl = new FormControl('', [Validators.required]);
-  formChanges$ = merge(this.urgencyFormControl.valueChanges, this.transcriptionTypeFormControl.valueChanges);
+  audioTimes?: { startTime: DateTime | null; endTime: DateTime | null };
 
   validationErrors: { fieldId: string; message: string }[] = [];
   isSubmitted = false;
@@ -57,6 +56,7 @@ export class RequestTranscriptComponent implements OnInit {
   hearing$ = this.caseService.getHearingById(this.caseId, this.hearingId);
   urgencies$ = this.transcriptionService.getUrgencies();
   transcriptionTypes$ = this.transcriptionService.getTranscriptionTypes();
+  events$ = this.hearingService.getEvents(this.hearingId);
   transcriptRequestRows$: Observable<AudioEventRow[]> = this.hearingService
     .getAudio(this.hearingId)
     .pipe(map((x) => this.mapEventsAndAudioToTable(x)));
@@ -67,6 +67,7 @@ export class RequestTranscriptComponent implements OnInit {
     audioRows: this.transcriptRequestRows$,
     transcriptionTypes: this.transcriptionTypes$,
     urgencies: this.urgencies$,
+    events: this.events$,
   });
 
   transcriptRequestColumns: DatatableColumn[] = [
@@ -76,6 +77,10 @@ export class RequestTranscriptComponent implements OnInit {
   ];
 
   step = 1;
+
+  ngOnInit(): void {
+    this.headerService.hideNavigation();
+  }
 
   onNextStep() {
     this.isSubmitted = true;
@@ -116,5 +121,10 @@ export class RequestTranscriptComponent implements OnInit {
       ...audio,
       name: 'Audio Recording',
     }));
+  }
+
+  onRequestTimeContinue({ startTime, endTime }: { startTime: DateTime | null; endTime: DateTime | null }) {
+    this.audioTimes = { startTime, endTime };
+    this.step = 3;
   }
 }

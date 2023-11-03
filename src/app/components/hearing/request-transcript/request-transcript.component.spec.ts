@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { AudioEventRow, Case, Hearing, HearingAudio } from '@darts-types/index';
+import { AudioEventRow, Case, Hearing, HearingAudio, HearingEvent } from '@darts-types/index';
 import { CaseService } from '@services/case/case.service';
 import { HearingService } from '@services/hearing/hearing.service';
 import { Observable, of } from 'rxjs';
@@ -54,6 +54,27 @@ describe('RequestTranscriptComponent', () => {
     },
   ]) as Observable<HearingAudio[]>;
 
+  const ehd = of([
+    {
+      id: 1,
+      timestamp: '2023-07-31T02:32:24.620Z',
+      name: 'Event 1',
+      text: 'Text 1',
+    },
+    {
+      id: 2,
+      timestamp: '2023-07-31T04:30:24.620Z',
+      name: 'Event 2',
+      text: 'Text 2',
+    },
+    {
+      id: 3,
+      timestamp: '2023-07-31T05:32:24.620Z',
+      name: 'Event 3',
+      text: 'Text 3',
+    },
+  ]) as Observable<HearingEvent[]>;
+
   beforeEach(() => {
     httpClientSpy = {
       get: jest.fn(),
@@ -65,6 +86,7 @@ describe('RequestTranscriptComponent', () => {
     jest.spyOn(caseService, 'getCase').mockReturnValue(cd);
     jest.spyOn(caseService, 'getHearingById').mockReturnValue(shd);
     jest.spyOn(hearingService, 'getAudio').mockReturnValue(ahd);
+    jest.spyOn(hearingService, 'getEvents').mockReturnValue(ehd);
 
     TestBed.configureTestingModule({
       imports: [RequestTranscriptComponent, HttpClientTestingModule],
