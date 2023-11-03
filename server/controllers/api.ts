@@ -17,6 +17,9 @@ function proxyMiddleware() {
         if (req.session.securityToken.accessToken) {
           proxyReq.setHeader('Authorization', `Bearer ${req.session.securityToken.accessToken}`);
         }
+        if (req.session.securityToken.userState?.userId) {
+          proxyReq.setHeader('user_id', req.session.securityToken.userState.userId);
+        }
       }
       if (req.path.startsWith('/audio/preview')) {
         console.log('onProxyReq::proxyReq', req.path, proxyReq.getHeaders());

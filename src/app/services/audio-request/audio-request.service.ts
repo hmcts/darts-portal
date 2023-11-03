@@ -44,7 +44,6 @@ export class AudioRequestService {
       switchMap((userState) => {
         return this.http
           .get<UserAudioRequest[]>(`api/audio-requests`, {
-            headers: { user_id: userState.userId.toString() },
             params: { expired },
           })
           .pipe(map((requests) => requests.map((r) => ({ ...r, hearing_date: r.hearing_date + 'T00:00:00Z' }))));
