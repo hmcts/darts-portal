@@ -500,6 +500,22 @@ router.get('/:caseId', (req, res) => {
   singleCase.case_id = req.params.caseId;
 
   switch (req.params.caseId) {
+    // this is returned by the API when a non-integer is passed as the case ID
+    case '400':
+      const resBodyBadReq = {
+        title: 'Bad request',
+        status: 400,
+      };
+      res.status(400).send(resBodyBadReq);
+      break;
+    case '403':
+      const resBodyAuth100 = {
+        type: 'AUTHORISATION_100',
+        title: 'User is not authorised for the associated courthouse',
+        status: 403,
+      };
+      res.status(403).send(resBodyAuth100);
+      break;
     case '404':
       const resBody104 = {
         type: 'CASE_104',
@@ -507,6 +523,9 @@ router.get('/:caseId', (req, res) => {
         status: 404,
       };
       res.status(404).send(resBody104);
+      break;
+    case '500':
+      res.sendStatus(500);
       break;
     case '2':
       res.send(singleCaseTwo);
