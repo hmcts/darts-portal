@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
@@ -16,7 +16,12 @@ import { DateTime } from 'luxon';
 import { combineLatest, map, Observable } from 'rxjs';
 import { ValidationErrorSummaryComponent } from './../../common/validation-error-summary/validation-error-summary.component';
 import { RequestTimesComponent } from './request-times/request-times.component';
+import { RequestTranscriptConfirmationComponent } from './request-transcript-confirmation/request-transcript-confirmation.component';
 
+enum TranscriptionType {
+  COURT_LOG = '5',
+  SPECIFIED_TIMES = '9',
+}
 @Component({
   selector: 'app-request-transcript',
   standalone: true,
@@ -31,9 +36,11 @@ import { RequestTimesComponent } from './request-times/request-times.component';
     ReactiveFormsModule,
     ValidationErrorSummaryComponent,
     RequestTimesComponent,
+    RequestTranscriptConfirmationComponent,
   ],
   templateUrl: './request-transcript.component.html',
   styleUrls: ['./request-transcript.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RequestTranscriptComponent implements OnInit {
   route = inject(ActivatedRoute);
@@ -105,11 +112,18 @@ export class RequestTranscriptComponent implements OnInit {
       return;
     }
 
-    if (this.transcriptionTypeFormControl.value == '5' || this.transcriptionTypeFormControl.value == '9') {
+    if (this.isSpecifiedTimesOrCourtLog()) {
       this.step = 2;
     } else {
       this.step = 3;
     }
+  }
+
+  isSpecifiedTimesOrCourtLog() {
+    return (
+      this.transcriptionTypeFormControl.value == TranscriptionType.COURT_LOG ||
+      this.transcriptionTypeFormControl.value == TranscriptionType.SPECIFIED_TIMES
+    );
   }
 
   getValidationMessage(fieldId: string): string {
@@ -126,5 +140,14 @@ export class RequestTranscriptComponent implements OnInit {
   onRequestTimeContinue({ startTime, endTime }: { startTime: DateTime | null; endTime: DateTime | null }) {
     this.audioTimes = { startTime, endTime };
     this.step = 3;
+  }
+
+  onRequestTimeCancel() {
+    this.audioTimes = undefined;
+    this.step = 1;
+  }
+
+  onConfirmationCancel() {
+    this.isSpecifiedTimesOrCourtLog() ? (this.step = 2) : (this.step = 1);
   }
 }

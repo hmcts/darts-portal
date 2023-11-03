@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, Output, ViewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { TimeInputComponent } from '@components/hearing/request-playback-audio/time-input/time-input.component';
@@ -14,10 +14,11 @@ import { DateTime } from 'luxon';
   imports: [CommonModule, TimeInputComponent, ReactiveFormsModule, DataTableComponent, TableRowTemplateDirective],
   templateUrl: './request-times.component.html',
   styleUrls: ['./request-times.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RequestTimesComponent {
+  @ViewChild('eventTable', { static: false }) eventTable!: DataTableComponent<HearingEvent>;
   fb = inject(FormBuilder);
-
   @Input() audioRows: AudioEventRow[] = [];
   @Input() events: HearingEvent[] = [];
   @Input() hearing!: Hearing;
@@ -91,6 +92,9 @@ export class RequestTimesComponent {
   }
 
   onCancel() {
+    this.form.reset();
+    this.eventTable.onSelectAllChanged(false);
+    this.isSubmitted = false;
     this.cancel.emit();
   }
 
