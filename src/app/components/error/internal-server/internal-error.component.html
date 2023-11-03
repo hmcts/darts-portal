@@ -10,7 +10,7 @@
           <!-- We should add unique identification for support requests later on -->
           <p class="govuk-body">
             Try again or
-            <a href="mailto:crownITsupport@justice.gov.uk" class="govuk-link">contact Crown IT Support</a> if the
+            <a href="mailto:{{ support?.emailAddress }}" class="govuk-link">contact {{ support?.name }}</a> if the
             problem persists
           </p>
         </div>
@@ -26,7 +26,7 @@
           <h1 class="govuk-heading-l">There is a problem with the service</h1>
           <p class="govuk-body">
             Try again or
-            <a href="mailto:crownITsupport@justice.gov.uk" class="govuk-link">contact Crown IT Support</a> if the
+            <a href="mailto:{{ support?.emailAddress }}" class="govuk-link">contact {{ support?.name }}</a> if the
             problem persists
           </p>
         </div>

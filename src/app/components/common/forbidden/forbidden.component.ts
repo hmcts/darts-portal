@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { AppConfigService } from '@services/app-config/app-config.service';
 
 @Component({
   selector: 'app-forbidden',
@@ -8,4 +9,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './forbidden.component.html',
   styleUrls: ['./forbidden.component.scss'],
 })
-export class ForbiddenComponent {}
+export class ForbiddenComponent {
+  private appConfigService = inject(AppConfigService);
+  support = this.appConfigService.getAppConfig()?.support;
+}
