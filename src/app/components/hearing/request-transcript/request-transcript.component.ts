@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
@@ -42,6 +42,7 @@ enum TranscriptionType {
   ],
   templateUrl: './request-transcript.component.html',
   styleUrls: ['./request-transcript.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RequestTranscriptComponent implements OnInit {
   route = inject(ActivatedRoute);
@@ -86,6 +87,10 @@ export class RequestTranscriptComponent implements OnInit {
 
   step = 1;
   transcriptRequestId: any;
+
+  ngOnInit(): void {
+    this.headerService.hideNavigation();
+  }
 
   ngOnInit(): void {
     this.headerService.hideNavigation();
