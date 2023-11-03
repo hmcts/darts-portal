@@ -87,7 +87,6 @@ export class AudioRequestService {
       switchMap((userState) =>
         this.http
           .get<{ count: number }>(UNREAD_AUDIO_COUNT_PATH, {
-            headers: { user_id: userState.userId.toString() },
           })
           .pipe(map((res) => res.count))
       )
