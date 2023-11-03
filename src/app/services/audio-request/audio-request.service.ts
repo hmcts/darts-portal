@@ -41,7 +41,7 @@ export class AudioRequestService {
 
   getAudioRequests(expired: boolean): Observable<UserAudioRequest[]> {
     return this.userProfile$.pipe(
-      switchMap((userState) => {
+      switchMap(() => {
         return this.http
           .get<UserAudioRequest[]>(`api/audio-requests`, {
             params: { expired },
@@ -84,7 +84,7 @@ export class AudioRequestService {
 
   getUnreadCount(): Observable<number> {
     return this.userProfile$.pipe(
-      switchMap((userState) =>
+      switchMap(() =>
         this.http
           .get<{ count: number }>(UNREAD_AUDIO_COUNT_PATH, {
           })
