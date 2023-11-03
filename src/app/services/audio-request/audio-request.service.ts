@@ -40,15 +40,11 @@ export class AudioRequestService {
   );
 
   getAudioRequests(expired: boolean): Observable<UserAudioRequest[]> {
-    return this.userProfile$.pipe(
-      switchMap(() => {
-        return this.http
-          .get<UserAudioRequest[]>(`api/audio-requests`, {
-            params: { expired },
-          })
-          .pipe(map((requests) => requests.map((r) => ({ ...r, hearing_date: r.hearing_date + 'T00:00:00Z' }))));
+    return this.http
+      .get<UserAudioRequest[]>(`api/audio-requests`, {
+        params: { expired },
       })
-    );
+      .pipe(map((requests) => requests.map((r) => ({ ...r, hearing_date: r.hearing_date + 'T00:00:00Z' }))));
   }
 
   deleteAudioRequests(mediaRequestId: number): Observable<HttpResponse<Response>> {
@@ -83,9 +79,7 @@ export class AudioRequestService {
   }
 
   getUnreadCount(): Observable<number> {
-    return this.userProfile$.pipe(
-      switchMap(() => this.http.get<{ count: number }>(UNREAD_AUDIO_COUNT_PATH, {}).pipe(map((res) => res.count)))
-    );
+    return this.http.get<{ count: number }>(UNREAD_AUDIO_COUNT_PATH, {}).pipe(map((res) => res.count));
   }
 
   private updateUnread(audioRequests: UserAudioRequest[]) {
