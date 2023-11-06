@@ -143,11 +143,13 @@ export class AudioViewComponent implements OnDestroy {
   }
 
   onDownloadClicked() {
-    this.audioRequestService.downloadAudio(this.route.snapshot.params.requestId).subscribe({
-      next: (blob: Blob) => {
-        this.saveAs(blob, `${this.audioRequest?.caseNumber.toString()}.zip`);
-      },
-    });
+    this.audioRequestService
+      .downloadAudio(this.route.snapshot.params.requestId, this.audioRequest.requestType)
+      .subscribe({
+        next: (blob: Blob) => {
+          this.saveAs(blob, `${this.audioRequest?.output_filename}.{this.audioRequest?.output_format}`);
+        },
+      });
   }
 
   onSkip(seconds: number, isAlreadyPlaying: boolean) {
