@@ -53,8 +53,13 @@
     <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
 
     <h2 class="govuk-heading-m">Audio list</h2>
-    <!-- insert table here -->
-    <app-data-table id="audio-table" [rows]="vm.audioRows" [columns]="transcriptRequestColumns" [pagination]="false">
+    <app-data-table
+      id="audio-table"
+      [rows]="vm.audioRows"
+      [columns]="transcriptRequestColumns"
+      [pagination]="true"
+      [pageLimit]="10"
+    >
       <ng-template [tableRowTemplate]="vm.audioRows" let-row>
         <td class="govuk-table__cell">{{ row.media_start_timestamp | date: 'HH:mm:ss' }}</td>
         <td class="govuk-table__cell">{{ row.media_end_timestamp | date: 'HH:mm:ss' }}</td>
@@ -81,17 +86,6 @@
     [events]="vm.events"
     [hearing]="vm.hearing!"
     (continue)="onRequestTimeContinue($event)"
-    (cancel)="step = 1"
-    (errors)="validationErrors = $event"
-    *ngIf="step === 2"
-  >
-  </app-request-times>
-
-  <app-request-times
-    [audioRows]="vm.audioRows"
-    [events]="vm.events"
-    [hearing]="vm.hearing!"
-    (continue)="onRequestTimeContinue($event)"
     (cancel)="onRequestTimeCancel()"
     (errors)="validationErrors = $event"
     [hidden]="!(step === 2)"
@@ -108,8 +102,14 @@
     [audioTimes]="audioTimes"
     (errors)="validationErrors = $event"
     (cancel)="onConfirmationCancel()"
+    (confirm)="onConfirm($event)"
     [hidden]="!(step === 3)"
   ></app-request-transcript-confirmation>
+
+  <app-request-transcript-success
+    [transcriptRequestId]="transcriptRequestId"
+    [hidden]="!(step === 4)"
+  ></app-request-transcript-success>
 </ng-container>
 
 <ng-template #loading>

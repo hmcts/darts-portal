@@ -5,6 +5,8 @@ import { ActivatedRoute } from '@angular/router';
 import { AudioEventRow, Case, Hearing, HearingAudio, HearingEvent } from '@darts-types/index';
 import { CaseService } from '@services/case/case.service';
 import { HearingService } from '@services/hearing/hearing.service';
+import { TranscriptionService } from '@services/transcription/transcription.service';
+import { DateTime } from 'luxon';
 import { Observable, of } from 'rxjs';
 
 import { RequestTranscriptComponent } from './request-transcript.component';
@@ -14,6 +16,7 @@ describe('RequestTranscriptComponent', () => {
   let fixture: ComponentFixture<RequestTranscriptComponent>;
   let caseService: CaseService;
   let hearingService: HearingService;
+  let transcriptionService: TranscriptionService;
   let httpClientSpy: HttpClient;
 
   const mockActivatedRoute = {
@@ -82,6 +85,7 @@ describe('RequestTranscriptComponent', () => {
 
     caseService = new CaseService(httpClientSpy);
     hearingService = new HearingService(httpClientSpy);
+    transcriptionService = new TranscriptionService(httpClientSpy);
 
     jest.spyOn(caseService, 'getCase').mockReturnValue(cd);
     jest.spyOn(caseService, 'getHearingById').mockReturnValue(shd);
@@ -94,6 +98,7 @@ describe('RequestTranscriptComponent', () => {
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
         { provide: CaseService, useValue: caseService },
         { provide: HearingService, useValue: hearingService },
+        { provide: TranscriptionService, useValue: transcriptionService },
       ],
     });
     fixture = TestBed.createComponent(RequestTranscriptComponent);
@@ -213,6 +218,120 @@ describe('RequestTranscriptComponent', () => {
         component.onNextStep();
         expect(component.getValidationMessage('urgency')).toEqual(expectedMessage);
       });
+    });
+  });
+
+  describe('#onConfirm', () => {
+    it('should set step to 4', () => {
+      jest.spyOn(transcriptionService, 'postTranscriptionRequest').mockReturnValue(of({ transcription_id: 1 }));
+      component.onConfirm('test');
+      expect(component.step).toEqual(4);
+    });
+    it('should call postTranscriptionRequest', () => {
+      jest.spyOn(transcriptionService, 'postTranscriptionRequest').mockReturnValue(of({ transcription_id: 1 }));
+      component.audioTimes = {
+        startTime: DateTime.fromISO('2023-02-21T13:00:00Z'),
+        endTime: DateTime.fromISO('2023-02-21T18:00:00Z'),
+      };
+      component.transcriptionTypeFormControl.patchValue('3');
+      component.urgencyFormControl.patchValue('2');
+      component.hearingId = 1;
+      component.caseId = 1;
+
+      const expectedRequestObject = {
+        case_id: 1,
+        comment: 'test',
+        end_date_time: '2023-02-21T18:00:00Z',
+        hearing_id: 1,
+        start_date_time: '2023-02-21T13:00:00Z',
+        transcription_type_id: 3,
+        urgency_id: 2,
+      };
+
+      component.onConfirm('test');
+      expect(transcriptionService.postTranscriptionRequest).toHaveBeenCalledWith(expectedRequestObject);
+    });
+  });
+
+  describe('#onRequestTimeContinue', () => {
+    it('should set step to 3', () => {
+      component.onRequestTimeContinue({
+        startTime: DateTime.fromISO('2023-02-21T13:00:00Z'),
+        endTime: DateTime.fromISO('2023-02-21T18:00:00Z'),
+      });
+      expect(component.step).toEqual(3);
+    });
+    it('should set audioTimes', () => {
+      component.onRequestTimeContinue({
+        startTime: DateTime.fromISO('2023-02-21T13:00:00Z'),
+        endTime: DateTime.fromISO('2023-02-21T18:00:00Z'),
+      });
+      expect(component.audioTimes).toEqual({
+        startTime: DateTime.fromISO('2023-02-21T13:00:00Z'),
+        endTime: DateTime.fromISO('2023-02-21T18:00:00Z'),
+      });
+    });
+  });
+
+  describe('#onRequestTimeCancel', () => {
+    it('should set step to 1', () => {
+      component.onRequestTimeCancel();
+      expect(component.step).toEqual(1);
+    });
+    it('should set audioTimes to undefined', () => {
+      component.onRequestTimeCancel();
+      expect(component.audioTimes).toEqual(undefined);
+    });
+  });
+
+  describe('#onConfirmationCancel', () => {
+    it('should set step to 2 if transcription type is court log', () => {
+      component.transcriptionTypeFormControl.patchValue('5');
+      component.onConfirmationCancel();
+      expect(component.step).toEqual(2);
+    });
+    it('should set step to 2 if transcription type is specified times', () => {
+      component.transcriptionTypeFormControl.patchValue('9');
+      component.onConfirmationCancel();
+      expect(component.step).toEqual(2);
+    });
+    it('should set step to 1 if transcription type is anything other than court log or specified times', () => {
+      component.transcriptionTypeFormControl.patchValue('3');
+      component.onConfirmationCancel();
+      expect(component.step).toEqual(1);
+    });
+  });
+
+  describe('#onConfirm', () => {
+    it('should set step to 4', () => {
+      jest.spyOn(transcriptionService, 'postTranscriptionRequest').mockReturnValue(of({ transcription_id: 1 }));
+      component.onConfirm('test');
+      expect(component.step).toEqual(4);
+    });
+
+    it('should call postTranscriptionRequest', () => {
+      jest.spyOn(transcriptionService, 'postTranscriptionRequest').mockReturnValue(of({ transcription_id: 1 }));
+      component.audioTimes = {
+        startTime: DateTime.fromISO('2023-02-21T13:00:00Z'),
+        endTime: DateTime.fromISO('2023-02-21T18:00:00Z'),
+      };
+      component.transcriptionTypeFormControl.patchValue('3');
+      component.urgencyFormControl.patchValue('2');
+      component.hearingId = 1;
+      component.caseId = 1;
+
+      const expectedRequestObject = {
+        case_id: 1,
+        comment: 'test',
+        end_date_time: '2023-02-21T18:00:00Z',
+        hearing_id: 1,
+        start_date_time: '2023-02-21T13:00:00Z',
+        transcription_type_id: 3,
+        urgency_id: 2,
+      };
+
+      component.onConfirm('test');
+      expect(transcriptionService.postTranscriptionRequest).toHaveBeenCalledWith(expectedRequestObject);
     });
   });
 });

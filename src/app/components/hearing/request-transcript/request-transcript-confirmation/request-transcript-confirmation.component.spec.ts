@@ -82,6 +82,21 @@ describe('RequestTranscriptConfirmationComponent', () => {
         { fieldId: 'authorisation', message: 'You must confirm that you have authority to request a transcript' },
       ]);
     });
+
+    it('should emit more detail text on confirm if authorisationFormControl is true', () => {
+      jest.spyOn(component.confirm, 'emit');
+      component.authorisationFormControl.patchValue(true);
+      component.moreDetailFormControl.patchValue('test');
+      component.onSubmit();
+      expect(component.confirm.emit).toHaveBeenCalledWith('test');
+    });
+
+    it('should emit empty errors if authorisationFormControl is true', () => {
+      jest.spyOn(component.errors, 'emit');
+      component.authorisationFormControl.patchValue(true);
+      component.onSubmit();
+      expect(component.errors.emit).toHaveBeenCalledWith([]);
+    });
   });
 
   describe('#onCancel', () => {

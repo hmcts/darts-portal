@@ -1,82 +1,51 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { TranscriptionType } from '@darts-types/transcription-type.interface';
-import { TranscriptionUrgency } from '@darts-types/transcription-urgency.interface';
-import { Observable, of } from 'rxjs';
+import { TranscriptionRequest } from '@darts-types/transcription-request.interface';
 
 import { TranscriptionService } from './transcription.service';
 
 describe('TranscriptionService', () => {
   let service: TranscriptionService;
 
-  const mockTranscriptionTypes: Observable<TranscriptionType[]> = of([
-    { trt_id: 1, description: 'Sentencing Remarks' },
-    { trt_id: 2, description: 'Summing up (inc. verdict)' },
-    { trt_id: 3, description: 'Antecedents' },
-    { trt_id: 4, description: 'Argument and submission of ruling' },
-    { trt_id: 5, description: 'Court log' },
-    { trt_id: 6, description: 'Mitigation' },
-    { trt_id: 7, description: 'Proceedings after verdict' },
-    { trt_id: 8, description: 'Proposed opening of facts' },
-    { trt_id: 9, description: 'Specified times' },
-    { trt_id: 999, description: 'Other' },
-  ]);
-
-  const mockTranscriptionUrgencies: Observable<TranscriptionUrgency[]> = of([
-    { tru_id: 1, description: 'Overnight' },
-    { tru_id: 2, description: '3 working days' },
-    { tru_id: 3, description: '7 working days' },
-    { tru_id: 4, description: '12 working days' },
-  ]);
-
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
     });
     service = TestBed.inject(TranscriptionService);
-
-    jest.spyOn(service, 'getUrgencies').mockReturnValue(mockTranscriptionUrgencies);
-    jest.spyOn(service, 'getTranscriptionTypes').mockReturnValue(mockTranscriptionTypes);
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  it('#getUrgencies', () => {
-    let result!: TranscriptionUrgency[];
-    const expectedValue: TranscriptionUrgency[] = [
-      { tru_id: 1, description: 'Overnight' },
-      { tru_id: 2, description: '3 working days' },
-      { tru_id: 3, description: '7 working days' },
-      { tru_id: 4, description: '12 working days' },
-    ];
-
-    service.getUrgencies().subscribe((c) => {
-      result = c;
+  describe('#getUrgencies', () => {
+    it('should call the correct endpoint', () => {
+      const spy = jest.spyOn(service['http'], 'get');
+      service.getUrgencies();
+      expect(spy).toHaveBeenCalledWith('/api/transcriptions/urgencies');
     });
-
-    expect(result).toEqual(expectedValue);
   });
-  it('#getTranscriptionTypes', () => {
-    let result!: TranscriptionType[];
-    const expectedValue: TranscriptionType[] = [
-      { trt_id: 1, description: 'Sentencing Remarks' },
-      { trt_id: 2, description: 'Summing up (inc. verdict)' },
-      { trt_id: 3, description: 'Antecedents' },
-      { trt_id: 4, description: 'Argument and submission of ruling' },
-      { trt_id: 5, description: 'Court log' },
-      { trt_id: 6, description: 'Mitigation' },
-      { trt_id: 7, description: 'Proceedings after verdict' },
-      { trt_id: 8, description: 'Proposed opening of facts' },
-      { trt_id: 9, description: 'Specified times' },
-      { trt_id: 999, description: 'Other' },
-    ];
-
-    service.getTranscriptionTypes().subscribe((c) => {
-      result = c;
+  describe('#getTranscriptionTypes', () => {
+    it('should call the correct endpoint', () => {
+      const spy = jest.spyOn(service['http'], 'get');
+      service.getTranscriptionTypes();
+      expect(spy).toHaveBeenCalledWith('/api/transcriptions/types');
     });
-
-    expect(result).toEqual(expectedValue);
+  });
+  describe('#postTranscriptionRequest', () => {
+    it('should call the correct endpoint', () => {
+      const postObject: TranscriptionRequest = {
+        case_id: 1,
+        comment: 'test',
+        end_date_time: '2023-02-21T18:00:00Z',
+        hearing_id: 1,
+        start_date_time: '2023-02-21T13:00:00Z',
+        transcription_type_id: 3,
+        urgency_id: 2,
+      };
+      const spy = jest.spyOn(service['http'], 'post');
+      service.postTranscriptionRequest(postObject);
+      expect(spy).toHaveBeenCalledWith('/api/transcriptions', postObject);
+    });
   });
 });
