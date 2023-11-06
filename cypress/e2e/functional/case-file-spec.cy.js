@@ -6,13 +6,17 @@ describe('Case file screen', () => {
   });
 
   describe('error scenarios', () => {
-    it('shows the correct error pages', () => {
+    it('shows the 400 error page', () => {
       cy.visit('/case/400');
       cy.get('h1').should('contain', 'There is a problem with the service');
+    });
 
+    it('shows the 403 error page', () => {
       cy.visit('/case/403');
       cy.get('h1').should('contain', 'You do not have permission to access this page');
+    });
 
+    it('shows the 404 error page', () => {
       cy.visit('/case/404');
       cy.get('h1').should('contain', 'Page not found');
     });
