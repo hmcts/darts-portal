@@ -147,7 +147,7 @@ export class AudioViewComponent implements OnDestroy {
       .downloadAudio(this.route.snapshot.params.requestId, this.audioRequest.requestType)
       .subscribe({
         next: (blob: Blob) => {
-          this.saveAs(blob, `${this.audioRequest?.output_filename}.{this.audioRequest?.output_format}`);
+          this.saveAs(blob, `${this.audioRequest?.output_filename}.${this.audioRequest?.output_format}`);
         },
       });
   }
