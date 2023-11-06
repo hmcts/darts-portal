@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
@@ -42,7 +42,6 @@ enum TranscriptionType {
   ],
   templateUrl: './request-transcript.component.html',
   styleUrls: ['./request-transcript.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RequestTranscriptComponent implements OnInit {
   route = inject(ActivatedRoute);
@@ -161,8 +160,8 @@ export class RequestTranscriptComponent implements OnInit {
       transcription_type_id: this.transcriptionTypeFormControl.value ? +this.transcriptionTypeFormControl.value : 0,
       urgency_id: this.urgencyFormControl.value ? +this.urgencyFormControl.value : 0,
       comment: moreDetail,
-      start_date_time: this.audioTimes?.startTime?.toISO() ?? '',
-      end_date_time: this.audioTimes?.endTime?.toISO() ?? '',
+      start_date_time: this.audioTimes?.startTime?.toISO()?.split('.')[0] + 'Z' ?? '',
+      end_date_time: this.audioTimes?.endTime?.toISO()?.split('.')[0] + 'Z' ?? '',
     };
 
     this.transcriptionService
