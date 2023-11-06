@@ -4,4 +4,5 @@ import config from 'config';
 
 export default () => ({
   appInsightsKey: config.get('secrets.darts.AppInsightsInstrumentationKey'),
+  support: config.get('support'),
 });

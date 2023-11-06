@@ -1,10 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppConfigService } from '@services/app-config/app-config.service';
-import { InternalErrorComponent } from './internal-error.component';
 
-describe('ErrorComponent', () => {
-  let component: InternalErrorComponent;
-  let fixture: ComponentFixture<InternalErrorComponent>;
+import { ForbiddenComponent } from './forbidden.component';
+
+describe('ForbiddenComponent', () => {
+  let component: ForbiddenComponent;
+  let fixture: ComponentFixture<ForbiddenComponent>;
 
   const appConfigServiceMock = {
     getAppConfig: () => ({
@@ -18,10 +19,10 @@ describe('ErrorComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [InternalErrorComponent],
+      imports: [ForbiddenComponent],
       providers: [{ provide: AppConfigService, useValue: appConfigServiceMock }],
     });
-    fixture = TestBed.createComponent(InternalErrorComponent);
+    fixture = TestBed.createComponent(ForbiddenComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -19,7 +19,13 @@ describe('AppConfigService', () => {
   });
 
   it('loads app config', async () => {
-    const testData: AppConfig = { appInsightsKey: 'Test Data' };
+    const testData: AppConfig = {
+      appInsightsKey: 'Test Data',
+      support: {
+        name: 'DARTS support',
+        emailAddress: 'support@darts',
+      },
+    };
     jest.spyOn(httpClientSpy, 'get').mockReturnValue(of(testData));
     await appConfigService.loadAppConfig();
 
