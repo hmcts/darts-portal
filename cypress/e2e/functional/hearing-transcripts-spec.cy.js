@@ -1,8 +1,10 @@
+import 'cypress-axe';
 import './commands';
 
 describe('Hearing Transcripts', () => {
   beforeEach(() => {
     cy.login();
+    cy.injectAxe();
     cy.contains('Search').click();
     cy.get('h1').should('contain', 'Search for a case');
     cy.get('#case_number').type('C20220620001');
@@ -20,6 +22,12 @@ describe('Hearing Transcripts', () => {
     cy.get('#transcription-count').should('contain', 2);
     cy.get('.govuk-button').should('contain', 'Request a new transcript');
     cy.get('#transcriptsTable').should('contain', 'Sentencing remarks');
+    cy.checkA11y(null, {
+      runOnly: {
+        type: 'tag',
+        values: ['wcag22aa'],
+      },
+    });
   });
 
   it("doesn't have transcripts against a hearing", () => {
