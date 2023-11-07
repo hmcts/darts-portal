@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { AppConfigService } from '@services/app-config/app-config.service';
 import { ErrorMessageService } from '@services/error/error-message.service';
 
 @Component({
@@ -10,6 +11,8 @@ import { ErrorMessageService } from '@services/error/error-message.service';
   styleUrls: ['./internal-error.component.scss'],
 })
 export class InternalErrorComponent {
-  errorMsgService = inject(ErrorMessageService);
+  private errorMsgService = inject(ErrorMessageService);
+  private appConfigService = inject(AppConfigService);
   error$ = this.errorMsgService.errorMessage$;
+  support = this.appConfigService.getAppConfig()?.support;
 }

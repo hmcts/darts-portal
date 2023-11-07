@@ -6,6 +6,7 @@ import { AudioPlayerComponent } from '@common/audio-player/audio-player.componen
 import { PlayButtonComponent } from '@common/play-button/play-button.component';
 import { HearingEvent } from '@darts-types/hearing-event.interface';
 import { Case, HearingEventRow, UserAudioRequestRow } from '@darts-types/index';
+import { AppConfigService } from '@services/app-config/app-config.service';
 import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { CaseService } from '@services/case/case.service';
 import { ErrorMessageService } from '@services/error/error-message.service';
@@ -25,6 +26,16 @@ describe('AudioViewComponent', () => {
         requestId: 12378,
       },
     },
+  };
+
+  const appConfigServiceMock = {
+    getAppConfig: () => ({
+      appInsightsKey: 'XXXXXXXX',
+      support: {
+        name: 'DARTS support',
+        emailAddress: 'support@darts',
+      },
+    }),
   };
 
   const MOCK_HEARING_EVENTS: HearingEvent[] = [
@@ -137,6 +148,7 @@ describe('AudioViewComponent', () => {
           { provide: HearingService, useValue: fakeHearingService },
           { provide: CaseService, useValue: fakeCaseService },
           { provide: ErrorMessageService, useValue: fakeErrorMessageService },
+          { provide: AppConfigService, useValue: appConfigServiceMock },
         ],
       });
       fixture = TestBed.createComponent(AudioViewComponent);
@@ -273,6 +285,7 @@ describe('AudioViewComponent', () => {
           { provide: ActivatedRoute, useValue: mockActivatedRoute },
           { provide: AudioRequestService, useValue: audioRequestService },
           { provide: Router, useValue: { navigate: jest.fn() } },
+          { provide: AppConfigService, useValue: appConfigServiceMock },
         ],
       });
       fixture = TestBed.createComponent(AudioViewComponent);

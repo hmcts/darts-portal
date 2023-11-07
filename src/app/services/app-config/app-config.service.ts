@@ -4,6 +4,10 @@ import { HttpBackendClient } from 'src/app/extensions/HttpBackendClient';
 
 export interface AppConfig {
   appInsightsKey: string;
+  support: {
+    name: string;
+    emailAddress: string;
+  };
 }
 
 const CONFIG_PATH = '/app/config';

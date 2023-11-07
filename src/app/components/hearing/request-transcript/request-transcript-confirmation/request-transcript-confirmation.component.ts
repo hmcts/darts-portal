@@ -25,7 +25,7 @@ export class RequestTranscriptConfirmationComponent {
   @Input() audioTimes?: { startTime: DateTime | null; endTime: DateTime | null };
 
   @Output() cancel = new EventEmitter<void>();
-  @Output() confirm = new EventEmitter<void>();
+  @Output() confirm = new EventEmitter<string>();
   @Output() errors = new EventEmitter<{ fieldId: string; message: string }[]>();
 
   moreDetailFormControl = new FormControl('');
@@ -33,7 +33,6 @@ export class RequestTranscriptConfirmationComponent {
 
   isSubmitted = false;
 
-  // get remaining character count from 2000 for more detail text area
   get remainingCharacterCount() {
     return 2000 - (this.moreDetailFormControl.value?.length || 0);
   }
@@ -52,7 +51,11 @@ export class RequestTranscriptConfirmationComponent {
       this.errors.emit([
         { fieldId: 'authorisation', message: 'You must confirm that you have authority to request a transcript' },
       ]);
+      return;
     }
+    this.errors.emit([]);
+
+    this.confirm.emit(this.moreDetailFormControl.value ?? '');
   }
 
   onCancel() {

@@ -5,10 +5,20 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { InternalErrorComponent } from '@components/error/internal-server/internal-error.component';
 import { ErrorMessage } from '@darts-types/error-message.interface';
+import { AppConfigService } from '@services/app-config/app-config.service';
 import { HeaderService } from '@services/header/header.service';
 import { SearchErrorComponent } from './search-error.component';
 
 describe('SearchErrorComponent', () => {
+  const appConfigServiceMock = {
+    getAppConfig: () => ({
+      appInsightsKey: 'XXXXXXXX',
+      support: {
+        name: 'DARTS support',
+        emailAddress: 'support@darts',
+      },
+    }),
+  };
   let component: SearchErrorComponent;
   let fixture: ComponentFixture<SearchErrorComponent>;
   let debugElement: DebugElement;
@@ -20,7 +30,7 @@ describe('SearchErrorComponent', () => {
         SearchErrorComponent,
         RouterTestingModule.withRoutes([{ path: 'internal-error', component: InternalErrorComponent }]),
       ],
-      providers: [HeaderService],
+      providers: [HeaderService, { provide: AppConfigService, useValue: appConfigServiceMock }],
     });
     fixture = TestBed.createComponent(SearchErrorComponent);
     component = fixture.componentInstance;

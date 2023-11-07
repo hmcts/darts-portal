@@ -14,6 +14,10 @@
     "prefix": "darts-portal-session",
     "ttlInSeconds": 1200
   },
+  "support": {
+    "name": "Crown IT Support",
+    "emailAddress": "crownITsupport@justice.gov.uk"
+  },
   "secrets": {
     "darts": {
       "AppInsightsInstrumentationKey": "00000000-0000-0000-0000-000000000000",

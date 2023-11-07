@@ -163,4 +163,29 @@ describe('Request Transcript', () => {
     // Confirm we are in the right place
     cy.contains('Events, audio and specific times requests').should('not.exist');
   });
+
+  it('submit a transcript request', () => {
+    // Get to the request transcript page
+    cy.get('#hearingsTable a').contains('1 Sep 2023').click();
+    cy.get(':nth-child(2) > .moj-sub-navigation__link').click();
+    cy.get('.govuk-button').click();
+
+    // Confirm we are in the right place
+    cy.get('h1.govuk-heading-l').should('contain', 'Request a new transcript');
+
+    // Fill in the form
+    cy.get('#transcrption-type').select('Mitigation');
+    cy.get('#urgency').select('Overnight');
+    cy.get('.govuk-button').click();
+
+    // Confirm we are in the right place
+    cy.contains('Events, audio and specific times requests').should('not.exist');
+    cy.get('#authorisation').check();
+
+    // Submit the form
+    cy.get('.govuk-button').click();
+
+    cy.get('.govuk-panel__title').should('contain', 'Transcript request submitted');
+    cy.get('.govuk-panel__body strong').should('contain', '123'); // check ID
+  });
 });

@@ -11,6 +11,7 @@ import { ErrorMessage } from '@darts-types/error-message.interface';
 import { DatatableColumn, HearingEvent, HearingEventRow, UserAudioRequestRow } from '@darts-types/index';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
+import { AppConfigService } from '@services/app-config/app-config.service';
 import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { CaseService } from '@services/case/case.service';
 import { ErrorMessageService } from '@services/error/error-message.service';
@@ -41,6 +42,7 @@ import { AudioDeleteComponent } from '../audio-delete/audio-delete.component';
 export class AudioViewComponent implements OnDestroy {
   @ViewChild(AudioPlayerComponent) audioPlayer!: AudioPlayerComponent;
 
+  appConfigService = inject(AppConfigService);
   audioRequestService = inject(AudioRequestService);
   caseService = inject(CaseService);
   hearingService = inject(HearingService);
@@ -61,6 +63,8 @@ export class AudioViewComponent implements OnDestroy {
   isAudioTouched = false;
   currentPlayTime = 0;
 
+  support = this.appConfigService.getAppConfig()?.support;
+
   columns: DatatableColumn[] = [
     { name: '', prop: '' },
     { name: 'Event type', prop: 'eventType', sortable: true },
@@ -72,7 +76,7 @@ export class AudioViewComponent implements OnDestroy {
 
   permissionErrors = [
     'You do not have permission to view this file',
-    'Email crownITsupport@justice.gov.uk to request access',
+    `Email ${this.support?.emailAddress} to request access`,
   ];
 
   constructor(private errorMsgService: ErrorMessageService) {

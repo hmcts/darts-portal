@@ -7,6 +7,7 @@ import { CourthouseComponent } from '@common/courthouse/courthouse.component';
 import { Courthouse } from '@darts-types/courthouse.interface';
 import { ErrorMessage } from '@darts-types/error-message.interface';
 import { ErrorSummaryEntry } from '@darts-types/index';
+import { AppConfigService } from '@services/app-config/app-config.service';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
 import { CaseService } from '@services/case/case.service';
 import { ErrorMessageService } from '@services/error/error-message.service';
@@ -22,6 +23,7 @@ jest.mock('@scottish-government/pattern-library/src/all', () => ({
 
 describe('SearchComponent', () => {
   const fakeAppInsightsService = {};
+  const fakeAppConfigService = {};
   let httpClientSpy: HttpClient;
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
@@ -57,6 +59,7 @@ describe('SearchComponent', () => {
       ],
       providers: [
         { provide: AppInsightsService, useValue: fakeAppInsightsService },
+        { provide: AppConfigService, useValue: fakeAppConfigService },
         { provide: CaseService, useValue: caseService },
         { provide: ErrorMessageService, useValue: errorMsgService },
       ],

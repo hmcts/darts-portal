@@ -26,4 +26,8 @@ router.get('/urgencies', (req, res) => {
   ]);
 });
 
+router.post('/', (req, res) => {
+  res.send({ transcription_id: 123 });
+});
+
 module.exports = router;

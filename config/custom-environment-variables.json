@@ -13,5 +13,9 @@
     "useSecureCookies": "DARTS_SESSION_USE_SECURE_COOKIES",
     "prefix": "DARTS_SESSION_PREFIX",
     "ttlInSeconds": "DARTS_SESSION_TTL"
+  },
+  "support": {
+    "name": "DARTS_SUPPORT_NAME",
+    "emailAddress": "DARTS_SUPPORT_EMAIL_ADDRESS"
   }
 }
