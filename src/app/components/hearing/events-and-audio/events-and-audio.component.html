@@ -48,13 +48,6 @@
             *ngIf="isAudioInPreview(row.id)"
             [audioSource]="audioPreviewPath + row.id"
           ></app-audio-player>
-          <a
-            class="test-audio-download"
-            style="display: none"
-            target="_blank"
-            [href]="'/api-test/audio/preview/' + row.id"
-            >Download</a
-          >
         </td>
         <td class="govuk-table__cell">End time: {{ row.media_end_timestamp | date: 'HH:mm:ss' }}</td>
       </ng-container>
