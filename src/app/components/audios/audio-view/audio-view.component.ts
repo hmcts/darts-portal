@@ -8,6 +8,7 @@ import { PlayButtonComponent } from '@common/play-button/play-button.component';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
 import { Case } from '@darts-types/case.interface';
 import { ErrorMessage } from '@darts-types/error-message.interface';
+import { ValidationErrorSummaryComponent } from './../../common/validation-error-summary/validation-error-summary.component';
 import { DatatableColumn, HearingEvent, HearingEventRow, UserAudioRequestRow } from '@darts-types/index';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
@@ -34,6 +35,7 @@ import { AudioDeleteComponent } from '../audio-delete/audio-delete.component';
     TableRowTemplateDirective,
     AudioPlayerComponent,
     PlayButtonComponent,
+    ValidationErrorSummaryComponent,
   ],
   templateUrl: './audio-view.component.html',
   styleUrls: ['./audio-view.component.scss'],
@@ -75,8 +77,8 @@ export class AudioViewComponent implements OnDestroy {
   error$ = this.errorMsgService.errorMessage$;
 
   permissionErrors = [
-    'You do not have permission to view this file',
-    `Email ${this.support?.emailAddress} to request access`,
+    { fieldId: 'permission', message: 'You do not have permission to view this file' },
+    { fieldId: 'email', message: `Email ${this.support?.emailAddress} to request access` },
   ];
 
   constructor(private errorMsgService: ErrorMessageService) {

@@ -9,19 +9,12 @@
     [reportingRestriction]="data.case.reporting_restriction"
   ></app-reporting-restriction>
 
+  <!-- Validation Error Summary Component -->
   <ng-container *ngIf="data.error">
-    <div *ngIf="data.error.status === 403" class="govuk-error-summary" data-module="govuk-error-summary">
-      <div role="alert">
-        <h2 class="govuk-error-summary__title">There is a problem</h2>
-        <div class="govuk-error-summary__body">
-          <ul class="govuk-list govuk-error-summary__list">
-            <li *ngFor="let error of permissionErrors">
-              <a [routerLink]="['.']">{{ error }}</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
+    <app-validation-error-summary
+      *ngIf="data.error.status === 403"
+      [errors]="permissionErrors"
+    ></app-validation-error-summary>
   </ng-container>
 
   <h1 class="govuk-caption-l">Audio File</h1>
