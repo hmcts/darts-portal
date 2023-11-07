@@ -87,17 +87,6 @@
   >
   </app-request-times>
 
-  <app-request-times
-    [audioRows]="vm.audioRows"
-    [events]="vm.events"
-    [hearing]="vm.hearing!"
-    (continue)="onRequestTimeContinue($event)"
-    (cancel)="onRequestTimeCancel()"
-    (errors)="validationErrors = $event"
-    [hidden]="!(step === 2)"
-  >
-  </app-request-times>
-
   <app-request-transcript-confirmation
     [case]="vm.case"
     [hearing]="vm.hearing!"

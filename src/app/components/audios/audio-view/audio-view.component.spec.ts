@@ -233,9 +233,9 @@ describe('AudioViewComponent', () => {
 
       component.onDownloadClicked();
 
-      expect(fakeAudioRequestService.downloadAudio).toHaveBeenCalledWith(12378);
+      expect(fakeAudioRequestService.downloadAudio).toHaveBeenCalledWith(12378, 'PLAYBACK');
 
-      expect(saveAsSpy).toHaveBeenCalledWith(mockBlob, 'T20200331.zip');
+      expect(saveAsSpy).toHaveBeenCalledWith(mockBlob, 'T20200331.mp3');
     });
 
     it('should call saveAs with the correct arguments', () => {
