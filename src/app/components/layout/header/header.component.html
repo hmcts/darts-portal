@@ -59,7 +59,9 @@
               ariaCurrentWhenActive="page"
               >Your Audio
               <ng-container *ngIf="unreadAudioCount$ | async as count">
-                <span *ngIf="count > 0" id="notifications" class="moj-notification-badge">{{ count }}</span>
+                <span *ngIf="count > 0" id="notifications" class="moj-notification-badge"
+                  ><span class="govuk-visually-hidden">Ready requests not viewed count: </span>{{ count }}</span
+                >
               </ng-container>
             </a>
           </li>
