@@ -72,7 +72,13 @@
                 <strong class="govuk-tag govuk-tag--green"> READY </strong>
               </td>
               <td class="govuk-table__cell">
-                <a href="#" (click)="onViewAudioRequest($event, row)" class="govuk-link">View</a>
+                <a
+                  href="#"
+                  [id]="'ready-view-' + row.requestId"
+                  (click)="onViewAudioRequest($event, row)"
+                  class="govuk-link"
+                  >View</a
+                >
               </td>
             </ng-template>
           </app-data-table>

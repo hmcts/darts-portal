@@ -11,7 +11,12 @@ export const pathsToTest = [
   '/internal-error',
 ];
 //List of paths that depend on UserState to load
-export const pathsToTestUserState = ['/audios'];
+export const pathsToTestUserState = ['/audios', '/audios/12376'];
+const audioViewSteps = [
+  'wait for element #readyTable to be visible',
+  'click element #ready-view-12376',
+  'wait for .govuk-footer__copyright-logo to be visible',
+]; //Custom steps required due to audio view not being directly accessible via url
 
 //Neccessary to login to application so that we can test pages that require UserState (e.g. Your Audios)
 const loginActions = [
@@ -48,6 +53,7 @@ async function pa11yPagesUserState() {
     const path = pathsToTestUserState[x];
     actionSteps.push(`navigate to ${testUrl}${path}`);
     actionSteps.push(`wait for .govuk-footer__copyright-logo to be visible`);
+    path === '/audios/12376' && actionSteps.push(...audioViewSteps);
 
     const results = await Promise.all(
       pathsToTestUserState.map((path) =>
