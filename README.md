@@ -83,7 +83,7 @@ Run `yarn test` or `yarn test:watch` to execute the unit tests via [Jest](https:
 
 ## Running end-to-end tests
 
-Run `yarn test:functional` to execute the end-to-end tests using Cypress.
+Run `yarn test:functional` to execute the end-to-end tests using Cypress, this includes accessibility checks via axe-core (WCAG22AA standards).
 
 Run `yarn cypress` to open the cypress console, very useful for debugging tests.
 

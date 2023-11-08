@@ -1,3 +1,4 @@
+import 'cypress-axe';
 Cypress.Commands.add('login', () => {
   cy.visit('/login');
   cy.contains('I work with the HM Courts and Tribunals Service').click();
@@ -10,4 +11,13 @@ Cypress.Commands.add('login', () => {
 
 Cypress.Commands.add('logout', () => {
   cy.contains('Sign out').click();
+});
+
+Cypress.Commands.add('a11y', () => {
+  cy.checkA11y(null, {
+    runOnly: {
+      type: 'tag',
+      values: ['wcag22aa', 'wcag21aa'],
+    },
+  });
 });
