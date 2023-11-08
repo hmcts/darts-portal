@@ -8,7 +8,6 @@ import { PlayButtonComponent } from '@common/play-button/play-button.component';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
 import { Case } from '@darts-types/case.interface';
 import { ErrorMessage } from '@darts-types/error-message.interface';
-import { ValidationErrorSummaryComponent } from './../../common/validation-error-summary/validation-error-summary.component';
 import { DatatableColumn, HearingEvent, HearingEventRow, UserAudioRequestRow } from '@darts-types/index';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
@@ -20,6 +19,7 @@ import { HearingService } from '@services/hearing/hearing.service';
 import { DateTime } from 'luxon';
 import { combineLatest, map, Observable } from 'rxjs';
 import { AudioDeleteComponent } from '../audio-delete/audio-delete.component';
+import { ValidationErrorSummaryComponent } from './../../common/validation-error-summary/validation-error-summary.component';
 
 @Component({
   selector: 'app-audio-view',
@@ -77,8 +77,8 @@ export class AudioViewComponent implements OnDestroy {
   error$ = this.errorMsgService.errorMessage$;
 
   permissionErrors = [
-    { fieldId: 'permission', message: 'You do not have permission to view this file' },
-    { fieldId: 'email', message: `Email ${this.support?.emailAddress} to request access` },
+    { fieldId: '', message: 'You do not have permission to view this file' },
+    { fieldId: '', message: `Email ${this.support?.emailAddress} to request access` },
   ];
 
   constructor(private errorMsgService: ErrorMessageService) {
