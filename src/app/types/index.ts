@@ -22,3 +22,4 @@ export * from './transcription-type.interface';
 export * from './transcripts-row.interface';
 export * from './user-audio-request-row.interface';
 export * from './user-audio-request.interface';
+export * from './transcription-details.interface';
