@@ -25,7 +25,7 @@ import { MappingService } from '@services/mapping/mapping.service';
 import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
 import { combineLatest, map } from 'rxjs';
-import { ValidationErrorSummaryComponent } from './../common/validation-error-summary/validation-error-summary.component';
+import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { LoadingComponent } from '../common/loading/loading.component';
 import { EventsAndAudioComponent } from './events-and-audio/events-and-audio.component';
 import { HearingFileComponent } from './hearing-file/hearing-file.component';

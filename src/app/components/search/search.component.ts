@@ -11,7 +11,7 @@ import { futureDateValidator } from '@validators/future-date.validator';
 import { Subscription, catchError, ignoreElements, of } from 'rxjs';
 import { ResultsComponent } from './results/results.component';
 import { SearchErrorComponent } from './search-error/search-error.component';
-import { ValidationErrorSummaryComponent } from './../common/validation-error-summary/validation-error-summary.component';
+import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 
 const fieldErrors: FieldErrors = {
   courthouse: {

@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { RouterLink } from '@angular/router';
 import { NgIf, NgClass } from '@angular/common';
 import { AuthService } from '@services/auth/auth.service';
-import { ValidationErrorSummaryComponent } from './../common/validation-error-summary/validation-error-summary.component';
+import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 
 @Component({
   selector: 'app-login',
