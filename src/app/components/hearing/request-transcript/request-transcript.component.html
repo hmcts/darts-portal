@@ -92,24 +92,30 @@
   >
   </app-request-times>
 
-  <app-request-transcript-confirmation
-    [case]="vm.case"
-    [hearing]="vm.hearing!"
-    [transcriptionTypes]="vm.transcriptionTypes"
-    [transcriptionTypeId]="+transcriptionTypeFormControl.value!"
-    [urgencies]="vm.urgencies"
-    [urgencyId]="+urgencyFormControl.value!"
-    [audioTimes]="audioTimes"
-    (errors)="validationErrors = $event"
-    (cancel)="onConfirmationCancel()"
-    (confirm)="onConfirm($event)"
-    [hidden]="!(step === 3)"
-  ></app-request-transcript-confirmation>
+  <ng-container *ngIf="vm.error">
+    <app-request-transcript-confirmation
+      [case]="vm.case"
+      [hearing]="vm.hearing!"
+      [transcriptionTypes]="vm.transcriptionTypes"
+      [transcriptionTypeId]="+transcriptionTypeFormControl.value!"
+      [urgencies]="vm.urgencies"
+      [urgencyId]="+urgencyFormControl.value!"
+      [audioTimes]="audioTimes"
+      (errors)="validationErrors = $event"
+      (cancel)="onConfirmationCancel()"
+      (confirm)="onConfirm($event)"
+      [hidden]="!(step === 3) && !vm.error"
+    ></app-request-transcript-confirmation>
+  </ng-container>
 
   <app-request-transcript-success
     [transcriptRequestId]="transcriptRequestId"
     [hidden]="!(step === 4)"
   ></app-request-transcript-success>
+
+  <ng-container *ngIf="vm.error">
+    <app-request-transcript-exists [hidden]="!(vm.error.status === 409)"></app-request-transcript-exists>
+  </ng-container>
 </ng-container>
 
 <ng-template #loading>

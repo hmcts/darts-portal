@@ -26,8 +26,17 @@ router.get('/urgencies', (req, res) => {
   ]);
 });
 
+router.use(express.json());
+
 router.post('/', (req, res) => {
-  res.send({ transcription_id: 123 });
+  //If start time is below then return 409
+  const exists = req.body.start_date_time.indexOf('00:00:00Z') !== -1 && true;
+
+  if (exists) {
+    res.sendStatus(409);
+  } else {
+    res.send({ transcription_id: 123 });
+  }
 });
 
 module.exports = router;
