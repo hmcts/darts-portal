@@ -11,7 +11,7 @@ This is primarily an Angular app, but runs through a node.js server. There are t
 
 Running the application requires the following tools to be installed in your environment:
 
-- [Node.js](https://nodejs.org/) v18.0.0 or later
+- [Node.js](https://nodejs.org/) v20.0.0 or later
 - [yarn](https://yarnpkg.com/) v3
 - [Docker](https://www.docker.com)
 
