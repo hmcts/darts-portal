@@ -19,6 +19,7 @@ import { HearingService } from '@services/hearing/hearing.service';
 import { DateTime } from 'luxon';
 import { combineLatest, map, Observable } from 'rxjs';
 import { AudioDeleteComponent } from '../audio-delete/audio-delete.component';
+import { ValidationErrorSummaryComponent } from './../../common/validation-error-summary/validation-error-summary.component';
 
 @Component({
   selector: 'app-audio-view',
@@ -34,6 +35,7 @@ import { AudioDeleteComponent } from '../audio-delete/audio-delete.component';
     TableRowTemplateDirective,
     AudioPlayerComponent,
     PlayButtonComponent,
+    ValidationErrorSummaryComponent,
   ],
   templateUrl: './audio-view.component.html',
   styleUrls: ['./audio-view.component.scss'],
@@ -75,8 +77,8 @@ export class AudioViewComponent implements OnDestroy {
   error$ = this.errorMsgService.errorMessage$;
 
   permissionErrors = [
-    'You do not have permission to view this file',
-    `Email ${this.support?.emailAddress} to request access`,
+    { fieldId: '', message: 'You do not have permission to view this file' },
+    { fieldId: '', message: `Email ${this.support?.emailAddress} to request access` },
   ];
 
   constructor(private errorMsgService: ErrorMessageService) {
