@@ -11,36 +11,24 @@ describe('Case file screen', () => {
       cy.visit('/case/400');
       cy.injectAxe();
       cy.get('h1').should('contain', 'There is a problem with the service');
-      cy.checkA11y(null, {
-        runOnly: {
-          type: 'tag',
-          values: ['wcag22aa'],
-        },
-      });
+
+      cy.a11y();
     });
 
     it('shows the 403 error page', () => {
       cy.visit('/case/403');
       cy.injectAxe();
       cy.get('h1').should('contain', 'You do not have permission to access this page');
-      cy.checkA11y(null, {
-        runOnly: {
-          type: 'tag',
-          values: ['wcag22aa'],
-        },
-      });
+
+      cy.a11y();
     });
 
     it('shows the 404 error page', () => {
       cy.visit('/case/404');
       cy.injectAxe();
       cy.get('h1').should('contain', 'Page not found');
-      cy.checkA11y(null, {
-        runOnly: {
-          type: 'tag',
-          values: ['wcag22aa'],
-        },
-      });
+
+      cy.a11y();
     });
   });
 
@@ -64,12 +52,8 @@ describe('Case file screen', () => {
           .then((rows) => {
             expect(rows.length).equal(7);
           });
-        cy.checkA11y(null, {
-          runOnly: {
-            type: 'tag',
-            values: ['wcag22aa'],
-          },
-        });
+
+        cy.a11y();
       });
     });
 
@@ -90,12 +74,8 @@ describe('Case file screen', () => {
           .then((rows) => {
             expect(rows.length).equal(8); // 8 including header row
           });
-        cy.checkA11y(null, {
-          runOnly: {
-            type: 'tag',
-            values: ['wcag22aa'],
-          },
-        });
+
+        cy.a11y();
       });
     });
   });

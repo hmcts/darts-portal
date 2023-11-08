@@ -29,24 +29,16 @@ describe('Your audio', () => {
   it('has "Ready" table', () => {
     cy.contains('Your Audio').click();
     cy.get('#readyTable').should('contain', 'T20200333');
-    cy.checkA11y(null, {
-      runOnly: {
-        type: 'tag',
-        values: ['wcag22aa'],
-      },
-    });
+
+    cy.a11y();
   });
 
   it('has "Expired" table', () => {
     cy.contains('Your Audio').click();
     cy.contains('Expired').click();
     cy.get('#expiredTable').should('contain', 'T20202110');
-    cy.checkA11y(null, {
-      runOnly: {
-        type: 'tag',
-        values: ['wcag22aa'],
-      },
-    });
+
+    cy.a11y();
   });
 
   it('should show correct Notification badge count', () => {
@@ -86,12 +78,8 @@ describe('Your audio', () => {
     cy.get('.govuk-error-summary').contains('You do not have permission to view this file');
     cy.get('.govuk-error-summary').contains('Email crownITsupport@justice.gov.uk to request access');
     cy.get('button.govuk-button').should('be.disabled');
-    cy.checkA11y(null, {
-      runOnly: {
-        type: 'tag',
-        values: ['wcag22aa'],
-      },
-    });
+
+    cy.a11y();
   });
 
   it('View audio request and delete', () => {
@@ -138,12 +126,8 @@ describe('Your audio', () => {
     cy.get('button.govuk-button--warning').click();
     cy.contains('T20200331').should('not.exist');
     cy.get(navigationSelector).should('exist');
-    cy.checkA11y(null, {
-      runOnly: {
-        type: 'tag',
-        values: ['wcag22aa'],
-      },
-    });
+
+    cy.a11y();
   });
 
   it('should clear failed audio requests', () => {

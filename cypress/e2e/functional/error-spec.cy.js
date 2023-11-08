@@ -14,12 +14,7 @@ describe('Error page handling', () => {
     cy.get('button').contains('Search').click();
     cy.get('h2').should('contain', 'An error has occurred');
     cy.get('.govuk-body').should('contain', 'Try again or contact Crown IT Support if the problem persists');
-    cy.checkA11y(null, {
-      runOnly: {
-        type: 'tag',
-        values: ['wcag22aa'],
-      },
-    });
+    cy.a11y();
   });
 
   it('should show full-page error for 500 responses', () => {
@@ -43,12 +38,7 @@ describe('Error page handling', () => {
       cy.get('h1').should('contain', 'There is a problem with the service');
       cy.get('p').should('contain', 'Try again or contact Crown IT Support if the problem persists');
       cy.get('.moj-primary-navigation').should('not.exist');
-      cy.checkA11y(null, {
-        runOnly: {
-          type: 'tag',
-          values: ['wcag22aa'],
-        },
-      });
+      cy.a11y();
     });
   });
 });

@@ -22,12 +22,7 @@ describe('Hearing Transcripts', () => {
     cy.get('#transcription-count').should('contain', 2);
     cy.get('.govuk-button').should('contain', 'Request a new transcript');
     cy.get('#transcriptsTable').should('contain', 'Sentencing remarks');
-    cy.checkA11y(null, {
-      runOnly: {
-        type: 'tag',
-        values: ['wcag22aa'],
-      },
-    });
+    cy.a11y();
   });
 
   it("doesn't have transcripts against a hearing", () => {

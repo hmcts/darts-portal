@@ -55,12 +55,7 @@ describe('Case search', () => {
     cy.get('button').contains('Search').click();
 
     cy.get('#search-results').should('contain', '12 results');
-    cy.checkA11y(null, {
-      runOnly: {
-        type: 'tag',
-        values: ['wcag22aa'],
-      },
-    });
+    cy.a11y();
   });
 
   it('courthouse only', () => {
@@ -140,12 +135,7 @@ describe('Case search', () => {
     cy.get('#date_to-errors').should('contain', DATE_FUTURE);
     cy.get('.govuk-error-summary').should('contain', DATE_FUTURE);
     cy.get('a').contains('Clear search').click();
-    cy.checkA11y(null, {
-      runOnly: {
-        type: 'tag',
-        values: ['wcag22aa'],
-      },
-    });
+    cy.a11y();
   });
 
   it('internal error', () => {

@@ -10,11 +10,6 @@ describe('Your Transcripts', () => {
   it('shows your transcripts', () => {
     cy.contains('Your Transcripts').click();
     cy.get('h3').should('contain', 'Your Transcripts');
-    cy.checkA11y(null, {
-      runOnly: {
-        type: 'tag',
-        values: ['wcag22aa'],
-      },
-    });
+    cy.a11y();
   });
 });

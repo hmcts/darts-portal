@@ -52,11 +52,6 @@ describe('Request audio', () => {
     cy.get('.govuk-grid-column-two-thirds > :nth-child(13)').should('contain', '02:32:24');
     cy.get('.govuk-grid-column-two-thirds > :nth-child(15)').should('contain', '14:32:24');
     cy.get(':nth-child(18) > strong').should('contain', 'dev@local');
-    cy.checkA11y(null, {
-      runOnly: {
-        type: 'tag',
-        values: ['wcag22aa'],
-      },
-    });
+    cy.a11y();
   });
 });

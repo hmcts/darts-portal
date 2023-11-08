@@ -1,4 +1,5 @@
 import 'cypress-axe';
+import './commands';
 describe('Login', () => {
   before(() => {
     cy.visit('/login');
@@ -7,12 +8,7 @@ describe('Login', () => {
 
   it('loads login page', () => {
     cy.get('h1').should('contain', 'Sign in to the DARTS Portal');
-    cy.checkA11y(null, {
-      runOnly: {
-        type: 'tag',
-        values: ['wcag22aa'],
-      },
-    });
+    cy.a11y();
   });
 
   it('logs in and out', () => {
