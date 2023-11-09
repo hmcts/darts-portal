@@ -44,7 +44,7 @@ describe('SearchErrorComponent', () => {
   });
 
   it('should show appropriate message for CASE_100 error', () => {
-    component.error = { type: 'CASE_100' } as ErrorMessage;
+    component.error = { detail: { type: 'CASE_100' } } as ErrorMessage;
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
     expect(compiled.textContent).toContain('There are more than 500 results');
@@ -52,7 +52,7 @@ describe('SearchErrorComponent', () => {
   });
 
   it('should show appropriate message for CASE_101 error', () => {
-    component.error = { type: 'CASE_101' } as ErrorMessage;
+    component.error = { detail: { type: 'CASE_101' } } as ErrorMessage;
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
     expect(compiled.textContent).toContain('No search results');
@@ -60,7 +60,7 @@ describe('SearchErrorComponent', () => {
   });
 
   it('should show appropriate message for CASE_102 error', () => {
-    component.error = { type: 'CASE_102' } as ErrorMessage;
+    component.error = { detail: { type: 'CASE_102' } } as ErrorMessage;
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
     expect(compiled.textContent).toContain('There are more than 500 results');
@@ -68,7 +68,7 @@ describe('SearchErrorComponent', () => {
   });
 
   it('should show default error message for unknown error', () => {
-    component.error = { type: 'UNKNOWN_CASE' } as ErrorMessage;
+    component.error = { detail: { type: 'UNKNOWN_CASE' } } as ErrorMessage;
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
     expect(compiled.textContent).toContain('An error has occurred. Please try again later.');

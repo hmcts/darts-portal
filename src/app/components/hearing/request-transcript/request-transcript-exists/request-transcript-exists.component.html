@@ -2,12 +2,18 @@
 
 <div class="govuk-button-group">
   <a
+    id="exists-duplicate-route"
     class="govuk-link"
     [routerLink]="['/case', caseId, '/hearing', hearingId, '/transcripts', transcriptionId]"
     routerLinkActive="router-link-active"
     >Go to this transcript</a
   >
-  <a class="govuk-link" routerLink="../" [queryParams]="{ tab: 'Transcripts' }" routerLinkActive="router-link-active"
+  <a
+    id="exists-hearing-route"
+    class="govuk-link"
+    routerLink="../"
+    [queryParams]="{ tab: 'Transcripts' }"
+    routerLinkActive="router-link-active"
     >Return to hearing</a
   >
 </div>
