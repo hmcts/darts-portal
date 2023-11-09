@@ -1,6 +1,8 @@
 import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
+import { CaseService } from '@services/case/case.service';
+import { TranscriptionService } from '@services/transcription/transcription.service';
 
 import { ViewTranscriptComponent } from './view-transcript.component';
 
@@ -31,7 +33,7 @@ describe('ViewTranscriptComponent', () => {
       params: {
         caseId: '1',
         hearing_id: '1',
-        transcriptId: '1',
+        transcriptId: '2',
       },
       queryParams: { tab: 'Transcripts' },
     },
@@ -40,15 +42,35 @@ describe('ViewTranscriptComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ViewTranscriptComponent, HttpClientModule],
-      providers: [{ provide: ActivatedRoute, useValue: mockActivatedRoute }],
+      providers: [
+        { provide: ActivatedRoute, useValue: mockActivatedRoute },
+        { provide: CaseService, useValue: { getCase: jest.fn() } },
+        { provide: TranscriptionService, useValue: { getTranscriptionDetails: jest.fn() } },
+      ],
     });
 
     fixture = TestBed.createComponent(ViewTranscriptComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should set the Case ID and Transcript ID', () => {
+    expect(component.caseId).toEqual('1');
+    expect(component.transcriptId).toEqual('2');
+  });
+
+  it('should call the correct getCase method with ID', () => {
+    const spy = jest.spyOn(component.caseService, 'getCase');
+    fixture.detectChanges();
+    expect(spy).toHaveBeenCalledWith('1');
+  });
+
+  it('should call the correct getTranscriptionDetails method with ID', () => {
+    const spy = jest.spyOn(component.transcriptionService, 'getTranscriptionDetails');
+    fixture.detectChanges();
+    expect(spy).toHaveBeenCalledWith('2');
   });
 });
