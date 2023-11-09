@@ -1,1 +1,13 @@
-<p>request-transcript-exists works!</p>
+<h1 class="govuk-heading-l">This transcript already exists</h1>
+
+<div class="govuk-button-group">
+  <a
+    class="govuk-link"
+    [routerLink]="['/case', caseId, '/hearing', hearingId, '/transcripts', transcriptionId]"
+    routerLinkActive="router-link-active"
+    >Go to this transcript</a
+  >
+  <a class="govuk-link" routerLink="../" [queryParams]="{ tab: 'Transcripts' }" routerLinkActive="router-link-active"
+    >Return to hearing</a
+  >
+</div>

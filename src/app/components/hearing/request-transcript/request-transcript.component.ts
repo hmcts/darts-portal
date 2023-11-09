@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
@@ -46,7 +46,7 @@ enum TranscriptionType {
   templateUrl: './request-transcript.component.html',
   styleUrls: ['./request-transcript.component.scss'],
 })
-export class RequestTranscriptComponent implements OnInit {
+export class RequestTranscriptComponent implements OnInit, OnDestroy {
   route = inject(ActivatedRoute);
   caseService = inject(CaseService);
   hearingService = inject(HearingService);
@@ -95,6 +95,10 @@ export class RequestTranscriptComponent implements OnInit {
 
   ngOnInit(): void {
     this.headerService.hideNavigation();
+  }
+
+  ngOnDestroy(): void {
+    this.errorMsgService.clearErrorMessage();
   }
 
   onNextStep() {
