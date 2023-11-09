@@ -1,9 +1,10 @@
+import 'cypress-axe';
 import './commands';
 
 describe('Request Transcript', () => {
   beforeEach(() => {
     cy.login();
-
+    cy.injectAxe();
     cy.contains('Search').click();
     cy.get('h1').should('contain', 'Search for a case');
     cy.get('#case_number').type('C20220620001');
@@ -52,6 +53,7 @@ describe('Request Transcript', () => {
     cy.get(':nth-child(12) > .govuk-label').should('contain', 'Request Type');
     cy.get(':nth-child(13) > .govuk-label').should('contain', 'Urgency');
     cy.get('.govuk-table__body > :nth-child(1) > :nth-child(1)').should('contain', '02:32:24');
+    cy.a11y();
   });
 
   it('should return to the hearing transcripts tab', () => {
@@ -109,6 +111,7 @@ describe('Request Transcript', () => {
     cy.get('.govuk-list > :nth-child(2) > a').should('contain', 'Please select an urgency');
     cy.get(':nth-child(12) > #subject-error').should('contain', 'Please select a transcription type');
     cy.get(':nth-child(13) > #subject-error').should('contain', 'Please select an urgency');
+    cy.a11y();
   });
 
   it('open the request times page if "court log" is selected', () => {
@@ -145,6 +148,7 @@ describe('Request Transcript', () => {
 
     // Confirm we are in the right place
     cy.get('h2.govuk-heading-m').should('contain', 'Events, audio and specific times requests');
+    cy.a11y();
   });
 
   it('open the confirmation page if neither "court log" or "specified times" is selected', () => {
@@ -188,6 +192,7 @@ describe('Request Transcript', () => {
 
     cy.get('.govuk-panel__title').should('contain', 'Transcript request submitted');
     cy.get('.govuk-panel__body strong').should('contain', '123'); // check ID
+    cy.a11y();
   });
 
   describe('Duplicate Transcripts', () => {
@@ -247,6 +252,7 @@ describe('Request Transcript', () => {
       cy.get('.govuk-button').contains('Submit request').click();
 
       cy.get('.govuk-heading-l').should('contain', 'This transcript already exists');
+      cy.a11y();
     });
 
     it('should route to hearings list on duplicate error page', () => {

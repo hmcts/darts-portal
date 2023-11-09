@@ -1,7 +1,14 @@
+import 'cypress-axe';
+import './commands';
 describe('Login', () => {
-  it('loads login page', () => {
+  before(() => {
     cy.visit('/login');
+    cy.injectAxe();
+  });
+
+  it('loads login page', () => {
     cy.get('h1').should('contain', 'Sign in to the DARTS Portal');
+    cy.a11y();
   });
 
   it('logs in and out', () => {

@@ -3,18 +3,8 @@
     <label class="govuk-label govuk-label--l" for="case-search"> Search for a case </label>
   </h1>
 
-  <div *ngIf="errorSummary.length > 0" class="govuk-error-summary" data-module="govuk-error-summary">
-    <div role="alert">
-      <h2 class="govuk-error-summary__title">There is a problem</h2>
-      <div class="govuk-error-summary__body">
-        <ul class="govuk-list govuk-error-summary__list">
-          <li *ngFor="let error of errorSummary">
-            <a href="search#{{ error.fieldId }}">{{ error.message }}</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
+  <!-- Validation Error Summary Component -->
+  <app-validation-error-summary [errors]="errorSummary"></app-validation-error-summary>
 
   <div class="govuk-form-group" [ngClass]="{ 'govuk-form-group--error': isSubmitted && f.case_number.errors }">
     <label class="govuk-label" for="case_number"> Case ID </label>
