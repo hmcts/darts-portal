@@ -21,21 +21,6 @@ function proxyMiddleware() {
           proxyReq.setHeader('user_id', req.session.securityToken.userState.userId);
         }
       }
-      if (req.path.startsWith('/audio/preview')) {
-        console.log('onProxyReq::proxyReq', req.path, proxyReq.getHeaders());
-        console.log('onProxyReq::req', req.path, req.headers);
-      }
-    },
-    onProxyRes: (proxyRes, req, res) => {
-      if (req.path.startsWith('/audio/preview')) {
-        console.log('onProxyRes::proxyRes', req.path, proxyRes.headers);
-        console.log('onProxyRes::res', req.path, res);
-      }
-    },
-    onError: (err, req) => {
-      if (req.path.startsWith('/audio/preview')) {
-        console.error('onError::err', req.path, err);
-      }
     },
   });
 }

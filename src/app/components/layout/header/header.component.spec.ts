@@ -41,6 +41,6 @@ describe('HeaderComponent', () => {
 
   it('should set header count', () => {
     const unreadCountElement: HTMLSpanElement = fixture.debugElement.query(By.css('#notifications')).nativeElement;
-    expect(unreadCountElement.textContent).toBe('5');
+    expect(unreadCountElement.textContent).toBe('Ready requests not viewed count: 5');
   });
 });

@@ -22,7 +22,7 @@ export default () => {
     });
     sessionMiddleware.store = redisStore;
 
-    if (config.get('session.useSecureCookies') === 'true' && sessionMiddleware.cookie) {
+    if (sessionMiddleware.cookie) {
       sessionMiddleware.cookie.secure = true; // serve secure cookies
     }
   }

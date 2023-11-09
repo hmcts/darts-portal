@@ -3,19 +3,28 @@ import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { RouterLink } from '@angular/router';
 import { NgIf, NgClass } from '@angular/common';
 import { AuthService } from '@services/auth/auth.service';
+import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
   standalone: true,
-  imports: [NgIf, RouterLink, ReactiveFormsModule, NgClass],
+  imports: [NgIf, RouterLink, ReactiveFormsModule, NgClass, ValidationErrorSummaryComponent],
 })
 export class LoginComponent {
   form = new FormGroup({
     userType: new FormControl('', Validators.required),
   });
   errors = false;
+
+  loginErrors = [
+    {
+      fieldId: 'user-type',
+      message:
+        'Select whether you are an employee of HM Courts and Tribunals Service or you work with HM Courts and Tribunals Service.',
+    },
+  ];
 
   constructor(
     public authService: AuthService,

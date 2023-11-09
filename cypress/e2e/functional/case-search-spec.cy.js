@@ -1,3 +1,4 @@
+import 'cypress-axe';
 import { DateTime } from 'luxon';
 import './commands';
 
@@ -10,6 +11,7 @@ const DATE_FUTURE = 'You have selected a date in the future. The hearing date mu
 describe('Case search', () => {
   beforeEach(() => {
     cy.login();
+    cy.injectAxe();
   });
 
   it('no search criteria', () => {
@@ -53,6 +55,7 @@ describe('Case search', () => {
     cy.get('button').contains('Search').click();
 
     cy.get('#search-results').should('contain', '12 results');
+    cy.a11y();
   });
 
   it('courthouse only', () => {
@@ -132,6 +135,7 @@ describe('Case search', () => {
     cy.get('#date_to-errors').should('contain', DATE_FUTURE);
     cy.get('.govuk-error-summary').should('contain', DATE_FUTURE);
     cy.get('a').contains('Clear search').click();
+    cy.a11y();
   });
 
   it('internal error', () => {

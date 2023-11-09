@@ -11,7 +11,7 @@ This is primarily an Angular app, but runs through a node.js server. There are t
 
 Running the application requires the following tools to be installed in your environment:
 
-- [Node.js](https://nodejs.org/) v18.0.0 or later
+- [Node.js](https://nodejs.org/) v20.0.0 or later
 - [yarn](https://yarnpkg.com/) v3
 - [Docker](https://www.docker.com)
 
@@ -83,7 +83,7 @@ Run `yarn test` or `yarn test:watch` to execute the unit tests via [Jest](https:
 
 ## Running end-to-end tests
 
-Run `yarn test:functional` to execute the end-to-end tests using Cypress.
+Run `yarn test:functional` to execute the end-to-end tests using Cypress, this includes accessibility checks via axe-core (WCAG22AA standards).
 
 Run `yarn cypress` to open the cypress console, very useful for debugging tests.
 

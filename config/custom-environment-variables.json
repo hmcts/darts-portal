@@ -10,7 +10,6 @@
     "allowAuthBootstrap": "DARTS_ALLOW_AUTH_BOOTSTRAP"
   },
   "session": {
-    "useSecureCookies": "DARTS_SESSION_USE_SECURE_COOKIES",
     "prefix": "DARTS_SESSION_PREFIX",
     "ttlInSeconds": "DARTS_SESSION_TTL"
   },

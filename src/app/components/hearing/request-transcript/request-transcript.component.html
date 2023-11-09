@@ -58,7 +58,7 @@
       [rows]="vm.audioRows"
       [columns]="transcriptRequestColumns"
       [pagination]="true"
-      [pageLimit]="10"
+      [pageLimit]="15"
     >
       <ng-template [tableRowTemplate]="vm.audioRows" let-row>
         <td class="govuk-table__cell">{{ row.media_start_timestamp | date: 'HH:mm:ss' }}</td>

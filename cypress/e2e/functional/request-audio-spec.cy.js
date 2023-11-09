@@ -1,8 +1,10 @@
+import 'cypress-axe';
 import './commands';
 
 describe('Request audio', () => {
   beforeEach(() => {
     cy.login();
+    cy.injectAxe();
     cy.contains('Search').click();
     cy.get('h1').should('contain', 'Search for a case');
     cy.get('#case_number').type('C20220620001');
@@ -50,5 +52,6 @@ describe('Request audio', () => {
     cy.get('.govuk-grid-column-two-thirds > :nth-child(13)').should('contain', '02:32:24');
     cy.get('.govuk-grid-column-two-thirds > :nth-child(15)').should('contain', '14:32:24');
     cy.get(':nth-child(18) > strong').should('contain', 'dev@local');
+    cy.a11y();
   });
 });

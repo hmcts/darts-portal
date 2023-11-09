@@ -4,24 +4,8 @@
     <ng-container *breadcrumb>{{ vm.hearing?.date | date: 'd MMM y' }}</ng-container>
   </app-breadcrumb>
 
-  <!-- Error Summary Box -->
-  <div
-    *ngIf="errorSummary.length > 0"
-    class="govuk-error-summary"
-    data-module="govuk-error-summary"
-    id="error-summary-box"
-  >
-    <div role="alert">
-      <h2 class="govuk-error-summary__title">There is a problem</h2>
-      <div class="govuk-error-summary__body">
-        <ul class="govuk-list govuk-error-summary__list">
-          <li *ngFor="let error of errorSummary">
-            <a [id]="'error-' + error.fieldId" [routerLink]="['.']" [fragment]="error.fieldId">{{ error.message }}</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
+  <!-- Validation Error Summary Component -->
+  <app-validation-error-summary [errors]="errorSummary"></app-validation-error-summary>
 
   <!-- Back Button -->
   <a href="#" *ngIf="state === 'OrderSummary'" (click)="onBack($event)" class="govuk-back-link">Back</a>
