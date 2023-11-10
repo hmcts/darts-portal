@@ -1,1 +1,72 @@
-<h3 class="govuk-heading-s">Your Transcripts</h3>
+<h1 class="govuk-label-wrapper">
+  <label class="govuk-label govuk-label--l" for="case-search">Your Transcripts</label>
+</h1>
+<ng-container *ngIf="data$ | async as data; else loading">
+  <p
+    id="no-requests-message"
+    *ngIf="!data.inProgessRequests.length && !data.completedRequests.length"
+    class="govuk-body"
+  >
+    There are no transcription requests in progress or ready
+  </p>
+  <ng-container *ngIf="data.inProgessRequests.length">
+    <h2 class="govuk-heading-m">In Progress</h2>
+    <app-data-table
+      id="in-progress-table"
+      [rows]="data.inProgessRequests"
+      [columns]="columns"
+      [pagination]="true"
+      [pageLimit]="15"
+    >
+      <ng-template [tableRowTemplate]="data.inProgessRequests" let-row>
+        <td class="govuk-table__cell">{{ row.case_number }}</td>
+        <td class="govuk-table__cell">{{ row.courthouse_name }}</td>
+        <td class="govuk-table__cell">{{ row.hearing_date | date: 'dd MMM yyyy' }}</td>
+        <td class="govuk-table__cell">{{ row.transcription_type }}</td>
+        <td class="govuk-table__cell">{{ row.requested_ts | date: 'dd MMM yyyy HH:mm' }}</td>
+        <td class="govuk-table__cell">
+          <strong class="govuk-tag" [ngClass]="transcriptStatusClassMap[row.status]">{{ row.status }}</strong>
+        </td>
+        <td class="govuk-table__cell">
+          <span [ngClass]="row.urgency === 'Overnight' ? 'moj-badge moj-badge--red' : ''">{{ row.urgency }}</span>
+        </td>
+      </ng-template>
+    </app-data-table>
+  </ng-container>
+  <ng-container *ngIf="data.completedRequests.length">
+    <h2 class="govuk-heading-m">Ready</h2>
+    <div class="action-container">
+      <div class="govuk-hint">Select to apply actions</div>
+      <button id="delete-button" class="govuk-button govuk-button--secondary">Remove transcript request</button>
+    </div>
+    <app-data-table
+      id="ready-table"
+      [rows]="data.completedRequests"
+      [columns]="readyColumns"
+      [pagination]="true"
+      [pageLimit]="15"
+      [rowSelectable]="true"
+    >
+      <ng-template [tableRowTemplate]="data.completedRequests" let-row>
+        <td class="govuk-table__cell">{{ row.case_number }}</td>
+        <td class="govuk-table__cell">{{ row.courthouse_name }}</td>
+        <td class="govuk-table__cell">{{ row.hearing_date | date: 'dd MMM yyyy' }}</td>
+        <td class="govuk-table__cell">{{ row.transcription_type }}</td>
+        <td class="govuk-table__cell">{{ row.requested_ts | date: 'dd MMM yyyy HH:mm' }}</td>
+        <td class="govuk-table__cell">
+          <strong class="govuk-tag" [ngClass]="transcriptStatusClassMap[row.status]">{{ row.status }}</strong>
+        </td>
+        <td class="govuk-table__cell">
+          <span [ngClass]="row.urgency === 'Overnight' ? 'moj-badge moj-badge--red' : ''">{{ row.urgency }}</span>
+        </td>
+        <td class="govuk-table__cell">
+          <a [routerLink]="'.'">View</a>
+        </td>
+      </ng-template>
+    </app-data-table>
+  </ng-container>
+</ng-container>
+
+<ng-template #loading>
+  <app-loading text="Loading transcription requests..."></app-loading>
+</ng-template>

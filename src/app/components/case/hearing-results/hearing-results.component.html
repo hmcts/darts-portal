@@ -22,7 +22,7 @@
         <td class="govuk-table__cell">{{ row.requestedOn | date: 'dd MMM yyyy HH:mm:ss' }}</td>
         <td class="govuk-table__cell">{{ row.requestedBy }}</td>
         <td class="govuk-table__cell">
-          <strong class="govuk-tag" [ngClass]="statusTagStyleMap[row.status]">
+          <strong class="govuk-tag" [ngClass]="transcriptStatusClassMap[row.status]">
             {{ row.status }}
           </strong>
         </td>
