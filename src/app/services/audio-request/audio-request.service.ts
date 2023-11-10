@@ -1,7 +1,7 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { UserAudioRequestRow } from '@darts-types/index';
-import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
+import { AudioRequestType, UserAudioRequest } from '@darts-types/user-audio-request.interface';
 import { UserService } from '@services/user/user.service';
 import { BehaviorSubject, map, merge, Observable, switchMap, tap, timer } from 'rxjs';
 
@@ -63,8 +63,9 @@ export class AudioRequestService {
     );
   }
 
-  downloadAudio(requestId: number): Observable<Blob> {
-    return this.http.get(`api/audio-requests/download`, {
+  downloadAudio(requestId: number, requestType: AudioRequestType): Observable<Blob> {
+    // api/audio-requests/{playback | download}?media_request_id={requestId}
+    return this.http.get(`api/audio-requests/${requestType.toLowerCase()}`, {
       params: { media_request_id: requestId },
       responseType: 'blob',
     });

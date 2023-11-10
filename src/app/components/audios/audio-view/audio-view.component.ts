@@ -94,7 +94,15 @@ export class AudioViewComponent implements OnDestroy {
       this.audioRequestService.patchAudioRequestLastAccess(this.requestId, isUnread).subscribe();
 
       this.case$ = this.caseService.getCase(this.audioRequest.caseId);
-      this.fileName = `${this.audioRequest.caseNumber}.zip`;
+
+      if (this.audioRequest.output_filename) {
+        this.fileName = this.audioRequest.output_filename;
+      } else {
+        this.fileName =
+          this.audioRequest.requestType === 'DOWNLOAD'
+            ? this.audioRequest.caseNumber + '.zip'
+            : this.audioRequest.caseNumber + '.mp3';
+      }
 
       this.audioSource = `/api/audio-requests/playback?media_request_id=${this.requestId}`;
 
@@ -104,8 +112,6 @@ export class AudioViewComponent implements OnDestroy {
       );
 
       this.data$ = combineLatest({ case: this.case$, rows: this.eventRows$, error: this.error$ });
-
-      this.fileName = `${this.audioRequest?.output_filename}.${this.audioRequest?.output_format}`;
     }
   }
 
@@ -149,11 +155,13 @@ export class AudioViewComponent implements OnDestroy {
   }
 
   onDownloadClicked() {
-    this.audioRequestService.downloadAudio(this.route.snapshot.params.requestId).subscribe({
-      next: (blob: Blob) => {
-        this.saveAs(blob, `${this.audioRequest?.caseNumber.toString()}.zip`);
-      },
-    });
+    this.audioRequestService
+      .downloadAudio(this.route.snapshot.params.requestId, this.audioRequest.requestType)
+      .subscribe({
+        next: (blob: Blob) => {
+          this.saveAs(blob, this.fileName);
+        },
+      });
   }
 
   onSkip(seconds: number, isAlreadyPlaying: boolean) {

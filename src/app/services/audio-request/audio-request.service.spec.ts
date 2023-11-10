@@ -1,5 +1,5 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { TestBed, discardPeriodicTasks, fakeAsync, tick } from '@angular/core/testing';
+import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { UserAudioRequestRow } from '@darts-types/user-audio-request-row.interface';
 import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
 import { UserState } from '@darts-types/user-state';
@@ -340,7 +340,7 @@ describe('AudioService', () => {
     jest.spyOn(service['http'], 'get').mockReturnValueOnce(of(mockBlob));
 
     let receivedBlob: Blob | undefined;
-    service.downloadAudio(requestId).subscribe((blob: Blob) => {
+    service.downloadAudio(requestId, 'DOWNLOAD').subscribe((blob: Blob) => {
       receivedBlob = blob;
     });
 
@@ -367,8 +367,7 @@ describe('AudioService', () => {
       expiry: '2023-08-23T09:00:00Z',
       status: 'OPEN',
       requestType: 'DOWNLOAD',
-      output_filename: 'T20200190',
-      output_format: 'zip',
+      output_filename: 'T20200190.zip',
     };
     service.setAudioRequest(mockAudioRequest);
     expect(service.audioRequestView).toEqual(mockAudioRequest);

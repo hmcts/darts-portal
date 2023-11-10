@@ -114,8 +114,7 @@ describe('AudioViewComponent', () => {
     hearingId: 3,
     requestType: 'PLAYBACK',
     lastAccessed: undefined,
-    output_filename: 'T20200331',
-    output_format: 'mp3',
+    output_filename: 'T20200331.mp3',
   };
 
   const fakeHearingService = {
@@ -245,9 +244,9 @@ describe('AudioViewComponent', () => {
 
       component.onDownloadClicked();
 
-      expect(fakeAudioRequestService.downloadAudio).toHaveBeenCalledWith(12378);
+      expect(fakeAudioRequestService.downloadAudio).toHaveBeenCalledWith(12378, 'PLAYBACK');
 
-      expect(saveAsSpy).toHaveBeenCalledWith(mockBlob, 'T20200331.zip');
+      expect(saveAsSpy).toHaveBeenCalledWith(mockBlob, 'T20200331.mp3');
     });
 
     it('should call saveAs with the correct arguments', () => {
