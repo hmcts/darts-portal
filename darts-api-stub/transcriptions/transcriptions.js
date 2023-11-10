@@ -2,6 +2,8 @@ const express = require('express');
 
 const router = express.Router();
 
+router.use(express.json());
+
 const mockTranscriptionDetails = {
   case_id: 1,
   case_number: 'C20220620001',
@@ -61,8 +63,6 @@ router.get('/:transcriptId', (req, res) => {
       res.status(200).send(mockTranscriptionDetails);
   }
 });
-
-router.use(express.json());
 
 router.post('/', (req, res) => {
   //If start time is below then return 409
