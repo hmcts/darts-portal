@@ -77,10 +77,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "darts-portal:build:production"
+              "buildTarget": "darts-portal:build:production"
             },
             "development": {
-              "browserTarget": "darts-portal:build:development"
+              "buildTarget": "darts-portal:build:development"
             }
           },
           "defaultConfiguration": "development"
