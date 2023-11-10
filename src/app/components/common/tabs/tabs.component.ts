@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   AfterContentInit,
   Component,
@@ -8,7 +9,6 @@ import {
   QueryList,
   TemplateRef,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { TabDirective } from 'src/app/directives/tab.directive';
 
 @Component({
@@ -26,8 +26,8 @@ export class TabsComponent implements AfterContentInit {
 
   ngAfterContentInit(): void {
     if (this.default) {
-      this.tabs.changes.subscribe((tabs) => {
-        const firstTab = tabs.find((t: any) => t.name === this.default)?.template;
+      this.tabs.changes.subscribe((tabs: TabDirective[]) => {
+        const firstTab = tabs.find((t) => t.name === this.default)?.template;
         if (firstTab) this.currentTab = firstTab;
       });
     } else {

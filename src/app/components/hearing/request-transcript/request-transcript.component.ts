@@ -85,7 +85,7 @@ export class RequestTranscriptComponent implements OnInit {
   ];
 
   step = 1;
-  transcriptRequestId: any;
+  transcriptRequestId!: number;
 
   ngOnInit(): void {
     this.headerService.hideNavigation();
