@@ -1,3 +1,17 @@
+<ng-template #tableTemplatePartial let-row>
+  <td class="govuk-table__cell">{{ row.case_number }}</td>
+  <td class="govuk-table__cell">{{ row.courthouse_name }}</td>
+  <td class="govuk-table__cell">{{ row.hearing_date | date: 'dd MMM yyyy' }}</td>
+  <td class="govuk-table__cell">{{ row.transcription_type }}</td>
+  <td class="govuk-table__cell">{{ row.requested_ts | date: 'dd MMM yyyy HH:mm' }}</td>
+  <td class="govuk-table__cell">
+    <strong class="govuk-tag" [ngClass]="transcriptStatusClassMap[row.status]">{{ row.status }}</strong>
+  </td>
+  <td class="govuk-table__cell">
+    <span [ngClass]="row.urgency === 'Overnight' ? 'moj-badge moj-badge--red' : ''">{{ row.urgency }}</span>
+  </td>
+</ng-template>
+
 <h1 class="govuk-label-wrapper">
   <label class="govuk-label govuk-label--l" for="case-search">Your Transcripts</label>
 </h1>
@@ -19,17 +33,7 @@
       [pageLimit]="15"
     >
       <ng-template [tableRowTemplate]="data.inProgessRequests" let-row>
-        <td class="govuk-table__cell">{{ row.case_number }}</td>
-        <td class="govuk-table__cell">{{ row.courthouse_name }}</td>
-        <td class="govuk-table__cell">{{ row.hearing_date | date: 'dd MMM yyyy' }}</td>
-        <td class="govuk-table__cell">{{ row.transcription_type }}</td>
-        <td class="govuk-table__cell">{{ row.requested_ts | date: 'dd MMM yyyy HH:mm' }}</td>
-        <td class="govuk-table__cell">
-          <strong class="govuk-tag" [ngClass]="transcriptStatusClassMap[row.status]">{{ row.status }}</strong>
-        </td>
-        <td class="govuk-table__cell">
-          <span [ngClass]="row.urgency === 'Overnight' ? 'moj-badge moj-badge--red' : ''">{{ row.urgency }}</span>
-        </td>
+        <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
       </ng-template>
     </app-data-table>
   </ng-container>
@@ -48,17 +52,7 @@
       [rowSelectable]="true"
     >
       <ng-template [tableRowTemplate]="data.completedRequests" let-row>
-        <td class="govuk-table__cell">{{ row.case_number }}</td>
-        <td class="govuk-table__cell">{{ row.courthouse_name }}</td>
-        <td class="govuk-table__cell">{{ row.hearing_date | date: 'dd MMM yyyy' }}</td>
-        <td class="govuk-table__cell">{{ row.transcription_type }}</td>
-        <td class="govuk-table__cell">{{ row.requested_ts | date: 'dd MMM yyyy HH:mm' }}</td>
-        <td class="govuk-table__cell">
-          <strong class="govuk-tag" [ngClass]="transcriptStatusClassMap[row.status]">{{ row.status }}</strong>
-        </td>
-        <td class="govuk-table__cell">
-          <span [ngClass]="row.urgency === 'Overnight' ? 'moj-badge moj-badge--red' : ''">{{ row.urgency }}</span>
-        </td>
+        <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
         <td class="govuk-table__cell">
           <a [routerLink]="'.'">View</a>
         </td>
