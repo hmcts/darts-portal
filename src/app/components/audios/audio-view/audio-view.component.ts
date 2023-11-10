@@ -103,7 +103,7 @@ export class AudioViewComponent implements OnDestroy {
 
       this.data$ = combineLatest({ case: this.case$, rows: this.eventRows$, error: this.error$ });
 
-      this.fileName = `${this.audioRequest?.output_filename}.${this.audioRequest?.output_format}`;
+      this.fileName = `${this.audioRequest?.output_filename}`;
     }
   }
 
