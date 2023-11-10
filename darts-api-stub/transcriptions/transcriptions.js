@@ -46,8 +46,8 @@ router.get('/:transcriptId', (req, res) => {
       res.status(200).send(mockTranscriptionDetails);
     default:
       const resBody104 = {
-        type: 'CASE_104',
-        title: 'The requested case cannot be found',
+        type: 'TRANSCRIPTION_101',
+        title: 'The requested transcript cannot be found',
         status: 404,
       };
       res.status(404).send(resBody104);

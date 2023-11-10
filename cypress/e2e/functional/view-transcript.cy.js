@@ -1,7 +1,7 @@
 import 'cypress-axe';
 import './commands';
 
-describe('Request Transcript', () => {
+describe('View Transcript', () => {
   beforeEach(() => {
     cy.login();
     cy.injectAxe();

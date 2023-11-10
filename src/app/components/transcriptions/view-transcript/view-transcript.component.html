@@ -1,7 +1,7 @@
 <ng-container *ngIf="data$ | async as vm">
   <app-breadcrumb>
     <ng-container *breadcrumb="['/search']">Search</ng-container>
-    <ng-container *breadcrumb="['/case', vm.transcript.case_number]">{{ vm.transcript.case_number }}</ng-container>
+    <ng-container *breadcrumb="['/case', vm.case.case_id.toString()]">{{ vm.transcript.case_number }}</ng-container>
     <ng-container *breadcrumb="['.']">{{ vm.transcript.transcript_file_name }}</ng-container>
   </app-breadcrumb>
 
@@ -20,19 +20,19 @@
     <tbody class="govuk-table__body">
       <tr class="govuk-table__row">
         <th scope="row" class="govuk-table__header">Case ID</th>
-        <td class="govuk-table__cell">{{ vm.transcript.case_number }}</td>
+        <td class="govuk-table__cell table-width">{{ vm.transcript.case_number }}</td>
       </tr>
       <tr class="govuk-table__row">
         <th scope="row" class="govuk-table__header">Courthouse</th>
-        <td class="govuk-table__cell">{{ vm.transcript.courthouse }}</td>
+        <td class="govuk-table__cell table-width">{{ vm.transcript.courthouse }}</td>
       </tr>
       <tr class="govuk-table__row">
         <th scope="row" class="govuk-table__header">Defendant(s)</th>
-        <td class="govuk-table__cell">{{ vm.transcript.defendants | join }}</td>
+        <td class="govuk-table__cell table-width">{{ vm.transcript.defendants | join }}</td>
       </tr>
       <tr class="govuk-table__row">
         <th scope="row" class="govuk-table__header">Judge(s)</th>
-        <td class="govuk-table__cell">{{ vm.transcript.judges | join }}</td>
+        <td class="govuk-table__cell table-width">{{ vm.transcript.judges | join }}</td>
       </tr>
     </tbody>
   </table>

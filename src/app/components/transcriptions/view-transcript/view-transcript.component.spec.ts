@@ -55,22 +55,18 @@ describe('ViewTranscriptComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+
+    const getCaseSpy = jest.spyOn(component.caseService, 'getCase');
+    fixture.detectChanges();
+    expect(getCaseSpy).toHaveBeenCalledWith('1');
+
+    const getTranscriptionDetailsSpy = jest.spyOn(component.transcriptionService, 'getTranscriptionDetails');
+    fixture.detectChanges();
+    expect(getTranscriptionDetailsSpy).toHaveBeenCalledWith('2');
   });
 
   it('should set the Case ID and Transcript ID', () => {
     expect(component.caseId).toEqual('1');
     expect(component.transcriptId).toEqual('2');
-  });
-
-  it('should call the correct getCase method with ID', () => {
-    const spy = jest.spyOn(component.caseService, 'getCase');
-    fixture.detectChanges();
-    expect(spy).toHaveBeenCalledWith('1');
-  });
-
-  it('should call the correct getTranscriptionDetails method with ID', () => {
-    const spy = jest.spyOn(component.transcriptionService, 'getTranscriptionDetails');
-    fixture.detectChanges();
-    expect(spy).toHaveBeenCalledWith('2');
   });
 });
