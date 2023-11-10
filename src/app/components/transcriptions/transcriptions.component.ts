@@ -51,6 +51,7 @@ export class TranscriptionsComponent {
     completedRequests: this.requests$.pipe(
       map((requests) => this.filterReadyRequests(requests.requester_transcriptions))
     ),
+    approverRequests: this.requests$.pipe(map((requests) => requests.approver_transcriptions)),
   });
 
   filterInProgressRequests(requests: UserTranscriptionRequest[]): UserTranscriptionRequest[] {
