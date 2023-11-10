@@ -5358,7 +5358,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.0.0, axios@npm:^1.6.0":
+"axios@npm:^1.0.0, axios@npm:^1.6.1":
   version: 1.6.1
   resolution: "axios@npm:1.6.1"
   dependencies:
@@ -6731,7 +6731,7 @@ __metadata:
     "@typescript-eslint/types": ^5.59.7
     accessible-autocomplete: ^2.0.4
     axe-core: ^4.8.2
-    axios: ^1.6.0
+    axios: ^1.6.1
     bluebird: ^3.7.2
     body-parser: ^1.20.2
     concurrently: ^8.0.0
