@@ -30,7 +30,6 @@ describe('SearchComponent', () => {
   let caseService: CaseService;
   let errorMsgService: ErrorMessageService;
   let headerService: HeaderService;
-  let router: Router;
   const courts = [
     { courthouse_name: 'Reading', id: 0, created_date_time: 'mock' },
     { courthouse_name: 'Slough', id: 1, created_date_time: 'mock' },
@@ -42,8 +41,12 @@ describe('SearchComponent', () => {
       get: jest.fn(),
     } as unknown as HttpClient;
 
+    const mockRouter = {
+      navigateByUrl: jest.fn(),
+    } as unknown as Router;
+
     headerService = new HeaderService();
-    errorMsgService = new ErrorMessageService(headerService, router);
+    errorMsgService = new ErrorMessageService(headerService, mockRouter);
     caseService = new CaseService(httpClientSpy);
     jest.spyOn(caseService, 'searchCases').mockReturnValue(of([]));
     jest.spyOn(caseService, 'getCourthouses').mockReturnValue(of(courts));

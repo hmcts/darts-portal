@@ -6,7 +6,7 @@ import { HeaderService } from '@services/header/header.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 //Contains endpoints where errors are handled in their component
-const subscribedEndpoints = ['/api/cases/search'];
+const subscribedEndpoints = ['/api/cases/search', 'api/audio-requests/playback'];
 
 @Injectable({
   providedIn: 'root',
@@ -44,13 +44,38 @@ export class ErrorMessageService {
   //Used to handle other components/endpoints that do not subscribe to the error
   private handleOtherPages(error: HttpErrorResponse) {
     const isIncluded = subscribedEndpoints.some((endpoint) => error.url?.includes(endpoint));
-    if (error.status === 500 && !isIncluded) {
-      this.showInternalError();
+    if (!isIncluded) {
+      switch (error.status) {
+        case 403:
+          this.showForbidden();
+          break;
+        case 404:
+          this.showNotFound();
+          break;
+        case 500:
+          this.showInternalError();
+          break;
+        default:
+          this.showInternalError();
+          break;
+      }
     }
   }
 
-  private showInternalError() {
-    this.router.navigateByUrl('internal-error');
+  private showGlobalErrorPage(route: string) {
+    this.router.navigateByUrl(route);
     setTimeout(() => this.headerService.hideNavigation(), 0);
+  }
+
+  private showForbidden() {
+    this.showGlobalErrorPage('forbidden');
+  }
+
+  private showNotFound() {
+    this.showGlobalErrorPage('page-not-found');
+  }
+
+  private showInternalError() {
+    this.showGlobalErrorPage('internal-error');
   }
 }
