@@ -14,5 +14,4 @@ export interface UserAudioRequestRow {
   requestType: AudioRequestType;
   lastAccessed: string | undefined;
   output_filename: string | undefined;
-  output_format: string | undefined;
 }

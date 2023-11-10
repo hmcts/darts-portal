@@ -367,8 +367,7 @@ describe('AudioService', () => {
       expiry: '2023-08-23T09:00:00Z',
       status: 'OPEN',
       requestType: 'DOWNLOAD',
-      output_filename: 'T20200190',
-      output_format: 'zip',
+      output_filename: 'T20200190.zip',
     };
     service.setAudioRequest(mockAudioRequest);
     expect(service.audioRequestView).toEqual(mockAudioRequest);
