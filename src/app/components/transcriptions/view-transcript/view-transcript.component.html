@@ -1,4 +1,4 @@
-<ng-container *ngIf="data$ | async as vm">
+<ng-container *ngIf="data$ | async as vm; else loading">
   <app-breadcrumb>
     <ng-container *breadcrumb="['/search']">Search</ng-container>
     <ng-container *breadcrumb="['/case', vm.case.case_id.toString()]">{{ vm.transcript.case_number }}</ng-container>
@@ -66,3 +66,7 @@
 
   <button class="govuk-button" data-module="govuk-button">Download transcript file</button>
 </ng-container>
+
+<ng-template #loading>
+  <app-loading text="Loading transcript details..."></app-loading>
+</ng-template>

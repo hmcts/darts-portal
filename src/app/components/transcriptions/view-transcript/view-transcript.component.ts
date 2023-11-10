@@ -8,11 +8,19 @@ import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
 import { TranscriptionService } from '@services/transcription/transcription.service';
+import { LoadingComponent } from '@common/loading/loading.component';
 
 @Component({
   selector: 'app-view-transcript',
   standalone: true,
-  imports: [CommonModule, JoinPipe, BreadcrumbComponent, BreadcrumbDirective, ReportingRestrictionComponent],
+  imports: [
+    CommonModule,
+    JoinPipe,
+    BreadcrumbComponent,
+    BreadcrumbDirective,
+    ReportingRestrictionComponent,
+    LoadingComponent,
+  ],
   templateUrl: './view-transcript.component.html',
   styleUrls: ['./view-transcript.component.scss'],
 })
