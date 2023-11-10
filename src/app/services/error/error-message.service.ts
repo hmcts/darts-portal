@@ -21,7 +21,7 @@ export class ErrorMessageService {
   ) {}
 
   handleErrorMessage(error: HttpErrorResponse) {
-    error.error && this.setErrorMessage({ status: error.status, type: error.error.type });
+    error.error && this.setErrorMessage({ status: error.status, detail: error.error });
     this.handleOtherPages(error);
   }
 

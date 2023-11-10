@@ -136,7 +136,7 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
     // Prevent service call being spammed with no form values
     if (!this.form.dirty && !this.form.touched) {
       //Manually set ErrorMessage for this case
-      this.errorMsgService.setErrorMessage({ type: 'CASE_101', status: 204, display: 'COMPONENT' });
+      this.errorMsgService.setErrorMessage({ detail: { type: 'CASE_101' }, status: 204, display: 'COMPONENT' });
       return;
     }
 

@@ -2,7 +2,7 @@
   <app-validation-error-summary [errors]="validationErrors"></app-validation-error-summary>
 
   <app-reporting-restriction
-    *ngIf="vm.case.reporting_restriction"
+    *ngIf="vm.case.reporting_restriction && !vm.error?.status"
     [reportingRestriction]="vm.case.reporting_restriction"
   ></app-reporting-restriction>
 
@@ -121,13 +121,20 @@
     (errors)="validationErrors = $event"
     (cancel)="onConfirmationCancel()"
     (confirm)="onConfirm($event)"
-    [hidden]="!(step === 3)"
+    [hidden]="!(step === 3) || vm.error?.status"
   ></app-request-transcript-confirmation>
 
   <app-request-transcript-success
     [transcriptRequestId]="transcriptRequestId"
-    [hidden]="!(step === 4)"
+    [hidden]="!(step === 4) || vm.error?.status"
   ></app-request-transcript-success>
+
+  <ng-container *ngIf="vm.error && vm.error.detail">
+    <app-request-transcript-exists
+      [transcriptionId]="vm.error.detail.transcription_id"
+      [hidden]="!(vm.error.status === 409)"
+    ></app-request-transcript-exists>
+  </ng-container>
 </ng-container>
 
 <ng-template #loading>

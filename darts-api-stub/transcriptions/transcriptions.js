@@ -4,6 +4,7 @@ const router = express.Router();
 
 router.get('/types', (req, res) => {
   res.send([
+    { trt_id: 0, description: 'Duplicate' },
     { trt_id: 1, description: 'Sentencing Remarks' },
     { trt_id: 2, description: 'Summing up (inc. verdict)' },
     { trt_id: 3, description: 'Antecedents' },
@@ -26,8 +27,18 @@ router.get('/urgencies', (req, res) => {
   ]);
 });
 
+router.use(express.json());
+
 router.post('/', (req, res) => {
-  res.send({ transcription_id: 123 });
+  //If start time is below then return 409
+  const exists = req.body.start_date_time.indexOf('00:00:00Z') !== -1 && true;
+  const dupe = req.body.transcription_type_id == 0 && true;
+
+  if (exists || dupe) {
+    res.status(409).send({ transcription_id: 1 });
+  } else {
+    res.send({ transcription_id: 123 });
+  }
 });
 
 module.exports = router;
