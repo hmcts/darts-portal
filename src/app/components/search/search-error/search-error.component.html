@@ -1,7 +1,7 @@
 <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
 
 <ng-container *ngIf="error">
-  <ng-container [ngSwitch]="error.type">
+  <ng-container [ngSwitch]="error.detail?.type">
     <div *ngSwitchCase="'CASE_100'">
       <h2 class="govuk-heading-m">There are more than 500 results</h2>
       <p class="govuk-body">Refine your search by:</p>
