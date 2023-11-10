@@ -84,8 +84,7 @@ const audioRequestMulti = [
     media_request_status: 'COMPLETED',
     request_type: 'DOWNLOAD',
     hearing_id: 3,
-    output_filename: 'T20200331',
-    output_format: 'zip',
+    output_filename: 'T20200331.zip',
   },
   {
     case_id: 7,
@@ -100,8 +99,7 @@ const audioRequestMulti = [
     last_accessed_ts: '2023-08-23T09:00:00Z',
     request_type: 'PLAYBACK',
     hearing_id: 3,
-    output_filename: 'T20200333',
-    output_format: 'mp3',
+    output_filename: 'T20200333.mp3',
   },
   {
     case_id: 7,
@@ -115,8 +113,7 @@ const audioRequestMulti = [
     media_request_status: 'COMPLETED',
     last_accessed_ts: '2023-08-23T09:00:00Z',
     hearing_id: 3,
-    output_filename: 'T20200334',
-    output_format: 'mp3',
+    output_filename: 'T20200334.mp3',
     request_type: 'PLAYBACK',
   },
   {
@@ -131,8 +128,7 @@ const audioRequestMulti = [
     media_request_status: 'COMPLETED',
     request_type: 'PLAYBACK',
     hearing_id: 3,
-    output_filename: 'T2020011820',
-    output_format: 'mp3',
+    output_filename: '',
   },
   {
     case_id: 9,
@@ -146,8 +142,7 @@ const audioRequestMulti = [
     media_request_status: 'COMPLETED',
     request_type: 'PLAYBACK',
     hearing_id: 3,
-    output_filename: 'T2023453422',
-    output_format: 'mp3',
+    output_filename: 'T2023453422.mp3',
   },
   {
     case_id: 10,
@@ -161,8 +156,7 @@ const audioRequestMulti = [
     media_request_status: 'COMPLETED',
     request_type: 'PLAYBACK',
     hearing_id: 3,
-    output_filename: 'T20200192232',
-    output_format: 'mp3',
+    output_filename: 'T20200192232.mp3',
   },
   {
     case_id: 11,
@@ -176,8 +170,7 @@ const audioRequestMulti = [
     media_request_status: 'COMPLETED',
     request_type: 'PLAYBACK',
     hearing_id: 3,
-    output_filename: 'T20200192233',
-    output_format: 'mp3',
+    output_filename: 'T20200192233.mp3',
   },
   {
     case_id: 12,
@@ -191,8 +184,7 @@ const audioRequestMulti = [
     media_request_status: 'COMPLETED',
     request_type: 'DOWNLOAD',
     hearing_id: 3,
-    output_filename: 'C22334455',
-    output_format: 'zip',
+    output_filename: 'C22334455.zip',
   },
 ];
 
@@ -248,29 +240,34 @@ router.patch('/:requestId', (req, res) => {
 });
 
 router.get('/playback', (req, res) => {
-  var filePath = __dirname + '/preview/preview.mp3';
-  var stat = fs.statSync(filePath);
-  var total = stat.size;
-  if (req.headers.range) {
-    var range = req.headers.range;
-    var parts = range.replace(/bytes=/, '').split('-');
-    var partialstart = parts[0];
-    var partialend = parts[1];
+  const mediaReqId = req.query.media_request_id;
+  if (mediaReqId !== '12377') {
+    var filePath = __dirname + '/preview/preview.mp3';
+    var stat = fs.statSync(filePath);
+    var total = stat.size;
+    if (req.headers.range) {
+      var range = req.headers.range;
+      var parts = range.replace(/bytes=/, '').split('-');
+      var partialstart = parts[0];
+      var partialend = parts[1];
 
-    var start = parseInt(partialstart, 10);
-    var end = partialend ? parseInt(partialend, 10) : total - 1;
-    var chunksize = end - start + 1;
-    var readStream = fs.createReadStream(filePath, { start: start, end: end });
-    res.writeHead(206, {
-      'Content-Range': 'bytes ' + start + '-' + end + '/' + total,
-      'Accept-Ranges': 'bytes',
-      'Content-Length': chunksize,
-      'Content-Type': 'audio/mpeg',
-    });
-    readStream.pipe(res);
+      var start = parseInt(partialstart, 10);
+      var end = partialend ? parseInt(partialend, 10) : total - 1;
+      var chunksize = end - start + 1;
+      var readStream = fs.createReadStream(filePath, { start: start, end: end });
+      res.writeHead(206, {
+        'Content-Range': 'bytes ' + start + '-' + end + '/' + total,
+        'Accept-Ranges': 'bytes',
+        'Content-Length': chunksize,
+        'Content-Type': 'audio/mpeg',
+      });
+      readStream.pipe(res);
+    } else {
+      res.writeHead(200, { 'Content-Length': total, 'Content-Type': 'audio/mpeg' });
+      fs.createReadStream(filePath).pipe(res);
+    }
   } else {
-    res.writeHead(200, { 'Content-Length': total, 'Content-Type': 'audio/mpeg' });
-    fs.createReadStream(filePath).pipe(res);
+    res.sendStatus(403);
   }
 });
 
