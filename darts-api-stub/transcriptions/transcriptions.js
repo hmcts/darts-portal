@@ -44,15 +44,15 @@ router.get('/:transcriptId', (req, res) => {
   switch (req.params.transcriptId) {
     case '403':
       const error403 = {
-        type: "AUTHORISATION_100",
-        title: "User is not authorised for the associated courthouse",
+        type: 'AUTHORISATION_100',
+        title: 'User is not authorised for the associated courthouse',
         status: 403,
       };
       res.status(403).send(error403);
     case '404':
       const error404 = {
-        type: "TRANSCRIPTION_101",
-        title: "The requested transcript cannot be found",
+        type: 'TRANSCRIPTION_101',
+        title: 'The requested transcript cannot be found',
         status: 404,
       };
       res.status(404).send(error404);
