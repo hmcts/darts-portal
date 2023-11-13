@@ -9,6 +9,7 @@ export class MappingService {
   mapTranscriptRequestToRows(transcripts: Transcript[]): TranscriptsRow[] {
     return transcripts.map((transcript) => {
       return {
+        tra_id: transcript.tra_id,
         hearingDate: transcript.hearing_date,
         type: transcript.type,
         requestedOn: transcript.requested_on,

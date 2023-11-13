@@ -47,6 +47,27 @@ const protectedRoutes: Routes = [
         (c) => c.RequestTranscriptComponent
       ),
   },
+  {
+    path: 'case/:caseId/transcripts/:transcriptId',
+    loadComponent: () =>
+      import('./components/transcriptions/view-transcript/view-transcript.component').then(
+        (c) => c.ViewTranscriptComponent
+      ),
+  },
+  {
+    path: 'case/:caseId/hearing/:hearing_id/transcripts/:transcriptId',
+    loadComponent: () =>
+      import('./components/transcriptions/view-transcript/view-transcript.component').then(
+        (c) => c.ViewTranscriptComponent
+      ),
+  },
+  {
+    path: 'your-transcripts/transcripts/:transcriptId',
+    loadComponent: () =>
+      import('./components/transcriptions/view-transcript/view-transcript.component').then(
+        (c) => c.ViewTranscriptComponent
+      ),
+  },
 ].map((route) => ({
   ...route,
   canActivate: [authGuard],

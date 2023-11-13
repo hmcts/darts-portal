@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
@@ -9,6 +9,7 @@ import { AudioEventRow, DatatableColumn, HearingAudio, TranscriptionRequest } fr
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { JoinPipe } from '@pipes/join';
 import { CaseService } from '@services/case/case.service';
+import { ErrorMessageService } from '@services/error/error-message.service';
 import { HeaderService } from '@services/header/header.service';
 import { HearingService } from '@services/hearing/hearing.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
@@ -17,6 +18,7 @@ import { combineLatest, map, Observable } from 'rxjs';
 import { ValidationErrorSummaryComponent } from './../../common/validation-error-summary/validation-error-summary.component';
 import { RequestTimesComponent } from './request-times/request-times.component';
 import { RequestTranscriptConfirmationComponent } from './request-transcript-confirmation/request-transcript-confirmation.component';
+import { RequestTranscriptExistsComponent } from './request-transcript-exists/request-transcript-exists.component';
 import { RequestTranscriptSuccessComponent } from './request-transcript-success/request-transcript-success.component';
 
 enum TranscriptionType {
@@ -39,16 +41,18 @@ enum TranscriptionType {
     RequestTimesComponent,
     RequestTranscriptConfirmationComponent,
     RequestTranscriptSuccessComponent,
+    RequestTranscriptExistsComponent,
   ],
   templateUrl: './request-transcript.component.html',
   styleUrls: ['./request-transcript.component.scss'],
 })
-export class RequestTranscriptComponent implements OnInit {
+export class RequestTranscriptComponent implements OnInit, OnDestroy {
   route = inject(ActivatedRoute);
   caseService = inject(CaseService);
   hearingService = inject(HearingService);
   headerService = inject(HeaderService);
   transcriptionService = inject(TranscriptionService);
+  errorMsgService = inject(ErrorMessageService);
 
   hearingId = this.route.snapshot.params.hearing_id;
   caseId = this.route.snapshot.params.caseId;
@@ -60,6 +64,7 @@ export class RequestTranscriptComponent implements OnInit {
   validationErrors: { fieldId: string; message: string }[] = [];
   isSubmitted = false;
 
+  error$ = this.errorMsgService.errorMessage$;
   case$ = this.caseService.getCase(this.caseId);
   hearing$ = this.caseService.getHearingById(this.caseId, this.hearingId);
   urgencies$ = this.transcriptionService.getUrgencies();
@@ -76,6 +81,7 @@ export class RequestTranscriptComponent implements OnInit {
     transcriptionTypes: this.transcriptionTypes$,
     urgencies: this.urgencies$,
     events: this.events$,
+    error: this.error$,
   });
 
   transcriptRequestColumns: DatatableColumn[] = [
@@ -89,6 +95,10 @@ export class RequestTranscriptComponent implements OnInit {
 
   ngOnInit(): void {
     this.headerService.hideNavigation();
+  }
+
+  ngOnDestroy(): void {
+    this.errorMsgService.clearErrorMessage();
   }
 
   onNextStep() {
