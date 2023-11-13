@@ -25,12 +25,12 @@ describe('SearchComponent', () => {
   const fakeAppInsightsService = {};
   const fakeAppConfigService = {};
   let httpClientSpy: HttpClient;
+  let mockRouter: Router;
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
   let caseService: CaseService;
   let errorMsgService: ErrorMessageService;
   let headerService: HeaderService;
-  let router: Router;
   const courts = [
     { courthouse_name: 'Reading', id: 0, created_date_time: 'mock' },
     { courthouse_name: 'Slough', id: 1, created_date_time: 'mock' },
@@ -42,8 +42,12 @@ describe('SearchComponent', () => {
       get: jest.fn(),
     } as unknown as HttpClient;
 
+    mockRouter = {
+      navigateByUrl: jest.fn(),
+    } as unknown as Router;
+
     headerService = new HeaderService();
-    errorMsgService = new ErrorMessageService(headerService, router);
+    errorMsgService = new ErrorMessageService(headerService, mockRouter);
     caseService = new CaseService(httpClientSpy);
     jest.spyOn(caseService, 'searchCases').mockReturnValue(of([]));
     jest.spyOn(caseService, 'getCourthouses').mockReturnValue(of(courts));
@@ -321,7 +325,7 @@ describe('SearchComponent', () => {
   });
 
   it('should handle errors and clear search form and results', fakeAsync(() => {
-    const errorResponse = new HttpErrorResponse({ error: { type: 'CASE_100' }, status: 400 });
+    const errorResponse = new HttpErrorResponse({ error: { type: 'CASE_100' }, status: 400, url: '/api/cases/search' });
     jest.spyOn(caseService, 'searchCases').mockReturnValue(throwError(() => errorResponse));
     errorMsgService.handleErrorMessage(errorResponse);
 
@@ -335,6 +339,7 @@ describe('SearchComponent', () => {
     let error: ErrorMessage | null = null;
     component.searchError$?.subscribe((errorType) => (error = errorType));
 
+    expect(mockRouter.navigateByUrl).not.toHaveBeenCalled();
     expect(error).toEqual(errorMessageMock);
     expect(caseService.searchFormValues).toBeNull();
     expect(caseService.searchResults$).toBeNull();
