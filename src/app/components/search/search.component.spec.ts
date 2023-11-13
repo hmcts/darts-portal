@@ -336,7 +336,6 @@ describe('SearchComponent', () => {
 
     flush();
 
-    // const navigateSpy = jest.spyOn(mockRouter, 'navigateByUrl');
     let error: ErrorMessage | null = null;
     component.searchError$?.subscribe((errorType) => (error = errorType));
 
