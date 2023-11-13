@@ -23,7 +23,7 @@ app.use('/courthouses', require('./courthouses/courthouses'));
 // stub out certain case APIs
 app.use('/cases', require('./cases/case'));
 // audio request API
-app.use('/audio-requests', require('./audios/audios'));
+app.use('/audio-requests', require('./audios/audio-requests'));
 // hearing APIs
 app.use('/hearings', require('./hearings/hearings'));
 // transcription APIs
