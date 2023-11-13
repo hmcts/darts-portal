@@ -25,6 +25,7 @@ describe('SearchComponent', () => {
   const fakeAppInsightsService = {};
   const fakeAppConfigService = {};
   let httpClientSpy: HttpClient;
+  let mockRouter: Router;
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
   let caseService: CaseService;
@@ -41,7 +42,7 @@ describe('SearchComponent', () => {
       get: jest.fn(),
     } as unknown as HttpClient;
 
-    const mockRouter = {
+    mockRouter = {
       navigateByUrl: jest.fn(),
     } as unknown as Router;
 
@@ -324,7 +325,7 @@ describe('SearchComponent', () => {
   });
 
   it('should handle errors and clear search form and results', fakeAsync(() => {
-    const errorResponse = new HttpErrorResponse({ error: { type: 'CASE_100' }, status: 400 });
+    const errorResponse = new HttpErrorResponse({ error: { type: 'CASE_100' }, status: 400, url: '/api/cases/search' });
     jest.spyOn(caseService, 'searchCases').mockReturnValue(throwError(() => errorResponse));
     errorMsgService.handleErrorMessage(errorResponse);
 
@@ -335,9 +336,11 @@ describe('SearchComponent', () => {
 
     flush();
 
+    // const navigateSpy = jest.spyOn(mockRouter, 'navigateByUrl');
     let error: ErrorMessage | null = null;
     component.searchError$?.subscribe((errorType) => (error = errorType));
 
+    expect(mockRouter.navigateByUrl).not.toHaveBeenCalled();
     expect(error).toEqual(errorMessageMock);
     expect(caseService.searchFormValues).toBeNull();
     expect(caseService.searchResults$).toBeNull();
