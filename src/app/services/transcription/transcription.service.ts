@@ -1,9 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { TranscriptionRequest, TranscriptionType, YourTranscriptionRequests } from '@darts-types/index';
-import { TranscriptionUrgency } from '@darts-types/transcription-urgency.interface';
+import {
+  TranscriptionDetails,
+  TranscriptionRequest,
+  TranscriptionType,
+  TranscriptionUrgency,
+  YourTranscriptionRequests,
+} from '@darts-types/index';
 import { Observable, map } from 'rxjs';
-
 @Injectable({
   providedIn: 'root',
 })
@@ -37,5 +41,9 @@ export class TranscriptionService {
         };
       })
     );
+  }
+
+  getTranscriptionDetails(transcriptId: number): Observable<TranscriptionDetails> {
+    return this.http.get<TranscriptionDetails>(`/api/transcriptions/${transcriptId}`);
   }
 }

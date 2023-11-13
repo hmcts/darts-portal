@@ -1,0 +1,19 @@
+<h1 class="govuk-heading-l">This transcript already exists</h1>
+
+<div class="govuk-button-group">
+  <a
+    id="exists-duplicate-route"
+    class="govuk-link"
+    [routerLink]="['../', 'transcripts', transcriptionId]"
+    routerLinkActive="router-link-active"
+    >Go to this transcript</a
+  >
+  <a
+    id="exists-hearing-route"
+    class="govuk-link"
+    routerLink="../"
+    [queryParams]="{ tab: 'Transcripts' }"
+    routerLinkActive="router-link-active"
+    >Return to hearing</a
+  >
+</div>
