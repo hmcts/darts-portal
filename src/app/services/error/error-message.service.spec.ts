@@ -27,4 +27,31 @@ describe('ErrorMessageService', () => {
 
     expect(navigateSpy).toHaveBeenCalledWith('internal-error');
   });
+
+  it('should route to forbidden page on 403 response', () => {
+    const error = new HttpErrorResponse({ status: 403 });
+    const navigateSpy = jest.spyOn(mockRouter, 'navigateByUrl');
+
+    service.handleErrorMessage(error);
+
+    expect(navigateSpy).toHaveBeenCalledWith('forbidden');
+  });
+
+  it('should route to not found page on 404 response', () => {
+    const error = new HttpErrorResponse({ status: 404 });
+    const navigateSpy = jest.spyOn(mockRouter, 'navigateByUrl');
+
+    service.handleErrorMessage(error);
+
+    expect(navigateSpy).toHaveBeenCalledWith('page-not-found');
+  });
+
+  it('should route to internal-error page on unhandled error response, e.g. 409', () => {
+    const error = new HttpErrorResponse({ status: 409 });
+    const navigateSpy = jest.spyOn(mockRouter, 'navigateByUrl');
+
+    service.handleErrorMessage(error);
+
+    expect(navigateSpy).toHaveBeenCalledWith('internal-error');
+  });
 });
