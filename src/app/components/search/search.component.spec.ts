@@ -328,7 +328,7 @@ describe('SearchComponent', () => {
     jest.spyOn(caseService, 'searchCases').mockReturnValue(throwError(() => errorResponse));
     errorMsgService.handleErrorMessage(errorResponse);
 
-    const errorMessageMock = { type: 'CASE_100', display: 'COMPONENT', status: 400 } as ErrorMessage;
+    const errorMessageMock = { detail: { type: 'CASE_100' }, display: 'COMPONENT', status: 400 } as ErrorMessage;
 
     component.form.markAsDirty();
     component.onSubmit();

@@ -1,0 +1,72 @@
+<ng-container *ngIf="data$ | async as vm; else loading">
+  <app-breadcrumb>
+    <ng-container *breadcrumb="['/search']">Search</ng-container>
+    <ng-container *breadcrumb="['/case', vm.case.case_id.toString()]">{{ vm.transcript.case_number }}</ng-container>
+    <ng-container *breadcrumb="['.']">{{ vm.transcript.transcript_file_name }}</ng-container>
+  </app-breadcrumb>
+
+  <app-reporting-restriction
+    *ngIf="vm.case.reporting_restriction"
+    [reportingRestriction]="vm.case.reporting_restriction"
+  ></app-reporting-restriction>
+
+  <span class="govuk-caption-l">Transcript file</span>
+  <h1 class="govuk-heading-l">{{ vm.transcript.transcript_file_name }}</h1>
+
+  <table class="govuk-table">
+    <caption class="govuk-table__caption govuk-table__caption--m">
+      Case Details
+    </caption>
+    <tbody class="govuk-table__body">
+      <tr class="govuk-table__row">
+        <th scope="row" class="govuk-table__header">Case ID</th>
+        <td class="govuk-table__cell table-width">{{ vm.transcript.case_number }}</td>
+      </tr>
+      <tr class="govuk-table__row">
+        <th scope="row" class="govuk-table__header">Courthouse</th>
+        <td class="govuk-table__cell table-width">{{ vm.transcript.courthouse }}</td>
+      </tr>
+      <tr class="govuk-table__row">
+        <th scope="row" class="govuk-table__header">Defendant(s)</th>
+        <td class="govuk-table__cell table-width">{{ vm.transcript.defendants | join }}</td>
+      </tr>
+      <tr class="govuk-table__row">
+        <th scope="row" class="govuk-table__header">Judge(s)</th>
+        <td class="govuk-table__cell table-width">{{ vm.transcript.judges | join }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="govuk-table">
+    <caption class="govuk-table__caption govuk-table__caption--m">
+      Request Details
+    </caption>
+    <tbody class="govuk-table__body">
+      <tr class="govuk-table__row">
+        <th scope="row" class="govuk-table__header">Hearing date</th>
+        <td class="govuk-table__cell">{{ vm.transcript.hearing_date | date: 'dd MMM yyyy' }}</td>
+      </tr>
+      <tr class="govuk-table__row">
+        <th scope="row" class="govuk-table__header">Request Type</th>
+        <td class="govuk-table__cell">{{ vm.transcript.request_type }}</td>
+      </tr>
+      <tr class="govuk-table__row">
+        <th scope="row" class="govuk-table__header">Urgency</th>
+        <td class="govuk-table__cell">{{ vm.transcript.urgency }}</td>
+      </tr>
+      <tr id="audio-times" class="govuk-table__row">
+        <th scope="row" class="govuk-table__header">Audio for Transcript</th>
+        <td class="govuk-table__cell">
+          Start time {{ vm.transcript.transcription_start_ts | date: 'HH:mm:ss' }} - End time
+          {{ vm.transcript.transcription_end_ts | date: 'HH:mm:ss' }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <button class="govuk-button" data-module="govuk-button">Download transcript file</button>
+</ng-container>
+
+<ng-template #loading>
+  <app-loading text="Loading transcript details..."></app-loading>
+</ng-template>

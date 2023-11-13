@@ -1,4 +1,5 @@
 export interface TranscriptsRow {
+  tra_id: number;
   hearingDate: string;
   type: string;
   requestedOn: string;
