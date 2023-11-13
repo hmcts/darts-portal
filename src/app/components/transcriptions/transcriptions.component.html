@@ -65,12 +65,20 @@
         <app-data-table
           id="approver-table"
           [rows]="data.approverRequests"
-          [columns]="readyColumns"
+          [columns]="approverColumns"
           [pagination]="true"
           [pageLimit]="15"
         >
           <ng-template [tableRowTemplate]="data.approverRequests" let-row>
-            <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
+            <td class="govuk-table__cell">{{ row.case_number }}</td>
+            <td class="govuk-table__cell">{{ row.courthouse_name }}</td>
+            <td class="govuk-table__cell">{{ row.hearing_date | date: 'dd MMM yyyy' }}</td>
+            <td class="govuk-table__cell">{{ row.transcription_type }}</td>
+            <td class="govuk-table__cell">{{ row.requested_ts | date: 'dd MMM yyyy HH:mm' }}</td>
+            <td class="govuk-table__cell">{{ row.transcription_id }}</td>
+            <td class="govuk-table__cell">
+              <span [ngClass]="row.urgency === 'Overnight' ? 'moj-badge moj-badge--red' : ''">{{ row.urgency }}</span>
+            </td>
             <td class="govuk-table__cell">
               <a [routerLink]="'.'">View</a>
             </td>

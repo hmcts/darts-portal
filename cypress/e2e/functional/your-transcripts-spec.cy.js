@@ -32,7 +32,7 @@ describe('Your Transcripts', () => {
     cy.contains('Your Transcripts').click();
     cy.contains('Transcript requests to review').click();
     cy.get('h2').should('contain', 'Requests to review');
-    cy.get('#approver-table').should('contain', 'Complete');
+    cy.get('#approver-table').should('contain', 'Request ID');
     cy.get('#approver-table').should('contain', 'View');
   });
 });

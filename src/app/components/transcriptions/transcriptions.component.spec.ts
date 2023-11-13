@@ -177,7 +177,7 @@ describe('TranscriptionsComponent', () => {
     expect(cells[2].textContent).toEqual('10 Jun 2023');
     expect(cells[3].textContent).toEqual('Court log');
     expect(cells[4].textContent).toEqual('26 Jun 2023 13:00');
-    expect(cells[5].textContent).toEqual('Complete');
+    expect(cells[5].textContent).toEqual('1');
     expect(cells[6].textContent).toEqual('3 Working days');
     expect(cells[7].textContent).toEqual('View');
   });
