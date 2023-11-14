@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { HeaderService } from '@services/header/header.service';
-import { DeleteTranscriptComponent } from './delete-transcript.component';
+import { DeleteComponent } from './delete.component';
 
-describe('DeleteTranscriptComponent', () => {
-  let component: DeleteTranscriptComponent;
-  let fixture: ComponentFixture<DeleteTranscriptComponent>;
+describe('DeleteComponent', () => {
+  let component: DeleteComponent;
+  let fixture: ComponentFixture<DeleteComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DeleteTranscriptComponent],
+      imports: [DeleteComponent],
       providers: [{ provide: HeaderService, useValue: { hideNavigation: jest.fn(), showNavigation: jest.fn() } }],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(DeleteTranscriptComponent);
+    fixture = TestBed.createComponent(DeleteComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

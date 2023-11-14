@@ -1,0 +1,8 @@
+<h2 class="govuk-heading-m">Are you sure you want to delete {{ numberOfItems > 1 ? 'these items' : 'this item' }}?</h2>
+
+<ng-content></ng-content>
+
+<div class="govuk-button-group">
+  <button class="govuk-button govuk-button--warning" (click)="confirm.emit()">Yes - delete</button>
+  <a href="#" (click)="$event.preventDefault(); cancel.emit()" class="govuk-link">Cancel</a>
+</div>

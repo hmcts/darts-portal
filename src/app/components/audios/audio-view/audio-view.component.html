@@ -98,9 +98,6 @@
   <a href="#" (click)="$event.preventDefault(); isDeleting = true" class="govuk-link">Delete audio file</a>
 </ng-container>
 
-<app-audio-delete
-  *ngIf="isDeleting && audioRequest"
-  [rowsToDelete]="[audioRequest]"
-  (confirm)="onDeleteConfirmed()"
-  (cancel)="isDeleting = false"
-></app-audio-delete>
+@if (isDeleting && audioRequest) {
+  <app-delete [numberOfItems]="1" (confirm)="onDeleteConfirmed()" (cancel)="isDeleting = false"></app-delete>
+}

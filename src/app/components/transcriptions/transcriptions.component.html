@@ -95,9 +95,11 @@
     <app-loading text="Loading transcription requests..." />
   }
 } @else {
-  <app-delete-transcript
-    [rowsToDelete]="selectedRequests"
-    (confirm)="onDeleteConfirmed()"
-    (cancel)="onDeleteCancelled()"
-  />
+  <app-delete [numberOfItems]="selectedRequests.length" (confirm)="onDeleteConfirmed()" (cancel)="onDeleteCancelled()">
+    <app-data-table id="deletionTable" [rows]="selectedRequests" [columns]="deleteColumns">
+      <ng-template [tableRowTemplate]="selectedRequests" let-row>
+        <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
+      </ng-template>
+    </app-data-table>
+  </app-delete>
 }

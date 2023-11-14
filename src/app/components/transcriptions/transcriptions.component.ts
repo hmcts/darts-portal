@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
+import { DeleteComponent } from '@common/delete/delete.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { transcriptStatusClassMap } from '@constants/transcript-status-class-map';
@@ -10,7 +11,6 @@ import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { Observable, combineLatest, forkJoin, map } from 'rxjs';
-import { DeleteTranscriptComponent } from './delete-transcript/delete-transcript.component';
 
 @Component({
   selector: 'app-transcriptions',
@@ -25,7 +25,7 @@ import { DeleteTranscriptComponent } from './delete-transcript/delete-transcript
     TableRowTemplateDirective,
     RouterLink,
     TabDirective,
-    DeleteTranscriptComponent,
+    DeleteComponent,
   ],
 })
 export class TranscriptionsComponent {
@@ -46,6 +46,7 @@ export class TranscriptionsComponent {
     // swap status column for request id column
     c.name === 'Status' ? { name: 'Request ID', prop: 'transcription_id', sortable: true } : c
   );
+  deleteColumns = this.columns.map((c) => ({ ...c, sortable: false }));
 
   isDeleting = false;
   selectedRequests = [] as UserTranscriptionRequest[];
