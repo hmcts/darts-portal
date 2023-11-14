@@ -76,4 +76,68 @@ router.post('/', (req, res) => {
   }
 });
 
+router.get('/', (req, res) => {
+  res.send({
+    requester_transcriptions: [
+      {
+        transcription_id: 1,
+        case_id: 72345,
+        case_number: 'T12345',
+        courthouse_name: 'Swansea',
+        hearing_date: '2023-06-10',
+        transcription_type: 'Court log',
+        status: 'Awaiting Authorisation',
+        urgency: 'Overnight',
+        requested_ts: '2023-06-26T13:00:00Z',
+      },
+      {
+        transcription_id: 2,
+        case_id: 72346,
+        case_number: 'T12345',
+        courthouse_name: 'NEWCASTLE',
+        hearing_date: '2023-06-10',
+        transcription_type: 'Court log',
+        status: 'With Transcriber',
+        urgency: '3 Working days',
+        requested_ts: '2023-06-26T13:00:00Z',
+      },
+      {
+        transcription_id: 2,
+        case_id: 72346,
+        case_number: 'T12345',
+        courthouse_name: 'Newcastle',
+        hearing_date: '2023-06-10',
+        transcription_type: 'Court log',
+        status: 'Complete',
+        urgency: '3 Working days',
+        requested_ts: '2023-06-26T13:00:00Z',
+      },
+      {
+        transcription_id: 2,
+        case_id: 72346,
+        case_number: 'T12345',
+        courthouse_name: 'Cardiff',
+        hearing_date: '2023-06-10',
+        transcription_type: 'Court log',
+        status: 'Rejected',
+        urgency: 'Overnight',
+        requested_ts: '2023-06-26T13:00:00Z',
+      },
+    ],
+    approver_transcriptions: [
+      {
+        transcription_id: 1,
+        case_id: 72345,
+        case_number: 'T12345',
+        courthouse_name: 'Cardiff',
+        hearing_date: '2023-06-10',
+        transcription_type: 'court_log',
+        status: 'Complete',
+        urgency: '3 Working days',
+        requested_ts: '2023-06-26T13:00:00Z',
+      },
+    ],
+  });
+});
+
 module.exports = router;
