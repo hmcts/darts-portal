@@ -1,7 +1,8 @@
 import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
-import { NotFoundComponent } from '@common/not-found/not-found.component';
+import { ForbiddenComponent } from '@components/error/forbidden/forbidden.component';
 import { InternalErrorComponent } from '@components/error/internal-server/internal-error.component';
+import { NotFoundComponent } from '@components/error/not-found/not-found.component';
 import { UserService } from '@services/user/user.service';
 import { authGuard } from './auth/auth.guard';
 import { LoginComponent } from './components/login/login.component';
@@ -10,6 +11,7 @@ const openRoutes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: '', redirectTo: '/search', pathMatch: 'full' },
   { path: 'page-not-found', component: NotFoundComponent },
+  { path: 'forbidden', component: ForbiddenComponent },
   { path: 'internal-error', component: InternalErrorComponent },
   { path: '**', redirectTo: '/page-not-found' },
 ];

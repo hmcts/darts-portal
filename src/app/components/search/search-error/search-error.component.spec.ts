@@ -81,7 +81,7 @@ describe('SearchErrorComponent', () => {
 
     const internalErrorComponent = debugElement.query(By.css('app-internal-error'));
     expect(internalErrorComponent).toBeTruthy();
-    expect(navigateByUrlSpy).toHaveBeenCalledTimes(0);
+    expect(navigateByUrlSpy).not.toHaveBeenCalled();
   });
 
   it('should show full-page internal server error page if DISPLAY = PAGE and status 500', fakeAsync(() => {
