@@ -10,7 +10,7 @@ import { DatatableColumn, UserTranscriptionRequest } from '@darts-types/index';
 import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { TranscriptionService } from '@services/transcription/transcription.service';
-import { Observable, combineLatest, forkJoin, map } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest, forkJoin, map, shareReplay, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-transcriptions',
@@ -51,7 +51,12 @@ export class TranscriptionsComponent {
   isDeleting = false;
   selectedRequests = [] as UserTranscriptionRequest[];
 
-  requests$ = this.transcriptService.getTranscriptionRequests();
+  private refresh$ = new BehaviorSubject<void>(undefined);
+
+  requests$ = this.refresh$.pipe(
+    switchMap(() => this.transcriptService.getTranscriptionRequests()),
+    shareReplay(1)
+  );
 
   data$ = combineLatest({
     inProgessRequests: this.requests$.pipe(
@@ -86,6 +91,8 @@ export class TranscriptionsComponent {
       next: () => (this.isDeleting = false),
       error: () => (this.isDeleting = false),
     });
+
+    this.refresh$.next();
   }
 
   onDeleteCancelled() {
