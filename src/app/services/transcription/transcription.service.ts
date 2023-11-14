@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   TranscriptionDetails,
@@ -45,5 +45,9 @@ export class TranscriptionService {
 
   getTranscriptionDetails(transcriptId: number): Observable<TranscriptionDetails> {
     return this.http.get<TranscriptionDetails>(`/api/transcriptions/${transcriptId}`);
+  }
+
+  deleteRequest(transcriptionId: number): Observable<HttpResponse<Response>> {
+    return this.http.delete<Response>(`api/transcriptions/${transcriptionId}`, { observe: 'response' });
   }
 }

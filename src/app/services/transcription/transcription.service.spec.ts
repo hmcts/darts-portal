@@ -25,6 +25,7 @@ describe('TranscriptionService', () => {
       expect(spy).toHaveBeenCalledWith('/api/transcriptions/urgencies');
     });
   });
+
   describe('#getTranscriptionTypes', () => {
     it('should call the correct endpoint', () => {
       const spy = jest.spyOn(service['http'], 'get');
@@ -32,6 +33,7 @@ describe('TranscriptionService', () => {
       expect(spy).toHaveBeenCalledWith('/api/transcriptions/types');
     });
   });
+
   describe('#postTranscriptionRequest', () => {
     it('should call the correct endpoint', () => {
       const postObject: TranscriptionRequest = {
@@ -48,11 +50,20 @@ describe('TranscriptionService', () => {
       expect(spy).toHaveBeenCalledWith('/api/transcriptions', postObject);
     });
   });
+
   describe('#getTranscriptionDetails', () => {
     it('should call the correct endpoint', () => {
       const spy = jest.spyOn(service['http'], 'get');
       service.getTranscriptionDetails(1);
       expect(spy).toHaveBeenCalledWith('/api/transcriptions/1');
+    });
+  });
+
+  describe('#deleteRequest', () => {
+    it('should call the correct endpoint', () => {
+      const spy = jest.spyOn(service['http'], 'delete');
+      service.deleteRequest(1);
+      expect(spy).toHaveBeenCalledWith('api/transcriptions/1', { observe: 'response' });
     });
   });
 });

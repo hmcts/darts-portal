@@ -9,7 +9,8 @@ import { DatatableColumn, UserTranscriptionRequest } from '@darts-types/index';
 import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { TranscriptionService } from '@services/transcription/transcription.service';
-import { combineLatest, map, shareReplay } from 'rxjs';
+import { Observable, combineLatest, forkJoin, map } from 'rxjs';
+import { DeleteTranscriptComponent } from './delete-transcript/delete-transcript.component';
 
 @Component({
   selector: 'app-transcriptions',
@@ -24,6 +25,7 @@ import { combineLatest, map, shareReplay } from 'rxjs';
     TableRowTemplateDirective,
     RouterLink,
     TabDirective,
+    DeleteTranscriptComponent,
   ],
 })
 export class TranscriptionsComponent {
@@ -39,14 +41,16 @@ export class TranscriptionsComponent {
     { name: 'Status', prop: 'status', sortable: true },
     { name: 'Urgency', prop: 'urgency', sortable: true },
   ];
-
   readyColumns = [...this.columns, { name: '', prop: '' }]; //Empty column header for view link
   approverColumns = this.readyColumns.map((c) =>
     // swap status column for request id column
     c.name === 'Status' ? { name: 'Request ID', prop: 'transcription_id', sortable: true } : c
   );
 
-  requests$ = this.transcriptService.getTranscriptionRequests().pipe(shareReplay(1));
+  isDeleting = false;
+  selectedRequests = [] as UserTranscriptionRequest[];
+
+  requests$ = this.transcriptService.getTranscriptionRequests();
 
   data$ = combineLatest({
     inProgessRequests: this.requests$.pipe(
@@ -64,5 +68,30 @@ export class TranscriptionsComponent {
 
   filterReadyRequests(requests: UserTranscriptionRequest[]): UserTranscriptionRequest[] {
     return requests.filter((r) => r.status === 'Complete' || r.status === 'Rejected');
+  }
+
+  onDeleteClicked() {
+    if (this.selectedRequests.length) {
+      this.isDeleting = true;
+    }
+  }
+
+  onDeleteConfirmed() {
+    const deleteRequests: Observable<unknown>[] = this.selectedRequests.map((s) =>
+      this.transcriptService.deleteRequest(s.transcription_id)
+    );
+
+    forkJoin(deleteRequests).subscribe({
+      next: () => (this.isDeleting = false),
+      error: () => (this.isDeleting = false),
+    });
+  }
+
+  onDeleteCancelled() {
+    this.isDeleting = false;
+  }
+
+  onTabChanged() {
+    this.selectedRequests = [];
   }
 }
