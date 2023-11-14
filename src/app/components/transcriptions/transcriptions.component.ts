@@ -53,11 +53,11 @@ export class TranscriptionsComponent {
     ),
   });
 
-  filterInProgressRequests(requests: UserTranscriptionRequest[]): UserTranscriptionRequest[] {
+  private filterInProgressRequests(requests: UserTranscriptionRequest[]): UserTranscriptionRequest[] {
     return requests.filter((r) => r.status === 'Awaiting Authorisation' || r.status === 'With Transcriber');
   }
 
-  filterReadyRequests(requests: UserTranscriptionRequest[]): UserTranscriptionRequest[] {
+  private filterReadyRequests(requests: UserTranscriptionRequest[]): UserTranscriptionRequest[] {
     return requests.filter((r) => r.status === 'Complete' || r.status === 'Rejected');
   }
 }
