@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AudioEventRow } from '@darts-types/hearing-audio-event.interface';
@@ -10,7 +11,7 @@ import { CaseService } from '@services/case/case.service';
 import { HeaderService } from '@services/header/header.service';
 import { HearingService } from '@services/hearing/hearing.service';
 import { UserService } from '@services/user/user.service';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { HearingFileComponent } from './hearing-file/hearing-file.component';
 import { HearingComponent } from './hearing.component';
 import { AppConfigService } from '@services/app-config/app-config.service';
@@ -18,6 +19,7 @@ import { AppConfigService } from '@services/app-config/app-config.service';
 describe('HearingComponent', () => {
   const fakeAppInsightsService = {};
   let httpClientSpy: HttpClient;
+  let mockRouter: Router;
   let caseService: CaseService;
   let hearingService: HearingService;
   let fakeUserService: Partial<UserService>;
@@ -133,6 +135,10 @@ describe('HearingComponent', () => {
     httpClientSpy = {
       get: jest.fn(),
     } as unknown as HttpClient;
+
+    mockRouter = {
+      navigateByUrl: jest.fn(),
+    } as unknown as Router;
 
     caseService = new CaseService(httpClientSpy);
     hearingService = new HearingService(httpClientSpy);
@@ -335,6 +341,21 @@ describe('HearingComponent', () => {
       component.onOrderConfirm(mockRequestObject);
       expect(component.state).toEqual('OrderConfirmation');
       expect(component.requestId).toEqual(1234);
+    });
+
+    it('should set the value of state when 403 encountered', () => {
+      const errorResponse = new HttpErrorResponse({ error: 'Forbidden', status: 403, url: '/api/audio-requests' });
+      jest.spyOn(hearingService, 'requestAudio').mockReturnValue(throwError(() => errorResponse));
+      const mockRequestObject: AudioRequest = {
+        hearing_id: 3,
+        requestor: 1,
+        start_time: '2023-09-01T02:00:00Z',
+        end_time: '2023-09-01T15:32:24Z',
+        request_type: 'DOWNLOAD',
+      };
+      component.onOrderConfirm(mockRequestObject);
+      expect(component.state).toEqual('OrderFailure');
+      expect(mockRouter.navigateByUrl).not.toHaveBeenCalled();
     });
   });
 
