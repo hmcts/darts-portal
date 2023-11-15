@@ -131,7 +131,7 @@ router.get('/', (req, res) => {
         case_number: 'T12345',
         courthouse_name: 'Cardiff',
         hearing_date: '2023-06-10',
-        transcription_type: 'court_log',
+        transcription_type: 'Court log',
         status: 'Complete',
         urgency: '3 Working days',
         requested_ts: '2023-06-26T13:00:00Z',
