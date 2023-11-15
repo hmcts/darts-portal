@@ -41,6 +41,10 @@ export class TranscriptionsComponent {
   ];
 
   readyColumns = [...this.columns, { name: '', prop: '' }]; //Empty column header for view link
+  approverColumns = this.readyColumns.map((c) =>
+    // swap status column for request id column
+    c.name === 'Status' ? { name: 'Request ID', prop: 'transcription_id', sortable: true } : c
+  );
 
   requests$ = this.transcriptService.getTranscriptionRequests().pipe(shareReplay(1));
 
@@ -51,6 +55,7 @@ export class TranscriptionsComponent {
     completedRequests: this.requests$.pipe(
       map((requests) => this.filterReadyRequests(requests.requester_transcriptions))
     ),
+    approverRequests: this.requests$.pipe(map((requests) => requests.approver_transcriptions)),
   });
 
   private filterInProgressRequests(requests: UserTranscriptionRequest[]): UserTranscriptionRequest[] {
