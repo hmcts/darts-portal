@@ -298,9 +298,10 @@ describe('Request Transcript', () => {
       cy.get('.govuk-heading-l').should('contain', 'This transcript already exists');
       cy.get('.govuk-link').should('contain', 'Go to this transcript');
 
-      //Commented out for now until view transcript is in
-      // cy.get('#exists-duplicate-route').contains('Go to this transcript').click();
-      // cy.contains('.govuk-caption-l').should('contain', 'Transcript file')
+      cy.get('#exists-duplicate-route').contains('Go to this transcript').click();
+
+      cy.get('.govuk-caption-l').should('contain', 'Transcript file');
+      cy.get('.govuk-heading-l').should('contain', 'C20220620001_0.docx');
     });
   });
 });
