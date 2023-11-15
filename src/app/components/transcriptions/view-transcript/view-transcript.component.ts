@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CaseService } from '@services/case/case.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
 import { JoinPipe } from '@pipes/join';
 import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
@@ -25,6 +25,7 @@ import { LoadingComponent } from '@common/loading/loading.component';
   styleUrls: ['./view-transcript.component.scss'],
 })
 export class ViewTranscriptComponent {
+  router = inject(Router);
   route = inject(ActivatedRoute);
   caseService = inject(CaseService);
   transcriptionService = inject(TranscriptionService);

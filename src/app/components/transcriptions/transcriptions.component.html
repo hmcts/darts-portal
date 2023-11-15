@@ -54,7 +54,7 @@
       <ng-template [tableRowTemplate]="data.completedRequests" let-row>
         <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
         <td class="govuk-table__cell">
-          <a [routerLink]="'.'">View</a>
+          <a [routerLink]="['transcripts', row.transcription_id]">View</a>
         </td>
       </ng-template>
     </app-data-table>
