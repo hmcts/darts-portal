@@ -14,6 +14,7 @@ import {
   HearingPageState,
   TranscriptsRow,
 } from '@darts-types/index';
+import { ErrorMessage } from '@darts-types/error-message.interface';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
@@ -31,6 +32,7 @@ import { EventsAndAudioComponent } from './events-and-audio/events-and-audio.com
 import { HearingFileComponent } from './hearing-file/hearing-file.component';
 import { OrderConfirmationComponent } from './order-confirmation/order-confirmation.component';
 import { RequestPlaybackAudioComponent } from './request-playback-audio/request-playback-audio.component';
+import { AppConfigService } from '@services/app-config/app-config.service';
 
 @Component({
   selector: 'app-hearing',
@@ -103,6 +105,8 @@ export class HearingComponent implements OnInit {
   hearing$ = this.caseService.getHearingById(this.caseId, this.hearingId);
   audio$ = this.hearingService.getAudio(this.hearingId);
   events$ = this.hearingService.getEvents(this.hearingId);
+  private appConfigService = inject(AppConfigService);
+  support = this.appConfigService.getAppConfig()?.support;
 
   data$ = combineLatest({
     case: this.case$,
@@ -181,9 +185,16 @@ export class HearingComponent implements OnInit {
   }
 
   onOrderConfirm(requestObject: AudioRequest) {
-    this.hearingService.requestAudio(requestObject).subscribe((response: AudioResponse) => {
-      this.requestId = response.request_id;
-    });
-    this.state = 'OrderConfirmation';
+    this.hearingService.requestAudio(requestObject).subscribe(
+      (response: AudioResponse) => {
+        this.requestId = response.request_id;
+        this.state = 'OrderConfirmation';
+      },
+      (error: ErrorMessage) => {
+        if (error.status === 403) {
+          this.state = 'OrderFailure';
+        }
+      }
+    );
   }
 }

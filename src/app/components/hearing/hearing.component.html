@@ -12,9 +12,19 @@
 
   <!-- Reporting Restriction Banner -->
   <app-reporting-restriction
-    *ngIf="vm.case.reporting_restriction"
+    *ngIf="vm.case.reporting_restriction && state !== 'OrderFailure'"
     [reportingRestriction]="vm.case.reporting_restriction"
   ></app-reporting-restriction>
+  <ng-container *ngIf="state === 'OrderFailure'">
+    <h1 class="govuk-heading-xl govuk-!-margin-bottom-8">
+      You do not have permission to get audio for this courthouse.
+    </h1>
+    <p class="govuk-body">
+      If you believe you should have permission,
+      <a href="mailto:{{ support?.emailAddress }}" class="govuk-link">contact {{ support?.name }}</a
+      >.
+    </p>
+  </ng-container>
 
   <div [hidden]="state !== 'Default'">
     <app-hearing-file [case]="vm.case" [hearing]="vm.hearing"></app-hearing-file>
@@ -77,7 +87,10 @@
   </div>
 
   <!-- Summary / Confirmation Screen -->
-  <div [hidden]="state !== 'OrderConfirmation' && state !== 'OrderSummary'" class="order-confirmation">
+  <div
+    [hidden]="state !== 'OrderConfirmation' && state !== 'OrderSummary' && state !== 'OrderFailure'"
+    class="order-confirmation"
+  >
     <app-order-confirmation
       [case]="vm.case"
       [hearing]="vm.hearing"
