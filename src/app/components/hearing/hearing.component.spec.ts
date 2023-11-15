@@ -13,6 +13,7 @@ import { UserService } from '@services/user/user.service';
 import { Observable, of } from 'rxjs';
 import { HearingFileComponent } from './hearing-file/hearing-file.component';
 import { HearingComponent } from './hearing.component';
+import { AppConfigService } from '@services/app-config/app-config.service';
 
 describe('HearingComponent', () => {
   const fakeAppInsightsService = {};
@@ -49,6 +50,16 @@ describe('HearingComponent', () => {
       },
       queryParams: { tab: 'Transcripts' },
     },
+  };
+
+  const appConfigServiceMock = {
+    getAppConfig: () => ({
+      appInsightsKey: 'XXXXXXXX',
+      support: {
+        name: 'DARTS support',
+        emailAddress: 'support@darts',
+      },
+    }),
   };
 
   const cd = of({ case_id: 1, case_number: '12345', courthouse: 'Reading', judges: ['Judy'] }) as Observable<Case>;
@@ -144,6 +155,7 @@ describe('HearingComponent', () => {
         { provide: HeaderService },
         { provide: UserService, useValue: fakeUserService },
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
+        { provide: AppConfigService, useValue: appConfigServiceMock },
       ],
     });
     fixture = TestBed.createComponent(HearingComponent);
