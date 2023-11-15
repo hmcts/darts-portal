@@ -3,10 +3,10 @@ appVersion: '1.0'
 description: A Helm chart for darts-portal App
 name: darts-portal
 home: https://github.com/hmcts/darts-portal
-version: 0.0.16
+version: 0.0.17
 maintainers:
   - name: HMCTS darts team
 dependencies:
   - name: nodejs
-    version: 3.0.0
+    version: 3.0.1
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
