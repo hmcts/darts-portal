@@ -182,8 +182,8 @@ export class HearingComponent implements OnInit {
 
   onOrderConfirm(requestObject: AudioRequest) {
     this.hearingService.requestAudio(requestObject).subscribe((response: AudioResponse) => {
-      this.state = 'OrderConfirmation';
       this.requestId = response.request_id;
     });
+    this.state = 'OrderConfirmation';
   }
 }
