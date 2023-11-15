@@ -9,7 +9,7 @@ export interface ErrorMessage {
 }
 
 export interface ErrorType {
-  transcription_id?: number;
+  duplicate_transcription_id?: number;
   type?: string;
   status?: number;
   title?: string;
