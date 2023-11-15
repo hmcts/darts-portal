@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AudioRequest, Case } from '@darts-types/index';
 import { HeaderService } from '@services/header/header.service';
-import { AppConfigService } from '@services/app-config/app-config.service';
 
 import { OrderConfirmationComponent } from './order-confirmation.component';
 
@@ -27,20 +26,10 @@ describe('OrderConfirmationComponent', () => {
     ],
   };
 
-  const appConfigServiceMock = {
-    getAppConfig: () => ({
-      appInsightsKey: 'XXXXXXXX',
-      support: {
-        name: 'DARTS support',
-        emailAddress: 'support@darts',
-      },
-    }),
-  };
-
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [OrderConfirmationComponent],
-      providers: [HeaderService, RouterTestingModule, { provide: AppConfigService, useValue: appConfigServiceMock }],
+      providers: [HeaderService, RouterTestingModule],
     });
     fixture = TestBed.createComponent(OrderConfirmationComponent);
     component = fixture.componentInstance;
