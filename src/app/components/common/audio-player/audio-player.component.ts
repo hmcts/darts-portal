@@ -1,6 +1,16 @@
 /* eslint-disable @angular-eslint/no-output-native */
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+  inject,
+} from '@angular/core';
+import { AppConfigService } from '@services/app-config/app-config.service';
 
 @Component({
   selector: 'app-audio-player',
@@ -18,7 +28,11 @@ export class AudioPlayerComponent {
   @Output() pause = new EventEmitter<void>();
   @Output() play = new EventEmitter<void>();
 
+  private appConfigService = inject(AppConfigService);
+  support = this.appConfigService.getAppConfig()?.support;
+
   canPlay = false;
+  errorMsg = false;
 
   setPlayTime(time: number, shouldPlay: boolean): void {
     if (this.canPlay) {
