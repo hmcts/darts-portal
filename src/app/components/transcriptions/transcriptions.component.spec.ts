@@ -5,6 +5,7 @@ import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UserTranscriptionRequest } from '@darts-types/user-transcription-request.interface';
 import { TranscriptionService } from '@services/transcription/transcription.service';
+import { UserService } from '@services/user/user.service';
 import { of } from 'rxjs';
 import { TranscriptionsComponent } from './transcriptions.component';
 
@@ -77,12 +78,19 @@ const mockTranscriptionService = {
 describe('TranscriptionsComponent', () => {
   let component: TranscriptionsComponent;
   let fixture: ComponentFixture<TranscriptionsComponent>;
+  let userServiceStub: Partial<UserService>;
 
   beforeEach(() => {
+    userServiceStub = {
+      isRequester: () => true,
+      isApprover: () => true,
+    };
+
     TestBed.configureTestingModule({
       imports: [TranscriptionsComponent, HttpClientTestingModule, RouterTestingModule],
       providers: [
         { provide: TranscriptionService, useValue: mockTranscriptionService },
+        { provide: UserService, useValue: userServiceStub },
         { provide: DATE_PIPE_DEFAULT_OPTIONS, useValue: { timezone: 'utc' } },
       ],
     });
@@ -99,7 +107,7 @@ describe('TranscriptionsComponent', () => {
   it('should filter "In Progress" requests', () => {
     let requests: UserTranscriptionRequest[] = [];
     fixture.detectChanges();
-    component.data$.subscribe((data) => (requests = data.inProgessRequests));
+    component.requesterRequests$.subscribe((data) => (requests = data.inProgessRequests));
     expect(requests.length).toEqual(2);
     expect(requests.find((r) => r.status === 'Awaiting Authorisation')).toBeTruthy();
     expect(requests.find((r) => r.status === 'With Transcriber')).toBeTruthy();
@@ -108,7 +116,7 @@ describe('TranscriptionsComponent', () => {
   it('should filter "Ready" requests', () => {
     let requests: UserTranscriptionRequest[] = [];
     fixture.detectChanges();
-    component.data$.subscribe((data) => (requests = data.completedRequests));
+    component.requesterRequests$.subscribe((data) => (requests = data.completedRequests));
     expect(requests.length).toEqual(2);
     expect(requests.find((r) => r.status === 'Complete')).toBeTruthy();
     expect(requests.find((r) => r.status === 'Rejected')).toBeTruthy();
@@ -180,5 +188,57 @@ describe('TranscriptionsComponent', () => {
     expect(cells[5].textContent).toEqual('1');
     expect(cells[6].textContent).toEqual('3 Working days');
     expect(cells[7].textContent).toEqual('View');
+  });
+
+  it('render tabs if both approver and requester', () => {
+    fixture.detectChanges();
+
+    component.isRequester = true;
+    component.isApprover = true;
+
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement;
+    const tabs = compiled.querySelector('app-tabs');
+    expect(tabs).toBeTruthy();
+  });
+
+  it('not render tabs if requestor only', () => {
+    fixture.detectChanges();
+
+    component.isRequester = true;
+    component.isApprover = false;
+
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement;
+    const tabs = compiled.querySelector('app-tabs');
+    expect(tabs).toBeFalsy();
+  });
+
+  it('not render tabs if approver only', () => {
+    fixture.detectChanges();
+
+    component.isRequester = false;
+    component.isApprover = true;
+
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement;
+    const tabs = compiled.querySelector('app-tabs');
+    expect(tabs).toBeFalsy();
+  });
+
+  it('render forbidden component if neither approver nor requester', () => {
+    fixture.detectChanges();
+
+    component.isRequester = false;
+    component.isApprover = false;
+
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement;
+    const forbidden = compiled.querySelector('app-forbidden');
+    expect(forbidden).toBeTruthy();
   });
 });
