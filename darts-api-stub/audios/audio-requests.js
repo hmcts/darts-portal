@@ -292,8 +292,9 @@ router.get('/not-accessed-count', (req, res) => {
 router.post('', (req, res) => {
   if (req.body?.hearing_id === 3) {
     res.sendStatus(403);
+  } else {
+    res.send(audioRequestOne);
   }
-  res.send(audioRequestOne);
 });
 
 router.get('', (req, res) => {

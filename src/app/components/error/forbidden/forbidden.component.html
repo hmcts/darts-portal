@@ -1,4 +1,8 @@
+@if (header){
+<h1 class="govuk-heading-xl govuk-!-margin-bottom-8">{{ header }}</h1>
+} @else {
 <h1 class="govuk-heading-xl govuk-!-margin-bottom-8">You do not have permission to access this page</h1>
+}
 <p class="govuk-body">
   If you believe you should have permission,
   <a href="mailto:{{ support?.emailAddress }}" class="govuk-link">contact {{ support?.name }}</a>

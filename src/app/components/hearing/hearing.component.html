@@ -15,15 +15,17 @@
     *ngIf="vm.case.reporting_restriction && state !== 'OrderFailure'"
     [reportingRestriction]="vm.case.reporting_restriction"
   ></app-reporting-restriction>
-  <ng-container *ngIf="state === 'OrderFailure'">
-    <h1 class="govuk-heading-xl govuk-!-margin-bottom-8">
+  <ng-container *ngIf="vm.error?.status === 403 && state === 'OrderFailure'">
+    <app-forbidden header="You do not have permission to get audio for this courthouse." />
+
+    <!-- <h1 class="govuk-heading-xl govuk-!-margin-bottom-8">
       You do not have permission to get audio for this courthouse.
     </h1>
     <p class="govuk-body">
       If you believe you should have permission,
       <a href="mailto:{{ support?.emailAddress }}" class="govuk-link">contact {{ support?.name }}</a
       >.
-    </p>
+    </p> -->
   </ng-container>
 
   <div [hidden]="state !== 'Default'">
