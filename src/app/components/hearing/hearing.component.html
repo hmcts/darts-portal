@@ -12,9 +12,12 @@
 
   <!-- Reporting Restriction Banner -->
   <app-reporting-restriction
-    *ngIf="vm.case.reporting_restriction"
+    *ngIf="vm.case.reporting_restriction && state !== 'OrderFailure'"
     [reportingRestriction]="vm.case.reporting_restriction"
   ></app-reporting-restriction>
+  <ng-container *ngIf="vm.error?.status === 403 && state === 'OrderFailure'">
+    <app-forbidden header="You do not have permission to get audio for this courthouse." />
+  </ng-container>
 
   <div [hidden]="state !== 'Default'">
     <app-hearing-file [case]="vm.case" [hearing]="vm.hearing"></app-hearing-file>
@@ -77,7 +80,10 @@
   </div>
 
   <!-- Summary / Confirmation Screen -->
-  <div [hidden]="state !== 'OrderConfirmation' && state !== 'OrderSummary'" class="order-confirmation">
+  <div
+    [hidden]="state !== 'OrderConfirmation' && state !== 'OrderSummary' && state !== 'OrderFailure'"
+    class="order-confirmation"
+  >
     <app-order-confirmation
       [case]="vm.case"
       [hearing]="vm.hearing"
