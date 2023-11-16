@@ -13,6 +13,7 @@
       "@interceptors/*": ["src/app/interceptors/*"],
       "@extensions/*": ["src/app/extensions/*"],
       "@directives/*": ["src/app/directives/*"],
+      "@constants/*": ["src/app/constants/*"]
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,

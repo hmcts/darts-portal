@@ -1,9 +1,9 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { UserAudioRequestRow } from '@darts-types/index';
 import { AudioRequestType, UserAudioRequest } from '@darts-types/user-audio-request.interface';
 import { UserService } from '@services/user/user.service';
-import { BehaviorSubject, map, merge, Observable, switchMap, tap, timer } from 'rxjs';
+import { BehaviorSubject, Observable, map, merge, switchMap, tap, timer } from 'rxjs';
 
 export const UNREAD_AUDIO_COUNT_PATH = 'api/audio-requests/not-accessed-count';
 @Injectable({

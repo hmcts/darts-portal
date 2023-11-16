@@ -54,4 +54,17 @@ describe('Request audio', () => {
     cy.get(':nth-child(18) > strong').should('contain', 'dev@local');
     cy.a11y();
   });
+
+  describe('Preview Audio', () => {
+    it('should show Error message when preview audio returns 500', () => {
+      cy.get('.govuk-table tr').eq(4).contains('button', 'Preview Audio').click();
+      cy.get('.govuk-table tr').eq(4).contains('p', 'An error has occurred. Try again or');
+    });
+
+    it('should show audio player when clicking preview audio', () => {
+      cy.get('.govuk-table tr').eq(2).contains('button', 'Preview Audio').click();
+
+      cy.get('.govuk-table tr').eq(2).find('audio').should('be.visible');
+    });
+  });
 });
