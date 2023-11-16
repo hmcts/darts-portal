@@ -9,6 +9,7 @@ import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { LoadingComponent } from '@common/loading/loading.component';
+import { transcriptStatusClassMap } from '@constants/transcript-status-class-map';
 
 @Component({
   selector: 'app-view-transcript',
@@ -29,6 +30,7 @@ export class ViewTranscriptComponent {
   route = inject(ActivatedRoute);
   caseService = inject(CaseService);
   transcriptionService = inject(TranscriptionService);
+  transcriptStatusClassMap = transcriptStatusClassMap;
 
   caseId = this.route.snapshot.params.caseId;
   transcriptId = this.route.snapshot.params.transcriptId;

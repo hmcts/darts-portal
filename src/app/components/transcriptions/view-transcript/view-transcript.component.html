@@ -1,4 +1,4 @@
-<ng-container *ngIf="data$ | async as vm; else loading">
+@if (data$ | async; as vm) {
   <ng-template #caseDetailsTable>
     <table class="govuk-table">
       <caption class="govuk-table__caption govuk-table__caption--m">
@@ -50,7 +50,7 @@
   <!-- START OF VIEW TRANSCRIPT FROM CASE OR HEARING -->
 
   <!-- If coming from case file or hearing file page -->
-  <ng-container *ngIf="router.url.includes('case') && router.url.includes('transcripts')">
+  @if (router.url.includes('case') && router.url.includes('transcripts')) {
     <app-breadcrumb>
       <ng-container *breadcrumb="['/search']">Search</ng-container>
       <ng-container *breadcrumb="['/case', vm.case.case_id.toString()]">{{ vm.transcript.case_number }}</ng-container>
@@ -77,12 +77,11 @@
     </table>
 
     <button class="govuk-button" data-module="govuk-button">Download transcript file</button>
-  </ng-container>
-
+  }
   <!-- START OF VIEW TRANSCRIPT FROM YOUR-TRANSCRIPTS -->
 
   <!-- If coming from your-transcripts -->
-  <ng-container *ngIf="router.url.includes('transcriptions/transcripts/')">
+  @if (router.url.includes('transcriptions/transcripts/')) {
     <app-breadcrumb>
       <ng-container *breadcrumb="['/transcriptions']">Your transcripts</ng-container>
       <ng-container *breadcrumb="['.']">{{ vm.transcript.transcript_file_name }}</ng-container>
@@ -129,9 +128,7 @@
     </table>
 
     <button class="govuk-button" data-module="govuk-button">Download transcript file</button>
-  </ng-container>
-</ng-container>
-
-<ng-template #loading>
+  }
+} @else {
   <app-loading text="Loading transcript details..."></app-loading>
-</ng-template>
+}
