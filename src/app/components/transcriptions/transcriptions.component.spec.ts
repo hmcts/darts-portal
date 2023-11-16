@@ -4,6 +4,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UserTranscriptionRequest } from '@darts-types/user-transcription-request.interface';
+import { AppConfigService } from '@services/app-config/app-config.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { UserService } from '@services/user/user.service';
 import { of } from 'rxjs';
@@ -75,6 +76,16 @@ const mockTranscriptionService = {
   getTranscriptionRequests: () => of(MOCK_REQUESTS),
 };
 
+const appConfigServiceMock = {
+  getAppConfig: () => ({
+    appInsightsKey: 'XXXXXXXX',
+    support: {
+      name: 'DARTS support',
+      emailAddress: 'support@darts',
+    },
+  }),
+};
+
 describe('TranscriptionsComponent', () => {
   let component: TranscriptionsComponent;
   let fixture: ComponentFixture<TranscriptionsComponent>;
@@ -92,6 +103,7 @@ describe('TranscriptionsComponent', () => {
         { provide: TranscriptionService, useValue: mockTranscriptionService },
         { provide: UserService, useValue: userServiceStub },
         { provide: DATE_PIPE_DEFAULT_OPTIONS, useValue: { timezone: 'utc' } },
+        { provide: AppConfigService, useValue: appConfigServiceMock },
       ],
     });
 
