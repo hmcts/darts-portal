@@ -84,8 +84,8 @@ describe('Request audio', () => {
 
     cy.get('.govuk-button-group > .govuk-button').contains('Confirm').click();
 
-    cy.get('h1').should('contain', 'You do not have permission to get audio for this courthouse.');
-    cy.get('p').should('contain', 'If you believe you should have permission, contact Crown IT Support.');
+    cy.get('#forbidden-heading').should('contain', 'You do not have permission to get audio for this courthouse.');
+    cy.get('#forbidden-body').should('contain', 'If you believe you should have permission, contact Crown IT Support.');
     cy.get('.govuk-back-link').should('not.exist');
     cy.a11y();
   });
