@@ -5652,16 +5652,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^0.27.2":
-  version: 0.27.2
-  resolution: "axios@npm:0.27.2"
-  dependencies:
-    follow-redirects: ^1.14.9
-    form-data: ^4.0.0
-  checksum: 38cb7540465fe8c4102850c4368053c21683af85c5fdf0ea619f9628abbcb59415d1e22ebc8a6390d2bbc9b58a9806c874f139767389c862ec9b772235f06854
-  languageName: node
-  linkType: hard
-
 "axios@npm:^1.5.1, axios@npm:^1.6.1":
   version: 1.6.2
   resolution: "axios@npm:1.6.2"
@@ -8687,7 +8677,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.0.0, follow-redirects@npm:^1.14.0, follow-redirects@npm:^1.14.9, follow-redirects@npm:^1.15.0":
+"follow-redirects@npm:^1.0.0, follow-redirects@npm:^1.14.0, follow-redirects@npm:^1.15.0":
   version: 1.15.3
   resolution: "follow-redirects@npm:1.15.3"
   peerDependenciesMeta:
@@ -14411,8 +14401,8 @@ __metadata:
   linkType: hard
 
 "start-server-and-test@npm:^2.0.0":
-  version: 2.0.2
-  resolution: "start-server-and-test@npm:2.0.2"
+  version: 2.0.3
+  resolution: "start-server-and-test@npm:2.0.3"
   dependencies:
     arg: ^5.0.2
     bluebird: 3.7.2
@@ -14421,12 +14411,12 @@ __metadata:
     execa: 5.1.1
     lazy-ass: 1.6.0
     ps-tree: 1.2.0
-    wait-on: 7.1.0
+    wait-on: 7.2.0
   bin:
     server-test: src/bin/start.js
     start-server-and-test: src/bin/start.js
     start-test: src/bin/start.js
-  checksum: 3abe3e7a0d3fc769aac7677db98f0b51c6c4242a72f179878ef021bd9ded5da85d26f662cbdf3213fb586b37c4bdfbea6dffa91ab27f1d540039b7cc8b5d6f74
+  checksum: 8e2844a1fab631e1ad83e58d903e8425cd6d2c2cbbc79f71b72a15dbc7d90e6e340bb9133c910d8f3da8b55c737cf579afb581b4551ae7a2392450a78180fa53
   languageName: node
   linkType: hard
 
@@ -15451,18 +15441,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"wait-on@npm:7.1.0":
-  version: 7.1.0
-  resolution: "wait-on@npm:7.1.0"
+"wait-on@npm:7.2.0":
+  version: 7.2.0
+  resolution: "wait-on@npm:7.2.0"
   dependencies:
-    axios: ^0.27.2
+    axios: ^1.6.1
     joi: ^17.11.0
     lodash: ^4.17.21
     minimist: ^1.2.8
     rxjs: ^7.8.1
   bin:
     wait-on: bin/wait-on
-  checksum: f956c79f5c44788f406223dbd8a1a210500aa3d645032a5bedd4db404131c7d5da31cede08950fefefdd9b91479a474b964396fa2890cb4109082d44560a7448
+  checksum: 69ec1432bb4479363fdd71f2f3f501a98aa356a562781108a4a89ef8fdf1e3d5fd0c2fd56c4cc5902abbb662065f1f22d4e436a1e6fc9331ce8b575eb023325e
   languageName: node
   linkType: hard
 
