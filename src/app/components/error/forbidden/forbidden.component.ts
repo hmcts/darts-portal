@@ -1,5 +1,5 @@
-import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, Input, inject } from '@angular/core';
 import { AppConfigService } from '@services/app-config/app-config.service';
 
 @Component({
@@ -12,4 +12,6 @@ import { AppConfigService } from '@services/app-config/app-config.service';
 export class ForbiddenComponent {
   private appConfigService = inject(AppConfigService);
   support = this.appConfigService.getAppConfig()?.support;
+
+  @Input() header!: string;
 }

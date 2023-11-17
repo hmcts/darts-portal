@@ -3,6 +3,7 @@ const path = require('path');
 const fs = require('fs');
 
 const router = express.Router();
+router.use(express.json());
 
 const audioRequestOne = {
   case_id: 1,
@@ -289,7 +290,11 @@ router.get('/not-accessed-count', (req, res) => {
 });
 
 router.post('', (req, res) => {
-  res.send(audioRequestOne);
+  if (req.body?.hearing_id === 3) {
+    res.sendStatus(403);
+  } else {
+    res.send(audioRequestOne);
+  }
 });
 
 router.get('', (req, res) => {

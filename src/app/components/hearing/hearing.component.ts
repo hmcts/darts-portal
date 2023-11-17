@@ -5,6 +5,8 @@ import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
+import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
+import { ForbiddenComponent } from '@components/error/forbidden/forbidden.component';
 import {
   AudioEventRow,
   AudioRequest,
@@ -18,14 +20,15 @@ import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { JoinPipe } from '@pipes/join';
+import { AppConfigService } from '@services/app-config/app-config.service';
 import { CaseService } from '@services/case/case.service';
+import { ErrorMessageService } from '@services/error/error-message.service';
 import { HeaderService } from '@services/header/header.service';
 import { HearingService } from '@services/hearing/hearing.service';
 import { MappingService } from '@services/mapping/mapping.service';
 import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
 import { combineLatest, map } from 'rxjs';
-import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { LoadingComponent } from '../common/loading/loading.component';
 import { EventsAndAudioComponent } from './events-and-audio/events-and-audio.component';
 import { HearingFileComponent } from './hearing-file/hearing-file.component';
@@ -44,6 +47,7 @@ import { RequestPlaybackAudioComponent } from './request-playback-audio/request-
     RequestPlaybackAudioComponent,
     OrderConfirmationComponent,
     ReportingRestrictionComponent,
+    ForbiddenComponent,
     RouterLink,
     ValidationErrorSummaryComponent,
     LoadingComponent,
@@ -59,10 +63,12 @@ import { RequestPlaybackAudioComponent } from './request-playback-audio/request-
 export class HearingComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private caseService = inject(CaseService);
+  private appConfigService = inject(AppConfigService);
   hearingService = inject(HearingService);
   headerService = inject(HeaderService);
   userService = inject(UserService);
   mappingService = inject(MappingService);
+  errorMsgService = inject(ErrorMessageService);
   audioTimes: { startTime: DateTime; endTime: DateTime } | null = null;
   private _state: HearingPageState = 'Default';
   public errorSummary: ErrorSummaryEntry[] = [];
@@ -103,12 +109,15 @@ export class HearingComponent implements OnInit {
   hearing$ = this.caseService.getHearingById(this.caseId, this.hearingId);
   audio$ = this.hearingService.getAudio(this.hearingId);
   events$ = this.hearingService.getEvents(this.hearingId);
+  support = this.appConfigService.getAppConfig()?.support;
+  error$ = this.errorMsgService.errorMessage$;
 
   data$ = combineLatest({
     case: this.case$,
     hearing: this.hearing$,
     audios: this.audio$,
     events: this.events$,
+    error: this.error$,
   });
 
   // getter for state variable
@@ -181,9 +190,14 @@ export class HearingComponent implements OnInit {
   }
 
   onOrderConfirm(requestObject: AudioRequest) {
-    this.hearingService.requestAudio(requestObject).subscribe((response: AudioResponse) => {
-      this.state = 'OrderConfirmation';
-      this.requestId = response.request_id;
+    this.hearingService.requestAudio(requestObject).subscribe({
+      next: (response: AudioResponse) => {
+        this.requestId = response.request_id;
+        this.state = 'OrderConfirmation';
+      },
+      error: () => {
+        this.state = 'OrderFailure';
+      },
     });
   }
 }

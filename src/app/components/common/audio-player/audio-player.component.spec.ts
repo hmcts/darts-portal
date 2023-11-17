@@ -1,14 +1,26 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { AppConfigService } from '@services/app-config/app-config.service';
 import { AudioPlayerComponent } from './audio-player.component';
 
 describe('AudioPlayerComponent', () => {
   let fixture: ComponentFixture<AudioPlayerComponent>;
   let component: AudioPlayerComponent;
 
+  const appConfigServiceMock = {
+    getAppConfig: () => ({
+      appInsightsKey: 'XXXXXXXX',
+      support: {
+        name: 'DARTS support',
+        emailAddress: 'support@darts',
+      },
+    }),
+  };
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [AudioPlayerComponent],
+      providers: [{ provide: AppConfigService, useValue: appConfigServiceMock }],
     });
 
     fixture = TestBed.createComponent(AudioPlayerComponent);
@@ -109,6 +121,19 @@ describe('AudioPlayerComponent', () => {
       audioPlayer.triggerEventHandler('timeupdate', null);
 
       expect(component.playTime.emit).toHaveBeenCalledWith(10);
+    });
+  });
+
+  describe('#onError', () => {
+    it('should set errorMsg to true on error event', () => {
+      component.audioSource = 'api/audio/preview/123';
+
+      fixture.detectChanges();
+      const audioPlayer = fixture.debugElement.query(By.css('audio'));
+
+      audioPlayer.triggerEventHandler('error', null);
+
+      expect(component.errorMsg).toBeTruthy();
     });
   });
 });
