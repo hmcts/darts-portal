@@ -1,4 +1,10 @@
 <ng-container *ngIf="!isDeleting && (data$ | async) as data">
+  <a
+    [href]="'/audios/' + requestId + (audioRequest.requestType === 'PLAYBACK' ? '#audio-player' : '#download-audio')"
+    class="govuk-skip-link"
+    data-module="govuk-skip-link"
+    >Skip to main content</a
+  >
   <app-breadcrumb>
     <ng-container *breadcrumb="['../']">Your Audio</ng-container>
     <ng-container *breadcrumb>{{ fileName }}</ng-container>
@@ -90,7 +96,9 @@
   </ng-container>
 
   <div class="govuk-button-group">
-    <button class="govuk-button" (click)="onDownloadClicked()" [disabled]="data.error">Download audio file</button>
+    <button id="download-audio" class="govuk-button" (click)="onDownloadClicked()" [disabled]="data.error">
+      Download audio file
+    </button>
   </div>
 
   <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
