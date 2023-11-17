@@ -65,6 +65,8 @@ describe('Your audio', () => {
     cy.contains('Your Audio').click();
     cy.contains('T20200331').parents('tr').contains('View').click();
     cy.contains('T20200331.zip').should('exist');
+    cy.get('[class="govuk-skip-link"]').should('exist');
+    cy.get('[class="govuk-skip-link"]').should('have.attr', 'href', '/audios/12378#download-audio');
     cy.contains('Download audio file').click();
     cy.readFile(path.join(downloadsFolder, 'T20200331.zip')).should('exist');
   });
@@ -86,6 +88,8 @@ describe('Your audio', () => {
     cy.contains('Your Audio').click();
     cy.contains('T20200334').parents('tr').contains('View').click();
     cy.contains('T20200334.mp3').should('exist');
+    cy.get('[class="govuk-skip-link"]').should('exist');
+    cy.get('[class="govuk-skip-link"]').should('have.attr', 'href', '/audios/12378#audio-player');
     cy.contains('Delete audio file').click();
     cy.get(navigationSelector).should('not.exist');
     cy.contains('Are you sure you want to delete this item');
