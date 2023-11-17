@@ -31,7 +31,7 @@ describe('Your Transcripts', () => {
   it('shows approvers table', () => {
     cy.contains('Your Transcripts').click();
     cy.contains('Transcript requests to review').click();
-    cy.get('h2').should('contain', 'Requests to review');
+    cy.get('h2').should('contain', 'Requests to approve or reject');
     cy.get('#approver-table').should('contain', 'Request ID');
     cy.get('#approver-table').should('contain', 'View');
   });

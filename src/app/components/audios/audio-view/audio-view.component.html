@@ -72,6 +72,8 @@
       <ng-template [tableRowTemplate]="data.rows" let-row let-index>
         <td class="govuk-table__cell play-cell">
           <app-play-button
+            tabindex="0"
+            (keydown.enter)="onSkip(row.startTime, isRowPlaying(row))"
             [class.isPlaying]="isAudioTouched && isRowPlaying(row)"
             [isPlaying]="isAudioTouched && isRowPlaying(row)"
             [isPaused]="isAudioPlaying && isRowPlaying(row)"
