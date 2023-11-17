@@ -4,8 +4,8 @@ const router = express.Router();
 
 const transcriptOne = [
   {
-    tra_id: 1,
-    hea_id: 2,
+    tra_id: 0,
+    hea_id: 1,
     hearing_date: '2023-10-12',
     type: 'Sentencing remarks',
     requested_on: '2023-10-12',
@@ -14,10 +14,19 @@ const transcriptOne = [
   },
   {
     tra_id: 1,
-    hea_id: 2,
+    hea_id: 1,
     hearing_date: '2023-10-12',
     type: 'Sentencing remarks',
     requested_on: '2023-10-12',
+    requested_by_name: 'Joe Bloggs',
+    status: 'Complete',
+  },
+  {
+    tra_id: 2,
+    hea_id: 1,
+    hearing_date: '2023-10-12',
+    type: 'Sentencing remarks',
+    requested_on: '2023-10-21',
     requested_by_name: 'Joe Bloggs',
     status: 'Complete',
   },
