@@ -25,7 +25,7 @@ const mockTranscriptionDetailsTwo = {
   status: 'Complete',
   from: 'MoJ CH Swansea',
   received: '2023-11-17T12:53:07.468Z',
-  comments: ['Please expedite my request', 'We are not in a rush'],
+  instructions: 'Please expedite my request',
   defendants: ['Defendant Dave', 'Defendant Bob'],
   judges: ['HHJ M. Hussain KC	', 'Ray Bob'],
   transcript_file_name: 'C20220620001_0.docx',
