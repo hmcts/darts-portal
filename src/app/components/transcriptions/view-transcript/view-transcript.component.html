@@ -34,6 +34,12 @@
       <th scope="row" class="govuk-table__header">Request Type</th>
       <td class="govuk-table__cell">{{ vm.transcript.request_type }}</td>
     </tr>
+    @if (vm.transcript.request_id) {
+      <tr class="govuk-table__row">
+        <th scope="row" class="govuk-table__header">Request ID</th>
+        <td class="govuk-table__cell">{{ vm.transcript.request_id }}</td>
+      </tr>
+    }
     <tr class="govuk-table__row">
       <th scope="row" class="govuk-table__header">Urgency</th>
       <td class="govuk-table__cell">{{ vm.transcript.urgency }}</td>
@@ -96,8 +102,14 @@
     <h1 class="govuk-heading-l">{{ vm.transcript.transcript_file_name }}</h1>
 
     <div>
-      <strong class="govuk-tag govuk-tag--green" style="margin-bottom: 30px"> COMPLETE </strong>
-      <strong class="govuk-tag govuk-tag--red" style="margin-bottom: 30px"> REJECTED </strong>
+      @if (vm.transcript.status) {
+        <strong
+          class="govuk-tag"
+          [ngClass]="transcriptStatusClassMap[vm.transcript.status]"
+          style="margin-bottom: 30px"
+          >{{ vm.transcript.status }}</strong
+        >
+      }
     </div>
 
     <ng-container *ngTemplateOutlet="caseDetailsTable"></ng-container>
@@ -110,15 +122,15 @@
         <ng-container *ngTemplateOutlet="requestDetailsPartial"></ng-container>
         <tr class="govuk-table__row">
           <th scope="row" class="govuk-table__header">From</th>
-          <td class="govuk-table__cell">{{ vm.transcript.urgency }}</td>
+          <td class="govuk-table__cell">{{ vm.transcript.from }}</td>
         </tr>
         <tr class="govuk-table__row">
           <th scope="row" class="govuk-table__header">Received</th>
-          <td class="govuk-table__cell">{{ vm.transcript.urgency }}</td>
+          <td class="govuk-table__cell">{{ vm.transcript.received | date: 'dd MMM yyyy HH:mm:ss' }}</td>
         </tr>
         <tr class="govuk-table__row">
           <th scope="row" class="govuk-table__header">Instructions</th>
-          <td class="govuk-table__cell">{{ vm.transcript.urgency }}</td>
+          <td class="govuk-table__cell">{{ vm.transcript.comments }}</td>
         </tr>
         <tr class="govuk-table__row">
           <th scope="row" class="govuk-table__header">Judge Approval</th>

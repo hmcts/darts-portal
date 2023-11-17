@@ -18,6 +18,25 @@ const mockTranscriptionDetails = {
   transcription_end_ts: '2023-06-26T16:00:00Z',
 };
 
+const mockTranscriptionDetailsTwo = {
+  case_id: 2,
+  case_number: 'C20220620001',
+  courthouse: 'Swansea',
+  status: 'Complete',
+  from: 'MoJ CH Swansea',
+  received: '2023-11-17T12:53:07.468Z',
+  comments: ['Please expedite my request', 'We are not in a rush'],
+  defendants: ['Defendant Dave', 'Defendant Bob'],
+  judges: ['HHJ M. Hussain KC	', 'Ray Bob'],
+  transcript_file_name: 'C20220620001_0.docx',
+  hearing_date: '2023-11-08',
+  urgency: 'Standard',
+  request_type: 'Specified Times',
+  request_id: 123456789,
+  transcription_start_ts: '2023-06-26T13:00:00Z',
+  transcription_end_ts: '2023-06-26T16:00:00Z',
+};
+
 router.get('/types', (req, res) => {
   res.send([
     { trt_id: 0, description: 'Duplicate' },
@@ -45,6 +64,8 @@ router.get('/urgencies', (req, res) => {
 
 router.get('/:transcriptId', (req, res) => {
   switch (req.params.transcriptId) {
+    case '2':
+      res.status(200).send(mockTranscriptionDetailsTwo);
     case '403':
       const error403 = {
         type: 'AUTHORISATION_100',
