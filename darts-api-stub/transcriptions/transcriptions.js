@@ -77,8 +77,6 @@ router.get('/urgencies', (req, res) => {
 
 router.get('/:transcriptId', (req, res) => {
   switch (req.params.transcriptId) {
-    case '2':
-      res.status(200).send(mockTranscriptionDetailsTwo);
     case '403':
       const error403 = {
         type: 'AUTHORISATION_100',
@@ -102,7 +100,7 @@ router.get('/:transcriptId', (req, res) => {
       res.status(200).send(mockTranscriptionDetailsNoName);
       break;
     default:
-      res.status(200).send(mockTranscriptionDetails);
+      res.status(200).send(mockTranscriptionDetailsTwo);
   }
 });
 
