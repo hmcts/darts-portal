@@ -2,7 +2,6 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { UserAudioRequestRow } from '@darts-types/index';
 import { AudioRequestType, UserAudioRequest } from '@darts-types/user-audio-request.interface';
-import { UserService } from '@services/user/user.service';
 import { BehaviorSubject, Observable, map, merge, switchMap, tap, timer } from 'rxjs';
 
 export const UNREAD_AUDIO_COUNT_PATH = 'api/audio-requests/not-accessed-count';
@@ -11,15 +10,14 @@ export const UNREAD_AUDIO_COUNT_PATH = 'api/audio-requests/not-accessed-count';
 })
 export class AudioRequestService {
   http = inject(HttpClient);
-  userProfile$ = inject(UserService).userProfile$;
 
   // Defined in seconds
   private readonly POLL_INTERVAL = 60;
   private readonly UNREAD_COUNT_POLL_INTERVAL = 30;
 
   // Save unread count in memory
-  private unreadCount: BehaviorSubject<number> = new BehaviorSubject<number>(0);
-  readonly unreadCount$: Observable<number> = this.unreadCount.asObservable();
+  private unreadCount = new BehaviorSubject<number>(0);
+  readonly unreadCount$ = this.unreadCount.asObservable();
 
   // Store audio request when clicking 'View' on 'Your Audio' screen
   audioRequestView!: UserAudioRequestRow;
