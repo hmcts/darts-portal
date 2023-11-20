@@ -85,7 +85,8 @@ const audioRequestMulti = [
     media_request_status: 'COMPLETED',
     request_type: 'DOWNLOAD',
     hearing_id: 3,
-    output_filename: 'T20200331.zip',
+    output_filename: 'T20200331',
+    output_format: 'zip',
   },
   {
     case_id: 7,
@@ -100,7 +101,8 @@ const audioRequestMulti = [
     last_accessed_ts: '2023-08-23T09:00:00Z',
     request_type: 'PLAYBACK',
     hearing_id: 3,
-    output_filename: 'T20200333.mp3',
+    output_filename: 'T20200333',
+    output_format: 'mp3',
   },
   {
     case_id: 7,
@@ -114,7 +116,8 @@ const audioRequestMulti = [
     media_request_status: 'COMPLETED',
     last_accessed_ts: '2023-08-23T09:00:00Z',
     hearing_id: 3,
-    output_filename: 'T20200334.mp3',
+    output_filename: 'T20200334',
+    output_format: 'mp3',
     request_type: 'PLAYBACK',
   },
   {
@@ -129,7 +132,8 @@ const audioRequestMulti = [
     media_request_status: 'COMPLETED',
     request_type: 'PLAYBACK',
     hearing_id: 3,
-    output_filename: '',
+    output_filename: 'T2020011820',
+    output_format: 'mp3',
   },
   {
     case_id: 9,
@@ -143,7 +147,8 @@ const audioRequestMulti = [
     media_request_status: 'COMPLETED',
     request_type: 'PLAYBACK',
     hearing_id: 3,
-    output_filename: 'T2023453422.mp3',
+    output_filename: 'T2023453422',
+    output_format: 'mp3',
   },
   {
     case_id: 10,
@@ -157,7 +162,8 @@ const audioRequestMulti = [
     media_request_status: 'COMPLETED',
     request_type: 'PLAYBACK',
     hearing_id: 3,
-    output_filename: 'T20200192232.mp3',
+    output_filename: 'T20200192232',
+    output_format: 'mp3',
   },
   {
     case_id: 11,
@@ -171,7 +177,8 @@ const audioRequestMulti = [
     media_request_status: 'COMPLETED',
     request_type: 'PLAYBACK',
     hearing_id: 3,
-    output_filename: 'T20200192233.mp3',
+    output_filename: 'T20200192233',
+    output_format: 'mp3',
   },
   {
     case_id: 12,
@@ -185,7 +192,8 @@ const audioRequestMulti = [
     media_request_status: 'COMPLETED',
     request_type: 'DOWNLOAD',
     hearing_id: 3,
-    output_filename: 'C22334455.zip',
+    output_filename: 'C22334455',
+    output_format: 'zip',
   },
 ];
 

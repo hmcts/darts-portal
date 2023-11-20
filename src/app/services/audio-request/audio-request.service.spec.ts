@@ -1,5 +1,5 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed, discardPeriodicTasks, fakeAsync, tick } from '@angular/core/testing';
 import { UserAudioRequestRow } from '@darts-types/user-audio-request-row.interface';
 import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
 import { UserState } from '@darts-types/user-state';
@@ -367,7 +367,8 @@ describe('AudioService', () => {
       expiry: '2023-08-23T09:00:00Z',
       status: 'OPEN',
       requestType: 'DOWNLOAD',
-      output_filename: 'T20200190.zip',
+      output_filename: 'T20200190',
+      output_format: 'zip',
     };
     service.setAudioRequest(mockAudioRequest);
     expect(service.audioRequestView).toEqual(mockAudioRequest);
