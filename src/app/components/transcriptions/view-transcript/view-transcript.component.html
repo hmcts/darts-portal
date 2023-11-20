@@ -78,7 +78,32 @@
         Request Details
       </caption>
       <tbody class="govuk-table__body">
-        <ng-container *ngTemplateOutlet="requestDetailsPartial"></ng-container>
+        <tr class="govuk-table__row">
+          <th scope="row" class="govuk-table__header">Hearing date</th>
+          <td class="govuk-table__cell">{{ vm.transcript.hearing_date | date: 'dd MMM yyyy' }}</td>
+        </tr>
+        <tr class="govuk-table__row">
+          <th scope="row" class="govuk-table__header">Request Type</th>
+          <td class="govuk-table__cell">{{ vm.transcript.request_type }}</td>
+        </tr>
+        @if (vm.transcript.request_id) {
+          <tr class="govuk-table__row">
+            <th scope="row" class="govuk-table__header">Request ID</th>
+            <td class="govuk-table__cell">{{ vm.transcript.request_id }}</td>
+          </tr>
+        }
+        <tr class="govuk-table__row">
+          <th scope="row" class="govuk-table__header">Urgency</th>
+          <td class="govuk-table__cell">{{ vm.transcript.urgency }}</td>
+        </tr>
+        <tr id="audio-times" class="govuk-table__row">
+          <th scope="row" class="govuk-table__header">Audio for Transcript</th>
+          <td class="govuk-table__cell">
+            Start time {{ vm.transcript.transcription_start_ts | date: 'HH:mm:ss' }} - End time
+            {{ vm.transcript.transcription_end_ts | date: 'HH:mm:ss' }}
+          </td>
+        </tr>
+        <!-- <ng-container *ngTemplateOutlet="requestDetailsPartial"></ng-container> -->
       </tbody>
     </table>
 
@@ -119,7 +144,32 @@
         Request Details
       </caption>
       <tbody class="govuk-table__body">
-        <ng-container *ngTemplateOutlet="requestDetailsPartial"></ng-container>
+        <!-- <ng-container *ngTemplateOutlet="requestDetailsPartial"></ng-container> -->
+        <tr class="govuk-table__row">
+          <th scope="row" class="govuk-table__header">Hearing date</th>
+          <td class="govuk-table__cell">{{ vm.transcript.hearing_date | date: 'dd MMM yyyy' }}</td>
+        </tr>
+        <tr class="govuk-table__row">
+          <th scope="row" class="govuk-table__header">Request Type</th>
+          <td class="govuk-table__cell">{{ vm.transcript.request_type }}</td>
+        </tr>
+        @if (vm.transcript.request_id) {
+          <tr class="govuk-table__row">
+            <th scope="row" class="govuk-table__header">Request ID</th>
+            <td class="govuk-table__cell">{{ vm.transcript.request_id }}</td>
+          </tr>
+        }
+        <tr class="govuk-table__row">
+          <th scope="row" class="govuk-table__header">Urgency</th>
+          <td class="govuk-table__cell">{{ vm.transcript.urgency }}</td>
+        </tr>
+        <tr id="audio-times" class="govuk-table__row">
+          <th scope="row" class="govuk-table__header">Audio for Transcript</th>
+          <td class="govuk-table__cell">
+            Start time {{ vm.transcript.transcription_start_ts | date: 'HH:mm:ss' }} - End time
+            {{ vm.transcript.transcription_end_ts | date: 'HH:mm:ss' }}
+          </td>
+        </tr>
         <tr class="govuk-table__row">
           <th scope="row" class="govuk-table__header">From</th>
           <td class="govuk-table__cell">{{ vm.transcript.from }}</td>
