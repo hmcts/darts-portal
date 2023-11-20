@@ -1,1 +1,1 @@
-export type HearingPageState = 'Default' | 'OrderSummary' | 'OrderConfirmation';
+export type HearingPageState = 'Default' | 'OrderSummary' | 'OrderConfirmation' | 'OrderFailure';

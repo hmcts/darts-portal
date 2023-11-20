@@ -131,7 +131,7 @@
 
   <ng-container *ngIf="vm.error && vm.error.detail">
     <app-request-transcript-exists
-      [transcriptionId]="vm.error.detail.transcription_id"
+      [transcriptionId]="vm.error.detail.duplicate_transcription_id"
       [hidden]="!(vm.error.status === 409)"
     ></app-request-transcript-exists>
   </ng-container>

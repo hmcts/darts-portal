@@ -1,0 +1,16 @@
+.govuk-table__header,
+.govuk-table__cell {
+  padding: 10px;
+  vertical-align: middle;
+  max-width: 175px;
+}
+
+.action-container {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+
+  button {
+    margin-bottom: 0;
+  }
+}

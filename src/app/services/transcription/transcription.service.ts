@@ -1,10 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { TranscriptionDetails, TranscriptionRequest } from '@darts-types/index';
-import { TranscriptionType } from '@darts-types/transcription-type.interface';
-import { TranscriptionUrgency } from '@darts-types/transcription-urgency.interface';
-import { Observable } from 'rxjs';
-
+import {
+  TranscriptionDetails,
+  TranscriptionRequest,
+  TranscriptionType,
+  TranscriptionUrgency,
+  YourTranscriptionRequests,
+} from '@darts-types/index';
+import { Observable, map } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
@@ -23,7 +26,29 @@ export class TranscriptionService {
     return this.http.post<{ transcription_id: number }>('/api/transcriptions', request);
   }
 
+  getTranscriptionRequests(): Observable<YourTranscriptionRequests> {
+    return this.http.get<YourTranscriptionRequests>('/api/transcriptions').pipe(
+      map((requests) => {
+        return {
+          requester_transcriptions: requests.requester_transcriptions.map((r) => ({
+            ...r,
+            hearing_date: r.hearing_date + 'T00:00:00Z',
+          })),
+          approver_transcriptions: requests.approver_transcriptions.map((r) => ({
+            ...r,
+            hearing_date: r.hearing_date + 'T00:00:00Z',
+          })),
+        };
+      })
+    );
+  }
+
   getTranscriptionDetails(transcriptId: number): Observable<TranscriptionDetails> {
-    return this.http.get<TranscriptionDetails>(`/api/transcriptions/${transcriptId}`);
+    return this.http.get<TranscriptionDetails>(`/api/transcriptions/${transcriptId}`).pipe(
+      map((transcription: TranscriptionDetails) => {
+        transcription.transcript_file_name = transcription.transcript_file_name ?? 'Document not found';
+        return transcription;
+      })
+    );
   }
 }

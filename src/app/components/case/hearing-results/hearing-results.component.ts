@@ -5,6 +5,7 @@ import { DataTableComponent } from '@common/data-table/data-table.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { DatatableColumn, Hearing, HearingRow, TranscriptsRow } from '@darts-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
+import { transcriptStatusClassMap } from 'src/app/constants/transcript-status-class-map';
 import { TabDirective } from 'src/app/directives/tab.directive';
 
 @Component({
@@ -23,15 +24,7 @@ export class HearingResultsComponent implements OnChanges {
   hearingsColumns: DatatableColumn[] = [];
   transcriptColumns: DatatableColumn[] = [];
 
-  statusTagStyleMap: { [key: string]: string } = {
-    Requested: 'govuk-tag--blue',
-    'Awaiting Authorisation': 'govuk-tag--yellow',
-    Approved: 'govuk-tag--turquoise',
-    Rejected: 'govuk-tag--red',
-    'With Transcriber': 'govuk-tag--purple',
-    Complete: 'govuk-tag--green',
-    Closed: 'govuk-tag--grey',
-  };
+  transcriptStatusClassMap = transcriptStatusClassMap;
 
   constructor(private route: ActivatedRoute) {
     this.caseId = this.route.snapshot.params.caseId;

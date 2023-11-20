@@ -8,10 +8,19 @@
   (play)="play.emit()"
   [hidden]="!canPlay"
   (timeupdate)="onTimeUpdate()"
+  (error)="errorMsg = true"
 >
-  <source type="audio/mpeg" [src]="audioSource" />
+  <source type="audio/mpeg" (error)="errorMsg = true" [src]="audioSource" />
 </audio>
 
-<p class="govuk-body" id="loading" *ngIf="!canPlay">Loading audio... Please wait</p>
-
-<p class="govuk-body" id="no-id-error" *ngIf="!audioSource">No audio source provided</p>
+@if (errorMsg && !canPlay) {
+  <p class="govuk-body" id="error">
+    An error has occurred. Try again or
+    <a href="mailto:{{ support?.emailAddress }}" class="govuk-link">contact {{ support?.name }}</a> if the problem
+    persists
+  </p>
+} @else if (!canPlay) {
+  <p class="govuk-body" id="loading">Loading audio... Please wait</p>
+} @else if (!audioSource) {
+  <p class="govuk-body" id="no-id-error">No audio source provided</p>
+}
