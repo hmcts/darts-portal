@@ -234,10 +234,18 @@ const audioRequestMultiExpired = [
 ];
 
 router.delete('/:requestId', (req, res) => {
-  const index = audioRequestMulti.findIndex((x) => x.media_request_id == req.params.requestId);
+  const requestId = req.params.requestId;
+  const index = audioRequestMulti.findIndex((x) => x.media_request_id == requestId);
+  const expiredIndex = audioRequestMultiExpired.findIndex((x) => x.media_request_id == requestId);
+
   if (index >= 0) {
     audioRequestMulti.splice(index, 1);
   }
+
+  if (expiredIndex >= 0) {
+    audioRequestMultiExpired.splice(index, 1);
+  }
+
   res.sendStatus(204);
 });
 
