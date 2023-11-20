@@ -80,6 +80,19 @@ const mockTranscriptionDetails = {
   transcription_end_ts: '2023-06-26T16:00:00Z',
 };
 
+const mockTranscriptionDetailsNoName = {
+  case_id: 1,
+  case_number: 'C20220620001',
+  courthouse: 'Swansea',
+  defendants: ['Defendant Dave'],
+  judges: ['HHJ M. Hussain KC	'],
+  hearing_date: '2023-11-08',
+  urgency: 'Standard',
+  request_type: 'Specified Times',
+  transcription_start_ts: '2023-06-26T13:00:00Z',
+  transcription_end_ts: '2023-06-26T16:00:00Z',
+};
+
 router.get('/types', (req, res) => {
   res.send([
     { trt_id: 0, description: 'Duplicate' },
@@ -114,6 +127,7 @@ router.get('/:transcriptId', (req, res) => {
         status: 403,
       };
       res.status(403).send(error403);
+      break;
     case '404':
       const error404 = {
         type: 'TRANSCRIPTION_101',
@@ -121,6 +135,13 @@ router.get('/:transcriptId', (req, res) => {
         status: 404,
       };
       res.status(404).send(error404);
+      break;
+    case '1':
+      res.status(200).send(mockTranscriptionDetails);
+      break;
+    case '2':
+      res.status(200).send(mockTranscriptionDetailsNoName);
+      break;
     default:
       res.status(200).send(mockTranscriptionDetails);
   }
@@ -132,7 +153,7 @@ router.post('/', (req, res) => {
   const dupe = req.body.transcription_type_id == 0 && true;
 
   if (exists || dupe) {
-    res.status(409).send({ transcription_id: 1 });
+    res.status(409).send({ duplicate_transcription_id: 1 });
   } else {
     res.send({ transcription_id: 123 });
   }

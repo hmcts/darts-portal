@@ -11,7 +11,7 @@ import { TableRowTemplateDirective } from '@directives/table-row-template.direct
 import { UnreadIconDirective } from '@directives/unread-icon.directive';
 import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { HeaderService } from '@services/header/header.service';
-import { Observable, combineLatest, forkJoin, map } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest, forkJoin, map, shareReplay, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-audios',
@@ -34,6 +34,8 @@ export class AudiosComponent {
   headerService = inject(HeaderService);
   audioService = inject(AudioRequestService);
   router = inject(Router);
+
+  private refresh$ = new BehaviorSubject<void>(undefined);
 
   selectedAudioRequests: UserAudioRequestRow[] = [];
 
@@ -66,8 +68,15 @@ export class AudiosComponent {
   readyColumns = [{ name: '', prop: '' }, ...this.columns, { name: '', prop: '' }]; //Empty columns for unread icon and view link
 
   constructor() {
-    this.audioRequests$ = this.audioService.audioRequests$;
-    this.expiredAudioRequests$ = this.audioService.expiredAudioRequests$;
+    this.audioRequests$ = this.refresh$.pipe(
+      switchMap(() => this.audioService.audioRequests$),
+      shareReplay(1)
+    );
+
+    this.expiredAudioRequests$ = this.refresh$.pipe(
+      switchMap(() => this.audioService.expiredAudioRequests$),
+      shareReplay(1)
+    );
 
     this.inProgessRows$ = this.audioRequests$.pipe(
       map((audioRequests) => this.filterInProgressRequests(audioRequests)),
@@ -144,6 +153,8 @@ export class AudiosComponent {
       next: () => (this.isDeleting = false),
       error: () => (this.isDeleting = false),
     });
+
+    this.refresh$.next();
   }
 
   onDeleteCancelled() {

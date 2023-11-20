@@ -44,7 +44,12 @@ export class TranscriptionService {
   }
 
   getTranscriptionDetails(transcriptId: number): Observable<TranscriptionDetails> {
-    return this.http.get<TranscriptionDetails>(`/api/transcriptions/${transcriptId}`);
+    return this.http.get<TranscriptionDetails>(`/api/transcriptions/${transcriptId}`).pipe(
+      map((transcription: TranscriptionDetails) => {
+        transcription.transcript_file_name = transcription.transcript_file_name ?? 'Document not found';
+        return transcription;
+      })
+    );
   }
 
   deleteRequest(transcriptionId: number): Observable<HttpResponse<Response>> {

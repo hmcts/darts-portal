@@ -10,6 +10,7 @@ const subscribedEndpoints = [
   { endpoint: '/api/cases/search', responses: [204, 400, 500] },
   { endpoint: '/api/audio-requests/playback', responses: [403] },
   { endpoint: '/api/transcriptions', responses: [409] },
+  { endpoint: '/api/audio-requests', responses: [403] },
 ];
 
 @Injectable({

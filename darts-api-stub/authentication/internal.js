@@ -20,6 +20,16 @@ router.post('/handle-oauth-code', (_, res) => {
       roleName: 'local dev',
       permissions: permissions,
     },
+    {
+      roleId: 123,
+      roleName: 'REQUESTER',
+      permissions: permissions,
+    },
+    {
+      roleId: 123,
+      roleName: 'APPROVER',
+      permissions: permissions,
+    },
   ];
   const userState = {
     userId: 123,

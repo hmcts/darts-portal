@@ -96,7 +96,7 @@ export class AudioViewComponent implements OnDestroy {
       this.case$ = this.caseService.getCase(this.audioRequest.caseId);
 
       if (this.audioRequest.output_filename) {
-        this.fileName = this.audioRequest.output_filename;
+        this.fileName = this.audioRequest.output_filename + '.' + this.audioRequest.output_format?.toLowerCase();
       } else {
         this.fileName =
           this.audioRequest.requestType === 'DOWNLOAD'

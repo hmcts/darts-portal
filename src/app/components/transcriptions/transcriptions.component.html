@@ -12,89 +12,7 @@
   </td>
 </ng-template>
 
-@if (!isDeleting) {
-  <h1 class="govuk-label-wrapper">
-    <label class="govuk-label govuk-label--l" for="case-search">Your Transcripts</label>
-  </h1>
-  @if (data$ | async; as data) {
-    <app-tabs (tabChange)="onTabChanged()">
-      <div *tab="'Transcript requests'">
-        @if (!data.inProgessRequests.length && !data.completedRequests.length) {
-          <p id="no-requests-message" class="govuk-body">There are no transcription requests in progress or ready</p>
-        }
-        @if (data.inProgessRequests.length) {
-          <h2 class="govuk-heading-m">In Progress</h2>
-          <app-data-table
-            id="in-progress-table"
-            [rows]="data.inProgessRequests"
-            [columns]="columns"
-            [pagination]="true"
-            [pageLimit]="15"
-          >
-            <ng-template [tableRowTemplate]="data.inProgessRequests" let-row>
-              <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
-            </ng-template>
-          </app-data-table>
-        }
-        <ng-container *ngIf="data.completedRequests.length">
-          <h2 class="govuk-heading-m">Ready</h2>
-          <div class="action-container">
-            <div class="govuk-hint">Select to apply actions</div>
-            <button id="delete-button" class="govuk-button govuk-button--secondary" (click)="onDeleteClicked()">
-              Remove transcript request
-            </button>
-          </div>
-          <app-data-table
-            id="ready-table"
-            [rows]="data.completedRequests"
-            [columns]="readyColumns"
-            [pagination]="true"
-            [pageLimit]="15"
-            [rowSelectable]="true"
-            (rowSelect)="selectedRequests = $event"
-          >
-            <ng-template [tableRowTemplate]="data.completedRequests" let-row>
-              <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
-              <td class="govuk-table__cell">
-                <a [routerLink]="'.'">View</a>
-              </td>
-            </ng-template>
-          </app-data-table>
-        </ng-container>
-      </div>
-      @if (data.approverRequests.length) {
-        <div *tab="'Transcript requests to review'">
-          <h2 class="govuk-heading-m">Requests to review</h2>
-
-          <app-data-table
-            id="approver-table"
-            [rows]="data.approverRequests"
-            [columns]="approverColumns"
-            [pagination]="true"
-            [pageLimit]="15"
-          >
-            <ng-template [tableRowTemplate]="data.approverRequests" let-row>
-              <td class="govuk-table__cell">{{ row.case_number }}</td>
-              <td class="govuk-table__cell">{{ row.courthouse_name }}</td>
-              <td class="govuk-table__cell">{{ row.hearing_date | date: 'dd MMM yyyy' }}</td>
-              <td class="govuk-table__cell">{{ row.transcription_type }}</td>
-              <td class="govuk-table__cell">{{ row.requested_ts | date: 'dd MMM yyyy HH:mm' }}</td>
-              <td class="govuk-table__cell">{{ row.transcription_id }}</td>
-              <td class="govuk-table__cell">
-                <span [ngClass]="row.urgency === 'Overnight' ? 'moj-badge moj-badge--red' : ''">{{ row.urgency }}</span>
-              </td>
-              <td class="govuk-table__cell">
-                <a [routerLink]="'.'">View</a>
-              </td>
-            </ng-template>
-          </app-data-table>
-        </div>
-      }
-    </app-tabs>
-  } @else {
-    <app-loading text="Loading transcription requests..." />
-  }
-} @else {
+@if (isDeleting) {
   <app-delete [numberOfItems]="selectedRequests.length" (confirm)="onDeleteConfirmed()" (cancel)="onDeleteCancelled()">
     <app-data-table id="deletionTable" [rows]="selectedRequests" [columns]="deleteColumns">
       <ng-template [tableRowTemplate]="selectedRequests" let-row>
@@ -102,4 +20,113 @@
       </ng-template>
     </app-data-table>
   </app-delete>
+} @else {
+  @if (isApprover || isRequester) {
+    <h1 class="govuk-label-wrapper">
+      <label class="govuk-label govuk-label--l" for="case-search">Your Transcripts</label>
+    </h1>
+  }
+  @if (isRequester && isApprover) {
+    <app-tabs>
+      <div *tab="'Transcript requests'">
+        <ng-template [ngTemplateOutlet]="RequesterTemplate"></ng-template>
+      </div>
+      <div *tab="'Transcript requests to review'">
+        <ng-template [ngTemplateOutlet]="ApproverTemplate"></ng-template>
+      </div>
+    </app-tabs>
+  } @else if (isApprover) {
+    <ng-template [ngTemplateOutlet]="ApproverTemplate"></ng-template>
+  } @else if (isRequester) {
+    <ng-template [ngTemplateOutlet]="RequesterTemplate"></ng-template>
+  } @else {
+    <app-forbidden></app-forbidden>
+  }
 }
+
+<ng-template #RequesterTemplate>
+  @if (requesterRequests$ | async; as vm) {
+    @if (!vm.inProgessRequests.length && !vm.completedRequests.length) {
+      <p id="no-requests-message" class="govuk-body">There are no transcription requests in progress or ready</p>
+    }
+
+    @if (vm.inProgessRequests.length) {
+      <h2 class="govuk-heading-m">In Progress</h2>
+      <app-data-table
+        id="in-progress-table"
+        [rows]="vm.inProgessRequests"
+        [columns]="columns"
+        [pagination]="true"
+        [pageLimit]="15"
+      >
+        <ng-template [tableRowTemplate]="vm.inProgessRequests" let-row>
+          <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
+        </ng-template>
+      </app-data-table>
+    }
+
+    @if (vm.completedRequests.length) {
+      <h2 class="govuk-heading-m">Ready</h2>
+      <div class="action-container">
+        <div class="govuk-hint">Select to apply actions</div>
+        <button id="delete-button" class="govuk-button govuk-button--secondary" (click)="onDeleteClicked()">
+          Remove transcript request
+        </button>
+      </div>
+      <app-data-table
+        id="ready-table"
+        [rows]="vm.completedRequests"
+        [columns]="readyColumns"
+        [pagination]="true"
+        [pageLimit]="15"
+        [rowSelectable]="true"
+        (rowSelect)="selectedRequests = $event"
+      >
+        <ng-template [tableRowTemplate]="vm.completedRequests" let-row>
+          <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
+          <td class="govuk-table__cell">
+            <a [routerLink]="'.'">View</a>
+          </td>
+        </ng-template>
+      </app-data-table>
+    }
+  } @else {
+    <app-loading text="Loading transcription requests..." />
+  }
+</ng-template>
+
+<ng-template #ApproverTemplate>
+  @if (approverRequests$ | async; as approverRequests) {
+    @if (!approverRequests.length) {
+      <p id="no-requests-message" class="govuk-body">There are no transcription requests to review</p>
+    }
+    @if (approverRequests.length) {
+      <h2 class="govuk-heading-m">Requests to approve or reject</h2>
+
+      <app-data-table
+        id="approver-table"
+        [rows]="approverRequests"
+        [columns]="approverColumns"
+        [pagination]="true"
+        [pageLimit]="15"
+      >
+        <ng-template [tableRowTemplate]="approverRequests" let-row>
+          <td class="govuk-table__cell">{{ row.case_number }}</td>
+          <td class="govuk-table__cell">{{ row.courthouse_name }}</td>
+          <td class="govuk-table__cell">{{ row.hearing_date | date: 'dd MMM yyyy' }}</td>
+          <td class="govuk-table__cell">{{ row.transcription_type }}</td>
+          <td class="govuk-table__cell">{{ row.requested_ts | date: 'dd MMM yyyy HH:mm' }}</td>
+          <td class="govuk-table__cell">{{ row.transcription_id }}</td>
+          <td class="govuk-table__cell">
+            <span [ngClass]="row.urgency === 'Overnight' ? 'moj-badge moj-badge--red' : ''">{{ row.urgency }}</span>
+          </td>
+          <td class="govuk-table__cell">
+            <a [routerLink]="'.'">View</a>
+          </td>
+        </ng-template>
+      </app-data-table>
+    }
+  } @else {
+    <app-loading text="Loading transcriptions awaiting approval..." />
+  }
+</ng-template>

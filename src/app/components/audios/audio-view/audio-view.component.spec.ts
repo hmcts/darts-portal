@@ -114,7 +114,8 @@ describe('AudioViewComponent', () => {
     hearingId: 3,
     requestType: 'PLAYBACK',
     lastAccessed: undefined,
-    output_filename: 'T20200331.mp3',
+    output_filename: 'T20200331',
+    output_format: 'mp3',
   };
 
   const fakeHearingService = {

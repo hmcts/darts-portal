@@ -1,15 +1,17 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DeleteComponent } from '@common/delete/delete.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
+import { ForbiddenComponent } from '@components/error/forbidden/forbidden.component';
 import { transcriptStatusClassMap } from '@constants/transcript-status-class-map';
 import { DatatableColumn, UserTranscriptionRequest } from '@darts-types/index';
 import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { TranscriptionService } from '@services/transcription/transcription.service';
+import { UserService } from '@services/user/user.service';
 import { BehaviorSubject, Observable, combineLatest, forkJoin, map, shareReplay, switchMap } from 'rxjs';
 
 @Component({
@@ -26,10 +28,13 @@ import { BehaviorSubject, Observable, combineLatest, forkJoin, map, shareReplay,
     RouterLink,
     TabDirective,
     DeleteComponent,
+    ForbiddenComponent,
   ],
 })
 export class TranscriptionsComponent {
   transcriptService = inject(TranscriptionService);
+  userService = inject(UserService);
+  userState = inject(ActivatedRoute).snapshot.data.userState;
   transcriptStatusClassMap = transcriptStatusClassMap;
 
   columns: DatatableColumn[] = [
@@ -58,7 +63,7 @@ export class TranscriptionsComponent {
     shareReplay(1)
   );
 
-  data$ = combineLatest({
+  requesterRequests$ = combineLatest({
     inProgessRequests: this.requests$.pipe(
       map((requests) => this.filterInProgressRequests(requests.requester_transcriptions))
     ),
@@ -67,6 +72,7 @@ export class TranscriptionsComponent {
     ),
     approverRequests: this.requests$.pipe(map((requests) => requests.approver_transcriptions)),
   });
+  approverRequests$ = this.requests$.pipe(map((requests) => requests.approver_transcriptions));
 
   private filterInProgressRequests(requests: UserTranscriptionRequest[]): UserTranscriptionRequest[] {
     return requests.filter((r) => r.status === 'Awaiting Authorisation' || r.status === 'With Transcriber');
@@ -102,4 +108,7 @@ export class TranscriptionsComponent {
   onTabChanged() {
     this.selectedRequests = [];
   }
+
+  isRequester = this.userService.isRequester(this.userState);
+  isApprover = this.userService.isApprover(this.userState);
 }
