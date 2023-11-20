@@ -22,7 +22,7 @@ const transcriptOne = [
     status: 'Complete',
   },
   {
-    tra_id: 2,
+    tra_id: 3,
     hea_id: 1,
     hearing_date: '2023-10-12',
     type: 'Sentencing remarks',
