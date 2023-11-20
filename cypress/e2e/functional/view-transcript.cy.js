@@ -55,4 +55,18 @@ describe('View Transcript', () => {
     cy.get('h1').should('contain', 'Document not found');
     cy.get('.govuk-body-m').should('contain', 'Section 4(2) of the Contempt of Court Act 1981');
   });
+
+  it('should get to a completed transcript from Your Transcripts', () => {
+    cy.get('.moj-primary-navigation__link').contains('Your Transcripts').click();
+    cy.contains('Complete').parents('tr').should('contain', 'View');
+    cy.contains('Complete').parents('tr').contains('View').click();
+    cy.get('.govuk-tag').should('contain', 'Complete');
+  });
+
+  it('should get to a rejected transcript from Your Transcripts', () => {
+    cy.get('.moj-primary-navigation__link').contains('Your Transcripts').click();
+    cy.contains('Rejected').parents('tr').should('contain', 'View');
+    cy.contains('Rejected').parents('tr').contains('View').click();
+    cy.get('.govuk-tag').should('contain', 'Rejected');
+  });
 });
