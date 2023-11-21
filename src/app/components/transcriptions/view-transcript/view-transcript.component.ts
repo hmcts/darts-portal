@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CaseService } from '@services/case/case.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { combineLatest } from 'rxjs';
+import { combineLatest, shareReplay, switchMap } from 'rxjs';
 import { JoinPipe } from '@pipes/join';
 import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
@@ -32,11 +32,10 @@ export class ViewTranscriptComponent {
   transcriptionService = inject(TranscriptionService);
   transcriptStatusClassMap = transcriptStatusClassMap;
 
-  caseId = this.route.snapshot.params.caseId;
   transcriptId = this.route.snapshot.params.transcriptId;
 
-  case$ = this.caseService.getCase(this.caseId);
-  transcript$ = this.transcriptionService.getTranscriptionDetails(this.transcriptId);
+  transcript$ = this.transcriptionService.getTranscriptionDetails(this.transcriptId).pipe(shareReplay(1));
+  case$ = this.transcript$.pipe(switchMap((transcript) => this.caseService.getCase(transcript.case_id)));
 
   data$ = combineLatest({
     case: this.case$,
