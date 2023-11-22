@@ -5,7 +5,7 @@ Cypress.Commands.add('login', () => {
   cy.contains('Continue').click();
 
   cy.get('h1').should('contain', 'Stub login page');
-  cy.get('#login').click();
+  cy.get('#login-admin').click();
   cy.get('.govuk-label-wrapper > .govuk-label').should('contain', 'Search for a case');
 });
 
