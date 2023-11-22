@@ -55,6 +55,7 @@ const mockTranscriptionDetailsNoName = {
   request_type: 'Specified Times',
   transcription_start_ts: '2023-06-26T13:00:00Z',
   transcription_end_ts: '2023-06-26T16:00:00Z',
+  reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
 };
 
 router.get('/types', (req, res) => {
