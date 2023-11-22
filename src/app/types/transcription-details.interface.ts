@@ -4,7 +4,7 @@ export interface TranscriptionDetails {
   courthouse: string;
   defendants: string[];
   judges: string[];
-  transcript_file_name: string;
+  transcript_file_name?: string;
   hearing_date: string;
   urgency: string;
   request_type: string;
