@@ -6,6 +6,7 @@ router.use(express.json());
 
 const mockTranscriptionDetails = {
   case_id: 2,
+  reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
   case_number: 'C20220620001',
   courthouse: 'Swansea',
   status: 'Rejected',
@@ -25,6 +26,7 @@ const mockTranscriptionDetails = {
 
 const mockTranscriptionDetailsTwo = {
   case_id: 2,
+  reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
   case_number: 'C20220620001',
   courthouse: 'Swansea',
   status: 'Complete',
