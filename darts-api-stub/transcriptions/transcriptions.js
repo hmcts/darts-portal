@@ -67,15 +67,39 @@ const yourTranscriptionsStub = {
 };
 
 const mockTranscriptionDetails = {
-  case_id: 1,
+  case_id: 2,
   case_number: 'C20220620001',
   courthouse: 'Swansea',
-  defendants: ['Defendant Dave'],
-  judges: ['HHJ M. Hussain KC	'],
+  status: 'Rejected',
+  from: 'MoJ CH Swansea',
+  received: '2023-11-17T12:53:07.468Z',
+  requestor_comments: 'Please expedite my request',
+  defendants: ['Defendant Dave', 'Defendant Bob'],
+  judges: ['HHJ M. Hussain KC	', 'Ray Bob'],
   transcript_file_name: 'C20220620001_0.docx',
   hearing_date: '2023-11-08',
   urgency: 'Standard',
   request_type: 'Specified Times',
+  request_id: 123456789,
+  transcription_start_ts: '2023-06-26T13:00:00Z',
+  transcription_end_ts: '2023-06-26T16:00:00Z',
+};
+
+const mockTranscriptionDetailsTwo = {
+  case_id: 2,
+  case_number: 'C20220620001',
+  courthouse: 'Swansea',
+  status: 'Complete',
+  from: 'MoJ CH Swansea',
+  received: '2023-11-17T12:53:07.468Z',
+  requestor_comments: 'Please expedite my request',
+  defendants: ['Defendant Dave', 'Defendant Bob'],
+  judges: ['HHJ M. Hussain KC	', 'Ray Bob'],
+  transcript_file_name: 'C20220620001_0.docx',
+  hearing_date: '2023-11-08',
+  urgency: 'Standard',
+  request_type: 'Specified Times',
+  request_id: 123456789,
   transcription_start_ts: '2023-06-26T13:00:00Z',
   transcription_end_ts: '2023-06-26T16:00:00Z',
 };
@@ -139,11 +163,11 @@ router.get('/:transcriptId', (req, res) => {
     case '1':
       res.status(200).send(mockTranscriptionDetails);
       break;
-    case '2':
+    case '3':
       res.status(200).send(mockTranscriptionDetailsNoName);
       break;
     default:
-      res.status(200).send(mockTranscriptionDetails);
+      res.status(200).send(mockTranscriptionDetailsTwo);
   }
 });
 

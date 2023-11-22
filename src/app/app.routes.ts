@@ -64,7 +64,7 @@ const protectedRoutes: Routes = [
       ),
   },
   {
-    path: 'your-transcripts/transcripts/:transcriptId',
+    path: 'transcriptions/transcripts/:transcriptId',
     loadComponent: () =>
       import('./components/transcriptions/view-transcript/view-transcript.component').then(
         (c) => c.ViewTranscriptComponent

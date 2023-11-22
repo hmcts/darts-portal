@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NavigationEnd, Router } from '@angular/router';
-import { AppInsightsService } from '@services/app-insights/app-insights.service';
+import { Event, NavigationEnd, Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { AuthService } from '@services/auth/auth.service';
 import { HeaderService } from '@services/header/header.service';
 import { Subject } from 'rxjs';
@@ -12,7 +12,6 @@ import { HeaderComponent } from './layout/header/header.component';
 import { PhaseBannerComponent } from './layout/phase-banner/phase-banner.component';
 
 describe('AppComponent', () => {
-  const fakeAppInsightsService = {};
   const fakeAuthService = {};
   const fakeHeaderService = { showNavigation: jest.fn() } as unknown as HeaderService;
   let component: AppComponent;
@@ -30,12 +29,11 @@ describe('AppComponent', () => {
         FooterComponent,
         AppComponent,
         HttpClientTestingModule,
+        RouterTestingModule,
       ],
       providers: [
-        { provide: AppInsightsService, useValue: fakeAppInsightsService },
         { provide: AuthService, useValue: fakeAuthService },
         { provide: HeaderService, useValue: fakeHeaderService },
-        { provide: Router, useValue: { events: routerEventsSubject } },
       ],
     });
 
@@ -52,11 +50,32 @@ describe('AppComponent', () => {
   });
 
   it('should show primary navigation on NavigationEnd event', () => {
-    const navigationEndEvent = new NavigationEnd(1, '/', '/');
     jest.spyOn(fakeHeaderService, 'showNavigation');
+    const navigationEndEvent = new NavigationEnd(1, '/', '/');
 
+    (TestBed.inject(Router).events as unknown as Subject<Event>).next(navigationEndEvent as Event);
     routerEventsSubject.next(navigationEndEvent);
 
     expect(fakeHeaderService.showNavigation).toHaveBeenCalled();
+  });
+
+  it('should set current URL NavigationEnd event', () => {
+    jest.spyOn(fakeHeaderService, 'showNavigation');
+    const navigationEndEvent = new NavigationEnd(1, '/test', '/test');
+
+    (TestBed.inject(Router).events as unknown as Subject<Event>).next(navigationEndEvent as Event);
+    routerEventsSubject.next(navigationEndEvent);
+
+    expect(component.currentUrl).toBe('/test');
+  });
+
+  it('should set current URL NavigationEnd event, without fragment', () => {
+    jest.spyOn(fakeHeaderService, 'showNavigation');
+    const navigationEndEvent = new NavigationEnd(1, '/test#content', '/test#content');
+
+    (TestBed.inject(Router).events as unknown as Subject<Event>).next(navigationEndEvent as Event);
+    routerEventsSubject.next(navigationEndEvent);
+
+    expect(component.currentUrl).toBe('/test');
   });
 });

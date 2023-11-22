@@ -34,7 +34,7 @@ export class CaseService {
         transcripts.map((t) => ({
           ...t,
           date: t.hearing_date + 'T00:00:00Z',
-          requested_on: t.requested_on + 'T00:00:00Z',
+          requested_on: t.requested_on ? t.requested_on + 'T00:00:00Z' : '',
         }))
       )
     );
@@ -47,7 +47,7 @@ export class CaseService {
         transcripts.map((t) => ({
           ...t,
           date: t.hearing_date + 'T00:00:00Z',
-          requested_on: t.requested_on + 'T00:00:00Z',
+          requested_on: t.requested_on ? t.requested_on + 'T00:00:00Z' : '',
         }))
       )
     );
