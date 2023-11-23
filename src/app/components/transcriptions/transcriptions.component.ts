@@ -71,6 +71,6 @@ export class TranscriptionsComponent {
     return requests.filter((r) => r.status === 'Complete' || r.status === 'Rejected');
   }
 
-  isRequester = this.userService.isRequester(this.userState);
-  isApprover = this.userService.isApprover(this.userState);
+  isRequester = this.userService.isRequester();
+  isApprover = this.userService.isApprover();
 }
