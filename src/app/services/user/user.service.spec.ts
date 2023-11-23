@@ -70,12 +70,13 @@ describe('UserService', () => {
           },
         ],
       };
-      const result = service.isTranscriber(transcriber);
+      service.userState.set(transcriber);
+      const result = service.isTranscriber();
       expect(result).toEqual(true);
     });
     it("returns false if the user doesn't have the Transcriber role", () => {
-      const nonTranscriber = mockUserState;
-      const result = service.isTranscriber(nonTranscriber);
+      service.userState.set(mockUserState);
+      const result = service.isTranscriber();
       expect(result).toEqual(false);
     });
   });
@@ -98,13 +99,14 @@ describe('UserService', () => {
           },
         ],
       };
-      const result = service.isApprover(approver);
+      service.userState.set(approver);
+      const result = service.isApprover();
       expect(result).toEqual(true);
     });
 
     it("returns false if the user doesn't have the Approver role", () => {
-      const nonApprover = mockUserState;
-      const result = service.isApprover(nonApprover);
+      service.userState.set(mockUserState);
+      const result = service.isApprover();
       expect(result).toEqual(false);
     });
   });
@@ -127,13 +129,14 @@ describe('UserService', () => {
           },
         ],
       };
-      const result = service.isJudge(judge);
+      service.userState.set(judge);
+      const result = service.isJudge();
       expect(result).toEqual(true);
     });
 
     it("returns false if the user doesn't have the Judge role", () => {
-      const nonJudge = mockUserState;
-      const result = service.isJudge(nonJudge);
+      service.userState.set(mockUserState);
+      const result = service.isJudge();
       expect(result).toEqual(false);
     });
   });
@@ -156,13 +159,14 @@ describe('UserService', () => {
           },
         ],
       };
-      const result = service.isRequester(requester);
+      service.userState.set(requester);
+      const result = service.isRequester();
       expect(result).toEqual(true);
     });
 
     it("returns false if the user doesn't have the Requester role", () => {
-      const nonRequester = mockUserState;
-      const result = service.isRequester(nonRequester);
+      service.userState.set(mockUserState);
+      const result = service.isRequester();
       expect(result).toEqual(false);
     });
   });
@@ -185,13 +189,14 @@ describe('UserService', () => {
           },
         ],
       };
-      const result = service.isLanguageShopUser(languageShopUser);
+      service.userState.set(languageShopUser);
+      const result = service.isLanguageShopUser();
       expect(result).toEqual(true);
     });
 
     it("returns false if the user doesn't have the Language Shop User role", () => {
-      const nonLanguageShopUser = mockUserState;
-      const result = service.isLanguageShopUser(nonLanguageShopUser);
+      service.userState.set(mockUserState);
+      const result = service.isLanguageShopUser();
       expect(result).toEqual(false);
     });
   });

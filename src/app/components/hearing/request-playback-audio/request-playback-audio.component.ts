@@ -74,7 +74,7 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
     });
   }
   ngOnInit(): void {
-    this.isTranscriber = this.userService.isTranscriber(this.userState);
+    this.isTranscriber = this.userService.isTranscriber();
     if (this.isTranscriber) {
       this.audioRequestForm.get('requestType')?.setValidators(Validators.required);
     } else {

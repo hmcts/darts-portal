@@ -21,6 +21,10 @@ const protectedRoutes: Routes = [
     loadComponent: () => import('./components/audios/audios.component').then((c) => c.AudiosComponent),
   },
   {
+    path: 'work',
+    loadComponent: () => import('./components/your-work/your-work.component').then((c) => c.YourWorkComponent),
+  },
+  {
     path: 'audios/:requestId',
     loadComponent: () =>
       import('./components/audios/audio-view/audio-view.component').then((c) => c.AudioViewComponent),
@@ -29,6 +33,13 @@ const protectedRoutes: Routes = [
     path: 'transcriptions',
     loadComponent: () =>
       import('./components/transcriptions/transcriptions.component').then((c) => c.TranscriptionsComponent),
+  },
+  {
+    path: 'transcription-requests',
+    loadComponent: () =>
+      import('./components/transcriptions/transcription-requests/transcription-requests.component').then(
+        (c) => c.TranscriptionRequestsComponent
+      ),
   },
   {
     path: 'search',

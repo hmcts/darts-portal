@@ -1,7 +1,11 @@
 import 'cypress-axe';
-Cypress.Commands.add('login', () => {
+Cypress.Commands.add('login', (loginType = 'external') => {
   cy.visit('/login');
-  cy.contains('I work with the HM Courts and Tribunals Service').click();
+  if (loginType === 'external') {
+    cy.contains('I work with the HM Courts and Tribunals Service').click();
+  } else {
+    cy.contains("I'm an employee of HM Courts and Tribunals Service").click();
+  }
   cy.contains('Continue').click();
 
   cy.get('h1').should('contain', 'Stub login page');
