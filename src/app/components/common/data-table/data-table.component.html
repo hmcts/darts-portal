@@ -47,7 +47,7 @@
             <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
               <div class="govuk-checkboxes__item">
                 <input
-                  [attr.aria-label]="'Select checkbox ' + row.id"
+                  [attr.aria-label]="'Select checkbox ' + (row[checkboxKey] || i)"
                   class="govuk-checkboxes__input"
                   [id]="i"
                   [name]="i"
@@ -57,7 +57,7 @@
                   (change)="toggleRowSelection(row)"
                 />
                 <label class="govuk-label govuk-checkboxes__label" [for]="i">
-                  <span style="display: none">{{ 'Select checkbox ' + row.id }}</span>
+                  <span style="display: none">{{ 'Select checkbox ' + (row[checkboxKey] || i) }}</span>
                 </label>
               </div>
             </div>
