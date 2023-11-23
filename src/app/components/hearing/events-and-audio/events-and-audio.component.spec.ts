@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
+import { QueryList } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AudioPlayerComponent } from '@common/audio-player/audio-player.component';
 import { AudioEventRow, HearingAudio, HearingEvent, HearingEventTypeEnum } from '@darts-types/index';
 import { Subscription } from 'rxjs';
 import { EventsAndAudioComponent } from './events-and-audio.component';
@@ -233,19 +235,29 @@ describe('EventsAndAudioComponent', () => {
   });
 
   describe('#onPreviewAudio', () => {
-    it('set audioInPreview to audio id', () => {
+    it('add audio to preview when not already in preview', () => {
       const idToAdd = 1;
+      component.audioInPreview = [2, 3];
 
       component.onPreviewAudio(idToAdd);
 
-      expect(component.audioInPreview).toEqual(1);
+      expect(component.audioInPreview).toEqual([2, 3, idToAdd]);
+    });
+
+    it('do not add audio to preview if it is already in preview', () => {
+      const idToAdd = 1;
+      component.audioInPreview = [1, 2, 3];
+
+      component.onPreviewAudio(idToAdd);
+
+      expect(component.audioInPreview).toEqual([1, 2, 3]);
     });
   });
 
   describe('#isAudioInPreview', () => {
     it('should return true when audio is in preview', () => {
       const idToCheck = 1;
-      component.audioInPreview = 1;
+      component.audioInPreview = [1, 2, 3];
 
       const result = component.isAudioInPreview(idToCheck);
 
@@ -254,11 +266,28 @@ describe('EventsAndAudioComponent', () => {
 
     it('should return false when audio is not in preview', () => {
       const idToCheck = 4;
-      component.audioInPreview = 1;
+      component.audioInPreview = [1, 2, 3];
 
       const result = component.isAudioInPreview(idToCheck);
 
       expect(result).toBe(false);
     });
+  });
+
+  it('should pause all audio players except the one with the given id', () => {
+    const id = 1;
+    const audioPlayer1 = { id: 1, pausePlayer: jest.fn() } as unknown as AudioPlayerComponent;
+    const audioPlayer2 = { id: 2, pausePlayer: jest.fn() } as unknown as AudioPlayerComponent;
+    const audioPlayer3 = { id: 3, pausePlayer: jest.fn() } as unknown as AudioPlayerComponent;
+
+    const audioPlayers = new QueryList<AudioPlayerComponent>();
+    audioPlayers.reset([audioPlayer1, audioPlayer2, audioPlayer3]);
+    component.audioPlayers = audioPlayers;
+
+    component.onAudioPlay(id);
+
+    expect(audioPlayer1.pausePlayer).not.toHaveBeenCalled();
+    expect(audioPlayer2.pausePlayer).toHaveBeenCalled();
+    expect(audioPlayer3.pausePlayer).toHaveBeenCalled();
   });
 });

@@ -23,6 +23,7 @@ import { AppConfigService } from '@services/app-config/app-config.service';
 export class AudioPlayerComponent {
   @ViewChild('audioPlayer', { static: false }) audioPlayer!: ElementRef<HTMLAudioElement>;
 
+  @Input() id!: number;
   @Input() audioSource: string | null = null;
   @Output() playTime = new EventEmitter<number>();
   @Output() pause = new EventEmitter<void>();
@@ -47,5 +48,9 @@ export class AudioPlayerComponent {
 
   onTimeUpdate() {
     this.playTime.emit(this.audioPlayer.nativeElement.currentTime);
+  }
+
+  pausePlayer() {
+    this.audioPlayer.nativeElement.pause();
   }
 }

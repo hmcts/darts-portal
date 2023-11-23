@@ -37,17 +37,15 @@
           <div>Start time: {{ row.timestamp | date: 'HH:mm:ss' }}</div>
         </td>
         <td class="govuk-table__cell">
-          <button
-            *ngIf="!isAudioInPreview(row.id)"
-            class="govuk-button govuk-button--secondary"
-            (click)="onPreviewAudio(row.id)"
-          >
-            Preview Audio
-          </button>
-          <app-audio-player
-            *ngIf="isAudioInPreview(row.id)"
-            [audioSource]="audioPreviewPath + row.id"
-          ></app-audio-player>
+          @if (isAudioInPreview(row.id)) {
+            <app-audio-player
+              [id]="row.id"
+              [audioSource]="audioPreviewPath + row.id"
+              (play)="onAudioPlay(row.id)"
+            ></app-audio-player>
+          } @else {
+            <button class="govuk-button govuk-button--secondary" (click)="onPreviewAudio(row.id)">Preview Audio</button>
+          }
         </td>
         <td class="govuk-table__cell">End time: {{ row.media_end_timestamp | date: 'HH:mm:ss' }}</td>
       </ng-container>
