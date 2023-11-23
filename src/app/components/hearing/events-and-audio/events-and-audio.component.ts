@@ -47,7 +47,7 @@ export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
   audioPreviewPath = '/api/audio/preview/';
 
   subs: Subscription[] = [];
-  audioInPreview: number[] = [];
+  audioInPreview!: number;
 
   ngOnInit(): void {
     this.subs.push(
@@ -99,13 +99,11 @@ export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onPreviewAudio(id: number) {
-    if (!this.isAudioInPreview(id)) {
-      this.audioInPreview = [...this.audioInPreview, id];
-    }
+    this.audioInPreview = id;
   }
 
   isAudioInPreview(id: number): boolean {
-    return !!this.audioInPreview.find((audioId) => audioId === id);
+    return this.audioInPreview === id;
   }
 
   private constructTable() {
