@@ -1,0 +1,15 @@
+<table class="govuk-table">
+  <caption class="govuk-table__caption govuk-table__caption--m">
+    {{
+      title
+    }}
+  </caption>
+  <tbody class="govuk-table__body">
+    @for (detail of details | keyvalue: originalOrder; track $index) {
+      <tr class="govuk-table__row">
+        <th scope="row" class="govuk-table__header">{{ detail.key }}</th>
+        <td class="govuk-table__cell table-width">{{ detail.value }}</td>
+      </tr>
+    }
+  </tbody>
+</table>

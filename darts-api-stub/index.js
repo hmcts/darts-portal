@@ -1,5 +1,7 @@
+const path = require('path');
 const express = require('express');
 const config = require('config');
+const bodyParser = require('body-parser');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const app = express();
@@ -11,13 +13,15 @@ const defaultApiPort = 4550;
 
 app.set('view engine', 'ejs');
 app.set('views', 'darts-api-stub/views');
+app.use('/assets', express.static(path.join(__dirname, '../server/assets')));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
-app.get('/', (req, res) => res.send('Welcome to the DARTS API stub'));
+app.get('/', (_, res) => res.send('Welcome to the DARTS API stub'));
 
-// stub out external user authentication
-app.use('/external-user', require('./authentication/external'));
-// stub out internal user authentication
-app.use('/internal-user', require('./authentication/internal'));
+// stub out user authentication
+app.use('/external-user', require('./authentication'));
+app.use('/internal-user', require('./authentication'));
 // stub out courthouses api
 app.use('/courthouses', require('./courthouses/courthouses'));
 // stub out certain case APIs
