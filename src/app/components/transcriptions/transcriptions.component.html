@@ -17,7 +17,6 @@
     <label class="govuk-label govuk-label--l" for="case-search">Your Transcripts</label>
   </h1>
 }
-
 @if (isRequester && isApprover) {
   <app-tabs>
     <div *tab="'Transcript requests'">
@@ -40,7 +39,6 @@
     @if (!vm.inProgessRequests.length && !vm.completedRequests.length) {
       <p id="no-requests-message" class="govuk-body">There are no transcription requests in progress or ready</p>
     }
-
     @if (vm.inProgessRequests.length) {
       <h2 class="govuk-heading-m">In Progress</h2>
       <app-data-table
@@ -55,7 +53,6 @@
         </ng-template>
       </app-data-table>
     }
-
     @if (vm.completedRequests.length) {
       <h2 class="govuk-heading-m">Ready</h2>
       <div class="action-container">
@@ -109,7 +106,7 @@
             <span [ngClass]="row.urgency === 'Overnight' ? 'moj-badge moj-badge--red' : ''">{{ row.urgency }}</span>
           </td>
           <td class="govuk-table__cell">
-            <a [routerLink]="'.'">View</a>
+            <a [routerLink]="['approve-transcript', row.transcription_id]">View</a>
           </td>
         </ng-template>
       </app-data-table>

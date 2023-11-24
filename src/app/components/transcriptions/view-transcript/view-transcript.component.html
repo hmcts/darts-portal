@@ -14,12 +14,12 @@
           <td class="govuk-table__cell table-width">{{ vm.courthouse }}</td>
         </tr>
         <tr class="govuk-table__row">
-          <th scope="row" class="govuk-table__header">Defendant(s)</th>
-          <td class="govuk-table__cell table-width">{{ vm.defendants | join }}</td>
-        </tr>
-        <tr class="govuk-table__row">
           <th scope="row" class="govuk-table__header">Judge(s)</th>
           <td class="govuk-table__cell table-width">{{ vm.judges | join }}</td>
+        </tr>
+        <tr class="govuk-table__row">
+          <th scope="row" class="govuk-table__header">Defendant(s)</th>
+          <td class="govuk-table__cell table-width">{{ vm.defendants | join }}</td>
         </tr>
       </tbody>
     </table>
@@ -87,8 +87,8 @@
   <!-- START OF VIEW TRANSCRIPT FROM YOUR-TRANSCRIPTS -->
 
   <!-- If coming from your-transcripts -->
-  @if (router.url.includes('transcriptions/transcripts/')) {
-    <app-breadcrumb>
+  @if (router.url.includes('transcriptions/transcripts/') || view === 'approver') {
+    <app-breadcrumb *ngIf="view !== 'approver'">
       <ng-container *breadcrumb="['/transcriptions']">Your transcripts</ng-container>
       <ng-container *breadcrumb="['.']">{{ vm.transcript_file_name }}</ng-container>
     </app-breadcrumb>
@@ -98,10 +98,16 @@
       [reportingRestriction]="vm.reporting_restriction"
     ></app-reporting-restriction>
 
-    <span class="govuk-caption-l">Transcript file</span>
-    <h1 class="govuk-heading-l">{{ vm.transcript_file_name }}</h1>
+    <ng-container *ngIf="view !== 'approver'">
+      <span class="govuk-caption-l">Transcript file</span>
+      <h1 class="govuk-heading-l">{{ vm.transcript_file_name }}</h1>
+    </ng-container>
 
-    <div>
+    <ng-container *ngIf="view === 'approver'">
+      <h1 class="govuk-heading-l">Approve transcript request</h1>
+    </ng-container>
+
+    <div *ngIf="view !== 'approver'">
       @if (vm.status) {
         <strong class="govuk-tag" [ngClass]="transcriptStatusClassMap[vm.status]" style="margin-bottom: 30px">{{
           vm.status
@@ -136,7 +142,9 @@
       </tbody>
     </table>
 
-    <button class="govuk-button" data-module="govuk-button">Download transcript file</button>
+    <button *ngIf="view !== 'approver'" class="govuk-button" data-module="govuk-button">
+      Download transcript file
+    </button>
   }
 } @else {
   <app-loading text="Loading transcript details..."></app-loading>
