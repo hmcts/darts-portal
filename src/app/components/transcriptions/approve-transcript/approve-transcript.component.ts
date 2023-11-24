@@ -47,10 +47,10 @@ export class ApproveTranscriptComponent implements OnInit {
         'Defendant(s)': data.defendants,
       };
       this.hearingDetails = {
-        hearing_date: data.hearing_date,
-        request_type: data.request_type,
-        request_id: data.request_id,
-        urgency: data.urgency,
+        'Hearing Date': this.datePipe.transform(data.hearing_date, 'dd MMM yyyy'),
+        'Request Type': data.request_type,
+        'Request ID': data.request_id,
+        Urgency: data.urgency,
         'Audio for transcript':
           'Start time ' +
           this.datePipe.transform(data.transcription_start_ts, 'HH:mm:ss') +
