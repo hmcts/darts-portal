@@ -91,7 +91,7 @@ export class AudiosComponent {
     );
 
     this.data$ = combineLatest({
-      inProgessRows: this.inProgessRows$,
+      inProgressRows: this.inProgessRows$,
       completedRows: this.completedRows$,
       expiredRows: this.expiredRows$,
     });
