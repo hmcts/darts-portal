@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
+import { QueryList } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HearingAudio, AudioEventRow, HearingEvent, HearingEventTypeEnum } from '@darts-types/index';
+import { AudioPlayerComponent } from '@common/audio-player/audio-player.component';
+import { AudioEventRow, HearingAudio, HearingEvent, HearingEventTypeEnum } from '@darts-types/index';
 import { Subscription } from 'rxjs';
 import { EventsAndAudioComponent } from './events-and-audio.component';
 
@@ -270,5 +272,22 @@ describe('EventsAndAudioComponent', () => {
 
       expect(result).toBe(false);
     });
+  });
+
+  it('should pause all audio players except the one with the given id', () => {
+    const id = 1;
+    const audioPlayer1 = { id: 1, pausePlayer: jest.fn() } as unknown as AudioPlayerComponent;
+    const audioPlayer2 = { id: 2, pausePlayer: jest.fn() } as unknown as AudioPlayerComponent;
+    const audioPlayer3 = { id: 3, pausePlayer: jest.fn() } as unknown as AudioPlayerComponent;
+
+    const audioPlayers = new QueryList<AudioPlayerComponent>();
+    audioPlayers.reset([audioPlayer1, audioPlayer2, audioPlayer3]);
+    component.audioPlayers = audioPlayers;
+
+    component.onAudioPlay(id);
+
+    expect(audioPlayer1.pausePlayer).not.toHaveBeenCalled();
+    expect(audioPlayer2.pausePlayer).toHaveBeenCalled();
+    expect(audioPlayer3.pausePlayer).toHaveBeenCalled();
   });
 });

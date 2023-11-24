@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { UserState } from '@darts-types/user-state';
-import { shareReplay } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
+import { RoleName, UserState } from '@darts-types/user-state';
+import { shareReplay, tap } from 'rxjs';
 
 export const USER_PROFILE_PATH = '/user/profile';
 
@@ -11,25 +11,34 @@ export const USER_PROFILE_PATH = '/user/profile';
 export class UserService {
   constructor(private http: HttpClient) {}
 
-  userProfile$ = this.http.get<UserState>(USER_PROFILE_PATH).pipe(shareReplay(1));
+  public readonly userState = signal<UserState | null>(null);
 
-  public isTranscriber(userState: UserState): boolean {
-    return userState.roles.some((x) => x.roleName === 'TRANSCRIBER');
+  userProfile$ = this.http
+    .get<UserState>(USER_PROFILE_PATH)
+    .pipe(shareReplay(1))
+    .pipe(tap((x) => this.userState.set(x)));
+
+  public isTranscriber(): boolean {
+    return this.hasRole('TRANSCRIBER');
   }
 
-  public isApprover(userState: UserState): boolean {
-    return userState.roles.some((x) => x.roleName === 'APPROVER');
+  public isApprover(): boolean {
+    return this.hasRole('APPROVER');
   }
 
-  public isJudge(userState: UserState): boolean {
-    return userState.roles.some((x) => x.roleName === 'JUDGE');
+  public isJudge(): boolean {
+    return this.hasRole('JUDGE');
   }
 
-  public isRequester(userState: UserState): boolean {
-    return userState.roles.some((x) => x.roleName === 'REQUESTER');
+  public isRequester(): boolean {
+    return this.hasRole('REQUESTER');
   }
 
-  public isLanguageShopUser(userState: UserState): boolean {
-    return userState.roles.some((x) => x.roleName === 'LANGUAGE_SHOP_USER');
+  public isLanguageShopUser(): boolean {
+    return this.hasRole('LANGUAGE_SHOP_USER');
+  }
+
+  private hasRole(role: RoleName): boolean {
+    return this.userState() ? this.userState()!.roles.some((x) => x.roleName === role) : false;
   }
 }

@@ -20,7 +20,9 @@
                 [checked]="isAllSelected()"
                 (change)="onSelectAllChanged($any($event.target).checked)"
               />
-              <label class="govuk-label govuk-checkboxes__label" for=""></label>
+              <label class="govuk-label govuk-checkboxes__label" for="selectAll">
+                <span style="display: none">Select all checkboxes</span>
+              </label>
             </div>
           </div>
         </th>
@@ -51,7 +53,7 @@
               <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
                 <div class="govuk-checkboxes__item">
                   <input
-                    [attr.aria-label]="'Select checkbox ' + row.id"
+                    [attr.aria-label]="'Select checkbox ' + (row[checkboxKey] || i + 1)"
                     class="govuk-checkboxes__input"
                     [id]="i"
                     [name]="i"
@@ -60,7 +62,9 @@
                     [checked]="isRowSelected(row)"
                     (change)="toggleRowSelection(row)"
                   />
-                  <label class="govuk-label govuk-checkboxes__label" [for]="row.id"></label>
+                  <label class="govuk-label govuk-checkboxes__label" [for]="i">
+                    <span style="display: none">{{ 'Select checkbox ' + (row[checkboxKey] || i + 1) }}</span>
+                  </label>
                 </div>
               </div>
             </td>

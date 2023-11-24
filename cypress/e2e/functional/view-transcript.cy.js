@@ -3,7 +3,7 @@ import './commands';
 
 describe('View Transcript', () => {
   beforeEach(() => {
-    cy.login();
+    cy.login('requestor-approver');
     cy.injectAxe();
     cy.contains('Search').click();
     cy.get('h1').should('contain', 'Search for a case');

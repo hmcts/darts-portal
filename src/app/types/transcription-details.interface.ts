@@ -1,4 +1,5 @@
 export interface TranscriptionDetails {
+  reporting_restriction?: string;
   case_id: number;
   case_number: string;
   courthouse: string;

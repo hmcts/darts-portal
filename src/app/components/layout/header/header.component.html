@@ -30,7 +30,7 @@
       <nav class="moj-header__navigation" aria-label="Account navigation">
         <ul class="moj-header__navigation-list">
           <li class="moj-header__navigation-item">
-            <a class="moj-header__navigation-link" href="/auth/logout">Sign out</a>
+            <a id="logout-link" class="moj-header__navigation-link" href="/auth/logout">Sign out</a>
           </li>
         </ul>
       </nav>
@@ -51,6 +51,18 @@
               >Search</a
             >
           </li>
+          @if (userService.isTranscriber()) {
+            <li class="moj-primary-navigation__item">
+              <a
+                id="your-work-link"
+                class="moj-primary-navigation__link"
+                routerLink="work"
+                routerLinkActive="active"
+                ariaCurrentWhenActive="page"
+                >Your work</a
+              >
+            </li>
+          }
           <li class="moj-primary-navigation__item">
             <a
               class="moj-primary-navigation__link"
@@ -65,15 +77,28 @@
               </ng-container>
             </a>
           </li>
-          <li class="moj-primary-navigation__item">
-            <a
-              class="moj-primary-navigation__link"
-              routerLink="transcriptions"
-              routerLinkActive="active"
-              ariaCurrentWhenActive="page"
-              >Your Transcripts</a
-            >
-          </li>
+          @if (userService.isTranscriber()) {
+            <li class="moj-primary-navigation__item">
+              <a
+                id="transcript-requests-link"
+                class="moj-primary-navigation__link"
+                routerLink="transcription-requests"
+                routerLinkActive="active"
+                ariaCurrentWhenActive="page"
+                >Transcript requests</a
+              >
+            </li>
+          } @else {
+            <li class="moj-primary-navigation__item">
+              <a
+                class="moj-primary-navigation__link"
+                routerLink="transcriptions"
+                routerLinkActive="active"
+                ariaCurrentWhenActive="page"
+                >Your Transcripts</a
+              >
+            </li>
+          }
         </ul>
       </nav>
     </div>

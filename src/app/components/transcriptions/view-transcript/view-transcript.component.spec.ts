@@ -1,7 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { CaseService } from '@services/case/case.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 
 import { ViewTranscriptComponent } from './view-transcript.component';
@@ -31,7 +30,6 @@ describe('ViewTranscriptComponent', () => {
         },
       },
       params: {
-        caseId: '1',
         hearing_id: '1',
         transcriptId: '2',
       },
@@ -44,7 +42,6 @@ describe('ViewTranscriptComponent', () => {
       imports: [ViewTranscriptComponent, HttpClientModule],
       providers: [
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
-        { provide: CaseService, useValue: { getCase: jest.fn() } },
         { provide: TranscriptionService, useValue: { getTranscriptionDetails: jest.fn() } },
       ],
     });
@@ -56,17 +53,12 @@ describe('ViewTranscriptComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
 
-    const getCaseSpy = jest.spyOn(component.caseService, 'getCase');
-    fixture.detectChanges();
-    expect(getCaseSpy).toHaveBeenCalledWith('1');
-
     const getTranscriptionDetailsSpy = jest.spyOn(component.transcriptionService, 'getTranscriptionDetails');
     fixture.detectChanges();
     expect(getTranscriptionDetailsSpy).toHaveBeenCalledWith('2');
   });
 
-  it('should set the Case ID and Transcript ID', () => {
-    expect(component.caseId).toEqual('1');
+  it('should set the Transcript ID', () => {
     expect(component.transcriptId).toEqual('2');
   });
 });
