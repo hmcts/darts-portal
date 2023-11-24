@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
 import { LoadingComponent } from '@common/loading/loading.component';
@@ -24,7 +24,6 @@ import { TranscriptionService } from '@services/transcription/transcription.serv
   styleUrls: ['./view-transcript.component.scss'],
 })
 export class ViewTranscriptComponent {
-  @Input() view!: string;
   router = inject(Router);
   route = inject(ActivatedRoute);
   transcriptionService = inject(TranscriptionService);

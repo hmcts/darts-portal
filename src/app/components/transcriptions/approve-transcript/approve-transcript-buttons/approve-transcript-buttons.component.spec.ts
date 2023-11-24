@@ -8,10 +8,9 @@ describe('ApproveTranscriptButtonsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ApproveTranscriptButtonsComponent]
-    })
-    .compileComponents();
-    
+      imports: [ApproveTranscriptButtonsComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(ApproveTranscriptButtonsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

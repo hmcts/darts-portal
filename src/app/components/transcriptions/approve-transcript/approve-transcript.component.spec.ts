@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { DatePipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute } from '@angular/router';
 import { ApproveTranscriptComponent } from './approve-transcript.component';
@@ -21,7 +22,7 @@ describe('ApproveTranscriptComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ApproveTranscriptComponent, HttpClientTestingModule],
-      providers: [{ provide: ActivatedRoute, useValue: mockActivatedRoute }],
+      providers: [{ provide: ActivatedRoute, useValue: mockActivatedRoute }, { provide: DatePipe }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ApproveTranscriptComponent);
