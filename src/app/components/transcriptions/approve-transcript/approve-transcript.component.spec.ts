@@ -40,8 +40,8 @@ describe('ApproveTranscriptComponent', () => {
     urgency: 'Standard',
     request_type: 'Specified Times',
     request_id: 123456789,
-    transcription_start_ts: '2023-06-26T13:00:00Z',
-    transcription_end_ts: '2023-06-26T16:00:00Z',
+    transcription_start_ts: '2023-11-26T13:00:00Z',
+    transcription_end_ts: '2023-11-26T16:00:00Z',
   });
 
   beforeEach(async () => {
@@ -82,7 +82,7 @@ describe('ApproveTranscriptComponent', () => {
       'Request Type': 'Specified Times',
       'Request ID': 123456789,
       Urgency: 'Standard',
-      'Audio for transcript': 'Start time 14:00:00 - End time 17:00:00',
+      'Audio for transcript': 'Start time 13:00:00 - End time 16:00:00',
       From: 'MoJ CH Swansea',
       Received: '17 Nov 2023 12:53:07',
       Instructions: 'Please expedite my request',
