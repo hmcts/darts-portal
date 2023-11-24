@@ -3,7 +3,7 @@ import './commands';
 
 describe('Transcript requests', () => {
   beforeEach(() => {
-    cy.login();
+    cy.login('transcriber');
     cy.injectAxe();
   });
 

@@ -8,6 +8,8 @@ import {
   OnDestroy,
   OnInit,
   Output,
+  QueryList,
+  ViewChildren,
 } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { AudioPlayerComponent } from '@common/audio-player/audio-player.component';
@@ -27,6 +29,7 @@ import { Subscription } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
+  @ViewChildren(AudioPlayerComponent) audioPlayers!: QueryList<AudioPlayerComponent>;
   @Input() audio: HearingAudio[] = [];
   @Input() events: HearingEvent[] = [];
 
@@ -106,6 +109,14 @@ export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
 
   isAudioInPreview(id: number): boolean {
     return !!this.audioInPreview.find((audioId) => audioId === id);
+  }
+
+  onAudioPlay(id: number) {
+    this.audioPlayers.toArray().forEach((player) => {
+      if (player.id !== id) {
+        player?.pausePlayer();
+      }
+    });
   }
 
   private constructTable() {
