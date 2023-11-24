@@ -17,14 +17,14 @@
   <ng-container *ngIf="data$ | async as data; else loading">
     <app-tabs (tabChange)="onTabChanged()">
       <div *tab="'Current'">
-        <p *ngIf="!data.inProgessRows.length && !data.completedRows.length" class="govuk-body">
+        <p *ngIf="!data.inProgressRows.length && !data.completedRows.length" class="govuk-body">
           There are no audio files in progress or ready
         </p>
 
-        <ng-container *ngIf="data.inProgessRows.length">
+        <ng-container *ngIf="data.inProgressRows.length">
           <h2 class="govuk-heading-m">In Progress</h2>
-          <app-data-table id="inProgressTable" [rows]="data.inProgessRows" [columns]="columns" [pagination]="false">
-            <ng-template [tableRowTemplate]="data.inProgessRows" let-row>
+          <app-data-table id="inProgressTable" [rows]="data.inProgressRows" [columns]="columns" [pagination]="false">
+            <ng-template [tableRowTemplate]="data.inProgressRows" let-row>
               <!-- Partial template for duplicated cells -->
               <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
 

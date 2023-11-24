@@ -49,7 +49,7 @@ export class AudiosComponent {
   expiredRows$!: Observable<UserAudioRequestRow[]>;
 
   data$: Observable<{
-    inProgessRows: UserAudioRequestRow[];
+    inProgressRows: UserAudioRequestRow[];
     completedRows: UserAudioRequestRow[];
     expiredRows: UserAudioRequestRow[];
   }>;

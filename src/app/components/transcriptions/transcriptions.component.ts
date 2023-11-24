@@ -54,7 +54,7 @@ export class TranscriptionsComponent {
   requests$ = this.transcriptService.getTranscriptionRequests().pipe(shareReplay(1));
 
   requesterRequests$ = combineLatest({
-    inProgessRequests: this.requests$.pipe(
+    inProgressRequests: this.requests$.pipe(
       map((requests) => this.filterInProgressRequests(requests.requester_transcriptions))
     ),
     completedRequests: this.requests$.pipe(
