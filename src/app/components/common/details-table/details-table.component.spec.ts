@@ -3,8 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DetailsTableComponent } from './details-table.component';
 
 describe('DetailsTableComponent', () => {
-  let component: DetailsTableComponent;
-  let fixture: ComponentFixture<DetailsTableComponent>;
+  let component: DetailsTableComponent<object>;
+  let fixture: ComponentFixture<DetailsTableComponent<object>>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
