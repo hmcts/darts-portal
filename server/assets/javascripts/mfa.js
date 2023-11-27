@@ -14,10 +14,10 @@ function insertInfoBox(){
             </div>
             <div class="govuk-notification-banner__content">
                 <p class="govuk-notification-banner__heading">
-                You are now leaving HMCTS.
+                You are now leaving HMCTS
                 </p>
                 <p>
-                Performing the action below, means you will leave HMCTS.
+                Performing the action below, means you will leave HMCTS
                 </p>
             </div>
             </div>`
