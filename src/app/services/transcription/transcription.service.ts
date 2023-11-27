@@ -7,6 +7,7 @@ import {
   TranscriptionUrgency,
   YourTranscriptionRequests,
 } from '@darts-types/index';
+import { TranscriberTranscriptions } from '@darts-types/transcriber-transcriptions.interface';
 import { Observable, map } from 'rxjs';
 @Injectable({
   providedIn: 'root',
@@ -50,5 +51,9 @@ export class TranscriptionService {
         return transcription;
       })
     );
+  }
+
+  getTranscriberTranscriptions(): Observable<TranscriberTranscriptions[]> {
+    return this.http.get<TranscriberTranscriptions[]>(`/api/transcriptions/transcriber-view`);
   }
 }
