@@ -160,10 +160,6 @@ button {
     DS Date-Picker
 \*------------------------------------*/
 
-.ds_datepicker {
-  position: relative;
-}
-
 .ds_datepicker__dialog__header {
   position: relative;
   text-align: center;
@@ -507,6 +503,7 @@ $ds_breakpoints: (
 }
 
 .ds_datepicker {
+  box-sizing: border-box;
   position: relative;
   margin-bottom: 24px;
 
@@ -711,10 +708,6 @@ $ds_breakpoints: (
 
 a.govuk-link {
   cursor: pointer;
-}
-
-.ds_datepicker {
-  box-sizing: border-box;
 }
 
 .ds_input {

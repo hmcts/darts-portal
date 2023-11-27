@@ -160,7 +160,11 @@ export class RequestTranscriptComponent implements OnInit, OnDestroy {
   }
 
   onConfirmationCancel() {
-    this.isSpecifiedTimesOrCourtLog() ? (this.step = 2) : (this.step = 1);
+    if (this.isSpecifiedTimesOrCourtLog()) {
+      this.step = 2;
+    } else {
+      this.step = 1;
+    }
   }
 
   onConfirm(moreDetail: string) {
