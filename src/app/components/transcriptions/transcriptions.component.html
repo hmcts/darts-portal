@@ -17,7 +17,6 @@
     <label class="govuk-label govuk-label--l" for="case-search">Your Transcripts</label>
   </h1>
 }
-
 @if (isRequester && isApprover) {
   <app-tabs>
     <div *tab="'Transcript requests'">
@@ -55,7 +54,6 @@
         </ng-template>
       </app-data-table>
     }
-
     @if (vm.completedRequests.length) {
       <h2 class="govuk-heading-m">Ready</h2>
       <div class="action-container">
@@ -109,7 +107,7 @@
             <span [ngClass]="row.urgency === 'Overnight' ? 'moj-badge moj-badge--red' : ''">{{ row.urgency }}</span>
           </td>
           <td class="govuk-table__cell">
-            <a [routerLink]="'.'">View</a>
+            <a [routerLink]="['approve-transcript', row.transcription_id]">View</a>
           </td>
         </ng-template>
       </app-data-table>

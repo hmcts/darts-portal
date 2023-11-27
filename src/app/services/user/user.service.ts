@@ -41,4 +41,8 @@ export class UserService {
   private hasRole(role: RoleName): boolean {
     return this.userState() ? this.userState()!.roles.some((x) => x.roleName === role) : false;
   }
+
+  public hasRoles(roles: RoleName[]): boolean {
+    return this.userState() ? roles.some((role) => this.userState()!.roles.some((x) => x.roleName === role)) : false;
+  }
 }
