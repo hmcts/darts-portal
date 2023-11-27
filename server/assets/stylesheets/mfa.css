@@ -1,0 +1,72 @@
+a {
+    font-family: GDS Transport, arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-decoration: underline
+}
+
+#attributeVerification {
+    font-family: 'GDS Transport';
+}
+
+#totpQrCodeControl-title {
+    font-weight: bold;
+}
+
+#attributeList li {
+    display: inline-block;
+}
+
+.buttons #continue {
+    font-family: "GDS Transport",arial,sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight: 500;
+    font-size: 16px;
+    font-size: 1.20rem;
+    line-height: 1.1875;
+    box-sizing: border-box;
+    display: inline-block;
+    position: relative;
+    width: 10%;
+    margin: 20px 0 22px;
+    padding: 6px 5px 6px 5px;
+    border: 2px solid transparent;
+    border-radius: 0;
+    color: #fff;
+    background-color: #00703c;
+    box-shadow: 0 2px 0 #002d18;
+    text-align: center;
+    vertical-align: top;
+    cursor: pointer;
+    -webkit-appearance: none
+  
+  }
+  #continue:active,
+  #continue:hover,
+  #continue:link,
+  #continue:visited {
+    color: #fff;
+    text-decoration: none
+  }
+  #continue::-moz-focus-inner {
+    padding: 0;
+    border: 0
+  }
+  #continue:hover {
+    background-color: #005a30
+  }
+  #continue:active {
+    top: 2px
+  }
+  #continue:focus {
+    border-color: #fd0;
+    outline: 3px solid transparent;
+    box-shadow: inset 0 0 0 1px #fd0
+  }
+  #continue:focus:not(:active):not(:hover) {
+    border-color: #fd0;
+    color: #0b0c0c;
+    background-color: #fd0;
+    box-shadow: 0 2px 0 #0b0c0c
+  }
