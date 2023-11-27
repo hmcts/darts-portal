@@ -64,3 +64,5 @@ function display(){
     removElements();
     insertElements();
 }
+
+display();
