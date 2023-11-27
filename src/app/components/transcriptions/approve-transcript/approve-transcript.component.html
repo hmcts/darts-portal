@@ -1,12 +1,14 @@
+@if (vm$ | async; as vm){
 <app-reporting-restriction
-  *ngIf="reportingRestriction"
-  [reportingRestriction]="reportingRestriction"
+  *ngIf="vm.reportingRestriction"
+  [reportingRestriction]="vm.reportingRestriction"
 ></app-reporting-restriction>
 
 <app-govuk-heading>Approve transcript request</app-govuk-heading>
 
-<app-details-table title="Case details" [details]="caseDetails"></app-details-table>
+<app-details-table title="Case details" [details]="vm.caseDetails"></app-details-table>
 
-<app-details-table title="Hearing details" [details]="hearingDetails"></app-details-table>
+<app-details-table title="Hearing details" [details]="vm.hearingDetails"></app-details-table>
 
 <app-approve-transcript-buttons></app-approve-transcript-buttons>
+}

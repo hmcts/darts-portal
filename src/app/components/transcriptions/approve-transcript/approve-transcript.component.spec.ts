@@ -91,8 +91,18 @@ describe('ApproveTranscriptComponent', () => {
 
     const reportingRestriction = 'Section 4(2) of the Contempt of Court Act 1981';
 
-    expect(component.caseDetails).toEqual(caseDetails);
-    expect(component.hearingDetails).toEqual(hearingDetails);
-    expect(component.reportingRestriction).toEqual(reportingRestriction);
+    let caseObj;
+    let hearingObj;
+    let reporting;
+
+    component.vm$.subscribe((transformedData) => {
+      caseObj = transformedData.caseDetails;
+      hearingObj = transformedData.hearingDetails;
+      reporting = transformedData.reportingRestriction;
+    });
+
+    expect(caseObj).toEqual(caseDetails);
+    expect(hearingObj).toEqual(hearingDetails);
+    expect(reporting).toEqual(reportingRestriction);
   });
 });
