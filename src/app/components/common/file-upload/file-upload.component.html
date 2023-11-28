@@ -1,0 +1,21 @@
+<div class="govuk-form-group" [class.govuk-form-group--error]="isInvalid">
+  <label class="govuk-label" [for]="controlId"> {{ label }} </label>
+  <p class="govuk-hint">{{ hint }}</p>
+  @if (isInvalid) {
+    <p [id]="controlErrorId" class="govuk-error-message">
+      <span class="govuk-visually-hidden">Error:</span> {{ errorMessage }}
+    </p>
+  }
+  <input
+    #fileInput
+    class="govuk-file-upload"
+    [id]="controlId"
+    type="file"
+    [attr.aria-describedby]="isInvalid ? controlErrorId : null"
+    (change)="onFileChange($any($event.target).files)"
+    [accept]="allowedFileTypes"
+  />
+  @if (fileInput?.files?.length) {
+    <a class="govuk-link" (click)="$event.preventDefault(); onFileRemove(fileInput)">Remove</a>
+  }
+</div>
