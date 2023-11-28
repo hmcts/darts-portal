@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DatePipe } from '@angular/common';
+import { DATE_PIPE_DEFAULT_OPTIONS, DatePipe } from '@angular/common';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -57,7 +57,8 @@ describe('UploadTranscriptComponent', () => {
       providers: [
         { provide: TranscriptionService, useValue: fakeTranscriptionService },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
-        { provide: DatePipe },
+        DatePipe,
+        { provide: DATE_PIPE_DEFAULT_OPTIONS, useValue: { timezone: 'utc' } },
       ],
     }).compileComponents();
 
@@ -138,7 +139,7 @@ describe('UploadTranscriptComponent', () => {
       expect(hearingDetails.textContent).toContain('Urgency');
       expect(hearingDetails.textContent).toContain('Overnight');
       expect(hearingDetails.textContent).toContain('Audio for transcript');
-      expect(hearingDetails.textContent).toContain('Start time 14:00:00 - End time 17:00:00');
+      expect(hearingDetails.textContent).toContain('Start time 13:00:00 - End time 16:00:00');
       expect(hearingDetails.textContent).toContain('26 Jun 2023');
       expect(hearingDetails.textContent).toContain('Instructions');
       expect(hearingDetails.textContent).toContain('Please expedite my request');
