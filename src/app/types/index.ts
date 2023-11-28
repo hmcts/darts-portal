@@ -25,3 +25,4 @@ export * from './transcripts-row.interface';
 export * from './user-audio-request-row.interface';
 export * from './user-audio-request.interface';
 export * from './user-transcription-request.interface';
+export * from './work-request.interface';
