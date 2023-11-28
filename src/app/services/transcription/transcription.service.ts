@@ -1,10 +1,11 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   TranscriptionDetails,
   TranscriptionRequest,
   TranscriptionType,
   TranscriptionUrgency,
+  WorkRequests,
   YourTranscriptionRequests,
 } from '@darts-types/index';
 import { Observable, map } from 'rxjs';
@@ -41,6 +42,12 @@ export class TranscriptionService {
         };
       })
     );
+  }
+
+  getWorkRequests(): Observable<WorkRequests> {
+    let params = new HttpParams();
+    params = params.set('assigned', false);
+    return this.http.get<WorkRequests>('/api/transcriptions/transcriber-view', { params });
   }
 
   getTranscriptionDetails(transcriptId: number): Observable<TranscriptionDetails> {
