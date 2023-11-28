@@ -1,3 +1,48 @@
+
+.account-details p{
+    display: table-cell;
+}
+
+.account-details label{
+    font-weight: bold;
+}
+
+#detailText{
+    margin-bottom: 20px;
+}
+
+#secretLabel{
+    margin-top: 20px;
+    display:block;
+}
+
+.govuk-notification-banner {
+    margin-top:20px;
+}
+
+#authenticatorAppIconControl-title::after, #authenticatorAppIconControl-apple::after, #authenticatorAppIconControl-instruction::after, #totpQrCodeControl-title::after{
+    content: "\a";
+    white-space: pre;
+}
+
+#authenticatorAppIconControl-title, #authenticatorAppIconControl-instruction, #totpQrCodeControl-title{
+    display: block;
+    padding-top : 20px;
+    padding-bottom: 20px;
+}
+
+.authenticatorIconControlContent a {
+    padding-right: 15px;
+}
+
+#attributeList {
+    margin-left: -40px;
+}
+
+#totpQrCodeControl-picture {
+    margin-left: -30px;
+}
+
 a {
     font-family: GDS Transport, arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -29,6 +74,7 @@ a {
     display: inline-block;
     position: relative;
     width: 10%;
+    min-width: 95px;
     margin: 20px 0 22px;
     padding: 6px 5px 6px 5px;
     border: 2px solid transparent;
