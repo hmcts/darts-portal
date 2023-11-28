@@ -136,8 +136,20 @@ export class HearingComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.route.snapshot.queryParams.tab === 'Transcripts') {
-      this.defaultTab = this.route.snapshot.queryParams.tab;
+    const tab = this.route.snapshot.queryParams.tab;
+
+    if (tab === 'Transcripts') {
+      this.defaultTab = tab;
+    }
+
+    const startTime = this.route.snapshot.queryParams.startTime;
+    const endTime = this.route.snapshot.queryParams.endTime;
+
+    if (startTime && endTime) {
+      this.audioTimes = {
+        startTime: DateTime.fromISO(this.route.snapshot.queryParams.startTime),
+        endTime: DateTime.fromISO(this.route.snapshot.queryParams.endTime),
+      };
     }
   }
 

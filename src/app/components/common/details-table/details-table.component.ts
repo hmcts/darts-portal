@@ -16,4 +16,8 @@ export class DetailsTableComponent<T extends object> {
   originalOrder = (a: KeyValue<string, string>, b: KeyValue<string, string>): number => {
     return 0;
   };
+
+  isNotNullUndefinedOrEmptyString(value: unknown) {
+    return value !== null && value !== undefined && value !== '';
+  }
 }

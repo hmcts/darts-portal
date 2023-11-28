@@ -39,9 +39,11 @@ describe('ApproveTranscriptComponent', () => {
     hearing_date: '2023-11-08',
     urgency: 'Standard',
     request_type: 'Specified Times',
-    request_id: 123456789,
+    transcription_id: 123456789,
     transcription_start_ts: '2023-11-26T13:00:00Z',
     transcription_end_ts: '2023-11-26T16:00:00Z',
+    is_manual: false,
+    hearing_id: 1,
   });
 
   beforeEach(async () => {

@@ -25,6 +25,20 @@ const protectedRoutes: Routes = [
     loadComponent: () => import('./components/your-work/your-work.component').then((c) => c.YourWorkComponent),
   },
   {
+    path: 'work/:requestId',
+    loadComponent: () =>
+      import('./components/your-work/upload-transcript/upload-transcript.component').then(
+        (c) => c.UploadTranscriptComponent
+      ),
+  },
+  {
+    path: 'work/:requestId/complete',
+    loadComponent: () =>
+      import('./components/your-work/completed-transcript/completed-transcript.component').then(
+        (c) => c.CompletedTranscriptComponent
+      ),
+  },
+  {
     path: 'audios/:requestId',
     loadComponent: () =>
       import('./components/audios/audio-view/audio-view.component').then((c) => c.AudioViewComponent),

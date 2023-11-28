@@ -1,0 +1,50 @@
+<app-breadcrumb>
+  <ng-container *breadcrumb="['/your-work']">Your work</ng-container>
+  <ng-container *breadcrumb>{{ requestId }}</ng-container>
+</app-breadcrumb>
+@if (vm$ | async; as vm) {
+  <!-- <app-validation-error-summary [errors]="errors"></app-validation-error-summary> -->
+
+  @if (vm.reportingRestriction) {
+    <app-reporting-restriction [reportingRestriction]="vm.reportingRestriction"></app-reporting-restriction>
+  }
+
+  <app-govuk-heading>Transcript Request</app-govuk-heading>
+
+  <app-details-table title="Case details" [details]="vm.caseDetails" />
+
+  <app-details-table title="Hearing details" [details]="vm.hearingDetails" />
+
+  <button
+    id="get-audio-button"
+    class="govuk-button govuk-button--secondary"
+    [routerLink]="['/case', vm.caseId, 'hearing', vm.hearingId]"
+    [queryParams]="{ startTime: vm.startTime, endTime: vm.endTime }"
+  >
+    Get audio for this request
+  </button>
+
+  @if (isManualRequest) {
+    <app-file-upload
+      [formControl]="fileControl"
+      label="Upload transcript file"
+      hint="This must be in a doc or docx format. Maximum file size 10MB."
+    ></app-file-upload>
+  } @else {
+    <p class="govuk-body">
+      This is an automated request. Send the transcript using your usual process for an automated request. Then, mark
+      the request as complete.
+    </p>
+  }
+
+  <div class="govuk-button-group">
+    <button id="submit-button" class="govuk-button" (click)="onComplete()">
+      @if (isManualRequest) {
+        Attach file and complete
+      } @else {
+        Complete transcript request
+      }
+    </button>
+    <a routerLink="../" class="govuk-link">Cancel</a>
+  </div>
+}
