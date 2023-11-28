@@ -81,6 +81,14 @@ const protectedRoutes: Routes = [
         (c) => c.ViewTranscriptComponent
       ),
   },
+  {
+    path: 'transcriptions/approve-transcript/:transcriptId',
+    data: { allowedRoles: ['APPROVER'] },
+    loadComponent: () =>
+      import('./components/transcriptions/approve-transcript/approve-transcript.component').then(
+        (c) => c.ApproveTranscriptComponent
+      ),
+  },
 ].map((route) => ({
   ...route,
   canActivate: [authGuard],

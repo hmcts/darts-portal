@@ -30,7 +30,13 @@
     </div>
   </fieldset>
 
-  <app-data-table [rows]="filteredRows" [columns]="columns" [rowSelectable]="true" (rowSelect)="onRowSelect($event)">
+  <app-data-table
+    id="eventAudioTable"
+    [rows]="filteredRows"
+    [columns]="columns"
+    [rowSelectable]="true"
+    (rowSelect)="onRowSelect($event)"
+  >
     <ng-template [tableRowTemplate]="filteredRows" let-row let-index>
       <ng-container *ngIf="row.type === 'audio'">
         <td class="govuk-table__cell">

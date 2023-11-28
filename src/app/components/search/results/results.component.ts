@@ -48,18 +48,13 @@ export class ResultsComponent implements OnChanges {
 
   //Fetches correct display value for defendants and judges
   getNameValue(arr: string[] | undefined): string {
-    if (arr) {
-      if (arr.length === 0) {
-        return '';
-      } else {
-        if (arr.length < 2) {
-          return arr[0];
-        } else {
-          return 'Multiple';
-        }
-      }
-    } else {
+    if (!arr || arr.length === 0) {
       return '';
+    }
+    if (arr.length < 2) {
+      return arr[0];
+    } else {
+      return 'Multiple';
     }
   }
 
@@ -67,16 +62,15 @@ export class ResultsComponent implements OnChanges {
   getHearingsValue(c: Case, key: keyof Hearing): string {
     if (!c.hearings || c.hearings.length === 0) {
       return '';
-    } else {
-      if (c.hearings.length < 2) {
-        if (key === 'date') {
-          return this.datePipe.transform(c.hearings[0][key], 'EEE dd MMM YYYY') ?? '';
-        } else {
-          return c.hearings[0][key] as string;
-        }
+    }
+    if (c.hearings.length < 2) {
+      if (key === 'date') {
+        return this.datePipe.transform(c.hearings[0][key], 'EEE dd MMM YYYY') ?? '';
       } else {
-        return 'Multiple';
+        return c.hearings[0][key] as string;
       }
+    } else {
+      return 'Multiple';
     }
   }
 }
