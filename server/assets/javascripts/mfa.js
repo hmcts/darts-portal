@@ -1,6 +1,7 @@
 
 function insertBackLink(){
-    $(`<a href="${document.referrer}" class="govuk-back-link">Back</a>`).insertBefore("#attributeVerification");
+    $('button#cancel').insertBefore("#attributeVerification");
+    // $(`<a href="${document.referrer}" class="govuk-back-link">Back</a>`).insertBefore("#attributeVerification");
 }
 
 function insertInfoBox(){
@@ -54,9 +55,9 @@ function getAccountDetails(){
     const authDetails = $('#totpQrCodeControl-text').text();
 
     const details = {};
-    const externalIdMatch = authDetails.match(/hmcts-stg-external-id:([^?]+)/);
+    const externalIdMatch = authDetails.match(/(?:[^:]+:){2}([^?]+)/);
     const secretMatch = authDetails.match(/secret=([^&]+)/);
-    
+
     if (externalIdMatch && secretMatch) {
         details.externalId = externalIdMatch[1];
         details.secret = secretMatch[1];
@@ -83,10 +84,6 @@ function removeText(){
     $('div.intro').remove();  
 }
 
-function removeButtons(){
-    $('button#cancel').remove();
-}
-
 function removeLinks(){
     $('a.helpLink').remove();
     $('li.authenticatorInfoControl_li').remove();
@@ -95,7 +92,6 @@ function removeLinks(){
 
 function removElements(){
     removeLinks();
-    removeButtons();
     removeText();
     removeAppStores();  
 }
