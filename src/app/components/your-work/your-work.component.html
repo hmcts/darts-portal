@@ -1,1 +1,54 @@
+<ng-template #tableTemplatePartial let-row>
+  <td class="govuk-table__cell">{{ row.case_number }}</td>
+  <td class="govuk-table__cell">{{ row.courthouse_name }}</td>
+  <td class="govuk-table__cell">{{ row.hearing_date | date: 'dd MMM yyyy' }}</td>
+  <td class="govuk-table__cell">{{ row.transcription_type }}</td>
+  <td class="govuk-table__cell">{{ row.requested_ts | date: 'dd MMM yyyy HH:mm' }}</td>
+  <td class="govuk-table__cell">
+    <span [ngClass]="row.urgency === 'Overnight' ? 'moj-badge moj-badge--red' : ''">{{ row.urgency }}</span>
+  </td>
+  <td class="govuk-table__cell">
+    <a href="#" (click)="onViewWorkRequest($event, row)" class="govuk-link">View</a>
+  </td>
+</ng-template>
+
 <h1 class="govuk-heading-l">Your work</h1>
+<ng-container *ngIf="requesterRequests$ | async as requests; else loading">
+  <app-tabs>
+    <div *tab="'To do'; count: requests.todoRequests.length">
+      <ng-container *ngIf="requests.todoRequests.length">
+        <h2 class="govuk-heading-m">To do</h2>
+        <app-data-table
+          id="inProgressTable"
+          [rows]="requests.todoRequests"
+          [columns]="readyColumns"
+          [pagination]="false"
+        >
+          <ng-template [tableRowTemplate]="requests.todoRequests" let-row>
+            <!-- Partial template for duplicated cells -->
+            <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
+          </ng-template>
+        </app-data-table>
+      </ng-container>
+    </div>
+    <div *tab="'Completed today'">
+      <ng-container *ngIf="requests.completedRequests.length">
+        <h2 class="govuk-heading-m">To do</h2>
+        <app-data-table
+          id="inProgressTable"
+          [rows]="requests.completedRequests"
+          [columns]="readyColumns"
+          [pagination]="false"
+        >
+          <ng-template [tableRowTemplate]="requests.completedRequests" let-row>
+            <!-- Partial template for duplicated cells -->
+            <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
+          </ng-template>
+        </app-data-table>
+      </ng-container>
+    </div>
+  </app-tabs>
+</ng-container>
+<ng-template #loading>
+  <app-loading text="Loading transcription requests..."></app-loading>
+</ng-template>
