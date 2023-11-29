@@ -23,6 +23,9 @@ describe('HeaderComponent', () => {
     fakeAudioService = { unreadAudioCount$: of(5) };
     fakeUserService = {
       isTranscriber: jest.fn(() => false),
+      isJudge: jest.fn(() => false),
+      isApprover: jest.fn(() => false),
+      isRequester: jest.fn(() => false),
     };
 
     await TestBed.configureTestingModule({

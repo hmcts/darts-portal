@@ -12,7 +12,7 @@
 
 <ng-container *ngIf="!isDeleting">
   <h1 class="govuk-label-wrapper">
-    <label class="govuk-label govuk-label--l" for="case-search">Your Audio</label>
+    <label class="govuk-label govuk-label--l" for="case-search">Your audio</label>
   </h1>
   <ng-container *ngIf="data$ | async as data; else loading">
     <app-tabs (tabChange)="onTabChanged()">
@@ -22,7 +22,7 @@
         </p>
 
         <ng-container *ngIf="data.inProgessRows.length">
-          <h2 class="govuk-heading-m">In Progress</h2>
+          <h2 class="govuk-heading-m">In progress</h2>
           <app-data-table id="inProgressTable" [rows]="data.inProgessRows" [columns]="columns" [pagination]="false">
             <ng-template [tableRowTemplate]="data.inProgessRows" let-row>
               <!-- Partial template for duplicated cells -->
