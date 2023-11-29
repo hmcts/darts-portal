@@ -1,4 +1,5 @@
 export interface TranscriptionDetails {
+  reporting_restriction?: string;
   case_id: number;
   case_number: string;
   courthouse: string;
@@ -12,7 +13,9 @@ export interface TranscriptionDetails {
   hearing_date: string;
   urgency: string;
   request_type: string;
-  request_id: number;
+  transcription_id: number;
   transcription_start_ts: string;
   transcription_end_ts: string;
+  is_manual: boolean;
+  hearing_id: number;
 }

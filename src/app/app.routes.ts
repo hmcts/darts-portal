@@ -21,6 +21,24 @@ const protectedRoutes: Routes = [
     loadComponent: () => import('./components/audios/audios.component').then((c) => c.AudiosComponent),
   },
   {
+    path: 'work',
+    loadComponent: () => import('./components/your-work/your-work.component').then((c) => c.YourWorkComponent),
+  },
+  {
+    path: 'work/:requestId',
+    loadComponent: () =>
+      import('./components/your-work/upload-transcript/upload-transcript.component').then(
+        (c) => c.UploadTranscriptComponent
+      ),
+  },
+  {
+    path: 'work/:requestId/complete',
+    loadComponent: () =>
+      import('./components/your-work/completed-transcript/completed-transcript.component').then(
+        (c) => c.CompletedTranscriptComponent
+      ),
+  },
+  {
     path: 'audios/:requestId',
     loadComponent: () =>
       import('./components/audios/audio-view/audio-view.component').then((c) => c.AudioViewComponent),
@@ -29,6 +47,13 @@ const protectedRoutes: Routes = [
     path: 'transcriptions',
     loadComponent: () =>
       import('./components/transcriptions/transcriptions.component').then((c) => c.TranscriptionsComponent),
+  },
+  {
+    path: 'transcription-requests',
+    loadComponent: () =>
+      import('./components/transcriptions/transcription-requests/transcription-requests.component').then(
+        (c) => c.TranscriptionRequestsComponent
+      ),
   },
   {
     path: 'search',
@@ -68,6 +93,14 @@ const protectedRoutes: Routes = [
     loadComponent: () =>
       import('./components/transcriptions/view-transcript/view-transcript.component').then(
         (c) => c.ViewTranscriptComponent
+      ),
+  },
+  {
+    path: 'transcriptions/approve-transcript/:transcriptId',
+    data: { allowedRoles: ['APPROVER'] },
+    loadComponent: () =>
+      import('./components/transcriptions/approve-transcript/approve-transcript.component').then(
+        (c) => c.ApproveTranscriptComponent
       ),
   },
 ].map((route) => ({

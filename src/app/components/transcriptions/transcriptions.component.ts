@@ -109,6 +109,6 @@ export class TranscriptionsComponent {
     this.selectedRequests = [];
   }
 
-  isRequester = this.userService.isRequester(this.userState);
-  isApprover = this.userService.isApprover(this.userState);
+  isRequester = this.userService.isRequester();
+  isApprover = this.userService.isApprover();
 }

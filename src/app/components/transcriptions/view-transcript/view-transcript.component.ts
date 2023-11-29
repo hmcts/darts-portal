@@ -1,15 +1,13 @@
-import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CaseService } from '@services/case/case.service';
+import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { combineLatest } from 'rxjs';
-import { JoinPipe } from '@pipes/join';
 import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
-import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
-import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
-import { TranscriptionService } from '@services/transcription/transcription.service';
 import { LoadingComponent } from '@common/loading/loading.component';
+import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
 import { transcriptStatusClassMap } from '@constants/transcript-status-class-map';
+import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
+import { JoinPipe } from '@pipes/join';
+import { TranscriptionService } from '@services/transcription/transcription.service';
 
 @Component({
   selector: 'app-view-transcript',
@@ -28,18 +26,10 @@ import { transcriptStatusClassMap } from '@constants/transcript-status-class-map
 export class ViewTranscriptComponent {
   router = inject(Router);
   route = inject(ActivatedRoute);
-  caseService = inject(CaseService);
   transcriptionService = inject(TranscriptionService);
   transcriptStatusClassMap = transcriptStatusClassMap;
 
-  caseId = this.route.snapshot.params.caseId;
   transcriptId = this.route.snapshot.params.transcriptId;
 
-  case$ = this.caseService.getCase(this.caseId);
   transcript$ = this.transcriptionService.getTranscriptionDetails(this.transcriptId);
-
-  data$ = combineLatest({
-    case: this.case$,
-    transcript: this.transcript$,
-  });
 }

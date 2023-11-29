@@ -148,7 +148,6 @@ export class AudioViewComponent implements OnDestroy {
       this.audioRequestService.deleteAudioRequests(this.requestId).subscribe({
         next: () => {
           this.router.navigate(['/audios']);
-          return;
         },
         error: () => (this.isDeleting = false),
       });
@@ -172,7 +171,7 @@ export class AudioViewComponent implements OnDestroy {
     }
   }
 
-  onPlayTimeChaged(playTime: number) {
+  onPlayTimeChanged(playTime: number) {
     this.currentPlayTime = playTime;
     this.isAudioTouched = true;
   }

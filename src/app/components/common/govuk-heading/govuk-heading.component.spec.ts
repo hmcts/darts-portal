@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PhaseBannerComponent } from './phase-banner.component';
+import { GovukHeadingComponent } from './govuk-heading.component';
 
-describe('PhaseBannerComponent', () => {
-  let component: PhaseBannerComponent;
-  let fixture: ComponentFixture<PhaseBannerComponent>;
+describe('GovukHeadingComponent', () => {
+  let component: GovukHeadingComponent;
+  let fixture: ComponentFixture<GovukHeadingComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PhaseBannerComponent],
+      imports: [GovukHeadingComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(PhaseBannerComponent);
+    fixture = TestBed.createComponent(GovukHeadingComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

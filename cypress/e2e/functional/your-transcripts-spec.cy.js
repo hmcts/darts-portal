@@ -5,7 +5,7 @@ const navigationSelector = '.moj-primary-navigation';
 
 describe('Your Transcripts', () => {
   beforeEach(() => {
-    cy.login();
+    cy.login('requestor-approver');
     cy.injectAxe();
     cy.contains('Your Transcripts').click();
   });
@@ -56,5 +56,20 @@ describe('Your Transcripts', () => {
     cy.get('h2').should('contain', 'Requests to approve or reject');
     cy.get('#approver-table').should('contain', 'Request ID');
     cy.get('#approver-table').should('contain', 'View');
+  });
+
+  it('should go to approve transcript view', () => {
+    cy.contains('Your Transcripts').click();
+    cy.contains('Transcript requests to review').click();
+    cy.get('h2').should('contain', 'Requests to approve or reject');
+    cy.get('#approver-table').should('contain', 'Request ID');
+    cy.contains('T12345').parents('tr').contains('View').click();
+    cy.a11y();
+
+    cy.get('h1').should('contain', 'Approve transcript request');
+    cy.get('.govuk-table').should('contain', 'C20220620001');
+    cy.get('h1').should('contain', 'Do you approve this request?');
+    cy.get('#reject-radio').click();
+    cy.get('label').should('contain', 'Why can you not approve this request?');
   });
 });

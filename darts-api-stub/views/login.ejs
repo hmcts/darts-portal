@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Stub DARTS API</title>
+    <link href="/assets/stylesheets/govuk-frontend-4.6.0.min.css" rel="stylesheet" />
+  </head>
+  <style type="text/css">
+    body {
+      margin: 0;
+      background-color: #fff;
+    }
+    html {
+      background-color: #f3f2f1;
+    }
+    .govuk-tag {
+      margin-right: 10px;
+    }
+    .govuk-body-s {
+      margin-bottom: 0;
+    }
+  </style>
+  <body class="govuk-template__body ">
+    <header class="govuk-header" role="banner" data-module="govuk-header">
+      <div class="govuk-header__container">
+        <div class="govuk-width-container">
+          <div class="govuk-header__logo">
+            <a href="/" class="govuk-header__link govuk-header__link--homepage">
+              <span class="govuk-header__logotype">
+                <img
+                  alt="UK Government crest in white"
+                  src="/assets/images/govuk-crest-white.png"
+                  height="30"
+                  width="36"
+                  class="govuk-header__logotype-crown-fallback-image"
+                />
+                <span class="govuk-header__logotype-text"> HMCTS <span style="font-weight: normal">DARTS</span></span>
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main class="govuk-main-wrapper" id="main-content" role="main">
+      <div class="govuk-width-container">
+        <h1 class="govuk-heading-l">Stub login page</h1>
+        <table class="govuk-table">
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th scope="col" class="govuk-table__header govuk-!-width-one-third"">Name</th>
+              <th scope="col" class="govuk-table__header">Roles</th>
+              <th scope="col" class="govuk-table__header"></th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body">
+            <% for(let i=0; i < stubUsers.length; i++) { %>
+              <tr class="govuk-table__row">
+                <td scope="row" class="govuk-table__cell">
+                  <div><strong><%=stubUsers[i].name%></strong></div>
+                  <div class="govuk-body-s"><%=stubUsers[i].userState.userName%></div>
+                </td>
+                <td class="govuk-table__cell"><%- stubUsers[i].userState.roles.map((r) => `<strong class="govuk-tag">${r.roleName}</strong>`).join('') %></td>
+                <td class="govuk-table__cell">
+                  <form name="<%=stubUsers[i].code%>" method="post" action="<%=callbackUrl%>">
+                    <input type="hidden" name="code" value="<%=stubUsers[i].code%>" />
+                    <a id="login-<%=stubUsers[i].code%>" href="#" class="govuk-link govuk-link--no-visited-state" onclick="document.forms['<%=stubUsers[i].code%>'].submit()">Login</a>
+                  </form>
+                </td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </body>
+</html>

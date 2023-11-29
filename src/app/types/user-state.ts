@@ -6,7 +6,7 @@ export interface UserState {
 
 interface Role {
   roleId: number;
-  roleName: string;
+  roleName: RoleName;
   permissions?: Permissions[];
 }
 
@@ -14,3 +14,5 @@ interface Permissions {
   permissionId: number;
   permissionName: string;
 }
+
+export type RoleName = 'TRANSCRIBER' | 'APPROVER' | 'JUDGE' | 'REQUESTER' | 'LANGUAGE_SHOP_USER';

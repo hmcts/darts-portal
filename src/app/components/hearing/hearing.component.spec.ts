@@ -1,11 +1,12 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { Router } from '@angular/router';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AudioEventRow } from '@darts-types/hearing-audio-event.interface';
 import { AudioRequest, Case, Hearing, HearingEventTypeEnum, HearingPageState, Transcript } from '@darts-types/index';
+import { UserState } from '@darts-types/user-state';
+import { AppConfigService } from '@services/app-config/app-config.service';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
 import { CaseService } from '@services/case/case.service';
 import { HeaderService } from '@services/header/header.service';
@@ -14,7 +15,6 @@ import { UserService } from '@services/user/user.service';
 import { Observable, of, throwError } from 'rxjs';
 import { HearingFileComponent } from './hearing-file/hearing-file.component';
 import { HearingComponent } from './hearing.component';
-import { AppConfigService } from '@services/app-config/app-config.service';
 
 describe('HearingComponent', () => {
   const fakeAppInsightsService = {};
@@ -114,19 +114,14 @@ describe('HearingComponent', () => {
     transcript_count: 99,
   }) as Observable<Hearing>;
 
-  const mockUser = of({
+  const mockUser: Observable<UserState> = of({
     userId: 123,
     userName: 'localdev01',
     roles: [
       {
         roleId: 123,
-        roleName: 'local dev',
-        permissions: [
-          {
-            permissionId: 1,
-            permissionName: 'local dev permissions',
-          },
-        ],
+        roleName: 'REQUESTER',
+        permissions: [],
       },
     ],
   });

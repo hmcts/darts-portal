@@ -1,11 +1,15 @@
 import 'cypress-axe';
-Cypress.Commands.add('login', () => {
+Cypress.Commands.add('login', (roleCode = 'admin', loginType = 'internal') => {
   cy.visit('/login');
-  cy.contains('I work with the HM Courts and Tribunals Service').click();
+  if (loginType === 'internal') {
+    cy.contains("I'm an employee of HM Courts and Tribunals Service").click();
+  } else {
+    cy.contains('I work with the HM Courts and Tribunals Service').click();
+  }
   cy.contains('Continue').click();
 
   cy.get('h1').should('contain', 'Stub login page');
-  cy.get('#login').click();
+  cy.get(`#login-${roleCode}`).click();
   cy.get('.govuk-label-wrapper > .govuk-label').should('contain', 'Search for a case');
 });
 
@@ -17,7 +21,7 @@ Cypress.Commands.add('a11y', () => {
   cy.checkA11y(null, {
     runOnly: {
       type: 'tag',
-      values: ['wcag22aa', 'wcag21aa'],
+      values: ['wcag22aa', 'wcag21aa', 'wcag2aa'],
     },
   });
 });

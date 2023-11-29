@@ -1,7 +1,9 @@
 import { Location } from '@angular/common';
+import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Route, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { UserState } from '@darts-types/user-state';
 import { UserService } from '@services/user/user.service';
 import { of } from 'rxjs';
 import { APP_ROUTES } from './app.routes';
@@ -13,12 +15,17 @@ describe('App Routes', () => {
 
   let mockAuthService: AuthService;
   let mockUserService: Partial<UserService>;
+  const userStateSignal = signal<UserState | null>(null);
 
   beforeEach(() => {
     mockAuthService = { checkAuthenticated: jest.fn() } as unknown as AuthService;
     jest.spyOn(mockAuthService, 'checkAuthenticated').mockResolvedValue(true);
 
-    mockUserService = { userProfile$: of({ userId: 123, userName: 'Dean', roles: [] }) };
+    mockUserService = {
+      userProfile$: of({ userId: 123, userName: 'Dean', roles: [{ roleId: 1, roleName: 'APPROVER' }] }),
+      hasRoles: jest.fn(),
+      userState: userStateSignal,
+    };
 
     TestBed.configureTestingModule({
       imports: [RouterTestingModule.withRoutes(APP_ROUTES)],
@@ -36,12 +43,23 @@ describe('App Routes', () => {
 
     router = TestBed.inject(Router);
     location = TestBed.inject(Location);
+    mockUserService.userState?.set({ userId: 123, userName: 'Dean', roles: [{ roleId: 1, roleName: 'APPROVER' }] });
     router.initialNavigation();
   });
+
   APP_ROUTES.filter((route) => !route.redirectTo).forEach((route: Route) => {
-    it(`navigate to "${route.path}" takes you to "/${route.path}"`, async () => {
+    it(`navigate to "${route.path}" takes you to "/${route.path}" if user has roles`, async () => {
+      jest.spyOn(mockUserService, 'hasRoles').mockReturnValue(true);
       await router.navigate([route.path]);
       expect(location.path()).toEqual(`/${route.path}`);
+    });
+  });
+
+  APP_ROUTES.filter((route) => route.data?.allowedRoles).forEach((route: Route) => {
+    it(`navigate to "${route.path}" redirects to "/login" if user does not have the required role`, async () => {
+      jest.spyOn(mockUserService, 'hasRoles').mockReturnValue(false);
+      await router.navigate([route.path]);
+      expect(location.path()).toEqual('/login');
     });
   });
 
