@@ -73,7 +73,7 @@ function getAccountDetails(){
 }
 
 // when clicking "Can't scan? Try this", show Account Details
-$('#accountDetailsLink').click(function () {
+$('#main-content').on('click', '#accountDetailsLink', function() {
     showAccountDetails();
 });
 
