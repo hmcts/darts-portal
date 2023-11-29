@@ -49,7 +49,7 @@ describe('HeaderComponent', () => {
     expect(fakeAuthService.getAuthenticated).toHaveBeenCalled();
   });
 
-  it('should set header count', () => {
+  it('should set unread audio count', () => {
     const unreadCountElement: HTMLSpanElement = fixture.debugElement.query(
       By.css('#unreadAudioCountNotifications')
     ).nativeElement;
@@ -100,6 +100,13 @@ describe('HeaderComponent', () => {
     it('shows "Your work" link in navigation', () => {
       const yourWorkLink = fixture.debugElement.query(By.css('#your-work-link'));
       expect(yourWorkLink).toBeTruthy();
+    });
+
+    it('should set transcript requests count', () => {
+      const unreadCountElement: HTMLSpanElement = fixture.debugElement.query(
+        By.css('#transcriptRequestNotifications')
+      ).nativeElement;
+      expect(unreadCountElement.textContent).toBe('Transcript requests not assigned count: 4');
     });
   });
 });
