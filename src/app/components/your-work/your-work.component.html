@@ -18,12 +18,7 @@
     <div *tab="'To do'; count: requests.todoRequests.length">
       <ng-container *ngIf="requests.todoRequests.length">
         <h2 class="govuk-heading-m">To do</h2>
-        <app-data-table
-          id="inProgressTable"
-          [rows]="requests.todoRequests"
-          [columns]="readyColumns"
-          [pagination]="false"
-        >
+        <app-data-table id="todoTable" [rows]="requests.todoRequests" [columns]="readyColumns" [pagination]="false">
           <ng-template [tableRowTemplate]="requests.todoRequests" let-row>
             <!-- Partial template for duplicated cells -->
             <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
@@ -35,7 +30,7 @@
       <ng-container *ngIf="requests.completedRequests.length">
         <h2 class="govuk-heading-m">To do</h2>
         <app-data-table
-          id="inProgressTable"
+          id="completedTable"
           [rows]="requests.completedRequests"
           [columns]="readyColumns"
           [pagination]="false"

@@ -5,6 +5,7 @@ import {
   TranscriptionRequest,
   TranscriptionType,
   TranscriptionUrgency,
+  WorkRequest,
   WorkRequests,
   YourTranscriptionRequests,
 } from '@darts-types/index';
@@ -47,7 +48,15 @@ export class TranscriptionService {
   getWorkRequests(): Observable<WorkRequests> {
     let params = new HttpParams();
     params = params.set('assigned', false);
-    return this.http.get<WorkRequests>('/api/transcriptions/transcriber-view', { params });
+    const requests = this.http.get<WorkRequests>('/api/transcriptions/transcriber-view', { params });
+    return requests.pipe(
+      map((workRequests) => {
+        return workRequests.map((workRequest) => ({
+          ...workRequest,
+          hearing_date: workRequest.hearing_date + 'T00:00:00Z',
+        }));
+      })
+    );
   }
 
   getTranscriptionDetails(transcriptId: number): Observable<TranscriptionDetails> {
