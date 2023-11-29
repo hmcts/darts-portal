@@ -8,5 +8,6 @@ import { Directive, Input, TemplateRef } from '@angular/core';
 export class TabDirective {
   @Input('tab') name!: string;
   @Input('tabCount') count?: number;
+  @Input('tabId') id?: string;
   constructor(public template: TemplateRef<unknown>) {}
 }
