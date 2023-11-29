@@ -3,6 +3,7 @@ import { Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DeleteComponent } from '@common/delete/delete.component';
+import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { ForbiddenComponent } from '@components/error/forbidden/forbidden.component';
@@ -29,6 +30,7 @@ import { BehaviorSubject, Observable, combineLatest, forkJoin, map, shareReplay,
     TabDirective,
     DeleteComponent,
     ForbiddenComponent,
+    GovukHeadingComponent,
   ],
 })
 export class TranscriptionsComponent {
@@ -111,4 +113,5 @@ export class TranscriptionsComponent {
 
   isRequester = this.userService.isRequester();
   isApprover = this.userService.isApprover();
+  isJudge = this.userService.isJudge();
 }

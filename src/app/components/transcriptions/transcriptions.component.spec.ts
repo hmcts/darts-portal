@@ -96,6 +96,8 @@ describe('TranscriptionsComponent', () => {
     userServiceStub = {
       isRequester: () => true,
       isApprover: () => true,
+      isJudge: () => false,
+      isTranscriber: () => false,
     };
 
     TestBed.configureTestingModule({
@@ -249,7 +251,7 @@ describe('TranscriptionsComponent', () => {
     });
   });
 
-  it('render tabs if both approver and requester', () => {
+  it('Tabs if both APPROVER and REQUESTOR', () => {
     fixture.detectChanges();
 
     component.isRequester = true;
@@ -262,7 +264,7 @@ describe('TranscriptionsComponent', () => {
     expect(tabs).toBeTruthy();
   });
 
-  it('not render tabs if requestor only', () => {
+  it('No tabs if REQUESTOR only', () => {
     fixture.detectChanges();
 
     component.isRequester = true;
@@ -275,7 +277,7 @@ describe('TranscriptionsComponent', () => {
     expect(tabs).toBeFalsy();
   });
 
-  it('not render tabs if approver only', () => {
+  it('No tabs if APPROVER only', () => {
     fixture.detectChanges();
 
     component.isRequester = false;
@@ -288,16 +290,35 @@ describe('TranscriptionsComponent', () => {
     expect(tabs).toBeFalsy();
   });
 
-  it('render forbidden component if neither approver nor requester', () => {
+  it('Requestor view and no tabs if JUDGE only', () => {
     fixture.detectChanges();
 
     component.isRequester = false;
     component.isApprover = false;
+    component.isJudge = true;
 
     fixture.detectChanges();
 
     const compiled = fixture.nativeElement;
-    const forbidden = compiled.querySelector('app-forbidden');
-    expect(forbidden).toBeTruthy();
+    const tabs = compiled.querySelector('app-tabs');
+    const table = compiled.querySelector('#in-progress-table');
+    expect(tabs).toBeFalsy();
+    expect(table).toBeTruthy();
+  });
+
+  it('Tabbed view if JUDGE and APPROVER', () => {
+    fixture.detectChanges();
+
+    component.isRequester = false;
+    component.isApprover = true;
+    component.isJudge = true;
+
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement;
+    const tabs = compiled.querySelector('app-tabs');
+    const table = compiled.querySelector('#in-progress-table');
+    expect(tabs).toBeTruthy();
+    expect(table).toBeTruthy();
   });
 });

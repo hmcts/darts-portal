@@ -9,7 +9,7 @@
     <app-reporting-restriction [reportingRestriction]="vm.reportingRestriction"></app-reporting-restriction>
   }
 
-  <app-govuk-heading>Transcript Request</app-govuk-heading>
+  <app-govuk-heading>Transcript request</app-govuk-heading>
 
   <app-details-table title="Case details" [details]="vm.caseDetails" />
 
@@ -19,7 +19,7 @@
     id="get-audio-button"
     class="govuk-button govuk-button--secondary"
     [routerLink]="['/case', vm.caseId, 'hearing', vm.hearingId]"
-    [queryParams]="{ startTime: vm.startTime, endTime: vm.endTime }"
+    [queryParams]="vm.getAudioQueryParams"
   >
     Get audio for this request
   </button>

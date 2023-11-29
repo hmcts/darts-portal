@@ -51,7 +51,7 @@ describe('Request audio', () => {
     cy.get('.govuk-grid-column-two-thirds > :nth-child(11)').should('contain', '1 Sep 2023');
     cy.get('.govuk-grid-column-two-thirds > :nth-child(13)').should('contain', '02:32:24');
     cy.get('.govuk-grid-column-two-thirds > :nth-child(15)').should('contain', '14:32:24');
-    cy.get(':nth-child(18) > strong').should('contain', 'eric.bristow@darts.local');
+    cy.get(':nth-child(18) > strong').should('contain', 'phil.taylor@darts.local');
     cy.a11y();
   });
 

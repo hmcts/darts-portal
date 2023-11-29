@@ -1,3 +1,6 @@
+.account-details {
+    margin-top: -20px;
+}
 
 .account-details p {
     display: table-cell;
@@ -20,6 +23,7 @@ a.govuk-link {
 }
 
 #backLink {
+    cursor: pointer;
     border: unset;
     background-color: unset;
 }
@@ -77,6 +81,7 @@ a {
 
 #totpQrCodeControl-title {
     font-weight: bold;
+    margin-top: -15px;
 }
 
 #attributeList li {
