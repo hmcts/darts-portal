@@ -59,7 +59,7 @@ describe('App Routes', () => {
     it(`navigate to "${route.path}" redirects to "/login" if user does not have the required role`, async () => {
       jest.spyOn(mockUserService, 'hasRoles').mockReturnValue(false);
       await router.navigate([route.path]);
-      expect(location.path()).toEqual('/login');
+      expect(location.path()).toEqual('/forbidden');
     });
   });
 
