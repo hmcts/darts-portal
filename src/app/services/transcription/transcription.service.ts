@@ -47,9 +47,9 @@ export class TranscriptionService {
     );
   }
 
-  getWorkRequests(): Observable<WorkRequests> {
+  getWorkRequests(assigned = true): Observable<WorkRequests> {
     let params = new HttpParams();
-    params = params.set('assigned', false);
+    params = params.set('assigned', assigned);
     return this.http.get<WorkRequests>('/api/transcriptions/transcriber-view', { params }).pipe(
       map((workRequests) => {
         return workRequests.map((workRequest) => ({

@@ -40,7 +40,7 @@ export class YourWorkComponent {
 
   readyColumns = [...this.columns, { name: '', prop: '' }]; // Empty column header for view link
 
-  requests$ = this.transcriptService.getWorkRequests().pipe(shareReplay(1));
+  requests$ = this.transcriptService.getWorkRequests(true).pipe(shareReplay(1));
 
   requesterRequests$ = combineLatest({
     todoRequests: this.requests$.pipe(map((requests) => this.filterTodoRequests(requests))),
@@ -48,16 +48,10 @@ export class YourWorkComponent {
   });
 
   private filterTodoRequests(requests: WorkRequest[]): WorkRequest[] {
-    return requests.filter((r) => r.status === 'WITH TRANSCRIBER');
+    return requests.filter((r) => r.status === 'With Transcriber');
   }
 
   private filterCompletedRequests(requests: WorkRequest[]): WorkRequest[] {
-    return requests.filter((r) => r.status === 'COMPLETED');
-  }
-
-  onViewWorkRequest(event: MouseEvent, workRequest: WorkRequest) {
-    event.preventDefault();
-    // Placeholder until transcript upload screen is finalised
-    this.router.navigate(['/work/', workRequest.transcription_id]);
+    return requests.filter((r) => r.status === 'COMPLETE');
   }
 }

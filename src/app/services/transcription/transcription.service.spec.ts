@@ -84,7 +84,7 @@ describe('TranscriptionService', () => {
         done();
       });
 
-      const req = httpMock.expectOne('/api/transcriptions/transcriber-view?assigned=false');
+      const req = httpMock.expectOne('/api/transcriptions/transcriber-view?assigned=true');
       req.flush(mockRequests);
     });
   });

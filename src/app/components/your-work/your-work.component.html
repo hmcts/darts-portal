@@ -8,7 +8,7 @@
     <span [ngClass]="row.urgency === 'Overnight' ? 'moj-badge moj-badge--red' : ''">{{ row.urgency }}</span>
   </td>
   <td class="govuk-table__cell">
-    <a href="#" (click)="onViewWorkRequest($event, row)" class="govuk-link">View</a>
+    <a [href]="'/work/' + row.transcription_id" class="govuk-link">View</a>
   </td>
 </ng-template>
 
@@ -16,31 +16,34 @@
 <ng-container *ngIf="requesterRequests$ | async as requests; else loading">
   <app-tabs>
     <div *tab="'To do'; count: requests.todoRequests.length">
-      <ng-container *ngIf="requests.todoRequests.length">
-        <h2 class="govuk-heading-m">To do</h2>
-        <app-data-table id="todoTable" [rows]="requests.todoRequests" [columns]="readyColumns" [pagination]="false">
-          <ng-template [tableRowTemplate]="requests.todoRequests" let-row>
-            <!-- Partial template for duplicated cells -->
-            <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
-          </ng-template>
-        </app-data-table>
-      </ng-container>
+      <h2 class="govuk-heading-m">To do</h2>
+      <app-data-table
+        id="todoTable"
+        noDataMessage="There are no outstanding transcript requests"
+        [rows]="requests.todoRequests"
+        [columns]="readyColumns"
+        [pagination]="false"
+      >
+        <ng-template [tableRowTemplate]="requests.todoRequests" let-row>
+          <!-- Partial template for duplicated cells -->
+          <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
+        </ng-template>
+      </app-data-table>
     </div>
     <div *tab="'Completed today'">
-      <ng-container *ngIf="requests.completedRequests.length">
-        <h2 class="govuk-heading-m">Completed</h2>
-        <app-data-table
-          id="completedTable"
-          [rows]="requests.completedRequests"
-          [columns]="readyColumns"
-          [pagination]="false"
-        >
-          <ng-template [tableRowTemplate]="requests.completedRequests" let-row>
-            <!-- Partial template for duplicated cells -->
-            <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
-          </ng-template>
-        </app-data-table>
-      </ng-container>
+      <h2 class="govuk-heading-m">Completed today</h2>
+      <app-data-table
+        id="completedTable"
+        noDataMessage="There are no transcript requests completed today"
+        [rows]="requests.completedRequests"
+        [columns]="readyColumns"
+        [pagination]="false"
+      >
+        <ng-template [tableRowTemplate]="requests.completedRequests" let-row>
+          <!-- Partial template for duplicated cells -->
+          <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
+        </ng-template>
+      </app-data-table>
     </div>
   </app-tabs>
 </ng-container>

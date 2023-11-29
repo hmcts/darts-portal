@@ -36,7 +36,7 @@ describe('Your work', () => {
     cy.get('#completedTable').should('contain', '10 Jun 2023');
     cy.get('#completedTable').should('contain', 'Court Log');
     cy.get('#completedTable').should('contain', '26 Jun 2023 13:00');
-    cy.get('#completedTable').should('contain', '3 Working days');
+    cy.get('#completedTable').should('contain', 'Up to 3 working days');
     cy.get('#completedTable').should('contain', 'View');
     cy.a11y();
   });
