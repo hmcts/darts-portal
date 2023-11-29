@@ -22,12 +22,10 @@ const protectedRoutes: Routes = [
   },
   {
     path: 'work',
-    data: { allowedRoles: ['TRANSCRIBER'] },
     loadComponent: () => import('./components/your-work/your-work.component').then((c) => c.YourWorkComponent),
   },
   {
     path: 'work/:requestId',
-    data: { allowedRoles: ['TRANSCRIBER'] },
     loadComponent: () =>
       import('./components/your-work/upload-transcript/upload-transcript.component').then(
         (c) => c.UploadTranscriptComponent
@@ -35,7 +33,6 @@ const protectedRoutes: Routes = [
   },
   {
     path: 'work/:requestId/complete',
-    data: { allowedRoles: ['TRANSCRIBER'] },
     loadComponent: () =>
       import('./components/your-work/completed-transcript/completed-transcript.component').then(
         (c) => c.CompletedTranscriptComponent
