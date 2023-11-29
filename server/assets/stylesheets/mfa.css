@@ -43,6 +43,7 @@ a.govuk-link {
 
 .govuk-notification-banner {
     margin-top:20px;
+    margin-bottom: 25px;
 }
 
 #authenticatorAppIconControl-title::after, #authenticatorAppIconControl-apple::after, #authenticatorAppIconControl-instruction::after, #totpQrCodeControl-title::after{
