@@ -44,7 +44,7 @@ export class AudiosComponent {
   audioRequests$: Observable<UserAudioRequest[]>;
   expiredAudioRequests$: Observable<UserAudioRequest[]>;
 
-  inProgessRows$!: Observable<UserAudioRequestRow[]>;
+  inProgress$!: Observable<UserAudioRequestRow[]>;
   completedRows$!: Observable<UserAudioRequestRow[]>;
   expiredRows$!: Observable<UserAudioRequestRow[]>;
 
@@ -78,7 +78,7 @@ export class AudiosComponent {
       shareReplay(1)
     );
 
-    this.inProgessRows$ = this.audioRequests$.pipe(
+    this.inProgress$ = this.audioRequests$.pipe(
       map((audioRequests) => this.filterInProgressRequests(audioRequests)),
       map((audioRequests) => this.mapAudioRequestToRows(audioRequests))
     );
@@ -91,7 +91,7 @@ export class AudiosComponent {
     );
 
     this.data$ = combineLatest({
-      inProgressRows: this.inProgessRows$,
+      inProgressRows: this.inProgress$,
       completedRows: this.completedRows$,
       expiredRows: this.expiredRows$,
     });
