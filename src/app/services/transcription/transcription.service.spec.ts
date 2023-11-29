@@ -48,7 +48,7 @@ describe('TranscriptionService', () => {
       hearing_date: '2023-06-11',
       transcription_type: 'Court Log',
       status: 'Complete',
-      urgency: '3 Working Days',
+      urgency: 'Up to 3 working days',
       requested_ts: '2023-06-26T13:00:00Z',
       state_change_ts: '2023-06-27T13:00:00Z',
       is_manual: false,
