@@ -9,7 +9,10 @@ import {
   YourTranscriptionRequests,
 } from '@darts-types/index';
 import { TranscriberTranscriptions } from '@darts-types/transcriber-transcriptions.interface';
-import { BehaviorSubject, Observable, map, merge, switchMap, tap, timer } from 'rxjs';
+import { BehaviorSubject, timer, switchMap, tap, merge, map } from 'rxjs';
+import { Observable } from 'rxjs/internal/Observable';
+
+export const COMPLETED_TRANSCRIPTION_STATUS_ID = 6;
 @Injectable({
   providedIn: 'root',
 })
@@ -26,7 +29,9 @@ export class TranscriptionService {
 
   transcriptRequests$ = timer(0, this.POLL_INTERVAL * 1000).pipe(
     switchMap(() => this.getTranscriberTranscriptions()),
-    tap((transcriberTranscriptions) => this.transcriptRequestCount.next(transcriberTranscriptions.length))
+    tap((transcriberTranscriptions: TranscriberTranscriptions[]) =>
+      this.transcriptRequestCount.next(transcriberTranscriptions.length)
+    )
   );
 
   pollTranscriptionRequestCount$ = timer(0, this.TRANSCRIPT_REQUEST_COUNT_POLL_INTERVAL * 1000).pipe(
@@ -95,5 +100,17 @@ export class TranscriptionService {
 
   getTranscriberTranscriptions(): Observable<TranscriberTranscriptions[]> {
     return this.http.get<TranscriberTranscriptions[]>(`/api/transcriptions/transcriber-view`);
+  }
+
+  uploadTranscript(transcriptId: string, file: File) {
+    const formData = new FormData();
+    formData.append('transcript', file, file.name);
+    return this.http.post(`/api/transcriptions/${transcriptId}/document`, formData);
+  }
+
+  completeTranscriptionRequest(transcriptId: number) {
+    return this.http.patch(`/api/transcriptions/${transcriptId}`, {
+      transcription_status_id: COMPLETED_TRANSCRIPTION_STATUS_ID,
+    });
   }
 }

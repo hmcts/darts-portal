@@ -1,0 +1,118 @@
+
+.account-details p{
+    display: table-cell;
+}
+
+.account-details label{
+    font-weight: bold;
+}
+
+#detailText{
+    margin-bottom: 20px;
+}
+
+#secretLabel{
+    margin-top: 20px;
+    display:block;
+}
+
+.govuk-notification-banner {
+    margin-top:20px;
+}
+
+#authenticatorAppIconControl-title::after, #authenticatorAppIconControl-apple::after, #authenticatorAppIconControl-instruction::after, #totpQrCodeControl-title::after{
+    content: "\a";
+    white-space: pre;
+}
+
+#authenticatorAppIconControl-title, #authenticatorAppIconControl-instruction, #totpQrCodeControl-title{
+    display: block;
+    padding-top : 20px;
+    padding-bottom: 20px;
+}
+
+.authenticatorIconControlContent a {
+    padding-right: 15px;
+}
+
+#attributeList {
+    margin-left: -40px;
+}
+
+#totpQrCodeControl-picture {
+    margin-left: -30px;
+}
+
+a {
+    font-family: GDS Transport, arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-decoration: underline
+}
+
+#attributeVerification {
+    font-family: 'GDS Transport';
+}
+
+#totpQrCodeControl-title {
+    font-weight: bold;
+}
+
+#attributeList li {
+    display: inline-block;
+}
+
+.buttons #continue {
+    font-family: "GDS Transport",arial,sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight: 500;
+    font-size: 16px;
+    font-size: 1.20rem;
+    line-height: 1.1875;
+    box-sizing: border-box;
+    display: inline-block;
+    position: relative;
+    width: 10%;
+    min-width: 95px;
+    margin: 20px 0 22px;
+    padding: 6px 5px 6px 5px;
+    border: 2px solid transparent;
+    border-radius: 0;
+    color: #fff;
+    background-color: #00703c;
+    box-shadow: 0 2px 0 #002d18;
+    text-align: center;
+    vertical-align: top;
+    cursor: pointer;
+    -webkit-appearance: none
+  
+  }
+  #continue:active,
+  #continue:hover,
+  #continue:link,
+  #continue:visited {
+    color: #fff;
+    text-decoration: none
+  }
+  #continue::-moz-focus-inner {
+    padding: 0;
+    border: 0
+  }
+  #continue:hover {
+    background-color: #005a30
+  }
+  #continue:active {
+    top: 2px
+  }
+  #continue:focus {
+    border-color: #fd0;
+    outline: 3px solid transparent;
+    box-shadow: inset 0 0 0 1px #fd0
+  }
+  #continue:focus:not(:active):not(:hover) {
+    border-color: #fd0;
+    color: #0b0c0c;
+    background-color: #fd0;
+    box-shadow: 0 2px 0 #0b0c0c
+  }

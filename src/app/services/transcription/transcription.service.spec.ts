@@ -4,7 +4,7 @@ import { TranscriptionRequest } from '@darts-types/transcription-request.interfa
 
 import { TranscriptionDetails } from '@darts-types/transcription-details.interface';
 import { UserTranscriptionRequest, YourTranscriptionRequests } from '@darts-types/user-transcription-request.interface';
-import { TranscriptionService } from './transcription.service';
+import { COMPLETED_TRANSCRIPTION_STATUS_ID, TranscriptionService } from './transcription.service';
 
 describe('TranscriptionService', () => {
   let service: TranscriptionService;
@@ -115,6 +115,30 @@ describe('TranscriptionService', () => {
 
       const req = httpMock.expectOne('/api/transcriptions/1');
       req.flush(mockTranscription);
+    });
+  });
+
+  describe('#completeTranscriptionRequest', () => {
+    it('should call the correct endpoint and update the transcription status', () => {
+      const transcriptId = 1;
+      const patchObject = {
+        transcription_status_id: COMPLETED_TRANSCRIPTION_STATUS_ID,
+      };
+      const spy = jest.spyOn(service['http'], 'patch');
+      service.completeTranscriptionRequest(transcriptId);
+      expect(spy).toHaveBeenCalledWith(`/api/transcriptions/${transcriptId}`, patchObject);
+    });
+  });
+  describe('#uploadTranscript', () => {
+    it('should call the correct endpoint with the correct data', () => {
+      const transcriptId = '1';
+      const file = new File(['test'], 'test.txt', { type: 'text/plain' });
+      const formData = new FormData();
+      formData.append('transcript', file, file.name);
+
+      const spy = jest.spyOn(service['http'], 'post');
+      service.uploadTranscript(transcriptId, file);
+      expect(spy).toHaveBeenCalledWith(`/api/transcriptions/${transcriptId}/document`, formData);
     });
   });
 });
