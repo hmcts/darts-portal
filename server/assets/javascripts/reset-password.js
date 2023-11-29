@@ -106,7 +106,7 @@ function displayErrors() {
 $('#main-content').on('input', '#email', function() {
     //Input runs before DOM is updated so use setTimeout to give enough time for DOM to appear
     setTimeout(() => {
-        removeErrors();    
+        removeErrors();
         addItemLevelErrorClasses('reset');
     }, 50);
 });
