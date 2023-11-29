@@ -27,7 +27,7 @@ export class TranscriptionService {
   readonly transcriptRequestCount$ = this.transcriptRequestCount.asObservable();
 
   transcriptRequests$ = timer(0, this.POLL_INTERVAL_SECS * 1000).pipe(
-    switchMap(() => this.getTranscriberTranscriptions()),
+    switchMap(() => this.getTranscriberTranscriptRequests()),
     tap((transcriberTranscriptions: TranscriberTranscriptions[]) =>
       this.transcriptRequestCount.next(transcriberTranscriptions.length)
     )
@@ -97,8 +97,10 @@ export class TranscriptionService {
     );
   }
 
-  getTranscriberTranscriptions(): Observable<TranscriberTranscriptions[]> {
-    return this.http.get<TranscriberTranscriptions[]>(`/api/transcriptions/transcriber-view`);
+  getTranscriberTranscriptRequests(): Observable<TranscriberTranscriptions[]> {
+    return this.http.get<TranscriberTranscriptions[]>(`/api/transcriptions/transcriber-view`, {
+      params: { assigned: false },
+    });
   }
 
   uploadTranscript(transcriptId: string, file: File) {

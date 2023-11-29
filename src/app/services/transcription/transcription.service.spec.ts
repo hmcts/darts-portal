@@ -73,7 +73,7 @@ describe('TranscriptionService', () => {
 
   it('transcriptRequests$ should getTranscriberTranscriptions and update transcript requests count', fakeAsync(() => {
     const getTranscriberTranscriptionsSpy = jest
-      .spyOn(service, 'getTranscriberTranscriptions')
+      .spyOn(service, 'getTranscriberTranscriptRequests')
       .mockReturnValue(of(MOCK_TRANSCRIPTION_REQUESTS));
 
     let result = 0;
@@ -157,11 +157,11 @@ describe('TranscriptionService', () => {
     it('gets transcriptions for transcript requests table', () => {
       let result;
 
-      service.getTranscriberTranscriptions().subscribe((count) => {
+      service.getTranscriberTranscriptRequests().subscribe((count) => {
         result = count;
       });
 
-      const req = httpMock.expectOne('/api/transcriptions/transcriber-view');
+      const req = httpMock.expectOne('/api/transcriptions/transcriber-view?assigned=false');
       expect(req.request.method).toBe('GET');
 
       req.flush(MOCK_TRANSCRIPTION_REQUESTS);
