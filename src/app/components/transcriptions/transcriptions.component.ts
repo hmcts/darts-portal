@@ -13,7 +13,7 @@ import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { UserService } from '@services/user/user.service';
-import { BehaviorSubject, Observable, combineLatest, forkJoin, map, shareReplay, switchMap } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, shareReplay, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-transcriptions',
@@ -91,11 +91,9 @@ export class TranscriptionsComponent {
   }
 
   onDeleteConfirmed() {
-    const deleteRequests: Observable<unknown>[] = this.selectedRequests.map((s) =>
-      this.transcriptService.deleteRequest(s.transcription_id)
-    );
+    const idsToDelete = this.selectedRequests.map((s) => s.transcription_id);
 
-    forkJoin(deleteRequests).subscribe({
+    this.transcriptService.deleteRequest(idsToDelete).subscribe({
       next: () => (this.isDeleting = false),
       error: () => (this.isDeleting = false),
     });

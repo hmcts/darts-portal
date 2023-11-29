@@ -1,4 +1,4 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   TranscriptionDetails,
@@ -55,8 +55,14 @@ export class TranscriptionService {
     );
   }
 
-  deleteRequest(transcriptionId: number): Observable<HttpResponse<Response>> {
-    return this.http.delete<Response>(`api/transcriptions/${transcriptionId}`, { observe: 'response' });
+  deleteRequest(transcriptionIds: number[]) {
+    return this.http.patch(
+      `api/transcriptions`,
+      transcriptionIds.map((id) => ({
+        transcription_id: id,
+        hide_request_from_requestor: true,
+      }))
+    );
   }
 
   uploadTranscript(transcriptId: string, file: File) {
