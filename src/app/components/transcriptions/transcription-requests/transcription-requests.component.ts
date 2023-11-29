@@ -28,6 +28,5 @@ export class TranscriptionRequestsComponent {
     { name: '', prop: '' },
   ];
 
-  // transcriptRequestsCount$ = this.transcriptionService.getUnassignedTranscriptionRequestCounts();
   transcriptRequests$ = this.transcriptionService.transcriptRequests$;
 }

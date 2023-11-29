@@ -1,7 +1,12 @@
 <h1 class="govuk-heading-l">Transcript requests</h1>
 
 @if (transcriptRequests$ | async; as rows) {
-  <app-data-table id="transcript-requests-table" [rows]="rows" [columns]="columns">
+  <app-data-table
+    id="transcript-requests-table"
+    [rows]="rows"
+    [columns]="columns"
+    noDataMessage="There are no outstanding transcript requests."
+  >
     <ng-template [tableRowTemplate]="rows" let-row>
       <td class="govuk-table__cell">{{ row.case_number }}</td>
       <td class="govuk-table__cell">{{ row.courthouse_name }}</td>

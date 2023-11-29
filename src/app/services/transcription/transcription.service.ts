@@ -19,22 +19,21 @@ export const COMPLETED_TRANSCRIPTION_STATUS_ID = 6;
 export class TranscriptionService {
   constructor(private http: HttpClient) {}
 
-  // Defined in seconds
-  private readonly POLL_INTERVAL = 60;
-  private readonly TRANSCRIPT_REQUEST_COUNT_POLL_INTERVAL = 30;
+  private readonly POLL_INTERVAL_SECS = 60;
+  private readonly TRANSCRIPT_REQUEST_COUNT_POLL_INTERVAL_SECS = 30;
 
   // save unread count in memory
   private transcriptRequestCount = new BehaviorSubject<number>(0);
   readonly transcriptRequestCount$ = this.transcriptRequestCount.asObservable();
 
-  transcriptRequests$ = timer(0, this.POLL_INTERVAL * 1000).pipe(
+  transcriptRequests$ = timer(0, this.POLL_INTERVAL_SECS * 1000).pipe(
     switchMap(() => this.getTranscriberTranscriptions()),
     tap((transcriberTranscriptions: TranscriberTranscriptions[]) =>
       this.transcriptRequestCount.next(transcriberTranscriptions.length)
     )
   );
 
-  pollTranscriptionRequestCount$ = timer(0, this.TRANSCRIPT_REQUEST_COUNT_POLL_INTERVAL * 1000).pipe(
+  pollTranscriptionRequestCount$ = timer(0, this.TRANSCRIPT_REQUEST_COUNT_POLL_INTERVAL_SECS * 1000).pipe(
     switchMap(() => this.getUnassignedTranscriptionRequestCounts())
   );
 
