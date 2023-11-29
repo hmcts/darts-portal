@@ -18,7 +18,7 @@ const MOCK_WORK_REQUESTS: WorkRequest[] = [
     case_id: 3,
     case_number: 'T2023453422',
     courthouse_name: 'Reading',
-    hearing_date: '2023-08-06',
+    hearing_date: '2023-08-06T00:00:00Z',
     transcription_type: 'Court Log',
     status: 'WITH TRANSCRIBER',
     urgency: 'Overnight',
@@ -31,7 +31,7 @@ const MOCK_WORK_REQUESTS: WorkRequest[] = [
     case_id: 3,
     case_number: 'T2023453436',
     courthouse_name: 'Swansea',
-    hearing_date: '2023-06-10',
+    hearing_date: '2023-06-10T00:00:00Z',
     transcription_type: 'Court Log',
     status: 'COMPLETED',
     urgency: '3 Working days',
@@ -53,10 +53,10 @@ describe('YourWorkComponent', () => {
     await TestBed.configureTestingModule({
       imports: [YourWorkComponent, HttpClientTestingModule],
       providers: [
-        { provide: Router, useValue: mockRouter },
-        { provide: TranscriptionService, useValue: fakeTranscriptService },
         DatePipe,
         { provide: DATE_PIPE_DEFAULT_OPTIONS, useValue: { timezone: 'utc' } },
+        { provide: Router, useValue: mockRouter },
+        { provide: TranscriptionService, useValue: fakeTranscriptService },
       ],
     }).compileComponents();
 
@@ -72,6 +72,10 @@ describe('YourWorkComponent', () => {
   it('render to do work table', () => {
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
+    const title = compiled.querySelectorAll('.govuk-heading-m')[0];
+    expect(title).toBeTruthy();
+    expect(title.textContent).toEqual('To do');
+
     const table = compiled.querySelector('#todoTable');
     expect(table).toBeTruthy();
     const tableRows = table.querySelectorAll('tr');
