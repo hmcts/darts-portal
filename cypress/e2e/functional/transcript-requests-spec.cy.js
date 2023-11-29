@@ -19,5 +19,5 @@ describe('Transcript requests', () => {
     cy.get('#transcript-requests-table').should('contain', 'Court Log');
     cy.get('#transcript-requests-table').should('contain', 'Manual');
     cy.a11y();
-  })
+  });
 });
