@@ -7,12 +7,14 @@ import { AuthService } from '@services/auth/auth.service';
 import { UserService } from '@services/user/user.service';
 import { of } from 'rxjs';
 import { HeaderComponent } from './header.component';
+import { TranscriptionService } from '@services/transcription/transcription.service';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
   let fakeAuthService: Partial<AuthService>;
   let fakeAudioService: Partial<AudioRequestService>;
+  let fakeTranscriptionService: Partial<TranscriptionService>;
   let fakeUserService: Partial<UserService>;
 
   beforeEach(async () => {
@@ -21,6 +23,7 @@ describe('HeaderComponent', () => {
       getAuthenticated: jest.fn(() => true),
     };
     fakeAudioService = { unreadAudioCount$: of(5) };
+    fakeTranscriptionService = { transcriptRequestCounts$: of(4) };
     fakeUserService = {
       isTranscriber: jest.fn(() => false),
     };
@@ -31,6 +34,7 @@ describe('HeaderComponent', () => {
         { provide: AppInsightsService, useValue: fakeAppInsightsService },
         { provide: AuthService, useValue: fakeAuthService },
         { provide: AudioRequestService, useValue: fakeAudioService },
+        { provide: TranscriptionService, useValue: fakeTranscriptionService },
         { provide: UserService, useValue: fakeUserService },
       ],
     }).compileComponents();
@@ -46,7 +50,9 @@ describe('HeaderComponent', () => {
   });
 
   it('should set header count', () => {
-    const unreadCountElement: HTMLSpanElement = fixture.debugElement.query(By.css('#notifications')).nativeElement;
+    const unreadCountElement: HTMLSpanElement = fixture.debugElement.query(
+      By.css('#unreadAudioCountNotifications')
+    ).nativeElement;
     expect(unreadCountElement.textContent).toBe('Ready requests not viewed count: 5');
   });
 
