@@ -21,11 +21,6 @@
     </app-data-table>
   </app-delete>
 } @else {
-  @if (isApprover || isRequester) {
-    <h1 class="govuk-label-wrapper">
-      <label class="govuk-label govuk-label--l" for="case-search">Your Transcripts</label>
-    </h1>
-  }
   <app-govuk-heading>Your transcripts</app-govuk-heading>
 
   @if (isApprover && (isRequester || isJudge)) {

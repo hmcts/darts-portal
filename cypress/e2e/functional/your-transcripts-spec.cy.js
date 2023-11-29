@@ -1,6 +1,8 @@
 import 'cypress-axe';
 import './commands';
 
+const navigationSelector = '.moj-primary-navigation';
+
 describe('Your transcripts', () => {
   beforeEach(() => {
     cy.login('requestor-approver');
