@@ -28,7 +28,7 @@
     </div>
     <div *tab="'Completed today'">
       <ng-container *ngIf="requests.completedRequests.length">
-        <h2 class="govuk-heading-m">To do</h2>
+        <h2 class="govuk-heading-m">Completed</h2>
         <app-data-table
           id="completedTable"
           [rows]="requests.completedRequests"
