@@ -23,7 +23,7 @@ describe('Request audio', () => {
     cy.get('.govuk-error-summary').should('contain', 'You must include an end time for your audio recording');
     cy.get('.govuk-error-summary').should('contain', 'You must select a request type');
 
-    cy.get(':nth-child(2) > [scope="row"] > .govuk-checkboxes > .govuk-checkboxes__item > #\\31 ').click();
+    cy.get('#eventAudioTable .govuk-table__row:nth-child(2) .govuk-checkboxes__item').click();
     cy.get('#start-time-hour-input').should('have.value', '02');
     cy.get('#start-time-minutes-input').should('have.value', '32');
     cy.get('#start-time-seconds-input').should('have.value', '24');
@@ -63,7 +63,7 @@ describe('Request audio', () => {
     cy.get('.govuk-error-summary').should('contain', 'You must include an end time for your audio recording');
     cy.get('.govuk-error-summary').should('contain', 'You must select a request type');
 
-    cy.get(':nth-child(2) > [scope="row"] > .govuk-checkboxes > .govuk-checkboxes__item > #\\31 ').click();
+    cy.get('#eventAudioTable .govuk-table__row:nth-child(2) .govuk-checkboxes__item').click();
     cy.get('#start-time-hour-input').should('have.value', '09');
     cy.get('#start-time-minutes-input').should('have.value', '00');
     cy.get('#start-time-seconds-input').should('have.value', '00');

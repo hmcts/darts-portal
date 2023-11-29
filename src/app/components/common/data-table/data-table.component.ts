@@ -70,22 +70,15 @@ export class DataTableComponent<TRow> implements OnChanges {
     this.rows.sort((a: TRow, b: TRow) => {
       const valueA = (a as { [key: string]: unknown })[column];
       const valueB = (b as { [key: string]: unknown })[column];
+      const isStrings = typeof valueA === 'string' && typeof valueB === 'string';
 
-      if (typeof valueA === 'string' && typeof valueB === 'string') {
-        if (this.isDateTime(valueA) && this.isDateTime(valueB)) {
-          return this.compareDates(column, DateTime.fromISO(valueA).toUTC(), DateTime.fromISO(valueB).toUTC());
-        }
+      if (isStrings && this.isDateTime(valueA) && this.isDateTime(valueB)) {
+        return this.compareDates(column, DateTime.fromISO(valueA).toUTC(), DateTime.fromISO(valueB).toUTC());
       }
-      if (
-        column === 'courtroom' &&
-        typeof valueA === 'string' &&
-        typeof valueB === 'string' &&
-        this.isNumeric(valueA) &&
-        this.isNumeric(valueB)
-      ) {
+      if (column === 'courtroom' && isStrings && this.isNumeric(valueA) && this.isNumeric(valueB)) {
         //Courtroom convert to number if numeric parseable
         return this.compareNumbers(column, +valueA, +valueB);
-      } else if (typeof valueA === 'string' && typeof valueB === 'string') {
+      } else if (isStrings) {
         //String sorting
         return this.compareStrings(column, valueA, valueB);
       } else if (typeof valueA === 'number' && typeof valueB === 'number') {

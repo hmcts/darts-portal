@@ -9,7 +9,6 @@ import { AppComponent } from './app.component';
 import { ContentComponent } from './layout/content/content.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { HeaderComponent } from './layout/header/header.component';
-import { PhaseBannerComponent } from './layout/phase-banner/phase-banner.component';
 
 describe('AppComponent', () => {
   const fakeAuthService = {};
@@ -24,7 +23,6 @@ describe('AppComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         HeaderComponent,
-        PhaseBannerComponent,
         ContentComponent,
         FooterComponent,
         AppComponent,

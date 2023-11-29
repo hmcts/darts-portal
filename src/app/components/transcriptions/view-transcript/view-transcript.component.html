@@ -14,12 +14,12 @@
           <td class="govuk-table__cell table-width">{{ vm.courthouse }}</td>
         </tr>
         <tr class="govuk-table__row">
-          <th scope="row" class="govuk-table__header">Defendant(s)</th>
-          <td class="govuk-table__cell table-width">{{ vm.defendants | join }}</td>
-        </tr>
-        <tr class="govuk-table__row">
           <th scope="row" class="govuk-table__header">Judge(s)</th>
           <td class="govuk-table__cell table-width">{{ vm.judges | join }}</td>
+        </tr>
+        <tr class="govuk-table__row">
+          <th scope="row" class="govuk-table__header">Defendant(s)</th>
+          <td class="govuk-table__cell table-width">{{ vm.defendants | join }}</td>
         </tr>
       </tbody>
     </table>
@@ -34,12 +34,12 @@
       <th scope="row" class="govuk-table__header">Request Type</th>
       <td class="govuk-table__cell">{{ vm.request_type }}</td>
     </tr>
-    @if (vm.request_id) {
-      <tr class="govuk-table__row">
-        <th scope="row" class="govuk-table__header">Request ID</th>
-        <td class="govuk-table__cell">{{ vm.request_id }}</td>
-      </tr>
-    }
+
+    <tr class="govuk-table__row">
+      <th scope="row" class="govuk-table__header">Request ID</th>
+      <td class="govuk-table__cell">{{ vm.transcription_id }}</td>
+    </tr>
+
     <tr class="govuk-table__row">
       <th scope="row" class="govuk-table__header">Urgency</th>
       <td class="govuk-table__cell">{{ vm.urgency }}</td>

@@ -1,0 +1,29 @@
+@switch (tag) {
+  @case ('h1') {
+    <h1 [class]="headingClass">
+      <ng-container *ngTemplateOutlet="text"></ng-container>
+    </h1>
+  }
+  @case ('h2') {
+    <h2 [class]="headingClass">
+      <ng-container *ngTemplateOutlet="text"></ng-container>
+    </h2>
+  }
+  @case ('h3') {
+    <h3 [class]="headingClass">
+      <ng-container *ngTemplateOutlet="text"></ng-container>
+    </h3>
+  }
+  @case ('h4') {
+    <h4 [class]="headingClass">
+      <ng-container *ngTemplateOutlet="text"></ng-container>
+    </h4>
+  }
+}
+
+<ng-template #text>
+  @if (caption) {
+    <span [class]="captionClass">{{ caption }}</span>
+  }
+  <ng-content></ng-content>
+</ng-template>
