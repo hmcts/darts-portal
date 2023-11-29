@@ -22,12 +22,10 @@ const protectedRoutes: Routes = [
   },
   {
     path: 'work',
-
     loadComponent: () => import('./components/your-work/your-work.component').then((c) => c.YourWorkComponent),
   },
   {
     path: 'work/:requestId',
-
     loadComponent: () =>
       import('./components/your-work/upload-transcript/upload-transcript.component').then(
         (c) => c.UploadTranscriptComponent
