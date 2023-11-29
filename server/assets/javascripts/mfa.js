@@ -63,11 +63,12 @@ function getAccountDetails(){
     if (externalIdMatch && secretMatch) {
         details.externalId = externalIdMatch[1];
         details.secret = secretMatch[1];
-        console.log(details);
+
         return details;
     } else {
         details.externalId = 'Error finding account details';
         details.secret = 'Cannot find secret';
+        
         return details;
     }
 }
