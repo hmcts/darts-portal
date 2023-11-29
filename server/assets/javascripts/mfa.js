@@ -1,7 +1,9 @@
 
 function insertBackLink(){
     $('button#cancel').insertBefore("#attributeVerification");
-    // $(`<a href="${document.referrer}" class="govuk-back-link">Back</a>`).insertBefore("#attributeVerification");
+    $('button#cancel').attr('id', 'backLink');
+    $('#backLink').attr('class', 'govuk-back-link');
+    $('#backLink').text('Back');
 }
 
 function insertInfoBox(){
@@ -31,7 +33,7 @@ function insertTitle(){
 }
 
 function hideTryThisLink(){
-    $('a[href^="otpauth://"]').hide();
+    $('#accountDetailsLink').hide();
 }
 
 function showAccountDetails(){
@@ -71,7 +73,7 @@ function getAccountDetails(){
 }
 
 // when clicking "Can't scan? Try this", show Account Details
-$('#totpQrCodeControl-text').click(function () {
+$('#accountDetailsLink').click(function () {
     showAccountDetails();
 });
 
@@ -84,16 +86,22 @@ function removeText(){
     $('div.intro').remove();  
 }
 
+function amendCantScanLink(){
+    $('a[href^="otpauth://"]').attr('id', 'accountDetailsLink');
+    $('#accountDetailsLink').attr('class', 'govuk-link govuk-link--no-visited-state');
+    $('#accountDetailsLink').removeAttr('href');
+}
+
 function removeLinks(){
     $('a.helpLink').remove();
     $('li.authenticatorInfoControl_li').remove();
-    $('a[href^="otpauth://"]').attr('href', '#');
 }
 
 function removElements(){
     removeLinks();
     removeText();
     removeAppStores();  
+    amendCantScanLink();
 }
 
 function insertElements(){
