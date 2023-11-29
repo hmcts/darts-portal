@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
-  TranscriberTranscriptionRequestCount,
+  TranscriberRequestCounts,
   TranscriptionDetails,
   TranscriptionRequest,
   TranscriptionType,
@@ -43,19 +43,19 @@ export class TranscriptionService {
     this.transcriptRequestCount$ // In memory count / manual update
   );
 
-  getTranscriberTranscriptionRequestCounts(): Observable<TranscriberTranscriptionRequestCount> {
-    return this.http.get<TranscriberTranscriptionRequestCount>('/api/transcriptions/transcriber-counts');
+  getTranscriberTranscriptionRequestCounts(): Observable<TranscriberRequestCounts> {
+    return this.http.get<TranscriberRequestCounts>('/api/transcriptions/transcriber-counts');
   }
 
   getUnassignedTranscriptionRequestCounts(): Observable<number> {
     return this.http
-      .get<TranscriberTranscriptionRequestCount>('/api/transcriptions/transcriber-counts')
+      .get<TranscriberRequestCounts>('/api/transcriptions/transcriber-counts')
       .pipe(map((res) => res.unassigned));
   }
 
   getAssignedTranscriptRequestCounts(): Observable<number> {
     return this.http
-      .get<TranscriberTranscriptionRequestCount>('/api/transcriptions/transcriber-counts')
+      .get<TranscriberRequestCounts>('/api/transcriptions/transcriber-counts')
       .pipe(map((res) => res.assigned));
   }
 

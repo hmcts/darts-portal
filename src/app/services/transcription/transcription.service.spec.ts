@@ -7,7 +7,7 @@ import { UserTranscriptionRequest, YourTranscriptionRequests } from '@darts-type
 import { COMPLETED_TRANSCRIPTION_STATUS_ID, TranscriptionService } from './transcription.service';
 import { of } from 'rxjs';
 import { TranscriberTranscriptions } from '@darts-types/transcriber-transcriptions.interface';
-import { TranscriberTranscriptionRequestCount } from '@darts-types/transcriber-transcription-request-count.interface';
+import { TranscriberRequestCounts } from '@darts-types/transcription-request-counts';
 
 describe('TranscriptionService', () => {
   let service: TranscriptionService;
@@ -92,7 +92,7 @@ describe('TranscriptionService', () => {
 
   describe('#getTranscriberTranscriptionRequestCounts', () => {
     it('gets transcriber trancription request counts', () => {
-      const mockTranscriptCounts: TranscriberTranscriptionRequestCount = {
+      const mockTranscriptCounts: TranscriberRequestCounts = {
         unassigned: 5,
         assigned: 3,
       };
@@ -113,7 +113,7 @@ describe('TranscriptionService', () => {
 
   describe('#getUnassignedTranscriptionRequestCounts', () => {
     it('gets Unassigned transcription request count', () => {
-      const mockTranscriptCounts: TranscriberTranscriptionRequestCount = {
+      const mockTranscriptCounts: TranscriberRequestCounts = {
         unassigned: 5,
         assigned: 3,
       };
@@ -134,7 +134,7 @@ describe('TranscriptionService', () => {
 
   describe('#getAssignedTranscriptRequestCounts', () => {
     it('gets Assigned transcription request count', () => {
-      const mockTranscriptCounts: TranscriberTranscriptionRequestCount = {
+      const mockTranscriptCounts: TranscriberRequestCounts = {
         unassigned: 5,
         assigned: 3,
       };

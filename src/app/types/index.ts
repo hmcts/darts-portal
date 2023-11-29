@@ -26,4 +26,4 @@ export * from './user-audio-request-row.interface';
 export * from './user-audio-request.interface';
 export * from './user-transcription-request.interface';
 export * from './transcriber-transcriptions.interface';
-export * from './transcriber-transcription-request-count.interface';
+export * from './transcription-request-counts';
