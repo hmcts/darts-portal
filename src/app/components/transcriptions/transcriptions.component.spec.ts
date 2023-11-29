@@ -229,9 +229,8 @@ describe('TranscriptionsComponent', () => {
         { transcription_id: 2 } as UserTranscriptionRequest,
       ];
       component.onDeleteConfirmed();
-      expect(spy).toHaveBeenCalledTimes(2);
-      expect(spy).toHaveBeenCalledWith(1);
-      expect(spy).toHaveBeenCalledWith(2);
+
+      expect(spy).toHaveBeenCalledWith([1, 2]);
     });
     it('should set isDeleting to false', () => {
       fixture.detectChanges();

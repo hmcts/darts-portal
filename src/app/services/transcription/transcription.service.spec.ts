@@ -147,9 +147,14 @@ describe('TranscriptionService', () => {
 
   describe('#deleteRequest', () => {
     it('should call the correct endpoint', () => {
-      const spy = jest.spyOn(service['http'], 'delete');
-      service.deleteRequest(1);
-      expect(spy).toHaveBeenCalledWith('api/transcriptions/1', { observe: 'response' });
+      const spy = jest.spyOn(service['http'], 'patch');
+      service.deleteRequest([1]);
+      expect(spy).toHaveBeenCalledWith('api/transcriptions', [
+        {
+          transcription_id: 1,
+          hide_request_from_requestor: true,
+        },
+      ]);
     });
   });
 

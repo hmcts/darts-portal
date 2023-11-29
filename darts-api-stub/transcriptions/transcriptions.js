@@ -202,13 +202,16 @@ router.get('/', (req, res) => {
   res.send(yourTranscriptionsStub);
 });
 
-router.delete('/:requestId', (req, res) => {
-  const index = yourTranscriptionsStub.requester_transcriptions.findIndex(
-    (x) => x.transcription_id == req.params.requestId
-  );
-  if (index >= 0) {
-    yourTranscriptionsStub.requester_transcriptions.splice(index, 1);
-  }
+router.patch('/', (req, res) => {
+  req.body.forEach((item) => {
+    const index = yourTranscriptionsStub.requester_transcriptions.findIndex(
+      (x) => x.transcription_id == item.transcription_id
+    );
+    if (index >= 0) {
+      yourTranscriptionsStub.requester_transcriptions.splice(index, 1);
+    }
+  });
+
   res.sendStatus(204);
 });
 
