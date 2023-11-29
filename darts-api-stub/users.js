@@ -1,19 +1,13 @@
-const permissions = [{ permissionId: 1, permissionName: 'local dev permissions' }];
+const { REQUESTER, APPROVER, TRANSCRIBER, JUDGE } = require('./roles');
 
 module.exports = [
   {
-    name: 'Phil Taylor',
+    name: 'Eric Bristow',
     code: 'requestor',
     userState: {
       userId: 1,
-      userName: 'phil.taylor@darts.local',
-      roles: [
-        {
-          roleId: 1,
-          roleName: 'REQUESTER',
-          permissions,
-        },
-      ],
+      userName: 'eric.bristow@darts.local',
+      roles: [REQUESTER],
     },
   },
   {
@@ -22,13 +16,7 @@ module.exports = [
     userState: {
       userId: 2,
       userName: 'fallon.sherrock@darts.local',
-      roles: [
-        {
-          roleId: 2,
-          roleName: 'APPROVER',
-          permissions,
-        },
-      ],
+      roles: [APPROVER],
     },
   },
   {
@@ -37,18 +25,7 @@ module.exports = [
     userState: {
       userId: 2,
       userName: 'michael.vangerwen@darts.local',
-      roles: [
-        {
-          roleId: 1,
-          roleName: 'REQUESTER',
-          permissions,
-        },
-        {
-          roleId: 2,
-          roleName: 'APPROVER',
-          permissions,
-        },
-      ],
+      roles: [REQUESTER, APPROVER],
     },
   },
   {
@@ -57,38 +34,34 @@ module.exports = [
     userState: {
       userId: 2,
       userName: 'trina.gulliver@darts.local',
-      roles: [
-        {
-          roleId: 3,
-          roleName: 'TRANSCRIBER',
-          permissions,
-        },
-      ],
+      roles: [TRANSCRIBER],
     },
   },
   {
-    name: 'Eric Bristow',
+    name: 'Phil Taylor',
     code: 'admin',
     userState: {
       userId: 2,
-      userName: 'eric.bristow@darts.local',
-      roles: [
-        {
-          roleId: 1,
-          roleName: 'REQUESTER',
-          permissions,
-        },
-        {
-          roleId: 2,
-          roleName: 'APPROVER',
-          permissions,
-        },
-        {
-          roleId: 3,
-          roleName: 'TRANSCRIBER',
-          permissions,
-        },
-      ],
+      userName: 'phil.taylor@darts.local',
+      roles: [REQUESTER, APPROVER, TRANSCRIBER],
+    },
+  },
+  {
+    name: 'Nigel Justice',
+    code: 'judge',
+    userState: {
+      userId: 2,
+      userName: 'nigel.justice@darts.local',
+      roles: [JUDGE],
+    },
+  },
+  {
+    name: 'Martin Adams',
+    code: 'judge-approver',
+    userState: {
+      userId: 2,
+      userName: 'martin.adams@darts.local',
+      roles: [JUDGE, APPROVER],
     },
   },
 ];
