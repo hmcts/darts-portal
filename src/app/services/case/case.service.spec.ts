@@ -31,7 +31,7 @@ describe('CaseService', () => {
       hea_id: 2,
       hearing_date: '2023-10-12',
       type: 'Sentencing remarks',
-      requested_on: '2023-10-12',
+      requested_on: '2023-10-12T00:00:00Z',
       requested_by_name: 'Joe Bloggs',
       status: 'Complete',
     },
@@ -40,7 +40,7 @@ describe('CaseService', () => {
       hea_id: 2,
       hearing_date: '2023-10-12',
       type: 'Sentencing remarks',
-      requested_on: '2023-10-12',
+      requested_on: '2023-10-12T00:00:00Z',
       requested_by_name: 'Joe Bloggs',
       status: 'Approved',
     },
@@ -133,7 +133,6 @@ describe('CaseService', () => {
       mockTranscripts.map((t) => ({
         ...t,
         date: t.hearing_date + 'T00:00:00Z',
-        requested_on: t.requested_on + 'T00:00:00Z',
       }))
     );
   });
@@ -155,7 +154,6 @@ describe('CaseService', () => {
       mockTranscripts.map((t) => ({
         ...t,
         date: t.hearing_date + 'T00:00:00Z',
-        requested_on: t.requested_on + 'T00:00:00Z',
       }))
     );
   });
