@@ -31,10 +31,6 @@ export class ApproveTranscriptComponent implements OnInit {
   transcriptionService = inject(TranscriptionService);
   datePipe = inject(DatePipe);
 
-  caseDetails = {};
-  hearingDetails = {};
-  reportingRestriction: string | null = null;
-
   transcriptId = this.route.snapshot.params.transcriptId;
 
   vm$ = this.transcriptionService.getTranscriptionDetails(this.transcriptId).pipe(
@@ -50,7 +46,7 @@ export class ApproveTranscriptComponent implements OnInit {
         hearingDetails: {
           'Hearing Date': this.datePipe.transform(data.hearing_date, 'dd MMM yyyy'),
           'Request Type': data.request_type,
-          'Request ID': data.request_id,
+          'Request ID': data.transcription_id,
           Urgency: data.urgency,
           'Audio for transcript':
             'Start time ' +

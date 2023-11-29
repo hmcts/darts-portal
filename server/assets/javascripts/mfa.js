@@ -1,6 +1,9 @@
 
 function insertBackLink(){
-    $(`<a href="${document.referrer}" class="govuk-back-link">Back</a>`).insertBefore("#attributeVerification");
+    $('button#cancel').insertBefore("#attributeVerification");
+    $('button#cancel').attr('id', 'backLink');
+    $('#backLink').attr('class', 'govuk-back-link');
+    $('#backLink').text('Back');
 }
 
 function insertInfoBox(){
@@ -29,6 +32,51 @@ function insertTitle(){
     $("<h1>Authenticator app</h1>").insertBefore("#attributeList");
 }
 
+function hideTryThisLink(){
+    $('#accountDetailsLink').hide();
+}
+
+function showAccountDetails(){
+    hideTryThisLink();
+    const details = getAccountDetails();
+    const accountDetailsHtml = 
+    `<div class="account-details">
+        <p id="detailText">You can enter these account details into the authenticator app manually.</p>
+        
+        <label>Account Name</label>
+        <p id="accountId">${details.externalId}</p>
+
+        <label id="secretLabel">Secret</label>
+        <p id="secret">${details.secret}</p>
+    </div>`
+
+    $(accountDetailsHtml).insertAfter('#attributeList');
+}
+
+function getAccountDetails(){
+    const authDetails = $('#totpQrCodeControl-text').text();
+
+    const details = {};
+    const externalIdMatch = authDetails.match(/(?:[^:]+:){2}([^?]+)/);
+    const secretMatch = authDetails.match(/secret=([^&]+)/);
+
+    if (externalIdMatch && secretMatch) {
+        details.externalId = externalIdMatch[1];
+        details.secret = secretMatch[1];
+        console.log(details);
+        return details;
+    } else {
+        details.externalId = 'Error finding account details';
+        details.secret = 'Cannot find secret';
+        return details;
+    }
+}
+
+// when clicking "Can't scan? Try this", show Account Details
+$('#main-content').on('click', '#accountDetailsLink', function() {
+    showAccountDetails();
+});
+
 function removeAppStores(){
     $('a#authenticatorAppIconControl-google').text('Google Play');
     $('a#authenticatorAppIconControl-apple').text('Apple App Store');
@@ -38,8 +86,10 @@ function removeText(){
     $('div.intro').remove();  
 }
 
-function removeButtons(){
-    $('button#cancel').remove();
+function amendCantScanLink(){
+    $('a[href^="otpauth://"]').attr('id', 'accountDetailsLink');
+    $('#accountDetailsLink').attr('class', 'govuk-link govuk-link--no-visited-state');
+    $('#accountDetailsLink').removeAttr('href');
 }
 
 function removeLinks(){
@@ -49,9 +99,9 @@ function removeLinks(){
 
 function removElements(){
     removeLinks();
-    removeButtons();
     removeText();
     removeAppStores();  
+    amendCantScanLink();
 }
 
 function insertElements(){

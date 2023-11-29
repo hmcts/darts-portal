@@ -8,7 +8,10 @@ import {
   WorkRequests,
   YourTranscriptionRequests,
 } from '@darts-types/index';
-import { Observable, map } from 'rxjs';
+import { Observable } from 'rxjs/internal/Observable';
+import { map } from 'rxjs/internal/operators/map';
+
+export const COMPLETED_TRANSCRIPTION_STATUS_ID = 6;
 @Injectable({
   providedIn: 'root',
 })
@@ -64,5 +67,17 @@ export class TranscriptionService {
         return transcription;
       })
     );
+  }
+
+  uploadTranscript(transcriptId: string, file: File) {
+    const formData = new FormData();
+    formData.append('transcript', file, file.name);
+    return this.http.post(`/api/transcriptions/${transcriptId}/document`, formData);
+  }
+
+  completeTranscriptionRequest(transcriptId: number) {
+    return this.http.patch(`/api/transcriptions/${transcriptId}`, {
+      transcription_status_id: COMPLETED_TRANSCRIPTION_STATUS_ID,
+    });
   }
 }

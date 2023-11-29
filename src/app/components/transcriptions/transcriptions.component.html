@@ -12,12 +12,9 @@
   </td>
 </ng-template>
 
-@if (isApprover || isRequester) {
-  <h1 class="govuk-label-wrapper">
-    <label class="govuk-label govuk-label--l" for="case-search">Your Transcripts</label>
-  </h1>
-}
-@if (isRequester && isApprover) {
+<app-govuk-heading>Your transcripts</app-govuk-heading>
+
+@if (isApprover && (isRequester || isJudge)) {
   <app-tabs>
     <div *tab="'Transcript requests'">
       <ng-template [ngTemplateOutlet]="RequesterTemplate"></ng-template>
@@ -28,10 +25,8 @@
   </app-tabs>
 } @else if (isApprover) {
   <ng-template [ngTemplateOutlet]="ApproverTemplate"></ng-template>
-} @else if (isRequester) {
+} @else if (isApprover || isRequester || isJudge) {
   <ng-template [ngTemplateOutlet]="RequesterTemplate"></ng-template>
-} @else {
-  <app-forbidden></app-forbidden>
 }
 
 <ng-template #RequesterTemplate>

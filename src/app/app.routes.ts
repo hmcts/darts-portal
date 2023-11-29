@@ -22,7 +22,24 @@ const protectedRoutes: Routes = [
   },
   {
     path: 'work',
+    data: { allowedRoles: ['TRANSCRIBER'] },
     loadComponent: () => import('./components/your-work/your-work.component').then((c) => c.YourWorkComponent),
+  },
+  {
+    path: 'work/:requestId',
+    data: { allowedRoles: ['TRANSCRIBER'] },
+    loadComponent: () =>
+      import('./components/your-work/upload-transcript/upload-transcript.component').then(
+        (c) => c.UploadTranscriptComponent
+      ),
+  },
+  {
+    path: 'work/:requestId/complete',
+    data: { allowedRoles: ['TRANSCRIBER'] },
+    loadComponent: () =>
+      import('./components/your-work/completed-transcript/completed-transcript.component').then(
+        (c) => c.CompletedTranscriptComponent
+      ),
   },
   {
     path: 'audios/:requestId',
@@ -31,11 +48,13 @@ const protectedRoutes: Routes = [
   },
   {
     path: 'transcriptions',
+    data: { allowedRoles: ['APPROVER', 'REQUESTER', 'JUDGE'] },
     loadComponent: () =>
       import('./components/transcriptions/transcriptions.component').then((c) => c.TranscriptionsComponent),
   },
   {
     path: 'transcription-requests',
+    data: { allowedRoles: ['TRANSCRIBER'] },
     loadComponent: () =>
       import('./components/transcriptions/transcription-requests/transcription-requests.component').then(
         (c) => c.TranscriptionRequestsComponent
