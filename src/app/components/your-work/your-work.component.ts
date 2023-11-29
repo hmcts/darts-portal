@@ -58,6 +58,6 @@ export class YourWorkComponent {
   onViewWorkRequest(event: MouseEvent, workRequest: WorkRequest) {
     event.preventDefault();
     // Placeholder until transcript upload screen is finalised
-    this.router.navigate(['./work/', workRequest.transcription_id]);
+    this.router.navigate(['/work/', workRequest.transcription_id]);
   }
 }
