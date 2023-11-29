@@ -12,7 +12,7 @@ export const authGuard: CanActivateFn = async (route: ActivatedRouteSnapshot, st
     if (userService.hasRoles(route.data.allowedRoles)) {
       return true;
     } else {
-      return router.navigateByUrl('forbidden');
+      return router.navigateByUrl('login');
     }
   }
 
