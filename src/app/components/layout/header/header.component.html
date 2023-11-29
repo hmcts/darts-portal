@@ -69,7 +69,7 @@
               routerLink="audios"
               routerLinkActive="active"
               ariaCurrentWhenActive="page"
-              >Your Audio
+              >Your audio
               <ng-container *ngIf="unreadAudioCount$ | async as count">
                 <span *ngIf="count > 0" id="notifications" class="moj-notification-badge"
                   ><span class="govuk-visually-hidden">Ready requests not viewed count: </span>{{ count }}</span
@@ -77,6 +77,17 @@
               </ng-container>
             </a>
           </li>
+          @if (userService.isJudge() || userService.isApprover() || userService.isRequester()) {
+            <li class="moj-primary-navigation__item">
+              <a
+                class="moj-primary-navigation__link"
+                routerLink="transcriptions"
+                routerLinkActive="active"
+                ariaCurrentWhenActive="page"
+                >Your transcripts</a
+              >
+            </li>
+          }
           @if (userService.isTranscriber()) {
             <li class="moj-primary-navigation__item">
               <a
@@ -86,16 +97,6 @@
                 routerLinkActive="active"
                 ariaCurrentWhenActive="page"
                 >Transcript requests</a
-              >
-            </li>
-          } @else {
-            <li class="moj-primary-navigation__item">
-              <a
-                class="moj-primary-navigation__link"
-                routerLink="transcriptions"
-                routerLinkActive="active"
-                ariaCurrentWhenActive="page"
-                >Your Transcripts</a
               >
             </li>
           }
