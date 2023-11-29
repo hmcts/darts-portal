@@ -12,7 +12,7 @@
 
 <ng-container *ngIf="!isDeleting">
   <h1 class="govuk-label-wrapper">
-    <label class="govuk-label govuk-label--l" for="case-search">Your Audio</label>
+    <label class="govuk-label govuk-label--l" for="case-search">Your audio</label>
   </h1>
   <ng-container *ngIf="data$ | async as data; else loading">
     <app-tabs (tabChange)="onTabChanged()">

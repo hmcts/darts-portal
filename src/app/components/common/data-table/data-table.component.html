@@ -1,85 +1,94 @@
-<table class="govuk-table" data-module="moj-sortable-table">
-  <caption class="govuk-table__caption govuk-table__caption--m">
-    {{
-      caption
-    }}
-  </caption>
-  <thead class="govuk-table__head">
-    <tr class="govuk-table__row header">
-      <th *ngIf="rowSelectable" scope="col" class="govuk-table__header">
-        <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
-          <div class="govuk-checkboxes__item">
-            <input
-              aria-label="Select all checkboxes"
-              class="govuk-checkboxes__input"
-              id="selectAll"
-              name="selectAll"
-              type="checkbox"
-              value="selectAll"
-              [checked]="isAllSelected()"
-              (change)="onSelectAllChanged($any($event.target).checked)"
-            />
-            <label class="govuk-label govuk-checkboxes__label" for="selectAll">
-              <span style="display: none">Select all checkboxes</span>
-            </label>
-          </div>
-        </div>
-      </th>
-      <ng-container *ngFor="let column of columns">
-        <th *ngIf="column.sortable" scope="col" class="govuk-table__header" [attr.aria-sort]="getAriaSort(column.prop)">
-          <button type="button" (click)="sortTable(column.prop)">{{ column.name }}</button>
-        </th>
-        <th *ngIf="!column.sortable && column.name" scope="col" class="govuk-table__header">
-          {{ column.name }}
-        </th>
-        <td *ngIf="!column.sortable && !column.name" class="govuk-table__header"></td>
-      </ng-container>
-    </tr>
-  </thead>
-  <tbody class="govuk-table__body">
-    <ng-container *ngFor="let row of pagedRows; let i = index">
-      <ng-container
-        *ngTemplateOutlet="bodyTemplate || defaultBodyTemplate; context: { $implicit: row, index: i }"
-      ></ng-container>
-      <ng-template #defaultBodyTemplate let-row let-index>
-        <tr class="govuk-table__row">
-          <td *ngIf="rowSelectable" class="govuk-table__cell">
-            <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
-              <div class="govuk-checkboxes__item">
-                <input
-                  [attr.aria-label]="'Select checkbox ' + (row[checkboxKey] || i + 1)"
-                  class="govuk-checkboxes__input"
-                  [id]="i"
-                  [name]="i"
-                  type="checkbox"
-                  [value]="row.id"
-                  [checked]="isRowSelected(row)"
-                  (change)="toggleRowSelection(row)"
-                />
-                <label class="govuk-label govuk-checkboxes__label" [for]="i">
-                  <span style="display: none">{{ 'Select checkbox ' + (row[checkboxKey] || i + 1) }}</span>
-                </label>
-              </div>
+@if (rows.length) {
+  <table class="govuk-table" data-module="moj-sortable-table">
+    <caption class="govuk-table__caption govuk-table__caption--m">
+      {{
+        caption
+      }}
+    </caption>
+    <thead class="govuk-table__head">
+      <tr class="govuk-table__row header">
+        <th *ngIf="rowSelectable" scope="col" class="govuk-table__header">
+          <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+            <div class="govuk-checkboxes__item">
+              <input
+                aria-label="Select all checkboxes"
+                class="govuk-checkboxes__input"
+                id="selectAll"
+                name="selectAll"
+                type="checkbox"
+                value="selectAll"
+                [checked]="isAllSelected()"
+                (change)="onSelectAllChanged($any($event.target).checked)"
+              />
+              <label class="govuk-label govuk-checkboxes__label" for="selectAll">
+                <span style="display: none">Select all checkboxes</span>
+              </label>
             </div>
-          </td>
-          <ng-container
-            *ngTemplateOutlet="rowTemplate || defaultRowTemplate; context: { $implicit: row, index: i }"
-          ></ng-container>
-        </tr>
+          </div>
+        </th>
+        <ng-container *ngFor="let column of columns">
+          <th
+            *ngIf="column.sortable"
+            scope="col"
+            class="govuk-table__header"
+            [attr.aria-sort]="getAriaSort(column.prop)"
+          >
+            <button type="button" (click)="sortTable(column.prop)">{{ column.name }}</button>
+          </th>
+          <th *ngIf="!column.sortable && column.name" scope="col" class="govuk-table__header">
+            {{ column.name }}
+          </th>
+          <td *ngIf="!column.sortable && !column.name" class="govuk-table__header"></td>
+        </ng-container>
+      </tr>
+    </thead>
+    <tbody class="govuk-table__body">
+      <ng-container *ngFor="let row of pagedRows; let i = index">
+        <ng-container
+          *ngTemplateOutlet="bodyTemplate || defaultBodyTemplate; context: { $implicit: row, index: i }"
+        ></ng-container>
+        <ng-template #defaultBodyTemplate let-row let-index>
+          <tr class="govuk-table__row">
+            <td *ngIf="rowSelectable" class="govuk-table__cell">
+              <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                <div class="govuk-checkboxes__item">
+                  <input
+                    [attr.aria-label]="'Select checkbox ' + (row[checkboxKey] || i + 1)"
+                    class="govuk-checkboxes__input"
+                    [id]="i"
+                    [name]="i"
+                    type="checkbox"
+                    [value]="row.id"
+                    [checked]="isRowSelected(row)"
+                    (change)="toggleRowSelection(row)"
+                  />
+                  <label class="govuk-label govuk-checkboxes__label" [for]="i">
+                    <span style="display: none">{{ 'Select checkbox ' + (row[checkboxKey] || i + 1) }}</span>
+                  </label>
+                </div>
+              </div>
+            </td>
+            <ng-container
+              *ngTemplateOutlet="rowTemplate || defaultRowTemplate; context: { $implicit: row, index: i }"
+            ></ng-container>
+          </tr>
+        </ng-template>
+      </ng-container>
+      <ng-template #defaultRowTemplate let-row let-index>
+        <td *ngFor="let column of columns" class="govuk-table__cell">
+          {{ row[column.prop] }}
+        </td>
       </ng-template>
-    </ng-container>
-    <ng-template #defaultRowTemplate let-row let-index>
-      <td *ngFor="let column of columns" class="govuk-table__cell">
-        {{ row[column.prop] }}
-      </td>
-    </ng-template>
-  </tbody>
-</table>
+    </tbody>
+  </table>
 
-<app-pagination
-  *ngIf="pagination"
-  [currentPage]="currentPage"
-  [limit]="pageLimit"
-  [total]="rows.length"
-  (changePage)="onPageChanged($event)"
-></app-pagination>
+  <app-pagination
+    *ngIf="pagination"
+    [currentPage]="currentPage"
+    [limit]="pageLimit"
+    [total]="rows.length"
+    (changePage)="onPageChanged($event)"
+  ></app-pagination>
+} @else {
+  <p id="no-data-message" class="govuk-body">{{ noDataMessage }}</p>
+}

@@ -1,7 +1,9 @@
 
 function insertBackLink(){
     $('button#cancel').insertBefore("#attributeVerification");
-    // $(`<a href="${document.referrer}" class="govuk-back-link">Back</a>`).insertBefore("#attributeVerification");
+    $('button#cancel').attr('id', 'backLink');
+    $('#backLink').attr('class', 'govuk-back-link');
+    $('#backLink').text('Back');
 }
 
 function insertInfoBox(){
@@ -31,7 +33,7 @@ function insertTitle(){
 }
 
 function hideTryThisLink(){
-    $('a[href^="otpauth://"]').hide();
+    $('#accountDetailsLink').hide();
 }
 
 function showAccountDetails(){
@@ -61,17 +63,18 @@ function getAccountDetails(){
     if (externalIdMatch && secretMatch) {
         details.externalId = externalIdMatch[1];
         details.secret = secretMatch[1];
-        console.log(details);
+
         return details;
     } else {
         details.externalId = 'Error finding account details';
         details.secret = 'Cannot find secret';
+        
         return details;
     }
 }
 
 // when clicking "Can't scan? Try this", show Account Details
-$('#totpQrCodeControl-text').click(function () {
+$('#main-content').on('click', '#accountDetailsLink', function() {
     showAccountDetails();
 });
 
@@ -84,16 +87,22 @@ function removeText(){
     $('div.intro').remove();  
 }
 
+function amendCantScanLink(){
+    $('a[href^="otpauth://"]').attr('id', 'accountDetailsLink');
+    $('#accountDetailsLink').attr('class', 'govuk-link govuk-link--no-visited-state');
+    $('#accountDetailsLink').removeAttr('href');
+}
+
 function removeLinks(){
     $('a.helpLink').remove();
     $('li.authenticatorInfoControl_li').remove();
-    $('a[href^="otpauth://"]').attr('href', '#');
 }
 
 function removElements(){
     removeLinks();
     removeText();
     removeAppStores();  
+    amendCantScanLink();
 }
 
 function insertElements(){

@@ -31,6 +31,7 @@ export class DataTableComponent<TRow> implements OnChanges {
   @Input() rowSelectable = false;
   @Input() pagination = true;
   @Input() pageLimit = 25;
+  @Input() noDataMessage = 'No data to display.';
   @Input() checkboxKey = '';
   @Output() rowSelect = new EventEmitter<TRow[]>();
 

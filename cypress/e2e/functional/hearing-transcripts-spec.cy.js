@@ -28,9 +28,6 @@ describe('Hearing Transcripts', () => {
   it("doesn't have transcripts against a hearing", () => {
     cy.get('#hearingsTable').contains('11 Oct 2023').click();
     cy.get(':nth-child(2) > .moj-sub-navigation__link').click();
-    cy.get('.tab-container > :nth-child(1) > .govuk-body').should(
-      'contain',
-      'There are no transcripts for this hearing.'
-    );
+    cy.get('#no-data-message').should('contain', 'There are no transcripts for this hearing.');
   });
 });

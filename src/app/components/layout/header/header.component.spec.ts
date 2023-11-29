@@ -26,6 +26,9 @@ describe('HeaderComponent', () => {
     fakeTranscriptionService = { transcriptRequestCounts$: of(4) };
     fakeUserService = {
       isTranscriber: jest.fn(() => false),
+      isJudge: jest.fn(() => false),
+      isApprover: jest.fn(() => false),
+      isRequester: jest.fn(() => false),
     };
 
     await TestBed.configureTestingModule({

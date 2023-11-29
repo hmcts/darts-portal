@@ -63,7 +63,7 @@ export class UploadTranscriptComponent {
           'Request ID': this.requestId,
           'Request method': data.is_manual ? 'Manual' : 'Automated',
           Urgency: data.urgency,
-          'Audio for transcript': `Start time ${startTime} - End time ${endTime}`,
+          'Audio for transcript': startTime && endTime ? `Start time ${startTime} - End time ${endTime}` : '',
           From: data.from,
           Received: received,
           Instructions: data.requestor_comments,
@@ -73,6 +73,7 @@ export class UploadTranscriptComponent {
         endTime,
         hearingId: data.hearing_id,
         caseId: data.case_id,
+        getAudioQueryParams: startTime && endTime ? { startTime, endTime } : null,
       };
 
       return vm;
