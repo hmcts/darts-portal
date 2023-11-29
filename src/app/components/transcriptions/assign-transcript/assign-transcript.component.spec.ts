@@ -8,10 +8,9 @@ describe('AssignTranscriptComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AssignTranscriptComponent]
-    })
-    .compileComponents();
-    
+      imports: [AssignTranscriptComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(AssignTranscriptComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

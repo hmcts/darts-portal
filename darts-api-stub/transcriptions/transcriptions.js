@@ -58,6 +58,48 @@ const mockTranscriptionDetailsNoName = {
   reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
 };
 
+const unassignedTranscriptions = [
+  {
+    transcription_id: 1,
+    case_id: 72345,
+    case_number: 'T12345',
+    courthouse_name: 'Newcastle',
+    hearing_date: '2023-06-10',
+    transcription_type: 'Court Log',
+    status: 'COMPLETED',
+    urgency: 'Overnight',
+    requested_ts: '2023-06-26T13:00:00Z',
+    state_change_ts: '2023-06-27T13:00:00Z',
+    is_manual: true,
+  },
+  {
+    transcription_id: 2,
+    case_id: 32345,
+    case_number: 'T12345',
+    courthouse_name: 'Newcastle',
+    hearing_date: '2023-06-11',
+    transcription_type: 'Court Log',
+    status: 'COMPLETED',
+    urgency: 'Overnight',
+    requested_ts: '2023-06-26T13:00:00Z',
+    state_change_ts: '2023-06-27T13:00:00Z',
+    is_manual: false,
+  },
+  {
+    transcription_id: 3,
+    case_id: 32445,
+    case_number: 'T12345',
+    courthouse_name: 'Newcastle',
+    hearing_date: '2023-06-11',
+    transcription_type: 'Court Log',
+    status: 'COMPLETED',
+    urgency: '3 Working Days',
+    requested_ts: '2023-06-26T13:00:00Z',
+    state_change_ts: '2023-06-27T13:00:00Z',
+    is_manual: false,
+  },
+];
+
 router.get('/types', (req, res) => {
   res.send([
     { trt_id: 0, description: 'Duplicate' },
@@ -83,48 +125,15 @@ router.get('/urgencies', (req, res) => {
   ]);
 });
 
+router.get('/transcriber-counts', (req, res) => {
+  res.send({
+    unassigned: unassignedTranscriptions.length,
+    assigned: 3,
+  });
+});
+
 router.get('/transcriber-view', (req, res) => {
-  res.send([
-    {
-      transcription_id: 1,
-      case_id: 72345,
-      case_number: 'T12345',
-      courthouse_name: 'Newcastle',
-      hearing_date: '2023-06-10',
-      transcription_type: 'Court Log',
-      status: 'COMPLETED',
-      urgency: 'Overnight',
-      requested_ts: '2023-06-26T13:00:00Z',
-      state_change_ts: '2023-06-27T13:00:00Z',
-      is_manual: true,
-    },
-    {
-      transcription_id: 2,
-      case_id: 32345,
-      case_number: 'T12345',
-      courthouse_name: 'Newcastle',
-      hearing_date: '2023-06-11',
-      transcription_type: 'Court Log',
-      status: 'COMPLETED',
-      urgency: 'Overnight',
-      requested_ts: '2023-06-26T13:00:00Z',
-      state_change_ts: '2023-06-27T13:00:00Z',
-      is_manual: false,
-    },
-    {
-      transcription_id: 3,
-      case_id: 32445,
-      case_number: 'T12345',
-      courthouse_name: 'Newcastle',
-      hearing_date: '2023-06-11',
-      transcription_type: 'Court Log',
-      status: 'COMPLETED',
-      urgency: '3 Working Days',
-      requested_ts: '2023-06-26T13:00:00Z',
-      state_change_ts: '2023-06-27T13:00:00Z',
-      is_manual: false,
-    },
-  ]);
+  res.send(unassignedTranscriptions);
 });
 
 router.get('/:transcriptId', (req, res) => {

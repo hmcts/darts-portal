@@ -4,6 +4,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { AuthService } from '@services/auth/auth.service';
 import { HeaderService } from '@services/header/header.service';
+import { TranscriptionService } from '@services/transcription/transcription.service';
 import { UserService } from '@services/user/user.service';
 
 @Component({
@@ -18,11 +19,13 @@ export class HeaderComponent implements DoCheck {
   isAuthenticated = false;
   isVisible$ = this.headerService.isVisible$;
   unreadAudioCount$ = this.audioService.unreadAudioCount$;
+  transcriptRequestCounts$ = this.transcriptionService.transcriptRequestCounts$;
 
   constructor(
     private authService: AuthService,
     private headerService: HeaderService,
-    private audioService: AudioRequestService
+    private audioService: AudioRequestService,
+    private transcriptionService: TranscriptionService
   ) {}
 
   ngDoCheck() {

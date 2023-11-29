@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
+  TranscriberTranscriptionRequestCount,
   TranscriptionDetails,
   TranscriptionRequest,
   TranscriptionType,
@@ -8,12 +9,51 @@ import {
   YourTranscriptionRequests,
 } from '@darts-types/index';
 import { TranscriberTranscriptions } from '@darts-types/transcriber-transcriptions.interface';
-import { Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, map, merge, switchMap, tap, timer } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
 export class TranscriptionService {
   constructor(private http: HttpClient) {}
+
+  // Defined in seconds
+  private readonly POLL_INTERVAL = 60;
+  private readonly TRANSCRIPT_REQUEST_COUNT_POLL_INTERVAL = 30;
+
+  // save unread count in memory
+  private transcriptRequestCount = new BehaviorSubject<number>(0);
+  readonly transcriptRequestCount$ = this.transcriptRequestCount.asObservable();
+
+  transcriptRequests$ = timer(0, this.POLL_INTERVAL * 1000).pipe(
+    switchMap(() => this.getTranscriberTranscriptions()),
+    tap((transcriberTranscriptions) => this.transcriptRequestCount.next(transcriberTranscriptions.length))
+  );
+
+  pollTranscriptionRequestCount$ = timer(0, this.TRANSCRIPT_REQUEST_COUNT_POLL_INTERVAL * 1000).pipe(
+    switchMap(() => this.getUnassignedTranscriptionRequestCounts())
+  );
+
+  // Merge both unread count observables into one
+  transcriptRequestCounts$ = merge(
+    this.pollTranscriptionRequestCount$, // Fetches count from server
+    this.transcriptRequestCount$ // In memory count / manual update
+  );
+
+  getTranscriberTranscriptionRequestCounts(): Observable<TranscriberTranscriptionRequestCount> {
+    return this.http.get<TranscriberTranscriptionRequestCount>('/api/transcriptions/transcriber-counts');
+  }
+
+  getUnassignedTranscriptionRequestCounts(): Observable<number> {
+    return this.http
+      .get<TranscriberTranscriptionRequestCount>('/api/transcriptions/transcriber-counts')
+      .pipe(map((res) => res.unassigned));
+  }
+
+  getAssignedTranscriptRequestCounts(): Observable<number> {
+    return this.http
+      .get<TranscriberTranscriptionRequestCount>('/api/transcriptions/transcriber-counts')
+      .pipe(map((res) => res.assigned));
+  }
 
   getUrgencies(): Observable<TranscriptionUrgency[]> {
     return this.http.get<TranscriptionUrgency[]>('/api/transcriptions/urgencies');

@@ -71,7 +71,7 @@
               ariaCurrentWhenActive="page"
               >Your Audio
               <ng-container *ngIf="unreadAudioCount$ | async as count">
-                <span *ngIf="count > 0" id="notifications" class="moj-notification-badge"
+                <span *ngIf="count > 0" id="unreadAudioCountNotifications" class="moj-notification-badge"
                   ><span class="govuk-visually-hidden">Ready requests not viewed count: </span>{{ count }}</span
                 >
               </ng-container>
@@ -85,8 +85,14 @@
                 routerLink="transcription-requests"
                 routerLinkActive="active"
                 ariaCurrentWhenActive="page"
-                >Transcript requests</a
-              >
+                >Transcript requests
+                <ng-container *ngIf="transcriptRequestCounts$ | async as count">
+                  <span *ngIf="count > 0" id="transcriptRequestNotifications" class="moj-notification-badge"
+                    ><span class="govuk-visually-hidden">Transcript requests not assigned count: </span
+                    >{{ count }}</span
+                  >
+                </ng-container>
+              </a>
             </li>
           } @else {
             <li class="moj-primary-navigation__item">
@@ -95,8 +101,8 @@
                 routerLink="transcriptions"
                 routerLinkActive="active"
                 ariaCurrentWhenActive="page"
-                >Your Transcripts</a
-              >
+                >Your Transcripts
+              </a>
             </li>
           }
         </ul>
