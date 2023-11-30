@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { LoadingComponent } from '@common/loading/loading.component';
@@ -26,8 +26,7 @@ import { TranscriptionService } from '@services/transcription/transcription.serv
   ],
 })
 export class YourWorkComponent {
-  router = inject(Router);
-  transcriptService = inject(TranscriptionService);
+  transcriptionService = inject(TranscriptionService);
 
   columns: DatatableColumn[] = [
     { name: 'Case ID', prop: 'case_number', sortable: true },
@@ -40,7 +39,7 @@ export class YourWorkComponent {
 
   readyColumns = [...this.columns, { name: '', prop: '' }]; // Empty column header for view link
 
-  requests$ = this.transcriptService.getWorkRequests(true).pipe(shareReplay(1));
+  requests$ = this.transcriptionService.getWorkRequests(true).pipe(shareReplay(1));
 
   requesterRequests$ = combineLatest({
     todoRequests: this.requests$.pipe(map((requests) => this.filterTodoRequests(requests))),

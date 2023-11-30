@@ -1,5 +1,4 @@
 import { DatePipe, DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
-import { Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { WorkRequest } from '@darts-types/index';
@@ -7,10 +6,7 @@ import { of } from 'rxjs';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 
 import { YourWorkComponent } from './your-work.component';
-
-const mockRouter = {
-  navigate: jest.fn(),
-};
+import { RouterTestingModule } from '@angular/router/testing';
 
 const MOCK_WORK_REQUESTS: WorkRequest[] = [
   {
@@ -56,11 +52,10 @@ describe('YourWorkComponent', () => {
   describe('When Work Requests returned', () => {
     beforeEach(async () => {
       await TestBed.configureTestingModule({
-        imports: [YourWorkComponent, HttpClientTestingModule],
+        imports: [YourWorkComponent, HttpClientTestingModule, RouterTestingModule],
         providers: [
           DatePipe,
           { provide: DATE_PIPE_DEFAULT_OPTIONS, useValue: { timezone: 'utc' } },
-          { provide: Router, useValue: mockRouter },
           { provide: TranscriptionService, useValue: fakeTranscriptService },
         ],
       }).compileComponents();
@@ -106,7 +101,6 @@ describe('YourWorkComponent', () => {
         providers: [
           DatePipe,
           { provide: DATE_PIPE_DEFAULT_OPTIONS, useValue: { timezone: 'utc' } },
-          { provide: Router, useValue: mockRouter },
           { provide: TranscriptionService, useValue: fakeTranscriptServiceNoRequests },
         ],
       }).compileComponents();
