@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   TranscriberRequestCounts,
@@ -6,6 +6,7 @@ import {
   TranscriptionRequest,
   TranscriptionType,
   TranscriptionUrgency,
+  WorkRequests,
   YourTranscriptionRequests,
 } from '@darts-types/index';
 import { TranscriberTranscriptions } from '@darts-types/transcriber-transcriptions.interface';
@@ -84,6 +85,19 @@ export class TranscriptionService {
             hearing_date: r.hearing_date + 'T00:00:00Z',
           })),
         };
+      })
+    );
+  }
+
+  getWorkRequests(assigned = true): Observable<WorkRequests> {
+    let params = new HttpParams();
+    params = params.set('assigned', assigned);
+    return this.http.get<WorkRequests>('/api/transcriptions/transcriber-view', { params }).pipe(
+      map((workRequests) => {
+        return workRequests.map((workRequest) => ({
+          ...workRequest,
+          hearing_date: workRequest.hearing_date + 'T00:00:00Z',
+        }));
       })
     );
   }

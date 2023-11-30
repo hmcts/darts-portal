@@ -107,7 +107,7 @@ function addVerificationControlErrors(screen){
 }
 
 function addItemLevelErrorClasses(screen) {
-  if (screen === 'reset') {
+  if (screen === 'reset' || screen === 'mfa') {
     const errs = [];
     const infoElem = $('.error.itemLevel.show').each(function(){
         errs.push($(this).text());        
