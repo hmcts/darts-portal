@@ -1,10 +1,13 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { TestBed } from '@angular/core/testing';
-import { TranscriptionRequest } from '@darts-types/transcription-request.interface';
-
-import { TranscriptionDetails } from '@darts-types/transcription-details.interface';
-import { UserTranscriptionRequest, YourTranscriptionRequests } from '@darts-types/user-transcription-request.interface';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import {
+  TranscriptionDetails,
+  TranscriptionRequest,
+  UserTranscriptionRequest,
+  YourTranscriptionRequests,
+} from '@darts-types/index';
 import { WorkRequest } from '@darts-types/work-request.interface';
+import { of } from 'rxjs';
 import { COMPLETED_TRANSCRIPTION_STATUS_ID, TranscriptionService } from './transcription.service';
 
 describe('TranscriptionService', () => {
@@ -160,5 +163,56 @@ describe('TranscriptionService', () => {
       service.uploadTranscript(transcriptId, file);
       expect(spy).toHaveBeenCalledWith(`/api/transcriptions/${transcriptId}/document`, formData);
     });
+  });
+
+  describe('#deleteRequest', () => {
+    it('should call the correct endpoint', () => {
+      const spy = jest.spyOn(service['http'], 'patch');
+      service.deleteRequest([1]);
+      expect(spy).toHaveBeenCalledWith('api/transcriptions', [
+        {
+          transcription_id: 1,
+          hide_request_from_requestor: true,
+        },
+      ]);
+    });
+  });
+
+  describe('#getTranscriptionRequests', () => {
+    it('should call the correct endpoint', () => {
+      const spy = jest.spyOn(service['http'], 'get');
+      service.getTranscriptionRequests();
+      expect(spy).toHaveBeenCalledWith('/api/transcriptions');
+    });
+
+    it('should map hearing date to UTC timestamp', fakeAsync(() => {
+      jest.spyOn(service['http'], 'get').mockReturnValue(
+        of({
+          approver_transcriptions: [
+            {
+              hearing_date: '2023-06-10',
+            },
+          ],
+          requester_transcriptions: [
+            {
+              hearing_date: '2023-06-12',
+            },
+          ],
+        })
+      );
+
+      let approverDate!: string;
+      let requesterDate!: string;
+
+      service.getTranscriptionRequests().subscribe((data) => {
+        approverDate = data.approver_transcriptions[0].hearing_date;
+        requesterDate = data.requester_transcriptions[0].hearing_date;
+      });
+
+      tick();
+
+      expect(approverDate).toEqual('2023-06-10T00:00:00Z');
+      expect(requesterDate).toEqual('2023-06-12T00:00:00Z');
+    }));
   });
 });

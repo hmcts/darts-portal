@@ -69,6 +69,16 @@ export class TranscriptionService {
     );
   }
 
+  deleteRequest(transcriptionIds: number[]) {
+    return this.http.patch(
+      `api/transcriptions`,
+      transcriptionIds.map((id) => ({
+        transcription_id: id,
+        hide_request_from_requestor: true,
+      }))
+    );
+  }
+
   uploadTranscript(transcriptId: string, file: File) {
     const formData = new FormData();
     formData.append('transcript', file, file.name);

@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
+import { DeleteComponent } from '@common/delete/delete.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { DatatableColumn, UserAudioRequest, UserAudioRequestRow } from '@darts-types/index';
@@ -11,7 +12,6 @@ import { UnreadIconDirective } from '@directives/unread-icon.directive';
 import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { HeaderService } from '@services/header/header.service';
 import { BehaviorSubject, Observable, combineLatest, forkJoin, map, shareReplay, switchMap } from 'rxjs';
-import { AudioDeleteComponent } from './audio-delete/audio-delete.component';
 
 @Component({
   selector: 'app-audios',
@@ -27,7 +27,7 @@ import { AudioDeleteComponent } from './audio-delete/audio-delete.component';
     UnreadIconDirective,
     RouterLink,
     TabDirective,
-    AudioDeleteComponent,
+    DeleteComponent,
   ],
 })
 export class AudiosComponent {
