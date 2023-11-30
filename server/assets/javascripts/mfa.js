@@ -1,4 +1,3 @@
-
 function insertBackLink(){
     $('button#cancel').insertBefore("#attributeVerification");
     $('button#cancel').attr('id', 'backLink');
@@ -29,7 +28,18 @@ function insertInfoBox(){
 }
 
 function insertTitle(){
+    isTotp() ? insertTotpTitle() : insertMfaTitle();
+}
+
+function insertMfaTitle(){
     $("<h1>Authenticator app</h1>").insertBefore("#attributeList");
+}
+
+function insertTotpTitle(){
+    const title = $("#QrCodeVerifyInstruction_label");
+    title.hide();
+
+    $(`<h1>${title.text()}</h1>`).insertBefore("#attributeList");
 }
 
 function hideTryThisLink(){
@@ -63,11 +73,12 @@ function getAccountDetails(){
     if (externalIdMatch && secretMatch) {
         details.externalId = externalIdMatch[1];
         details.secret = secretMatch[1];
-        console.log(details);
+
         return details;
     } else {
         details.externalId = 'Error finding account details';
         details.secret = 'Cannot find secret';
+        
         return details;
     }
 }
@@ -105,9 +116,13 @@ function removElements(){
 }
 
 function insertElements(){
-    insertTitle();
     insertBackLink();
-    insertInfoBox();
+    insertTitle();
+    isTotp() && insertInfoBox();
+}
+
+function isTotp(){
+    return $('input#otpCode').length ? true : false;
 }
 
 function display(){
@@ -116,3 +131,30 @@ function display(){
 }
 
 display();
+
+$('#main-content').on('input', '#otpCode', function() {
+    setTimeout(() => {
+        removeErrors();    
+        addItemLevelErrorClasses('mfa');
+    }, 50);
+});
+
+$('#main-content').on('click', '#continue', function() {
+    if (isTotp()){
+        removeErrors();
+        addItemLevelErrorClasses('mfa');
+    }
+});
+
+function displayErrors(){
+    //FIGURE OUT WHAT I NEED FROM DISPLAYERRORS TO HANDLE ERRORS ON REQUEST
+    //MAY NEED SOMETHING TO CLEAR ERRORS ON SUCCESS
+
+    //NEED TO MOVE SUMMARY BOX BELOW BACKLINK
+    console.log('displaying')
+}
+
+// wait a second before trying to do this, in case the JS in head isn't loaded yet
+setTimeout(function() {
+    wrapXhrOpen('SelfAsserted', '"status":"400"', displayErrors);
+}, 1000);

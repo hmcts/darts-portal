@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DateTime } from 'luxon';
 
+import { By } from '@angular/platform-browser';
 import { DataTableComponent, SortingInterface } from './data-table.component';
 
 describe('DataTableComponent', () => {
@@ -450,5 +451,16 @@ describe('DataTableComponent', () => {
       expect(component.selectedRows).toEqual([]);
       expect(eventsSelectSpy).toHaveBeenCalledWith(component.selectedRows);
     });
+  });
+
+  it('should show no data message when no rows are present', () => {
+    component.rows = [];
+    component.noDataMessage = 'No data';
+
+    fixture.detectChanges();
+
+    const noDataMessage = fixture.debugElement.query(By.css('#no-data-message'));
+    expect(noDataMessage).toBeTruthy();
+    expect(noDataMessage.nativeElement.textContent).toContain('No data');
   });
 });

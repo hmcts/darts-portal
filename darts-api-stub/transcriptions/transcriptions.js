@@ -157,6 +157,37 @@ router.get('/urgencies', (req, res) => {
   ]);
 });
 
+router.get('/transcriber-view', (req, res) => {
+  res.send([
+    {
+      transcription_id: 1,
+      case_id: 3,
+      case_number: 'T2023453422',
+      courthouse_name: 'Reading',
+      hearing_date: '2023-08-06',
+      transcription_type: 'Court Log',
+      status: 'With Transcriber',
+      urgency: 'Overnight',
+      requested_ts: '2023-08-12T13:00:00Z',
+      state_change_ts: '2023-08-13T13:00:00Z',
+      is_manual: true,
+    },
+    {
+      transcription_id: 1,
+      case_id: 3,
+      case_number: 'T2023453436',
+      courthouse_name: 'Swansea',
+      hearing_date: '2023-06-10',
+      transcription_type: 'Court Log',
+      status: 'COMPLETE',
+      urgency: 'Up to 3 working days',
+      requested_ts: '2023-06-26T13:00:00Z',
+      state_change_ts: '2023-06-27T13:00:00Z',
+      is_manual: true,
+    },
+  ]);
+});
+
 router.get('/:transcriptId', (req, res) => {
   switch (req.params.transcriptId) {
     case '403':

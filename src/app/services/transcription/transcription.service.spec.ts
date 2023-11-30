@@ -6,6 +6,7 @@ import {
   UserTranscriptionRequest,
   YourTranscriptionRequests,
 } from '@darts-types/index';
+import { WorkRequest } from '@darts-types/work-request.interface';
 import { of } from 'rxjs';
 import { COMPLETED_TRANSCRIPTION_STATUS_ID, TranscriptionService } from './transcription.service';
 
@@ -68,6 +69,25 @@ describe('TranscriptionService', () => {
       });
 
       const req = httpMock.expectOne('/api/transcriptions');
+      req.flush(mockRequests);
+    });
+  });
+
+  describe('#getWorkRequests', () => {
+    it('should transform hearing dates', (done) => {
+      const mockRequests = [
+        { transcription_id: 1, hearing_date: '2023-11-01' },
+        { transcription_id: 2, hearing_date: '2023-11-02' },
+      ] as Partial<WorkRequest>;
+
+      service.getWorkRequests().subscribe((transformedRequests) => {
+        expect(transformedRequests[0].hearing_date).toBe('2023-11-01T00:00:00Z');
+        expect(transformedRequests[1].hearing_date).toBe('2023-11-02T00:00:00Z');
+
+        done();
+      });
+
+      const req = httpMock.expectOne('/api/transcriptions/transcriber-view?assigned=true');
       req.flush(mockRequests);
     });
   });
