@@ -1,1 +1,64 @@
-<app-govuk-heading>Assign Transcript Order</app-govuk-heading>
+<app-breadcrumb>
+  <ng-container *breadcrumb="['../']">Transcript Requests</ng-container>
+  <ng-container *breadcrumb="['.']">{{ transcriptId }}</ng-container>
+</app-breadcrumb>
+
+@if (vm$ | async; as vm) {
+  @if (vm.reportingRestriction) {
+    <app-reporting-restriction [reportingRestriction]="vm.reportingRestriction"></app-reporting-restriction>
+  }
+  <app-govuk-heading>Transcript Request</app-govuk-heading>
+
+  <app-details-table title="Case details" [details]="vm.caseDetails" />
+
+  <app-details-table title="Hearing details" [details]="vm.hearingDetails" />
+
+  <div class="govuk-form-group">
+    <fieldset class="govuk-fieldset">
+      <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+        <h1 class="govuk-fieldset__heading">Choose an action</h1>
+      </legend>
+      <div class="govuk-radios" data-module="govuk-radios">
+        <div class="govuk-radios__item">
+          <input
+            class="govuk-radios__input"
+            id="transcriptionOption"
+            name="transcriptionOptions"
+            type="radio"
+            value="assignToMe"
+          />
+          <label class="govuk-label govuk-radios__label" for="transcriptionOption"> Assign to me </label>
+        </div>
+        <div class="govuk-radios__item">
+          <input
+            class="govuk-radios__input"
+            id="transcriptionOption-2"
+            name="transcriptionOptions"
+            type="radio"
+            value="assignToMeAndGetAudio"
+          />
+          <label class="govuk-label govuk-radios__label" for="transcriptionOption-2">
+            Assign to me and get audio
+          </label>
+        </div>
+        <div class="govuk-radios__item">
+          <input
+            class="govuk-radios__input"
+            id="transcriptionOption-3"
+            name="transcriptionOptions"
+            type="radio"
+            value="assignToMeAndUploadATranscript"
+          />
+          <label class="govuk-label govuk-radios__label" for="transcriptionOption-3">
+            Assign to me and upload a transcript
+          </label>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+
+  <div class="govuk-button-group">
+    <button id="submit-button" class="govuk-button">Continue</button>
+    <a routerLink="../" class="govuk-link">Cancel</a>
+  </div>
+}

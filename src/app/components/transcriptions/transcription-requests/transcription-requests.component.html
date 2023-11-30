@@ -18,7 +18,7 @@
         <span [ngClass]="row.urgency === 'Overnight' ? 'moj-badge moj-badge--red' : ''">{{ row.urgency }}</span>
       </td>
       <td class="govuk-table__cell">
-        <a [routerLink]="'assign-transcript'">View</a>
+        <a [routerLink]="[row.transcription_id]">View</a>
       </td>
     </ng-template>
   </app-data-table>
