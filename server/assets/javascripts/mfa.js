@@ -39,7 +39,7 @@ function insertTotpTitle(){
     const title = $("#QrCodeVerifyInstruction_label");
     title.hide();
 
-    $(`<h1>${titleTxt.text()}</h1>`).insertBefore("#attributeList");
+    $(`<h1>${title.text()}</h1>`).insertBefore("#attributeList");
 }
 
 function hideTryThisLink(){
