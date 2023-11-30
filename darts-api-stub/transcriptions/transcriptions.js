@@ -25,7 +25,7 @@ const yourTranscriptionsStub = {
       hearing_date: '2023-06-10',
       transcription_type: 'Court log',
       status: 'With Transcriber',
-      urgency: '3 Working days',
+      urgency: 'Up to 3 working days',
       requested_ts: '2023-06-26T13:00:00Z',
     },
     {
