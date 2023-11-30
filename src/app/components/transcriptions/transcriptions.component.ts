@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
+import { DeleteComponent } from '@common/delete/delete.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
@@ -12,7 +13,7 @@ import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { UserService } from '@services/user/user.service';
-import { combineLatest, map, shareReplay } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, shareReplay, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-transcriptions',
@@ -27,6 +28,7 @@ import { combineLatest, map, shareReplay } from 'rxjs';
     TableRowTemplateDirective,
     RouterLink,
     TabDirective,
+    DeleteComponent,
     ForbiddenComponent,
     GovukHeadingComponent,
   ],
@@ -46,14 +48,22 @@ export class TranscriptionsComponent {
     { name: 'Status', prop: 'status', sortable: true },
     { name: 'Urgency', prop: 'urgency', sortable: true },
   ];
-
   readyColumns = [...this.columns, { name: '', prop: '' }]; //Empty column header for view link
   approverColumns = this.readyColumns.map((c) =>
     // swap status column for request id column
     c.name === 'Status' ? { name: 'Request ID', prop: 'transcription_id', sortable: true } : c
   );
+  deleteColumns = this.columns.map((c) => ({ ...c, sortable: false }));
 
-  requests$ = this.transcriptService.getTranscriptionRequests().pipe(shareReplay(1));
+  isDeleting = false;
+  selectedRequests = [] as UserTranscriptionRequest[];
+
+  private refresh$ = new BehaviorSubject<void>(undefined);
+
+  requests$ = this.refresh$.pipe(
+    switchMap(() => this.transcriptService.getTranscriptionRequests()),
+    shareReplay(1)
+  );
 
   requesterRequests$ = combineLatest({
     inProgressRequests: this.requests$.pipe(
@@ -62,6 +72,7 @@ export class TranscriptionsComponent {
     completedRequests: this.requests$.pipe(
       map((requests) => this.filterReadyRequests(requests.requester_transcriptions))
     ),
+    approverRequests: this.requests$.pipe(map((requests) => requests.approver_transcriptions)),
   });
   approverRequests$ = this.requests$.pipe(map((requests) => requests.approver_transcriptions));
 
@@ -71,6 +82,31 @@ export class TranscriptionsComponent {
 
   private filterReadyRequests(requests: UserTranscriptionRequest[]): UserTranscriptionRequest[] {
     return requests.filter((r) => r.status === 'Complete' || r.status === 'Rejected');
+  }
+
+  onDeleteClicked() {
+    if (this.selectedRequests.length) {
+      this.isDeleting = true;
+    }
+  }
+
+  onDeleteConfirmed() {
+    const idsToDelete = this.selectedRequests.map((s) => s.transcription_id);
+
+    this.transcriptService.deleteRequest(idsToDelete).subscribe({
+      next: () => (this.isDeleting = false),
+      error: () => (this.isDeleting = false),
+    });
+
+    this.refresh$.next();
+  }
+
+  onDeleteCancelled() {
+    this.isDeleting = false;
+  }
+
+  onTabChanged() {
+    this.selectedRequests = [];
   }
 
   isRequester = this.userService.isRequester();

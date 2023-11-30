@@ -74,6 +74,7 @@ const MOCK_REQUESTS = {
 
 const mockTranscriptionService = {
   getTranscriptionRequests: () => of(MOCK_REQUESTS),
+  deleteRequest: () => of({} as Response),
 };
 
 const appConfigServiceMock = {
@@ -202,6 +203,51 @@ describe('TranscriptionsComponent', () => {
     expect(cells[5].textContent).toEqual('1');
     expect(cells[6].textContent).toEqual('3 Working days');
     expect(cells[7].textContent).toEqual('View');
+  });
+
+  describe('onDeleteClicked', () => {
+    it('should set isDeleting to true if requests are selected', () => {
+      fixture.detectChanges();
+      component.selectedRequests = [{} as UserTranscriptionRequest];
+      component.onDeleteClicked();
+      expect(component.isDeleting).toEqual(true);
+    });
+    it('should not set isDeleting to true if no requests are selected', () => {
+      fixture.detectChanges();
+      component.selectedRequests = [];
+      component.onDeleteClicked();
+      expect(component.isDeleting).toEqual(false);
+    });
+  });
+
+  describe('onDeleteConfirmed', () => {
+    it('should call deleteRequest for each selected request', () => {
+      fixture.detectChanges();
+      const spy = jest.spyOn(component.transcriptService, 'deleteRequest');
+      component.selectedRequests = [
+        { transcription_id: 1 } as UserTranscriptionRequest,
+        { transcription_id: 2 } as UserTranscriptionRequest,
+      ];
+      component.onDeleteConfirmed();
+
+      expect(spy).toHaveBeenCalledWith([1, 2]);
+    });
+    it('should set isDeleting to false', () => {
+      fixture.detectChanges();
+      component.selectedRequests = [{} as UserTranscriptionRequest];
+      component.isDeleting = true;
+      component.onDeleteConfirmed();
+      expect(component.isDeleting).toEqual(false);
+    });
+  });
+
+  describe('#onDeleteCancelled', () => {
+    it('should set isDeleting to false', () => {
+      fixture.detectChanges();
+      component.isDeleting = true;
+      component.onDeleteCancelled();
+      expect(component.isDeleting).toEqual(false);
+    });
   });
 
   it('Tabs if both APPROVER and REQUESTOR', () => {

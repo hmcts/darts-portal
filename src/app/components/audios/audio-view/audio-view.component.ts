@@ -4,6 +4,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AudioPlayerComponent } from '@common/audio-player/audio-player.component';
 import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
 import { DataTableComponent } from '@common/data-table/data-table.component';
+import { DeleteComponent } from '@common/delete/delete.component';
 import { PlayButtonComponent } from '@common/play-button/play-button.component';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
 import { Case } from '@darts-types/case.interface';
@@ -18,7 +19,6 @@ import { ErrorMessageService } from '@services/error/error-message.service';
 import { HearingService } from '@services/hearing/hearing.service';
 import { DateTime } from 'luxon';
 import { combineLatest, map, Observable } from 'rxjs';
-import { AudioDeleteComponent } from '../audio-delete/audio-delete.component';
 import { ValidationErrorSummaryComponent } from './../../common/validation-error-summary/validation-error-summary.component';
 
 @Component({
@@ -28,7 +28,7 @@ import { ValidationErrorSummaryComponent } from './../../common/validation-error
     CommonModule,
     RouterLink,
     ReportingRestrictionComponent,
-    AudioDeleteComponent,
+    DeleteComponent,
     BreadcrumbComponent,
     BreadcrumbDirective,
     DataTableComponent,

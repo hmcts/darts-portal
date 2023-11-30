@@ -12,21 +12,31 @@
   </td>
 </ng-template>
 
-<app-govuk-heading>Your transcripts</app-govuk-heading>
+@if (isDeleting) {
+  <app-delete [numberOfItems]="selectedRequests.length" (confirm)="onDeleteConfirmed()" (cancel)="onDeleteCancelled()">
+    <app-data-table id="deletionTable" [rows]="selectedRequests" [columns]="deleteColumns">
+      <ng-template [tableRowTemplate]="selectedRequests" let-row>
+        <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
+      </ng-template>
+    </app-data-table>
+  </app-delete>
+} @else {
+  <app-govuk-heading>Your transcripts</app-govuk-heading>
 
-@if (isApprover && (isRequester || isJudge)) {
-  <app-tabs>
-    <div *tab="'Transcript requests'">
-      <ng-template [ngTemplateOutlet]="RequesterTemplate"></ng-template>
-    </div>
-    <div *tab="'Transcript requests to review'">
-      <ng-template [ngTemplateOutlet]="ApproverTemplate"></ng-template>
-    </div>
-  </app-tabs>
-} @else if (isApprover) {
-  <ng-template [ngTemplateOutlet]="ApproverTemplate"></ng-template>
-} @else if (isApprover || isRequester || isJudge) {
-  <ng-template [ngTemplateOutlet]="RequesterTemplate"></ng-template>
+  @if (isApprover && (isRequester || isJudge)) {
+    <app-tabs>
+      <div *tab="'Transcript requests'">
+        <ng-template [ngTemplateOutlet]="RequesterTemplate"></ng-template>
+      </div>
+      <div *tab="'Transcript requests to review'">
+        <ng-template [ngTemplateOutlet]="ApproverTemplate"></ng-template>
+      </div>
+    </app-tabs>
+  } @else if (isApprover) {
+    <ng-template [ngTemplateOutlet]="ApproverTemplate"></ng-template>
+  } @else if (isApprover || isRequester || isJudge) {
+    <ng-template [ngTemplateOutlet]="RequesterTemplate"></ng-template>
+  }
 }
 
 <ng-template #RequesterTemplate>
@@ -53,7 +63,9 @@
       <h2 class="govuk-heading-m">Ready</h2>
       <div class="action-container">
         <div class="govuk-hint">Select to apply actions</div>
-        <button id="delete-button" class="govuk-button govuk-button--secondary">Remove transcript request</button>
+        <button id="delete-button" class="govuk-button govuk-button--secondary" (click)="onDeleteClicked()">
+          Remove transcript request
+        </button>
       </div>
       <app-data-table
         id="ready-table"
@@ -62,6 +74,7 @@
         [pagination]="true"
         [pageLimit]="15"
         [rowSelectable]="true"
+        (rowSelect)="selectedRequests = $event"
       >
         <ng-template [tableRowTemplate]="vm.completedRequests" let-row>
           <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
