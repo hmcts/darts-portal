@@ -61,7 +61,8 @@ const protectedRoutes: Routes = [
       ),
   },
   {
-    path: 'transcription-requests/assign-transcript',
+    path: 'transcription-requests/:transcriptId',
+    data: { allowedRoles: ['TRANSCRIBER'] },
     loadComponent: () =>
       import('./components/transcriptions/assign-transcript/assign-transcript.component').then(
         (c) => c.AssignTranscriptComponent
