@@ -31,7 +31,6 @@ export class AssignTranscriptComponent {
   datePipe = inject(DatePipe);
 
   vm$ = this.transcriptionService.getTranscriptionDetails(this.transcriptId).pipe(
-    // tap((data: TranscriptionDetails) => (this.isManualRequest = data.is_manual)),
     map((data: TranscriptionDetails) => {
       const hearingDate = this.datePipe.transform(data.hearing_date, 'dd MMM yyyy');
       const startTime = this.datePipe.transform(data.transcription_start_ts, 'HH:mm:ss');
