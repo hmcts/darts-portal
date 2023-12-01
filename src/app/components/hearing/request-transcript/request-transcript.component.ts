@@ -173,6 +173,7 @@ export class RequestTranscriptComponent implements OnInit, OnDestroy {
       hearing_id: this.hearingId,
       transcription_type_id: this.transcriptionTypeFormControl.value ? +this.transcriptionTypeFormControl.value : 0,
       urgency_id: this.urgencyFormControl.value ? +this.urgencyFormControl.value : 0,
+      transcription_urgency_id: this.urgencyFormControl.value ? +this.urgencyFormControl.value : 0,
       comment: moreDetail,
       start_date_time: this.audioTimes?.startTime ? this.audioTimes?.startTime?.toISO()?.split('.')[0] + 'Z' : '',
       end_date_time: this.audioTimes?.startTime ? this.audioTimes?.endTime?.toISO()?.split('.')[0] + 'Z' : '',

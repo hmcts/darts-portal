@@ -246,6 +246,7 @@ describe('RequestTranscriptComponent', () => {
         start_date_time: '2023-02-21T13:00:00Z',
         transcription_type_id: 3,
         urgency_id: 2,
+        transcription_urgency_id: 2,
       };
 
       component.onConfirm('test');
@@ -327,6 +328,7 @@ describe('RequestTranscriptComponent', () => {
         hearing_id: 1,
         start_date_time: '2023-02-21T13:00:00Z',
         transcription_type_id: 3,
+        transcription_urgency_id: 2,
         urgency_id: 2,
       };
 
