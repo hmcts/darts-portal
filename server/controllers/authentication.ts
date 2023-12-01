@@ -1,8 +1,8 @@
-import * as express from 'express';
-import { Router, Request, Response, NextFunction } from 'express';
 import axios from 'axios';
-import config from 'config';
 import bodyParser from 'body-parser';
+import config from 'config';
+import * as express from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 import SecurityToken from 'server/types/classes/securityToken';
 import { AuthenticationUtils } from '../utils/authentication-utils';
 import * as Base64 from '../utils/base64';
@@ -157,9 +157,9 @@ function getIsAuthenticated(disableAuthentication = false): (req: Request, res: 
     res.header('Cache-Control', 'no-store, must-revalidate');
 
     if (!AuthenticationUtils.isJwtExpired(req.session?.securityToken?.accessToken) || disableAuthentication) {
-      res.status(200).send();
+      res.status(200).send(true);
     } else {
-      res.status(401).send();
+      res.status(200).send(false);
     }
   };
 }
