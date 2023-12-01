@@ -22,9 +22,9 @@ export class AuthService {
   checkIsAuthenticated(): Observable<boolean> {
     // Timestamp cache busting string eg: /auth/is-authenticated?t=1701426443869
     return this.http.get<boolean>(`${IS_AUTH_PATH}`, { params: { t: new Date().getTime() } }).pipe(
-      map(() => {
-        this.isAuthenticated = true;
-        return true;
+      map((isAuthenticated) => {
+        this.isAuthenticated = isAuthenticated;
+        return this.isAuthenticated;
       }),
       catchError(() => {
         this.isAuthenticated = false;
