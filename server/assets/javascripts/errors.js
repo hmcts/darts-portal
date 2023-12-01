@@ -49,7 +49,14 @@ function addGovukErrorSummary(headingErrors) {
     errorSummaryDiv.appendChild(roleAlertDiv);
   
     const mainForm = document.getElementById('darts-container');
-    mainForm.prepend(errorSummaryDiv);
+    const backLink = document.getElementById('backLink');
+
+    //If back link exists, insert after
+    if (backLink) {
+      backLink.insertAdjacentElement('afterend', errorSummaryDiv);
+    } else {
+      mainForm.prepend(errorSummaryDiv);
+    }
   }
 }
 
@@ -60,7 +67,7 @@ function createErrorSummaryBox(screen) {
     const verifErrorElems = document.getElementsByClassName('verificationErrorText error');
     errorElems = [...verifErrorElems];
   }
-  if (screen === 'login' || screen === 'change_password') {
+  if (screen === 'login' || screen === 'change_password' || screen === 'mfa') {
     // login and change password page errors
     let itemLevelSelector = 'error itemLevel';
     if (screen === 'change_password') {
@@ -103,6 +110,24 @@ function addVerificationControlErrors(screen){
     });
     //Set old error message to hidden 
     $('#emailVerificationControl_error_message').hide();
+  }
+
+  if (screen === 'mfa'){
+    $('#otpCode_label').parent().addClass('darts-error');
+    $('#claimVerificationServerError').each(function() {
+      if ($(this).css('display') !== 'none') {
+        const err = $(this).clone().addClass('errorText').css('display', 'block')
+        //Replace if error already exists otherwise insert after
+        const verifErrMsg = $('#otpCode_label').parent().children('#claimVerificationServerError')
+        if (verifErrMsg.length){
+          verifErrMsg.replaceWith(err);
+        } else {
+          err.insertAfter('#otpCode_label');
+        }
+      }
+    });
+    //Set old error message to hidden 
+    $('#claimVerificationServerError').hide();
   }
 }
 
