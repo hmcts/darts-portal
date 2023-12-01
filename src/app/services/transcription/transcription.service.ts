@@ -10,7 +10,7 @@ import {
   YourTranscriptionRequests,
 } from '@darts-types/index';
 import { TranscriberTranscriptions } from '@darts-types/transcriber-transcriptions.interface';
-import { BehaviorSubject, timer, switchMap, tap, merge, map } from 'rxjs';
+import { BehaviorSubject, map, merge, switchMap, tap, timer } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 
 export const COMPLETED_TRANSCRIPTION_STATUS_ID = 6;
@@ -136,6 +136,12 @@ export class TranscriptionService {
   completeTranscriptionRequest(transcriptId: number) {
     return this.http.patch(`/api/transcriptions/${transcriptId}`, {
       transcription_status_id: COMPLETED_TRANSCRIPTION_STATUS_ID,
+    });
+  }
+
+  assignTranscript(transcriptId: number) {
+    return this.http.patch(`/api/transcriptions/${transcriptId}`, {
+      transcription_status_id: 5,
     });
   }
 }
