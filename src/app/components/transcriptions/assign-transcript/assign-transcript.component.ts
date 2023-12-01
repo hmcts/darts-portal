@@ -39,7 +39,7 @@ export class AssignTranscriptComponent {
       const received = this.datePipe.transform(data.received, 'dd MMM yyyy HH:mm:ss');
 
       const vm = {
-        reportingRestriction: data.reporting_restriction || null,
+        reportingRestriction: data.reporting_restriction ?? null,
         caseDetails: {
           'Case ID': data.case_number,
           Courthouse: data.courthouse,
