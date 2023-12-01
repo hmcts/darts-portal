@@ -51,7 +51,7 @@ export class AssignTranscriptComponent {
           'Request ID': this.transcriptId,
           'Request method': data.is_manual ? 'Manual' : 'Automated',
           Urgency: data.urgency,
-          'Audio for transcript': `Start time ${startTime} - End time ${endTime}`,
+          'Audio for transcript': startTime && endTime ? `Start time ${startTime} - End time ${endTime}` : '',
           From: data.from,
           Received: received,
           Instructions: data.requestor_comments,
