@@ -7,7 +7,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { TranscriptionDetails } from '@darts-types/transcription-details.interface';
-import { map } from 'rxjs';
+import { map, tap } from 'rxjs';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
 
 @Component({
@@ -29,8 +29,10 @@ export class AssignTranscriptComponent {
   transcriptId = inject(ActivatedRoute).snapshot.params.transcriptId;
   transcriptionService = inject(TranscriptionService);
   datePipe = inject(DatePipe);
+  caseNumber!: string;
 
   vm$ = this.transcriptionService.getTranscriptionDetails(this.transcriptId).pipe(
+    tap((data: TranscriptionDetails) => (this.caseNumber = data.case_number)),
     map((data: TranscriptionDetails) => {
       const hearingDate = this.datePipe.transform(data.hearing_date, 'dd MMM yyyy');
       const startTime = this.datePipe.transform(data.transcription_start_ts, 'HH:mm:ss');
