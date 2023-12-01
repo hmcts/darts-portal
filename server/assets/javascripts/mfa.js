@@ -1,5 +1,6 @@
 function insertBackLink(){
-    $('button#cancel').insertBefore('#darts-container :first-child');
+    var cancelBtn = $('button#cancel');
+    $('#darts-container').prepend(cancelBtn);
     $('button#cancel').attr('id', 'backLink');
     $('#backLink').attr('class', 'govuk-back-link');
     $('#backLink').text('Back');
