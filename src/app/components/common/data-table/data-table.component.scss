@@ -6,10 +6,12 @@
   border-bottom: none;
 }
 
-.govuk-table__header,
-.govuk-table__cell {
-  padding: 10px;
-  vertical-align: middle;
+::ng-deep {
+  .govuk-table__header,
+  .govuk-table__cell {
+    padding: 10px;
+    vertical-align: middle;
+  }
 }
 
 .govuk-checkboxes__label {

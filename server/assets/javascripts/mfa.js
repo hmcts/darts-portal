@@ -1,5 +1,5 @@
 function insertBackLink(){
-    $('button#cancel').insertBefore("#attributeVerification");
+    $('#darts-container').prepend($('button#cancel'));
     $('button#cancel').attr('id', 'backLink');
     $('#backLink').attr('class', 'govuk-back-link');
     $('#backLink').text('Back');
@@ -118,7 +118,7 @@ function removElements(){
 function insertElements(){
     insertBackLink();
     insertTitle();
-    isTotp() && insertInfoBox();
+    !isTotp() && insertInfoBox();
 }
 
 function isTotp(){
@@ -147,11 +147,10 @@ $('#main-content').on('click', '#continue', function() {
 });
 
 function displayErrors(){
-    //FIGURE OUT WHAT I NEED FROM DISPLAYERRORS TO HANDLE ERRORS ON REQUEST
-    //MAY NEED SOMETHING TO CLEAR ERRORS ON SUCCESS
-
-    //NEED TO MOVE SUMMARY BOX BELOW BACKLINK
-    console.log('displaying')
+    $('.verifying-modal').hide();
+    removeErrors();
+    createErrorSummaryBox('mfa');
+    addVerificationControlErrors('mfa');
 }
 
 // wait a second before trying to do this, in case the JS in head isn't loaded yet

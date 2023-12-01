@@ -3,84 +3,94 @@ import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } fr
 import { AuthService } from '@services/auth/auth.service';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { UserState } from '@darts-types/user-state';
 import { UserService } from '@services/user/user.service';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { authGuard } from './auth.guard';
 
 describe('authGuard', () => {
-  const mockRouter = {
-    navigateByUrl: jest.fn(),
-  };
   const mockRouteSnapshot = {
     data: {
-      allowedRoles: ['APPROVER'],
+      allowedRoles: null,
     },
   } as unknown as ActivatedRouteSnapshot;
+
   const mockStateRouter = {
     url: '',
   } as unknown as RouterStateSnapshot;
 
-  const userState: UserState = { userName: 'test@test.com', userId: 123, roles: [] };
-  const userServiceStub = {
-    userProfile$: of(userState),
-    hasRoles: jest.fn(),
-  };
-
   const executeGuard: CanActivateFn = (...guardParameters) =>
     TestBed.runInInjectionContext(() => authGuard(...guardParameters));
 
-  const prepareGuard = (checkAuthenticated: boolean) => {
+  const prepareGuard = (checkAuthenticated: boolean, hasRoles?: boolean) => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
         {
           provide: Router,
-          useValue: mockRouter,
+          useValue: {
+            navigateByUrl: jest.fn(),
+          },
         },
         {
           provide: UserService,
-          useValue: userServiceStub,
+          useValue: {
+            userProfile$: of({}),
+            hasRoles: jest.fn().mockReturnValue(hasRoles),
+          },
         },
         {
           provide: AuthService,
-          useValue: { checkAuthenticated: async () => Promise.resolve(checkAuthenticated) },
+          useValue: { checkIsAuthenticated: () => of(checkAuthenticated) },
         },
       ],
     });
   };
 
-  it('should be created', () => {
+  it('should return true if authenticated', () => {
     prepareGuard(true);
-    expect(executeGuard(mockRouteSnapshot, mockStateRouter)).toBeTruthy();
+    let canActivate: boolean | undefined;
+    (executeGuard(mockRouteSnapshot, mockStateRouter) as Observable<boolean>).subscribe((isAuthenticated) => {
+      canActivate = isAuthenticated;
+    });
+    expect(canActivate).toBeTruthy();
   });
 
-  it('returns true when authenticated', async () => {
-    prepareGuard(true);
-    expect(executeGuard(mockRouteSnapshot, mockStateRouter)).toBeTruthy();
-  });
-
-  it('returns navigates to login when unauthenticated', async () => {
+  it('should return false if not authenticated', () => {
     prepareGuard(false);
-    await executeGuard(mockRouteSnapshot, mockStateRouter);
-    expect(mockRouter.navigateByUrl).toHaveBeenCalledWith('login');
+    let canActivate: boolean | undefined;
+    (executeGuard(mockRouteSnapshot, mockStateRouter) as Observable<boolean>).subscribe((isAuthenticated) => {
+      canActivate = isAuthenticated;
+    });
+    expect(canActivate).toBeFalsy();
   });
 
-  it('should return true if user has allowed roles', async () => {
-    prepareGuard(true);
-    jest.spyOn(userServiceStub, 'hasRoles').mockReturnValue(true);
-    const canActivate = await executeGuard(mockRouteSnapshot, mockStateRouter);
-
-    expect(canActivate).toBe(true);
-    expect(userServiceStub.hasRoles).toHaveBeenCalledWith(['APPROVER']);
+  it('should return true if authenticated and user has required role', () => {
+    prepareGuard(true, true);
+    mockRouteSnapshot.data.allowedRoles = ['APPROVER'];
+    let canActivate: boolean | undefined;
+    (executeGuard(mockRouteSnapshot, mockStateRouter) as Observable<boolean>).subscribe((isAuthenticated) => {
+      canActivate = isAuthenticated;
+    });
+    expect(canActivate).toBeTruthy();
   });
 
-  it('should navigate to login if user does not have allowed roles', async () => {
-    prepareGuard(true);
-    jest.spyOn(userServiceStub, 'hasRoles').mockReturnValue(false);
-    executeGuard(mockRouteSnapshot, mockStateRouter);
+  it('should return false if athenticated and user does not have required role', () => {
+    prepareGuard(true, false);
+    mockRouteSnapshot.data.allowedRoles = ['APPROVER'];
+    let canActivate: boolean | undefined;
+    (executeGuard(mockRouteSnapshot, mockStateRouter) as Observable<boolean>).subscribe((isAuthenticated) => {
+      canActivate = isAuthenticated;
+    });
+    expect(canActivate).toBeFalsy();
+  });
 
-    expect(userServiceStub.hasRoles).toHaveBeenCalledWith(['APPROVER']);
-    expect(mockRouter.navigateByUrl).toHaveBeenCalledWith('login');
+  it('should navigate to forbidden page if user is authenticated but does not have required role', () => {
+    prepareGuard(true, false);
+    const spy = jest.spyOn(TestBed.inject(Router), 'navigateByUrl');
+    mockRouteSnapshot.data.allowedRoles = ['APPROVER'];
+
+    (executeGuard(mockRouteSnapshot, mockStateRouter) as Observable<boolean>).subscribe();
+
+    expect(spy).toHaveBeenCalledWith('forbidden');
   });
 });

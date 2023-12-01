@@ -167,9 +167,22 @@ input#otpCode.textInput {
     -webkit-appearance: none;
     appearance: none;
     max-width: 29.5em;
+    outline: unset;
 }
 
 .error.itemLevel.errorText.show {
     margin: 10px 0 15px 0;
     color: #D4351C;
+}
+
+label#otpCode_label {
+    display: inline-block;
+    margin: 10px 0px;
+    font-size: 1.1875rem;
+}
+
+.errorText {
+    margin: 10px 0 15px 0;
+    color: #D4351C;
+    font-weight: bold;
 }
