@@ -10,7 +10,8 @@ import { ValidationErrorSummaryComponent } from '@common/validation-error-summar
 import { TranscriptionDetails } from '@darts-types/transcription-details.interface';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { TranscriptionService } from '@services/transcription/transcription.service';
-import { map, tap } from 'rxjs';
+import { map } from 'rxjs/internal/operators/map';
+import { tap } from 'rxjs/internal/operators/tap';
 
 @Component({
   selector: 'app-assign-transcript',
@@ -42,6 +43,7 @@ export class AssignTranscriptComponent {
   caseId: number | null = null;
   startTime: string | null = null;
   endTime: string | null = null;
+  caseNumber: string | null = null;
   getAudioQueryParams: { startTime: string; endTime: string } | null = null;
   isSubmitted = false;
   errors: { fieldId: string; message: string }[] = [];
@@ -50,6 +52,7 @@ export class AssignTranscriptComponent {
 
   vm$ = this.transcriptionService.getTranscriptionDetails(this.transcriptId).pipe(
     tap((data: TranscriptionDetails) => {
+      this.caseNumber = data.case_number;
       this.hearingId = data.hearing_id;
       this.caseId = data.case_id;
       this.startTime = this.datePipe.transform(data.transcription_start_ts, 'HH:mm:ss');
@@ -100,13 +103,11 @@ export class AssignTranscriptComponent {
 
     this.transcriptionService.assignTranscript(this.transcriptId).subscribe(() => {
       if (this.selectedOption.value === this.ASSIGN_TO_ME) {
-        console.log('WORK');
         this.router.navigate(['/work']);
         return;
       }
 
       if (this.selectedOption.value === this.ASSIGN_GET_AUDIO) {
-        console.log('GET AUDIO');
         this.router.navigate(['/case', this.caseId, 'hearing', this.hearingId], {
           queryParams: this.getAudioQueryParams,
         });
@@ -114,7 +115,6 @@ export class AssignTranscriptComponent {
       }
 
       if (this.selectedOption.value === this.ASSIGN_UPLOAD) {
-        console.log('UPLOAD');
         this.router.navigate(['/work', this.transcriptId]);
         return;
       }
