@@ -124,13 +124,47 @@ const mockTranscriptionDetailsNoName = {
   reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
 };
 
-router.post('/:transcriptId/document', (req, res) => {
-  res.status(200).send(req.body);
-});
-
-router.patch('/:transcriptId', (req, res) => {
-  res.status(200).send(req.body);
-});
+const unassignedTranscriptions = [
+  {
+    transcription_id: 1,
+    case_id: 72345,
+    case_number: 'T12345',
+    courthouse_name: 'Newcastle',
+    hearing_date: '2023-06-10',
+    transcription_type: 'Court Log',
+    status: 'Complete',
+    urgency: 'Overnight',
+    requested_ts: '2023-06-26T13:00:00Z',
+    state_change_ts: '2023-06-27T13:00:00Z',
+    is_manual: true,
+  },
+  {
+    transcription_id: 2,
+    case_id: 32345,
+    case_number: 'T12345',
+    courthouse_name: 'Newcastle',
+    hearing_date: '2023-06-11',
+    transcription_type: 'Court Log',
+    status: 'Complete',
+    urgency: 'Overnight',
+    requested_ts: '2023-06-26T13:00:00Z',
+    state_change_ts: '2023-06-27T13:00:00Z',
+    is_manual: false,
+  },
+  {
+    transcription_id: 3,
+    case_id: 32445,
+    case_number: 'T12345',
+    courthouse_name: 'Newcastle',
+    hearing_date: '2023-06-11',
+    transcription_type: 'Court Log',
+    status: 'Complete',
+    urgency: 'Up to 3 working days',
+    requested_ts: '2023-06-26T13:00:00Z',
+    state_change_ts: '2023-06-27T13:00:00Z',
+    is_manual: false,
+  },
+];
 
 router.get('/types', (req, res) => {
   res.send([
@@ -151,41 +185,55 @@ router.get('/types', (req, res) => {
 router.get('/urgencies', (req, res) => {
   res.send([
     { tru_id: 1, description: 'Overnight' },
-    { tru_id: 2, description: '3 working days' },
+    { tru_id: 2, description: 'Up to 3 working days' },
     { tru_id: 3, description: '7 working days' },
     { tru_id: 4, description: '12 working days' },
   ]);
 });
 
+router.get('/transcriber-counts', (req, res) => {
+  res.send({
+    unassigned: unassignedTranscriptions.length,
+    assigned: 3,
+  });
+});
+
 router.get('/transcriber-view', (req, res) => {
-  res.send([
-    {
-      transcription_id: 1,
-      case_id: 3,
-      case_number: 'T2023453422',
-      courthouse_name: 'Reading',
-      hearing_date: '2023-08-06',
-      transcription_type: 'Court Log',
-      status: 'With Transcriber',
-      urgency: 'Overnight',
-      requested_ts: '2023-08-12T13:00:00Z',
-      state_change_ts: '2023-08-13T13:00:00Z',
-      is_manual: true,
-    },
-    {
-      transcription_id: 1,
-      case_id: 3,
-      case_number: 'T2023453436',
-      courthouse_name: 'Swansea',
-      hearing_date: '2023-06-10',
-      transcription_type: 'Court Log',
-      status: 'COMPLETE',
-      urgency: 'Up to 3 working days',
-      requested_ts: '2023-06-26T13:00:00Z',
-      state_change_ts: '2023-06-27T13:00:00Z',
-      is_manual: true,
-    },
-  ]);
+  switch (req.query.assigned) {
+    case 'true':
+      res.send([
+        {
+          transcription_id: 1,
+          case_id: 3,
+          case_number: 'T2023453422',
+          courthouse_name: 'Reading',
+          hearing_date: '2023-08-06',
+          transcription_type: 'Court Log',
+          status: 'With Transcriber',
+          urgency: 'Overnight',
+          requested_ts: '2023-08-12T13:00:00Z',
+          state_change_ts: '2023-08-13T13:00:00Z',
+          is_manual: true,
+        },
+        {
+          transcription_id: 1,
+          case_id: 3,
+          case_number: 'T2023453436',
+          courthouse_name: 'Swansea',
+          hearing_date: '2023-06-10',
+          transcription_type: 'Court Log',
+          status: 'COMPLETE',
+          urgency: 'Up to 3 working days',
+          requested_ts: '2023-06-26T13:00:00Z',
+          state_change_ts: '2023-06-27T13:00:00Z',
+          is_manual: true,
+        },
+      ]);
+      break;
+    case 'false':
+      res.send(unassignedTranscriptions);
+      break;
+  }
 });
 
 router.get('/:transcriptId', (req, res) => {
@@ -215,6 +263,14 @@ router.get('/:transcriptId', (req, res) => {
     default:
       res.status(200).send(mockTranscriptionDetailsTwo);
   }
+});
+
+router.post('/:transcriptId/document', (req, res) => {
+  res.status(200).send(req.body);
+});
+
+router.patch('/:transcriptId', (req, res) => {
+  res.status(200).send(req.body);
 });
 
 router.post('/', (req, res) => {

@@ -41,19 +41,20 @@
 
 <ng-template #RequesterTemplate>
   @if (requesterRequests$ | async; as vm) {
-    @if (!vm.inProgessRequests.length && !vm.completedRequests.length) {
+    @if (!vm.inProgressRequests.length && !vm.completedRequests.length) {
       <p id="no-requests-message" class="govuk-body">There are no transcription requests in progress or ready</p>
     }
-    @if (vm.inProgessRequests.length) {
+
+    @if (vm.inProgressRequests.length) {
       <h2 class="govuk-heading-m">In Progress</h2>
       <app-data-table
         id="in-progress-table"
-        [rows]="vm.inProgessRequests"
+        [rows]="vm.inProgressRequests"
         [columns]="columns"
         [pagination]="true"
         [pageLimit]="15"
       >
-        <ng-template [tableRowTemplate]="vm.inProgessRequests" let-row>
+        <ng-template [tableRowTemplate]="vm.inProgressRequests" let-row>
           <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
         </ng-template>
       </app-data-table>

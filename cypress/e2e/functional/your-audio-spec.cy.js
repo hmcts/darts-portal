@@ -43,10 +43,10 @@ describe('Your audio', () => {
 
   it('should show correct Notification badge count', () => {
     //On landing page
-    cy.get('#notifications').should('contain', '6');
+    cy.get('#unreadAudioCountNotifications').should('contain', '6');
     cy.contains('Your audio').click();
     //On specific Your audio page
-    cy.get('#notifications').should('contain', '6');
+    cy.get('#unreadAudioCountNotifications').should('contain', '6');
   });
 
   it('should show correct number of Unread icons', () => {
@@ -58,7 +58,7 @@ describe('Your audio', () => {
     cy.contains('Your audio').click();
     cy.contains('T20200331').parents('tr').contains('View').click();
 
-    cy.get('#notifications').should('contain', '5');
+    cy.get('#unreadAudioCountNotifications').should('contain', '5');
   });
 
   it('View audio request and download', () => {
@@ -169,9 +169,9 @@ describe('No audio requests', () => {
   });
 
   it('shows no audio requests message and no notification badge', () => {
-    cy.get('#notifications').should('not.exist');
+    cy.get('#unreadAudioCountNotifications').should('not.exist');
     cy.contains('Your audio').click();
-    cy.get('#notifications').should('not.exist');
+    cy.get('#unreadAudioCountNotifications').should('not.exist');
     cy.get('p').should('contain', 'There are no audio files in progress or ready');
   });
 });

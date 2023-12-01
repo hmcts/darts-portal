@@ -61,6 +61,13 @@ const protectedRoutes: Routes = [
       ),
   },
   {
+    path: 'transcription-requests/assign-transcript',
+    loadComponent: () =>
+      import('./components/transcriptions/assign-transcript/assign-transcript.component').then(
+        (c) => c.AssignTranscriptComponent
+      ),
+  },
+  {
     path: 'search',
     loadComponent: () => import('./components/search/search.component').then((c) => c.SearchComponent),
   },

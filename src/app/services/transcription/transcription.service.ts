@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
+  TranscriberRequestCounts,
   TranscriptionDetails,
   TranscriptionRequest,
   TranscriptionType,
@@ -8,8 +9,9 @@ import {
   WorkRequests,
   YourTranscriptionRequests,
 } from '@darts-types/index';
+import { TranscriberTranscriptions } from '@darts-types/transcriber-transcriptions.interface';
+import { BehaviorSubject, timer, switchMap, tap, merge, map } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
-import { map } from 'rxjs/internal/operators/map';
 
 export const COMPLETED_TRANSCRIPTION_STATUS_ID = 6;
 @Injectable({
@@ -17,6 +19,46 @@ export const COMPLETED_TRANSCRIPTION_STATUS_ID = 6;
 })
 export class TranscriptionService {
   constructor(private http: HttpClient) {}
+
+  private readonly POLL_INTERVAL_SECS = 60;
+  private readonly TRANSCRIPT_REQUEST_COUNT_POLL_INTERVAL_SECS = 30;
+
+  // save unread count in memory
+  private transcriptRequestCount = new BehaviorSubject<number>(0);
+  readonly transcriptRequestCount$ = this.transcriptRequestCount.asObservable();
+
+  transcriptRequests$ = timer(0, this.POLL_INTERVAL_SECS * 1000).pipe(
+    switchMap(() => this.getTranscriberTranscriptRequests()),
+    tap((transcriberTranscriptions: TranscriberTranscriptions[]) =>
+      this.transcriptRequestCount.next(transcriberTranscriptions.length)
+    )
+  );
+
+  pollTranscriptionRequestCount$ = timer(0, this.TRANSCRIPT_REQUEST_COUNT_POLL_INTERVAL_SECS * 1000).pipe(
+    switchMap(() => this.getUnassignedTranscriptionRequestCounts())
+  );
+
+  // Merge both unread count observables into one
+  transcriptRequestCounts$ = merge(
+    this.pollTranscriptionRequestCount$, // Fetches count from server
+    this.transcriptRequestCount$ // In memory count / manual update
+  );
+
+  getTranscriberTranscriptionRequestCounts(): Observable<TranscriberRequestCounts> {
+    return this.http.get<TranscriberRequestCounts>('/api/transcriptions/transcriber-counts');
+  }
+
+  getUnassignedTranscriptionRequestCounts(): Observable<number> {
+    return this.http
+      .get<TranscriberRequestCounts>('/api/transcriptions/transcriber-counts')
+      .pipe(map((res) => res.unassigned));
+  }
+
+  getAssignedTranscriptRequestCounts(): Observable<number> {
+    return this.http
+      .get<TranscriberRequestCounts>('/api/transcriptions/transcriber-counts')
+      .pipe(map((res) => res.assigned));
+  }
 
   getUrgencies(): Observable<TranscriptionUrgency[]> {
     return this.http.get<TranscriptionUrgency[]>('/api/transcriptions/urgencies');
@@ -67,6 +109,12 @@ export class TranscriptionService {
         return transcription;
       })
     );
+  }
+
+  getTranscriberTranscriptRequests(): Observable<TranscriberTranscriptions[]> {
+    return this.http.get<TranscriberTranscriptions[]>(`/api/transcriptions/transcriber-view`, {
+      params: { assigned: false },
+    });
   }
 
   deleteRequest(transcriptionIds: number[]) {

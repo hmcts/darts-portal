@@ -122,7 +122,7 @@ describe('TranscriptionsComponent', () => {
   it('should filter "In Progress" requests', () => {
     let requests: UserTranscriptionRequest[] = [];
     fixture.detectChanges();
-    component.requesterRequests$.subscribe((data) => (requests = data.inProgessRequests));
+    component.requesterRequests$.subscribe((data) => (requests = data.inProgressRequests));
     expect(requests.length).toEqual(2);
     expect(requests.find((r) => r.status === 'Awaiting Authorisation')).toBeTruthy();
     expect(requests.find((r) => r.status === 'With Transcriber')).toBeTruthy();

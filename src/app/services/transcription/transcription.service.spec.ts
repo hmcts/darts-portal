@@ -1,5 +1,5 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed, discardPeriodicTasks, fakeAsync, tick } from '@angular/core/testing';
 import {
   TranscriptionDetails,
   TranscriptionRequest,
@@ -7,12 +7,56 @@ import {
   YourTranscriptionRequests,
 } from '@darts-types/index';
 import { WorkRequest } from '@darts-types/work-request.interface';
-import { of } from 'rxjs';
 import { COMPLETED_TRANSCRIPTION_STATUS_ID, TranscriptionService } from './transcription.service';
+import { of } from 'rxjs';
+import { TranscriberTranscriptions } from '@darts-types/transcriber-transcriptions.interface';
+import { TranscriberRequestCounts } from '@darts-types/transcription-request-counts';
 
 describe('TranscriptionService', () => {
   let service: TranscriptionService;
   let httpMock: HttpTestingController;
+
+  const MOCK_TRANSCRIPTION_REQUESTS: TranscriberTranscriptions[] = [
+    {
+      transcription_id: 1,
+      case_id: 72345,
+      case_number: 'T12345',
+      courthouse_name: 'Newcastle',
+      hearing_date: '2023-06-10',
+      transcription_type: 'Court Log',
+      status: 'Complete',
+      urgency: 'Overnight',
+      requested_ts: '2023-06-26T13:00:00Z',
+      state_change_ts: '2023-06-27T13:00:00Z',
+      is_manual: true,
+    },
+    {
+      transcription_id: 2,
+      case_id: 32345,
+      case_number: 'T12345',
+      courthouse_name: 'Newcastle',
+      hearing_date: '2023-06-11',
+      transcription_type: 'Court Log',
+      status: 'Complete',
+      urgency: 'Overnight',
+      requested_ts: '2023-06-26T13:00:00Z',
+      state_change_ts: '2023-06-27T13:00:00Z',
+      is_manual: false,
+    },
+    {
+      transcription_id: 3,
+      case_id: 32445,
+      case_number: 'T12345',
+      courthouse_name: 'Newcastle',
+      hearing_date: '2023-06-11',
+      transcription_type: 'Court Log',
+      status: 'Complete',
+      urgency: 'Up to 3 working days',
+      requested_ts: '2023-06-26T13:00:00Z',
+      state_change_ts: '2023-06-27T13:00:00Z',
+      is_manual: false,
+    },
+  ];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -28,6 +72,105 @@ describe('TranscriptionService', () => {
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  it('transcriptRequests$ should getTranscriberTranscriptions and update transcript requests count', fakeAsync(() => {
+    const getTranscriberTranscriptionsSpy = jest
+      .spyOn(service, 'getTranscriberTranscriptRequests')
+      .mockReturnValue(of(MOCK_TRANSCRIPTION_REQUESTS));
+
+    let result = 0;
+    service.transcriptRequests$.subscribe();
+
+    tick();
+
+    service.transcriptRequestCounts$.subscribe((count) => {
+      result = count;
+    });
+
+    expect(result).toBe(3);
+    expect(getTranscriberTranscriptionsSpy).toHaveBeenCalledTimes(1);
+    discardPeriodicTasks();
+  }));
+
+  describe('#getTranscriberTranscriptionRequestCounts', () => {
+    it('gets transcriber trancription request counts', () => {
+      const mockTranscriptCounts: TranscriberRequestCounts = {
+        unassigned: 5,
+        assigned: 3,
+      };
+      let result;
+
+      service.getTranscriberTranscriptionRequestCounts().subscribe((count) => {
+        result = count;
+      });
+
+      const req = httpMock.expectOne('/api/transcriptions/transcriber-counts');
+      expect(req.request.method).toBe('GET');
+
+      req.flush(mockTranscriptCounts);
+
+      expect(result).toEqual(mockTranscriptCounts);
+    });
+  });
+
+  describe('#getUnassignedTranscriptionRequestCounts', () => {
+    it('gets Unassigned transcription request count', () => {
+      const mockTranscriptCounts: TranscriberRequestCounts = {
+        unassigned: 5,
+        assigned: 3,
+      };
+      let result;
+
+      service.getUnassignedTranscriptionRequestCounts().subscribe((count) => {
+        result = count;
+      });
+
+      const req = httpMock.expectOne('/api/transcriptions/transcriber-counts');
+      expect(req.request.method).toBe('GET');
+
+      req.flush(mockTranscriptCounts);
+
+      expect(result).toEqual(mockTranscriptCounts.unassigned);
+    });
+  });
+
+  describe('#getAssignedTranscriptRequestCounts', () => {
+    it('gets Assigned transcription request count', () => {
+      const mockTranscriptCounts: TranscriberRequestCounts = {
+        unassigned: 5,
+        assigned: 3,
+      };
+      let result;
+
+      service.getAssignedTranscriptRequestCounts().subscribe((count) => {
+        result = count;
+      });
+
+      const req = httpMock.expectOne('/api/transcriptions/transcriber-counts');
+      expect(req.request.method).toBe('GET');
+
+      req.flush(mockTranscriptCounts);
+
+      expect(result).toEqual(mockTranscriptCounts.assigned);
+    });
+  });
+
+  describe('#getTranscriberTranscriptions', () => {
+    it('gets transcriptions for transcript requests table', () => {
+      let result;
+
+      service.getTranscriberTranscriptRequests().subscribe((count) => {
+        result = count;
+      });
+
+      const req = httpMock.expectOne('/api/transcriptions/transcriber-view?assigned=false');
+      expect(req.request.method).toBe('GET');
+
+      req.flush(MOCK_TRANSCRIPTION_REQUESTS);
+
+      expect(result).toEqual(MOCK_TRANSCRIPTION_REQUESTS);
+    });
   });
 
   describe('#getUrgencies', () => {
