@@ -3,29 +3,34 @@ import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } fr
 import { AuthService } from '@services/auth/auth.service';
 import { UserService } from '@services/user/user.service';
 
-export const authGuard: CanActivateFn = async (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+import { switchMap } from 'rxjs';
+import { map } from 'rxjs/internal/operators/map';
+
+export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
   const authService: AuthService = inject(AuthService);
   const userService: UserService = inject(UserService);
-  const router: Router = inject(Router);
+  const router = inject(Router);
 
-  if (route.data.allowedRoles) {
-    if (userService.hasRoles(route.data.allowedRoles)) {
-      return true;
-    } else {
-      return router.navigateByUrl('login');
-    }
-  }
-
-  if (await authService.checkAuthenticated()) {
-    if (localStorage.getItem('redirectUrl') !== null) {
-      router.navigateByUrl(`${localStorage.getItem('redirectUrl')}`);
-      localStorage.removeItem('redirectUrl');
-    }
-    return true;
-  }
-
-  if (state.url !== '/') {
-    localStorage.setItem('redirectUrl', state.url);
-  }
-  return router.navigateByUrl('login');
+  return authService.checkIsAuthenticated().pipe(
+    switchMap((isAuthenticated) =>
+      userService.userProfile$.pipe(
+        map(() => {
+          if (!isAuthenticated) {
+            return false;
+          }
+          // if not role protected, allow access
+          if (!route.data?.allowedRoles) {
+            return true;
+          }
+          // if user has role, allow access
+          if (userService.hasRoles(route.data.allowedRoles)) {
+            return true;
+          } else {
+            router.navigateByUrl('forbidden');
+            return false;
+          }
+        })
+      )
+    )
+  );
 };

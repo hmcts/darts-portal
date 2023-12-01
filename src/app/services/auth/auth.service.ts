@@ -1,35 +1,35 @@
 import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { DateTime } from 'luxon';
-import { lastValueFrom } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { Observable } from 'rxjs';
+import { of } from 'rxjs/internal/observable/of';
+import { catchError } from 'rxjs/internal/operators/catchError';
+import { map } from 'rxjs/internal/operators/map';
 
-const IS_AUTH_PATH = '/auth/is-authenticated';
+export const IS_AUTH_PATH = '/auth/is-authenticated';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private authenticated = false;
+  http = inject(HttpClient);
 
-  constructor(
-    private readonly http: HttpClient,
-    private router: Router,
-    @Inject('Window') private window: Window
-  ) {}
+  private isAuthenticated = false;
 
   getAuthenticated(): boolean {
-    return this.authenticated;
+    return this.isAuthenticated;
   }
 
-  async checkAuthenticated(): Promise<boolean> {
-    try {
-      // add timestamp to the second to be doubly-sure we are preventing caching
-      await lastValueFrom(this.http.get(`${IS_AUTH_PATH}?t=${DateTime.now().toFormat('YYYYMMDDHHmmss')}`));
-      this.authenticated = true;
-    } catch (err) {
-      this.authenticated = false;
-    }
-    return this.authenticated;
+  checkIsAuthenticated(): Observable<boolean> {
+    // Timestamp cache busting string eg: /auth/is-authenticated?t=1701426443869
+    return this.http.get<boolean>(`${IS_AUTH_PATH}`, { params: { t: new Date().getTime() } }).pipe(
+      map(() => {
+        this.isAuthenticated = true;
+        return true;
+      }),
+      catchError(() => {
+        this.isAuthenticated = false;
+        return of(false);
+      })
+    );
   }
 }

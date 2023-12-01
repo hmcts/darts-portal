@@ -1,44 +1,48 @@
-import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { of } from 'rxjs';
-
-import { AuthService } from './auth.service';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { AuthService, IS_AUTH_PATH } from './auth.service';
 
 describe('AuthService', () => {
-  let httpClientSpy: HttpClient;
   let authService: AuthService;
-  let routerSpy: Router;
-  let windowSpy: Window;
+  let httpMock: HttpTestingController;
 
   beforeEach(() => {
-    httpClientSpy = {
-      get: jest.fn(),
-    } as unknown as HttpClient;
-    routerSpy = {
-      navigateByUrl: jest.fn(),
-    } as unknown as Router;
-    windowSpy = {
-      location: {
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        reload: () => {},
-      },
-    } as Window;
-    authService = new AuthService(httpClientSpy, routerSpy, windowSpy as Window);
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [AuthService],
+    });
+
+    authService = TestBed.inject(AuthService);
+    httpMock = TestBed.inject(HttpTestingController);
+  });
+
+  afterEach(() => {
+    httpMock.verify();
   });
 
   it('should be created', () => {
     expect(authService).toBeTruthy();
   });
 
-  describe('#isAuthenticated', () => {
-    it('true', async () => {
-      jest.spyOn(httpClientSpy, 'get').mockReturnValue(of({}));
-      expect(await authService.checkAuthenticated()).toBeTruthy();
+  it('should return true when authenticated', fakeAsync(() => {
+    authService.checkIsAuthenticated().subscribe((result) => {
+      expect(result).toBeTruthy();
+      expect(authService.getAuthenticated()).toBeTruthy();
     });
+    tick();
+    const req = httpMock.expectOne((r) => r.url === `${IS_AUTH_PATH}`);
+    expect(req.request.method).toBe('GET');
+    req.flush(true);
+  }));
 
-    it('false', async () => {
-      jest.spyOn(httpClientSpy, 'get').mockReturnValue(of({}));
-      expect(await authService.checkAuthenticated()).toBeTruthy();
+  it('should return false when not authenticated', fakeAsync(() => {
+    authService.checkIsAuthenticated().subscribe((result) => {
+      expect(result).toBeFalsy();
+      expect(authService.getAuthenticated()).toBeFalsy();
     });
-  });
+    tick();
+    const req = httpMock.expectOne((r) => r.url === `${IS_AUTH_PATH}`);
+    expect(req.request.method).toBe('GET');
+    req.flush(null, { status: 401, statusText: 'Unauthorized' });
+  }));
 });
