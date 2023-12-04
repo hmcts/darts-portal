@@ -98,7 +98,7 @@ export class DataTableComponent<TRow> implements OnChanges {
     this.updatePagedData();
   }
 
-  isBoolean(valueA: unknown, valueB: unknown): boolean {
+  private isBoolean(valueA: unknown, valueB: unknown): boolean {
     return typeof valueA === 'boolean' && typeof valueB === 'boolean';
   }
 
