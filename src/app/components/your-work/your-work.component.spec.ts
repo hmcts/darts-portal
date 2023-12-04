@@ -1,12 +1,12 @@
-import { DatePipe, DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
+import { DATE_PIPE_DEFAULT_OPTIONS, DatePipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { WorkRequest } from '@darts-types/index';
-import { of } from 'rxjs';
 import { TranscriptionService } from '@services/transcription/transcription.service';
+import { of } from 'rxjs';
 
-import { YourWorkComponent } from './your-work.component';
 import { RouterTestingModule } from '@angular/router/testing';
+import { YourWorkComponent } from './your-work.component';
 
 const MOCK_WORK_REQUESTS: WorkRequest[] = [
   {
@@ -29,7 +29,7 @@ const MOCK_WORK_REQUESTS: WorkRequest[] = [
     courthouse_name: 'Swansea',
     hearing_date: '2023-06-10T00:00:00Z',
     transcription_type: 'Court Log',
-    status: 'COMPLETE',
+    status: 'Complete',
     urgency: 'Up to 3 Working days',
     requested_ts: '2023-06-26T13:00:00Z',
     state_change_ts: '2023-06-27T13:00:00Z',
