@@ -6,11 +6,11 @@ import {
   UserTranscriptionRequest,
   YourTranscriptionRequests,
 } from '@darts-types/index';
-import { WorkRequest } from '@darts-types/work-request.interface';
-import { COMPLETED_TRANSCRIPTION_STATUS_ID, TranscriptionService } from './transcription.service';
-import { of } from 'rxjs';
 import { TranscriberTranscriptions } from '@darts-types/transcriber-transcriptions.interface';
 import { TranscriberRequestCounts } from '@darts-types/transcription-request-counts';
+import { WorkRequest } from '@darts-types/work-request.interface';
+import { of } from 'rxjs';
+import { COMPLETED_TRANSCRIPTION_STATUS_ID, TranscriptionService } from './transcription.service';
 
 describe('TranscriptionService', () => {
   let service: TranscriptionService;
@@ -358,5 +358,17 @@ describe('TranscriptionService', () => {
       expect(approverDate).toEqual('2023-06-10T00:00:00Z');
       expect(requesterDate).toEqual('2023-06-12T00:00:00Z');
     }));
+  });
+
+  describe('#assignTranscript', () => {
+    it('should call the correct endpoint and update the transcription status', () => {
+      const transcriptId = 1;
+      const patchObject = {
+        transcription_status_id: 5,
+      };
+      const spy = jest.spyOn(service['http'], 'patch');
+      service.assignTranscript(transcriptId);
+      expect(spy).toHaveBeenCalledWith(`/api/transcriptions/${transcriptId}`, patchObject);
+    });
   });
 });

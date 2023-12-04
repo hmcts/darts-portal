@@ -3,6 +3,9 @@
     <ng-container *breadcrumb="['../']">Transcript requests</ng-container>
     <ng-container *breadcrumb="['.']">{{ caseNumber }}</ng-container>
   </app-breadcrumb>
+
+  <app-validation-error-summary [errors]="errors"></app-validation-error-summary>
+
   @if (vm.reportingRestriction) {
     <app-reporting-restriction [reportingRestriction]="vm.reportingRestriction"></app-reporting-restriction>
   }
@@ -12,11 +15,16 @@
 
   <app-details-table title="Hearing details" [details]="vm.hearingDetails" />
 
-  <div class="govuk-form-group">
+  <div class="govuk-form-group" [class.govuk-form-group--error]="selectedOption.invalid && isSubmitted">
     <fieldset class="govuk-fieldset">
       <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
         <h1 class="govuk-fieldset__heading">Choose an action</h1>
       </legend>
+      @if (selectedOption.invalid && isSubmitted) {
+        <p id="error-message" class="govuk-error-message">
+          <span class="govuk-visually-hidden">Error:</span> Select an action to progress this request.
+        </p>
+      }
       <div class="govuk-radios" data-module="govuk-radios">
         <div class="govuk-radios__item">
           <input
@@ -24,7 +32,8 @@
             id="transcriptionOption"
             name="transcriptionOptions"
             type="radio"
-            value="assignToMe"
+            [value]="ASSIGN_TO_ME"
+            [formControl]="selectedOption"
           />
           <label class="govuk-label govuk-radios__label" for="transcriptionOption"> Assign to me </label>
         </div>
@@ -34,7 +43,8 @@
             id="transcriptionOption-2"
             name="transcriptionOptions"
             type="radio"
-            value="assignToMeAndGetAudio"
+            [value]="ASSIGN_GET_AUDIO"
+            [formControl]="selectedOption"
           />
           <label class="govuk-label govuk-radios__label" for="transcriptionOption-2">
             Assign to me and get audio
@@ -46,7 +56,8 @@
             id="transcriptionOption-3"
             name="transcriptionOptions"
             type="radio"
-            value="assignToMeAndUploadATranscript"
+            [value]="ASSIGN_UPLOAD"
+            [formControl]="selectedOption"
           />
           <label class="govuk-label govuk-radios__label" for="transcriptionOption-3">
             Assign to me and upload a transcript
@@ -57,7 +68,7 @@
   </div>
 
   <div class="govuk-button-group">
-    <button id="submit-button" class="govuk-button">Continue</button>
+    <button id="submit-button" class="govuk-button" (click)="onAssignTranscript()">Continue</button>
     <a routerLink="../" class="govuk-link">Cancel</a>
   </div>
 }

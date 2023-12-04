@@ -1,11 +1,12 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
-import { AssignTranscriptComponent } from './assign-transcript.component';
-import { ActivatedRoute } from '@angular/router';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { of } from 'rxjs';
+import { AssignTranscriptComponent } from './assign-transcript.component';
 
 describe('AssignTranscriptComponent', () => {
   let component: AssignTranscriptComponent;
@@ -70,7 +71,7 @@ describe('AssignTranscriptComponent', () => {
     jest.spyOn(transcriptionService, 'getTranscriptionDetails').mockReturnValue(transcriptionDetail);
 
     await TestBed.configureTestingModule({
-      imports: [AssignTranscriptComponent, HttpClientModule],
+      imports: [AssignTranscriptComponent, HttpClientModule, RouterTestingModule],
       providers: [
         DatePipe,
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
@@ -81,6 +82,7 @@ describe('AssignTranscriptComponent', () => {
 
     fixture = TestBed.createComponent(AssignTranscriptComponent);
     component = fixture.componentInstance;
+
     fixture.detectChanges();
   });
 
@@ -94,5 +96,60 @@ describe('AssignTranscriptComponent', () => {
 
   it('should set the Transcript ID', () => {
     expect(component.transcriptId).toEqual('2');
+  });
+
+  it('should assign transcript to self and navigate to /work', fakeAsync(() => {
+    component.selectedOption.setValue(component.ASSIGN_TO_ME);
+    const assignTranscriptSpy = jest.spyOn(component.transcriptionService, 'assignTranscript').mockReturnValue(of({}));
+    const routerNavigateSpy = jest.spyOn(component['router'], 'navigate').mockResolvedValue(true);
+
+    component.onAssignTranscript();
+    tick();
+
+    expect(component.isSubmitted).toBe(true);
+    expect(component.errors).toEqual([]);
+    expect(assignTranscriptSpy).toHaveBeenCalledWith(component.transcriptId);
+    expect(routerNavigateSpy).toHaveBeenCalledWith(['/work']);
+  }));
+
+  it('should assign transcript and navigate to /case/:caseId/hearing/:hearingId with audio query params', fakeAsync(() => {
+    component.selectedOption.setValue(component.ASSIGN_GET_AUDIO);
+    const assignTranscriptSpy = jest.spyOn(component.transcriptionService, 'assignTranscript').mockReturnValue(of({}));
+    const routerNavigateSpy = jest.spyOn(component['router'], 'navigate').mockResolvedValue(true);
+
+    component.onAssignTranscript();
+    tick();
+
+    expect(component.isSubmitted).toBe(true);
+    expect(component.errors).toEqual([]);
+    expect(assignTranscriptSpy).toHaveBeenCalledWith(component.transcriptId);
+    expect(routerNavigateSpy).toHaveBeenCalledWith(['/case', component.caseId, 'hearing', component.hearingId], {
+      queryParams: component.getAudioQueryParams,
+    });
+  }));
+
+  it('should assign transcript and navigate to /work/:transcriptId', fakeAsync(() => {
+    component.selectedOption.setValue(component.ASSIGN_UPLOAD);
+    const assignTranscriptSpy = jest.spyOn(component.transcriptionService, 'assignTranscript').mockReturnValue(of({}));
+    const routerNavigateSpy = jest.spyOn(component['router'], 'navigate').mockResolvedValue(true);
+
+    component.onAssignTranscript();
+    tick();
+
+    expect(component.isSubmitted).toBe(true);
+    expect(component.errors).toEqual([]);
+    expect(assignTranscriptSpy).toHaveBeenCalledWith(component.transcriptId);
+    expect(routerNavigateSpy).toHaveBeenCalledWith(['/work', component.transcriptId]);
+  }));
+
+  it('should set errors when selectedOption is invalid', () => {
+    component.selectedOption.setValue(null);
+
+    component.onAssignTranscript();
+
+    expect(component.isSubmitted).toBe(true);
+    expect(component.errors).toEqual([
+      { fieldId: 'transcriptionOptions', message: 'Select an action to progress this request.' },
+    ]);
   });
 });
