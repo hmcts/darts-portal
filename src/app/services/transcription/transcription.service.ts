@@ -140,8 +140,10 @@ export class TranscriptionService {
   }
 
   assignTranscript(transcriptId: number) {
-    return this.http.patch(`/api/transcriptions/${transcriptId}`, {
-      transcription_status_id: 5,
-    });
+    return this.http
+      .patch(`/api/transcriptions/${transcriptId}`, {
+        transcription_status_id: 5,
+      })
+      .pipe(tap(() => this.transcriptRequestCount.next(this.transcriptRequestCount.value - 1)));
   }
 }
