@@ -1,4 +1,4 @@
 export interface TranscriptionUrgency {
-  tru_id: number;
+  transcription_urgency_id: number;
   description: string;
 }

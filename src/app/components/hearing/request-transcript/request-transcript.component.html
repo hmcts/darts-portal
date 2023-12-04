@@ -47,7 +47,7 @@
           [class.govuk-select--error]="isSubmitted && transcriptionTypeFormControl.invalid"
         >
           <option value="" disabled selected>Please select</option>
-          <option *ngFor="let type of vm.transcriptionTypes" [value]="type.trt_id">{{ type.description }}</option>
+          <option *ngFor="let type of vm.transcriptionTypes" [value]="type.transcription_type_id">{{ type.description }}</option>
         </select>
       </div>
       <div class="govuk-form-group" [class.govuk-form-group--error]="isSubmitted && urgencyFormControl.invalid">
@@ -63,7 +63,7 @@
           [class.govuk-select--error]="isSubmitted && urgencyFormControl.invalid"
         >
           <option value="" disabled selected>Please select</option>
-          <option *ngFor="let urgency of vm.urgencies" [value]="urgency.tru_id">{{ urgency.description }}</option>
+          <option *ngFor="let urgency of vm.urgencies" [value]="urgency.transcription_urgency_id">{{ urgency.description }}</option>
         </select>
       </div>
 
