@@ -94,11 +94,12 @@ export class TranscriptionsComponent {
     const idsToDelete = this.selectedRequests.map((s) => s.transcription_id);
 
     this.transcriptService.deleteRequest(idsToDelete).subscribe({
-      next: () => (this.isDeleting = false),
+      next: () => {
+        this.isDeleting = false;
+        this.refresh$.next();
+      },
       error: () => (this.isDeleting = false),
     });
-
-    this.refresh$.next();
   }
 
   onDeleteCancelled() {
