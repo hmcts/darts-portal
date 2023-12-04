@@ -44,13 +44,15 @@
       <th scope="row" class="govuk-table__header">Urgency</th>
       <td class="govuk-table__cell">{{ vm.urgency }}</td>
     </tr>
-    <tr id="audio-times" class="govuk-table__row">
-      <th scope="row" class="govuk-table__header">Audio for Transcript</th>
-      <td class="govuk-table__cell">
-        Start time {{ vm.transcription_start_ts | date: 'HH:mm:ss' }} - End time
-        {{ vm.transcription_end_ts | date: 'HH:mm:ss' }}
-      </td>
-    </tr>
+    @if (vm.transcription_start_ts && vm.transcription_end_ts) {
+      <tr id="audio-times" class="govuk-table__row">
+        <th scope="row" class="govuk-table__header">Audio for Transcript</th>
+        <td class="govuk-table__cell">
+          Start time {{ vm.transcription_start_ts | date: 'HH:mm:ss' }} - End time
+          {{ vm.transcription_end_ts | date: 'HH:mm:ss' }}
+        </td>
+      </tr>
+    }
   </ng-template>
 
   <!-- START OF VIEW TRANSCRIPT FROM CASE OR HEARING -->
