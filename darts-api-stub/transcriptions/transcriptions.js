@@ -4,6 +4,68 @@ const router = express.Router();
 
 router.use(express.json());
 
+const yourTranscriptionsStub = {
+  requester_transcriptions: [
+    {
+      transcription_id: 1,
+      case_id: 72345,
+      case_number: 'T12345',
+      courthouse_name: 'Swansea',
+      hearing_date: '2023-06-10',
+      transcription_type: 'Court log',
+      status: 'Awaiting Authorisation',
+      urgency: 'Overnight',
+      requested_ts: '2023-06-26T13:00:00Z',
+    },
+    {
+      transcription_id: 2,
+      case_id: 72346,
+      case_number: 'T12345',
+      courthouse_name: 'Liverpool',
+      hearing_date: '2023-06-10',
+      transcription_type: 'Court log',
+      status: 'With Transcriber',
+      urgency: 'Up to 3 working days',
+      requested_ts: '2023-06-26T13:00:00Z',
+    },
+    {
+      transcription_id: 3,
+      case_id: 72346,
+      case_number: 'CXYZ12345',
+      courthouse_name: 'Newcastle',
+      hearing_date: '2023-06-10',
+      transcription_type: 'Court log',
+      status: 'Complete',
+      urgency: 'Up to 3 working days',
+      requested_ts: '2023-06-26T13:00:00Z',
+    },
+    {
+      transcription_id: 4,
+      case_id: 72346,
+      case_number: 'T12345',
+      courthouse_name: 'Cardiff',
+      hearing_date: '2023-06-10',
+      transcription_type: 'Court log',
+      status: 'Rejected',
+      urgency: 'Overnight',
+      requested_ts: '2023-06-26T13:00:00Z',
+    },
+  ],
+  approver_transcriptions: [
+    {
+      transcription_id: 1,
+      case_id: 72345,
+      case_number: 'T12345',
+      courthouse_name: 'Cardiff',
+      hearing_date: '2023-06-10',
+      transcription_type: 'Court log',
+      status: 'Complete',
+      urgency: 'Up to 3 working days',
+      requested_ts: '2023-06-26T13:00:00Z',
+    },
+  ],
+};
+
 const mockTranscriptionDetails = {
   case_id: 1,
   reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
@@ -62,13 +124,47 @@ const mockTranscriptionDetailsNoName = {
   reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
 };
 
-router.post('/:transcriptId/document', (req, res) => {
-  res.status(200).send(req.body);
-});
-
-router.patch('/:transcriptId', (req, res) => {
-  res.status(200).send(req.body);
-});
+const unassignedTranscriptions = [
+  {
+    transcription_id: 1,
+    case_id: 72345,
+    case_number: 'T12345',
+    courthouse_name: 'Newcastle',
+    hearing_date: '2023-06-10',
+    transcription_type: 'Court Log',
+    status: 'Complete',
+    urgency: 'Overnight',
+    requested_ts: '2023-06-26T13:00:00Z',
+    state_change_ts: '2023-06-27T13:00:00Z',
+    is_manual: true,
+  },
+  {
+    transcription_id: 2,
+    case_id: 32345,
+    case_number: 'T12345',
+    courthouse_name: 'Newcastle',
+    hearing_date: '2023-06-11',
+    transcription_type: 'Court Log',
+    status: 'Complete',
+    urgency: 'Overnight',
+    requested_ts: '2023-06-26T13:00:00Z',
+    state_change_ts: '2023-06-27T13:00:00Z',
+    is_manual: false,
+  },
+  {
+    transcription_id: 3,
+    case_id: 32445,
+    case_number: 'T12345',
+    courthouse_name: 'Newcastle',
+    hearing_date: '2023-06-11',
+    transcription_type: 'Court Log',
+    status: 'Complete',
+    urgency: 'Up to 3 working days',
+    requested_ts: '2023-06-26T13:00:00Z',
+    state_change_ts: '2023-06-27T13:00:00Z',
+    is_manual: false,
+  },
+];
 
 router.get('/types', (req, res) => {
   res.send([
@@ -88,11 +184,56 @@ router.get('/types', (req, res) => {
 
 router.get('/urgencies', (req, res) => {
   res.send([
-    { transcript_urgency_id: 1, description: 'Overnight' },
-    { transcript_urgency_id: 2, description: '3 working days' },
-    { transcript_urgency_id: 3, description: '7 working days' },
-    { transcript_urgency_id: 4, description: '12 working days' },
+    { transcription_urgency_id: 1, description: 'Overnight' },
+    { transcription_urgency_id: 2, description: 'Up to 3 working days' },
+    { transcription_urgency_id: 3, description: '7 working days' },
+    { transcription_urgency_id: 4, description: '12 working days' },
   ]);
+});
+
+router.get('/transcriber-counts', (req, res) => {
+  res.send({
+    unassigned: unassignedTranscriptions.length,
+    assigned: 3,
+  });
+});
+
+router.get('/transcriber-view', (req, res) => {
+  switch (req.query.assigned) {
+    case 'true':
+      res.send([
+        {
+          transcription_id: 1,
+          case_id: 3,
+          case_number: 'T2023453422',
+          courthouse_name: 'Reading',
+          hearing_date: '2023-08-06',
+          transcription_type: 'Court Log',
+          status: 'With Transcriber',
+          urgency: 'Overnight',
+          requested_ts: '2023-08-12T13:00:00Z',
+          state_change_ts: '2023-08-13T13:00:00Z',
+          is_manual: true,
+        },
+        {
+          transcription_id: 1,
+          case_id: 3,
+          case_number: 'T2023453436',
+          courthouse_name: 'Swansea',
+          hearing_date: '2023-06-10',
+          transcription_type: 'Court Log',
+          status: 'COMPLETE',
+          urgency: 'Up to 3 working days',
+          requested_ts: '2023-06-26T13:00:00Z',
+          state_change_ts: '2023-06-27T13:00:00Z',
+          is_manual: true,
+        },
+      ]);
+      break;
+    case 'false':
+      res.send(unassignedTranscriptions);
+      break;
+  }
 });
 
 router.get('/:transcriptId', (req, res) => {
@@ -124,6 +265,14 @@ router.get('/:transcriptId', (req, res) => {
   }
 });
 
+router.post('/:transcriptId/document', (req, res) => {
+  res.status(200).send(req.body);
+});
+
+router.patch('/:transcriptId', (req, res) => {
+  res.status(200).send(req.body);
+});
+
 router.post('/', (req, res) => {
   //If start time is below then return 409
   const exists = req.body.start_date_time.indexOf('00:00:00Z') !== -1 && true;
@@ -137,67 +286,20 @@ router.post('/', (req, res) => {
 });
 
 router.get('/', (req, res) => {
-  res.send({
-    requester_transcriptions: [
-      {
-        transcription_id: 1,
-        case_id: 72345,
-        case_number: 'T12345',
-        courthouse_name: 'Swansea',
-        hearing_date: '2023-06-10',
-        transcription_type: 'Court log',
-        status: 'Awaiting Authorisation',
-        urgency: 'Overnight',
-        requested_ts: '2023-06-26T13:00:00Z',
-      },
-      {
-        transcription_id: 2,
-        case_id: 72346,
-        case_number: 'T12345',
-        courthouse_name: 'NEWCASTLE',
-        hearing_date: '2023-06-10',
-        transcription_type: 'Court log',
-        status: 'With Transcriber',
-        urgency: '3 Working days',
-        requested_ts: '2023-06-26T13:00:00Z',
-      },
-      {
-        transcription_id: 2,
-        case_id: 72346,
-        case_number: 'T12345',
-        courthouse_name: 'Newcastle',
-        hearing_date: '2023-06-10',
-        transcription_type: 'Court log',
-        status: 'Complete',
-        urgency: '3 Working days',
-        requested_ts: '2023-06-26T13:00:00Z',
-      },
-      {
-        transcription_id: 1,
-        case_id: 72346,
-        case_number: 'T12345',
-        courthouse_name: 'Cardiff',
-        hearing_date: '2023-06-10',
-        transcription_type: 'Court log',
-        status: 'Rejected',
-        urgency: 'Overnight',
-        requested_ts: '2023-06-26T13:00:00Z',
-      },
-    ],
-    approver_transcriptions: [
-      {
-        transcription_id: 1,
-        case_id: 72345,
-        case_number: 'T12345',
-        courthouse_name: 'Cardiff',
-        hearing_date: '2023-06-10',
-        transcription_type: 'Court log',
-        status: 'Complete',
-        urgency: '3 Working days',
-        requested_ts: '2023-06-26T13:00:00Z',
-      },
-    ],
+  res.send(yourTranscriptionsStub);
+});
+
+router.patch('/', (req, res) => {
+  req.body.forEach((item) => {
+    const index = yourTranscriptionsStub.requester_transcriptions.findIndex(
+      (x) => x.transcription_id == item.transcription_id
+    );
+    if (index >= 0) {
+      yourTranscriptionsStub.requester_transcriptions.splice(index, 1);
+    }
   });
+
+  res.sendStatus(204);
 });
 
 module.exports = router;
