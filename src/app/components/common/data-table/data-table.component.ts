@@ -71,6 +71,7 @@ export class DataTableComponent<TRow> implements OnChanges {
       const valueA = (a as { [key: string]: unknown })[column];
       const valueB = (b as { [key: string]: unknown })[column];
       const isStrings = typeof valueA === 'string' && typeof valueB === 'string';
+      const isBoolean = typeof valueA === 'boolean' && typeof valueB === 'boolean';
 
       if (isStrings && this.isDateTime(valueA) && this.isDateTime(valueB)) {
         return this.compareDates(column, DateTime.fromISO(valueA).toUTC(), DateTime.fromISO(valueB).toUTC());
@@ -84,6 +85,9 @@ export class DataTableComponent<TRow> implements OnChanges {
       } else if (typeof valueA === 'number' && typeof valueB === 'number') {
         //Number sorting
         return this.compareNumbers(column, valueA, valueB);
+      } else if (isBoolean) {
+        //Boolean sorting
+        return this.compareStrings(column, valueA.toString(), valueB.toString());
       } else if (Array.isArray(valueA) && Array.isArray(valueB)) {
         //Array sorting
         return this.compareStrings(column, valueA[0], valueB[0]);
