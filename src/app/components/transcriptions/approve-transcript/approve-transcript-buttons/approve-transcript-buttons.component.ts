@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
@@ -10,6 +10,9 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
   styleUrl: './approve-transcript-buttons.component.scss',
 })
 export class ApproveTranscriptButtonsComponent {
+  // @Output() rejectError = new EventEmitter<string>();
+  @Output() errors = new EventEmitter<{ fieldId: string; message: string }[]>();
+
   rejectReasonFormControl = new FormControl('');
   approveFormControl = new FormControl('');
 
@@ -18,7 +21,13 @@ export class ApproveTranscriptButtonsComponent {
   }
 
   onSubmit() {
-    //
+    if (this.approveFormControl.value === 'No' && !this.rejectReasonFormControl.value?.length) {
+      this.errors.emit([
+        { fieldId: 'reject-reason', message: 'You must explain why you cannot approve this request.' },
+      ]);
+      return;
+    }
+    this.errors.emit([]);
   }
 
   onCancel() {

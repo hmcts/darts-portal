@@ -1,4 +1,6 @@
 @if (vm$ | async; as vm) {
+  <!-- Validation Error Summary Component -->
+  <app-validation-error-summary *ngIf="approvalErrors.length" [errors]="approvalErrors"></app-validation-error-summary>
   <app-reporting-restriction
     *ngIf="vm.reportingRestriction"
     [reportingRestriction]="vm.reportingRestriction"
@@ -10,5 +12,5 @@
 
   <app-details-table title="Hearing details" [details]="vm.hearingDetails"></app-details-table>
 
-  <app-approve-transcript-buttons></app-approve-transcript-buttons>
+  <app-approve-transcript-buttons (errors)="handleRejectError($event)"></app-approve-transcript-buttons>
 }
