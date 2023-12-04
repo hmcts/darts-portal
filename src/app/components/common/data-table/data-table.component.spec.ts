@@ -14,6 +14,7 @@ describe('DataTableComponent', () => {
       courthouse: 'Swansea',
       judge: ['Judge Jonny'],
       courtroom: '123',
+      is_manual: true,
       transcription_count: 12,
       date: '11 Oct 2023',
     },
@@ -23,6 +24,7 @@ describe('DataTableComponent', () => {
       courthouse: 'Slough',
       judge: ['Harry Jon'],
       courtroom: '122',
+      is_manual: true,
       transcription_count: 101,
       date: '1 Sep 2023',
     },
@@ -32,6 +34,7 @@ describe('DataTableComponent', () => {
       courthouse: 'Reading',
       judge: ['Alex Zach'],
       courtroom: '28',
+      is_manual: false,
       transcription_count: 55,
       date: '10 Mar 2024',
     },
@@ -41,6 +44,7 @@ describe('DataTableComponent', () => {
       courthouse: 'Windsor',
       judge: ['Zachary Benson'],
       courtroom: '87',
+      is_manual: true,
       transcription_count: 8,
       date: '5 Jan 2024',
     },
@@ -113,6 +117,45 @@ describe('DataTableComponent', () => {
     it('should set sorting to descending order for the given column', () => {
       component.rows = MOCK_ROWS;
       const column = 'case_number';
+      component.sorting = {
+        column,
+        order: 'asc',
+      };
+
+      component.sortTable(column);
+
+      const expectedSorting: SortingInterface = {
+        column,
+        order: 'desc',
+      };
+
+      expect(component.sorting).toEqual(expectedSorting);
+      expect(component.rows).toEqual(component.rows);
+    });
+
+    it('should set sorting to ascending order for a boolean column', () => {
+      component.rows = MOCK_ROWS;
+      const column = 'is_manual';
+
+      component.sorting = {
+        column,
+        order: 'desc',
+      };
+
+      component.sortTable(column);
+
+      const expectedSorting: SortingInterface = {
+        column,
+        order: 'asc',
+      };
+
+      expect(component.sorting).toEqual(expectedSorting);
+      expect(component.rows).toEqual(component.rows.reverse());
+    });
+
+    it('should set sorting to descending order for a boolean column', () => {
+      component.rows = MOCK_ROWS;
+      const column = 'is_manual';
       component.sorting = {
         column,
         order: 'asc',
