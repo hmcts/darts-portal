@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-approve-transcript-buttons',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ApproveTranscriptButtonsComponent],
+  imports: [CommonModule, ReactiveFormsModule, ApproveTranscriptButtonsComponent, RouterLink],
   templateUrl: './approve-transcript-buttons.component.html',
   styleUrl: './approve-transcript-buttons.component.scss',
 })

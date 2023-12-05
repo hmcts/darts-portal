@@ -51,5 +51,5 @@
 
 <div class="govuk-button-group">
   <button class="govuk-button" data-module="govuk-button" (click)="onSubmit()">Submit request</button>
-  <a class="govuk-link" href="#" (click)="$event.preventDefault(); onCancel()">Cancel</a>
+  <a [routerLink]="['/transcriptions']" class="govuk-link">Cancel</a>
 </div>
