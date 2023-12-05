@@ -7,7 +7,12 @@ import {
   YourTranscriptionRequests,
 } from '@darts-types/index';
 import { WorkRequest } from '@darts-types/work-request.interface';
-import { COMPLETED_TRANSCRIPTION_STATUS_ID, TranscriptionService } from './transcription.service';
+import {
+  COMPLETED_TRANSCRIPTION_STATUS_ID,
+  APPROVED_TRANSCRIPTION_STATUS_ID,
+  REJECTED_TRANSCRIPTION_STATUS_ID,
+  TranscriptionService,
+} from './transcription.service';
 import { of } from 'rxjs';
 import { TranscriberTranscriptions } from '@darts-types/transcriber-transcriptions.interface';
 import { TranscriberRequestCounts } from '@darts-types/transcription-request-counts';
@@ -293,6 +298,31 @@ describe('TranscriptionService', () => {
       };
       const spy = jest.spyOn(service['http'], 'patch');
       service.completeTranscriptionRequest(transcriptId);
+      expect(spy).toHaveBeenCalledWith(`/api/transcriptions/${transcriptId}`, patchObject);
+    });
+  });
+
+  describe('#approveTranscriptionRequest', () => {
+    it('should call the correct endpoint and update the transcription status', () => {
+      const transcriptId = 1;
+      const patchObject = {
+        transcription_status_id: APPROVED_TRANSCRIPTION_STATUS_ID,
+      };
+      const spy = jest.spyOn(service['http'], 'patch');
+      service.approveTranscriptionRequest(transcriptId);
+      expect(spy).toHaveBeenCalledWith(`/api/transcriptions/${transcriptId}`, patchObject);
+    });
+  });
+
+  describe('#rejectTranscriptionRequest', () => {
+    it('should call the correct endpoint and update the transcription status', () => {
+      const transcriptId = 1;
+      const patchObject = {
+        transcription_status_id: REJECTED_TRANSCRIPTION_STATUS_ID,
+        workflow_comment: "I don't like this transcription request",
+      };
+      const spy = jest.spyOn(service['http'], 'patch');
+      service.rejectTranscriptionRequest(transcriptId, "I don't like this transcription request");
       expect(spy).toHaveBeenCalledWith(`/api/transcriptions/${transcriptId}`, patchObject);
     });
   });
