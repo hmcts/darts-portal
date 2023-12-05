@@ -338,8 +338,8 @@ const multipleCases = [
 
 const transcriptOne = [
   {
-    tra_id: 1,
-    hea_id: 2,
+    transcription_id: 1,
+    hearing_id: 2,
     hearing_date: '2023-10-12',
     type: 'Sentencing remarks',
     requested_on: '',
@@ -347,8 +347,8 @@ const transcriptOne = [
     status: 'Requested',
   },
   {
-    tra_id: 1,
-    hea_id: 2,
+    transcription_id: 1,
+    hearing_id: 2,
     hearing_date: '2023-10-12',
     type: 'Sentencing remarks',
     requested_on: '2023-10-12',
@@ -356,7 +356,7 @@ const transcriptOne = [
     status: 'Awaiting Authorisation',
   },
   {
-    tra_id: 1,
+    transcription_id: 1,
     hea_id: 2,
     hearing_date: '2023-10-12',
     type: 'Sentencing remarks',
@@ -365,7 +365,7 @@ const transcriptOne = [
     status: 'Approved',
   },
   {
-    tra_id: 1,
+    transcription_id: 1,
     hea_id: 2,
     hearing_date: '2023-10-12',
     type: 'Sentencing remarks',
@@ -374,7 +374,7 @@ const transcriptOne = [
     status: 'Rejected',
   },
   {
-    tra_id: 1,
+    transcription_id: 1,
     hea_id: 2,
     hearing_date: '2023-10-12',
     type: 'Sentencing remarks',
@@ -383,7 +383,7 @@ const transcriptOne = [
     status: 'With Transcriber',
   },
   {
-    tra_id: 1,
+    transcription_id: 1,
     hea_id: 2,
     hearing_date: '2023-10-12',
     type: 'Sentencing remarks',
@@ -392,7 +392,7 @@ const transcriptOne = [
     status: 'Complete',
   },
   {
-    tra_id: 1,
+    transcription_id: 1,
     hea_id: 2,
     hearing_date: '2023-10-12',
     type: 'Sentencing remarks',
@@ -404,7 +404,7 @@ const transcriptOne = [
 
 const transcriptTwo = [
   {
-    tra_id: 1,
+    transcription_id: 1,
     hea_id: 2,
     hearing_date: '2023-10-12',
     type: 'Sentencing remarks',
@@ -413,7 +413,7 @@ const transcriptTwo = [
     status: 'Requested',
   },
   {
-    tra_id: 1,
+    transcription_id: 1,
     hea_id: 2,
     hearing_date: '2023-10-12',
     type: 'Sentencing remarks',
@@ -422,7 +422,7 @@ const transcriptTwo = [
     status: 'Awaiting Authorisation',
   },
   {
-    tra_id: 1,
+    transcription_id: 1,
     hea_id: 2,
     hearing_date: '2023-10-12',
     type: 'Sentencing remarks',
@@ -431,8 +431,8 @@ const transcriptTwo = [
     status: 'Complete',
   },
   {
-    tra_id: 1,
-    hea_id: 2,
+    transcription_id: 1,
+    hearing_id: 2,
     hearing_date: '2023-10-12',
     type: 'Sentencing remarks',
     requested_on: '2023-10-12',

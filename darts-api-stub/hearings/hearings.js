@@ -4,8 +4,8 @@ const router = express.Router();
 
 const transcriptOne = [
   {
-    tra_id: 0,
-    hea_id: 1,
+    transcription_id: 0,
+    hearing_id: 1,
     hearing_date: '2023-10-12',
     type: 'Sentencing remarks',
     requested_on: '2023-10-12',
@@ -13,8 +13,8 @@ const transcriptOne = [
     status: 'With Transcriber',
   },
   {
-    tra_id: 1,
-    hea_id: 1,
+    transcription_id: 1,
+    hearing_id: 1,
     hearing_date: '2023-10-12',
     type: 'Sentencing remarks',
     requested_on: '',
@@ -22,8 +22,8 @@ const transcriptOne = [
     status: 'Complete',
   },
   {
-    tra_id: 3,
-    hea_id: 1,
+    transcription_id: 3,
+    hearing_id: 1,
     hearing_date: '2023-10-12',
     type: 'Sentencing remarks',
     requested_on: '2023-10-21',
@@ -34,8 +34,8 @@ const transcriptOne = [
 
 const transcriptTwo = [
   {
-    tra_id: 1,
-    hea_id: 2,
+    transcription_id: 1,
+    hearing_id: 2,
     hearing_date: '2023-10-12',
     type: 'Sentencing remarks',
     requested_on: '2023-10-12',
@@ -43,8 +43,8 @@ const transcriptTwo = [
     status: 'Requested',
   },
   {
-    tra_id: 1,
-    hea_id: 2,
+    transcription_id: 1,
+    hearing_id: 2,
     hearing_date: '2023-10-12',
     type: 'Sentencing remarks',
     requested_on: '2023-10-12',
@@ -52,8 +52,8 @@ const transcriptTwo = [
     status: 'Requested',
   },
   {
-    tra_id: 1,
-    hea_id: 2,
+    transcription_id: 1,
+    hearing_id: 2,
     hearing_date: '2023-10-12',
     type: 'Sentencing remarks',
     requested_on: '2023-10-12',
@@ -61,8 +61,8 @@ const transcriptTwo = [
     status: 'Complete',
   },
   {
-    tra_id: 1,
-    hea_id: 2,
+    transcription_id: 1,
+    hearing_id: 2,
     hearing_date: '2023-10-12',
     type: 'Sentencing remarks',
     requested_on: '2023-10-12',

@@ -10,7 +10,7 @@ import {
   YourTranscriptionRequests,
 } from '@darts-types/index';
 import { TranscriberTranscriptions } from '@darts-types/transcriber-transcriptions.interface';
-import { BehaviorSubject, timer, switchMap, tap, merge, map } from 'rxjs';
+import { BehaviorSubject, map, merge, switchMap, tap, timer } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 
 export const APPROVED_TRANSCRIPTION_STATUS_ID = 3;
@@ -152,5 +152,13 @@ export class TranscriptionService {
       transcription_status_id: REJECTED_TRANSCRIPTION_STATUS_ID,
       workflow_comment: rejectReason,
     });
+  }
+
+  assignTranscript(transcriptId: number) {
+    return this.http
+      .patch(`/api/transcriptions/${transcriptId}`, {
+        transcription_status_id: 5,
+      })
+      .pipe(tap(() => this.transcriptRequestCount.next(this.transcriptRequestCount.value - 1)));
   }
 }

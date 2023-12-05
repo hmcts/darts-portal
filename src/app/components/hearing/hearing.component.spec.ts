@@ -87,8 +87,8 @@ describe('HearingComponent', () => {
 
   const mockTranscript: Observable<Transcript[]> = of([
     {
-      tra_id: 1,
-      hea_id: 2,
+      transcription_id: 1,
+      hearing_id: 2,
       hearing_date: '2023-10-12',
       type: 'Sentencing remarks',
       requested_on: '2023-10-12',
@@ -96,8 +96,8 @@ describe('HearingComponent', () => {
       status: 'With Transcriber',
     },
     {
-      tra_id: 1,
-      hea_id: 2,
+      transcription_id: 1,
+      hearing_id: 2,
       hearing_date: '2023-10-12',
       type: 'Sentencing remarks',
       requested_on: '2023-10-12',

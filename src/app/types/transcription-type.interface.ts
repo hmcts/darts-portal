@@ -1,4 +1,4 @@
 export interface TranscriptionType {
-  trt_id: number;
+  transcription_type_id: number;
   description: string;
 }
