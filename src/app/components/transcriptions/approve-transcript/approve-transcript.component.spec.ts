@@ -71,7 +71,7 @@ describe('ApproveTranscriptComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should set caseDetails & hearingDetails & reportingRestriction', () => {
+  it('should set caseDetails & requestDetails & reportingRestriction', () => {
     const caseDetails = {
       'Case ID': 'C20220620001',
       Courthouse: 'Swansea',
@@ -79,7 +79,7 @@ describe('ApproveTranscriptComponent', () => {
       'Defendant(s)': ['Defendant Dave', 'Defendant Bob'],
     };
 
-    const hearingDetails = {
+    const requestDetails = {
       'Hearing Date': '08 Nov 2023',
       'Request Type': 'Specified Times',
       'Request ID': 123456789,
@@ -94,17 +94,17 @@ describe('ApproveTranscriptComponent', () => {
     const reportingRestriction = 'Section 4(2) of the Contempt of Court Act 1981';
 
     let caseObj;
-    let hearingObj;
+    let requestObj;
     let reporting;
 
     component.vm$.subscribe((transformedData) => {
       caseObj = transformedData.caseDetails;
-      hearingObj = transformedData.hearingDetails;
+      requestObj = transformedData.requestDetails;
       reporting = transformedData.reportingRestriction;
     });
 
     expect(caseObj).toEqual(caseDetails);
-    expect(hearingObj).toEqual(hearingDetails);
+    expect(requestObj).toEqual(requestDetails);
     expect(reporting).toEqual(reportingRestriction);
   });
 });
