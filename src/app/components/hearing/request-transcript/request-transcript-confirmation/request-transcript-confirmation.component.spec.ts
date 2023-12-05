@@ -16,7 +16,7 @@ describe('RequestTranscriptConfirmationComponent', () => {
     });
     fixture = TestBed.createComponent(RequestTranscriptConfirmationComponent);
     component = fixture.componentInstance;
-    component.urgencies = [{ tru_id: 1, description: 'Urgent' }];
+    component.urgencies = [{ transcription_urgency_id: 1, description: 'Urgent' }];
     component.case = { case_id: 1, case_number: '12345', courthouse: 'Reading', judges: ['Judy'] };
     component.hearing = {
       id: 1,
@@ -60,7 +60,7 @@ describe('RequestTranscriptConfirmationComponent', () => {
   describe('#urgency', () => {
     it('should return the urgency description', () => {
       component.urgencyId = 1;
-      component.urgencies = [{ tru_id: 1, description: 'Urgent' }];
+      component.urgencies = [{ transcription_urgency_id: 1, description: 'Urgent' }];
       expect(component.urgency).toEqual('Urgent');
     });
   });
@@ -68,7 +68,7 @@ describe('RequestTranscriptConfirmationComponent', () => {
   describe('#transcriptionType', () => {
     it('should return the transcription type description', () => {
       component.transcriptionTypeId = 1;
-      component.transcriptionTypes = [{ trt_id: 1, description: 'Transcription type' }];
+      component.transcriptionTypes = [{ transcription_type_id: 1, description: 'Transcription type' }];
       expect(component.transcriptionType).toEqual('Transcription type');
     });
   });
