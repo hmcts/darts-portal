@@ -244,7 +244,6 @@ describe('TranscriptionService', () => {
         hearing_id: 1,
         start_date_time: '2023-02-21T13:00:00Z',
         transcription_type_id: 3,
-        urgency_id: 2,
         transcription_urgency_id: 2,
       };
       const spy = jest.spyOn(service['http'], 'post');
