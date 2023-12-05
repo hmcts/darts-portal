@@ -4,6 +4,19 @@ const router = express.Router();
 
 router.use(express.json());
 
+const statuses = {
+  3: 'Approved',
+  4: 'Rejected',
+  5: 'With Transcriber',
+  6: 'Completed',
+};
+
+const errorTranscriptNotFound = {
+  type: 'TRANSCRIPTION_101',
+  title: 'The requested transcript cannot be found',
+  status: 404,
+};
+
 const yourTranscriptionsStub = {
   requester_transcriptions: [
     {
@@ -53,7 +66,7 @@ const yourTranscriptionsStub = {
   ],
   approver_transcriptions: [
     {
-      transcription_id: 1,
+      transcription_id: 5,
       case_id: 72345,
       case_number: 'T12345',
       courthouse_name: 'Cardiff',
@@ -247,12 +260,7 @@ router.get('/:transcriptId', (req, res) => {
       res.status(403).send(error403);
       break;
     case '404':
-      const error404 = {
-        type: 'TRANSCRIPTION_101',
-        title: 'The requested transcript cannot be found',
-        status: 404,
-      };
-      res.status(404).send(error404);
+      res.status(404).send(errorTranscriptNotFound);
       break;
     case '1':
       res.status(200).send(mockTranscriptionDetails);
@@ -270,7 +278,23 @@ router.post('/:transcriptId/document', (req, res) => {
 });
 
 router.patch('/:transcriptId', (req, res) => {
-  res.status(200).send(req.body);
+  // Find the transcription
+  const transcriptionIndex = yourTranscriptionsStub.approver_transcriptions.findIndex(
+    (transcription) => transcription.transcription_id == req.params.transcriptId
+  );
+  if (transcriptionIndex >= 0) {
+    const transcription = yourTranscriptionsStub.approver_transcriptions[transcriptionIndex];
+    const body = req.body;
+    // If it's a change to
+    if (body.transcription_status_id && statuses.hasOwnProperty(body.transcription_status_id)) {
+      transcription.status = statuses[body.transcription_status_id];
+      yourTranscriptionsStub.requester_transcriptions.push(transcription);
+      yourTranscriptionsStub.approver_transcriptions.splice(transcriptionIndex, 1);
+    }
+    res.status(200).send(transcription);
+    return;
+  }
+  res.status(errorTranscriptNotFound.status).send(errorTranscriptNotFound);
 });
 
 router.post('/', (req, res) => {
