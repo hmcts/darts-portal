@@ -75,8 +75,8 @@ export class AssignTranscriptComponent {
         hearingDetails: {
           'Hearing Date': hearingDate,
           'Request Type': data.request_type,
-          'Request ID': this.transcriptId,
           'Request method': data.is_manual ? 'Manual' : 'Automated',
+          'Request ID': this.transcriptId,
           Urgency: data.urgency,
           'Audio for transcript':
             this.startTime && this.endTime ? `Start time ${this.startTime} - End time ${this.endTime}` : '',
