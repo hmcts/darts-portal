@@ -13,6 +13,8 @@ import { TranscriberTranscriptions } from '@darts-types/transcriber-transcriptio
 import { BehaviorSubject, timer, switchMap, tap, merge, map } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 
+export const APPROVED_TRANSCRIPTION_STATUS_ID = 3;
+export const REJECTED_TRANSCRIPTION_STATUS_ID = 4;
 export const COMPLETED_TRANSCRIPTION_STATUS_ID = 6;
 @Injectable({
   providedIn: 'root',
@@ -136,6 +138,19 @@ export class TranscriptionService {
   completeTranscriptionRequest(transcriptId: number) {
     return this.http.patch(`/api/transcriptions/${transcriptId}`, {
       transcription_status_id: COMPLETED_TRANSCRIPTION_STATUS_ID,
+    });
+  }
+
+  approveTranscriptionRequest(transcriptId: number) {
+    return this.http.patch(`/api/transcriptions/${transcriptId}`, {
+      transcription_status_id: APPROVED_TRANSCRIPTION_STATUS_ID,
+    });
+  }
+
+  rejectTranscriptionRequest(transcriptId: number, rejectReason: string) {
+    return this.http.patch(`/api/transcriptions/${transcriptId}`, {
+      transcription_status_id: REJECTED_TRANSCRIPTION_STATUS_ID,
+      workflow_comment: rejectReason,
     });
   }
 }
