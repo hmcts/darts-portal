@@ -38,11 +38,11 @@ export class RequestTranscriptConfirmationComponent {
   }
 
   get urgency() {
-    return this.urgencies.find((u) => u.tru_id === this.urgencyId)?.description;
+    return this.urgencies.find((u) => u.transcription_urgency_id === this.urgencyId)?.description;
   }
 
   get transcriptionType() {
-    return this.transcriptionTypes.find((t) => t.trt_id === this.transcriptionTypeId)?.description;
+    return this.transcriptionTypes.find((t) => t.transcription_type_id === this.transcriptionTypeId)?.description;
   }
 
   onSubmit() {

@@ -2,13 +2,13 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
-import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
-import { TabDirective } from '@directives/tab.directive';
-import { combineLatest, shareReplay, map } from 'rxjs';
 import { DatatableColumn, WorkRequest } from '@darts-types/index';
+import { TabDirective } from '@directives/tab.directive';
+import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { TranscriptionService } from '@services/transcription/transcription.service';
+import { combineLatest, map, shareReplay } from 'rxjs';
 
 @Component({
   selector: 'app-your-work',
@@ -51,6 +51,6 @@ export class YourWorkComponent {
   }
 
   private filterCompletedRequests(requests: WorkRequest[]): WorkRequest[] {
-    return requests.filter((r) => r.status === 'COMPLETE');
+    return requests.filter((r) => r.status === 'Complete');
   }
 }

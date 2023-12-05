@@ -12,6 +12,6 @@ export interface WorkRequest {
   is_manual: boolean;
 }
 
-type WorkStatus = 'COMPLETE' | 'With Transcriber';
+type WorkStatus = 'Complete' | 'With Transcriber';
 
 export interface WorkRequests extends Array<WorkRequest> {}
