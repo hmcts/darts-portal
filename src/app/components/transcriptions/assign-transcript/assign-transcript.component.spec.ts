@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { DatePipe } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranscriptionService } from '@services/transcription/transcription.service';
@@ -11,8 +11,7 @@ import { AssignTranscriptComponent } from './assign-transcript.component';
 describe('AssignTranscriptComponent', () => {
   let component: AssignTranscriptComponent;
   let fixture: ComponentFixture<AssignTranscriptComponent>;
-  let transcriptionService: TranscriptionService;
-  let httpClientSpy: HttpClient;
+  let fakeTranscriptionService: Partial<TranscriptionService>;
 
   const mockActivatedRoute = {
     snapshot: {
@@ -64,11 +63,8 @@ describe('AssignTranscriptComponent', () => {
   });
 
   beforeEach(async () => {
-    httpClientSpy = {
-      get: jest.fn(),
-    } as unknown as HttpClient;
-    transcriptionService = new TranscriptionService(httpClientSpy);
-    jest.spyOn(transcriptionService, 'getTranscriptionDetails').mockReturnValue(transcriptionDetail);
+    fakeTranscriptionService = { getTranscriptionDetails: jest.fn(), assignTranscript: jest.fn() };
+    jest.spyOn(fakeTranscriptionService, 'getTranscriptionDetails').mockReturnValue(transcriptionDetail);
 
     await TestBed.configureTestingModule({
       imports: [AssignTranscriptComponent, HttpClientModule, RouterTestingModule],
@@ -76,7 +72,7 @@ describe('AssignTranscriptComponent', () => {
         DatePipe,
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
         { provide: DatePipe },
-        { provide: TranscriptionService, useValue: transcriptionService },
+        { provide: TranscriptionService, useValue: fakeTranscriptionService },
       ],
     }).compileComponents();
 
