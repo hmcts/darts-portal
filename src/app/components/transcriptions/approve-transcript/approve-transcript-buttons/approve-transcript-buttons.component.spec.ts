@@ -35,6 +35,8 @@ describe('ApproveTranscriptButtonsComponent', () => {
     fixture.detectChanges();
     const rejectReason = compiled.querySelector('#reject-reason');
     expect(rejectReason).toBeTruthy();
+    const errorRejectReason = compiled.querySelector('#error-reject-reason');
+    expect(errorRejectReason).toBeTruthy();
   });
 
   it('should call rejectTranscriptionRequest from transcriptionService when reason populated', () => {

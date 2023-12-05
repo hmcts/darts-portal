@@ -4,6 +4,13 @@
       <h1 class="govuk-fieldset__heading">Do you approve this request?</h1>
     </legend>
     <div class="govuk-radios" data-module="govuk-radios">
+      <p
+        *ngIf="approveFormControl.value === 'No' && !rejectReasonFormControl.value"
+        class="govuk-error-message"
+        id="error-reject-reason"
+      >
+        You must explain why you cannot approve this request.
+      </p>
       <div class="govuk-radios__item">
         <input
           class="govuk-radios__input"
