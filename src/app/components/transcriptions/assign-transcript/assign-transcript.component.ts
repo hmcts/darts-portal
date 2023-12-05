@@ -1,14 +1,14 @@
-import { Component, inject } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
-import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
-import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
+import { Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
-import { TranscriptionService } from '@services/transcription/transcription.service';
-import { TranscriptionDetails } from '@darts-types/transcription-details.interface';
-import { map, tap } from 'rxjs';
+import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
+import { TranscriptionDetails } from '@darts-types/transcription-details.interface';
+import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
+import { TranscriptionService } from '@services/transcription/transcription.service';
+import { map, tap } from 'rxjs';
 
 @Component({
   selector: 'app-assign-transcript',
@@ -50,8 +50,8 @@ export class AssignTranscriptComponent {
         hearingDetails: {
           'Hearing Date': hearingDate,
           'Request Type': data.request_type,
-          'Request ID': this.transcriptId,
           'Request method': data.is_manual ? 'Manual' : 'Automated',
+          'Request ID': this.transcriptId,
           Urgency: data.urgency,
           'Audio for transcript': startTime && endTime ? `Start time ${startTime} - End time ${endTime}` : '',
           From: data.from,
