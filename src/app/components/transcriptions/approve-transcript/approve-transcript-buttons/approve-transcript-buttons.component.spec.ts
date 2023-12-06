@@ -29,21 +29,33 @@ describe('ApproveTranscriptButtonsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should disable "Submit" button if no choice selected', () => {
+  it('should call onChange if option changed', () => {
+    component.errors.emit = jest.fn();
     const compiled = fixture.nativeElement;
-    const submitButton = compiled.querySelector('#submit-button');
-    expect(submitButton).toBeTruthy();
-    expect(submitButton).toHaveProperty('disabled');
+    const approveRadio = compiled.querySelector('#approve-radio');
+    approveRadio.click();
+    expect(component.errors.emit).toHaveBeenCalledWith([]);
+  });
+
+  it('should render reject-reason box if options are not selected', () => {
+    const compiled = fixture.nativeElement;
+    component.onSubmit();
+    fixture.detectChanges();
+    const errorRejectReason = compiled.querySelector('#error-reject-reason');
+    expect(errorRejectReason).toBeTruthy();
+    expect(errorRejectReason.textContent).toEqual(' You must choose whether you approve or reject this request. ');
   });
 
   it('should render reject-reason box if "No" selected', () => {
     const compiled = fixture.nativeElement;
     component.approveFormControl.setValue('No');
+    component.onSubmit();
     fixture.detectChanges();
     const rejectReason = compiled.querySelector('#reject-reason');
     expect(rejectReason).toBeTruthy();
     const errorRejectReason = compiled.querySelector('#error-reject-reason');
     expect(errorRejectReason).toBeTruthy();
+    expect(errorRejectReason.textContent).toEqual(' You must explain why you cannot approve this request. ');
   });
 
   it('should call rejectTranscriptionRequest from transcriptionService when reason populated', () => {

@@ -21,6 +21,7 @@ export class ApproveTranscriptButtonsComponent {
 
   rejectReasonFormControl = new FormControl('');
   approveFormControl = new FormControl('');
+  buttonsError = '';
 
   get remainingCharacterCount() {
     return 2000 - (this.rejectReasonFormControl.value?.length || 0);
@@ -30,7 +31,10 @@ export class ApproveTranscriptButtonsComponent {
     if (this.approveFormControl.value === 'No') {
       if (!this.rejectReasonFormControl.value?.length) {
         this.errors.emit([
-          { fieldId: 'reject-reason', message: 'You must explain why you cannot approve this request.' },
+          {
+            fieldId: 'reject-reason',
+            message: (this.buttonsError = 'You must explain why you cannot approve this request.'),
+          },
         ]);
         return;
       }
@@ -43,7 +47,20 @@ export class ApproveTranscriptButtonsComponent {
       this.transcriptionService.approveTranscriptionRequest(this.transcriptId).subscribe(() => {
         this.handleResponse();
       });
+    } else {
+      this.errors.emit([
+        {
+          fieldId: 'approval-radios',
+          message: (this.buttonsError = 'You must choose whether you approve or reject this request.'),
+        },
+      ]);
+      return;
     }
+  }
+
+  onChange() {
+    this.buttonsError = '';
+    this.errors.emit([]);
   }
 
   private handleResponse() {
