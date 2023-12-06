@@ -126,25 +126,25 @@ describe('UploadTranscriptComponent', () => {
       expect(caseDetails.textContent).toContain('Defendant Dave');
     });
 
-    it('render hearing details', () => {
-      const hearingDetails = fixture.debugElement.queryAll(By.directive(DetailsTableComponent))[1].nativeElement;
-      expect(hearingDetails.textContent).toContain('Hearing Date');
-      expect(hearingDetails.textContent).toContain('26 Jun 2023');
-      expect(hearingDetails.textContent).toContain('Request Type');
-      expect(hearingDetails.textContent).toContain('Specified Times');
-      expect(hearingDetails.textContent).toContain('Request ID');
-      expect(hearingDetails.textContent).toContain('1');
-      expect(hearingDetails.textContent).toContain('Request method');
-      expect(hearingDetails.textContent).toContain('Manual');
-      expect(hearingDetails.textContent).toContain('Urgency');
-      expect(hearingDetails.textContent).toContain('Overnight');
-      expect(hearingDetails.textContent).toContain('Audio for transcript');
-      expect(hearingDetails.textContent).toContain('Start time 13:00:00 - End time 16:00:00');
-      expect(hearingDetails.textContent).toContain('26 Jun 2023');
-      expect(hearingDetails.textContent).toContain('Instructions');
-      expect(hearingDetails.textContent).toContain('Please expedite my request');
-      expect(hearingDetails.textContent).toContain('Judge approval');
-      expect(hearingDetails.textContent).toContain('Yes');
+    it('render request details', () => {
+      const requestDetails = fixture.debugElement.queryAll(By.directive(DetailsTableComponent))[1].nativeElement;
+      expect(requestDetails.textContent).toContain('Hearing Date');
+      expect(requestDetails.textContent).toContain('26 Jun 2023');
+      expect(requestDetails.textContent).toContain('Request Type');
+      expect(requestDetails.textContent).toContain('Specified Times');
+      expect(requestDetails.textContent).toContain('Request ID');
+      expect(requestDetails.textContent).toContain('1');
+      expect(requestDetails.textContent).toContain('Request method');
+      expect(requestDetails.textContent).toContain('Manual');
+      expect(requestDetails.textContent).toContain('Urgency');
+      expect(requestDetails.textContent).toContain('Overnight');
+      expect(requestDetails.textContent).toContain('Audio for transcript');
+      expect(requestDetails.textContent).toContain('Start time 13:00:00 - End time 16:00:00');
+      expect(requestDetails.textContent).toContain('26 Jun 2023');
+      expect(requestDetails.textContent).toContain('Instructions');
+      expect(requestDetails.textContent).toContain('Please expedite my request');
+      expect(requestDetails.textContent).toContain('Judge approval');
+      expect(requestDetails.textContent).toContain('Yes');
     });
 
     it('render reporting restriction', () => {

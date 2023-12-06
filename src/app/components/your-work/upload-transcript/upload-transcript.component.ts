@@ -57,11 +57,11 @@ export class UploadTranscriptComponent {
           'Judge(s)': data.judges,
           'Defendant(s)': data.defendants,
         },
-        hearingDetails: {
+        requestDetails: {
           'Hearing Date': hearingDate,
           'Request Type': data.request_type,
-          'Request ID': this.requestId,
           'Request method': data.is_manual ? 'Manual' : 'Automated',
+          'Request ID': this.requestId,
           Urgency: data.urgency,
           'Audio for transcript': startTime && endTime ? `Start time ${startTime} - End time ${endTime}` : '',
           From: data.from,
