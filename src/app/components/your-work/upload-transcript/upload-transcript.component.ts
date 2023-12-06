@@ -57,7 +57,7 @@ export class UploadTranscriptComponent {
           'Judge(s)': data.judges,
           'Defendant(s)': data.defendants,
         },
-        hearingDetails: {
+        requestDetails: {
           'Hearing Date': hearingDate,
           'Request Type': data.request_type,
           'Request ID': this.requestId,
