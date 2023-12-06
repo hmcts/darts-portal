@@ -38,11 +38,11 @@ const MOCK_WORK_REQUESTS: WorkRequest[] = [
 ];
 
 const fakeTranscriptService = {
-  getWorkRequests: () => of(MOCK_WORK_REQUESTS),
+  assignedRequests$: of(MOCK_WORK_REQUESTS),
 };
 
 const fakeTranscriptServiceNoRequests = {
-  getWorkRequests: () => of([]),
+  assignedRequests$: of([]),
 };
 
 describe('YourWorkComponent', () => {
@@ -94,7 +94,7 @@ describe('YourWorkComponent', () => {
     });
   });
 
-  describe('When Work Requests returned', () => {
+  describe('When NO work requests returned', () => {
     beforeEach(async () => {
       await TestBed.configureTestingModule({
         imports: [YourWorkComponent, HttpClientTestingModule],

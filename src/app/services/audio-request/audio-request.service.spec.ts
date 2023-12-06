@@ -5,7 +5,7 @@ import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
 import { UserState } from '@darts-types/user-state';
 import { UserService } from '@services/user/user.service';
 import { of } from 'rxjs';
-import { AudioRequestService, UNREAD_AUDIO_COUNT_PATH } from './audio-request.service';
+import { AudioRequestService } from './audio-request.service';
 
 describe('AudioService', () => {
   let service: AudioRequestService;
@@ -278,43 +278,7 @@ describe('AudioService', () => {
         expect(responseStatus).toEqual(204);
       });
     });
-
-    describe('#getUnreadCount', () => {
-      it('gets unread count', () => {
-        const mockUnreadCount = { count: 5 };
-        let unreadCount;
-
-        service.getUnreadCount().subscribe((count) => {
-          unreadCount = count;
-        });
-
-        const req = httpMock.expectOne(UNREAD_AUDIO_COUNT_PATH);
-        expect(req.request.method).toBe('GET');
-
-        req.flush(mockUnreadCount);
-
-        expect(unreadCount).toEqual(mockUnreadCount.count);
-      });
-    });
   });
-
-  it('audioRequests$ should getAudioRequests and update unread count', fakeAsync(() => {
-    const getAudioRequestsSpy = jest.spyOn(service, 'getAudioRequests').mockReturnValue(of(MOCK_AUDIO_REQUESTS));
-
-    let result = 0;
-    service.audioRequests$.subscribe();
-
-    tick();
-
-    service.unreadAudioCount$.subscribe((count) => {
-      result = count;
-    });
-
-    expect(result).toBe(5);
-    expect(getAudioRequestsSpy).toHaveBeenCalledTimes(1);
-    expect(getAudioRequestsSpy).toHaveBeenCalledWith(false);
-    discardPeriodicTasks();
-  }));
 
   it('expiredAudioRequests$ should call getAudioRequests', fakeAsync(() => {
     const audioSpy = jest.spyOn(service, 'getAudioRequests');

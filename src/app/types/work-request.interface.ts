@@ -1,3 +1,5 @@
+import { TranscriptStatus } from './transcripts-row.interface';
+
 export interface WorkRequest {
   transcription_id: number;
   case_id: number;
@@ -5,13 +7,11 @@ export interface WorkRequest {
   courthouse_name: string;
   hearing_date: string;
   transcription_type: string;
-  status: WorkStatus;
+  status: TranscriptStatus;
   urgency: string;
   requested_ts: string;
   state_change_ts: string;
   is_manual: boolean;
 }
-
-type WorkStatus = 'Complete' | 'With Transcriber';
 
 export interface WorkRequests extends Array<WorkRequest> {}

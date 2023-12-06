@@ -9,7 +9,7 @@ describe('Your work', () => {
 
   it('shows "Your work"', () => {
     cy.contains('Your work').click();
-    cy.get('#transcription-count').should('contain', ' 1 ');
+    cy.get('#transcription-count').should('contain', '5');
     cy.get('h1').should('contain', 'Your work');
     cy.a11y();
   });

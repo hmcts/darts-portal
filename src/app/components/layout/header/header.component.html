@@ -59,8 +59,15 @@
                 routerLink="work"
                 routerLinkActive="active"
                 ariaCurrentWhenActive="page"
-                >Your work</a
-              >
+                >Your work
+                @if (assignedTranscriptCount$ | async; as count) {
+                  @if (count > 0) {
+                    <span id="assignedTranscriptCount" class="moj-notification-badge"
+                      ><span class="govuk-visually-hidden">Transcript requests assigned count: </span>{{ count }}</span
+                    >
+                  }
+                }
+              </a>
             </li>
           }
           <li class="moj-primary-navigation__item">
@@ -97,12 +104,14 @@
                 routerLinkActive="active"
                 ariaCurrentWhenActive="page"
                 >Transcript requests
-                <ng-container *ngIf="transcriptRequestCounts$ | async as count">
-                  <span *ngIf="count > 0" id="transcriptRequestNotifications" class="moj-notification-badge"
-                    ><span class="govuk-visually-hidden">Transcript requests not assigned count: </span
-                    >{{ count }}</span
-                  >
-                </ng-container>
+                @if (unassignedTranscriptCount$ | async; as count) {
+                  @if (count > 0) {
+                    <span id="unassignedTranscriptCount" class="moj-notification-badge"
+                      ><span class="govuk-visually-hidden">Transcript requests unassigned count: </span
+                      >{{ count }}</span
+                    >
+                  }
+                }
               </a>
             </li>
           }

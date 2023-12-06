@@ -2,40 +2,28 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { UserAudioRequestRow } from '@darts-types/index';
 import { AudioRequestType, UserAudioRequest } from '@darts-types/user-audio-request.interface';
-import { BehaviorSubject, Observable, map, merge, switchMap, tap, timer } from 'rxjs';
+import { CountNotificationService } from '@services/count-notification/count-notification.service';
+import { Observable, map, switchMap, tap, timer } from 'rxjs';
 
-export const UNREAD_AUDIO_COUNT_PATH = 'api/audio-requests/not-accessed-count';
 @Injectable({
   providedIn: 'root',
 })
 export class AudioRequestService {
   http = inject(HttpClient);
+  countService = inject(CountNotificationService);
 
   // Defined in seconds
   private readonly POLL_INTERVAL = 60;
-  private readonly UNREAD_COUNT_POLL_INTERVAL = 30;
-
-  // Save unread count in memory
-  private unreadCount = new BehaviorSubject<number>(0);
-  readonly unreadCount$ = this.unreadCount.asObservable();
 
   // Store audio request when clicking 'View' on 'Your Audio' screen
   audioRequestView!: UserAudioRequestRow;
 
   audioRequests$ = timer(0, this.POLL_INTERVAL * 1000).pipe(
     switchMap(() => this.getAudioRequests(false)),
-    tap((audioRequests) => this.updateUnread(audioRequests))
+    tap((audioRequests) => this.updateCount(audioRequests))
   );
 
   expiredAudioRequests$ = timer(0, this.POLL_INTERVAL * 1000).pipe(switchMap(() => this.getAudioRequests(true)));
-
-  pollUnreadCount$ = timer(0, this.UNREAD_COUNT_POLL_INTERVAL * 1000).pipe(switchMap(() => this.getUnreadCount()));
-
-  // Merge both unread count observables into one
-  unreadAudioCount$ = merge(
-    this.pollUnreadCount$, // Fetches count from server
-    this.unreadCount$ // In memory count / manual update
-  );
 
   getAudioRequests(expired: boolean): Observable<UserAudioRequest[]> {
     return this.http
@@ -55,7 +43,7 @@ export class AudioRequestService {
       tap(() => {
         if (isUnread) {
           // Optimistically update the unread count before next polling interval
-          this.decrementUnreadAudioCount();
+          this.countService.decrementUnreadAudioCount();
         }
       })
     );
@@ -77,21 +65,13 @@ export class AudioRequestService {
     return audioRequests.filter((ar) => ar.media_request_status === 'COMPLETED');
   }
 
-  getUnreadCount(): Observable<number> {
-    return this.http.get<{ count: number }>(UNREAD_AUDIO_COUNT_PATH, {}).pipe(map((res) => res.count));
-  }
-
-  private updateUnread(audioRequests: UserAudioRequest[]) {
+  private updateCount(audioRequests: UserAudioRequest[]) {
     const completedRequests = this.filterCompletedRequests(audioRequests);
-    this.unreadCount.next(this.getUnreadCountFromAudioRequests(completedRequests));
+    this.countService.setUnreadAudioCount(this.countUnreadAudioRequests(completedRequests));
   }
 
-  private getUnreadCountFromAudioRequests(audioRequests: UserAudioRequest[]): number {
+  private countUnreadAudioRequests(audioRequests: UserAudioRequest[]): number {
     //Return count of completed rows which contain last_accessed_ts property
     return audioRequests.filter((ar) => Boolean(!ar.last_accessed_ts)).length;
-  }
-
-  private decrementUnreadAudioCount() {
-    this.unreadCount.next(this.unreadCount.getValue() - 1);
   }
 }

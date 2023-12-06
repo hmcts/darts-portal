@@ -8,7 +8,7 @@ describe('Transcript requests', () => {
   beforeEach(() => {
     cy.login('transcriber');
     cy.injectAxe();
-    cy.contains('Transcript requests').click();
+    cy.get('#transcript-requests-link').click();
   });
 
   it('shows "Transcript requests"', () => {
@@ -16,15 +16,15 @@ describe('Transcript requests', () => {
     cy.a11y();
   });
 
-  it('has data in the table', () => {
+  it('has Data in the table', () => {
     cy.get('#transcript-requests-table').should('contain', 'Newcastle');
     cy.get('#transcript-requests-table').should('contain', 'Court Log');
     cy.get('#transcript-requests-table').should('contain', 'Manual');
     cy.a11y();
   });
 
-  it('view transcript', () => {
-    clickViewLink();
+  it('takes you to assign transcript page', () => {
+    cy.get('#transcript-requests-table td').contains('Up to 3 working days').parents('tr').contains('View').click();
     cy.contains('Case ID').parents('tr').should('contain', 'C20220620001');
     cy.contains('Hearing Date').parents('tr').should('contain', '08 Nov 2023');
     cy.get('h1').should('contain', 'Choose an action');
@@ -38,6 +38,8 @@ describe('Transcript requests', () => {
     cy.get('#transcriptionOption').click();
     cy.get('#submit-button').click();
     cy.get('h1').contains('Your work');
+    cy.get('#unassignedTranscriptCount').should('contain', '3');
+    cy.get('#assignedTranscriptCount').should('contain', '3');
   });
 
   it('assign transcript to me and upload', () => {
@@ -45,6 +47,8 @@ describe('Transcript requests', () => {
     cy.get('#transcriptionOption-3').click();
     cy.get('#submit-button').click();
     cy.get('h1').contains('Transcript request');
+    cy.get('#unassignedTranscriptCount').should('contain', '2');
+    cy.get('#assignedTranscriptCount').should('contain', '4');
   });
 
   it('assign transcript to me and get audio', () => {
@@ -52,6 +56,8 @@ describe('Transcript requests', () => {
     cy.get('#transcriptionOption-2').click();
     cy.get('#submit-button').click();
     cy.get('h1').contains('Hearing');
-    cy.url().should('include', '/case/1/hearing/1?startTime=13:00:00&endTime=16:00:00');
+    cy.url().should('include', '/case/2/hearing/1?startTime=13:00:00&endTime=16:00:00');
+    cy.get('#unassignedTranscriptCount').should('contain', '1');
+    cy.get('#assignedTranscriptCount').should('contain', '5');
   });
 });
