@@ -29,7 +29,7 @@ describe('ApproveTranscriptButtonsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render reject-reason box if no selected', () => {
+  it('should render reject-reason box if "No" selected', () => {
     const compiled = fixture.nativeElement;
     component.approveFormControl.setValue('No');
     fixture.detectChanges();
