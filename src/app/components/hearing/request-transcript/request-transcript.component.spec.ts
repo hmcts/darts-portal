@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
@@ -14,10 +13,9 @@ import { RequestTranscriptComponent } from './request-transcript.component';
 describe('RequestTranscriptComponent', () => {
   let component: RequestTranscriptComponent;
   let fixture: ComponentFixture<RequestTranscriptComponent>;
-  let caseService: CaseService;
-  let hearingService: HearingService;
-  let transcriptionService: TranscriptionService;
-  let httpClientSpy: HttpClient;
+  let fakeCaseService: Partial<CaseService>;
+  let fakeHearingService: Partial<HearingService>;
+  let fakeTranscriptionService: Partial<TranscriptionService>;
 
   const mockActivatedRoute = {
     snapshot: {
@@ -79,26 +77,26 @@ describe('RequestTranscriptComponent', () => {
   ]) as Observable<HearingEvent[]>;
 
   beforeEach(() => {
-    httpClientSpy = {
-      get: jest.fn(),
-    } as unknown as HttpClient;
+    fakeCaseService = { getCase: jest.fn(), getHearingById: jest.fn() };
+    fakeHearingService = { getAudio: jest.fn(), getEvents: jest.fn() };
+    fakeTranscriptionService = {
+      postTranscriptionRequest: jest.fn(),
+      getUrgencies: jest.fn(),
+      getTranscriptionTypes: jest.fn(),
+    };
 
-    caseService = new CaseService(httpClientSpy);
-    hearingService = new HearingService(httpClientSpy);
-    transcriptionService = new TranscriptionService(httpClientSpy);
-
-    jest.spyOn(caseService, 'getCase').mockReturnValue(cd);
-    jest.spyOn(caseService, 'getHearingById').mockReturnValue(shd);
-    jest.spyOn(hearingService, 'getAudio').mockReturnValue(ahd);
-    jest.spyOn(hearingService, 'getEvents').mockReturnValue(ehd);
+    jest.spyOn(fakeCaseService, 'getCase').mockReturnValue(cd);
+    jest.spyOn(fakeCaseService, 'getHearingById').mockReturnValue(shd);
+    jest.spyOn(fakeHearingService, 'getAudio').mockReturnValue(ahd);
+    jest.spyOn(fakeHearingService, 'getEvents').mockReturnValue(ehd);
 
     TestBed.configureTestingModule({
       imports: [RequestTranscriptComponent, HttpClientTestingModule],
       providers: [
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
-        { provide: CaseService, useValue: caseService },
-        { provide: HearingService, useValue: hearingService },
-        { provide: TranscriptionService, useValue: transcriptionService },
+        { provide: CaseService, useValue: fakeCaseService },
+        { provide: HearingService, useValue: fakeHearingService },
+        { provide: TranscriptionService, useValue: fakeTranscriptionService },
       ],
     });
     fixture = TestBed.createComponent(RequestTranscriptComponent);
@@ -197,7 +195,7 @@ describe('RequestTranscriptComponent', () => {
         },
       ];
 
-      hearingService.getAudio(1).subscribe((c) => {
+      component.hearingService.getAudio(1).subscribe((c) => {
         returnedData = c;
       });
 
@@ -223,12 +221,12 @@ describe('RequestTranscriptComponent', () => {
 
   describe('#onConfirm', () => {
     it('should set step to 4', () => {
-      jest.spyOn(transcriptionService, 'postTranscriptionRequest').mockReturnValue(of({ transcription_id: 1 }));
+      jest.spyOn(fakeTranscriptionService, 'postTranscriptionRequest').mockReturnValue(of({ transcription_id: 1 }));
       component.onConfirm('test');
       expect(component.step).toEqual(4);
     });
     it('should call postTranscriptionRequest', () => {
-      jest.spyOn(transcriptionService, 'postTranscriptionRequest').mockReturnValue(of({ transcription_id: 1 }));
+      jest.spyOn(fakeTranscriptionService, 'postTranscriptionRequest').mockReturnValue(of({ transcription_id: 1 }));
       component.audioTimes = {
         startTime: DateTime.fromISO('2023-02-21T13:00:00Z'),
         endTime: DateTime.fromISO('2023-02-21T18:00:00Z'),
@@ -249,7 +247,7 @@ describe('RequestTranscriptComponent', () => {
       };
 
       component.onConfirm('test');
-      expect(transcriptionService.postTranscriptionRequest).toHaveBeenCalledWith(expectedRequestObject);
+      expect(fakeTranscriptionService.postTranscriptionRequest).toHaveBeenCalledWith(expectedRequestObject);
     });
   });
 
@@ -304,13 +302,13 @@ describe('RequestTranscriptComponent', () => {
 
   describe('#onConfirm', () => {
     it('should set step to 4', () => {
-      jest.spyOn(transcriptionService, 'postTranscriptionRequest').mockReturnValue(of({ transcription_id: 1 }));
+      jest.spyOn(fakeTranscriptionService, 'postTranscriptionRequest').mockReturnValue(of({ transcription_id: 1 }));
       component.onConfirm('test');
       expect(component.step).toEqual(4);
     });
 
     it('should call postTranscriptionRequest', () => {
-      jest.spyOn(transcriptionService, 'postTranscriptionRequest').mockReturnValue(of({ transcription_id: 1 }));
+      jest.spyOn(fakeTranscriptionService, 'postTranscriptionRequest').mockReturnValue(of({ transcription_id: 1 }));
       component.audioTimes = {
         startTime: DateTime.fromISO('2023-02-21T13:00:00Z'),
         endTime: DateTime.fromISO('2023-02-21T18:00:00Z'),
@@ -331,7 +329,7 @@ describe('RequestTranscriptComponent', () => {
       };
 
       component.onConfirm('test');
-      expect(transcriptionService.postTranscriptionRequest).toHaveBeenCalledWith(expectedRequestObject);
+      expect(fakeTranscriptionService.postTranscriptionRequest).toHaveBeenCalledWith(expectedRequestObject);
     });
   });
 });

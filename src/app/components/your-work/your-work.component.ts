@@ -39,7 +39,7 @@ export class YourWorkComponent {
 
   readyColumns = [...this.columns, { name: '', prop: '' }]; // Empty column header for view link
 
-  requests$ = this.transcriptionService.getWorkRequests(true).pipe(shareReplay(1));
+  requests$ = this.transcriptionService.assignedRequests$.pipe(shareReplay(1));
 
   requesterRequests$ = combineLatest({
     todoRequests: this.requests$.pipe(map((requests) => this.filterTodoRequests(requests))),

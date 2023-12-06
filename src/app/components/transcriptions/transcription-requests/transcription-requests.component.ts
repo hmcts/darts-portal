@@ -1,11 +1,11 @@
-import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TranscriptionService } from '@services/transcription/transcription.service';
-import { DataTableComponent } from '@common/data-table/data-table.component';
-import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { DatatableColumn } from '@darts-types/index';
+import { DataTableComponent } from '@common/data-table/data-table.component';
 import { LoadingComponent } from '@common/loading/loading.component';
+import { DatatableColumn } from '@darts-types/index';
+import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
+import { TranscriptionService } from '@services/transcription/transcription.service';
 
 @Component({
   selector: 'app-transcription-requests',
@@ -28,5 +28,5 @@ export class TranscriptionRequestsComponent {
     { name: '', prop: '' },
   ];
 
-  transcriptRequests$ = this.transcriptionService.transcriptRequests$;
+  transcriptRequests$ = this.transcriptionService.unassignedRequests$;
 }

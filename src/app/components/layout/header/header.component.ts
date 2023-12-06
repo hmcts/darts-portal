@@ -1,10 +1,9 @@
 import { CommonModule, NgIf } from '@angular/common';
 import { Component, DoCheck, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { AuthService } from '@services/auth/auth.service';
+import { CountNotificationService } from '@services/count-notification/count-notification.service';
 import { HeaderService } from '@services/header/header.service';
-import { TranscriptionService } from '@services/transcription/transcription.service';
 import { UserService } from '@services/user/user.service';
 
 @Component({
@@ -16,16 +15,16 @@ import { UserService } from '@services/user/user.service';
 })
 export class HeaderComponent implements DoCheck {
   userService = inject(UserService);
+  countService = inject(CountNotificationService);
   isAuthenticated = false;
   isVisible$ = this.headerService.isVisible$;
-  unreadAudioCount$ = this.audioService.unreadAudioCount$;
-  transcriptRequestCounts$ = this.transcriptionService.transcriptRequestCounts$;
+  unreadAudioCount$ = this.countService.unreadAudio$;
+  unassignedTranscriptCount$ = this.countService.unassignedTranscripts$;
+  assignedTranscriptCount$ = this.countService.assignedTranscripts$;
 
   constructor(
     private authService: AuthService,
-    private headerService: HeaderService,
-    private audioService: AudioRequestService,
-    private transcriptionService: TranscriptionService
+    private headerService: HeaderService
   ) {}
 
   ngDoCheck() {
