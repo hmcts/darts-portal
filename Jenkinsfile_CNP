@@ -5,6 +5,7 @@
 def type = "angular"
 def product = "darts"
 def component = "portal"
+env.BUILD_AGENT_TYPE = "arm"
 
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 def branchesToSync = ['demo']
