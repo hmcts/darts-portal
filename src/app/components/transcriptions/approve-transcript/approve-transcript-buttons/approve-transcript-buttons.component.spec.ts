@@ -29,6 +29,13 @@ describe('ApproveTranscriptButtonsComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should disable "Submit" button if no choice selected', () => {
+    const compiled = fixture.nativeElement;
+    const submitButton = compiled.querySelector('#submit-button');
+    expect(submitButton).toBeTruthy();
+    expect(submitButton).toHaveProperty('disabled');
+  });
+
   it('should render reject-reason box if "No" selected', () => {
     const compiled = fixture.nativeElement;
     component.approveFormControl.setValue('No');

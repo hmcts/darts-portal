@@ -39,8 +39,7 @@ export class ApproveTranscriptButtonsComponent {
         .subscribe(() => {
           this.handleResponse();
         });
-    } else {
-      // else choice will be 'Yes'
+    } else if (this.approveFormControl.value === 'Yes') {
       this.transcriptionService.approveTranscriptionRequest(this.transcriptId).subscribe(() => {
         this.handleResponse();
       });
