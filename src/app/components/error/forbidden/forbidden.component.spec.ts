@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppConfigService } from '@services/app-config/app-config.service';
 
+import { HeaderService } from '@services/header/header.service';
 import { ForbiddenComponent } from './forbidden.component';
 
 describe('ForbiddenComponent', () => {
@@ -29,5 +30,19 @@ describe('ForbiddenComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('hide nav on init', () => {
+    const headerService = TestBed.inject(HeaderService);
+    const hideNavSpy = jest.spyOn(headerService, 'hideNavigation');
+    component.ngOnInit();
+    expect(hideNavSpy).toHaveBeenCalled();
+  });
+
+  it('show nav on destroy', () => {
+    const headerService = TestBed.inject(HeaderService);
+    const showNavSpy = jest.spyOn(headerService, 'showNavigation');
+    component.ngOnDestroy();
+    expect(showNavSpy).toHaveBeenCalled();
   });
 });
