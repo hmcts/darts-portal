@@ -1,4 +1,7 @@
-<div class="govuk-form-group">
+<div
+  class="govuk-form-group"
+  [class.govuk-form-group--error]="approveFormControl.value === 'No' && !rejectReasonFormControl.value"
+>
   <fieldset class="govuk-fieldset">
     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
       <h1 class="govuk-fieldset__heading">Do you approve this request?</h1>
