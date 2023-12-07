@@ -33,7 +33,7 @@ export class ApproveTranscriptButtonsComponent {
         this.errors.emit([
           {
             fieldId: 'reject-reason',
-            message: (this.buttonsError = 'You must explain why you cannot approve this request.'),
+            message: (this.buttonsError = 'You must explain why you cannot approve this request'),
           },
         ]);
         return;
@@ -51,7 +51,7 @@ export class ApproveTranscriptButtonsComponent {
       this.errors.emit([
         {
           fieldId: 'approval-radios',
-          message: (this.buttonsError = 'You must choose whether you approve or reject this request.'),
+          message: (this.buttonsError = 'You must choose whether you approve or reject this request'),
         },
       ]);
       return;
