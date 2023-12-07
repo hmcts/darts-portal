@@ -3,6 +3,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 
+import { TranscriptionDetails } from '@darts-types/transcription-details.interface';
+import { FileDownloadService } from '@services/file-download/file-download.service';
+import { of } from 'rxjs/internal/observable/of';
 import { ViewTranscriptComponent } from './view-transcript.component';
 
 describe('ViewTranscriptComponent', () => {
@@ -37,28 +40,63 @@ describe('ViewTranscriptComponent', () => {
     },
   };
 
+  const mockTransctiptionDetails: TranscriptionDetails = {
+    case_id: 0,
+    case_number: '',
+    courthouse: '',
+    defendants: [],
+    judges: [],
+    transcript_file_name: 'test-file-name.docx',
+    hearing_date: '',
+    urgency: '',
+    request_type: '',
+    transcription_id: 0,
+    transcription_start_ts: '',
+    transcription_end_ts: '',
+    is_manual: false,
+    hearing_id: 0,
+  };
+
+  const blob = new Blob();
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ViewTranscriptComponent, HttpClientModule],
       providers: [
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
-        { provide: TranscriptionService, useValue: { getTranscriptionDetails: jest.fn() } },
+        {
+          provide: TranscriptionService,
+          useValue: {
+            getTranscriptionDetails: jest.fn().mockReturnValue(of(mockTransctiptionDetails)),
+            downloadTranscriptDocument: jest.fn().mockReturnValue(of(blob)),
+          },
+        },
+        {
+          provide: FileDownloadService,
+          useValue: {
+            saveAs: jest.fn(),
+          },
+        },
       ],
     });
 
     fixture = TestBed.createComponent(ViewTranscriptComponent);
     component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
-
-    const getTranscriptionDetailsSpy = jest.spyOn(component.transcriptionService, 'getTranscriptionDetails');
-    fixture.detectChanges();
-    expect(getTranscriptionDetailsSpy).toHaveBeenCalledWith('2');
+    expect(component.transcriptionService.getTranscriptionDetails).toHaveBeenCalledWith('2');
+    expect(component.transcriptId).toEqual('2');
+    expect(component.fileName).toEqual('test-file-name.docx');
   });
 
-  it('should set the Transcript ID', () => {
-    expect(component.transcriptId).toEqual('2');
+  describe('#onDownloadClicked', () => {
+    it('calls downloadTranscriptDocument', () => {
+      component.onDownloadClicked();
+      expect(component.transcriptionService.downloadTranscriptDocument).toHaveBeenCalledWith('2');
+      expect(component.fileDownloadService.saveAs).toHaveBeenCalledWith(blob, 'test-file-name.docx');
+    });
   });
 });

@@ -129,4 +129,8 @@ export class TranscriptionService {
         })
       );
   }
+
+  downloadTranscriptDocument(transcriptId: number): Observable<Blob> {
+    return this.http.get(`/api/transcriptions/${transcriptId}/document`, { responseType: 'blob' });
+  }
 }

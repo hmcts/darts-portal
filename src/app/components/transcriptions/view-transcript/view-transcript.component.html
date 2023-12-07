@@ -138,7 +138,7 @@
       </tbody>
     </table>
 
-    <button class="govuk-button">Download transcript file</button>
+    <button id="download-button" class="govuk-button" (click)="onDownloadClicked()">Download transcript file</button>
   }
 } @else {
   <app-loading text="Loading transcript details..."></app-loading>

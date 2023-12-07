@@ -268,4 +268,19 @@ describe('TranscriptionService', () => {
       req.flush({});
     });
   });
+
+  describe('#downloadTranscriptDocument', () => {
+    it('should call the correct endpoint and return a Blob', (done) => {
+      const transcriptId = 1;
+      const mockBlob = new Blob(['test'], { type: 'text/plain' });
+
+      service.downloadTranscriptDocument(transcriptId).subscribe((result) => {
+        expect(result instanceof Blob).toBe(true);
+        done();
+      });
+
+      const req = httpMock.expectOne(`/api/transcriptions/${transcriptId}/document`);
+      req.flush(mockBlob);
+    });
+  });
 });

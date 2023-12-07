@@ -9,7 +9,7 @@ describe('Upload transcript', () => {
   });
 
   it('shows "Upload transcript screen"', () => {
-    cy.get('h1').should('contain', 'Transcript Request');
+    cy.get('h1').should('contain', 'Transcript request');
     cy.a11y();
   });
 
