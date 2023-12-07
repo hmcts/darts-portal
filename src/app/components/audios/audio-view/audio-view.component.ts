@@ -16,6 +16,7 @@ import { AppConfigService } from '@services/app-config/app-config.service';
 import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { CaseService } from '@services/case/case.service';
 import { ErrorMessageService } from '@services/error/error-message.service';
+import { FileDownloadService } from '@services/file-download/file-download.service';
 import { HearingService } from '@services/hearing/hearing.service';
 import { DateTime } from 'luxon';
 import { combineLatest, map, Observable } from 'rxjs';
@@ -50,6 +51,7 @@ export class AudioViewComponent implements OnDestroy {
   hearingService = inject(HearingService);
   route = inject(ActivatedRoute);
   router = inject(Router);
+  downloadService = inject(FileDownloadService);
 
   case$!: Observable<Case>;
   eventRows$!: Observable<HearingEventRow[]>;
@@ -158,7 +160,7 @@ export class AudioViewComponent implements OnDestroy {
       .downloadAudio(this.route.snapshot.params.requestId, this.audioRequest.requestType)
       .subscribe({
         next: (blob: Blob) => {
-          this.saveAs(blob, this.fileName);
+          this.downloadService.saveAs(blob, this.fileName);
         },
       });
   }
@@ -178,17 +180,6 @@ export class AudioViewComponent implements OnDestroy {
 
   isRowPlaying(row: HearingEventRow): boolean {
     return this.currentPlayTime > row.startTime && this.currentPlayTime < row.endTime;
-  }
-
-  private saveAs(blob: Blob, fileName: string) {
-    const downloadLink = document.createElement('a');
-    const url = window.URL.createObjectURL(blob);
-    downloadLink.href = url;
-    downloadLink.download = fileName;
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    window.URL.revokeObjectURL(url);
-    document.body.removeChild(downloadLink);
   }
 
   ngOnDestroy(): void {
