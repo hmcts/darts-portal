@@ -3,6 +3,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
+import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
 import { TranscriptionDetails } from '@darts-types/transcription-details.interface';
 import { HeaderService } from '@services/header/header.service';
@@ -21,6 +22,7 @@ import { ApproveTranscriptButtonsComponent } from './approve-transcript-buttons/
     DetailsTableComponent,
     GovukHeadingComponent,
     ReportingRestrictionComponent,
+    ValidationErrorSummaryComponent,
   ],
   templateUrl: './approve-transcript.component.html',
   styleUrl: './approve-transcript.component.scss',
@@ -32,6 +34,7 @@ export class ApproveTranscriptComponent implements OnInit {
   datePipe = inject(DatePipe);
 
   transcriptId = this.route.snapshot.params.transcriptId;
+  approvalErrors: { fieldId: string; message: string }[] = [];
 
   vm$ = this.transcriptionService.getTranscriptionDetails(this.transcriptId).pipe(
     map((data: TranscriptionDetails) => {
@@ -64,5 +67,9 @@ export class ApproveTranscriptComponent implements OnInit {
 
   ngOnInit(): void {
     setTimeout(() => this.headerService.hideNavigation(), 0);
+  }
+
+  handleRejectError(errors: { fieldId: string; message: string }[] = []) {
+    this.approvalErrors = errors;
   }
 }

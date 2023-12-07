@@ -1,9 +1,13 @@
-<div class="govuk-form-group">
+<div class="govuk-form-group" [class.govuk-form-group--error]="buttonsError">
   <fieldset class="govuk-fieldset">
     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
       <h1 class="govuk-fieldset__heading">Do you approve this request?</h1>
     </legend>
-    <div class="govuk-radios" data-module="govuk-radios">
+    <div class="govuk-radios" id="approval-radios" data-module="govuk-radios">
+      <p *ngIf="buttonsError" class="govuk-error-message" id="error-reject-reason">
+        {{ buttonsError }}
+      </p>
+
       <div class="govuk-radios__item">
         <input
           class="govuk-radios__input"
@@ -12,6 +16,7 @@
           name="approval-transcription"
           type="radio"
           value="Yes"
+          (click)="onChange()"
         />
         <label class="govuk-label govuk-radios__label" for="approve-request"> Yes </label>
       </div>
@@ -23,6 +28,7 @@
           name="approval-transcription"
           type="radio"
           value="No"
+          (click)="onChange()"
         />
         <label class="govuk-label govuk-radios__label" for="reject-request"> No </label>
       </div>
@@ -50,6 +56,6 @@
 </div>
 
 <div class="govuk-button-group">
-  <button class="govuk-button" data-module="govuk-button" (click)="onSubmit()">Submit request</button>
-  <a class="govuk-link" href="#" (click)="$event.preventDefault(); onCancel()">Cancel</a>
+  <button id="submit-button" class="govuk-button" data-module="govuk-button" (click)="onSubmit()">Submit</button>
+  <a [routerLink]="['/transcriptions']" class="govuk-link">Cancel</a>
 </div>
