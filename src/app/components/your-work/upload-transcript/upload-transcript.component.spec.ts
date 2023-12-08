@@ -71,7 +71,71 @@ describe('UploadTranscriptComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should set fileControl value when a file is selected', () => {
+    const file = new File(['test'], 'test.txt', { type: 'text/plain' });
+    const fileControl = component.fileControl;
+    fileControl.setValue(file);
+    expect(fileControl.value).toEqual(file);
+  });
+
+  it('should mark fileControl as invalid when no file is selected', () => {
+    const fileControl = component.fileControl;
+    fileControl.setValue(null);
+    expect(fileControl.invalid).toBe(true);
+  });
+
+  it('should mark fileControl as valid when a file is selected', () => {
+    const file = new File(['test'], 'test.txt', { type: 'text/plain' });
+    const fileControl = component.fileControl;
+    fileControl.setValue(file);
+    expect(fileControl.valid).toBe(true);
+  });
+
+  it('should mark fileControl as required', () => {
+    const fileControl = component.fileControl;
+    fileControl.setValue(null);
+    expect(fileControl.hasError('required')).toBe(true);
+  });
+
+  it('should mark fileControl as invalid when file size exceeds the maximum limit', () => {
+    const file = new File(['test'], 'test.txt', { type: 'text/plain' });
+    Object.defineProperty(file, 'size', { value: 12 * 1024 * 1024 }); // 12MB file size
+    const fileControl = component.fileControl;
+    fileControl.setValue(file);
+    expect(fileControl.hasError('maxFileSize')).toBe(true);
+  });
+
+  it('should mark fileControl as valid when file size is within the maximum limit', () => {
+    const file = new File(['test'], 'test.txt', { type: 'text/plain' });
+    const fileControl = component.fileControl;
+    fileControl.setValue(file);
+    expect(fileControl.valid).toBe(true);
+  });
+
+  describe('validation errors', () => {
+    it('set error message when fileControl is required', () => {
+      component.onComplete();
+      expect(component.errors[0].message).toBe('You must upload a file to complete this request');
+    });
+    it('set error message when filesize is too large', () => {
+      const file = new File(['test'], 'test.txt', { type: 'text/plain' });
+      Object.defineProperty(file, 'size', { value: 12 * 1024 * 1024 }); // 12MB file size
+      component.fileControl.setValue(file);
+      component.onComplete();
+      expect(component.errors[0].message).toBe('The selected file must be smaller than 10MB.');
+    });
+  });
+
   describe('#onComplete ', () => {
+    it('set is sumbitted to true and update form value and validity', () => {
+      const updateValueAndValiditySpy = jest.spyOn(component.fileControl, 'updateValueAndValidity');
+
+      component.onComplete();
+
+      expect(component.isSubmitted).toBe(true);
+      expect(updateValueAndValiditySpy).toHaveBeenCalled();
+    });
+
     it('should call uploadTranscript if isManualRequest is true', () => {
       component.isManualRequest = true;
       component.fileControl.setValue(new File(['test'], 'test.txt', { type: 'text/plain' }));
