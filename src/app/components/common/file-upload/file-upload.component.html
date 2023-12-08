@@ -16,6 +16,6 @@
     [accept]="allowedFileTypes"
   />
   @if (fileInput?.files?.length) {
-    <a class="govuk-link" (click)="$event.preventDefault(); onFileRemove(fileInput)">Remove</a>
+    <a id="remove-button" class="govuk-link" (click)="$event.preventDefault(); onFileRemove(fileInput)">Remove</a>
   }
 </div>
