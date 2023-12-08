@@ -1,7 +1,6 @@
-const e = require('express');
 const express = require('express');
-
 const router = express.Router();
+const path = require('path');
 
 router.use(express.json());
 
@@ -43,12 +42,23 @@ const yourTranscriptionsStub = {
     {
       transcription_id: 4,
       case_id: 72346,
-      case_number: 'T12345',
+      case_number: 'REJ12345',
       courthouse_name: 'Cardiff',
       hearing_date: '2023-06-10',
       transcription_type: 'Court log',
       status: 'Rejected',
       urgency: 'Overnight',
+      requested_ts: '2023-06-26T13:00:00Z',
+    },
+    {
+      transcription_id: 5,
+      case_id: 72346,
+      case_number: 'FGH12345',
+      courthouse_name: 'Swansea',
+      hearing_date: '2023-06-10',
+      transcription_type: 'Court log',
+      status: 'Complete',
+      urgency: 'Up to 3 working days',
       requested_ts: '2023-06-26T13:00:00Z',
     },
   ],
@@ -289,6 +299,9 @@ router.get('/:transcriptId', (req, res) => {
     case '3':
       res.status(200).send(mockTranscriptionDetailsNoName);
       break;
+    case '4':
+      res.status(200).send(mockTranscriptionDetails);
+      break;
     default:
       res.status(200).send(mockTranscriptionDetailsTwo);
   }
@@ -302,6 +315,10 @@ router.post('/:transcriptId/document', (req, res) => {
     return t;
   });
   res.status(200).send();
+});
+
+router.get('/:transcriptId/document', (req, res) => {
+  res.sendFile(path.join(__dirname, './download', 'TestDoc.docx'));
 });
 
 router.patch('/:transcriptId', (req, res) => {

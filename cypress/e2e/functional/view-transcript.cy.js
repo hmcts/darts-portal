@@ -1,5 +1,7 @@
 import 'cypress-axe';
 import './commands';
+const path = require('path');
+const downloadsFolder = Cypress.config('downloadsFolder');
 
 describe('View Transcript', () => {
   beforeEach(() => {
@@ -58,15 +60,21 @@ describe('View Transcript', () => {
 
   it('should get to a completed transcript from Your transcripts', () => {
     cy.get('.moj-primary-navigation__link').contains('Your transcripts').click();
-    cy.contains('Complete').parents('tr').should('contain', 'View');
-    cy.contains('Complete').parents('tr').contains('View').click();
+    cy.contains('FGH12345').parents('tr').contains('View').click();
     cy.get('.govuk-tag').should('contain', 'Complete');
   });
 
   it('should get to a rejected transcript from Your transcripts', () => {
     cy.get('.moj-primary-navigation__link').contains('Your transcripts').click();
-    cy.contains('Rejected').parents('tr').should('contain', 'View');
-    cy.contains('Rejected').parents('tr').contains('View').click();
+    cy.contains('REJ12345').parents('tr').contains('View').click();
     cy.get('.govuk-tag').should('contain', 'Rejected');
+  });
+
+  it('download a transcript', () => {
+    cy.get('.moj-primary-navigation__link').contains('Your transcripts').click();
+    cy.contains('FGH12345').parents('tr').contains('View').click();
+    // cy.get('.govuk-tag').should('contain', 'Complete');
+    cy.get('#download-button').click();
+    cy.readFile(path.join(downloadsFolder, 'C20220620001_0.docx')).should('exist');
   });
 });
