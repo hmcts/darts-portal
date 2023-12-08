@@ -3,7 +3,7 @@
     <ng-container *ngIf="error.status === 409">
       <app-govuk-heading>This request is no longer available</app-govuk-heading>
       <p class="govuk-body">Another user may have already actioned this request.</p>
-      <a [routerLink]="['/transcriptions']" class="govuk-link">Return to your transcripts</a>
+      <a [routerLink]="['/transcriptions']" id="return-link" class="govuk-link">Return to your transcripts</a>
     </ng-container>
   </ng-container>
   <ng-template #approval>

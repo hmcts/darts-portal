@@ -103,4 +103,10 @@ describe('ApproveTranscriptComponent', () => {
     expect(requestObj).toEqual(requestDetails);
     expect(reporting).toEqual(reportingRestriction);
   });
+
+  it('should handle incoming error', () => {
+    const errors = [{ fieldId: 'Test', message: 'Message' }];
+    component.handleRejectError(errors);
+    expect(component.approvalErrors).toEqual(errors);
+  });
 });
