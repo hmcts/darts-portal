@@ -1,5 +1,5 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -29,7 +29,7 @@ import { ErrorMessageService } from '@services/error/error-message.service';
   templateUrl: './approve-transcript.component.html',
   styleUrl: './approve-transcript.component.scss',
 })
-export class ApproveTranscriptComponent implements OnInit {
+export class ApproveTranscriptComponent implements OnInit, OnDestroy {
   headerService = inject(HeaderService);
   route = inject(ActivatedRoute);
   transcriptionService = inject(TranscriptionService);
@@ -71,6 +71,10 @@ export class ApproveTranscriptComponent implements OnInit {
 
   ngOnInit(): void {
     setTimeout(() => this.headerService.hideNavigation(), 0);
+  }
+
+  ngOnDestroy(): void {
+    this.errorMsgService.clearErrorMessage();
   }
 
   handleRejectError(errors: { fieldId: string; message: string }[] = []) {
