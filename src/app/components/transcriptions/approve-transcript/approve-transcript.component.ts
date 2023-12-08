@@ -1,6 +1,6 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
@@ -11,6 +11,7 @@ import { TranscriptionService } from '@services/transcription/transcription.serv
 import { map } from 'rxjs';
 import { ViewTranscriptComponent } from '../view-transcript/view-transcript.component';
 import { ApproveTranscriptButtonsComponent } from './approve-transcript-buttons/approve-transcript-buttons.component';
+import { ErrorMessageService } from '@services/error/error-message.service';
 
 @Component({
   selector: 'app-approve-transcript',
@@ -23,6 +24,7 @@ import { ApproveTranscriptButtonsComponent } from './approve-transcript-buttons/
     GovukHeadingComponent,
     ReportingRestrictionComponent,
     ValidationErrorSummaryComponent,
+    RouterLink,
   ],
   templateUrl: './approve-transcript.component.html',
   styleUrl: './approve-transcript.component.scss',
@@ -32,9 +34,11 @@ export class ApproveTranscriptComponent implements OnInit {
   route = inject(ActivatedRoute);
   transcriptionService = inject(TranscriptionService);
   datePipe = inject(DatePipe);
+  errorMsgService = inject(ErrorMessageService);
 
   transcriptId = this.route.snapshot.params.transcriptId;
   approvalErrors: { fieldId: string; message: string }[] = [];
+  error$ = this.errorMsgService.errorMessage$;
 
   vm$ = this.transcriptionService.getTranscriptionDetails(this.transcriptId).pipe(
     map((data: TranscriptionDetails) => {

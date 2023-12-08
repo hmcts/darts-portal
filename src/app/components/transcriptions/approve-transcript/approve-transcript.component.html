@@ -1,16 +1,28 @@
 @if (vm$ | async; as vm) {
-  <!-- Validation Error Summary Component -->
-  <app-validation-error-summary *ngIf="approvalErrors.length" [errors]="approvalErrors"></app-validation-error-summary>
-  <app-reporting-restriction
-    *ngIf="vm.reportingRestriction"
-    [reportingRestriction]="vm.reportingRestriction"
-  ></app-reporting-restriction>
+  <ng-container *ngIf="error$ | async as error; else approval">
+    <ng-container *ngIf="error.status === 409">
+      <app-govuk-heading>This request is no longer available</app-govuk-heading>
+      <p class="govuk-body">Another user may have already actioned this request.</p>
+      <a [routerLink]="['/transcriptions']" class="govuk-link">Return to your transcripts</a>
+    </ng-container>
+  </ng-container>
+  <ng-template #approval>
+    <!-- Validation Error Summary Component -->
+    <app-validation-error-summary
+      *ngIf="approvalErrors.length"
+      [errors]="approvalErrors"
+    ></app-validation-error-summary>
+    <app-reporting-restriction
+      *ngIf="vm.reportingRestriction"
+      [reportingRestriction]="vm.reportingRestriction"
+    ></app-reporting-restriction>
 
-  <app-govuk-heading>Approve transcript request</app-govuk-heading>
+    <app-govuk-heading>Approve transcript request</app-govuk-heading>
 
-  <app-details-table title="Case details" [details]="vm.caseDetails"></app-details-table>
+    <app-details-table title="Case details" [details]="vm.caseDetails"></app-details-table>
 
-  <app-details-table title="Request details" [details]="vm.requestDetails"></app-details-table>
+    <app-details-table title="Request details" [details]="vm.requestDetails"></app-details-table>
 
-  <app-approve-transcript-buttons (errors)="handleRejectError($event)"></app-approve-transcript-buttons>
+    <app-approve-transcript-buttons (errors)="handleRejectError($event)"></app-approve-transcript-buttons>
+  </ng-template>
 }
