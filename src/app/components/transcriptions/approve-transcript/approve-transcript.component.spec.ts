@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { of } from 'rxjs';
 import { ApproveTranscriptComponent } from './approve-transcript.component';
+import { ErrorMessageService } from '@services/error/error-message.service';
 
 describe('ApproveTranscriptComponent', () => {
   let component: ApproveTranscriptComponent;
@@ -102,5 +103,18 @@ describe('ApproveTranscriptComponent', () => {
     expect(caseObj).toEqual(caseDetails);
     expect(requestObj).toEqual(requestDetails);
     expect(reporting).toEqual(reportingRestriction);
+  });
+
+  it('should clear error message on destroy', () => {
+    const errorMessageService = TestBed.inject(ErrorMessageService);
+    const clearErrorMessageSpy = jest.spyOn(errorMessageService, 'clearErrorMessage');
+    component.ngOnDestroy();
+    expect(clearErrorMessageSpy).toHaveBeenCalled();
+  });
+
+  it('should handle incoming error', () => {
+    const errors = [{ fieldId: 'Test', message: 'Message' }];
+    component.handleRejectError(errors);
+    expect(component.approvalErrors).toEqual(errors);
   });
 });

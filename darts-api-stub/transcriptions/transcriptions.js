@@ -74,6 +74,17 @@ const yourTranscriptionsStub = {
       urgency: 'Up to 3 working days',
       requested_ts: '2023-06-26T13:00:00Z',
     },
+    {
+      transcription_id: 10,
+      case_id: 72345,
+      case_number: 'CXYZ12345',
+      courthouse_name: 'Newcastle',
+      hearing_date: '2023-04-09',
+      transcription_type: 'Court log',
+      status: 'Complete',
+      urgency: 'Up to 3 working days',
+      requested_ts: '2023-04-09T09:58:34Z',
+    },
   ],
 };
 
@@ -322,6 +333,14 @@ router.get('/:transcriptId/document', (req, res) => {
 });
 
 router.patch('/:transcriptId', (req, res) => {
+  if (req.params.transcriptId == 10) {
+    res.status(409).send({
+      type: 'TRANSCRIPTION_105',
+      title: 'The requested transcript has already been actioned',
+      status: 409,
+    });
+    return;
+  }
   const transcript = unassignedTranscriptions.find((t) => t.transcription_id == req.params.transcriptId);
   if (transcript) {
     if (req.body.transcription_status_id == 6) {
