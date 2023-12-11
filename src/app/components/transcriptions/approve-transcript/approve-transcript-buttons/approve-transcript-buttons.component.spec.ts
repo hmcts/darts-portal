@@ -43,7 +43,7 @@ describe('ApproveTranscriptButtonsComponent', () => {
     fixture.detectChanges();
     const errorRejectReason = compiled.querySelector('#error-reject-reason');
     expect(errorRejectReason).toBeTruthy();
-    expect(errorRejectReason.textContent).toEqual(' You must choose whether you approve or reject this request ');
+    expect(errorRejectReason.textContent).toEqual(' Select if you approve this request or not ');
   });
 
   it('should render reject-reason box if "No" selected', () => {
