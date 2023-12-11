@@ -68,6 +68,8 @@ export class DataTableComponent<TRow> implements OnChanges {
     };
 
     if (customSortFn) {
+      console.log('hello!');
+
       this.rows = this.rows.sort((a: TRow, b: TRow) => customSortFn(a, b, this.sorting.order));
       this.updatePagedData();
       return;
