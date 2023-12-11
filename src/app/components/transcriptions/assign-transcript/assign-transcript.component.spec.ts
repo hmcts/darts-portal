@@ -7,6 +7,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { of } from 'rxjs';
 import { AssignTranscriptComponent } from './assign-transcript.component';
+import { ErrorMessageService } from '@services/error/error-message.service';
 
 describe('AssignTranscriptComponent', () => {
   let component: AssignTranscriptComponent;
@@ -147,5 +148,12 @@ describe('AssignTranscriptComponent', () => {
     expect(component.errors).toEqual([
       { fieldId: 'transcriptionOptions', message: 'Select an action to progress this request.' },
     ]);
+  });
+
+  it('should clear error message on destroy', () => {
+    const errorMessageService = TestBed.inject(ErrorMessageService);
+    const clearErrorMessageSpy = jest.spyOn(errorMessageService, 'clearErrorMessage');
+    component.ngOnDestroy();
+    expect(clearErrorMessageSpy).toHaveBeenCalled();
   });
 });
