@@ -134,7 +134,7 @@ let unassignedTranscriptions = [
     hearing_date: '2023-06-10',
     transcription_type: 'Court Log',
     status: 'Approved',
-    urgency: 'Overnight',
+    urgency: 'Up to 3 working days',
     requested_ts: '2023-06-26T13:00:00Z',
     state_change_ts: '2023-06-27T13:00:00Z',
     is_manual: true,
@@ -160,7 +160,7 @@ let unassignedTranscriptions = [
     hearing_date: '2023-06-11',
     transcription_type: 'Court Log',
     status: 'Approved',
-    urgency: 'Up to 3 working days',
+    urgency: 'Up to 12 working days',
     requested_ts: '2023-06-26T13:00:00Z',
     state_change_ts: '2023-06-27T13:00:00Z',
     is_manual: true,
@@ -173,7 +173,7 @@ let unassignedTranscriptions = [
     hearing_date: '2023-06-11',
     transcription_type: 'Court Log',
     status: 'Approved',
-    urgency: 'Up to 3 working days',
+    urgency: 'Up to 7 working days',
     requested_ts: '2023-06-26T13:00:00Z',
     state_change_ts: '2023-06-27T13:00:00Z',
     is_manual: false,
@@ -240,10 +240,10 @@ router.get('/types', (req, res) => {
 
 router.get('/urgencies', (req, res) => {
   res.send([
-    { transcription_urgency_id: 1, description: 'Overnight' },
-    { transcription_urgency_id: 2, description: 'Up to 3 working days' },
-    { transcription_urgency_id: 3, description: '7 working days' },
-    { transcription_urgency_id: 4, description: '12 working days' },
+    { transcription_urgency_id: 1, description: 'Overnight', priority_order: 1 },
+    { transcription_urgency_id: 2, description: 'Up to 3 working days', priority_order: 2 },
+    { transcription_urgency_id: 3, description: 'Up to 7 working days', priority_order: 3 },
+    { transcription_urgency_id: 4, description: 'Up to 12 working days', priority_order: 4 },
   ]);
 });
 

@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { PaginationComponent } from '@common/pagination/pagination.component';
-import { DatatableColumn } from '@darts-types/index';
+import { CustomSort, DatatableColumn } from '@darts-types/index';
 import { DateTime } from 'luxon';
 import { TableBodyTemplateDirective } from 'src/app/directives/table-body-template.directive';
 import { TableRowTemplateDirective } from 'src/app/directives/table-row-template.directive';
@@ -61,11 +61,17 @@ export class DataTableComponent<TRow> implements OnChanges {
     this.updatePagedData();
   }
 
-  sortTable(column: string): void {
+  sortTable(column: string, sortFn?: CustomSort<TRow>): void {
     this.sorting = {
       column: column,
       order: this.isDescSorting(column) ? 'asc' : 'desc',
     };
+
+    if (sortFn) {
+      this.rows = this.rows.sort((a: TRow, b: TRow) => sortFn(a, b, this.sorting.order));
+      this.updatePagedData();
+      return;
+    }
 
     this.rows.sort((a: TRow, b: TRow) => {
       const valueA = (a as { [key: string]: unknown })[column];

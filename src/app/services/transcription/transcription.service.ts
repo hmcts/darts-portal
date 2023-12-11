@@ -9,8 +9,12 @@ import {
   YourTranscriptionRequests,
 } from '@darts-types/index';
 import { CountNotificationService } from '@services/count-notification/count-notification.service';
-import { map, switchMap, tap, timer } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
+import { timer } from 'rxjs/internal/observable/timer';
+import { map } from 'rxjs/internal/operators/map';
+import { shareReplay } from 'rxjs/internal/operators/shareReplay';
+import { switchMap } from 'rxjs/internal/operators/switchMap';
+import { tap } from 'rxjs/internal/operators/tap';
 
 export const APPROVED_TRANSCRIPTION_STATUS_ID = 3;
 export const REJECTED_TRANSCRIPTION_STATUS_ID = 4;
@@ -39,7 +43,7 @@ export class TranscriptionService {
   );
 
   getUrgencies(): Observable<TranscriptionUrgency[]> {
-    return this.http.get<TranscriptionUrgency[]>('/api/transcriptions/urgencies');
+    return this.http.get<TranscriptionUrgency[]>('/api/transcriptions/urgencies').pipe(shareReplay(1));
   }
 
   getTranscriptionTypes(): Observable<TranscriptionType[]> {
