@@ -7,7 +7,9 @@ import { ReportingRestrictionComponent } from '@common/reporting-restriction/rep
 import { transcriptStatusClassMap } from '@constants/transcript-status-class-map';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { JoinPipe } from '@pipes/join';
+import { FileDownloadService } from '@services/file-download/file-download.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
+import { tap } from 'rxjs/internal/operators/tap';
 
 @Component({
   selector: 'app-view-transcript',
@@ -27,9 +29,18 @@ export class ViewTranscriptComponent {
   router = inject(Router);
   route = inject(ActivatedRoute);
   transcriptionService = inject(TranscriptionService);
+  fileDownloadService = inject(FileDownloadService);
   transcriptStatusClassMap = transcriptStatusClassMap;
-
   transcriptId = this.route.snapshot.params.transcriptId;
+  fileName = '';
 
-  transcript$ = this.transcriptionService.getTranscriptionDetails(this.transcriptId);
+  transcript$ = this.transcriptionService
+    .getTranscriptionDetails(this.transcriptId)
+    .pipe(tap((details) => (this.fileName = details.transcript_file_name)));
+
+  onDownloadClicked() {
+    this.transcriptionService.downloadTranscriptDocument(this.transcriptId).subscribe((blob: Blob) => {
+      this.fileDownloadService.saveAs(blob, this.fileName);
+    });
+  }
 }

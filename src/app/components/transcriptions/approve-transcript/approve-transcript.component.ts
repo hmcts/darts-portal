@@ -1,11 +1,12 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
-import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
+import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { TranscriptionDetails } from '@darts-types/transcription-details.interface';
+import { ErrorMessageService } from '@services/error/error-message.service';
 import { HeaderService } from '@services/header/header.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { map } from 'rxjs';
@@ -23,18 +24,21 @@ import { ApproveTranscriptButtonsComponent } from './approve-transcript-buttons/
     GovukHeadingComponent,
     ReportingRestrictionComponent,
     ValidationErrorSummaryComponent,
+    RouterLink,
   ],
   templateUrl: './approve-transcript.component.html',
   styleUrl: './approve-transcript.component.scss',
 })
-export class ApproveTranscriptComponent implements OnInit {
+export class ApproveTranscriptComponent implements OnInit, OnDestroy {
   headerService = inject(HeaderService);
   route = inject(ActivatedRoute);
   transcriptionService = inject(TranscriptionService);
   datePipe = inject(DatePipe);
+  errorMsgService = inject(ErrorMessageService);
 
   transcriptId = this.route.snapshot.params.transcriptId;
   approvalErrors: { fieldId: string; message: string }[] = [];
+  error$ = this.errorMsgService.errorMessage$;
 
   vm$ = this.transcriptionService.getTranscriptionDetails(this.transcriptId).pipe(
     map((data: TranscriptionDetails) => {
@@ -67,6 +71,10 @@ export class ApproveTranscriptComponent implements OnInit {
 
   ngOnInit(): void {
     setTimeout(() => this.headerService.hideNavigation(), 0);
+  }
+
+  ngOnDestroy(): void {
+    this.errorMsgService.clearErrorMessage();
   }
 
   handleRejectError(errors: { fieldId: string; message: string }[] = []) {

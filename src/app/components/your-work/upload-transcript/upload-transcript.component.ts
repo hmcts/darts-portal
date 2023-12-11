@@ -1,5 +1,5 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
@@ -12,6 +12,7 @@ import { TranscriptionDetails } from '@darts-types/index';
 
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { TranscriptionService } from '@services/transcription/transcription.service';
+import { maxFileSizeValidator } from '@validators/max-file-size.validator';
 import { map } from 'rxjs/internal/operators/map';
 import { tap } from 'rxjs/internal/operators/tap';
 
@@ -33,11 +34,12 @@ import { tap } from 'rxjs/internal/operators/tap';
   templateUrl: './upload-transcript.component.html',
   styleUrl: './upload-transcript.component.scss',
 })
-export class UploadTranscriptComponent {
+export class UploadTranscriptComponent implements OnDestroy {
   transcriptionService = inject(TranscriptionService);
   requestId = inject(ActivatedRoute).snapshot.params.requestId;
   router = inject(Router);
   datePipe = inject(DatePipe);
+  errors: { fieldId: string; message: string }[] = [];
 
   isManualRequest = false;
 
@@ -57,11 +59,11 @@ export class UploadTranscriptComponent {
           'Judge(s)': data.judges,
           'Defendant(s)': data.defendants,
         },
-        hearingDetails: {
+        requestDetails: {
           'Hearing Date': hearingDate,
           'Request Type': data.request_type,
-          'Request ID': this.requestId,
           'Request method': data.is_manual ? 'Manual' : 'Automated',
+          'Request ID': this.requestId,
           Urgency: data.urgency,
           'Audio for transcript': startTime && endTime ? `Start time ${startTime} - End time ${endTime}` : '',
           From: data.from,
@@ -80,9 +82,27 @@ export class UploadTranscriptComponent {
     })
   );
 
-  fileControl = new FormControl<File | null>(null, [Validators.required]);
+  fileControl = new FormControl<File | null>(null, [Validators.required, maxFileSizeValidator(10)]);
+
+  valueChangeSub = this.fileControl.valueChanges.subscribe(() => {
+    if (this.isSubmitted) {
+      if (this.fileControl.errors?.required) {
+        this.errors = [{ fieldId: 'file-upload-1', message: 'You must upload a file to complete this request' }];
+        return;
+      }
+      if (this.fileControl.errors?.maxFileSize) {
+        this.errors = [{ fieldId: 'file-upload-1', message: 'The selected file must be smaller than 10MB.' }];
+        return;
+      }
+      this.errors = [];
+    }
+  });
+
+  isSubmitted = false;
 
   onComplete() {
+    this.isSubmitted = true;
+    this.fileControl.updateValueAndValidity();
     if (this.fileControl.invalid && this.isManualRequest) {
       return;
     }
@@ -99,5 +119,9 @@ export class UploadTranscriptComponent {
 
   private goToCompletedScreen() {
     this.router.navigate(['/work', this.requestId, 'complete']);
+  }
+
+  ngOnDestroy() {
+    this.valueChangeSub.unsubscribe();
   }
 }

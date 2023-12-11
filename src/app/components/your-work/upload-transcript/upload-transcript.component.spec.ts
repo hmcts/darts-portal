@@ -71,7 +71,71 @@ describe('UploadTranscriptComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should set fileControl value when a file is selected', () => {
+    const file = new File(['test'], 'test.txt', { type: 'text/plain' });
+    const fileControl = component.fileControl;
+    fileControl.setValue(file);
+    expect(fileControl.value).toEqual(file);
+  });
+
+  it('should mark fileControl as invalid when no file is selected', () => {
+    const fileControl = component.fileControl;
+    fileControl.setValue(null);
+    expect(fileControl.invalid).toBe(true);
+  });
+
+  it('should mark fileControl as valid when a file is selected', () => {
+    const file = new File(['test'], 'test.txt', { type: 'text/plain' });
+    const fileControl = component.fileControl;
+    fileControl.setValue(file);
+    expect(fileControl.valid).toBe(true);
+  });
+
+  it('should mark fileControl as required', () => {
+    const fileControl = component.fileControl;
+    fileControl.setValue(null);
+    expect(fileControl.hasError('required')).toBe(true);
+  });
+
+  it('should mark fileControl as invalid when file size exceeds the maximum limit', () => {
+    const file = new File(['test'], 'test.txt', { type: 'text/plain' });
+    Object.defineProperty(file, 'size', { value: 12 * 1024 * 1024 }); // 12MB file size
+    const fileControl = component.fileControl;
+    fileControl.setValue(file);
+    expect(fileControl.hasError('maxFileSize')).toBe(true);
+  });
+
+  it('should mark fileControl as valid when file size is within the maximum limit', () => {
+    const file = new File(['test'], 'test.txt', { type: 'text/plain' });
+    const fileControl = component.fileControl;
+    fileControl.setValue(file);
+    expect(fileControl.valid).toBe(true);
+  });
+
+  describe('validation errors', () => {
+    it('set error message when fileControl is required', () => {
+      component.onComplete();
+      expect(component.errors[0].message).toBe('You must upload a file to complete this request');
+    });
+    it('set error message when filesize is too large', () => {
+      const file = new File(['test'], 'test.txt', { type: 'text/plain' });
+      Object.defineProperty(file, 'size', { value: 12 * 1024 * 1024 }); // 12MB file size
+      component.fileControl.setValue(file);
+      component.onComplete();
+      expect(component.errors[0].message).toBe('The selected file must be smaller than 10MB.');
+    });
+  });
+
   describe('#onComplete ', () => {
+    it('set is sumbitted to true and update form value and validity', () => {
+      const updateValueAndValiditySpy = jest.spyOn(component.fileControl, 'updateValueAndValidity');
+
+      component.onComplete();
+
+      expect(component.isSubmitted).toBe(true);
+      expect(updateValueAndValiditySpy).toHaveBeenCalled();
+    });
+
     it('should call uploadTranscript if isManualRequest is true', () => {
       component.isManualRequest = true;
       component.fileControl.setValue(new File(['test'], 'test.txt', { type: 'text/plain' }));
@@ -126,25 +190,25 @@ describe('UploadTranscriptComponent', () => {
       expect(caseDetails.textContent).toContain('Defendant Dave');
     });
 
-    it('render hearing details', () => {
-      const hearingDetails = fixture.debugElement.queryAll(By.directive(DetailsTableComponent))[1].nativeElement;
-      expect(hearingDetails.textContent).toContain('Hearing Date');
-      expect(hearingDetails.textContent).toContain('26 Jun 2023');
-      expect(hearingDetails.textContent).toContain('Request Type');
-      expect(hearingDetails.textContent).toContain('Specified Times');
-      expect(hearingDetails.textContent).toContain('Request ID');
-      expect(hearingDetails.textContent).toContain('1');
-      expect(hearingDetails.textContent).toContain('Request method');
-      expect(hearingDetails.textContent).toContain('Manual');
-      expect(hearingDetails.textContent).toContain('Urgency');
-      expect(hearingDetails.textContent).toContain('Overnight');
-      expect(hearingDetails.textContent).toContain('Audio for transcript');
-      expect(hearingDetails.textContent).toContain('Start time 13:00:00 - End time 16:00:00');
-      expect(hearingDetails.textContent).toContain('26 Jun 2023');
-      expect(hearingDetails.textContent).toContain('Instructions');
-      expect(hearingDetails.textContent).toContain('Please expedite my request');
-      expect(hearingDetails.textContent).toContain('Judge approval');
-      expect(hearingDetails.textContent).toContain('Yes');
+    it('render request details', () => {
+      const requestDetails = fixture.debugElement.queryAll(By.directive(DetailsTableComponent))[1].nativeElement;
+      expect(requestDetails.textContent).toContain('Hearing Date');
+      expect(requestDetails.textContent).toContain('26 Jun 2023');
+      expect(requestDetails.textContent).toContain('Request Type');
+      expect(requestDetails.textContent).toContain('Specified Times');
+      expect(requestDetails.textContent).toContain('Request ID');
+      expect(requestDetails.textContent).toContain('1');
+      expect(requestDetails.textContent).toContain('Request method');
+      expect(requestDetails.textContent).toContain('Manual');
+      expect(requestDetails.textContent).toContain('Urgency');
+      expect(requestDetails.textContent).toContain('Overnight');
+      expect(requestDetails.textContent).toContain('Audio for transcript');
+      expect(requestDetails.textContent).toContain('Start time 13:00:00 - End time 16:00:00');
+      expect(requestDetails.textContent).toContain('26 Jun 2023');
+      expect(requestDetails.textContent).toContain('Instructions');
+      expect(requestDetails.textContent).toContain('Please expedite my request');
+      expect(requestDetails.textContent).toContain('Judge approval');
+      expect(requestDetails.textContent).toContain('Yes');
     });
 
     it('render reporting restriction', () => {

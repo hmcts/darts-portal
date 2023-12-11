@@ -22,10 +22,7 @@ export class FileUploadComponent implements ControlValueAccessor {
   @Input() hint = '';
   @Input() errorMessage = '';
   @Input() isInvalid = false;
-  @Input() maxFileSize = 10485760; // 10MB in bytes
   @Input() allowedFileTypes = '.doc,.docx,.zip';
-  @Input() requiredErrorMessage = 'You must upload a file to complete this request.';
-  @Input() maxFileSizeErrorMessage = `The selected file must be smaller than ${this.maxFileSize / (1024 * 1024)}MB`;
 
   controlId = `file-upload-${this.id}`;
   controlErrorId = `${this.controlId}-error`;
