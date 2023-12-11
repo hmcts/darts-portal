@@ -8,17 +8,12 @@ import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { ForbiddenComponent } from '@components/error/forbidden/forbidden.component';
 import { transcriptStatusClassMap } from '@constants/transcript-status-class-map';
-import {
-  DatatableColumn,
-  TranscriptionDataTableRow,
-  TranscriptionUrgency,
-  UserTranscriptionRequest,
-} from '@darts-types/index';
+import { DatatableColumn, TranscriptionUrgency, UserTranscriptionRequest } from '@darts-types/index';
 import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { UserService } from '@services/user/user.service';
-import { BehaviorSubject, combineLatest, map, shareReplay, switchMap } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, shareReplay, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-transcriptions',
@@ -43,18 +38,6 @@ export class TranscriptionsComponent {
   userService = inject(UserService);
   userState = inject(ActivatedRoute).snapshot.data.userState;
   transcriptStatusClassMap = transcriptStatusClassMap;
-  priorityMatrix = new Map<string, number>();
-
-  urgencyMatrix = this.transcriptService
-    .getUrgencies()
-    .pipe(
-      map((TranscriptionUrgency: TranscriptionUrgency[]) => {
-        TranscriptionUrgency.forEach((x) => {
-          this.priorityMatrix.set(x.description, x.priority_order);
-        });
-      })
-    )
-    .subscribe();
 
   columns: DatatableColumn[] = [
     { name: 'Case ID', prop: 'case_number', sortable: true },
@@ -67,23 +50,7 @@ export class TranscriptionsComponent {
       name: 'Urgency',
       prop: 'urgency',
       sortable: true,
-      customSortFn: (a: unknown, b: unknown, direction?: 'asc' | 'desc') => {
-        const priorityMatrix = this.priorityMatrix;
-
-        if (direction === 'desc') {
-          return (
-            priorityMatrix.get((a as TranscriptionDataTableRow).urgency)! -
-            priorityMatrix.get((b as TranscriptionDataTableRow).urgency)!
-          );
-        } else if (direction === 'asc') {
-          return (
-            priorityMatrix.get((b as TranscriptionDataTableRow).urgency)! -
-            priorityMatrix.get((a as TranscriptionDataTableRow).urgency)!
-          );
-        } else {
-          return 0;
-        }
-      },
+      customSortFn: this.sortByUrgencyPriorityOrder,
     },
   ];
   readyColumns = [...this.columns, { name: '', prop: '' }]; //Empty column header for view link
@@ -112,7 +79,16 @@ export class TranscriptionsComponent {
     ),
     approverRequests: this.requests$.pipe(map((requests) => requests.approver_transcriptions)),
   });
-  approverRequests$ = this.requests$.pipe(map((requests) => requests.approver_transcriptions));
+  approverRequests$ = this.requests$.pipe(map((requests) => requests.approver_transcriptions)).pipe(
+    switchMap((requests) =>
+      this.transcriptService.getUrgencies().pipe(
+        map((urgencies) =>
+          requests.map((r) => ({ ...r, urgency: this.getUrgencyByDescription(urgencies, r.urgency) }))
+        ),
+        tap((request) => console.log(request))
+      )
+    )
+  );
 
   private filterInProgressRequests(requests: UserTranscriptionRequest[]): UserTranscriptionRequest[] {
     return requests.filter((r) => r.status === 'Awaiting Authorisation' || r.status === 'With Transcriber');
@@ -120,6 +96,20 @@ export class TranscriptionsComponent {
 
   private filterReadyRequests(requests: UserTranscriptionRequest[]): UserTranscriptionRequest[] {
     return requests.filter((r) => r.status === 'Complete' || r.status === 'Rejected');
+  }
+
+  sortByUrgencyPriorityOrder(a: any, b: any, direction?: 'asc' | 'desc') {
+    if (direction === 'desc') {
+      return a.urgency.priority_order - b.urgency.priority_order;
+    } else if (direction === 'asc') {
+      return b.urgency.priority_order - a.urgency.priority_order;
+    } else {
+      return 0;
+    }
+  }
+
+  getUrgencyByDescription(urgencies: TranscriptionUrgency[], description: string) {
+    return urgencies.find((u) => u.description === description);
   }
 
   onDeleteClicked() {

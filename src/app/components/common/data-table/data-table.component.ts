@@ -61,14 +61,14 @@ export class DataTableComponent<TRow> implements OnChanges {
     this.updatePagedData();
   }
 
-  sortTable(column: string, customSortFn?: CustomSort<TRow>): void {
+  sortTable(column: string, sortFn?: CustomSort<TRow>): void {
     this.sorting = {
       column: column,
       order: this.isDescSorting(column) ? 'asc' : 'desc',
     };
 
-    if (customSortFn) {
-      this.rows = this.rows.sort((a: TRow, b: TRow) => customSortFn(a, b, this.sorting.order));
+    if (sortFn) {
+      this.rows = this.rows.sort((a: TRow, b: TRow) => sortFn(a, b, this.sorting.order));
       this.updatePagedData();
       return;
     }
