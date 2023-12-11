@@ -9,7 +9,7 @@ import {
   YourTranscriptionRequests,
 } from '@darts-types/index';
 import { CountNotificationService } from '@services/count-notification/count-notification.service';
-import { map, switchMap, tap, timer } from 'rxjs';
+import { map, shareReplay, switchMap, tap, timer } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 
 export const APPROVED_TRANSCRIPTION_STATUS_ID = 3;
@@ -39,7 +39,7 @@ export class TranscriptionService {
   );
 
   getUrgencies(): Observable<TranscriptionUrgency[]> {
-    return this.http.get<TranscriptionUrgency[]>('/api/transcriptions/urgencies');
+    return this.http.get<TranscriptionUrgency[]>('/api/transcriptions/urgencies').pipe(shareReplay(1));
   }
 
   getTranscriptionTypes(): Observable<TranscriptionType[]> {
