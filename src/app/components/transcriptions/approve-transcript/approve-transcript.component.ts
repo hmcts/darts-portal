@@ -1,6 +1,7 @@
+import { ConflictComponent } from './../../error/conflict/conflict.component';
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
@@ -24,7 +25,7 @@ import { ErrorMessageService } from '@services/error/error-message.service';
     GovukHeadingComponent,
     ReportingRestrictionComponent,
     ValidationErrorSummaryComponent,
-    RouterLink,
+    ConflictComponent,
   ],
   templateUrl: './approve-transcript.component.html',
   styleUrl: './approve-transcript.component.scss',
