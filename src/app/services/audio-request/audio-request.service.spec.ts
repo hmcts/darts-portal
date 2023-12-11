@@ -140,6 +140,42 @@ describe('AudioService', () => {
           })),
         });
       });
+
+      it('should emit audio requests periodically', fakeAsync(() => {
+        const audioSpy = jest.spyOn(service, 'getAudioRequests').mockReturnValue(of(MOCK_MEDIA_REQUESTS));
+
+        service.audioRequests$.subscribe();
+
+        tick();
+
+        expect(audioSpy).toHaveBeenCalledTimes(1);
+        expect(audioSpy).toHaveBeenCalledWith(false);
+
+        tick(60 * 1000);
+
+        expect(audioSpy).toHaveBeenCalledTimes(2);
+        expect(audioSpy).toHaveBeenCalledWith(false);
+
+        tick(60 * 1000);
+
+        expect(audioSpy).toHaveBeenCalledTimes(3);
+        expect(audioSpy).toHaveBeenCalledWith(false);
+        discardPeriodicTasks();
+      }));
+
+      it('updates unread count', fakeAsync(() => {
+        jest.spyOn(service, 'getAudioRequests').mockReturnValue(of(MOCK_MEDIA_REQUESTS));
+
+        const countSpy = jest.spyOn(service['countService'], 'setUnreadAudioCount');
+
+        service.audioRequests$.subscribe();
+
+        tick();
+
+        expect(countSpy).toHaveBeenCalledTimes(1);
+        expect(countSpy).toHaveBeenCalledWith(1);
+        discardPeriodicTasks();
+      }));
     });
 
     describe('#deleteAudioRequest', () => {

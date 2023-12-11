@@ -104,6 +104,7 @@ describe('AudiosComponent', () => {
     audioRequests$: of(MOCK_MEDIA_REQUESTS),
     expiredAudioRequests$: of(MOCK_EXPIRED_MEDIA_REQUESTS),
     deleteAudioRequests: jest.fn(),
+    setAudioRequest: jest.fn(),
   };
 
   const mockRouter = {
@@ -197,6 +198,51 @@ describe('AudiosComponent', () => {
       component.onTabChanged();
 
       expect(component.selectedAudioRequests.length).toBe(0);
+    });
+  });
+
+  describe('#onClearClicked', () => {
+    it('should set selectedAudioRequests to contain the clicked row', () => {
+      const event = new MouseEvent('click');
+      const row: UserAudioRequestRow = { requestId: 1 } as UserAudioRequestRow;
+
+      component.onClearClicked(event, row);
+
+      expect(component.selectedAudioRequests).toEqual([row]);
+    });
+
+    it('should set isDeleting to true', () => {
+      const event = new MouseEvent('click');
+      const row: UserAudioRequestRow = { requestId: 1 } as UserAudioRequestRow;
+
+      component.onClearClicked(event, row);
+
+      expect(component.isDeleting).toBe(true);
+    });
+  });
+
+  describe('#onDeleteCancelled', () => {
+    it('should set isDeleting to false', () => {
+      component.isDeleting = true;
+
+      component.onDeleteCancelled();
+
+      expect(component.isDeleting).toBeFalsy();
+    });
+  });
+
+  describe('#onViewAudioRequest', () => {
+    it('should store audio request in service and navigate to view screen', () => {
+      const event = new MouseEvent('click');
+      const audioRequestRow: UserAudioRequestRow = { requestId: 1 } as UserAudioRequestRow;
+
+      const setAudioRequestSpy = jest.spyOn(audioServiceStub, 'setAudioRequest');
+      const navigateSpy = jest.spyOn(mockRouter, 'navigate');
+
+      component.onViewAudioRequest(event, audioRequestRow);
+
+      expect(setAudioRequestSpy).toHaveBeenCalledWith(audioRequestRow);
+      expect(navigateSpy).toHaveBeenCalledWith(['./audios', audioRequestRow.requestId]);
     });
   });
 });
