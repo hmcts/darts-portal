@@ -7,7 +7,7 @@
   <td class="govuk-table__cell">{{ row.startTime | date: 'HH:mm:ss' }}</td>
   <td class="govuk-table__cell">{{ row.endTime | date: 'HH:mm:ss' }}</td>
   <td class="govuk-table__cell">{{ row.requestId }}</td>
-  <td class="govuk-table__cell">{{ row.expiry | date: 'HH:mm:ss dd/MM/yyyy' }}</td>
+  <td class="govuk-table__cell">{{ (row.expiry | date: 'HH:mm:ss dd/MM/yyyy') ?? '-' }}</td>
 </ng-template>
 
 @if (!isDeleting) {
