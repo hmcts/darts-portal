@@ -114,24 +114,6 @@ export class TranscriptionsComponent {
   });
   approverRequests$ = this.requests$.pipe(map((requests) => requests.approver_transcriptions));
 
-  // transcriptionUrgencyCustomSort(a: unkown, b, direction?: 'asc' | 'desc') {
-  //   const priorityMatrix = this.priorityMatrix;
-
-  //   if (direction === 'desc') {
-  //     return (
-  //       priorityMatrix.get((a as TranscriptionDataTableRow).urgency)! -
-  //       priorityMatrix.get((b as TranscriptionDataTableRow).urgency)!
-  //     );
-  //   } else if (direction === 'asc') {
-  //     return (
-  //       priorityMatrix.get((b as TranscriptionDataTableRow).urgency)! -
-  //       priorityMatrix.get((a as TranscriptionDataTableRow).urgency)!
-  //     );
-  //   } else {
-  //     return 0;
-  //   }
-  // }
-
   private filterInProgressRequests(requests: UserTranscriptionRequest[]): UserTranscriptionRequest[] {
     return requests.filter((r) => r.status === 'Awaiting Authorisation' || r.status === 'With Transcriber');
   }
