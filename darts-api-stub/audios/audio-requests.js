@@ -16,234 +16,171 @@ const audioRequestOne = {
   end_time: '2023-09-20T10:00:00Z',
 };
 
-const audioRequestMulti = [
-  {
-    case_id: 2,
-    media_request_id: 12345,
-    case_number: 'T20200190',
-    courthouse_name: 'Manchester Minshull Street',
-    hearing_date: '2022-01-03',
-    media_request_start_ts: '2023-08-21T09:00:00Z',
-    media_request_end_ts: '2023-08-21T10:00:00Z',
-    media_request_expiry_ts: '2023-08-23T09:00:00Z',
-    media_request_status: 'OPEN',
-    last_accessed_ts: '2023-08-23T09:00:00Z',
-    request_type: 'PLAYBACK',
-    hearing_id: 1,
-  },
-  {
-    case_id: 3,
-    media_request_id: 12346,
-    case_number: 'T2020019210',
-    courthouse_name: 'Reading',
-    hearing_date: '2021-01-02',
-    media_request_start_ts: '2023-08-21T09:08:00Z',
-    media_request_end_ts: '2023-08-21T10:14:00Z',
-    media_request_expiry_ts: '2023-08-23T09:00:00Z',
-    media_request_status: 'PROCESSING',
-    last_accessed_ts: '2023-08-23T09:00:00Z',
-    request_type: 'PLAYBACK',
-    hearing_id: 3,
-  },
-  {
-    case_id: 4,
-    media_request_id: 12347,
-    case_number: 'T20200192222',
-    courthouse_name: 'Slough',
-    hearing_date: '2023-11-12',
-    media_request_start_ts: '2023-08-21T09:57:00Z',
-    media_request_end_ts: '2023-08-21T10:43:00Z',
-    media_request_expiry_ts: '2023-11-23T09:00:00Z',
-    media_request_status: 'OPEN',
-    last_accessed_ts: '2023-08-23T09:00:00Z',
-    request_type: 'PLAYBACK',
-    hearing_id: 3,
-  },
-  {
-    case_id: 5,
-    media_request_id: 12348,
-    case_number: 'T20200192231',
-    courthouse_name: 'Brighton',
-    hearing_date: '2023-11-13',
-    media_request_start_ts: '2023-08-21T09:57:00Z',
-    media_request_end_ts: '2023-08-21T10:43:00Z',
-    media_request_expiry_ts: '2023-11-23T09:00:00Z',
-    media_request_status: 'FAILED',
-    request_type: 'PLAYBACK',
-    hearing_id: 3,
-  },
+const mediaRequests = {
+  media_request_details: [
+    {
+      case_id: 1,
+      media_request_id: 1,
+      case_number: 'C1',
+      courthouse_name: 'Swansea',
+      hearing_date: '2022-01-03',
+      start_ts: '2023-08-21T09:00:00Z',
+      end_ts: '2023-08-21T10:00:00Z',
+      transformed_media_expiry_ts: '2023-08-23T09:00:00Z',
+      media_request_status: 'OPEN',
+      request_type: 'PLAYBACK',
+      last_accessed_ts: '2023-08-23T09:00:00Z',
+      transformed_media_filename: 'C1',
+      transformed_media_format: 'MP3',
+      transformed_media_id: 1,
+      hearing_id: 1,
+    },
+    {
+      case_id: 2,
+      media_request_id: 2,
+      case_number: 'C2',
+      courthouse_name: 'Swansea',
+      hearing_date: '2022-01-03',
+      start_ts: '2023-08-21T09:00:00Z',
+      end_ts: '2023-08-21T10:00:00Z',
+      transformed_media_expiry_ts: '2023-08-23T09:00:00Z',
+      media_request_status: 'FAILED',
+      request_type: 'PLAYBACK',
+      last_accessed_ts: '2023-08-23T09:00:00Z',
+      transformed_media_filename: 'C2',
+      transformed_media_format: 'MP3',
+      transformed_media_id: 2,
+      hearing_id: 2,
+    },
+  ],
+  transformed_media_details: [
+    {
+      case_id: 3,
+      media_request_id: 3,
+      case_number: 'C3',
+      courthouse_name: 'Cardiff',
+      hearing_date: '2022-01-04',
+      start_ts: '2022-01-04T09:00:00Z',
+      end_ts: '2022-01-04T10:00:00Z',
+      transformed_media_expiry_ts: '2022-01-04T09:00:00Z',
+      media_request_status: 'COMPLETED',
+      request_type: 'DOWNLOAD',
+      last_accessed_ts: '',
+      transformed_media_filename: 'C3',
+      transformed_media_format: 'ZIP',
+      transformed_media_id: 3,
+      hearing_id: 3,
+    },
+    {
+      case_id: 4,
+      media_request_id: 4,
+      case_number: 'C4_Playback',
+      courthouse_name: 'Cardiff',
+      hearing_date: '2023-11-13',
+      start_ts: '2023-11-13T09:00:00Z',
+      end_ts: '2023-11-13T09:01:00Z',
+      transformed_media_expiry_ts: '2023-11-13T09:00:00Z',
+      media_request_status: 'COMPLETED',
+      request_type: 'PLAYBACK',
+      last_accessed_ts: '',
+      transformed_media_filename: 'C4_Playback',
+      transformed_media_format: 'MP3',
+      transformed_media_id: 4,
+      hearing_id: 4,
+    },
+    {
+      case_id: 5,
+      media_request_id: 5,
+      case_number: 'C5_NoDownloadPermissions',
+      courthouse_name: 'Cardiff',
+      hearing_date: '2022-01-04',
+      start_ts: '2022-01-04T09:00:00Z',
+      end_ts: '2022-01-04T10:00:00Z',
+      transformed_media_expiry_ts: '2022-01-04T09:00:00Z',
+      media_request_status: 'COMPLETED',
+      request_type: 'PLAYBACK',
+      last_accessed_ts: '',
+      transformed_media_filename: 'C5_NoDownloadPermissions',
+      transformed_media_format: 'MP3',
+      transformed_media_id: 5,
+      hearing_id: 5,
+    },
+    {
+      case_id: 6,
+      media_request_id: 6,
+      case_number: 'C6_ViewAndDeleteMe',
+      courthouse_name: 'Cardiff',
+      hearing_date: '2022-01-04',
+      start_ts: '2022-01-04T09:00:00Z',
+      end_ts: '2022-01-04T10:00:00Z',
+      transformed_media_expiry_ts: '2022-01-04T09:00:00Z',
+      media_request_status: 'COMPLETED',
+      request_type: 'PLAYBACK',
+      last_accessed_ts: '',
+      transformed_media_filename: 'C6_ViewAndDeleteMe',
+      transformed_media_format: 'MP3',
+      transformed_media_id: 6,
+      hearing_id: 6,
+    },
+    {
+      case_id: 7,
+      media_request_id: 7,
+      case_number: 'C7_DeleteMe',
+      courthouse_name: 'Cardiff',
+      hearing_date: '2022-01-04',
+      start_ts: '2022-01-04T09:00:00Z',
+      end_ts: '2022-01-04T10:00:00Z',
+      transformed_media_expiry_ts: '2022-01-04T09:00:00Z',
+      media_request_status: 'COMPLETED',
+      request_type: 'PLAYBACK',
+      last_accessed_ts: '',
+      transformed_media_filename: 'C7_DeleteMe',
+      transformed_media_format: 'MP3',
+      transformed_media_id: 7,
+      hearing_id: 7,
+    },
+  ],
+};
 
-  {
-    case_id: 6,
-    media_request_id: 12378,
-    case_number: 'T20200331',
-    courthouse_name: 'Liverpool',
-    hearing_date: '2023-10-04',
-    media_request_start_ts: '2023-08-21T09:00:00Z',
-    media_request_end_ts: '2023-08-21T10:00:00Z',
-    media_request_expiry_ts: '2023-08-23T09:00:00Z',
-    media_request_status: 'COMPLETED',
-    request_type: 'DOWNLOAD',
-    hearing_id: 3,
-    output_filename: 'T20200331',
-    output_format: 'zip',
-  },
-  {
-    case_id: 7,
-    media_request_id: 12377,
-    case_number: 'T20200333',
-    courthouse_name: 'Liverpool',
-    hearing_date: '2023-10-04',
-    media_request_start_ts: '2023-08-21T09:00:00Z',
-    media_request_end_ts: '2023-08-21T10:00:00Z',
-    media_request_expiry_ts: '2023-08-23T09:00:00Z',
-    media_request_status: 'COMPLETED',
-    last_accessed_ts: '2023-08-23T09:00:00Z',
-    request_type: 'PLAYBACK',
-    hearing_id: 3,
-    output_filename: 'T20200333',
-    output_format: 'mp3',
-  },
-  {
-    case_id: 7,
-    media_request_id: 12376,
-    case_number: 'T20200334',
-    courthouse_name: 'Manchester',
-    hearing_date: '2023-10-04',
-    media_request_start_ts: '2023-08-21T09:00:00Z',
-    media_request_end_ts: '2023-08-21T10:00:00Z',
-    media_request_expiry_ts: '2023-08-23T09:00:00Z',
-    media_request_status: 'COMPLETED',
-    last_accessed_ts: '2023-08-23T09:00:00Z',
-    hearing_id: 3,
-    output_filename: 'T20200334',
-    output_format: 'mp3',
-    request_type: 'PLAYBACK',
-  },
-  {
-    case_id: 8,
-    media_request_id: 12342,
-    case_number: 'T2020011820',
-    courthouse_name: 'Ascot',
-    hearing_date: '2023-11-13',
-    media_request_start_ts: '2023-08-21T09:08:00Z',
-    media_request_end_ts: '2023-08-21T10:14:00Z',
-    media_request_expiry_ts: '2023-08-23T09:00:00Z',
-    media_request_status: 'COMPLETED',
-    request_type: 'PLAYBACK',
-    hearing_id: 3,
-    output_filename: 'T2020011820',
-    output_format: 'mp3',
-  },
-  {
-    case_id: 9,
-    media_request_id: 12341,
-    case_number: 'T2023453422',
-    courthouse_name: 'Bournemouth',
-    hearing_date: '2023-11-13',
-    media_request_start_ts: '2023-11-13T09:00:00Z',
-    media_request_end_ts: '2023-11-13T09:01:00Z',
-    media_request_expiry_ts: '2023-11-23T09:00:00Z',
-    media_request_status: 'COMPLETED',
-    request_type: 'PLAYBACK',
-    hearing_id: 3,
-    output_filename: 'T2023453422',
-    output_format: 'mp3',
-  },
-  {
-    case_id: 10,
-    media_request_id: 123443,
-    case_number: 'T20200192232',
-    courthouse_name: 'Brighton',
-    hearing_date: '2023-11-13',
-    media_request_start_ts: '2023-11-13T09:00:00Z',
-    media_request_end_ts: '2023-11-13T09:01:00Z',
-    media_request_expiry_ts: '2023-11-23T09:00:00Z',
-    media_request_status: 'COMPLETED',
-    request_type: 'PLAYBACK',
-    hearing_id: 3,
-    output_filename: 'T20200192232',
-    output_format: 'mp3',
-  },
-  {
-    case_id: 11,
-    media_request_id: 123449,
-    case_number: 'T20200192233',
-    courthouse_name: 'Swindon',
-    hearing_date: '2023-11-13',
-    media_request_start_ts: '2023-11-13T09:00:00Z',
-    media_request_end_ts: '2023-11-13T09:01:00Z',
-    media_request_expiry_ts: '2023-11-23T09:00:00Z',
-    media_request_status: 'COMPLETED',
-    request_type: 'PLAYBACK',
-    hearing_id: 3,
-    output_filename: 'T20200192233',
-    output_format: 'mp3',
-  },
-  {
-    case_id: 12,
-    media_request_id: 8080,
-    case_number: 'C22334455',
-    courthouse_name: 'Swindon',
-    hearing_date: '2023-12-18',
-    media_request_start_ts: '2023-08-21T09:57:00Z',
-    media_request_end_ts: '2023-08-21T10:43:00Z',
-    media_request_expiry_ts: '2023-11-23T09:00:00Z',
-    media_request_status: 'COMPLETED',
-    request_type: 'DOWNLOAD',
-    hearing_id: 3,
-    output_filename: 'C22334455',
-    output_format: 'zip',
-  },
-];
-
-const audioRequestMultiExpired = [
-  {
-    media_request_id: 444,
-    case_number: 'T20202110',
-    courthouse_name: 'Manchester Minshull Street',
-    hearing_id: 3,
-    hearing_date: '2023-10-13',
-    media_request_start_ts: '2023-08-21T09:00:00Z',
-    media_request_end_ts: '2023-08-21T10:00:00Z',
-    media_request_expiry_ts: '2023-08-23T09:00:00Z',
-    media_request_status: 'EXPIRED',
-  },
-  {
-    media_request_id: 555,
-    case_number: 'T202001232',
-    courthouse_name: 'Reading',
-    hearing_id: 3,
-    hearing_date: '2023-11-21',
-    media_request_start_ts: '2023-08-21T09:08:00Z',
-    media_request_end_ts: '2023-08-21T10:14:00Z',
-    media_request_expiry_ts: '2023-08-23T09:00:00Z',
-    media_request_status: 'EXPIRED',
-  },
-  {
-    media_request_id: 666,
-    case_number: 'T20200192772',
-    courthouse_name: 'Slough',
-    hearing_id: 3,
-    hearing_date: '2023-11-28',
-    media_request_start_ts: '2023-08-21T09:57:00Z',
-    media_request_end_ts: '2023-08-21T10:43:00Z',
-    media_request_expiry_ts: '2023-11-23T09:00:00Z',
-    media_request_status: 'EXPIRED',
-  },
-];
+const expiredMediaRequests = {
+  media_request_details: [],
+  transformed_media_details: [
+    {
+      case_id: 99,
+      media_request_id: 99,
+      case_number: 'C99',
+      courthouse_name: 'Cardiff',
+      hearing_date: '2022-01-04',
+      start_ts: '2022-01-04T09:00:00Z',
+      end_ts: '2022-01-04T10:00:00Z',
+      transformed_media_expiry_ts: '2022-01-04T09:00:00Z',
+      media_request_status: 'COMPLETED',
+      request_type: 'PLAYBACK',
+      last_accessed_ts: '2022-01-04T09:00:00Z',
+      transformed_media_filename: 'C99',
+      transformed_media_format: 'MP3',
+      transformed_media_id: 99,
+      hearing_id: 99,
+    },
+  ],
+};
 
 router.delete('/:requestId', (req, res) => {
   const requestId = req.params.requestId;
-  const index = audioRequestMulti.findIndex((x) => x.media_request_id == requestId);
-  const expiredIndex = audioRequestMultiExpired.findIndex((x) => x.media_request_id == requestId);
+  const index = mediaRequests.transformed_media_details.findIndex((x) => x.media_request_id == requestId);
+  const expiredIndex = expiredMediaRequests.transformed_media_details.findIndex((x) => x.media_request_id == requestId);
+  const clearIndex = mediaRequests.media_request_details.findIndex((x) => x.media_request_id == requestId);
 
   if (index >= 0) {
-    audioRequestMulti.splice(index, 1);
+    mediaRequests.transformed_media_details.splice(index, 1);
   }
 
   if (expiredIndex >= 0) {
-    audioRequestMultiExpired.splice(index, 1);
+    expiredMediaRequests.transformed_media_details.splice(index, 1);
+  }
+
+  if (clearIndex >= 0) {
+    mediaRequests.media_request_details.splice(index, 1);
   }
 
   res.sendStatus(204);
@@ -252,13 +189,14 @@ router.delete('/:requestId', (req, res) => {
 router.patch('/:requestId', (req, res) => {
   //Set specific media request last_accessed_ts value
   let id = req.params.requestId;
-  audioRequestMulti.find((x) => x.media_request_id == id).last_accessed_ts = new Date().toISOString();
+  mediaRequests.transformed_media_details.find((x) => x.media_request_id == id).last_accessed_ts =
+    new Date().toISOString();
   res.sendStatus(204);
 });
 
 router.get('/playback', (req, res) => {
   const mediaReqId = req.query.media_request_id;
-  if (mediaReqId !== '12377') {
+  if (mediaReqId !== '5') {
     var filePath = __dirname + '/preview/preview.mp3';
     var stat = fs.statSync(filePath);
     var total = stat.size;
@@ -290,7 +228,7 @@ router.get('/playback', (req, res) => {
 
 router.get('/download', (req, res) => {
   const mediaReqId = req.query.media_request_id;
-  if (mediaReqId !== '12377') {
+  if (mediaReqId !== '5') {
     res.sendFile(path.join(__dirname, './preview', 'preview.mp3.zip'));
   } else {
     res.sendStatus(403);
@@ -299,7 +237,7 @@ router.get('/download', (req, res) => {
 
 router.get('/not-accessed-count', (req, res) => {
   let count = 0;
-  audioRequestMulti.forEach((request) => {
+  mediaRequests.transformed_media_details.forEach((request) => {
     if (request.media_request_status === 'COMPLETED' && !request.last_accessed_ts) count++;
   });
   res.send({ count });
@@ -316,9 +254,9 @@ router.post('', (req, res) => {
 router.get('', (req, res) => {
   const expired = Boolean(JSON.parse(req.query.expired));
   if (!expired) {
-    res.send(audioRequestMulti);
+    res.send(mediaRequests);
   } else {
-    res.send(audioRequestMultiExpired);
+    res.send(expiredMediaRequests);
   }
 });
 

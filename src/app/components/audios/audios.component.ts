@@ -5,7 +5,7 @@ import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DeleteComponent } from '@common/delete/delete.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
-import { DatatableColumn, UserAudioRequest, UserAudioRequestRow } from '@darts-types/index';
+import { DatatableColumn, MediaRequest, MediaRequests, UserAudioRequestRow } from '@darts-types/index';
 import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { UnreadIconDirective } from '@directives/unread-icon.directive';
@@ -41,8 +41,8 @@ export class AudiosComponent {
 
   isDeleting = false;
 
-  audioRequests$: Observable<UserAudioRequest[]>;
-  expiredAudioRequests$: Observable<UserAudioRequest[]>;
+  audioRequests$: Observable<MediaRequests>;
+  expiredAudioRequests$: Observable<MediaRequests>;
 
   inProgress$!: Observable<UserAudioRequestRow[]>;
   completedRows$!: Observable<UserAudioRequestRow[]>;
@@ -79,15 +79,15 @@ export class AudiosComponent {
     );
 
     this.inProgress$ = this.audioRequests$.pipe(
-      map((audioRequests) => this.filterInProgressRequests(audioRequests)),
+      map((audioRequests) => this.filterInProgressRequests(audioRequests.media_request_details)),
       map((audioRequests) => this.mapAudioRequestToRows(audioRequests))
     );
     this.completedRows$ = this.audioRequests$.pipe(
-      map((audioRequests) => this.audioService.filterCompletedRequests(audioRequests)),
+      map((audioRequests) => this.audioService.filterCompletedRequests(audioRequests.transformed_media_details)),
       map((audioRequests) => this.mapAudioRequestToRows(audioRequests))
     );
     this.expiredRows$ = this.expiredAudioRequests$.pipe(
-      map((audioRequests) => this.mapAudioRequestToRows(audioRequests))
+      map((audioRequests) => this.mapAudioRequestToRows(audioRequests.transformed_media_details))
     );
 
     this.data$ = combineLatest({
@@ -97,7 +97,7 @@ export class AudiosComponent {
     });
   }
 
-  mapAudioRequestToRows(audioRequests: UserAudioRequest[]): UserAudioRequestRow[] {
+  mapAudioRequestToRows(audioRequests: MediaRequest[]): UserAudioRequestRow[] {
     return audioRequests.map((ar) => {
       return {
         caseId: ar.case_id,
@@ -105,20 +105,20 @@ export class AudiosComponent {
         courthouse: ar.courthouse_name,
         hearingId: ar.hearing_id,
         hearingDate: ar.hearing_date,
-        startTime: ar.media_request_start_ts,
-        endTime: ar.media_request_end_ts,
+        startTime: ar.start_ts,
+        endTime: ar.end_ts,
         requestId: ar.media_request_id,
-        expiry: ar.media_request_expiry_ts,
+        expiry: ar.transformed_media_expiry_ts,
         status: ar.media_request_status,
         lastAccessed: ar.last_accessed_ts,
         requestType: ar.request_type,
-        output_filename: ar.output_filename,
-        output_format: ar.output_format,
+        output_filename: ar.transformed_media_filename,
+        output_format: ar.transformed_media_format,
       };
     });
   }
 
-  filterInProgressRequests(audioRequests: UserAudioRequest[]): UserAudioRequest[] {
+  filterInProgressRequests(audioRequests: MediaRequest[]): MediaRequest[] {
     return audioRequests.filter(
       (ar) =>
         ar.media_request_status === 'OPEN' ||

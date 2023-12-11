@@ -107,7 +107,7 @@ router.get('/:hearingId/events', (req, res) => {
       ];
       res.send(body2);
       break;
-    case '3':
+    case '4':
       const body3 = [
         {
           id: -1,

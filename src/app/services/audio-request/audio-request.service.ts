@@ -1,7 +1,7 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { UserAudioRequestRow } from '@darts-types/index';
-import { AudioRequestType, UserAudioRequest } from '@darts-types/user-audio-request.interface';
+import { AudioRequestType, MediaRequest, MediaRequests } from '@darts-types/user-audio-request.interface';
 import { CountNotificationService } from '@services/count-notification/count-notification.service';
 import { Observable, map, switchMap, tap, timer } from 'rxjs';
 
@@ -20,17 +20,31 @@ export class AudioRequestService {
 
   audioRequests$ = timer(0, this.POLL_INTERVAL * 1000).pipe(
     switchMap(() => this.getAudioRequests(false)),
-    tap((audioRequests) => this.updateCount(audioRequests))
+    tap((requests) => this.updateCount(requests.transformed_media_details))
   );
 
   expiredAudioRequests$ = timer(0, this.POLL_INTERVAL * 1000).pipe(switchMap(() => this.getAudioRequests(true)));
 
-  getAudioRequests(expired: boolean): Observable<UserAudioRequest[]> {
+  getAudioRequests(expired: boolean): Observable<MediaRequests> {
     return this.http
-      .get<UserAudioRequest[]>(`api/audio-requests`, {
+      .get<MediaRequests>(`api/audio-requests`, {
         params: { expired },
+        headers: { api_version: '2.0' },
       })
-      .pipe(map((requests) => requests.map((r) => ({ ...r, hearing_date: r.hearing_date + 'T00:00:00Z' }))));
+      .pipe(
+        map((requests) => {
+          return {
+            media_request_details: requests.media_request_details.map((r) => ({
+              ...r,
+              hearing_date: r.hearing_date + 'T00:00:00Z',
+            })),
+            transformed_media_details: requests.transformed_media_details.map((r) => ({
+              ...r,
+              hearing_date: r.hearing_date + 'T00:00:00Z',
+            })),
+          };
+        })
+      );
   }
 
   deleteAudioRequests(mediaRequestId: number): Observable<HttpResponse<Response>> {
@@ -61,16 +75,16 @@ export class AudioRequestService {
     this.audioRequestView = audioRequestRow;
   }
 
-  filterCompletedRequests(audioRequests: UserAudioRequest[]): UserAudioRequest[] {
+  filterCompletedRequests(audioRequests: MediaRequest[]): MediaRequest[] {
     return audioRequests.filter((ar) => ar.media_request_status === 'COMPLETED');
   }
 
-  private updateCount(audioRequests: UserAudioRequest[]) {
+  private updateCount(audioRequests: MediaRequest[]) {
     const completedRequests = this.filterCompletedRequests(audioRequests);
     this.countService.setUnreadAudioCount(this.countUnreadAudioRequests(completedRequests));
   }
 
-  private countUnreadAudioRequests(audioRequests: UserAudioRequest[]): number {
+  private countUnreadAudioRequests(audioRequests: MediaRequest[]): number {
     //Return count of completed rows which contain last_accessed_ts property
     return audioRequests.filter((ar) => Boolean(!ar.last_accessed_ts)).length;
   }
