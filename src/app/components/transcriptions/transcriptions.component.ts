@@ -70,12 +70,12 @@ export class TranscriptionsComponent {
       customSortFn: (a: unknown, b: unknown, direction?: 'asc' | 'desc') => {
         const priorityMatrix = this.priorityMatrix;
 
-        if (direction === 'asc') {
+        if (direction === 'desc') {
           return (
             priorityMatrix.get((a as TranscriptionDataTableRow).urgency)! -
             priorityMatrix.get((b as TranscriptionDataTableRow).urgency)!
           );
-        } else if (direction === 'desc') {
+        } else if (direction === 'asc') {
           return (
             priorityMatrix.get((b as TranscriptionDataTableRow).urgency)! -
             priorityMatrix.get((a as TranscriptionDataTableRow).urgency)!
