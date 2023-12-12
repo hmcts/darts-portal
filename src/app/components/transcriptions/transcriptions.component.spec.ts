@@ -3,14 +3,23 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
-import { UserTranscriptionRequest } from '@darts-types/user-transcription-request.interface';
+import { TranscriptionUrgency } from '@darts-types/transcription-urgency.interface';
+import { UserTranscriptionRequest, YourTranscriptionRequests } from '@darts-types/user-transcription-request.interface';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { UserService } from '@services/user/user.service';
-import { of } from 'rxjs';
+import { map, of } from 'rxjs';
 import { TranscriptionsComponent } from './transcriptions.component';
 
-const MOCK_REQUESTS = {
+const MOCK_URGENCIES: TranscriptionUrgency[] = [
+  { transcription_urgency_id: 1, description: 'Overnight', priority_order: 1 },
+  { transcription_urgency_id: 2, description: 'Up to 2 working days', priority_order: 2 },
+  { transcription_urgency_id: 3, description: 'Up to 3 working days', priority_order: 3 },
+  { transcription_urgency_id: 4, description: 'Up to 7 working days', priority_order: 4 },
+  { transcription_urgency_id: 5, description: 'Up to 12 working days', priority_order: 5 },
+];
+
+const MOCK_REQUESTS: YourTranscriptionRequests = {
   requester_transcriptions: [
     {
       transcription_id: 1,
@@ -31,7 +40,7 @@ const MOCK_REQUESTS = {
       hearing_date: '2023-06-10T00:00:00Z',
       transcription_type: 'Court log',
       status: 'With Transcriber',
-      urgency: '3 Working days',
+      urgency: 'Up to 3 working days',
       requested_ts: '2023-06-26T13:00:00Z',
     },
     {
@@ -42,7 +51,7 @@ const MOCK_REQUESTS = {
       hearing_date: '2023-06-10T00:00:00Z',
       transcription_type: 'Court log',
       status: 'Complete',
-      urgency: '3 Working days',
+      urgency: 'Up to 3 working days',
       requested_ts: '2023-06-26T13:00:00Z',
     },
     {
@@ -66,7 +75,7 @@ const MOCK_REQUESTS = {
       hearing_date: '2023-06-10T00:00:00Z',
       transcription_type: 'Court log',
       status: 'Complete',
-      urgency: '3 Working days',
+      urgency: 'Up to 3 working days',
       requested_ts: '2023-06-26T13:00:00Z',
     },
   ],
@@ -75,6 +84,12 @@ const MOCK_REQUESTS = {
 const mockTranscriptionService = {
   getTranscriptionRequests: () => of(MOCK_REQUESTS),
   deleteRequest: () => of({} as Response),
+  getUrgencies: () => of(MOCK_URGENCIES),
+  mapTranscriptUrgencies: () => {
+    return map((requests: UserTranscriptionRequest[]) =>
+      requests.map((r) => ({ ...r, urgency: MOCK_URGENCIES.find((u) => u.description === r.urgency) }))
+    );
+  },
 };
 
 const appConfigServiceMock = {
@@ -174,7 +189,7 @@ describe('TranscriptionsComponent', () => {
     expect(cells[4].textContent).toEqual('Court log');
     expect(cells[5].textContent).toEqual('26 Jun 2023 13:00');
     expect(cells[6].textContent).toEqual('Complete');
-    expect(cells[7].textContent).toEqual('3 Working days');
+    expect(cells[7].textContent).toEqual('Up to 3 working days');
     expect(cells[8].textContent).toEqual('View');
   });
 
@@ -201,7 +216,7 @@ describe('TranscriptionsComponent', () => {
     expect(cells[3].textContent).toEqual('Court log');
     expect(cells[4].textContent).toEqual('26 Jun 2023 13:00');
     expect(cells[5].textContent).toEqual('1');
-    expect(cells[6].textContent).toEqual('3 Working days');
+    expect(cells[6].textContent).toEqual('Up to 3 working days');
     expect(cells[7].textContent).toEqual('View');
   });
 
