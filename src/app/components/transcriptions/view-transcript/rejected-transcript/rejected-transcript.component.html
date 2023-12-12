@@ -3,30 +3,33 @@
   <ng-container *breadcrumb="['.']">{{ transcript.transcript_file_name }}</ng-container>
 </app-breadcrumb>
 
-@if (transcript.reporting_restriction){
-<app-reporting-restriction [reportingRestriction]="transcript.reporting_restriction"></app-reporting-restriction>
+@if (transcript.reporting_restriction) {
+  <app-reporting-restriction [reportingRestriction]="transcript.reporting_restriction"></app-reporting-restriction>
 }
 
 <app-govuk-heading caption="Transcript request"> {{ transcript.case_number }} </app-govuk-heading>
 
 <!-- TODO: This could be refactored into it's own component -->
 @if (transcript.status) {
-<strong class="govuk-tag" [ngClass]="transcriptStatusClassMap[transcript.status]" style="margin-bottom: 30px">{{
-  transcript.status
-}}</strong>
+  <strong class="govuk-tag" [ngClass]="transcriptStatusClassMap[transcript.status]" style="margin-bottom: 30px">{{
+    transcript.status
+  }}</strong>
 }
 
-<!-- TODO: This could be refactored into it's own component -->
-<h1 class="govuk-heading-s">Your request was rejected</h1>
+<h1 class="govuk-heading-m">Your request was rejected</h1>
 <p class="govuk-body">"{{ transcript.rejection_reason }}"</p>
 
 <app-details-table title="Case details" [details]="caseDetails"></app-details-table>
 
 <app-details-table title="Request details" [details]="requestDetails"></app-details-table>
 
-<!-- TODO: This could be refactored into it's own component -->
 <div class="govuk-button-group">
-  <button id="request-button" class="govuk-button" data-module="govuk-button" [routerLink]="['/transcriptions']">
+  <button
+    id="request-button"
+    class="govuk-button"
+    data-module="govuk-button"
+    [routerLink]="['/case', transcript.case_id, 'hearing', transcript.hearing_id, 'request-transcript']"
+  >
     Request again
   </button>
   <a [routerLink]="['/transcriptions']" class="govuk-link govuk-link--no-visited-state">Cancel</a>

@@ -3,17 +3,17 @@
   <ng-container *breadcrumb="['.']">{{ transcript.transcript_file_name }}</ng-container>
 </app-breadcrumb>
 
-@if (transcript.reporting_restriction){
-<app-reporting-restriction [reportingRestriction]="transcript.reporting_restriction"></app-reporting-restriction>
+@if (transcript.reporting_restriction) {
+  <app-reporting-restriction [reportingRestriction]="transcript.reporting_restriction"></app-reporting-restriction>
 }
 
 <app-govuk-heading caption="Transcript file"> {{ transcript.case_number }} </app-govuk-heading>
 
 <!-- TODO: This could be refactored into it's own component -->
 @if (transcript.status) {
-<strong class="govuk-tag" [ngClass]="transcriptStatusClassMap[transcript.status]" style="margin-bottom: 30px">{{
-  transcript.status
-}}</strong>
+  <strong class="govuk-tag" [ngClass]="transcriptStatusClassMap[transcript.status]" style="margin-bottom: 30px">{{
+    transcript.status
+  }}</strong>
 }
 
 <app-details-table title="Case details" [details]="caseDetails"></app-details-table>
