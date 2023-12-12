@@ -51,7 +51,7 @@ export class ApproveTranscriptButtonsComponent {
       this.errors.emit([
         {
           fieldId: 'approval-radios',
-          message: (this.buttonsError = 'You must choose whether you approve or reject this request'),
+          message: (this.buttonsError = 'Select if you approve this request or not'),
         },
       ]);
       return;
