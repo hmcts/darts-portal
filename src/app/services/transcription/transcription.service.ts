@@ -5,6 +5,7 @@ import {
   TranscriptionRequest,
   TranscriptionType,
   TranscriptionUrgency,
+  UserTranscriptionRequest,
   WorkRequests,
   YourTranscriptionRequests,
 } from '@darts-types/index';
@@ -147,5 +148,20 @@ export class TranscriptionService {
 
   downloadTranscriptDocument(transcriptId: number): Observable<Blob> {
     return this.http.get(`/api/transcriptions/${transcriptId}/document`, { responseType: 'blob' });
+  }
+
+  public mapTranscriptUrgencies() {
+    return switchMap((requests: UserTranscriptionRequest[]) =>
+      this.getUrgencies().pipe(
+        map((urgencies) =>
+          requests.map((r) => ({ ...r, urgency: this.getUrgencyByDescription(urgencies, r.urgency) }))
+        ),
+        tap((request) => console.log(request))
+      )
+    );
+  }
+
+  getUrgencyByDescription(urgencies: TranscriptionUrgency[], description: string) {
+    return urgencies.find((u) => u.description === description);
   }
 }

@@ -7,5 +7,11 @@ export interface TranscriptionDataTableRow {
   status: string;
   transcription_id: number;
   transcription_type: string;
-  urgency: string;
+  urgency: Urgency;
+}
+
+interface Urgency {
+  transcription_urgency_id: number;
+  description: string;
+  priority_order: number;
 }

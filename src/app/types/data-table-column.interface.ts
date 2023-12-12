@@ -5,4 +5,6 @@ export interface DatatableColumn {
   customSortFn?: CustomSort<unknown>;
 }
 
-export type CustomSort<T> = (a: T, b: T, order: 'asc' | 'desc') => number;
+export type CustomSort<T> = (a: T, b: T, order: Order) => number;
+
+export type Order = 'asc' | 'desc';
