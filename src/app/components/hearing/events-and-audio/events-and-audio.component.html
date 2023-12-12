@@ -44,11 +44,7 @@
         </td>
         <td class="govuk-table__cell">
           @if (isAudioInPreview(row.id)) {
-            <app-audio-player
-              [id]="row.id"
-              [audioSource]="audioPreviewPath + row.id"
-              (play)="onAudioPlay(row.id)"
-            ></app-audio-player>
+            <app-audio-player [id]="row.id" (play)="onAudioPlay(row.id)"></app-audio-player>
           } @else {
             <button class="govuk-button govuk-button--secondary" (click)="onPreviewAudio(row.id)">Preview Audio</button>
           }

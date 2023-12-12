@@ -59,7 +59,6 @@ export class AudioViewComponent implements OnDestroy {
 
   audioRequest!: UserAudioRequestRow;
   downloadUrl = '';
-  audioSource = '';
   fileName = '';
   isDeleting = false;
   requestId: number | undefined;
@@ -105,8 +104,6 @@ export class AudioViewComponent implements OnDestroy {
             ? this.audioRequest.caseNumber + '.zip'
             : this.audioRequest.caseNumber + '.mp3';
       }
-
-      this.audioSource = `/api/audio-requests/playback?media_request_id=${this.requestId}`;
 
       this.eventRows$ = this.hearingService.getEvents(this.audioRequest.hearingId).pipe(
         map((events) => this.filterEvents(events)), // Remove events outside of audio start and end time

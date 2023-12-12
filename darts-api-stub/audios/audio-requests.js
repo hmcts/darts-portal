@@ -258,7 +258,7 @@ router.patch('/:requestId', (req, res) => {
 
 router.get('/playback', (req, res) => {
   const mediaReqId = req.query.media_request_id;
-  if (mediaReqId !== '12377') {
+  if (mediaReqId !== '1') {
     var filePath = __dirname + '/preview/preview.mp3';
     var stat = fs.statSync(filePath);
     var total = stat.size;

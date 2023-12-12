@@ -47,7 +47,6 @@ export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
   selectedRows: AudioEventRow[] = [];
   selectedOption = new FormControl('all');
   formChanges$ = this.selectedOption.valueChanges;
-  audioPreviewPath = '/api/audio/preview/';
 
   subs: Subscription[] = [];
   audioInPreview: number[] = [];

@@ -43,6 +43,10 @@ router.get('/hearings/:hearingId/audios', (req, res) => {
 router.get('/preview/:mediaId', (req, res) => {
   if (req.params.mediaId === '2') {
     res.sendStatus(500);
+  } else if (req.params.mediaId === '1') {
+    res.sendStatus(403);
+  } else if (req.params.mediaId === '3') {
+    res.sendStatus(404);
   } else {
     var filePath = __dirname + '/preview/preview.mp3';
     var stat = fs.statSync(filePath);
