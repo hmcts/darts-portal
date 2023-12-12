@@ -153,10 +153,7 @@ export class TranscriptionService {
   public mapTranscriptUrgencies() {
     return switchMap((requests: UserTranscriptionRequest[]) =>
       this.getUrgencies().pipe(
-        map((urgencies) =>
-          requests.map((r) => ({ ...r, urgency: this.getUrgencyByDescription(urgencies, r.urgency) }))
-        ),
-        tap((request) => console.log(request))
+        map((urgencies) => requests.map((r) => ({ ...r, urgency: this.getUrgencyByDescription(urgencies, r.urgency) })))
       )
     );
   }
