@@ -3,14 +3,15 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import {
   TranscriptionDetails,
   TranscriptionRequest,
+  TranscriptionUrgency,
   UserTranscriptionRequest,
   YourTranscriptionRequests,
 } from '@darts-types/index';
 import { WorkRequest } from '@darts-types/work-request.interface';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import {
-  COMPLETED_TRANSCRIPTION_STATUS_ID,
   APPROVED_TRANSCRIPTION_STATUS_ID,
+  COMPLETED_TRANSCRIPTION_STATUS_ID,
   REJECTED_TRANSCRIPTION_STATUS_ID,
   TranscriptionService,
 } from './transcription.service';
@@ -18,6 +19,14 @@ import {
 describe('TranscriptionService', () => {
   let service: TranscriptionService;
   let httpMock: HttpTestingController;
+
+  const MOCK_URGENCIES: TranscriptionUrgency[] = [
+    { transcription_urgency_id: 1, description: 'Overnight', priority_order: 1 },
+    { transcription_urgency_id: 2, description: 'Up to 2 working days', priority_order: 2 },
+    { transcription_urgency_id: 3, description: 'Up to 3 working days', priority_order: 3 },
+    { transcription_urgency_id: 4, description: 'Up to 7 working days', priority_order: 4 },
+    { transcription_urgency_id: 5, description: 'Up to 12 working days', priority_order: 5 },
+  ];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -311,6 +320,68 @@ describe('TranscriptionService', () => {
 
       const req = httpMock.expectOne(`/api/transcriptions/${transcriptId}/document`);
       req.flush(mockBlob);
+    });
+  });
+
+  describe('#mapTranscriptUrgencies', () => {
+    it('update urgency to return an object instead of a single value', () => {
+      interface newUserTranscriptionRequest extends Omit<UserTranscriptionRequest, 'urgency'> {
+        urgency: TranscriptionUrgency | undefined;
+      }
+      let result!: newUserTranscriptionRequest[];
+
+      const spy = jest.spyOn(service, 'getUrgencies').mockReturnValue(
+        of([
+          { transcription_urgency_id: 2, description: 'Up to 2 working days', priority_order: 2 },
+          { transcription_urgency_id: 3, description: 'Up to 3 working days', priority_order: 3 },
+        ])
+      );
+
+      const mockTranscription: Observable<UserTranscriptionRequest[]> = of([
+        {
+          transcription_id: 1,
+          case_id: 12345,
+          case_number: 'T12345',
+          courthouse_name: 'Cardiff',
+          hearing_date: '2023-06-09',
+          transcription_type: 'Court log',
+          status: 'Complete',
+          urgency: 'Up to 3 working days',
+          requested_ts: '2023-06-26T13:00:00Z',
+        },
+      ]);
+
+      const resultObj = [
+        {
+          transcription_id: 1,
+          case_id: 12345,
+          case_number: 'T12345',
+          courthouse_name: 'Cardiff',
+          hearing_date: '2023-06-09',
+          transcription_type: 'Court log',
+          status: 'Complete',
+          urgency: { transcription_urgency_id: 3, description: 'Up to 3 working days', priority_order: 3 },
+          requested_ts: '2023-06-26T13:00:00Z',
+        },
+      ];
+
+      mockTranscription.pipe(service.mapTranscriptUrgencies()).subscribe((data) => {
+        result = data;
+      });
+      expect(spy).toHaveBeenCalled();
+      expect(result).toEqual(resultObj);
+    });
+  });
+
+  describe('#getUrgencyByDescription', () => {
+    it('should return the TranscriptionUrgency object where the description matches', () => {
+      const response = service.getUrgencyByDescription(MOCK_URGENCIES, 'Up to 3 working days');
+      const result: TranscriptionUrgency = {
+        transcription_urgency_id: 3,
+        description: 'Up to 3 working days',
+        priority_order: 3,
+      };
+      expect(response).toEqual(result);
     });
   });
 });
