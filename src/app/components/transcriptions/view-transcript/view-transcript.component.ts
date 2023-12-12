@@ -10,6 +10,8 @@ import { JoinPipe } from '@pipes/join';
 import { FileDownloadService } from '@services/file-download/file-download.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { tap } from 'rxjs/internal/operators/tap';
+import { ApprovedTranscriptComponent } from './approved-transcript/approved-transcript.component';
+import { RejectedTranscriptComponent } from './rejected-transcript/rejected-transcript.component';
 
 @Component({
   selector: 'app-view-transcript',
@@ -21,6 +23,8 @@ import { tap } from 'rxjs/internal/operators/tap';
     BreadcrumbDirective,
     ReportingRestrictionComponent,
     LoadingComponent,
+    ApprovedTranscriptComponent,
+    RejectedTranscriptComponent,
   ],
   templateUrl: './view-transcript.component.html',
   styleUrls: ['./view-transcript.component.scss'],
