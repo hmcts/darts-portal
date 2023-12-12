@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Order } from '@darts-types/data-table-column.interface';
-import { TranscriptionDataTableRow } from '@darts-types/transcription-datatable-row.interface';
+import { TranscriptionUrgency } from '@darts-types/transcription-urgency.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -8,13 +8,13 @@ import { TranscriptionDataTableRow } from '@darts-types/transcription-datatable-
 export class TableCustomSortFunctionsService {
   // only works for transcription data table
   sortByUrgencyPriorityOrder(a: unknown, b: unknown, direction?: Order) {
-    const castedA = a as TranscriptionDataTableRow;
-    const castedB = b as TranscriptionDataTableRow;
+    const urgencyA = a as { urgency: TranscriptionUrgency };
+    const urgencyB = b as { urgency: TranscriptionUrgency };
 
     if (direction === 'desc') {
-      return castedA.urgency.priority_order - castedB.urgency.priority_order;
+      return urgencyA.urgency.priority_order! - urgencyB.urgency.priority_order!;
     } else if (direction === 'asc') {
-      return castedB.urgency.priority_order - castedA.urgency.priority_order;
+      return urgencyB.urgency.priority_order! - urgencyA.urgency.priority_order!;
     } else {
       return 0;
     }

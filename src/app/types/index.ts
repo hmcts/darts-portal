@@ -18,7 +18,6 @@ export * from './hearing.interface';
 export * from './search-form.interface';
 export * from './transcriber-transcriptions.interface';
 export * from './transcript.interface';
-export * from './transcription-datatable-row.interface';
 export * from './transcription-details.interface';
 export * from './transcription-request-counts';
 export * from './transcription-request.interface';
