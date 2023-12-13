@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AudioPlayerComponent } from '@common/audio-player/audio-player.component';
 import { PlayButtonComponent } from '@common/play-button/play-button.component';
 import { HearingEvent } from '@darts-types/hearing-event.interface';
-import { Case, HearingEventRow, UserAudioRequestRow } from '@darts-types/index';
+import { Case, HearingEventRow, TransformedMediaRow } from '@darts-types/index';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { CaseService } from '@services/case/case.service';
@@ -101,7 +101,7 @@ describe('AudioViewComponent', () => {
     ],
   };
 
-  const MOCK_AUDIO_REQUEST: UserAudioRequestRow = {
+  const MOCK_AUDIO_REQUEST: TransformedMediaRow = {
     caseId: 6,
     caseNumber: 'T20200331',
     courthouse: 'Swindon',
@@ -114,8 +114,9 @@ describe('AudioViewComponent', () => {
     hearingId: 3,
     requestType: 'PLAYBACK',
     lastAccessed: undefined,
-    output_filename: 'T20200331',
-    output_format: 'mp3',
+    filename: 'T20200331',
+    format: 'mp3',
+    mediaId: 1,
   };
 
   const fakeHearingService = {
@@ -165,7 +166,7 @@ describe('AudioViewComponent', () => {
 
     describe('#constructor', () => {
       it('should set the audioRequest', () => {
-        expect(component.audioRequest).toEqual(fakeAudioRequestService.audioRequestView);
+        expect(component.transformedMedia).toEqual(fakeAudioRequestService.audioRequestView);
       });
       it('should set the requestId', () => {
         expect(component.requestId).toEqual(fakeAudioRequestService.audioRequestView.requestId);

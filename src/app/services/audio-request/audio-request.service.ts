@@ -1,7 +1,7 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { UserAudioRequestRow } from '@darts-types/index';
-import { AudioRequestType, MediaRequest, MediaRequests } from '@darts-types/user-audio-request.interface';
+import { TransformedMediaRow } from '@darts-types/index';
+import { AudioRequestType, RequestedMedia, TransformedMedia } from '@darts-types/requested-media.interface';
 import { CountNotificationService } from '@services/count-notification/count-notification.service';
 import { Observable, map, switchMap, tap, timer } from 'rxjs';
 
@@ -16,35 +16,22 @@ export class AudioRequestService {
   private readonly POLL_INTERVAL = 60;
 
   // Store audio request when clicking 'View' on 'Your Audio' screen
-  audioRequestView!: UserAudioRequestRow;
+  audioRequestView!: TransformedMediaRow;
 
   audioRequests$ = timer(0, this.POLL_INTERVAL * 1000).pipe(
     switchMap(() => this.getAudioRequests(false)),
-    tap((requests) => this.updateCount(requests.transformed_media_details))
+    tap((requests) => this.updateUnreadAudioCount(requests.transformed_media_details))
   );
 
   expiredAudioRequests$ = timer(0, this.POLL_INTERVAL * 1000).pipe(switchMap(() => this.getAudioRequests(true)));
 
-  getAudioRequests(expired: boolean): Observable<MediaRequests> {
+  getAudioRequests(expired: boolean): Observable<RequestedMedia> {
     return this.http
-      .get<MediaRequests>(`api/audio-requests`, {
+      .get<RequestedMedia>(`api/audio-requests`, {
         params: { expired },
         headers: { api_version: '2.0' },
       })
-      .pipe(
-        map((requests) => {
-          return {
-            media_request_details: requests.media_request_details.map((r) => ({
-              ...r,
-              hearing_date: r.hearing_date + 'T00:00:00Z',
-            })),
-            transformed_media_details: requests.transformed_media_details.map((r) => ({
-              ...r,
-              hearing_date: r.hearing_date + 'T00:00:00Z',
-            })),
-          };
-        })
-      );
+      .pipe(map(this.convertHearingDateToUtc));
   }
 
   deleteAudioRequests(mediaRequestId: number): Observable<HttpResponse<Response>> {
@@ -71,21 +58,25 @@ export class AudioRequestService {
     });
   }
 
-  setAudioRequest(audioRequestRow: UserAudioRequestRow) {
-    this.audioRequestView = audioRequestRow;
+  setAudioRequest(transformedMediaRow: TransformedMediaRow) {
+    this.audioRequestView = transformedMediaRow;
   }
 
-  filterCompletedRequests(audioRequests: MediaRequest[]): MediaRequest[] {
-    return audioRequests.filter((ar) => ar.media_request_status === 'COMPLETED');
+  private updateUnreadAudioCount(media: TransformedMedia[]) {
+    const count = media.filter((m) => !m.last_accessed_ts).length;
+    this.countService.setUnreadAudioCount(count);
   }
 
-  private updateCount(audioRequests: MediaRequest[]) {
-    const completedRequests = this.filterCompletedRequests(audioRequests);
-    this.countService.setUnreadAudioCount(this.countUnreadAudioRequests(completedRequests));
-  }
-
-  private countUnreadAudioRequests(audioRequests: MediaRequest[]): number {
-    //Return count of completed rows which contain last_accessed_ts property
-    return audioRequests.filter((ar) => Boolean(!ar.last_accessed_ts)).length;
+  private convertHearingDateToUtc(requestedMedia: RequestedMedia) {
+    return {
+      media_request_details: requestedMedia.media_request_details.map((r) => ({
+        ...r,
+        hearing_date: r.hearing_date + 'T00:00:00Z',
+      })),
+      transformed_media_details: requestedMedia.transformed_media_details.map((r) => ({
+        ...r,
+        hearing_date: r.hearing_date + 'T00:00:00Z',
+      })),
+    };
   }
 }

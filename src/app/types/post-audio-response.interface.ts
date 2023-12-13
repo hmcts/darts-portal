@@ -1,4 +1,4 @@
-export interface AudioResponse {
+export interface PostAudioResponse {
   request_id: number;
   case_id: string;
   courthouse_name: string;

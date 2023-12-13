@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { AudioRequest, Case, Hearing, HearingPageState } from '@darts-types/index';
+import { Case, Hearing, HearingPageState, PostAudioRequest } from '@darts-types/index';
 import { UserState } from '@darts-types/user-state';
 import { HeaderService } from '@services/header/header.service';
 
@@ -15,13 +15,13 @@ import { HeaderService } from '@services/header/header.service';
 export class OrderConfirmationComponent {
   @Input() case!: Case;
   @Input() hearing!: Hearing | undefined;
-  @Input() audioRequest!: AudioRequest;
+  @Input() audioRequest!: PostAudioRequest;
   @Input() requestId!: number;
   @Input() state!: HearingPageState;
   @Input() userState!: UserState | null | undefined;
 
   @Output() stateChange = new EventEmitter<HearingPageState>();
-  @Output() orderConfirm = new EventEmitter<AudioRequest>();
+  @Output() orderConfirm = new EventEmitter<PostAudioRequest>();
 
   headerService = inject(HeaderService);
   router = inject(Router);

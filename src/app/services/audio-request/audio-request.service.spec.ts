@@ -1,7 +1,7 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed, discardPeriodicTasks, fakeAsync, tick } from '@angular/core/testing';
-import { UserAudioRequestRow } from '@darts-types/user-audio-request-row.interface';
-import { MediaRequest, MediaRequests } from '@darts-types/user-audio-request.interface';
+import { TransformedMediaRow } from '@darts-types/audio-request-row.interface';
+import { RequestedMedia } from '@darts-types/requested-media.interface';
 import { of } from 'rxjs';
 import { AudioRequestService } from './audio-request.service';
 
@@ -9,7 +9,7 @@ describe('AudioService', () => {
   let service: AudioRequestService;
   let httpMock: HttpTestingController;
 
-  const MOCK_MEDIA_REQUESTS: MediaRequests = {
+  const MOCK_MEDIA_REQUESTS: RequestedMedia = {
     media_request_details: [
       {
         case_id: 1,
@@ -19,13 +19,8 @@ describe('AudioService', () => {
         hearing_date: '2022-01-03',
         start_ts: '2023-08-21T09:00:00Z',
         end_ts: '2023-08-21T10:00:00Z',
-        transformed_media_expiry_ts: '2023-08-23T09:00:00Z',
         media_request_status: 'OPEN',
         request_type: 'PLAYBACK',
-        last_accessed_ts: '2023-08-23T09:00:00Z',
-        transformed_media_filename: 'C1',
-        transformed_media_format: 'MP3',
-        transformed_media_id: 1,
         hearing_id: 1,
       },
       {
@@ -36,13 +31,8 @@ describe('AudioService', () => {
         hearing_date: '2022-01-03',
         start_ts: '2023-08-21T09:00:00Z',
         end_ts: '2023-08-21T10:00:00Z',
-        transformed_media_expiry_ts: '2023-08-23T09:00:00Z',
         media_request_status: 'FAILED',
         request_type: 'PLAYBACK',
-        last_accessed_ts: '2023-08-23T09:00:00Z',
-        transformed_media_filename: 'C2',
-        transformed_media_format: 'MP3',
-        transformed_media_id: 2,
         hearing_id: 2,
       },
     ],
@@ -67,7 +57,7 @@ describe('AudioService', () => {
     ],
   };
 
-  const MOCK_EXPIRED_MEDIA_REQUESTS: MediaRequests = {
+  const MOCK_EXPIRED_MEDIA_REQUESTS: RequestedMedia = {
     media_request_details: [],
     transformed_media_details: [
       {
@@ -225,12 +215,6 @@ describe('AudioService', () => {
     discardPeriodicTasks();
   }));
 
-  it('#filterCompletedRequests', () => {
-    const mockAudios: MediaRequest[] = MOCK_MEDIA_REQUESTS.transformed_media_details;
-    const completeAudios = service.filterCompletedRequests(mockAudios);
-    expect(completeAudios.length).toBe(1);
-  });
-
   it('#downloadAudio', () => {
     const requestId = 123449;
     const mockBlob = new Blob(['mock audio data'], { type: 'audio/wav' });
@@ -251,21 +235,21 @@ describe('AudioService', () => {
   });
 
   it('#setAudioRequest', () => {
-    const mockAudioRequest: UserAudioRequestRow = {
+    const mockAudioRequest: TransformedMediaRow = {
       caseId: 123,
       caseNumber: 'T20200190',
       courthouse: 'Manchester Minshull Street',
       hearingId: 123,
       hearingDate: '2023-10-03',
-      lastAccessed: '2023-08-23T09:00:00Z',
       startTime: '2023-08-21T09:00:00Z',
       endTime: '2023-08-21T10:00:00Z',
       requestId: 123,
       expiry: '2023-08-23T09:00:00Z',
       status: 'OPEN',
       requestType: 'DOWNLOAD',
-      output_filename: 'T20200190',
-      output_format: 'zip',
+      mediaId: 0,
+      filename: '',
+      format: '',
     };
     service.setAudioRequest(mockAudioRequest);
     expect(service.audioRequestView).toEqual(mockAudioRequest);

@@ -1,17 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute, Router } from '@angular/router';
-import { UserAudioRequestRow } from '@darts-types/user-audio-request-row.interface';
-import { MediaRequests } from '@darts-types/user-audio-request.interface';
+import { ActivatedRoute } from '@angular/router';
+import { AudioRequestRow, TransformedMediaRow } from '@darts-types/audio-request-row.interface';
 import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { of } from 'rxjs';
 
+import { RouterTestingModule } from '@angular/router/testing';
+import { RequestedMedia } from '@darts-types/requested-media.interface';
 import { AudiosComponent } from './audios.component';
 
 describe('AudiosComponent', () => {
   let component: AudiosComponent;
   let fixture: ComponentFixture<AudiosComponent>;
 
-  const MOCK_MEDIA_REQUESTS: MediaRequests = {
+  const MOCK_MEDIA_REQUESTS: RequestedMedia = {
     media_request_details: [
       {
         case_id: 1,
@@ -21,13 +22,8 @@ describe('AudiosComponent', () => {
         hearing_date: '2022-01-03',
         start_ts: '2023-08-21T09:00:00Z',
         end_ts: '2023-08-21T10:00:00Z',
-        transformed_media_expiry_ts: '2023-08-23T09:00:00Z',
         media_request_status: 'OPEN',
         request_type: 'PLAYBACK',
-        last_accessed_ts: '2023-08-23T09:00:00Z',
-        transformed_media_filename: 'C1',
-        transformed_media_format: 'MP3',
-        transformed_media_id: 1,
         hearing_id: 1,
       },
       {
@@ -38,13 +34,8 @@ describe('AudiosComponent', () => {
         hearing_date: '2022-01-03',
         start_ts: '2023-08-21T09:00:00Z',
         end_ts: '2023-08-21T10:00:00Z',
-        transformed_media_expiry_ts: '2023-08-23T09:00:00Z',
         media_request_status: 'FAILED',
         request_type: 'PLAYBACK',
-        last_accessed_ts: '2023-08-23T09:00:00Z',
-        transformed_media_filename: 'C2',
-        transformed_media_format: 'MP3',
-        transformed_media_id: 2,
         hearing_id: 2,
       },
     ],
@@ -69,7 +60,7 @@ describe('AudiosComponent', () => {
     ],
   };
 
-  const MOCK_EXPIRED_MEDIA_REQUESTS: MediaRequests = {
+  const MOCK_EXPIRED_MEDIA_REQUESTS: RequestedMedia = {
     media_request_details: [],
     transformed_media_details: [
       {
@@ -113,9 +104,8 @@ describe('AudiosComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AudiosComponent],
+      imports: [AudiosComponent, RouterTestingModule],
       providers: [
-        { provide: Router, useValue: mockRouter },
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
         { provide: AudioRequestService, useValue: audioServiceStub },
       ],
@@ -130,19 +120,9 @@ describe('AudiosComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should filter in-progress audio requests correctly', () => {
-    const audioRequests: MediaRequests = MOCK_MEDIA_REQUESTS;
-
-    const result = component.filterInProgressRequests(audioRequests.media_request_details);
-
-    expect(result.length).toEqual(2);
-    expect(result[0].media_request_status).toEqual('OPEN');
-    expect(result[1].media_request_status).toEqual('FAILED');
-  });
-
   describe('#onSelectedAudio', () => {
     it('should set selectedAudioRequests array', () => {
-      const selectedAudioRequests = [{} as UserAudioRequestRow];
+      const selectedAudioRequests = [{} as AudioRequestRow];
 
       component.onSelectedAudio(selectedAudioRequests);
 
@@ -152,7 +132,7 @@ describe('AudiosComponent', () => {
 
   describe('#onDeleteClicked', () => {
     it('should set isDeleting to true if audio requests are selected', () => {
-      component.selectedAudioRequests = [{} as UserAudioRequestRow];
+      component.selectedAudioRequests = [{} as AudioRequestRow];
 
       component.onDeleteClicked();
 
@@ -171,9 +151,9 @@ describe('AudiosComponent', () => {
       const deleteSpy = jest.spyOn(audioServiceStub, 'deleteAudioRequests');
 
       component.selectedAudioRequests = [
-        { requestId: 1 } as UserAudioRequestRow,
-        { requestId: 2 } as UserAudioRequestRow,
-        { requestId: 3 } as UserAudioRequestRow,
+        { requestId: 1 } as AudioRequestRow,
+        { requestId: 2 } as AudioRequestRow,
+        { requestId: 3 } as AudioRequestRow,
       ];
 
       component.onDeleteConfirmed();
@@ -193,7 +173,7 @@ describe('AudiosComponent', () => {
 
   describe('#onTabChanged', () => {
     it('should set selectedAudioRequests to empty []', () => {
-      component.selectedAudioRequests = [{} as UserAudioRequestRow];
+      component.selectedAudioRequests = [{} as AudioRequestRow];
 
       component.onTabChanged();
 
@@ -204,7 +184,7 @@ describe('AudiosComponent', () => {
   describe('#onClearClicked', () => {
     it('should set selectedAudioRequests to contain the clicked row', () => {
       const event = new MouseEvent('click');
-      const row: UserAudioRequestRow = { requestId: 1 } as UserAudioRequestRow;
+      const row: AudioRequestRow = { requestId: 1 } as AudioRequestRow;
 
       component.onClearClicked(event, row);
 
@@ -213,7 +193,7 @@ describe('AudiosComponent', () => {
 
     it('should set isDeleting to true', () => {
       const event = new MouseEvent('click');
-      const row: UserAudioRequestRow = { requestId: 1 } as UserAudioRequestRow;
+      const row: AudioRequestRow = { requestId: 1 } as AudioRequestRow;
 
       component.onClearClicked(event, row);
 
@@ -234,12 +214,12 @@ describe('AudiosComponent', () => {
   describe('#onViewAudioRequest', () => {
     it('should store audio request in service and navigate to view screen', () => {
       const event = new MouseEvent('click');
-      const audioRequestRow: UserAudioRequestRow = { requestId: 1 } as UserAudioRequestRow;
+      const audioRequestRow: TransformedMediaRow = { requestId: 1 } as TransformedMediaRow;
 
       const setAudioRequestSpy = jest.spyOn(audioServiceStub, 'setAudioRequest');
-      const navigateSpy = jest.spyOn(mockRouter, 'navigate');
+      const navigateSpy = jest.spyOn(component.router, 'navigate');
 
-      component.onViewAudioRequest(event, audioRequestRow);
+      component.onViewTransformedMedia(event, audioRequestRow);
 
       expect(setAudioRequestSpy).toHaveBeenCalledWith(audioRequestRow);
       expect(navigateSpy).toHaveBeenCalledWith(['./audios', audioRequestRow.requestId]);

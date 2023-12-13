@@ -10,16 +10,19 @@ export interface MediaRequest {
   hearing_date: string;
   start_ts: string;
   end_ts: string;
-  transformed_media_expiry_ts: string;
   media_request_status: AudioRequestStatus;
   request_type: AudioRequestType;
-  last_accessed_ts?: string;
-  transformed_media_filename: string;
-  transformed_media_format: string;
-  transformed_media_id: number;
 }
 
-export interface MediaRequests {
+export interface TransformedMedia extends MediaRequest {
+  transformed_media_id: number;
+  transformed_media_filename: string;
+  transformed_media_format: string;
+  transformed_media_expiry_ts: string;
+  last_accessed_ts?: string;
+}
+
+export interface RequestedMedia {
   media_request_details: MediaRequest[];
-  transformed_media_details: MediaRequest[];
+  transformed_media_details: TransformedMedia[];
 }
