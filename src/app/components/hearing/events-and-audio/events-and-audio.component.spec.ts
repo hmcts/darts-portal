@@ -234,46 +234,6 @@ describe('EventsAndAudioComponent', () => {
     expect(component.filteredRows).toEqual(component.rows);
   });
 
-  describe('#onPreviewAudio', () => {
-    it('add audio to preview when not already in preview', () => {
-      const idToAdd = 1;
-      component.audioInPreview = [2, 3];
-
-      component.onPreviewAudio(idToAdd);
-
-      expect(component.audioInPreview).toEqual([2, 3, idToAdd]);
-    });
-
-    it('do not add audio to preview if it is already in preview', () => {
-      const idToAdd = 1;
-      component.audioInPreview = [1, 2, 3];
-
-      component.onPreviewAudio(idToAdd);
-
-      expect(component.audioInPreview).toEqual([1, 2, 3]);
-    });
-  });
-
-  describe('#isAudioInPreview', () => {
-    it('should return true when audio is in preview', () => {
-      const idToCheck = 1;
-      component.audioInPreview = [1, 2, 3];
-
-      const result = component.isAudioInPreview(idToCheck);
-
-      expect(result).toBe(true);
-    });
-
-    it('should return false when audio is not in preview', () => {
-      const idToCheck = 4;
-      component.audioInPreview = [1, 2, 3];
-
-      const result = component.isAudioInPreview(idToCheck);
-
-      expect(result).toBe(false);
-    });
-  });
-
   it('should pause all audio players except the one with the given id', () => {
     const id = 1;
     const audioPlayer1 = { id: 1, pausePlayer: jest.fn() } as unknown as AudioPlayerComponent;

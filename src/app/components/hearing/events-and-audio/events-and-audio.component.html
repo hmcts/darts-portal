@@ -40,20 +40,17 @@
     <ng-template [tableRowTemplate]="filteredRows" let-row let-index>
       <ng-container *ngIf="row.type === 'audio'">
         <td class="govuk-table__cell">
-          <div>Start time: {{ row.timestamp | date: 'HH:mm:ss' }}</div>
+          <div>{{ row.timestamp | date: 'HH:mm:ss' }} - {{ row.media_end_timestamp | date: 'HH:mm:ss' }}</div>
         </td>
+        <td class="govuk-table__cell">Audio recording</td>
         <td class="govuk-table__cell">
-          @if (isAudioInPreview(row.id)) {
-            <app-audio-player
-              [id]="row.id"
-              [audioSource]="audioPreviewPath + row.id"
-              (play)="onAudioPlay(row.id)"
-            ></app-audio-player>
-          } @else {
-            <button class="govuk-button govuk-button--secondary" (click)="onPreviewAudio(row.id)">Preview Audio</button>
-          }
+          <app-audio-player
+            [id]="row.id"
+            [audioSource]="audioPreviewPath + row.id"
+            (play)="onAudioPlay(row.id)"
+            [preload]="false"
+          ></app-audio-player>
         </td>
-        <td class="govuk-table__cell">End time: {{ row.media_end_timestamp | date: 'HH:mm:ss' }}</td>
       </ng-container>
       <ng-container *ngIf="row.type === 'event'">
         <td class="govuk-table__cell">{{ row.timestamp | date: 'HH:mm:ss' }}</td>
