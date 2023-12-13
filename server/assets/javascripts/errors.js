@@ -164,3 +164,21 @@ function removeErrors() {
 function hidePageLevelErrors() {
   $('.error.pageLevel').css('display', 'none');
 }
+
+//Used to hide required input errors on login page load
+function hideRequiredErrorsOnLoad() {
+  var requiredEmailMsg = 'You must enter the email address you use to sign in to the DARTS Portal';
+  var requiredPwdMsg = 'You must enter the password you use to sign in to the DARTS Portal'
+
+  if ($('#email').val().trim() !== '' || $('#password').val().trim() !== '') {
+    $('.error.itemLevel').each(function() {
+      var errorMessage = $(this).find('p').text().trim();
+      if ((errorMessage === requiredEmailMsg || errorMessage === requiredPwdMsg) && $(this).css('display') !== 'none') {
+        $(this).css('display', 'none');
+      }
+    });
+  }
+  // Unbind the events to ensure it runs only once
+  $(document).off('click', hideRequiredErrorsOnLoad);
+  $(document).off('keydown', hideRequiredErrorsOnLoad);
+}
