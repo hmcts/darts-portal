@@ -56,6 +56,8 @@ describe('ApprovedTranscriptComponent', () => {
           useValue: {
             getTranscriptionDetails: jest.fn().mockReturnValue(of(mockTranscriptionDetails)),
             downloadTranscriptDocument: jest.fn().mockReturnValue(of(blob)),
+            getCaseDetailsFromTranscript: jest.fn(),
+            getRequestDetailsFromTranscript: jest.fn(),
           },
         },
         {

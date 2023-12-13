@@ -3,10 +3,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DatePipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute } from '@angular/router';
+import { ErrorMessageService } from '@services/error/error-message.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { of } from 'rxjs';
 import { ApproveTranscriptComponent } from './approve-transcript.component';
-import { ErrorMessageService } from '@services/error/error-message.service';
 
 describe('ApproveTranscriptComponent', () => {
   let component: ApproveTranscriptComponent;
@@ -46,7 +46,11 @@ describe('ApproveTranscriptComponent', () => {
   });
 
   beforeEach(async () => {
-    fakeTranscriptionService = { getTranscriptionDetails: jest.fn() };
+    fakeTranscriptionService = {
+      getTranscriptionDetails: jest.fn(),
+      getCaseDetailsFromTranscript: jest.fn(),
+      getRequestDetailsFromTranscript: jest.fn(),
+    };
 
     jest.spyOn(fakeTranscriptionService, 'getTranscriptionDetails').mockReturnValue(transcriptionDetail);
 
@@ -87,6 +91,9 @@ describe('ApproveTranscriptComponent', () => {
       Instructions: 'Please expedite my request',
       'Judge approval': 'Yes',
     };
+
+    jest.spyOn(fakeTranscriptionService, 'getCaseDetailsFromTranscript').mockReturnValue(caseDetails);
+    jest.spyOn(fakeTranscriptionService, 'getRequestDetailsFromTranscript').mockReturnValue(requestDetails);
 
     const reportingRestriction = 'Section 4(2) of the Contempt of Court Act 1981';
 

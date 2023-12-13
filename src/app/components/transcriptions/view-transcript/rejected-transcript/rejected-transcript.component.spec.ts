@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DatePipe } from '@angular/common';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute } from '@angular/router';
 import { TranscriptionDetails } from '@darts-types/transcription-details.interface';
 import { RejectedTranscriptComponent } from './rejected-transcript.component';
@@ -42,7 +43,7 @@ describe('RejectedTranscriptComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RejectedTranscriptComponent],
+      imports: [RejectedTranscriptComponent, HttpClientTestingModule],
       providers: [{ provide: ActivatedRoute, useValue: mockActivatedRoute }, { provide: DatePipe }],
     }).compileComponents();
 

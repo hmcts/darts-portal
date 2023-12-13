@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import {
@@ -9,8 +10,8 @@ import {
 import { WorkRequest } from '@darts-types/work-request.interface';
 import { of } from 'rxjs';
 import {
-  COMPLETED_TRANSCRIPTION_STATUS_ID,
   APPROVED_TRANSCRIPTION_STATUS_ID,
+  COMPLETED_TRANSCRIPTION_STATUS_ID,
   REJECTED_TRANSCRIPTION_STATUS_ID,
   TranscriptionService,
 } from './transcription.service';
@@ -22,6 +23,7 @@ describe('TranscriptionService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
+      providers: [{ provide: DatePipe }],
     });
     service = TestBed.inject(TranscriptionService);
     httpMock = TestBed.inject(HttpTestingController);

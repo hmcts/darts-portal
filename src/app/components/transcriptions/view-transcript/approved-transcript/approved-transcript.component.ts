@@ -42,29 +42,8 @@ export class ApprovedTranscriptComponent implements OnInit {
   fileName = '';
 
   ngOnInit(): void {
-    this.caseDetails = {
-      'Case ID': this.transcript.case_number,
-      Courthouse: this.transcript.courthouse,
-      'Judge(s)': this.transcript.judges,
-      'Defendant(s)': this.transcript.defendants,
-    };
-
-    this.requestDetails = {
-      'Hearing Date': this.datePipe.transform(this.transcript.hearing_date, 'dd MMM yyyy'),
-      'Request Type': this.transcript.request_type,
-      'Request ID': this.transcript.transcription_id,
-      Urgency: this.transcript.urgency,
-      'Audio for transcript':
-        'Start time ' +
-        this.datePipe.transform(this.transcript.transcription_start_ts, 'HH:mm:ss') +
-        ' - End time ' +
-        this.datePipe.transform(this.transcript.transcription_end_ts, 'HH:mm:ss'),
-      From: this.transcript.from,
-      Received: this.datePipe.transform(this.transcript.received, 'dd MMM yyyy HH:mm:ss'),
-      Instructions: this.transcript.requestor_comments,
-      'Judge approval': 'Yes',
-    };
-
+    this.caseDetails = this.transcriptionService.getCaseDetailsFromTranscript(this.transcript);
+    this.requestDetails = this.transcriptionService.getRequestDetailsFromTranscript(this.transcript);
     this.fileName = this.transcript.transcript_file_name;
   }
 
