@@ -98,10 +98,6 @@ describe('AudiosComponent', () => {
     setAudioRequest: jest.fn(),
   };
 
-  const mockRouter = {
-    navigate: jest.fn(),
-  };
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AudiosComponent, RouterTestingModule],
