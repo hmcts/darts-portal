@@ -1,6 +1,5 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { TransformedMediaRow } from '@darts-types/index';
 import { AudioRequestType, RequestedMedia, TransformedMedia } from '@darts-types/requested-media.interface';
 import { CountNotificationService } from '@services/count-notification/count-notification.service';
 import { Observable, map, switchMap, tap, timer } from 'rxjs';
@@ -14,9 +13,6 @@ export class AudioRequestService {
 
   // Defined in seconds
   private readonly POLL_INTERVAL = 60;
-
-  // Store audio request when clicking 'View' on 'Your Audio' screen
-  audioRequestView!: TransformedMediaRow;
 
   audioRequests$ = timer(0, this.POLL_INTERVAL * 1000).pipe(
     switchMap(() => this.getAudioRequests(false)),
@@ -56,10 +52,6 @@ export class AudioRequestService {
       params: { media_request_id: requestId },
       responseType: 'blob',
     });
-  }
-
-  setAudioRequest(transformedMediaRow: TransformedMediaRow) {
-    this.audioRequestView = transformedMediaRow;
   }
 
   private updateUnreadAudioCount(media: TransformedMedia[]) {

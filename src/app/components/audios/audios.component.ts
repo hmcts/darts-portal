@@ -144,9 +144,9 @@ export class AudiosComponent {
 
   onViewTransformedMedia(event: MouseEvent, transformedMediaRow: TransformedMediaRow) {
     event.preventDefault();
-    // Store audio request in service for retrieval on view screen
-    this.audioService.setAudioRequest(transformedMediaRow);
-    this.router.navigate(['./audios', transformedMediaRow.requestId]);
+    this.router.navigate(['./audios', transformedMediaRow.requestId], {
+      state: { transformedMedia: transformedMediaRow },
+    });
   }
 
   onSelectedAudio(selectedAudio: AudioRequestRow[]) {

@@ -1,6 +1,5 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed, discardPeriodicTasks, fakeAsync, tick } from '@angular/core/testing';
-import { TransformedMediaRow } from '@darts-types/audio-request-row.interface';
 import { RequestedMedia } from '@darts-types/requested-media.interface';
 import { of } from 'rxjs';
 import { AudioRequestService } from './audio-request.service';
@@ -232,26 +231,5 @@ describe('AudioService', () => {
     });
 
     expect(receivedBlob).toBeInstanceOf(Blob);
-  });
-
-  it('#setAudioRequest', () => {
-    const mockAudioRequest: TransformedMediaRow = {
-      caseId: 123,
-      caseNumber: 'T20200190',
-      courthouse: 'Manchester Minshull Street',
-      hearingId: 123,
-      hearingDate: '2023-10-03',
-      startTime: '2023-08-21T09:00:00Z',
-      endTime: '2023-08-21T10:00:00Z',
-      requestId: 123,
-      expiry: '2023-08-23T09:00:00Z',
-      status: 'OPEN',
-      requestType: 'DOWNLOAD',
-      mediaId: 0,
-      filename: '',
-      format: '',
-    };
-    service.setAudioRequest(mockAudioRequest);
-    expect(service.audioRequestView).toEqual(mockAudioRequest);
   });
 });

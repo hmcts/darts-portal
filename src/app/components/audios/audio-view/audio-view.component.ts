@@ -84,7 +84,7 @@ export class AudioViewComponent implements OnDestroy {
   ];
 
   constructor(private errorMsgService: ErrorMessageService) {
-    this.transformedMedia = this.audioRequestService.audioRequestView;
+    this.transformedMedia = this.router.getCurrentNavigation()?.extras?.state?.transformedMedia;
 
     if (!this.transformedMedia) {
       this.router.navigate(['/audios']);

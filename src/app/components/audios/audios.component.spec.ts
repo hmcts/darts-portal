@@ -210,15 +210,15 @@ describe('AudiosComponent', () => {
   describe('#onViewAudioRequest', () => {
     it('should store audio request in service and navigate to view screen', () => {
       const event = new MouseEvent('click');
-      const audioRequestRow: TransformedMediaRow = { requestId: 1 } as TransformedMediaRow;
+      const transformedMedia: TransformedMediaRow = { requestId: 1 } as TransformedMediaRow;
 
-      const setAudioRequestSpy = jest.spyOn(audioServiceStub, 'setAudioRequest');
       const navigateSpy = jest.spyOn(component.router, 'navigate');
 
-      component.onViewTransformedMedia(event, audioRequestRow);
+      component.onViewTransformedMedia(event, transformedMedia);
 
-      expect(setAudioRequestSpy).toHaveBeenCalledWith(audioRequestRow);
-      expect(navigateSpy).toHaveBeenCalledWith(['./audios', audioRequestRow.requestId]);
+      expect(navigateSpy).toHaveBeenCalledWith(['./audios', transformedMedia.requestId], {
+        state: { transformedMedia },
+      });
     });
   });
 });
