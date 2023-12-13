@@ -32,13 +32,23 @@
             scope="col"
             class="govuk-table__header"
             [attr.aria-sort]="getAriaSort(column.prop)"
+            [ngStyle]="{ width: column.width }"
           >
             <button type="button" (click)="sortTable(column.prop, column.customSortFn)">{{ column.name }}</button>
           </th>
-          <th *ngIf="!column.sortable && column.name" scope="col" class="govuk-table__header">
+          <th
+            *ngIf="!column.sortable && column.name"
+            scope="col"
+            class="govuk-table__header"
+            [ngStyle]="{ width: column.width }"
+          >
             {{ column.name }}
           </th>
-          <td *ngIf="!column.sortable && !column.name" class="govuk-table__header"></td>
+          <td
+            *ngIf="!column.sortable && !column.name"
+            class="govuk-table__header"
+            [ngStyle]="{ width: column.width }"
+          ></td>
         </ng-container>
       </tr>
     </thead>

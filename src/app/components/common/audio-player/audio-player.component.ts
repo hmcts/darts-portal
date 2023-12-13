@@ -25,6 +25,7 @@ export class AudioPlayerComponent {
 
   @Input() id!: number;
   @Input() audioSource: string | null = null;
+  @Input() preload = true;
   @Output() playTime = new EventEmitter<number>();
   @Output() pause = new EventEmitter<void>();
   @Output() play = new EventEmitter<void>();

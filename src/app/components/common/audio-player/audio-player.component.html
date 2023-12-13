@@ -1,26 +1,29 @@
-<audio
-  #audioPlayer
-  *ngIf="audioSource"
-  preload="auto"
-  controls
-  (canplay)="canPlay = true"
-  (pause)="pause.emit()"
-  (play)="play.emit()"
-  [hidden]="!canPlay"
-  (timeupdate)="onTimeUpdate()"
-  (error)="errorMsg = true"
->
-  <source type="audio/mpeg" (error)="errorMsg = true" [src]="audioSource" />
-</audio>
+@if (audioSource) {
+  <audio
+    #audioPlayer
+    controls
+    [preload]="preload ? 'auto' : 'none'"
+    [ngStyle]="{ display: (!canPlay && preload) || errorMsg ? 'none' : 'block' }"
+    (canplay)="canPlay = true"
+    (pause)="pause.emit()"
+    (play)="play.emit()"
+    (timeupdate)="onTimeUpdate()"
+    (error)="errorMsg = true"
+  >
+    <source type="audio/mpeg" (error)="errorMsg = true" [src]="audioSource" />
+  </audio>
+} @else {
+  <p class="govuk-body" id="no-id-error">No audio source provided</p>
+}
 
-@if (errorMsg && !canPlay) {
+@if (!canPlay && preload && !errorMsg) {
+  <p class="govuk-body" id="loading">Loading audio... Please wait</p>
+}
+
+@if (errorMsg) {
   <p class="govuk-body" id="error">
     An error has occurred. Try again or
     <a href="mailto:{{ support?.emailAddress }}" class="govuk-link">contact {{ support?.name }}</a> if the problem
     persists
   </p>
-} @else if (!canPlay) {
-  <p class="govuk-body" id="loading">Loading audio... Please wait</p>
-} @else if (!audioSource) {
-  <p class="govuk-body" id="no-id-error">No audio source provided</p>
 }
