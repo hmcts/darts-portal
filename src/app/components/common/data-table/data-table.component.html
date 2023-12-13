@@ -34,7 +34,7 @@
             [attr.aria-sort]="getAriaSort(column.prop)"
             [ngStyle]="{ width: column.width }"
           >
-            <button type="button" (click)="sortTable(column.prop)">{{ column.name }}</button>
+            <button type="button" (click)="sortTable(column.prop, column.customSortFn)">{{ column.name }}</button>
           </th>
           <th
             *ngIf="!column.sortable && column.name"

@@ -11,6 +11,7 @@ import { transcriptStatusClassMap } from '@constants/transcript-status-class-map
 import { DatatableColumn, UserTranscriptionRequest } from '@darts-types/index';
 import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
+import { TableCustomSortFunctionsService } from '@services/custom-sort/table-custom-sort-functions.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { UserService } from '@services/user/user.service';
 import { BehaviorSubject, combineLatest, map, shareReplay, switchMap } from 'rxjs';
@@ -37,6 +38,7 @@ export class TranscriptionsComponent {
   transcriptService = inject(TranscriptionService);
   userService = inject(UserService);
   userState = inject(ActivatedRoute).snapshot.data.userState;
+  customSortFunctionService = inject(TableCustomSortFunctionsService);
   transcriptStatusClassMap = transcriptStatusClassMap;
 
   columns: DatatableColumn[] = [
@@ -46,7 +48,12 @@ export class TranscriptionsComponent {
     { name: 'Type', prop: 'transcription_type', sortable: true },
     { name: 'Requested on', prop: 'requested_ts', sortable: true },
     { name: 'Status', prop: 'status', sortable: true },
-    { name: 'Urgency', prop: 'urgency', sortable: true },
+    {
+      name: 'Urgency',
+      prop: 'urgency',
+      sortable: true,
+      customSortFn: this.customSortFunctionService.sortByUrgencyPriorityOrder,
+    },
   ];
   readyColumns = [...this.columns, { name: '', prop: '' }]; //Empty column header for view link
   approverColumns = this.readyColumns.map((c) =>
@@ -74,7 +81,9 @@ export class TranscriptionsComponent {
     ),
     approverRequests: this.requests$.pipe(map((requests) => requests.approver_transcriptions)),
   });
-  approverRequests$ = this.requests$.pipe(map((requests) => requests.approver_transcriptions));
+  approverRequests$ = this.requests$
+    .pipe(map((requests) => requests.approver_transcriptions))
+    .pipe(this.transcriptService.mapTranscriptUrgencies());
 
   private filterInProgressRequests(requests: UserTranscriptionRequest[]): UserTranscriptionRequest[] {
     return requests.filter((r) => r.status === 'Awaiting Authorisation' || r.status === 'With Transcriber');

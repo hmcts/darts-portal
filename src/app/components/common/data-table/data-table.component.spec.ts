@@ -2,6 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DateTime } from 'luxon';
 
 import { By } from '@angular/platform-browser';
+import { Order } from '@darts-types/data-table-column.interface';
+import { TranscriptionUrgency } from '@darts-types/transcription-urgency.interface';
 import { DataTableComponent, SortingInterface } from './data-table.component';
 
 describe('DataTableComponent', () => {
@@ -170,6 +172,232 @@ describe('DataTableComponent', () => {
 
       expect(component.sorting).toEqual(expectedSorting);
       expect(component.rows).toEqual(component.rows);
+    });
+
+    it('use a custom sorting function to sort in ascending order', () => {
+      component.rows = [
+        {
+          transcription_id: 10,
+          case_id: 72345,
+          case_number: 'CXYZ12345',
+          courthouse_name: 'Newcastle',
+          hearing_date: '2023-04-09',
+          transcription_type: 'Court log',
+          status: 'Complete',
+          urgency: { transcription_urgency_id: 3, description: 'Up to 3 working days', priority_order: 3 },
+          requested_ts: '2023-04-09T09:58:34Z',
+        },
+        {
+          transcription_id: 3,
+          case_id: 23452,
+          case_number: 'T34567',
+          courthouse_name: 'Cardiff',
+          hearing_date: '2023-06-11',
+          transcription_type: 'Court log',
+          status: 'Complete',
+          urgency: { transcription_urgency_id: 1, description: 'Overnight', priority_order: 1 },
+          requested_ts: '2023-06-28T13:00:00Z',
+        },
+        {
+          transcription_id: 4,
+          case_id: 76543,
+          case_number: 'T45678',
+          courthouse_name: 'Cardiff',
+          hearing_date: '2023-06-12',
+          transcription_type: 'Court log',
+          status: 'Complete',
+          urgency: { transcription_urgency_id: 4, description: 'Up to 7 working days', priority_order: 4 },
+          requested_ts: '2023-06-29T13:00:00Z',
+        },
+      ];
+
+      const expectedResult = [
+        {
+          transcription_id: 4,
+          case_id: 76543,
+          case_number: 'T45678',
+          courthouse_name: 'Cardiff',
+          hearing_date: '2023-06-12',
+          transcription_type: 'Court log',
+          status: 'Complete',
+          urgency: {
+            transcription_urgency_id: 4,
+            description: 'Up to 7 working days',
+            priority_order: 4,
+          },
+          requested_ts: '2023-06-29T13:00:00Z',
+        },
+        {
+          transcription_id: 10,
+          case_id: 72345,
+          case_number: 'CXYZ12345',
+          courthouse_name: 'Newcastle',
+          hearing_date: '2023-04-09',
+          transcription_type: 'Court log',
+          status: 'Complete',
+          urgency: {
+            transcription_urgency_id: 3,
+            description: 'Up to 3 working days',
+            priority_order: 3,
+          },
+          requested_ts: '2023-04-09T09:58:34Z',
+        },
+        {
+          transcription_id: 3,
+          case_id: 23452,
+          case_number: 'T34567',
+          courthouse_name: 'Cardiff',
+          hearing_date: '2023-06-11',
+          transcription_type: 'Court log',
+          status: 'Complete',
+          urgency: {
+            transcription_urgency_id: 1,
+            description: 'Overnight',
+            priority_order: 1,
+          },
+          requested_ts: '2023-06-28T13:00:00Z',
+        },
+      ];
+
+      const column = 'urgency';
+      component.sorting = {
+        column,
+        order: 'desc',
+      };
+
+      component.sortTable(column, (a: unknown, b: unknown, direction?: Order) => {
+        const urgencyA = a as { urgency: TranscriptionUrgency };
+        const urgencyB = b as { urgency: TranscriptionUrgency };
+
+        if (direction === 'desc') {
+          return urgencyA.urgency.priority_order! - urgencyB.urgency.priority_order!;
+        } else if (direction === 'asc') {
+          return urgencyB.urgency.priority_order! - urgencyA.urgency.priority_order!;
+        } else {
+          return 0;
+        }
+      });
+
+      const expectedSorting: SortingInterface = {
+        column,
+        order: 'asc',
+      };
+
+      expect(component.sorting).toEqual(expectedSorting);
+      expect(component.rows).toEqual(expectedResult);
+    });
+
+    it('use a custom sorting function to sort in descending order', () => {
+      component.rows = [
+        {
+          transcription_id: 10,
+          case_id: 72345,
+          case_number: 'CXYZ12345',
+          courthouse_name: 'Newcastle',
+          hearing_date: '2023-04-09',
+          transcription_type: 'Court log',
+          status: 'Complete',
+          urgency: { transcription_urgency_id: 3, description: 'Up to 3 working days', priority_order: 3 },
+          requested_ts: '2023-04-09T09:58:34Z',
+        },
+        {
+          transcription_id: 3,
+          case_id: 23452,
+          case_number: 'T34567',
+          courthouse_name: 'Cardiff',
+          hearing_date: '2023-06-11',
+          transcription_type: 'Court log',
+          status: 'Complete',
+          urgency: { transcription_urgency_id: 1, description: 'Overnight', priority_order: 1 },
+          requested_ts: '2023-06-28T13:00:00Z',
+        },
+        {
+          transcription_id: 4,
+          case_id: 76543,
+          case_number: 'T45678',
+          courthouse_name: 'Cardiff',
+          hearing_date: '2023-06-12',
+          transcription_type: 'Court log',
+          status: 'Complete',
+          urgency: { transcription_urgency_id: 4, description: 'Up to 7 working days', priority_order: 4 },
+          requested_ts: '2023-06-29T13:00:00Z',
+        },
+      ];
+
+      const expectedResult = [
+        {
+          transcription_id: 3,
+          case_id: 23452,
+          case_number: 'T34567',
+          courthouse_name: 'Cardiff',
+          hearing_date: '2023-06-11',
+          transcription_type: 'Court log',
+          status: 'Complete',
+          urgency: {
+            transcription_urgency_id: 1,
+            description: 'Overnight',
+            priority_order: 1,
+          },
+          requested_ts: '2023-06-28T13:00:00Z',
+        },
+        {
+          transcription_id: 10,
+          case_id: 72345,
+          case_number: 'CXYZ12345',
+          courthouse_name: 'Newcastle',
+          hearing_date: '2023-04-09',
+          transcription_type: 'Court log',
+          status: 'Complete',
+          urgency: {
+            transcription_urgency_id: 3,
+            description: 'Up to 3 working days',
+            priority_order: 3,
+          },
+          requested_ts: '2023-04-09T09:58:34Z',
+        },
+        {
+          transcription_id: 4,
+          case_id: 76543,
+          case_number: 'T45678',
+          courthouse_name: 'Cardiff',
+          hearing_date: '2023-06-12',
+          transcription_type: 'Court log',
+          status: 'Complete',
+          urgency: {
+            transcription_urgency_id: 4,
+            description: 'Up to 7 working days',
+            priority_order: 4,
+          },
+          requested_ts: '2023-06-29T13:00:00Z',
+        },
+      ];
+
+      const column = 'urgency';
+      component.sorting = {
+        column,
+        order: 'asc',
+      };
+
+      component.sortTable(column, (a: unknown, b: unknown, direction?: Order) => {
+        const urgencyA = a as { urgency: TranscriptionUrgency };
+        const urgencyB = b as { urgency: TranscriptionUrgency };
+
+        if (direction === 'desc') {
+          return urgencyA.urgency.priority_order! - urgencyB.urgency.priority_order!;
+        } else if (direction === 'asc') {
+          return urgencyB.urgency.priority_order! - urgencyA.urgency.priority_order!;
+        } else {
+          return 0;
+        }
+      });
+
+      const expectedSorting: SortingInterface = {
+        column,
+        order: 'desc',
+      };
+
+      expect(component.sorting).toEqual(expectedSorting);
+      expect(component.rows).toEqual(expectedResult);
     });
 
     it('should set numeric sorting to ascending order for the courtroom string column', () => {

@@ -65,10 +65,10 @@ const yourTranscriptionsStub = {
   approver_transcriptions: [
     {
       transcription_id: 1,
-      case_id: 72345,
+      case_id: 12345,
       case_number: 'T12345',
       courthouse_name: 'Cardiff',
-      hearing_date: '2023-06-10',
+      hearing_date: '2023-06-09',
       transcription_type: 'Court log',
       status: 'Complete',
       urgency: 'Up to 3 working days',
@@ -84,6 +84,39 @@ const yourTranscriptionsStub = {
       status: 'Complete',
       urgency: 'Up to 3 working days',
       requested_ts: '2023-04-09T09:58:34Z',
+    },
+    {
+      transcription_id: 3,
+      case_id: 23452,
+      case_number: 'T34567',
+      courthouse_name: 'Cardiff',
+      hearing_date: '2023-06-11',
+      transcription_type: 'Court log',
+      status: 'Complete',
+      urgency: 'Overnight',
+      requested_ts: '2023-06-28T13:00:00Z',
+    },
+    {
+      transcription_id: 4,
+      case_id: 76543,
+      case_number: 'T45678',
+      courthouse_name: 'Cardiff',
+      hearing_date: '2023-06-12',
+      transcription_type: 'Court log',
+      status: 'Complete',
+      urgency: 'Up to 7 working days',
+      requested_ts: '2023-06-29T13:00:00Z',
+    },
+    {
+      transcription_id: 5,
+      case_id: 87543,
+      case_number: 'T56789',
+      courthouse_name: 'Cardiff',
+      hearing_date: '2023-06-13',
+      transcription_type: 'Court log',
+      status: 'Complete',
+      urgency: 'Up to 2 working days',
+      requested_ts: '2023-06-30T13:00:00Z',
     },
   ],
 };
@@ -262,10 +295,11 @@ router.get('/types', (req, res) => {
 
 router.get('/urgencies', (req, res) => {
   res.send([
-    { transcription_urgency_id: 1, description: 'Overnight' },
-    { transcription_urgency_id: 2, description: 'Up to 3 working days' },
-    { transcription_urgency_id: 3, description: '7 working days' },
-    { transcription_urgency_id: 4, description: '12 working days' },
+    { transcription_urgency_id: 1, description: 'Overnight', priority_order: 1 },
+    { transcription_urgency_id: 2, description: 'Up to 2 working days', priority_order: 2 },
+    { transcription_urgency_id: 3, description: 'Up to 3 working days', priority_order: 3 },
+    { transcription_urgency_id: 4, description: 'Up to 7 working days', priority_order: 4 },
+    { transcription_urgency_id: 5, description: 'Up to 12 working days', priority_order: 5 },
   ]);
 });
 
