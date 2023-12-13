@@ -160,7 +160,7 @@ describe('No audio requests', () => {
     cy.intercept(
       {
         method: 'GET',
-        url: '/api/audio-requests*',
+        url: '/api/audio-requests/v2*',
       },
       { media_request_details: [], transformed_media_details: [] }
     ).as('getAudioRequests');
