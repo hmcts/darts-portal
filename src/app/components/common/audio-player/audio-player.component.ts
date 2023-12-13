@@ -1,4 +1,4 @@
-import { OnInit } from '@angular/core';
+import { OnInit, OnDestroy } from '@angular/core';
 /* eslint-disable @angular-eslint/no-output-native */
 import { CommonModule } from '@angular/common';
 import {
@@ -14,7 +14,7 @@ import {
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { ErrorMessageService } from '@services/error/error-message.service';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 
 @Component({
   selector: 'app-audio-player',
@@ -24,7 +24,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./audio-player.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AudioPlayerComponent implements OnInit {
+export class AudioPlayerComponent implements OnInit, OnDestroy {
   @ViewChild('audioPlayer', { static: false }) audioPlayer!: ElementRef<HTMLAudioElement>;
 
   @Input() id!: number;
@@ -41,7 +41,7 @@ export class AudioPlayerComponent implements OnInit {
   canPlay = false;
   errorMsg = false;
   audioBlob = new Blob();
-  error$ = this.errorMsgService.errorMessage$;
+  error$ = this.errorMsgService.errorMessage$.pipe(take(2));
 
   setPlayTime(time: number, shouldPlay: boolean): void {
     if (this.canPlay) {
@@ -82,5 +82,9 @@ export class AudioPlayerComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAudioSource();
+  }
+
+  ngOnDestroy(): void {
+    this.errorMsgService.clearErrorMessage();
   }
 }
