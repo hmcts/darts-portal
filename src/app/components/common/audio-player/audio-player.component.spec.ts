@@ -2,6 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { AudioPlayerComponent } from './audio-player.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { AudioRequestService } from '@services/audio-request/audio-request.service';
+import { of } from 'rxjs';
+import { ErrorMessageService } from '@services/error/error-message.service';
 
 describe('AudioPlayerComponent', () => {
   let fixture: ComponentFixture<AudioPlayerComponent>;
@@ -17,123 +21,231 @@ describe('AudioPlayerComponent', () => {
     }),
   };
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [AudioPlayerComponent],
-      providers: [{ provide: AppConfigService, useValue: appConfigServiceMock }],
+  const audioRequestServiceMock = {
+    getAudioPreview: jest.fn(() => of(new Blob(['audio data'], { type: 'audio/wav' }))),
+    downloadAudio: jest.fn(() => of(new Blob(['audio data'], { type: 'audio/wav' }))),
+  };
+
+  describe('No Errors', () => {
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [AudioPlayerComponent, HttpClientTestingModule],
+        providers: [
+          { provide: AppConfigService, useValue: appConfigServiceMock },
+          { provide: AudioRequestService, useValue: audioRequestServiceMock },
+        ],
+      });
+
+      fixture = TestBed.createComponent(AudioPlayerComponent);
+      component = fixture.componentInstance;
     });
 
-    fixture = TestBed.createComponent(AudioPlayerComponent);
-    component = fixture.componentInstance;
-  });
+    it('should create', () => {
+      expect(component).toBeTruthy();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('display loading message while waiting for canplay event', () => {
+      component.id = 1;
 
-  it('set audioSource when mediaId is provided', () => {
-    component.audioSource = 'api/audio/preview/123';
+      fixture.detectChanges();
 
-    fixture.detectChanges();
+      const loadingMessage = fixture.debugElement.query(By.css('#loading'));
 
-    const audioPlayerSource = fixture.debugElement.query(By.css('source'));
+      expect(loadingMessage.nativeElement.textContent).toContain('Loading audio... Please wait');
+    });
 
-    expect(audioPlayerSource.nativeElement.getAttribute('src')).toBe('api/audio/preview/123');
-  });
-
-  it('display loading message while waiting for canplay event', () => {
-    component.audioSource = 'api/audio/preview/123';
-
-    fixture.detectChanges();
-
-    const loadingMessage = fixture.debugElement.query(By.css('#loading'));
-
-    expect(loadingMessage.nativeElement.textContent).toContain('Loading audio... Please wait');
-  });
-
-  it('not display loading message if canplay is true', () => {
-    component.audioSource = 'api/audio/preview/123';
-    component.canPlay = true;
-
-    fixture.detectChanges();
-    const loadingMessage = fixture.debugElement.query(By.css('#loading'));
-
-    expect(loadingMessage).toBeFalsy();
-  });
-
-  it('hide the audio player until canplay event is fired', () => {
-    component.audioSource = 'api/audio/preview/123';
-
-    fixture.detectChanges();
-    const audioPlayer = fixture.debugElement.query(By.css('audio'));
-
-    expect(audioPlayer.nativeElement.hasAttribute('hidden')).toBeTruthy();
-
-    audioPlayer.triggerEventHandler('canplay', null);
-    fixture.detectChanges();
-
-    expect(audioPlayer.nativeElement.hasAttribute('hidden')).toBeFalsy();
-  });
-
-  describe('#setPlayTime', () => {
-    it('should set the play time', () => {
-      component.audioSource = 'api/audio/preview/123';
+    it('not display loading message if canplay is true', () => {
+      component.id = 1;
+      component.preview = true;
       component.canPlay = true;
 
       fixture.detectChanges();
-      const audioPlayer = fixture.debugElement.query(By.css('audio'));
+      const loadingMessage = fixture.debugElement.query(By.css('#loading'));
 
-      audioPlayer.triggerEventHandler('canplay', null);
-      component.setPlayTime(10, true);
-
-      expect(audioPlayer.nativeElement.currentTime).toEqual(10);
+      expect(loadingMessage).toBeFalsy();
     });
 
-    it('should play the audio if shouldPlay is true', () => {
-      component.audioSource = 'api/audio/preview/123';
-      component.canPlay = true;
+    it('hide the audio player until canplay event is fired', () => {
+      component.id = 1;
 
       fixture.detectChanges();
       const audioPlayer = fixture.debugElement.query(By.css('audio'));
 
-      jest.spyOn(audioPlayer.nativeElement, 'play');
+      expect(audioPlayer.nativeElement.hasAttribute('hidden')).toBeTruthy();
 
       audioPlayer.triggerEventHandler('canplay', null);
-      component.setPlayTime(10, true);
-
       fixture.detectChanges();
 
-      expect(audioPlayer.nativeElement.play).toBeCalled();
+      expect(audioPlayer.nativeElement.hasAttribute('hidden')).toBeFalsy();
+    });
+
+    describe('#setPlayTime', () => {
+      it('should set the play time', () => {
+        component.id = 1;
+        component.canPlay = true;
+
+        fixture.detectChanges();
+        const audioPlayer = fixture.debugElement.query(By.css('audio'));
+
+        audioPlayer.triggerEventHandler('canplay', null);
+        component.setPlayTime(10, true);
+
+        expect(audioPlayer.nativeElement.currentTime).toEqual(10);
+      });
+
+      it('should play the audio if shouldPlay is true', () => {
+        component.id = 1;
+        component.canPlay = true;
+
+        fixture.detectChanges();
+        const audioPlayer = fixture.debugElement.query(By.css('audio'));
+
+        jest.spyOn(audioPlayer.nativeElement, 'play');
+
+        audioPlayer.triggerEventHandler('canplay', null);
+        component.setPlayTime(10, true);
+
+        fixture.detectChanges();
+
+        expect(audioPlayer.nativeElement.play).toHaveBeenCalled();
+      });
+
+      it('should pause the audio if shouldPlay is false', () => {
+        component.id = 1;
+        component.canPlay = true;
+
+        fixture.detectChanges();
+        const audioPlayer = fixture.debugElement.query(By.css('audio'));
+
+        jest.spyOn(audioPlayer.nativeElement, 'pause');
+
+        audioPlayer.triggerEventHandler('canplay', null);
+        component.setPlayTime(10, false);
+
+        fixture.detectChanges();
+
+        expect(audioPlayer.nativeElement.pause).toHaveBeenCalled();
+      });
+
+      it('should pause the audio if pausePlayer function called', () => {
+        component.id = 1;
+
+        fixture.detectChanges();
+        const audioPlayer = fixture.debugElement.query(By.css('audio'));
+
+        jest.spyOn(audioPlayer.nativeElement, 'pause');
+
+        component.pausePlayer();
+        expect(audioPlayer.nativeElement.pause).toHaveBeenCalled();
+      });
+    });
+
+    describe('#onTimeUpdate', () => {
+      it('should emit the play time', () => {
+        jest.spyOn(component.playTime, 'emit');
+        component.id = 1;
+        component.canPlay = true;
+
+        fixture.detectChanges();
+        const audioPlayer = fixture.debugElement.query(By.css('audio'));
+
+        audioPlayer.triggerEventHandler('canplay', null);
+        audioPlayer.nativeElement.currentTime = 10;
+        audioPlayer.triggerEventHandler('timeupdate', null);
+
+        expect(component.playTime.emit).toHaveBeenCalledWith(10);
+      });
     });
   });
+  describe('On Errors', () => {
+    it('should set error message on 403', () => {
+      // Set ErrorMessageService to return 403
+      TestBed.configureTestingModule({
+        imports: [AudioPlayerComponent, HttpClientTestingModule],
+        providers: [
+          { provide: AppConfigService, useValue: appConfigServiceMock },
+          { provide: AudioRequestService, useValue: audioRequestServiceMock },
+          {
+            provide: ErrorMessageService,
+            useValue: {
+              errorMessage$: of({ status: 403 }),
+              clearErrorMessage: jest.fn(),
+            },
+          },
+        ],
+      });
+      fixture = TestBed.createComponent(AudioPlayerComponent);
+      component = fixture.componentInstance;
 
-  describe('#onTimeUpdate', () => {
-    it('should emit the play time', () => {
-      jest.spyOn(component.playTime, 'emit');
-      component.audioSource = 'api/audio/preview/123';
-      component.canPlay = true;
-
+      component.id = 1;
       fixture.detectChanges();
-      const audioPlayer = fixture.debugElement.query(By.css('audio'));
 
-      audioPlayer.triggerEventHandler('canplay', null);
-      audioPlayer.nativeElement.currentTime = 10;
-      audioPlayer.triggerEventHandler('timeupdate', null);
-
-      expect(component.playTime.emit).toHaveBeenCalledWith(10);
+      const expectedName = appConfigServiceMock.getAppConfig().support.name;
+      const errorPermission = fixture.debugElement.query(By.css('#permission-error'));
+      expect(errorPermission).toBeTruthy();
+      expect(errorPermission.nativeElement.textContent).toContain(
+        ` You do not have permission to preview. If you believe you should have permission contact ${expectedName}`
+      );
     });
-  });
 
-  describe('#onError', () => {
-    it('should set errorMsg to true on error event', () => {
-      component.audioSource = 'api/audio/preview/123';
+    it('should set error message on 404', () => {
+      // Set ErrorMessageService to return 404
+      TestBed.configureTestingModule({
+        imports: [AudioPlayerComponent, HttpClientTestingModule],
+        providers: [
+          { provide: AppConfigService, useValue: appConfigServiceMock },
+          { provide: AudioRequestService, useValue: audioRequestServiceMock },
+          {
+            provide: ErrorMessageService,
+            useValue: {
+              errorMessage$: of({ status: 404 }),
+              clearErrorMessage: jest.fn(),
+            },
+          },
+        ],
+      });
+      fixture = TestBed.createComponent(AudioPlayerComponent);
+      component = fixture.componentInstance;
 
+      component.id = 1;
       fixture.detectChanges();
-      const audioPlayer = fixture.debugElement.query(By.css('audio'));
 
-      audioPlayer.triggerEventHandler('error', null);
+      const errorPermission = fixture.debugElement.query(By.css('#not-found-error'));
+      expect(errorPermission).toBeTruthy();
+      expect(errorPermission.nativeElement.textContent).toContain('Preview not found');
+    });
 
-      expect(component.errorMsg).toBeTruthy();
+    it('should set error message on 500', () => {
+      // Set ErrorMessageService to return 500
+      TestBed.configureTestingModule({
+        imports: [AudioPlayerComponent, HttpClientTestingModule],
+        providers: [
+          { provide: AppConfigService, useValue: appConfigServiceMock },
+          { provide: AudioRequestService, useValue: audioRequestServiceMock },
+          {
+            provide: ErrorMessageService,
+            useValue: {
+              errorMessage$: of({ status: 500 }),
+              clearErrorMessage: jest.fn(),
+            },
+          },
+        ],
+      });
+      fixture = TestBed.createComponent(AudioPlayerComponent);
+      component = fixture.componentInstance;
+
+      component.id = 1;
+      fixture.detectChanges();
+
+      component.id = 1;
+      fixture.detectChanges();
+
+      const expectedName = appConfigServiceMock.getAppConfig().support.name;
+      const errorPermission = fixture.debugElement.query(By.css('#server-error'));
+      expect(errorPermission).toBeTruthy();
+      expect(errorPermission.nativeElement.textContent).toContain(
+        ` An error has occurred. Try again or contact ${expectedName} if the problem persists `
+      );
     });
   });
 });

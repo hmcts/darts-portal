@@ -39,8 +39,6 @@ export class AudioPlayerComponent implements OnInit, OnDestroy {
   errorMsgService = inject(ErrorMessageService);
 
   canPlay = false;
-  errorMsg = false;
-  audioBlob = new Blob();
   error$ = this.errorMsgService.errorMessage$.pipe(take(2));
 
   setPlayTime(time: number, shouldPlay: boolean): void {
@@ -73,9 +71,9 @@ export class AudioPlayerComponent implements OnInit, OnDestroy {
   handleAudio(audio: Observable<Blob>) {
     audio.subscribe({
       next: (blob: Blob) => {
-        this.audioBlob = blob;
         this.audioPlayer.nativeElement.src = URL.createObjectURL(blob);
         this.audioPlayer.nativeElement.load();
+        this.canPlay = true;
       },
     });
   }

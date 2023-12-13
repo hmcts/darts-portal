@@ -317,6 +317,24 @@ describe('AudioService', () => {
     expect(receivedBlob).toBeInstanceOf(Blob);
   });
 
+  it('#getAudioPreview', () => {
+    const requestId = 123449;
+    const mockBlob = new Blob(['mock audio data'], { type: 'audio/wav' });
+    jest.spyOn(service['http'], 'get').mockReturnValueOnce(of(mockBlob));
+
+    let receivedBlob: Blob | undefined;
+    service.getAudioPreview(requestId).subscribe((blob: Blob) => {
+      receivedBlob = blob;
+    });
+
+    const expectedUrl = `api/audio/preview/123449`;
+    expect(service['http'].get).toHaveBeenCalledWith(expectedUrl, {
+      responseType: 'blob',
+    });
+
+    expect(receivedBlob).toBeInstanceOf(Blob);
+  });
+
   it('#setAudioRequest', () => {
     const mockAudioRequest: UserAudioRequestRow = {
       caseId: 123,

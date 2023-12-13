@@ -57,24 +57,8 @@ export class AudioRequestService {
     });
   }
 
-  getAudioPlayback(requestId: number, requestType: AudioRequestType): Observable<Blob> {
-    // api/audio-requests/{playback | download}?media_request_id={requestId}
-    return this.http.get(`api/audio-requests/${requestType.toLowerCase()}`, {
-      params: { media_request_id: requestId },
-      responseType: 'blob',
-    });
-  }
-
   getAudioPreview(requestId: number): Observable<Blob> {
     return this.http.get(`api/audio/preview/${requestId}`, {
-      responseType: 'blob',
-    });
-  }
-
-  getAudioByUrl(requestUrl: string): Observable<Blob> {
-    // This should probably be refactored to accept
-    console.log(requestUrl);
-    return this.http.get(`${requestUrl}`, {
       responseType: 'blob',
     });
   }

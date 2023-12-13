@@ -131,7 +131,8 @@ describe('AudioViewComponent', () => {
     audioRequestView: MOCK_AUDIO_REQUEST,
     patchAudioRequestLastAccess: () => of(new HttpResponse<Response>({ status: 200 })),
     deleteAudioRequests: jest.fn(),
-    downloadAudio: jest.fn(),
+    getAudioPreview: jest.fn(() => of(new Blob(['audio data'], { type: 'audio/wav' }))),
+    downloadAudio: jest.fn(() => of(new Blob(['audio data'], { type: 'audio/wav' }))),
   };
 
   const fakeCaseService = {
@@ -256,7 +257,6 @@ describe('AudioViewComponent', () => {
       audioRequestView: null,
       patchAudioRequestLastAccess: () => of(new HttpResponse<Response>({ status: 200 })),
       deleteAudioRequests: jest.fn(),
-      downloadAudio: jest.fn(),
     };
 
     beforeEach(() => {
