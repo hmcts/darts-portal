@@ -7,6 +7,7 @@ export interface TranscriptionDetails {
   from?: string;
   received?: string;
   requestor_comments?: string;
+  rejection_reason?: string;
   defendants: string[];
   judges: string[];
   transcript_file_name: string;
