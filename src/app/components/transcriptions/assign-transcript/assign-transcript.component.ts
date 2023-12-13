@@ -1,5 +1,6 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
+import { ConflictComponent } from './../../error/conflict/conflict.component';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
@@ -9,6 +10,7 @@ import { ReportingRestrictionComponent } from '@common/reporting-restriction/rep
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { TranscriptionDetails } from '@darts-types/transcription-details.interface';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
+import { ErrorMessageService } from '@services/error/error-message.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { map } from 'rxjs/internal/operators/map';
 import { tap } from 'rxjs/internal/operators/tap';
@@ -26,11 +28,12 @@ import { tap } from 'rxjs/internal/operators/tap';
     ReportingRestrictionComponent,
     ReactiveFormsModule,
     ValidationErrorSummaryComponent,
+    ConflictComponent,
   ],
   templateUrl: './assign-transcript.component.html',
   styleUrl: './assign-transcript.component.scss',
 })
-export class AssignTranscriptComponent {
+export class AssignTranscriptComponent implements OnDestroy {
   readonly ASSIGN_TO_ME = 'assignToMe';
   readonly ASSIGN_GET_AUDIO = 'assignToMeAndGetAudio';
   readonly ASSIGN_UPLOAD = 'assignToMeAndUploadATranscript';
@@ -39,6 +42,7 @@ export class AssignTranscriptComponent {
   transcriptionService = inject(TranscriptionService);
   datePipe = inject(DatePipe);
   router = inject(Router);
+  errorMsgService = inject(ErrorMessageService);
   hearingId: number | null = null;
   caseId: number | null = null;
   startTime: string | null = null;
@@ -47,6 +51,7 @@ export class AssignTranscriptComponent {
   getAudioQueryParams: { startTime: string; endTime: string } | null = null;
   isSubmitted = false;
   errors: { fieldId: string; message: string }[] = [];
+  error$ = this.errorMsgService.errorMessage$;
 
   selectedOption = new FormControl<string | null>(null, [Validators.required]);
 
@@ -119,5 +124,9 @@ export class AssignTranscriptComponent {
         return;
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.errorMsgService.clearErrorMessage();
   }
 }

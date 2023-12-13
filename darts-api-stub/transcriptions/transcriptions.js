@@ -233,6 +233,19 @@ let unassignedTranscriptions = [
     state_change_ts: '2023-06-27T13:00:00Z',
     is_manual: false,
   },
+  {
+    transcription_id: 10,
+    case_id: 32445,
+    case_number: 'T12345',
+    courthouse_name: 'Newcastle',
+    hearing_date: '2023-06-11',
+    transcription_type: 'Court Log',
+    status: 'Approved',
+    urgency: 'Up to 3 working days',
+    requested_ts: '2023-06-26T13:00:00Z',
+    state_change_ts: '2023-06-27T13:00:00Z',
+    is_manual: false,
+  },
 ];
 
 let assignedTranscriptions = [
