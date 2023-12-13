@@ -241,7 +241,7 @@ router.post('', (req, res) => {
   }
 });
 
-router.get('', (req, res) => {
+router.get('/v2', (req, res) => {
   const expired = Boolean(JSON.parse(req.query.expired));
   if (!expired) {
     res.send(mediaRequests);

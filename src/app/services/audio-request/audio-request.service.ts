@@ -23,9 +23,8 @@ export class AudioRequestService {
 
   getAudioRequests(expired: boolean): Observable<RequestedMedia> {
     return this.http
-      .get<RequestedMedia>(`api/audio-requests`, {
+      .get<RequestedMedia>(`api/audio-requests/v2`, {
         params: { expired },
-        headers: { api_version: '2.0' },
       })
       .pipe(map(this.convertHearingDateToUtc));
   }

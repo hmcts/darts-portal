@@ -103,7 +103,7 @@ describe('AudioService', () => {
           expect(audios).toEqual(MOCK_MEDIA_REQUESTS);
         });
 
-        const req = httpMock.expectOne('api/audio-requests?expired=false');
+        const req = httpMock.expectOne('api/audio-requests/v2?expired=false');
         expect(req.request.method).toBe('GET');
 
         req.flush(MOCK_MEDIA_REQUESTS);
@@ -116,7 +116,7 @@ describe('AudioService', () => {
           audios = result;
         });
 
-        const req = httpMock.expectOne('api/audio-requests?expired=true');
+        const req = httpMock.expectOne('api/audio-requests/v2?expired=true');
         expect(req.request.method).toBe('GET');
 
         req.flush(MOCK_EXPIRED_MEDIA_REQUESTS);
