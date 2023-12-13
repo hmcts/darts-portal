@@ -68,6 +68,11 @@ describe('View Transcript', () => {
     cy.get('.moj-primary-navigation__link').contains('Your transcripts').click();
     cy.contains('REJ12345').parents('tr').contains('View').click();
     cy.get('.govuk-tag').should('contain', 'Rejected');
+    cy.get('.govuk-heading-m').should('contain', 'Your request was rejected');
+    cy.get('p.govuk-body').should(
+      'contain',
+      '"This request will take longer to transcribe within the urgency level you require."'
+    );
   });
 
   it('download a transcript', () => {

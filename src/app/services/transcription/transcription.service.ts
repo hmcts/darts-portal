@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import {
@@ -20,6 +21,7 @@ export const COMPLETED_TRANSCRIPTION_STATUS_ID = 6;
   providedIn: 'root',
 })
 export class TranscriptionService {
+  datePipe = inject(DatePipe);
   http = inject(HttpClient);
   countService = inject(CountNotificationService);
 
@@ -148,6 +150,33 @@ export class TranscriptionService {
 
   downloadTranscriptDocument(transcriptId: number): Observable<Blob> {
     return this.http.get(`/api/transcriptions/${transcriptId}/document`, { responseType: 'blob' });
+  }
+
+  getCaseDetailsFromTranscript(transcript: TranscriptionDetails) {
+    return {
+      'Case ID': transcript.case_number,
+      Courthouse: transcript.courthouse,
+      'Judge(s)': transcript.judges,
+      'Defendant(s)': transcript.defendants,
+    };
+  }
+
+  getRequestDetailsFromTranscript(transcript: TranscriptionDetails) {
+    return {
+      'Hearing Date': this.datePipe.transform(transcript.hearing_date, 'dd MMM yyyy'),
+      'Request Type': transcript.request_type,
+      'Request ID': transcript.transcription_id,
+      Urgency: transcript.urgency,
+      'Audio for transcript':
+        'Start time ' +
+        this.datePipe.transform(transcript.transcription_start_ts, 'HH:mm:ss') +
+        ' - End time ' +
+        this.datePipe.transform(transcript.transcription_end_ts, 'HH:mm:ss'),
+      From: transcript.from,
+      Received: this.datePipe.transform(transcript.received, 'dd MMM yyyy HH:mm:ss'),
+      Instructions: transcript.requestor_comments,
+      'Judge approval': 'Yes',
+    };
   }
 
   public mapTranscriptUrgencies() {

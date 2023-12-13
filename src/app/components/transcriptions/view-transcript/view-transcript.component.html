@@ -58,6 +58,7 @@
   <!-- START OF VIEW TRANSCRIPT FROM CASE OR HEARING -->
 
   <!-- If coming from case file or hearing file page -->
+  <!-- TODO: Refactor this into it's own component -->
   @if (router.url.includes('case') && router.url.includes('transcripts')) {
     <app-breadcrumb>
       <ng-container *breadcrumb="['/search']">Search</ng-container>
@@ -90,55 +91,11 @@
 
   <!-- If coming from your-transcripts -->
   @if (router.url.includes('transcriptions/transcripts/')) {
-    <app-breadcrumb>
-      <ng-container *breadcrumb="['/transcriptions']">Your transcripts</ng-container>
-      <ng-container *breadcrumb="['.']">{{ vm.transcript_file_name }}</ng-container>
-    </app-breadcrumb>
-
-    <app-reporting-restriction
-      *ngIf="vm.reporting_restriction"
-      [reportingRestriction]="vm.reporting_restriction"
-    ></app-reporting-restriction>
-
-    <span class="govuk-caption-l">Transcript file</span>
-    <h1 class="govuk-heading-l">{{ vm.transcript_file_name }}</h1>
-
-    <div>
-      @if (vm.status) {
-        <strong class="govuk-tag" [ngClass]="transcriptStatusClassMap[vm.status]" style="margin-bottom: 30px">{{
-          vm.status
-        }}</strong>
-      }
-    </div>
-
-    <ng-container *ngTemplateOutlet="caseDetailsTable"></ng-container>
-
-    <table class="govuk-table">
-      <caption class="govuk-table__caption govuk-table__caption--m">
-        Request Details
-      </caption>
-      <tbody class="govuk-table__body">
-        <ng-container *ngTemplateOutlet="requestDetailsPartial"></ng-container>
-        <tr class="govuk-table__row">
-          <th scope="row" class="govuk-table__header">From</th>
-          <td class="govuk-table__cell">{{ vm.from }}</td>
-        </tr>
-        <tr class="govuk-table__row">
-          <th scope="row" class="govuk-table__header">Received</th>
-          <td class="govuk-table__cell">{{ vm.received | date: 'dd MMM yyyy HH:mm:ss' }}</td>
-        </tr>
-        <tr class="govuk-table__row">
-          <th scope="row" class="govuk-table__header">Instructions</th>
-          <td class="govuk-table__cell">{{ vm.requestor_comments }}</td>
-        </tr>
-        <tr class="govuk-table__row">
-          <th scope="row" class="govuk-table__header">Judge Approval</th>
-          <td class="govuk-table__cell">Yes</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <button id="download-button" class="govuk-button" (click)="onDownloadClicked()">Download transcript file</button>
+    @if (vm.status?.toUpperCase() === 'REJECTED') {
+      <app-rejected-transcript [transcript]="vm"> </app-rejected-transcript>
+    } @else {
+      <app-approved-transcript [transcript]="vm"> </app-approved-transcript>
+    }
   }
 } @else {
   <app-loading text="Loading transcript details..."></app-loading>

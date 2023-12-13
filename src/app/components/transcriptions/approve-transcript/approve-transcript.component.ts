@@ -44,27 +44,8 @@ export class ApproveTranscriptComponent implements OnInit, OnDestroy {
     map((data: TranscriptionDetails) => {
       return {
         reportingRestriction: data.reporting_restriction || null,
-        caseDetails: {
-          'Case ID': data.case_number,
-          Courthouse: data.courthouse,
-          'Judge(s)': data.judges,
-          'Defendant(s)': data.defendants,
-        },
-        requestDetails: {
-          'Hearing Date': this.datePipe.transform(data.hearing_date, 'dd MMM yyyy'),
-          'Request Type': data.request_type,
-          'Request ID': data.transcription_id,
-          Urgency: data.urgency,
-          'Audio for transcript':
-            'Start time ' +
-            this.datePipe.transform(data.transcription_start_ts, 'HH:mm:ss') +
-            ' - End time ' +
-            this.datePipe.transform(data.transcription_end_ts, 'HH:mm:ss'),
-          From: data.from,
-          Received: this.datePipe.transform(data.received, 'dd MMM yyyy HH:mm:ss'),
-          Instructions: data.requestor_comments,
-          'Judge approval': 'Yes',
-        },
+        caseDetails: this.transcriptionService.getCaseDetailsFromTranscript(data),
+        requestDetails: this.transcriptionService.getRequestDetailsFromTranscript(data),
       };
     })
   );

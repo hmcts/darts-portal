@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import {
@@ -31,6 +32,7 @@ describe('TranscriptionService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
+      providers: [{ provide: DatePipe }],
     });
     service = TestBed.inject(TranscriptionService);
     httpMock = TestBed.inject(HttpTestingController);
