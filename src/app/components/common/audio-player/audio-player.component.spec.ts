@@ -67,12 +67,12 @@ describe('AudioPlayerComponent', () => {
     fixture.detectChanges();
     const audioPlayer = fixture.debugElement.query(By.css('audio'));
 
-    expect(audioPlayer.nativeElement.hasAttribute('hidden')).toBeTruthy();
+    expect(audioPlayer.nativeElement.style.display === 'none').toBeTruthy();
 
     audioPlayer.triggerEventHandler('canplay', null);
     fixture.detectChanges();
 
-    expect(audioPlayer.nativeElement.hasAttribute('hidden')).toBeFalsy();
+    expect(audioPlayer.nativeElement.style.display === 'none').toBeFalsy();
   });
 
   describe('#setPlayTime', () => {
@@ -134,6 +134,17 @@ describe('AudioPlayerComponent', () => {
       audioPlayer.triggerEventHandler('error', null);
 
       expect(component.errorMsg).toBeTruthy();
+    });
+
+    it('hide the audio player on error event', () => {
+      component.audioSource = 'api/audio/preview/123';
+
+      fixture.detectChanges();
+      const audioPlayer = fixture.debugElement.query(By.css('audio'));
+
+      audioPlayer.triggerEventHandler('error', null);
+
+      expect(audioPlayer.nativeElement.style.display === 'none').toBeTruthy();
     });
   });
 });

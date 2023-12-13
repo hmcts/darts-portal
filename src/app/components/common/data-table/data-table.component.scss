@@ -62,3 +62,7 @@ tr:has(app-audio-player),
 tr:has(app-play-button.isPlaying) {
   background-color: #e8f1f8;
 }
+
+td:has(input[type='checkbox']) {
+  width: 44px;
+}
