@@ -60,10 +60,12 @@ export class AudioRequestService {
 
   private convertHearingDateToUtc(requestedMedia: RequestedMedia) {
     return {
-      media_request_details: requestedMedia.media_request_details.map((r) => ({
-        ...r,
-        hearing_date: r.hearing_date + 'T00:00:00Z',
-      })),
+      media_request_details: requestedMedia.media_request_details
+        ? requestedMedia.media_request_details.map((r) => ({
+            ...r,
+            hearing_date: r.hearing_date + 'T00:00:00Z',
+          }))
+        : [], // If there are no media requests, return an empty array
       transformed_media_details: requestedMedia.transformed_media_details.map((r) => ({
         ...r,
         hearing_date: r.hearing_date + 'T00:00:00Z',

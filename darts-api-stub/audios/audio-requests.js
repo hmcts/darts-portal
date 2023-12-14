@@ -133,7 +133,7 @@ const mediaRequests = {
 };
 
 const expiredMediaRequests = {
-  media_request_details: [],
+  // media_request_details: [], isn't returned by the API when expired=true
   transformed_media_details: [
     {
       case_id: 99,
