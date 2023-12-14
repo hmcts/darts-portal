@@ -1,8 +1,17 @@
 
 //Used to hide required input errors on login page load
-function hideRequiredErrorsOnLoad() {
+function hideRequiredErrorsOnLoad(type) {
+  if (type === 'wait') {
+    hideEmailPasswordErrors(800);
+  } else {
+    hideEmailPasswordErrors(0);
+  }
+}
+
+function hideEmailPasswordErrors(delayMs = 0) {
   var requiredEmailMsg = 'You must enter the email address you use to sign in to the DARTS Portal';
   var requiredPwdMsg = 'You must enter the password you use to sign in to the DARTS Portal'
+
   setTimeout(() => {
     if ($('#email').val().trim() !== '' || $('#password').val().trim() !== '') {
       $('.error.itemLevel').each(function() {
@@ -14,7 +23,7 @@ function hideRequiredErrorsOnLoad() {
     }
     $(document).off('click keydown', hideRequiredErrorsOnLoad);
     $('#email,#password').off('input', hideRequiredErrorsOnLoad);
-  }, 0);
+  }, delayMs);
 }
 
 function addGovukErrorSummary(headingErrors) {

@@ -26,5 +26,5 @@ setTimeout(function() {
   wrapXhrOpen('SelfAsserted', '"status":"400"', displayErrors);
 }, 1000);
 
-$(document).on('click keydown', hideRequiredErrorsOnLoad);
-$('#email,#password').on('input', hideRequiredErrorsOnLoad);
+$('#email,#password').on('input', hideRequiredErrorsOnLoad('wait'));
+$(document).on('click keydown', hideRequiredErrorsOnLoad('immediate'));
