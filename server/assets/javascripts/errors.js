@@ -1,11 +1,7 @@
 
 //Used to hide required input errors on login page load
-function hideRequiredErrorsOnLoad(type) {
-  if (type === 'wait') {
-    hideEmailPasswordErrors(800);
-  } else {
+function hideRequiredErrorsOnLoad() {
     hideEmailPasswordErrors(0);
-  }
 }
 
 function hideEmailPasswordErrors(delayMs = 0) {
