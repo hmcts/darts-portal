@@ -1,3 +1,4 @@
+import { TranscriptionUrgency } from './transcription-urgency.interface';
 import { TranscriptStatus } from './transcripts-row.interface';
 
 export interface WorkRequest {
@@ -14,4 +15,4 @@ export interface WorkRequest {
   is_manual: boolean;
 }
 
-export interface WorkRequests extends Array<WorkRequest> {}
+export type WorkRequestVm = Omit<WorkRequest, 'urgency'> & { urgency: TranscriptionUrgency };

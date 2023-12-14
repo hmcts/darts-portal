@@ -8,10 +8,10 @@ import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { ForbiddenComponent } from '@components/error/forbidden/forbidden.component';
 import { transcriptStatusClassMap } from '@constants/transcript-status-class-map';
-import { DatatableColumn, UserTranscriptionRequest } from '@darts-types/index';
+import { DatatableColumn, UserTranscriptionRequestVm } from '@darts-types/index';
 import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
-import { TableCustomSortFunctionsService } from '@services/custom-sort/table-custom-sort-functions.service';
+import { SortService } from '@services/sort/sort.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { UserService } from '@services/user/user.service';
 import { BehaviorSubject, combineLatest, map, shareReplay, switchMap } from 'rxjs';
@@ -38,7 +38,7 @@ export class TranscriptionsComponent {
   transcriptService = inject(TranscriptionService);
   userService = inject(UserService);
   userState = inject(ActivatedRoute).snapshot.data.userState;
-  customSortFunctionService = inject(TableCustomSortFunctionsService);
+  customSortFunctionService = inject(SortService);
   transcriptStatusClassMap = transcriptStatusClassMap;
 
   columns: DatatableColumn[] = [
@@ -63,7 +63,7 @@ export class TranscriptionsComponent {
   deleteColumns = this.columns.map((c) => ({ ...c, sortable: false }));
 
   isDeleting = false;
-  selectedRequests = [] as UserTranscriptionRequest[];
+  selectedRequests = [] as UserTranscriptionRequestVm[];
 
   private refresh$ = new BehaviorSubject<void>(undefined);
 
@@ -81,15 +81,13 @@ export class TranscriptionsComponent {
     ),
     approverRequests: this.requests$.pipe(map((requests) => requests.approver_transcriptions)),
   });
-  approverRequests$ = this.requests$
-    .pipe(map((requests) => requests.approver_transcriptions))
-    .pipe(this.transcriptService.mapTranscriptUrgencies());
+  approverRequests$ = this.requests$.pipe(map((requests) => requests.approver_transcriptions));
 
-  private filterInProgressRequests(requests: UserTranscriptionRequest[]): UserTranscriptionRequest[] {
+  private filterInProgressRequests(requests: UserTranscriptionRequestVm[]): UserTranscriptionRequestVm[] {
     return requests.filter((r) => r.status === 'Awaiting Authorisation' || r.status === 'With Transcriber');
   }
 
-  private filterReadyRequests(requests: UserTranscriptionRequest[]): UserTranscriptionRequest[] {
+  private filterReadyRequests(requests: UserTranscriptionRequestVm[]): UserTranscriptionRequestVm[] {
     return requests.filter((r) => r.status === 'Complete' || r.status === 'Rejected');
   }
 

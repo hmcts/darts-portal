@@ -5,7 +5,7 @@ import { TranscriptionUrgency } from '@darts-types/transcription-urgency.interfa
 @Injectable({
   providedIn: 'root',
 })
-export class TableCustomSortFunctionsService {
+export class SortService {
   // only works for transcription data table
   sortByUrgencyPriorityOrder(a: unknown, b: unknown, direction?: Order) {
     const urgencyA = a as { urgency: TranscriptionUrgency };

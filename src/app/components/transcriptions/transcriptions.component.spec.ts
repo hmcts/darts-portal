@@ -4,11 +4,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranscriptionUrgency } from '@darts-types/transcription-urgency.interface';
-import { UserTranscriptionRequest, YourTranscriptionRequests } from '@darts-types/user-transcription-request.interface';
+import {
+  UserTranscriptionRequestVm,
+  YourTranscriptionRequestsVm,
+} from '@darts-types/user-transcription-request.interface';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { UserService } from '@services/user/user.service';
-import { map, of } from 'rxjs';
+import { of } from 'rxjs/internal/observable/of';
 import { TranscriptionsComponent } from './transcriptions.component';
 
 const MOCK_URGENCIES: TranscriptionUrgency[] = [
@@ -19,7 +22,7 @@ const MOCK_URGENCIES: TranscriptionUrgency[] = [
   { transcription_urgency_id: 5, description: 'Up to 12 working days', priority_order: 5 },
 ];
 
-const MOCK_REQUESTS: YourTranscriptionRequests = {
+const MOCK_REQUESTS: YourTranscriptionRequestsVm = {
   requester_transcriptions: [
     {
       transcription_id: 1,
@@ -29,7 +32,7 @@ const MOCK_REQUESTS: YourTranscriptionRequests = {
       hearing_date: '2023-06-10T00:00:00Z',
       transcription_type: 'Court log',
       status: 'Awaiting Authorisation',
-      urgency: 'Overnight',
+      urgency: { transcription_urgency_id: 3, description: 'Up to 7 working days', priority_order: 3 },
       requested_ts: '2023-06-26T13:00:00Z',
     },
     {
@@ -40,7 +43,7 @@ const MOCK_REQUESTS: YourTranscriptionRequests = {
       hearing_date: '2023-06-10T00:00:00Z',
       transcription_type: 'Court log',
       status: 'With Transcriber',
-      urgency: 'Up to 3 working days',
+      urgency: { transcription_urgency_id: 2, description: 'Up to 3 working days', priority_order: 2 },
       requested_ts: '2023-06-26T13:00:00Z',
     },
     {
@@ -51,7 +54,7 @@ const MOCK_REQUESTS: YourTranscriptionRequests = {
       hearing_date: '2023-06-10T00:00:00Z',
       transcription_type: 'Court log',
       status: 'Complete',
-      urgency: 'Up to 3 working days',
+      urgency: { transcription_urgency_id: 2, description: 'Up to 3 working days', priority_order: 2 },
       requested_ts: '2023-06-26T13:00:00Z',
     },
     {
@@ -62,7 +65,7 @@ const MOCK_REQUESTS: YourTranscriptionRequests = {
       hearing_date: '2023-06-10T00:00:00Z',
       transcription_type: 'Court log',
       status: 'Rejected',
-      urgency: 'Overnight',
+      urgency: { transcription_urgency_id: 1, description: 'Overnight', priority_order: 1 },
       requested_ts: '2023-06-26T13:00:00Z',
     },
   ],
@@ -75,7 +78,7 @@ const MOCK_REQUESTS: YourTranscriptionRequests = {
       hearing_date: '2023-06-10T00:00:00Z',
       transcription_type: 'Court log',
       status: 'Complete',
-      urgency: 'Up to 3 working days',
+      urgency: { transcription_urgency_id: 1, description: 'Overnight', priority_order: 1 },
       requested_ts: '2023-06-26T13:00:00Z',
     },
   ],
@@ -85,11 +88,6 @@ const mockTranscriptionService = {
   getTranscriptionRequests: () => of(MOCK_REQUESTS),
   deleteRequest: () => of({} as Response),
   getUrgencies: () => of(MOCK_URGENCIES),
-  mapTranscriptUrgencies: () => {
-    return map((requests: UserTranscriptionRequest[]) =>
-      requests.map((r) => ({ ...r, urgency: MOCK_URGENCIES.find((u) => u.description === r.urgency) }))
-    );
-  },
 };
 
 const appConfigServiceMock = {
@@ -135,7 +133,7 @@ describe('TranscriptionsComponent', () => {
   });
 
   it('should filter "In Progress" requests', () => {
-    let requests: UserTranscriptionRequest[] = [];
+    let requests: UserTranscriptionRequestVm[] = [];
     fixture.detectChanges();
     component.requesterRequests$.subscribe((data) => (requests = data.inProgressRequests));
     expect(requests.length).toEqual(2);
@@ -144,7 +142,7 @@ describe('TranscriptionsComponent', () => {
   });
 
   it('should filter "Ready" requests', () => {
-    let requests: UserTranscriptionRequest[] = [];
+    let requests: UserTranscriptionRequestVm[] = [];
     fixture.detectChanges();
     component.requesterRequests$.subscribe((data) => (requests = data.completedRequests));
     expect(requests.length).toEqual(2);
@@ -169,7 +167,7 @@ describe('TranscriptionsComponent', () => {
     expect(cells[3].textContent).toEqual('Court log');
     expect(cells[4].textContent).toEqual('26 Jun 2023 13:00');
     expect(cells[5].textContent).toEqual('Awaiting Authorisation');
-    expect(cells[6].textContent).toEqual('Overnight');
+    expect(cells[6].textContent).toEqual('Up to 7 working days');
   });
 
   it('render ready requests table', () => {
@@ -216,14 +214,14 @@ describe('TranscriptionsComponent', () => {
     expect(cells[3].textContent).toEqual('Court log');
     expect(cells[4].textContent).toEqual('26 Jun 2023 13:00');
     expect(cells[5].textContent).toEqual('1');
-    expect(cells[6].textContent).toEqual('Up to 3 working days');
+    expect(cells[6].textContent).toEqual('Overnight');
     expect(cells[7].textContent).toEqual('View');
   });
 
   describe('onDeleteClicked', () => {
     it('should set isDeleting to true if requests are selected', () => {
       fixture.detectChanges();
-      component.selectedRequests = [{} as UserTranscriptionRequest];
+      component.selectedRequests = [{} as UserTranscriptionRequestVm];
       component.onDeleteClicked();
       expect(component.isDeleting).toEqual(true);
     });
@@ -240,8 +238,8 @@ describe('TranscriptionsComponent', () => {
       fixture.detectChanges();
       const spy = jest.spyOn(component.transcriptService, 'deleteRequest');
       component.selectedRequests = [
-        { transcription_id: 1 } as UserTranscriptionRequest,
-        { transcription_id: 2 } as UserTranscriptionRequest,
+        { transcription_id: 1 } as UserTranscriptionRequestVm,
+        { transcription_id: 2 } as UserTranscriptionRequestVm,
       ];
       component.onDeleteConfirmed();
 
@@ -249,7 +247,7 @@ describe('TranscriptionsComponent', () => {
     });
     it('should set isDeleting to false', () => {
       fixture.detectChanges();
-      component.selectedRequests = [{} as UserTranscriptionRequest];
+      component.selectedRequests = [{} as UserTranscriptionRequestVm];
       component.isDeleting = true;
       component.onDeleteConfirmed();
       expect(component.isDeleting).toEqual(false);

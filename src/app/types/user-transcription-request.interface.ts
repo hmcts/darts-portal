@@ -1,3 +1,4 @@
+import { TranscriptionUrgency } from './transcription-urgency.interface';
 import { TranscriptStatus } from './transcripts-row.interface';
 
 export interface UserTranscriptionRequest {
@@ -12,7 +13,14 @@ export interface UserTranscriptionRequest {
   requested_ts: string;
 }
 
+export type UserTranscriptionRequestVm = Omit<UserTranscriptionRequest, 'urgency'> & { urgency: TranscriptionUrgency };
+
 export interface YourTranscriptionRequests {
   requester_transcriptions: UserTranscriptionRequest[];
   approver_transcriptions: UserTranscriptionRequest[];
+}
+
+export interface YourTranscriptionRequestsVm {
+  requester_transcriptions: UserTranscriptionRequestVm[];
+  approver_transcriptions: UserTranscriptionRequestVm[];
 }
