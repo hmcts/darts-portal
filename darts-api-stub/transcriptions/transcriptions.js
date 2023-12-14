@@ -156,7 +156,7 @@ const mockTranscriptionDetailsTwo = {
   defendants: ['Defendant Dave', 'Defendant Bob'],
   judges: ['HHJ M. Hussain KC	', 'Ray Bob'],
   transcript_file_name: 'C20220620001_0.docx',
-  hearing_date: '2023-11-08',
+  hearing_date: '2023-08-07',
   urgency: 'Standard',
   request_type: 'Specified Times',
   request_id: 123456789,

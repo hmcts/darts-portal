@@ -85,6 +85,7 @@ export class TranscriptionService {
     return this.http.get<TranscriptionDetails>(`/api/transcriptions/${transcriptId}`).pipe(
       map((transcription: TranscriptionDetails) => {
         transcription.transcript_file_name = transcription.transcript_file_name ?? 'Document not found';
+        transcription.hearing_date += 'T00:00:00Z';
         return transcription;
       })
     );
