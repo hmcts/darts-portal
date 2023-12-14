@@ -11,6 +11,10 @@ export class TableCustomSortFunctionsService {
     const urgencyA = a as { urgency: TranscriptionUrgency };
     const urgencyB = b as { urgency: TranscriptionUrgency };
 
+    if (!urgencyA?.urgency || !urgencyB?.urgency) {
+      return -1;
+    }
+
     if (direction === 'desc') {
       return urgencyA.urgency.priority_order! - urgencyB.urgency.priority_order!;
     } else if (direction === 'asc') {

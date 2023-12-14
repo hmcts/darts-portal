@@ -308,11 +308,36 @@ router.get('/types', (req, res) => {
 
 router.get('/urgencies', (req, res) => {
   res.send([
-    { transcription_urgency_id: 1, description: 'Overnight', priority_order: 1 },
-    { transcription_urgency_id: 2, description: 'Up to 2 working days', priority_order: 2 },
-    { transcription_urgency_id: 3, description: 'Up to 3 working days', priority_order: 3 },
-    { transcription_urgency_id: 4, description: 'Up to 7 working days', priority_order: 4 },
-    { transcription_urgency_id: 5, description: 'Up to 12 working days', priority_order: 5 },
+    {
+      transcription_urgency_id: 2,
+      description: 'Overnight',
+      priority_order: 1,
+    },
+    {
+      transcription_urgency_id: 7,
+      description: 'Up to 2 working days',
+      priority_order: 2,
+    },
+    {
+      transcription_urgency_id: 4,
+      description: 'Up to 3 working days',
+      priority_order: 3,
+    },
+    {
+      transcription_urgency_id: 5,
+      description: 'Up to 7 working days',
+      priority_order: 4,
+    },
+    {
+      transcription_urgency_id: 6,
+      description: 'Up to 12 working days',
+      priority_order: 5,
+    },
+    {
+      transcription_urgency_id: 3,
+      description: 'Other',
+      priority_order: 6,
+    },
   ]);
 });
 
