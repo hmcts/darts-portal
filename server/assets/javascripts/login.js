@@ -10,9 +10,6 @@ function loginAccessibility(){
   }
 }
 
-$(document).on('click', hideRequiredErrorsOnLoad);
-$(document).on('keydown', hideRequiredErrorsOnLoad);
-
 function displayErrors() {
   removeErrors();
   createErrorSummaryBox('login');
@@ -28,3 +25,6 @@ $('button#next').click(displayErrors);
 setTimeout(function() {
   wrapXhrOpen('SelfAsserted', '"status":"400"', displayErrors);
 }, 1000);
+
+$(document).on('click keydown', hideRequiredErrorsOnLoad);
+$('#email,#password').on('input', hideRequiredErrorsOnLoad);
