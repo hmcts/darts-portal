@@ -28,7 +28,7 @@ import { combineLatest, map, shareReplay } from 'rxjs';
 })
 export class YourWorkComponent {
   transcriptionService = inject(TranscriptionService);
-  customSortService = inject(SortService);
+  sortService = inject(SortService);
 
   columns: DatatableColumn[] = [
     { name: 'Case ID', prop: 'case_number', sortable: true },
@@ -40,7 +40,7 @@ export class YourWorkComponent {
       name: 'Urgency',
       prop: 'urgency',
       sortable: true,
-      customSortFn: this.customSortService.sortByUrgencyPriorityOrder,
+      customSortFn: this.sortService.sortByUrgencyPriorityOrder,
     },
   ];
 

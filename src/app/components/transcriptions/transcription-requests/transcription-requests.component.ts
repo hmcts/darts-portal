@@ -17,7 +17,7 @@ import { TranscriptionService } from '@services/transcription/transcription.serv
 })
 export class TranscriptionRequestsComponent {
   transcriptionService = inject(TranscriptionService);
-  customSortFunctionService = inject(SortService);
+  sortService = inject(SortService);
 
   columns: DatatableColumn[] = [
     { name: 'Case ID', prop: 'case_number', sortable: true },
@@ -30,7 +30,7 @@ export class TranscriptionRequestsComponent {
       name: 'Urgency',
       prop: 'urgency',
       sortable: true,
-      customSortFn: this.customSortFunctionService.sortByUrgencyPriorityOrder,
+      customSortFn: this.sortService.sortByUrgencyPriorityOrder,
     },
     { name: '', prop: '' },
   ];

@@ -38,7 +38,7 @@ export class TranscriptionsComponent {
   transcriptService = inject(TranscriptionService);
   userService = inject(UserService);
   userState = inject(ActivatedRoute).snapshot.data.userState;
-  customSortFunctionService = inject(SortService);
+  sortService = inject(SortService);
   transcriptStatusClassMap = transcriptStatusClassMap;
 
   columns: DatatableColumn[] = [
@@ -52,7 +52,7 @@ export class TranscriptionsComponent {
       name: 'Urgency',
       prop: 'urgency',
       sortable: true,
-      customSortFn: this.customSortFunctionService.sortByUrgencyPriorityOrder,
+      customSortFn: this.sortService.sortByUrgencyPriorityOrder,
     },
   ];
   readyColumns = [...this.columns, { name: '', prop: '' }]; //Empty column header for view link
