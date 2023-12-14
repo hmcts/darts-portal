@@ -1,10 +1,9 @@
 import { TestBed } from '@angular/core/testing';
-
 import { TranscriptionUrgency } from '@darts-types/index';
-import { TableCustomSortFunctionsService } from './table-custom-sort-functions.service';
+import { SortService } from './sort.service';
 
 describe('TableCustomSortFunctionsService', () => {
-  let service: TableCustomSortFunctionsService;
+  let service: SortService;
 
   const mockUrgencyA: { urgency: TranscriptionUrgency } = {
     urgency: {
@@ -24,7 +23,7 @@ describe('TableCustomSortFunctionsService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(TableCustomSortFunctionsService);
+    service = TestBed.inject(SortService);
   });
 
   it('should be created', () => {

@@ -1,14 +1,14 @@
 import { DATE_PIPE_DEFAULT_OPTIONS, DatePipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { WorkRequest } from '@darts-types/index';
+import { WorkRequestVm } from '@darts-types/index';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { of } from 'rxjs';
 
 import { RouterTestingModule } from '@angular/router/testing';
 import { YourWorkComponent } from './your-work.component';
 
-const MOCK_WORK_REQUESTS: WorkRequest[] = [
+const MOCK_WORK_REQUESTS: WorkRequestVm[] = [
   {
     transcription_id: 1,
     case_id: 3,
@@ -17,7 +17,7 @@ const MOCK_WORK_REQUESTS: WorkRequest[] = [
     hearing_date: '2023-08-06T00:00:00Z',
     transcription_type: 'Court Log',
     status: 'With Transcriber',
-    urgency: 'Overnight',
+    urgency: { transcription_urgency_id: 1, description: 'Overnight', priority_order: 1 },
     requested_ts: '2023-08-12T13:00:00Z',
     state_change_ts: '2023-08-13T13:00:00Z',
     is_manual: true,
@@ -30,7 +30,7 @@ const MOCK_WORK_REQUESTS: WorkRequest[] = [
     hearing_date: '2023-06-10T00:00:00Z',
     transcription_type: 'Court Log',
     status: 'Complete',
-    urgency: 'Up to 3 Working days',
+    urgency: { transcription_urgency_id: 1, description: 'Up to 3 Working days', priority_order: 1 },
     requested_ts: '2023-06-26T13:00:00Z',
     state_change_ts: '2023-06-27T13:00:00Z',
     is_manual: true,

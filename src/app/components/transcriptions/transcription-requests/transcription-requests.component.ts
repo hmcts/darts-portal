@@ -3,8 +3,10 @@ import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { LoadingComponent } from '@common/loading/loading.component';
+import { transcriptTableColumns } from '@constants/transcription-columns';
 import { DatatableColumn } from '@darts-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
+import { SortService } from '@services/sort/sort.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 
 @Component({
@@ -16,15 +18,17 @@ import { TranscriptionService } from '@services/transcription/transcription.serv
 })
 export class TranscriptionRequestsComponent {
   transcriptionService = inject(TranscriptionService);
+  sortService = inject(SortService);
 
   columns: DatatableColumn[] = [
-    { name: 'Case ID', prop: 'case_number', sortable: true },
-    { name: 'Court', prop: 'courthouse_name', sortable: true },
-    { name: 'Hearing date', prop: 'hearing_date', sortable: true },
-    { name: 'Type', prop: 'transcription_type', sortable: true },
-    { name: 'Requested on', prop: 'requested_ts', sortable: true },
+    ...transcriptTableColumns,
     { name: 'Method', prop: 'is_manual', sortable: true },
-    { name: 'Urgency', prop: 'urgency', sortable: true },
+    {
+      name: 'Urgency',
+      prop: 'urgency',
+      sortable: true,
+      customSortFn: this.sortService.sortByUrgencyPriorityOrder,
+    },
     { name: '', prop: '' },
   ];
 

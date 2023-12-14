@@ -6,17 +6,19 @@ import {
   TranscriptionRequest,
   TranscriptionType,
   TranscriptionUrgency,
-  UserTranscriptionRequest,
-  WorkRequests,
+  WorkRequest,
+  WorkRequestVm,
   YourTranscriptionRequests,
+  YourTranscriptionRequestsVm,
 } from '@darts-types/index';
 import { CountNotificationService } from '@services/count-notification/count-notification.service';
-import { map, shareReplay, switchMap, tap, timer } from 'rxjs';
-import { Observable } from 'rxjs/internal/Observable';
+import { Observable, map, shareReplay, switchMap, tap, timer } from 'rxjs';
 
 export const APPROVED_TRANSCRIPTION_STATUS_ID = 3;
 export const REJECTED_TRANSCRIPTION_STATUS_ID = 4;
 export const COMPLETED_TRANSCRIPTION_STATUS_ID = 6;
+type WithTranscriptionUrgency<T> = T & { urgency: TranscriptionUrgency };
+
 @Injectable({
   providedIn: 'root',
 })
@@ -29,14 +31,14 @@ export class TranscriptionService {
 
   unassignedRequests$ = timer(0, this.DATA_POLL_INTERVAL_SECS * 1000).pipe(
     switchMap(() => this.getWorkRequests(false)),
-    tap((requests: WorkRequests) => {
+    tap((requests: WorkRequestVm[]) => {
       this.countService.setUnassignedTranscriptCount(requests.length);
     })
   );
 
   assignedRequests$ = timer(0, this.DATA_POLL_INTERVAL_SECS * 1000).pipe(
     switchMap(() => this.getWorkRequests(true)),
-    tap((requests: WorkRequests) => {
+    tap((requests: WorkRequestVm[]) => {
       this.countService.setAssignedTranscriptCount(requests.filter((r) => r.status != 'Complete').length);
     })
   );
@@ -53,7 +55,7 @@ export class TranscriptionService {
     return this.http.post<{ transcription_id: number }>('/api/transcriptions', request);
   }
 
-  getTranscriptionRequests(): Observable<YourTranscriptionRequests> {
+  getTranscriptionRequests(): Observable<YourTranscriptionRequestsVm> {
     return this.http.get<YourTranscriptionRequests>('/api/transcriptions').pipe(
       map((requests) => {
         return {
@@ -66,19 +68,37 @@ export class TranscriptionService {
             hearing_date: r.hearing_date + 'T00:00:00Z',
           })),
         };
-      })
+      }),
+      switchMap((requests) =>
+        this.getUrgencies().pipe(
+          map((urgencies) => ({
+            requester_transcriptions: this.mapUrgencyToTranscripts(requests.requester_transcriptions, urgencies),
+            approver_transcriptions: this.mapUrgencyToTranscripts(requests.approver_transcriptions, urgencies),
+          }))
+        )
+      )
     );
   }
 
-  getWorkRequests(assigned = true): Observable<WorkRequests> {
-    return this.http.get<WorkRequests>('/api/transcriptions/transcriber-view', { params: { assigned } }).pipe(
+  getWorkRequests(assigned = true): Observable<WorkRequestVm[]> {
+    return this.http.get<WorkRequest[]>('/api/transcriptions/transcriber-view', { params: { assigned } }).pipe(
       map((workRequests) => {
         return workRequests.map((workRequest) => ({
           ...workRequest,
           hearing_date: workRequest.hearing_date + 'T00:00:00Z',
         }));
-      })
+      }),
+      switchMap((requests) =>
+        this.getUrgencies().pipe(map((urgencies) => this.mapUrgencyToTranscripts<WorkRequest>(requests, urgencies)))
+      )
     );
+  }
+
+  mapUrgencyToTranscripts<T extends { urgency: string }>(
+    requests: T[],
+    urgencies: TranscriptionUrgency[]
+  ): WithTranscriptionUrgency<T>[] {
+    return requests.map((r) => ({ ...r, urgency: this.getUrgencyByDescription(urgencies, r.urgency) }));
   }
 
   getTranscriptionDetails(transcriptId: number): Observable<TranscriptionDetails> {
@@ -179,15 +199,13 @@ export class TranscriptionService {
     };
   }
 
-  public mapTranscriptUrgencies() {
-    return switchMap((requests: UserTranscriptionRequest[]) =>
-      this.getUrgencies().pipe(
-        map((urgencies) => requests.map((r) => ({ ...r, urgency: this.getUrgencyByDescription(urgencies, r.urgency) })))
-      )
+  getUrgencyByDescription(urgencies: TranscriptionUrgency[], description: string): TranscriptionUrgency {
+    return (
+      urgencies.find((u) => u.description === description) ?? {
+        transcription_urgency_id: 0,
+        description: '-',
+        priority_order: 999,
+      }
     );
-  }
-
-  getUrgencyByDescription(urgencies: TranscriptionUrgency[], description: string) {
-    return urgencies.find((u) => u.description === description);
   }
 }
