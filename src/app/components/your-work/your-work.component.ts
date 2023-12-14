@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
+import { transcriptTableColumns } from '@constants/transcription-columns';
 import { DatatableColumn, WorkRequestVm } from '@darts-types/index';
 import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
@@ -31,11 +32,7 @@ export class YourWorkComponent {
   sortService = inject(SortService);
 
   columns: DatatableColumn[] = [
-    { name: 'Case ID', prop: 'case_number', sortable: true },
-    { name: 'Court', prop: 'courthouse_name', sortable: true },
-    { name: 'Hearing date', prop: 'hearing_date', sortable: true },
-    { name: 'Type', prop: 'transcription_type', sortable: true },
-    { name: 'Requested on', prop: 'requested_ts', sortable: true },
+    ...transcriptTableColumns,
     {
       name: 'Urgency',
       prop: 'urgency',

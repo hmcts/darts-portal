@@ -8,6 +8,7 @@ import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { ForbiddenComponent } from '@components/error/forbidden/forbidden.component';
 import { transcriptStatusClassMap } from '@constants/transcript-status-class-map';
+import { transcriptTableColumns } from '@constants/transcription-columns';
 import { DatatableColumn, UserTranscriptionRequestVm } from '@darts-types/index';
 import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
@@ -42,11 +43,7 @@ export class TranscriptionsComponent {
   transcriptStatusClassMap = transcriptStatusClassMap;
 
   columns: DatatableColumn[] = [
-    { name: 'Case ID', prop: 'case_number', sortable: true },
-    { name: 'Court', prop: 'courthouse_name', sortable: true },
-    { name: 'Hearing date', prop: 'hearing_date', sortable: true },
-    { name: 'Type', prop: 'transcription_type', sortable: true },
-    { name: 'Requested on', prop: 'requested_ts', sortable: true },
+    ...transcriptTableColumns,
     { name: 'Status', prop: 'status', sortable: true },
     {
       name: 'Urgency',
