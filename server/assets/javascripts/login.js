@@ -28,3 +28,6 @@ $('button#next').click(displayErrors);
 setTimeout(function() {
   wrapXhrOpen('SelfAsserted', '"status":"400"', displayErrors);
 }, 1000);
+
+$('#email,#password').on('input', hideRequiredErrorsOnLoad('wait'));
+$(document).on('click keydown', hideRequiredErrorsOnLoad('immediate'));

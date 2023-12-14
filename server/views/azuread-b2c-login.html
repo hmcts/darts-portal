@@ -12,6 +12,8 @@
       href="{{hostname}}/assets/images/favicon.ico"
       type="image/x-icon"
     />
+    <script src="{{hostname}}/assets/javascripts/errors.js"></script>
+    <script src="{{hostname}}/assets/javascripts/xhr.js"></script>
     <link rel="mask-icon" href="{{hostname}}/assets/images/govuk-mask-icon.svg" color="#0b0c0c" />
     <link rel="apple-touch-icon" sizes="180x180" href="{{hostname}}/assets/images/govuk-apple-touch-icon-180x180.png" />
     <link rel="apple-touch-icon" sizes="167x167" href="{{hostname}}/assets/images/govuk-apple-touch-icon-167x167.png" />
@@ -30,8 +32,6 @@
     {% if screen === 'mfa' %}
     <link href="{{hostname}}/assets/stylesheets/mfa.css" rel="stylesheet" />
     {% endif %}
-    <script src="{{hostname}}/assets/javascripts/xhr.js"></script>
-    <script src="{{hostname}}/assets/javascripts/errors.js"></script>
     <style>
       body {
         margin: 0;
