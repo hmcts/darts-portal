@@ -10,9 +10,6 @@ function loginAccessibility(){
   }
 }
 
-$(document).on('click', hideRequiredErrorsOnLoad);
-$(document).on('keydown', hideRequiredErrorsOnLoad);
-
 function displayErrors() {
   removeErrors();
   createErrorSummaryBox('login');

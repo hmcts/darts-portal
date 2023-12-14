@@ -44,5 +44,9 @@ describe('TableCustomSortFunctionsService', () => {
       const result = service.sortByUrgencyPriorityOrder(mockUrgencyA, mockUrgencyA);
       expect(result).toEqual(0);
     });
+    it('should return -1 if urgencyA or urgencyB is undefined', () => {
+      const result = service.sortByUrgencyPriorityOrder(undefined, mockUrgencyA);
+      expect(result).toEqual(-1);
+    });
   });
 });
