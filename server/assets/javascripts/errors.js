@@ -16,9 +16,9 @@ function hideEmailPasswordErrors(delayMs = 0) {
           $(this).css('display', 'none');
         }
       });
+      $(document).off('click keydown', hideRequiredErrorsOnLoad);
+      $('#email,#password').off('input', hideRequiredErrorsOnLoad);
     }
-    $(document).off('click keydown', hideRequiredErrorsOnLoad);
-    $('#email,#password').off('input', hideRequiredErrorsOnLoad);
   }, delayMs);
 }
 
