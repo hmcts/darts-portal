@@ -3,7 +3,9 @@
     <app-data-table id="hearingsTable" [rows]="rows" [columns]="hearingsColumns">
       <ng-template [tableRowTemplate]="rows" let-row>
         <td class="govuk-table__cell">
-          <a [routerLink]="['/case', caseId, 'hearing', row.id]">{{ row.date.toString() | date: 'd MMM y' }}</a>
+          <a class="govuk-link" [routerLink]="['/case', caseId, 'hearing', row.id]">{{
+            row.date.toString() | date: 'd MMM y'
+          }}</a>
         </td>
         <td class="govuk-table__cell">{{ row.judges }}</td>
         <td class="govuk-table__cell">{{ row.courtroom }}</td>
@@ -31,7 +33,7 @@
           </strong>
         </td>
         <td class="govuk-table__cell">
-          <a *ngIf="row.status === 'Complete'" [routerLink]="['transcripts', row.tra_id]">View</a>
+          <a class="govuk-link" *ngIf="row.status === 'Complete'" [routerLink]="['transcripts', row.tra_id]">View</a>
         </td>
       </ng-template>
     </app-data-table>

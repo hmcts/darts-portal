@@ -1,6 +1,6 @@
 <ng-template #tableTemplatePartial let-row>
   <td class="govuk-table__cell">
-    <a [routerLink]="['/case', row.caseId]"> {{ row.caseNumber }}</a>
+    <a class="govuk-link" [routerLink]="['/case', row.caseId]"> {{ row.caseNumber }}</a>
   </td>
   <td class="govuk-table__cell">{{ row.courthouse }}</td>
   <td class="govuk-table__cell">{{ row.hearingDate | date: 'dd MMM yyyy' }}</td>
