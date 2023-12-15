@@ -18,7 +18,7 @@
           value="Yes"
           (click)="onChange()"
         />
-        <label class="govuk-label govuk-radios__label" for="approve-request"> Yes </label>
+        <label class="govuk-label govuk-radios__label" for="approve-radio"> Yes </label>
       </div>
       <div class="govuk-radios__item">
         <input
@@ -30,11 +30,11 @@
           value="No"
           (click)="onChange()"
         />
-        <label class="govuk-label govuk-radios__label" for="reject-request"> No </label>
+        <label class="govuk-label govuk-radios__label" for="reject-radio"> No </label>
       </div>
       <div *ngIf="approveFormControl.value === 'No'" class="govuk-radios__conditional" id="conditional-reason">
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-!-font-weight-bold" for="reject-label">
+          <label class="govuk-label govuk-!-font-weight-bold" for="reject-reason">
             Why can you not approve this request?
           </label>
           <textarea
