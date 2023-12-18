@@ -40,6 +40,7 @@ export class AudioPlayerComponent implements OnInit, OnDestroy {
   errorMsgService = inject(ErrorMessageService);
 
   canPlay = false;
+  errorMsg = false;
   error$ = this.errorMsgService.errorMessage$.pipe(take(2));
 
   setPlayTime(time: number, shouldPlay: boolean): void {

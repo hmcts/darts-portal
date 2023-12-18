@@ -3,20 +3,26 @@
   id="audio-player"
   controls
   [preload]="preload ? 'auto' : 'none'"
-  [ngStyle]="{ display: !canPlay && preload ? 'none' : 'block' }"
+  [ngStyle]="{ display: (!canPlay && preload) || errorMsg ? 'none' : 'block' }"
   (canplay)="canPlay = true"
   (pause)="pause.emit()"
   (play)="play.emit()"
   [hidden]="!canPlay"
   (timeupdate)="onTimeUpdate()"
+  (error)="errorMsg = true"
 ></audio>
 <p *ngIf="!canPlay && !audioPlayer.src" class="govuk-body" id="loading">Loading audio... Please wait</p>
 
 <ng-container *ngIf="error$ | async as error">
+  <p>{{ error.status }}</p>
   <p *ngIf="error.status === 403" class="govuk-body" id="permission-error">
     You do not have permission to preview. If you believe you should have permission
     <a href="mailto:{{ support?.emailAddress }}" class="govuk-link">contact {{ support?.name }}</a>
   </p>
   <p *ngIf="error.status === 404" class="govuk-body" id="not-found-error">Preview not found</p>
-  <p *ngIf="error.status === 500" class="govuk-body" id="server-error"></p
-></ng-container>
+  <p *ngIf="error.status === 500" class="govuk-body" id="server-error">
+    An error has occurred. Try again or
+    <a href="mailto:{{ support?.emailAddress }}" class="govuk-link">contact {{ support?.name }}</a> if the problem
+    persists
+  </p></ng-container
+>
