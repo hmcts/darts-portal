@@ -10,6 +10,7 @@
   (timeupdate)="onTimeUpdate()"
 ></audio>
 
+<p *ngIf="!canPlay && !audioPlayer.src" class="govuk-body" id="loading">Loading audio... Please wait</p>
 <ng-container *ngIf="error$ | async as error">
   <p *ngIf="error.status === 403" class="govuk-body" id="permission-error">
     You do not have permission to preview. If you believe you should have permission
@@ -22,8 +23,3 @@
     persists
   </p>
 </ng-container>
-@if (!canPlay) {
-  <p class="govuk-body" id="loading">Loading audio... Please wait</p>
-} @else if (!id) {
-  <p class="govuk-body" id="no-id-error">No audio source provided</p>
-}
