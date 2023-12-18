@@ -21,7 +21,7 @@ describe('Error page handling', () => {
     cy.intercept(
       {
         method: 'GET',
-        url: '/api/audio-requests*',
+        url: '/api/audio-requests/v2*',
       },
       {
         statusCode: 500,

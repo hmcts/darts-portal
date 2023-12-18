@@ -1,11 +1,12 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Navigation, Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { AudioPlayerComponent } from '@common/audio-player/audio-player.component';
 import { PlayButtonComponent } from '@common/play-button/play-button.component';
 import { HearingEvent } from '@darts-types/hearing-event.interface';
-import { Case, HearingEventRow, UserAudioRequestRow } from '@darts-types/index';
+import { Case, HearingEventRow, TransformedMediaRow } from '@darts-types/index';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { CaseService } from '@services/case/case.service';
@@ -19,6 +20,7 @@ describe('AudioViewComponent', () => {
   let fixture: ComponentFixture<AudioViewComponent>;
   let patchAudioRequestLastAccessSpy: jest.SpyInstance;
   let router: Router;
+  let routerSpy: jest.SpyInstance;
 
   const mockActivatedRoute = {
     snapshot: {
@@ -101,7 +103,7 @@ describe('AudioViewComponent', () => {
     ],
   };
 
-  const MOCK_AUDIO_REQUEST: UserAudioRequestRow = {
+  const MOCK_AUDIO_REQUEST: TransformedMediaRow = {
     caseId: 6,
     caseNumber: 'T20200331',
     courthouse: 'Swindon',
@@ -114,8 +116,9 @@ describe('AudioViewComponent', () => {
     hearingId: 3,
     requestType: 'PLAYBACK',
     lastAccessed: undefined,
-    output_filename: 'T20200331',
-    output_format: 'mp3',
+    filename: 'T20200331',
+    format: 'mp3',
+    mediaId: 1,
   };
 
   const fakeHearingService = {
@@ -128,7 +131,6 @@ describe('AudioViewComponent', () => {
   };
 
   const fakeAudioRequestService = {
-    audioRequestView: MOCK_AUDIO_REQUEST,
     patchAudioRequestLastAccess: () => of(new HttpResponse<Response>({ status: 200 })),
     deleteAudioRequests: jest.fn(),
     downloadAudio: jest.fn(),
@@ -138,10 +140,24 @@ describe('AudioViewComponent', () => {
     getCase: () => of(MOCK_CASE),
   };
 
-  describe('With audioRequestView', () => {
+  const mockNavigationExtras = {
+    extras: {
+      state: {
+        transformedMedia: MOCK_AUDIO_REQUEST,
+      },
+    },
+  };
+
+  describe('With transformedMedia', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [AudioViewComponent, PlayButtonComponent, AudioPlayerComponent, HttpClientTestingModule],
+        imports: [
+          AudioViewComponent,
+          PlayButtonComponent,
+          AudioPlayerComponent,
+          HttpClientTestingModule,
+          RouterTestingModule,
+        ],
         providers: [
           { provide: ActivatedRoute, useValue: mockActivatedRoute },
           { provide: AudioRequestService, useValue: fakeAudioRequestService },
@@ -151,24 +167,26 @@ describe('AudioViewComponent', () => {
           { provide: AppConfigService, useValue: appConfigServiceMock },
         ],
       });
+
+      router = TestBed.inject(Router);
+      jest.spyOn(router, 'getCurrentNavigation').mockReturnValue(mockNavigationExtras as unknown as Navigation);
+
       fixture = TestBed.createComponent(AudioViewComponent);
       component = fixture.componentInstance;
-      router = TestBed.inject(Router) as jest.Mocked<Router>;
       patchAudioRequestLastAccessSpy = jest.spyOn(fakeAudioRequestService, 'patchAudioRequestLastAccess');
       fixture.detectChanges();
     });
 
     it('should create', () => {
       expect(component).toBeTruthy();
-      // expect(component.audioPlayer).toBeTruthy();
     });
 
     describe('#constructor', () => {
       it('should set the audioRequest', () => {
-        expect(component.audioRequest).toEqual(fakeAudioRequestService.audioRequestView);
+        expect(component.transformedMedia).toEqual(MOCK_AUDIO_REQUEST);
       });
       it('should set the requestId', () => {
-        expect(component.requestId).toEqual(fakeAudioRequestService.audioRequestView.requestId);
+        expect(component.requestId).toEqual(MOCK_AUDIO_REQUEST.requestId);
       });
       it('should set the case$', () => {
         expect(component.case$).toBeTruthy();
@@ -253,7 +271,6 @@ describe('AudioViewComponent', () => {
 
   describe('With audioRequestView set to null', () => {
     const audioRequestService = {
-      audioRequestView: null,
       patchAudioRequestLastAccess: () => of(new HttpResponse<Response>({ status: 200 })),
       deleteAudioRequests: jest.fn(),
       downloadAudio: jest.fn(),
@@ -261,26 +278,23 @@ describe('AudioViewComponent', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [AudioViewComponent, HttpClientTestingModule],
+        imports: [AudioViewComponent, HttpClientTestingModule, RouterTestingModule],
         providers: [
           { provide: ActivatedRoute, useValue: mockActivatedRoute },
           { provide: AudioRequestService, useValue: audioRequestService },
-          { provide: Router, useValue: { navigate: jest.fn() } },
           { provide: AppConfigService, useValue: appConfigServiceMock },
         ],
       });
+      router = TestBed.inject(Router);
+      jest.spyOn(router, 'getCurrentNavigation').mockReturnValue({} as unknown as Navigation);
+      routerSpy = jest.spyOn(router, 'navigate');
       fixture = TestBed.createComponent(AudioViewComponent);
       component = fixture.componentInstance;
-      router = TestBed.inject(Router) as jest.Mocked<Router>;
-      fixture.detectChanges();
     });
 
-    it('should navigate to /audios on null audioRequestView', () => {
-      const navigateSpy = jest.spyOn(router, 'navigate');
-
+    it('should navigate to /audios on undefined transformedMedia', () => {
       fixture.detectChanges();
-
-      expect(navigateSpy).toHaveBeenCalledWith(['/audios']);
+      expect(routerSpy).toHaveBeenCalledWith(['/audios']);
     });
   });
 });

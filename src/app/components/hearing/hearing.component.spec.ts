@@ -4,7 +4,14 @@ import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AudioEventRow } from '@darts-types/hearing-audio-event.interface';
-import { AudioRequest, Case, Hearing, HearingEventTypeEnum, HearingPageState, Transcript } from '@darts-types/index';
+import {
+  Case,
+  Hearing,
+  HearingEventTypeEnum,
+  HearingPageState,
+  PostAudioRequest,
+  Transcript,
+} from '@darts-types/index';
 import { UserState } from '@darts-types/user-state';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
@@ -255,7 +262,7 @@ describe('HearingComponent', () => {
 
   describe('#onAudioRequest', () => {
     it('should set the request object and set the state variable', () => {
-      const mockRequestObject: AudioRequest = {
+      const mockRequestObject: PostAudioRequest = {
         hearing_id: 1,
         requestor: 1,
         start_time: '2023-09-01T02:00:00Z',
@@ -326,7 +333,7 @@ describe('HearingComponent', () => {
           end_time: '2023-09-01T15:32:24Z',
         })
       );
-      const mockRequestObject: AudioRequest = {
+      const mockRequestObject: PostAudioRequest = {
         hearing_id: 1,
         requestor: 1,
         start_time: '2023-09-01T02:00:00Z',
@@ -341,7 +348,7 @@ describe('HearingComponent', () => {
     it('should set the value of state when 403 encountered', () => {
       const errorResponse = new HttpErrorResponse({ error: 'Forbidden', status: 403, url: '/api/audio-requests' });
       jest.spyOn(hearingService, 'requestAudio').mockReturnValue(throwError(() => errorResponse));
-      const mockRequestObject: AudioRequest = {
+      const mockRequestObject: PostAudioRequest = {
         hearing_id: 3,
         requestor: 1,
         start_time: '2023-09-01T02:00:00Z',

@@ -9,7 +9,7 @@ import { PlayButtonComponent } from '@common/play-button/play-button.component';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
 import { Case } from '@darts-types/case.interface';
 import { ErrorMessage } from '@darts-types/error-message.interface';
-import { DatatableColumn, HearingEvent, HearingEventRow, UserAudioRequestRow } from '@darts-types/index';
+import { DatatableColumn, HearingEvent, HearingEventRow, TransformedMediaRow } from '@darts-types/index';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { AppConfigService } from '@services/app-config/app-config.service';
@@ -57,7 +57,7 @@ export class AudioViewComponent implements OnDestroy {
   eventRows$!: Observable<HearingEventRow[]>;
   data$: Observable<{ case: Case; rows: HearingEventRow[]; error: ErrorMessage | null }> | undefined;
 
-  audioRequest!: UserAudioRequestRow;
+  transformedMedia!: TransformedMediaRow;
   downloadUrl = '';
   audioSource = '';
   fileName = '';
@@ -84,31 +84,31 @@ export class AudioViewComponent implements OnDestroy {
   ];
 
   constructor(private errorMsgService: ErrorMessageService) {
-    this.audioRequest = this.audioRequestService.audioRequestView;
+    this.transformedMedia = this.router.getCurrentNavigation()?.extras?.state?.transformedMedia;
 
-    if (!this.audioRequest) {
+    if (!this.transformedMedia) {
       this.router.navigate(['/audios']);
     } else {
-      this.requestId = this.audioRequest.requestId;
-      const isUnread = !this.audioRequest.lastAccessed;
+      this.requestId = this.transformedMedia.requestId;
+      const isUnread = !this.transformedMedia.lastAccessed;
 
       //Send request to update last accessed time of audio
       this.audioRequestService.patchAudioRequestLastAccess(this.requestId, isUnread).subscribe();
 
-      this.case$ = this.caseService.getCase(this.audioRequest.caseId);
+      this.case$ = this.caseService.getCase(this.transformedMedia.caseId);
 
-      if (this.audioRequest.output_filename) {
-        this.fileName = this.audioRequest.output_filename + '.' + this.audioRequest.output_format?.toLowerCase();
+      if (this.transformedMedia.filename) {
+        this.fileName = this.transformedMedia.filename + '.' + this.transformedMedia.format?.toLowerCase();
       } else {
         this.fileName =
-          this.audioRequest.requestType === 'DOWNLOAD'
-            ? this.audioRequest.caseNumber + '.zip'
-            : this.audioRequest.caseNumber + '.mp3';
+          this.transformedMedia.requestType === 'DOWNLOAD'
+            ? this.transformedMedia.caseNumber + '.zip'
+            : this.transformedMedia.caseNumber + '.mp3';
       }
 
       this.audioSource = `/api/audio-requests/playback?media_request_id=${this.requestId}`;
 
-      this.eventRows$ = this.hearingService.getEvents(this.audioRequest.hearingId).pipe(
+      this.eventRows$ = this.hearingService.getEvents(this.transformedMedia.hearingId).pipe(
         map((events) => this.filterEvents(events)), // Remove events outside of audio start and end time
         map((events) => this.mapEventRows(events)) // Map hearing events to rows for data table
       );
@@ -120,8 +120,8 @@ export class AudioViewComponent implements OnDestroy {
   filterEvents(events: HearingEvent[]): HearingEvent[] {
     return events.filter(
       (event) =>
-        DateTime.fromISO(event.timestamp) >= DateTime.fromISO(this.audioRequest.startTime) &&
-        DateTime.fromISO(event.timestamp) <= DateTime.fromISO(this.audioRequest.endTime)
+        DateTime.fromISO(event.timestamp) >= DateTime.fromISO(this.transformedMedia.startTime) &&
+        DateTime.fromISO(event.timestamp) <= DateTime.fromISO(this.transformedMedia.endTime)
     );
   }
 
@@ -129,8 +129,8 @@ export class AudioViewComponent implements OnDestroy {
     return events.map((event, index) => {
       const eventStartTime = DateTime.fromISO(event.timestamp);
       // as there is no event end timestamp, use the next event's start time, if there is no next event, use the audio file's end time
-      const eventEndTime = DateTime.fromISO(events[index + 1]?.timestamp || this.audioRequest.endTime);
-      const audioStartTime = DateTime.fromISO(this.audioRequest.startTime);
+      const eventEndTime = DateTime.fromISO(events[index + 1]?.timestamp || this.transformedMedia.endTime);
+      const audioStartTime = DateTime.fromISO(this.transformedMedia.startTime);
 
       const eventAudioStartTime = eventStartTime.diff(audioStartTime, ['hours', 'minutes', 'seconds']);
       const eventAudioEndTime = eventEndTime.diff(audioStartTime, ['hours', 'minutes', 'seconds']);
@@ -157,7 +157,7 @@ export class AudioViewComponent implements OnDestroy {
 
   onDownloadClicked() {
     this.audioRequestService
-      .downloadAudio(this.route.snapshot.params.requestId, this.audioRequest.requestType)
+      .downloadAudio(this.route.snapshot.params.requestId, this.transformedMedia.requestType)
       .subscribe({
         next: (blob: Blob) => {
           this.downloadService.saveAs(blob, this.fileName);

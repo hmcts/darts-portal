@@ -7,7 +7,7 @@
   <td class="govuk-table__cell">{{ row.startTime | date: 'HH:mm:ss' }}</td>
   <td class="govuk-table__cell">{{ row.endTime | date: 'HH:mm:ss' }}</td>
   <td class="govuk-table__cell">{{ row.requestId }}</td>
-  <td class="govuk-table__cell">{{ row.expiry | date: 'HH:mm:ss dd/MM/yyyy' }}</td>
+  <td class="govuk-table__cell">{{ (row.expiry | date: 'HH:mm:ss dd/MM/yyyy') ?? '-' }}</td>
 </ng-template>
 
 @if (!isDeleting) {
@@ -72,7 +72,7 @@
                 <strong class="govuk-tag govuk-tag--green"> READY </strong>
               </td>
               <td class="govuk-table__cell">
-                <a href="#" (click)="onViewAudioRequest($event, row)" class="govuk-link">View</a>
+                <a href="#" (click)="onViewTransformedMedia($event, row)" class="govuk-link view-link">View</a>
               </td>
             </ng-template>
           </app-data-table>
@@ -80,7 +80,9 @@
       </div>
 
       <div *tab="'Expired'">
-        <ng-container *ngIf="data.expiredRows.length">
+        @if (!data.expiredRows.length) {
+          <p class="govuk-body">There are no expired audio files</p>
+        } @else {
           <h2 class="govuk-heading-m">Expired</h2>
           <div class="action-container">
             <div class="govuk-hint">Select to apply actions</div>
@@ -104,7 +106,7 @@
               </td>
             </ng-template>
           </app-data-table>
-        </ng-container>
+        }
       </div>
     </app-tabs>
   } @else {
