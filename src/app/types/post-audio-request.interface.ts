@@ -1,4 +1,4 @@
-export interface AudioRequest {
+export interface PostAudioRequest {
   hearing_id: number;
   requestor: number;
   start_time: string;

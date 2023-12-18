@@ -94,16 +94,11 @@ describe('Request audio', () => {
     it('should show Error message when preview audio returns 500', () => {
       cy.get('#hearingsTable').should('contain', '1 Sep 2023');
       cy.get('#hearingsTable a').contains('1 Sep 2023').click();
-      cy.get('.govuk-table tr').eq(4).contains('button', 'Preview Audio').click();
-      cy.get('.govuk-table tr').eq(4).contains('p', 'An error has occurred. Try again or');
-    });
-
-    it('should show audio player when clicking preview audio', () => {
-      cy.get('#hearingsTable').should('contain', '1 Sep 2023');
-      cy.get('#hearingsTable a').contains('1 Sep 2023').click();
-      cy.get('.govuk-table tr').eq(2).contains('button', 'Preview Audio').click();
-
-      cy.get('.govuk-table tr').eq(2).find('audio').should('be.visible');
+      cy.get('audio').then(($audio) => {
+        const audio = $audio.get(1);
+        audio.play();
+      });
+      cy.get('.govuk-table tr').eq(4).contains('p', 'An error has occurred.');
     });
   });
 });

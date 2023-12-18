@@ -8,7 +8,9 @@
     <strong class="govuk-tag" [ngClass]="transcriptStatusClassMap[row.status]">{{ row.status }}</strong>
   </td>
   <td class="govuk-table__cell">
-    <span [ngClass]="row.urgency === 'Overnight' ? 'moj-badge moj-badge--red' : ''">{{ row.urgency }}</span>
+    <span [ngClass]="row.urgency.description === 'Overnight' ? 'moj-badge moj-badge--red' : ''">{{
+      row.urgency.description
+    }}</span>
   </td>
 </ng-template>
 
@@ -79,7 +81,7 @@
         <ng-template [tableRowTemplate]="vm.completedRequests" let-row>
           <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
           <td class="govuk-table__cell">
-            <a [routerLink]="['transcripts', row.transcription_id]">View</a>
+            <a class="govuk-link" [routerLink]="['transcripts', row.transcription_id]">View</a>
           </td>
         </ng-template>
       </app-data-table>
@@ -112,10 +114,12 @@
           <td class="govuk-table__cell">{{ row.requested_ts | date: 'dd MMM yyyy HH:mm' }}</td>
           <td class="govuk-table__cell">{{ row.transcription_id }}</td>
           <td class="govuk-table__cell">
-            <span [ngClass]="row.urgency === 'Overnight' ? 'moj-badge moj-badge--red' : ''">{{ row.urgency }}</span>
+            <span [ngClass]="row.urgency.description === 'Overnight' ? 'moj-badge moj-badge--red' : ''">{{
+              row.urgency.description
+            }}</span>
           </td>
           <td class="govuk-table__cell">
-            <a [routerLink]="['approve-transcript', row.transcription_id]">View</a>
+            <a class="govuk-link" [routerLink]="['approve-transcript', row.transcription_id]">View</a>
           </td>
         </ng-template>
       </app-data-table>

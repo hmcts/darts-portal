@@ -9,11 +9,11 @@ import { ValidationErrorSummaryComponent } from '@common/validation-error-summar
 import { ForbiddenComponent } from '@components/error/forbidden/forbidden.component';
 import {
   AudioEventRow,
-  AudioRequest,
-  AudioResponse,
   DatatableColumn,
   ErrorSummaryEntry,
   HearingPageState,
+  PostAudioRequest,
+  PostAudioResponse,
   TranscriptsRow,
 } from '@darts-types/index';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
@@ -103,7 +103,7 @@ export class HearingComponent implements OnInit {
 
   requestId!: number;
 
-  requestObject!: AudioRequest;
+  requestObject!: PostAudioRequest;
 
   case$ = this.caseService.getCase(this.caseId);
   hearing$ = this.caseService.getHearingById(this.caseId, this.hearingId);
@@ -178,7 +178,7 @@ export class HearingComponent implements OnInit {
     }
   }
 
-  onAudioRequest(requestObject: AudioRequest) {
+  onAudioRequest(requestObject: PostAudioRequest) {
     this.requestObject = requestObject;
     this.state = 'OrderSummary';
   }
@@ -201,9 +201,9 @@ export class HearingComponent implements OnInit {
     this.state = 'Default';
   }
 
-  onOrderConfirm(requestObject: AudioRequest) {
+  onOrderConfirm(requestObject: PostAudioRequest) {
     this.hearingService.requestAudio(requestObject).subscribe({
-      next: (response: AudioResponse) => {
+      next: (response: PostAudioResponse) => {
         this.requestId = response.request_id;
         this.state = 'OrderConfirmation';
       },

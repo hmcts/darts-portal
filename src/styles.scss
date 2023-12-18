@@ -20,6 +20,7 @@
 
 a.govuk-link {
   cursor: pointer;
+  @extend .govuk-link--no-visited-state;
 }
 
 .govuk-table__head {

@@ -36,9 +36,9 @@ export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
   @Output() eventsSelect = new EventEmitter<AudioEventRow[]>();
 
   columns: DatatableColumn[] = [
-    { name: 'Time', prop: 'timestamp', sortable: true },
+    { name: 'Time', prop: 'timestamp', sortable: true, width: '180px' },
     { name: 'Event', prop: 'event' },
-    { name: 'Text', prop: 'text' },
+    { name: 'Text', prop: 'text', width: '700px' },
   ];
 
   rows: AudioEventRow[] = [];
@@ -98,16 +98,6 @@ export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
     } else {
       this.filteredRows = this.rows.filter((row) => row.type === HearingEventTypeEnum.Event);
     }
-  }
-
-  onPreviewAudio(id: number) {
-    if (!this.isAudioInPreview(id)) {
-      this.audioInPreview = [...this.audioInPreview, id];
-    }
-  }
-
-  isAudioInPreview(id: number): boolean {
-    return !!this.audioInPreview.find((audioId) => audioId === id);
   }
 
   onAudioPlay(id: number) {

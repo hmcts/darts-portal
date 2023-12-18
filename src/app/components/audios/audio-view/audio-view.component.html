@@ -36,27 +36,27 @@
     </div>
   </div>
 
-  <ng-container *ngIf="audioRequest">
+  <ng-container *ngIf="transformedMedia">
     <h2 class="govuk-heading-m">Audio details</h2>
     <div class="details-container">
       <div class="label-text-container">
         <h3 class="govuk-heading-s">Hearing date</h3>
-        <p class="govuk-body">{{ audioRequest.hearingDate | date: 'd MMM y' }}</p>
+        <p class="govuk-body">{{ transformedMedia.hearingDate | date: 'd MMM y' }}</p>
       </div>
       <div class="label-text-container">
         <h3 class="govuk-heading-s">Start Time</h3>
-        <p class="govuk-body">{{ audioRequest.startTime | date: 'HH:mm:ss' }}</p>
+        <p class="govuk-body">{{ transformedMedia.startTime | date: 'HH:mm:ss' }}</p>
       </div>
       <div class="label-text-container">
         <h3 class="govuk-heading-s">End Time</h3>
-        <p class="govuk-body">{{ audioRequest.endTime | date: 'HH:mm:ss' }}</p>
+        <p class="govuk-body">{{ transformedMedia.endTime | date: 'HH:mm:ss' }}</p>
       </div>
     </div>
   </ng-container>
 
   <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible" />
 
-  <ng-container *ngIf="audioRequest.requestType === 'PLAYBACK'">
+  <ng-container *ngIf="transformedMedia.requestType === 'PLAYBACK'">
     <h2 class="govuk-heading-l">Play all audio</h2>
     <app-audio-player
       (pause)="isAudioPlaying = false"
@@ -99,6 +99,6 @@
   <a href="#" (click)="$event.preventDefault(); isDeleting = true" class="govuk-link">Delete audio file</a>
 </ng-container>
 
-@if (isDeleting && audioRequest) {
+@if (isDeleting && transformedMedia) {
   <app-delete [numberOfItems]="1" (confirm)="onDeleteConfirmed()" (cancel)="isDeleting = false"></app-delete>
 }

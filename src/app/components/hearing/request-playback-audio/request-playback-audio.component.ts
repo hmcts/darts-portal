@@ -10,7 +10,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AudioRequest, ErrorSummaryEntry, FieldErrors, Hearing } from '@darts-types/index';
+import { ErrorSummaryEntry, FieldErrors, Hearing, PostAudioRequest } from '@darts-types/index';
 import { UserState } from '@darts-types/user-state';
 import { UserService } from '@services/user/user.service';
 import { timeGroupValidator } from '@validators/time-group.validator';
@@ -42,8 +42,8 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
   @Input() audioTimes: { startTime: DateTime; endTime: DateTime } | null = null;
   @Input() userState!: UserState;
   audioRequestForm: FormGroup;
-  requestObj!: AudioRequest;
-  @Output() audioRequest = new EventEmitter<AudioRequest>();
+  requestObj!: PostAudioRequest;
+  @Output() audioRequest = new EventEmitter<PostAudioRequest>();
   @Output() validationErrorEvent = new EventEmitter<ErrorSummaryEntry[]>();
   public isSubmitted = false;
   errorSummary: ErrorSummaryEntry[] = [];

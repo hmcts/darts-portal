@@ -29,6 +29,7 @@ export class AudioPlayerComponent implements OnInit, OnDestroy {
 
   @Input() id!: number;
   @Input() preview = new Boolean();
+  @Input() preload = true;
   @Output() playTime = new EventEmitter<number>();
   @Output() pause = new EventEmitter<void>();
   @Output() play = new EventEmitter<void>();

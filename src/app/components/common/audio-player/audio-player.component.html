@@ -1,8 +1,9 @@
 <audio
   #audioPlayer
   id="audio-player"
-  preload="auto"
   controls
+  [preload]="preload ? 'auto' : 'none'"
+  [ngStyle]="{ display: !canPlay && preload ? 'none' : 'block' }"
   (canplay)="canPlay = true"
   (pause)="pause.emit()"
   (play)="play.emit()"
@@ -17,9 +18,5 @@
     <a href="mailto:{{ support?.emailAddress }}" class="govuk-link">contact {{ support?.name }}</a>
   </p>
   <p *ngIf="error.status === 404" class="govuk-body" id="not-found-error">Preview not found</p>
-  <p *ngIf="error.status === 500" class="govuk-body" id="server-error">
-    An error has occurred. Try again or
-    <a href="mailto:{{ support?.emailAddress }}" class="govuk-link">contact {{ support?.name }}</a> if the problem
-    persists
-  </p>
-</ng-container>
+  <p *ngIf="error.status === 500" class="govuk-body" id="server-error"></p
+></ng-container>

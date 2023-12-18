@@ -1,9 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed, discardPeriodicTasks, fakeAsync, tick } from '@angular/core/testing';
-import { UserAudioRequestRow } from '@darts-types/user-audio-request-row.interface';
-import { UserAudioRequest } from '@darts-types/user-audio-request.interface';
-import { UserState } from '@darts-types/user-state';
-import { UserService } from '@services/user/user.service';
+import { RequestedMedia } from '@darts-types/requested-media.interface';
 import { of } from 'rxjs';
 import { AudioRequestService } from './audio-request.service';
 
@@ -11,194 +8,81 @@ describe('AudioService', () => {
   let service: AudioRequestService;
   let httpMock: HttpTestingController;
 
-  const MOCK_AUDIO_REQUESTS: UserAudioRequest[] = [
-    {
-      case_id: 2,
-      media_request_id: 12345,
-      case_number: 'T20200190',
-      courthouse_name: 'Manchester Minshull Street',
-      hearing_date: '2023-10-03',
-      media_request_start_ts: '2023-08-21T09:00:00Z',
-      media_request_end_ts: '2023-08-21T10:00:00Z',
-      media_request_expiry_ts: '2023-08-23T09:00:00Z',
-      media_request_status: 'OPEN',
-      last_accessed_ts: '2023-08-23T09:00:00Z',
-      request_type: 'DOWNLOAD',
-      hearing_id: 123,
-    },
-    {
-      case_id: 3,
-      media_request_id: 12346,
-      case_number: 'T2020019210',
-      courthouse_name: 'Reading',
-      hearing_date: '2023-11-13',
-      media_request_start_ts: '2023-08-21T09:08:00Z',
-      media_request_end_ts: '2023-08-21T10:14:00Z',
-      media_request_expiry_ts: '2023-08-23T09:00:00Z',
-      media_request_status: 'PROCESSING',
-      last_accessed_ts: '2023-08-23T09:00:00Z',
-      request_type: 'DOWNLOAD',
-      hearing_id: 123,
-    },
-    {
-      case_id: 4,
-      media_request_id: 12347,
-      case_number: 'T20200192222',
-      courthouse_name: 'Slough',
-      hearing_date: '2023-11-12',
-      media_request_start_ts: '2023-08-21T09:57:00Z',
-      media_request_end_ts: '2023-08-21T10:43:00Z',
-      media_request_expiry_ts: '2023-11-23T09:00:00Z',
-      media_request_status: 'OPEN',
-      last_accessed_ts: '2023-08-23T09:00:00Z',
-      request_type: 'DOWNLOAD',
-      hearing_id: 123,
-    },
-    {
-      case_id: 5,
-      media_request_id: 12347,
-      case_number: 'T20200192231',
-      courthouse_name: 'Brighton',
-      hearing_date: '2023-11-13',
-      media_request_start_ts: '2023-08-21T09:57:00Z',
-      media_request_end_ts: '2023-08-21T10:43:00Z',
-      media_request_expiry_ts: '2023-11-23T09:00:00Z',
-      media_request_status: 'FAILED',
-      request_type: 'DOWNLOAD',
-      hearing_id: 123,
-    },
-    {
-      case_id: 6,
-      media_request_id: 12378,
-      case_number: 'T20200331',
-      courthouse_name: 'Liverpool',
-      hearing_date: '2023-10-04',
-      media_request_start_ts: '2023-08-21T09:00:00Z',
-      media_request_end_ts: '2023-08-21T10:00:00Z',
-      media_request_expiry_ts: '2023-08-23T09:00:00Z',
-      media_request_status: 'COMPLETED',
-      request_type: 'DOWNLOAD',
-      hearing_id: 123,
-    },
-    {
-      case_id: 7,
-      media_request_id: 12377,
-      case_number: 'T20200333',
-      courthouse_name: 'Liverpool',
-      hearing_date: '2023-10-04',
-      media_request_start_ts: '2023-08-21T09:00:00Z',
-      media_request_end_ts: '2023-08-21T10:00:00Z',
-      media_request_expiry_ts: '2023-08-23T09:00:00Z',
-      media_request_status: 'COMPLETED',
-      last_accessed_ts: '2023-08-23T09:00:00Z',
-      request_type: 'DOWNLOAD',
-      hearing_id: 123,
-    },
-    {
-      case_id: 8,
-      media_request_id: 12342,
-      case_number: 'T2020011820',
-      courthouse_name: 'Ascot',
-      hearing_date: '2023-11-13',
-      media_request_start_ts: '2023-08-21T09:08:00Z',
-      media_request_end_ts: '2023-08-21T10:14:00Z',
-      media_request_expiry_ts: '2023-08-23T09:00:00Z',
-      media_request_status: 'COMPLETED',
-      request_type: 'DOWNLOAD',
-      hearing_id: 123,
-    },
-    {
-      case_id: 9,
-      media_request_id: 12341,
-      case_number: 'T2023453422',
-      courthouse_name: 'Bournemouth',
-      hearing_date: '2023-11-15',
-      media_request_start_ts: '2023-08-21T09:57:00Z',
-      media_request_end_ts: '2023-08-21T10:43:00Z',
-      media_request_expiry_ts: '2023-11-23T09:00:00Z',
-      media_request_status: 'COMPLETED',
-      request_type: 'DOWNLOAD',
-      hearing_id: 123,
-    },
-    {
-      case_id: 10,
-      media_request_id: 123443,
-      case_number: 'T20200192231',
-      courthouse_name: 'Brighton',
-      hearing_date: '2023-11-13',
-      media_request_start_ts: '2023-08-21T09:57:00Z',
-      media_request_end_ts: '2023-08-21T10:43:00Z',
-      media_request_expiry_ts: '2023-11-23T09:00:00Z',
-      media_request_status: 'COMPLETED',
-      request_type: 'DOWNLOAD',
-      hearing_id: 123,
-    },
-    {
-      case_id: 11,
-      media_request_id: 123449,
-      case_number: 'T202001922310202',
-      courthouse_name: 'Swindon',
-      hearing_date: '2023-11-13',
-      media_request_start_ts: '2023-08-21T09:57:00Z',
-      media_request_end_ts: '2023-08-21T10:43:00Z',
-      media_request_expiry_ts: '2023-11-23T09:00:00Z',
-      media_request_status: 'COMPLETED',
-      request_type: 'DOWNLOAD',
-      hearing_id: 123,
-    },
-  ];
+  const MOCK_MEDIA_REQUESTS: RequestedMedia = {
+    media_request_details: [
+      {
+        case_id: 1,
+        media_request_id: 1,
+        case_number: 'C1',
+        courthouse_name: 'Swansea',
+        hearing_date: '2022-01-03',
+        start_ts: '2023-08-21T09:00:00Z',
+        end_ts: '2023-08-21T10:00:00Z',
+        media_request_status: 'OPEN',
+        request_type: 'PLAYBACK',
+        hearing_id: 1,
+      },
+      {
+        case_id: 2,
+        media_request_id: 2,
+        case_number: 'C2',
+        courthouse_name: 'Swansea',
+        hearing_date: '2022-01-03',
+        start_ts: '2023-08-21T09:00:00Z',
+        end_ts: '2023-08-21T10:00:00Z',
+        media_request_status: 'FAILED',
+        request_type: 'PLAYBACK',
+        hearing_id: 2,
+      },
+    ],
+    transformed_media_details: [
+      {
+        case_id: 3,
+        media_request_id: 3,
+        case_number: 'C3',
+        courthouse_name: 'Cardiff',
+        hearing_date: '2022-01-04',
+        start_ts: '2022-01-04T09:00:00Z',
+        end_ts: '2022-01-04T10:00:00Z',
+        transformed_media_expiry_ts: '2022-01-04T09:00:00Z',
+        media_request_status: 'COMPLETED',
+        request_type: 'PLAYBACK',
+        last_accessed_ts: '',
+        transformed_media_filename: 'C3',
+        transformed_media_format: 'MP3',
+        transformed_media_id: 3,
+        hearing_id: 3,
+      },
+    ],
+  };
 
-  const MOCK_EXPIRED_AUDIO_REQUESTS: UserAudioRequest[] = [
-    {
-      case_id: 12,
-      media_request_id: 12311,
-      case_number: 'T20202110',
-      courthouse_name: 'Manchester Minshull Street',
-      hearing_date: '2023-10-13',
-      media_request_start_ts: '2023-08-21T09:00:00Z',
-      media_request_end_ts: '2023-08-21T10:00:00Z',
-      media_request_expiry_ts: '2023-08-23T09:00:00Z',
-      media_request_status: 'EXPIRED',
-      request_type: 'DOWNLOAD',
-      hearing_id: 123,
-    },
-    {
-      case_id: 13,
-      media_request_id: 123123,
-      case_number: 'T202001232',
-      courthouse_name: 'Reading',
-      hearing_date: '2023-11-21',
-      media_request_start_ts: '2023-08-21T09:08:00Z',
-      media_request_end_ts: '2023-08-21T10:14:00Z',
-      media_request_expiry_ts: '2023-08-23T09:00:00Z',
-      media_request_status: 'EXPIRED',
-      request_type: 'DOWNLOAD',
-      hearing_id: 123,
-    },
-    {
-      case_id: 14,
-      media_request_id: 4321,
-      case_number: 'T20200192772',
-      courthouse_name: 'Slough',
-      hearing_date: '2023-11-28',
-      media_request_start_ts: '2023-08-21T09:57:00Z',
-      media_request_end_ts: '2023-08-21T10:43:00Z',
-      media_request_expiry_ts: '2023-11-23T09:00:00Z',
-      media_request_status: 'EXPIRED',
-      request_type: 'DOWNLOAD',
-      hearing_id: 123,
-    },
-  ];
-
-  const userState: UserState = { userName: 'test@test.com', userId: 123, roles: [] };
-  const userServiceStub = {
-    userProfile$: of(userState),
+  const MOCK_EXPIRED_MEDIA_REQUESTS: RequestedMedia = {
+    media_request_details: [],
+    transformed_media_details: [
+      {
+        case_id: 4,
+        media_request_id: 4,
+        case_number: 'C4',
+        courthouse_name: 'Cardiff',
+        hearing_date: '2022-01-04',
+        start_ts: '2022-01-04T09:00:00Z',
+        end_ts: '2022-01-04T10:00:00Z',
+        transformed_media_expiry_ts: '2022-01-04T09:00:00Z',
+        media_request_status: 'COMPLETED',
+        request_type: 'PLAYBACK',
+        last_accessed_ts: '2022-01-04T09:00:00Z',
+        transformed_media_filename: 'C4',
+        transformed_media_format: 'MP3',
+        transformed_media_id: 4,
+        hearing_id: 4,
+      },
+    ],
   };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [AudioRequestService, { provide: UserService, useValue: userServiceStub }],
+      providers: [AudioRequestService],
     });
 
     service = TestBed.inject(AudioRequestService);
@@ -213,36 +97,74 @@ describe('AudioService', () => {
     afterEach(() => {
       httpMock.verify();
     });
-    describe('#getAudioRequestsForUser', () => {
+    describe('#getAudioRequests', () => {
       it('gets audio requests that are not expired', () => {
-        const mockAudios: UserAudioRequest[] = MOCK_AUDIO_REQUESTS;
-
         service.getAudioRequests(false).subscribe((audios) => {
-          expect(audios).toEqual(mockAudios);
+          expect(audios).toEqual(MOCK_MEDIA_REQUESTS);
         });
 
-        const req = httpMock.expectOne('api/audio-requests?expired=false');
+        const req = httpMock.expectOne('api/audio-requests/v2?expired=false');
         expect(req.request.method).toBe('GET');
 
-        req.flush(mockAudios);
+        req.flush(MOCK_MEDIA_REQUESTS);
       });
 
       it('gets audio requests that are expired', () => {
-        const mockAudios: UserAudioRequest[] = MOCK_EXPIRED_AUDIO_REQUESTS;
-
         let audios;
 
         service.getAudioRequests(true).subscribe((result) => {
           audios = result;
         });
 
-        const req = httpMock.expectOne('api/audio-requests?expired=true');
+        const req = httpMock.expectOne('api/audio-requests/v2?expired=true');
         expect(req.request.method).toBe('GET');
 
-        req.flush(mockAudios);
+        req.flush(MOCK_EXPIRED_MEDIA_REQUESTS);
 
-        expect(audios).toEqual(mockAudios.map((ar) => ({ ...ar, hearing_date: ar.hearing_date + 'T00:00:00Z' })));
+        expect(audios).toEqual({
+          media_request_details: [],
+          transformed_media_details: MOCK_EXPIRED_MEDIA_REQUESTS.transformed_media_details.map((ar) => ({
+            ...ar,
+            hearing_date: ar.hearing_date + 'T00:00:00Z',
+          })),
+        });
       });
+
+      it('should emit audio requests periodically', fakeAsync(() => {
+        const audioSpy = jest.spyOn(service, 'getAudioRequests').mockReturnValue(of(MOCK_MEDIA_REQUESTS));
+
+        service.audioRequests$.subscribe();
+
+        tick();
+
+        expect(audioSpy).toHaveBeenCalledTimes(1);
+        expect(audioSpy).toHaveBeenCalledWith(false);
+
+        tick(60 * 1000);
+
+        expect(audioSpy).toHaveBeenCalledTimes(2);
+        expect(audioSpy).toHaveBeenCalledWith(false);
+
+        tick(60 * 1000);
+
+        expect(audioSpy).toHaveBeenCalledTimes(3);
+        expect(audioSpy).toHaveBeenCalledWith(false);
+        discardPeriodicTasks();
+      }));
+
+      it('updates unread count', fakeAsync(() => {
+        jest.spyOn(service, 'getAudioRequests').mockReturnValue(of(MOCK_MEDIA_REQUESTS));
+
+        const countSpy = jest.spyOn(service['countService'], 'setUnreadAudioCount');
+
+        service.audioRequests$.subscribe();
+
+        tick();
+
+        expect(countSpy).toHaveBeenCalledTimes(1);
+        expect(countSpy).toHaveBeenCalledWith(1);
+        discardPeriodicTasks();
+      }));
     });
 
     describe('#deleteAudioRequest', () => {
@@ -291,12 +213,6 @@ describe('AudioService', () => {
     expect(audioSpy).toHaveBeenCalledWith(true);
     discardPeriodicTasks();
   }));
-
-  it('#filterCompletedRequests', () => {
-    const mockAudios: UserAudioRequest[] = MOCK_AUDIO_REQUESTS;
-    const completeAudios = service.filterCompletedRequests(mockAudios);
-    expect(completeAudios.length).toBe(6);
-  });
 
   it('#downloadAudio', () => {
     const requestId = 123449;

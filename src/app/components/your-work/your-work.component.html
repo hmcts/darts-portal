@@ -5,10 +5,12 @@
   <td class="govuk-table__cell">{{ row.transcription_type }}</td>
   <td class="govuk-table__cell">{{ row.requested_ts | date: 'dd MMM yyyy HH:mm' }}</td>
   <td class="govuk-table__cell">
-    <span [ngClass]="row.urgency === 'Overnight' ? 'moj-badge moj-badge--red' : ''">{{ row.urgency }}</span>
+    <span [ngClass]="row.urgency.description === 'Overnight' ? 'moj-badge moj-badge--red' : ''">{{
+      row.urgency.description
+    }}</span>
   </td>
   <td class="govuk-table__cell">
-    <a [routerLink]="['/work', row.transcription_id]">View</a>
+    <a class="govuk-link" [routerLink]="['/work', row.transcription_id]">View</a>
   </td>
 </ng-template>
 

@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { HearingAudio, HearingEvent, AudioRequest } from '@darts-types/index';
+import { HearingAudio, HearingEvent, PostAudioRequest } from '@darts-types/index';
 import { HearingService } from './hearing.service';
 
 describe('HearingService', () => {
@@ -114,7 +114,7 @@ describe('HearingService', () => {
   describe('#requestAudio', () => {
     it('should request audio', () => {
       let response;
-      const audioRequest: AudioRequest = {
+      const audioRequest: PostAudioRequest = {
         hearing_id: 1,
         requestor: 1,
         start_time: '2023-09-01T02:00:00Z',

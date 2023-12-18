@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TranscriptionRequestsComponent } from './transcription-requests.component';
+import { DatePipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { TranscriptionRequestsComponent } from './transcription-requests.component';
 
 describe('TranscriptionRequestsComponent', () => {
   let component: TranscriptionRequestsComponent;
@@ -10,6 +11,7 @@ describe('TranscriptionRequestsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TranscriptionRequestsComponent, HttpClientModule],
+      providers: [{ provide: DatePipe }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TranscriptionRequestsComponent);

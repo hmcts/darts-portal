@@ -5,7 +5,14 @@ import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DeleteComponent } from '@common/delete/delete.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
-import { DatatableColumn, UserAudioRequest, UserAudioRequestRow } from '@darts-types/index';
+import {
+  AudioRequestRow,
+  DatatableColumn,
+  MediaRequest,
+  RequestedMedia,
+  TransformedMedia,
+  TransformedMediaRow,
+} from '@darts-types/index';
 import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { UnreadIconDirective } from '@directives/unread-icon.directive';
@@ -37,21 +44,21 @@ export class AudiosComponent {
 
   private refresh$ = new BehaviorSubject<void>(undefined);
 
-  selectedAudioRequests: UserAudioRequestRow[] = [];
+  selectedAudioRequests: AudioRequestRow[] = [];
 
   isDeleting = false;
 
-  audioRequests$: Observable<UserAudioRequest[]>;
-  expiredAudioRequests$: Observable<UserAudioRequest[]>;
+  audioRequests$: Observable<RequestedMedia>;
+  expiredAudioRequests$: Observable<RequestedMedia>;
 
-  inProgress$!: Observable<UserAudioRequestRow[]>;
-  completedRows$!: Observable<UserAudioRequestRow[]>;
-  expiredRows$!: Observable<UserAudioRequestRow[]>;
+  inProgress$!: Observable<AudioRequestRow[]>;
+  completedRows$!: Observable<TransformedMediaRow[]>;
+  expiredRows$!: Observable<TransformedMediaRow[]>;
 
   data$: Observable<{
-    inProgressRows: UserAudioRequestRow[];
-    completedRows: UserAudioRequestRow[];
-    expiredRows: UserAudioRequestRow[];
+    inProgressRows: AudioRequestRow[];
+    completedRows: TransformedMediaRow[];
+    expiredRows: TransformedMediaRow[];
   }>;
 
   columns: DatatableColumn[] = [
@@ -79,15 +86,13 @@ export class AudiosComponent {
     );
 
     this.inProgress$ = this.audioRequests$.pipe(
-      map((audioRequests) => this.filterInProgressRequests(audioRequests)),
-      map((audioRequests) => this.mapAudioRequestToRows(audioRequests))
+      map((requestedMedia) => this.mapAudioRequestsToRows(requestedMedia.media_request_details))
     );
     this.completedRows$ = this.audioRequests$.pipe(
-      map((audioRequests) => this.audioService.filterCompletedRequests(audioRequests)),
-      map((audioRequests) => this.mapAudioRequestToRows(audioRequests))
+      map((requestedMedia) => this.mapTransformedMediaToRows(requestedMedia.transformed_media_details))
     );
     this.expiredRows$ = this.expiredAudioRequests$.pipe(
-      map((audioRequests) => this.mapAudioRequestToRows(audioRequests))
+      map((requestedMedia) => this.mapTransformedMediaToRows(requestedMedia.transformed_media_details))
     );
 
     this.data$ = combineLatest({
@@ -97,7 +102,7 @@ export class AudiosComponent {
     });
   }
 
-  mapAudioRequestToRows(audioRequests: UserAudioRequest[]): UserAudioRequestRow[] {
+  mapAudioRequestsToRows(audioRequests: MediaRequest[]): AudioRequestRow[] {
     return audioRequests.map((ar) => {
       return {
         caseId: ar.case_id,
@@ -105,36 +110,46 @@ export class AudiosComponent {
         courthouse: ar.courthouse_name,
         hearingId: ar.hearing_id,
         hearingDate: ar.hearing_date,
-        startTime: ar.media_request_start_ts,
-        endTime: ar.media_request_end_ts,
+        startTime: ar.start_ts,
+        endTime: ar.end_ts,
         requestId: ar.media_request_id,
-        expiry: ar.media_request_expiry_ts,
+        expiry: '',
         status: ar.media_request_status,
-        lastAccessed: ar.last_accessed_ts,
         requestType: ar.request_type,
-        output_filename: ar.output_filename,
-        output_format: ar.output_format,
       };
     });
   }
 
-  filterInProgressRequests(audioRequests: UserAudioRequest[]): UserAudioRequest[] {
-    return audioRequests.filter(
-      (ar) =>
-        ar.media_request_status === 'OPEN' ||
-        ar.media_request_status === 'PROCESSING' ||
-        ar.media_request_status === 'FAILED'
-    );
+  mapTransformedMediaToRows(audioRequests: TransformedMedia[]): TransformedMediaRow[] {
+    return audioRequests.map((ar) => {
+      return {
+        caseId: ar.case_id,
+        caseNumber: ar.case_number,
+        courthouse: ar.courthouse_name,
+        hearingId: ar.hearing_id,
+        hearingDate: ar.hearing_date,
+        startTime: ar.start_ts,
+        endTime: ar.end_ts,
+        requestId: ar.media_request_id,
+        expiry: ar.transformed_media_expiry_ts,
+        status: ar.media_request_status,
+        requestType: ar.request_type,
+        mediaId: ar.transformed_media_id,
+        filename: ar.transformed_media_filename,
+        format: ar.transformed_media_format,
+        lastAccessed: ar.last_accessed_ts,
+      };
+    });
   }
 
-  onViewAudioRequest(event: MouseEvent, audioRequestRow: UserAudioRequestRow) {
+  onViewTransformedMedia(event: MouseEvent, transformedMediaRow: TransformedMediaRow) {
     event.preventDefault();
-    // Store audio request in service for retrieval on view screen
-    this.audioService.setAudioRequest(audioRequestRow);
-    this.router.navigate(['./audios', audioRequestRow.requestId]);
+    this.router.navigate(['./audios', transformedMediaRow.requestId], {
+      state: { transformedMedia: transformedMediaRow },
+    });
   }
 
-  onSelectedAudio(selectedAudio: UserAudioRequestRow[]) {
+  onSelectedAudio(selectedAudio: AudioRequestRow[]) {
     this.selectedAudioRequests = selectedAudio;
   }
 
@@ -165,7 +180,7 @@ export class AudiosComponent {
     this.selectedAudioRequests = [];
   }
 
-  onClearClicked(event: MouseEvent, row: UserAudioRequestRow) {
+  onClearClicked(event: MouseEvent, row: AudioRequestRow) {
     event.preventDefault();
     this.selectedAudioRequests = [row];
     this.isDeleting = true;

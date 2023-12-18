@@ -4,9 +4,11 @@ import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
-import { DatatableColumn, WorkRequest } from '@darts-types/index';
+import { transcriptTableColumns } from '@constants/transcription-columns';
+import { DatatableColumn, WorkRequestVm } from '@darts-types/index';
 import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
+import { SortService } from '@services/sort/sort.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { combineLatest, map, shareReplay } from 'rxjs';
 
@@ -27,14 +29,16 @@ import { combineLatest, map, shareReplay } from 'rxjs';
 })
 export class YourWorkComponent {
   transcriptionService = inject(TranscriptionService);
+  sortService = inject(SortService);
 
   columns: DatatableColumn[] = [
-    { name: 'Case ID', prop: 'case_number', sortable: true },
-    { name: 'Court', prop: 'courthouse_name', sortable: true },
-    { name: 'Hearing date', prop: 'hearing_date', sortable: true },
-    { name: 'Type', prop: 'transcription_type', sortable: true },
-    { name: 'Requested on', prop: 'requested_ts', sortable: true },
-    { name: 'Urgency', prop: 'urgency', sortable: true },
+    ...transcriptTableColumns,
+    {
+      name: 'Urgency',
+      prop: 'urgency',
+      sortable: true,
+      customSortFn: this.sortService.sortByUrgencyPriorityOrder,
+    },
   ];
 
   readyColumns = [...this.columns, { name: '', prop: '' }]; // Empty column header for view link
@@ -46,11 +50,11 @@ export class YourWorkComponent {
     completedRequests: this.requests$.pipe(map((requests) => this.filterCompletedRequests(requests))),
   });
 
-  private filterTodoRequests(requests: WorkRequest[]): WorkRequest[] {
+  private filterTodoRequests(requests: WorkRequestVm[]): WorkRequestVm[] {
     return requests.filter((r) => r.status === 'With Transcriber');
   }
 
-  private filterCompletedRequests(requests: WorkRequest[]): WorkRequest[] {
+  private filterCompletedRequests(requests: WorkRequestVm[]): WorkRequestVm[] {
     return requests.filter((r) => r.status === 'Complete');
   }
 }

@@ -54,17 +54,6 @@ describe('AudioPlayerComponent', () => {
       expect(loadingMessage.nativeElement.textContent).toContain('Loading audio... Please wait');
     });
 
-    it('not display loading message if canplay is true', () => {
-      component.id = 1;
-      component.preview = true;
-      component.canPlay = true;
-
-      fixture.detectChanges();
-      const loadingMessage = fixture.debugElement.query(By.css('#loading'));
-
-      expect(loadingMessage).toBeFalsy();
-    });
-
     it('hide the audio player until canplay event is fired', () => {
       component.id = 1;
 
@@ -246,6 +235,17 @@ describe('AudioPlayerComponent', () => {
       expect(errorPermission.nativeElement.textContent).toContain(
         ` An error has occurred. Try again or contact ${expectedName} if the problem persists `
       );
+    });
+
+    it('hide the audio player on error event', () => {
+      component.audioSource = 'api/audio/preview/123';
+
+      fixture.detectChanges();
+      const audioPlayer = fixture.debugElement.query(By.css('audio'));
+
+      audioPlayer.triggerEventHandler('error', null);
+
+      expect(audioPlayer.nativeElement.style.display === 'none').toBeTruthy();
     });
   });
 });

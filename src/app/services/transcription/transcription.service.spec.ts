@@ -1,16 +1,18 @@
+import { DatePipe } from '@angular/common';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import {
   TranscriptionDetails,
   TranscriptionRequest,
-  UserTranscriptionRequest,
-  YourTranscriptionRequests,
+  TranscriptionUrgency,
+  UserTranscriptionRequestVm,
+  YourTranscriptionRequestsVm,
 } from '@darts-types/index';
-import { WorkRequest } from '@darts-types/work-request.interface';
+import { WorkRequestVm } from '@darts-types/work-request.interface';
 import { of } from 'rxjs';
 import {
-  COMPLETED_TRANSCRIPTION_STATUS_ID,
   APPROVED_TRANSCRIPTION_STATUS_ID,
+  COMPLETED_TRANSCRIPTION_STATUS_ID,
   REJECTED_TRANSCRIPTION_STATUS_ID,
   TranscriptionService,
 } from './transcription.service';
@@ -19,9 +21,18 @@ describe('TranscriptionService', () => {
   let service: TranscriptionService;
   let httpMock: HttpTestingController;
 
+  const MOCK_URGENCIES: TranscriptionUrgency[] = [
+    { transcription_urgency_id: 1, description: 'Overnight', priority_order: 1 },
+    { transcription_urgency_id: 2, description: 'Up to 2 working days', priority_order: 2 },
+    { transcription_urgency_id: 3, description: 'Up to 3 working days', priority_order: 3 },
+    { transcription_urgency_id: 4, description: 'Up to 7 working days', priority_order: 4 },
+    { transcription_urgency_id: 5, description: 'Up to 12 working days', priority_order: 5 },
+  ];
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
+      providers: [{ provide: DatePipe }],
     });
     service = TestBed.inject(TranscriptionService);
     httpMock = TestBed.inject(HttpTestingController);
@@ -53,16 +64,17 @@ describe('TranscriptionService', () => {
 
   describe('#getTranscriptionRequests', () => {
     it('should transform hearing dates', (done) => {
+      jest.spyOn(service, 'getUrgencies').mockReturnValue(of(MOCK_URGENCIES));
       const mockRequests = {
         requester_transcriptions: [
           { transcription_id: 1, hearing_date: '2023-11-01' },
           { transcription_id: 2, hearing_date: '2023-11-02' },
-        ] as Partial<UserTranscriptionRequest>,
+        ] as Partial<UserTranscriptionRequestVm>,
         approver_transcriptions: [
           { transcription_id: 3, hearing_date: '2023-11-03' },
           { transcription_id: 4, hearing_date: '2023-11-04' },
-        ] as Partial<UserTranscriptionRequest>,
-      } as YourTranscriptionRequests;
+        ] as Partial<UserTranscriptionRequestVm>,
+      } as YourTranscriptionRequestsVm;
 
       service.getTranscriptionRequests().subscribe((transformedRequests) => {
         expect(transformedRequests.requester_transcriptions[0].hearing_date).toBe('2023-11-01T00:00:00Z');
@@ -80,10 +92,11 @@ describe('TranscriptionService', () => {
 
   describe('#getWorkRequests', () => {
     it('should transform hearing dates', (done) => {
+      jest.spyOn(service, 'getUrgencies').mockReturnValue(of(MOCK_URGENCIES));
       const mockRequests = [
         { transcription_id: 1, hearing_date: '2023-11-01' },
         { transcription_id: 2, hearing_date: '2023-11-02' },
-      ] as Partial<WorkRequest>;
+      ] as Partial<WorkRequestVm>;
 
       service.getWorkRequests().subscribe((transformedRequests) => {
         expect(transformedRequests[0].hearing_date).toBe('2023-11-01T00:00:00Z');
@@ -227,6 +240,7 @@ describe('TranscriptionService', () => {
     });
 
     it('should map hearing date to UTC timestamp', fakeAsync(() => {
+      jest.spyOn(service, 'getUrgencies').mockReturnValue(of(MOCK_URGENCIES));
       jest.spyOn(service['http'], 'get').mockReturnValue(
         of({
           approver_transcriptions: [
@@ -311,6 +325,44 @@ describe('TranscriptionService', () => {
 
       const req = httpMock.expectOne(`/api/transcriptions/${transcriptId}/document`);
       req.flush(mockBlob);
+    });
+  });
+
+  describe('#getUrgencyByDescription', () => {
+    it('should return the TranscriptionUrgency object where the description matches', () => {
+      const response = service.getUrgencyByDescription(MOCK_URGENCIES, 'Up to 3 working days');
+      const result: TranscriptionUrgency = {
+        transcription_urgency_id: 3,
+        description: 'Up to 3 working days',
+        priority_order: 3,
+      };
+      expect(response).toEqual(result);
+    });
+  });
+
+  describe('#mapUrgencyToTranscripts', () => {
+    it('should map urgency to transcripts', () => {
+      const requests = [
+        { urgency: 'Overnight' },
+        { urgency: 'Up to 2 working days' },
+        { urgency: 'Up to 3 working days' },
+      ];
+      const urgencies = [
+        { transcription_urgency_id: 1, description: 'Overnight', priority_order: 1 },
+        { transcription_urgency_id: 2, description: 'Up to 2 working days', priority_order: 2 },
+        { transcription_urgency_id: 3, description: 'Up to 3 working days', priority_order: 3 },
+        { transcription_urgency_id: 4, description: 'Up to 7 working days', priority_order: 4 },
+        { transcription_urgency_id: 5, description: 'Up to 12 working days', priority_order: 5 },
+      ];
+
+      const expected = [
+        { urgency: { transcription_urgency_id: 1, description: 'Overnight', priority_order: 1 } },
+        { urgency: { transcription_urgency_id: 2, description: 'Up to 2 working days', priority_order: 2 } },
+        { urgency: { transcription_urgency_id: 3, description: 'Up to 3 working days', priority_order: 3 } },
+      ];
+
+      const result = service.mapUrgencyToTranscripts(requests, urgencies);
+      expect(result).toEqual(expected);
     });
   });
 });
