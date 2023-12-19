@@ -189,11 +189,13 @@ export class TranscriptionService {
       'Request ID': transcript.transcription_id,
       Urgency: transcript.urgency,
       'Audio for transcript':
-        'Start time ' +
-        this.datePipe.transform(transcript.transcription_start_ts, 'HH:mm:ss') +
-        ' - End time ' +
-        this.datePipe.transform(transcript.transcription_end_ts, 'HH:mm:ss'),
-      From: transcript.from,
+        transcript.transcription_start_ts && transcript.transcription_end_ts
+          ? 'Start time ' +
+            this.datePipe.transform(transcript.transcription_start_ts, 'HH:mm:ss') +
+            ' - End time ' +
+            this.datePipe.transform(transcript.transcription_end_ts, 'HH:mm:ss')
+          : '',
+      Requested: transcript.from,
       Received: this.datePipe.transform(transcript.received, 'dd MMM yyyy HH:mm:ss'),
       Instructions: transcript.requestor_comments,
       'Judge approval': 'Yes',

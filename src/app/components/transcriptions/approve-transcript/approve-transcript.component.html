@@ -1,4 +1,9 @@
 @if (vm$ | async; as vm) {
+  <app-breadcrumb>
+    <ng-container *breadcrumb="['../../']">Your transcripts</ng-container>
+    <ng-container *breadcrumb="['.']">{{ transcriptId }}</ng-container>
+  </app-breadcrumb>
+
   <ng-container *ngIf="error$ | async as error; else approval">
     <app-conflict
       header="This request is no longer available"
@@ -7,11 +12,11 @@
     ></app-conflict>
   </ng-container>
   <ng-template #approval>
-    <!-- Validation Error Summary Component -->
     <app-validation-error-summary
       *ngIf="approvalErrors.length"
       [errors]="approvalErrors"
     ></app-validation-error-summary>
+
     <app-reporting-restriction
       *ngIf="vm.reportingRestriction"
       [reportingRestriction]="vm.reportingRestriction"
