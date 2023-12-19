@@ -86,7 +86,7 @@ describe('ApproveTranscriptComponent', () => {
       'Request ID': 123456789,
       Urgency: 'Standard',
       'Audio for transcript': 'Start time 13:00:00 - End time 16:00:00',
-      From: 'MoJ CH Swansea',
+      Requested: 'MoJ CH Swansea',
       Received: '17 Nov 2023 12:53:07',
       Instructions: 'Please expedite my request',
       'Judge approval': 'Yes',
