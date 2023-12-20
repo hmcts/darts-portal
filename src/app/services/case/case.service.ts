@@ -16,7 +16,7 @@ export class CaseService {
   constructor(private readonly http: HttpClient) {}
 
   // Store for previous search results and form values
-  searchResults$: Observable<Case[]> | null = null;
+  searchResults$: Observable<Case[] | null> | null = null;
   searchFormValues: SearchFormValues | null = null;
 
   getCourthouses(): Observable<Courthouse[]> {
@@ -61,7 +61,7 @@ export class CaseService {
       .get<Hearing[]>(`${GET_CASE_PATH}/${caseId}/hearings`)
       .pipe(map((hearings) => hearings.map((h) => ({ ...h, date: h.date + 'T00:00:00Z' }))));
   }
-  searchCases(searchForm: SearchFormValues): Observable<Case[]> {
+  searchCases(searchForm: SearchFormValues): Observable<Case[] | null> {
     // Save search form values
     this.searchFormValues = searchForm;
 
