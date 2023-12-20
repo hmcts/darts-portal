@@ -2,6 +2,7 @@
   #audioPlayer
   id="audio-player"
   preload="auto"
+  [style.display]="!audioPlayer.src ? 'none' : 'block'"
   controls
   (canplay)="canPlay = true"
   (pause)="pause.emit()"
