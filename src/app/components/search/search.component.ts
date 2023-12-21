@@ -3,15 +3,15 @@ import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angu
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CourthouseComponent } from '@common/courthouse/courthouse.component';
 import { LoadingComponent } from '@common/loading/loading.component';
+import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { ErrorSummaryEntry, FieldErrors, SearchFormValues } from '@darts-types/index';
 import { initAll } from '@scottish-government/pattern-library/src/all';
 import { CaseService } from '@services/case/case.service';
 import { ErrorMessageService } from '@services/error/error-message.service';
 import { futureDateValidator } from '@validators/future-date.validator';
-import { Subscription, catchError, ignoreElements, of } from 'rxjs';
+import { Subscription, catchError, of } from 'rxjs';
 import { ResultsComponent } from './results/results.component';
 import { SearchErrorComponent } from './search-error/search-error.component';
-import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 
 const fieldErrors: FieldErrors = {
   courthouse: {
@@ -140,15 +140,13 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
       return;
     }
 
-    this.searchResults$ = this.caseService.searchCases(this.form.value);
-    this.searchError$ = this.searchResults$.pipe(
-      ignoreElements(),
+    this.searchResults$ = this.caseService.searchCases(this.form.value).pipe(
       catchError(() => {
         // clear search form and results or error state will be cached in service
         this.caseService.searchFormValues = null;
         this.caseService.searchResults$ = null;
         this.errorMsgService.updateDisplayType('COMPONENT');
-        return this.errorMsgService.errorMessage$;
+        return of(null);
       })
     );
   }
@@ -190,11 +188,11 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   clearSearch() {
+    this.errorMsgService.clearErrorMessage();
     this.form.reset();
     this.searchResults$ = null;
     this.caseService.searchResults$ = null;
     this.caseService.searchFormValues = null;
-    this.searchError$ = of(null);
     this.isSubmitted = false;
     this.errorSummary = [];
     this.courthouseComponent.reset();

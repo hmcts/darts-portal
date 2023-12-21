@@ -337,7 +337,10 @@ describe('SearchComponent', () => {
     flush();
 
     let error: ErrorMessage | null = null;
-    component.searchError$?.subscribe((errorType) => (error = errorType));
+    component.searchResults$?.subscribe();
+    component.searchError$.subscribe((errorType) => {
+      error = errorType;
+    });
 
     expect(mockRouter.navigateByUrl).not.toHaveBeenCalled();
     expect(error).toEqual(errorMessageMock);
