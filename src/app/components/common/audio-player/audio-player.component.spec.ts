@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { AppConfigService } from '@services/app-config/app-config.service';
+import { AudioRequestService } from '@services/audio-request/audio-request.service';
+import { of } from 'rxjs';
 import { AudioPlayerComponent } from './audio-player.component';
 
 describe('AudioPlayerComponent', () => {
@@ -20,7 +22,15 @@ describe('AudioPlayerComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [AudioPlayerComponent],
-      providers: [{ provide: AppConfigService, useValue: appConfigServiceMock }],
+      providers: [
+        { provide: AppConfigService, useValue: appConfigServiceMock },
+        {
+          provide: AudioRequestService,
+          useValue: {
+            getStatusCode: jest.fn().mockReturnValue(of(200)),
+          },
+        },
+      ],
     });
 
     fixture = TestBed.createComponent(AudioPlayerComponent);
@@ -133,7 +143,7 @@ describe('AudioPlayerComponent', () => {
 
       audioPlayer.triggerEventHandler('error', null);
 
-      expect(component.errorMsg).toBeTruthy();
+      expect(component.isError).toBeTruthy();
     });
 
     it('hide the audio player on error event', () => {
@@ -145,6 +155,54 @@ describe('AudioPlayerComponent', () => {
       audioPlayer.triggerEventHandler('error', null);
 
       expect(audioPlayer.nativeElement.style.display === 'none').toBeTruthy();
+    });
+
+    it('403 error', () => {
+      component.audioSource = 'api/audio/preview/123';
+      const audioService = TestBed.inject(AudioRequestService);
+      audioService.getStatusCode = jest.fn().mockReturnValue(of(403));
+
+      fixture.detectChanges();
+      const audioPlayer = fixture.debugElement.query(By.css('audio'));
+
+      audioPlayer.triggerEventHandler('error', null);
+
+      fixture.detectChanges();
+      const errorMessage = fixture.debugElement.query(By.css('#permission-error'));
+
+      expect(errorMessage.nativeElement.textContent).toContain('You do not have permission to preview');
+    });
+
+    it('404 error', () => {
+      component.audioSource = 'api/audio/preview/123';
+      const audioService = TestBed.inject(AudioRequestService);
+      audioService.getStatusCode = jest.fn().mockReturnValue(of(404));
+
+      fixture.detectChanges();
+      const audioPlayer = fixture.debugElement.query(By.css('audio'));
+
+      audioPlayer.triggerEventHandler('error', null);
+
+      fixture.detectChanges();
+      const errorMessage = fixture.debugElement.query(By.css('#not-found-error'));
+
+      expect(errorMessage.nativeElement.textContent).toContain('Preview not found');
+    });
+
+    it('500 error', () => {
+      component.audioSource = 'api/audio/preview/123';
+      const audioService = TestBed.inject(AudioRequestService);
+      audioService.getStatusCode = jest.fn().mockReturnValue(of(500));
+
+      fixture.detectChanges();
+      const audioPlayer = fixture.debugElement.query(By.css('audio'));
+
+      audioPlayer.triggerEventHandler('error', null);
+
+      fixture.detectChanges();
+      const errorMessage = fixture.debugElement.query(By.css('#error'));
+
+      expect(errorMessage.nativeElement.textContent).toContain('An error has occurred');
     });
   });
 });

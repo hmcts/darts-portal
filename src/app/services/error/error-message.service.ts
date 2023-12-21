@@ -8,9 +8,10 @@ import { BehaviorSubject, Observable } from 'rxjs';
 //Contains endpoints where errors are handled in their component
 const subscribedEndpoints = [
   { endpoint: '/api/cases/search', responses: [204, 400, 500] },
-  { endpoint: '/api/audio-requests/playback', responses: [403] },
+  { endpoint: '/api/audio-requests/playback', responses: [403, 404, 500, 502, 504] },
   { endpoint: '/api/transcriptions', responses: [409] },
   { endpoint: '/api/audio-requests', responses: [403] },
+  { endpoint: '/api/audio/preview', responses: [403, 404, 500, 502, 504] },
 ];
 
 @Injectable({

@@ -6,11 +6,14 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  OnInit,
   Output,
   ViewChild,
   inject,
 } from '@angular/core';
 import { AppConfigService } from '@services/app-config/app-config.service';
+import { AudioRequestService } from '@services/audio-request/audio-request.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-audio-player',
@@ -20,7 +23,7 @@ import { AppConfigService } from '@services/app-config/app-config.service';
   styleUrls: ['./audio-player.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AudioPlayerComponent {
+export class AudioPlayerComponent implements OnInit {
   @ViewChild('audioPlayer', { static: false }) audioPlayer!: ElementRef<HTMLAudioElement>;
 
   @Input() id!: number;
@@ -30,11 +33,20 @@ export class AudioPlayerComponent {
   @Output() pause = new EventEmitter<void>();
   @Output() play = new EventEmitter<void>();
 
+  audioService = inject(AudioRequestService);
+  statusCode$: Observable<number> | undefined;
+
   private appConfigService = inject(AppConfigService);
   support = this.appConfigService.getAppConfig()?.support;
 
   canPlay = false;
-  errorMsg = false;
+  isError = false;
+
+  ngOnInit() {
+    if (this.audioSource) {
+      this.statusCode$ = this.audioService.getStatusCode(this.audioSource);
+    }
+  }
 
   setPlayTime(time: number, shouldPlay: boolean): void {
     if (this.canPlay) {

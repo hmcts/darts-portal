@@ -91,14 +91,31 @@ describe('Request audio', () => {
   });
 
   describe('Preview Audio', () => {
-    it('should show Error message when preview audio returns 500', () => {
-      cy.get('#hearingsTable').should('contain', '1 Sep 2023');
+    it('should show Error message when preview audio returns 403', () => {
       cy.get('#hearingsTable a').contains('1 Sep 2023').click();
       cy.get('audio').then(($audio) => {
-        const audio = $audio.get(1);
+        const audio = $audio.get(3);
         audio.play();
       });
-      cy.get('.govuk-table tr').eq(4).contains('p', 'An error has occurred.');
+      cy.get('.govuk-table tr').eq(7).contains('p', 'You do not have permission to preview.');
+    });
+
+    it('should show Error message when preview audio returns 404', () => {
+      cy.get('#hearingsTable a').contains('1 Sep 2023').click();
+      cy.get('audio').then(($audio) => {
+        const audio = $audio.get(4);
+        audio.play();
+      });
+      cy.get('.govuk-table tr').eq(8).contains('p', 'Preview not found');
+    });
+
+    it('should show Error message when preview audio returns 500', () => {
+      cy.get('#hearingsTable a').contains('1 Sep 2023').click();
+      cy.get('audio').then(($audio) => {
+        const audio = $audio.get(5);
+        audio.play();
+      });
+      cy.get('.govuk-table tr').eq(9).contains('p', 'An error has occurred.');
     });
   });
 });
