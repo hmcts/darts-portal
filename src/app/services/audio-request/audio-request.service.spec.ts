@@ -274,12 +274,6 @@ describe('AudioService', () => {
       expect(req.request.method).toBe('HEAD');
 
       req.error(new ErrorEvent('Internal Server Error'));
-
-      // Alternatively, you can use the following code to simulate an HttpErrorResponse:
-      // req.error(new HttpErrorResponse({ error: 'Internal Server Error', status: statusCode }));
-
-      // You can also test the catchError block by modifying the request to return an error:
-      // req.flush(null, { status: 200, statusText: 'OK' });
     });
   });
 });

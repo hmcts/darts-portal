@@ -22,7 +22,6 @@
 
 @if (isError) {
   @if (statusCode$ | async; as statusCode) {
-    <!-- {{ statusCode }} -->
     @if (statusCode === 403) {
       <p class="govuk-body" id="permission-error">
         You do not have permission to preview. If you believe you should have permission
