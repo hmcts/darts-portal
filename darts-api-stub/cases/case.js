@@ -11,7 +11,37 @@ const singleCase = {
   judges: ['Judge Judy'],
   prosecutors: ['Polly Prosecutor'],
   defenders: ['Derek Defender'],
-  reporting_restriction: ['Section 4(2) of the Contempt of Court Act 1981'],
+  reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
+  reporting_restrictions: [
+    {
+      hearing_id: 1,
+      event_id: 123,
+      event_name: 'Section 4(2) of the Contempt of Court Act 1981',
+      event_text: 'Restriction applied',
+      event_ts: '2023-08-21T09:00:00Z',
+    },
+    {
+      hearing_id: 1,
+      event_id: 123,
+      event_name: 'Section 39, Children and Young People Act 1933',
+      event_text: 'Restriction applied',
+      event_ts: '2023-08-21T09:00:00Z',
+    },
+    {
+      hearing_id: 1,
+      event_id: 123,
+      event_name: 'Section 40, Children and Young People Act 1933',
+      event_text: 'Restriction applied',
+      event_ts: '2023-08-21T09:00:00Z',
+    },
+    {
+      hearing_id: 1,
+      event_id: 123,
+      event_name: '',
+      event_text: 'Restriction(s) lifted',
+      event_ts: '2023-08-21T09:00:00Z',
+    },
+  ],
   retain_until: '2023-08-10T11:23:24.858Z',
 };
 
