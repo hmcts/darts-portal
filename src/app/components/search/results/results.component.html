@@ -18,13 +18,16 @@
           <td class="govuk-table__cell">{{ row.judges }}</td>
           <td class="govuk-table__cell">{{ row.defendants }}</td>
         </tr>
-        <tr *ngIf="row.reporting_restriction" class="restriction-row govuk-table__row">
+        <tr
+          *ngIf="row.reporting_restriction || row.reporting_restrictions?.length"
+          class="restriction-row govuk-table__row"
+        >
           <td class="govuk-table__cell" colspan="6">
             <div class="govuk-warning-text">
               <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
               <span class="govuk-warning-text__text">
                 <span class="govuk-warning-text__assistive">Restriction</span>
-                <strong>Restriction:</strong> {{ row.reporting_restriction }}
+                There are restrictions against this case
               </span>
             </div>
           </td>
