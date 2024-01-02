@@ -24,7 +24,7 @@ const singleCaseTwo = {
   judges: ['Judge Judy'],
   prosecutors: ['Patrick Prosecutor'],
   defenders: ['Derek Defender'],
-  retain_until: '2023-08-10T11:23:24.858Z',
+  retain_until: '',
 };
 
 const singleCaseHearings = [
