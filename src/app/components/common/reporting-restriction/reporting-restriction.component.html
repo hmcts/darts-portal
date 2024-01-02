@@ -35,11 +35,15 @@
       <app-govuk-details openSummary="Hide restrictions" closedSummary="Show restrictions">
         <ul class="govuk-list">
           @for (restriction of restrictions; track $index) {
-            <li>
-              <strong>{{ restriction.event_text }}:</strong> {{ restriction.event_name }}
-              {{ restriction.event_name ? '- Applied' : '' }}
-              {{ restriction.event_ts | date: 'dd MMM yyyy' }}
-            </li>
+            @if (restriction.event_name === 'Restrictions lifted') {
+              <li><strong>Restriction(s) lifted:</strong> {{ restriction.event_ts | date: 'dd MMM yyyy' }}</li>
+            } @else {
+              <li>
+                <strong>Restriction applied:</strong> {{ restriction.event_name }}
+                {{ restriction.event_name ? '- Applied' : '' }}
+                {{ restriction.event_ts | date: 'dd MMM yyyy' }}
+              </li>
+            }
           }
         </ul>
         <ng-content />
