@@ -40,6 +40,16 @@ describe('Case file screen', () => {
       cy.contains('C20220620001').click();
     });
 
+    describe('Reporting restrictions', () => {
+      it('Displays restrictions', () => {
+        cy.contains('Show restrictions').click();
+        cy.get('.govuk-details__text').contains(
+          'Restriction applied: Section 4(2) of the Contempt of Court Act 1981 - Applied 21 Aug 2023'
+        );
+        cy.get('.govuk-details__text').contains('Restriction(s) lifted: 21 Aug 2023');
+      });
+    });
+
     describe('Hearings Tab', () => {
       it('Tab exists', () => {
         cy.get('a.moj-sub-navigation__link').first().should('contain', 'Hearings');
