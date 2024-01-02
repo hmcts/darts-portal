@@ -35,7 +35,7 @@ describe('Case search', () => {
     cy.get('.govuk-table__row').contains('1');
     cy.get('.govuk-table__row').contains('Judge Judy');
     cy.get('.govuk-table__row').contains('Defendant Dave');
-    cy.get('.restriction-row').should('contain', 'Restriction: Section 4(2) of the Contempt of Court Act 1981');
+    cy.get('.restriction-row').should('contain', 'There are restrictions against this case');
   });
 
   it('advanced search fields and multiple results', () => {
