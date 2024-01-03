@@ -12,10 +12,16 @@
 <p class="govuk-body">{{ caseFile.defenders | join }}</p>
 <h3 class="govuk-heading-s">Defendant(s)</h3>
 <p class="govuk-body">{{ caseFile.defendants | join }}</p>
-<h3 class="govuk-heading-s">Retained until</h3>
-<p class="govuk-body">
-  {{ caseFile.retain_until | date: 'd MMM y' }} &nbsp;&nbsp;
-  <a *ngIf="caseFile.retain_until" routerLink="retention" routerLinkActive="router-link-active" class="govuk-link"
-    >Change</a
-  >
-</p>
+
+@if (userService.isRequester() || userService.isApprover() || userService.isJudge() || userService.isAdmin()) {
+  <h3 class="govuk-heading-s">Retained until</h3>
+  <p class="govuk-body">
+    @if (caseFile.retain_until && caseFile.retain_until !== '') {
+      {{ caseFile.retain_until | date: 'd MMM y' }}
+    } @else {
+      No date applied
+    }
+
+    <a routerLink="retention" routerLinkActive="router-link-active" class="govuk-link retention-link">View or change</a>
+  </p>
+}

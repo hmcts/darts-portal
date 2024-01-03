@@ -1,4 +1,5 @@
 import { DatePipe } from '@angular/common';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { Case, Hearing, Transcript } from '@darts-types/index';
@@ -78,7 +79,7 @@ describe('CaseComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CaseComponent],
+      imports: [CaseComponent, HttpClientTestingModule],
       providers: [
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
         { provide: CaseService, useValue: caseServiceMock },
