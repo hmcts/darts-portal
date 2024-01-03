@@ -1,0 +1,57 @@
+@if (vm$ | async; as vm) {
+  <app-breadcrumb>
+    <ng-container *breadcrumb="['/search']">Search</ng-container>
+    <ng-container *breadcrumb="['/case', vm.caseDetails.case_id.toString()]">{{
+      vm.caseDetails.case_number
+    }}</ng-container>
+    <ng-container *breadcrumb>Case retention date</ng-container>
+  </app-breadcrumb>
+
+  <!-- TODO: Move banner into it's own component -->
+  <div
+    class="govuk-notification-banner"
+    aria-labelledby="govuk-notification-banner-title"
+    data-module="govuk-notification-banner"
+  >
+    <div class="govuk-notification-banner__header">
+      <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">Important</h2>
+    </div>
+    <div class="govuk-notification-banner__content">
+      <p class="govuk-notification-banner__heading">This case is still open or was recently closed.</p>
+      <p class="govuk-notification-banner__body">
+        The retention date for this case cannot be changed while the case is open or while a retention policy is
+        currently pending.
+      </p>
+    </div>
+  </div>
+
+  <app-govuk-heading>Case retention date</app-govuk-heading>
+
+  <app-details-table title="Case details" [details]="vm.caseDetails.details"></app-details-table>
+
+  <ng-container>
+    <app-details-table
+      title="Current retention details"
+      [details]="{ '': 'A retention policy has yet to be applied to this case.' }"
+    ></app-details-table>
+    <div class="govuk-button-group">
+      <button class="govuk-button" data-module="govuk-button">Change retention date</button>
+      <a class="govuk-link" routerLink="../" routerLinkActive="router-link-active">Cancel</a>
+    </div>
+  </ng-container>
+
+  <ng-container>
+    <h2 class="govuk-heading-m">Retention audit history</h2>
+    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
+    <app-data-table
+      id="retentionTable"
+      noDataMessage="No history to show"
+      [columns]="columns"
+      [rows]="vm.retentionHistory"
+    ></app-data-table>
+  </ng-container>
+} @else {
+  <ng-template #loading>
+    <app-loading text="Loading case retention details..."></app-loading>
+  </ng-template>
+}

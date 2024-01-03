@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { CaseRetentionHistory } from '@darts-types/case-retention-history.interface';
 import { Case, Courthouse, Hearing, SearchFormValues, Transcript } from '@darts-types/index';
 import { Observable, of } from 'rxjs';
 import { catchError, map, shareReplay } from 'rxjs/operators';
@@ -8,6 +9,7 @@ export const GET_COURTHOUSES_PATH = '/api/courthouses';
 export const GET_CASE_PATH = '/api/cases';
 export const GET_HEARINGS_PATH = 'api/hearings';
 export const ADVANCED_SEARCH_CASE_PATH = '/api/cases/search';
+export const GET_CASE_RETENTION_HISTORY = '/api/retentions';
 
 @Injectable({
   providedIn: 'root',
@@ -100,5 +102,17 @@ export class CaseService {
    */
   getHearingById(cId: number, hId: number): Observable<Hearing | undefined> {
     return this.getCaseHearings(cId).pipe(map((h) => h.find((x) => x.id == hId)));
+  }
+
+  getCaseRetentionHistory(caseId: number): Observable<CaseRetentionHistory[]> {
+    let params = new HttpParams();
+    params = params.set('case_id', caseId);
+    return this.http.get<CaseRetentionHistory[]>(GET_CASE_RETENTION_HISTORY, { params }).pipe(
+      //TODO: Add Z stamp to 'retention_date'
+      //
+      catchError(() => {
+        return of([]);
+      })
+    );
   }
 }
