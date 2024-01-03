@@ -108,8 +108,7 @@ export class CaseService {
     let params = new HttpParams();
     params = params.set('case_id', caseId);
     return this.http.get<CaseRetentionHistory[]>(GET_CASE_RETENTION_HISTORY, { params }).pipe(
-      //TODO: Add Z stamp to 'retention_date'
-      //
+      map((hearings) => hearings.map((h) => ({ ...h, retention_date: h.retention_date + 'T00:00:00Z' }))),
       catchError(() => {
         return of([]);
       })

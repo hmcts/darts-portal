@@ -1,9 +1,11 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { CaseRetentionHistory } from '@darts-types/case-retention-history.interface';
 import { Case } from '@darts-types/case.interface';
 import { DatatableColumn } from '@darts-types/data-table-column.interface';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
+import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { CaseService } from '@services/case/case.service';
 import { HeaderService } from '@services/header/header.service';
 import { combineLatest, map } from 'rxjs';
@@ -26,23 +28,40 @@ import { LoadingComponent } from '../../common/loading/loading.component';
     GovukHeadingComponent,
     DetailsTableComponent,
     DataTableComponent,
+    RouterLink,
+    TableRowTemplateDirective,
   ],
 })
 export class CaseRetentionDateComponent implements OnInit {
   headerService = inject(HeaderService);
   route = inject(ActivatedRoute);
   caseService = inject(CaseService);
+  datePipe = inject(DatePipe);
 
   caseId = this.route.snapshot.params.caseId;
-  //TODO: Map retention_last_changed_date & retention_date to display format
-  //TODO: Show status display properly
-  retentionHistory$ = this.caseService.getCaseRetentionHistory(this.caseId);
+  retentionHistory$ = this.caseService.getCaseRetentionHistory(this.caseId).pipe(
+    map((rows: CaseRetentionHistory[]) => {
+      return rows.map((rowData) => {
+        return {
+          retention_last_changed_date: this.datePipe.transform(
+            rowData.retention_last_changed_date,
+            'dd MMM yyyy HH:mm:ss'
+          ),
+          retention_date: this.datePipe.transform(rowData.retention_last_changed_date, 'dd MMM yyyy'),
+          amended_by: rowData.amended_by,
+          retention_policy_applied: rowData.retention_policy_applied,
+          comments: rowData.comments,
+          status: rowData.status,
+        };
+      });
+    })
+  );
   caseDetails$ = this.caseService.getCase(this.caseId).pipe(
     map((data: Case) => {
       const caseDetails = {
         details: {
           'Case ID': data.case_id,
-          'Case closed date': '-TO-DO------',
+          'Case closed date': this.datePipe.transform(data.case_closed_date_time, 'dd MMM yyyy'),
           Courthouse: data.courthouse,
           'Judge(s)': data.judges,
           'Defendant(s)': data.defendants,

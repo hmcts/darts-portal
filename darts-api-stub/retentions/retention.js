@@ -22,7 +22,11 @@ const retentionHistory = [
 ];
 
 router.get('', (req, res) => {
-  res.send(retentionHistory);
+  if (req.query.case_id === '1') {
+    res.send(retentionHistory);
+  } else {
+    res.send([]);
+  }
 });
 
 module.exports = router;

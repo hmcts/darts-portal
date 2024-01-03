@@ -36,7 +36,7 @@
     ></app-details-table>
     <div class="govuk-button-group">
       <button class="govuk-button" data-module="govuk-button">Change retention date</button>
-      <a class="govuk-link" routerLink="../" routerLinkActive="router-link-active">Cancel</a>
+      <a routerLink="../" routerLinkActive="router-link-active" class="govuk-link">Cancel</a>
     </div>
   </ng-container>
 
@@ -48,7 +48,30 @@
       noDataMessage="No history to show"
       [columns]="columns"
       [rows]="vm.retentionHistory"
-    ></app-data-table>
+    >
+      <ng-template [tableRowTemplate]="vm.retentionHistory" let-row>
+        <td class="govuk-table__cell">{{ row.retention_last_changed_date }}</td>
+        <td class="govuk-table__cell">{{ row.retention_date }}</td>
+        <td class="govuk-table__cell">{{ row.amended_by }}</td>
+        <td class="govuk-table__cell">{{ row.retention_policy_applied }}</td>
+        <td class="govuk-table__cell">{{ row.comments }}</td>
+
+        <td class="govuk-table__cell">
+          <div class="status-cell">
+            <strong
+              class="govuk-tag"
+              [ngClass]="{
+                'govuk-tag--green': row.status === 'COMPLETE',
+                'govuk-tag--yellow': row.status === 'PENDING',
+                'govuk-tag--red': row.status === 'CLOSED'
+              }"
+            >
+              {{ row.status }}
+            </strong>
+          </div>
+        </td>
+      </ng-template>
+    </app-data-table>
   </ng-container>
 } @else {
   <ng-template #loading>
