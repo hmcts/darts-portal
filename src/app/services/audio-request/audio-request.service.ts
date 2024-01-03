@@ -30,7 +30,9 @@ export class AudioRequestService {
   }
 
   deleteAudioRequests(mediaRequestId: number): Observable<HttpResponse<Response>> {
-    return this.http.delete<Response>(`api/audio-requests/${mediaRequestId}`, { observe: 'response' });
+    return this.http.delete<Response>(`api/transformed_media/audio-requests/${mediaRequestId}`, {
+      observe: 'response',
+    });
   }
 
   //Sends request to update last accessed timestamp

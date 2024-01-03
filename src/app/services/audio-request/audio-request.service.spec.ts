@@ -175,7 +175,7 @@ describe('AudioService', () => {
           responseStatus = res.status;
         });
 
-        const req = httpMock.expectOne(`api/audio-requests/${reqId}`);
+        const req = httpMock.expectOne(`api/transformed_media/audio-requests/${reqId}`);
         expect(req.request.method).toBe('DELETE');
 
         req.flush(null, { status: 204, statusText: '' });
