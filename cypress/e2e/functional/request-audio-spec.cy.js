@@ -90,6 +90,41 @@ describe('Request audio', () => {
     cy.a11y();
   });
 
+  it('should show an error screen if a 409 is returned', () => {
+    cy.get('#hearingsTable').should('contain', '1 Dec 2023');
+    cy.get('#hearingsTable a').contains('1 Dec 2023').click();
+
+    cy.get('#eventAudioTable .govuk-table__row:nth-child(2) .govuk-checkboxes__item').click();
+    cy.get('#start-time-hour-input').should('have.value', '09');
+    cy.get('#start-time-minutes-input').should('have.value', '00');
+    cy.get('#start-time-seconds-input').should('have.value', '00');
+    cy.get('#end-time-hour-input').should('have.value', '09');
+    cy.get('#end-time-minutes-input').should('have.value', '00');
+    cy.get('#end-time-seconds-input').should('have.value', '00');
+
+    cy.get('#download-radio').click();
+
+    cy.get('.button > .govuk-button').contains('Get Audio').click();
+
+    cy.get('.govuk-grid-column-two-thirds > :nth-child(4)').should('contain', 'C20220620001');
+    cy.get('.govuk-grid-column-two-thirds > :nth-child(6)').should('contain', 'Swansea');
+    cy.get('.govuk-grid-column-two-thirds > :nth-child(8)').should('contain', 'Defendant Dave');
+    cy.get('.govuk-grid-column-two-thirds > :nth-child(11)').should('contain', '1 Dec 2023');
+    cy.get('.govuk-grid-column-two-thirds > :nth-child(13)').should('contain', '09:00:00');
+    cy.get('.govuk-grid-column-two-thirds > :nth-child(15)').should('contain', '09:00:00');
+
+    cy.get('.govuk-button-group > .govuk-button').contains('Confirm').click();
+
+    cy.get('#conflict-heading').should('contain', 'You cannot order this audio');
+    cy.get('#conflict-body-1').should('contain', "You have already ordered this audio and the request is 'pending'.");
+    cy.get('#conflict-body-2').should(
+      'contain',
+      "You'll be able to order it when the order is marked as 'complete' in Your Audio."
+    );
+    cy.get('.govuk-back-link').should('not.exist');
+    cy.a11y();
+  });
+
   describe('Preview Audio', () => {
     it('should show Error message when preview audio returns 403', () => {
       cy.get('#hearingsTable a').contains('1 Sep 2023').click();

@@ -359,6 +359,21 @@ describe('HearingComponent', () => {
       expect(component.state).toEqual('OrderFailure');
       expect(mockRouter.navigateByUrl).not.toHaveBeenCalled();
     });
+
+    it('should set the value of state when 409 encountered', () => {
+      const errorResponse = new HttpErrorResponse({ error: 'Conflict', status: 409, url: '/api/audio-requests' });
+      jest.spyOn(hearingService, 'requestAudio').mockReturnValue(throwError(() => errorResponse));
+      const mockRequestObject: PostAudioRequest = {
+        hearing_id: 3,
+        requestor: 1,
+        start_time: '2023-09-01T02:00:00Z',
+        end_time: '2023-09-01T15:32:24Z',
+        request_type: 'DOWNLOAD',
+      };
+      component.onOrderConfirm(mockRequestObject);
+      expect(component.state).toEqual('OrderFailure');
+      expect(mockRouter.navigateByUrl).not.toHaveBeenCalled();
+    });
   });
 
   describe('#onValidationError', () => {

@@ -20,9 +20,9 @@
       <app-forbidden header="You do not have permission to get audio for this courthouse." />
     </ng-container>
     <ng-container *ngIf="vm.error.status === 409 && state === 'OrderFailure'">
-      <h1 id="forbidden-heading" class="govuk-heading-xl govuk-!-margin-bottom-8">You cannot order this audio</h1>
-      <p id="forbidden-body" class="govuk-body">You have already ordered this audio and the request is 'pending'.</p>
-      <p id="forbidden-body" class="govuk-body">
+      <h1 id="conflict-heading" class="govuk-heading-xl govuk-!-margin-bottom-8">You cannot order this audio</h1>
+      <p id="conflict-body-1" class="govuk-body">You have already ordered this audio and the request is 'pending'.</p>
+      <p id="conflict-body-2" class="govuk-body">
         You'll be able to order it when the order is marked as 'complete' in Your Audio.
       </p>
     </ng-container>
