@@ -1,10 +1,12 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { CaseRetentionHistory } from '@darts-types/case-retention-history.interface';
 import { Case, CaseFile, Courthouse, Hearing, SearchFormValues, Transcript } from '@darts-types/index';
 import {
   ADVANCED_SEARCH_CASE_PATH,
   CaseService,
   GET_CASE_PATH,
+  GET_CASE_RETENTION_HISTORY,
   GET_COURTHOUSES_PATH,
   GET_HEARINGS_PATH,
 } from './case.service';
@@ -69,6 +71,15 @@ describe('CaseService', () => {
     judges: ['HHJ M. David KC'],
     courtroom: '9',
     transcript_count: 300,
+  };
+
+  const mockHistory: CaseRetentionHistory = {
+    retention_last_changed_date: '2023-10-11T00:18:00Z',
+    retention_date: '2030-09-15',
+    amended_by: 'Judge Phil',
+    retention_policy_applied: 'Permanent',
+    comments: 'Permanent policy applied',
+    status: 'PENDING',
   };
 
   beforeEach(() => {
@@ -226,5 +237,35 @@ describe('CaseService', () => {
     expect(req.request.method).toBe('GET');
 
     req.flush(mockHearings);
+  });
+
+  it('#getCaseRetentionHistory', () => {
+    const mockCaseId = 123;
+    const mock: CaseRetentionHistory[] = [mockHistory];
+
+    service.getCaseRetentionHistory(mockCaseId).subscribe((history) => {
+      expect(history).toBeDefined();
+    });
+
+    const req = httpMock.expectOne(
+      (req) => req.url === GET_CASE_RETENTION_HISTORY && req.params.get('case_id') === mockCaseId.toString()
+    );
+
+    expect(req.request.method).toBe('GET');
+    req.flush(mock);
+  });
+
+  it('#getCaseRetentionHistory should return an empty array on error', () => {
+    const caseId = 123;
+
+    service.getCaseRetentionHistory(caseId).subscribe({
+      next: (data) => expect(data).toEqual([]),
+      error: () => fail('Expected a successful response, but an error was received'),
+    });
+
+    const req = httpMock.expectOne(`${GET_CASE_RETENTION_HISTORY}?case_id=${caseId}`);
+    expect(req.request.method).toEqual('GET');
+
+    req.flush(null, { status: 404, statusText: 'Not Found' });
   });
 });

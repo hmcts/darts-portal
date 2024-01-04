@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
 import { CaseFile } from '@darts-types/index';
 import { UserService } from '@services/user/user.service';
 import { CaseFileComponent } from './case-file.component';
@@ -18,13 +19,22 @@ describe('CaseFileComponent', () => {
     reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
     retain_until: '2023-08-10T11:23:24.858Z',
   };
-
+  const mockActivatedRoute = {
+    snapshot: {
+      params: {
+        caseId: 1,
+      },
+    },
+  };
   const fakeUserService = { isRequester: () => true, isTranscriber: () => false } as Partial<UserService>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [CaseFileComponent],
-      providers: [{ provide: UserService, useValue: fakeUserService }],
+      providers: [
+        { provide: UserService, useValue: fakeUserService },
+        { provide: ActivatedRoute, useValue: mockActivatedRoute },
+      ],
     });
     fixture = TestBed.createComponent(CaseFileComponent);
     component = fixture.componentInstance;
