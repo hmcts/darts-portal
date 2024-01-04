@@ -8,10 +8,9 @@ describe('NotificationBannerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NotificationBannerComponent]
-    })
-    .compileComponents();
-    
+      imports: [NotificationBannerComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(NotificationBannerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
