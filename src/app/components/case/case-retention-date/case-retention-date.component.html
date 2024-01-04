@@ -7,24 +7,12 @@
     <ng-container *breadcrumb>Case retention date</ng-container>
   </app-breadcrumb>
 
-  <!-- TODO: Move banner into it's own component -->
   @if (!infoBannerHide(vm.retentionHistory)) {
-    <div
-      class="govuk-notification-banner"
-      aria-labelledby="govuk-notification-banner-title"
-      data-module="govuk-notification-banner"
-    >
-      <div class="govuk-notification-banner__header">
-        <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">Important</h2>
-      </div>
-      <div class="govuk-notification-banner__content">
-        <p class="govuk-notification-banner__heading">This case is still open or was recently closed.</p>
-        <p class="govuk-notification-banner__body">
-          The retention date for this case cannot be changed while the case is open or while a retention policy is
-          currently pending.
-        </p>
-      </div>
-    </div>
+    <app-notification-banner
+      heading="This case is still open or was recently closed."
+      body="The retention date for this case cannot be changed while the case is open or while a retention policy is
+    currently pending."
+    ></app-notification-banner>
   }
 
   <app-govuk-heading>Case retention date</app-govuk-heading>

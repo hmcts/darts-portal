@@ -14,6 +14,7 @@ import { DataTableComponent } from '../../common/data-table/data-table.component
 import { DetailsTableComponent } from '../../common/details-table/details-table.component';
 import { GovukHeadingComponent } from '../../common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '../../common/loading/loading.component';
+import { NotificationBannerComponent } from '../../common/notification-banner/notification-banner.component';
 
 @Component({
   selector: 'app-case-retention-date',
@@ -30,6 +31,7 @@ import { LoadingComponent } from '../../common/loading/loading.component';
     DataTableComponent,
     RouterLink,
     TableRowTemplateDirective,
+    NotificationBannerComponent,
   ],
 })
 export class CaseRetentionDateComponent implements OnInit {
