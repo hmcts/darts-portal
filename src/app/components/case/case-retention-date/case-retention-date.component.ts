@@ -77,8 +77,9 @@ export class CaseRetentionDateComponent implements OnInit {
   buttonGroupHide(rows: CaseRetentionHistory[]): boolean {
     if (rows.length) {
       return this.getLatestDate(rows).status !== 'COMPLETE';
+    } else {
+      return true;
     }
-    return true;
   }
 
   getLatestDate(rows: CaseRetentionHistory[]) {
