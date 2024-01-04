@@ -19,6 +19,14 @@ const retentionHistory = [
     comments: 'Manual policy applied',
     status: 'COMPLETE',
   },
+  {
+    retention_last_changed_date: '2024-01-13T12:15:00Z',
+    retention_date: '2030-09-15',
+    amended_by: 'Judge Samuel',
+    retention_policy_applied: 'Manual',
+    comments: 'Manual policy applied',
+    status: 'COMPLETE',
+  },
 ];
 
 router.get('', (req, res) => {

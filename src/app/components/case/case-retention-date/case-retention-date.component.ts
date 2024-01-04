@@ -39,32 +39,22 @@ export class CaseRetentionDateComponent implements OnInit {
   datePipe = inject(DatePipe);
 
   caseId = this.route.snapshot.params.caseId;
-  retentionHistory$ = this.caseService.getCaseRetentionHistory(this.caseId).pipe(
-    map((rows: CaseRetentionHistory[]) => {
-      return rows.map((rowData) => {
-        return {
-          retention_last_changed_date: this.datePipe.transform(
-            rowData.retention_last_changed_date,
-            'dd MMM yyyy HH:mm:ss'
-          ),
-          retention_date: this.datePipe.transform(rowData.retention_last_changed_date, 'dd MMM yyyy'),
-          amended_by: rowData.amended_by,
-          retention_policy_applied: rowData.retention_policy_applied,
-          comments: rowData.comments,
-          status: rowData.status,
-        };
-      });
-    })
-  );
+
+  retentionHistory$ = this.caseService.getCaseRetentionHistory(this.caseId);
   caseDetails$ = this.caseService.getCase(this.caseId).pipe(
     map((data: Case) => {
       const caseDetails = {
         details: {
           'Case ID': data.case_id,
-          'Case closed date': this.datePipe.transform(data.case_closed_date_time, 'dd MMM yyyy'),
+          'Case closed date': this.datePipe.transform(data.case_closed_date_time, 'dd MMM yyyy') || '-',
           Courthouse: data.courthouse,
           'Judge(s)': data.judges,
           'Defendant(s)': data.defendants,
+        },
+        currentRetention: {
+          'Date applied': this.datePipe.transform(data.retention_date_time_applied, 'dd MMM yyyy'),
+          'Retain case until': this.datePipe.transform(data.retain_until_date_time, 'dd MMM yyyy'),
+          'DARTS Retention policy applied': data.retention_policy_applied,
         },
         case_id: data.case_id,
         case_number: data.case_number,
@@ -72,6 +62,30 @@ export class CaseRetentionDateComponent implements OnInit {
       return caseDetails;
     })
   );
+
+  infoBannerHide(rows: CaseRetentionHistory[]): boolean {
+    if (rows.length) {
+      return this.getLatestDate(rows).status !== 'PENDING';
+    } else {
+      //Show banner if array is empty
+      return false;
+    }
+  }
+
+  buttonGroupHide(rows: CaseRetentionHistory[]): boolean {
+    if (rows.length) {
+      return this.getLatestDate(rows).status !== 'COMPLETE';
+    }
+    return true;
+  }
+
+  getLatestDate(rows: CaseRetentionHistory[]) {
+    return rows.reduce(
+      (max, item) =>
+        new Date(item.retention_last_changed_date) > new Date(max.retention_last_changed_date) ? item : max,
+      rows[0]
+    );
+  }
 
   vm$ = combineLatest({
     caseDetails: this.caseDetails$,

@@ -8,36 +8,48 @@
   </app-breadcrumb>
 
   <!-- TODO: Move banner into it's own component -->
-  <div
-    class="govuk-notification-banner"
-    aria-labelledby="govuk-notification-banner-title"
-    data-module="govuk-notification-banner"
-  >
-    <div class="govuk-notification-banner__header">
-      <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">Important</h2>
+  @if (!infoBannerHide(vm.retentionHistory)) {
+    <div
+      class="govuk-notification-banner"
+      aria-labelledby="govuk-notification-banner-title"
+      data-module="govuk-notification-banner"
+    >
+      <div class="govuk-notification-banner__header">
+        <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">Important</h2>
+      </div>
+      <div class="govuk-notification-banner__content">
+        <p class="govuk-notification-banner__heading">This case is still open or was recently closed.</p>
+        <p class="govuk-notification-banner__body">
+          The retention date for this case cannot be changed while the case is open or while a retention policy is
+          currently pending.
+        </p>
+      </div>
     </div>
-    <div class="govuk-notification-banner__content">
-      <p class="govuk-notification-banner__heading">This case is still open or was recently closed.</p>
-      <p class="govuk-notification-banner__body">
-        The retention date for this case cannot be changed while the case is open or while a retention policy is
-        currently pending.
-      </p>
-    </div>
-  </div>
+  }
 
   <app-govuk-heading>Case retention date</app-govuk-heading>
 
   <app-details-table title="Case details" [details]="vm.caseDetails.details"></app-details-table>
 
   <ng-container>
-    <app-details-table
-      title="Current retention details"
-      [details]="{ '': 'A retention policy has yet to be applied to this case.' }"
-    ></app-details-table>
-    <div class="govuk-button-group">
-      <button class="govuk-button" data-module="govuk-button">Change retention date</button>
-      <a routerLink="../" routerLinkActive="router-link-active" class="govuk-link">Cancel</a>
-    </div>
+    @if (!vm.caseDetails.currentRetention['Date applied']) {
+      <app-details-table
+        title="Current retention details"
+        [details]="{ '': 'A retention policy has yet to be applied to this case.' }"
+      ></app-details-table>
+    } @else {
+      <app-details-table
+        title="Current retention details"
+        [details]="vm.caseDetails.currentRetention"
+      ></app-details-table>
+    }
+
+    @if (!buttonGroupHide(vm.retentionHistory)) {
+      <div class="govuk-button-group">
+        <button class="govuk-button" data-module="govuk-button">Change retention date</button>
+        <a routerLink="../" routerLinkActive="router-link-active" class="govuk-link">Cancel</a>
+      </div>
+    }
   </ng-container>
 
   <ng-container>
@@ -50,8 +62,8 @@
       [rows]="vm.retentionHistory"
     >
       <ng-template [tableRowTemplate]="vm.retentionHistory" let-row>
-        <td class="govuk-table__cell">{{ row.retention_last_changed_date }}</td>
-        <td class="govuk-table__cell">{{ row.retention_date }}</td>
+        <td class="govuk-table__cell">{{ row.retention_last_changed_date | date: 'dd MMM yyyy HH:mm:ss' }}</td>
+        <td class="govuk-table__cell">{{ row.retention_date | date: 'dd MMM yyyy' }}</td>
         <td class="govuk-table__cell">{{ row.amended_by }}</td>
         <td class="govuk-table__cell">{{ row.retention_policy_applied }}</td>
         <td class="govuk-table__cell">{{ row.comments }}</td>
@@ -62,8 +74,7 @@
               class="govuk-tag"
               [ngClass]="{
                 'govuk-tag--green': row.status === 'COMPLETE',
-                'govuk-tag--yellow': row.status === 'PENDING',
-                'govuk-tag--red': row.status === 'CLOSED'
+                'govuk-tag--yellow': row.status === 'PENDING'
               }"
             >
               {{ row.status }}
