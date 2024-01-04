@@ -11,10 +11,15 @@
   <a href="#" *ngIf="state === 'OrderSummary'" (click)="onBack($event)" class="govuk-back-link">Back</a>
 
   <!-- Reporting Restriction Banner -->
-  <app-reporting-restriction
-    *ngIf="vm.case.reporting_restriction && state !== 'OrderFailure'"
-    [reportingRestriction]="vm.case.reporting_restriction"
-  ></app-reporting-restriction>
+  @if (state !== 'OrderFailure') {
+    <app-reporting-restriction
+      [heading]="'There are restrictions against this ' + (vm.case.reporting_restrictions?.length ? 'hearing' : 'case')"
+      [restrictions]="vm.restrictions"
+      [caseHasRestrictions]="!!vm.case.reporting_restrictions?.length"
+    >
+      <p class="govuk-body">For full details, check the hearing events.</p>
+    </app-reporting-restriction>
+  }
   <ng-container *ngIf="vm.error?.status === 403 && state === 'OrderFailure'">
     <app-forbidden header="You do not have permission to get audio for this courthouse." />
   </ng-container>

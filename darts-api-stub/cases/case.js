@@ -28,7 +28,7 @@ const singleCase = {
       event_ts: '2023-08-21T09:00:00Z',
     },
     {
-      hearing_id: 1,
+      hearing_id: 2,
       event_id: 123,
       event_name: 'Section 40, Children and Young People Act 1933',
       event_text: '',

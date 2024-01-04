@@ -1,7 +1,7 @@
 import 'cypress-axe';
 import './commands';
 
-describe('Hearing Transcripts', () => {
+describe('Hearing Screen', () => {
   beforeEach(() => {
     cy.login();
     cy.injectAxe();

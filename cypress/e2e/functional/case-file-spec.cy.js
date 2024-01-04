@@ -46,7 +46,7 @@ describe('Case file screen', () => {
         cy.get('.govuk-details__text').contains(
           'Restriction applied: Section 4(2) of the Contempt of Court Act 1981 - Applied 21 Aug 2023'
         );
-        cy.get('.govuk-details__text').contains('Restriction(s) lifted: 21 Aug 2023');
+        cy.get('.govuk-details__text').contains('Restrictions lifted: 21 Aug 2023');
       });
     });
 
