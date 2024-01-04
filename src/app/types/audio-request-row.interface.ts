@@ -15,7 +15,7 @@ export interface AudioRequestRow {
 }
 
 export interface TransformedMediaRow extends AudioRequestRow {
-  mediaId: number;
+  transformedMediaId: number;
   filename: string;
   format: string;
   lastAccessed?: string;
