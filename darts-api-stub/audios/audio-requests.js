@@ -234,10 +234,15 @@ router.get('/not-accessed-count', (req, res) => {
 });
 
 router.post('', (req, res) => {
-  if (req.body?.hearing_id === 3) {
-    res.sendStatus(403);
-  } else {
-    res.send(audioRequestOne);
+  switch (req.body?.hearing_id) {
+    case 3:
+      res.sendStatus(403);
+      break;
+    case 4:
+      res.sendStatus(409);
+      break;
+    default:
+      res.send(audioRequestOne);
   }
 });
 
