@@ -176,10 +176,10 @@ router.delete('/transformed_media/:requestId', (req, res) => {
   res.sendStatus(204);
 });
 
-router.patch('/transformed_media/:requestId', (req, res) => {
+router.patch('/transformed_media/:transformedMediaId', (req, res) => {
   //Set specific media request last_accessed_ts value
-  let id = req.params.requestId;
-  mediaRequests.transformed_media_details.find((x) => x.media_request_id == id).last_accessed_ts =
+  let id = req.params.transformedMediaId;
+  mediaRequests.transformed_media_details.find((x) => x.transformed_media_id == id).last_accessed_ts =
     new Date().toISOString();
   res.sendStatus(204);
 });

@@ -91,9 +91,10 @@ export class AudioViewComponent implements OnDestroy {
     } else {
       this.requestId = this.transformedMedia.requestId;
       const isUnread = !this.transformedMedia.lastAccessed;
+      const transformedMediaId = this.transformedMedia.transformedMediaId;
 
       //Send request to update last accessed time of audio
-      this.audioRequestService.patchAudioRequestLastAccess(this.requestId, isUnread).subscribe();
+      this.audioRequestService.patchAudioRequestLastAccess(transformedMediaId, isUnread).subscribe();
 
       this.case$ = this.caseService.getCase(this.transformedMedia.caseId);
 
