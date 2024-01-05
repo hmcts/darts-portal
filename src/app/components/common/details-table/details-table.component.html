@@ -13,7 +13,7 @@
         </tr>
       } @else if (isNotNullUndefinedOrEmptyString(detail.value)) {
         <tr class="govuk-table__row">
-          <th class="govuk-table__header">{{ detail.key }}</th>
+          <th [id]="'detail-th-' + $index" class="govuk-table__header">{{ detail.key }}</th>
           <td class="govuk-table__cell table-width">{{ detail.value }}</td>
         </tr>
       }
