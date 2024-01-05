@@ -58,7 +58,7 @@ const mediaRequests = {
       last_accessed_ts: '',
       transformed_media_filename: 'C3',
       transformed_media_format: 'ZIP',
-      transformed_media_id: 3,
+      transformed_media_id: 4,
       hearing_id: 3,
     },
     {
@@ -75,7 +75,7 @@ const mediaRequests = {
       last_accessed_ts: '',
       transformed_media_filename: 'C4_Playback',
       transformed_media_format: 'MP3',
-      transformed_media_id: 4,
+      transformed_media_id: 5,
       hearing_id: 4,
     },
     {
@@ -92,7 +92,7 @@ const mediaRequests = {
       last_accessed_ts: '',
       transformed_media_filename: 'C5_NoDownloadPermissions',
       transformed_media_format: 'MP3',
-      transformed_media_id: 5,
+      transformed_media_id: 6,
       hearing_id: 5,
     },
     {
@@ -109,7 +109,7 @@ const mediaRequests = {
       last_accessed_ts: '',
       transformed_media_filename: 'C6_ViewAndDeleteMe',
       transformed_media_format: 'MP3',
-      transformed_media_id: 6,
+      transformed_media_id: 7,
       hearing_id: 6,
     },
     {
@@ -126,7 +126,7 @@ const mediaRequests = {
       last_accessed_ts: '',
       transformed_media_filename: 'C7_DeleteMe',
       transformed_media_format: 'MP3',
-      transformed_media_id: 7,
+      transformed_media_id: 8,
       hearing_id: 7,
     },
   ],
@@ -155,7 +155,7 @@ const expiredMediaRequests = {
   ],
 };
 
-router.delete('/:requestId', (req, res) => {
+router.delete('/transformed_media/:requestId', (req, res) => {
   const requestId = req.params.requestId;
   const index = mediaRequests.transformed_media_details.findIndex((x) => x.media_request_id == requestId);
   const expiredIndex = expiredMediaRequests.transformed_media_details.findIndex((x) => x.media_request_id == requestId);
@@ -234,10 +234,15 @@ router.get('/not-accessed-count', (req, res) => {
 });
 
 router.post('', (req, res) => {
-  if (req.body?.hearing_id === 3) {
-    res.sendStatus(403);
-  } else {
-    res.send(audioRequestOne);
+  switch (req.body?.hearing_id) {
+    case 3:
+      res.sendStatus(403);
+      break;
+    case 4:
+      res.sendStatus(409);
+      break;
+    default:
+      res.send(audioRequestOne);
   }
 });
 

@@ -134,7 +134,7 @@ export class AudiosComponent {
         expiry: ar.transformed_media_expiry_ts,
         status: ar.media_request_status,
         requestType: ar.request_type,
-        mediaId: ar.transformed_media_id,
+        transformedMediaId: ar.transformed_media_id,
         filename: ar.transformed_media_filename,
         format: ar.transformed_media_format,
         lastAccessed: ar.last_accessed_ts,
@@ -161,7 +161,7 @@ export class AudiosComponent {
 
   onDeleteConfirmed() {
     const deleteRequests: Observable<unknown>[] = this.selectedAudioRequests.map((s) =>
-      this.audioService.deleteAudioRequests(s.requestId)
+      this.audioService.deleteTransformedMedia(s.requestId)
     );
 
     forkJoin(deleteRequests).subscribe({

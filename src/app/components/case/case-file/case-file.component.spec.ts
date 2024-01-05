@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CaseFile } from '@darts-types/index';
+import { UserService } from '@services/user/user.service';
 import { CaseFileComponent } from './case-file.component';
 
 describe('CaseFileComponent', () => {
@@ -18,9 +19,12 @@ describe('CaseFileComponent', () => {
     retain_until: '2023-08-10T11:23:24.858Z',
   };
 
+  const fakeUserService = { isRequester: () => true, isTranscriber: () => false } as Partial<UserService>;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [CaseFileComponent],
+      providers: [{ provide: UserService, useValue: fakeUserService }],
     });
     fixture = TestBed.createComponent(CaseFileComponent);
     component = fixture.componentInstance;

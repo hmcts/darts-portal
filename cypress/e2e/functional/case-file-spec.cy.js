@@ -89,4 +89,42 @@ describe('Case file screen', () => {
       });
     });
   });
+
+  describe('retention date', () => {
+    it('should show retain until for valid role', () => {
+      //Defaults to valid role
+      cy.contains('Search').click();
+      cy.get('#case_number').type('C20220620001');
+      cy.get('button').contains('Search').click();
+      cy.contains('C20220620001').click();
+
+      cy.get('h3.govuk-heading-s').should('contain', 'Retained until');
+      cy.get('p.govuk-body').should('contain', '10 Aug 2023');
+      cy.get('a.govuk-link').should('contain', 'View or change');
+    });
+
+    it('should show no date applied for valid role', () => {
+      //Defaults to valid role
+      cy.contains('Search').click();
+      cy.get('#case_number').type('C20220620002');
+      cy.get('button').contains('Search').click();
+      cy.contains('C20220620002').click();
+
+      cy.get('h3.govuk-heading-s').should('contain', 'Retained until');
+      cy.get('p.govuk-body').should('contain', 'No date applied');
+      cy.get('a.govuk-link').should('contain', 'View or change');
+    });
+
+    it('should hide retain until for invalid role', () => {
+      cy.logout();
+      cy.login('transcriber');
+      cy.contains('Search').click();
+      cy.get('#case_number').type('C20220620002');
+      cy.get('button').contains('Search').click();
+      cy.contains('C20220620002').click();
+
+      cy.contains('Retained until').should('not.exist');
+      cy.contains('View or change').should('not.exist');
+    });
+  });
 });

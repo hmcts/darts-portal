@@ -147,7 +147,7 @@ export class AudioViewComponent implements OnDestroy {
 
   onDeleteConfirmed() {
     this.requestId &&
-      this.audioRequestService.deleteAudioRequests(this.requestId).subscribe({
+      this.audioRequestService.deleteTransformedMedia(this.requestId).subscribe({
         next: () => {
           this.router.navigate(['/audios']);
         },

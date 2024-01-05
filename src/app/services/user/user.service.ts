@@ -30,6 +30,10 @@ export class UserService {
     return this.hasRole('JUDGE');
   }
 
+  public isAdmin(): boolean {
+    return this.hasRole('ADMIN');
+  }
+
   public isRequester(): boolean {
     return this.hasRole('REQUESTER');
   }
