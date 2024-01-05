@@ -12,8 +12,11 @@
 
   @if (state !== 'OrderFailure') {
     <app-reporting-restriction
-      [heading]="'There are restrictions against this ' + (vm.case.reporting_restrictions?.length ? 'hearing' : 'case')"
-      [restrictions]="vm.restrictions"
+      [heading]="
+        'There are restrictions against this ' +
+        (vm.case.reporting_restrictions?.length && vm.hearingRestrictions.length ? 'hearing' : 'case')
+      "
+      [restrictions]="vm.hearingRestrictions"
       [caseHasRestrictions]="!!vm.case.reporting_restrictions?.length"
     >
       <p class="govuk-body">For full details, check the hearing events.</p>

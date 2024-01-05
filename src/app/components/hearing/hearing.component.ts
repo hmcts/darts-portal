@@ -121,7 +121,7 @@ export class HearingComponent implements OnInit {
     hearing: this.hearing$,
     audios: this.audio$,
     events: this.events$,
-    restrictions: this.restrictions$,
+    hearingRestrictions: this.restrictions$,
     error: this.error$,
   });
 
