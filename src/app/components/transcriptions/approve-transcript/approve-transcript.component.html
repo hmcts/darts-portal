@@ -18,8 +18,8 @@
     ></app-validation-error-summary>
 
     <app-reporting-restriction
-      *ngIf="vm.reportingRestriction"
-      [reportingRestriction]="vm.reportingRestriction"
+      class="margin-bottom"
+      [restrictions]="vm.reportingRestrictions"
     ></app-reporting-restriction>
 
     <app-govuk-heading>Approve transcript request</app-govuk-heading>
