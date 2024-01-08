@@ -159,8 +159,9 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   onCourthouseSelected(courthouse: string) {
-    this.form.get('courthouse')?.setValue(courthouse);
+    this.form.get('courthouse')?.patchValue(courthouse);
     this.form.get('courthouse')?.markAsDirty();
+    this.isSubmitted = false;
   }
 
   ngAfterViewChecked(): void {
