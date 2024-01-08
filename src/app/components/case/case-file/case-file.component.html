@@ -16,7 +16,7 @@
 @if (userService.isRequester() || userService.isApprover() || userService.isJudge() || userService.isAdmin()) {
   <h3 class="govuk-heading-s">Retained until</h3>
   <p class="govuk-body">
-    @if (caseFile.retain_until_date_time && caseFile.retain_until_date_time !== '') {
+    @if (caseFile.retain_until_date_time) {
       {{ caseFile.retain_until_date_time | date: 'd MMM y' }}
     } @else {
       No date applied
