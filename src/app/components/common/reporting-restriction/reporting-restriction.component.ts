@@ -1,13 +1,17 @@
+import { DatePipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { GovukDetailsComponent } from '@common/govuk-details/govuk-details.component';
+import { ReportingRestriction } from '@darts-types/index';
 
 @Component({
   selector: 'app-reporting-restriction',
   standalone: true,
-  imports: [CommonModule],
+  imports: [GovukDetailsComponent, DatePipe],
   templateUrl: './reporting-restriction.component.html',
   styleUrls: ['./reporting-restriction.component.scss'],
 })
 export class ReportingRestrictionComponent {
-  @Input() reportingRestriction = '';
+  @Input() heading?: string;
+  @Input() reportingRestriction?: string; // TODO: Remove this when fully migrated to multiple reporting_restrictions
+  @Input() restrictions?: ReportingRestriction[] = [];
 }

@@ -118,7 +118,7 @@ describe('AudioViewComponent', () => {
     lastAccessed: undefined,
     filename: 'T20200331',
     format: 'mp3',
-    mediaId: 1,
+    transformedMediaId: 1,
   };
 
   const fakeHearingService = {
@@ -132,7 +132,7 @@ describe('AudioViewComponent', () => {
 
   const fakeAudioRequestService = {
     patchAudioRequestLastAccess: () => of(new HttpResponse<Response>({ status: 200 })),
-    deleteAudioRequests: jest.fn(),
+    deleteTransformedMedia: jest.fn(),
     downloadAudio: jest.fn(),
     getStatusCode: () => of(200),
   };
@@ -202,7 +202,7 @@ describe('AudioViewComponent', () => {
         expect(component.fileName).toEqual('T20200331.mp3');
       });
       it('should call patchAudioRequestLastAccess()', () => {
-        expect(patchAudioRequestLastAccessSpy).toHaveBeenCalledWith(12378, true);
+        expect(patchAudioRequestLastAccessSpy).toHaveBeenCalledWith(1, true);
       });
     });
 
@@ -234,24 +234,24 @@ describe('AudioViewComponent', () => {
 
     it('should navigate to /audios on successful deletion', () => {
       const routerSpy = jest.spyOn(component.router, 'navigate');
-      fakeAudioRequestService.deleteAudioRequests.mockReturnValue(of(null));
+      fakeAudioRequestService.deleteTransformedMedia.mockReturnValue(of(null));
       component.requestId = 123;
 
       component.onDeleteConfirmed();
 
-      expect(fakeAudioRequestService.deleteAudioRequests).toHaveBeenCalledWith(123);
+      expect(fakeAudioRequestService.deleteTransformedMedia).toHaveBeenCalledWith(123);
 
       expect(routerSpy).toHaveBeenCalledWith(['/audios']);
     });
 
     it('should set isDeleting to false on deletion error', () => {
       const error = new HttpErrorResponse({ status: 500 });
-      fakeAudioRequestService.deleteAudioRequests.mockReturnValue(of(error));
+      fakeAudioRequestService.deleteTransformedMedia.mockReturnValue(of(error));
       component.requestId = 123;
 
       component.onDeleteConfirmed();
 
-      expect(fakeAudioRequestService.deleteAudioRequests).toHaveBeenCalledWith(123);
+      expect(fakeAudioRequestService.deleteTransformedMedia).toHaveBeenCalledWith(123);
       expect(component.isDeleting).toBe(false);
     });
 
@@ -273,7 +273,7 @@ describe('AudioViewComponent', () => {
   describe('With audioRequestView set to null', () => {
     const audioRequestService = {
       patchAudioRequestLastAccess: () => of(new HttpResponse<Response>({ status: 200 })),
-      deleteAudioRequests: jest.fn(),
+      deleteTransformedMedia: jest.fn(),
       downloadAudio: jest.fn(),
     };
 

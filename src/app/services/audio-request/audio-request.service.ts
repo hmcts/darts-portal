@@ -29,20 +29,24 @@ export class AudioRequestService {
       .pipe(map(this.convertHearingDateToUtc));
   }
 
-  deleteAudioRequests(mediaRequestId: number): Observable<HttpResponse<Response>> {
-    return this.http.delete<Response>(`api/audio-requests/${mediaRequestId}`, { observe: 'response' });
+  deleteTransformedMedia(transformedMediaId: number): Observable<HttpResponse<Response>> {
+    return this.http.delete<Response>(`api/audio-requests/transformed_media/${transformedMediaId}`, {
+      observe: 'response',
+    });
   }
 
   //Sends request to update last accessed timestamp
-  patchAudioRequestLastAccess(requestId: number, isUnread = false): Observable<HttpResponse<Response>> {
-    return this.http.patch<Response>(`api/audio-requests/${requestId}`, {}, { observe: 'response' }).pipe(
-      tap(() => {
-        if (isUnread) {
-          // Optimistically update the unread count before next polling interval
-          this.countService.decrementUnreadAudioCount();
-        }
-      })
-    );
+  patchAudioRequestLastAccess(transformedMediaId: number, isUnread = false): Observable<HttpResponse<Response>> {
+    return this.http
+      .patch<Response>(`api/audio-requests/transformed_media/${transformedMediaId}`, {}, { observe: 'response' })
+      .pipe(
+        tap(() => {
+          if (isUnread) {
+            // Optimistically update the unread count before next polling interval
+            this.countService.decrementUnreadAudioCount();
+          }
+        })
+      );
   }
 
   downloadAudio(requestId: number, requestType: AudioRequestType): Observable<Blob> {

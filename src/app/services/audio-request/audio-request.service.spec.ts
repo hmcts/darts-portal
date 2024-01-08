@@ -171,11 +171,11 @@ describe('AudioService', () => {
       it('sends delete request', () => {
         const reqId = 123449;
         let responseStatus;
-        service.deleteAudioRequests(reqId).subscribe((res) => {
+        service.deleteTransformedMedia(reqId).subscribe((res) => {
           responseStatus = res.status;
         });
 
-        const req = httpMock.expectOne(`api/audio-requests/${reqId}`);
+        const req = httpMock.expectOne(`api/audio-requests/transformed_media/${reqId}`);
         expect(req.request.method).toBe('DELETE');
 
         req.flush(null, { status: 204, statusText: '' });
@@ -192,7 +192,7 @@ describe('AudioService', () => {
           responseStatus = res.status;
         });
 
-        const req = httpMock.expectOne(`api/audio-requests/${reqId}`);
+        const req = httpMock.expectOne(`api/audio-requests/transformed_media/${reqId}`);
         expect(req.request.method).toBe('PATCH');
 
         req.flush(null, { status: 204, statusText: '' });

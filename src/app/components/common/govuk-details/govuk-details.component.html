@@ -1,0 +1,10 @@
+<details class="govuk-details" [open]="isOpen">
+  <summary class="govuk-details__summary" (click)="$event.preventDefault(); isOpen = !isOpen">
+    <span class="govuk-details__summary-text">
+      {{ isOpen ? openSummary : closedSummary }}
+    </span>
+  </summary>
+  <div class="govuk-details__text">
+    <ng-content></ng-content>
+  </div>
+</details>
