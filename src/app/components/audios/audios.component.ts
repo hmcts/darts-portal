@@ -47,6 +47,7 @@ export class AudiosComponent {
   selectedAudioRequests: AudioRequestRow[] = [];
 
   isDeleting = false;
+  isAudioRequest = false;
 
   audioRequests$: Observable<RequestedMedia>;
   expiredAudioRequests$: Observable<RequestedMedia>;
@@ -160,16 +161,29 @@ export class AudiosComponent {
   }
 
   onDeleteConfirmed() {
-    const deleteRequests: Observable<unknown>[] = this.selectedAudioRequests.map((s) =>
-      this.audioService.deleteTransformedMedia(s.requestId)
-    );
+    if (!this.isAudioRequest) {
+      const deleteRequests: Observable<unknown>[] = this.selectedAudioRequests.map((s) =>
+        this.audioService.deleteTransformedMedia(s.requestId)
+      );
 
-    forkJoin(deleteRequests).subscribe({
-      next: () => (this.isDeleting = false),
-      error: () => (this.isDeleting = false),
-    });
+      forkJoin(deleteRequests).subscribe({
+        next: () => (this.isDeleting = false),
+        error: () => (this.isDeleting = false),
+      });
 
-    this.refresh$.next();
+      this.refresh$.next();
+    } else {
+      const deleteRequests: Observable<unknown>[] = this.selectedAudioRequests.map((s) =>
+        this.audioService.deleteAudioRequests(s.requestId)
+      );
+
+      forkJoin(deleteRequests).subscribe({
+        next: () => (this.isDeleting = false),
+        error: () => (this.isDeleting = false),
+      });
+
+      this.refresh$.next();
+    }
   }
 
   onDeleteCancelled() {
@@ -181,6 +195,7 @@ export class AudiosComponent {
   }
 
   onClearClicked(event: MouseEvent, row: AudioRequestRow) {
+    this.isAudioRequest = true;
     event.preventDefault();
     this.selectedAudioRequests = [row];
     this.isDeleting = true;
