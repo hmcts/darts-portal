@@ -23,31 +23,37 @@
   </div>
 }
 
-@if (restrictions?.length) {
+@if (restrictions?.length || caseHasRestrictions) {
   <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title">
     <div class="govuk-notification-banner__header">
       <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">Important</h2>
     </div>
     <div class="govuk-notification-banner__content">
       <p class="govuk-notification-banner__heading">
-        {{ heading ?? 'There are restrictions against this case' }}
+        {{ heading }}
       </p>
-      <app-govuk-details openSummary="Hide restrictions" closedSummary="Show restrictions">
-        <ul class="govuk-list">
-          @for (restriction of restrictions; track $index) {
-            @if (restriction.event_name === 'Restrictions lifted') {
-              <li><strong>Restriction(s) lifted:</strong> {{ restriction.event_ts | date: 'dd MMM yyyy' }}</li>
-            } @else {
-              <li>
-                <strong>Restriction applied:</strong> {{ restriction.event_name }}
-                {{ restriction.event_name ? '- Applied' : '' }}
-                {{ restriction.event_ts | date: 'dd MMM yyyy' }}
-              </li>
+      @if (restrictions?.length) {
+        <app-govuk-details openSummary="Hide restrictions" closedSummary="Show restrictions">
+          <ul class="govuk-list">
+            @for (restriction of restrictions; track $index) {
+              @if (restriction.event_name === 'Restrictions lifted') {
+                @if (restriction.event_ts) {
+                  <li><strong>Restrictions lifted:</strong> {{ restriction.event_ts | date: 'dd MMM yyyy' }}</li>
+                } @else {
+                  <li><strong>Restrictions lifted</strong></li>
+                }
+              } @else {
+                <li>
+                  <strong>Restriction applied:</strong> {{ restriction.event_name }}
+                  {{ restriction.event_ts ? '- Applied' : '' }}
+                  {{ restriction.event_ts | date: 'dd MMM yyyy' }}
+                </li>
+              }
             }
-          }
-        </ul>
-        <ng-content />
-      </app-govuk-details>
+          </ul>
+          <ng-content />
+        </app-govuk-details>
+      }
     </div>
   </div>
 }

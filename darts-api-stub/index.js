@@ -24,6 +24,8 @@ app.use('/external-user', require('./authentication'));
 app.use('/internal-user', require('./authentication'));
 // stub out courthouses api
 app.use('/courthouses', require('./courthouses/courthouses'));
+// retention APIs
+app.use('/retentions', require('./retentions/retention'));
 // stub out certain case APIs
 app.use('/cases', require('./cases/case'));
 // audio request API

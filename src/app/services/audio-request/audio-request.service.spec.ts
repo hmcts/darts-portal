@@ -192,7 +192,7 @@ describe('AudioService', () => {
           responseStatus = res.status;
         });
 
-        const req = httpMock.expectOne(`api/audio-requests/${reqId}`);
+        const req = httpMock.expectOne(`api/audio-requests/transformed_media/${reqId}`);
         expect(req.request.method).toBe('PATCH');
 
         req.flush(null, { status: 204, statusText: '' });

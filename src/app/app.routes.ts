@@ -78,8 +78,11 @@ const protectedRoutes: Routes = [
   },
   {
     path: 'case/:caseId/retention',
+    data: { allowedRoles: ['APPROVER', 'REQUESTER', 'JUDGE', 'ADMIN'] },
     loadComponent: () =>
-      import('./components/case/case-retention/case-retention.component').then((c) => c.CaseRententionComponent),
+      import('./components/case/case-retention-date/case-retention-date.component').then(
+        (c) => c.CaseRetentionDateComponent
+      ),
   },
   {
     path: 'case/:caseId/hearing/:hearing_id',

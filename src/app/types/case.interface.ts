@@ -13,4 +13,8 @@ export interface Case {
   hearings?: Hearing[];
   retain_until?: string;
   prosecutors?: string[];
+  retain_until_date_time?: string;
+  case_closed_date_time?: string;
+  retention_date_time_applied?: string;
+  retention_policy_applied?: string;
 }

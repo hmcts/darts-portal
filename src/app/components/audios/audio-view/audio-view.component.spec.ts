@@ -202,7 +202,7 @@ describe('AudioViewComponent', () => {
         expect(component.fileName).toEqual('T20200331.mp3');
       });
       it('should call patchAudioRequestLastAccess()', () => {
-        expect(patchAudioRequestLastAccessSpy).toHaveBeenCalledWith(12378, true);
+        expect(patchAudioRequestLastAccessSpy).toHaveBeenCalledWith(1, true);
       });
     });
 

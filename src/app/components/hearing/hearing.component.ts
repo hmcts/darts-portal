@@ -14,6 +14,7 @@ import {
   HearingPageState,
   PostAudioRequest,
   PostAudioResponse,
+  ReportingRestriction,
   TranscriptsRow,
 } from '@darts-types/index';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
@@ -28,7 +29,7 @@ import { HearingService } from '@services/hearing/hearing.service';
 import { MappingService } from '@services/mapping/mapping.service';
 import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
-import { combineLatest, map } from 'rxjs';
+import { combineLatest, map, shareReplay } from 'rxjs';
 import { LoadingComponent } from '../common/loading/loading.component';
 import { EventsAndAudioComponent } from './events-and-audio/events-and-audio.component';
 import { HearingFileComponent } from './hearing-file/hearing-file.component';
@@ -72,7 +73,7 @@ export class HearingComponent implements OnInit {
   audioTimes: { startTime: DateTime; endTime: DateTime } | null = null;
   private _state: HearingPageState = 'Default';
   public errorSummary: ErrorSummaryEntry[] = [];
-  hearingId = this.route.snapshot.params.hearing_id;
+  hearingId = this.route.snapshot.params.hearing_id as number;
   caseId = this.route.snapshot.params.caseId;
   userState = this.route.snapshot.data.userState;
   transcripts: TranscriptsRow[] = [];
@@ -105,10 +106,13 @@ export class HearingComponent implements OnInit {
 
   requestObject!: PostAudioRequest;
 
-  case$ = this.caseService.getCase(this.caseId);
+  case$ = this.caseService.getCase(this.caseId).pipe(shareReplay(1));
   hearing$ = this.caseService.getHearingById(this.caseId, this.hearingId);
   audio$ = this.hearingService.getAudio(this.hearingId);
   events$ = this.hearingService.getEvents(this.hearingId);
+  restrictions$ = this.case$.pipe(
+    map((c) => this.filterRestrictionsByHearingId(c.reporting_restrictions ?? [], this.hearingId))
+  );
   support = this.appConfigService.getAppConfig()?.support;
   error$ = this.errorMsgService.errorMessage$;
 
@@ -117,6 +121,7 @@ export class HearingComponent implements OnInit {
     hearing: this.hearing$,
     audios: this.audio$,
     events: this.events$,
+    hearingRestrictions: this.restrictions$,
     error: this.error$,
   });
 
@@ -211,5 +216,13 @@ export class HearingComponent implements OnInit {
         this.state = 'OrderFailure';
       },
     });
+  }
+
+  filterRestrictionsByHearingId(restrictions: ReportingRestriction[], hearingId: number): ReportingRestriction[] {
+    return restrictions
+      .filter((r) => {
+        return r.hearing_id == hearingId;
+      })
+      .map((r) => ({ ...r, event_ts: '' })); // timestamp is not required in hearing screen
   }
 }
