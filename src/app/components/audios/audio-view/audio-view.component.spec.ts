@@ -235,7 +235,7 @@ describe('AudioViewComponent', () => {
     it('should navigate to /audios on successful deletion', () => {
       const routerSpy = jest.spyOn(component.router, 'navigate');
       fakeAudioRequestService.deleteTransformedMedia.mockReturnValue(of(null));
-      component.requestId = 123;
+      component.transformedMedia.transformedMediaId = 123;
 
       component.onDeleteConfirmed();
 
@@ -247,7 +247,7 @@ describe('AudioViewComponent', () => {
     it('should set isDeleting to false on deletion error', () => {
       const error = new HttpErrorResponse({ status: 500 });
       fakeAudioRequestService.deleteTransformedMedia.mockReturnValue(of(error));
-      component.requestId = 123;
+      component.transformedMedia.transformedMediaId = 123;
 
       component.onDeleteConfirmed();
 
