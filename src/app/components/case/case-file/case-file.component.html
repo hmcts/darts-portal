@@ -27,6 +27,11 @@
       No date applied
     }
 
-    <a routerLink="#" routerLinkActive="router-link-active" class="govuk-link retention-link">View or change</a>
+    <a
+      [routerLink]="['/case', caseFile.case_id, 'retention']"
+      routerLinkActive="router-link-active"
+      class="govuk-link retention-link"
+      >View or change</a
+    >
   </p>
 }

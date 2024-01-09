@@ -1,0 +1,87 @@
+<h1 class="govuk-heading-l">Change case retention date</h1>
+<div class="govuk-form-group">
+  <fieldset class="govuk-fieldset">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+      <h1 class="govuk-fieldset__heading">Select a new retention date</h1>
+    </legend>
+    <!-- @if (selectedOption.invalid && isSubmitted) {
+        <p id="error-message" class="govuk-error-message">
+          <span class="govuk-visually-hidden">Error:</span> Select an action to progress this request.
+        </p>
+      } -->
+    <div class="govuk-radios" data-module="govuk-radios">
+      <div class="govuk-radios__item">
+        <input
+          class="govuk-radios__input"
+          id="retentionDateOption"
+          name="retentionOptions"
+          type="radio"
+          [formControl]="retainFormControl"
+          (click)="onChange()"
+          value="date"
+        />
+        <label class="govuk-label govuk-radios__label" for="retentionOption">Retain until a specific date</label>
+      </div>
+      <div *ngIf="retainFormControl.value === 'date'" class="govuk-radios__conditional" id="conditional-reason">
+        Hello!
+      </div>
+      <div
+        *ngIf="retainFormControl.value === 'date'"
+        class="govuk-form-group input-group-indent-1"
+        id="specific-date-items"
+      >
+        <div data-module="ds-datepicker" class="ds_datepicker">
+          <label class="ds_label" for="specific_date">Enter a date</label>
+          <p class="ds_hint-text">Use dd/mm/yyyy format.</p>
+          <!-- Error message date range date_from -->
+          <!-- <div *ngIf="isControlInvalid('specific_date')" id="specific_date-errors">
+          <p *ngFor="let error of getFieldErrorMessages('specific_date')" class="govuk-error-message">
+            <span class="govuk-visually-hidden">Error:</span> {{ error }}
+          </p>
+        </div> -->
+          <div class="ds_input__wrapper">
+            <input
+              aria-label="Enter a date in dd/mm/yyyy format"
+              [formControl]="retainDate"
+              name="specific_date"
+              id="specific_date"
+              type="text"
+              class="ds_input ds_input--fixed-10"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="govuk-radios__item">
+        <input
+          class="govuk-radios__input"
+          id="retentionOption-2"
+          name="retentionOptions"
+          type="radio"
+          [formControl]="retainFormControl"
+          (click)="onChange()"
+          value="permanent"
+        />
+        <label class="govuk-label govuk-radios__label" for="retentionOption-2">Retain permanently (99 years)</label>
+      </div>
+    </div>
+    <div class="govuk-form-group">
+      <label class="govuk-label govuk-!-font-weight-bold" for="change-reason">Why are you making this change?</label>
+      <textarea
+        class="govuk-textarea govuk-!-width-one-half"
+        id="change-reason"
+        name="reason"
+        rows="5"
+        aria-describedby="change-reason-hint"
+        [formControl]="changeReasonFormControl"
+        [maxlength]="rententionCharacterLimit"
+      ></textarea>
+      <div id="change-reason-hint" class="govuk-hint">
+        You have {{ remainingCharacterCount }} character{{ remainingCharacterCount === 1 ? '' : 's' }} remaining
+      </div>
+      <button class="govuk-button" (click)="onConfirm()" data-module="govuk-button">Continue</button>
+      <a class="govuk-link" [routerLink]="['/case', caseId.toString()]" routerLinkActive="router-link-active">
+        Cancel
+      </a>
+    </div>
+  </fieldset>
+</div>
