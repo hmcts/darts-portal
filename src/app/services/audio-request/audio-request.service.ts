@@ -29,6 +29,10 @@ export class AudioRequestService {
       .pipe(map(this.convertHearingDateToUtc));
   }
 
+  deleteAudioRequests(mediaRequestId: number): Observable<HttpResponse<Response>> {
+    return this.http.delete<Response>(`api/audio-requests/${mediaRequestId}`, { observe: 'response' });
+  }
+
   deleteTransformedMedia(transformedMediaId: number): Observable<HttpResponse<Response>> {
     return this.http.delete<Response>(`api/audio-requests/transformed_media/${transformedMediaId}`, {
       observe: 'response',

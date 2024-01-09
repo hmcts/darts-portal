@@ -167,7 +167,24 @@ describe('AudioService', () => {
       }));
     });
 
-    describe('#deleteAudioRequest', () => {
+    describe('#deleteAudioRequests', () => {
+      it('sends delete request', () => {
+        const reqId = 123449;
+        let responseStatus;
+        service.deleteAudioRequests(reqId).subscribe((res) => {
+          responseStatus = res.status;
+        });
+
+        const req = httpMock.expectOne(`api/audio-requests/${reqId}`);
+        expect(req.request.method).toBe('DELETE');
+
+        req.flush(null, { status: 204, statusText: '' });
+
+        expect(responseStatus).toEqual(204);
+      });
+    });
+
+    describe('#deleteTransformedMedia', () => {
       it('sends delete request', () => {
         const reqId = 123449;
         let responseStatus;
