@@ -149,9 +149,9 @@ describe('AudiosComponent', () => {
       component.isAudioRequest = false;
 
       component.selectedAudioRequests = [
-        { requestId: 1 } as AudioRequestRow,
-        { requestId: 2 } as AudioRequestRow,
-        { requestId: 3 } as AudioRequestRow,
+        { transformedMediaId: 1 } as TransformedMediaRow,
+        { transformedMediaId: 2 } as TransformedMediaRow,
+        { transformedMediaId: 3 } as TransformedMediaRow,
       ];
 
       component.onDeleteConfirmed();

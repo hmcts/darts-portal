@@ -155,11 +155,11 @@ const expiredMediaRequests = {
   ],
 };
 
-router.delete('/transformed_media/:requestId', (req, res) => {
-  const requestId = req.params.requestId;
-  const index = mediaRequests.transformed_media_details.findIndex((x) => x.media_request_id == requestId);
-  const expiredIndex = expiredMediaRequests.transformed_media_details.findIndex((x) => x.media_request_id == requestId);
-  const clearIndex = mediaRequests.media_request_details.findIndex((x) => x.media_request_id == requestId);
+router.delete('/transformed_media/:transformedMediaId', (req, res) => {
+  let id = req.params.transformedMediaId;
+  const index = mediaRequests.transformed_media_details.findIndex((x) => x.transformed_media_id == id);
+  const expiredIndex = expiredMediaRequests.transformed_media_details.findIndex((x) => x.transformed_media_id == id);
+  const clearIndex = mediaRequests.media_request_details.findIndex((x) => x.transformed_media_id == id);
 
   if (index >= 0) {
     mediaRequests.transformed_media_details.splice(index, 1);
