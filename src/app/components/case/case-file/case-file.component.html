@@ -1,11 +1,6 @@
-@if (caseFile.reporting_restrictions?.length) {
-  <app-reporting-restriction
-    heading="There are restrictions against this case"
-    [restrictions]="caseFile.reporting_restrictions"
-  >
-    <p class="govuk-body">For full details, check the events for each hearing below.</p>
-  </app-reporting-restriction>
-}
+<app-reporting-restriction [restrictions]="caseFile.reporting_restrictions">
+  <p class="govuk-body">For full details, check the events for each hearing below.</p>
+</app-reporting-restriction>
 
 <h1 class="govuk-caption-l">Case ID</h1>
 <h1 class="govuk-heading-l">{{ caseFile.case_number }}</h1>
@@ -21,12 +16,12 @@
 @if (userService.isRequester() || userService.isApprover() || userService.isJudge() || userService.isAdmin()) {
   <h3 class="govuk-heading-s">Retained until</h3>
   <p class="govuk-body">
-    @if (caseFile.retain_until && caseFile.retain_until !== '') {
-      {{ caseFile.retain_until | date: 'd MMM y' }}
+    @if (caseFile.retain_until_date_time) {
+      {{ caseFile.retain_until_date_time | date: 'd MMM y' }}
     } @else {
       No date applied
     }
 
-    <a routerLink="#" routerLinkActive="router-link-active" class="govuk-link retention-link">View or change</a>
+    <a routerLink="retention" routerLinkActive="router-link-active" class="govuk-link retention-link">View or change</a>
   </p>
 }

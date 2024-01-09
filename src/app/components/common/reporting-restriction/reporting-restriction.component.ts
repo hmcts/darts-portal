@@ -11,7 +11,8 @@ import { ReportingRestriction } from '@darts-types/index';
   styleUrls: ['./reporting-restriction.component.scss'],
 })
 export class ReportingRestrictionComponent {
-  @Input() heading?: string;
+  @Input() heading = 'There are restrictions against this case';
   @Input() reportingRestriction?: string; // TODO: Remove this when fully migrated to multiple reporting_restrictions
   @Input() restrictions?: ReportingRestriction[] = [];
+  @Input() caseHasRestrictions = false;
 }

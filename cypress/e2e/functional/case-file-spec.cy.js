@@ -44,9 +44,9 @@ describe('Case file screen', () => {
       it('Displays restrictions', () => {
         cy.contains('Show restrictions').click();
         cy.get('.govuk-details__text').contains(
-          'Restriction applied: Section 4(2) of the Contempt of Court Act 1981 - Applied 21 Aug 2023'
+          'Restriction applied: Section 4(2) of the Contempt of Court Act 1981 - Applied 01 Sep 2023'
         );
-        cy.get('.govuk-details__text').contains('Restriction(s) lifted: 21 Aug 2023');
+        cy.get('.govuk-details__text').contains('Restrictions lifted: 01 Sep 2023');
       });
     });
 
@@ -99,7 +99,7 @@ describe('Case file screen', () => {
       cy.contains('C20220620001').click();
 
       cy.get('h3.govuk-heading-s').should('contain', 'Retained until');
-      cy.get('p.govuk-body').should('contain', '10 Aug 2023');
+      cy.get('p.govuk-body').should('contain', '10 Aug 2030');
       cy.get('a.govuk-link').should('contain', 'View or change');
     });
 
