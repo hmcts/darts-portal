@@ -28,7 +28,15 @@ const MOCK_TRANSCRIPTION_DETAILS: TranscriptionDetails = {
   is_manual: true,
   hearing_id: 1,
   requestor_comments: 'Please expedite my request',
-  reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
+  reporting_restrictions: [
+    {
+      hearing_id: 1,
+      event_id: 1,
+      event_name: 'Section 4(2) of the Contempt of Court Act 1981',
+      event_text: '',
+      event_ts: '2023-09-01T09:00:00Z',
+    },
+  ],
 };
 
 describe('UploadTranscriptComponent', () => {
