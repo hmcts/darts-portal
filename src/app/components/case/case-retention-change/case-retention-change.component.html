@@ -1,25 +1,25 @@
 <h1 class="govuk-heading-l">Change case retention date</h1>
+<!-- Validation Error Summary Component -->
+<app-validation-error-summary [errors]="errors"></app-validation-error-summary>
 <div class="govuk-form-group">
   <fieldset class="govuk-fieldset">
-    <!-- Validation Error Summary Component -->
-    <app-validation-error-summary [errors]="errors"></app-validation-error-summary>
     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
       <h1 class="govuk-fieldset__heading">Select a new retention date</h1>
     </legend>
-    <div id="radios" class="govuk-radios govuk-details" data-module="govuk-radios">
+    <div id="change-radios" class="govuk-radios govuk-details" data-module="govuk-radios">
       <div class="govuk-radios__item">
         <input
           class="govuk-radios__input"
           id="retentionDateOption"
           name="retentionOptions"
           type="radio"
-          [formControl]="retainFormControl"
+          [formControl]="retainOptionFormControl"
           (click)="onChange()"
           value="date"
         />
         <label class="govuk-label govuk-radios__label" for="retentionOption">Retain until a specific date</label>
       </div>
-      <div *ngIf="retainFormControl.value === 'date'" class="govuk-radios__conditional" id="conditional-reason">
+      <div *ngIf="retainOptionFormControl.value === 'date'" class="govuk-radios__conditional" id="change-date">
         <div data-module="ds-datepicker" class="ds_datepicker">
           <label class="ds_label" for="retention_date">Enter a date to retain the case until</label>
           <p class="ds_hint-text">Use dd/mm/yyyy format. For example, 31/01/2023.</p>
@@ -33,12 +33,12 @@
           <div class="ds_input__wrapper">
             <input
               aria-label="Enter a date in dd/mm/yyyy format"
-              [formControl]="retainDate"
+              [formControl]="retainDateFormControl"
               name="retention_date"
               id="retention_date"
               type="text"
               class="ds_input ds_input--fixed-10"
-              (change)="setInputValue($any($event).target.value)"
+              (change)="setDateValue($any($event).target.value)"
               [class.govuk-input--error]="isDateInvalid()"
             />
           </div>
@@ -50,7 +50,7 @@
           id="retentionOption-2"
           name="retentionOptions"
           type="radio"
-          [formControl]="retainFormControl"
+          [formControl]="retainOptionFormControl"
           (click)="onChange()"
           value="permanent"
         />
@@ -65,7 +65,7 @@
         name="reason"
         rows="5"
         aria-describedby="change-reason-hint"
-        [formControl]="changeReasonFormControl"
+        [formControl]="retainReasonFormControl"
         [maxlength]="rententionCharacterLimit"
       ></textarea>
       <div id="change-reason-hint" class="govuk-hint">

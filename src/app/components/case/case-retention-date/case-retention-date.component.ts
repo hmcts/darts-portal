@@ -1,6 +1,6 @@
 import { CaseRententionChangeComponent } from '../case-retention-change/case-retention-change.component';
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, OnInit, inject, OnChanges } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CaseRetentionHistory } from '@darts-types/case-retention-history.interface';
 import { Case } from '@darts-types/case.interface';
