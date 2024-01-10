@@ -162,8 +162,8 @@ export class AudiosComponent {
 
   onDeleteConfirmed() {
     if (!this.isAudioRequest) {
-      const deleteRequests: Observable<unknown>[] = this.selectedAudioRequests.map((s) =>
-        this.audioService.deleteTransformedMedia(s.requestId)
+      const deleteRequests: Observable<unknown>[] = (this.selectedAudioRequests as TransformedMediaRow[]).map((s) =>
+        this.audioService.deleteTransformedMedia(s.transformedMediaId)
       );
 
       forkJoin(deleteRequests).subscribe({
