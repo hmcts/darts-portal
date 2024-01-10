@@ -5,9 +5,10 @@
 @if (vm$ | async; as vm) {
   <app-validation-error-summary [errors]="errors"></app-validation-error-summary>
 
-  @if (vm.reportingRestriction) {
-    <app-reporting-restriction [reportingRestriction]="vm.reportingRestriction"></app-reporting-restriction>
-  }
+  <app-reporting-restriction
+    class="margin-bottom"
+    [restrictions]="vm.reportingRestrictions"
+  ></app-reporting-restriction>
 
   <app-govuk-heading>Transcript request</app-govuk-heading>
 

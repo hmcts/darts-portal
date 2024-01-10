@@ -4,10 +4,7 @@
     <ng-container *breadcrumb>{{ fileName }}</ng-container>
   </app-breadcrumb>
 
-  <app-reporting-restriction
-    *ngIf="data.case.reporting_restriction"
-    [reportingRestriction]="data.case.reporting_restriction"
-  ></app-reporting-restriction>
+  <app-reporting-restriction [restrictions]="data.case.reporting_restrictions"></app-reporting-restriction>
 
   <!-- Validation Error Summary Component -->
   <ng-container *ngIf="data.error">

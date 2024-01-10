@@ -25,7 +25,15 @@ describe('ApproveTranscriptComponent', () => {
 
   const transcriptionDetail = of({
     case_id: 2,
-    reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
+    reporting_restrictions: [
+      {
+        hearing_id: 1,
+        event_id: 1,
+        event_name: 'Section 4(2) of the Contempt of Court Act 1981',
+        event_text: '',
+        event_ts: '2023-09-01T09:00:00Z',
+      },
+    ],
     case_number: 'C20220620001',
     courthouse: 'Swansea',
     status: 'Rejected',
@@ -95,7 +103,15 @@ describe('ApproveTranscriptComponent', () => {
     jest.spyOn(fakeTranscriptionService, 'getCaseDetailsFromTranscript').mockReturnValue(caseDetails);
     jest.spyOn(fakeTranscriptionService, 'getRequestDetailsFromTranscript').mockReturnValue(requestDetails);
 
-    const reportingRestriction = 'Section 4(2) of the Contempt of Court Act 1981';
+    const reportingRestrictions = [
+      {
+        hearing_id: 1,
+        event_id: 1,
+        event_name: 'Section 4(2) of the Contempt of Court Act 1981',
+        event_text: '',
+        event_ts: '2023-09-01T09:00:00Z',
+      },
+    ];
 
     let caseObj;
     let requestObj;
@@ -104,12 +120,12 @@ describe('ApproveTranscriptComponent', () => {
     component.vm$.subscribe((transformedData) => {
       caseObj = transformedData.caseDetails;
       requestObj = transformedData.requestDetails;
-      reporting = transformedData.reportingRestriction;
+      reporting = transformedData.reportingRestrictions;
     });
 
     expect(caseObj).toEqual(caseDetails);
     expect(requestObj).toEqual(requestDetails);
-    expect(reporting).toEqual(reportingRestriction);
+    expect(reporting).toEqual(reportingRestrictions);
   });
 
   it('should clear error message on destroy', () => {
