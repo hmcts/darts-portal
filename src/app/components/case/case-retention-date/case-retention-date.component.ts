@@ -1,4 +1,4 @@
-import { CaseRententionChangeComponent } from './../case-retention/case-retention.component';
+import { CaseRententionChangeComponent } from '../case-retention-change/case-retention-change.component';
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, OnInit, inject, OnChanges } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';

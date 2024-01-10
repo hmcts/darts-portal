@@ -19,8 +19,8 @@ import { CaseRetentionPageState } from '@darts-types/case-retention-page-state.t
     RouterLink,
     ValidationErrorSummaryComponent,
   ],
-  templateUrl: './case-retention.component.html',
-  styleUrls: ['./case-retention.component.scss'],
+  templateUrl: './case-retention-change.component.html',
+  styleUrls: ['./case-retention-change.component.scss'],
 })
 export class CaseRententionChangeComponent implements AfterViewChecked {
   @Input() state!: CaseRetentionPageState;

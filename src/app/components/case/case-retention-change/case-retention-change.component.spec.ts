@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CaseFile } from '@darts-types/index';
 import { UserService } from '@services/user/user.service';
-import { CaseRententionChangeComponent } from './case-retention.component';
+import { CaseRententionChangeComponent } from './case-retention-change.component';
 
 describe('CaseRetentionComponent', () => {
   let component: CaseRententionChangeComponent;
