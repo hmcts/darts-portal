@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CaseFile } from '@darts-types/index';
 import { UserService } from '@services/user/user.service';
-import { CaseRententionComponent } from './case-retention.component';
+import { CaseRententionChangeComponent } from './case-retention.component';
 
 describe('CaseRetentionComponent', () => {
-  let component: CaseRententionComponent;
-  let fixture: ComponentFixture<CaseRententionComponent>;
+  let component: CaseRententionChangeComponent;
+  let fixture: ComponentFixture<CaseRententionChangeComponent>;
 
   const mockCaseFile: CaseFile = {
     case_id: 1,
@@ -23,10 +23,10 @@ describe('CaseRetentionComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CaseRententionComponent],
+      imports: [CaseRententionChangeComponent],
       providers: [{ provide: UserService, useValue: fakeUserService }],
     });
-    fixture = TestBed.createComponent(CaseRententionComponent);
+    fixture = TestBed.createComponent(CaseRententionChangeComponent);
     component = fixture.componentInstance;
     component.caseFile = mockCaseFile;
     fixture.detectChanges();

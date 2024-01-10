@@ -1,46 +1,93 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { AfterViewChecked, Component, Input, Output, inject, EventEmitter } from '@angular/core';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { initAll } from '@scottish-government/pattern-library/src/all';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
+import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { Case } from '@darts-types/index';
-import { JoinPipe } from '@pipes/join';
 import { UserService } from '@services/user/user.service';
+import { CaseRetentionPageState } from '@darts-types/case-retention-page-state.type';
 
 @Component({
-  selector: 'app-case-file',
+  selector: 'app-case-retention-change',
   standalone: true,
-  imports: [CommonModule, JoinPipe, ReactiveFormsModule, ReportingRestrictionComponent, RouterLink],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    ReportingRestrictionComponent,
+    RouterLink,
+    ValidationErrorSummaryComponent,
+  ],
   templateUrl: './case-retention.component.html',
   styleUrls: ['./case-retention.component.scss'],
 })
-export class CaseRententionComponent {
+export class CaseRententionChangeComponent implements AfterViewChecked {
+  @Input() state!: CaseRetentionPageState;
+  @Input() public caseFile!: Case;
+
+  @Output() stateChange = new EventEmitter<CaseRetentionPageState>();
+
   private route = inject(ActivatedRoute);
   caseId = this.route.snapshot.params.caseId;
   userService = inject(UserService);
   changeReasonFormControl = new FormControl('');
   retainFormControl = new FormControl('');
   retainDate = new FormControl();
+  datePatternValidator = Validators.pattern(/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/);
 
-  buttonsError = '';
   rententionCharacterLimit = 200;
-
-  @Input() public caseFile!: Case;
-  @Output() errors = new EventEmitter<{ fieldId: string; message: string }[]>();
+  errors: { fieldId: string; message: string }[] = [];
 
   get remainingCharacterCount() {
     return this.rententionCharacterLimit - (this.changeReasonFormControl.value?.length || 0);
   }
 
-  onChange() {
-    console.log(this.changeReasonFormControl.value);
-    this.buttonsError = '';
-    this.errors.emit([]);
+  setInputValue(value: string) {
+    this.retainDate.patchValue(value);
   }
 
-  onConfirm() {}
+  isDateInvalid(): boolean {
+    return !!this.datePatternValidator(this.retainDate);
+  }
+
+  onChange() {
+    this.errors = [];
+  }
+
+  getFieldErrorMessages(fieldName: string): string[] {
+    return [];
+  }
+
+  onConfirm() {
+    this.errors = [];
+    if (!this.retainFormControl.value) {
+      this.errors.push({
+        fieldId: 'radios',
+        message: 'You must select an option',
+      });
+    }
+    if (this.retainFormControl.value === 'date' && this.isDateInvalid()) {
+      this.errors.push({
+        fieldId: 'conditional-reason',
+        message: 'You have not entered a recognised date in the correct format (for example 31/01/2023)',
+      });
+    }
+    if (!this.changeReasonFormControl.value) {
+      this.errors.push({
+        fieldId: 'change-reason',
+        message: 'You must provide a reason for this change',
+      });
+    }
+    // Move onto confirmation screen
+  }
 
   onCancel(event: Event) {
     event.preventDefault();
+    this.stateChange.emit('Default');
+  }
+
+  ngAfterViewChecked(): void {
+    initAll();
   }
 }

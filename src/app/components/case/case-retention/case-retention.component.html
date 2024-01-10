@@ -1,15 +1,12 @@
 <h1 class="govuk-heading-l">Change case retention date</h1>
 <div class="govuk-form-group">
   <fieldset class="govuk-fieldset">
+    <!-- Validation Error Summary Component -->
+    <app-validation-error-summary [errors]="errors"></app-validation-error-summary>
     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
       <h1 class="govuk-fieldset__heading">Select a new retention date</h1>
     </legend>
-    <!-- @if (selectedOption.invalid && isSubmitted) {
-        <p id="error-message" class="govuk-error-message">
-          <span class="govuk-visually-hidden">Error:</span> Select an action to progress this request.
-        </p>
-      } -->
-    <div class="govuk-radios" data-module="govuk-radios">
+    <div id="radios" class="govuk-radios govuk-details" data-module="govuk-radios">
       <div class="govuk-radios__item">
         <input
           class="govuk-radios__input"
@@ -23,30 +20,26 @@
         <label class="govuk-label govuk-radios__label" for="retentionOption">Retain until a specific date</label>
       </div>
       <div *ngIf="retainFormControl.value === 'date'" class="govuk-radios__conditional" id="conditional-reason">
-        Hello!
-      </div>
-      <div
-        *ngIf="retainFormControl.value === 'date'"
-        class="govuk-form-group input-group-indent-1"
-        id="specific-date-items"
-      >
         <div data-module="ds-datepicker" class="ds_datepicker">
-          <label class="ds_label" for="specific_date">Enter a date</label>
-          <p class="ds_hint-text">Use dd/mm/yyyy format.</p>
-          <!-- Error message date range date_from -->
-          <!-- <div *ngIf="isControlInvalid('specific_date')" id="specific_date-errors">
-          <p *ngFor="let error of getFieldErrorMessages('specific_date')" class="govuk-error-message">
-            <span class="govuk-visually-hidden">Error:</span> {{ error }}
-          </p>
-        </div> -->
+          <label class="ds_label" for="retention_date">Enter a date to retain the case until</label>
+          <p class="ds_hint-text">Use dd/mm/yyyy format. For example, 31/01/2023.</p>
+          <!-- Error message if date invalid -->
+          <div *ngIf="isDateInvalid()" id="retention_date-errors">
+            <p class="govuk-error-message">
+              <span class="govuk-visually-hidden">Error:</span>You have not entered a recognised date in the correct
+              format (for example 31/01/2023)
+            </p>
+          </div>
           <div class="ds_input__wrapper">
             <input
               aria-label="Enter a date in dd/mm/yyyy format"
               [formControl]="retainDate"
-              name="specific_date"
-              id="specific_date"
+              name="retention_date"
+              id="retention_date"
               type="text"
               class="ds_input ds_input--fixed-10"
+              (change)="setInputValue($any($event).target.value)"
+              [class.govuk-input--error]="isDateInvalid()"
             />
           </div>
         </div>
@@ -64,7 +57,7 @@
         <label class="govuk-label govuk-radios__label" for="retentionOption-2">Retain permanently (99 years)</label>
       </div>
     </div>
-    <div class="govuk-form-group">
+    <div class="govuk-form-group reason-box">
       <label class="govuk-label govuk-!-font-weight-bold" for="change-reason">Why are you making this change?</label>
       <textarea
         class="govuk-textarea govuk-!-width-one-half"
@@ -78,10 +71,10 @@
       <div id="change-reason-hint" class="govuk-hint">
         You have {{ remainingCharacterCount }} character{{ remainingCharacterCount === 1 ? '' : 's' }} remaining
       </div>
-      <button class="govuk-button" (click)="onConfirm()" data-module="govuk-button">Continue</button>
-      <a class="govuk-link" [routerLink]="['/case', caseId.toString()]" routerLinkActive="router-link-active">
-        Cancel
-      </a>
+    </div>
+    <div class="govuk-button-group">
+      <button class="govuk-button" data-module="govuk-button" (click)="onConfirm()">Continue</button>
+      <a href="#" (click)="onCancel($event)" class="govuk-link">Cancel</a>
     </div>
   </fieldset>
 </div>
