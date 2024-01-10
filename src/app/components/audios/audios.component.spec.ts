@@ -94,6 +94,7 @@ describe('AudiosComponent', () => {
   const audioServiceStub = {
     audioRequests$: of(MOCK_MEDIA_REQUESTS),
     expiredAudioRequests$: of(MOCK_EXPIRED_MEDIA_REQUESTS),
+    deleteAudioRequests: jest.fn(),
     deleteTransformedMedia: jest.fn(),
     setAudioRequest: jest.fn(),
   };
@@ -143,8 +144,27 @@ describe('AudiosComponent', () => {
   });
 
   describe('#onDeleteConfirmed', () => {
-    it('should set isDeleting to true if audio requests are selected', () => {
+    it('should set isDeleting to true if transformed media is selected and isAudioRequest is false', () => {
       const deleteSpy = jest.spyOn(audioServiceStub, 'deleteTransformedMedia');
+      component.isAudioRequest = false;
+
+      component.selectedAudioRequests = [
+        { requestId: 1 } as AudioRequestRow,
+        { requestId: 2 } as AudioRequestRow,
+        { requestId: 3 } as AudioRequestRow,
+      ];
+
+      component.onDeleteConfirmed();
+
+      expect(deleteSpy).toBeCalledTimes(3);
+      expect(deleteSpy).toHaveBeenCalledWith(1);
+      expect(deleteSpy).toHaveBeenCalledWith(2);
+      expect(deleteSpy).toHaveBeenCalledWith(3);
+    });
+
+    it('should set isDeleting to true if audio requests are selected and isAudioRequest is true', () => {
+      const deleteSpy = jest.spyOn(audioServiceStub, 'deleteAudioRequests');
+      component.isAudioRequest = true;
 
       component.selectedAudioRequests = [
         { requestId: 1 } as AudioRequestRow,

@@ -176,6 +176,27 @@ router.delete('/transformed_media/:requestId', (req, res) => {
   res.sendStatus(204);
 });
 
+router.delete('/:requestId', (req, res) => {
+  const requestId = req.params.requestId;
+  const index = mediaRequests.transformed_media_details.findIndex((x) => x.media_request_id == requestId);
+  const expiredIndex = expiredMediaRequests.transformed_media_details.findIndex((x) => x.media_request_id == requestId);
+  const clearIndex = mediaRequests.media_request_details.findIndex((x) => x.media_request_id == requestId);
+
+  if (index >= 0) {
+    mediaRequests.transformed_media_details.splice(index, 1);
+  }
+
+  if (expiredIndex >= 0) {
+    expiredMediaRequests.transformed_media_details.splice(index, 1);
+  }
+
+  if (clearIndex >= 0) {
+    mediaRequests.media_request_details.splice(index, 1);
+  }
+
+  res.sendStatus(204);
+});
+
 router.patch('/transformed_media/:transformedMediaId', (req, res) => {
   //Set specific media request last_accessed_ts value
   let id = req.params.transformedMediaId;
