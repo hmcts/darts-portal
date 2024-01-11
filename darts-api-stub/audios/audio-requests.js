@@ -206,8 +206,8 @@ router.patch('/transformed_media/:transformedMediaId', (req, res) => {
 });
 
 router.get('/playback', (req, res) => {
-  const mediaReqId = req.query.media_request_id;
-  if (mediaReqId !== '5') {
+  const transformedMediaId = req.query.transformed_media_id;
+  if (transformedMediaId !== '5') {
     var filePath = __dirname + '/preview/preview.mp3';
     var stat = fs.statSync(filePath);
     var total = stat.size;
@@ -238,8 +238,8 @@ router.get('/playback', (req, res) => {
 });
 
 router.get('/download', (req, res) => {
-  const mediaReqId = req.query.media_request_id;
-  if (mediaReqId !== '5') {
+  const transformedMediaId = req.query.transformed_media_id;
+  if (transformedMediaId !== '5') {
     res.sendFile(path.join(__dirname, './preview', 'preview.mp3.zip'));
   } else {
     res.sendStatus(403);
