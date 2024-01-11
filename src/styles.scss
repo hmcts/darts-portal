@@ -1,4 +1,4 @@
-@import 'govuk-frontend/govuk/all';
+@import 'govuk-frontend/dist/govuk/all';
 @import '@ministryofjustice/frontend/moj/all';
 @import 'accessible-autocomplete';
 @import 'src/assets/datepicker.scss';
@@ -49,4 +49,9 @@ a.govuk-back-link:hover {
 
 .moj-notification-badge {
   background-color: #1d70b8;
+}
+
+.govuk-tag {
+  font-weight: 600;
+  text-transform: uppercase;
 }
