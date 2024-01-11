@@ -161,29 +161,19 @@ export class AudiosComponent {
   }
 
   onDeleteConfirmed() {
-    if (!this.isAudioRequest) {
-      const deleteRequests: Observable<unknown>[] = (this.selectedAudioRequests as TransformedMediaRow[]).map((s) =>
+    let deleteRequests: Observable<unknown>[] = [];
+    if (this.isAudioRequest) {
+      deleteRequests = this.selectedAudioRequests.map((s) => this.audioService.deleteAudioRequests(s.requestId));
+    } else {
+      deleteRequests = (this.selectedAudioRequests as TransformedMediaRow[]).map((s) =>
         this.audioService.deleteTransformedMedia(s.transformedMediaId)
       );
-
-      forkJoin(deleteRequests).subscribe({
-        next: () => (this.isDeleting = false),
-        error: () => (this.isDeleting = false),
-      });
-
-      this.refresh$.next();
-    } else {
-      const deleteRequests: Observable<unknown>[] = this.selectedAudioRequests.map((s) =>
-        this.audioService.deleteAudioRequests(s.requestId)
-      );
-
-      forkJoin(deleteRequests).subscribe({
-        next: () => (this.isDeleting = false),
-        error: () => (this.isDeleting = false),
-      });
-
-      this.refresh$.next();
     }
+    forkJoin(deleteRequests).subscribe({
+      next: () => (this.isDeleting = false),
+      error: () => (this.isDeleting = false),
+      complete: () => this.refresh$.next(),
+    });
   }
 
   onDeleteCancelled() {

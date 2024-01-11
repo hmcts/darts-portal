@@ -1,6 +1,5 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, OnDestroy, inject } from '@angular/core';
-import { ConflictComponent } from './../../error/conflict/conflict.component';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
@@ -14,6 +13,7 @@ import { ErrorMessageService } from '@services/error/error-message.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { map } from 'rxjs/internal/operators/map';
 import { tap } from 'rxjs/internal/operators/tap';
+import { ConflictComponent } from './../../error/conflict/conflict.component';
 
 @Component({
   selector: 'app-assign-transcript',
@@ -70,7 +70,7 @@ export class AssignTranscriptComponent implements OnDestroy {
       const received = this.datePipe.transform(data.received, 'dd MMM yyyy HH:mm:ss');
 
       const vm = {
-        reportingRestriction: data.reporting_restriction ?? null,
+        reportingRestrictions: data.reporting_restrictions ?? [],
         caseDetails: {
           'Case ID': data.case_number,
           Courthouse: data.courthouse,
