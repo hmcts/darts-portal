@@ -33,7 +33,12 @@
 
       @if (!buttonGroupHide(vm.retentionHistory)) {
         <div class="govuk-button-group">
-          <button (click)="changeRetentionDate()" class="govuk-button" data-module="govuk-button">
+          <button
+            (click)="changeRetentionDate()"
+            id="change-retention-button"
+            class="govuk-button"
+            data-module="govuk-button"
+          >
             Change retention date
           </button>
           <a routerLink="../" routerLinkActive="router-link-active" class="govuk-link">Cancel</a>

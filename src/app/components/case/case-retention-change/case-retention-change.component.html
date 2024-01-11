@@ -19,14 +19,14 @@
       <div class="govuk-radios__item">
         <input
           class="govuk-radios__input"
-          id="retentionDateOption"
+          id="retention-option-date"
           name="retentionOptions"
           type="radio"
           [formControl]="retainOptionFormControl"
           (click)="onChange()"
           value="date"
         />
-        <label class="govuk-label govuk-radios__label" for="retentionOption">Retain until a specific date</label>
+        <label class="govuk-label govuk-radios__label" for="retention-option-date">Retain until a specific date</label>
       </div>
       <div
         *ngIf="retainOptionFormControl.value === 'date'"
@@ -61,14 +61,16 @@
       <div class="govuk-radios__item">
         <input
           class="govuk-radios__input"
-          id="retentionOption-2"
+          id="retention-option-permanent"
           name="retentionOptions"
           type="radio"
           [formControl]="retainOptionFormControl"
           (click)="onChange()"
           value="permanent"
         />
-        <label class="govuk-label govuk-radios__label" for="retentionOption-2">Retain permanently (99 years)</label>
+        <label class="govuk-label govuk-radios__label" for="retention-option-permanent"
+          >Retain permanently (99 years)</label
+        >
       </div>
     </div>
     <div class="govuk-form-group reason-box" [class.govuk-form-group--error]="isReasonInvalid()">
@@ -92,7 +94,9 @@
       </div>
     </div>
     <div class="govuk-button-group">
-      <button class="govuk-button" data-module="govuk-button" (click)="onConfirm()">Continue</button>
+      <button class="govuk-button" id="continue-button" data-module="govuk-button" (click)="onConfirm()">
+        Continue
+      </button>
       <a href="#" (click)="onCancel($event)" class="govuk-link">Cancel</a>
     </div>
   </fieldset>
