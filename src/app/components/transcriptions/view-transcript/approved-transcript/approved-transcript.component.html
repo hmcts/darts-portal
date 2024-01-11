@@ -3,9 +3,10 @@
   <ng-container *breadcrumb="['.']">{{ transcript.transcript_file_name }}</ng-container>
 </app-breadcrumb>
 
-@if (transcript.reporting_restriction) {
-  <app-reporting-restriction [reportingRestriction]="transcript.reporting_restriction"></app-reporting-restriction>
-}
+<app-reporting-restriction
+  class="margin-bottom"
+  [restrictions]="transcript.reporting_restrictions"
+></app-reporting-restriction>
 
 <app-govuk-heading caption="Transcript file"> {{ transcript.case_number }} </app-govuk-heading>
 

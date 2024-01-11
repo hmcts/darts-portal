@@ -123,7 +123,15 @@ const yourTranscriptionsStub = {
 
 const mockTranscriptionDetails = {
   case_id: 1,
-  reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
+  reporting_restrictions: [
+    {
+      hearing_id: 1,
+      event_id: 123,
+      event_name: 'Section 4(2) of the Contempt of Court Act 1981',
+      event_text: '',
+      event_ts: '2023-08-07T09:00:00Z',
+    },
+  ],
   case_number: 'C20220620001',
   courthouse: 'Swansea',
   status: 'Rejected',
@@ -146,7 +154,15 @@ const mockTranscriptionDetails = {
 
 const mockTranscriptionDetailsTwo = {
   case_id: 2,
-  reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
+  reporting_restrictions: [
+    {
+      hearing_id: 1,
+      event_id: 123,
+      event_name: 'Section 4(2) of the Contempt of Court Act 1981',
+      event_text: '',
+      event_ts: '2023-08-07T09:00:00Z',
+    },
+  ],
   case_number: 'C20220620001',
   courthouse: 'Swansea',
   status: 'Complete',
@@ -177,7 +193,15 @@ const mockTranscriptionDetailsNoName = {
   request_type: 'Specified Times',
   transcription_start_ts: '2023-06-26T13:00:00Z',
   transcription_end_ts: '2023-06-26T16:00:00Z',
-  reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
+  reporting_restrictions: [
+    {
+      hearing_id: 1,
+      event_id: 123,
+      event_name: 'Section 4(2) of the Contempt of Court Act 1981',
+      event_text: '',
+      event_ts: '2023-11-08T09:00:00Z',
+    },
+  ],
 };
 
 let unassignedTranscriptions = [

@@ -2,8 +2,8 @@
   <app-validation-error-summary [errors]="validationErrors"></app-validation-error-summary>
 
   <app-reporting-restriction
-    *ngIf="vm.case.reporting_restriction && !vm.error?.status"
-    [reportingRestriction]="vm.case.reporting_restriction"
+    class="margin-bottom"
+    [restrictions]="vm.case.reporting_restrictions"
   ></app-reporting-restriction>
 
   <ng-container *ngIf="step === 1">
