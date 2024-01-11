@@ -1,25 +1,13 @@
-.govuk-heading-s {
-  margin: 0;
-}
-.govuk-main-wrapper {
-  padding-top: 0px;
+#change-date {
+  margin-left: 15px;
 }
 
-.govuk-heading-m,
-.govuk-body-m {
-  display: inline;
+.govuk-error-text {
+  color: #d4351c;
 }
 
-.govuk-heading-l {
-  margin-bottom: 20px;
-}
-
-.govuk-body {
-  margin-bottom: 10px;
-}
-
-.govuk-link {
-  color: #1d70b8 !important;
+.govuk-input--error {
+  border-color: #d4351c !important;
 }
 
 .reason-box {

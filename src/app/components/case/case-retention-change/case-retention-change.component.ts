@@ -30,6 +30,10 @@ export class CaseRententionChangeComponent implements AfterViewChecked {
   rententionCharacterLimit = 200;
   errors: { fieldId: string; message: string }[] = [];
 
+  errorNoOption = 'Select an option';
+  errorUnrecognisedDate = 'You have not entered a recognised date in the correct format (for example 31/01/2023)';
+  errorNoReason = 'You must explain why you are making this change';
+
   get remainingCharacterCount() {
     return this.rententionCharacterLimit - (this.retainReasonFormControl.value?.length || 0);
   }
@@ -38,8 +42,19 @@ export class CaseRententionChangeComponent implements AfterViewChecked {
     this.retainDateFormControl.patchValue(value);
   }
 
+  isOptionInvalid(): boolean {
+    return this.retainOptionFormControl.dirty && !this.retainOptionFormControl.value;
+  }
+
   isDateInvalid(): boolean {
-    return !!this.datePatternValidator(this.retainDateFormControl) || !this.retainDateFormControl.value;
+    return (
+      this.retainDateFormControl.dirty &&
+      (!!this.datePatternValidator(this.retainDateFormControl) || !this.retainDateFormControl.value)
+    );
+  }
+
+  isReasonInvalid(): boolean {
+    return this.retainReasonFormControl.dirty && !this.retainReasonFormControl.value;
   }
 
   onChange() {
@@ -48,22 +63,27 @@ export class CaseRententionChangeComponent implements AfterViewChecked {
 
   onConfirm() {
     this.errors = [];
+    this.retainOptionFormControl.markAsDirty();
     if (!this.retainOptionFormControl.value) {
       this.errors.push({
         fieldId: 'change-radios',
-        message: 'You must select an option',
+        message: this.errorNoOption,
       });
     }
-    if (this.retainOptionFormControl.value === 'date' && this.isDateInvalid()) {
-      this.errors.push({
-        fieldId: 'change-date',
-        message: 'You have not entered a recognised date in the correct format (for example 31/01/2023)',
-      });
+    if (this.retainOptionFormControl.value === 'date') {
+      this.retainDateFormControl.markAsDirty();
+      if (this.isDateInvalid()) {
+        this.errors.push({
+          fieldId: 'retention-date',
+          message: this.errorUnrecognisedDate,
+        });
+      }
     }
     if (!this.retainReasonFormControl.value) {
+      this.retainReasonFormControl.markAsDirty();
       this.errors.push({
         fieldId: 'change-reason',
-        message: 'You must provide a reason for this change',
+        message: this.errorNoReason,
       });
     }
     // Move onto confirmation screen

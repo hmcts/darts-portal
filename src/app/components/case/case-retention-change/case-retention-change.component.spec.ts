@@ -33,7 +33,7 @@ describe('CaseRetentionComponent', () => {
     it('should check option selected', () => {
       // Populate reason
       component.retainReasonFormControl.patchValue('test');
-      const expected = [{ fieldId: 'change-radios', message: 'You must select an option' }];
+      const expected = [{ fieldId: 'change-radios', message: 'Select an option' }];
       component.onConfirm();
       expect(component.errors).toEqual(expected);
     });
@@ -47,7 +47,7 @@ describe('CaseRetentionComponent', () => {
       component.retainDateFormControl.patchValue('NONSENSE');
       const expected = [
         {
-          fieldId: 'change-date',
+          fieldId: 'retention-date',
           message: 'You have not entered a recognised date in the correct format (for example 31/01/2023)',
         },
       ];
@@ -58,7 +58,7 @@ describe('CaseRetentionComponent', () => {
     it('should check reason populated', () => {
       // Select an option
       component.retainOptionFormControl.patchValue('permanent');
-      const expected = [{ fieldId: 'change-reason', message: 'You must provide a reason for this change' }];
+      const expected = [{ fieldId: 'change-reason', message: 'You must explain why you are making this change' }];
       component.onConfirm();
       expect(component.errors).toEqual(expected);
     });
@@ -77,8 +77,26 @@ describe('CaseRetentionComponent', () => {
     });
   });
 
+  describe('#isOptionInvalid', () => {
+    it('should return false if option selected', () => {
+      component.retainOptionFormControl.markAsDirty();
+      component.retainOptionFormControl.patchValue('date');
+      const isOptionInvalid = component.isOptionInvalid();
+
+      expect(isOptionInvalid).toEqual(false);
+    });
+
+    it('should return true if no option selected', () => {
+      component.retainOptionFormControl.markAsDirty();
+      const isOptionInvalid = component.isOptionInvalid();
+
+      expect(isOptionInvalid).toEqual(true);
+    });
+  });
+
   describe('#isDateInvalid', () => {
     it('should return false if date format', () => {
+      component.retainDateFormControl.markAsDirty();
       component.retainDateFormControl.patchValue('01/01/2024');
       const isDateInvalid = component.isDateInvalid();
 
@@ -86,10 +104,28 @@ describe('CaseRetentionComponent', () => {
     });
 
     it('should return true if not date', () => {
+      component.retainDateFormControl.markAsDirty();
       component.retainDateFormControl.patchValue('TEST');
       const isDateInvalid = component.isDateInvalid();
 
       expect(isDateInvalid).toEqual(true);
+    });
+  });
+
+  describe('#isReasonInvalid', () => {
+    it('should return true if reason empty', () => {
+      component.retainReasonFormControl.markAsDirty();
+      const isReasonInvalid = component.isReasonInvalid();
+
+      expect(isReasonInvalid).toEqual(true);
+    });
+
+    it('should return false if reason specified', () => {
+      component.retainReasonFormControl.markAsDirty();
+      component.retainReasonFormControl.patchValue('TEST');
+      const isReasonInvalid = component.isReasonInvalid();
+
+      expect(isReasonInvalid).toEqual(false);
     });
   });
 
