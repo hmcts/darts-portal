@@ -75,11 +75,8 @@
     </ng-container>
   </ng-container>
   <!-- Summary / Confirmation Screen -->
-  <div *ngIf="!buttonGroupHide(vm.retentionHistory)" class="govuk-button-group">
-    <button (click)="changeRetentionDate()" class="govuk-button" data-module="govuk-button">
-      Change retention date
-    </button>
-    <a routerLink="../" routerLinkActive="router-link-active" class="govuk-link">Cancel</a>
+  <div *ngIf="state === 'Change'" class="order-confirmation">
+    <app-case-retention-change [state]="state" (stateChange)="onStateChanged($event)"></app-case-retention-change>
   </div>
 </ng-container>
 
