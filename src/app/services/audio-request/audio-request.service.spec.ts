@@ -232,18 +232,18 @@ describe('AudioService', () => {
   }));
 
   it('#downloadAudio', () => {
-    const requestId = 123449;
+    const transformedMediaId = 123449;
     const mockBlob = new Blob(['mock audio data'], { type: 'audio/wav' });
     jest.spyOn(service['http'], 'get').mockReturnValueOnce(of(mockBlob));
 
     let receivedBlob: Blob | undefined;
-    service.downloadAudio(requestId, 'DOWNLOAD').subscribe((blob: Blob) => {
+    service.downloadAudio(transformedMediaId, 'DOWNLOAD').subscribe((blob: Blob) => {
       receivedBlob = blob;
     });
 
     const expectedUrl = `api/audio-requests/download`;
     expect(service['http'].get).toHaveBeenCalledWith(expectedUrl, {
-      params: { media_request_id: requestId },
+      params: { transformed_media_id: transformedMediaId },
       responseType: 'blob',
     });
 
