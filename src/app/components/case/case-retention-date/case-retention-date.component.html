@@ -1,79 +1,90 @@
-@if (vm$ | async; as vm) {
-  <app-breadcrumb>
+<ng-container *ngIf="vm$ | async as vm; else loading">
+  <app-breadcrumb *ngIf="state === 'Default'">
     <ng-container *breadcrumb="['/search']">Search</ng-container>
     <ng-container *breadcrumb="['/case', vm.caseDetails.case_id.toString()]">{{
       vm.caseDetails.case_number
     }}</ng-container>
     <ng-container *breadcrumb>Case retention date</ng-container>
   </app-breadcrumb>
-
-  @if (!infoBannerHide(vm.retentionHistory)) {
+  <ng-container *ngIf="state === 'Default'">
     <app-notification-banner
+      *ngIf="!infoBannerHide(vm.retentionHistory)"
       heading="This case is still open or was recently closed."
       body="The retention date for this case cannot be changed while the case is open or while a retention policy is
     currently pending."
     ></app-notification-banner>
-  }
 
-  <app-govuk-heading>Case retention date</app-govuk-heading>
+    <app-govuk-heading>Case retention date</app-govuk-heading>
 
-  <app-details-table title="Case details" [details]="vm.caseDetails.details"></app-details-table>
+    <app-details-table title="Case details" [details]="vm.caseDetails.details"></app-details-table>
 
-  <ng-container>
-    @if (!vm.caseDetails.currentRetention['Date applied']) {
-      <app-details-table
-        title="Current retention details"
-        [details]="{ '': 'A retention policy has yet to be applied to this case.' }"
-      ></app-details-table>
-    } @else {
-      <app-details-table
-        title="Current retention details"
-        [details]="vm.caseDetails.currentRetention"
-      ></app-details-table>
-    }
+    <ng-container>
+      @if (!vm.caseDetails.currentRetention['Date applied']) {
+        <app-details-table
+          title="Current retention details"
+          [details]="{ '': 'A retention policy has yet to be applied to this case.' }"
+        ></app-details-table>
+      } @else {
+        <app-details-table
+          title="Current retention details"
+          [details]="vm.caseDetails.currentRetention"
+        ></app-details-table>
+      }
 
-    @if (!buttonGroupHide(vm.retentionHistory)) {
-      <div class="govuk-button-group">
-        <button class="govuk-button" data-module="govuk-button">Change retention date</button>
-        <a routerLink="../" routerLinkActive="router-link-active" class="govuk-link">Cancel</a>
-      </div>
-    }
+      @if (!buttonGroupHide(vm.retentionHistory)) {
+        <div class="govuk-button-group">
+          <button
+            (click)="changeRetentionDate()"
+            id="change-retention-button"
+            class="govuk-button"
+            data-module="govuk-button"
+          >
+            Change retention date
+          </button>
+          <a routerLink="../" routerLinkActive="router-link-active" class="govuk-link">Cancel</a>
+        </div>
+      }
+    </ng-container>
+
+    <ng-container>
+      <h2 class="govuk-heading-m">Retention audit history</h2>
+      <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
+      <app-data-table
+        id="retentionTable"
+        noDataMessage="No history to show"
+        [columns]="columns"
+        [rows]="vm.retentionHistory"
+      >
+        <ng-template [tableRowTemplate]="vm.retentionHistory" let-row>
+          <td class="govuk-table__cell">{{ row.retention_last_changed_date | date: 'dd MMM yyyy HH:mm:ss' }}</td>
+          <td class="govuk-table__cell">{{ row.retention_date | date: 'dd MMM yyyy' }}</td>
+          <td class="govuk-table__cell">{{ row.amended_by }}</td>
+          <td class="govuk-table__cell">{{ row.retention_policy_applied }}</td>
+          <td class="govuk-table__cell">{{ row.comments }}</td>
+
+          <td class="govuk-table__cell">
+            <div class="status-cell">
+              <strong
+                class="govuk-tag"
+                [ngClass]="{
+                  'govuk-tag--green': row.status === 'COMPLETE',
+                  'govuk-tag--yellow': row.status === 'PENDING'
+                }"
+              >
+                {{ row.status }}
+              </strong>
+            </div>
+          </td>
+        </ng-template>
+      </app-data-table>
+    </ng-container>
   </ng-container>
+  <!-- Summary / Confirmation Screen -->
+  <div *ngIf="state === 'Change'" class="order-confirmation">
+    <app-case-retention-change [state]="state" (stateChange)="onStateChanged($event)"></app-case-retention-change>
+  </div>
+</ng-container>
 
-  <ng-container>
-    <h2 class="govuk-heading-m">Retention audit history</h2>
-    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
-    <app-data-table
-      id="retentionTable"
-      noDataMessage="No history to show"
-      [columns]="columns"
-      [rows]="vm.retentionHistory"
-    >
-      <ng-template [tableRowTemplate]="vm.retentionHistory" let-row>
-        <td class="govuk-table__cell">{{ row.retention_last_changed_date | date: 'dd MMM yyyy HH:mm:ss' }}</td>
-        <td class="govuk-table__cell">{{ row.retention_date | date: 'dd MMM yyyy' }}</td>
-        <td class="govuk-table__cell">{{ row.amended_by }}</td>
-        <td class="govuk-table__cell">{{ row.retention_policy_applied }}</td>
-        <td class="govuk-table__cell">{{ row.comments }}</td>
-
-        <td class="govuk-table__cell">
-          <div class="status-cell">
-            <strong
-              class="govuk-tag"
-              [ngClass]="{
-                'govuk-tag--green': row.status === 'COMPLETE',
-                'govuk-tag--yellow': row.status === 'PENDING'
-              }"
-            >
-              {{ row.status }}
-            </strong>
-          </div>
-        </td>
-      </ng-template>
-    </app-data-table>
-  </ng-container>
-} @else {
-  <ng-template #loading>
-    <app-loading text="Loading case retention details..."></app-loading>
-  </ng-template>
-}
+<ng-template #loading>
+  <app-loading text="Loading case retention details..."></app-loading>
+</ng-template>

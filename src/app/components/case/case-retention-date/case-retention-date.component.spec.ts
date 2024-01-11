@@ -130,6 +130,27 @@ describe('CaseRetentionDateComponent', () => {
     });
   });
 
+  describe('#changeRetentionDate', () => {
+    it('should return true if rows array is empty', () => {
+      component.changeRetentionDate();
+      expect(component.state).toEqual('Change');
+    });
+  });
+
+  describe('#onStateChanged', () => {
+    it('should change state value to "Change"', () => {
+      const testValue = 'Change';
+      component.onStateChanged(testValue);
+      expect(component.state).toEqual('Change');
+    });
+
+    it('should change state value to "Default"', () => {
+      const testValue = 'Default';
+      component.onStateChanged(testValue);
+      expect(component.state).toEqual('Default');
+    });
+  });
+
   it('should transform case details correctly', (done) => {
     component.caseDetails$.subscribe((caseDetails) => {
       expect(caseDetails.details).toEqual({

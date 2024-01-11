@@ -1,3 +1,4 @@
+import { CaseRententionChangeComponent } from '../case-retention-change/case-retention-change.component';
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -15,6 +16,7 @@ import { DetailsTableComponent } from '../../common/details-table/details-table.
 import { GovukHeadingComponent } from '../../common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '../../common/loading/loading.component';
 import { NotificationBannerComponent } from '../../common/notification-banner/notification-banner.component';
+import { CaseRetentionPageState } from '@darts-types/case-retention-page-state.type';
 
 @Component({
   selector: 'app-case-retention-date',
@@ -32,9 +34,11 @@ import { NotificationBannerComponent } from '../../common/notification-banner/no
     RouterLink,
     TableRowTemplateDirective,
     NotificationBannerComponent,
+    CaseRententionChangeComponent,
   ],
 })
 export class CaseRetentionDateComponent implements OnInit {
+  private _state: CaseRetentionPageState = 'Default';
   headerService = inject(HeaderService);
   route = inject(ActivatedRoute);
   caseService = inject(CaseService);
@@ -65,6 +69,21 @@ export class CaseRetentionDateComponent implements OnInit {
     })
   );
 
+  // getter for state variable
+  public get state() {
+    return this._state;
+  }
+
+  // overriding state setter to call show/hide navigation
+  public set state(value: CaseRetentionPageState) {
+    if (value === 'Default') {
+      this.headerService.showNavigation();
+    } else {
+      this.headerService.hideNavigation();
+    }
+    this._state = value;
+  }
+
   infoBannerHide(rows: CaseRetentionHistory[]): boolean {
     if (rows.length) {
       return this.getLatestDate(rows).status !== 'PENDING';
@@ -88,6 +107,14 @@ export class CaseRetentionDateComponent implements OnInit {
         new Date(item.retention_last_changed_date) > new Date(max.retention_last_changed_date) ? item : max,
       rows[0]
     );
+  }
+
+  changeRetentionDate() {
+    this.state = 'Change';
+  }
+
+  onStateChanged(state: CaseRetentionPageState) {
+    this.state = state;
   }
 
   vm$ = combineLatest({
