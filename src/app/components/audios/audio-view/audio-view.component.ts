@@ -107,7 +107,7 @@ export class AudioViewComponent implements OnDestroy {
             : this.transformedMedia.caseNumber + '.mp3';
       }
 
-      this.audioSource = `/api/audio-requests/playback?media_request_id=${this.requestId}`;
+      this.audioSource = `/api/audio-requests/playback?transformed_media_id=${this.requestId}`;
 
       this.eventRows$ = this.hearingService.getEvents(this.transformedMedia.hearingId).pipe(
         map((events) => this.filterEvents(events)), // Remove events outside of audio start and end time
