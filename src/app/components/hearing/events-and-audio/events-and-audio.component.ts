@@ -4,6 +4,7 @@ import {
   Component,
   EventEmitter,
   Input,
+  inject,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -18,7 +19,9 @@ import { HearingEventTypeEnum } from '@darts-types/enums';
 import { AudioEventRow, DatatableColumn, HearingAudio, HearingEvent } from '@darts-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { DateTime } from 'luxon';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
+import * as _ from 'lodash';
+import { FileDownloadService } from '@services/file-download/file-download.service';
 
 @Component({
   selector: 'app-events-and-audio',
@@ -26,12 +29,13 @@ import { Subscription } from 'rxjs';
   imports: [CommonModule, ReactiveFormsModule, AudioPlayerComponent, DataTableComponent, TableRowTemplateDirective],
   templateUrl: './events-and-audio.component.html',
   styleUrls: ['./events-and-audio.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+//   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChildren(AudioPlayerComponent) audioPlayers!: QueryList<AudioPlayerComponent>;
   @Input() audio: HearingAudio[] = [];
   @Input() events: HearingEvent[] = [];
+  filedownloadService = inject(FileDownloadService);
 
   @Output() eventsSelect = new EventEmitter<AudioEventRow[]>();
 
@@ -47,7 +51,8 @@ export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
   selectedRows: AudioEventRow[] = [];
   selectedOption = new FormControl('all');
   formChanges$ = this.selectedOption.valueChanges;
-  audioPreviewPath = '/api/audio/preview/';
+  audioPreviewPath = '/api/audio/preview5/';
+  audioSource = '';
 
   subs: Subscription[] = [];
   audioInPreview: number[] = [];
@@ -58,7 +63,83 @@ export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
         this.onFilterChanged(valueChanges as string);
       })
     );
+//     this.connect();
+    this.getAudioPreview('http://localhost:3000/api/audio/preview5/3533').subscribe((url)=> this.audioSource = url);  }
+
+//   connect(): void {
+//       let source = new EventSource('http://localhost:3000/api/audio/preview5/3533');
+//       source.addEventListener('real response', message => {
+//           const myData = JSON.parse(message.data);
+//           console.log(myData);
+//           const blob = new Blob([myData.body], { type: 'audio/mpeg' });
+//       });
+//    }
+
+  getAudioPreview(path: string) : Observable<string>{
+    return new Observable(observer => {
+      let eventSource = new EventSource('http://localhost:3000/api/audio/preview5/3533');
+//new Blob([new Uint8Array(BYTEARRAY)]
+          eventSource.addEventListener('real response', message => {
+              const myData = JSON.parse(message.data);
+              const responseBody = myData.body;
+              //const blob = new Blob([myData.body], { type: 'audio/mpeg' });
+              const blob = this.b64toBlob(responseBody);
+//               let bytes = new Uint8Array(responseBody.length);
+//
+//               for (let i = 0; i < bytes.length; i++) {
+//                   bytes[i] = responseBody.charCodeAt(i);
+//               }
+//
+//               let blob = new Blob([bytes], { type: 'audio/mpeg' });
+
+              console.log("data="+blob);
+              //console.log(blob);
+              const blobUrl = window.URL.createObjectURL(blob)
+              console.log(blobUrl);
+              //this.filedownloadService.saveAs(blob, 'test.mp3')
+              observer.next(blobUrl);
+          });
+
+      eventSource.onerror = () => {
+        if (eventSource.readyState !== eventSource.CONNECTING) {
+          observer.error('An error occurred.');
+        }
+        eventSource.close();
+        console.log("Closing connection2");
+        observer.complete();
+      };
+      return () => {
+        console.log("Closing connection");
+        eventSource.close();
+      };
+    });
   }
+
+
+b64toBlob(b64Data: any) {
+  const contentType = 'audio/mpeg';
+  const sliceSize = 512;
+
+  var byteCharacters = atob(b64Data);
+  var byteArrays = [];
+
+  for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+    var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+    var byteNumbers = new Array(slice.length);
+    for (var i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+    }
+
+    var byteArray = new Uint8Array(byteNumbers);
+
+    byteArrays.push(byteArray);
+  }
+
+  var blob = new Blob(byteArrays, {type: contentType});
+  return blob;
+}
+
 
   ngOnChanges(): void {
     this.constructTable();

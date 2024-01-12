@@ -44,12 +44,14 @@
         </td>
         <td class="govuk-table__cell">Audio recording</td>
         <td class="govuk-table__cell">
+          @if(audioSource){
           <app-audio-player
             [id]="row.id"
-            [audioSource]="audioPreviewPath + row.id"
+            [audioSource]="audioSource"
             (play)="onAudioPlay(row.id)"
             [preload]="false"
           ></app-audio-player>
+          }
         </td>
       </ng-container>
       <ng-container *ngIf="row.type === 'event'">
