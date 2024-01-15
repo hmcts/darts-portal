@@ -64,6 +64,7 @@ export class CaseRetentionDateComponent implements OnInit {
         },
         case_id: data.case_id,
         case_number: data.case_number,
+        retain_until_date_time: this.datePipe.transform(data.retain_until_date_time, 'dd/MM/yyyy'),
       };
       return caseDetails;
     })
@@ -120,6 +121,18 @@ export class CaseRetentionDateComponent implements OnInit {
   vm$ = combineLatest({
     caseDetails: this.caseDetails$,
     retentionHistory: this.retentionHistory$,
+    originalRetentionDate: this.retentionHistory$.pipe(
+      map((data) => {
+        return this.datePipe.transform(
+          data.sort(function (a, b) {
+            return (
+              new Date(a.retention_last_changed_date).getTime() - new Date(b.retention_last_changed_date).getTime()
+            );
+          })[0].retention_last_changed_date,
+          'dd/MM/yyyy'
+        );
+      })
+    ),
   });
 
   columns: DatatableColumn[] = [

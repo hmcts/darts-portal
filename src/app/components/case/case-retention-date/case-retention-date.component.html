@@ -81,7 +81,12 @@
   </ng-container>
   <!-- Summary / Confirmation Screen -->
   <div *ngIf="state === 'Change'" class="order-confirmation">
-    <app-case-retention-change [state]="state" (stateChange)="onStateChanged($event)"></app-case-retention-change>
+    <app-case-retention-change
+      [state]="state"
+      [currentRetentionDate]="vm.caseDetails.retain_until_date_time"
+      [originalRetentionDate]="vm.originalRetentionDate"
+      (stateChange)="onStateChanged($event)"
+    ></app-case-retention-change>
   </div>
 </ng-container>
 
