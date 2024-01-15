@@ -83,8 +83,8 @@
   <div *ngIf="state === 'Change'" class="order-confirmation">
     <app-case-retention-change
       [state]="state"
-      [currentRetentionDate]="vm.caseDetails.retain_until_date_time"
-      [originalRetentionDate]="vm.originalRetentionDate"
+      [currentRetentionDate]="vm.caseDetails.case_retain_until_date_time"
+      [originalRetentionDate]="getOriginalRetentionDateString(vm.retentionHistory)"
       (stateChange)="onStateChanged($event)"
     ></app-case-retention-change>
   </div>

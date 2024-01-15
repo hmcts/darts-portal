@@ -64,7 +64,7 @@ export class CaseRetentionDateComponent implements OnInit {
         },
         case_id: data.case_id,
         case_number: data.case_number,
-        retain_until_date_time: this.datePipe.transform(data.retain_until_date_time, 'dd/MM/yyyy'),
+        case_retain_until_date_time: this.datePipe.transform(data.retain_until_date_time, 'dd/MM/yyyy'),
       };
       return caseDetails;
     })
@@ -110,6 +110,19 @@ export class CaseRetentionDateComponent implements OnInit {
     );
   }
 
+  getEarliestDate(rows: CaseRetentionHistory[]) {
+    return rows.reduce(
+      (max, item) =>
+        new Date(item.retention_last_changed_date) < new Date(max.retention_last_changed_date) ? item : max,
+      rows[0]
+    );
+  }
+
+  getOriginalRetentionDateString(rows: CaseRetentionHistory[]) {
+    const date = this.getEarliestDate(rows).retention_date;
+    return this.datePipe.transform(date, 'dd/MM/yyyy');
+  }
+
   changeRetentionDate() {
     this.state = 'Change';
   }
@@ -121,18 +134,6 @@ export class CaseRetentionDateComponent implements OnInit {
   vm$ = combineLatest({
     caseDetails: this.caseDetails$,
     retentionHistory: this.retentionHistory$,
-    originalRetentionDate: this.retentionHistory$.pipe(
-      map((data) => {
-        return this.datePipe.transform(
-          data.sort(function (a, b) {
-            return (
-              new Date(a.retention_last_changed_date).getTime() - new Date(b.retention_last_changed_date).getTime()
-            );
-          })[0]?.retention_last_changed_date,
-          'dd/MM/yyyy'
-        );
-      })
-    ),
   });
 
   columns: DatatableColumn[] = [
