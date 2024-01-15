@@ -128,7 +128,7 @@ export class CaseRetentionDateComponent implements OnInit {
             return (
               new Date(a.retention_last_changed_date).getTime() - new Date(b.retention_last_changed_date).getTime()
             );
-          })[0].retention_last_changed_date,
+          })[0]?.retention_last_changed_date,
           'dd/MM/yyyy'
         );
       })

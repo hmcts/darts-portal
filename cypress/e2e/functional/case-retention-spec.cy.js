@@ -79,14 +79,26 @@ describe('Case retention screen', () => {
         'You have not entered a recognised date in the correct format (for example 31/01/2023)'
       );
 
-      // Fill it in properly this time, error message should not appear but summary will do still
+      // Fill in a date that is lower than the current retention date
       cy.get('#retention-date').clear();
-      cy.get('#retention-date').type(TOMORROW);
-      cy.get('.govuk-error-summary').should('exist');
-      cy.get('.govuk-error-message').should('not.exist');
-
-      // Finally click the continue button, summary will disappear
+      cy.get('#retention-date').type('01/01/2024');
       cy.get('#continue-button').click();
+      cy.get('.govuk-error-summary').should('exist');
+      cy.get('.govuk-error-message').should('exist');
+      cy.get('.govuk-error-summary').should(
+        'contain',
+        'You do not have permission to reduce the current retention date. Please refer to the DARTS retention policy guidance'
+      );
+      cy.get('.govuk-error-message').should(
+        'contain',
+        'You do not have permission to reduce the current retention date. Please refer to the DARTS retention policy guidance'
+      );
+
+      // Fill it in properly this time, error message should not appear
+      cy.get('#retention-date').clear();
+      cy.get('#retention-date').type('01/01/2031');
+      cy.get('#continue-button').click();
+      cy.get('.govuk-error-summary').should('not.exist');
       cy.get('.govuk-error-message').should('not.exist');
 
       cy.a11y();
