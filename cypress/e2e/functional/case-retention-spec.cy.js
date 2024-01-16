@@ -2,9 +2,7 @@ import 'cypress-axe';
 import { DateTime } from 'luxon';
 import './commands';
 
-const TOMORROW = DateTime.now().plus({ days: 1 }).startOf('day').toFormat('dd/MM/yyyy');
-
-describe('Case retention screen', () => {
+describe('Case retention screen as non Judge / Admin', () => {
   beforeEach(() => {
     cy.login();
     cy.injectAxe();
@@ -133,6 +131,54 @@ describe('Case retention screen', () => {
 
       //Button group, should not be visible on open cases
       cy.get('.govuk-button-group').should('not.exist');
+
+      cy.a11y();
+    });
+  });
+});
+
+describe('Case retention screen as non judge', () => {
+  beforeEach(() => {
+    cy.login('judge');
+    cy.injectAxe();
+  });
+
+  describe('Closed case retention screen', () => {
+    beforeEach(() => {
+      cy.contains('Search').click();
+      cy.get('#case_number').type('C20220620001');
+      cy.get('button').contains('Search').click();
+      cy.contains('C20220620001').click();
+      cy.contains('View or change').click();
+    });
+
+    it('Change retention date', () => {
+      cy.get('#change-retention-button').should('exist');
+      cy.get('#change-retention-button').click();
+
+      cy.get('h1.govuk-heading-l').should('contain', 'Change case retention date');
+      cy.get('.govuk-fieldset__heading').should('contain', 'Select a new retention date');
+
+      // Fill in the reason box
+      cy.get('#change-reason').type('Just want to change the date');
+      // Select the date option
+      cy.get('#retention-option-date').click();
+
+      // Fill in a date that is lower than the current retention date
+      cy.get('#retention-date').type('01/01/2024');
+      cy.get('#continue-button').click();
+      // Specific error message just for Admins and Judges will be shown
+      cy.get('.govuk-error-summary').should('exist');
+      cy.get('.govuk-error-message').should('exist');
+      cy.get('.govuk-error-summary').should('contain', 'You cannot set retention date earlier than 15/09/2030');
+      cy.get('.govuk-error-message').should('contain', 'You cannot set retention date earlier than 15/09/2030');
+
+      // Fill in a date later than the original retention date this time this time, error message should not appear
+      cy.get('#retention-date').clear();
+      cy.get('#retention-date').type('01/01/2031');
+      cy.get('#continue-button').click();
+      cy.get('.govuk-error-summary').should('not.exist');
+      cy.get('.govuk-error-message').should('not.exist');
 
       cy.a11y();
     });
