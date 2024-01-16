@@ -100,5 +100,5 @@
     (changePage)="onPageChanged($event)"
   ></app-pagination>
 } @else {
-  <p id="no-data-message" class="govuk-body">{{ noDataMessage }}</p>
+  <p id="no-data-message" [attr.aria-label]="noDataMessage" class="govuk-body" tabindex="0">{{ noDataMessage }}</p>
 }
