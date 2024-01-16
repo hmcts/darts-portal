@@ -53,10 +53,10 @@ export class AudioRequestService {
       );
   }
 
-  downloadAudio(requestId: number, requestType: AudioRequestType): Observable<Blob> {
+  downloadAudio(transformedMediaId: number, requestType: AudioRequestType): Observable<Blob> {
     // api/audio-requests/{playback | download}?media_request_id={requestId}
     return this.http.get(`api/audio-requests/${requestType.toLowerCase()}`, {
-      params: { media_request_id: requestId },
+      params: { transformed_media_id: transformedMediaId },
       responseType: 'blob',
     });
   }

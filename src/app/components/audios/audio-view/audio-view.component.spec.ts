@@ -257,6 +257,8 @@ describe('AudioViewComponent', () => {
 
     it('should download audio and call saveAs', () => {
       const mockBlob = new Blob(['audio data'], { type: 'audio/wav' });
+      component.transformedMedia.transformedMediaId = 12378;
+
       fakeAudioRequestService.downloadAudio.mockReturnValue(of(mockBlob));
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
