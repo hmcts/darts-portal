@@ -23,7 +23,7 @@
           name="retentionOptions"
           type="radio"
           [formControl]="retainOptionFormControl"
-          (click)="onChange()"
+          (click)="onChangeOption()"
           value="date"
         />
         <label class="govuk-label govuk-radios__label" for="retention-option-date">Retain until a specific date</label>
@@ -34,15 +34,14 @@
         [class.govuk-details__text]="!isDateInvalid()"
         [class.govuk-form-group--error]="isDateInvalid()"
         id="change-date"
+        (change)="onChangeDate()"
       >
         <div data-module="ds-datepicker" class="ds_datepicker">
           <label class="ds_label" for="retention-date">Enter a date to retain the case until</label>
           <p class="ds_hint-text">Use dd/mm/yyyy format. For example, 31/01/2023.</p>
           <!-- Error message if date invalid -->
           <div *ngIf="isDateInvalid()" id="retention-date-errors">
-            <p class="govuk-error-message">
-              <span class="govuk-visually-hidden">Error: </span>{{ errorUnrecognisedDate }}
-            </p>
+            <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ errorDate }}</p>
           </div>
           <div class="ds_input__wrapper">
             <input
@@ -65,7 +64,7 @@
           name="retentionOptions"
           type="radio"
           [formControl]="retainOptionFormControl"
-          (click)="onChange()"
+          (click)="onChangeOption()"
           value="permanent"
         />
         <label class="govuk-label govuk-radios__label" for="retention-option-permanent"

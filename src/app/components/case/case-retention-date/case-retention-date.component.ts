@@ -64,6 +64,7 @@ export class CaseRetentionDateComponent implements OnInit {
         },
         case_id: data.case_id,
         case_number: data.case_number,
+        case_retain_until_date_time: this.datePipe.transform(data.retain_until_date_time, 'dd/MM/yyyy'),
       };
       return caseDetails;
     })
@@ -107,6 +108,19 @@ export class CaseRetentionDateComponent implements OnInit {
         new Date(item.retention_last_changed_date) > new Date(max.retention_last_changed_date) ? item : max,
       rows[0]
     );
+  }
+
+  getEarliestDate(rows: CaseRetentionHistory[]) {
+    return rows.reduce(
+      (max, item) =>
+        new Date(item.retention_last_changed_date) < new Date(max.retention_last_changed_date) ? item : max,
+      rows[0]
+    );
+  }
+
+  getOriginalRetentionDateString(rows: CaseRetentionHistory[]) {
+    const date = this.getEarliestDate(rows).retention_date;
+    return this.datePipe.transform(date, 'dd/MM/yyyy');
   }
 
   changeRetentionDate() {

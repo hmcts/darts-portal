@@ -4,9 +4,9 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { initAll } from '@scottish-government/pattern-library/src/all';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
-import { Case } from '@darts-types/index';
 import { UserService } from '@services/user/user.service';
 import { CaseRetentionPageState } from '@darts-types/case-retention-page-state.type';
+import { beforeDateValidator } from '@validators/before-date.validator';
 
 @Component({
   selector: 'app-case-retention-change',
@@ -17,7 +17,8 @@ import { CaseRetentionPageState } from '@darts-types/case-retention-page-state.t
 })
 export class CaseRententionChangeComponent implements AfterViewChecked {
   @Input() state!: CaseRetentionPageState;
-  @Input() public caseFile!: Case;
+  @Input() currentRetentionDate!: string | null;
+  @Input() originalRetentionDate!: string | null;
 
   @Output() stateChange = new EventEmitter<CaseRetentionPageState>();
 
@@ -31,7 +32,7 @@ export class CaseRententionChangeComponent implements AfterViewChecked {
   errors: { fieldId: string; message: string }[] = [];
 
   errorNoOption = 'Select an option';
-  errorUnrecognisedDate = 'You have not entered a recognised date in the correct format (for example 31/01/2023)';
+  errorDate = '';
   errorNoReason = 'You must explain why you are making this change';
 
   get remainingCharacterCount() {
@@ -47,17 +48,35 @@ export class CaseRententionChangeComponent implements AfterViewChecked {
   }
 
   isDateInvalid(): boolean {
-    return (
-      this.retainDateFormControl.dirty &&
-      (!!this.datePatternValidator(this.retainDateFormControl) || !this.retainDateFormControl.value)
-    );
+    return !!this.errorDate;
   }
 
   isReasonInvalid(): boolean {
     return this.retainReasonFormControl.dirty && !this.retainReasonFormControl.value;
   }
 
-  onChange() {
+  onChangeDate() {
+    this.retainDateFormControl.markAsDirty();
+    this.errorDate = '';
+    if (this.retainDateFormControl.dirty) {
+      if (!!this.datePatternValidator(this.retainDateFormControl) || !this.retainDateFormControl.value) {
+        this.errorDate = 'You have not entered a recognised date in the correct format (for example 31/01/2023)';
+        return;
+      }
+      if (
+        !this.userService.hasRoles(['ADMIN', 'JUDGE']) &&
+        beforeDateValidator(this.retainDateFormControl, this.currentRetentionDate)
+      ) {
+        this.errorDate =
+          'You do not have permission to reduce the current retention date. Please refer to the DARTS retention policy guidance';
+      } else if (beforeDateValidator(this.retainDateFormControl, this.originalRetentionDate)) {
+        this.errorDate = `You cannot set retention date earlier than ${this.originalRetentionDate}`;
+      }
+    }
+    return;
+  }
+
+  onChangeOption() {
     this.errors = [];
   }
 
@@ -72,10 +91,11 @@ export class CaseRententionChangeComponent implements AfterViewChecked {
     }
     if (this.retainOptionFormControl.value === 'date') {
       this.retainDateFormControl.markAsDirty();
-      if (this.isDateInvalid()) {
+      this.onChangeDate();
+      if (this.errorDate) {
         this.errors.push({
           fieldId: 'retention-date',
-          message: this.errorUnrecognisedDate,
+          message: this.errorDate,
         });
       }
     }

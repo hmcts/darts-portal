@@ -5,16 +5,24 @@ import { CaseRententionChangeComponent } from './case-retention-change.component
 describe('CaseRetentionComponent', () => {
   let component: CaseRententionChangeComponent;
   let fixture: ComponentFixture<CaseRententionChangeComponent>;
+  let mockUserService: Partial<UserService>;
 
-  const fakeUserService = { isRequester: () => true, isTranscriber: () => false } as Partial<UserService>;
+  const currentRetentionDate = '01/01/2024';
+  const originalRetentionDate = '01/01/2023';
 
   beforeEach(() => {
+    mockUserService = {
+      hasRoles: jest.fn(),
+    };
+
     TestBed.configureTestingModule({
       imports: [CaseRententionChangeComponent],
-      providers: [{ provide: UserService, useValue: fakeUserService }],
+      providers: [{ provide: UserService, useValue: mockUserService }],
     });
     fixture = TestBed.createComponent(CaseRententionChangeComponent);
     component = fixture.componentInstance;
+    component.currentRetentionDate = currentRetentionDate;
+    component.originalRetentionDate = originalRetentionDate;
     fixture.detectChanges();
   });
 
@@ -24,7 +32,7 @@ describe('CaseRetentionComponent', () => {
 
   describe('#onChange', () => {
     it('should reset errors', () => {
-      component.onChange();
+      component.onChangeOption();
       expect(component.errors).toEqual([]);
     });
   });
@@ -95,20 +103,54 @@ describe('CaseRetentionComponent', () => {
   });
 
   describe('#isDateInvalid', () => {
-    it('should return false if date format', () => {
-      component.retainDateFormControl.markAsDirty();
+    it('should return false if date format and user is Admin or Judge', () => {
+      jest.spyOn(mockUserService, 'hasRoles').mockReturnValue(true);
       component.retainDateFormControl.patchValue('01/01/2024');
+      component.retainDateFormControl.markAsDirty();
+      // Signal the date has been changed
+      component.onChangeDate();
       const isDateInvalid = component.isDateInvalid();
 
       expect(isDateInvalid).toEqual(false);
     });
 
     it('should return true if not date', () => {
-      component.retainDateFormControl.markAsDirty();
       component.retainDateFormControl.patchValue('TEST');
+      component.retainDateFormControl.markAsDirty();
+      // Signal the date has been changed
+      component.onChangeDate();
       const isDateInvalid = component.isDateInvalid();
 
       expect(isDateInvalid).toEqual(true);
+      expect(component.errorDate).toEqual(
+        'You have not entered a recognised date in the correct format (for example 31/01/2023)'
+      );
+    });
+
+    it('should return true if user is NOT Admin or Judge and date is set before current retention date', () => {
+      jest.spyOn(mockUserService, 'hasRoles').mockReturnValue(false);
+      component.retainDateFormControl.patchValue('31/12/2023');
+      component.retainDateFormControl.markAsDirty();
+      // Signal the date has been changed
+      component.onChangeDate();
+      const isDateInvalid = component.isDateInvalid();
+
+      expect(isDateInvalid).toEqual(true);
+      expect(component.errorDate).toEqual(
+        'You do not have permission to reduce the current retention date. Please refer to the DARTS retention policy guidance'
+      );
+    });
+
+    it('should return true if user is Admin or Judge but date is set before original retention date', () => {
+      jest.spyOn(mockUserService, 'hasRoles').mockReturnValue(true);
+      component.retainDateFormControl.patchValue('31/12/2022');
+      component.retainDateFormControl.markAsDirty();
+      // Signal the date has been changed
+      component.onChangeDate();
+      const isDateInvalid = component.isDateInvalid();
+
+      expect(isDateInvalid).toEqual(true);
+      expect(component.errorDate).toEqual(`You cannot set retention date earlier than ${originalRetentionDate}`);
     });
   });
 

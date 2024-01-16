@@ -64,7 +64,7 @@ describe('CaseRetentionDateComponent', () => {
 
   const mockCaseService = {
     getCase: () => of(mockCaseData),
-    getCaseRetentionHistory: jest.fn(),
+    getCaseRetentionHistory: () => of(mockRetentionHistory),
   } as unknown as CaseService;
   const mockDatePipe = new DatePipe('en-GB');
 
@@ -89,8 +89,18 @@ describe('CaseRetentionDateComponent', () => {
 
   it('#getLatestDate', () => {
     const result = component.getLatestDate(mockRetentionHistory);
-
     expect(result).toEqual(mockRetentionHistory[1]);
+  });
+
+  it('#getEarliestDate', () => {
+    const result = component.getEarliestDate(mockRetentionHistory);
+    expect(result).toEqual(mockRetentionHistory[0]);
+  });
+
+  it('#getOriginalRetentionDateString', () => {
+    const result = component.getOriginalRetentionDateString(mockRetentionHistory);
+    const expectedDateString = mockDatePipe.transform(mockRetentionHistory[0].retention_date, 'dd/MM/yyyy');
+    expect(result).toEqual(expectedDateString);
   });
 
   describe('#infoBannerHide', () => {
@@ -166,6 +176,9 @@ describe('CaseRetentionDateComponent', () => {
         'Retain case until': mockDatePipe.transform(mockCaseData.retain_until_date_time, 'dd MMM yyyy'),
         'DARTS Retention policy applied': 'Manual',
       });
+      expect(caseDetails.case_retain_until_date_time).toEqual(
+        mockDatePipe.transform(mockCaseData.retain_until_date_time, 'dd/MM/yyyy')
+      );
       expect(caseDetails.case_id).toBe(1);
       expect(caseDetails.case_number).toBe('C20220620001');
       done();
