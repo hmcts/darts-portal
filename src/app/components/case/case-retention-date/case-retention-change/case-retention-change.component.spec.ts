@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserService } from '@services/user/user.service';
 import { CaseRententionChangeComponent } from './case-retention-change.component';
+import { DatePipe } from '@angular/common';
 
 describe('CaseRetentionComponent', () => {
   let component: CaseRententionChangeComponent;
@@ -17,7 +18,7 @@ describe('CaseRetentionComponent', () => {
 
     TestBed.configureTestingModule({
       imports: [CaseRententionChangeComponent],
-      providers: [{ provide: UserService, useValue: mockUserService }],
+      providers: [{ provide: UserService, useValue: mockUserService }, { provide: DatePipe }],
     });
     fixture = TestBed.createComponent(CaseRententionChangeComponent);
     component = fixture.componentInstance;
@@ -69,6 +70,24 @@ describe('CaseRetentionComponent', () => {
       const expected = [{ fieldId: 'change-reason', message: 'You must explain why you are making this change' }];
       component.onConfirm();
       expect(component.errors).toEqual(expected);
+    });
+
+    it('should emit stateChange events if all is OK', () => {
+      const testDate = '02/01/2024';
+      const testReason = 'This is the reason';
+      // Select date option
+      component.retainOptionFormControl.patchValue('date');
+      component.retainDateFormControl.patchValue(testDate);
+      // Populate reason
+      component.retainReasonFormControl.patchValue(testReason);
+      const stateChangeSpy = jest.spyOn(component.stateChange, 'emit');
+      const retentionDateChangeSpy = jest.spyOn(component.retentionDateChange, 'emit');
+      const retentionReasonChange = jest.spyOn(component.retentionReasonChange, 'emit');
+      component.onConfirm();
+
+      expect(stateChangeSpy).toHaveBeenCalledWith('Confirm');
+      expect(retentionDateChangeSpy).toHaveBeenCalledWith(testDate);
+      expect(retentionReasonChange).toHaveBeenCalledWith(testReason);
     });
   });
 

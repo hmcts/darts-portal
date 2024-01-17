@@ -53,7 +53,6 @@ export class CaseRetentionDateComponent implements OnInit {
   retentionHistory$ = this.caseService.getCaseRetentionHistory(this.caseId);
   caseDetails$ = this.caseService.getCase(this.caseId).pipe(
     map((data: Case) => {
-      console.log(data);
       const caseDetails = {
         details: {
           'Case ID': data.case_number,

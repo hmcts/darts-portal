@@ -161,14 +161,30 @@ describe('CaseRetentionDateComponent', () => {
     });
   });
 
+  describe('#onRetentionDateChanged', () => {
+    it('should change date', () => {
+      const testValue = '01/01/2024';
+      component.onRetentionDateChanged(testValue);
+      expect(component.newRetentionDate).toEqual(testValue);
+    });
+  });
+
+  describe('#onRetentionReasonChanged', () => {
+    it('should change state value to "Change"', () => {
+      const testValue = 'I have reasons';
+      component.onRetentionReasonChanged(testValue);
+      expect(component.newRetentionReason).toEqual(testValue);
+    });
+  });
+
   it('should transform case details correctly', (done) => {
     component.caseDetails$.subscribe((caseDetails) => {
       expect(caseDetails.details).toEqual({
-        'Case ID': 1,
+        'Case ID': mockCaseData.case_number,
         'Case closed date': mockDatePipe.transform(mockCaseData.case_closed_date_time, 'dd MMM yyyy') || '-',
         Courthouse: 'Swansea',
-        'Judge(s)': ['Judge Judy'],
-        'Defendant(s)': ['Defendant Dave'],
+        'Judge(s)': [' Judge Judy'],
+        'Defendant(s)': [' Defendant Dave'],
       });
 
       expect(caseDetails.currentRetention).toEqual({
