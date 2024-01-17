@@ -29,12 +29,12 @@
               "src/assets",
               {
                 "glob": "**/*",
-                "input": "./node_modules/govuk-frontend/govuk/assets/images",
+                "input": "./node_modules/govuk-frontend/dist/govuk/assets/images",
                 "output": "./assets/images"
               },
               {
                 "glob": "**/*",
-                "input": "./node_modules/govuk-frontend/govuk/assets/fonts",
+                "input": "./node_modules/govuk-frontend/dist/govuk/assets/fonts",
                 "output": "./assets/fonts"
               },
               {
