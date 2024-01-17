@@ -25,7 +25,7 @@ describe('ApproveTranscriptComponent', () => {
 
   const transcriptionDetail = of({
     case_id: 2,
-    reporting_restrictions: [
+    case_reporting_restrictions: [
       {
         hearing_id: 1,
         event_id: 1,

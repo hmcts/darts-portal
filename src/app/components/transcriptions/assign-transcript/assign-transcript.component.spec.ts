@@ -4,10 +4,10 @@ import { DatePipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { ErrorMessageService } from '@services/error/error-message.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { of } from 'rxjs';
 import { AssignTranscriptComponent } from './assign-transcript.component';
-import { ErrorMessageService } from '@services/error/error-message.service';
 
 describe('AssignTranscriptComponent', () => {
   let component: AssignTranscriptComponent;
@@ -43,7 +43,7 @@ describe('AssignTranscriptComponent', () => {
 
   const transcriptionDetail = of({
     case_id: 2,
-    reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
+    case_reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
     case_number: 'C20220620001',
     courthouse: 'Swansea',
     status: 'Rejected',
