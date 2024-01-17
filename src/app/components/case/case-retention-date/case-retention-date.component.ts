@@ -41,7 +41,7 @@ import { CaseRetentionPageState } from '@darts-types/case-retention-page-state.t
 })
 export class CaseRetentionDateComponent implements OnInit {
   private _state: CaseRetentionPageState = 'Default';
-  newRetentionDate = '';
+  newRetentionDate = new Date();
   newRetentionReason: string | null = '';
   headerService = inject(HeaderService);
   route = inject(ActivatedRoute);
@@ -135,7 +135,7 @@ export class CaseRetentionDateComponent implements OnInit {
     this.state = state;
   }
 
-  onRetentionDateChanged(value: string) {
+  onRetentionDateChanged(value: Date) {
     this.newRetentionDate = value;
   }
 

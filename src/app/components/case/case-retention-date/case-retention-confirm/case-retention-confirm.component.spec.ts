@@ -19,7 +19,7 @@ describe('CaseRetentionComponent', () => {
     component = fixture.componentInstance;
     component.caseCourthouse = 'Ducksea';
     component.caseDefendants = [' Mrs Test', ' Mr Test'];
-    component.newRetentionDate = '01/01/2024';
+    component.newRetentionDate = new Date(2024, 0, 1);
     component.newRetentionReason = 'Here is a reason';
 
     fixture.detectChanges();

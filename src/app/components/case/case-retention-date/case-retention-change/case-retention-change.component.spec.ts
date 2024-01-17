@@ -73,11 +73,11 @@ describe('CaseRetentionComponent', () => {
     });
 
     it('should emit stateChange events if all is OK', () => {
-      const testDate = '02/01/2024';
+      const testDate = new Date(2024, 0, 1);
       const testReason = 'This is the reason';
       // Select date option
       component.retainOptionFormControl.patchValue('date');
-      component.retainDateFormControl.patchValue(testDate);
+      component.retainDateFormControl.patchValue('01/01/2024');
       // Populate reason
       component.retainReasonFormControl.patchValue(testReason);
       const stateChangeSpy = jest.spyOn(component.stateChange, 'emit');

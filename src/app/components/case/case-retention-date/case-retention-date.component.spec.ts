@@ -163,9 +163,9 @@ describe('CaseRetentionDateComponent', () => {
 
   describe('#onRetentionDateChanged', () => {
     it('should change date', () => {
-      const testValue = '01/01/2024';
-      component.onRetentionDateChanged(testValue);
-      expect(component.newRetentionDate).toEqual(testValue);
+      const testDate = new Date(2024, 0, 1);
+      component.onRetentionDateChanged(testDate);
+      expect(component.newRetentionDate).toEqual(testDate);
     });
   });
 

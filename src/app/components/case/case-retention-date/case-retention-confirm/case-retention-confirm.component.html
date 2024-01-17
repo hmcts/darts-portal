@@ -10,14 +10,16 @@
       </caption>
       <tbody class="govuk-table__body">
         <tr class="govuk-table__row">
-          <th id="'detail-th-retain'" class="govuk-table__header">Retain case until</th>
-          <td class="govuk-table__cell table-width">{{ newRetentionDate }}</td>
-          <td class="govuk-table__cell"><a href="#" (click)="onReturnDate($event)">Change</a></td>
+          <th class="govuk-table__header">Retain case until</th>
+          <td id="retain-date" class="govuk-table__cell table-width">
+            {{ newRetentionDate | date: 'dd MMM yyyy' }}
+          </td>
+          <td class="govuk-table__cell"><a href="#" id="date-link" (click)="onReturnDate($event)">Change</a></td>
         </tr>
         <tr class="govuk-table__row">
-          <th id="'detail-th-reason'" class="govuk-table__header">Reason for change</th>
-          <td class="govuk-table__cell table-width">{{ newRetentionReason }}</td>
-          <td class="govuk-table__cell"><a href="#" (click)="onReturnReason($event)">Change</a></td>
+          <th class="govuk-table__header">Reason for change</th>
+          <td id="retain-reason" class="govuk-table__cell table-width">{{ newRetentionReason }}</td>
+          <td class="govuk-table__cell"><a href="#" id="reason-link" (click)="onReturnReason($event)">Change</a></td>
         </tr>
       </tbody>
     </table>
@@ -27,6 +29,6 @@
     <button class="govuk-button" id="continue-button" data-module="govuk-button" (click)="onConfirm()">
       Confirm retention date change
     </button>
-    <a href="#" (click)="onCancel($event)" class="govuk-link">Cancel</a>
+    <a href="#" (click)="onCancel($event)" id="cancel-link" class="govuk-link">Cancel</a>
   </div>
 </div>

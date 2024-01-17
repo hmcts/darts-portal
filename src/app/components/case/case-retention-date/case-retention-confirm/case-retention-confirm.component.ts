@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
@@ -26,7 +26,7 @@ export class CaseRententionConfirmComponent {
   @Input() caseId!: string | undefined;
   @Input() caseCourthouse!: string | undefined;
   @Input() caseDefendants!: string[] | undefined;
-  @Input() newRetentionDate!: string | null;
+  @Input() newRetentionDate!: Date | null;
   @Input() newRetentionReason!: string | null;
 
   @Output() stateChange = new EventEmitter<CaseRetentionPageState>();

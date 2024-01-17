@@ -21,7 +21,7 @@ export class CaseRententionChangeComponent implements AfterViewChecked {
   @Input() originalRetentionDate!: string | null;
 
   @Output() stateChange = new EventEmitter<CaseRetentionPageState>();
-  @Output() retentionDateChange = new EventEmitter<string>();
+  @Output() retentionDateChange = new EventEmitter<Date>();
   @Output() retentionReasonChange = new EventEmitter<string | null>();
 
   userService = inject(UserService);
@@ -112,10 +112,15 @@ export class CaseRententionChangeComponent implements AfterViewChecked {
       });
     }
     if (!this.errors.length) {
-      this.retentionDateChange.emit(this.retainDateFormControl.value);
+      this.retentionDateChange.emit(this.dateFromString(this.retainDateFormControl.value));
       this.retentionReasonChange.emit(this.retainReasonFormControl.value);
       this.stateChange.emit('Confirm');
     }
+  }
+
+  dateFromString(value: string) {
+    // Convert UK format date string to Date object
+    return new Date(parseInt(value.split('/')[2]), parseInt(value.split('/')[1]) - 1, parseInt(value.split('/')[0]));
   }
 
   onCancel(event: Event) {

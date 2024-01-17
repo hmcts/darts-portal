@@ -2,7 +2,10 @@ import 'cypress-axe';
 import { DateTime } from 'luxon';
 import './commands';
 
-describe('Case retention screen as non Judge / Admin', () => {
+const validDateObject = DateTime.fromISO('2031-01-01');
+const validReason = 'REASONS';
+
+describe('Case retention screen as standard user', () => {
   beforeEach(() => {
     cy.login();
     cy.injectAxe();
@@ -35,11 +38,52 @@ describe('Case retention screen as non Judge / Admin', () => {
       cy.get('#retentionTable').should('contain', '11 Oct 2023 00:18:00');
       cy.a11y();
     });
+  });
 
-    it('Change retention date', () => {
-      cy.get('#change-retention-button').should('exist');
+  describe('Open case retention screen', () => {
+    beforeEach(() => {
+      cy.contains('Search').click();
+      cy.get('#case_number').type('C20220620002');
+      cy.get('button').contains('Search').click();
+      cy.contains('C20220620002').click();
+      cy.contains('View or change').click();
+    });
+
+    it('Check page elements', () => {
+      //Breadcrumb
+      cy.get('a.govuk-breadcrumbs__link').should('contain', 'Case retention date');
+
+      //Info banner, shows on open or pending cases
+      cy.get('div.govuk-notification-banner').should('contain', 'This case is still open or was recently closed.');
+
+      cy.get('h1.govuk-heading-l').should('contain', 'Case retention date');
+      cy.get('.govuk-table__caption.govuk-table__caption--m').should('contain', 'Case details');
+      cy.get('.govuk-table__caption.govuk-table__caption--m').should('contain', 'Current retention details');
+
+      cy.get('td.govuk-table__cell').should('contain', '-');
+
+      cy.get('td.govuk-table__cell').should('contain', 'A retention policy has yet to be applied to this case.');
+
+      cy.get('p.govuk-body').should('contain', 'No history to show');
+
+      //Button group, should not be visible on open cases
+      cy.get('.govuk-button-group').should('not.exist');
+
+      cy.a11y();
+    });
+  });
+
+  describe('Change case retention screen', () => {
+    beforeEach(() => {
+      cy.contains('Search').click();
+      cy.get('#case_number').type('C20220620001');
+      cy.get('button').contains('Search').click();
+      cy.contains('C20220620001').click();
+      cy.contains('View or change').click();
       cy.get('#change-retention-button').click();
+    });
 
+    it('Check page elements', () => {
       cy.get('h1.govuk-heading-l').should('contain', 'Change case retention date');
       cy.get('.govuk-fieldset__heading').should('contain', 'Select a new retention date');
 
@@ -54,7 +98,7 @@ describe('Case retention screen as non Judge / Admin', () => {
       cy.get('.govuk-error-message').should('contain', 'You must explain why you are making this change');
 
       // Fill in the reason box but don't fill in the date, should show error
-      cy.get('#change-reason').type('REASONS');
+      cy.get('#change-reason').type(validReason);
       cy.get('#retention-option-date').click();
       cy.get('#continue-button').click();
       cy.get('.govuk-error-summary').should(
@@ -94,7 +138,7 @@ describe('Case retention screen as non Judge / Admin', () => {
 
       // Fill it in properly this time, error message should not appear
       cy.get('#retention-date').clear();
-      cy.get('#retention-date').type('01/01/2031');
+      cy.get('#retention-date').type(validDateObject.toFormat('dd/MM/yyyy'));
       cy.get('#continue-button').click();
       cy.get('.govuk-error-summary').should('not.exist');
       cy.get('.govuk-error-message').should('not.exist');
@@ -103,59 +147,72 @@ describe('Case retention screen as non Judge / Admin', () => {
     });
   });
 
-  describe('Open case retention screen', () => {
-    beforeEach(() => {
-      cy.contains('Search').click();
-      cy.get('#case_number').type('C20220620002');
-      cy.get('button').contains('Search').click();
-      cy.contains('C20220620002').click();
-      cy.contains('View or change').click();
-    });
-
-    it('Check page elements', () => {
-      //Breadcrumb
-      cy.get('a.govuk-breadcrumbs__link').should('contain', 'Case retention date');
-
-      //Info banner, shows on open or pending cases
-      cy.get('div.govuk-notification-banner').should('contain', 'This case is still open or was recently closed.');
-
-      cy.get('h1.govuk-heading-l').should('contain', 'Case retention date');
-      cy.get('.govuk-table__caption.govuk-table__caption--m').should('contain', 'Case details');
-      cy.get('.govuk-table__caption.govuk-table__caption--m').should('contain', 'Current retention details');
-
-      cy.get('td.govuk-table__cell').should('contain', '-');
-
-      cy.get('td.govuk-table__cell').should('contain', 'A retention policy has yet to be applied to this case.');
-
-      cy.get('p.govuk-body').should('contain', 'No history to show');
-
-      //Button group, should not be visible on open cases
-      cy.get('.govuk-button-group').should('not.exist');
-
-      cy.a11y();
-    });
-  });
-});
-
-describe('Case retention screen as non judge', () => {
-  beforeEach(() => {
-    cy.login('judge');
-    cy.injectAxe();
-  });
-
-  describe('Closed case retention screen', () => {
+  describe('Confirm case retention screen', () => {
     beforeEach(() => {
       cy.contains('Search').click();
       cy.get('#case_number').type('C20220620001');
       cy.get('button').contains('Search').click();
       cy.contains('C20220620001').click();
       cy.contains('View or change').click();
+      cy.get('#change-retention-button').click();
+      cy.get('#retention-option-date').click();
+      cy.get('#retention-date').type(validDateObject.toFormat('dd/MM/yyyy'));
+      cy.get('#change-reason').type(validReason);
+      cy.get('#continue-button').click();
     });
 
-    it('Change retention date', () => {
-      cy.get('#change-retention-button').should('exist');
-      cy.get('#change-retention-button').click();
+    it('Check page elements', () => {
+      cy.get('h1.govuk-heading-l').should('contain', 'Check retention date change');
+      cy.get('.govuk-table__caption.govuk-table__caption--m').should('contain', 'Case details');
+      cy.get('#retain-date').should('contain', validDateObject.toFormat('dd MMM yyyy'));
+      cy.get('#retain-reason').should('contain', validReason);
+    });
 
+    it('Should go back to case retention screen', () => {
+      cy.get('#cancel-link').click();
+      // Should go back to case retention screen
+      cy.get('h1.govuk-heading-l').should('contain', 'Case retention date');
+
+      cy.a11y();
+    });
+
+    it('Should go back to change screen and select reason box', () => {
+      cy.get('#date-link').click();
+      // Should go back to case retention screen
+      cy.get('h1.govuk-heading-l').should('contain', 'Change case retention date');
+      cy.url().should('contain', 'retention-date');
+
+      cy.a11y();
+    });
+
+    it('Should go back to change screen and select reason box', () => {
+      cy.get('#reason-link').click();
+      // Should go back to case retention screen
+      cy.get('h1.govuk-heading-l').should('contain', 'Change case retention date');
+      cy.url().should('contain', 'change-reason');
+
+      cy.a11y();
+    });
+  });
+});
+
+describe('Case retention screen as Judge', () => {
+  beforeEach(() => {
+    cy.login('judge');
+    cy.injectAxe();
+  });
+
+  describe('Change case retention screen', () => {
+    beforeEach(() => {
+      cy.contains('Search').click();
+      cy.get('#case_number').type('C20220620001');
+      cy.get('button').contains('Search').click();
+      cy.contains('C20220620001').click();
+      cy.contains('View or change').click();
+      cy.get('#change-retention-button').click();
+    });
+
+    it('Change retention date screen', () => {
       cy.get('h1.govuk-heading-l').should('contain', 'Change case retention date');
       cy.get('.govuk-fieldset__heading').should('contain', 'Select a new retention date');
 
@@ -175,7 +232,7 @@ describe('Case retention screen as non judge', () => {
 
       // Fill in a date later than the original retention date this time this time, error message should not appear
       cy.get('#retention-date').clear();
-      cy.get('#retention-date').type('01/01/2031');
+      cy.get('#retention-date').type(validDateObject.toFormat('dd/MM/yyyy'));
       cy.get('#continue-button').click();
       cy.get('.govuk-error-summary').should('not.exist');
       cy.get('.govuk-error-message').should('not.exist');
