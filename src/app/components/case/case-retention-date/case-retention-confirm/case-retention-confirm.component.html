@@ -1,0 +1,32 @@
+<h1 class="govuk-heading-l">Check retention date change</h1>
+<div class="govuk-form-group">
+  <ng-container>
+    <app-details-table title="Case details" [details]="caseDetails"></app-details-table>
+  </ng-container>
+  <ng-container>
+    <table class="govuk-table">
+      <caption class="govuk-table__caption govuk-table__caption--m">
+        Change case retention date
+      </caption>
+      <tbody class="govuk-table__body">
+        <tr class="govuk-table__row">
+          <th id="'detail-th-retain'" class="govuk-table__header">Retain case until</th>
+          <td class="govuk-table__cell table-width">{{ newRetentionDate }}</td>
+          <td class="govuk-table__cell"><a href="#" (click)="onReturnDate($event)">Change</a></td>
+        </tr>
+        <tr class="govuk-table__row">
+          <th id="'detail-th-reason'" class="govuk-table__header">Reason for change</th>
+          <td class="govuk-table__cell table-width">{{ newRetentionReason }}</td>
+          <td class="govuk-table__cell"><a href="#" (click)="onReturnReason($event)">Change</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+
+  <div class="govuk-button-group">
+    <button class="govuk-button" id="continue-button" data-module="govuk-button" (click)="onConfirm()">
+      Confirm retention date change
+    </button>
+    <a href="#" (click)="onCancel($event)" class="govuk-link">Cancel</a>
+  </div>
+</div>
