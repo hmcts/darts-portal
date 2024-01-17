@@ -1,4 +1,4 @@
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
