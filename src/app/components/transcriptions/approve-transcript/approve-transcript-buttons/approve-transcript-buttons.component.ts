@@ -1,13 +1,20 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, RouterLink, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { CharacterCountTextareaComponent } from '@common/character-count-textarea/character-count-textarea.component';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 
 @Component({
   selector: 'app-approve-transcript-buttons',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ApproveTranscriptButtonsComponent, RouterLink],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    ApproveTranscriptButtonsComponent,
+    RouterLink,
+    CharacterCountTextareaComponent,
+  ],
   templateUrl: './approve-transcript-buttons.component.html',
   styleUrl: './approve-transcript-buttons.component.scss',
 })

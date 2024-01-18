@@ -16,6 +16,7 @@ export class CharacterCountTextareaComponent {
   @Input() id!: string;
   @Input() name!: string;
   @Input() ariaDescribedBy!: string;
+  @Input() booleanErrorFunction!: () => boolean;
 
   get remainingCharacterCount() {
     return this.maxCharacterLimit - (this.control.value?.length ?? 0);
