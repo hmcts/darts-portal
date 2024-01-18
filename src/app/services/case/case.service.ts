@@ -1,9 +1,13 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CaseRetentionHistory } from '@darts-types/case-retention-history.interface';
-import { Case, Courthouse, Hearing, SearchFormValues, Transcript } from '@darts-types/index';
-import { Observable, of } from 'rxjs';
-import { catchError, map, shareReplay } from 'rxjs/operators';
+import { Case, Courthouse, Hearing, SearchFormValues, Transcript, TranscriptData } from '@darts-types/index';
+import { DateTime } from 'luxon';
+import { Observable } from 'rxjs/internal/Observable';
+import { of } from 'rxjs/internal/observable/of';
+import { catchError } from 'rxjs/internal/operators/catchError';
+import { map } from 'rxjs/internal/operators/map';
+import { shareReplay } from 'rxjs/internal/operators/shareReplay';
 
 export const GET_COURTHOUSES_PATH = '/api/courthouses';
 export const GET_CASE_PATH = '/api/cases';
@@ -29,28 +33,30 @@ export class CaseService {
     );
   }
 
-  getAllHearingTranscripts(hearingId: number): Observable<Transcript[]> {
-    const apiURL = `${GET_HEARINGS_PATH}/${hearingId}/transcripts`;
-    return this.http.get<Transcript[]>(apiURL).pipe(
-      map((transcripts) =>
-        transcripts.map((t) => ({
-          ...t,
-          date: t.hearing_date + 'T00:00:00Z',
-        }))
-      )
-    );
+  getHearingTranscripts(hearingId: number): Observable<Transcript[]> {
+    const url = `${GET_HEARINGS_PATH}/${hearingId}/transcripts`;
+    return this.http
+      .get<TranscriptData[]>(url)
+      .pipe(map((transcripts) => transcripts.map(this.mapTranscriptDataToTranscript)));
   }
 
-  getAllCaseTranscripts(caseId: number): Observable<Transcript[]> {
-    const apiURL = `${GET_CASE_PATH}/${caseId}/transcripts`;
-    return this.http.get<Transcript[]>(apiURL).pipe(
-      map((transcripts) =>
-        transcripts.map((t) => ({
-          ...t,
-          date: t.hearing_date + 'T00:00:00Z',
-        }))
-      )
-    );
+  getCaseTranscripts(caseId: number): Observable<Transcript[]> {
+    const url = `${GET_CASE_PATH}/${caseId}/transcripts`;
+    return this.http
+      .get<TranscriptData[]>(url)
+      .pipe(map((transcripts) => transcripts.map(this.mapTranscriptDataToTranscript)));
+  }
+
+  private mapTranscriptDataToTranscript(t: TranscriptData): Transcript {
+    return {
+      id: t.transcription_id,
+      hearingId: t.hearing_id,
+      hearingDate: DateTime.fromISO(t.hearing_date),
+      type: t.type,
+      requestedOn: DateTime.fromISO(t.requested_on),
+      requestedByName: t.requested_by_name,
+      status: t.status,
+    };
   }
 
   getCase(caseId: number): Observable<Case> {

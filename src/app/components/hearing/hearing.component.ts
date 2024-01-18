@@ -81,7 +81,7 @@ export class HearingComponent implements OnInit {
   defaultTab = 'Events and Audio';
 
   public transcripts$ = this.caseService
-    .getAllHearingTranscripts(this.hearingId)
+    .getHearingTranscripts(this.hearingId)
     .pipe(map((transcript) => this.mappingService.mapTranscriptRequestToRows(transcript)));
 
   transcriptColumns: DatatableColumn[] = [
