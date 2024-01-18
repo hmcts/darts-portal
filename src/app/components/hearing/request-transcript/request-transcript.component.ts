@@ -146,6 +146,7 @@ export class RequestTranscriptComponent implements OnInit, OnDestroy {
     return audio.map((audio) => ({
       ...audio,
       name: 'Audio Recording',
+      type: 'audio',
     }));
   }
 

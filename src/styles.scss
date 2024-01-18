@@ -21,6 +21,7 @@
 a.govuk-link {
   cursor: pointer;
   @extend .govuk-link--no-visited-state;
+  color: #1d70b8;
 }
 
 .govuk-table__head {
