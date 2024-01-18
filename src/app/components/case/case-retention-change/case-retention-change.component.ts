@@ -1,17 +1,24 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewChecked, Component, Input, Output, inject, EventEmitter } from '@angular/core';
+import { AfterViewChecked, Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { initAll } from '@scottish-government/pattern-library/src/all';
+import { CharacterCountTextareaComponent } from '@common/character-count-textarea/character-count-textarea.component';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
-import { UserService } from '@services/user/user.service';
 import { CaseRetentionPageState } from '@darts-types/case-retention-page-state.type';
+import { initAll } from '@scottish-government/pattern-library/src/all';
+import { UserService } from '@services/user/user.service';
 import { beforeDateValidator } from '@validators/before-date.validator';
 
 @Component({
   selector: 'app-case-retention-change',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ReportingRestrictionComponent, ValidationErrorSummaryComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    ReportingRestrictionComponent,
+    ValidationErrorSummaryComponent,
+    CharacterCountTextareaComponent,
+  ],
   templateUrl: './case-retention-change.component.html',
   styleUrls: ['./case-retention-change.component.scss'],
 })
@@ -53,6 +60,10 @@ export class CaseRententionChangeComponent implements AfterViewChecked {
 
   isReasonInvalid(): boolean {
     return this.retainReasonFormControl.dirty && !this.retainReasonFormControl.value;
+  }
+
+  isReasonInvalidCallBack(control: FormControl): boolean {
+    return control.dirty && !control.value;
   }
 
   onChangeDate() {
