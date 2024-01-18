@@ -77,7 +77,6 @@ describe('AudioPreviewService', () => {
 
   it('should return the blob URL when receiving a response', (done) => {
     const mediaId = 123;
-    const url = '/api/audio/preview5/123';
     const eventSourceMock = {
       addEventListener: jest.fn((event, callback) => {
         if (event === 'response') {
