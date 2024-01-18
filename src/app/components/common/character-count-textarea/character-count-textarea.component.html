@@ -1,0 +1,26 @@
+<!-- <textarea
+  class="govuk-textarea govuk-!-width-one-half"
+  [id]="id"
+  [name]="name"
+  [rows]="rows"
+  [attr.aria-describedby]="ariaDescribedBy"
+  [formControl]="control"
+  [maxlength]="maxCharacterLimit"
+  [class.govuk-input--error]="isReasonInvalid()"
+></textarea>
+<div [id]="id + '-hint'" class="govuk-hint" [class.govuk-error-text]="isReasonInvalid()">
+  You have {{ remainingCharacterCount }} character{{ remainingCharacterCount === 1 ? '' : 's' }} remaining
+</div> -->
+
+<textarea
+  class="govuk-textarea govuk-!-width-one-half"
+  [id]="id"
+  [name]="name"
+  [rows]="rows"
+  [attr.aria-describedby]="ariaDescribedBy"
+  [formControl]="control"
+  [maxlength]="maxCharacterLimit"
+></textarea>
+<div [id]="id + '-hint'" class="govuk-hint">
+  You have {{ remainingCharacterCount }} character{{ remainingCharacterCount === 1 ? '' : 's' }} remaining
+</div>
