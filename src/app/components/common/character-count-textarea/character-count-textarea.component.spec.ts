@@ -8,10 +8,9 @@ describe('CharacterCountTextareaComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CharacterCountTextareaComponent]
-    })
-    .compileComponents();
-    
+      imports: [CharacterCountTextareaComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(CharacterCountTextareaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
