@@ -3,17 +3,23 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AudioPreviewService } from './audio-preview.service';
 
+declare global {
+  interface Window {
+    EventSource: typeof EventSource;
+  }
+}
+
 describe('AudioPreviewService', () => {
   let service: AudioPreviewService;
 
   beforeEach(() => {
     // Mock URL.createObjectURL()
-    (window.URL as any) = {
+    (window.URL as unknown) = {
       createObjectURL: jest.fn(() => 'mocked blob url'),
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (window as any).EventSource = class EventSource {
-      // Define the methods and properties you need to mock here
       onmessage = jest.fn();
       onerror = jest.fn();
       close = jest.fn();
