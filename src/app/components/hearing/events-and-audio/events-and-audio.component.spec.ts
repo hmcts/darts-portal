@@ -263,4 +263,105 @@ describe('EventsAndAudioComponent', () => {
     expect(audioPlayer2.pausePlayer).toHaveBeenCalled();
     expect(audioPlayer3.pausePlayer).toHaveBeenCalled();
   });
+
+  it('should add audio id to audioInPreview array', () => {
+    const id = 1;
+    component.onPreviewAudio(id);
+    expect(component.audioInPreview).toContain(id);
+  });
+
+  it('should not add audio id to audioInPreview array if it already exists', () => {
+    const id = 1;
+    component.audioInPreview = [1, 2, 3];
+    component.onPreviewAudio(id);
+    expect(component.audioInPreview).toEqual([1, 2, 3]);
+  });
+
+  describe('#isAudioInPreview', () => {
+    it('should return true if the audio id is in the audioInPreview array', () => {
+      // Arrange
+      const id = 1;
+      component.audioInPreview = [1, 2, 3];
+
+      // Act
+      const result = component.isAudioInPreview(id);
+
+      // Assert
+      expect(result).toBe(true);
+    });
+
+    it('should return false if the audio id is not in the audioInPreview array', () => {
+      // Arrange
+      const id = 4;
+      component.audioInPreview = [1, 2, 3];
+
+      // Act
+      const result = component.isAudioInPreview(id);
+
+      // Assert
+      expect(result).toBe(false);
+    });
+  });
+
+  it('should emit selected rows when onRowSelect is called', () => {
+    jest.spyOn(component.eventsSelect, 'emit');
+    const rows: AudioEventRow[] = [
+      {
+        id: 1,
+        media_start_timestamp: '2023-07-31T14:32:24.620Z',
+        media_end_timestamp: '2023-07-31T14:32:24.620Z',
+        type: 'audio',
+      },
+      {
+        id: 2,
+        timestamp: '2023-07-31T14:32:24.620Z',
+        name: 'Case called on',
+        text: 'Record: New Case',
+        type: 'event',
+      },
+    ];
+
+    component.onRowSelect(rows);
+
+    expect(component.eventsSelect.emit).toHaveBeenCalledWith(rows);
+  });
+
+  it('should map events and audio to table', () => {
+    const audio: HearingAudio[] = [
+      {
+        id: 1,
+        media_start_timestamp: '2023-07-31T10:00:01.620Z',
+        media_end_timestamp: '2023-07-31T14:32:24.620Z',
+      },
+    ];
+    const events: HearingEvent[] = [
+      {
+        id: 1,
+        timestamp: '2023-07-31T10:00:02.620Z',
+        name: 'Case called on',
+        text: 'Record: New Case',
+      },
+    ];
+
+    component.audio = audio;
+    component.events = events;
+
+    // Act
+    component['mapEventsAndAudioToTable']();
+
+    // Assert
+    const expectedRows = [
+      ...audio.map((audioItem) => ({
+        ...audioItem,
+        type: 'audio',
+        timestamp: audioItem.media_start_timestamp,
+        audioSourceUrl$: expect.anything(),
+      })),
+      ...events.map((eventItem) => ({
+        ...eventItem,
+        type: 'event',
+      })),
+    ];
+    expect(component.rows).toEqual(expectedRows);
+  });
 });

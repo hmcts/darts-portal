@@ -26,7 +26,6 @@ export class AudioPreviewService {
         const responseBody = responsedata.body;
         const blob = this.b64toBlob(responseBody);
         const blobUrl = window.URL.createObjectURL(blob);
-        console.log('blobUrl', blobUrl);
         observer.next(blobUrl);
       });
 
@@ -36,7 +35,6 @@ export class AudioPreviewService {
           observer.error(url);
         }
         eventSource.close();
-        // observer.error();
       };
       return () => {
         eventSource.close();

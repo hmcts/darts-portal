@@ -74,4 +74,28 @@ describe('AudioPreviewService', () => {
 
     expect(eventSourceMock.close).toHaveBeenCalled();
   });
+
+  it('should return the blob URL when receiving a response', (done) => {
+    const mediaId = 123;
+    const url = '/api/audio/preview5/123';
+    const eventSourceMock = {
+      addEventListener: jest.fn((event, callback) => {
+        if (event === 'response') {
+          const message = {
+            data: JSON.stringify({ body: 'base64data' }),
+          };
+          callback(message);
+        }
+      }),
+      close: jest.fn(),
+      onerror: jest.fn(),
+    } as unknown as EventSource;
+
+    jest.spyOn(window, 'EventSource').mockReturnValue(eventSourceMock);
+
+    service.getAudioPreviewBlobUrl(mediaId).subscribe((blobUrl) => {
+      expect(blobUrl).toBe('mocked blob url');
+      done();
+    });
+  });
 });
