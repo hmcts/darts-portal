@@ -1,7 +1,7 @@
 <ng-container *ngIf="!isDeleting && (data$ | async) as data">
   <app-breadcrumb>
     <ng-container *breadcrumb="['../']">Your audio</ng-container>
-    <ng-container *breadcrumb>{{ fileName }}</ng-container>
+    <ng-container *breadcrumb>{{ transformedMedia.filename }}</ng-container>
   </app-breadcrumb>
 
   <app-reporting-restriction [restrictions]="data.case.reporting_restrictions"></app-reporting-restriction>
@@ -15,7 +15,7 @@
   </ng-container>
 
   <h1 class="govuk-caption-l">Audio File</h1>
-  <h1 class="govuk-heading-l">{{ fileName }}</h1>
+  <h1 class="govuk-heading-l">{{ transformedMedia.filename }}</h1>
 
   <h2 class="govuk-heading-m">Case details</h2>
   <div class="details-container">

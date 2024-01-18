@@ -98,15 +98,6 @@ export class AudioViewComponent implements OnDestroy {
 
       this.case$ = this.caseService.getCase(this.transformedMedia.caseId);
 
-      if (this.transformedMedia.filename) {
-        this.fileName = this.transformedMedia.filename + '.' + this.transformedMedia.format?.toLowerCase();
-      } else {
-        this.fileName =
-          this.transformedMedia.requestType === 'DOWNLOAD'
-            ? this.transformedMedia.caseNumber + '.zip'
-            : this.transformedMedia.caseNumber + '.mp3';
-      }
-
       this.audioSource = `/api/audio-requests/playback?transformed_media_id=${this.transformedMedia.transformedMediaId}`;
 
       this.eventRows$ = this.hearingService.getEvents(this.transformedMedia.hearingId).pipe(
