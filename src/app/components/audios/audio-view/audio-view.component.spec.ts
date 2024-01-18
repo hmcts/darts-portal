@@ -116,7 +116,7 @@ describe('AudioViewComponent', () => {
     hearingId: 3,
     requestType: 'PLAYBACK',
     lastAccessed: undefined,
-    filename: 'T20200331',
+    filename: 'T20200331.mp3',
     format: 'mp3',
     transformedMediaId: 1,
   };
@@ -198,9 +198,6 @@ describe('AudioViewComponent', () => {
       it('should set the currentPlayTime', () => {
         expect(component.currentPlayTime).toEqual(0);
       });
-      it('should set the fileName', () => {
-        expect(component.fileName).toEqual('T20200331.mp3');
-      });
       it('should call patchAudioRequestLastAccess()', () => {
         expect(patchAudioRequestLastAccessSpy).toHaveBeenCalledWith(1, true);
       });
@@ -256,12 +253,11 @@ describe('AudioViewComponent', () => {
     });
 
     it('should download audio and call saveAs', () => {
-      const mockBlob = new Blob(['audio data'], { type: 'audio/wav' });
+      const mockBlob = new Blob(['audio data'], { type: 'audio/mpeg' });
       component.transformedMedia.transformedMediaId = 12378;
 
       fakeAudioRequestService.downloadAudio.mockReturnValue(of(mockBlob));
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const saveAsSpy = jest.spyOn(component.downloadService, 'saveAs');
 
       component.onDownloadClicked();

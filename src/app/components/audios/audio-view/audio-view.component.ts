@@ -150,11 +150,7 @@ export class AudioViewComponent implements OnDestroy {
   onDownloadClicked() {
     this.audioRequestService
       .downloadAudio(this.transformedMedia.transformedMediaId, this.transformedMedia.requestType)
-      .subscribe({
-        next: (blob: Blob) => {
-          this.downloadService.saveAs(blob, this.fileName);
-        },
-      });
+      .subscribe((blob: Blob) => this.downloadService.saveAs(blob, this.transformedMedia.filename));
   }
 
   onSkip(seconds: number, isAlreadyPlaying: boolean) {
