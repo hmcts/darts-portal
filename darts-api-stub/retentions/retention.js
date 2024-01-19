@@ -33,7 +33,8 @@ const retentionHistory = [
 router.get('', (req, res) => {
   switch (req.query?.case_id) {
     case '1':
-    case '2':
+    case '3':
+    case '4':
       res.send(retentionHistory);
       return;
     default:
@@ -44,17 +45,14 @@ router.get('', (req, res) => {
 // POST /api/transcriptions
 router.post('', (req, res) => {
   switch (req.body?.case_id) {
-    case '1':
-      res.send(req.body);
-      return;
-    case '2':
+    case '3':
       res.sendStatus(403);
       return;
-    case '2':
+    case '4':
       res.sendStatus(422);
       return;
     default:
-      res.send([]);
+      res.send(req.body);
   }
 });
 
