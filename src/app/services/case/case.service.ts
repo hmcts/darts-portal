@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { CaseRetentionChange } from '@darts-types/case-retention-change.interface';
 import { CaseRetentionHistory } from '@darts-types/case-retention-history.interface';
 import { Case, Courthouse, Hearing, SearchFormValues, Transcript } from '@darts-types/index';
 import { Observable, of } from 'rxjs';
@@ -113,5 +114,9 @@ export class CaseService {
         return of([]);
       })
     );
+  }
+
+  postCaseRetentionChange(retentionChange: CaseRetentionChange): Observable<CaseRetentionChange> {
+    return this.http.post<CaseRetentionChange>(GET_CASE_RETENTION_HISTORY, retentionChange);
   }
 }

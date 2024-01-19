@@ -1,32 +1,83 @@
+import { of } from 'rxjs';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CaseRententionConfirmComponent } from './case-retention-confirm.component';
 import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { CaseService } from '@services/case/case.service';
 
 describe('CaseRetentionComponent', () => {
   let component: CaseRententionConfirmComponent;
   let fixture: ComponentFixture<CaseRententionConfirmComponent>;
+  const mockDatePipe = new DatePipe('en-GB');
   const fakeRouter = {
     navigate: jest.fn(),
     url: 'test#',
   };
 
+  const fakeCaseService = {
+    postCaseRetentionChange: jest.fn().mockReturnValue(of({})),
+  };
+
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CaseRententionConfirmComponent],
-      providers: [{ provide: Router, useValue: fakeRouter }],
+      imports: [CaseRententionConfirmComponent, HttpClientTestingModule],
+      providers: [
+        { provide: Router, useValue: fakeRouter },
+        { provide: CaseService, useValue: fakeCaseService },
+        { provide: DatePipe },
+      ],
     });
     fixture = TestBed.createComponent(CaseRententionConfirmComponent);
     component = fixture.componentInstance;
-    component.caseCourthouse = 'Ducksea';
-    component.caseDefendants = [' Mrs Test', ' Mr Test'];
-    component.newRetentionDate = new Date(2024, 0, 1);
-    component.newRetentionReason = 'Here is a reason';
 
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('#onConfirm', () => {
+    it('should call caseService with expected object when permanent is false"', () => {
+      component.caseId = 123;
+      component.caseCourthouse = 'Ducksea';
+      component.caseDefendants = [' Mrs Test', ' Mr Test'];
+      component.newRetentionDate = new Date(2024, 0, 1);
+      component.newRetentionReason = 'Here is a reason';
+      component.newRetentionPermanent = false;
+
+      const expectedCall = {
+        case_id: component.caseId,
+        comments: component.newRetentionReason,
+        is_permanent_retention: undefined,
+        retention_date: mockDatePipe.transform(component.newRetentionDate, 'yyyy/MM/dd'),
+      };
+
+      component.onConfirm();
+
+      expect(fakeCaseService.postCaseRetentionChange).toHaveBeenCalledWith(expectedCall);
+    });
+
+    it('should call caseService without date when permanent is true"', () => {
+      component.caseId = 123;
+      component.caseCourthouse = 'Ducksea';
+      component.caseDefendants = [' Mrs Test', ' Mr Test'];
+      component.newRetentionDate = new Date(2024, 0, 1);
+      component.newRetentionReason = 'Here is a reason';
+      component.newRetentionPermanent = true;
+
+      const expectedCall = {
+        case_id: component.caseId,
+        comments: component.newRetentionReason,
+        is_permanent_retention: true,
+        retention_date: undefined,
+      };
+
+      component.onConfirm();
+
+      expect(fakeCaseService.postCaseRetentionChange).toHaveBeenCalledWith(expectedCall);
+    });
   });
 
   describe('#onCancel', () => {
