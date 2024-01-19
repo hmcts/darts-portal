@@ -30,4 +30,11 @@ describe('CharacterCountTextareaComponent', () => {
     const result = component.remainingCharacterCount;
     expect(result).toEqual(component.maxCharacterLimit - component.control.value.length);
   });
+
+  it('should get the remaining Character Count with custom max Character Limit', () => {
+    component.control.patchValue('Eagle');
+    component.maxCharacterLimit = 200;
+    const result = component.remainingCharacterCount;
+    expect(result).toEqual(195);
+  });
 });
