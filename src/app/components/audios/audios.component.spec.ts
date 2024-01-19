@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { AudioRequestRow, TransformedMediaRow } from '@darts-types/audio-request-row.interface';
 import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { of } from 'rxjs';
 
 import { RouterTestingModule } from '@angular/router/testing';
-import { RequestedMedia } from '@darts-types/requested-media.interface';
+import { MediaRequest, RequestedMedia, TransformedMedia } from '@darts-types/requested-media.interface';
+import { DateTime } from 'luxon';
 import { AudiosComponent } from './audios.component';
 
 describe('AudiosComponent', () => {
@@ -13,72 +13,72 @@ describe('AudiosComponent', () => {
   let fixture: ComponentFixture<AudiosComponent>;
 
   const MOCK_MEDIA_REQUESTS: RequestedMedia = {
-    media_request_details: [
+    mediaRequests: [
       {
-        case_id: 1,
-        media_request_id: 1,
-        case_number: 'C1',
-        courthouse_name: 'Swansea',
-        hearing_date: '2022-01-03',
-        start_ts: '2023-08-21T09:00:00Z',
-        end_ts: '2023-08-21T10:00:00Z',
-        media_request_status: 'OPEN',
-        request_type: 'PLAYBACK',
-        hearing_id: 1,
+        caseId: 1,
+        mediaRequestId: 1,
+        caseNumber: 'C1',
+        courthouseName: 'Swansea',
+        hearingDate: DateTime.fromISO('2022-01-03'),
+        startTime: DateTime.fromISO('2023-08-21T09:00:00Z'),
+        endTime: DateTime.fromISO('2023-08-21T10:00:00Z'),
+        status: 'OPEN',
+        requestType: 'PLAYBACK',
+        hearingId: 1,
       },
       {
-        case_id: 2,
-        media_request_id: 2,
-        case_number: 'C2',
-        courthouse_name: 'Swansea',
-        hearing_date: '2022-01-03',
-        start_ts: '2023-08-21T09:00:00Z',
-        end_ts: '2023-08-21T10:00:00Z',
-        media_request_status: 'FAILED',
-        request_type: 'PLAYBACK',
-        hearing_id: 2,
+        caseId: 2,
+        mediaRequestId: 2,
+        caseNumber: 'C2',
+        courthouseName: 'Swansea',
+        hearingDate: DateTime.fromISO('2022-01-03'),
+        startTime: DateTime.fromISO('2023-08-21T09:00:00Z'),
+        endTime: DateTime.fromISO('2023-08-21T10:00:00Z'),
+        status: 'FAILED',
+        requestType: 'PLAYBACK',
+        hearingId: 2,
       },
     ],
-    transformed_media_details: [
+    transformedMedia: [
       {
-        case_id: 3,
-        media_request_id: 3,
-        case_number: 'C3',
-        courthouse_name: 'Cardiff',
-        hearing_date: '2022-01-04',
-        start_ts: '2022-01-04T09:00:00Z',
-        end_ts: '2022-01-04T10:00:00Z',
-        transformed_media_expiry_ts: '2022-01-04T09:00:00Z',
-        media_request_status: 'COMPLETED',
-        request_type: 'PLAYBACK',
-        last_accessed_ts: '',
-        transformed_media_filename: 'C3',
-        transformed_media_format: 'MP3',
-        transformed_media_id: 3,
-        hearing_id: 3,
+        caseId: 3,
+        mediaRequestId: 3,
+        caseNumber: 'C3',
+        courthouseName: 'Cardiff',
+        hearingDate: DateTime.fromISO('2022-01-04'),
+        startTime: DateTime.fromISO('2022-01-04T09:00:00Z'),
+        endTime: DateTime.fromISO('2022-01-04T10:00:00Z'),
+        transformedMediaExpiryTs: DateTime.fromISO('2022-01-04T09:00:00Z'),
+        status: 'COMPLETED',
+        requestType: 'PLAYBACK',
+        lastAccessedTs: undefined,
+        transformedMediaFilename: 'C3.mp3',
+        transformedMediaFormat: 'MP3',
+        transformedMediaId: 3,
+        hearingId: 3,
       },
     ],
   };
 
   const MOCK_EXPIRED_MEDIA_REQUESTS: RequestedMedia = {
-    media_request_details: [],
-    transformed_media_details: [
+    mediaRequests: [],
+    transformedMedia: [
       {
-        case_id: 4,
-        media_request_id: 4,
-        case_number: 'C4',
-        courthouse_name: 'Cardiff',
-        hearing_date: '2022-01-04',
-        start_ts: '2022-01-04T09:00:00Z',
-        end_ts: '2022-01-04T10:00:00Z',
-        transformed_media_expiry_ts: '2022-01-04T09:00:00Z',
-        media_request_status: 'COMPLETED',
-        request_type: 'PLAYBACK',
-        last_accessed_ts: '2022-01-04T09:00:00Z',
-        transformed_media_filename: 'C4',
-        transformed_media_format: 'MP3',
-        transformed_media_id: 4,
-        hearing_id: 4,
+        caseId: 4,
+        mediaRequestId: 4,
+        caseNumber: 'C4',
+        courthouseName: 'Cardiff',
+        hearingDate: DateTime.fromISO('2022-01-04'),
+        startTime: DateTime.fromISO('2022-01-04T09:00:00Z'),
+        endTime: DateTime.fromISO('2022-01-04T10:00:00Z'),
+        transformedMediaExpiryTs: DateTime.fromISO('2022-01-04T09:00:00Z'),
+        status: 'COMPLETED',
+        requestType: 'PLAYBACK',
+        lastAccessedTs: DateTime.fromISO('2022-01-04T09:00:00Z'),
+        transformedMediaFilename: 'C4.mp3',
+        transformedMediaFormat: 'MP3',
+        transformedMediaId: 4,
+        hearingId: 4,
       },
     ],
   };
@@ -119,7 +119,7 @@ describe('AudiosComponent', () => {
 
   describe('#onSelectedAudio', () => {
     it('should set selectedAudioRequests array', () => {
-      const selectedAudioRequests = [{} as AudioRequestRow];
+      const selectedAudioRequests = [{} as TransformedMedia];
 
       component.onSelectedAudio(selectedAudioRequests);
 
@@ -129,7 +129,7 @@ describe('AudiosComponent', () => {
 
   describe('#onDeleteClicked', () => {
     it('should set isDeleting to true if audio requests are selected', () => {
-      component.selectedAudioRequests = [{} as AudioRequestRow];
+      component.selectedAudioRequests = [{} as TransformedMedia];
 
       component.onDeleteClicked();
 
@@ -149,9 +149,9 @@ describe('AudiosComponent', () => {
       component.isAudioRequest = false;
 
       component.selectedAudioRequests = [
-        { transformedMediaId: 1 } as TransformedMediaRow,
-        { transformedMediaId: 2 } as TransformedMediaRow,
-        { transformedMediaId: 3 } as TransformedMediaRow,
+        { transformedMediaId: 1 } as TransformedMedia,
+        { transformedMediaId: 2 } as TransformedMedia,
+        { transformedMediaId: 3 } as TransformedMedia,
       ];
 
       component.onDeleteConfirmed();
@@ -167,14 +167,14 @@ describe('AudiosComponent', () => {
       component.isAudioRequest = true;
 
       component.selectedAudioRequests = [
-        { requestId: 1 } as AudioRequestRow,
-        { requestId: 2 } as AudioRequestRow,
-        { requestId: 3 } as AudioRequestRow,
+        { mediaRequestId: 1 } as TransformedMedia,
+        { mediaRequestId: 2 } as TransformedMedia,
+        { mediaRequestId: 3 } as TransformedMedia,
       ];
 
       component.onDeleteConfirmed();
 
-      expect(deleteSpy).toBeCalledTimes(3);
+      expect(deleteSpy).toHaveBeenCalledTimes(3);
       expect(deleteSpy).toHaveBeenCalledWith(1);
       expect(deleteSpy).toHaveBeenCalledWith(2);
       expect(deleteSpy).toHaveBeenCalledWith(3);
@@ -189,7 +189,7 @@ describe('AudiosComponent', () => {
 
   describe('#onTabChanged', () => {
     it('should set selectedAudioRequests to empty []', () => {
-      component.selectedAudioRequests = [{} as AudioRequestRow];
+      component.selectedAudioRequests = [{} as TransformedMedia];
 
       component.onTabChanged();
 
@@ -200,7 +200,7 @@ describe('AudiosComponent', () => {
   describe('#onClearClicked', () => {
     it('should set selectedAudioRequests to contain the clicked row', () => {
       const event = new MouseEvent('click');
-      const row: AudioRequestRow = { requestId: 1 } as AudioRequestRow;
+      const row: MediaRequest = { mediaRequestId: 1 } as MediaRequest;
 
       component.onClearClicked(event, row);
 
@@ -209,7 +209,7 @@ describe('AudiosComponent', () => {
 
     it('should set isDeleting to true', () => {
       const event = new MouseEvent('click');
-      const row: AudioRequestRow = { requestId: 1 } as AudioRequestRow;
+      const row: MediaRequest = { mediaRequestId: 1 } as MediaRequest;
 
       component.onClearClicked(event, row);
 
@@ -230,13 +230,13 @@ describe('AudiosComponent', () => {
   describe('#onViewAudioRequest', () => {
     it('should store audio request in service and navigate to view screen', () => {
       const event = new MouseEvent('click');
-      const transformedMedia: TransformedMediaRow = { requestId: 1 } as TransformedMediaRow;
+      const transformedMedia: TransformedMedia = { mediaRequestId: 1 } as TransformedMedia;
 
       const navigateSpy = jest.spyOn(component.router, 'navigate');
 
       component.onViewTransformedMedia(event, transformedMedia);
 
-      expect(navigateSpy).toHaveBeenCalledWith(['./audios', transformedMedia.requestId], {
+      expect(navigateSpy).toHaveBeenCalledWith(['./audios', transformedMedia.mediaRequestId], {
         state: { transformedMedia },
       });
     });
