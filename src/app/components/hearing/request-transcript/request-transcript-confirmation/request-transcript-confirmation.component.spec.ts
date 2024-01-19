@@ -50,13 +50,6 @@ describe('RequestTranscriptConfirmationComponent', () => {
     expect(element).toBeFalsy();
   });
 
-  describe('#remainingCharacterCount', () => {
-    it('should return the remaining character count', () => {
-      component.moreDetailFormControl.patchValue('test');
-      expect(component.remainingCharacterCount).toEqual(1996);
-    });
-  });
-
   describe('#urgency', () => {
     it('should return the urgency description', () => {
       component.urgencyId = 1;

@@ -1,13 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, RouterLink, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { GovukTextareaComponent } from '@common/govuk-textarea/govuk-textarea.component';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 
 @Component({
   selector: 'app-approve-transcript-buttons',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ApproveTranscriptButtonsComponent, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, ApproveTranscriptButtonsComponent, RouterLink, GovukTextareaComponent],
   templateUrl: './approve-transcript-buttons.component.html',
   styleUrl: './approve-transcript-buttons.component.scss',
 })
@@ -22,10 +23,6 @@ export class ApproveTranscriptButtonsComponent {
   rejectReasonFormControl = new FormControl('');
   approveFormControl = new FormControl('');
   buttonsError = '';
-
-  get remainingCharacterCount() {
-    return 2000 - (this.rejectReasonFormControl.value?.length || 0);
-  }
 
   onSubmit() {
     if (this.approveFormControl.value === 'No') {
