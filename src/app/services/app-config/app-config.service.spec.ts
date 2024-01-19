@@ -25,6 +25,7 @@ describe('AppConfigService', () => {
         name: 'DARTS support',
         emailAddress: 'support@darts',
       },
+      environment: 'development',
     };
     jest.spyOn(httpClientSpy, 'get').mockReturnValue(of(testData));
     await appConfigService.loadAppConfig();
