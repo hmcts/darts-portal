@@ -10,12 +10,12 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
   styleUrl: './character-count-textarea.component.scss',
 })
 export class CharacterCountTextareaComponent {
-  @Input() control!: FormControl;
+  @Input({ required: true }) control!: FormControl;
   @Input() maxCharacterLimit = 2000;
   @Input() rows = 5;
-  @Input() id!: string;
-  @Input() name!: string;
-  @Input() ariaDescribedBy!: string;
+  @Input({ required: true }) id!: string;
+  @Input({ required: true }) name!: string;
+  @Input({ required: true }) ariaDescribedBy!: string;
   @Input() isInvalid: boolean = false;
 
   get remainingCharacterCount() {
