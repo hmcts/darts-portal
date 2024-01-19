@@ -84,7 +84,7 @@
         ariaDescribedBy="change-reason-hint"
         [control]="retainReasonFormControl"
         [maxCharacterLimit]="rententionCharacterLimit"
-        [booleanErrorFunction]="isReasonInvalidCallBack"
+        [isInvalid]="isReasonInvalid()"
       ></app-character-count-textarea>
     </div>
     <div class="govuk-button-group">

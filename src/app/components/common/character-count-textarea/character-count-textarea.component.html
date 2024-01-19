@@ -6,8 +6,8 @@
   [attr.aria-describedby]="ariaDescribedBy"
   [formControl]="control"
   [maxlength]="maxCharacterLimit"
-  [class.govuk-input--error]="errors"
+  [class.govuk-input--error]="isInvalid"
 ></textarea>
-<div [id]="id + '-hint'" class="govuk-hint" [class.govuk-error-text]="errors">
+<div [id]="id + '-hint'" class="govuk-hint" [class.govuk-error-text]="isInvalid">
   You have {{ remainingCharacterCount }} character{{ remainingCharacterCount === 1 ? '' : 's' }} remaining
 </div>
