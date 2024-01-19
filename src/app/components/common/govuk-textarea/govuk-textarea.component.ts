@@ -3,13 +3,13 @@ import { Component, Input } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-character-count-textarea',
+  selector: 'app-govuk-textarea',
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
-  templateUrl: './character-count-textarea.component.html',
-  styleUrl: './character-count-textarea.component.scss',
+  templateUrl: './govuk-textarea.component.html',
+  styleUrl: './govuk-textarea.component.scss',
 })
-export class CharacterCountTextareaComponent {
+export class GovukTextareaComponent {
   @Input({ required: true }) control!: FormControl;
   @Input() maxCharacterLimit = 2000;
   @Input() rows = 5;

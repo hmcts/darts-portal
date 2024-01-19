@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FormControl } from '@angular/forms';
-import { CharacterCountTextareaComponent } from './character-count-textarea.component';
+import { GovukTextareaComponent } from './govuk-textarea.component';
 
-describe('CharacterCountTextareaComponent', () => {
-  let component: CharacterCountTextareaComponent;
-  let fixture: ComponentFixture<CharacterCountTextareaComponent>;
+describe('GovukTextareaComponent', () => {
+  let component: GovukTextareaComponent;
+  let fixture: ComponentFixture<GovukTextareaComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CharacterCountTextareaComponent],
+      imports: [GovukTextareaComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(CharacterCountTextareaComponent);
+    fixture = TestBed.createComponent(GovukTextareaComponent);
     component = fixture.componentInstance;
     component.control = new FormControl('');
     fixture.detectChanges();

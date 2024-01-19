@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { CharacterCountTextareaComponent } from '@common/character-count-textarea/character-count-textarea.component';
+import { GovukTextareaComponent } from '@common/govuk-textarea/govuk-textarea.component';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 
 @Component({
@@ -13,7 +13,7 @@ import { TranscriptionService } from '@services/transcription/transcription.serv
     ReactiveFormsModule,
     ApproveTranscriptButtonsComponent,
     RouterLink,
-    CharacterCountTextareaComponent,
+    GovukTextareaComponent,
   ],
   templateUrl: './approve-transcript-buttons.component.html',
   styleUrl: './approve-transcript-buttons.component.scss',

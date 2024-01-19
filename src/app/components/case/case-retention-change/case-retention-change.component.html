@@ -78,14 +78,14 @@
       <div *ngIf="isReasonInvalid()" id="change-reason-errors">
         <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ errorNoReason }}</p>
       </div>
-      <app-character-count-textarea
+      <app-govuk-textarea
         id="change-reason"
         name="reason"
         ariaDescribedBy="change-reason-hint"
         [control]="retainReasonFormControl"
         [maxCharacterLimit]="rententionCharacterLimit"
         [isInvalid]="isReasonInvalid()"
-      ></app-character-count-textarea>
+      ></app-govuk-textarea>
     </div>
     <div class="govuk-button-group">
       <button class="govuk-button" id="continue-button" data-module="govuk-button" (click)="onConfirm()">

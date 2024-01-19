@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewChecked, Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CharacterCountTextareaComponent } from '@common/character-count-textarea/character-count-textarea.component';
+import { GovukTextareaComponent } from '@common/govuk-textarea/govuk-textarea.component';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { CaseRetentionPageState } from '@darts-types/case-retention-page-state.type';
@@ -17,7 +17,7 @@ import { beforeDateValidator } from '@validators/before-date.validator';
     ReactiveFormsModule,
     ReportingRestrictionComponent,
     ValidationErrorSummaryComponent,
-    CharacterCountTextareaComponent,
+    GovukTextareaComponent,
   ],
   templateUrl: './case-retention-change.component.html',
   styleUrls: ['./case-retention-change.component.scss'],
