@@ -1,7 +1,7 @@
 import { ReportingRestriction } from './reporting-restriction.interface';
 
 export interface TranscriptionDetails {
-  reporting_restrictions?: ReportingRestriction[];
+  case_reporting_restrictions?: ReportingRestriction[];
   case_id: number;
   case_number: string;
   courthouse: string;

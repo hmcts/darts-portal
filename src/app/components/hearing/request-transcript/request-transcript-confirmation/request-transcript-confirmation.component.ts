@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { GovukTextareaComponent } from '@common/govuk-textarea/govuk-textarea.component';
 import { Case } from '@darts-types/case.interface';
 import { Hearing, TranscriptionType } from '@darts-types/index';
 import { TranscriptionUrgency } from '@darts-types/transcription-urgency.interface';
@@ -10,7 +11,7 @@ import { DateTime } from 'luxon';
 @Component({
   selector: 'app-request-transcript-confirmation',
   standalone: true,
-  imports: [CommonModule, JoinPipe, ReactiveFormsModule],
+  imports: [CommonModule, JoinPipe, ReactiveFormsModule, GovukTextareaComponent],
   templateUrl: './request-transcript-confirmation.component.html',
   styleUrls: ['./request-transcript-confirmation.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -32,10 +33,6 @@ export class RequestTranscriptConfirmationComponent {
   authorisationFormControl = new FormControl(false, [Validators.required]);
 
   isSubmitted = false;
-
-  get remainingCharacterCount() {
-    return 2000 - (this.moreDetailFormControl.value?.length ?? 0);
-  }
 
   get urgency() {
     return this.urgencies.find((u) => u.transcription_urgency_id === this.urgencyId)?.description;

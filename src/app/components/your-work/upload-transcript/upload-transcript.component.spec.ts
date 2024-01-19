@@ -28,7 +28,7 @@ const MOCK_TRANSCRIPTION_DETAILS: TranscriptionDetails = {
   is_manual: true,
   hearing_id: 1,
   requestor_comments: 'Please expedite my request',
-  reporting_restrictions: [
+  case_reporting_restrictions: [
     {
       hearing_id: 1,
       event_id: 1,

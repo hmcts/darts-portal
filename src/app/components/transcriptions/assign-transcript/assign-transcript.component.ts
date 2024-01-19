@@ -70,7 +70,7 @@ export class AssignTranscriptComponent implements OnDestroy {
       const received = this.datePipe.transform(data.received, 'dd MMM yyyy HH:mm:ss');
 
       const vm = {
-        reportingRestrictions: data.reporting_restrictions ?? [],
+        reportingRestrictions: data.case_reporting_restrictions ?? [],
         caseDetails: {
           'Case ID': data.case_number,
           Courthouse: data.courthouse,

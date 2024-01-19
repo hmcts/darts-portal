@@ -1,0 +1,15 @@
+<textarea
+  class="govuk-textarea govuk-!-width-one-half"
+  [id]="id"
+  [name]="name"
+  [rows]="rows"
+  [attr.aria-describedby]="ariaDescribedBy"
+  [formControl]="control"
+  [maxlength]="maxCharacterLimit"
+  [class.govuk-input--error]="isInvalid"
+></textarea>
+@if (characterCountEnabled) {
+  <div [id]="id + '-hint'" class="govuk-hint" [class.govuk-error-text]="isInvalid">
+    You have {{ remainingCharacterCount }} character{{ remainingCharacterCount === 1 ? '' : 's' }} remaining
+  </div>
+}

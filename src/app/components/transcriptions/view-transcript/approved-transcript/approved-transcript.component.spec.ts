@@ -23,7 +23,7 @@ describe('ApprovedTranscriptComponent', () => {
 
   const mockTranscriptionDetails = {
     case_id: 1,
-    reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
+    case_reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
     case_number: 'C20220620001',
     courthouse: 'Swansea',
     status: 'Approved',

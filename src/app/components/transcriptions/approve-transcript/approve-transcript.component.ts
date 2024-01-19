@@ -48,7 +48,7 @@ export class ApproveTranscriptComponent implements OnInit, OnDestroy {
   vm$ = this.transcriptionService.getTranscriptionDetails(this.transcriptId).pipe(
     map((data: TranscriptionDetails) => {
       return {
-        reportingRestrictions: data.reporting_restrictions ?? [],
+        reportingRestrictions: data.case_reporting_restrictions ?? [],
         caseDetails: this.transcriptionService.getCaseDetailsFromTranscript(data),
         requestDetails: this.transcriptionService.getRequestDetailsFromTranscript(data),
       };
