@@ -42,10 +42,6 @@ export class CaseRententionChangeComponent implements AfterViewChecked {
   errorDate = '';
   errorNoReason = 'You must explain why you are making this change';
 
-  get remainingCharacterCount() {
-    return this.rententionCharacterLimit - (this.retainReasonFormControl.value?.length || 0);
-  }
-
   setDateValue(value: string) {
     this.retainDateFormControl.patchValue(value);
   }
@@ -60,10 +56,6 @@ export class CaseRententionChangeComponent implements AfterViewChecked {
 
   isReasonInvalid(): boolean {
     return this.retainReasonFormControl.dirty && !this.retainReasonFormControl.value;
-  }
-
-  isReasonInvalidCallBack(control: FormControl): boolean {
-    return control.dirty && !control.value;
   }
 
   onChangeDate() {

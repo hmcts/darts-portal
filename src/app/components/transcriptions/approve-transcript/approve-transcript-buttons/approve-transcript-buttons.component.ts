@@ -30,10 +30,6 @@ export class ApproveTranscriptButtonsComponent {
   approveFormControl = new FormControl('');
   buttonsError = '';
 
-  get remainingCharacterCount() {
-    return 2000 - (this.rejectReasonFormControl.value?.length || 0);
-  }
-
   onSubmit() {
     if (this.approveFormControl.value === 'No') {
       if (!this.rejectReasonFormControl.value?.length) {

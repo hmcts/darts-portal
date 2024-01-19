@@ -34,10 +34,6 @@ export class RequestTranscriptConfirmationComponent {
 
   isSubmitted = false;
 
-  get remainingCharacterCount() {
-    return 2000 - (this.moreDetailFormControl.value?.length ?? 0);
-  }
-
   get urgency() {
     return this.urgencies.find((u) => u.transcription_urgency_id === this.urgencyId)?.description;
   }
