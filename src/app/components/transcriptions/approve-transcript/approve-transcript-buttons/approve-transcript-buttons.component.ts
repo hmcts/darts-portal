@@ -8,13 +8,7 @@ import { TranscriptionService } from '@services/transcription/transcription.serv
 @Component({
   selector: 'app-approve-transcript-buttons',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    ApproveTranscriptButtonsComponent,
-    RouterLink,
-    GovukTextareaComponent,
-  ],
+  imports: [CommonModule, ReactiveFormsModule, ApproveTranscriptButtonsComponent, RouterLink, GovukTextareaComponent],
   templateUrl: './approve-transcript-buttons.component.html',
   styleUrl: './approve-transcript-buttons.component.scss',
 })
