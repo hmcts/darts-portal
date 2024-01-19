@@ -37,18 +37,12 @@
           <label class="govuk-label govuk-!-font-weight-bold" for="reject-reason">
             Why can you not approve this request?
           </label>
-          <textarea
-            class="govuk-textarea govuk-!-width-one-half"
+          <app-govuk-textarea
             id="reject-reason"
             name="reason"
-            rows="5"
-            aria-describedby="more-detail-hint"
-            [formControl]="rejectReasonFormControl"
-            maxlength="2000"
-          ></textarea>
-          <div id="reject-reason-hint" class="govuk-hint">
-            You have {{ remainingCharacterCount }} character{{ remainingCharacterCount === 1 ? '' : 's' }} remaining
-          </div>
+            ariaDescribedBy="more-detail-hint"
+            [control]="rejectReasonFormControl"
+          ></app-govuk-textarea>
         </div>
       </div>
     </div>
