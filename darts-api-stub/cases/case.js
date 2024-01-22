@@ -11,7 +11,7 @@ const singleCase = {
   judges: ['Judge Judy'],
   prosecutors: ['Polly Prosecutor'],
   defenders: ['Derek Defender'],
-  retain_until_date_time: '2030-08-10T11:23:24.858Z',
+  retain_until_date_time: '2030-09-15T11:23:24.858Z',
   case_closed_date_time: '2023-08-15T14:57:24.858Z',
   retention_date_time_applied: '2023-12-12T11:02:24.858Z',
   retention_policy_applied: 'Manual',
