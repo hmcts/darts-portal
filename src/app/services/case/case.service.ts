@@ -1,14 +1,22 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CaseRetentionHistory } from '@darts-types/case-retention-history.interface';
-import { Case, CaseData, Courthouse, Hearing, SearchFormValues, Transcript, TranscriptData } from '@darts-types/index';
+import {
+  Case,
+  CaseData,
+  Courthouse,
+  Hearing,
+  HearingData,
+  SearchFormValues,
+  Transcript,
+  TranscriptData,
+} from '@darts-types/index';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs/internal/observable/of';
 import { catchError } from 'rxjs/internal/operators/catchError';
 import { map } from 'rxjs/internal/operators/map';
 import { shareReplay } from 'rxjs/internal/operators/shareReplay';
-import { HearingData } from './../../types/hearing.interface';
 
 export const GET_COURTHOUSES_PATH = '/api/courthouses';
 export const GET_CASE_PATH = '/api/cases';
