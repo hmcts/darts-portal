@@ -52,18 +52,12 @@
     <label class="govuk-label govuk-label--m" for="more-detail"> Comments to the Transcriber (optional) </label>
   </h1>
   <div id="more-detail-hint" class="govuk-hint">Provide any further instructions or comments for the transcriber.</div>
-  <textarea
-    class="govuk-textarea"
+  <app-govuk-textarea
     id="more-detail"
     name="moreDetail"
-    rows="5"
-    aria-describedby="more-detail-hint"
-    [formControl]="moreDetailFormControl"
-    maxlength="2000"
-  ></textarea>
-  <div id="more-detail-hint" class="govuk-hint">
-    You have {{ remainingCharacterCount }} character{{ remainingCharacterCount === 1 ? '' : 's' }} remaining
-  </div>
+    ariaDescribedBy="more-detail-hint"
+    [control]="moreDetailFormControl"
+  ></app-govuk-textarea>
 </div>
 
 <div class="govuk-form-group" [class.govuk-form-group--error]="isSubmitted && !authorisationFormControl.value">

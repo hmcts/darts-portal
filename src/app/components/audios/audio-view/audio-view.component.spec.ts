@@ -259,7 +259,6 @@ describe('AudioViewComponent', () => {
 
       fakeAudioRequestService.downloadAudio.mockReturnValue(of(mockBlob));
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const saveAsSpy = jest.spyOn(component.downloadService, 'saveAs');
 
       component.onDownloadClicked();
