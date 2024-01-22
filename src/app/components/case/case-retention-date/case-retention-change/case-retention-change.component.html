@@ -79,7 +79,7 @@
         <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ errorNoReason }}</p>
       </div>
       <app-govuk-textarea
-        id="change-reason"
+        [id]="'change-reason'"
         name="reason"
         ariaDescribedBy="change-reason-hint"
         [control]="retainReasonFormControl"
