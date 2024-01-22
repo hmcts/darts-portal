@@ -16,10 +16,10 @@ describe('RequestTimesComponent', () => {
     component = fixture.componentInstance;
     component.hearing = {
       id: 1,
-      date: '2023-01-01T00:00:00Z',
+      date: DateTime.fromISO('2023-01-01T00:00:00Z'),
       judges: ['Joseph', 'Judy'],
       courtroom: '3',
-      transcript_count: 99,
+      transcriptCount: 99,
     };
 
     fixture.detectChanges();

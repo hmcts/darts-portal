@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { CaseFile } from '@darts-types/index';
+import { Case } from '@darts-types/index';
 import { UserService } from '@services/user/user.service';
 import { CaseFileComponent } from './case-file.component';
 
@@ -8,16 +8,16 @@ describe('CaseFileComponent', () => {
   let component: CaseFileComponent;
   let fixture: ComponentFixture<CaseFileComponent>;
 
-  const mockCaseFile: CaseFile = {
-    case_id: 1,
+  const mockCaseFile: Case = {
+    id: 1,
     courthouse: 'Swansea',
-    case_number: 'CASE1001',
+    number: 'CASE1001',
     defendants: ['Defendant Dave', 'Defendant Debbie'],
     judges: ['Judge Judy', 'Judge Jones'],
     prosecutors: ['Polly Prosecutor'],
     defenders: ['Derek Defender'],
-    reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
-    retain_until: '2023-08-10T11:23:24.858Z',
+    reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
+    retainUntil: '2023-08-10T11:23:24.858Z',
   };
   const mockActivatedRoute = {
     snapshot: {

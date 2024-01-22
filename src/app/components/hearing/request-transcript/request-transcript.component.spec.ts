@@ -29,13 +29,13 @@ describe('RequestTranscriptComponent', () => {
     },
   };
 
-  const cd = of({ case_id: 1, case_number: '12345', courthouse: 'Reading', judges: ['Judy'] }) as Observable<Case>;
+  const cd = of({ id: 1, number: '12345', courthouse: 'Reading', judges: ['Judy'] }) as Observable<Case>;
   const shd = of({
     id: 1,
-    date: '2023-02-21',
+    date: DateTime.fromISO('2023-02-21'),
     judges: ['Joseph', 'Judy'],
     courtroom: '3',
-    transcript_count: 99,
+    transcriptCount: 99,
   }) as Observable<Hearing>;
   const ahd = of([
     {

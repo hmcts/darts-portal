@@ -1,13 +1,14 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CaseRetentionHistory } from '@darts-types/case-retention-history.interface';
-import { Case, Courthouse, Hearing, SearchFormValues, Transcript, TranscriptData } from '@darts-types/index';
+import { Case, CaseData, Courthouse, Hearing, SearchFormValues, Transcript, TranscriptData } from '@darts-types/index';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs/internal/observable/of';
 import { catchError } from 'rxjs/internal/operators/catchError';
 import { map } from 'rxjs/internal/operators/map';
 import { shareReplay } from 'rxjs/internal/operators/shareReplay';
+import { HearingData } from './../../types/hearing.interface';
 
 export const GET_COURTHOUSES_PATH = '/api/courthouses';
 export const GET_CASE_PATH = '/api/cases';
@@ -35,40 +36,23 @@ export class CaseService {
 
   getHearingTranscripts(hearingId: number): Observable<Transcript[]> {
     const url = `${GET_HEARINGS_PATH}/${hearingId}/transcripts`;
-    return this.http
-      .get<TranscriptData[]>(url)
-      .pipe(map((transcripts) => transcripts.map(this.mapTranscriptDataToTranscript)));
+    return this.http.get<TranscriptData[]>(url).pipe(map(this.mapTranscriptDataToTranscript));
   }
 
   getCaseTranscripts(caseId: number): Observable<Transcript[]> {
     const url = `${GET_CASE_PATH}/${caseId}/transcripts`;
-    return this.http
-      .get<TranscriptData[]>(url)
-      .pipe(map((transcripts) => transcripts.map(this.mapTranscriptDataToTranscript)));
-  }
-
-  private mapTranscriptDataToTranscript(t: TranscriptData): Transcript {
-    return {
-      id: t.transcription_id,
-      hearingId: t.hearing_id,
-      hearingDate: DateTime.fromISO(t.hearing_date),
-      type: t.type,
-      requestedOn: DateTime.fromISO(t.requested_on),
-      requestedByName: t.requested_by_name,
-      status: t.status,
-    };
+    return this.http.get<TranscriptData[]>(url).pipe(map(this.mapTranscriptDataToTranscript));
   }
 
   getCase(caseId: number): Observable<Case> {
     const apiURL = `${GET_CASE_PATH}/${caseId}`;
-    return this.http.get<Case>(apiURL);
+    return this.http.get<CaseData>(apiURL).pipe(map(this.mapCaseDataToCase));
   }
 
   getCaseHearings(caseId: number): Observable<Hearing[]> {
-    return this.http
-      .get<Hearing[]>(`${GET_CASE_PATH}/${caseId}/hearings`)
-      .pipe(map((hearings) => hearings.map((h) => ({ ...h, date: h.date + 'T00:00:00Z' }))));
+    return this.http.get<HearingData[]>(`${GET_CASE_PATH}/${caseId}/hearings`).pipe(map(this.mapHearingDataToHearing));
   }
+
   searchCases(searchForm: SearchFormValues): Observable<Case[] | null> {
     // Save search form values
     this.searchFormValues = searchForm;
@@ -76,15 +60,10 @@ export class CaseService {
     let params = new HttpParams();
 
     if (searchForm.case_number) params = params.set('case_number', searchForm.case_number);
-
     if (searchForm.courthouse) params = params.set('courthouse', searchForm.courthouse);
-
     if (searchForm.courtroom) params = params.set('courtroom', searchForm.courtroom);
-
     if (searchForm.judge_name) params = params.set('judge_name', searchForm.judge_name);
-
     if (searchForm.defendant_name) params = params.set('defendant_name', searchForm.defendant_name);
-
     if (searchForm.specific_date) {
       const dateParameter = searchForm.specific_date.split('/').reverse().join('-');
       params = params.set('date_from', dateParameter);
@@ -97,15 +76,13 @@ export class CaseService {
     if (searchForm.event_text_contains) params = params.set('event_text_contains', searchForm.event_text_contains);
 
     // Store results in service for retrieval
-    this.searchResults$ = this.http.get<Case[]>(ADVANCED_SEARCH_CASE_PATH, { params }).pipe(shareReplay(1));
+    this.searchResults$ = this.http
+      .get<CaseData[]>(ADVANCED_SEARCH_CASE_PATH, { params })
+      .pipe(map((results) => results.map(this.mapCaseDataToCase)))
+      .pipe(shareReplay(1));
     return this.searchResults$;
   }
 
-  /**
-   * @param {number} cId Required parameter, representing the case id to look for
-   * @param {number} hId Required parameter, representing the hearing id to look for
-   * @returns {Observable<Hearing | undefined> | undefined} Returns either a Observable of Hearing, or undefined
-   */
   getHearingById(cId: number, hId: number): Observable<Hearing | undefined> {
     return this.getCaseHearings(cId).pipe(map((h) => h.find((x) => x.id == hId)));
   }
@@ -119,5 +96,49 @@ export class CaseService {
         return of([]);
       })
     );
+  }
+
+  private mapHearingDataToHearing(hearingData: HearingData[]): Hearing[] {
+    return hearingData.map((h) => ({
+      id: h.id,
+      date: DateTime.fromISO(h.date),
+      judges: h.judges,
+      courtroom: h.courtroom,
+      transcriptCount: h.transcript_count,
+    }));
+  }
+
+  private mapTranscriptDataToTranscript(transcriptData: TranscriptData[]): Transcript[] {
+    return transcriptData.map((t) => ({
+      id: t.transcription_id,
+      hearingId: t.hearing_id,
+      hearingDate: DateTime.fromISO(t.hearing_date),
+      type: t.type,
+      requestedOn: DateTime.fromISO(t.requested_on),
+      requestedByName: t.requested_by_name,
+      status: t.status,
+    }));
+  }
+
+  mapCaseDataToCase(c: CaseData): Case {
+    return {
+      id: c.case_id,
+      number: c.case_number,
+      courthouse: c.courthouse,
+      defendants: c.defendants,
+      defenders: c.defenders,
+      judges: c.judges,
+      reportingRestriction: c.reporting_restriction,
+      reportingRestrictions: c.reporting_restrictions,
+      hearings: c.hearings,
+      prosecutors: c.prosecutors,
+      retainUntil: c.retain_until,
+      retainUntilDateTime: c.retain_until_date_time ? DateTime.fromISO(c.retain_until_date_time) : undefined,
+      closedDateTime: c.case_closed_date_time ? DateTime.fromISO(c.case_closed_date_time) : undefined,
+      retentionDateTimeApplied: c.retention_date_time_applied
+        ? DateTime.fromISO(c.retention_date_time_applied)
+        : undefined,
+      retentionPolicyApplied: c.retention_policy_applied,
+    };
   }
 }
