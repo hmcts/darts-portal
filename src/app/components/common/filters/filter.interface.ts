@@ -1,6 +1,7 @@
 export interface Filter {
+  display_name: string;
   name: string;
   values: string[];
   multiselect?: boolean;
-  autocomplete?: boolean;
+  search?: boolean;
 }

@@ -24,7 +24,7 @@
       </div>
 
       <ng-container *ngFor="let selected of selectedFilters">
-        <h3 class="govuk-heading-s govuk-!-margin-bottom-0">{{ selected.name }}</h3>
+        <h3 class="govuk-heading-s govuk-!-margin-bottom-0">{{ selected.display_name }}</h3>
 
         <ul class="moj-filter-tags">
           <ng-container *ngFor="let value of selected.values">
@@ -47,31 +47,46 @@
         Apply filters
       </button>
 
-      <ng-container *ngFor="let filter of filters">
+      @for (filter of filters; track filter.name) {
         <div class="govuk-form-group">
           <fieldset class="govuk-fieldset">
-            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">{{ filter.name }}</legend>
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">{{ filter.display_name }}</legend>
 
-            <ng-container *ngFor="let value of filter.values; index as $index">
-              <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
-                <div class="govuk-checkboxes__item">
-                  <input
-                    #checkboxes
-                    class="govuk-checkboxes__input"
-                    [id]="'type-value-' + $index"
-                    [name]="filter.name"
-                    type="checkbox"
-                    [attr.aria-label]="'Select checkbox value ' + value"
-                    [value]="value"
-                    (change)="onCheckChanged(filter, value, $event)"
-                  />
-                  <label class="govuk-label govuk-checkboxes__label" for="type"> {{ value }} </label>
+            @if (filter.search) {
+              <input
+                class="govuk-input search-filter"
+                id="search-filter"
+                [name]="filter.name + 'search-filter'"
+                type="text"
+                [placeholder]="'Search for ' + filter.display_name.toLowerCase()"
+                [(ngModel)]="searchTerms[filter.name]"
+              />
+            }
+            @if (getFilteredValues(filter, searchTerms[filter.name]); as filteredValues) {
+              @for (value of filteredValues; track $index) {
+                <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                  <div class="govuk-checkboxes__item">
+                    <input
+                      #checkboxes
+                      class="govuk-checkboxes__input"
+                      [id]="'type-value-' + $index"
+                      [name]="filter.name"
+                      type="checkbox"
+                      [attr.aria-label]="'Select checkbox value ' + value"
+                      [value]="value"
+                      (change)="onCheckChanged(filter, value, $event)"
+                    />
+                    <label class="govuk-label govuk-checkboxes__label" for="type"> {{ value }} </label>
+                  </div>
                 </div>
-              </div>
-            </ng-container>
+              }
+              @if (filteredValues.length === 0) {
+                <p class="govuk-body">No results found</p>
+              }
+            }
           </fieldset>
         </div>
-      </ng-container>
+      }
     </div>
   </div>
 </div>

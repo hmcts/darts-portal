@@ -32,16 +32,19 @@ export class DevComponent {
   //Hardcoded output data
   exampleOutput: Filter[] = [
     {
-      name: 'Display name',
+      display_name: 'Display name',
+      name: 'display_name',
       values: ['Display name 4'],
     },
     {
-      name: 'Courts',
+      display_name: 'Courts',
+      name: 'courts',
       values: ['Maidenhead', 'Kingston', 'Slough'],
       multiselect: true,
     },
     {
-      name: 'Role type',
+      display_name: 'Role type',
+      name: 'role_type',
       values: ['Transcriber', 'Translation QA'],
       multiselect: true,
     },
@@ -50,7 +53,8 @@ export class DevComponent {
   //Hardcoded filter data
   filters: Filter[] = [
     {
-      name: 'Display name',
+      display_name: 'Display name',
+      name: 'display_name',
       values: [
         'Display name 1',
         'Display name 2',
@@ -62,7 +66,8 @@ export class DevComponent {
       multiselect: false,
     },
     {
-      name: 'Courts',
+      display_name: 'Courts',
+      name: 'courts',
       values: [
         'Reading',
         'Slough',
@@ -80,10 +85,11 @@ export class DevComponent {
         'Eton',
       ],
       multiselect: true,
-      autocomplete: true,
+      search: true,
     },
     {
-      name: 'Role type',
+      display_name: 'Role type',
+      name: 'role_type',
       values: [
         'Approver',
         'Requester',
@@ -95,6 +101,7 @@ export class DevComponent {
         'Super Admin (Admin Portal)',
       ],
       multiselect: true,
+      search: true,
     },
   ];
 }

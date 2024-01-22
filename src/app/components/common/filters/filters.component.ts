@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
-import { Filter } from './filter.interface';
+import { FormsModule } from '@angular/forms';
+import { Filter } from '@components/common/filters/filter.interface';
 
 @Component({
   selector: 'app-filters',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './filters.component.html',
   styleUrl: './filters.component.scss',
 })
@@ -13,11 +14,13 @@ export class FiltersComponent {
   @Input() filters!: Filter[];
   @Output() filterEvent = new EventEmitter<Filter[]>();
   selectedFilters: Filter[] = [];
+  searchTerms: { [key: string]: string } = {};
 
   @ViewChildren('checkboxes') checkboxes!: QueryList<ElementRef>;
 
   clearFilters() {
     this.selectedFilters = [];
+    this.searchTerms = {};
     this.uncheckAll();
   }
 
@@ -29,7 +32,7 @@ export class FiltersComponent {
     const index = this.selectedFilters.findIndex((item) => item.name === filter.name);
 
     if (index === -1) {
-      const selected: Filter = { name: filter.name, values: [value] };
+      const selected: Filter = { display_name: filter.display_name, name: filter.name, values: [value] };
       if (filter.multiselect) selected.multiselect = true;
       this.selectedFilters.push(selected);
     } else {
@@ -91,5 +94,12 @@ export class FiltersComponent {
   unselectFromTag(filter: Filter, value: string) {
     this.unselectFilter(filter, value);
     this.uncheck(filter.name, value);
+  }
+
+  getFilteredValues(filter: Filter, searchTerm: string): string[] {
+    if (!searchTerm) {
+      return filter.values;
+    }
+    return filter.values.filter((value) => value.toLowerCase().includes(searchTerm.toLowerCase()));
   }
 }
