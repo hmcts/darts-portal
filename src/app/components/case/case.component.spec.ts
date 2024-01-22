@@ -2,7 +2,7 @@ import { DatePipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { Case, Hearing, Transcript } from '@darts-types/index';
+import { Case, Hearing, TranscriptData } from '@darts-types/index';
 import { CaseService } from '@services/case/case.service';
 import { Observable, of } from 'rxjs';
 import { CaseComponent } from './case.component';
@@ -33,7 +33,7 @@ describe('CaseComponent', () => {
     },
   ]);
 
-  const mockTranscript: Observable<Transcript[]> = of([
+  const mockTranscript: Observable<TranscriptData[]> = of([
     {
       transcription_id: 1,
       hearing_id: 2,
@@ -66,7 +66,7 @@ describe('CaseComponent', () => {
   const caseServiceMock = {
     getCase: jest.fn(),
     getCaseHearings: jest.fn(),
-    getAllCaseTranscripts: jest.fn(),
+    getCaseTranscripts: jest.fn(),
   };
 
   const mockActivatedRoute = {
@@ -89,7 +89,7 @@ describe('CaseComponent', () => {
 
     jest.spyOn(caseServiceMock, 'getCase').mockReturnValue(mockCaseFile);
     jest.spyOn(caseServiceMock, 'getCaseHearings').mockReturnValue(mockSingleCaseTwoHearings);
-    jest.spyOn(caseServiceMock, 'getAllCaseTranscripts').mockReturnValue(mockTranscript);
+    jest.spyOn(caseServiceMock, 'getCaseTranscripts').mockReturnValue(mockTranscript);
 
     fixture = TestBed.createComponent(CaseComponent);
     component = fixture.componentInstance;

@@ -19,6 +19,7 @@ import { CaseService } from '@services/case/case.service';
 import { HeaderService } from '@services/header/header.service';
 import { HearingService } from '@services/hearing/hearing.service';
 import { UserService } from '@services/user/user.service';
+import { DateTime } from 'luxon';
 import { Observable, of, throwError } from 'rxjs';
 import { HearingFileComponent } from './hearing-file/hearing-file.component';
 import { HearingComponent } from './hearing.component';
@@ -94,22 +95,22 @@ describe('HearingComponent', () => {
 
   const mockTranscript: Observable<Transcript[]> = of([
     {
-      transcription_id: 1,
-      hearing_id: 2,
-      hearing_date: '2023-10-12',
+      id: 1,
+      hearingId: 2,
+      hearingDate: DateTime.fromISO('2023-10-12'),
       type: 'Sentencing remarks',
-      requested_on: '2023-10-12T00:00:00Z',
-      requested_by_name: 'Joe Bloggs',
+      requestedOn: DateTime.fromISO('2023-10-12T00:00:00Z'),
+      requestedByName: 'Joe Bloggs',
       status: 'With Transcriber',
     },
     {
-      transcription_id: 1,
-      hearing_id: 2,
-      hearing_date: '2023-10-12',
+      id: 1,
+      hearingId: 2,
+      hearingDate: DateTime.fromISO('2023-10-12'),
       type: 'Sentencing remarks',
-      requested_on: '2023-10-12T00:00:00Z',
-      requested_by_name: 'Joe Bloggs',
-      status: 'Complete',
+      requestedOn: DateTime.fromISO('2023-10-12T00:00:00Z'),
+      requestedByName: 'Joe Bloggs',
+      status: 'With Transcriber',
     },
   ]);
 
@@ -147,7 +148,7 @@ describe('HearingComponent', () => {
 
     jest.spyOn(caseService, 'getCase').mockReturnValue(cd);
     jest.spyOn(caseService, 'getCaseHearings').mockReturnValue(hd);
-    jest.spyOn(caseService, 'getAllHearingTranscripts').mockReturnValue(mockTranscript);
+    jest.spyOn(caseService, 'getHearingTranscripts').mockReturnValue(mockTranscript);
     jest.spyOn(caseService, 'getHearingById').mockReturnValue(shd);
     jest.spyOn(hearingService, 'getAudio').mockReturnValue(ad);
     jest.spyOn(hearingService, 'getEvents').mockReturnValue(ed);
