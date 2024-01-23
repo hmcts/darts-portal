@@ -202,6 +202,22 @@ export class TranscriptionService {
     };
   }
 
+  getHearingRequestDetailsFromTranscript(transcript: TranscriptionDetails) {
+    return {
+      'Hearing Date': this.datePipe.transform(transcript.hearing_date, 'dd MMM yyyy'),
+      'Request Type': transcript.request_type,
+      'Request ID': transcript.transcription_id,
+      Urgency: transcript.urgency,
+      'Audio for transcript':
+        transcript.transcription_start_ts && transcript.transcription_end_ts
+          ? 'Start time ' +
+            this.datePipe.transform(transcript.transcription_start_ts, 'HH:mm:ss') +
+            ' - End time ' +
+            this.datePipe.transform(transcript.transcription_end_ts, 'HH:mm:ss')
+          : '',
+    };
+  }
+
   getUrgencyByDescription(urgencies: TranscriptionUrgency[], description: string): TranscriptionUrgency {
     return (
       urgencies.find((u) => u.description === description) ?? {
