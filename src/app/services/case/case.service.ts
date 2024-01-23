@@ -69,7 +69,14 @@ export class CaseService {
       .get<Hearing[]>(`${GET_CASE_PATH}/${caseId}/hearings`)
       .pipe(map((hearings) => hearings.map((h) => ({ ...h, date: h.date + 'T00:00:00Z' }))));
   }
+
   searchCases(searchForm: SearchFormValues): Observable<Case[] | null> {
+    // Save search form values
+    this.searchFormValues = searchForm;
+    return this.http.post<Case[]>(ADVANCED_SEARCH_CASE_PATH, this.searchFormValues).pipe(shareReplay(1));
+  }
+
+  searchPostCases(searchForm: SearchFormValues): Observable<Case[] | null> {
     // Save search form values
     this.searchFormValues = searchForm;
 

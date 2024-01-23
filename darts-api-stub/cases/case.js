@@ -482,6 +482,59 @@ const transcriptTwo = [
 ];
 
 // Advanced search stub API
+router.post('/search', (req, res) => {
+  const searchTerms = req.body;
+  // expected API response if searching for courthouse only
+  if (Object.keys(searchTerms).length === 1 && searchTerms.courthouse) {
+    const resBody102 = {
+      type: 'CASE_102',
+      title: 'Search criteria is too broad, please add at least 1 more criteria to search for.',
+      status: 400,
+    };
+    return res.status(400).send(resBody102);
+  }
+  // yield many results by doing a judge search "Judge Judy"
+  if (Object.keys(searchTerms).length === 1 && searchTerms.judge_name) {
+    return res
+      .status(200)
+      .send(
+        multipleCases.filter(
+          (c) =>
+            c.judges.includes(searchTerms.judge_name) ||
+            c.hearings.find((h) => h.judges.includes(searchTerms.judge_name))
+        )
+      );
+  }
+  switch (req.body.case_number) {
+    case 'INTERNAL_SERVER_ERROR':
+      res.sendStatus(500);
+      break;
+    case 'TOO_MANY_RESULTS':
+      const resBody100 = {
+        type: 'CASE_100',
+        title: 'Too many results have been returned. Please change search criteria.',
+        status: 400,
+      };
+      res.status(400).send(resBody100);
+      break;
+    case 'UNKNOWN_ERROR':
+      const resBody103 = {
+        type: 'CASE_103',
+        title: 'The request is not valid..',
+        status: 400,
+      };
+      res.status(400).send(resBody103);
+      break;
+    case 'ALL':
+      res.status(200).send(multipleCases);
+      break;
+    default:
+      res.status(200).send(multipleCases.filter((c) => c.case_number === req.query.case_number));
+      break;
+  }
+});
+
+// Advanced search stub API
 router.get('/search', (req, res) => {
   const searchTerms = req.query;
   // expected API response if searching for courthouse only
