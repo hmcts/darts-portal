@@ -1,4 +1,4 @@
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
@@ -34,7 +34,6 @@ import { RejectedTranscriptComponent } from './rejected-transcript/rejected-tran
 export class ViewTranscriptComponent {
   router = inject(Router);
   route = inject(ActivatedRoute);
-  datePipe = inject(DatePipe);
 
   transcriptionService = inject(TranscriptionService);
   transcriptStatusClassMap = transcriptStatusClassMap;

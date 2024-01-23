@@ -14,29 +14,10 @@ describe('ViewTranscriptComponent', () => {
 
   const mockActivatedRoute = {
     snapshot: {
-      data: {
-        userState: {
-          userId: 123,
-          userName: 'dev@local',
-          roles: [
-            {
-              roleId: 123,
-              roleName: 'local dev',
-              permissions: [
-                {
-                  permissionId: 1,
-                  permissionName: 'local dev permissions',
-                },
-              ],
-            },
-          ],
-        },
-      },
       params: {
         hearing_id: '1',
         transcriptId: '2',
       },
-      queryParams: { tab: 'Transcripts' },
     },
   };
 
@@ -57,8 +38,6 @@ describe('ViewTranscriptComponent', () => {
     hearing_id: 0,
   };
 
-  const blob = new Blob();
-
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ViewTranscriptComponent, HttpClientModule],
@@ -68,7 +47,6 @@ describe('ViewTranscriptComponent', () => {
           provide: TranscriptionService,
           useValue: {
             getTranscriptionDetails: jest.fn().mockReturnValue(of(mockTransctiptionDetails)),
-            downloadTranscriptDocument: jest.fn().mockReturnValue(of(blob)),
           },
         },
         {
@@ -89,14 +67,5 @@ describe('ViewTranscriptComponent', () => {
     expect(component).toBeTruthy();
     expect(component.transcriptionService.getTranscriptionDetails).toHaveBeenCalledWith('2');
     expect(component.transcriptId).toEqual('2');
-    expect(component.fileName).toEqual('test-file-name.docx');
-  });
-
-  describe('#onDownloadClicked', () => {
-    it('calls downloadTranscriptDocument', () => {
-      component.onDownloadClicked();
-      expect(component.transcriptionService.downloadTranscriptDocument).toHaveBeenCalledWith('2');
-      expect(component.fileDownloadService.saveAs).toHaveBeenCalledWith(blob, 'test-file-name.docx');
-    });
   });
 });
