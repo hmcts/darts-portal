@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Filter } from '@common/filters/filter.interface';
 import { FiltersComponent } from '@common/filters/filters.component';
 import { TabDirective } from '@directives/tab.directive';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { TabsComponent } from '../common/tabs/tabs.component';
+import { HeaderService } from '@services/header/header.service';
 
 @Component({
   selector: 'app-dev',
@@ -14,15 +15,18 @@ import { TabsComponent } from '../common/tabs/tabs.component';
   styleUrl: './dev.component.scss',
   imports: [FiltersComponent, TabsComponent, TabDirective, CommonModule],
 })
-export class DevComponent {
+export class DevComponent implements OnInit {
   selectedFilters: Filter[] | null = null;
 
-  constructor(
-    private appConfigSvc: AppConfigService,
-    private router: Router
-  ) {
+  headerService = inject(HeaderService);
+  appConfigService = inject(AppConfigService);
+  router = inject(Router);
+
+  ngOnInit(): void {
     //Only allow access if running in development
-    !this.appConfigSvc.isDevelopment() && this.router.navigateByUrl('page-not-found');
+    if (!this.appConfigService.isDevelopment()) {
+      this.router.navigateByUrl('page-not-found');
+    }
   }
 
   getFilters(filters: Filter[]) {
