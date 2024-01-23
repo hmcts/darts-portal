@@ -92,7 +92,7 @@
         (retentionPermanentChange)="onRetentionPermanentChanged($event)"
       ></app-case-retention-change>
     </div>
-    <div *ngIf="state === 'Change' || state === 'Confirm'" [hidden]="state === 'Change'" class="order-confirmation">
+    <div [hidden]="state === 'Change'" class="order-confirmation">
       <app-case-retention-confirm
         [state]="state"
         [caseId]="caseId"
