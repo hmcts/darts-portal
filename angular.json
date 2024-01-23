@@ -29,6 +29,11 @@
               "src/assets",
               {
                 "glob": "**/*",
+                "input": "./node_modules/@ministryofjustice/frontend/moj/assets/images",
+                "output": "./assets/images"
+              },
+              {
+                "glob": "**/*",
                 "input": "./node_modules/govuk-frontend/dist/govuk/assets/images",
                 "output": "./assets/images"
               },

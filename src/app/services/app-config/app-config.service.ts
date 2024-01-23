@@ -8,6 +8,7 @@ export interface AppConfig {
     name: string;
     emailAddress: string;
   };
+  environment: string;
 }
 
 const CONFIG_PATH = '/app/config';
@@ -24,5 +25,9 @@ export class AppConfigService {
 
   getAppConfig(): AppConfig | undefined {
     return this.appConfig;
+  }
+
+  isDevelopment(): boolean {
+    return this.appConfig?.environment.toLowerCase() === 'development';
   }
 }
