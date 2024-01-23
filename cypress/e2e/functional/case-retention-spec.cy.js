@@ -42,10 +42,11 @@ describe('Case retention screen as standard user', () => {
 
   describe('Open case retention screen', () => {
     beforeEach(() => {
+      const caseNumber = 'C20220620002';
       cy.contains('Search').click();
-      cy.get('#case_number').type('C20220620002');
+      cy.get('#case_number').type(caseNumber);
       cy.get('button').contains('Search').click();
-      cy.contains('C20220620002').click();
+      cy.contains(caseNumber).click();
       cy.contains('View or change').click();
     });
 
@@ -168,7 +169,7 @@ describe('Case retention screen as standard user', () => {
       cy.get('#retain-reason').should('contain', validReason);
     });
 
-    it('Should go back to case retention screen', () => {
+    it('Should go back to case retention screen on cancel', () => {
       cy.get('#cancel-link').click();
       // Should go back to case retention screen
       cy.get('h1.govuk-heading-l').should('contain', 'Case retention date');
@@ -190,6 +191,16 @@ describe('Case retention screen as standard user', () => {
       // Should go back to case retention screen
       cy.get('h1.govuk-heading-l').should('contain', 'Change case retention date');
       cy.url().should('contain', 'change-reason');
+
+      cy.a11y();
+    });
+
+    it('Should go back to case retention screen on confirm, if successful', () => {
+      cy.get('#confirm-button').click();
+      // Should go back to case retention screen
+      cy.get('h1.govuk-heading-l').should('contain', 'Case retention date');
+      // and display success message
+      cy.get('#success-message').should('contain', 'Case retention date changed.');
 
       cy.a11y();
     });

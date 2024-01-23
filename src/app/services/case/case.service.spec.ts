@@ -11,6 +11,7 @@ import {
   GET_COURTHOUSES_PATH,
   GET_HEARINGS_PATH,
 } from './case.service';
+import { CaseRetentionChange } from '@darts-types/case-retention-change.interface';
 
 Settings.defaultZone = 'utc';
 
@@ -271,5 +272,23 @@ describe('CaseService', () => {
     expect(req.request.method).toEqual('GET');
 
     req.flush(null, { status: 404, statusText: 'Not Found' });
+  });
+
+  it('#postCaseRetentionChange', () => {
+    const mockCaseRetentionChange: CaseRetentionChange = {
+      case_id: 123,
+      retention_date: '2033/01/01',
+      is_permanent_retention: undefined,
+      comments: 'These are my comments on the matter',
+    };
+
+    service.postCaseRetentionChange(mockCaseRetentionChange).subscribe((c) => {
+      expect(c).toEqual(mockCaseRetentionChange);
+    });
+
+    const req = httpMock.expectOne(`${GET_CASE_RETENTION_HISTORY}`);
+    expect(req.request.method).toBe('POST');
+
+    req.flush(mockCaseRetentionChange);
   });
 });

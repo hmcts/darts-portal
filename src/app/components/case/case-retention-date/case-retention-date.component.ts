@@ -18,6 +18,7 @@ import { GovukHeadingComponent } from '../../common/govuk-heading/govuk-heading.
 import { LoadingComponent } from '../../common/loading/loading.component';
 import { NotificationBannerComponent } from '../../common/notification-banner/notification-banner.component';
 import { CaseRetentionPageState } from '@darts-types/case-retention-page-state.type';
+import { SuccessBannerComponent } from '@common/success-banner/success-banner.component';
 
 @Component({
   selector: 'app-case-retention-date',
@@ -37,12 +38,14 @@ import { CaseRetentionPageState } from '@darts-types/case-retention-page-state.t
     NotificationBannerComponent,
     CaseRententionChangeComponent,
     CaseRententionConfirmComponent,
+    SuccessBannerComponent,
   ],
 })
 export class CaseRetentionDateComponent implements OnInit {
   private _state: CaseRetentionPageState = 'Default';
   newRetentionDate = new Date();
-  newRetentionReason: string | null = '';
+  newRetentionReason = '';
+  newRetentionPermanent: boolean = false;
   headerService = inject(HeaderService);
   route = inject(ActivatedRoute);
   caseService = inject(CaseService);
@@ -81,10 +84,13 @@ export class CaseRetentionDateComponent implements OnInit {
 
   // overriding state setter to call show/hide navigation
   public set state(value: CaseRetentionPageState) {
-    if (value === 'Default') {
-      this.headerService.showNavigation();
-    } else {
-      this.headerService.hideNavigation();
+    switch (value) {
+      case 'Success':
+      case 'Default':
+        this.headerService.showNavigation();
+        break;
+      default:
+        this.headerService.hideNavigation();
     }
     this._state = value;
   }
@@ -139,8 +145,12 @@ export class CaseRetentionDateComponent implements OnInit {
     this.newRetentionDate = value;
   }
 
-  onRetentionReasonChanged(value: string | null) {
+  onRetentionReasonChanged(value: string) {
     this.newRetentionReason = value;
+  }
+
+  onRetentionPermanentChanged(value: boolean) {
+    this.newRetentionPermanent = value;
   }
 
   vm$ = combineLatest({

@@ -29,7 +29,8 @@ export class CaseRententionChangeComponent implements AfterViewChecked {
 
   @Output() stateChange = new EventEmitter<CaseRetentionPageState>();
   @Output() retentionDateChange = new EventEmitter<Date>();
-  @Output() retentionReasonChange = new EventEmitter<string | null>();
+  @Output() retentionReasonChange = new EventEmitter<string>();
+  @Output() retentionPermanentChange = new EventEmitter<boolean>();
 
   userService = inject(UserService);
   retainReasonFormControl = new FormControl('');
@@ -116,7 +117,8 @@ export class CaseRententionChangeComponent implements AfterViewChecked {
     }
     if (!this.errors.length) {
       this.retentionDateChange.emit(this.dateFromString(this.retainDateFormControl.value));
-      this.retentionReasonChange.emit(this.retainReasonFormControl.value);
+      this.retentionReasonChange.emit(this.retainReasonFormControl.value || '');
+      this.retentionPermanentChange.emit(!(this.retainOptionFormControl.value === 'date'));
       this.stateChange.emit('Confirm');
     }
   }
