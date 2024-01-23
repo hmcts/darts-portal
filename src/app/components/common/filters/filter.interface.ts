@@ -1,5 +1,5 @@
 export interface Filter {
-  display_name: string;
+  displayName: string;
   name: string;
   values: string[];
   multiselect?: boolean;

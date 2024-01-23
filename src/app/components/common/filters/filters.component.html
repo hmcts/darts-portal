@@ -8,33 +8,35 @@
   </div>
 
   <div class="moj-filter__content">
-    <div class="moj-filter__selected">
-      <div class="moj-filter__selected-heading">
-        <div class="moj-filter__heading-title">
-          <h2 class="govuk-heading-m">Selected filters</h2>
+    @if (selectedFilters.length > 0) {
+      <div class="moj-filter__selected">
+        <div class="moj-filter__selected-heading">
+          <div class="moj-filter__heading-title">
+            <h2 class="govuk-heading-m">Selected filters</h2>
+          </div>
+
+          <div class="moj-filter__heading-action clear-filter">
+            <p>
+              <a class="govuk-link govuk-link--no-visited-state" href="javascript:void(0)" (click)="clearFilters()"
+                >Clear filters</a
+              >
+            </p>
+          </div>
         </div>
 
-        <div class="moj-filter__heading-action clear-filter">
-          <p>
-            <a class="govuk-link govuk-link--no-visited-state" href="javascript:void(0)" (click)="clearFilters()"
-              >Clear filters</a
-            >
-          </p>
-        </div>
+        <ng-container *ngFor="let selected of selectedFilters">
+          <h3 class="govuk-heading-s govuk-!-margin-bottom-0">{{ selected.displayName }}</h3>
+
+          <ul class="moj-filter-tags">
+            <ng-container *ngFor="let value of selected.values">
+              <li>
+                <a class="moj-filter__tag" (click)="unselectFromTag(selected, value)"> {{ value }}</a>
+              </li>
+            </ng-container>
+          </ul>
+        </ng-container>
       </div>
-
-      <ng-container *ngFor="let selected of selectedFilters">
-        <h3 class="govuk-heading-s govuk-!-margin-bottom-0">{{ selected.display_name }}</h3>
-
-        <ul class="moj-filter-tags">
-          <ng-container *ngFor="let value of selected.values">
-            <li>
-              <a class="moj-filter__tag" (click)="unselectFromTag(selected, value)"> {{ value }}</a>
-            </li>
-          </ng-container>
-        </ul>
-      </ng-container>
-    </div>
+    }
 
     <div class="moj-filter__options">
       <button
@@ -50,7 +52,7 @@
       @for (filter of filters; track filter.name) {
         <div class="govuk-form-group">
           <fieldset class="govuk-fieldset">
-            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">{{ filter.display_name }}</legend>
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">{{ filter.displayName }}</legend>
 
             @if (filter.search) {
               <input
@@ -58,7 +60,7 @@
                 id="search-filter"
                 [name]="filter.name + 'search-filter'"
                 type="text"
-                [placeholder]="'Search for ' + filter.display_name.toLowerCase()"
+                [placeholder]="'Search for ' + filter.displayName.toLowerCase()"
                 [(ngModel)]="searchTerms[filter.name]"
               />
             }

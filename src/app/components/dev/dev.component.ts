@@ -32,18 +32,18 @@ export class DevComponent {
   //Hardcoded output data
   exampleOutput: Filter[] = [
     {
-      display_name: 'Display name',
-      name: 'display_name',
+      displayName: 'Display name',
+      name: 'displayName',
       values: ['Display name 4'],
     },
     {
-      display_name: 'Courts',
+      displayName: 'Courts',
       name: 'courts',
       values: ['Maidenhead', 'Kingston', 'Slough'],
       multiselect: true,
     },
     {
-      display_name: 'Role type',
+      displayName: 'Role type',
       name: 'role_type',
       values: ['Transcriber', 'Translation QA'],
       multiselect: true,
@@ -53,8 +53,8 @@ export class DevComponent {
   //Hardcoded filter data
   filters: Filter[] = [
     {
-      display_name: 'Display name',
-      name: 'display_name',
+      displayName: 'Display name',
+      name: 'displayName',
       values: [
         'Display name 1',
         'Display name 2',
@@ -66,7 +66,7 @@ export class DevComponent {
       multiselect: false,
     },
     {
-      display_name: 'Courts',
+      displayName: 'Courts',
       name: 'courts',
       values: [
         'Reading',
@@ -88,7 +88,7 @@ export class DevComponent {
       search: true,
     },
     {
-      display_name: 'Role type',
+      displayName: 'Role type',
       name: 'role_type',
       values: [
         'Approver',

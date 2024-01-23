@@ -13,30 +13,37 @@
     </ul>
 
     <p class="govuk-body">
-      See <a class="govuk-link" href="/dev/components#input"> bottom of page</a> for example
+      See below for example
       <strong>Input & Output</strong>
     </p>
 
-    <!-- Filters component -->
-    <app-filters (filterEvent)="getFilters($event)" [filters]="filters"></app-filters>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-one-half">
+        <!-- Filters component -->
+        <app-filters (filterEvent)="getFilters($event)" [filters]="filters"></app-filters>
+      </div>
 
-    <h3 class="govuk-heading-s" id="input" style="padding-top: 40px">Input</h3>
+      <div class="govuk-grid-column-one-half">
+        <h3 class="govuk-heading-s" id="input" style="padding-top: 40px">Input</h3>
 
-    <p class="govuk-body">
-      This filter component takes in a generic object and renders UI based on that component, see example object below.
-    </p>
-    <pre> {{ filters | json }} </pre>
+        <p class="govuk-body">
+          This filter component takes in a generic object and renders UI based on that component, see example object
+          below.
+        </p>
+        <pre> {{ filters | json }} </pre>
 
-    <h3 class="govuk-heading-s">Output</h3>
+        <h3 class="govuk-heading-s">Output</h3>
 
-    <p class="govuk-body">
-      This filter component outputs the currently filtered values so they can be used by a parent component, see example
-      object below. To see actual output, click 'Apply filters' button on the filter component.
-    </p>
-    @if (selectedFilters) {
-      <pre> {{ selectedFilters | json }} </pre>
-    } @else {
-      <pre> {{ exampleOutput | json }} </pre>
-    }
+        <p class="govuk-body">
+          This filter component outputs the currently filtered values so they can be used by a parent component, see
+          example object below. To see actual output, click 'Apply filters' button on the filter component.
+        </p>
+        @if (selectedFilters) {
+          <pre> {{ selectedFilters | json }} </pre>
+        } @else {
+          <pre> {{ exampleOutput | json }} </pre>
+        }
+      </div>
+    </div>
   </div>
 </app-tabs>

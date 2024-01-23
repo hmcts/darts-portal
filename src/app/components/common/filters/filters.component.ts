@@ -32,7 +32,7 @@ export class FiltersComponent {
     const index = this.selectedFilters.findIndex((item) => item.name === filter.name);
 
     if (index === -1) {
-      const selected: Filter = { display_name: filter.display_name, name: filter.name, values: [value] };
+      const selected: Filter = { displayName: filter.displayName, name: filter.name, values: [value] };
       if (filter.multiselect) selected.multiselect = true;
       this.selectedFilters.push(selected);
     } else {

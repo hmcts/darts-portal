@@ -35,7 +35,7 @@ describe('FiltersComponent', () => {
 
   it('should clear all selected filters', () => {
     component.uncheckAll = jest.fn();
-    component.selectedFilters = [{ display_name: 'Filter 1', name: 'Filter 1', values: ['1', '2', '3', '4'] }];
+    component.selectedFilters = [{ displayName: 'Filter 1', name: 'Filter 1', values: ['1', '2', '3', '4'] }];
     component.clearFilters();
     expect(component.selectedFilters).toEqual([]);
 
@@ -44,27 +44,25 @@ describe('FiltersComponent', () => {
 
   describe('#selectFilter', () => {
     it('should add a new filter if it does not exist', () => {
-      const filter: Filter = { display_name: 'Filter 1', name: 'filter1', values: [] };
+      const filter: Filter = { displayName: 'Filter 1', name: 'filter1', values: [] };
       component.selectFilter(filter, 'value1');
 
-      expect(component.selectedFilters).toEqual([{ display_name: 'Filter 1', name: 'filter1', values: ['value1'] }]);
+      expect(component.selectedFilters).toEqual([{ displayName: 'Filter 1', name: 'filter1', values: ['value1'] }]);
     });
 
     it('should add a value to an existing multiselect filter', () => {
-      component.selectedFilters = [
-        { display_name: 'Filter 1', name: 'filter1', values: ['value1'], multiselect: true },
-      ];
-      const filter: Filter = { display_name: 'Filter 1', name: 'filter1', values: [], multiselect: true };
+      component.selectedFilters = [{ displayName: 'Filter 1', name: 'filter1', values: ['value1'], multiselect: true }];
+      const filter: Filter = { displayName: 'Filter 1', name: 'filter1', values: [], multiselect: true };
       component.selectFilter(filter, 'value2');
 
       expect(component.selectedFilters).toEqual([
-        { display_name: 'Filter 1', name: 'filter1', values: ['value1', 'value2'], multiselect: true },
+        { displayName: 'Filter 1', name: 'filter1', values: ['value1', 'value2'], multiselect: true },
       ]);
     });
 
     it('should call selectSingle for an existing non-multiselect filter', () => {
-      component.selectedFilters = [{ display_name: 'Filter 1', name: 'filter1', values: ['value1'] }];
-      const filter: Filter = { display_name: 'Filter 1', name: 'filter1', values: [], multiselect: false };
+      component.selectedFilters = [{ displayName: 'Filter 1', name: 'filter1', values: ['value1'] }];
+      const filter: Filter = { displayName: 'Filter 1', name: 'filter1', values: [], multiselect: false };
       component.selectSingle = jest.fn();
       component.selectFilter(filter, 'value2');
 
@@ -74,8 +72,8 @@ describe('FiltersComponent', () => {
 
   describe('#unselectFilter', () => {
     it('should remove a non-multiselect filter', () => {
-      component.selectedFilters = [{ display_name: 'Filter 1', name: 'filter1', values: ['value1'] }];
-      const filter: Filter = { display_name: 'Filter 1', name: 'filter1', values: [], multiselect: false };
+      component.selectedFilters = [{ displayName: 'Filter 1', name: 'filter1', values: ['value1'] }];
+      const filter: Filter = { displayName: 'Filter 1', name: 'filter1', values: [], multiselect: false };
       component.unselectFilter(filter, 'value1');
 
       expect(component.selectedFilters).toEqual([]);
@@ -83,21 +81,19 @@ describe('FiltersComponent', () => {
 
     it('should remove a value from a multiselect filter', () => {
       component.selectedFilters = [
-        { display_name: 'Filter 1', name: 'filter1', values: ['value1', 'value2'], multiselect: true },
+        { displayName: 'Filter 1', name: 'filter1', values: ['value1', 'value2'], multiselect: true },
       ];
-      const filter: Filter = { display_name: 'Filter 1', name: 'filter1', values: [], multiselect: true };
+      const filter: Filter = { displayName: 'Filter 1', name: 'filter1', values: [], multiselect: true };
       component.unselectFilter(filter, 'value1');
 
       expect(component.selectedFilters).toEqual([
-        { display_name: 'Filter 1', name: 'filter1', values: ['value2'], multiselect: true },
+        { displayName: 'Filter 1', name: 'filter1', values: ['value2'], multiselect: true },
       ]);
     });
 
     it('should remove the filter if the last value is removed from a multiselect filter', () => {
-      component.selectedFilters = [
-        { display_name: 'Filter 1', name: 'filter1', values: ['value1'], multiselect: true },
-      ];
-      const filter: Filter = { display_name: 'Filter 1', name: 'filter1', values: [], multiselect: true };
+      component.selectedFilters = [{ displayName: 'Filter 1', name: 'filter1', values: ['value1'], multiselect: true }];
+      const filter: Filter = { displayName: 'Filter 1', name: 'filter1', values: [], multiselect: true };
       component.unselectFilter(filter, 'value1');
 
       expect(component.selectedFilters).toEqual([]);
@@ -108,8 +104,8 @@ describe('FiltersComponent', () => {
     it('should update the selected filter and call uncheckAllExcept', () => {
       component.uncheckAllExcept = jest.fn();
       component.selectedFilters = [
-        { display_name: 'Filter 1', name: 'filter1', values: ['value1', 'value2'] },
-        { display_name: 'Filter 2', name: 'filter2', values: ['value3'] },
+        { displayName: 'Filter 1', name: 'filter1', values: ['value1', 'value2'] },
+        { displayName: 'Filter 2', name: 'filter2', values: ['value3'] },
       ];
 
       const index = 0;
@@ -130,7 +126,7 @@ describe('FiltersComponent', () => {
 
     it('should call selectFilter when checkbox is checked', () => {
       const mockEvent = { target: { checked: true } } as unknown as Event;
-      const mockFilter = { display_name: 'Filter 1', name: 'filter1', values: ['value1'] };
+      const mockFilter = { displayName: 'Filter 1', name: 'filter1', values: ['value1'] };
       const mockValue = 'value1';
 
       component.onCheckChanged(mockFilter, mockValue, mockEvent);
@@ -141,7 +137,7 @@ describe('FiltersComponent', () => {
 
     it('should call unselectFilter when checkbox is unchecked', () => {
       const mockEvent = { target: { checked: false } } as unknown as Event;
-      const mockFilter = { display_name: 'Filter 1', name: 'filter1', values: ['value1'] };
+      const mockFilter = { displayName: 'Filter 1', name: 'filter1', values: ['value1'] };
       const mockValue = 'value1';
 
       component.onCheckChanged(mockFilter, mockValue, mockEvent);
@@ -183,7 +179,7 @@ describe('FiltersComponent', () => {
     it('should call unselectFilter and uncheck with correct arguments', () => {
       component.unselectFilter = jest.fn();
       component.uncheck = jest.fn();
-      const mockFilter = { display_name: 'Filter 1', name: 'filter1', values: ['value1'] };
+      const mockFilter = { displayName: 'Filter 1', name: 'filter1', values: ['value1'] };
       const mockValue = 'value1';
 
       component.unselectFromTag(mockFilter, mockValue);
@@ -195,19 +191,19 @@ describe('FiltersComponent', () => {
 
   describe('#getFilteredValues', () => {
     it('should return all values when the search term is empty', () => {
-      const filter: Filter = { name: 'fruit', display_name: 'Fruit selection', values: ['Apple', 'Banana', 'Orange'] };
+      const filter: Filter = { name: 'fruit', displayName: 'Fruit selection', values: ['Apple', 'Banana', 'Orange'] };
       const results = component.getFilteredValues(filter, '');
       expect(results).toEqual(['Apple', 'Banana', 'Orange']);
     });
 
     it('should return filtered values when the search term is not empty', () => {
-      const filter: Filter = { name: 'fruit', display_name: 'Fruit selection', values: ['Apple', 'Banana', 'Orange'] };
+      const filter: Filter = { name: 'fruit', displayName: 'Fruit selection', values: ['Apple', 'Banana', 'Orange'] };
       const results = component.getFilteredValues(filter, 'an');
       expect(results).toEqual(['Banana', 'Orange']);
     });
 
     it('should return an empty array when no values match the search term', () => {
-      const filter: Filter = { name: 'fruit', display_name: 'Fruit selection', values: ['Apple', 'Banana', 'Orange'] };
+      const filter: Filter = { name: 'fruit', displayName: 'Fruit selection', values: ['Apple', 'Banana', 'Orange'] };
       const results = component.getFilteredValues(filter, 'xyz');
       expect(results).toEqual([]);
     });
