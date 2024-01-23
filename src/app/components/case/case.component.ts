@@ -39,7 +39,7 @@ export class CaseComponent {
   public caseFile$ = this.caseService.getCase(this.caseId);
   public hearings$ = this.caseService.getCaseHearings(this.caseId);
   public transcripts$ = this.caseService
-    .getAllCaseTranscripts(this.caseId)
+    .getCaseTranscripts(this.caseId)
     .pipe(map((transcript) => this.mappingService.mapTranscriptRequestToRows(transcript)));
 
   data$ = combineLatest({

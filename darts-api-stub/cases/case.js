@@ -380,7 +380,7 @@ const transcriptOne = [
   {
     transcription_id: 1,
     hearing_id: 2,
-    hearing_date: '2023-10-12',
+    hearing_date: '2023-10-13',
     type: 'Sentencing remarks',
     requested_on: '',
     requested_by_name: 'Joe Bloggs',
@@ -398,7 +398,7 @@ const transcriptOne = [
   {
     transcription_id: 1,
     hea_id: 2,
-    hearing_date: '2023-10-12',
+    hearing_date: '2023-10-11',
     type: 'Sentencing remarks',
     requested_on: '2023-10-12T00:00:00Z',
     requested_by_name: 'Joe Bloggs',
@@ -407,7 +407,7 @@ const transcriptOne = [
   {
     transcription_id: 1,
     hea_id: 2,
-    hearing_date: '2023-10-12',
+    hearing_date: '2023-10-10',
     type: 'Sentencing remarks',
     requested_on: '2023-10-12T00:00:00Z',
     requested_by_name: 'Joe Bloggs',
@@ -416,7 +416,7 @@ const transcriptOne = [
   {
     transcription_id: 1,
     hea_id: 2,
-    hearing_date: '2023-10-12',
+    hearing_date: '2023-10-15',
     type: 'Sentencing remarks',
     requested_on: '2023-10-12T00:00:00Z',
     requested_by_name: 'Joe Bloggs',
@@ -425,7 +425,7 @@ const transcriptOne = [
   {
     transcription_id: 1,
     hea_id: 2,
-    hearing_date: '2023-10-12',
+    hearing_date: '2023-10-01',
     type: 'Sentencing remarks',
     requested_on: '2023-10-12T00:00:00Z',
     requested_by_name: 'Joe Bloggs',
@@ -434,7 +434,7 @@ const transcriptOne = [
   {
     transcription_id: 1,
     hea_id: 2,
-    hearing_date: '2023-10-12',
+    hearing_date: '2023-10-29',
     type: 'Sentencing remarks',
     requested_on: '2023-10-12T00:00:00Z',
     requested_by_name: 'Joe Bloggs',

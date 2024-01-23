@@ -23,9 +23,9 @@
       noDataMessage="There are no transcripts for this case."
     >
       <ng-template [tableRowTemplate]="transcripts" let-row>
-        <td class="govuk-table__cell">{{ row.hearingDate | date: 'dd MMM yyyy' }}</td>
+        <td class="govuk-table__cell">{{ row.hearingDate.toISO() | date: 'dd MMM yyyy' }}</td>
         <td class="govuk-table__cell">{{ row.type }}</td>
-        <td class="govuk-table__cell">{{ row.requestedOn | date: 'dd MMM yyyy HH:mm:ss' }}</td>
+        <td class="govuk-table__cell">{{ row.requestedOn.toISO() | date: 'dd MMM yyyy HH:mm:ss' }}</td>
         <td class="govuk-table__cell">{{ row.requestedBy }}</td>
         <td class="govuk-table__cell">
           <strong class="govuk-tag" [ngClass]="transcriptStatusClassMap[row.status]">
@@ -33,7 +33,7 @@
           </strong>
         </td>
         <td class="govuk-table__cell">
-          <a class="govuk-link" *ngIf="row.status === 'Complete'" [routerLink]="['transcripts', row.tra_id]">View</a>
+          <a class="govuk-link" *ngIf="row.status === 'Complete'" [routerLink]="['transcripts', row.id]">View</a>
         </td>
       </ng-template>
     </app-data-table>

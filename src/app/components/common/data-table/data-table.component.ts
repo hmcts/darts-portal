@@ -78,11 +78,16 @@ export class DataTableComponent<TRow> implements OnChanges {
       const valueB = (b as { [key: string]: unknown })[column];
       const isStrings = typeof valueA === 'string' && typeof valueB === 'string';
 
+      // if both values are luxon DateTime, compare them as DateTime
+      if (this.isLuxonDateTime(valueA) && this.isLuxonDateTime(valueB)) {
+        return this.compareDates(column, valueA as DateTime, valueB as DateTime);
+      }
+      // if both values are strings and luxon DateTime, compare them as DateTime
       if (isStrings && this.isDateTime(valueA) && this.isDateTime(valueB)) {
         return this.compareDates(column, DateTime.fromISO(valueA).toUTC(), DateTime.fromISO(valueB).toUTC());
       }
+      // TO DO: To be removed and then passed in as custom sort function by the parent component
       if (column === 'courtroom' && isStrings && this.isNumeric(valueA) && this.isNumeric(valueB)) {
-        //Courtroom convert to number if numeric parseable
         return this.compareNumbers(column, +valueA, +valueB);
       } else if (isStrings) {
         //String sorting
@@ -164,6 +169,10 @@ export class DataTableComponent<TRow> implements OnChanges {
 
   isAscSorting(column: string): boolean {
     return this.sorting.column === column && this.sorting.order === 'asc';
+  }
+
+  isLuxonDateTime(value: unknown): boolean {
+    return DateTime.isDateTime(value);
   }
 
   getAriaSort(column: string): 'ascending' | 'descending' | 'none' {

@@ -9,11 +9,11 @@ export class MappingService {
   mapTranscriptRequestToRows(transcripts: Transcript[]): TranscriptsRow[] {
     return transcripts.map((transcript) => {
       return {
-        tra_id: transcript.transcription_id,
-        hearingDate: transcript.hearing_date,
+        id: transcript.id,
+        hearingDate: transcript.hearingDate,
         type: transcript.type,
-        requestedOn: transcript.requested_on,
-        requestedBy: transcript.requested_by_name,
+        requestedOn: transcript.requestedOn,
+        requestedBy: transcript.requestedByName,
         status: transcript.status,
       };
     });
