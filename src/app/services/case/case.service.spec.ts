@@ -209,21 +209,10 @@ describe('CaseService', () => {
     });
 
     const req = httpMock.expectOne((request) => {
-      return (
-        request.url === ADVANCED_SEARCH_CASE_PATH &&
-        request.method === 'GET' &&
-        request.params.get('case_number') === '123' &&
-        request.params.get('courthouse') === 'Court A' &&
-        request.params.get('courtroom') === 'Room B' &&
-        request.params.get('judge_name') === 'Judge C' &&
-        request.params.get('defendant_name') === 'Defendant D' &&
-        request.params.get('date_from') === '2023-01-01' &&
-        request.params.get('date_to') === '2023-12-31' &&
-        request.params.get('event_text_contains') === 'Event Text'
-      );
+      return request.url === ADVANCED_SEARCH_CASE_PATH && request.method === 'POST' && request.body === mockSearchForm;
     });
 
-    expect(req.request.method).toBe('GET');
+    expect(req.request.method).toBe('POST');
 
     req.flush(mockCases);
   });
