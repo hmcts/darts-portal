@@ -1,0 +1,19 @@
+<app-breadcrumb>
+  <ng-container *breadcrumb="['/search']">Search</ng-container>
+  <ng-container *breadcrumb="['/case', transcript.case_id.toString()]">{{ transcript.case_number }}</ng-container>
+  <ng-container *breadcrumb="['.']">{{ transcript.transcript_file_name }}</ng-container>
+</app-breadcrumb>
+
+<app-reporting-restriction
+  class="margin-bottom"
+  [restrictions]="transcript.case_reporting_restrictions"
+></app-reporting-restriction>
+
+<span class="govuk-caption-l">Transcript file</span>
+<h1 class="govuk-heading-l">{{ transcript.transcript_file_name }}</h1>
+
+<app-details-table title="Case details" [details]="caseDetails"></app-details-table>
+
+<app-details-table title="Request details" [details]="requestDetails"></app-details-table>
+
+<button id="download-button" class="govuk-button" (click)="onDownloadClicked()">Download transcript file</button>
