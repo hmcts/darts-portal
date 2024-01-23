@@ -1,4 +1,5 @@
-import { CaseRententionChangeComponent } from '../case-retention-change/case-retention-change.component';
+import { CaseRententionConfirmComponent } from './case-retention-confirm/case-retention-confirm.component';
+import { CaseRententionChangeComponent } from './case-retention-change/case-retention-change.component';
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -35,10 +36,13 @@ import { CaseRetentionPageState } from '@darts-types/case-retention-page-state.t
     TableRowTemplateDirective,
     NotificationBannerComponent,
     CaseRententionChangeComponent,
+    CaseRententionConfirmComponent,
   ],
 })
 export class CaseRetentionDateComponent implements OnInit {
   private _state: CaseRetentionPageState = 'Default';
+  newRetentionDate = new Date();
+  newRetentionReason: string | null = '';
   headerService = inject(HeaderService);
   route = inject(ActivatedRoute);
   caseService = inject(CaseService);
@@ -51,11 +55,11 @@ export class CaseRetentionDateComponent implements OnInit {
     map((data: Case) => {
       const caseDetails = {
         details: {
-          'Case ID': data.case_id,
+          'Case ID': data.case_number,
           'Case closed date': this.datePipe.transform(data.case_closed_date_time, 'dd MMM yyyy') || '-',
           Courthouse: data.courthouse,
-          'Judge(s)': data.judges,
-          'Defendant(s)': data.defendants,
+          'Judge(s)': data.judges?.map((judge) => ' ' + judge),
+          'Defendant(s)': data.defendants?.map((defendant) => ' ' + defendant),
         },
         currentRetention: {
           'Date applied': this.datePipe.transform(data.retention_date_time_applied, 'dd MMM yyyy'),
@@ -129,6 +133,14 @@ export class CaseRetentionDateComponent implements OnInit {
 
   onStateChanged(state: CaseRetentionPageState) {
     this.state = state;
+  }
+
+  onRetentionDateChanged(value: Date) {
+    this.newRetentionDate = value;
+  }
+
+  onRetentionReasonChanged(value: string | null) {
+    this.newRetentionReason = value;
   }
 
   vm$ = combineLatest({

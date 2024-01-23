@@ -80,14 +80,29 @@
     </ng-container>
   </ng-container>
   <!-- Summary / Confirmation Screen -->
-  <div *ngIf="state === 'Change'" class="order-confirmation">
-    <app-case-retention-change
-      [state]="state"
-      [currentRetentionDate]="vm.caseDetails.case_retain_until_date_time"
-      [originalRetentionDate]="getOriginalRetentionDateString(vm.retentionHistory)"
-      (stateChange)="onStateChanged($event)"
-    ></app-case-retention-change>
-  </div>
+  <ng-container *ngIf="state === 'Change' || state === 'Confirm'">
+    <div [hidden]="state === 'Confirm'" class="order-confirmation">
+      <app-case-retention-change
+        [state]="state"
+        [currentRetentionDate]="vm.caseDetails.case_retain_until_date_time"
+        [originalRetentionDate]="getOriginalRetentionDateString(vm.retentionHistory)"
+        (stateChange)="onStateChanged($event)"
+        (retentionDateChange)="onRetentionDateChanged($event)"
+        (retentionReasonChange)="onRetentionReasonChanged($event)"
+      ></app-case-retention-change>
+    </div>
+    <div [hidden]="state === 'Change'" class="order-confirmation">
+      <app-case-retention-confirm
+        [state]="state"
+        [caseId]="vm.caseDetails.details['Case ID']"
+        [caseCourthouse]="vm.caseDetails.details['Courthouse']"
+        [caseDefendants]="vm.caseDetails.details['Defendant(s)']"
+        [newRetentionDate]="newRetentionDate"
+        [newRetentionReason]="newRetentionReason"
+        (stateChange)="onStateChanged($event)"
+      ></app-case-retention-confirm>
+    </div>
+  </ng-container>
 </ng-container>
 
 <ng-template #loading>

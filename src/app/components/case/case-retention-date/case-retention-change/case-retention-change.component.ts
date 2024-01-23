@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { AfterViewChecked, Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { GovukTextareaComponent } from '@common/govuk-textarea/govuk-textarea.component';
@@ -28,12 +28,15 @@ export class CaseRententionChangeComponent implements AfterViewChecked {
   @Input() originalRetentionDate!: string | null;
 
   @Output() stateChange = new EventEmitter<CaseRetentionPageState>();
+  @Output() retentionDateChange = new EventEmitter<Date>();
+  @Output() retentionReasonChange = new EventEmitter<string | null>();
 
   userService = inject(UserService);
   retainReasonFormControl = new FormControl('');
   retainOptionFormControl = new FormControl('');
   retainDateFormControl = new FormControl();
   datePatternValidator = Validators.pattern(/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/);
+  datePipe = inject(DatePipe);
 
   rententionCharacterLimit = 200;
   errors: { fieldId: string; message: string }[] = [];
@@ -59,28 +62,27 @@ export class CaseRententionChangeComponent implements AfterViewChecked {
   }
 
   onChangeDate() {
-    this.retainDateFormControl.markAsDirty();
     this.errorDate = '';
-    if (this.retainDateFormControl.dirty) {
-      if (!!this.datePatternValidator(this.retainDateFormControl) || !this.retainDateFormControl.value) {
-        this.errorDate = 'You have not entered a recognised date in the correct format (for example 31/01/2023)';
-        return;
-      }
-      if (
-        !this.userService.hasRoles(['ADMIN', 'JUDGE']) &&
-        beforeDateValidator(this.retainDateFormControl, this.currentRetentionDate)
-      ) {
-        this.errorDate =
-          'You do not have permission to reduce the current retention date. Please refer to the DARTS retention policy guidance';
-      } else if (beforeDateValidator(this.retainDateFormControl, this.originalRetentionDate)) {
-        this.errorDate = `You cannot set retention date earlier than ${this.originalRetentionDate}`;
-      }
+    if (!!this.datePatternValidator(this.retainDateFormControl) || !this.retainDateFormControl.value) {
+      this.errorDate = 'You have not entered a recognised date in the correct format (for example 31/01/2023)';
+      return;
+    }
+    if (
+      !this.userService.hasRoles(['ADMIN', 'JUDGE']) &&
+      beforeDateValidator(this.retainDateFormControl, this.currentRetentionDate)
+    ) {
+      this.errorDate =
+        'You do not have permission to reduce the current retention date. Please refer to the DARTS retention policy guidance';
+    } else if (beforeDateValidator(this.retainDateFormControl, this.originalRetentionDate)) {
+      this.errorDate = `You cannot set retention date earlier than ${this.originalRetentionDate}`;
     }
     return;
   }
 
   onChangeOption() {
     this.errors = [];
+    this.errorDate = '';
+    this.retainDateFormControl.setValue('');
   }
 
   onConfirm() {
@@ -93,7 +95,6 @@ export class CaseRententionChangeComponent implements AfterViewChecked {
       });
     }
     if (this.retainOptionFormControl.value === 'date') {
-      this.retainDateFormControl.markAsDirty();
       this.onChangeDate();
       if (this.errorDate) {
         this.errors.push({
@@ -101,6 +102,10 @@ export class CaseRententionChangeComponent implements AfterViewChecked {
           message: this.errorDate,
         });
       }
+    } else {
+      const date = new Date();
+      date.setDate(date.getDate() + 36159.75);
+      this.retainDateFormControl.setValue(this.datePipe.transform(date, 'dd/MM/yyyy'));
     }
     if (!this.retainReasonFormControl.value) {
       this.retainReasonFormControl.markAsDirty();
@@ -109,7 +114,16 @@ export class CaseRententionChangeComponent implements AfterViewChecked {
         message: this.errorNoReason,
       });
     }
-    // Move onto confirmation screen
+    if (!this.errors.length) {
+      this.retentionDateChange.emit(this.dateFromString(this.retainDateFormControl.value));
+      this.retentionReasonChange.emit(this.retainReasonFormControl.value);
+      this.stateChange.emit('Confirm');
+    }
+  }
+
+  dateFromString(value: string) {
+    // Convert UK format date string to Date object
+    return new Date(parseInt(value.split('/')[2]), parseInt(value.split('/')[1]) - 1, parseInt(value.split('/')[0]));
   }
 
   onCancel(event: Event) {
