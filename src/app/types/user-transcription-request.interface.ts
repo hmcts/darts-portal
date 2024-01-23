@@ -1,5 +1,5 @@
+import { TranscriptStatus } from './transcript.interface';
 import { TranscriptionUrgency } from './transcription-urgency.interface';
-import { TranscriptStatus } from './transcripts-row.interface';
 
 export interface UserTranscriptionRequest {
   transcription_id: number;

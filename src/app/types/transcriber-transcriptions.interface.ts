@@ -1,4 +1,4 @@
-import { TranscriptStatus } from './transcripts-row.interface';
+import { TranscriptStatus } from './transcript.interface';
 
 export interface TranscriberTranscriptions {
   transcription_id: number;

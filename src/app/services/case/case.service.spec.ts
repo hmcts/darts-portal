@@ -1,7 +1,8 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { CaseRetentionHistory } from '@darts-types/case-retention-history.interface';
-import { Case, CaseFile, Courthouse, Hearing, SearchFormValues, Transcript } from '@darts-types/index';
+import { Case, CaseFile, Courthouse, Hearing, SearchFormValues, Transcript, TranscriptData } from '@darts-types/index';
+import { DateTime, Settings } from 'luxon';
 import {
   ADVANCED_SEARCH_CASE_PATH,
   CaseService,
@@ -11,6 +12,8 @@ import {
   GET_HEARINGS_PATH,
 } from './case.service';
 import { CaseRetentionChange } from '@darts-types/case-retention-change.interface';
+
+Settings.defaultZone = 'utc';
 
 describe('CaseService', () => {
   let service: CaseService;
@@ -28,7 +31,7 @@ describe('CaseService', () => {
     retain_until: '2023-08-10T11:23:24.858Z',
   };
 
-  const mockTranscripts: Transcript[] = [
+  const mockTranscripts: TranscriptData[] = [
     {
       transcription_id: 1,
       hearing_id: 2,
@@ -37,15 +40,6 @@ describe('CaseService', () => {
       requested_on: '2023-10-12T00:00:00Z',
       requested_by_name: 'Joe Bloggs',
       status: 'Complete',
-    },
-    {
-      transcription_id: 1,
-      hearing_id: 2,
-      hearing_date: '2023-10-12',
-      type: 'Sentencing remarks',
-      requested_on: '2023-10-12T00:00:00Z',
-      requested_by_name: 'Joe Bloggs',
-      status: 'Approved',
     },
   ];
 
@@ -128,12 +122,12 @@ describe('CaseService', () => {
     req.flush(mockCase);
   });
 
-  it('#getAllCaseTranscripts', () => {
+  it('#getCaseTranscripts', () => {
     const mockCaseId = 1;
-    const mockTranscript: Transcript[] = mockTranscripts;
+    const mockTranscript: TranscriptData[] = mockTranscripts;
     let result!: Transcript[];
 
-    service.getAllCaseTranscripts(mockCaseId).subscribe((c) => {
+    service.getCaseTranscripts(mockCaseId).subscribe((c) => {
       result = c;
     });
 
@@ -141,20 +135,25 @@ describe('CaseService', () => {
     expect(req.request.method).toBe('GET');
 
     req.flush(mockTranscript);
-    expect(result).toEqual(
-      mockTranscripts.map((t) => ({
-        ...t,
-        date: t.hearing_date + 'T00:00:00Z',
-      }))
-    );
+    expect(result).toEqual([
+      {
+        id: 1,
+        hearingId: 2,
+        hearingDate: DateTime.fromISO('2023-10-12'),
+        requestedByName: 'Joe Bloggs',
+        requestedOn: DateTime.fromISO('2023-10-12T00:00:00Z'),
+        status: 'Complete',
+        type: 'Sentencing remarks',
+      },
+    ]);
   });
 
-  it('#getAllHearingTranscripts', () => {
+  it('#getHearingTranscripts', () => {
     const mockHearingId = 1;
-    const mockTranscript: Transcript[] = mockTranscripts;
+    const mockTranscript: TranscriptData[] = mockTranscripts;
     let result!: Transcript[];
 
-    service.getAllHearingTranscripts(mockHearingId).subscribe((c) => {
+    service.getHearingTranscripts(mockHearingId).subscribe((c) => {
       result = c;
     });
 
@@ -162,12 +161,17 @@ describe('CaseService', () => {
     expect(req.request.method).toBe('GET');
 
     req.flush(mockTranscript);
-    expect(result).toEqual(
-      mockTranscripts.map((t) => ({
-        ...t,
-        date: t.hearing_date + 'T00:00:00Z',
-      }))
-    );
+    expect(result).toEqual([
+      {
+        id: 1,
+        hearingId: 2,
+        hearingDate: DateTime.fromISO('2023-10-12'),
+        requestedByName: 'Joe Bloggs',
+        requestedOn: DateTime.fromISO('2023-10-12T00:00:00Z'),
+        status: 'Complete',
+        type: 'Sentencing remarks',
+      },
+    ]);
   });
 
   it('#getCaseHearings', () => {

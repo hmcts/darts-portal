@@ -17,6 +17,10 @@ const openRoutes: Routes = [
 ];
 const protectedRoutes: Routes = [
   {
+    path: 'dev/components',
+    loadComponent: () => import('./components/dev/dev.component').then((c) => c.DevComponent),
+  },
+  {
     path: 'audios',
     loadComponent: () => import('./components/audios/audios.component').then((c) => c.AudiosComponent),
   },
