@@ -1,0 +1,94 @@
+<div class="moj-filter">
+  <div class="moj-filter__header">
+    <div class="moj-filter__header-title">
+      <h2 class="govuk-heading-m">Filter</h2>
+    </div>
+
+    <div class="moj-filter__header-action"></div>
+  </div>
+
+  <div class="moj-filter__content">
+    @if (selectedFilters.length > 0) {
+      <div class="moj-filter__selected">
+        <div class="moj-filter__selected-heading">
+          <div class="moj-filter__heading-title">
+            <h2 class="govuk-heading-m">Selected filters</h2>
+          </div>
+
+          <div class="moj-filter__heading-action clear-filter">
+            <p>
+              <a class="govuk-link govuk-link--no-visited-state" href="javascript:void(0)" (click)="clearFilters()"
+                >Clear filters</a
+              >
+            </p>
+          </div>
+        </div>
+
+        <ng-container *ngFor="let selected of selectedFilters">
+          <h3 class="govuk-heading-s govuk-!-margin-bottom-0">{{ selected.displayName }}</h3>
+
+          <ul class="moj-filter-tags">
+            <ng-container *ngFor="let value of selected.values">
+              <li>
+                <a class="moj-filter__tag" (click)="unselectFromTag(selected, value)"> {{ value }}</a>
+              </li>
+            </ng-container>
+          </ul>
+        </ng-container>
+      </div>
+    }
+
+    <div class="moj-filter__options">
+      <button
+        type="submit"
+        class="govuk-button"
+        data-module="govuk-button"
+        (click)="emitFilters()"
+        data-test-id="submit-button"
+      >
+        Apply filters
+      </button>
+
+      @for (filter of filters; track filter.name) {
+        <div class="govuk-form-group">
+          <fieldset class="govuk-fieldset">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">{{ filter.displayName }}</legend>
+
+            @if (filter.search) {
+              <input
+                class="govuk-input search-filter"
+                id="search-filter"
+                [name]="filter.name + 'search-filter'"
+                type="text"
+                [placeholder]="'Search for ' + filter.displayName.toLowerCase()"
+                [(ngModel)]="searchTerms[filter.name]"
+              />
+            }
+            @if (getFilteredValues(filter, searchTerms[filter.name]); as filteredValues) {
+              @for (value of filteredValues; track $index) {
+                <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                  <div class="govuk-checkboxes__item">
+                    <input
+                      #checkboxes
+                      class="govuk-checkboxes__input"
+                      [id]="'type-value-' + $index"
+                      [name]="filter.name"
+                      type="checkbox"
+                      [attr.aria-label]="'Select checkbox value ' + value"
+                      [value]="value"
+                      (change)="onCheckChanged(filter, value, $event)"
+                    />
+                    <label class="govuk-label govuk-checkboxes__label" for="type"> {{ value }} </label>
+                  </div>
+                </div>
+              }
+              @if (filteredValues.length === 0) {
+                <p class="govuk-body">No results found</p>
+              }
+            }
+          </fieldset>
+        </div>
+      }
+    </div>
+  </div>
+</div>

@@ -1,6 +1,7 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { SuccessBannerComponent } from '@common/success-banner/success-banner.component';
 import { CaseRetentionHistory } from '@darts-types/case-retention-history.interface';
 import { CaseRetentionPageState } from '@darts-types/case-retention-page-state.type';
 import { Case } from '@darts-types/case.interface';
@@ -16,7 +17,8 @@ import { DetailsTableComponent } from '../../common/details-table/details-table.
 import { GovukHeadingComponent } from '../../common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '../../common/loading/loading.component';
 import { NotificationBannerComponent } from '../../common/notification-banner/notification-banner.component';
-import { CaseRententionChangeComponent } from '../case-retention-change/case-retention-change.component';
+import { CaseRententionChangeComponent } from './case-retention-change/case-retention-change.component';
+import { CaseRententionConfirmComponent } from './case-retention-confirm/case-retention-confirm.component';
 
 @Component({
   selector: 'app-case-retention-date',
@@ -35,10 +37,15 @@ import { CaseRententionChangeComponent } from '../case-retention-change/case-ret
     TableRowTemplateDirective,
     NotificationBannerComponent,
     CaseRententionChangeComponent,
+    CaseRententionConfirmComponent,
+    SuccessBannerComponent,
   ],
 })
 export class CaseRetentionDateComponent implements OnInit {
   private _state: CaseRetentionPageState = 'Default';
+  newRetentionDate = new Date();
+  newRetentionReason = '';
+  newRetentionPermanent: boolean = false;
   headerService = inject(HeaderService);
   route = inject(ActivatedRoute);
   caseService = inject(CaseService);
@@ -51,11 +58,11 @@ export class CaseRetentionDateComponent implements OnInit {
     map((data: Case) => {
       const caseDetails = {
         details: {
-          'Case ID': data.id,
+          'Case ID': data.number,
           'Case closed date': this.datePipe.transform(data.closedDateTime?.toISO(), 'dd MMM yyyy') || '-',
           Courthouse: data.courthouse,
-          'Judge(s)': data.judges,
-          'Defendant(s)': data.defendants,
+          'Judge(s)': data.judges?.map((judge) => ' ' + judge),
+          'Defendant(s)': data.defendants?.map((defendant) => ' ' + defendant),
         },
         currentRetention: {
           'Date applied': this.datePipe.transform(data.retentionDateTimeApplied?.toISO(), 'dd MMM yyyy'),
@@ -77,10 +84,13 @@ export class CaseRetentionDateComponent implements OnInit {
 
   // overriding state setter to call show/hide navigation
   public set state(value: CaseRetentionPageState) {
-    if (value === 'Default') {
-      this.headerService.showNavigation();
-    } else {
-      this.headerService.hideNavigation();
+    switch (value) {
+      case 'Success':
+      case 'Default':
+        this.headerService.showNavigation();
+        break;
+      default:
+        this.headerService.hideNavigation();
     }
     this._state = value;
   }
@@ -129,6 +139,18 @@ export class CaseRetentionDateComponent implements OnInit {
 
   onStateChanged(state: CaseRetentionPageState) {
     this.state = state;
+  }
+
+  onRetentionDateChanged(value: Date) {
+    this.newRetentionDate = value;
+  }
+
+  onRetentionReasonChanged(value: string) {
+    this.newRetentionReason = value;
+  }
+
+  onRetentionPermanentChanged(value: boolean) {
+    this.newRetentionPermanent = value;
   }
 
   vm$ = combineLatest({

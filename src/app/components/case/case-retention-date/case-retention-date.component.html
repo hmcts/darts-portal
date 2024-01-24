@@ -1,19 +1,19 @@
 <ng-container *ngIf="vm$ | async as vm; else loading">
-  <app-breadcrumb *ngIf="state === 'Default'">
+  <app-breadcrumb *ngIf="state === 'Default' || state === 'Success'">
     <ng-container *breadcrumb="['/search']">Search</ng-container>
     <ng-container *breadcrumb="['/case', vm.caseDetails.case_id.toString()]">{{
       vm.caseDetails.case_number
     }}</ng-container>
     <ng-container *breadcrumb>Case retention date</ng-container>
   </app-breadcrumb>
-  <ng-container *ngIf="state === 'Default'">
+  <ng-container *ngIf="state === 'Default' || state === 'Success'">
     <app-notification-banner
       *ngIf="!infoBannerHide(vm.retentionHistory)"
       heading="This case is still open or was recently closed."
       body="The retention date for this case cannot be changed while the case is open or while a retention policy is
     currently pending."
     ></app-notification-banner>
-
+    <app-success-banner *ngIf="state === 'Success'" text="Case retention date changed." />
     <app-govuk-heading>Case retention date</app-govuk-heading>
 
     <app-details-table title="Case details" [details]="vm.caseDetails.details"></app-details-table>
@@ -80,14 +80,32 @@
     </ng-container>
   </ng-container>
   <!-- Summary / Confirmation Screen -->
-  <div *ngIf="state === 'Change'" class="order-confirmation">
-    <app-case-retention-change
-      [state]="state"
-      [currentRetentionDate]="vm.caseDetails.case_retain_until_date_time"
-      [originalRetentionDate]="getOriginalRetentionDateString(vm.retentionHistory)"
-      (stateChange)="onStateChanged($event)"
-    ></app-case-retention-change>
-  </div>
+  <ng-container *ngIf="state === 'Change' || state === 'Confirm'">
+    <div [hidden]="state === 'Confirm'" class="order-confirmation">
+      <app-case-retention-change
+        [state]="state"
+        [currentRetentionDate]="vm.caseDetails.case_retain_until_date_time"
+        [originalRetentionDate]="getOriginalRetentionDateString(vm.retentionHistory)"
+        (stateChange)="onStateChanged($event)"
+        (retentionDateChange)="onRetentionDateChanged($event)"
+        (retentionReasonChange)="onRetentionReasonChanged($event)"
+        (retentionPermanentChange)="onRetentionPermanentChanged($event)"
+      ></app-case-retention-change>
+    </div>
+    <div [hidden]="state === 'Change'" class="order-confirmation">
+      <app-case-retention-confirm
+        [state]="state"
+        [caseId]="caseId"
+        [caseNumber]="vm.caseDetails.details['Case ID']"
+        [caseCourthouse]="vm.caseDetails.details['Courthouse']"
+        [caseDefendants]="vm.caseDetails.details['Defendant(s)']"
+        [newRetentionDate]="newRetentionDate"
+        [newRetentionReason]="newRetentionReason"
+        [newRetentionPermanent]="newRetentionPermanent"
+        (stateChange)="onStateChanged($event)"
+      ></app-case-retention-confirm>
+    </div>
+  </ng-container>
 </ng-container>
 
 <ng-template #loading>

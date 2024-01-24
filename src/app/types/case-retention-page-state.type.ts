@@ -1,1 +1,1 @@
-export type CaseRetentionPageState = 'Default' | 'Change';
+export type CaseRetentionPageState = 'Default' | 'Change' | 'Confirm' | 'Success';

@@ -13,6 +13,7 @@ const openRoutes: Routes = [
   { path: 'page-not-found', component: NotFoundComponent },
   { path: 'forbidden', component: ForbiddenComponent },
   { path: 'internal-error', component: InternalErrorComponent },
+  { path: 'dev/components', loadComponent: () => import('./components/dev/dev.component').then((c) => c.DevComponent) },
   { path: '**', redirectTo: '/page-not-found' },
 ];
 const protectedRoutes: Routes = [

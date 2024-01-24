@@ -99,7 +99,7 @@ describe('Case file screen', () => {
       cy.contains('C20220620001').click();
 
       cy.get('h3.govuk-heading-s').should('contain', 'Retained until');
-      cy.get('p.govuk-body').should('contain', '10 Aug 2030');
+      cy.get('p.govuk-body').should('contain', '15 Sep 2030');
       cy.get('a.govuk-link').should('contain', 'View or change');
     });
 

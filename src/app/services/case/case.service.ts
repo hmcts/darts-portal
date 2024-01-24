@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { CaseRetentionChange } from '@darts-types/case-retention-change.interface';
 import { CaseRetentionHistory } from '@darts-types/case-retention-history.interface';
 import {
   Case,
@@ -106,6 +107,10 @@ export class CaseService {
     );
   }
 
+  postCaseRetentionChange(retentionChange: CaseRetentionChange): Observable<CaseRetentionChange> {
+    return this.http.post<CaseRetentionChange>(GET_CASE_RETENTION_HISTORY, retentionChange);
+  }
+
   private mapHearingDataToHearing(hearingData: HearingData[]): Hearing[] {
     return hearingData.map((h) => ({
       id: h.id,
@@ -128,7 +133,7 @@ export class CaseService {
     }));
   }
 
-  mapCaseDataToCase(c: CaseData): Case {
+  private mapCaseDataToCase(c: CaseData): Case {
     return {
       id: c.case_id,
       number: c.case_number,

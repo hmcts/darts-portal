@@ -29,11 +29,30 @@ const retentionHistory = [
   },
 ];
 
+// GET /api/transcriptions
 router.get('', (req, res) => {
-  if (req.query.case_id === '1') {
-    res.send(retentionHistory);
-  } else {
-    res.send([]);
+  switch (req.query?.case_id) {
+    case '1':
+    case '3':
+    case '4':
+      res.send(retentionHistory);
+      return;
+    default:
+      res.send([]);
+  }
+});
+
+// POST /api/transcriptions
+router.post('', (req, res) => {
+  switch (req.body?.case_id) {
+    case '3':
+      res.sendStatus(403);
+      return;
+    case '4':
+      res.sendStatus(422);
+      return;
+    default:
+      res.send(req.body);
   }
 });
 
