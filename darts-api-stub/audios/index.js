@@ -55,7 +55,8 @@ router.get('/hearings/:hearingId/audios', (req, res) => {
   }
 });
 
-router.get('/preview/:mediaId', (req, res) => {
+// To be removed
+router.get('/preview-old/:mediaId', (req, res) => {
   if (req.params.mediaId === '4') res.sendStatus(403);
   if (req.params.mediaId === '5') res.sendStatus(404);
   if (req.params.mediaId === '6') res.sendStatus(500);
@@ -86,7 +87,8 @@ router.get('/preview/:mediaId', (req, res) => {
   }
 });
 
-router.get('/preview5/:mediaId', (req, res) => {
+// SSE Preview Audio Stub
+router.get('/preview/:mediaId', (req, res) => {
   if (req.params.mediaId === '4') {
     res.status(403).end();
     return;

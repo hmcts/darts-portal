@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { Observable } from 'rxjs/internal/Observable';
 
-export const audioPreviewPath = '/api/audio/preview5/';
+export const audioPreviewPath = '/api/audio/preview/';
 
 @Injectable({
   providedIn: 'root',

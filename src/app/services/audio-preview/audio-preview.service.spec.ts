@@ -45,7 +45,7 @@ describe('AudioPreviewService', () => {
 
   it('should connect with an EventSource', () => {
     const mediaId = 123;
-    const url = '/api/audio/preview5/123';
+    const url = '/api/audio/preview/123';
     const eventSourceMock = {
       addEventListener: jest.fn(),
       close: jest.fn(),

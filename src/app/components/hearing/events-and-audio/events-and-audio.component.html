@@ -54,14 +54,14 @@
                 (play)="onAudioPlay(row.id)"
               />
             } @else {
-              <div class="loading">Loading audio preview...</div>
+              <div class="loading">Loading preview</div>
             }
           } @else {
             <a
               class="govuk-link"
               data-cy="preview-link-button"
               (click)="($event.preventDefault); onPreviewAudio(row.id)"
-              >Preview Audio</a
+              >Play preview</a
             >
           }
         </td>
