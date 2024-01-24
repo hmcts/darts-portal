@@ -260,6 +260,7 @@ describe('CaseService', () => {
         return request.url === ADVANCED_SEARCH_CASE_PATH && request.method === 'POST';
       });
 
+      expect(req.request.body).not.toHaveProperty('specific_date');
       expect(req.request.method).toBe('POST');
       expect(req.request.body).toEqual(expectedBody);
 
