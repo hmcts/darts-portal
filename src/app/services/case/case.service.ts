@@ -73,16 +73,28 @@ export class CaseService {
   searchCases(searchForm: SearchFormValues): Observable<Case[] | null> {
     // Save search form values
     this.searchFormValues = searchForm;
+    // Deep copy form to create Post Obj DTO
+    const body: SearchFormValues = { ...searchForm };
 
-    if (searchForm.specific_date) {
-      const dateParameter = searchForm.specific_date.split('/').reverse().join('-');
-      searchForm.date_from = dateParameter;
-      searchForm.date_to = dateParameter;
+    // if there is a specific date, set both date from and date to as the same value, to the correct backend format of YYYY-MM-DD
+    if (body.specific_date) {
+      const specificDate = this.formatDate(body.specific_date);
+      body.date_from = specificDate;
+      body.date_to = specificDate;
+    } else {
+      // otherwise set date range values to the correct backend format
+      if (body.date_from) body.date_from = this.formatDate(body.date_from);
+      if (body.date_to) body.date_to = this.formatDate(body.date_to);
     }
 
     // Store results in service for retrieval
-    this.searchResults$ = this.http.post<Case[]>(ADVANCED_SEARCH_CASE_PATH, this.searchFormValues).pipe(shareReplay(1));
+    this.searchResults$ = this.http.post<Case[]>(ADVANCED_SEARCH_CASE_PATH, body).pipe(shareReplay(1));
     return this.searchResults$;
+  }
+
+  // takes a date of format DD/MM/YYYY and returns YYYY-MM-DD
+  formatDate(date: string): string {
+    return date.split('/').reverse().join('-');
   }
 
   /**

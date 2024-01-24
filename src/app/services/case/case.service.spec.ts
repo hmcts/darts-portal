@@ -208,13 +208,34 @@ describe('CaseService', () => {
       expect(cases).toEqual(mockCases);
     });
 
+    const expectedBody: SearchFormValues = {
+      case_number: '123',
+      courthouse: 'Court A',
+      courtroom: 'Room B',
+      judge_name: 'Judge C',
+      defendant_name: 'Defendant D',
+      date_from: '2023-01-01',
+      date_to: '2023-12-31',
+      event_text_contains: 'Event Text',
+    };
+
     const req = httpMock.expectOne((request) => {
-      return request.url === ADVANCED_SEARCH_CASE_PATH && request.method === 'POST' && request.body === mockSearchForm;
+      return request.url === ADVANCED_SEARCH_CASE_PATH && request.method === 'POST';
     });
 
     expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual(expectedBody);
 
     req.flush(mockCases);
+  });
+
+  describe('#formatDate', () => {
+    it('should return YYYY-MM-DD when sent a string of DD/MM/YYYY', () => {
+      const date = '18/05/1990';
+      const result = service.formatDate(date);
+      const expectedResult = '1990-05-18';
+      expect(result).toEqual(expectedResult);
+    });
   });
 
   it('#getHearingById', () => {
