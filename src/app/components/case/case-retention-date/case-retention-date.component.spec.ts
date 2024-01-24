@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CaseRetentionHistory } from '@darts-types/case-retention-history.interface';
 import { Case } from '@darts-types/case.interface';
 import { CaseService } from '@services/case/case.service';
+import { HeaderService } from '@services/header/header.service';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
 import { CaseRetentionDateComponent } from './case-retention-date.component';
@@ -20,6 +21,11 @@ describe('CaseRetentionDateComponent', () => {
         caseId: 1,
       },
     },
+  };
+
+  const fakeHeaderService = {
+    showNavigation: jest.fn(),
+    hideNavigation: jest.fn(),
   };
 
   const mockRetentionHistory: CaseRetentionHistory[] = [
@@ -76,6 +82,7 @@ describe('CaseRetentionDateComponent', () => {
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
         { provide: DatePipe },
         { provide: CaseService, useValue: mockCaseService },
+        { provide: HeaderService, useValue: fakeHeaderService },
       ],
     }).compileComponents();
 
@@ -152,13 +159,55 @@ describe('CaseRetentionDateComponent', () => {
     it('should change state value to "Change"', () => {
       const testValue = 'Change';
       component.onStateChanged(testValue);
-      expect(component.state).toEqual('Change');
+      expect(component.state).toEqual(testValue);
+      expect(fakeHeaderService.hideNavigation).toHaveBeenCalled();
     });
 
     it('should change state value to "Default"', () => {
       const testValue = 'Default';
       component.onStateChanged(testValue);
-      expect(component.state).toEqual('Default');
+      expect(component.state).toEqual(testValue);
+      expect(fakeHeaderService.showNavigation).toHaveBeenCalled();
+    });
+  });
+
+  describe('#onRetentionDateChanged', () => {
+    it('should change newRetentionDate to date', () => {
+      const testDate = new Date(2024, 0, 1);
+      component.onRetentionDateChanged(testDate);
+      expect(component.newRetentionDate).toEqual(testDate);
+    });
+  });
+
+  describe('#onRetentionReasonChanged', () => {
+    it('should change newRetentionReason value to "Change"', () => {
+      const testValue = 'I have reasons';
+      component.onRetentionReasonChanged(testValue);
+      expect(component.newRetentionReason).toEqual(testValue);
+    });
+  });
+
+  describe('#onRetentionPermanentChanged', () => {
+    it('should change state value to true', () => {
+      const testValue = true;
+      component.onRetentionPermanentChanged(testValue);
+      expect(component.newRetentionPermanent).toEqual(testValue);
+    });
+  });
+
+  describe('#onRetentionDateChanged', () => {
+    it('should change date', () => {
+      const testDate = new Date(2024, 0, 1);
+      component.onRetentionDateChanged(testDate);
+      expect(component.newRetentionDate).toEqual(testDate);
+    });
+  });
+
+  describe('#onRetentionReasonChanged', () => {
+    it('should change state value to "Change"', () => {
+      const testValue = 'I have reasons';
+      component.onRetentionReasonChanged(testValue);
+      expect(component.newRetentionReason).toEqual(testValue);
     });
   });
 
@@ -166,10 +215,10 @@ describe('CaseRetentionDateComponent', () => {
     component.caseDetails$.subscribe((caseDetails) => {
       expect(caseDetails.details).toEqual({
         'Case ID': 1,
-        'Case closed date': mockCaseData.closedDateTime?.toFormat('dd LLL yyyy') || '-',
+        'Case closed date': mockDatePipe.transform(mockCaseData.closedDateTime?.toISO(), 'dd MMM yyyy') || '-',
         Courthouse: 'Swansea',
-        'Judge(s)': ['Judge Judy'],
-        'Defendant(s)': ['Defendant Dave'],
+        'Judge(s)': [' Judge Judy'],
+        'Defendant(s)': [' Defendant Dave'],
       });
 
       expect(caseDetails.currentRetention).toEqual({
