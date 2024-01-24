@@ -74,6 +74,12 @@ export class CaseService {
     // Save search form values
     this.searchFormValues = searchForm;
 
+    if (searchForm.specific_date) {
+      const dateParameter = searchForm.specific_date.split('/').reverse().join('-');
+      searchForm.date_from = dateParameter;
+      searchForm.date_to = dateParameter;
+    }
+
     // Store results in service for retrieval
     this.searchResults$ = this.http.post<Case[]>(ADVANCED_SEARCH_CASE_PATH, this.searchFormValues).pipe(shareReplay(1));
     return this.searchResults$;
