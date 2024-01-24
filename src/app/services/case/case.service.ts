@@ -73,7 +73,10 @@ export class CaseService {
   searchCases(searchForm: SearchFormValues): Observable<Case[] | null> {
     // Save search form values
     this.searchFormValues = searchForm;
-    return this.http.post<Case[]>(ADVANCED_SEARCH_CASE_PATH, this.searchFormValues).pipe(shareReplay(1));
+
+    // Store results in service for retrieval
+    this.searchResults$ = this.http.post<Case[]>(ADVANCED_SEARCH_CASE_PATH, this.searchFormValues).pipe(shareReplay(1));
+    return this.searchResults$;
   }
 
   searchPostCases(searchForm: SearchFormValues): Observable<Case[] | null> {
