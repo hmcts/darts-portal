@@ -87,6 +87,9 @@ export class CaseService {
       if (body.date_to) body.date_to = this.formatDate(body.date_to);
     }
 
+    // remove the specific date property before sending
+    delete body.specific_date;
+
     // Store results in service for retrieval
     this.searchResults$ = this.http.post<Case[]>(ADVANCED_SEARCH_CASE_PATH, body).pipe(shareReplay(1));
     return this.searchResults$;
