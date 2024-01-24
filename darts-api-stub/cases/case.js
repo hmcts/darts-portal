@@ -484,8 +484,9 @@ const transcriptTwo = [
 // Advanced search stub API
 router.post('/search', (req, res) => {
   const searchTerms = req.body;
+  const notNullProperties = Object.keys(searchTerms).filter(x => searchTerms[x] != undefined).length;
   // expected API response if searching for courthouse only
-  if (Object.keys(searchTerms).length === 9 && searchTerms.courthouse) {
+  if (notNullProperties === 1 && searchTerms.courthouse) {
     const resBody102 = {
       type: 'CASE_102',
       title: 'Search criteria is too broad, please add at least 1 more criteria to search for.',
@@ -494,7 +495,7 @@ router.post('/search', (req, res) => {
     return res.status(400).send(resBody102);
   }
   // yield many results by doing a judge search "Judge Judy"
-  if (Object.keys(searchTerms).length === 9 && searchTerms.judge_name) {
+  if (notNullProperties === 1 && searchTerms.judge_name) {
     return res
       .status(200)
       .send(
