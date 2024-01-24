@@ -129,8 +129,8 @@ export class CaseRetentionDateComponent implements OnInit {
   }
 
   getOriginalRetentionDateString(rows: CaseRetentionHistory[]) {
-    const date = this.getEarliestDate(rows).retention_date;
-    return this.datePipe.transform(date, 'dd/MM/yyyy');
+    const earliestDate = this.getEarliestDate(rows).retention_date;
+    return this.datePipe.transform(earliestDate, 'dd/MM/yyyy', 'GMT+1');
   }
 
   changeRetentionDate() {
