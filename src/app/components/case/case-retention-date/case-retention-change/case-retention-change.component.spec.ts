@@ -73,7 +73,7 @@ describe('CaseRetentionComponent', () => {
     });
 
     it('should emit stateChange events if all is OK', () => {
-      const testDate = new Date(2024, 0, 1, 12);
+      const testDate = new Date(2024, 0, 1);
       const testReason = 'This is the reason';
       // Select date option
       component.retainOptionFormControl.patchValue('date');
