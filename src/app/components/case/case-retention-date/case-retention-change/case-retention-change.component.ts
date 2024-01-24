@@ -8,6 +8,7 @@ import { CaseRetentionPageState } from '@darts-types/case-retention-page-state.t
 import { initAll } from '@scottish-government/pattern-library/src/all';
 import { UserService } from '@services/user/user.service';
 import { beforeDateValidator } from '@validators/before-date.validator';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-case-retention-change',
@@ -125,12 +126,7 @@ export class CaseRententionChangeComponent implements AfterViewChecked {
 
   dateFromString(value: string) {
     // Convert UK format date string to Date object
-    return new Date(
-      parseInt(value.split('/')[2]),
-      parseInt(value.split('/')[1]) - 1,
-      parseInt(value.split('/')[0]),
-      12
-    );
+    return DateTime.fromFormat(value, 'dd/MM/yyyy', { setZone: true }).toJSDate();
   }
 
   onCancel(event: Event) {

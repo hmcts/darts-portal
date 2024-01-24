@@ -19,6 +19,7 @@ import { LoadingComponent } from '../../common/loading/loading.component';
 import { NotificationBannerComponent } from '../../common/notification-banner/notification-banner.component';
 import { CaseRetentionPageState } from '@darts-types/case-retention-page-state.type';
 import { SuccessBannerComponent } from '@common/success-banner/success-banner.component';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-case-retention-date',
@@ -130,7 +131,7 @@ export class CaseRetentionDateComponent implements OnInit {
 
   getOriginalRetentionDateString(rows: CaseRetentionHistory[]) {
     const earliestDate = this.getEarliestDate(rows).retention_date;
-    return this.datePipe.transform(earliestDate, 'dd/MM/yyyy', 'GMT+1');
+    return DateTime.fromISO(earliestDate, { setZone: true }).toFormat('dd/MM/yyyy');
   }
 
   changeRetentionDate() {
