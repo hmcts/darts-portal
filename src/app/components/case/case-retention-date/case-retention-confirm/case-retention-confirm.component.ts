@@ -53,7 +53,7 @@ export class CaseRententionConfirmComponent {
     const caseRetentionChange: CaseRetentionChange = {
       case_id: this.caseId,
       retention_date: !this.newRetentionPermanent
-        ? this.datePipe.transform(this.newRetentionDate, 'yyyy/MM/dd') || ''
+        ? this.datePipe.transform(this.newRetentionDate, 'yyyy-MM-dd') || ''
         : undefined,
       is_permanent_retention: this.newRetentionPermanent || undefined,
       comments: this.newRetentionReason || '',

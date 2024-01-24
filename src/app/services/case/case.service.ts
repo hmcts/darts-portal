@@ -114,12 +114,7 @@ export class CaseService {
   getCaseRetentionHistory(caseId: number): Observable<CaseRetentionHistory[]> {
     let params = new HttpParams();
     params = params.set('case_id', caseId);
-    return this.http.get<CaseRetentionHistory[]>(GET_CASE_RETENTION_HISTORY, { params }).pipe(
-      map((hearings) => hearings.map((h) => ({ ...h, retention_date: h.retention_date + 'T00:00:00Z' }))),
-      catchError(() => {
-        return of([]);
-      })
-    );
+    return this.http.get<CaseRetentionHistory[]>(GET_CASE_RETENTION_HISTORY, { params });
   }
 
   postCaseRetentionChange(retentionChange: CaseRetentionChange): Observable<CaseRetentionChange> {

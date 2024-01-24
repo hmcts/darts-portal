@@ -125,7 +125,12 @@ export class CaseRententionChangeComponent implements AfterViewChecked {
 
   dateFromString(value: string) {
     // Convert UK format date string to Date object
-    return new Date(parseInt(value.split('/')[2]), parseInt(value.split('/')[1]) - 1, parseInt(value.split('/')[0]));
+    return new Date(
+      parseInt(value.split('/')[2]),
+      parseInt(value.split('/')[1]) - 1,
+      parseInt(value.split('/')[0]),
+      12
+    );
   }
 
   onCancel(event: Event) {
