@@ -214,7 +214,7 @@ describe('CaseRetentionDateComponent', () => {
   it('should transform case details correctly', (done) => {
     component.caseDetails$.subscribe((caseDetails) => {
       expect(caseDetails.details).toEqual({
-        'Case ID': 1,
+        'Case ID': mockCaseData.number,
         'Case closed date': mockDatePipe.transform(mockCaseData.closedDateTime?.toISO(), 'dd MMM yyyy') || '-',
         Courthouse: 'Swansea',
         'Judge(s)': [' Judge Judy'],
