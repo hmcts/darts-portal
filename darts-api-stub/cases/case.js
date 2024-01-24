@@ -484,7 +484,7 @@ const transcriptTwo = [
 // Advanced search stub API
 router.post('/search', (req, res) => {
   const searchTerms = req.body;
-  const notNullProperties = Object.keys(searchTerms).filter(x => searchTerms[x] != undefined).length;
+  const notNullProperties = Object.keys(searchTerms).filter((x) => searchTerms[x] != undefined).length;
   // expected API response if searching for courthouse only
   if (notNullProperties === 1 && searchTerms.courthouse) {
     const resBody102 = {
