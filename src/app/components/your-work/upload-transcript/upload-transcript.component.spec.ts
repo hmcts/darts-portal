@@ -8,27 +8,29 @@ import { DetailsTableComponent } from '@common/details-table/details-table.compo
 import { FileUploadComponent } from '@common/file-upload/file-upload.component';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
 import { TranscriptionDetails } from '@darts-types/transcription-details.interface';
+import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { TranscriptionService } from '@services/transcription/transcription.service';
+import { DateTime } from 'luxon';
 import { of } from 'rxjs/internal/observable/of';
 import { UploadTranscriptComponent } from './upload-transcript.component';
 
 const MOCK_TRANSCRIPTION_DETAILS: TranscriptionDetails = {
-  case_id: 1,
-  case_number: '123',
+  caseId: 1,
+  caseNumber: '123',
   courthouse: 'Swansea',
   defendants: ['Defendant Dave', 'Defendant Bob'],
   judges: ['HHJ M. Hussain KC', 'Ray Bob'],
-  transcript_file_name: '',
-  hearing_date: '2023-06-26T00:00:00Z',
+  transcriptFileName: '',
+  hearingDate: DateTime.fromISO('2023-06-26T00:00:00Z'),
   urgency: 'Overnight',
-  request_type: 'Specified Times',
-  transcription_id: 1,
-  transcription_start_ts: '2023-06-26T13:00:00Z',
-  transcription_end_ts: '2023-06-26T16:00:00Z',
-  is_manual: true,
-  hearing_id: 1,
-  requestor_comments: 'Please expedite my request',
-  case_reporting_restrictions: [
+  requestType: 'Specified Times',
+  transcriptionId: 1,
+  transcriptionStartTs: DateTime.fromISO('2023-06-26T13:00:00Z'),
+  transcriptionEndTs: DateTime.fromISO('2023-06-26T16:00:00Z'),
+  isManual: true,
+  hearingId: 1,
+  requestorComments: 'Please expedite my request',
+  caseReportingRestrictions: [
     {
       hearing_id: 1,
       event_id: 1,
@@ -67,6 +69,7 @@ describe('UploadTranscriptComponent', () => {
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         DatePipe,
         { provide: DATE_PIPE_DEFAULT_OPTIONS, useValue: { timezone: 'utc' } },
+        LuxonDatePipe,
       ],
     }).compileComponents();
 

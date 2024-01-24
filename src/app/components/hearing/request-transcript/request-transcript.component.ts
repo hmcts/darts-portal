@@ -8,6 +8,7 @@ import { ReportingRestrictionComponent } from '@common/reporting-restriction/rep
 import { AudioEventRow, DatatableColumn, HearingAudio, TranscriptionRequest } from '@darts-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { JoinPipe } from '@pipes/join';
+import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { CaseService } from '@services/case/case.service';
 import { ErrorMessageService } from '@services/error/error-message.service';
 import { HeaderService } from '@services/header/header.service';
@@ -42,6 +43,7 @@ enum TranscriptionType {
     RequestTranscriptConfirmationComponent,
     RequestTranscriptSuccessComponent,
     RequestTranscriptExistsComponent,
+    LuxonDatePipe,
   ],
   templateUrl: './request-transcript.component.html',
   styleUrls: ['./request-transcript.component.scss'],

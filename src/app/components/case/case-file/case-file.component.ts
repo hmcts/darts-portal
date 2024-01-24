@@ -4,12 +4,13 @@ import { RouterLink } from '@angular/router';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
 import { Case } from '@darts-types/index';
 import { JoinPipe } from '@pipes/join';
+import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { UserService } from '@services/user/user.service';
 
 @Component({
   selector: 'app-case-file',
   standalone: true,
-  imports: [CommonModule, JoinPipe, ReportingRestrictionComponent, RouterLink],
+  imports: [CommonModule, JoinPipe, ReportingRestrictionComponent, RouterLink, LuxonDatePipe],
   templateUrl: './case-file.component.html',
   styleUrls: ['./case-file.component.scss'],
 })

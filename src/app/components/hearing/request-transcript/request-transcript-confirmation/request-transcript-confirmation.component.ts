@@ -4,14 +4,15 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { GovukTextareaComponent } from '@common/govuk-textarea/govuk-textarea.component';
 import { Case } from '@darts-types/case.interface';
 import { Hearing, TranscriptionType } from '@darts-types/index';
-import { TranscriptionUrgency } from '@darts-types/transcription-urgency.interface';
+import { Urgency } from '@darts-types/transcription-urgency.interface';
 import { JoinPipe } from '@pipes/join';
+import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-request-transcript-confirmation',
   standalone: true,
-  imports: [CommonModule, JoinPipe, ReactiveFormsModule, GovukTextareaComponent],
+  imports: [CommonModule, JoinPipe, ReactiveFormsModule, GovukTextareaComponent, LuxonDatePipe],
   templateUrl: './request-transcript-confirmation.component.html',
   styleUrls: ['./request-transcript-confirmation.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -20,7 +21,7 @@ export class RequestTranscriptConfirmationComponent {
   @Input() case!: Case;
   @Input() hearing!: Hearing;
   @Input() urgencyId!: number;
-  @Input() urgencies: TranscriptionUrgency[] = [];
+  @Input() urgencies: Urgency[] = [];
   @Input() transcriptionTypeId!: number;
   @Input() transcriptionTypes: TranscriptionType[] = [];
   @Input() audioTimes?: { startTime: DateTime | null; endTime: DateTime | null };

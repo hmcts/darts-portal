@@ -3,6 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Case, PostAudioRequest } from '@darts-types/index';
 import { HeaderService } from '@services/header/header.service';
 
+import { DatePipe } from '@angular/common';
 import { DateTime } from 'luxon';
 import { OrderConfirmationComponent } from './order-confirmation.component';
 
@@ -30,7 +31,7 @@ describe('OrderConfirmationComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [OrderConfirmationComponent],
-      providers: [HeaderService, RouterTestingModule],
+      providers: [HeaderService, RouterTestingModule, DatePipe],
     });
     fixture = TestBed.createComponent(OrderConfirmationComponent);
     component = fixture.componentInstance;

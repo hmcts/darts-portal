@@ -7,7 +7,7 @@
       <tbody class="govuk-table__body">
         <tr class="govuk-table__row">
           <th scope="row" class="govuk-table__header">Case ID</th>
-          <td class="govuk-table__cell table-width">{{ vm.case_number }}</td>
+          <td class="govuk-table__cell table-width">{{ vm.caseNumber }}</td>
         </tr>
         <tr class="govuk-table__row">
           <th scope="row" class="govuk-table__header">Courthouse</th>
@@ -28,28 +28,28 @@
   <ng-template #requestDetailsPartial>
     <tr class="govuk-table__row">
       <th scope="row" class="govuk-table__header">Hearing date</th>
-      <td class="govuk-table__cell">{{ vm.hearing_date | date: 'dd MMM yyyy' }}</td>
+      <td class="govuk-table__cell">{{ vm.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
     </tr>
     <tr class="govuk-table__row">
       <th scope="row" class="govuk-table__header">Request Type</th>
-      <td class="govuk-table__cell">{{ vm.request_type }}</td>
+      <td class="govuk-table__cell">{{ vm.requestType }}</td>
     </tr>
 
     <tr class="govuk-table__row">
       <th scope="row" class="govuk-table__header">Request ID</th>
-      <td class="govuk-table__cell">{{ vm.transcription_id }}</td>
+      <td class="govuk-table__cell">{{ vm.transcriptionId }}</td>
     </tr>
 
     <tr class="govuk-table__row">
       <th scope="row" class="govuk-table__header">Urgency</th>
       <td class="govuk-table__cell">{{ vm.urgency }}</td>
     </tr>
-    @if (vm.transcription_start_ts && vm.transcription_end_ts) {
+    @if (vm.transcriptionStartTs && vm.transcriptionEndTs) {
       <tr id="audio-times" class="govuk-table__row">
         <th scope="row" class="govuk-table__header">Audio for Transcript</th>
         <td class="govuk-table__cell">
-          Start time {{ vm.transcription_start_ts | date: 'HH:mm:ss' }} - End time
-          {{ vm.transcription_end_ts | date: 'HH:mm:ss' }}
+          Start time {{ vm.transcriptionStartTs | luxonDate: 'HH:mm:ss' }} - End time
+          {{ vm.transcriptionEndTs | luxonDate: 'HH:mm:ss' }}
         </td>
       </tr>
     }
@@ -62,17 +62,17 @@
   @if (router.url.includes('case') && router.url.includes('transcripts')) {
     <app-breadcrumb>
       <ng-container *breadcrumb="['/search']">Search</ng-container>
-      <ng-container *breadcrumb="['/case', vm.case_id.toString()]">{{ vm.case_number }}</ng-container>
-      <ng-container *breadcrumb="['.']">{{ vm.transcript_file_name }}</ng-container>
+      <ng-container *breadcrumb="['/case', vm.caseId.toString()]">{{ vm.caseNumber }}</ng-container>
+      <ng-container *breadcrumb="['.']">{{ vm.transcriptFileName }}</ng-container>
     </app-breadcrumb>
 
     <app-reporting-restriction
       class="margin-bottom"
-      [restrictions]="vm.case_reporting_restrictions"
+      [restrictions]="vm.caseReportingRestrictions"
     ></app-reporting-restriction>
 
     <span class="govuk-caption-l">Transcript file</span>
-    <h1 class="govuk-heading-l">{{ vm.transcript_file_name }}</h1>
+    <h1 class="govuk-heading-l">{{ vm.transcriptFileName }}</h1>
 
     <ng-container *ngTemplateOutlet="caseDetailsTable"></ng-container>
 

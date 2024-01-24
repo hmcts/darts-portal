@@ -1,7 +1,7 @@
 <ng-container *ngIf="data$ | async as vm; else loading">
   <app-breadcrumb *ngIf="state === 'Default'">
     <ng-container *breadcrumb="['/case', vm.case.id.toString()]">{{ vm.case.number }}</ng-container>
-    <ng-container *breadcrumb>{{ vm.hearing?.date?.toISO() | date: 'd MMM y' }}</ng-container>
+    <ng-container *breadcrumb>{{ vm.hearing?.date | luxonDate: 'd MMM y' }}</ng-container>
   </app-breadcrumb>
 
   <!-- Validation Error Summary Component -->
@@ -79,7 +79,7 @@
           >
             <ng-template [tableRowTemplate]="transcripts" let-row>
               <td class="govuk-table__cell">{{ row.type }}</td>
-              <td class="govuk-table__cell">{{ row.requestedOn.toISO() | date: 'dd MMM yyyy HH:mm:ss' }}</td>
+              <td class="govuk-table__cell">{{ row.requestedOn | luxonDate: 'dd MMM yyyy HH:mm:ss' }}</td>
               <td class="govuk-table__cell">{{ row.requestedBy }}</td>
               <td class="govuk-table__cell">
                 <strong class="govuk-tag" [ngClass]="statusTagStyleMap[row.status]">

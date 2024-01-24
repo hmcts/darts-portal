@@ -3,7 +3,7 @@ import { DateTime } from 'luxon';
 
 import { By } from '@angular/platform-browser';
 import { Order } from '@darts-types/data-table-column.interface';
-import { TranscriptionUrgency } from '@darts-types/transcription-urgency.interface';
+import { Urgency } from '@darts-types/transcription-urgency.interface';
 import { DataTableComponent, SortingInterface } from './data-table.component';
 
 describe('DataTableComponent', () => {
@@ -266,8 +266,8 @@ describe('DataTableComponent', () => {
       };
 
       component.sortTable(column, (a: unknown, b: unknown, direction?: Order) => {
-        const urgencyA = a as { urgency: TranscriptionUrgency };
-        const urgencyB = b as { urgency: TranscriptionUrgency };
+        const urgencyA = a as { urgency: Urgency };
+        const urgencyB = b as { urgency: Urgency };
 
         if (direction === 'desc') {
           return urgencyA.urgency.priority_order! - urgencyB.urgency.priority_order!;
@@ -379,8 +379,8 @@ describe('DataTableComponent', () => {
       };
 
       component.sortTable(column, (a: unknown, b: unknown, direction?: Order) => {
-        const urgencyA = a as { urgency: TranscriptionUrgency };
-        const urgencyB = b as { urgency: TranscriptionUrgency };
+        const urgencyA = a as { urgency: Urgency };
+        const urgencyB = b as { urgency: Urgency };
 
         if (direction === 'desc') {
           return urgencyA.urgency.priority_order! - urgencyB.urgency.priority_order!;

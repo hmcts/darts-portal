@@ -1,14 +1,16 @@
 import { DatePipe } from '@angular/common';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import {
-  TranscriptionDetails,
+  TranscriptionDetailsData,
   TranscriptionRequest,
-  TranscriptionUrgency,
-  UserTranscriptionRequestVm,
-  YourTranscriptionRequestsVm,
+  Urgency,
+  WorkRequest,
+  WorkRequestData,
+  YourTranscriptsData,
 } from '@darts-types/index';
-import { WorkRequestVm } from '@darts-types/work-request.interface';
+import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
+import { DateTime } from 'luxon';
 import { of } from 'rxjs';
 import {
   APPROVED_TRANSCRIPTION_STATUS_ID,
@@ -21,7 +23,7 @@ describe('TranscriptionService', () => {
   let service: TranscriptionService;
   let httpMock: HttpTestingController;
 
-  const MOCK_URGENCIES: TranscriptionUrgency[] = [
+  const MOCK_URGENCIES: Urgency[] = [
     { transcription_urgency_id: 1, description: 'Overnight', priority_order: 1 },
     { transcription_urgency_id: 2, description: 'Up to 2 working days', priority_order: 2 },
     { transcription_urgency_id: 3, description: 'Up to 3 working days', priority_order: 3 },
@@ -32,7 +34,7 @@ describe('TranscriptionService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [{ provide: DatePipe }],
+      providers: [LuxonDatePipe, DatePipe],
     });
     service = TestBed.inject(TranscriptionService);
     httpMock = TestBed.inject(HttpTestingController);
@@ -62,46 +64,47 @@ describe('TranscriptionService', () => {
     });
   });
 
-  describe('#getTranscriptionRequests', () => {
-    it('should transform hearing dates', (done) => {
-      jest.spyOn(service, 'getUrgencies').mockReturnValue(of(MOCK_URGENCIES));
-      const mockRequests = {
-        requester_transcriptions: [
-          { transcription_id: 1, hearing_date: '2023-11-01' },
-          { transcription_id: 2, hearing_date: '2023-11-02' },
-        ] as Partial<UserTranscriptionRequestVm>,
-        approver_transcriptions: [
-          { transcription_id: 3, hearing_date: '2023-11-03' },
-          { transcription_id: 4, hearing_date: '2023-11-04' },
-        ] as Partial<UserTranscriptionRequestVm>,
-      } as YourTranscriptionRequestsVm;
-
-      service.getTranscriptionRequests().subscribe((transformedRequests) => {
-        expect(transformedRequests.requester_transcriptions[0].hearing_date).toBe('2023-11-01T00:00:00Z');
-        expect(transformedRequests.requester_transcriptions[1].hearing_date).toBe('2023-11-02T00:00:00Z');
-        expect(transformedRequests.approver_transcriptions[0].hearing_date).toBe('2023-11-03T00:00:00Z');
-        expect(transformedRequests.approver_transcriptions[1].hearing_date).toBe('2023-11-04T00:00:00Z');
-
-        done();
-      });
-
-      const req = httpMock.expectOne('/api/transcriptions');
-      req.flush(mockRequests);
-    });
-  });
-
   describe('#getWorkRequests', () => {
-    it('should transform hearing dates', (done) => {
+    it('should map workRequests', (done) => {
       jest.spyOn(service, 'getUrgencies').mockReturnValue(of(MOCK_URGENCIES));
-      const mockRequests = [
-        { transcription_id: 1, hearing_date: '2023-11-01' },
-        { transcription_id: 2, hearing_date: '2023-11-02' },
-      ] as Partial<WorkRequestVm>;
+      const mockRequests: WorkRequestData[] = [
+        {
+          transcription_id: 1,
+          case_id: 1,
+          case_number: 'T2023453422',
+          courthouse_name: 'Reading',
+          hearing_date: '2023-11-01',
+          transcription_type: 'Court log',
+          status: 'With Transcriber',
+          urgency: 'Up to 2 working days',
+          requested_ts: '2023-11-01',
+          state_change_ts: '2023-11-01',
+          is_manual: false,
+        },
+      ];
+
+      const mappedRequests: WorkRequest[] = [
+        {
+          transcriptionId: 1,
+          caseId: 1,
+          caseNumber: 'T2023453422',
+          courthouseName: 'Reading',
+          hearingDate: DateTime.fromISO('2023-11-01T00:00:00Z'),
+          transcriptionType: 'Court log',
+          status: 'With Transcriber',
+          urgency: {
+            transcription_urgency_id: 2,
+            description: 'Up to 2 working days',
+            priority_order: 2,
+          },
+          requestedTs: DateTime.fromISO('2023-11-01T00:00:00Z'),
+          stateChangeTs: DateTime.fromISO('2023-11-01T00:00:00Z'),
+          isManual: false,
+        },
+      ];
 
       service.getWorkRequests().subscribe((transformedRequests) => {
-        expect(transformedRequests[0].hearing_date).toBe('2023-11-01T00:00:00Z');
-        expect(transformedRequests[1].hearing_date).toBe('2023-11-02T00:00:00Z');
-
+        expect(transformedRequests[0]).toEqual(mappedRequests[0]);
         done();
       });
 
@@ -136,7 +139,7 @@ describe('TranscriptionService', () => {
 
     it('should return TranscriptionDetails with default filename if not provided', (done) => {
       // Simulate a scenario where transcript_file_name is not provided in the response
-      const mockTranscription: Partial<TranscriptionDetails> = {
+      const mockTranscription: Partial<TranscriptionDetailsData> = {
         case_id: 1,
         case_number: '123',
         courthouse: 'Swansea',
@@ -150,7 +153,7 @@ describe('TranscriptionService', () => {
       };
 
       service.getTranscriptionDetails(1).subscribe((result) => {
-        expect(result.transcript_file_name).toEqual('Document not found');
+        expect(result.transcriptFileName).toEqual('Document not found');
         done();
       });
 
@@ -232,43 +235,90 @@ describe('TranscriptionService', () => {
     });
   });
 
-  describe('#getTranscriptionRequests', () => {
+  describe('#getYourTranscripts', () => {
     it('should call the correct endpoint', () => {
       const spy = jest.spyOn(service['http'], 'get');
-      service.getTranscriptionRequests();
+      service.getYourTranscripts();
       expect(spy).toHaveBeenCalledWith('/api/transcriptions');
     });
 
-    it('should map hearing date to UTC timestamp', fakeAsync(() => {
-      jest.spyOn(service, 'getUrgencies').mockReturnValue(of(MOCK_URGENCIES));
-      jest.spyOn(service['http'], 'get').mockReturnValue(
-        of({
-          approver_transcriptions: [
-            {
-              hearing_date: '2023-06-10',
-            },
-          ],
-          requester_transcriptions: [
-            {
-              hearing_date: '2023-06-12',
-            },
-          ],
-        })
-      );
+    it('maps YourTranscriptsData to YourTranscripts', (done) => {
+      const mockRequests: YourTranscriptsData = {
+        requester_transcriptions: [
+          {
+            transcription_id: 1,
+            case_id: 1,
+            case_number: '123',
+            courthouse_name: 'Swansea',
+            hearing_date: '2023-11-01',
+            transcription_type: 'Type',
+            status: 'Awaiting Authorisation',
+            urgency: 'Up to 2 working days',
+            requested_ts: '2023-11-01T00:00:00Z',
+          },
+        ],
+        approver_transcriptions: [
+          {
+            transcription_id: 2,
+            case_id: 2,
+            case_number: '123',
+            courthouse_name: 'Swansea',
+            hearing_date: '2023-11-01',
+            transcription_type: 'Type',
+            status: 'Awaiting Authorisation',
+            urgency: 'Up to 2 working days',
+            requested_ts: '2023-11-01T00:00:00Z',
+          },
+        ],
+      };
 
-      let approverDate!: string;
-      let requesterDate!: string;
+      const expected = {
+        requesterTranscriptions: [
+          {
+            transcriptionId: 1,
+            caseId: 1,
+            caseNumber: '123',
+            courthouseName: 'Swansea',
+            hearingDate: DateTime.fromISO('2023-11-01'),
+            transcriptionType: 'Type',
+            status: 'Awaiting Authorisation',
+            urgency: {
+              transcription_urgency_id: 2,
+              description: 'Up to 2 working days',
+              priority_order: 2,
+            },
+            requestedTs: DateTime.fromISO('2023-11-01T00:00:00Z'),
+          },
+        ],
+        approverTranscriptions: [
+          {
+            transcriptionId: 2,
+            caseId: 2,
+            caseNumber: '123',
+            courthouseName: 'Swansea',
+            hearingDate: DateTime.fromISO('2023-11-01'),
+            transcriptionType: 'Type',
+            status: 'Awaiting Authorisation',
+            urgency: {
+              transcription_urgency_id: 2,
+              description: 'Up to 2 working days',
+              priority_order: 2,
+            },
+            requestedTs: DateTime.fromISO('2023-11-01T00:00:00Z'),
+          },
+        ],
+      };
 
-      service.getTranscriptionRequests().subscribe((data) => {
-        approverDate = data.approver_transcriptions[0].hearing_date;
-        requesterDate = data.requester_transcriptions[0].hearing_date;
+      service.getUrgencies = jest.fn().mockReturnValue(of(MOCK_URGENCIES));
+
+      service.getYourTranscripts().subscribe((result) => {
+        expect(result).toEqual(expected);
+        done();
       });
 
-      tick();
-
-      expect(approverDate).toEqual('2023-06-10T00:00:00Z');
-      expect(requesterDate).toEqual('2023-06-12T00:00:00Z');
-    }));
+      const req = httpMock.expectOne('/api/transcriptions');
+      req.flush(mockRequests);
+    });
   });
 
   describe('#assignTranscript', () => {
@@ -331,38 +381,12 @@ describe('TranscriptionService', () => {
   describe('#getUrgencyByDescription', () => {
     it('should return the TranscriptionUrgency object where the description matches', () => {
       const response = service.getUrgencyByDescription(MOCK_URGENCIES, 'Up to 3 working days');
-      const result: TranscriptionUrgency = {
+      const result: Urgency = {
         transcription_urgency_id: 3,
         description: 'Up to 3 working days',
         priority_order: 3,
       };
       expect(response).toEqual(result);
-    });
-  });
-
-  describe('#mapUrgencyToTranscripts', () => {
-    it('should map urgency to transcripts', () => {
-      const requests = [
-        { urgency: 'Overnight' },
-        { urgency: 'Up to 2 working days' },
-        { urgency: 'Up to 3 working days' },
-      ];
-      const urgencies = [
-        { transcription_urgency_id: 1, description: 'Overnight', priority_order: 1 },
-        { transcription_urgency_id: 2, description: 'Up to 2 working days', priority_order: 2 },
-        { transcription_urgency_id: 3, description: 'Up to 3 working days', priority_order: 3 },
-        { transcription_urgency_id: 4, description: 'Up to 7 working days', priority_order: 4 },
-        { transcription_urgency_id: 5, description: 'Up to 12 working days', priority_order: 5 },
-      ];
-
-      const expected = [
-        { urgency: { transcription_urgency_id: 1, description: 'Overnight', priority_order: 1 } },
-        { urgency: { transcription_urgency_id: 2, description: 'Up to 2 working days', priority_order: 2 } },
-        { urgency: { transcription_urgency_id: 3, description: 'Up to 3 working days', priority_order: 3 } },
-      ];
-
-      const result = service.mapUrgencyToTranscripts(requests, urgencies);
-      expect(result).toEqual(expected);
     });
   });
 });

@@ -1,14 +1,14 @@
 <app-breadcrumb>
   <ng-container *breadcrumb="['/transcriptions']">Your transcripts</ng-container>
-  <ng-container *breadcrumb="['.']">{{ transcript.transcript_file_name }}</ng-container>
+  <ng-container *breadcrumb="['.']">{{ transcript.transcriptFileName }}</ng-container>
 </app-breadcrumb>
 
 <app-reporting-restriction
   class="margin-bottom"
-  [restrictions]="transcript.case_reporting_restrictions"
+  [restrictions]="transcript.caseReportingRestrictions"
 ></app-reporting-restriction>
 
-<app-govuk-heading caption="Transcript file"> {{ transcript.case_number }} </app-govuk-heading>
+<app-govuk-heading caption="Transcript file"> {{ transcript.caseNumber }} </app-govuk-heading>
 
 <!-- TODO: This could be refactored into it's own component -->
 @if (transcript.status) {
