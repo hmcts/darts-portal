@@ -51,6 +51,7 @@ export class CaseRetentionDateComponent implements OnInit {
   route = inject(ActivatedRoute);
   caseService = inject(CaseService);
   datePipe = inject(DatePipe);
+  dateTime = DateTime;
 
   caseId = this.route.snapshot.params.caseId;
 
@@ -140,6 +141,13 @@ export class CaseRetentionDateComponent implements OnInit {
 
   onStateChanged(state: CaseRetentionPageState) {
     this.state = state;
+    if (state === 'Success') {
+      // Refetch case and retention data
+      this.vm$ = combineLatest({
+        caseDetails: this.caseDetails$,
+        retentionHistory: this.retentionHistory$,
+      });
+    }
   }
 
   onRetentionDateChanged(value: Date) {

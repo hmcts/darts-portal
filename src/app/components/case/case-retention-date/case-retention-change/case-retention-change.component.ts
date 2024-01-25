@@ -106,10 +106,8 @@ export class CaseRententionChangeComponent implements AfterViewChecked {
       }
     } else {
       // Permanent - Add 99 years to today's date
-      const date = new Date();
-      const ninetyNineYearsInDays = 36159.75;
-      date.setDate(date.getDate() + ninetyNineYearsInDays);
-      this.retainDateFormControl.setValue(this.datePipe.transform(date, 'dd/MM/yyyy'));
+      const date = DateTime.now().plus({ years: 99 });
+      this.retainDateFormControl.setValue(date.toFormat('dd/MM/yyyy'));
     }
     if (!this.retainReasonFormControl.value) {
       this.retainReasonFormControl.markAsDirty();
