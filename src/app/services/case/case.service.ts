@@ -2,7 +2,16 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CaseRetentionChange } from '@darts-types/case-retention-change.interface';
 import { CaseRetentionHistory } from '@darts-types/case-retention-history.interface';
-import { Case, Courthouse, Hearing, SearchFormValues, Transcript, TranscriptData } from '@darts-types/index';
+import {
+  Case,
+  CaseData,
+  Courthouse,
+  Hearing,
+  HearingData,
+  SearchFormValues,
+  Transcript,
+  TranscriptData,
+} from '@darts-types/index';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs/internal/observable/of';
@@ -36,39 +45,21 @@ export class CaseService {
 
   getHearingTranscripts(hearingId: number): Observable<Transcript[]> {
     const url = `${GET_HEARINGS_PATH}/${hearingId}/transcripts`;
-    return this.http
-      .get<TranscriptData[]>(url)
-      .pipe(map((transcripts) => transcripts.map(this.mapTranscriptDataToTranscript)));
+    return this.http.get<TranscriptData[]>(url).pipe(map(this.mapTranscriptDataToTranscript));
   }
 
   getCaseTranscripts(caseId: number): Observable<Transcript[]> {
     const url = `${GET_CASE_PATH}/${caseId}/transcripts`;
-    return this.http
-      .get<TranscriptData[]>(url)
-      .pipe(map((transcripts) => transcripts.map(this.mapTranscriptDataToTranscript)));
-  }
-
-  private mapTranscriptDataToTranscript(t: TranscriptData): Transcript {
-    return {
-      id: t.transcription_id,
-      hearingId: t.hearing_id,
-      hearingDate: DateTime.fromISO(t.hearing_date),
-      type: t.type,
-      requestedOn: DateTime.fromISO(t.requested_on),
-      requestedByName: t.requested_by_name,
-      status: t.status,
-    };
+    return this.http.get<TranscriptData[]>(url).pipe(map(this.mapTranscriptDataToTranscript));
   }
 
   getCase(caseId: number): Observable<Case> {
     const apiURL = `${GET_CASE_PATH}/${caseId}`;
-    return this.http.get<Case>(apiURL);
+    return this.http.get<CaseData>(apiURL).pipe(map(this.mapCaseDataToCase));
   }
 
   getCaseHearings(caseId: number): Observable<Hearing[]> {
-    return this.http
-      .get<Hearing[]>(`${GET_CASE_PATH}/${caseId}/hearings`)
-      .pipe(map((hearings) => hearings.map((h) => ({ ...h, date: h.date + 'T00:00:00Z' }))));
+    return this.http.get<HearingData[]>(`${GET_CASE_PATH}/${caseId}/hearings`).pipe(map(this.mapHearingDataToHearing));
   }
 
   searchCases(searchForm: SearchFormValues): Observable<Case[] | null> {
@@ -92,7 +83,10 @@ export class CaseService {
     delete body.specific_date;
 
     // Store results in service for retrieval
-    this.searchResults$ = this.http.post<Case[]>(ADVANCED_SEARCH_CASE_PATH, body).pipe(shareReplay(1));
+    this.searchResults$ = this.http
+      .post<CaseData[]>(ADVANCED_SEARCH_CASE_PATH, body)
+      .pipe(map((results) => results.map(this.mapCaseDataToCase)))
+      .pipe(shareReplay(1));
     return this.searchResults$;
   }
 
@@ -118,5 +112,49 @@ export class CaseService {
 
   postCaseRetentionChange(retentionChange: CaseRetentionChange): Observable<CaseRetentionChange> {
     return this.http.post<CaseRetentionChange>(GET_CASE_RETENTION_HISTORY, retentionChange);
+  }
+
+  private mapHearingDataToHearing(hearingData: HearingData[]): Hearing[] {
+    return hearingData.map((h) => ({
+      id: h.id,
+      date: DateTime.fromISO(h.date),
+      judges: h.judges,
+      courtroom: h.courtroom,
+      transcriptCount: h.transcript_count,
+    }));
+  }
+
+  private mapTranscriptDataToTranscript(transcriptData: TranscriptData[]): Transcript[] {
+    return transcriptData.map((t) => ({
+      id: t.transcription_id,
+      hearingId: t.hearing_id,
+      hearingDate: DateTime.fromISO(t.hearing_date),
+      type: t.type,
+      requestedOn: DateTime.fromISO(t.requested_on),
+      requestedByName: t.requested_by_name,
+      status: t.status,
+    }));
+  }
+
+  private mapCaseDataToCase(c: CaseData): Case {
+    return {
+      id: c.case_id,
+      number: c.case_number,
+      courthouse: c.courthouse,
+      defendants: c.defendants,
+      defenders: c.defenders,
+      judges: c.judges,
+      reportingRestriction: c.reporting_restriction,
+      reportingRestrictions: c.reporting_restrictions,
+      hearings: c.hearings,
+      prosecutors: c.prosecutors,
+      retainUntil: c.retain_until,
+      retainUntilDateTime: c.retain_until_date_time ? DateTime.fromISO(c.retain_until_date_time) : undefined,
+      closedDateTime: c.case_closed_date_time ? DateTime.fromISO(c.case_closed_date_time) : undefined,
+      retentionDateTimeApplied: c.retention_date_time_applied
+        ? DateTime.fromISO(c.retention_date_time_applied)
+        : undefined,
+      retentionPolicyApplied: c.retention_policy_applied,
+    };
   }
 }

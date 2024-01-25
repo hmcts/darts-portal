@@ -95,10 +95,10 @@ describe('RequestPlaybackAudioComponent', () => {
       const audioRequestSpy = jest.spyOn(component.audioRequest, 'emit');
       component.hearing = {
         id: 1,
-        date: '2023-09-01',
+        date: DateTime.fromISO('2023-09-01'),
         judges: ['HHJ M. Hussain KC'],
         courtroom: '3',
-        transcript_count: 1,
+        transcriptCount: 1,
       };
       const audioRequestForm = {
         startTime: {
@@ -128,10 +128,10 @@ describe('RequestPlaybackAudioComponent', () => {
     it('should return null when nothing is submitted', () => {
       component.hearing = {
         id: 1,
-        date: '2023-09-01',
+        date: DateTime.fromISO('2023-09-01'),
         judges: ['HHJ M. Hussain KC'],
         courtroom: '3',
-        transcript_count: 1,
+        transcriptCount: 1,
       };
       const audioRequestForm = {
         startTime: {

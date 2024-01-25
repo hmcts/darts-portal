@@ -6,9 +6,10 @@ import { ActivatedRoute } from '@angular/router';
 import { CaseRetentionHistory } from '@darts-types/case-retention-history.interface';
 import { Case } from '@darts-types/case.interface';
 import { CaseService } from '@services/case/case.service';
+import { HeaderService } from '@services/header/header.service';
+import { DateTime } from 'luxon';
 import { of } from 'rxjs';
 import { CaseRetentionDateComponent } from './case-retention-date.component';
-import { HeaderService } from '@services/header/header.service';
 
 describe('CaseRetentionDateComponent', () => {
   let component: CaseRetentionDateComponent;
@@ -55,17 +56,17 @@ describe('CaseRetentionDateComponent', () => {
   ];
 
   const mockCaseData: Case = {
-    case_id: 1,
+    id: 1,
     courthouse: 'Swansea',
-    case_number: 'C20220620001',
+    number: 'C20220620001',
     defendants: ['Defendant Dave'],
     judges: ['Judge Judy'],
     prosecutors: ['Polly Prosecutor'],
     defenders: ['Derek Defender'],
-    retain_until_date_time: '2030-08-10T11:23:24.858Z',
-    case_closed_date_time: '2023-08-15T14:57:24.858Z',
-    retention_date_time_applied: '2023-12-12T11:02:24.858Z',
-    retention_policy_applied: 'Manual',
+    retainUntilDateTime: DateTime.fromISO('2030-08-10T11:23:24.858Z'),
+    closedDateTime: DateTime.fromISO('2023-08-15T14:57:24.858Z'),
+    retentionDateTimeApplied: DateTime.fromISO('2023-12-12T11:02:24.858Z'),
+    retentionPolicyApplied: 'Manual',
   };
 
   const mockCaseService = {
@@ -221,21 +222,19 @@ describe('CaseRetentionDateComponent', () => {
   it('should transform case details correctly', (done) => {
     component.caseDetails$.subscribe((caseDetails) => {
       expect(caseDetails.details).toEqual({
-        'Case ID': mockCaseData.case_number,
-        'Case closed date': mockDatePipe.transform(mockCaseData.case_closed_date_time, 'dd MMM yyyy') || '-',
+        'Case ID': mockCaseData.number,
+        'Case closed date': mockDatePipe.transform(mockCaseData.closedDateTime?.toISO(), 'dd MMM yyyy') || '-',
         Courthouse: 'Swansea',
         'Judge(s)': [' Judge Judy'],
         'Defendant(s)': [' Defendant Dave'],
       });
 
       expect(caseDetails.currentRetention).toEqual({
-        'Date applied': mockDatePipe.transform(mockCaseData.retention_date_time_applied, 'dd MMM yyyy'),
-        'Retain case until': mockDatePipe.transform(mockCaseData.retain_until_date_time, 'dd MMM yyyy'),
+        'Date applied': mockCaseData.retentionDateTimeApplied?.toFormat('dd LLL yyyy'),
+        'Retain case until': mockCaseData.retainUntilDateTime?.toFormat('dd LLL yyyy'),
         'DARTS Retention policy applied': 'Manual',
       });
-      expect(caseDetails.case_retain_until_date_time).toEqual(
-        mockDatePipe.transform(mockCaseData.retain_until_date_time, 'dd/MM/yyyy')
-      );
+      expect(caseDetails.case_retain_until_date_time).toEqual(mockCaseData.retainUntilDateTime?.toFormat('dd/LL/yyyy'));
       expect(caseDetails.case_id).toBe(1);
       expect(caseDetails.case_number).toBe('C20220620001');
       done();

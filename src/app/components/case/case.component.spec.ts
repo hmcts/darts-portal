@@ -4,6 +4,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { Case, Hearing, TranscriptData } from '@darts-types/index';
 import { CaseService } from '@services/case/case.service';
+import { DateTime } from 'luxon';
 import { Observable, of } from 'rxjs';
 import { CaseComponent } from './case.component';
 
@@ -12,9 +13,9 @@ describe('CaseComponent', () => {
   let fixture: ComponentFixture<CaseComponent>;
 
   const mockCaseFile: Observable<Case> = of({
-    case_id: 1,
+    id: 1,
     courthouse: 'Swansea',
-    case_number: 'CASE1001',
+    number: 'CASE1001',
     defendants: ['Defendant Dave', 'Defendant Debbie'],
     judges: ['Judge Judy', 'Judge Jones'],
     prosecutors: ['Polly Prosecutor'],
@@ -26,10 +27,10 @@ describe('CaseComponent', () => {
   const mockSingleCaseTwoHearings: Observable<Hearing[]> = of([
     {
       id: 1,
-      date: '2023-09-01',
+      date: DateTime.fromISO('2023-09-01'),
       judges: ['HHJ M. Hussain KC'],
       courtroom: '3',
-      transcript_count: 1,
+      transcriptCount: 1,
     },
   ]);
 

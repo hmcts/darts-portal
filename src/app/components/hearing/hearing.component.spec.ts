@@ -72,10 +72,10 @@ describe('HearingComponent', () => {
     }),
   };
 
-  const cd = of({ case_id: 1, case_number: '12345', courthouse: 'Reading', judges: ['Judy'] }) as Observable<Case>;
+  const cd = of({ id: 1, number: '12345', courthouse: 'Reading', judges: ['Judy'] }) as Observable<Case>;
   const hd = of([
-    { id: 1, date: '2023-02-21', judges: ['Joseph', 'Judy'], courtroom: '3', transcript_count: 99 },
-    { id: 2, date: '2023-03-21', judges: ['Joseph', 'Kennedy'], courtroom: '1', transcript_count: 12 },
+    { id: 1, date: DateTime.fromISO('2023-02-21'), judges: ['Joseph', 'Judy'], courtroom: '3', transcriptCount: 99 },
+    { id: 2, date: DateTime.fromISO('2023-03-21'), judges: ['Joseph', 'Kennedy'], courtroom: '1', transcriptCount: 12 },
   ]) as Observable<Hearing[]>;
   const ad = of([
     {
@@ -116,10 +116,10 @@ describe('HearingComponent', () => {
 
   const shd = of({
     id: 1,
-    date: '2023-02-21',
+    date: DateTime.fromISO('2023-02-21'),
     judges: ['Joseph', 'Judy'],
     courtroom: '3',
-    transcript_count: 99,
+    transcriptCount: 99,
   }) as Observable<Hearing>;
 
   const mockUser: Observable<UserState> = of({

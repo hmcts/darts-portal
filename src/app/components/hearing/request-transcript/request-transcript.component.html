@@ -3,7 +3,7 @@
 
   <app-reporting-restriction
     class="margin-bottom"
-    [restrictions]="vm.case.reporting_restrictions"
+    [restrictions]="vm.case.reportingRestrictions"
   ></app-reporting-restriction>
 
   <ng-container *ngIf="step === 1">
@@ -12,7 +12,7 @@
       <p class="govuk-body">There is no audio for this hearing date.</p>
       <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
       <div class="govuk-button-group">
-        <a class="govuk-link" [routerLink]="['/case', vm.case.case_id.toString()]" routerLinkActive="router-link-active"
+        <a class="govuk-link" [routerLink]="['/case', vm.case.id.toString()]" routerLinkActive="router-link-active"
           >Cancel and go back to case level</a
         >
         <a class="govuk-link" routerLink="/search" routerLinkActive="router-link-active"
@@ -23,13 +23,13 @@
     <ng-container *ngIf="vm.audioRows.length">
       <h1 class="govuk-heading-l">Request a new transcript</h1>
       <h1 class="govuk-heading-s">Case ID</h1>
-      <h1 class="govuk-body">{{ vm.case.case_number }}</h1>
+      <h1 class="govuk-body">{{ vm.case.number }}</h1>
       <h3 class="govuk-heading-s">Courthouse</h3>
       <p class="govuk-body">{{ vm.case.courthouse }}</p>
       <h3 class="govuk-heading-s">Defendant(s)</h3>
       <p class="govuk-body">{{ vm.case.defendants | join }}</p>
       <h3 class="govuk-heading-s">Hearing Date</h3>
-      <p class="govuk-body">{{ vm.hearing?.date | date: 'd MMM y' }}</p>
+      <p class="govuk-body">{{ vm.hearing?.date?.toISO() | date: 'd MMM y' }}</p>
 
       <div
         class="govuk-form-group"
