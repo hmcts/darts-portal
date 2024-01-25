@@ -1,62 +1,65 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed, discardPeriodicTasks, fakeAsync, tick } from '@angular/core/testing';
-import { RequestedMedia } from '@darts-types/requested-media.interface';
+import { RequestedMedia, RequestedMediaData } from '@darts-types/requested-media.interface';
+import { DateTime, Settings } from 'luxon';
 import { of } from 'rxjs';
 import { AudioRequestService } from './audio-request.service';
+
+Settings.defaultZone = 'utc';
 
 describe('AudioService', () => {
   let service: AudioRequestService;
   let httpMock: HttpTestingController;
 
   const MOCK_MEDIA_REQUESTS: RequestedMedia = {
-    media_request_details: [
+    mediaRequests: [
       {
-        case_id: 1,
-        media_request_id: 1,
-        case_number: 'C1',
-        courthouse_name: 'Swansea',
-        hearing_date: '2022-01-03',
-        start_ts: '2023-08-21T09:00:00Z',
-        end_ts: '2023-08-21T10:00:00Z',
-        media_request_status: 'OPEN',
-        request_type: 'PLAYBACK',
-        hearing_id: 1,
+        caseId: 1,
+        mediaRequestId: 1,
+        caseNumber: 'C1',
+        courthouseName: 'Swansea',
+        hearingDate: DateTime.fromISO('2022-01-03'),
+        startTime: DateTime.fromISO('2023-08-21T09:00:00Z'),
+        endTime: DateTime.fromISO('2023-08-21T10:00:00Z'),
+        status: 'OPEN',
+        requestType: 'PLAYBACK',
+        hearingId: 1,
       },
       {
-        case_id: 2,
-        media_request_id: 2,
-        case_number: 'C2',
-        courthouse_name: 'Swansea',
-        hearing_date: '2022-01-03',
-        start_ts: '2023-08-21T09:00:00Z',
-        end_ts: '2023-08-21T10:00:00Z',
-        media_request_status: 'FAILED',
-        request_type: 'PLAYBACK',
-        hearing_id: 2,
+        caseId: 2,
+        mediaRequestId: 2,
+        caseNumber: 'C2',
+        courthouseName: 'Swansea',
+        hearingDate: DateTime.fromISO('2022-01-03'),
+        startTime: DateTime.fromISO('2023-08-21T09:00:00Z'),
+        endTime: DateTime.fromISO('2023-08-21T10:00:00Z'),
+        status: 'FAILED',
+        requestType: 'PLAYBACK',
+        hearingId: 2,
       },
     ],
-    transformed_media_details: [
+    transformedMedia: [
       {
-        case_id: 3,
-        media_request_id: 3,
-        case_number: 'C3',
-        courthouse_name: 'Cardiff',
-        hearing_date: '2022-01-04',
-        start_ts: '2022-01-04T09:00:00Z',
-        end_ts: '2022-01-04T10:00:00Z',
-        transformed_media_expiry_ts: '2022-01-04T09:00:00Z',
-        media_request_status: 'COMPLETED',
-        request_type: 'PLAYBACK',
-        last_accessed_ts: '',
-        transformed_media_filename: 'C3',
-        transformed_media_format: 'MP3',
-        transformed_media_id: 3,
-        hearing_id: 3,
+        caseId: 3,
+        mediaRequestId: 3,
+        caseNumber: 'C3',
+        courthouseName: 'Cardiff',
+        hearingDate: DateTime.fromISO('2022-01-04'),
+        startTime: DateTime.fromISO('2022-01-04T09:00:00Z'),
+        endTime: DateTime.fromISO('2022-01-04T10:00:00Z'),
+        transformedMediaExpiryTs: DateTime.fromISO('2022-01-04T09:00:00Z'),
+        status: 'COMPLETED',
+        requestType: 'PLAYBACK',
+        lastAccessedTs: undefined,
+        transformedMediaFilename: 'C3.mp3',
+        transformedMediaFormat: 'MP3',
+        transformedMediaId: 3,
+        hearingId: 3,
       },
     ],
   };
 
-  const MOCK_EXPIRED_MEDIA_REQUESTS: RequestedMedia = {
+  const MOCK_EXPIRED_MEDIA_REQUESTS: RequestedMediaData = {
     media_request_details: [],
     transformed_media_details: [
       {
@@ -71,7 +74,7 @@ describe('AudioService', () => {
         media_request_status: 'COMPLETED',
         request_type: 'PLAYBACK',
         last_accessed_ts: '2022-01-04T09:00:00Z',
-        transformed_media_filename: 'C4',
+        transformed_media_filename: 'C4.mp3',
         transformed_media_format: 'MP3',
         transformed_media_id: 4,
         hearing_id: 4,
@@ -122,11 +125,26 @@ describe('AudioService', () => {
         req.flush(MOCK_EXPIRED_MEDIA_REQUESTS);
 
         expect(audios).toEqual({
-          media_request_details: [],
-          transformed_media_details: MOCK_EXPIRED_MEDIA_REQUESTS.transformed_media_details.map((ar) => ({
-            ...ar,
-            hearing_date: ar.hearing_date + 'T00:00:00Z',
-          })),
+          mediaRequests: [],
+          transformedMedia: [
+            {
+              caseId: 4,
+              caseNumber: 'C4',
+              courthouseName: 'Cardiff',
+              endTime: DateTime.fromISO('2022-01-04T10:00:00Z'),
+              hearingDate: DateTime.fromISO('2022-01-04T00:00:00Z'),
+              hearingId: 4,
+              lastAccessedTs: DateTime.fromISO('2022-01-04T09:00:00Z'),
+              mediaRequestId: 4,
+              requestType: 'PLAYBACK',
+              startTime: DateTime.fromISO('2022-01-04T09:00:00Z'),
+              status: 'COMPLETED',
+              transformedMediaExpiryTs: DateTime.fromISO('2022-01-04T09:00:00Z'),
+              transformedMediaFilename: 'C4.mp3',
+              transformedMediaFormat: 'MP3',
+              transformedMediaId: 4,
+            },
+          ],
         });
       });
 

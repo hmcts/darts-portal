@@ -1,7 +1,13 @@
+import { DateTime } from 'luxon';
+
 export type AudioRequestType = 'PLAYBACK' | 'DOWNLOAD';
 export type AudioRequestStatus = 'OPEN' | 'PROCESSING' | 'FAILED' | 'COMPLETED' | 'EXPIRED';
 
-export interface MediaRequest {
+export interface RequestedMediaData {
+  media_request_details: MediaRequestData[];
+  transformed_media_details: TransformedMediaData[];
+}
+export interface MediaRequestData {
   case_id: number;
   media_request_id: number;
   case_number: string;
@@ -14,7 +20,7 @@ export interface MediaRequest {
   request_type: AudioRequestType;
 }
 
-export interface TransformedMedia extends MediaRequest {
+export interface TransformedMediaData extends MediaRequestData {
   transformed_media_id: number;
   transformed_media_filename: string;
   transformed_media_format: string;
@@ -22,7 +28,29 @@ export interface TransformedMedia extends MediaRequest {
   last_accessed_ts?: string;
 }
 
-export interface RequestedMedia {
-  media_request_details: MediaRequest[];
-  transformed_media_details: TransformedMedia[];
-}
+//Mapped types
+export type RequestedMedia = {
+  mediaRequests: MediaRequest[];
+  transformedMedia: TransformedMedia[];
+};
+
+export type MediaRequest = {
+  caseId: number;
+  mediaRequestId: number;
+  caseNumber: string;
+  courthouseName: string;
+  hearingId: number;
+  hearingDate: DateTime;
+  startTime: DateTime;
+  endTime: DateTime;
+  status: AudioRequestStatus;
+  requestType: AudioRequestType;
+};
+
+export type TransformedMedia = MediaRequest & {
+  transformedMediaId: number;
+  transformedMediaFilename: string;
+  transformedMediaFormat: string;
+  transformedMediaExpiryTs: DateTime;
+  lastAccessedTs?: DateTime;
+};

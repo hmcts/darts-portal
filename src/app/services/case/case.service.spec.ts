@@ -15,6 +15,8 @@ import { CaseRetentionChange } from '@darts-types/case-retention-change.interfac
 
 Settings.defaultZone = 'utc';
 
+Settings.defaultZone = 'utc';
+
 describe('CaseService', () => {
   let service: CaseService;
   let httpMock: HttpTestingController;
@@ -192,41 +194,90 @@ describe('CaseService', () => {
     expect(hearingsResponse).toEqual(mockHearings.map((h) => ({ ...h, date: h.date + 'T00:00:00Z' })));
   });
 
-  it('#searchCases', () => {
-    const mockSearchForm: SearchFormValues = {
-      case_number: '123',
-      courthouse: 'Court A',
-      courtroom: 'Room B',
-      judge_name: 'Judge C',
-      defendant_name: 'Defendant D',
-      date_from: '01/01/2023',
-      date_to: '31/12/2023',
-      event_text_contains: 'Event Text',
-    };
-    const mockCases: Case[] = [];
+  describe('#searchCases', () => {
+    it('for date ranges', () => {
+      const mockSearchForm: SearchFormValues = {
+        case_number: '123',
+        courthouse: 'Court A',
+        courtroom: 'Room B',
+        judge_name: 'Judge C',
+        defendant_name: 'Defendant D',
+        date_from: '01/01/2023',
+        date_to: '31/12/2023',
+        event_text_contains: 'Event Text',
+      };
+      const mockCases: Case[] = [];
 
-    service.searchCases(mockSearchForm).subscribe((cases) => {
-      expect(cases).toEqual(mockCases);
+      service.searchCases(mockSearchForm).subscribe((cases) => {
+        expect(cases).toEqual(mockCases);
+      });
+
+      const expectedBody: SearchFormValues = {
+        case_number: '123',
+        courthouse: 'Court A',
+        courtroom: 'Room B',
+        judge_name: 'Judge C',
+        defendant_name: 'Defendant D',
+        date_from: '2023-01-01',
+        date_to: '2023-12-31',
+        event_text_contains: 'Event Text',
+      };
+
+      const req = httpMock.expectOne((request) => {
+        return request.url === ADVANCED_SEARCH_CASE_PATH && request.method === 'POST';
+      });
+
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body).toEqual(expectedBody);
+
+      req.flush(mockCases);
     });
+    it('for specific date', () => {
+      const mockSearchForm: SearchFormValues = {
+        case_number: '123',
+        courthouse: 'Court A',
+        courtroom: 'Room B',
+        judge_name: 'Judge C',
+        defendant_name: 'Defendant D',
+        specific_date: '01/01/2023',
+        event_text_contains: 'Event Text',
+      };
+      const mockCases: Case[] = [];
 
-    const req = httpMock.expectOne((request) => {
-      return (
-        request.url === ADVANCED_SEARCH_CASE_PATH &&
-        request.method === 'GET' &&
-        request.params.get('case_number') === '123' &&
-        request.params.get('courthouse') === 'Court A' &&
-        request.params.get('courtroom') === 'Room B' &&
-        request.params.get('judge_name') === 'Judge C' &&
-        request.params.get('defendant_name') === 'Defendant D' &&
-        request.params.get('date_from') === '2023-01-01' &&
-        request.params.get('date_to') === '2023-12-31' &&
-        request.params.get('event_text_contains') === 'Event Text'
-      );
+      service.searchCases(mockSearchForm).subscribe((cases) => {
+        expect(cases).toEqual(mockCases);
+      });
+
+      const expectedBody: SearchFormValues = {
+        case_number: '123',
+        courthouse: 'Court A',
+        courtroom: 'Room B',
+        judge_name: 'Judge C',
+        defendant_name: 'Defendant D',
+        date_from: '2023-01-01',
+        date_to: '2023-01-01',
+        event_text_contains: 'Event Text',
+      };
+
+      const req = httpMock.expectOne((request) => {
+        return request.url === ADVANCED_SEARCH_CASE_PATH && request.method === 'POST';
+      });
+
+      expect(req.request.body).not.toHaveProperty('specific_date');
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body).toEqual(expectedBody);
+
+      req.flush(mockCases);
     });
+  });
 
-    expect(req.request.method).toBe('GET');
-
-    req.flush(mockCases);
+  describe('#formatDate', () => {
+    it('should return YYYY-MM-DD when sent a string of DD/MM/YYYY', () => {
+      const date = '18/05/1990';
+      const result = service.formatDate(date);
+      const expectedResult = '1990-05-18';
+      expect(result).toEqual(expectedResult);
+    });
   });
 
   it('#getHearingById', () => {
