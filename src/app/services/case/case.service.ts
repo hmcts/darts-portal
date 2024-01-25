@@ -65,33 +65,41 @@ export class CaseService {
   searchCases(searchForm: SearchFormValues): Observable<Case[] | null> {
     // Save search form values
     this.searchFormValues = searchForm;
+    // Deep copy form to create Post Obj DTO
+    const body: SearchFormValues = { ...searchForm };
 
-    let params = new HttpParams();
-
-    if (searchForm.case_number) params = params.set('case_number', searchForm.case_number);
-    if (searchForm.courthouse) params = params.set('courthouse', searchForm.courthouse);
-    if (searchForm.courtroom) params = params.set('courtroom', searchForm.courtroom);
-    if (searchForm.judge_name) params = params.set('judge_name', searchForm.judge_name);
-    if (searchForm.defendant_name) params = params.set('defendant_name', searchForm.defendant_name);
-    if (searchForm.specific_date) {
-      const dateParameter = searchForm.specific_date.split('/').reverse().join('-');
-      params = params.set('date_from', dateParameter);
-      params = params.set('date_to', dateParameter);
+    // if there is a specific date, set both date from and date to as the same value, to the correct backend format of YYYY-MM-DD
+    if (body.specific_date) {
+      const specificDate = this.formatDate(body.specific_date);
+      body.date_from = specificDate;
+      body.date_to = specificDate;
     } else {
-      if (searchForm.date_from) params = params.set('date_from', searchForm.date_from.split('/').reverse().join('-'));
-      if (searchForm.date_to) params = params.set('date_to', searchForm.date_to.split('/').reverse().join('-'));
+      // otherwise set date range values to the correct backend format
+      if (body.date_from) body.date_from = this.formatDate(body.date_from);
+      if (body.date_to) body.date_to = this.formatDate(body.date_to);
     }
 
-    if (searchForm.event_text_contains) params = params.set('event_text_contains', searchForm.event_text_contains);
+    // remove the specific date property before sending
+    delete body.specific_date;
 
     // Store results in service for retrieval
     this.searchResults$ = this.http
-      .get<CaseData[]>(ADVANCED_SEARCH_CASE_PATH, { params })
+      .post<CaseData[]>(ADVANCED_SEARCH_CASE_PATH, body)
       .pipe(map((results) => results.map(this.mapCaseDataToCase)))
       .pipe(shareReplay(1));
     return this.searchResults$;
   }
 
+  // takes a date of format DD/MM/YYYY and returns YYYY-MM-DD
+  formatDate(date: string): string {
+    return date.split('/').reverse().join('-');
+  }
+
+  /**
+   * @param {number} cId Required parameter, representing the case id to look for
+   * @param {number} hId Required parameter, representing the hearing id to look for
+   * @returns {Observable<Hearing | undefined> | undefined} Returns either a Observable of Hearing, or undefined
+   */
   getHearingById(cId: number, hId: number): Observable<Hearing | undefined> {
     return this.getCaseHearings(cId).pipe(map((h) => h.find((x) => x.id == hId)));
   }
