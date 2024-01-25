@@ -70,8 +70,8 @@ describe('CaseRetentionDateComponent', () => {
   };
 
   const mockCaseService = {
-    getCase: () => of(mockCaseData),
-    getCaseRetentionHistory: () => of(mockRetentionHistory),
+    getCase: jest.fn().mockReturnValue(of(mockCaseData)),
+    getCaseRetentionHistory: jest.fn().mockReturnValue(of(mockRetentionHistory)),
   } as unknown as CaseService;
   const mockDatePipe = new DatePipe('en-GB');
 
@@ -161,6 +161,14 @@ describe('CaseRetentionDateComponent', () => {
       component.onStateChanged(testValue);
       expect(component.state).toEqual(testValue);
       expect(fakeHeaderService.hideNavigation).toHaveBeenCalled();
+    });
+
+    it('should change state value to "Success"', () => {
+      const testValue = 'Success';
+      component.onStateChanged(testValue);
+      expect(component.state).toEqual(testValue);
+      expect(mockCaseService.getCase).toHaveBeenCalled();
+      expect(mockCaseService.getCaseRetentionHistory).toHaveBeenCalled();
     });
 
     it('should change state value to "Default"', () => {
