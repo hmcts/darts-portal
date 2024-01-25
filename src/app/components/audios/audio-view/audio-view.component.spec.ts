@@ -6,12 +6,13 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AudioPlayerComponent } from '@common/audio-player/audio-player.component';
 import { PlayButtonComponent } from '@common/play-button/play-button.component';
 import { HearingEvent } from '@darts-types/hearing-event.interface';
-import { Case, HearingEventRow, TransformedMediaRow } from '@darts-types/index';
+import { Case, HearingEventRow, TransformedMedia } from '@darts-types/index';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { CaseService } from '@services/case/case.service';
 import { ErrorMessageService } from '@services/error/error-message.service';
 import { HearingService } from '@services/hearing/hearing.service';
+import { DateTime } from 'luxon';
 import { of } from 'rxjs';
 import { AudioViewComponent } from './audio-view.component';
 
@@ -103,21 +104,21 @@ describe('AudioViewComponent', () => {
     ],
   };
 
-  const MOCK_AUDIO_REQUEST: TransformedMediaRow = {
+  const MOCK_AUDIO_REQUEST: TransformedMedia = {
     caseId: 6,
     caseNumber: 'T20200331',
-    courthouse: 'Swindon',
-    hearingDate: '2023-11-13',
-    startTime: '2023-11-13T09:00:00Z',
-    endTime: '2023-11-13T09:01:00Z',
-    requestId: 12378,
-    expiry: '2023-08-23T09:00:00Z',
+    courthouseName: 'Swindon',
+    hearingDate: DateTime.fromISO('2023-11-13'),
+    startTime: DateTime.fromISO('2023-11-13T09:00:00Z'),
+    endTime: DateTime.fromISO('2023-11-13T09:01:00Z'),
+    mediaRequestId: 12378,
+    transformedMediaExpiryTs: DateTime.fromISO('2023-08-23T09:00:00Z'),
     status: 'COMPLETED',
     hearingId: 3,
     requestType: 'PLAYBACK',
-    lastAccessed: undefined,
-    filename: 'T20200331.mp3',
-    format: 'mp3',
+    lastAccessedTs: undefined,
+    transformedMediaFilename: 'T20200331.mp3',
+    transformedMediaFormat: 'mp3',
     transformedMediaId: 1,
   };
 
@@ -187,7 +188,7 @@ describe('AudioViewComponent', () => {
         expect(component.transformedMedia).toEqual(MOCK_AUDIO_REQUEST);
       });
       it('should set the requestId', () => {
-        expect(component.requestId).toEqual(MOCK_AUDIO_REQUEST.requestId);
+        expect(component.requestId).toEqual(MOCK_AUDIO_REQUEST.mediaRequestId);
       });
       it('should set the case$', () => {
         expect(component.case$).toBeTruthy();
