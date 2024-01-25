@@ -15,12 +15,28 @@
 </ng-template>
 
 @if (isDeleting) {
-  <app-delete [numberOfItems]="selectedRequests.length" (confirm)="onDeleteConfirmed()" (cancel)="onDeleteCancelled()">
-    <app-data-table id="deletionTable" [rows]="selectedRequests" [columns]="deleteColumns">
+  <app-delete
+    [numberOfItems]="selectedRequests.length"
+    [title]="deleteScreenTitle"
+    (confirm)="onDeleteConfirmed()"
+    (cancel)="onDeleteCancelled()"
+  >
+    <app-data-table
+      id="deletionTable"
+      [rows]="selectedRequests"
+      [columns]="deleteColumns"
+      class="govuk-grid-column-full"
+    >
       <ng-template [tableRowTemplate]="selectedRequests" let-row>
         <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
       </ng-template>
     </app-data-table>
+    <div class="govuk-grid-column-two-thirds">
+      <p class="govuk-body">
+        This action will remove these transcript requests from your transcripts. You can still access them by searching
+        at the hearing and case levels.
+      </p>
+    </div>
   </app-delete>
 } @else {
   <app-govuk-heading>Your transcripts</app-govuk-heading>

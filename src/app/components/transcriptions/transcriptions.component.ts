@@ -114,6 +114,12 @@ export class TranscriptionsComponent {
     this.selectedRequests = [];
   }
 
+  get deleteScreenTitle(): string {
+    return this.selectedRequests.length === 1
+      ? 'Are you sure you want to remove this transcript request?'
+      : 'Are you sure you want to remove these transcript requests?';
+  }
+
   isRequester = this.userService.isRequester();
   isApprover = this.userService.isApprover();
   isJudge = this.userService.isJudge();
