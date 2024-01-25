@@ -23,7 +23,7 @@ export class TranscriptionRequestsComponent {
 
   columns: DatatableColumn[] = [
     ...transcriptTableColumns,
-    { name: 'Method', prop: 'is_manual', sortable: true },
+    { name: 'Method', prop: 'isManual', sortable: true },
     {
       name: 'Urgency',
       prop: 'urgency',
