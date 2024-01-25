@@ -87,7 +87,7 @@ export class HearingComponent implements OnInit {
   transcriptColumns: DatatableColumn[] = [
     { name: 'Type', prop: 'type', sortable: true },
     { name: 'Requested on', prop: 'requestedOn', sortable: true },
-    { name: 'Requested by', prop: 'requestedBy', sortable: true },
+    { name: 'Requested by', prop: 'requestedByName', sortable: true },
     { name: 'Status', prop: 'status', sortable: true },
     { name: '', prop: '' },
   ];
@@ -111,7 +111,7 @@ export class HearingComponent implements OnInit {
   audio$ = this.hearingService.getAudio(this.hearingId);
   events$ = this.hearingService.getEvents(this.hearingId);
   restrictions$ = this.case$.pipe(
-    map((c) => this.filterRestrictionsByHearingId(c.reporting_restrictions ?? [], this.hearingId))
+    map((c) => this.filterRestrictionsByHearingId(c.reportingRestrictions ?? [], this.hearingId))
   );
   support = this.appConfigService.getAppConfig()?.support;
   error$ = this.errorMsgService.errorMessage$;

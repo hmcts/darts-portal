@@ -274,9 +274,22 @@ let unassignedTranscriptions = [
 
 let assignedTranscriptions = [
   {
+    transcription_id: 0,
+    case_id: 3,
+    case_number: 'T2023453499',
+    courthouse_name: 'Southwark',
+    hearing_date: '2023-07-17',
+    transcription_type: 'Antecedents',
+    status: 'With Transcriber',
+    urgency: 'Up to 12 working days',
+    requested_ts: '2024-01-10T10:00:00Z',
+    state_change_ts: '2023-08-13T13:00:00Z',
+    is_manual: false,
+  },
+  {
     transcription_id: 1,
     case_id: 3,
-    case_number: 'T2023453422',
+    case_number: 'T2023453423',
     courthouse_name: 'Reading',
     hearing_date: '2023-08-06',
     transcription_type: 'Court Log',
@@ -291,11 +304,11 @@ let assignedTranscriptions = [
     case_id: 3,
     case_number: 'T2023453422',
     courthouse_name: 'Cardiff',
-    hearing_date: '2023-08-06',
-    transcription_type: 'Court Log',
+    hearing_date: '2023-08-07',
+    transcription_type: 'Sentencing remarks',
     status: 'With Transcriber',
-    urgency: 'Overnight',
-    requested_ts: '2023-08-12T13:00:00Z',
+    urgency: 'Up to 3 working days',
+    requested_ts: '2023-08-21T14:00:00Z',
     state_change_ts: '2023-08-13T13:00:00Z',
     is_manual: false,
   },
@@ -303,13 +316,26 @@ let assignedTranscriptions = [
     transcription_id: 3,
     case_id: 3,
     case_number: 'T2023453436',
-    courthouse_name: 'Swansea',
+    courthouse_name: 'Newcastle',
     hearing_date: '2023-06-10',
     transcription_type: 'Court Log',
     status: 'Complete',
     urgency: 'Up to 3 working days',
-    requested_ts: '2023-06-26T13:00:00Z',
+    requested_ts: '2023-06-27T16:00:00Z',
     state_change_ts: '2023-06-27T13:00:00Z',
+    is_manual: true,
+  },
+  {
+    transcription_id: 4,
+    case_id: 3,
+    case_number: 'T2023453427',
+    courthouse_name: 'Reading',
+    hearing_date: '2023-08-06',
+    transcription_type: 'Court Log',
+    status: 'Complete',
+    urgency: 'Overnight',
+    requested_ts: '2023-08-12T13:00:00Z',
+    state_change_ts: '2023-08-13T13:00:00Z',
     is_manual: true,
   },
 ];
@@ -413,6 +439,16 @@ router.get('/:transcriptId', (req, res) => {
     default:
       res.status(200).send(mockTranscriptionDetailsTwo);
   }
+});
+
+router.patch('/:transcriptId/document', (req, res) => {
+  assignedTranscriptions = assignedTranscriptions.map((t) => {
+    if (t.transcription_id == req.params.transcriptId) {
+      t.status = 'Complete';
+    }
+    return t;
+  });
+  res.status(200).send();
 });
 
 router.post('/:transcriptId/document', (req, res) => {

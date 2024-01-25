@@ -17,13 +17,13 @@ describe('RequestTranscriptConfirmationComponent', () => {
     fixture = TestBed.createComponent(RequestTranscriptConfirmationComponent);
     component = fixture.componentInstance;
     component.urgencies = [{ transcription_urgency_id: 1, description: 'Urgent' }];
-    component.case = { case_id: 1, case_number: '12345', courthouse: 'Reading', judges: ['Judy'] };
+    component.case = { id: 1, number: '12345', courthouse: 'Reading', judges: ['Judy'] };
     component.hearing = {
       id: 1,
-      date: '2023-02-21T00:00:00Z',
+      date: DateTime.fromISO('2023-02-21T00:00:00Z'),
       judges: ['Joseph', 'Judy'],
       courtroom: '3',
-      transcript_count: 99,
+      transcriptCount: 99,
     };
     component.urgencyId = 1;
     fixture.detectChanges();

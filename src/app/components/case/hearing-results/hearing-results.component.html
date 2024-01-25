@@ -1,7 +1,7 @@
 <app-tabs>
   <div *tab="'Hearings'">
-    <app-data-table id="hearingsTable" [rows]="rows" [columns]="hearingsColumns">
-      <ng-template [tableRowTemplate]="rows" let-row>
+    <app-data-table id="hearingsTable" [rows]="hearings" [columns]="hearingsColumns">
+      <ng-template [tableRowTemplate]="hearings" let-row>
         <td class="govuk-table__cell">
           <a class="govuk-link" [routerLink]="['/case', caseId, 'hearing', row.id]">{{
             row.date.toString() | date: 'd MMM y'
@@ -9,7 +9,7 @@
         </td>
         <td class="govuk-table__cell">{{ row.judges }}</td>
         <td class="govuk-table__cell">{{ row.courtroom }}</td>
-        <td class="govuk-table__cell">{{ row.transcripts }}</td>
+        <td class="govuk-table__cell">{{ row.transcriptCount }}</td>
       </ng-template>
     </app-data-table>
   </div>

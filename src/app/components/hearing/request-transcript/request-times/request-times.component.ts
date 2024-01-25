@@ -136,7 +136,7 @@ export class RequestTimesComponent {
     const endTimeMinutes = this.form.get('endTime.minutes')?.value;
     const endTimeSeconds = this.form.get('endTime.seconds')?.value;
 
-    const hearingDate = this.hearing.date.replace('T00:00:00Z', '');
+    const hearingDate = this.hearing.date.toFormat('yyyy-LL-dd');
 
     const startTime = DateTime.fromISO(
       `${hearingDate}T${startTimeHours}:${startTimeMinutes}:${startTimeSeconds}Z`

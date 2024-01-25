@@ -1,7 +1,16 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { CaseRetentionHistory } from '@darts-types/case-retention-history.interface';
-import { Case, CaseFile, Courthouse, Hearing, SearchFormValues, Transcript, TranscriptData } from '@darts-types/index';
+import {
+  Case,
+  CaseData,
+  Courthouse,
+  Hearing,
+  HearingData,
+  SearchFormValues,
+  Transcript,
+  TranscriptData,
+} from '@darts-types/index';
 import { DateTime, Settings } from 'luxon';
 import {
   ADVANCED_SEARCH_CASE_PATH,
@@ -21,19 +30,25 @@ describe('CaseService', () => {
   let service: CaseService;
   let httpMock: HttpTestingController;
 
-  const mockCaseFile: CaseFile = {
+  const mockCaseData: CaseData = {
     case_id: 1,
     courthouse: 'Swansea',
     case_number: 'CASE1001',
     defendants: ['Defendant Dave', 'Defendant Debbie'],
+    hearings: [],
     judges: ['Judge Judy', 'Judge Jones'],
     prosecutors: ['Polly Prosecutor'],
     defenders: ['Derek Defender'],
     reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
-    retain_until: '2023-08-10T11:23:24.858Z',
+    retain_until: '2023-08-10T11:23:24Z',
+    case_closed_date_time: '',
+    reporting_restrictions: [],
+    retain_until_date_time: '2023-07-10T11:23:24Z',
+    retention_date_time_applied: '2023-06-10T11:23:24Z',
+    retention_policy_applied: 'MANUAL',
   };
 
-  const mockTranscripts: TranscriptData[] = [
+  const mockTranscriptData: TranscriptData[] = [
     {
       transcription_id: 1,
       hearing_id: 2,
@@ -45,10 +60,10 @@ describe('CaseService', () => {
     },
   ];
 
-  const multipleMockHearings: Hearing[] = [
+  const multipleMockHearings: HearingData[] = [
     {
       id: 1,
-      date: '2023-09-01',
+      date: '2024-09-01',
       judges: ['HHJ M. Hussain KC'],
       courtroom: '3',
       transcript_count: 1,
@@ -62,7 +77,7 @@ describe('CaseService', () => {
     },
   ];
 
-  const mockHearing: Hearing = {
+  const mockHearing: HearingData = {
     id: 2,
     date: '2024-09-01',
     judges: ['HHJ M. David KC'],
@@ -112,21 +127,39 @@ describe('CaseService', () => {
 
   it('#getCase', () => {
     const mockCaseId = 123;
-    const mockCase: Case = mockCaseFile;
+    let result!: Case;
 
-    service.getCase(mockCaseId).subscribe((c) => {
-      expect(c).toEqual(mockCase);
+    service.getCase(mockCaseId).subscribe((caseData) => {
+      result = caseData;
     });
 
     const req = httpMock.expectOne(`${GET_CASE_PATH}/${mockCaseId}`);
     expect(req.request.method).toBe('GET');
 
-    req.flush(mockCase);
+    req.flush(mockCaseData);
+
+    expect(result).toEqual({
+      id: 1,
+      courthouse: 'Swansea',
+      number: 'CASE1001',
+      defendants: ['Defendant Dave', 'Defendant Debbie'],
+      hearings: [],
+      judges: ['Judge Judy', 'Judge Jones'],
+      prosecutors: ['Polly Prosecutor'],
+      defenders: ['Derek Defender'],
+      reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
+      retainUntil: '2023-08-10T11:23:24Z',
+      closedDateTime: undefined,
+      reportingRestrictions: [],
+      retainUntilDateTime: DateTime.fromISO('2023-07-10T11:23:24Z'),
+      retentionDateTimeApplied: DateTime.fromISO('2023-06-10T11:23:24Z'),
+      retentionPolicyApplied: 'MANUAL',
+    });
   });
 
   it('#getCaseTranscripts', () => {
     const mockCaseId = 1;
-    const mockTranscript: TranscriptData[] = mockTranscripts;
+    const mockTranscript: TranscriptData[] = mockTranscriptData;
     let result!: Transcript[];
 
     service.getCaseTranscripts(mockCaseId).subscribe((c) => {
@@ -152,7 +185,7 @@ describe('CaseService', () => {
 
   it('#getHearingTranscripts', () => {
     const mockHearingId = 1;
-    const mockTranscript: TranscriptData[] = mockTranscripts;
+    const mockTranscript: TranscriptData[] = mockTranscriptData;
     let result!: Transcript[];
 
     service.getHearingTranscripts(mockHearingId).subscribe((c) => {
@@ -178,7 +211,7 @@ describe('CaseService', () => {
 
   it('#getCaseHearings', () => {
     const mockCaseId = 123;
-    const mockHearings: Hearing[] = multipleMockHearings;
+    const mockHearings: HearingData[] = multipleMockHearings;
 
     let hearingsResponse!: Hearing[];
 
@@ -191,7 +224,22 @@ describe('CaseService', () => {
 
     req.flush(mockHearings);
 
-    expect(hearingsResponse).toEqual(mockHearings.map((h) => ({ ...h, date: h.date + 'T00:00:00Z' })));
+    expect(hearingsResponse).toEqual([
+      {
+        id: 1,
+        date: DateTime.fromISO('2024-09-01'),
+        judges: ['HHJ M. Hussain KC'],
+        courtroom: '3',
+        transcriptCount: 1,
+      },
+      {
+        id: 2,
+        date: DateTime.fromISO('2024-09-01'),
+        judges: ['HHJ M. David KC'],
+        courtroom: '9',
+        transcriptCount: 300,
+      },
+    ]);
   });
 
   describe('#searchCases', () => {
@@ -283,7 +331,7 @@ describe('CaseService', () => {
   it('#getHearingById', () => {
     const mockCaseId = 123;
     const mockHearingId = 456;
-    const mockHearings: Hearing[] = [mockHearing];
+    const mockHearings: HearingData[] = [mockHearing];
 
     service.getHearingById(mockCaseId, mockHearingId).subscribe((hearing) => {
       expect(hearing).toBeDefined();
