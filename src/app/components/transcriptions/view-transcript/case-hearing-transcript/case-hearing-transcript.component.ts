@@ -35,7 +35,7 @@ export class CaseHearingTranscriptComponent implements OnInit {
 
   onDownloadClicked() {
     this.transcriptionService.downloadTranscriptDocument(this.transcriptId).subscribe((blob: Blob) => {
-      this.fileDownloadService.saveAs(blob, this.transcript.transcript_file_name);
+      this.fileDownloadService.saveAs(blob, this.transcript.transcriptFileName);
     });
   }
 }
