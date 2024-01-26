@@ -19,6 +19,7 @@ import { LoadingComponent } from '../../common/loading/loading.component';
 import { NotificationBannerComponent } from '../../common/notification-banner/notification-banner.component';
 import { CaseRententionChangeComponent } from './case-retention-change/case-retention-change.component';
 import { CaseRententionConfirmComponent } from './case-retention-confirm/case-retention-confirm.component';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-case-retention-date',
@@ -50,6 +51,7 @@ export class CaseRetentionDateComponent implements OnInit {
   route = inject(ActivatedRoute);
   caseService = inject(CaseService);
   datePipe = inject(DatePipe);
+  dateTime = DateTime;
 
   caseId = this.route.snapshot.params.caseId;
 
@@ -129,8 +131,8 @@ export class CaseRetentionDateComponent implements OnInit {
   }
 
   getOriginalRetentionDateString(rows: CaseRetentionHistory[]) {
-    const date = this.getEarliestDate(rows).retention_date;
-    return this.datePipe.transform(date, 'dd/MM/yyyy');
+    const earliestDate = this.getEarliestDate(rows).retention_date;
+    return DateTime.fromISO(earliestDate, { setZone: true }).toFormat('dd/MM/yyyy');
   }
 
   changeRetentionDate() {
@@ -139,6 +141,13 @@ export class CaseRetentionDateComponent implements OnInit {
 
   onStateChanged(state: CaseRetentionPageState) {
     this.state = state;
+    if (state === 'Success') {
+      // Refetch case and retention data
+      this.vm$ = combineLatest({
+        caseDetails: this.caseDetails$,
+        retentionHistory: this.retentionHistory$,
+      });
+    }
   }
 
   onRetentionDateChanged(value: Date) {

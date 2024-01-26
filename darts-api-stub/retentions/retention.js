@@ -29,7 +29,7 @@ const retentionHistory = [
   },
 ];
 
-// GET /api/transcriptions
+// GET /api/retentions
 router.get('', (req, res) => {
   switch (req.query?.case_id) {
     case '1':
@@ -42,7 +42,7 @@ router.get('', (req, res) => {
   }
 });
 
-// POST /api/transcriptions
+// POST /api/retentions
 router.post('', (req, res) => {
   switch (req.body?.case_id) {
     case '3':

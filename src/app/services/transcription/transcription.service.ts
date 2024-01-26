@@ -178,6 +178,22 @@ export class TranscriptionService {
     };
   }
 
+  getHearingRequestDetailsFromTranscript(transcript: TranscriptionDetails) {
+    return {
+      'Hearing Date': this.luxonPipe.transform(transcript.hearingDate, 'dd MMM yyyy'),
+      'Request Type': transcript.requestType,
+      'Request ID': transcript.transcriptionId,
+      Urgency: transcript.urgency,
+      'Audio for transcript':
+        transcript.transcriptionStartTs && transcript.transcriptionEndTs
+          ? 'Start time ' +
+            this.luxonPipe.transform(transcript.transcriptionStartTs, 'HH:mm:ss') +
+            ' - End time ' +
+            this.luxonPipe.transform(transcript.transcriptionEndTs, 'HH:mm:ss')
+          : '',
+    };
+  }
+
   getUrgencyByDescription(urgencies: Urgency[], description: string): Urgency {
     return (
       urgencies.find((u) => u.description === description) ?? {

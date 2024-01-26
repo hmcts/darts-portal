@@ -1,7 +1,8 @@
-import { DatePipe } from '@angular/common';
+import { DATE_PIPE_DEFAULT_OPTIONS, DatePipe } from '@angular/common';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import {
+  TranscriptionDetails,
   TranscriptionDetailsData,
   TranscriptionRequest,
   Urgency,
@@ -34,7 +35,7 @@ describe('TranscriptionService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [LuxonDatePipe, DatePipe],
+      providers: [LuxonDatePipe, DatePipe, { provide: DATE_PIPE_DEFAULT_OPTIONS, useValue: { timezone: 'utc' } }],
     });
     service = TestBed.inject(TranscriptionService);
     httpMock = TestBed.inject(HttpTestingController);
@@ -387,6 +388,73 @@ describe('TranscriptionService', () => {
         priority_order: 3,
       };
       expect(response).toEqual(result);
+    });
+  });
+
+  describe('Mapping transcript request functions', () => {
+    const mockTranscription: TranscriptionDetails = {
+      caseId: 1,
+      caseNumber: '123',
+      courthouse: 'Swansea',
+      defendants: ['John Doe', 'Jane Doe'],
+      judges: ['Judge Judy', 'Judge Joe Brown'],
+      hearingDate: DateTime.fromISO('2023-11-08'),
+      urgency: 'High',
+      requestType: 'Type A',
+      transcriptionId: 123456,
+      transcriptionStartTs: DateTime.fromISO('2023-06-26T13:00:00Z'),
+      transcriptionEndTs: DateTime.fromISO('2023-06-26T16:00:00Z'),
+      received: DateTime.fromISO('2023-11-17T12:53:07.468Z'),
+      from: 'MoJ CH Swansea',
+      requestorComments: 'Please expedite my request',
+      transcriptFileName: '',
+      isManual: false,
+      hearingId: 0,
+    };
+
+    it('should correctly transform TranscriptionDetails to a case details object', () => {
+      const expectedResult = {
+        'Case ID': '123',
+        Courthouse: 'Swansea',
+        'Judge(s)': ['Judge Judy', 'Judge Joe Brown'],
+        'Defendant(s)': ['John Doe', 'Jane Doe'],
+      };
+
+      const result = service.getCaseDetailsFromTranscript(mockTranscription);
+
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should transform TranscriptionDetails to a request details object', () => {
+      const expectedResult = {
+        'Hearing Date': '08 Nov 2023',
+        'Request Type': 'Type A',
+        'Request ID': 123456,
+        Urgency: 'High',
+        'Audio for transcript': 'Start time 13:00:00 - End time 16:00:00',
+        Requested: 'MoJ CH Swansea',
+        Received: '17 Nov 2023 12:53:07',
+        Instructions: 'Please expedite my request',
+        'Judge approval': 'Yes',
+      };
+
+      const result = service.getRequestDetailsFromTranscript(mockTranscription);
+
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should correctly transform TranscriptionDetails to hearing request details', () => {
+      const expectedResult = {
+        'Hearing Date': '08 Nov 2023',
+        'Request Type': 'Type A',
+        'Request ID': 123456,
+        Urgency: 'High',
+        'Audio for transcript': 'Start time 13:00:00 - End time 16:00:00',
+      };
+
+      const result = service.getHearingRequestDetailsFromTranscript(mockTranscription);
+
+      expect(result).toEqual(expectedResult);
     });
   });
 });
