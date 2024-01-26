@@ -90,28 +90,14 @@
             [class.govuk-form-group--error]="isControlInvalid('specific_date')"
             id="specific-date-items"
           >
-            <div data-module="ds-datepicker" class="ds_datepicker">
-              <label class="ds_label" for="specific_date">Enter a date</label>
-              <p class="ds_hint-text">Use dd/mm/yyyy format.</p>
-              <!-- Error message date range date_from -->
-              <div *ngIf="isControlInvalid('specific_date')" id="specific_date-errors">
-                <p *ngFor="let error of getFieldErrorMessages('specific_date')" class="govuk-error-message">
-                  <span class="govuk-visually-hidden">Error:</span> {{ error }}
-                </p>
-              </div>
-              <div class="ds_input__wrapper">
-                <input
-                  aria-label="Enter a date in dd/mm/yyyy format"
-                  formControlName="specific_date"
-                  name="specific_date"
-                  id="specific_date"
-                  type="text"
-                  class="ds_input ds_input--fixed-10"
-                  (change)="setInputValue($any($event).target.value, 'specific_date')"
-                  [class.govuk-input--error]="isControlInvalid('specific_date')"
-                />
-              </div>
-            </div>
+            <app-datepicker
+              id="specific_date"
+              name="specific_date"
+              label="Enter a date"
+              hint="Use dd/mm/yyyy format."
+              [errors]="isControlInvalid('specific_date') ? getFieldErrorMessages('specific_date') : null"
+              (dateChange)="setInputValue($event, 'specific_date')"
+            />
           </div>
           <!-- End of specific date -->
 
@@ -135,30 +121,14 @@
               [class.govuk-form-group--error]="isControlInvalid('date_from')"
               id="range-date-items"
             >
-              <div data-module="ds-datepicker" class="ds_datepicker">
-                <label class="ds_label" for="date_from">Enter date from</label>
-                <p class="ds_hint-text">Use dd/mm/yyyy format.</p>
-
-                <!-- Error message date range date_from -->
-                <div *ngIf="isControlInvalid('date_from')" id="date_from-errors">
-                  <p *ngFor="let error of getFieldErrorMessages('date_from')" class="govuk-error-message">
-                    <span class="govuk-visually-hidden">Error:</span> {{ error }}
-                  </p>
-                </div>
-
-                <div class="ds_input__wrapper">
-                  <input
-                    aria-label="Enter date from in dd/mm/yyyy format"
-                    formControlName="date_from"
-                    name="date_from"
-                    id="date_from"
-                    type="text"
-                    class="ds_input ds_input--fixed-10"
-                    (change)="setInputValue($any($event).target.value, 'date_from')"
-                    [class.govuk-input--error]="isControlInvalid('date_from')"
-                  />
-                </div>
-              </div>
+              <app-datepicker
+                id="date_from"
+                name="date_from"
+                label="Enter date from"
+                hint="Use dd/mm/yyyy format."
+                [errors]="isControlInvalid('date_from') ? getFieldErrorMessages('date_from') : null"
+                (dateChange)="setInputValue($event, 'date_from')"
+              />
             </div>
 
             <div
@@ -166,30 +136,14 @@
               [class.govuk-details__text]="!isControlInvalid('date_to')"
               [class.govuk-form-group--error]="isControlInvalid('date_to')"
             >
-              <div data-module="ds-datepicker" class="ds_datepicker">
-                <label class="ds_label" for="date_to">Enter date to</label>
-                <p class="ds_hint-text">Use dd/mm/yyyy format.</p>
-
-                <!-- Error message date range date_to -->
-                <div *ngIf="isControlInvalid('date_to')" id="date_to-errors">
-                  <p *ngFor="let error of getFieldErrorMessages('date_to')" class="govuk-error-message">
-                    <span class="govuk-visually-hidden">Error:</span> {{ error }}
-                  </p>
-                </div>
-
-                <div class="ds_input__wrapper">
-                  <input
-                    aria-label="Enter date to in dd/mm/yyyy format"
-                    formControlName="date_to"
-                    id="date_to"
-                    name="date_to"
-                    type="text"
-                    class="ds_input ds_input--fixed-10"
-                    (change)="setInputValue($any($event).target.value, 'date_to')"
-                    [class.govuk-input--error]="isControlInvalid('date_to')"
-                  />
-                </div>
-              </div>
+              <app-datepicker
+                id="date_to"
+                name="date_to"
+                label="Enter date from"
+                hint="Use dd/mm/yyyy format."
+                [errors]="isControlInvalid('date_to') ? getFieldErrorMessages('date_to') : null"
+                (dateChange)="setInputValue($event, 'date_to')"
+              />
             </div>
           </div>
           <!-- End of date range -->

@@ -12,6 +12,7 @@ import { futureDateValidator } from '@validators/future-date.validator';
 import { Subscription, catchError, of } from 'rxjs';
 import { ResultsComponent } from './results/results.component';
 import { SearchErrorComponent } from './search-error/search-error.component';
+import { DatepickerComponent } from '@common/datepicker/datepicker.component';
 
 const fieldErrors: FieldErrors = {
   courthouse: {
@@ -46,6 +47,7 @@ const fieldErrors: FieldErrors = {
     SearchErrorComponent,
     LoadingComponent,
     ValidationErrorSummaryComponent,
+    DatepickerComponent,
   ],
 })
 export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
