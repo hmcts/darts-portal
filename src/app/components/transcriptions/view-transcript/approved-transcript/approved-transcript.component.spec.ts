@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TranscriptionDetails } from '@darts-types/transcription-details.interface';
 import { FileDownloadService } from '@services/file-download/file-download.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
+import { DateTime } from 'luxon';
 import { of } from 'rxjs';
 import { ApprovedTranscriptComponent } from './approved-transcript.component';
 
@@ -21,27 +22,28 @@ describe('ApprovedTranscriptComponent', () => {
     },
   };
 
-  const mockTranscriptionDetails = {
-    case_id: 1,
-    case_reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
-    case_number: 'C20220620001',
+  const mockTranscriptionDetails: TranscriptionDetails = {
+    caseId: 1,
+    caseNumber: 'C20220620001',
     courthouse: 'Swansea',
     status: 'Approved',
     from: 'MoJ CH Swansea',
-    received: '2023-11-17T12:53:07.468Z',
-    requestor_comments: 'Please expedite my request',
+    received: DateTime.fromISO('2023-11-17T12:53:07.468Z'),
+    requestorComments: 'Please expedite my request',
+    rejectionReason: 'This request will take longer to transcribe within the urgency level you require.',
     defendants: ['Defendant Dave', 'Defendant Bob'],
     judges: ['HHJ M. Hussain KC	', 'Ray Bob'],
-    transcript_file_name: 'C20220620001_0.docx',
-    hearing_date: '2023-11-08',
+    transcriptFileName: 'C20220620001_0.docx',
+    hearingDate: DateTime.fromISO('2023-11-08'),
     urgency: 'Standard',
-    request_type: 'Specified Times',
-    request_id: 123456789,
-    transcription_start_ts: '2023-06-26T13:00:00Z',
-    transcription_end_ts: '2023-06-26T16:00:00Z',
-    is_manual: true,
-    hearing_id: 1,
-  } as unknown as TranscriptionDetails;
+    requestType: 'Specified Times',
+    transcriptionId: 12,
+    transcriptionStartTs: DateTime.fromISO('2023-06-26T13:00:00Z'),
+    transcriptionEndTs: DateTime.fromISO('2023-06-26T16:00:00Z'),
+    isManual: true,
+    hearingId: 1,
+    caseReportingRestrictions: [],
+  };
 
   const blob = new Blob();
 

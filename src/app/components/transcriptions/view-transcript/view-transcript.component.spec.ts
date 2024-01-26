@@ -5,6 +5,7 @@ import { TranscriptionService } from '@services/transcription/transcription.serv
 
 import { TranscriptionDetails } from '@darts-types/transcription-details.interface';
 import { FileDownloadService } from '@services/file-download/file-download.service';
+import { DateTime } from 'luxon';
 import { of } from 'rxjs/internal/observable/of';
 import { ViewTranscriptComponent } from './view-transcript.component';
 
@@ -14,50 +15,29 @@ describe('ViewTranscriptComponent', () => {
 
   const mockActivatedRoute = {
     snapshot: {
-      data: {
-        userState: {
-          userId: 123,
-          userName: 'dev@local',
-          roles: [
-            {
-              roleId: 123,
-              roleName: 'local dev',
-              permissions: [
-                {
-                  permissionId: 1,
-                  permissionName: 'local dev permissions',
-                },
-              ],
-            },
-          ],
-        },
-      },
       params: {
         hearing_id: '1',
         transcriptId: '2',
       },
-      queryParams: { tab: 'Transcripts' },
     },
   };
 
   const mockTransctiptionDetails: TranscriptionDetails = {
-    case_id: 0,
-    case_number: '',
+    caseId: 0,
+    caseNumber: '',
     courthouse: '',
     defendants: [],
     judges: [],
-    transcript_file_name: 'test-file-name.docx',
-    hearing_date: '',
+    transcriptFileName: 'test-file-name.docx',
+    hearingDate: DateTime.fromISO('2023-11-08'),
     urgency: '',
-    request_type: '',
-    transcription_id: 0,
-    transcription_start_ts: '',
-    transcription_end_ts: '',
-    is_manual: false,
-    hearing_id: 0,
+    requestType: '',
+    transcriptionId: 0,
+    transcriptionStartTs: DateTime.fromISO('2023-11-08'),
+    transcriptionEndTs: DateTime.fromISO('2023-11-08'),
+    isManual: false,
+    hearingId: 0,
   };
-
-  const blob = new Blob();
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -68,7 +48,6 @@ describe('ViewTranscriptComponent', () => {
           provide: TranscriptionService,
           useValue: {
             getTranscriptionDetails: jest.fn().mockReturnValue(of(mockTransctiptionDetails)),
-            downloadTranscriptDocument: jest.fn().mockReturnValue(of(blob)),
           },
         },
         {
@@ -89,14 +68,5 @@ describe('ViewTranscriptComponent', () => {
     expect(component).toBeTruthy();
     expect(component.transcriptionService.getTranscriptionDetails).toHaveBeenCalledWith('2');
     expect(component.transcriptId).toEqual('2');
-    expect(component.fileName).toEqual('test-file-name.docx');
-  });
-
-  describe('#onDownloadClicked', () => {
-    it('calls downloadTranscriptDocument', () => {
-      component.onDownloadClicked();
-      expect(component.transcriptionService.downloadTranscriptDocument).toHaveBeenCalledWith('2');
-      expect(component.fileDownloadService.saveAs).toHaveBeenCalledWith(blob, 'test-file-name.docx');
-    });
   });
 });

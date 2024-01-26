@@ -1,39 +1,40 @@
 import { DATE_PIPE_DEFAULT_OPTIONS, DatePipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { WorkRequestVm } from '@darts-types/index';
+import { WorkRequest } from '@darts-types/index';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { of } from 'rxjs';
 
 import { RouterTestingModule } from '@angular/router/testing';
+import { DateTime } from 'luxon';
 import { YourWorkComponent } from './your-work.component';
 
-const MOCK_WORK_REQUESTS: WorkRequestVm[] = [
+const MOCK_WORK_REQUESTS: WorkRequest[] = [
   {
-    transcription_id: 1,
-    case_id: 3,
-    case_number: 'T2023453422',
-    courthouse_name: 'Reading',
-    hearing_date: '2023-08-06T00:00:00Z',
-    transcription_type: 'Court Log',
+    transcriptionId: 1,
+    caseId: 3,
+    caseNumber: 'T2023453422',
+    courthouseName: 'Reading',
+    hearingDate: DateTime.fromISO('2023-08-06T00:00:00Z'),
+    transcriptionType: 'Court Log',
     status: 'With Transcriber',
     urgency: { transcription_urgency_id: 1, description: 'Overnight', priority_order: 1 },
-    requested_ts: '2023-08-12T13:00:00Z',
-    state_change_ts: '2023-08-13T13:00:00Z',
-    is_manual: true,
+    requestedTs: DateTime.fromISO('2023-08-12T13:00:00Z'),
+    stateChangeTs: DateTime.fromISO('2023-08-13T13:00:00Z'),
+    isManual: true,
   },
   {
-    transcription_id: 1,
-    case_id: 3,
-    case_number: 'T2023453436',
-    courthouse_name: 'Swansea',
-    hearing_date: '2023-06-10T00:00:00Z',
-    transcription_type: 'Court Log',
+    transcriptionId: 1,
+    caseId: 3,
+    caseNumber: 'T2023453436',
+    courthouseName: 'Swansea',
+    hearingDate: DateTime.fromISO('2023-06-10T00:00:00Z'),
+    transcriptionType: 'Court Log',
     status: 'Complete',
     urgency: { transcription_urgency_id: 1, description: 'Up to 3 Working days', priority_order: 1 },
-    requested_ts: '2023-06-26T13:00:00Z',
-    state_change_ts: '2023-06-27T13:00:00Z',
-    is_manual: true,
+    requestedTs: DateTime.fromISO('2023-06-26T13:00:00Z'),
+    stateChangeTs: DateTime.fromISO('2023-06-27T13:00:00Z'),
+    isManual: true,
   },
 ];
 

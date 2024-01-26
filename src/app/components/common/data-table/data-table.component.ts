@@ -77,22 +77,22 @@ export class DataTableComponent<TRow> implements OnChanges {
       const valueA = (a as { [key: string]: unknown })[column];
       const valueB = (b as { [key: string]: unknown })[column];
       const isStrings = typeof valueA === 'string' && typeof valueB === 'string';
+      const isNumbers = typeof valueA === 'number' && typeof valueB === 'number';
 
-      // if both values are luxon DateTime, compare them as DateTime
       if (this.isLuxonDateTime(valueA) && this.isLuxonDateTime(valueB)) {
+        // if both values are luxon DateTime, compare them as DateTime
         return this.compareDates(column, valueA as DateTime, valueB as DateTime);
-      }
-      // if both values are strings and luxon DateTime, compare them as DateTime
-      if (isStrings && this.isDateTime(valueA) && this.isDateTime(valueB)) {
+      } else if (isStrings && this.isDateTime(valueA) && this.isDateTime(valueB)) {
+        // if both values are strings and luxon DateTime, compare them as DateTime
         return this.compareDates(column, DateTime.fromISO(valueA).toUTC(), DateTime.fromISO(valueB).toUTC());
       }
       // TO DO: To be removed and then passed in as custom sort function by the parent component
-      if (column === 'courtroom' && isStrings && this.isNumeric(valueA) && this.isNumeric(valueB)) {
+      else if (column === 'courtroom' && isStrings && this.isNumeric(valueA) && this.isNumeric(valueB)) {
         return this.compareNumbers(column, +valueA, +valueB);
       } else if (isStrings) {
         //String sorting
         return this.compareStrings(column, valueA, valueB);
-      } else if (typeof valueA === 'number' && typeof valueB === 'number') {
+      } else if (isNumbers) {
         //Number sorting
         return this.compareNumbers(column, valueA, valueB);
       } else if (this.isBoolean(valueA, valueB)) {

@@ -3,25 +3,27 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Case, PostAudioRequest } from '@darts-types/index';
 import { HeaderService } from '@services/header/header.service';
 
+import { DatePipe } from '@angular/common';
+import { DateTime } from 'luxon';
 import { OrderConfirmationComponent } from './order-confirmation.component';
 
 describe('OrderConfirmationComponent', () => {
   let component: OrderConfirmationComponent;
   let fixture: ComponentFixture<OrderConfirmationComponent>;
   const MOCK_CASE: Case = {
-    case_id: 1,
-    case_number: 'C20220620001',
+    id: 1,
+    number: 'C20220620001',
     courthouse: 'Swansea',
     defendants: ['Defendant Dave'],
     judges: ['Judge Judy'],
-    reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
+    reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
     hearings: [
       {
         id: 1,
-        date: '2023-08-10',
+        date: DateTime.fromISO('2023-08-10'),
         courtroom: '1',
         judges: ['Judge Judy'],
-        transcript_count: 0,
+        transcriptCount: 0,
       },
     ],
   };
@@ -29,7 +31,7 @@ describe('OrderConfirmationComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [OrderConfirmationComponent],
-      providers: [HeaderService, RouterTestingModule],
+      providers: [HeaderService, RouterTestingModule, DatePipe],
     });
     fixture = TestBed.createComponent(OrderConfirmationComponent);
     component = fixture.componentInstance;

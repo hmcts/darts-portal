@@ -1,5 +1,6 @@
 <app-breadcrumb>
-  <ng-container *breadcrumb="['/transcriptions']">Your transcripts</ng-container>
+  <ng-container *breadcrumb="['/search']">Search</ng-container>
+  <ng-container *breadcrumb="['/case', transcript.caseId.toString()]">{{ transcript.caseNumber }}</ng-container>
   <ng-container *breadcrumb="['.']">{{ transcript.transcriptFileName }}</ng-container>
 </app-breadcrumb>
 
@@ -8,14 +9,8 @@
   [restrictions]="transcript.caseReportingRestrictions"
 ></app-reporting-restriction>
 
-<app-govuk-heading caption="Transcript file"> {{ transcript.caseNumber }} </app-govuk-heading>
-
-<!-- TODO: This could be refactored into it's own component -->
-@if (transcript.status) {
-  <strong class="govuk-tag" [ngClass]="transcriptStatusClassMap[transcript.status]" style="margin-bottom: 30px">{{
-    transcript.status
-  }}</strong>
-}
+<span class="govuk-caption-l">Transcript file</span>
+<h1 class="govuk-heading-l">{{ transcript.transcriptFileName }}</h1>
 
 <app-details-table title="Case details" [details]="caseDetails"></app-details-table>
 

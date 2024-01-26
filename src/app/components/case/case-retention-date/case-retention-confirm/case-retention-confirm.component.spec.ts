@@ -51,7 +51,7 @@ describe('CaseRetentionComponent', () => {
         case_id: component.caseId,
         comments: component.newRetentionReason,
         is_permanent_retention: undefined,
-        retention_date: mockDatePipe.transform(component.newRetentionDate, 'yyyy/MM/dd'),
+        retention_date: mockDatePipe.transform(component.newRetentionDate, 'yyyy-MM-dd'),
       };
 
       component.onConfirm();

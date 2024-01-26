@@ -1,7 +1,7 @@
 <ng-container *ngIf="data$ | async as vm; else loading">
   <app-breadcrumb *ngIf="state === 'Default'">
-    <ng-container *breadcrumb="['/case', vm.case.case_id.toString()]">{{ vm.case.case_number }}</ng-container>
-    <ng-container *breadcrumb>{{ vm.hearing?.date | date: 'd MMM y' }}</ng-container>
+    <ng-container *breadcrumb="['/case', vm.case.id.toString()]">{{ vm.case.number }}</ng-container>
+    <ng-container *breadcrumb>{{ vm.hearing?.date | luxonDate: 'd MMM y' }}</ng-container>
   </app-breadcrumb>
 
   <!-- Validation Error Summary Component -->
@@ -14,10 +14,10 @@
     <app-reporting-restriction
       [heading]="
         'There are restrictions against this ' +
-        (vm.case.reporting_restrictions?.length && vm.hearingRestrictions.length ? 'hearing' : 'case')
+        (vm.case.reportingRestrictions?.length && vm.hearingRestrictions.length ? 'hearing' : 'case')
       "
       [restrictions]="vm.hearingRestrictions"
-      [caseHasRestrictions]="!!vm.case.reporting_restrictions?.length"
+      [caseHasRestrictions]="!!vm.case.reportingRestrictions?.length"
     >
       <p class="govuk-body">For full details, check the hearing events.</p>
     </app-reporting-restriction>
@@ -79,7 +79,7 @@
           >
             <ng-template [tableRowTemplate]="transcripts" let-row>
               <td class="govuk-table__cell">{{ row.type }}</td>
-              <td class="govuk-table__cell">{{ row.requestedOn.toISO() | date: 'dd MMM yyyy HH:mm:ss' }}</td>
+              <td class="govuk-table__cell">{{ row.requestedOn | luxonDate: 'dd MMM yyyy HH:mm:ss' }}</td>
               <td class="govuk-table__cell">{{ row.requestedBy }}</td>
               <td class="govuk-table__cell">
                 <strong class="govuk-tag" [ngClass]="statusTagStyleMap[row.status]">

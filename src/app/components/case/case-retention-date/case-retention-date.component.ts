@@ -1,9 +1,9 @@
-import { CaseRententionConfirmComponent } from './case-retention-confirm/case-retention-confirm.component';
-import { CaseRententionChangeComponent } from './case-retention-change/case-retention-change.component';
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { SuccessBannerComponent } from '@common/success-banner/success-banner.component';
 import { CaseRetentionHistory } from '@darts-types/case-retention-history.interface';
+import { CaseRetentionPageState } from '@darts-types/case-retention-page-state.type';
 import { Case } from '@darts-types/case.interface';
 import { DatatableColumn } from '@darts-types/data-table-column.interface';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
@@ -17,8 +17,9 @@ import { DetailsTableComponent } from '../../common/details-table/details-table.
 import { GovukHeadingComponent } from '../../common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '../../common/loading/loading.component';
 import { NotificationBannerComponent } from '../../common/notification-banner/notification-banner.component';
-import { CaseRetentionPageState } from '@darts-types/case-retention-page-state.type';
-import { SuccessBannerComponent } from '@common/success-banner/success-banner.component';
+import { CaseRententionChangeComponent } from './case-retention-change/case-retention-change.component';
+import { CaseRententionConfirmComponent } from './case-retention-confirm/case-retention-confirm.component';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-case-retention-date',
@@ -50,6 +51,7 @@ export class CaseRetentionDateComponent implements OnInit {
   route = inject(ActivatedRoute);
   caseService = inject(CaseService);
   datePipe = inject(DatePipe);
+  dateTime = DateTime;
 
   caseId = this.route.snapshot.params.caseId;
 
@@ -58,20 +60,20 @@ export class CaseRetentionDateComponent implements OnInit {
     map((data: Case) => {
       const caseDetails = {
         details: {
-          'Case ID': data.case_number,
-          'Case closed date': this.datePipe.transform(data.case_closed_date_time, 'dd MMM yyyy') || '-',
+          'Case ID': data.number,
+          'Case closed date': this.datePipe.transform(data.closedDateTime?.toISO(), 'dd MMM yyyy') || '-',
           Courthouse: data.courthouse,
           'Judge(s)': data.judges?.map((judge) => ' ' + judge),
           'Defendant(s)': data.defendants?.map((defendant) => ' ' + defendant),
         },
         currentRetention: {
-          'Date applied': this.datePipe.transform(data.retention_date_time_applied, 'dd MMM yyyy'),
-          'Retain case until': this.datePipe.transform(data.retain_until_date_time, 'dd MMM yyyy'),
-          'DARTS Retention policy applied': data.retention_policy_applied,
+          'Date applied': this.datePipe.transform(data.retentionDateTimeApplied?.toISO(), 'dd MMM yyyy'),
+          'Retain case until': this.datePipe.transform(data.retainUntilDateTime?.toISO(), 'dd MMM yyyy'),
+          'DARTS Retention policy applied': data.retentionPolicyApplied,
         },
-        case_id: data.case_id,
-        case_number: data.case_number,
-        case_retain_until_date_time: this.datePipe.transform(data.retain_until_date_time, 'dd/MM/yyyy'),
+        case_id: data.id,
+        case_number: data.number,
+        case_retain_until_date_time: this.datePipe.transform(data.retainUntilDateTime?.toISO(), 'dd/MM/yyyy'),
       };
       return caseDetails;
     })
@@ -129,8 +131,8 @@ export class CaseRetentionDateComponent implements OnInit {
   }
 
   getOriginalRetentionDateString(rows: CaseRetentionHistory[]) {
-    const date = this.getEarliestDate(rows).retention_date;
-    return this.datePipe.transform(date, 'dd/MM/yyyy');
+    const earliestDate = this.getEarliestDate(rows).retention_date;
+    return DateTime.fromISO(earliestDate, { setZone: true }).toFormat('dd/MM/yyyy');
   }
 
   changeRetentionDate() {
@@ -139,6 +141,13 @@ export class CaseRetentionDateComponent implements OnInit {
 
   onStateChanged(state: CaseRetentionPageState) {
     this.state = state;
+    if (state === 'Success') {
+      // Refetch case and retention data
+      this.vm$ = combineLatest({
+        caseDetails: this.caseDetails$,
+        retentionHistory: this.retentionHistory$,
+      });
+    }
   }
 
   onRetentionDateChanged(value: Date) {

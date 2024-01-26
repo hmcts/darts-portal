@@ -37,7 +37,7 @@ export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
 
   columns: DatatableColumn[] = [
     { name: 'Time', prop: 'timestamp', sortable: true, width: '180px' },
-    { name: 'Event', prop: 'event' },
+    { name: 'Event', prop: 'name' },
     { name: 'Text', prop: 'text', width: '700px' },
   ];
 

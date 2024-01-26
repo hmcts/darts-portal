@@ -147,7 +147,7 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
     const endTimeMinutes = this.audioRequestForm.get('endTime.minutes')?.value;
     const endTimeSeconds = this.audioRequestForm.get('endTime.seconds')?.value;
 
-    const hearingDate = this.hearing.date.replace('T00:00:00Z', '');
+    const hearingDate = this.hearing.date.toFormat('yyyy-LL-dd');
 
     const startDateTime = DateTime.fromISO(`${hearingDate}T${startTimeHours}:${startTimeMinutes}:${startTimeSeconds}`);
 

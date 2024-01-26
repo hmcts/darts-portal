@@ -3,8 +3,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DatePipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute } from '@angular/router';
+import { TranscriptionDetails } from '@darts-types/transcription-details.interface';
 import { ErrorMessageService } from '@services/error/error-message.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
+import { DateTime } from 'luxon';
 import { of } from 'rxjs';
 import { ApproveTranscriptComponent } from './approve-transcript.component';
 
@@ -23,9 +25,27 @@ describe('ApproveTranscriptComponent', () => {
     },
   };
 
-  const transcriptionDetail = of({
-    case_id: 2,
-    case_reporting_restrictions: [
+  const mockTranscriptionDetails: TranscriptionDetails = {
+    caseId: 2,
+    caseNumber: 'C20220620001',
+    courthouse: 'Swansea',
+    status: 'Rejected',
+    from: 'MoJ CH Swansea',
+    received: DateTime.fromISO('2023-11-17T12:53:07.468Z'),
+    requestorComments: 'Please expedite my request',
+    rejectionReason: undefined,
+    defendants: ['Defendant Dave', 'Defendant Bob'],
+    judges: ['HHJ M. Hussain KC\t', 'Ray Bob'],
+    transcriptFileName: 'C20220620001_0.docx',
+    hearingDate: DateTime.fromISO('2023-11-08'),
+    urgency: 'Standard',
+    requestType: 'Specified Times',
+    transcriptionId: 123456789,
+    transcriptionStartTs: DateTime.fromISO('2023-11-26T13:00:00Z'),
+    transcriptionEndTs: DateTime.fromISO('2023-11-26T16:00:00Z'),
+    isManual: false,
+    hearingId: 1,
+    caseReportingRestrictions: [
       {
         hearing_id: 1,
         event_id: 1,
@@ -34,24 +54,7 @@ describe('ApproveTranscriptComponent', () => {
         event_ts: '2023-09-01T09:00:00Z',
       },
     ],
-    case_number: 'C20220620001',
-    courthouse: 'Swansea',
-    status: 'Rejected',
-    from: 'MoJ CH Swansea',
-    received: '2023-11-17T12:53:07.468Z',
-    requestor_comments: 'Please expedite my request',
-    defendants: ['Defendant Dave', 'Defendant Bob'],
-    judges: ['HHJ M. Hussain KC\t', 'Ray Bob'],
-    transcript_file_name: 'C20220620001_0.docx',
-    hearing_date: '2023-11-08',
-    urgency: 'Standard',
-    request_type: 'Specified Times',
-    transcription_id: 123456789,
-    transcription_start_ts: '2023-11-26T13:00:00Z',
-    transcription_end_ts: '2023-11-26T16:00:00Z',
-    is_manual: false,
-    hearing_id: 1,
-  });
+  };
 
   beforeEach(async () => {
     fakeTranscriptionService = {
@@ -60,7 +63,7 @@ describe('ApproveTranscriptComponent', () => {
       getRequestDetailsFromTranscript: jest.fn(),
     };
 
-    jest.spyOn(fakeTranscriptionService, 'getTranscriptionDetails').mockReturnValue(transcriptionDetail);
+    jest.spyOn(fakeTranscriptionService, 'getTranscriptionDetails').mockReturnValue(of(mockTranscriptionDetails));
 
     await TestBed.configureTestingModule({
       imports: [ApproveTranscriptComponent, HttpClientTestingModule],

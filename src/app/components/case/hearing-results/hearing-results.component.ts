@@ -1,26 +1,34 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
-import { DatatableColumn, Hearing, HearingRow, TranscriptsRow } from '@darts-types/index';
+import { DatatableColumn, Hearing, TranscriptsRow } from '@darts-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
+import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { transcriptStatusClassMap } from 'src/app/constants/transcript-status-class-map';
 import { TabDirective } from 'src/app/directives/tab.directive';
 
 @Component({
   selector: 'app-hearing-results',
   standalone: true,
-  imports: [CommonModule, RouterLink, DataTableComponent, TabsComponent, TabDirective, TableRowTemplateDirective],
+  imports: [
+    CommonModule,
+    RouterLink,
+    DataTableComponent,
+    TabsComponent,
+    TabDirective,
+    TableRowTemplateDirective,
+    LuxonDatePipe,
+  ],
   templateUrl: './hearing-results.component.html',
   styleUrls: ['./hearing-results.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HearingResultsComponent implements OnChanges {
+export class HearingResultsComponent {
   @Input() hearings: Hearing[] = [];
   @Input() transcripts: TranscriptsRow[] = [];
   caseId: number;
-  rows: HearingRow[] = [];
   hearingsColumns: DatatableColumn[] = [];
   transcriptColumns: DatatableColumn[] = [];
 
@@ -33,7 +41,7 @@ export class HearingResultsComponent implements OnChanges {
       { name: 'Hearing date', prop: 'date', sortable: true },
       { name: 'Judge', prop: 'judges', sortable: true },
       { name: 'Courtroom', prop: 'courtroom', sortable: true },
-      { name: 'No. of transcripts', prop: 'transcripts', sortable: true },
+      { name: 'No. of transcripts', prop: 'transcriptCount', sortable: true },
     ];
 
     this.transcriptColumns = [
@@ -44,17 +52,5 @@ export class HearingResultsComponent implements OnChanges {
       { name: 'Status', prop: 'status', sortable: true },
       { name: '', prop: '' },
     ];
-  }
-
-  ngOnChanges() {
-    this.rows = this.hearings.map((hearing: Hearing) => {
-      return {
-        id: hearing.id,
-        date: hearing.date,
-        judges: hearing.judges,
-        courtroom: hearing.courtroom,
-        transcripts: hearing.transcript_count,
-      };
-    });
   }
 }

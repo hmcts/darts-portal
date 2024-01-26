@@ -1,3 +1,4 @@
+import { DATE_PIPE_DEFAULT_OPTIONS, DatePipe } from '@angular/common';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -87,19 +88,19 @@ describe('AudioViewComponent', () => {
   ];
 
   const MOCK_CASE: Case = {
-    case_id: 1,
-    case_number: 'C20220620001',
+    id: 1,
+    number: 'C20220620001',
     courthouse: 'Swansea',
     defendants: ['Defendant Dave'],
     judges: ['Judge Judy'],
-    reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
+    reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
     hearings: [
       {
         id: 1,
-        date: '2023-08-10',
+        date: DateTime.fromISO('2023-08-10'),
         courtroom: '1',
         judges: ['Judge Judy'],
-        transcript_count: 0,
+        transcriptCount: 0,
       },
     ],
   };
@@ -167,6 +168,8 @@ describe('AudioViewComponent', () => {
           { provide: CaseService, useValue: fakeCaseService },
           { provide: ErrorMessageService, useValue: fakeErrorMessageService },
           { provide: AppConfigService, useValue: appConfigServiceMock },
+          DatePipe,
+          { provide: DATE_PIPE_DEFAULT_OPTIONS, useValue: { timezone: 'utc' } },
         ],
       });
 
