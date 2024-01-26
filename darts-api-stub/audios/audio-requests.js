@@ -144,7 +144,7 @@ const expiredMediaRequests = {
       start_ts: '2022-01-04T09:00:00Z',
       end_ts: '2022-01-04T10:00:00Z',
       transformed_media_expiry_ts: '2022-01-04T09:00:00Z',
-      media_request_status: 'COMPLETED',
+      media_request_status: 'EXPIRED',
       request_type: 'PLAYBACK',
       last_accessed_ts: '2022-01-04T09:00:00Z',
       transformed_media_filename: 'C99',

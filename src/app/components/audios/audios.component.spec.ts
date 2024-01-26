@@ -241,4 +241,62 @@ describe('AudiosComponent', () => {
       });
     });
   });
+
+  describe('#getStatusClass', () => {
+    it('should return "govuk-tag--yellow" for status "OPEN"', () => {
+      const status = 'OPEN';
+      const result = component.getStatusClass(status);
+      expect(result).toBe('govuk-tag--yellow');
+    });
+
+    it('should return "govuk-tag--yellow" for status "PROCESSING"', () => {
+      const status = 'PROCESSING';
+      const result = component.getStatusClass(status);
+      expect(result).toBe('govuk-tag--yellow');
+    });
+
+    it('should return "govuk-tag--red" for status "FAILED"', () => {
+      const status = 'FAILED';
+      const result = component.getStatusClass(status);
+      expect(result).toBe('govuk-tag--red');
+    });
+
+    it('should return "govuk-tag--green" for status "COMPLETED"', () => {
+      const status = 'COMPLETED';
+      const result = component.getStatusClass(status);
+      expect(result).toBe('govuk-tag--green');
+    });
+
+    it('should return "govuk-tag--grey" for status "EXPIRED"', () => {
+      const status = 'EXPIRED';
+      const result = component.getStatusClass(status);
+      expect(result).toBe('govuk-tag--grey');
+    });
+
+    it('should return "govuk-tag--blue" for unknown status', () => {
+      const status = 'UNKNOWN';
+      const result = component.getStatusClass(status);
+      expect(result).toBe('govuk-tag--blue');
+    });
+  });
+
+  describe('#getStatusText', () => {
+    it('should return "READY" when status is "COMPLETED"', () => {
+      const status = 'COMPLETED';
+      const result = component.getStatusText(status);
+      expect(result).toBe('READY');
+    });
+
+    it('should return "IN PROGRESS" when status is "PROCESSING"', () => {
+      const status = 'PROCESSING';
+      const result = component.getStatusText(status);
+      expect(result).toBe('IN PROGRESS');
+    });
+
+    it('should return the same status when status is not "COMPLETED" or "PROCESSING"', () => {
+      const status = 'OPEN';
+      const result = component.getStatusText(status);
+      expect(result).toBe(status);
+    });
+  });
 });
