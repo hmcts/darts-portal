@@ -55,7 +55,7 @@ export class AudiosComponent {
 
   columns: DatatableColumn[] = [
     { name: 'Case ID', prop: 'caseNumber', sortable: true },
-    { name: 'Court', prop: 'courthouseName', sortable: true },
+    { name: 'Courthouse', prop: 'courthouseName', sortable: true },
     { name: 'Hearing date', prop: 'hearingDate', sortable: true },
     { name: 'Start time', prop: 'startTime', sortable: true },
     { name: 'End time', prop: 'endTime', sortable: true },
