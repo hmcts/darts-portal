@@ -1,6 +1,7 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { AfterViewChecked, Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { DatepickerComponent } from '@common/datepicker/datepicker.component';
 import { GovukTextareaComponent } from '@common/govuk-textarea/govuk-textarea.component';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
@@ -19,6 +20,7 @@ import { DateTime } from 'luxon';
     ReportingRestrictionComponent,
     ValidationErrorSummaryComponent,
     GovukTextareaComponent,
+    DatepickerComponent,
   ],
   templateUrl: './case-retention-change.component.html',
   styleUrls: ['./case-retention-change.component.scss'],
