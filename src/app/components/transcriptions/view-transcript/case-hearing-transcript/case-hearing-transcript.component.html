@@ -1,16 +1,16 @@
 <app-breadcrumb>
   <ng-container *breadcrumb="['/search']">Search</ng-container>
-  <ng-container *breadcrumb="['/case', transcript.case_id.toString()]">{{ transcript.case_number }}</ng-container>
-  <ng-container *breadcrumb="['.']">{{ transcript.transcript_file_name }}</ng-container>
+  <ng-container *breadcrumb="['/case', transcript.caseId.toString()]">{{ transcript.caseNumber }}</ng-container>
+  <ng-container *breadcrumb="['.']">{{ transcript.transcriptFileName }}</ng-container>
 </app-breadcrumb>
 
 <app-reporting-restriction
   class="margin-bottom"
-  [restrictions]="transcript.case_reporting_restrictions"
+  [restrictions]="transcript.caseReportingRestrictions"
 ></app-reporting-restriction>
 
 <span class="govuk-caption-l">Transcript file</span>
-<h1 class="govuk-heading-l">{{ transcript.transcript_file_name }}</h1>
+<h1 class="govuk-heading-l">{{ transcript.transcriptFileName }}</h1>
 
 <app-details-table title="Case details" [details]="caseDetails"></app-details-table>
 

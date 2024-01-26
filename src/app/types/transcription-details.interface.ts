@@ -1,6 +1,7 @@
+import { DateTime } from 'luxon';
 import { ReportingRestriction } from './reporting-restriction.interface';
 
-export interface TranscriptionDetails {
+export interface TranscriptionDetailsData {
   case_reporting_restrictions?: ReportingRestriction[];
   case_id: number;
   case_number: string;
@@ -22,3 +23,26 @@ export interface TranscriptionDetails {
   is_manual: boolean;
   hearing_id: number;
 }
+
+export type TranscriptionDetails = {
+  caseReportingRestrictions?: ReportingRestriction[];
+  caseId: number;
+  caseNumber: string;
+  courthouse: string;
+  status?: string;
+  from?: string;
+  received?: DateTime;
+  requestorComments?: string;
+  rejectionReason?: string;
+  defendants: string[];
+  judges: string[];
+  transcriptFileName: string;
+  hearingDate: DateTime;
+  urgency: string;
+  requestType: string;
+  transcriptionId: number;
+  transcriptionStartTs: DateTime;
+  transcriptionEndTs: DateTime;
+  isManual: boolean;
+  hearingId: number;
+};

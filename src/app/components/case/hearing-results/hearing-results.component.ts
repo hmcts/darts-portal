@@ -5,13 +5,22 @@ import { DataTableComponent } from '@common/data-table/data-table.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { DatatableColumn, Hearing, TranscriptsRow } from '@darts-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
+import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { transcriptStatusClassMap } from 'src/app/constants/transcript-status-class-map';
 import { TabDirective } from 'src/app/directives/tab.directive';
 
 @Component({
   selector: 'app-hearing-results',
   standalone: true,
-  imports: [CommonModule, RouterLink, DataTableComponent, TabsComponent, TabDirective, TableRowTemplateDirective],
+  imports: [
+    CommonModule,
+    RouterLink,
+    DataTableComponent,
+    TabsComponent,
+    TabDirective,
+    TableRowTemplateDirective,
+    LuxonDatePipe,
+  ],
   templateUrl: './hearing-results.component.html',
   styleUrls: ['./hearing-results.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

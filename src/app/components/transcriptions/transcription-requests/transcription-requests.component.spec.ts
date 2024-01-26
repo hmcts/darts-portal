@@ -1,7 +1,7 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { DatePipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { TranscriptionRequestsComponent } from './transcription-requests.component';
 
 describe('TranscriptionRequestsComponent', () => {
@@ -11,7 +11,7 @@ describe('TranscriptionRequestsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TranscriptionRequestsComponent, HttpClientModule],
-      providers: [{ provide: DatePipe }],
+      providers: [DatePipe, LuxonDatePipe],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TranscriptionRequestsComponent);

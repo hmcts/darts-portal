@@ -44,7 +44,7 @@ export class ApprovedTranscriptComponent implements OnInit {
   ngOnInit(): void {
     this.caseDetails = this.transcriptionService.getCaseDetailsFromTranscript(this.transcript);
     this.requestDetails = this.transcriptionService.getRequestDetailsFromTranscript(this.transcript);
-    this.fileName = this.transcript.transcript_file_name;
+    this.fileName = this.transcript.transcriptFileName;
   }
 
   onDownloadClicked() {

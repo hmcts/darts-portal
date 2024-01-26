@@ -12,6 +12,7 @@ import { ErrorMessage } from '@darts-types/error-message.interface';
 import { DatatableColumn, HearingEvent, HearingEventRow, TransformedMedia } from '@darts-types/index';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
+import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { CaseService } from '@services/case/case.service';
@@ -37,6 +38,7 @@ import { ValidationErrorSummaryComponent } from './../../common/validation-error
     AudioPlayerComponent,
     PlayButtonComponent,
     ValidationErrorSummaryComponent,
+    LuxonDatePipe,
   ],
   templateUrl: './audio-view.component.html',
   styleUrls: ['./audio-view.component.scss'],

@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -165,6 +166,7 @@ describe('HearingComponent', () => {
         { provide: UserService, useValue: fakeUserService },
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
         { provide: AppConfigService, useValue: appConfigServiceMock },
+        { provide: DatePipe },
       ],
     });
     fixture = TestBed.createComponent(HearingComponent);

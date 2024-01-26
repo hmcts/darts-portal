@@ -21,6 +21,7 @@ import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { JoinPipe } from '@pipes/join';
+import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { CaseService } from '@services/case/case.service';
 import { ErrorMessageService } from '@services/error/error-message.service';
@@ -59,6 +60,7 @@ import { RequestPlaybackAudioComponent } from './request-playback-audio/request-
     DataTableComponent,
     TableRowTemplateDirective,
     JoinPipe,
+    LuxonDatePipe,
   ],
 })
 export class HearingComponent implements OnInit {

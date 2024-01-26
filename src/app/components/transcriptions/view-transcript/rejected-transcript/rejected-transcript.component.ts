@@ -1,4 +1,4 @@
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
@@ -8,6 +8,7 @@ import { ReportingRestrictionComponent } from '@common/reporting-restriction/rep
 import { transcriptStatusClassMap } from '@constants/transcript-status-class-map';
 import { TranscriptionDetails } from '@darts-types/transcription-details.interface';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
+import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 
 @Component({
@@ -26,7 +27,7 @@ import { TranscriptionService } from '@services/transcription/transcription.serv
   styleUrl: './rejected-transcript.component.scss',
 })
 export class RejectedTranscriptComponent implements OnInit {
-  datePipe = inject(DatePipe);
+  luxonDatePipe = inject(LuxonDatePipe);
   transcriptionService = inject(TranscriptionService);
 
   @Input() transcript!: TranscriptionDetails;

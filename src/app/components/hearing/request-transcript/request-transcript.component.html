@@ -29,7 +29,7 @@
       <h3 class="govuk-heading-s">Defendant(s)</h3>
       <p class="govuk-body">{{ vm.case.defendants | join }}</p>
       <h3 class="govuk-heading-s">Hearing Date</h3>
-      <p class="govuk-body">{{ vm.hearing?.date?.toISO() | date: 'd MMM y' }}</p>
+      <p class="govuk-body">{{ vm.hearing ? (vm.hearing.date | luxonDate: 'd MMM y') : '' }}</p>
 
       <div
         class="govuk-form-group"

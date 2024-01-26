@@ -4,7 +4,7 @@
       <ng-template [tableRowTemplate]="hearings" let-row>
         <td class="govuk-table__cell">
           <a class="govuk-link" [routerLink]="['/case', caseId, 'hearing', row.id]">{{
-            row.date.toString() | date: 'd MMM y'
+            row.date | luxonDate: 'd MMM y'
           }}</a>
         </td>
         <td class="govuk-table__cell">{{ row.judges }}</td>
@@ -23,9 +23,9 @@
       noDataMessage="There are no transcripts for this case."
     >
       <ng-template [tableRowTemplate]="transcripts" let-row>
-        <td class="govuk-table__cell">{{ row.hearingDate.toISO() | date: 'dd MMM yyyy' }}</td>
+        <td class="govuk-table__cell">{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
         <td class="govuk-table__cell">{{ row.type }}</td>
-        <td class="govuk-table__cell">{{ row.requestedOn.toISO() | date: 'dd MMM yyyy HH:mm:ss' }}</td>
+        <td class="govuk-table__cell">{{ row.requestedOn | luxonDate: 'dd MMM yyyy HH:mm:ss' }}</td>
         <td class="govuk-table__cell">{{ row.requestedBy }}</td>
         <td class="govuk-table__cell">
           <strong class="govuk-tag" [ngClass]="transcriptStatusClassMap[row.status]">
