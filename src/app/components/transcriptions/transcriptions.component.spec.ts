@@ -333,4 +333,23 @@ describe('TranscriptionsComponent', () => {
     expect(tabs).toBeTruthy();
     expect(table).toBeTruthy();
   });
+
+  describe('deleteScreenTitle', () => {
+    it('should return the correct title when there is only one selected request', () => {
+      const component = fixture.componentInstance;
+      component.selectedRequests = [{ transcription_id: 1 } as UserTranscriptionRequestVm];
+      const title = component.deleteScreenTitle;
+      expect(title).toEqual('Are you sure you want to remove this transcript request?');
+    });
+
+    it('should return the correct title when there are multiple selected requests', () => {
+      const component = fixture.componentInstance;
+      component.selectedRequests = [
+        { transcription_id: 1 } as UserTranscriptionRequestVm,
+        { transcription_id: 2 } as UserTranscriptionRequestVm,
+      ];
+      const title = component.deleteScreenTitle;
+      expect(title).toEqual('Are you sure you want to remove these transcript requests?');
+    });
+  });
 });
