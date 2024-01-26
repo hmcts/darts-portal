@@ -2,8 +2,10 @@
   <label class="ds_label" for="retention-date">{{ label }}</label>
   <p class="ds_hint-text">{{ hint }}</p>
   <!-- Error message if date invalid -->
-  <div *ngIf="error" id="retention-date-errors">
-    <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ error }}</p>
+  <div *ngIf="areDateErrors()" id="retention-date-errors">
+    <p *ngFor="let error of errors" class="govuk-error-message">
+      <span class="govuk-visually-hidden">Error: </span>{{ error }}
+    </p>
   </div>
   <div class="ds_input__wrapper">
     <input
@@ -13,7 +15,7 @@
       type="text"
       class="ds_input ds_input--fixed-10"
       (change)="setDateValue($any($event).target.value)"
-      [class.govuk-input--error]="error"
+      [class.govuk-input--error]="areDateErrors()"
     />
   </div>
 </div>
