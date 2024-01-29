@@ -129,4 +129,35 @@ export class AudiosComponent {
     this.selectedAudioRequests = [row as TransformedMedia];
     this.isDeleting = true;
   }
+
+  getStatusClass(status: string): string {
+    // 'OPEN' | 'PROCESSING' | 'FAILED' | 'COMPLETED' | 'EXPIRED';
+    switch (status) {
+      case 'OPEN':
+        return 'govuk-tag--yellow';
+      case 'PROCESSING':
+        return 'govuk-tag--yellow';
+      case 'FAILED':
+        return 'govuk-tag--red';
+      case 'COMPLETED':
+        return 'govuk-tag--green';
+      case 'EXPIRED':
+        return 'govuk-tag--grey';
+      default:
+        return 'govuk-tag--blue';
+    }
+  }
+
+  getStatusText(status: string): string {
+    switch (status) {
+      case 'COMPLETED':
+        return 'READY';
+      case 'PROCESSING':
+        return 'IN PROGRESS';
+      case 'OPEN':
+        return 'REQUESTED';
+      default:
+        return status;
+    }
+  }
 }

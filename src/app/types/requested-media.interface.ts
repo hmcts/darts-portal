@@ -1,14 +1,7 @@
 import { DateTime } from 'luxon';
 
 export type AudioRequestType = 'PLAYBACK' | 'DOWNLOAD';
-export type AudioRequestStatus =
-  | 'OPEN'
-  | 'PROCESSING'
-  | 'FAILED'
-  | 'COMPLETED'
-  | 'EXPIRED'
-  | 'IN PROGRESS'
-  | 'REQUESTED';
+export type AudioRequestStatus = 'OPEN' | 'PROCESSING' | 'FAILED' | 'COMPLETED' | 'EXPIRED';
 
 export interface RequestedMediaData {
   media_request_details: MediaRequestData[];
