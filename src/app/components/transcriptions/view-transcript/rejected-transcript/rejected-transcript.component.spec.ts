@@ -4,6 +4,8 @@ import { DatePipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute } from '@angular/router';
 import { TranscriptionDetails } from '@darts-types/transcription-details.interface';
+import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
+import { DateTime } from 'luxon';
 import { RejectedTranscriptComponent } from './rejected-transcript.component';
 
 describe('RejectedTranscriptComponent', () => {
@@ -18,38 +20,37 @@ describe('RejectedTranscriptComponent', () => {
     },
   };
 
-  const mockTranscriptionDetails = {
-    case_id: 1,
-    case_reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
-    case_number: 'C20220620001',
+  const mockTranscript: TranscriptionDetails = {
+    caseId: 1,
+    caseNumber: 'C20220620001',
     courthouse: 'Swansea',
     status: 'Rejected',
     from: 'MoJ CH Swansea',
-    received: '2023-11-17T12:53:07.468Z',
-    requestor_comments: 'Please expedite my request',
-    rejection_reason: 'This request will take longer to transcribe within the urgency level you require.',
+    received: DateTime.fromISO('2023-11-17T12:53:07.468Z'),
+    requestorComments: 'Please expedite my request',
+    rejectionReason: 'This request will take longer to transcribe within the urgency level you require.',
     defendants: ['Defendant Dave', 'Defendant Bob'],
     judges: ['HHJ M. Hussain KC	', 'Ray Bob'],
-    transcript_file_name: 'C20220620001_0.docx',
-    hearing_date: '2023-11-08',
+    transcriptFileName: 'C20220620001_0.docx',
+    hearingDate: DateTime.fromISO('2023-11-08'),
     urgency: 'Standard',
-    request_type: 'Specified Times',
-    request_id: 123456789,
-    transcription_start_ts: '2023-06-26T13:00:00Z',
-    transcription_end_ts: '2023-06-26T16:00:00Z',
-    is_manual: true,
-    hearing_id: 1,
-  } as unknown as TranscriptionDetails;
+    requestType: 'Specified Times',
+    transcriptionId: 12,
+    transcriptionStartTs: DateTime.fromISO('2023-06-26T13:00:00Z'),
+    transcriptionEndTs: DateTime.fromISO('2023-06-26T16:00:00Z'),
+    isManual: true,
+    hearingId: 1,
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RejectedTranscriptComponent, HttpClientTestingModule],
-      providers: [{ provide: ActivatedRoute, useValue: mockActivatedRoute }, { provide: DatePipe }],
+      providers: [{ provide: ActivatedRoute, useValue: mockActivatedRoute }, DatePipe, LuxonDatePipe],
     }).compileComponents();
 
     fixture = TestBed.createComponent(RejectedTranscriptComponent);
     component = fixture.componentInstance;
-    component.transcript = mockTranscriptionDetails;
+    component.transcript = mockTranscript;
     fixture.detectChanges();
   });
 

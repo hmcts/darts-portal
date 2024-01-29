@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { of } from 'rxjs';
 
+import { DatePipe } from '@angular/common';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MediaRequest, RequestedMedia, TransformedMedia } from '@darts-types/requested-media.interface';
 import { DateTime } from 'luxon';
@@ -105,6 +106,7 @@ describe('AudiosComponent', () => {
       providers: [
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
         { provide: AudioRequestService, useValue: audioServiceStub },
+        DatePipe,
       ],
     }).compileComponents();
 

@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TranscriptionDetails } from '@darts-types/transcription-details.interface';
 import { FileDownloadService } from '@services/file-download/file-download.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
+import { DateTime } from 'luxon';
 import { of } from 'rxjs';
 import { CaseHearingTranscriptComponent } from './case-hearing-transcript.component';
 
@@ -22,20 +23,20 @@ describe('CaseHearingTranscriptComponent', () => {
   };
 
   const mockTransctiptionDetails: TranscriptionDetails = {
-    case_id: 0,
-    case_number: '',
+    caseId: 0,
+    caseNumber: '',
     courthouse: '',
     defendants: [],
     judges: [],
-    transcript_file_name: 'test-file-name.docx',
-    hearing_date: '',
+    transcriptFileName: 'test-file-name.docx',
+    hearingDate: DateTime.fromISO('2021-01-01'),
     urgency: '',
-    request_type: '',
-    transcription_id: 0,
-    transcription_start_ts: '',
-    transcription_end_ts: '',
-    is_manual: false,
-    hearing_id: 0,
+    requestType: '',
+    transcriptionId: 0,
+    transcriptionStartTs: DateTime.fromISO('2021-01-01'),
+    transcriptionEndTs: DateTime.fromISO('2021-01-01'),
+    isManual: false,
+    hearingId: 0,
   };
 
   const blob = new Blob();

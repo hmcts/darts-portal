@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import { TranscriptionUrgency } from '@darts-types/index';
+import { Urgency } from '@darts-types/index';
 import { SortService } from './sort.service';
 
 describe('TableCustomSortFunctionsService', () => {
   let service: SortService;
 
-  const mockUrgencyA: { urgency: TranscriptionUrgency } = {
+  const mockUrgencyA: { urgency: Urgency } = {
     urgency: {
       transcription_urgency_id: 1,
       description: 'Overnight',
@@ -13,7 +13,7 @@ describe('TableCustomSortFunctionsService', () => {
     },
   };
 
-  const mockUrgencyB: { urgency: TranscriptionUrgency } = {
+  const mockUrgencyB: { urgency: Urgency } = {
     urgency: {
       transcription_urgency_id: 3,
       description: 'Up to 3 working days',

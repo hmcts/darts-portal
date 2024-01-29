@@ -5,9 +5,10 @@ import { DataTableComponent } from '@common/data-table/data-table.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { transcriptTableColumns } from '@constants/transcription-columns';
-import { DatatableColumn, WorkRequestVm } from '@darts-types/index';
+import { DatatableColumn, WorkRequest } from '@darts-types/index';
 import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
+import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { SortService } from '@services/sort/sort.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { combineLatest, map, shareReplay } from 'rxjs';
@@ -25,6 +26,7 @@ import { combineLatest, map, shareReplay } from 'rxjs';
     TabsComponent,
     TabDirective,
     TableRowTemplateDirective,
+    LuxonDatePipe,
   ],
 })
 export class YourWorkComponent {
@@ -50,11 +52,11 @@ export class YourWorkComponent {
     completedRequests: this.requests$.pipe(map((requests) => this.filterCompletedRequests(requests))),
   });
 
-  private filterTodoRequests(requests: WorkRequestVm[]): WorkRequestVm[] {
+  private filterTodoRequests(requests: WorkRequest[]): WorkRequest[] {
     return requests.filter((r) => r.status === 'With Transcriber');
   }
 
-  private filterCompletedRequests(requests: WorkRequestVm[]): WorkRequestVm[] {
+  private filterCompletedRequests(requests: WorkRequest[]): WorkRequest[] {
     return requests.filter((r) => r.status === 'Complete');
   }
 }

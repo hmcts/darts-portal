@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DateTime } from 'luxon';
 
+import { DatePipe } from '@angular/common';
 import { RequestTranscriptConfirmationComponent } from './request-transcript-confirmation.component';
 
 describe('RequestTranscriptConfirmationComponent', () => {
@@ -11,6 +12,7 @@ describe('RequestTranscriptConfirmationComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [RequestTranscriptConfirmationComponent],
+      providers: [DatePipe],
     }).overrideComponent(RequestTranscriptConfirmationComponent, {
       set: { changeDetection: ChangeDetectionStrategy.Default },
     });

@@ -4,8 +4,11 @@ import { DatePipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { TranscriptionDetails } from '@darts-types/transcription-details.interface';
+import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { ErrorMessageService } from '@services/error/error-message.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
+import { DateTime } from 'luxon';
 import { of } from 'rxjs';
 import { AssignTranscriptComponent } from './assign-transcript.component';
 
@@ -41,39 +44,39 @@ describe('AssignTranscriptComponent', () => {
     },
   };
 
-  const transcriptionDetail = of({
-    case_id: 2,
-    case_reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
-    case_number: 'C20220620001',
+  const transcriptionDetail: TranscriptionDetails = {
+    caseId: 2,
+    caseNumber: 'C20220620001',
     courthouse: 'Swansea',
     status: 'Rejected',
     from: 'MoJ CH Swansea',
-    received: '2023-11-17T12:53:07.468Z',
-    requestor_comments: 'Please expedite my request',
+    received: undefined,
+    requestorComments: 'Please expedite my request',
+    rejectionReason: undefined,
     defendants: ['Defendant Dave', 'Defendant Bob'],
     judges: ['HHJ M. Hussain KC\t', 'Ray Bob'],
-    transcript_file_name: 'C20220620001_0.docx',
-    hearing_date: '2023-11-08',
+    transcriptFileName: 'C20220620001_0.docx',
+    hearingDate: DateTime.fromISO('2023-11-08'),
     urgency: 'Standard',
-    request_type: 'Specified Times',
-    transcription_id: 123456789,
-    transcription_start_ts: '2023-11-26T13:00:00Z',
-    transcription_end_ts: '2023-11-26T16:00:00Z',
-    is_manual: false,
-    hearing_id: 1,
-  });
+    requestType: 'Specified Times',
+    transcriptionId: 123456789,
+    transcriptionStartTs: DateTime.fromISO('2023-11-26T13:00:00Z'),
+    transcriptionEndTs: DateTime.fromISO('2023-11-26T16:00:00Z'),
+    isManual: false,
+    hearingId: 1,
+  };
 
   beforeEach(async () => {
     fakeTranscriptionService = { getTranscriptionDetails: jest.fn(), assignTranscript: jest.fn() };
-    jest.spyOn(fakeTranscriptionService, 'getTranscriptionDetails').mockReturnValue(transcriptionDetail);
+    jest.spyOn(fakeTranscriptionService, 'getTranscriptionDetails').mockReturnValue(of(transcriptionDetail));
 
     await TestBed.configureTestingModule({
       imports: [AssignTranscriptComponent, HttpClientModule, RouterTestingModule],
       providers: [
         DatePipe,
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
-        { provide: DatePipe },
         { provide: TranscriptionService, useValue: fakeTranscriptionService },
+        LuxonDatePipe,
       ],
     }).compileComponents();
 

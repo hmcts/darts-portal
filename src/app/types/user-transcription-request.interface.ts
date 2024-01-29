@@ -1,7 +1,13 @@
+import { DateTime } from 'luxon';
 import { TranscriptStatus } from './transcript.interface';
-import { TranscriptionUrgency } from './transcription-urgency.interface';
+import { Urgency } from './transcription-urgency.interface';
 
-export interface UserTranscriptionRequest {
+// DTOs
+export interface YourTranscriptsData {
+  requester_transcriptions: TranscriptRequestData[];
+  approver_transcriptions: TranscriptRequestData[];
+}
+export interface TranscriptRequestData {
   transcription_id: number;
   case_id: number;
   case_number: string;
@@ -13,14 +19,22 @@ export interface UserTranscriptionRequest {
   requested_ts: string;
 }
 
-export type UserTranscriptionRequestVm = Omit<UserTranscriptionRequest, 'urgency'> & { urgency: TranscriptionUrgency };
+// View Models
+export type YourTranscripts = {
+  requesterTranscriptions: TranscriptRequest[];
+  approverTranscriptions: TranscriptRequest[];
+};
 
-export interface YourTranscriptionRequests {
-  requester_transcriptions: UserTranscriptionRequest[];
-  approver_transcriptions: UserTranscriptionRequest[];
-}
+export type TranscriptRequest = {
+  transcriptionId: number;
+  caseId: number;
+  caseNumber: string;
+  courthouseName: string;
+  hearingDate: DateTime;
+  transcriptionType: string;
+  status: TranscriptStatus;
+  urgency: Urgency;
+  requestedTs: DateTime;
+};
 
-export interface YourTranscriptionRequestsVm {
-  requester_transcriptions: UserTranscriptionRequestVm[];
-  approver_transcriptions: UserTranscriptionRequestVm[];
-}
+export type WithTranscriptionUrgency<T> = T & { urgency: Urgency };

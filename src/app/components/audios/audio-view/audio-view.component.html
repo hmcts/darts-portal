@@ -38,15 +38,15 @@
     <div class="details-container">
       <div class="label-text-container">
         <h3 class="govuk-heading-s">Hearing date</h3>
-        <p class="govuk-body">{{ transformedMedia.hearingDate.toISO() | date: 'd MMM y' }}</p>
+        <p class="govuk-body">{{ transformedMedia.hearingDate | luxonDate: 'd MMM y' }}</p>
       </div>
       <div class="label-text-container">
         <h3 class="govuk-heading-s">Start Time</h3>
-        <p class="govuk-body">{{ transformedMedia.startTime.toISO() | date: 'HH:mm:ss' }}</p>
+        <p class="govuk-body">{{ transformedMedia.startTime | luxonDate: 'HH:mm:ss' }}</p>
       </div>
       <div class="label-text-container">
         <h3 class="govuk-heading-s">End Time</h3>
-        <p class="govuk-body">{{ transformedMedia.endTime.toISO() | date: 'HH:mm:ss' }}</p>
+        <p class="govuk-body">{{ transformedMedia.endTime | luxonDate: 'HH:mm:ss' }}</p>
       </div>
     </div>
   </ng-container>

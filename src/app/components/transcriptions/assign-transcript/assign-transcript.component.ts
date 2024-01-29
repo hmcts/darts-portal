@@ -1,4 +1,4 @@
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -9,6 +9,8 @@ import { ReportingRestrictionComponent } from '@common/reporting-restriction/rep
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { TranscriptionDetails } from '@darts-types/transcription-details.interface';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
+
+import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { ErrorMessageService } from '@services/error/error-message.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { map } from 'rxjs/internal/operators/map';
@@ -40,7 +42,7 @@ export class AssignTranscriptComponent implements OnDestroy {
 
   transcriptId = inject(ActivatedRoute).snapshot.params.transcriptId;
   transcriptionService = inject(TranscriptionService);
-  datePipe = inject(DatePipe);
+  luxonDatePipe = inject(LuxonDatePipe);
   router = inject(Router);
   errorMsgService = inject(ErrorMessageService);
   hearingId: number | null = null;
@@ -57,41 +59,41 @@ export class AssignTranscriptComponent implements OnDestroy {
 
   vm$ = this.transcriptionService.getTranscriptionDetails(this.transcriptId).pipe(
     tap((data: TranscriptionDetails) => {
-      this.caseNumber = data.case_number;
-      this.hearingId = data.hearing_id;
-      this.caseId = data.case_id;
-      this.startTime = this.datePipe.transform(data.transcription_start_ts, 'HH:mm:ss');
-      this.endTime = this.datePipe.transform(data.transcription_end_ts, 'HH:mm:ss');
+      this.caseNumber = data.caseNumber;
+      this.hearingId = data.hearingId;
+      this.caseId = data.caseId;
+      this.startTime = this.luxonDatePipe.transform(data.transcriptionStartTs, 'HH:mm:ss');
+      this.endTime = this.luxonDatePipe.transform(data.transcriptionEndTs, 'HH:mm:ss');
       this.getAudioQueryParams =
         this.startTime && this.endTime ? { startTime: this.startTime, endTime: this.endTime } : null;
     }),
     map((data: TranscriptionDetails) => {
-      const hearingDate = this.datePipe.transform(data.hearing_date, 'dd MMM yyyy');
-      const received = this.datePipe.transform(data.received, 'dd MMM yyyy HH:mm:ss');
+      const hearingDate = this.luxonDatePipe.transform(data.hearingDate, 'dd MMM yyyy');
+      const received = this.luxonDatePipe.transform(data.received, 'dd MMM yyyy HH:mm:ss');
 
       const vm = {
-        reportingRestrictions: data.case_reporting_restrictions ?? [],
+        reportingRestrictions: data.caseReportingRestrictions ?? [],
         caseDetails: {
-          'Case ID': data.case_number,
+          'Case ID': data.caseNumber,
           Courthouse: data.courthouse,
           'Judge(s)': data.judges,
           'Defendant(s)': data.defendants,
         },
         hearingDetails: {
           'Hearing Date': hearingDate,
-          'Request Type': data.request_type,
-          'Request method': data.is_manual ? 'Manual' : 'Automated',
+          'Request Type': data.requestType,
+          'Request method': data.isManual ? 'Manual' : 'Automated',
           'Request ID': this.transcriptId,
           Urgency: data.urgency,
           'Audio for transcript':
             this.startTime && this.endTime ? `Start time ${this.startTime} - End time ${this.endTime}` : '',
           From: data.from,
           Received: received,
-          Instructions: data.requestor_comments,
+          Instructions: data.requestorComments,
           'Judge approval': 'Yes',
         },
-        hearingId: data.hearing_id,
-        caseId: data.case_id,
+        hearingId: data.hearingId,
+        caseId: data.caseId,
       };
 
       return vm;

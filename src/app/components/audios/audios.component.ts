@@ -9,6 +9,7 @@ import { DatatableColumn, MediaRequest, RequestedMedia, TransformedMedia } from 
 import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { UnreadIconDirective } from '@directives/unread-icon.directive';
+import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { HeaderService } from '@services/header/header.service';
 import { BehaviorSubject, Observable, combineLatest, forkJoin, map, shareReplay, switchMap } from 'rxjs';
@@ -28,6 +29,7 @@ import { BehaviorSubject, Observable, combineLatest, forkJoin, map, shareReplay,
     RouterLink,
     TabDirective,
     DeleteComponent,
+    LuxonDatePipe,
   ],
 })
 export class AudiosComponent {
@@ -53,7 +55,7 @@ export class AudiosComponent {
 
   columns: DatatableColumn[] = [
     { name: 'Case ID', prop: 'caseNumber', sortable: true },
-    { name: 'Court', prop: 'courthouseName', sortable: true },
+    { name: 'Courthouse', prop: 'courthouseName', sortable: true },
     { name: 'Hearing date', prop: 'hearingDate', sortable: true },
     { name: 'Start time', prop: 'startTime', sortable: true },
     { name: 'End time', prop: 'endTime', sortable: true },

@@ -11,6 +11,7 @@ import { ValidationErrorSummaryComponent } from '@common/validation-error-summar
 import { TranscriptionDetails } from '@darts-types/index';
 
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
+import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { maxFileSizeValidator } from '@validators/max-file-size.validator';
 import { map } from 'rxjs/internal/operators/map';
@@ -39,42 +40,43 @@ export class UploadTranscriptComponent implements OnDestroy {
   requestId = inject(ActivatedRoute).snapshot.params.requestId;
   router = inject(Router);
   datePipe = inject(DatePipe);
+  luxonPipe = inject(LuxonDatePipe);
   errors: { fieldId: string; message: string }[] = [];
 
   isManualRequest = false;
 
   vm$ = this.transcriptionService.getTranscriptionDetails(this.requestId).pipe(
-    tap((data: TranscriptionDetails) => (this.isManualRequest = data.is_manual)),
+    tap((data: TranscriptionDetails) => (this.isManualRequest = data.isManual)),
     map((data: TranscriptionDetails) => {
-      const hearingDate = this.datePipe.transform(data.hearing_date, 'dd MMM yyyy');
-      const startTime = this.datePipe.transform(data.transcription_start_ts, 'HH:mm:ss');
-      const endTime = this.datePipe.transform(data.transcription_end_ts, 'HH:mm:ss');
-      const received = this.datePipe.transform(data.received, 'dd MMM yyyy HH:mm:ss');
+      const hearingDate = this.luxonPipe.transform(data.hearingDate, 'dd MMM yyyy');
+      const startTime = this.luxonPipe.transform(data.transcriptionStartTs, 'HH:mm:ss');
+      const endTime = this.luxonPipe.transform(data.transcriptionEndTs, 'HH:mm:ss');
+      const received = this.luxonPipe.transform(data.received, 'dd MMM yyyy HH:mm:ss');
 
       const vm = {
-        reportingRestrictions: data.case_reporting_restrictions ?? [],
+        reportingRestrictions: data.caseReportingRestrictions ?? [],
         caseDetails: {
-          'Case ID': data.case_number,
+          'Case ID': data.caseNumber,
           Courthouse: data.courthouse,
           'Judge(s)': data.judges,
           'Defendant(s)': data.defendants,
         },
         requestDetails: {
           'Hearing Date': hearingDate,
-          'Request Type': data.request_type,
-          'Request method': data.is_manual ? 'Manual' : 'Automated',
+          'Request Type': data.requestType,
+          'Request method': data.isManual ? 'Manual' : 'Automated',
           'Request ID': this.requestId,
           Urgency: data.urgency,
           'Audio for transcript': startTime && endTime ? `Start time ${startTime} - End time ${endTime}` : '',
           From: data.from,
           Received: received,
-          Instructions: data.requestor_comments,
+          Instructions: data.requestorComments,
           'Judge approval': 'Yes',
         },
         startTime,
         endTime,
-        hearingId: data.hearing_id,
-        caseId: data.case_id,
+        hearingId: data.hearingId,
+        caseId: data.caseId,
         getAudioQueryParams: startTime && endTime ? { startTime, endTime } : null,
       };
 
