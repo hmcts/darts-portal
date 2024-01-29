@@ -16,11 +16,6 @@ import { of, throwError } from 'rxjs';
 import { ResultsComponent } from './results/results.component';
 import { SearchComponent } from './search.component';
 
-// Mock the initAll function
-jest.mock('@scottish-government/pattern-library/src/all', () => ({
-  initAll: jest.fn(),
-}));
-
 describe('SearchComponent', () => {
   const fakeAppInsightsService = {};
   const fakeAppConfigService = {};

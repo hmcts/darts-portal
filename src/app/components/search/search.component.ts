@@ -1,11 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CourthouseComponent } from '@common/courthouse/courthouse.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { ErrorSummaryEntry, FieldErrors, SearchFormValues } from '@darts-types/index';
-import { initAll } from '@scottish-government/pattern-library/src/all';
 import { CaseService } from '@services/case/case.service';
 import { ErrorMessageService } from '@services/error/error-message.service';
 import { futureDateValidator } from '@validators/future-date.validator';
@@ -50,7 +49,7 @@ const fieldErrors: FieldErrors = {
     DatepickerComponent,
   ],
 })
-export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
+export class SearchComponent implements OnInit, OnDestroy {
   @ViewChild(CourthouseComponent) courthouseComponent!: CourthouseComponent;
 
   dateInputType: 'specific' | 'range' | undefined;
@@ -164,10 +163,6 @@ export class SearchComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.form.get('courthouse')?.patchValue(courthouse);
     this.form.get('courthouse')?.markAsDirty();
     this.isSubmitted = false;
-  }
-
-  ngAfterViewChecked(): void {
-    initAll();
   }
 
   get f() {
