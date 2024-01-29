@@ -19,7 +19,7 @@ describe('ErrorMessageService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('Subscribed endpoint error handling', () => {
+  describe('Subscribed endpoints error handling', () => {
     it('should not change route on the subscribed endpoints, for transcriptions', () => {
       const error = new HttpErrorResponse({ status: 409, url: '/api/transcriptions' });
       const navigateSpy = jest.spyOn(mockRouter, 'navigateByUrl');
@@ -46,6 +46,15 @@ describe('ErrorMessageService', () => {
 
       const error2 = new HttpErrorResponse({ status: 204, url: '/api/cases/search' });
       service.handleErrorMessage(error2);
+      expect(navigateSpy).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('Ignored endpoints error handling', () => {
+    it('should not change route on the ignored endpoints, for not-accessed-count', () => {
+      const error = new HttpErrorResponse({ status: 500, url: '/api/audio-requests/not-accessed-count' });
+      const navigateSpy = jest.spyOn(mockRouter, 'navigateByUrl');
+      service.handleErrorMessage(error);
       expect(navigateSpy).not.toHaveBeenCalled();
     });
   });
