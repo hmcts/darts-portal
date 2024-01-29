@@ -55,7 +55,7 @@ export class AudiosComponent {
 
   columns: DatatableColumn[] = [
     { name: 'Case ID', prop: 'caseNumber', sortable: true },
-    { name: 'Court', prop: 'courthouseName', sortable: true },
+    { name: 'Courthouse', prop: 'courthouseName', sortable: true },
     { name: 'Hearing date', prop: 'hearingDate', sortable: true },
     { name: 'Start time', prop: 'startTime', sortable: true },
     { name: 'End time', prop: 'endTime', sortable: true },
@@ -130,5 +130,36 @@ export class AudiosComponent {
     event.preventDefault();
     this.selectedAudioRequests = [row as TransformedMedia];
     this.isDeleting = true;
+  }
+
+  getStatusClass(status: string): string {
+    // 'OPEN' | 'PROCESSING' | 'FAILED' | 'COMPLETED' | 'EXPIRED';
+    switch (status) {
+      case 'OPEN':
+        return 'govuk-tag--yellow';
+      case 'PROCESSING':
+        return 'govuk-tag--yellow';
+      case 'FAILED':
+        return 'govuk-tag--red';
+      case 'COMPLETED':
+        return 'govuk-tag--green';
+      case 'EXPIRED':
+        return 'govuk-tag--grey';
+      default:
+        return 'govuk-tag--blue';
+    }
+  }
+
+  getStatusText(status: string): string {
+    switch (status) {
+      case 'COMPLETED':
+        return 'READY';
+      case 'PROCESSING':
+        return 'IN PROGRESS';
+      case 'OPEN':
+        return 'REQUESTED';
+      default:
+        return status;
+    }
   }
 }
