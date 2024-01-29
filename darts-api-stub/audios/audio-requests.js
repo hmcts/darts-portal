@@ -21,7 +21,7 @@ const mediaRequests = {
     {
       case_id: 1,
       media_request_id: 1,
-      case_number: 'C2',
+      case_number: 'C0',
       courthouse_name: 'Newport',
       hearing_date: '2023-02-01',
       start_ts: '2023-08-21T10:00:00Z',
