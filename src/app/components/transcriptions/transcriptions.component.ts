@@ -122,6 +122,12 @@ export class TranscriptionsComponent {
       : 'Are you sure you want to remove these transcript requests?';
   }
 
+  get deleteScreenText(): string {
+    return this.selectedRequests.length === 1
+      ? 'This action will remove this transcript request from your transcripts. You can still access it by searching at the hearing and case levels.'
+      : 'This action will remove these transcript requests from your transcripts. You can still access them by searching at the hearing and case levels.';
+  }
+
   isRequester = this.userService.isRequester();
   isApprover = this.userService.isApprover();
   isJudge = this.userService.isJudge();

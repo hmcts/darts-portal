@@ -351,4 +351,25 @@ describe('TranscriptionsComponent', () => {
       expect(title).toEqual('Are you sure you want to remove these transcript requests?');
     });
   });
+
+  describe('deleteScreenText', () => {
+    it('should return the correct message for a single selected request', () => {
+      component.selectedRequests = [{ transcriptionId: 1 } as TranscriptRequest];
+      const result = component.deleteScreenText;
+      expect(result).toEqual(
+        'This action will remove this transcript request from your transcripts. You can still access it by searching at the hearing and case levels.'
+      );
+    });
+
+    it('should return the correct message for multiple selected requests', () => {
+      component.selectedRequests = [
+        { transcriptionId: 1 } as TranscriptRequest,
+        { transcriptionId: 2 } as TranscriptRequest,
+      ];
+      const result = component.deleteScreenText;
+      expect(result).toEqual(
+        'This action will remove these transcript requests from your transcripts. You can still access them by searching at the hearing and case levels.'
+      );
+    });
+  });
 });
