@@ -3,5 +3,5 @@ nodejs:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
   environment:
-    DARTS_API_URL: https://darts-api.staging.platform.hmcts.net
+    DARTS_API_URL: https://darts-api-pr-996.dev.platform.hmcts.net
     DARTS_PORTAL_URL: https://${SERVICE_FQDN}
