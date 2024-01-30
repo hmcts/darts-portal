@@ -104,12 +104,6 @@ export class FiltersComponent {
   }
 
   isChecked(name: string, value: string) {
-    if (this.selectedFilters && this.selectedFilters.length > 0) {
-      const index = this.selectedFilters.findIndex((item) => item.name === name);
-      if (this.selectedFilters[index]) {
-        return this.selectedFilters[index].values.includes(value) ? true : false;
-      }
-    }
-    return false;
+    return Boolean(this.selectedFilters?.find((item) => item.name === name)?.values?.includes(value));
   }
 }
