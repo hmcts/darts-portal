@@ -7,7 +7,7 @@ export default (req: Request, res: Response, next: NextFunction): void => {
   } else {
     next();
   }
-  if (req.session.securityToken?.userState?.userId) {
+  if (!req.session.securityToken?.userState?.userId) {
     res.sendStatus(401);
   }
 };
