@@ -102,4 +102,8 @@ export class FiltersComponent {
     }
     return filter.values.filter((value) => value.toLowerCase().includes(searchTerm.toLowerCase()));
   }
+
+  isChecked(name: string, value: string) {
+    return Boolean(this.selectedFilters?.find((item) => item.name === name)?.values?.includes(value));
+  }
 }
