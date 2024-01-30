@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { AuthenticationUtils } from '../utils/authentication-utils';
 
 export default (req: Request, res: Response, next: NextFunction): void => {
@@ -6,5 +6,8 @@ export default (req: Request, res: Response, next: NextFunction): void => {
     res.sendStatus(401);
   } else {
     next();
+  }
+  if (req.session.securityToken?.userState?.userId) {
+    res.sendStatus(401);
   }
 };
