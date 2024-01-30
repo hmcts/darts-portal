@@ -112,9 +112,12 @@ describe('SearchComponent', () => {
 
       const rangeDateInput = fixture.debugElement.query(By.css('#date_to'));
       rangeDateInput.triggerEventHandler('change', { target: { value: '23/08/2023' } });
+      const el = rangeDateInput.nativeElement;
+
       fixture.detectChanges();
       component.setInputValue('23/08/2023', 'date_to');
 
+      expect(el.value).toEqual('23/08/2023');
       expect(component.form.controls['date_to'].value).toEqual('23/08/2023');
     });
   });
