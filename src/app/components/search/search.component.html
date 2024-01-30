@@ -91,7 +91,8 @@
             id="specific-date-items"
           >
             <app-datepicker
-              id="specific_date"
+              inputId="specific_date"
+              [control]="$any(form.controls.specific_date)"
               name="specific_date"
               label="Enter a date"
               hint="Use dd/mm/yyyy format."
@@ -122,7 +123,8 @@
               id="range-date-items"
             >
               <app-datepicker
-                id="date_from"
+                inputId="date_from"
+                [control]="$any(form.controls.date_from)"
                 name="date_from"
                 label="Enter date from"
                 hint="Use dd/mm/yyyy format."
@@ -137,7 +139,8 @@
               [class.govuk-form-group--error]="isControlInvalid('date_to')"
             >
               <app-datepicker
-                id="date_to"
+                inputId="date_to"
+                [control]="$any(form.controls.date_to)"
                 name="date_to"
                 label="Enter date from"
                 hint="Use dd/mm/yyyy format."

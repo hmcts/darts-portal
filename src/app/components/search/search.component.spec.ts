@@ -93,7 +93,7 @@ describe('SearchComponent', () => {
       fixture.detectChanges();
       component.setInputValue('23/08/2023', 'specific_date');
       expect(el.value).toEqual('23/08/2023');
-      //With specific date picker, date_from and date_to should equal the same
+      // With specific date picker, date_from and date_to should equal the same
       expect(component.form.controls['specific_date'].value).toEqual('23/08/2023');
     });
 
@@ -112,11 +112,10 @@ describe('SearchComponent', () => {
 
       const rangeDateInput = fixture.debugElement.query(By.css('#date_to'));
       rangeDateInput.triggerEventHandler('change', { target: { value: '23/08/2023' } });
-      const el = rangeDateInput.nativeElement;
-
       fixture.detectChanges();
+      component.setInputValue('23/08/2023', 'date_to');
 
-      expect(el.value).toEqual('23/08/2023');
+      expect(component.form.controls['date_to'].value).toEqual('23/08/2023');
     });
   });
 
@@ -196,6 +195,25 @@ describe('SearchComponent', () => {
         event_text_contains: 'Keywords',
         judge_name: 'Judy',
       });
+    });
+
+    it('should set isAdvancedSearch true when search button is clicked and fields are filled incorrectly', () => {
+      component.form.controls['case_number'].setValue('1');
+      component.form.controls['courthouse'].setValue('Reading');
+      component.form.controls['courtroom'].setValue('2');
+      component.form.controls['judge_name'].setValue('Judy');
+      component.form.controls['defendant_name'].setValue('Dave');
+      // component.form.controls['specific_date'].setValue('');
+      component.form.controls['date_to'].setValue('INVALID');
+      component.form.controls['date_from'].setValue('INVALID');
+      component.form.controls['event_text_contains'].setValue('Keywords');
+
+      component.form.markAsDirty();
+      component.form.markAsTouched();
+
+      component.onSubmit();
+
+      expect(component.isAdvancedSearch).toEqual(true);
     });
   });
 
@@ -343,7 +361,7 @@ describe('SearchComponent', () => {
     expect(caseService.searchResults$).toBeNull();
   }));
 
-  it('should restore form values when previousFormValues is defined', () => {
+  it('should restore form values when previousFormValues is defined and range was previously selected', () => {
     // Mock previousFormValues
     const previousFormValues = {
       case_number: '',
@@ -363,6 +381,32 @@ describe('SearchComponent', () => {
 
     expect(component.isAdvancedSearch).toBeTruthy();
     expect(component.dateInputType).toEqual('range');
+    expect(component.courthouse).toEqual(previousFormValues.courthouse);
+    expect(component.form.value).toEqual(previousFormValues);
+    expect(component.form.dirty).toBeTruthy();
+    expect(component.isSubmitted).toBeTruthy();
+  });
+
+  it('should restore form values when previousFormValues is defined and specific date was previously selected', () => {
+    // Mock previousFormValues
+    const previousFormValues = {
+      case_number: '',
+      courthouse: 'Cardiff',
+      courtroom: '',
+      date_from: '',
+      date_to: '',
+      defendant_name: '',
+      event_text_contains: '',
+      judge_name: '',
+      specific_date: '2022-09-01',
+    };
+
+    caseService.searchFormValues = previousFormValues;
+
+    component.restoreForm();
+
+    expect(component.isAdvancedSearch).toBeTruthy();
+    expect(component.dateInputType).toEqual('specific');
     expect(component.courthouse).toEqual(previousFormValues.courthouse);
     expect(component.form.value).toEqual(previousFormValues);
     expect(component.form.dirty).toBeTruthy();

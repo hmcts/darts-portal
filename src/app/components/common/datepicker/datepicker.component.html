@@ -1,8 +1,8 @@
 <div data-module="ds-datepicker" class="ds_datepicker">
-  <label class="ds_label" for="retention-date">{{ label }}</label>
+  <label class="ds_label" [for]="inputId">{{ label }}</label>
   <p class="ds_hint-text">{{ hint }}</p>
   <!-- Error message if date invalid -->
-  <div *ngIf="areDateErrors()" id="retention-date-errors">
+  <div *ngIf="areDateErrors()" [id]="inputId + '-errors'">
     <p *ngFor="let error of errors" class="govuk-error-message">
       <span class="govuk-visually-hidden">Error: </span>{{ error }}
     </p>
@@ -10,8 +10,9 @@
   <div class="ds_input__wrapper">
     <input
       aria-label="Enter a date in dd/mm/yyyy format"
-      [name]="name ? name : null"
-      [id]="id ? id : null"
+      [formControl]="control"
+      [name]="name"
+      [id]="inputId"
       type="text"
       class="ds_input ds_input--fixed-10"
       (change)="setDateValue($any($event).target.value)"

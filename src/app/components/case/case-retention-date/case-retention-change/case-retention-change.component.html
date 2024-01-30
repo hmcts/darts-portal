@@ -37,12 +37,13 @@
         (change)="onChangeDate()"
       >
         <app-datepicker
-          id="retention-date"
+          inputId="retention-date"
           name="retention-date"
           label="Enter a date to retain the case until"
           hint="Use dd/mm/yyyy format. For example, 31/01/2023."
           [errors]="[errorDate]"
           (dateChange)="setDateValue($event)"
+          [control]="retainDateFormControl"
         />
       </div>
       <div class="govuk-radios__item">
