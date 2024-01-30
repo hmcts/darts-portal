@@ -741,41 +741,60 @@ describe('DataTableComponent', () => {
     expect(noDataMessage.nativeElement.textContent).toContain('No data');
   });
 
-  describe('#sortAndPaginateOnRowsChanged', () => {
-    it('true: maintains sorting and page number when rows are updated', () => {
+  describe('#ngOnChanges', () => {
+    it('if rows not changed, do nothing', () => {
       component.rows = MOCK_ROWS;
-      component.sortAndPaginateOnRowsChanged = true;
       component.sorting = {
         column: 'case_number',
-        order: 'asc',
+        order: 'desc',
       };
       component.currentPage = 2;
 
-      component.ngOnChanges({ rows: {} } as unknown as SimpleChanges);
+      component.ngOnChanges({} as unknown as SimpleChanges);
 
       expect(component.sorting).toEqual({
         column: 'case_number',
-        order: 'asc',
+        order: 'desc',
       });
       expect(component.currentPage).toEqual(2);
     });
 
-    it('false: resets sorting and page when rows are updated', () => {
-      component.rows = MOCK_ROWS;
-      component.sortAndPaginateOnRowsChanged = false;
-      component.sorting = {
-        column: 'case_number',
-        order: 'desc',
-      };
-      component.currentPage = 2;
+    describe('#sortAndPaginateOnRowsChanged', () => {
+      it('true: maintains sorting and page number when rows are updated', () => {
+        component.rows = MOCK_ROWS;
+        component.sortAndPaginateOnRowsChanged = true;
+        component.sorting = {
+          column: 'case_number',
+          order: 'asc',
+        };
+        component.currentPage = 2;
 
-      component.ngOnChanges({ rows: {} } as unknown as SimpleChanges);
+        component.ngOnChanges({ rows: {} } as unknown as SimpleChanges);
 
-      expect(component.sorting).toEqual({
-        column: '',
-        order: 'desc',
+        expect(component.sorting).toEqual({
+          column: 'case_number',
+          order: 'asc',
+        });
+        expect(component.currentPage).toEqual(2);
       });
-      expect(component.currentPage).toEqual(1);
+
+      it('false: resets sorting and page when rows are updated', () => {
+        component.rows = MOCK_ROWS;
+        component.sortAndPaginateOnRowsChanged = false;
+        component.sorting = {
+          column: 'case_number',
+          order: 'desc',
+        };
+        component.currentPage = 2;
+
+        component.ngOnChanges({ rows: {} } as unknown as SimpleChanges);
+
+        expect(component.sorting).toEqual({
+          column: '',
+          order: 'desc',
+        });
+        expect(component.currentPage).toEqual(1);
+      });
     });
   });
 });
