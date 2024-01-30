@@ -14,6 +14,11 @@ const subscribedEndpoints = [
   { endpoint: '/api/audio/preview', responses: [403, 404, 500, 502, 504] },
 ];
 
+//Contains endpoints where errors will be ignored
+const ignoredEndpoints = [
+  { endpoint: '/api/audio-requests/not-accessed-count', responses: [400, 401, 403, 404, 500, 502, 504] },
+];
+
 @Injectable({
   providedIn: 'root',
 })
@@ -49,7 +54,7 @@ export class ErrorMessageService {
 
   //Used to handle other components/endpoints that do not subscribe to the error
   private handleOtherPages(error: HttpErrorResponse) {
-    if (!this.isSubscribed(error)) {
+    if (!this.isSubscribed(error) && !this.isIgnored(error)) {
       switch (error.status) {
         case 403:
           this.showForbidden();
@@ -69,6 +74,15 @@ export class ErrorMessageService {
 
   private isSubscribed(response: HttpErrorResponse) {
     return subscribedEndpoints.some((subscribed) => {
+      const endpointMatches = response.url?.includes(subscribed.endpoint);
+      const responseMatches = subscribed.responses.includes(response.status);
+
+      return endpointMatches && responseMatches;
+    });
+  }
+
+  private isIgnored(response: HttpErrorResponse) {
+    return ignoredEndpoints.some((subscribed) => {
       const endpointMatches = response.url?.includes(subscribed.endpoint);
       const responseMatches = subscribed.responses.includes(response.status);
 
