@@ -208,4 +208,28 @@ describe('FiltersComponent', () => {
       expect(results).toEqual([]);
     });
   });
+
+  describe('#isChecked', () => {
+    beforeEach(() => {
+      component.selectedFilters = [
+        { name: 'filter1', displayName: 'Filter 1', values: ['value1', 'value2'] },
+        { name: 'filter2', displayName: 'Filter 2', values: ['value3'] },
+      ];
+    });
+
+    it('should return true if the value is in the selected filters', () => {
+      expect(component.isChecked('filter1', 'value1')).toBeTruthy();
+      expect(component.isChecked('filter2', 'value3')).toBeTruthy();
+    });
+
+    it('should return false if the value is not in the selected filters', () => {
+      expect(component.isChecked('filter1', 'value3')).toBeFalsy();
+      expect(component.isChecked('filter2', 'value1')).toBeFalsy();
+    });
+
+    it('should return false if there are no selected filters', () => {
+      component.selectedFilters = [];
+      expect(component.isChecked('filter1', 'value1')).toBeFalsy();
+    });
+  });
 });

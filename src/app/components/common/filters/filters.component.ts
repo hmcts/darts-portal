@@ -102,4 +102,14 @@ export class FiltersComponent {
     }
     return filter.values.filter((value) => value.toLowerCase().includes(searchTerm.toLowerCase()));
   }
+
+  isChecked(name: string, value: string) {
+    if (this.selectedFilters && this.selectedFilters.length > 0) {
+      const index = this.selectedFilters.findIndex((item) => item.name === name);
+      if (this.selectedFilters[index]) {
+        return this.selectedFilters[index].values.includes(value) ? true : false;
+      }
+    }
+    return false;
+  }
 }
