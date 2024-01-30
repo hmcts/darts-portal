@@ -7,7 +7,7 @@
     <p class="govuk-body">Review the case ID, case reference or court reference you entered and try again.</p>
   </div>
   <div *ngIf="cases.length">
-    <app-data-table [rows]="cases" [columns]="columns" [caption]="caption">
+    <app-data-table [rows]="cases" [columns]="columns" [caption]="caption" [sortAndPaginateOnRowsChanged]="false">
       <ng-template [tableBodyTemplate] let-row>
         <tr class="govuk-table__row">
           <td class="govuk-table__cell">
