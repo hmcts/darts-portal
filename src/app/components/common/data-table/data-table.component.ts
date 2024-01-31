@@ -195,7 +195,7 @@ export class DataTableComponent<TRow> implements OnChanges {
   }
 
   private updatePagedData(): void {
-    this.pagedRows = this.paginate(this.rows, this.pageLimit, this.currentPage);
+    this.pagedRows = this.pagination ? this.paginate(this.rows, this.pageLimit, this.currentPage) : this.rows;
   }
 
   private paginate(array: TRow[], pageSize: number, currentPage: number) {

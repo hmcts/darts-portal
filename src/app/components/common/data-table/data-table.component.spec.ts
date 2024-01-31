@@ -94,6 +94,17 @@ describe('DataTableComponent', () => {
       expect(component.pagedRows.length).toEqual(1);
       expect(component.pagedRows[0]).toEqual(MOCK_ROWS[3]);
     });
+
+    it('does not paginate when it is disabled', () => {
+      component.rows = MOCK_ROWS;
+      component.pageLimit = 2;
+      component.pagination = false;
+
+      component.ngOnChanges({ rows: {} } as unknown as SimpleChanges); // Pass an empty object as an argument
+
+      // given 4 rows and an irrelevant page limit of 2, we expect all rows to display
+      expect(component.pagedRows.length).toEqual(4);
+    });
   });
 
   describe('Sorting', () => {
