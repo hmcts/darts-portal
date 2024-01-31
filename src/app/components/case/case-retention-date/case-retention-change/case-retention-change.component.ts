@@ -1,11 +1,11 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { AfterViewChecked, Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { DatepickerComponent } from '@common/datepicker/datepicker.component';
 import { GovukTextareaComponent } from '@common/govuk-textarea/govuk-textarea.component';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { CaseRetentionPageState } from '@darts-types/case-retention-page-state.type';
-import { initAll } from '@scottish-government/pattern-library/src/all';
 import { UserService } from '@services/user/user.service';
 import { beforeDateValidator } from '@validators/before-date.validator';
 import { DateTime } from 'luxon';
@@ -19,11 +19,12 @@ import { DateTime } from 'luxon';
     ReportingRestrictionComponent,
     ValidationErrorSummaryComponent,
     GovukTextareaComponent,
+    DatepickerComponent,
   ],
   templateUrl: './case-retention-change.component.html',
   styleUrls: ['./case-retention-change.component.scss'],
 })
-export class CaseRententionChangeComponent implements AfterViewChecked {
+export class CaseRententionChangeComponent {
   @Input() state!: CaseRetentionPageState;
   @Input() currentRetentionDate!: string | null;
   @Input() originalRetentionDate!: string | null;
@@ -132,9 +133,5 @@ export class CaseRententionChangeComponent implements AfterViewChecked {
   onCancel(event: Event) {
     event.preventDefault();
     this.stateChange.emit('Default');
-  }
-
-  ngAfterViewChecked(): void {
-    initAll();
   }
 }

@@ -36,26 +36,15 @@
         id="change-date"
         (change)="onChangeDate()"
       >
-        <div data-module="ds-datepicker" class="ds_datepicker">
-          <label class="ds_label" for="retention-date">Enter a date to retain the case until</label>
-          <p class="ds_hint-text">Use dd/mm/yyyy format. For example, 31/01/2023.</p>
-          <!-- Error message if date invalid -->
-          <div *ngIf="isDateInvalid()" id="retention-date-errors">
-            <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ errorDate }}</p>
-          </div>
-          <div class="ds_input__wrapper">
-            <input
-              aria-label="Enter a date in dd/mm/yyyy format"
-              [formControl]="retainDateFormControl"
-              name="retention-date"
-              id="retention-date"
-              type="text"
-              class="ds_input ds_input--fixed-10"
-              (change)="setDateValue($any($event).target.value)"
-              [class.govuk-input--error]="isDateInvalid()"
-            />
-          </div>
-        </div>
+        <app-datepicker
+          inputId="retention-date"
+          name="retention-date"
+          label="Enter a date to retain the case until"
+          hint="Use dd/mm/yyyy format. For example, 31/01/2023."
+          [errors]="[errorDate]"
+          (dateChange)="setDateValue($event)"
+          [control]="retainDateFormControl"
+        />
       </div>
       <div class="govuk-radios__item">
         <input
