@@ -57,11 +57,21 @@ describe('App Routes', () => {
     });
   });
 
-  APP_ROUTES.filter((route) => route.data?.allowedRoles).forEach((route: Route) => {
-    it(`navigate to "${route.path}" redirects to "/login" if user does not have the required role`, async () => {
+  APP_ROUTES.filter((route) => route.data?.allowedRoles && route.data?.allowedRoles === 'ADMIN').forEach(
+    (route: Route) => {
+      it(`navigate to "${route.path}" redirects to "/forbidden" if user does not have the required role`, async () => {
+        jest.spyOn(mockUserService, 'hasRoles').mockReturnValue(false);
+        await router.navigate([route.path]);
+        expect(location.path()).toEqual('/forbidden');
+      });
+    }
+  );
+
+  APP_ROUTES.filter((route) => route.data?.allowedRoles === 'ADMIN').forEach((route: Route) => {
+    it(`navigate to "${route.path}" redirects to "/page-not-found" if user does not have the admin role`, async () => {
       jest.spyOn(mockUserService, 'hasRoles').mockReturnValue(false);
       await router.navigate([route.path]);
-      expect(location.path()).toEqual('/forbidden');
+      expect(location.path()).toEqual('/page-not-found');
     });
   });
 
