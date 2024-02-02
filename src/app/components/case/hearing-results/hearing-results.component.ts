@@ -4,6 +4,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
+import { Annotations } from '@darts-types/annotations.interface';
 import { DatatableColumn, Hearing, TranscriptsRow } from '@darts-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
@@ -30,7 +31,7 @@ import { TabDirective } from 'src/app/directives/tab.directive';
 export class HearingResultsComponent {
   @Input() hearings: Hearing[] = [];
   @Input() transcripts: TranscriptsRow[] = [];
-  // @Input() annotations:
+  @Input() annotations: Annotations[] = [];
   caseId: number;
   hearingsColumns: DatatableColumn[] = [];
   transcriptColumns: DatatableColumn[] = [];
@@ -59,10 +60,10 @@ export class HearingResultsComponent {
 
     this.annotationColumns = [
       { name: 'Hearing date', prop: 'hearingDate', sortable: true },
-      { name: 'File name', prop: 'type', sortable: true },
-      { name: 'Format', prop: 'requestedOn', sortable: true },
-      { name: 'Date created', prop: 'requestedBy', sortable: true },
-      { name: 'Comments', prop: 'status', sortable: false },
+      { name: 'File name', prop: 'file_name', sortable: true },
+      { name: 'Format', prop: 'fileType', sortable: true },
+      { name: 'Date created', prop: 'uploadedTs', sortable: true },
+      { name: 'Comments', prop: 'annotationText', sortable: false },
       { name: '', prop: '' },
       { name: '', prop: '' },
     ];
