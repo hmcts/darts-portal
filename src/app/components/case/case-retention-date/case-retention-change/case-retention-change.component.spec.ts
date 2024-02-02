@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserService } from '@services/user/user.service';
-import { CaseRententionChangeComponent } from './case-retention-change.component';
+import { CaseRetentionChangeComponent } from './case-retention-change.component';
 import { DatePipe } from '@angular/common';
 
 describe('CaseRetentionComponent', () => {
-  let component: CaseRententionChangeComponent;
-  let fixture: ComponentFixture<CaseRententionChangeComponent>;
+  let component: CaseRetentionChangeComponent;
+  let fixture: ComponentFixture<CaseRetentionChangeComponent>;
   let mockUserService: Partial<UserService>;
 
   const currentRetentionDate = '01/01/2024';
@@ -17,10 +17,10 @@ describe('CaseRetentionComponent', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [CaseRententionChangeComponent],
+      imports: [CaseRetentionChangeComponent],
       providers: [{ provide: UserService, useValue: mockUserService }, { provide: DatePipe }],
     });
-    fixture = TestBed.createComponent(CaseRententionChangeComponent);
+    fixture = TestBed.createComponent(CaseRetentionChangeComponent);
     component = fixture.componentInstance;
     component.currentRetentionDate = currentRetentionDate;
     component.originalRetentionDate = originalRetentionDate;
