@@ -12,13 +12,13 @@ import { combineLatest, map } from 'rxjs';
 import { CaseRetentionHistory } from 'src/app/portal/models/case/case-retention-history.interface';
 import { CaseRetentionPageState } from 'src/app/portal/models/case/case-retention-page-state.type';
 import { CaseService } from 'src/app/portal/services/case/case.service';
-import { BreadcrumbComponent } from '../../../../components/common/breadcrumb/breadcrumb.component';
+import { BreadcrumbComponent } from '../../../../components/common/breadcrumb/breadcrumb.component'; //TO DO update as part of core
 import { DataTableComponent } from '../../../../components/common/data-table/data-table.component';
 import { DetailsTableComponent } from '../../../../components/common/details-table/details-table.component';
 import { GovukHeadingComponent } from '../../../../components/common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '../../../../components/common/loading/loading.component';
 import { NotificationBannerComponent } from '../../../../components/common/notification-banner/notification-banner.component';
-import { CaseRententionChangeComponent } from './case-retention-change/case-retention-change.component';
+import { CaseRetentionChangeComponent } from './case-retention-change/case-retention-change.component';
 import { CaseRententionConfirmComponent } from './case-retention-confirm/case-retention-confirm.component';
 
 @Component({
@@ -37,7 +37,7 @@ import { CaseRententionConfirmComponent } from './case-retention-confirm/case-re
     RouterLink,
     TableRowTemplateDirective,
     NotificationBannerComponent,
-    CaseRententionChangeComponent,
+    CaseRetentionChangeComponent,
     CaseRententionConfirmComponent,
     SuccessBannerComponent,
   ],

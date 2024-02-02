@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { HeaderService } from '@services/header/header.service';
 
 @Component({
   selector: 'app-not-found',
@@ -9,4 +10,14 @@ import { RouterModule } from '@angular/router';
   templateUrl: './not-found.component.html',
   styleUrls: ['./not-found.component.scss'],
 })
-export class NotFoundComponent {}
+export class NotFoundComponent implements OnInit, OnDestroy {
+  headerService = inject(HeaderService);
+
+  ngOnInit() {
+    this.headerService.hideNavigation();
+  }
+
+  ngOnDestroy() {
+    this.headerService.showNavigation();
+  }
+}

@@ -69,10 +69,10 @@
       </div>
       <app-govuk-textarea
         [id]="'change-reason'"
-        name="reason"
-        ariaDescribedBy="change-reason-hint"
+        [name]="'reason'"
+        [ariaDescribedBy]="'change-reason-hint'"
         [control]="retainReasonFormControl"
-        [maxCharacterLimit]="rententionCharacterLimit"
+        [maxCharacterLimit]="retentionCharacterLimit"
         [isInvalid]="isReasonInvalid()"
       ></app-govuk-textarea>
     </div>

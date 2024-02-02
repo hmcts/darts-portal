@@ -1,6 +1,6 @@
 import { CommonModule, NgIf } from '@angular/common';
 import { Component, DoCheck, inject } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '@services/auth/auth.service';
 import { HeaderService } from '@services/header/header.service';
 import { UserService } from '@services/user/user.service';
@@ -16,6 +16,7 @@ import { CountNotificationService } from 'src/app/portal/services/count-notifica
 export class HeaderComponent implements DoCheck {
   userService = inject(UserService);
   countService = inject(CountNotificationService);
+  router = inject(Router);
   isAuthenticated = false;
   isVisible$ = this.headerService.isVisible$;
   unreadAudioCount$ = this.countService.unreadAudio$;
