@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Annotations, AnnotationsData } from '@darts-types/annotations.interface';
 import { CaseRetentionChange } from '@darts-types/case-retention-change.interface';
 import { CaseRetentionHistory } from '@darts-types/case-retention-history.interface';
 import {
@@ -60,6 +61,12 @@ export class CaseService {
 
   getCaseHearings(caseId: number): Observable<Hearing[]> {
     return this.http.get<HearingData[]>(`${GET_CASE_PATH}/${caseId}/hearings`).pipe(map(this.mapHearingDataToHearing));
+  }
+
+  getCaseAnnotations(caseId: number): Observable<Annotations[]> {
+    return this.http
+      .get<AnnotationsData[]>(`${GET_CASE_PATH}/${caseId}/annotations`)
+      .pipe(map(this.mapAnnotationsDataToAnnotations));
   }
 
   searchCases(searchForm: SearchFormValues): Observable<Case[] | null> {
@@ -156,5 +163,22 @@ export class CaseService {
         : undefined,
       retentionPolicyApplied: c.retention_policy_applied,
     };
+  }
+
+  private mapAnnotationsDataToAnnotations(annotationsData: AnnotationsData[]): Annotations[] {
+    return annotationsData.map((a) => ({
+      annotationId: a.annotation_id,
+      hearingId: a.hearing_id,
+      hearingDate: DateTime.fromISO(a.hearing_date),
+      annotationTs: DateTime.fromISO(a.annotation_ts),
+      annotationText: a.annotation_text,
+      annotationDocuments: a.annotation_documents.map((ad) => ({
+        annotationDocumentId: ad.annotation_document_id,
+        fileName: ad.file_name,
+        fileType: ad.file_type,
+        uploadedBy: ad.uploaded_by,
+        uploadedTs: DateTime.fromISO(ad.uploaded_ts),
+      })),
+    }));
   }
 }

@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
+import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { DatatableColumn, Hearing, TranscriptsRow } from '@darts-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
@@ -20,6 +21,7 @@ import { TabDirective } from 'src/app/directives/tab.directive';
     TabDirective,
     TableRowTemplateDirective,
     LuxonDatePipe,
+    GovukHeadingComponent,
   ],
   templateUrl: './hearing-results.component.html',
   styleUrls: ['./hearing-results.component.scss'],
@@ -28,9 +30,11 @@ import { TabDirective } from 'src/app/directives/tab.directive';
 export class HearingResultsComponent {
   @Input() hearings: Hearing[] = [];
   @Input() transcripts: TranscriptsRow[] = [];
+  // @Input() annotations:
   caseId: number;
   hearingsColumns: DatatableColumn[] = [];
   transcriptColumns: DatatableColumn[] = [];
+  annotationColumns: DatatableColumn[] = [];
 
   transcriptStatusClassMap = transcriptStatusClassMap;
 
@@ -50,6 +54,16 @@ export class HearingResultsComponent {
       { name: 'Requested on', prop: 'requestedOn', sortable: true },
       { name: 'Requested by', prop: 'requestedBy', sortable: true },
       { name: 'Status', prop: 'status', sortable: true },
+      { name: '', prop: '' },
+    ];
+
+    this.annotationColumns = [
+      { name: 'Hearing date', prop: 'hearingDate', sortable: true },
+      { name: 'File name', prop: 'type', sortable: true },
+      { name: 'Format', prop: 'requestedOn', sortable: true },
+      { name: 'Date created', prop: 'requestedBy', sortable: true },
+      { name: 'Comments', prop: 'status', sortable: false },
+      { name: '', prop: '' },
       { name: '', prop: '' },
     ];
   }
