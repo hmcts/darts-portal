@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { GovukDetailsComponent } from '@components/common/govuk-details/govuk-details.component';
-import { ReportingRestriction } from '@core-types/index';
+import { GovukDetailsComponent } from '@common/govuk-details/govuk-details.component';
+import { ReportingRestriction } from '@darts-types/index';
 
 @Component({
   selector: 'app-reporting-restriction',
