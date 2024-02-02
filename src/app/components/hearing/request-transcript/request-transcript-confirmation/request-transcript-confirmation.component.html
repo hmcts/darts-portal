@@ -53,9 +53,9 @@
   </h1>
   <div id="more-detail-hint" class="govuk-hint">Provide any further instructions or comments for the transcriber.</div>
   <app-govuk-textarea
-    id="more-detail"
-    name="moreDetail"
-    ariaDescribedBy="more-detail-hint"
+    [id]="'more-detail'"
+    [name]="'moreDetail'"
+    [ariaDescribedBy]="'more-detail-hint'"
     [control]="moreDetailFormControl"
   ></app-govuk-textarea>
 </div>

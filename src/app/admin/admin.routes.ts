@@ -1,5 +1,3 @@
-// admin.routes.ts
-
 import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
 import { UserService } from '@services/user/user.service';
