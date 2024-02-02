@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -8,6 +8,7 @@ import { Annotations } from '@darts-types/annotations.interface';
 import { DatatableColumn, Hearing, TranscriptsRow } from '@darts-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
+import { UserService } from '@services/user/user.service';
 import { transcriptStatusClassMap } from 'src/app/constants/transcript-status-class-map';
 import { TabDirective } from 'src/app/directives/tab.directive';
 
@@ -29,6 +30,7 @@ import { TabDirective } from 'src/app/directives/tab.directive';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HearingResultsComponent {
+  userService = inject(UserService);
   @Input() hearings: Hearing[] = [];
   @Input() transcripts: TranscriptsRow[] = [];
   @Input() annotations: Annotations[] = [];

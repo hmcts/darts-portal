@@ -38,25 +38,27 @@
       </ng-template>
     </app-data-table>
   </div>
-  <div *tab="'All annotations'; count: annotations.length">
-    <app-govuk-heading [size]="'m'" [tag]="'h2'">All annotations</app-govuk-heading>
-    <app-data-table
-      id="annotationsTable"
-      [rows]="annotations"
-      [columns]="annotationColumns"
-      noDataMessage="There are no annotations for this case. Annotations added to hearings will be listed here."
-    >
-      <ng-template [tableRowTemplate]="annotations" let-row>
-        <td class="govuk-table__cell">
-          <a class="govuk-link" [routerLink]="['/case', caseId]">{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</a>
-        </td>
-        <td class="govuk-table__cell">{{ row.annotationDocuments[0].fileName }}</td>
-        <td class="govuk-table__cell">{{ row.annotationDocuments[0].fileType }}</td>
-        <td class="govuk-table__cell">{{ row.annotationDocuments[0].uploadedTs | luxonDate: 'dd MMM yyyy' }}</td>
-        <td class="govuk-table__cell">{{ row.annotationText }}</td>
-        <td class="govuk-table__cell"><a routerLink=".">Download</a></td>
-        <td class="govuk-table__cell"><a routerLink=".">Delete</a></td>
-      </ng-template>
-    </app-data-table>
-  </div>
+  @if (userService.isJudge() || userService.isAdmin()) {
+    <div *tab="'All annotations'; count: annotations.length">
+      <app-govuk-heading [size]="'m'" [tag]="'h2'">All annotations</app-govuk-heading>
+      <app-data-table
+        id="annotationsTable"
+        [rows]="annotations"
+        [columns]="annotationColumns"
+        noDataMessage="There are no annotations for this case. Annotations added to hearings will be listed here."
+      >
+        <ng-template [tableRowTemplate]="annotations" let-row>
+          <td class="govuk-table__cell">
+            <a class="govuk-link" [routerLink]="['/case', caseId]">{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</a>
+          </td>
+          <td class="govuk-table__cell">{{ row.annotationDocuments[0].fileName }}</td>
+          <td class="govuk-table__cell">{{ row.annotationDocuments[0].fileType }}</td>
+          <td class="govuk-table__cell">{{ row.annotationDocuments[0].uploadedTs | luxonDate: 'dd MMM yyyy' }}</td>
+          <td class="govuk-table__cell">{{ row.annotationText }}</td>
+          <td class="govuk-table__cell"><a routerLink=".">Download</a></td>
+          <td class="govuk-table__cell"><a routerLink=".">Delete</a></td>
+        </ng-template>
+      </app-data-table>
+    </div>
+  }
 </app-tabs>
