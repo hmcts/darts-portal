@@ -60,7 +60,7 @@ export class HearingResultsComponent {
 
     this.annotationColumns = [
       { name: 'Hearing date', prop: 'hearingDate', sortable: true },
-      { name: 'File name', prop: 'file_name', sortable: true },
+      { name: 'File name', prop: 'fileName', sortable: true },
       { name: 'Format', prop: 'fileType', sortable: true },
       { name: 'Date created', prop: 'uploadedTs', sortable: true },
       { name: 'Comments', prop: 'annotationText', sortable: false },
