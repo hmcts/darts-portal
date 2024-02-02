@@ -6,7 +6,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { UserState } from '@darts-types/user-state';
 import { UserService } from '@services/user/user.service';
 import { of } from 'rxjs/internal/observable/of';
+import { ADMIN_ROUTES } from './admin/admin.routes';
 import { APP_ROUTES } from './app.routes';
+import { PORTAL_ROUTES } from './portal/portal.routes';
 import { AuthService } from './services/auth/auth.service';
 
 describe('App Routes', () => {
@@ -57,11 +59,21 @@ describe('App Routes', () => {
     });
   });
 
-  APP_ROUTES.filter((route) => route.data?.allowedRoles).forEach((route: Route) => {
-    it(`navigate to "${route.path}" redirects to "/login" if user does not have the required role`, async () => {
+  // All role protected portal routes should redirect to forbidden if user does not have the required role
+  PORTAL_ROUTES.filter((route) => route.data?.allowedRoles).forEach((route: Route) => {
+    it(`navigate to "${route.path}" redirects to "/forbidden" if user does not have the required role for non-admin route`, async () => {
       jest.spyOn(mockUserService, 'hasRoles').mockReturnValue(false);
       await router.navigate([route.path]);
       expect(location.path()).toEqual('/forbidden');
+    });
+  });
+
+  // All admin routes should redirect to page not found if user does not have the admin role
+  ADMIN_ROUTES.forEach((route: Route) => {
+    it(`navigate to "${route.path}" redirects to "/page-not-found" if user does not have the admin role`, async () => {
+      jest.spyOn(mockUserService, 'hasRoles').mockReturnValue(false);
+      await router.navigate([route.path]);
+      expect(location.path()).toEqual('/page-not-found');
     });
   });
 
