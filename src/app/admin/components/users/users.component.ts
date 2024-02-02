@@ -2,7 +2,7 @@ import { AsyncPipe, JsonPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { Subject } from 'rxjs/internal/Subject';
 import { of } from 'rxjs/internal/observable/of';
 import { catchError } from 'rxjs/internal/operators/catchError';
@@ -33,35 +33,50 @@ export class UsersComponent {
 
   search$ = new Subject<UserSearchFormValues | null>();
   loading$ = new Subject<boolean>();
-  error$ = new Subject<any>();
+  error$ = new Subject<any>(); // TODO: Define error type
+  isSubmitted$ = new BehaviorSubject<boolean>(false);
 
-  results$: Observable<User[] | null> = this.search$.pipe(
-    tap(() => this.loading$.next(true)),
-    switchMap((values) => {
-      if (!values) {
+  results$ = combineLatest([this.search$, this.isSubmitted$]).pipe(
+    tap(() => this.startLoading()),
+    switchMap(([values, isSubmitted]) => {
+      if (!values || !isSubmitted) {
         return of(null);
       }
-      return this.userAdminService.searchUsers(values).pipe(
-        catchError((error) => {
-          this.error$.next(error);
-          this.loading$.next(false);
-          return of(null);
-        })
-      );
+      return this.searchUsers(values);
     }),
-    tap(() => this.loading$.next(false))
+    tap(() => this.stopLoading())
   );
 
-  isSubmitted = false;
+  searchUsers(values: UserSearchFormValues): Observable<User[] | null> {
+    return this.userAdminService.searchUsers(values).pipe(
+      catchError((error) => {
+        this.handleError(error);
+        return of(null);
+      })
+    );
+  }
+
+  startLoading() {
+    this.loading$.next(true);
+  }
+
+  stopLoading() {
+    this.loading$.next(false);
+  }
+
+  handleError(error: any) {
+    this.error$.next(error);
+    this.stopLoading();
+  }
 
   onSubmit(values: UserSearchFormValues) {
-    this.isSubmitted = true;
-    this.error$.next(null);
-    this.search$.next(values);
+    this.isSubmitted$.next(true);
+    this.error$.next(null); // Clear any previous errors
+    this.search$.next(values); // Trigger the search
   }
 
   onClear() {
-    this.isSubmitted = false;
+    this.isSubmitted$.next(false);
     this.search$.next(null);
     this.error$.next(null);
   }
