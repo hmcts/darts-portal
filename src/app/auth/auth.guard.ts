@@ -10,7 +10,7 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: R
   const authService: AuthService = inject(AuthService);
   const userService: UserService = inject(UserService);
   const router = inject(Router);
-  const isAdminRoute = route.data.allowedRoles.includes('ADMIN') && route.url[0].path === 'admin';
+  const isAdminRoute = route.data?.allowedRoles?.includes('ADMIN') && route.url[0].path === 'admin';
 
   return authService.checkIsAuthenticated().pipe(
     switchMap((isAuthenticated) => {
