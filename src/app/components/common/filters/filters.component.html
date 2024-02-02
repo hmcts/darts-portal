@@ -77,6 +77,7 @@
                       [attr.aria-label]="'Select checkbox value ' + value"
                       [value]="value"
                       (change)="onCheckChanged(filter, value, $event)"
+                      [checked]="isChecked(filter.name, value)"
                     />
                     <label class="govuk-label govuk-checkboxes__label" for="type"> {{ value }} </label>
                   </div>

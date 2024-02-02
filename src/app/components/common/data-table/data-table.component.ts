@@ -7,6 +7,7 @@ import {
   Input,
   OnChanges,
   Output,
+  SimpleChanges,
   TemplateRef,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -33,6 +34,7 @@ export class DataTableComponent<TRow> implements OnChanges {
   @Input() pageLimit = 25;
   @Input() noDataMessage = 'No data to display.';
   @Input() checkboxKey = '';
+  @Input() sortAndPaginateOnRowsChanged = true; // To maintain the sorting and pagination when rows are changed e.g. polling updates the data
   @Output() rowSelect = new EventEmitter<TRow[]>();
 
   @ContentChild(TableBodyTemplateDirective, { read: TemplateRef })
@@ -45,15 +47,24 @@ export class DataTableComponent<TRow> implements OnChanges {
   pagedRows: TRow[] = [];
   currentPage = 1;
 
-  sorting: SortingInterface = {
+  sorting: SortingInterface<TRow> = {
     column: '',
     order: 'asc',
+    sortFn: undefined,
   };
 
-  ngOnChanges(): void {
-    this.sorting.column = '';
-    this.currentPage = 1;
-    this.updatePagedData();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes.rows) {
+      return;
+    }
+    if (!this.sortAndPaginateOnRowsChanged) {
+      this.sorting.column = '';
+      this.currentPage = 1;
+      this.updatePagedData();
+    } else {
+      this.sorting.order = this.isDescSorting(this.sorting.column) ? 'asc' : 'desc';
+      this.sortTable(this.sorting.column, this.sorting.sortFn);
+    }
   }
 
   onPageChanged(page: number): void {
@@ -65,6 +76,7 @@ export class DataTableComponent<TRow> implements OnChanges {
     this.sorting = {
       column: column,
       order: this.isDescSorting(column) ? 'asc' : 'desc',
+      sortFn: sortFn,
     };
 
     if (sortFn) {
@@ -183,7 +195,7 @@ export class DataTableComponent<TRow> implements OnChanges {
   }
 
   private updatePagedData(): void {
-    this.pagedRows = this.paginate(this.rows, this.pageLimit, this.currentPage);
+    this.pagedRows = this.pagination ? this.paginate(this.rows, this.pageLimit, this.currentPage) : this.rows;
   }
 
   private paginate(array: TRow[], pageSize: number, currentPage: number) {
@@ -191,7 +203,8 @@ export class DataTableComponent<TRow> implements OnChanges {
   }
 }
 
-export interface SortingInterface {
+export interface SortingInterface<Row> {
   column: string;
   order: 'asc' | 'desc';
+  sortFn?: CustomSort<Row>;
 }

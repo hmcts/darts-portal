@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DateTime } from 'luxon';
 
+import { SimpleChanges } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { Order } from '@darts-types/data-table-column.interface';
 import { Urgency } from '@darts-types/transcription-urgency.interface';
@@ -78,7 +79,7 @@ describe('DataTableComponent', () => {
       component.currentPage = 1;
       component.pageLimit = 1;
 
-      component.ngOnChanges();
+      component.ngOnChanges({ rows: {} } as unknown as SimpleChanges); // Pass an empty object as an argument
 
       expect(component.pagedRows.length).toEqual(1);
     });
@@ -92,6 +93,17 @@ describe('DataTableComponent', () => {
 
       expect(component.pagedRows.length).toEqual(1);
       expect(component.pagedRows[0]).toEqual(MOCK_ROWS[3]);
+    });
+
+    it('does not paginate when it is disabled', () => {
+      component.rows = MOCK_ROWS;
+      component.pageLimit = 2;
+      component.pagination = false;
+
+      component.ngOnChanges({ rows: {} } as unknown as SimpleChanges); // Pass an empty object as an argument
+
+      // given 4 rows and an irrelevant page limit of 2, we expect all rows to display
+      expect(component.pagedRows.length).toEqual(4);
     });
   });
 
@@ -107,7 +119,7 @@ describe('DataTableComponent', () => {
 
       component.sortTable(column);
 
-      const expectedSorting: SortingInterface = {
+      const expectedSorting: SortingInterface<unknown> = {
         column,
         order: 'asc',
       };
@@ -126,7 +138,7 @@ describe('DataTableComponent', () => {
 
       component.sortTable(column);
 
-      const expectedSorting: SortingInterface = {
+      const expectedSorting: SortingInterface<unknown> = {
         column,
         order: 'desc',
       };
@@ -146,7 +158,7 @@ describe('DataTableComponent', () => {
 
       component.sortTable(column);
 
-      const expectedSorting: SortingInterface = {
+      const expectedSorting: SortingInterface<unknown> = {
         column,
         order: 'asc',
       };
@@ -165,7 +177,7 @@ describe('DataTableComponent', () => {
 
       component.sortTable(column);
 
-      const expectedSorting: SortingInterface = {
+      const expectedSorting: SortingInterface<unknown> = {
         column,
         order: 'desc',
       };
@@ -265,7 +277,7 @@ describe('DataTableComponent', () => {
         order: 'desc',
       };
 
-      component.sortTable(column, (a: unknown, b: unknown, direction?: Order) => {
+      const sortFn = (a: unknown, b: unknown, direction?: Order) => {
         const urgencyA = a as { urgency: Urgency };
         const urgencyB = b as { urgency: Urgency };
 
@@ -276,11 +288,13 @@ describe('DataTableComponent', () => {
         } else {
           return 0;
         }
-      });
+      };
+      component.sortTable(column, sortFn);
 
-      const expectedSorting: SortingInterface = {
+      const expectedSorting: SortingInterface<unknown> = {
         column,
         order: 'asc',
+        sortFn,
       };
 
       expect(component.sorting).toEqual(expectedSorting);
@@ -378,7 +392,7 @@ describe('DataTableComponent', () => {
         order: 'asc',
       };
 
-      component.sortTable(column, (a: unknown, b: unknown, direction?: Order) => {
+      const sortFn = (a: unknown, b: unknown, direction?: Order) => {
         const urgencyA = a as { urgency: Urgency };
         const urgencyB = b as { urgency: Urgency };
 
@@ -389,11 +403,13 @@ describe('DataTableComponent', () => {
         } else {
           return 0;
         }
-      });
+      };
+      component.sortTable(column, sortFn);
 
-      const expectedSorting: SortingInterface = {
+      const expectedSorting: SortingInterface<unknown> = {
         column,
         order: 'desc',
+        sortFn,
       };
 
       expect(component.sorting).toEqual(expectedSorting);
@@ -411,7 +427,7 @@ describe('DataTableComponent', () => {
 
       component.sortTable(column);
 
-      const expectedSorting: SortingInterface = {
+      const expectedSorting: SortingInterface<unknown> = {
         column,
         order: 'asc',
       };
@@ -430,7 +446,7 @@ describe('DataTableComponent', () => {
 
       component.sortTable(column);
 
-      const expectedSorting: SortingInterface = {
+      const expectedSorting: SortingInterface<unknown> = {
         column,
         order: 'desc',
       };
@@ -450,7 +466,7 @@ describe('DataTableComponent', () => {
 
       component.sortTable(column);
 
-      const expectedSorting: SortingInterface = {
+      const expectedSorting: SortingInterface<unknown> = {
         column,
         order: 'asc',
       };
@@ -469,7 +485,7 @@ describe('DataTableComponent', () => {
 
       component.sortTable(column);
 
-      const expectedSorting: SortingInterface = {
+      const expectedSorting: SortingInterface<unknown> = {
         column,
         order: 'desc',
       };
@@ -489,7 +505,7 @@ describe('DataTableComponent', () => {
 
       component.sortTable(column);
 
-      const expectedSorting: SortingInterface = {
+      const expectedSorting: SortingInterface<unknown> = {
         column,
         order: 'asc',
       };
@@ -508,7 +524,7 @@ describe('DataTableComponent', () => {
 
       component.sortTable(column);
 
-      const expectedSorting: SortingInterface = {
+      const expectedSorting: SortingInterface<unknown> = {
         column,
         order: 'desc',
       };
@@ -528,7 +544,7 @@ describe('DataTableComponent', () => {
 
       component.sortTable(column);
 
-      const expectedSorting: SortingInterface = {
+      const expectedSorting: SortingInterface<unknown> = {
         column,
         order: 'asc',
       };
@@ -547,7 +563,7 @@ describe('DataTableComponent', () => {
 
       component.sortTable(column);
 
-      const expectedSorting: SortingInterface = {
+      const expectedSorting: SortingInterface<unknown> = {
         column,
         order: 'desc',
       };
@@ -672,13 +688,14 @@ describe('DataTableComponent', () => {
 
     it('should reset column sorting state on cases changed', () => {
       component.rows = MOCK_ROWS;
+      component.sortAndPaginateOnRowsChanged = false;
       const column = 'case_number';
       component.sorting = {
         column,
         order: 'asc',
       };
 
-      component.ngOnChanges();
+      component.ngOnChanges({ rows: {} } as unknown as SimpleChanges);
 
       expect(component.sorting.column).toBe('');
     });
@@ -733,5 +750,62 @@ describe('DataTableComponent', () => {
     const noDataMessage = fixture.debugElement.query(By.css('#no-data-message'));
     expect(noDataMessage).toBeTruthy();
     expect(noDataMessage.nativeElement.textContent).toContain('No data');
+  });
+
+  describe('#ngOnChanges', () => {
+    it('if rows not changed, do nothing', () => {
+      component.rows = MOCK_ROWS;
+      component.sorting = {
+        column: 'case_number',
+        order: 'desc',
+      };
+      component.currentPage = 2;
+
+      component.ngOnChanges({} as unknown as SimpleChanges);
+
+      expect(component.sorting).toEqual({
+        column: 'case_number',
+        order: 'desc',
+      });
+      expect(component.currentPage).toEqual(2);
+    });
+
+    describe('#sortAndPaginateOnRowsChanged', () => {
+      it('true: maintains sorting and page number when rows are updated', () => {
+        component.rows = MOCK_ROWS;
+        component.sortAndPaginateOnRowsChanged = true;
+        component.sorting = {
+          column: 'case_number',
+          order: 'asc',
+        };
+        component.currentPage = 2;
+
+        component.ngOnChanges({ rows: {} } as unknown as SimpleChanges);
+
+        expect(component.sorting).toEqual({
+          column: 'case_number',
+          order: 'asc',
+        });
+        expect(component.currentPage).toEqual(2);
+      });
+
+      it('false: resets sorting and page when rows are updated', () => {
+        component.rows = MOCK_ROWS;
+        component.sortAndPaginateOnRowsChanged = false;
+        component.sorting = {
+          column: 'case_number',
+          order: 'desc',
+        };
+        component.currentPage = 2;
+
+        component.ngOnChanges({ rows: {} } as unknown as SimpleChanges);
+
+        expect(component.sorting).toEqual({
+          column: '',
+          order: 'desc',
+        });
+        expect(component.currentPage).toEqual(1);
+      });
+    });
   });
 });

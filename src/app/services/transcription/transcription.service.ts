@@ -29,8 +29,8 @@ export class TranscriptionService {
   luxonPipe = inject(LuxonDatePipe);
   http = inject(HttpClient);
   countService = inject(CountNotificationService);
-
   private readonly DATA_POLL_INTERVAL_SECS = 60;
+  private readonly urgencies$ = this.http.get<Urgency[]>('/api/transcriptions/urgencies').pipe(shareReplay(1));
 
   unassignedRequests$ = timer(0, this.DATA_POLL_INTERVAL_SECS * 1000).pipe(
     switchMap(() => this.getWorkRequests(false)),
@@ -47,7 +47,7 @@ export class TranscriptionService {
   );
 
   getUrgencies(): Observable<Urgency[]> {
-    return this.http.get<Urgency[]>('/api/transcriptions/urgencies').pipe(shareReplay(1));
+    return this.urgencies$;
   }
 
   getTranscriptionTypes(): Observable<TranscriptionType[]> {

@@ -50,10 +50,25 @@ describe('TranscriptionService', () => {
   });
 
   describe('#getUrgencies', () => {
-    it('should call the correct endpoint', () => {
-      const spy = jest.spyOn(service['http'], 'get');
-      service.getUrgencies();
-      expect(spy).toHaveBeenCalledWith('/api/transcriptions/urgencies');
+    it('call the correct endpoint and return the urgencies', (done) => {
+      service.getUrgencies().subscribe((urgencies) => {
+        expect(urgencies).toEqual(MOCK_URGENCIES);
+        done();
+      });
+
+      const req = httpMock.expectOne('/api/transcriptions/urgencies');
+      req.flush(MOCK_URGENCIES);
+    });
+
+    it('only make one call and share results to subsequent subscribers ', () => {
+      service.getUrgencies().subscribe();
+      service.getUrgencies().subscribe();
+      service.getUrgencies().subscribe();
+
+      const req = httpMock.expectOne('/api/transcriptions/urgencies');
+      req.flush(MOCK_URGENCIES);
+
+      httpMock.verify();
     });
   });
 

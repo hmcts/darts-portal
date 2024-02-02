@@ -55,9 +55,11 @@ export class ApproveTranscriptButtonsComponent {
     }
   }
 
-  onChange() {
-    this.buttonsError = '';
-    this.errors.emit([]);
+  onChange(value: string) {
+    if (value !== this.approveFormControl.value) {
+      this.buttonsError = '';
+      this.errors.emit([]);
+    }
   }
 
   private handleResponse() {

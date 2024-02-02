@@ -16,7 +16,7 @@
           name="approval-transcription"
           type="radio"
           value="Yes"
-          (click)="onChange()"
+          (click)="onChange($any($event).target.value)"
         />
         <label class="govuk-label govuk-radios__label" for="approve-radio"> Yes </label>
       </div>
@@ -28,7 +28,7 @@
           name="approval-transcription"
           type="radio"
           value="No"
-          (click)="onChange()"
+          (click)="onChange($any($event).target.value)"
         />
         <label class="govuk-label govuk-radios__label" for="reject-radio"> No </label>
       </div>
@@ -38,9 +38,9 @@
             Why can you not approve this request?
           </label>
           <app-govuk-textarea
-            id="reject-reason"
-            name="reason"
-            ariaDescribedBy="more-detail-hint"
+            [id]="'reject-reason'"
+            [name]="'reason'"
+            [ariaDescribedBy]="'more-detail-hint'"
             [control]="rejectReasonFormControl"
           ></app-govuk-textarea>
         </div>
