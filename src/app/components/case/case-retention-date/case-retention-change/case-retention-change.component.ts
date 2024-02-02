@@ -24,7 +24,7 @@ import { DateTime } from 'luxon';
   templateUrl: './case-retention-change.component.html',
   styleUrls: ['./case-retention-change.component.scss'],
 })
-export class CaseRententionChangeComponent {
+export class CaseRetentionChangeComponent {
   @Input() state!: CaseRetentionPageState;
   @Input() currentRetentionDate!: string | null;
   @Input() originalRetentionDate!: string | null;
@@ -41,7 +41,7 @@ export class CaseRententionChangeComponent {
   datePatternValidator = Validators.pattern(/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/);
   datePipe = inject(DatePipe);
 
-  rententionCharacterLimit = 200;
+  retentionCharacterLimit = 200;
   errors: { fieldId: string; message: string }[] = [];
 
   errorNoOption = 'Select an option';

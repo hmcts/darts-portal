@@ -17,7 +17,7 @@ import { DetailsTableComponent } from '../../common/details-table/details-table.
 import { GovukHeadingComponent } from '../../common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '../../common/loading/loading.component';
 import { NotificationBannerComponent } from '../../common/notification-banner/notification-banner.component';
-import { CaseRententionChangeComponent } from './case-retention-change/case-retention-change.component';
+import { CaseRetentionChangeComponent } from './case-retention-change/case-retention-change.component';
 import { CaseRententionConfirmComponent } from './case-retention-confirm/case-retention-confirm.component';
 import { DateTime } from 'luxon';
 
@@ -37,7 +37,7 @@ import { DateTime } from 'luxon';
     RouterLink,
     TableRowTemplateDirective,
     NotificationBannerComponent,
-    CaseRententionChangeComponent,
+    CaseRetentionChangeComponent,
     CaseRententionConfirmComponent,
     SuccessBannerComponent,
   ],
