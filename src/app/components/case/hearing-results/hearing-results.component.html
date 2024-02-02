@@ -38,7 +38,7 @@
       </ng-template>
     </app-data-table>
   </div>
-  <div *tab="'All annotations'; count: transcripts.length">
+  <div *tab="'All annotations'; count: annotations.length">
     <app-govuk-heading [size]="'m'" [tag]="'h2'">All annotations</app-govuk-heading>
     <app-data-table
       id="annotationsTable"
@@ -54,8 +54,8 @@
         <td class="govuk-table__cell">{{ row.annotationDocuments[0].fileType }}</td>
         <td class="govuk-table__cell">{{ row.annotationDocuments[0].uploadedTs | luxonDate: 'dd MMM yyyy' }}</td>
         <td class="govuk-table__cell">{{ row.annotationText }}</td>
-        <td class="govuk-table__cell"><a href="#">Download</a></td>
-        <td class="govuk-table__cell"><a href="#">Delete</a></td>
+        <td class="govuk-table__cell"><a routerLink=".">Download</a></td>
+        <td class="govuk-table__cell"><a routerLink=".">Delete</a></td>
       </ng-template>
     </app-data-table>
   </div>
