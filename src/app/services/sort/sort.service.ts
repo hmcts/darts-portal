@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Order } from '@darts-types/data-table-column.interface';
-import { Urgency } from '@darts-types/transcription-urgency.interface';
+import { Urgency } from 'src/app/portal/models/transcriptions/transcription-urgency.interface';
 
 @Injectable({
   providedIn: 'root',
