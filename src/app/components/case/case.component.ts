@@ -41,9 +41,11 @@ export class CaseComponent {
   public transcripts$ = this.caseService
     .getCaseTranscripts(this.caseId)
     .pipe(map((transcript) => this.mappingService.mapTranscriptRequestToRows(transcript)));
+  public annotations$ = this.caseService.getCaseAnnotations(this.caseId);
 
   data$ = combineLatest({
     hearings: this.hearings$,
     transcripts: this.transcripts$,
+    annotations: this.annotations$,
   });
 }
