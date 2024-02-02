@@ -35,7 +35,7 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: R
           if (userService.hasRoles(route.data.allowedRoles)) {
             return true;
           } else {
-            if (route.data.allowedRoles.includes('ADMIN')) {
+            if (route.data.allowedRoles.includes('ADMIN') && route.url[0].path === 'admin') {
               // fail role check for admin, redirect to 404 page
               router.navigateByUrl('page-not-found');
               return false;
