@@ -7,6 +7,7 @@ import {
   Input,
   OnChanges,
   Output,
+  SimpleChanges,
   TemplateRef,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -33,6 +34,7 @@ export class DataTableComponent<TRow> implements OnChanges {
   @Input() pageLimit = 25;
   @Input() noDataMessage = 'No data to display.';
   @Input() checkboxKey = '';
+  @Input() sortAndPaginateOnRowsChanged = true; // To maintain the sorting and pagination when rows are changed e.g. polling updates the data
   @Output() rowSelect = new EventEmitter<TRow[]>();
 
   @ContentChild(TableBodyTemplateDirective, { read: TemplateRef })
@@ -45,15 +47,24 @@ export class DataTableComponent<TRow> implements OnChanges {
   pagedRows: TRow[] = [];
   currentPage = 1;
 
-  sorting: SortingInterface = {
+  sorting: SortingInterface<TRow> = {
     column: '',
     order: 'asc',
+    sortFn: undefined,
   };
 
-  ngOnChanges(): void {
-    this.sorting.column = '';
-    this.currentPage = 1;
-    this.updatePagedData();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes.rows) {
+      return;
+    }
+    if (!this.sortAndPaginateOnRowsChanged) {
+      this.sorting.column = '';
+      this.currentPage = 1;
+      this.updatePagedData();
+    } else {
+      this.sorting.order = this.isDescSorting(this.sorting.column) ? 'asc' : 'desc';
+      this.sortTable(this.sorting.column, this.sorting.sortFn);
+    }
   }
 
   onPageChanged(page: number): void {
@@ -65,6 +76,7 @@ export class DataTableComponent<TRow> implements OnChanges {
     this.sorting = {
       column: column,
       order: this.isDescSorting(column) ? 'asc' : 'desc',
+      sortFn: sortFn,
     };
 
     if (sortFn) {
@@ -77,17 +89,22 @@ export class DataTableComponent<TRow> implements OnChanges {
       const valueA = (a as { [key: string]: unknown })[column];
       const valueB = (b as { [key: string]: unknown })[column];
       const isStrings = typeof valueA === 'string' && typeof valueB === 'string';
+      const isNumbers = typeof valueA === 'number' && typeof valueB === 'number';
 
-      if (isStrings && this.isDateTime(valueA) && this.isDateTime(valueB)) {
+      if (this.isLuxonDateTime(valueA) && this.isLuxonDateTime(valueB)) {
+        // if both values are luxon DateTime, compare them as DateTime
+        return this.compareDates(column, valueA as DateTime, valueB as DateTime);
+      } else if (isStrings && this.isDateTime(valueA) && this.isDateTime(valueB)) {
+        // if both values are strings and luxon DateTime, compare them as DateTime
         return this.compareDates(column, DateTime.fromISO(valueA).toUTC(), DateTime.fromISO(valueB).toUTC());
       }
-      if (column === 'courtroom' && isStrings && this.isNumeric(valueA) && this.isNumeric(valueB)) {
-        //Courtroom convert to number if numeric parseable
+      // TO DO: To be removed and then passed in as custom sort function by the parent component
+      else if (column === 'courtroom' && isStrings && this.isNumeric(valueA) && this.isNumeric(valueB)) {
         return this.compareNumbers(column, +valueA, +valueB);
       } else if (isStrings) {
         //String sorting
         return this.compareStrings(column, valueA, valueB);
-      } else if (typeof valueA === 'number' && typeof valueB === 'number') {
+      } else if (isNumbers) {
         //Number sorting
         return this.compareNumbers(column, valueA, valueB);
       } else if (this.isBoolean(valueA, valueB)) {
@@ -166,6 +183,10 @@ export class DataTableComponent<TRow> implements OnChanges {
     return this.sorting.column === column && this.sorting.order === 'asc';
   }
 
+  isLuxonDateTime(value: unknown): boolean {
+    return DateTime.isDateTime(value);
+  }
+
   getAriaSort(column: string): 'ascending' | 'descending' | 'none' {
     if (this.sorting.column === column) {
       return this.isAscSorting(column) ? 'ascending' : 'descending';
@@ -174,7 +195,7 @@ export class DataTableComponent<TRow> implements OnChanges {
   }
 
   private updatePagedData(): void {
-    this.pagedRows = this.paginate(this.rows, this.pageLimit, this.currentPage);
+    this.pagedRows = this.pagination ? this.paginate(this.rows, this.pageLimit, this.currentPage) : this.rows;
   }
 
   private paginate(array: TRow[], pageSize: number, currentPage: number) {
@@ -182,7 +203,8 @@ export class DataTableComponent<TRow> implements OnChanges {
   }
 }
 
-export interface SortingInterface {
+export interface SortingInterface<Row> {
   column: string;
   order: 'asc' | 'desc';
+  sortFn?: CustomSort<Row>;
 }

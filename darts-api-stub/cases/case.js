@@ -11,7 +11,7 @@ const singleCase = {
   judges: ['Judge Judy'],
   prosecutors: ['Polly Prosecutor'],
   defenders: ['Derek Defender'],
-  retain_until_date_time: '2030-08-10T11:23:24.858Z',
+  retain_until_date_time: '2030-09-15T11:23:24.858Z',
   case_closed_date_time: '2023-08-15T14:57:24.858Z',
   retention_date_time_applied: '2023-12-12T11:02:24.858Z',
   retention_policy_applied: 'Manual',
@@ -380,64 +380,64 @@ const transcriptOne = [
   {
     transcription_id: 1,
     hearing_id: 2,
-    hearing_date: '2023-10-12',
+    hearing_date: '2023-10-13',
     type: 'Sentencing remarks',
-    requested_on: '',
-    requested_by_name: 'Joe Bloggs',
+    requested_on: '2024-01-01T00:00:00Z',
+    requested_by_name: 'Scott Smith',
     status: 'Requested',
   },
   {
     transcription_id: 1,
     hearing_id: 2,
     hearing_date: '2023-10-12',
-    type: 'Sentencing remarks',
-    requested_on: '2023-10-12T00:00:00Z',
-    requested_by_name: 'Joe Bloggs',
+    type: 'Court log',
+    requested_on: '2024-01-02T00:00:00Z',
+    requested_by_name: 'Chris Evans',
     status: 'Awaiting Authorisation',
   },
   {
     transcription_id: 1,
     hea_id: 2,
-    hearing_date: '2023-10-12',
+    hearing_date: '2023-10-11',
     type: 'Sentencing remarks',
-    requested_on: '2023-10-12T00:00:00Z',
-    requested_by_name: 'Joe Bloggs',
+    requested_on: '2024-01-10T00:00:00Z',
+    requested_by_name: 'Carl Edwards',
     status: 'Approved',
   },
   {
     transcription_id: 1,
     hea_id: 2,
-    hearing_date: '2023-10-12',
-    type: 'Sentencing remarks',
+    hearing_date: '2023-10-10',
+    type: 'Antecedents',
     requested_on: '2023-10-12T00:00:00Z',
-    requested_by_name: 'Joe Bloggs',
+    requested_by_name: 'Rhys Jones',
     status: 'Rejected',
   },
   {
     transcription_id: 1,
     hea_id: 2,
-    hearing_date: '2023-10-12',
+    hearing_date: '2023-10-15',
     type: 'Sentencing remarks',
-    requested_on: '2023-10-12T00:00:00Z',
-    requested_by_name: 'Joe Bloggs',
+    requested_on: '2023-11-11T00:00:00Z',
+    requested_by_name: 'Jarred Collins',
     status: 'With Transcriber',
   },
   {
     transcription_id: 1,
     hea_id: 2,
-    hearing_date: '2023-10-12',
-    type: 'Sentencing remarks',
-    requested_on: '2023-10-12T00:00:00Z',
-    requested_by_name: 'Joe Bloggs',
+    hearing_date: '2023-10-01',
+    type: 'Mitigation',
+    requested_on: '2023-11-12T00:00:00Z',
+    requested_by_name: 'Gary Jones',
     status: 'Complete',
   },
   {
     transcription_id: 1,
     hea_id: 2,
-    hearing_date: '2023-10-12',
+    hearing_date: '2023-10-29',
     type: 'Sentencing remarks',
-    requested_on: '2023-10-12T00:00:00Z',
-    requested_by_name: 'Joe Bloggs',
+    requested_on: '2023-10-16T00:00:00Z',
+    requested_by_name: 'Phil Davies',
     status: 'Closed',
   },
 ];
@@ -482,10 +482,11 @@ const transcriptTwo = [
 ];
 
 // Advanced search stub API
-router.get('/search', (req, res) => {
-  const searchTerms = req.query;
+router.post('/search', (req, res) => {
+  const searchTerms = req.body;
+  const notNullProperties = Object.keys(searchTerms).filter((x) => searchTerms[x] != undefined).length;
   // expected API response if searching for courthouse only
-  if (Object.keys(searchTerms).length === 1 && searchTerms.courthouse) {
+  if (notNullProperties === 1 && searchTerms.courthouse) {
     const resBody102 = {
       type: 'CASE_102',
       title: 'Search criteria is too broad, please add at least 1 more criteria to search for.',
@@ -494,7 +495,7 @@ router.get('/search', (req, res) => {
     return res.status(400).send(resBody102);
   }
   // yield many results by doing a judge search "Judge Judy"
-  if (Object.keys(searchTerms).length === 1 && searchTerms.judge_name) {
+  if (notNullProperties === 1 && searchTerms.judge_name) {
     return res
       .status(200)
       .send(
@@ -505,7 +506,7 @@ router.get('/search', (req, res) => {
         )
       );
   }
-  switch (req.query.case_number) {
+  switch (req.body.case_number) {
     case 'INTERNAL_SERVER_ERROR':
       res.sendStatus(500);
       break;
@@ -529,7 +530,7 @@ router.get('/search', (req, res) => {
       res.status(200).send(multipleCases);
       break;
     default:
-      res.status(200).send(multipleCases.filter((c) => c.case_number === req.query.case_number));
+      res.status(200).send(multipleCases.filter((c) => c.case_number === req.body.case_number));
       break;
   }
 });

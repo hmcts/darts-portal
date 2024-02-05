@@ -36,6 +36,10 @@ a.govuk-link {
   color: #d4351c;
 }
 
+.govuk-input--error {
+  border-color: #d4351c !important;
+}
+
 a.govuk-link:hover,
 a.govuk-back-link:hover {
   text-decoration-thickness: max(3px, 0.1875rem, 0.12em);

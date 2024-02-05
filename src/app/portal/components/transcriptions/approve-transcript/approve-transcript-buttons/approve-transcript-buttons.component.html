@@ -1,0 +1,55 @@
+<div class="govuk-form-group" [class.govuk-form-group--error]="buttonsError">
+  <fieldset class="govuk-fieldset">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+      <h1 class="govuk-fieldset__heading">Do you approve this request?</h1>
+    </legend>
+    <div class="govuk-radios" id="approval-radios" data-module="govuk-radios">
+      <p *ngIf="buttonsError" class="govuk-error-message" id="error-reject-reason">
+        {{ buttonsError }}
+      </p>
+
+      <div class="govuk-radios__item">
+        <input
+          class="govuk-radios__input"
+          id="approve-radio"
+          [formControl]="approveFormControl"
+          name="approval-transcription"
+          type="radio"
+          value="Yes"
+          (click)="onChange($any($event).target.value)"
+        />
+        <label class="govuk-label govuk-radios__label" for="approve-radio"> Yes </label>
+      </div>
+      <div class="govuk-radios__item">
+        <input
+          class="govuk-radios__input"
+          [formControl]="approveFormControl"
+          id="reject-radio"
+          name="approval-transcription"
+          type="radio"
+          value="No"
+          (click)="onChange($any($event).target.value)"
+        />
+        <label class="govuk-label govuk-radios__label" for="reject-radio"> No </label>
+      </div>
+      <div *ngIf="approveFormControl.value === 'No'" class="govuk-radios__conditional" id="conditional-reason">
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-!-font-weight-bold" for="reject-reason">
+            Why can you not approve this request?
+          </label>
+          <app-govuk-textarea
+            [id]="'reject-reason'"
+            [name]="'reason'"
+            [ariaDescribedBy]="'more-detail-hint'"
+            [control]="rejectReasonFormControl"
+          ></app-govuk-textarea>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+</div>
+
+<div class="govuk-button-group">
+  <button id="submit-button" class="govuk-button" data-module="govuk-button" (click)="onSubmit()">Submit</button>
+  <a [routerLink]="['/transcriptions']" class="govuk-link">Cancel</a>
+</div>

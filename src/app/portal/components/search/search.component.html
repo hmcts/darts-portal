@@ -1,0 +1,205 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <h1 class="govuk-label-wrapper">
+    <label class="govuk-label govuk-label--l" for="case-search"> Search for a case </label>
+  </h1>
+
+  <!-- Validation Error Summary Component -->
+  <app-validation-error-summary [errors]="errorSummary"></app-validation-error-summary>
+
+  <div class="govuk-form-group" [ngClass]="{ 'govuk-form-group--error': isSubmitted && f.case_number.errors }">
+    <label class="govuk-label" for="case_number"> Case ID </label>
+    <div id="case_number-hint" class="govuk-hint">
+      Also known as a case reference or court reference. There should be no spaces.
+    </div>
+    <div *ngIf="isControlInvalid('case_number')" id="casenumber-errors">
+      <p *ngFor="let error of getFieldErrorMessages('case_number')" class="govuk-error-message">
+        <span class="govuk-visually-hidden">Error:</span> {{ error }}
+      </p>
+    </div>
+    <input
+      formControlName="case_number"
+      minlength="1"
+      class="govuk-input govuk-input--width-10"
+      id="case_number"
+      name="case_number"
+      type="text"
+      aria-describedby="case-search-hint"
+      aria-describedby="case_number-hint"
+      [ngClass]="{ 'govuk-input--error': isSubmitted && f.case_number.errors }"
+    />
+  </div>
+  <details class="govuk-details" data-module="govuk-details" [open]="isAdvancedSearch">
+    <summary class="govuk-details__summary" (click)="toggleAdvancedSearch($event)">
+      <span class="govuk-details__summary-text"> Advanced search </span>
+    </summary>
+    <div class="govuk-form-group govuk-details__text">
+      <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('courthouse')">
+        <app-courthouse-field
+          *ngIf="courthouses$ | async as courthouses"
+          [courthouses]="courthouses"
+          [courthouse]="courthouse"
+          (courthouseSelect)="onCourthouseSelected($event)"
+          [isInvalid]="isControlInvalid('courthouse')"
+          [errors]="getFieldErrorMessages('courthouse')"
+        ></app-courthouse-field>
+      </div>
+
+      <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('courthouse')">
+        <label class="govuk-label" for="courtroom"> Courtroom </label>
+        <div id="courtroom-search-hint" class="govuk-hint">For example, 3</div>
+        <!-- Error message courtroom -->
+        <div *ngIf="isControlInvalid('courtroom')" id="courtroom-errors">
+          <p *ngFor="let error of getFieldErrorMessages('courtroom')" class="govuk-error-message">
+            <span class="govuk-visually-hidden">Error:</span> {{ error }}
+          </p>
+        </div>
+        <input
+          minlength="1"
+          formControlName="courtroom"
+          class="govuk-input govuk-input--width-2"
+          id="courtroom"
+          name="courtroom"
+          type="text"
+          aria-describedby="courtroom-search-hint"
+          [class.govuk-input--error]="isControlInvalid('courthouse')"
+        />
+      </div>
+
+      <div class="govuk-form-group">
+        <label class="govuk-label govuk-!-font-weight-bold" for="advanced-case-search"> Hearing date </label>
+        <div id="hearingdate-search-hint" class="govuk-hint">There is limited data pre-2012.</div>
+        <div class="govuk-radios" data-module="govuk-radios">
+          <!-- Specific date -->
+          <div class="govuk-radios__item">
+            <input
+              class="govuk-radios__input"
+              id="specific-date-radio"
+              name="specific-date-radio"
+              type="radio"
+              [checked]="dateInputType === 'specific'"
+              (change)="toggleRadioSelected('specific')"
+            />
+
+            <label class="govuk-label govuk-radios__label" for="specific-date-radio"> Specific date </label>
+          </div>
+
+          <div
+            *ngIf="dateInputType === 'specific'"
+            class="govuk-form-group input-group-indent-1"
+            [class.govuk-details__text]="!isControlInvalid('specific_date')"
+            [class.govuk-form-group--error]="isControlInvalid('specific_date')"
+            id="specific-date-items"
+          >
+            <app-datepicker
+              inputId="specific_date"
+              [control]="$any(form.controls.specific_date)"
+              name="specific_date"
+              label="Enter a date"
+              hint="Use dd/mm/yyyy format."
+              [errors]="isControlInvalid('specific_date') ? getFieldErrorMessages('specific_date') : null"
+              (dateChange)="setInputValue($event, 'specific_date')"
+            />
+          </div>
+          <!-- End of specific date -->
+
+          <!-- Date range -->
+          <div class="govuk-radios__item">
+            <input
+              class="govuk-radios__input"
+              id="date-range-radio"
+              name="date-range-radio"
+              type="radio"
+              [checked]="dateInputType === 'range'"
+              (change)="toggleRadioSelected('range')"
+              aria-label="Date range radio button"
+            />
+            <label class="govuk-label govuk-radios__label" for="date-range-radio"> Date range </label>
+          </div>
+          <div *ngIf="dateInputType === 'range'" id="date-range-items">
+            <div
+              class="govuk-form-group input-group-indent-1"
+              [class.govuk-details__text]="!isControlInvalid('date_from')"
+              [class.govuk-form-group--error]="isControlInvalid('date_from')"
+              id="range-date-items"
+            >
+              <app-datepicker
+                inputId="date_from"
+                [control]="$any(form.controls.date_from)"
+                name="date_from"
+                label="Enter date from"
+                hint="Use dd/mm/yyyy format."
+                [errors]="isControlInvalid('date_from') ? getFieldErrorMessages('date_from') : null"
+                (dateChange)="setInputValue($event, 'date_from')"
+              />
+            </div>
+
+            <div
+              class="govuk-form-group input-group-indent-1"
+              [class.govuk-details__text]="!isControlInvalid('date_to')"
+              [class.govuk-form-group--error]="isControlInvalid('date_to')"
+            >
+              <app-datepicker
+                inputId="date_to"
+                [control]="$any(form.controls.date_to)"
+                name="date_to"
+                label="Enter date from"
+                hint="Use dd/mm/yyyy format."
+                [errors]="isControlInvalid('date_to') ? getFieldErrorMessages('date_to') : null"
+                (dateChange)="setInputValue($event, 'date_to')"
+              />
+            </div>
+          </div>
+          <!-- End of date range -->
+        </div>
+      </div>
+
+      <div class="govuk-form-group">
+        <label class="govuk-label" for="defendant"> Defendant's name </label>
+        <input
+          formControlName="defendant_name"
+          class="govuk-input govuk-input--width-20"
+          id="defendant"
+          name="defendant"
+          type="text"
+        />
+      </div>
+
+      <div class="govuk-form-group">
+        <label class="govuk-label" for="judge"> Judge's name </label>
+        <input
+          formControlName="judge_name"
+          class="govuk-input govuk-input--width-20"
+          id="judge"
+          name="judge"
+          type="text"
+        />
+      </div>
+
+      <div class="govuk-form-group">
+        <label class="govuk-label" for="keywords"> Keywords </label>
+        <input
+          formControlName="event_text_contains"
+          class="govuk-input govuk-input--width-20"
+          id="keywords"
+          name="keywords"
+          type="text"
+        />
+      </div>
+    </div>
+  </details>
+  <div class="govuk-button-group">
+    <button type="submit" class="govuk-button" data-module="govuk-button">Search</button>
+    <a class="govuk-link" href="javascript:void(0)" (click)="clearSearch()">Clear search</a>
+  </div>
+</form>
+
+<app-results *ngIf="searchResults$ | async as cases; else loadingOrError" [cases]="cases"></app-results>
+
+<ng-template #loadingOrError>
+  <ng-container *ngIf="isSubmitted && form.valid">
+    <app-search-error *ngIf="searchError$ | async as error; else loading" [error]="error"></app-search-error>
+    <ng-template #loading>
+      <app-loading text="Loading search results ..."></app-loading>
+    </ng-template>
+  </ng-container>
+</ng-template>

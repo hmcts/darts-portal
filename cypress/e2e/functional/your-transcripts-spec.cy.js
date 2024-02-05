@@ -45,7 +45,7 @@ describe('Your transcripts', () => {
     cy.get('#ready-table tbody input[type="checkbox"]').first().click();
     cy.get('#delete-button').click();
     cy.get(navigationSelector).should('not.exist');
-    cy.contains('Are you sure you want to delete this item');
+    cy.contains('Are you sure you want to remove this transcript request');
     cy.get('button.govuk-button--warning').click();
     cy.contains('CXYZ12345').should('not.exist');
     cy.get(navigationSelector).should('exist');
@@ -76,7 +76,7 @@ describe('Your transcripts', () => {
     cy.get('label').should('contain', 'Why can you not approve this request?');
   });
 
-  it('should show error message if transcrript already approved', () => {
+  it('should show error message if transcript already approved', () => {
     cy.contains('Your transcripts').click();
     cy.contains('Transcript requests to review').click();
     cy.get('h2').should('contain', 'Requests to approve or reject');

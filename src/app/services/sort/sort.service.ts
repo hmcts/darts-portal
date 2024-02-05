@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Order } from '@darts-types/data-table-column.interface';
-import { TranscriptionUrgency } from '@darts-types/transcription-urgency.interface';
+import { Urgency } from 'src/app/portal/models/transcriptions/transcription-urgency.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -8,8 +8,8 @@ import { TranscriptionUrgency } from '@darts-types/transcription-urgency.interfa
 export class SortService {
   // only works for transcription data table
   sortByUrgencyPriorityOrder(a: unknown, b: unknown, direction?: Order) {
-    const urgencyA = a as { urgency: TranscriptionUrgency };
-    const urgencyB = b as { urgency: TranscriptionUrgency };
+    const urgencyA = a as { urgency: Urgency };
+    const urgencyB = b as { urgency: Urgency };
 
     if (!urgencyA?.urgency || !urgencyB?.urgency) {
       return -1;

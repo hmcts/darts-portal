@@ -1,12 +1,17 @@
+import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
 import { AuthService } from '@services/auth/auth.service';
-import { CountNotificationService } from '@services/count-notification/count-notification.service';
 import { UserService } from '@services/user/user.service';
 import { of } from 'rxjs';
+import { CountNotificationService } from 'src/app/portal/services/count-notification/count-notification.service';
 import { HeaderComponent } from './header.component';
+
+@Component({ template: '' })
+class DummyComponent {}
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -14,6 +19,7 @@ describe('HeaderComponent', () => {
   let fakeAuthService: Partial<AuthService>;
   let fakeUserService: Partial<UserService>;
   let fakeCountService: Partial<CountNotificationService>;
+  let router: Router;
 
   beforeEach(async () => {
     const fakeAppInsightsService = {};
@@ -26,10 +32,11 @@ describe('HeaderComponent', () => {
       isJudge: jest.fn(() => false),
       isApprover: jest.fn(() => false),
       isRequester: jest.fn(() => false),
+      isAdmin: jest.fn(() => false),
     };
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, HeaderComponent],
+      imports: [RouterTestingModule.withRoutes([{ path: 'admin', component: DummyComponent }]), HeaderComponent],
       providers: [
         { provide: AppInsightsService, useValue: fakeAppInsightsService },
         { provide: AuthService, useValue: fakeAuthService },
@@ -37,7 +44,7 @@ describe('HeaderComponent', () => {
         { provide: UserService, useValue: fakeUserService },
       ],
     }).compileComponents();
-
+    router = TestBed.inject(Router);
     fixture = TestBed.createComponent(HeaderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -113,6 +120,20 @@ describe('HeaderComponent', () => {
         By.css('#assignedTranscriptCount')
       ).nativeElement;
       expect(unreadCountElement.textContent).toBe('Transcript requests assigned count: 3');
+    });
+  });
+
+  describe('when user is ADMIN and is on /admin URL', () => {
+    beforeEach(async () => {
+      fakeAuthService.getAuthenticated = jest.fn(() => true);
+      fakeUserService.isAdmin = jest.fn(() => true);
+      await router.navigate(['/admin']);
+      fixture.detectChanges();
+    });
+
+    it('show admin navigation', () => {
+      const adminNav = fixture.debugElement.query(By.css('#admin-nav'));
+      expect(adminNav).toBeTruthy();
     });
   });
 });

@@ -41,81 +41,159 @@
   <div class="moj-primary-navigation__container">
     <div class="moj-primary-navigation__nav">
       <nav class="moj-primary-navigation" aria-label="Primary navigation">
-        <ul class="moj-primary-navigation__list">
-          <li class="moj-primary-navigation__item">
-            <a
-              class="moj-primary-navigation__link"
-              routerLink="search"
-              routerLinkActive="active"
-              ariaCurrentWhenActive="page"
-              >Search</a
-            >
-          </li>
-          @if (userService.isTranscriber()) {
-            <li class="moj-primary-navigation__item">
-              <a
-                id="your-work-link"
-                class="moj-primary-navigation__link"
-                routerLink="work"
-                routerLinkActive="active"
-                ariaCurrentWhenActive="page"
-                >Your work
-                @if (assignedTranscriptCount$ | async; as count) {
-                  @if (count > 0) {
-                    <span id="assignedTranscriptCount" class="moj-notification-badge"
-                      ><span class="govuk-visually-hidden">Transcript requests assigned count: </span>{{ count }}</span
-                    >
-                  }
-                }
-              </a>
-            </li>
-          }
-          <li class="moj-primary-navigation__item">
-            <a
-              class="moj-primary-navigation__link"
-              routerLink="audios"
-              routerLinkActive="active"
-              ariaCurrentWhenActive="page"
-              >Your audio
-              <ng-container *ngIf="unreadAudioCount$ | async as count">
-                <span *ngIf="count > 0" id="unreadAudioCountNotifications" class="moj-notification-badge"
-                  ><span class="govuk-visually-hidden">Ready requests not viewed count: </span>{{ count }}</span
-                >
-              </ng-container>
-            </a>
-          </li>
-          @if (userService.isJudge() || userService.isApprover() || userService.isRequester()) {
+        @if (userService.isAdmin() && router.url.startsWith('/admin')) {
+          <ul id="admin-nav" class="moj-primary-navigation__list">
             <li class="moj-primary-navigation__item">
               <a
                 class="moj-primary-navigation__link"
-                routerLink="transcriptions"
+                routerLink="admin/users"
                 routerLinkActive="active"
                 ariaCurrentWhenActive="page"
-                >Your transcripts</a
+                >Users</a
               >
             </li>
-          }
-          @if (userService.isTranscriber()) {
             <li class="moj-primary-navigation__item">
               <a
-                id="transcript-requests-link"
                 class="moj-primary-navigation__link"
-                routerLink="transcription-requests"
+                routerLink="admin/groups"
                 routerLinkActive="active"
                 ariaCurrentWhenActive="page"
-                >Transcript requests
-                @if (unassignedTranscriptCount$ | async; as count) {
-                  @if (count > 0) {
-                    <span id="unassignedTranscriptCount" class="moj-notification-badge"
-                      ><span class="govuk-visually-hidden">Transcript requests unassigned count: </span
-                      >{{ count }}</span
-                    >
+                >Groups</a
+              >
+            </li>
+            <li class="moj-primary-navigation__item">
+              <a
+                class="moj-primary-navigation__link"
+                routerLink="admin/organisations"
+                routerLinkActive="active"
+                ariaCurrentWhenActive="page"
+                >Organisations</a
+              >
+            </li>
+            <li class="moj-primary-navigation__item">
+              <a
+                class="moj-primary-navigation__link"
+                routerLink="admin/courthouses"
+                routerLinkActive="active"
+                ariaCurrentWhenActive="page"
+                >Courthouses</a
+              >
+            </li>
+            <li class="moj-primary-navigation__item">
+              <a
+                class="moj-primary-navigation__link"
+                routerLink="admin/events"
+                routerLinkActive="active"
+                ariaCurrentWhenActive="page"
+                >Events</a
+              >
+            </li>
+            <li class="moj-primary-navigation__item">
+              <a
+                class="moj-primary-navigation__link"
+                routerLink="admin/node-registry"
+                routerLinkActive="active"
+                ariaCurrentWhenActive="page"
+                >Node registry</a
+              >
+            </li>
+            <li class="moj-primary-navigation__item">
+              <a
+                class="moj-primary-navigation__link"
+                routerLink="admin/transformed-media"
+                routerLinkActive="active"
+                ariaCurrentWhenActive="page"
+                >Transformed media</a
+              >
+            </li>
+            <li class="moj-primary-navigation__item">
+              <a
+                class="moj-primary-navigation__link"
+                routerLink="admin/transcription-requests"
+                routerLinkActive="active"
+                ariaCurrentWhenActive="page"
+                >Transcript requests</a
+              >
+            </li>
+          </ul>
+        } @else {
+          <ul id="portal-nav" class="moj-primary-navigation__list">
+            <li class="moj-primary-navigation__item">
+              <a
+                class="moj-primary-navigation__link"
+                routerLink="search"
+                routerLinkActive="active"
+                ariaCurrentWhenActive="page"
+                >Search</a
+              >
+            </li>
+            @if (userService.isTranscriber()) {
+              <li class="moj-primary-navigation__item">
+                <a
+                  id="your-work-link"
+                  class="moj-primary-navigation__link"
+                  routerLink="work"
+                  routerLinkActive="active"
+                  ariaCurrentWhenActive="page"
+                  >Your work
+                  @if (assignedTranscriptCount$ | async; as count) {
+                    @if (count > 0) {
+                      <span id="assignedTranscriptCount" class="moj-notification-badge"
+                        ><span class="govuk-visually-hidden">Transcript requests assigned count: </span
+                        >{{ count }}</span
+                      >
+                    }
                   }
-                }
+                </a>
+              </li>
+            }
+            <li class="moj-primary-navigation__item">
+              <a
+                class="moj-primary-navigation__link"
+                routerLink="audios"
+                routerLinkActive="active"
+                ariaCurrentWhenActive="page"
+                >Your audio
+                <ng-container *ngIf="unreadAudioCount$ | async as count">
+                  <span *ngIf="count > 0" id="unreadAudioCountNotifications" class="moj-notification-badge"
+                    ><span class="govuk-visually-hidden">Ready requests not viewed count: </span>{{ count }}</span
+                  >
+                </ng-container>
               </a>
             </li>
-          }
-        </ul>
+            @if (userService.isJudge() || userService.isApprover() || userService.isRequester()) {
+              <li class="moj-primary-navigation__item">
+                <a
+                  class="moj-primary-navigation__link"
+                  routerLink="transcriptions"
+                  routerLinkActive="active"
+                  ariaCurrentWhenActive="page"
+                  >Your transcripts</a
+                >
+              </li>
+            }
+            @if (userService.isTranscriber()) {
+              <li class="moj-primary-navigation__item">
+                <a
+                  id="transcript-requests-link"
+                  class="moj-primary-navigation__link"
+                  routerLink="transcription-requests"
+                  routerLinkActive="active"
+                  ariaCurrentWhenActive="page"
+                  >Transcript requests
+                  @if (unassignedTranscriptCount$ | async; as count) {
+                    @if (count > 0) {
+                      <span id="unassignedTranscriptCount" class="moj-notification-badge"
+                        ><span class="govuk-visually-hidden">Transcript requests unassigned count: </span
+                        >{{ count }}</span
+                      >
+                    }
+                  }
+                </a>
+              </li>
+            }
+          </ul>
+        }
       </nav>
     </div>
   </div>

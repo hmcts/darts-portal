@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Transcript } from '@darts-types/transcript.interface';
-import { TranscriptsRow } from '@darts-types/transcripts-row.interface';
+import { Transcript } from '@portal-types/transcriptions/transcript.type';
+import { TranscriptsRow } from '@portal-types/transcriptions/transcripts-row.type';
 
 @Injectable({
   providedIn: 'root',
@@ -9,11 +9,11 @@ export class MappingService {
   mapTranscriptRequestToRows(transcripts: Transcript[]): TranscriptsRow[] {
     return transcripts.map((transcript) => {
       return {
-        tra_id: transcript.transcription_id,
-        hearingDate: transcript.hearing_date,
+        id: transcript.id,
+        hearingDate: transcript.hearingDate,
         type: transcript.type,
-        requestedOn: transcript.requested_on,
-        requestedBy: transcript.requested_by_name,
+        requestedOn: transcript.requestedOn,
+        requestedBy: transcript.requestedByName,
         status: transcript.status,
       };
     });

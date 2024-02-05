@@ -123,7 +123,7 @@ const yourTranscriptionsStub = {
 
 const mockTranscriptionDetails = {
   case_id: 1,
-  reporting_restrictions: [
+  case_reporting_restrictions: [
     {
       hearing_id: 1,
       event_id: 123,
@@ -154,7 +154,7 @@ const mockTranscriptionDetails = {
 
 const mockTranscriptionDetailsTwo = {
   case_id: 2,
-  reporting_restrictions: [
+  case_reporting_restrictions: [
     {
       hearing_id: 1,
       event_id: 123,
@@ -193,7 +193,7 @@ const mockTranscriptionDetailsNoName = {
   request_type: 'Specified Times',
   transcription_start_ts: '2023-06-26T13:00:00Z',
   transcription_end_ts: '2023-06-26T16:00:00Z',
-  reporting_restrictions: [
+  case_reporting_restrictions: [
     {
       hearing_id: 1,
       event_id: 123,
@@ -208,13 +208,13 @@ let unassignedTranscriptions = [
   {
     transcription_id: 4,
     case_id: 72345,
-    case_number: 'T12345',
+    case_number: 'T12348',
     courthouse_name: 'Newcastle',
     hearing_date: '2023-06-10',
     transcription_type: 'Court Log',
     status: 'Approved',
-    urgency: 'Overnight',
-    requested_ts: '2023-06-26T13:00:00Z',
+    urgency: 'Up to 2 working days',
+    requested_ts: '2023-08-01T10:00:00Z',
     state_change_ts: '2023-06-27T13:00:00Z',
     is_manual: true,
   },
@@ -222,51 +222,51 @@ let unassignedTranscriptions = [
     transcription_id: 54,
     case_id: 32345,
     case_number: 'T12345',
-    courthouse_name: 'Newcastle',
-    hearing_date: '2023-06-11',
-    transcription_type: 'Court Log',
+    courthouse_name: 'Cardiff',
+    hearing_date: '2022-03-11',
+    transcription_type: 'Specified Times',
     status: 'Approved',
     urgency: 'Overnight',
-    requested_ts: '2023-06-26T13:00:00Z',
+    requested_ts: '2022-06-27T12:00:00Z',
     state_change_ts: '2023-06-27T13:00:00Z',
     is_manual: true,
   },
   {
     transcription_id: 6,
     case_id: 32445,
-    case_number: 'T12345',
-    courthouse_name: 'Newcastle',
-    hearing_date: '2023-06-11',
-    transcription_type: 'Court Log',
+    case_number: 'T12346',
+    courthouse_name: 'Swansea',
+    hearing_date: '2021-04-18',
+    transcription_type: 'Sentencing Remarks',
     status: 'Approved',
     urgency: 'Up to 3 working days',
-    requested_ts: '2023-06-26T13:00:00Z',
+    requested_ts: '2022-02-28T13:00:00Z',
     state_change_ts: '2023-06-27T13:00:00Z',
     is_manual: true,
   },
   {
     transcription_id: 7,
     case_id: 32445,
-    case_number: 'T12345',
-    courthouse_name: 'Newcastle',
-    hearing_date: '2023-06-11',
+    case_number: 'T12347',
+    courthouse_name: 'Windsor',
+    hearing_date: '2023-11-03',
     transcription_type: 'Court Log',
     status: 'Approved',
-    urgency: 'Up to 3 working days',
-    requested_ts: '2023-06-26T13:00:00Z',
+    urgency: 'Up to 12 working days',
+    requested_ts: '2023-12-25T13:00:00Z',
     state_change_ts: '2023-06-27T13:00:00Z',
     is_manual: false,
   },
   {
     transcription_id: 10,
     case_id: 32445,
-    case_number: 'T12345',
-    courthouse_name: 'Newcastle',
-    hearing_date: '2023-06-11',
-    transcription_type: 'Court Log',
+    case_number: 'T12341',
+    courthouse_name: 'Manchester',
+    hearing_date: '2023-06-15',
+    transcription_type: 'Antecedents',
     status: 'Approved',
     urgency: 'Up to 3 working days',
-    requested_ts: '2023-06-26T13:00:00Z',
+    requested_ts: '2021-09-09T13:00:00Z',
     state_change_ts: '2023-06-27T13:00:00Z',
     is_manual: false,
   },
@@ -274,9 +274,22 @@ let unassignedTranscriptions = [
 
 let assignedTranscriptions = [
   {
+    transcription_id: 0,
+    case_id: 3,
+    case_number: 'T2023453499',
+    courthouse_name: 'Southwark',
+    hearing_date: '2023-07-17',
+    transcription_type: 'Antecedents',
+    status: 'With Transcriber',
+    urgency: 'Up to 12 working days',
+    requested_ts: '2024-01-10T10:00:00Z',
+    state_change_ts: '2023-08-13T13:00:00Z',
+    is_manual: false,
+  },
+  {
     transcription_id: 1,
     case_id: 3,
-    case_number: 'T2023453422',
+    case_number: 'T2023453423',
     courthouse_name: 'Reading',
     hearing_date: '2023-08-06',
     transcription_type: 'Court Log',
@@ -291,11 +304,11 @@ let assignedTranscriptions = [
     case_id: 3,
     case_number: 'T2023453422',
     courthouse_name: 'Cardiff',
-    hearing_date: '2023-08-06',
-    transcription_type: 'Court Log',
+    hearing_date: '2023-08-07',
+    transcription_type: 'Sentencing remarks',
     status: 'With Transcriber',
-    urgency: 'Overnight',
-    requested_ts: '2023-08-12T13:00:00Z',
+    urgency: 'Up to 3 working days',
+    requested_ts: '2023-08-21T14:00:00Z',
     state_change_ts: '2023-08-13T13:00:00Z',
     is_manual: false,
   },
@@ -303,13 +316,26 @@ let assignedTranscriptions = [
     transcription_id: 3,
     case_id: 3,
     case_number: 'T2023453436',
-    courthouse_name: 'Swansea',
+    courthouse_name: 'Newcastle',
     hearing_date: '2023-06-10',
     transcription_type: 'Court Log',
     status: 'Complete',
     urgency: 'Up to 3 working days',
-    requested_ts: '2023-06-26T13:00:00Z',
+    requested_ts: '2023-06-27T16:00:00Z',
     state_change_ts: '2023-06-27T13:00:00Z',
+    is_manual: true,
+  },
+  {
+    transcription_id: 4,
+    case_id: 3,
+    case_number: 'T2023453427',
+    courthouse_name: 'Reading',
+    hearing_date: '2023-08-06',
+    transcription_type: 'Court Log',
+    status: 'Complete',
+    urgency: 'Overnight',
+    requested_ts: '2023-08-12T13:00:00Z',
+    state_change_ts: '2023-08-13T13:00:00Z',
     is_manual: true,
   },
 ];
@@ -413,6 +439,16 @@ router.get('/:transcriptId', (req, res) => {
     default:
       res.status(200).send(mockTranscriptionDetailsTwo);
   }
+});
+
+router.patch('/:transcriptId/document', (req, res) => {
+  assignedTranscriptions = assignedTranscriptions.map((t) => {
+    if (t.transcription_id == req.params.transcriptId) {
+      t.status = 'Complete';
+    }
+    return t;
+  });
+  res.status(200).send();
 });
 
 router.post('/:transcriptId/document', (req, res) => {

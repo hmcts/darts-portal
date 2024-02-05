@@ -1,0 +1,12 @@
+<ng-container *ngIf="case && hearing">
+  <div>
+    <h1 class="govuk-caption-l">Hearing</h1>
+    <h1 class="govuk-heading-l">{{ hearing.date | luxonDate: 'd MMM y' }}</h1>
+    <h3 class="govuk-heading-s">Courthouse</h3>
+    <p class="govuk-body">{{ case.courthouse }}</p>
+    <h3 class="govuk-heading-s">Courtroom</h3>
+    <p class="govuk-body">{{ hearing.courtroom }}</p>
+    <h3 class="govuk-heading-s">Judge(s)</h3>
+    <p *ngIf="hearing.judges" class="govuk-body">{{ hearing.judges | join }}</p>
+  </div>
+</ng-container>

@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { AppConfigService } from '@services/app-config/app-config.service';
-import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { of } from 'rxjs';
+import { AudioRequestService } from 'src/app/portal/services/audio-request/audio-request.service';
 import { AudioPlayerComponent } from './audio-player.component';
 
 describe('AudioPlayerComponent', () => {

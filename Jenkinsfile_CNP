@@ -7,7 +7,7 @@ def product = "darts"
 def component = "portal"
 
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
-def branchesToSync = ['demo', 'ithc', 'test']
+def branchesToSync = ['demo', 'perftest']
 
 withPipeline(type, product, component) {
   enableSlackNotifications('#darts-builds')

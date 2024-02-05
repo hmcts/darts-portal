@@ -39,7 +39,7 @@ describe('Transcript requests', () => {
     cy.get('#submit-button').click();
     cy.get('h1').contains('Your work');
     cy.get('#unassignedTranscriptCount').should('contain', '4');
-    cy.get('#assignedTranscriptCount').should('contain', '3');
+    cy.get('#assignedTranscriptCount').should('contain', '4');
   });
 
   it('assign transcript to me and upload', () => {
@@ -48,7 +48,7 @@ describe('Transcript requests', () => {
     cy.get('#submit-button').click();
     cy.get('h1').contains('Transcript request');
     cy.get('#unassignedTranscriptCount').should('contain', '3');
-    cy.get('#assignedTranscriptCount').should('contain', '4');
+    cy.get('#assignedTranscriptCount').should('contain', '5');
   });
 
   it('assign transcript to me and get audio', () => {
@@ -58,6 +58,6 @@ describe('Transcript requests', () => {
     cy.get('h1').contains('Hearing');
     cy.url().should('include', '/case/2/hearing/1?startTime=13:00:00&endTime=16:00:00');
     cy.get('#unassignedTranscriptCount').should('contain', '2');
-    cy.get('#assignedTranscriptCount').should('contain', '5');
+    cy.get('#assignedTranscriptCount').should('contain', '6');
   });
 });

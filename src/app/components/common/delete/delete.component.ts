@@ -10,6 +10,7 @@ import { HeaderService } from '@services/header/header.service';
 })
 export class DeleteComponent implements OnInit, OnDestroy {
   @Input() numberOfItems = 0;
+  @Input() title = '';
   @Output() confirm = new EventEmitter();
   @Output() cancel = new EventEmitter();
 

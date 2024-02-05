@@ -1,0 +1,139 @@
+<ng-template #tableTemplatePartial let-row>
+  <td class="govuk-table__cell">
+    <a class="govuk-link" [routerLink]="['/case', row.caseId]"> {{ row.caseNumber }}</a>
+  </td>
+  <td class="govuk-table__cell">{{ row.courthouseName }}</td>
+  <td class="govuk-table__cell">{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
+  <td class="govuk-table__cell">{{ row.startTime | luxonDate: 'HH:mm:ss' }}</td>
+  <td class="govuk-table__cell">{{ row.endTime | luxonDate: 'HH:mm:ss' }}</td>
+  <td class="govuk-table__cell">{{ row.mediaRequestId }}</td>
+  <td class="govuk-table__cell">
+    {{ row.transformedMediaExpiryTs ? (row.transformedMediaExpiryTs | luxonDate: 'HH:mm:ss dd/MM/yyyy') : '-' }}
+  </td>
+</ng-template>
+
+@if (!isDeleting) {
+  <h1 class="govuk-label-wrapper">
+    <label class="govuk-label govuk-label--l" for="case-search">Your audio</label>
+  </h1>
+  @if (data$ | async; as data) {
+    <app-tabs (tabChange)="onTabChanged()">
+      <div *tab="'Current'">
+        <p *ngIf="!data.inProgressRows.length && !data.completedRows.length" class="govuk-body">
+          There are no audio files in progress or ready
+        </p>
+
+        <ng-container *ngIf="data.inProgressRows.length">
+          <h2 class="govuk-heading-m">In Progress</h2>
+          <app-data-table id="inProgressTable" [rows]="data.inProgressRows" [columns]="columns" [pagination]="false">
+            <ng-template [tableRowTemplate]="data.inProgressRows" let-row>
+              <!-- Partial template for duplicated cells -->
+              <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
+
+              <td class="govuk-table__cell">
+                <div class="status-cell">
+                  <strong class="govuk-tag" [ngClass]="getStatusClass(row.status)">
+                    {{ getStatusText(row.status) }}
+                  </strong>
+                  <a *ngIf="row.status === 'FAILED'" href="#" (click)="onClearClicked($event, row)" class="govuk-link">
+                    Clear
+                  </a>
+                </div>
+              </td>
+            </ng-template>
+          </app-data-table>
+        </ng-container>
+
+        <ng-container *ngIf="data.completedRows.length">
+          <h2 class="govuk-heading-m">Ready</h2>
+          <div class="action-container">
+            <div class="govuk-hint">Select to apply actions</div>
+            <button id="delete-button" class="govuk-button govuk-button--secondary" (click)="onDeleteClicked()">
+              Delete
+            </button>
+          </div>
+          <app-data-table
+            id="readyTable"
+            [rows]="data.completedRows"
+            [columns]="readyColumns"
+            [rowSelectable]="true"
+            [pageLimit]="15"
+            (rowSelect)="onSelectedAudio($event)"
+          >
+            <ng-template [tableRowTemplate]="data.completedRows" let-row>
+              <td class="govuk-table__cell">
+                <span unreadIcon [class.unread]="!row.lastAccessedTs" *ngIf="!row.lastAccessedTs"> </span>
+              </td>
+              <!-- Partial template for duplicated cells -->
+              <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
+
+              <td class="govuk-table__cell">
+                <strong class="govuk-tag govuk-tag--green"> READY </strong>
+              </td>
+              <td class="govuk-table__cell">
+                <a href="#" (click)="onViewTransformedMedia($event, row)" class="govuk-link view-link">View</a>
+              </td>
+            </ng-template>
+          </app-data-table>
+        </ng-container>
+      </div>
+
+      <div *tab="'Expired'">
+        @if (!data.expiredRows.length) {
+          <p class="govuk-body">There are no expired audio files</p>
+        } @else {
+          <h2 class="govuk-heading-m">Expired</h2>
+          <div class="action-container">
+            <div class="govuk-hint">Select to apply actions</div>
+            <button class="govuk-button govuk-button--secondary" (click)="onDeleteClicked()">Delete</button>
+          </div>
+          <app-data-table
+            id="expiredTable"
+            [rows]="data.expiredRows"
+            [columns]="columns"
+            [rowSelectable]="true"
+            (rowSelect)="onSelectedAudio($event)"
+          >
+            <ng-template [tableRowTemplate]="data.expiredRows" let-row>
+              <!-- Partial template for duplicated cells -->
+              <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
+
+              <td class="govuk-table__cell">
+                <div class="status-cell">
+                  <strong class="govuk-tag govuk-tag--grey"> EXPIRED </strong>
+                </div>
+              </td>
+            </ng-template>
+          </app-data-table>
+        }
+      </div>
+    </app-tabs>
+  } @else {
+    <app-loading text="Loading audio requests..."></app-loading>
+  }
+}
+
+@if (isDeleting) {
+  <app-delete
+    [numberOfItems]="selectedAudioRequests.length"
+    (confirm)="onDeleteConfirmed()"
+    (cancel)="onDeleteCancelled()"
+  >
+    <app-data-table id="deletionTable" [rows]="selectedAudioRequests" [columns]="columns">
+      <ng-template [tableRowTemplate]="selectedAudioRequests" let-row>
+        <td class="govuk-table__cell">{{ row.caseNumber }}</td>
+        <td class="govuk-table__cell">{{ row.courthouseName }}</td>
+        <td class="govuk-table__cell">{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
+        <td class="govuk-table__cell">{{ row.startTime | luxonDate: 'hh:mm:ss' }}</td>
+        <td class="govuk-table__cell">{{ row.endTime | luxonDate: 'hh:mm:ss' }}</td>
+        <td class="govuk-table__cell">{{ row.mediaRequestId }}</td>
+        <td class="govuk-table__cell">{{ row.transformedMediaExpiryTs | luxonDate: 'hh:mm:ss dd/MM/yyyy' }}</td>
+        <td class="govuk-table__cell">
+          <strong class="govuk-tag" [ngClass]="getStatusClass(row.status)">
+            {{ getStatusText(row.status) }}
+          </strong>
+        </td>
+      </ng-template>
+    </app-data-table>
+  </app-delete>
+}
