@@ -1,8 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Courthouse } from '@core-types/index';
-import { CaseRetentionHistory, CaseRetentionChange } from '@darts-types/case-retention-history.interface';
-import { Case, CaseData, Hearing, HearingData, SearchFormValues, Transcript, TranscriptData } from '@darts-types/index';
 import { DateTime, Settings } from 'luxon';
 import {
   ADVANCED_SEARCH_CASE_PATH,
@@ -12,6 +10,16 @@ import {
   GET_COURTHOUSES_PATH,
   GET_HEARINGS_PATH,
 } from './case.service';
+import {
+  CaseData,
+  CaseRetentionChange,
+  CaseRetentionHistory,
+  Hearing,
+  HearingData,
+  SearchFormValues,
+  Transcript,
+  TranscriptData,
+} from '@portal-types/index';
 
 Settings.defaultZone = 'utc';
 
@@ -26,11 +34,9 @@ describe('CaseService', () => {
     courthouse: 'Swansea',
     case_number: 'CASE1001',
     defendants: ['Defendant Dave', 'Defendant Debbie'],
-    hearings: [],
     judges: ['Judge Judy', 'Judge Jones'],
     prosecutors: ['Polly Prosecutor'],
     defenders: ['Derek Defender'],
-    reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
     retain_until: '2023-08-10T11:23:24Z',
     case_closed_date_time: '',
     reporting_restrictions: [],
@@ -134,11 +140,9 @@ describe('CaseService', () => {
       courthouse: 'Swansea',
       number: 'CASE1001',
       defendants: ['Defendant Dave', 'Defendant Debbie'],
-      hearings: [],
       judges: ['Judge Judy', 'Judge Jones'],
       prosecutors: ['Polly Prosecutor'],
       defenders: ['Derek Defender'],
-      reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
       retainUntil: '2023-08-10T11:23:24Z',
       closedDateTime: undefined,
       reportingRestrictions: [],

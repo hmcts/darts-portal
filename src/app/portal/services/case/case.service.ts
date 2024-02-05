@@ -4,6 +4,10 @@ import { Courthouse } from '@core-types/index';
 import {
   Case,
   CaseData,
+  CaseRetentionChange,
+  CaseRetentionHistory,
+  CaseSearchResult,
+  CaseSearchResultData,
   Hearing,
   HearingData,
   SearchFormValues,
@@ -30,7 +34,7 @@ export class CaseService {
   constructor(private readonly http: HttpClient) {}
 
   // Store for previous search results and form values
-  searchResults$: Observable<Case[] | null> | null = null;
+  searchResults$: Observable<CaseSearchResult[] | null> | null = null;
   searchFormValues: SearchFormValues | null = null;
 
   getCourthouses(): Observable<Courthouse[]> {
@@ -60,7 +64,7 @@ export class CaseService {
     return this.http.get<HearingData[]>(`${GET_CASE_PATH}/${caseId}/hearings`).pipe(map(this.mapHearingDataToHearing));
   }
 
-  searchCases(searchForm: SearchFormValues): Observable<Case[] | null> {
+  searchCases(searchForm: SearchFormValues): Observable<CaseSearchResult[] | null> {
     // Save search form values
     this.searchFormValues = searchForm;
     // Deep copy form to create Post Obj DTO
@@ -83,7 +87,7 @@ export class CaseService {
     // Store results in service for retrieval
     this.searchResults$ = this.http
       .post<CaseData[]>(ADVANCED_SEARCH_CASE_PATH, body)
-      .pipe(map((results) => results.map(this.mapCaseDataToCase)))
+      .pipe(map((results) => results.map(this.mapCaseDataToCaseSearchResult)))
       .pipe(shareReplay(1));
     return this.searchResults$;
   }
@@ -132,6 +136,18 @@ export class CaseService {
       requestedByName: t.requested_by_name,
       status: t.status,
     }));
+  }
+
+  private mapCaseDataToCaseSearchResult(c: CaseSearchResultData): CaseSearchResult {
+    return {
+      id: c.case_id,
+      number: c.case_number,
+      courthouse: c.courthouse,
+      defendants: c.defendants,
+      judges: c.judges,
+      reportingRestriction: c.reporting_restriction,
+      hearings: c.hearings,
+    };
   }
 
   private mapCaseDataToCase(c: CaseData): Case {

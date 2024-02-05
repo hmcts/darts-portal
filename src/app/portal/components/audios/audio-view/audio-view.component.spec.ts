@@ -102,15 +102,6 @@ describe('AudioViewComponent', () => {
         event_ts: '2023-08-10T09:00:00Z',
       },
     ],
-    hearings: [
-      {
-        id: 1,
-        date: DateTime.fromISO('2023-08-10'),
-        courtroom: '1',
-        judges: ['Judge Judy'],
-        transcriptCount: 0,
-      },
-    ],
   };
 
   const MOCK_AUDIO_REQUEST: TransformedMedia = {
