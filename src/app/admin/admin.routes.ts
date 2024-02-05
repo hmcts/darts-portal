@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
-import { UserService } from 'src/app/core/services/user/user.service';
+import { UserService } from '@services/user/user.service';
 import { authGuard } from '../core/auth/auth.guard';
 
 export const ADMIN_ROUTES: Routes = [

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
-import { HeaderService } from 'src/app/core/services/header/header.service';
+import { HeaderService } from '@services/header/header.service';
 
 @Component({
   selector: 'app-conflict',

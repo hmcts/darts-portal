@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { HeaderService } from 'src/app/core/services/header/header.service';
+import { HeaderService } from '@services/header/header.service';
 import { DeleteComponent } from './delete.component';
 
 describe('DeleteComponent', () => {

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { TabDirective } from 'src/app/core/directives/tab.directive';
+import { TabDirective } from '@directives/tab.directive';
 import { TabsComponent } from './tabs.component';
 
 @Component({

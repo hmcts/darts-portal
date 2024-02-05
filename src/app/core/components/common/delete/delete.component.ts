@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
-import { HeaderService } from 'src/app/core/services/header/header.service';
+import { HeaderService } from '@services/header/header.service';
 
 @Component({
   selector: 'app-delete',

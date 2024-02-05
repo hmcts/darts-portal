@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
-import { ForbiddenComponent } from 'src/app/core/components/error/forbidden/forbidden.component';
-import { InternalErrorComponent } from 'src/app/core/components/error/internal-server/internal-error.component';
-import { NotFoundComponent } from 'src/app/core/components/error/not-found/not-found.component';
+import { ForbiddenComponent } from '@components/error/forbidden/forbidden.component';
+import { InternalErrorComponent } from '@components/error/internal-server/internal-error.component';
+import { NotFoundComponent } from '@components/error/not-found/not-found.component';
+import { LoginComponent } from '@components/login/login.component';
 import { ADMIN_ROUTES } from './admin/admin.routes';
-import { LoginComponent } from './core/components/login/login.component';
 import { PORTAL_ROUTES } from './portal/portal.routes';
 
 // Place all redirects here

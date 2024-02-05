@@ -9,7 +9,7 @@ import {
   QueryList,
   TemplateRef,
 } from '@angular/core';
-import { TabDirective } from 'src/app/core/directives/tab.directive';
+import { TabDirective } from '@directives/tab.directive';
 
 @Component({
   selector: 'app-tabs',
