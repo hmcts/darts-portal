@@ -7,7 +7,7 @@ const validReason = 'REASONS';
 
 describe('Case retention screen as standard user', () => {
   beforeEach(() => {
-    cy.login();
+    cy.login('requestor-approver');
     cy.injectAxe();
   });
 

@@ -6,10 +6,11 @@ const config: Config = {
   moduleDirectories: ['node_modules', '<rootDir>'],
   transformIgnorePatterns: ['node_modules/(?!@angular|@scottish-government)'],
   moduleNameMapper: {
-    '^@services/(.*)$': '<rootDir>/src/app/services/$1',
+    '^@services/(.*)$': ['<rootDir>/src/app/services/$1', '<rootDir>/src/app/portal/services/$1'],
     '^@common/(.*)$': '<rootDir>/src/app/components/common/$1',
     '^@components/(.*)$': '<rootDir>/src/app/components/$1',
     '^@darts-types/(.*)$': '<rootDir>/src/app/types/$1',
+    '^@portal-types/(.*)$': '<rootDir>/src/app/portal/models/$1',
     '^@validators/(.*)$': '<rootDir>/src/app/validators/$1',
     '^@pipes/(.*)$': '<rootDir>/src/app/pipes/$1',
     '^@interceptors/(.*)$': '<rootDir>/src/app/interceptors/$1',
