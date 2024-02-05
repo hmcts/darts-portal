@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
+import { AnnotationsData } from '@darts-types/annotations.interface';
 import { Case, Hearing, TranscriptData } from '@darts-types/index';
 import { CaseService } from '@services/case/case.service';
 import { DateTime } from 'luxon';
@@ -64,10 +65,30 @@ describe('CaseComponent', () => {
     },
   ]);
 
+  const mockAnnotation: Observable<AnnotationsData[]> = of([
+    {
+      annotation_id: 1,
+      hearing_id: 123,
+      hearing_date: '2023-12-14',
+      annotation_ts: '2023-12-15T12:00:00.000Z',
+      annotation_text: 'A summary notes of this annotation...',
+      annotation_documents: [
+        {
+          annotation_document_id: 1,
+          file_name: 'Annotation.doc',
+          file_type: 'DOC',
+          uploaded_by: 'Mr User McUserFace',
+          uploaded_ts: '2023-12-15T12:00:00.000Z',
+        },
+      ],
+    },
+  ]);
+
   const caseServiceMock = {
     getCase: jest.fn(),
     getCaseHearings: jest.fn(),
     getCaseTranscripts: jest.fn(),
+    getCaseAnnotations: jest.fn(),
   };
 
   const mockActivatedRoute = {
@@ -91,6 +112,7 @@ describe('CaseComponent', () => {
     jest.spyOn(caseServiceMock, 'getCase').mockReturnValue(mockCaseFile);
     jest.spyOn(caseServiceMock, 'getCaseHearings').mockReturnValue(mockSingleCaseTwoHearings);
     jest.spyOn(caseServiceMock, 'getCaseTranscripts').mockReturnValue(mockTranscript);
+    jest.spyOn(caseServiceMock, 'getCaseAnnotations').mockReturnValue(mockAnnotation);
 
     fixture = TestBed.createComponent(CaseComponent);
     component = fixture.componentInstance;
