@@ -12,10 +12,10 @@ import {
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ErrorSummaryEntry, FieldErrors } from '@core-types/index';
 import { Hearing, PostAudioRequest } from '@portal-types/index';
+import { UserService } from '@services/user/user.service';
+import { timeGroupValidator } from '@validators/time-group.validator';
 import { DateTime } from 'luxon';
 import { UserState } from 'src/app/core/models/user/user-state.interface';
-import { UserService } from 'src/app/core/services/user/user.service';
-import { timeGroupValidator } from 'src/app/core/validators/time-group.validator';
 import { TimeInputComponent } from './time-input/time-input.component';
 
 const fieldErrors: FieldErrors = {

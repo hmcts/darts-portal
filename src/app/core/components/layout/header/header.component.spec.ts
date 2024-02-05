@@ -3,11 +3,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { AppInsightsService } from '@services/app-insights/app-insights.service';
+import { AuthService } from '@services/auth/auth.service';
+import { CountNotificationService } from '@services/count-notification/count-notification.service';
+import { UserService } from '@services/user/user.service';
 import { of } from 'rxjs';
-import { AppInsightsService } from 'src/app/core/services/app-insights/app-insights.service';
-import { AuthService } from 'src/app/core/services/auth/auth.service';
-import { UserService } from 'src/app/core/services/user/user.service';
-import { CountNotificationService } from 'src/app/portal/services/count-notification/count-notification.service';
 import { HeaderComponent } from './header.component';
 
 @Component({ template: '' })

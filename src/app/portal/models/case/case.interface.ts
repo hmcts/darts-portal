@@ -1,5 +1,5 @@
+import { ReportingRestriction } from '@core-types/reporting-restriction/reporting-restriction.interface';
 import { Hearing } from '@portal-types/hearing/hearing.type';
-import { ReportingRestriction } from '../../../core/models/reporting-restriction/reporting-restriction.interface'; //Update once core is re-structured
 
 export interface CaseData {
   case_id: number;

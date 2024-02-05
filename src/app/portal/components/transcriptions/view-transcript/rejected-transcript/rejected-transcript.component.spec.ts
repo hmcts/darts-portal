@@ -2,9 +2,9 @@ import { DatePipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
+import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { TranscriptionDetails } from '@portal-types/transcriptions/transcription-details.type';
 import { DateTime } from 'luxon';
-import { LuxonDatePipe } from 'src/app/core/pipes/luxon-date.pipe';
 import { RejectedTranscriptComponent } from './rejected-transcript.component';
 
 describe('RejectedTranscriptComponent', () => {

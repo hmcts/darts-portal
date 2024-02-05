@@ -11,8 +11,8 @@ import {
   ViewChild,
   inject,
 } from '@angular/core';
+import { AppConfigService } from '@services/app-config/app-config.service';
 import { Observable } from 'rxjs';
-import { AppConfigService } from 'src/app/core/services/app-config/app-config.service';
 import { AudioRequestService } from 'src/app/portal/services/audio-request/audio-request.service';
 
 @Component({

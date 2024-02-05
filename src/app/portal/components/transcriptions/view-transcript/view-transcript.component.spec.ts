@@ -2,10 +2,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { TranscriptionDetails } from '@portal-types/transcriptions/transcription-details.type';
+import { FileDownloadService } from '@services/file-download/file-download.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs/internal/observable/of';
-import { FileDownloadService } from 'src/app/core/services/file-download/file-download.service';
 import { ViewTranscriptComponent } from './view-transcript.component';
 
 describe('ViewTranscriptComponent', () => {

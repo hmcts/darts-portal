@@ -4,12 +4,12 @@ import { DatePipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { TranscriptionDetails } from '@portal-types/transcriptions/transcription-details.type';
+import { ErrorMessageService } from '@services/error/error-message.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
-import { LuxonDatePipe } from 'src/app/core/pipes/luxon-date.pipe';
-import { ErrorMessageService } from 'src/app/core/services/error/error-message.service';
 import { AssignTranscriptComponent } from './assign-transcript.component';
 
 describe('AssignTranscriptComponent', () => {

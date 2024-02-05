@@ -3,16 +3,14 @@ import { ComponentFixture, TestBed, fakeAsync, flush, tick } from '@angular/core
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { ErrorSummaryEntry } from '@core-types/index';
+import { Courthouse, ErrorMessage, ErrorSummaryEntry } from '@core-types/index';
+import { AppConfigService } from '@services/app-config/app-config.service';
+import { AppInsightsService } from '@services/app-insights/app-insights.service';
+import { CaseService } from '@services/case/case.service';
+import { ErrorMessageService } from '@services/error/error-message.service';
+import { HeaderService } from '@services/header/header.service';
 import { of, throwError } from 'rxjs';
 import { CourthouseComponent } from 'src/app/core/components/common/courthouse/courthouse.component';
-import { Courthouse } from 'src/app/core/models/courthouse/courthouse.interface';
-import { ErrorMessage } from 'src/app/core/models/error/error-message.interface';
-import { AppConfigService } from 'src/app/core/services/app-config/app-config.service';
-import { AppInsightsService } from 'src/app/core/services/app-insights/app-insights.service';
-import { ErrorMessageService } from 'src/app/core/services/error/error-message.service';
-import { HeaderService } from 'src/app/core/services/header/header.service';
-import { CaseService } from 'src/app/portal/services/case/case.service';
 import { ResultsComponent } from './results/results.component';
 import { SearchComponent } from './search.component';
 

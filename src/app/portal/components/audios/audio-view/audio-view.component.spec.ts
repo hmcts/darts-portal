@@ -9,12 +9,12 @@ import { PlayButtonComponent } from '@components/common/play-button/play-button.
 import { HearingEvent } from '@portal-types/hearing/hearing-event.interface';
 import { Case, HearingEventRow, TransformedMedia } from '@portal-types/index';
 import { AppConfigService } from '@services/app-config/app-config.service';
-import { AudioRequestService } from '@services/audio-request/audio-request.service';
-import { CaseService } from '@services/case/case.service';
 import { ErrorMessageService } from '@services/error/error-message.service';
-import { HearingService } from '@services/hearing/hearing.service';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
+import { AudioRequestService } from 'src/app/portal/services/audio-request/audio-request.service';
+import { CaseService } from 'src/app/portal/services/case/case.service';
+import { HearingService } from 'src/app/portal/services/hearing/hearing.service';
 import { AudioViewComponent } from './audio-view.component';
 
 describe('AudioViewComponent', () => {

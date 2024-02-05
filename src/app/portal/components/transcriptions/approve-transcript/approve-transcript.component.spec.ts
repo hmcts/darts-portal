@@ -4,10 +4,10 @@ import { DatePipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute } from '@angular/router';
 import { TranscriptionDetails } from '@portal-types/transcriptions/transcription-details.type';
+import { ErrorMessageService } from '@services/error/error-message.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
-import { ErrorMessageService } from 'src/app/core/services/error/error-message.service';
 import { ApproveTranscriptComponent } from './approve-transcript.component';
 
 describe('ApproveTranscriptComponent', () => {

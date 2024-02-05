@@ -15,9 +15,9 @@ import { TableRowTemplateDirective } from '@directives/table-row-template.direct
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { TranscriptRequest } from '@portal-types/index';
 import { SortService } from '@services/sort/sort.service';
-import { TranscriptionService } from '@services/transcription/transcription.service';
 import { UserService } from '@services/user/user.service';
 import { BehaviorSubject, combineLatest, map, shareReplay, switchMap } from 'rxjs';
+import { TranscriptionService } from 'src/app/portal/services/transcription/transcription.service';
 
 @Component({
   selector: 'app-transcriptions',
