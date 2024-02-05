@@ -16,8 +16,6 @@ import { of } from 'rxjs/internal/observable/of';
 import { catchError } from 'rxjs/internal/operators/catchError';
 import { map } from 'rxjs/internal/operators/map';
 import { shareReplay } from 'rxjs/internal/operators/shareReplay';
-import { CaseRetentionChange } from 'src/app/portal/models/case/case-retention-change.interface';
-import { CaseRetentionHistory } from 'src/app/portal/models/case/case-retention-history.interface';
 
 export const GET_COURTHOUSES_PATH = '/api/courthouses';
 export const GET_CASE_PATH = '/api/cases';
@@ -144,9 +142,7 @@ export class CaseService {
       defendants: c.defendants,
       defenders: c.defenders,
       judges: c.judges,
-      reportingRestriction: c.reporting_restriction,
       reportingRestrictions: c.reporting_restrictions,
-      hearings: c.hearings,
       prosecutors: c.prosecutors,
       retainUntil: c.retain_until,
       retainUntilDateTime: c.retain_until_date_time ? DateTime.fromISO(c.retain_until_date_time) : undefined,

@@ -93,7 +93,15 @@ describe('AudioViewComponent', () => {
     courthouse: 'Swansea',
     defendants: ['Defendant Dave'],
     judges: ['Judge Judy'],
-    reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
+    reportingRestrictions: [
+      {
+        hearing_id: 1,
+        event_id: 1,
+        event_name: 'Section 4(2) of the Contempt of Court Act 1981',
+        event_text: '',
+        event_ts: '2023-08-10T09:00:00Z',
+      },
+    ],
     hearings: [
       {
         id: 1,
