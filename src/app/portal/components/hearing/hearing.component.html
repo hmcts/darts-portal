@@ -59,7 +59,7 @@
         ></app-events-and-audio>
       </div>
       <ng-container *ngIf="transcripts$ | async as transcripts">
-        <div *tab="'Transcripts'; count: transcripts.length">
+        <div *tab="'Transcripts'; count: transcripts.length; id: 'transcription-count'">
           <div class="flex-space-between">
             <h2 class="govuk-heading-m">Transcripts for this hearing</h2>
             <button
