@@ -13,7 +13,6 @@ import {
 } from '@portal-types/index';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
-import { LuxonDatePipe } from 'src/app/core/pipes/luxon-date.pipe';
 import {
   APPROVED_TRANSCRIPTION_STATUS_ID,
   COMPLETED_TRANSCRIPTION_STATUS_ID,
