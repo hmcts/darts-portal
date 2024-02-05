@@ -19,9 +19,9 @@ export class AudioPreviewService {
 
       const eventSource = new EventSource(url);
 
-      // Listen for the 'response' event, parse the data
+      // Listen for the 'audio response' event, parse the data
       // This downloads the full audio file as a blob and creates a local URL for it
-      eventSource.addEventListener('response', (message) => {
+      eventSource.addEventListener('audio response', (message) => {
         const responsedata = JSON.parse(message.data);
         const responseBody = responsedata.body;
         const blob = this.b64toBlob(responseBody);

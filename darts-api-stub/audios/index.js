@@ -120,7 +120,7 @@ router.get('/preview/:mediaId', (req, res) => {
         }
         const base64String = data.toString('base64');
         const x = { body: base64String };
-        res.write(`event: response\ndata: ${JSON.stringify(x)}\n\n`);
+        res.write(`event: audio response\ndata: ${JSON.stringify(x)}\n\n`);
         res.end();
       });
     } else {
