@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Transcript } from '@darts-types/transcript.interface';
-import { TranscriptsRow } from '@darts-types/transcripts-row.interface';
+import { Transcript } from '@portal-types/transcriptions/transcript.type';
+import { TranscriptsRow } from '@portal-types/transcriptions/transcripts-row.type';
 
 @Injectable({
   providedIn: 'root',

@@ -5,9 +5,9 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
 import { AuthService } from '@services/auth/auth.service';
-import { CountNotificationService } from '@services/count-notification/count-notification.service';
 import { UserService } from '@services/user/user.service';
 import { of } from 'rxjs';
+import { CountNotificationService } from 'src/app/portal/services/count-notification/count-notification.service';
 import { HeaderComponent } from './header.component';
 
 @Component({ template: '' })

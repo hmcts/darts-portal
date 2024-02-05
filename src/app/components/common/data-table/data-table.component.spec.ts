@@ -4,7 +4,7 @@ import { DateTime } from 'luxon';
 import { SimpleChanges } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { Order } from '@darts-types/data-table-column.interface';
-import { Urgency } from '@darts-types/transcription-urgency.interface';
+import { Urgency } from 'src/app/portal/models/transcriptions/transcription-urgency.interface';
 import { DataTableComponent, SortingInterface } from './data-table.component';
 
 describe('DataTableComponent', () => {
