@@ -79,7 +79,7 @@ describe('AudioPreviewService', () => {
     const mediaId = 123;
     const eventSourceMock = {
       addEventListener: jest.fn((event, callback) => {
-        if (event === 'response') {
+        if (event === 'audio response') {
           const message = {
             data: JSON.stringify({ body: 'base64data' }),
           };
