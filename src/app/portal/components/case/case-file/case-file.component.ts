@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
-import { JoinPipe } from '@pipes/join';
-import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
+import { ReportingRestrictionComponent } from '@components/common/reporting-restriction/reporting-restriction.component';
 import { Case } from '@portal-types/case/case.type';
-import { UserService } from '@services/user/user.service';
+import { JoinPipe } from 'src/app/core/pipes/join';
+import { LuxonDatePipe } from 'src/app/core/pipes/luxon-date.pipe';
+import { UserService } from 'src/app/core/services/user/user.service';
 
 @Component({
   selector: 'app-case-file',

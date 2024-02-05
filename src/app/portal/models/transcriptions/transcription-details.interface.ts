@@ -1,4 +1,4 @@
-import { ReportingRestriction } from '../../../types/reporting-restriction.interface'; //Change when core is introduced
+import { ReportingRestriction } from '../../../core/models/reporting-restriction/reporting-restriction.interface'; //Change when core is introduced
 
 export interface TranscriptionDetailsData {
   case_reporting_restrictions?: ReportingRestriction[];

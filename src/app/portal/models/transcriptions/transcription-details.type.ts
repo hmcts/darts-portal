@@ -1,5 +1,5 @@
-import { ReportingRestriction } from '@darts-types/reporting-restriction.interface';
 import { DateTime } from 'luxon';
+import { ReportingRestriction } from 'src/app/core/models/reporting-restriction/reporting-restriction.interface';
 
 export type TranscriptionDetails = {
   caseReportingRestrictions?: ReportingRestriction[];

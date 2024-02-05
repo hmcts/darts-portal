@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Case, PostAudioRequest } from '@portal-types/index';
-import { HeaderService } from '@services/header/header.service';
+import { HeaderService } from 'src/app/core/services/header/header.service';
 
 import { DatePipe } from '@angular/common';
 import { DateTime } from 'luxon';

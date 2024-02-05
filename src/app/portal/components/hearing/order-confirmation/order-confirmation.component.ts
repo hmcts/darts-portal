@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserState } from '@darts-types/user-state';
-import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { Case, Hearing, HearingPageState, PostAudioRequest } from '@portal-types/index';
-import { HeaderService } from '@services/header/header.service';
+import { UserState } from 'src/app/core/models/user/user-state.interface';
+import { LuxonDatePipe } from 'src/app/core/pipes/luxon-date.pipe';
+import { HeaderService } from 'src/app/core/services/header/header.service';
 
 @Component({
   selector: 'app-order-confirmation',

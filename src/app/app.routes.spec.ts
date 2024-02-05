@@ -3,13 +3,13 @@ import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Route, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { UserState } from '@darts-types/user-state';
-import { UserService } from '@services/user/user.service';
 import { of } from 'rxjs/internal/observable/of';
+import { UserState } from 'src/app/core/models/user/user-state.interface';
+import { UserService } from 'src/app/core/services/user/user.service';
 import { ADMIN_ROUTES } from './admin/admin.routes';
 import { APP_ROUTES } from './app.routes';
+import { AuthService } from './core/services/auth/auth.service';
 import { PORTAL_ROUTES } from './portal/portal.routes';
-import { AuthService } from './services/auth/auth.service';
 
 describe('App Routes', () => {
   let router: Router;

@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, Output, ViewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { DataTableComponent } from '@common/data-table/data-table.component';
-import { AudioEventRow, DatatableColumn } from '@darts-types/index';
+import { DataTableComponent } from '@components/common/data-table/data-table.component';
+import { TimeInputComponent } from '@components/hearing/request-playback-audio/time-input/time-input.component';
+import { DatatableColumn } from '@core-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
-import { Hearing, HearingEvent } from '@portal-types/index';
+import { AudioEventRow, Hearing, HearingEvent } from '@portal-types/index';
 import { timeGroupValidator } from '@validators/time-group.validator';
 import { DateTime } from 'luxon';
-import { TimeInputComponent } from 'src/app/portal/components/hearing/request-playback-audio/time-input/time-input.component';
 
 @Component({
   selector: 'app-request-times',

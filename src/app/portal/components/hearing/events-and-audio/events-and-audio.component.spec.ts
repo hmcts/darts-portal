@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { QueryList } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AudioPlayerComponent } from '@common/audio-player/audio-player.component';
-import { AudioEventRow, HearingAudio, HearingEvent, HearingEventTypeEnum } from '@darts-types/index';
+import { AudioEventRow, HearingAudio, HearingEvent, HearingEventTypeEnum } from '@portal-types/index';
 import { Subscription } from 'rxjs';
+import { AudioPlayerComponent } from 'src/app/core/components/common/audio-player/audio-player.component';
 import { EventsAndAudioComponent } from './events-and-audio.component';
 
 describe('EventsAndAudioComponent', () => {

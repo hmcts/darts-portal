@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import {
   TranscriptRequest,
   TranscriptRequestData,
@@ -14,6 +13,7 @@ import {
   YourTranscripts,
   YourTranscriptsData,
 } from '@portal-types/index';
+import { LuxonDatePipe } from 'src/app/core/pipes/luxon-date.pipe';
 
 import { DateTime } from 'luxon';
 import { Observable, map, shareReplay, switchMap, tap, timer } from 'rxjs';

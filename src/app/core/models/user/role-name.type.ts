@@ -1,0 +1,1 @@
+export type RoleName = 'TRANSCRIBER' | 'APPROVER' | 'JUDGE' | 'REQUESTER' | 'LANGUAGE_SHOP_USER' | 'ADMIN';

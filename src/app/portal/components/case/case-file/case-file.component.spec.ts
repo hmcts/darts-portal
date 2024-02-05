@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { Case } from '@portal-types/case/case.type';
-import { UserService } from '@services/user/user.service';
+import { UserService } from 'src/app/core/services/user/user.service';
 import { CaseFileComponent } from './case-file.component';
 
 describe('CaseFileComponent', () => {

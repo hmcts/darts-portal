@@ -1,7 +1,6 @@
 import { DATE_PIPE_DEFAULT_OPTIONS, DatePipe } from '@angular/common';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import {
   TranscriptionDetails,
   TranscriptionDetailsData,
@@ -13,6 +12,7 @@ import {
 } from '@portal-types/index';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
+import { LuxonDatePipe } from 'src/app/core/pipes/luxon-date.pipe';
 import {
   APPROVED_TRANSCRIPTION_STATUS_ID,
   COMPLETED_TRANSCRIPTION_STATUS_ID,

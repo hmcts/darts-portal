@@ -1,23 +1,23 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { DataTableComponent } from '@common/data-table/data-table.component';
-import { DeleteComponent } from '@common/delete/delete.component';
-import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
-import { LoadingComponent } from '@common/loading/loading.component';
-import { TabsComponent } from '@common/tabs/tabs.component';
+import { DataTableComponent } from '@components/common/data-table/data-table.component';
+import { DeleteComponent } from '@components/common/delete/delete.component';
+import { GovukHeadingComponent } from '@components/common/govuk-heading/govuk-heading.component';
+import { LoadingComponent } from '@components/common/loading/loading.component';
+import { TabsComponent } from '@components/common/tabs/tabs.component';
 import { ForbiddenComponent } from '@components/error/forbidden/forbidden.component';
 import { transcriptStatusClassMap } from '@constants/transcript-status-class-map';
 import { transcriptTableColumns } from '@constants/transcription-columns';
-import { DatatableColumn } from '@darts-types/index';
+import { DatatableColumn } from '@core-types/index';
 import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { TranscriptRequest } from '@portal-types/index';
 import { SortService } from '@services/sort/sort.service';
+import { TranscriptionService } from '@services/transcription/transcription.service';
 import { UserService } from '@services/user/user.service';
 import { BehaviorSubject, combineLatest, map, shareReplay, switchMap } from 'rxjs';
-import { TranscriptionService } from 'src/app/portal/services/transcription/transcription.service';
 
 @Component({
   selector: 'app-transcriptions',
