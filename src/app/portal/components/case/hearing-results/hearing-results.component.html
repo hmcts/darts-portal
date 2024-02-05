@@ -52,7 +52,9 @@
             <a class="govuk-link" [routerLink]="['/case', caseId]">{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</a>
           </td>
           <td class="govuk-table__cell">{{ row.annotationDocuments[0].fileName }}</td>
-          <td class="govuk-table__cell">{{ row.annotationDocuments[0].fileType === 'DOC' ? 'Word Document' : '-' }}</td>
+          <td class="govuk-table__cell">
+            {{ row.annotationDocuments[0].fileType === 'DOC' || 'DOCX' ? 'Word Document' : '-' }}
+          </td>
           <td class="govuk-table__cell">{{ row.annotationDocuments[0].uploadedTs | luxonDate: 'dd MMM yyyy' }}</td>
           <td class="govuk-table__cell">{{ row.annotationText }}</td>
           <td class="govuk-table__cell"><a routerLink=".">Download</a></td>

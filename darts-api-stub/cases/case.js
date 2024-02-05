@@ -527,7 +527,7 @@ const multipleAnnotations = [
       {
         annotation_document_id: 4,
         file_name: 'AnnotationAlpha.doc',
-        file_type: 'DOC',
+        file_type: 'DOCX',
         uploaded_by: 'Mrs Jane Ince',
         uploaded_ts: '2024-01-16T12:00:00.000Z',
       },
