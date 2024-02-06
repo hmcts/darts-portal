@@ -1,12 +1,32 @@
 <form [formGroup]="form" class="govuk-form" (ngSubmit)="onSubmit()">
   <div class="govuk-form-group">
-    <label class="govuk-label" for="fullName">Full Name</label>
-    <input class="govuk-input govuk-!-width-one-half" type="text" id="fullName" formControlName="fullName" />
+    <label class="govuk-label" for="fullName">Full name</label>
+    <!-- Inline Validation Errors -->
+    @for (error of getFormControlErrorMessages('fullName'); track error) {
+      <p class="govuk-error-message fullName-error"><span class="govuk-visually-hidden">Error:</span> {{ error }}</p>
+    }
+    <input
+      class="govuk-input govuk-!-width-one-half"
+      type="text"
+      id="fullName"
+      formControlName="fullName"
+      [class.govuk-input--error]="fullNameControl.errors"
+    />
   </div>
 
   <div class="govuk-form-group">
     <label class="govuk-label" for="email">Email</label>
-    <input class="govuk-input govuk-!-width-one-half" type="email" id="email" formControlName="email" />
+    <!-- Inline Validation Errors -->
+    @for (error of getFormControlErrorMessages('email'); track error) {
+      <p class="govuk-error-message email-error"><span class="govuk-visually-hidden">Error:</span> {{ error }}</p>
+    }
+    <input
+      class="govuk-input govuk-!-width-one-half"
+      type="email"
+      id="email"
+      formControlName="email"
+      [class.govuk-input--error]="emailControl.errors"
+    />
   </div>
 
   <div class="govuk-form-group">

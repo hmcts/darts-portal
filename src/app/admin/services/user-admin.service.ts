@@ -36,8 +36,8 @@ export class UserAdminService {
 
   private mapToUserSearchRequest(query: UserSearchFormValues): UserSearchRequest {
     return {
-      full_name: query.fullName ?? '',
-      email_address: query.email ?? '',
+      full_name: query.fullName ? query.fullName : null,
+      email_address: query.email ? query.email : null,
       active: query.userStatus === 'active' ? true : query.userStatus === 'inactive' ? false : null,
     };
   }

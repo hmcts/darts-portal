@@ -13,12 +13,3 @@
 @if (results$ | async; as results) {
   <app-user-search-results [results]="results" />
 }
-
-@if (error$ | async; as error) {
-  <p class="govuk-body govuk-error-message">Error: {{ error.message }}</p>
-  <p class="govuk-body govuk-error-message">
-    @for (violation of error.error.violations; track violation) {
-      <p class="govuk-body govuk-error-message">{{ violation.field }}: {{ violation.message }}</p>
-    }
-  </p>
-}
