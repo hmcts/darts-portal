@@ -1,4 +1,4 @@
-export interface CaseRetentionHistory {
+export interface CaseRetentionHistoryData {
   retention_last_changed_date: string;
   retention_date: string;
   amended_by: string;

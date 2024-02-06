@@ -12,7 +12,7 @@ import {
 } from '@portal-types/index';
 import { DateTime, Settings } from 'luxon';
 import { CaseRetentionChange } from 'src/app/portal/models/case/case-retention-change.interface';
-import { CaseRetentionHistory } from 'src/app/portal/models/case/case-retention-history.interface';
+import { CaseRetentionHistoryData } from 'src/app/portal/models/case/case-retention-history.interface';
 import {
   ADVANCED_SEARCH_CASE_PATH,
   CaseService,
@@ -85,7 +85,7 @@ describe('CaseService', () => {
     transcript_count: 300,
   };
 
-  const mockHistory: CaseRetentionHistory = {
+  const mockHistory: CaseRetentionHistoryData = {
     retention_last_changed_date: '2023-10-11T00:18:00Z',
     retention_date: '2030-09-15',
     amended_by: 'Judge Phil',
@@ -345,7 +345,7 @@ describe('CaseService', () => {
 
   it('#getCaseRetentionHistory', () => {
     const mockCaseId = 123;
-    const mock: CaseRetentionHistory[] = [mockHistory];
+    const mock: CaseRetentionHistoryData[] = [mockHistory];
 
     service.getCaseRetentionHistory(mockCaseId).subscribe((history) => {
       expect(history).toBeDefined();

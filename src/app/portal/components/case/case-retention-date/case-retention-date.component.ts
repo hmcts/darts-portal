@@ -9,7 +9,7 @@ import { Case } from '@portal-types/case/case.type';
 import { HeaderService } from '@services/header/header.service';
 import { DateTime } from 'luxon';
 import { combineLatest, map } from 'rxjs';
-import { CaseRetentionHistory } from 'src/app/portal/models/case/case-retention-history.interface';
+import { CaseRetentionHistory } from 'src/app/portal/models/case/case-retention-history.type';
 import { CaseRetentionPageState } from 'src/app/portal/models/case/case-retention-page-state.type';
 import { CaseService } from 'src/app/portal/services/case/case.service';
 import { BreadcrumbComponent } from '../../../../components/common/breadcrumb/breadcrumb.component'; //TO DO update as part of core
@@ -18,6 +18,7 @@ import { DetailsTableComponent } from '../../../../components/common/details-tab
 import { GovukHeadingComponent } from '../../../../components/common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '../../../../components/common/loading/loading.component';
 import { NotificationBannerComponent } from '../../../../components/common/notification-banner/notification-banner.component';
+import { LuxonDatePipe } from '../../../../pipes/luxon-date.pipe';
 import { CaseRetentionChangeComponent } from './case-retention-change/case-retention-change.component';
 import { CaseRententionConfirmComponent } from './case-retention-confirm/case-retention-confirm.component';
 
@@ -40,6 +41,7 @@ import { CaseRententionConfirmComponent } from './case-retention-confirm/case-re
     CaseRetentionChangeComponent,
     CaseRententionConfirmComponent,
     SuccessBannerComponent,
+    LuxonDatePipe,
   ],
 })
 export class CaseRetentionDateComponent implements OnInit {
@@ -116,23 +118,21 @@ export class CaseRetentionDateComponent implements OnInit {
 
   getLatestDate(rows: CaseRetentionHistory[]) {
     return rows.reduce(
-      (max, item) =>
-        new Date(item.retention_last_changed_date) > new Date(max.retention_last_changed_date) ? item : max,
+      (max, item) => (item.retentionLastChangedDate > max.retentionLastChangedDate ? item : max),
       rows[0]
     );
   }
 
   getEarliestDate(rows: CaseRetentionHistory[]) {
     return rows.reduce(
-      (max, item) =>
-        new Date(item.retention_last_changed_date) < new Date(max.retention_last_changed_date) ? item : max,
+      (max, item) => (item.retentionLastChangedDate < max.retentionLastChangedDate ? item : max),
       rows[0]
     );
   }
 
   getOriginalRetentionDateString(rows: CaseRetentionHistory[]) {
-    const earliestDate = this.getEarliestDate(rows).retention_date;
-    return DateTime.fromISO(earliestDate, { setZone: true }).toFormat('dd/MM/yyyy');
+    const earliestDate = this.getEarliestDate(rows).retentionDate;
+    return earliestDate.toFormat('dd/MM/yyyy');
   }
 
   changeRetentionDate() {
