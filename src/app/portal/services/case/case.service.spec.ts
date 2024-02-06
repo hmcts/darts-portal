@@ -2,6 +2,8 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { Courthouse } from '@darts-types/index';
 import {
+  Annotations,
+  AnnotationsData,
   Case,
   CaseData,
   Hearing,
@@ -74,6 +76,25 @@ describe('CaseService', () => {
       judges: ['HHJ M. David KC'],
       courtroom: '9',
       transcript_count: 300,
+    },
+  ];
+
+  const multipleMockAnnotations: AnnotationsData[] = [
+    {
+      annotation_id: 1,
+      hearing_id: 2,
+      hearing_date: '2023-12-14',
+      annotation_ts: '2023-12-15T12:00:00.000Z',
+      annotation_text: 'A summary notes of this annotation...',
+      annotation_documents: [
+        {
+          annotation_document_id: 1,
+          file_name: 'Annotation.doc',
+          file_type: 'DOC',
+          uploaded_by: 'Mr User McUserFace',
+          uploaded_ts: '2023-12-15T12:00:00.000Z',
+        },
+      ],
     },
   ];
 
@@ -238,6 +259,41 @@ describe('CaseService', () => {
         judges: ['HHJ M. David KC'],
         courtroom: '9',
         transcriptCount: 300,
+      },
+    ]);
+  });
+
+  it('#getCaseAnnotations', () => {
+    const mockCaseId = 123;
+    const mockAnnotations: AnnotationsData[] = multipleMockAnnotations;
+
+    let annotationsResponse!: Annotations[];
+
+    service.getCaseAnnotations(mockCaseId).subscribe((annotations) => {
+      annotationsResponse = annotations;
+    });
+
+    const req = httpMock.expectOne(`${GET_CASE_PATH}/${mockCaseId}/annotations`);
+    expect(req.request.method).toBe('GET');
+
+    req.flush(mockAnnotations);
+
+    expect(annotationsResponse).toEqual([
+      {
+        annotationId: 1,
+        hearingId: 2,
+        hearingDate: DateTime.fromISO('2023-12-14'),
+        annotationTs: DateTime.fromISO('2023-12-15T12:00:00.000Z'),
+        annotationText: 'A summary notes of this annotation...',
+        annotationDocuments: [
+          {
+            annotationDocumentId: 1,
+            fileName: 'Annotation.doc',
+            fileType: 'DOC',
+            uploadedBy: 'Mr User McUserFace',
+            uploadedTs: DateTime.fromISO('2023-12-15T12:00:00.000Z'),
+          },
+        ],
       },
     ]);
   });
