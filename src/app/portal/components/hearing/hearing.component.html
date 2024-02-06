@@ -92,6 +92,9 @@
             </ng-template>
           </app-data-table>
         </div>
+        @if (userService.isJudge() || userService.isAdmin()) {
+          <div *tab="'Annotations'; id: 'annotation-count'"></div>
+        }
       </ng-container>
     </app-tabs>
   </div>

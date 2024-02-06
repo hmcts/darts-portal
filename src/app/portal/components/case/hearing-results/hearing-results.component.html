@@ -49,9 +49,12 @@
       >
         <ng-template [tableRowTemplate]="annotations" let-row>
           <td class="govuk-table__cell">
-            <a class="govuk-link" [routerLink]="['/case', caseId, 'hearing', row.hearingId]">{{
-              row.hearingDate | luxonDate: 'dd MMM yyyy'
-            }}</a>
+            <a
+              class="govuk-link"
+              [routerLink]="['/case', caseId, 'hearing', row.hearingId]"
+              [queryParams]="{ tab: 'Annotations' }"
+              >{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</a
+            >
           </td>
           <td class="govuk-table__cell">{{ row.annotationDocuments[0].fileName }}</td>
           <td class="govuk-table__cell">
