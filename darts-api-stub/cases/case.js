@@ -1,16 +1,17 @@
 const express = require('express');
+const { DateTime } = require('luxon');
 
 const router = express.Router();
-const retention = require('../retentions/retention');
 const { localArray } = require('../localArray');
 const { getLatestDatefromKey } = require('../utils/date');
+const dateFormat = 'yyyy-MM-dd';
 
 const retentionHistory = localArray('retentionHistory');
 
 const getLatestRetentionDate = (caseId) => {
   const rows = retentionHistory.value.filter((history) => history.case_id === parseInt(caseId));
   const latest = getLatestDatefromKey(rows, 'retention_last_changed_date');
-  return latest.retention_date;
+  return DateTime.fromFormat(latest.retention_date, dateFormat).startOf('day').toISO();
 };
 
 const getLatestRetentionChange = (caseId) => {
@@ -609,11 +610,7 @@ router.get('/:caseId/transcripts', (req, res) => {
       res.status(404).send(resBody104);
       break;
     case '1':
-      retention.get('', (history) => {
-        transcriptOne.retain_until_date_time = history;
-        console.log(transcriptOne);
-        res.send(transcriptOne);
-      });
+      res.send(transcriptOne);
       break;
     default:
       res.send(transcriptTwo);

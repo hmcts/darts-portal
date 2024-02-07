@@ -3,13 +3,16 @@ const { DateTime } = require('luxon');
 const router = express.Router();
 
 const { localArray } = require('../localArray');
-const { getEarliestDatefromKey } = require('../utils/date');
+const { getEarliestDatefromKey, getLatestDatefromKey } = require('../utils/date');
+const { JUDGE, ADMIN } = require('../roles');
+const { userIdhasAnyRoles } = require('../users');
 
+const dateFormat = 'yyyy-MM-dd';
 const defaultRetentionHistory = [
   {
     case_id: 1,
     retention_last_changed_date: '2023-10-11T00:18:00Z',
-    retention_date: '2030-09-13T00:00:00Z',
+    retention_date: '2030-09-13',
     amended_by: 'Judge Phil',
     retention_policy_applied: 'Permanent',
     comments: 'Permanent policy applied',
@@ -18,7 +21,7 @@ const defaultRetentionHistory = [
   {
     case_id: 1,
     retention_last_changed_date: '2023-10-12T00:15:00Z',
-    retention_date: '2030-09-14T00:00:00Z',
+    retention_date: '2030-09-14',
     amended_by: 'Judge Samuel',
     retention_policy_applied: 'Manual',
     comments: 'Manual policy applied',
@@ -27,7 +30,7 @@ const defaultRetentionHistory = [
   {
     case_id: 1,
     retention_last_changed_date: '2024-01-13T12:15:00Z',
-    retention_date: '2030-09-15T00:00:00Z',
+    retention_date: '2030-09-15',
     amended_by: 'Judge Samuel',
     retention_policy_applied: 'Manual',
     comments: 'Manual policy applied',
@@ -36,7 +39,7 @@ const defaultRetentionHistory = [
   {
     case_id: 5,
     retention_last_changed_date: '2024-01-13T12:15:00Z',
-    retention_date: '2030-09-15T00:00:00Z',
+    retention_date: '2030-09-15',
     amended_by: 'Judge Samuel',
     retention_policy_applied: 'Manual',
     comments: 'Manual policy applied',
@@ -45,6 +48,7 @@ const defaultRetentionHistory = [
 ];
 
 const retentionHistory = localArray('retentionHistory');
+// Clear out old values on restart
 retentionHistory.value = defaultRetentionHistory;
 
 const getRetentionHistoryByCaseId = (caseId) => {
@@ -79,7 +83,6 @@ router.post('', (req, res) => {
       res.sendStatus(422);
       return;
     default:
-      const dateFormat = 'yyyy-MM-dd';
       const permanentCount = {
         years: 99,
         months: 0,
@@ -115,10 +118,21 @@ router.post('', (req, res) => {
         const earliestRetentionDate = DateTime.fromISO(
           getEarliestDatefromKey(retentionHistory.value, 'retention_last_changed_date').retention_date
         ).startOf('day');
+        const latestRetentionDate = DateTime.fromISO(
+          getLatestDatefromKey(retentionHistory.value, 'retention_last_changed_date').retention_date
+        ).startOf('day');
+        if (retention.retention_date < latestRetentionDate && !userIdhasAnyRoles([ADMIN, JUDGE], req.headers.user_id)) {
+          // If date is less than the latest retention date and user is not Admin or Judge
+          res.status(403).send({
+            title: 'The retention date being applied is too early.',
+            detail: `You do not have permission to lower the retention date for caseId '${case_id}' before last retention date '${latestRetentionDate.toFormat(dateFormat)}'.`,
+          });
+          return;
+        }
         if (retention.retention_date < earliestRetentionDate) {
           // If date is less than the original retention date
           res.status(422).send({
-            title: 'The retention date being applied is too late.',
+            title: 'The retention date being applied is too early.',
             detail: `caseId '${case_id}' must have a retention date after the last completed automated retention date '${earliestRetentionDate.toFormat(dateFormat)}'.`,
             latest_automated_retention_date: earliestRetentionDate.toFormat(dateFormat),
           });
