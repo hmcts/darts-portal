@@ -6,6 +6,7 @@ import {
   CaseData,
   CaseRetentionChange,
   CaseRetentionHistory,
+  CaseRetentionHistoryData,
   CaseSearchResult,
   CaseSearchResultData,
   Hearing,
@@ -109,11 +110,24 @@ export class CaseService {
   getCaseRetentionHistory(caseId: number): Observable<CaseRetentionHistory[]> {
     let params = new HttpParams();
     params = params.set('case_id', caseId);
-    return this.http.get<CaseRetentionHistory[]>(GET_CASE_RETENTION_HISTORY, { params });
+    return this.http
+      .get<CaseRetentionHistoryData[]>(GET_CASE_RETENTION_HISTORY, { params })
+      .pipe(map(this.mapCaseRetentionHistory));
   }
 
   postCaseRetentionChange(retentionChange: CaseRetentionChange): Observable<CaseRetentionChange> {
     return this.http.post<CaseRetentionChange>(GET_CASE_RETENTION_HISTORY, retentionChange);
+  }
+
+  private mapCaseRetentionHistory(retentionHistory: CaseRetentionHistoryData[]): CaseRetentionHistory[] {
+    return retentionHistory.map((r) => ({
+      retentionLastChangedDate: DateTime.fromISO(r.retention_last_changed_date),
+      retentionDate: DateTime.fromISO(r.retention_date),
+      amendedBy: r.amended_by,
+      retentionPolicyApplied: r.retention_policy_applied,
+      comments: r.comments,
+      status: r.status,
+    }));
   }
 
   private mapHearingDataToHearing(hearingData: HearingData[]): Hearing[] {
