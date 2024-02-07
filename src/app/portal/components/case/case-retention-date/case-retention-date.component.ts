@@ -11,6 +11,7 @@ import { SuccessBannerComponent } from '@components/common/success-banner/succes
 import { DatatableColumn } from '@core-types/data-table/data-table-column.interface';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
+import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { Case, CaseRetentionHistory, CaseRetentionPageState } from '@portal-types/index';
 import { CaseService } from '@services/case/case.service';
 import { HeaderService } from '@services/header/header.service';
