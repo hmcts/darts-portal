@@ -18,8 +18,3 @@ export * from '../portal/models/transcriptions/transcription-type.interface';
 export * from '../portal/models/transcriptions/transcription-urgency.interface';
 export * from '../portal/models/transcriptions/user-transcription-request.interface';
 export * from '../portal/models/transcriptions/work-request.interface';
-export * from './courthouse.interface';
-export * from './data-table-column.interface';
-export * from './error-summary-entry.interface';
-export * from './field-errors.interface';
-export * from './reporting-restriction.interface';

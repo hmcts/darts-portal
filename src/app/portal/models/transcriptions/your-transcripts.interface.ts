@@ -1,4 +1,4 @@
-import { TranscriptRequestData } from '@darts-types/index';
+import { TranscriptRequestData } from '@portal-types/index';
 
 export interface YourTranscriptsData {
   requester_transcriptions: TranscriptRequestData[];

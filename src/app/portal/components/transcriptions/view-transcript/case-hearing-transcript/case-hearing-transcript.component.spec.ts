@@ -3,10 +3,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { TranscriptionDetails } from '@portal-types/transcriptions/transcription-details.type';
-import { FileDownloadService } from '@services/file-download/file-download.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
+import { FileDownloadService } from 'src/app/core/services/file-download/file-download.service';
 import { CaseHearingTranscriptComponent } from './case-hearing-transcript.component';
 
 describe('CaseHearingTranscriptComponent', () => {

@@ -10,7 +10,7 @@ import { AppInsightsService } from '@services/app-insights/app-insights.service'
 import { ErrorHandlerService } from '@services/error/error-handler.service';
 import { Settings } from 'luxon';
 import { APP_ROUTES } from './app/app.routes';
-import { AppComponent } from './app/components/app.component';
+import { AppComponent } from './app/core/components/app/app.component';
 
 export function initAppFn(envService: AppConfigService) {
   return () => envService.loadAppConfig();

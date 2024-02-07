@@ -1,13 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
-import { DataTableComponent } from '@common/data-table/data-table.component';
-import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
-import { TabsComponent } from '@common/tabs/tabs.component';
-import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
+import { BreadcrumbComponent } from '@components/common/breadcrumb/breadcrumb.component';
+import { DataTableComponent } from '@components/common/data-table/data-table.component';
+import { LoadingComponent } from '@components/common/loading/loading.component';
+import { ReportingRestrictionComponent } from '@components/common/reporting-restriction/reporting-restriction.component';
+import { TabsComponent } from '@components/common/tabs/tabs.component';
+import { ValidationErrorSummaryComponent } from '@components/common/validation-error-summary/validation-error-summary.component';
 import { ForbiddenComponent } from '@components/error/forbidden/forbidden.component';
-import { DatatableColumn, ErrorSummaryEntry, ReportingRestriction } from '@darts-types/index';
+import { DatatableColumn, ErrorSummaryEntry, ReportingRestriction } from '@core-types/index';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
@@ -21,15 +22,14 @@ import {
   TranscriptsRow,
 } from '@portal-types/index';
 import { AppConfigService } from '@services/app-config/app-config.service';
+import { CaseService } from '@services/case/case.service';
 import { ErrorMessageService } from '@services/error/error-message.service';
 import { HeaderService } from '@services/header/header.service';
+import { HearingService } from '@services/hearing/hearing.service';
 import { MappingService } from '@services/mapping/mapping.service';
 import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
 import { combineLatest, map, shareReplay } from 'rxjs';
-import { CaseService } from 'src/app/portal/services/case/case.service';
-import { HearingService } from 'src/app/portal/services/hearing/hearing.service';
-import { LoadingComponent } from '../../../components/common/loading/loading.component';
 import { EventsAndAudioComponent } from './events-and-audio/events-and-audio.component';
 import { HearingFileComponent } from './hearing-file/hearing-file.component';
 import { OrderConfirmationComponent } from './order-confirmation/order-confirmation.component';

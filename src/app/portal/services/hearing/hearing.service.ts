@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HearingAudio, HearingEvent, PostAudioRequest, PostAudioResponse } from '@darts-types/index';
+import { HearingAudio, HearingEvent, PostAudioRequest, PostAudioResponse } from '@portal-types/index';
 import { Observable, catchError, of, throwError } from 'rxjs';
 
 @Injectable({

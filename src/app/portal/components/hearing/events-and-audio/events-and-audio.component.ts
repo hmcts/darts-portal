@@ -12,11 +12,12 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { AudioPlayerComponent } from '@common/audio-player/audio-player.component';
-import { DataTableComponent } from '@common/data-table/data-table.component';
-import { AudioEventRow, DatatableColumn, HearingAudio, HearingEvent } from '@darts-types/index';
+import { AudioPlayerComponent } from '@components/common/audio-player/audio-player.component';
+import { DataTableComponent } from '@components/common/data-table/data-table.component';
+import { DatatableColumn } from '@core-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { HearingEventTypeEnum } from '@portal-types/hearing/enums';
+import { AudioEventRow, HearingAudio, HearingEvent } from '@portal-types/index';
 import { DateTime } from 'luxon';
 import { Subscription } from 'rxjs';
 

@@ -5,7 +5,6 @@ import { CaseRetentionChangeComponent } from './case-retention-change.component'
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DatePipe } from '@angular/common';
 import { CaseService } from '@services/case/case.service';
-import { HttpErrorResponse } from '@angular/common/http';
 
 describe('CaseRetentionComponent', () => {
   let component: CaseRetentionChangeComponent;
