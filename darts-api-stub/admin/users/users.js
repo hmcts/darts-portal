@@ -42,4 +42,14 @@ router.post('/search', (req, res) => {
   res.send(USERS);
 });
 
+router.get('/:userid', (req, res) => {
+  //SEE 1253 FOR OBJECT
+  if (req.body.full_name === 'NO_RESULTS') {
+    res.send([]);
+    return;
+  }
+
+  res.send(USERS);
+});
+
 module.exports = router;
