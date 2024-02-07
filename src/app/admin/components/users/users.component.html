@@ -1,1 +1,9 @@
-<app-govuk-heading>Users</app-govuk-heading>
+<div class="space-between">
+  <app-govuk-heading>Users</app-govuk-heading>
+  <button class="govuk-button govuk-button--secondary">Create new user</button>
+</div>
+<app-govuk-heading tag="h2" size="m">Search for user</app-govuk-heading>
+
+<app-user-search-form (submitForm)="onSubmit($event)" (clear)="onClear()" />
+
+<!-- <app-user-search-results [users]="users" /> -->
