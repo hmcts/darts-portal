@@ -3,13 +3,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DatePipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute } from '@angular/router';
+import { CaseRetentionHistoryData } from '@portal-types/case/case-retention-history.interface';
+import { CaseRetentionHistory } from '@portal-types/case/case-retention-history.type';
 import { Case } from '@portal-types/case/case.type';
+import { CaseService } from '@services/case/case.service';
 import { HeaderService } from '@services/header/header.service';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
-import { CaseRetentionHistoryData } from 'src/app/portal/models/case/case-retention-history.interface';
-import { CaseRetentionHistory } from 'src/app/portal/models/case/case-retention-history.type';
-import { CaseService } from 'src/app/portal/services/case/case.service';
 import { CaseRetentionDateComponent } from './case-retention-date.component';
 
 describe('CaseRetentionDateComponent', () => {

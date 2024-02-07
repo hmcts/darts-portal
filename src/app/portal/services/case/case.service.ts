@@ -1,8 +1,16 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Courthouse, SearchFormValues } from '@darts-types/index';
-import { CaseRetentionHistory } from '@portal-types/case/case-retention-history.type';
-import { Case, CaseData, Hearing, HearingData, Transcript, TranscriptData } from '@portal-types/index';
+import { Courthouse } from '@core-types/index';
+import {
+  Case,
+  CaseData,
+  CaseRetentionHistory,
+  Hearing,
+  HearingData,
+  SearchFormValues,
+  Transcript,
+  TranscriptData,
+} from '@portal-types/index';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs/internal/observable/of';

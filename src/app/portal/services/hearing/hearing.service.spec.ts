@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { HearingAudio, HearingEvent, PostAudioRequest } from '@darts-types/index';
+import { HearingAudio, HearingEvent, PostAudioRequest } from '@portal-types/index';
 import { HearingService } from './hearing.service';
 
 describe('HearingService', () => {

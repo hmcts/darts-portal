@@ -6,14 +6,14 @@ import { DetailsTableComponent } from '@common/details-table/details-table.compo
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
+import { ConflictComponent } from '@components/error/conflict/conflict.component';
+import { ViewTranscriptComponent } from '@components/transcriptions/view-transcript/view-transcript.component';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { TranscriptionDetails } from '@portal-types/index';
 import { ErrorMessageService } from '@services/error/error-message.service';
 import { HeaderService } from '@services/header/header.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { map } from 'rxjs';
-import { ConflictComponent } from '../../../../components/error/conflict/conflict.component'; //TO-DO update when core ius introduced
-import { ViewTranscriptComponent } from '../view-transcript/view-transcript.component';
 import { ApproveTranscriptButtonsComponent } from './approve-transcript-buttons/approve-transcript-buttons.component';
 
 @Component({
