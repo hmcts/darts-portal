@@ -1,7 +1,7 @@
 import { JsonPipe, NgClass } from '@angular/common';
 import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { FieldErrors } from '@darts-types/index';
+import { FieldErrors } from '@core-types/index';
 import { optionalMaxLengthValidator } from '@validators/optional-maxlength.validator';
 import { UserSearchFormValues } from '../../../models/users/user-search-form-values.type';
 
