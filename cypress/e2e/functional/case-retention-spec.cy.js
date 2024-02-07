@@ -238,8 +238,8 @@ describe('Case retention screen as Judge', () => {
       // Specific error message just for Admins and Judges will be shown
       cy.get('.govuk-error-summary').should('exist');
       cy.get('.govuk-error-message').should('exist');
-      cy.get('.govuk-error-summary').should('contain', 'You cannot set retention date earlier than 15/09/2030');
-      cy.get('.govuk-error-message').should('contain', 'You cannot set retention date earlier than 15/09/2030');
+      cy.get('.govuk-error-summary').should('contain', 'You cannot set retention date earlier than 15/12/2025');
+      cy.get('.govuk-error-message').should('contain', 'You cannot set retention date earlier than 15/12/2025');
 
       // Fill in a date later than the original retention date this time this time, error message should not appear
       cy.get('#retention-date').clear();

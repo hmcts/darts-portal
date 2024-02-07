@@ -3,7 +3,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Case, PostAudioRequest } from '@portal-types/index';
 import { HeaderService } from '@services/header/header.service';
-import { DateTime } from 'luxon';
 import { OrderConfirmationComponent } from './order-confirmation.component';
 
 describe('OrderConfirmationComponent', () => {
@@ -15,14 +14,13 @@ describe('OrderConfirmationComponent', () => {
     courthouse: 'Swansea',
     defendants: ['Defendant Dave'],
     judges: ['Judge Judy'],
-    reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
-    hearings: [
+    reportingRestrictions: [
       {
-        id: 1,
-        date: DateTime.fromISO('2023-08-10'),
-        courtroom: '1',
-        judges: ['Judge Judy'],
-        transcriptCount: 0,
+        hearing_id: 1,
+        event_id: 1,
+        event_name: 'Section 4(2) of the Contempt of Court Act 1981',
+        event_text: '',
+        event_ts: '2023-08-10T09:00:00Z',
       },
     ],
   };

@@ -12,7 +12,7 @@ const defaultRetentionHistory = [
   {
     case_id: 1,
     retention_last_changed_date: '2023-10-11T00:18:00Z',
-    retention_date: '2030-09-13',
+    retention_date: '2025-12-15',
     amended_by: 'Judge Phil',
     retention_policy_applied: 'Permanent',
     comments: 'Permanent policy applied',
@@ -21,7 +21,7 @@ const defaultRetentionHistory = [
   {
     case_id: 1,
     retention_last_changed_date: '2023-10-12T00:15:00Z',
-    retention_date: '2030-09-14',
+    retention_date: '2030-07-10',
     amended_by: 'Judge Samuel',
     retention_policy_applied: 'Manual',
     comments: 'Manual policy applied',

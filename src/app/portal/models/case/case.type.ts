@@ -2,6 +2,16 @@ import { ReportingRestriction } from '@core-types/reporting-restriction/reportin
 import { Hearing } from '@portal-types/hearing/hearing.type';
 import { DateTime } from 'luxon';
 
+export type CaseSearchResult = {
+  id: number;
+  number: string;
+  courthouse?: string;
+  defendants?: string[];
+  judges?: string[];
+  reportingRestriction?: string;
+  hearings?: Hearing[];
+};
+
 export type Case = {
   id: number;
   number: string;
@@ -9,9 +19,7 @@ export type Case = {
   defendants?: string[];
   defenders?: string[];
   judges?: string[];
-  reportingRestriction?: string;
   reportingRestrictions?: ReportingRestriction[];
-  hearings?: Hearing[];
   retainUntil?: string;
   prosecutors?: string[];
   retainUntilDateTime?: DateTime;

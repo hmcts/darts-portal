@@ -1,32 +1,34 @@
-@if (restrictions?.length || caseHasRestrictions) {
+@if (restrictions?.length) {
   <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title">
     <div class="govuk-notification-banner__header">
       <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">Important</h2>
     </div>
     <div class="govuk-notification-banner__content">
-      <p class="govuk-notification-banner__heading">
-        {{ heading }}
-      </p>
-      @if (restrictions?.length) {
+      <p class="govuk-notification-banner__heading">{{ heading }}</p>
+      @if (displayRestrictions.length) {
         <app-govuk-details openSummary="Hide restrictions" closedSummary="Show restrictions">
           <ul class="govuk-list">
-            @for (restriction of restrictions; track $index) {
+            @for (restriction of displayRestrictions; track $index) {
               @if (restriction.event_name === 'Restrictions lifted') {
-                @if (restriction.event_ts) {
-                  <li><strong>Restrictions lifted:</strong> {{ restriction.event_ts | date: 'dd MMM yyyy' }}</li>
-                } @else {
-                  <li><strong>Restrictions lifted</strong></li>
-                }
+                <li class="restriction restrictions-lifted">
+                  @if (!hearingId && restriction.event_ts) {
+                    <strong>Restrictions lifted:</strong> {{ restriction.event_ts | date: 'dd MMM yyyy' }}
+                  } @else {
+                    <strong>Restrictions lifted</strong>
+                  }
+                </li>
               } @else {
-                <li>
+                <li class="restriction">
                   <strong>Restriction applied:</strong> {{ restriction.event_name }}
-                  {{ restriction.event_ts ? '- Applied' : '' }}
-                  {{ restriction.event_ts | date: 'dd MMM yyyy' }}
+                  @if (!hearingId && restriction.event_ts) {
+                    <span class="applied-datetime">- Applied {{ restriction.event_ts | date: 'dd MMM yyyy' }}</span>
+                  }
                 </li>
               }
             }
           </ul>
           <ng-content />
+          <p class="govuk-body">{{ footer }}</p>
         </app-govuk-details>
       }
     </div>

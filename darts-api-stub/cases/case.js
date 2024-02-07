@@ -33,7 +33,6 @@ const singleCase = {
   case_closed_date_time: '2023-08-15T14:57:24.858Z',
   retention_date_time_applied: getLatestRetentionChange(1),
   retention_policy_applied: 'Manual',
-  reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
   reporting_restrictions: [
     {
       hearing_id: 1,
