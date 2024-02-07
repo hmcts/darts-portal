@@ -83,7 +83,7 @@ describe('ApproveTranscriptComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should set caseDetails & requestDetails & reportingRestriction', () => {
+  it('should set caseDetails & requestDetails & reportingRestrictions', () => {
     const caseDetails = {
       'Case ID': 'C20220620001',
       Courthouse: 'Swansea',

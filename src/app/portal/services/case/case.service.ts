@@ -4,6 +4,10 @@ import { Courthouse } from '@core-types/index';
 import {
   Case,
   CaseData,
+  CaseRetentionChange,
+  CaseRetentionHistory,
+  CaseSearchResult,
+  CaseSearchResultData,
   Hearing,
   HearingData,
   SearchFormValues,
@@ -16,8 +20,6 @@ import { of } from 'rxjs/internal/observable/of';
 import { catchError } from 'rxjs/internal/operators/catchError';
 import { map } from 'rxjs/internal/operators/map';
 import { shareReplay } from 'rxjs/internal/operators/shareReplay';
-import { CaseRetentionChange } from 'src/app/portal/models/case/case-retention-change.interface';
-import { CaseRetentionHistory } from 'src/app/portal/models/case/case-retention-history.interface';
 
 export const GET_COURTHOUSES_PATH = '/api/courthouses';
 export const GET_CASE_PATH = '/api/cases';
@@ -32,7 +34,7 @@ export class CaseService {
   constructor(private readonly http: HttpClient) {}
 
   // Store for previous search results and form values
-  searchResults$: Observable<Case[] | null> | null = null;
+  searchResults$: Observable<CaseSearchResult[] | null> | null = null;
   searchFormValues: SearchFormValues | null = null;
 
   getCourthouses(): Observable<Courthouse[]> {
@@ -62,7 +64,7 @@ export class CaseService {
     return this.http.get<HearingData[]>(`${GET_CASE_PATH}/${caseId}/hearings`).pipe(map(this.mapHearingDataToHearing));
   }
 
-  searchCases(searchForm: SearchFormValues): Observable<Case[] | null> {
+  searchCases(searchForm: SearchFormValues): Observable<CaseSearchResult[] | null> {
     // Save search form values
     this.searchFormValues = searchForm;
     // Deep copy form to create Post Obj DTO
@@ -85,7 +87,7 @@ export class CaseService {
     // Store results in service for retrieval
     this.searchResults$ = this.http
       .post<CaseData[]>(ADVANCED_SEARCH_CASE_PATH, body)
-      .pipe(map((results) => results.map(this.mapCaseDataToCase)))
+      .pipe(map((results) => results.map(this.mapCaseDataToCaseSearchResult)))
       .pipe(shareReplay(1));
     return this.searchResults$;
   }
@@ -136,6 +138,18 @@ export class CaseService {
     }));
   }
 
+  private mapCaseDataToCaseSearchResult(c: CaseSearchResultData): CaseSearchResult {
+    return {
+      id: c.case_id,
+      number: c.case_number,
+      courthouse: c.courthouse,
+      defendants: c.defendants,
+      judges: c.judges,
+      reportingRestriction: c.reporting_restriction,
+      hearings: c.hearings,
+    };
+  }
+
   private mapCaseDataToCase(c: CaseData): Case {
     return {
       id: c.case_id,
@@ -144,9 +158,7 @@ export class CaseService {
       defendants: c.defendants,
       defenders: c.defenders,
       judges: c.judges,
-      reportingRestriction: c.reporting_restriction,
       reportingRestrictions: c.reporting_restrictions,
-      hearings: c.hearings,
       prosecutors: c.prosecutors,
       retainUntil: c.retain_until,
       retainUntilDateTime: c.retain_until_date_time ? DateTime.fromISO(c.retain_until_date_time) : undefined,
