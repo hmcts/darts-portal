@@ -1,12 +1,20 @@
+import { of } from 'rxjs';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserService } from '@services/user/user.service';
 import { CaseRetentionChangeComponent } from './case-retention-change.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DatePipe } from '@angular/common';
+import { CaseService } from '@services/case/case.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 describe('CaseRetentionComponent', () => {
   let component: CaseRetentionChangeComponent;
   let fixture: ComponentFixture<CaseRetentionChangeComponent>;
   let mockUserService: Partial<UserService>;
+
+  const mockCaseService = {
+    postCaseRetentionDateValidate: jest.fn().mockReturnValue(of({})),
+  } as unknown as CaseService;
 
   const currentRetentionDate = '01/01/2024';
   const originalRetentionDate = '01/01/2023';
@@ -17,8 +25,12 @@ describe('CaseRetentionComponent', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [CaseRetentionChangeComponent],
-      providers: [{ provide: UserService, useValue: mockUserService }, { provide: DatePipe }],
+      imports: [CaseRetentionChangeComponent, HttpClientTestingModule],
+      providers: [
+        { provide: UserService, useValue: mockUserService },
+        { provide: DatePipe },
+        { provide: CaseService, useValue: mockCaseService },
+      ],
     });
     fixture = TestBed.createComponent(CaseRetentionChangeComponent);
     component = fixture.componentInstance;
@@ -61,6 +73,7 @@ describe('CaseRetentionComponent', () => {
         },
       ];
       component.onConfirm();
+
       expect(component.errors).toEqual(expected);
     });
 
@@ -83,6 +96,7 @@ describe('CaseRetentionComponent', () => {
       const stateChangeSpy = jest.spyOn(component.stateChange, 'emit');
       const retentionDateChangeSpy = jest.spyOn(component.retentionDateChange, 'emit');
       const retentionReasonChange = jest.spyOn(component.retentionReasonChange, 'emit');
+
       component.onConfirm();
 
       expect(stateChangeSpy).toHaveBeenCalledWith('Confirm');

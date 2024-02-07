@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
+import { DateTime } from 'luxon';
 import { CaseRetentionChange } from 'src/app/portal/models/case/case-retention-change.interface';
 import { CaseRetentionPageState } from 'src/app/portal/models/case/case-retention-page-state.type';
 import { CaseService } from 'src/app/portal/services/case/case.service';
@@ -29,7 +30,7 @@ export class CaseRententionConfirmComponent {
   @Input() caseNumber!: string | undefined;
   @Input() caseCourthouse!: string | undefined;
   @Input() caseDefendants!: string[] | undefined;
-  @Input() newRetentionDate!: Date | null;
+  @Input() newRetentionDate!: Date;
   @Input() newRetentionReason!: string;
   @Input() newRetentionPermanent!: boolean;
 
@@ -47,6 +48,10 @@ export class CaseRententionConfirmComponent {
       'Defendant(s)': this.caseDefendants,
     };
     return details;
+  }
+
+  getDate() {
+    return `${this.datePipe.transform(this.newRetentionDate, 'dd MMM yyyy')} ${this.newRetentionPermanent ? ' (Permanent)' : ''}`;
   }
 
   onConfirm() {

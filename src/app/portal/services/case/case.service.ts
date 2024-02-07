@@ -106,6 +106,12 @@ export class CaseService {
     return this.http.post<CaseRetentionChange>(GET_CASE_RETENTION_HISTORY, retentionChange);
   }
 
+  postCaseRetentionDateValidate(retentionChange: CaseRetentionChange): Observable<CaseRetentionChange> {
+    let params = new HttpParams();
+    params = params.set('validate_only', true);
+    return this.http.post<CaseRetentionChange>(GET_CASE_RETENTION_HISTORY, retentionChange, { params });
+  }
+
   private mapHearingDataToHearing(hearingData: HearingData[]): Hearing[] {
     return hearingData.map((h) => ({
       id: h.id,
