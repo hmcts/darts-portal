@@ -1,8 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { ErrorMessage } from '@core-types/error/error-message.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ErrorMessage } from 'src/app/core/models/error/error-message.interface';
 import { HeaderService } from 'src/app/core/services/header/header.service';
 
 //Contains endpoints where errors are handled in their component

@@ -1,10 +1,10 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Validators } from '@angular/forms';
+import { UserState } from '@core-types/user/user-state.interface';
+import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
-import { UserState } from 'src/app/core/models/user/user-state.interface';
-import { UserService } from 'src/app/core/services/user/user.service';
 
 import { RequestPlaybackAudioComponent } from './request-playback-audio.component';
 

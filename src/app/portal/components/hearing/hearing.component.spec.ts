@@ -4,6 +4,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { UserState } from '@core-types/user/user-state.interface';
+import { AudioEventRow } from '@portal-types/hearing/hearing-audio-event.interface';
 import {
   Case,
   Hearing,
@@ -12,16 +14,14 @@ import {
   PostAudioRequest,
   Transcript,
 } from '@portal-types/index';
+import { AppConfigService } from '@services/app-config/app-config.service';
+import { AppInsightsService } from '@services/app-insights/app-insights.service';
+import { CaseService } from '@services/case/case.service';
+import { HeaderService } from '@services/header/header.service';
+import { HearingService } from '@services/hearing/hearing.service';
+import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
 import { Observable, of, throwError } from 'rxjs';
-import { UserState } from 'src/app/core/models/user/user-state.interface';
-import { AppConfigService } from 'src/app/core/services/app-config/app-config.service';
-import { AppInsightsService } from 'src/app/core/services/app-insights/app-insights.service';
-import { HeaderService } from 'src/app/core/services/header/header.service';
-import { UserService } from 'src/app/core/services/user/user.service';
-import { AudioEventRow } from 'src/app/portal/models/hearing/hearing-audio-event.interface';
-import { CaseService } from 'src/app/portal/services/case/case.service';
-import { HearingService } from 'src/app/portal/services/hearing/hearing.service';
 import { HearingFileComponent } from './hearing-file/hearing-file.component';
 import { HearingComponent } from './hearing.component';
 

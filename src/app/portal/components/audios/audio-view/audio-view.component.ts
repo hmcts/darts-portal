@@ -8,21 +8,21 @@ import { DeleteComponent } from '@common/delete/delete.component';
 import { PlayButtonComponent } from '@common/play-button/play-button.component';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
+import { ErrorMessage } from '@core-types/error/error-message.interface';
 import { DatatableColumn } from '@core-types/index';
+import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
+import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
+import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { Case } from '@portal-types/case/case.type';
 import { HearingEvent, HearingEventRow, TransformedMedia } from '@portal-types/index';
+import { AppConfigService } from '@services/app-config/app-config.service';
 import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { CaseService } from '@services/case/case.service';
+import { ErrorMessageService } from '@services/error/error-message.service';
+import { FileDownloadService } from '@services/file-download/file-download.service';
 import { HearingService } from '@services/hearing/hearing.service';
 import { DateTime } from 'luxon';
 import { combineLatest, map, Observable } from 'rxjs';
-import { BreadcrumbDirective } from 'src/app/core/directives/breadcrumb.directive';
-import { TableRowTemplateDirective } from 'src/app/core/directives/table-row-template.directive';
-import { ErrorMessage } from 'src/app/core/models/error/error-message.interface';
-import { LuxonDatePipe } from 'src/app/core/pipes/luxon-date.pipe';
-import { AppConfigService } from 'src/app/core/services/app-config/app-config.service';
-import { ErrorMessageService } from 'src/app/core/services/error/error-message.service';
-import { FileDownloadService } from 'src/app/core/services/file-download/file-download.service';
 
 @Component({
   selector: 'app-audio-view',
