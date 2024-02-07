@@ -6,4 +6,10 @@
 
 <app-user-search-form (submitForm)="onSubmit($event)" (clear)="onClear()" />
 
-<!-- <app-user-search-results [users]="users" /> -->
+@if (loading$ | async) {
+  <app-loading />
+}
+
+@if (results$ | async; as results) {
+  <app-user-search-results [results]="results" />
+}
