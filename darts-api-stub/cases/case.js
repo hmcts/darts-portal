@@ -1,6 +1,23 @@
 const express = require('express');
 
 const router = express.Router();
+const retention = require('../retentions/retention');
+const { localArray } = require('../localArray');
+const { getLatestDatefromKey } = require('../utils/date');
+
+const retentionHistory = localArray('retentionHistory');
+
+const getLatestRetentionDate = (caseId) => {
+  const rows = retentionHistory.value.filter((history) => history.case_id === parseInt(caseId));
+  const latest = getLatestDatefromKey(rows, 'retention_last_changed_date');
+  return latest.retention_date;
+};
+
+const getLatestRetentionChange = (caseId) => {
+  const rows = retentionHistory.value.filter((history) => history.case_id === parseInt(caseId));
+  const latest = getLatestDatefromKey(rows, 'retention_last_changed_date');
+  return latest.retention_last_changed_date;
+};
 
 // CASES Mock objects
 const singleCase = {
@@ -11,9 +28,9 @@ const singleCase = {
   judges: ['Judge Judy'],
   prosecutors: ['Polly Prosecutor'],
   defenders: ['Derek Defender'],
-  retain_until_date_time: '2030-09-15T11:23:24.858Z',
+  retain_until_date_time: getLatestRetentionDate(1),
   case_closed_date_time: '2023-08-15T14:57:24.858Z',
-  retention_date_time_applied: '2023-12-12T11:02:24.858Z',
+  retention_date_time_applied: getLatestRetentionChange(1),
   retention_policy_applied: 'Manual',
   reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
   reporting_restrictions: [
@@ -592,7 +609,11 @@ router.get('/:caseId/transcripts', (req, res) => {
       res.status(404).send(resBody104);
       break;
     case '1':
-      res.send(transcriptOne);
+      retention.get('', (history) => {
+        transcriptOne.retain_until_date_time = history;
+        console.log(transcriptOne);
+        res.send(transcriptOne);
+      });
       break;
     default:
       res.send(transcriptTwo);
