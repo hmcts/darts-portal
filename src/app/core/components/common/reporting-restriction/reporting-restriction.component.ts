@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { GovukDetailsComponent } from '@common/govuk-details/govuk-details.component';
-import { ReportingRestriction } from '@darts-types/index';
+import { ReportingRestriction } from '@core-types/index';
 
 @Component({
   selector: 'app-reporting-restriction',
@@ -10,9 +10,23 @@ import { ReportingRestriction } from '@darts-types/index';
   templateUrl: './reporting-restriction.component.html',
   styleUrls: ['./reporting-restriction.component.scss'],
 })
-export class ReportingRestrictionComponent {
-  @Input() heading = 'There are restrictions against this case';
-  @Input() reportingRestriction?: string; // TODO: Remove this when fully migrated to multiple reporting_restrictions
+export class ReportingRestrictionComponent implements OnInit {
   @Input() restrictions?: ReportingRestriction[] = [];
-  @Input() caseHasRestrictions = false;
+  @Input() hearingId?: number;
+
+  heading = 'There are restrictions against this case';
+  footer = 'For full details, check the events for each hearing below.';
+  displayRestrictions!: ReportingRestriction[];
+
+  ngOnInit(): void {
+    if (this.hearingId) {
+      this.displayRestrictions = (this.restrictions || []).filter((r) => r.hearing_id === this.hearingId);
+      if (this.displayRestrictions.length) {
+        this.heading = 'There are restrictions against this hearing';
+        this.footer = 'For full details, check the hearing events.';
+      }
+    } else {
+      this.displayRestrictions = this.restrictions || [];
+    }
+  }
 }

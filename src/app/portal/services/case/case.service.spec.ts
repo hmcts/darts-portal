@@ -11,6 +11,7 @@ import {
   GET_HEARINGS_PATH,
 } from './case.service';
 import {
+  Case,
   CaseData,
   CaseRetentionChange,
   CaseRetentionHistory,
