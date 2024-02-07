@@ -1,9 +1,11 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { Courthouse } from '@darts-types/index';
+import { Courthouse } from '@core-types/index';
 import {
   Case,
   CaseData,
+  CaseRetentionChange,
+  CaseRetentionHistory,
   Hearing,
   HearingData,
   SearchFormValues,
@@ -11,8 +13,6 @@ import {
   TranscriptData,
 } from '@portal-types/index';
 import { DateTime, Settings } from 'luxon';
-import { CaseRetentionChange } from 'src/app/portal/models/case/case-retention-change.interface';
-import { CaseRetentionHistory } from 'src/app/portal/models/case/case-retention-history.interface';
 import {
   ADVANCED_SEARCH_CASE_PATH,
   CaseService,
