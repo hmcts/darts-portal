@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, inject } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angular/core';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
@@ -29,7 +29,7 @@ import { TabDirective } from 'src/app/directives/tab.directive';
   styleUrls: ['./hearing-results.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HearingResultsComponent {
+export class HearingResultsComponent implements OnInit {
   userService = inject(UserService);
   @Input() hearings: Hearing[] = [];
   @Input() transcripts: TranscriptsRow[] = [];
@@ -38,10 +38,17 @@ export class HearingResultsComponent {
   hearingsColumns: DatatableColumn[] = [];
   transcriptColumns: DatatableColumn[] = [];
   annotationColumns: DatatableColumn[] = [];
+  defaultTab = 'Hearings';
 
   transcriptStatusClassMap = transcriptStatusClassMap;
 
-  constructor(private route: ActivatedRoute) {
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
+    this.router.routeReuseStrategy.shouldReuseRoute = function () {
+      return false;
+    };
     this.caseId = this.route.snapshot.params.caseId;
 
     this.hearingsColumns = [
@@ -69,5 +76,13 @@ export class HearingResultsComponent {
       { name: '', prop: '' },
       { name: '', prop: '' },
     ];
+  }
+
+  ngOnInit(): void {
+    const tab = this.route.snapshot.queryParams.tab;
+
+    if (tab === 'All Transcripts' || tab === 'All annotations' || tab === 'Hearings') {
+      this.defaultTab = tab;
+    }
   }
 }

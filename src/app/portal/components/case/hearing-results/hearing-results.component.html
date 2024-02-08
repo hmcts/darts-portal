@@ -1,4 +1,4 @@
-<app-tabs>
+<app-tabs [default]="defaultTab">
   <div *tab="'Hearings'">
     <app-data-table id="hearingsTable" [rows]="hearings" [columns]="hearingsColumns">
       <ng-template [tableRowTemplate]="hearings" let-row>
@@ -45,6 +45,7 @@
         id="annotationsTable"
         [rows]="annotations"
         [columns]="annotationColumns"
+        [annotationHyperLinkMessage]="true"
         noDataMessage="There are no annotations for this case. Annotations added to hearings will be listed here."
       >
         <ng-template [tableRowTemplate]="annotations" let-row>

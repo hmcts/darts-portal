@@ -30,6 +30,8 @@ export class TabsComponent implements AfterContentInit {
         const firstTab = tabs.find((t) => t.name === this.default)?.template;
         if (firstTab) this.currentTab = firstTab;
       });
+      const firstTab = this.tabs.find((t) => t.name === this.default)?.template;
+      if (firstTab) this.currentTab = firstTab;
     } else {
       const firstTab = this.tabs.first.template;
       if (firstTab) this.currentTab = firstTab;

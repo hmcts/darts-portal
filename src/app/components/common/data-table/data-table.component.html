@@ -102,5 +102,14 @@
     (changePage)="onPageChanged($event)"
   ></app-pagination>
 } @else {
-  <p id="no-data-message" [attr.aria-label]="noDataMessage" class="govuk-body" tabindex="0">{{ noDataMessage }}</p>
+  @if (annotationHyperLinkMessage) {
+    <p id="no-data-message" [attr.aria-label]="noDataMessage" class="govuk-body" tabindex="0">
+      {{ noDataMessage }} Annotations added to <a routerLink="." [queryParams]="{ tab: 'Hearings' }">hearings</a> will
+      be listed here.
+    </p>
+  } @else {
+    <p id="no-data-message" [attr.aria-label]="noDataMessage" class="govuk-body" tabindex="0">
+      {{ noDataMessage }}
+    </p>
+  }
 }
