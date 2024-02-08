@@ -1,18 +1,18 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { DataTableComponent } from '@common/data-table/data-table.component';
-import { LoadingComponent } from '@common/loading/loading.component';
-import { TabsComponent } from '@common/tabs/tabs.component';
+import { DataTableComponent } from '@components/common/data-table/data-table.component';
+import { LoadingComponent } from '@components/common/loading/loading.component';
+import { TabsComponent } from '@components/common/tabs/tabs.component';
 import { transcriptTableColumns } from '@constants/transcription-columns';
-import { DatatableColumn } from '@darts-types/index';
+import { DatatableColumn } from '@core-types/index';
 import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { WorkRequest } from '@portal-types/index';
 import { SortService } from '@services/sort/sort.service';
+import { TranscriptionService } from '@services/transcription/transcription.service';
 import { combineLatest, map, shareReplay } from 'rxjs';
-import { TranscriptionService } from 'src/app/portal/services/transcription/transcription.service';
 
 @Component({
   selector: 'app-your-work',

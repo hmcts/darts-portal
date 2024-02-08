@@ -12,15 +12,9 @@
 
   @if (state !== 'OrderFailure') {
     <app-reporting-restriction
-      [heading]="
-        'There are restrictions against this ' +
-        (vm.case.reportingRestrictions?.length && vm.hearingRestrictions.length ? 'hearing' : 'case')
-      "
-      [restrictions]="vm.hearingRestrictions"
-      [caseHasRestrictions]="!!vm.case.reportingRestrictions?.length"
-    >
-      <p class="govuk-body">For full details, check the hearing events.</p>
-    </app-reporting-restriction>
+      [restrictions]="vm.case.reportingRestrictions"
+      [hearingId]="vm.hearing?.id"
+    ></app-reporting-restriction>
   }
   <ng-container *ngIf="vm.error">
     <ng-container *ngIf="vm.error.status === 403 && state === 'OrderFailure'">

@@ -1,14 +1,14 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { DatepickerComponent } from '@common/datepicker/datepicker.component';
-import { GovukTextareaComponent } from '@common/govuk-textarea/govuk-textarea.component';
-import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
-import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
+import { DatepickerComponent } from '@components/common/datepicker/datepicker.component';
+import { GovukTextareaComponent } from '@components/common/govuk-textarea/govuk-textarea.component';
+import { ReportingRestrictionComponent } from '@components/common/reporting-restriction/reporting-restriction.component';
+import { ValidationErrorSummaryComponent } from '@components/common/validation-error-summary/validation-error-summary.component';
+import { CaseRetentionPageState } from '@portal-types/case/case-retention-page-state.type';
 import { UserService } from '@services/user/user.service';
 import { beforeDateValidator } from '@validators/before-date.validator';
 import { DateTime } from 'luxon';
-import { CaseRetentionPageState } from 'src/app/portal/models/case/case-retention-page-state.type';
 
 @Component({
   selector: 'app-case-retention-change',

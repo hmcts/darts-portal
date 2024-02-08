@@ -1,16 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
-import { TabsComponent } from '@common/tabs/tabs.component';
-import { DatatableColumn } from '@darts-types/index';
+import { DataTableComponent } from '@components/common/data-table/data-table.component';
+import { TabsComponent } from '@components/common/tabs/tabs.component';
+import { transcriptStatusClassMap } from '@constants/transcript-status-class-map';
+import { DatatableColumn } from '@core-types/index';
+import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { Annotations, Hearing, TranscriptsRow } from '@portal-types/index';
 import { UserService } from '@services/user/user.service';
-import { transcriptStatusClassMap } from 'src/app/constants/transcript-status-class-map';
-import { TabDirective } from 'src/app/directives/tab.directive';
 
 @Component({
   selector: 'app-hearing-results',

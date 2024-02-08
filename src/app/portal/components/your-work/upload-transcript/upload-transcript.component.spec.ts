@@ -222,7 +222,7 @@ describe('UploadTranscriptComponent', () => {
       expect(requestDetails.textContent).toContain('Yes');
     });
 
-    it('render reporting restriction', () => {
+    it('render reporting restrictions', () => {
       const reportingRestriction = fixture.debugElement.query(
         By.directive(ReportingRestrictionComponent)
       ).nativeElement;

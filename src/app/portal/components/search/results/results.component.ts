@@ -1,11 +1,11 @@
 import { NgFor, NgIf } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { DataTableComponent } from '@common/data-table/data-table.component';
-import { DatatableColumn } from '@darts-types/index';
-import { ArrayDisplayPipe } from '@pipes/array-display.pipe';
-import { Case } from '@portal-types/index';
-import { TableBodyTemplateDirective } from 'src/app/directives/table-body-template.directive';
+import { DatatableColumn } from '@core-types/index';
+import { CaseSearchResult } from '@portal-types/index';
+import { DataTableComponent } from 'src/app/core/components/common/data-table/data-table.component';
+import { TableBodyTemplateDirective } from 'src/app/core/directives/table-body-template.directive';
+import { ArrayDisplayPipe } from 'src/app/core/pipes/array-display.pipe';
 
 @Component({
   selector: 'app-results',
@@ -15,7 +15,7 @@ import { TableBodyTemplateDirective } from 'src/app/directives/table-body-templa
   standalone: true,
 })
 export class ResultsComponent implements OnChanges {
-  @Input() cases: Case[] = [];
+  @Input() cases: CaseSearchResult[] = [];
   @Input() loaded = false;
   @Input() errorType = '';
   caption = '';

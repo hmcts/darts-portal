@@ -1,14 +1,20 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Courthouse, SearchFormValues } from '@darts-types/index';
+import { Courthouse } from '@core-types/index';
 import {
   AnnotationDocumentData,
   Annotations,
   AnnotationsData,
   Case,
   CaseData,
+  CaseRetentionChange,
+  CaseRetentionHistory,
+  CaseRetentionHistoryData,
+  CaseSearchResult,
+  CaseSearchResultData,
   Hearing,
   HearingData,
+  SearchFormValues,
   Transcript,
   TranscriptData,
 } from '@portal-types/index';
@@ -18,8 +24,6 @@ import { of } from 'rxjs/internal/observable/of';
 import { catchError } from 'rxjs/internal/operators/catchError';
 import { map } from 'rxjs/internal/operators/map';
 import { shareReplay } from 'rxjs/internal/operators/shareReplay';
-import { CaseRetentionChange } from 'src/app/portal/models/case/case-retention-change.interface';
-import { CaseRetentionHistory } from 'src/app/portal/models/case/case-retention-history.interface';
 
 export const GET_COURTHOUSES_PATH = '/api/courthouses';
 export const GET_CASE_PATH = '/api/cases';
@@ -34,7 +38,7 @@ export class CaseService {
   constructor(private readonly http: HttpClient) {}
 
   // Store for previous search results and form values
-  searchResults$: Observable<Case[] | null> | null = null;
+  searchResults$: Observable<CaseSearchResult[] | null> | null = null;
   searchFormValues: SearchFormValues | null = null;
 
   getCourthouses(): Observable<Courthouse[]> {
@@ -70,7 +74,7 @@ export class CaseService {
       .pipe(map(this.mapAnnotationsDataToAnnotations));
   }
 
-  searchCases(searchForm: SearchFormValues): Observable<Case[] | null> {
+  searchCases(searchForm: SearchFormValues): Observable<CaseSearchResult[] | null> {
     // Save search form values
     this.searchFormValues = searchForm;
     // Deep copy form to create Post Obj DTO
@@ -93,7 +97,7 @@ export class CaseService {
     // Store results in service for retrieval
     this.searchResults$ = this.http
       .post<CaseData[]>(ADVANCED_SEARCH_CASE_PATH, body)
-      .pipe(map((results) => results.map(this.mapCaseDataToCase)))
+      .pipe(map((results) => results.map(this.mapCaseDataToCaseSearchResult)))
       .pipe(shareReplay(1));
     return this.searchResults$;
   }
@@ -115,11 +119,24 @@ export class CaseService {
   getCaseRetentionHistory(caseId: number): Observable<CaseRetentionHistory[]> {
     let params = new HttpParams();
     params = params.set('case_id', caseId);
-    return this.http.get<CaseRetentionHistory[]>(GET_CASE_RETENTION_HISTORY, { params });
+    return this.http
+      .get<CaseRetentionHistoryData[]>(GET_CASE_RETENTION_HISTORY, { params })
+      .pipe(map(this.mapCaseRetentionHistory));
   }
 
   postCaseRetentionChange(retentionChange: CaseRetentionChange): Observable<CaseRetentionChange> {
     return this.http.post<CaseRetentionChange>(GET_CASE_RETENTION_HISTORY, retentionChange);
+  }
+
+  private mapCaseRetentionHistory(retentionHistory: CaseRetentionHistoryData[]): CaseRetentionHistory[] {
+    return retentionHistory.map((r) => ({
+      retentionLastChangedDate: DateTime.fromISO(r.retention_last_changed_date),
+      retentionDate: DateTime.fromISO(r.retention_date),
+      amendedBy: r.amended_by,
+      retentionPolicyApplied: r.retention_policy_applied,
+      comments: r.comments,
+      status: r.status,
+    }));
   }
 
   private mapHearingDataToHearing(hearingData: HearingData[]): Hearing[] {
@@ -144,6 +161,18 @@ export class CaseService {
     }));
   }
 
+  private mapCaseDataToCaseSearchResult(c: CaseSearchResultData): CaseSearchResult {
+    return {
+      id: c.case_id,
+      number: c.case_number,
+      courthouse: c.courthouse,
+      defendants: c.defendants,
+      judges: c.judges,
+      reportingRestriction: c.reporting_restriction,
+      hearings: c.hearings,
+    };
+  }
+
   private mapCaseDataToCase(c: CaseData): Case {
     return {
       id: c.case_id,
@@ -152,9 +181,7 @@ export class CaseService {
       defendants: c.defendants,
       defenders: c.defenders,
       judges: c.judges,
-      reportingRestriction: c.reporting_restriction,
       reportingRestrictions: c.reporting_restrictions,
-      hearings: c.hearings,
       prosecutors: c.prosecutors,
       retainUntil: c.retain_until,
       retainUntilDateTime: c.retain_until_date_time ? DateTime.fromISO(c.retain_until_date_time) : undefined,

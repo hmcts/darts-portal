@@ -1,5 +1,15 @@
+import { ReportingRestriction } from '@core-types/reporting-restriction/reporting-restriction.interface';
 import { Hearing } from '@portal-types/hearing/hearing.type';
-import { ReportingRestriction } from '../../../types/reporting-restriction.interface'; //Update once core is re-structured
+
+export interface CaseSearchResultData {
+  case_id: number;
+  case_number: string;
+  courthouse?: string;
+  defendants?: string[];
+  judges?: string[];
+  reporting_restriction?: string;
+  hearings?: Hearing[];
+}
 
 export interface CaseData {
   case_id: number;
@@ -8,9 +18,7 @@ export interface CaseData {
   defendants?: string[];
   defenders?: string[];
   judges?: string[];
-  reporting_restriction?: string;
   reporting_restrictions?: ReportingRestriction[];
-  hearings?: Hearing[];
   retain_until?: string;
   prosecutors?: string[];
   retain_until_date_time?: string;

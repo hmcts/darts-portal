@@ -1,0 +1,50 @@
+<form [formGroup]="form" class="govuk-form" (ngSubmit)="onSubmit()">
+  <div class="govuk-form-group">
+    <label class="govuk-label" for="fullName">Full Name</label>
+    <input class="govuk-input govuk-!-width-one-half" type="text" id="fullName" formControlName="fullName" />
+  </div>
+
+  <div class="govuk-form-group">
+    <label class="govuk-label" for="email">Email</label>
+    <input class="govuk-input govuk-!-width-one-half" type="email" id="email" formControlName="email" />
+  </div>
+
+  <div class="govuk-form-group">
+    <fieldset class="govuk-fieldset">
+      <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+        <span class="govuk-fieldset__heading">User Status</span>
+      </legend>
+      <div class="govuk-radios govuk-radios--small govuk-radios--inline">
+        <div class="govuk-radios__item">
+          <input
+            class="govuk-radios__input"
+            type="radio"
+            id="activeUsers"
+            value="active"
+            formControlName="userStatus"
+          />
+          <label class="govuk-label govuk-radios__label" for="activeUsers">Active Users</label>
+        </div>
+        <div class="govuk-radios__item">
+          <input
+            class="govuk-radios__input"
+            type="radio"
+            id="inactiveUsers"
+            value="inactive"
+            formControlName="userStatus"
+          />
+          <label class="govuk-label govuk-radios__label" for="inactiveUsers">Inactive Users</label>
+        </div>
+        <div class="govuk-radios__item">
+          <input class="govuk-radios__input" type="radio" id="allUsers" value="all" formControlName="userStatus" />
+          <label class="govuk-label govuk-radios__label" for="allUsers">All Users</label>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+
+  <div class="govuk-button-group">
+    <button class="govuk-button" type="submit">Search</button>
+    <a class="govuk-link" href="javascript:void(0)" (click)="clearSearch()">Clear search</a>
+  </div>
+</form>

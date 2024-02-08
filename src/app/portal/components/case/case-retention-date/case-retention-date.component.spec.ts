@@ -3,12 +3,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DatePipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute } from '@angular/router';
+import { CaseRetentionHistoryData } from '@portal-types/case/case-retention-history.interface';
+import { CaseRetentionHistory } from '@portal-types/case/case-retention-history.type';
 import { Case } from '@portal-types/case/case.type';
+import { CaseService } from '@services/case/case.service';
 import { HeaderService } from '@services/header/header.service';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
-import { CaseRetentionHistory } from 'src/app/portal/models/case/case-retention-history.interface';
-import { CaseService } from 'src/app/portal/services/case/case.service';
 import { CaseRetentionDateComponent } from './case-retention-date.component';
 
 describe('CaseRetentionDateComponent', () => {
@@ -28,7 +29,7 @@ describe('CaseRetentionDateComponent', () => {
     hideNavigation: jest.fn(),
   };
 
-  const mockRetentionHistory: CaseRetentionHistory[] = [
+  const mockRetentionHistory: CaseRetentionHistoryData[] = [
     {
       retention_last_changed_date: '2023-01-01T00:00:00Z',
       retention_date: '2030-09-15',
@@ -50,6 +51,33 @@ describe('CaseRetentionDateComponent', () => {
       retention_date: '2030-09-15',
       amended_by: 'Judge Phil',
       retention_policy_applied: 'Permanent',
+      comments: 'Permanent policy applied',
+      status: 'PENDING',
+    },
+  ];
+
+  const mockRetentionHistoryVm: CaseRetentionHistory[] = [
+    {
+      retentionLastChangedDate: DateTime.fromISO(mockRetentionHistory[0].retention_last_changed_date),
+      retentionDate: DateTime.fromISO(mockRetentionHistory[0].retention_date),
+      amendedBy: 'Judge Phil',
+      retentionPolicyApplied: 'Permanent',
+      comments: 'Permanent policy applied',
+      status: 'COMPLETE',
+    },
+    {
+      retentionLastChangedDate: DateTime.fromISO(mockRetentionHistory[1].retention_last_changed_date),
+      retentionDate: DateTime.fromISO(mockRetentionHistory[1].retention_date),
+      amendedBy: 'Judge Phil',
+      retentionPolicyApplied: 'Permanent',
+      comments: 'Permanent policy applied',
+      status: 'PENDING',
+    },
+    {
+      retentionLastChangedDate: DateTime.fromISO(mockRetentionHistory[2].retention_last_changed_date),
+      retentionDate: DateTime.fromISO(mockRetentionHistory[2].retention_date),
+      amendedBy: 'Judge Phil',
+      retentionPolicyApplied: 'Permanent',
       comments: 'Permanent policy applied',
       status: 'PENDING',
     },
@@ -96,17 +124,17 @@ describe('CaseRetentionDateComponent', () => {
   });
 
   it('#getLatestDate', () => {
-    const result = component.getLatestDate(mockRetentionHistory);
-    expect(result).toEqual(mockRetentionHistory[1]);
+    const result = component.getLatestDate(mockRetentionHistoryVm);
+    expect(result).toEqual(mockRetentionHistoryVm[1]);
   });
 
   it('#getEarliestDate', () => {
-    const result = component.getEarliestDate(mockRetentionHistory);
-    expect(result).toEqual(mockRetentionHistory[0]);
+    const result = component.getEarliestDate(mockRetentionHistoryVm);
+    expect(result).toEqual(mockRetentionHistoryVm[0]);
   });
 
   it('#getOriginalRetentionDateString', () => {
-    const result = component.getOriginalRetentionDateString(mockRetentionHistory);
+    const result = component.getOriginalRetentionDateString(mockRetentionHistoryVm);
     const expectedDateString = mockDatePipe.transform(mockRetentionHistory[0].retention_date, 'dd/MM/yyyy');
     expect(result).toEqual(expectedDateString);
   });
@@ -117,13 +145,13 @@ describe('CaseRetentionDateComponent', () => {
     });
 
     it('should return true if the latest date status is not PENDING', () => {
-      jest.spyOn(component, 'getLatestDate').mockReturnValue(mockRetentionHistory[0]);
-      expect(component.infoBannerHide(mockRetentionHistory)).toBe(true);
+      jest.spyOn(component, 'getLatestDate').mockReturnValue(mockRetentionHistoryVm[0]);
+      expect(component.infoBannerHide(mockRetentionHistoryVm)).toBe(true);
     });
 
     it('should return false if the latest date status is PENDING', () => {
-      jest.spyOn(component, 'getLatestDate').mockReturnValue(mockRetentionHistory[1]);
-      expect(component.infoBannerHide(mockRetentionHistory)).toBe(false);
+      jest.spyOn(component, 'getLatestDate').mockReturnValue(mockRetentionHistoryVm[1]);
+      expect(component.infoBannerHide(mockRetentionHistoryVm)).toBe(false);
     });
   });
 
@@ -133,18 +161,18 @@ describe('CaseRetentionDateComponent', () => {
     });
 
     it('should return true if the latest date status is not COMPLETE', () => {
-      const mockLatestDate = mockRetentionHistory[2];
+      const mockLatestDate = mockRetentionHistoryVm[2];
       expect(mockLatestDate.status).not.toBe('COMPLETE');
 
       jest.spyOn(component, 'getLatestDate').mockReturnValue(mockLatestDate);
 
-      const result = component.buttonGroupHide(mockRetentionHistory);
+      const result = component.buttonGroupHide(mockRetentionHistoryVm);
       expect(result).toBe(true);
     });
 
     it('should return false if the latest date status is COMPLETE', () => {
-      jest.spyOn(component, 'getLatestDate').mockReturnValue(mockRetentionHistory[0]);
-      expect(component.buttonGroupHide(mockRetentionHistory)).toBe(false);
+      jest.spyOn(component, 'getLatestDate').mockReturnValue(mockRetentionHistoryVm[0]);
+      expect(component.buttonGroupHide(mockRetentionHistoryVm)).toBe(false);
     });
   });
 

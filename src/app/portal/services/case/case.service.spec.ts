@@ -1,11 +1,13 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { Courthouse } from '@darts-types/index';
+import { Courthouse } from '@core-types/index';
 import {
   Annotations,
   AnnotationsData,
   Case,
   CaseData,
+  CaseRetentionChange,
+  CaseRetentionHistoryData,
   Hearing,
   HearingData,
   SearchFormValues,
@@ -13,8 +15,6 @@ import {
   TranscriptData,
 } from '@portal-types/index';
 import { DateTime, Settings } from 'luxon';
-import { CaseRetentionChange } from 'src/app/portal/models/case/case-retention-change.interface';
-import { CaseRetentionHistory } from 'src/app/portal/models/case/case-retention-history.interface';
 import {
   ADVANCED_SEARCH_CASE_PATH,
   CaseService,
@@ -37,11 +37,9 @@ describe('CaseService', () => {
     courthouse: 'Swansea',
     case_number: 'CASE1001',
     defendants: ['Defendant Dave', 'Defendant Debbie'],
-    hearings: [],
     judges: ['Judge Judy', 'Judge Jones'],
     prosecutors: ['Polly Prosecutor'],
     defenders: ['Derek Defender'],
-    reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
     retain_until: '2023-08-10T11:23:24Z',
     case_closed_date_time: '',
     reporting_restrictions: [],
@@ -106,7 +104,7 @@ describe('CaseService', () => {
     transcript_count: 300,
   };
 
-  const mockHistory: CaseRetentionHistory = {
+  const mockHistory: CaseRetentionHistoryData = {
     retention_last_changed_date: '2023-10-11T00:18:00Z',
     retention_date: '2030-09-15',
     amended_by: 'Judge Phil',
@@ -164,11 +162,9 @@ describe('CaseService', () => {
       courthouse: 'Swansea',
       number: 'CASE1001',
       defendants: ['Defendant Dave', 'Defendant Debbie'],
-      hearings: [],
       judges: ['Judge Judy', 'Judge Jones'],
       prosecutors: ['Polly Prosecutor'],
       defenders: ['Derek Defender'],
-      reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
       retainUntil: '2023-08-10T11:23:24Z',
       closedDateTime: undefined,
       reportingRestrictions: [],
@@ -401,7 +397,7 @@ describe('CaseService', () => {
 
   it('#getCaseRetentionHistory', () => {
     const mockCaseId = 123;
-    const mock: CaseRetentionHistory[] = [mockHistory];
+    const mock: CaseRetentionHistoryData[] = [mockHistory];
 
     service.getCaseRetentionHistory(mockCaseId).subscribe((history) => {
       expect(history).toBeDefined();

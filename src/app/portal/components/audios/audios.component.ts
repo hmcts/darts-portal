@@ -5,15 +5,15 @@ import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DeleteComponent } from '@common/delete/delete.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
-import { DatatableColumn } from '@darts-types/index';
+import { DatatableColumn } from '@core-types/index';
 import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { UnreadIconDirective } from '@directives/unread-icon.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { MediaRequest, RequestedMedia, TransformedMedia } from '@portal-types/index';
+import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { HeaderService } from '@services/header/header.service';
 import { BehaviorSubject, Observable, combineLatest, forkJoin, map, shareReplay, switchMap } from 'rxjs';
-import { AudioRequestService } from 'src/app/portal/services/audio-request/audio-request.service';
 
 @Component({
   selector: 'app-audios',

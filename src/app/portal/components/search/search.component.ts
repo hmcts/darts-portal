@@ -1,15 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CourthouseComponent } from '@common/courthouse/courthouse.component';
-import { DatepickerComponent } from '@common/datepicker/datepicker.component';
-import { LoadingComponent } from '@common/loading/loading.component';
-import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
-import { ErrorSummaryEntry, FieldErrors, SearchFormValues } from '@darts-types/index';
+import { CourthouseComponent } from '@components/common/courthouse/courthouse.component';
+import { DatepickerComponent } from '@components/common/datepicker/datepicker.component';
+import { LoadingComponent } from '@components/common/loading/loading.component';
+import { ValidationErrorSummaryComponent } from '@components/common/validation-error-summary/validation-error-summary.component';
+import { ErrorSummaryEntry, FieldErrors } from '@core-types/index';
+import { SearchFormValues } from '@portal-types/index';
+import { CaseService } from '@services/case/case.service';
 import { ErrorMessageService } from '@services/error/error-message.service';
 import { futureDateValidator } from '@validators/future-date.validator';
 import { Subscription, catchError, of } from 'rxjs';
-import { CaseService } from 'src/app/portal/services/case/case.service';
 import { ResultsComponent } from './results/results.component';
 import { SearchErrorComponent } from './search-error/search-error.component';
 

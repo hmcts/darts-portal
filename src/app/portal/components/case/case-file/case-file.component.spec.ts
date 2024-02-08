@@ -16,7 +16,15 @@ describe('CaseFileComponent', () => {
     judges: ['Judge Judy', 'Judge Jones'],
     prosecutors: ['Polly Prosecutor'],
     defenders: ['Derek Defender'],
-    reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
+    reportingRestrictions: [
+      {
+        hearing_id: 1,
+        event_id: 1,
+        event_name: 'Section 4(2) of the Contempt of Court Act 1981',
+        event_text: '',
+        event_ts: '2023-08-10T09:00:00Z',
+      },
+    ],
     retainUntil: '2023-08-10T11:23:24.858Z',
   };
   const mockActivatedRoute = {
