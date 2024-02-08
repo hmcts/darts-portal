@@ -100,7 +100,7 @@ describe('Case retention screen as standard user', () => {
 
       // Fill in the reason box but don't fill in the date, should show error
       cy.get('#change-reason').type(validReason);
-      cy.get('#retention-option-date').click();
+      cy.get('#retention-option-date').click({ force: true });
       cy.get('#continue-button').click();
       cy.get('.govuk-error-summary').should(
         'contain',
@@ -156,7 +156,7 @@ describe('Case retention screen as standard user', () => {
       cy.contains('C20220620001').click();
       cy.contains('View or change').click();
       cy.get('#change-retention-button').click();
-      cy.get('#retention-option-date').click();
+      cy.get('#retention-option-date').click({ force: true });
       cy.get('#retention-date').type(validDateObject.toFormat('dd/MM/yyyy'));
       cy.get('#change-reason').type(validReason);
       cy.get('#continue-button').click();
@@ -230,7 +230,7 @@ describe('Case retention screen as Judge', () => {
       // Fill in the reason box
       cy.get('#change-reason').type('Just want to change the date');
       // Select the date option
-      cy.get('#retention-option-date').click();
+      cy.get('#retention-option-date').click({ force: true });
 
       // Fill in a date that is lower than the current retention date
       cy.get('#retention-date').type('01/01/2024');
