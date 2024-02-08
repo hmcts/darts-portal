@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, RouteReuseStrategy, RouterLink } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { DataTableComponent } from '@components/common/data-table/data-table.component';
 import { TabsComponent } from '@components/common/tabs/tabs.component';
@@ -44,12 +44,11 @@ export class HearingResultsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router
+    private routeReuseStrategy: RouteReuseStrategy
   ) {
-    this.router.routeReuseStrategy.shouldReuseRoute = function () {
+    this.routeReuseStrategy.shouldReuseRoute = function () {
       return false;
     };
-    this.router.onSameUrlNavigation = 'reload';
     this.caseId = this.route.snapshot.params.caseId;
 
     this.hearingsColumns = [
