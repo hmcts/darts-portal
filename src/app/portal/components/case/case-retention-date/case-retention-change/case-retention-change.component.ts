@@ -1,4 +1,4 @@
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DatepickerComponent } from '@common/datepicker/datepicker.component';
@@ -7,7 +7,6 @@ import { ReportingRestrictionComponent } from '@common/reporting-restriction/rep
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { CaseRetentionPageState } from 'src/app/portal/models/case/case-retention-page-state.type';
 import { CaseService } from '@services/case/case.service';
-import { UserService } from '@services/user/user.service';
 import { DateTime, Duration } from 'luxon';
 
 @Component({
