@@ -95,6 +95,7 @@ describe('CaseComponent', () => {
       params: {
         caseId: 1,
       },
+      queryParams: { tab: 'Transcripts' },
     },
   };
 
