@@ -49,6 +49,7 @@ export class HearingResultsComponent implements OnInit {
     this.router.routeReuseStrategy.shouldReuseRoute = function () {
       return false;
     };
+    this.router.onSameUrlNavigation = 'reload';
     this.caseId = this.route.snapshot.params.caseId;
 
     this.hearingsColumns = [
