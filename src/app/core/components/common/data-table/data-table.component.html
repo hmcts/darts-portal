@@ -104,8 +104,8 @@
 } @else {
   @if (annotationHyperLinkMessage) {
     <p id="no-data-message" [attr.aria-label]="noDataMessage" class="govuk-body" tabindex="0">
-      {{ noDataMessage }} Annotations added to <a routerLink="." [queryParams]="{ tab: 'Hearings' }">hearings</a> will
-      be listed here.
+      {{ noDataMessage }} Annotations added to <a class="govuk-link" (click)="goTo('Hearings')">hearings</a> will be
+      listed here.
     </p>
   } @else {
     <p id="no-data-message" [attr.aria-label]="noDataMessage" class="govuk-body" tabindex="0">{{ noDataMessage }}</p>

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -9,8 +9,8 @@ import {
   Output,
   SimpleChanges,
   TemplateRef,
+  inject,
 } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { PaginationComponent } from '@components/common/pagination/pagination.component';
 import { CustomSort, DatatableColumn } from '@core-types/index';
 import { TableBodyTemplateDirective } from '@directives/table-body-template.directive';
@@ -20,12 +20,14 @@ import { DateTime } from 'luxon';
 @Component({
   selector: 'app-data-table',
   standalone: true,
-  imports: [CommonModule, PaginationComponent, RouterLink, TableRowTemplateDirective, TableBodyTemplateDirective],
+  imports: [CommonModule, PaginationComponent, TableRowTemplateDirective, TableBodyTemplateDirective],
   templateUrl: './data-table.component.html',
   styleUrls: ['./data-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataTableComponent<TRow> implements OnChanges {
+  location = inject(Location);
+
   @Input() rows: TRow[] = [];
   @Input() columns: DatatableColumn[] = [];
   @Input() caption = '';
@@ -201,6 +203,14 @@ export class DataTableComponent<TRow> implements OnChanges {
 
   private paginate(array: TRow[], pageSize: number, currentPage: number) {
     return array.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+  }
+
+  goTo(name: string) {
+    const currentPath = this.location.path();
+    const queryParams = 'tab=' + name;
+    const newPath = currentPath.split('?')[0] + '?' + queryParams;
+    this.location.go(newPath);
+    window.location.reload();
   }
 }
 

@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angular/core';
-import { ActivatedRoute, RouteReuseStrategy, RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
-import { DataTableComponent } from '@components/common/data-table/data-table.component';
 import { TabsComponent } from '@components/common/tabs/tabs.component';
 import { transcriptStatusClassMap } from '@constants/transcript-status-class-map';
 import { DatatableColumn } from '@core-types/index';
@@ -31,6 +31,7 @@ import { UserService } from '@services/user/user.service';
 })
 export class HearingResultsComponent implements OnInit {
   userService = inject(UserService);
+  // routeReuseStrategy = inject(RouteReuseStrategy);
   @Input() hearings: Hearing[] = [];
   @Input() transcripts: TranscriptsRow[] = [];
   @Input() annotations: Annotations[] = [];
@@ -42,13 +43,7 @@ export class HearingResultsComponent implements OnInit {
 
   transcriptStatusClassMap = transcriptStatusClassMap;
 
-  constructor(
-    private route: ActivatedRoute,
-    private routeReuseStrategy: RouteReuseStrategy
-  ) {
-    this.routeReuseStrategy.shouldReuseRoute = function () {
-      return false;
-    };
+  constructor(private route: ActivatedRoute) {
     this.caseId = this.route.snapshot.params.caseId;
 
     this.hearingsColumns = [

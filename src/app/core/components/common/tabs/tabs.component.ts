@@ -45,15 +45,7 @@ export class TabsComponent implements AfterContentInit {
 
   onTabClick(event: MouseEvent, tab: TabDirective) {
     event.preventDefault();
-    this.setQueryParamsWithoutRedirecting(tab.name);
     this.currentTab = tab.template;
     this.tabChange.emit();
-  }
-
-  private setQueryParamsWithoutRedirecting(name: string) {
-    const currentPath = this.location.path();
-    const queryParams = 'tab=' + name;
-    const newPath = currentPath.split('?')[0] + '?' + queryParams;
-    this.location.go(newPath);
   }
 }
