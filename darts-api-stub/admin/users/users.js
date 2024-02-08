@@ -43,13 +43,13 @@ router.post('/search', (req, res) => {
 });
 
 router.get('/:userid', (req, res) => {
-  //SEE 1253 FOR OBJECT
-  if (req.body.full_name === 'NO_RESULTS') {
-    res.send([]);
-    return;
+  const id = req.params.userid;
+  if (id) {
+    const user = USERS.find((user) => user.id.toString() === id);
+    res.send(user);
+  } else {
+    res.sendStatus(404);
   }
-
-  res.send(USERS);
 });
 
 module.exports = router;

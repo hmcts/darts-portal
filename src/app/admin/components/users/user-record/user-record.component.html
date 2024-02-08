@@ -1,1 +1,55 @@
-<p>user-record works!</p>
+@if (user$ | async; as user) {
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper">
+      <div class="govuk-grid-row">
+        <div class="user-record-tags govuk-grid-column-one-third">
+          <strong class="govuk-tag govuk-tag--green"> User record </strong>
+
+          @if (user.active) {
+            <strong class="govuk-tag"> Active user </strong>
+          } @else {
+            <strong class="govuk-tag govuk-tag--grey"> Inactive </strong>
+          }
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-xl">{{ user.fullName }}</h1>
+        </div>
+        <div class="govuk-grid-column-one-third">
+          <div class="button-container govuk-button-group">
+            <button type="submit" class="edit-button govuk-button govuk-button--secondary" data-module="govuk-button">
+              Edit user
+            </button>
+
+            @if (user.active) {
+              <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button">
+                Activate user
+              </button>
+            } @else {
+              <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button">
+                Deactivate user
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+      <div class="user-record-dates-container govuk-grid-row">
+        <div>
+          <h3 class="govuk-heading-s">Date created</h3>
+          <p class="govuk-body">{{ user.createdAt }}</p>
+        </div>
+        <div>
+          <h3 class="govuk-heading-s">Last updated</h3>
+          <p class="govuk-body">{{ user.lastModifiedAt }}</p>
+        </div>
+        <div>
+          <h3 class="govuk-heading-s">Last active</h3>
+          <p class="govuk-body">{{ user.lastLoginAt }}</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <pre>{{ user | json }}</pre>
+}

@@ -4,7 +4,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@services/*": ["src/app/core/services/*", "src/app/portal/services/*"],
+      "@services/*": ["src/app/core/services/*", "src/app/portal/services/*", "src/app/admin/services/*"],
       "@common/*": ["src/app/core/components/common/*"],
       "@components/*": ["src/app/core/components/*", "src/app/portal/components/*"],
       "@core-types/*": ["src/app/core/models/*"],
@@ -14,7 +14,7 @@
       "@interceptors/*": ["src/app/core/interceptors/*"],
       "@extensions/*": ["src/app/core/extensions/*"],
       "@directives/*": ["src/app/core/directives/*"],
-      "@constants/*": ["src/app/portal/constants/*"],
+      "@constants/*": ["src/app/portal/constants/*"]
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
@@ -33,12 +33,12 @@
     "useDefineForClassFields": false,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
-    "lib": ["ES2022", "dom"],
+    "lib": ["ES2022", "dom"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
-    "strictTemplates": true,
-  },
+    "strictTemplates": true
+  }
 }
