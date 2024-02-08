@@ -1,23 +1,21 @@
 const express = require('express');
-const { DateTime } = require('luxon');
 
 const router = express.Router();
 const { localArray } = require('../localArray');
 const { getLatestDatefromKey } = require('../utils/date');
-const dateFormat = 'yyyy-MM-dd';
-
-const retentionHistory = localArray('retentionHistory');
 
 const getLatestRetentionDate = (caseId) => {
+  const retentionHistory = localArray('retentionHistory');
   const rows = retentionHistory.value.filter((history) => history.case_id === parseInt(caseId));
   const latest = getLatestDatefromKey(rows, 'retention_last_changed_date');
-  return DateTime.fromFormat(latest.retention_date, dateFormat).startOf('day').toISO();
+  return latest?.retention_date;
 };
 
 const getLatestRetentionChange = (caseId) => {
+  const retentionHistory = localArray('retentionHistory');
   const rows = retentionHistory.value.filter((history) => history.case_id === parseInt(caseId));
   const latest = getLatestDatefromKey(rows, 'retention_last_changed_date');
-  return latest.retention_last_changed_date;
+  return latest?.retention_last_changed_date;
 };
 
 // CASES Mock objects
@@ -556,6 +554,8 @@ router.post('/search', (req, res) => {
 // Simple search
 router.get('/:caseId', (req, res) => {
   singleCase.case_id = req.params.caseId;
+  singleCase.retain_until_date_time = getLatestRetentionDate(singleCase.case_id);
+  singleCase.retention_date_time_applied = getLatestRetentionChange(singleCase.case_id);
 
   switch (req.params.caseId) {
     // this is returned by the API when a non-integer is passed as the case ID
@@ -598,6 +598,8 @@ router.get('/:caseId', (req, res) => {
 // transcripts stub data
 router.get('/:caseId/transcripts', (req, res) => {
   singleCase.case_id = req.params.caseId;
+  singleCase.retain_until_date_time = getLatestRetentionDate(singleCase.case_id);
+  singleCase.retention_date_time_applied = getLatestRetentionChange(singleCase.case_id);
 
   switch (req.params.caseId) {
     case '404':

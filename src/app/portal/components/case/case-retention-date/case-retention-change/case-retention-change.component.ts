@@ -27,8 +27,6 @@ import { DateTime, Duration } from 'luxon';
 export class CaseRetentionChangeComponent {
   @Input() caseId!: number;
   @Input() state!: CaseRetentionPageState;
-  @Input() currentRetentionDate!: string | null;
-  @Input() originalRetentionDate!: string | null;
 
   @Output() stateChange = new EventEmitter<CaseRetentionPageState>();
   @Output() retentionDateChange = new EventEmitter<Date>();
@@ -38,12 +36,10 @@ export class CaseRetentionChangeComponent {
   private datePageFormat = 'dd/MM/yyyy';
   private dateApiFormat = 'yyyy-MM-dd';
 
-  userService = inject(UserService);
   retainReasonFormControl = new FormControl('');
   retainOptionFormControl = new FormControl('');
   retainDateFormControl = new FormControl();
   datePatternValidator = Validators.pattern(/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/);
-  datePipe = inject(DatePipe);
   caseService = inject(CaseService);
 
   retentionCharacterLimit = 200;
@@ -113,7 +109,6 @@ export class CaseRetentionChangeComponent {
         });
       }
     }
-
     if (!this.errors.length) {
       // As long as there's no other errors, make the call
       this.caseService
@@ -173,11 +168,6 @@ export class CaseRetentionChangeComponent {
           },
         });
     }
-  }
-
-  dateFromString(value: string) {
-    // Convert UK format date string to Date object
-    return DateTime.fromFormat(value, this.datePageFormat, { setZone: true }).toJSDate();
   }
 
   onCancel(event: Event) {

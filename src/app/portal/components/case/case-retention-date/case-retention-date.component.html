@@ -87,8 +87,6 @@
       <app-case-retention-change
         [state]="state"
         [caseId]="caseId"
-        [currentRetentionDate]="vm.caseDetails.case_retain_until_date_time"
-        [originalRetentionDate]="getOriginalRetentionDateString(vm.retentionHistory)"
         (stateChange)="onStateChanged($event)"
         (retentionDateChange)="onRetentionDateChanged($event)"
         (retentionReasonChange)="onRetentionReasonChanged($event)"

@@ -262,7 +262,6 @@ describe('CaseRetentionDateComponent', () => {
         'Retain case until': mockCaseData.retainUntilDateTime?.toFormat('dd LLL yyyy'),
         'DARTS Retention policy applied': 'Manual',
       });
-      expect(caseDetails.case_retain_until_date_time).toEqual(mockCaseData.retainUntilDateTime?.toFormat('dd/LL/yyyy'));
       expect(caseDetails.case_id).toBe(1);
       expect(caseDetails.case_number).toBe('C20220620001');
       done();

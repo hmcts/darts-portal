@@ -39,7 +39,7 @@ const defaultRetentionHistory = [
   {
     case_id: 5,
     retention_last_changed_date: '2024-01-13T12:15:00Z',
-    retention_date: '2030-09-15',
+    retention_date: '2066-03-25',
     amended_by: 'Judge Samuel',
     retention_policy_applied: 'Manual',
     comments: 'Manual policy applied',
@@ -139,15 +139,14 @@ router.post('', (req, res) => {
           return;
         }
       }
+      retention.retention_date = retention.retention_date.toFormat(dateFormat);
       // If it's a validate only query, just stop right here and send it back
       if (req.query?.validate_only == 'true') {
-        retention.retention_date = retention.retention_date.toFormat(dateFormat);
         res.send(retention);
         return;
       }
       // Otherwise, add the rest
       // Set to ISO string
-      retention.retention_date = retention.retention_date.toISO({ setZone: true });
       retention.case_id = parseInt(req.body.case_id);
       retention.retention_last_changed_date = DateTime.now().toISO({ setZone: true });
       // Could work out which user made the request by token here?

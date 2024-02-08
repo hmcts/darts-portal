@@ -181,10 +181,14 @@ export class CaseService {
       reportingRestrictions: c.reporting_restrictions,
       prosecutors: c.prosecutors,
       retainUntil: c.retain_until,
-      retainUntilDateTime: c.retain_until_date_time ? DateTime.fromISO(c.retain_until_date_time) : undefined,
-      closedDateTime: c.case_closed_date_time ? DateTime.fromISO(c.case_closed_date_time) : undefined,
+      retainUntilDateTime: c.retain_until_date_time
+        ? DateTime.fromISO(c.retain_until_date_time, { setZone: true })
+        : undefined,
+      closedDateTime: c.case_closed_date_time
+        ? DateTime.fromISO(c.case_closed_date_time, { setZone: true })
+        : undefined,
       retentionDateTimeApplied: c.retention_date_time_applied
-        ? DateTime.fromISO(c.retention_date_time_applied)
+        ? DateTime.fromISO(c.retention_date_time_applied, { setZone: true })
         : undefined,
       retentionPolicyApplied: c.retention_policy_applied,
     };
