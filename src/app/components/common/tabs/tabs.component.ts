@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import {
   AfterContentInit,
   Component,
@@ -8,7 +8,9 @@ import {
   Output,
   QueryList,
   TemplateRef,
+  inject,
 } from '@angular/core';
+import { Router } from '@angular/router';
 import { TabDirective } from 'src/app/directives/tab.directive';
 
 @Component({
@@ -19,6 +21,9 @@ import { TabDirective } from 'src/app/directives/tab.directive';
   styleUrls: ['./tabs.component.scss'],
 })
 export class TabsComponent implements AfterContentInit {
+  router = inject(Router);
+  location = inject(Location);
+
   @ContentChildren(TabDirective) tabs!: QueryList<TabDirective>;
   currentTab!: TemplateRef<unknown>;
   @Output() tabChange = new EventEmitter();
@@ -40,7 +45,15 @@ export class TabsComponent implements AfterContentInit {
 
   onTabClick(event: MouseEvent, tab: TabDirective) {
     event.preventDefault();
+    this.setQueryParamsWithoutRedirecting(tab.name);
     this.currentTab = tab.template;
     this.tabChange.emit();
+  }
+
+  private setQueryParamsWithoutRedirecting(name: string) {
+    const currentPath = this.location.path();
+    const queryParams = 'tab=' + name;
+    const newPath = currentPath.split('?')[0] + '?' + queryParams;
+    this.location.go(newPath);
   }
 }
