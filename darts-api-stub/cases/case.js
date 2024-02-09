@@ -503,7 +503,7 @@ const multipleAnnotations = [
   ...annotation,
   {
     annotation_id: 2,
-    hearing_id: 2,
+    hearing_id: 3,
     hearing_date: '2023-12-15',
     annotation_ts: '2023-12-16T12:00:00.000Z',
     annotation_text: 'A summary note of this annotation...',
