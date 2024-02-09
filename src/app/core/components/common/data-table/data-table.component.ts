@@ -1,4 +1,4 @@
-import { CommonModule, Location } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -9,7 +9,6 @@ import {
   Output,
   SimpleChanges,
   TemplateRef,
-  inject,
 } from '@angular/core';
 import { PaginationComponent } from '@components/common/pagination/pagination.component';
 import { CustomSort, DatatableColumn } from '@core-types/index';
@@ -26,8 +25,6 @@ import { DateTime } from 'luxon';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataTableComponent<TRow> implements OnChanges {
-  location = inject(Location);
-
   @Input() rows: TRow[] = [];
   @Input() columns: DatatableColumn[] = [];
   @Input() caption = '';
