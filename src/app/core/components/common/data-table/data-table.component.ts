@@ -203,14 +203,6 @@ export class DataTableComponent<TRow> implements OnChanges {
   private paginate(array: TRow[], pageSize: number, currentPage: number) {
     return array.slice((currentPage - 1) * pageSize, currentPage * pageSize);
   }
-
-  goTo(name: string) {
-    const currentPath = this.location.path();
-    const queryParams = 'tab=' + name;
-    const newPath = currentPath.split('?')[0] + '?' + queryParams;
-    this.location.go(newPath);
-    window.location.reload();
-  }
 }
 
 export interface SortingInterface<Row> {
