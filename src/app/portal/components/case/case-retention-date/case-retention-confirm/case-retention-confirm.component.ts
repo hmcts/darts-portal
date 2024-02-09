@@ -1,7 +1,7 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { RouteReuseStrategy, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { DetailsTableComponent } from '@components/common/details-table/details-table.component';
 import { ReportingRestrictionComponent } from '@components/common/reporting-restriction/reporting-restriction.component';
 import { ValidationErrorSummaryComponent } from '@components/common/validation-error-summary/validation-error-summary.component';
@@ -34,9 +34,6 @@ export class CaseRententionConfirmComponent {
 
   @Output() stateChange = new EventEmitter<CaseRetentionPageState>();
 
-  private routeReuseStrategy = (inject(RouteReuseStrategy).shouldReuseRoute = function () {
-    return true;
-  });
   router = inject(Router);
   datePipe = inject(DatePipe);
   caseService = inject(CaseService);
