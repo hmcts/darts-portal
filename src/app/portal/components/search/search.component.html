@@ -142,7 +142,7 @@
                 inputId="date_to"
                 [control]="$any(form.controls.date_to)"
                 name="date_to"
-                label="Enter date from"
+                label="Enter date to"
                 hint="Use dd/mm/yyyy format."
                 [errors]="isControlInvalid('date_to') ? getFieldErrorMessages('date_to') : null"
                 (dateChange)="setInputValue($event, 'date_to')"
