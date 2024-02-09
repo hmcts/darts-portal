@@ -1,4 +1,4 @@
-import { CommonModule, Location } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import {
   AfterContentInit,
   Component,
@@ -8,9 +8,7 @@ import {
   Output,
   QueryList,
   TemplateRef,
-  inject,
 } from '@angular/core';
-import { Router } from '@angular/router';
 import { TabDirective } from '@directives/tab.directive';
 
 @Component({
@@ -21,9 +19,6 @@ import { TabDirective } from '@directives/tab.directive';
   styleUrls: ['./tabs.component.scss'],
 })
 export class TabsComponent implements AfterContentInit {
-  router = inject(Router);
-  location = inject(Location);
-
   @ContentChildren(TabDirective) tabs!: QueryList<TabDirective>;
   currentTab!: TemplateRef<unknown>;
   @Output() tabChange = new EventEmitter();
