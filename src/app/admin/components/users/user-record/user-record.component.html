@@ -34,22 +34,39 @@
           </div>
         </div>
       </div>
-      <div class="user-record-dates-container govuk-grid-row">
+      <div class="user-record-dates-container">
         <div>
           <h3 class="govuk-heading-s">Date created</h3>
-          <p class="govuk-body">{{ user.createdAt }}</p>
+          <p class="govuk-body">{{ user.createdAt | luxonDate: 'EEE d MMM yyyy' }}</p>
         </div>
         <div>
           <h3 class="govuk-heading-s">Last updated</h3>
-          <p class="govuk-body">{{ user.lastModifiedAt }}</p>
+          <p class="govuk-body">{{ user.lastModifiedAt | luxonDate: 'EEE d MMM yyyy' }}</p>
         </div>
         <div>
           <h3 class="govuk-heading-s">Last active</h3>
-          <p class="govuk-body">{{ user.lastLoginAt }}</p>
+          @if (user.lastLoginAt) {
+            <p class="govuk-body">{{ user.lastLoginAt | luxonDate: 'EEE d MMM yyyy' }}</p>
+          }
         </div>
       </div>
+
+      <app-tabs>
+        <div *tab="'Details'">
+          <app-details-table
+            title="Details"
+            [details]="{ 'Full Name': user.fullName, Email: user.emailAddress, Description: user.description }"
+          ></app-details-table>
+        </div>
+
+        <div *tab="'Groups'"></div>
+
+        <div *tab="'Transcript Requests'; count: 21"></div>
+
+        <div *tab="'Audio Files'"></div>
+      </app-tabs>
     </main>
   </div>
-
-  <pre>{{ user | json }}</pre>
+} @else {
+  <app-not-found></app-not-found>
 }

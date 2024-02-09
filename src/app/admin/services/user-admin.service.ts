@@ -35,7 +35,7 @@ export class UserAdminService {
     }));
   }
 
-  private mapUser(user: UserData): User {
+  mapUser(user: UserData): User {
     return {
       id: user.id,
       lastLoginAt: DateTime.fromISO(user.last_login_at),

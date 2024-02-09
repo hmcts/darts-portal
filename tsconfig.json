@@ -9,6 +9,7 @@
       "@components/*": ["src/app/core/components/*", "src/app/portal/components/*"],
       "@core-types/*": ["src/app/core/models/*"],
       "@portal-types/*": ["src/app/portal/models/*"],
+      "@admin-types/*": ["src/app/admin/models/*"],
       "@validators/*": ["src/app/core/validators/*"],
       "@pipes/*": ["src/app/core/pipes/*"],
       "@interceptors/*": ["src/app/core/interceptors/*"],
