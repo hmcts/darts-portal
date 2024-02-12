@@ -31,7 +31,6 @@ import { UserService } from '@services/user/user.service';
 })
 export class HearingResultsComponent {
   userService = inject(UserService);
-  // routeReuseStrategy = inject(RouteReuseStrategy);
   @Input() hearings: Hearing[] = [];
   @Input() transcripts: TranscriptsRow[] = [];
   @Input() annotations: Annotations[] = [];
