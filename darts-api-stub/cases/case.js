@@ -1,6 +1,22 @@
 const express = require('express');
 
 const router = express.Router();
+const { localArray } = require('../localArray');
+const { getLatestDatefromKey } = require('../utils/date');
+
+const getLatestRetentionDate = (caseId) => {
+  const retentionHistory = localArray('retentionHistory');
+  const rows = retentionHistory.value.filter((history) => history.case_id === parseInt(caseId));
+  const latest = getLatestDatefromKey(rows, 'retention_last_changed_date');
+  return latest?.retention_date;
+};
+
+const getLatestRetentionChange = (caseId) => {
+  const retentionHistory = localArray('retentionHistory');
+  const rows = retentionHistory.value.filter((history) => history.case_id === parseInt(caseId));
+  const latest = getLatestDatefromKey(rows, 'retention_last_changed_date');
+  return latest?.retention_last_changed_date;
+};
 
 // CASES Mock objects
 const singleCase = {
@@ -11,9 +27,9 @@ const singleCase = {
   judges: ['Judge Judy'],
   prosecutors: ['Polly Prosecutor'],
   defenders: ['Derek Defender'],
-  retain_until_date_time: '2030-09-15T11:23:24.858Z',
+  retain_until_date_time: getLatestRetentionDate(1),
   case_closed_date_time: '2023-08-15T14:57:24.858Z',
-  retention_date_time_applied: '2023-12-12T11:02:24.858Z',
+  retention_date_time_applied: getLatestRetentionChange(1),
   retention_policy_applied: 'Manual',
   reporting_restrictions: [
     {
@@ -538,6 +554,8 @@ router.post('/search', (req, res) => {
 // Simple search
 router.get('/:caseId', (req, res) => {
   singleCase.case_id = req.params.caseId;
+  singleCase.retain_until_date_time = getLatestRetentionDate(singleCase.case_id);
+  singleCase.retention_date_time_applied = getLatestRetentionChange(singleCase.case_id);
 
   switch (req.params.caseId) {
     // this is returned by the API when a non-integer is passed as the case ID
@@ -580,6 +598,8 @@ router.get('/:caseId', (req, res) => {
 // transcripts stub data
 router.get('/:caseId/transcripts', (req, res) => {
   singleCase.case_id = req.params.caseId;
+  singleCase.retain_until_date_time = getLatestRetentionDate(singleCase.case_id);
+  singleCase.retention_date_time_applied = getLatestRetentionChange(singleCase.case_id);
 
   switch (req.params.caseId) {
     case '404':

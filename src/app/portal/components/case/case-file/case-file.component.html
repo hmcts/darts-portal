@@ -15,7 +15,7 @@
   <h3 class="govuk-heading-s">Retained until</h3>
   <p class="govuk-body">
     @if (caseFile.retainUntilDateTime) {
-      {{ caseFile.retainUntilDateTime | luxonDate: 'd MMM y' }}
+      {{ caseFile.retainUntilDateTime | dateTime: 'd MMM y' }}
     } @else {
       No date applied
     }
