@@ -22,7 +22,7 @@
               Edit user
             </button>
 
-            @if (user.active) {
+            @if (!user.active) {
               <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button">
                 Activate user
               </button>
@@ -35,15 +35,15 @@
         </div>
       </div>
       <div class="user-record-dates-container">
-        <div>
+        <div id="date-created-container">
           <h3 class="govuk-heading-s">Date created</h3>
           <p class="govuk-body">{{ user.createdAt | luxonDate: 'EEE d MMM yyyy' }}</p>
         </div>
-        <div>
+        <div id="last-updated-container">
           <h3 class="govuk-heading-s">Last updated</h3>
           <p class="govuk-body">{{ user.lastModifiedAt | luxonDate: 'EEE d MMM yyyy' }}</p>
         </div>
-        <div>
+        <div id="last-active-container">
           <h3 class="govuk-heading-s">Last active</h3>
           @if (user.lastLoginAt) {
             <p class="govuk-body">{{ user.lastLoginAt | luxonDate: 'EEE d MMM yyyy' }}</p>
