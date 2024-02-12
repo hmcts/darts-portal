@@ -1,5 +1,6 @@
 export * from './case/case-retention-change.interface';
 export * from './case/case-retention-history.interface';
+export * from './case/case-retention-history.type';
 export * from './case/case-retention-page-state.type';
 export * from './case/case.interface';
 export * from './case/case.type';

@@ -14,7 +14,7 @@ import {
   Case,
   CaseData,
   CaseRetentionChange,
-  CaseRetentionHistory,
+  CaseRetentionHistoryData,
   Hearing,
   HearingData,
   SearchFormValues,
@@ -83,7 +83,7 @@ describe('CaseService', () => {
     transcript_count: 300,
   };
 
-  const mockHistory: CaseRetentionHistory = {
+  const mockHistory: CaseRetentionHistoryData = {
     retention_last_changed_date: '2023-10-11T00:18:00Z',
     retention_date: '2030-09-15',
     amended_by: 'Judge Phil',
@@ -341,7 +341,7 @@ describe('CaseService', () => {
 
   it('#getCaseRetentionHistory', () => {
     const mockCaseId = 123;
-    const mock: CaseRetentionHistory[] = [mockHistory];
+    const mock: CaseRetentionHistoryData[] = [mockHistory];
 
     service.getCaseRetentionHistory(mockCaseId).subscribe((history) => {
       expect(history).toBeDefined();

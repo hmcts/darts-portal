@@ -185,7 +185,7 @@ describe('Request Transcript', () => {
 
     // Confirm we are in the right place
     cy.contains('Events, audio and specific times requests').should('not.visible');
-    cy.get('#authorisation').check();
+    cy.get('#authorisation').check({ force: true });
 
     // Submit the form
     cy.get('.govuk-button').contains('Submit request').click();
@@ -212,7 +212,7 @@ describe('Request Transcript', () => {
 
       // Confirm we are in the right place
       cy.contains('Events, audio and specific times requests').should('not.visible');
-      cy.get('#authorisation').check();
+      cy.get('#authorisation').check({ force: true });
 
       // Submit the form
       cy.get('.govuk-button').contains('Submit request').click();
@@ -248,7 +248,7 @@ describe('Request Transcript', () => {
       cy.get('.govuk-button').contains('Continue').click();
 
       // Submit the form
-      cy.get('#authorisation').check();
+      cy.get('#authorisation').check({ force: true });
       cy.get('.govuk-button').contains('Submit request').click();
 
       cy.get('.govuk-heading-l').should('contain', 'This transcript already exists');
@@ -269,7 +269,7 @@ describe('Request Transcript', () => {
       cy.get('.govuk-button').contains('Continue').click();
 
       // Submit the form
-      cy.get('#authorisation').check();
+      cy.get('#authorisation').check({ force: true });
       cy.get('.govuk-button').contains('Submit request').click();
 
       cy.get('.govuk-heading-l').should('contain', 'This transcript already exists');
@@ -292,7 +292,7 @@ describe('Request Transcript', () => {
       cy.get('.govuk-button').contains('Continue').click();
 
       // Submit the form
-      cy.get('#authorisation').check();
+      cy.get('#authorisation').check({ force: true });
       cy.get('.govuk-button').contains('Submit request').click();
 
       cy.get('.govuk-heading-l').should('contain', 'This transcript already exists');

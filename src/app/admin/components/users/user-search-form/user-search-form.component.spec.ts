@@ -39,8 +39,8 @@ describe('UserSearchFormComponent', () => {
     component.clearSearch();
 
     expect(component.form.value).toEqual({
-      fullName: null,
-      email: null,
+      fullName: '',
+      email: '',
       userStatus: 'active',
     });
     expect(component.clear.emit).toHaveBeenCalled();
