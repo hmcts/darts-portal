@@ -3,6 +3,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { AnnotationsData, Case, Hearing, TranscriptData } from '@portal-types/index';
+import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
 import { Observable, of } from 'rxjs';
 import { CaseService } from 'src/app/portal/services/case/case.service';
@@ -11,6 +12,7 @@ import { CaseComponent } from './case.component';
 describe('CaseComponent', () => {
   let component: CaseComponent;
   let fixture: ComponentFixture<CaseComponent>;
+  let fakeUserService: Partial<UserService>;
 
   const mockCaseFile: Observable<Case> = of({
     id: 1,
@@ -100,11 +102,20 @@ describe('CaseComponent', () => {
   };
 
   beforeEach(() => {
+    fakeUserService = {
+      isTranscriber: jest.fn(() => false),
+      isJudge: jest.fn(() => true),
+      isApprover: jest.fn(() => false),
+      isRequester: jest.fn(() => false),
+      isAdmin: jest.fn(() => true),
+    };
+
     TestBed.configureTestingModule({
       imports: [CaseComponent, HttpClientTestingModule],
       providers: [
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
         { provide: CaseService, useValue: caseServiceMock },
+        { provide: UserService, useValue: fakeUserService },
         { provide: DatePipe },
       ],
     });
@@ -133,5 +144,9 @@ describe('CaseComponent', () => {
 
   it('hearings$ should be set', () => {
     expect(component.hearings$).toEqual(mockSingleCaseTwoHearings);
+  });
+
+  it('annotations$ should be set if user is an admin or judge', () => {
+    expect(component.annotations$).toEqual(mockAnnotation);
   });
 });
