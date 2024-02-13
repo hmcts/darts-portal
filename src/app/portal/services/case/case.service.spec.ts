@@ -96,6 +96,32 @@ describe('CaseService', () => {
     },
   ];
 
+  const multipleMockAnnotationsDocuments: AnnotationsData[] = [
+    {
+      annotation_id: 1,
+      hearing_id: 2,
+      hearing_date: '2023-12-14',
+      annotation_ts: '2023-12-15T12:00:00.000Z',
+      annotation_text: 'A summary notes of this annotation...',
+      annotation_documents: [
+        {
+          annotation_document_id: 1,
+          file_name: 'Annotation.doc',
+          file_type: 'DOC',
+          uploaded_by: 'Mr User McUserFace',
+          uploaded_ts: '2023-12-15T12:00:00.000Z',
+        },
+        {
+          annotation_document_id: 2,
+          file_name: 'AnnotationBeta.doc',
+          file_type: 'DOC',
+          uploaded_by: 'Mr Bob Sponge',
+          uploaded_ts: '2023-12-15T14:00:00.000Z',
+        },
+      ],
+    },
+  ];
+
   const mockHearing: HearingData = {
     id: 2,
     date: '2024-09-01',
@@ -259,39 +285,80 @@ describe('CaseService', () => {
     ]);
   });
 
-  it('#getCaseAnnotations', () => {
-    const mockCaseId = 123;
-    const mockAnnotations: AnnotationsData[] = multipleMockAnnotations;
+  describe('#getCaseAnnotations', () => {
+    it('should map an annotation for a single annotation document', () => {
+      const mockCaseId = 123;
+      const mockAnnotations: AnnotationsData[] = multipleMockAnnotations;
 
-    let annotationsResponse!: Annotations[];
+      let annotationsResponse!: Annotations[];
 
-    service.getCaseAnnotations(mockCaseId).subscribe((annotations) => {
-      annotationsResponse = annotations;
+      service.getCaseAnnotations(mockCaseId).subscribe((annotations) => {
+        annotationsResponse = annotations;
+      });
+
+      const req = httpMock.expectOne(`${GET_CASE_PATH}/${mockCaseId}/annotations`);
+      expect(req.request.method).toBe('GET');
+
+      req.flush(mockAnnotations);
+
+      expect(annotationsResponse).toEqual([
+        {
+          annotationId: 1,
+          hearingId: 2,
+          hearingDate: DateTime.fromISO('2023-12-14'),
+          annotationTs: DateTime.fromISO('2023-12-15T12:00:00.000Z'),
+          annotationText: 'A summary notes of this annotation...',
+          annotationDocumentId: 1,
+          fileName: 'Annotation.doc',
+          fileType: 'DOC',
+          uploadedBy: 'Mr User McUserFace',
+          uploadedTs: DateTime.fromISO('2023-12-15T12:00:00.000Z'),
+        },
+      ]);
     });
 
-    const req = httpMock.expectOne(`${GET_CASE_PATH}/${mockCaseId}/annotations`);
-    expect(req.request.method).toBe('GET');
+    it('should map an annotation for multiple annotation documents', () => {
+      const mockCaseId = 123;
+      const mockAnnotations: AnnotationsData[] = multipleMockAnnotationsDocuments;
 
-    req.flush(mockAnnotations);
+      let annotationsResponse!: Annotations[];
 
-    expect(annotationsResponse).toEqual([
-      {
-        annotationId: 1,
-        hearingId: 2,
-        hearingDate: DateTime.fromISO('2023-12-14'),
-        annotationTs: DateTime.fromISO('2023-12-15T12:00:00.000Z'),
-        annotationText: 'A summary notes of this annotation...',
-        annotationDocuments: [
-          {
-            annotationDocumentId: 1,
-            fileName: 'Annotation.doc',
-            fileType: 'DOC',
-            uploadedBy: 'Mr User McUserFace',
-            uploadedTs: DateTime.fromISO('2023-12-15T12:00:00.000Z'),
-          },
-        ],
-      },
-    ]);
+      service.getCaseAnnotations(mockCaseId).subscribe((annotations) => {
+        annotationsResponse = annotations;
+      });
+
+      const req = httpMock.expectOne(`${GET_CASE_PATH}/${mockCaseId}/annotations`);
+      expect(req.request.method).toBe('GET');
+
+      req.flush(mockAnnotations);
+
+      expect(annotationsResponse).toEqual([
+        {
+          annotationId: 1,
+          hearingId: 2,
+          hearingDate: DateTime.fromISO('2023-12-14'),
+          annotationTs: DateTime.fromISO('2023-12-15T12:00:00.000Z'),
+          annotationText: 'A summary notes of this annotation...',
+          annotationDocumentId: 1,
+          fileName: 'Annotation.doc',
+          fileType: 'DOC',
+          uploadedBy: 'Mr User McUserFace',
+          uploadedTs: DateTime.fromISO('2023-12-15T12:00:00.000Z'),
+        },
+        {
+          annotationId: 1,
+          hearingId: 2,
+          hearingDate: DateTime.fromISO('2023-12-14'),
+          annotationTs: DateTime.fromISO('2023-12-15T12:00:00.000Z'),
+          annotationText: 'A summary notes of this annotation...',
+          annotationDocumentId: 2,
+          fileName: 'AnnotationBeta.doc',
+          fileType: 'DOC',
+          uploadedBy: 'Mr Bob Sponge',
+          uploadedTs: DateTime.fromISO('2023-12-15T14:00:00.000Z'),
+        },
+      ]);
+    });
   });
 
   describe('#searchCases', () => {

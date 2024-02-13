@@ -2,7 +2,6 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Courthouse } from '@core-types/index';
 import {
-  AnnotationDocumentData,
   Annotations,
   AnnotationsData,
   Case,
@@ -194,19 +193,19 @@ export class CaseService {
   }
 
   private mapAnnotationsDataToAnnotations(annotationsData: AnnotationsData[]): Annotations[] {
-    return annotationsData.map((a) => ({
-      annotationId: a.annotation_id,
-      hearingId: a.hearing_id,
-      hearingDate: DateTime.fromISO(a.hearing_date),
-      annotationTs: DateTime.fromISO(a.annotation_ts),
-      annotationText: a.annotation_text,
-      annotationDocuments: a.annotation_documents.map((ad: AnnotationDocumentData) => ({
-        annotationDocumentId: ad.annotation_document_id,
-        fileName: ad.file_name,
-        fileType: ad.file_type,
-        uploadedBy: ad.uploaded_by,
-        uploadedTs: DateTime.fromISO(ad.uploaded_ts),
-      })),
-    }));
+    return annotationsData.flatMap((x) =>
+      x.annotation_documents.map((a) => ({
+        annotationId: x.annotation_id,
+        hearingId: x.hearing_id,
+        hearingDate: DateTime.fromISO(x.hearing_date),
+        annotationTs: DateTime.fromISO(x.annotation_ts),
+        annotationText: x.annotation_text,
+        annotationDocumentId: a.annotation_document_id,
+        fileName: a.file_name,
+        fileType: a.file_type,
+        uploadedBy: a.uploaded_by,
+        uploadedTs: DateTime.fromISO(a.uploaded_ts),
+      }))
+    );
   }
 }
