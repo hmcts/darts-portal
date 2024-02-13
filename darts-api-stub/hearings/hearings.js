@@ -1,6 +1,13 @@
 const express = require('express');
+const { localArray } = require('../localArray');
 
 const router = express.Router();
+
+const resBody104 = {
+  type: 'CASE_104',
+  title: 'The requested case cannot be found',
+  status: 404,
+};
 
 const transcriptOne = [
   {
@@ -70,6 +77,30 @@ const transcriptTwo = [
     status: 'Complete',
   },
 ];
+
+const defaultAnnotations = [
+  {
+    annotation_id: 1,
+    hearing_id: 2,
+    hearing_date: '2023-12-14',
+    annotation_ts: '2023-12-15T12:00:00.000Z',
+    annotation_text: 'A summary notes of this annotation...',
+    annotation_documents: [
+      {
+        annotation_document_id: 1,
+        file_name: 'Annotation.docx',
+        file_type: 'DOCX',
+        uploaded_by: 'Mr User McUserFace',
+        uploaded_ts: '2023-12-15T12:00:00.000Z',
+      },
+    ],
+  },
+];
+
+const annotations = localArray('annotations');
+// Clear out old values on restart
+annotations.value = defaultAnnotations;
+
 const events = [
   {
     id: -1,
@@ -114,6 +145,10 @@ const events = [
     text: 'Record: New Case',
   },
 ];
+
+const getAnnotationsByHearingId = (hearingId) => {
+  return annotations.value.filter((annotation) => annotation.hearing_id === parseInt(hearingId));
+};
 
 router.get('/:hearingId/events', (req, res) => {
   switch (req.params.hearingId) {
@@ -162,13 +197,8 @@ router.get('/:hearingId/events', (req, res) => {
 
 // transcripts stub data
 router.get('/:hearingId/transcripts', (req, res) => {
-  switch (req.params.hearingId) {
+  switch (req.params?.hearingId) {
     case '404':
-      const resBody104 = {
-        type: 'CASE_104',
-        title: 'The requested case cannot be found',
-        status: 404,
-      };
       res.status(404).send(resBody104);
       break;
     case '1':
@@ -179,6 +209,21 @@ router.get('/:hearingId/transcripts', (req, res) => {
       break;
     default:
       res.send([]);
+      break;
+  }
+});
+
+// annotations stub data
+router.get('/:hearingId/annotations', (req, res) => {
+  const hearingId = req.params?.hearingId;
+  switch (hearingId) {
+    case undefined:
+    case '404':
+      res.status(404).send(resBody104);
+      break;
+    default:
+      const annotations = getAnnotationsByHearingId(hearingId);
+      res.send(annotations);
       break;
   }
 });

@@ -82,4 +82,11 @@ const userIdhasAnyRoles = (roles, userId) => {
   return user.userState.roles.some((role) => roles.includes(role));
 };
 
-module.exports = { stubUsers, userIdhasAnyRoles };
+const getUserNamebyUserId = (userId) => {
+  // If user id has any of these roles
+  const user = stubUsers.find((user) => user.userState.userId == userId);
+  if (!user) return false;
+  return user.name;
+};
+
+module.exports = { stubUsers, userIdhasAnyRoles, getUserNamebyUserId };
