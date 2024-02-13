@@ -1,10 +1,10 @@
+import { User } from '@admin-types/index';
 import { NgClass } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DatatableColumn } from '@core-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
-import { User } from 'src/app/admin/models/users/user.type'; //TO DO create admin-type alias
 
 @Component({
   selector: 'app-user-search-results',
