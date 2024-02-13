@@ -2,6 +2,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Courthouse } from '@core-types/index';
 import {
+  Annotations,
+  AnnotationsData,
   Case,
   CaseData,
   CaseRetentionChange,
@@ -63,6 +65,12 @@ export class CaseService {
 
   getCaseHearings(caseId: number): Observable<Hearing[]> {
     return this.http.get<HearingData[]>(`${GET_CASE_PATH}/${caseId}/hearings`).pipe(map(this.mapHearingDataToHearing));
+  }
+
+  getCaseAnnotations(caseId: number): Observable<Annotations[]> {
+    return this.http
+      .get<AnnotationsData[]>(`${GET_CASE_PATH}/${caseId}/annotations`)
+      .pipe(map(this.mapAnnotationsDataToAnnotations));
   }
 
   searchCases(searchForm: SearchFormValues): Observable<CaseSearchResult[] | null> {
@@ -192,5 +200,22 @@ export class CaseService {
         : undefined,
       retentionPolicyApplied: c.retention_policy_applied,
     };
+  }
+
+  private mapAnnotationsDataToAnnotations(annotationsData: AnnotationsData[]): Annotations[] {
+    return annotationsData.flatMap((x) =>
+      x.annotation_documents.map((a) => ({
+        annotationId: x.annotation_id,
+        hearingId: x.hearing_id,
+        hearingDate: DateTime.fromISO(x.hearing_date),
+        annotationTs: DateTime.fromISO(x.annotation_ts),
+        annotationText: x.annotation_text,
+        annotationDocumentId: a.annotation_document_id,
+        fileName: a.file_name,
+        fileType: a.file_type,
+        uploadedBy: a.uploaded_by,
+        uploadedTs: DateTime.fromISO(a.uploaded_ts),
+      }))
+    );
   }
 }

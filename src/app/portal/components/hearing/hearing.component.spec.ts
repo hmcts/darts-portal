@@ -474,5 +474,10 @@ describe('HearingComponent', () => {
       component.ngOnInit();
       expect(component.defaultTab).toEqual('Transcripts');
     });
+    it('should set the tab to annotations if the url contains ?tab=Annotations', () => {
+      mockActivatedRoute.snapshot.queryParams = { tab: 'Annotations' };
+      component.ngOnInit();
+      expect(component.defaultTab).toEqual('Annotations');
+    });
   });
 });

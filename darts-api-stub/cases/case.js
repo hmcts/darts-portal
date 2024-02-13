@@ -496,6 +496,45 @@ const transcriptTwo = [
   },
 ];
 
+const annotation = [
+  {
+    annotation_id: 1,
+    hearing_id: 2,
+    hearing_date: '2023-12-14',
+    annotation_ts: '2023-12-15T12:00:00.000Z',
+    annotation_text: 'A summary notes of this annotation...',
+    annotation_documents: [
+      {
+        annotation_document_id: 1,
+        file_name: 'Annotation.doc',
+        file_type: 'DOC',
+        uploaded_by: 'Mr User McUserFace',
+        uploaded_ts: '2023-12-15T12:00:00.000Z',
+      },
+    ],
+  },
+];
+
+const multipleAnnotations = [
+  ...annotation,
+  {
+    annotation_id: 2,
+    hearing_id: 3,
+    hearing_date: '2023-12-15',
+    annotation_ts: '2023-12-16T12:00:00.000Z',
+    annotation_text: 'A summary note of this annotation...',
+    annotation_documents: [
+      {
+        annotation_document_id: 4,
+        file_name: 'AnnotationAlpha.doc',
+        file_type: 'DOCX',
+        uploaded_by: 'Mrs Jane Ince',
+        uploaded_ts: '2024-01-16T12:00:00.000Z',
+      },
+    ],
+  },
+];
+
 // Advanced search stub API
 router.post('/search', (req, res) => {
   const searchTerms = req.body;
@@ -636,6 +675,31 @@ router.get('/:caseId/hearings', (req, res) => {
       break;
     default:
       res.send(singleCaseMultiHearings);
+      break;
+  }
+});
+
+// CASES STUB APIs
+// annotations stub
+router.get('/:caseId/annotations', (req, res) => {
+  switch (req.params.caseId) {
+    case '404':
+      const resBody104 = {
+        type: 'CASE_104',
+        title: 'The requested case cannot be found',
+        status: 404,
+      };
+      res.status(404).send(resBody104);
+      break;
+    case '2':
+      res.send(annotation);
+      break;
+    // empty response
+    case '3':
+      res.send([]);
+      break;
+    default:
+      res.send(multipleAnnotations);
       break;
   }
 });

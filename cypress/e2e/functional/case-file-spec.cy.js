@@ -69,7 +69,7 @@ describe('Case file screen', () => {
 
     describe('Transcripts Tab', () => {
       it('Tab exists', () => {
-        cy.get('a.moj-sub-navigation__link').last().should('contain', 'All Transcripts');
+        cy.get('a.moj-sub-navigation__link').should('contain', 'All Transcripts');
       });
 
       it('Transcript count', () => {
@@ -83,6 +83,28 @@ describe('Case file screen', () => {
           .find('tr')
           .then((rows) => {
             expect(rows.length).equal(8); // 8 including header row
+          });
+
+        cy.a11y();
+      });
+    });
+
+    describe('Annotations Tab', () => {
+      it('Tab exists', () => {
+        cy.get('a.moj-sub-navigation__link').last().should('contain', 'All annotations');
+      });
+
+      it('Annotations count', () => {
+        cy.get('#annotation-count').should('contain', '2');
+      });
+
+      it('Displays table of annotations', () => {
+        cy.injectAxe();
+        cy.contains('All annotations').click();
+        cy.get('#annotationsTable')
+          .find('tr')
+          .then((rows) => {
+            expect(rows.length).equal(3); // 3 including header row
           });
 
         cy.a11y();

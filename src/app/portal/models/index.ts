@@ -1,3 +1,7 @@
+export * from './annotations/annotations-data.interface';
+export * from './annotations/annotations-document-data.interface';
+export * from './annotations/annotations-document.type';
+export * from './annotations/annotations.type';
 export * from './case/case-retention-change.interface';
 export * from './case/case-retention-history.interface';
 export * from './case/case-retention-history.type';

@@ -7,5 +7,4 @@ export type Annotations = {
   hearingDate: DateTime;
   annotationTs: DateTime;
   annotationText: string;
-  annotationDocuments: AnnotationDocument[];
-};
+} & AnnotationDocument;
