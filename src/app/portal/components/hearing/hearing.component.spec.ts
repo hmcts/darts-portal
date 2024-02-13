@@ -154,7 +154,7 @@ describe('HearingComponent', () => {
     jest.spyOn(hearingService, 'getAudio').mockReturnValue(ad);
     jest.spyOn(hearingService, 'getEvents').mockReturnValue(ed);
 
-    fakeUserService = { userProfile$: mockUser, isTranscriber: () => true };
+    fakeUserService = { userProfile$: mockUser, isTranscriber: () => true, isJudge: () => true, isAdmin: () => true };
 
     TestBed.configureTestingModule({
       imports: [HearingComponent, HearingFileComponent, RouterTestingModule],
@@ -404,6 +404,11 @@ describe('HearingComponent', () => {
     it('should set the tab to transcripts if the url contains ?tab=Transcripts', () => {
       component.ngOnInit();
       expect(component.defaultTab).toEqual('Transcripts');
+    });
+    it('should set the tab to annotations if the url contains ?tab=Annotations', () => {
+      mockActivatedRoute.snapshot.queryParams = { tab: 'Annotations' };
+      component.ngOnInit();
+      expect(component.defaultTab).toEqual('Annotations');
     });
   });
 });
