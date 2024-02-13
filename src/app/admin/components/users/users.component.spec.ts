@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { UserAdminService } from '@services/user-admin.service';
 import { of } from 'rxjs';
-import { UserAdminService } from '../../services/user-admin.service';
 import { UsersComponent } from './users.component';
 
 describe('UsersComponent', () => {
@@ -38,20 +38,21 @@ describe('UsersComponent', () => {
     expect(component.stopLoading).toHaveBeenCalled();
   });
 
-  // Commented out due to Deans PR in prog
-  // it('should call searchUsers when search is triggered', () => {
-  //   jest.spyOn(userAdminService, 'searchUsers').mockReturnValue(of([]));
-  //   component.search$.next({}); // Trigger search
-  //   expect(userAdminService.searchUsers).toHaveBeenCalled();
-  // });
+  it('should call searchUsers when search is triggered', () => {
+    jest.spyOn(userAdminService, 'searchUsers').mockReturnValue(of([]));
+    component.search$.next({}); // Trigger search
+    component.isSubmitted$.next(true);
+    expect(userAdminService.searchUsers).toHaveBeenCalled();
+  });
 
-  // it('should call searchUsers with correct values', () => {
-  //   const searchValues = { fullName: 'test', email: 'admin', active: true };
-  //   jest.spyOn(userAdminService, 'searchUsers').mockReturnValue(of([]));
-  //   component.search$.next(searchValues); // Trigger search
-  //   fixture.detectChanges();
-  //   expect(userAdminService.searchUsers).toHaveBeenCalledWith(searchValues);
-  // });
+  it('should call searchUsers with correct values', () => {
+    const searchValues = { fullName: 'test', email: 'admin', active: true };
+    jest.spyOn(userAdminService, 'searchUsers').mockReturnValue(of([]));
+    component.search$.next(searchValues); // Trigger search
+    component.isSubmitted$.next(true);
+    fixture.detectChanges();
+    expect(userAdminService.searchUsers).toHaveBeenCalledWith(searchValues);
+  });
 
   it('should clear the search when onClear is called', () => {
     jest.spyOn(component.search$, 'next');
