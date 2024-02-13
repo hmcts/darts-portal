@@ -4,16 +4,17 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@services/*": ["src/app/services/*"],
-      "@common/*": ["src/app/components/common/*"],
-      "@components/*": ["src/app/components/*"],
-      "@darts-types/*": ["src/app/types/*"],
-      "@validators/*": ["src/app/validators/*"],
-      "@pipes/*": ["src/app/pipes/*"],
-      "@interceptors/*": ["src/app/interceptors/*"],
-      "@extensions/*": ["src/app/extensions/*"],
-      "@directives/*": ["src/app/directives/*"],
-      "@constants/*": ["src/app/constants/*"]
+      "@services/*": ["src/app/core/services/*", "src/app/portal/services/*"],
+      "@common/*": ["src/app/core/components/common/*"],
+      "@components/*": ["src/app/core/components/*", "src/app/portal/components/*"],
+      "@core-types/*": ["src/app/core/models/*"],
+      "@portal-types/*": ["src/app/portal/models/*"],
+      "@validators/*": ["src/app/core/validators/*"],
+      "@pipes/*": ["src/app/core/pipes/*"],
+      "@interceptors/*": ["src/app/core/interceptors/*"],
+      "@extensions/*": ["src/app/core/extensions/*"],
+      "@directives/*": ["src/app/core/directives/*"],
+      "@constants/*": ["src/app/portal/constants/*"],
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
@@ -32,12 +33,12 @@
     "useDefineForClassFields": false,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
-    "lib": ["ES2022", "dom"]
+    "lib": ["ES2022", "dom"],
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
-    "strictTemplates": true
-  }
+    "strictTemplates": true,
+  },
 }

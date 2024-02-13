@@ -1,0 +1,38 @@
+<app-breadcrumb>
+  <ng-container *breadcrumb="['/transcriptions']">Your transcripts</ng-container>
+  <ng-container *breadcrumb="['.']">{{ transcript.transcriptFileName }}</ng-container>
+</app-breadcrumb>
+
+<app-reporting-restriction
+  class="margin-bottom"
+  [restrictions]="transcript.caseReportingRestrictions"
+  [hearingId]="transcript.hearingId"
+></app-reporting-restriction>
+
+<app-govuk-heading caption="Transcript request"> {{ transcript.caseNumber }} </app-govuk-heading>
+
+<!-- TODO: This could be refactored into it's own component -->
+@if (transcript.status) {
+  <strong class="govuk-tag" [ngClass]="transcriptStatusClassMap[transcript.status]" style="margin-bottom: 30px">{{
+    transcript.status
+  }}</strong>
+}
+
+<h1 class="govuk-heading-m">Your request was rejected</h1>
+<p class="govuk-body">"{{ transcript.rejectionReason }}"</p>
+
+<app-details-table title="Case details" [details]="caseDetails"></app-details-table>
+
+<app-details-table title="Request details" [details]="requestDetails"></app-details-table>
+
+<div class="govuk-button-group">
+  <button
+    id="request-button"
+    class="govuk-button"
+    data-module="govuk-button"
+    [routerLink]="['/case', transcript.caseId, 'hearing', transcript.hearingId, 'request-transcript']"
+  >
+    Request again
+  </button>
+  <a [routerLink]="['/transcriptions']" class="govuk-link govuk-link--no-visited-state">Cancel</a>
+</div>

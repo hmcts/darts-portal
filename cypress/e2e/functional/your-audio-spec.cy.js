@@ -119,7 +119,7 @@ describe('Your audio', () => {
 
   it('should delete selected audio requests', () => {
     cy.contains('Your audio').click();
-    cy.contains('DeleteMe').parents('tr').find('input[type="checkbox"]').click();
+    cy.contains('DeleteMe').parents('tr').find('input[type="checkbox"]').click({ force: true });
     cy.get('#delete-button').click();
     cy.get(navigationSelector).should('not.exist');
     cy.contains('Are you sure you want to delete this item');

@@ -42,7 +42,7 @@ describe('Your transcripts', () => {
   });
 
   it('deletes a transcript', () => {
-    cy.get('#ready-table tbody input[type="checkbox"]').first().click();
+    cy.get('#ready-table tbody input[type="checkbox"]').first().click({ force: true });
     cy.get('#delete-button').click();
     cy.get(navigationSelector).should('not.exist');
     cy.contains('Are you sure you want to remove this transcript request');
@@ -72,7 +72,7 @@ describe('Your transcripts', () => {
     cy.get('h1').should('contain', 'Approve transcript request');
     cy.get('.govuk-table').should('contain', 'C20220620001');
     cy.get('h1').should('contain', 'Do you approve this request?');
-    cy.get('#reject-radio').click();
+    cy.get('#reject-radio').click({ force: true });
     cy.get('label').should('contain', 'Why can you not approve this request?');
   });
 
@@ -87,7 +87,7 @@ describe('Your transcripts', () => {
     cy.get('h1').should('contain', 'Approve transcript request');
     cy.get('.govuk-table').should('contain', 'C20220620001');
     cy.get('h1').should('contain', 'Do you approve this request?');
-    cy.get('#approve-radio').click();
+    cy.get('#approve-radio').click({ force: true });
     cy.get('#submit-button').click();
     cy.get('h1').should('contain', 'This request is no longer available');
     cy.get('p').should('contain', 'Another user may have already actioned this request.');
