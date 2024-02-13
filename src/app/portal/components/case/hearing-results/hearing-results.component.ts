@@ -33,7 +33,7 @@ export class HearingResultsComponent {
   userService = inject(UserService);
   @Input() hearings: Hearing[] = [];
   @Input() transcripts: TranscriptsRow[] = [];
-  @Input() annotations: Annotations[] = [];
+  @Input() annotations: Annotations[] | null = [];
   caseId: number;
   hearingsColumns: DatatableColumn[] = [];
   transcriptColumns: DatatableColumn[] = [];

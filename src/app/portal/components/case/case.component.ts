@@ -9,7 +9,8 @@ import { NotFoundComponent } from '@components/error/not-found/not-found.compone
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { CaseService } from '@services/case/case.service';
 import { MappingService } from '@services/mapping/mapping.service';
-import { combineLatest, map } from 'rxjs';
+import { UserService } from '@services/user/user.service';
+import { combineLatest, map, of } from 'rxjs';
 import { CaseFileComponent } from './case-file/case-file.component';
 import { HearingResultsComponent } from './hearing-results/hearing-results.component';
 
@@ -34,6 +35,7 @@ export class CaseComponent {
   private route = inject(ActivatedRoute);
   private caseService = inject(CaseService);
   private mappingService = inject(MappingService);
+  private userService = inject(UserService);
 
   public caseId = this.route.snapshot.params.caseId;
   public caseFile$ = this.caseService.getCase(this.caseId);
@@ -41,7 +43,10 @@ export class CaseComponent {
   public transcripts$ = this.caseService
     .getCaseTranscripts(this.caseId)
     .pipe(map((transcript) => this.mappingService.mapTranscriptRequestToRows(transcript)));
-  public annotations$ = this.caseService.getCaseAnnotations(this.caseId);
+  public annotations$ =
+    this.userService.isJudge() || this.userService.isAdmin()
+      ? this.caseService.getCaseAnnotations(this.caseId)
+      : of(null);
 
   data$ = combineLatest({
     hearings: this.hearings$,
