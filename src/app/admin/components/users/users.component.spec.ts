@@ -40,6 +40,7 @@ describe('UsersComponent', () => {
   it('should call searchUsers when search is triggered', () => {
     jest.spyOn(userAdminService, 'searchUsers').mockReturnValue(of([]));
     component.search$.next({}); // Trigger search
+    component.isSubmitted$.next(true);
     expect(userAdminService.searchUsers).toHaveBeenCalled();
   });
 
@@ -47,6 +48,7 @@ describe('UsersComponent', () => {
     const searchValues = { fullName: 'test', email: 'admin', active: true };
     jest.spyOn(userAdminService, 'searchUsers').mockReturnValue(of([]));
     component.search$.next(searchValues); // Trigger search
+    component.isSubmitted$.next(true);
     fixture.detectChanges();
     expect(userAdminService.searchUsers).toHaveBeenCalledWith(searchValues);
   });
