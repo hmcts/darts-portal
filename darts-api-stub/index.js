@@ -36,6 +36,8 @@ app.use('/hearings', require('./hearings/hearings'));
 app.use('/transcriptions', require('./transcriptions/transcriptions'));
 // audio APIs
 app.use('/audio', require('./audios'));
+// ADMIN APIs
+app.use('/admin/users', require('./admin/users/users'));
 // proxy non-stubbed routes to the actual API
 app.use(
   createProxyMiddleware({

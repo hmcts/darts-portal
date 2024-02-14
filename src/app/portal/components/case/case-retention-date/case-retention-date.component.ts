@@ -11,6 +11,7 @@ import { SuccessBannerComponent } from '@components/common/success-banner/succes
 import { DatatableColumn } from '@core-types/data-table/data-table-column.interface';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
+import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { Case, CaseRetentionHistory, CaseRetentionPageState } from '@portal-types/index';
 import { CaseService } from '@services/case/case.service';
 import { HeaderService } from '@services/header/header.service';
@@ -38,6 +39,7 @@ import { CaseRententionConfirmComponent } from './case-retention-confirm/case-re
     CaseRetentionChangeComponent,
     CaseRententionConfirmComponent,
     SuccessBannerComponent,
+    LuxonDatePipe,
   ],
 })
 export class CaseRetentionDateComponent implements OnInit {
@@ -114,23 +116,21 @@ export class CaseRetentionDateComponent implements OnInit {
 
   getLatestDate(rows: CaseRetentionHistory[]) {
     return rows.reduce(
-      (max, item) =>
-        new Date(item.retention_last_changed_date) > new Date(max.retention_last_changed_date) ? item : max,
+      (max, item) => (item.retentionLastChangedDate > max.retentionLastChangedDate ? item : max),
       rows[0]
     );
   }
 
   getEarliestDate(rows: CaseRetentionHistory[]) {
     return rows.reduce(
-      (max, item) =>
-        new Date(item.retention_last_changed_date) < new Date(max.retention_last_changed_date) ? item : max,
+      (max, item) => (item.retentionLastChangedDate < max.retentionLastChangedDate ? item : max),
       rows[0]
     );
   }
 
   getOriginalRetentionDateString(rows: CaseRetentionHistory[]) {
-    const earliestDate = this.getEarliestDate(rows).retention_date;
-    return DateTime.fromISO(earliestDate, { setZone: true }).toFormat('dd/MM/yyyy');
+    const earliestDate = this.getEarliestDate(rows).retentionDate;
+    return earliestDate.toFormat('dd/MM/yyyy');
   }
 
   changeRetentionDate() {

@@ -4,7 +4,10 @@
     <ng-container *breadcrumb>{{ transformedMedia.transformedMediaFilename }}</ng-container>
   </app-breadcrumb>
 
-  <app-reporting-restriction [restrictions]="data.case.reportingRestrictions"></app-reporting-restriction>
+  <app-reporting-restriction
+    [restrictions]="data.case.reportingRestrictions"
+    [hearingId]="transformedMedia.hearingId"
+  ></app-reporting-restriction>
 
   <!-- Validation Error Summary Component -->
   <ng-container *ngIf="data.error">
