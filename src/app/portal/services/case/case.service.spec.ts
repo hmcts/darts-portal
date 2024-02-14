@@ -159,18 +159,16 @@ describe('CaseService', () => {
   });
 
   it('#getCourthouses', () => {
-    describe('should get courthouses if all OK', () => {
-      const mockCourthouses: Courthouse[] = [];
+    const mockCourthouses: Courthouse[] = [];
 
-      service.getCourthouses().subscribe((courthouses) => {
-        expect(courthouses).toEqual(mockCourthouses);
-      });
-
-      const req = httpMock.expectOne(GET_COURTHOUSES_PATH);
-      expect(req.request.method).toBe('GET');
-
-      req.flush(mockCourthouses);
+    service.getCourthouses().subscribe((courthouses) => {
+      expect(courthouses).toEqual(mockCourthouses);
     });
+
+    const req = httpMock.expectOne(GET_COURTHOUSES_PATH);
+    expect(req.request.method).toBe('GET');
+
+    req.flush(mockCourthouses);
   });
 
   it('#getCase', () => {
