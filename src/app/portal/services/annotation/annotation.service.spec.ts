@@ -1,10 +1,7 @@
 import { of } from 'rxjs';
 import { AnnotationService } from '@services/annotation/annotation.service';
-import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { HearingAudio, HearingEvent, PostAudioRequest } from '@portal-types/index';
-import { Annotations } from '@portal-types/annotations/annotations.type';
 
 describe('HearingService', () => {
   let service: AnnotationService;
