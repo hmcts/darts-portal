@@ -78,29 +78,6 @@ const transcriptTwo = [
   },
 ];
 
-const defaultAnnotations = [
-  {
-    annotation_id: 1,
-    hearing_id: 2,
-    hearing_date: '2023-12-14',
-    annotation_ts: '2023-12-15T12:00:00.000Z',
-    annotation_text: 'A summary notes of this annotation...',
-    annotation_documents: [
-      {
-        annotation_document_id: 1,
-        file_name: 'Annotation.docx',
-        file_type: 'DOCX',
-        uploaded_by: 'Mr User McUserFace',
-        uploaded_ts: '2023-12-15T12:00:00.000Z',
-      },
-    ],
-  },
-];
-
-const annotations = localArray('annotations');
-// Clear out old values on restart
-annotations.value = defaultAnnotations;
-
 const events = [
   {
     id: -1,
@@ -146,7 +123,9 @@ const events = [
   },
 ];
 
+// Fetch the annotations from the case module
 const getAnnotationsByHearingId = (hearingId) => {
+  const annotations = localArray('annotations');
   return annotations.value.filter((annotation) => annotation.hearing_id === parseInt(hearingId));
 };
 

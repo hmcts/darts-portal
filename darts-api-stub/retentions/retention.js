@@ -52,9 +52,9 @@ const retentionHistory = localArray('retentionHistory');
 retentionHistory.value = defaultRetentionHistory;
 
 const getRetentionHistoryByCaseId = (caseId) => {
-  const filtered = retentionHistory.value.filter((history) => history.case_id === parseInt(caseId));
+  const filteredRetentionHistory = retentionHistory.value.filter((history) => history.case_id === parseInt(caseId));
   // Remove case_id key
-  return filtered.map((record) => {
+  return filteredRetentionHistory.map((record) => {
     const { case_id, ...filtered } = record;
     return filtered;
   });
