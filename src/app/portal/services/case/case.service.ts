@@ -2,6 +2,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Courthouse } from '@core-types/index';
 import {
+  Annotations,
+  AnnotationsData,
   Case,
   CaseData,
   CaseRetentionChange,
@@ -65,6 +67,12 @@ export class CaseService {
     return this.http.get<HearingData[]>(`${GET_CASE_PATH}/${caseId}/hearings`).pipe(map(this.mapHearingDataToHearing));
   }
 
+  getCaseAnnotations(caseId: number): Observable<Annotations[]> {
+    return this.http
+      .get<AnnotationsData[]>(`${GET_CASE_PATH}/${caseId}/annotations`)
+      .pipe(map(this.mapAnnotationsDataToAnnotations));
+  }
+
   searchCases(searchForm: SearchFormValues): Observable<CaseSearchResult[] | null> {
     // Save search form values
     this.searchFormValues = searchForm;
@@ -117,6 +125,12 @@ export class CaseService {
 
   postCaseRetentionChange(retentionChange: CaseRetentionChange): Observable<CaseRetentionChange> {
     return this.http.post<CaseRetentionChange>(GET_CASE_RETENTION_HISTORY, retentionChange);
+  }
+
+  postCaseRetentionDateValidate(retentionChange: CaseRetentionChange): Observable<CaseRetentionChange> {
+    let params = new HttpParams();
+    params = params.set('validate_only', true);
+    return this.http.post<CaseRetentionChange>(GET_CASE_RETENTION_HISTORY, retentionChange, { params });
   }
 
   private mapCaseRetentionHistory(retentionHistory: CaseRetentionHistoryData[]): CaseRetentionHistory[] {
@@ -175,12 +189,33 @@ export class CaseService {
       reportingRestrictions: c.reporting_restrictions,
       prosecutors: c.prosecutors,
       retainUntil: c.retain_until,
-      retainUntilDateTime: c.retain_until_date_time ? DateTime.fromISO(c.retain_until_date_time) : undefined,
-      closedDateTime: c.case_closed_date_time ? DateTime.fromISO(c.case_closed_date_time) : undefined,
+      retainUntilDateTime: c.retain_until_date_time
+        ? DateTime.fromISO(c.retain_until_date_time, { setZone: true })
+        : undefined,
+      closedDateTime: c.case_closed_date_time
+        ? DateTime.fromISO(c.case_closed_date_time, { setZone: true })
+        : undefined,
       retentionDateTimeApplied: c.retention_date_time_applied
-        ? DateTime.fromISO(c.retention_date_time_applied)
+        ? DateTime.fromISO(c.retention_date_time_applied, { setZone: true })
         : undefined,
       retentionPolicyApplied: c.retention_policy_applied,
     };
+  }
+
+  private mapAnnotationsDataToAnnotations(annotationsData: AnnotationsData[]): Annotations[] {
+    return annotationsData.flatMap((x) =>
+      x.annotation_documents.map((a) => ({
+        annotationId: x.annotation_id,
+        hearingId: x.hearing_id,
+        hearingDate: DateTime.fromISO(x.hearing_date),
+        annotationTs: DateTime.fromISO(x.annotation_ts),
+        annotationText: x.annotation_text,
+        annotationDocumentId: a.annotation_document_id,
+        fileName: a.file_name,
+        fileType: a.file_type,
+        uploadedBy: a.uploaded_by,
+        uploadedTs: DateTime.fromISO(a.uploaded_ts),
+      }))
+    );
   }
 }

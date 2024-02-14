@@ -12,7 +12,7 @@
         <tr class="govuk-table__row">
           <th class="govuk-table__header">Retain case until</th>
           <td id="retain-date" class="govuk-table__cell table-width">
-            {{ newRetentionPermanent ? 'Permanent' : (newRetentionDate | date: 'dd MMM yyyy') }}
+            {{ getDate() }}
           </td>
           <td class="govuk-table__cell"><a href="#" id="date-link" (click)="onReturnDate($event)">Change</a></td>
         </tr>

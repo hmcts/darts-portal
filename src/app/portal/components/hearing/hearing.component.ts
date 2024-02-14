@@ -143,7 +143,7 @@ export class HearingComponent implements OnInit {
   ngOnInit(): void {
     const tab = this.route.snapshot.queryParams.tab;
 
-    if (tab === 'Transcripts') {
+    if (tab === 'Transcripts' || tab === 'Annotations') {
       this.defaultTab = tab;
     }
 

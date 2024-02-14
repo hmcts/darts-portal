@@ -15,7 +15,6 @@ import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { Case, CaseRetentionHistory, CaseRetentionPageState } from '@portal-types/index';
 import { CaseService } from '@services/case/case.service';
 import { HeaderService } from '@services/header/header.service';
-import { DateTime } from 'luxon';
 import { combineLatest, map } from 'rxjs';
 import { CaseRetentionChangeComponent } from './case-retention-change/case-retention-change.component';
 import { CaseRententionConfirmComponent } from './case-retention-confirm/case-retention-confirm.component';
@@ -51,7 +50,6 @@ export class CaseRetentionDateComponent implements OnInit {
   route = inject(ActivatedRoute);
   caseService = inject(CaseService);
   datePipe = inject(DatePipe);
-  dateTime = DateTime;
 
   caseId = this.route.snapshot.params.caseId;
 
@@ -61,19 +59,18 @@ export class CaseRetentionDateComponent implements OnInit {
       const caseDetails = {
         details: {
           'Case ID': data.number,
-          'Case closed date': this.datePipe.transform(data.closedDateTime?.toISO(), 'dd MMM yyyy') || '-',
+          'Case closed date': data.closedDateTime?.toFormat('dd MMM yyyy') || '-',
           Courthouse: data.courthouse,
           'Judge(s)': data.judges?.map((judge) => ' ' + judge),
           'Defendant(s)': data.defendants?.map((defendant) => ' ' + defendant),
         },
         currentRetention: {
-          'Date applied': this.datePipe.transform(data.retentionDateTimeApplied?.toISO(), 'dd MMM yyyy'),
-          'Retain case until': this.datePipe.transform(data.retainUntilDateTime?.toISO(), 'dd MMM yyyy'),
+          'Date applied': data.retentionDateTimeApplied?.toFormat('dd MMM yyyy'),
+          'Retain case until': data.retainUntilDateTime?.toFormat('dd MMM yyyy'),
           'DARTS Retention policy applied': data.retentionPolicyApplied,
         },
         case_id: data.id,
         case_number: data.number,
-        case_retain_until_date_time: this.datePipe.transform(data.retainUntilDateTime?.toISO(), 'dd/MM/yyyy'),
       };
       return caseDetails;
     })

@@ -1,14 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { DataTableComponent } from '@components/common/data-table/data-table.component';
+import { DataTableComponent } from '@common/data-table/data-table.component';
+import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { TabsComponent } from '@components/common/tabs/tabs.component';
 import { transcriptStatusClassMap } from '@constants/transcript-status-class-map';
 import { DatatableColumn } from '@core-types/index';
 import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
-import { Hearing, TranscriptsRow } from '@portal-types/index';
+import { Annotations, Hearing, TranscriptsRow } from '@portal-types/index';
+import { UserService } from '@services/user/user.service';
 
 @Component({
   selector: 'app-hearing-results',
@@ -21,17 +23,21 @@ import { Hearing, TranscriptsRow } from '@portal-types/index';
     TabDirective,
     TableRowTemplateDirective,
     LuxonDatePipe,
+    GovukHeadingComponent,
   ],
   templateUrl: './hearing-results.component.html',
   styleUrls: ['./hearing-results.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HearingResultsComponent {
+  userService = inject(UserService);
   @Input() hearings: Hearing[] = [];
   @Input() transcripts: TranscriptsRow[] = [];
+  @Input() annotations: Annotations[] | null = [];
   caseId: number;
   hearingsColumns: DatatableColumn[] = [];
   transcriptColumns: DatatableColumn[] = [];
+  annotationColumns: DatatableColumn[] = [];
 
   transcriptStatusClassMap = transcriptStatusClassMap;
 
@@ -51,6 +57,16 @@ export class HearingResultsComponent {
       { name: 'Requested on', prop: 'requestedOn', sortable: true },
       { name: 'Requested by', prop: 'requestedBy', sortable: true },
       { name: 'Status', prop: 'status', sortable: true },
+      { name: '', prop: '' },
+    ];
+
+    this.annotationColumns = [
+      { name: 'Hearing date', prop: 'hearingDate', sortable: true },
+      { name: 'File name', prop: 'fileName', sortable: true },
+      { name: 'Format', prop: 'fileType', sortable: true },
+      { name: 'Date created', prop: 'uploadedTs', sortable: true },
+      { name: 'Comments', prop: 'annotationText', sortable: false },
+      { name: '', prop: '' },
       { name: '', prop: '' },
     ];
   }

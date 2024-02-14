@@ -1,6 +1,22 @@
 const express = require('express');
 
 const router = express.Router();
+const { localArray } = require('../localArray');
+const { getLatestDatefromKey } = require('../utils/date');
+
+const getLatestRetentionDate = (caseId) => {
+  const retentionHistory = localArray('retentionHistory');
+  const rows = retentionHistory.value.filter((history) => history.case_id === parseInt(caseId));
+  const latest = getLatestDatefromKey(rows, 'retention_last_changed_date');
+  return latest?.retention_date;
+};
+
+const getLatestRetentionChange = (caseId) => {
+  const retentionHistory = localArray('retentionHistory');
+  const rows = retentionHistory.value.filter((history) => history.case_id === parseInt(caseId));
+  const latest = getLatestDatefromKey(rows, 'retention_last_changed_date');
+  return latest?.retention_last_changed_date;
+};
 
 // CASES Mock objects
 const singleCase = {
@@ -11,9 +27,9 @@ const singleCase = {
   judges: ['Judge Judy'],
   prosecutors: ['Polly Prosecutor'],
   defenders: ['Derek Defender'],
-  retain_until_date_time: '2030-09-15T11:23:24.858Z',
+  retain_until_date_time: getLatestRetentionDate(1),
   case_closed_date_time: '2023-08-15T14:57:24.858Z',
-  retention_date_time_applied: '2023-12-12T11:02:24.858Z',
+  retention_date_time_applied: getLatestRetentionChange(1),
   retention_policy_applied: 'Manual',
   reporting_restrictions: [
     {
@@ -480,6 +496,45 @@ const transcriptTwo = [
   },
 ];
 
+const annotation = [
+  {
+    annotation_id: 1,
+    hearing_id: 2,
+    hearing_date: '2023-12-14',
+    annotation_ts: '2023-12-15T12:00:00.000Z',
+    annotation_text: 'A summary notes of this annotation...',
+    annotation_documents: [
+      {
+        annotation_document_id: 1,
+        file_name: 'Annotation.doc',
+        file_type: 'DOC',
+        uploaded_by: 'Mr User McUserFace',
+        uploaded_ts: '2023-12-15T12:00:00.000Z',
+      },
+    ],
+  },
+];
+
+const multipleAnnotations = [
+  ...annotation,
+  {
+    annotation_id: 2,
+    hearing_id: 3,
+    hearing_date: '2023-12-15',
+    annotation_ts: '2023-12-16T12:00:00.000Z',
+    annotation_text: 'A summary note of this annotation...',
+    annotation_documents: [
+      {
+        annotation_document_id: 4,
+        file_name: 'AnnotationAlpha.doc',
+        file_type: 'DOCX',
+        uploaded_by: 'Mrs Jane Ince',
+        uploaded_ts: '2024-01-16T12:00:00.000Z',
+      },
+    ],
+  },
+];
+
 // Advanced search stub API
 router.post('/search', (req, res) => {
   const searchTerms = req.body;
@@ -538,6 +593,8 @@ router.post('/search', (req, res) => {
 // Simple search
 router.get('/:caseId', (req, res) => {
   singleCase.case_id = req.params.caseId;
+  singleCase.retain_until_date_time = getLatestRetentionDate(singleCase.case_id);
+  singleCase.retention_date_time_applied = getLatestRetentionChange(singleCase.case_id);
 
   switch (req.params.caseId) {
     // this is returned by the API when a non-integer is passed as the case ID
@@ -580,6 +637,8 @@ router.get('/:caseId', (req, res) => {
 // transcripts stub data
 router.get('/:caseId/transcripts', (req, res) => {
   singleCase.case_id = req.params.caseId;
+  singleCase.retain_until_date_time = getLatestRetentionDate(singleCase.case_id);
+  singleCase.retention_date_time_applied = getLatestRetentionChange(singleCase.case_id);
 
   switch (req.params.caseId) {
     case '404':
@@ -616,6 +675,31 @@ router.get('/:caseId/hearings', (req, res) => {
       break;
     default:
       res.send(singleCaseMultiHearings);
+      break;
+  }
+});
+
+// CASES STUB APIs
+// annotations stub
+router.get('/:caseId/annotations', (req, res) => {
+  switch (req.params.caseId) {
+    case '404':
+      const resBody104 = {
+        type: 'CASE_104',
+        title: 'The requested case cannot be found',
+        status: 404,
+      };
+      res.status(404).send(resBody104);
+      break;
+    case '2':
+      res.send(annotation);
+      break;
+    // empty response
+    case '3':
+      res.send([]);
+      break;
+    default:
+      res.send(multipleAnnotations);
       break;
   }
 });

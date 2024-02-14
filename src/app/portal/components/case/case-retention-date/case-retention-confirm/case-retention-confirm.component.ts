@@ -2,11 +2,12 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DetailsTableComponent } from '@components/common/details-table/details-table.component';
-import { ReportingRestrictionComponent } from '@components/common/reporting-restriction/reporting-restriction.component';
-import { ValidationErrorSummaryComponent } from '@components/common/validation-error-summary/validation-error-summary.component';
-import { CaseRetentionChange, CaseRetentionPageState } from '@portal-types/index';
-import { CaseService } from '@services/case/case.service';
+import { DetailsTableComponent } from '@common/details-table/details-table.component';
+import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
+import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
+import { CaseRetentionChange } from 'src/app/portal/models/case/case-retention-change.interface';
+import { CaseRetentionPageState } from 'src/app/portal/models/case/case-retention-page-state.type';
+import { CaseService } from 'src/app/portal/services/case/case.service';
 
 @Component({
   selector: 'app-case-retention-confirm',
@@ -28,7 +29,7 @@ export class CaseRententionConfirmComponent {
   @Input() caseNumber!: string | undefined;
   @Input() caseCourthouse!: string | undefined;
   @Input() caseDefendants!: string[] | undefined;
-  @Input() newRetentionDate!: Date | null;
+  @Input() newRetentionDate!: Date;
   @Input() newRetentionReason!: string;
   @Input() newRetentionPermanent!: boolean;
 
@@ -46,6 +47,10 @@ export class CaseRententionConfirmComponent {
       'Defendant(s)': this.caseDefendants,
     };
     return details;
+  }
+
+  getDate() {
+    return `${this.datePipe.transform(this.newRetentionDate, 'dd MMM yyyy')} ${this.newRetentionPermanent ? ' (Permanent)' : ''}`;
   }
 
   onConfirm() {

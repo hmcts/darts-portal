@@ -4326,11 +4326,11 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:*, @types/node@npm:^20.0.0":
-  version: 20.11.16
-  resolution: "@types/node@npm:20.11.16"
+  version: 20.11.17
+  resolution: "@types/node@npm:20.11.17"
   dependencies:
     undici-types: ~5.26.4
-  checksum: 51f0831c1219bf4698e7430aeb9892237bd851deeb25ce23c5bb0ceefcc77c3b114e48f4e98d9fc26def5a87ba9d8079f0281dd37bee691140a93f133812c152
+  checksum: 59c0dde187120adc97da30063c86511664b24b50fe777abfe1f557c217d0a0b84a68aaab5ef8ac44f5c2986b3f9cd605a15fa6e4f31195e594da96bbe9617c20
   languageName: node
   linkType: hard
 
@@ -14936,10 +14936,10 @@ __metadata:
   linkType: hard
 
 "zone.js@npm:~0.14.0":
-  version: 0.14.3
-  resolution: "zone.js@npm:0.14.3"
+  version: 0.14.4
+  resolution: "zone.js@npm:0.14.4"
   dependencies:
     tslib: ^2.3.0
-  checksum: 6150e7f3472f0c0063b776172b09c0eed18b1842528a45a83bc773d96b795e928f0b1ebced02b2af57ff892b73990c1a80c3c05b4f5adc6c3754c3e9a50b6dcb
+  checksum: 6168114b44f3f984c9aa72b1d0a05706b7b3010a38bcb49ef89f338c217279db77be26d1fd79d3eeb59b63b223472b104851be81898094f5eefc550bd69ae68f
   languageName: node
   linkType: hard
