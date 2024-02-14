@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { LuxonDatePipe } from 'src/app/core/pipes/luxon-date.pipe';
+import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { TranscriptionRequestsComponent } from './transcription-requests.component';
 
 describe('TranscriptionRequestsComponent', () => {

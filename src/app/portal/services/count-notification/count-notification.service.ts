@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
+import { TranscriberRequestCounts } from '@portal-types/transcriptions/transcription-request-counts.interface';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { Observable } from 'rxjs/internal/Observable';
 import { merge } from 'rxjs/internal/observable/merge';
@@ -7,7 +8,6 @@ import { timer } from 'rxjs/internal/observable/timer';
 import { map } from 'rxjs/internal/operators/map';
 import { switchMap } from 'rxjs/internal/operators/switchMap';
 import { tap } from 'rxjs/internal/operators/tap';
-import { TranscriberRequestCounts } from 'src/app/portal/models/transcriptions/transcription-request-counts.interface';
 
 export const UNREAD_AUDIO_COUNT_PATH = 'api/audio-requests/not-accessed-count';
 export const TRANSCRIPTION_COUNT_PATH = 'api/transcriptions/transcriber-counts';

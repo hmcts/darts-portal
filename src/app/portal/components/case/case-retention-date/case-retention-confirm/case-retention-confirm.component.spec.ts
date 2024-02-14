@@ -2,8 +2,8 @@ import { DatePipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
+import { CaseService } from '@services/case/case.service';
 import { of } from 'rxjs';
-import { CaseService } from 'src/app/portal/services/case/case.service';
 import { CaseRententionConfirmComponent } from './case-retention-confirm.component';
 
 describe('CaseRetentionComponent', () => {

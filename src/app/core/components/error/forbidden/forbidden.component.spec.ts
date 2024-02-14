@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AppConfigService } from 'src/app/core/services/app-config/app-config.service';
-
-import { HeaderService } from 'src/app/core/services/header/header.service';
+import { AppConfigService } from '@services/app-config/app-config.service';
+import { HeaderService } from '@services/header/header.service';
 import { ForbiddenComponent } from './forbidden.component';
 
 describe('ForbiddenComponent', () => {

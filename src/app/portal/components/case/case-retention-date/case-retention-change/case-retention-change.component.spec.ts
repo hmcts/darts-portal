@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { UserService } from 'src/app/core/services/user/user.service';
+import { UserService } from '@services/user/user.service';
 import { CaseRetentionChangeComponent } from './case-retention-change.component';
 
 describe('CaseRetentionComponent', () => {

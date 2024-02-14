@@ -12,8 +12,8 @@ import {
   inject,
 } from '@angular/core';
 import { AppConfigService } from '@services/app-config/app-config.service';
+import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { Observable } from 'rxjs';
-import { AudioRequestService } from 'src/app/portal/services/audio-request/audio-request.service';
 
 @Component({
   selector: 'app-audio-player',

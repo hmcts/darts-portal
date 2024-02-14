@@ -1,7 +1,7 @@
 import { NgForOf, NgTemplateOutlet } from '@angular/common';
 import { Component, ContentChildren, QueryList } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { BreadcrumbDirective } from 'src/app/core/directives/breadcrumb.directive';
+import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 
 @Component({
   selector: 'app-breadcrumb',
