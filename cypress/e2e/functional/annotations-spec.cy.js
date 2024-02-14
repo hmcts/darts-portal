@@ -1,7 +1,10 @@
 import 'cypress-axe';
 import './commands';
 
-describe('All Annotations', () => {
+const path = require('path');
+const downloadsFolder = Cypress.config('downloadsFolder');
+
+describe('Annotations', () => {
   it('shows All annotations uploaded by judge against a case', () => {
     cy.login('judge');
     cy.injectAxe();
@@ -100,12 +103,27 @@ describe('All Annotations', () => {
 
     cy.contains('All annotations').click();
 
-    cy.contains('14 Dec 2023').click();
+    cy.contains('1 Dec 2023').click();
 
     cy.get('h1').should('contain', 'Hearing');
 
     cy.get('a.moj-sub-navigation__link').should('contain', 'Annotations');
+    // Now we've gone to the hearing page, the annotation count should only be one
+    cy.get('#annotation-count').should('contain', '1');
+    cy.get('#annotationsTable')
+      .find('tr')
+      .then((rows) => {
+        expect(rows.length).equal(2); // 2 including header row as there's only one entry
+      });
+    const fileName = 'AnnotationBeta.doc';
+    cy.get('#annotationsTable')
+      .contains(fileName)
+      .parent('tr')
+      .then((row) => {
+        cy.wrap(row).find('td').contains('Download').click();
+      });
 
+    cy.readFile(path.join(downloadsFolder, fileName)).should('exist');
     cy.a11y();
   });
 

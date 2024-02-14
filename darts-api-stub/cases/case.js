@@ -509,11 +509,11 @@ const transcriptTwo = [
 
 const defaultAnnotations = [
   {
-    case_id: 2,
-    annotation_id: 1,
-    hearing_id: 2,
-    hearing_date: '2023-12-14',
-    annotation_ts: '2023-12-15T12:00:00.000Z',
+    case_id: 1,
+    annotation_id: 2,
+    hearing_id: 3,
+    hearing_date: '2023-10-11',
+    annotation_ts: '2023-10-06T12:00:00.000Z',
     annotation_text: 'A summary notes of this annotation...',
     annotation_documents: [
       {
@@ -526,19 +526,36 @@ const defaultAnnotations = [
     ],
   },
   {
-    case_id: 2,
-    annotation_id: 2,
-    hearing_id: 2,
-    hearing_date: '2023-12-15',
+    case_id: 1,
+    annotation_id: 3,
+    hearing_id: 4,
+    hearing_date: '2023-12-01',
     annotation_ts: '2023-12-16T12:00:00.000Z',
     annotation_text: 'A summary note of this annotation...',
     annotation_documents: [
       {
         annotation_document_id: 4,
-        file_name: 'AnnotationAlpha.doc',
+        file_name: 'AnnotationBeta.doc',
         file_type: 'DOCX',
         uploaded_by: 'Mrs Jane Ince',
         uploaded_ts: '2024-01-16T12:00:00.000Z',
+      },
+    ],
+  },
+  {
+    case_id: 2,
+    annotation_id: 1,
+    hearing_id: 2,
+    hearing_date: '2023-09-01',
+    annotation_ts: '2023-12-15T12:00:00.000Z',
+    annotation_text: 'A summary notes of this annotation...',
+    annotation_documents: [
+      {
+        annotation_document_id: 1,
+        file_name: 'Annotation.doc',
+        file_type: 'DOC',
+        uploaded_by: 'Mr User McUserFace',
+        uploaded_ts: '2023-12-15T12:00:00.000Z',
       },
     ],
   },
