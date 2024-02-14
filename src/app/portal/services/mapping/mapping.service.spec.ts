@@ -77,15 +77,11 @@ describe('MappingService', () => {
           hearingDate: DateTime.fromISO(hearingDateIso),
           annotationTs: DateTime.fromISO(annotationTimeStampIso),
           annotationText: 'TEST',
-          annotationDocuments: [
-            {
-              annotationDocumentId: 3,
-              fileName: 'filename.docx',
-              fileType: 'DOC',
-              uploadedBy: 'Dr Test',
-              uploadedTs: DateTime.fromISO(uploadedTimeStampIso),
-            },
-          ],
+          annotationDocumentId: 3,
+          fileName: 'filename.docx',
+          fileType: 'DOC',
+          uploadedBy: 'Dr Test',
+          uploadedTs: DateTime.fromISO(uploadedTimeStampIso),
         },
       ]);
     });

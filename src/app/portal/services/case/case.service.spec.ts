@@ -23,6 +23,7 @@ import {
   GET_COURTHOUSES_PATH,
   GET_HEARINGS_PATH,
 } from './case.service';
+import { MappingService } from '@services/mapping/mapping.service';
 
 Settings.defaultZone = 'utc';
 
@@ -142,7 +143,7 @@ describe('CaseService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [CaseService],
+      providers: [CaseService, MappingService],
     });
 
     service = TestBed.inject(CaseService);
@@ -158,16 +159,18 @@ describe('CaseService', () => {
   });
 
   it('#getCourthouses', () => {
-    const mockCourthouses: Courthouse[] = [];
+    describe('should get courthouses if all OK', () => {
+      const mockCourthouses: Courthouse[] = [];
 
-    service.getCourthouses().subscribe((courthouses) => {
-      expect(courthouses).toEqual(mockCourthouses);
+      service.getCourthouses().subscribe((courthouses) => {
+        expect(courthouses).toEqual(mockCourthouses);
+      });
+
+      const req = httpMock.expectOne(GET_COURTHOUSES_PATH);
+      expect(req.request.method).toBe('GET');
+
+      req.flush(mockCourthouses);
     });
-
-    const req = httpMock.expectOne(GET_COURTHOUSES_PATH);
-    expect(req.request.method).toBe('GET');
-
-    req.flush(mockCourthouses);
   });
 
   it('#getCase', () => {

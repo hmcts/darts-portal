@@ -133,15 +133,11 @@ describe('HearingComponent', () => {
       hearingDate: DateTime.fromISO('2024-01-01'),
       annotationTs: DateTime.fromISO('2024-01-01'),
       annotationText: 'text',
-      annotationDocuments: [
-        {
-          annotationDocumentId: 1,
-          fileName: 'document.docx',
-          fileType: 'DOC',
-          uploadedBy: 'Mr Test',
-          uploadedTs: DateTime.fromISO('2024-01-01'),
-        },
-      ],
+      annotationDocumentId: 1,
+      fileName: 'document.docx',
+      fileType: 'DOC',
+      uploadedBy: 'Mr Test',
+      uploadedTs: DateTime.fromISO('2024-01-01'),
     },
   ]);
 
@@ -475,7 +471,7 @@ describe('HearingComponent', () => {
       expect(component.defaultTab).toEqual('Transcripts');
     });
     it('should set the tab to annotations if the url contains ?tab=Annotations', () => {
-      mockActivatedRoute.snapshot.queryParams = { tab: 'Annotations' };
+      mockActivatedRoute.snapshot.queryParams = { tab: 'Annotations', startTime: '2024-01-01', endTime: '2024-01-02' };
       component.ngOnInit();
       expect(component.defaultTab).toEqual('Annotations');
     });

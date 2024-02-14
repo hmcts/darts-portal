@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, Injector, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 import { Annotations } from '@portal-types/annotations/annotations.type';
 import { AnnotationsData } from '@portal-types/annotations/annotations-data.interface';
@@ -40,10 +40,10 @@ export class HearingService {
     return this.http.post<PostAudioResponse>('api/audio-requests', audioRequest);
   }
 
-  getAnnotations(caseId: number): Observable<Annotations[]> {
-    const mappingService = inject(MappingService);
+  getAnnotations(hearingId: string | number): Observable<Annotations[]> {
+    const mappingService = new MappingService();
     return this.http
-      .get<AnnotationsData[]>(`${GET_HEARINGS_PATH}/${caseId}/annotations`)
+      .get<AnnotationsData[]>(`${GET_HEARINGS_PATH}/${hearingId}/annotations`)
       .pipe(map(mappingService.mapAnnotationsDataToAnnotations));
   }
 }
