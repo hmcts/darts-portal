@@ -19,7 +19,7 @@ import { HeaderService } from '@services/header/header.service';
 import { MappingService } from '@services/mapping/mapping.service';
 import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
-import { combineLatest, map, shareReplay } from 'rxjs';
+import { combineLatest, map, of, shareReplay } from 'rxjs';
 import { CaseService } from 'src/app/portal/services/case/case.service';
 import { HearingService } from 'src/app/portal/services/hearing/hearing.service';
 import { EventsAndAudioComponent } from './events-and-audio/events-and-audio.component';
@@ -122,7 +122,11 @@ export class HearingComponent implements OnInit {
   case$ = this.caseService.getCase(this.caseId).pipe(shareReplay(1));
   hearing$ = this.caseService.getHearingById(this.caseId, this.hearingId);
   audio$ = this.hearingService.getAudio(this.hearingId);
-  annotations$ = this.hearingService.getAnnotations(this.hearingId);
+  // Return null Observable if user is not Admin or Judge
+  annotations$ =
+    this.userService.isJudge() || this.userService.isAdmin()
+      ? this.hearingService.getAnnotations(this.caseId)
+      : of(null);
   events$ = this.hearingService.getEvents(this.hearingId);
   restrictions$ = this.case$.pipe(
     map((c) => this.filterRestrictionsByHearingId(c.reportingRestrictions ?? [], this.hearingId))

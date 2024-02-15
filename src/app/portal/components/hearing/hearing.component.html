@@ -86,7 +86,7 @@
             </ng-template>
           </app-data-table>
         </div>
-        @if (userService.isJudge() || userService.isAdmin()) {
+        @if (vm.annotations) {
           <div *tab="'Annotations'; id: 'annotation-count'; count: vm.annotations.length">
             <div class="flex-space-between">
               <h2 class="govuk-heading-m">Annotations</h2>

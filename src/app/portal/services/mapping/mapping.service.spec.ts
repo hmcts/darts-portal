@@ -19,15 +19,13 @@ describe('MappingService', () => {
 
   describe('#mapTranscriptRequestToRows', () => {
     it('should map correctly', () => {
-      const hearingDateDateTime = DateTime.fromISO('2024-02-01');
-      const requestedOnDateTime = DateTime.fromISO('2024-01-01');
       const transcripts: Transcript[] = [
         {
           id: 1,
           hearingId: 1,
-          hearingDate: hearingDateDateTime,
+          hearingDate: DateTime.fromISO('2024-02-01'),
           type: 'TYPE',
-          requestedOn: requestedOnDateTime,
+          requestedOn: DateTime.fromISO('2024-01-01'),
           requestedByName: 'Mrs Test',
           status: 'Complete',
         },
@@ -35,10 +33,10 @@ describe('MappingService', () => {
       const result = service.mapTranscriptRequestToRows(transcripts);
       expect(result).toStrictEqual([
         {
-          hearingDate: hearingDateDateTime,
+          hearingDate: DateTime.fromISO('2024-02-01'),
           id: 1,
           requestedBy: 'Mrs Test',
-          requestedOn: requestedOnDateTime,
+          requestedOn: DateTime.fromISO('2024-01-01'),
           status: 'Complete',
           type: 'TYPE',
         },
@@ -48,15 +46,12 @@ describe('MappingService', () => {
 
   describe('#mapAnnotationsDataToAnnotations', () => {
     it('should map correctly', () => {
-      const hearingDateIso = '2024-02-01';
-      const annotationTimeStampIso = '2024-01-01';
-      const uploadedTimeStampIso = '2024-03-01';
       const transcripts: AnnotationsData[] = [
         {
           annotation_id: 1,
           hearing_id: 2,
-          hearing_date: hearingDateIso,
-          annotation_ts: annotationTimeStampIso,
+          hearing_date: '2024-02-01',
+          annotation_ts: '2024-01-01',
           annotation_text: 'TEST',
           annotation_documents: [
             {
@@ -64,7 +59,7 @@ describe('MappingService', () => {
               file_name: 'filename.docx',
               file_type: 'DOC',
               uploaded_by: 'Dr Test',
-              uploaded_ts: uploadedTimeStampIso,
+              uploaded_ts: '2024-03-01',
             },
           ],
         },
@@ -74,14 +69,14 @@ describe('MappingService', () => {
         {
           annotationId: 1,
           hearingId: 2,
-          hearingDate: DateTime.fromISO(hearingDateIso),
-          annotationTs: DateTime.fromISO(annotationTimeStampIso),
+          hearingDate: DateTime.fromISO('2024-02-01'),
+          annotationTs: DateTime.fromISO('2024-01-01'),
           annotationText: 'TEST',
           annotationDocumentId: 3,
           fileName: 'filename.docx',
           fileType: 'DOC',
           uploadedBy: 'Dr Test',
-          uploadedTs: DateTime.fromISO(uploadedTimeStampIso),
+          uploadedTs: DateTime.fromISO('2024-03-01'),
         },
       ]);
     });

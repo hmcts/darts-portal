@@ -3,7 +3,7 @@ import { AnnotationService } from '@services/annotation/annotation.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
-describe('HearingService', () => {
+describe('AnnotationService', () => {
   let service: AnnotationService;
   let httpTestingController: HttpTestingController;
 
