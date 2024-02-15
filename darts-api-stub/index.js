@@ -38,6 +38,8 @@ app.use('/transcriptions', require('./transcriptions/transcriptions'));
 app.use('/audio', require('./audios'));
 // annotation APIs
 app.use('/annotations', require('./annotations/annotation'));
+// ADMIN APIs
+app.use('/admin/users', require('./admin/users/users'));
 // proxy non-stubbed routes to the actual API
 app.use(
   createProxyMiddleware({
