@@ -1,5 +1,7 @@
 import 'cypress-axe';
 import './commands';
+const path = require('path');
+const downloadsFolder = Cypress.config('downloadsFolder');
 
 describe('All Annotations', () => {
   it('shows All annotations uploaded by judge against a case', () => {
@@ -121,6 +123,34 @@ describe('All Annotations', () => {
     cy.contains('C20220620001').click();
 
     cy.should('not.exist', 'All annotations');
+
+    cy.a11y();
+  });
+
+  it('download an annotation file at case level', () => {
+    cy.login('judge');
+    cy.injectAxe();
+
+    cy.contains('Search').click();
+    cy.get('h1').should('contain', 'Search for a case');
+    cy.get('#case_number').type('C20220620001');
+    cy.get('button').contains('Search').click();
+
+    cy.contains('C20220620001').click();
+
+    cy.get('#annotation-count').should('contain', '2');
+
+    cy.contains('All annotations').click();
+
+    const fileName = 'AnnotationAlpha.doc';
+    cy.get('#annotationsTable')
+      .contains(fileName)
+      .parent('tr')
+      .then((row) => {
+        cy.wrap(row).find('td').contains('Download').click();
+      });
+
+    cy.readFile(path.join(downloadsFolder, fileName)).should('exist');
 
     cy.a11y();
   });
