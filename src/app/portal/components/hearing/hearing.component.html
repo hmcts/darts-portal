@@ -102,7 +102,7 @@
               id="annotationsTable"
               [rows]="vm.annotations"
               [columns]="annotationColumns"
-              noDataMessage="There are no annotations for this hearing. Annotations added to hearings will be listed here"
+              noDataMessage="There are no annotations for this hearing."
             >
               <ng-template [tableRowTemplate]="vm.annotations" let-row>
                 <td class="govuk-table__cell">{{ row.fileName }}</td>
