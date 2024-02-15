@@ -125,7 +125,7 @@ export class HearingComponent implements OnInit {
   // Return null Observable if user is not Admin or Judge
   annotations$ =
     this.userService.isJudge() || this.userService.isAdmin()
-      ? this.hearingService.getAnnotations(this.caseId)
+      ? this.hearingService.getAnnotations(this.hearingId)
       : of(null);
   events$ = this.hearingService.getEvents(this.hearingId);
   restrictions$ = this.case$.pipe(
