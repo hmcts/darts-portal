@@ -34,6 +34,8 @@ app.use('/audio-requests', require('./audios/audio-requests'));
 app.use('/hearings', require('./hearings/hearings'));
 // transcription APIs
 app.use('/transcriptions', require('./transcriptions/transcriptions'));
+// annotations APIs
+app.use('/annotations', require('./annotations/annotations'));
 // audio APIs
 app.use('/audio', require('./audios'));
 // annotation APIs
