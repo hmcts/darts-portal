@@ -86,8 +86,47 @@
             </ng-template>
           </app-data-table>
         </div>
-        @if (userService.isJudge() || userService.isAdmin()) {
-          <div *tab="'Annotations'; id: 'annotation-count'"></div>
+        @if (vm.annotations) {
+          <div *tab="'Annotations'; id: 'annotation-count'; count: vm.annotations.length">
+            <div class="flex-space-between">
+              <h2 class="govuk-heading-m">Annotations</h2>
+            </div>
+            <div class="govuk-button-group">
+              <button class="govuk-button govuk-button--secondary" data-module="govuk-button">Upload annotation</button>
+              <button class="govuk-button govuk-button--secondary" data-module="govuk-button">
+                Download annotation template
+              </button>
+            </div>
+
+            <app-data-table
+              id="annotationsTable"
+              [rows]="vm.annotations"
+              [columns]="annotationColumns"
+              noDataMessage="There are no annotations for this hearing."
+            >
+              <ng-template [tableRowTemplate]="vm.annotations" let-row>
+                <td class="govuk-table__cell">{{ row.fileName }}</td>
+                <td class="govuk-table__cell">
+                  {{ row.fileType === 'DOC' || 'DOCX' ? 'Word Document' : '-' }}
+                </td>
+                <td class="govuk-table__cell">
+                  {{ row.uploadedTs | luxonDate: 'dd MMM yyyy' }}
+                </td>
+                <td class="govuk-table__cell">{{ row.annotationText }}</td>
+                <td class="govuk-table__cell">
+                  <a
+                    class="govuk-link"
+                    href="javascript:void(0)"
+                    (click)="onDownloadClicked(row.annotationId, row.annotationDocumentId, row.fileName)"
+                    >Download</a
+                  >
+                </td>
+                <td class="govuk-table__cell">
+                  <a class="govuk-link" href="javascript:void(0)" (click)="onDeleteClicked()">Delete</a>
+                </td>
+              </ng-template>
+            </app-data-table>
+          </div>
         }
       </ng-container>
     </app-tabs>

@@ -19,7 +19,7 @@ import { HeaderService } from '@services/header/header.service';
 import { MappingService } from '@services/mapping/mapping.service';
 import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
-import { combineLatest, map, shareReplay } from 'rxjs';
+import { combineLatest, map, of, shareReplay } from 'rxjs';
 import { CaseService } from 'src/app/portal/services/case/case.service';
 import { HearingService } from 'src/app/portal/services/hearing/hearing.service';
 import { EventsAndAudioComponent } from './events-and-audio/events-and-audio.component';
@@ -34,6 +34,8 @@ import {
   PostAudioResponse,
   TranscriptsRow,
 } from '@portal-types/index';
+import { AnnotationService } from '@services/annotation/annotation.service';
+import { FileDownloadService } from '@services/file-download/file-download.service';
 
 @Component({
   selector: 'app-hearing',
@@ -65,6 +67,8 @@ export class HearingComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private caseService = inject(CaseService);
   private appConfigService = inject(AppConfigService);
+  annotationService = inject(AnnotationService);
+  fileDownloadService = inject(FileDownloadService);
   hearingService = inject(HearingService);
   headerService = inject(HeaderService);
   userService = inject(UserService);
@@ -92,6 +96,15 @@ export class HearingComponent implements OnInit {
     { name: '', prop: '' },
   ];
 
+  annotationColumns: DatatableColumn[] = [
+    { name: 'File name', prop: 'fileName', sortable: true },
+    { name: 'Format', prop: 'fileType', sortable: true },
+    { name: 'Date created', prop: 'uploadedTs', sortable: true },
+    { name: 'Comments', prop: 'annotationText', sortable: false },
+    { name: '', prop: '' },
+    { name: '', prop: '' },
+  ];
+
   statusTagStyleMap: { [key: string]: string } = {
     Requested: 'govuk-tag--blue',
     'Awaiting Authorisation': 'govuk-tag--yellow',
@@ -109,6 +122,11 @@ export class HearingComponent implements OnInit {
   case$ = this.caseService.getCase(this.caseId).pipe(shareReplay(1));
   hearing$ = this.caseService.getHearingById(this.caseId, this.hearingId);
   audio$ = this.hearingService.getAudio(this.hearingId);
+  // Return null Observable if user is not Admin or Judge
+  annotations$ =
+    this.userService.isJudge() || this.userService.isAdmin()
+      ? this.hearingService.getAnnotations(this.hearingId)
+      : of(null);
   events$ = this.hearingService.getEvents(this.hearingId);
   restrictions$ = this.case$.pipe(
     map((c) => this.filterRestrictionsByHearingId(c.reportingRestrictions ?? [], this.hearingId))
@@ -120,6 +138,7 @@ export class HearingComponent implements OnInit {
     case: this.case$,
     hearing: this.hearing$,
     audios: this.audio$,
+    annotations: this.annotations$,
     events: this.events$,
     hearingRestrictions: this.restrictions$,
     error: this.error$,
@@ -216,6 +235,16 @@ export class HearingComponent implements OnInit {
         this.state = 'OrderFailure';
       },
     });
+  }
+
+  onDownloadClicked(annotationId: number, annotationDocumentId: number, fileName: string) {
+    this.annotationService.downloadAnnotationDocument(annotationId, annotationDocumentId).subscribe((blob: Blob) => {
+      this.fileDownloadService.saveAs(blob, fileName);
+    });
+  }
+
+  onDeleteClicked() {
+    // Placeholder for DMP-1612
   }
 
   filterRestrictionsByHearingId(restrictions: ReportingRestriction[], hearingId: number): ReportingRestriction[] {

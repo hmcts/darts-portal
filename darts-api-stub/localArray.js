@@ -19,8 +19,8 @@ function localArray(name) {
           this.v = data;
         } else {
           // Prevent the file from going over a certain length
-          // If no value is provided in the LOCAL_ARRAY_LIMIT env, then default to 200
-          if (this.v.length > (process.env.LOCAL_ARRAY_LIMIT || 200)) {
+          // Set to 200
+          if (this.v.length > 200) {
             this.v.shift();
           }
           fs.writeFileSync(filePath, JSON.stringify(this.v, null, 2));

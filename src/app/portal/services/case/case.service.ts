@@ -17,6 +17,7 @@ import {
   Transcript,
   TranscriptData,
 } from '@portal-types/index';
+import { MappingService } from '@services/mapping/mapping.service';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs/internal/observable/of';
@@ -68,9 +69,10 @@ export class CaseService {
   }
 
   getCaseAnnotations(caseId: number): Observable<Annotations[]> {
+    const mappingService = new MappingService();
     return this.http
       .get<AnnotationsData[]>(`${GET_CASE_PATH}/${caseId}/annotations`)
-      .pipe(map(this.mapAnnotationsDataToAnnotations));
+      .pipe(map(mappingService.mapAnnotationsDataToAnnotations));
   }
 
   searchCases(searchForm: SearchFormValues): Observable<CaseSearchResult[] | null> {
@@ -200,22 +202,5 @@ export class CaseService {
         : undefined,
       retentionPolicyApplied: c.retention_policy_applied,
     };
-  }
-
-  private mapAnnotationsDataToAnnotations(annotationsData: AnnotationsData[]): Annotations[] {
-    return annotationsData.flatMap((x) =>
-      x.annotation_documents.map((a) => ({
-        annotationId: x.annotation_id,
-        hearingId: x.hearing_id,
-        hearingDate: DateTime.fromISO(x.hearing_date),
-        annotationTs: DateTime.fromISO(x.annotation_ts),
-        annotationText: x.annotation_text,
-        annotationDocumentId: a.annotation_document_id,
-        fileName: a.file_name,
-        fileType: a.file_type,
-        uploadedBy: a.uploaded_by,
-        uploadedTs: DateTime.fromISO(a.uploaded_ts),
-      }))
-    );
   }
 }

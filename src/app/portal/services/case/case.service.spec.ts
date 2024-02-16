@@ -23,6 +23,7 @@ import {
   GET_COURTHOUSES_PATH,
   GET_HEARINGS_PATH,
 } from './case.service';
+import { MappingService } from '@services/mapping/mapping.service';
 
 Settings.defaultZone = 'utc';
 
@@ -142,7 +143,7 @@ describe('CaseService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [CaseService],
+      providers: [CaseService, MappingService],
     });
 
     service = TestBed.inject(CaseService);
