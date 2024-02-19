@@ -25,7 +25,7 @@ describe('AnnotationService', () => {
   });
 
   describe('#downloadAnnotationDocument', () => {
-    it('should get events', () => {
+    it('should get annotation document', () => {
       const annotationId = 123;
       const annotationDocumentId = 321;
       const mockBlob = new Blob(['mock document data'], {
@@ -44,6 +44,18 @@ describe('AnnotationService', () => {
       });
 
       expect(receivedBlob).toBeInstanceOf(Blob);
+    });
+  });
+
+  describe('#deleteAnnotation', () => {
+    it('should delete annotation', () => {
+      const annotationId = 123;
+      jest.spyOn(service['http'], 'delete').mockReturnValueOnce(of({}));
+
+      service.deleteAnnotation(annotationId).subscribe();
+
+      const expectedUrl = `/api/annotations/${annotationId}`;
+      expect(service['http'].delete).toHaveBeenCalledWith(expectedUrl);
     });
   });
 });
