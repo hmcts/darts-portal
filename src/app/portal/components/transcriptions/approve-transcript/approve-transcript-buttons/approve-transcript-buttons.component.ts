@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { GovukTextareaComponent } from '@common/govuk-textarea/govuk-textarea.component';
-import { TranscriptionService } from 'src/app/portal/services/transcription/transcription.service';
+import { GovukTextareaComponent } from '@components/common/govuk-textarea/govuk-textarea.component';
+import { TranscriptionService } from '@services/transcription/transcription.service';
 
 @Component({
   selector: 'app-approve-transcript-buttons',

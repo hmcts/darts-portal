@@ -1,14 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
-import { TabsComponent } from '@common/tabs/tabs.component';
-import { DatatableColumn } from '@darts-types/index';
+import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
+import { TabsComponent } from '@components/common/tabs/tabs.component';
+import { transcriptStatusClassMap } from '@constants/transcript-status-class-map';
+import { DatatableColumn } from '@core-types/index';
+import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
-import { Hearing, TranscriptsRow } from '@portal-types/index';
-import { transcriptStatusClassMap } from 'src/app/constants/transcript-status-class-map';
-import { TabDirective } from 'src/app/directives/tab.directive';
+import { Annotations, Hearing, TranscriptsRow } from '@portal-types/index';
+import { AnnotationsService } from '@services/annotations/annotations.service';
+import { FileDownloadService } from '@services/file-download/file-download.service';
+import { UserService } from '@services/user/user.service';
 
 @Component({
   selector: 'app-hearing-results',
@@ -21,17 +25,23 @@ import { TabDirective } from 'src/app/directives/tab.directive';
     TabDirective,
     TableRowTemplateDirective,
     LuxonDatePipe,
+    GovukHeadingComponent,
   ],
   templateUrl: './hearing-results.component.html',
   styleUrls: ['./hearing-results.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HearingResultsComponent {
+  userService = inject(UserService);
+  annotationsService = inject(AnnotationsService);
+  fileDownloadService = inject(FileDownloadService);
   @Input() hearings: Hearing[] = [];
   @Input() transcripts: TranscriptsRow[] = [];
+  @Input() annotations: Annotations[] | null = [];
   caseId: number;
   hearingsColumns: DatatableColumn[] = [];
   transcriptColumns: DatatableColumn[] = [];
+  annotationColumns: DatatableColumn[] = [];
 
   transcriptStatusClassMap = transcriptStatusClassMap;
 
@@ -53,5 +63,21 @@ export class HearingResultsComponent {
       { name: 'Status', prop: 'status', sortable: true },
       { name: '', prop: '' },
     ];
+
+    this.annotationColumns = [
+      { name: 'Hearing date', prop: 'hearingDate', sortable: true },
+      { name: 'File name', prop: 'fileName', sortable: true },
+      { name: 'Format', prop: 'fileType', sortable: true },
+      { name: 'Date created', prop: 'uploadedTs', sortable: true },
+      { name: 'Comments', prop: 'annotationText', sortable: false },
+      { name: '', prop: '' },
+      { name: '', prop: '' },
+    ];
+  }
+
+  downloadAnnotation(annotationId: number, annotationDocumentId: number, fileName: string) {
+    this.annotationsService.downloadAnnotationDocument(annotationId, annotationDocumentId).subscribe((blob: Blob) => {
+      this.fileDownloadService.saveAs(blob, fileName);
+    });
   }
 }

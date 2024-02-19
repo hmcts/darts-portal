@@ -1,9 +1,13 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { Courthouse } from '@darts-types/index';
+import { Courthouse } from '@core-types/index';
 import {
+  Annotations,
+  AnnotationsData,
   Case,
   CaseData,
+  CaseRetentionChange,
+  CaseRetentionHistoryData,
   Hearing,
   HearingData,
   SearchFormValues,
@@ -11,8 +15,6 @@ import {
   TranscriptData,
 } from '@portal-types/index';
 import { DateTime, Settings } from 'luxon';
-import { CaseRetentionChange } from 'src/app/portal/models/case/case-retention-change.interface';
-import { CaseRetentionHistory } from 'src/app/portal/models/case/case-retention-history.interface';
 import {
   ADVANCED_SEARCH_CASE_PATH,
   CaseService,
@@ -21,6 +23,7 @@ import {
   GET_COURTHOUSES_PATH,
   GET_HEARINGS_PATH,
 } from './case.service';
+import { MappingService } from '@services/mapping/mapping.service';
 
 Settings.defaultZone = 'utc';
 
@@ -35,11 +38,9 @@ describe('CaseService', () => {
     courthouse: 'Swansea',
     case_number: 'CASE1001',
     defendants: ['Defendant Dave', 'Defendant Debbie'],
-    hearings: [],
     judges: ['Judge Judy', 'Judge Jones'],
     prosecutors: ['Polly Prosecutor'],
     defenders: ['Derek Defender'],
-    reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
     retain_until: '2023-08-10T11:23:24Z',
     case_closed_date_time: '',
     reporting_restrictions: [],
@@ -77,6 +78,51 @@ describe('CaseService', () => {
     },
   ];
 
+  const multipleMockAnnotations: AnnotationsData[] = [
+    {
+      annotation_id: 1,
+      hearing_id: 2,
+      hearing_date: '2023-12-14',
+      annotation_ts: '2023-12-15T12:00:00.000Z',
+      annotation_text: 'A summary notes of this annotation...',
+      annotation_documents: [
+        {
+          annotation_document_id: 1,
+          file_name: 'Annotation.doc',
+          file_type: 'DOC',
+          uploaded_by: 'Mr User McUserFace',
+          uploaded_ts: '2023-12-15T12:00:00.000Z',
+        },
+      ],
+    },
+  ];
+
+  const multipleMockAnnotationsDocuments: AnnotationsData[] = [
+    {
+      annotation_id: 1,
+      hearing_id: 2,
+      hearing_date: '2023-12-14',
+      annotation_ts: '2023-12-15T12:00:00.000Z',
+      annotation_text: 'A summary notes of this annotation...',
+      annotation_documents: [
+        {
+          annotation_document_id: 1,
+          file_name: 'Annotation.doc',
+          file_type: 'DOC',
+          uploaded_by: 'Mr User McUserFace',
+          uploaded_ts: '2023-12-15T12:00:00.000Z',
+        },
+        {
+          annotation_document_id: 2,
+          file_name: 'AnnotationBeta.doc',
+          file_type: 'DOC',
+          uploaded_by: 'Mr Bob Sponge',
+          uploaded_ts: '2023-12-15T14:00:00.000Z',
+        },
+      ],
+    },
+  ];
+
   const mockHearing: HearingData = {
     id: 2,
     date: '2024-09-01',
@@ -85,7 +131,7 @@ describe('CaseService', () => {
     transcript_count: 300,
   };
 
-  const mockHistory: CaseRetentionHistory = {
+  const mockHistory: CaseRetentionHistoryData = {
     retention_last_changed_date: '2023-10-11T00:18:00Z',
     retention_date: '2030-09-15',
     amended_by: 'Judge Phil',
@@ -97,7 +143,7 @@ describe('CaseService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [CaseService],
+      providers: [CaseService, MappingService],
     });
 
     service = TestBed.inject(CaseService);
@@ -143,11 +189,9 @@ describe('CaseService', () => {
       courthouse: 'Swansea',
       number: 'CASE1001',
       defendants: ['Defendant Dave', 'Defendant Debbie'],
-      hearings: [],
       judges: ['Judge Judy', 'Judge Jones'],
       prosecutors: ['Polly Prosecutor'],
       defenders: ['Derek Defender'],
-      reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
       retainUntil: '2023-08-10T11:23:24Z',
       closedDateTime: undefined,
       reportingRestrictions: [],
@@ -240,6 +284,82 @@ describe('CaseService', () => {
         transcriptCount: 300,
       },
     ]);
+  });
+
+  describe('#getCaseAnnotations', () => {
+    it('should map an annotation for a single annotation document', () => {
+      const mockCaseId = 123;
+      const mockAnnotations: AnnotationsData[] = multipleMockAnnotations;
+
+      let annotationsResponse!: Annotations[];
+
+      service.getCaseAnnotations(mockCaseId).subscribe((annotations) => {
+        annotationsResponse = annotations;
+      });
+
+      const req = httpMock.expectOne(`${GET_CASE_PATH}/${mockCaseId}/annotations`);
+      expect(req.request.method).toBe('GET');
+
+      req.flush(mockAnnotations);
+
+      expect(annotationsResponse).toEqual([
+        {
+          annotationId: 1,
+          hearingId: 2,
+          hearingDate: DateTime.fromISO('2023-12-14'),
+          annotationTs: DateTime.fromISO('2023-12-15T12:00:00.000Z'),
+          annotationText: 'A summary notes of this annotation...',
+          annotationDocumentId: 1,
+          fileName: 'Annotation.doc',
+          fileType: 'DOC',
+          uploadedBy: 'Mr User McUserFace',
+          uploadedTs: DateTime.fromISO('2023-12-15T12:00:00.000Z'),
+        },
+      ]);
+    });
+
+    it('should map an annotation for multiple annotation documents', () => {
+      const mockCaseId = 123;
+      const mockAnnotations: AnnotationsData[] = multipleMockAnnotationsDocuments;
+
+      let annotationsResponse!: Annotations[];
+
+      service.getCaseAnnotations(mockCaseId).subscribe((annotations) => {
+        annotationsResponse = annotations;
+      });
+
+      const req = httpMock.expectOne(`${GET_CASE_PATH}/${mockCaseId}/annotations`);
+      expect(req.request.method).toBe('GET');
+
+      req.flush(mockAnnotations);
+
+      expect(annotationsResponse).toEqual([
+        {
+          annotationId: 1,
+          hearingId: 2,
+          hearingDate: DateTime.fromISO('2023-12-14'),
+          annotationTs: DateTime.fromISO('2023-12-15T12:00:00.000Z'),
+          annotationText: 'A summary notes of this annotation...',
+          annotationDocumentId: 1,
+          fileName: 'Annotation.doc',
+          fileType: 'DOC',
+          uploadedBy: 'Mr User McUserFace',
+          uploadedTs: DateTime.fromISO('2023-12-15T12:00:00.000Z'),
+        },
+        {
+          annotationId: 1,
+          hearingId: 2,
+          hearingDate: DateTime.fromISO('2023-12-14'),
+          annotationTs: DateTime.fromISO('2023-12-15T12:00:00.000Z'),
+          annotationText: 'A summary notes of this annotation...',
+          annotationDocumentId: 2,
+          fileName: 'AnnotationBeta.doc',
+          fileType: 'DOC',
+          uploadedBy: 'Mr Bob Sponge',
+          uploadedTs: DateTime.fromISO('2023-12-15T14:00:00.000Z'),
+        },
+      ]);
+    });
   });
 
   describe('#searchCases', () => {
@@ -345,7 +465,7 @@ describe('CaseService', () => {
 
   it('#getCaseRetentionHistory', () => {
     const mockCaseId = 123;
-    const mock: CaseRetentionHistory[] = [mockHistory];
+    const mock: CaseRetentionHistoryData[] = [mockHistory];
 
     service.getCaseRetentionHistory(mockCaseId).subscribe((history) => {
       expect(history).toBeDefined();

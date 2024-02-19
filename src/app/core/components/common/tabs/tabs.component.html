@@ -1,0 +1,23 @@
+<nav class="moj-sub-navigation" aria-label="Sub navigation">
+  <ul class="moj-sub-navigation__list">
+    <li *ngFor="let tab of tabs" class="moj-sub-navigation__item">
+      <a
+        class="moj-sub-navigation__link"
+        [attr.aria-current]="tab.template === currentTab ? 'page' : null"
+        [attr.id]="tab.id || null"
+        href="#"
+        (click)="onTabClick($event, tab)"
+        >{{ tab.name }}
+        <ng-container *ngIf="tab.count">
+          <span [id]="tab.id" class="moj-notification-badge">
+            {{ tab.count }}
+          </span>
+        </ng-container>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<div class="tab-container">
+  <ng-container [ngTemplateOutlet]="currentTab"></ng-container>
+</div>

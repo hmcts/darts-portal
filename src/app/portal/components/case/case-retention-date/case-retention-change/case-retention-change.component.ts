@@ -1,14 +1,13 @@
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DatepickerComponent } from '@common/datepicker/datepicker.component';
 import { GovukTextareaComponent } from '@common/govuk-textarea/govuk-textarea.component';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
-import { UserService } from '@services/user/user.service';
-import { beforeDateValidator } from '@validators/before-date.validator';
-import { DateTime } from 'luxon';
 import { CaseRetentionPageState } from 'src/app/portal/models/case/case-retention-page-state.type';
+import { CaseService } from '@services/case/case.service';
+import { DateTime, Duration } from 'luxon';
 
 @Component({
   selector: 'app-case-retention-change',
@@ -25,21 +24,22 @@ import { CaseRetentionPageState } from 'src/app/portal/models/case/case-retentio
   styleUrls: ['./case-retention-change.component.scss'],
 })
 export class CaseRetentionChangeComponent {
+  @Input() caseId!: number;
   @Input() state!: CaseRetentionPageState;
-  @Input() currentRetentionDate!: string | null;
-  @Input() originalRetentionDate!: string | null;
 
   @Output() stateChange = new EventEmitter<CaseRetentionPageState>();
   @Output() retentionDateChange = new EventEmitter<Date>();
   @Output() retentionReasonChange = new EventEmitter<string>();
   @Output() retentionPermanentChange = new EventEmitter<boolean>();
 
-  userService = inject(UserService);
+  private datePageFormat = 'dd/MM/yyyy';
+  private dateApiFormat = 'yyyy-MM-dd';
+
   retainReasonFormControl = new FormControl('');
   retainOptionFormControl = new FormControl('');
   retainDateFormControl = new FormControl();
   datePatternValidator = Validators.pattern(/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/);
-  datePipe = inject(DatePipe);
+  caseService = inject(CaseService);
 
   retentionCharacterLimit = 200;
   errors: { fieldId: string; message: string }[] = [];
@@ -70,15 +70,6 @@ export class CaseRetentionChangeComponent {
       this.errorDate = 'You have not entered a recognised date in the correct format (for example 31/01/2023)';
       return;
     }
-    if (
-      !this.userService.hasRoles(['ADMIN', 'JUDGE']) &&
-      beforeDateValidator(this.retainDateFormControl, this.currentRetentionDate)
-    ) {
-      this.errorDate =
-        'You do not have permission to reduce the current retention date. Please refer to the DARTS retention policy guidance';
-    } else if (beforeDateValidator(this.retainDateFormControl, this.originalRetentionDate)) {
-      this.errorDate = `You cannot set retention date earlier than ${this.originalRetentionDate}`;
-    }
     return;
   }
 
@@ -91,25 +82,14 @@ export class CaseRetentionChangeComponent {
   onConfirm() {
     this.errors = [];
     this.retainOptionFormControl.markAsDirty();
+    // Check an option has been selected
     if (!this.retainOptionFormControl.value) {
       this.errors.push({
         fieldId: 'change-radios',
         message: this.errorNoOption,
       });
     }
-    if (this.retainOptionFormControl.value === 'date') {
-      this.onChangeDate();
-      if (this.errorDate) {
-        this.errors.push({
-          fieldId: 'retention-date',
-          message: this.errorDate,
-        });
-      }
-    } else {
-      // Permanent - Add 99 years to today's date
-      const date = DateTime.now().plus({ years: 99 });
-      this.retainDateFormControl.setValue(date.toFormat('dd/MM/yyyy'));
-    }
+    // Check a reason has been provided
     if (!this.retainReasonFormControl.value) {
       this.retainReasonFormControl.markAsDirty();
       this.errors.push({
@@ -117,17 +97,76 @@ export class CaseRetentionChangeComponent {
         message: this.errorNoReason,
       });
     }
-    if (!this.errors.length) {
-      this.retentionDateChange.emit(this.dateFromString(this.retainDateFormControl.value));
-      this.retentionReasonChange.emit(this.retainReasonFormControl.value || '');
-      this.retentionPermanentChange.emit(!(this.retainOptionFormControl.value === 'date'));
-      this.stateChange.emit('Confirm');
+    const isPermanent = !(this.retainOptionFormControl.value === 'date');
+    // Check a date has been provided
+    if (!isPermanent) {
+      this.onChangeDate();
+      if (this.errorDate) {
+        this.errors.push({
+          fieldId: 'retention-date',
+          message: this.errorDate,
+        });
+      }
     }
-  }
-
-  dateFromString(value: string) {
-    // Convert UK format date string to Date object
-    return DateTime.fromFormat(value, 'dd/MM/yyyy', { setZone: true }).toJSDate();
+    if (!this.errors.length) {
+      // As long as there's no other errors, make the call
+      this.caseService
+        .postCaseRetentionDateValidate({
+          case_id: this.caseId,
+          retention_date: this.retainDateFormControl.value
+            ? DateTime.fromFormat(this.retainDateFormControl.value, this.datePageFormat).toFormat(this.dateApiFormat)
+            : undefined,
+          is_permanent_retention: isPermanent,
+          // Comments do appear to be required for this call
+          comments: this.retainReasonFormControl.value || '',
+        })
+        .subscribe({
+          next: (response) => {
+            if (response.retention_date) {
+              const retention_date = DateTime.fromFormat(response.retention_date, this.dateApiFormat, {
+                setZone: true,
+              });
+              // Convert to JS date and place into the EventEmitter
+              this.retentionDateChange.emit(retention_date.toJSDate());
+              this.retentionReasonChange.emit(this.retainReasonFormControl.value || '');
+              this.retentionPermanentChange.emit(isPermanent);
+              this.stateChange.emit('Confirm');
+            }
+          },
+          error: (err) => {
+            if (err?.error?.max_duration) {
+              // Sanitise the output to something human readable,
+              // For example: 1 Year, 2 Months and 3 Days
+              const max_duration_split = err.error.max_duration.split(/[A-Z]/);
+              const years = parseInt(max_duration_split[0]);
+              // Don't include months which are 0
+              const months = parseInt(max_duration_split[1]) || undefined;
+              // Don't include days which are 0
+              const days = parseInt(max_duration_split[2]) || undefined;
+              const duration = Duration.fromObject({
+                years,
+                months,
+                days,
+              });
+              this.errorDate = `You cannot retain a case for more than ${duration.toHuman({ listStyle: 'long' })} after the case closed`;
+            } else if (err?.error?.latest_automated_retention_date) {
+              // Sanitise the output to something human readable
+              const earliestDate = DateTime.fromFormat(err.error.latest_automated_retention_date, this.dateApiFormat, {
+                setZone: true,
+              });
+              this.errorDate = `You cannot set retention date earlier than ${earliestDate.toFormat(this.datePageFormat)}`;
+            } else {
+              // Otherwise, the only other error can be a permissions issue
+              this.errorDate = `You do not have permission to reduce the current retention date. Please refer to the DARTS retention policy guidance`;
+            }
+            this.errors.push({
+              fieldId: 'retention-date',
+              message: this.errorDate,
+            });
+            return;
+          },
+        });
+    }
   }
 
   onCancel(event: Event) {

@@ -1,8 +1,12 @@
+import { Annotations } from '@portal-types/annotations/annotations.type';
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { HearingAudio, HearingEvent, PostAudioRequest } from '@darts-types/index';
+import { AnnotationsData, HearingAudio, HearingEvent, PostAudioRequest } from '@portal-types/index';
 import { HearingService } from './hearing.service';
+import { DateTime } from 'luxon';
+
+export const GET_HEARINGS_PATH = 'api/hearings';
 
 describe('HearingService', () => {
   let service: HearingService;
@@ -139,6 +143,125 @@ describe('HearingService', () => {
       req.flush(mockResponse);
 
       expect(response).toEqual(mockResponse);
+    });
+  });
+
+  describe('#getAnnotations', () => {
+    it('should map an annotation for a single annotation document', () => {
+      const multipleMockAnnotations: AnnotationsData[] = [
+        {
+          annotation_id: 1,
+          hearing_id: 2,
+          hearing_date: '2023-12-14',
+          annotation_ts: '2023-12-15T12:00:00.000Z',
+          annotation_text: 'A summary notes of this annotation...',
+          annotation_documents: [
+            {
+              annotation_document_id: 1,
+              file_name: 'Annotation.doc',
+              file_type: 'DOC',
+              uploaded_by: 'Mr User McUserFace',
+              uploaded_ts: '2023-12-15T12:00:00.000Z',
+            },
+          ],
+        },
+      ];
+      const mockHearingId = 2;
+      const mockAnnotations: AnnotationsData[] = multipleMockAnnotations;
+
+      let annotationsResponse!: Annotations[];
+
+      service.getAnnotations(mockHearingId).subscribe((annotations) => {
+        annotationsResponse = annotations;
+      });
+
+      const req = httpTestingController.expectOne(`${GET_HEARINGS_PATH}/${mockHearingId}/annotations`);
+      expect(req.request.method).toBe('GET');
+
+      req.flush(mockAnnotations);
+
+      expect(annotationsResponse).toEqual([
+        {
+          annotationId: 1,
+          hearingId: 2,
+          hearingDate: DateTime.fromISO('2023-12-14'),
+          annotationTs: DateTime.fromISO('2023-12-15T12:00:00.000Z'),
+          annotationText: 'A summary notes of this annotation...',
+          annotationDocumentId: 1,
+          fileName: 'Annotation.doc',
+          fileType: 'DOC',
+          uploadedBy: 'Mr User McUserFace',
+          uploadedTs: DateTime.fromISO('2023-12-15T12:00:00.000Z'),
+        },
+      ]);
+    });
+
+    it('should map an annotation for multiple annotation documents', () => {
+      const multipleMockAnnotationsDocuments: AnnotationsData[] = [
+        {
+          annotation_id: 1,
+          hearing_id: 2,
+          hearing_date: '2023-12-14',
+          annotation_ts: '2023-12-15T12:00:00.000Z',
+          annotation_text: 'A summary notes of this annotation...',
+          annotation_documents: [
+            {
+              annotation_document_id: 1,
+              file_name: 'Annotation.doc',
+              file_type: 'DOC',
+              uploaded_by: 'Mr User McUserFace',
+              uploaded_ts: '2023-12-15T12:00:00.000Z',
+            },
+            {
+              annotation_document_id: 2,
+              file_name: 'AnnotationBeta.doc',
+              file_type: 'DOC',
+              uploaded_by: 'Mr Bob Sponge',
+              uploaded_ts: '2023-12-15T14:00:00.000Z',
+            },
+          ],
+        },
+      ];
+      const mockHearingId = 2;
+      const mockAnnotations: AnnotationsData[] = multipleMockAnnotationsDocuments;
+
+      let annotationsResponse!: Annotations[];
+
+      service.getAnnotations(mockHearingId).subscribe((annotations) => {
+        annotationsResponse = annotations;
+      });
+
+      const req = httpTestingController.expectOne(`${GET_HEARINGS_PATH}/${mockHearingId}/annotations`);
+      expect(req.request.method).toBe('GET');
+
+      req.flush(mockAnnotations);
+
+      expect(annotationsResponse).toEqual([
+        {
+          annotationId: 1,
+          hearingId: 2,
+          hearingDate: DateTime.fromISO('2023-12-14'),
+          annotationTs: DateTime.fromISO('2023-12-15T12:00:00.000Z'),
+          annotationText: 'A summary notes of this annotation...',
+          annotationDocumentId: 1,
+          fileName: 'Annotation.doc',
+          fileType: 'DOC',
+          uploadedBy: 'Mr User McUserFace',
+          uploadedTs: DateTime.fromISO('2023-12-15T12:00:00.000Z'),
+        },
+        {
+          annotationId: 1,
+          hearingId: 2,
+          hearingDate: DateTime.fromISO('2023-12-14'),
+          annotationTs: DateTime.fromISO('2023-12-15T12:00:00.000Z'),
+          annotationText: 'A summary notes of this annotation...',
+          annotationDocumentId: 2,
+          fileName: 'AnnotationBeta.doc',
+          fileType: 'DOC',
+          uploadedBy: 'Mr Bob Sponge',
+          uploadedTs: DateTime.fromISO('2023-12-15T14:00:00.000Z'),
+        },
+      ]);
     });
   });
 });

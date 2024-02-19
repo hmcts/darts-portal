@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { GovukTextareaComponent } from '@common/govuk-textarea/govuk-textarea.component';
+import { GovukTextareaComponent } from '@components/common/govuk-textarea/govuk-textarea.component';
 import { JoinPipe } from '@pipes/join';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { Case, Hearing, TranscriptionType, Urgency } from '@portal-types/index';

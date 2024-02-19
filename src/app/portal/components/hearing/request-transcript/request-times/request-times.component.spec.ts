@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HearingEvent } from '@darts-types/index';
+import { HearingEvent } from '@portal-types/index';
 import { DateTime } from 'luxon';
 
 import { RequestTimesComponent } from './request-times.component';

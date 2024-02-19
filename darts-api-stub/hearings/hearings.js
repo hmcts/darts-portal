@@ -1,6 +1,13 @@
 const express = require('express');
+const { localArray } = require('../localArray');
 
 const router = express.Router();
+
+const resBody104 = {
+  type: 'CASE_104',
+  title: 'The requested case cannot be found',
+  status: 404,
+};
 
 const transcriptOne = [
   {
@@ -70,6 +77,7 @@ const transcriptTwo = [
     status: 'Complete',
   },
 ];
+
 const events = [
   {
     id: -1,
@@ -114,6 +122,12 @@ const events = [
     text: 'Record: New Case',
   },
 ];
+
+// Fetch the annotations from the case module
+const getAnnotationsByHearingId = (hearingId) => {
+  const annotations = localArray('annotations');
+  return annotations.value.filter((annotation) => annotation.hearing_id === parseInt(hearingId));
+};
 
 router.get('/:hearingId/events', (req, res) => {
   switch (req.params.hearingId) {
@@ -162,13 +176,8 @@ router.get('/:hearingId/events', (req, res) => {
 
 // transcripts stub data
 router.get('/:hearingId/transcripts', (req, res) => {
-  switch (req.params.hearingId) {
+  switch (req.params?.hearingId) {
     case '404':
-      const resBody104 = {
-        type: 'CASE_104',
-        title: 'The requested case cannot be found',
-        status: 404,
-      };
       res.status(404).send(resBody104);
       break;
     case '1':
@@ -179,6 +188,21 @@ router.get('/:hearingId/transcripts', (req, res) => {
       break;
     default:
       res.send([]);
+      break;
+  }
+});
+
+// annotations stub data
+router.get('/:hearingId/annotations', (req, res) => {
+  const hearingId = req.params?.hearingId;
+  switch (hearingId) {
+    case undefined:
+    case '404':
+      res.status(404).send(resBody104);
+      break;
+    default:
+      const annotations = getAnnotationsByHearingId(hearingId);
+      res.send(annotations);
       break;
   }
 });

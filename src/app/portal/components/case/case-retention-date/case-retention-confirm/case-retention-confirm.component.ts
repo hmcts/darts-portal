@@ -29,7 +29,7 @@ export class CaseRententionConfirmComponent {
   @Input() caseNumber!: string | undefined;
   @Input() caseCourthouse!: string | undefined;
   @Input() caseDefendants!: string[] | undefined;
-  @Input() newRetentionDate!: Date | null;
+  @Input() newRetentionDate!: Date;
   @Input() newRetentionReason!: string;
   @Input() newRetentionPermanent!: boolean;
 
@@ -47,6 +47,10 @@ export class CaseRententionConfirmComponent {
       'Defendant(s)': this.caseDefendants,
     };
     return details;
+  }
+
+  getDate() {
+    return `${this.datePipe.transform(this.newRetentionDate, 'dd MMM yyyy')} ${this.newRetentionPermanent ? ' (Permanent)' : ''}`;
   }
 
   onConfirm() {

@@ -4,6 +4,7 @@
   <app-reporting-restriction
     class="margin-bottom"
     [restrictions]="vm.case.reportingRestrictions"
+    [hearingId]="vm.hearing?.id"
   ></app-reporting-restriction>
 
   <ng-container *ngIf="step === 1">

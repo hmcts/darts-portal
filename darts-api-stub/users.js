@@ -1,6 +1,6 @@
 const { REQUESTER, APPROVER, TRANSCRIBER, JUDGE, ADMIN } = require('./roles');
 
-module.exports = [
+const stubUsers = [
   {
     name: 'Eric Bristow',
     code: 'requestor',
@@ -74,3 +74,19 @@ module.exports = [
     },
   },
 ];
+
+const userIdhasAnyRoles = (roles, userId) => {
+  // If user id has any of these roles
+  const user = stubUsers.find((user) => user.userState.userId == userId);
+  if (!user) return false;
+  return user.userState.roles.some((role) => roles.includes(role));
+};
+
+const getUserNamebyUserId = (userId) => {
+  // If user id has any of these roles
+  const user = stubUsers.find((user) => user.userState.userId == userId);
+  if (!user) return false;
+  return user.name;
+};
+
+module.exports = { stubUsers, userIdhasAnyRoles, getUserNamebyUserId };

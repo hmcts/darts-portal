@@ -33,7 +33,7 @@ describe('Request audio', () => {
     cy.get('#end-time-minutes-input').should('have.value', '32');
     cy.get('#end-time-seconds-input').should('have.value', '24');
 
-    cy.get('#download-radio').click();
+    cy.get('#download-radio').click({ force: true });
 
     cy.get('.button > .govuk-button').contains('Get Audio').click();
 
@@ -73,7 +73,7 @@ describe('Request audio', () => {
     cy.get('#end-time-minutes-input').should('have.value', '00');
     cy.get('#end-time-seconds-input').should('have.value', '00');
 
-    cy.get('#download-radio').click();
+    cy.get('#download-radio').click({ force: true });
 
     cy.get('.button > .govuk-button').contains('Get Audio').click();
 
@@ -104,7 +104,7 @@ describe('Request audio', () => {
     cy.get('#end-time-minutes-input').should('have.value', '00');
     cy.get('#end-time-seconds-input').should('have.value', '00');
 
-    cy.get('#download-radio').click();
+    cy.get('#download-radio').click({ force: true });
 
     cy.get('.button > .govuk-button').contains('Get Audio').click();
 

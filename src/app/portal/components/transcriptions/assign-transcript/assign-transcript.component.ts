@@ -7,6 +7,7 @@ import { DetailsTableComponent } from '@common/details-table/details-table.compo
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
+import { ConflictComponent } from '@components/error/conflict/conflict.component';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { TranscriptionDetails } from '@portal-types/index';
@@ -14,7 +15,6 @@ import { ErrorMessageService } from '@services/error/error-message.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { map } from 'rxjs/internal/operators/map';
 import { tap } from 'rxjs/internal/operators/tap';
-import { ConflictComponent } from '../../../../components/error/conflict/conflict.component'; //TO DO update when core introduced
 
 @Component({
   selector: 'app-assign-transcript',

@@ -1,18 +1,32 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
-import { DataTableComponent } from '@common/data-table/data-table.component';
-import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
-import { TabsComponent } from '@common/tabs/tabs.component';
-import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
+import { BreadcrumbComponent } from '@components/common/breadcrumb/breadcrumb.component';
+import { DataTableComponent } from '@components/common/data-table/data-table.component';
+import { ReportingRestrictionComponent } from '@components/common/reporting-restriction/reporting-restriction.component';
+import { TabsComponent } from '@components/common/tabs/tabs.component';
+import { ValidationErrorSummaryComponent } from '@components/common/validation-error-summary/validation-error-summary.component';
 import { ForbiddenComponent } from '@components/error/forbidden/forbidden.component';
-import { DatatableColumn, ErrorSummaryEntry, ReportingRestriction } from '@darts-types/index';
+import { DatatableColumn, ErrorSummaryEntry, ReportingRestriction } from '@core-types/index';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { JoinPipe } from '@pipes/join';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
+import { AppConfigService } from '@services/app-config/app-config.service';
+import { ErrorMessageService } from '@services/error/error-message.service';
+import { HeaderService } from '@services/header/header.service';
+import { MappingService } from '@services/mapping/mapping.service';
+import { UserService } from '@services/user/user.service';
+import { DateTime } from 'luxon';
+import { combineLatest, map, of, shareReplay } from 'rxjs';
+import { CaseService } from 'src/app/portal/services/case/case.service';
+import { HearingService } from 'src/app/portal/services/hearing/hearing.service';
+import { EventsAndAudioComponent } from './events-and-audio/events-and-audio.component';
+import { HearingFileComponent } from './hearing-file/hearing-file.component';
+import { OrderConfirmationComponent } from './order-confirmation/order-confirmation.component';
+import { RequestPlaybackAudioComponent } from './request-playback-audio/request-playback-audio.component';
+import { LoadingComponent } from '@common/loading/loading.component';
 import {
   AudioEventRow,
   HearingPageState,
@@ -20,20 +34,8 @@ import {
   PostAudioResponse,
   TranscriptsRow,
 } from '@portal-types/index';
-import { AppConfigService } from '@services/app-config/app-config.service';
-import { ErrorMessageService } from '@services/error/error-message.service';
-import { HeaderService } from '@services/header/header.service';
-import { MappingService } from '@services/mapping/mapping.service';
-import { UserService } from '@services/user/user.service';
-import { DateTime } from 'luxon';
-import { combineLatest, map, shareReplay } from 'rxjs';
-import { CaseService } from 'src/app/portal/services/case/case.service';
-import { HearingService } from 'src/app/portal/services/hearing/hearing.service';
-import { LoadingComponent } from '../../../components/common/loading/loading.component';
-import { EventsAndAudioComponent } from './events-and-audio/events-and-audio.component';
-import { HearingFileComponent } from './hearing-file/hearing-file.component';
-import { OrderConfirmationComponent } from './order-confirmation/order-confirmation.component';
-import { RequestPlaybackAudioComponent } from './request-playback-audio/request-playback-audio.component';
+import { AnnotationService } from '@services/annotation/annotation.service';
+import { FileDownloadService } from '@services/file-download/file-download.service';
 
 @Component({
   selector: 'app-hearing',
@@ -65,6 +67,8 @@ export class HearingComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private caseService = inject(CaseService);
   private appConfigService = inject(AppConfigService);
+  annotationService = inject(AnnotationService);
+  fileDownloadService = inject(FileDownloadService);
   hearingService = inject(HearingService);
   headerService = inject(HeaderService);
   userService = inject(UserService);
@@ -92,6 +96,15 @@ export class HearingComponent implements OnInit {
     { name: '', prop: '' },
   ];
 
+  annotationColumns: DatatableColumn[] = [
+    { name: 'File name', prop: 'fileName', sortable: true },
+    { name: 'Format', prop: 'fileType', sortable: true },
+    { name: 'Date created', prop: 'uploadedTs', sortable: true },
+    { name: 'Comments', prop: 'annotationText', sortable: false },
+    { name: '', prop: '' },
+    { name: '', prop: '' },
+  ];
+
   statusTagStyleMap: { [key: string]: string } = {
     Requested: 'govuk-tag--blue',
     'Awaiting Authorisation': 'govuk-tag--yellow',
@@ -109,6 +122,11 @@ export class HearingComponent implements OnInit {
   case$ = this.caseService.getCase(this.caseId).pipe(shareReplay(1));
   hearing$ = this.caseService.getHearingById(this.caseId, this.hearingId);
   audio$ = this.hearingService.getAudio(this.hearingId);
+  // Return null Observable if user is not Admin or Judge
+  annotations$ =
+    this.userService.isJudge() || this.userService.isAdmin()
+      ? this.hearingService.getAnnotations(this.hearingId)
+      : of(null);
   events$ = this.hearingService.getEvents(this.hearingId);
   restrictions$ = this.case$.pipe(
     map((c) => this.filterRestrictionsByHearingId(c.reportingRestrictions ?? [], this.hearingId))
@@ -120,6 +138,7 @@ export class HearingComponent implements OnInit {
     case: this.case$,
     hearing: this.hearing$,
     audios: this.audio$,
+    annotations: this.annotations$,
     events: this.events$,
     hearingRestrictions: this.restrictions$,
     error: this.error$,
@@ -143,7 +162,7 @@ export class HearingComponent implements OnInit {
   ngOnInit(): void {
     const tab = this.route.snapshot.queryParams.tab;
 
-    if (tab === 'Transcripts') {
+    if (tab === 'Transcripts' || tab === 'Annotations') {
       this.defaultTab = tab;
     }
 
@@ -216,6 +235,16 @@ export class HearingComponent implements OnInit {
         this.state = 'OrderFailure';
       },
     });
+  }
+
+  onDownloadClicked(annotationId: number, annotationDocumentId: number, fileName: string) {
+    this.annotationService.downloadAnnotationDocument(annotationId, annotationDocumentId).subscribe((blob: Blob) => {
+      this.fileDownloadService.saveAs(blob, fileName);
+    });
+  }
+
+  onDeleteClicked() {
+    // Placeholder for DMP-1612
   }
 
   filterRestrictionsByHearingId(restrictions: ReportingRestriction[], hearingId: number): ReportingRestriction[] {

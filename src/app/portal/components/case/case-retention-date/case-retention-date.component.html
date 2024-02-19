@@ -56,10 +56,12 @@
         [rows]="vm.retentionHistory"
       >
         <ng-template [tableRowTemplate]="vm.retentionHistory" let-row>
-          <td class="govuk-table__cell">{{ row.retention_last_changed_date | date: 'dd MMM yyyy HH:mm:ss' }}</td>
-          <td class="govuk-table__cell">{{ row.retention_date | date: 'dd MMM yyyy' }}</td>
-          <td class="govuk-table__cell">{{ row.amended_by }}</td>
-          <td class="govuk-table__cell">{{ row.retention_policy_applied }}</td>
+          <td class="govuk-table__cell">
+            {{ row.retentionLastChangedDate | luxonDate: 'dd MMM yyyy HH:mm:ss' }}
+          </td>
+          <td class="govuk-table__cell">{{ row.retentionDate | luxonDate: 'dd MMM yyyy' }}</td>
+          <td class="govuk-table__cell">{{ row.amendedBy }}</td>
+          <td class="govuk-table__cell">{{ row.retentionPolicyApplied }}</td>
           <td class="govuk-table__cell">{{ row.comments }}</td>
 
           <td class="govuk-table__cell">
@@ -84,8 +86,7 @@
     <div [hidden]="state === 'Confirm'" class="order-confirmation">
       <app-case-retention-change
         [state]="state"
-        [currentRetentionDate]="vm.caseDetails.case_retain_until_date_time"
-        [originalRetentionDate]="getOriginalRetentionDateString(vm.retentionHistory)"
+        [caseId]="caseId"
         (stateChange)="onStateChanged($event)"
         (retentionDateChange)="onRetentionDateChanged($event)"
         (retentionReasonChange)="onRetentionReasonChanged($event)"

@@ -4,14 +4,14 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Navigation, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { AudioPlayerComponent } from '@common/audio-player/audio-player.component';
-import { PlayButtonComponent } from '@common/play-button/play-button.component';
+import { AudioPlayerComponent } from '@components/common/audio-player/audio-player.component';
+import { PlayButtonComponent } from '@components/common/play-button/play-button.component';
+import { HearingEvent } from '@portal-types/hearing/hearing-event.interface';
 import { Case, HearingEventRow, TransformedMedia } from '@portal-types/index';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { ErrorMessageService } from '@services/error/error-message.service';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
-import { HearingEvent } from 'src/app/portal/models/hearing/hearing-event.interface';
 import { AudioRequestService } from 'src/app/portal/services/audio-request/audio-request.service';
 import { CaseService } from 'src/app/portal/services/case/case.service';
 import { HearingService } from 'src/app/portal/services/hearing/hearing.service';
@@ -93,14 +93,13 @@ describe('AudioViewComponent', () => {
     courthouse: 'Swansea',
     defendants: ['Defendant Dave'],
     judges: ['Judge Judy'],
-    reportingRestriction: 'Section 4(2) of the Contempt of Court Act 1981',
-    hearings: [
+    reportingRestrictions: [
       {
-        id: 1,
-        date: DateTime.fromISO('2023-08-10'),
-        courtroom: '1',
-        judges: ['Judge Judy'],
-        transcriptCount: 0,
+        hearing_id: 1,
+        event_id: 1,
+        event_name: 'Section 4(2) of the Contempt of Court Act 1981',
+        event_text: '',
+        event_ts: '2023-08-10T09:00:00Z',
       },
     ],
   };

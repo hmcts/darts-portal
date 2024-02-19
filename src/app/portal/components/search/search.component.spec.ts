@@ -3,16 +3,14 @@ import { ComponentFixture, TestBed, fakeAsync, flush, tick } from '@angular/core
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { CourthouseComponent } from '@common/courthouse/courthouse.component';
-import { Courthouse } from '@darts-types/courthouse.interface';
-import { ErrorMessage } from '@darts-types/error-message.interface';
-import { ErrorSummaryEntry } from '@darts-types/index';
+import { Courthouse, ErrorMessage, ErrorSummaryEntry } from '@core-types/index';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
+import { CaseService } from '@services/case/case.service';
 import { ErrorMessageService } from '@services/error/error-message.service';
 import { HeaderService } from '@services/header/header.service';
 import { of, throwError } from 'rxjs';
-import { CaseService } from 'src/app/portal/services/case/case.service';
+import { CourthouseComponent } from 'src/app/core/components/common/courthouse/courthouse.component';
 import { ResultsComponent } from './results/results.component';
 import { SearchComponent } from './search.component';
 

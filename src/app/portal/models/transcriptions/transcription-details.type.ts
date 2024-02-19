@@ -1,4 +1,4 @@
-import { ReportingRestriction } from '@darts-types/reporting-restriction.interface';
+import { ReportingRestriction } from '@core-types/reporting-restriction/reporting-restriction.interface';
 import { DateTime } from 'luxon';
 
 export type TranscriptionDetails = {
