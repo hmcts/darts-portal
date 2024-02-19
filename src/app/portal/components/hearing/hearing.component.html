@@ -96,6 +96,7 @@
                 class="govuk-button govuk-button--secondary"
                 data-module="govuk-button"
                 [routerLink]="['./add-annotation']"
+                [state]="{ caseId: vm.case.id.toString(), caseNumber: vm.case.number, hearingDate: vm.hearing?.date }"
               >
                 Upload annotation
               </button>
