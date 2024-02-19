@@ -44,6 +44,7 @@ describe('HearingComponent', () => {
   };
   const fakeAnnotationService = {
     downloadAnnotationDocument: jest.fn().mockReturnValue(of({})),
+    deleteAnnotation: jest.fn().mockReturnValue(of({})),
   };
 
   const mockActivatedRoute = {
@@ -462,6 +463,32 @@ describe('HearingComponent', () => {
       ];
       component.onValidationError(mockErrorSummary);
       expect(component.errorSummary).toEqual(mockErrorSummary);
+    });
+  });
+
+  describe('#onDeleteClicked', () => {
+    it('should set the ID in the selectedAnnotationsforDeletion array', () => {
+      component.onDeleteClicked(123);
+      expect(component.selectedAnnotationsforDeletion).toEqual([123]);
+    });
+  });
+
+  describe('#onDeleteConfirmed', () => {
+    it('should set the ID in the selectedAnnotationsforDeletion array', () => {
+      const annotationId = 123;
+      component.onDeleteClicked(annotationId);
+      component.onDeleteConfirmed();
+      expect(fakeAnnotationService.deleteAnnotation).toHaveBeenCalledWith(annotationId);
+    });
+  });
+
+  describe('#onDeleteConfirmed', () => {
+    it('should clear the ID in selectedAnnotationsforDeletion array', () => {
+      const ids = [123, 321];
+      component.selectedAnnotationsforDeletion = ids;
+      expect(component.selectedAnnotationsforDeletion).toEqual(ids);
+      component.onDeleteCancelled();
+      expect(component.selectedAnnotationsforDeletion).toEqual([]);
     });
   });
 
