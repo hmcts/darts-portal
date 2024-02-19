@@ -115,14 +115,28 @@ describe('Annotations', () => {
         expect(rows.length).equal(2); // 2 including header row as there's only one entry
       });
     const fileName = 'AnnotationBeta.doc';
+    // Download the annotation
     cy.get('#annotationsTable')
       .contains(fileName)
       .parent('tr')
       .then((row) => {
         cy.wrap(row).find('td').contains('Download').click();
       });
-
     cy.readFile(path.join(downloadsFolder, fileName)).should('exist');
+
+    // Delete the annotation
+    cy.get('#annotationsTable')
+      .contains(fileName)
+      .parent('tr')
+      .then((row) => {
+        cy.wrap(row).find('td').contains('Delete').click();
+      });
+
+    cy.contains('Are you sure you want to delete this item?');
+    cy.contains('Yes - delete').click();
+
+    cy.get('#no-data-message').should('contain', 'There are no annotations for this hearing.');
+
     cy.a11y();
   });
 

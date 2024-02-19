@@ -246,8 +246,8 @@ export class HearingComponent implements OnInit {
     });
   }
 
-  onDeleteClicked(id: number) {
-    this.selectedAnnotationsforDeletion = [id];
+  onDeleteClicked(annotationId: number) {
+    this.selectedAnnotationsforDeletion = [annotationId];
   }
 
   onDeleteConfirmed() {

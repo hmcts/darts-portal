@@ -474,7 +474,7 @@ describe('HearingComponent', () => {
   });
 
   describe('#onDeleteConfirmed', () => {
-    it('should set the ID in the selectedAnnotationsforDeletion array', () => {
+    it('should use the IDs in the selectedAnnotationsforDeletion array and call the backend', () => {
       const annotationId = 123;
       component.onDeleteClicked(annotationId);
       component.onDeleteConfirmed();
