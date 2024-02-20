@@ -57,8 +57,7 @@
   display: inline-block;
 }
 
-tr:has(button.govuk-button--secondary),
-tr:has(app-audio-player),
+tr:has(td.audio-row),
 tr:has(app-play-button.isPlaying) {
   background-color: #e8f1f8;
 }
