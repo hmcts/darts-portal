@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
 import { FileUploadComponent } from '@common/file-upload/file-upload.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -22,6 +22,7 @@ import { DateTime } from 'luxon';
     FileUploadComponent,
     ReactiveFormsModule,
     GovukTextareaComponent,
+    RouterLink,
   ],
   templateUrl: './add-annotation.component.html',
   styleUrl: './add-annotation.component.scss',
