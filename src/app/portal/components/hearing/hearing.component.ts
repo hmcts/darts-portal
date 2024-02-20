@@ -36,6 +36,7 @@ import {
 } from '@portal-types/index';
 import { AnnotationService } from '@services/annotation/annotation.service';
 import { FileDownloadService } from '@services/file-download/file-download.service';
+import { DeleteComponent } from '@common/delete/delete.component';
 
 @Component({
   selector: 'app-hearing',
@@ -61,6 +62,7 @@ import { FileDownloadService } from '@services/file-download/file-download.servi
     TableRowTemplateDirective,
     JoinPipe,
     LuxonDatePipe,
+    DeleteComponent,
   ],
 })
 export class HearingComponent implements OnInit {
@@ -83,6 +85,7 @@ export class HearingComponent implements OnInit {
   transcripts: TranscriptsRow[] = [];
   rows: AudioEventRow[] = [];
   defaultTab = 'Events and Audio';
+  selectedAnnotationsforDeletion: number[] = [];
 
   public transcripts$ = this.caseService
     .getHearingTranscripts(this.hearingId)
@@ -243,8 +246,31 @@ export class HearingComponent implements OnInit {
     });
   }
 
-  onDeleteClicked() {
-    // Placeholder for DMP-1612
+  onDeleteClicked(annotationId: number) {
+    this.selectedAnnotationsforDeletion = [annotationId];
+  }
+
+  onDeleteConfirmed() {
+    this.selectedAnnotationsforDeletion.forEach((annotationId) => {
+      this.annotationService.deleteAnnotation(annotationId).subscribe(() => {
+        this.data$ = combineLatest({
+          case: this.case$,
+          hearing: this.hearing$,
+          audios: this.audio$,
+          annotations: this.annotations$,
+          events: this.events$,
+          hearingRestrictions: this.restrictions$,
+          error: this.error$,
+        });
+        this.selectedAnnotationsforDeletion = [];
+        this.defaultTab = 'Annotations';
+      });
+    });
+  }
+
+  onDeleteCancelled() {
+    this.selectedAnnotationsforDeletion = [];
+    this.defaultTab = 'Annotations';
   }
 
   downloadAnnotationTemplate(caseId: string, hearingDate: DateTime | undefined) {

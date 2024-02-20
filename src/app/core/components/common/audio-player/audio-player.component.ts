@@ -29,18 +29,18 @@ export class AudioPlayerComponent implements OnInit {
   @Input() id!: number;
   @Input() audioSource: string | null = null;
   @Input() preload = true;
+  @Input() autoplay = false;
+  @Input() isError = false;
   @Output() playTime = new EventEmitter<number>();
   @Output() pause = new EventEmitter<void>();
   @Output() play = new EventEmitter<void>();
+  canPlay = false;
 
   audioService = inject(AudioRequestService);
-  statusCode$: Observable<number> | undefined;
-
   private appConfigService = inject(AppConfigService);
   support = this.appConfigService.getAppConfig()?.support;
 
-  canPlay = false;
-  isError = false;
+  statusCode$: Observable<number> | undefined;
 
   ngOnInit() {
     if (this.audioSource) {

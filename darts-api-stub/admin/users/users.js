@@ -6,6 +6,8 @@ const USERS = [
   {
     id: 1,
     last_modified_at: '2024-01-20T00:00:00.000000Z',
+    last_login_at: '2024-01-23T00:00:00.000000Z',
+    description: 'This is a test user',
     created_at: '2024-01-20T00:00:00.000000Z',
     full_name: 'Darts User',
     email_address: 'user@local.net',
@@ -40,6 +42,16 @@ router.post('/search', (req, res) => {
   }
 
   res.send(USERS);
+});
+
+router.get('/:userid', (req, res) => {
+  const id = req.params.userid;
+  if (id) {
+    const user = USERS.find((user) => user.id.toString() === id);
+    res.send(user);
+  } else {
+    res.sendStatus(404);
+  }
 });
 
 module.exports = router;

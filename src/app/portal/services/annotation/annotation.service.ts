@@ -18,4 +18,8 @@ export class AnnotationService {
       responseType: 'blob',
     });
   }
+
+  deleteAnnotation(annotationId: number) {
+    return this.http.delete(`/api/annotations/${annotationId}`);
+  }
 }
