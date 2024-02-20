@@ -24,6 +24,10 @@ import { CaseService } from 'src/app/portal/services/case/case.service';
 import { HearingService } from 'src/app/portal/services/hearing/hearing.service';
 import { HearingFileComponent } from './hearing-file/hearing-file.component';
 import { HearingComponent } from './hearing.component';
+import { MappingService } from '@services/mapping/mapping.service';
+import { FileDownloadService } from '@services/file-download/file-download.service';
+import { AnnotationService } from '@services/annotation/annotation.service';
+import { Annotations } from '@portal-types/annotations/annotations.type';
 
 describe('HearingComponent', () => {
   const fakeAppInsightsService = {};
@@ -31,9 +35,16 @@ describe('HearingComponent', () => {
   let mockRouter: Router;
   let caseService: CaseService;
   let hearingService: HearingService;
+  // let annotationService: AnnotationService;
   let fakeUserService: Partial<UserService>;
   let component: HearingComponent;
   let fixture: ComponentFixture<HearingComponent>;
+  const fakeFileDownloadService = {
+    saveAs: jest.fn(),
+  };
+  const fakeAnnotationService = {
+    downloadAnnotationDocument: jest.fn().mockReturnValue(of({})),
+  };
 
   const mockActivatedRoute = {
     snapshot: {
@@ -59,7 +70,7 @@ describe('HearingComponent', () => {
         caseId: '1',
         hearing_id: '1',
       },
-      queryParams: { tab: 'Transcripts' },
+      queryParams: { tab: 'Transcripts', startTime: '2024-01-01', endTime: '2024-01-02' },
     },
   };
 
@@ -115,6 +126,21 @@ describe('HearingComponent', () => {
     },
   ]);
 
+  const mockAnnotations: Observable<Annotations[]> = of([
+    {
+      annotationId: 1,
+      hearingId: 2,
+      hearingDate: DateTime.fromISO('2024-01-01'),
+      annotationTs: DateTime.fromISO('2024-01-01'),
+      annotationText: 'text',
+      annotationDocumentId: 1,
+      fileName: 'document.docx',
+      fileType: 'DOC',
+      uploadedBy: 'Mr Test',
+      uploadedTs: DateTime.fromISO('2024-01-01'),
+    },
+  ]);
+
   const shd = of({
     id: 1,
     date: DateTime.fromISO('2023-02-21'),
@@ -153,8 +179,9 @@ describe('HearingComponent', () => {
     jest.spyOn(caseService, 'getHearingById').mockReturnValue(shd);
     jest.spyOn(hearingService, 'getAudio').mockReturnValue(ad);
     jest.spyOn(hearingService, 'getEvents').mockReturnValue(ed);
+    jest.spyOn(hearingService, 'getAnnotations').mockReturnValue(mockAnnotations);
 
-    fakeUserService = { userProfile$: mockUser, isTranscriber: () => true };
+    fakeUserService = { userProfile$: mockUser, isTranscriber: () => true, isJudge: () => true, isAdmin: () => true };
 
     TestBed.configureTestingModule({
       imports: [HearingComponent, HearingFileComponent, RouterTestingModule],
@@ -164,6 +191,9 @@ describe('HearingComponent', () => {
         { provide: HearingService, useValue: hearingService },
         { provide: HeaderService },
         { provide: UserService, useValue: fakeUserService },
+        { provide: FileDownloadService, useValue: fakeFileDownloadService },
+        { provide: AnnotationService, useValue: fakeAnnotationService },
+        { provide: MappingService },
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
         { provide: AppConfigService, useValue: appConfigServiceMock },
         { provide: DatePipe },
@@ -348,6 +378,41 @@ describe('HearingComponent', () => {
       expect(component.requestId).toEqual(1234);
     });
 
+    describe('#onDownloadClicked', () => {
+      const blob = new Blob();
+      const fileName = 'filename.docx';
+      it('should call saveAs with blob and filename', () => {
+        jest.spyOn(fakeAnnotationService, 'downloadAnnotationDocument').mockReturnValue(of(blob));
+        component.onDownloadClicked(1, 1, fileName);
+        expect(fakeFileDownloadService.saveAs).toHaveBeenCalledWith(blob, fileName);
+      });
+    });
+
+    describe('#filterRestrictionsByHearingId', () => {
+      it('should filter items with same hearing ID and blank out event timestamp', () => {
+        const reportingRestriction = [
+          {
+            hearing_id: 1,
+            event_id: 2,
+            event_name: 'EVENT_NAME',
+            event_text: 'EVENT_TEXT',
+            event_ts: '2024-01-01',
+          },
+          {
+            hearing_id: 2,
+            event_id: 2,
+            event_name: 'DIFFERENT_EVENT_NAME',
+            event_text: 'DIFFERENT_EVENT_TEXT',
+            event_ts: '2024-01-01',
+          },
+        ];
+        const result = component.filterRestrictionsByHearingId(reportingRestriction, 1);
+        expect(result).toStrictEqual([
+          { event_id: 2, event_name: 'EVENT_NAME', event_text: 'EVENT_TEXT', event_ts: '', hearing_id: 1 },
+        ]);
+      });
+    });
+
     it('should set the value of state when 403 encountered', () => {
       const errorResponse = new HttpErrorResponse({ error: 'Forbidden', status: 403, url: '/api/audio-requests' });
       jest.spyOn(hearingService, 'requestAudio').mockReturnValue(throwError(() => errorResponse));
@@ -404,6 +469,11 @@ describe('HearingComponent', () => {
     it('should set the tab to transcripts if the url contains ?tab=Transcripts', () => {
       component.ngOnInit();
       expect(component.defaultTab).toEqual('Transcripts');
+    });
+    it('should set the tab to annotations if the url contains ?tab=Annotations', () => {
+      mockActivatedRoute.snapshot.queryParams = { tab: 'Annotations', startTime: '2024-01-01', endTime: '2024-01-02' };
+      component.ngOnInit();
+      expect(component.defaultTab).toEqual('Annotations');
     });
   });
 });

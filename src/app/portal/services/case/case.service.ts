@@ -2,6 +2,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Courthouse } from '@core-types/index';
 import {
+  Annotations,
+  AnnotationsData,
   Case,
   CaseData,
   CaseRetentionChange,
@@ -15,6 +17,7 @@ import {
   Transcript,
   TranscriptData,
 } from '@portal-types/index';
+import { MappingService } from '@services/mapping/mapping.service';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs/internal/observable/of';
@@ -63,6 +66,13 @@ export class CaseService {
 
   getCaseHearings(caseId: number): Observable<Hearing[]> {
     return this.http.get<HearingData[]>(`${GET_CASE_PATH}/${caseId}/hearings`).pipe(map(this.mapHearingDataToHearing));
+  }
+
+  getCaseAnnotations(caseId: number): Observable<Annotations[]> {
+    const mappingService = new MappingService();
+    return this.http
+      .get<AnnotationsData[]>(`${GET_CASE_PATH}/${caseId}/annotations`)
+      .pipe(map(mappingService.mapAnnotationsDataToAnnotations));
   }
 
   searchCases(searchForm: SearchFormValues): Observable<CaseSearchResult[] | null> {
@@ -117,6 +127,12 @@ export class CaseService {
 
   postCaseRetentionChange(retentionChange: CaseRetentionChange): Observable<CaseRetentionChange> {
     return this.http.post<CaseRetentionChange>(GET_CASE_RETENTION_HISTORY, retentionChange);
+  }
+
+  postCaseRetentionDateValidate(retentionChange: CaseRetentionChange): Observable<CaseRetentionChange> {
+    let params = new HttpParams();
+    params = params.set('validate_only', true);
+    return this.http.post<CaseRetentionChange>(GET_CASE_RETENTION_HISTORY, retentionChange, { params });
   }
 
   private mapCaseRetentionHistory(retentionHistory: CaseRetentionHistoryData[]): CaseRetentionHistory[] {
@@ -175,10 +191,14 @@ export class CaseService {
       reportingRestrictions: c.reporting_restrictions,
       prosecutors: c.prosecutors,
       retainUntil: c.retain_until,
-      retainUntilDateTime: c.retain_until_date_time ? DateTime.fromISO(c.retain_until_date_time) : undefined,
-      closedDateTime: c.case_closed_date_time ? DateTime.fromISO(c.case_closed_date_time) : undefined,
+      retainUntilDateTime: c.retain_until_date_time
+        ? DateTime.fromISO(c.retain_until_date_time, { setZone: true })
+        : undefined,
+      closedDateTime: c.case_closed_date_time
+        ? DateTime.fromISO(c.case_closed_date_time, { setZone: true })
+        : undefined,
       retentionDateTimeApplied: c.retention_date_time_applied
-        ? DateTime.fromISO(c.retention_date_time_applied)
+        ? DateTime.fromISO(c.retention_date_time_applied, { setZone: true })
         : undefined,
       retentionPolicyApplied: c.retention_policy_applied,
     };

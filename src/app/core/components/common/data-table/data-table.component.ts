@@ -10,7 +10,6 @@ import {
   SimpleChanges,
   TemplateRef,
 } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { PaginationComponent } from '@components/common/pagination/pagination.component';
 import { CustomSort, DatatableColumn } from '@core-types/index';
 import { TableBodyTemplateDirective } from '@directives/table-body-template.directive';
@@ -20,7 +19,7 @@ import { DateTime } from 'luxon';
 @Component({
   selector: 'app-data-table',
   standalone: true,
-  imports: [CommonModule, PaginationComponent, RouterLink, TableRowTemplateDirective, TableBodyTemplateDirective],
+  imports: [CommonModule, PaginationComponent, TableRowTemplateDirective, TableBodyTemplateDirective],
   templateUrl: './data-table.component.html',
   styleUrls: ['./data-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
