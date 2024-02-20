@@ -44,6 +44,7 @@ describe('HearingComponent', () => {
   };
   const fakeAnnotationService = {
     downloadAnnotationDocument: jest.fn().mockReturnValue(of({})),
+    downloadAnnotationTemplate: jest.fn().mockReturnValue(of({})),
   };
 
   const mockActivatedRoute = {
@@ -385,6 +386,17 @@ describe('HearingComponent', () => {
         jest.spyOn(fakeAnnotationService, 'downloadAnnotationDocument').mockReturnValue(of(blob));
         component.onDownloadClicked(1, 1, fileName);
         expect(fakeFileDownloadService.saveAs).toHaveBeenCalledWith(blob, fileName);
+      });
+    });
+
+    describe('#downloadAnnotationTemplate', () => {
+      const blob = new Blob();
+      it('should call saveAs with blob and filename', () => {
+        jest.spyOn(fakeAnnotationService, 'downloadAnnotationTemplate').mockReturnValue(of(blob));
+        const hearingDate = DateTime.fromISO('2024-01-01');
+        component.downloadAnnotationTemplate('CASEID', hearingDate);
+        const expectedFilename = 'Annotations_for_CASEID_on_20240101.docx';
+        expect(fakeFileDownloadService.saveAs).toHaveBeenCalledWith(blob, expectedFilename);
       });
     });
 

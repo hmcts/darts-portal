@@ -93,7 +93,11 @@
             </div>
             <div class="govuk-button-group">
               <button class="govuk-button govuk-button--secondary" data-module="govuk-button">Upload annotation</button>
-              <button class="govuk-button govuk-button--secondary" data-module="govuk-button">
+              <button
+                (click)="downloadAnnotationTemplate(vm.case.number, vm.hearing?.date)"
+                class="govuk-button govuk-button--secondary"
+                data-module="govuk-button"
+              >
                 Download annotation template
               </button>
             </div>

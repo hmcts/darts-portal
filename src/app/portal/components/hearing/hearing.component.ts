@@ -247,6 +247,16 @@ export class HearingComponent implements OnInit {
     // Placeholder for DMP-1612
   }
 
+  downloadAnnotationTemplate(caseId: string, hearingDate: DateTime | undefined) {
+    if (!hearingDate) {
+      return;
+    }
+    this.annotationService.downloadAnnotationTemplate().subscribe((blob: Blob) => {
+      // Get the blob response and pass it to the saveAs service
+      this.fileDownloadService.saveAs(blob, `Annotations_for_${caseId}_on_${hearingDate.toFormat('yyyyMMdd')}.docx`);
+    });
+  }
+
   filterRestrictionsByHearingId(restrictions: ReportingRestriction[], hearingId: number): ReportingRestriction[] {
     return restrictions
       .filter((r) => {

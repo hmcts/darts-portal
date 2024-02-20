@@ -13,4 +13,9 @@ export class AnnotationService {
       responseType: 'blob',
     });
   }
+  downloadAnnotationTemplate(): Observable<Blob> {
+    return this.http.get(`/assets/AnnotationsTemplateExample.docx`, {
+      responseType: 'blob',
+    });
+  }
 }
