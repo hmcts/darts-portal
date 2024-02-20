@@ -263,6 +263,7 @@ export class HearingComponent implements OnInit {
           error: this.error$,
         });
         this.selectedAnnotationsforDeletion = [];
+        this.defaultTab = 'Annotations';
       });
     });
   }
