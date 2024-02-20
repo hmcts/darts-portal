@@ -270,6 +270,7 @@ export class HearingComponent implements OnInit {
 
   onDeleteCancelled() {
     this.selectedAnnotationsforDeletion = [];
+    this.defaultTab = 'Annotations';
   }
 
   filterRestrictionsByHearingId(restrictions: ReportingRestriction[], hearingId: number): ReportingRestriction[] {
