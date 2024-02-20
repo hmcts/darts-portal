@@ -3,9 +3,6 @@ import './commands';
 const path = require('path');
 const downloadsFolder = Cypress.config('downloadsFolder');
 
-const path = require('path');
-const downloadsFolder = Cypress.config('downloadsFolder');
-
 describe('Annotations', () => {
   it('shows All annotations uploaded by judge against a case', () => {
     cy.login('judge');
@@ -160,7 +157,7 @@ describe('Annotations', () => {
 
     cy.contains('All annotations').click();
 
-    const fileName = 'AnnotationAlpha.doc';
+    const fileName = 'AnnotationBeta.doc';
     cy.get('#annotationsTable')
       .contains(fileName)
       .parent('tr')
