@@ -35,7 +35,6 @@ describe('HearingComponent', () => {
   let mockRouter: Router;
   let caseService: CaseService;
   let hearingService: HearingService;
-  // let annotationService: AnnotationService;
   let fakeUserService: Partial<UserService>;
   let component: HearingComponent;
   let fixture: ComponentFixture<HearingComponent>;
