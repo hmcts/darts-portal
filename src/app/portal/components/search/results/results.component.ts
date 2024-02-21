@@ -24,7 +24,7 @@ export class ResultsComponent implements OnChanges {
     { name: 'Courthouse', prop: 'courthouse', sortable: true },
     { name: 'Courtroom', prop: 'courtroom', sortable: false },
     { name: 'Judge(s)', prop: 'judges', sortable: false },
-    { name: 'Defendants(s)', prop: 'defendants', sortable: false },
+    { name: 'Defendant(s)', prop: 'defendants', sortable: false },
   ];
 
   ngOnChanges(): void {
