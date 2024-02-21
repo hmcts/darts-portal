@@ -32,6 +32,7 @@ export class AddAnnotationComponent implements OnInit {
   caseId!: string;
   caseNumber!: number;
   hearingDate!: DateTime;
+  hearingId!: number;
 
   headerService = inject(HeaderService);
   router = inject(Router);
@@ -45,17 +46,18 @@ export class AddAnnotationComponent implements OnInit {
     this.caseId = state!.caseId;
     this.caseNumber = state!.caseNumber;
     this.hearingDate = state!.hearingDate;
+    this.hearingId = state!.hearingId;
   }
 
   onComplete() {
     if (this.annotationComments.value) {
       this.annotationService
-        .uploadAnnotationDocument(this.fileControl.value!, this.annotationComments.value)
+        .uploadAnnotationDocument(this.fileControl.value!, this.hearingId, this.annotationComments.value)
         .subscribe(() => {
           // this.goToCompletedScreen();
         });
     } else {
-      this.annotationService.uploadAnnotationDocument(this.fileControl.value!).subscribe(() => {
+      this.annotationService.uploadAnnotationDocument(this.fileControl.value!, this.hearingId).subscribe(() => {
         // this.goToCompletedScreen();
       });
     }

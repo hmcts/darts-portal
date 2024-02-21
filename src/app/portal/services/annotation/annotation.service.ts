@@ -14,12 +14,14 @@ export class AnnotationService {
     });
   }
 
-  uploadAnnotationDocument(file: File, comments?: string) {
+  uploadAnnotationDocument(file: File, hearingId: number, comment?: string) {
+    const postDTO = {
+      hearing_id: hearingId,
+      comment: comment,
+    };
     const formData = new FormData();
     formData.append('file', file, file.name);
-    if (comments) {
-      formData.append('annotation', comments);
-    }
+    formData.append('annotation', new Blob([JSON.stringify(postDTO)], { type: 'application/json' }));
     return this.http.post(`/api/annotations`, formData);
   }
 }
