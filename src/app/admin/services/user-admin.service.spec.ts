@@ -78,38 +78,39 @@ describe('UserAdminService', () => {
       expect(result).toEqual(expectedUser);
     });
   });
+  describe('searchUsers', () => {
+    it('should return an array of Users', () => {
+      const mockQuery: UserSearchFormValues = {
+        fullName: 'User',
+      };
+      const mockResponse = [
+        {
+          id: 1,
+          last_modified_at: '2024-01-20T00:00:00.000000Z',
+          created_at: '2024-01-20T00:00:00.000000Z',
+          full_name: 'Darts User',
+          email_address: 'user@local.net',
+          active: true,
+          security_group_ids: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        },
+        {
+          id: 2,
+          last_modified_at: '2023-01-20T00:00:00.000000Z',
+          created_at: '2023-01-20T00:00:00.000000Z',
+          full_name: 'Dev User',
+          email_address: 'dev@local.net',
+          active: true,
+          security_group_ids: [1, 2, 3],
+        },
+      ] as UserData[];
 
-  it('should call searchUsers and return an array of Users', () => {
-    const mockQuery: UserSearchFormValues = {
-      fullName: 'User',
-    };
-    const mockResponse = [
-      {
-        id: 1,
-        last_modified_at: '2024-01-20T00:00:00.000000Z',
-        created_at: '2024-01-20T00:00:00.000000Z',
-        full_name: 'Darts User',
-        email_address: 'user@local.net',
-        active: true,
-        security_group_ids: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      },
-      {
-        id: 2,
-        last_modified_at: '2023-01-20T00:00:00.000000Z',
-        created_at: '2023-01-20T00:00:00.000000Z',
-        full_name: 'Dev User',
-        email_address: 'dev@local.net',
-        active: true,
-        security_group_ids: [1, 2, 3],
-      },
-    ] as UserData[];
+      service.searchUsers(mockQuery).subscribe((users) => {
+        expect(users).toEqual(mockResponse);
+      });
 
-    service.searchUsers(mockQuery).subscribe((users) => {
-      expect(users).toEqual(mockResponse);
+      const req = httpMock.expectOne(USER_ADMIN_SEARCH_PATH);
+      expect(req.request.method).toEqual('POST');
+      req.flush(mockResponse); // Simulate a response
     });
-
-    const req = httpMock.expectOne(USER_ADMIN_SEARCH_PATH);
-    expect(req.request.method).toEqual('POST');
-    req.flush(mockResponse); // Simulate a response
   });
 });

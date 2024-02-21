@@ -1,25 +1,3 @@
-@if (audioSource) {
-  <audio
-    #audioPlayer
-    controls
-    [preload]="preload ? 'auto' : 'none'"
-    [ngStyle]="{ display: (!canPlay && preload) || isError ? 'none' : 'block' }"
-    (canplay)="canPlay = true"
-    (pause)="pause.emit()"
-    (play)="play.emit()"
-    (timeupdate)="onTimeUpdate()"
-    (error)="isError = true"
-  >
-    <source type="audio/mpeg" (error)="isError = true" [src]="audioSource" />
-  </audio>
-} @else {
-  <p class="govuk-body" id="no-id-error">No audio source provided</p>
-}
-
-@if (!canPlay && preload && !isError) {
-  <p class="govuk-body" id="loading">Loading audio... Please wait</p>
-}
-
 @if (isError) {
   @if (statusCode$ | async; as statusCode) {
     @if (statusCode === 403) {
@@ -38,5 +16,23 @@
         persists
       </p>
     }
+  }
+} @else {
+  <audio
+    #audioPlayer
+    controls
+    [autoplay]="autoplay"
+    [ngStyle]="{ display: (!canPlay && preload) || isError ? 'none' : 'block' }"
+    (canplay)="canPlay = true"
+    (pause)="pause.emit()"
+    (play)="play.emit()"
+    (timeupdate)="onTimeUpdate()"
+    (error)="isError = true"
+  >
+    <source type="audio/mpeg" (error)="isError = true" [src]="audioSource" />
+  </audio>
+
+  @if (!canPlay && preload && !isError) {
+    <p class="govuk-body" id="loading">Loading audio... Please wait</p>
   }
 }

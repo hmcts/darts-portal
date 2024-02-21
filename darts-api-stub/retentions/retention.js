@@ -5,7 +5,7 @@ const router = express.Router();
 const { localArray } = require('../localArray');
 const { getEarliestDatefromKey, getLatestDatefromKey } = require('../utils/date');
 const { JUDGE, ADMIN } = require('../roles');
-const { userIdhasAnyRoles } = require('../users');
+const { userIdhasAnyRoles, getUserNamebyUserId } = require('../users');
 
 const dateFormat = 'yyyy-MM-dd';
 const defaultRetentionHistory = [
@@ -52,9 +52,9 @@ const retentionHistory = localArray('retentionHistory');
 retentionHistory.value = defaultRetentionHistory;
 
 const getRetentionHistoryByCaseId = (caseId) => {
-  const filtered = retentionHistory.value.filter((history) => history.case_id === parseInt(caseId));
+  const filteredRetentionHistory = retentionHistory.value.filter((history) => history.case_id === parseInt(caseId));
   // Remove case_id key
-  return filtered.map((record) => {
+  return filteredRetentionHistory.map((record) => {
     const { case_id, ...filtered } = record;
     return filtered;
   });
@@ -149,8 +149,8 @@ router.post('', (req, res) => {
       // Set to ISO string
       retention.case_id = parseInt(req.body.case_id);
       retention.retention_last_changed_date = DateTime.now().toISO({ setZone: true });
-      // Could work out which user made the request by token here?
-      retention.amended_by = 'Stub User';
+      // Work out which user made the request by the user ID in the headers
+      retention.amended_by = getUserNamebyUserId(req.headers.user_id);
       retention.retention_policy_applied = req.body?.is_permanent_retention ? 'Permanent' : 'Manual';
       retention.comments = req.body.comments;
       retention.status = 'COMPLETE';

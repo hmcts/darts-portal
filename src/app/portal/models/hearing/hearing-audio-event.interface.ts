@@ -1,11 +1,10 @@
-import { HearingEventTypeEnum } from '@portal-types/hearing/enums';
+import { Observable } from 'rxjs';
+import { HearingAudio } from './hearing-audio.interface';
+import { HearingEvent } from './hearing-event.interface';
 
-export interface AudioEventRow {
-  id: number;
-  type?: HearingEventTypeEnum;
-  media_start_timestamp?: string;
-  media_end_timestamp?: string;
-  timestamp?: string;
-  name?: string;
-  text?: string;
-}
+export type AudioEventRow = Partial<HearingEvent> &
+  Partial<HearingAudio> & {
+    id: number;
+    type: 'event' | 'audio';
+    audioSourceUrl$?: Observable<string>;
+  };

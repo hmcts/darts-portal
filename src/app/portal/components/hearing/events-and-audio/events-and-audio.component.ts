@@ -10,6 +10,7 @@ import {
   Output,
   QueryList,
   ViewChildren,
+  inject,
 } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { AudioPlayerComponent } from '@components/common/audio-player/audio-player.component';
@@ -18,8 +19,9 @@ import { DatatableColumn } from '@core-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { HearingEventTypeEnum } from '@portal-types/hearing/enums';
 import { AudioEventRow, HearingAudio, HearingEvent } from '@portal-types/index';
+import { AudioPreviewService } from '@services/audio-preview/audio-preview.service';
 import { DateTime } from 'luxon';
-import { Subscription } from 'rxjs';
+import { Subscription, catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-events-and-audio',
@@ -33,8 +35,8 @@ export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChildren(AudioPlayerComponent) audioPlayers!: QueryList<AudioPlayerComponent>;
   @Input() audio: HearingAudio[] = [];
   @Input() events: HearingEvent[] = [];
-
   @Output() eventsSelect = new EventEmitter<AudioEventRow[]>();
+  audioPreviewService = inject(AudioPreviewService);
 
   columns: DatatableColumn[] = [
     { name: 'Time', prop: 'timestamp', sortable: true, width: '180px' },
@@ -48,7 +50,6 @@ export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
   selectedRows: AudioEventRow[] = [];
   selectedOption = new FormControl('all');
   formChanges$ = this.selectedOption.valueChanges;
-  audioPreviewPath = '/api/audio/preview/';
 
   subs: Subscription[] = [];
   audioInPreview: number[] = [];
@@ -102,6 +103,16 @@ export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
+  onPreviewAudio(id: number) {
+    if (!this.isAudioInPreview(id)) {
+      this.audioInPreview = [...this.audioInPreview, id];
+    }
+  }
+
+  isAudioInPreview(id: number): boolean {
+    return !!this.audioInPreview.find((audioId) => audioId === id);
+  }
+
   onAudioPlay(id: number) {
     this.audioPlayers.toArray().forEach((player) => {
       if (player.id !== id) {
@@ -122,6 +133,9 @@ export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
         ...audio,
         type: HearingEventTypeEnum.Audio,
         timestamp: audio.media_start_timestamp,
+        audioSourceUrl$: this.audioPreviewService
+          .getAudioPreviewBlobUrl(audio.id)
+          .pipe(catchError((failedUrl: string) => of(failedUrl))),
       })),
       ...this.events.map((event) => ({ ...event, type: HearingEventTypeEnum.Event })),
     ];

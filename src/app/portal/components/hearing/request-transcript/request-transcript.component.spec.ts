@@ -180,18 +180,21 @@ describe('RequestTranscriptComponent', () => {
           media_start_timestamp: '2023-07-31T02:32:24.620Z',
           media_end_timestamp: '2023-07-31T14:32:24.620Z',
           name: 'Audio Recording',
+          type: 'audio',
         },
         {
           id: 2,
           media_start_timestamp: '2023-07-31T04:30:24.620Z',
           media_end_timestamp: '2023-07-31T14:32:24.620Z',
           name: 'Audio Recording',
+          type: 'audio',
         },
         {
           id: 3,
           media_start_timestamp: '2023-07-31T05:32:24.620Z',
           media_end_timestamp: '2023-07-31T14:32:24.620Z',
           name: 'Audio Recording',
+          type: 'audio',
         },
       ];
 

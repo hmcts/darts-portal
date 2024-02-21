@@ -63,7 +63,13 @@
             </td>
             <td class="govuk-table__cell">{{ row.uploadedTs | luxonDate: 'dd MMM yyyy' }}</td>
             <td class="govuk-table__cell">{{ row.annotationText }}</td>
-            <td class="govuk-table__cell"><a routerLink=".">Download</a></td>
+            <td class="govuk-table__cell">
+              <a
+                href="javascript:void(0)"
+                (click)="downloadAnnotation(row.annotationId, row.annotationDocumentId, row.fileName)"
+                >Download</a
+              >
+            </td>
             <td class="govuk-table__cell"><a routerLink=".">Delete</a></td>
           </ng-template>
         </app-data-table>
