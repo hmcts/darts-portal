@@ -54,13 +54,17 @@ export class AddAnnotationComponent implements OnInit {
       this.annotationService
         .uploadAnnotationDocument(this.fileControl.value!, this.hearingId, this.annotationComments.value)
         .subscribe(() => {
-          // this.goToCompletedScreen();
+          this.goToCompletedScreen();
         });
     } else {
       this.annotationService.uploadAnnotationDocument(this.fileControl.value!, this.hearingId).subscribe(() => {
-        // this.goToCompletedScreen();
+        this.goToCompletedScreen();
       });
     }
+  }
+
+  private goToCompletedScreen() {
+    this.router.navigate(['/work', this.requestId, 'complete']);
   }
 
   ngOnInit(): void {
