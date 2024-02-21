@@ -35,7 +35,7 @@ export class AddAnnotationComponent implements OnInit {
   headerService = inject(HeaderService);
   router = inject(Router);
 
-  fileControl = new FormControl<File | null>(null, [Validators.required, maxFileSizeValidator(10)]);
+  fileControl = new FormControl<File | null>(null, [Validators.required, maxFileSizeValidator(20)]);
   annotationComments = new FormControl('');
 
   constructor() {
