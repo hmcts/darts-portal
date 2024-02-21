@@ -160,6 +160,7 @@ export class RequestTranscriptComponent implements OnInit, OnDestroy {
 
   onRequestTimeCancel() {
     this.audioTimes = undefined;
+    this.validationErrors = [];
     this.step = 1;
   }
 
