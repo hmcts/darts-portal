@@ -1,24 +1,27 @@
-<app-breadcrumb>
-  <ng-container *breadcrumb="['/search']">Search</ng-container>
-  <ng-container *breadcrumb="['/case', caseId]">{{ caseNumber }}</ng-container>
-  <ng-container *breadcrumb="['../']">{{ hearingDate | luxonDate: 'd MMM y' }}</ng-container>
-  <ng-container *breadcrumb="['.']">Add annotation</ng-container>
-</app-breadcrumb>
-<app-govuk-heading tag="h1" size="l">Add annotation</app-govuk-heading>
-<app-file-upload
-  [formControl]="fileControl"
-  label="Upload annotation file"
-  hint="This must be in a doc or docx format. Maximum file size 20MB."
-></app-file-upload>
-<app-govuk-heading tag="h2" size="m">Comments</app-govuk-heading>
-<app-govuk-textarea
-  [id]="'annotation-comments'"
-  [name]="'comments'"
-  [ariaDescribedBy]="'annotation-comments-hint'"
-  [control]="annotationComments"
-  [maxCharacterLimit]="200"
-></app-govuk-textarea>
-<div class="govuk-button-group">
-  <button type="submit" class="govuk-button" data-module="govuk-button" (click)="onComplete()">Upload</button>
-  <a class="govuk-link" href="javascript:void(0)" routerLink="../" [queryParams]="{ tab: 'Annotations' }">Cancel</a>
-</div>
+@if (step === 1) {
+  <app-breadcrumb>
+    <ng-container *breadcrumb="['/search']">Search</ng-container>
+    <ng-container *breadcrumb="['/case', caseId]">{{ caseNumber }}</ng-container>
+    <ng-container *breadcrumb="['../']">{{ hearingDate | luxonDate: 'd MMM y' }}</ng-container>
+    <ng-container *breadcrumb="['.']">Add annotation</ng-container>
+  </app-breadcrumb>
+  <app-govuk-heading tag="h1" size="l">Add annotation</app-govuk-heading>
+  <app-file-upload
+    [formControl]="fileControl"
+    label="Upload annotation file"
+    hint="This must be in a doc or docx format. Maximum file size 20MB."
+  ></app-file-upload>
+  <app-govuk-heading tag="h2" size="m">Comments</app-govuk-heading>
+  <app-govuk-textarea
+    [id]="'annotation-comments'"
+    [name]="'comments'"
+    [ariaDescribedBy]="'annotation-comments-hint'"
+    [control]="annotationComments"
+    [maxCharacterLimit]="200"
+  ></app-govuk-textarea>
+  <div class="govuk-button-group">
+    <button type="submit" class="govuk-button" data-module="govuk-button" (click)="onComplete()">Upload</button>
+    <a class="govuk-link" href="javascript:void(0)" routerLink="../" [queryParams]="{ tab: 'Annotations' }">Cancel</a>
+  </div>
+}
+<app-add-annotation-success [hidden]="!(step === 2)"></app-add-annotation-success>

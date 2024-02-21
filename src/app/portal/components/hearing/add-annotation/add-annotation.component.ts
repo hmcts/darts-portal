@@ -11,6 +11,7 @@ import { AnnotationService } from '@services/annotation/annotation.service';
 import { HeaderService } from '@services/header/header.service';
 import { maxFileSizeValidator } from '@validators/max-file-size.validator';
 import { DateTime } from 'luxon';
+import { AddAnnotationSuccessComponent } from './add-annotation-success/add-annotation-success.component';
 
 @Component({
   selector: 'app-add-annotation',
@@ -24,6 +25,7 @@ import { DateTime } from 'luxon';
     ReactiveFormsModule,
     GovukTextareaComponent,
     RouterLink,
+    AddAnnotationSuccessComponent,
   ],
   templateUrl: './add-annotation.component.html',
   styleUrl: './add-annotation.component.scss',
@@ -40,6 +42,7 @@ export class AddAnnotationComponent implements OnInit {
 
   fileControl = new FormControl<File | null>(null, [Validators.required, maxFileSizeValidator(20)]);
   annotationComments = new FormControl('');
+  step = 1;
 
   constructor() {
     const state = this.router.getCurrentNavigation()?.extras.state;
@@ -54,17 +57,17 @@ export class AddAnnotationComponent implements OnInit {
       this.annotationService
         .uploadAnnotationDocument(this.fileControl.value!, this.hearingId, this.annotationComments.value)
         .subscribe(() => {
-          this.goToCompletedScreen();
+          this.goToSuccessScreen();
         });
     } else {
       this.annotationService.uploadAnnotationDocument(this.fileControl.value!, this.hearingId).subscribe(() => {
-        this.goToCompletedScreen();
+        this.goToSuccessScreen();
       });
     }
   }
 
-  private goToCompletedScreen() {
-    this.router.navigate(['/work', this.requestId, 'complete']);
+  private goToSuccessScreen() {
+    this.step = 2;
   }
 
   ngOnInit(): void {
