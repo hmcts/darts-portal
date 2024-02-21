@@ -1,10 +1,9 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } from '@angular/router';
-import { AuthService } from 'src/app/core/services/auth/auth.service';
-
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { AuthService } from '@services/auth/auth.service';
+import { UserService } from '@services/user/user.service';
 import { Observable, of } from 'rxjs';
-import { UserService } from 'src/app/core/services/user/user.service';
 import { authGuard } from './auth.guard';
 
 describe('authGuard', () => {

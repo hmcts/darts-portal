@@ -3,10 +3,10 @@ import { ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testi
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { InternalErrorComponent } from 'src/app/core/components/error/internal-server/internal-error.component';
-import { ErrorMessage } from 'src/app/core/models/error/error-message.interface';
-import { AppConfigService } from 'src/app/core/services/app-config/app-config.service';
-import { HeaderService } from 'src/app/core/services/header/header.service';
+import { InternalErrorComponent } from '@components/error/internal-server/internal-error.component';
+import { ErrorMessage } from '@core-types/error/error-message.interface';
+import { AppConfigService } from '@services/app-config/app-config.service';
+import { HeaderService } from '@services/header/header.service';
 import { SearchErrorComponent } from './search-error.component';
 
 describe('SearchErrorComponent', () => {

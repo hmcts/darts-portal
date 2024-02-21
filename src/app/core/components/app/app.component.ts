@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 
+import { HeaderService } from '@services/header/header.service';
 import { filter } from 'rxjs';
-import { HeaderService } from 'src/app/core/services/header/header.service';
 import { ContentComponent } from '../layout/content/content.component';
 import { FooterComponent } from '../layout/footer/footer.component';
 import { HeaderComponent } from '../layout/header/header.component';

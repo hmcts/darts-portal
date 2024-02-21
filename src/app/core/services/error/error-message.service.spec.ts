@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { HeaderService } from 'src/app/core/services/header/header.service';
+import { HeaderService } from '@services/header/header.service';
 import { ErrorMessageService } from './error-message.service';
 
 describe('ErrorMessageService', () => {

@@ -3,9 +3,9 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { WorkRequest } from '@portal-types/index';
+import { TranscriptionService } from '@services/transcription/transcription.service';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
-import { TranscriptionService } from 'src/app/portal/services/transcription/transcription.service';
 import { YourWorkComponent } from './your-work.component';
 
 const MOCK_WORK_REQUESTS: WorkRequest[] = [

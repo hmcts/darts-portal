@@ -11,11 +11,11 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ErrorSummaryEntry, FieldErrors } from '@core-types/index';
+import { UserState } from '@core-types/user/user-state.interface';
 import { Hearing, PostAudioRequest } from '@portal-types/index';
 import { UserService } from '@services/user/user.service';
 import { timeGroupValidator } from '@validators/time-group.validator';
 import { DateTime } from 'luxon';
-import { UserState } from 'src/app/core/models/user/user-state.interface';
 import { TimeInputComponent } from './time-input/time-input.component';
 
 const fieldErrors: FieldErrors = {

@@ -4,12 +4,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranscriptRequest, YourTranscripts } from '@portal-types/index';
+import { Urgency } from '@portal-types/transcriptions/transcription-urgency.interface';
 import { AppConfigService } from '@services/app-config/app-config.service';
+import { TranscriptionService } from '@services/transcription/transcription.service';
 import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs/internal/observable/of';
-import { Urgency } from 'src/app/portal/models/transcriptions/transcription-urgency.interface';
-import { TranscriptionService } from 'src/app/portal/services/transcription/transcription.service';
 import { TranscriptionsComponent } from './transcriptions.component';
 
 const MOCK_URGENCIES: Urgency[] = [

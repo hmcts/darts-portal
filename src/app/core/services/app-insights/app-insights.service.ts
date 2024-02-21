@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApplicationInsights, ITelemetryItem } from '@microsoft/applicationinsights-web';
-import { AppConfigService } from 'src/app/core/services/app-config/app-config.service';
+import { AppConfigService } from '@services/app-config/app-config.service';
 
 @Injectable()
 export class AppInsightsService {

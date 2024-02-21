@@ -13,7 +13,7 @@ const config: Config = {
     ],
     '^@common/(.*)$': '<rootDir>/src/app/core/components/common/$1',
     '^@components/(.*)$': ['<rootDir>/src/app/core/components/$1', '<rootDir>/src/app/portal/components/$1'],
-    '^@core-types/(.*)$': '<rootDir>/src/app/core/types/$1',
+    '^@core-types/(.*)$': '<rootDir>/src/app/core/models/$1',
     '^@portal-types/(.*)$': '<rootDir>/src/app/portal/models/$1',
     '^@validators/(.*)$': '<rootDir>/src/app/core/validators/$1',
     '^@pipes/(.*)$': '<rootDir>/src/app/core/pipes/$1',

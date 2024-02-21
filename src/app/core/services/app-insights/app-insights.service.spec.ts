@@ -1,5 +1,5 @@
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
-import { AppConfigService } from 'src/app/core/services/app-config/app-config.service';
+import { AppConfigService } from '@services/app-config/app-config.service';
 import { AppInsightsService } from './app-insights.service';
 
 describe('AppInsightsService', () => {

@@ -19,9 +19,9 @@ import { DatatableColumn } from '@core-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { HearingEventTypeEnum } from '@portal-types/hearing/enums';
 import { AudioEventRow, HearingAudio, HearingEvent } from '@portal-types/index';
+import { AudioPreviewService } from '@services/audio-preview/audio-preview.service';
 import { DateTime } from 'luxon';
 import { Subscription, catchError, of } from 'rxjs';
-import { AudioPreviewService } from 'src/app/services/audio-preview/audio-preview.service';
 
 @Component({
   selector: 'app-events-and-audio',
