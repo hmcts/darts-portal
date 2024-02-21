@@ -391,8 +391,17 @@ describe('HearingComponent', () => {
     });
 
     describe('#downloadAnnotationTemplate', () => {
-      const blob = new Blob();
+      it("should call saveAs with blob and filename with today's date if no date provided", () => {
+        const blob = new Blob();
+        jest.spyOn(fakeAnnotationService, 'downloadAnnotationTemplate').mockReturnValue(of(blob));
+        const todaysDate = DateTime.now().toFormat('yyyyMMdd');
+        component.downloadAnnotationTemplate('CASEID', undefined);
+        const expectedFilename = `Annotations_for_CASEID_on_${todaysDate}.docx`;
+        expect(fakeFileDownloadService.saveAs).toHaveBeenCalledWith(blob, expectedFilename);
+      });
+
       it('should call saveAs with blob and filename', () => {
+        const blob = new Blob();
         jest.spyOn(fakeAnnotationService, 'downloadAnnotationTemplate').mockReturnValue(of(blob));
         const hearingDate = DateTime.fromISO('2024-01-01');
         component.downloadAnnotationTemplate('CASEID', hearingDate);
