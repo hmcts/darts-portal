@@ -15,7 +15,7 @@ export function init(): Router {
       return;
     }
 
-    res.sendFile(path.join(__dirname, '../assets/templates', 'AnnotationsTemplateExample.docx'));
+    res.sendFile(path.join(__dirname, '../downloads', 'AnnotationsTemplateExample.docx'));
   });
 
   return router;
