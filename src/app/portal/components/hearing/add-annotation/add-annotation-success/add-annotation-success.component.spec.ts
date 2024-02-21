@@ -8,10 +8,9 @@ describe('AddAnnotationSuccessComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AddAnnotationSuccessComponent]
-    })
-    .compileComponents();
-    
+      imports: [AddAnnotationSuccessComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(AddAnnotationSuccessComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
