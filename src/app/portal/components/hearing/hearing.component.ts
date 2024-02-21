@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { DeleteComponent } from '@common/delete/delete.component';
+import { LoadingComponent } from '@common/loading/loading.component';
 import { BreadcrumbComponent } from '@components/common/breadcrumb/breadcrumb.component';
 import { DataTableComponent } from '@components/common/data-table/data-table.component';
 import { ReportingRestrictionComponent } from '@components/common/reporting-restriction/reporting-restriction.component';
@@ -13,20 +15,6 @@ import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { JoinPipe } from '@pipes/join';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
-import { AppConfigService } from '@services/app-config/app-config.service';
-import { ErrorMessageService } from '@services/error/error-message.service';
-import { HeaderService } from '@services/header/header.service';
-import { MappingService } from '@services/mapping/mapping.service';
-import { UserService } from '@services/user/user.service';
-import { DateTime } from 'luxon';
-import { combineLatest, map, of, shareReplay } from 'rxjs';
-import { CaseService } from 'src/app/portal/services/case/case.service';
-import { HearingService } from 'src/app/portal/services/hearing/hearing.service';
-import { EventsAndAudioComponent } from './events-and-audio/events-and-audio.component';
-import { HearingFileComponent } from './hearing-file/hearing-file.component';
-import { OrderConfirmationComponent } from './order-confirmation/order-confirmation.component';
-import { RequestPlaybackAudioComponent } from './request-playback-audio/request-playback-audio.component';
-import { LoadingComponent } from '@common/loading/loading.component';
 import {
   AudioEventRow,
   HearingPageState,
@@ -35,7 +23,20 @@ import {
   TranscriptsRow,
 } from '@portal-types/index';
 import { AnnotationService } from '@services/annotation/annotation.service';
+import { AppConfigService } from '@services/app-config/app-config.service';
+import { CaseService } from '@services/case/case.service';
+import { ErrorMessageService } from '@services/error/error-message.service';
 import { FileDownloadService } from '@services/file-download/file-download.service';
+import { HeaderService } from '@services/header/header.service';
+import { HearingService } from '@services/hearing/hearing.service';
+import { MappingService } from '@services/mapping/mapping.service';
+import { UserService } from '@services/user/user.service';
+import { DateTime } from 'luxon';
+import { combineLatest, map, of, shareReplay } from 'rxjs';
+import { EventsAndAudioComponent } from './events-and-audio/events-and-audio.component';
+import { HearingFileComponent } from './hearing-file/hearing-file.component';
+import { OrderConfirmationComponent } from './order-confirmation/order-confirmation.component';
+import { RequestPlaybackAudioComponent } from './request-playback-audio/request-playback-audio.component';
 
 @Component({
   selector: 'app-hearing',
@@ -61,6 +62,7 @@ import { FileDownloadService } from '@services/file-download/file-download.servi
     TableRowTemplateDirective,
     JoinPipe,
     LuxonDatePipe,
+    DeleteComponent,
   ],
 })
 export class HearingComponent implements OnInit {
@@ -83,6 +85,7 @@ export class HearingComponent implements OnInit {
   transcripts: TranscriptsRow[] = [];
   rows: AudioEventRow[] = [];
   defaultTab = 'Events and Audio';
+  selectedAnnotationsforDeletion: number[] = [];
 
   public transcripts$ = this.caseService
     .getHearingTranscripts(this.hearingId)
@@ -243,8 +246,31 @@ export class HearingComponent implements OnInit {
     });
   }
 
-  onDeleteClicked() {
-    // Placeholder for DMP-1612
+  onDeleteClicked(annotationId: number) {
+    this.selectedAnnotationsforDeletion = [annotationId];
+  }
+
+  onDeleteConfirmed() {
+    this.selectedAnnotationsforDeletion.forEach((annotationId) => {
+      this.annotationService.deleteAnnotation(annotationId).subscribe(() => {
+        this.data$ = combineLatest({
+          case: this.case$,
+          hearing: this.hearing$,
+          audios: this.audio$,
+          annotations: this.annotations$,
+          events: this.events$,
+          hearingRestrictions: this.restrictions$,
+          error: this.error$,
+        });
+        this.selectedAnnotationsforDeletion = [];
+        this.defaultTab = 'Annotations';
+      });
+    });
+  }
+
+  onDeleteCancelled() {
+    this.selectedAnnotationsforDeletion = [];
+    this.defaultTab = 'Annotations';
   }
 
   filterRestrictionsByHearingId(restrictions: ReportingRestriction[], hearingId: number): ReportingRestriction[] {

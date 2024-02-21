@@ -4,9 +4,9 @@ import { Router } from '@angular/router';
 import { Filter } from '@common/filters/filter.interface';
 import { FiltersComponent } from '@common/filters/filters.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
-import { TabDirective } from 'src/app/core/directives/tab.directive';
-import { AppConfigService } from 'src/app/core/services/app-config/app-config.service';
-import { HeaderService } from 'src/app/core/services/header/header.service';
+import { TabDirective } from '@directives/tab.directive';
+import { AppConfigService } from '@services/app-config/app-config.service';
+import { HeaderService } from '@services/header/header.service';
 
 @Component({
   selector: 'app-dev',

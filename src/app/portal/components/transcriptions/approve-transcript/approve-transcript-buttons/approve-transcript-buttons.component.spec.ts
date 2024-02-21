@@ -1,8 +1,8 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { TranscriptionService } from '@services/transcription/transcription.service';
 import { of } from 'rxjs/internal/observable/of';
-import { TranscriptionService } from 'src/app/portal/services/transcription/transcription.service';
 
 import { ApproveTranscriptButtonsComponent } from './approve-transcript-buttons.component';
 

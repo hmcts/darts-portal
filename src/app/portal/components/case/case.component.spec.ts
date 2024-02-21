@@ -3,10 +3,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { AnnotationsData, Case, Hearing, TranscriptData } from '@portal-types/index';
+import { CaseService } from '@services/case/case.service';
 import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
 import { Observable, of } from 'rxjs';
-import { CaseService } from 'src/app/portal/services/case/case.service';
 import { CaseComponent } from './case.component';
 
 describe('CaseComponent', () => {

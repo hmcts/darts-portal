@@ -6,10 +6,14 @@ const config: Config = {
   moduleDirectories: ['node_modules', '<rootDir>'],
   transformIgnorePatterns: ['node_modules/(?!@angular|@scottish-government)'],
   moduleNameMapper: {
-    '^@services/(.*)$': ['<rootDir>/src/app/core/services/$1', '<rootDir>/src/app/portal/services/$1'],
+    '^@services/(.*)$': [
+      '<rootDir>/src/app/core/services/$1',
+      '<rootDir>/src/app/portal/services/$1',
+      '<rootDir>/src/app/admin/services/$1',
+    ],
     '^@common/(.*)$': '<rootDir>/src/app/core/components/common/$1',
     '^@components/(.*)$': ['<rootDir>/src/app/core/components/$1', '<rootDir>/src/app/portal/components/$1'],
-    '^@core-types/(.*)$': '<rootDir>/src/app/core/types/$1',
+    '^@core-types/(.*)$': '<rootDir>/src/app/core/models/$1',
     '^@portal-types/(.*)$': '<rootDir>/src/app/portal/models/$1',
     '^@validators/(.*)$': '<rootDir>/src/app/core/validators/$1',
     '^@pipes/(.*)$': '<rootDir>/src/app/core/pipes/$1',

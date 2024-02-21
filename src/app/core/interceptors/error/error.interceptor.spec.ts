@@ -1,8 +1,8 @@
 import { HttpErrorResponse, HttpHandler, HttpRequest } from '@angular/common/http';
 import { ErrorHandler } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { ErrorMessageService } from '@services/error/error-message.service';
 import { throwError } from 'rxjs';
-import { ErrorMessageService } from 'src/app/core/services/error/error-message.service';
 import { ErrorInterceptor } from './error.interceptor';
 
 class MockWindow {

@@ -2,11 +2,11 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { AudioEventRow, Case, Hearing, HearingAudio, HearingEvent } from '@portal-types/index';
+import { CaseService } from '@services/case/case.service';
+import { HearingService } from '@services/hearing/hearing.service';
+import { TranscriptionService } from '@services/transcription/transcription.service';
 import { DateTime } from 'luxon';
 import { Observable, of } from 'rxjs';
-import { CaseService } from 'src/app/portal/services/case/case.service';
-import { HearingService } from 'src/app/portal/services/hearing/hearing.service';
-import { TranscriptionService } from 'src/app/portal/services/transcription/transcription.service';
 
 import { RequestTranscriptComponent } from './request-transcript.component';
 
@@ -180,18 +180,21 @@ describe('RequestTranscriptComponent', () => {
           media_start_timestamp: '2023-07-31T02:32:24.620Z',
           media_end_timestamp: '2023-07-31T14:32:24.620Z',
           name: 'Audio Recording',
+          type: 'audio',
         },
         {
           id: 2,
           media_start_timestamp: '2023-07-31T04:30:24.620Z',
           media_end_timestamp: '2023-07-31T14:32:24.620Z',
           name: 'Audio Recording',
+          type: 'audio',
         },
         {
           id: 3,
           media_start_timestamp: '2023-07-31T05:32:24.620Z',
           media_end_timestamp: '2023-07-31T14:32:24.620Z',
           name: 'Audio Recording',
+          type: 'audio',
         },
       ];
 

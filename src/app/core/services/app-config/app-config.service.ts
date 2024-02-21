@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
+import { HttpBackendClient } from '@extensions/HttpBackendClient';
 import { lastValueFrom } from 'rxjs';
-import { HttpBackendClient } from 'src/app/core/extensions/HttpBackendClient';
 
 export interface AppConfig {
   appInsightsKey: string;

@@ -6,7 +6,7 @@
       <p class="govuk-error-message fullName-error"><span class="govuk-visually-hidden">Error:</span> {{ error }}</p>
     }
     <input
-      class="govuk-input govuk-!-width-one-half"
+      class="govuk-input"
       type="text"
       id="fullName"
       formControlName="fullName"
@@ -21,7 +21,7 @@
       <p class="govuk-error-message email-error"><span class="govuk-visually-hidden">Error:</span> {{ error }}</p>
     }
     <input
-      class="govuk-input govuk-!-width-one-half"
+      class="govuk-input"
       type="email"
       id="email"
       formControlName="email"
@@ -31,7 +31,7 @@
 
   <div class="govuk-form-group">
     <fieldset class="govuk-fieldset">
-      <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+      <legend class="govuk-visually-hidden">
         <span class="govuk-fieldset__heading">User Status</span>
       </legend>
       <div class="govuk-radios govuk-radios--small govuk-radios--inline">
@@ -43,7 +43,7 @@
             value="active"
             formControlName="userStatus"
           />
-          <label class="govuk-label govuk-radios__label" for="activeUsers">Active Users</label>
+          <label class="govuk-label govuk-radios__label" for="activeUsers">Active users</label>
         </div>
         <div class="govuk-radios__item">
           <input
@@ -53,11 +53,11 @@
             value="inactive"
             formControlName="userStatus"
           />
-          <label class="govuk-label govuk-radios__label" for="inactiveUsers">Inactive Users</label>
+          <label class="govuk-label govuk-radios__label" for="inactiveUsers">Inactive users</label>
         </div>
         <div class="govuk-radios__item">
           <input class="govuk-radios__input" type="radio" id="allUsers" value="all" formControlName="userStatus" />
-          <label class="govuk-label govuk-radios__label" for="allUsers">All Users</label>
+          <label class="govuk-label govuk-radios__label" for="allUsers">All</label>
         </div>
       </div>
     </fieldset>

@@ -24,4 +24,8 @@ export class AnnotationService {
     formData.append('annotation', new Blob([JSON.stringify(postDTO)], { type: 'application/json' }));
     return this.http.post(`/api/annotations`, formData);
   }
+
+  deleteAnnotation(annotationId: number) {
+    return this.http.delete(`/api/annotations/${annotationId}`);
+  }
 }

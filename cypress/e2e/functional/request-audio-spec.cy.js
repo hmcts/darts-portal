@@ -1,6 +1,8 @@
 import 'cypress-axe';
 import './commands';
 
+const previewLinkSelector = 'a[data-cy="preview-link-button"]';
+
 describe('Request audio', () => {
   beforeEach(() => {
     cy.login();
@@ -126,30 +128,29 @@ describe('Request audio', () => {
   });
 
   describe('Preview Audio', () => {
+    it('should preview audio', () => {
+      cy.get('#hearingsTable a').contains('1 Sep 2023').click();
+      cy.get(previewLinkSelector).eq(0).click();
+      cy.get('audio').should('be.visible');
+      // check audio player is playing
+      cy.get('audio').should('have.prop', 'paused', false);
+    });
+
     it('should show Error message when preview audio returns 403', () => {
       cy.get('#hearingsTable a').contains('1 Sep 2023').click();
-      cy.get('audio').then(($audio) => {
-        const audio = $audio.get(3);
-        audio.play();
-      });
+      cy.get(previewLinkSelector).eq(3).click();
       cy.get('.govuk-table tr').eq(7).contains('p', 'You do not have permission to preview.');
     });
 
     it('should show Error message when preview audio returns 404', () => {
       cy.get('#hearingsTable a').contains('1 Sep 2023').click();
-      cy.get('audio').then(($audio) => {
-        const audio = $audio.get(4);
-        audio.play();
-      });
+      cy.get(previewLinkSelector).eq(4).click();
       cy.get('.govuk-table tr').eq(8).contains('p', 'Preview not found');
     });
 
     it('should show Error message when preview audio returns 500', () => {
       cy.get('#hearingsTable a').contains('1 Sep 2023').click();
-      cy.get('audio').then(($audio) => {
-        const audio = $audio.get(5);
-        audio.play();
-      });
+      cy.get(previewLinkSelector).eq(5).click();
       cy.get('.govuk-table tr').eq(9).contains('p', 'An error has occurred.');
     });
   });

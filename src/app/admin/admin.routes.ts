@@ -8,6 +8,11 @@ export const ADMIN_ROUTES: Routes = [
     path: 'admin/users',
     loadComponent: () => import('./components/users/users.component').then((c) => c.UsersComponent),
   },
+  {
+    path: 'admin/users/:userId',
+    loadComponent: () =>
+      import('./components/users/user-record/user-record.component').then((c) => c.UserRecordComponent),
+  },
 ].map((route) => ({
   ...route,
   resolve: { userState: () => inject(UserService).userProfile$ },
