@@ -13,4 +13,13 @@ export class AnnotationService {
       responseType: 'blob',
     });
   }
+
+  uploadAnnotationDocument(file: File, comments?: string) {
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+    if (comments) {
+      formData.append('annotation', comments);
+    }
+    return this.http.post(`/api/annotations`, formData);
+  }
 }

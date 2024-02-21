@@ -7,6 +7,7 @@ import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.compo
 import { GovukTextareaComponent } from '@common/govuk-textarea/govuk-textarea.component';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
+import { AnnotationService } from '@services/annotation/annotation.service';
 import { HeaderService } from '@services/header/header.service';
 import { maxFileSizeValidator } from '@validators/max-file-size.validator';
 import { DateTime } from 'luxon';
@@ -34,6 +35,7 @@ export class AddAnnotationComponent implements OnInit {
 
   headerService = inject(HeaderService);
   router = inject(Router);
+  annotationService = inject(AnnotationService);
 
   fileControl = new FormControl<File | null>(null, [Validators.required, maxFileSizeValidator(20)]);
   annotationComments = new FormControl('');
@@ -43,6 +45,20 @@ export class AddAnnotationComponent implements OnInit {
     this.caseId = state!.caseId;
     this.caseNumber = state!.caseNumber;
     this.hearingDate = state!.hearingDate;
+  }
+
+  onComplete() {
+    if (this.annotationComments.value) {
+      this.annotationService
+        .uploadAnnotationDocument(this.fileControl.value!, this.annotationComments.value)
+        .subscribe(() => {
+          // this.goToCompletedScreen();
+        });
+    } else {
+      this.annotationService.uploadAnnotationDocument(this.fileControl.value!).subscribe(() => {
+        // this.goToCompletedScreen();
+      });
+    }
   }
 
   ngOnInit(): void {

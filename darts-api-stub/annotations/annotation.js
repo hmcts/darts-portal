@@ -19,6 +19,13 @@ const getAnnotationDocumentByAnnotationAndDocumentId = (annotationId, annotation
   );
 };
 
+router.post('', (req, res) => {
+  console.log(req.body);
+  res.status(201).send({
+    "annotation_id": 1
+  });
+});
+
 // annotations stub data
 router.get('/:annotationId/documents/:annotationDocumentId', (req, res) => {
   const document = getAnnotationDocumentByAnnotationAndDocumentId(
