@@ -6,6 +6,7 @@ import { TimeInputComponent } from '@components/hearing/request-playback-audio/t
 import { DatatableColumn } from '@core-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { AudioEventRow, Hearing, HearingEvent } from '@portal-types/index';
+import { beforeTimeValidator } from '@validators/before-time.validator';
 import { timeGroupValidator } from '@validators/time-group.validator';
 import { DateTime } from 'luxon';
 
@@ -42,24 +43,27 @@ export class RequestTimesComponent {
 
   isSubmitted = false;
 
-  form = this.fb.group({
-    startTime: this.fb.group(
-      {
-        hours: ['', [Validators.required, Validators.min(0), Validators.max(23), Validators.pattern(/^\d{2}$/)]],
-        minutes: ['', [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
-        seconds: ['', [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
-      },
-      { validators: timeGroupValidator }
-    ),
-    endTime: this.fb.group(
-      {
-        hours: ['', [Validators.required, Validators.min(0), Validators.max(23), Validators.pattern(/^\d{2}$/)]],
-        minutes: ['', [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
-        seconds: ['', [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
-      },
-      { validators: timeGroupValidator }
-    ),
-  });
+  form = this.fb.group(
+    {
+      startTime: this.fb.group(
+        {
+          hours: ['', [Validators.required, Validators.min(0), Validators.max(23), Validators.pattern(/^\d{2}$/)]],
+          minutes: ['', [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
+          seconds: ['', [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
+        },
+        { validators: timeGroupValidator }
+      ),
+      endTime: this.fb.group(
+        {
+          hours: ['', [Validators.required, Validators.min(0), Validators.max(23), Validators.pattern(/^\d{2}$/)]],
+          minutes: ['', [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
+          seconds: ['', [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
+        },
+        { validators: timeGroupValidator }
+      ),
+    },
+    { validators: beforeTimeValidator }
+  );
 
   onEventRowSelected(events: HearingEvent[]) {
     if (events.length) {
@@ -115,6 +119,12 @@ export class RequestTimesComponent {
           message: 'Select an end time',
         });
       }
+      if (!this.form.controls.endTime.invalid && this.form.errors?.endTimeBeforeStartTime) {
+        this.validationErrors.push({
+          fieldId: 'end-hour-input',
+          message: 'End time must be after start time',
+        });
+      }
     }
 
     this.errors.emit(this.validationErrors);
@@ -143,5 +153,13 @@ export class RequestTimesComponent {
     ).toUTC();
     const endTime = DateTime.fromISO(`${hearingDate}T${endTimeHours}:${endTimeMinutes}:${endTimeSeconds}Z`).toUTC();
     return { startTime, endTime };
+  }
+
+  fieldHasError(fieldId: string): boolean {
+    return Boolean(this.validationErrors.find((f) => f.fieldId === fieldId));
+  }
+
+  getValidationMessage(fieldId: string): string {
+    return this.validationErrors.find((x) => x.fieldId === fieldId)?.message ?? '';
   }
 }

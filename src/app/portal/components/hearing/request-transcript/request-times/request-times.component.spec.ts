@@ -142,7 +142,7 @@ describe('RequestTimesComponent', () => {
       expect(component.validationErrors).toEqual([]);
     });
 
-    it('should set validationErrors if the form is invalid', () => {
+    it('should set validationErrors if the times are left blank', () => {
       const expectedValidationErrors = [
         {
           fieldId: 'start-hour-input',
@@ -153,6 +153,52 @@ describe('RequestTimesComponent', () => {
           message: 'Select an end time',
         },
       ];
+      component.onContinue();
+      expect(component.validationErrors).toEqual(expectedValidationErrors);
+    });
+
+    it('should set validationErrors if the end time before start time', () => {
+      const expectedValidationErrors = [
+        {
+          fieldId: 'end-hour-input',
+          message: 'End time must be after start time',
+        },
+      ];
+      component.form.patchValue({
+        startTime: {
+          hours: '01',
+          minutes: '15',
+          seconds: '30',
+        },
+        endTime: {
+          hours: '01',
+          minutes: '10',
+          seconds: '00',
+        },
+      });
+      component.onContinue();
+      expect(component.validationErrors).toEqual(expectedValidationErrors);
+    });
+
+    it('should set validationErrors if the end time equals start time', () => {
+      const expectedValidationErrors = [
+        {
+          fieldId: 'end-hour-input',
+          message: 'End time must be after start time',
+        },
+      ];
+      component.form.patchValue({
+        startTime: {
+          hours: '01',
+          minutes: '15',
+          seconds: '30',
+        },
+        endTime: {
+          hours: '01',
+          minutes: '15',
+          seconds: '30',
+        },
+      });
       component.onContinue();
       expect(component.validationErrors).toEqual(expectedValidationErrors);
     });
@@ -185,6 +231,50 @@ describe('RequestTimesComponent', () => {
       const { startTime, endTime } = component.getStartEndTimeFromForm();
       expect(startTime?.toISO()).toEqual(expectedStartTimestamp);
       expect(endTime?.toISO()).toEqual(expectedEndTimestamp);
+    });
+  });
+
+  describe('#fieldHasError', () => {
+    it('returns true if an error exists', () => {
+      component.validationErrors = [
+        {
+          fieldId: 'some-field',
+          message: 'Some error',
+        },
+      ];
+      expect(component.fieldHasError('some-field')).toBeTruthy();
+    });
+
+    it('returns false when no error exists', () => {
+      component.validationErrors = [
+        {
+          fieldId: 'some-field',
+          message: 'Some error',
+        },
+      ];
+      expect(component.fieldHasError('some-other-field')).toBeFalsy();
+    });
+  });
+
+  describe('#getValidationMessage', () => {
+    it('returns message', () => {
+      component.validationErrors = [
+        {
+          fieldId: 'some-field',
+          message: 'Some error',
+        },
+      ];
+      expect(component.getValidationMessage('some-field')).toBe('Some error');
+    });
+
+    it('returns empty string if no message exists', () => {
+      component.validationErrors = [
+        {
+          fieldId: 'some-field',
+          message: 'Some error',
+        },
+      ];
+      expect(component.getValidationMessage('some-other-field')).toBe('');
     });
   });
 });

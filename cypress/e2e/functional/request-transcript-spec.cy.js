@@ -109,8 +109,8 @@ describe('Request Transcript', () => {
     cy.get('.govuk-button').contains('Continue').click();
     cy.get('.govuk-list > :nth-child(1) > a').should('contain', 'Please select a transcription type');
     cy.get('.govuk-list > :nth-child(2) > a').should('contain', 'Please select an urgency');
-    cy.get(':nth-child(12) > #subject-error').should('contain', 'Please select a transcription type');
-    cy.get(':nth-child(13) > #subject-error').should('contain', 'Please select an urgency');
+    cy.get(':nth-child(12) > #transcription-type-error').should('contain', 'Please select a transcription type');
+    cy.get(':nth-child(13) > #urgency-error').should('contain', 'Please select an urgency');
     cy.a11y();
   });
 
