@@ -9,6 +9,11 @@ export const ADMIN_ROUTES: Routes = [
     loadComponent: () => import('./components/users/users.component').then((c) => c.UsersComponent),
   },
   {
+    path: 'admin/users/create',
+    loadComponent: () =>
+      import('./components/users/create-user/create-user.component').then((c) => c.CreateUserComponent),
+  },
+  {
     path: 'admin/users/:userId',
     loadComponent: () =>
       import('./components/users/user-record/user-record.component').then((c) => c.UserRecordComponent),

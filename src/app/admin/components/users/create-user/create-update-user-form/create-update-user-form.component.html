@@ -1,0 +1,51 @@
+<form [formGroup]="form" class="govuk-form" (ngSubmit)="onSubmit()">
+  <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid(fullNameControl)">
+    <label class="govuk-label" for="fullName">Full name</label>
+    <!-- Inline Validation Errors -->
+    @for (error of getFormControlErrorMessages('fullName'); track error) {
+      <p class="govuk-error-message fullName-error"><span class="govuk-visually-hidden">Error:</span> {{ error }}</p>
+    }
+    <input
+      class="govuk-input"
+      type="text"
+      id="fullName"
+      formControlName="fullName"
+      [class.govuk-input--error]="isControlInvalid(fullNameControl)"
+    />
+  </div>
+
+  <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid(emailControl)">
+    <label class="govuk-label" for="email">Email</label>
+    <!-- Inline Validation Errors -->
+    @for (error of getFormControlErrorMessages('email'); track error) {
+      <p class="govuk-error-message email-error"><span class="govuk-visually-hidden">Error:</span> {{ error }}</p>
+    }
+    <input
+      class="govuk-input"
+      type="email"
+      id="email"
+      formControlName="email"
+      [class.govuk-input--error]="isControlInvalid(emailControl)"
+    />
+  </div>
+
+  <div class="govuk-form-group" [class.govuk-from-group--error]="isControlInvalid(descriptionControl)">
+    <label class="govuk-label" for="description">Description (optional)</label>
+    <!-- Inline Validation Errors -->
+    @for (error of getFormControlErrorMessages('description'); track error) {
+      <p class="govuk-error-message description-error"><span class="govuk-visually-hidden">Error:</span> {{ error }}</p>
+    }
+    <input
+      class="govuk-input"
+      type="description"
+      id="description"
+      formControlName="description"
+      [class.govuk-input--error]="isControlInvalid(descriptionControl)"
+    />
+  </div>
+
+  <div class="govuk-button-group">
+    <button class="govuk-button" type="submit">Continue</button>
+    <a class="govuk-link" href="javascript:void(0)" (click)="onCancel()">Cancel</a>
+  </div>
+</form>

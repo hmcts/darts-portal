@@ -1,0 +1,9 @@
+<app-validation-error-summary #validationErrorSummary />
+
+<app-govuk-heading caption="Create user"> Enter user details </app-govuk-heading>
+
+<app-create-update-user-form
+  (submitForm)="onFormSubmit($event)"
+  (errors)="validationErrorSummary.errors = $event"
+  (cancel)="router.navigate(['admin/users'])"
+/>

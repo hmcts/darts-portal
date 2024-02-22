@@ -28,17 +28,14 @@ describe('Admin - Users screen', () => {
     cy.a11y();
   });
 
-  //   it('View a user', () => {});
+  it('Creates a new user', () => {
+    cy.get('button').contains('Create new user').click();
+    cy.get('h1').should('contain', 'Enter user details');
 
-  //   it('Creates a new user', () => {});
+    cy.get('#fullName').type('New User');
+    cy.get('#email').type('user@test.com');
+    cy.get('#description').type('This is a test user');
 
-  describe('Validation', () => {
-    describe('Full name field', () => {
-      it('Required', () => {});
-      it('Invalid characters', () => {});
-    });
-    describe('Email field', () => {
-      it('Invalid email', () => {});
-    });
+    cy.a11y();
   });
 });
