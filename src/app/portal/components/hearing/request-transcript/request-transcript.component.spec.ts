@@ -283,6 +283,10 @@ describe('RequestTranscriptComponent', () => {
       component.onRequestTimeCancel();
       expect(component.audioTimes).toEqual(undefined);
     });
+    it('should clear validation errors', () => {
+      component.onRequestTimeCancel();
+      expect(component.validationErrors).toEqual([]);
+    });
   });
 
   describe('#onConfirmationCancel', () => {

@@ -37,7 +37,11 @@
         [class.govuk-form-group--error]="isSubmitted && transcriptionTypeFormControl.invalid"
       >
         <label class="govuk-label" for="transcription-type"> Request Type </label>
-        <p *ngIf="isSubmitted && transcriptionTypeFormControl.invalid" id="subject-error" class="govuk-error-message">
+        <p
+          *ngIf="isSubmitted && transcriptionTypeFormControl.invalid"
+          id="transcription-type-error"
+          class="govuk-error-message"
+        >
           <span class="govuk-visually-hidden">Error:</span> {{ getValidationMessage('transcription-type') }}
         </p>
         <select
@@ -55,7 +59,7 @@
       </div>
       <div class="govuk-form-group" [class.govuk-form-group--error]="isSubmitted && urgencyFormControl.invalid">
         <label class="govuk-label" for="urgency"> Urgency </label>
-        <p *ngIf="isSubmitted && urgencyFormControl.invalid" id="subject-error" class="govuk-error-message">
+        <p *ngIf="isSubmitted && urgencyFormControl.invalid" id="urgency-error" class="govuk-error-message">
           <span class="govuk-visually-hidden">Error:</span> {{ getValidationMessage('urgency') }}
         </p>
         <select
