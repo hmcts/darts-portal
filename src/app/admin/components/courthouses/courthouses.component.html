@@ -1,0 +1,7 @@
+<div class="space-between">
+  <app-govuk-heading>Courthouses</app-govuk-heading>
+  <button class="govuk-button govuk-button--secondary">Create new courthouse</button>
+</div>
+<app-govuk-heading tag="h2" size="m">Search for courthouse</app-govuk-heading>
+
+<app-courthouse-search-form (submitForm)="onSubmit($event)" (clear)="onClear()"></app-courthouse-search-form>
