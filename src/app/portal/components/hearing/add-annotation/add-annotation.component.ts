@@ -66,7 +66,7 @@ export class AddAnnotationComponent implements OnInit {
     }
   }
 
-  private goToSuccessScreen() {
+  public goToSuccessScreen() {
     this.step = 2;
   }
 
