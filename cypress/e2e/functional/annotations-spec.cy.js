@@ -183,4 +183,73 @@ describe('Annotations', () => {
 
     cy.a11y();
   });
+
+
+  it('Upload Annotation against a hearing', () => {
+    cy.login('judge');
+    cy.injectAxe();
+
+    cy.contains('Search').click();
+    cy.get('h1').should('contain', 'Search for a case');
+    cy.get('#case_number').type('ALL');
+    cy.get('button').contains('Search').click();
+
+    cy.contains('C20220620001').click();
+
+    cy.contains('All annotations').click();
+
+    cy.contains('1 Dec 2023').click();
+
+    cy.get('h1').should('contain', 'Hearing');
+
+    cy.get('a.moj-sub-navigation__link').should('contain', 'Annotations');
+    // Now we've gone to the hearing page, the annotation count should only be one
+    cy.get('#annotation-count').should('contain', '1');
+    cy.get('#annotationsTable')
+      .find('tr')
+      .then((rows) => {
+        expect(rows.length).equal(2); // 2 including header row as there's only one entry
+      });
+    const fileName = 'AnnotationBeta.doc';
+    // Download the annotation
+    cy.get('#annotationsTable')
+      .contains(fileName)
+      .parent('tr')
+      .then((row) => {
+        cy.wrap(row).find('td').contains('Download').click();
+      });
+    cy.readFile(path.join(downloadsFolder, fileName)).should('exist');
+
+    // Delete the annotation
+    cy.get('#annotationsTable')
+      .contains(fileName)
+      .parent('tr')
+      .then((row) => {
+        cy.wrap(row).find('td').contains('Delete').click();
+      });
+
+    cy.contains('Are you sure you want to delete this item?');
+    cy.contains('Yes - delete').click();
+
+    cy.get('#no-data-message').should('contain', 'There are no annotations for this hearing.');
+
+    cy.contains('Upload annotation').click();
+
+    cy.get('input[type=file]').selectFile({
+      contents: Cypress.Buffer.from('file contents'),
+      fileName: 'file.docx',
+      lastModified: Date.now(),
+    });
+
+    cy.get('#annotation-comments').type('Test');
+
+    cy.get('#annotation-comments-hint').should('contain', 'You have 196 characters remaining');
+
+    cy.get('#upload-button').click();
+
+    cy.get('.govuk-panel__title').should('contain', 'You have added an annotation');
+
+
+    cy.a11y();
+  });
 });
