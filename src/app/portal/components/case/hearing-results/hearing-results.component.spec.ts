@@ -3,7 +3,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Hearing } from '@portal-types/index';
-import { AnnotationsService } from '@services/annotations/annotations.service';
+import { AnnotationService } from '@services/annotation/annotation.service';
 import { FileDownloadService } from '@services/file-download/file-download.service';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
@@ -31,7 +31,7 @@ describe('HearingResultsComponent', () => {
       providers: [
         { provide: DatePipe },
         {
-          provide: AnnotationsService,
+          provide: AnnotationService,
           useValue: {
             downloadAnnotationDocument: jest.fn().mockReturnValue(of(blob)),
           },
@@ -57,7 +57,7 @@ describe('HearingResultsComponent', () => {
   describe('#downloadAnnotation', () => {
     it('calls downloadAnnotationDocument', () => {
       component.downloadAnnotation(1, 1, 'testDoc.docx');
-      expect(component.annotationsService.downloadAnnotationDocument).toHaveBeenCalledWith(1, 1);
+      expect(component.AnnotationService.downloadAnnotationDocument).toHaveBeenCalledWith(1, 1);
       expect(component.fileDownloadService.saveAs).toHaveBeenCalledWith(blob, 'testDoc.docx');
     });
   });

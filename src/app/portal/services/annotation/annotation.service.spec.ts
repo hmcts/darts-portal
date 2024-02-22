@@ -25,7 +25,7 @@ describe('AnnotationService', () => {
   });
 
   describe('#downloadAnnotationDocument', () => {
-    it('should get events', () => {
+    it('should get annotation document', () => {
       const annotationId = 123;
       const annotationDocumentId = 321;
       const mockBlob = new Blob(['mock document data'], {
@@ -44,6 +44,39 @@ describe('AnnotationService', () => {
       });
 
       expect(receivedBlob).toBeInstanceOf(Blob);
+    });
+  });
+
+  describe('#downloadAnnotationTemplate', () => {
+    it('should get annotation template', () => {
+      const mockBlob = new Blob(['mock document data'], {
+        type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      });
+      jest.spyOn(service['http'], 'get').mockReturnValueOnce(of(mockBlob));
+
+      let receivedBlob: Blob | undefined;
+      service.downloadAnnotationTemplate().subscribe((blob: Blob) => {
+        receivedBlob = blob;
+      });
+
+      const expectedUrl = `/download/annotations/template`;
+      expect(service['http'].get).toHaveBeenCalledWith(expectedUrl, {
+        responseType: 'blob',
+      });
+
+      expect(receivedBlob).toBeInstanceOf(Blob);
+    });
+  });
+
+  describe('#deleteAnnotation', () => {
+    it('should delete annotation', () => {
+      const annotationId = 123;
+      jest.spyOn(service['http'], 'delete').mockReturnValueOnce(of({}));
+
+      service.deleteAnnotation(annotationId).subscribe();
+
+      const expectedUrl = `/api/annotations/${annotationId}`;
+      expect(service['http'].delete).toHaveBeenCalledWith(expectedUrl);
     });
   });
 });

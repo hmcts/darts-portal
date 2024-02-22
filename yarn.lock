@@ -22,20 +22,30 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular-builders/custom-webpack@npm:^17.0.0":
-  version: 17.0.0
-  resolution: "@angular-builders/custom-webpack@npm:17.0.0"
+"@angular-builders/common@npm:1.0.1":
+  version: 1.0.1
+  resolution: "@angular-builders/common@npm:1.0.1"
   dependencies:
+    "@angular-devkit/core": ^17.1.0
+    ts-node: ^10.0.0
+    tsconfig-paths: ^4.1.0
+  checksum: 07bbaad5711b11687034d7b0165d09f51c17f3900b3d726422bc42b7ad2844dc0eac62c675de22f173a186034dd82f9f2b3277c75e116490e6fdd6a4e41d7966
+  languageName: node
+  linkType: hard
+
+"@angular-builders/custom-webpack@npm:^17.0.0":
+  version: 17.0.1
+  resolution: "@angular-builders/custom-webpack@npm:17.0.1"
+  dependencies:
+    "@angular-builders/common": 1.0.1
     "@angular-devkit/architect": ">=0.1700.0 < 0.1800.0"
     "@angular-devkit/build-angular": ^17.0.0
     "@angular-devkit/core": ^17.0.0
     lodash: ^4.17.15
-    ts-node: ^10.0.0
-    tsconfig-paths: ^4.1.0
     webpack-merge: ^5.7.3
   peerDependencies:
     "@angular/compiler-cli": ^17.0.0
-  checksum: 076389f230577ff192654c5dfc2535b6bf15dcff878507ce00a097fc28c1d031140455de7980d4e0fe2afcf424b2d34d408d2f00d133c19b098879d5a8d8eec9
+  checksum: 0b0bd44e15151946abe287489da7abd955f6840685988d1509f3198e4f38675fe174c3311a4853d8fd4bb1deb25ac326154032db7900c7579d0547f124fbedb1
   languageName: node
   linkType: hard
 
@@ -212,7 +222,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular-devkit/core@npm:17.2.0":
+"@angular-devkit/core@npm:17.2.0, @angular-devkit/core@npm:^17.1.0":
   version: 17.2.0
   resolution: "@angular-devkit/core@npm:17.2.0"
   dependencies:
@@ -357,13 +367,13 @@ __metadata:
   linkType: hard
 
 "@angular/animations@npm:^17.0.1":
-  version: 17.2.1
-  resolution: "@angular/animations@npm:17.2.1"
+  version: 17.2.2
+  resolution: "@angular/animations@npm:17.2.2"
   dependencies:
     tslib: ^2.3.0
   peerDependencies:
-    "@angular/core": 17.2.1
-  checksum: 063cb39c70e14082ce79a8dfc30b2c15904c0f8f34128e072fccc347dcea0ffafe97982e700aba95ad201644ae9b24226f945b63879be4d8bec6bec7ae659756
+    "@angular/core": 17.2.2
+  checksum: c034da6d7f7d3d588d1c85801f1003f3c77b484f6281c665a741254e8104586a3a9fb161596eae97f5f12eb48987435c453a3ff7fa7fb6f14d9de37a04f9fd4b
   languageName: node
   linkType: hard
 
@@ -413,20 +423,20 @@ __metadata:
   linkType: hard
 
 "@angular/common@npm:^17.0.1":
-  version: 17.2.1
-  resolution: "@angular/common@npm:17.2.1"
+  version: 17.2.2
+  resolution: "@angular/common@npm:17.2.2"
   dependencies:
     tslib: ^2.3.0
   peerDependencies:
-    "@angular/core": 17.2.1
+    "@angular/core": 17.2.2
     rxjs: ^6.5.3 || ^7.4.0
-  checksum: 7f9d2f093701e1aaefaf03c5f954ab346c3519a6561121d4930a0f141439bca4f3304dcc4860af7105098ab338713fd3719150552e03503c2b8011842d9b9fc6
+  checksum: 187c8b83af9b94c316640d87ad411c53eb7cb9983189ae1c02d39ea72bf8a856b5ff9970dd1f8df3c2bac5e11ab3009b7c2858fc416909b2fc0d8cadacf2195d
   languageName: node
   linkType: hard
 
 "@angular/compiler-cli@npm:^17.0.1":
-  version: 17.2.1
-  resolution: "@angular/compiler-cli@npm:17.2.1"
+  version: 17.2.2
+  resolution: "@angular/compiler-cli@npm:17.2.2"
   dependencies:
     "@babel/core": 7.23.9
     "@jridgewell/sourcemap-codec": ^1.4.14
@@ -437,97 +447,97 @@ __metadata:
     tslib: ^2.3.0
     yargs: ^17.2.1
   peerDependencies:
-    "@angular/compiler": 17.2.1
+    "@angular/compiler": 17.2.2
     typescript: ">=5.2 <5.4"
   bin:
     ng-xi18n: bundles/src/bin/ng_xi18n.js
     ngc: bundles/src/bin/ngc.js
     ngcc: bundles/ngcc/index.js
-  checksum: 077773e0051487d3d9af8770e3960382b4b3ac9b25110e14327dc204fec7cab337f47cedb59f0094ec1e90fb4ace042d227f7c786b2558bc0bb2613044ed3035
+  checksum: 49fed70fecf04aa48de2182093eec8859d24466ecf24bee57f10a7426bf34ea64bb6838cb50976303aa5bc3b8eb777f1a1f1aa9785e94ca810eb59d20e900795
   languageName: node
   linkType: hard
 
 "@angular/compiler@npm:^17.0.1":
-  version: 17.2.1
-  resolution: "@angular/compiler@npm:17.2.1"
+  version: 17.2.2
+  resolution: "@angular/compiler@npm:17.2.2"
   dependencies:
     tslib: ^2.3.0
   peerDependencies:
-    "@angular/core": 17.2.1
+    "@angular/core": 17.2.2
   peerDependenciesMeta:
     "@angular/core":
       optional: true
-  checksum: 29613823d8766b92560938eb1e44153370aa23b547c3509fd975c18b2948408db07452bec55073af5a0360431dfcc21d1fd5b1bb358922fda5c8567790d8fefa
+  checksum: 32c5cc7f5aa9a84344b6ea47c226be330cfda65d9a68c36330097af69221fa1097d3b0bf87aa366b7656764a107a38ee8178988d0230ad366c10e1a374b88820
   languageName: node
   linkType: hard
 
 "@angular/core@npm:^17.0.1":
-  version: 17.2.1
-  resolution: "@angular/core@npm:17.2.1"
+  version: 17.2.2
+  resolution: "@angular/core@npm:17.2.2"
   dependencies:
     tslib: ^2.3.0
   peerDependencies:
     rxjs: ^6.5.3 || ^7.4.0
     zone.js: ~0.14.0
-  checksum: e4625d79b4a20f65db2c27acf39e461b80238a3997e81050912f2406933228dbd20214cb9ea552a30670fd4bc6576966d81bc89be176134e2bbd2b144ee498c2
+  checksum: 00e171ae48eb5965b4772723552e903bef634bcbf998493dcfad876af1f4f858ddb1fb71705382397d6575bfaa403ddad498d2031a39047bbabf21652038da0c
   languageName: node
   linkType: hard
 
 "@angular/forms@npm:^17.0.1":
-  version: 17.2.1
-  resolution: "@angular/forms@npm:17.2.1"
+  version: 17.2.2
+  resolution: "@angular/forms@npm:17.2.2"
   dependencies:
     tslib: ^2.3.0
   peerDependencies:
-    "@angular/common": 17.2.1
-    "@angular/core": 17.2.1
-    "@angular/platform-browser": 17.2.1
+    "@angular/common": 17.2.2
+    "@angular/core": 17.2.2
+    "@angular/platform-browser": 17.2.2
     rxjs: ^6.5.3 || ^7.4.0
-  checksum: 9b317097baf813ac51538e05e499ce2675e0596f3abf2ae04b815fca4e6d8f99d946852bd5c730f77d4827e7bd0c09a1d238b4ac9a9ad5099cc30550d478d2b1
+  checksum: 3a7d99776ca8abbabb23f30fd2651d58efbbdf50c5d6d6ec459df2abc4be68958a42b94d0db0f42aef43549180dbd4465474413e496aa4878d5ad1c7abb15460
   languageName: node
   linkType: hard
 
 "@angular/platform-browser-dynamic@npm:^17.0.1":
-  version: 17.2.1
-  resolution: "@angular/platform-browser-dynamic@npm:17.2.1"
+  version: 17.2.2
+  resolution: "@angular/platform-browser-dynamic@npm:17.2.2"
   dependencies:
     tslib: ^2.3.0
   peerDependencies:
-    "@angular/common": 17.2.1
-    "@angular/compiler": 17.2.1
-    "@angular/core": 17.2.1
-    "@angular/platform-browser": 17.2.1
-  checksum: e1b7f38fd3cec1bbe9276469576eacda10b2a60c84bdfaaf74d8e01cc9576bc7ba55c0e3993a2da2af6b6e3f030f9195fa8ffa8990c0c19b143e3721e240077f
+    "@angular/common": 17.2.2
+    "@angular/compiler": 17.2.2
+    "@angular/core": 17.2.2
+    "@angular/platform-browser": 17.2.2
+  checksum: 63d94a3448cd58fb485b4348240c782346701a4729cc3a4d8e5e1bbe4cfde56b79084d9c436db73ab0c7e98ef167867e8640a59fd74ae4557f7af22eaa9f29ea
   languageName: node
   linkType: hard
 
 "@angular/platform-browser@npm:^17.0.1":
-  version: 17.2.1
-  resolution: "@angular/platform-browser@npm:17.2.1"
+  version: 17.2.2
+  resolution: "@angular/platform-browser@npm:17.2.2"
   dependencies:
     tslib: ^2.3.0
   peerDependencies:
-    "@angular/animations": 17.2.1
-    "@angular/common": 17.2.1
-    "@angular/core": 17.2.1
+    "@angular/animations": 17.2.2
+    "@angular/common": 17.2.2
+    "@angular/core": 17.2.2
   peerDependenciesMeta:
     "@angular/animations":
       optional: true
-  checksum: 89f01129994cec47803ff2483900e2588174d8e1a024b54eaf920c41f0ecd06b2312655c3cb2252fb1b05f0e290e5a9e2d81805a45b6bca77956e2ba51b97c3e
+  checksum: 38482fabab7ee5dd9537efecc444a140dad07794a46497fcfda384760ebc73a28e8f154b4ccea3e49d3faf4c2b3a9afeb9418b239b80a55be016d29790d54bde
   languageName: node
   linkType: hard
 
 "@angular/router@npm:^17.0.1":
-  version: 17.2.1
-  resolution: "@angular/router@npm:17.2.1"
+  version: 17.2.2
+  resolution: "@angular/router@npm:17.2.2"
   dependencies:
     tslib: ^2.3.0
   peerDependencies:
-    "@angular/common": 17.2.1
-    "@angular/core": 17.2.1
-    "@angular/platform-browser": 17.2.1
+    "@angular/common": 17.2.2
+    "@angular/core": 17.2.2
+    "@angular/platform-browser": 17.2.2
     rxjs: ^6.5.3 || ^7.4.0
-  checksum: 4c9d6d22478c08ad597038d582df6c7c26a7505bfccf814bd7bb916b4a8519f02b22a549797b2ec687feba9a67099efc87b4472a964ccbd17531bb291ea7024b
+  checksum: 401149d76037da72363beeb9deed7e8ac649c348948319e8405beaf58afa2d1bdca68cbe7f4f04c8fbefa028a3f7ae8b693f8ab7b26fc92e17c537652f26ed70
   languageName: node
   linkType: hard
 
@@ -2855,13 +2865,13 @@ __metadata:
   linkType: hard
 
 "@hmcts/nodejs-healthcheck@npm:^1.8.0":
-  version: 1.8.3
-  resolution: "@hmcts/nodejs-healthcheck@npm:1.8.3"
+  version: 1.8.4
+  resolution: "@hmcts/nodejs-healthcheck@npm:1.8.4"
   dependencies:
     "@hmcts/nodejs-logging": ^4.0.4
     js-yaml: ^3.8.4
-    superagent: 7
-  checksum: 76f87a5a6707e76ab407f041991ac10139390290c40267401349e4af4f95490f4b3f542cbe4f59eb392655e71e28a1ec782a0522189257327f39c1fbb5d965bc
+    superagent: 8
+  checksum: 8b2a6d1745fc2b63bd933a4034b92e9b144c385e8e57a9c9cde454ef2dff19467911aa1c5ade2ece54fff10868c07b966814c31fe1d743c59ab10d5706db898e
   languageName: node
   linkType: hard
 
@@ -3280,109 +3290,109 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@microsoft/applicationinsights-analytics-js@npm:3.0.8":
-  version: 3.0.8
-  resolution: "@microsoft/applicationinsights-analytics-js@npm:3.0.8"
+"@microsoft/applicationinsights-analytics-js@npm:3.1.0":
+  version: 3.1.0
+  resolution: "@microsoft/applicationinsights-analytics-js@npm:3.1.0"
   dependencies:
-    "@microsoft/applicationinsights-common": 3.0.8
-    "@microsoft/applicationinsights-core-js": 3.0.8
+    "@microsoft/applicationinsights-common": 3.1.0
+    "@microsoft/applicationinsights-core-js": 3.1.0
     "@microsoft/applicationinsights-shims": 3.0.1
     "@microsoft/dynamicproto-js": ^2.0.3
     "@nevware21/ts-utils": ">= 0.10.5 < 2.x"
   peerDependencies:
     tslib: "*"
-  checksum: a4321ac465218875ffbe8489adb828812b9f550e9aad5a571e6a95b78b9089fd7c3a2f5b8f660145b25f377b0ef0ec2c6095f0b2b3916717d27848592261cad3
+  checksum: c8ccdf53df774b940e53599bf5449320d2e1d511ee20eb40a612b396dddd63635d3bfa4da1a2189764bc44252d7927f8bdfb0141404d593c06e3f48ec52579c6
   languageName: node
   linkType: hard
 
-"@microsoft/applicationinsights-cfgsync-js@npm:3.0.8":
-  version: 3.0.8
-  resolution: "@microsoft/applicationinsights-cfgsync-js@npm:3.0.8"
+"@microsoft/applicationinsights-cfgsync-js@npm:3.1.0":
+  version: 3.1.0
+  resolution: "@microsoft/applicationinsights-cfgsync-js@npm:3.1.0"
   dependencies:
-    "@microsoft/applicationinsights-common": 3.0.8
-    "@microsoft/applicationinsights-core-js": 3.0.8
+    "@microsoft/applicationinsights-common": 3.1.0
+    "@microsoft/applicationinsights-core-js": 3.1.0
     "@microsoft/applicationinsights-shims": 3.0.1
     "@microsoft/dynamicproto-js": ^2.0.3
     "@nevware21/ts-async": ">= 0.3.0 < 2.x"
     "@nevware21/ts-utils": ">= 0.10.5 < 2.x"
   peerDependencies:
     tslib: "*"
-  checksum: c7db38cba5d5c90a6266178da773032892636c8c86e2f35689d072145d05acf436d75509ecdef176970c6f4f8520f170070c2a01b127a53d5367b338f8f8199c
+  checksum: 69504d76348178960e0080edf861a9a7f0ed2001bc4efa429d319d75f9bec847de1fcdd642e41f9446e0b013110f258253302b2fd3a31f5374bd6c70a54b3295
   languageName: node
   linkType: hard
 
-"@microsoft/applicationinsights-channel-js@npm:3.0.8":
-  version: 3.0.8
-  resolution: "@microsoft/applicationinsights-channel-js@npm:3.0.8"
+"@microsoft/applicationinsights-channel-js@npm:3.1.0":
+  version: 3.1.0
+  resolution: "@microsoft/applicationinsights-channel-js@npm:3.1.0"
   dependencies:
-    "@microsoft/applicationinsights-common": 3.0.8
-    "@microsoft/applicationinsights-core-js": 3.0.8
+    "@microsoft/applicationinsights-common": 3.1.0
+    "@microsoft/applicationinsights-core-js": 3.1.0
     "@microsoft/applicationinsights-shims": 3.0.1
     "@microsoft/dynamicproto-js": ^2.0.3
     "@nevware21/ts-async": ">= 0.3.0 < 2.x"
     "@nevware21/ts-utils": ">= 0.10.5 < 2.x"
   peerDependencies:
     tslib: "*"
-  checksum: 8f01ebaf54deb62bc77da112fdaf5e148a34f159c0a565d8126c5b4dca3495f8ad5f1d350d1c42cbc43a75fd166c1fde0cf2574187732f1d0e504ff8d1d96aa9
+  checksum: f87f05bd67b2240ea4300426cf71a4d35f5639dcb6bf77d9bfe2e935e63843982632ea6c8a84e8ea318990971566a794a7f3dd75379aebbf29e9c1e36fd7182e
   languageName: node
   linkType: hard
 
-"@microsoft/applicationinsights-common@npm:3.0.8":
-  version: 3.0.8
-  resolution: "@microsoft/applicationinsights-common@npm:3.0.8"
+"@microsoft/applicationinsights-common@npm:3.1.0":
+  version: 3.1.0
+  resolution: "@microsoft/applicationinsights-common@npm:3.1.0"
   dependencies:
-    "@microsoft/applicationinsights-core-js": 3.0.8
+    "@microsoft/applicationinsights-core-js": 3.1.0
     "@microsoft/applicationinsights-shims": 3.0.1
     "@microsoft/dynamicproto-js": ^2.0.3
     "@nevware21/ts-utils": ">= 0.10.5 < 2.x"
   peerDependencies:
     tslib: "*"
-  checksum: a5f142ee9a90975c37c2a3f59c0fb1a21e776fd5deb60c39099adc4c5ee699022686b6c9f95453c0ee5c11c6fe92ff56f6c974e5c8acc8d2debd865faeb8a25a
+  checksum: 776c031d66799238819bbab7282c492f51496754695a21ed6e93ad03776c75301710d274ad4ad60649af7c966beed42dee3bbf235919fbb7d973649268487853
   languageName: node
   linkType: hard
 
-"@microsoft/applicationinsights-core-js@npm:3.0.8":
-  version: 3.0.8
-  resolution: "@microsoft/applicationinsights-core-js@npm:3.0.8"
+"@microsoft/applicationinsights-core-js@npm:3.1.0":
+  version: 3.1.0
+  resolution: "@microsoft/applicationinsights-core-js@npm:3.1.0"
   dependencies:
-    "@microsoft/applicationinsights-shims": 3.0.1
-    "@microsoft/dynamicproto-js": ^2.0.3
-    "@nevware21/ts-async": ">= 0.3.0 < 2.x"
-    "@nevware21/ts-utils": ">= 0.10.5 < 2.x"
-  peerDependencies:
-    tslib: "*"
-  checksum: a0aa118f813e1d194ada36812d216a94ca24b78917b5974446d3913a5c9444e031fa26f2641fb49665d52d1f545503597a810c15326f8e73a1360c0f69c3b3c8
-  languageName: node
-  linkType: hard
-
-"@microsoft/applicationinsights-dependencies-js@npm:3.0.8":
-  version: 3.0.8
-  resolution: "@microsoft/applicationinsights-dependencies-js@npm:3.0.8"
-  dependencies:
-    "@microsoft/applicationinsights-common": 3.0.8
-    "@microsoft/applicationinsights-core-js": 3.0.8
     "@microsoft/applicationinsights-shims": 3.0.1
     "@microsoft/dynamicproto-js": ^2.0.3
     "@nevware21/ts-async": ">= 0.3.0 < 2.x"
     "@nevware21/ts-utils": ">= 0.10.5 < 2.x"
   peerDependencies:
     tslib: "*"
-  checksum: fe2cf5b4c7e6c33e904a73a40fe1552fb3f9c219e8fc1d01ba976c7a92c1a1fc3e19c05124955cbfc99b313b01fb3b33c2d6e12f9223c47064b78c43fed00056
+  checksum: ff6f4c31f42cbcd281218e95246e4a4558f6df1966bd00e1a45b31ee818ee605ff6130245e3d13572d89509c66623e941e135b7edb43a89ca49cf875a400d2b1
   languageName: node
   linkType: hard
 
-"@microsoft/applicationinsights-properties-js@npm:3.0.8":
-  version: 3.0.8
-  resolution: "@microsoft/applicationinsights-properties-js@npm:3.0.8"
+"@microsoft/applicationinsights-dependencies-js@npm:3.1.0":
+  version: 3.1.0
+  resolution: "@microsoft/applicationinsights-dependencies-js@npm:3.1.0"
   dependencies:
-    "@microsoft/applicationinsights-common": 3.0.8
-    "@microsoft/applicationinsights-core-js": 3.0.8
+    "@microsoft/applicationinsights-common": 3.1.0
+    "@microsoft/applicationinsights-core-js": 3.1.0
+    "@microsoft/applicationinsights-shims": 3.0.1
+    "@microsoft/dynamicproto-js": ^2.0.3
+    "@nevware21/ts-async": ">= 0.3.0 < 2.x"
+    "@nevware21/ts-utils": ">= 0.10.5 < 2.x"
+  peerDependencies:
+    tslib: "*"
+  checksum: 3e07e614696318ed375ff47a88b7cde6213b7171eb3736793e5c482064b81e91de645b82180feb9b83522dad9d75d8207b10c0095a575e631907c7d881748eef
+  languageName: node
+  linkType: hard
+
+"@microsoft/applicationinsights-properties-js@npm:3.1.0":
+  version: 3.1.0
+  resolution: "@microsoft/applicationinsights-properties-js@npm:3.1.0"
+  dependencies:
+    "@microsoft/applicationinsights-common": 3.1.0
+    "@microsoft/applicationinsights-core-js": 3.1.0
     "@microsoft/applicationinsights-shims": 3.0.1
     "@microsoft/dynamicproto-js": ^2.0.3
     "@nevware21/ts-utils": ">= 0.10.5 < 2.x"
   peerDependencies:
     tslib: "*"
-  checksum: f42756f9f6eae265d8db6426272f083a51abd5957adaf92fe0f345c6336acf5977cf1efc07c820306c6de9ecbf06f4de5ceba600d5d5e5d8daabb8a8cc7cfd18
+  checksum: d963b764e9c568159964205782bdf6faed425d15f46305d2e4c43dde3664901a804f12d84dd34f89fcb7d567f573faa4531f347eee8e1fe1de7742e0a93e8db5
   languageName: node
   linkType: hard
 
@@ -3396,23 +3406,23 @@ __metadata:
   linkType: hard
 
 "@microsoft/applicationinsights-web@npm:^3.0.1":
-  version: 3.0.8
-  resolution: "@microsoft/applicationinsights-web@npm:3.0.8"
+  version: 3.1.0
+  resolution: "@microsoft/applicationinsights-web@npm:3.1.0"
   dependencies:
-    "@microsoft/applicationinsights-analytics-js": 3.0.8
-    "@microsoft/applicationinsights-cfgsync-js": 3.0.8
-    "@microsoft/applicationinsights-channel-js": 3.0.8
-    "@microsoft/applicationinsights-common": 3.0.8
-    "@microsoft/applicationinsights-core-js": 3.0.8
-    "@microsoft/applicationinsights-dependencies-js": 3.0.8
-    "@microsoft/applicationinsights-properties-js": 3.0.8
+    "@microsoft/applicationinsights-analytics-js": 3.1.0
+    "@microsoft/applicationinsights-cfgsync-js": 3.1.0
+    "@microsoft/applicationinsights-channel-js": 3.1.0
+    "@microsoft/applicationinsights-common": 3.1.0
+    "@microsoft/applicationinsights-core-js": 3.1.0
+    "@microsoft/applicationinsights-dependencies-js": 3.1.0
+    "@microsoft/applicationinsights-properties-js": 3.1.0
     "@microsoft/applicationinsights-shims": 3.0.1
     "@microsoft/dynamicproto-js": ^2.0.3
     "@nevware21/ts-async": ">= 0.3.0 < 2.x"
     "@nevware21/ts-utils": ">= 0.10.5 < 2.x"
   peerDependencies:
     tslib: "*"
-  checksum: 98095ac7fb211b0425961ad16e6b9ee13a601c1e86f5f6f2ba3ada6c68e5bd85b1f572fece3677a55798aa210ab6c13ee48c2115cf07677c2a8d18c3ccfffc79
+  checksum: db656b7dac2137b8eadbdf8c1dc25cfd4ca00ba66f64157560457f4f6d63e7614bbc7b51644650938b72c52ad2277e4e166b540fc686f9288382eadc902a931e
   languageName: node
   linkType: hard
 
@@ -3426,14 +3436,14 @@ __metadata:
   linkType: hard
 
 "@ministryofjustice/frontend@npm:^2.0.0":
-  version: 2.1.0
-  resolution: "@ministryofjustice/frontend@npm:2.1.0"
+  version: 2.1.1
+  resolution: "@ministryofjustice/frontend@npm:2.1.1"
   dependencies:
     govuk-frontend: ^5.0.0
     moment: ^2.27.0
   peerDependencies:
     jquery: ^3.6.0
-  checksum: 27ec3bce0c237ffaf35c1889295d2598f8b0085bce602a3b0737c54f5c0f45ab2705cf904cf20369cb28c825c46af3ba2ae2c51ed322c2752d05c76b46d7e6de
+  checksum: e8fc290fe428bcb6c34264a4de9940f64e95a24aaad62ffa49373506a66c1739e244c2338aec8b84dd2995ee2b7a8a4a855c4b600610e7bbb19d4d7e0a8349ee
   languageName: node
   linkType: hard
 
@@ -4502,11 +4512,11 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:*, @types/node@npm:^20.0.0":
-  version: 20.11.17
-  resolution: "@types/node@npm:20.11.17"
+  version: 20.11.19
+  resolution: "@types/node@npm:20.11.19"
   dependencies:
     undici-types: ~5.26.4
-  checksum: 59c0dde187120adc97da30063c86511664b24b50fe777abfe1f557c217d0a0b84a68aaab5ef8ac44f5c2986b3f9cd605a15fa6e4f31195e594da96bbe9617c20
+  checksum: 259d16643ba611ade617a8212e594a3ac014727457507389bbf7213971346ab052d870f1e6e2df0afd0876ecd7874f578bccb130be01e069263cfc7136ddc0c1
   languageName: node
   linkType: hard
 
@@ -5937,7 +5947,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"buffer@npm:^5.5.0, buffer@npm:^5.6.0":
+"buffer@npm:^5.5.0, buffer@npm:^5.7.1":
   version: 5.7.1
   resolution: "buffer@npm:5.7.1"
   dependencies:
@@ -6627,7 +6637,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cookiejar@npm:^2.1.3":
+"cookiejar@npm:^2.1.4":
   version: 2.1.4
   resolution: "cookiejar@npm:2.1.4"
   checksum: c4442111963077dc0e5672359956d6556a195d31cbb35b528356ce5f184922b99ac48245ac05ed86cf993f7df157c56da10ab3efdadfed79778a0d9b1b092d5b
@@ -6852,8 +6862,8 @@ __metadata:
   linkType: hard
 
 "cypress@npm:^13.0.0":
-  version: 13.6.4
-  resolution: "cypress@npm:13.6.4"
+  version: 13.6.5
+  resolution: "cypress@npm:13.6.5"
   dependencies:
     "@cypress/request": ^3.0.0
     "@cypress/xvfb": ^1.2.4
@@ -6862,7 +6872,7 @@ __metadata:
     arch: ^2.2.0
     blob-util: ^2.0.2
     bluebird: ^3.7.2
-    buffer: ^5.6.0
+    buffer: ^5.7.1
     cachedir: ^2.3.0
     chalk: ^4.1.0
     check-more-types: ^2.24.0
@@ -6880,7 +6890,7 @@ __metadata:
     figures: ^3.2.0
     fs-extra: ^9.1.0
     getos: ^3.2.1
-    is-ci: ^3.0.0
+    is-ci: ^3.0.1
     is-installed-globally: ~0.4.0
     lazy-ass: ^1.6.0
     listr2: ^3.8.3
@@ -6899,7 +6909,7 @@ __metadata:
     yauzl: ^2.10.0
   bin:
     cypress: bin/cypress
-  checksum: 39daef291ccd18d7d724d7f8c1f5a2ed2b3d24c5c1eab1e00642c5db232fcc4dbd3fd30db3a2dce4e8b737d510355d135eb43034d800198d2867ecde4cdd696a
+  checksum: b0f106d11ceb54ed7c90abfeb5ecd02b9c0fd2d9e8aa9848e60d0f15248e48339a2e3dcd82d3ebe2d86e9af95f4af2810f48f45d97dd8d87189220ab980d56f0
   languageName: node
   linkType: hard
 
@@ -8474,7 +8484,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"formidable@npm:^2.0.1":
+"formidable@npm:^2.1.2":
   version: 2.1.2
   resolution: "formidable@npm:2.1.2"
   dependencies:
@@ -8835,9 +8845,9 @@ __metadata:
   linkType: hard
 
 "govuk-frontend@npm:^5.0.0":
-  version: 5.1.0
-  resolution: "govuk-frontend@npm:5.1.0"
-  checksum: 8bc32fa2f22319385476b8f4e9b080fb15b17f2487bad59acb68ae683ce027269221d6113b0aa5befb04e7be908f31ee8eefa7958a329e2e3618f912fea93ba8
+  version: 5.2.0
+  resolution: "govuk-frontend@npm:5.2.0"
+  checksum: aabf67174acdd77dea3033612999c99b501dce2bf20dd01a4d45c2de2e157694334c5c1fb2868dd9e0049f385deed824c96385898adfb5d11e2e3a55787f93fe
   languageName: node
   linkType: hard
 
@@ -9397,7 +9407,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-ci@npm:^3.0.0":
+"is-ci@npm:^3.0.1":
   version: 3.0.1
   resolution: "is-ci@npm:3.0.1"
   dependencies:
@@ -11165,7 +11175,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mime@npm:^2.5.0":
+"mime@npm:2.6.0":
   version: 2.6.0
   resolution: "mime@npm:2.6.0"
   bin:
@@ -12732,7 +12742,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"qs@npm:^6.10.3, qs@npm:^6.11.0":
+"qs@npm:^6.11.0":
   version: 6.11.2
   resolution: "qs@npm:6.11.2"
   dependencies:
@@ -12862,7 +12872,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"readable-stream@npm:^3.0.6, readable-stream@npm:^3.1.1, readable-stream@npm:^3.4.0, readable-stream@npm:^3.6.0":
+"readable-stream@npm:^3.0.6, readable-stream@npm:^3.1.1, readable-stream@npm:^3.4.0":
   version: 3.6.2
   resolution: "readable-stream@npm:3.6.2"
   dependencies:
@@ -13350,7 +13360,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:7.6.0":
+"semver@npm:7.6.0, semver@npm:^7.3.8":
   version: 7.6.0
   resolution: "semver@npm:7.6.0"
   dependencies:
@@ -14017,22 +14027,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"superagent@npm:7":
-  version: 7.1.5
-  resolution: "superagent@npm:7.1.5"
+"superagent@npm:8":
+  version: 8.1.2
+  resolution: "superagent@npm:8.1.2"
   dependencies:
     component-emitter: ^1.3.0
-    cookiejar: ^2.1.3
+    cookiejar: ^2.1.4
     debug: ^4.3.4
     fast-safe-stringify: ^2.1.1
     form-data: ^4.0.0
-    formidable: ^2.0.1
+    formidable: ^2.1.2
     methods: ^1.1.2
-    mime: ^2.5.0
-    qs: ^6.10.3
-    readable-stream: ^3.6.0
-    semver: ^7.3.7
-  checksum: 4782ca099b18a0933705f93ac4678290bcfcd5e57ca1286dd4f733c7fbb554ca0c7cc1c97261254dc29623ac258aa64fc40aaa18da960cbe759085efa3e4b8f6
+    mime: 2.6.0
+    qs: ^6.11.0
+    semver: ^7.3.8
+  checksum: f3601c5ccae34d5ba684a03703394b5d25931f4ae2e1e31a1de809f88a9400e997ece037f9accf148a21c408f950dc829db1e4e23576a7f9fe0efa79fd5c9d2f
   languageName: node
   linkType: hard
 

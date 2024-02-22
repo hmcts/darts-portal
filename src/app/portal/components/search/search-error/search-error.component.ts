@@ -1,9 +1,9 @@
 import { NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import { AfterViewInit, Component, Input, NgZone, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { InternalErrorComponent } from 'src/app/core/components/error/internal-server/internal-error.component';
-import { ErrorMessage } from 'src/app/core/models/error/error-message.interface';
-import { HeaderService } from 'src/app/core/services/header/header.service';
+import { InternalErrorComponent } from '@components/error/internal-server/internal-error.component';
+import { ErrorMessage } from '@core-types/error/error-message.interface';
+import { HeaderService } from '@services/header/header.service';
 
 @Component({
   selector: 'app-search-error',

@@ -3,7 +3,7 @@ import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
-import { AuthService } from 'src/app/core/services/auth/auth.service';
+import { AuthService } from '@services/auth/auth.service';
 
 @Component({
   selector: 'app-login',

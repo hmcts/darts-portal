@@ -3,9 +3,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MediaRequest, RequestedMedia, TransformedMedia } from '@portal-types/index';
+import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
-import { AudioRequestService } from 'src/app/portal/services/audio-request/audio-request.service';
 import { AudiosComponent } from './audios.component';
 
 describe('AudiosComponent', () => {

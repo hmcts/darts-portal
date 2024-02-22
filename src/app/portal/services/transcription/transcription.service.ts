@@ -15,9 +15,9 @@ import {
   YourTranscriptsData,
 } from '@portal-types/index';
 
+import { CountNotificationService } from '@services/count-notification/count-notification.service';
 import { DateTime } from 'luxon';
 import { Observable, map, shareReplay, switchMap, tap, timer } from 'rxjs';
-import { CountNotificationService } from 'src/app/portal/services/count-notification/count-notification.service';
 
 export const APPROVED_TRANSCRIPTION_STATUS_ID = 3;
 export const REJECTED_TRANSCRIPTION_STATUS_ID = 4;

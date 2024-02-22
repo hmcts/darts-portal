@@ -4,6 +4,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { UserState } from '@core-types/user/user-state.interface';
+import { AudioEventRow } from '@portal-types/hearing/hearing-audio-event.interface';
 import {
   Case,
   Hearing,
@@ -12,16 +14,14 @@ import {
   PostAudioRequest,
   Transcript,
 } from '@portal-types/index';
+import { AppConfigService } from '@services/app-config/app-config.service';
+import { AppInsightsService } from '@services/app-insights/app-insights.service';
+import { CaseService } from '@services/case/case.service';
+import { HeaderService } from '@services/header/header.service';
+import { HearingService } from '@services/hearing/hearing.service';
+import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
 import { Observable, of, throwError } from 'rxjs';
-import { UserState } from 'src/app/core/models/user/user-state.interface';
-import { AppConfigService } from 'src/app/core/services/app-config/app-config.service';
-import { AppInsightsService } from 'src/app/core/services/app-insights/app-insights.service';
-import { HeaderService } from 'src/app/core/services/header/header.service';
-import { UserService } from 'src/app/core/services/user/user.service';
-import { AudioEventRow } from 'src/app/portal/models/hearing/hearing-audio-event.interface';
-import { CaseService } from 'src/app/portal/services/case/case.service';
-import { HearingService } from 'src/app/portal/services/hearing/hearing.service';
 import { HearingFileComponent } from './hearing-file/hearing-file.component';
 import { HearingComponent } from './hearing.component';
 import { MappingService } from '@services/mapping/mapping.service';
@@ -35,7 +35,6 @@ describe('HearingComponent', () => {
   let mockRouter: Router;
   let caseService: CaseService;
   let hearingService: HearingService;
-  // let annotationService: AnnotationService;
   let fakeUserService: Partial<UserService>;
   let component: HearingComponent;
   let fixture: ComponentFixture<HearingComponent>;
@@ -44,6 +43,8 @@ describe('HearingComponent', () => {
   };
   const fakeAnnotationService = {
     downloadAnnotationDocument: jest.fn().mockReturnValue(of({})),
+    downloadAnnotationTemplate: jest.fn().mockReturnValue(of({})),
+    deleteAnnotation: jest.fn().mockReturnValue(of({})),
   };
 
   const mockActivatedRoute = {
@@ -388,6 +389,26 @@ describe('HearingComponent', () => {
       });
     });
 
+    describe('#downloadAnnotationTemplate', () => {
+      it("should call saveAs with blob and filename with today's date if no date provided", () => {
+        const blob = new Blob();
+        jest.spyOn(fakeAnnotationService, 'downloadAnnotationTemplate').mockReturnValue(of(blob));
+        const todaysDate = DateTime.now().toFormat('yyyyMMdd');
+        component.downloadAnnotationTemplate('CASEID', undefined);
+        const expectedFilename = `Annotations_for_CASEID_on_${todaysDate}.docx`;
+        expect(fakeFileDownloadService.saveAs).toHaveBeenCalledWith(blob, expectedFilename);
+      });
+
+      it('should call saveAs with blob and filename', () => {
+        const blob = new Blob();
+        jest.spyOn(fakeAnnotationService, 'downloadAnnotationTemplate').mockReturnValue(of(blob));
+        const hearingDate = DateTime.fromISO('2024-01-01');
+        component.downloadAnnotationTemplate('CASEID', hearingDate);
+        const expectedFilename = 'Annotations_for_CASEID_on_20240101.docx';
+        expect(fakeFileDownloadService.saveAs).toHaveBeenCalledWith(blob, expectedFilename);
+      });
+    });
+
     describe('#filterRestrictionsByHearingId', () => {
       it('should filter items with same hearing ID and blank out event timestamp', () => {
         const reportingRestriction = [
@@ -462,6 +483,32 @@ describe('HearingComponent', () => {
       ];
       component.onValidationError(mockErrorSummary);
       expect(component.errorSummary).toEqual(mockErrorSummary);
+    });
+  });
+
+  describe('#onDeleteClicked', () => {
+    it('should set the ID in the selectedAnnotationsforDeletion array', () => {
+      component.onDeleteClicked(123);
+      expect(component.selectedAnnotationsforDeletion).toEqual([123]);
+    });
+  });
+
+  describe('#onDeleteConfirmed', () => {
+    it('should use the IDs in the selectedAnnotationsforDeletion array and call the backend', () => {
+      const annotationId = 123;
+      component.onDeleteClicked(annotationId);
+      component.onDeleteConfirmed();
+      expect(fakeAnnotationService.deleteAnnotation).toHaveBeenCalledWith(annotationId);
+    });
+  });
+
+  describe('#onDeleteConfirmed', () => {
+    it('should clear the ID in selectedAnnotationsforDeletion array', () => {
+      const ids = [123, 321];
+      component.selectedAnnotationsforDeletion = ids;
+      expect(component.selectedAnnotationsforDeletion).toEqual(ids);
+      component.onDeleteCancelled();
+      expect(component.selectedAnnotationsforDeletion).toEqual([]);
     });
   });
 

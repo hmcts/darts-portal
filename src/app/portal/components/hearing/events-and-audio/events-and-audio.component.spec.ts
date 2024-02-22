@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { QueryList } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AudioPlayerComponent } from '@common/audio-player/audio-player.component';
 import { AudioEventRow, HearingAudio, HearingEvent } from '@portal-types/index';
 import { AudioPreviewService } from '@services/audio-preview/audio-preview.service';
 import { Subscription, catchError, of } from 'rxjs';
-import { AudioPlayerComponent } from 'src/app/core/components/common/audio-player/audio-player.component';
 import { EventsAndAudioComponent } from './events-and-audio.component';
 
 describe('EventsAndAudioComponent', () => {
