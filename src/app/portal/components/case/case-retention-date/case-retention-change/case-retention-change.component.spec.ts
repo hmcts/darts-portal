@@ -119,7 +119,7 @@ describe('CaseRetentionComponent', () => {
       component.onConfirm();
 
       expect(component.errorDate).toEqual(
-        'You do not have permission to reduce the current retention date. Please refer to the DARTS retention policy guidance'
+        'You do not have permission to reduce the current retention date.\r\nPlease refer to the DARTS retention policy guidance'
       );
     });
 
