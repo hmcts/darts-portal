@@ -1,6 +1,7 @@
 import { CreateUpdateUserFormValues } from '@admin-types/index';
 import { NgFor } from '@angular/common';
 import { Component, EventEmitter, Output, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ErrorSummaryEntry, FieldErrors } from '@core-types/index';
 import { FormService } from '@services/form/form.service';
@@ -79,7 +80,4 @@ export class CreateUpdateUserFormComponent {
   get descriptionControl() {
     return this.form.get('description')!;
   }
-}
-function takeUntilDestroyed(): import('rxjs').OperatorFunction<import('@angular/forms').FormControlStatus, unknown> {
-  throw new Error('Function not implemented.');
 }
