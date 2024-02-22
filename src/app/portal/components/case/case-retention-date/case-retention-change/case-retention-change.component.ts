@@ -45,7 +45,7 @@ export class CaseRetentionChangeComponent {
   errors: { fieldId: string; message: string }[] = [];
 
   errorNoOption = 'Select an option';
-  errorDate = '';
+  errorDate: string[] = [];
   errorNoReason = 'You must explain why you are making this change';
 
   setDateValue(value: string) {
@@ -57,7 +57,7 @@ export class CaseRetentionChangeComponent {
   }
 
   isDateInvalid(): boolean {
-    return !!this.errorDate;
+    return !!this.errorDate.length;
   }
 
   isReasonInvalid(): boolean {
@@ -65,9 +65,9 @@ export class CaseRetentionChangeComponent {
   }
 
   onChangeDate() {
-    this.errorDate = '';
+    this.errorDate = [];
     if (!!this.datePatternValidator(this.retainDateFormControl) || !this.retainDateFormControl.value) {
-      this.errorDate = 'You have not entered a recognised date in the correct format (for example 31/01/2023)';
+      this.errorDate = ['You have not entered a recognised date in the correct format (for example 31/01/2023)'];
       return;
     }
     return;
@@ -75,7 +75,7 @@ export class CaseRetentionChangeComponent {
 
   onChangeOption() {
     this.errors = [];
-    this.errorDate = '';
+    this.errorDate = [];
     this.retainDateFormControl.setValue('');
   }
 
@@ -101,11 +101,13 @@ export class CaseRetentionChangeComponent {
     // Check a date has been provided
     if (!isPermanent) {
       this.onChangeDate();
-      if (this.errorDate) {
-        this.errors.push({
-          fieldId: 'retention-date',
-          message: this.errorDate,
-        });
+      if (this.errorDate.length) {
+        for (const error in this.errorDate) {
+          this.errors.push({
+            fieldId: 'retention-date',
+            message: this.errorDate[error],
+          });
+        }
       }
     }
     if (!this.errors.length) {
@@ -148,21 +150,30 @@ export class CaseRetentionChangeComponent {
                 months,
                 days,
               });
-              this.errorDate = `You cannot retain a case for more than ${duration.toHuman({ listStyle: 'long' })} after the case closed`;
+              this.errorDate = [
+                `You cannot retain a case for more than ${duration.toHuman({ listStyle: 'long' })} after the case closed`,
+              ];
             } else if (err?.error?.latest_automated_retention_date) {
               // Sanitise the output to something human readable
               const earliestDate = DateTime.fromFormat(err.error.latest_automated_retention_date, this.dateApiFormat, {
                 setZone: true,
               });
-              this.errorDate = `You cannot set retention date earlier than ${earliestDate.toFormat(this.datePageFormat)}`;
+              this.errorDate = [
+                `You cannot set retention date earlier than ${earliestDate.toFormat(this.datePageFormat)}`,
+              ];
             } else {
               // Otherwise, the only other error can be a permissions issue
-              this.errorDate = `You do not have permission to reduce the current retention date. Please refer to the DARTS retention policy guidance`;
+              this.errorDate = [
+                `You do not have permission to reduce the current retention date.`,
+                `Please refer to the DARTS retention policy guidance`,
+              ];
             }
-            this.errors.push({
-              fieldId: 'retention-date',
-              message: this.errorDate,
-            });
+            for (const error in this.errorDate) {
+              this.errors.push({
+                fieldId: 'retention-date',
+                message: this.errorDate[error],
+              });
+            }
             return;
           },
         });
