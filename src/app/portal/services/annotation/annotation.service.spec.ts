@@ -47,6 +47,27 @@ describe('AnnotationService', () => {
     });
   });
 
+  describe('#downloadAnnotationTemplate', () => {
+    it('should get annotation template', () => {
+      const mockBlob = new Blob(['mock document data'], {
+        type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      });
+      jest.spyOn(service['http'], 'get').mockReturnValueOnce(of(mockBlob));
+
+      let receivedBlob: Blob | undefined;
+      service.downloadAnnotationTemplate().subscribe((blob: Blob) => {
+        receivedBlob = blob;
+      });
+
+      const expectedUrl = `/download/annotations/template`;
+      expect(service['http'].get).toHaveBeenCalledWith(expectedUrl, {
+        responseType: 'blob',
+      });
+
+      expect(receivedBlob).toBeInstanceOf(Blob);
+    });
+  });
+
   describe('#deleteAnnotation', () => {
     it('should delete annotation', () => {
       const annotationId = 123;

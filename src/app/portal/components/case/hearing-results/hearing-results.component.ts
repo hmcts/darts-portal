@@ -10,7 +10,7 @@ import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { Annotations, Hearing, TranscriptsRow } from '@portal-types/index';
-import { AnnotationsService } from '@services/annotations/annotations.service';
+import { AnnotationService } from '@services/annotation/annotation.service';
 import { FileDownloadService } from '@services/file-download/file-download.service';
 import { UserService } from '@services/user/user.service';
 
@@ -33,7 +33,7 @@ import { UserService } from '@services/user/user.service';
 })
 export class HearingResultsComponent {
   userService = inject(UserService);
-  annotationsService = inject(AnnotationsService);
+  AnnotationService = inject(AnnotationService);
   fileDownloadService = inject(FileDownloadService);
   @Input() hearings: Hearing[] = [];
   @Input() transcripts: TranscriptsRow[] = [];
@@ -76,7 +76,7 @@ export class HearingResultsComponent {
   }
 
   downloadAnnotation(annotationId: number, annotationDocumentId: number, fileName: string) {
-    this.annotationsService.downloadAnnotationDocument(annotationId, annotationDocumentId).subscribe((blob: Blob) => {
+    this.AnnotationService.downloadAnnotationDocument(annotationId, annotationDocumentId).subscribe((blob: Blob) => {
       this.fileDownloadService.saveAs(blob, fileName);
     });
   }

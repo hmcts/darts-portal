@@ -273,6 +273,13 @@ export class HearingComponent implements OnInit {
     this.defaultTab = 'Annotations';
   }
 
+  downloadAnnotationTemplate(caseId: string, hearingDate: DateTime = DateTime.now()) {
+    this.annotationService.downloadAnnotationTemplate().subscribe((blob: Blob) => {
+      // Get the blob response and pass it to the saveAs service
+      this.fileDownloadService.saveAs(blob, `Annotations_for_${caseId}_on_${hearingDate.toFormat('yyyyMMdd')}.docx`);
+    });
+  }
+
   filterRestrictionsByHearingId(restrictions: ReportingRestriction[], hearingId: number): ReportingRestriction[] {
     return restrictions
       .filter((r) => {

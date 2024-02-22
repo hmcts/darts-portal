@@ -13,6 +13,11 @@ export class AnnotationService {
       responseType: 'blob',
     });
   }
+  downloadAnnotationTemplate(): Observable<Blob> {
+    return this.http.get(`/download/annotations/template`, {
+      responseType: 'blob',
+    });
+  }
 
   uploadAnnotationDocument(file: File, hearingId: number, comment?: string) {
     const postDTO = {
