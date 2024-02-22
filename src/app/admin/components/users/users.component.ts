@@ -1,5 +1,6 @@
 import { AsyncPipe, JsonPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { BehaviorSubject, combineLatest } from 'rxjs';
@@ -28,6 +29,7 @@ import { UserSearchResultsComponent } from './user-search-results/user-search-re
 })
 export class UsersComponent {
   userAdminService = inject(UserAdminService);
+  router = inject(Router);
 
   search$ = new Subject<UserSearchFormValues | null>();
   loading$ = new Subject<boolean>();

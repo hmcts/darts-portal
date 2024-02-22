@@ -74,7 +74,7 @@ describe('UserAdminService', () => {
         securityGroupIds: [1, 2, 3],
       } as unknown as User;
 
-      const result = service.mapUser(userData);
+      const result = service['mapUser'](userData);
       expect(result).toEqual(expectedUser);
     });
   });

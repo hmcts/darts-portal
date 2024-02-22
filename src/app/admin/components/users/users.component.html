@@ -1,6 +1,8 @@
 <div class="space-between">
   <app-govuk-heading>Users</app-govuk-heading>
-  <button class="govuk-button govuk-button--secondary">Create new user</button>
+  <button class="govuk-button govuk-button--secondary" (click)="router.navigate(['admin/users/create'])">
+    Create new user
+  </button>
 </div>
 <app-govuk-heading tag="h2" size="m">Search for user</app-govuk-heading>
 
