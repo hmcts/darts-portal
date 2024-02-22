@@ -58,8 +58,8 @@ router.get('/', (req, res) => {
   const email = req.headers['email-address'];
 
   if (email) {
-    const user = USERS.find((user) => user.email_address === email) ?? [];
-    res.send([user]);
+    const user = USERS.find((user) => user.email_address === email);
+    res.send(user ? [user] : []);
     return;
   }
 });
