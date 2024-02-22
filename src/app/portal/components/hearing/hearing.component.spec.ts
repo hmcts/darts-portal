@@ -35,7 +35,6 @@ describe('HearingComponent', () => {
   let mockRouter: Router;
   let caseService: CaseService;
   let hearingService: HearingService;
-  // let annotationService: AnnotationService;
   let fakeUserService: Partial<UserService>;
   let component: HearingComponent;
   let fixture: ComponentFixture<HearingComponent>;
@@ -44,6 +43,7 @@ describe('HearingComponent', () => {
   };
   const fakeAnnotationService = {
     downloadAnnotationDocument: jest.fn().mockReturnValue(of({})),
+    downloadAnnotationTemplate: jest.fn().mockReturnValue(of({})),
     deleteAnnotation: jest.fn().mockReturnValue(of({})),
   };
 
@@ -386,6 +386,26 @@ describe('HearingComponent', () => {
         jest.spyOn(fakeAnnotationService, 'downloadAnnotationDocument').mockReturnValue(of(blob));
         component.onDownloadClicked(1, 1, fileName);
         expect(fakeFileDownloadService.saveAs).toHaveBeenCalledWith(blob, fileName);
+      });
+    });
+
+    describe('#downloadAnnotationTemplate', () => {
+      it("should call saveAs with blob and filename with today's date if no date provided", () => {
+        const blob = new Blob();
+        jest.spyOn(fakeAnnotationService, 'downloadAnnotationTemplate').mockReturnValue(of(blob));
+        const todaysDate = DateTime.now().toFormat('yyyyMMdd');
+        component.downloadAnnotationTemplate('CASEID', undefined);
+        const expectedFilename = `Annotations_for_CASEID_on_${todaysDate}.docx`;
+        expect(fakeFileDownloadService.saveAs).toHaveBeenCalledWith(blob, expectedFilename);
+      });
+
+      it('should call saveAs with blob and filename', () => {
+        const blob = new Blob();
+        jest.spyOn(fakeAnnotationService, 'downloadAnnotationTemplate').mockReturnValue(of(blob));
+        const hearingDate = DateTime.fromISO('2024-01-01');
+        component.downloadAnnotationTemplate('CASEID', hearingDate);
+        const expectedFilename = 'Annotations_for_CASEID_on_20240101.docx';
+        expect(fakeFileDownloadService.saveAs).toHaveBeenCalledWith(blob, expectedFilename);
       });
     });
 
