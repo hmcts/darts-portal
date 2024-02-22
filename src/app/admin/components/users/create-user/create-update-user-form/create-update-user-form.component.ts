@@ -45,7 +45,7 @@ export class CreateUpdateUserFormComponent {
     this.form.markAllAsTouched();
 
     if (this.form.invalid) {
-      this.form.statusChanges.subscribe(() => {
+      this.form.statusChanges.pipe(takeUntilDestroyed()).subscribe(() => {
         this.errors.emit(this.formService.getErrorSummary(this.form, controlErrors));
       });
       this.form.updateValueAndValidity();
@@ -79,4 +79,7 @@ export class CreateUpdateUserFormComponent {
   get descriptionControl() {
     return this.form.get('description')!;
   }
+}
+function takeUntilDestroyed(): import('rxjs').OperatorFunction<import('@angular/forms').FormControlStatus, unknown> {
+  throw new Error('Function not implemented.');
 }
