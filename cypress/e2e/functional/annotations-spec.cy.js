@@ -184,7 +184,6 @@ describe('Annotations', () => {
     cy.a11y();
   });
 
-
   it('Upload Annotation against a hearing', () => {
     cy.login('judge');
     cy.injectAxe();
@@ -248,7 +247,6 @@ describe('Annotations', () => {
     cy.get('#upload-button').click();
 
     cy.get('.govuk-panel__title').should('contain', 'You have added an annotation');
-
 
     cy.a11y();
   });
