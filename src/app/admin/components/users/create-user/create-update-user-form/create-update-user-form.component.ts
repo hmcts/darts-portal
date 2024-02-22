@@ -1,6 +1,6 @@
 import { CreateUpdateUserFormValues } from '@admin-types/index';
 import { NgFor } from '@angular/common';
-import { Component, EventEmitter, Output, inject } from '@angular/core';
+import { Component, DestroyRef, EventEmitter, Output, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ErrorSummaryEntry, FieldErrors } from '@core-types/index';
@@ -35,6 +35,7 @@ export class CreateUpdateUserFormComponent {
 
   fb = inject(FormBuilder);
   formService = inject(FormService);
+  destroyRef = inject(DestroyRef);
 
   form = this.fb.group({
     fullName: [this.formDefaultValues.fullName, Validators.required],
@@ -46,7 +47,7 @@ export class CreateUpdateUserFormComponent {
     this.form.markAllAsTouched();
 
     if (this.form.invalid) {
-      this.form.statusChanges.pipe(takeUntilDestroyed()).subscribe(() => {
+      this.form.statusChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
         this.errors.emit(this.formService.getErrorSummary(this.form, controlErrors));
       });
       this.form.updateValueAndValidity();
