@@ -1,0 +1,35 @@
+<form [formGroup]="form" class="govuk-form" (ngSubmit)="onSubmit()">
+  <div class="govuk-form-group">
+    <label class="govuk-label" for="courthouseName">Courthouse name</label>
+    <!-- Inline Validation Errors -->
+    @for (error of getFormControlErrorMessages('courthouseName'); track error) {
+      <p class="govuk-error-message courthouseName-error">
+        <span class="govuk-visually-hidden">Error:</span> {{ error }}
+      </p>
+    }
+    <input class="govuk-input" type="text" id="courthouseName" formControlName="courthouseName" />
+  </div>
+
+  <div class="govuk-form-group">
+    <label class="govuk-label" for="displayName">Display name</label>
+    <!-- Inline Validation Errors -->
+    @for (error of getFormControlErrorMessages('displayName'); track error) {
+      <p class="govuk-error-message displayName-error"><span class="govuk-visually-hidden">Error:</span> {{ error }}</p>
+    }
+    <input class="govuk-input" type="text" id="displayName" formControlName="displayName" />
+  </div>
+
+  <div class="govuk-form-group">
+    <label class="govuk-label" for="region">Region</label>
+    <!-- Inline Validation Errors -->
+    @for (error of getFormControlErrorMessages('region'); track error) {
+      <p class="govuk-error-message region-error"><span class="govuk-visually-hidden">Error:</span> {{ error }}</p>
+    }
+    <input class="govuk-input" type="text" id="region" formControlName="region" />
+  </div>
+
+  <div class="govuk-button-group">
+    <button class="govuk-button" type="submit">Search</button>
+    <a class="govuk-link" href="javascript:void(0)" (click)="clearSearch()">Clear search</a>
+  </div>
+</form>
