@@ -21,6 +21,12 @@ const getAnnotationDocumentByAnnotationAndDocumentId = (annotationId, annotation
   );
 };
 
+router.post('', (req, res) => {
+  res.status(201).send({
+    annotation_id: 1,
+  });
+});
+
 const deleteAnnotationById = (annotationId) => {
   const annotations = localArray('annotations');
   const annotation = annotations.value.find((annotation) => annotation.annotation_id === parseInt(annotationId));

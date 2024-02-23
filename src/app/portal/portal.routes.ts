@@ -77,6 +77,14 @@ export const PORTAL_ROUTES: Routes = [
     loadComponent: () => import('../portal/components/hearing/hearing.component').then((c) => c.HearingComponent),
   },
   {
+    path: 'case/:caseId/hearing/:hearing_id/add-annotation',
+    data: { allowedRoles: ['JUDGE', 'ADMIN'] },
+    loadComponent: () =>
+      import('../portal/components/hearing/add-annotation/add-annotation.component').then(
+        (c) => c.AddAnnotationComponent
+      ),
+  },
+  {
     path: 'case/:caseId/hearing/:hearing_id/request-transcript',
     loadComponent: () =>
       import('../portal/components/hearing/request-transcript/request-transcript.component').then(

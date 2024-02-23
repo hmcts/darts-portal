@@ -19,6 +19,17 @@ export class AnnotationService {
     });
   }
 
+  uploadAnnotationDocument(file: File, hearingId: number, comment?: string) {
+    const postDTO = {
+      hearing_id: hearingId,
+      comment: comment,
+    };
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+    formData.append('annotation', new Blob([JSON.stringify(postDTO)], { type: 'application/json' }));
+    return this.http.post(`/api/annotations`, formData);
+  }
+
   deleteAnnotation(annotationId: number) {
     return this.http.delete(`/api/annotations/${annotationId}`);
   }

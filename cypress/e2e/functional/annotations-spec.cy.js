@@ -183,4 +183,80 @@ describe('Annotations', () => {
 
     cy.a11y();
   });
+
+  it('Upload Annotation against a hearing as a judge', () => {
+    cy.login('judge');
+    cy.injectAxe();
+
+    cy.contains('Search').click();
+    cy.get('h1').should('contain', 'Search for a case');
+    cy.get('#case_number').type('ALL');
+    cy.get('button').contains('Search').click();
+
+    cy.contains('C20220620001').click();
+
+    cy.contains('All annotations').click();
+
+    cy.contains('1 Dec 2023').click();
+
+    cy.get('h1').should('contain', 'Hearing');
+
+    cy.get('a.moj-sub-navigation__link').should('contain', 'Annotations');
+
+    cy.contains('Upload annotation').click();
+
+    cy.get('input[type=file]').selectFile({
+      contents: Cypress.Buffer.from('file contents'),
+      fileName: 'file.docx',
+      lastModified: Date.now(),
+    });
+
+    cy.get('#annotation-comments').type('Test');
+
+    cy.get('#annotation-comments-hint').should('contain', 'You have 196 characters remaining');
+
+    cy.get('#upload-button').click();
+
+    cy.get('.govuk-panel__title').should('contain', 'You have added an annotation');
+
+    cy.a11y();
+  });
+
+  it('Upload Annotation against a hearing as an admin', () => {
+    cy.login('admin');
+    cy.injectAxe();
+
+    cy.contains('Search').click();
+    cy.get('h1').should('contain', 'Search for a case');
+    cy.get('#case_number').type('ALL');
+    cy.get('button').contains('Search').click();
+
+    cy.contains('C20220620001').click();
+
+    cy.contains('All annotations').click();
+
+    cy.contains('1 Dec 2023').click();
+
+    cy.get('h1').should('contain', 'Hearing');
+
+    cy.get('a.moj-sub-navigation__link').should('contain', 'Annotations');
+
+    cy.contains('Upload annotation').click();
+
+    cy.get('input[type=file]').selectFile({
+      contents: Cypress.Buffer.from('file contents'),
+      fileName: 'file.docx',
+      lastModified: Date.now(),
+    });
+
+    cy.get('#annotation-comments').type('Test');
+
+    cy.get('#annotation-comments-hint').should('contain', 'You have 196 characters remaining');
+
+    cy.get('#upload-button').click();
+
+    cy.get('.govuk-panel__title').should('contain', 'You have added an annotation');
+
+    cy.a11y();
+  });
 });

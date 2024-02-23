@@ -103,7 +103,17 @@
                 <h2 class="govuk-heading-m">Annotations</h2>
               </div>
               <div class="govuk-button-group">
-                <button class="govuk-button govuk-button--secondary" data-module="govuk-button">
+                <button
+                  class="govuk-button govuk-button--secondary"
+                  data-module="govuk-button"
+                  [routerLink]="['./add-annotation']"
+                  [state]="{
+                    caseId: vm.case.id.toString(),
+                    caseNumber: vm.case.number,
+                    hearingDate: vm.hearing?.date,
+                    hearingId: vm.hearing?.id
+                  }"
+                >
                   Upload annotation
                 </button>
                 <button

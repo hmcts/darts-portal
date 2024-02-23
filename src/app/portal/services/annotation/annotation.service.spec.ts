@@ -1,7 +1,7 @@
-import { of } from 'rxjs';
-import { AnnotationService } from '@services/annotation/annotation.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { AnnotationService } from '@services/annotation/annotation.service';
+import { of } from 'rxjs';
 
 describe('AnnotationService', () => {
   let service: AnnotationService;
@@ -77,6 +77,36 @@ describe('AnnotationService', () => {
 
       const expectedUrl = `/api/annotations/${annotationId}`;
       expect(service['http'].delete).toHaveBeenCalledWith(expectedUrl);
+    });
+  });
+
+  describe('#uploadAnnotationDocument', () => {
+    it('should call the correct endpoint with the correct data', (done) => {
+      const hearingId = 1;
+      const comment = 'Extra notes';
+      const file = new File(['test'], 'test.txt', { type: 'text/plain' });
+
+      const mockDTO = {
+        hearing_id: hearingId,
+        comment: comment,
+      };
+
+      const formData = new FormData();
+      formData.append('file', file, file.name);
+      formData.append('annotation', new Blob([JSON.stringify(mockDTO)], { type: 'application/json' }));
+
+      const spyPost = jest.spyOn(service['http'], 'post');
+
+      service.uploadAnnotationDocument(file, hearingId, comment).subscribe(() => {
+        expect(spyPost).toHaveBeenCalledWith(`/api/annotations`, formData);
+        done();
+      });
+
+      const req = httpTestingController.expectOne(`/api/annotations`);
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body).toEqual(formData);
+
+      req.flush({});
     });
   });
 });
