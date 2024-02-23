@@ -37,5 +37,25 @@ describe('Admin - Users screen', () => {
     cy.get('#description').type('This is a test user');
 
     cy.a11y();
+
+    cy.get('button[type="submit"]').click();
+    cy.get('h1').should('contain', 'Check user details');
+
+    cy.a11y();
+
+    cy.get('#confirm-button').click();
+
+    cy.get('app-success-banner').should('contain', 'User record has been created for New User');
+  });
+
+  it('Email address already exists when creating new user', () => {
+    cy.get('button').contains('Create new user').click();
+    cy.get('h1').should('contain', 'Enter user details');
+
+    cy.get('#fullName').type('New User');
+    cy.get('#email').type('dev@local.net');
+    cy.get('#description').type('This is a test user');
+
+    cy.get('.email-error').should('contain', 'This email account already exists in the database');
   });
 });

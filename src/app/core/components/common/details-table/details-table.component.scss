@@ -4,6 +4,9 @@
 
 table.govuk-table {
   max-width: 60%;
+  & > th {
+    text-align: right;
+  }
 }
 
 .margin-top-10 {
@@ -12,4 +15,8 @@ table.govuk-table {
 
 .govuk-table__cell.table-width {
   width: 486.67px;
+}
+
+caption {
+  display: inline-block;
 }

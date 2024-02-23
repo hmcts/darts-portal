@@ -1,3 +1,5 @@
+import { CreateUpdateUserFormValues } from '@admin-types/index';
+import { CreateUserRequest } from '@admin-types/users/create-user-request.type';
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { DateTime } from 'luxon';
@@ -8,7 +10,7 @@ import { UserSearchRequest } from '../models/users/user-search-request.interface
 import { User } from '../models/users/user.type';
 
 export const USER_ADMIN_SEARCH_PATH = 'api/admin/users/search';
-export const ADMIN_GET_USER = 'api/admin/users';
+export const USER_ADMIN_PATH = 'api/admin/users';
 
 @Injectable({
   providedIn: 'root',
@@ -22,13 +24,27 @@ export class UserAdminService {
   }
 
   getUser(userId: number): Observable<User> {
-    return this.http.get<UserData>(`${ADMIN_GET_USER}/${userId}`).pipe(map(this.mapUser));
+    return this.http.get<UserData>(`${USER_ADMIN_PATH}/${userId}`).pipe(map(this.mapUser));
+  }
+
+  createUser(user: CreateUpdateUserFormValues): Observable<User> {
+    return this.http.post<UserData>(USER_ADMIN_PATH, this.mapToCreateUserRequest(user)).pipe(map(this.mapUser));
   }
 
   doesEmailExist(email: string): Observable<boolean> {
     return this.http
-      .get<UserData[]>(`${ADMIN_GET_USER}`, { headers: { 'Email-Address': email } })
+      .get<UserData[]>(`${USER_ADMIN_PATH}`, { headers: { 'Email-Address': email } })
       .pipe(map((users) => users.length > 0));
+  }
+
+  private mapToCreateUserRequest(user: CreateUpdateUserFormValues): CreateUserRequest {
+    return {
+      full_name: user.fullName!,
+      email_address: user.email!,
+      description: user.description ? user.description : null,
+      active: true,
+      security_group_ids: [],
+    };
   }
 
   private mapToUserSearchRequest(query: UserSearchFormValues): UserSearchRequest {

@@ -64,4 +64,11 @@ router.get('/', (req, res) => {
   }
 });
 
+router.post('/', (req, res) => {
+  const user = req.body;
+  user.id = USERS.length + 1;
+  USERS.push(user);
+  res.send(user);
+});
+
 module.exports = router;

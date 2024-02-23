@@ -4,6 +4,8 @@
       title
     }}
   </caption>
+  <!-- Content projection for action button -->
+  <th><ng-content></ng-content></th>
   <tbody class="govuk-table__body">
     @for (detail of details | keyvalue: originalOrder; track $index) {
       @if (isNotNullUndefinedOrEmptyString(detail.value) && !isNotNullUndefinedOrEmptyString(detail.key)) {

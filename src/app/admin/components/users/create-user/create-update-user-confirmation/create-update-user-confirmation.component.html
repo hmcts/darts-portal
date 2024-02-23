@@ -1,0 +1,8 @@
+<app-details-table title="Details" [details]="userDetails">
+  <a id="change-link" href="javascript:void(0)" class="govuk-link" (click)="back.emit()">Change</a>
+</app-details-table>
+
+<div class="govuk-button-group">
+  <button id="confirm-button" class="govuk-button" (click)="confirm.emit()">Create user</button>
+  <a id="cancel-link" class="govuk-link" href="javascript:void(0)" (click)="cancel.emit()">Cancel</a>
+</div>
