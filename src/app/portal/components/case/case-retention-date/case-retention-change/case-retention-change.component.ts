@@ -157,7 +157,7 @@ export class CaseRetentionChangeComponent {
               this.errorDate = `You cannot set retention date earlier than ${earliestDate.toFormat(this.datePageFormat)}`;
             } else {
               // Otherwise, the only other error can be a permissions issue
-              this.errorDate = `You do not have permission to reduce the current retention date. Please refer to the DARTS retention policy guidance`;
+              this.errorDate = `You do not have permission to reduce the current retention date.\r\nPlease refer to the DARTS retention policy guidance`;
             }
             this.errors.push({
               fieldId: 'retention-date',
