@@ -1,13 +1,7 @@
-<h1 class="govuk-heading-l">This transcript already exists</h1>
+<h1 class="govuk-heading-l">This transcript was requested already</h1>
 
+<p class="govuk-body">If the request is complete, a transcript will be available below.</p>
 <div class="govuk-button-group">
-  <a
-    id="exists-duplicate-route"
-    class="govuk-link"
-    [routerLink]="['../', 'transcripts', transcriptionId]"
-    routerLinkActive="router-link-active"
-    >Go to this transcript</a
-  >
   <a
     id="exists-hearing-route"
     class="govuk-link"
@@ -16,4 +10,14 @@
     routerLinkActive="router-link-active"
     >Return to hearing</a
   >
+
+  @if (transcriptionId) {
+    <a
+      id="exists-duplicate-route"
+      class="govuk-link"
+      [routerLink]="['../', 'transcripts', transcriptionId]"
+      routerLinkActive="router-link-active"
+      >Go to transcript</a
+    >
+  }
 </div>

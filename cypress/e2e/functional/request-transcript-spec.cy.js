@@ -217,7 +217,8 @@ describe('Request Transcript', () => {
       // Submit the form
       cy.get('.govuk-button').contains('Submit request').click();
 
-      cy.get('.govuk-heading-l').should('contain', 'This transcript already exists');
+      cy.get('.govuk-heading-l').should('contain', 'This transcript was requested already');
+      cy.get('.govuk-body').should('contain', 'If the request is complete, a transcript will be available below.');
     });
 
     it('should show duplicate error message during court log transcript request', () => {
@@ -251,7 +252,8 @@ describe('Request Transcript', () => {
       cy.get('#authorisation').check({ force: true });
       cy.get('.govuk-button').contains('Submit request').click();
 
-      cy.get('.govuk-heading-l').should('contain', 'This transcript already exists');
+      cy.get('.govuk-heading-l').should('contain', 'This transcript was requested already');
+      cy.get('.govuk-body').should('contain', 'If the request is complete, a transcript will be available below.');
       cy.a11y();
     });
 
@@ -272,7 +274,8 @@ describe('Request Transcript', () => {
       cy.get('#authorisation').check({ force: true });
       cy.get('.govuk-button').contains('Submit request').click();
 
-      cy.get('.govuk-heading-l').should('contain', 'This transcript already exists');
+      cy.get('.govuk-heading-l').should('contain', 'This transcript was requested already');
+      cy.get('.govuk-body').should('contain', 'If the request is complete, a transcript will be available below.');
       cy.get('#exists-hearing-route').contains('Return to hearing').click();
 
       cy.get('.govuk-heading-m').should('contain', 'Transcripts for this hearing');
@@ -295,10 +298,11 @@ describe('Request Transcript', () => {
       cy.get('#authorisation').check({ force: true });
       cy.get('.govuk-button').contains('Submit request').click();
 
-      cy.get('.govuk-heading-l').should('contain', 'This transcript already exists');
-      cy.get('.govuk-link').should('contain', 'Go to this transcript');
+      cy.get('.govuk-heading-l').should('contain', 'This transcript was requested already');
+      cy.get('.govuk-body').should('contain', 'If the request is complete, a transcript will be available below.');
+      cy.get('.govuk-link').should('contain', 'Go to transcript');
 
-      cy.get('#exists-duplicate-route').contains('Go to this transcript').click();
+      cy.get('#exists-duplicate-route').contains('Go to transcript').click();
 
       cy.get('.govuk-caption-l').should('contain', 'Transcript file');
       cy.get('.govuk-heading-l').should('contain', 'C20220620001_0.docx');

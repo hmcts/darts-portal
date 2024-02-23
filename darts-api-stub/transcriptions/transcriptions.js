@@ -493,7 +493,7 @@ router.post('/', (req, res) => {
   const dupe = req.body.transcription_type_id == 0 && true;
 
   if (exists || dupe) {
-    res.status(409).send({ duplicate_transcription_id: 1 });
+    res.status(409).send({ duplicate_transcription_id: 1, detail: 'Duplicated' });
   } else {
     res.send({ transcription_id: 123 });
   }
