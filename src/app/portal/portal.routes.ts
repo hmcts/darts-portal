@@ -78,7 +78,7 @@ export const PORTAL_ROUTES: Routes = [
   },
   {
     path: 'case/:caseId/hearing/:hearing_id/add-annotation',
-    data: { allowedRoles: ['JUDGE'] },
+    data: { allowedRoles: ['JUDGE', 'ADMIN'] },
     loadComponent: () =>
       import('../portal/components/hearing/add-annotation/add-annotation.component').then(
         (c) => c.AddAnnotationComponent
