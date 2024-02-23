@@ -1,11 +1,12 @@
+import { CreateUpdateUserFormValues } from '@admin-types/index';
 import { UserData } from '@admin-types/users/user-data.interface';
 import { UserSearchFormValues } from '@admin-types/users/user-search-form-values.type';
 import { User } from '@admin-types/users/user.type';
 import { DatePipe } from '@angular/common';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync } from '@angular/core/testing';
 import { DateTime } from 'luxon';
-import { USER_ADMIN_SEARCH_PATH, UserAdminService } from './user-admin.service';
+import { USER_ADMIN_PATH, USER_ADMIN_SEARCH_PATH, UserAdminService } from './user-admin.service';
 
 export const ADMIN_GET_USER = 'api/admin/users';
 
@@ -112,5 +113,32 @@ describe('UserAdminService', () => {
       expect(req.request.method).toEqual('POST');
       req.flush(mockResponse); // Simulate a response
     });
+  });
+
+  describe('createUser', () => {
+    it('map and post a user request', fakeAsync(() => {
+      const mockUserFormValues: CreateUpdateUserFormValues = {
+        fullName: 'John Doe',
+        email: 'test@test',
+        description: 'A user description',
+      };
+
+      const expectedUserRequest = {
+        full_name: 'John Doe',
+        email_address: 'test@test',
+        description: 'A user description',
+        active: true,
+        security_group_ids: [],
+      };
+
+      const mockUserData = {};
+
+      service.createUser(mockUserFormValues).subscribe();
+
+      const req = httpMock.expectOne(USER_ADMIN_PATH);
+      expect(req.request.method).toEqual('POST');
+      expect(req.request.body).toEqual(expectedUserRequest);
+      req.flush(mockUserData);
+    }));
   });
 });

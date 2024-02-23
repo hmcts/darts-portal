@@ -1,9 +1,24 @@
-<app-validation-error-summary #validationErrorSummary />
+<app-validation-error-summary [errors]="errors" />
 
-<app-govuk-heading caption="Create user"> Enter user details </app-govuk-heading>
+@if (isConfirmation) {
+  <a href="javascript:void(0)" (click)="onBack()" class="govuk-back-link">Back</a>
+}
+
+<app-govuk-heading caption="Create user">
+  {{ !this.isConfirmation ? 'Enter' : 'Check' }} user details
+</app-govuk-heading>
 
 <app-create-update-user-form
-  (submitForm)="onFormSubmit($event)"
-  (errors)="validationErrorSummary.errors = $event"
-  (cancel)="router.navigate(['admin/users'])"
+  (submitForm)="onSubmit($event)"
+  (errors)="errors = $event"
+  (cancel)="onCancel()"
+  [hidden]="!!isConfirmation"
+/>
+
+<app-create-update-user-confirmation
+  [values]="formValues"
+  (confirm)="onConfirmUserDetails()"
+  (back)="onBack()"
+  (cancel)="onCancel()"
+  [hidden]="!isConfirmation"
 />

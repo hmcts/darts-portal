@@ -1,4 +1,7 @@
 @if (user$ | async; as user) {
+  @if (isNewUser$ | async) {
+    <app-success-banner [text]="'User record has been created for ' + user.fullName" />
+  }
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper">
       <div class="govuk-grid-row">
@@ -55,7 +58,7 @@
         <div *tab="'Details'">
           <app-details-table
             title="Details"
-            [details]="{ 'Full Name': user.fullName, Email: user.emailAddress, Description: user.description }"
+            [details]="{ 'Full name': user.fullName, Email: user.emailAddress, Description: user.description }"
           ></app-details-table>
         </div>
 
