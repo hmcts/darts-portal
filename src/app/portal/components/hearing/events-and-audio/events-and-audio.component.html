@@ -56,6 +56,8 @@
             } @else {
               <div class="loading">Loading preview</div>
             }
+          } @else if (row.is_archived) {
+            <p class="govuk-hint">Audio archived. Preview not available.</p>
           } @else {
             <a
               class="govuk-link"

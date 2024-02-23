@@ -153,5 +153,10 @@ describe('Request audio', () => {
       cy.get(previewLinkSelector).eq(5).click();
       cy.get('.govuk-table tr').eq(9).contains('p', 'An error has occurred.');
     });
+
+    it('should show audio archived message', () => {
+      cy.get('#hearingsTable a').contains('10 Oct 2023').click();
+      cy.get('.govuk-hint').contains('Audio archived. Preview not available.');
+    });
   });
 });
