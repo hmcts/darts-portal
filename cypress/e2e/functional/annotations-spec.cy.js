@@ -261,6 +261,41 @@ describe('Annotations', () => {
     cy.a11y();
   });
 
+  it('Upload Confirmation screen link returns to hearing level', () => {
+    cy.login('judge');
+    cy.injectAxe();
+
+    cy.contains('Search').click();
+    cy.get('#case_number').type('ALL');
+    cy.get('button').contains('Search').click();
+
+    cy.contains('C20220620001').click();
+
+    cy.contains('All annotations').click();
+
+    cy.contains('1 Dec 2023').click();
+
+    cy.contains('Upload annotation').click();
+
+    cy.get('input[type=file]').selectFile({
+      contents: Cypress.Buffer.from('file contents'),
+      fileName: 'file.docx',
+      lastModified: Date.now(),
+    });
+
+    cy.get('#upload-button').click();
+
+    cy.get('.govuk-panel__title').should('contain', 'You have added an annotation');
+
+    cy.get('#return-to-hearing-route').click();
+
+    cy.get('h1').should('contain', 'Hearing');
+
+    cy.get('.govuk-heading-l').should('contain', '1 Dec 2023');
+
+    cy.a11y();
+  });
+
   it('Upload Confirmation screen link returns to case level', () => {
     cy.login('judge');
     cy.injectAxe();
