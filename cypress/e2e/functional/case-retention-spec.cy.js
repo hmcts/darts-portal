@@ -130,11 +130,11 @@ describe('Case retention screen as standard user', () => {
       cy.get('.govuk-error-message').should('exist');
       cy.get('.govuk-error-summary').should(
         'contain',
-        'You do not have permission to reduce the current retention date.\r\nPlease refer to the DARTS retention policy guidance'
+        'You do not have permission to reduce the current retention date.\r\nPlease refer to the DARTS retention policy guidance.'
       );
       cy.get('.govuk-error-message').should(
         'contain',
-        'You do not have permission to reduce the current retention date.\r\nPlease refer to the DARTS retention policy guidance'
+        'You do not have permission to reduce the current retention date.\r\nPlease refer to the DARTS retention policy guidance.'
       );
 
       // Fill it in properly this time, error message should not appear
