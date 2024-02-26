@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { CreateUpdateUserFormValues } from '@admin-types/index';
-import { UserAdminService } from '@services/user-admin.service';
+import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { of } from 'rxjs';
 import { CreateUpdateUserFormComponent } from './create-update-user-form.component';
 

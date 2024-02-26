@@ -1,6 +1,6 @@
 import { NgFor, NgIf } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, Output, ViewChild } from '@angular/core';
-import { Courthouse } from '@core-types/index';
+import { CourthouseData } from '@core-types/index';
 import accessibleAutocomplete, { AccessibleAutocompleteProps } from 'accessible-autocomplete';
 
 @Component({
@@ -13,7 +13,7 @@ import accessibleAutocomplete, { AccessibleAutocompleteProps } from 'accessible-
 export class CourthouseComponent implements AfterViewInit, OnChanges {
   @ViewChild('courthouseAutocomplete') autocompleteContainer!: ElementRef<HTMLElement>;
 
-  @Input() courthouses: Courthouse[] = [];
+  @Input() courthouses: CourthouseData[] = [];
   @Input() courthouse = '';
   @Input() isInvalid = false;
   @Input() errors: string[] = [];

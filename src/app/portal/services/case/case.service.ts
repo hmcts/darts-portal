@@ -1,6 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Courthouse } from '@core-types/index';
 import {
   Annotations,
   AnnotationsData,
@@ -20,12 +19,9 @@ import {
 import { MappingService } from '@services/mapping/mapping.service';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs/internal/Observable';
-import { of } from 'rxjs/internal/observable/of';
-import { catchError } from 'rxjs/internal/operators/catchError';
 import { map } from 'rxjs/internal/operators/map';
 import { shareReplay } from 'rxjs/internal/operators/shareReplay';
 
-export const GET_COURTHOUSES_PATH = '/api/courthouses';
 export const GET_CASE_PATH = '/api/cases';
 export const GET_HEARINGS_PATH = 'api/hearings';
 export const ADVANCED_SEARCH_CASE_PATH = '/api/cases/search';
@@ -40,14 +36,6 @@ export class CaseService {
   // Store for previous search results and form values
   searchResults$: Observable<CaseSearchResult[] | null> | null = null;
   searchFormValues: SearchFormValues | null = null;
-
-  getCourthouses(): Observable<Courthouse[]> {
-    return this.http.get<Courthouse[]>(GET_COURTHOUSES_PATH).pipe(
-      catchError(() => {
-        return of([]);
-      })
-    );
-  }
 
   getHearingTranscripts(hearingId: number): Observable<Transcript[]> {
     const url = `${GET_HEARINGS_PATH}/${hearingId}/transcripts`;

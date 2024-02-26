@@ -8,7 +8,7 @@ import { TabsComponent } from '@common/tabs/tabs.component';
 import { NotFoundComponent } from '@components/error/not-found/not-found.component';
 import { TabDirective } from '@directives/tab.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
-import { UserAdminService } from '@services/user-admin.service';
+import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { map } from 'rxjs/internal/operators/map';
 
 @Component({

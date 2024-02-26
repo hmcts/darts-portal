@@ -4,7 +4,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { UserAdminService } from '@services/user-admin.service';
+import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { DateTime } from 'luxon';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { of } from 'rxjs/internal/observable/of';

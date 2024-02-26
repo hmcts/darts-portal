@@ -6,7 +6,7 @@ import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.compo
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { ErrorSummaryEntry } from '@core-types/index';
 import { HeaderService } from '@services/header/header.service';
-import { UserAdminService } from '@services/user-admin.service';
+import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { CreateUpdateUserConfirmationComponent } from './create-update-user-confirmation/create-update-user-confirmation.component';
 import { CreateUpdateUserFormComponent } from './create-update-user-form/create-update-user-form.component';
 
