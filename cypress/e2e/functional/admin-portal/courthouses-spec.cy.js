@@ -24,9 +24,6 @@ describe('Admin - Courthouses screen', () => {
   });
 
   it('Search courthouses', () => {
-    //TBD
-    //Search, check results
-    //Search by courthouse name
     cy.get('#courthouseName').type('Reading');
     cy.get('button[type="submit"]').click();
 
