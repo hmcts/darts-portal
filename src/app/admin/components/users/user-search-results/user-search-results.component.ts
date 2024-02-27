@@ -15,9 +15,11 @@ import { TableRowTemplateDirective } from '@directives/table-row-template.direct
 })
 export class UserSearchResultsComponent {
   @Input() results: User[] = [];
+  @Input() loading: boolean | null = false;
+
   columns: DatatableColumn[] = [
     { name: 'Full name', prop: 'fullName', sortable: true },
-    { name: 'Email address', prop: 'emailAddress', sortable: true },
+    { name: 'Email', prop: 'emailAddress', sortable: true },
     { name: 'Status', prop: 'active', sortable: true },
     { name: '', prop: '' },
   ];
