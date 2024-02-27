@@ -4,11 +4,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { CourthouseComponent } from '@common/courthouse/courthouse.component';
-import { Courthouse, ErrorMessage, ErrorSummaryEntry } from '@core-types/index';
+import { CourthouseData, ErrorMessage, ErrorSummaryEntry } from '@core-types/index';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
 import { CaseService } from '@services/case/case.service';
-import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { ErrorMessageService } from '@services/error/error-message.service';
 import { HeaderService } from '@services/header/header.service';
 import { of, throwError } from 'rxjs';
@@ -23,14 +22,13 @@ describe('SearchComponent', () => {
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
   let caseService: CaseService;
-  let courthouseService: CourthouseService;
   let errorMsgService: ErrorMessageService;
   let headerService: HeaderService;
   const courts = [
     { courthouse_name: 'Reading', id: 0, created_date_time: 'mock' },
     { courthouse_name: 'Slough', id: 1, created_date_time: 'mock' },
     { courthouse_name: 'Ascot', id: 2, created_date_time: 'mock' },
-  ] as Courthouse[];
+  ] as CourthouseData[];
 
   beforeEach(() => {
     httpClientSpy = {
@@ -44,9 +42,8 @@ describe('SearchComponent', () => {
     headerService = new HeaderService();
     errorMsgService = new ErrorMessageService(headerService, mockRouter);
     caseService = new CaseService(httpClientSpy);
-    courthouseService = new CourthouseService(httpClientSpy);
     jest.spyOn(caseService, 'searchCases').mockReturnValue(of([]));
-    jest.spyOn(courthouseService, 'getCourthouses').mockReturnValue(of(courts));
+    jest.spyOn(caseService, 'getCourthouses').mockReturnValue(of(courts));
 
     TestBed.configureTestingModule({
       imports: [

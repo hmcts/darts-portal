@@ -10,9 +10,11 @@
   } @else {
     <app-data-table [rows]="results" [columns]="columns" [caption]="caption" [sortAndPaginateOnRowsChanged]="false">
       <ng-template [tableRowTemplate]="results" let-row>
-        <td class="govuk-table__cell">{{ row.courthouseName }}</td>
+        <td class="govuk-table__cell">
+          <a class="govuk-link" href="#">{{ row.courthouseName }}</a>
+        </td>
         <td class="govuk-table__cell">{{ row.displayName }}</td>
-        <td class="govuk-table__cell">{{ row.region }}</td>
+        <td class="govuk-table__cell">{{ row.regionName }}</td>
       </ng-template>
     </app-data-table>
   }

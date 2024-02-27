@@ -1,15 +1,17 @@
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { NgClass } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DatatableColumn } from '@core-types/index';
+import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 
 @Component({
   selector: 'app-courthouse-search-results',
   standalone: true,
   templateUrl: './courthouse-search-results.component.html',
   styleUrl: './courthouse-search-results.component.scss',
-  imports: [DataTableComponent, NgClass],
+  imports: [DataTableComponent, NgClass, RouterLink, TableRowTemplateDirective],
 })
 export class CourthouseSearchResultsComponent {
   @Input() results: Courthouse[] = [];
