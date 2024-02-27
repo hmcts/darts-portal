@@ -8,7 +8,6 @@ import { CourthouseData, ErrorMessage, ErrorSummaryEntry } from '@core-types/ind
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
 import { CaseService } from '@services/case/case.service';
-import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { ErrorMessageService } from '@services/error/error-message.service';
 import { HeaderService } from '@services/header/header.service';
 import { of, throwError } from 'rxjs';
@@ -23,7 +22,6 @@ describe('SearchComponent', () => {
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
   let caseService: CaseService;
-  let courthouseService: CourthouseService;
   let errorMsgService: ErrorMessageService;
   let headerService: HeaderService;
   const courts = [
@@ -44,9 +42,8 @@ describe('SearchComponent', () => {
     headerService = new HeaderService();
     errorMsgService = new ErrorMessageService(headerService, mockRouter);
     caseService = new CaseService(httpClientSpy);
-    courthouseService = new CourthouseService(httpClientSpy);
     jest.spyOn(caseService, 'searchCases').mockReturnValue(of([]));
-    jest.spyOn(courthouseService, 'getCourthouses').mockReturnValue(of(courts));
+    jest.spyOn(caseService, 'getCourthouses').mockReturnValue(of(courts));
 
     TestBed.configureTestingModule({
       imports: [

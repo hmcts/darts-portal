@@ -24,6 +24,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs/internal/operators/map';
 import { shareReplay } from 'rxjs/internal/operators/shareReplay';
 
+export const GET_COURTHOUSES_PATH = '/api/courthouses';
 export const GET_CASE_PATH = '/api/cases';
 export const GET_HEARINGS_PATH = 'api/hearings';
 export const ADVANCED_SEARCH_CASE_PATH = '/api/cases/search';

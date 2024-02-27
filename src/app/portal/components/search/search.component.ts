@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CourthouseComponent } from '@components/common/courthouse/courthouse.component';
 import { DatepickerComponent } from '@components/common/datepicker/datepicker.component';
@@ -8,7 +8,6 @@ import { ValidationErrorSummaryComponent } from '@components/common/validation-e
 import { ErrorSummaryEntry, FieldErrors } from '@core-types/index';
 import { SearchFormValues } from '@portal-types/index';
 import { CaseService } from '@services/case/case.service';
-import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { ErrorMessageService } from '@services/error/error-message.service';
 import { futureDateValidator } from '@validators/future-date.validator';
 import { Subscription, catchError, of } from 'rxjs';
@@ -52,10 +51,6 @@ const fieldErrors: FieldErrors = {
   ],
 })
 export class SearchComponent implements OnInit, OnDestroy {
-  caseService = inject(CaseService);
-  courthouseService = inject(CourthouseService);
-  errorMsgService = inject(ErrorMessageService);
-
   @ViewChild(CourthouseComponent) courthouseComponent!: CourthouseComponent;
 
   dateInputType: 'specific' | 'range' | undefined;
@@ -64,13 +59,18 @@ export class SearchComponent implements OnInit, OnDestroy {
   isAdvancedSearch = false;
   datePatternValidator = Validators.pattern(/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/);
   dateValidators = [this.datePatternValidator, futureDateValidator];
-  courthouses$ = this.courthouseService.getCourthouses();
+  courthouses$ = this.caseService.getCourthouses();
   courthouse = '';
 
   // Retrieve Previous Search Results
   searchResults$ = this.caseService.searchResults$;
   searchError$ = this.errorMsgService.errorMessage$;
   subs: Subscription[] = [];
+
+  constructor(
+    private caseService: CaseService,
+    private errorMsgService: ErrorMessageService
+  ) {}
 
   form: FormGroup = new FormGroup({
     case_number: new FormControl(),
