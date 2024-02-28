@@ -37,9 +37,13 @@ app.use('/transcriptions', require('./transcriptions/transcriptions'));
 // audio APIs
 app.use('/audio', require('./audios'));
 // annotation APIs
-app.use('/annotations', require('./annotations/annotation'));
+app.use('/annotations', require('./annotations/annotations'));
 // ADMIN APIs
 app.use('/admin/users', require('./admin/users/users'));
+app.use('/admin/courthouses', require('./admin/courthouses/courthouses'));
+app.use('/admin/regions', require('./admin/regions/regions'));
+app.use('/admin/security-groups', require('./admin/security-groups/security-groups'));
+
 // proxy non-stubbed routes to the actual API
 app.use(
   createProxyMiddleware({
