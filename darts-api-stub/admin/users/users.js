@@ -1,63 +1,21 @@
 const c = require('config');
 const express = require('express');
+const { stubUsers } = require('../../users');
 
 const router = express.Router();
 
-const USERS = [
-  {
-    id: 1,
-    last_modified_at: '2024-01-20T00:00:00.000000Z',
-    last_login_at: '2024-01-23T00:00:00.000000Z',
-    description: 'This is a test user',
-    created_at: '2024-01-20T00:00:00.000000Z',
-    full_name: 'Darts User',
-    email_address: 'user@local.net',
-    active: true,
-    security_group_ids: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-  },
-  {
-    id: 2,
-    last_modified_at: '2023-01-20T00:00:00.000000Z',
-    last_login_at: '2024-01-23T00:00:00.000000Z',
-    description: 'This is a test user',
-    created_at: '2023-01-20T00:00:00.000000Z',
-    full_name: 'Dev User',
-    email_address: 'dev@local.net',
-    active: true,
-    security_group_ids: [1, 2, 3],
-  },
-  {
-    id: 3,
+const USERS = stubUsers.map((stubUser) => {
+  return {
+    id: stubUser.userState.userId,
     last_modified_at: '2021-01-20T00:00:00.000000Z',
+    last_login_at: '2024-01-23T00:00:00.000000Z',
     created_at: '2021-01-20T00:00:00.000000Z',
-    full_name: 'Inactive User',
-    email_address: 'inactive.user@local.net',
-    active: false,
-    security_group_ids: [1],
-  },
-  {
-    id: 4,
-    last_modified_at: '2022-01-20T00:00:00.000000Z',
-    last_login_at: '2024-01-23T00:00:00.000000Z',
-    description: 'Edit me',
-    created_at: '2022-01-20T00:00:00.000000Z',
-    full_name: 'Edit Email Functional Test',
-    email_address: 'edit@me.net',
-    active: true,
-    security_group_ids: [1],
-  },
-  {
-    id: 5,
-    last_modified_at: '2024-01-20T00:00:00.000000Z',
-    last_login_at: '2024-01-23T00:00:00.000000Z',
-    description: 'Edit description',
-    created_at: '2024-01-20T00:00:00.000000Z',
-    full_name: 'Edit Functional Test',
-    email_address: 'dont.edit@me.net',
-    active: true,
-    security_group_ids: [1],
-  },
-];
+    full_name: stubUser.name,
+    email_address: stubUser.userState.userName,
+    active: stubUser.active,
+    security_group_ids: stubUser.userState.roles.map((role) => role.roleId),
+  };
+});
 
 // api/admin/users/search
 router.post('/search', (req, res) => {
