@@ -1,9 +1,24 @@
+import { DateTime } from 'luxon';
+import { SecurityGroup } from './security-groups.interface';
+
 export interface CourthouseData {
+  id: number;
   courthouse_name: string;
   display_name: string;
   code: number;
-  id: number;
-  region_id?: number;
   created_date_time: string;
   last_modified_date_time?: string;
+  region_id?: number;
+  security_group_ids?: number[];
+}
+
+export interface Courthouse {
+  id: number;
+  name: string;
+  code: number;
+  displayName: string;
+  createdDateTime?: DateTime;
+  lastModifiedDateTime?: DateTime;
+  regionName?: string;
+  securityGroups?: SecurityGroup[];
 }
