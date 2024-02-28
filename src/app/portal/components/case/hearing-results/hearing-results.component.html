@@ -70,7 +70,9 @@
                 >Download</a
               >
             </td>
-            <td class="govuk-table__cell"><a routerLink=".">Delete</a></td>
+            <td class="govuk-table__cell">
+              <a class="govuk-link" href="javascript:void(0)" (click)="onDeleteClicked(row.annotationId)">Delete</a>
+            </td>
           </ng-template>
         </app-data-table>
       </div>

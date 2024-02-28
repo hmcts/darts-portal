@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
+import { DeleteComponent } from '@common/delete/delete.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { TabsComponent } from '@components/common/tabs/tabs.component';
 import { transcriptStatusClassMap } from '@constants/transcript-status-class-map';
@@ -26,6 +27,7 @@ import { UserService } from '@services/user/user.service';
     TableRowTemplateDirective,
     LuxonDatePipe,
     GovukHeadingComponent,
+    DeleteComponent,
   ],
   templateUrl: './hearing-results.component.html',
   styleUrls: ['./hearing-results.component.scss'],
@@ -38,6 +40,7 @@ export class HearingResultsComponent {
   @Input() hearings: Hearing[] = [];
   @Input() transcripts: TranscriptsRow[] = [];
   @Input() annotations: Annotations[] | null = [];
+  @Output() deleteAnnotationEvent = new EventEmitter<number>();
   caseId: number;
   hearingsColumns: DatatableColumn[] = [];
   transcriptColumns: DatatableColumn[] = [];
@@ -79,5 +82,9 @@ export class HearingResultsComponent {
     this.AnnotationService.downloadAnnotationDocument(annotationId, annotationDocumentId).subscribe((blob: Blob) => {
       this.fileDownloadService.saveAs(blob, fileName);
     });
+  }
+
+  onDeleteClicked(annotationId: number) {
+    this.deleteAnnotationEvent.emit(annotationId);
   }
 }
