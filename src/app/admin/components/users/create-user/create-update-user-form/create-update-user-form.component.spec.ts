@@ -45,7 +45,7 @@ const formValidationTestCases: formValidationTestCase[] = [
   },
   {
     name: 'valid when optional description is empty',
-    data: { fullName: 'Test User', email: 'test@user.com' },
+    data: { fullName: 'Test User', email: 'test@user.com', description: null },
     validity: true,
     emailExists: false,
   },
@@ -83,8 +83,9 @@ describe('CreateUpdateUserFormComponent', () => {
       };
 
       component.form.setValue(formValues);
-      component.onSubmit();
       tick(500);
+
+      component.onSubmit();
 
       expect(component.submitForm.emit).toHaveBeenCalledWith(formValues);
     }));
@@ -137,6 +138,36 @@ describe('CreateUpdateUserFormComponent', () => {
           expect(component.form.valid).toBe(test.validity);
         })
       );
+    });
+  });
+
+  describe('#ngOnInit', () => {
+    it('should set form values and remove email exists validator when updating a user', fakeAsync(() => {
+      const updateUser = {
+        fullName: 'Test User',
+        email: 'test@test.com',
+        description: 'A test user',
+      };
+      component.updateUser = updateUser;
+
+      component.ngOnInit();
+
+      tick(500); // wait for async validators to complete
+
+      expect(component.form.value).toEqual(updateUser);
+      expect(component.form.get('email')?.asyncValidator).toEqual(null);
+      expect(component.form.valid).toBe(true);
+    }));
+
+    it('should not modify form values when not updating a user', () => {
+      component.updateUser = null;
+      const originalFormValue = component.form.value;
+
+      component.ngOnInit();
+
+      expect(component.form.value).toEqual(originalFormValue);
+      expect(component.form.get('email')?.asyncValidator).not.toEqual(null);
+      expect(component.form.valid).toBe(false);
     });
   });
 });

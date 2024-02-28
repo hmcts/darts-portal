@@ -1,8 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HearingEvent } from '@portal-types/index';
-import { DateTime } from 'luxon';
+import { DateTime, Settings } from 'luxon';
 
 import { RequestTimesComponent } from './request-times.component';
+
+// set luxon zone
+Settings.defaultZone = 'utc';
 
 describe('RequestTimesComponent', () => {
   let component: RequestTimesComponent;

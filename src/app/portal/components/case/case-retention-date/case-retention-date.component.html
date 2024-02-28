@@ -13,7 +13,7 @@
       body="The retention date for this case cannot be changed while the case is open or while a retention policy is
     currently pending."
     ></app-notification-banner>
-    <app-success-banner *ngIf="state === 'Success'" text="Case retention date changed." />
+    <app-govuk-banner *ngIf="state === 'Success'" type="success">Case retention date changed.</app-govuk-banner>
     <app-govuk-heading>Case retention date</app-govuk-heading>
 
     <app-details-table title="Case details" [details]="vm.caseDetails.details"></app-details-table>

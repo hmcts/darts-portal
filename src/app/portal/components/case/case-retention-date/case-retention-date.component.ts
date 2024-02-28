@@ -1,13 +1,13 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
 import { BreadcrumbComponent } from '@components/common/breadcrumb/breadcrumb.component';
 import { DataTableComponent } from '@components/common/data-table/data-table.component';
 import { DetailsTableComponent } from '@components/common/details-table/details-table.component';
 import { GovukHeadingComponent } from '@components/common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@components/common/loading/loading.component';
 import { NotificationBannerComponent } from '@components/common/notification-banner/notification-banner.component';
-import { SuccessBannerComponent } from '@components/common/success-banner/success-banner.component';
 import { DatatableColumn } from '@core-types/data-table/data-table-column.interface';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
@@ -37,7 +37,7 @@ import { CaseRententionConfirmComponent } from './case-retention-confirm/case-re
     NotificationBannerComponent,
     CaseRetentionChangeComponent,
     CaseRententionConfirmComponent,
-    SuccessBannerComponent,
+    GovukBannerComponent,
     LuxonDatePipe,
   ],
 })

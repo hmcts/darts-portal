@@ -1,15 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { SuccessBannerComponent } from './success-banner.component';
+import { GovukBannerComponent } from './govuk-banner.component';
 
 describe('SuccessBannerComponent', () => {
-  let component: SuccessBannerComponent;
-  let fixture: ComponentFixture<SuccessBannerComponent>;
+  let component: GovukBannerComponent;
+  let fixture: ComponentFixture<GovukBannerComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [SuccessBannerComponent],
+      imports: [GovukBannerComponent],
     });
-    fixture = TestBed.createComponent(SuccessBannerComponent);
+    fixture = TestBed.createComponent(GovukBannerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

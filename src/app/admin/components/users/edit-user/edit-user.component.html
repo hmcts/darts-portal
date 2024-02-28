@@ -1,0 +1,31 @@
+<app-validation-error-summary [errors]="errors" />
+
+@if (showEmailChangeConfirmation) {
+  <app-govuk-banner type="information">Editing a user email address will change their login details </app-govuk-banner>
+}
+
+<app-govuk-heading caption="Edit user record">
+  @if (showEmailChangeConfirmation) {
+    Confirm change of user email address
+  } @else {
+    {{ user.fullName }}
+  }
+</app-govuk-heading>
+
+<app-create-update-user-form
+  [updateUser]="{ fullName: user.fullName, email: user.emailAddress, description: user.description }"
+  (submitForm)="onSubmit($event)"
+  (errors)="errors = $event"
+  (cancel)="onCancel()"
+  [hidden]="!!showEmailChangeConfirmation"
+/>
+
+@if (isEmailChanged()) {
+  <app-edit-email-confirmation
+    [newEmail]="updatedUser.email!"
+    [oldEmail]="user.emailAddress"
+    (confirm)="onConfirmEmailChange($event)"
+    (cancel)="onCancel()"
+    (errors)="errors = $event"
+  />
+}

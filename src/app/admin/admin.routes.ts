@@ -14,6 +14,10 @@ export const ADMIN_ROUTES: Routes = [
       import('./components/users/create-user/create-user.component').then((c) => c.CreateUserComponent),
   },
   {
+    path: 'admin/users/edit/:userId',
+    loadComponent: () => import('./components/users/edit-user/edit-user.component').then((c) => c.EditUserComponent),
+  },
+  {
     path: 'admin/users/:userId',
     loadComponent: () =>
       import('./components/users/user-record/user-record.component').then((c) => c.UserRecordComponent),

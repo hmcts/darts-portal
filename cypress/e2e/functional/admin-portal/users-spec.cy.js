@@ -45,7 +45,7 @@ describe('Admin - Users screen', () => {
 
     cy.get('#confirm-button').click();
 
-    cy.get('app-success-banner').should('contain', 'User record has been created for New User');
+    cy.get('app-govuk-banner').should('contain', 'User record has been created for New User');
   });
 
   it('Email address already exists when creating new user', () => {
