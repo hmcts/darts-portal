@@ -22,6 +22,13 @@ export const ADMIN_ROUTES: Routes = [
     path: 'admin/courthouses',
     loadComponent: () => import('./components/courthouses/courthouses.component').then((c) => c.CourthousesComponent),
   },
+  {
+    path: 'admin/courthouses/:courthouseId',
+    loadComponent: () =>
+      import('./components/courthouses/courthouse-record/courthouse-record.component').then(
+        (c) => c.CourthouseRecordComponent
+      ),
+  },
 ].map((route) => ({
   ...route,
   resolve: { userState: () => inject(UserService).userProfile$ },
