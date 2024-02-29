@@ -144,7 +144,6 @@ describe('CourthouseService', () => {
 
   describe('searchCourthouses', () => {
     it('should filter courthouses based on the search query', () => {
-      const mockCourthousesObservable = of(courthouses);
       const searchQuery: CourthouseSearchFormValues = {
         courthouseName: 'Kingston',
         displayName: '',
@@ -152,14 +151,13 @@ describe('CourthouseService', () => {
       };
 
       let result;
-      service.searchCourthouses(mockCourthousesObservable, searchQuery).subscribe((data) => {
+      service.searchCourthouses(courthouses, searchQuery).subscribe((data) => {
         result = data;
       });
       expect(result).toEqual([courthouses[2]]);
     });
 
     it('should filter courthouses based on the search query, display name', () => {
-      const mockCourthousesObservable = of(courthouses);
       const searchQuery: CourthouseSearchFormValues = {
         courthouseName: '',
         displayName: 'Slough',
@@ -167,14 +165,13 @@ describe('CourthouseService', () => {
       };
 
       let result;
-      service.searchCourthouses(mockCourthousesObservable, searchQuery).subscribe((data) => {
+      service.searchCourthouses(courthouses, searchQuery).subscribe((data) => {
         result = data;
       });
       expect(result).toEqual([courthouses[1]]);
     });
 
     it('should filter courthouses based on the search query, no results', () => {
-      const mockCourthousesObservable = of(courthouses);
       const searchQuery: CourthouseSearchFormValues = {
         courthouseName: '',
         displayName: 'zzzzz',
@@ -182,7 +179,7 @@ describe('CourthouseService', () => {
       };
 
       let result;
-      service.searchCourthouses(mockCourthousesObservable, searchQuery).subscribe((data) => {
+      service.searchCourthouses(courthouses, searchQuery).subscribe((data) => {
         result = data;
       });
       expect(result).toEqual([]);

@@ -1,9 +1,10 @@
 import { CourthouseSearchFormValues } from '@admin-types/courthouses/courthouse-search-form-values.type';
+import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
-import { BehaviorSubject, Subject, combineLatest, of, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, combineLatest, of, switchMap, tap } from 'rxjs';
 import { CourthouseSearchFormComponent } from './courthouse-search-form/courthouse-search-form.component';
 import { CourthouseSearchResultsComponent } from './courthouse-search-results/courthouse-search-results.component';
 
@@ -23,13 +24,14 @@ export class CourthousesComponent {
 
   courthouses$ = this.courthouseService.getCourthousesWithRegions();
 
-  results$ = combineLatest([this.search$, this.isSubmitted$]).pipe(
+  results$: Observable<Courthouse[]> = combineLatest([this.search$, this.isSubmitted$, this.courthouses$]).pipe(
     tap(() => this.startLoading()),
-    switchMap(([values, isSubmitted]) => {
-      if (!values || !isSubmitted) {
-        return of(null);
+    switchMap(([values, isSubmitted, courthouses]) => {
+      if (!values || !isSubmitted || !courthouses) {
+        return of([]);
       }
-      return this.courthouseService.searchCourthouses(this.courthouses$, values);
+      // Directly use the emitted courthouses array for filtering
+      return this.courthouseService.searchCourthouses(courthouses, values);
     }),
     tap(() => this.stopLoading())
   );

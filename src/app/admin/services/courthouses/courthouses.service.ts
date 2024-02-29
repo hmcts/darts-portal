@@ -56,26 +56,21 @@ export class CourthouseService {
     });
   }
 
-  searchCourthouses(
-    courthouses: Observable<Courthouse[]>,
-    query: CourthouseSearchFormValues
-  ): Observable<Courthouse[]> {
-    return courthouses.pipe(
-      map((courthouseArray) =>
-        courthouseArray.filter((courthouse) => {
-          const matchesCourthouseName = query.courthouseName
-            ? courthouse.courthouseName.toLowerCase().includes(query.courthouseName.toLowerCase())
-            : true;
-          const matchesDisplayName = query.displayName
-            ? courthouse.displayName.toLowerCase().includes(query.displayName.toLowerCase())
-            : true;
-          const matchesRegionName = query.region
-            ? courthouse.regionName?.toLowerCase().includes(query.region.toLowerCase())
-            : true;
+  searchCourthouses(courthouses: Courthouse[], query: CourthouseSearchFormValues): Observable<Courthouse[]> {
+    const filteredCourthouses = courthouses.filter((courthouse) => {
+      const matchesCourthouseName = query.courthouseName
+        ? courthouse.courthouseName.toLowerCase().includes(query.courthouseName.toLowerCase())
+        : true;
+      const matchesDisplayName = query.displayName
+        ? courthouse.displayName.toLowerCase().includes(query.displayName.toLowerCase())
+        : true;
+      const matchesRegionName = query.region
+        ? courthouse.regionName?.toLowerCase().includes(query.region.toLowerCase())
+        : true;
 
-          return matchesCourthouseName && matchesDisplayName && matchesRegionName;
-        })
-      )
-    );
+      return matchesCourthouseName && matchesDisplayName && matchesRegionName;
+    });
+
+    return of(filteredCourthouses);
   }
 }
