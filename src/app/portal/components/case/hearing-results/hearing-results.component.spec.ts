@@ -61,4 +61,12 @@ describe('HearingResultsComponent', () => {
       expect(component.fileDownloadService.saveAs).toHaveBeenCalledWith(blob, 'testDoc.docx');
     });
   });
+
+  describe('#onDeleteClicked', () => {
+    it('should emit when delete is clicked', () => {
+      jest.spyOn(component.deleteAnnotationEvent, 'emit');
+      component.onDeleteClicked(123);
+      expect(component.deleteAnnotationEvent.emit).toHaveBeenCalledWith(123);
+    });
+  });
 });

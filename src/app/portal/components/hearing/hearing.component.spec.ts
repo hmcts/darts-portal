@@ -5,6 +5,7 @@ import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UserState } from '@core-types/user/user-state.interface';
+import { Annotations } from '@portal-types/annotations/annotations.type';
 import { AudioEventRow } from '@portal-types/hearing/hearing-audio-event.interface';
 import {
   Case,
@@ -14,20 +15,19 @@ import {
   PostAudioRequest,
   Transcript,
 } from '@portal-types/index';
+import { AnnotationService } from '@services/annotation/annotation.service';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
 import { CaseService } from '@services/case/case.service';
+import { FileDownloadService } from '@services/file-download/file-download.service';
 import { HeaderService } from '@services/header/header.service';
 import { HearingService } from '@services/hearing/hearing.service';
+import { MappingService } from '@services/mapping/mapping.service';
 import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
 import { Observable, of, throwError } from 'rxjs';
 import { HearingFileComponent } from './hearing-file/hearing-file.component';
 import { HearingComponent } from './hearing.component';
-import { MappingService } from '@services/mapping/mapping.service';
-import { FileDownloadService } from '@services/file-download/file-download.service';
-import { AnnotationService } from '@services/annotation/annotation.service';
-import { Annotations } from '@portal-types/annotations/annotations.type';
 
 describe('HearingComponent', () => {
   const fakeAppInsightsService = {};
@@ -502,7 +502,7 @@ describe('HearingComponent', () => {
     });
   });
 
-  describe('#onDeleteConfirmed', () => {
+  describe('#onDeleteCancelled', () => {
     it('should clear the ID in selectedAnnotationsforDeletion array', () => {
       const ids = [123, 321];
       component.selectedAnnotationsforDeletion = ids;
