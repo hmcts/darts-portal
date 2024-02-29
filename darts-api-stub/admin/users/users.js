@@ -1,15 +1,19 @@
 const c = require('config');
 const express = require('express');
 const { stubUsers } = require('../../users');
+const { DateTime } = require('luxon');
 
 const router = express.Router();
 
 const USERS = stubUsers.map((stubUser) => {
   return {
     id: stubUser.userState.userId,
-    last_modified_at: '2021-01-20T00:00:00.000000Z',
-    last_login_at: '2024-01-23T00:00:00.000000Z',
-    created_at: '2021-01-20T00:00:00.000000Z',
+    description: stubUser.active ? 'Stub Active User' : undefined,
+    last_modified_at: DateTime.fromISO('2020-01-11').plus({ days: stubUser.userState.userId * 10 }),
+    last_login_at: stubUser.active
+      ? DateTime.fromISO('2023-12-01').plus({ days: stubUser.userState.userId * 10 })
+      : undefined,
+    created_at: DateTime.fromISO('2020-01-01').plus({ days: stubUser.userState.userId * 10 }),
     full_name: stubUser.name,
     email_address: stubUser.userState.userName,
     active: stubUser.active,
@@ -19,12 +23,18 @@ const USERS = stubUsers.map((stubUser) => {
 
 // api/admin/users/search
 router.post('/search', (req, res) => {
-  if (req.body.full_name === 'NO_RESULTS') {
-    res.send([]);
-    return;
+  const searchFullName = req?.body?.full_name?.toLowerCase() || '';
+  const searchEmailAddress = req?.body?.email_address?.toLowerCase() || '';
+  if (searchFullName === 'NO_RESULTS') {
+    return res.send([]);
   }
-
-  res.send(USERS);
+  return res.send(
+    USERS.filter(
+      (user) =>
+        user.full_name.toLowerCase().includes(searchFullName) &&
+        user.email_address.toLowerCase().includes(searchEmailAddress)
+    )
+  );
 });
 
 router.get('/:userid', (req, res) => {

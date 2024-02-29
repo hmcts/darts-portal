@@ -4,17 +4,17 @@ describe('Admin - User record screen', () => {
   beforeEach(() => {
     cy.login('admin');
     cy.visit('/admin/users');
-    cy.get('#fullName').type('Darts User');
+    cy.get('#email').type('darts');
     cy.get('button[type="submit"]').click();
     cy.injectAxe();
   });
 
   describe('User Record - Details', () => {
     it('Verify active user details', () => {
-      cy.get('app-user-search-results').should('contain', 'Darts User');
-      cy.contains('Darts User').parents('tr').contains('View').click();
+      cy.get('app-user-search-results').should('contain', 'Eric Bristow');
+      cy.contains('Eric Bristow').parents('tr').contains('View').click();
 
-      cy.contains('h1', 'Darts User').should('exist');
+      cy.contains('h1', 'Eric Bristow').should('exist');
 
       //Check tabs
       cy.get('.moj-sub-navigation a').contains('Details').should('exist');
@@ -26,18 +26,18 @@ describe('Admin - User record screen', () => {
       cy.get('#date-created-container h3').contains('Date created').should('exist');
       cy.get('#last-updated-container h3').contains('Last updated').should('exist');
       cy.get('#last-active-container h3').contains('Last active').should('exist');
-      cy.get('#date-created-container p').contains('Sat 20 Jan 2024').should('exist');
-      cy.get('#last-updated-container p').contains('Sat 20 Jan 2024').should('exist');
-      cy.get('#last-active-container p').contains('Tue 23 Jan 2024').should('exist');
+      cy.get('#date-created-container p').contains('Sat 11 Jan 2020').should('exist');
+      cy.get('#last-updated-container p').contains('Tue 21 Jan 2020').should('exist');
+      cy.get('#last-active-container p').contains('Mon 11 Dec 2023').should('exist');
 
       //Table
       cy.get('.govuk-table__caption').contains('Details').should('be.visible');
       cy.get('th#detail-th-0').contains('Full name').should('be.visible');
-      cy.get('td').contains('Darts User').should('be.visible');
+      cy.get('td').contains('Eric Bristow').should('be.visible');
       cy.get('th#detail-th-1').contains('Email').should('be.visible');
-      cy.get('td').contains('user@local.net').should('be.visible');
+      cy.get('td').contains('eric.bristow@darts.local').should('be.visible');
       cy.get('th#detail-th-2').contains('Description').should('be.visible');
-      cy.get('td').contains('This is a test user').should('be.visible');
+      cy.get('td').contains('Stub Active User').should('be.visible');
 
       //Tags
       cy.get('.govuk-tag--green').contains('User record').should('exist');
@@ -51,11 +51,11 @@ describe('Admin - User record screen', () => {
     });
 
     it('Verify inactive user details', () => {
-      cy.get('app-user-search-results').should('contain', 'Inactive User');
+      cy.get('app-user-search-results').should('contain', 'Peter Wright');
 
-      cy.get('td').contains('Inactive User').parents('tr').contains('View').click();
+      cy.get('td').contains('Peter Wright').parents('tr').contains('View').click();
 
-      cy.contains('h1', 'Inactive User').should('exist');
+      cy.contains('h1', 'Peter Wright').should('exist');
 
       //Check tabs
       cy.get('.moj-sub-navigation a').contains('Details').should('exist');
@@ -67,16 +67,16 @@ describe('Admin - User record screen', () => {
       cy.get('#date-created-container h3').contains('Date created').should('exist');
       cy.get('#last-updated-container h3').contains('Last updated').should('exist');
       cy.get('#last-active-container h3').contains('Last active').should('exist');
-      cy.get('#date-created-container p').contains('Wed 20 Jan 2021').should('exist');
-      cy.get('#last-updated-container p').contains('Wed 20 Jan 2021').should('exist');
+      cy.get('#date-created-container p').contains('Mon 30 Mar 2020').should('exist');
+      cy.get('#last-updated-container p').contains('Thu 9 Apr 2020').should('exist');
       cy.get('#last-active-container p').should('be.empty');
 
       //Table
       cy.get('.govuk-table__caption').contains('Details').should('be.visible');
       cy.get('th#detail-th-0').contains('Full name').should('be.visible');
-      cy.get('td').contains('Inactive User').should('be.visible');
+      cy.get('td').contains('Peter Wright').should('be.visible');
       cy.get('th#detail-th-1').contains('Email').should('be.visible');
-      cy.get('td').contains('inactive.user@local.net').should('be.visible');
+      cy.get('td').contains('peter.wright@darts.local').should('be.visible');
       cy.get('th#detail-th-2').should('not.exist');
 
       //Tags
