@@ -4214,6 +4214,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sigstore/protobuf-specs@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "@sigstore/protobuf-specs@npm:0.3.0"
+  checksum: 584ea2888aede7124c747a343ab09dd5234195973f15169b6afff19f87347c2e29a2e688298dba87827883c704096fc31a8a0748049dde0b85fbec2cf922a350
+  languageName: node
+  linkType: hard
+
 "@sigstore/sign@npm:^2.1.0":
   version: 2.2.0
   resolution: "@sigstore/sign@npm:2.2.0"
@@ -4254,6 +4261,16 @@ __metadata:
     "@sigstore/protobuf-specs": ^0.2.1
     tuf-js: ^2.2.0
   checksum: 77ed2931c4e80b13310ccb1f57623bdf20b8c1d1760a07ed2f0b6c31aeed799cb839646f688c7cc3be05e05f7cf25acce18d90a864774ce768834a6e9017deef
+  languageName: node
+  linkType: hard
+
+"@sigstore/tuf@npm:^2.3.1":
+  version: 2.3.1
+  resolution: "@sigstore/tuf@npm:2.3.1"
+  dependencies:
+    "@sigstore/protobuf-specs": ^0.3.0
+    tuf-js: ^2.2.0
+  checksum: 809befef876567b14240ee41baabc5b595e9d5a245c7cf31b7ae2e37f4600e0ac353b010807f5caa7b720d12f630ea5b33d2f222c1844083d6a1ee08b3cc4250
   languageName: node
   linkType: hard
 
@@ -12044,8 +12061,8 @@ __metadata:
   linkType: hard
 
 "npm@npm:^10.1.0":
-  version: 10.4.0
-  resolution: "npm@npm:10.4.0"
+  version: 10.5.0
+  resolution: "npm@npm:10.5.0"
   dependencies:
     "@isaacs/string-locale-compare": ^1.1.0
     "@npmcli/arborist": ^7.2.1
@@ -12055,7 +12072,7 @@ __metadata:
     "@npmcli/package-json": ^5.0.0
     "@npmcli/promise-spawn": ^7.0.1
     "@npmcli/run-script": ^7.0.4
-    "@sigstore/tuf": ^2.3.0
+    "@sigstore/tuf": ^2.3.1
     abbrev: ^2.0.0
     archy: ~1.0.0
     cacache: ^18.0.2
@@ -12106,7 +12123,7 @@ __metadata:
     proc-log: ^3.0.0
     qrcode-terminal: ^0.12.0
     read: ^2.1.0
-    semver: ^7.5.4
+    semver: ^7.6.0
     spdx-expression-parse: ^3.0.1
     ssri: ^10.0.5
     supports-color: ^9.4.0
@@ -12120,7 +12137,7 @@ __metadata:
   bin:
     npm: bin/npm-cli.js
     npx: bin/npx-cli.js
-  checksum: 81285b77f86b9d7cb6b6893a9792efe6cb11367d87180fe27304ff82d4eb24f84c9c08399648501779bc5d7c728278e35e387de2908c47903997a32ec8da90a3
+  checksum: f9f2a9980df45fcf2b124929682bcd7ff2e7bffe0d47debdf46167d31733348cb790663dd28cbba312e6150a973572e1f8bb4dc834ec4bd1637812b708378882
   languageName: node
   linkType: hard
 
@@ -13701,7 +13718,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:7.6.0, semver@npm:^7.3.8":
+"semver@npm:7.6.0, semver@npm:^7.3.8, semver@npm:^7.6.0":
   version: 7.6.0
   resolution: "semver@npm:7.6.0"
   dependencies:
