@@ -31,10 +31,6 @@ const regions = [
     id: 6,
     name: 'Wales',
   },
-  {
-    id: 7,
-    name: 'No region',
-  },
 ];
 
 router.get('', (req, res) => {
