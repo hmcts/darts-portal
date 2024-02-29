@@ -4,14 +4,14 @@ import { DatePipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CourthouseRecordComponent } from './courthouse-record.component';
-import { CourthouseAdminService } from '@services/courthouse-admin.service';
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { DateTime } from 'luxon';
+import { CourthouseService } from '@services/courthouses/courthouses.service';
 
 describe('CourthouseRecordComponent', () => {
   let component: CourthouseRecordComponent;
   let fixture: ComponentFixture<CourthouseRecordComponent>;
-  let fakeCourthouseAdminService: Partial<CourthouseAdminService>;
+  let fakeCourthouseAdminService: Partial<CourthouseService>;
   let fakeActivatedRoute: ActivatedRoute;
 
   const TEST_COURTHOUSE: Courthouse = {
@@ -41,7 +41,7 @@ describe('CourthouseRecordComponent', () => {
       providers: [
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         {
-          provide: CourthouseAdminService,
+          provide: CourthouseService,
           useValue: fakeCourthouseAdminService,
         },
         DatePipe,
@@ -55,5 +55,16 @@ describe('CourthouseRecordComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should format security groups to string', () => {
+    const groups = [
+      { id: 1, name: 'Group 1' },
+      { id: 2, name: 'Group 2' },
+    ];
+    expect(component.formatSecurityGroupLinks(groups)).toStrictEqual([
+      { value: 'Group 1', href: '/admin/groups/1' },
+      { value: 'Group 2', href: '/admin/groups/2' },
+    ]);
   });
 });

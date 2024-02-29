@@ -4,10 +4,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { DateTime } from 'luxon';
 import { Observable, map } from 'rxjs';
-import { UserData } from '../../models/users/user-data.interface';
-import { UserSearchFormValues } from '../../models/users/user-search-form-values.type';
-import { UserSearchRequest } from '../../models/users/user-search-request.interface';
-import { User } from '../../models/users/user.type';
+import { UserData } from '@admin-types/users/user-data.interface';
+import { UserSearchFormValues } from '@admin-types/users/user-search-form-values.type';
+import { UserSearchRequest } from '@admin-types/users/user-search-request.interface';
+import { User } from '@admin-types/users/user.type';
 
 export const USER_ADMIN_SEARCH_PATH = 'api/admin/users/search';
 export const USER_ADMIN_PATH = 'api/admin/users';

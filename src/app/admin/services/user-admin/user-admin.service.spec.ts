@@ -164,5 +164,21 @@ describe('UserAdminService', () => {
       expect(req.request.body).toEqual(expectedUserRequest);
       req.flush({});
     });
+
+    describe('doesEmailExist', () => {
+      it('Returns true if it does', fakeAsync(() => {
+        const mockUserData = {};
+        let result;
+
+        service.doesEmailExist('test@email.com').subscribe((data) => {
+          result = data;
+        });
+
+        const req = httpMock.expectOne(USER_ADMIN_PATH);
+        expect(req.request.method).toEqual('GET');
+        req.flush(mockUserData);
+        expect(result).toBe(false);
+      }));
+    });
   });
 });

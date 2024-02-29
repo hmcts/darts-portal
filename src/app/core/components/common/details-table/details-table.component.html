@@ -16,7 +16,17 @@
       } @else if (isNotNullUndefinedOrEmptyString(detail.value)) {
         <tr class="govuk-table__row">
           <th [id]="'detail-th-' + $index" class="govuk-table__header">{{ detail.key }}</th>
-          <td class="govuk-table__cell table-width">{{ detail.value }}</td>
+          <td class="govuk-table__cell table-width">
+            @if (getLinkArray(detail.value).length) {
+              @for (item of getLinkArray(detail.value); track item) {
+                <a *ngIf="item.href" [href]="item.href" class="govuk-link">{{ item.value }}</a>
+                <span *ngIf="!item.href">{{ item }} </span>
+                <br *ngIf="item.href" />
+              }
+            } @else {
+              {{ detail.value }}
+            }
+          </td>
         </tr>
       }
     }

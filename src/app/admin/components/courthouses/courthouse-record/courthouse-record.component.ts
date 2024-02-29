@@ -8,8 +8,8 @@ import { TabsComponent } from '@common/tabs/tabs.component';
 import { NotFoundComponent } from '@components/error/not-found/not-found.component';
 import { TabDirective } from '@directives/tab.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
-import { CourthouseAdminService } from '@services/courthouse-admin.service';
 import { SecurityGroup } from '@core-types/courthouse/security-groups.interface';
+import { CourthouseService } from '@services/courthouses/courthouses.service';
 
 @Component({
   selector: 'app-courthouse',
@@ -28,14 +28,16 @@ import { SecurityGroup } from '@core-types/courthouse/security-groups.interface'
   ],
 })
 export class CourthouseRecordComponent {
-  courthouseAdminService = inject(CourthouseAdminService);
+  courthouseService = inject(CourthouseService);
   route = inject(ActivatedRoute);
 
-  courthouse$ = this.courthouseAdminService.getCourthouseWithRegionsAndSecurityGroups(
+  courthouse$ = this.courthouseService.getCourthouseWithRegionsAndSecurityGroups(
     this.route.snapshot.params.courthouseId
   );
 
-  formatSecurityGroups(securityGroups: SecurityGroup[] | undefined) {
-    return securityGroups?.map((securityGroup) => securityGroup.name).join('\n');
+  formatSecurityGroupLinks(securityGroups: SecurityGroup[] | undefined) {
+    return securityGroups?.map((securityGroup) => {
+      return { value: securityGroup.name, href: `/admin/groups/${securityGroup.id}` };
+    });
   }
 }
