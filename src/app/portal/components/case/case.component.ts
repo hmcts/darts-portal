@@ -53,6 +53,7 @@ export class CaseComponent {
       : of(null);
 
   selectedAnnotationsforDeletion: number[] = [];
+  tab!: string;
 
   data$ = combineLatest({
     hearings: this.hearings$,
@@ -73,13 +74,13 @@ export class CaseComponent {
           annotations: this.annotations$,
         });
         this.selectedAnnotationsforDeletion = [];
-        // this.defaultTab = 'Annotations';
+        this.tab = 'All annotations';
       });
     });
   }
 
   onDeleteCancelled() {
     this.selectedAnnotationsforDeletion = [];
-    // this.defaultTab = 'Annotations';
+    this.tab = 'All annotations';
   }
 }

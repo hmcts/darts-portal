@@ -1,4 +1,4 @@
-<app-tabs>
+<app-tabs [default]="tab">
   <div *tab="'Hearings'">
     <app-data-table id="hearingsTable" [rows]="hearings" [columns]="hearingsColumns">
       <ng-template [tableRowTemplate]="hearings" let-row>
@@ -66,6 +66,7 @@
             <td class="govuk-table__cell">
               <a
                 href="javascript:void(0)"
+                class="govuk-link"
                 (click)="downloadAnnotation(row.annotationId, row.annotationDocumentId, row.fileName)"
                 >Download</a
               >

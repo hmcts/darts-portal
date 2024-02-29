@@ -40,6 +40,7 @@ export class HearingResultsComponent {
   @Input() hearings: Hearing[] = [];
   @Input() transcripts: TranscriptsRow[] = [];
   @Input() annotations: Annotations[] | null = [];
+  @Input() tab!: string;
   @Output() deleteAnnotationEvent = new EventEmitter<number>();
   caseId: number;
   hearingsColumns: DatatableColumn[] = [];
