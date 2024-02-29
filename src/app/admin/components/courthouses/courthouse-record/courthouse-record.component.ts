@@ -1,5 +1,4 @@
-import { combineLatest, map } from 'rxjs';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
@@ -10,7 +9,6 @@ import { NotFoundComponent } from '@components/error/not-found/not-found.compone
 import { TabDirective } from '@directives/tab.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { CourthouseAdminService } from '@services/courthouse-admin.service';
-import { Region } from '@core-types/courthouse/region.interface';
 import { SecurityGroup } from '@core-types/courthouse/security-groups.interface';
 
 @Component({
