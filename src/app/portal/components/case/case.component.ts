@@ -1,12 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { DeleteComponent } from '@common/delete/delete.component';
 import { BreadcrumbComponent } from '@components/common/breadcrumb/breadcrumb.component';
 import { LoadingComponent } from '@components/common/loading/loading.component';
 import { ForbiddenComponent } from '@components/error/forbidden/forbidden.component';
 import { InternalErrorComponent } from '@components/error/internal-server/internal-error.component';
 import { NotFoundComponent } from '@components/error/not-found/not-found.component';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
+import { AnnotationService } from '@services/annotation/annotation.service';
 import { CaseService } from '@services/case/case.service';
 import { MappingService } from '@services/mapping/mapping.service';
 import { UserService } from '@services/user/user.service';
@@ -27,6 +29,7 @@ import { HearingResultsComponent } from './hearing-results/hearing-results.compo
     NotFoundComponent,
     ForbiddenComponent,
     InternalErrorComponent,
+    DeleteComponent,
   ],
   templateUrl: './case.component.html',
   styleUrls: ['./case.component.scss'],
@@ -36,6 +39,7 @@ export class CaseComponent {
   private caseService = inject(CaseService);
   private mappingService = inject(MappingService);
   private userService = inject(UserService);
+  private annotationService = inject(AnnotationService);
 
   public caseId = this.route.snapshot.params.caseId;
   public caseFile$ = this.caseService.getCase(this.caseId);
@@ -48,9 +52,35 @@ export class CaseComponent {
       ? this.caseService.getCaseAnnotations(this.caseId)
       : of(null);
 
+  selectedAnnotationsforDeletion: number[] = [];
+  tab!: string;
+
   data$ = combineLatest({
     hearings: this.hearings$,
     transcripts: this.transcripts$,
     annotations: this.annotations$,
   });
+
+  onDeleteClicked(annotationId: number) {
+    this.selectedAnnotationsforDeletion = [annotationId];
+  }
+
+  onDeleteConfirmed() {
+    this.selectedAnnotationsforDeletion.forEach((annotationId) => {
+      this.annotationService.deleteAnnotation(annotationId).subscribe(() => {
+        this.data$ = combineLatest({
+          hearings: this.hearings$,
+          transcripts: this.transcripts$,
+          annotations: this.annotations$,
+        });
+        this.selectedAnnotationsforDeletion = [];
+        this.tab = 'All annotations';
+      });
+    });
+  }
+
+  onDeleteCancelled() {
+    this.selectedAnnotationsforDeletion = [];
+    this.tab = 'All annotations';
+  }
 }

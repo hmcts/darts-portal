@@ -25,20 +25,28 @@ export class TabsComponent implements AfterContentInit {
   @Input() default?: string;
 
   ngAfterContentInit(): void {
-    if (this.default) {
-      this.tabs.changes.subscribe((tabs: TabDirective[]) => {
-        const firstTab = tabs.find((t) => t.name === this.default)?.template;
-        if (firstTab) this.currentTab = firstTab;
-      });
-    } else {
-      const firstTab = this.tabs.first.template;
-      if (firstTab) this.currentTab = firstTab;
+    this.tabs.changes.subscribe((tabs: TabDirective[]) => {
+      this.selectDefaultTab(tabs);
+    });
+    this.selectDefaultTab(this.tabs.toArray());
+  }
+
+  selectDefaultTab(tabs: TabDirective[]): void {
+    const defaultTab = tabs.find((t) => t.name === this.default);
+    const firstTab = tabs[0];
+    const tabToSelect = defaultTab || firstTab;
+    if (tabToSelect) {
+      this.selectTab(tabToSelect);
     }
   }
 
   onTabClick(event: MouseEvent, tab: TabDirective) {
     event.preventDefault();
+    this.selectTab(tab);
+  }
+
+  selectTab(tab: TabDirective) {
     this.currentTab = tab.template;
-    this.tabChange.emit();
+    this.tabChange.emit(tab);
   }
 }
