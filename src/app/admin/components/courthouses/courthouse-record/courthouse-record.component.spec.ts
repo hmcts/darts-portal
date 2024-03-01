@@ -59,8 +59,8 @@ describe('CourthouseRecordComponent', () => {
 
   it('should format security groups to string', () => {
     const groups = [
-      { id: 1, name: 'Group 1' },
-      { id: 2, name: 'Group 2' },
+      { id: 1, security_role_id: 1, name: 'Group 1' },
+      { id: 2, security_role_id: 2, name: 'Group 2' },
     ];
     expect(component.formatSecurityGroupLinks(groups)).toStrictEqual([
       { value: 'Group 1', href: '/admin/groups/1' },
