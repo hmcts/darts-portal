@@ -3,7 +3,6 @@ import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
 import { LoadingComponent } from '@common/loading/loading.component';
-import { SuccessBannerComponent } from '@common/success-banner/success-banner.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { NotFoundComponent } from '@components/error/not-found/not-found.component';
 import { TabDirective } from '@directives/tab.directive';
@@ -24,7 +23,6 @@ import { CourthouseService } from '@services/courthouses/courthouses.service';
     DetailsTableComponent,
     NotFoundComponent,
     LoadingComponent,
-    SuccessBannerComponent,
   ],
 })
 export class CourthouseRecordComponent {
