@@ -3,7 +3,7 @@ import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { FieldErrors } from '@core-types/index';
 import { optionalMaxLengthValidator } from '@validators/optional-maxlength.validator';
-import { UserSearchFormValues } from '../../../models/users/user-search-form-values.type';
+import { UserSearchFormValues } from '@admin-types/users/user-search-form-values.type';
 
 const controlErrors: FieldErrors = {
   fullName: {
