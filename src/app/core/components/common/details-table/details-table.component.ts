@@ -1,3 +1,4 @@
+import { DetailsTableLink } from '@core-types/details-table/details-table-array.interface';
 import { CommonModule, KeyValue } from '@angular/common';
 import { Component, Input } from '@angular/core';
 
@@ -19,5 +20,10 @@ export class DetailsTableComponent<T extends object> {
 
   isNotNullUndefinedOrEmptyString(value: unknown) {
     return value !== null && value !== undefined && value !== '';
+  }
+
+  getLinkArray(value: DetailsTableLink[] | string): DetailsTableLink[] {
+    // Return the array if it is DetailsTableLink, otherwise empty array
+    return typeof value === 'string' ? [] : value;
   }
 }

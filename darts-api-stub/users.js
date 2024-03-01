@@ -9,6 +9,7 @@ const stubUsers = [
       userName: 'eric.bristow@darts.local',
       roles: [REQUESTER],
     },
+    active: true,
   },
   {
     name: 'Fallon Sherrock',
@@ -18,6 +19,7 @@ const stubUsers = [
       userName: 'fallon.sherrock@darts.local',
       roles: [APPROVER],
     },
+    active: true,
   },
   {
     name: 'Michael van Gerwen',
@@ -27,6 +29,7 @@ const stubUsers = [
       userName: 'michael.vangerwen@darts.local',
       roles: [REQUESTER, APPROVER],
     },
+    active: true,
   },
   {
     name: 'Trina Gulliver',
@@ -36,6 +39,7 @@ const stubUsers = [
       userName: 'trina.gulliver@darts.local',
       roles: [TRANSCRIBER],
     },
+    active: true,
   },
   {
     name: 'Phil Taylor',
@@ -45,6 +49,7 @@ const stubUsers = [
       userName: 'phil.taylor@darts.local',
       roles: [REQUESTER, APPROVER, TRANSCRIBER, ADMIN],
     },
+    active: true,
   },
   {
     name: 'Nigel Justice',
@@ -54,6 +59,7 @@ const stubUsers = [
       userName: 'nigel.justice@darts.local',
       roles: [JUDGE],
     },
+    active: true,
   },
   {
     name: 'Martin Adams',
@@ -63,6 +69,7 @@ const stubUsers = [
       userName: 'martin.adams@darts.local',
       roles: [JUDGE, APPROVER],
     },
+    active: true,
   },
   {
     name: 'Luke Littler',
@@ -72,6 +79,17 @@ const stubUsers = [
       userName: 'luke.littler@darts.local',
       roles: [ADMIN],
     },
+    active: true,
+  },
+  {
+    name: 'Peter Wright',
+    code: 'non-active',
+    userState: {
+      userId: 9,
+      userName: 'peter.wright@darts.local',
+      roles: [],
+    },
+    active: false,
   },
 ];
 

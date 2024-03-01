@@ -57,8 +57,8 @@ export class UploadTranscriptComponent implements OnDestroy {
         caseDetails: {
           'Case ID': data.caseNumber,
           Courthouse: data.courthouse,
-          'Judge(s)': data.judges,
-          'Defendant(s)': data.defendants,
+          'Judge(s)': data.judges.join(', '),
+          'Defendant(s)': data.defendants.join(', '),
         },
         requestDetails: {
           'Hearing Date': hearingDate,

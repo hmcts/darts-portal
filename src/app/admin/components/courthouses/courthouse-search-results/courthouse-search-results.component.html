@@ -11,7 +11,7 @@
     <app-data-table [rows]="results" [columns]="columns" [caption]="caption" [sortAndPaginateOnRowsChanged]="false">
       <ng-template [tableRowTemplate]="results" let-row>
         <td class="govuk-table__cell">
-          <a class="govuk-link" href="#">{{ row.courthouseName }}</a>
+          <a class="govuk-link" [href]="'/admin/courthouses/' + row.id">{{ row.courthouseName }}</a>
         </td>
         <td class="govuk-table__cell">{{ row.displayName }}</td>
         <td class="govuk-table__cell">{{ row.regionName }}</td>

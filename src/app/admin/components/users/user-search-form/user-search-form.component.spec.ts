@@ -45,4 +45,15 @@ describe('UserSearchFormComponent', () => {
     });
     expect(component.clear.emit).toHaveBeenCalled();
   });
+
+  it('should generate error if over 26 characters', () => {
+    // Generate string that is over 256 characters
+    // 257 "a" characters will do
+    const characters = 257;
+    const over256 = new Array(characters + 1).join('a');
+    const fullName = 'fullName';
+    // Set the courthouseName value to the characters above
+    component.form.get(fullName)?.setValue(over256);
+    expect(component.getFormControlErrorMessages(fullName)).toEqual(['Must be less than 256 characters']);
+  });
 });

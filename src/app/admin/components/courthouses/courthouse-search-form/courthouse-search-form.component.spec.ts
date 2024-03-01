@@ -45,4 +45,27 @@ describe('CourthouseSearchFormComponent', () => {
     });
     expect(component.clear.emit).toHaveBeenCalled();
   });
+
+  it('should reset form on clearSearch', () => {
+    jest.spyOn(component.clear, 'emit');
+    component.clearSearch();
+
+    expect(component.form.value).toEqual({
+      courthouseName: null,
+      displayName: null,
+      region: null,
+    });
+    expect(component.clear.emit).toHaveBeenCalled();
+  });
+
+  it('should generate error if over 26 characters', () => {
+    // Generate string that is over 256 characters
+    // 257 "a" characters will do
+    const characters = 257;
+    const over256 = new Array(characters + 1).join('a');
+    const courthouseName = 'courthouseName';
+    // Set the courthouseName value to the characters above
+    component.form.get(courthouseName)?.setValue(over256);
+    expect(component.getFormControlErrorMessages(courthouseName)).toEqual(['Must be less than 256 characters']);
+  });
 });
