@@ -9,6 +9,8 @@ import { DateTime } from 'luxon';
 import { USER_ADMIN_PATH, USER_ADMIN_SEARCH_PATH, UserAdminService } from './user-admin.service';
 
 export const ADMIN_GET_USER = 'api/admin/users';
+export const ADMIN_GET_SECURITY_GROUPS = 'api/admin/security-groups';
+export const ADMIN_GET_SECURITY_ROLES = 'api/admin/security-roles';
 
 describe('UserAdminService', () => {
   let service: UserAdminService;
@@ -30,6 +32,7 @@ describe('UserAdminService', () => {
 
   describe('get and map user', () => {
     it('should fetch user', () => {
+      let result!: User;
       const mockUserId = 1;
       const mockUserData: UserData = {
         id: mockUserId,
@@ -40,14 +43,72 @@ describe('UserAdminService', () => {
         email_address: 'john@example.com',
         description: 'A test user',
         active: true,
-        security_group_ids: [1, 2, 3],
+        security_group_ids: [1, 2],
       };
 
-      service.getUser(mockUserId).subscribe();
+      const mappedUser: User = {
+        id: mockUserId,
+        lastLoginAt: DateTime.fromISO(mockUserData.last_login_at),
+        lastModifiedAt: DateTime.fromISO(mockUserData.last_modified_at),
+        createdAt: DateTime.fromISO(mockUserData.created_at),
+        fullName: 'John Doe',
+        emailAddress: 'john@example.com',
+        description: 'A test user',
+        active: true,
+        securityGroupIds: [1, 2],
+        securityGroups: [
+          {
+            id: 1,
+            name: 'Judiciary',
+            securityRoleId: 1,
+            role: {
+              id: 1,
+              name: 'Approver',
+            },
+          },
+          {
+            id: 2,
+            name: 'Opus Transcribers',
+            securityRoleId: 2,
+            role: {
+              id: 2,
+              name: 'Requestor',
+            },
+          },
+        ],
+      };
 
-      const req = httpMock.expectOne(`${ADMIN_GET_USER}/${mockUserId}`);
-      expect(req.request.method).toEqual('GET');
-      req.flush(mockUserData);
+      service.getUser(mockUserId).subscribe((res) => (result = res));
+
+      httpMock.expectOne(`${ADMIN_GET_USER}/${mockUserId}`).flush(mockUserData);
+
+      httpMock.expectOne(ADMIN_GET_SECURITY_GROUPS).flush([
+        {
+          id: 1,
+          name: 'Judiciary',
+          security_role_id: 1,
+        },
+        {
+          id: 2,
+          name: 'Opus Transcribers',
+          security_role_id: 2,
+        },
+      ]);
+
+      httpMock.expectOne(ADMIN_GET_SECURITY_ROLES).flush([
+        {
+          id: 1,
+          display_name: 'Approver',
+          display_state: true,
+        },
+        {
+          id: 2,
+          display_name: 'Requestor',
+          display_state: true,
+        },
+      ]);
+
+      expect(result).toEqual(mappedUser);
     });
 
     it('should correctly map UserData to User', () => {
@@ -79,6 +140,7 @@ describe('UserAdminService', () => {
       expect(result).toEqual(expectedUser);
     });
   });
+
   describe('searchUsers', () => {
     it('should return an array of Users', () => {
       const mockQuery: UserSearchFormValues = {
@@ -179,6 +241,93 @@ describe('UserAdminService', () => {
         req.flush(mockUserData);
         expect(result).toBe(false);
       }));
+    });
+  });
+
+  describe('getSecurityGroups', () => {
+    it('should return an array of mapped SecurityGroups', () => {
+      const mockSecurityGroups = [
+        {
+          id: 1,
+          name: 'Judiciary',
+          security_role_id: 1,
+        },
+        {
+          id: 2,
+          name: 'Opus Transcribers',
+          security_role_id: 2,
+        },
+      ];
+
+      const expectedSecurityGroups = [
+        {
+          id: 1,
+          name: 'Judiciary',
+          securityRoleId: 1,
+        },
+        {
+          id: 2,
+          name: 'Opus Transcribers',
+          securityRoleId: 2,
+        },
+      ];
+
+      let result;
+
+      service.getSecurityGroups().subscribe((groups) => {
+        result = groups;
+      });
+
+      const req = httpMock.expectOne(ADMIN_GET_SECURITY_GROUPS);
+      expect(req.request.method).toEqual('GET');
+      req.flush(mockSecurityGroups);
+
+      expect(result).toEqual(expectedSecurityGroups);
+    });
+  });
+
+  describe('getSecurityRoles', () => {
+    it('should return an array of mapped SecurityRoles removing non display_state roles', () => {
+      const mockSecurityRoles = [
+        {
+          id: 1,
+          display_name: 'Approver',
+          display_state: true,
+        },
+        {
+          id: 2,
+          display_name: 'Requestor',
+          display_state: true,
+        },
+        {
+          id: 2,
+          display_name: 'Test Role',
+          display_state: false,
+        },
+      ];
+
+      const expectedSecurityRoles = [
+        {
+          id: 1,
+          name: 'Approver',
+        },
+        {
+          id: 2,
+          name: 'Requestor',
+        },
+      ];
+
+      let result;
+
+      service.getSecurityRoles().subscribe((roles) => {
+        result = roles;
+      });
+
+      const req = httpMock.expectOne(ADMIN_GET_SECURITY_ROLES);
+      expect(req.request.method).toEqual('GET');
+      req.flush(mockSecurityRoles);
+
+      expect(result).toEqual(expectedSecurityRoles);
     });
   });
 });

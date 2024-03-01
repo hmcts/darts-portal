@@ -1,9 +1,9 @@
 import { CourthouseSearchFormValues } from '@admin-types/courthouses/courthouse-search-form-values.type';
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { RegionData } from '@admin-types/courthouses/region.interface';
+import { SecurityGroup } from '@admin-types/users/security-group.type';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { SecurityGroup } from '@core-types/courthouse/security-groups.interface';
 import { CourthouseData } from '@core-types/index';
 import { DateTime } from 'luxon';
 import { Observable, catchError, forkJoin, map, of } from 'rxjs';
@@ -11,7 +11,7 @@ import { Observable, catchError, forkJoin, map, of } from 'rxjs';
 export const GET_COURTHOUSE_REGIONS_PATH = '/api/admin/regions';
 export const GET_COURTHOUSES_PATH = '/api/courthouses';
 export const GET_COURTHOUSES_ADMIN_PATH = '/api/admin/courthouses';
-export const GET_SECURITY_GROUPS_PATH = '/api/admin/security-groups';
+export const GET_SECURITY_GROUPS_PATH = 'api/admin/security-groups';
 
 @Injectable({
   providedIn: 'root',

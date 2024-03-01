@@ -1,5 +1,5 @@
+import { SecurityGroup } from '@admin-types/index';
 import { DateTime } from 'luxon';
-import { SecurityGroup } from './security-groups.interface';
 
 export interface CourthouseData {
   id: number;
@@ -12,7 +12,7 @@ export interface CourthouseData {
   security_group_ids?: number[];
 }
 
-export interface Courthouse {
+export type Courthouse = {
   id: number;
   name: string;
   code: number;
@@ -21,4 +21,4 @@ export interface Courthouse {
   lastModifiedDateTime?: DateTime;
   regionName?: string;
   securityGroups?: SecurityGroup[];
-}
+};

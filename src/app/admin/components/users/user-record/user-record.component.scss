@@ -10,9 +10,30 @@
   margin-right: 15px;
 }
 
+.selected-group-count {
+  margin-bottom: 0;
+}
+
+#remove-groups-button {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
 .button-container {
   display: flex;
   justify-content: flex-end;
+}
+
+.assign-button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid black;
+  padding-bottom: 0.5rem;
+
+  button {
+    margin-bottom: 0;
+  }
 }
 
 .user-record-dates-container {

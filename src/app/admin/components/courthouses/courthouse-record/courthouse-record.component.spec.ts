@@ -1,12 +1,13 @@
-import { of } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { Courthouse } from '@admin-types/courthouses/courthouse.type';
+import { SecurityGroup } from '@admin-types/index';
 import { DatePipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CourthouseRecordComponent } from './courthouse-record.component';
-import { Courthouse } from '@admin-types/courthouses/courthouse.type';
-import { DateTime } from 'luxon';
+import { ActivatedRoute } from '@angular/router';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
+import { DateTime } from 'luxon';
+import { of } from 'rxjs';
+import { CourthouseRecordComponent } from './courthouse-record.component';
 
 describe('CourthouseRecordComponent', () => {
   let component: CourthouseRecordComponent;
@@ -58,9 +59,9 @@ describe('CourthouseRecordComponent', () => {
   });
 
   it('should format security groups to string', () => {
-    const groups = [
-      { id: 1, security_role_id: 1, name: 'Group 1' },
-      { id: 2, security_role_id: 2, name: 'Group 2' },
+    const groups: SecurityGroup[] = [
+      { id: 1, securityRoleId: 1, name: 'Group 1' },
+      { id: 2, securityRoleId: 2, name: 'Group 2' },
     ];
     expect(component.formatSecurityGroupLinks(groups)).toStrictEqual([
       { value: 'Group 1', href: '/admin/groups/1' },

@@ -1,3 +1,4 @@
+import { SecurityGroup } from '@admin-types/users/security-group.type';
 import { DateTime } from 'luxon';
 
 export type User = {
@@ -9,5 +10,6 @@ export type User = {
   emailAddress: string;
   description: string;
   active: boolean;
-  securityGroupIds: number[];
+  securityGroupIds?: number[]; //to be removed
+  securityGroups?: SecurityGroup[];
 };

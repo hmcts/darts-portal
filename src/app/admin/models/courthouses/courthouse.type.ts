@@ -1,4 +1,4 @@
-import { SecurityGroup } from '@core-types/courthouse/security-groups.interface';
+import { SecurityGroup } from '@admin-types/users/security-group.type';
 import { DateTime } from 'luxon';
 
 export type Courthouse = {
