@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { User } from '@admin-types/index';
 import { Router } from '@angular/router';
 import { HeaderService } from '@services/header/header.service';
-import { UserAdminService } from '@services/user-admin.service';
+import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { of } from 'rxjs/internal/observable/of';
 import { CreateUserComponent } from './create-user.component';
 

@@ -1,6 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { Courthouse } from '@core-types/index';
+import { CourthouseData } from '@core-types/index';
 import {
   Annotations,
   AnnotationsData,
@@ -14,16 +14,16 @@ import {
   Transcript,
   TranscriptData,
 } from '@portal-types/index';
+import { GET_COURTHOUSES_PATH } from '@services/courthouses/courthouses.service';
+import { MappingService } from '@services/mapping/mapping.service';
 import { DateTime, Settings } from 'luxon';
 import {
   ADVANCED_SEARCH_CASE_PATH,
   CaseService,
   GET_CASE_PATH,
   GET_CASE_RETENTION_HISTORY,
-  GET_COURTHOUSES_PATH,
   GET_HEARINGS_PATH,
 } from './case.service';
-import { MappingService } from '@services/mapping/mapping.service';
 
 Settings.defaultZone = 'utc';
 
@@ -159,9 +159,9 @@ describe('CaseService', () => {
   });
 
   it('#getCourthouses', () => {
-    const mockCourthouses: Courthouse[] = [];
+    const mockCourthouses: CourthouseData[] = [];
 
-    service.getCourthouses().subscribe((courthouses) => {
+    service.getCourthouses().subscribe((courthouses: CourthouseData[]) => {
       expect(courthouses).toEqual(mockCourthouses);
     });
 

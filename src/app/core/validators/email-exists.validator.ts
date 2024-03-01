@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
-import { UserAdminService } from '@services/user-admin.service';
+import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { Observable, map, of, switchMap, timer } from 'rxjs';
 
 export const emailExistsValidator = (): AsyncValidatorFn => {

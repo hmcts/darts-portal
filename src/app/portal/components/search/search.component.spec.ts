@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { CourthouseComponent } from '@common/courthouse/courthouse.component';
-import { Courthouse, ErrorMessage, ErrorSummaryEntry } from '@core-types/index';
+import { CourthouseData, ErrorMessage, ErrorSummaryEntry } from '@core-types/index';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
 import { CaseService } from '@services/case/case.service';
@@ -28,7 +28,7 @@ describe('SearchComponent', () => {
     { courthouse_name: 'Reading', id: 0, created_date_time: 'mock' },
     { courthouse_name: 'Slough', id: 1, created_date_time: 'mock' },
     { courthouse_name: 'Ascot', id: 2, created_date_time: 'mock' },
-  ] as Courthouse[];
+  ] as CourthouseData[];
 
   beforeEach(() => {
     httpClientSpy = {

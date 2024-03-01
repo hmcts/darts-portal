@@ -9,7 +9,7 @@ import { of } from 'rxjs/internal/observable/of';
 import { switchMap } from 'rxjs/internal/operators/switchMap';
 import { tap } from 'rxjs/internal/operators/tap';
 import { UserSearchFormValues } from '../../models/users/user-search-form-values.type';
-import { UserAdminService } from './../../services/user-admin.service';
+import { UserAdminService } from '../../services/user-admin/user-admin.service';
 import { UserSearchFormComponent } from './user-search-form/user-search-form.component';
 import { UserSearchResultsComponent } from './user-search-results/user-search-results.component';
 
