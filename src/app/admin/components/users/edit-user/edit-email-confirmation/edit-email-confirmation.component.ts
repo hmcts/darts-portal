@@ -1,7 +1,7 @@
-import { Component, DestroyRef, EventEmitter, Input, Output, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ErrorSummaryEntry } from '@core-types/index';
+import { HeaderService } from '@services/header/header.service';
 
 @Component({
   selector: 'app-edit-email-confirmation',
@@ -10,35 +10,19 @@ import { ErrorSummaryEntry } from '@core-types/index';
   templateUrl: './edit-email-confirmation.component.html',
   styleUrl: './edit-email-confirmation.component.scss',
 })
-export class EditEmailConfirmationComponent {
+export class EditEmailConfirmationComponent implements OnInit, OnDestroy {
   @Input() newEmail = '';
   @Input() oldEmail = '';
-  @Output() confirm = new EventEmitter<boolean>();
+  @Output() confirm = new EventEmitter<void>();
   @Output() cancel = new EventEmitter<void>();
   @Output() errors = new EventEmitter<ErrorSummaryEntry[]>();
 
-  destroyRef = inject(DestroyRef);
+  headerService = inject(HeaderService);
 
-  formControl = new FormControl<boolean | null>(null, [Validators.required]);
-
-  errorMessage = "Choose whether to change the user's email address";
-
-  onSubmit() {
-    this.formControl.markAsTouched();
-
-    this.formControl.statusChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((status) => {
-      if (status === 'INVALID') {
-        this.errors.emit([{ fieldId: 'confirmChange', message: this.errorMessage }]);
-      } else {
-        this.errors.emit([]);
-      }
-    });
-
-    if (this.formControl.invalid) {
-      this.errors.emit([{ fieldId: 'confirmChange', message: this.errorMessage }]);
-      return;
-    }
-
-    this.confirm.emit(!!this.formControl.value);
+  ngOnInit(): void {
+    this.headerService.hideNavigation();
+  }
+  ngOnDestroy(): void {
+    this.headerService.showNavigation();
   }
 }

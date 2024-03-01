@@ -133,12 +133,11 @@ describe('Admin - User record screen', () => {
 
       cy.a11y();
 
-      cy.wait(500); // Wait for the email validation to complete
+      cy.wait(500);
+
       cy.get('button[type="submit"]').click();
 
-      cy.get('h1').should('contain', 'Confirm change of user email address');
-
-      cy.get('#yes').click();
+      cy.get('h1').should('contain', 'Are you sure you want to change this user’s email address?');
 
       cy.a11y();
 

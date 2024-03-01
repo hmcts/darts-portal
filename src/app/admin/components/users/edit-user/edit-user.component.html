@@ -1,12 +1,8 @@
 <app-validation-error-summary [errors]="errors" />
 
-@if (showEmailChangeConfirmation) {
-  <app-govuk-banner type="information">Editing a user email address will change their login details </app-govuk-banner>
-}
-
 <app-govuk-heading caption="Edit user record">
   @if (showEmailChangeConfirmation) {
-    Confirm change of user email address
+    Are you sure you want to change this user’s email address?
   } @else {
     {{ user.fullName }}
   }
@@ -20,11 +16,11 @@
   [hidden]="!!showEmailChangeConfirmation"
 />
 
-@if (isEmailChanged()) {
+@if (showEmailChangeConfirmation) {
   <app-edit-email-confirmation
     [newEmail]="updatedUser.email!"
     [oldEmail]="user.emailAddress"
-    (confirm)="onConfirmEmailChange($event)"
+    (confirm)="saveUser()"
     (cancel)="onCancel()"
     (errors)="errors = $event"
   />

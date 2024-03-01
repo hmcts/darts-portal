@@ -1,10 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { User } from '@admin-types/index';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Navigation, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { EditUserComponent } from './edit-user.component';
 
 const mockNavigationExtras = {
@@ -71,30 +72,15 @@ describe('EditUserComponent', () => {
   });
 
   it('should show email change confirmation if email is changed', () => {
+    jest.spyOn(component, 'saveUser');
+
     component.user = { fullName: 'Test', emailAddress: 'test@test.com', description: 'test' } as User;
     component.updatedUser = { fullName: 'Test', email: 'test2@test.com', description: 'test' };
 
     component.onSubmit(component.updatedUser);
 
+    expect(component.saveUser).not.toHaveBeenCalled();
     expect(component.showEmailChangeConfirmation).toBe(true);
-  });
-
-  it('should update email if user confirms email change', () => {
-    component.user = { fullName: 'Test', emailAddress: 'test@test.com', description: 'test' } as User;
-    component.updatedUser = { fullName: 'Test', email: 'test2@test.com', description: 'test' };
-
-    component.onConfirmEmailChange(true);
-
-    expect(component.updatedUser.email).toBe('test2@test.com');
-  });
-
-  it('should not update email if user does not confirm email change', () => {
-    component.user = { fullName: 'Test', emailAddress: 'test@test.com', description: 'test' } as User;
-    component.updatedUser = { fullName: 'Test', email: 'test2@test.com', description: 'test' };
-
-    component.onConfirmEmailChange(false);
-
-    expect(component.updatedUser.email).toBe('test@test.com');
   });
 
   it('should save user and navigate to updated user page', () => {
@@ -118,5 +104,16 @@ describe('EditUserComponent', () => {
     component.onCancel();
 
     expect(router.navigate).toHaveBeenCalledWith(['/admin/users', 1]);
+  });
+
+  it('should handle error status 409 and hide email change confirmation', () => {
+    const errorResponse = new HttpErrorResponse({ status: 409 });
+    jest.spyOn(component.userAdminService, 'updateUser').mockReturnValue(throwError(() => errorResponse));
+    jest.spyOn(router, 'navigate');
+
+    component.saveUser();
+
+    expect(component.showEmailChangeConfirmation).toBe(false);
+    expect(router.navigate).not.toHaveBeenCalled();
   });
 });

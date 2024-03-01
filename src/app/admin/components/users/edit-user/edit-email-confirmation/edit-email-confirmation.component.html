@@ -1,42 +1,16 @@
 <p class="govuk-body">Changing the user's email address will also change their DARTS portal login.</p>
-<form class="govuk-form-group" [class.govuk-form-group--error]="formControl.invalid && formControl.touched">
-  <fieldset class="govuk-fieldset">
-    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l govuk-visually-hidden">
-      Confirm change of user email address
-    </legend>
-    @if (formControl.invalid && formControl.touched) {
-      <p class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> {{ errorMessage }}</p>
-    }
-    <div class="govuk-radios">
-      <div class="govuk-radios__item">
-        <input
-          [formControl]="formControl"
-          class="govuk-radios__input"
-          id="yes"
-          name="confirmChange"
-          type="radio"
-          [value]="true"
-        />
-        <label class="govuk-label govuk-radios__label" for="yes"> Yes - change their email to {{ newEmail }} </label>
-      </div>
-      <div class="govuk-radios__item">
-        <input
-          [formControl]="formControl"
-          class="govuk-radios__input"
-          id="no"
-          name="confirmChange"
-          type="radio"
-          [value]="false"
-        />
-        <label class="govuk-label govuk-radios__label" for="no">
-          No - keep the existing email address - {{ oldEmail }}
-        </label>
-      </div>
-    </div>
-  </fieldset>
-</form>
+
+<p id="old-email" class="govuk-body">
+  <strong>Previous email address</strong><br />
+  {{ oldEmail }}
+</p>
+
+<p id="new-email" class="govuk-body">
+  <strong>New email address</strong><br />
+  {{ newEmail }}
+</p>
 
 <div class="govuk-button-group">
-  <button id="confirm-button" class="govuk-button" type="button" (click)="onSubmit()">Confirm</button>
-  <a class="govuk-link" href="javascript:void(0)" (click)="cancel.emit()">Cancel</a>
+  <button id="confirm-button" class="govuk-button" type="button" (click)="confirm.emit()">Yes - continue</button>
+  <a class="govuk-link" href="javascript:void(0)" (click)="cancel.emit()">No - cancel</a>
 </div>
