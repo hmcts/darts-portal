@@ -27,8 +27,6 @@ import {
 
 Settings.defaultZone = 'utc';
 
-Settings.defaultZone = 'utc';
-
 describe('CaseService', () => {
   let service: CaseService;
   let httpMock: HttpTestingController;

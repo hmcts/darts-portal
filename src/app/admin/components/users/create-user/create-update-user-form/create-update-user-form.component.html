@@ -45,7 +45,7 @@
   </div>
 
   <div class="govuk-button-group">
-    <button class="govuk-button" type="submit">Continue</button>
+    <button class="govuk-button" type="submit">{{ this.updateUser ? 'Save changes' : 'Continue' }}</button>
     <a class="govuk-link" href="javascript:void(0)" (click)="onCancel()">Cancel</a>
   </div>
 </form>

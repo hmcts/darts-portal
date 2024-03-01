@@ -32,7 +32,7 @@ describe('Admin - User record screen', () => {
 
       //Table
       cy.get('.govuk-table__caption').contains('Details').should('be.visible');
-      cy.get('th#detail-th-0').contains('Full Name').should('be.visible');
+      cy.get('th#detail-th-0').contains('Full name').should('be.visible');
       cy.get('td').contains('Darts User').should('be.visible');
       cy.get('th#detail-th-1').contains('Email').should('be.visible');
       cy.get('td').contains('user@local.net').should('be.visible');
@@ -73,7 +73,7 @@ describe('Admin - User record screen', () => {
 
       //Table
       cy.get('.govuk-table__caption').contains('Details').should('be.visible');
-      cy.get('th#detail-th-0').contains('Full Name').should('be.visible');
+      cy.get('th#detail-th-0').contains('Full name').should('be.visible');
       cy.get('td').contains('Inactive User').should('be.visible');
       cy.get('th#detail-th-1').contains('Email').should('be.visible');
       cy.get('td').contains('inactive.user@local.net').should('be.visible');
@@ -88,6 +88,66 @@ describe('Admin - User record screen', () => {
       cy.contains('button', 'Activate user').should('exist');
 
       cy.a11y();
+    });
+  });
+
+  describe('Edit user', () => {
+    it('No email change flow', () => {
+      cy.get('app-user-search-results').should('contain', 'Edit Functional Test');
+      cy.contains('Edit Functional Test').parents('tr').contains('View').click();
+
+      cy.get('button').contains('Edit user').click();
+      cy.get('h1').should('contain', 'Edit user record');
+
+      cy.get('#fullName').should('have.value', 'Edit Functional Test');
+      cy.get('#description').should('have.value', 'Edit description');
+
+      cy.get('#fullName').clear().type('Edit Functional Test (Updated)');
+      cy.get('#description').clear().type('This is an edited test user');
+
+      cy.a11y();
+
+      cy.get('button[type="submit"]').click();
+
+      cy.get('app-govuk-banner').should('contain', 'User updated');
+
+      cy.contains('h1', 'Edit Functional Test (Updated)').should('exist');
+      cy.get('td').contains('dont.edit@me.net').should('be.visible');
+      cy.get('td').contains('This is an edited test user').should('be.visible');
+    });
+
+    it('Change email flow', () => {
+      cy.get('app-user-search-results').should('contain', 'Edit Email Functional Test');
+      cy.contains('Edit Email Functional Test').parents('tr').contains('View').click();
+
+      cy.get('button').contains('Edit user').click();
+      cy.get('h1').should('contain', 'Edit user record');
+
+      cy.get('#fullName').should('have.value', 'Edit Email Functional Test');
+      cy.get('#email').should('have.value', 'edit@me.net');
+      cy.get('#description').should('have.value', 'Edit me');
+
+      cy.get('#fullName').clear().type('Edit Email Functional Test (updated)');
+      cy.get('#email').clear().type('edit@me.com');
+      cy.get('#description').clear().type('Edit me 2');
+
+      cy.a11y();
+
+      cy.get('button[type="submit"]').click();
+
+      cy.get('h1').should('contain', 'Confirm change of user email address');
+
+      cy.get('#yes').click();
+
+      cy.a11y();
+
+      cy.get('#confirm-button').click();
+
+      cy.get('app-govuk-banner').should('contain', 'User updated');
+
+      cy.contains('h1', 'Edit Email Functional Test (updated)').should('exist');
+      cy.get('td').contains('edit@me.com').should('be.visible');
+      cy.get('td').contains('Edit me 2').should('be.visible');
     });
   });
 });

@@ -31,6 +31,16 @@ export class UserAdminService {
     return this.http.post<UserData>(USER_ADMIN_PATH, this.mapToCreateUserRequest(user)).pipe(map(this.mapUser));
   }
 
+  updateUser(id: number, updatedUser: CreateUpdateUserFormValues) {
+    return this.http
+      .patch<UserData>(`${USER_ADMIN_PATH}/${id}`, {
+        full_name: updatedUser.fullName,
+        email_address: updatedUser.email,
+        description: updatedUser.description,
+      })
+      .pipe(map(this.mapUser));
+  }
+
   doesEmailExist(email: string): Observable<boolean> {
     return this.http
       .get<UserData[]>(`${USER_ADMIN_PATH}`, { headers: { 'Email-Address': email } })

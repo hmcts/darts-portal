@@ -28,7 +28,7 @@ describe('UserRecordComponent', () => {
     securityGroupIds: [],
   };
 
-  const mockQueryParams = new BehaviorSubject<{ newUser: boolean }>({ newUser: false });
+  const mockQueryParams = new BehaviorSubject<{ [key: string]: boolean }>({ newUser: false });
 
   beforeEach(async () => {
     fakeUserAdminService = {
@@ -66,7 +66,7 @@ describe('UserRecordComponent', () => {
 
     fixture.detectChanges();
 
-    const successBanner = fixture.debugElement.query(By.css('app-success-banner'));
+    const successBanner = fixture.debugElement.query(By.css('app-govuk-banner'));
     expect(successBanner).toBeTruthy();
   });
 
@@ -75,7 +75,16 @@ describe('UserRecordComponent', () => {
 
     fixture.detectChanges();
 
-    const successBanner = fixture.debugElement.query(By.css('app-success-banner'));
+    const successBanner = fixture.debugElement.query(By.css('app-govuk-banner'));
     expect(successBanner).toBeFalsy();
+  });
+
+  it('render success banner when updated user', () => {
+    mockQueryParams.next({ updated: true });
+
+    fixture.detectChanges();
+
+    const successBanner = fixture.debugElement.query(By.css('app-govuk-banner'));
+    expect(successBanner).toBeTruthy();
   });
 });

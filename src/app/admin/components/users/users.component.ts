@@ -55,7 +55,9 @@ export class UsersComponent {
   }
 
   onSubmit(values: UserSearchFormValues) {
-    this.isSubmitted$.next(true);
+    if (this.isSubmitted$.value === false) {
+      this.isSubmitted$.next(true);
+    }
     this.search$.next(values); // Trigger the search
   }
 

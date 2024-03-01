@@ -2,12 +2,13 @@ import { Component, Input } from '@angular/core';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 
 @Component({
-  selector: 'app-success-banner',
+  selector: 'app-govuk-banner',
   standalone: true,
   imports: [GovukHeadingComponent],
-  templateUrl: './success-banner.component.html',
-  styleUrls: ['./success-banner.component.scss'],
+  templateUrl: './govuk-banner.component.html',
+  styleUrls: ['./govuk-banner.component.scss'],
 })
-export class SuccessBannerComponent {
+export class GovukBannerComponent {
   @Input() text!: string;
+  @Input() type = 'success | warning | info';
 }

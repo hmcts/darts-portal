@@ -13,6 +13,7 @@ const subscribedEndpoints = [
   { endpoint: '/api/audio-requests', responses: [403, 409] },
   { endpoint: '/api/audio/preview', responses: [403, 404, 500, 502, 504] },
   { endpoint: '/api/retentions', responses: [403, 422] },
+  { endpoint: '/api/admin/users', responses: [409] },
 ];
 
 //Contains endpoints where errors will be ignored

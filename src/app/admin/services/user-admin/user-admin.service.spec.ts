@@ -141,4 +141,28 @@ describe('UserAdminService', () => {
       req.flush(mockUserData);
     }));
   });
+
+  describe('updateUser', () => {
+    it('should send a PATCH request and map the updated user', () => {
+      const mockUserId = 1;
+      const mockUpdatedUser: CreateUpdateUserFormValues = {
+        fullName: 'John Doe',
+        email: 'test@test',
+        description: 'A user description',
+      };
+
+      const expectedUserRequest = {
+        full_name: mockUpdatedUser.fullName,
+        email_address: mockUpdatedUser.email,
+        description: mockUpdatedUser.description,
+      };
+
+      service.updateUser(mockUserId, mockUpdatedUser).subscribe();
+
+      const req = httpMock.expectOne(`${USER_ADMIN_PATH}/${mockUserId}`);
+      expect(req.request.method).toEqual('PATCH');
+      expect(req.request.body).toEqual(expectedUserRequest);
+      req.flush({});
+    });
+  });
 });
