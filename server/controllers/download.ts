@@ -6,7 +6,7 @@ export function init(): Router {
   const router = express.Router();
 
   router.get('/annotations/template', (req: Request, res: Response) => {
-    const oneOfRequiredRoles: string[] = ['JUDGE', 'ADMIN'];
+    const oneOfRequiredRoles: string[] = ['JUDGE', 'SUPER_ADMIN'];
     const userRoles = req?.session?.securityToken?.userState?.roles?.map((role) => role.roleName);
 
     if (!userRoles?.some((role) => oneOfRequiredRoles.includes(role))) {
