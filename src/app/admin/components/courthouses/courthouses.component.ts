@@ -21,6 +21,7 @@ export class CourthousesComponent {
   search$ = new Subject<CourthouseSearchFormValues | null>();
   loading$ = new Subject<boolean>();
   isSubmitted$ = new BehaviorSubject<boolean>(false);
+  isFormEmpty = true;
 
   courthouses$ = this.courthouseService.getCourthousesWithRegions();
 
@@ -45,11 +46,13 @@ export class CourthousesComponent {
   }
 
   onSubmit(values: CourthouseSearchFormValues) {
+    this.isFormEmpty = false;
     this.isSubmitted$.next(true);
     this.search$.next(values);
   }
 
   onClear() {
+    this.isFormEmpty = true;
     this.isSubmitted$.next(false);
     this.search$.next(null);
   }
