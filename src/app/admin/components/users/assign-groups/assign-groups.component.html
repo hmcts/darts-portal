@@ -1,0 +1,12 @@
+<app-govuk-heading>Assign groups</app-govuk-heading>
+
+@if (data$ | async; as data) {
+  <app-security-group-selector
+    [groups]="data.groups"
+    [selectedGroupIds]="user.securityGroupIds"
+    (assign)="onAssign($event, data.hiddenGroups)"
+    (cancel)="onCancel()"
+  ></app-security-group-selector>
+} @else {
+  <app-loading text="Loading security groups" />
+}

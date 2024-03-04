@@ -1,5 +1,5 @@
 @if (rows.length) {
-  <div [style.max-height]="maxHeight" [class.scrollable]="maxHeight">
+  <div [class.scrollable]="maxHeight" [style.max-height]="maxHeight">
     <table class="govuk-table" data-module="moj-sortable-table">
       <caption class="govuk-table__caption govuk-table__caption--m" [class.govuk-visually-hidden]="hiddenCaption">
         {{
@@ -95,7 +95,6 @@
       </tbody>
     </table>
   </div>
-
   <app-pagination
     *ngIf="pagination"
     [currentPage]="currentPage"

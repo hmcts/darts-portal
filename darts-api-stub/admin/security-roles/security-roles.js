@@ -40,7 +40,7 @@ const defaultSecurityRoles = [
   },
   {
     id: 8,
-    display_name: 'Non-displayed',
+    display_name: 'Dont Display Role',
     display_state: false,
   },
 ];

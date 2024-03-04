@@ -64,6 +64,7 @@ describe('UserAdminService', () => {
             role: {
               id: 1,
               name: 'Approver',
+              displayState: true,
             },
           },
           {
@@ -73,6 +74,7 @@ describe('UserAdminService', () => {
             role: {
               id: 2,
               name: 'Requestor',
+              displayState: true,
             },
           },
         ],
@@ -287,7 +289,7 @@ describe('UserAdminService', () => {
   });
 
   describe('getSecurityRoles', () => {
-    it('should return an array of mapped SecurityRoles removing non display_state roles', () => {
+    it('should return an array of mapped SecurityRoles', () => {
       const mockSecurityRoles = [
         {
           id: 1,
@@ -300,7 +302,7 @@ describe('UserAdminService', () => {
           display_state: true,
         },
         {
-          id: 2,
+          id: 3,
           display_name: 'Test Role',
           display_state: false,
         },
@@ -310,10 +312,17 @@ describe('UserAdminService', () => {
         {
           id: 1,
           name: 'Approver',
+          displayState: true,
         },
         {
           id: 2,
           name: 'Requestor',
+          displayState: true,
+        },
+        {
+          id: 3,
+          name: 'Test Role',
+          displayState: false,
         },
       ];
 

@@ -10,12 +10,10 @@ import { DatatableColumn } from '@core-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { Observable, combineLatest, map, of, startWith } from 'rxjs';
 
-export type UserGroup = { id: number; name: string; role: string };
-
-export type UserGroupWithAction = UserGroup & { action: (groupId: number) => void };
+export type UserGroup = { id: number; name: string; role: string; displayState: boolean };
 
 @Component({
-  selector: 'app-assign-groups',
+  selector: 'app-security-group-selector',
   standalone: true,
   imports: [
     GovukHeadingComponent,
@@ -28,20 +26,23 @@ export type UserGroupWithAction = UserGroup & { action: (groupId: number) => voi
     CheckboxListComponent,
     AsyncPipe,
   ],
-  templateUrl: './assign-groups.component.html',
-  styleUrl: './assign-groups.component.scss',
+  templateUrl: './security-group-selector.component.html',
+  styleUrl: './security-group-selector.component.scss',
 })
-export class AssignGroupsComponent implements OnInit {
+export class SecurityGroupSelectorComponent implements OnInit {
   destroyRef = inject(DestroyRef);
   fb = inject(FormBuilder);
 
   @Input() groups: UserGroup[] = [];
+  @Input() selectedGroupIds: number[] = [];
   @Output() assign = new EventEmitter<UserGroup[]>();
+  @Output() cancel = new EventEmitter<void>();
 
   filteredGroups: UserGroup[] = [];
   selectedGroups: UserGroup[] = [];
+  hiddenGroups: UserGroup[] = [];
 
-  hideSelectedPanel = false;
+  showSelectedPanel = true;
 
   roles: CheckboxListItem[] = [];
 
@@ -58,8 +59,9 @@ export class AssignGroupsComponent implements OnInit {
   filteredGroups$: Observable<UserGroup[]> | null = null;
 
   ngOnInit() {
+    this.selectedGroups = this.groups.filter((group) => this.selectedGroupIds.some((g) => g === group.id));
     // Get unique list roles based on the groups
-    this.roles = Array.from(new Set(this.groups.map((group) => group.role))).map((role) => ({
+    this.roles = Array.from(new Set(this.groups.map((g) => g.role))).map((role) => ({
       name: role,
     }));
 

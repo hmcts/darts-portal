@@ -1,3 +1,4 @@
+import { User } from '@admin-types/index';
 import { SecurityGroup } from '@admin-types/users/security-group.type';
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
@@ -39,14 +40,23 @@ export class UserRecordComponent {
   route = inject(ActivatedRoute);
   router = inject(Router);
 
-  user$ = this.userAdminSvc.getUser(this.route.snapshot.params.userId);
+  user$ = this.userAdminSvc.getUser(this.route.snapshot.params.userId).pipe(map(this.filterSecurityGroups));
   isNewUser$ = this.route.queryParams.pipe(map((params) => !!params.newUser));
   isUpdatedUser$ = this.route.queryParams.pipe(map((params) => !!params.updated));
+  isAssignedGroups$ = this.route.queryParams.pipe(map((params) => params.assigned));
+  tab$ = this.route.queryParams.pipe(map((params) => params.tab));
 
   selectedGroups: SecurityGroup[] = [];
 
   groupColumns = [
     { name: 'Name', prop: 'name', sortable: false },
-    { name: 'Role', prop: 'roleName', sortable: false },
+    { name: 'Role', prop: 'role', sortable: false },
   ];
+
+  private filterSecurityGroups(user: User) {
+    return {
+      ...user,
+      securityGroups: user.securityGroups?.filter((group) => group.role?.displayState) ?? [],
+    };
+  }
 }
