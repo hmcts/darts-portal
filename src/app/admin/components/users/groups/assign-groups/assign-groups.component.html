@@ -21,13 +21,17 @@
     <div class="govuk-summary-card__title-wrapper">
       <h2 class="govuk-summary-card__title">
         <span class="govuk-accordion__section-toggle-focus"
-          ><span (click)="hide = !hide" class="govuk-accordion-nav__chevron govuk-accordion-nav__chevron--down"></span
+          ><span
+            (click)="hideSelectedPanel = !hideSelectedPanel"
+            class="govuk-accordion-nav__chevron"
+            [class.govuk-accordion-nav__chevron--down]="!hideSelectedPanel"
+          ></span
           ><span class="govuk-accordion__section-toggle-text"></span
         ></span>
         {{ selectedGroups.length }} groups selected
       </h2>
     </div>
-    @if (hide) {
+    @if (hideSelectedPanel) {
       <div class="govuk-summary-card__content">
         <dl class="govuk-summary-list">
           @for (group of selectedGroups; track group.id) {

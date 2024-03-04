@@ -41,7 +41,7 @@ export class AssignGroupsComponent implements OnInit {
   filteredGroups: UserGroup[] = [];
   selectedGroups: UserGroup[] = [];
 
-  hide = false;
+  hideSelectedPanel = false;
 
   roles: CheckboxListItem[] = [];
 
