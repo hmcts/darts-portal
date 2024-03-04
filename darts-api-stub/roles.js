@@ -25,7 +25,7 @@ const JUDGE = {
 
 const ADMIN = {
   roleId: 5,
-  roleName: 'ADMIN',
+  roleName: 'SUPER_ADMIN',
   permissions,
 };
 

@@ -31,7 +31,7 @@ export class UserService {
   }
 
   public isAdmin(): boolean {
-    return this.hasRole('ADMIN');
+    return this.hasRole('SUPER_ADMIN');
   }
 
   public isRequester(): boolean {
