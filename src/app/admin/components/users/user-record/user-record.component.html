@@ -1,3 +1,4 @@
+<app-validation-error-summary [errors]="errors" />
 @if (user$ | async; as user) {
   @if (isNewUser$ | async) {
     <app-govuk-banner type="success">
@@ -7,15 +8,17 @@
   @if (isUpdatedUser$ | async) {
     <app-govuk-banner type="success">User updated</app-govuk-banner>
   }
-  @if (isAssignedGroups$ | async; as assignedCount) {
+  @if (hasAssignedGroups$ | async; as assignedCount) {
     <app-govuk-banner type="success">Assigned {{ assignedCount }} groups</app-govuk-banner>
+  }
+  @if (hasRemovedGroups$ | async; as removedCount) {
+    <app-govuk-banner type="success">Removed {{ removedCount }} groups</app-govuk-banner>
   }
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper">
       <div class="govuk-grid-row">
         <div class="user-record-tags govuk-grid-column-one-third">
           <strong class="govuk-tag govuk-tag--green"> User record </strong>
-
           @if (user.active) {
             <strong class="govuk-tag"> Active user </strong>
           } @else {
@@ -36,7 +39,6 @@
             >
               Edit user
             </button>
-
             @if (!user.active) {
               <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button">
                 Activate user
@@ -73,41 +75,7 @@
         </div>
 
         <div *tab="'Groups'; screenReaderText: 'User Groups'">
-          <div class="assign-button-container">
-            <app-govuk-heading tag="h2" size="m" class="no-margin">Groups</app-govuk-heading>
-            <button
-              class="govuk-button"
-              (click)="router.navigate(['admin/users/', user.id, 'assign-groups'], { state: { user } })"
-            >
-              Assign groups
-            </button>
-          </div>
-
-          @if (user.securityGroups.length) {
-            <button id="remove-groups-button" type="submit" class="govuk-button govuk-button--secondary">
-              Remove groups
-            </button>
-            <p class="govuk-body selected-group-count">
-              {{ selectedGroups.length }} of {{ user.securityGroups.length }} selected
-            </p>
-            <app-data-table
-              id="userGroupTable"
-              [columns]="groupColumns"
-              [rows]="user.securityGroups"
-              [rowSelectable]="true"
-              [pageLimit]="15"
-              [(selectedRows)]="selectedGroups"
-            >
-              <ng-template [tableRowTemplate]="user.securityGroups" let-row>
-                <td class="govuk-table__cell">
-                  <a class="govuk-link" href="javascript:void(0)">{{ row.name }}</a>
-                </td>
-                <td class="govuk-table__cell">{{ row.role?.name }}</td>
-              </ng-template>
-            </app-data-table>
-          } @else {
-            <p class="govuk-body no-groups-message">This user is not a member of any groups.</p>
-          }
+          <app-user-groups [user]="user" (errors)="errors = $event" />
         </div>
 
         <div *tab="'Transcript Requests'"></div>

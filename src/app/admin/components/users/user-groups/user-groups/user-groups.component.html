@@ -1,0 +1,43 @@
+<div class="assign-button-container">
+  <app-govuk-heading tag="h2" size="m" class="no-margin">Groups</app-govuk-heading>
+  <button
+    class="govuk-button"
+    (click)="router.navigate(['admin/users/', user.id, 'assign-groups'], { state: { user } })"
+  >
+    Assign groups
+  </button>
+</div>
+
+@if (userGroups.length) {
+  <button
+    id="remove-groups-button"
+    type="button"
+    class="govuk-button govuk-button--secondary"
+    (click)="onRemoveGroups()"
+  >
+    Remove groups
+  </button>
+  <div class="govuk-form-group" [class.govuk-form-group--error]="removeError">
+    @if (removeError) {
+      <p class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> Select one or more groups</p>
+    }
+    <p class="govuk-body selected-group-count">{{ selectedGroups.length }} of {{ userGroups.length }} selected</p>
+    <app-data-table
+      id="userGroupTable"
+      [columns]="groupColumns"
+      [rows]="userGroups"
+      [rowSelectable]="true"
+      [pageLimit]="15"
+      [(selectedRows)]="selectedGroups"
+    >
+      <ng-template [tableRowTemplate]="userGroups" let-row>
+        <td class="govuk-table__cell">
+          <a class="govuk-link" href="javascript:void(0)">{{ row.name }}</a>
+        </td>
+        <td class="govuk-table__cell">{{ row.role?.name }}</td>
+      </ng-template>
+    </app-data-table>
+  </div>
+} @else {
+  <p class="govuk-body no-groups-message">This user is not a member of any groups.</p>
+}

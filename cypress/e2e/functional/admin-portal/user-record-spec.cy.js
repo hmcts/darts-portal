@@ -169,7 +169,7 @@ describe('Admin - User record screen', () => {
       cy.get('app-user-search-results').should('contain', 'Fallon Sherrock');
       cy.contains('Fallon Sherrock').parents('tr').contains('View').click();
 
-      cy.get('.moj-sub-navigation a').contains('Groups').click();
+      cy.get('#Groups-tab').click();
 
       cy.contains('h2', 'Groups').should('exist');
 
@@ -183,7 +183,7 @@ describe('Admin - User record screen', () => {
       cy.get('app-user-search-results').should('contain', 'Fallon Sherrock');
       cy.contains('Fallon Sherrock').parents('tr').contains('View').click();
 
-      cy.get('.moj-sub-navigation a').contains('Groups').click();
+      cy.get('#Groups-tab').click();
 
       cy.get('button').contains('Assign groups').click();
 
@@ -202,6 +202,30 @@ describe('Admin - User record screen', () => {
       cy.get('app-govuk-banner').should('contain', 'Assigned 3 groups');
 
       cy.tableRowShouldContain('Judiciary', 'Approver');
+      cy.tableRowShouldContain('Opus Transcribers', 'Requestor');
+      cy.tableRowShouldContain('Super user (DARTS portal)', 'Judge');
+    });
+
+    it('Remove groups from user', () => {
+      cy.get('app-user-search-results').should('contain', 'Fallon Sherrock');
+      cy.contains('Fallon Sherrock').parents('tr').contains('View').click();
+
+      cy.get('#Groups-tab').click();
+
+      cy.tableRowShouldContain('Judiciary', 'Approver');
+      cy.checkGroup('Judiciary');
+
+      cy.get('#remove-groups-button').click();
+
+      cy.a11y();
+
+      cy.get('h1').should('contain', 'Are you sure you want to remove Fallon Sherrock from these groups?');
+
+      cy.get('#confirm-button').click();
+
+      cy.get('app-govuk-banner').should('contain', 'Removed 1 group');
+
+      cy.get('.govuk-table__body').contains('Judiciary').should('not.exist');
       cy.tableRowShouldContain('Opus Transcribers', 'Requestor');
       cy.tableRowShouldContain('Super user (DARTS portal)', 'Judge');
     });

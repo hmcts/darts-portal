@@ -20,7 +20,16 @@ export const ADMIN_ROUTES: Routes = [
   {
     path: 'admin/users/:userId/assign-groups',
     loadComponent: () =>
-      import('./components/users/assign-groups/assign-groups.component').then((c) => c.AssignGroupsComponent),
+      import('./components/users/user-groups/assign-groups/assign-groups.component').then(
+        (c) => c.AssignGroupsComponent
+      ),
+  },
+  {
+    path: 'admin/users/:userId/remove-groups',
+    loadComponent: () =>
+      import('./components/users/user-groups/remove-groups/remove-groups.component').then(
+        (c) => c.RemoveGroupsComponent
+      ),
   },
   {
     path: 'admin/users/:userId',

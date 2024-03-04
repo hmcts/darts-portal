@@ -4,7 +4,7 @@
       <a
         class="moj-sub-navigation__link"
         [attr.aria-current]="tab.template === currentTab ? 'page' : null"
-        [attr.id]="tab.id || null"
+        [attr.id]="(tab.id || tab.name) + '-tab'"
         href="#"
         (click)="onTabClick($event, tab)"
       >

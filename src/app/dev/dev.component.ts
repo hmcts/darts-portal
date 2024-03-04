@@ -11,7 +11,7 @@ import { HeaderService } from '@services/header/header.service';
 import {
   SecurityGroupSelectorComponent,
   UserGroup,
-} from '../admin/components/users/assign-groups/security-group-selector/security-group-selector.component';
+} from '../admin/components/users/user-groups/assign-groups/security-group-selector/security-group-selector.component';
 import { CheckboxListComponent } from './../core/components/common/filters/checkbox-list/checkbox-list.component';
 
 @Component({

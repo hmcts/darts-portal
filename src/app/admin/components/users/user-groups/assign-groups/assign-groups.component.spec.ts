@@ -75,8 +75,8 @@ describe('AssignGroupsComponent', () => {
   describe('onAssign', () => {
     it('should assign groups', () => {
       const spy = jest.spyOn(userAdminService, 'assignGroups');
-      component.onAssign([mockUserGroups[0]], [mockUserGroups[1]]);
-      expect(spy).toHaveBeenCalledWith(mockUser.id, [1, 2]);
+      component.onAssign([mockUserGroups[0]]);
+      expect(spy).toHaveBeenCalledWith(mockUser.id, [1]);
     });
   });
 
@@ -112,7 +112,7 @@ describe('AssignGroupsComponent', () => {
   });
 
   describe('groups$', () => {
-    it('should fetch security groups with roles and transform them into UserGroups', fakeAsync(() => {
+    it('should fetch security groups with roles and transform them into filtered UserGroups', fakeAsync(() => {
       const mockGroups: SecurityGroup[] = [
         {
           id: 1,
@@ -135,12 +135,6 @@ describe('AssignGroupsComponent', () => {
           role: 'Role 1',
           displayState: true,
         },
-        {
-          id: 2,
-          name: 'Group 2',
-          role: 'Role 2',
-          displayState: false,
-        },
       ];
 
       // Mock the getSecurityGroupsWithRoles method to return the mockGroups
@@ -157,32 +151,5 @@ describe('AssignGroupsComponent', () => {
 
       expect(result).toEqual(expectedUserGroups);
     }));
-
-    it('should share the replay of the groups$', () => {
-      const mockGroups: SecurityGroup[] = [
-        {
-          id: 1,
-          name: 'Group 1',
-          securityRoleId: 1,
-          role: { id: 1, name: 'Role 1', displayState: true },
-        },
-        {
-          id: 2,
-          name: 'Group 2',
-          securityRoleId: 2,
-          role: { id: 2, name: 'Role 2', displayState: false },
-        },
-      ];
-
-      // Mock the getSecurityGroupsWithRoles method to return the mockGroups
-      jest.spyOn(userAdminService, 'getSecurityGroupsWithRoles').mockReturnValue(of(mockGroups));
-
-      // Subscribe to the groups$ observable twice
-      component.groups$.subscribe();
-      component.groups$.subscribe();
-
-      // Check that the getSecurityGroupsWithRoles method is only called once
-      expect(userAdminService.getSecurityGroupsWithRoles).toHaveBeenCalledTimes(1);
-    });
   });
 });
