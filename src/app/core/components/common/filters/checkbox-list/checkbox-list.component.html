@@ -1,0 +1,23 @@
+<form [formGroup]="form" class="govuk-form-group">
+  <fieldset class="govuk-fieldset" formArrayName="checkboxes">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+      <h1 class="govuk-fieldset__heading govuk-visually-hidden">Filter</h1>
+    </legend>
+    @for (checkbox of checkboxesFormArray.controls; track checkbox; let i = $index) {
+      <div class="govuk-checkboxes govuk-checkboxes--small">
+        <div class="govuk-checkboxes__item">
+          <input
+            class="govuk-checkboxes__input"
+            [id]="checkboxes[i].name"
+            [name]="checkboxes[i].name"
+            type="checkbox"
+            [formControlName]="i"
+          />
+          <label class="govuk-label govuk-checkboxes__label" [for]="checkboxes[i].name">
+            {{ checkboxes[i].name }}
+          </label>
+        </div>
+      </div>
+    }
+  </fieldset>
+</form>

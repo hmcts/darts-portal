@@ -65,3 +65,7 @@ tr:has(app-play-button.isPlaying) {
 td:has(input[type='checkbox']) {
   width: 44px;
 }
+
+.scrollable {
+  overflow-y: auto;
+}

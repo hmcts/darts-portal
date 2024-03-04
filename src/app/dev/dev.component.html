@@ -46,4 +46,33 @@
       </div>
     </div>
   </div>
+
+  <div *tab="'Assign Groups'">
+    <div class="govuk-grid-column-one-half">
+      <app-assign-groups [groups]="groups" (assign)="selectedGroups = $event"></app-assign-groups>
+    </div>
+    <div class="govuk-grid-column-one-half">
+      <h3 class="govuk-heading-s">Input</h3>
+      <pre>{{ groups | json }}</pre>
+
+      <h3 class="govuk-heading-s">Output</h3>
+      <pre>{{ selectedGroups | json }}</pre>
+    </div>
+  </div>
+
+  <div *tab="'Checkbox List'">
+    <app-checkbox-list
+      class="govuk-grid-column-one-half"
+      [checkboxes]="checkboxItems"
+      [formControl]="checkboxes"
+    ></app-checkbox-list>
+
+    <div class="govuk-grid-column-one-half">
+      <h3 class="govuk-heading-s">Input</h3>
+      <pre>{{ checkboxItems | json }}</pre>
+
+      <h3 class="govuk-heading-s">Output</h3>
+      <pre>{{ checkboxes.value | json }}</pre>
+    </div>
+  </div>
 </app-tabs>

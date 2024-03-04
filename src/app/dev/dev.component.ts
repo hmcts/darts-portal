@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Filter } from '@common/filters/filter.interface';
 import { FiltersComponent } from '@common/filters/filters.component';
@@ -7,13 +8,26 @@ import { TabsComponent } from '@common/tabs/tabs.component';
 import { TabDirective } from '@directives/tab.directive';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { HeaderService } from '@services/header/header.service';
+import {
+  AssignGroupsComponent,
+  UserGroup,
+} from '../admin/components/users/groups/assign-groups/assign-groups.component';
+import { CheckboxListComponent } from './../core/components/common/filters/checkbox-list/checkbox-list.component';
 
 @Component({
   selector: 'app-dev',
   standalone: true,
   templateUrl: './dev.component.html',
   styleUrl: './dev.component.scss',
-  imports: [FiltersComponent, TabsComponent, TabDirective, CommonModule],
+  imports: [
+    FiltersComponent,
+    TabsComponent,
+    TabDirective,
+    CommonModule,
+    AssignGroupsComponent,
+    ReactiveFormsModule,
+    CheckboxListComponent,
+  ],
 })
 export class DevComponent implements OnInit {
   selectedFilters: Filter[] | null = null;
@@ -108,4 +122,18 @@ export class DevComponent implements OnInit {
       search: true,
     },
   ];
+
+  // Assign groups
+  groups = [
+    { id: 1, name: 'Group 1', role: 'Approver' },
+    { id: 2, name: 'Group 2', role: 'Requester' },
+    { id: 3, name: 'Group 3', role: 'Judge' },
+    { id: 4, name: 'Group 4', role: 'Transcriber' },
+    { id: 5, name: 'Group 5', role: 'Translation QA' },
+  ];
+  selectedGroups: UserGroup[] = [];
+
+  // Checkbox list
+  checkboxItems = [{ name: 'Approver' }, { name: 'Requester' }, { name: 'Judge' }, { name: 'Transcriber' }];
+  checkboxes = new FormControl([], { nonNullable: true });
 }

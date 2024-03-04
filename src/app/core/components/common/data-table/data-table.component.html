@@ -1,5 +1,10 @@
 @if (rows.length) {
-  <table class="govuk-table" data-module="moj-sortable-table">
+  <table
+    class="govuk-table"
+    data-module="moj-sortable-table"
+    [class.scrollable]="maxHeight"
+    [style.max-height]="maxHeight"
+  >
     <caption class="govuk-table__caption govuk-table__caption--m">
       {{
         caption
