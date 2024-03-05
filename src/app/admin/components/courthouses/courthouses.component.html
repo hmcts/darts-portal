@@ -7,5 +7,5 @@
 <app-courthouse-search-form (submitForm)="onSubmit($event)" (clear)="onClear()"></app-courthouse-search-form>
 
 @if (results$ | async; as results) {
-  <app-courthouse-search-results [results]="results" [isFormEmpty]="isFormEmpty" />
+  <app-courthouse-search-results [results]="results" [show]="(isSubmitted$ | async) ?? false" />
 }

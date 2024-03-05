@@ -109,13 +109,11 @@ describe('CourthousesComponent', () => {
   it('should clear the search when onClear is called', () => {
     jest.spyOn(component.search$, 'next');
     component.onClear();
-    expect(component.isFormEmpty).toEqual(true);
     expect(component.search$.next).toHaveBeenCalledWith(null);
   });
 
   it('should set isSubmitted to true when onSubmit is called', () => {
     component.onSubmit({}); // Trigger submit
-    expect(component.isFormEmpty).toEqual(false);
     expect(component.isSubmitted$.value).toBe(true);
   });
 
