@@ -123,5 +123,5 @@
     "typescript": "^5.2.2",
     "xunit-viewer": "^10.5.1"
   },
-  "packageManager": "yarn@3.8.0"
+  "packageManager": "yarn@3.8.1"
 }
