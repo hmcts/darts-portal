@@ -6,5 +6,5 @@ export type AudioEventRow = Partial<HearingEvent> &
   Partial<HearingAudio> & {
     id: number;
     type: 'event' | 'audio';
-    audioSourceUrl$?: Observable<string>;
+    audioIsReady$?: Observable<boolean>;
   };

@@ -4,18 +4,17 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AudioPlayerComponent } from '@common/audio-player/audio-player.component';
 import { AudioEventRow, HearingAudio, HearingEvent } from '@portal-types/index';
 import { AudioPreviewService } from '@services/audio-preview/audio-preview.service';
-import { Subscription, catchError, of } from 'rxjs';
+import { Subscription, of } from 'rxjs';
 import { EventsAndAudioComponent } from './events-and-audio.component';
 
 describe('EventsAndAudioComponent', () => {
   let component: EventsAndAudioComponent;
   let fixture: ComponentFixture<EventsAndAudioComponent>;
   let audioPreviewService: Partial<AudioPreviewService>;
-  const mockBlobUrl$ = of('blob: http://localhost/mock');
 
   beforeEach(() => {
     audioPreviewService = {
-      getAudioPreviewBlobUrl: jest.fn().mockReturnValue(mockBlobUrl$),
+      isAudioPreviewReady: jest.fn().mockReturnValue(true),
     };
 
     TestBed.configureTestingModule({
@@ -99,7 +98,7 @@ describe('EventsAndAudioComponent', () => {
         media_end_timestamp: '2023-07-31T14:32:24.620Z',
         timestamp: '2023-07-31T10:00:01.620Z',
         type: 'audio',
-        audioSourceUrl$: mockBlobUrl$.pipe(catchError((failedUrl: string) => of(failedUrl))),
+        audioIsReady$: of(true),
       },
       {
         id: 8,
@@ -121,7 +120,7 @@ describe('EventsAndAudioComponent', () => {
         media_end_timestamp: '2022-07-31T14:32:24.620Z',
         timestamp: '2023-07-31T10:00:04.620Z',
         type: 'audio',
-        audioSourceUrl$: mockBlobUrl$.pipe(catchError((failedUrl: string) => of(failedUrl))),
+        audioIsReady$: of(true),
       },
       {
         id: 3,
@@ -129,7 +128,7 @@ describe('EventsAndAudioComponent', () => {
         media_end_timestamp: '2023-07-31T14:32:24.620Z',
         timestamp: '2023-07-31T10:00:06.620Z',
         type: 'audio',
-        audioSourceUrl$: mockBlobUrl$.pipe(catchError((failedUrl: string) => of(failedUrl))),
+        audioIsReady$: of(true),
       },
       {
         id: 10,
@@ -140,11 +139,11 @@ describe('EventsAndAudioComponent', () => {
       },
     ];
 
-    //assertion to check that the table is constructed correctly omitting the audioSourceUrl$ property
+    // assertion to check that the table is constructed correctly omitting the audioIsReady$ property
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    expect(component.rows.map(({ audioSourceUrl$, ...rest }) => rest)).toEqual(
+    expect(component.rows.map(({ audioIsReady$, ...rest }) => rest)).toEqual(
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      expectedTable.map(({ audioSourceUrl$, ...rest }) => rest)
+      expectedTable.map(({ audioIsReady$, ...rest }) => rest)
     );
   });
 
@@ -355,7 +354,7 @@ describe('EventsAndAudioComponent', () => {
         ...audioItem,
         type: 'audio',
         timestamp: audioItem.media_start_timestamp,
-        audioSourceUrl$: expect.anything(),
+        audioIsReady$: true,
       })),
       ...events.map((eventItem) => ({
         ...eventItem,
