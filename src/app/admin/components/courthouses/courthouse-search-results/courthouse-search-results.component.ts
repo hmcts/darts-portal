@@ -15,6 +15,7 @@ import { TableRowTemplateDirective } from '@directives/table-row-template.direct
 })
 export class CourthouseSearchResultsComponent {
   @Input() results: Courthouse[] = [];
+  @Input() show = false;
 
   columns: DatatableColumn[] = [
     { name: 'Courthouse name', prop: 'courthouseName', sortable: true },
