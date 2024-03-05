@@ -32,6 +32,20 @@ export const ADMIN_ROUTES: Routes = [
     loadComponent: () => import('./components/courthouses/courthouses.component').then((c) => c.CourthousesComponent),
   },
   {
+    path: 'admin/courthouses/edit/:courthouseId',
+    loadComponent: () =>
+      import('./components/courthouses/edit-courthouse/edit-courthouse.component').then(
+        (c) => c.EditCourthouseComponent
+      ),
+  },
+  {
+    path: 'admin/courthouses/create',
+    loadComponent: () =>
+      import('./components/courthouses/create-courthouse/create-courthouse.component').then(
+        (c) => c.CreateCourthouseComponent
+      ),
+  },
+  {
     path: 'admin/courthouses/:courthouseId',
     loadComponent: () =>
       import('./components/courthouses/courthouse-record/courthouse-record.component').then(

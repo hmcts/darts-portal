@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { CourthouseSearchFormValues } from '@admin-types/courthouses/courthouse-search-form-values.type';
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { CommonModule } from '@angular/common';
@@ -11,12 +12,13 @@ import { CourthouseSearchResultsComponent } from './courthouse-search-results/co
 @Component({
   selector: 'app-courthouses',
   standalone: true,
+  imports: [CommonModule, GovukHeadingComponent, CourthouseSearchFormComponent, CourthouseSearchResultsComponent],
   templateUrl: './courthouses.component.html',
   styleUrl: './courthouses.component.scss',
-  imports: [CommonModule, GovukHeadingComponent, CourthouseSearchFormComponent, CourthouseSearchResultsComponent],
 })
 export class CourthousesComponent {
   courthouseService = inject(CourthouseService);
+  router = inject(Router);
 
   search$ = new Subject<CourthouseSearchFormValues | null>();
   loading$ = new Subject<boolean>();

@@ -1,0 +1,14 @@
+<app-validation-error-summary [errors]="errors" />
+
+<app-govuk-heading caption="Edit courthouse"> Courthouse details </app-govuk-heading>
+
+<app-create-update-courthouse-form
+  [updateCourthouse]="{
+    courthouseName: courthouse.courthouseName,
+    displayName: courthouse.displayName,
+    region: courthouse.regionName
+  }"
+  (submitForm)="onSubmit($event)"
+  (errors)="errors = $event"
+  (cancel)="onCancel()"
+/>

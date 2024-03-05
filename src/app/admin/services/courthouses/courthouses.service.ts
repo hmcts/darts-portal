@@ -2,6 +2,7 @@ import { CourthouseSearchFormValues } from '@admin-types/courthouses/courthouse-
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { RegionData } from '@admin-types/courthouses/region.interface';
 import { SecurityGroup } from '@admin-types/users/security-group.type';
+import { CreateUpdateCourthouseFormValues } from '@admin-types/index';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CourthouseData } from '@core-types/index';
@@ -18,6 +19,14 @@ export const GET_SECURITY_GROUPS_PATH = 'api/admin/security-groups';
 })
 export class CourthouseService {
   constructor(private readonly http: HttpClient) {}
+
+  createCourthouse(courthouse: CreateUpdateCourthouseFormValues): Observable<CourthouseData> {
+    return this.http.post<CourthouseData>(`${GET_COURTHOUSES_ADMIN_PATH}`, courthouse);
+  }
+
+  updateCourthouse(courthouseId: number, courthouse: CreateUpdateCourthouseFormValues): Observable<CourthouseData> {
+    return this.http.post<CourthouseData>(`${GET_COURTHOUSES_ADMIN_PATH}/${courthouseId}`, courthouse);
+  }
 
   getCourthouse(courthouseId: number): Observable<CourthouseData> {
     return this.http.get<CourthouseData>(`${GET_COURTHOUSES_ADMIN_PATH}/${courthouseId}`);
@@ -60,6 +69,18 @@ export class CourthouseService {
         this.mapRegionAndSecurityGroupsToCourthouse(courthouse, regions, securityGroups)
       )
     );
+  }
+
+  doesCourthouseNameExist(courthouseName: string): Observable<boolean> {
+    return this.http
+      .get<CourthouseData[]>(GET_COURTHOUSES_PATH)
+      .pipe(map((courthouses) => !!courthouses.find((courthouse) => courthouse.courthouse_name === courthouseName)));
+  }
+
+  doesDisplayNameExist(displayName: string): Observable<boolean> {
+    return this.http
+      .get<CourthouseData[]>(GET_COURTHOUSES_PATH)
+      .pipe(map((courthouses) => !!courthouses.find((courthouse) => courthouse.display_name === displayName)));
   }
 
   mapRegionsToCourthouses(regions: RegionData[], courthouses: CourthouseData[]): Courthouse[] {

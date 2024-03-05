@@ -1,7 +1,7 @@
 import { SecurityGroup } from '@admin-types/users/security-group.type';
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
@@ -28,6 +28,7 @@ import { CourthouseService } from '@services/courthouses/courthouses.service';
 export class CourthouseRecordComponent {
   courthouseService = inject(CourthouseService);
   route = inject(ActivatedRoute);
+  router = inject(Router);
 
   courthouse$ = this.courthouseService.getCourthouseWithRegionsAndSecurityGroups(
     this.route.snapshot.params.courthouseId

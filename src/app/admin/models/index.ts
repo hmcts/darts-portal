@@ -4,6 +4,7 @@ export * from './users/security-group.interface';
 export * from './users/security-group.type';
 export * from './users/security-role.interface';
 export * from './users/security-role.type';
+export * from './courthouses/create-update-courthouse-form-values.type';
 export * from './users/user-data.interface';
 export * from './users/user-search-form-values.type';
 export * from './users/user-search-request.interface';
