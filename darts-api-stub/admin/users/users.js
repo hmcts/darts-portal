@@ -1,7 +1,9 @@
 const c = require('config');
 const express = require('express');
 const { stubUsers } = require('../../users');
-const { DateTime } = require('luxon');
+const { DateTime, Settings } = require('luxon');
+
+Settings.defaultZone = 'utc';
 
 const router = express.Router();
 
@@ -9,11 +11,11 @@ const USERS = stubUsers.map((stubUser) => {
   return {
     id: stubUser.userState.userId,
     description: stubUser.active ? 'Stub Active User' : undefined,
-    last_modified_at: DateTime.fromISO('2020-01-11').plus({ days: stubUser.userState.userId * 10 }),
+    last_modified_at: DateTime.fromISO('2020-01-11T00:00:00Z').plus({ days: stubUser.userState.userId * 10 }),
     last_login_at: stubUser.active
-      ? DateTime.fromISO('2023-12-01').plus({ days: stubUser.userState.userId * 10 })
+      ? DateTime.fromISO('2023-12-01T00:00:00Z').plus({ days: stubUser.userState.userId * 10 })
       : undefined,
-    created_at: DateTime.fromISO('2020-01-01').plus({ days: stubUser.userState.userId * 10 }),
+    created_at: DateTime.fromISO('2020-01-01T00:00:00Z').plus({ days: stubUser.userState.userId * 10 }),
     full_name: stubUser.name,
     email_address: stubUser.userState.userName,
     active: stubUser.active,

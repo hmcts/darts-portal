@@ -38,6 +38,7 @@ describe('Admin - Users screen', () => {
 
     cy.a11y();
 
+    cy.wait(500);
     cy.get('button[type="submit"]').click();
     cy.get('h1').should('contain', 'Check user details');
 
