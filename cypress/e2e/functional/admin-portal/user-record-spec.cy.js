@@ -93,17 +93,17 @@ describe('Admin - User record screen', () => {
 
   describe('Edit user', () => {
     it('No email change flow', () => {
-      cy.get('app-user-search-results').should('contain', 'Edit Functional Test');
-      cy.contains('Edit Functional Test').parents('tr').contains('View').click();
+      cy.get('app-user-search-results').should('contain', 'Luke Littler');
+      cy.contains('Luke Littler').parents('tr').contains('View').click();
 
       cy.get('button').contains('Edit user').click();
       cy.get('h1').should('contain', 'Edit user record');
 
-      cy.get('#fullName').should('have.value', 'Edit Functional Test');
-      cy.get('#description').should('have.value', 'Edit description');
+      cy.get('#fullName').should('have.value', 'Luke Littler');
+      cy.get('#description').should('have.value', 'Stub Active User');
 
-      cy.get('#fullName').clear().type('Edit Functional Test (Updated)');
-      cy.get('#description').clear().type('This is an edited test user');
+      cy.get('#fullName').clear().type('Luke Littler Edit');
+      cy.get('#description').clear().type('Stub Active User Edit');
 
       cy.a11y();
 
@@ -111,28 +111,29 @@ describe('Admin - User record screen', () => {
 
       cy.get('app-govuk-banner').should('contain', 'User updated');
 
-      cy.contains('h1', 'Edit Functional Test (Updated)').should('exist');
-      cy.get('td').contains('dont.edit@me.net').should('be.visible');
-      cy.get('td').contains('This is an edited test user').should('be.visible');
+      cy.contains('h1', 'Luke Littler Edit').should('exist');
+      cy.get('td').contains('luke.littler@darts.local').should('be.visible');
+      cy.get('td').contains('Stub Active User Edit').should('be.visible');
     });
 
     it('Change email flow', () => {
-      cy.get('app-user-search-results').should('contain', 'Edit Email Functional Test');
-      cy.contains('Edit Email Functional Test').parents('tr').contains('View').click();
+      cy.get('app-user-search-results').should('contain', 'phil.taylor@darts.local');
+      cy.contains('phil.taylor@darts.local').parents('tr').contains('View').click();
 
       cy.get('button').contains('Edit user').click();
       cy.get('h1').should('contain', 'Edit user record');
 
-      cy.get('#fullName').should('have.value', 'Edit Email Functional Test');
-      cy.get('#email').should('have.value', 'edit@me.net');
-      cy.get('#description').should('have.value', 'Edit me');
+      cy.get('#fullName').should('have.value', 'Phil Taylor');
+      cy.get('#email').should('have.value', 'phil.taylor@darts.local');
+      cy.get('#description').should('have.value', 'Stub Active User');
 
-      cy.get('#fullName').clear().type('Edit Email Functional Test (updated)');
-      cy.get('#email').clear().type('edit@me.com');
-      cy.get('#description').clear().type('Edit me 2');
+      cy.get('#fullName').clear().type('Phil Taylor EDIT');
+      cy.get('#email').clear().type('phil.taylor@darts.edit');
+      cy.get('#description').clear().type('Stub Active User EDIT');
 
       cy.a11y();
 
+      cy.wait(500); // Wait for the email validation to complete
       cy.get('button[type="submit"]').click();
 
       cy.get('h1').should('contain', 'Confirm change of user email address');
@@ -145,9 +146,9 @@ describe('Admin - User record screen', () => {
 
       cy.get('app-govuk-banner').should('contain', 'User updated');
 
-      cy.contains('h1', 'Edit Email Functional Test (updated)').should('exist');
-      cy.get('td').contains('edit@me.com').should('be.visible');
-      cy.get('td').contains('Edit me 2').should('be.visible');
+      cy.contains('h1', 'Phil Taylor EDIT').should('exist');
+      cy.get('td').contains('phil.taylor@darts.edit').should('be.visible');
+      cy.get('td').contains('Stub Active User EDIT').should('be.visible');
     });
   });
 });
