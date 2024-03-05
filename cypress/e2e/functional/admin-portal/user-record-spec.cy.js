@@ -67,8 +67,8 @@ describe('Admin - User record screen', () => {
       cy.get('#date-created-container h3').contains('Date created').should('exist');
       cy.get('#last-updated-container h3').contains('Last updated').should('exist');
       cy.get('#last-active-container h3').contains('Last active').should('exist');
-      cy.get('#date-created-container p').contains('Mon 30 Mar 2020').should('exist');
-      cy.get('#last-updated-container p').contains('Thu 9 Apr 2020').should('exist');
+      cy.get('#date-created-container p').contains('Tue 31 Mar 2020').should('exist');
+      cy.get('#last-updated-container p').contains('Fri 10 Apr 2020').should('exist');
       cy.get('#last-active-container p').should('be.empty');
 
       //Table
