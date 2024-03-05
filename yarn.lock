@@ -15241,8 +15241,8 @@ __metadata:
   linkType: hard
 
 "xunit-viewer@npm:^10.5.1":
-  version: 10.5.1
-  resolution: "xunit-viewer@npm:10.5.1"
+  version: 10.6.1
+  resolution: "xunit-viewer@npm:10.6.1"
   dependencies:
     "@uiw/react-codemirror": ^4.21.3
     chalk: ^5.2.0
@@ -15261,7 +15261,7 @@ __metadata:
     yargs: ^17.7.2
   bin:
     xunit-viewer: bin/xunit-viewer.js
-  checksum: ac1cae9e9fa00a1e943f094a7e22a3edfb87751c6d2bc30c356d0f6f0be5be057512c3c01bf209797e1a55273a307901bf9f65498cf5060733cd1144cf1afff4
+  checksum: 238f4b144c6fc0f7d8bd89d60c6fac6c254b1dca403959f80e63c90b06263d6e1f47b256ea88de96e08a162a0aa52019c3c6e508cb3e4f7b19728c57c77e5463
   languageName: node
   linkType: hard
 
