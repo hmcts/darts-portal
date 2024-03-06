@@ -35,6 +35,7 @@ export class DataTableComponent<TRow> implements OnChanges {
   @Input() noDataMessage = 'No data to display.';
   @Input() checkboxKey = '';
   @Input() sortAndPaginateOnRowsChanged = true; // To maintain the sorting and pagination when rows are changed e.g. polling updates the data
+  @Input() hiddenCaption = false;
   @Output() rowSelect = new EventEmitter<TRow[]>();
 
   // Two way binding for selected rows
