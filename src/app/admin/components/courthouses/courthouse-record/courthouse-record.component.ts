@@ -1,3 +1,4 @@
+import { SecurityGroup } from '@admin-types/users/security-group.type';
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -7,7 +8,6 @@ import { TabsComponent } from '@common/tabs/tabs.component';
 import { NotFoundComponent } from '@components/error/not-found/not-found.component';
 import { TabDirective } from '@directives/tab.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
-import { SecurityGroup } from '@core-types/courthouse/security-groups.interface';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 
 @Component({
@@ -35,7 +35,7 @@ export class CourthouseRecordComponent {
 
   formatSecurityGroupLinks(securityGroups: SecurityGroup[] | undefined) {
     return securityGroups?.map((securityGroup) => {
-      return { value: securityGroup.name, href: `/admin/groups/${securityGroup.security_role_id}` };
+      return { value: securityGroup.name, href: `/admin/groups/${securityGroup.securityRoleId}` };
     });
   }
 }

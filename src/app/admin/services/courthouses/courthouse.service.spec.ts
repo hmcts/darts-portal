@@ -1,13 +1,13 @@
-import { SecurityGroup } from '@core-types/courthouse/security-groups.interface';
 import { CourthouseSearchFormValues } from '@admin-types/courthouses/courthouse-search-form-values.type';
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { RegionData } from '@admin-types/courthouses/region.interface';
+import { SecurityGroup } from '@admin-types/users/security-group.type';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { CourthouseData } from '@core-types/index';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
-import { CourthouseService, GET_COURTHOUSES_PATH, GET_COURTHOUSES_ADMIN_PATH } from './courthouses.service';
+import { CourthouseService, GET_COURTHOUSES_ADMIN_PATH, GET_COURTHOUSES_PATH } from './courthouses.service';
 
 describe('CourthouseService', () => {
   let service: CourthouseService;
