@@ -1,4 +1,5 @@
 import { CreateUpdateUserFormValues, User } from '@admin-types/index';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
@@ -6,6 +7,7 @@ import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.compo
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { ErrorSummaryEntry } from '@core-types/index';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
+import { EMPTY, catchError } from 'rxjs';
 import { CreateUpdateUserFormComponent } from '../create-user/create-update-user-form/create-update-user-form.component';
 import { EditEmailConfirmationComponent } from './edit-email-confirmation/edit-email-confirmation.component';
 
@@ -54,18 +56,20 @@ export class EditUserComponent implements OnInit {
     }
   }
 
-  onConfirmEmailChange(confirm: boolean) {
-    // if user selects no, we don't update the email and keep the old one
-    if (!confirm) {
-      this.updatedUser.email = this.user.emailAddress;
-    }
-    this.saveUser();
-  }
-
   saveUser() {
-    this.userAdminService.updateUser(this.user.id, this.updatedUser).subscribe((user) => {
-      this.router.navigate(['/admin/users', user.id], { queryParams: { updated: true } });
-    });
+    this.userAdminService
+      .updateUser(this.user.id, this.updatedUser)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          if (error.status === 409) {
+            this.showEmailChangeConfirmation = false;
+          }
+          return EMPTY;
+        })
+      )
+      .subscribe((user) => {
+        this.router.navigate(['/admin/users', user.id], { queryParams: { updated: true } });
+      });
   }
 
   onCancel() {

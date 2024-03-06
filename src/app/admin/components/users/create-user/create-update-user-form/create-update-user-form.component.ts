@@ -54,6 +54,8 @@ export class CreateUpdateUserFormComponent implements OnInit {
         description: this.updateUser.description ?? null,
       });
 
+      this.form.markAllAsTouched();
+
       this.setEmailUpdateValidation();
 
       this.form.updateValueAndValidity();
@@ -67,10 +69,10 @@ export class CreateUpdateUserFormComponent implements OnInit {
 
     emailControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((newEmail) => {
       if (newEmail === this.updateUser?.email) {
-        // Remove the email exists validator for email if we are updating a user and the email has not changed
+        // Remove the email exists validator when updating a user and the email has not changed
         emailControl.setAsyncValidators([]);
       } else {
-        // Add the email exists validator for email if we are updating a user and the email has changed
+        // Add the email exists validator when updating a user and the email has changed
         emailControl.setAsyncValidators([this.emailExistsValidator]);
       }
       this.emailControl.updateValueAndValidity({ emitEvent: false });
@@ -80,12 +82,7 @@ export class CreateUpdateUserFormComponent implements OnInit {
   onSubmit() {
     this.form.markAllAsTouched();
 
-    // wait for async validation to complete
-    if (this.form.status === 'PENDING') {
-      return;
-    }
-
-    if (this.form.invalid) {
+    if (!this.form.valid) {
       this.form.statusChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
         this.errors.emit(this.formService.getErrorSummary(this.form, controlErrors));
       });
