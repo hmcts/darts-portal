@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DeleteComponent } from '@common/delete/delete.component';
@@ -37,6 +38,7 @@ export class AudiosComponent {
   headerService = inject(HeaderService);
   audioService = inject(AudioRequestService);
   router = inject(Router);
+  destroyRef = inject(DestroyRef);
 
   private refresh$ = new BehaviorSubject<void>(undefined);
 
@@ -69,12 +71,12 @@ export class AudiosComponent {
 
   constructor() {
     this.audioRequests$ = this.refresh$.pipe(
-      switchMap(() => this.audioService.audioRequests$),
+      switchMap(() => this.audioService.audioRequests$.pipe(takeUntilDestroyed(this.destroyRef))),
       shareReplay(1)
     );
 
     this.expiredAudioRequests$ = this.refresh$.pipe(
-      switchMap(() => this.audioService.expiredAudioRequests$),
+      switchMap(() => this.audioService.expiredAudioRequests$.pipe(takeUntilDestroyed(this.destroyRef))),
       shareReplay(1)
     );
 

@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@components/common/data-table/data-table.component';
 import { LoadingComponent } from '@components/common/loading/loading.component';
@@ -33,6 +34,7 @@ import { combineLatest, map, shareReplay } from 'rxjs';
 export class YourWorkComponent {
   transcriptionService = inject(TranscriptionService);
   sortService = inject(SortService);
+  destroyRef = inject(DestroyRef);
 
   columns: DatatableColumn[] = [
     ...transcriptTableColumns,
@@ -46,7 +48,9 @@ export class YourWorkComponent {
 
   readyColumns = [...this.columns, { name: '', prop: '' }]; // Empty column header for view link
 
-  requests$ = this.transcriptionService.assignedRequests$.pipe(shareReplay(1));
+  requests$ = this.transcriptionService.assignedRequests$
+    .pipe(takeUntilDestroyed(this.destroyRef))
+    .pipe(shareReplay(1));
 
   requesterRequests$ = combineLatest({
     todoRequests: this.requests$.pipe(map((requests) => this.filterTodoRequests(requests))),
