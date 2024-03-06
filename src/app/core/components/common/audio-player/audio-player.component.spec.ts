@@ -1,8 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { AppConfigService } from '@services/app-config/app-config.service';
-import { AudioRequestService } from '@services/audio-request/audio-request.service';
-import { of } from 'rxjs';
 import { AudioPlayerComponent } from './audio-player.component';
 
 describe('AudioPlayerComponent', () => {
@@ -22,19 +20,12 @@ describe('AudioPlayerComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [AudioPlayerComponent],
-      providers: [
-        { provide: AppConfigService, useValue: appConfigServiceMock },
-        {
-          provide: AudioRequestService,
-          useValue: {
-            getStatusCode: jest.fn().mockReturnValue(of(200)),
-          },
-        },
-      ],
+      providers: [{ provide: AppConfigService, useValue: appConfigServiceMock }],
     });
 
     fixture = TestBed.createComponent(AudioPlayerComponent);
     component = fixture.componentInstance;
+    component.statusCode = 200;
   });
 
   it('should create', () => {
@@ -135,37 +126,9 @@ describe('AudioPlayerComponent', () => {
   });
 
   describe('#onError', () => {
-    it('should set errorMsg to true on error event', () => {
-      component.audioSource = 'api/audio/preview/123';
-
-      fixture.detectChanges();
-      const audioPlayer = fixture.debugElement.query(By.css('audio'));
-
-      audioPlayer.triggerEventHandler('error', null);
-
-      expect(component.isError).toBeTruthy();
-    });
-
-    it('hide the audio player on error event', () => {
-      component.audioSource = 'api/audio/preview/123';
-
-      fixture.detectChanges();
-      const audioPlayer = fixture.debugElement.query(By.css('audio'));
-
-      audioPlayer.triggerEventHandler('error', null);
-
-      expect(audioPlayer.nativeElement.style.display === 'none').toBeTruthy();
-    });
-
     it('403 error', () => {
       component.audioSource = 'api/audio/preview/123';
-      const audioService = TestBed.inject(AudioRequestService);
-      audioService.getStatusCode = jest.fn().mockReturnValue(of(403));
-
-      fixture.detectChanges();
-      const audioPlayer = fixture.debugElement.query(By.css('audio'));
-
-      audioPlayer.triggerEventHandler('error', null);
+      component.statusCode = 403;
 
       fixture.detectChanges();
       const errorMessage = fixture.debugElement.query(By.css('#permission-error'));
@@ -175,13 +138,7 @@ describe('AudioPlayerComponent', () => {
 
     it('404 error', () => {
       component.audioSource = 'api/audio/preview/123';
-      const audioService = TestBed.inject(AudioRequestService);
-      audioService.getStatusCode = jest.fn().mockReturnValue(of(404));
-
-      fixture.detectChanges();
-      const audioPlayer = fixture.debugElement.query(By.css('audio'));
-
-      audioPlayer.triggerEventHandler('error', null);
+      component.statusCode = 404;
 
       fixture.detectChanges();
       const errorMessage = fixture.debugElement.query(By.css('#not-found-error'));
@@ -191,13 +148,7 @@ describe('AudioPlayerComponent', () => {
 
     it('500 error', () => {
       component.audioSource = 'api/audio/preview/123';
-      const audioService = TestBed.inject(AudioRequestService);
-      audioService.getStatusCode = jest.fn().mockReturnValue(of(500));
-
-      fixture.detectChanges();
-      const audioPlayer = fixture.debugElement.query(By.css('audio'));
-
-      audioPlayer.triggerEventHandler('error', null);
+      component.statusCode = 500;
 
       fixture.detectChanges();
       const errorMessage = fixture.debugElement.query(By.css('#error'));

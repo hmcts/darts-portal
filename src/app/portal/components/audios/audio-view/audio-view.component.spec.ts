@@ -135,7 +135,6 @@ describe('AudioViewComponent', () => {
     patchAudioRequestLastAccess: () => of(new HttpResponse<Response>({ status: 200 })),
     deleteTransformedMedia: jest.fn(),
     downloadAudio: jest.fn(),
-    getStatusCode: () => of(200),
   };
 
   const fakeCaseService = {

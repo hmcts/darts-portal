@@ -45,15 +45,18 @@
         <td class="govuk-table__cell">Audio recording</td>
         <td class="govuk-table__cell">
           @if (isAudioInPreview(row.id)) {
-            @if (row.audioIsReady$ | async; as audioSource) {
-              <app-audio-player
-                [id]="row.id"
-                [audioSource]="audioPreviewPath + row.id"
-                [autoplay]="true"
-                (play)="onAudioPlay(row.id)"
-              />
-            } @else {
-              <div class="loading">Loading preview</div>
+            @if (row.audioIsReady$ | async; as audioCode) {
+              @if (audioCode === 202) {
+                <div class="loading">Loading preview</div>
+              } @else {
+                <app-audio-player
+                  [id]="row.id"
+                  [audioSource]="audioPreviewPath + row.id"
+                  [autoplay]="true"
+                  (play)="onAudioPlay(row.id)"
+                  [statusCode]="audioCode"
+                />
+              }
             }
           } @else if (!row.is_available) {
             <p class="govuk-hint">This audio is not currently available in DARTS, please try again later.</p>

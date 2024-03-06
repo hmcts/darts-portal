@@ -98,7 +98,7 @@ describe('EventsAndAudioComponent', () => {
         media_end_timestamp: '2023-07-31T14:32:24.620Z',
         timestamp: '2023-07-31T10:00:01.620Z',
         type: 'audio',
-        audioIsReady$: of(true),
+        audioIsReady$: of(200),
       },
       {
         id: 8,
@@ -120,7 +120,7 @@ describe('EventsAndAudioComponent', () => {
         media_end_timestamp: '2022-07-31T14:32:24.620Z',
         timestamp: '2023-07-31T10:00:04.620Z',
         type: 'audio',
-        audioIsReady$: of(true),
+        audioIsReady$: of(200),
       },
       {
         id: 3,
@@ -128,7 +128,7 @@ describe('EventsAndAudioComponent', () => {
         media_end_timestamp: '2023-07-31T14:32:24.620Z',
         timestamp: '2023-07-31T10:00:06.620Z',
         type: 'audio',
-        audioIsReady$: of(true),
+        audioIsReady$: of(200),
       },
       {
         id: 10,

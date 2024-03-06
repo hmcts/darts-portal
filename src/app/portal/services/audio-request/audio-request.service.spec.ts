@@ -267,48 +267,4 @@ describe('AudioService', () => {
 
     expect(receivedBlob).toBeInstanceOf(Blob);
   });
-
-  describe('#getStatusCode', () => {
-    it('should return the status code of the HTTP response', () => {
-      const url = '/api';
-      const statusCode = 200;
-
-      service.getStatusCode(url).subscribe((result) => {
-        expect(result).toEqual(statusCode);
-      });
-
-      const req = httpMock.expectOne(url);
-      expect(req.request.method).toBe('HEAD');
-
-      req.flush(null, { status: statusCode, statusText: 'OK' });
-    });
-
-    it('should return the status code of the HTTP error response', () => {
-      const url = '/api';
-      const statusCode = 404;
-
-      service.getStatusCode(url).subscribe((result) => {
-        expect(result).toEqual(statusCode);
-      });
-
-      const req = httpMock.expectOne(url);
-      expect(req.request.method).toBe('HEAD');
-
-      req.flush(null, { status: statusCode, statusText: 'Not Found' });
-    });
-
-    it('should return the status code of the HTTP error response when an error occurs', () => {
-      const url = '/api';
-      const statusCode = 500;
-
-      service.getStatusCode(url).subscribe((result) => {
-        expect(result).toEqual(statusCode);
-      });
-
-      const req = httpMock.expectOne(url);
-      expect(req.request.method).toBe('HEAD');
-
-      req.error(new ErrorEvent('Internal Server Error'));
-    });
-  });
 });

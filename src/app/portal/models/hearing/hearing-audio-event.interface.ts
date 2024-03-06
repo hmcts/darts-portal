@@ -6,5 +6,5 @@ export type AudioEventRow = Partial<HearingEvent> &
   Partial<HearingAudio> & {
     id: number;
     type: 'event' | 'audio';
-    audioIsReady$?: Observable<boolean>;
+    audioIsReady$?: Observable<number>;
   };
