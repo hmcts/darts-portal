@@ -1,0 +1,67 @@
+<app-govuk-heading>Assign groups</app-govuk-heading>
+<app-govuk-heading tag="h2" size="s">Select one or more groups</app-govuk-heading>
+
+<div class="govuk-form-group">
+  <label class="govuk-label" for="search">Filter by group name</label>
+  <input
+    class="govuk-input"
+    type="text"
+    id="search"
+    [formControl]="searchFormControl"
+    [class.govuk-input--error]="searchFormControl.errors"
+  />
+</div>
+
+<app-govuk-details openSummary="Filter by role" closedSummary="Filter by role">
+  <app-checkbox-list [checkboxes]="roles" [formControl]="rolesFormControl"></app-checkbox-list>
+</app-govuk-details>
+
+@if (selectedGroups.length) {
+  <div class="govuk-summary-card">
+    <div class="govuk-summary-card__title-wrapper">
+      <h2 class="govuk-summary-card__title">
+        <span class="govuk-accordion__section-toggle-focus"
+          ><span
+            (click)="hideSelectedPanel = !hideSelectedPanel"
+            class="govuk-accordion-nav__chevron"
+            [class.govuk-accordion-nav__chevron--down]="!hideSelectedPanel"
+          ></span
+          ><span class="govuk-accordion__section-toggle-text"></span
+        ></span>
+        {{ selectedGroups.length }} groups selected
+      </h2>
+    </div>
+    @if (hideSelectedPanel) {
+      <div class="govuk-summary-card__content">
+        <dl class="govuk-summary-list">
+          @for (group of selectedGroups; track group.id) {
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">{{ group.name }}</dt>
+              <dd class="govuk-summary-list__value">{{ group.role }}</dd>
+              <dd class="govuk-summary-list__actions">
+                <a href="javascript:void(0)" class="govuk-link" (click)="deselectGroup(group.id)">Remove</a>
+              </dd>
+            </div>
+          }
+        </dl>
+      </div>
+    }
+  </div>
+}
+
+<p class="govuk-body">{{ selectedGroups.length }} of {{ groups.length }} selected</p>
+@if (filteredGroups$ | async; as groups) {
+  <app-data-table
+    [rows]="groups"
+    [columns]="cols"
+    [rowSelectable]="true"
+    [pagination]="false"
+    maxHeight="750px"
+    [(selectedRows)]="selectedGroups"
+  ></app-data-table>
+}
+
+<div class="govuk-button-group">
+  <button class="govuk-button" type="button" (click)="onAssign()">Assign groups ({{ selectedGroups.length }})</button>
+  <a class="govuk-link" href="javascript:void(0)" (click)="onCancel()">Cancel</a>
+</div>

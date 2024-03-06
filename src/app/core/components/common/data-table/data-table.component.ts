@@ -30,11 +30,16 @@ export class DataTableComponent<TRow> implements OnChanges {
   @Input() caption = '';
   @Input() rowSelectable = false;
   @Input() pagination = true;
+  @Input() maxHeight = '';
   @Input() pageLimit = 25;
   @Input() noDataMessage = 'No data to display.';
   @Input() checkboxKey = '';
   @Input() sortAndPaginateOnRowsChanged = true; // To maintain the sorting and pagination when rows are changed e.g. polling updates the data
   @Output() rowSelect = new EventEmitter<TRow[]>();
+
+  // Two way binding for selected rows
+  @Input() selectedRows: TRow[] = [];
+  @Output() selectedRowsChange = new EventEmitter<TRow[]>();
 
   @ContentChild(TableBodyTemplateDirective, { read: TemplateRef })
   bodyTemplate?: TemplateRef<unknown>;
@@ -42,7 +47,6 @@ export class DataTableComponent<TRow> implements OnChanges {
   @ContentChild(TableRowTemplateDirective, { read: TemplateRef })
   rowTemplate?: TemplateRef<TRow>;
 
-  selectedRows: TRow[] = [];
   pagedRows: TRow[] = [];
   currentPage = 1;
 
@@ -137,6 +141,7 @@ export class DataTableComponent<TRow> implements OnChanges {
       this.selectedRows.splice(index, 1);
     }
     this.rowSelect.emit(this.selectedRows);
+    this.selectedRowsChange.emit(this.selectedRows);
   }
 
   onSelectAllChanged(checked: boolean) {
@@ -146,6 +151,7 @@ export class DataTableComponent<TRow> implements OnChanges {
       this.selectedRows = [];
     }
     this.rowSelect.emit(this.selectedRows);
+    this.selectedRowsChange.emit(this.selectedRows);
   }
 
   isAllSelected() {
