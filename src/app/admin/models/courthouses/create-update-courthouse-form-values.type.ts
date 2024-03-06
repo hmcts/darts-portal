@@ -1,5 +1,6 @@
 export type CreateUpdateCourthouseFormValues = {
-  courthouseName: string | null;
-  displayName: string | null;
-  region?: string | null | undefined;
+  courthouseName: string | null | undefined;
+  displayName: string | null | undefined;
+  regionId: string | null | undefined;
+  securityGroupIds?: number[];
 };

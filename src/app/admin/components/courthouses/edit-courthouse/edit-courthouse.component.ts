@@ -8,6 +8,9 @@ import { ValidationErrorSummaryComponent } from '@common/validation-error-summar
 import { ErrorSummaryEntry } from '@core-types/index';
 import { CreateUpdateCourthouseFormComponent } from '../create-courthouse/create-update-courthouse-form/create-update-courthouse-form.component';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
+import { CommonModule } from '@angular/common';
+import { LoadingComponent } from '@common/loading/loading.component';
+import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-edit-courthouse',
@@ -17,6 +20,8 @@ import { CourthouseService } from '@services/courthouses/courthouses.service';
     ValidationErrorSummaryComponent,
     GovukHeadingComponent,
     GovukBannerComponent,
+    CommonModule,
+    LoadingComponent,
   ],
   templateUrl: './edit-courthouse.component.html',
   styleUrl: './edit-courthouse.component.scss',
@@ -32,6 +37,10 @@ export class EditCourthouseComponent implements OnInit {
   showEmailChangeConfirmation = false;
 
   updateCourthouse!: CreateUpdateCourthouseFormValues;
+  regions$ = this.courthouseService.getCourthouseRegions();
+  vm$ = combineLatest({
+    regions: this.regions$,
+  });
 
   ngOnInit(): void {
     if (!this.courthouse) {

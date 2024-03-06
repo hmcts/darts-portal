@@ -1,14 +1,20 @@
-<app-validation-error-summary [errors]="errors" />
+<ng-container *ngIf="vm$ | async as vm; else loading">
+  <app-validation-error-summary [errors]="errors" />
 
-<app-govuk-heading caption="Edit courthouse"> Courthouse details </app-govuk-heading>
+  <app-govuk-heading caption="Edit courthouse"> Courthouse details </app-govuk-heading>
 
-<app-create-update-courthouse-form
-  [updateCourthouse]="{
-    courthouseName: courthouse.courthouseName,
-    displayName: courthouse.displayName,
-    region: courthouse.regionName
-  }"
-  (submitForm)="onSubmit($event)"
-  (errors)="errors = $event"
-  (cancel)="onCancel()"
-/>
+  <app-create-update-courthouse-form
+    [updateCourthouse]="{
+      courthouseName: courthouse.courthouseName,
+      displayName: courthouse.displayName,
+      regionId: courthouse.region?.id?.toString()
+    }"
+    (submitForm)="onSubmit($event)"
+    (errors)="errors = $event"
+    (cancel)="onCancel()"
+    [regions]="vm.regions"
+  />
+</ng-container>
+<ng-template #loading>
+  <app-loading text="Loading..."></app-loading>
+</ng-template>

@@ -1,13 +1,13 @@
 import { CourthouseSearchFormValues } from '@admin-types/courthouses/courthouse-search-form-values.type';
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
-import { RegionData } from '@admin-types/courthouses/region.interface';
 import { SecurityGroup } from '@admin-types/users/security-group.type';
+import { Region } from '@admin-types/courthouses/region.interface';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { CourthouseData } from '@core-types/index';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
-import { CourthouseService, GET_COURTHOUSES_ADMIN_PATH, GET_COURTHOUSES_PATH } from './courthouses.service';
+import { CourthouseService, GET_COURTHOUSES_PATH, COURTHOUSES_ADMIN_PATH } from './courthouses.service';
 
 describe('CourthouseService', () => {
   let service: CourthouseService;
@@ -95,7 +95,7 @@ describe('CourthouseService', () => {
       id: 2,
       name: 'London',
     },
-  ] as RegionData[];
+  ] as Region[];
 
   const courthouseData = [
     {
@@ -150,7 +150,7 @@ describe('CourthouseService', () => {
       expect(courthouse).toEqual(mockCourthouse);
     });
 
-    const req = httpMock.expectOne(`${GET_COURTHOUSES_ADMIN_PATH}/${courthouseId}`);
+    const req = httpMock.expectOne(`${COURTHOUSES_ADMIN_PATH}/${courthouseId}`);
     expect(req.request.method).toBe('GET');
 
     req.flush(mockCourthouse);

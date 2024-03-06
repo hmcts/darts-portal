@@ -1,5 +1,6 @@
 import { SecurityGroup } from '@admin-types/users/security-group.type';
 import { DateTime } from 'luxon';
+import { Region } from './region.interface';
 
 export type Courthouse = {
   courthouseName: string;
@@ -8,6 +9,6 @@ export type Courthouse = {
   id: number;
   createdDateTime: DateTime;
   lastModifiedDateTime?: DateTime;
-  regionName?: string;
+  region?: Region;
   securityGroups?: SecurityGroup[];
 };

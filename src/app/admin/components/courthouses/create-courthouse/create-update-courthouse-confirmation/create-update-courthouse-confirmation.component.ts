@@ -1,3 +1,4 @@
+import { Region } from '@admin-types/courthouses/region.interface';
 import { CreateUpdateCourthouseFormValues } from '@admin-types/index';
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
@@ -16,7 +17,8 @@ type courthouseDetailsVM = {
   styleUrl: './create-update-courthouse-confirmation.component.scss',
 })
 export class CreateUpdateCourthouseConfirmationComponent implements OnChanges {
-  @Input() values: CreateUpdateCourthouseFormValues = { courthouseName: null, displayName: null, region: null };
+  @Input() values: CreateUpdateCourthouseFormValues = { courthouseName: null, displayName: null, regionId: null };
+  @Input() regions!: Region[];
   @Output() confirm = new EventEmitter<void>();
   @Output() back = new EventEmitter<void>();
   @Output() cancel = new EventEmitter<void>();
@@ -27,10 +29,17 @@ export class CreateUpdateCourthouseConfirmationComponent implements OnChanges {
   }
 
   private mapFormValuesToDetailsTable(values: CreateUpdateCourthouseFormValues): courthouseDetailsVM {
+    console.log(values);
+    const regionId = values?.regionId;
+    let region;
+    if (regionId) {
+      region = this.regions?.find((region) => region.id === parseInt(regionId));
+    }
+
     return {
       'Courthouse name': values.courthouseName,
       'Display name': values.displayName,
-      Region: values.region,
+      Region: region?.name || 'No region',
     };
   }
 }

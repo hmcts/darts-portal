@@ -1,5 +1,5 @@
 import { inject } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { Observable, map, of, switchMap, timer } from 'rxjs';
 
@@ -38,5 +38,17 @@ export const displayNameExistsValidator = (): AsyncValidatorFn => {
         );
       })
     );
+  };
+};
+
+export const valueIsUndefined = (): ValidatorFn => {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+    // If it's undefined, that's OK
+    // Also pass if there actually is a value too
+    if (typeof value === 'undefined' || value) {
+      return null;
+    }
+    return { required: true };
   };
 };

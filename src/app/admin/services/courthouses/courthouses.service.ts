@@ -1,8 +1,9 @@
 import { CourthouseSearchFormValues } from '@admin-types/courthouses/courthouse-search-form-values.type';
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
-import { RegionData } from '@admin-types/courthouses/region.interface';
-import { SecurityGroup } from '@admin-types/users/security-group.type';
+import { CreateCourthouseRequest } from '@admin-types/courthouses/create-courthouse-request.type';
+import { Region } from '@admin-types/courthouses/region.interface';
 import { CreateUpdateCourthouseFormValues } from '@admin-types/index';
+import { SecurityGroup } from '@admin-types/users/security-group.type';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CourthouseData } from '@core-types/index';
@@ -11,8 +12,8 @@ import { Observable, catchError, forkJoin, map, of } from 'rxjs';
 
 export const GET_COURTHOUSE_REGIONS_PATH = '/api/admin/regions';
 export const GET_COURTHOUSES_PATH = '/api/courthouses';
-export const GET_COURTHOUSES_ADMIN_PATH = '/api/admin/courthouses';
-export const GET_SECURITY_GROUPS_PATH = 'api/admin/security-groups';
+export const COURTHOUSES_ADMIN_PATH = '/api/admin/courthouses';
+export const GET_SECURITY_GROUPS_PATH = '/api/admin/security-groups';
 
 @Injectable({
   providedIn: 'root',
@@ -21,15 +22,22 @@ export class CourthouseService {
   constructor(private readonly http: HttpClient) {}
 
   createCourthouse(courthouse: CreateUpdateCourthouseFormValues): Observable<CourthouseData> {
-    return this.http.post<CourthouseData>(`${GET_COURTHOUSES_ADMIN_PATH}`, courthouse);
+    return this.http.post<CourthouseData>(`${COURTHOUSES_ADMIN_PATH}`, this.mapToCreateCourthouseRequest(courthouse));
   }
 
   updateCourthouse(courthouseId: number, courthouse: CreateUpdateCourthouseFormValues): Observable<CourthouseData> {
-    return this.http.post<CourthouseData>(`${GET_COURTHOUSES_ADMIN_PATH}/${courthouseId}`, courthouse);
+    const updatedCourthouse = {
+      courthouse_name: courthouse?.courthouseName,
+      display_name: courthouse?.displayName,
+      region_id: courthouse?.regionId,
+    };
+    return this.http.patch<CourthouseData>(`${COURTHOUSES_ADMIN_PATH}/${courthouseId}`, {
+      updatedCourthouse,
+    });
   }
 
   getCourthouse(courthouseId: number): Observable<CourthouseData> {
-    return this.http.get<CourthouseData>(`${GET_COURTHOUSES_ADMIN_PATH}/${courthouseId}`);
+    return this.http.get<CourthouseData>(`${COURTHOUSES_ADMIN_PATH}/${courthouseId}`);
   }
 
   getCourthouses(): Observable<CourthouseData[]> {
@@ -40,8 +48,8 @@ export class CourthouseService {
     );
   }
 
-  getCourthouseRegions(): Observable<RegionData[]> {
-    return this.http.get<RegionData[]>(GET_COURTHOUSE_REGIONS_PATH).pipe(
+  getCourthouseRegions(): Observable<Region[]> {
+    return this.http.get<Region[]>(GET_COURTHOUSE_REGIONS_PATH).pipe(
       catchError(() => {
         return of([]);
       })
@@ -83,7 +91,7 @@ export class CourthouseService {
       .pipe(map((courthouses) => !!courthouses.find((courthouse) => courthouse.display_name === displayName)));
   }
 
-  mapRegionsToCourthouses(regions: RegionData[], courthouses: CourthouseData[]): Courthouse[] {
+  mapRegionsToCourthouses(regions: Region[], courthouses: CourthouseData[]): Courthouse[] {
     return courthouses.map((courthouse) => {
       const matchingRegion = regions.find((region) => region.id === courthouse.region_id);
       return {
@@ -100,9 +108,18 @@ export class CourthouseService {
     });
   }
 
+  private mapToCreateCourthouseRequest(courthouse: CreateUpdateCourthouseFormValues): CreateCourthouseRequest {
+    return {
+      courthouse_name: courthouse.courthouseName!,
+      display_name: courthouse.displayName!,
+      region_id: courthouse?.regionId ? parseInt(courthouse.regionId) : undefined,
+      security_group_ids: courthouse?.securityGroupIds,
+    };
+  }
+
   mapRegionAndSecurityGroupsToCourthouse(
     courthouse: CourthouseData,
-    regions: RegionData[],
+    regions: Region[],
     securityGroups: SecurityGroup[]
   ): Courthouse {
     const matchingRegion = regions.find((region) => region.id === courthouse.region_id);
@@ -118,8 +135,8 @@ export class CourthouseService {
       lastModifiedDateTime: courthouse.last_modified_date_time
         ? DateTime.fromISO(courthouse.last_modified_date_time)
         : undefined,
-      // Provide 'No region' string if none provided
-      regionName: matchingRegion?.name || 'No region',
+      // Provide 'No region' object if none provided
+      region: matchingRegion || { name: 'No region' },
       securityGroups: matchingGroups,
     };
   }
@@ -133,7 +150,7 @@ export class CourthouseService {
         ? courthouse.displayName.toLowerCase().includes(query.displayName.toLowerCase())
         : true;
       const matchesRegionName = query.region
-        ? courthouse.regionName?.toLowerCase().includes(query.region.toLowerCase())
+        ? courthouse?.region?.name?.toLowerCase().includes(query.region.toLowerCase())
         : true;
 
       return matchesCourthouseName && matchesDisplayName && matchesRegionName;

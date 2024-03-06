@@ -1,5 +1,5 @@
 import { CreateUpdateCourthouseFormValues } from '@admin-types/index';
-import { JsonPipe } from '@angular/common';
+import { CommonModule, JsonPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -9,6 +9,8 @@ import { HeaderService } from '@services/header/header.service';
 import { CreateUpdateCourthouseConfirmationComponent } from './create-update-courthouse-confirmation/create-update-courthouse-confirmation.component';
 import { CreateUpdateCourthouseFormComponent } from './create-update-courthouse-form/create-update-courthouse-form.component';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
+import { combineLatest } from 'rxjs';
+import { LoadingComponent } from '@common/loading/loading.component';
 
 @Component({
   selector: 'app-create-courthouse',
@@ -19,6 +21,8 @@ import { CourthouseService } from '@services/courthouses/courthouses.service';
     ValidationErrorSummaryComponent,
     CreateUpdateCourthouseConfirmationComponent,
     JsonPipe,
+    CommonModule,
+    LoadingComponent,
   ],
   templateUrl: './create-courthouse.component.html',
   styleUrl: './create-courthouse.component.scss',
@@ -42,7 +46,11 @@ export class CreateCourthouseComponent {
     }
   }
 
-  formValues: CreateUpdateCourthouseFormValues = { courthouseName: null, displayName: null, region: null };
+  formValues: CreateUpdateCourthouseFormValues = { courthouseName: null, displayName: null, regionId: null };
+  regions$ = this.courthouseService.getCourthouseRegions();
+  vm$ = combineLatest({
+    regions: this.regions$,
+  });
 
   onSubmit(formValues: CreateUpdateCourthouseFormValues) {
     this.formValues = formValues;
@@ -53,7 +61,7 @@ export class CreateCourthouseComponent {
     this.courthouseService.createCourthouse(this.formValues!).subscribe((courthouse) => {
       this.router.navigate(['/admin/courthouses', courthouse.id], { queryParams: { newCourthouse: true } });
 
-      //TO DO: Unhappy path
+      // TODO: Unhappy path
     });
   }
 

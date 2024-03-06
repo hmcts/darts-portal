@@ -1,14 +1,16 @@
+import { Region } from '@admin-types/courthouses/region.interface';
 import { CreateUpdateCourthouseFormValues } from '@admin-types/index';
-import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { LoadingComponent } from '@common/loading/loading.component';
 import { ErrorSummaryEntry, FieldErrors } from '@core-types/index';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { FormService } from '@services/form/form.service';
-import { courthouseNameExistsValidator, displayNameExistsValidator } from '@validators/courthourtName-exists.validator';
-import { combineLatest } from 'rxjs';
+import {
+  courthouseNameExistsValidator,
+  displayNameExistsValidator,
+  valueIsUndefined,
+} from '@validators/courthouse.validator';
 
 const controlErrors: FieldErrors = {
   courthouseName: {
@@ -19,7 +21,7 @@ const controlErrors: FieldErrors = {
     required: 'Enter a display name',
     displayNameExists: 'The display name you entered exists already',
   },
-  region: {
+  regionId: {
     required: 'Select a region',
   },
 };
@@ -27,7 +29,7 @@ const controlErrors: FieldErrors = {
 @Component({
   selector: 'app-create-update-courthouse-form',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, LoadingComponent],
+  imports: [ReactiveFormsModule],
   templateUrl: './create-update-courthouse-form.component.html',
   styleUrl: './create-update-courthouse-form.component.scss',
 })
@@ -37,12 +39,13 @@ export class CreateUpdateCourthouseFormComponent implements OnInit {
   @Output() errors = new EventEmitter<ErrorSummaryEntry[]>();
 
   @Input() updateCourthouse: CreateUpdateCourthouseFormValues | null = null;
+  @Input() regions!: Region[];
 
-  formDefaultValues: CreateUpdateCourthouseFormValues = { courthouseName: null, displayName: null, region: null };
+  formDefaultValues: CreateUpdateCourthouseFormValues = { courthouseName: null, displayName: null, regionId: null };
   nameExistsValidator = courthouseNameExistsValidator();
   displayNameExistsValidator = displayNameExistsValidator();
+  valueIsUndefined = valueIsUndefined();
   courthouseService = inject(CourthouseService);
-  regions$ = this.courthouseService.getCourthouseRegions();
 
   fb = inject(FormBuilder);
   formService = inject(FormService);
@@ -51,16 +54,18 @@ export class CreateUpdateCourthouseFormComponent implements OnInit {
   form = this.fb.group({
     courthouseName: [this.formDefaultValues.courthouseName, [Validators.required], [this.nameExistsValidator]],
     displayName: [this.formDefaultValues.displayName, [Validators.required], [this.displayNameExistsValidator]],
-    region: [this.formDefaultValues.region, [Validators.required]],
+    regionId: [this.formDefaultValues.regionId, [this.valueIsUndefined]],
   });
 
   ngOnInit(): void {
+    console.log(this.updateCourthouse);
     if (this.updateCourthouse) {
       this.form.setValue({
         courthouseName: this.updateCourthouse.courthouseName,
         displayName: this.updateCourthouse.displayName,
-        region: this.updateCourthouse.region ?? null,
+        regionId: this.updateCourthouse?.regionId?.toString() || '',
       });
+      console.log(this.form);
 
       this.setCourthouseNameUpdateValidation();
 
@@ -109,8 +114,13 @@ export class CreateUpdateCourthouseFormComponent implements OnInit {
     return value.toLowerCase().replace(' ', '-');
   }
 
-  onChangeRegion(value: string | null) {
-    this.form.patchValue({ region: value });
+  onChangeRegion(value: string | undefined) {
+    this.form.patchValue({ regionId: value });
+  }
+
+  radioIsChecked(regionId: number | undefined) {
+    const newRegionId = regionId?.toString();
+    return newRegionId === this.regionControl.value;
   }
 
   onCancel() {
@@ -125,10 +135,6 @@ export class CreateUpdateCourthouseFormComponent implements OnInit {
     return control.errors && control.touched;
   }
 
-  vm$ = combineLatest({
-    regions: this.regions$,
-  });
-
   get courthouseNameControl() {
     return this.form.get('courthouseName')!;
   }
@@ -138,6 +144,6 @@ export class CreateUpdateCourthouseFormComponent implements OnInit {
   }
 
   get regionControl() {
-    return this.form.get('region')!;
+    return this.form.get('regionId')!;
   }
 }
