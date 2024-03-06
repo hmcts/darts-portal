@@ -57,6 +57,6 @@ describe('Admin - Users screen', () => {
     cy.get('#email').type('eric.bristow@darts.local');
     cy.get('#description').type('This is a test user');
 
-    cy.get('.email-error').should('contain', 'This email account already exists in the database');
+    cy.get('.email-error').should('contain', 'Enter a unique email address');
   });
 });
