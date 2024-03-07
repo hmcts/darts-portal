@@ -6,17 +6,20 @@ import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@
 import { ErrorSummaryEntry, FieldErrors } from '@core-types/index';
 import { FormService } from '@services/form/form.service';
 import { emailExistsValidator } from '@validators/email-exists.validator';
+import { optionalMaxLengthValidator } from '@validators/optional-maxlength.validator';
 
 const controlErrors: FieldErrors = {
   fullName: {
-    required: 'Enter full name',
+    required: 'Enter a full name',
   },
   email: {
-    required: 'Enter email',
+    required: 'Enter an email address',
     email: 'Enter a valid email address',
     emailExists: 'Enter a unique email address',
   },
-  description: {},
+  description: {
+    maxlength: 'Enter a description shorter than 256 characters',
+  },
 };
 
 @Component({
@@ -43,7 +46,7 @@ export class CreateUpdateUserFormComponent implements OnInit {
   form = this.fb.group({
     fullName: [this.formDefaultValues.fullName, Validators.required],
     email: [this.formDefaultValues.email, [Validators.required, Validators.email], [this.emailExistsValidator]],
-    description: this.formDefaultValues.description,
+    description: [this.formDefaultValues.description, [optionalMaxLengthValidator(256)]],
   });
 
   ngOnInit(): void {

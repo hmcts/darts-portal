@@ -95,8 +95,8 @@ describe('CreateUpdateUserFormComponent', () => {
       component.onSubmit();
 
       expect(component.errors.emit).toHaveBeenCalledWith([
-        { fieldId: 'fullName', message: 'Enter full name' },
-        { fieldId: 'email', message: 'Enter email' },
+        { fieldId: 'fullName', message: 'Enter a full name' },
+        { fieldId: 'email', message: 'Enter an email address' },
       ]);
     });
 

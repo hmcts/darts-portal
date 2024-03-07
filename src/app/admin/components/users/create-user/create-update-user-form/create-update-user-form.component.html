@@ -29,7 +29,7 @@
     />
   </div>
 
-  <div class="govuk-form-group" [class.govuk-from-group--error]="isControlInvalid(descriptionControl)">
+  <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid(descriptionControl)">
     <label class="govuk-label" for="description">Description (optional)</label>
     <!-- Inline Validation Errors -->
     @for (error of getFormControlErrorMessages('description'); track error) {
