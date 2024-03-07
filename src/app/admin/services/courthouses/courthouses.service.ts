@@ -3,17 +3,20 @@ import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { CreateCourthouseRequest } from '@admin-types/courthouses/create-courthouse-request.type';
 import { Region } from '@admin-types/courthouses/region.interface';
 import { CreateUpdateCourthouseFormValues } from '@admin-types/index';
+import { SecurityGroupData } from '@admin-types/users/security-group.interface';
 import { SecurityGroup } from '@admin-types/users/security-group.type';
+import { SecurityRole } from '@admin-types/users/security-role.type';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CourthouseData } from '@core-types/index';
 import { DateTime } from 'luxon';
-import { Observable, catchError, forkJoin, map, of } from 'rxjs';
+import { Observable, catchError, forkJoin, map, of, switchMap } from 'rxjs';
 
 export const GET_COURTHOUSE_REGIONS_PATH = '/api/admin/regions';
 export const GET_COURTHOUSES_PATH = '/api/courthouses';
 export const COURTHOUSES_ADMIN_PATH = '/api/admin/courthouses';
 export const GET_SECURITY_GROUPS_PATH = '/api/admin/security-groups';
+export const GET_SECURITY_ROLES_PATH = '/api/admin/security-roles';
 
 @Injectable({
   providedIn: 'root',
@@ -58,6 +61,22 @@ export class CourthouseService {
 
   getCourthouseSecurityGroups(): Observable<SecurityGroup[]> {
     return this.http.get<SecurityGroup[]>(`${GET_SECURITY_GROUPS_PATH}`);
+  }
+
+  getCourthouseTranscriptionCompanies(): Observable<SecurityGroup[]> {
+    return this.http.get<SecurityRole[]>(`${GET_SECURITY_ROLES_PATH}`).pipe(
+      switchMap((securityGroups) => {
+        const transcriberRole = securityGroups.find(
+          (securityGroup: SecurityRole) => securityGroup.name === 'TRANSCRIBER'
+        );
+        if (transcriberRole) {
+          return this.http
+            .get<SecurityGroupData[]>(`${GET_SECURITY_GROUPS_PATH}/?role-ids=${transcriberRole.id}`)
+            .pipe(map((securityGroups) => this.mapToSecurityGroupData(securityGroups)));
+        }
+        return of([]);
+      })
+    );
   }
 
   getCourthousesWithRegions() {
@@ -113,8 +132,18 @@ export class CourthouseService {
       courthouse_name: courthouse.courthouseName!,
       display_name: courthouse.displayName!,
       region_id: courthouse?.regionId ? parseInt(courthouse.regionId) : undefined,
-      security_group_ids: courthouse?.securityGroupIds,
+      security_group_ids: courthouse?.securityGroupIds.map((securityGroupId) => parseInt(securityGroupId)),
     };
+  }
+
+  private mapToSecurityGroupData(securityGroups: SecurityGroupData[]): SecurityGroup[] {
+    return securityGroups.map((group) => {
+      return {
+        id: group.id!,
+        name: group.name!,
+        displayName: group.display_name,
+      };
+    });
   }
 
   mapRegionAndSecurityGroupsToCourthouse(

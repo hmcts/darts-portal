@@ -48,7 +48,6 @@
             name="regionId"
             type="radio"
             [value]="region.id"
-            (click)="onChangeRegion($any($event).target.value)"
             formControlName="regionId"
           />
           <label class="govuk-label govuk-radios__label" for="approve-radio">{{ region.name }}</label>
@@ -56,20 +55,13 @@
       }
       <label id="or-label" class="govuk-label govuk-radios__label" for="no-region">Or</label>
       <div class="govuk-radios__item">
-        <input
-          class="govuk-radios__input"
-          id="no-region"
-          name="regionId"
-          type="radio"
-          (click)="onChangeRegion(undefined)"
-          formControlName="regionId"
-        />
+        <input class="govuk-radios__input" id="no-region" name="regionId" type="radio" formControlName="regionId" />
         <label class="govuk-label govuk-radios__label" for="approve-radio">No region</label>
       </div>
     </div>
   </div>
   <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
-  <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid(regionControl)">
+  <div class="govuk-form-group">
     <h2 class="govuk-heading-m">Transcription companies</h2>
     <span class="govuk-body">Select transcription companies</span>
     <div id="case_number-hint" class="govuk-hint">You can select and add multiple companies</div>
@@ -77,16 +69,43 @@
       class="govuk-select"
       id="transcription-type"
       name="transcription-type"
-      [class.govuk-select--error]="isControlInvalid(regionControl)"
+      (change)="selectCompany($any($event).target.value)"
     >
       <option value="" disabled selected>Please select</option>
-      @for (region of regions; track region) {
-        <option [value]="region.id">
-          {{ region.name }}
+      @for (company of companies; track company) {
+        <option [value]="company.id">
+          {{ company.name }}
         </option>
       }
     </select>
-    <button type="submit" class="add-company-button govuk-button govuk-button--secondary">Add company</button>
+    <button
+      (click)="$event.preventDefault(); addCompany()"
+      class="add-company-button govuk-button govuk-button--secondary"
+    >
+      Add company
+    </button>
+    @if (selectedCompanies.length) {
+      <table aria-label="Selected companies" class="govuk-table" id="company-table">
+        <th><ng-content></ng-content></th>
+        <tbody class="govuk-table__body">
+          @for (company of selectedCompanies; track company) {
+            <!-- Single column message -->
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell table-width">{{ company.name }}</td>
+              <td class="govuk-table__cell table-width">
+                <a
+                  href="javascript:void(0)"
+                  (click)="$event.preventDefault(); removeCompany(company.id)"
+                  class="govuk-link"
+                >
+                  Remove
+                </a>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
   </div>
 
   <div class="govuk-button-group">

@@ -46,10 +46,18 @@ export class CreateCourthouseComponent {
     }
   }
 
-  formValues: CreateUpdateCourthouseFormValues = { courthouseName: null, displayName: null, regionId: null };
+  formValues: CreateUpdateCourthouseFormValues = {
+    courthouseName: null,
+    displayName: null,
+    regionId: null,
+    securityGroupIds: [],
+  };
   regions$ = this.courthouseService.getCourthouseRegions();
+  companies$ = this.courthouseService.getCourthouseTranscriptionCompanies();
+
   vm$ = combineLatest({
     regions: this.regions$,
+    companies: this.companies$,
   });
 
   onSubmit(formValues: CreateUpdateCourthouseFormValues) {

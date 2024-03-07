@@ -36,7 +36,7 @@ export class CourthouseRecordComponent {
 
   formatSecurityGroupLinks(securityGroups: SecurityGroup[] | undefined) {
     return securityGroups?.map((securityGroup) => {
-      return { value: securityGroup.name, href: `/admin/groups/${securityGroup.securityRoleId}` };
+      return { value: securityGroup.name, href: `/admin/groups/${securityGroup.id}` };
     });
   }
 }

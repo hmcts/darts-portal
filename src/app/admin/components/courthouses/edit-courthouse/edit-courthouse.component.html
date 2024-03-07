@@ -7,7 +7,8 @@
     [updateCourthouse]="{
       courthouseName: courthouse.courthouseName,
       displayName: courthouse.displayName,
-      regionId: courthouse.region?.id?.toString()
+      regionId: courthouse.region?.id?.toString(),
+      securityGroupIds: []
     }"
     (submitForm)="onSubmit($event)"
     (errors)="errors = $event"

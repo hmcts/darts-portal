@@ -3,6 +3,6 @@ import { SecurityRole } from './security-role.type';
 export type SecurityGroup = {
   id: number;
   name: string;
-  securityRoleId: number;
+  securityRoleId?: number;
   role?: SecurityRole;
 };

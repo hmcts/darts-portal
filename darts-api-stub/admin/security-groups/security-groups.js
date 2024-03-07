@@ -43,9 +43,27 @@ const defaultSecurityGroups = [
     security_role_id: 8,
     name: 'Visually Hidden Group',
   },
+  {
+    id: 9,
+    security_role_id: 4,
+    name: 'Magic Transcribers Inc',
+  },
+  {
+    id: 10,
+    security_role_id: 4,
+    name: 'Transcribers R Us',
+  },
+  {
+    id: 11,
+    security_role_id: 4,
+    name: 'Skriber Tech UK',
+  },
 ];
 
-router.get('/', (_, res) => {
+router.get('/', (req, res) => {
+  const roleIds = req?.query?.['role-ids'];
+  if (roleIds)
+    return res.send(defaultSecurityGroups.filter((securityGroup) => roleIds.includes(securityGroup.security_role_id)));
   res.send(defaultSecurityGroups);
 });
 

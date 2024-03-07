@@ -1,5 +1,6 @@
 import { Region } from '@admin-types/courthouses/region.interface';
 import { CreateUpdateCourthouseFormValues } from '@admin-types/index';
+import { SecurityRole } from '@admin-types/users/security-role.type';
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
 
@@ -7,6 +8,7 @@ type courthouseDetailsVM = {
   'Courthouse name': string | null | undefined;
   'Display name': string | null | undefined;
   Region: string | null | undefined;
+  'Transcription companies': string | null | undefined;
 };
 
 @Component({
@@ -17,8 +19,14 @@ type courthouseDetailsVM = {
   styleUrl: './create-update-courthouse-confirmation.component.scss',
 })
 export class CreateUpdateCourthouseConfirmationComponent implements OnChanges {
-  @Input() values: CreateUpdateCourthouseFormValues = { courthouseName: null, displayName: null, regionId: null };
+  @Input() values: CreateUpdateCourthouseFormValues = {
+    courthouseName: null,
+    displayName: null,
+    regionId: null,
+    securityGroupIds: [],
+  };
   @Input() regions!: Region[];
+  @Input() companies!: SecurityRole[];
   @Output() confirm = new EventEmitter<void>();
   @Output() back = new EventEmitter<void>();
   @Output() cancel = new EventEmitter<void>();
@@ -29,17 +37,19 @@ export class CreateUpdateCourthouseConfirmationComponent implements OnChanges {
   }
 
   private mapFormValuesToDetailsTable(values: CreateUpdateCourthouseFormValues): courthouseDetailsVM {
-    console.log(values);
     const regionId = values?.regionId;
     let region;
     if (regionId) {
       region = this.regions?.find((region) => region.id === parseInt(regionId));
     }
+    const companyNumberIds = values?.securityGroupIds.map((companyId) => parseInt(companyId));
+    const selectedCompanies = this.companies.filter((company) => companyNumberIds.includes(company.id));
 
     return {
       'Courthouse name': values.courthouseName,
       'Display name': values.displayName,
       Region: region?.name || 'No region',
+      'Transcription companies': selectedCompanies.map((selectedCompany) => selectedCompany.name).join('\r\n'),
     };
   }
 }

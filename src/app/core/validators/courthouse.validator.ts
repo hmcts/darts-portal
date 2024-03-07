@@ -44,9 +44,9 @@ export const displayNameExistsValidator = (): AsyncValidatorFn => {
 export const valueIsUndefined = (): ValidatorFn => {
   return (control: AbstractControl): ValidationErrors | null => {
     const value = control.value;
-    // If it's undefined, that's OK
+    // If it's undefined or 0, that's OK
     // Also pass if there actually is a value too
-    if (typeof value === 'undefined' || value) {
+    if (typeof value === 'undefined' || value === 0 || value) {
       return null;
     }
     return { required: true };
