@@ -9,12 +9,14 @@ export const beforeTimeValidator = (control: AbstractControl): ValidationErrors 
     return null;
   }
 
-  const startTime = DateTime.now().set({
+  const now = DateTime.now();
+
+  const startTime = now.set({
     hour: startTimeCtrl?.get('hours')?.value,
     minute: startTimeCtrl?.get('minutes')?.value,
     second: startTimeCtrl?.get('seconds')?.value,
   });
-  const endTime = DateTime.now().set({
+  const endTime = now.set({
     hour: endTimeCtrl?.get('hours')?.value,
     minute: endTimeCtrl?.get('minutes')?.value,
     second: endTimeCtrl?.get('seconds')?.value,
