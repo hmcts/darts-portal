@@ -1,19 +1,11 @@
 @if (rows.length) {
   <div [style.max-height]="maxHeight" [class.scrollable]="maxHeight">
     <table class="govuk-table" data-module="moj-sortable-table">
-      @if (hiddenCaption) {
-        <caption class="govuk-table__caption govuk-table__caption--m govuk-visually-hidden">
-          {{
-            caption
-          }}
-        </caption>
-      } @else {
-        <caption class="govuk-table__caption govuk-table__caption--m">
-          {{
-            caption
-          }}
-        </caption>
-      }
+      <caption class="govuk-table__caption govuk-table__caption--m" [class.govuk-visually-hidden]="hiddenCaption">
+        {{
+          caption
+        }}
+      </caption>
       <thead class="govuk-table__head">
         <tr class="govuk-table__row header">
           <td *ngIf="rowSelectable" class="govuk-table__header">
