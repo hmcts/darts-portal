@@ -28,6 +28,21 @@ describe('CourthouseService', () => {
     },
   ] as SecurityGroup[];
 
+  const regions = [
+    {
+      id: 0,
+      name: 'South West',
+    },
+    {
+      id: 1,
+      name: 'South',
+    },
+    {
+      id: 2,
+      name: 'London',
+    },
+  ] as Region[];
+
   const courthouses = [
     {
       id: 1,
@@ -36,7 +51,7 @@ describe('CourthouseService', () => {
       code: 0,
       createdDateTime: DateTime.fromISO('2023-08-18T09:48:29.728Z'),
       lastModifiedDateTime: DateTime.fromISO('2023-08-18T09:48:29.728Z'),
-      regionName: 'South West',
+      region: regions[0],
     },
     {
       id: 2,
@@ -45,7 +60,7 @@ describe('CourthouseService', () => {
       code: 0,
       createdDateTime: DateTime.fromISO('2023-08-18T09:48:29.728Z'),
       lastModifiedDateTime: DateTime.fromISO('2023-08-18T09:48:29.728Z'),
-      regionName: 'South',
+      region: regions[1],
     },
     {
       id: 3,
@@ -54,7 +69,7 @@ describe('CourthouseService', () => {
       code: 0,
       createdDateTime: DateTime.fromISO('2023-08-18T09:48:29.728Z'),
       lastModifiedDateTime: DateTime.fromISO('2023-08-18T09:48:29.728Z'),
-      regionName: 'London',
+      region: regions[2],
     },
   ] as unknown as Courthouse[];
 
@@ -65,7 +80,7 @@ describe('CourthouseService', () => {
     code: 0,
     createdDateTime: DateTime.fromISO('2023-08-18T09:48:29.728Z'),
     lastModifiedDateTime: DateTime.fromISO('2023-08-18T09:48:29.728Z'),
-    regionName: 'South West',
+    region: regions[0],
     securityGroups: [
       {
         id: 1,
@@ -81,21 +96,6 @@ describe('CourthouseService', () => {
       },
     ],
   };
-
-  const regions = [
-    {
-      id: 0,
-      name: 'South West',
-    },
-    {
-      id: 1,
-      name: 'South',
-    },
-    {
-      id: 2,
-      name: 'London',
-    },
-  ] as Region[];
 
   const courthouseData = [
     {

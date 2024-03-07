@@ -122,7 +122,7 @@ export class CourthouseService {
         lastModifiedDateTime: courthouse.last_modified_date_time
           ? DateTime.fromISO(courthouse.last_modified_date_time)
           : undefined,
-        regionName: matchingRegion ? matchingRegion.name : undefined,
+        region: matchingRegion || undefined,
       };
     });
   }

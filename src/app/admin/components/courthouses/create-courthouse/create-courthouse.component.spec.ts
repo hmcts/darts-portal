@@ -15,6 +15,8 @@ describe('CreateCourthouseComponent', () => {
   beforeEach(async () => {
     courthouseService = {
       createCourthouse: jest.fn(),
+      getCourthouseRegions: jest.fn(),
+      getCourthouseTranscriptionCompanies: jest.fn(),
     };
 
     await TestBed.configureTestingModule({
@@ -52,7 +54,7 @@ describe('CreateCourthouseComponent', () => {
   });
 
   it('onSubmit should set formValues and isConfirmation to true', () => {
-    const formValues = { courthouseName: 'COURTHOUSE', displayName: 'Courthouse', region: 'test' };
+    const formValues = { courthouseName: 'COURTHOUSE', displayName: 'Courthouse', regionId: '1', securityGroupIds: [] };
     component.onSubmit(formValues);
 
     expect(component.formValues).toEqual(formValues);
@@ -65,7 +67,12 @@ describe('CreateCourthouseComponent', () => {
     jest.spyOn(courthouseService, 'createCourthouse').mockReturnValue(of(courthouse));
     jest.spyOn(router, 'navigate');
 
-    component.formValues = { courthouseName: 'COURTHOUSE', displayName: 'Courthouse', region: 'test' };
+    component.formValues = {
+      courthouseName: 'COURTHOUSE',
+      displayName: 'Courthouse',
+      regionId: '1',
+      securityGroupIds: [],
+    };
     component.onConfirmCourthouseDetails();
 
     expect(courthouseService.createCourthouse).toHaveBeenCalledWith(component.formValues);

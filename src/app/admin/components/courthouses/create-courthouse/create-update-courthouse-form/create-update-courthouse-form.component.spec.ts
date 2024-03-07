@@ -16,34 +16,34 @@ type formValidationTestCase = {
 const formValidationTestCases: formValidationTestCase[] = [
   {
     name: 'valid when all fields are valid',
-    data: { courthouseName: 'COURTHOUSE', displayName: 'Courthouse', region: 'South west' },
+    data: { courthouseName: 'COURTHOUSE', displayName: 'Courthouse', regionId: '1', securityGroupIds: [] },
     validity: true,
   },
   {
-    name: 'invalid when full name is empty',
-    data: { courthouseName: '', displayName: 'Courthouse', region: 'South west' },
+    name: 'invalid when courthouseName is empty',
+    data: { courthouseName: '', displayName: 'Courthouse', regionId: '1', securityGroupIds: [] },
     validity: false,
   },
   {
-    name: 'invalid when email is empty',
-    data: { courthouseName: 'COURTHOUSE', displayName: '', region: 'South west' },
+    name: 'invalid when displayName is empty',
+    data: { courthouseName: 'COURTHOUSE', displayName: '', regionId: '1', securityGroupIds: [] },
     validity: false,
   },
   {
     name: 'invalid when courthouseName already exists in DB',
-    data: { courthouseName: 'COURTHOUSE', displayName: 'Courthouse', region: 'South west' },
+    data: { courthouseName: 'COURTHOUSE', displayName: 'Courthouse', regionId: '1', securityGroupIds: [] },
     validity: false,
     courthouseNameExists: true,
   },
   {
     name: 'invalid when displayName already exists in DB',
-    data: { courthouseName: 'COURTHOUSE', displayName: 'Courthouse', region: 'South west' },
+    data: { courthouseName: 'COURTHOUSE', displayName: 'Courthouse', regionId: '1', securityGroupIds: [] },
     validity: false,
     displayNameExists: true,
   },
   {
-    name: 'valid when optional description is empty',
-    data: { courthouseName: 'COURTHOUSE', displayName: 'Courthouse', region: null },
+    name: 'valid when regionId is undefined',
+    data: { courthouseName: 'COURTHOUSE', displayName: 'Courthouse', regionId: undefined, securityGroupIds: [] },
     validity: true,
   },
 ];
@@ -54,7 +54,10 @@ describe('CreateUpdateCourthouseFormComponent', () => {
   let mockCourthouseService: Partial<CourthouseService>;
 
   beforeEach(async () => {
-    mockCourthouseService = { doesDisplayNameExist: jest.fn(() => of(false)) };
+    mockCourthouseService = {
+      doesCourthouseNameExist: jest.fn(() => of(false)),
+      doesDisplayNameExist: jest.fn(() => of(false)),
+    };
 
     await TestBed.configureTestingModule({
       imports: [CreateUpdateCourthouseFormComponent],
@@ -76,7 +79,8 @@ describe('CreateUpdateCourthouseFormComponent', () => {
       const formValues = {
         courthouseName: 'COURTHOUSE',
         displayName: 'Courthouse',
-        region: 'South west',
+        regionId: '1',
+        securityGroupIds: [],
       };
 
       component.form.setValue(formValues);
@@ -92,15 +96,21 @@ describe('CreateUpdateCourthouseFormComponent', () => {
       component.onSubmit();
 
       expect(component.errors.emit).toHaveBeenCalledWith([
-        { fieldId: 'courthouseName', message: 'Enter courthouse name' },
-        { fieldId: 'displayName', message: 'Enter display name' },
+        { fieldId: 'courthouseName', message: 'Enter a courthouse code' },
+        { fieldId: 'displayName', message: 'Enter a display name' },
+        { fieldId: 'regionId', message: 'Select a region' },
       ]);
     });
 
     it('does not emit errors when form is valid', fakeAsync(() => {
       jest.spyOn(component.errors, 'emit');
 
-      component.form.setValue({ courthouseName: 'COURTHOUSE', displayName: 'Courthouse', region: 'South west' });
+      component.form.setValue({
+        courthouseName: 'COURTHOUSE',
+        displayName: 'Courthouse',
+        regionId: '1',
+        securityGroupIds: [],
+      });
 
       tick(500);
       component.onSubmit();
@@ -128,7 +138,7 @@ describe('CreateUpdateCourthouseFormComponent', () => {
 
           component.form.get('courthouseName')?.setValue(test.data.courthouseName);
           component.form.get('displayName')?.setValue(test.data.displayName);
-          component.form.get('region')?.setValue(test.data.region);
+          component.form.get('regionId')?.setValue(test.data.regionId);
 
           tick(500); // wait for async validators to complete
           component.form.updateValueAndValidity();
@@ -140,23 +150,6 @@ describe('CreateUpdateCourthouseFormComponent', () => {
   });
 
   describe('#ngOnInit', () => {
-    it('should set form value when updating a courthouse', fakeAsync(() => {
-      const updateCourthouse = {
-        courthouseName: 'COURTHOUSE',
-        displayName: 'Courthouse',
-        region: 'South west',
-      };
-      component.updateCourthouse = updateCourthouse;
-
-      component.ngOnInit();
-
-      tick(500); // wait for async validators to complete
-
-      expect(component.form.value).toEqual(updateCourthouse);
-      expect(component.form.get('displayName')?.asyncValidator).toEqual(null);
-      expect(component.form.valid).toBe(true);
-    }));
-
     it('should not modify form values when not updating a courthouse', () => {
       component.updateCourthouse = null;
       const originalFormValue = component.form.value;

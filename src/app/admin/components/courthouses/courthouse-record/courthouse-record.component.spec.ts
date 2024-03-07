@@ -1,5 +1,4 @@
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
-import { SecurityGroup } from '@admin-types/index';
 import { DatePipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -8,6 +7,7 @@ import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
 import { CourthouseRecordComponent } from './courthouse-record.component';
+import { SecurityGroup } from '@admin-types/users/security-group.type';
 
 describe('CourthouseRecordComponent', () => {
   let component: CourthouseRecordComponent;
@@ -22,7 +22,7 @@ describe('CourthouseRecordComponent', () => {
     displayName: 'Courthouse',
     createdDateTime: DateTime.fromISO('2024-01-01'),
     lastModifiedDateTime: DateTime.fromISO('2024-01-01'),
-    regionName: 'Region',
+    region: { name: 'Region' },
   };
 
   beforeEach(async () => {
