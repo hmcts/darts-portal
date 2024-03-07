@@ -9,6 +9,7 @@ export default () => {
     resave: false,
     saveUninitialized: true,
     cookie: {},
+    name: config.get('session.cookieName'),
   };
 
   if (config.get('node-env') === 'production') {
