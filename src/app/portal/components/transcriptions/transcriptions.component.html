@@ -66,6 +66,8 @@
       <h2 class="govuk-heading-m">In Progress</h2>
       <app-data-table
         id="in-progress-table"
+        [caption]="'In progress transcript requests'"
+        [hiddenCaption]="true"
         [rows]="vm.inProgressRequests"
         [columns]="columns"
         [pagination]="true"
@@ -86,6 +88,8 @@
       </div>
       <app-data-table
         id="ready-table"
+        [caption]="'Ready transcript requests'"
+        [hiddenCaption]="true"
         [rows]="vm.completedRequests"
         [columns]="readyColumns"
         [pagination]="true"
@@ -116,6 +120,8 @@
 
       <app-data-table
         id="approver-table"
+        [caption]="'Requests to approve or reject'"
+        [hiddenCaption]="true"
         [rows]="approverRequests"
         [columns]="approverColumns"
         [pagination]="true"
