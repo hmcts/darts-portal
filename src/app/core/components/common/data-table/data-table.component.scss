@@ -12,6 +12,9 @@
     padding: 10px;
     vertical-align: middle;
   }
+  td {
+    word-wrap: break-word;
+  }
 }
 
 .govuk-checkboxes__label {
