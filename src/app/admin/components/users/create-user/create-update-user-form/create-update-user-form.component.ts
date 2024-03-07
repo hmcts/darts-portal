@@ -9,10 +9,10 @@ import { emailExistsValidator } from '@validators/email-exists.validator';
 
 const controlErrors: FieldErrors = {
   fullName: {
-    required: 'Enter full name',
+    required: 'Enter a full name',
   },
   email: {
-    required: 'Enter email',
+    required: 'Enter an email address',
     email: 'Enter a valid email address',
     emailExists: 'Enter a unique email address',
   },
