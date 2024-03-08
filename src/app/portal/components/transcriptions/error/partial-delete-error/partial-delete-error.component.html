@@ -1,0 +1,9 @@
+<h1 id="conflict-heading" class="govuk-heading-xl govuk-!-margin-bottom-8">
+  There was a problem removing one or more transcript requests
+</h1>
+<p class="govuk-body">
+  Try again or
+  <a href="mailto:{{ support?.emailAddress }}" class="govuk-link">contact {{ support?.name }}</a> if the problem
+  persists
+</p>
+<button class="govuk-button" type="submit" (click)="router.navigate(['/transcriptions'])">Go back</button>

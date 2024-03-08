@@ -1,4 +1,5 @@
 import { DATE_PIPE_DEFAULT_OPTIONS, DatePipe } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -9,6 +10,7 @@ import { AppConfigService } from '@services/app-config/app-config.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
+import { throwError } from 'rxjs';
 import { of } from 'rxjs/internal/observable/of';
 import { TranscriptionsComponent } from './transcriptions.component';
 
@@ -240,6 +242,7 @@ describe('TranscriptionsComponent', () => {
         { transcriptionId: 1 } as TranscriptRequest,
         { transcriptionId: 2 } as TranscriptRequest,
       ];
+
       component.onDeleteConfirmed();
 
       expect(spy).toHaveBeenCalledWith([1, 2]);
@@ -248,8 +251,22 @@ describe('TranscriptionsComponent', () => {
       fixture.detectChanges();
       component.selectedRequests = [{} as TranscriptRequest];
       component.isDeleting = true;
+
       component.onDeleteConfirmed();
+
       expect(component.isDeleting).toEqual(false);
+    });
+    it('should navigate to /delete-error when a 400 is received and set isDeleting to false', () => {
+      fixture.detectChanges();
+      const errorResponse = new HttpErrorResponse({ status: 400, error: {} });
+      const routerSpy = jest.spyOn(component.router, 'navigate');
+      jest.spyOn(component.transcriptService, 'deleteRequest').mockReturnValue(throwError(() => errorResponse));
+      component.selectedRequests = [{ transcriptionId: 5 } as TranscriptRequest];
+
+      component.onDeleteConfirmed();
+
+      expect(component.isDeleting).toEqual(false);
+      expect(routerSpy).toHaveBeenCalledWith(['transcriptions/delete-error']);
     });
   });
 

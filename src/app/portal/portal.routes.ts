@@ -41,6 +41,14 @@ export const PORTAL_ROUTES: Routes = [
       import('../portal/components/transcriptions/transcriptions.component').then((c) => c.TranscriptionsComponent),
   },
   {
+    path: 'transcriptions/delete-error',
+    data: { allowedRoles: ['APPROVER', 'REQUESTER', 'JUDGE'] },
+    loadComponent: () =>
+      import('../portal/components/transcriptions/error/partial-delete-error/partial-delete-error.component').then(
+        (c) => c.PartialDeleteErrorComponent
+      ),
+  },
+  {
     path: 'transcription-requests',
     data: { allowedRoles: ['TRANSCRIBER'] },
     loadComponent: () =>

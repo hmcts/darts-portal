@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@components/common/data-table/data-table.component';
 import { DeleteComponent } from '@components/common/delete/delete.component';
 import { GovukHeadingComponent } from '@components/common/govuk-heading/govuk-heading.component';
@@ -43,6 +44,7 @@ export class TranscriptionsComponent {
   userService = inject(UserService);
   userState = inject(ActivatedRoute).snapshot.data.userState;
   sortService = inject(SortService);
+  router = inject(Router);
   transcriptStatusClassMap = transcriptStatusClassMap;
 
   columns: DatatableColumn[] = [
@@ -105,7 +107,12 @@ export class TranscriptionsComponent {
         this.isDeleting = false;
         this.refresh$.next();
       },
-      error: () => (this.isDeleting = false),
+      error: (error: HttpErrorResponse) => {
+        this.isDeleting = false;
+        if (error.status === 400) {
+          this.router.navigate(['transcriptions/delete-error']);
+        }
+      },
     });
   }
 
