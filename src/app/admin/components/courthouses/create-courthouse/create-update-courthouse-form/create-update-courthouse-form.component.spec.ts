@@ -117,6 +117,29 @@ describe('CreateUpdateCourthouseFormComponent', () => {
 
       expect(component.errors.emit).toHaveBeenCalledWith([]);
     }));
+
+    it('does not emit submitForm when form is pending', fakeAsync(() => {
+      jest.spyOn(component.submitForm, 'emit');
+
+      component.form.setValue({
+        courthouseName: 'COURTHOUSE',
+        displayName: 'Courthouse',
+        regionId: '1',
+        securityGroupIds: [],
+      });
+
+      tick(500);
+      component.form.markAsPending();
+      component.onSubmit();
+
+      expect(component.submitForm.emit).not.toHaveBeenCalled();
+    }));
+  });
+
+  describe('#formatNameToId', () => {
+    it('Should change name to id style', () => {
+      expect(component.formatNameToId('Test ID')).toEqual('test-id');
+    });
   });
 
   describe('#onCancel', () => {
@@ -125,6 +148,47 @@ describe('CreateUpdateCourthouseFormComponent', () => {
       component.onCancel();
 
       expect(component.cancel.emit).toHaveBeenCalled();
+    });
+  });
+
+  describe('#selectCompany', () => {
+    it('finds appropriate company on select', () => {
+      const companies = [
+        { id: 0, name: 'Company 1' },
+        { id: 1, name: 'Company 2' },
+      ];
+      component.companies = companies;
+      component.selectCompany('1');
+      expect(component.selectedCompany).toEqual(companies[1]);
+    });
+  });
+
+  describe('#addCompany', () => {
+    it('finds appropriate company and adds to form array on "Add company" button press"', () => {
+      const companies = [
+        { id: 0, name: 'Company 1' },
+        { id: 1, name: 'Company 2' },
+        { id: 2, name: 'Company 3' },
+      ];
+      component.companies = companies;
+      component.selectCompany('1');
+      component.addCompany();
+      component.selectCompany('2');
+      component.addCompany();
+      expect(component.selectedCompanies).toEqual([companies[1], companies[2]]);
+    });
+  });
+
+  describe('#removeCompany', () => {
+    it('finds appropriate company and removes from form array on "Remove" button press"', () => {
+      const companies = [
+        { id: 0, name: 'Company 1' },
+        { id: 1, name: 'Company 2' },
+        { id: 2, name: 'Company 3' },
+      ];
+      component.selectedCompanies = [...companies];
+      component.removeCompany(1);
+      expect(component.selectedCompanies).toEqual([companies[0], companies[2]]);
     });
   });
 
@@ -158,6 +222,38 @@ describe('CreateUpdateCourthouseFormComponent', () => {
 
       expect(component.form.value).toEqual(originalFormValue);
       expect(component.form.get('displayName')?.asyncValidator).not.toEqual(null);
+      expect(component.form.valid).toBe(false);
+    });
+
+    it('should modify form values when updating a courthouse', () => {
+      const updateCourthouse = {
+        courthouseName: 'COURTHOUSE',
+        displayName: 'Courthouse',
+        regionId: '1',
+        securityGroupIds: ['1', '2'],
+      };
+      component.updateCourthouse = updateCourthouse;
+
+      component.ngOnInit();
+
+      expect(component.form.value).toEqual(updateCourthouse);
+      expect(component.form.get('courthouseName')?.asyncValidator).not.toEqual(null);
+      expect(component.form.get('displayName')?.asyncValidator).not.toEqual(null);
+      expect(component.form.valid).toBe(false);
+    });
+
+    it('should provide empty string on no region', () => {
+      const updateCourthouse = {
+        courthouseName: 'COURTHOUSE',
+        displayName: 'Courthouse',
+        regionId: undefined,
+        securityGroupIds: ['1', '2'],
+      };
+      component.updateCourthouse = updateCourthouse;
+
+      component.ngOnInit();
+
+      expect(component.form.get('regionId')?.value).toEqual('');
       expect(component.form.valid).toBe(false);
     });
   });

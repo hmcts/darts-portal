@@ -76,30 +76,11 @@ export class CreateUpdateCourthouseFormComponent implements OnInit {
         courthouseName: this.updateCourthouse.courthouseName,
         displayName: this.updateCourthouse.displayName,
         regionId: this.updateCourthouse?.regionId?.toString() || '',
-        securityGroupIds: [],
+        securityGroupIds: this.updateCourthouse?.securityGroupIds,
       });
-
-      this.setCourthouseNameUpdateValidation();
 
       this.form.updateValueAndValidity();
     }
-  }
-
-  private setCourthouseNameUpdateValidation() {
-    const courthouseNameControl = this.form.get('courthouseName')!;
-
-    courthouseNameControl.setAsyncValidators([]);
-
-    courthouseNameControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((newCourthouseName) => {
-      if (newCourthouseName === this.updateCourthouse?.courthouseName) {
-        // Remove the email exists validator for email if we are updating a courthouse and the email has not changed
-        courthouseNameControl.setAsyncValidators([]);
-      } else {
-        // Add the email exists validator for email if we are updating a courthouse and the email has changed
-        courthouseNameControl.setAsyncValidators([this.nameExistsValidator]);
-      }
-      this.displayNameControl.updateValueAndValidity({ emitEvent: false });
-    });
   }
 
   onSubmit() {
@@ -124,11 +105,6 @@ export class CreateUpdateCourthouseFormComponent implements OnInit {
 
   formatNameToId(value: string) {
     return value.toLowerCase().replace(' ', '-');
-  }
-
-  radioIsChecked(regionId: number | undefined) {
-    const newRegionId = regionId?.toString();
-    return newRegionId === this.regionControl.value;
   }
 
   onCancel() {
@@ -162,7 +138,7 @@ export class CreateUpdateCourthouseFormComponent implements OnInit {
 
   removeCompany(id: number) {
     const removeCompanyIndex = this.selectedCompanies.findIndex((company) => company.id === id);
-    if (removeCompanyIndex <= 0) {
+    if (removeCompanyIndex >= 0) {
       this.securityGroupsControl.patchValue([]);
       this.selectedCompanies.splice(removeCompanyIndex, 1);
     }

@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CreateUpdateCourthouseConfirmationComponent } from './create-update-courthouse-confirmation.component';
+import { CreateUpdateCourthouseFormValues } from '@admin-types/index';
 
 describe('CreateUpdateCourthouseConfirmationComponent', () => {
   let component: CreateUpdateCourthouseConfirmationComponent;
@@ -18,5 +19,66 @@ describe('CreateUpdateCourthouseConfirmationComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('ngOnChanges', () => {
+    describe('should update courthouseDetails with mapped form values', () => {
+      it('when regionId is included', () => {
+        component.companies = [
+          { id: 0, name: 'Company 1' },
+          { id: 1, name: 'Company 2' },
+        ];
+        component.regions = [
+          { id: 0, name: 'Region 1' },
+          { id: 1, name: 'Region 2' },
+        ];
+        const values: CreateUpdateCourthouseFormValues = {
+          courthouseName: 'TEST',
+          displayName: 'Test',
+          regionId: '0',
+          securityGroupIds: ['0'],
+        };
+
+        const expectedUserDetails = {
+          'Courthouse name': 'TEST',
+          'Display name': 'Test',
+          Region: 'Region 1',
+          'Transcription companies': 'Company 1',
+        };
+
+        component.values = values;
+        component.ngOnChanges();
+
+        expect(component.courthouseDetails).toEqual(expectedUserDetails);
+      });
+      it('when regionId is NOT included', () => {
+        component.companies = [
+          { id: 0, name: 'Company 1' },
+          { id: 1, name: 'Company 2' },
+        ];
+        component.regions = [
+          { id: 0, name: 'Region 1' },
+          { id: 1, name: 'Region 2' },
+        ];
+        const values: CreateUpdateCourthouseFormValues = {
+          courthouseName: 'TEST',
+          displayName: 'Test',
+          regionId: undefined,
+          securityGroupIds: ['0'],
+        };
+
+        const expectedUserDetails = {
+          'Courthouse name': 'TEST',
+          'Display name': 'Test',
+          Region: 'No region',
+          'Transcription companies': 'Company 1',
+        };
+
+        component.values = values;
+        component.ngOnChanges();
+
+        expect(component.courthouseDetails).toEqual(expectedUserDetails);
+      });
+    });
   });
 });

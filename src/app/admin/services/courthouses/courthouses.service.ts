@@ -71,7 +71,7 @@ export class CourthouseService {
         );
         if (transcriberRole) {
           return this.http
-            .get<SecurityGroupData[]>(`${GET_SECURITY_GROUPS_PATH}/?role-ids=${transcriberRole.id}`)
+            .get<SecurityGroupData[]>(`${GET_SECURITY_GROUPS_PATH}?role-ids=${transcriberRole.id}`)
             .pipe(map((securityGroups) => this.mapToSecurityGroupData(securityGroups)));
         }
         return of([]);
