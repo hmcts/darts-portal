@@ -9,7 +9,7 @@ import { DateTime } from 'luxon';
 import { USER_ADMIN_PATH, USER_ADMIN_SEARCH_PATH, UserAdminService } from './user-admin.service';
 
 export const ADMIN_GET_USER = 'api/admin/users';
-export const ADMIN_GET_SECURITY_GROUPS = 'api/admin/security-groups';
+export const ADMIN_GET_SECURITY_GROUPS = '/api/admin/security-groups';
 export const ADMIN_GET_SECURITY_ROLES = 'api/admin/security-roles';
 
 describe('UserAdminService', () => {
