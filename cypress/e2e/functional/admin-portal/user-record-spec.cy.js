@@ -64,6 +64,8 @@ describe('Admin - User record screen', () => {
     });
 
     it('Verify inactive user details', () => {
+      cy.get('#allUsers').click();
+      cy.get('button[type="submit"]').click();
       cy.get('app-user-search-results').should('contain', 'Peter Wright');
 
       cy.get('td').contains('Peter Wright').parents('tr').contains('View').click();

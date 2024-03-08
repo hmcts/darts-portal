@@ -37,18 +37,18 @@ const USERS = stubUsers.map((stubUser) => {
 router.post('/search', (req, res) => {
   const searchFullName = req?.body?.full_name?.toLowerCase() || '';
   const searchEmailAddress = req?.body?.email_address?.toLowerCase() || '';
-  const active = !!req?.body?.active;
+  const active = req?.body?.active;
   if (searchFullName === 'NO_RESULTS') {
     return res.send([]);
   }
-  return res.send(
-    USERS.filter(
-      (user) =>
-        user.full_name.toLowerCase().includes(searchFullName) &&
-        user.email_address.toLowerCase().includes(searchEmailAddress) &&
-        user.active === active
-    )
+  const users = USERS.filter(
+    (user) =>
+      user.full_name.toLowerCase().includes(searchFullName) &&
+      user.email_address.toLowerCase().includes(searchEmailAddress)
   );
+  if (active === null || typeof active === 'undefined') return res.send(users);
+
+  res.send(users.filter((user) => user.active === !!active));
 });
 
 router.get('/:userid', (req, res) => {
