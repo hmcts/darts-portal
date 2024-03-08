@@ -16,7 +16,6 @@ import {
   GET_COURTHOUSE_REGIONS_PATH,
 } from './courthouses.service';
 import { SecurityRole } from '@admin-types/index';
-import { HttpErrorResponse } from '@angular/common/http';
 
 describe('CourthouseService', () => {
   let service: CourthouseService;
