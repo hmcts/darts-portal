@@ -5,7 +5,6 @@ import { Region } from '@admin-types/courthouses/region.interface';
 import { CreateUpdateCourthouseFormValues, SecurityRoleData } from '@admin-types/index';
 import { SecurityGroupData } from '@admin-types/users/security-group.interface';
 import { SecurityGroup } from '@admin-types/users/security-group.type';
-import { SecurityRole } from '@admin-types/users/security-role.type';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CourthouseData } from '@core-types/index';
