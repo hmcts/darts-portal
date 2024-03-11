@@ -14,7 +14,7 @@ const controlErrors: FieldErrors = {
   },
   email: {
     required: 'Enter an email address',
-    email: 'Enter a valid email address',
+    email: 'Enter an email address in the correct format, like name@example.com',
     emailExists: 'Enter a unique email address',
   },
   description: {
