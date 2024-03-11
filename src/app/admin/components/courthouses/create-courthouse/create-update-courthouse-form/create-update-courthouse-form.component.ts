@@ -86,7 +86,7 @@ export class CreateUpdateCourthouseFormComponent implements OnInit {
   onSubmit() {
     this.form.markAllAsTouched();
 
-    if (this.form.invalid) {
+    if (!this.form.valid) {
       this.form.statusChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
         this.errors.emit(this.formService.getErrorSummary(this.form, controlErrors));
       });
