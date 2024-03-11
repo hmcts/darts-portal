@@ -55,8 +55,7 @@ describe('CreateUpdateCourthouseFormComponent', () => {
 
   beforeEach(async () => {
     mockCourthouseService = {
-      doesCourthouseNameExist: jest.fn(() => of(false)),
-      doesDisplayNameExist: jest.fn(() => of(false)),
+      getCourthouses: jest.fn(() => of([])),
     };
     await TestBed.configureTestingModule({
       imports: [CreateUpdateCourthouseFormComponent],
