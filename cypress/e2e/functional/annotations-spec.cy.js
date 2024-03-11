@@ -59,7 +59,7 @@ describe('Annotations', () => {
 
     cy.contains('C20220620001').click();
 
-    cy.get('#annotation-count').should('contain', '2');
+    cy.get('#annotations-tab .count').should('contain', '2');
 
     cy.a11y();
   });
@@ -75,7 +75,7 @@ describe('Annotations', () => {
 
     cy.contains('C20220620003').click();
 
-    cy.get('#annotation-count').should('contain', '');
+    cy.get('#annotations-tab .count').should('not.exist');
 
     cy.contains('All annotations').click();
 
@@ -108,7 +108,7 @@ describe('Annotations', () => {
 
     cy.get('a.moj-sub-navigation__link').should('contain', 'Annotations');
     // Now we've gone to the hearing page, the annotation count should only be one
-    cy.get('#annotation-count').should('contain', '1');
+    cy.get('#annotations-tab .count').should('contain', '1');
     cy.get('#annotationsTable')
       .find('tr')
       .then((rows) => {
@@ -167,7 +167,7 @@ describe('Annotations', () => {
 
     cy.contains('C20220620001').click();
 
-    cy.get('#annotation-count').should('contain', '2');
+    cy.get('#annotations-tab .count').should('contain', '2');
 
     cy.contains('All annotations').click();
 

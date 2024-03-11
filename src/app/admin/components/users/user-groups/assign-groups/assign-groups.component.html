@@ -1,10 +1,10 @@
 <app-govuk-heading>Assign groups</app-govuk-heading>
 
-@if (data$ | async; as data) {
+@if (groups$ | async; as groups) {
   <app-security-group-selector
-    [groups]="data.groups"
+    [groups]="groups"
     [selectedGroupIds]="user.securityGroupIds"
-    (assign)="onAssign($event, data.hiddenGroups)"
+    (assign)="onAssign($event)"
     (cancel)="onCancel()"
   ></app-security-group-selector>
 } @else {

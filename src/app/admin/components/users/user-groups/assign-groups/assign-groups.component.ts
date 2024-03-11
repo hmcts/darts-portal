@@ -1,4 +1,4 @@
-import { User } from '@admin-types/index';
+import { SecurityGroup, User } from '@admin-types/index';
 import { AsyncPipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
@@ -6,8 +6,7 @@ import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.compo
 import { LoadingComponent } from '@common/loading/loading.component';
 import { HeaderService } from '@services/header/header.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
-import { Observable, combineLatest, shareReplay } from 'rxjs';
-import { map } from 'rxjs/internal/operators/map';
+import { Observable, map } from 'rxjs';
 import { SecurityGroupSelectorComponent, UserGroup } from './security-group-selector/security-group-selector.component';
 
 @Component({
@@ -24,27 +23,13 @@ export class AssignGroupsComponent implements OnInit, OnDestroy {
 
   user = this.router.getCurrentNavigation()?.extras.state?.user as User;
 
+  // store the hidden groups so we can put them back in when assigning
+  usersHiddenGroups = this.user?.securityGroups?.filter((group) => !group.role?.displayState) ?? [];
+
   groups$: Observable<UserGroup[]> = this.userAdminService
     .getSecurityGroupsWithRoles()
-    .pipe(
-      map((groups) =>
-        groups.map((group) => ({
-          id: group.id,
-          name: group.name,
-          role: group.role?.name as string,
-          displayState: group.role?.displayState as boolean,
-        }))
-      )
-    )
-    .pipe(shareReplay(1));
-
-  visibleGroups$ = this.groups$.pipe(map((groups) => groups.filter((group) => group.displayState)));
-  hiddenGroups$ = this.groups$.pipe(map((groups) => groups.filter((group) => !group.displayState)));
-
-  data$ = combineLatest({
-    groups: this.visibleGroups$,
-    hiddenGroups: this.hiddenGroups$,
-  });
+    .pipe(map(this.mapSecurityGroupsToUserGroups)) // map to view model
+    .pipe(map((groups) => groups.filter((group) => group.displayState))); // filter out hidden groups for the UI
 
   ngOnInit() {
     if (!this.user) {
@@ -54,13 +39,16 @@ export class AssignGroupsComponent implements OnInit, OnDestroy {
     this.headerService.hideNavigation();
   }
 
-  onAssign(groups: UserGroup[], hiddenGroups: UserGroup[]) {
-    const groupIds = groups.concat(hiddenGroups).map((group) => group.id);
-    const assignedCount = groupIds.length - hiddenGroups.length;
+  onAssign(selectedGroups: UserGroup[]) {
+    const selectedGroupIds = selectedGroups.map((group) => group.id);
+    const usersHiddenGroupIds = this.usersHiddenGroups.map((group) => group.id);
 
-    this.userAdminService.assignGroups(this.user.id, groupIds).subscribe(() =>
+    // put the hidden groups back in
+    const groupsToAssign = selectedGroupIds.concat(usersHiddenGroupIds);
+
+    this.userAdminService.assignGroups(this.user.id, groupsToAssign).subscribe(() =>
       this.router.navigate(['admin', 'users', this.user.id], {
-        queryParams: { assigned: assignedCount, tab: 'Groups' },
+        queryParams: { assigned: selectedGroupIds.length, tab: 'Groups' },
       })
     );
   }
@@ -71,5 +59,14 @@ export class AssignGroupsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.headerService.showNavigation();
+  }
+
+  mapSecurityGroupsToUserGroups(groups: SecurityGroup[]): UserGroup[] {
+    return groups.map((group) => ({
+      id: group.id,
+      name: group.name,
+      role: group.role?.name as string,
+      displayState: group.role?.displayState as boolean,
+    }));
   }
 }

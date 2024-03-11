@@ -62,7 +62,7 @@
           ></app-events-and-audio>
         </div>
         <ng-container *ngIf="transcripts$ | async as transcripts">
-          <div *tab="'Transcripts'; count: transcripts.length; id: 'transcription-count'">
+          <div *tab="'Transcripts'; count: transcripts.length; id: 'transcripts-tab'">
             <div class="flex-space-between">
               <h2 class="govuk-heading-m">Transcripts for this hearing</h2>
               <button
@@ -98,7 +98,7 @@
             </app-data-table>
           </div>
           @if (vm.annotations) {
-            <div *tab="'Annotations'; id: 'annotation-count'; count: vm.annotations.length">
+            <div *tab="'Annotations'; id: 'annotations-tab'; count: vm.annotations.length">
               <div class="flex-space-between">
                 <h2 class="govuk-heading-m">Annotations</h2>
               </div>

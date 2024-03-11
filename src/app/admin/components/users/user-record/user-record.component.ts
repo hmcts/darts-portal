@@ -1,5 +1,3 @@
-import { User } from '@admin-types/index';
-import { SecurityGroup } from '@admin-types/users/security-group.type';
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,13 +6,17 @@ import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.componen
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
+import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { NotFoundComponent } from '@components/error/not-found/not-found.component';
+import { ErrorSummaryEntry } from '@core-types/index';
 import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
+import { shareReplay } from 'rxjs';
 import { map } from 'rxjs/internal/operators/map';
 import { DataTableComponent } from '../../../../core/components/common/data-table/data-table.component';
+import { UserGroupsComponent } from '../user-groups/user-groups/user-groups.component';
 
 @Component({
   selector: 'app-user-record',
@@ -33,30 +35,20 @@ import { DataTableComponent } from '../../../../core/components/common/data-tabl
     DataTableComponent,
     GovukHeadingComponent,
     TableRowTemplateDirective,
+    UserGroupsComponent,
+    ValidationErrorSummaryComponent,
   ],
 })
 export class UserRecordComponent {
   userAdminSvc = inject(UserAdminService);
   route = inject(ActivatedRoute);
   router = inject(Router);
+  errors: ErrorSummaryEntry[] = [];
 
-  user$ = this.userAdminSvc.getUser(this.route.snapshot.params.userId).pipe(map(this.filterSecurityGroups));
+  user$ = this.userAdminSvc.getUser(this.route.snapshot.params.userId).pipe(shareReplay(1));
   isNewUser$ = this.route.queryParams.pipe(map((params) => !!params.newUser));
   isUpdatedUser$ = this.route.queryParams.pipe(map((params) => !!params.updated));
-  isAssignedGroups$ = this.route.queryParams.pipe(map((params) => params.assigned));
+  hasAssignedGroups$ = this.route.queryParams.pipe(map((params) => params.assigned));
+  hasRemovedGroups$ = this.route.queryParams.pipe(map((params) => params.groupsRemoved));
   tab$ = this.route.queryParams.pipe(map((params) => params.tab));
-
-  selectedGroups: SecurityGroup[] = [];
-
-  groupColumns = [
-    { name: 'Name', prop: 'name', sortable: false },
-    { name: 'Role', prop: 'role', sortable: false },
-  ];
-
-  private filterSecurityGroups(user: User) {
-    return {
-      ...user,
-      securityGroups: user.securityGroups?.filter((group) => group.role?.displayState) ?? [],
-    };
-  }
 }

@@ -17,7 +17,7 @@
 <h1 class="govuk-heading-l">Your work</h1>
 <ng-container *ngIf="requesterRequests$ | async as requests; else loading">
   <app-tabs>
-    <div *tab="'To do'; id: 'todoTab'; count: requests.todoRequests.length; id: 'transcription-count'">
+    <div *tab="'To do'; id: 'todo-tab'; count: requests.todoRequests.length">
       <h2 class="govuk-heading-m">To do</h2>
       <app-data-table
         id="todoTable"
@@ -32,7 +32,7 @@
         </ng-template>
       </app-data-table>
     </div>
-    <div *tab="'Completed today'; id: 'completedTab'">
+    <div *tab="'Completed today'; id: 'completed-tab'">
       <h2 class="govuk-heading-m" tabindex="0">Completed today</h2>
       <app-data-table
         id="completedTable"
