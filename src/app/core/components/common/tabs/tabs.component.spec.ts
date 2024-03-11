@@ -9,6 +9,7 @@ import { TabsComponent } from './tabs.component';
     <app-tabs>
       <div *tab="'Tab 1'">Content for Tab 1</div>
       <div *tab="'Tab 2'">Content for Tab 2</div>
+      <div *tab="'Tab 3'; screenReaderText: 'text for screen reader'">Content for Tab 3</div>
     </app-tabs>
   `,
   standalone: true,
@@ -63,5 +64,14 @@ describe('TabsComponent', () => {
     secondTabLink.click();
     fixture.detectChanges();
     expect(tabChangeSpy).toBeCalled();
+  });
+
+  it('should set the screen reader text for the tab', () => {
+    fixture.detectChanges();
+    const thirdTab = fixture.nativeElement.querySelectorAll('.moj-sub-navigation__link')[2];
+
+    const expectedHTML = '<span class="govuk-visually-hidden">text for screen reader</span>';
+
+    expect(thirdTab.innerHTML.includes(expectedHTML)).toBeTruthy();
   });
 });

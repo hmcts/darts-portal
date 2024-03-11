@@ -9,5 +9,6 @@ export class TabDirective {
   @Input('tab') name!: string;
   @Input('tabCount') count?: number;
   @Input('tabId') id?: string;
+  @Input('tabScreenReaderText') screenReaderText?: string;
   constructor(public template: TemplateRef<unknown>) {}
 }
