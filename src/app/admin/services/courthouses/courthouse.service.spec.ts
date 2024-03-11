@@ -15,7 +15,7 @@ import {
   GET_SECURITY_GROUPS_PATH,
   GET_COURTHOUSE_REGIONS_PATH,
 } from './courthouses.service';
-import { SecurityRole } from '@admin-types/index';
+import { SecurityRole, SecurityRoleData } from '@admin-types/index';
 
 describe('CourthouseService', () => {
   let service: CourthouseService;
@@ -270,7 +270,9 @@ describe('CourthouseService', () => {
 
   describe('#getCourthouseTranscriptionCompanies', () => {
     it('should return companies if there is a transcriber role', () => {
-      const mockSecurityRoles: SecurityRole[] = [{ id: 99, name: 'TRANSCRIBER', displayState: true }];
+      const mockSecurityRoles: SecurityRoleData[] = [
+        { id: 99, role_name: 'TRANSCRIBER', display_name: 'Transcriber', display_state: true },
+      ];
 
       service.getCourthouseTranscriptionCompanies().subscribe((securityGroups: SecurityGroup[]) => {
         expect(securityGroups).toEqual(mockSecurityRoles);
@@ -293,7 +295,9 @@ describe('CourthouseService', () => {
     });
 
     it('should return empty if there is not a transcriber role', () => {
-      const mockSecurityRoles: SecurityRole[] = [{ id: 1, name: 'NOT A TRANSCRIBER', displayState: true }];
+      const mockSecurityRoles: SecurityRoleData[] = [
+        { id: 1, role_name: 'NOT A TRANSCRIBER', display_name: 'I am not a Transcriber', display_state: true },
+      ];
 
       service.getCourthouseTranscriptionCompanies().subscribe((securityGroups: SecurityGroup[]) => {
         expect(securityGroups).toEqual(mockSecurityRoles);
