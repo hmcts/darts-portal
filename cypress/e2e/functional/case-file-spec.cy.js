@@ -73,7 +73,7 @@ describe('Case file screen', () => {
       });
 
       it('Transcript count', () => {
-        cy.get('#transcription-count').should('contain', '7');
+        cy.get('#transcripts-tab .count').should('contain', '7');
       });
 
       it('Displays table of transcripts', () => {
@@ -95,7 +95,7 @@ describe('Case file screen', () => {
       });
 
       it('Annotations count', () => {
-        cy.get('#annotation-count').should('contain', '2');
+        cy.get('#annotations-tab .count').should('contain', '2');
       });
 
       it('Displays table of annotations', () => {

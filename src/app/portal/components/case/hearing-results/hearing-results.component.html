@@ -14,7 +14,7 @@
     </app-data-table>
   </div>
 
-  <div *tab="'All Transcripts'; count: transcripts.length; id: 'transcription-count'">
+  <div *tab="'All Transcripts'; count: transcripts.length; id: 'transcripts-tab'">
     <h2 class="govuk-heading-m">All transcripts for this case</h2>
     <app-data-table
       id="transcriptsTable"
@@ -40,7 +40,7 @@
   </div>
   @if (userService.isJudge() || userService.isAdmin()) {
     @if (annotations) {
-      <div *tab="'All annotations'; count: annotations.length; id: 'annotation-count'">
+      <div *tab="'All annotations'; count: annotations.length; id: 'annotations-tab'">
         <app-govuk-heading [size]="'m'" [tag]="'h2'">All annotations</app-govuk-heading>
         <app-data-table
           id="annotationsTable"

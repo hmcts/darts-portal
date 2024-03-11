@@ -4,7 +4,7 @@
       <a
         class="moj-sub-navigation__link"
         [attr.aria-current]="tab.template === currentTab ? 'page' : null"
-        [attr.id]="(tab.id || tab.name) + '-tab'"
+        [id]="tab.id || null"
         href="#"
         (click)="onTabClick($event, tab)"
       >
@@ -13,7 +13,7 @@
         }
         {{ tab.name }}
         <ng-container *ngIf="tab.count">
-          <span [id]="tab.id" class="moj-notification-badge">
+          <span class="moj-notification-badge count">
             {{ tab.count }}
           </span>
         </ng-container>

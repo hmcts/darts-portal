@@ -74,7 +74,7 @@
           ></app-details-table>
         </div>
 
-        <div *tab="'Groups'; screenReaderText: 'User Groups'">
+        <div *tab="'Groups'; screenReaderText: 'User Groups'; id: 'groups-tab'">
           <app-user-groups [user]="user" (errors)="errors = $event" />
         </div>
 

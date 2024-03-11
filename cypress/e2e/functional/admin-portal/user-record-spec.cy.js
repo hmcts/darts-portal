@@ -169,7 +169,7 @@ describe('Admin - User record screen', () => {
       cy.get('app-user-search-results').should('contain', 'Fallon Sherrock');
       cy.contains('Fallon Sherrock').parents('tr').contains('View').click();
 
-      cy.get('#Groups-tab').click();
+      cy.get('#groups-tab').click();
 
       cy.contains('h2', 'Groups').should('exist');
 
@@ -183,7 +183,7 @@ describe('Admin - User record screen', () => {
       cy.get('app-user-search-results').should('contain', 'Fallon Sherrock');
       cy.contains('Fallon Sherrock').parents('tr').contains('View').click();
 
-      cy.get('#Groups-tab').click();
+      cy.get('#groups-tab').click();
 
       cy.get('button').contains('Assign groups').click();
 
@@ -210,7 +210,7 @@ describe('Admin - User record screen', () => {
       cy.get('app-user-search-results').should('contain', 'Fallon Sherrock');
       cy.contains('Fallon Sherrock').parents('tr').contains('View').click();
 
-      cy.get('#Groups-tab').click();
+      cy.get('#groups-tab').click();
 
       cy.tableRowShouldContain('Judiciary', 'Approver');
       cy.checkGroup('Judiciary');
