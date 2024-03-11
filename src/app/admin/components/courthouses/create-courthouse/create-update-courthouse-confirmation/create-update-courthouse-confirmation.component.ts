@@ -1,6 +1,5 @@
 import { Region } from '@admin-types/courthouses/region.interface';
-import { CreateUpdateCourthouseFormValues } from '@admin-types/index';
-import { SecurityRole } from '@admin-types/users/security-role.type';
+import { CreateUpdateCourthouseFormValues, SecurityGroup } from '@admin-types/index';
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
 
@@ -26,7 +25,7 @@ export class CreateUpdateCourthouseConfirmationComponent implements OnChanges {
     securityGroupIds: [],
   };
   @Input() regions!: Region[];
-  @Input() companies!: SecurityRole[];
+  @Input() companies!: SecurityGroup[];
   @Output() confirm = new EventEmitter<void>();
   @Output() back = new EventEmitter<void>();
   @Output() cancel = new EventEmitter<void>();

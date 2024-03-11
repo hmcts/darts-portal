@@ -270,7 +270,7 @@ describe('CourthouseService', () => {
 
   describe('#getCourthouseTranscriptionCompanies', () => {
     it('should return companies if there is a transcriber role', () => {
-      const mockSecurityRoles: SecurityRole[] = [{ id: 99, name: 'TRANSCRIBER' }];
+      const mockSecurityRoles: SecurityRole[] = [{ id: 99, name: 'TRANSCRIBER', displayState: true }];
 
       service.getCourthouseTranscriptionCompanies().subscribe((securityGroups: SecurityGroup[]) => {
         expect(securityGroups).toEqual(mockSecurityRoles);
@@ -293,7 +293,7 @@ describe('CourthouseService', () => {
     });
 
     it('should return empty if there is not a transcriber role', () => {
-      const mockSecurityRoles: SecurityRole[] = [{ id: 1, name: 'NOT A TRANSCRIBER' }];
+      const mockSecurityRoles: SecurityRole[] = [{ id: 1, name: 'NOT A TRANSCRIBER', displayState: true }];
 
       service.getCourthouseTranscriptionCompanies().subscribe((securityGroups: SecurityGroup[]) => {
         expect(securityGroups).toEqual(mockSecurityRoles);
