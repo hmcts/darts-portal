@@ -115,4 +115,38 @@ describe('Admin - Courthouses screen', () => {
 
     // cy.a11y(); TO DO: This breaks the test for some reason
   });
+
+  it('Create courthouse', () => {
+    cy.contains('button.govuk-button', 'Create new courthouse').click();
+
+    cy.contains('span', 'Create courthouse').should('exist');
+    cy.contains('h1', 'Courthouse details').should('exist');
+
+    cy.contains('button.govuk-button', 'Continue').click();
+
+    // Errors
+    cy.get('.govuk-error-summary').should('contain', 'Enter a courthouse code');
+    cy.get('.courthouse-name-error').should('contain', 'Enter a courthouse code');
+    cy.get('.govuk-error-summary').should('contain', 'Enter a display name');
+    cy.get('.display-name-error').should('contain', 'Enter a display name');
+    cy.get('.govuk-error-summary').should('contain', 'Select a region');
+    cy.get('.region-error').should('contain', 'Select a region');
+
+    cy.get('#courthouse-name').type('READING');
+    cy.get('.govuk-error-summary').should('contain', 'The courthouse code you entered exists already');
+    cy.get('.courthouse-name-error').should('contain', 'The courthouse code you entered exists already');
+    cy.get('#courthouse-name').clear();
+
+    cy.get('#display-name').type('Reading');
+    cy.get('.govuk-error-summary').should('contain', 'The display name you entered exists already');
+    cy.get('.display-name-error').should('contain', 'The display name you entered exists already');
+    cy.get('#display-name').clear();
+
+    cy.get('#courthouse-name').type('COURTHOUSE');
+    cy.get('#display-name').type('Courthouse');
+    cy.get('#wales-radio').click();
+    cy.contains('.govuk-button', 'Continue').click();
+
+    // cy.a11y(); TO DO: This breaks the test for some reason
+  });
 });
