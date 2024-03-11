@@ -37,7 +37,7 @@ export class CreateUpdateCourthouseConfirmationComponent implements OnChanges {
   }
 
   private mapFormValuesToDetailsTable(values: CreateUpdateCourthouseFormValues): courthouseDetailsVM {
-    const regionId = values?.regionId;
+    const regionId = values?.regionId?.toString();
     let region;
     if (regionId) {
       region = this.regions?.find((region) => region.id === parseInt(regionId));

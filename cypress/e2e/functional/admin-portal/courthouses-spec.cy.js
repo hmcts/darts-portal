@@ -145,8 +145,9 @@ describe('Admin - Courthouses screen', () => {
     cy.get('#courthouse-name').type('COURTHOUSE');
     cy.get('#display-name').type('Courthouse');
     cy.get('#wales-radio').click();
-    cy.contains('.govuk-button', 'Continue').click();
 
-    // cy.a11y(); TO DO: This breaks the test for some reason
+    cy.contains('.govuk-button', 'Continue').click();
+    cy.contains('h1', 'Check details').should('exist');
+    cy.contains('.govuk-button', 'Create courthouse').click();
   });
 });
