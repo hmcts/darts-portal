@@ -1,6 +1,7 @@
 import { CourthouseSearchFormValues } from '@admin-types/courthouses/courthouse-search-form-values.type';
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { SecurityGroup } from '@admin-types/users/security-group.type';
+import { SecurityRoleData } from '@admin-types/index';
 import { Region } from '@admin-types/courthouses/region.interface';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
@@ -15,7 +16,6 @@ import {
   GET_SECURITY_GROUPS_PATH,
   GET_COURTHOUSE_REGIONS_PATH,
 } from './courthouses.service';
-import { SecurityRole, SecurityRoleData } from '@admin-types/index';
 
 describe('CourthouseService', () => {
   let service: CourthouseService;
