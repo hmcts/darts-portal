@@ -2,7 +2,7 @@ import { CourthouseSearchFormValues } from '@admin-types/courthouses/courthouse-
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { CreateCourthouseRequest } from '@admin-types/courthouses/create-courthouse-request.type';
 import { Region } from '@admin-types/courthouses/region.interface';
-import { CreateUpdateCourthouseFormValues } from '@admin-types/index';
+import { CreateUpdateCourthouseFormValues, SecurityRoleData } from '@admin-types/index';
 import { SecurityGroupData } from '@admin-types/users/security-group.interface';
 import { SecurityGroup } from '@admin-types/users/security-group.type';
 import { SecurityRole } from '@admin-types/users/security-role.type';
@@ -64,10 +64,10 @@ export class CourthouseService {
   }
 
   getCourthouseTranscriptionCompanies(): Observable<SecurityGroup[]> {
-    return this.http.get<SecurityRole[]>(`${GET_SECURITY_ROLES_PATH}`).pipe(
+    return this.http.get<SecurityRoleData[]>(`${GET_SECURITY_ROLES_PATH}`).pipe(
       switchMap((securityRoles) => {
         const transcriberRole = securityRoles.find(
-          (securityGroup: SecurityRole) => securityGroup.name === 'TRANSCRIBER'
+          (securityGroup: SecurityRoleData) => securityGroup.role_name === 'TRANSCRIBER'
         );
         if (transcriberRole) {
           return this.http

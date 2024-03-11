@@ -47,7 +47,10 @@ const defaultSecurityRoles = [
 
 router.get('/', (_, res) => {
   res.send(
-    defaultSecurityRoles.map((securityRole) => ({ ...securityRole, name: securityRole.display_name.toUpperCase() }))
+    defaultSecurityRoles.map((securityRole) => ({
+      ...securityRole,
+      role_name: securityRole.display_name.toUpperCase(),
+    }))
   );
 });
 
