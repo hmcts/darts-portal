@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { CreateUpdateUserFormValues } from '@admin-types/index';
+import { By } from '@angular/platform-browser';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { of } from 'rxjs';
 import { CreateUpdateUserFormComponent } from './create-update-user-form.component';
@@ -10,6 +11,7 @@ type formValidationTestCase = {
   data: CreateUpdateUserFormValues;
   validity: boolean;
   emailExists: boolean;
+  errorText?: string;
 };
 
 const formValidationTestCases: formValidationTestCase[] = [
@@ -24,30 +26,41 @@ const formValidationTestCases: formValidationTestCase[] = [
     data: { fullName: '', email: 'test@user.com', description: 'A test user' },
     validity: false,
     emailExists: false,
+    errorText: 'Enter a full name',
   },
   {
     name: 'invalid when email is empty',
     data: { fullName: 'Test User', email: '', description: 'A test user' },
     validity: false,
     emailExists: false,
+    errorText: 'Enter an email address',
   },
   {
     name: 'invalid when email is not a valid email',
     data: { fullName: 'Test User', email: 'test', description: 'A test user' },
     validity: false,
     emailExists: false,
+    errorText: 'Enter an email address in the correct format, like name@example.com',
   },
   {
     name: 'invalid when email already exists in DB',
     data: { fullName: 'Test User', email: 'test@user.com', description: 'A test user' },
     validity: false,
     emailExists: true,
+    errorText: 'Enter a unique email address',
   },
   {
     name: 'valid when optional description is empty',
     data: { fullName: 'Test User', email: 'test@user.com', description: null },
     validity: true,
     emailExists: false,
+  },
+  {
+    name: 'invalid when optional description is too long',
+    data: { fullName: 'Test User', email: 'test@test.com', description: 'A'.repeat(257) },
+    validity: false,
+    emailExists: false,
+    errorText: 'Enter a description shorter than 256 characters',
   },
 ];
 
@@ -133,7 +146,19 @@ describe('CreateUpdateUserFormComponent', () => {
           component.form.get('description')?.setValue(test.data.description);
 
           tick(500); // wait for async validators to complete
+
+          component.form.markAllAsTouched();
           component.form.updateValueAndValidity();
+
+          if (test.errorText) {
+            fixture.detectChanges();
+
+            const errorText = fixture.debugElement
+              .queryAll(By.css('.govuk-error-message'))
+              .find((el) => el.nativeElement.textContent.includes(test.errorText));
+
+            expect(errorText).toBeTruthy();
+          }
 
           expect(component.form.valid).toBe(test.validity);
         })
