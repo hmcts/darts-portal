@@ -30,13 +30,8 @@ export class UserAdminService {
   getUser(userId: number): Observable<User> {
     return forkJoin({
       userData: this.http.get<UserData>(`${USER_ADMIN_PATH}/${userId}`),
-      securityGroups: this.getSecurityGroups(),
-      securityRoles: this.getSecurityRoles(),
-    }).pipe(
-      map(({ userData, securityGroups, securityRoles }) => {
-        return this.mapUserWithSecurityGroups(userData, securityGroups, securityRoles);
-      })
-    );
+      securityGroups: this.getSecurityGroupsWithRoles(),
+    }).pipe(map(({ userData, securityGroups }) => this.mapUserWithSecurityGroups(userData, securityGroups)));
   }
 
   createUser(user: CreateUpdateUserFormValues): Observable<User> {
@@ -49,6 +44,14 @@ export class UserAdminService {
         full_name: updatedUser.fullName,
         email_address: updatedUser.email,
         description: updatedUser.description,
+      })
+      .pipe(map(this.mapUser));
+  }
+
+  assignGroups(id: number, securityGroupIds: number[]) {
+    return this.http
+      .patch<UserData>(`${USER_ADMIN_PATH}/${id}`, {
+        security_group_ids: securityGroupIds,
       })
       .pipe(map(this.mapUser));
   }
@@ -74,13 +77,26 @@ export class UserAdminService {
   getSecurityRoles(): Observable<SecurityRole[]> {
     return this.http.get<SecurityRoleData[]>(`${GET_SECURITY_ROLES_PATH}`).pipe(
       map((roles) => {
-        return roles
-          .filter((role) => role.display_state)
-          .map((role) => ({
-            id: role.id,
-            name: role.display_name,
-          }));
+        return roles.map((role) => ({
+          id: role.id,
+          name: role.display_name,
+          displayState: role.display_state,
+        }));
       })
+    );
+  }
+
+  getSecurityGroupsWithRoles(): Observable<SecurityGroup[]> {
+    return forkJoin({
+      groups: this.getSecurityGroups(),
+      roles: this.getSecurityRoles(),
+    }).pipe(
+      map(({ groups, roles }) =>
+        groups.map((group) => {
+          const role = roles.find((r) => r.id === group.securityRoleId);
+          return { ...group, role };
+        })
+      )
     );
   }
 
@@ -130,16 +146,7 @@ export class UserAdminService {
     };
   }
 
-  private mapUserWithSecurityGroups(
-    user: UserData,
-    securityGroups: SecurityGroup[],
-    securityRoles: SecurityRole[]
-  ): User {
-    const userSecurityGroups = securityGroups.map((group) => {
-      const role = securityRoles.find((role) => role.id === group.securityRoleId);
-      return { ...group, role }; // Add the role to the security group
-    });
-
+  private mapUserWithSecurityGroups(user: UserData, securityGroups: SecurityGroup[]): User {
     return {
       id: user.id,
       lastLoginAt: DateTime.fromISO(user.last_login_at),
@@ -150,7 +157,7 @@ export class UserAdminService {
       description: user.description,
       active: user.active,
       securityGroupIds: user.security_group_ids,
-      securityGroups: userSecurityGroups,
+      securityGroups: user.security_group_ids.map((id) => securityGroups.find((group) => group.id === id)!),
     };
   }
 }

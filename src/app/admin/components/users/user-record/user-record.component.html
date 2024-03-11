@@ -7,6 +7,9 @@
   @if (isUpdatedUser$ | async) {
     <app-govuk-banner type="success">User updated</app-govuk-banner>
   }
+  @if (isAssignedGroups$ | async; as assignedCount) {
+    <app-govuk-banner type="success">Assigned {{ assignedCount }} groups</app-govuk-banner>
+  }
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper">
       <div class="govuk-grid-row">
@@ -61,7 +64,7 @@
         </div>
       </div>
 
-      <app-tabs>
+      <app-tabs [default]="tab$ | async">
         <div *tab="'Details'">
           <app-details-table
             title="Details"
@@ -72,10 +75,15 @@
         <div *tab="'Groups'; screenReaderText: 'User Groups'">
           <div class="assign-button-container">
             <app-govuk-heading tag="h2" size="m" class="no-margin">Groups</app-govuk-heading>
-            <button class="govuk-button">Assign groups</button>
+            <button
+              class="govuk-button"
+              (click)="router.navigate(['admin/users/', user.id, 'assign-groups'], { state: { user } })"
+            >
+              Assign groups
+            </button>
           </div>
 
-          @if (user.securityGroups) {
+          @if (user.securityGroups.length) {
             <button id="remove-groups-button" type="submit" class="govuk-button govuk-button--secondary">
               Remove groups
             </button>
@@ -98,7 +106,7 @@
               </ng-template>
             </app-data-table>
           } @else {
-            <p class="govuk-body">This user is not a member of any groups.</p>
+            <p class="govuk-body no-groups-message">This user is not a member of any groups.</p>
           }
         </div>
 

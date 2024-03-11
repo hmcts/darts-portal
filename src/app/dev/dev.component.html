@@ -49,7 +49,7 @@
 
   <div *tab="'Assign Groups'">
     <div class="govuk-grid-column-one-half">
-      <app-assign-groups [groups]="groups" (assign)="selectedGroups = $event"></app-assign-groups>
+      <app-security-group-selector [groups]="groups" (assign)="selectedGroups = $event" />
     </div>
     <div class="govuk-grid-column-one-half">
       <h3 class="govuk-heading-s">Input</h3>

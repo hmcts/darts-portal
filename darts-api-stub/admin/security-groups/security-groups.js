@@ -38,10 +38,15 @@ const defaultSecurityGroups = [
     security_role_id: 7,
     name: 'Cardiff Approvers',
   },
+  {
+    id: 8,
+    security_role_id: 8,
+    name: 'Visually Hidden Group',
+  },
 ];
 
 router.get('/', (_, res) => {
   res.send(defaultSecurityGroups);
 });
 
-module.exports = router;
+module.exports = { router, defaultSecurityGroups };

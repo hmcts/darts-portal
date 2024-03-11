@@ -1,5 +1,18 @@
 import 'cypress-axe';
 import '../commands';
+
+Cypress.Commands.add('tableRowShouldContain', (groupName, role) => {
+  cy.get('.govuk-table__body').contains(groupName).parents('tr').contains(role).should('exist');
+});
+
+Cypress.Commands.add('selectedListShouldContain', (groupName, role) => {
+  cy.get('.govuk-summary-list__row').contains(groupName).parents('dl').contains(role).should('exist');
+});
+
+Cypress.Commands.add('checkGroup', (groupName) => {
+  cy.get('.govuk-table__body').contains(groupName).parents('tr').find('input[type="checkbox"]').check();
+});
+
 describe('Admin - User record screen', () => {
   beforeEach(() => {
     cy.login('admin');
@@ -148,6 +161,49 @@ describe('Admin - User record screen', () => {
       cy.contains('h1', 'Phil Taylor EDIT').should('exist');
       cy.get('td').contains('phil.taylor@darts.edit').should('be.visible');
       cy.get('td').contains('Stub Active User EDIT').should('be.visible');
+    });
+  });
+
+  describe('Groups tab', () => {
+    it('Verify groups tab', () => {
+      cy.get('app-user-search-results').should('contain', 'Fallon Sherrock');
+      cy.contains('Fallon Sherrock').parents('tr').contains('View').click();
+
+      cy.get('.moj-sub-navigation a').contains('Groups').click();
+
+      cy.contains('h2', 'Groups').should('exist');
+
+      cy.tableRowShouldContain('Judiciary', 'Approver');
+      cy.tableRowShouldContain('Opus Transcribers', 'Requestor');
+
+      cy.a11y();
+    });
+
+    it('Assigns groups to user', () => {
+      cy.get('app-user-search-results').should('contain', 'Fallon Sherrock');
+      cy.contains('Fallon Sherrock').parents('tr').contains('View').click();
+
+      cy.get('.moj-sub-navigation a').contains('Groups').click();
+
+      cy.get('button').contains('Assign groups').click();
+
+      cy.get('h1').should('contain', 'Assign groups');
+      cy.get('h2').should('contain', '2 groups selected');
+
+      cy.selectedListShouldContain('Judiciary', 'Approver');
+      cy.selectedListShouldContain('Opus Transcribers', 'Requestor');
+
+      cy.checkGroup('Super user (DARTS portal)');
+
+      cy.a11y();
+
+      cy.get('#assign-button').click();
+
+      cy.get('app-govuk-banner').should('contain', 'Assigned 3 groups');
+
+      cy.tableRowShouldContain('Judiciary', 'Approver');
+      cy.tableRowShouldContain('Opus Transcribers', 'Requestor');
+      cy.tableRowShouldContain('Super user (DARTS portal)', 'Judge');
     });
   });
 });

@@ -9,9 +9,9 @@ import { TabDirective } from '@directives/tab.directive';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { HeaderService } from '@services/header/header.service';
 import {
-  AssignGroupsComponent,
+  SecurityGroupSelectorComponent,
   UserGroup,
-} from '../admin/components/users/groups/assign-groups/assign-groups.component';
+} from '../admin/components/users/assign-groups/security-group-selector/security-group-selector.component';
 import { CheckboxListComponent } from './../core/components/common/filters/checkbox-list/checkbox-list.component';
 
 @Component({
@@ -24,7 +24,7 @@ import { CheckboxListComponent } from './../core/components/common/filters/check
     TabsComponent,
     TabDirective,
     CommonModule,
-    AssignGroupsComponent,
+    SecurityGroupSelectorComponent,
     ReactiveFormsModule,
     CheckboxListComponent,
   ],
@@ -125,11 +125,12 @@ export class DevComponent implements OnInit {
 
   // Assign groups
   groups = [
-    { id: 1, name: 'Group 1', role: 'Approver' },
-    { id: 2, name: 'Group 2', role: 'Requester' },
-    { id: 3, name: 'Group 3', role: 'Judge' },
-    { id: 4, name: 'Group 4', role: 'Transcriber' },
-    { id: 5, name: 'Group 5', role: 'Translation QA' },
+    { id: 1, name: 'Group 1', role: 'Approver', displayState: true },
+    { id: 2, name: 'Group 2', role: 'Requester', displayState: true },
+    { id: 3, name: 'Group 3', role: 'Judge', displayState: true },
+    { id: 4, name: 'Group 4', role: 'Transcriber', displayState: true },
+    { id: 5, name: 'Group 5', role: 'Translation QA', displayState: true },
+    { id: 6, name: 'Group 6', role: 'Secret', displayState: false },
   ];
   selectedGroups: UserGroup[] = [];
 

@@ -10,6 +10,6 @@ export type User = {
   emailAddress: string;
   description: string;
   active: boolean;
-  securityGroupIds?: number[]; //to be removed
+  securityGroupIds: number[];
   securityGroups?: SecurityGroup[];
 };

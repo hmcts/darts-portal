@@ -1,9 +1,19 @@
 const c = require('config');
 const express = require('express');
 const { stubUsers } = require('../../users');
+const { defaultSecurityGroups } = require('../security-groups/security-groups');
 const { DateTime, Settings } = require('luxon');
 
 Settings.defaultZone = 'utc';
+
+generateSecurityGroupIds = (id, numberOfSecurityGroups) => {
+  if (id <= numberOfSecurityGroups) {
+    // first user has [1], the second user has [1,2], the third user has [1,2,3], etc.
+    return Array.from({ length: id }, (_, i) => i + 1);
+  }
+  // all other users have no security groups
+  return [];
+};
 
 const router = express.Router();
 
@@ -19,7 +29,7 @@ const USERS = stubUsers.map((stubUser) => {
     full_name: stubUser.name,
     email_address: stubUser.userState.userName,
     active: stubUser.active,
-    security_group_ids: stubUser.userState.roles.map((role) => role.roleId),
+    security_group_ids: generateSecurityGroupIds(stubUser.userState.userId, defaultSecurityGroups.length),
   };
 });
 
