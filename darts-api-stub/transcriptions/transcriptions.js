@@ -504,10 +504,11 @@ router.get('/', (req, res) => {
 });
 
 router.patch('/', (req, res) => {
+  let status = 204;
   req.body.forEach((item) => {
     // send 400 error for last requester transcription hide
     if (item.transcription_id === 5) {
-      res.sendStatus(400);
+      status = 400;
     }
     const index = yourTranscriptionsStub.requester_transcriptions.findIndex(
       (x) => x.transcription_id == item.transcription_id
@@ -517,7 +518,7 @@ router.patch('/', (req, res) => {
     }
   });
 
-  res.sendStatus(204);
+  res.sendStatus(status);
 });
 
 module.exports = router;
