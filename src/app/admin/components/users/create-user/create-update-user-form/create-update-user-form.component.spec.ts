@@ -123,6 +123,22 @@ describe('CreateUpdateUserFormComponent', () => {
 
       expect(component.errors.emit).toHaveBeenCalledWith([]);
     }));
+
+    it('does not emit submitForm when form is pending', fakeAsync(() => {
+      jest.spyOn(component.submitForm, 'emit');
+      const formValues = {
+        fullName: 'Test User',
+        email: 'test@test.com',
+        description: 'A test user',
+      };
+      component.form.setValue(formValues);
+
+      tick(500);
+      component.form.markAsPending();
+      component.onSubmit();
+
+      expect(component.submitForm.emit).not.toHaveBeenCalled();
+    }));
   });
 
   describe('#onCancel', () => {

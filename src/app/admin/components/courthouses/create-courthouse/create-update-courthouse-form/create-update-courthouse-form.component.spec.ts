@@ -117,23 +117,6 @@ describe('CreateUpdateCourthouseFormComponent', () => {
 
       expect(component.errors.emit).toHaveBeenCalledWith([]);
     }));
-
-    it('does not emit submitForm when form is pending', fakeAsync(() => {
-      jest.spyOn(component.submitForm, 'emit');
-
-      component.form.setValue({
-        courthouseName: 'COURTHOUSE',
-        displayName: 'Courthouse',
-        regionId: '1',
-        securityGroupIds: [],
-      });
-
-      tick(500);
-      component.form.markAsPending();
-      component.onSubmit();
-
-      expect(component.submitForm.emit).not.toHaveBeenCalled();
-    }));
   });
 
   describe('#formatNameToId', () => {

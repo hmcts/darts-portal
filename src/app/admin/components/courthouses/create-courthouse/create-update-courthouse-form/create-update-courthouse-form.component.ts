@@ -86,11 +86,6 @@ export class CreateUpdateCourthouseFormComponent implements OnInit {
   onSubmit() {
     this.form.markAllAsTouched();
 
-    // wait for async validation to complete
-    if (this.form.status === 'PENDING') {
-      return;
-    }
-
     if (this.form.invalid) {
       this.form.statusChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
         this.errors.emit(this.formService.getErrorSummary(this.form, controlErrors));

@@ -11,6 +11,7 @@
     <input
       class="govuk-input"
       type="text"
+      name="courthouseName"
       id="courthouse-name"
       formControlName="courthouseName"
       [class.govuk-input--error]="isControlInvalid(courthouseNameControl)"
@@ -28,6 +29,7 @@
     <input
       class="govuk-input"
       type="displayName"
+      name="displayName"
       id="display-name"
       formControlName="displayName"
       [class.govuk-input--error]="isControlInvalid(displayNameControl)"
@@ -39,13 +41,12 @@
     @for (error of getFormControlErrorMessages('regionId'); track error) {
       <p class="govuk-error-message region-error"><span class="govuk-visually-hidden">Error:</span> {{ error }}</p>
     }
-    <div class="govuk-radios" id="region-radios" data-module="govuk-radios">
+    <div class="govuk-radios" name="regionId" id="region-radios" data-module="govuk-radios">
       @for (region of regions; track region) {
         <div class="govuk-radios__item">
           <input
             class="govuk-radios__input"
             [id]="formatNameToId(region.name) + '-radio'"
-            name="regionId"
             type="radio"
             [value]="region.id"
             formControlName="regionId"

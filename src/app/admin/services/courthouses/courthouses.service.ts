@@ -65,8 +65,8 @@ export class CourthouseService {
 
   getCourthouseTranscriptionCompanies(): Observable<SecurityGroup[]> {
     return this.http.get<SecurityRole[]>(`${GET_SECURITY_ROLES_PATH}`).pipe(
-      switchMap((securityGroups) => {
-        const transcriberRole = securityGroups.find(
+      switchMap((securityRoles) => {
+        const transcriberRole = securityRoles.find(
           (securityGroup: SecurityRole) => securityGroup.name === 'TRANSCRIBER'
         );
         if (transcriberRole) {
