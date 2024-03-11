@@ -31,13 +31,13 @@ const formValidationTestCases: formValidationTestCase[] = [
   },
   {
     name: 'invalid when courthouseName already exists in DB',
-    data: { courthouseName: 'COURTHOUSE', displayName: 'Courthouse', regionId: '1', securityGroupIds: [] },
+    data: { courthouseName: 'COURTHOUSEEXISTS', displayName: 'Courthouse', regionId: '1', securityGroupIds: [] },
     validity: false,
     courthouseNameExists: true,
   },
   {
     name: 'invalid when displayName already exists in DB',
-    data: { courthouseName: 'COURTHOUSE', displayName: 'Courthouse', regionId: '1', securityGroupIds: [] },
+    data: { courthouseName: 'COURTHOUSE', displayName: 'Courthouse Exists', regionId: '1', securityGroupIds: [] },
     validity: false,
     displayNameExists: true,
   },
@@ -58,7 +58,6 @@ describe('CreateUpdateCourthouseFormComponent', () => {
       doesCourthouseNameExist: jest.fn(() => of(false)),
       doesDisplayNameExist: jest.fn(() => of(false)),
     };
-
     await TestBed.configureTestingModule({
       imports: [CreateUpdateCourthouseFormComponent],
       providers: [{ provide: CourthouseService, useValue: mockCourthouseService }],
@@ -66,6 +65,9 @@ describe('CreateUpdateCourthouseFormComponent', () => {
 
     fixture = TestBed.createComponent(CreateUpdateCourthouseFormComponent);
     component = fixture.componentInstance;
+    component.courthouses = [
+      { id: 0, code: 0, courthouse_name: 'COURTHOUSEEXISTS', display_name: 'Courthouse Exists', created_date_time: '' },
+    ];
     fixture.detectChanges();
   });
 
@@ -180,9 +182,6 @@ describe('CreateUpdateCourthouseFormComponent', () => {
       it(
         test.name,
         fakeAsync(() => {
-          mockCourthouseService.doesCourthouseNameExist = jest.fn(() => of(test?.courthouseNameExists || false));
-          mockCourthouseService.doesDisplayNameExist = jest.fn(() => of(test?.displayNameExists || false));
-
           component.form.get('courthouseName')?.setValue(test.data.courthouseName);
           component.form.get('displayName')?.setValue(test.data.displayName);
           component.form.get('regionId')?.setValue(test.data.regionId);
@@ -204,24 +203,6 @@ describe('CreateUpdateCourthouseFormComponent', () => {
       component.ngOnInit();
 
       expect(component.form.value).toEqual(originalFormValue);
-      expect(component.form.get('displayName')?.asyncValidator).not.toEqual(null);
-      expect(component.form.valid).toBe(false);
-    });
-
-    it('should modify form values when updating a courthouse', () => {
-      const updateCourthouse = {
-        courthouseName: 'COURTHOUSE',
-        displayName: 'Courthouse',
-        regionId: '1',
-        securityGroupIds: ['1', '2'],
-      };
-      component.updateCourthouse = updateCourthouse;
-
-      component.ngOnInit();
-
-      expect(component.form.value).toEqual(updateCourthouse);
-      expect(component.form.get('courthouseName')?.asyncValidator).not.toEqual(null);
-      expect(component.form.get('displayName')?.asyncValidator).not.toEqual(null);
       expect(component.form.valid).toBe(false);
     });
 

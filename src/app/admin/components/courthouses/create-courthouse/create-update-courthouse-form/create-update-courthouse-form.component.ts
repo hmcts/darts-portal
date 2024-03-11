@@ -4,8 +4,8 @@ import { CreateUpdateCourthouseFormValues } from '@admin-types/index';
 import { SecurityGroup } from '@admin-types/users/security-group.type';
 import { Component, DestroyRef, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { AbstractControl, FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ErrorSummaryEntry, FieldErrors } from '@core-types/index';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CourthouseData, ErrorSummaryEntry, FieldErrors } from '@core-types/index';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { FormService } from '@services/form/form.service';
 import {
@@ -43,12 +43,11 @@ export class CreateUpdateCourthouseFormComponent implements OnInit {
   @Input() updateCourthouse: CreateUpdateCourthouseFormValues | null = null;
   @Input() regions!: Region[];
   @Input() companies!: SecurityGroup[];
+  @Input() courthouses!: CourthouseData[];
 
   selectedCompanies: SecurityGroup[] = [];
   selectedCompany: SecurityGroup | undefined = undefined;
 
-  nameExistsValidator = courthouseNameExistsValidator();
-  displayNameExistsValidator = displayNameExistsValidator();
   valueIsUndefined = valueIsUndefined();
   courthouseService = inject(CourthouseService);
 
@@ -63,14 +62,23 @@ export class CreateUpdateCourthouseFormComponent implements OnInit {
     securityGroupIds: [],
   };
 
-  form = this.fb.group({
-    courthouseName: [this.formDefaultValues.courthouseName, [Validators.required], [this.nameExistsValidator]],
-    displayName: [this.formDefaultValues.displayName, [Validators.required], [this.displayNameExistsValidator]],
-    regionId: [this.formDefaultValues.regionId, [this.valueIsUndefined]],
-    securityGroupIds: [this.formDefaultValues.securityGroupIds],
-  });
+  form!: FormGroup;
 
   ngOnInit(): void {
+    // Build the form group after init so that we have access to data
+    this.form = this.fb.group({
+      courthouseName: [
+        this.formDefaultValues.courthouseName,
+        [Validators.required, courthouseNameExistsValidator(this.courthouses)],
+      ],
+      displayName: [
+        this.formDefaultValues.displayName,
+        [Validators.required, displayNameExistsValidator(this.courthouses)],
+      ],
+      regionId: [this.formDefaultValues.regionId, [this.valueIsUndefined]],
+      securityGroupIds: [this.formDefaultValues.securityGroupIds],
+    });
+
     if (this.updateCourthouse) {
       this.form.setValue({
         courthouseName: this.updateCourthouse.courthouseName,

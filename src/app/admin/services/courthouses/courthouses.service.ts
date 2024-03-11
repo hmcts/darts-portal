@@ -98,18 +98,6 @@ export class CourthouseService {
     );
   }
 
-  doesCourthouseNameExist(courthouseName: string): Observable<boolean> {
-    return this.http
-      .get<CourthouseData[]>(GET_COURTHOUSES_PATH)
-      .pipe(map((courthouses) => !!courthouses.find((courthouse) => courthouse.courthouse_name === courthouseName)));
-  }
-
-  doesDisplayNameExist(displayName: string): Observable<boolean> {
-    return this.http
-      .get<CourthouseData[]>(GET_COURTHOUSES_PATH)
-      .pipe(map((courthouses) => !!courthouses.find((courthouse) => courthouse.display_name === displayName)));
-  }
-
   mapRegionsToCourthouses(regions: Region[], courthouses: CourthouseData[]): Courthouse[] {
     return courthouses.map((courthouse) => {
       const matchingRegion = regions.find((region) => region.id === courthouse.region_id);

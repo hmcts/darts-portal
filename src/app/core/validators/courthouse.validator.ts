@@ -1,43 +1,25 @@
-import { inject } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { CourthouseService } from '@services/courthouses/courthouses.service';
-import { Observable, map, of, switchMap, timer } from 'rxjs';
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { CourthouseData } from '@core-types/index';
 
-export const courthouseNameExistsValidator = (): AsyncValidatorFn => {
-  const courthouseService = inject(CourthouseService);
-  return (control: AbstractControl): Observable<ValidationErrors | null> => {
-    return timer(500).pipe(
-      switchMap(() => {
-        if (!control.value) {
-          return of(null);
-        }
-
-        return courthouseService.doesCourthouseNameExist(control.value).pipe(
-          map((response) => {
-            return response ? { courthouseNameExists: true } : null;
-          })
-        );
-      })
-    );
+export const courthouseNameExistsValidator = (courthouses: CourthouseData[]): ValidatorFn => {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+    // If the courthouse name does not exist in the courthouse array
+    if (!courthouses?.find((courthouse) => courthouse.courthouse_name === value)) {
+      return null;
+    }
+    return { courthouseNameExists: true };
   };
 };
 
-export const displayNameExistsValidator = (): AsyncValidatorFn => {
-  const courthouseService = inject(CourthouseService);
-  return (control: AbstractControl): Observable<ValidationErrors | null> => {
-    return timer(500).pipe(
-      switchMap(() => {
-        if (!control.value) {
-          return of(null);
-        }
-
-        return courthouseService.doesDisplayNameExist(control.value).pipe(
-          map((response) => {
-            return response ? { displayNameExists: true } : null;
-          })
-        );
-      })
-    );
+export const displayNameExistsValidator = (courthouses: CourthouseData[]): ValidatorFn => {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+    // If the display name does not exist in the courthouse array
+    if (!courthouses?.find((courthouse) => courthouse.display_name === value)) {
+      return null;
+    }
+    return { displayNameExists: true };
   };
 };
 

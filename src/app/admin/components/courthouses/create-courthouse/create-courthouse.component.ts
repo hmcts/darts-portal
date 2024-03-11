@@ -54,10 +54,12 @@ export class CreateCourthouseComponent {
   };
   regions$ = this.courthouseService.getCourthouseRegions();
   companies$ = this.courthouseService.getCourthouseTranscriptionCompanies();
+  courthouses$ = this.courthouseService.getCourthouses();
 
   vm$ = combineLatest({
     regions: this.regions$,
     companies: this.companies$,
+    courthouses: this.courthouses$,
   });
 
   onSubmit(formValues: CreateUpdateCourthouseFormValues) {

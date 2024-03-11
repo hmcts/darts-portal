@@ -332,32 +332,6 @@ describe('CourthouseService', () => {
     });
   });
 
-  it('doesCourthouseNameExist', () => {
-    const mockEmptyCourthouses: Courthouse[] = [];
-
-    service.doesCourthouseNameExist('test').subscribe((result: boolean) => {
-      expect(result).toEqual(false);
-    });
-
-    const req = httpMock.expectOne(GET_COURTHOUSES_PATH);
-    expect(req.request.method).toBe('GET');
-
-    req.flush(mockEmptyCourthouses);
-  });
-
-  it('doesDisplayNameExist', () => {
-    const mockEmptyCourthouses: Courthouse[] = [];
-
-    service.doesDisplayNameExist('test').subscribe((result: boolean) => {
-      expect(result).toEqual(false);
-    });
-
-    const req = httpMock.expectOne(GET_COURTHOUSES_PATH);
-    expect(req.request.method).toBe('GET');
-
-    req.flush(mockEmptyCourthouses);
-  });
-
   describe('mapRegionsToCourthouses', () => {
     it('should correctly map regions to courthouses', () => {
       const result = service.mapRegionsToCourthouses(regions, courthouseData);

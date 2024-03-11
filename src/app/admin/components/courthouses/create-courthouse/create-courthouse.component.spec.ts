@@ -17,6 +17,7 @@ describe('CreateCourthouseComponent', () => {
       createCourthouse: jest.fn(),
       getCourthouseRegions: jest.fn(),
       getCourthouseTranscriptionCompanies: jest.fn(),
+      getCourthouses: jest.fn(),
     };
 
     await TestBed.configureTestingModule({
