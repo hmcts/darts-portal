@@ -1,7 +1,9 @@
-import { CreateUpdateUserFormValues, SecurityGroup, SecurityRole } from '@admin-types/index';
+import { CreateUpdateUserFormValues } from '@admin-types/index';
 import { CreateUserRequest } from '@admin-types/users/create-user-request.type';
 import { SecurityGroupData } from '@admin-types/users/security-group.interface';
+import { SecurityGroup } from '@admin-types/users/security-group.type';
 import { SecurityRoleData } from '@admin-types/users/security-role.interface';
+import { SecurityRole } from '@admin-types/users/security-role.type';
 import { UserData } from '@admin-types/users/user-data.interface';
 import { UserSearchFormValues } from '@admin-types/users/user-search-form-values.type';
 import { UserSearchRequest } from '@admin-types/users/user-search-request.interface';

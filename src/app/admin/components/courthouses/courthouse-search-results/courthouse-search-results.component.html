@@ -14,7 +14,7 @@
             <a class="govuk-link" [href]="'/admin/courthouses/' + row.id">{{ row.courthouseName }}</a>
           </td>
           <td class="govuk-table__cell">{{ row.displayName }}</td>
-          <td class="govuk-table__cell">{{ row.regionName }}</td>
+          <td class="govuk-table__cell">{{ row.region?.name }}</td>
         </ng-template>
       </app-data-table>
     }

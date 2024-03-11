@@ -40,6 +40,21 @@ export const ADMIN_ROUTES: Routes = [
     path: 'admin/courthouses',
     loadComponent: () => import('./components/courthouses/courthouses.component').then((c) => c.CourthousesComponent),
   },
+  // Commented until DMP-2252
+  // {
+  //   path: 'admin/courthouses/edit/:courthouseId',
+  //   loadComponent: () =>
+  //     import('./components/courthouses/edit-courthouse/edit-courthouse.component').then(
+  //       (c) => c.EditCourthouseComponent
+  //     ),
+  // },
+  {
+    path: 'admin/courthouses/create',
+    loadComponent: () =>
+      import('./components/courthouses/create-courthouse/create-courthouse.component').then(
+        (c) => c.CreateCourthouseComponent
+      ),
+  },
   {
     path: 'admin/courthouses/:courthouseId',
     loadComponent: () =>

@@ -12,9 +12,7 @@
         </div>
         <div class="govuk-grid-column-one-third">
           <div class="button-container govuk-button-group">
-            <button type="submit" class="edit-button govuk-button govuk-button--secondary" data-module="govuk-button">
-              Edit courthouse
-            </button>
+            <button type="submit" class="edit-button govuk-button govuk-button--secondary">Edit courthouse</button>
           </div>
         </div>
       </div>
@@ -36,7 +34,7 @@
             [details]="{
               'Database ID': courthouse.id,
               'Courthouse name': courthouse.displayName,
-              Region: courthouse.regionName,
+              Region: courthouse.region?.name,
               Groups: formatSecurityGroupLinks(courthouse.securityGroups)
             }"
           ></app-details-table>

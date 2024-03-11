@@ -46,7 +46,12 @@ const defaultSecurityRoles = [
 ];
 
 router.get('/', (_, res) => {
-  res.send(defaultSecurityRoles);
+  res.send(
+    defaultSecurityRoles.map((securityRole) => ({
+      ...securityRole,
+      role_name: securityRole.display_name.toUpperCase(),
+    }))
+  );
 });
 
 module.exports = router;
