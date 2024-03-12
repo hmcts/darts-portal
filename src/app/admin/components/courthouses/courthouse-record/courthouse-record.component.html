@@ -1,4 +1,9 @@
 @if (courthouse$ | async; as courthouse) {
+  @if (isNewCourthouse$ | async) {
+    <app-govuk-banner type="success">
+      {{ 'Created ' + courthouse.displayName }}
+    </app-govuk-banner>
+  }
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper">
       <div class="govuk-grid-row">
