@@ -36,7 +36,7 @@ export class CourthouseRecordComponent {
   courthouse$ = this.courthouseService.getCourthouseWithRegionsAndSecurityGroups(
     this.route.snapshot.params.courthouseId
   );
-  isNewCourthouse$ = this.route.queryParams.pipe(map((params) => !!params.newCourthouse));
+  isNewCourthouse$ = this.route.queryParams?.pipe(map((params) => !!params.newCourthouse));
 
   formatSecurityGroupLinks(securityGroups: SecurityGroup[] | undefined) {
     return securityGroups?.map((securityGroup) => {

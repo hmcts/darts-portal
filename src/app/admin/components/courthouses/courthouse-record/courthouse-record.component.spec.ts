@@ -34,6 +34,9 @@ describe('CourthouseRecordComponent', () => {
         params: {
           courthouseId: 123,
         },
+        queryParams: {
+          newCourthouse: true,
+        },
       },
     } as unknown as ActivatedRoute;
 
