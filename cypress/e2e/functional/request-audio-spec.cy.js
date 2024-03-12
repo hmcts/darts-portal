@@ -65,7 +65,7 @@ describe('Request audio', () => {
     cy.get('.govuk-error-summary').should('contain', 'You must include an end time for your audio recording');
     cy.get('.govuk-error-summary').should('contain', 'You must select a request type');
 
-    cy.get('#eventAudioTable .govuk-table__row:nth-child(2) .govuk-checkboxes__item').click();
+    cy.get('#eventAudioTable .govuk-table__row:nth-child(3) .govuk-checkboxes__item').click();
     cy.get('#start-time-hour-input').should('have.value', '09');
     cy.get('#start-time-minutes-input').should('have.value', '00');
     cy.get('#start-time-seconds-input').should('have.value', '00');
@@ -157,6 +157,11 @@ describe('Request audio', () => {
     it('should show audio archived message', () => {
       cy.get('#hearingsTable a').contains('10 Oct 2023').click();
       cy.get('.govuk-hint').contains('Audio archived. Preview not available.');
+    });
+
+    it('should show audio is not available message', () => {
+      cy.get('#hearingsTable a').contains('11 Oct 2023').click();
+      cy.get('.govuk-hint').contains('This audio is not currently available in DARTS, please try again later.');
     });
   });
 });
