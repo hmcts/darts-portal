@@ -3,4 +3,5 @@ export interface HearingAudio {
   media_start_timestamp: string;
   media_end_timestamp: string;
   is_archived?: boolean;
+  is_available?: boolean;
 }

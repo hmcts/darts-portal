@@ -10,31 +10,43 @@ router.get('/hearings/:hearingId/audios', (req, res) => {
           id: 1,
           media_start_timestamp: '2023-07-31T02:32:24.620Z',
           media_end_timestamp: '2023-07-31T14:32:24.620Z',
+          is_available: true,
         },
         {
           id: 2,
           media_start_timestamp: '2023-07-31T04:30:24.620Z',
           media_end_timestamp: '2023-07-31T14:32:24.620Z',
+          is_available: true,
         },
         {
           id: 3,
           media_start_timestamp: '2023-07-31T05:32:24.620Z',
           media_end_timestamp: '2023-07-31T14:32:24.620Z',
+          is_available: true,
         },
         {
           id: 4,
           media_start_timestamp: '2023-07-31T18:00:00.620Z',
           media_end_timestamp: '2023-07-31T18:01:00.620Z',
+          is_available: true,
         },
         {
           id: 5,
           media_start_timestamp: '2023-07-31T19:00:00.620Z',
           media_end_timestamp: '2023-07-31T19:01:00.620Z',
+          is_available: true,
         },
         {
           id: 6,
           media_start_timestamp: '2023-07-31T20:00:00.620Z',
           media_end_timestamp: '2023-07-31T20:01:00.620Z',
+          is_available: true,
+        },
+        {
+          id: 7,
+          media_start_timestamp: '2023-07-31T20:32:24.620Z',
+          media_end_timestamp: '2023-07-31T20:35:24.620Z',
+          is_available: false,
         },
       ];
       res.send(body1);
@@ -43,12 +55,24 @@ router.get('/hearings/:hearingId/audios', (req, res) => {
       const body2 = [
         {
           id: 4,
-          media_start_timestamp: '2023-07-31T14:32:24.620Z',
-          media_end_timestamp: '2023-07-31T14:32:24.620Z',
+          media_start_timestamp: '2023-07-31T09:32:24.620Z',
+          media_end_timestamp: '2023-07-31T09:35:24.620Z',
           is_archived: true,
+          is_available: true,
         },
       ];
       res.send(body2);
+      break;
+    case '3':
+      const body3 = [
+        {
+          id: 5,
+          media_start_timestamp: '2023-07-21T08:32:24.620Z',
+          media_end_timestamp: '2023-07-21T08:36:24.620Z',
+          is_available: false,
+        },
+      ];
+      res.send(body3);
       break;
     default:
       res.send([]);
