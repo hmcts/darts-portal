@@ -14,6 +14,7 @@ export class GovukHeadingComponent implements OnInit {
   @Input() tag: 'h1' | 'h2' | 'h3' | 'h4' = 'h1';
   @Input() headingClass = '';
   @Input() captionClass = '';
+  @Input() ariaRole = '';
 
   ngOnInit(): void {
     this.headingClass = `govuk-heading-${this.size}`;
