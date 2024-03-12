@@ -41,14 +41,6 @@
   @if (isAdminNavigation()) {
     <app-admin-navigation />
   } @else {
-    <app-portal-navigation
-      [assignedTranscriptCount]="(assignedTranscriptCount$ | async) ?? 0"
-      [unassignedTranscriptCount]="(unassignedTranscriptCount$ | async) ?? 0"
-      [unreadAudioCount]="(unreadAudioCount$ | async) ?? 0"
-      [isApprover]="userService.isApprover()"
-      [isJudge]="userService.isJudge()"
-      [isRequester]="userService.isRequester()"
-      [isTranscriber]="userService.isTranscriber()"
-    />
+    <app-portal-navigation />
   }
 </div>

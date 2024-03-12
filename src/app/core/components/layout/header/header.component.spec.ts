@@ -78,51 +78,6 @@ describe('HeaderComponent', () => {
     });
   });
 
-  describe('when user IS NOT transcriber', () => {
-    it('not show "Transcript requests" link in navigation', () => {
-      const transcriptRequestsLink = fixture.debugElement.query(By.css('#transcript-requests-link'));
-
-      expect(transcriptRequestsLink).toBeFalsy();
-    });
-
-    it('not show "Your work" link in navigation', () => {
-      const yourWorkLink = fixture.debugElement.query(By.css('#your-work-link'));
-
-      expect(yourWorkLink).toBeFalsy();
-    });
-  });
-
-  describe('when user IS transcriber', () => {
-    beforeEach(() => {
-      fakeUserService.isTranscriber = jest.fn(() => true);
-      fixture.detectChanges();
-    });
-
-    it('shows "Transcript requests" link in navigation', () => {
-      const transcriptRequestsLink = fixture.debugElement.query(By.css('#transcript-requests-link'));
-      expect(transcriptRequestsLink).toBeTruthy();
-    });
-
-    it('shows "Your work" link in navigation', () => {
-      const yourWorkLink = fixture.debugElement.query(By.css('#your-work-link'));
-      expect(yourWorkLink).toBeTruthy();
-    });
-
-    it('should set "Transcript requests" count', () => {
-      const unreadCountElement: HTMLSpanElement = fixture.debugElement.query(
-        By.css('#unassignedTranscriptCount')
-      ).nativeElement;
-      expect(unreadCountElement.textContent).toBe('Transcript requests unassigned count: 2');
-    });
-
-    it('should set "Your work" count', () => {
-      const unreadCountElement: HTMLSpanElement = fixture.debugElement.query(
-        By.css('#assignedTranscriptCount')
-      ).nativeElement;
-      expect(unreadCountElement.textContent).toBe('Transcript requests assigned count: 3');
-    });
-  });
-
   describe('when user is ADMIN and is on /admin URL', () => {
     beforeEach(async () => {
       fakeAuthService.getAuthenticated = jest.fn(() => true);

@@ -1,20 +1,21 @@
-import { Component, Input } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { CountNotificationService } from '@services/count-notification/count-notification.service';
+import { UserService } from '@services/user/user.service';
 
 @Component({
   selector: 'app-portal-navigation',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, AsyncPipe],
   templateUrl: './portal-navigation.component.html',
   styleUrl: './portal-navigation.component.scss',
 })
 export class PortalNavigationComponent {
-  @Input() assignedTranscriptCount = 0;
-  @Input() unreadAudioCount = 0;
-  @Input() unassignedTranscriptCount = 0;
+  countService = inject(CountNotificationService);
+  userService = inject(UserService);
 
-  @Input() isTranscriber = false;
-  @Input() isJudge = false;
-  @Input() isApprover = false;
-  @Input() isRequester = false;
+  unreadAudioCount$ = this.countService.unreadAudio$;
+  unassignedTranscriptCount$ = this.countService.unassignedTranscripts$;
+  assignedTranscriptCount$ = this.countService.assignedTranscripts$;
 }
