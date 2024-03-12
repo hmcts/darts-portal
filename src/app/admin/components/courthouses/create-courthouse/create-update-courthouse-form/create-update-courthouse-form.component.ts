@@ -133,17 +133,21 @@ export class CreateUpdateCourthouseFormComponent implements OnInit {
     if (this.selectedCompany) {
       const exists = this.selectedCompanies.find((company) => company.id === this.selectedCompany?.id);
       if (!exists) {
-        (this.securityGroupsControl as FormArray).value.push(this.selectedCompany.id.toString());
+        const securityGroupsCopy = [...this.securityGroupsControl.value];
+        securityGroupsCopy.push(this.selectedCompany.id.toString());
+        this.securityGroupsControl.setValue(securityGroupsCopy);
         this.selectedCompanies.push(this.selectedCompany);
       }
     }
   }
 
   removeCompany(id: number) {
-    const removeCompanyIndex = this.selectedCompanies.findIndex((company) => company.id === id);
-    if (removeCompanyIndex >= 0) {
-      this.securityGroupsControl.patchValue([]);
-      this.selectedCompanies.splice(removeCompanyIndex, 1);
+    const removeCompany = this.selectedCompanies.find((company) => company.id === id);
+    if (removeCompany) {
+      const securityGroupsCopy = [...this.securityGroupsControl.value];
+      securityGroupsCopy.splice(securityGroupsCopy.indexOf(removeCompany.id.toString()), 1);
+      this.securityGroupsControl.setValue(securityGroupsCopy);
+      this.selectedCompanies.splice(this.selectedCompanies.indexOf(removeCompany), 1);
     }
   }
 
