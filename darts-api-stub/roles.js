@@ -29,4 +29,10 @@ const ADMIN = {
   permissions,
 };
 
-module.exports = { JUDGE, TRANSCRIBER, APPROVER, REQUESTER, ADMIN };
+const TRANSLATION_QA = {
+  roleId: 6,
+  roleName: 'TRANSLATION_QA',
+  permissions,
+};
+
+module.exports = { JUDGE, TRANSCRIBER, APPROVER, REQUESTER, ADMIN, TRANSLATION_QA };

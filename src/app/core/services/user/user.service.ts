@@ -38,8 +38,8 @@ export class UserService {
     return this.hasRole('REQUESTER');
   }
 
-  public isLanguageShopUser(): boolean {
-    return this.hasRole('LANGUAGE_SHOP_USER');
+  public isTranslationQA(): boolean {
+    return this.hasRole('TRANSLATION_QA');
   }
 
   private hasRole(role: RoleName): boolean {
