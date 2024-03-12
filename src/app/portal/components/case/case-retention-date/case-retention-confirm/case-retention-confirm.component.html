@@ -14,12 +14,20 @@
           <td id="retain-date" class="govuk-table__cell table-width">
             {{ getDate() }}
           </td>
-          <td class="govuk-table__cell"><a href="#" id="date-link" (click)="onReturnDate($event)">Change</a></td>
+          <td class="govuk-table__cell">
+            <a href="#" id="date-link" class="govuk-link" (click)="onReturnDate($event)"
+              >Change <span class="govuk-visually-hidden">case retention date</span></a
+            >
+          </td>
         </tr>
         <tr class="govuk-table__row">
           <th class="govuk-table__header">Reason for change</th>
           <td id="retain-reason" class="govuk-table__cell table-width">{{ newRetentionReason }}</td>
-          <td class="govuk-table__cell"><a href="#" id="reason-link" (click)="onReturnReason($event)">Change</a></td>
+          <td class="govuk-table__cell">
+            <a href="#" id="reason-link" class="govuk-link" (click)="onReturnReason($event)"
+              >Change <span class="govuk-visually-hidden">retention reason for change</span></a
+            >
+          </td>
         </tr>
       </tbody>
     </table>
