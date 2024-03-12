@@ -171,15 +171,15 @@ describe('UserService', () => {
     });
   });
 
-  describe('#isLanguageShopUser', () => {
-    it('returns true if the user has the Language Shop User role', () => {
+  describe('#isTranslationQA', () => {
+    it('returns true if the user has the Translation QA role', () => {
       const languageShopUser: UserState = {
         userName: '',
         userId: 1,
         roles: [
           {
             roleId: 123,
-            roleName: 'LANGUAGE_SHOP_USER',
+            roleName: 'TRANSLATION_QA',
             permissions: [
               {
                 permissionId: 1,
@@ -190,13 +190,13 @@ describe('UserService', () => {
         ],
       };
       service.userState.set(languageShopUser);
-      const result = service.isLanguageShopUser();
+      const result = service.isTranslationQA();
       expect(result).toEqual(true);
     });
 
-    it("returns false if the user doesn't have the Language Shop User role", () => {
+    it("returns false if the user doesn't have the Translation QA role", () => {
       service.userState.set(mockUserState);
-      const result = service.isLanguageShopUser();
+      const result = service.isTranslationQA();
       expect(result).toEqual(false);
     });
   });
