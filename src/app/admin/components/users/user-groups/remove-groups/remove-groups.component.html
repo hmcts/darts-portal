@@ -1,4 +1,7 @@
-<app-govuk-heading>Are you sure you want to remove {{ user.fullName }} from these groups?</app-govuk-heading>
+<app-govuk-heading
+  >Are you sure you want to remove {{ user.fullName }} from
+  {{ selectedGroups.length === 1 ? 'this group' : 'these groups' }}
+</app-govuk-heading>
 
 @for (group of selectedGroups; track group.id) {
   <div class="group-row">
