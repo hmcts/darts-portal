@@ -14,6 +14,9 @@
   @if (hasRemovedGroups$ | async; as removedCount) {
     <app-govuk-banner type="success">Removed {{ removedCount }} groups</app-govuk-banner>
   }
+  @if (isUserActivated$ | async) {
+    <app-govuk-banner type="success">User record activated</app-govuk-banner>
+  }
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper">
       <div class="govuk-grid-row">
@@ -40,7 +43,11 @@
               Edit user
             </button>
             @if (!user.active) {
-              <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button">
+              <button
+                type="submit"
+                class="govuk-button govuk-button--secondary"
+                (click)="router.navigate(['admin/users', user.id, 'activate'], { state: { user } })"
+              >
                 Activate user
               </button>
             } @else {

@@ -50,5 +50,6 @@ export class UserRecordComponent {
   isUpdatedUser$ = this.route.queryParams.pipe(map((params) => !!params.updated));
   hasAssignedGroups$ = this.route.queryParams.pipe(map((params) => params.assigned));
   hasRemovedGroups$ = this.route.queryParams.pipe(map((params) => params.groupsRemoved));
+  isUserActivated$ = this.route.queryParams.pipe(map((params) => params.activated));
   tab$ = this.route.queryParams.pipe(map((params) => params.tab));
 }

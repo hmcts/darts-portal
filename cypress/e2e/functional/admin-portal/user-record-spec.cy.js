@@ -104,6 +104,33 @@ describe('Admin - User record screen', () => {
 
       cy.a11y();
     });
+
+    it('Reactivate user', () => {
+      cy.get('#inactiveUsers').click();
+      cy.get('button[type="submit"]').click();
+
+      cy.get('app-user-search-results').should('contain', 'Peter Wright');
+      cy.contains('Peter Wright').parents('tr').contains('View').click();
+
+      cy.get('button').contains('Activate user').click();
+
+      cy.get('h1').should('contain', 'Reactivate user');
+      cy.get('h1').should('contain', 'Peter Wright');
+
+      cy.get('p.govuk-body').should(
+        'contain',
+        'Reactivating this user will give them access to DARTS. They will not be able to see any data until they are added to at least one group.'
+      );
+
+      cy.a11y();
+
+      cy.get('#activate-button').click();
+
+      cy.get('app-govuk-banner').should('contain', 'User record activated');
+
+      cy.get('.govuk-tag--green').contains('User record').should('exist');
+      cy.get('.govuk-tag').contains('Active user').should('exist');
+    });
   });
 
   describe('Edit user', () => {

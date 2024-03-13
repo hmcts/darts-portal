@@ -102,6 +102,10 @@ export class UserAdminService {
     );
   }
 
+  activateUser(id: number) {
+    return this.http.patch<UserData>(`${USER_ADMIN_PATH}/${id}`, { active: true }).pipe(map(this.mapUser));
+  }
+
   private mapToCreateUserRequest(user: CreateUpdateUserFormValues): CreateUserRequest {
     return {
       full_name: user.fullName!,

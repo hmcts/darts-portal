@@ -32,6 +32,11 @@ export const ADMIN_ROUTES: Routes = [
       ),
   },
   {
+    path: 'admin/users/:userId/activate',
+    loadComponent: () =>
+      import('./components/users/activate-user/activate-user.component').then((c) => c.ActivateUserComponent),
+  },
+  {
     path: 'admin/users/:userId',
     loadComponent: () =>
       import('./components/users/user-record/user-record.component').then((c) => c.UserRecordComponent),
