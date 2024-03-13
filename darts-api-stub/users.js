@@ -1,4 +1,4 @@
-const { REQUESTER, APPROVER, TRANSCRIBER, JUDGE, ADMIN, TRANSLATION_QA } = require('./roles');
+const { REQUESTER, APPROVER, TRANSCRIBER, JUDGE, SUPER_ADMIN, TRANSLATION_QA, SUPER_USER } = require('./roles');
 
 const stubUsers = [
   {
@@ -47,7 +47,7 @@ const stubUsers = [
     userState: {
       userId: 5,
       userName: 'phil.taylor@darts.local',
-      roles: [REQUESTER, APPROVER, TRANSCRIBER, ADMIN],
+      roles: [REQUESTER, APPROVER, TRANSCRIBER, SUPER_ADMIN],
     },
     active: true,
   },
@@ -77,7 +77,7 @@ const stubUsers = [
     userState: {
       userId: 8,
       userName: 'luke.littler@darts.local',
-      roles: [ADMIN],
+      roles: [SUPER_ADMIN],
     },
     active: true,
   },
@@ -98,6 +98,16 @@ const stubUsers = [
       userId: 10,
       userName: 'john.lowe@darts.local',
       roles: [TRANSLATION_QA],
+    },
+    active: true,
+  },
+  {
+    name: 'Gary Anderson',
+    code: 'super-user',
+    userState: {
+      userId: 11,
+      userName: 'gary.anderson@darts.local',
+      roles: [SUPER_USER],
     },
     active: true,
   },

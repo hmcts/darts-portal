@@ -48,7 +48,6 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
   @Output() validationErrorEvent = new EventEmitter<ErrorSummaryEntry[]>();
   public isSubmitted = false;
   errorSummary: ErrorSummaryEntry[] = [];
-  isTranscriber = false;
 
   constructor(
     private fb: FormBuilder,
@@ -75,8 +74,9 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
     });
   }
   ngOnInit(): void {
-    this.isTranscriber = this.userService.isTranscriber();
-    if (this.isTranscriber) {
+    const requestTypeRequired =
+      this.userService.isTranscriber() || this.userService.isAdmin() || this.userService.isSuperUser();
+    if (requestTypeRequired) {
       this.audioRequestForm.get('requestType')?.setValidators(Validators.required);
     } else {
       this.audioRequestForm.get('requestType')?.patchValue('PLAYBACK');
