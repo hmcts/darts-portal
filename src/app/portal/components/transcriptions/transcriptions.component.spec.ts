@@ -111,6 +111,7 @@ describe('TranscriptionsComponent', () => {
       isApprover: () => true,
       isJudge: () => false,
       isTranscriber: () => false,
+      isSuperUser: () => false,
     };
 
     TestBed.configureTestingModule({
@@ -324,6 +325,23 @@ describe('TranscriptionsComponent', () => {
     component.isRequester = false;
     component.isApprover = false;
     component.isJudge = true;
+
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement;
+    const tabs = compiled.querySelector('app-tabs');
+    const table = compiled.querySelector('#in-progress-table');
+    expect(tabs).toBeFalsy();
+    expect(table).toBeTruthy();
+  });
+
+  it('Requestor view and no tabs if SUPER_USER only', () => {
+    fixture.detectChanges();
+
+    component.isRequester = false;
+    component.isApprover = false;
+    component.isJudge = false;
+    component.isSuperUser = true;
 
     fixture.detectChanges();
 
