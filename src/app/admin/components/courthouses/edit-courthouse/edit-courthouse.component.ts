@@ -1,5 +1,5 @@
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
-import { CreateUpdateCourthouseFormValues } from '@admin-types/index';
+import { CreateUpdateCourthouseFormValues, SecurityGroup } from '@admin-types/index';
 import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
@@ -38,8 +38,11 @@ export class EditCourthouseComponent implements OnInit {
 
   updateCourthouse!: CreateUpdateCourthouseFormValues;
   regions$ = this.courthouseService.getCourthouseRegions();
+  companies$ = this.courthouseService.getCourthouseTranscriptionCompanies();
+
   vm$ = combineLatest({
     regions: this.regions$,
+    companies: this.companies$,
   });
 
   ngOnInit(): void {
@@ -50,7 +53,6 @@ export class EditCourthouseComponent implements OnInit {
 
   onSubmit(formValues: CreateUpdateCourthouseFormValues) {
     this.updateCourthouse = formValues;
-
     this.saveCourthouse();
   }
 
@@ -58,6 +60,10 @@ export class EditCourthouseComponent implements OnInit {
     this.courthouseService.updateCourthouse(this.courthouse.id, this.updateCourthouse).subscribe((courthouse) => {
       this.router.navigate(['/admin/courthouses', courthouse.id], { queryParams: { updated: true } });
     });
+  }
+
+  getSecurityGroupIds(securityGroups: SecurityGroup[] | undefined) {
+    return securityGroups?.map((securityGroup) => securityGroup.id.toString()) || [];
   }
 
   onCancel() {

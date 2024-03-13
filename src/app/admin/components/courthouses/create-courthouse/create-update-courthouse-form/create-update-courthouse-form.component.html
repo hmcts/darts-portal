@@ -46,15 +46,18 @@
         <div class="govuk-radios__item">
           <input
             class="govuk-radios__input"
-            [id]="formatNameToId(region.name) + '-radio'"
+            [id]="formatNameToRadioId(region.name)"
             type="radio"
             [value]="region.id"
             formControlName="regionId"
+            name="regionId"
           />
-          <label class="govuk-label govuk-radios__label" for="approve-radio">{{ region.name }}</label>
+          <label class="govuk-label govuk-radios__label" [for]="formatNameToRadioId(region.name)">{{
+            region.name
+          }}</label>
         </div>
       }
-      <label id="or-label" class="govuk-label govuk-radios__label" for="no-region">Or</label>
+      <label id="or-label" class="govuk-label govuk-radios__label" for="no-region-radio">Or</label>
       <div class="govuk-radios__item">
         <input class="govuk-radios__input" id="no-region" name="regionId" type="radio" formControlName="regionId" />
         <label class="govuk-label govuk-radios__label" for="approve-radio">No region</label>
@@ -85,7 +88,7 @@
     >
       Add company
     </button>
-    @if (selectedCompanies.length) {
+    @if (selectedCompanies) {
       <table aria-label="Selected companies" class="govuk-table" id="company-table">
         <th><ng-content></ng-content></th>
         <tbody class="govuk-table__body">

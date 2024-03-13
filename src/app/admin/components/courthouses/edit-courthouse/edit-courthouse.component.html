@@ -8,12 +8,13 @@
       courthouseName: courthouse.courthouseName,
       displayName: courthouse.displayName,
       regionId: courthouse.region?.id?.toString(),
-      securityGroupIds: []
+      securityGroupIds: getSecurityGroupIds(courthouse.securityGroups)
     }"
     (submitForm)="onSubmit($event)"
     (errors)="errors = $event"
     (cancel)="onCancel()"
     [regions]="vm.regions"
+    [companies]="vm.companies"
   />
 </ng-container>
 <ng-template #loading>

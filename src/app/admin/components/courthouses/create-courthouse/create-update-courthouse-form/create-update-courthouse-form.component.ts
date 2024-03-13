@@ -2,7 +2,7 @@ import { DataTableComponent } from '@common/data-table/data-table.component';
 import { Region } from '@admin-types/courthouses/region.interface';
 import { CreateUpdateCourthouseFormValues } from '@admin-types/index';
 import { SecurityGroup } from '@admin-types/users/security-group.type';
-import { Component, DestroyRef, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import { Component, DestroyRef, EventEmitter, Input, OnInit, Output, inject, ElementRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CourthouseData, ErrorSummaryEntry, FieldErrors } from '@core-types/index';
@@ -36,6 +36,7 @@ const controlErrors: FieldErrors = {
   styleUrl: './create-update-courthouse-form.component.scss',
 })
 export class CreateUpdateCourthouseFormComponent implements OnInit {
+  constructor(private elementRef: ElementRef<HTMLElement>) {}
   @Output() submitForm = new EventEmitter<CreateUpdateCourthouseFormValues>();
   @Output() cancel = new EventEmitter<void>();
   @Output() errors = new EventEmitter<ErrorSummaryEntry[]>();
@@ -86,6 +87,20 @@ export class CreateUpdateCourthouseFormComponent implements OnInit {
         regionId: this.updateCourthouse?.regionId?.toString() || '',
         securityGroupIds: this.updateCourthouse?.securityGroupIds,
       });
+      if (this.securityGroupsControl.value.length) {
+        const selectedCompanies = this.companies.filter((company) =>
+          this.securityGroupsControl.value.includes(company.id.toString())
+        );
+        this.selectedCompanies = selectedCompanies;
+      }
+      console.log(this.regionControl.value);
+      console.log(this.regions);
+      const selectedRegion = this.regions.find((region) => region.id === parseInt(this.regionControl.value));
+      console.log(selectedRegion);
+      const elementName = this.formatNameToRadioId(selectedRegion?.name.toString());
+      console.log(elementName);
+      const element = document.getElementById(elementName) as HTMLInputElement;
+      console.log(element);
 
       this.form.updateValueAndValidity();
     }
@@ -106,8 +121,8 @@ export class CreateUpdateCourthouseFormComponent implements OnInit {
     this.submitForm.emit(this.form.value as CreateUpdateCourthouseFormValues);
   }
 
-  formatNameToId(value: string) {
-    return value.toLowerCase().replace(' ', '-');
+  formatNameToRadioId(value: string | undefined) {
+    return (value?.toLowerCase().replace(' ', '-') || 'no-region') + '-radio';
   }
 
   onCancel() {

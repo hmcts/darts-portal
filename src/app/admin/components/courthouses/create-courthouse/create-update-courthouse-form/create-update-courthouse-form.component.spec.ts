@@ -122,7 +122,7 @@ describe('CreateUpdateCourthouseFormComponent', () => {
 
   describe('#formatNameToId', () => {
     it('Should change name to id style', () => {
-      expect(component.formatNameToId('Test ID')).toEqual('test-id');
+      expect(component.formatNameToRadioId('Test ID')).toEqual('test-id');
     });
   });
 
