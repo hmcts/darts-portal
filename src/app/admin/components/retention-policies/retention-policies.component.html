@@ -1,0 +1,49 @@
+<div class="heading-button-container">
+  <h1 class="govuk-heading-xl">Retention policies</h1>
+  <button class="govuk-button" data-module="govuk-button">Create policy</button>
+</div>
+@if (retentionPolicies$ | async; as rows) {
+  <app-tabs>
+    <app-data-table
+      *tab="'Active'"
+      id="active-policies-table"
+      [rows]="rows.activeRetentionPolicies"
+      [columns]="activeColumns"
+    >
+      <ng-template [tableRowTemplate]="rows.activeRetentionPolicies" let-row>
+        <td class="govuk-table__cell">{{ row.name }}</td>
+        <td class="govuk-table__cell">{{ row.description }}</td>
+        <td class="govuk-table__cell">{{ row.fixedPolicyKey }}</td>
+        <td class="govuk-table__cell">{{ row.duration | duration }}</td>
+        <td class="govuk-table__cell">{{ row.policyStartAt | luxonDate: 'dd MMM yyyy h:mm a' }}</td>
+        <td class="govuk-table__cell">
+          {{ row.policyEndAt ? (row.policyEndAt | luxonDate: 'dd MMM yyyy h:mm a') : '-' }}
+        </td>
+        <td class="govuk-table__cell">
+          @if (isPolicyActive(row.policyStartAt)) {
+            <a class="govuk-link">Edit Policy</a>
+          } @else {
+            <a class="govuk-link">Create new version</a>
+          }
+        </td>
+      </ng-template>
+    </app-data-table>
+    <app-data-table
+      *tab="'Inactive'"
+      id="inactive-policies-table"
+      [rows]="rows.inactiveRetentionPolicies"
+      [columns]="inActiveColumns"
+    >
+      <ng-template [tableRowTemplate]="rows.inactiveRetentionPolicies" let-row>
+        <td class="govuk-table__cell">{{ row.name }}</td>
+        <td class="govuk-table__cell">{{ row.description }}</td>
+        <td class="govuk-table__cell">{{ row.fixedPolicyKey }}</td>
+        <td class="govuk-table__cell">{{ row.duration | duration }}</td>
+        <td class="govuk-table__cell">{{ row.policyStartAt | luxonDate: 'dd MMM yyyy h:mm a' }}</td>
+        <td class="govuk-table__cell">
+          {{ row.policyEndAt ? (row.policyEndAt | luxonDate: 'dd MMM yyyy h:mm a') : '-' }}
+        </td>
+      </ng-template>
+    </app-data-table>
+  </app-tabs>
+}
