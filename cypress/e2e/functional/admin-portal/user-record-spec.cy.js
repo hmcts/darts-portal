@@ -203,7 +203,7 @@ describe('Admin - User record screen', () => {
       cy.contains('h2', 'Groups').should('exist');
 
       cy.tableRowShouldContain('Judiciary', 'Approver');
-      cy.tableRowShouldContain('Opus Transcribers', 'Requestor');
+      cy.tableRowShouldContain('Opus Transcribers', 'Transcriber');
 
       cy.a11y();
     });
@@ -220,7 +220,7 @@ describe('Admin - User record screen', () => {
       cy.get('h2').should('contain', '2 groups selected');
 
       cy.selectedListShouldContain('Judiciary', 'Approver');
-      cy.selectedListShouldContain('Opus Transcribers', 'Requestor');
+      cy.selectedListShouldContain('Opus Transcribers', 'Transcriber');
 
       cy.checkGroup('Super user (DARTS portal)');
 
@@ -231,7 +231,7 @@ describe('Admin - User record screen', () => {
       cy.get('app-govuk-banner').should('contain', 'Assigned 3 groups');
 
       cy.tableRowShouldContain('Judiciary', 'Approver');
-      cy.tableRowShouldContain('Opus Transcribers', 'Requestor');
+      cy.tableRowShouldContain('Opus Transcribers', 'Transcriber');
       cy.tableRowShouldContain('Super user (DARTS portal)', 'Judge');
     });
 
@@ -255,7 +255,7 @@ describe('Admin - User record screen', () => {
       cy.get('app-govuk-banner').should('contain', 'Removed 1 group');
 
       cy.get('.govuk-table__body').contains('Judiciary').should('not.exist');
-      cy.tableRowShouldContain('Opus Transcribers', 'Requestor');
+      cy.tableRowShouldContain('Opus Transcribers', 'Transcriber');
       cy.tableRowShouldContain('Super user (DARTS portal)', 'Judge');
     });
   });
