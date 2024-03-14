@@ -252,7 +252,7 @@ describe('Audio request type - Role checks', () => {
   });
 
   it('should show request type for super user role', () => {
-    cy.login('super-user');
+    cy.login('superuser');
     cy.contains('Search').click();
     cy.get('h1').should('contain', 'Search for a case');
     cy.get('#case_number').type('C20220620001');
