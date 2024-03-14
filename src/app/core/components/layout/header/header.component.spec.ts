@@ -33,6 +33,7 @@ describe('HeaderComponent', () => {
       isApprover: jest.fn(() => false),
       isRequester: jest.fn(() => false),
       isAdmin: jest.fn(() => false),
+      isSuperUser: jest.fn(() => false),
     };
 
     await TestBed.configureTestingModule({
@@ -82,6 +83,20 @@ describe('HeaderComponent', () => {
     beforeEach(async () => {
       fakeAuthService.getAuthenticated = jest.fn(() => true);
       fakeUserService.isAdmin = jest.fn(() => true);
+      await router.navigate(['/admin']);
+      fixture.detectChanges();
+    });
+
+    it('show admin navigation', () => {
+      const adminNav = fixture.debugElement.query(By.css('#admin-nav'));
+      expect(adminNav).toBeTruthy();
+    });
+  });
+
+  describe('when user is SUPER_USER and is on /admin URL', () => {
+    beforeEach(async () => {
+      fakeAuthService.getAuthenticated = jest.fn(() => true);
+      fakeUserService.isSuperUser = jest.fn(() => true);
       await router.navigate(['/admin']);
       fixture.detectChanges();
     });

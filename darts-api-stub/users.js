@@ -47,7 +47,11 @@ const stubUsers = [
     userState: {
       userId: 5,
       userName: 'phil.taylor@darts.local',
+<<<<<<< HEAD
       roles: [REQUESTER, APPROVER, TRANSCRIBER, SUPER_ADMIN],
+=======
+      roles: [REQUESTER, APPROVER, TRANSCRIBER, ADMIN, SUPER_USER],
+>>>>>>> master
     },
     active: true,
   },
@@ -72,12 +76,32 @@ const stubUsers = [
     active: true,
   },
   {
+    name: 'John Lowe',
+    code: 'translation-qa',
+    userState: {
+      userId: 10,
+      userName: 'john.lowe@darts.local',
+      roles: [TRANSLATION_QA],
+    },
+    active: true,
+  },
+  {
     name: 'Luke Littler',
     code: 'admin-only',
     userState: {
       userId: 8,
       userName: 'luke.littler@darts.local',
       roles: [SUPER_ADMIN],
+    },
+    active: true,
+  },
+  {
+    name: 'Luke Humphries',
+    code: 'super-user-only',
+    userState: {
+      userId: 11,
+      userName: 'luke.humphries@darts.local',
+      roles: [SUPER_USER],
     },
     active: true,
   },
@@ -91,6 +115,7 @@ const stubUsers = [
     },
     active: false,
   },
+<<<<<<< HEAD
   {
     name: 'John Lowe',
     code: 'translation-qa',
@@ -111,6 +136,8 @@ const stubUsers = [
     },
     active: true,
   },
+=======
+>>>>>>> master
 ];
 
 const userIdhasAnyRoles = (roles, userId) => {

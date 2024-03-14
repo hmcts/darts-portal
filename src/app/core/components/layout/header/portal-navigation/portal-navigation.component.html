@@ -45,7 +45,9 @@
               }
             </a>
           </li>
-          @if (userService.isJudge() || userService.isApprover() || userService.isRequester()) {
+          @if (
+            userService.isJudge() || userService.isApprover() || userService.isRequester() || userService.isSuperUser()
+          ) {
             <li class="moj-primary-navigation__item">
               <a
                 class="moj-primary-navigation__link"

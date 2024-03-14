@@ -71,5 +71,5 @@ export const ADMIN_ROUTES: Routes = [
   ...route,
   resolve: { userState: () => inject(UserService).userProfile$ },
   canActivate: [authGuard],
-  data: { allowedRoles: ['SUPER_ADMIN'] },
+  data: { allowedRoles: ['SUPER_ADMIN', 'SUPER_USER'] },
 }));

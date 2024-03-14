@@ -21,6 +21,7 @@ describe('PortalNavigationComponent', () => {
       isApprover: jest.fn(() => false),
       isRequester: jest.fn(() => false),
       isAdmin: jest.fn(() => false),
+      isSuperUser: jest.fn(() => false),
     };
 
     await TestBed.configureTestingModule({
