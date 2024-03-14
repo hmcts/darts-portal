@@ -118,7 +118,7 @@ export class CourthouseService {
     return {
       courthouse_name: courthouse.courthouseName!,
       display_name: courthouse.displayName!,
-      region_id: courthouse?.regionId ? parseInt(courthouse.regionId) : undefined,
+      region_id: courthouse?.regionId ? +courthouse.regionId : undefined,
       security_group_ids: courthouse?.securityGroupIds.map((securityGroupId) => parseInt(securityGroupId)),
     };
   }

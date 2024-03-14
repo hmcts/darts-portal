@@ -84,7 +84,7 @@ export class CreateUpdateCourthouseFormComponent implements OnInit {
       this.form.setValue({
         courthouseName: this.updateCourthouse.courthouseName,
         displayName: this.updateCourthouse.displayName,
-        regionId: this.updateCourthouse?.regionId?.toString() || '',
+        regionId: this.updateCourthouse?.regionId || '',
         securityGroupIds: this.updateCourthouse?.securityGroupIds,
       });
       if (this.securityGroupsControl.value.length) {
@@ -93,14 +93,6 @@ export class CreateUpdateCourthouseFormComponent implements OnInit {
         );
         this.selectedCompanies = selectedCompanies;
       }
-      console.log(this.regionControl.value);
-      console.log(this.regions);
-      const selectedRegion = this.regions.find((region) => region.id === parseInt(this.regionControl.value));
-      console.log(selectedRegion);
-      const elementName = this.formatNameToRadioId(selectedRegion?.name.toString());
-      console.log(elementName);
-      const element = document.getElementById(elementName) as HTMLInputElement;
-      console.log(element);
 
       this.form.updateValueAndValidity();
     }

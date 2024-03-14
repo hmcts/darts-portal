@@ -10,7 +10,7 @@ const defaultSecurityGroups = [
   },
   {
     id: 2,
-    security_role_id: 2,
+    security_role_id: 4,
     name: 'Opus Transcribers',
   },
   {
@@ -20,7 +20,7 @@ const defaultSecurityGroups = [
   },
   {
     id: 4,
-    security_role_id: 4,
+    security_role_id: 2,
     name: 'Admin (Admin portal)',
   },
   {

@@ -45,12 +45,12 @@
       @for (region of regions; track region) {
         <div class="govuk-radios__item">
           <input
-            class="govuk-radios__input"
-            [id]="formatNameToRadioId(region.name)"
             type="radio"
-            [value]="region.id"
+            class="govuk-radios__input"
             formControlName="regionId"
+            [id]="formatNameToRadioId(region.name)"
             name="regionId"
+            [value]="region.id"
           />
           <label class="govuk-label govuk-radios__label" [for]="formatNameToRadioId(region.name)">{{
             region.name
@@ -59,7 +59,14 @@
       }
       <label id="or-label" class="govuk-label govuk-radios__label" for="no-region-radio">Or</label>
       <div class="govuk-radios__item">
-        <input class="govuk-radios__input" id="no-region" name="regionId" type="radio" formControlName="regionId" />
+        <input
+          class="govuk-radios__input"
+          id="no-region-radio"
+          name="regionId"
+          type="radio"
+          formControlName="regionId"
+          [checked]="true"
+        />
         <label class="govuk-label govuk-radios__label" for="approve-radio">No region</label>
       </div>
     </div>

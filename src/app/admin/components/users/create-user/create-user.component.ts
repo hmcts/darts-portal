@@ -1,5 +1,4 @@
 import { CreateUpdateUserFormValues } from '@admin-types/index';
-import { JsonPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -18,7 +17,6 @@ import { CreateUpdateUserFormComponent } from './create-update-user-form/create-
     CreateUpdateUserFormComponent,
     ValidationErrorSummaryComponent,
     CreateUpdateUserConfirmationComponent,
-    JsonPipe,
   ],
   templateUrl: './create-user.component.html',
   styleUrl: './create-user.component.scss',
