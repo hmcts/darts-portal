@@ -1,10 +1,10 @@
-import { DataTableComponent } from '@common/data-table/data-table.component';
 import { Region } from '@admin-types/courthouses/region.interface';
 import { CreateUpdateCourthouseFormValues } from '@admin-types/index';
 import { SecurityGroup } from '@admin-types/users/security-group.type';
-import { Component, DestroyRef, EventEmitter, Input, OnInit, Output, inject, ElementRef } from '@angular/core';
+import { Component, DestroyRef, ElementRef, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { DataTableComponent } from '@common/data-table/data-table.component';
 import { CourthouseData, ErrorSummaryEntry, FieldErrors } from '@core-types/index';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { FormService } from '@services/form/form.service';

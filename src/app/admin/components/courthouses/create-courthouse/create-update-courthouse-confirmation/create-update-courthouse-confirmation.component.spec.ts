@@ -35,7 +35,7 @@ describe('CreateUpdateCourthouseConfirmationComponent', () => {
         const values: CreateUpdateCourthouseFormValues = {
           courthouseName: 'TEST',
           displayName: 'Test',
-          regionId: '0',
+          regionId: 0,
           securityGroupIds: ['0'],
         };
 

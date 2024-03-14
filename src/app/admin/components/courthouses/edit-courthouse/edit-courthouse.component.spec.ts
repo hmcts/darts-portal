@@ -63,13 +63,13 @@ describe('EditCourthouseComponent', () => {
       createdDateTime: DateTime.now(),
       courthouseName: 'Test',
       displayName: 'Courthouse',
-      regionId: '1',
+      regionId: 1,
       securityGroupIds: [],
     } as Courthouse;
     component.updateCourthouse = {
       courthouseName: 'Test',
       displayName: 'Courthouse',
-      regionId: '1',
+      regionId: 1,
       securityGroupIds: [],
     };
 
@@ -87,13 +87,13 @@ describe('EditCourthouseComponent', () => {
       createdDateTime: DateTime.now(),
       courthouseName: 'Test',
       displayName: 'Courthouse',
-      regionId: '1',
+      regionId: 1,
       securityGroupIds: [],
     } as Courthouse;
     component.updateCourthouse = {
       courthouseName: 'Test',
       displayName: 'Courthoos',
-      regionId: '1',
+      regionId: 1,
       securityGroupIds: [],
     };
 
@@ -107,13 +107,13 @@ describe('EditCourthouseComponent', () => {
       createdDateTime: DateTime.now(),
       courthouseName: 'Test',
       displayName: 'Courthouse',
-      regionId: '1',
+      regionId: 1,
       securityGroupIds: [],
     } as Courthouse;
     component.updateCourthouse = {
       courthouseName: 'Test',
       displayName: 'Courthoos',
-      regionId: '1',
+      regionId: 1,
       securityGroupIds: [],
     };
 
@@ -135,7 +135,7 @@ describe('EditCourthouseComponent', () => {
       createdDateTime: DateTime.now(),
       courthouseName: 'Test',
       displayName: 'Courthouse',
-      regionId: '1',
+      regionId: 1,
       securityGroupIds: [],
     } as Courthouse;
 

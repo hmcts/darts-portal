@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Router } from '@angular/router';
+import { CourthouseData } from '@core-types/index';
+import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { HeaderService } from '@services/header/header.service';
 import { of } from 'rxjs/internal/observable/of';
 import { CreateCourthouseComponent } from './create-courthouse.component';
-import { CourthouseService } from '@services/courthouses/courthouses.service';
-import { CourthouseData } from '@core-types/index';
 
 describe('CreateCourthouseComponent', () => {
   let component: CreateCourthouseComponent;
@@ -55,7 +55,7 @@ describe('CreateCourthouseComponent', () => {
   });
 
   it('onSubmit should set formValues and isConfirmation to true', () => {
-    const formValues = { courthouseName: 'COURTHOUSE', displayName: 'Courthouse', regionId: '1', securityGroupIds: [] };
+    const formValues = { courthouseName: 'COURTHOUSE', displayName: 'Courthouse', regionId: 1, securityGroupIds: [] };
     component.onSubmit(formValues);
 
     expect(component.formValues).toEqual(formValues);
@@ -71,7 +71,7 @@ describe('CreateCourthouseComponent', () => {
     component.formValues = {
       courthouseName: 'COURTHOUSE',
       displayName: 'Courthouse',
-      regionId: '1',
+      regionId: 1,
       securityGroupIds: [],
     };
     component.onConfirmCourthouseDetails();
