@@ -103,7 +103,7 @@ const stubUsers = [
   },
   {
     name: 'Gary Anderson',
-    code: 'super-user',
+    code: 'superuser',
     userState: {
       userId: 11,
       userName: 'gary.anderson@darts.local',

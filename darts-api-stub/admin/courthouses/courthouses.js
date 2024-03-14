@@ -1,6 +1,6 @@
 const express = require('express');
 const { localArray } = require('../../localArray');
-const { ADMIN } = require('../../roles');
+const { SUPER_ADMIN } = require('../../roles');
 const { userIdhasAnyRoles } = require('../../users');
 const { DateTime } = require('luxon');
 
@@ -170,7 +170,7 @@ const getCourthouseByCourthouseId = (courthouseId) => {
 };
 
 router.get('/:courthouseId', (req, res) => {
-  if (!userIdhasAnyRoles([ADMIN], req.headers.user_id))
+  if (!userIdhasAnyRoles([SUPER_ADMIN], req.headers.user_id))
     return res.status(403).send({
       detail: `You do not have permission`,
     });
@@ -180,7 +180,7 @@ router.get('/:courthouseId', (req, res) => {
 });
 
 router.patch('/:courthouseId', (req, res) => {
-  if (!userIdhasAnyRoles([ADMIN], req.headers.user_id))
+  if (!userIdhasAnyRoles([SUPER_ADMIN], req.headers.user_id))
     return res.status(403).send({
       detail: `You do not have permission`,
     });
@@ -197,7 +197,7 @@ router.patch('/:courthouseId', (req, res) => {
 
 router.post('/', (req, res) => {
   const mandatoryKeys = ['courthouse_name', 'display_name'];
-  if (!userIdhasAnyRoles([ADMIN], req.headers.user_id))
+  if (!userIdhasAnyRoles([SUPER_ADMIN], req.headers.user_id))
     return res.status(403).send({
       detail: `You do not have permission`,
     });
