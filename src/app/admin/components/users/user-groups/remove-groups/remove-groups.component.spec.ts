@@ -52,7 +52,7 @@ describe('RemoveGroupsComponent', () => {
     fixture = TestBed.createComponent(RemoveGroupsComponent);
     component = fixture.componentInstance;
     component.user = mockUser;
-
+    component.selectedGroups = mockGroupsWithRoles;
     fixture.detectChanges();
   });
 
