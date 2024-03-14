@@ -129,6 +129,7 @@ export class CourthouseService {
         id: group.id!,
         name: group.name!,
         displayName: group.display_name,
+        description: group.description,
       };
     });
   }

@@ -1,6 +1,7 @@
 import { SecurityGroup, User } from '@admin-types/index';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { GroupsService } from '@services/groups/groups.service';
 import { HeaderService } from '@services/header/header.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { DateTime } from 'luxon';
@@ -21,7 +22,7 @@ const mockGroupsWithRoles: SecurityGroup[] = [
     securityRoleId: 2,
     role: { id: 2, name: 'Role 2', displayState: false },
   },
-];
+] as SecurityGroup[];
 
 const mockUserGroups: UserGroup[] = mockGroupsWithRoles.map((group) => ({
   ...group,
@@ -46,16 +47,23 @@ describe('AssignGroupsComponent', () => {
   let component: AssignGroupsComponent;
   let fixture: ComponentFixture<AssignGroupsComponent>;
   let userAdminService: Partial<UserAdminService>;
+  let groupsService: Partial<GroupsService>;
 
   beforeEach(async () => {
     userAdminService = {
-      getSecurityGroupsWithRoles: jest.fn().mockReturnValue(of(mockGroupsWithRoles)),
       assignGroups: jest.fn().mockReturnValue(of(null)),
+    };
+    groupsService = {
+      getGroupsAndRoles: jest.fn().mockReturnValue(of({ groups: mockGroupsWithRoles, roles: [] })),
     };
 
     await TestBed.configureTestingModule({
       imports: [AssignGroupsComponent, RouterTestingModule],
-      providers: [{ provide: UserAdminService, useValue: userAdminService }, HeaderService],
+      providers: [
+        { provide: UserAdminService, useValue: userAdminService },
+        { provide: GroupsService, useValue: groupsService },
+        HeaderService,
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AssignGroupsComponent);
@@ -69,7 +77,7 @@ describe('AssignGroupsComponent', () => {
   });
 
   it('should get groups with roles', () => {
-    expect(userAdminService.getSecurityGroupsWithRoles).toHaveBeenCalled();
+    expect(groupsService.getGroupsAndRoles).toHaveBeenCalled();
   });
 
   describe('onAssign', () => {
@@ -118,12 +126,14 @@ describe('AssignGroupsComponent', () => {
           id: 1,
           name: 'Group 1',
           securityRoleId: 1,
+          description: 'Group 1 description',
           role: { id: 1, name: 'Role 1', displayState: true },
         },
         {
           id: 2,
           name: 'Group 2',
           securityRoleId: 2,
+          description: 'Group 2 description',
           role: { id: 2, name: 'Role 2', displayState: false },
         },
       ];
@@ -137,12 +147,10 @@ describe('AssignGroupsComponent', () => {
         },
       ];
 
-      // Mock the getSecurityGroupsWithRoles method to return the mockGroups
-      jest.spyOn(userAdminService, 'getSecurityGroupsWithRoles').mockReturnValue(of(mockGroups));
+      jest.spyOn(groupsService, 'getGroupsAndRoles').mockReturnValue(of({ groups: mockGroups, roles: [] }));
 
       let result;
 
-      // Subscribe to the groups$ observable and check the emitted value
       component.groups$.subscribe((groups) => {
         result = groups;
       });

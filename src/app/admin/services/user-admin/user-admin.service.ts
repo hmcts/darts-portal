@@ -1,28 +1,25 @@
 import { CreateUpdateUserFormValues } from '@admin-types/index';
 import { CreateUserRequest } from '@admin-types/users/create-user-request.type';
-import { SecurityGroupData } from '@admin-types/users/security-group.interface';
 import { SecurityGroup } from '@admin-types/users/security-group.type';
-import { SecurityRoleData } from '@admin-types/users/security-role.interface';
-import { SecurityRole } from '@admin-types/users/security-role.type';
 import { UserData } from '@admin-types/users/user-data.interface';
 import { UserSearchFormValues } from '@admin-types/users/user-search-form-values.type';
 import { UserSearchRequest } from '@admin-types/users/user-search-request.interface';
 import { User } from '@admin-types/users/user.type';
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { GET_SECURITY_GROUPS_PATH } from '@services/courthouses/courthouses.service';
+import { GroupsService } from '@services/groups/groups.service';
 import { DateTime } from 'luxon';
 import { Observable, forkJoin, map } from 'rxjs';
 
 export const USER_ADMIN_SEARCH_PATH = 'api/admin/users/search';
 export const USER_ADMIN_PATH = 'api/admin/users';
-export const GET_SECURITY_ROLES_PATH = 'api/admin/security-roles';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserAdminService {
   http = inject(HttpClient);
+  groupsService = inject(GroupsService);
 
   searchUsers(query: UserSearchFormValues): Observable<User[]> {
     const body: UserSearchRequest = this.mapToUserSearchRequest(query);
@@ -32,8 +29,8 @@ export class UserAdminService {
   getUser(userId: number): Observable<User> {
     return forkJoin({
       userData: this.http.get<UserData>(`${USER_ADMIN_PATH}/${userId}`),
-      securityGroups: this.getSecurityGroupsWithRoles(),
-    }).pipe(map(({ userData, securityGroups }) => this.mapUserWithSecurityGroups(userData, securityGroups)));
+      security: this.groupsService.getGroupsAndRoles(),
+    }).pipe(map(({ userData, security }) => this.mapUserWithSecurityGroups(userData, security.groups)));
   }
 
   createUser(user: CreateUpdateUserFormValues): Observable<User> {
@@ -62,44 +59,6 @@ export class UserAdminService {
     return this.http
       .get<UserData[]>(`${USER_ADMIN_PATH}`, { headers: { 'Email-Address': email } })
       .pipe(map((users) => users.length > 0));
-  }
-
-  getSecurityGroups(): Observable<SecurityGroup[]> {
-    return this.http.get<SecurityGroupData[]>(`${GET_SECURITY_GROUPS_PATH}`).pipe(
-      map((groups) => {
-        return groups.map((group) => ({
-          id: group.id,
-          name: group.name,
-          securityRoleId: group.security_role_id,
-        }));
-      })
-    );
-  }
-
-  getSecurityRoles(): Observable<SecurityRole[]> {
-    return this.http.get<SecurityRoleData[]>(`${GET_SECURITY_ROLES_PATH}`).pipe(
-      map((roles) => {
-        return roles.map((role) => ({
-          id: role.id,
-          name: role.display_name,
-          displayState: role.display_state,
-        }));
-      })
-    );
-  }
-
-  getSecurityGroupsWithRoles(): Observable<SecurityGroup[]> {
-    return forkJoin({
-      groups: this.getSecurityGroups(),
-      roles: this.getSecurityRoles(),
-    }).pipe(
-      map(({ groups, roles }) =>
-        groups.map((group) => {
-          const role = roles.find((r) => r.id === group.securityRoleId);
-          return { ...group, role };
-        })
-      )
-    );
   }
 
   activateUser(id: number) {
