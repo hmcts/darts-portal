@@ -36,7 +36,7 @@ export const PORTAL_ROUTES: Routes = [
   },
   {
     path: 'transcriptions',
-    data: { allowedRoles: ['APPROVER', 'REQUESTER', 'JUDGE'] },
+    data: { allowedRoles: ['APPROVER', 'REQUESTER', 'JUDGE', 'SUPER_USER'] },
     loadComponent: () =>
       import('../portal/components/transcriptions/transcriptions.component').then((c) => c.TranscriptionsComponent),
   },
@@ -74,7 +74,7 @@ export const PORTAL_ROUTES: Routes = [
   },
   {
     path: 'case/:caseId/retention',
-    data: { allowedRoles: ['APPROVER', 'REQUESTER', 'JUDGE', 'SUPER_ADMIN'] },
+    data: { allowedRoles: ['APPROVER', 'REQUESTER', 'JUDGE', 'SUPER_ADMIN', 'SUPER_USER'] },
     loadComponent: () =>
       import('../portal/components/case/case-retention-date/case-retention-date.component').then(
         (c) => c.CaseRetentionDateComponent

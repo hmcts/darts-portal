@@ -34,6 +34,10 @@ export class UserService {
     return this.hasRole('SUPER_ADMIN');
   }
 
+  public isSuperUser(): boolean {
+    return this.hasRole('SUPER_USER');
+  }
+
   public isRequester(): boolean {
     return this.hasRole('REQUESTER');
   }

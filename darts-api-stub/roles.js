@@ -35,4 +35,10 @@ const TRANSLATION_QA = {
   permissions,
 };
 
-module.exports = { JUDGE, TRANSCRIBER, APPROVER, REQUESTER, ADMIN, TRANSLATION_QA };
+const SUPER_USER = {
+  roleId: 7,
+  roleName: 'SUPER_USER',
+  permissions,
+};
+
+module.exports = { JUDGE, TRANSCRIBER, APPROVER, REQUESTER, ADMIN, SUPER_USER, TRANSLATION_QA };

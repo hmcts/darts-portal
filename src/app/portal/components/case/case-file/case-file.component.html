@@ -11,7 +11,13 @@
 <h3 class="govuk-heading-s">Defendant(s)</h3>
 <p class="govuk-body">{{ caseFile.defendants | join }}</p>
 
-@if (userService.isRequester() || userService.isApprover() || userService.isJudge() || userService.isAdmin()) {
+@if (
+  userService.isRequester() ||
+  userService.isApprover() ||
+  userService.isJudge() ||
+  userService.isAdmin() ||
+  userService.isSuperUser()
+) {
   <h3 class="govuk-heading-s">Retained until</h3>
   <p class="govuk-body">
     @if (caseFile.retainUntilDateTime) {
