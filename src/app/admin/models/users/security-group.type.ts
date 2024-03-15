@@ -5,5 +5,5 @@ export type SecurityGroup = {
   name: string;
   securityRoleId?: number;
   role?: SecurityRole;
-  description: string;
+  description?: string;
 };
