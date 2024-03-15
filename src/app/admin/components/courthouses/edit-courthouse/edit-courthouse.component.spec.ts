@@ -151,4 +151,11 @@ describe('EditCourthouseComponent', () => {
 
     expect(router.navigate).toHaveBeenCalledWith(['/admin/courthouses', 1]);
   });
+
+  it('#onBack', () => {
+    component.isConfirmation = true;
+    expect(component.isConfirmation).toBe(true);
+    component.onBack();
+    expect(component.isConfirmation).toBe(false);
+  });
 });

@@ -10,7 +10,7 @@ import { ValidationErrorSummaryComponent } from '@common/validation-error-summar
 import { ErrorSummaryEntry } from '@core-types/index';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { HeaderService } from '@services/header/header.service';
-import { EMPTY, catchError, combineLatest } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { CreateUpdateCourthouseConfirmationComponent } from '../create-courthouse/create-update-courthouse-confirmation/create-update-courthouse-confirmation.component';
 import { CreateUpdateCourthouseFormComponent } from '../create-courthouse/create-update-courthouse-form/create-update-courthouse-form.component';
 
@@ -76,16 +76,9 @@ export class EditCourthouseComponent implements OnInit {
   }
 
   saveCourthouse() {
-    this.courthouseService
-      .updateCourthouse(this.courthouse.id, this.updateCourthouse)
-      .pipe(
-        catchError(() => {
-          return EMPTY;
-        })
-      )
-      .subscribe((courthouse) => {
-        this.router.navigate(['/admin/courthouses', courthouse.id], { queryParams: { updated: true } });
-      });
+    this.courthouseService.updateCourthouse(this.courthouse.id, this.updateCourthouse).subscribe((courthouse) => {
+      this.router.navigate(['/admin/courthouses', courthouse.id], { queryParams: { updated: true } });
+    });
   }
 
   getSecurityGroupIds(securityGroups: SecurityGroup[] | undefined) {
