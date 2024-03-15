@@ -74,7 +74,7 @@ export class CreateUpdateCourthouseConfirmationComponent implements OnChanges {
     return {
       'Courthouse name': values.courthouseName,
       'Display name': values.displayName,
-      Region: region?.name || 'No region',
+      Region: region?.name ?? 'No region',
       'Transcription companies': selectedCompanies.length
         ? selectedCompanies.map((selectedCompany) => selectedCompany.name).join('\r\n')
         : 'None',

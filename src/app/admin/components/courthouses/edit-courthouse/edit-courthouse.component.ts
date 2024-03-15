@@ -89,7 +89,7 @@ export class EditCourthouseComponent implements OnInit {
   }
 
   getSecurityGroupIds(securityGroups: SecurityGroup[] | undefined) {
-    return securityGroups?.map((securityGroup) => securityGroup.id.toString()) || [];
+    return securityGroups?.map((securityGroup) => securityGroup.id.toString()) ?? [];
   }
 
   onCancel() {
