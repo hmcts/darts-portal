@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { CreateUpdateCourthouseFormValues, SecurityGroup } from '@admin-types/index';
 import { CreateUpdateCourthouseConfirmationComponent } from './create-update-courthouse-confirmation.component';
-import { CreateUpdateCourthouseFormValues } from '@admin-types/index';
 
 describe('CreateUpdateCourthouseConfirmationComponent', () => {
   let component: CreateUpdateCourthouseConfirmationComponent;
@@ -27,7 +27,7 @@ describe('CreateUpdateCourthouseConfirmationComponent', () => {
         component.companies = [
           { id: 0, name: 'Company 1' },
           { id: 1, name: 'Company 2' },
-        ];
+        ] as SecurityGroup[];
         component.regions = [
           { id: 0, name: 'Region 1' },
           { id: 1, name: 'Region 2' },
@@ -55,7 +55,7 @@ describe('CreateUpdateCourthouseConfirmationComponent', () => {
         component.companies = [
           { id: 0, name: 'Company 1' },
           { id: 1, name: 'Company 2' },
-        ];
+        ] as SecurityGroup[];
         component.regions = [
           { id: 0, name: 'Region 1' },
           { id: 1, name: 'Region 2' },

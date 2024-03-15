@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
-import { CreateUpdateCourthouseFormValues } from '@admin-types/index';
+import { CreateUpdateCourthouseFormValues, SecurityGroup } from '@admin-types/index';
+import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { of } from 'rxjs';
 import { CreateUpdateCourthouseFormComponent } from './create-update-courthouse-form.component';
-import { CourthouseService } from '@services/courthouses/courthouses.service';
 
 type formValidationTestCase = {
   name: string;
@@ -140,7 +140,7 @@ describe('CreateUpdateCourthouseFormComponent', () => {
       const companies = [
         { id: 0, name: 'Company 1' },
         { id: 1, name: 'Company 2' },
-      ];
+      ] as SecurityGroup[];
       component.companies = companies;
       component.selectCompany('1');
       expect(component.selectedCompany).toEqual(companies[1]);
@@ -153,7 +153,7 @@ describe('CreateUpdateCourthouseFormComponent', () => {
         { id: 0, name: 'Company 1' },
         { id: 1, name: 'Company 2' },
         { id: 2, name: 'Company 3' },
-      ];
+      ] as SecurityGroup[];
       component.companies = companies;
       component.selectCompany('1');
       component.addCompany();
@@ -169,7 +169,7 @@ describe('CreateUpdateCourthouseFormComponent', () => {
         { id: 0, name: 'Company 1' },
         { id: 1, name: 'Company 2' },
         { id: 2, name: 'Company 3' },
-      ];
+      ] as SecurityGroup[];
       component.selectedCompanies = [...companies];
       component.removeCompany(1);
       expect(component.selectedCompanies).toEqual([companies[0], companies[2]]);
