@@ -37,7 +37,7 @@ export class CreateUpdateCourthouseConfirmationComponent implements OnChanges {
   currentUrl = this.router.url.split('#')[0];
 
   ngOnChanges() {
-    this.courthouseDetails = this.mapFormValuesToDetailsTable(this.values);
+    if (this.values) this.courthouseDetails = this.mapFormValuesToDetailsTable(this.values);
   }
 
   onReturnCourthouseName(event: Event) {

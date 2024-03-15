@@ -34,9 +34,7 @@ export class CourthouseService {
       region_id: courthouse?.regionId,
       security_group_ids: courthouse?.securityGroupIds,
     };
-    return this.http.patch<CourthouseData>(`${COURTHOUSES_ADMIN_PATH}/${courthouseId}`, {
-      updatedCourthouse,
-    });
+    return this.http.patch<CourthouseData>(`${COURTHOUSES_ADMIN_PATH}/${courthouseId}`, updatedCourthouse);
   }
 
   getCourthouse(courthouseId: number): Observable<CourthouseData> {

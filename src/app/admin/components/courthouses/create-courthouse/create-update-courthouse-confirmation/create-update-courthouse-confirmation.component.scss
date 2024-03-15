@@ -4,3 +4,7 @@ table.govuk-table {
     text-align: right;
   }
 }
+
+.govuk-table__cell {
+  white-space: pre-line;
+}
