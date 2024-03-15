@@ -4,6 +4,11 @@
       {{ 'Created ' + courthouse.displayName }}
     </app-govuk-banner>
   }
+  @if (isUpdatedCourthouse$ | async) {
+    <app-govuk-banner type="success">
+      {{ courthouse.displayName + ' updated' }}
+    </app-govuk-banner>
+  }
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper">
       <div class="govuk-grid-row">

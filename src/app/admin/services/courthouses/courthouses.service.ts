@@ -32,6 +32,7 @@ export class CourthouseService {
       courthouse_name: courthouse?.courthouseName,
       display_name: courthouse?.displayName,
       region_id: courthouse?.regionId,
+      security_group_ids: courthouse?.securityGroupIds,
     };
     return this.http.patch<CourthouseData>(`${COURTHOUSES_ADMIN_PATH}/${courthouseId}`, {
       updatedCourthouse,

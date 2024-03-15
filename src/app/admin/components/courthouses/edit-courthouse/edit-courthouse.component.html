@@ -1,7 +1,9 @@
 <ng-container *ngIf="vm$ | async as vm; else loading">
   <app-validation-error-summary [errors]="errors" />
 
-  <app-govuk-heading caption="Edit courthouse"> Courthouse details </app-govuk-heading>
+  <app-govuk-heading caption="Edit courthouse">
+    {{ !!isConfirmation ? 'Check' : 'Courthouse' }} details
+  </app-govuk-heading>
 
   <app-create-update-courthouse-form
     [updateCourthouse]="{
@@ -10,11 +12,23 @@
       regionId: courthouse.region?.id,
       securityGroupIds: getSecurityGroupIds(courthouse.securityGroups)
     }"
+    [hidden]="!!isConfirmation"
     (submitForm)="onSubmit($event)"
     (errors)="errors = $event"
     (cancel)="onCancel()"
     [regions]="vm.regions"
     [companies]="vm.companies"
+  />
+
+  <app-create-update-courthouse-confirmation
+    [values]="updateCourthouse"
+    (confirm)="saveCourthouse()"
+    (back)="onBack()"
+    (cancel)="onCancel()"
+    [hidden]="!isConfirmation"
+    [regions]="vm.regions"
+    [companies]="vm.companies"
+    [update]="!!updateCourthouse"
   />
 </ng-container>
 <ng-template #loading>

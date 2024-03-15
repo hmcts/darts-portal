@@ -75,11 +75,11 @@
   <div class="govuk-form-group">
     <h2 class="govuk-heading-m">Transcription companies</h2>
     <span class="govuk-body">Select transcription companies</span>
-    <div id="case_number-hint" class="govuk-hint">You can select and add multiple companies</div>
+    <div class="govuk-hint">You can select and add multiple companies</div>
     <select
       class="govuk-select"
-      id="transcription-type"
-      name="transcription-type"
+      id="transcriptionCompanies"
+      name="transcriptionCompanies"
       (change)="selectCompany($any($event).target.value)"
     >
       <option value="" disabled selected>Please select</option>

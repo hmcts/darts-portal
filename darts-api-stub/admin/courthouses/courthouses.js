@@ -185,8 +185,8 @@ router.patch('/:courthouseId', (req, res) => {
       detail: `You do not have permission`,
     });
   const courthouse = getCourthouseByCourthouseId(req?.params?.courthouseId);
-  const { display_name, region_id } = req?.body;
   if (!courthouse) return res.sendStatus(404);
+  const { display_name, region_id } = req?.body;
   if (display_name) courthouse.display_name = display_name;
   if (region_id) courthouse.region_id = region_id;
   // A stupid workaround that works

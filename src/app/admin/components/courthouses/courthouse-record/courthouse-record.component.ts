@@ -37,6 +37,7 @@ export class CourthouseRecordComponent {
     this.route.snapshot.params.courthouseId
   );
   isNewCourthouse$ = this.route.queryParams?.pipe(map((params) => !!params.newCourthouse));
+  isUpdatedCourthouse$ = this.route.queryParams?.pipe(map((params) => !!params.updated));
 
   formatSecurityGroupLinks(securityGroups: SecurityGroup[] | undefined) {
     return securityGroups?.map((securityGroup) => {

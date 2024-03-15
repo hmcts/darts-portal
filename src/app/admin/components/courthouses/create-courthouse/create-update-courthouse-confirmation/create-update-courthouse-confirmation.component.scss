@@ -1,0 +1,6 @@
+table.govuk-table {
+  max-width: 60%;
+  & > th {
+    text-align: right;
+  }
+}

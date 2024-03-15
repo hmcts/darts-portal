@@ -1,6 +1,7 @@
 import { Region } from '@admin-types/courthouses/region.interface';
 import { CreateUpdateCourthouseFormValues, SecurityGroup } from '@admin-types/index';
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
 
 type courthouseDetailsVM = {
@@ -26,13 +27,39 @@ export class CreateUpdateCourthouseConfirmationComponent implements OnChanges {
   };
   @Input() regions!: Region[];
   @Input() companies!: SecurityGroup[];
+  @Input() update: boolean = false;
   @Output() confirm = new EventEmitter<void>();
   @Output() back = new EventEmitter<void>();
   @Output() cancel = new EventEmitter<void>();
+
+  router = inject(Router);
   courthouseDetails!: courthouseDetailsVM;
+  currentUrl = this.router.url.split('#')[0];
 
   ngOnChanges() {
     this.courthouseDetails = this.mapFormValuesToDetailsTable(this.values);
+  }
+
+  onReturnCourthouseName(event: Event) {
+    this.goBack(event);
+    this.router.navigate([this.currentUrl], { fragment: 'courthouseName' });
+  }
+  onReturnDisplayName(event: Event) {
+    this.goBack(event);
+    this.router.navigate([this.currentUrl], { fragment: 'displayName' });
+  }
+  onReturnRegion(event: Event) {
+    this.goBack(event);
+    this.router.navigate([this.currentUrl], { fragment: 'regionId' });
+  }
+  onReturnCompanies(event: Event) {
+    this.goBack(event);
+    this.router.navigate([this.currentUrl], { fragment: 'transcriptionCompanies' });
+  }
+
+  goBack(event: Event) {
+    event.preventDefault();
+    this.back.emit();
   }
 
   private mapFormValuesToDetailsTable(values: CreateUpdateCourthouseFormValues): courthouseDetailsVM {
