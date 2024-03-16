@@ -9,10 +9,14 @@
     <app-govuk-banner type="success">User updated</app-govuk-banner>
   }
   @if (hasAssignedGroups$ | async; as assignedCount) {
-    <app-govuk-banner type="success">Assigned {{ assignedCount }} groups</app-govuk-banner>
+    <app-govuk-banner type="success"
+      >Assigned {{ assignedCount }} {{ assignedCount === '1' ? 'group' : 'groups' }}</app-govuk-banner
+    >
   }
   @if (hasRemovedGroups$ | async; as removedCount) {
-    <app-govuk-banner type="success">Removed {{ removedCount }} groups</app-govuk-banner>
+    <app-govuk-banner type="success"
+      >Removed {{ removedCount }} {{ removedCount === '1' ? 'group' : 'groups' }}</app-govuk-banner
+    >
   }
   @if (isUserActivated$ | async) {
     <app-govuk-banner type="success">User record activated</app-govuk-banner>

@@ -248,7 +248,7 @@ describe('Admin - User record screen', () => {
 
       cy.a11y();
 
-      cy.get('h1').should('contain', 'Are you sure you want to remove Fallon Sherrock from these groups?');
+      cy.get('h1').should('contain', 'Are you sure you want to remove Fallon Sherrock from this group?');
 
       cy.get('#confirm-button').click();
 
