@@ -129,6 +129,11 @@ export class CourthouseService {
         name: group.name!,
         displayName: group.display_name,
         description: group.description,
+        securityRoleId: group.security_role_id,
+        userIds: group.user_ids,
+        courthouseIds: group.courthouse_ids,
+        displayState: group.display_state,
+        globalAccess: group.global_access,
       };
     });
   }

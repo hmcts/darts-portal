@@ -197,4 +197,87 @@ describe('GroupsService', () => {
       expect(result).toEqual(expectedSecurityRoles);
     });
   });
+
+  describe('getGroup', () => {
+    it('should return a mapped SecurityGroup', () => {
+      const mockSecurityGroup = {
+        id: 1,
+        name: 'Judiciary',
+        description: 'Judiciary group',
+        security_role_id: 1,
+      };
+
+      const expectedSecurityGroup = {
+        id: 1,
+        name: 'Judiciary',
+        description: 'Judiciary group',
+        securityRoleId: 1,
+      };
+
+      let result;
+
+      service.getGroup(1).subscribe((group) => {
+        result = group;
+      });
+
+      const req = httpMock.expectOne(`${GET_SECURITY_GROUPS_PATH}/1`);
+      expect(req.request.method).toEqual('GET');
+      req.flush(mockSecurityGroup);
+
+      expect(result).toEqual(expectedSecurityGroup);
+    });
+  });
+
+  describe('getGroupAndRole', () => {
+    it('should return a mapped SecurityGroup with a mapped SecurityRole', () => {
+      const mockSecurityGroup = {
+        id: 1,
+        name: 'Judiciary',
+        description: 'Judiciary group',
+        security_role_id: 1,
+      };
+
+      const mockSecurityRole = {
+        id: 1,
+        display_name: 'Approver',
+        display_state: true,
+      };
+
+      const expectedSecurityGroup = {
+        id: 1,
+        name: 'Judiciary',
+        description: 'Judiciary group',
+        securityRoleId: 1,
+        role: { id: 1, name: 'Approver', displayState: true },
+      };
+
+      let result;
+
+      service.getGroupAndRole(1).subscribe((group) => {
+        result = group;
+      });
+
+      const groupReq = httpMock.expectOne(`${GET_SECURITY_GROUPS_PATH}/1`);
+      expect(groupReq.request.method).toEqual('GET');
+      groupReq.flush(mockSecurityGroup);
+
+      const rolesReq = httpMock.expectOne(GET_SECURITY_ROLES_PATH);
+      expect(rolesReq.request.method).toEqual('GET');
+      rolesReq.flush([mockSecurityRole]);
+
+      expect(result).toEqual(expectedSecurityGroup);
+    });
+  });
+
+  describe('assignCourthousesToGroup', () => {
+    it('should patch the group with the courthouse ids', () => {
+      const mockCourthouseIds = [1, 2, 3];
+
+      service.assignCourthousesToGroup(1, mockCourthouseIds).subscribe();
+
+      const req = httpMock.expectOne(`${GET_SECURITY_GROUPS_PATH}/1`);
+      expect(req.request.method).toEqual('PATCH');
+      expect(req.request.body).toEqual({ courthouse_ids: mockCourthouseIds });
+    });
+  });
 });

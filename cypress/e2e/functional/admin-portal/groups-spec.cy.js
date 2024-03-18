@@ -39,4 +39,14 @@ describe('Admin - Groups screen', () => {
     cy.get('#groups-table').should('not.contain', 'Opus Transcribers');
     cy.get('#groups-table').should('not.contain', 'Requestor');
   });
+
+  it('view group details', () => {
+    cy.get('#groups-table').contains('Judiciary').click();
+
+    cy.get('h1').should('contain', 'Group details');
+    cy.get('app-group-record').should('contain', 'Judiciary');
+    cy.get('app-group-record').should('contain', 'Approver');
+
+    cy.get('#company-table').should('contain', 'Slough');
+  });
 });

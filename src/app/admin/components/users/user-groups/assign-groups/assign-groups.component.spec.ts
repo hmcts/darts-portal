@@ -136,7 +136,7 @@ describe('AssignGroupsComponent', () => {
           description: 'Group 2 description',
           role: { id: 2, name: 'Role 2', displayState: false },
         },
-      ];
+      ] as SecurityGroup[];
 
       const expectedUserGroups: UserGroup[] = [
         {
