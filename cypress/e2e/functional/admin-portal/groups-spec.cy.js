@@ -47,6 +47,6 @@ describe('Admin - Groups screen', () => {
     cy.get('app-group-record').should('contain', 'Judiciary');
     cy.get('app-group-record').should('contain', 'Approver');
 
-    cy.get('#company-table').should('contain', 'Slough');
+    cy.get('#courthouse-table').should('contain', 'Slough');
   });
 });

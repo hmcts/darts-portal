@@ -21,7 +21,8 @@
   </button>
 
   @if (selectedCourthouses.length) {
-    <table aria-label="Selected companies" class="govuk-table" id="company-table">
+    <table aria-label="group courthouses" class="govuk-table" id="courthouse-table">
+      <th></th>
       <tbody class="govuk-table__body">
         @for (courthouse of selectedCourthouses; track courthouse.id) {
           <tr class="govuk-table__row">

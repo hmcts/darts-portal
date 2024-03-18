@@ -17,13 +17,13 @@ describe('Admin - Groups screen', () => {
 
     cy.get('button').contains('Add courthouse').click();
 
-    cy.get('#company-table').should('contain', 'Slough');
-    cy.get('#company-table').should('contain', 'Kingston');
-    cy.get('#company-table').should('contain', 'Cardiff');
+    cy.get('#courthouse-table').should('contain', 'Slough');
+    cy.get('#courthouse-table').should('contain', 'Kingston');
+    cy.get('#courthouse-table').should('contain', 'Cardiff');
   });
 
   it('removes courthouse from group', () => {
-    cy.get('#company-table').contains('Cardiff').siblings('td').contains('Remove').click();
-    cy.get('#company-table').should('not.contain', 'Cardiff');
+    cy.get('#courthouse-table').contains('Cardiff').siblings('td').contains('Remove').click();
+    cy.get('#courthouse-table').should('not.contain', 'Cardiff');
   });
 });
