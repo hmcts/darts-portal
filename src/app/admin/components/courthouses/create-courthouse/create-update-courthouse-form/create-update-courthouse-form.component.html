@@ -45,18 +45,28 @@
       @for (region of regions; track region) {
         <div class="govuk-radios__item">
           <input
-            class="govuk-radios__input"
-            [id]="formatNameToId(region.name) + '-radio'"
             type="radio"
-            [value]="region.id"
+            class="govuk-radios__input"
             formControlName="regionId"
+            [id]="formatNameToRadioId(region.name)"
+            name="regionId"
+            [value]="region.id"
           />
-          <label class="govuk-label govuk-radios__label" for="approve-radio">{{ region.name }}</label>
+          <label class="govuk-label govuk-radios__label" [for]="formatNameToRadioId(region.name)">{{
+            region.name
+          }}</label>
         </div>
       }
-      <label id="or-label" class="govuk-label govuk-radios__label" for="no-region">Or</label>
+      <label id="or-label" class="govuk-label govuk-radios__label" for="no-region-radio">Or</label>
       <div class="govuk-radios__item">
-        <input class="govuk-radios__input" id="no-region" name="regionId" type="radio" formControlName="regionId" />
+        <input
+          class="govuk-radios__input"
+          id="no-region-radio"
+          name="regionId"
+          type="radio"
+          formControlName="regionId"
+          [checked]="true"
+        />
         <label class="govuk-label govuk-radios__label" for="approve-radio">No region</label>
       </div>
     </div>
@@ -65,11 +75,11 @@
   <div class="govuk-form-group">
     <h2 class="govuk-heading-m">Transcription companies</h2>
     <span class="govuk-body">Select transcription companies</span>
-    <div id="case_number-hint" class="govuk-hint">You can select and add multiple companies</div>
+    <div class="govuk-hint">You can select and add multiple companies</div>
     <select
       class="govuk-select"
-      id="transcription-type"
-      name="transcription-type"
+      id="transcriptionCompanies"
+      name="transcriptionCompanies"
       (change)="selectCompany($any($event).target.value)"
     >
       <option value="" disabled selected>Please select</option>
@@ -85,9 +95,9 @@
     >
       Add company
     </button>
-    @if (selectedCompanies.length) {
+    @if (selectedCompanies) {
       <table aria-label="Selected companies" class="govuk-table" id="company-table">
-        <th><ng-content></ng-content></th>
+        <th></th>
         <tbody class="govuk-table__body">
           @for (company of selectedCompanies; track company) {
             <!-- Single column message -->

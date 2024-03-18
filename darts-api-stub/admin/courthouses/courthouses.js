@@ -185,12 +185,28 @@ router.patch('/:courthouseId', (req, res) => {
       detail: `You do not have permission`,
     });
   const courthouse = getCourthouseByCourthouseId(req?.params?.courthouseId);
-  const { display_name, region_id } = req?.body;
   if (!courthouse) return res.sendStatus(404);
+  const { courthouse_name, display_name, region_id, security_group_ids } = req?.body;
+  if (courthouse_name) courthouse.courthouse_name = courthouse_name;
   if (display_name) courthouse.display_name = display_name;
   if (region_id) courthouse.region_id = region_id;
-  // A stupid workaround that works
-  courthouses.value = courthouses.value;
+  if (security_group_ids) {
+    const securityRoles = localArray('securityRoles');
+    const transcriberRole = securityRoles.value.find((securityRole) => securityRole.role_name === 'TRANSCRIBER');
+    if (transcriberRole) {
+      const securityGroups = localArray('securityGroups');
+      const nonTranscriberGroups = securityGroups.value.filter(
+        (securityGroup) => securityGroup.security_role_id !== transcriberRole.id
+      );
+      courthouse.security_group_ids = [
+        ...nonTranscriberGroups.map((nonTranscriberGroup) => nonTranscriberGroup.id),
+        ...security_group_ids.map((security_group_id) => parseInt(security_group_id)),
+      ];
+    }
+  }
+
+  const dateTimeNowIso = DateTime.now().toISO({ setZone: true });
+  courthouse.last_modified_date_time = dateTimeNowIso;
 
   res.send(courthouse);
 });
@@ -217,7 +233,8 @@ router.post('/', (req, res) => {
   // If region_id is included, add it to courthouse object
   if (region_id) courthouse.region_id = region_id;
   // If security_group_ids are included, add them to courthouse object
-  if (security_group_ids) courthouse.security_group_ids = security_group_ids;
+  if (security_group_ids)
+    courthouse.security_group_ids = security_group_ids.map((security_group_id) => parseInt(security_group_id));
   // Add the rest
   courthouse.courthouse_name = courthouse_name;
   courthouse.display_name = display_name;

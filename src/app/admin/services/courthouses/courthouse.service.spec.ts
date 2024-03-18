@@ -154,7 +154,7 @@ describe('CourthouseService', () => {
     const newCourthouse = {
       courthouseName: 'COURTHOUSE',
       displayName: 'Courthouse',
-      regionId: '1',
+      regionId: 1,
       securityGroupIds: ['1', '2', '3'],
     };
 
@@ -172,7 +172,7 @@ describe('CourthouseService', () => {
     const newCourthouse = {
       courthouseName: 'COURTHOUSE',
       displayName: 'Courthouse',
-      regionId: '1',
+      regionId: 1,
       securityGroupIds: ['1', '2', '3'],
     };
     const courthouseId = 1;

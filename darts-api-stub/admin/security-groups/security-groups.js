@@ -1,4 +1,5 @@
 const express = require('express');
+const { localArray } = require('../../localArray');
 
 const router = express.Router();
 
@@ -10,7 +11,7 @@ const defaultSecurityGroups = [
   },
   {
     id: 2,
-    security_role_id: 2,
+    security_role_id: 4,
     name: 'Opus Transcribers',
   },
   {
@@ -20,7 +21,7 @@ const defaultSecurityGroups = [
   },
   {
     id: 4,
-    security_role_id: 4,
+    security_role_id: 2,
     name: 'Admin (Admin portal)',
   },
   {
@@ -60,11 +61,15 @@ const defaultSecurityGroups = [
   },
 ];
 
+const securityGroups = localArray('securityGroups');
+// Clear out old values on restart
+securityGroups.value = defaultSecurityGroups;
+
 router.get('/', (req, res) => {
   const roleIds = req?.query?.['role-ids'];
   if (roleIds)
-    return res.send(defaultSecurityGroups.filter((securityGroup) => roleIds.includes(securityGroup.security_role_id)));
-  res.send(defaultSecurityGroups);
+    return res.send(securityGroups.value.filter((securityGroup) => roleIds.includes(securityGroup.security_role_id)));
+  res.send(securityGroups.value);
 });
 
 module.exports = { router, defaultSecurityGroups };

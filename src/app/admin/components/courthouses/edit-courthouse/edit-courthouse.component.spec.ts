@@ -1,15 +1,15 @@
 import { Region } from '@admin-types/courthouses/region.interface';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { Courthouse } from '@admin-types/courthouses/courthouse.type';
+import { SecurityGroup } from '@admin-types/users/security-group.type';
 import { Navigation, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { of } from 'rxjs';
-import { EditCourthouseComponent } from './edit-courthouse.component';
-import { Courthouse } from '@admin-types/courthouses/courthouse.type';
+import { CourthouseData } from '@core-types/index';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { DateTime } from 'luxon';
-import { CourthouseData } from '@core-types/index';
-import { SecurityGroup } from '@admin-types/users/security-group.type';
+import { of } from 'rxjs';
+import { EditCourthouseComponent } from './edit-courthouse.component';
 
 const mockNavigationExtras = {
   extras: {
@@ -40,6 +40,12 @@ describe('EditCourthouseComponent', () => {
 
     fixture = TestBed.createComponent(EditCourthouseComponent);
     component = fixture.componentInstance;
+    component.updateCourthouse = {
+      courthouseName: 'COURTHOUSE',
+      displayName: 'Courthouse',
+      regionId: 1,
+      securityGroupIds: [],
+    };
     fixture.detectChanges();
   });
 
@@ -63,13 +69,13 @@ describe('EditCourthouseComponent', () => {
       createdDateTime: DateTime.now(),
       courthouseName: 'Test',
       displayName: 'Courthouse',
-      regionId: '1',
+      regionId: 1,
       securityGroupIds: [],
     } as Courthouse;
     component.updateCourthouse = {
       courthouseName: 'Test',
       displayName: 'Courthouse',
-      regionId: '1',
+      regionId: 1,
       securityGroupIds: [],
     };
 
@@ -77,7 +83,7 @@ describe('EditCourthouseComponent', () => {
 
     component.onSubmit(component.updateCourthouse);
 
-    expect(component.saveCourthouse).toHaveBeenCalled();
+    expect(component.isConfirmation).toEqual(true);
   });
 
   it('should update displayName if courthouse confirms displayName change', () => {
@@ -87,13 +93,13 @@ describe('EditCourthouseComponent', () => {
       createdDateTime: DateTime.now(),
       courthouseName: 'Test',
       displayName: 'Courthouse',
-      regionId: '1',
+      regionId: 1,
       securityGroupIds: [],
     } as Courthouse;
     component.updateCourthouse = {
       courthouseName: 'Test',
       displayName: 'Courthoos',
-      regionId: '1',
+      regionId: 1,
       securityGroupIds: [],
     };
 
@@ -107,13 +113,13 @@ describe('EditCourthouseComponent', () => {
       createdDateTime: DateTime.now(),
       courthouseName: 'Test',
       displayName: 'Courthouse',
-      regionId: '1',
+      regionId: 1,
       securityGroupIds: [],
     } as Courthouse;
     component.updateCourthouse = {
       courthouseName: 'Test',
       displayName: 'Courthoos',
-      regionId: '1',
+      regionId: 1,
       securityGroupIds: [],
     };
 
@@ -135,7 +141,7 @@ describe('EditCourthouseComponent', () => {
       createdDateTime: DateTime.now(),
       courthouseName: 'Test',
       displayName: 'Courthouse',
-      regionId: '1',
+      regionId: 1,
       securityGroupIds: [],
     } as Courthouse;
 
@@ -144,5 +150,12 @@ describe('EditCourthouseComponent', () => {
     component.onCancel();
 
     expect(router.navigate).toHaveBeenCalledWith(['/admin/courthouses', 1]);
+  });
+
+  it('#onBack', () => {
+    component.isConfirmation = true;
+    expect(component.isConfirmation).toBe(true);
+    component.onBack();
+    expect(component.isConfirmation).toBe(false);
   });
 });
