@@ -58,7 +58,10 @@
             ></app-time-input>
           </div>
         </div>
-        <div class="govuk-grid-column-one-quarter requestType" [ngClass]="isTranscriber ? '' : 'hidden'">
+        <div
+          class="govuk-grid-column-one-quarter requestType"
+          [ngClass]="userService.isTranscriber() || userService.isAdmin() || userService.isSuperUser() ? '' : 'hidden'"
+        >
           <div
             class="govuk-form-group"
             [ngClass]="{

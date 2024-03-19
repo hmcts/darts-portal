@@ -4,7 +4,7 @@ const router = express.Router();
 
 const { localArray } = require('../localArray');
 const { getEarliestDatefromKey, getLatestDatefromKey } = require('../utils/date');
-const { JUDGE, ADMIN } = require('../roles');
+const { JUDGE, SUPER_ADMIN } = require('../roles');
 const { userIdhasAnyRoles, getUserNamebyUserId } = require('../users');
 
 const dateFormat = 'yyyy-MM-dd';
@@ -121,7 +121,10 @@ router.post('', (req, res) => {
         const latestRetentionDate = DateTime.fromISO(
           getLatestDatefromKey(retentionHistory.value, 'retention_last_changed_date').retention_date
         ).startOf('day');
-        if (retention.retention_date < latestRetentionDate && !userIdhasAnyRoles([ADMIN, JUDGE], req.headers.user_id)) {
+        if (
+          retention.retention_date < latestRetentionDate &&
+          !userIdhasAnyRoles([SUPER_ADMIN, JUDGE], req.headers.user_id)
+        ) {
           // If date is less than the latest retention date and user is not Admin or Judge
           res.status(403).send({
             title: 'The retention date being applied is too early.',
