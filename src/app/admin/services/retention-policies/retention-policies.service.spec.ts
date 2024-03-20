@@ -1,4 +1,4 @@
-import { RetentionPolicyTypes, RetentionPolicyTypesData } from '@admin-types/index';
+import { RetentionPolicy, RetentionPolicyData } from '@admin-types/index';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { DateTime, Settings } from 'luxon';
@@ -26,7 +26,7 @@ describe('RetentionPoliciesService', () => {
 
   describe('#getRetentionPolicyTypes', () => {
     it('should map Retention Policy Data', () => {
-      const mockRetentionPolicies: RetentionPolicyTypesData[] = [
+      const mockRetentionPolicies: RetentionPolicyData[] = [
         {
           id: 0,
           name: 'DARTS Permanent Retention v3',
@@ -49,7 +49,7 @@ describe('RetentionPoliciesService', () => {
         },
       ];
 
-      const expectedRetentionPolicies: RetentionPolicyTypes[] = [
+      const expectedRetentionPolicies: RetentionPolicy[] = [
         {
           id: 0,
           name: 'DARTS Permanent Retention v3',

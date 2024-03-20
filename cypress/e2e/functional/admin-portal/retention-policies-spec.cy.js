@@ -29,10 +29,3 @@ describe('Admin - Retention Policies screen', () => {
     cy.get('#inactive-policies-table').contains('td', '31 Jan 2024 12:00 AM');
   });
 });
-
-// cy.get('#annotationsTable')
-//     .contains(fileName)
-//     .parent('tr')
-//     .then((row) => {
-//         cy.wrap(row).find('td').contains('Download').click();
-//     });

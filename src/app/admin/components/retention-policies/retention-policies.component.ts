@@ -1,4 +1,4 @@
-import { RetentionPolicyTypes } from '@admin-types/index';
+import { RetentionPolicy } from '@admin-types/index';
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { DataTableComponent } from '@common/data-table/data-table.component';
@@ -51,11 +51,11 @@ export class RetentionPoliciesComponent {
     return policyStartDate > DateTime.now();
   }
 
-  filterActivePolicies(policies: RetentionPolicyTypes[]): RetentionPolicyTypes[] {
+  filterActivePolicies(policies: RetentionPolicy[]): RetentionPolicy[] {
     return policies.filter((r) => (r.policyEndAt ? r.policyEndAt > DateTime.now() : true));
   }
 
-  filterInactivePolicies(policies: RetentionPolicyTypes[]): RetentionPolicyTypes[] {
+  filterInactivePolicies(policies: RetentionPolicy[]): RetentionPolicy[] {
     return policies.filter((r) => (r.policyEndAt ? r.policyEndAt < DateTime.now() : false));
   }
 }

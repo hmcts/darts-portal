@@ -26,8 +26,8 @@ const retentionPolicies = [
   },
   {
     id: 2,
-    name: 'DARTS Standard Retention v3',
-    display_name: 'Legacy Standard',
+    name: 'DARTS Not Guilty Policy',
+    display_name: 'Not Guilty',
     description: 'lorem ipsum',
     fixed_policy_key: 2,
     duration: '1Y6M0D',

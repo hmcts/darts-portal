@@ -1,4 +1,4 @@
-export interface RetentionPolicyTypesData {
+export interface RetentionPolicyData {
   id: number;
   name: string;
   display_name: string;

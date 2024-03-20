@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 
-export type RetentionPolicyTypes = {
+export type RetentionPolicy = {
   id: number;
   name: string;
   displayName: string;

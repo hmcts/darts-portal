@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RetentionPolicyTypes, RetentionPolicyTypesData } from '@admin-types/index';
+import { RetentionPolicy, RetentionPolicyData } from '@admin-types/index';
 import { DatePipe } from '@angular/common';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { RetentionPoliciesService } from '@services/retention-policies/retention-policies.service';
@@ -13,7 +13,7 @@ describe('RetentionPoliciesComponent', () => {
   let fixture: ComponentFixture<RetentionPoliciesComponent>;
   let fakeRetentionPoliciesService: Partial<RetentionPoliciesService>;
 
-  const retentionPolicies: RetentionPolicyTypesData[] = [
+  const retentionPolicies: RetentionPolicyData[] = [
     {
       id: 0,
       name: 'DARTS Permanent Retention v3',
@@ -74,7 +74,7 @@ describe('RetentionPoliciesComponent', () => {
         {
           policyEndAt: DateTime.fromISO('2024-01-31T00:00:00Z'),
         },
-      ] as unknown as RetentionPolicyTypes[];
+      ] as unknown as RetentionPolicy[];
 
       const expectedResult = [
         {
@@ -103,7 +103,7 @@ describe('RetentionPoliciesComponent', () => {
         {
           policyEndAt: DateTime.fromISO('2024-01-31T00:00:00Z'),
         },
-      ] as unknown as RetentionPolicyTypes[];
+      ] as unknown as RetentionPolicy[];
 
       const expectedResult = [
         {
