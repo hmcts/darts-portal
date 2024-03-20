@@ -1,4 +1,4 @@
-import { CreateUpdateUserFormValues } from '@admin-types/index';
+import { CreateUpdateUserFormValues, SecurityGroup } from '@admin-types/index';
 import { UserData } from '@admin-types/users/user-data.interface';
 import { UserSearchFormValues } from '@admin-types/users/user-search-form-values.type';
 import { User } from '@admin-types/users/user.type';
@@ -16,11 +16,15 @@ export const ADMIN_GET_SECURITY_ROLES = 'api/admin/security-roles';
 describe('UserAdminService', () => {
   let service: UserAdminService;
   let httpMock: HttpTestingController;
-  const mockSecurityGroups = [
+  const mockSecurityGroups: SecurityGroup[] = [
     {
       id: 1,
       name: 'Judiciary',
       description: '',
+      displayState: true,
+      globalAccess: true,
+      courthouseIds: [1, 2, 3],
+      userIds: [1, 2, 3],
       securityRoleId: 1,
       role: {
         id: 1,
@@ -32,6 +36,10 @@ describe('UserAdminService', () => {
       id: 2,
       name: 'Opus Transcribers',
       description: '',
+      displayState: true,
+      globalAccess: true,
+      courthouseIds: [1, 2, 3],
+      userIds: [1, 2, 3],
       securityRoleId: 2,
       role: {
         id: 2,

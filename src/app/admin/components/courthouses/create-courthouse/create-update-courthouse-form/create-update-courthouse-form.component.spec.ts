@@ -70,7 +70,7 @@ describe('CreateUpdateCourthouseFormComponent', () => {
     component.companies = [
       { id: 1, name: 'Transcriber company 1' },
       { id: 2, name: 'Transcriber company 2' },
-    ];
+    ] as SecurityGroup[];
     fixture.detectChanges();
   });
 

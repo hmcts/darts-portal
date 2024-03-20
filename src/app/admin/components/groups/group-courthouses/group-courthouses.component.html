@@ -1,0 +1,40 @@
+<app-govuk-heading tag="h2" size="m">Courthouses</app-govuk-heading>
+
+<div class="govuk-form-group">
+  <span class="govuk-body">Select courthouses</span>
+  <div id="case_number-hint" class="govuk-hint">You can select and add multiple companies</div>
+
+  <select class="govuk-select" id="select-courthouse" name="select-courthouse" #selectCourthouse>
+    <option value="" disabled selected></option>
+    @for (courthouse of allCourthouses; track courthouse.id) {
+      <option [value]="courthouse.id">
+        {{ courthouse.display_name }}
+      </option>
+    }
+  </select>
+
+  <button
+    (click)="onAddCourthouse(selectCourthouse.value)"
+    class="add-company-button govuk-button govuk-button--primary"
+  >
+    Add courthouse
+  </button>
+
+  @if (selectedCourthouses.length) {
+    <table aria-label="group courthouses" class="govuk-table" id="courthouse-table">
+      <th></th>
+      <tbody class="govuk-table__body">
+        @for (courthouse of selectedCourthouses; track courthouse.id) {
+          <tr class="govuk-table__row">
+            <td class="govuk-table__cell table-width">{{ courthouse.display_name }}</td>
+            <td class="govuk-table__cell table-width">
+              <a href="javascript:void(0)" (click)="onRemoveCourthouse(courthouse.id)" class="govuk-link"> Remove </a>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  } @else {
+    <p class="govuk-body">There are no courthouses assigned to this group.</p>
+  }
+</div>

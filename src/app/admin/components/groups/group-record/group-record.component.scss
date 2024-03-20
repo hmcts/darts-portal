@@ -1,0 +1,11 @@
+:host ::ng-deep {
+  h3 {
+    margin-bottom: 0;
+  }
+}
+
+.heading-button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}

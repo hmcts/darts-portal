@@ -46,6 +46,12 @@ export const ADMIN_ROUTES: Routes = [
     loadComponent: () => import('./components/groups/groups.component').then((c) => c.GroupsComponent),
   },
   {
+    path: 'admin/groups/:id',
+    loadComponent: () =>
+      import('./components/groups/group-record/group-record.component').then((c) => c.GroupRecordComponent),
+  },
+
+  {
     path: 'admin/courthouses',
     loadComponent: () => import('./components/courthouses/courthouses.component').then((c) => c.CourthousesComponent),
   },

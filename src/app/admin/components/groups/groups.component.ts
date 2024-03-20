@@ -2,6 +2,7 @@ import { SecurityGroup } from '@admin-types/index';
 import { AsyncPipe, JsonPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { CheckboxListComponent } from '@common/filters/checkbox-list/checkbox-list.component';
 import { GovukDetailsComponent } from '@common/govuk-details/govuk-details.component';
@@ -25,6 +26,7 @@ import { BehaviorSubject, combineLatest, map, shareReplay, startWith, tap } from
     CheckboxListComponent,
     GovukDetailsComponent,
     LoadingComponent,
+    RouterLink,
   ],
   templateUrl: './groups.component.html',
   styleUrl: './groups.component.scss',
