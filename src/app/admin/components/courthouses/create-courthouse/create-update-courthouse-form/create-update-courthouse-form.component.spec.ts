@@ -220,8 +220,9 @@ describe('CreateUpdateCourthouseFormComponent', () => {
 
       component.ngOnInit();
 
-      expect(component.form.get('regionId')?.value).toEqual('');
-      expect(component.form.valid).toBe(false);
+      expect(component.form.get('regionId')?.value).toEqual(-1);
+      // Form should be valid because region will be selected as "No region"
+      expect(component.form.valid).toBe(true);
     });
   });
 });
