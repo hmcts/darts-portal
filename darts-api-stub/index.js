@@ -44,6 +44,7 @@ app.use('/admin/courthouses', require('./admin/courthouses/courthouses'));
 app.use('/admin/regions', require('./admin/regions/regions'));
 app.use('/admin/security-groups', require('./admin/security-groups/security-groups').router);
 app.use('/admin/security-roles', require('./admin/security-roles/security-roles'));
+app.use('/admin/retention-policy-types', require('./admin/retention-policies/retention-policies'));
 
 // proxy non-stubbed routes to the actual API
 app.use(

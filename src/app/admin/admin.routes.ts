@@ -76,6 +76,11 @@ export const ADMIN_ROUTES: Routes = [
         (c) => c.CourthouseRecordComponent
       ),
   },
+  {
+    path: 'admin/retention-policies',
+    loadComponent: () =>
+      import('./components/retention-policies/retention-policies.component').then((c) => c.RetentionPoliciesComponent),
+  },
 ].map((route) => ({
   ...route,
   resolve: { userState: () => inject(UserService).userProfile$ },
