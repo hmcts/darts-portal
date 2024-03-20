@@ -1,9 +1,9 @@
-import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { AudioRequestType, RequestedMedia, RequestedMediaData, TransformedMedia } from '@portal-types/index';
 import { CountNotificationService } from '@services/count-notification/count-notification.service';
 import { DateTime } from 'luxon';
-import { Observable, catchError, map, of, switchMap, tap, timer } from 'rxjs';
+import { Observable, map, switchMap, tap, timer } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -60,15 +60,6 @@ export class AudioRequestService {
       params: { transformed_media_id: transformedMediaId },
       responseType: 'blob',
     });
-  }
-
-  getStatusCode(url: string): Observable<number> {
-    return this.http.head(url, { observe: 'response' }).pipe(
-      map((response) => response.status),
-      catchError((error: HttpErrorResponse) => {
-        return of(error.status);
-      })
-    );
   }
 
   private updateUnreadAudioCount(media: TransformedMedia[]) {
