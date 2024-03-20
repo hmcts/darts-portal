@@ -135,7 +135,7 @@ router.get('/:id', (req, res) => {
 });
 
 router.get('/', (req, res) => {
-  const roleIds = req?.query?.['role-ids'];
+  const roleIds = req?.query?.['role_ids'];
   if (roleIds)
     return res.send(securityGroups.value.filter((securityGroup) => roleIds.includes(securityGroup.security_role_id)));
   res.send(securityGroups.value);

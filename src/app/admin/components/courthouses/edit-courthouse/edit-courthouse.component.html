@@ -12,6 +12,7 @@
       regionId: courthouse.region?.id,
       securityGroupIds: getSecurityGroupIds(courthouse.securityGroups)
     }"
+    [hasData]="courthouse.hasData || false"
     [hidden]="!!isConfirmation"
     (submitForm)="onSubmit($event)"
     (errors)="errors = $event"
@@ -29,6 +30,7 @@
     [regions]="vm.regions"
     [companies]="vm.companies"
     [update]="!!updateCourthouse"
+    [hasData]="courthouse.hasData || false"
   />
 </ng-container>
 <ng-template #loading>

@@ -11,4 +11,5 @@ export type Courthouse = {
   lastModifiedDateTime?: DateTime;
   region?: Region;
   securityGroups?: SecurityGroup[];
+  hasData?: boolean | false;
 };

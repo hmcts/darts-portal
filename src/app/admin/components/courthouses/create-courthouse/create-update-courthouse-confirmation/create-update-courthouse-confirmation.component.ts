@@ -28,6 +28,7 @@ export class CreateUpdateCourthouseConfirmationComponent implements OnChanges {
   @Input() regions!: Region[];
   @Input() companies!: SecurityGroup[];
   @Input() update: boolean = false;
+  @Input() hasData: boolean = false;
   @Output() confirm = new EventEmitter<void>();
   @Output() back = new EventEmitter<void>();
   @Output() cancel = new EventEmitter<void>();

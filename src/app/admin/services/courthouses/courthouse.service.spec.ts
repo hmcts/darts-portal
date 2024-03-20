@@ -280,7 +280,7 @@ describe('CourthouseService', () => {
 
       httpMock.expectOne(`${GET_SECURITY_ROLES_PATH}`).flush(mockSecurityRoles);
 
-      httpMock.expectOne(`${GET_SECURITY_GROUPS_PATH}?role-ids=99`).flush([
+      httpMock.expectOne(`${GET_SECURITY_GROUPS_PATH}?role_ids=99`).flush([
         {
           id: 1,
           name: 'Company 1',
@@ -305,7 +305,7 @@ describe('CourthouseService', () => {
 
       httpMock.expectOne(`${GET_SECURITY_ROLES_PATH}`).flush(mockSecurityRoles);
 
-      httpMock.expectNone(`${GET_SECURITY_GROUPS_PATH}?role-ids=99`);
+      httpMock.expectNone(`${GET_SECURITY_GROUPS_PATH}?role_ids=99`);
     });
   });
 

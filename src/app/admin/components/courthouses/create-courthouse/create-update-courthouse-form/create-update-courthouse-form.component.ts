@@ -6,7 +6,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { CourthouseData, ErrorSummaryEntry, FieldErrors } from '@core-types/index';
-import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { FormService } from '@services/form/form.service';
 import {
   courthouseNameExistsValidator,
@@ -45,12 +44,12 @@ export class CreateUpdateCourthouseFormComponent implements OnInit {
   @Input() regions!: Region[];
   @Input() companies!: SecurityGroup[];
   @Input() courthouses!: CourthouseData[];
+  @Input() hasData: boolean = false;
 
   selectedCompanies: SecurityGroup[] = [];
   selectedCompany: SecurityGroup | undefined = undefined;
 
   valueIsUndefined = valueIsUndefined();
-  courthouseService = inject(CourthouseService);
 
   fb = inject(FormBuilder);
   formService = inject(FormService);
@@ -59,7 +58,7 @@ export class CreateUpdateCourthouseFormComponent implements OnInit {
   formDefaultValues: CreateUpdateCourthouseFormValues = {
     courthouseName: null,
     displayName: null,
-    regionId: null,
+    regionId: undefined,
     securityGroupIds: [],
   };
 
@@ -84,7 +83,7 @@ export class CreateUpdateCourthouseFormComponent implements OnInit {
       this.form.setValue({
         courthouseName: this.updateCourthouse.courthouseName,
         displayName: this.updateCourthouse.displayName,
-        regionId: this.updateCourthouse?.regionId || '',
+        regionId: this.updateCourthouse?.regionId || -1,
         securityGroupIds: this.updateCourthouse?.securityGroupIds,
       });
       if (this.securityGroupsControl.value.length) {

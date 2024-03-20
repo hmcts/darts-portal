@@ -8,9 +8,11 @@
         <th class="govuk-table__header">Courthouse name</th>
         <td class="govuk-table__cell table-width">{{ courthouseDetails['Courthouse name'] }}</td>
         <td class="govuk-table__cell">
-          <a href="#" id="reason-link" class="govuk-link" (click)="onReturnCourthouseName($event)"
-            >Change <span class="govuk-visually-hidden">courthouse name</span></a
-          >
+          @if (!hasData) {
+            <a href="#" id="reason-link" class="govuk-link" (click)="onReturnCourthouseName($event)"
+              >Change <span class="govuk-visually-hidden">courthouse name</span></a
+            >
+          }
         </td>
       </tr>
       <tr class="govuk-table__row">
