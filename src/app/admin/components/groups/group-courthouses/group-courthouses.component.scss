@@ -1,7 +1,23 @@
 .add-courthouse-button {
-  margin-left: 110px;
+  margin-left: 1rem;
 }
 
 #courthouse-table {
   max-width: 350px;
+}
+
+.govuk-form-group {
+  max-width: 425px;
+}
+
+.right-align-text {
+  text-align: right;
+}
+
+.select-button-container {
+  display: flex;
+  justify-content: space-between;
+  button {
+    margin-bottom: 0;
+  }
 }
