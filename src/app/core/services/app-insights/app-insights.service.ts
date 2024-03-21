@@ -31,24 +31,24 @@ export class AppInsightsService {
 
   logPageView(name?: string, url?: string) {
     this.appInsights.trackPageView({
-      name: name,
+      name,
       uri: url,
     });
   }
 
   logEvent(name: string, properties?: { [key: string]: unknown }) {
-    this.appInsights.trackEvent({ name: name }, properties);
+    this.appInsights.trackEvent({ name }, properties);
   }
 
   logMetric(name: string, average: number, properties?: { [key: string]: unknown }) {
-    this.appInsights.trackMetric({ name: name, average: average }, properties);
+    this.appInsights.trackMetric({ name, average }, properties);
   }
 
   logException(exception: Error, severityLevel?: number) {
-    this.appInsights.trackException({ exception: exception, severityLevel: severityLevel });
+    this.appInsights.trackException({ exception, severityLevel });
   }
 
   logTrace(message: string, properties?: { [key: string]: unknown }) {
-    this.appInsights.trackTrace({ message: message }, properties);
+    this.appInsights.trackTrace({ message }, properties);
   }
 }
