@@ -32,10 +32,9 @@ export class CourthouseService {
       courthouse_name: courthouse?.courthouseName,
       display_name: courthouse?.displayName,
       region_id: courthouse?.regionId,
+      security_group_ids: courthouse?.securityGroupIds,
     };
-    return this.http.patch<CourthouseData>(`${COURTHOUSES_ADMIN_PATH}/${courthouseId}`, {
-      updatedCourthouse,
-    });
+    return this.http.patch<CourthouseData>(`${COURTHOUSES_ADMIN_PATH}/${courthouseId}`, updatedCourthouse);
   }
 
   getCourthouse(courthouseId: number): Observable<CourthouseData> {
@@ -118,7 +117,7 @@ export class CourthouseService {
     return {
       courthouse_name: courthouse.courthouseName!,
       display_name: courthouse.displayName!,
-      region_id: courthouse?.regionId ? parseInt(courthouse.regionId) : undefined,
+      region_id: courthouse?.regionId ? +courthouse.regionId : undefined,
       security_group_ids: courthouse?.securityGroupIds.map((securityGroupId) => parseInt(securityGroupId)),
     };
   }
@@ -129,6 +128,12 @@ export class CourthouseService {
         id: group.id!,
         name: group.name!,
         displayName: group.display_name,
+        description: group.description,
+        securityRoleId: group.security_role_id,
+        userIds: group.user_ids,
+        courthouseIds: group.courthouse_ids,
+        displayState: group.display_state,
+        globalAccess: group.global_access,
       };
     });
   }

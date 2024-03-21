@@ -1,0 +1,41 @@
+<div class="heading-button-container">
+  <app-govuk-heading>Groups</app-govuk-heading>
+  <button class="govuk-button govuk-button--secondary">Create group</button>
+</div>
+
+@if (data$ | async; as data) {
+  <div class="content-container">
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="search">Filter by name</label>
+      <input
+        class="govuk-input"
+        type="text"
+        id="search"
+        [formControl]="searchFormControl"
+        [class.govuk-input--error]="searchFormControl.errors"
+      />
+    </div>
+
+    <label class="govuk-label" for="roles-filter">Role</label>
+    <select class="govuk-select" id="roles-filter" name="transcription-type" [formControl]="rolesFormControl">
+      <option value="" selected></option>
+      @for (role of data.roles; track role.name) {
+        <option [value]="role.name">{{ role.name }}</option>
+      }
+    </select>
+
+    <app-data-table id="groups-table" [columns]="columns" [rows]="data.groups">
+      <ng-template [tableRowTemplate]="data.groups" let-row>
+        <td class="govuk-table__cell">
+          <a class="govuk-link" [routerLink]="[row.id]">{{ row.name }}</a>
+        </td>
+        <td class="govuk-table__cell">{{ row.description }}</td>
+        <td class="govuk-table__cell">{{ row.role?.name }}</td>
+      </ng-template>
+    </app-data-table>
+  </div>
+}
+
+@if (loading$ | async) {
+  <app-loading />
+}

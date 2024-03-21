@@ -42,17 +42,26 @@ export const ADMIN_ROUTES: Routes = [
       import('./components/users/user-record/user-record.component').then((c) => c.UserRecordComponent),
   },
   {
+    path: 'admin/groups',
+    loadComponent: () => import('./components/groups/groups.component').then((c) => c.GroupsComponent),
+  },
+  {
+    path: 'admin/groups/:id',
+    loadComponent: () =>
+      import('./components/groups/group-record/group-record.component').then((c) => c.GroupRecordComponent),
+  },
+
+  {
     path: 'admin/courthouses',
     loadComponent: () => import('./components/courthouses/courthouses.component').then((c) => c.CourthousesComponent),
   },
-  // Commented until DMP-2252
-  // {
-  //   path: 'admin/courthouses/edit/:courthouseId',
-  //   loadComponent: () =>
-  //     import('./components/courthouses/edit-courthouse/edit-courthouse.component').then(
-  //       (c) => c.EditCourthouseComponent
-  //     ),
-  // },
+  {
+    path: 'admin/courthouses/edit/:courthouseId',
+    loadComponent: () =>
+      import('./components/courthouses/edit-courthouse/edit-courthouse.component').then(
+        (c) => c.EditCourthouseComponent
+      ),
+  },
   {
     path: 'admin/courthouses/create',
     loadComponent: () =>
@@ -67,9 +76,14 @@ export const ADMIN_ROUTES: Routes = [
         (c) => c.CourthouseRecordComponent
       ),
   },
+  {
+    path: 'admin/retention-policies',
+    loadComponent: () =>
+      import('./components/retention-policies/retention-policies.component').then((c) => c.RetentionPoliciesComponent),
+  },
 ].map((route) => ({
   ...route,
   resolve: { userState: () => inject(UserService).userProfile$ },
   canActivate: [authGuard],
-  data: { allowedRoles: ['SUPER_ADMIN'] },
+  data: { allowedRoles: ['SUPER_ADMIN', 'SUPER_USER'] },
 }));

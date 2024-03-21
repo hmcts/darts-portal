@@ -1,0 +1,10 @@
+table.govuk-table {
+  max-width: 60%;
+  & > th {
+    text-align: right;
+  }
+}
+
+.govuk-table__cell {
+  white-space: pre-line;
+}

@@ -63,7 +63,7 @@
     </div>
     <div class="govuk-form-group reason-box" [class.govuk-form-group--error]="isReasonInvalid()">
       <label class="govuk-label govuk-!-font-weight-bold" for="change-reason">Why are you making this change?</label>
-      <p class="govuk-hint">If you have a service now incident number, include it here.</p>
+      <p class="govuk-hint">If you have a Service Now incident number, include it here.</p>
       <!-- Error message if reason invalid -->
       <div *ngIf="isReasonInvalid()" id="change-reason-errors">
         <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ errorNoReason }}</p>

@@ -1,6 +1,6 @@
-import { DetailsTableLink } from '@core-types/details-table/details-table-array.interface';
 import { CommonModule, KeyValue } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { DetailsTableLink } from '@core-types/details-table/details-table-array.interface';
 
 @Component({
   selector: 'app-details-table',

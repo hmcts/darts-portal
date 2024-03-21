@@ -139,4 +139,5 @@ export class TranscriptionsComponent {
   isRequester = this.userService.isRequester();
   isApprover = this.userService.isApprover();
   isJudge = this.userService.isJudge();
+  isSuperUser = this.userService.isSuperUser();
 }

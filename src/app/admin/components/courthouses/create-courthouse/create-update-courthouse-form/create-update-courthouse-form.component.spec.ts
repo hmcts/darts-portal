@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
-import { CreateUpdateCourthouseFormValues } from '@admin-types/index';
+import { CreateUpdateCourthouseFormValues, SecurityGroup } from '@admin-types/index';
+import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { of } from 'rxjs';
 import { CreateUpdateCourthouseFormComponent } from './create-update-courthouse-form.component';
-import { CourthouseService } from '@services/courthouses/courthouses.service';
 
 type formValidationTestCase = {
   name: string;
@@ -16,28 +16,28 @@ type formValidationTestCase = {
 const formValidationTestCases: formValidationTestCase[] = [
   {
     name: 'valid when all fields are valid',
-    data: { courthouseName: 'COURTHOUSE', displayName: 'Courthouse', regionId: '1', securityGroupIds: [] },
+    data: { courthouseName: 'COURTHOUSE', displayName: 'Courthouse', regionId: 1, securityGroupIds: [] },
     validity: true,
   },
   {
     name: 'invalid when courthouseName is empty',
-    data: { courthouseName: '', displayName: 'Courthouse', regionId: '1', securityGroupIds: [] },
+    data: { courthouseName: '', displayName: 'Courthouse', regionId: 1, securityGroupIds: [] },
     validity: false,
   },
   {
     name: 'invalid when displayName is empty',
-    data: { courthouseName: 'COURTHOUSE', displayName: '', regionId: '1', securityGroupIds: [] },
+    data: { courthouseName: 'COURTHOUSE', displayName: '', regionId: 1, securityGroupIds: [] },
     validity: false,
   },
   {
     name: 'invalid when courthouseName already exists in DB',
-    data: { courthouseName: 'COURTHOUSEEXISTS', displayName: 'Courthouse', regionId: '1', securityGroupIds: [] },
+    data: { courthouseName: 'COURTHOUSEEXISTS', displayName: 'Courthouse', regionId: 1, securityGroupIds: [] },
     validity: false,
     courthouseNameExists: true,
   },
   {
     name: 'invalid when displayName already exists in DB',
-    data: { courthouseName: 'COURTHOUSE', displayName: 'Courthouse Exists', regionId: '1', securityGroupIds: [] },
+    data: { courthouseName: 'COURTHOUSE', displayName: 'Courthouse Exists', regionId: 1, securityGroupIds: [] },
     validity: false,
     displayNameExists: true,
   },
@@ -67,6 +67,10 @@ describe('CreateUpdateCourthouseFormComponent', () => {
     component.courthouses = [
       { id: 0, code: 0, courthouse_name: 'COURTHOUSEEXISTS', display_name: 'Courthouse Exists', created_date_time: '' },
     ];
+    component.companies = [
+      { id: 1, name: 'Transcriber company 1' },
+      { id: 2, name: 'Transcriber company 2' },
+    ] as SecurityGroup[];
     fixture.detectChanges();
   });
 
@@ -80,7 +84,7 @@ describe('CreateUpdateCourthouseFormComponent', () => {
       const formValues = {
         courthouseName: 'COURTHOUSE',
         displayName: 'Courthouse',
-        regionId: '1',
+        regionId: 1,
         securityGroupIds: [],
       };
 
@@ -109,7 +113,7 @@ describe('CreateUpdateCourthouseFormComponent', () => {
       component.form.setValue({
         courthouseName: 'COURTHOUSE',
         displayName: 'Courthouse',
-        regionId: '1',
+        regionId: 1,
         securityGroupIds: [],
       });
 
@@ -121,8 +125,8 @@ describe('CreateUpdateCourthouseFormComponent', () => {
   });
 
   describe('#formatNameToId', () => {
-    it('Should change name to id style', () => {
-      expect(component.formatNameToId('Test ID')).toEqual('test-id');
+    it('Should change name to id radio style', () => {
+      expect(component.formatNameToRadioId('Test ID')).toEqual('test-id-radio');
     });
   });
 
@@ -140,7 +144,7 @@ describe('CreateUpdateCourthouseFormComponent', () => {
       const companies = [
         { id: 0, name: 'Company 1' },
         { id: 1, name: 'Company 2' },
-      ];
+      ] as SecurityGroup[];
       component.companies = companies;
       component.selectCompany('1');
       expect(component.selectedCompany).toEqual(companies[1]);
@@ -153,7 +157,7 @@ describe('CreateUpdateCourthouseFormComponent', () => {
         { id: 0, name: 'Company 1' },
         { id: 1, name: 'Company 2' },
         { id: 2, name: 'Company 3' },
-      ];
+      ] as SecurityGroup[];
       component.companies = companies;
       component.selectCompany('1');
       component.addCompany();
@@ -169,7 +173,7 @@ describe('CreateUpdateCourthouseFormComponent', () => {
         { id: 0, name: 'Company 1' },
         { id: 1, name: 'Company 2' },
         { id: 2, name: 'Company 3' },
-      ];
+      ] as SecurityGroup[];
       component.selectedCompanies = [...companies];
       component.removeCompany(1);
       expect(component.selectedCompanies).toEqual([companies[0], companies[2]]);

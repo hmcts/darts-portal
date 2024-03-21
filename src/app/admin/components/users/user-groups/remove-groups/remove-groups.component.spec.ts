@@ -19,7 +19,7 @@ const mockGroupsWithRoles: SecurityGroup[] = [
     securityRoleId: 2,
     role: { id: 2, name: 'Role 2', displayState: false },
   },
-];
+] as SecurityGroup[];
 
 const mockUser: User = {
   id: 1,
@@ -52,7 +52,7 @@ describe('RemoveGroupsComponent', () => {
     fixture = TestBed.createComponent(RemoveGroupsComponent);
     component = fixture.componentInstance;
     component.user = mockUser;
-
+    component.selectedGroups = mockGroupsWithRoles;
     fixture.detectChanges();
   });
 

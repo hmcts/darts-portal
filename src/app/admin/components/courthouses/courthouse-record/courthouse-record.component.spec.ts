@@ -1,4 +1,5 @@
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
+import { SecurityGroup } from '@admin-types/users/security-group.type';
 import { DatePipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -7,7 +8,6 @@ import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
 import { CourthouseRecordComponent } from './courthouse-record.component';
-import { SecurityGroup } from '@admin-types/users/security-group.type';
 
 describe('CourthouseRecordComponent', () => {
   let component: CourthouseRecordComponent;
@@ -65,7 +65,7 @@ describe('CourthouseRecordComponent', () => {
     const groups: SecurityGroup[] = [
       { id: 1, securityRoleId: 1, name: 'Group 1' },
       { id: 2, securityRoleId: 2, name: 'Group 2' },
-    ];
+    ] as SecurityGroup[];
     expect(component.formatSecurityGroupLinks(groups)).toStrictEqual([
       { value: 'Group 1', href: '/admin/groups/1' },
       { value: 'Group 2', href: '/admin/groups/2' },

@@ -200,4 +200,64 @@ describe('UserService', () => {
       expect(result).toEqual(false);
     });
   });
+
+  describe('#isAdmin', () => {
+    it('returns true if the user has the Super Admin role', () => {
+      const adminUser: UserState = {
+        userName: '',
+        userId: 1,
+        roles: [
+          {
+            roleId: 123,
+            roleName: 'SUPER_ADMIN',
+            permissions: [
+              {
+                permissionId: 1,
+                permissionName: 'local dev permissions',
+              },
+            ],
+          },
+        ],
+      };
+      service.userState.set(adminUser);
+      const result = service.isAdmin();
+      expect(result).toEqual(true);
+    });
+
+    it("returns false if the user doesn't have the Super Admin role", () => {
+      service.userState.set(mockUserState);
+      const result = service.isAdmin();
+      expect(result).toEqual(false);
+    });
+  });
+
+  describe('#isSuperUser', () => {
+    it('returns true if the user has the Super User role', () => {
+      const superUser: UserState = {
+        userName: '',
+        userId: 1,
+        roles: [
+          {
+            roleId: 123,
+            roleName: 'SUPER_USER',
+            permissions: [
+              {
+                permissionId: 1,
+                permissionName: 'local dev permissions',
+              },
+            ],
+          },
+        ],
+      };
+      service.userState.set(superUser);
+      const result = service.isSuperUser();
+      expect(result).toEqual(true);
+    });
+
+    it("returns false if the user doesn't have the Super User role", () => {
+      service.userState.set(mockUserState);
+      const result = service.isSuperUser();
+      expect(result).toEqual(false);
+    });
+  });
 });

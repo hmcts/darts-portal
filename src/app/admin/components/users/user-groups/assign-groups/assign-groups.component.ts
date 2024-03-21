@@ -4,6 +4,7 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
+import { GroupsService } from '@services/groups/groups.service';
 import { HeaderService } from '@services/header/header.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { Observable, map } from 'rxjs';
@@ -20,15 +21,16 @@ export class AssignGroupsComponent implements OnInit, OnDestroy {
   router = inject(Router);
   userAdminService = inject(UserAdminService);
   headerService = inject(HeaderService);
+  groupsService = inject(GroupsService);
 
   user = this.router.getCurrentNavigation()?.extras.state?.user as User;
 
   // store the hidden groups so we can put them back in when assigning
   usersHiddenGroups = this.user?.securityGroups?.filter((group) => !group.role?.displayState) ?? [];
 
-  groups$: Observable<UserGroup[]> = this.userAdminService
-    .getSecurityGroupsWithRoles()
-    .pipe(map(this.mapSecurityGroupsToUserGroups)) // map to view model
+  groups$: Observable<UserGroup[]> = this.groupsService
+    .getGroupsAndRoles()
+    .pipe(map((data) => this.mapSecurityGroupsToUserGroups(data.groups))) //flatten view model
     .pipe(map((groups) => groups.filter((group) => group.displayState))); // filter out hidden groups for the UI
 
   ngOnInit() {

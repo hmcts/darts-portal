@@ -23,7 +23,7 @@ const JUDGE = {
   permissions,
 };
 
-const ADMIN = {
+const SUPER_ADMIN = {
   roleId: 5,
   roleName: 'SUPER_ADMIN',
   permissions,
@@ -35,4 +35,10 @@ const TRANSLATION_QA = {
   permissions,
 };
 
-module.exports = { JUDGE, TRANSCRIBER, APPROVER, REQUESTER, ADMIN, TRANSLATION_QA };
+const SUPER_USER = {
+  roleId: 7,
+  roleName: 'SUPER_USER',
+  permissions,
+};
+
+module.exports = { JUDGE, TRANSCRIBER, APPROVER, REQUESTER, SUPER_ADMIN, TRANSLATION_QA, SUPER_USER };
