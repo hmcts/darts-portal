@@ -60,6 +60,7 @@ export class AudioViewComponent implements OnDestroy {
   eventRows$!: Observable<HearingEventRow[]>;
   data$: Observable<{ case: Case; rows: HearingEventRow[]; error: ErrorMessage | null }> | undefined;
 
+  isAudioAvailable$!: Observable<number>;
   transformedMedia!: TransformedMedia;
   downloadUrl = '';
   audioSource = '';
@@ -101,7 +102,9 @@ export class AudioViewComponent implements OnDestroy {
 
       this.case$ = this.caseService.getCase(this.transformedMedia.caseId);
 
-      this.audioSource = `/api/audio-requests/playback?transformed_media_id=${this.transformedMedia.transformedMediaId}`;
+      const url = `/api/audio-requests/playback?transformed_media_id=${this.transformedMedia.transformedMediaId}`;
+      this.isAudioAvailable$ = this.audioRequestService.isAudioPlaybackAvailable(url);
+      this.audioSource = url;
 
       this.eventRows$ = this.hearingService.getEvents(this.transformedMedia.hearingId).pipe(
         map((events) => this.filterEvents(events)), // Remove events outside of audio start and end time

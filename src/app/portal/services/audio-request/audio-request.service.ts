@@ -1,9 +1,9 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { AudioRequestType, RequestedMedia, RequestedMediaData, TransformedMedia } from '@portal-types/index';
 import { CountNotificationService } from '@services/count-notification/count-notification.service';
 import { DateTime } from 'luxon';
-import { Observable, map, switchMap, tap, timer } from 'rxjs';
+import { Observable, catchError, map, of, switchMap, tap, timer } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -38,6 +38,13 @@ export class AudioRequestService {
     return this.http.delete<Response>(`api/audio-requests/transformed_media/${transformedMediaId}`, {
       observe: 'response',
     });
+  }
+
+  isAudioPlaybackAvailable(url: string): Observable<number> {
+    return this.http.head<unknown>(url, { observe: 'response' }).pipe(
+      switchMap((response: HttpResponse<unknown>) => of(response.status)),
+      catchError((error: HttpErrorResponse) => of(error.status))
+    );
   }
 
   //Sends request to update last accessed timestamp

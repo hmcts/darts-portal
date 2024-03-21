@@ -267,4 +267,32 @@ describe('AudioService', () => {
 
     expect(receivedBlob).toBeInstanceOf(Blob);
   });
+
+  describe('#isAudioPlaybackAvailable', () => {
+    it('should return the status code for a successful HEAD request', () => {
+      const testUrl = '/test-url';
+      const expectedStatus = 200;
+
+      service.isAudioPlaybackAvailable(testUrl).subscribe((status) => {
+        expect(status).toEqual(expectedStatus);
+      });
+
+      const req = httpMock.expectOne(testUrl);
+      expect(req.request.method).toBe('HEAD');
+      req.flush({}, { status: expectedStatus, statusText: 'OK' });
+    });
+
+    it('should return the error status code for a failed HEAD request', () => {
+      const testUrl = '/test-url';
+      const errorStatus = 404;
+
+      service.isAudioPlaybackAvailable(testUrl).subscribe((status) => {
+        expect(status).toEqual(errorStatus);
+      });
+
+      const req = httpMock.expectOne(testUrl);
+      expect(req.request.method).toBe('HEAD');
+      req.flush({}, { status: errorStatus, statusText: 'Not Found' });
+    });
+  });
 });
