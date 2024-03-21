@@ -8,7 +8,7 @@ const app = express();
 
 // specify this if you want to overwrite the entire DARTS API URL to proxy to
 const proxyToApi = process.env.PROXY_TO_API_URL;
-const port = 4551;
+const port = 4545;
 const defaultApiPort = 4550;
 
 app.set('view engine', 'ejs');
