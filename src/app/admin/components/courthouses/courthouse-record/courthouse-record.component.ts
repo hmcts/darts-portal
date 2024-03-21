@@ -44,6 +44,7 @@ export class CourthouseRecordComponent {
       return securityGroups?.map((securityGroup) => {
         return { value: securityGroup.name, href: `/admin/groups/${securityGroup.id}` };
       });
+    // Otherwise return "None"
     return 'None';
   }
 }
