@@ -23,7 +23,13 @@ export class UserAdminService {
 
   searchUsers(query: UserSearchFormValues): Observable<User[]> {
     const body: UserSearchRequest = this.mapToUserSearchRequest(query);
-    return this.http.post<UserData[]>(USER_ADMIN_SEARCH_PATH, body).pipe(map(this.mapUsers));
+    return this.http.post<UserData[]>(USER_ADMIN_SEARCH_PATH, body).pipe(map((users) => this.mapUsers(users)));
+  }
+
+  getUsers(): Observable<User[]> {
+    return this.http
+      .post<UserData[]>(USER_ADMIN_SEARCH_PATH, { full_name: null, email_address: null, active: null })
+      .pipe(map((users) => this.mapUsers(users)));
   }
 
   getUser(userId: number): Observable<User> {
@@ -44,7 +50,7 @@ export class UserAdminService {
         email_address: updatedUser.email,
         description: updatedUser.description,
       })
-      .pipe(map(this.mapUser));
+      .pipe(map((user) => this.mapUser(user)));
   }
 
   assignGroups(id: number, securityGroupIds: number[]) {
@@ -52,7 +58,7 @@ export class UserAdminService {
       .patch<UserData>(`${USER_ADMIN_PATH}/${id}`, {
         security_group_ids: securityGroupIds,
       })
-      .pipe(map(this.mapUser));
+      .pipe(map((user) => this.mapUser(user)));
   }
 
   doesEmailExist(email: string): Observable<boolean> {
@@ -62,7 +68,9 @@ export class UserAdminService {
   }
 
   activateUser(id: number) {
-    return this.http.patch<UserData>(`${USER_ADMIN_PATH}/${id}`, { active: true }).pipe(map(this.mapUser));
+    return this.http
+      .patch<UserData>(`${USER_ADMIN_PATH}/${id}`, { active: true })
+      .pipe(map((user) => this.mapUser(user)));
   }
 
   private mapToCreateUserRequest(user: CreateUpdateUserFormValues): CreateUserRequest {
@@ -82,22 +90,7 @@ export class UserAdminService {
       active: query.userStatus === 'active' ? true : query.userStatus === 'inactive' ? false : null,
     };
   }
-
-  private mapUsers(users: UserData[]): User[] {
-    return users.map((user) => ({
-      id: user.id,
-      lastLoginAt: DateTime.fromISO(user.last_login_at),
-      lastModifiedAt: DateTime.fromISO(user.last_modified_at),
-      createdAt: DateTime.fromISO(user.created_at),
-      fullName: user.full_name,
-      emailAddress: user.email_address,
-      description: user.description,
-      active: user.active,
-      securityGroupIds: user.security_group_ids,
-    }));
-  }
-
-  private mapUser(user: UserData): User {
+  mapUser(user: UserData): User {
     return {
       id: user.id,
       lastLoginAt: DateTime.fromISO(user.last_login_at),
@@ -111,17 +104,13 @@ export class UserAdminService {
     };
   }
 
+  private mapUsers(users: UserData[]): User[] {
+    return users.map((user) => this.mapUser(user));
+  }
+
   private mapUserWithSecurityGroups(user: UserData, securityGroups: SecurityGroup[]): User {
     return {
-      id: user.id,
-      lastLoginAt: DateTime.fromISO(user.last_login_at),
-      lastModifiedAt: DateTime.fromISO(user.last_modified_at),
-      createdAt: DateTime.fromISO(user.created_at),
-      fullName: user.full_name,
-      emailAddress: user.email_address,
-      description: user.description,
-      active: user.active,
-      securityGroupIds: user.security_group_ids,
+      ...this.mapUser(user),
       securityGroups: user.security_group_ids.map((id) => securityGroups.find((group) => group.id === id)!),
     };
   }

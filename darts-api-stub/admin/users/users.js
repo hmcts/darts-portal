@@ -38,6 +38,7 @@ router.post('/search', (req, res) => {
   const searchFullName = req?.body?.full_name?.toLowerCase() || '';
   const searchEmailAddress = req?.body?.email_address?.toLowerCase() || '';
   const active = req?.body?.active;
+
   if (searchFullName === 'NO_RESULTS') {
     return res.send([]);
   }

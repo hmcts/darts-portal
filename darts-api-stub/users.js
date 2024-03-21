@@ -72,16 +72,6 @@ const stubUsers = [
     active: true,
   },
   {
-    name: 'John Lowe',
-    code: 'translation-qa',
-    userState: {
-      userId: 10,
-      userName: 'john.lowe@darts.local',
-      roles: [TRANSLATION_QA],
-    },
-    active: true,
-  },
-  {
     name: 'Luke Littler',
     code: 'admin-only',
     userState: {

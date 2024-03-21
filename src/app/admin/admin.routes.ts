@@ -50,7 +50,13 @@ export const ADMIN_ROUTES: Routes = [
     loadComponent: () =>
       import('./components/groups/group-record/group-record.component').then((c) => c.GroupRecordComponent),
   },
-
+  {
+    path: 'admin/groups/:id/remove-users',
+    loadComponent: () =>
+      import('./components/groups/remove-group-users/remove-group-users.component').then(
+        (c) => c.RemoveGroupUsersComponent
+      ),
+  },
   {
     path: 'admin/courthouses',
     loadComponent: () => import('./components/courthouses/courthouses.component').then((c) => c.CourthousesComponent),

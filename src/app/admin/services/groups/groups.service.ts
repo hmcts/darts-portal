@@ -66,6 +66,12 @@ export class GroupsService {
     });
   }
 
+  assignUsersToGroup(groupId: number, userIds: number[]) {
+    return this.http.patch(`${GET_SECURITY_GROUPS_PATH}/${groupId}`, {
+      user_ids: userIds,
+    });
+  }
+
   mapGroupDataToGroup(mapGroupDataToGroup: SecurityGroupData): SecurityGroup {
     return {
       id: mapGroupDataToGroup.id,
