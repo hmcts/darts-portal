@@ -5,8 +5,6 @@ import { AnnotationsData } from '@portal-types/annotations/annotations-data.inte
 import { Annotations } from '@portal-types/annotations/annotations.type';
 import { HearingAudio } from '@portal-types/hearing/hearing-audio.interface';
 import { HearingEvent } from '@portal-types/hearing/hearing-event.interface';
-import { PostAudioRequest } from '@portal-types/hearing/post-audio-request.interface';
-import { PostAudioResponse } from '@portal-types/hearing/post-audio-response.interface';
 
 import { GET_HEARINGS_PATH } from '@services/case/case.service';
 import { MappingService } from '@services/mapping/mapping.service';
@@ -33,13 +31,6 @@ export class HearingService {
         if (error.status === 404) return of([]);
         return throwError(() => error);
       })
-    );
-  }
-
-  requestAudio(audioRequest: PostAudioRequest): Observable<PostAudioResponse> {
-    return this.http.post<PostAudioResponse>(
-      `api/audio-requests/${audioRequest.request_type.toLowerCase()}`,
-      audioRequest
     );
   }
 

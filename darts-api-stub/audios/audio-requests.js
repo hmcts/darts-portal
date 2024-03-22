@@ -6,7 +6,6 @@ const router = express.Router();
 router.use(express.json());
 
 const audioRequestOne = {
-  case_id: 1,
   request_id: 1234,
   case_id: 'T4565443',
   courthouse_name: 'Swansea',
