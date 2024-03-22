@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 
 import { HeaderService } from '@services/header/header.service';
@@ -6,6 +6,7 @@ import { filter } from 'rxjs';
 import { ContentComponent } from '../layout/content/content.component';
 import { FooterComponent } from '../layout/footer/footer.component';
 import { HeaderComponent } from '../layout/header/header.component';
+import { AppInsightsService } from '@services/app-insights/app-insights.service';
 
 @Component({
   selector: 'app-root',
@@ -14,19 +15,21 @@ import { HeaderComponent } from '../layout/header/header.component';
   standalone: true,
   imports: [HeaderComponent, ContentComponent, FooterComponent, RouterLink],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+  private router = inject(Router);
+  private headerService = inject(HeaderService);
+  private appInsightsService = inject(AppInsightsService);
+
   title = 'DARTS portal';
   currentUrl = '';
-  constructor(
-    private headerService: HeaderService,
-    private router: Router
-  ) {
+  ngOnInit() {
     // If url changes show navigation in case it is hidden
     // This is useful if a user improperly navigates away from a confirmation screen
     // via the browser back button, for example.
     this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((e) => {
       this.currentUrl = (e as NavigationEnd).url.split('#')[0];
       this.headerService.showNavigation();
+      this.appInsightsService.logPageView(this.currentUrl, this.currentUrl);
     });
   }
 }
