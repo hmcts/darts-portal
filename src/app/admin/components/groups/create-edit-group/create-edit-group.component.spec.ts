@@ -43,7 +43,7 @@ describe('CreateEditGroupComponent', () => {
   });
 
   describe('onSave', () => {
-    it('should call editGroup if in edit mode', () => {
+    it('should call updateGroup if in edit mode', () => {
       const formValues: GroupFormValue = { name: 'test', description: 'test', role: 'test' };
       jest.spyOn(component.groupService, 'updateGroup');
       component.group = { id: 1 } as SecurityGroup;
@@ -52,7 +52,7 @@ describe('CreateEditGroupComponent', () => {
       expect(component.groupService.updateGroup).toHaveBeenCalledWith(1, formValues);
     });
 
-    it('should not call editGroup if not in edit mode', () => {
+    it('should not call updateGroup if not in edit mode', () => {
       const formValues: GroupFormValue = { name: '', description: '', role: '' };
       component.group = { id: 1 } as SecurityGroup;
       jest.spyOn(component.groupService, 'updateGroup');
