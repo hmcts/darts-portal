@@ -1,21 +1,31 @@
 <form [formGroup]="form" class="govuk-form" (ngSubmit)="onSubmit()">
   <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid(courthouseNameControl)">
     <label class="govuk-label" for="courthouse-name">Courthouse name</label>
-    <div id="case_number-hint" class="govuk-hint">Must be the same ID used on XHIBIT or CPP</div>
+    <div id="case_number-hint" class="govuk-hint">
+      {{
+        hasData
+          ? 'There is data associated with this courthouse name. It cannot be changed.'
+          : 'Must be the same ID used on XHIBIT or CPP'
+      }}
+    </div>
     <!-- Inline Validation Errors -->
     @for (error of getFormControlErrorMessages('courthouseName'); track error) {
       <p class="govuk-error-message courthouse-name-error">
         <span class="govuk-visually-hidden">Error:</span> {{ error }}
       </p>
     }
-    <input
-      class="govuk-input"
-      type="text"
-      name="courthouseName"
-      id="courthouse-name"
-      formControlName="courthouseName"
-      [class.govuk-input--error]="isControlInvalid(courthouseNameControl)"
-    />
+    @if (hasData) {
+      <span class="govuk-body">{{ updateCourthouse?.courthouseName }}</span>
+    } @else {
+      <input
+        class="govuk-input"
+        type="text"
+        name="courthouseName"
+        id="courthouse-name"
+        formControlName="courthouseName"
+        [class.govuk-input--error]="isControlInvalid(courthouseNameControl)"
+      />
+    }
   </div>
 
   <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid(displayNameControl)">
@@ -57,7 +67,7 @@
           }}</label>
         </div>
       }
-      <label id="or-label" class="govuk-label govuk-radios__label" for="no-region-radio">Or</label>
+      <label id="or-label" class="govuk-label govuk-radios__label">Or</label>
       <div class="govuk-radios__item">
         <input
           class="govuk-radios__input"
@@ -65,9 +75,9 @@
           name="regionId"
           type="radio"
           formControlName="regionId"
-          [checked]="true"
+          [value]="null"
         />
-        <label class="govuk-label govuk-radios__label" for="approve-radio">No region</label>
+        <label class="govuk-label govuk-radios__label" for="no-region-radio">No region</label>
       </div>
     </div>
   </div>

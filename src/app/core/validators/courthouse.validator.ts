@@ -34,3 +34,15 @@ export const valueIsUndefined = (): ValidatorFn => {
     return { required: true };
   };
 };
+
+export const valueIsNull = (): ValidatorFn => {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+    // If it's null or 0, that's OK
+    // Also pass if there actually is a value too
+    if (value === null || value === 0 || value) {
+      return null;
+    }
+    return { required: true };
+  };
+};

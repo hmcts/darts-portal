@@ -15,6 +15,7 @@ const defaultCourthouses = [
     last_modified_date_time: '2023-08-18T09:48:29.728Z',
     region_id: 4,
     security_group_ids: [1, 2, 3, 4, 5],
+    has_data: true,
   },
   {
     courthouse_name: 'SLOUGH',
@@ -24,6 +25,7 @@ const defaultCourthouses = [
     last_modified_date_time: '2023-08-18T09:48:29.728Z',
     region_id: 4,
     security_group_ids: [1, 2, 3, 4, 5],
+    has_data: true,
   },
   {
     courthouse_name: 'KINGSTON',
@@ -33,6 +35,7 @@ const defaultCourthouses = [
     last_modified_date_time: '2023-08-18T09:48:29.728Z',
     region_id: 0,
     security_group_ids: [1, 2, 3, 4, 5],
+    has_data: true,
   },
   {
     courthouse_name: 'MAIDENHEAD',
@@ -42,6 +45,7 @@ const defaultCourthouses = [
     last_modified_date_time: '2023-08-18T09:48:29.728Z',
     region_id: 4,
     security_group_ids: [1, 2, 3, 4, 5],
+    has_data: true,
   },
   {
     courthouse_name: 'BASINGSTOKE',
@@ -51,6 +55,7 @@ const defaultCourthouses = [
     last_modified_date_time: '2023-08-18T09:48:29.728Z',
     region_id: 1,
     security_group_ids: [1, 2, 3, 4, 5],
+    has_data: true,
   },
   {
     courthouse_name: 'BOURNEMOUTH',
@@ -60,6 +65,7 @@ const defaultCourthouses = [
     last_modified_date_time: '2023-08-18T09:48:29.728Z',
     region_id: 3,
     security_group_ids: [1, 2, 3, 4, 5],
+    has_data: true,
   },
   {
     courthouse_name: 'SOUTHAMPTON',
@@ -69,6 +75,7 @@ const defaultCourthouses = [
     last_modified_date_time: '2023-08-18T09:48:29.728Z',
     region_id: 4,
     security_group_ids: [1, 2, 3, 4, 5],
+    has_data: true,
   },
   {
     courthouse_name: 'CARDIFF',
@@ -78,6 +85,7 @@ const defaultCourthouses = [
     last_modified_date_time: '2023-08-18T09:48:29.728Z',
     region_id: 6,
     security_group_ids: [1, 2, 3, 4, 5, 6, 7],
+    has_data: true,
   },
   {
     courthouse_name: 'BRIDGEND',
@@ -87,6 +95,7 @@ const defaultCourthouses = [
     last_modified_date_time: '2023-08-18T09:48:29.728Z',
     region_id: 6,
     security_group_ids: [1, 2, 3, 4, 5],
+    has_data: true,
   },
   {
     courthouse_name: 'GLOUCESTER',
@@ -96,6 +105,7 @@ const defaultCourthouses = [
     last_modified_date_time: '2023-08-18T09:48:29.728Z',
     region_id: 4,
     security_group_ids: [1, 2, 3, 4, 5],
+    has_data: true,
   },
   {
     courthouse_name: 'MILTON KEYNES',
@@ -105,8 +115,8 @@ const defaultCourthouses = [
     last_modified_date_time: '2023-08-18T09:48:29.728Z',
     region_id: 5,
     security_group_ids: [1, 2, 3, 4, 5],
+    has_data: true,
   },
-
   {
     courthouse_name: 'ANDOVER',
     display_name: 'Andover',
@@ -115,6 +125,7 @@ const defaultCourthouses = [
     last_modified_date_time: '2023-08-18T09:48:29.728Z',
     region_id: 4,
     security_group_ids: [1, 2, 3, 4, 5],
+    has_data: true,
   },
   {
     courthouse_name: 'WINDSOR',
@@ -124,6 +135,7 @@ const defaultCourthouses = [
     last_modified_date_time: '2023-08-18T09:48:29.728Z',
     region_id: 4,
     security_group_ids: [1, 2, 3, 4, 5],
+    has_data: true,
   },
   {
     courthouse_name: 'ETON',
@@ -133,6 +145,7 @@ const defaultCourthouses = [
     last_modified_date_time: '2023-08-18T09:48:29.728Z',
     region_id: 4,
     security_group_ids: [1, 2, 3, 4, 5],
+    has_data: true,
   },
   {
     courthouse_name: 'COURTSVILLE',
@@ -141,6 +154,7 @@ const defaultCourthouses = [
     created_date_time: '2023-08-18T09:48:29.728Z',
     last_modified_date_time: '2023-08-18T09:48:29.728Z',
     security_group_ids: [1, 2, 3, 4, 5],
+    has_data: false,
   },
   {
     courthouse_name: 'MUMBOLAND',
@@ -149,6 +163,7 @@ const defaultCourthouses = [
     created_date_time: '2023-08-18T09:48:29.728Z',
     last_modified_date_time: '2023-08-18T09:48:29.728Z',
     security_group_ids: [1, 2, 3, 4, 5],
+    has_data: false,
   },
   {
     courthouse_name: 'OXFORD',
@@ -158,6 +173,7 @@ const defaultCourthouses = [
     last_modified_date_time: '2023-08-18T09:48:29.728Z',
     region_id: 2,
     security_group_ids: [1, 2, 3, 4, 5],
+    has_data: true,
   },
 ];
 

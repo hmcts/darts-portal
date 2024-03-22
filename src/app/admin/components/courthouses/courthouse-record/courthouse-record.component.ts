@@ -40,8 +40,11 @@ export class CourthouseRecordComponent {
   isUpdatedCourthouse$ = this.route.queryParams?.pipe(map((params) => !!params.updated));
 
   formatSecurityGroupLinks(securityGroups: SecurityGroup[] | undefined) {
-    return securityGroups?.map((securityGroup) => {
-      return { value: securityGroup.name, href: `/admin/groups/${securityGroup.id}` };
-    });
+    if (securityGroups?.length)
+      return securityGroups?.map((securityGroup) => {
+        return { value: securityGroup.name, href: `/admin/groups/${securityGroup.id}` };
+      });
+    // Otherwise return "None"
+    return 'None';
   }
 }

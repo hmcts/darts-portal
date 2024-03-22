@@ -3,14 +3,14 @@ import { CommonModule, JsonPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
+import { LoadingComponent } from '@common/loading/loading.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { ErrorSummaryEntry } from '@core-types/index';
+import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { HeaderService } from '@services/header/header.service';
+import { combineLatest } from 'rxjs';
 import { CreateUpdateCourthouseConfirmationComponent } from './create-update-courthouse-confirmation/create-update-courthouse-confirmation.component';
 import { CreateUpdateCourthouseFormComponent } from './create-update-courthouse-form/create-update-courthouse-form.component';
-import { CourthouseService } from '@services/courthouses/courthouses.service';
-import { combineLatest } from 'rxjs';
-import { LoadingComponent } from '@common/loading/loading.component';
 
 @Component({
   selector: 'app-create-courthouse',
@@ -49,7 +49,7 @@ export class CreateCourthouseComponent {
   formValues: CreateUpdateCourthouseFormValues = {
     courthouseName: null,
     displayName: null,
-    regionId: null,
+    regionId: undefined,
     securityGroupIds: [],
   };
   regions$ = this.courthouseService.getCourthouseRegions();
@@ -68,7 +68,9 @@ export class CreateCourthouseComponent {
   }
 
   onConfirmCourthouseDetails() {
-    this.courthouseService.createCourthouse(this.formValues!).subscribe((courthouse) => {
+    const createCourthouse = { ...this.formValues };
+    if (!createCourthouse.regionId) delete createCourthouse.regionId;
+    this.courthouseService.createCourthouse(createCourthouse).subscribe((courthouse) => {
       this.router.navigate(['/admin/courthouses', courthouse.id], { queryParams: { newCourthouse: true } });
 
       // TODO: Unhappy path

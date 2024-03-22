@@ -69,7 +69,7 @@ export class CourthouseService {
         );
         if (transcriberRole) {
           return this.http
-            .get<SecurityGroupData[]>(`${GET_SECURITY_GROUPS_PATH}?role-ids=${transcriberRole.id}`)
+            .get<SecurityGroupData[]>(`${GET_SECURITY_GROUPS_PATH}?role_ids=${transcriberRole.id}`)
             .pipe(map((securityGroups) => this.mapToSecurityGroupData(securityGroups)));
         }
         return of([]);
@@ -159,6 +159,7 @@ export class CourthouseService {
       // Provide 'No region' object if none provided
       region: matchingRegion || { name: 'No region' },
       securityGroups: matchingGroups,
+      hasData: courthouse.has_data,
     };
   }
 
