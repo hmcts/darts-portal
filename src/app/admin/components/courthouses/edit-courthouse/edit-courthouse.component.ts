@@ -78,7 +78,7 @@ export class EditCourthouseComponent implements OnInit {
   saveCourthouse() {
     const updateCourthouse = { ...this.updateCourthouse };
     if (this.courthouse.hasData) delete updateCourthouse.courthouseName;
-    if (updateCourthouse.regionId && updateCourthouse.regionId < 0) delete updateCourthouse.regionId;
+    if (!updateCourthouse.regionId) delete updateCourthouse.regionId;
     this.courthouseService.updateCourthouse(this.courthouse.id, updateCourthouse).subscribe((courthouse) => {
       this.router.navigate(['/admin/courthouses', courthouse.id], { queryParams: { updated: true } });
     });

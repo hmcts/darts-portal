@@ -22,7 +22,7 @@ export class CreateUpdateCourthouseConfirmationComponent implements OnChanges {
   @Input() values: CreateUpdateCourthouseFormValues = {
     courthouseName: null,
     displayName: null,
-    regionId: null,
+    regionId: undefined,
     securityGroupIds: [],
   };
   @Input() regions!: Region[];

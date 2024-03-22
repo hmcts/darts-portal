@@ -42,8 +42,8 @@ const formValidationTestCases: formValidationTestCase[] = [
     displayNameExists: true,
   },
   {
-    name: 'valid when regionId is undefined',
-    data: { courthouseName: 'COURTHOUSE', displayName: 'Courthouse', regionId: undefined, securityGroupIds: [] },
+    name: 'valid when regionId is null',
+    data: { courthouseName: 'COURTHOUSE', displayName: 'Courthouse', regionId: null, securityGroupIds: [] },
     validity: true,
   },
 ];
@@ -220,7 +220,7 @@ describe('CreateUpdateCourthouseFormComponent', () => {
 
       component.ngOnInit();
 
-      expect(component.form.get('regionId')?.value).toEqual(-1);
+      expect(component.form.get('regionId')?.value).toEqual(null);
       // Form should be valid because region will be selected as "No region"
       expect(component.form.valid).toBe(true);
     });

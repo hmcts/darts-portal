@@ -49,7 +49,7 @@ export class CreateCourthouseComponent {
   formValues: CreateUpdateCourthouseFormValues = {
     courthouseName: null,
     displayName: null,
-    regionId: null,
+    regionId: undefined,
     securityGroupIds: [],
   };
   regions$ = this.courthouseService.getCourthouseRegions();
@@ -69,7 +69,7 @@ export class CreateCourthouseComponent {
 
   onConfirmCourthouseDetails() {
     const createCourthouse = { ...this.formValues };
-    if (createCourthouse.regionId! < 0) delete createCourthouse.regionId;
+    if (!createCourthouse.regionId) delete createCourthouse.regionId;
     this.courthouseService.createCourthouse(createCourthouse).subscribe((courthouse) => {
       this.router.navigate(['/admin/courthouses', courthouse.id], { queryParams: { newCourthouse: true } });
 

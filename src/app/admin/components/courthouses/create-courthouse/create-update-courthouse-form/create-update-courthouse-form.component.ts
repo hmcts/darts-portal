@@ -12,6 +12,7 @@ import {
   displayNameExistsValidator,
   valueIsUndefined,
 } from '@validators/courthouse.validator';
+import { valueIsNull } from './../../../../../core/validators/courthouse.validator';
 
 const controlErrors: FieldErrors = {
   courthouseName: {
@@ -50,6 +51,7 @@ export class CreateUpdateCourthouseFormComponent implements OnInit {
   selectedCompany: SecurityGroup | undefined = undefined;
 
   valueIsUndefined = valueIsUndefined();
+  valueIsNull = valueIsNull();
 
   fb = inject(FormBuilder);
   formService = inject(FormService);
@@ -58,7 +60,8 @@ export class CreateUpdateCourthouseFormComponent implements OnInit {
   formDefaultValues: CreateUpdateCourthouseFormValues = {
     courthouseName: null,
     displayName: null,
-    regionId: undefined,
+    // Set regionId as empty string so "No region" is not selected
+    regionId: '',
     securityGroupIds: [],
   };
 
@@ -75,15 +78,14 @@ export class CreateUpdateCourthouseFormComponent implements OnInit {
         this.formDefaultValues.displayName,
         [Validators.required, displayNameExistsValidator(this.courthouses)],
       ],
-      regionId: [this.formDefaultValues.regionId, [this.valueIsUndefined]],
+      regionId: [this.formDefaultValues.regionId, [this.valueIsNull]],
       securityGroupIds: [this.formDefaultValues.securityGroupIds],
     });
-
     if (this.updateCourthouse) {
       this.form.setValue({
         courthouseName: this.updateCourthouse.courthouseName,
         displayName: this.updateCourthouse.displayName,
-        regionId: this.updateCourthouse?.regionId || -1,
+        regionId: this.updateCourthouse?.regionId || null,
         securityGroupIds: this.updateCourthouse?.securityGroupIds,
       });
       if (this.securityGroupsControl.value.length) {
