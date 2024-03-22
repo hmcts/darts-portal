@@ -18,6 +18,7 @@ import {
 import { AnnotationService } from '@services/annotation/annotation.service';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
+import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { CaseService } from '@services/case/case.service';
 import { FileDownloadService } from '@services/file-download/file-download.service';
 import { HeaderService } from '@services/header/header.service';
@@ -35,6 +36,7 @@ describe('HearingComponent', () => {
   let mockRouter: Router;
   let caseService: CaseService;
   let hearingService: HearingService;
+  let audioRequestService: Partial<AudioRequestService>;
   let fakeUserService: Partial<UserService>;
   let component: HearingComponent;
   let fixture: ComponentFixture<HearingComponent>;
@@ -173,6 +175,9 @@ describe('HearingComponent', () => {
 
     caseService = new CaseService(httpClientSpy);
     hearingService = new HearingService(httpClientSpy);
+    audioRequestService = {
+      requestAudio: jest.fn(),
+    };
 
     jest.spyOn(caseService, 'getCase').mockReturnValue(cd);
     jest.spyOn(caseService, 'getCaseHearings').mockReturnValue(hd);
@@ -190,6 +195,7 @@ describe('HearingComponent', () => {
         { provide: AppInsightsService, useValue: fakeAppInsightsService },
         { provide: CaseService, useValue: caseService },
         { provide: HearingService, useValue: hearingService },
+        { provide: AudioRequestService, useValue: audioRequestService },
         { provide: HeaderService },
         { provide: UserService, useValue: fakeUserService },
         { provide: FileDownloadService, useValue: fakeFileDownloadService },
@@ -356,7 +362,7 @@ describe('HearingComponent', () => {
 
   describe('#onOrderConfirm', () => {
     it('should set the values of state and requestId', () => {
-      jest.spyOn(hearingService, 'requestAudio').mockReturnValue(
+      jest.spyOn(audioRequestService, 'requestAudio').mockReturnValue(
         of({
           request_id: 1234,
           case_id: 'T4565443',
@@ -436,7 +442,7 @@ describe('HearingComponent', () => {
 
     it('should set the value of state when 403 encountered', () => {
       const errorResponse = new HttpErrorResponse({ error: 'Forbidden', status: 403, url: '/api/audio-requests' });
-      jest.spyOn(hearingService, 'requestAudio').mockReturnValue(throwError(() => errorResponse));
+      jest.spyOn(audioRequestService, 'requestAudio').mockReturnValue(throwError(() => errorResponse));
       const mockRequestObject: PostAudioRequest = {
         hearing_id: 3,
         requestor: 1,
@@ -451,7 +457,7 @@ describe('HearingComponent', () => {
 
     it('should set the value of state when 409 encountered', () => {
       const errorResponse = new HttpErrorResponse({ error: 'Conflict', status: 409, url: '/api/audio-requests' });
-      jest.spyOn(hearingService, 'requestAudio').mockReturnValue(throwError(() => errorResponse));
+      jest.spyOn(audioRequestService, 'requestAudio').mockReturnValue(throwError(() => errorResponse));
       const mockRequestObject: PostAudioRequest = {
         hearing_id: 3,
         requestor: 1,
