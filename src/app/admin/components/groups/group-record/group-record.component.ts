@@ -42,6 +42,7 @@ export class GroupRecordComponent {
   groupId: number = +this.route.snapshot.params.id;
   tab = this.route.snapshot.queryParams.tab || 'Courthouses';
   hasRemovedUsers$ = this.route.queryParams.pipe(map((params) => params.removedUsers));
+  hasUpdatedGroup$ = this.route.queryParams.pipe(map((params) => params.updated));
 
   selectedCourthouses: CourthouseData[] = [];
 

@@ -2,12 +2,21 @@
   <app-govuk-banner type="success">{{ count }} {{ +count === 1 ? 'user' : 'users' }} removed</app-govuk-banner>
 }
 
-<div class="heading-button-container">
-  <app-govuk-heading caption="View group">Group details</app-govuk-heading>
-  <button class="govuk-button govuk-button--secondary">Edit group details</button>
-</div>
+@if (hasUpdatedGroup$ | async) {
+  <app-govuk-banner type="success">Group details updated</app-govuk-banner>
+}
 
 @if (vm$ | async; as vm) {
+  <div class="heading-button-container">
+    <app-govuk-heading caption="View group">Group details</app-govuk-heading>
+    <button
+      class="govuk-button govuk-button--secondary"
+      (click)="router.navigate(['admin/groups', groupId, 'edit'], { state: { group: vm.group } })"
+    >
+      Edit group details
+    </button>
+  </div>
+
   <app-govuk-heading tag="h3" size="s">Group name</app-govuk-heading>
   <p class="govuk-body" id="group-name">{{ vm.group.name }}</p>
 

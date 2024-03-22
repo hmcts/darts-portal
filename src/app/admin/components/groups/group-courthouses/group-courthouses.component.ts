@@ -17,6 +17,8 @@ export class GroupCourthousesComponent {
   @Output() update = new EventEmitter<number[]>();
 
   onAddCourthouse(courthouseId: string) {
+    if (!courthouseId && courthouseId !== '0') return;
+
     const courthouse = this.allCourthouses.find((c) => c.id === +courthouseId);
     const courthouseNotSelected = !this.selectedCourthouses.find((c) => c.id === +courthouseId);
 

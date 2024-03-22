@@ -1,6 +1,5 @@
 import { Region } from '@admin-types/courthouses/region.interface';
-import { CreateUpdateCourthouseFormValues } from '@admin-types/index';
-import { SecurityGroup } from '@admin-types/users/security-group.type';
+import { CreateUpdateCourthouseFormValues, SecurityGroup } from '@admin-types/index';
 import { Component, DestroyRef, ElementRef, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
