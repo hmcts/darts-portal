@@ -1,8 +1,7 @@
-import { Region } from '@admin-types/courthouses/region.interface';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
-import { SecurityGroup } from '@admin-types/users/security-group.type';
+import { Region } from '@admin-types/courthouses/region.interface';
+import { SecurityGroup } from '@admin-types/index';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Navigation, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CourthouseData } from '@core-types/index';

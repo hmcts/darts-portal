@@ -1,0 +1,90 @@
+<form [formGroup]="form" (ngSubmit)="onSave()">
+  <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('name')">
+    <label class="govuk-label" for="name">Group name</label>
+
+    @if (isControlInvalid('name')) {
+      <p class="govuk-error-message fullName-error">
+        <span class="govuk-visually-hidden">Error:</span> {{ getFormControlErrorMessages('name')[0] }}
+      </p>
+    }
+
+    <input
+      formControlName="name"
+      class="govuk-input govuk-input--width-20"
+      id="name"
+      name="name"
+      type="text"
+      [class.govuk-input--error]="isControlInvalid('name')"
+    />
+  </div>
+
+  <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('description')">
+    <label class="govuk-label" for="description">Description</label>
+
+    @if (isControlInvalid('description')) {
+      <p class="govuk-error-message fullName-error">
+        <span class="govuk-visually-hidden">Error:</span> {{ getFormControlErrorMessages('description')[0] }}
+      </p>
+    }
+
+    <input
+      formControlName="description"
+      class="govuk-input govuk-input--width-20"
+      id="description"
+      name="description"
+      type="text"
+      [class.govuk-input--error]="isControlInvalid('description')"
+    />
+  </div>
+
+  <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('role')">
+    <fieldset class="govuk-fieldset">
+      <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+        <h1 class="govuk-fieldset__heading">Role</h1>
+      </legend>
+
+      @if (isControlInvalid('role')) {
+        <p class="govuk-error-message fullName-error">
+          <span class="govuk-visually-hidden">Error:</span> {{ getFormControlErrorMessages('role')[0] }}
+        </p>
+      }
+
+      @if (isEdit) {
+        <div id="role-hint" class="govuk-hint">Cannot be changed.</div>
+        <p class="govuk-body" id="role">
+          {{ form.value.role }}
+        </p>
+      } @else {
+        <div class="govuk-radios govuk-radios--inline">
+          <div class="govuk-radios__item">
+            <input
+              class="govuk-radios__input"
+              id="role-transcriber"
+              formControlName="role"
+              name="role"
+              type="radio"
+              value="transcriber"
+            />
+            <label class="govuk-label govuk-radios__label" for="role-transcriber">Transcriber</label>
+          </div>
+          <div class="govuk-radios__item">
+            <input
+              class="govuk-radios__input"
+              id="role-translationqa"
+              formControlName="role"
+              name="role"
+              type="radio"
+              value="translationqa"
+            />
+            <label class="govuk-label govuk-radios__label" for="role-translationqa">Translation QA</label>
+          </div>
+        </div>
+      }
+    </fieldset>
+  </div>
+
+  <div class="govuk-form-group">
+    <button class="govuk-button" type="submit">{{ isEdit ? 'Save changes' : 'Create group' }}</button>
+    <a class="govuk-button govuk-button--secondary" href="javascript:void(0)" (click)="onCancel()">Cancel</a>
+  </div>
+</form>

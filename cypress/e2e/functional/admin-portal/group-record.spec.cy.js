@@ -72,4 +72,35 @@ describe('Admin - Groups screen', () => {
     cy.get('app-govuk-banner').should('contain', '2 users removed');
     cy.get('#group-users-table').should('contain', 'There are no users assigned to this group.');
   });
+
+  it('edits group details', () => {
+    cy.get('#group-name').should('contain', 'Opus Transcribers');
+    cy.get('#group-description').should('contain', 'Dummy description 2');
+    cy.get('#group-role').should('contain', 'Transcriber');
+
+    cy.get('button').contains('Edit group details').click();
+
+    cy.get('#name').clear().type('Opus Transcribers Edit');
+    cy.get('#description').clear().type('Dummy description Edit');
+    cy.get('#role').should('contain', 'Transcriber');
+    cy.get('#role-hint').should('contain', 'Cannot be changed.');
+
+    cy.get('button').contains('Save changes').click();
+
+    cy.get('app-govuk-banner').should('contain', 'Group details updated');
+    cy.get('h1').should('contain', 'Group details');
+
+    cy.get('#group-name').should('contain', 'Opus Transcribers Edit');
+    cy.get('#group-description').should('contain', 'Dummy description Edit');
+    cy.get('#group-role').should('contain', 'Transcriber');
+  });
+
+  it('edit group details prevents duplicate name entry', () => {
+    cy.get('button').contains('Edit group details').click();
+
+    cy.get('#name').clear().type('Judiciary');
+    cy.get('button').contains('Save changes').click();
+
+    cy.get('.fullName-error').should('contain', 'There is an existing group with this name');
+  });
 });

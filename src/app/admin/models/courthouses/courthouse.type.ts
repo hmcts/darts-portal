@@ -1,4 +1,4 @@
-import { SecurityGroup } from '@admin-types/users/security-group.type';
+import { SecurityGroup } from '@admin-types/index';
 import { DateTime } from 'luxon';
 import { Region } from './region.interface';
 

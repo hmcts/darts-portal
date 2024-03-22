@@ -13,6 +13,7 @@ const defaultSecurityGroups = [
     global_access: true,
     courthouse_ids: [1],
     user_ids: [1],
+    description: 'Dummy description 1',
   },
   {
     id: 2,
@@ -23,6 +24,7 @@ const defaultSecurityGroups = [
     global_access: true,
     courthouse_ids: [1, 2],
     user_ids: [1, 2],
+    description: 'Dummy description 2',
   },
   {
     id: 3,
@@ -33,6 +35,7 @@ const defaultSecurityGroups = [
     global_access: true,
     courthouse_ids: [1, 2, 3],
     user_ids: [1, 2, 3],
+    description: 'Dummy description 3',
   },
   {
     id: 4,
@@ -43,6 +46,7 @@ const defaultSecurityGroups = [
     global_access: true,
     courthouse_ids: [1, 2, 3, 4],
     user_ids: [1, 2, 3, 4],
+    description: 'Dummy description 4',
   },
   {
     id: 5,
@@ -53,6 +57,7 @@ const defaultSecurityGroups = [
     global_access: true,
     courthouse_ids: [1, 2, 3, 4, 5],
     user_ids: [1, 2, 3, 4, 5],
+    description: 'Dummy description 5',
   },
   {
     id: 6,
@@ -63,6 +68,7 @@ const defaultSecurityGroups = [
     global_access: true,
     courthouse_ids: [1, 2, 3, 4, 5, 6],
     user_ids: [1, 2, 3, 4, 5, 6],
+    description: 'Dummy description 6',
   },
   {
     id: 7,
@@ -73,6 +79,7 @@ const defaultSecurityGroups = [
     global_access: true,
     courthouse_ids: [1, 2, 3, 4, 5, 6, 7],
     user_ids: [1, 2, 3, 4, 5, 6, 7],
+    description: 'Dummy description 7',
   },
   {
     id: 8,
@@ -83,6 +90,7 @@ const defaultSecurityGroups = [
     global_access: true,
     courthouse_ids: [1, 2, 3, 4, 5, 6, 7, 8],
     user_ids: [1, 2, 3, 4, 5, 6, 7, 8],
+    description: 'Dummy description 8',
   },
   {
     id: 9,
@@ -93,6 +101,7 @@ const defaultSecurityGroups = [
     global_access: true,
     courthouse_ids: [1, 2, 3, 4, 5, 6, 7, 8, 9],
     user_ids: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    description: 'Dummy description 9',
   },
   {
     id: 10,
@@ -103,6 +112,7 @@ const defaultSecurityGroups = [
     global_access: true,
     courthouse_ids: [],
     user_ids: [],
+    description: 'Dummy description 10',
   },
   {
     id: 11,
@@ -113,6 +123,7 @@ const defaultSecurityGroups = [
     global_access: true,
     courthouse_ids: [1],
     user_ids: [1],
+    description: 'Dummy description 11',
   },
 ];
 
@@ -121,7 +132,7 @@ const securityGroups = localArray('securityGroups');
 securityGroups.value = defaultSecurityGroups;
 router.patch('/:id', (req, res) => {
   const id = req.params.id;
-  const securityGroup = defaultSecurityGroups.find((securityGroup) => securityGroup.id == id);
+  const securityGroup = securityGroups.value.find((securityGroup) => securityGroup.id == id);
   if (!securityGroup) return res.status(404).send('Security group not found');
   Object.assign(securityGroup, req.body);
   res.send(securityGroup);
@@ -129,7 +140,7 @@ router.patch('/:id', (req, res) => {
 
 router.get('/:id', (req, res) => {
   const id = req.params.id;
-  const securityGroup = defaultSecurityGroups.find((securityGroup) => securityGroup.id == id);
+  const securityGroup = securityGroups.value.find((securityGroup) => securityGroup.id == id);
   if (!securityGroup) return res.status(404).send('Security group not found');
   res.send(securityGroup);
 });

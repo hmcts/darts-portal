@@ -1,4 +1,4 @@
-import { SecurityGroup } from '@admin-types/users/security-group.type';
+import { SecurityGroup } from '@admin-types/index';
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';

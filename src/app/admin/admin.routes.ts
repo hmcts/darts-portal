@@ -46,6 +46,13 @@ export const ADMIN_ROUTES: Routes = [
     loadComponent: () => import('./components/groups/groups.component').then((c) => c.GroupsComponent),
   },
   {
+    path: 'admin/groups/create',
+    loadComponent: () =>
+      import('./components/groups/create-edit-group/create-edit-group.component').then(
+        (c) => c.CreateEditGroupComponent
+      ),
+  },
+  {
     path: 'admin/groups/:id',
     loadComponent: () =>
       import('./components/groups/group-record/group-record.component').then((c) => c.GroupRecordComponent),
@@ -55,6 +62,13 @@ export const ADMIN_ROUTES: Routes = [
     loadComponent: () =>
       import('./components/groups/remove-group-users/remove-group-users.component').then(
         (c) => c.RemoveGroupUsersComponent
+      ),
+  },
+  {
+    path: 'admin/groups/:id/edit',
+    loadComponent: () =>
+      import('./components/groups/create-edit-group/create-edit-group.component').then(
+        (c) => c.CreateEditGroupComponent
       ),
   },
   {
