@@ -10,9 +10,8 @@ import { FormService } from '@services/form/form.service';
 import {
   courthouseNameExistsValidator,
   displayNameExistsValidator,
-  valueIsUndefined,
+  valueIsNull,
 } from '@validators/courthouse.validator';
-import { valueIsNull } from './../../../../../core/validators/courthouse.validator';
 
 const controlErrors: FieldErrors = {
   courthouseName: {
@@ -50,7 +49,6 @@ export class CreateUpdateCourthouseFormComponent implements OnInit {
   selectedCompanies: SecurityGroup[] = [];
   selectedCompany: SecurityGroup | undefined = undefined;
 
-  valueIsUndefined = valueIsUndefined();
   valueIsNull = valueIsNull();
 
   fb = inject(FormBuilder);
