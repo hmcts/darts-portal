@@ -266,7 +266,20 @@ router.get('/not-accessed-count', (req, res) => {
   res.send({ count });
 });
 
-router.post('', (req, res) => {
+router.post('/download', (req, res) => {
+  switch (req.body?.hearing_id) {
+    case 3:
+      res.sendStatus(403);
+      break;
+    case 4:
+      res.sendStatus(409);
+      break;
+    default:
+      res.send(audioRequestOne);
+  }
+});
+
+router.post('/playback', (req, res) => {
   switch (req.body?.hearing_id) {
     case 3:
       res.sendStatus(403);

@@ -1,10 +1,10 @@
-import { Annotations } from '@portal-types/annotations/annotations.type';
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { Annotations } from '@portal-types/annotations/annotations.type';
 import { AnnotationsData, HearingAudio, HearingEvent, PostAudioRequest } from '@portal-types/index';
-import { HearingService } from './hearing.service';
 import { DateTime } from 'luxon';
+import { HearingService } from './hearing.service';
 
 export const GET_HEARINGS_PATH = 'api/hearings';
 
@@ -116,7 +116,7 @@ describe('HearingService', () => {
   });
 
   describe('#requestAudio', () => {
-    it('should request audio', () => {
+    it('should request audio for download', () => {
       let response;
       const audioRequest: PostAudioRequest = {
         hearing_id: 1,
@@ -137,7 +137,35 @@ describe('HearingService', () => {
       service.requestAudio(audioRequest).subscribe((res) => (response = res));
 
       const req = httpTestingController.expectOne((request) => {
-        return request.body === audioRequest && request.url === 'api/audio-requests';
+        return request.body === audioRequest && request.url === 'api/audio-requests/download';
+      });
+      expect(req.request.method).toBe('POST');
+      req.flush(mockResponse);
+
+      expect(response).toEqual(mockResponse);
+    });
+    it('should request audio for playback', () => {
+      let response;
+      const audioRequest: PostAudioRequest = {
+        hearing_id: 1,
+        requestor: 1,
+        start_time: '2023-09-01T02:00:00Z',
+        end_time: '2023-09-01T15:32:24Z',
+        request_type: 'PLAYBACK',
+      };
+      const mockResponse = {
+        request_id: 141,
+        case_id: 'DMP461_Case12',
+        courthouse_name: 'LIVERPOOL_DMP461',
+        hearing_date: '2023-08-11',
+        start_time: '2023-08-11T15:30:17Z',
+        end_time: '2023-08-11T15:30:17Z',
+      };
+
+      service.requestAudio(audioRequest).subscribe((res) => (response = res));
+
+      const req = httpTestingController.expectOne((request) => {
+        return request.body === audioRequest && request.url === 'api/audio-requests/playback';
       });
       expect(req.request.method).toBe('POST');
       req.flush(mockResponse);
