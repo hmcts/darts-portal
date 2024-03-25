@@ -1,100 +1,94 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, flush, tick } from '@angular/core/testing';
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { AudioPreviewService } from './audio-preview.service';
-
-declare global {
-  interface Window {
-    EventSource: typeof EventSource;
-  }
-}
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { AudioPreviewService, audioPreviewPath } from './audio-preview.service';
 
 describe('AudioPreviewService', () => {
   let service: AudioPreviewService;
+  let httpMock: HttpTestingController;
 
   beforeEach(() => {
-    // Mock URL.createObjectURL()
-    (window.URL as unknown) = {
-      createObjectURL: jest.fn(() => 'mocked blob url'),
-    };
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (window as any).EventSource = class EventSource {
-      onmessage = jest.fn();
-      onerror = jest.fn();
-      close = jest.fn();
-    };
-
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
+      providers: [AudioPreviewService],
     });
+
     service = TestBed.inject(AudioPreviewService);
+    httpMock = TestBed.inject(HttpTestingController);
+  });
+
+  afterEach(() => {
+    httpMock.verify();
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should create a blob from a base64 string', () => {
-    const b64Data =
-      'SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU2LjM2LjEwMAAAAAAAAAAAAAAAA//8AAAAyYWRtaW5pc3RyYXRvcgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
-    const blob = service.b64toBlob(b64Data);
-    expect(blob).toBeTruthy();
-    expect(blob.type).toBe('audio/mpeg');
-  });
-
-  it('should connect with an EventSource', () => {
+  it('should return immediately with status 200', () => {
     const mediaId = 123;
-    const url = '/api/audio/preview/123';
-    const eventSourceMock = {
-      addEventListener: jest.fn(),
-      close: jest.fn(),
-      onerror: jest.fn(),
-    } as unknown as EventSource;
+    let status: number | undefined;
 
-    jest.spyOn(window, 'EventSource').mockReturnValue(eventSourceMock);
-
-    service.getAudioPreviewBlobUrl(mediaId).subscribe();
-
-    expect(window.EventSource).toHaveBeenCalledWith(url);
-  });
-
-  it('should close the EventSource on unsubscribe', () => {
-    const mediaId = 123;
-    const eventSourceMock = {
-      addEventListener: jest.fn(),
-      close: jest.fn(),
-      onerror: jest.fn(),
-    } as unknown as EventSource;
-
-    jest.spyOn(window, 'EventSource').mockReturnValue(eventSourceMock);
-
-    const subscription = service.getAudioPreviewBlobUrl(mediaId).subscribe();
-    subscription.unsubscribe();
-
-    expect(eventSourceMock.close).toHaveBeenCalled();
-  });
-
-  it('should return the blob URL when receiving a response', (done) => {
-    const mediaId = 123;
-    const eventSourceMock = {
-      addEventListener: jest.fn((event, callback) => {
-        if (event === 'audio response') {
-          const message = {
-            data: JSON.stringify({ body: 'base64data' }),
-          };
-          callback(message);
-        }
-      }),
-      close: jest.fn(),
-      onerror: jest.fn(),
-    } as unknown as EventSource;
-
-    jest.spyOn(window, 'EventSource').mockReturnValue(eventSourceMock);
-
-    service.getAudioPreviewBlobUrl(mediaId).subscribe((blobUrl) => {
-      expect(blobUrl).toBe('mocked blob url');
-      done();
+    service.isAudioPreviewReady(mediaId).subscribe((res) => {
+      status = res;
     });
+
+    const req = httpMock.expectOne(`${audioPreviewPath}${mediaId}`);
+    expect(req.request.method).toEqual('HEAD');
+    req.flush({}, { status: 200, statusText: 'OK' });
+
+    expect(status).toEqual(200);
   });
+
+  it('should poll until status is not 202', fakeAsync(() => {
+    const mediaId = 1;
+    const receivedStatuses: number[] = [];
+
+    service.isAudioPreviewReady(mediaId).subscribe((status) => {
+      receivedStatuses.push(status);
+    });
+
+    let req = httpMock.expectOne(`${audioPreviewPath}${mediaId}`);
+    req.flush({}, { status: 202, statusText: 'Accepted' });
+    tick(5000); // Simulate the time delay for the polling interval.
+
+    req = httpMock.expectOne(`${audioPreviewPath}${mediaId}`);
+    req.flush({}, { status: 202, statusText: 'Accepted' });
+    tick(5000);
+
+    req = httpMock.expectOne(`${audioPreviewPath}${mediaId}`);
+    req.flush({}, { status: 202, statusText: 'Accepted' });
+    tick(5000);
+
+    req = httpMock.expectOne(`${audioPreviewPath}${mediaId}`);
+    req.flush({}, { status: 200, statusText: 'OK' });
+    flush();
+
+    //One less 202 on the other end due to polling logic returned by Interval
+    expect(receivedStatuses).toEqual([202, 202, 200]);
+  }));
+
+  it('should return the error status when an error occurs', fakeAsync(() => {
+    const mediaId = 123;
+    const errorStatus = 500; // Simulate an internal server error
+    let receivedStatus: number | undefined;
+
+    service.isAudioPreviewReady(mediaId).subscribe({
+      next: (status) => {
+        receivedStatus = status;
+      },
+    });
+
+    // Expect the initial request and respond with an error
+    const req = httpMock.expectOne(`${audioPreviewPath}${mediaId}`);
+    // Use req.error to simulate an error response.
+    const errorEvent = new ProgressEvent('Network error');
+    req.error(errorEvent, { status: errorStatus });
+
+    tick();
+
+    expect(receivedStatus).toBe(errorStatus);
+
+    flush();
+  }));
 });

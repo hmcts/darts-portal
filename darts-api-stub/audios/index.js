@@ -74,53 +74,91 @@ router.get('/hearings/:hearingId/audios', (req, res) => {
       ];
       res.send(body3);
       break;
+    case '6':
+      const body6 = [
+        {
+          id: 1,
+          media_start_timestamp: '2023-07-21T08:32:24.620Z',
+          media_end_timestamp: '2023-07-21T08:36:24.620Z',
+          is_available: true,
+        },
+        {
+          id: 7,
+          media_start_timestamp: '2023-07-21T09:32:24.620Z',
+          media_end_timestamp: '2023-07-21T09:36:24.620Z',
+          is_available: true,
+        },
+        {
+          id: 8,
+          media_start_timestamp: '2023-07-21T09:37:24.620Z',
+          media_end_timestamp: '2023-07-21T09:39:24.620Z',
+          is_available: true,
+        },
+      ];
+      res.send(body6);
+      break;
     default:
       res.send([]);
       break;
   }
 });
 
-// SSE Preview Audio Stub
-router.get('/preview/:mediaId', (req, res) => {
-  if (req.params.mediaId === '4') {
-    res.status(403).end();
-    return;
+const requestCounts = {};
+router.get('/preview/:mediaId', async (req, res) => {
+  const largeRequestCount = 6; // Assuming 5 seconds per request
+  const smallRequestCount = 3;
+  const { mediaId } = req.params;
+
+  // Initialize or increment the request count for the given mediaId
+  requestCounts[mediaId] = (requestCounts[mediaId] || 0) + 1;
+
+  if (mediaId === '4') {
+    return res.status(403).end();
   }
-  if (req.params.mediaId === '5') {
-    res.status(404).end();
-    return;
+  if (mediaId === '5') {
+    return res.status(404).end();
   }
-  if (req.params.mediaId === '6') {
-    res.status(500).end();
-    return;
+  if (mediaId === '6') {
+    return res.status(500).end();
   }
 
-  res.setHeader('Content-Type', 'text/event-stream');
-  res.setHeader('Cache-Control', 'no-cache');
-  res.setHeader('Connection', 'keep-alive');
-
-  var filePath = __dirname + '/preview/preview.mp3';
-
-  let counter = 0;
-  const intervalId = setInterval(() => {
-    if (counter >= 3) {
-      clearInterval(intervalId);
-      fs.readFile(filePath, (err, data) => {
-        if (err) {
-          console.error(err);
-          res.status(500).end();
-          return;
-        }
-        const base64String = data.toString('base64');
-        const x = { body: base64String };
-        res.write(`event: audio response\ndata: ${JSON.stringify(x)}\n\n`);
-        res.end();
-      });
-    } else {
-      res.write(`event: emptyResponse\ndata: \n\n`);
-      counter++;
+  if (mediaId === '7') {
+    if (requestCounts[mediaId] < largeRequestCount) {
+      // Simulate a large file request without resetting the count
+      return res.status(202).end();
     }
-  }, 100);
+  }
+
+  if (mediaId === '8') {
+    if (requestCounts[mediaId] < smallRequestCount) {
+      //Simulate medium file request
+      return res.status(202).end();
+    }
+  }
+
+  // Handle the default case with cached response
+  serveAudioFile(res, req.headers.range, __dirname + '/preview/preview.mp3');
 });
+
+function serveAudioFile(res, range, filePath) {
+  var stat = fs.statSync(filePath);
+  var total = stat.size;
+  if (range) {
+    var parts = range.replace(/bytes=/, '').split('-');
+    var start = parseInt(parts[0], 10);
+    var end = parts[1] ? parseInt(parts[1], 10) : total - 1;
+    var chunksize = end - start + 1;
+    res.writeHead(206, {
+      'Content-Range': 'bytes ' + start + '-' + end + '/' + total,
+      'Accept-Ranges': 'bytes',
+      'Content-Length': chunksize,
+      'Content-Type': 'audio/mpeg',
+    });
+    fs.createReadStream(filePath, { start: start, end: end }).pipe(res);
+  } else {
+    res.writeHead(200, { 'Content-Length': total, 'Content-Type': 'audio/mpeg' });
+    fs.createReadStream(filePath).pipe(res);
+  }
+}
 
 module.exports = router;

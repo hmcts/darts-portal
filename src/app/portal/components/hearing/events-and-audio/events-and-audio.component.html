@@ -45,14 +45,18 @@
         <td class="govuk-table__cell">Audio recording</td>
         <td class="govuk-table__cell">
           @if (isAudioInPreview(row.id)) {
-            @if (row.audioSourceUrl$ | async; as audioSource) {
-              <app-audio-player
-                [id]="row.id"
-                [audioSource]="audioSource"
-                [autoplay]="true"
-                [isError]="!audioSource.includes('blob:')"
-                (play)="onAudioPlay(row.id)"
-              />
+            @if (row.audioIsReady$ | async; as audioCode) {
+              @if (audioCode === 202) {
+                <div class="loading">Loading preview</div>
+              } @else {
+                <app-audio-player
+                  [id]="row.id"
+                  [audioSource]="audioPreviewPath + row.id"
+                  [autoplay]="true"
+                  (play)="onAudioPlay(row.id)"
+                  [statusCode]="audioCode"
+                />
+              }
             } @else {
               <div class="loading">Loading preview</div>
             }

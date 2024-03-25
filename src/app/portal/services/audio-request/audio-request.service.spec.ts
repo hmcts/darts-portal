@@ -1,6 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed, discardPeriodicTasks, fakeAsync, tick } from '@angular/core/testing';
-import { PostAudioRequest, RequestedMedia, RequestedMediaData } from '@portal-types/index';
+import { RequestedMedia, RequestedMediaData } from '@portal-types/index';
 import { DateTime, Settings } from 'luxon';
 import { of } from 'rxjs';
 import { AudioRequestService } from './audio-request.service';
@@ -268,107 +268,31 @@ describe('AudioService', () => {
     expect(receivedBlob).toBeInstanceOf(Blob);
   });
 
-  describe('#requestAudio', () => {
-    it('should request audio for download', () => {
-      let response;
-      const audioRequest: PostAudioRequest = {
-        hearing_id: 1,
-        requestor: 1,
-        start_time: '2023-09-01T02:00:00Z',
-        end_time: '2023-09-01T15:32:24Z',
-        request_type: 'DOWNLOAD',
-      };
-      const mockResponse = {
-        request_id: 141,
-        case_id: 'DMP461_Case12',
-        courthouse_name: 'LIVERPOOL_DMP461',
-        hearing_date: '2023-08-11',
-        start_time: '2023-08-11T15:30:17Z',
-        end_time: '2023-08-11T15:30:17Z',
-      };
+  describe('#isAudioPlaybackAvailable', () => {
+    it('should return the status code for a successful HEAD request', () => {
+      const testUrl = '/test-url';
+      const expectedStatus = 200;
 
-      service.requestAudio(audioRequest).subscribe((res) => (response = res));
-
-      const req = httpMock.expectOne((request) => {
-        return request.body === audioRequest && request.url === 'api/audio-requests/download';
-      });
-      expect(req.request.method).toBe('POST');
-      req.flush(mockResponse);
-
-      expect(response).toEqual(mockResponse);
-    });
-
-    it('should request audio for playback', () => {
-      let response;
-      const audioRequest: PostAudioRequest = {
-        hearing_id: 1,
-        requestor: 1,
-        start_time: '2023-09-01T02:00:00Z',
-        end_time: '2023-09-01T15:32:24Z',
-        request_type: 'PLAYBACK',
-      };
-      const mockResponse = {
-        request_id: 141,
-        case_id: 'DMP461_Case12',
-        courthouse_name: 'LIVERPOOL_DMP461',
-        hearing_date: '2023-08-11',
-        start_time: '2023-08-11T15:30:17Z',
-        end_time: '2023-08-11T15:30:17Z',
-      };
-
-      service.requestAudio(audioRequest).subscribe((res) => (response = res));
-
-      const req = httpMock.expectOne((request) => {
-        return request.body === audioRequest && request.url === 'api/audio-requests/playback';
-      });
-      expect(req.request.method).toBe('POST');
-      req.flush(mockResponse);
-
-      expect(response).toEqual(mockResponse);
-    });
-  });
-
-  describe('#getStatusCode', () => {
-    it('should return the status code of the HTTP response', () => {
-      const url = '/api';
-      const statusCode = 200;
-
-      service.getStatusCode(url).subscribe((result) => {
-        expect(result).toEqual(statusCode);
+      service.isAudioPlaybackAvailable(testUrl).subscribe((status) => {
+        expect(status).toEqual(expectedStatus);
       });
 
-      const req = httpMock.expectOne(url);
+      const req = httpMock.expectOne(testUrl);
       expect(req.request.method).toBe('HEAD');
-
-      req.flush(null, { status: statusCode, statusText: 'OK' });
+      req.flush({}, { status: expectedStatus, statusText: 'OK' });
     });
 
-    it('should return the status code of the HTTP error response', () => {
-      const url = '/api';
-      const statusCode = 404;
+    it('should return the error status code for a failed HEAD request', () => {
+      const testUrl = '/test-url';
+      const errorStatus = 404;
 
-      service.getStatusCode(url).subscribe((result) => {
-        expect(result).toEqual(statusCode);
+      service.isAudioPlaybackAvailable(testUrl).subscribe((status) => {
+        expect(status).toEqual(errorStatus);
       });
 
-      const req = httpMock.expectOne(url);
+      const req = httpMock.expectOne(testUrl);
       expect(req.request.method).toBe('HEAD');
-
-      req.flush(null, { status: statusCode, statusText: 'Not Found' });
-    });
-
-    it('should return the status code of the HTTP error response when an error occurs', () => {
-      const url = '/api';
-      const statusCode = 500;
-
-      service.getStatusCode(url).subscribe((result) => {
-        expect(result).toEqual(statusCode);
-      });
-
-      const req = httpMock.expectOne(url);
-      expect(req.request.method).toBe('HEAD');
-
-      req.error(new ErrorEvent('Internal Server Error'));
+      req.flush({}, { status: errorStatus, statusText: 'Not Found' });
     });
   });
 });

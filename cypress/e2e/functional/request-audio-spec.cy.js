@@ -163,6 +163,19 @@ describe('Request audio', () => {
       cy.get('#hearingsTable a').contains('11 Oct 2023').click();
       cy.get('.govuk-hint').contains('This audio is not currently available in DARTS, please try again later.');
     });
+
+    it('should preview audio on a medium length request', () => {
+      cy.get('#hearingsTable a').contains('10 Mar 2024').click();
+      cy.get(previewLinkSelector).eq(2).click();
+
+      cy.get('.loading').should('be.visible');
+      cy.wait(6000);
+      cy.get('.loading').should('not.exist');
+
+      cy.get('audio').should('be.visible');
+      // check audio player is playing
+      cy.get('audio').should('have.prop', 'paused', false);
+    });
   });
 });
 

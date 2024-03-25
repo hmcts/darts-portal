@@ -47,6 +47,13 @@ export class AudioRequestService {
     });
   }
 
+  isAudioPlaybackAvailable(url: string): Observable<number> {
+    return this.http.head<unknown>(url, { observe: 'response' }).pipe(
+      switchMap((response: HttpResponse<unknown>) => of(response.status)),
+      catchError((error: HttpErrorResponse) => of(error.status))
+    );
+  }
+
   //Sends request to update last accessed timestamp
   patchAudioRequestLastAccess(transformedMediaId: number, isUnread = false): Observable<HttpResponse<Response>> {
     return this.http
@@ -74,15 +81,6 @@ export class AudioRequestService {
       params: { transformed_media_id: transformedMediaId },
       responseType: 'blob',
     });
-  }
-
-  getStatusCode(url: string): Observable<number> {
-    return this.http.head(url, { observe: 'response' }).pipe(
-      map((response) => response.status),
-      catchError((error: HttpErrorResponse) => {
-        return of(error.status);
-      })
-    );
   }
 
   private updateUnreadAudioCount(media: TransformedMedia[]) {

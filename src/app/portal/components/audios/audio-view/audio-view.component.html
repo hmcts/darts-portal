@@ -56,40 +56,43 @@
 
   <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible" />
 
-  <ng-container *ngIf="transformedMedia.requestType === 'PLAYBACK'">
-    <h2 class="govuk-heading-l">Play all audio</h2>
-    <app-audio-player
-      (pause)="isAudioPlaying = false"
-      (play)="isAudioPlaying = true"
-      (playTime)="onPlayTimeChanged($event)"
-      [audioSource]="audioSource"
-    ></app-audio-player>
+  @if (isAudioAvailable$ | async; as audioCode) {
+    <ng-container *ngIf="transformedMedia.requestType === 'PLAYBACK'">
+      <h2 class="govuk-heading-l">Play all audio</h2>
+      <app-audio-player
+        (pause)="isAudioPlaying = false"
+        (play)="isAudioPlaying = true"
+        (playTime)="onPlayTimeChanged($event)"
+        [audioSource]="audioSource"
+        [statusCode]="audioCode"
+      ></app-audio-player>
 
-    <h3 class="govuk-heading-m no-magin-bottom">Skip to event</h3>
-    <p class="govuk-hint no-magin-top">Jump to a specific audio events within the audio file</p>
+      <h3 class="govuk-heading-m no-magin-bottom">Skip to event</h3>
+      <p class="govuk-hint no-magin-top">Jump to a specific audio events within the audio file</p>
 
-    <app-data-table [rows]="data.rows" [columns]="columns" [pagination]="true">
-      <ng-template [tableRowTemplate]="data.rows" let-row let-index>
-        <td class="govuk-table__cell play-cell">
-          <app-play-button
-            tabindex="0"
-            (keydown.enter)="onSkip(row.startTime, isRowPlaying(row))"
-            [class.isPlaying]="isAudioTouched && isRowPlaying(row)"
-            [isPlaying]="isAudioTouched && isRowPlaying(row)"
-            [isPaused]="isAudioPlaying && isRowPlaying(row)"
-            (click)="onSkip(row.startTime, isRowPlaying(row))"
-          ></app-play-button>
-        </td>
-        <td class="govuk-table__cell">{{ row.eventType }}</td>
-        <td class="govuk-table__cell">{{ row.eventTime | date: 'HH:mm:ss' }}</td>
-        <td class="govuk-table__cell">
-          <a href="#" (click)="$event.preventDefault(); onSkip(row.startTime, false)" class="govuk-link">
-            {{ row.audioTime }}
-          </a>
-        </td>
-      </ng-template>
-    </app-data-table>
-  </ng-container>
+      <app-data-table [rows]="data.rows" [columns]="columns" [pagination]="true">
+        <ng-template [tableRowTemplate]="data.rows" let-row let-index>
+          <td class="govuk-table__cell play-cell">
+            <app-play-button
+              tabindex="0"
+              (keydown.enter)="onSkip(row.startTime, isRowPlaying(row))"
+              [class.isPlaying]="isAudioTouched && isRowPlaying(row)"
+              [isPlaying]="isAudioTouched && isRowPlaying(row)"
+              [isPaused]="isAudioPlaying && isRowPlaying(row)"
+              (click)="onSkip(row.startTime, isRowPlaying(row))"
+            ></app-play-button>
+          </td>
+          <td class="govuk-table__cell">{{ row.eventType }}</td>
+          <td class="govuk-table__cell">{{ row.eventTime | date: 'HH:mm:ss' }}</td>
+          <td class="govuk-table__cell">
+            <a href="#" (click)="$event.preventDefault(); onSkip(row.startTime, false)" class="govuk-link">
+              {{ row.audioTime }}
+            </a>
+          </td>
+        </ng-template>
+      </app-data-table>
+    </ng-container>
+  }
 
   <div class="govuk-button-group">
     <button class="govuk-button" (click)="onDownloadClicked()" [disabled]="data.error">Download audio file</button>

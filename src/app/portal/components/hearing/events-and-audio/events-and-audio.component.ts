@@ -19,9 +19,9 @@ import { DatatableColumn } from '@core-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { HearingEventTypeEnum } from '@portal-types/hearing/enums';
 import { AudioEventRow, HearingAudio, HearingEvent } from '@portal-types/index';
-import { AudioPreviewService } from '@services/audio-preview/audio-preview.service';
+import { AudioPreviewService, audioPreviewPath } from '@services/audio-preview/audio-preview.service';
 import { DateTime } from 'luxon';
-import { Subscription, catchError, of } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-events-and-audio',
@@ -53,6 +53,8 @@ export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
 
   subs: Subscription[] = [];
   audioInPreview: number[] = [];
+
+  audioPreviewPath = audioPreviewPath;
 
   ngOnInit(): void {
     this.subs.push(
@@ -133,9 +135,7 @@ export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
         ...audio,
         type: HearingEventTypeEnum.Audio,
         timestamp: audio.media_start_timestamp,
-        audioSourceUrl$: this.audioPreviewService
-          .getAudioPreviewBlobUrl(audio.id)
-          .pipe(catchError((failedUrl: string) => of(failedUrl))),
+        audioIsReady$: this.audioPreviewService.isAudioPreviewReady(audio.id),
       })),
       ...this.events.map((event) => ({ ...event, type: HearingEventTypeEnum.Event })),
     ];
