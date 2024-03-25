@@ -6,49 +6,49 @@ const router = express.Router();
 const defaultSecurityRoles = [
   {
     id: 1,
-    role_name: 'Approver',
+    role_name: 'APPROVER',
     display_name: 'Approver',
     display_state: true,
   },
   {
     id: 2,
-    role_name: 'Requestor',
+    role_name: 'REQUESTOR',
     display_name: 'Requestor',
     display_state: true,
   },
   {
     id: 3,
-    role_name: 'Judge',
+    role_name: 'JUDGE',
     display_name: 'Judge',
     display_state: true,
   },
   {
     id: 4,
-    role_name: 'Transcriber',
+    role_name: 'TRANSCRIBER',
     display_name: 'Transcriber',
     display_state: true,
   },
   {
     id: 5,
-    role_name: 'Translation QA',
+    role_name: 'TRANSLATION QA',
     display_name: 'Translation QA',
     display_state: true,
   },
   {
     id: 6,
-    role_name: 'RCJ Appeals',
+    role_name: 'RCJ APPEALS',
     display_name: 'RCJ Appeals',
     display_state: true,
   },
   {
     id: 7,
-    role_name: 'Admin',
+    role_name: 'ADMIN',
     display_name: 'Admin',
     display_state: true,
   },
   {
     id: 8,
-    role_name: 'Dont Display Role',
+    role_name: 'DONT DISPLAY ROLE',
     display_name: 'Dont Display Role',
     display_state: false,
   },
@@ -56,10 +56,7 @@ const defaultSecurityRoles = [
 
 const securityRoles = localArray('securityRoles');
 // Clear out old values on restart
-securityRoles.value = defaultSecurityRoles.map((securityRole) => ({
-  ...securityRole,
-  role_name: securityRole.display_name.toUpperCase(),
-}));
+securityRoles.value = defaultSecurityRoles;
 
 router.get('/', (_, res) => {
   res.send(securityRoles.value);

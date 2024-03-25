@@ -1,11 +1,13 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { CourthouseData } from '@core-types/index';
+import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 
 @Component({
   selector: 'app-group-courthouses',
   standalone: true,
-  imports: [GovukHeadingComponent],
+  imports: [GovukHeadingComponent, DataTableComponent, TableRowTemplateDirective],
   templateUrl: './group-courthouses.component.html',
   styleUrl: './group-courthouses.component.scss',
 })
@@ -15,11 +17,13 @@ export class GroupCourthousesComponent {
   @Output() update = new EventEmitter<number[]>();
 
   onAddCourthouse(courthouseId: string) {
+    if (!courthouseId && courthouseId !== '0') return;
+
     const courthouse = this.allCourthouses.find((c) => c.id === +courthouseId);
     const courthouseNotSelected = !this.selectedCourthouses.find((c) => c.id === +courthouseId);
 
     if (courthouse && courthouseNotSelected) {
-      this.selectedCourthouses.push(courthouse);
+      this.selectedCourthouses = [...this.selectedCourthouses, courthouse];
       this.emitCourthouseIds();
     }
   }

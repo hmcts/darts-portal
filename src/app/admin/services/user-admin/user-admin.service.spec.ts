@@ -20,6 +20,7 @@ describe('UserAdminService', () => {
     {
       id: 1,
       name: 'Judiciary',
+      displayName: 'Judiciary',
       description: '',
       displayState: true,
       globalAccess: true,
@@ -35,6 +36,7 @@ describe('UserAdminService', () => {
     {
       id: 2,
       name: 'Opus Transcribers',
+      displayName: 'Opus Transcribers',
       description: '',
       displayState: true,
       globalAccess: true,

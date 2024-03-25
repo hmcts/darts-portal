@@ -1,20 +1,19 @@
 import { CourthouseSearchFormValues } from '@admin-types/courthouses/courthouse-search-form-values.type';
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
-import { SecurityGroup } from '@admin-types/users/security-group.type';
-import { SecurityRoleData } from '@admin-types/index';
 import { Region } from '@admin-types/courthouses/region.interface';
+import { SecurityGroup, SecurityRoleData } from '@admin-types/index';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { CourthouseData } from '@core-types/index';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
 import {
+  COURTHOUSES_ADMIN_PATH,
   CourthouseService,
   GET_COURTHOUSES_PATH,
-  COURTHOUSES_ADMIN_PATH,
-  GET_SECURITY_ROLES_PATH,
-  GET_SECURITY_GROUPS_PATH,
   GET_COURTHOUSE_REGIONS_PATH,
+  GET_SECURITY_GROUPS_PATH,
+  GET_SECURITY_ROLES_PATH,
 } from './courthouses.service';
 
 describe('CourthouseService', () => {
@@ -280,7 +279,7 @@ describe('CourthouseService', () => {
 
       httpMock.expectOne(`${GET_SECURITY_ROLES_PATH}`).flush(mockSecurityRoles);
 
-      httpMock.expectOne(`${GET_SECURITY_GROUPS_PATH}?role-ids=99`).flush([
+      httpMock.expectOne(`${GET_SECURITY_GROUPS_PATH}?role_ids=99`).flush([
         {
           id: 1,
           name: 'Company 1',
@@ -305,7 +304,7 @@ describe('CourthouseService', () => {
 
       httpMock.expectOne(`${GET_SECURITY_ROLES_PATH}`).flush(mockSecurityRoles);
 
-      httpMock.expectNone(`${GET_SECURITY_GROUPS_PATH}?role-ids=99`);
+      httpMock.expectNone(`${GET_SECURITY_GROUPS_PATH}?role_ids=99`);
     });
   });
 

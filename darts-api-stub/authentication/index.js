@@ -6,7 +6,7 @@ const router = express.Router();
 const activeUsers = stubUsers.filter((stubUser) => stubUser.active);
 
 router.get('/login-or-refresh', (_, res) => {
-  res.header('Location', 'http://localhost:4551/external-user/login');
+  res.header('Location', 'http://localhost:4545/external-user/login');
   res.status(302).send();
 });
 
@@ -26,7 +26,7 @@ router.post('/handle-oauth-code', (req, res, next) => {
 });
 
 router.get('/logout', (_, res) => {
-  res.header('Location', 'http://localhost:4551/external-user/handle-logout');
+  res.header('Location', 'http://localhost:4545/external-user/handle-logout');
   res.status(302).send();
 });
 

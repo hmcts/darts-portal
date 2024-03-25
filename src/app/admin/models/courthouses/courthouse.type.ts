@@ -1,4 +1,4 @@
-import { SecurityGroup } from '@admin-types/users/security-group.type';
+import { SecurityGroup } from '@admin-types/index';
 import { DateTime } from 'luxon';
 import { Region } from './region.interface';
 
@@ -11,4 +11,5 @@ export type Courthouse = {
   lastModifiedDateTime?: DateTime;
   region?: Region;
   securityGroups?: SecurityGroup[];
+  hasData?: boolean | false;
 };

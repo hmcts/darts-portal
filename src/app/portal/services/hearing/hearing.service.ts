@@ -1,16 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { Annotations } from '@portal-types/annotations/annotations.type';
 import { AnnotationsData } from '@portal-types/annotations/annotations-data.interface';
+import { Annotations } from '@portal-types/annotations/annotations.type';
 import { HearingAudio } from '@portal-types/hearing/hearing-audio.interface';
 import { HearingEvent } from '@portal-types/hearing/hearing-event.interface';
-import { PostAudioRequest } from '@portal-types/hearing/post-audio-request.interface';
-import { PostAudioResponse } from '@portal-types/hearing/post-audio-response.interface';
 
 import { GET_HEARINGS_PATH } from '@services/case/case.service';
 import { MappingService } from '@services/mapping/mapping.service';
-import { Observable, catchError, of, throwError, map } from 'rxjs';
+import { Observable, catchError, map, of, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -34,10 +32,6 @@ export class HearingService {
         return throwError(() => error);
       })
     );
-  }
-
-  requestAudio(audioRequest: PostAudioRequest): Observable<PostAudioResponse> {
-    return this.http.post<PostAudioResponse>('api/audio-requests', audioRequest);
   }
 
   getAnnotations(hearingId: string | number): Observable<Annotations[]> {

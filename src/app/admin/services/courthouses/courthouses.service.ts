@@ -2,9 +2,12 @@ import { CourthouseSearchFormValues } from '@admin-types/courthouses/courthouse-
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { CreateCourthouseRequest } from '@admin-types/courthouses/create-courthouse-request.type';
 import { Region } from '@admin-types/courthouses/region.interface';
-import { CreateUpdateCourthouseFormValues, SecurityRoleData } from '@admin-types/index';
-import { SecurityGroupData } from '@admin-types/users/security-group.interface';
-import { SecurityGroup } from '@admin-types/users/security-group.type';
+import {
+  CreateUpdateCourthouseFormValues,
+  SecurityGroup,
+  SecurityGroupData,
+  SecurityRoleData,
+} from '@admin-types/index';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CourthouseData } from '@core-types/index';
@@ -69,7 +72,7 @@ export class CourthouseService {
         );
         if (transcriberRole) {
           return this.http
-            .get<SecurityGroupData[]>(`${GET_SECURITY_GROUPS_PATH}?role-ids=${transcriberRole.id}`)
+            .get<SecurityGroupData[]>(`${GET_SECURITY_GROUPS_PATH}?role_ids=${transcriberRole.id}`)
             .pipe(map((securityGroups) => this.mapToSecurityGroupData(securityGroups)));
         }
         return of([]);
@@ -159,6 +162,7 @@ export class CourthouseService {
       // Provide 'No region' object if none provided
       region: matchingRegion || { name: 'No region' },
       securityGroups: matchingGroups,
+      hasData: courthouse.has_data,
     };
   }
 

@@ -22,12 +22,13 @@ export class CreateUpdateCourthouseConfirmationComponent implements OnChanges {
   @Input() values: CreateUpdateCourthouseFormValues = {
     courthouseName: null,
     displayName: null,
-    regionId: null,
+    regionId: undefined,
     securityGroupIds: [],
   };
   @Input() regions!: Region[];
   @Input() companies!: SecurityGroup[];
   @Input() update: boolean = false;
+  @Input() hasData: boolean = false;
   @Output() confirm = new EventEmitter<void>();
   @Output() back = new EventEmitter<void>();
   @Output() cancel = new EventEmitter<void>();

@@ -1,19 +1,32 @@
-<div class="heading-button-container">
-  <app-govuk-heading caption="View group">Group details</app-govuk-heading>
-  <button class="govuk-button govuk-button--secondary">Edit group details</button>
-</div>
+@if (hasRemovedUsers$ | async; as count) {
+  <app-govuk-banner type="success">{{ count }} {{ +count === 1 ? 'user' : 'users' }} removed</app-govuk-banner>
+}
+
+@if (hasUpdatedGroup$ | async) {
+  <app-govuk-banner type="success">Group details updated</app-govuk-banner>
+}
 
 @if (vm$ | async; as vm) {
+  <div class="heading-button-container">
+    <app-govuk-heading caption="View group">Group details</app-govuk-heading>
+    <button
+      class="govuk-button govuk-button--secondary"
+      (click)="router.navigate(['admin/groups', groupId, 'edit'], { state: { group: vm.group } })"
+    >
+      Edit group details
+    </button>
+  </div>
+
   <app-govuk-heading tag="h3" size="s">Group name</app-govuk-heading>
-  <p class="govuk-body">{{ vm.group.name }}</p>
+  <p class="govuk-body" id="group-name">{{ vm.group.name }}</p>
 
   <app-govuk-heading tag="h3" size="s">Description</app-govuk-heading>
-  <p class="govuk-body">{{ vm.group.description || '-' }}</p>
+  <p class="govuk-body" id="group-description">{{ vm.group.description || '-' }}</p>
 
   <app-govuk-heading tag="h3" size="s">Role</app-govuk-heading>
-  <p class="govuk-body">{{ vm?.group?.role?.name }}</p>
+  <p class="govuk-body" id="group-role">{{ vm?.group?.role?.name }}</p>
 
-  <app-tabs>
+  <app-tabs [default]="tab">
     <app-group-courthouses
       *tab="'Courthouses'"
       [allCourthouses]="vm.courthouses"
@@ -21,7 +34,13 @@
       (update)="onUpdateCourthouses($event)"
     />
 
-    <app-group-users *tab="'Users'" />
+    <app-group-users
+      *tab="'Users'"
+      [allUsers]="vm.users"
+      [groupUsers]="vm.group.users"
+      (update)="onUpdateUsers($event)"
+      (remove)="onRemoveUsers($event)"
+    />
   </app-tabs>
 }
 

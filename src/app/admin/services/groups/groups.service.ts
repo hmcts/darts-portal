@@ -1,4 +1,4 @@
-import { SecurityGroup, SecurityGroupData, SecurityRole, SecurityRoleData } from '@admin-types/index';
+import { GroupFormValue, SecurityGroup, SecurityGroupData, SecurityRole, SecurityRoleData } from '@admin-types/index';
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, map, switchMap } from 'rxjs';
@@ -66,10 +66,37 @@ export class GroupsService {
     });
   }
 
+  assignUsersToGroup(groupId: number, userIds: number[]) {
+    return this.http.patch(`${GET_SECURITY_GROUPS_PATH}/${groupId}`, {
+      user_ids: userIds,
+    });
+  }
+
+  updateGroup(groupId: number, formValues: GroupFormValue) {
+    return this.http.patch(`${GET_SECURITY_GROUPS_PATH}/${groupId}`, {
+      name: formValues.name,
+      display_name: formValues.name,
+      description: formValues.description,
+    });
+  }
+
+  // TODO:
+  // createGroup(formValues: GroupFormValue): Observable<SecurityGroup> {
+  //   return this.http
+  //     .post<SecurityGroupData>(`${GET_SECURITY_GROUPS_PATH}`, {
+  //       name: formValues.name,
+  //       display_name: formValues.name,
+  //       description: formValues.description,
+  //       security_role_id: formValues.role, // need to grab the id from the role object
+  //     })
+  //     .pipe(map(this.mapGroupDataToGroup));
+  // }
+
   mapGroupDataToGroup(mapGroupDataToGroup: SecurityGroupData): SecurityGroup {
     return {
       id: mapGroupDataToGroup.id,
       name: mapGroupDataToGroup.name,
+      displayName: mapGroupDataToGroup.display_name,
       description: mapGroupDataToGroup.description,
       displayState: mapGroupDataToGroup.display_state,
       globalAccess: mapGroupDataToGroup.global_access,

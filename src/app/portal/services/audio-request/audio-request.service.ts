@@ -1,6 +1,13 @@
 import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { AudioRequestType, RequestedMedia, RequestedMediaData, TransformedMedia } from '@portal-types/index';
+import {
+  AudioRequestType,
+  PostAudioRequest,
+  PostAudioResponse,
+  RequestedMedia,
+  RequestedMediaData,
+  TransformedMedia,
+} from '@portal-types/index';
 import { CountNotificationService } from '@services/count-notification/count-notification.service';
 import { DateTime } from 'luxon';
 import { Observable, catchError, map, of, switchMap, tap, timer } from 'rxjs';
@@ -59,6 +66,13 @@ export class AudioRequestService {
           }
         })
       );
+  }
+
+  requestAudio(audioRequest: PostAudioRequest): Observable<PostAudioResponse> {
+    return this.http.post<PostAudioResponse>(
+      `api/audio-requests/${audioRequest.request_type.toLowerCase()}`,
+      audioRequest
+    );
   }
 
   downloadAudio(transformedMediaId: number, requestType: AudioRequestType): Observable<Blob> {

@@ -1,17 +1,15 @@
 import { Region } from '@admin-types/courthouses/region.interface';
-import { CreateUpdateCourthouseFormValues } from '@admin-types/index';
-import { SecurityGroup } from '@admin-types/users/security-group.type';
+import { CreateUpdateCourthouseFormValues, SecurityGroup } from '@admin-types/index';
 import { Component, DestroyRef, ElementRef, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { CourthouseData, ErrorSummaryEntry, FieldErrors } from '@core-types/index';
-import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { FormService } from '@services/form/form.service';
 import {
   courthouseNameExistsValidator,
   displayNameExistsValidator,
-  valueIsUndefined,
+  valueIsNull,
 } from '@validators/courthouse.validator';
 
 const controlErrors: FieldErrors = {
@@ -45,12 +43,12 @@ export class CreateUpdateCourthouseFormComponent implements OnInit {
   @Input() regions!: Region[];
   @Input() companies!: SecurityGroup[];
   @Input() courthouses!: CourthouseData[];
+  @Input() hasData: boolean = false;
 
   selectedCompanies: SecurityGroup[] = [];
   selectedCompany: SecurityGroup | undefined = undefined;
 
-  valueIsUndefined = valueIsUndefined();
-  courthouseService = inject(CourthouseService);
+  valueIsNull = valueIsNull();
 
   fb = inject(FormBuilder);
   formService = inject(FormService);
@@ -59,7 +57,8 @@ export class CreateUpdateCourthouseFormComponent implements OnInit {
   formDefaultValues: CreateUpdateCourthouseFormValues = {
     courthouseName: null,
     displayName: null,
-    regionId: null,
+    // Set regionId as empty string so "No region" is not selected
+    regionId: '',
     securityGroupIds: [],
   };
 
@@ -76,15 +75,14 @@ export class CreateUpdateCourthouseFormComponent implements OnInit {
         this.formDefaultValues.displayName,
         [Validators.required, displayNameExistsValidator(this.courthouses)],
       ],
-      regionId: [this.formDefaultValues.regionId, [this.valueIsUndefined]],
+      regionId: [this.formDefaultValues.regionId, [this.valueIsNull]],
       securityGroupIds: [this.formDefaultValues.securityGroupIds],
     });
-
     if (this.updateCourthouse) {
       this.form.setValue({
         courthouseName: this.updateCourthouse.courthouseName,
         displayName: this.updateCourthouse.displayName,
-        regionId: this.updateCourthouse?.regionId || '',
+        regionId: this.updateCourthouse?.regionId || null,
         securityGroupIds: this.updateCourthouse?.securityGroupIds,
       });
       if (this.securityGroupsControl.value.length) {

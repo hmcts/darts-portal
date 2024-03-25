@@ -1,11 +1,23 @@
-.govuk-input {
-  width: 465px;
+.add-courthouse-button {
+  margin-left: 1rem;
 }
 
-.add-company-button {
-  margin-left: 110px;
-}
-
-#company-table {
+#courthouse-table {
   max-width: 350px;
+}
+
+.govuk-form-group {
+  max-width: 425px;
+}
+
+.right-align-text {
+  text-align: right;
+}
+
+.select-button-container {
+  display: flex;
+  justify-content: space-between;
+  button {
+    margin-bottom: 1rem;
+  }
 }

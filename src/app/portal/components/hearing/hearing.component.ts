@@ -24,6 +24,7 @@ import {
 } from '@portal-types/index';
 import { AnnotationService } from '@services/annotation/annotation.service';
 import { AppConfigService } from '@services/app-config/app-config.service';
+import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { CaseService } from '@services/case/case.service';
 import { ErrorMessageService } from '@services/error/error-message.service';
 import { FileDownloadService } from '@services/file-download/file-download.service';
@@ -72,6 +73,7 @@ export class HearingComponent implements OnInit {
   annotationService = inject(AnnotationService);
   fileDownloadService = inject(FileDownloadService);
   hearingService = inject(HearingService);
+  audioRequestService = inject(AudioRequestService);
   headerService = inject(HeaderService);
   userService = inject(UserService);
   mappingService = inject(MappingService);
@@ -229,7 +231,7 @@ export class HearingComponent implements OnInit {
   }
 
   onOrderConfirm(requestObject: PostAudioRequest) {
-    this.hearingService.requestAudio(requestObject).subscribe({
+    this.audioRequestService.requestAudio(requestObject).subscribe({
       next: (response: PostAudioResponse) => {
         this.requestId = response.request_id;
         this.state = 'OrderConfirmation';

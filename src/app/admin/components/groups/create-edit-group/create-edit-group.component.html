@@ -1,0 +1,15 @@
+<app-validation-error-summary [errors]="errors" />
+
+<app-govuk-heading [caption]="caption">Group details</app-govuk-heading>
+
+@if (groups$ | async; as groups) {
+  <app-group-form
+    [group]="group"
+    [allGroups]="groups"
+    (saveGroup)="onSave($event)"
+    (cancel)="cancel()"
+    (errors)="errors = $event"
+  />
+} @else {
+  <app-loading text="Loading group details" />
+}

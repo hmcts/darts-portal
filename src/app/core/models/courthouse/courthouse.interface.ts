@@ -10,6 +10,7 @@ export interface CourthouseData {
   last_modified_date_time?: string;
   region_id?: number;
   security_group_ids?: number[];
+  has_data?: boolean | false;
 }
 
 export type Courthouse = {
