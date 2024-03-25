@@ -1,6 +1,6 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { catchError, interval, map, of, startWith, switchMap, takeWhile } from 'rxjs';
+import { catchError, interval, map, of, switchMap, takeWhile } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 
 export const audioPreviewPath = '/api/audio/preview/';
@@ -20,7 +20,6 @@ export class AudioPreviewService {
           return of(response.status);
         } else {
           return interval(5000).pipe(
-            startWith(0),
             switchMap(() => this.http.head(url, { observe: 'response' })),
             map((response: HttpResponse<unknown>) => {
               return response.status;

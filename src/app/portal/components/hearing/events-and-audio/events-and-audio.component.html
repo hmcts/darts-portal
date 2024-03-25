@@ -57,6 +57,8 @@
                   [statusCode]="audioCode"
                 />
               }
+            } @else {
+              <div class="loading">Loading preview</div>
             }
           } @else if (!row.is_available) {
             <p class="govuk-hint">This audio is not currently available in DARTS, please try again later.</p>

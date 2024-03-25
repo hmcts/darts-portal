@@ -48,23 +48,23 @@ describe('AudioPreviewService', () => {
       receivedStatuses.push(status);
     });
 
-    const req = httpMock.match(`${audioPreviewPath}${mediaId}`);
-    req[0].flush({}, { status: 202, statusText: 'Accepted' });
+    let req = httpMock.expectOne(`${audioPreviewPath}${mediaId}`);
+    req.flush({}, { status: 202, statusText: 'Accepted' });
     tick(5000); // Simulate the time delay for the polling interval.
 
-    //Required due to the startWith(0) in polling
-    const req1 = httpMock.match(`${audioPreviewPath}${mediaId}`);
-    req1[1].flush({}, { status: 202, statusText: 'Accepted' });
+    req = httpMock.expectOne(`${audioPreviewPath}${mediaId}`);
+    req.flush({}, { status: 202, statusText: 'Accepted' });
     tick(5000);
 
-    const req2 = httpMock.expectOne(`${audioPreviewPath}${mediaId}`);
-    req2.flush({}, { status: 202, statusText: 'Accepted' });
+    req = httpMock.expectOne(`${audioPreviewPath}${mediaId}`);
+    req.flush({}, { status: 202, statusText: 'Accepted' });
     tick(5000);
 
-    const req3 = httpMock.expectOne(`${audioPreviewPath}${mediaId}`);
-    req3.flush({}, { status: 200, statusText: 'OK' });
+    req = httpMock.expectOne(`${audioPreviewPath}${mediaId}`);
+    req.flush({}, { status: 200, statusText: 'OK' });
     flush();
 
+    //One less 202 on the other end due to polling logic returned by Interval
     expect(receivedStatuses).toEqual([202, 202, 200]);
   }));
 
