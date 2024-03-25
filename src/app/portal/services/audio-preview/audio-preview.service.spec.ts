@@ -27,13 +27,17 @@ describe('AudioPreviewService', () => {
 
   it('should return immediately with status 200', () => {
     const mediaId = 123;
-    service.isAudioPreviewReady(mediaId).subscribe((status) => {
-      expect(status).toEqual(200);
+    let status: number | undefined;
+
+    service.isAudioPreviewReady(mediaId).subscribe((res) => {
+      status = res;
     });
 
     const req = httpMock.expectOne(`${audioPreviewPath}${mediaId}`);
     expect(req.request.method).toEqual('HEAD');
     req.flush({}, { status: 200, statusText: 'OK' });
+
+    expect(status).toEqual(200);
   });
 
   it('should poll until status is not 202', fakeAsync(() => {
