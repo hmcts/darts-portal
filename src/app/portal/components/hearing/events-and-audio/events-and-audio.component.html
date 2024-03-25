@@ -47,7 +47,7 @@
           @if (isAudioInPreview(row.id)) {
             @if (row.audioIsReady$ | async; as audioCode) {
               @if (audioCode === 202) {
-                <div class="loading">Loading preview</div>
+                <div class="loading govuk-hint">Loading preview</div>
               } @else {
                 <app-audio-player
                   [id]="row.id"
@@ -58,7 +58,7 @@
                 />
               }
             } @else {
-              <div class="loading">Loading preview</div>
+              <div class="loading govuk-hint">Loading preview</div>
             }
           } @else if (!row.is_available) {
             <p class="govuk-hint">This audio is not currently available in DARTS, please try again later.</p>
