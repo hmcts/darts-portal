@@ -341,12 +341,13 @@ describe('SearchComponent', () => {
   it('should handle errors and clear search form and results', fakeAsync(() => {
     const errorResponse = new HttpErrorResponse({ error: { type: 'CASE_100' }, status: 400, url: '/api/cases/search' });
     jest.spyOn(caseService, 'searchCases').mockReturnValue(throwError(() => errorResponse));
-    errorMsgService.handleErrorMessage(errorResponse);
-
-    const errorMessageMock = { detail: { type: 'CASE_100' }, display: 'COMPONENT', status: 400 } as ErrorMessage;
 
     component.form.markAsDirty();
     component.onSubmit();
+
+    errorMsgService.handleErrorMessage(errorResponse);
+
+    const errorMessageMock = { detail: { type: 'CASE_100' }, display: 'COMPONENT', status: 400 } as ErrorMessage;
 
     flush();
 
