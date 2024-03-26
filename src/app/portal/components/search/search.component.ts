@@ -127,6 +127,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    this.errorMsgService.clearErrorMessage();
     this.isSubmitted = true;
     this.form.updateValueAndValidity();
 
