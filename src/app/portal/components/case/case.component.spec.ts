@@ -115,6 +115,7 @@ describe('CaseComponent', () => {
       isApprover: jest.fn(() => false),
       isRequester: jest.fn(() => false),
       isAdmin: jest.fn(() => true),
+      isTranslationQA: jest.fn(() => false),
     };
 
     TestBed.configureTestingModule({
