@@ -6,6 +6,7 @@ import { HeaderService } from '@services/header/header.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 //Contains endpoints where errors are handled in their component
+const regexIdPlaceholder = '\\d+';
 const subscribedEndpoints = [
   { endpoint: '/api/cases/search', responses: [204, 400, 500] },
   { endpoint: '/api/audio-requests/playback', responses: [403, 404, 500, 502, 504] },
@@ -14,6 +15,8 @@ const subscribedEndpoints = [
   { endpoint: '/api/audio/preview', responses: [403, 404, 500, 502, 504] },
   { endpoint: '/api/retentions', responses: [403, 422] },
   { endpoint: '/api/admin/users', responses: [409] },
+  //Regex for case ID
+  { endpoint: new RegExp(`/api/cases/${regexIdPlaceholder}/transcriptions`), responses: [403] },
 ];
 
 //Contains endpoints where errors will be ignored
@@ -76,9 +79,15 @@ export class ErrorMessageService {
 
   private isSubscribed(response: HttpErrorResponse) {
     return subscribedEndpoints.some((subscribed) => {
-      const endpointMatches = response.url?.includes(subscribed.endpoint);
-      const responseMatches = subscribed.responses.includes(response.status);
+      let endpointMatches = false;
 
+      if (typeof subscribed.endpoint === 'string') {
+        endpointMatches = response.url?.includes(subscribed.endpoint) ?? false;
+      } else if (subscribed.endpoint instanceof RegExp) {
+        endpointMatches = subscribed.endpoint.test(response.url || '');
+      }
+
+      const responseMatches = subscribed.responses.includes(response.status);
       return endpointMatches && responseMatches;
     });
   }

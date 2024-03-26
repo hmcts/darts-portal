@@ -43,7 +43,6 @@
       <app-tabs [default]="defaultTab">
         <div *tab="'Events and Audio'">
           <!-- Hearing Screen -->
-
           <h2 id="events-audio-heading" class="govuk-heading-m">Events and audio recordings</h2>
 
           <app-request-playback-audio
@@ -62,41 +61,43 @@
           ></app-events-and-audio>
         </div>
         <ng-container *ngIf="transcripts$ | async as transcripts">
-          <div *tab="'Transcripts'; count: transcripts.length; id: 'transcripts-tab'">
-            <div class="flex-space-between">
-              <h2 class="govuk-heading-m">Transcripts for this hearing</h2>
-              <button
-                class="govuk-button govuk-button--secondary"
-                data-module="govuk-button"
-                routerLink="./request-transcript"
-              >
-                Request a new transcript
-              </button>
-            </div>
+          @if (!userService.isTranslationQA()) {
+            <div *tab="'Transcripts'; count: transcripts.length; id: 'transcripts-tab'">
+              <div class="flex-space-between">
+                <h2 class="govuk-heading-m">Transcripts for this hearing</h2>
+                <button
+                  class="govuk-button govuk-button--secondary"
+                  data-module="govuk-button"
+                  routerLink="./request-transcript"
+                >
+                  Request a new transcript
+                </button>
+              </div>
 
-            <app-data-table
-              id="transcriptsTable"
-              [rows]="transcripts"
-              [columns]="transcriptColumns"
-              noDataMessage="There are no transcripts for this hearing."
-            >
-              <ng-template [tableRowTemplate]="transcripts" let-row>
-                <td class="govuk-table__cell">{{ row.type }}</td>
-                <td class="govuk-table__cell">{{ row.requestedOn | luxonDate: 'dd MMM yyyy HH:mm:ss' }}</td>
-                <td class="govuk-table__cell">{{ row.requestedBy }}</td>
-                <td class="govuk-table__cell">
-                  <strong class="govuk-tag" [ngClass]="statusTagStyleMap[row.status]">
-                    {{ row.status }}
-                  </strong>
-                </td>
-                <td class="govuk-table__cell">
-                  <a class="govuk-link" *ngIf="row.status === 'Complete'" [routerLink]="['transcripts', row.id]"
-                    >View</a
-                  >
-                </td>
-              </ng-template>
-            </app-data-table>
-          </div>
+              <app-data-table
+                id="transcriptsTable"
+                [rows]="transcripts"
+                [columns]="transcriptColumns"
+                noDataMessage="There are no transcripts for this hearing."
+              >
+                <ng-template [tableRowTemplate]="transcripts" let-row>
+                  <td class="govuk-table__cell">{{ row.type }}</td>
+                  <td class="govuk-table__cell">{{ row.requestedOn | luxonDate: 'dd MMM yyyy HH:mm:ss' }}</td>
+                  <td class="govuk-table__cell">{{ row.requestedBy }}</td>
+                  <td class="govuk-table__cell">
+                    <strong class="govuk-tag" [ngClass]="statusTagStyleMap[row.status]">
+                      {{ row.status }}
+                    </strong>
+                  </td>
+                  <td class="govuk-table__cell">
+                    <a class="govuk-link" *ngIf="row.status === 'Complete'" [routerLink]="['transcripts', row.id]"
+                      >View</a
+                    >
+                  </td>
+                </ng-template>
+              </app-data-table>
+            </div>
+          }
           @if (vm.annotations) {
             <div *tab="'Annotations'; id: 'annotations-tab'; count: vm.annotations.length">
               <div class="flex-space-between">
