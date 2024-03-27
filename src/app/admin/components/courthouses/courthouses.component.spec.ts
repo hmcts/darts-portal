@@ -46,7 +46,10 @@ describe('CourthousesComponent', () => {
       providers: [
         {
           provide: CourthouseService,
-          useValue: { searchCourthouses: jest.fn(), getCourthousesWithRegions: jest.fn().mockReturnValue(courthouses) },
+          useValue: {
+            searchCourthouses: jest.fn(),
+            getCourthousesWithRegions: jest.fn().mockReturnValue(courthouses),
+          },
         },
       ],
     }).compileComponents();

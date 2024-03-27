@@ -82,6 +82,30 @@ describe('CreateCourthouseComponent', () => {
     });
   });
 
+  it('onConfirmCourthouseDetails should call courthouseService.createCourthouse and navigate to admin/courthouses with no regionId', () => {
+    const router = TestBed.inject(Router);
+    const courthouse = { id: 1 } as unknown as CourthouseData;
+    jest.spyOn(courthouseService, 'createCourthouse').mockReturnValue(of(courthouse));
+    jest.spyOn(router, 'navigate');
+
+    component.formValues = {
+      courthouseName: 'COURTHOUSE',
+      displayName: 'Courthouse',
+      regionId: null,
+      securityGroupIds: [],
+    };
+    component.onConfirmCourthouseDetails();
+
+    expect(courthouseService.createCourthouse).toHaveBeenCalledWith({
+      courthouseName: 'COURTHOUSE',
+      displayName: 'Courthouse',
+      securityGroupIds: [],
+    });
+    expect(router.navigate).toHaveBeenCalledWith(['/admin/courthouses', courthouse.id], {
+      queryParams: { newCourthouse: true },
+    });
+  });
+
   it('onBack should set isConfirmation to false', () => {
     component.isConfirmation = true;
     component.onBack();

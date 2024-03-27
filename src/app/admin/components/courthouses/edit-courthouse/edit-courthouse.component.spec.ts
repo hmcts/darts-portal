@@ -133,6 +133,38 @@ describe('EditCourthouseComponent', () => {
     expect(router.navigate).toHaveBeenCalledWith(['/admin/courthouses', 1], { queryParams: { updated: true } });
   });
 
+  it('should save courthouse and navigate to updated courthouse page', () => {
+    component.courthouse = {
+      id: 1,
+      code: 0,
+      createdDateTime: DateTime.now(),
+      courthouseName: 'Test',
+      displayName: 'Courthouse',
+      regionId: 1,
+      securityGroupIds: [],
+      hasData: true,
+    } as Courthouse;
+    component.updateCourthouse = {
+      courthouseName: null,
+      displayName: 'Courthoos',
+      regionId: null,
+      securityGroupIds: [],
+    };
+
+    jest
+      .spyOn(component.courthouseService, 'updateCourthouse')
+      .mockReturnValue(of({ id: 1 } as unknown as CourthouseData));
+    jest.spyOn(router, 'navigate');
+
+    component.saveCourthouse();
+
+    expect(component.courthouseService.updateCourthouse).toHaveBeenCalledWith(1, {
+      displayName: 'Courthoos',
+      securityGroupIds: [],
+    });
+    expect(router.navigate).toHaveBeenCalledWith(['/admin/courthouses', 1], { queryParams: { updated: true } });
+  });
+
   it('should navigate to courthouse page on cancel', () => {
     component.courthouse = {
       id: 1,

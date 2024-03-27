@@ -128,6 +128,9 @@ describe('CreateUpdateCourthouseFormComponent', () => {
     it('Should change name to id radio style', () => {
       expect(component.formatNameToRadioId('Test ID')).toEqual('test-id-radio');
     });
+    it('Should provide "no-region" if undefined', () => {
+      expect(component.formatNameToRadioId(undefined)).toEqual('no-region-radio');
+    });
   });
 
   describe('#onCancel', () => {

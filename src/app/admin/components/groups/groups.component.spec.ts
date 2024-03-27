@@ -79,4 +79,42 @@ describe('GroupsComponent', () => {
     fixture.detectChanges();
     expect(component.loading$.value).toEqual(false);
   });
+
+  describe('private method - roleFilter', () => {
+    it('should return true if role found', () => {
+      expect(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (component as any).roleFilter('ROLE', {
+          role: { name: 'ROLE' },
+        })
+      ).toEqual(true);
+    });
+    it('should return false if role not found', () => {
+      expect(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (component as any).roleFilter('NOPE', {
+          role: { name: 'ROLE' },
+        })
+      ).toEqual(false);
+    });
+  });
+
+  describe('private method - searchFilter', () => {
+    it('should return true if group found', () => {
+      expect(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (component as any).searchFilter('ROLE', {
+          name: 'ROLE',
+        })
+      ).toEqual(true);
+    });
+    it('should return false if group not found', () => {
+      expect(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (component as any).searchFilter('NOPE', {
+          name: 'ROLE',
+        })
+      ).toEqual(false);
+    });
+  });
 });
