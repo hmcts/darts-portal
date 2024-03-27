@@ -60,6 +60,16 @@ describe('FiltersComponent', () => {
       ]);
     });
 
+    it("should add a value to empty selectedFilters array if it doesn't exist", () => {
+      component.selectedFilters = [];
+      const filter: Filter = { displayName: 'Filter 1', name: 'filter1', values: [], multiselect: true };
+      component.selectFilter(filter, 'value2');
+
+      expect(component.selectedFilters).toEqual([
+        { displayName: 'Filter 1', name: 'filter1', values: ['value2'], multiselect: true },
+      ]);
+    });
+
     it('should call selectSingle for an existing non-multiselect filter', () => {
       component.selectedFilters = [{ displayName: 'Filter 1', name: 'filter1', values: ['value1'] }];
       const filter: Filter = { displayName: 'Filter 1', name: 'filter1', values: [], multiselect: false };
@@ -67,6 +77,21 @@ describe('FiltersComponent', () => {
       component.selectFilter(filter, 'value2');
 
       expect(component.selectSingle).toHaveBeenCalledWith(0, 'filter1', 'value2');
+    });
+  });
+
+  describe('#emitFilters', () => {
+    it('should emit filterEvent if called', () => {
+      component.selectedFilters = [
+        {
+          displayName: 'DISPLAYNAME',
+          name: 'NAME',
+          values: ['TEST'],
+        },
+      ];
+      jest.spyOn(component.filterEvent, 'emit');
+      component.emitFilters();
+      expect(component.filterEvent.emit).toHaveBeenCalledWith(component.selectedFilters);
     });
   });
 
