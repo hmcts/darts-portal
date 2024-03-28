@@ -18,6 +18,7 @@ describe('CreateEditGroupComponent', () => {
           useValue: {
             getGroups: jest.fn().mockReturnValue(of([])),
             updateGroup: jest.fn().mockReturnValue(of({})),
+            createGroup: jest.fn().mockReturnValue(of({})),
           },
         },
       ],
