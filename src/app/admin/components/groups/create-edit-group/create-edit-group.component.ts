@@ -40,12 +40,11 @@ export class CreateEditGroupComponent implements OnInit {
       this.groupService.updateGroup(this.group.id, formValues).subscribe(() => {
         this.router.navigate(['admin/groups', this.group.id], { queryParams: { updated: true } });
       });
+    } else {
+      this.groupService.createGroup(formValues).subscribe(({ id }) => {
+        this.router.navigate(['admin/groups', id], { queryParams: { created: true } });
+      });
     }
-    // } else {
-    //   this.groupService.createGroup(formValues).subscribe(({ id }) => {
-    //     this.router.navigate(['admin/groups', id], { queryParams: { created: true } });
-    //   });
-    // }
   }
 
   cancel() {

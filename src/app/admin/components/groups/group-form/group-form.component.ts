@@ -62,7 +62,6 @@ export class GroupFormComponent implements OnInit {
 
   onSave() {
     this.form.markAllAsTouched();
-    console.log(this.form.valid);
     if (this.form.valid) {
       this.saveGroup.emit(this.form.value);
       return;
