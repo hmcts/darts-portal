@@ -1,0 +1,7 @@
+<h1 id="forbidden-heading" role="alert" class="govuk-heading-xl govuk-!-margin-bottom-8">
+  {{ header || 'You do not have permission to access this page' }}
+</h1>
+<p id="forbidden-body" class="govuk-body">
+  If you believe you should have permission,
+  <a href="mailto:{{ support?.emailAddress }}" class="govuk-link">contact {{ support?.name }}.</a>
+</p>

@@ -7,7 +7,7 @@ const validReason = 'REASONS';
 
 describe('Case retention screen as standard user', () => {
   beforeEach(() => {
-    cy.login();
+    cy.login('requestor-approver');
     cy.injectAxe();
   });
 
@@ -100,7 +100,7 @@ describe('Case retention screen as standard user', () => {
 
       // Fill in the reason box but don't fill in the date, should show error
       cy.get('#change-reason').type(validReason);
-      cy.get('#retention-option-date').click();
+      cy.get('#retention-option-date').click({ force: true });
       cy.get('#continue-button').click();
       cy.get('.govuk-error-summary').should(
         'contain',
@@ -130,11 +130,11 @@ describe('Case retention screen as standard user', () => {
       cy.get('.govuk-error-message').should('exist');
       cy.get('.govuk-error-summary').should(
         'contain',
-        'You do not have permission to reduce the current retention date. Please refer to the DARTS retention policy guidance'
+        'You do not have permission to reduce the current retention date.\r\nPlease refer to the DARTS retention policy guidance.'
       );
       cy.get('.govuk-error-message').should(
         'contain',
-        'You do not have permission to reduce the current retention date. Please refer to the DARTS retention policy guidance'
+        'You do not have permission to reduce the current retention date.\r\nPlease refer to the DARTS retention policy guidance.'
       );
 
       // Fill it in properly this time, error message should not appear
@@ -156,7 +156,7 @@ describe('Case retention screen as standard user', () => {
       cy.contains('C20220620001').click();
       cy.contains('View or change').click();
       cy.get('#change-retention-button').click();
-      cy.get('#retention-option-date').click();
+      cy.get('#retention-option-date').click({ force: true });
       cy.get('#retention-date').type(validDateObject.toFormat('dd/MM/yyyy'));
       cy.get('#change-reason').type(validReason);
       cy.get('#continue-button').click();
@@ -230,7 +230,7 @@ describe('Case retention screen as Judge', () => {
       // Fill in the reason box
       cy.get('#change-reason').type('Just want to change the date');
       // Select the date option
-      cy.get('#retention-option-date').click();
+      cy.get('#retention-option-date').click({ force: true });
 
       // Fill in a date that is lower than the current retention date
       cy.get('#retention-date').type('01/01/2024');
@@ -238,8 +238,8 @@ describe('Case retention screen as Judge', () => {
       // Specific error message just for Admins and Judges will be shown
       cy.get('.govuk-error-summary').should('exist');
       cy.get('.govuk-error-message').should('exist');
-      cy.get('.govuk-error-summary').should('contain', 'You cannot set retention date earlier than 15/09/2030');
-      cy.get('.govuk-error-message').should('contain', 'You cannot set retention date earlier than 15/09/2030');
+      cy.get('.govuk-error-summary').should('contain', 'You cannot set retention date earlier than 15/12/2025');
+      cy.get('.govuk-error-message').should('contain', 'You cannot set retention date earlier than 15/12/2025');
 
       // Fill in a date later than the original retention date this time this time, error message should not appear
       cy.get('#retention-date').clear();

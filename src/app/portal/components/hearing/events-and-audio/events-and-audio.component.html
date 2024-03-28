@@ -1,0 +1,84 @@
+<ng-container *ngIf="!rows.length">
+  <h2 class="govuk-heading-m">There are no events or audio for this hearing</h2>
+</ng-container>
+<ng-container *ngIf="rows.length">
+  <fieldset class="govuk-fieldset" aria-describedby="changedName-hint">
+    <legend id="changedName-hint" class="govuk-hint">Select events to include in requests</legend>
+    <div class="govuk-radios govuk-radios--inline govuk-radios--small" data-module="govuk-radios">
+      <div class="govuk-radios__item">
+        <input
+          class="govuk-radios__input"
+          id="filterAll"
+          name="selectedOption"
+          type="radio"
+          value="all"
+          [formControl]="selectedOption"
+        />
+        <label class="govuk-label govuk-radios__label" for="filterAll"> Audio preview and events </label>
+      </div>
+      <div class="govuk-radios__item">
+        <input
+          class="govuk-radios__input"
+          id="filterEvents"
+          name="selectedOption"
+          type="radio"
+          value="events"
+          [formControl]="selectedOption"
+        />
+        <label class="govuk-label govuk-radios__label" for="filterEvents"> Events only </label>
+      </div>
+    </div>
+  </fieldset>
+
+  <app-data-table
+    id="eventAudioTable"
+    [rows]="filteredRows"
+    [columns]="columns"
+    [rowSelectable]="true"
+    (rowSelect)="onRowSelect($event)"
+  >
+    <ng-template [tableRowTemplate]="filteredRows" let-row let-index>
+      <ng-container *ngIf="row.type === 'audio'">
+        <td class="govuk-table__cell audio-row">
+          <div>{{ row.timestamp | date: 'HH:mm:ss' }} - {{ row.media_end_timestamp | date: 'HH:mm:ss' }}</div>
+        </td>
+        <td class="govuk-table__cell">Audio recording</td>
+        <td class="govuk-table__cell">
+          @if (isAudioInPreview(row.id)) {
+            @if (row.audioIsReady$ | async; as audioCode) {
+              @if (audioCode === 202) {
+                <div class="loading govuk-hint">Loading preview</div>
+              } @else {
+                <app-audio-player
+                  [id]="row.id"
+                  [audioSource]="audioPreviewPath + row.id"
+                  [autoplay]="true"
+                  (play)="onAudioPlay(row.id)"
+                  [statusCode]="audioCode"
+                />
+              }
+            } @else {
+              <div class="loading govuk-hint">Loading preview</div>
+            }
+          } @else if (!row.is_available) {
+            <p class="govuk-hint">This audio is not currently available in DARTS, please try again later.</p>
+          } @else if (row.is_archived) {
+            <p class="govuk-hint">Audio archived. Preview not available.</p>
+          } @else {
+            <a
+              class="govuk-link"
+              data-cy="preview-link-button"
+              (click)="($event.preventDefault); onPreviewAudio(row.id)"
+              >Play preview</a
+            >
+          }
+        </td>
+      </ng-container>
+      <ng-container *ngIf="row.type === 'event'">
+        <td class="govuk-table__cell">{{ row.timestamp | date: 'HH:mm:ss' }}</td>
+        <td class="govuk-table__cell">{{ row.name }}</td>
+        <td class="govuk-table__cell">{{ row.text }}</td>
+      </ng-container>
+    </ng-template>
+  </app-data-table>
+</ng-container>

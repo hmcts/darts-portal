@@ -1,0 +1,27 @@
+<app-validation-error-summary [errors]="errors" />
+
+<app-govuk-heading caption="Edit user record">
+  @if (showEmailChangeConfirmation) {
+    Are you sure you want to change this user’s email address?
+  } @else {
+    {{ user.fullName }}
+  }
+</app-govuk-heading>
+
+<app-create-update-user-form
+  [updateUser]="{ fullName: user.fullName, email: user.emailAddress, description: user.description }"
+  (submitForm)="onSubmit($event)"
+  (errors)="errors = $event"
+  (cancel)="onCancel()"
+  [hidden]="!!showEmailChangeConfirmation"
+/>
+
+@if (showEmailChangeConfirmation) {
+  <app-edit-email-confirmation
+    [newEmail]="updatedUser.email!"
+    [oldEmail]="user.emailAddress"
+    (confirm)="saveUser()"
+    (cancel)="onCancel()"
+    (errors)="errors = $event"
+  />
+}

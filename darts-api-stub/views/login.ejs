@@ -52,17 +52,17 @@
             </tr>
           </thead>
           <tbody class="govuk-table__body">
-            <% for(let i=0; i < stubUsers.length; i++) { %>
+            <% for(let i=0; i < activeUsers.length; i++) { %>
               <tr class="govuk-table__row">
                 <td scope="row" class="govuk-table__cell">
-                  <div><strong><%=stubUsers[i].name%></strong></div>
-                  <div class="govuk-body-s"><%=stubUsers[i].userState.userName%></div>
+                  <div><strong><%=activeUsers[i].name%></strong></div>
+                  <div class="govuk-body-s"><%=activeUsers[i].userState.userName%></div>
                 </td>
-                <td class="govuk-table__cell"><%- stubUsers[i].userState.roles.map((r) => `<strong class="govuk-tag">${r.roleName}</strong>`).join('') %></td>
+                <td class="govuk-table__cell"><%- activeUsers[i].userState.roles.map((r) => `<strong class="govuk-tag">${r.roleName}</strong>`).join('') %></td>
                 <td class="govuk-table__cell">
-                  <form name="<%=stubUsers[i].code%>" method="post" action="<%=callbackUrl%>">
-                    <input type="hidden" name="code" value="<%=stubUsers[i].code%>" />
-                    <a id="login-<%=stubUsers[i].code%>" href="#" class="govuk-link govuk-link--no-visited-state" onclick="document.forms['<%=stubUsers[i].code%>'].submit()">Login</a>
+                  <form name="<%=activeUsers[i].code%>" method="post" action="<%=callbackUrl%>">
+                    <input type="hidden" name="code" value="<%=activeUsers[i].code%>" />
+                    <a id="login-<%=activeUsers[i].code%>" href="#" class="govuk-link govuk-link--no-visited-state" onclick="document.forms['<%=activeUsers[i].code%>'].submit()">Login</a>
                   </form>
                 </td>
               </tr>

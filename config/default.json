@@ -11,7 +11,8 @@
   },
   "session": {
     "prefix": "darts-portal-session",
-    "ttlInSeconds": 1200
+    "ttlInSeconds": 1200,
+    "cookieName": "darts_session"
   },
   "support": {
     "name": "Crown IT Support",

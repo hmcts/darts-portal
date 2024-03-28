@@ -44,9 +44,9 @@ describe('Case search', () => {
     cy.contains('Advanced search').click();
     cy.get('#courthouse');
     cy.get('#courtroom');
-    cy.get('#specific-date-radio').click();
+    cy.get('#specific-date-radio').click({ force: true });
     cy.get('#specific_date');
-    cy.get('#date-range-radio').click();
+    cy.get('#date-range-radio').click({ force: true });
     cy.get('#date_from');
     cy.get('#date_to');
     cy.get('#defendant');
@@ -81,7 +81,7 @@ describe('Case search', () => {
     cy.get('a').contains('Clear search').click();
 
     // specific date invalid
-    cy.get('#specific-date-radio').click();
+    cy.get('#specific-date-radio').click({ force: true });
     cy.get('#specific_date').type('blah');
     cy.get('button').contains('Search').click();
     cy.get('#specific_date-errors').should('contain', DATE_INVALID);
@@ -89,7 +89,7 @@ describe('Case search', () => {
     cy.get('a').contains('Clear search').click();
 
     // specific date in future
-    cy.get('#specific-date-radio').click();
+    cy.get('#specific-date-radio').click({ force: true });
     cy.get('#specific_date').type(TOMORROW);
     cy.get('button').contains('Search').click();
     cy.get('#specific_date-errors').should('contain', DATE_FUTURE);
@@ -97,7 +97,7 @@ describe('Case search', () => {
     cy.get('a').contains('Clear search').click();
 
     // date range from date invalid
-    cy.get('#date-range-radio').click();
+    cy.get('#date-range-radio').click({ force: true });
     cy.get('#date_from').type('blah');
     cy.get('button').contains('Search').click();
     cy.get('#date_from-errors').should('contain', DATE_INVALID);
@@ -111,7 +111,7 @@ describe('Case search', () => {
     cy.get('a').contains('Clear search').click();
 
     // date range from date in future
-    cy.get('#date-range-radio').click();
+    cy.get('#date-range-radio').click({ force: true });
     cy.get('#date_from').type(TOMORROW);
     cy.get('button').contains('Search').click();
     cy.get('#date_from-errors').should('contain', DATE_FUTURE);
@@ -119,7 +119,7 @@ describe('Case search', () => {
     cy.get('a').contains('Clear search').click();
 
     // date range to date invalid
-    cy.get('#date-range-radio').click();
+    cy.get('#date-range-radio').click({ force: true });
     cy.get('#date_to').type('blah');
     cy.get('button').contains('Search').click();
     cy.get('#date_to-errors').should('contain', DATE_INVALID);
@@ -129,7 +129,7 @@ describe('Case search', () => {
     cy.get('a').contains('Clear search').click();
 
     // date range to date in future
-    cy.get('#date-range-radio').click();
+    cy.get('#date-range-radio').click({ force: true });
     cy.get('#date_to').type(TOMORROW);
     cy.get('button').contains('Search').click();
     cy.get('#date_to-errors').should('contain', DATE_FUTURE);
@@ -163,7 +163,7 @@ describe('Case search', () => {
     cy.get('#case_number').type('C20220620001');
     cy.get('#courthouse').type('Cardiff');
     cy.get('#courtroom').type('2');
-    cy.get('#specific-date-radio').click();
+    cy.get('#specific-date-radio').click({ force: true });
     cy.get('#specific_date').type('03/07/2021');
     cy.get('#defendant').type('Dean');
     cy.get('#judge').type('Judge Dredd');

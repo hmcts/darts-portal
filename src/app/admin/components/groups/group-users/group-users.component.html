@@ -1,0 +1,45 @@
+<app-govuk-heading tag="h2" size="m">Users</app-govuk-heading>
+
+<div class="govuk-form-group flex" [class.govuk-form-group--error]="this.invalidUserSubmitted">
+  <app-auto-complete
+    dataType="users"
+    label="Search for a user"
+    [data]="autoCompleteUsers"
+    [isInvalid]="this.invalidUserSubmitted"
+    [errors]="['Select a user']"
+    [showAllValues]="true"
+    (dataSelect)="onUserSelect($event)"
+  ></app-auto-complete>
+
+  <button id="add-user-button" class="govuk-button" (click)="onAddUserToCourthouse()" type="button">Add user</button>
+</div>
+
+@if (groupUsers.length) {
+  <button
+    id="remove-users-button"
+    class="govuk-button govuk-button--secondary"
+    (click)="onRemoveUsersButtonClicked()"
+    type="button"
+  >
+    Remove users
+  </button>
+
+  <p class="govuk-body">{{ usersToRemove.length }} of {{ groupUsers.length }} selected</p>
+}
+
+<app-data-table
+  id="group-users-table"
+  [rows]="groupUsers"
+  [columns]="tableColumns"
+  [rowSelectable]="true"
+  [pagination]="true"
+  [(selectedRows)]="usersToRemove"
+  noDataMessage="There are no users assigned to this group."
+>
+  <ng-template let-row [tableRowTemplate]="groupUsers">
+    <td class="govuk-table__cell">{{ row.fullName }}</td>
+    <td class="govuk-table__cell">{{ row.emailAddress }}</td>
+    <td class="govuk-table__cell">{{ row.lastLoginAt | luxonDate: 'dd/MM/yy hh:mm' }}</td>
+    <td class="govuk-table__cell">{{ row.active ? 'Active' : 'Inactive' }}</td>
+  </ng-template>
+</app-data-table>

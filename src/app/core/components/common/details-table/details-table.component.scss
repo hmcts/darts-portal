@@ -1,0 +1,34 @@
+.govuk-table__body {
+  border-top: 2px solid #000;
+}
+
+table.govuk-table {
+  max-width: 60%;
+  & > th {
+    text-align: right;
+  }
+}
+
+.margin-top-10 {
+  margin-top: 10px;
+}
+
+.govuk-table__cell.table-width {
+  width: 486.67px;
+}
+
+caption {
+  display: inline-block;
+}
+
+.govuk-table__cell {
+  white-space: pre-line;
+}
+
+a {
+  white-space: pre;
+}
+
+.details-header {
+  text-align: right;
+}

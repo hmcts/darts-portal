@@ -8,7 +8,7 @@ const app = express();
 
 // specify this if you want to overwrite the entire DARTS API URL to proxy to
 const proxyToApi = process.env.PROXY_TO_API_URL;
-const port = 4551;
+const port = 4545;
 const defaultApiPort = 4550;
 
 app.set('view engine', 'ejs');
@@ -36,6 +36,16 @@ app.use('/hearings', require('./hearings/hearings'));
 app.use('/transcriptions', require('./transcriptions/transcriptions'));
 // audio APIs
 app.use('/audio', require('./audios'));
+// annotation APIs
+app.use('/annotations', require('./annotations/annotations'));
+// ADMIN APIs
+app.use('/admin/users', require('./admin/users/users'));
+app.use('/admin/courthouses', require('./admin/courthouses/courthouses'));
+app.use('/admin/regions', require('./admin/regions/regions'));
+app.use('/admin/security-groups', require('./admin/security-groups/security-groups').router);
+app.use('/admin/security-roles', require('./admin/security-roles/security-roles'));
+app.use('/admin/retention-policy-types', require('./admin/retention-policies/retention-policies'));
+
 // proxy non-stubbed routes to the actual API
 app.use(
   createProxyMiddleware({

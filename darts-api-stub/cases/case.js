@@ -1,6 +1,28 @@
 const express = require('express');
 
 const router = express.Router();
+const { localArray } = require('../localArray');
+const { getLatestDatefromKey } = require('../utils/date');
+
+const resBody104 = {
+  type: 'CASE_104',
+  title: 'The requested case cannot be found',
+  status: 404,
+};
+
+const getLatestRetentionDate = (caseId) => {
+  const retentionHistory = localArray('retentionHistory');
+  const rows = retentionHistory.value.filter((history) => history.case_id === parseInt(caseId));
+  const latest = getLatestDatefromKey(rows, 'retention_last_changed_date');
+  return latest?.retention_date;
+};
+
+const getLatestRetentionChange = (caseId) => {
+  const retentionHistory = localArray('retentionHistory');
+  const rows = retentionHistory.value.filter((history) => history.case_id === parseInt(caseId));
+  const latest = getLatestDatefromKey(rows, 'retention_last_changed_date');
+  return latest?.retention_last_changed_date;
+};
 
 // CASES Mock objects
 const singleCase = {
@@ -11,11 +33,10 @@ const singleCase = {
   judges: ['Judge Judy'],
   prosecutors: ['Polly Prosecutor'],
   defenders: ['Derek Defender'],
-  retain_until_date_time: '2030-09-15T11:23:24.858Z',
+  retain_until_date_time: getLatestRetentionDate(1),
   case_closed_date_time: '2023-08-15T14:57:24.858Z',
-  retention_date_time_applied: '2023-12-12T11:02:24.858Z',
+  retention_date_time_applied: getLatestRetentionChange(1),
   retention_policy_applied: 'Manual',
-  reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
   reporting_restrictions: [
     {
       hearing_id: 1,
@@ -67,8 +88,9 @@ const singleCaseTwo = {
   defenders: ['Derek Defender'],
 };
 
-const singleCaseHearings = [
+const defaultCaseHearings = [
   {
+    case_id: 2,
     id: 2,
     date: '2023-09-01',
     judges: ['Bob Ross'],
@@ -76,16 +98,15 @@ const singleCaseHearings = [
     transcript_count: 0,
   },
   {
+    case_id: 2,
     id: 2,
     date: '2023-03-01',
     judges: ['Defender Dave'],
     courtroom: '2',
     transcript_count: 2,
   },
-];
-
-const singleCaseMultiHearings = [
   {
+    case_id: 1,
     id: 1,
     date: '2023-09-01',
     judges: ['HHJ M. Hussain KC'],
@@ -93,6 +114,7 @@ const singleCaseMultiHearings = [
     transcript_count: 1,
   },
   {
+    case_id: 1,
     id: 2,
     date: '2023-10-10',
     courtroom: '4',
@@ -100,6 +122,7 @@ const singleCaseMultiHearings = [
     transcript_count: 2,
   },
   {
+    case_id: 1,
     id: 3,
     date: '2023-10-11',
     courtroom: '9',
@@ -107,6 +130,7 @@ const singleCaseMultiHearings = [
     transcript_count: 3,
   },
   {
+    case_id: 1,
     id: 4,
     date: '2023-12-01',
     courtroom: '9',
@@ -114,6 +138,7 @@ const singleCaseMultiHearings = [
     transcript_count: 50,
   },
   {
+    case_id: 1,
     id: 5,
     date: '2024-01-05',
     courtroom: '9',
@@ -121,6 +146,7 @@ const singleCaseMultiHearings = [
     transcript_count: 53,
   },
   {
+    case_id: 1,
     id: 6,
     date: '2024-03-10',
     courtroom: '11',
@@ -481,6 +507,86 @@ const transcriptTwo = [
   },
 ];
 
+const defaultAnnotations = [
+  {
+    case_id: 1,
+    annotation_id: 2,
+    hearing_id: 3,
+    hearing_date: '2023-10-11',
+    annotation_ts: '2023-10-06T12:00:00.000Z',
+    annotation_text: 'A summary notes of this annotation...',
+    annotation_documents: [
+      {
+        annotation_document_id: 1,
+        file_name: 'Annotation.doc',
+        file_type: 'DOC',
+        uploaded_by: 'Mr User McUserFace',
+        uploaded_ts: '2023-12-15T12:00:00.000Z',
+      },
+    ],
+  },
+  {
+    case_id: 1,
+    annotation_id: 3,
+    hearing_id: 4,
+    hearing_date: '2023-12-01',
+    annotation_ts: '2023-12-16T12:00:00.000Z',
+    annotation_text: 'A summary note of this annotation...',
+    annotation_documents: [
+      {
+        annotation_document_id: 4,
+        file_name: 'AnnotationBeta.doc',
+        file_type: 'DOCX',
+        uploaded_by: 'Mrs Jane Ince',
+        uploaded_ts: '2024-01-16T12:00:00.000Z',
+      },
+    ],
+  },
+  {
+    case_id: 2,
+    annotation_id: 1,
+    hearing_id: 2,
+    hearing_date: '2023-09-01',
+    annotation_ts: '2023-12-15T12:00:00.000Z',
+    annotation_text: 'A summary notes of this annotation...',
+    annotation_documents: [
+      {
+        annotation_document_id: 1,
+        file_name: 'Annotation.doc',
+        file_type: 'DOC',
+        uploaded_by: 'Mr User McUserFace',
+        uploaded_ts: '2023-12-15T12:00:00.000Z',
+      },
+    ],
+  },
+];
+
+const hearings = localArray('hearings');
+// Clear out old values on restart
+hearings.value = defaultCaseHearings;
+
+const getHearingsByCaseId = (caseId) => {
+  const filteredHearings = hearings.value.filter((hearing) => hearing.case_id === parseInt(caseId));
+  return filteredHearings.map((record) => {
+    // Remove case_id key
+    const { case_id, ...filteredHearing } = record;
+    return filteredHearing;
+  });
+};
+
+const annotations = localArray('annotations');
+// Clear out old values on restart
+annotations.value = defaultAnnotations;
+
+const getAnnotationsByCaseId = (caseId) => {
+  const filteredAnnotations = annotations.value.filter((annotation) => annotation.case_id === parseInt(caseId));
+  // Remove case_id key
+  return filteredAnnotations.map((record) => {
+    const { case_id, ...filteredAnnotation } = record;
+    return filteredAnnotation;
+  });
+};
+
 // Advanced search stub API
 router.post('/search', (req, res) => {
   const searchTerms = req.body;
@@ -539,6 +645,8 @@ router.post('/search', (req, res) => {
 // Simple search
 router.get('/:caseId', (req, res) => {
   singleCase.case_id = req.params.caseId;
+  singleCase.retain_until_date_time = getLatestRetentionDate(singleCase.case_id);
+  singleCase.retention_date_time_applied = getLatestRetentionChange(singleCase.case_id);
 
   switch (req.params.caseId) {
     // this is returned by the API when a non-integer is passed as the case ID
@@ -558,11 +666,6 @@ router.get('/:caseId', (req, res) => {
       res.status(403).send(resBodyAuth100);
       break;
     case '404':
-      const resBody104 = {
-        type: 'CASE_104',
-        title: 'The requested case cannot be found',
-        status: 404,
-      };
       res.status(404).send(resBody104);
       break;
     case '500':
@@ -581,14 +684,11 @@ router.get('/:caseId', (req, res) => {
 // transcripts stub data
 router.get('/:caseId/transcripts', (req, res) => {
   singleCase.case_id = req.params.caseId;
+  singleCase.retain_until_date_time = getLatestRetentionDate(singleCase.case_id);
+  singleCase.retention_date_time_applied = getLatestRetentionChange(singleCase.case_id);
 
   switch (req.params.caseId) {
     case '404':
-      const resBody104 = {
-        type: 'CASE_104',
-        title: 'The requested case cannot be found',
-        status: 404,
-      };
       res.status(404).send(resBody104);
       break;
     case '1':
@@ -603,20 +703,36 @@ router.get('/:caseId/transcripts', (req, res) => {
 // CASES STUB APIs
 // hearings
 router.get('/:caseId/hearings', (req, res) => {
-  switch (req.params.caseId) {
+  const caseId = req.params?.caseId;
+  switch (caseId) {
+    case undefined:
     case '404':
-      const resBody104 = {
-        type: 'CASE_104',
-        title: 'The requested case cannot be found',
-        status: 404,
-      };
       res.status(404).send(resBody104);
       break;
     case '2':
-      res.send(singleCaseHearings);
+      res.send(getHearingsByCaseId(caseId));
       break;
     default:
-      res.send(singleCaseMultiHearings);
+      // Just leaving this as 1 at the moment to replicate
+      // existing data, for potential future expansion
+      const caseHearings = getHearingsByCaseId(1);
+      res.send(caseHearings);
+      break;
+  }
+});
+
+// CASES STUB APIs
+// annotations stub
+router.get('/:caseId/annotations', (req, res) => {
+  const caseId = req.params?.caseId;
+  switch (caseId) {
+    case undefined:
+    case '404':
+      res.status(404).send(resBody104);
+      break;
+    default:
+      const annotations = getAnnotationsByCaseId(caseId);
+      res.send(annotations);
       break;
   }
 });

@@ -1,0 +1,56 @@
+<h2 class="govuk-heading-m">Events, audio and specific times requests</h2>
+<p class="govuk-body">Select events or specify start and end times to request a transcript.</p>
+<p class="govuk-body">Specific times requests cover all events and audio between the transcript start and end time.</p>
+
+<hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
+
+<h2 class="govuk-heading-m">Audio list</h2>
+<app-data-table id="audio-table" [rows]="audioRows" [columns]="audioColumns" [pagination]="true" [pageLimit]="15">
+  <ng-template [tableRowTemplate]="audioRows" let-row>
+    <td class="govuk-table__cell">{{ row.media_start_timestamp | date: 'HH:mm:ss' }}</td>
+    <td class="govuk-table__cell">{{ row.media_end_timestamp | date: 'HH:mm:ss' }}</td>
+    <td class="govuk-table__cell">{{ row.name }}</td>
+  </ng-template>
+</app-data-table>
+
+<hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
+<form [formGroup]="form">
+  <div class="govuk-form-group" [class.govuk-form-group--error]="isSubmitted && fieldHasError('start-hour-input')">
+    <label class="govuk-label" for="start-hour-input">Start time</label>
+    <p *ngIf="isSubmitted && fieldHasError('start-hour-input')" id="start-time-error" class="govuk-error-message">
+      <span class="govuk-visually-hidden">Error:</span> {{ getValidationMessage('start-hour-input') }}
+    </p>
+    <app-time-input formGroupName="startTime" idStringPrepend="start" [isSubmitted]="isSubmitted"></app-time-input>
+  </div>
+  <div class="govuk-form-group" [class.govuk-form-group--error]="isSubmitted && fieldHasError('end-hour-input')">
+    <label class="govuk-label" for="end-hour-input">End time</label>
+    <p *ngIf="isSubmitted && fieldHasError('end-hour-input')" id="end-time-error" class="govuk-error-message">
+      <span class="govuk-visually-hidden">Error:</span> {{ getValidationMessage('end-hour-input') }}
+    </p>
+    <app-time-input formGroupName="endTime" idStringPrepend="end" [isSubmitted]="isSubmitted"></app-time-input>
+  </div>
+</form>
+
+<hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
+
+<app-data-table
+  #eventTable
+  id="event-table"
+  [rows]="events"
+  [columns]="eventColumns"
+  [pagination]="true"
+  [rowSelectable]="true"
+  (rowSelect)="onEventRowSelected($event)"
+  [pageLimit]="15"
+>
+  <ng-template [tableRowTemplate]="events" let-row>
+    <td class="govuk-table__cell">{{ row.timestamp | date: 'HH:mm:ss' }}</td>
+    <td class="govuk-table__cell">{{ row.name }}</td>
+    <td class="govuk-table__cell">{{ row.text }}</td>
+  </ng-template>
+</app-data-table>
+
+<div class="govuk-button-group">
+  <button class="govuk-button" data-module="govuk-button" (click)="onContinue()">Continue</button>
+  <a class="govuk-link" href="#" (click)="$event.preventDefault(); onCancel()">Cancel</a>
+</div>

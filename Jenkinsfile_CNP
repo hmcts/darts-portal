@@ -29,12 +29,30 @@ withPipeline(type, product, component) {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/screenshots/**/*'
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/videos/**/*'
+
+    publishHTML target: [
+      allowMissing         : true,
+      alwaysLinkToLastBuild: true,
+      keepAll              : true,
+      reportDir            : "functional-output/functional",
+      reportFiles          : "functional-test-result.html",
+      reportName           : "Functional Test Report"
+    ]
   }
 
   afterAlways('functionalTest:stg') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/screenshots/**/*'
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/videos/**/*'
+
+    publishHTML target: [
+      allowMissing         : true,
+      alwaysLinkToLastBuild: true,
+      keepAll              : true,
+      reportDir            : "functional-output/functional",
+      reportFiles          : "functional-test-result.html",
+      reportName           : "Functional Test Report"
+    ]
   }
 
   syncBranchesWithMaster(branchesToSync)

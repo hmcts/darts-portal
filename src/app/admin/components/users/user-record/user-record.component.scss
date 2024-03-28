@@ -1,0 +1,41 @@
+.edit-button {
+  margin-right: 15px;
+}
+
+.user-record-tags {
+  margin-bottom: 20px;
+}
+
+.user-record-tags strong {
+  margin-right: 15px;
+}
+
+.selected-group-count {
+  margin-bottom: 0;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.user-record-dates-container {
+  border-top: 4px solid #1d70b8;
+  background-color: #f3f2f1;
+  height: 80px;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+}
+
+.user-record-dates-container h3 {
+  padding-top: 20px;
+  margin-bottom: 0;
+}
+
+.user-record-dates-container div {
+  flex: 1;
+  min-width: 0;
+  padding: 0 20px;
+  max-width: 200px;
+}

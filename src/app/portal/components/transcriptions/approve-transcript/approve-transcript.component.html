@@ -1,0 +1,34 @@
+@if (vm$ | async; as vm) {
+  <app-breadcrumb>
+    <ng-container *breadcrumb="['../../']">Your transcripts</ng-container>
+    <ng-container *breadcrumb="['.']">{{ transcriptId }}</ng-container>
+  </app-breadcrumb>
+
+  <ng-container *ngIf="error$ | async as error; else approval">
+    <app-conflict
+      header="This request is no longer available"
+      body="Another user may have already actioned this request."
+      [link]="{ href: '/transcriptions', text: 'Return to your transcripts' }"
+    ></app-conflict>
+  </ng-container>
+  <ng-template #approval>
+    <app-validation-error-summary
+      *ngIf="approvalErrors.length"
+      [errors]="approvalErrors"
+    ></app-validation-error-summary>
+
+    <app-reporting-restriction
+      class="margin-bottom"
+      [restrictions]="vm.reportingRestrictions"
+      [hearingId]="vm.hearingId"
+    ></app-reporting-restriction>
+
+    <app-govuk-heading>Approve transcript request</app-govuk-heading>
+
+    <app-details-table title="Case details" [details]="vm.caseDetails"></app-details-table>
+
+    <app-details-table title="Request details" [details]="vm.requestDetails"></app-details-table>
+
+    <app-approve-transcript-buttons (errors)="handleRejectError($event)"></app-approve-transcript-buttons>
+  </ng-template>
+}

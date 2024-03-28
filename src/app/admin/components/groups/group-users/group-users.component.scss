@@ -1,0 +1,16 @@
+.flex {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+#add-user-button {
+  margin-bottom: 0px;
+  margin-top: 30px;
+}
+
+.govuk-form-group--error {
+  #add-user-button {
+    margin-top: 68px;
+  }
+}

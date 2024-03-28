@@ -1,0 +1,35 @@
+@if (statusCode === 403) {
+  <p class="govuk-body govuk-hint" id="permission-error">
+    You do not have permission to preview. If you believe you should have permission
+    <a href="mailto:{{ support?.emailAddress }}" class="govuk-link">contact {{ support?.name }}</a>
+  </p>
+}
+@if (statusCode === 404) {
+  <p class="govuk-body govuk-hint" id="not-found-error">Preview not found</p>
+}
+@if (statusCode >= 500) {
+  <p class="govuk-body govuk-hint" id="error">
+    An error has occurred. Try again or
+    <a href="mailto:{{ support?.emailAddress }}" class="govuk-link">contact {{ support?.name }}</a> if the problem
+    persists
+  </p>
+}
+
+@if (statusCode === 200) {
+  <audio
+    #audioPlayer
+    controls
+    [autoplay]="autoplay"
+    [ngStyle]="{ display: !canPlay && preload ? 'none' : 'block' }"
+    (canplay)="canPlay = true"
+    (pause)="pause.emit()"
+    (play)="play.emit()"
+    (timeupdate)="onTimeUpdate()"
+  >
+    <source type="audio/mpeg" [src]="audioSource" />
+  </audio>
+
+  @if (!canPlay && preload) {
+    <p class="govuk-body govuk-hint" id="loading">Loading audio... Please wait</p>
+  }
+}

@@ -1,0 +1,13 @@
+<div class="space-between">
+  <app-govuk-heading>Courthouses</app-govuk-heading>
+  <button class="govuk-button govuk-button--secondary" (click)="router.navigate(['admin/courthouses/create'])">
+    Create new courthouse
+  </button>
+</div>
+<app-govuk-heading tag="h2" size="m">Search for courthouse</app-govuk-heading>
+
+<app-courthouse-search-form (submitForm)="onSubmit($event)" (clear)="onClear()"></app-courthouse-search-form>
+
+@if (results$ | async; as results) {
+  <app-courthouse-search-results [results]="results" [show]="(isSubmitted$ | async) ?? false" />
+}

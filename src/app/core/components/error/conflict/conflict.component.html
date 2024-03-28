@@ -1,0 +1,7 @@
+<app-govuk-heading ariaRole="alert"> {{ header || 'This request is no longer available' }}</app-govuk-heading>
+<p id="conflict-body" class="govuk-body" role="alert">
+  {{ body || 'Another user may have already actioned this request.' }}
+</p>
+<a [routerLink]="[link?.href || '/transcriptions']" id="return-link" class="govuk-link">{{
+  link?.text || 'Return to your transcripts'
+}}</a>

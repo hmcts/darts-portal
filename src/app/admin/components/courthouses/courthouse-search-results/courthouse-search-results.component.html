@@ -1,0 +1,22 @@
+<!-- Results -->
+@if (show) {
+  <div id="search-results">
+    <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
+    @if (!results.length) {
+      <h2 class="govuk-heading-m">No search results</h2>
+      <p class="govuk-body">
+        No courthouses can be found with the search details provided. Review your search criteria and try again.
+      </p>
+    } @else {
+      <app-data-table [rows]="results" [columns]="columns" [caption]="caption" [sortAndPaginateOnRowsChanged]="false">
+        <ng-template [tableRowTemplate]="results" let-row>
+          <td class="govuk-table__cell">
+            <a class="govuk-link" [href]="'/admin/courthouses/' + row.id">{{ row.courthouseName }}</a>
+          </td>
+          <td class="govuk-table__cell">{{ row.displayName }}</td>
+          <td class="govuk-table__cell">{{ row.region?.name }}</td>
+        </ng-template>
+      </app-data-table>
+    }
+  </div>
+}

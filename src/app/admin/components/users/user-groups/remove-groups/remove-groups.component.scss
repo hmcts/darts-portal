@@ -1,0 +1,26 @@
+:host {
+  display: block;
+  width: 66%;
+}
+
+.group-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-bottom: 1px solid #b1b4b6;
+
+  &:first-of-type {
+    border-top: 1px solid #b1b4b6;
+  }
+
+  p {
+    margin: 1rem 0;
+    &:first-of-type {
+      width: 50%;
+    }
+  }
+}
+
+.govuk-button-group {
+  margin-top: 2rem;
+}

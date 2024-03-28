@@ -1,0 +1,65 @@
+@if (courthouse$ | async; as courthouse) {
+  @if (isNewCourthouse$ | async) {
+    <app-govuk-banner type="success">
+      {{ 'Created ' + courthouse.displayName }}
+    </app-govuk-banner>
+  }
+  @if (isUpdatedCourthouse$ | async) {
+    <app-govuk-banner type="success">
+      {{ courthouse.displayName + ' updated' }}
+    </app-govuk-banner>
+  }
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper">
+      <div class="govuk-grid-row">
+        <div class="courthouse-record-tags govuk-grid-column-one-third">
+          <strong class="govuk-tag govuk-tag--purple"> Courthouse record </strong>
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-xl">{{ courthouse.displayName }}</h1>
+        </div>
+        <div class="govuk-grid-column-one-third">
+          <div class="button-container govuk-button-group">
+            <button
+              type="submit"
+              class="edit-button govuk-button govuk-button--secondary"
+              (click)="router.navigate(['admin/courthouses/edit', courthouse.id], { state: { courthouse } })"
+            >
+              Edit courthouse
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="courthouse-record-dates-container">
+        <div id="date-created-container">
+          <h3 class="govuk-heading-s">Date created</h3>
+          <p class="govuk-body">{{ courthouse.createdDateTime | luxonDate: 'EEE d MMM yyyy' }}</p>
+        </div>
+        <div id="last-updated-container">
+          <h3 class="govuk-heading-s">Last updated</h3>
+          <p class="govuk-body">{{ courthouse.lastModifiedDateTime | luxonDate: 'EEE d MMM yyyy' }}</p>
+        </div>
+      </div>
+
+      <app-tabs>
+        <div *tab="'Details'">
+          <app-details-table
+            title="Details"
+            [details]="{
+              'Database ID': courthouse.id,
+              'Courthouse name': courthouse.displayName,
+              Region: courthouse.region?.name,
+              Groups: formatSecurityGroupLinks(courthouse.securityGroups)
+            }"
+          ></app-details-table>
+        </div>
+
+        <div *tab="'Users'"></div>
+      </app-tabs>
+    </main>
+  </div>
+} @else {
+  <app-loading />
+}

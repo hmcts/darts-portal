@@ -1,0 +1,15 @@
+<app-govuk-heading caption="Reactivate user">
+  {{ user.fullName }}
+</app-govuk-heading>
+
+<p class="govuk-body">
+  Reactivating this user will give them access to DARTS. They will not be able to see any data until they are added to
+  at least one group.
+</p>
+
+<div class="govuk-button-group">
+  <button id="activate-button" class="govuk-button" type="button" (click)="activateUser()">Reactivate user</button>
+  <a id="cancel-button" class="govuk-link" href="javascript:void(0)" (click)="router.navigate(['admin/users', user.id])"
+    >Cancel</a
+  >
+</div>

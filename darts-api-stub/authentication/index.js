@@ -1,16 +1,18 @@
 const express = require('express');
-const stubUsers = require('../users');
+const { stubUsers } = require('../users');
 
 const router = express.Router();
+// Filter out only active users
+const activeUsers = stubUsers.filter((stubUser) => stubUser.active);
 
 router.get('/login-or-refresh', (_, res) => {
-  res.header('Location', 'http://localhost:4551/external-user/login');
+  res.header('Location', 'http://localhost:4545/external-user/login');
   res.status(302).send();
 });
 
 router.post('/handle-oauth-code', (req, res, next) => {
   const code = req.body.code;
-  const user = stubUsers.find((u) => u.code === code);
+  const user = activeUsers.find((u) => u.code === code);
   if (!user) {
     return next(`Could not find stub user for code ${code}`);
   }
@@ -24,12 +26,12 @@ router.post('/handle-oauth-code', (req, res, next) => {
 });
 
 router.get('/logout', (_, res) => {
-  res.header('Location', 'http://localhost:4551/external-user/handle-logout');
+  res.header('Location', 'http://localhost:4545/external-user/handle-logout');
   res.status(302).send();
 });
 
 router.get('/login', (_, res) => {
-  res.render('login', { callbackUrl: 'http://localhost:3000/auth/callback', stubUsers });
+  res.render('login', { callbackUrl: 'http://localhost:3000/auth/callback', activeUsers });
 });
 
 router.get('/handle-logout', (_, res) => {

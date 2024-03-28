@@ -1,0 +1,20 @@
+.assign-button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid black;
+  padding-bottom: 0.5rem;
+
+  button {
+    margin-bottom: 0;
+  }
+}
+
+.no-groups-message {
+  margin-top: 1rem;
+}
+
+#remove-groups-button {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
