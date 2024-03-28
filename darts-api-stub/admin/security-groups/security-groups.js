@@ -152,4 +152,18 @@ router.get('/', (req, res) => {
   res.send(securityGroups.value);
 });
 
+router.post('/', (req, res) => {
+  const group = req.body;
+  Object.assign(securityGroups, group);
+  res.send({
+    id: 12,
+    security_role_id: 4,
+    global_access: true,
+    display_state: true,
+    name: "LEEDS_DMP3812",
+    display_name: "LEEDS_DMP3812",
+    description: "Test"
+  }).status(201);
+});
+
 module.exports = { router, defaultSecurityGroups };

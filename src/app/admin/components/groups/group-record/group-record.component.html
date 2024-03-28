@@ -6,6 +6,10 @@
   <app-govuk-banner type="success">Group details updated</app-govuk-banner>
 }
 
+@if (hasCreatedGroup$ | async) {
+  <app-govuk-banner type="success">Group created</app-govuk-banner>
+}
+
 @if (vm$ | async; as vm) {
   <div class="heading-button-container">
     <app-govuk-heading caption="View group">Group details</app-govuk-heading>

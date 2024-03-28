@@ -86,7 +86,6 @@ export class GroupsService {
         name: formValues.name,
         display_name: formValues.name,
         description: formValues.description,
-        security_role_id: formValues.role, // need to grab the id from the role object
       })
       .pipe(map(this.mapGroupDataToGroup));
   }
