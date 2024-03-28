@@ -156,17 +156,43 @@ describe('CaseService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('#getCourthouses', () => {
-    const mockCourthouses: CourthouseData[] = [];
+  describe('#getCourthouses', () => {
+    it('should get courthouses', () => {
+      const mockCourthouses: CourthouseData[] = [
+        {
+          id: 1,
+          courthouse_name: 'COURTHOUSENAME',
+          display_name: 'DISPLAYNAME',
+          code: 1,
+          created_date_time: '2024-01-01',
+          last_modified_date_time: 'string',
+          region_id: 1,
+          security_group_ids: [1],
+          has_data: false,
+        },
+      ];
 
-    service.getCourthouses().subscribe((courthouses: CourthouseData[]) => {
-      expect(courthouses).toEqual(mockCourthouses);
+      service.getCourthouses().subscribe((courthouses: CourthouseData[]) => {
+        expect(courthouses).toEqual(mockCourthouses);
+      });
+
+      const req = httpMock.expectOne(GET_COURTHOUSES_PATH);
+      expect(req.request.method).toBe('GET');
+
+      req.flush(mockCourthouses);
     });
 
-    const req = httpMock.expectOne(GET_COURTHOUSES_PATH);
-    expect(req.request.method).toBe('GET');
+    it('on error', () => {
+      let mockCourthouses!: CourthouseData[];
 
-    req.flush(mockCourthouses);
+      service.getCourthouses().subscribe((courthouses) => (mockCourthouses = courthouses));
+
+      const req = httpMock.expectOne(GET_COURTHOUSES_PATH);
+      expect(req.request.method).toBe('GET');
+      req.flush(null, { status: 500, statusText: 'Server Error' });
+
+      expect(mockCourthouses).toEqual([]);
+    });
   });
 
   it('#getCase', () => {
@@ -507,5 +533,47 @@ describe('CaseService', () => {
     expect(req.request.method).toBe('POST');
 
     req.flush(mockCaseRetentionChange);
+  });
+
+  it('#postCaseRetentionDateValidate', () => {
+    const mockCaseRetentionChange: CaseRetentionChange = {
+      case_id: 123,
+      retention_date: '2033/01/01',
+      is_permanent_retention: undefined,
+      comments: 'These are my comments on the matter',
+    };
+
+    service.postCaseRetentionDateValidate(mockCaseRetentionChange).subscribe((c) => {
+      expect(c).toEqual(mockCaseRetentionChange);
+    });
+
+    const req = httpMock.expectOne(`${GET_CASE_RETENTION_HISTORY}?validate_only=true`);
+    expect(req.request.method).toBe('POST');
+
+    req.flush(mockCaseRetentionChange);
+  });
+
+  describe('private method - mapCaseDataToCaseSearchResult', () => {
+    it('should map user creation request', () => {
+      expect(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (service as any).mapCaseDataToCaseSearchResult({
+          case_id: 1,
+          case_number: '1',
+          courthouse: 'COURTHOUSE',
+          defendants: ['DEFENDANT'],
+          judges: ['JUDGE'],
+          reporting_restriction: 'RESTRICTION',
+        })
+      ).toEqual({
+        courthouse: 'COURTHOUSE',
+        defendants: ['DEFENDANT'],
+        hearings: undefined,
+        id: 1,
+        judges: ['JUDGE'],
+        number: '1',
+        reportingRestriction: 'RESTRICTION',
+      });
+    });
   });
 });
