@@ -32,4 +32,18 @@ describe('AppConfigService', () => {
 
     expect(appConfigService.getAppConfig()).toEqual(testData);
   });
+
+  it('#isDevelopment', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (appConfigService as any).appConfig = {
+      appInsightsKey: 'Test Data',
+      support: {
+        name: 'DARTS support',
+        emailAddress: 'support@darts',
+      },
+      environment: 'development',
+    };
+    const result = appConfigService.isDevelopment();
+    expect(result).toEqual(true);
+  });
 });
