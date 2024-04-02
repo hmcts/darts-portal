@@ -1,5 +1,6 @@
 const express = require('express');
 const { localArray } = require('../localArray');
+const { getRolesByUserId } = require('../users');
 
 const router = express.Router();
 
@@ -7,6 +8,12 @@ const resBody104 = {
   type: 'CASE_104',
   title: 'The requested case cannot be found',
   status: 404,
+};
+
+const resBodyAuth100 = {
+  type: 'AUTHORISATION_100',
+  title: 'User is not authorised for the associated courthouse',
+  status: 403,
 };
 
 const transcriptOne = [
@@ -176,6 +183,11 @@ router.get('/:hearingId/events', (req, res) => {
 
 // transcripts stub data
 router.get('/:hearingId/transcripts', (req, res) => {
+  // if the user only has TRANSLATION_QA role, the respond with 403
+  const userRoles = getRolesByUserId(parseInt(req.headers.user_id, 10));
+  if (userRoles?.length === 1 && userRoles[0].roleName === 'TRANSLATION_QA') {
+    return res.status(403).send(resBodyAuth100);
+  }
   switch (req.params?.hearingId) {
     case '404':
       res.status(404).send(resBody104);

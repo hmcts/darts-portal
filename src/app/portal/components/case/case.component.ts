@@ -12,7 +12,7 @@ import { AnnotationService } from '@services/annotation/annotation.service';
 import { CaseService } from '@services/case/case.service';
 import { MappingService } from '@services/mapping/mapping.service';
 import { UserService } from '@services/user/user.service';
-import { combineLatest, map, of } from 'rxjs';
+import { catchError, combineLatest, map, of } from 'rxjs';
 import { CaseFileComponent } from './case-file/case-file.component';
 import { HearingResultsComponent } from './hearing-results/hearing-results.component';
 
@@ -57,7 +57,7 @@ export class CaseComponent {
 
   data$ = combineLatest({
     hearings: this.hearings$,
-    transcripts: this.transcripts$,
+    transcripts: this.transcripts$.pipe(catchError(() => of(null))),
     annotations: this.annotations$,
   });
 
