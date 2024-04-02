@@ -153,17 +153,16 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  const group = req.body;
-  Object.assign(securityGroups, group);
-  res.send({
-    id: 12,
-    security_role_id: 4,
+  const group = {
+    ...req.body,
     global_access: true,
     display_state: true,
-    name: "LEEDS_DMP3812",
-    display_name: "LEEDS_DMP3812",
-    description: "Test"
-  }).status(201);
+    id: securityGroups.value.length + 1,
+    courthouse_ids: [],
+    user_ids: [],
+  };
+  securityGroups.value.push(group);
+  res.send(group).status(201);
 });
 
 module.exports = { router, defaultSecurityGroups };

@@ -67,7 +67,7 @@ export class AssignGroupsComponent implements OnInit, OnDestroy {
     return groups.map((group) => ({
       id: group.id,
       name: group.name,
-      role: group.role?.name as string,
+      role: group.role?.displayName as string,
       displayState: group.role?.displayState as boolean,
     }));
   }

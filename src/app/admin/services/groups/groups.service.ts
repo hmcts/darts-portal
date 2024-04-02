@@ -27,8 +27,9 @@ export class GroupsService {
       map((roles) => {
         return roles.map((role) => ({
           id: role.id,
-          name: role.display_name,
+          name: role.role_name,
           displayState: role.display_state,
+          displayName: role.display_name,
         }));
       })
     );
@@ -86,6 +87,7 @@ export class GroupsService {
         name: formValues.name,
         display_name: formValues.name,
         description: formValues.description,
+        security_role_id: formValues.role?.id,
       })
       .pipe(map(this.mapGroupDataToGroup));
   }

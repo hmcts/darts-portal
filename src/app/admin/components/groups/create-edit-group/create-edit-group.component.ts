@@ -7,6 +7,8 @@ import { LoadingComponent } from '@common/loading/loading.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { ErrorSummaryEntry } from '@core-types/index';
 import { GroupsService } from '@services/groups/groups.service';
+import { combineLatest } from 'rxjs';
+import { map } from 'rxjs/internal/operators/map';
 import { GroupFormComponent } from '../group-form/group-form.component';
 
 @Component({
@@ -22,6 +24,11 @@ export class CreateEditGroupComponent implements OnInit {
   errors: ErrorSummaryEntry[] = [];
 
   groups$ = this.groupService.getGroups();
+  transcriberRoles$ = this.groupService
+    .getRoles()
+    .pipe(map((roles) => roles.filter((role) => role.name === 'TRANSCRIBER' || role.name === 'TRANSLATION_QA')));
+
+  data$ = combineLatest({ groups: this.groups$, roles: this.transcriberRoles$ });
 
   group: SecurityGroup = this.router.getCurrentNavigation()?.extras?.state?.group as SecurityGroup;
 

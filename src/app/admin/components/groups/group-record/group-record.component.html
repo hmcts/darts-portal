@@ -28,7 +28,7 @@
   <p class="govuk-body" id="group-description">{{ vm.group.description || '-' }}</p>
 
   <app-govuk-heading tag="h3" size="s">Role</app-govuk-heading>
-  <p class="govuk-body" id="group-role">{{ vm?.group?.role?.name }}</p>
+  <p class="govuk-body" id="group-role">{{ vm?.group?.role?.displayName }}</p>
 
   <app-tabs [default]="tab">
     <app-group-courthouses

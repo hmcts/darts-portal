@@ -52,6 +52,7 @@ describe('GroupFormComponent', () => {
           id: 1,
           name: 'Approver',
           displayState: true,
+          displayName: 'Approver',
         },
       };
       component.group = group as SecurityGroup;
@@ -65,7 +66,12 @@ describe('GroupFormComponent', () => {
     it('set form values from group input', () => {
       expect(component.form.get('name')?.value).toBe('Judiciary');
       expect(component.form.get('description')?.value).toBe('Judiciary Group');
-      expect(component.form.get('role')?.value).toBe('Approver');
+      expect(component.form.get('role')?.value).toEqual({
+        displayName: 'Approver',
+        displayState: true,
+        id: 1,
+        name: 'Approver',
+      });
     });
 
     it('role should not have required validator', () => {

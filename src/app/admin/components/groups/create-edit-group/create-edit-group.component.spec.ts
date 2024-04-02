@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GroupFormValue, SecurityGroup } from '@admin-types/index';
+import { GroupFormValue, SecurityGroup, SecurityRole } from '@admin-types/index';
 import { GroupsService } from '@services/groups/groups.service';
 import { of } from 'rxjs';
 import { CreateEditGroupComponent } from './create-edit-group.component';
@@ -19,6 +19,7 @@ describe('CreateEditGroupComponent', () => {
             getGroups: jest.fn().mockReturnValue(of([])),
             updateGroup: jest.fn().mockReturnValue(of({})),
             createGroup: jest.fn().mockReturnValue(of({})),
+            getRoles: jest.fn().mockReturnValue(of([])),
           },
         },
       ],
@@ -45,7 +46,7 @@ describe('CreateEditGroupComponent', () => {
 
   describe('onSave', () => {
     it('should call updateGroup if in edit mode', () => {
-      const formValues: GroupFormValue = { name: 'test', description: 'test', role: 'test' };
+      const formValues: GroupFormValue = { name: 'test', description: 'test', role: {} as SecurityRole };
       jest.spyOn(component.groupService, 'updateGroup');
       component.group = { id: 1 } as SecurityGroup;
       component.isEdit = true;
@@ -54,12 +55,20 @@ describe('CreateEditGroupComponent', () => {
     });
 
     it('should not call updateGroup if not in edit mode', () => {
-      const formValues: GroupFormValue = { name: '', description: '', role: '' };
+      const formValues: GroupFormValue = { name: '', description: '', role: {} as SecurityRole };
       component.group = { id: 1 } as SecurityGroup;
       jest.spyOn(component.groupService, 'updateGroup');
       component.isEdit = false;
       component.onSave(formValues);
       expect(component.groupService.updateGroup).not.toHaveBeenCalled();
+    });
+
+    it('should call createGroup if not in edit mode', () => {
+      const formValues: GroupFormValue = { name: 'test', description: 'test', role: {} as SecurityRole };
+      jest.spyOn(component.groupService, 'createGroup');
+      component.isEdit = false;
+      component.onSave(formValues);
+      expect(component.groupService.createGroup).toHaveBeenCalledWith(formValues);
     });
   });
 

@@ -2,10 +2,11 @@
 
 <app-govuk-heading [caption]="caption">Group details</app-govuk-heading>
 
-@if (groups$ | async; as groups) {
+@if (data$ | async; as data) {
   <app-group-form
     [group]="group"
-    [allGroups]="groups"
+    [allGroups]="data.groups"
+    [roles]="data.roles"
     (saveGroup)="onSave($event)"
     (cancel)="cancel()"
     (errors)="errors = $event"

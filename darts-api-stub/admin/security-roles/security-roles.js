@@ -30,7 +30,7 @@ const defaultSecurityRoles = [
   },
   {
     id: 5,
-    role_name: 'TRANSLATION QA',
+    role_name: 'TRANSLATION_QA',
     display_name: 'Translation QA',
     display_state: true,
   },

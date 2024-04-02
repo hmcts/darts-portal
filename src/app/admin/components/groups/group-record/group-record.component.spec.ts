@@ -25,7 +25,7 @@ describe('GroupRecordComponent', () => {
                 id: 1,
                 courthouseIds: [1, 2, 3],
                 userIds: [1, 2, 3],
-                role: { name: 'admin' },
+                role: { name: 'ADMIN', displayName: 'Admin' },
                 description: ' test',
                 name: 'Group 1',
               })
@@ -67,7 +67,7 @@ describe('GroupRecordComponent', () => {
   it('render group details', () => {
     expect(fixture.nativeElement.querySelector('#group-name').textContent).toContain('Group 1');
     expect(fixture.nativeElement.querySelector('#group-description').textContent).toContain('test');
-    expect(fixture.nativeElement.querySelector('#group-role').textContent).toContain('admin');
+    expect(fixture.nativeElement.querySelector('#group-role').textContent).toContain('Admin');
   });
 
   it('should update courthouses when onUpdateCourthouses is called', () => {

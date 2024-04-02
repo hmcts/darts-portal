@@ -1,13 +1,13 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CountNotificationService } from '@services/count-notification/count-notification.service';
 import { UserService } from '@services/user/user.service';
 
 @Component({
   selector: 'app-portal-navigation',
   standalone: true,
-  imports: [RouterLink, AsyncPipe],
+  imports: [RouterLink, AsyncPipe, RouterLinkActive],
   templateUrl: './portal-navigation.component.html',
   styleUrl: './portal-navigation.component.scss',
 })

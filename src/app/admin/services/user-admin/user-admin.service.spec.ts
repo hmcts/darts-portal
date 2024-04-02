@@ -29,8 +29,9 @@ describe('UserAdminService', () => {
       securityRoleId: 1,
       role: {
         id: 1,
-        name: 'Approver',
+        name: 'APPROVER',
         displayState: true,
+        displayName: 'Approver',
       },
     },
     {
@@ -45,8 +46,9 @@ describe('UserAdminService', () => {
       securityRoleId: 2,
       role: {
         id: 2,
-        name: 'Requestor',
+        name: 'REQUESTOR',
         displayState: true,
+        displayName: 'Requestor',
       },
     },
   ];

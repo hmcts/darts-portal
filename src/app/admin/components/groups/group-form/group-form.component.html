@@ -52,32 +52,23 @@
       @if (isEdit) {
         <div id="role-hint" class="govuk-hint">Cannot be changed.</div>
         <p class="govuk-body" id="role">
-          {{ form.value.role }}
+          {{ form.value.role.displayName }}
         </p>
       } @else {
         <div class="govuk-radios govuk-radios--inline">
-          <div class="govuk-radios__item">
-            <input
-              class="govuk-radios__input"
-              id="role-transcriber"
-              formControlName="role"
-              name="role"
-              type="radio"
-              value="transcriber"
-            />
-            <label class="govuk-label govuk-radios__label" for="role-transcriber">Transcriber</label>
-          </div>
-          <div class="govuk-radios__item">
-            <input
-              class="govuk-radios__input"
-              id="role-translationqa"
-              formControlName="role"
-              name="role"
-              type="radio"
-              value="translationqa"
-            />
-            <label class="govuk-label govuk-radios__label" for="role-translationqa">Translation QA</label>
-          </div>
+          @for (role of roles; track role.id) {
+            <div class="govuk-radios__item">
+              <input
+                class="govuk-radios__input"
+                id="role-{{ role.displayName }}"
+                formControlName="role"
+                name="role"
+                type="radio"
+                [value]="role"
+              />
+              <label class="govuk-label govuk-radios__label" for="role-{{ role.name }}">{{ role.displayName }}</label>
+            </div>
+          }
         </div>
       }
     </fieldset>

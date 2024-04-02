@@ -1,5 +1,5 @@
 import { GroupFormValue } from '@admin-types/groups/security-group-form-values.type';
-import { SecurityGroup } from '@admin-types/index';
+import { SecurityGroup, SecurityRole } from '@admin-types/index';
 import { JsonPipe } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -30,6 +30,7 @@ const formControlErrorMessages: FieldErrors = {
 export class GroupFormComponent implements OnInit {
   @Input() group: SecurityGroup | null = null;
   @Input() allGroups: SecurityGroup[] = [];
+  @Input() roles: SecurityRole[] = [];
   @Output() saveGroup = new EventEmitter<GroupFormValue>();
   @Output() cancel = new EventEmitter<void>();
   @Output() errors = new EventEmitter<ErrorSummaryEntry[]>();
@@ -47,7 +48,7 @@ export class GroupFormComponent implements OnInit {
     this.formDefaults = {
       name: this.group?.name ?? null,
       description: this.group?.description ?? null,
-      role: this.group?.role?.name ?? null,
+      role: this.group?.role ?? null,
     };
 
     this.form = this.fb.group({

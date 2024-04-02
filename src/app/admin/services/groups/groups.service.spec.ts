@@ -1,4 +1,4 @@
-import { SecurityGroup, SecurityRole } from '@admin-types/index';
+import { GroupFormValue, SecurityGroup, SecurityRole, SecurityRoleData } from '@admin-types/index';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { GET_SECURITY_GROUPS_PATH, GET_SECURITY_ROLES_PATH, GroupsService } from './groups.service';
@@ -41,11 +41,13 @@ describe('GroupsService', () => {
       const mockSecurityRoles = [
         {
           id: 1,
+          role_name: 'APPROVER',
           display_name: 'Approver',
           display_state: true,
         },
         {
           id: 2,
+          role_name: 'REQUESTOR',
           display_name: 'Requestor',
           display_state: false,
         },
@@ -57,27 +59,29 @@ describe('GroupsService', () => {
           name: 'Judiciary',
           description: 'Judiciary group',
           securityRoleId: 1,
-          role: { id: 1, name: 'Approver', displayState: true },
+          role: { id: 1, name: 'APPROVER', displayState: true, displayName: 'Approver' },
         },
         {
           id: 2,
           name: 'Opus Transcribers',
           description: 'Opus Transcribers group',
           securityRoleId: 2,
-          role: { id: 2, name: 'Requestor', displayState: false },
+          role: { id: 2, name: 'REQUESTOR', displayState: false, displayName: 'Requestor' },
         },
       ];
 
       const expectedSecurityRoles = [
         {
           id: 1,
-          name: 'Approver',
+          name: 'APPROVER',
           displayState: true,
+          displayName: 'Approver',
         },
         {
           id: 2,
-          name: 'Requestor',
+          name: 'REQUESTOR',
           displayState: false,
+          displayName: 'Requestor',
         },
       ];
 
@@ -148,19 +152,22 @@ describe('GroupsService', () => {
 
   describe('getRoles', () => {
     it('should return an array of mapped SecurityRoles', () => {
-      const mockSecurityRoles = [
+      const mockSecurityRoles: SecurityRoleData[] = [
         {
           id: 1,
+          role_name: 'APPROVER',
           display_name: 'Approver',
           display_state: true,
         },
         {
           id: 2,
+          role_name: 'REQUESTOR',
           display_name: 'Requestor',
           display_state: true,
         },
         {
           id: 3,
+          role_name: 'TEST_ROLE',
           display_name: 'Test Role',
           display_state: false,
         },
@@ -169,18 +176,21 @@ describe('GroupsService', () => {
       const expectedSecurityRoles = [
         {
           id: 1,
-          name: 'Approver',
+          name: 'APPROVER',
           displayState: true,
+          displayName: 'Approver',
         },
         {
           id: 2,
-          name: 'Requestor',
+          name: 'REQUESTOR',
           displayState: true,
+          displayName: 'Requestor',
         },
         {
           id: 3,
-          name: 'Test Role',
+          name: 'TEST_ROLE',
           displayState: false,
+          displayName: 'Test Role',
         },
       ];
 
@@ -239,6 +249,7 @@ describe('GroupsService', () => {
 
       const mockSecurityRole = {
         id: 1,
+        role_name: 'APPROVER',
         display_name: 'Approver',
         display_state: true,
       };
@@ -248,7 +259,7 @@ describe('GroupsService', () => {
         name: 'Judiciary',
         description: 'Judiciary group',
         securityRoleId: 1,
-        role: { id: 1, name: 'Approver', displayState: true },
+        role: { id: 1, name: 'APPROVER', displayState: true, displayName: 'Approver' },
       };
 
       let result;
@@ -278,6 +289,37 @@ describe('GroupsService', () => {
       const req = httpMock.expectOne(`${GET_SECURITY_GROUPS_PATH}/1`);
       expect(req.request.method).toEqual('PATCH');
       expect(req.request.body).toEqual({ courthouse_ids: mockCourthouseIds });
+    });
+  });
+
+  describe('createGroup', () => {
+    it('should call endpoint with group form values', () => {
+      const mockGroupFormValues: GroupFormValue = {
+        name: 'Judiciary',
+        description: 'Judiciary group',
+        role: { id: 1 } as SecurityRole,
+      };
+
+      const expectedGroupRequest = {
+        name: 'Judiciary',
+        display_name: 'Judiciary',
+        description: 'Judiciary group',
+        security_role_id: 1,
+      };
+
+      const mockSecurityGroup = {
+        id: 1,
+        name: 'Judiciary',
+        description: 'Judiciary group',
+        security_role_id: 1,
+      };
+
+      service.createGroup(mockGroupFormValues).subscribe();
+
+      const req = httpMock.expectOne(GET_SECURITY_GROUPS_PATH);
+      expect(req.request.method).toEqual('POST');
+      expect(req.request.body).toEqual(expectedGroupRequest);
+      req.flush(mockSecurityGroup);
     });
   });
 });
