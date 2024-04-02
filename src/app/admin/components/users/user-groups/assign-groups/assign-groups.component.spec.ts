@@ -14,19 +14,19 @@ const mockGroupsWithRoles: SecurityGroup[] = [
     id: 1,
     name: 'Group 1',
     securityRoleId: 1,
-    role: { id: 1, name: 'Role 1', displayState: true },
+    role: { id: 1, name: 'ROLE 1', displayState: true, displayName: 'Role 1' },
   },
   {
     id: 2,
     name: 'Group 2',
     securityRoleId: 2,
-    role: { id: 2, name: 'Role 2', displayState: false },
+    role: { id: 2, name: 'ROLE 2', displayState: false, displayName: 'Role 2' },
   },
 ] as SecurityGroup[];
 
 const mockUserGroups: UserGroup[] = mockGroupsWithRoles.map((group) => ({
   ...group,
-  role: group.role?.name as string,
+  role: group.role?.displayName as string,
   displayState: group.role?.displayState as boolean,
 }));
 
@@ -121,23 +121,6 @@ describe('AssignGroupsComponent', () => {
 
   describe('groups$', () => {
     it('should fetch security groups with roles and transform them into filtered UserGroups', fakeAsync(() => {
-      const mockGroups: SecurityGroup[] = [
-        {
-          id: 1,
-          name: 'Group 1',
-          securityRoleId: 1,
-          description: 'Group 1 description',
-          role: { id: 1, name: 'Role 1', displayState: true },
-        },
-        {
-          id: 2,
-          name: 'Group 2',
-          securityRoleId: 2,
-          description: 'Group 2 description',
-          role: { id: 2, name: 'Role 2', displayState: false },
-        },
-      ] as SecurityGroup[];
-
       const expectedUserGroups: UserGroup[] = [
         {
           id: 1,
@@ -146,8 +129,6 @@ describe('AssignGroupsComponent', () => {
           displayState: true,
         },
       ];
-
-      jest.spyOn(groupsService, 'getGroupsAndRoles').mockReturnValue(of({ groups: mockGroups, roles: [] }));
 
       let result;
 

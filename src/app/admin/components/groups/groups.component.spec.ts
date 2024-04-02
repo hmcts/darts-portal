@@ -15,18 +15,18 @@ describe('GroupsComponent', () => {
         id: 1,
         name: 'Group 1',
         securityRoleId: 1,
-        role: { id: 1, name: 'Role 1', displayState: true },
+        role: { id: 1, displayName: 'Role 1', displayState: true },
       },
       {
         id: 2,
         name: 'Group 2',
         securityRoleId: 2,
-        role: { id: 2, name: 'Role 2', displayState: false },
+        role: { id: 2, displayName: 'Role 2', displayState: false },
       },
     ],
     roles: [
-      { id: 1, name: 'Role 1', displayState: true },
-      { id: 2, name: 'Role 2', displayState: false },
+      { id: 1, displayName: 'Role 1', displayState: true },
+      { id: 2, displayName: 'Role 2', displayState: false },
     ],
   };
 

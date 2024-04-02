@@ -30,7 +30,7 @@ export class AssignGroupsComponent implements OnInit, OnDestroy {
 
   groups$: Observable<UserGroup[]> = this.groupsService
     .getGroupsAndRoles()
-    .pipe(map((data) => this.mapSecurityGroupsToUserGroups(data.groups))) //flatten view model
+    .pipe(map((data) => this.mapSecurityGroupsToUserGroups(data.groups))) // flatten view model
     .pipe(map((groups) => groups.filter((group) => group.displayState))); // filter out hidden groups for the UI
 
   ngOnInit() {
