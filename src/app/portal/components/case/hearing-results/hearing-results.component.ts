@@ -38,7 +38,7 @@ export class HearingResultsComponent {
   AnnotationService = inject(AnnotationService);
   fileDownloadService = inject(FileDownloadService);
   @Input() hearings: Hearing[] = [];
-  @Input() transcripts: TranscriptsRow[] = [];
+  @Input() transcripts: TranscriptsRow[] | null = [];
   @Input() annotations: Annotations[] | null = [];
   @Input() tab!: string;
   @Output() deleteAnnotationEvent = new EventEmitter<number>();

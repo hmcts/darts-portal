@@ -13,7 +13,7 @@
       </ng-template>
     </app-data-table>
   </div>
-  @if (!userService.isTranslationQA()) {
+  @if (transcripts) {
     <div *tab="'All Transcripts'; count: transcripts.length; id: 'transcripts-tab'">
       <h2 class="govuk-heading-m">All transcripts for this case</h2>
       <app-data-table

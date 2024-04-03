@@ -33,7 +33,7 @@ import { HearingService } from '@services/hearing/hearing.service';
 import { MappingService } from '@services/mapping/mapping.service';
 import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
-import { combineLatest, map, of, shareReplay } from 'rxjs';
+import { catchError, combineLatest, map, of, shareReplay } from 'rxjs';
 import { EventsAndAudioComponent } from './events-and-audio/events-and-audio.component';
 import { HearingFileComponent } from './hearing-file/hearing-file.component';
 import { OrderConfirmationComponent } from './order-confirmation/order-confirmation.component';
@@ -89,9 +89,10 @@ export class HearingComponent implements OnInit {
   defaultTab = 'Events and Audio';
   selectedAnnotationsforDeletion: number[] = [];
 
-  public transcripts$ = this.caseService
-    .getHearingTranscripts(this.hearingId)
-    .pipe(map((transcript) => this.mappingService.mapTranscriptRequestToRows(transcript)));
+  public transcripts$ = this.caseService.getHearingTranscripts(this.hearingId).pipe(
+    map((transcript) => this.mappingService.mapTranscriptRequestToRows(transcript)),
+    catchError(() => of(null))
+  );
 
   transcriptColumns: DatatableColumn[] = [
     { name: 'Type', prop: 'type', sortable: true },

@@ -3,11 +3,18 @@ const express = require('express');
 const router = express.Router();
 const { localArray } = require('../localArray');
 const { getLatestDatefromKey } = require('../utils/date');
+const { getRolesByUserId } = require('../users');
 
 const resBody104 = {
   type: 'CASE_104',
   title: 'The requested case cannot be found',
   status: 404,
+};
+
+const resBodyAuth100 = {
+  type: 'AUTHORISATION_100',
+  title: 'User is not authorised for the associated courthouse',
+  status: 403,
 };
 
 const getLatestRetentionDate = (caseId) => {
@@ -658,11 +665,6 @@ router.get('/:caseId', (req, res) => {
       res.status(400).send(resBodyBadReq);
       break;
     case '403':
-      const resBodyAuth100 = {
-        type: 'AUTHORISATION_100',
-        title: 'User is not authorised for the associated courthouse',
-        status: 403,
-      };
       res.status(403).send(resBodyAuth100);
       break;
     case '404':
@@ -683,6 +685,12 @@ router.get('/:caseId', (req, res) => {
 // CASES STUB APIs
 // transcripts stub data
 router.get('/:caseId/transcripts', (req, res) => {
+  // if the user only has TRANSLATION_QA role, the respond with 403
+  const userRoles = getRolesByUserId(parseInt(req.headers.user_id, 10));
+  if (userRoles?.length === 1 && userRoles[0].roleName === 'TRANSLATION_QA') {
+    return res.status(403).send(resBodyAuth100);
+  }
+
   singleCase.case_id = req.params.caseId;
   singleCase.retain_until_date_time = getLatestRetentionDate(singleCase.case_id);
   singleCase.retention_date_time_applied = getLatestRetentionChange(singleCase.case_id);
