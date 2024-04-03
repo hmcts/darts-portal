@@ -127,6 +127,23 @@ describe('Request audio', () => {
     cy.a11y();
   });
 
+  it('should show an error when start time is after end time', () => {
+    cy.get('#hearingsTable').should('contain', '1 Sep 2023');
+    cy.get('#hearingsTable a').contains('1 Sep 2023').click();
+
+    cy.get('#start-time-hour-input').clear().type('13');
+    cy.get('#start-time-minutes-input').clear().type('00');
+    cy.get('#start-time-seconds-input').clear().type('00');
+    cy.get('#end-time-hour-input').clear().type('11');
+    cy.get('#end-time-minutes-input').clear().type('00');
+    cy.get('#end-time-seconds-input').clear().type('00');
+    cy.get('#download-radio').click({ force: true });
+
+    cy.get('.button').contains('Get Audio').click();
+    cy.get('.govuk-error-summary').should('contain', 'The start time must be before the end time');
+    cy.get('.govuk-error-message').should('contain', 'The start time must be before the end time');
+  });
+
   describe('Preview Audio', () => {
     it('should preview audio', () => {
       cy.get('#hearingsTable a').contains('1 Sep 2023').click();
