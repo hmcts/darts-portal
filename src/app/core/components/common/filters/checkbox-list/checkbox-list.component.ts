@@ -63,7 +63,9 @@ export class CheckboxListComponent implements OnInit, ControlValueAccessor {
   // Control Value Accessor boilerplate
   onChange: (value: CheckboxListItem[]) => void = () => {};
   onTouched = () => {};
-  writeValue(): void {}
+  writeValue(): void {
+    // no implementation required
+  }
   registerOnChange(fn: (value: CheckboxListItem[]) => void): void {
     this.onChange = fn;
   }

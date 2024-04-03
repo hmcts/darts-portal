@@ -37,7 +37,9 @@ export class FileUploadComponent implements ControlValueAccessor {
     this.onTouched();
   }
 
-  writeValue(): void {}
+  writeValue(): void {
+    // no implementation required
+  }
 
   registerOnChange(fn: (value: File | null) => void): void {
     this.onChange = fn;
