@@ -22,22 +22,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular-builders/common@npm:1.0.1":
-  version: 1.0.1
-  resolution: "@angular-builders/common@npm:1.0.1"
+"@angular-builders/common@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@angular-builders/common@npm:1.0.2"
   dependencies:
     "@angular-devkit/core": ^17.1.0
     ts-node: ^10.0.0
     tsconfig-paths: ^4.1.0
-  checksum: 07bbaad5711b11687034d7b0165d09f51c17f3900b3d726422bc42b7ad2844dc0eac62c675de22f173a186034dd82f9f2b3277c75e116490e6fdd6a4e41d7966
+  checksum: 2f002415744ef962f9e27fb2757364d4062a1eeffb7d2c35bcb98db755a55843aa2778da55bc89cf0884fb6c5976cb31f19892bca1ef30115ceeea26728d0c66
   languageName: node
   linkType: hard
 
 "@angular-builders/custom-webpack@npm:^17.0.0":
-  version: 17.0.1
-  resolution: "@angular-builders/custom-webpack@npm:17.0.1"
+  version: 17.0.2
+  resolution: "@angular-builders/custom-webpack@npm:17.0.2"
   dependencies:
-    "@angular-builders/common": 1.0.1
+    "@angular-builders/common": 1.0.2
     "@angular-devkit/architect": ">=0.1700.0 < 0.1800.0"
     "@angular-devkit/build-angular": ^17.0.0
     "@angular-devkit/core": ^17.0.0
@@ -45,7 +45,7 @@ __metadata:
     webpack-merge: ^5.7.3
   peerDependencies:
     "@angular/compiler-cli": ^17.0.0
-  checksum: 0b0bd44e15151946abe287489da7abd955f6840685988d1509f3198e4f38675fe174c3311a4853d8fd4bb1deb25ac326154032db7900c7579d0547f124fbedb1
+  checksum: 858302096f5809b3a17dd0053a51a608bc495cc8f05b6fc20b6f69c667c401b221040949cc09892e4eaa667f3572e8e3fb552f1df95fb335ecf2bef5b2e800a0
   languageName: node
   linkType: hard
 
