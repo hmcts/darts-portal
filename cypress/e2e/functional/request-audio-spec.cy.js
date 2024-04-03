@@ -140,8 +140,8 @@ describe('Request audio', () => {
     cy.get('#download-radio').click({ force: true });
 
     cy.get('.button').contains('Get Audio').click();
-    cy.get('.govuk-error-summary').should('contain', 'The start time must be before the end time');
-    cy.get('.govuk-error-message').should('contain', 'The start time must be before the end time');
+    cy.get('.govuk-error-summary').should('contain', 'End time must be after start time');
+    cy.get('.govuk-error-message').should('contain', 'End time must be after start time');
   });
 
   describe('Preview Audio', () => {

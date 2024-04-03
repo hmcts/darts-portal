@@ -17,7 +17,7 @@ import { UserService } from '@services/user/user.service';
 import { beforeTimeValidator } from '@validators/before-time.validator';
 import { timeGroupValidator } from '@validators/time-group.validator';
 import { DateTime } from 'luxon';
-import { TimeInputComponent } from './time-input/time-input.component';
+import { TimeInputComponent, timeInputFormControls } from './time-input/time-input.component';
 
 const fieldErrors: FieldErrors = {
   startTime: {
@@ -56,22 +56,8 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
   ) {
     this.audioRequestForm = this.fb.group(
       {
-        startTime: this.fb.group(
-          {
-            hours: ['', [Validators.required, Validators.min(0), Validators.max(23), Validators.pattern(/^\d{2}$/)]],
-            minutes: ['', [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
-            seconds: ['', [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
-          },
-          { validators: timeGroupValidator }
-        ),
-        endTime: this.fb.group(
-          {
-            hours: ['', [Validators.required, Validators.min(0), Validators.max(23), Validators.pattern(/^\d{2}$/)]],
-            minutes: ['', [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
-            seconds: ['', [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
-          },
-          { validators: timeGroupValidator }
-        ),
+        startTime: this.fb.group(timeInputFormControls, { validators: timeGroupValidator }),
+        endTime: this.fb.group(timeInputFormControls, { validators: timeGroupValidator }),
         requestType: [''],
       },
       { validators: beforeTimeValidator }
@@ -119,8 +105,8 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
     if (this.audioRequestForm.invalid) {
       if (!this.audioRequestForm.controls.endTime.invalid && this.audioRequestForm.errors?.endTimeBeforeStartTime) {
         errorMessages.push({
-          fieldId: 'endTime',
-          message: 'The start time must be before the end time',
+          fieldId: 'end-time-hour-input',
+          message: 'End time must be after start time',
         });
       }
     }
