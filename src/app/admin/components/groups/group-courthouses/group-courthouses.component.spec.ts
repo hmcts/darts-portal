@@ -30,6 +30,14 @@ describe('GroupCourthousesComponent', () => {
     expect(component.selectedCourthouses).toContain(courthouseData);
   });
 
+  it('should add courthouse to selectedCourthouses when onAddCourthouse is called', () => {
+    const courthouseId = '';
+    jest.spyOn(component.update, 'emit');
+    component.onAddCourthouse(courthouseId);
+
+    expect(component.update.emit).not.toHaveBeenCalled();
+  });
+
   it('should not add courthouse to selectedCourthouses if it is already selected', () => {
     const courthouseId = '1';
     const courthouseData = { id: 1, name: 'Courthouse 1' } as unknown as CourthouseData;

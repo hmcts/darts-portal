@@ -1,5 +1,6 @@
 import { SecurityGroup, User } from '@admin-types/index';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { DateTime } from 'luxon';
 import { UserGroupsComponent } from './user-groups.component';
 
@@ -66,6 +67,38 @@ describe('UserGroupsComponent', () => {
       const spy = jest.spyOn(component as never, 'removeHiddenSecurityGroups');
       component.ngOnInit();
       expect(spy).toHaveBeenCalled();
+    });
+  });
+
+  describe('onRemoveGroups', () => {
+    it('should navigate back to users screen if groups selected ', () => {
+      const router = TestBed.inject(Router);
+      jest.spyOn(router, 'navigate');
+      const groups = [
+        {
+          id: 1,
+          name: 'string',
+          displayName: 'string',
+          description: 'string',
+          displayState: true,
+          globalAccess: true,
+          securityRoleId: 1,
+          courthouseIds: [1],
+          userIds: [1],
+        },
+      ];
+      component.selectedGroups = groups;
+      component.onRemoveGroups();
+      expect(router.navigate).toHaveBeenCalledWith(['admin/users/', mockUser.id, 'remove-groups'], {
+        state: { user: mockUser, selectedGroups: groups },
+      });
+    });
+
+    it('should emit errors if no groups selected', () => {
+      const router = TestBed.inject(Router);
+      jest.spyOn(router, 'navigate');
+      component.onRemoveGroups();
+      expect(router.navigate).not.toHaveBeenCalled();
     });
   });
 });

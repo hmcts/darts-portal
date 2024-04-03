@@ -36,11 +36,11 @@ describe('GroupRecordComponent', () => {
         },
         {
           provide: CourthouseService,
-          useValue: { getCourthouses: jest.fn().mockReturnValue(of([])) },
+          useValue: { getCourthouses: jest.fn().mockReturnValue(of([{ id: 1 }, { id: 2 }, { id: 3 }])) },
         },
         {
           provide: UserAdminService,
-          useValue: { getUsers: jest.fn().mockReturnValue(of([])) },
+          useValue: { getUsers: jest.fn().mockReturnValue(of([{ id: 1 }, { id: 2 }, { id: 3 }])) },
         },
         {
           provide: ActivatedRoute,

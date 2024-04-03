@@ -73,6 +73,51 @@ describe('UserAdminService', () => {
     expect(service).toBeTruthy();
   });
 
+  describe('getUsers', () => {
+    it('should fetch and map all users', () => {
+      const mockUserId = 1;
+      const mockUsersData: UserData[] = [
+        {
+          id: mockUserId,
+          last_login_at: '2020-01-01T00:00:00Z',
+          last_modified_at: '2020-01-02T00:00:00Z',
+          created_at: '2020-01-01T00:00:00Z',
+          full_name: 'John Doe',
+          email_address: 'john@example.com',
+          description: 'A test user',
+          active: true,
+          security_group_ids: [1, 2],
+        },
+      ];
+
+      const mockUserData = mockUsersData[0];
+
+      const mappedUsers: User[] = [
+        {
+          id: mockUserId,
+          lastLoginAt: DateTime.fromISO(mockUserData.last_login_at),
+          lastModifiedAt: DateTime.fromISO(mockUserData.last_modified_at),
+          createdAt: DateTime.fromISO(mockUserData.created_at),
+          fullName: 'John Doe',
+          emailAddress: 'john@example.com',
+          description: 'A test user',
+          active: true,
+          securityGroupIds: [1, 2],
+          securityGroups: mockSecurityGroups,
+        },
+      ];
+
+      service.getUsers().subscribe((res) => {
+        expect(res).toEqual(mappedUsers);
+      });
+
+      const req = httpMock.expectOne(USER_ADMIN_SEARCH_PATH);
+      req.flush(mockUserData);
+
+      expect(req.request.method).toEqual('POST');
+    });
+  });
+
   describe('getUser', () => {
     it('should fetch and map user', () => {
       const mockUserId = 1;
@@ -225,21 +270,110 @@ describe('UserAdminService', () => {
       expect(req.request.body).toEqual(expectedUserRequest);
       req.flush({});
     });
+  });
 
-    describe('doesEmailExist', () => {
-      it('Returns true if it does', fakeAsync(() => {
-        const mockUserData = {};
-        let result;
+  describe('assignGroups', () => {
+    it('should send a PATCH request and map the updated user', () => {
+      const mockUserId = 1;
+      const mockUpdatedGroups: number[] = [1, 2, 3];
 
-        service.doesEmailExist('test@email.com').subscribe((data) => {
-          result = data;
-        });
+      const expectedUserRequest = {
+        security_group_ids: mockUpdatedGroups,
+      };
 
-        const req = httpMock.expectOne(USER_ADMIN_PATH);
-        expect(req.request.method).toEqual('GET');
-        req.flush(mockUserData);
-        expect(result).toBe(false);
-      }));
+      service.assignGroups(mockUserId, mockUpdatedGroups).subscribe();
+
+      const req = httpMock.expectOne(`${USER_ADMIN_PATH}/${mockUserId}`);
+      expect(req.request.method).toEqual('PATCH');
+      expect(req.request.body).toEqual(expectedUserRequest);
+      req.flush({});
+    });
+  });
+
+  describe('doesEmailExist', () => {
+    it('Returns true if it does', fakeAsync(() => {
+      const mockUserData = {};
+      let result;
+
+      service.doesEmailExist('test@email.com').subscribe((data) => {
+        result = data;
+      });
+
+      const req = httpMock.expectOne(USER_ADMIN_PATH);
+      expect(req.request.method).toEqual('GET');
+      req.flush(mockUserData);
+      expect(result).toBe(false);
+    }));
+  });
+
+  describe('activateUser', () => {
+    it('should send a PATCH request and map the updated user', () => {
+      const mockUserId = 1;
+
+      service.activateUser(mockUserId).subscribe();
+
+      const req = httpMock.expectOne(`${USER_ADMIN_PATH}/${mockUserId}`);
+      expect(req.request.method).toEqual('PATCH');
+      req.flush({});
+    });
+  });
+
+  describe('private method - mapToCreateUserRequest', () => {
+    it('should map user creation request', () => {
+      expect(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (service as any).mapToCreateUserRequest({
+          fullName: 'FULLNAME',
+          email: 'EMAIL',
+        })
+      ).toEqual({
+        full_name: 'FULLNAME',
+        email_address: 'EMAIL',
+        description: null,
+        active: true,
+        security_group_ids: [],
+      });
+    });
+  });
+
+  describe('private method - mapToUserSearchRequest', () => {
+    it('should map user creation request', () => {
+      expect(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (service as any).mapToUserSearchRequest({
+          fullName: 'FULLNAME',
+          email: 'EMAIL',
+          userStatus: 'active',
+        })
+      ).toEqual({
+        full_name: 'FULLNAME',
+        email_address: 'EMAIL',
+        active: true,
+      });
+    });
+
+    it('should return null for values not provided', () => {
+      expect(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (service as any).mapToUserSearchRequest({})
+      ).toEqual({
+        full_name: null,
+        email_address: null,
+        active: null,
+      });
+    });
+
+    it('should return active as false if "inactive" provided as userStatus value', () => {
+      expect(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (service as any).mapToUserSearchRequest({
+          userStatus: 'inactive',
+        })
+      ).toEqual({
+        full_name: null,
+        email_address: null,
+        active: false,
+      });
     });
   });
 });

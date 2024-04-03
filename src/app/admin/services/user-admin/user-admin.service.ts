@@ -89,6 +89,7 @@ export class UserAdminService {
       active: query.userStatus === 'active' ? true : query.userStatus === 'inactive' ? false : null,
     };
   }
+
   mapUser(user: UserData): User {
     return {
       id: user.id,

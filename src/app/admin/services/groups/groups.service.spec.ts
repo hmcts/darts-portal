@@ -269,6 +269,24 @@ describe('GroupsService', () => {
     });
   });
 
+  describe('assignUsersToGroup', () => {
+    it('should call security groups patch path', () => {
+      service.assignUsersToGroup(1, [1, 2, 3]).subscribe();
+
+      const req = httpMock.expectOne(`${GET_SECURITY_GROUPS_PATH}/1`);
+      expect(req.request.method).toEqual('PATCH');
+    });
+  });
+
+  describe('updateGroup', () => {
+    it('should call security groups patch path', () => {
+      service.updateGroup(1, { name: null, description: null, role: null }).subscribe();
+
+      const req = httpMock.expectOne(`${GET_SECURITY_GROUPS_PATH}/1`);
+      expect(req.request.method).toEqual('PATCH');
+    });
+  });
+
   describe('assignCourthousesToGroup', () => {
     it('should patch the group with the courthouse ids', () => {
       const mockCourthouseIds = [1, 2, 3];

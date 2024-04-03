@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SecurityGroup, User } from '@admin-types/index';
+import { Router } from '@angular/router';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
@@ -28,7 +29,7 @@ const mockUser: User = {
   lastLoginAt: DateTime.fromISO('2021-01-01T00:00:00Z'),
   lastModifiedAt: DateTime.fromISO('2021-01-01T00:00:00Z'),
   createdAt: DateTime.fromISO('2021-01-01T00:00:00Z'),
-  description: 'test descrtiption',
+  description: 'test description',
   active: true,
   securityGroupIds: [1, 2],
   securityGroups: mockGroupsWithRoles,
@@ -75,6 +76,15 @@ describe('RemoveGroupsComponent', () => {
       component.removeGroups();
 
       expect(fakeUserAdminService.assignGroups).toHaveBeenCalledWith(mockUser.id, [2]);
+    });
+
+    it('should navigate back to the user page on cancel', () => {
+      const router = TestBed.inject(Router);
+      jest.spyOn(router, 'navigate');
+
+      component.onCancel();
+
+      expect(router.navigate).toHaveBeenCalledWith(['/admin/users', mockUser.id], { queryParams: { tab: 'Groups' } });
     });
   });
 });

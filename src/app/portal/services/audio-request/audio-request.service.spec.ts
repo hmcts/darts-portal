@@ -1,6 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed, discardPeriodicTasks, fakeAsync, tick } from '@angular/core/testing';
-import { RequestedMedia, RequestedMediaData } from '@portal-types/index';
+import { PostAudioRequest, RequestedMedia, RequestedMediaData } from '@portal-types/index';
 import { DateTime, Settings } from 'luxon';
 import { of } from 'rxjs';
 import { AudioRequestService } from './audio-request.service';
@@ -235,6 +235,22 @@ describe('AudioService', () => {
         expect(responseStatus).toEqual(204);
       });
     });
+
+    describe('#requestAudio', () => {
+      it('sends post request', () => {
+        const audioRequest: PostAudioRequest = {
+          hearing_id: 1,
+          requestor: 1,
+          start_time: 'string',
+          end_time: 'string',
+          request_type: 'test',
+        };
+        service.requestAudio(audioRequest).subscribe();
+
+        const req = httpMock.expectOne(`api/audio-requests/${audioRequest.request_type}`);
+        expect(req.request.method).toBe('POST');
+      });
+    });
   });
 
   it('expiredAudioRequests$ should call getAudioRequests', fakeAsync(() => {
@@ -293,6 +309,55 @@ describe('AudioService', () => {
       const req = httpMock.expectOne(testUrl);
       expect(req.request.method).toBe('HEAD');
       req.flush({}, { status: errorStatus, statusText: 'Not Found' });
+    });
+  });
+
+  describe('private method - mapRequestedMediaData', () => {
+    it('should map requested media data', () => {
+      const startTs = DateTime.fromISO('00:00:00');
+      const endTs = DateTime.fromISO('01:00:00');
+      const hearingDate = DateTime.fromObject({
+        year: 2024,
+        day: 1,
+        month: 1,
+      });
+      expect(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (service as any).mapRequestedMediaData({
+          media_request_details: [
+            {
+              case_id: 1,
+              case_number: 123,
+              media_request_id: 1,
+              case_1: 'CASE',
+              courthouse_name: 'COURTHOUSENAME',
+              hearing_id: 1,
+              hearing_date: hearingDate.toISODate(),
+              start_ts: startTs.toISO(),
+              end_ts: endTs.toISO(),
+              media_request_status: 'OPEN',
+              request_type: 'PLAYBACK',
+            },
+          ],
+          transformed_media_details: [],
+        })
+      ).toEqual({
+        mediaRequests: [
+          {
+            caseId: 1,
+            caseNumber: 123,
+            courthouseName: 'COURTHOUSENAME',
+            endTime: endTs,
+            hearingDate: hearingDate,
+            hearingId: 1,
+            mediaRequestId: 1,
+            requestType: 'PLAYBACK',
+            startTime: startTs,
+            status: 'OPEN',
+          },
+        ],
+        transformedMedia: [],
+      });
     });
   });
 });

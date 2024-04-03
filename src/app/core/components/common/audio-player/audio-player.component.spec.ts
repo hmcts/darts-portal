@@ -106,6 +106,23 @@ describe('AudioPlayerComponent', () => {
 
       expect(audioPlayer.nativeElement.play).toBeCalled();
     });
+
+    it('should pause the audio if shouldPlay is false', () => {
+      component.audioSource = 'api/audio/preview/123';
+      component.canPlay = true;
+
+      fixture.detectChanges();
+      const audioPlayer = fixture.debugElement.query(By.css('audio'));
+
+      jest.spyOn(audioPlayer.nativeElement, 'pause');
+
+      audioPlayer.triggerEventHandler('canplay', null);
+      component.setPlayTime(10, false);
+
+      fixture.detectChanges();
+
+      expect(audioPlayer.nativeElement.pause).toHaveBeenCalled();
+    });
   });
 
   describe('#onTimeUpdate', () => {
@@ -122,6 +139,23 @@ describe('AudioPlayerComponent', () => {
       audioPlayer.triggerEventHandler('timeupdate', null);
 
       expect(component.playTime.emit).toHaveBeenCalledWith(10);
+    });
+  });
+
+  describe('#pausePlayer', () => {
+    it('should pause the player', () => {
+      component.audioSource = 'api/audio/preview/123';
+      component.canPlay = true;
+
+      fixture.detectChanges();
+      const audioPlayer = fixture.debugElement.query(By.css('audio'));
+
+      jest.spyOn(audioPlayer.nativeElement, 'pause');
+
+      component.pausePlayer();
+      fixture.detectChanges();
+
+      expect(audioPlayer.nativeElement.pause).toHaveBeenCalled();
     });
   });
 
