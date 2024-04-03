@@ -84,7 +84,9 @@
   </div>
 
   <div class="govuk-form-group">
-    <button class="govuk-button" type="submit">{{ isEdit ? 'Save changes' : 'Create group' }}</button>
+    <button class="govuk-button" type="submit" (mousedown)="(false)">
+      {{ isEdit ? 'Save changes' : 'Create group' }}
+    </button>
     <a class="govuk-button govuk-button--secondary" href="javascript:void(0)" (click)="onCancel()">Cancel</a>
   </div>
 </form>
