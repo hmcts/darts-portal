@@ -66,12 +66,13 @@ describe('Request audio', () => {
     cy.get('.govuk-error-summary').should('contain', 'You must select a request type');
 
     cy.get('#eventAudioTable .govuk-table__row:nth-child(3) .govuk-checkboxes__item').click();
+    cy.get('#eventAudioTable .govuk-table__row:nth-child(4) .govuk-checkboxes__item').click();
     cy.get('#start-time-hour-input').should('have.value', '09');
     cy.get('#start-time-minutes-input').should('have.value', '00');
     cy.get('#start-time-seconds-input').should('have.value', '00');
     cy.get('#end-time-hour-input').should('have.value', '09');
     cy.get('#end-time-minutes-input').should('have.value', '00');
-    cy.get('#end-time-seconds-input').should('have.value', '00');
+    cy.get('#end-time-seconds-input').should('have.value', '10');
 
     cy.get('#download-radio').click({ force: true });
 
@@ -82,7 +83,7 @@ describe('Request audio', () => {
     cy.get('.govuk-grid-column-two-thirds > :nth-child(8)').should('contain', 'Defendant Dave');
     cy.get('.govuk-grid-column-two-thirds > :nth-child(11)').should('contain', '11 Oct 2023');
     cy.get('.govuk-grid-column-two-thirds > :nth-child(13)').should('contain', '09:00:00');
-    cy.get('.govuk-grid-column-two-thirds > :nth-child(15)').should('contain', '09:00:00');
+    cy.get('.govuk-grid-column-two-thirds > :nth-child(15)').should('contain', '09:00:10');
 
     cy.get('.govuk-button-group > .govuk-button').contains('Confirm').click();
 
@@ -97,12 +98,13 @@ describe('Request audio', () => {
     cy.get('#hearingsTable a').contains('1 Dec 2023').click();
 
     cy.get('#eventAudioTable .govuk-table__row:nth-child(2) .govuk-checkboxes__item').click();
+    cy.get('#eventAudioTable .govuk-table__row:nth-child(3) .govuk-checkboxes__item').click();
     cy.get('#start-time-hour-input').should('have.value', '09');
     cy.get('#start-time-minutes-input').should('have.value', '00');
     cy.get('#start-time-seconds-input').should('have.value', '00');
     cy.get('#end-time-hour-input').should('have.value', '09');
     cy.get('#end-time-minutes-input').should('have.value', '00');
-    cy.get('#end-time-seconds-input').should('have.value', '00');
+    cy.get('#end-time-seconds-input').should('have.value', '10');
 
     cy.get('#download-radio').click({ force: true });
 
@@ -113,7 +115,7 @@ describe('Request audio', () => {
     cy.get('.govuk-grid-column-two-thirds > :nth-child(8)').should('contain', 'Defendant Dave');
     cy.get('.govuk-grid-column-two-thirds > :nth-child(11)').should('contain', '1 Dec 2023');
     cy.get('.govuk-grid-column-two-thirds > :nth-child(13)').should('contain', '09:00:00');
-    cy.get('.govuk-grid-column-two-thirds > :nth-child(15)').should('contain', '09:00:00');
+    cy.get('.govuk-grid-column-two-thirds > :nth-child(15)').should('contain', '09:00:10');
 
     cy.get('.govuk-button-group > .govuk-button').contains('Confirm').click();
 
