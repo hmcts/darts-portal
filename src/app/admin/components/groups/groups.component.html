@@ -22,7 +22,7 @@
     <select class="govuk-select" id="roles-filter" name="transcription-type" [formControl]="rolesFormControl">
       <option value="" selected></option>
       @for (role of data.roles; track role.name) {
-        <option [value]="role.name">{{ role.name }}</option>
+        <option [value]="role.name">{{ role.displayName }}</option>
       }
     </select>
 
@@ -32,7 +32,7 @@
           <a class="govuk-link" [routerLink]="[row.id]">{{ row.name }}</a>
         </td>
         <td class="govuk-table__cell">{{ row.description }}</td>
-        <td class="govuk-table__cell">{{ row.role?.name }}</td>
+        <td class="govuk-table__cell">{{ row.role?.displayName }}</td>
       </ng-template>
     </app-data-table>
   </div>

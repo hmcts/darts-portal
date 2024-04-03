@@ -49,4 +49,21 @@ describe('Admin - Groups screen', () => {
 
     cy.get('#courthouse-table').should('contain', 'Slough');
   });
+
+  it('creates new group', () => {
+    cy.get('button').contains('Create group').click();
+
+    cy.get('#name').type('Test Group');
+    cy.get('#description').type('Test description');
+    cy.get('#role-TRANSCRIBER').click();
+
+    cy.get('button').contains('Create group').click();
+
+    cy.get('app-govuk-banner').should('contain', 'Group created');
+    cy.get('h1').should('contain', 'Group details');
+
+    cy.get('#group-name').should('contain', 'Test Group');
+    cy.get('#group-description').should('contain', 'Test description');
+    cy.get('#group-role').should('contain', 'Transcriber');
+  });
 });

@@ -152,4 +152,17 @@ router.get('/', (req, res) => {
   res.send(securityGroups.value);
 });
 
+router.post('/', (req, res) => {
+  const group = {
+    ...req.body,
+    global_access: true,
+    display_state: true,
+    id: securityGroups.value.length + 1,
+    courthouse_ids: [],
+    user_ids: [],
+  };
+  securityGroups.value.push(group);
+  res.send(group).status(201);
+});
+
 module.exports = { router, defaultSecurityGroups };

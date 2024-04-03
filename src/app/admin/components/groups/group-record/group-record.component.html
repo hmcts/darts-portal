@@ -6,6 +6,10 @@
   <app-govuk-banner type="success">Group details updated</app-govuk-banner>
 }
 
+@if (hasCreatedGroup$ | async) {
+  <app-govuk-banner type="success">Group created</app-govuk-banner>
+}
+
 @if (vm$ | async; as vm) {
   <div class="heading-button-container">
     <app-govuk-heading caption="View group">Group details</app-govuk-heading>
@@ -24,7 +28,7 @@
   <p class="govuk-body" id="group-description">{{ vm.group.description || '-' }}</p>
 
   <app-govuk-heading tag="h3" size="s">Role</app-govuk-heading>
-  <p class="govuk-body" id="group-role">{{ vm?.group?.role?.name }}</p>
+  <p class="govuk-body" id="group-role">{{ vm?.group?.role?.displayName }}</p>
 
   <app-tabs [default]="tab">
     <app-group-courthouses

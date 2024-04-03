@@ -27,8 +27,9 @@ export class GroupsService {
       map((roles) => {
         return roles.map((role) => ({
           id: role.id,
-          name: role.display_name,
+          name: role.role_name,
           displayState: role.display_state,
+          displayName: role.display_name,
         }));
       })
     );
@@ -80,17 +81,16 @@ export class GroupsService {
     });
   }
 
-  // TODO:
-  // createGroup(formValues: GroupFormValue): Observable<SecurityGroup> {
-  //   return this.http
-  //     .post<SecurityGroupData>(`${GET_SECURITY_GROUPS_PATH}`, {
-  //       name: formValues.name,
-  //       display_name: formValues.name,
-  //       description: formValues.description,
-  //       security_role_id: formValues.role, // need to grab the id from the role object
-  //     })
-  //     .pipe(map(this.mapGroupDataToGroup));
-  // }
+  createGroup(formValues: GroupFormValue): Observable<SecurityGroup> {
+    return this.http
+      .post<SecurityGroupData>(`${GET_SECURITY_GROUPS_PATH}`, {
+        name: formValues.name,
+        display_name: formValues.name,
+        description: formValues.description,
+        security_role_id: formValues.role?.id,
+      })
+      .pipe(map(this.mapGroupDataToGroup));
+  }
 
   mapGroupDataToGroup(mapGroupDataToGroup: SecurityGroupData): SecurityGroup {
     return {
