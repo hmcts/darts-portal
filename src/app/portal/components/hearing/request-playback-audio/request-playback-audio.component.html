@@ -36,7 +36,11 @@
         <div class="govuk-grid-column-one-quarter">
           <div
             class="govuk-form-group"
-            [ngClass]="{ 'govuk-form-group--error': audioRequestForm.controls['endTime'].invalid && isSubmitted }"
+            [ngClass]="{
+              'govuk-form-group--error':
+                (audioRequestForm.controls['endTime'].invalid && isSubmitted) ||
+                (audioRequestForm.hasError('endTimeBeforeStartTime') && isSubmitted)
+            }"
           >
             <h3 class="govuk-heading-s">End Time</h3>
             <p
@@ -50,6 +54,13 @@
               class="govuk-error-message"
             >
               <span class="govuk-visually-hidden">Error:</span> You must include an end time for your audio recording
+            </p>
+            <p
+              *ngIf="audioRequestForm.hasError('endTimeBeforeStartTime') && isSubmitted"
+              class="end-time-error"
+              class="govuk-error-message"
+            >
+              <span class="govuk-visually-hidden">Error:</span> End time must be after start time
             </p>
             <app-time-input
               formGroupName="endTime"

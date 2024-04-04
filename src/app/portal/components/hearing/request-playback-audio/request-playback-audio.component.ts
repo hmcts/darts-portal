@@ -14,9 +14,10 @@ import { ErrorSummaryEntry, FieldErrors } from '@core-types/index';
 import { UserState } from '@core-types/user/user-state.interface';
 import { Hearing, PostAudioRequest } from '@portal-types/index';
 import { UserService } from '@services/user/user.service';
+import { beforeTimeValidator } from '@validators/before-time.validator';
 import { timeGroupValidator } from '@validators/time-group.validator';
 import { DateTime } from 'luxon';
-import { TimeInputComponent } from './time-input/time-input.component';
+import { TimeInputComponent, timeInputFormControls } from './time-input/time-input.component';
 
 const fieldErrors: FieldErrors = {
   startTime: {
@@ -53,25 +54,14 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
     private fb: FormBuilder,
     public userService: UserService
   ) {
-    this.audioRequestForm = this.fb.group({
-      startTime: this.fb.group(
-        {
-          hours: [null, [Validators.required, Validators.min(0), Validators.max(23), Validators.pattern(/^\d{2}$/)]],
-          minutes: [null, [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
-          seconds: [null, [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
-        },
-        { validators: timeGroupValidator }
-      ),
-      endTime: this.fb.group(
-        {
-          hours: [null, [Validators.required, Validators.min(0), Validators.max(23), Validators.pattern(/^\d{2}$/)]],
-          minutes: [null, [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
-          seconds: [null, [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
-        },
-        { validators: timeGroupValidator }
-      ),
-      requestType: [''],
-    });
+    this.audioRequestForm = this.fb.group(
+      {
+        startTime: this.fb.group(timeInputFormControls, { validators: timeGroupValidator }),
+        endTime: this.fb.group(timeInputFormControls, { validators: timeGroupValidator }),
+        requestType: [''],
+      },
+      { validators: beforeTimeValidator }
+    );
   }
   ngOnInit(): void {
     const requestTypeRequired =
@@ -90,6 +80,7 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
 
   getFieldErrorMessages(fieldName: string): string[] {
     const errors = this.f[fieldName].errors;
+
     if (!errors) {
       return [];
     }
@@ -110,6 +101,15 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
         this.getFieldErrorMessages(fieldId).map((message) => ({ fieldId: idHashMap.get(fieldId) ?? '', message }))
       )
       .flat();
+
+    if (this.audioRequestForm.invalid) {
+      if (!this.audioRequestForm.controls.endTime.invalid && this.audioRequestForm.errors?.endTimeBeforeStartTime) {
+        errorMessages.push({
+          fieldId: 'end-time-hour-input',
+          message: 'End time must be after start time',
+        });
+      }
+    }
 
     this.validationErrorEvent.emit(errorMessages);
   }
@@ -154,7 +154,14 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
 
     const endDateTime = DateTime.fromISO(`${hearingDate}T${endTimeHours}:${endTimeMinutes}:${endTimeSeconds}`);
 
-    if (!startDateTime.isValid || !endDateTime.isValid || this.audioRequestForm.get('requestType')?.invalid) return;
+    //Refuse to submit if form is invalid
+    if (
+      !startDateTime.isValid ||
+      !endDateTime.isValid ||
+      this.audioRequestForm.get('requestType')?.invalid ||
+      this.audioRequestForm.errors?.endTimeBeforeStartTime
+    )
+      return;
 
     this.requestObj = {
       hearing_id: this.hearing.id,

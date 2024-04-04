@@ -1,8 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, Output, ViewChild } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { DataTableComponent } from '@components/common/data-table/data-table.component';
-import { TimeInputComponent } from '@components/hearing/request-playback-audio/time-input/time-input.component';
+import {
+  TimeInputComponent,
+  timeInputFormControls,
+} from '@components/hearing/request-playback-audio/time-input/time-input.component';
 import { DatatableColumn } from '@core-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { AudioEventRow, Hearing, HearingEvent } from '@portal-types/index';
@@ -45,22 +48,8 @@ export class RequestTimesComponent {
 
   form = this.fb.group(
     {
-      startTime: this.fb.group(
-        {
-          hours: ['', [Validators.required, Validators.min(0), Validators.max(23), Validators.pattern(/^\d{2}$/)]],
-          minutes: ['', [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
-          seconds: ['', [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
-        },
-        { validators: timeGroupValidator }
-      ),
-      endTime: this.fb.group(
-        {
-          hours: ['', [Validators.required, Validators.min(0), Validators.max(23), Validators.pattern(/^\d{2}$/)]],
-          minutes: ['', [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
-          seconds: ['', [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
-        },
-        { validators: timeGroupValidator }
-      ),
+      startTime: this.fb.group(timeInputFormControls, { validators: timeGroupValidator }),
+      endTime: this.fb.group(timeInputFormControls, { validators: timeGroupValidator }),
     },
     { validators: beforeTimeValidator }
   );
