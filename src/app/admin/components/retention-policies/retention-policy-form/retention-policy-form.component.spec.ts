@@ -3,7 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RetentionPolicy, RetentionPolicyForm } from '@admin-types/index';
 import { SimpleChanges } from '@angular/core';
 import { RetentionPolicyFormErrorMessages } from '@constants/retention-policy-form-error-messages';
-import { CreatePolicyError } from '../create-retention-policy/create-retention-policy.component';
+import { DateTime } from 'luxon';
+import { CreatePolicyError } from '../create-edit-retention-policy/create-edit-retention-policy.component';
 import { RetentionPolicyFormComponent } from './retention-policy-form.component';
 
 type formValidationTestCase = {
@@ -15,7 +16,7 @@ type formValidationTestCase = {
 
 // Factory function to create a Valid RetentionPolicyForm object
 // with the option to override any properties
-export const formDataFactory = (data: Partial<RetentionPolicyForm>): RetentionPolicyForm => ({
+export const formDataFactory = (data?: Partial<RetentionPolicyForm>): RetentionPolicyForm => ({
   name: 'test',
   displayName: 'test',
   description: 'test',
@@ -158,7 +159,7 @@ describe('RetentionPolicyFormComponent', () => {
 
     fixture = TestBed.createComponent(RetentionPolicyFormComponent);
     component = fixture.componentInstance;
-    component.existingPolicies = [
+    component.policies = [
       { name: 'non-unique name', displayName: 'non-unique display name', fixedPolicyKey: '123' } as RetentionPolicy,
     ];
     fixture.detectChanges();
@@ -245,6 +246,36 @@ describe('RetentionPolicyFormComponent', () => {
       component.ngOnChanges({ savePolicyError: { currentValue: null } } as unknown as SimpleChanges);
 
       expect(component.form.controls.name.errors?.unique).toBeUndefined();
+    });
+  });
+
+  describe('edit context', () => {
+    it('populate form with policy data', () => {
+      component.context = 'edit';
+      const policy: RetentionPolicy = {
+        id: 0,
+        name: 'name',
+        displayName: 'disp',
+        description: 'desc',
+        fixedPolicyKey: '33',
+        duration: '1Y0M0D',
+        policyStartAt: DateTime.fromISO('2025-01-01T11:11:00.000Z'),
+        policyEndAt: null,
+      };
+      component.policies = [policy];
+      component.policyId = 0;
+
+      component.ngOnInit();
+
+      expect(component.form.value).toEqual({
+        name: 'name',
+        displayName: 'disp',
+        description: 'desc',
+        fixedPolicyKey: '33',
+        duration: { years: '1', months: '0', days: '0' },
+        startDate: '01/01/2025',
+        startTime: { hours: '11', minutes: '11' },
+      });
     });
   });
 });
