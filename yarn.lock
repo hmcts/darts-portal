@@ -6735,6 +6735,7 @@ __metadata:
     junit-report-merger: ^6.0.2
     lodash: ^4.17.21
     luxon: ^3.4.3
+    ngx-cookie-service: ^17.1.0
     nodemon: ^3.0.0
     npm: ^10.1.0
     nunjucks: ^3.2.4
@@ -11154,6 +11155,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ngx-cookie-service@npm:^17.1.0":
+  version: 17.1.0
+  resolution: "ngx-cookie-service@npm:17.1.0"
+  dependencies:
+    tslib: ^2.6.2
+  peerDependencies:
+    "@angular/common": ^17.0.0
+    "@angular/core": ^17.0.0
+  checksum: db028a860ae3d3a14e33c8e5567720d998f898d322e1f1fcac3f335c2b383584d0dd3b0f30212fa69c0d15f17e5d274e57035fa80cc14c0e2da438d479827441
+  languageName: node
+  linkType: hard
+
 "nice-napi@npm:^1.0.2":
   version: 1.0.2
   resolution: "nice-napi@npm:1.0.2"
@@ -14135,7 +14148,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:2.6.2, tslib@npm:^2.1.0, tslib@npm:^2.2.0, tslib@npm:^2.3.0, tslib@npm:^2.4.0":
+"tslib@npm:2.6.2, tslib@npm:^2.1.0, tslib@npm:^2.2.0, tslib@npm:^2.3.0, tslib@npm:^2.4.0, tslib@npm:^2.6.2":
   version: 2.6.2
   resolution: "tslib@npm:2.6.2"
   checksum: 329ea56123005922f39642318e3d1f0f8265d1e7fcb92c633e0809521da75eeaca28d2cf96d7248229deb40e5c19adf408259f4b9640afd20d13aecc1430f3ad

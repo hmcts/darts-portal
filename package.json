@@ -69,6 +69,7 @@
     "govuk-frontend": "^5.2.0",
     "http-proxy-middleware": "^2.0.6",
     "luxon": "^3.4.3",
+    "ngx-cookie-service": "^17.1.0",
     "nunjucks": "^3.2.4",
     "redis": "^4.6.7",
     "rxjs": "~7.8.0",
