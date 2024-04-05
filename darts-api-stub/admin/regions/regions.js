@@ -1,5 +1,5 @@
 const express = require('express');
-const { userIdhasAnyRoles } = require('../../users');
+const { userIdHasAnyRoles } = require('../../users');
 const { SUPER_ADMIN } = require('../../roles');
 
 const router = express.Router();
@@ -14,7 +14,7 @@ const defaultRegions = [
 ];
 
 router.get('/', (req, res) => {
-  if (!userIdhasAnyRoles([SUPER_ADMIN], req.headers.user_id))
+  if (!userIdHasAnyRoles([SUPER_ADMIN], req.headers.user_id))
     return res.status(403).send({
       detail: `You do not have permission`,
     });

@@ -1,7 +1,7 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { UserState } from '@core-types/user/user-state.interface';
-import { USER_PROFILE_PATH, UserService } from './user.service';
+import { USER_PROFILE_PATH, REFRESH_USER_PROFILE_PATH, UserService } from './user.service';
 
 describe('UserService', () => {
   let service: UserService;
@@ -74,8 +74,15 @@ describe('UserService', () => {
       const result = service.isTranscriber();
       expect(result).toEqual(true);
     });
+
     it("returns false if the user doesn't have the Transcriber role", () => {
       service.userState.set(mockUserState);
+      const result = service.isTranscriber();
+      expect(result).toEqual(false);
+    });
+
+    it('returns false when user state is not set', () => {
+      service.userState.set(null);
       const result = service.isTranscriber();
       expect(result).toEqual(false);
     });
@@ -258,6 +265,49 @@ describe('UserService', () => {
       service.userState.set(mockUserState);
       const result = service.isSuperUser();
       expect(result).toEqual(false);
+    });
+  });
+
+  describe('#refreshUserProfile', () => {
+    it('does not refresh when userstate is not set', () => {
+      service.userState.set(null);
+      service.refreshUserProfile();
+
+      httpMock.expectNone(REFRESH_USER_PROFILE_PATH);
+    });
+
+    it('refreshes when userstate is set', () => {
+      service.userState.set(mockUserState);
+      service.refreshUserProfile();
+
+      httpMock.expectOne(REFRESH_USER_PROFILE_PATH);
+    });
+  });
+
+  describe('#hasRoles', () => {
+    it('returns false when userstate is not set', () => {
+      service.userState.set(null);
+      expect(service.hasRoles(['SUPER_USER'])).toBeFalsy();
+    });
+
+    it('returns false when user does not have any roles', () => {
+      const approver: UserState = {
+        userName: '',
+        userId: 1,
+        roles: [{ roleId: 123, roleName: 'APPROVER' }],
+      };
+      service.userState.set(approver);
+      expect(service.hasRoles(['SUPER_USER', 'REQUESTER'])).toBeFalsy();
+    });
+
+    it('returns true when user has a role', () => {
+      const approver: UserState = {
+        userName: '',
+        userId: 1,
+        roles: [{ roleId: 123, roleName: 'APPROVER' }],
+      };
+      service.userState.set(approver);
+      expect(service.hasRoles(['REQUESTER', 'APPROVER'])).toBeTruthy();
     });
   });
 });

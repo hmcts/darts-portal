@@ -4,6 +4,7 @@ import { RoleName, UserState } from '@core-types/index';
 import { shareReplay, tap } from 'rxjs';
 
 export const USER_PROFILE_PATH = '/user/profile';
+export const REFRESH_USER_PROFILE_PATH = '/user/refresh-profile';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +18,12 @@ export class UserService {
     .get<UserState>(USER_PROFILE_PATH)
     .pipe(shareReplay(1))
     .pipe(tap((x) => this.userState.set(x)));
+
+  public refreshUserProfile(): void {
+    if (this.hasUserState()) {
+      this.http.post<UserState>(REFRESH_USER_PROFILE_PATH, null).subscribe();
+    }
+  }
 
   public isTranscriber(): boolean {
     return this.hasRole('TRANSCRIBER');
@@ -46,11 +53,15 @@ export class UserService {
     return this.hasRole('TRANSLATION_QA');
   }
 
-  private hasRole(role: RoleName): boolean {
-    return this.userState() ? this.userState()!.roles.some((x) => x.roleName === role) : false;
-  }
-
   public hasRoles(roles: RoleName[]): boolean {
     return this.userState() ? roles.some((role) => this.userState()!.roles.some((x) => x.roleName === role)) : false;
+  }
+
+  private hasUserState(): boolean {
+    return Boolean(this.userState());
+  }
+
+  private hasRole(role: RoleName): boolean {
+    return this.userState() ? this.userState()!.roles.some((x) => x.roleName === role) : false;
   }
 }

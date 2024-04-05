@@ -113,23 +113,30 @@ const stubUsers = [
   },
 ];
 
+const getUserById = (userId) => stubUsers.find((user) => user.userState.userId === userId);
+
 const getRolesByUserId = (userId) => {
-  const u = stubUsers.find((user) => user.userState.userId === userId);
-  return u?.userState.roles;
+  return getUserById(parseInt(userId, 10))?.userState.roles;
 };
 
-const userIdhasAnyRoles = (roles, userId) => {
+const userIdHasAnyRoles = (roles, userId) => {
   // If user id has any of these roles
-  const user = stubUsers.find((user) => user.userState.userId == userId);
+  const user = getUserById(parseInt(userId, 10));
   if (!user) return false;
   return user.userState.roles.some((role) => roles.includes(role));
 };
 
-const getUserNamebyUserId = (userId) => {
+const getUserNameByUserId = (userId) => {
   // If user id has any of these roles
-  const user = stubUsers.find((user) => user.userState.userId == userId);
+  const user = getUserById(parseInt(userId, 10));
   if (!user) return false;
   return user.name;
 };
 
-module.exports = { stubUsers, userIdhasAnyRoles, getUserNamebyUserId, getRolesByUserId };
+module.exports = {
+  stubUsers,
+  getUserById,
+  userIdHasAnyRoles,
+  getUserNameByUserId,
+  getRolesByUserId,
+};

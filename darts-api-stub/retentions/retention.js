@@ -5,7 +5,7 @@ const router = express.Router();
 const { localArray } = require('../localArray');
 const { getEarliestDatefromKey, getLatestDatefromKey } = require('../utils/date');
 const { JUDGE, SUPER_ADMIN } = require('../roles');
-const { userIdhasAnyRoles, getUserNamebyUserId } = require('../users');
+const { userIdHasAnyRoles, getUserNameByUserId } = require('../users');
 
 const dateFormat = 'yyyy-MM-dd';
 const defaultRetentionHistory = [
@@ -123,7 +123,7 @@ router.post('', (req, res) => {
         ).startOf('day');
         if (
           retention.retention_date < latestRetentionDate &&
-          !userIdhasAnyRoles([SUPER_ADMIN, JUDGE], req.headers.user_id)
+          !userIdHasAnyRoles([SUPER_ADMIN, JUDGE], req.headers.user_id)
         ) {
           // If date is less than the latest retention date and user is not Admin or Judge
           res.status(403).send({
@@ -153,7 +153,7 @@ router.post('', (req, res) => {
       retention.case_id = parseInt(req.body.case_id);
       retention.retention_last_changed_date = DateTime.now().toISO({ setZone: true });
       // Work out which user made the request by the user ID in the headers
-      retention.amended_by = getUserNamebyUserId(req.headers.user_id);
+      retention.amended_by = getUserNameByUserId(req.headers.user_id);
       retention.retention_policy_applied = req.body?.is_permanent_retention ? 'Permanent' : 'Manual';
       retention.comments = req.body.comments;
       retention.status = 'COMPLETE';

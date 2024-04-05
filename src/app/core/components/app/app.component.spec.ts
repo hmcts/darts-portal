@@ -8,10 +8,12 @@ import { FooterComponent } from '../layout/footer/footer.component';
 import { HeaderComponent } from '../layout/header/header.component';
 import { AppComponent } from './app.component';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
+import { UserService } from '@services/user/user.service';
 
 describe('AppComponent', () => {
   const fakeHeaderService = { showNavigation: jest.fn() } as unknown as HeaderService;
   const fakeAppInsightsService = { logPageView: jest.fn() } as unknown as AppInsightsService;
+  const fakeUserService = { refreshUserProfile: jest.fn() } as unknown as UserService;
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
   let routerEventsSubject: Subject<NavigationEnd>;
@@ -20,6 +22,7 @@ describe('AppComponent', () => {
   beforeEach(() => {
     (fakeHeaderService.showNavigation as jest.Mock).mockClear();
     (fakeAppInsightsService.logPageView as jest.Mock).mockClear();
+    (fakeUserService.refreshUserProfile as jest.Mock).mockClear();
     routerEventsSubject = new Subject<NavigationEnd>();
 
     TestBed.configureTestingModule({
@@ -27,6 +30,7 @@ describe('AppComponent', () => {
       providers: [
         { provide: HeaderService, useValue: fakeHeaderService },
         { provide: AppInsightsService, useValue: fakeAppInsightsService },
+        { provide: UserService, useValue: fakeUserService },
         { provide: ActivatedRoute, useValue: { snapshot: mockRoute } },
       ],
     });
@@ -78,5 +82,16 @@ describe('AppComponent', () => {
     routerEventsSubject.next(navigationEndEvent);
 
     expect(fakeAppInsightsService.logPageView).toHaveBeenCalledWith(url, url);
+  });
+
+  it('should refresh user profile NavigationEnd event', () => {
+    const url = '/something';
+    jest.spyOn(fakeUserService, 'refreshUserProfile');
+    const navigationEndEvent = new NavigationEnd(1, url, url);
+
+    (TestBed.inject(Router).events as unknown as Subject<Event>).next(navigationEndEvent as Event);
+    routerEventsSubject.next(navigationEndEvent);
+
+    expect(fakeUserService.refreshUserProfile).toHaveBeenCalled();
   });
 });
