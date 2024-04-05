@@ -35,23 +35,25 @@
         />
       </div>
     </div>
-    <span class="govuk-body colon">:</span>
-    <div class="govuk-date-input__item">
-      <div class="govuk-form-group">
-        <label class="govuk-label govuk-date-input__label small-text" [for]="idStringPrepend + '-seconds-input'">
-          Seconds
-        </label>
-        <input
-          class="govuk-input govuk-date-input__input govuk-input--width-2"
-          [id]="idStringPrepend + '-seconds-input'"
-          name="seconds-input"
-          formControlName="seconds"
-          type="text"
-          inputmode="numeric"
-          maxlength="2"
-          [ngClass]="{ 'govuk-input--error': form.controls['seconds'].invalid && isSubmitted }"
-        />
+    @if (form.controls.seconds) {
+      <span class="govuk-body colon">:</span>
+      <div class="govuk-date-input__item">
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-date-input__label small-text" [for]="idStringPrepend + '-seconds-input'">
+            Seconds
+          </label>
+          <input
+            class="govuk-input govuk-date-input__input govuk-input--width-2"
+            [id]="idStringPrepend + '-seconds-input'"
+            name="seconds-input"
+            formControlName="seconds"
+            type="text"
+            inputmode="numeric"
+            maxlength="2"
+            [ngClass]="{ 'govuk-input--error': form.controls['seconds'].invalid && isSubmitted }"
+          />
+        </div>
       </div>
-    </div>
+    }
   </div>
 </ng-container>

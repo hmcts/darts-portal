@@ -1,6 +1,8 @@
 <div data-module="ds-datepicker" class="ds_datepicker">
-  <label class="ds_label" [for]="inputId">{{ label }}</label>
-  <p class="ds_hint-text">{{ hint }}</p>
+  <label class="govuk-label" [for]="inputId">{{ label }}</label>
+  @if (hint) {
+    <p class="ds_hint-text">{{ hint }}</p>
+  }
   <!-- Error message if date invalid -->
   @if (areDateErrors()) {
     <div [id]="inputId + '-errors'">

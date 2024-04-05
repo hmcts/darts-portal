@@ -1,6 +1,10 @@
+@if (hasPolicyCreated$ | async) {
+  <app-govuk-banner type="success">Retention policy created</app-govuk-banner>
+}
+
 <div class="heading-button-container">
   <h1 class="govuk-heading-xl">Retention policies</h1>
-  <button class="govuk-button" data-module="govuk-button">Create policy</button>
+  <button class="govuk-button" (click)="router.navigate(['admin/retention-policies/create'])">Create policy</button>
 </div>
 @if (retentionPolicies$ | async; as rows) {
   <app-tabs>

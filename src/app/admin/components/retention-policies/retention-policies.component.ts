@@ -1,7 +1,9 @@
 import { RetentionPolicy } from '@admin-types/index';
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
+import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { DatatableColumn } from '@core-types/index';
 import { TabDirective } from '@directives/tab.directive';
@@ -23,13 +25,17 @@ import { combineLatest, map } from 'rxjs';
     LuxonDatePipe,
     TableRowTemplateDirective,
     DurationPipe,
+    GovukBannerComponent,
   ],
   templateUrl: './retention-policies.component.html',
   styleUrl: './retention-policies.component.scss',
 })
 export class RetentionPoliciesComponent {
   private retentionPoliciesService = inject(RetentionPoliciesService);
+  router = inject(Router);
+  route = inject(ActivatedRoute);
   retentionPoliciesData$ = this.retentionPoliciesService.getRetentionPolicyTypes();
+  hasPolicyCreated$ = this.route.queryParams.pipe(map((params) => !!params.created));
 
   retentionPolicies$ = combineLatest({
     activeRetentionPolicies: this.retentionPoliciesData$.pipe(map((policy) => this.filterActivePolicies(policy))),

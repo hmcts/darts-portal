@@ -15,7 +15,7 @@
       "@interceptors/*": ["src/app/core/interceptors/*"],
       "@extensions/*": ["src/app/core/extensions/*"],
       "@directives/*": ["src/app/core/directives/*"],
-      "@constants/*": ["src/app/portal/constants/*"]
+      "@constants/*": ["src/app/portal/constants/*", "src/app/core/constants/*", "src/app/admin/constants/*"]
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
