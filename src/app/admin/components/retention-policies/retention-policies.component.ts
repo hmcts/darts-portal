@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
-import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { DatatableColumn } from '@core-types/index';
@@ -26,7 +25,6 @@ import { combineLatest, map } from 'rxjs';
     LuxonDatePipe,
     TableRowTemplateDirective,
     DurationPipe,
-    GovukBannerComponent,
     GovukHeadingComponent,
     RouterLink,
   ],
@@ -38,8 +36,6 @@ export class RetentionPoliciesComponent {
   router = inject(Router);
   route = inject(ActivatedRoute);
   retentionPoliciesData$ = this.retentionPoliciesService.getRetentionPolicyTypes();
-  hasPolicyCreated$ = this.route.queryParams.pipe(map((params) => !!params.created));
-  hasPolicyUpdated$ = this.route.queryParams.pipe(map((params) => !!params.updated));
   retentionPoliciesPath = 'admin/system-configuration/retention-policies';
 
   retentionPolicies$ = combineLatest({
@@ -60,6 +56,19 @@ export class RetentionPoliciesComponent {
 
   isPolicyActive(policyStartDate: DateTime): boolean {
     return policyStartDate > DateTime.now();
+  }
+
+  isPolicyRevision(policy: RetentionPolicy, policies: RetentionPolicy[]): boolean {
+    // check if other policies have the same fixed policy key, this means it is a revision
+    return policies.some((p) => p.fixedPolicyKey === policy.fixedPolicyKey && p.id !== policy.id);
+  }
+
+  onEditClick(policy: RetentionPolicy, policies: RetentionPolicy[]): void {
+    this.router.navigate([
+      this.retentionPoliciesPath,
+      policy.id,
+      this.isPolicyRevision(policy, policies) ? 'edit-revision' : 'edit',
+    ]);
   }
 
   filterActivePolicies(policies: RetentionPolicy[]): RetentionPolicy[] {

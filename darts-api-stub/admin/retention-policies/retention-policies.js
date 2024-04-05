@@ -4,10 +4,6 @@ const { SUPER_ADMIN } = require('../../roles');
 const { DateTime } = require('luxon');
 const router = express.Router();
 
-const NON_UNIQUE_POLICY_NAME = 'NON_UNIQUE_POLICY_NAME';
-const NON_UNIQUE_POLICY_DISPLAY_NAME = 'NON_UNIQUE_POLICY_DISPLAY_NAME';
-const NON_UNIQUE_FIXED_POLICY_KEY = 'NON_UNIQUE_FIXED_POLICY_KEY';
-
 const retentionPolicies = [
   {
     id: 0,
@@ -95,25 +91,32 @@ router.patch('/:id', (req, res) => {
       detail: `Policy with id ${req.params.id} not found`,
     });
 
-  if (req.body.name === NON_UNIQUE_POLICY_NAME) {
+  if (req.body.name === 'NON_UNIQUE_POLICY_NAME') {
     return res.status(400).send({
-      type: NON_UNIQUE_POLICY_NAME,
+      type: 'RETENTION_109',
     });
   }
 
-  if (req.body.display_name === NON_UNIQUE_POLICY_DISPLAY_NAME) {
+  if (req.body.display_name === 'NON_UNIQUE_POLICY_DISPLAY_NAME') {
     return res.status(400).send({
-      type: NON_UNIQUE_POLICY_DISPLAY_NAME,
+      type: 'RETENTION_110',
     });
   }
-  if (req.body.fixed_policy_key === NON_UNIQUE_FIXED_POLICY_KEY) {
+
+  if (req.body.fixed_policy_key === 'NON_UNIQUE_FIXED_POLICY_KEY') {
     return res.status(400).send({
-      type: NON_UNIQUE_FIXED_POLICY_KEY,
+      type: 'RETENTION_114',
     });
   }
 
   // convert policy_start_at to DateTime
   const policyStart = DateTime.fromISO(req.body.policy_start_at);
+
+  if (policyStart < DateTime.now()) {
+    return res.status(400).send({
+      type: 'RETENTION_112',
+    });
+  }
 
   // split duration string ('3Y6M12D') into years, months, days
   const [years, months, days] = req.body.duration.split(/[YMD]/).map(Number);
@@ -132,21 +135,21 @@ router.post('/', (req, res) => {
       detail: `You do not have permission`,
     });
 
-  if (req.body.name === NON_UNIQUE_POLICY_NAME) {
+  if (req.body.name === 'NON_UNIQUE_POLICY_NAME') {
     return res.status(400).send({
-      type: NON_UNIQUE_POLICY_NAME,
+      type: 'RETENTION_109',
     });
   }
 
-  if (req.body.display_name === NON_UNIQUE_POLICY_DISPLAY_NAME) {
+  if (req.body.display_name === 'NON_UNIQUE_POLICY_DISPLAY_NAME') {
     return res.status(400).send({
-      type: NON_UNIQUE_POLICY_DISPLAY_NAME,
+      type: 'RETENTION_110',
     });
   }
 
-  if (req.body.fixed_policy_key === NON_UNIQUE_FIXED_POLICY_KEY) {
+  if (req.body.fixed_policy_key === 'NON_UNIQUE_FIXED_POLICY_KEY') {
     return res.status(400).send({
-      type: NON_UNIQUE_FIXED_POLICY_KEY,
+      type: 'RETENTION_114',
     });
   }
 

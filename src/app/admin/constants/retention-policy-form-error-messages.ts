@@ -22,7 +22,8 @@ export const RetentionPolicyFormErrorMessages: FieldErrors = {
   startDate: {
     required: 'Enter a policy start date',
     pastDate: 'Enter a policy start date in the future',
-    unique: 'Enter a policy start date that is not used in another version of this policy',
+    priorRevisionDate: 'Enter a policy start date that is not used in another version of this policy',
+    pattern: 'Enter start date in dd/mm/yyyy format',
   },
   startTime: {
     required: 'Enter a start time',
@@ -30,5 +31,6 @@ export const RetentionPolicyFormErrorMessages: FieldErrors = {
     maxlength: 'Enter the start time as numbers',
     minlength: 'Enter the start time as numbers',
     invalidTime: 'Enter the start time as numbers',
+    pastDateTime: 'Enter a policy start time in the future',
   },
 };

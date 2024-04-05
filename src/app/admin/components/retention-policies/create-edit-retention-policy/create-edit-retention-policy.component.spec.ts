@@ -41,6 +41,7 @@ describe('CreateEditRetentionPolicyComponent', () => {
   describe('create context (default)', () => {
     beforeEach(() => {
       component.context = 'create';
+      component.isCreate = true;
     });
 
     it('should create', () => {
@@ -57,7 +58,7 @@ describe('CreateEditRetentionPolicyComponent', () => {
 
       component.onSubmitPolicy(policy);
 
-      expect(retentionPoliciesService.createRetentionPolicy).toHaveBeenCalledWith(policy);
+      expect(retentionPoliciesService.createRetentionPolicy).toHaveBeenCalledWith(policy, false);
       expect(routerSpy).toHaveBeenCalledWith(['admin/system-configuration/retention-policies'], {
         queryParams: { created: true },
       });
@@ -70,7 +71,7 @@ describe('CreateEditRetentionPolicyComponent', () => {
 
       component.onSubmitPolicy(policy);
 
-      expect(retentionPoliciesService.createRetentionPolicy).toHaveBeenCalledWith(policy);
+      expect(retentionPoliciesService.createRetentionPolicy).toHaveBeenCalledWith(policy, false);
       expect(component.error).toEqual('some-error');
     });
 
@@ -123,6 +124,55 @@ describe('CreateEditRetentionPolicyComponent', () => {
 
       expect(retentionPoliciesService.editRetentionPolicy).toHaveBeenCalledWith(policy, '1');
       expect(component.error).toEqual('some-error');
+    });
+  });
+
+  describe('create-revision context', () => {
+    it('should set title to Create new version', () => {
+      component.context = 'create-revision';
+
+      component.ngOnInit();
+
+      expect(component.title).toEqual('Create new version');
+    });
+
+    it('navigate to /admin/retention-policies with query param revised=true on successful policy submission', () => {
+      const routerSpy = jest.spyOn(component.router, 'navigate');
+      const policy = formDataFactory({});
+
+      component.context = 'create-revision';
+      component.isCreateRevision = true;
+
+      component.onSubmitPolicy(policy);
+
+      expect(retentionPoliciesService.createRetentionPolicy).toHaveBeenCalledWith(policy, true);
+      expect(routerSpy).toHaveBeenCalledWith(['admin/system-configuration/retention-policies'], {
+        queryParams: { revised: true },
+      });
+    });
+  });
+
+  describe('edit-revision context', () => {
+    it('should set title to Edit version', () => {
+      component.context = 'edit-revision';
+
+      component.ngOnInit();
+
+      expect(component.title).toEqual('Edit policy');
+    });
+
+    it('navigate to /admin/retention-policies with query param updated=true on successful policy submission', () => {
+      const routerSpy = jest.spyOn(component.router, 'navigate');
+      const policy = formDataFactory({});
+
+      component.context = 'edit-revision';
+
+      component.onSubmitPolicy(policy);
+
+      expect(retentionPoliciesService.editRetentionPolicy).toHaveBeenCalledWith(policy, '1');
+      expect(routerSpy).toHaveBeenCalledWith(['admin/system-configuration/retention-policies'], {
+        queryParams: { updated: true },
+      });
     });
   });
 });

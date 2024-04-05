@@ -16,10 +16,10 @@ export class RetentionPoliciesService {
       .pipe(map((policies) => policies.map((p) => this.mapRetentionPolicyDataToRetentionPolicy(p))));
   }
 
-  createRetentionPolicy(policy: RetentionPolicyForm): Observable<RetentionPolicy> {
+  createRetentionPolicy(policy: RetentionPolicyForm, isRevision: boolean = false): Observable<RetentionPolicy> {
     return this.http
       .post<RetentionPolicyData>(`api/admin/retention-policy-types`, this.mapPolicyRequestBody(policy), {
-        params: { is_revision: false },
+        params: { is_revision: isRevision },
       })
       .pipe(map((policy) => this.mapRetentionPolicyDataToRetentionPolicy(policy)));
   }
