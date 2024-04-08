@@ -11,10 +11,12 @@ describe('Admin - Retention Policies screen', () => {
   it('show active policies', () => {
     cy.get('#active-policies-table').contains('td', '-');
     cy.get('#active-policies-table').contains('td', '01 Jan 2099 12:00 AM');
+    cy.a11y();
   });
   it('show inactive policies', () => {
     cy.contains('Inactive').click();
     cy.get('#inactive-policies-table').contains('td', '31 Jan 2024 12:00 AM');
+    cy.a11y();
   });
 
   it('create new policy', () => {
@@ -29,6 +31,8 @@ describe('Admin - Retention Policies screen', () => {
     cy.get('#startDate').type('10/10/3000');
     cy.get('#start-time-hour-input').type('23');
     cy.get('#start-time-minutes-input').type('59');
+
+    cy.a11y();
 
     cy.contains('Save').click();
 
