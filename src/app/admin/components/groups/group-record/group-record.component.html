@@ -32,14 +32,14 @@
 
   <app-tabs [default]="tab">
     <app-group-courthouses
-      *tab="'Courthouses'"
+      *tab="'Courthouses'; screenReaderText: 'Group courthouses'; id: 'group-courthouses'"
       [allCourthouses]="vm.courthouses"
       [selectedCourthouses]="vm.group.courthouses"
       (update)="onUpdateCourthouses($event)"
     />
 
     <app-group-users
-      *tab="'Users'"
+      *tab="'Users'; screenReaderText: 'Group users'; id: 'group-users'"
       [allUsers]="vm.users"
       [groupUsers]="vm.group.users"
       (update)="onUpdateUsers($event)"

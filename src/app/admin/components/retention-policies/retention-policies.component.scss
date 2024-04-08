@@ -4,8 +4,11 @@
   justify-content: space-between;
 }
 
-::ng-deep {
+:host ::ng-deep {
   th {
     color: black;
+  }
+  .govuk-table__cell {
+    max-width: 18rem;
   }
 }

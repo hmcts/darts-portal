@@ -1,6 +1,10 @@
+@if (hasPolicyCreated$ | async) {
+  <app-govuk-banner type="success">Retention policy created</app-govuk-banner>
+}
+
 <div class="heading-button-container">
   <h1 class="govuk-heading-xl">Retention policies</h1>
-  <button class="govuk-button" data-module="govuk-button">Create policy</button>
+  <button class="govuk-button" (click)="router.navigate(['admin/retention-policies/create'])">Create policy</button>
 </div>
 @if (retentionPolicies$ | async; as rows) {
   <app-tabs>
@@ -11,7 +15,7 @@
       [columns]="activeColumns"
     >
       <ng-template [tableRowTemplate]="rows.activeRetentionPolicies" let-row>
-        <td class="govuk-table__cell">{{ row.name }}</td>
+        <td class="govuk-table__cell">{{ row.displayName }}</td>
         <td class="govuk-table__cell">{{ row.description }}</td>
         <td class="govuk-table__cell">{{ row.fixedPolicyKey }}</td>
         <td class="govuk-table__cell">{{ row.duration | duration }}</td>
@@ -35,7 +39,7 @@
       [columns]="inActiveColumns"
     >
       <ng-template [tableRowTemplate]="rows.inactiveRetentionPolicies" let-row>
-        <td class="govuk-table__cell">{{ row.name }}</td>
+        <td class="govuk-table__cell">{{ row.displayName }}</td>
         <td class="govuk-table__cell">{{ row.description }}</td>
         <td class="govuk-table__cell">{{ row.fixedPolicyKey }}</td>
         <td class="govuk-table__cell">{{ row.duration | duration }}</td>
