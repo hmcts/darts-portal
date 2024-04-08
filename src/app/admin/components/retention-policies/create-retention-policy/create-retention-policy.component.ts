@@ -1,7 +1,7 @@
 import { RetentionPolicyForm } from '@admin-types/index';
 import { AsyncPipe, JsonPipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
@@ -9,6 +9,7 @@ import { ValidationErrorSummaryComponent } from '@common/validation-error-summar
 import { ErrorSummaryEntry } from '@core-types/index';
 import { RetentionPoliciesService } from '@services/retention-policies/retention-policies.service';
 import { RetentionPolicyFormComponent } from '../retention-policy-form/retention-policy-form.component';
+import { HeaderService } from './../../../../core/services/header/header.service';
 
 export type CreatePolicyError =
   | 'NON_UNIQUE_POLICY_NAME'
@@ -29,13 +30,18 @@ export type CreatePolicyError =
   templateUrl: './create-retention-policy.component.html',
   styleUrl: './create-retention-policy.component.scss',
 })
-export class CreateRetentionPolicyComponent {
+export class CreateRetentionPolicyComponent implements OnInit {
   router = inject(Router);
   retentionPoliciesService = inject(RetentionPoliciesService);
   errors: ErrorSummaryEntry[] = [];
   error: CreatePolicyError | null = null;
+  headerService = inject(HeaderService);
 
   policies$ = this.retentionPoliciesService.getRetentionPolicyTypes();
+
+  ngOnInit(): void {
+    this.headerService.hideNavigation();
+  }
 
   onSubmitPolicy(policy: RetentionPolicyForm) {
     this.retentionPoliciesService.createRetentionPolicy(policy).subscribe({
