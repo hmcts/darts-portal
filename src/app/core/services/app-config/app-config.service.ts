@@ -9,6 +9,7 @@ export interface AppConfig {
     emailAddress: string;
   };
   environment: string;
+  dynatraceScriptUrl: string;
 }
 
 const CONFIG_PATH = '/app/config';

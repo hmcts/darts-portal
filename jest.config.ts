@@ -4,7 +4,7 @@ const config: Config = {
   preset: 'jest-preset-angular',
   setupFilesAfterEnv: ['<rootDir>/setup-jest.ts'],
   moduleDirectories: ['node_modules', '<rootDir>'],
-  transformIgnorePatterns: ['node_modules/(?!@angular|@scottish-government)'],
+  transformIgnorePatterns: ['node_modules/(?!@angular|@scottish-government|ngx-cookie-service)'],
   moduleNameMapper: {
     '^@services/(.*)$': [
       '<rootDir>/src/app/core/services/$1',

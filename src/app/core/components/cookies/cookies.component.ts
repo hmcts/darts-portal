@@ -21,7 +21,7 @@ export class CookiesComponent implements OnInit {
   cookiePolicy = this.cookieService.getCookiePolicy();
 
   ngOnInit(): void {
-    this.cookieForm = this.fb.group(this.cookiePolicy);
+    this.cookieForm = this.fb.group(this.cookiePolicy!);
   }
 
   submit() {
@@ -34,10 +34,5 @@ export class CookiesComponent implements OnInit {
       top: 0,
       left: 0,
     });
-
-    console.log(this.cookieForm.value);
   }
-
-  //Dynamically reference Dynatrace script based off cookie policy
-  //If select no, this reference will need to delete script and cookies
 }
