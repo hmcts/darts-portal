@@ -5,7 +5,7 @@ export type RetentionPolicy = {
   name: string;
   displayName: string;
   description: string;
-  fixedPolicyKey: number;
+  fixedPolicyKey: string;
   duration: string;
   policyStartAt: DateTime;
   policyEndAt: DateTime | null;

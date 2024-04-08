@@ -101,6 +101,13 @@ export const ADMIN_ROUTES: Routes = [
     loadComponent: () =>
       import('./components/retention-policies/retention-policies.component').then((c) => c.RetentionPoliciesComponent),
   },
+  {
+    path: 'admin/retention-policies/create',
+    loadComponent: () =>
+      import('./components/retention-policies/create-retention-policy/create-retention-policy.component').then(
+        (c) => c.CreateRetentionPolicyComponent
+      ),
+  },
 ].map((route) => ({
   ...route,
   resolve: { userState: () => inject(UserService).userProfile$ },

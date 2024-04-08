@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RetentionPolicy, RetentionPolicyData } from '@admin-types/index';
 import { DatePipe } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { RetentionPoliciesService } from '@services/retention-policies/retention-policies.service';
 import { DateTime } from 'luxon';
@@ -19,7 +20,7 @@ describe('RetentionPoliciesComponent', () => {
       name: 'DARTS Permanent Retention v3',
       display_name: 'Legacy Permanent',
       description: 'lorem ipsum',
-      fixed_policy_key: 2,
+      fixed_policy_key: '2',
       duration: '1Y0M0D',
       policy_start_at: '2025-01-01T00:00:00Z',
       policy_end_at: '',
@@ -37,6 +38,7 @@ describe('RetentionPoliciesComponent', () => {
         { provide: RetentionPoliciesService, useValue: fakeRetentionPoliciesService },
         LuxonDatePipe,
         DatePipe,
+        { provide: ActivatedRoute, useValue: { queryParams: of({ created: true }) } },
       ],
     }).compileComponents();
 

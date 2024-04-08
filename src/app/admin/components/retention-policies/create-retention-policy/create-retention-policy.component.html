@@ -1,0 +1,15 @@
+<app-validation-error-summary [errors]="errors" />
+
+<app-govuk-heading caption="Retention policy">Create new policy</app-govuk-heading>
+
+@if (policies$ | async; as policies) {
+  <app-retention-policy-form
+    [existingPolicies]="policies"
+    (submitPolicy)="onSubmitPolicy($event)"
+    (cancel)="router.navigate(['admin/retention-policies'])"
+    (errors)="errors = $event"
+    [savePolicyError]="error"
+  ></app-retention-policy-form>
+} @else {
+  <app-loading />
+}
