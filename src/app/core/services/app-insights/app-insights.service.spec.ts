@@ -1,5 +1,6 @@
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 import { AppConfigService } from '@services/app-config/app-config.service';
+import { CookiesService } from '@services/cookies/cookies.service';
 import { AppInsightsService } from './app-insights.service';
 
 describe('AppInsightsService', () => {
@@ -9,8 +10,12 @@ describe('AppInsightsService', () => {
     }),
   } as AppConfigService;
 
+  const fakeCookieService = {
+    getCookiePolicy: jest.fn(),
+  } as unknown as CookiesService;
+
   it('logs a page view', () => {
-    const appInsightsService = new AppInsightsService(fakeAppConfigService);
+    const appInsightsService = new AppInsightsService(fakeAppConfigService, fakeCookieService);
     const spy = jest.spyOn(ApplicationInsights.prototype, 'trackPageView');
 
     appInsightsService.logPageView('TEST_PAGE', 'http://localhost:3000/test-page');
@@ -24,7 +29,7 @@ describe('AppInsightsService', () => {
   });
 
   it('logs an event', () => {
-    const appInsightsService = new AppInsightsService(fakeAppConfigService);
+    const appInsightsService = new AppInsightsService(fakeAppConfigService, fakeCookieService);
     const spy = jest.spyOn(ApplicationInsights.prototype, 'trackEvent');
 
     const eventProps = { caseId: 'CASE1001', eventId: 'TRANSCRIPTION_APPROVED' };
@@ -35,7 +40,7 @@ describe('AppInsightsService', () => {
   });
 
   it('logs a metric', () => {
-    const appInsightsService = new AppInsightsService(fakeAppConfigService);
+    const appInsightsService = new AppInsightsService(fakeAppConfigService, fakeCookieService);
     const spy = jest.spyOn(ApplicationInsights.prototype, 'trackMetric');
 
     const metricProps = { caseId: 'CASE1001' };
@@ -46,7 +51,7 @@ describe('AppInsightsService', () => {
   });
 
   it('logs an exception', () => {
-    const appInsightsService = new AppInsightsService(fakeAppConfigService);
+    const appInsightsService = new AppInsightsService(fakeAppConfigService, fakeCookieService);
     const spy = jest.spyOn(ApplicationInsights.prototype, 'trackException');
 
     const err = new Error('BAD_ERROR');
@@ -57,7 +62,7 @@ describe('AppInsightsService', () => {
   });
 
   it('logs a trace', () => {
-    const appInsightsService = new AppInsightsService(fakeAppConfigService);
+    const appInsightsService = new AppInsightsService(fakeAppConfigService, fakeCookieService);
     const spy = jest.spyOn(ApplicationInsights.prototype, 'trackTrace');
 
     const traceProps = { caseId: 'CASE1001' };
