@@ -29,7 +29,7 @@
             Cookies are small files saved on your phone, tablet or computer when you visit a website.
           </p>
 
-          <p class="govuk-body">
+          <p id="essential-cookies" class="govuk-body">
             We use cookies to make this site work and collect information about how you use our service.
           </p>
 
@@ -41,7 +41,7 @@
               permission to use them.
             </p>
 
-            <table description="Essential cookies table" class="govuk-table">
+            <table aria-describedby="essential-cookies" class="govuk-table">
               <thead>
                 <tr class="govuk-table__row">
                   <th scope="col" scope="col" class="govuk-table__header">Name</th>
@@ -86,9 +86,9 @@
 
             <p class="govuk-body">We don't allow Microsoft to use or share our analytics data.</p>
 
-            <p class="govuk-body">Azure Application Insights sets the following cookies</p>
+            <p id="app-insights-cookies" class="govuk-body">Azure Application Insights sets the following cookies</p>
 
-            <table description="Application Insights cookies table" class="govuk-table">
+            <table aria-describedby="app-insights-cookies" class="govuk-table">
               <thead>
                 <tr class="govuk-table__row">
                   <th scope="col" class="govuk-table__header">Name</th>
@@ -163,13 +163,13 @@
               <li>user behaviour</li>
             </ul>
 
-            <p class="govuk-body">
+            <p id="dynatrace-cookies" class="govuk-body">
               Information is presented within the Application Performance Monitoring service for the purposes detailed
               above. We do not use or share the information for any other purpose. We do not allow Dynatrace to use or
               share the information for any other purposes.
             </p>
 
-            <table description="Dynatrace cookies table " class="govuk-table">
+            <table aria-describedby="dynatrace-cookies" class="govuk-table">
               <thead>
                 <tr class="govuk-table__row">
                   <th scope="col" class="govuk-table__header">Name</th>
