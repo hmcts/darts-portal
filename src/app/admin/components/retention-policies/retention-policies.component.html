@@ -15,7 +15,7 @@
       [columns]="activeColumns"
     >
       <ng-template [tableRowTemplate]="rows.activeRetentionPolicies" let-row>
-        <td class="govuk-table__cell">{{ row.name }}</td>
+        <td class="govuk-table__cell">{{ row.displayName }}</td>
         <td class="govuk-table__cell">{{ row.description }}</td>
         <td class="govuk-table__cell">{{ row.fixedPolicyKey }}</td>
         <td class="govuk-table__cell">{{ row.duration | duration }}</td>
@@ -39,7 +39,7 @@
       [columns]="inActiveColumns"
     >
       <ng-template [tableRowTemplate]="rows.inactiveRetentionPolicies" let-row>
-        <td class="govuk-table__cell">{{ row.name }}</td>
+        <td class="govuk-table__cell">{{ row.displayName }}</td>
         <td class="govuk-table__cell">{{ row.description }}</td>
         <td class="govuk-table__cell">{{ row.fixedPolicyKey }}</td>
         <td class="govuk-table__cell">{{ row.duration | duration }}</td>
