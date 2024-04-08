@@ -7,9 +7,9 @@ import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.compo
 import { LoadingComponent } from '@common/loading/loading.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { ErrorSummaryEntry } from '@core-types/index';
+import { HeaderService } from '@services/header/header.service';
 import { RetentionPoliciesService } from '@services/retention-policies/retention-policies.service';
 import { RetentionPolicyFormComponent } from '../retention-policy-form/retention-policy-form.component';
-import { HeaderService } from './../../../../core/services/header/header.service';
 
 export type CreatePolicyError =
   | 'NON_UNIQUE_POLICY_NAME'
