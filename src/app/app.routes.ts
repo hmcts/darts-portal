@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { CookiesComponent } from '@components/cookies/cookies.component';
 import { ForbiddenComponent } from '@components/error/forbidden/forbidden.component';
 import { InternalErrorComponent } from '@components/error/internal-server/internal-error.component';
 import { NotFoundComponent } from '@components/error/not-found/not-found.component';
@@ -13,6 +14,7 @@ const openRoutes: Routes = [
   { path: 'page-not-found', component: NotFoundComponent },
   { path: 'forbidden', component: ForbiddenComponent },
   { path: 'internal-error', component: InternalErrorComponent },
+  { path: 'cookies', component: CookiesComponent },
   { path: 'dev/components', loadComponent: () => import('./dev/dev.component').then((c) => c.DevComponent) },
   { path: 'admin', redirectTo: '/admin/users', pathMatch: 'full' },
   { path: '**', redirectTo: '/page-not-found' },

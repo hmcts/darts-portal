@@ -1,13 +1,13 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
-
+import { AppInsightsService } from '@services/app-insights/app-insights.service';
+import { DynatraceService } from '@services/dynatrace/dynatrace.service';
 import { HeaderService } from '@services/header/header.service';
+import { UserService } from '@services/user/user.service';
 import { filter } from 'rxjs';
 import { ContentComponent } from '../layout/content/content.component';
 import { FooterComponent } from '../layout/footer/footer.component';
 import { HeaderComponent } from '../layout/header/header.component';
-import { AppInsightsService } from '@services/app-insights/app-insights.service';
-import { UserService } from '@services/user/user.service';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +20,7 @@ export class AppComponent implements OnInit {
   private router = inject(Router);
   private headerService = inject(HeaderService);
   private appInsightsService = inject(AppInsightsService);
+  private dynatraceService = inject(DynatraceService);
   private userService = inject(UserService);
 
   title = 'DARTS portal';
@@ -36,5 +37,6 @@ export class AppComponent implements OnInit {
       // refresh the user profile/userstate, including roles/permissions
       this.userService.refreshUserProfile();
     });
+    this.dynatraceService.addDynatraceScript();
   }
 }

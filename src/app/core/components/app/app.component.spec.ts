@@ -1,18 +1,20 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, ActivatedRouteSnapshot, Event, NavigationEnd, Router } from '@angular/router';
+import { AppConfigService } from '@services/app-config/app-config.service';
+import { AppInsightsService } from '@services/app-insights/app-insights.service';
 import { HeaderService } from '@services/header/header.service';
+import { UserService } from '@services/user/user.service';
 import { Subject } from 'rxjs';
 import { ContentComponent } from '../layout/content/content.component';
 import { FooterComponent } from '../layout/footer/footer.component';
 import { HeaderComponent } from '../layout/header/header.component';
 import { AppComponent } from './app.component';
-import { AppInsightsService } from '@services/app-insights/app-insights.service';
-import { UserService } from '@services/user/user.service';
 
 describe('AppComponent', () => {
   const fakeHeaderService = { showNavigation: jest.fn() } as unknown as HeaderService;
   const fakeAppInsightsService = { logPageView: jest.fn() } as unknown as AppInsightsService;
+  const fakeAppConfigService = {} as unknown as AppConfigService;
   const fakeUserService = { refreshUserProfile: jest.fn() } as unknown as UserService;
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
@@ -32,6 +34,7 @@ describe('AppComponent', () => {
         { provide: AppInsightsService, useValue: fakeAppInsightsService },
         { provide: UserService, useValue: fakeUserService },
         { provide: ActivatedRoute, useValue: { snapshot: mockRoute } },
+        { provide: AppConfigService, useValue: { snapshot: fakeAppConfigService } },
       ],
     });
 

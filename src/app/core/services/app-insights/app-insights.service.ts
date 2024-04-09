@@ -1,17 +1,22 @@
 import { Injectable } from '@angular/core';
 import { ApplicationInsights, ITelemetryItem } from '@microsoft/applicationinsights-web';
 import { AppConfigService } from '@services/app-config/app-config.service';
+import { CookiesService } from '@services/cookies/cookies.service';
 
 @Injectable()
 export class AppInsightsService {
   appInsights: ApplicationInsights;
   private readonly cloudRoleName = 'DARTS portal';
 
-  constructor(private readonly appConfigService: AppConfigService) {
+  constructor(
+    private readonly appConfigService: AppConfigService,
+    private cookieService: CookiesService
+  ) {
     this.appInsights = new ApplicationInsights({
       config: {
         instrumentationKey: this.appConfigService.getAppConfig()?.appInsightsKey,
         enableAutoRouteTracking: true, // option to log all route changes
+        disableCookiesUsage: !this.cookieService.getCookiePolicy()?.appInsightsCookiesEnabled,
       },
     });
     const telemetryInitializer = (envelope: ITelemetryItem) => {
