@@ -184,6 +184,7 @@ export class CaseService {
       id: c.case_id,
       number: c.case_number,
       courthouse: c.courthouse,
+      courthouseId: c.courthouse_id,
       defendants: c.defendants,
       defenders: c.defenders,
       judges: c.judges,

@@ -12,7 +12,7 @@ import { AnnotationService } from '@services/annotation/annotation.service';
 import { CaseService } from '@services/case/case.service';
 import { MappingService } from '@services/mapping/mapping.service';
 import { UserService } from '@services/user/user.service';
-import { catchError, combineLatest, map, of } from 'rxjs';
+import { catchError, combineLatest, map, of, switchMap, tap } from 'rxjs';
 import { CaseFileComponent } from './case-file/case-file.component';
 import { HearingResultsComponent } from './hearing-results/hearing-results.component';
 
@@ -41,16 +41,33 @@ export class CaseComponent {
   private userService = inject(UserService);
   private annotationService = inject(AnnotationService);
 
+  private courthouseId: number | undefined;
   public caseId = this.route.snapshot.params.caseId;
-  public caseFile$ = this.caseService.getCase(this.caseId);
+  public caseFile$ = this.caseService.getCase(this.caseId).pipe(
+    tap((caseFile) => {
+      this.courthouseId = caseFile.courthouseId;
+    })
+  );
   public hearings$ = this.caseService.getCaseHearings(this.caseId);
   public transcripts$ = this.caseService
     .getCaseTranscripts(this.caseId)
     .pipe(map((transcript) => this.mappingService.mapTranscriptRequestToRows(transcript)));
-  public annotations$ =
-    this.userService.isJudge() || this.userService.isAdmin()
-      ? this.caseService.getCaseAnnotations(this.caseId)
-      : of(null);
+
+  // public annotations$ =
+  //   this.userService.isCourthouseJudge(this.courthouseId) || this.userService.isAdmin()
+  //     ? this.caseService.getCaseAnnotations(this.caseId)
+  //     : of(null);
+
+  public annotations$ = this.caseFile$.pipe(
+    switchMap(() => {
+      if (!this.courthouseId) return of(null);
+      if (this.userService.isCourthouseJudge(this.courthouseId) || this.userService.isAdmin()) {
+        return this.caseService.getCaseAnnotations(this.caseId);
+      } else {
+        return of(null);
+      }
+    })
+  );
 
   selectedAnnotationsforDeletion: number[] = [];
   tab!: string;

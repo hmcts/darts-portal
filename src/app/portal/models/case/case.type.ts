@@ -16,6 +16,7 @@ export type Case = {
   id: number;
   number: string;
   courthouse?: string;
+  courthouseId?: number;
   defendants?: string[];
   defenders?: string[];
   judges?: string[];
