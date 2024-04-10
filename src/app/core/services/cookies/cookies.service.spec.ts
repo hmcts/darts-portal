@@ -71,7 +71,7 @@ describe('CookiesService', () => {
       expect(mockCookieService.set).toHaveBeenCalledWith(
         'cookie_policy',
         JSON.stringify({ appInsightsCookiesEnabled: true, dynatraceCookiesEnabled: false }),
-        { expires: expiryDate, path: '/' }
+        { expires: expiryDate, path: '/', sameSite: 'Strict' }
       );
 
       expect(deleteDynatraceCookiesSpy).toHaveBeenCalled();

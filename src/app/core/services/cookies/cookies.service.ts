@@ -45,7 +45,11 @@ export class CookiesService {
     };
 
     this.cookiePolicy = cookiePolicy;
-    this.cookieService.set('cookie_policy', JSON.stringify(cookiePolicy), { expires: expiryDate, path: '/' });
+    this.cookieService.set('cookie_policy', JSON.stringify(cookiePolicy), {
+      expires: expiryDate,
+      path: '/',
+      sameSite: 'Strict',
+    });
 
     !appInsightsEnabled && this.deleteAppInsightsCookies();
     !dynatraceEnabled && this.deleteDynatraceCookies();
