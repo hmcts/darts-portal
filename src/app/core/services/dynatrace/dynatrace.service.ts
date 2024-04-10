@@ -12,7 +12,7 @@ export class DynatraceService {
   addDynatraceScript(): void {
     if (
       this.cookieService.getCookiePolicy()?.dynatraceCookiesEnabled &&
-      this.appConfigService.getAppConfig()?.dynatraceScriptUrl &&
+      this.appConfigService.getAppConfig()?.dynatrace?.scriptUrl &&
       !document.getElementById('dynatrace-script')
     ) {
       const script = document.createElement('script');
@@ -20,7 +20,7 @@ export class DynatraceService {
       script.type = 'text/javascript';
       script.async = true;
       script.crossOrigin = 'anonymous';
-      script.src = this.appConfigService.getAppConfig()!.dynatraceScriptUrl;
+      script.src = this.appConfigService.getAppConfig()!.dynatrace?.scriptUrl;
       document.head.appendChild(script);
     }
   }
