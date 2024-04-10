@@ -49,6 +49,7 @@ export class CookiesService {
       expires: expiryDate,
       path: '/',
       sameSite: 'Strict',
+      secure: true,
     });
 
     !appInsightsEnabled && this.deleteAppInsightsCookies();
