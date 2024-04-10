@@ -43,7 +43,7 @@ describe('DynatraceService', () => {
       .mockReturnValue({ dynatraceCookiesEnabled: true, appInsightsCookiesEnabled: false });
 
     jest.spyOn(appConfigService, 'getAppConfig').mockReturnValue({
-      dynatraceScriptUrl: 'https://dynatrace.com/script.js',
+      dynatrace: { scriptUrl: 'https://dynatrace.com/script.js' },
       appInsightsKey: 'X',
       environment: 'env',
       support: { name: 'name', emailAddress: 'email' },
