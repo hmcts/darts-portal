@@ -17,6 +17,11 @@ const openRoutes: Routes = [
   { path: 'cookies', component: CookiesComponent },
   { path: 'dev/components', loadComponent: () => import('./dev/dev.component').then((c) => c.DevComponent) },
   { path: 'admin', redirectTo: '/admin/users', pathMatch: 'full' },
+  {
+    path: 'admin/system-configuration',
+    redirectTo: 'admin/system-configuration/retention-policies',
+    pathMatch: 'full',
+  },
   { path: '**', redirectTo: '/page-not-found' },
 ];
 

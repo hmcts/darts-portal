@@ -4,7 +4,7 @@ import '../commands';
 describe('Admin - Retention Policies screen', () => {
   beforeEach(() => {
     cy.login('admin');
-    cy.visit('/admin/retention-policies');
+    cy.visit('/admin/system-configuration/retention-policies');
     cy.injectAxe();
   });
 
