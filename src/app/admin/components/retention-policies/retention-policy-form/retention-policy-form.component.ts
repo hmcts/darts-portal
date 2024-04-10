@@ -80,11 +80,10 @@ export class RetentionPolicyFormComponent implements OnInit, OnChanges {
       const policy = this.policies.find((p) => p.id == this.policyId) ?? null;
 
       if (!policy) return;
-      // All fields are populated with the existing policy data
       const [years, months, days] = policy.duration.split(/[YMD]/).map(Number).map(String);
       const startDate = policy.policyStartAt.toFormat('dd/MM/yyyy');
-      const hours = policy.policyStartAt.hour.toString();
-      const minutes = policy.policyStartAt.minute.toString();
+      const hours = policy.policyStartAt.hour.toString().padStart(2, '0');
+      const minutes = policy.policyStartAt.minute.toString().padStart(2, '0');
 
       this.form.patchValue({
         displayName: policy.displayName,

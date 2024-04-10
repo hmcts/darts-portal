@@ -259,7 +259,7 @@ describe('RetentionPolicyFormComponent', () => {
         description: 'desc',
         fixedPolicyKey: '33',
         duration: '1Y0M0D',
-        policyStartAt: DateTime.fromISO('2025-01-01T11:11:00.000Z'),
+        policyStartAt: DateTime.fromISO('2025-01-01T01:02:00.000Z'),
         policyEndAt: null,
       };
       component.policies = [policy];
@@ -274,7 +274,7 @@ describe('RetentionPolicyFormComponent', () => {
         fixedPolicyKey: '33',
         duration: { years: '1', months: '0', days: '0' },
         startDate: '01/01/2025',
-        startTime: { hours: '11', minutes: '11' },
+        startTime: { hours: '01', minutes: '02' },
       });
     });
   });
