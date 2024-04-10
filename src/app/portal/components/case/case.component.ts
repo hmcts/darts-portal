@@ -53,11 +53,6 @@ export class CaseComponent {
     .getCaseTranscripts(this.caseId)
     .pipe(map((transcript) => this.mappingService.mapTranscriptRequestToRows(transcript)));
 
-  // public annotations$ =
-  //   this.userService.isCourthouseJudge(this.courthouseId) || this.userService.isAdmin()
-  //     ? this.caseService.getCaseAnnotations(this.caseId)
-  //     : of(null);
-
   public annotations$ = this.caseFile$.pipe(
     switchMap(() => {
       if (!this.courthouseId) return of(null);

@@ -97,6 +97,17 @@ const singleCaseTwo = {
   defenders: ['Derek Defender'],
 };
 
+const singleCaseFive = {
+  case_id: 5,
+  courthouse: 'Swansea',
+  courthouse_id: 5,
+  case_number: 'C20220620005',
+  defendants: ['Defendant Dave'],
+  judges: ['Judge Judy'],
+  prosecutors: ['Patrick Prosecutor'],
+  defenders: ['Derek Defender'],
+};
+
 const defaultCaseHearings = [
   {
     case_id: 2,
@@ -581,6 +592,23 @@ const defaultAnnotations = [
       },
     ],
   },
+  {
+    case_id: 5,
+    annotation_id: 1,
+    hearing_id: 2,
+    hearing_date: '2023-09-01',
+    annotation_ts: '2023-12-15T12:00:00.000Z',
+    annotation_text: 'A summary notes of this annotation...',
+    annotation_documents: [
+      {
+        annotation_document_id: 1,
+        file_name: 'Annotation.doc',
+        file_type: 'DOC',
+        uploaded_by: 'Mr User McUserFace',
+        uploaded_ts: '2023-12-15T12:00:00.000Z',
+      },
+    ],
+  },
 ];
 
 const hearings = localArray('hearings');
@@ -690,6 +718,9 @@ router.get('/:caseId', (req, res) => {
       break;
     case '2':
       res.send(singleCaseTwo);
+      break;
+    case '5':
+      res.send(singleCaseFive);
       break;
     default:
       res.send(singleCase);
