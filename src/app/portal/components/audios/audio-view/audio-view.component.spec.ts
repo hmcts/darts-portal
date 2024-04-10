@@ -21,6 +21,7 @@ describe('AudioViewComponent', () => {
   let component: AudioViewComponent;
   let fixture: ComponentFixture<AudioViewComponent>;
   let patchAudioRequestLastAccessSpy: jest.SpyInstance;
+  let isAudioPlaybackAvailableSpy: jest.SpyInstance;
   let router: Router;
   let routerSpy: jest.SpyInstance;
 
@@ -135,7 +136,7 @@ describe('AudioViewComponent', () => {
     patchAudioRequestLastAccess: () => of(new HttpResponse<Response>({ status: 200 })),
     deleteTransformedMedia: jest.fn(),
     downloadAudio: jest.fn(),
-    isAudioPlaybackAvailable: jest.fn(),
+    isAudioPlaybackAvailable: () => of(new HttpResponse<Response>({ status: 200 })),
   };
 
   const fakeCaseService = {
@@ -152,6 +153,8 @@ describe('AudioViewComponent', () => {
 
   describe('With transformedMedia', () => {
     beforeEach(() => {
+      patchAudioRequestLastAccessSpy?.mockClear();
+      isAudioPlaybackAvailableSpy?.mockClear();
       TestBed.configureTestingModule({
         imports: [
           AudioViewComponent,
@@ -178,6 +181,7 @@ describe('AudioViewComponent', () => {
       fixture = TestBed.createComponent(AudioViewComponent);
       component = fixture.componentInstance;
       patchAudioRequestLastAccessSpy = jest.spyOn(fakeAudioRequestService, 'patchAudioRequestLastAccess');
+      isAudioPlaybackAvailableSpy = jest.spyOn(fakeAudioRequestService, 'isAudioPlaybackAvailable');
       fixture.detectChanges();
     });
 
@@ -202,7 +206,15 @@ describe('AudioViewComponent', () => {
         expect(component.currentPlayTime).toEqual(0);
       });
       it('should call patchAudioRequestLastAccess()', () => {
+        expect(patchAudioRequestLastAccessSpy).toHaveBeenCalledTimes(1);
         expect(patchAudioRequestLastAccessSpy).toHaveBeenCalledWith(1, true);
+      });
+      it('should check if playback is available', () => {
+        expect(isAudioPlaybackAvailableSpy).toHaveBeenCalledTimes(1);
+        expect(isAudioPlaybackAvailableSpy).toHaveBeenCalledWith('/api/audio-requests/playback?transformed_media_id=1');
+      });
+      it('sets audioSource', () => {
+        expect(component.audioSource).toBe('/api/audio-requests/playback?transformed_media_id=1');
       });
     });
 
@@ -297,6 +309,48 @@ describe('AudioViewComponent', () => {
     it('should navigate to /audios on undefined transformedMedia', () => {
       fixture.detectChanges();
       expect(routerSpy).toHaveBeenCalledWith(['/audios']);
+    });
+  });
+
+  describe('With request type DOWNLOAD', () => {
+    const audioRequestService = {
+      patchAudioRequestLastAccess: () => of(new HttpResponse<Response>({ status: 200 })),
+      deleteTransformedMedia: jest.fn(),
+      downloadAudio: jest.fn(),
+    };
+
+    const mockNavigationExtras = {
+      extras: {
+        state: {
+          transformedMedia: { ...MOCK_AUDIO_REQUEST, requestType: 'DOWNLOAD' },
+        },
+      },
+    };
+
+    beforeEach(() => {
+      isAudioPlaybackAvailableSpy?.mockClear();
+      TestBed.configureTestingModule({
+        imports: [AudioViewComponent, HttpClientTestingModule, RouterTestingModule],
+        providers: [
+          { provide: ActivatedRoute, useValue: mockActivatedRoute },
+          { provide: AudioRequestService, useValue: audioRequestService },
+          { provide: AppConfigService, useValue: appConfigServiceMock },
+        ],
+      });
+      router = TestBed.inject(Router);
+      jest.spyOn(router, 'getCurrentNavigation').mockReturnValue(mockNavigationExtras as unknown as Navigation);
+      routerSpy = jest.spyOn(router, 'navigate');
+      fixture = TestBed.createComponent(AudioViewComponent);
+      component = fixture.componentInstance;
+      isAudioPlaybackAvailableSpy = jest.spyOn(fakeAudioRequestService, 'isAudioPlaybackAvailable');
+    });
+
+    it('should not check if playback is available', () => {
+      expect(isAudioPlaybackAvailableSpy).not.toHaveBeenCalled();
+    });
+
+    it('does not set audioSource', () => {
+      expect(component.audioSource).toBe('');
     });
   });
 });

@@ -102,9 +102,11 @@ export class AudioViewComponent implements OnDestroy {
 
       this.case$ = this.caseService.getCase(this.transformedMedia.caseId);
 
-      const url = `/api/audio-requests/playback?transformed_media_id=${this.transformedMedia.transformedMediaId}`;
-      this.isAudioAvailable$ = this.audioRequestService.isAudioPlaybackAvailable(url);
-      this.audioSource = url;
+      if (this.transformedMedia.requestType === 'PLAYBACK') {
+        const url = `/api/audio-requests/playback?transformed_media_id=${this.transformedMedia.transformedMediaId}`;
+        this.isAudioAvailable$ = this.audioRequestService.isAudioPlaybackAvailable(url);
+        this.audioSource = url;
+      }
 
       this.eventRows$ = this.hearingService.getEvents(this.transformedMedia.hearingId).pipe(
         map((events) => this.filterEvents(events)), // Remove events outside of audio start and end time
