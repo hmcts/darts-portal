@@ -89,7 +89,7 @@ describe('RetentionPoliciesService', () => {
 
   describe('#createRetentionPolicy', () => {
     it('should map Retention Policy Data', () => {
-      const mockPolicyFormData = formDataFactory({});
+      const mockPolicyFormData = formDataFactory({ duration: { years: '1', months: '', days: '' } });
 
       const policyDto: CreateRetentionPolicy = {
         name: 'test',
