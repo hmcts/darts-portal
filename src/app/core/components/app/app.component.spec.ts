@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, ActivatedRouteSnapshot, Event, NavigationEnd, Router } from '@angular/router';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
+import { DynatraceService } from '@services/dynatrace/dynatrace.service';
 import { HeaderService } from '@services/header/header.service';
 import { UserService } from '@services/user/user.service';
 import { Subject } from 'rxjs';
@@ -14,8 +15,9 @@ import { AppComponent } from './app.component';
 describe('AppComponent', () => {
   const fakeHeaderService = { showNavigation: jest.fn() } as unknown as HeaderService;
   const fakeAppInsightsService = { logPageView: jest.fn() } as unknown as AppInsightsService;
-  const fakeAppConfigService = {} as unknown as AppConfigService;
+  const fakeAppConfigService = { getAppConfig: jest.fn() } as unknown as AppConfigService;
   const fakeUserService = { refreshUserProfile: jest.fn() } as unknown as UserService;
+  const fakeDtService = { addDynatraceScript: jest.fn() } as unknown as DynatraceService;
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
   let routerEventsSubject: Subject<NavigationEnd>;
@@ -25,6 +27,7 @@ describe('AppComponent', () => {
     (fakeHeaderService.showNavigation as jest.Mock).mockClear();
     (fakeAppInsightsService.logPageView as jest.Mock).mockClear();
     (fakeUserService.refreshUserProfile as jest.Mock).mockClear();
+    (fakeDtService.addDynatraceScript as jest.Mock).mockClear();
     routerEventsSubject = new Subject<NavigationEnd>();
 
     TestBed.configureTestingModule({
@@ -34,7 +37,8 @@ describe('AppComponent', () => {
         { provide: AppInsightsService, useValue: fakeAppInsightsService },
         { provide: UserService, useValue: fakeUserService },
         { provide: ActivatedRoute, useValue: { snapshot: mockRoute } },
-        { provide: AppConfigService, useValue: { snapshot: fakeAppConfigService } },
+        { provide: AppConfigService, useValue: fakeAppConfigService },
+        { provide: DynatraceService, useValue: fakeDtService },
       ],
     });
 
