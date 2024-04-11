@@ -1,7 +1,7 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { UserState } from '@core-types/user/user-state.interface';
-import { USER_PROFILE_PATH, REFRESH_USER_PROFILE_PATH, UserService } from './user.service';
+import { REFRESH_USER_PROFILE_PATH, USER_PROFILE_PATH, UserService } from './user.service';
 
 describe('UserService', () => {
   let service: UserService;
@@ -308,6 +308,103 @@ describe('UserService', () => {
       };
       service.userState.set(approver);
       expect(service.hasRoles(['REQUESTER', 'APPROVER'])).toBeTruthy();
+    });
+  });
+
+  describe('hasCourthouse', () => {
+    it('should return true if user has access to a specific courthouse', () => {
+      const courthouseId = 100;
+      const judge: UserState = {
+        userName: '',
+        userId: 1,
+        roles: [{ roleId: 123, roleName: 'JUDGE', courthouseIds: [courthouseId] }],
+      };
+
+      service.userState.set(judge);
+
+      expect(service.hasCourthouse(courthouseId)).toBe(true);
+    });
+
+    it('should return false if user does not have access to a specific courthouse', () => {
+      const courthouseId = 100;
+      const judge: UserState = {
+        userName: '',
+        userId: 1,
+        roles: [{ roleId: 123, roleName: 'JUDGE', courthouseIds: [200] }],
+      };
+
+      service.userState.set(judge);
+
+      expect(service.hasCourthouse(courthouseId)).toBe(false);
+    });
+  });
+
+  describe('isCourthouseJudge', () => {
+    it('should return true if user is a courthouse judge by courthouse ID', () => {
+      const courthouseId = 100;
+
+      const judge: UserState = {
+        userName: '',
+        userId: 1,
+        roles: [{ roleId: 123, roleName: 'JUDGE', globalAccess: false, courthouseIds: [courthouseId] }],
+      };
+
+      service.userState.set(judge);
+
+      expect(service.isCourthouseJudge(courthouseId)).toBe(true);
+    });
+
+    it('should return true if user is a global judge regardless of courthouse ID', () => {
+      const courthouseId = 100;
+
+      const judge: UserState = {
+        userName: '',
+        userId: 1,
+        roles: [{ roleId: 123, roleName: 'JUDGE', globalAccess: true, courthouseIds: [200] }],
+      };
+
+      service.userState.set(judge);
+
+      expect(service.isCourthouseJudge(courthouseId)).toBe(true);
+    });
+
+    it('should return false if user is neither a global judge nor a courthouse judge', () => {
+      const courthouseId = 100;
+
+      const judge: UserState = {
+        userName: '',
+        userId: 1,
+        roles: [{ roleId: 123, roleName: 'JUDGE', globalAccess: false, courthouseIds: [200] }],
+      };
+
+      service.userState.set(judge);
+
+      expect(service.isCourthouseJudge(courthouseId)).toBe(false);
+    });
+  });
+
+  describe('isGlobalJudge', () => {
+    it('should return true if user is a global judge', () => {
+      const judge: UserState = {
+        userName: 'user',
+        userId: 1,
+        roles: [{ roleId: 123, roleName: 'JUDGE', globalAccess: true }],
+      };
+
+      service.userState.set(judge);
+
+      expect(service.isGlobalJudge()).toBe(true);
+    });
+
+    it('should return false if user is not a global judge', () => {
+      const judge: UserState = {
+        userName: 'user',
+        userId: 1,
+        roles: [{ roleId: 123, roleName: 'JUDGE', globalAccess: false }],
+      };
+
+      service.userState.set(judge);
+      expect(service.isGlobalJudge()).toBe(false);
     });
   });
 });

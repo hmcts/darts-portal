@@ -21,17 +21,17 @@ describe('CaseComponent', () => {
     deleteAnnotation: jest.fn().mockReturnValue(of({})),
   };
 
-  const mockCaseFile: Observable<Case> = of({
+  const mockCaseFile: Case = {
     id: 1,
     courthouse: 'Swansea',
+    courthouseId: 1,
     number: 'CASE1001',
     defendants: ['Defendant Dave', 'Defendant Debbie'],
     judges: ['Judge Judy', 'Judge Jones'],
     prosecutors: ['Polly Prosecutor'],
     defenders: ['Derek Defender'],
-    reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
-    retain_until: '2023-08-10T11:23:24.858Z',
-  });
+    retainUntil: '2023-08-10T11:23:24.858Z',
+  };
 
   const mockSingleCaseTwoHearings: Observable<Hearing[]> = of([
     {
@@ -73,7 +73,7 @@ describe('CaseComponent', () => {
     },
   ]);
 
-  const mockAnnotation: Observable<AnnotationsData[]> = of([
+  const mockAnnotation: AnnotationsData[] = [
     {
       annotation_id: 1,
       hearing_id: 123,
@@ -90,7 +90,7 @@ describe('CaseComponent', () => {
         },
       ],
     },
-  ]);
+  ];
 
   const caseServiceMock = {
     getCase: jest.fn(),
@@ -116,6 +116,7 @@ describe('CaseComponent', () => {
       isRequester: jest.fn(() => false),
       isAdmin: jest.fn(() => true),
       isTranslationQA: jest.fn(() => false),
+      isCourthouseJudge: jest.fn(() => false),
     };
 
     TestBed.configureTestingModule({
@@ -129,7 +130,7 @@ describe('CaseComponent', () => {
       ],
     });
 
-    jest.spyOn(caseServiceMock, 'getCase').mockReturnValue(mockCaseFile);
+    jest.spyOn(caseServiceMock, 'getCase').mockReturnValue(of(mockCaseFile));
     jest.spyOn(caseServiceMock, 'getCaseHearings').mockReturnValue(mockSingleCaseTwoHearings);
     jest.spyOn(caseServiceMock, 'getCaseTranscripts').mockReturnValue(mockTranscript);
     jest.spyOn(caseServiceMock, 'getCaseAnnotations').mockReturnValue(mockAnnotation);
@@ -148,15 +149,19 @@ describe('CaseComponent', () => {
   });
 
   it('caseFile$ should be set', () => {
-    expect(component.caseFile$).toEqual(mockCaseFile);
+    let result;
+    component.caseFile$.subscribe((r) => (result = r));
+    expect(result).toEqual(mockCaseFile);
   });
 
   it('hearings$ should be set', () => {
     expect(component.hearings$).toEqual(mockSingleCaseTwoHearings);
   });
 
-  it('annotations$ should be set if user is an admin or judge', () => {
-    expect(component.annotations$).toEqual(mockAnnotation);
+  it('annotations$ should be set if user is an admin or courthouse judge', () => {
+    let result;
+    component.annotations$.subscribe((r) => (result = r));
+    expect([result]).toStrictEqual(mockAnnotation);
   });
 
   describe('#onDeleteClicked', () => {

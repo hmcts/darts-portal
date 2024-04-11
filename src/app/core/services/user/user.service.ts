@@ -65,7 +65,7 @@ export class UserService {
     return this.userState() ? roles.some((role) => this.userState()!.roles.some((x) => x.roleName === role)) : false;
   }
 
-  private hasCourthouse(courthouseId: number): boolean {
+  public hasCourthouse(courthouseId: number): boolean {
     return this.userState()
       ? this.userState()!.roles.some((x) => x.roleName === 'JUDGE' && x.courthouseIds?.includes(courthouseId))
       : false;
