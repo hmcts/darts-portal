@@ -26,7 +26,7 @@ describe('AppConfigService', () => {
         emailAddress: 'support@darts',
       },
       environment: 'development',
-      dynatraceScriptUrl: 'script',
+      dynatrace: { scriptUrl: 'script' },
     };
     jest.spyOn(httpClientSpy, 'get').mockReturnValue(of(testData));
     await appConfigService.loadAppConfig();

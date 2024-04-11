@@ -6,5 +6,5 @@ export default () => ({
   appInsightsKey: config.get('secrets.darts.AppInsightsInstrumentationKey'),
   support: config.get('support'),
   environment: config.get('node-env'),
-  dynatraceScriptUrl: config.get('secrets.darts.dynatrace-script-url'),
+  dynatrace: config.get('dynatrace'),
 });

@@ -15,28 +15,19 @@ export class DynatraceService {
   appConfigService = inject(AppConfigService);
 
   addDynatraceScript(): void {
-    // this.cookieService.getCookiePolicy()?.dynatraceCookiesEnabled &&
-    if (this.appConfigService.getAppConfig()?.dynatraceScriptUrl && !document.getElementById('dynatrace-script')) {
+    if (this.appConfigService.getAppConfig()?.dynatrace?.scriptUrl && !document.getElementById('dynatrace-script')) {
       const script = document.createElement('script');
       script.id = 'dynatrace-script';
       script.type = 'text/javascript';
       script.async = true;
       script.crossOrigin = 'anonymous';
-      script.src = this.appConfigService.getAppConfig()!.dynatraceScriptUrl;
+      script.src = this.appConfigService.getAppConfig()!.dynatrace?.scriptUrl;
       document.head.appendChild(script);
 
       script.onload = () => {
-        // this.cookieService.getCookiePolicy()?.dynatraceCookiesEnabled
-        //   ? (window as Window).dtrum?.enable()
-        //   : (window as Window).dtrum?.disable();
-
-        if (this.cookieService.getCookiePolicy()?.dynatraceCookiesEnabled) {
-          (window as Window).dtrum?.enable();
-          console.log('enabling cookies');
-        } else {
-          (window as Window).dtrum?.disable();
-          console.log('disabling dt cookies');
-        }
+        this.cookieService.getCookiePolicy()?.dynatraceCookiesEnabled
+          ? (window as Window).dtrum?.enable()
+          : (window as Window).dtrum?.disable();
       };
     }
   }
