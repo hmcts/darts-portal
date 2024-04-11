@@ -2237,6 +2237,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@dynatrace/dtrum-api-types@npm:^1.283.3":
+  version: 1.283.3
+  resolution: "@dynatrace/dtrum-api-types@npm:1.283.3"
+  checksum: e0d1ad33cd97367d4658b590f0f2f9beaa3d5c329784397a3a786e418ee5ff91df582e76ab1c7cdd59a06bb970de588fa4b0114afb889c2cf2ae539eb84a262b
+  languageName: node
+  linkType: hard
+
 "@esbuild/aix-ppc64@npm:0.19.12":
   version: 0.19.12
   resolution: "@esbuild/aix-ppc64@npm:0.19.12"
@@ -6691,6 +6698,7 @@ __metadata:
     "@angular/platform-browser": ^17.0.1
     "@angular/platform-browser-dynamic": ^17.0.1
     "@angular/router": ^17.0.1
+    "@dynatrace/dtrum-api-types": ^1.283.3
     "@hmcts/nodejs-healthcheck": ^1.8.0
     "@hmcts/properties-volume": ^1.0.0
     "@microsoft/applicationinsights-web": ^3.0.1

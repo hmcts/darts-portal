@@ -1,6 +1,11 @@
 import { Injectable, inject } from '@angular/core';
+import { dtrum } from '@dynatrace/dtrum-api-types';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { CookiesService } from '@services/cookies/cookies.service';
+
+interface Window {
+  dtrum: dtrum;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -10,11 +15,7 @@ export class DynatraceService {
   appConfigService = inject(AppConfigService);
 
   addDynatraceScript(): void {
-    if (
-      this.cookieService.getCookiePolicy()?.dynatraceCookiesEnabled &&
-      this.appConfigService.getAppConfig()?.dynatrace?.scriptUrl &&
-      !document.getElementById('dynatrace-script')
-    ) {
+    if (this.appConfigService.getAppConfig()?.dynatrace?.scriptUrl && !document.getElementById('dynatrace-script')) {
       const script = document.createElement('script');
       script.id = 'dynatrace-script';
       script.type = 'text/javascript';
@@ -22,6 +23,12 @@ export class DynatraceService {
       script.crossOrigin = 'anonymous';
       script.src = this.appConfigService.getAppConfig()!.dynatrace?.scriptUrl;
       document.head.appendChild(script);
+
+      script.onload = () => {
+        this.cookieService.getCookiePolicy()?.dynatraceCookiesEnabled
+          ? (window as Window).dtrum?.enable()
+          : (window as Window).dtrum?.disable();
+      };
     }
   }
 }
