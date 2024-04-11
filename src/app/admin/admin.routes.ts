@@ -104,9 +104,16 @@ export const ADMIN_ROUTES: Routes = [
   {
     path: 'admin/retention-policies/create',
     loadComponent: () =>
-      import('./components/retention-policies/create-retention-policy/create-retention-policy.component').then(
-        (c) => c.CreateRetentionPolicyComponent
-      ),
+      import(
+        './components/retention-policies/create-edit-retention-policy/create-edit-retention-policy.component'
+      ).then((c) => c.CreateEditRetentionPolicyComponent),
+  },
+  {
+    path: 'admin/retention-policies/:id/edit',
+    loadComponent: () =>
+      import(
+        './components/retention-policies/create-edit-retention-policy/create-edit-retention-policy.component'
+      ).then((c) => c.CreateEditRetentionPolicyComponent),
   },
 ].map((route) => ({
   ...route,

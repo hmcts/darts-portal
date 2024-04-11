@@ -24,6 +24,18 @@ export class RetentionPoliciesService {
       .pipe(map((policy) => this.mapRetentionPolicyDataToRetentionPolicy(policy)));
   }
 
+  getRetentionPolicy(id: number): Observable<RetentionPolicy> {
+    return this.http
+      .get<RetentionPolicyData>(`api/admin/retention-policy-types/${id}`)
+      .pipe(map((policy) => this.mapRetentionPolicyDataToRetentionPolicy(policy)));
+  }
+
+  editRetentionPolicy(policy: RetentionPolicyForm, id: string): Observable<RetentionPolicy> {
+    return this.http
+      .patch<RetentionPolicyData>(`api/admin/retention-policy-types/${id}`, this.mapPolicyRequestBody(policy))
+      .pipe(map((policy) => this.mapRetentionPolicyDataToRetentionPolicy(policy)));
+  }
+
   private mapPolicyRequestBody(policy: RetentionPolicyForm) {
     // 2 years, 3 months, 4 days => 2Y3M4D || 0Y0M0D
     const durationString = `${policy.duration.years ?? 0}Y${policy.duration.months ?? 0}M${policy.duration.days ?? 0}D`;

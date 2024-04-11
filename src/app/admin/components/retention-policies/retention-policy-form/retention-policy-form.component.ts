@@ -25,7 +25,10 @@ import { pastDateValidator } from '@validators/past-date.validator';
 import { uniqueValidator } from '@validators/retention-policy.validator';
 import { timeGroupValidator } from '@validators/time-group.validator';
 import { startWith } from 'rxjs';
-import { CreatePolicyError } from '../create-retention-policy/create-retention-policy.component';
+import {
+  CreatePolicyError,
+  RetentionFormContext,
+} from '../create-edit-retention-policy/create-edit-retention-policy.component';
 
 @Component({
   selector: 'app-retention-policy-form',
@@ -39,7 +42,9 @@ export class RetentionPolicyFormComponent implements OnInit, OnChanges {
   formService = inject(FormService);
   destroyRef = inject(DestroyRef);
 
-  @Input() existingPolicies: RetentionPolicy[] = [];
+  @Input() policyId: number | null = null;
+  @Input() context: RetentionFormContext = 'create';
+  @Input() policies: RetentionPolicy[] = [];
   @Input() savePolicyError: CreatePolicyError | null = null; // Pass in server side error
   @Output() submitPolicy = new EventEmitter<RetentionPolicyForm>();
   @Output() cancel = new EventEmitter<void>();
@@ -69,7 +74,34 @@ export class RetentionPolicyFormComponent implements OnInit, OnChanges {
   });
 
   ngOnInit(): void {
-    this.setValidators();
+    this.setValidators(this.context);
+
+    if (this.context === 'edit') {
+      const policy = this.policies.find((p) => p.id == this.policyId) ?? null;
+
+      if (!policy) return;
+      const [years, months, days] = policy.duration.split(/[YMD]/).map(Number).map(String);
+      const startDate = policy.policyStartAt.toFormat('dd/MM/yyyy');
+      const hours = policy.policyStartAt.hour.toString().padStart(2, '0');
+      const minutes = policy.policyStartAt.minute.toString().padStart(2, '0');
+
+      this.form.patchValue({
+        displayName: policy.displayName,
+        name: policy.name,
+        description: policy.description,
+        fixedPolicyKey: policy.fixedPolicyKey,
+        duration: {
+          years,
+          months,
+          days,
+        },
+        startDate,
+        startTime: {
+          hours,
+          minutes,
+        },
+      });
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -104,10 +136,12 @@ export class RetentionPolicyFormComponent implements OnInit, OnChanges {
     }
   }
 
-  private setValidators() {
-    this.form.controls.displayName.addValidators(uniqueValidator(this.existingPolicies, 'displayName'));
-    this.form.controls.name.addValidators(uniqueValidator(this.existingPolicies, 'name'));
-    this.form.controls.fixedPolicyKey.addValidators(uniqueValidator(this.existingPolicies, 'fixedPolicyKey'));
+  private setValidators(context: RetentionFormContext) {
+    const policies = context === 'create' ? this.policies : this.policies.filter((p) => p.id != this.policyId);
+
+    this.form.controls.displayName.addValidators(uniqueValidator(policies, 'displayName'));
+    this.form.controls.name.addValidators(uniqueValidator(policies, 'name'));
+    this.form.controls.fixedPolicyKey.addValidators(uniqueValidator(policies, 'fixedPolicyKey'));
     this.form.updateValueAndValidity();
   }
 

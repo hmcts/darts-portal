@@ -1,6 +1,9 @@
 @if (hasPolicyCreated$ | async) {
   <app-govuk-banner type="success">Retention policy created</app-govuk-banner>
 }
+@if (hasPolicyUpdated$ | async) {
+  <app-govuk-banner type="success">Retention policy updated</app-govuk-banner>
+}
 
 <div class="heading-button-container">
   <h1 class="govuk-heading-xl">Retention policies</h1>
@@ -25,7 +28,12 @@
         </td>
         <td class="govuk-table__cell">
           @if (isPolicyActive(row.policyStartAt)) {
-            <a class="govuk-link">Edit Policy</a>
+            <a
+              href="javascript:void(0)"
+              class="govuk-link"
+              (click)="router.navigate(['admin/retention-policies/', row.id, 'edit'])"
+              >Edit Policy</a
+            >
           } @else {
             <a class="govuk-link">Create new version</a>
           }

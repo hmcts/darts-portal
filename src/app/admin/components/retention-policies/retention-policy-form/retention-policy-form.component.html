@@ -78,11 +78,12 @@
             <label class="govuk-label govuk-date-input__label" for="years"> Years </label>
 
             <input
-              class="govuk-input govuk-date-input__input govuk-input--width-4"
+              class="govuk-input govuk-date-input__input govuk-input--width-2"
               id="years"
               name="years"
               type="text"
               formControlName="years"
+              maxlength="2"
               [class.govuk-input--error]="isControlInvalid('duration')"
             />
           </div>
@@ -98,6 +99,7 @@
               name="months"
               type="text"
               formControlName="months"
+              maxlength="2"
               [class.govuk-input--error]="isControlInvalid('duration')"
             />
           </div>
@@ -113,6 +115,7 @@
               name="days"
               type="text"
               formControlName="days"
+              maxlength="2"
               [class.govuk-input--error]="isControlInvalid('duration')"
             />
           </div>

@@ -9,13 +9,12 @@ describe('Admin - Retention Policies screen', () => {
   });
 
   it('show active policies', () => {
-    cy.get('#active-policies-table').contains('td', '-');
-    cy.get('#active-policies-table').contains('td', '01 Jan 2099 12:00 AM');
+    cy.get('#active-policies-table').contains('Legacy Permanent');
     cy.a11y();
   });
   it('show inactive policies', () => {
     cy.contains('Inactive').click();
-    cy.get('#inactive-policies-table').contains('td', '31 Jan 2024 12:00 AM');
+    cy.get('#inactive-policies-table').contains('Not Guilty');
     cy.a11y();
   });
 
@@ -39,5 +38,42 @@ describe('Admin - Retention Policies screen', () => {
     cy.get('app-govuk-banner').contains('Retention policy created');
 
     cy.get('#active-policies-table').contains('New Policy');
+  });
+
+  it('edit policy', () => {
+    cy.get('td').contains('Retention Policy 1').parents('tr').contains('Edit Policy').click();
+
+    // populate form
+    cy.get('#name').should('have.value', 'Retention Policy 1');
+    cy.get('#displayName').should('have.value', 'Retention Policy 1');
+    cy.get('#description').should('have.value', 'description ipsum');
+    cy.get('#fixedPolicyKey').should('have.value', 'DEF');
+    cy.get('#years').should('have.value', '3');
+    cy.get('#months').should('have.value', '10');
+    cy.get('#days').should('have.value', '9');
+    cy.get('#startDate').should('have.value', '01/02/2088');
+    cy.get('#start-time-hour-input').should('have.value', '17');
+    cy.get('#start-time-minutes-input').should('have.value', '30');
+
+    // update form
+    cy.get('#name').clear().type('Updated Policy');
+    cy.get('#displayName').clear().type('Updated Policy');
+    cy.get('#description').clear().type('Updated Policy Description');
+    cy.get('#fixedPolicyKey').clear().type('999');
+    cy.get('#years').clear().type('1');
+    cy.get('#months').clear().type('1');
+    cy.get('#days').clear().type('1');
+    cy.get('#startDate').clear().type('01/01/3000');
+    cy.get('#start-time-hour-input').clear().type('12');
+    cy.get('#start-time-minutes-input').clear().type('00');
+
+    cy.contains('Save').click();
+
+    cy.get('app-govuk-banner').contains('Retention policy updated');
+
+    cy.get('#active-policies-table').contains('Updated Policy');
+    cy.get('#active-policies-table').contains('01 Jan 3000 12:00 PM');
+    cy.get('#active-policies-table').contains('999');
+    cy.get('#active-policies-table').contains('Updated Policy Description');
   });
 });
