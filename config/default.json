@@ -19,7 +19,7 @@
     "emailAddress": "crownITsupport@justice.gov.uk"
   },
   "dynatrace": {
-    "scriptUrl": "https://js-cdn.dynatrace.com/jstag/17177a07246/bf24054dsx/274641a9600eefc2_complete.js"
+    "scriptUrl": null
   },
   "secrets": {
     "darts": {
