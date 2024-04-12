@@ -40,6 +40,7 @@ export class RetentionPoliciesComponent {
   retentionPoliciesData$ = this.retentionPoliciesService.getRetentionPolicyTypes();
   hasPolicyCreated$ = this.route.queryParams.pipe(map((params) => !!params.created));
   hasPolicyUpdated$ = this.route.queryParams.pipe(map((params) => !!params.updated));
+  retentionPoliciesPath = 'admin/system-configuration/retention-policies';
 
   retentionPolicies$ = combineLatest({
     activeRetentionPolicies: this.retentionPoliciesData$.pipe(map((policy) => this.filterActivePolicies(policy))),

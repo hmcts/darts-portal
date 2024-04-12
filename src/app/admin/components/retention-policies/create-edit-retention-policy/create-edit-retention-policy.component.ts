@@ -76,7 +76,7 @@ export class CreateEditRetentionPolicyComponent implements OnInit {
 
   private editRetentionPolicyAndRedirect(policy: RetentionPolicyForm) {
     this.retentionPoliciesService.editRetentionPolicy(policy, this.policyId).subscribe({
-      next: () => void this.router.navigate(['/admin/retention-policies'], { queryParams: { updated: true } }),
+      next: () => void this.router.navigate([this.retentionPoliciesPath], { queryParams: { updated: true } }),
       error: this.handleError,
     });
   }

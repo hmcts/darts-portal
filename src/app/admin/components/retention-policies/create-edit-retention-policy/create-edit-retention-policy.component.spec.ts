@@ -109,7 +109,9 @@ describe('CreateEditRetentionPolicyComponent', () => {
       component.onSubmitPolicy(policy);
 
       expect(retentionPoliciesService.editRetentionPolicy).toHaveBeenCalledWith(policy, '1');
-      expect(routerSpy).toHaveBeenCalledWith(['/admin/retention-policies'], { queryParams: { updated: true } });
+      expect(routerSpy).toHaveBeenCalledWith(['admin/system-configuration/retention-policies'], {
+        queryParams: { updated: true },
+      });
     });
 
     it('set error property on policy submission error', () => {

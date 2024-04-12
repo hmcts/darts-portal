@@ -7,9 +7,7 @@
 
 <div class="heading-button-container">
   <app-govuk-heading tag="h2">Retention policies</app-govuk-heading>
-  <button class="govuk-button" (click)="router.navigate(['admin/system-configuration/retention-policies/create'])">
-    Create policy
-  </button>
+  <button class="govuk-button" (click)="router.navigate([retentionPoliciesPath, 'create'])">Create policy</button>
 </div>
 @if (retentionPolicies$ | async; as rows) {
   <app-tabs>
