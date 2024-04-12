@@ -2,6 +2,14 @@
   .colon {
     margin-bottom: 0;
   }
+  app-datepicker {
+    label {
+      font-weight: bold;
+    }
+  }
+  .bold-label {
+    font-weight: bold;
+  }
 }
 
 .underline {
