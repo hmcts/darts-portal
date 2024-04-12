@@ -139,7 +139,7 @@ export class HearingComponent implements OnInit {
     switchMap(() => {
       if (!this.courthouseId) return of(null);
       if (this.userService.isCourthouseJudge(this.courthouseId) || this.userService.isAdmin()) {
-        return this.caseService.getCaseAnnotations(this.caseId);
+        return this.hearingService.getAnnotations(this.hearingId);
       } else {
         return of(null);
       }

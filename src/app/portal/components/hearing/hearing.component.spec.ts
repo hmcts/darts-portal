@@ -88,6 +88,8 @@ describe('HearingComponent', () => {
   };
 
   const cd = of({ id: 1, number: '12345', courthouse: 'Reading', judges: ['Judy'] }) as Observable<Case>;
+
+  const cd1 = { id: 1, courthouseId: 1, number: '12345', courthouse: 'Reading', judges: ['Judy'] } as Case;
   const hd = of([
     { id: 1, date: DateTime.fromISO('2023-02-21'), judges: ['Joseph', 'Judy'], courtroom: '3', transcriptCount: 99 },
     { id: 2, date: DateTime.fromISO('2023-03-21'), judges: ['Joseph', 'Kennedy'], courtroom: '1', transcriptCount: 12 },
@@ -193,6 +195,7 @@ describe('HearingComponent', () => {
       isJudge: () => true,
       isAdmin: () => true,
       isTranslationQA: () => false,
+      isCourthouseJudge: () => false,
     };
 
     TestBed.configureTestingModule({
@@ -268,6 +271,22 @@ describe('HearingComponent', () => {
     it('should load via api', () => {
       expect(component.case$).toBeDefined();
       expect(component.hearing$).toEqual(shd);
+    });
+  });
+
+  describe('#annotations', () => {
+    it('should not fetch annotations if courthouseId is undefined', () => {
+      //Default getCase response does not have courthouseId
+      expect(hearingService.getAnnotations).not.toHaveBeenCalled();
+    });
+
+    it('should not fetch annotations if user has no admin or courthouse judge role', () => {
+      jest.spyOn(caseService, 'getCase').mockReturnValue(of(cd1));
+      jest.spyOn(fakeUserService, 'isAdmin').mockReturnValue(false);
+      jest.spyOn(fakeUserService, 'isCourthouseJudge').mockReturnValue(false);
+      fixture.detectChanges();
+
+      expect(hearingService.getAnnotations).not.toHaveBeenCalled();
     });
   });
 

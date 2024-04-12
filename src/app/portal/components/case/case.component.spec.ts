@@ -33,6 +33,17 @@ describe('CaseComponent', () => {
     retainUntil: '2023-08-10T11:23:24.858Z',
   };
 
+  const mockCaseFileNoCourthouseId: Case = {
+    id: 1,
+    courthouse: 'Swansea',
+    number: 'CASE1001',
+    defendants: ['Defendant Dave', 'Defendant Debbie'],
+    judges: ['Judge Judy', 'Judge Jones'],
+    prosecutors: ['Polly Prosecutor'],
+    defenders: ['Derek Defender'],
+    retainUntil: '2023-08-10T11:23:24.858Z',
+  };
+
   const mockSingleCaseTwoHearings: Observable<Hearing[]> = of([
     {
       id: 1,
@@ -158,12 +169,6 @@ describe('CaseComponent', () => {
     expect(component.hearings$).toEqual(mockSingleCaseTwoHearings);
   });
 
-  it('annotations$ should be set if user is an admin or courthouse judge', () => {
-    let result;
-    component.annotations$.subscribe((r) => (result = r));
-    expect([result]).toStrictEqual(mockAnnotation);
-  });
-
   describe('#onDeleteClicked', () => {
     it('should set the ID in the selectedAnnotationsforDeletion array', () => {
       component.onDeleteClicked(345);
@@ -189,6 +194,24 @@ describe('CaseComponent', () => {
       component.onDeleteCancelled();
       expect(component.selectedAnnotationsforDeletion).toEqual([]);
       expect(component.tab).toEqual('All annotations');
+    });
+  });
+
+  describe('#annotations', () => {
+    it('annotations$ should be set if user is an admin or courthouse judge', () => {
+      let result;
+      component.annotations$.subscribe((r) => (result = r));
+      expect([result]).toStrictEqual(mockAnnotation);
+    });
+
+    it('annotations$ should not be set if user has no admin or courthouse judge role', () => {
+      jest.spyOn(caseServiceMock, 'getCase').mockReturnValue(of(mockCaseFileNoCourthouseId));
+      jest.spyOn(fakeUserService, 'isAdmin').mockReturnValue(false);
+      jest.spyOn(fakeUserService, 'isCourthouseJudge').mockReturnValue(false);
+
+      let result;
+      component.annotations$.subscribe((r) => (result = r));
+      expect(result).toEqual(null);
     });
   });
 });
