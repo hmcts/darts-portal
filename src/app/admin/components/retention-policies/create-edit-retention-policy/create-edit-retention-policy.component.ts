@@ -45,6 +45,7 @@ export class CreateEditRetentionPolicyComponent implements OnInit {
   title = '';
   errors: ErrorSummaryEntry[] = [];
   error: CreatePolicyError | null = null;
+  retentionPoliciesPath = 'admin/system-configuration/retention-policies';
 
   policies$ = this.retentionPoliciesService.getRetentionPolicyTypes();
 
@@ -65,14 +66,17 @@ export class CreateEditRetentionPolicyComponent implements OnInit {
 
   private createRetentionPolicyAndRedirect(policy: RetentionPolicyForm) {
     this.retentionPoliciesService.createRetentionPolicy(policy).subscribe({
-      next: () => void this.router.navigate(['/admin/retention-policies'], { queryParams: { created: true } }),
-      error: this.handleError,
+      next: () =>
+        void this.router.navigate([this.retentionPoliciesPath], {
+          queryParams: { created: true },
+        }),
+      error: (res: HttpErrorResponse) => (this.error = res.error.type),
     });
   }
 
   private editRetentionPolicyAndRedirect(policy: RetentionPolicyForm) {
     this.retentionPoliciesService.editRetentionPolicy(policy, this.policyId).subscribe({
-      next: () => void this.router.navigate(['/admin/retention-policies'], { queryParams: { updated: true } }),
+      next: () => void this.router.navigate([this.retentionPoliciesPath], { queryParams: { updated: true } }),
       error: this.handleError,
     });
   }

@@ -9,7 +9,7 @@
     [policies]="policies"
     [savePolicyError]="error"
     (submitPolicy)="onSubmitPolicy($event)"
-    (cancel)="router.navigate(['admin/retention-policies'])"
+    (cancel)="router.navigate([retentionPoliciesPath])"
     (errors)="errors = $event"
   ></app-retention-policy-form>
 } @else {

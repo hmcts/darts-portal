@@ -6,8 +6,8 @@
 }
 
 <div class="heading-button-container">
-  <h1 class="govuk-heading-xl">Retention policies</h1>
-  <button class="govuk-button" (click)="router.navigate(['admin/retention-policies/create'])">Create policy</button>
+  <app-govuk-heading tag="h2">Retention policies</app-govuk-heading>
+  <button class="govuk-button" (click)="router.navigate([retentionPoliciesPath, 'create'])">Create policy</button>
 </div>
 @if (retentionPolicies$ | async; as rows) {
   <app-tabs>
@@ -28,12 +28,7 @@
         </td>
         <td class="govuk-table__cell">
           @if (isPolicyActive(row.policyStartAt)) {
-            <a
-              href="javascript:void(0)"
-              class="govuk-link"
-              (click)="router.navigate(['admin/retention-policies/', row.id, 'edit'])"
-              >Edit Policy</a
-            >
+            <a class="govuk-link" [routerLink]="[row.id, 'edit']">Edit Policy</a>
           } @else {
             <a class="govuk-link">Create new version</a>
           }
