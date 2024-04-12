@@ -3401,7 +3401,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@npmcli/map-workspaces@npm:^3.0.2, @npmcli/map-workspaces@npm:^3.0.4":
+"@npmcli/map-workspaces@npm:^3.0.2":
   version: 3.0.4
   resolution: "@npmcli/map-workspaces@npm:3.0.4"
   dependencies:
@@ -3410,6 +3410,18 @@ __metadata:
     minimatch: ^9.0.0
     read-package-json-fast: ^3.0.0
   checksum: 99607dbc502b16d0ce7a47a81ccc496b3f5ed10df4e61e61a505929de12c356092996044174ae0cfd6d8cc177ef3b597eef4987b674fc0c5a306d3a8cc1fe91a
+  languageName: node
+  linkType: hard
+
+"@npmcli/map-workspaces@npm:^3.0.6":
+  version: 3.0.6
+  resolution: "@npmcli/map-workspaces@npm:3.0.6"
+  dependencies:
+    "@npmcli/name-from-folder": ^2.0.0
+    glob: ^10.2.2
+    minimatch: ^9.0.0
+    read-package-json-fast: ^3.0.0
+  checksum: bdb09ee1d044bb9b2857d9e2d7ca82f40783a8549b5a7e150e25f874ee354cdbc8109ad7c3df42ec412f7057d95baa05920c4d361c868a93a42146b8e4390d3d
   languageName: node
   linkType: hard
 
@@ -3451,6 +3463,21 @@ __metadata:
     proc-log: ^3.0.0
     semver: ^7.5.3
   checksum: 0d128e84e05e8a1771c8cc1f4232053fecf32e28f44e123ad16366ca3a7fd06f272f25f0b7d058f2763cab26bc479c8fc3c570af5de6324b05cb39868dcc6264
+  languageName: node
+  linkType: hard
+
+"@npmcli/package-json@npm:^5.0.2":
+  version: 5.0.2
+  resolution: "@npmcli/package-json@npm:5.0.2"
+  dependencies:
+    "@npmcli/git": ^5.0.0
+    glob: ^10.2.2
+    hosted-git-info: ^7.0.0
+    json-parse-even-better-errors: ^3.0.0
+    normalize-package-data: ^6.0.0
+    proc-log: ^3.0.0
+    semver: ^7.5.3
+  checksum: f0e69d093a5733c7d31ce45098e2ce059f01d09b79329a7f3e975baf91d87f4bf3171fadc27442f4f540dc546954259f178be40ca632b87cfe16bcfe04f00dd3
   languageName: node
   linkType: hard
 
@@ -5924,12 +5951,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cidr-regex@npm:4.0.3":
-  version: 4.0.3
-  resolution: "cidr-regex@npm:4.0.3"
+"cidr-regex@npm:^4.0.4":
+  version: 4.0.5
+  resolution: "cidr-regex@npm:4.0.5"
   dependencies:
     ip-regex: ^5.0.0
-  checksum: d26f9168c2c380a136ac3af6379959d6140c61e08adafed276ed50e9e0d55c129c6ac7c1629e2c676bca9a030d927fbc4a45355e90d10ebcca30a97e8f17011d
+  checksum: 60ceea71b7842e40822dc7685e120dffc33f852ee7b66c862a9c24e710f0d0ec3280915f499647c129a1f5db8657175fde6dda4a76196d3ab8b523bdc462a48a
   languageName: node
   linkType: hard
 
@@ -9113,12 +9140,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-cidr@npm:^5.0.3":
-  version: 5.0.3
-  resolution: "is-cidr@npm:5.0.3"
+"is-cidr@npm:^5.0.5":
+  version: 5.0.5
+  resolution: "is-cidr@npm:5.0.5"
   dependencies:
-    cidr-regex: 4.0.3
-  checksum: 011435859915f2681b5a020a4e0803b21b37ef53cb8f1a1d912d6b84009e02ab6570b30951d499d82c58bcff15df45a64e4607ffe67165edec52e5ae1906b231
+    cidr-regex: ^4.0.4
+  checksum: d7c7e5391bc0ccfd586b312d42d1d2e3b88cee348db2b8af9132442d0c8b413b6330b2ebcc195dc0d31f34d38ce36bca872ab8cebace3c993d0ae77e0d54b024
   languageName: node
   linkType: hard
 
@@ -11465,15 +11492,15 @@ __metadata:
   linkType: hard
 
 "npm@npm:^10.1.0":
-  version: 10.5.1
-  resolution: "npm@npm:10.5.1"
+  version: 10.5.2
+  resolution: "npm@npm:10.5.2"
   dependencies:
     "@isaacs/string-locale-compare": ^1.1.0
     "@npmcli/arborist": ^7.2.1
     "@npmcli/config": ^8.0.2
     "@npmcli/fs": ^3.1.0
-    "@npmcli/map-workspaces": ^3.0.4
-    "@npmcli/package-json": ^5.0.0
+    "@npmcli/map-workspaces": ^3.0.6
+    "@npmcli/package-json": ^5.0.2
     "@npmcli/promise-spawn": ^7.0.1
     "@npmcli/redact": ^1.1.0
     "@npmcli/run-script": ^7.0.4
@@ -11493,7 +11520,7 @@ __metadata:
     hosted-git-info: ^7.0.1
     ini: ^4.1.2
     init-package-json: ^6.0.2
-    is-cidr: ^5.0.3
+    is-cidr: ^5.0.5
     json-parse-even-better-errors: ^3.0.1
     libnpmaccess: ^8.0.1
     libnpmdiff: ^6.0.3
@@ -11529,7 +11556,7 @@ __metadata:
     qrcode-terminal: ^0.12.0
     read: ^3.0.1
     semver: ^7.6.0
-    spdx-expression-parse: ^3.0.1
+    spdx-expression-parse: ^4.0.0
     ssri: ^10.0.5
     supports-color: ^9.4.0
     tar: ^6.2.1
@@ -11542,7 +11569,7 @@ __metadata:
   bin:
     npm: bin/npm-cli.js
     npx: bin/npx-cli.js
-  checksum: 0872c0f2e5d4c155215a9a21968bea50124651c9bc73da2723e05afc0fc7c660651cb9a30d5ebdde40fb8034c65a935139da69d011d97365fc0a4381e0f44936
+  checksum: 3b4216005a73341c5eaba27803d75423079c5d1b2763be40d4fedf8633d436f545cd7e74ebb1c2c23414f9511e4582a01bf8d5b72e6f7b37a0525255f26c8ab3
   languageName: node
   linkType: hard
 
@@ -13468,13 +13495,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"spdx-expression-parse@npm:^3.0.0, spdx-expression-parse@npm:^3.0.1":
+"spdx-expression-parse@npm:^3.0.0":
   version: 3.0.1
   resolution: "spdx-expression-parse@npm:3.0.1"
   dependencies:
     spdx-exceptions: ^2.1.0
     spdx-license-ids: ^3.0.0
   checksum: a1c6e104a2cbada7a593eaa9f430bd5e148ef5290d4c0409899855ce8b1c39652bcc88a725259491a82601159d6dc790bedefc9016c7472f7de8de7361f8ccde
+  languageName: node
+  linkType: hard
+
+"spdx-expression-parse@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "spdx-expression-parse@npm:4.0.0"
+  dependencies:
+    spdx-exceptions: ^2.1.0
+    spdx-license-ids: ^3.0.0
+  checksum: 936be681fbf5edeec3a79c023136479f70d6edb3fd3875089ac86cd324c6c8c81add47399edead296d1d0af17ae5ce88c7f88885eb150b62c2ff6e535841ca6a
   languageName: node
   linkType: hard
 
