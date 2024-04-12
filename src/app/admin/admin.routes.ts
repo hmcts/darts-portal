@@ -76,7 +76,7 @@ export const ADMIN_ROUTES: Routes = [
     loadComponent: () => import('./components/courthouses/courthouses.component').then((c) => c.CourthousesComponent),
   },
   {
-    path: 'admin/courthouses/edit/:courthouseId',
+    path: 'admin/courthouses/:courthouseId/edit',
     loadComponent: () =>
       import('./components/courthouses/edit-courthouse/edit-courthouse.component').then(
         (c) => c.EditCourthouseComponent
@@ -97,23 +97,56 @@ export const ADMIN_ROUTES: Routes = [
       ),
   },
   {
-    path: 'admin/retention-policies',
-    loadComponent: () =>
-      import('./components/retention-policies/retention-policies.component').then((c) => c.RetentionPoliciesComponent),
+    path: 'admin/events',
+    loadComponent: () => import('./components/events/events.component').then((c) => c.EventsComponent),
   },
   {
-    path: 'admin/retention-policies/create',
+    path: 'admin/audio-cache',
+    loadComponent: () => import('./components/audio-cache/audio-cache.component').then((c) => c.AudioCacheComponent),
+  },
+  {
+    path: 'admin/transcripts',
+    loadComponent: () => import('./components/transcripts/transcripts.component').then((c) => c.TranscriptsComponent),
+  },
+  {
+    path: 'admin/file-deletion',
+    loadComponent: () =>
+      import('./components/file-deletion/file-deletion.component').then((c) => c.FileDeletionComponent),
+  },
+  {
+    path: 'admin/system-configuration/retention-policies',
+    loadComponent: () =>
+      import('./components/system-configuration/system-configuration.component').then(
+        (c) => c.SystemConfigurationComponent
+      ),
+  },
+  {
+    path: 'admin/system-configuration/retention-policies/create',
     loadComponent: () =>
       import(
         './components/retention-policies/create-edit-retention-policy/create-edit-retention-policy.component'
       ).then((c) => c.CreateEditRetentionPolicyComponent),
   },
   {
-    path: 'admin/retention-policies/:id/edit',
+    path: 'admin/system-configuration/retention-policies/:id/edit',
     loadComponent: () =>
       import(
         './components/retention-policies/create-edit-retention-policy/create-edit-retention-policy.component'
       ).then((c) => c.CreateEditRetentionPolicyComponent),
+  },
+  {
+    path: 'admin/system-configuration/event-mapping',
+    loadComponent: () =>
+      import('./components/system-configuration/system-configuration.component').then(
+        (c) => c.SystemConfigurationComponent
+      ),
+  },
+  {
+    path: 'admin/system-configuration/automated-tasks',
+    loadComponent: () =>
+      import('./components/system-configuration/system-configuration.component').then(
+        (c) => c.SystemConfigurationComponent
+      ),
   },
 ].map((route) => ({
   ...route,

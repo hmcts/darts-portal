@@ -1,9 +1,10 @@
 import { RetentionPolicy } from '@admin-types/index';
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
+import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { DatatableColumn } from '@core-types/index';
 import { TabDirective } from '@directives/tab.directive';
@@ -26,6 +27,8 @@ import { combineLatest, map } from 'rxjs';
     TableRowTemplateDirective,
     DurationPipe,
     GovukBannerComponent,
+    GovukHeadingComponent,
+    RouterLink,
   ],
   templateUrl: './retention-policies.component.html',
   styleUrl: './retention-policies.component.scss',
@@ -37,6 +40,7 @@ export class RetentionPoliciesComponent {
   retentionPoliciesData$ = this.retentionPoliciesService.getRetentionPolicyTypes();
   hasPolicyCreated$ = this.route.queryParams.pipe(map((params) => !!params.created));
   hasPolicyUpdated$ = this.route.queryParams.pipe(map((params) => !!params.updated));
+  retentionPoliciesPath = 'admin/system-configuration/retention-policies';
 
   retentionPolicies$ = combineLatest({
     activeRetentionPolicies: this.retentionPoliciesData$.pipe(map((policy) => this.filterActivePolicies(policy))),
