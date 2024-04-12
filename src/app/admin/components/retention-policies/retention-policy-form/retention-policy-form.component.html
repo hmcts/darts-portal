@@ -1,6 +1,6 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('displayName')">
-    <label for="displayName" class="govuk-label">Display Name</label>
+    <label for="displayName" class="govuk-label">Display name</label>
 
     @for (error of getErrorMessages('displayName'); track error) {
       <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ error }}</p>
@@ -47,7 +47,7 @@
     />
   </div>
   <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('fixedPolicyKey')">
-    <label for="fixedPolicyKey" class="govuk-label">Fixed Policy Key</label>
+    <label for="fixedPolicyKey" class="govuk-label">Fixed policy key</label>
 
     @for (error of getErrorMessages('fixedPolicyKey'); track error) {
       <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ error }}</p>
@@ -140,7 +140,7 @@
     </div>
 
     <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('startTime')">
-      <label class="govuk-label" for="startTime">Start time</label>
+      <label class="govuk-label bold-label" for="startTime">Start time</label>
 
       @for (error of getErrorMessages('startTime'); track error) {
         <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ error }}</p>
@@ -157,6 +157,6 @@
 
   <div class="govuk-button-group">
     <button id="confirm-button" class="govuk-button" type="submit">Save</button>
-    <button class="govuk-button govuk-button--secondary" type="button" (click)="cancel.emit()">Cancel</button>
+    <a class="govuk-link" href="javascript:void(0)" (click)="cancel.emit()">Cancel</a>
   </div>
 </form>
