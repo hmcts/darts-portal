@@ -33,7 +33,7 @@ import { HearingService } from '@services/hearing/hearing.service';
 import { MappingService } from '@services/mapping/mapping.service';
 import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
-import { catchError, combineLatest, map, of, shareReplay, switchMap, tap } from 'rxjs';
+import { catchError, combineLatest, map, of, shareReplay, switchMap } from 'rxjs';
 import { EventsAndAudioComponent } from './events-and-audio/events-and-audio.component';
 import { HearingFileComponent } from './hearing-file/hearing-file.component';
 import { OrderConfirmationComponent } from './order-confirmation/order-confirmation.component';
@@ -125,20 +125,15 @@ export class HearingComponent implements OnInit {
 
   requestObject!: PostAudioRequest;
 
-  private courthouseId: number | undefined;
-  case$ = this.caseService.getCase(this.caseId).pipe(
-    shareReplay(1),
-    tap((caseFile) => {
-      this.courthouseId = caseFile.courthouseId;
-    })
-  );
+  case$ = this.caseService.getCase(this.caseId).pipe(shareReplay(1));
   hearing$ = this.caseService.getHearingById(this.caseId, this.hearingId);
   audio$ = this.hearingService.getAudio(this.hearingId);
 
   annotations$ = this.case$.pipe(
-    switchMap(() => {
-      if (!this.courthouseId) return of(null);
-      if (this.userService.isCourthouseJudge(this.courthouseId) || this.userService.isAdmin()) {
+    switchMap((c) => {
+      console.log(c);
+      if (!c.courthouseId) return of(null);
+      if (this.userService.isCourthouseJudge(c.courthouseId) || this.userService.isAdmin()) {
         return this.hearingService.getAnnotations(this.hearingId);
       } else {
         return of(null);
