@@ -38,7 +38,7 @@ export class UserService {
   }
 
   public isAdmin(): boolean {
-    return this.hasRole('SUPER_ADMIN');
+    return this.hasGlobalRole('SUPER_ADMIN');
   }
 
   public isSuperUser(): boolean {
@@ -73,6 +73,10 @@ export class UserService {
 
   private hasUserState(): boolean {
     return Boolean(this.userState());
+  }
+
+  private hasGlobalRole(role: RoleName): boolean {
+    return this.userState() ? this.userState()!.roles.some((x) => x.roleName === role && x.globalAccess) : false;
   }
 
   private hasRole(role: RoleName): boolean {
