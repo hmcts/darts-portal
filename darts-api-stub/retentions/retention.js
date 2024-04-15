@@ -4,7 +4,7 @@ const router = express.Router();
 
 const { localArray } = require('../localArray');
 const { getEarliestDatefromKey, getLatestDatefromKey } = require('../utils/date');
-const { JUDGE, SUPER_ADMIN } = require('../roles');
+const { GLOBAL_JUDGE, JUDGE, SUPER_ADMIN } = require('../roles');
 const { userIdHasAnyRoles, getUserNameByUserId } = require('../users');
 
 const dateFormat = 'yyyy-MM-dd';
@@ -123,7 +123,7 @@ router.post('', (req, res) => {
         ).startOf('day');
         if (
           retention.retention_date < latestRetentionDate &&
-          !userIdHasAnyRoles([SUPER_ADMIN, JUDGE], req.headers.user_id)
+          !userIdHasAnyRoles([SUPER_ADMIN, GLOBAL_JUDGE, JUDGE], req.headers.user_id)
         ) {
           // If date is less than the latest retention date and user is not Admin or Judge
           res.status(403).send({

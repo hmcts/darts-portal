@@ -35,6 +35,7 @@ const getLatestRetentionChange = (caseId) => {
 const singleCase = {
   case_id: 1,
   courthouse: 'Swansea',
+  courthouse_id: 1,
   case_number: 'C20220620001',
   defendants: ['Defendant Dave'],
   judges: ['Judge Judy'],
@@ -88,7 +89,19 @@ const singleCase = {
 const singleCaseTwo = {
   case_id: 2,
   courthouse: 'Reading',
+  courthouse_id: 2,
   case_number: 'CASE1001',
+  defendants: ['Defendant Dave'],
+  judges: ['Judge Judy'],
+  prosecutors: ['Patrick Prosecutor'],
+  defenders: ['Derek Defender'],
+};
+
+const singleCaseFive = {
+  case_id: 5,
+  courthouse: 'Swansea',
+  courthouse_id: 5,
+  case_number: 'C20220620005',
   defendants: ['Defendant Dave'],
   judges: ['Judge Judy'],
   prosecutors: ['Patrick Prosecutor'],
@@ -166,6 +179,7 @@ const multipleCases = [
   {
     case_id: 1,
     case_number: 'C20220620001',
+    courthouse_id: 1,
     courthouse: 'Swansea',
     defendants: ['Defendant Dave'],
     judges: ['Judge Judy'],
@@ -183,6 +197,7 @@ const multipleCases = [
     case_id: 2,
     case_number: 'C20220620002',
     courthouse: 'Slough',
+    courthouse_id: 2,
     defendants: ['Defendant Derren'],
     judges: ['Judge Juniper'],
     hearings: [],
@@ -191,6 +206,7 @@ const multipleCases = [
     case_id: 3,
     case_number: 'C20220620003',
     courthouse: 'Reading',
+    courthouse_id: 3,
     defendants: ['Defendant Darran', 'Defendant Daniel'],
     judges: ['Judge Julie', 'Judge Judy'],
     reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
@@ -207,6 +223,7 @@ const multipleCases = [
     case_id: 4,
     case_number: 'C20220620004',
     courthouse: 'Windsor',
+    courthouse_id: 4,
     defendants: ['Defendant Dileep', 'Defendant Debs'],
     judges: ['Judge Josephine', 'Judge Jackie'],
     hearings: [
@@ -228,6 +245,7 @@ const multipleCases = [
     case_id: 5,
     case_number: 'C20220620005',
     courthouse: 'Swansea',
+    courthouse_id: 5,
     defendants: ['Defendant Dave'],
     judges: ['Judge Judy'],
     reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
@@ -244,6 +262,7 @@ const multipleCases = [
     case_id: 6,
     case_number: 'C20220620006',
     courthouse: 'Slough',
+    courthouse_id: 6,
     defendants: ['Defendant Derren'],
     judges: ['Judge Juniper'],
     hearings: [],
@@ -252,6 +271,7 @@ const multipleCases = [
     case_id: 7,
     case_number: 'C20220620007',
     courthouse: 'Reading',
+    courthouse_id: 7,
     defendants: ['Defendant Darran', 'Defendant Daniel'],
     judges: ['Judge Julie', 'Judge Judy'],
     reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
@@ -268,6 +288,7 @@ const multipleCases = [
     case_id: 8,
     case_number: 'C20220620008',
     courthouse: 'Windsor',
+    courthouse_id: 8,
     defendants: ['Defendant Dileep', 'Defendant Debs'],
     judges: ['Judge Josephine', 'Judge Jackie'],
     hearings: [
@@ -289,6 +310,7 @@ const multipleCases = [
     case_id: 9,
     case_number: 'C20220620009',
     courthouse: 'Swansea',
+    courthouse_id: 9,
     defendants: ['Defendant Dave'],
     judges: ['Judge Judy'],
     reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
@@ -305,6 +327,7 @@ const multipleCases = [
     case_id: 10,
     case_number: 'C20220620010',
     courthouse: 'Slough',
+    courthouse_id: 10,
     defendants: ['Defendant Derren'],
     judges: ['Judge Juniper'],
     hearings: [],
@@ -313,6 +336,7 @@ const multipleCases = [
     case_id: 11,
     case_number: 'C20220620011',
     courthouse: 'Reading',
+    courthouse_id: 11,
     defendants: ['Defendant Darran', 'Defendant Daniel'],
     judges: ['Judge Julie', 'Judge Judy'],
     reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
@@ -329,6 +353,7 @@ const multipleCases = [
     case_id: 12,
     case_number: 'C20220620012',
     courthouse: 'Windsor',
+    courthouse_id: 12,
     defendants: ['Defendant Dileep', 'Defendant Debs'],
     judges: ['Judge Josephine', 'Judge Jackie'],
     hearings: [
@@ -350,6 +375,7 @@ const multipleCases = [
     case_id: 13,
     case_number: 'C20220620013',
     courthouse: 'Swansea',
+    courthouse_id: 13,
     defendants: ['Defendant Dave'],
     judges: ['Judge Judy'],
     reporting_restriction: 'Section 4(2) of the Contempt of Court Act 1981',
@@ -566,6 +592,23 @@ const defaultAnnotations = [
       },
     ],
   },
+  {
+    case_id: 5,
+    annotation_id: 1,
+    hearing_id: 2,
+    hearing_date: '2023-09-01',
+    annotation_ts: '2023-12-15T12:00:00.000Z',
+    annotation_text: 'A summary notes of this annotation...',
+    annotation_documents: [
+      {
+        annotation_document_id: 1,
+        file_name: 'Annotation.doc',
+        file_type: 'DOC',
+        uploaded_by: 'Mr User McUserFace',
+        uploaded_ts: '2023-12-15T12:00:00.000Z',
+      },
+    ],
+  },
 ];
 
 const hearings = localArray('hearings');
@@ -675,6 +718,9 @@ router.get('/:caseId', (req, res) => {
       break;
     case '2':
       res.send(singleCaseTwo);
+      break;
+    case '5':
+      res.send(singleCaseFive);
       break;
     default:
       res.send(singleCase);

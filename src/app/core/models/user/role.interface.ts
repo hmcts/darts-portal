@@ -5,4 +5,6 @@ export interface Role {
   roleId: number;
   roleName: RoleName;
   permissions?: Permissions[];
+  globalAccess?: boolean;
+  courthouseIds?: number[];
 }

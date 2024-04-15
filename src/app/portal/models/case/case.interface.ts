@@ -15,6 +15,7 @@ export interface CaseData {
   case_id: number;
   case_number: string;
   courthouse?: string;
+  courthouse_id?: number;
   defendants?: string[];
   defenders?: string[];
   judges?: string[];

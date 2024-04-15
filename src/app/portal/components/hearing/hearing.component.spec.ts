@@ -1,5 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -88,6 +89,8 @@ describe('HearingComponent', () => {
   };
 
   const cd = of({ id: 1, number: '12345', courthouse: 'Reading', judges: ['Judy'] }) as Observable<Case>;
+
+  const cd1 = { id: 1, courthouseId: 1, number: '12345', courthouse: 'Reading', judges: ['Judy'] } as Case;
   const hd = of([
     { id: 1, date: DateTime.fromISO('2023-02-21'), judges: ['Joseph', 'Judy'], courtroom: '3', transcriptCount: 99 },
     { id: 2, date: DateTime.fromISO('2023-03-21'), judges: ['Joseph', 'Kennedy'], courtroom: '1', transcriptCount: 12 },
@@ -129,7 +132,7 @@ describe('HearingComponent', () => {
     },
   ]);
 
-  const mockAnnotations: Observable<Annotations[]> = of([
+  const mockAnnotations: Annotations[] = [
     {
       annotationId: 1,
       hearingId: 2,
@@ -142,7 +145,7 @@ describe('HearingComponent', () => {
       uploadedBy: 'Mr Test',
       uploadedTs: DateTime.fromISO('2024-01-01'),
     },
-  ]);
+  ];
 
   const shd = of({
     id: 1,
@@ -173,19 +176,24 @@ describe('HearingComponent', () => {
       navigateByUrl: jest.fn(),
     } as unknown as Router;
 
-    caseService = new CaseService(httpClientSpy);
     hearingService = new HearingService(httpClientSpy);
     audioRequestService = {
       requestAudio: jest.fn(),
     };
+    caseService = {
+      getCase: jest.fn(),
+      getCaseHearings: jest.fn(),
+      getHearingTranscripts: jest.fn(),
+      getHearingById: jest.fn(),
+    } as unknown as CaseService;
 
-    jest.spyOn(caseService, 'getCase').mockReturnValue(cd);
+    jest.spyOn(caseService, 'getCase').mockReturnValue(of(cd1));
     jest.spyOn(caseService, 'getCaseHearings').mockReturnValue(hd);
     jest.spyOn(caseService, 'getHearingTranscripts').mockReturnValue(mockTranscript);
     jest.spyOn(caseService, 'getHearingById').mockReturnValue(shd);
     jest.spyOn(hearingService, 'getAudio').mockReturnValue(ad);
     jest.spyOn(hearingService, 'getEvents').mockReturnValue(ed);
-    jest.spyOn(hearingService, 'getAnnotations').mockReturnValue(mockAnnotations);
+    jest.spyOn(hearingService, 'getAnnotations').mockReturnValue(of(mockAnnotations));
 
     fakeUserService = {
       userProfile$: mockUser,
@@ -193,10 +201,11 @@ describe('HearingComponent', () => {
       isJudge: () => true,
       isAdmin: () => true,
       isTranslationQA: () => false,
+      isCourthouseJudge: () => false,
     };
 
     TestBed.configureTestingModule({
-      imports: [HearingComponent, HearingFileComponent, RouterTestingModule],
+      imports: [HearingComponent, HearingFileComponent, RouterTestingModule, HttpClientTestingModule],
       providers: [
         { provide: AppInsightsService, useValue: fakeAppInsightsService },
         { provide: CaseService, useValue: caseService },
@@ -214,7 +223,6 @@ describe('HearingComponent', () => {
     });
     fixture = TestBed.createComponent(HearingComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
 
     component.caseId = 1;
     component.hearingId = 1;
@@ -271,8 +279,28 @@ describe('HearingComponent', () => {
     });
   });
 
+  describe('#annotations', () => {
+    it('annotations$ should be set if user is an admin or courthouse judge', () => {
+      fixture.detectChanges();
+      let result;
+      component.annotations$.subscribe((r) => (result = r));
+
+      expect(result).toStrictEqual(mockAnnotations);
+    });
+
+    it('should not fetch annotations if user has no admin or courthouse judge role', () => {
+      jest.spyOn(caseService, 'getCase').mockReturnValue(of(cd1));
+      jest.spyOn(fakeUserService, 'isAdmin').mockReturnValue(false);
+      jest.spyOn(fakeUserService, 'isCourthouseJudge').mockReturnValue(false);
+      fixture.detectChanges();
+
+      expect(hearingService.getAnnotations).not.toHaveBeenCalled();
+    });
+  });
+
   describe('#onEventsSelected', () => {
     it('should set the start and end times from selected entries', () => {
+      fixture.detectChanges();
       const mockAudioAndEvents = [
         {
           id: 1,
@@ -300,6 +328,7 @@ describe('HearingComponent', () => {
       expect(component.audioTimes);
     });
     it('should set request Audio times to undefined if audio and Events are empty', () => {
+      fixture.detectChanges();
       const mockAudioAndEvents: AudioEventRow[] = [];
       component.onEventsSelected(mockAudioAndEvents);
       expect(component.audioTimes).toEqual(null);
@@ -308,6 +337,7 @@ describe('HearingComponent', () => {
 
   describe('#onAudioRequest', () => {
     it('should set the request object and set the state variable', () => {
+      fixture.detectChanges();
       const mockRequestObject: PostAudioRequest = {
         hearing_id: 1,
         requestor: 1,
@@ -324,6 +354,7 @@ describe('HearingComponent', () => {
   describe('state setter', () => {
     it('should call the header service with true when the state is default', () => {
       const headerServiceSpy = jest.spyOn(component.headerService, 'showNavigation');
+      fixture.detectChanges();
       const value: HearingPageState = 'Default';
       component.state = value;
       expect(headerServiceSpy).toHaveBeenCalled();
@@ -331,12 +362,14 @@ describe('HearingComponent', () => {
     describe('should hide navigation when ', () => {
       it('state is Order Summary', () => {
         const headerServiceSpy = jest.spyOn(component.headerService, 'hideNavigation');
+        fixture.detectChanges();
         const value: HearingPageState = 'OrderSummary';
         component.state = value;
         expect(headerServiceSpy).toHaveBeenCalled();
       });
       it('state is Order Confirmation', () => {
         const headerServiceSpy = jest.spyOn(component.headerService, 'hideNavigation');
+        fixture.detectChanges();
         const value: HearingPageState = 'OrderConfirmation';
         component.state = value;
         expect(headerServiceSpy).toHaveBeenCalled();
@@ -346,10 +379,12 @@ describe('HearingComponent', () => {
 
   describe('#onStageChanged', () => {
     it('should set the state to orderSummary', () => {
+      fixture.detectChanges();
       component.onStateChanged('OrderSummary');
       expect(component.state).toEqual('OrderSummary');
     });
     it('should set the state to orderConfirmation', () => {
+      fixture.detectChanges();
       component.onStateChanged('OrderConfirmation');
       expect(component.state).toEqual('OrderConfirmation');
     });
@@ -357,6 +392,7 @@ describe('HearingComponent', () => {
 
   describe('#onBack', () => {
     it('should change state to Default', () => {
+      fixture.detectChanges();
       const event = new MouseEvent('click');
       const eventSpy = jest.spyOn(event, 'preventDefault');
       component.onBack(event);
@@ -379,6 +415,8 @@ describe('HearingComponent', () => {
           end_time: '2023-09-01T15:32:24Z',
         })
       );
+
+      fixture.detectChanges();
       const mockRequestObject: PostAudioRequest = {
         hearing_id: 1,
         requestor: 1,
@@ -396,6 +434,7 @@ describe('HearingComponent', () => {
       const fileName = 'filename.docx';
       it('should call saveAs with blob and filename', () => {
         jest.spyOn(fakeAnnotationService, 'downloadAnnotationDocument').mockReturnValue(of(blob));
+        fixture.detectChanges();
         component.onDownloadClicked(1, 1, fileName);
         expect(fakeFileDownloadService.saveAs).toHaveBeenCalledWith(blob, fileName);
       });
@@ -405,6 +444,7 @@ describe('HearingComponent', () => {
       it("should call saveAs with blob and filename with today's date if no date provided", () => {
         const blob = new Blob();
         jest.spyOn(fakeAnnotationService, 'downloadAnnotationTemplate').mockReturnValue(of(blob));
+        fixture.detectChanges();
         const todaysDate = DateTime.now().toFormat('yyyyMMdd');
         component.downloadAnnotationTemplate('CASEID', undefined);
         const expectedFilename = `Annotations_for_CASEID_on_${todaysDate}.docx`;
@@ -414,6 +454,7 @@ describe('HearingComponent', () => {
       it('should call saveAs with blob and filename', () => {
         const blob = new Blob();
         jest.spyOn(fakeAnnotationService, 'downloadAnnotationTemplate').mockReturnValue(of(blob));
+        fixture.detectChanges();
         const hearingDate = DateTime.fromISO('2024-01-01');
         component.downloadAnnotationTemplate('CASEID', hearingDate);
         const expectedFilename = 'Annotations_for_CASEID_on_20240101.docx';
@@ -423,6 +464,7 @@ describe('HearingComponent', () => {
 
     describe('#filterRestrictionsByHearingId', () => {
       it('should filter items with same hearing ID and blank out event timestamp', () => {
+        fixture.detectChanges();
         const reportingRestriction = [
           {
             hearing_id: 1,
@@ -449,6 +491,7 @@ describe('HearingComponent', () => {
     it('should set the value of state when 403 encountered', () => {
       const errorResponse = new HttpErrorResponse({ error: 'Forbidden', status: 403, url: '/api/audio-requests' });
       jest.spyOn(audioRequestService, 'requestAudio').mockReturnValue(throwError(() => errorResponse));
+      fixture.detectChanges();
       const mockRequestObject: PostAudioRequest = {
         hearing_id: 3,
         requestor: 1,
@@ -464,6 +507,7 @@ describe('HearingComponent', () => {
     it('should set the value of state when 409 encountered', () => {
       const errorResponse = new HttpErrorResponse({ error: 'Conflict', status: 409, url: '/api/audio-requests' });
       jest.spyOn(audioRequestService, 'requestAudio').mockReturnValue(throwError(() => errorResponse));
+      fixture.detectChanges();
       const mockRequestObject: PostAudioRequest = {
         hearing_id: 3,
         requestor: 1,
@@ -479,6 +523,7 @@ describe('HearingComponent', () => {
 
   describe('#onValidationError', () => {
     it('should set the error summary and focus on the first error summary message', () => {
+      fixture.detectChanges();
       const mockErrorSummary = [
         {
           fieldId: 'start-time-hour-input',
@@ -500,6 +545,7 @@ describe('HearingComponent', () => {
 
   describe('#onDeleteClicked', () => {
     it('should set the ID in the selectedAnnotationsforDeletion array', () => {
+      fixture.detectChanges();
       component.onDeleteClicked(123);
       expect(component.selectedAnnotationsforDeletion).toEqual([123]);
     });
@@ -507,6 +553,7 @@ describe('HearingComponent', () => {
 
   describe('#onDeleteConfirmed', () => {
     it('should use the IDs in the selectedAnnotationsforDeletion array and call the backend', () => {
+      fixture.detectChanges();
       const annotationId = 123;
       component.onDeleteClicked(annotationId);
       component.onDeleteConfirmed();
@@ -516,6 +563,7 @@ describe('HearingComponent', () => {
 
   describe('#onDeleteCancelled', () => {
     it('should clear the ID in selectedAnnotationsforDeletion array', () => {
+      fixture.detectChanges();
       const ids = [123, 321];
       component.selectedAnnotationsforDeletion = ids;
       expect(component.selectedAnnotationsforDeletion).toEqual(ids);
@@ -526,12 +574,12 @@ describe('HearingComponent', () => {
 
   describe('#ngOnInit', () => {
     it('should set the tab to transcripts if the url contains ?tab=Transcripts', () => {
-      component.ngOnInit();
+      fixture.detectChanges();
       expect(component.defaultTab).toEqual('Transcripts');
     });
     it('should set the tab to annotations if the url contains ?tab=Annotations', () => {
       mockActivatedRoute.snapshot.queryParams = { tab: 'Annotations', startTime: '2024-01-01', endTime: '2024-01-02' };
-      component.ngOnInit();
+      fixture.detectChanges();
       expect(component.defaultTab).toEqual('Annotations');
     });
   });

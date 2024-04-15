@@ -12,7 +12,7 @@ import { AnnotationService } from '@services/annotation/annotation.service';
 import { CaseService } from '@services/case/case.service';
 import { MappingService } from '@services/mapping/mapping.service';
 import { UserService } from '@services/user/user.service';
-import { catchError, combineLatest, map, of } from 'rxjs';
+import { catchError, combineLatest, map, of, switchMap } from 'rxjs';
 import { CaseFileComponent } from './case-file/case-file.component';
 import { HearingResultsComponent } from './hearing-results/hearing-results.component';
 
@@ -47,10 +47,17 @@ export class CaseComponent {
   public transcripts$ = this.caseService
     .getCaseTranscripts(this.caseId)
     .pipe(map((transcript) => this.mappingService.mapTranscriptRequestToRows(transcript)));
-  public annotations$ =
-    this.userService.isJudge() || this.userService.isAdmin()
-      ? this.caseService.getCaseAnnotations(this.caseId)
-      : of(null);
+
+  public annotations$ = this.caseFile$.pipe(
+    switchMap((c) => {
+      if (!c.courthouseId) return of(null);
+      if (this.userService.isCourthouseJudge(c.courthouseId) || this.userService.isAdmin()) {
+        return this.caseService.getCaseAnnotations(this.caseId);
+      } else {
+        return of(null);
+      }
+    })
+  );
 
   selectedAnnotationsforDeletion: number[] = [];
   tab!: string;

@@ -2,7 +2,7 @@ const express = require('express');
 const { localArray } = require('../localArray');
 const path = require('path');
 const { userIdHasAnyRoles } = require('../users');
-const { SUPER_ADMIN, JUDGE } = require('../roles');
+const { SUPER_ADMIN, JUDGE, GLOBAL_JUDGE } = require('../roles');
 
 const router = express.Router();
 
@@ -54,7 +54,7 @@ router.get('/:annotationId/documents/:annotationDocumentId', (req, res) => {
 
 router.delete('/:annotationId', (req, res) => {
   const { annotationId } = req.params;
-  if (!userIdHasAnyRoles([SUPER_ADMIN, JUDGE], req.headers.user_id)) {
+  if (!userIdHasAnyRoles([SUPER_ADMIN, GLOBAL_JUDGE, JUDGE], req.headers.user_id)) {
     res.status(403).send({
       detail: `You do not have permission to delete annotation with annotationId ${req.params?.annotationId}'.`,
     });

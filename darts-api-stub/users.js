@@ -1,4 +1,13 @@
-const { REQUESTER, APPROVER, TRANSCRIBER, JUDGE, SUPER_ADMIN, TRANSLATION_QA, SUPER_USER } = require('./roles');
+const {
+  REQUESTER,
+  APPROVER,
+  TRANSCRIBER,
+  GLOBAL_JUDGE,
+  JUDGE,
+  SUPER_ADMIN,
+  TRANSLATION_QA,
+  SUPER_USER,
+} = require('./roles');
 
 const stubUsers = [
   {
@@ -57,7 +66,7 @@ const stubUsers = [
     userState: {
       userId: 6,
       userName: 'nigel.justice@darts.local',
-      roles: [JUDGE],
+      roles: [GLOBAL_JUDGE],
     },
     active: true,
   },
