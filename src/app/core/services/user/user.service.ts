@@ -57,8 +57,11 @@ export class UserService {
     return this.userState() ? this.userState()!.roles.some((x) => x.roleName === 'JUDGE' && x.globalAccess) : false;
   }
 
-  public isCourthouseJudge(courthouseId: number): boolean {
-    return this.isGlobalJudge() || this.hasCourthouse(courthouseId);
+  public isCourthouseJudge(courthouseId?: number): boolean {
+    if (courthouseId) {
+      return this.isGlobalJudge() || this.hasCourthouse(courthouseId);
+    }
+    return this.isGlobalJudge();
   }
 
   public hasRoles(roles: RoleName[]): boolean {

@@ -14,7 +14,7 @@
 @if (
   userService.isRequester() ||
   userService.isApprover() ||
-  userService.isJudge() ||
+  userService.isCourthouseJudge(caseFile.courthouseId) ||
   userService.isAdmin() ||
   userService.isSuperUser()
 ) {
