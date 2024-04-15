@@ -68,7 +68,7 @@ describe('Case retention screen as standard user', () => {
       cy.get('p.govuk-body').should('contain', 'No history to show');
 
       //Button group, should not be visible on open cases
-      cy.get('.govuk-button-group').should('not.exist');
+      cy.get('#retention-date-buttons').should('not.exist');
 
       cy.a11y();
     });
