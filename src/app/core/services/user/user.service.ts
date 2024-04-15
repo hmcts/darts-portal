@@ -42,7 +42,7 @@ export class UserService {
   }
 
   public isSuperUser(): boolean {
-    return this.hasRole('SUPER_USER');
+    return this.hasGlobalRole('SUPER_USER');
   }
 
   public isRequester(): boolean {

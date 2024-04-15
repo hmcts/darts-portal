@@ -236,6 +236,7 @@ describe('UserService', () => {
           {
             roleId: 123,
             roleName: 'SUPER_USER',
+            globalAccess: true,
             permissions: [],
           },
         ],
@@ -247,6 +248,24 @@ describe('UserService', () => {
 
     it("returns false if the user doesn't have the Super User role", () => {
       service.userState.set(mockUserState);
+      const result = service.isSuperUser();
+      expect(result).toEqual(false);
+    });
+
+    it('returns false if the user has non-global Super User role', () => {
+      const adminUser: UserState = {
+        userName: '',
+        userId: 1,
+        roles: [
+          {
+            roleId: 123,
+            roleName: 'SUPER_USER',
+            globalAccess: false,
+            permissions: [],
+          },
+        ],
+      };
+      service.userState.set(adminUser);
       const result = service.isSuperUser();
       expect(result).toEqual(false);
     });
