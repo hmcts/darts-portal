@@ -37,6 +37,10 @@ export class CookiesService {
     return this.cookiePolicy;
   }
 
+  doesCookiePolicyExist() {
+    return this.cookieService.check('cookie_policy') ? true : false;
+  }
+
   setCookiePolicy(appInsightsEnabled: boolean, dynatraceEnabled: boolean) {
     const expiryDate = DateTime.now().plus({ years: 1 }).toJSDate();
     const cookiePolicy = {

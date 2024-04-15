@@ -38,6 +38,24 @@ describe('CookiesService', () => {
     });
   });
 
+  describe('doesCookiePolicyExist', () => {
+    it('should return true if the cookie_policy cookie exists', () => {
+      mockCookieService.check.mockReturnValue(true);
+      const result = service.doesCookiePolicyExist();
+
+      expect(result).toBe(true);
+      expect(mockCookieService.check).toHaveBeenCalledWith('cookie_policy');
+    });
+
+    it('should return false if the cookie_policy cookie does not exist', () => {
+      mockCookieService.check.mockReturnValue(false);
+      const result = service.doesCookiePolicyExist();
+
+      expect(result).toBe(false);
+      expect(mockCookieService.check).toHaveBeenCalledWith('cookie_policy');
+    });
+  });
+
   describe('getCookiePolicy', () => {
     it('should return the current cookie policy if exists', () => {
       mockCookieService.check.mockReturnValue(true);
