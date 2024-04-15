@@ -73,7 +73,11 @@ export class RetentionPolicyFormComponent implements OnInit, OnChanges {
     ),
   });
 
+  submitButtonText = 'Save';
+
   ngOnInit(): void {
+    this.submitButtonText = this.context.includes('create') ? 'Create' : 'Save';
+
     this.setValidators(this.context);
 
     if (this.context === 'edit') {

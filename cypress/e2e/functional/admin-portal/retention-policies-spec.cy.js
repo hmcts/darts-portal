@@ -33,7 +33,7 @@ describe('Admin - Retention Policies screen', () => {
 
     cy.a11y();
 
-    cy.contains('Save').click();
+    cy.get('button').contains('Create').click();
 
     cy.get('app-govuk-banner').contains('Retention policy created');
 
