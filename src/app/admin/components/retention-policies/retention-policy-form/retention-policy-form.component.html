@@ -47,8 +47,8 @@
     />
   </div>
   <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('fixedPolicyKey')">
-    <label for="fixedPolicyKey" class="govuk-label">Fixed policy key</label>
-    @if (context === 'create-revision' || context === 'edit-revision') {
+    <label for="fixedPolicyKey" class="govuk-label" [class.bold-label]="isRevision">Fixed policy key</label>
+    @if (isRevision) {
       <p class="govuk-body" id="read-only-fixed-policy-key">{{ form.controls.fixedPolicyKey.value }}</p>
     } @else {
       @for (error of getErrorMessages('fixedPolicyKey'); track error) {

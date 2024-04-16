@@ -50,6 +50,7 @@ export class RetentionPolicyFormComponent implements OnInit, OnChanges {
   @Output() errors = new EventEmitter<ErrorSummaryEntry[]>(); // emit frontend form validation errors
 
   isSubmitted = false;
+  isRevision = false;
 
   form = this.fb.nonNullable.group(
     {
@@ -83,6 +84,7 @@ export class RetentionPolicyFormComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.submitButtonText = this.context.includes('create') ? 'Create' : 'Save';
+    this.isRevision = this.context === 'create-revision' || this.context === 'edit-revision';
 
     this.policy = this.policies.find((p) => p.id == this.policyId) ?? null;
 
