@@ -63,8 +63,8 @@ describe('SearchErrorComponent', () => {
     component.error = { detail: { type: 'CASE_102' } } as ErrorMessage;
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
-    expect(compiled.textContent).toContain('There are more than 500 results');
-    expect(compiled.textContent).toContain('adding more information to your search');
+    expect(compiled.textContent).toContain('We need more information to search for a case');
+    expect(compiled.textContent).toContain('Refine your search by adding more information and try again.');
   });
 
   it('should show default error message for unknown error', () => {

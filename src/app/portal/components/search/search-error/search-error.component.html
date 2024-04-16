@@ -17,13 +17,10 @@
     </div>
 
     <div *ngSwitchCase="'CASE_102'">
-      <h2 class="govuk-heading-m">There are more than 500 results</h2>
-      <p class="govuk-body">Refine your search by:</p>
-      <ul class="govuk-list govuk-list--bullet">
-        <li>adding more information to your search</li>
-        <li>using filters to restrict the number of results</li>
-      </ul>
+      <h2 class="govuk-heading-m">We need more information to search for a case</h2>
+      <p class="govuk-body">Refine your search by adding more information and try again.</p>
     </div>
+
     <div *ngSwitchDefault>
       <h2 *ngIf="error.status !== 500" class="govuk-heading-m">An error has occurred. Please try again later.</h2>
     </div>

@@ -65,7 +65,7 @@ describe('Case search', () => {
     cy.get('#courthouse').type('Reading');
     cy.get('button').contains('Search').click();
 
-    cy.get('app-search-error').should('contain', 'There are more than 500 results');
+    cy.get('app-search-error').should('contain', 'We need more information to search for a case');
   });
 
   it('validation', () => {
