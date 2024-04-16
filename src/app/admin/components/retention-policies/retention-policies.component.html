@@ -1,10 +1,3 @@
-@if (hasPolicyCreated$ | async) {
-  <app-govuk-banner type="success">Retention policy created</app-govuk-banner>
-}
-@if (hasPolicyUpdated$ | async) {
-  <app-govuk-banner type="success">Retention policy updated</app-govuk-banner>
-}
-
 <div class="heading-button-container">
   <app-govuk-heading tag="h2">Retention policies</app-govuk-heading>
   <button class="govuk-button" (click)="router.navigate([retentionPoliciesPath, 'create'])">Create policy</button>
@@ -28,9 +21,17 @@
         </td>
         <td class="govuk-table__cell">
           @if (isPolicyActive(row.policyStartAt)) {
-            <a class="govuk-link" [routerLink]="[row.id, 'edit']">Edit Policy</a>
+            <a href="javascript:void(0)" class="govuk-link" (click)="onEditClick(row, rows.activeRetentionPolicies)">
+              Edit Policy
+            </a>
           } @else {
-            <a class="govuk-link">Create new version</a>
+            <a
+              href="javascript:void(0)"
+              class="govuk-link"
+              (click)="router.navigate([retentionPoliciesPath, row.id, 'create-revision'])"
+            >
+              Create new version
+            </a>
           }
         </td>
       </ng-template>

@@ -6,18 +6,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
+import { RetentionPolicyErrorCode } from '@constants/retention-policy-error-codes';
 import { ErrorSummaryEntry } from '@core-types/index';
 import { HeaderService } from '@services/header/header.service';
 import { RetentionPoliciesService } from '@services/retention-policies/retention-policies.service';
 import { RetentionPolicyFormComponent } from '../retention-policy-form/retention-policy-form.component';
 
 export type RetentionFormContext = 'create' | 'edit' | 'create-revision' | 'edit-revision';
-
-export type CreatePolicyError =
-  | 'NON_UNIQUE_POLICY_NAME'
-  | 'NON_UNIQUE_POLICY_DISPLAY_NAME'
-  | 'NON_UNIQUE_FIXED_POLICY_KEY';
-
 @Component({
   selector: 'app-create-edit-retention-policy',
   standalone: true,
@@ -38,13 +33,13 @@ export class CreateEditRetentionPolicyComponent implements OnInit {
   headerService = inject(HeaderService);
   retentionPoliciesService = inject(RetentionPoliciesService);
 
-  // Context can be derived from the end of the url
-  // .../create || .../id/edit || .../id/edit-revision' || .../id/create-revision'
-  context = this.router.url.split('/').pop() as RetentionFormContext;
+  context = this.getContextFromUrl(this.router.url);
   policyId = this.route.snapshot.params?.id;
   title = '';
   errors: ErrorSummaryEntry[] = [];
-  error: CreatePolicyError | null = null;
+  error: RetentionPolicyErrorCode | null = null;
+  isCreateRevision = this.context === 'create-revision';
+  isCreate = this.context === 'create';
   retentionPoliciesPath = 'admin/system-configuration/retention-policies';
 
   policies$ = this.retentionPoliciesService.getRetentionPolicyTypes();
@@ -55,7 +50,7 @@ export class CreateEditRetentionPolicyComponent implements OnInit {
   }
 
   onSubmitPolicy(policy: RetentionPolicyForm) {
-    if (this.context === 'create') {
+    if (this.isCreate || this.isCreateRevision) {
       this.createRetentionPolicyAndRedirect(policy);
     } else {
       this.editRetentionPolicyAndRedirect(policy);
@@ -65,12 +60,11 @@ export class CreateEditRetentionPolicyComponent implements OnInit {
   private handleError = (res: HttpErrorResponse) => (this.error = res.error.type);
 
   private createRetentionPolicyAndRedirect(policy: RetentionPolicyForm) {
-    this.retentionPoliciesService.createRetentionPolicy(policy).subscribe({
-      next: () =>
-        void this.router.navigate([this.retentionPoliciesPath], {
-          queryParams: { created: true },
-        }),
-      error: (res: HttpErrorResponse) => (this.error = res.error.type),
+    const queryParams = this.isCreateRevision ? { revised: true } : { created: true };
+
+    this.retentionPoliciesService.createRetentionPolicy(policy, this.isCreateRevision).subscribe({
+      next: () => void this.router.navigate([this.retentionPoliciesPath], { queryParams }),
+      error: this.handleError,
     });
   }
 
@@ -90,7 +84,13 @@ export class CreateEditRetentionPolicyComponent implements OnInit {
       case 'create-revision':
         return 'Create new version';
       case 'edit-revision':
-        return 'Edit version';
+        return 'Edit policy';
     }
+  }
+
+  private getContextFromUrl(url: string): RetentionFormContext {
+    // Context can be derived from the end of the url
+    // .../create || .../id/edit || .../id/edit-revision || .../id/create-revision'
+    return url.split('/').pop()?.split('?')[0] as RetentionFormContext;
   }
 }

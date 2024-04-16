@@ -148,6 +148,20 @@ export const ADMIN_ROUTES: Routes = [
         (c) => c.SystemConfigurationComponent
       ),
   },
+  {
+    path: 'admin/system-configuration/retention-policies/:id/create-revision',
+    loadComponent: () =>
+      import(
+        './components/retention-policies/create-edit-retention-policy/create-edit-retention-policy.component'
+      ).then((c) => c.CreateEditRetentionPolicyComponent),
+  },
+  {
+    path: 'admin/system-configuration/retention-policies/:id/edit-revision',
+    loadComponent: () =>
+      import(
+        './components/retention-policies/create-edit-retention-policy/create-edit-retention-policy.component'
+      ).then((c) => c.CreateEditRetentionPolicyComponent),
+  },
 ].map((route) => ({
   ...route,
   resolve: { userState: () => inject(UserService).userProfile$ },

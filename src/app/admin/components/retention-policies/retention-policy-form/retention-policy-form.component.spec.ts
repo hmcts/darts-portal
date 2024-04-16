@@ -1,10 +1,12 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { RetentionPolicy, RetentionPolicyForm } from '@admin-types/index';
 import { SimpleChanges } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { RetentionPolicyErrorCode } from '@constants/retention-policy-error-codes';
 import { RetentionPolicyFormErrorMessages } from '@constants/retention-policy-form-error-messages';
 import { DateTime } from 'luxon';
-import { CreatePolicyError } from '../create-edit-retention-policy/create-edit-retention-policy.component';
+import { RetentionFormContext } from '../create-edit-retention-policy/create-edit-retention-policy.component';
 import { RetentionPolicyFormComponent } from './retention-policy-form.component';
 
 type formValidationTestCase = {
@@ -12,6 +14,8 @@ type formValidationTestCase = {
   data: RetentionPolicyForm;
   validity: boolean;
   errorMessage?: string;
+  context?: RetentionFormContext;
+  onSubmit?: boolean;
 };
 
 // Factory function to create a Valid RetentionPolicyForm object
@@ -121,7 +125,6 @@ const formValidationTestCases: formValidationTestCase[] = [
     name: 'startTime hours is not a valid time',
     data: formDataFactory({ startTime: { hours: '24', minutes: '00' } }),
     validity: false,
-    errorMessage: RetentionPolicyFormErrorMessages.startTime.invalidTime,
   },
   {
     name: 'startTime minutes is empty',
@@ -144,6 +147,24 @@ const formValidationTestCases: formValidationTestCase[] = [
   {
     name: 'startTime hours and minutes are valid',
     data: formDataFactory({ startTime: { hours: '00', minutes: '00' } }),
+    validity: true,
+  },
+  {
+    name: 'date is today but time is in the past',
+    data: formDataFactory({
+      startDate: DateTime.now().toFormat('dd/MM/yyyy'),
+      startTime: { hours: '00', minutes: '00' },
+    }),
+    validity: false,
+    onSubmit: true,
+    errorMessage: RetentionPolicyFormErrorMessages.startTime.pastDateTime,
+  },
+  {
+    name: 'date is today but time is in future',
+    data: formDataFactory({
+      startDate: DateTime.now().toFormat('dd/MM/yyyy'),
+      startTime: { hours: '23', minutes: '59' },
+    }),
     validity: true,
   },
 ];
@@ -184,8 +205,22 @@ describe('RetentionPolicyFormComponent', () => {
   describe('form validation', () => {
     formValidationTestCases.forEach((test) => {
       it(test.name, () => {
+        component.context = test.context || 'create';
         component.form.setValue(test.data);
         expect(component.form.valid).toBe(test.validity);
+
+        if (test.onSubmit) {
+          component.onSubmit();
+        }
+
+        if (test.errorMessage) {
+          component.form.markAllAsTouched();
+          fixture.detectChanges();
+          const errorMessages: string[] = fixture.debugElement
+            .queryAll(By.css('.govuk-error-message'))
+            .map((el) => el.nativeElement.textContent.trim());
+          expect(errorMessages).toContain(`Error: ${test.errorMessage}`);
+        }
       });
     });
   });
@@ -210,43 +245,51 @@ describe('RetentionPolicyFormComponent', () => {
   });
 
   describe('Create policy errors', () => {
-    it('should map NON_UNIQUE_POLICY_NAME error to form', () => {
-      const error: CreatePolicyError = 'NON_UNIQUE_POLICY_NAME';
+    it('should map NON_UNIQUE_POLICY_NAME error to form', fakeAsync(() => {
+      const error = RetentionPolicyErrorCode.NON_UNIQUE_POLICY_NAME;
 
       component.savePolicyError = error;
 
       component.ngOnChanges({ savePolicyError: { currentValue: error } } as unknown as SimpleChanges);
+
+      tick();
 
       expect(component.form.controls.name.errors?.unique).toBe(true);
-    });
+    }));
 
-    it('should map NON_UNIQUE_POLICY_DISPLAY_NAME error to form', () => {
-      const error: CreatePolicyError = 'NON_UNIQUE_POLICY_DISPLAY_NAME';
+    it('should map NON_UNIQUE_POLICY_DISPLAY_NAME error to form', fakeAsync(() => {
+      const error = RetentionPolicyErrorCode.NON_UNIQUE_POLICY_DISPLAY_NAME;
 
       component.savePolicyError = error;
 
       component.ngOnChanges({ savePolicyError: { currentValue: error } } as unknown as SimpleChanges);
+
+      tick();
 
       expect(component.form.controls.displayName.errors?.unique).toBe(true);
-    });
+    }));
 
-    it('should map NON_UNIQUE_FIXED_POLICY_KEY error to form', () => {
-      const error: CreatePolicyError = 'NON_UNIQUE_FIXED_POLICY_KEY';
+    it('should map NON_UNIQUE_FIXED_POLICY_KEY error to form', fakeAsync(() => {
+      const error = RetentionPolicyErrorCode.NON_UNIQUE_FIXED_POLICY_KEY;
 
       component.savePolicyError = error;
 
       component.ngOnChanges({ savePolicyError: { currentValue: error } } as unknown as SimpleChanges);
 
-      expect(component.form.controls.fixedPolicyKey.errors?.unique).toBe(true);
-    });
+      tick();
 
-    it('should not set the form error when savePolicyError is null', () => {
+      expect(component.form.controls.fixedPolicyKey.errors?.unique).toBe(true);
+    }));
+
+    it('should not set the form error when savePolicyError is null', fakeAsync(() => {
       component.savePolicyError = null;
 
       component.ngOnChanges({ savePolicyError: { currentValue: null } } as unknown as SimpleChanges);
 
+      tick();
+
       expect(component.form.controls.name.errors?.unique).toBeUndefined();
-    });
+    }));
   });
 
   describe('edit context', () => {
@@ -275,6 +318,36 @@ describe('RetentionPolicyFormComponent', () => {
         duration: { years: '1', months: '0', days: '0' },
         startDate: '01/01/2025',
         startTime: { hours: '01', minutes: '02' },
+      });
+    });
+  });
+
+  describe('create-revision context', () => {
+    it('populate form with policy data', () => {
+      component.context = 'create-revision';
+      const policy: RetentionPolicy = {
+        id: 0,
+        name: 'name',
+        displayName: 'disp',
+        description: 'desc',
+        fixedPolicyKey: '33',
+        duration: '1Y0M0D',
+        policyStartAt: DateTime.fromISO('2099-01-01T01:02:00.000Z'),
+        policyEndAt: null,
+      };
+      component.policies = [policy];
+      component.policyId = 0;
+
+      component.ngOnInit();
+
+      expect(component.form.value).toEqual({
+        name: 'name',
+        displayName: 'disp',
+        description: 'desc',
+        fixedPolicyKey: '33',
+        duration: { years: '', months: '', days: '' },
+        startDate: '',
+        startTime: { hours: '', minutes: '' },
       });
     });
   });

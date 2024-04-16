@@ -47,20 +47,22 @@
     />
   </div>
   <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('fixedPolicyKey')">
-    <label for="fixedPolicyKey" class="govuk-label">Fixed policy key</label>
-
-    @for (error of getErrorMessages('fixedPolicyKey'); track error) {
-      <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ error }}</p>
+    <label for="fixedPolicyKey" class="govuk-label" [class.bold-label]="isRevision">Fixed policy key</label>
+    @if (isRevision) {
+      <p class="govuk-body" id="read-only-fixed-policy-key">{{ form.controls.fixedPolicyKey.value }}</p>
+    } @else {
+      @for (error of getErrorMessages('fixedPolicyKey'); track error) {
+        <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ error }}</p>
+      }
+      <input
+        type="text"
+        id="fixedPolicyKey"
+        name="fixedPolicyKey"
+        formControlName="fixedPolicyKey"
+        class="govuk-input govuk-input--width-10"
+        [class.govuk-input--error]="isControlInvalid('fixedPolicyKey')"
+      />
     }
-
-    <input
-      type="text"
-      id="fixedPolicyKey"
-      name="fixedPolicyKey"
-      formControlName="fixedPolicyKey"
-      class="govuk-input govuk-input--width-10"
-      [class.govuk-input--error]="isControlInvalid('fixedPolicyKey')"
-    />
   </div>
   <div class="govuk-form-group" formGroupName="duration" [class.govuk-form-group--error]="isControlInvalid('duration')">
     <fieldset class="govuk-fieldset" role="group">
