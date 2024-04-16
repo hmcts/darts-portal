@@ -19,11 +19,7 @@ Cypress.Commands.add('logout', () => {
 });
 
 Cypress.Commands.add('acceptCookies', () => {
-  cy.get('body').then(($body) => {
-    if ($body.find('button[name="cookies-accept"]:contains("Accept additional cookies")').length) {
-      cy.get('button[name="cookies-accept"]').contains('Accept additional cookies').click();
-    }
-  });
+  cy.get('button[name="cookies-accept"]').contains('Accept additional cookies').click();
 });
 
 Cypress.Commands.add('a11y', () => {
