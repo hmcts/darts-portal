@@ -38,11 +38,11 @@ export class UserService {
   }
 
   public isAdmin(): boolean {
-    return this.hasRole('SUPER_ADMIN');
+    return this.hasGlobalRole('SUPER_ADMIN');
   }
 
   public isSuperUser(): boolean {
-    return this.hasRole('SUPER_USER');
+    return this.hasGlobalRole('SUPER_USER');
   }
 
   public isRequester(): boolean {
@@ -57,8 +57,11 @@ export class UserService {
     return this.userState() ? this.userState()!.roles.some((x) => x.roleName === 'JUDGE' && x.globalAccess) : false;
   }
 
-  public isCourthouseJudge(courthouseId: number): boolean {
-    return this.isGlobalJudge() || this.hasCourthouse(courthouseId);
+  public isCourthouseJudge(courthouseId?: number): boolean {
+    if (courthouseId) {
+      return this.isGlobalJudge() || this.hasCourthouse(courthouseId);
+    }
+    return this.isGlobalJudge();
   }
 
   public hasRoles(roles: RoleName[]): boolean {
@@ -73,6 +76,10 @@ export class UserService {
 
   private hasUserState(): boolean {
     return Boolean(this.userState());
+  }
+
+  private hasGlobalRole(role: RoleName): boolean {
+    return this.userState() ? this.userState()!.roles.some((x) => x.roleName === role && x.globalAccess) : false;
   }
 
   private hasRole(role: RoleName): boolean {

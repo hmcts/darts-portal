@@ -27,6 +27,7 @@ const JUDGE = {
 const SUPER_ADMIN = {
   roleId: 5,
   roleName: 'SUPER_ADMIN',
+  globalAccess: true,
   permissions,
 };
 
@@ -39,6 +40,7 @@ const TRANSLATION_QA = {
 const SUPER_USER = {
   roleId: 7,
   roleName: 'SUPER_USER',
+  globalAccess: true,
   permissions,
 };
 

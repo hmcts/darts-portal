@@ -61,12 +61,7 @@ describe('UserService', () => {
           {
             roleId: 123,
             roleName: 'TRANSCRIBER',
-            permissions: [
-              {
-                permissionId: 1,
-                permissionName: 'local dev permissions',
-              },
-            ],
+            permissions: [],
           },
         ],
       };
@@ -97,12 +92,7 @@ describe('UserService', () => {
           {
             roleId: 123,
             roleName: 'APPROVER',
-            permissions: [
-              {
-                permissionId: 1,
-                permissionName: 'local dev permissions',
-              },
-            ],
+            permissions: [],
           },
         ],
       };
@@ -127,12 +117,7 @@ describe('UserService', () => {
           {
             roleId: 123,
             roleName: 'JUDGE',
-            permissions: [
-              {
-                permissionId: 1,
-                permissionName: 'local dev permissions',
-              },
-            ],
+            permissions: [],
           },
         ],
       };
@@ -157,12 +142,7 @@ describe('UserService', () => {
           {
             roleId: 123,
             roleName: 'REQUESTER',
-            permissions: [
-              {
-                permissionId: 1,
-                permissionName: 'local dev permissions',
-              },
-            ],
+            permissions: [],
           },
         ],
       };
@@ -187,12 +167,7 @@ describe('UserService', () => {
           {
             roleId: 123,
             roleName: 'TRANSLATION_QA',
-            permissions: [
-              {
-                permissionId: 1,
-                permissionName: 'local dev permissions',
-              },
-            ],
+            permissions: [],
           },
         ],
       };
@@ -217,12 +192,8 @@ describe('UserService', () => {
           {
             roleId: 123,
             roleName: 'SUPER_ADMIN',
-            permissions: [
-              {
-                permissionId: 1,
-                permissionName: 'local dev permissions',
-              },
-            ],
+            globalAccess: true,
+            permissions: [],
           },
         ],
       };
@@ -233,6 +204,24 @@ describe('UserService', () => {
 
     it("returns false if the user doesn't have the Super Admin role", () => {
       service.userState.set(mockUserState);
+      const result = service.isAdmin();
+      expect(result).toEqual(false);
+    });
+
+    it('returns false if the user has non-global Super Admin role', () => {
+      const adminUser: UserState = {
+        userName: '',
+        userId: 1,
+        roles: [
+          {
+            roleId: 123,
+            roleName: 'SUPER_ADMIN',
+            globalAccess: false,
+            permissions: [],
+          },
+        ],
+      };
+      service.userState.set(adminUser);
       const result = service.isAdmin();
       expect(result).toEqual(false);
     });
@@ -247,12 +236,8 @@ describe('UserService', () => {
           {
             roleId: 123,
             roleName: 'SUPER_USER',
-            permissions: [
-              {
-                permissionId: 1,
-                permissionName: 'local dev permissions',
-              },
-            ],
+            globalAccess: true,
+            permissions: [],
           },
         ],
       };
@@ -263,6 +248,24 @@ describe('UserService', () => {
 
     it("returns false if the user doesn't have the Super User role", () => {
       service.userState.set(mockUserState);
+      const result = service.isSuperUser();
+      expect(result).toEqual(false);
+    });
+
+    it('returns false if the user has non-global Super User role', () => {
+      const adminUser: UserState = {
+        userName: '',
+        userId: 1,
+        roles: [
+          {
+            roleId: 123,
+            roleName: 'SUPER_USER',
+            globalAccess: false,
+            permissions: [],
+          },
+        ],
+      };
+      service.userState.set(adminUser);
       const result = service.isSuperUser();
       expect(result).toEqual(false);
     });
