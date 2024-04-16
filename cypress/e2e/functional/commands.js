@@ -1,6 +1,7 @@
 import 'cypress-axe';
 Cypress.Commands.add('login', (roleCode = 'admin', loginType = 'internal') => {
   cy.visit('/login');
+  cy.acceptCookies();
   if (loginType === 'internal') {
     cy.contains("I'm an employee of HM Courts and Tribunals Service").click();
   } else {
@@ -15,6 +16,10 @@ Cypress.Commands.add('login', (roleCode = 'admin', loginType = 'internal') => {
 
 Cypress.Commands.add('logout', () => {
   cy.contains('Sign out').click();
+});
+
+Cypress.Commands.add('acceptCookies', () => {
+  cy.get('button[name="cookies-accept"]').contains('Accept additional cookies').click();
 });
 
 Cypress.Commands.add('a11y', () => {

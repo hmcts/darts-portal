@@ -32,7 +32,7 @@
       }
 
       @if (!buttonGroupHide(vm.retentionHistory)) {
-        <div class="govuk-button-group">
+        <div id="retention-date-buttons" class="govuk-button-group">
           <button
             (click)="changeRetentionDate()"
             id="change-retention-button"

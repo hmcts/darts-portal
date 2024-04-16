@@ -2,11 +2,11 @@ import 'cypress-axe';
 import './commands';
 
 describe('Case file screen', () => {
-  beforeEach(() => {
-    cy.login();
-  });
-
   describe('error scenarios', () => {
+    beforeEach(() => {
+      cy.login();
+    });
+
     it('shows the 400 error page', () => {
       cy.visit('/case/400');
       cy.injectAxe();
@@ -34,6 +34,7 @@ describe('Case file screen', () => {
 
   describe('valid cases', () => {
     beforeEach(() => {
+      cy.login();
       cy.contains('Search').click();
       cy.get('#case_number').type('C20220620001');
       cy.get('button').contains('Search').click();
@@ -113,40 +114,50 @@ describe('Case file screen', () => {
   });
 
   describe('retention date', () => {
-    it('should show retain until for valid role', () => {
-      //Defaults to valid role
-      cy.contains('Search').click();
-      cy.get('#case_number').type('C20220620001');
-      cy.get('button').contains('Search').click();
-      cy.contains('C20220620001').click();
+    describe('valid role', () => {
+      beforeEach(() => {
+        cy.login();
+      });
 
-      cy.get('h3.govuk-heading-s').should('contain', 'Retained until');
-      cy.get('p.govuk-body').should('contain', '15 Sep 2030');
-      cy.get('a.govuk-link').should('contain', 'View or change');
+      it('should show retain until for valid role', () => {
+        //Defaults to valid role
+        cy.contains('Search').click();
+        cy.get('#case_number').type('C20220620001');
+        cy.get('button').contains('Search').click();
+        cy.contains('C20220620001').click();
+
+        cy.get('h3.govuk-heading-s').should('contain', 'Retained until');
+        cy.get('p.govuk-body').should('contain', '15 Sep 2030');
+        cy.get('a.govuk-link').should('contain', 'View or change');
+      });
+
+      it('should show no date applied for valid role', () => {
+        //Defaults to valid role
+        cy.contains('Search').click();
+        cy.get('#case_number').type('C20220620002');
+        cy.get('button').contains('Search').click();
+        cy.contains('C20220620002').click();
+
+        cy.get('h3.govuk-heading-s').should('contain', 'Retained until');
+        cy.get('p.govuk-body').should('contain', 'No date applied');
+        cy.get('a.govuk-link').should('contain', 'View or change');
+      });
     });
 
-    it('should show no date applied for valid role', () => {
-      //Defaults to valid role
-      cy.contains('Search').click();
-      cy.get('#case_number').type('C20220620002');
-      cy.get('button').contains('Search').click();
-      cy.contains('C20220620002').click();
+    describe('invalid role', () => {
+      beforeEach(() => {
+        cy.login('transcriber');
+      });
 
-      cy.get('h3.govuk-heading-s').should('contain', 'Retained until');
-      cy.get('p.govuk-body').should('contain', 'No date applied');
-      cy.get('a.govuk-link').should('contain', 'View or change');
-    });
+      it('should hide retain until for invalid role', () => {
+        cy.contains('Search').click();
+        cy.get('#case_number').type('C20220620002');
+        cy.get('button').contains('Search').click();
+        cy.contains('C20220620002').click();
 
-    it('should hide retain until for invalid role', () => {
-      cy.logout();
-      cy.login('transcriber');
-      cy.contains('Search').click();
-      cy.get('#case_number').type('C20220620002');
-      cy.get('button').contains('Search').click();
-      cy.contains('C20220620002').click();
-
-      cy.contains('Retained until').should('not.exist');
-      cy.contains('View or change').should('not.exist');
+        cy.contains('Retained until').should('not.exist');
+        cy.contains('View or change').should('not.exist');
+      });
     });
   });
 });
