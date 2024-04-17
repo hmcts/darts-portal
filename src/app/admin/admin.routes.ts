@@ -6,19 +6,23 @@ import { authGuard } from '../core/auth/auth.guard';
 export const ADMIN_ROUTES: Routes = [
   {
     path: 'admin/users',
+    title: 'DARTS Admin Search Users',
     loadComponent: () => import('./components/users/users.component').then((c) => c.UsersComponent),
   },
   {
     path: 'admin/users/create',
+    title: 'DARTS Admin Create Users',
     loadComponent: () =>
       import('./components/users/create-user/create-user.component').then((c) => c.CreateUserComponent),
   },
   {
     path: 'admin/users/edit/:userId',
+    title: 'DARTS Admin Edit User',
     loadComponent: () => import('./components/users/edit-user/edit-user.component').then((c) => c.EditUserComponent),
   },
   {
     path: 'admin/users/:userId/assign-groups',
+    title: 'DARTS Admin Assign User Groups',
     loadComponent: () =>
       import('./components/users/user-groups/assign-groups/assign-groups.component').then(
         (c) => c.AssignGroupsComponent
@@ -26,6 +30,7 @@ export const ADMIN_ROUTES: Routes = [
   },
   {
     path: 'admin/users/:userId/remove-groups',
+    title: 'DARTS Admin Remove User Groups',
     loadComponent: () =>
       import('./components/users/user-groups/remove-groups/remove-groups.component').then(
         (c) => c.RemoveGroupsComponent
@@ -33,20 +38,24 @@ export const ADMIN_ROUTES: Routes = [
   },
   {
     path: 'admin/users/:userId/activate',
+    title: 'DARTS Admin Activate User',
     loadComponent: () =>
       import('./components/users/activate-user/activate-user.component').then((c) => c.ActivateUserComponent),
   },
   {
     path: 'admin/users/:userId',
+    title: 'DARTS Admin View User',
     loadComponent: () =>
       import('./components/users/user-record/user-record.component').then((c) => c.UserRecordComponent),
   },
   {
     path: 'admin/groups',
+    title: 'DARTS Admin Search Groups',
     loadComponent: () => import('./components/groups/groups.component').then((c) => c.GroupsComponent),
   },
   {
     path: 'admin/groups/create',
+    title: 'DARTS Admin Create Group',
     loadComponent: () =>
       import('./components/groups/create-edit-group/create-edit-group.component').then(
         (c) => c.CreateEditGroupComponent
@@ -54,11 +63,13 @@ export const ADMIN_ROUTES: Routes = [
   },
   {
     path: 'admin/groups/:id',
+    title: 'DARTS Admin View Group',
     loadComponent: () =>
       import('./components/groups/group-record/group-record.component').then((c) => c.GroupRecordComponent),
   },
   {
     path: 'admin/groups/:id/remove-users',
+    title: 'DARTS Admin Remove Users Group',
     loadComponent: () =>
       import('./components/groups/remove-group-users/remove-group-users.component').then(
         (c) => c.RemoveGroupUsersComponent
@@ -66,6 +77,7 @@ export const ADMIN_ROUTES: Routes = [
   },
   {
     path: 'admin/groups/:id/edit',
+    title: 'DARTS Admin Edit Group',
     loadComponent: () =>
       import('./components/groups/create-edit-group/create-edit-group.component').then(
         (c) => c.CreateEditGroupComponent
@@ -73,10 +85,12 @@ export const ADMIN_ROUTES: Routes = [
   },
   {
     path: 'admin/courthouses',
+    title: 'DARTS Admin Search Courthouses',
     loadComponent: () => import('./components/courthouses/courthouses.component').then((c) => c.CourthousesComponent),
   },
   {
     path: 'admin/courthouses/:courthouseId/edit',
+    title: 'DARTS Admin Edit Courthouse',
     loadComponent: () =>
       import('./components/courthouses/edit-courthouse/edit-courthouse.component').then(
         (c) => c.EditCourthouseComponent
@@ -84,6 +98,7 @@ export const ADMIN_ROUTES: Routes = [
   },
   {
     path: 'admin/courthouses/create',
+    title: 'DARTS Admin Create Courthouse',
     loadComponent: () =>
       import('./components/courthouses/create-courthouse/create-courthouse.component').then(
         (c) => c.CreateCourthouseComponent
@@ -91,6 +106,7 @@ export const ADMIN_ROUTES: Routes = [
   },
   {
     path: 'admin/courthouses/:courthouseId',
+    title: 'DARTS Admin View Courthouses',
     loadComponent: () =>
       import('./components/courthouses/courthouse-record/courthouse-record.component').then(
         (c) => c.CourthouseRecordComponent
@@ -98,23 +114,28 @@ export const ADMIN_ROUTES: Routes = [
   },
   {
     path: 'admin/events',
+    title: 'DARTS Admin Events',
     loadComponent: () => import('./components/events/events.component').then((c) => c.EventsComponent),
   },
   {
     path: 'admin/audio-cache',
+    title: 'DARTS Admin Audio Cache',
     loadComponent: () => import('./components/audio-cache/audio-cache.component').then((c) => c.AudioCacheComponent),
   },
   {
     path: 'admin/transcripts',
+    title: 'DARTS Admin Transcripts',
     loadComponent: () => import('./components/transcripts/transcripts.component').then((c) => c.TranscriptsComponent),
   },
   {
     path: 'admin/file-deletion',
+    title: 'DARTS Admin File Deletion',
     loadComponent: () =>
       import('./components/file-deletion/file-deletion.component').then((c) => c.FileDeletionComponent),
   },
   {
     path: 'admin/system-configuration/retention-policies',
+    title: 'DARTS Admin Retention Policies',
     loadComponent: () =>
       import('./components/system-configuration/system-configuration.component').then(
         (c) => c.SystemConfigurationComponent
@@ -122,6 +143,7 @@ export const ADMIN_ROUTES: Routes = [
   },
   {
     path: 'admin/system-configuration/retention-policies/create',
+    title: 'DARTS Admin Create Retention Policy',
     loadComponent: () =>
       import(
         './components/retention-policies/create-edit-retention-policy/create-edit-retention-policy.component'
@@ -129,6 +151,7 @@ export const ADMIN_ROUTES: Routes = [
   },
   {
     path: 'admin/system-configuration/retention-policies/:id/edit',
+    title: 'DARTS Admin Edit Retention Policy',
     loadComponent: () =>
       import(
         './components/retention-policies/create-edit-retention-policy/create-edit-retention-policy.component'
@@ -136,6 +159,7 @@ export const ADMIN_ROUTES: Routes = [
   },
   {
     path: 'admin/system-configuration/event-mapping',
+    title: 'DARTS Admin Event Mapping',
     loadComponent: () =>
       import('./components/system-configuration/system-configuration.component').then(
         (c) => c.SystemConfigurationComponent
@@ -143,6 +167,7 @@ export const ADMIN_ROUTES: Routes = [
   },
   {
     path: 'admin/system-configuration/automated-tasks',
+    title: 'DARTS Admin Automated Tasks',
     loadComponent: () =>
       import('./components/system-configuration/system-configuration.component').then(
         (c) => c.SystemConfigurationComponent
@@ -150,6 +175,7 @@ export const ADMIN_ROUTES: Routes = [
   },
   {
     path: 'admin/system-configuration/retention-policies/:id/create-revision',
+    title: 'DARTS Admin New Version Retention Policy',
     loadComponent: () =>
       import(
         './components/retention-policies/create-edit-retention-policy/create-edit-retention-policy.component'
@@ -157,6 +183,7 @@ export const ADMIN_ROUTES: Routes = [
   },
   {
     path: 'admin/system-configuration/retention-policies/:id/edit-revision',
+    title: 'DARTS Admin Edit Revision Retention Policy',
     loadComponent: () =>
       import(
         './components/retention-policies/create-edit-retention-policy/create-edit-retention-policy.component'

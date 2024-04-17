@@ -6,15 +6,18 @@ import { authGuard } from '../core/auth/auth.guard';
 export const PORTAL_ROUTES: Routes = [
   {
     path: 'audios',
+    title: 'DARTS Your Audio',
     loadComponent: () => import('../portal/components/audios/audios.component').then((c) => c.AudiosComponent),
   },
   {
     path: 'work',
+    title: 'DARTS Your Work',
     data: { allowedRoles: ['TRANSCRIBER'] },
     loadComponent: () => import('../portal/components/your-work/your-work.component').then((c) => c.YourWorkComponent),
   },
   {
     path: 'work/:requestId',
+    title: 'DARTS View Your Work Request',
     data: { allowedRoles: ['TRANSCRIBER'] },
     loadComponent: () =>
       import('../portal/components/your-work/upload-transcript/upload-transcript.component').then(
@@ -23,6 +26,7 @@ export const PORTAL_ROUTES: Routes = [
   },
   {
     path: 'work/:requestId/complete',
+    title: 'DARTS Completed Transcript Request',
     data: { allowedRoles: ['TRANSCRIBER'] },
     loadComponent: () =>
       import('../portal/components/your-work/completed-transcript/completed-transcript.component').then(
@@ -31,17 +35,20 @@ export const PORTAL_ROUTES: Routes = [
   },
   {
     path: 'audios/:requestId',
+    title: 'DARTS Play Audio',
     loadComponent: () =>
       import('../portal/components/audios/audio-view/audio-view.component').then((c) => c.AudioViewComponent),
   },
   {
     path: 'transcriptions',
+    title: 'DARTS Your Transcripts',
     data: { allowedRoles: ['APPROVER', 'REQUESTER', 'JUDGE', 'SUPER_USER'] },
     loadComponent: () =>
       import('../portal/components/transcriptions/transcriptions.component').then((c) => c.TranscriptionsComponent),
   },
   {
     path: 'transcriptions/delete-error',
+    title: 'DARTS Delete Transcript Error',
     data: { allowedRoles: ['APPROVER', 'REQUESTER', 'JUDGE'] },
     loadComponent: () =>
       import('../portal/components/transcriptions/error/partial-delete-error/partial-delete-error.component').then(
@@ -50,6 +57,7 @@ export const PORTAL_ROUTES: Routes = [
   },
   {
     path: 'transcription-requests',
+    title: 'DARTS Transcript Requests',
     data: { allowedRoles: ['TRANSCRIBER'] },
     loadComponent: () =>
       import('../portal/components/transcriptions/transcription-requests/transcription-requests.component').then(
@@ -58,6 +66,7 @@ export const PORTAL_ROUTES: Routes = [
   },
   {
     path: 'transcription-requests/:transcriptId',
+    title: 'DARTS View Transcript Request',
     data: { allowedRoles: ['TRANSCRIBER'] },
     loadComponent: () =>
       import('../portal/components/transcriptions/assign-transcript/assign-transcript.component').then(
@@ -66,14 +75,17 @@ export const PORTAL_ROUTES: Routes = [
   },
   {
     path: 'search',
+    title: 'DARTS Search',
     loadComponent: () => import('../portal/components/search/search.component').then((c) => c.SearchComponent),
   },
   {
     path: 'case/:caseId',
+    title: 'DARTS Case File',
     loadComponent: () => import('../portal/components/case/case.component').then((c) => c.CaseComponent),
   },
   {
     path: 'case/:caseId/retention',
+    title: 'DARTS Case Retention',
     data: { allowedRoles: ['APPROVER', 'REQUESTER', 'JUDGE', 'SUPER_ADMIN', 'SUPER_USER'] },
     loadComponent: () =>
       import('../portal/components/case/case-retention-date/case-retention-date.component').then(
@@ -82,10 +94,12 @@ export const PORTAL_ROUTES: Routes = [
   },
   {
     path: 'case/:caseId/hearing/:hearing_id',
+    title: 'DARTS Hearing Details',
     loadComponent: () => import('../portal/components/hearing/hearing.component').then((c) => c.HearingComponent),
   },
   {
     path: 'case/:caseId/hearing/:hearing_id/add-annotation',
+    title: 'DARTS Add Annotation',
     data: { allowedRoles: ['JUDGE', 'SUPER_ADMIN'] },
     loadComponent: () =>
       import('../portal/components/hearing/add-annotation/add-annotation.component').then(
@@ -94,6 +108,7 @@ export const PORTAL_ROUTES: Routes = [
   },
   {
     path: 'case/:caseId/hearing/:hearing_id/request-transcript',
+    title: 'DARTS Request Transcript',
     loadComponent: () =>
       import('../portal/components/hearing/request-transcript/request-transcript.component').then(
         (c) => c.RequestTranscriptComponent
@@ -101,6 +116,7 @@ export const PORTAL_ROUTES: Routes = [
   },
   {
     path: 'case/:caseId/transcripts/:transcriptId',
+    title: 'DARTS View Transcript File',
     loadComponent: () =>
       import('../portal/components/transcriptions/view-transcript/view-transcript.component').then(
         (c) => c.ViewTranscriptComponent
@@ -108,6 +124,7 @@ export const PORTAL_ROUTES: Routes = [
   },
   {
     path: 'case/:caseId/hearing/:hearing_id/transcripts/:transcriptId',
+    title: 'DARTS View Transcript File',
     loadComponent: () =>
       import('../portal/components/transcriptions/view-transcript/view-transcript.component').then(
         (c) => c.ViewTranscriptComponent
@@ -115,6 +132,7 @@ export const PORTAL_ROUTES: Routes = [
   },
   {
     path: 'transcriptions/transcripts/:transcriptId',
+    title: 'DARTS View Transcript File',
     loadComponent: () =>
       import('../portal/components/transcriptions/view-transcript/view-transcript.component').then(
         (c) => c.ViewTranscriptComponent
@@ -122,6 +140,7 @@ export const PORTAL_ROUTES: Routes = [
   },
   {
     path: 'transcriptions/approve-transcript/:transcriptId',
+    title: 'DARTS Approve Transcript',
     data: { allowedRoles: ['APPROVER'] },
     loadComponent: () =>
       import('../portal/components/transcriptions/approve-transcript/approve-transcript.component').then(

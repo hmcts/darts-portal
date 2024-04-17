@@ -9,12 +9,12 @@ import { PORTAL_ROUTES } from './portal/portal.routes';
 
 // Place all redirects here
 const openRoutes: Routes = [
-  { path: 'login', component: LoginComponent },
+  { path: 'login', component: LoginComponent, title: 'DARTS Portal Login' },
   { path: '', redirectTo: '/search', pathMatch: 'full' },
-  { path: 'page-not-found', component: NotFoundComponent },
-  { path: 'forbidden', component: ForbiddenComponent },
-  { path: 'internal-error', component: InternalErrorComponent },
-  { path: 'cookies', component: CookiesComponent },
+  { path: 'page-not-found', component: NotFoundComponent, title: 'DARTS Page Not Found' },
+  { path: 'forbidden', component: ForbiddenComponent, title: 'DARTS Forbidden' },
+  { path: 'internal-error', component: InternalErrorComponent, title: 'DARTS Internal Error' },
+  { path: 'cookies', component: CookiesComponent, title: 'DARTS Cookie Policy' },
   { path: 'dev/components', loadComponent: () => import('./dev/dev.component').then((c) => c.DevComponent) },
   { path: 'admin', redirectTo: '/admin/users', pathMatch: 'full' },
   {
