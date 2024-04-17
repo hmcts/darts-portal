@@ -16,7 +16,7 @@ describe('RequestPlaybackAudioComponent', () => {
     const userState: UserState = { userName: 'test@test.com', userId: 123, roles: [] };
     const userServiceStub = {
       userProfile$: of(userState),
-      isTranscriber: jest.fn(),
+      isCourthouseTranscriber: jest.fn(),
       isAdmin: jest.fn(),
       isSuperUser: jest.fn(),
     };
@@ -83,12 +83,12 @@ describe('RequestPlaybackAudioComponent', () => {
     it('should set request type as required if the user is a transcriber', () => {
       jest.spyOn(component.userService, 'isAdmin').mockReturnValue(false);
       jest.spyOn(component.userService, 'isSuperUser').mockReturnValue(false);
-      jest.spyOn(component.userService, 'isTranscriber').mockReturnValue(true);
+      jest.spyOn(component.userService, 'isCourthouseTranscriber').mockReturnValue(true);
       component.ngOnInit();
       expect(component.audioRequestForm.get('requestType')?.hasValidator(Validators.required)).toBeTruthy();
     });
     it('should set request type as required if the user is a admin or super user', () => {
-      jest.spyOn(component.userService, 'isTranscriber').mockReturnValue(false);
+      jest.spyOn(component.userService, 'isCourthouseTranscriber').mockReturnValue(false);
       jest.spyOn(component.userService, 'isAdmin').mockReturnValue(true);
       component.ngOnInit();
       expect(component.audioRequestForm.get('requestType')?.hasValidator(Validators.required)).toBeTruthy();
@@ -98,7 +98,7 @@ describe('RequestPlaybackAudioComponent', () => {
       expect(component.audioRequestForm.get('requestType')?.hasValidator(Validators.required)).toBeTruthy();
     });
     it('should not set any validators on request type if the user is not a transcriber, or admin, or super user', () => {
-      jest.spyOn(component.userService, 'isTranscriber').mockReturnValue(false);
+      jest.spyOn(component.userService, 'isCourthouseTranscriber').mockReturnValue(false);
       jest.spyOn(component.userService, 'isAdmin').mockReturnValue(false);
       jest.spyOn(component.userService, 'isSuperUser').mockReturnValue(false);
       component.ngOnInit();

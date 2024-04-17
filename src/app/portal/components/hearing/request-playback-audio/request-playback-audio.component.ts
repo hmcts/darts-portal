@@ -40,6 +40,7 @@ const fieldErrors: FieldErrors = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
+  @Input() courthouseId!: number;
   @Input() hearing!: Hearing;
   @Input() audioTimes: { startTime: DateTime; endTime: DateTime } | null = null;
   @Input() userState!: UserState;
@@ -65,7 +66,9 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
   }
   ngOnInit(): void {
     const requestTypeRequired =
-      this.userService.isTranscriber() || this.userService.isAdmin() || this.userService.isSuperUser();
+      this.userService.isCourthouseTranscriber(this.courthouseId) ||
+      this.userService.isAdmin() ||
+      this.userService.isSuperUser();
     if (requestTypeRequired) {
       this.audioRequestForm.get('requestType')?.setValidators(Validators.required);
     } else {
