@@ -325,7 +325,7 @@ describe('UserService', () => {
 
       service.userState.set(judge);
 
-      expect(service.hasCourthouse(courthouseId)).toBe(true);
+      expect(service.hasCourthouse('JUDGE', courthouseId)).toBe(true);
     });
 
     it('should return false if user does not have access to a specific courthouse', () => {
@@ -338,7 +338,50 @@ describe('UserService', () => {
 
       service.userState.set(judge);
 
-      expect(service.hasCourthouse(courthouseId)).toBe(false);
+      expect(service.hasCourthouse('JUDGE', courthouseId)).toBe(false);
+    });
+
+    it('should return false if user does not have role', () => {
+      const courthouseId = 100;
+      const judge: UserState = {
+        userName: '',
+        userId: 1,
+        roles: [{ roleId: 123, roleName: 'JUDGE', courthouseIds: [200] }],
+      };
+
+      service.userState.set(judge);
+
+      expect(service.hasCourthouse('CLERK', courthouseId)).toBe(false);
+    });
+  });
+
+  describe('isCourthouseTranscriber', () => {
+    it('should return true if transcriber user has correct courthouse id', () => {
+      const courthouseId = 100;
+
+      const transcriber: UserState = {
+        userName: '',
+        userId: 1,
+        roles: [{ roleId: 123, roleName: 'TRANSCRIBER', globalAccess: false, courthouseIds: [courthouseId] }],
+      };
+
+      service.userState.set(transcriber);
+
+      expect(service.isCourthouseTranscriber(courthouseId)).toBe(true);
+    });
+
+    it('should return false if user is neither a transcriber nor a courthouse transcriber', () => {
+      const courthouseId = 100;
+
+      const judge: UserState = {
+        userName: '',
+        userId: 1,
+        roles: [{ roleId: 123, roleName: 'JUDGE', globalAccess: false, courthouseIds: [200] }],
+      };
+
+      service.userState.set(judge);
+
+      expect(service.isCourthouseTranscriber(courthouseId)).toBe(false);
     });
   });
 

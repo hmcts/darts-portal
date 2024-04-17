@@ -53,13 +53,17 @@ export class UserService {
     return this.hasRole('TRANSLATION_QA');
   }
 
+  public isCourthouseTranscriber(courthouseId?: number): boolean {
+    return courthouseId ? this.hasCourthouse('TRANSCRIBER', courthouseId) : false;
+  }
+
   public isGlobalJudge(): boolean {
-    return this.userState() ? this.userState()!.roles.some((x) => x.roleName === 'JUDGE' && x.globalAccess) : false;
+    return this.hasGlobalRole('JUDGE');
   }
 
   public isCourthouseJudge(courthouseId?: number): boolean {
     if (courthouseId) {
-      return this.isGlobalJudge() || this.hasCourthouse(courthouseId);
+      return this.isGlobalJudge() || this.hasCourthouse('JUDGE', courthouseId);
     }
     return this.isGlobalJudge();
   }
@@ -68,9 +72,9 @@ export class UserService {
     return this.userState() ? roles.some((role) => this.userState()!.roles.some((x) => x.roleName === role)) : false;
   }
 
-  public hasCourthouse(courthouseId: number): boolean {
+  public hasCourthouse(role: string, courthouseId: number): boolean {
     return this.userState()
-      ? this.userState()!.roles.some((x) => x.roleName === 'JUDGE' && x.courthouseIds?.includes(courthouseId))
+      ? this.userState()!.roles.some((x) => x.roleName === role && x.courthouseIds?.includes(courthouseId))
       : false;
   }
 

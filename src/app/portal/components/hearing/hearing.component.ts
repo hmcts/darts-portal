@@ -128,10 +128,11 @@ export class HearingComponent implements OnInit {
   case$ = this.caseService.getCase(this.caseId).pipe(shareReplay(1));
   hearing$ = this.caseService.getHearingById(this.caseId, this.hearingId);
   audio$ = this.hearingService.getAudio(this.hearingId);
+  courthouseId!: number | undefined;
 
   annotations$ = this.case$.pipe(
     switchMap((c) => {
-      console.log(c);
+      this.courthouseId = c.courthouseId;
       if (!c.courthouseId) return of(null);
       if (this.userService.isCourthouseJudge(c.courthouseId) || this.userService.isAdmin()) {
         return this.hearingService.getAnnotations(this.hearingId);

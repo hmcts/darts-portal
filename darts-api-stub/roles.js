@@ -15,6 +15,7 @@ const TRANSCRIBER = {
   roleId: 3,
   roleName: 'TRANSCRIBER',
   permissions,
+  courthouseIds: [1, 2, 3, 4],
 };
 
 const JUDGE = {
