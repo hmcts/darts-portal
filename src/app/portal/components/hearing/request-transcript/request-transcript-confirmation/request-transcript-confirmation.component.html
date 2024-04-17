@@ -1,51 +1,23 @@
 <h1 class="govuk-heading-l">Check and confirm your transcript request</h1>
 
-<table class="govuk-table">
-  <caption class="govuk-table__caption govuk-table__caption--m">
-    Case details
-  </caption>
-  <tbody class="govuk-table__body">
-    <tr class="govuk-table__row">
-      <th scope="row" class="govuk-table__header">Case ID</th>
-      <td class="govuk-table__cell">{{ case.number }}</td>
-    </tr>
-    <tr class="govuk-table__row">
-      <th scope="row" class="govuk-table__header">Courthouse</th>
-      <td class="govuk-table__cell">{{ case.courthouse }}</td>
-    </tr>
-    <tr class="govuk-table__row">
-      <th scope="row" class="govuk-table__header">Defendant(s)</th>
-      <td class="govuk-table__cell">{{ case.defendants | join }}</td>
-    </tr>
-  </tbody>
-</table>
+<app-details-table
+  title="Case details"
+  [details]="{
+    'Case ID': case.number,
+    Courthouse: case.courthouse,
+    'Defendant(s)': case.defendants?.join(', ')
+  }"
+/>
 
-<table class="govuk-table">
-  <caption class="govuk-table__caption govuk-table__caption--m">
-    Request details
-  </caption>
-  <tbody class="govuk-table__body">
-    <tr class="govuk-table__row">
-      <th scope="row" class="govuk-table__header">Hearing date</th>
-      <td class="govuk-table__cell">{{ hearing.date | luxonDate: 'dd MMM yyyy' }}</td>
-    </tr>
-    <tr class="govuk-table__row">
-      <th scope="row" class="govuk-table__header">Request type</th>
-      <td class="govuk-table__cell">{{ transcriptionType }}</td>
-    </tr>
-    <tr class="govuk-table__row">
-      <th scope="row" class="govuk-table__header">Urgency</th>
-      <td class="govuk-table__cell">{{ urgency }}</td>
-    </tr>
-    <tr *ngIf="audioTimes" id="audio-times" class="govuk-table__row">
-      <th scope="row" class="govuk-table__header">Audio for Transcript</th>
-      <td class="govuk-table__cell">
-        Start time {{ audioTimes.startTime?.toFormat('HH:mm:ss') }} - End time
-        {{ audioTimes.endTime?.toFormat('HH:mm:ss') }}
-      </td>
-    </tr>
-  </tbody>
-</table>
+<app-details-table
+  title="Request details"
+  [details]="{
+    'Hearing date': hearing.date | luxonDate: 'dd MMM yyyy',
+    'Request type': transcriptionType,
+    Urgency: urgency,
+    'Audio for Transcript': audioTimesString || null
+  }"
+/>
 
 <div class="govuk-form-group margin-top-10">
   <h1 class="govuk-label-wrapper">

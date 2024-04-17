@@ -1,27 +1,20 @@
-.govuk-table__body {
-  border-top: 2px solid #000;
+:host {
+  max-width: 66%;
+  display: block;
 }
-
-table.govuk-table {
-  max-width: 60%;
-  & > th {
-    text-align: right;
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #000;
+  ::ng-deep * {
+    margin-bottom: 0.33rem;
   }
 }
-
 .margin-top-10 {
   margin-top: 10px;
 }
-
-.govuk-table__cell.table-width {
-  width: 486.67px;
-}
-
-caption {
-  display: inline-block;
-}
-
-.govuk-table__cell {
+.govuk-summary-list__value {
   white-space: pre-line;
 }
 

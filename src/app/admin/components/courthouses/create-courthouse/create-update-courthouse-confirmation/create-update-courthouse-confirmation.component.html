@@ -1,54 +1,10 @@
 <p class="govuk-body">Check the courthouse name carefully, as it must exactly match the name on XHIBIT or CPP.</p>
-@if (update) {
-  <table class="govuk-table">
-    <caption class="govuk-table__caption govuk-table__caption--m"></caption>
-    <td class="details-header" colspan="2"><ng-content></ng-content></td>
-    <tbody class="govuk-table__body">
-      <tr class="govuk-table__row">
-        <th id="th-courthouse-name" class="govuk-table__header">Courthouse name</th>
-        <td class="govuk-table__cell table-width">{{ courthouseDetails['Courthouse name'] }}</td>
-        <td class="govuk-table__cell">
-          @if (!hasData) {
-            <a href="#" id="courthouse-name-link" class="govuk-link" (click)="onReturnCourthouseName($event)"
-              >Change <span class="govuk-visually-hidden">courthouse name</span></a
-            >
-          }
-        </td>
-      </tr>
-      <tr class="govuk-table__row">
-        <th id="th-display-name" class="govuk-table__header">Display name</th>
-        <td class="govuk-table__cell table-width">{{ courthouseDetails['Display name'] }}</td>
-        <td class="govuk-table__cell">
-          <a href="#" id="display-name-link" class="govuk-link" (click)="onReturnDisplayName($event)"
-            >Change <span class="govuk-visually-hidden">display name</span></a
-          >
-        </td>
-      </tr>
-      <tr class="govuk-table__row">
-        <th id="th-region" class="govuk-table__header">Region</th>
-        <td class="govuk-table__cell table-width">{{ courthouseDetails['Region'] }}</td>
-        <td class="govuk-table__cell">
-          <a href="#" id="region-link" class="govuk-link" (click)="onReturnRegion($event)"
-            >Change <span class="govuk-visually-hidden">region</span></a
-          >
-        </td>
-      </tr>
-      <tr class="govuk-table__row">
-        <th id="th-transcription-companies" class="govuk-table__header">Transcription companies</th>
-        <td class="govuk-table__cell table-width">{{ courthouseDetails['Transcription companies'] }}</td>
-        <td class="govuk-table__cell">
-          <a href="#" id="transcription-companies-link" class="govuk-link" (click)="onReturnCompanies($event)"
-            >Change <span class="govuk-visually-hidden">transcription companies</span></a
-          >
-        </td>
-      </tr>
-    </tbody>
-  </table>
-} @else {
-  <app-details-table [title]="update ? '' : 'Details'" [details]="courthouseDetails">
+
+<app-details-table title="Details" [details]="courthouseDetails">
+  @if (!update) {
     <a id="change-link" href="javascript:void(0)" class="govuk-link" (click)="back.emit()">Change</a>
-  </app-details-table>
-}
+  }
+</app-details-table>
 
 <div class="govuk-button-group">
   <button id="confirm-button" class="govuk-button" (click)="confirm.emit()">

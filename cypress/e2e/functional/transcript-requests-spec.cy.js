@@ -25,8 +25,8 @@ describe('Transcript requests', () => {
 
   it('takes you to assign transcript page', () => {
     cy.get('#transcript-requests-table td').contains('Up to 3 working days').parents('tr').contains('View').click();
-    cy.contains('Case ID').parents('tr').should('contain', 'C20220620001');
-    cy.contains('Hearing Date').parents('tr').should('contain', '07 Aug 2023');
+    cy.contains('Case ID').parent().should('contain', 'C20220620001');
+    cy.contains('Hearing Date').parent().should('contain', '07 Aug 2023');
     cy.get('h1').should('contain', 'Choose an action');
     cy.get('.govuk-label.govuk-radios__label').should('contain', 'Assign to me');
     cy.get('#submit-button').should('contain', 'Continue');

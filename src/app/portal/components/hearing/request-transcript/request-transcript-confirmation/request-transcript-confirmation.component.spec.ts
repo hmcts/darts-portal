@@ -42,9 +42,8 @@ describe('RequestTranscriptConfirmationComponent', () => {
     };
 
     fixture.detectChanges();
-    const element = fixture.nativeElement.querySelector('#audio-times') as HTMLElement;
-    expect(element).toBeTruthy();
-    expect(element.textContent).toContain('Start time 13:00:00 - End time 18:00:00');
+
+    expect(component.audioTimesString).toEqual('Start time 13:00:00 - End time 18:00:00');
   });
 
   it('should not render audio time if audioTimes is undefined', () => {

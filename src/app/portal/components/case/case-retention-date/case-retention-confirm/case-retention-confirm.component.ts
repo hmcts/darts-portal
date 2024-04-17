@@ -49,6 +49,20 @@ export class CaseRententionConfirmComponent {
     return details;
   }
 
+  public get retentionDetails() {
+    const details = {
+      'Retain case until': {
+        value: this.getDate(),
+        action: { text: 'Change', fn: this.onReturnDate.bind(this) },
+      },
+      'Reason for change': {
+        value: this.newRetentionReason,
+        action: { text: 'Change', fn: this.onReturnReason.bind(this) },
+      },
+    };
+    return details;
+  }
+
   getDate() {
     return `${this.datePipe.transform(this.newRetentionDate, 'dd MMM yyyy')} ${this.newRetentionPermanent ? ' (Permanent)' : ''}`;
   }
@@ -72,18 +86,13 @@ export class CaseRententionConfirmComponent {
     this.stateChange.emit('Default');
   }
 
-  goBacktoChangeScreen(event: Event) {
-    event.preventDefault();
+  onReturnDate() {
+    this.router.navigate([this.currentUrl], { fragment: 'retention-date' });
     this.stateChange.emit('Change');
   }
 
-  onReturnDate(event: Event) {
-    this.goBacktoChangeScreen(event);
-    this.router.navigate([this.currentUrl], { fragment: 'retention-date' });
-  }
-
-  onReturnReason(event: Event) {
-    this.goBacktoChangeScreen(event);
+  onReturnReason() {
     this.router.navigate([this.currentUrl], { fragment: 'change-reason' });
+    this.stateChange.emit('Change');
   }
 }

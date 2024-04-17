@@ -1,15 +1,8 @@
 import { Region } from '@admin-types/courthouses/region.interface';
 import { CreateUpdateCourthouseFormValues, SecurityGroup } from '@admin-types/index';
-import { Component, EventEmitter, Input, OnChanges, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
-
-type courthouseDetailsVM = {
-  'Courthouse name': string | null | undefined;
-  'Display name': string | null | undefined;
-  Region: string | null | undefined;
-  'Transcription companies': string | null | undefined;
-};
 
 @Component({
   selector: 'app-create-update-courthouse-confirmation',
@@ -18,7 +11,7 @@ type courthouseDetailsVM = {
   templateUrl: './create-update-courthouse-confirmation.component.html',
   styleUrl: './create-update-courthouse-confirmation.component.scss',
 })
-export class CreateUpdateCourthouseConfirmationComponent implements OnChanges {
+export class CreateUpdateCourthouseConfirmationComponent {
   @Input() values: CreateUpdateCourthouseFormValues = {
     courthouseName: null,
     displayName: null,
@@ -34,36 +27,34 @@ export class CreateUpdateCourthouseConfirmationComponent implements OnChanges {
   @Output() cancel = new EventEmitter<void>();
 
   router = inject(Router);
-  courthouseDetails!: courthouseDetailsVM;
   currentUrl = this.router.url.split('#')[0];
 
-  ngOnChanges() {
-    if (this.values) this.courthouseDetails = this.mapFormValuesToDetailsTable(this.values);
+  get courthouseDetails() {
+    return this.mapFormValuesToDetailsTable(this.values);
   }
 
-  onReturnCourthouseName(event: Event) {
-    this.goBack(event);
+  onReturnCourthouseName() {
+    this.goBack();
     this.router.navigate([this.currentUrl], { fragment: 'courthouseName' });
   }
-  onReturnDisplayName(event: Event) {
-    this.goBack(event);
+  onReturnDisplayName() {
+    this.goBack();
     this.router.navigate([this.currentUrl], { fragment: 'displayName' });
   }
-  onReturnRegion(event: Event) {
-    this.goBack(event);
+  onReturnRegion() {
+    this.goBack();
     this.router.navigate([this.currentUrl], { fragment: 'regionId' });
   }
-  onReturnCompanies(event: Event) {
-    this.goBack(event);
+  onReturnCompanies() {
+    this.goBack();
     this.router.navigate([this.currentUrl], { fragment: 'transcriptionCompanies' });
   }
 
-  goBack(event: Event) {
-    event.preventDefault();
+  goBack() {
     this.back.emit();
   }
 
-  private mapFormValuesToDetailsTable(values: CreateUpdateCourthouseFormValues): courthouseDetailsVM {
+  private mapFormValuesToDetailsTable(values: CreateUpdateCourthouseFormValues) {
     const regionId = values?.regionId?.toString();
     let region;
     if (regionId) {
@@ -71,14 +62,22 @@ export class CreateUpdateCourthouseConfirmationComponent implements OnChanges {
     }
     const companyNumberIds = values?.securityGroupIds.map((companyId) => parseInt(companyId));
     const selectedCompanies = this.companies.filter((company) => companyNumberIds.includes(company.id));
+    const selectedCompaniesNames = selectedCompanies.length
+      ? selectedCompanies.map((selectedCompany) => selectedCompany.name).join('\r\n')
+      : 'None';
+    const regionName = region?.name ?? 'No region';
 
     return {
       'Courthouse name': values.courthouseName,
-      'Display name': values.displayName,
-      Region: region?.name ?? 'No region',
-      'Transcription companies': selectedCompanies.length
-        ? selectedCompanies.map((selectedCompany) => selectedCompany.name).join('\r\n')
-        : 'None',
+      'Display name': !this.update
+        ? values.displayName
+        : { value: values.displayName, action: { text: 'Change', fn: this.onReturnDisplayName.bind(this) } },
+      Region: !this.update
+        ? regionName
+        : { value: regionName, action: { text: 'Change', fn: this.onReturnRegion.bind(this) } },
+      'Transcription companies': !this.update
+        ? selectedCompaniesNames
+        : { value: selectedCompaniesNames, action: { text: 'Change', fn: this.onReturnCompanies.bind(this) } },
     };
   }
 }

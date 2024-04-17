@@ -26,16 +26,15 @@ describe('Admin - Courthouse record screen', () => {
     cy.get('#last-updated-container p').contains('Fri 18 Aug 2023').should('exist');
 
     // Table
-    cy.get('.govuk-table__caption').contains('Details').should('be.visible');
-    cy.get('th#detail-th-0').contains('Database ID').should('be.visible');
-    cy.get('td').contains('0').should('be.visible');
-    cy.get('th#detail-th-1').contains('Courthouse name').should('be.visible');
-    cy.get('td').contains('Reading').should('be.visible');
-    cy.get('th#detail-th-2').contains('Region').should('be.visible');
-    cy.get('td').contains('South west').should('be.visible');
-    cy.get('th#detail-th-3').contains('Groups').should('be.visible');
-    cy.get('td').contains('Judiciary').should('be.visible');
-    cy.get('th#detail-th-4').should('not.exist');
+    cy.get('app-details-table').contains('Details').should('be.visible');
+    cy.get('dt').contains('Database ID').should('be.visible');
+    cy.get('dd').contains('0').should('be.visible');
+    cy.get('dt').contains('Courthouse name').should('be.visible');
+    cy.get('dd').contains('Reading').should('be.visible');
+    cy.get('dt').contains('Region').should('be.visible');
+    cy.get('dd').contains('South west').should('be.visible');
+    cy.get('dt').contains('Groups').should('be.visible');
+    cy.get('dd').contains('Judiciary').should('be.visible');
 
     // Tags
     cy.get('.govuk-tag--purple').contains('Courthouse record').should('exist');
@@ -70,21 +69,21 @@ describe('Admin - Courthouse record screen', () => {
     cy.contains('h1', 'Check details').should('exist');
 
     // Confirmation screen
-    cy.get('th#th-transcription-companies').contains('Transcription companies').should('exist');
-    cy.get('td').contains(courthouseName).should('exist');
-    cy.get('#courthouse-name-link').should('not.exist');
+    cy.get('dt').contains('Courthouse name').should('exist');
+    cy.get('dd').contains(courthouseName).should('exist');
+    cy.get('dt').contains('Courthouse name').parent().find('.govuk-summary-list__actions').should('not.exist');
 
-    cy.get('th#th-display-name').contains('Display name').should('exist');
-    cy.get('td').contains(displayName).should('exist');
-    cy.get('#display-name-link').should('exist');
+    cy.get('dt').contains('Display name').should('exist');
+    cy.get('dd').contains(displayName).should('exist');
+    cy.get('dt').contains('Display name').parent().get('dd a').contains('Change').should('exist');
 
-    cy.get('th#th-region').contains('Region').should('exist');
-    cy.get('td').contains('South west').should('exist');
-    cy.get('#region-link').should('exist');
+    cy.get('dt').contains('Region').should('exist');
+    cy.get('dd').contains('South west').should('exist');
+    cy.get('dt').contains('Region').parent().get('dd a').contains('Change').should('exist');
 
-    cy.get('th#th-transcription-companies').contains('Transcription companies').should('exist');
-    cy.get('td').contains('Opus Transcribers').should('exist');
-    cy.get('#transcription-companies-link').should('exist');
+    cy.get('dt').contains('Transcription companies').should('exist');
+    cy.get('dd').contains('Opus Transcribers').should('exist');
+    cy.get('dt').contains('Transcription companies').parent().get('dd a').contains('Change').should('exist');
 
     // Click update button
     cy.contains('.govuk-button', 'Update courthouse').click();
@@ -117,21 +116,21 @@ describe('Admin - Courthouse record screen', () => {
     cy.contains('h1', 'Check details').should('exist');
 
     // Confirmation screen
-    cy.get('th#th-transcription-companies').contains('Transcription companies').should('exist');
-    cy.get('td').contains(courthouseName).should('exist');
-    cy.get('#courthouse-name-link').should('exist');
+    cy.get('dt').contains('Transcription companies').should('exist');
+    cy.get('dd').contains(courthouseName).should('exist');
+    cy.contains('Transcription companies').parent().get('dd a').contains('Change').should('exist');
 
-    cy.get('th#th-display-name').contains('Display name').should('exist');
-    cy.get('td').contains(displayName).should('exist');
-    cy.get('#display-name-link').should('exist');
+    cy.get('dt').contains('Display name').should('exist');
+    cy.get('dd').contains(displayName).should('exist');
+    cy.contains('Display name').parent().get('dd a').contains('Change').should('exist');
 
-    cy.get('th#th-region').contains('Region').should('exist');
-    cy.get('td').contains('No region').should('exist');
-    cy.get('#region-link').should('exist');
+    cy.get('dt').contains('Region').should('exist');
+    cy.get('dd').contains('No region').should('exist');
+    cy.contains('Region').parent().get('dd a').contains('Change').should('exist');
 
-    cy.get('th#th-transcription-companies').contains('Transcription companies').should('exist');
-    cy.get('td').contains('Opus Transcribers').should('exist');
-    cy.get('#transcription-companies-link').should('exist');
+    cy.get('dt').contains('Transcription companies').should('exist');
+    cy.get('dd').contains('Opus Transcribers').should('exist');
+    cy.get('dt').contains('Transcription companies').parent().get('dd a').contains('Change').should('exist');
 
     // Click update button
     cy.contains('.govuk-button', 'Update courthouse').click();
@@ -141,7 +140,7 @@ describe('Admin - Courthouse record screen', () => {
     // cy.a11y();
   });
 
-  it.skip('Create courthouse', () => {
+  it('Create courthouse', () => {
     const courthouseName = 'COURTHOUSE';
     const displayName = 'Courthouse';
     cy.contains('button.govuk-button', 'Create new courthouse').click();
@@ -200,15 +199,15 @@ describe('Admin - Courthouse record screen', () => {
     cy.contains('h1', 'Check details').should('exist');
 
     // Confirmation screen
-    cy.get('.govuk-table__caption').contains('Details').should('exist');
-    cy.get('th#detail-th-0').contains('Courthouse name').should('exist');
-    cy.get('td').contains(courthouseName).should('exist');
-    cy.get('th#detail-th-1').contains('Display name').should('exist');
-    cy.get('td').contains(displayName).should('exist');
-    cy.get('th#detail-th-2').contains('Region').should('exist');
-    cy.get('td').contains('Wales').should('exist');
-    cy.get('th#detail-th-3').contains('Transcription companies').should('exist');
-    cy.get('td').contains(company2).should('exist');
+    cy.get('app-details-table').contains('Details').should('exist');
+    cy.get('dt').contains('Courthouse name').should('exist');
+    cy.get('dd').contains(courthouseName).should('exist');
+    cy.get('dt').contains('Display name').should('exist');
+    cy.get('dd').contains(displayName).should('exist');
+    cy.get('dt').contains('Region').should('exist');
+    cy.get('dd').contains('Wales').should('exist');
+    cy.get('dt').contains('Transcription companies').should('exist');
+    cy.get('dd').contains(company2).should('exist');
 
     // Click create button
     cy.contains('.govuk-button', 'Create courthouse').click();

@@ -24,12 +24,12 @@ describe('Case retention screen as standard user', () => {
       //Breadcrumb
       cy.get('a.govuk-breadcrumbs__link').should('contain', 'Case retention date');
       cy.get('h1.govuk-heading-l').should('contain', 'Case retention date');
-      cy.get('.govuk-table__caption.govuk-table__caption--m').should('contain', 'Case details');
-      cy.get('.govuk-table__caption.govuk-table__caption--m').should('contain', 'Current retention details');
+      cy.get('#case-details').should('contain', 'Case details');
+      cy.get('#current-retention-details').should('contain', 'Current retention details');
 
-      cy.get('td.govuk-table__cell').should('contain', '15 Aug 2023');
+      cy.get('dl dd').should('contain', '15 Aug 2023');
 
-      cy.get('th.govuk-table__header').should('contain', 'Retain case until');
+      cy.get('dl dt').should('contain', 'Retain case until');
 
       //Button group, only shows on closed cases
       cy.get('.govuk-button-group').should('contain', 'Change retention date');
@@ -58,12 +58,9 @@ describe('Case retention screen as standard user', () => {
       cy.get('div.govuk-notification-banner').should('contain', 'This case is still open or was recently closed.');
 
       cy.get('h1.govuk-heading-l').should('contain', 'Case retention date');
-      cy.get('.govuk-table__caption.govuk-table__caption--m').should('contain', 'Case details');
-      cy.get('.govuk-table__caption.govuk-table__caption--m').should('contain', 'Current retention details');
+      cy.get('#case-details').should('contain', 'Case details');
 
-      cy.get('td.govuk-table__cell').should('contain', '-');
-
-      cy.get('td.govuk-table__cell').should('contain', 'A retention policy has yet to be applied to this case.');
+      cy.get('p.govuk-body').should('contain', 'A retention policy has yet to be applied to this case.');
 
       cy.get('p.govuk-body').should('contain', 'No history to show');
 
@@ -164,9 +161,12 @@ describe('Case retention screen as standard user', () => {
 
     it('Check page elements', () => {
       cy.get('h1.govuk-heading-l').should('contain', 'Check retention date change');
-      cy.get('.govuk-table__caption.govuk-table__caption--m').should('contain', 'Case details');
-      cy.get('#retain-date').should('contain', validDateObject.toFormat('dd MMM yyyy'));
-      cy.get('#retain-reason').should('contain', validReason);
+      cy.get('app-details-table').should('contain', 'Case details');
+      cy.contains('Retain case until')
+        .parent('div')
+        .find('dd')
+        .should('contain', validDateObject.toFormat('dd MMM yyyy'));
+      cy.contains('Reason for change').parent('div').find('dd').should('contain', validReason);
     });
 
     it('Should go back to case retention screen on cancel', () => {
@@ -178,7 +178,8 @@ describe('Case retention screen as standard user', () => {
     });
 
     it('Should go back to change screen and select reason box', () => {
-      cy.get('#date-link').click();
+      cy.contains('Retain case until').parent('div').find('dd a').should('contain', 'Change').click();
+      // cy.get('#date-link').click();
       // Should go back to case retention screen
       cy.get('h1.govuk-heading-l').should('contain', 'Change case retention date');
       cy.url().should('contain', 'retention-date');
@@ -187,7 +188,7 @@ describe('Case retention screen as standard user', () => {
     });
 
     it('Should go back to change screen and select reason box', () => {
-      cy.get('#reason-link').click();
+      cy.contains('Reason for change').parent('div').find('dd a').should('contain', 'Change').click();
       // Should go back to case retention screen
       cy.get('h1.govuk-heading-l').should('contain', 'Change case retention date');
       cy.url().should('contain', 'change-reason');
