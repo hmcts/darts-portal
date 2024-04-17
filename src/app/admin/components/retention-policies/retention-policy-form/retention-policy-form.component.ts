@@ -102,9 +102,10 @@ export class RetentionPolicyFormComponent implements OnInit, OnChanges {
     // When @Input() savePolicyError changes, set the form error
     // i.e when the server returns a 400, hightlight the offending form control
     if (changes.savePolicyError) {
-      setTimeout(() => {
+      // wrap in promise to avoid ExpressionChangedAfterItHasBeenCheckedError
+      Promise.resolve().then(() => {
         this.setFormError(this.savePolicyError!);
-      }, 0);
+      });
     }
   }
 
@@ -216,7 +217,7 @@ export class RetentionPolicyFormComponent implements OnInit, OnChanges {
     if (error === RetentionPolicyErrorCode.POLICY_START_DATE_MUST_BE_PAST) {
       this.form.controls.startDate.setErrors({ priorRevisionDate: true });
     }
-    this.form.updateValueAndValidity();
+    this.emitFormErrorSummary();
   }
 
   private emitFormErrorSummary() {
