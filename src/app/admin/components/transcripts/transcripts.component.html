@@ -1,3 +1,11 @@
 <app-govuk-heading>Transcript requests</app-govuk-heading>
 
 <app-search-transcripts-form (search)="onSearch($event)" />
+
+@if (loading$ | async) {
+  <app-loading text="Loading transcript requests..." />
+}
+
+@if (results$ | async; as results) {
+  <app-search-transcripts-results [results]="results" [loading]="loading$ | async" />
+}
