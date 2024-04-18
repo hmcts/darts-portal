@@ -70,7 +70,7 @@ describe('Your transcripts', () => {
     cy.a11y();
 
     cy.get('h1').should('contain', 'Approve transcript request');
-    cy.get('.govuk-table').should('contain', 'C20220620001');
+    cy.get('dl dd').should('contain', 'C20220620001');
     cy.get('h1').should('contain', 'Do you approve this request?');
     cy.get('#reject-radio').click({ force: true });
     cy.get('label').should('contain', 'Why can you not approve this request?');
@@ -85,7 +85,7 @@ describe('Your transcripts', () => {
     cy.a11y();
 
     cy.get('h1').should('contain', 'Approve transcript request');
-    cy.get('.govuk-table').should('contain', 'C20220620001');
+    cy.get('dl dd').should('contain', 'C20220620001');
     cy.get('h1').should('contain', 'Do you approve this request?');
     cy.get('#approve-radio').click({ force: true });
     cy.get('#submit-button').click();

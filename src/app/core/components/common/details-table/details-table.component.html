@@ -1,34 +1,45 @@
-<table class="govuk-table">
-  <caption class="govuk-table__caption govuk-table__caption--m">
-    {{
-      title
-    }}
-  </caption>
-  <!-- Content projection for action button -->
-  <td class="details-header" colspan="2"><ng-content></ng-content></td>
-  <tbody class="govuk-table__body">
-    @for (detail of details | keyvalue: originalOrder; track $index) {
-      @if (isNotNullUndefinedOrEmptyString(detail.value) && !isNotNullUndefinedOrEmptyString(detail.key)) {
-        <!-- Single column message -->
-        <tr class="govuk-table__row">
-          <td class="govuk-table__cell table-width">{{ detail.value }}</td>
-        </tr>
-      } @else if (isNotNullUndefinedOrEmptyString(detail.value)) {
-        <tr class="govuk-table__row">
-          <th [id]="'detail-th-' + $index" class="govuk-table__header">{{ detail.key }}</th>
-          <td class="govuk-table__cell table-width">
-            @if (getLinkArray(detail.value).length) {
-              @for (item of getLinkArray(detail.value); track item) {
-                <a *ngIf="item.href" [href]="item.href" class="govuk-link">{{ item.value }}</a>
-                <span *ngIf="!item.href">{{ item }} </span>
-                <br *ngIf="item.href" />
-              }
-            } @else {
-              {{ detail.value }}
+<header>
+  <app-govuk-heading tag="h2" size="m">{{ title }}</app-govuk-heading>
+  <div><ng-content></ng-content></div>
+</header>
+
+<dl class="govuk-summary-list">
+  @for (detail of details | keyvalue: originalOrder; track $index) {
+    <!-- skip row if value is empty -->
+    @if (isNotNullUndefinedOrEmptyString(detail.value)) {
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          {{ detail.key }}
+        </dt>
+        <dd class="govuk-summary-list__value">
+          <!-- check if value is an array of links -->
+          @if (getLinkArray(detail.value)?.length) {
+            @for (item of getLinkArray(detail.value); track item) {
+              <a *ngIf="item.href" [href]="item.href" class="govuk-link">{{ item.value }}</a>
+              <span *ngIf="!item.href">{{ item }} </span>
+              <br *ngIf="item.href" />
             }
-          </td>
-        </tr>
-      }
+          } @else {
+            <!-- check if value is object.value -->
+            {{ getStringValues(detail.value) ?? '-' }}
+          }
+        </dd>
+        <!-- check if value has actions -->
+        @if (getAction(detail.value); as action) {
+          <dd class="govuk-summary-list__actions">
+            @if (action?.url) {
+              <a class="govuk-link" [routerLink]="action.url" [fragment]="action.fragment"
+                >{{ action.text }}<span class="govuk-visually-hidden"> {{ detail.key }}</span></a
+              >
+            }
+            @if (action?.fn) {
+              <a class="govuk-link" (click)="action?.fn()"
+                >{{ action.text }}<span class="govuk-visually-hidden"> {{ detail.key }}</span></a
+              >
+            }
+          </dd>
+        }
+      </div>
     }
-  </tbody>
-</table>
+  }
+</dl>

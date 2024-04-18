@@ -44,13 +44,13 @@ describe('Admin - User record screen', () => {
       cy.get('#last-active-container p').contains('Mon 11 Dec 2023').should('exist');
 
       //Table
-      cy.get('.govuk-table__caption').contains('Details').should('be.visible');
-      cy.get('th#detail-th-0').contains('Full name').should('be.visible');
-      cy.get('td').contains('Eric Bristow').should('be.visible');
-      cy.get('th#detail-th-1').contains('Email').should('be.visible');
-      cy.get('td').contains('eric.bristow@darts.local').should('be.visible');
-      cy.get('th#detail-th-2').contains('Description').should('be.visible');
-      cy.get('td').contains('Stub Active User').should('be.visible');
+      cy.get('app-details-table').contains('Details').should('be.visible');
+      cy.get('dt').contains('Full name').should('be.visible');
+      cy.get('dd').contains('Eric Bristow').should('be.visible');
+      cy.get('dt').contains('Email').should('be.visible');
+      cy.get('dd').contains('eric.bristow@darts.local').should('be.visible');
+      cy.get('dt').contains('Description').should('be.visible');
+      cy.get('dd').contains('Stub Active User').should('be.visible');
 
       //Tags
       cy.get('.govuk-tag--green').contains('User record').should('exist');
@@ -87,12 +87,11 @@ describe('Admin - User record screen', () => {
       cy.get('#last-active-container p').should('be.empty');
 
       //Table
-      cy.get('.govuk-table__caption').contains('Details').should('be.visible');
-      cy.get('th#detail-th-0').contains('Full name').should('be.visible');
-      cy.get('td').contains('Peter Wright').should('be.visible');
-      cy.get('th#detail-th-1').contains('Email').should('be.visible');
-      cy.get('td').contains('peter.wright@darts.local').should('be.visible');
-      cy.get('th#detail-th-2').should('not.exist');
+      cy.get('app-details-table').contains('Details').should('be.visible');
+      cy.get('dt').contains('Full name').should('be.visible');
+      cy.get('dd').contains('Peter Wright').should('be.visible');
+      cy.get('dt').contains('Email').should('be.visible');
+      cy.get('dd').contains('peter.wright@darts.local').should('be.visible');
 
       //Tags
       cy.get('.govuk-tag--green').contains('User record').should('exist');
@@ -154,8 +153,8 @@ describe('Admin - User record screen', () => {
       cy.get('app-govuk-banner').should('contain', 'User updated');
 
       cy.contains('h1', 'Luke Littler Edit').should('exist');
-      cy.get('td').contains('luke.littler@darts.local').should('be.visible');
-      cy.get('td').contains('Stub Active User Edit').should('be.visible');
+      cy.get('dd').contains('luke.littler@darts.local').should('be.visible');
+      cy.get('dd').contains('Stub Active User Edit').should('be.visible');
     });
 
     it('Change email flow', () => {
@@ -188,8 +187,8 @@ describe('Admin - User record screen', () => {
       cy.get('app-govuk-banner').should('contain', 'User updated');
 
       cy.contains('h1', 'Phil Taylor EDIT').should('exist');
-      cy.get('td').contains('phil.taylor@darts.edit').should('be.visible');
-      cy.get('td').contains('Stub Active User EDIT').should('be.visible');
+      cy.get('dd').contains('phil.taylor@darts.edit').should('be.visible');
+      cy.get('dd').contains('Stub Active User EDIT').should('be.visible');
     });
   });
 

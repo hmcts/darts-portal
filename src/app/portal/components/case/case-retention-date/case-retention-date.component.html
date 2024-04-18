@@ -16,35 +16,33 @@
     <app-govuk-banner *ngIf="state === 'Success'" type="success">Case retention date changed.</app-govuk-banner>
     <app-govuk-heading>Case retention date</app-govuk-heading>
 
-    <app-details-table title="Case details" [details]="vm.caseDetails.details"></app-details-table>
+    <app-details-table id="case-details" title="Case details" [details]="vm.caseDetails.details"></app-details-table>
 
-    <ng-container>
-      @if (!vm.caseDetails.currentRetention['Date applied']) {
-        <app-details-table
-          title="Current retention details"
-          [details]="{ '': 'A retention policy has yet to be applied to this case.' }"
-        ></app-details-table>
-      } @else {
-        <app-details-table
-          title="Current retention details"
-          [details]="vm.caseDetails.currentRetention"
-        ></app-details-table>
-      }
+    @if (!vm.caseDetails.currentRetention['Date applied']) {
+      <app-govuk-heading tag="h2" size="m">Current retention details</app-govuk-heading>
+      <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
+      <p class="govuk-body">A retention policy has yet to be applied to this case.</p>
+    } @else {
+      <app-details-table
+        id="current-retention-details"
+        title="Current retention details"
+        [details]="vm.caseDetails.currentRetention"
+      ></app-details-table>
+    }
 
-      @if (!buttonGroupHide(vm.retentionHistory)) {
-        <div id="retention-date-buttons" class="govuk-button-group">
-          <button
-            (click)="changeRetentionDate()"
-            id="change-retention-button"
-            class="govuk-button"
-            data-module="govuk-button"
-          >
-            Change retention date
-          </button>
-          <a routerLink="../" routerLinkActive="router-link-active" class="govuk-link">Cancel</a>
-        </div>
-      }
-    </ng-container>
+    @if (!buttonGroupHide(vm.retentionHistory)) {
+      <div id="retention-date-buttons" class="govuk-button-group">
+        <button
+          (click)="changeRetentionDate()"
+          id="change-retention-button"
+          class="govuk-button"
+          data-module="govuk-button"
+        >
+          Change retention date
+        </button>
+        <a routerLink="../" routerLinkActive="router-link-active" class="govuk-link">Cancel</a>
+      </div>
+    }
 
     <ng-container>
       <h2 class="govuk-heading-m">Retention audit history</h2>

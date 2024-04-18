@@ -20,6 +20,7 @@ describe('CreateUpdateCourthouseConfirmationComponent', () => {
 
     fixture = TestBed.createComponent(CreateUpdateCourthouseConfirmationComponent);
     component = fixture.componentInstance;
+    component.companies = [];
     fixture.detectChanges();
   });
 
@@ -27,76 +28,69 @@ describe('CreateUpdateCourthouseConfirmationComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('ngOnChanges', () => {
-    describe('should update courthouseDetails with mapped form values', () => {
-      it('when regionId is included', () => {
-        component.companies = [
-          { id: 0, name: 'Company 1' },
-          { id: 1, name: 'Company 2' },
-        ] as SecurityGroup[];
-        component.regions = [
-          { id: 0, name: 'Region 1' },
-          { id: 1, name: 'Region 2' },
-        ];
-        const values: CreateUpdateCourthouseFormValues = {
-          courthouseName: 'TEST',
-          displayName: 'Test',
-          regionId: 0,
-          securityGroupIds: ['0'],
-        };
+  describe('should update courthouseDetails with mapped form values', () => {
+    it('when regionId is included', () => {
+      component.companies = [
+        { id: 0, name: 'Company 1' },
+        { id: 1, name: 'Company 2' },
+      ] as SecurityGroup[];
+      component.regions = [
+        { id: 0, name: 'Region 1' },
+        { id: 1, name: 'Region 2' },
+      ];
+      const values: CreateUpdateCourthouseFormValues = {
+        courthouseName: 'TEST',
+        displayName: 'Test',
+        regionId: 0,
+        securityGroupIds: ['0'],
+      };
 
-        const expectedUserDetails = {
-          'Courthouse name': 'TEST',
-          'Display name': 'Test',
-          Region: 'Region 1',
-          'Transcription companies': 'Company 1',
-        };
+      const expectedUserDetails = {
+        'Courthouse name': 'TEST',
+        'Display name': 'Test',
+        Region: 'Region 1',
+        'Transcription companies': 'Company 1',
+      };
 
-        component.values = values;
-        component.ngOnChanges();
+      component.values = values;
 
-        expect(component.courthouseDetails).toEqual(expectedUserDetails);
-      });
-      it('when regionId is NOT included', () => {
-        component.companies = [
-          { id: 0, name: 'Company 1' },
-          { id: 1, name: 'Company 2' },
-        ] as SecurityGroup[];
-        component.regions = [
-          { id: 0, name: 'Region 1' },
-          { id: 1, name: 'Region 2' },
-        ];
-        const values: CreateUpdateCourthouseFormValues = {
-          courthouseName: 'TEST',
-          displayName: 'Test',
-          regionId: undefined,
-          securityGroupIds: ['0'],
-        };
+      expect(component.courthouseDetails).toEqual(expectedUserDetails);
+    });
+    it('when regionId is NOT included', () => {
+      component.companies = [
+        { id: 0, name: 'Company 1' },
+        { id: 1, name: 'Company 2' },
+      ] as SecurityGroup[];
+      component.regions = [
+        { id: 0, name: 'Region 1' },
+        { id: 1, name: 'Region 2' },
+      ];
+      const values: CreateUpdateCourthouseFormValues = {
+        courthouseName: 'TEST',
+        displayName: 'Test',
+        regionId: undefined,
+        securityGroupIds: ['0'],
+      };
 
-        const expectedUserDetails = {
-          'Courthouse name': 'TEST',
-          'Display name': 'Test',
-          Region: 'No region',
-          'Transcription companies': 'Company 1',
-        };
+      const expectedUserDetails = {
+        'Courthouse name': 'TEST',
+        'Display name': 'Test',
+        Region: 'No region',
+        'Transcription companies': 'Company 1',
+      };
 
-        component.values = values;
-        component.ngOnChanges();
+      component.values = values;
 
-        expect(component.courthouseDetails).toEqual(expectedUserDetails);
-      });
+      expect(component.courthouseDetails).toEqual(expectedUserDetails);
     });
   });
 
   describe('onReturnCourthouseName', () => {
     it('should emit a back event and call router with appropriate fragment', () => {
-      const event = new MouseEvent('click');
-      const eventSpy = jest.spyOn(event, 'preventDefault');
       const stateChangeSpy = jest.spyOn(component.back, 'emit');
 
-      component.onReturnCourthouseName(event);
+      component.onReturnCourthouseName();
 
-      expect(eventSpy).toHaveBeenCalled();
       expect(stateChangeSpy).toHaveBeenCalled();
       expect(fakeRouter.navigate).toHaveBeenCalledWith(['test'], { fragment: 'courthouseName' });
     });
@@ -104,13 +98,10 @@ describe('CreateUpdateCourthouseConfirmationComponent', () => {
 
   describe('onReturnDisplayName', () => {
     it('should emit a back event and call router with appropriate fragment', () => {
-      const event = new MouseEvent('click');
-      const eventSpy = jest.spyOn(event, 'preventDefault');
       const stateChangeSpy = jest.spyOn(component.back, 'emit');
 
-      component.onReturnDisplayName(event);
+      component.onReturnDisplayName();
 
-      expect(eventSpy).toHaveBeenCalled();
       expect(stateChangeSpy).toHaveBeenCalled();
       expect(fakeRouter.navigate).toHaveBeenCalledWith(['test'], { fragment: 'displayName' });
     });
@@ -118,13 +109,10 @@ describe('CreateUpdateCourthouseConfirmationComponent', () => {
 
   describe('onReturnRegion', () => {
     it('should emit a back event and call router with appropriate fragment', () => {
-      const event = new MouseEvent('click');
-      const eventSpy = jest.spyOn(event, 'preventDefault');
       const stateChangeSpy = jest.spyOn(component.back, 'emit');
 
-      component.onReturnRegion(event);
+      component.onReturnRegion();
 
-      expect(eventSpy).toHaveBeenCalled();
       expect(stateChangeSpy).toHaveBeenCalled();
       expect(fakeRouter.navigate).toHaveBeenCalledWith(['test'], { fragment: 'regionId' });
     });
@@ -132,13 +120,10 @@ describe('CreateUpdateCourthouseConfirmationComponent', () => {
 
   describe('onReturnCompanies', () => {
     it('should emit a back event and call router with appropriate fragment', () => {
-      const event = new MouseEvent('click');
-      const eventSpy = jest.spyOn(event, 'preventDefault');
       const stateChangeSpy = jest.spyOn(component.back, 'emit');
 
-      component.onReturnCompanies(event);
+      component.onReturnCompanies();
 
-      expect(eventSpy).toHaveBeenCalled();
       expect(stateChangeSpy).toHaveBeenCalled();
       expect(fakeRouter.navigate).toHaveBeenCalledWith(['test'], { fragment: 'transcriptionCompanies' });
     });

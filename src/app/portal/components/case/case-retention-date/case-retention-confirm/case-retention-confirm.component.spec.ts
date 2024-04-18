@@ -95,13 +95,10 @@ describe('CaseRetentionComponent', () => {
 
   describe('#onReturnDate', () => {
     it('should emit a stateChange event to "Change" and call router with fragment', () => {
-      const event = new MouseEvent('click');
-      const eventSpy = jest.spyOn(event, 'preventDefault');
       const stateChangeSpy = jest.spyOn(component.stateChange, 'emit');
 
-      component.onReturnDate(event);
+      component.onReturnDate();
 
-      expect(eventSpy).toHaveBeenCalled();
       expect(stateChangeSpy).toHaveBeenCalledWith('Change');
       expect(fakeRouter.navigate).toHaveBeenCalledWith(['test'], { fragment: 'retention-date' });
     });
@@ -109,13 +106,10 @@ describe('CaseRetentionComponent', () => {
 
   describe('#onReturnReason', () => {
     it('should emit a stateChange event to "Change" and call router with fragment', () => {
-      const event = new MouseEvent('click');
-      const eventSpy = jest.spyOn(event, 'preventDefault');
       const stateChangeSpy = jest.spyOn(component.stateChange, 'emit');
 
-      component.onReturnReason(event);
+      component.onReturnReason();
 
-      expect(eventSpy).toHaveBeenCalled();
       expect(stateChangeSpy).toHaveBeenCalledWith('Change');
       expect(fakeRouter.navigate).toHaveBeenCalledWith(['test'], { fragment: 'change-reason' });
     });

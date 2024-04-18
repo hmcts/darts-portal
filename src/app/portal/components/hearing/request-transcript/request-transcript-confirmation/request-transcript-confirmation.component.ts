@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { DetailsTableComponent } from '@common/details-table/details-table.component';
 import { GovukTextareaComponent } from '@components/common/govuk-textarea/govuk-textarea.component';
 import { JoinPipe } from '@pipes/join';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
@@ -10,7 +11,7 @@ import { DateTime } from 'luxon';
 @Component({
   selector: 'app-request-transcript-confirmation',
   standalone: true,
-  imports: [CommonModule, JoinPipe, ReactiveFormsModule, GovukTextareaComponent, LuxonDatePipe],
+  imports: [CommonModule, JoinPipe, ReactiveFormsModule, GovukTextareaComponent, LuxonDatePipe, DetailsTableComponent],
   templateUrl: './request-transcript-confirmation.component.html',
   styleUrls: ['./request-transcript-confirmation.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -39,6 +40,13 @@ export class RequestTranscriptConfirmationComponent {
 
   get transcriptionType() {
     return this.transcriptionTypes.find((t) => t.transcription_type_id === this.transcriptionTypeId)?.description;
+  }
+
+  get audioTimesString() {
+    if (!this.audioTimes) {
+      return '';
+    }
+    return `Start time ${this.audioTimes.startTime?.toFormat('HH:mm:ss')} - End time ${this.audioTimes.endTime?.toFormat('HH:mm:ss')}`;
   }
 
   onSubmit() {
