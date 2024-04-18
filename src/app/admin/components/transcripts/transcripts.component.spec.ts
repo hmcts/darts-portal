@@ -19,4 +19,10 @@ describe('TranscriptsComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should log values on search', () => {
+    jest.spyOn(console, 'log');
+    component.onSearch({ test: 'test' });
+    expect(console.log).toHaveBeenCalledWith({ test: 'test' });
+  });
 });
