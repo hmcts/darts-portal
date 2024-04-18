@@ -136,7 +136,6 @@ export class AudiosComponent {
   }
 
   getStatusClass(status: string): string {
-    // 'OPEN' | 'PROCESSING' | 'FAILED' | 'COMPLETED' | 'EXPIRED';
     switch (status) {
       case 'OPEN':
         return 'govuk-tag--yellow';
