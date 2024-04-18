@@ -50,6 +50,7 @@ export class CreateEditRetentionPolicyComponent implements OnInit {
   }
 
   onSubmitPolicy(policy: RetentionPolicyForm) {
+    this.error = null;
     if (this.isCreate || this.isCreateRevision) {
       this.createRetentionPolicyAndRedirect(policy);
     } else {
