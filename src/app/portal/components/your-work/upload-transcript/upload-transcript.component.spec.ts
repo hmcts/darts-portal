@@ -39,6 +39,7 @@ const MOCK_TRANSCRIPTION_DETAILS: TranscriptionDetails = {
       event_ts: '2023-09-01T09:00:00Z',
     },
   ],
+  courthouseId: 1,
 };
 
 describe('UploadTranscriptComponent', () => {

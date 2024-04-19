@@ -43,6 +43,7 @@ describe('ApprovedTranscriptComponent', () => {
     isManual: true,
     hearingId: 1,
     caseReportingRestrictions: [],
+    courthouseId: 1,
   };
 
   const blob = new Blob();

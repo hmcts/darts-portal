@@ -37,6 +37,7 @@ describe('CaseHearingTranscriptComponent', () => {
     transcriptionEndTs: DateTime.fromISO('2021-01-01'),
     isManual: false,
     hearingId: 0,
+    courthouseId: 0,
   };
 
   const blob = new Blob();

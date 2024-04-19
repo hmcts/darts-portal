@@ -64,6 +64,7 @@ describe('AssignTranscriptComponent', () => {
     transcriptionEndTs: DateTime.fromISO('2023-11-26T16:00:00Z'),
     isManual: false,
     hearingId: 1,
+    courthouseId: 1,
   };
 
   beforeEach(async () => {

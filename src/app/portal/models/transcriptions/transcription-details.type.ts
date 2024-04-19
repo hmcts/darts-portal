@@ -22,4 +22,5 @@ export type TranscriptionDetails = {
   transcriptionEndTs: DateTime;
   isManual: boolean;
   hearingId: number;
+  courthouseId: number;
 };
