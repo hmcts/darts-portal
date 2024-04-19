@@ -6,18 +6,18 @@
         Your request ID<br /><strong>{{ requestId }}</strong>
       </div>
     </div>
-    <h1 *ngIf="state === 'OrderSummary'" class="govuk-heading-l">Confirm your Order</h1>
+    <app-govuk-heading *ngIf="state === 'OrderSummary'">Confirm your Order</app-govuk-heading>
     <ng-container *ngIf="state !== 'OrderFailure'">
       <h2 class="govuk-heading-m">Case details</h2>
-      <h1 class="govuk-heading-s">Case ID</h1>
-      <h1 class="govuk-body">{{ case.number }}</h1>
+      <h3 class="govuk-heading-s">Case ID</h3>
+      <p class="govuk-body">{{ case.number }}</p>
       <h3 class="govuk-heading-s">Courthouse</h3>
       <p class="govuk-body">{{ case.courthouse }}</p>
       <h3 class="govuk-heading-s">Defendant(s)</h3>
       <p class="govuk-body">{{ case.defendants }}</p>
       <h2 class="govuk-heading-m">Audio details</h2>
-      <h1 class="govuk-heading-s">Hearing date</h1>
-      <h1 class="govuk-body">{{ hearing?.date | luxonDate: 'd MMM y' }}</h1>
+      <h3 class="govuk-heading-s">Hearing date</h3>
+      <p class="govuk-body">{{ hearing?.date | luxonDate: 'd MMM y' }}</p>
       <ng-container *ngIf="audioRequest">
         <h3 class="govuk-heading-s">Start Time</h3>
         <p class="govuk-body">{{ audioRequest.start_time | date: 'HH:mm:ss' }}</p>
