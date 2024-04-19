@@ -29,7 +29,7 @@
     noDataMessage="There are no courthouses assigned to this group."
   >
     <ng-template let-row [tableRowTemplate]="selectedCourthouses">
-      <td class="govuk-table__cell">{{ row.display_name }}</td>
+      <td class="govuk-table__cell" [attr.aria-label]="row.display_name">{{ row.display_name }}</td>
       <td class="govuk-table__cell right-align-text">
         <a href="javascript:void(0)" (click)="onRemoveCourthouse(row.id)" class="govuk-link"> Remove </a>
       </td>
