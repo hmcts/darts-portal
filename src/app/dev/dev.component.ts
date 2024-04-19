@@ -5,9 +5,12 @@ import { Router } from '@angular/router';
 import { Filter } from '@common/filters/filter.interface';
 import { FiltersComponent } from '@common/filters/filters.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
+import { TimelineComponent } from '@common/timeline/timeline.component';
+import { TimelineItem } from '@core-types/index';
 import { TabDirective } from '@directives/tab.directive';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { HeaderService } from '@services/header/header.service';
+import { DateTime } from 'luxon';
 import {
   SecurityGroupSelectorComponent,
   UserGroup,
@@ -27,6 +30,7 @@ import { CheckboxListComponent } from './../core/components/common/filters/check
     SecurityGroupSelectorComponent,
     ReactiveFormsModule,
     CheckboxListComponent,
+    TimelineComponent,
   ],
 })
 export class DevComponent implements OnInit {
@@ -137,4 +141,40 @@ export class DevComponent implements OnInit {
   // Checkbox list
   checkboxItems = [{ name: 'Approver' }, { name: 'Requester' }, { name: 'Judge' }, { name: 'Transcriber' }];
   checkboxes = new FormControl([], { nonNullable: true });
+
+  timeline: TimelineItem[] = [
+    {
+      id: 1,
+      title: 'Rejected',
+      dateTime: DateTime.now(),
+      descriptionLines: ['Comment 1 here'],
+      user: {
+        id: 1,
+        fullName: 'John Smith',
+        emailAddress: 'john@smith.com',
+      },
+    },
+    {
+      id: 2,
+      title: 'Approved',
+      dateTime: DateTime.now(),
+      descriptionLines: ['Comment 1 here', 'Comment 2 here'],
+      user: {
+        id: 2,
+        fullName: 'Jane Smith',
+        emailAddress: 'jane@smith.com',
+      },
+    },
+    {
+      id: 3,
+      title: 'Requested',
+      dateTime: DateTime.now(),
+      descriptionLines: ['Comment 1 here', 'Comment 2 here', 'Comment 3 here'],
+      user: {
+        id: 3,
+        fullName: 'John Doe',
+        emailAddress: 'john@doe.com',
+      },
+    },
+  ];
 }

@@ -1,0 +1,24 @@
+<div class="moj-timeline">
+  @for (item of items; track item.id) {
+    <div class="moj-timeline__item">
+      <div class="moj-timeline__header">
+        <h2 class="moj-timeline__title">{{ item.title }}</h2>
+
+        <p class="moj-timeline__byline">
+          by
+          <a class="govuk-link user-link" [routerLink]="['/admin/users', item.user.id]">{{ item.user.fullName }}</a> ({{
+            item.user.emailAddress
+          }})
+        </p>
+      </div>
+
+      <p class="moj-timeline__date">
+        <time [dateTime]="item.dateTime.toISO()">{{ item.dateTime | luxonDate: "d MMMM yyyy 'at' h:mm a" }}</time>
+      </p>
+
+      @for (line of item.descriptionLines; track line) {
+        <div class="moj-timeline__description">{{ line }}</div>
+      }
+    </div>
+  }
+</div>
