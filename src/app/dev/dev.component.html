@@ -76,5 +76,12 @@
     </div>
   </div>
 
-  <app-timeline *tab="'Timeline'" [items]="timeline" />
+  <div *tab="'Timeline'">
+    <app-timeline [items]="timeline" class="govuk-grid-column-one-half" />
+
+    <div class="govuk-grid-column-one-half">
+      <h3 class="govuk-heading-s">Input</h3>
+      <pre>{{ timeline | json }}</pre>
+    </div>
+  </div>
 </app-tabs>
