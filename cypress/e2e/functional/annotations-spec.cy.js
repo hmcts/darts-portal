@@ -328,9 +328,9 @@ describe('Annotations', () => {
 
     cy.get('#return-to-case-route').click();
 
-    cy.get('h1').should('contain', 'Case ID');
+    cy.get('app-govuk-heading').should('contain', 'Case ID');
 
-    cy.get('.govuk-heading-l').should('contain', 'C20220620001');
+    cy.get('app-govuk-heading').should('contain', 'C20220620001');
 
     cy.a11y();
   });

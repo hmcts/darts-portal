@@ -111,7 +111,7 @@ const singleCaseFive = {
 const defaultCaseHearings = [
   {
     case_id: 2,
-    id: 2,
+    id: 1,
     date: '2023-09-01',
     judges: ['Bob Ross'],
     courtroom: '4',
