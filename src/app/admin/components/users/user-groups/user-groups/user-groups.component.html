@@ -21,7 +21,9 @@
     @if (removeError) {
       <p class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> Select one or more groups</p>
     }
-    <p class="govuk-body selected-group-count">{{ selectedGroups.length }} of {{ userGroups.length }} selected</p>
+    <p class="govuk-body selected-group-count" role="status" [attr.aria-label]="selectedGroupsCountText">
+      {{ selectedGroupsCountText }}
+    </p>
     <app-data-table
       id="userGroupTable"
       [columns]="groupColumns"

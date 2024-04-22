@@ -43,6 +43,10 @@ export class UserGroupsComponent implements OnInit {
     }
   }
 
+  get selectedGroupsCountText() {
+    return `${this.selectedGroups.length} of ${this.userGroups.length} groups selected`;
+  }
+
   private removeHiddenSecurityGroups(userGroups: SecurityGroup[]): SecurityGroup[] {
     return userGroups.filter((group) => group.role?.displayState);
   }
