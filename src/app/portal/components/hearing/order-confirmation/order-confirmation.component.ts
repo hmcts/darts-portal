@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { UserState } from '@core-types/user/user-state.interface';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { Case, Hearing, HearingPageState, PostAudioRequest } from '@portal-types/index';
@@ -9,7 +10,7 @@ import { HeaderService } from '@services/header/header.service';
 @Component({
   selector: 'app-order-confirmation',
   standalone: true,
-  imports: [CommonModule, LuxonDatePipe],
+  imports: [CommonModule, LuxonDatePipe, GovukHeadingComponent],
   templateUrl: './order-confirmation.component.html',
   styleUrls: ['./order-confirmation.component.scss'],
 })

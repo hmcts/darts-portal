@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { DataTableComponent } from '@components/common/data-table/data-table.component';
 import { LoadingComponent } from '@components/common/loading/loading.component';
 import { ReportingRestrictionComponent } from '@components/common/reporting-restriction/reporting-restriction.component';
@@ -45,6 +46,7 @@ enum TranscriptionType {
     RequestTranscriptSuccessComponent,
     RequestTranscriptExistsComponent,
     LuxonDatePipe,
+    GovukHeadingComponent,
   ],
   templateUrl: './request-transcript.component.html',
   styleUrls: ['./request-transcript.component.scss'],

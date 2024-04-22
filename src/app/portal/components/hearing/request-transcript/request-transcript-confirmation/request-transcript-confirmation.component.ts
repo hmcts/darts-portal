@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
+import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { GovukTextareaComponent } from '@components/common/govuk-textarea/govuk-textarea.component';
 import { JoinPipe } from '@pipes/join';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
@@ -11,7 +12,15 @@ import { DateTime } from 'luxon';
 @Component({
   selector: 'app-request-transcript-confirmation',
   standalone: true,
-  imports: [CommonModule, JoinPipe, ReactiveFormsModule, GovukTextareaComponent, LuxonDatePipe, DetailsTableComponent],
+  imports: [
+    CommonModule,
+    JoinPipe,
+    ReactiveFormsModule,
+    GovukTextareaComponent,
+    LuxonDatePipe,
+    DetailsTableComponent,
+    GovukHeadingComponent,
+  ],
   templateUrl: './request-transcript-confirmation.component.html',
   styleUrls: ['./request-transcript-confirmation.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

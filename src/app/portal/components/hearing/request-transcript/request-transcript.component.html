@@ -22,9 +22,8 @@
       </div>
     </ng-container>
     <ng-container *ngIf="vm.audioRows.length">
-      <h1 class="govuk-heading-l">Request a new transcript</h1>
-      <h1 class="govuk-heading-s">Case ID</h1>
-      <h1 class="govuk-body">{{ vm.case.number }}</h1>
+      <app-govuk-heading>Request a new transcript</app-govuk-heading>
+      <app-govuk-heading caption="Case ID" tag="h2" size="m">{{ vm.case.number }}</app-govuk-heading>
       <h3 class="govuk-heading-s">Courthouse</h3>
       <p class="govuk-body">{{ vm.case.courthouse }}</p>
       <h3 class="govuk-heading-s">Defendant(s)</h3>

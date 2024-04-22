@@ -1,7 +1,6 @@
 <app-reporting-restriction [restrictions]="caseFile.reportingRestrictions"></app-reporting-restriction>
 
-<h1 class="govuk-caption-l">Case ID</h1>
-<h1 class="govuk-heading-l">{{ caseFile.number }}</h1>
+<app-govuk-heading caption="Case ID">{{ caseFile.number }}</app-govuk-heading>
 <h3 class="govuk-heading-s">Courthouse</h3>
 <p class="govuk-body">{{ caseFile.courthouse }}</p>
 <h3 class="govuk-heading-s">Prosecutor(s)</h3>
