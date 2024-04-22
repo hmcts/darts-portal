@@ -119,7 +119,8 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   setInputValue(value: string, control: string) {
-    this.form.controls[`${control}`].patchValue(value);
+    this.form.controls[control].patchValue(value);
+    this.form.controls[control].markAsTouched();
   }
 
   isControlInvalid(control: keyof SearchFormValues): boolean {
