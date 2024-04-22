@@ -36,6 +36,7 @@ describe('ViewTranscriptComponent', () => {
     transcriptionEndTs: DateTime.fromISO('2023-11-08'),
     isManual: false,
     hearingId: 0,
+    courthouseId: 0,
   };
 
   beforeEach(() => {

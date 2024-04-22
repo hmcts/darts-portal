@@ -153,28 +153,59 @@ describe('TranscriptionService', () => {
       expect(spy).toHaveBeenCalledWith('/api/transcriptions/1');
     });
 
-    it('should return TranscriptionDetails with default filename if not provided', (done) => {
+    it('should map TranscriptionDetails', () => {
       // Simulate a scenario where transcript_file_name is not provided in the response
-      const mockTranscription: Partial<TranscriptionDetailsData> = {
+      const mockTranscriptionResponse: TranscriptionDetailsData = {
         case_id: 1,
         case_number: '123',
         courthouse: 'Swansea',
-        defendants: [],
-        judges: [],
-        hearing_date: '',
-        urgency: '',
-        request_type: '',
-        transcription_start_ts: '',
-        transcription_end_ts: '',
+        defendants: ['defendant1', 'defendant2'],
+        judges: ['judge1', 'judge2'],
+        hearing_date: '2023-02-21T18:00:00Z',
+        urgency: 'Overnight',
+        request_type: 'Specified Times',
+        transcription_start_ts: '2023-06-26T13:00:00Z',
+        transcription_end_ts: '2023-06-26T13:00:00Z',
+        transcript_file_name: '',
+        transcription_id: 4,
+        is_manual: false,
+        hearing_id: 3,
+        courthouse_id: 2,
+        requestor: {
+          user_id: 3,
+          user_full_name: 'test user',
+        },
       };
 
-      service.getTranscriptionDetails(1).subscribe((result) => {
-        expect(result.transcriptFileName).toEqual('Document not found');
-        done();
+      const mappedTranscription: TranscriptionDetails = {
+        caseId: 1,
+        caseNumber: '123',
+        courthouse: 'Swansea',
+        defendants: ['defendant1', 'defendant2'],
+        judges: ['judge1', 'judge2'],
+        hearingDate: DateTime.fromISO('2023-02-21T18:00:00Z'),
+        urgency: 'Overnight',
+        requestType: 'Specified Times',
+        transcriptionId: 4,
+        transcriptionStartTs: DateTime.fromISO('2023-06-26T13:00:00Z'),
+        transcriptionEndTs: DateTime.fromISO('2023-06-26T13:00:00Z'),
+        transcriptFileName: '',
+        isManual: false,
+        hearingId: 3,
+        courthouseId: 2,
+        from: 'test user',
+      };
+
+      let result = {} as TranscriptionDetails;
+
+      service.getTranscriptionDetails(1).subscribe((t) => {
+        result = t;
       });
 
       const req = httpMock.expectOne('/api/transcriptions/1');
-      req.flush(mockTranscription);
+      req.flush(mockTranscriptionResponse);
+
+      expect(result).toEqual(mappedTranscription);
     });
   });
 
@@ -425,6 +456,7 @@ describe('TranscriptionService', () => {
       transcriptFileName: '',
       isManual: false,
       hearingId: 0,
+      courthouseId: 0,
     };
 
     it('should correctly transform TranscriptionDetails to a case details object', () => {

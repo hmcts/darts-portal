@@ -136,6 +136,11 @@ const mockTranscriptionDetails = {
   courthouse: 'Swansea',
   status: 'Rejected',
   from: 'MoJ CH Swansea',
+  requestor: {
+    user_id: 1,
+    user_full_name: 'Joe Smith',
+  },
+  courthouse_id: 1,
   received: '2023-11-17T12:53:07.468Z',
   requestor_comments: 'Please expedite my request',
   rejection_reason: 'This request will take longer to transcribe within the urgency level you require.',
@@ -167,6 +172,11 @@ const mockTranscriptionDetailsTwo = {
   courthouse: 'Swansea',
   status: 'Complete',
   from: 'MoJ CH Swansea',
+  requestor: {
+    user_id: 1,
+    user_full_name: 'Joe Smith',
+  },
+  courthouse_id: 1,
   received: '2023-11-17T12:53:07.468Z',
   requestor_comments: 'Please expedite my request',
   defendants: ['Defendant Dave', 'Defendant Bob'],

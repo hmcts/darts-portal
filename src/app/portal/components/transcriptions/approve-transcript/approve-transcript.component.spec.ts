@@ -54,6 +54,7 @@ describe('ApproveTranscriptComponent', () => {
         event_ts: '2023-09-01T09:00:00Z',
       },
     ],
+    courthouseId: 1,
   };
 
   beforeEach(async () => {

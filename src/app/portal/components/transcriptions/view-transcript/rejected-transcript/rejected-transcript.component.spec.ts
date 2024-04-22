@@ -39,6 +39,7 @@ describe('RejectedTranscriptComponent', () => {
     transcriptionEndTs: DateTime.fromISO('2023-06-26T16:00:00Z'),
     isManual: true,
     hearingId: 1,
+    courthouseId: 1,
   };
 
   beforeEach(async () => {

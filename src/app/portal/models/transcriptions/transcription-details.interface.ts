@@ -21,4 +21,9 @@ export interface TranscriptionDetailsData {
   transcription_end_ts: string;
   is_manual: boolean;
   hearing_id: number;
+  requestor?: {
+    user_id: number;
+    user_full_name: string;
+  };
+  courthouse_id: number;
 }
