@@ -128,6 +128,7 @@ export class RetentionPolicyFormComponent implements OnInit, OnChanges {
     // Set custom error for same day but past time
     if (this.form.errors?.pastDateTime) {
       this.form.controls.startTime.setErrors({ pastDateTime: true });
+      this.form.updateValueAndValidity();
     }
 
     if (this.isSubmitted) return; // prevent multiple subscriptions
