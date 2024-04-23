@@ -134,7 +134,8 @@ const mockTranscriptionDetails = {
   ],
   case_number: 'C20220620001',
   courthouse: 'Swansea',
-  status: 'Rejected',
+  courthouse_id: 1,
+  status: 'With transcriber',
   from: 'MoJ CH Swansea',
   requestor: {
     user_id: 1,
@@ -151,10 +152,15 @@ const mockTranscriptionDetails = {
   urgency: 'Standard',
   request_type: 'Specified Times',
   request_id: 123456789,
+  transcription_id: 12345,
   transcription_start_ts: '2023-06-26T13:00:00Z',
   transcription_end_ts: '2023-06-26T16:00:00Z',
   is_manual: true,
   hearing_id: 1,
+  requestor: {
+    user_id: 1,
+    user_full_name: 'Eric Bristow',
+  },
 };
 
 const mockTranscriptionDetailsTwo = {

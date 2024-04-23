@@ -6,6 +6,7 @@ export type TranscriptionDetails = {
   caseId: number;
   caseNumber: string;
   courthouse: string;
+  courthouseId?: number;
   status?: string;
   from?: string;
   received?: DateTime;
@@ -22,5 +23,4 @@ export type TranscriptionDetails = {
   transcriptionEndTs: DateTime;
   isManual: boolean;
   hearingId: number;
-  courthouseId: number;
 };

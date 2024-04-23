@@ -15,9 +15,15 @@
           <!-- check if value is an array of links -->
           @if (getLinkArray(detail.value)?.length) {
             @for (item of getLinkArray(detail.value); track item) {
-              <a *ngIf="item.href" [href]="item.href" class="govuk-link">{{ item.value }}</a>
-              <span *ngIf="!item.href">{{ item }} </span>
-              <br *ngIf="item.href" />
+              @if (item.href) {
+                <a [href]="item.href" class="govuk-link">{{ item.value }}</a>
+                @if (item.caption) {
+                  <span class="value-caption govuk-caption-m"> ({{ item.caption }})</span>
+                }
+                <br />
+              } @else {
+                <span>{{ item }} </span>
+              }
             }
           } @else {
             <!-- check if value is object.value -->

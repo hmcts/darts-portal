@@ -161,8 +161,8 @@ export class TranscriptionService {
 
   getRequestDetailsFromTranscript(transcript: TranscriptionDetails) {
     return {
-      'Hearing Date': this.luxonPipe.transform(transcript.hearingDate, 'dd MMM yyyy'),
-      'Request Type': transcript.requestType,
+      'Hearing date': this.luxonPipe.transform(transcript.hearingDate, 'dd MMM yyyy'),
+      'Request type': transcript.requestType,
       'Request ID': transcript.transcriptionId,
       Urgency: transcript.urgency,
       'Audio for transcript':
@@ -181,8 +181,8 @@ export class TranscriptionService {
 
   getHearingRequestDetailsFromTranscript(transcript: TranscriptionDetails) {
     return {
-      'Hearing Date': this.luxonPipe.transform(transcript.hearingDate, 'dd MMM yyyy'),
-      'Request Type': transcript.requestType,
+      'Hearing date': this.luxonPipe.transform(transcript.hearingDate, 'dd MMM yyyy'),
+      'Request type': transcript.requestType,
       'Request ID': transcript.transcriptionId,
       Urgency: transcript.urgency,
       'Audio for transcript':

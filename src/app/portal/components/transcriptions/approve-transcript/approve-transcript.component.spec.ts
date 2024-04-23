@@ -93,8 +93,8 @@ describe('ApproveTranscriptComponent', () => {
     };
 
     const requestDetails = {
-      'Hearing Date': '08 Nov 2023',
-      'Request Type': 'Specified Times',
+      'Hearing date': '08 Nov 2023',
+      'Request type': 'Specified Times',
       'Request ID': 123456789,
       Urgency: 'Standard',
       'Audio for transcript': 'Start time 13:00:00 - End time 16:00:00',
