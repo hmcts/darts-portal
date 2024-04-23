@@ -23,8 +23,10 @@
           height="40"
         ></image>
       </svg>
-      <a class="moj-header__link moj-header__link--organisation-name" href="/">HMCTS</a>
-      <a class="moj-header__link moj-header__link--service-name" href="/">DARTS</a>
+      <a [routerLink]="['/']">
+        <span class="moj-header__link moj-header__link--organisation-name">HMCTS</span>
+        <span class="moj-header__link moj-header__link--service-name">DARTS</span>
+      </a>
     </div>
     <div *ngIf="isAuthenticated" class="moj-header__content">
       <nav class="moj-header__navigation" aria-label="Account navigation">
