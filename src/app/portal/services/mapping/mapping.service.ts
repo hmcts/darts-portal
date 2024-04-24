@@ -47,7 +47,7 @@ export class MappingService {
       caseNumber: transcription.case_number,
       courthouse: transcription.courthouse,
       status: transcription.status,
-      from: transcription.from,
+      from: transcription.requestor?.user_full_name,
       received: transcription.received ? DateTime.fromISO(transcription.received) : undefined,
       requestorComments: transcription.requestor_comments,
       rejectionReason: transcription.rejection_reason,

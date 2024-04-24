@@ -164,7 +164,7 @@ describe('TranscriptionAdminService', () => {
       courthouse: 'Swansea',
       courthouseId: 1,
       status: 'With transcriber',
-      from: 'MoJ CH Swansea',
+      from: 'Eric Bristow',
       received: DateTime.fromISO('2023-11-17T12:53:07.468Z'),
       requestorComments: 'Please expedite my request',
       rejectionReason: 'This request will take longer to transcribe within the urgency level you require.',

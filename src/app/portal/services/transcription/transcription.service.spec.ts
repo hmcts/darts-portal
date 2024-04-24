@@ -161,7 +161,6 @@ describe('TranscriptionService', () => {
         courthouse: 'Swansea',
         defendants: ['defendant1', 'defendant2'],
         judges: ['judge1', 'judge2'],
-        from: 'test user',
         hearing_date: '2023-02-21T18:00:00Z',
         urgency: 'Overnight',
         request_type: 'Specified Times',
