@@ -1,7 +1,7 @@
 export type Requestor = {
-  userId?: number;
-  fullName?: string;
-  email?: string;
+  userId?: number | undefined;
+  fullName?: string | undefined;
+  email?: string | undefined;
 };
 
 export interface RequestorData {

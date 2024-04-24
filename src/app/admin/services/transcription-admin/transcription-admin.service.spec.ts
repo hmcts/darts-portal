@@ -229,7 +229,7 @@ describe('TranscriptionAdminService', () => {
     jest.spyOn(service, 'getTranscriptionWorkflows').mockReturnValue(of(mockWorkflows));
 
     let id;
-    service.getLatestTranscriptionWorkflowActor(false, transcriptionId).subscribe((actorId) => {
+    service.getLatestTranscriptionWorkflowActor(transcriptionId, false).subscribe((actorId) => {
       id = actorId;
     });
 
@@ -292,7 +292,7 @@ describe('TranscriptionAdminService', () => {
     const current = true;
 
     let wflows: TranscriptionWorkflow[] = [];
-    service.getTranscriptionWorkflows(current, transcriptionId).subscribe((workflows) => {
+    service.getTranscriptionWorkflows(transcriptionId, current).subscribe((workflows) => {
       wflows = workflows;
     });
 

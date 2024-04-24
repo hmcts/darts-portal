@@ -16,6 +16,7 @@ import {
 } from '@portal-types/index';
 
 import { CountNotificationService } from '@services/count-notification/count-notification.service';
+import { MappingService } from '@services/mapping/mapping.service';
 import { DateTime } from 'luxon';
 import { Observable, map, shareReplay, switchMap, tap, timer } from 'rxjs';
 
@@ -30,6 +31,7 @@ export class TranscriptionService {
   luxonPipe = inject(LuxonDatePipe);
   http = inject(HttpClient);
   countService = inject(CountNotificationService);
+  mapping = inject(MappingService);
   private readonly DATA_POLL_INTERVAL_SECS = 60;
   private readonly urgencies$ = this.http.get<Urgency[]>('/api/transcriptions/urgencies').pipe(shareReplay(1));
 
@@ -85,7 +87,7 @@ export class TranscriptionService {
   getTranscriptionDetails(transcriptId: number): Observable<TranscriptionDetails> {
     return this.http
       .get<TranscriptionDetailsData>(`/api/transcriptions/${transcriptId}`)
-      .pipe(map(this.mapTranscriptionDetails));
+      .pipe(map((t) => this.mapTranscriptionDetails(t)));
   }
 
   deleteRequest(transcriptionIds: number[]) {
@@ -236,28 +238,6 @@ export class TranscriptionService {
   }
 
   private mapTranscriptionDetails(transcription: TranscriptionDetailsData): TranscriptionDetails {
-    return {
-      caseReportingRestrictions: transcription.case_reporting_restrictions,
-      caseId: transcription.case_id,
-      caseNumber: transcription.case_number,
-      courthouse: transcription.courthouse,
-      status: transcription.status,
-      from: transcription.requestor?.user_full_name ?? '',
-      received: transcription.received ? DateTime.fromISO(transcription.received) : undefined,
-      requestorComments: transcription.requestor_comments,
-      rejectionReason: transcription.rejection_reason,
-      defendants: transcription.defendants,
-      judges: transcription.judges,
-      transcriptFileName: transcription.transcript_file_name ?? 'Document not found',
-      hearingDate: DateTime.fromISO(transcription.hearing_date),
-      urgency: transcription.urgency,
-      requestType: transcription.request_type,
-      transcriptionId: transcription.transcription_id,
-      transcriptionStartTs: DateTime.fromISO(transcription.transcription_start_ts),
-      transcriptionEndTs: DateTime.fromISO(transcription.transcription_end_ts),
-      isManual: transcription.is_manual,
-      hearingId: transcription.hearing_id,
-      courthouseId: transcription.courthouse_id,
-    };
+    return this.mapping.mapBaseTranscriptionDetails(transcription);
   }
 }

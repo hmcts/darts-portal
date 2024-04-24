@@ -37,7 +37,7 @@ export class ViewTranscriptComponent {
         return of(transcription);
       } else {
         return this.transcriptionAdminService
-          .getLatestTranscriptionWorkflowActor(true, this.route.snapshot.params.transcriptionId)
+          .getLatestTranscriptionWorkflowActor(this.route.snapshot.params.transcriptionId, true)
           .pipe(
             switchMap((workflowUserId) => {
               const userIds = transcription.requestor?.userId

@@ -18,6 +18,7 @@ import { Injectable, inject } from '@angular/core';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { GET_SECURITY_GROUPS_PATH } from '@services/courthouses/courthouses.service';
 import { GET_SECURITY_ROLES_PATH } from '@services/groups/groups.service';
+import { MappingService } from '@services/mapping/mapping.service';
 import { DateTime } from 'luxon';
 import { Observable, of, switchMap } from 'rxjs';
 import { map } from 'rxjs/internal/operators/map';
@@ -28,6 +29,7 @@ import { map } from 'rxjs/internal/operators/map';
 export class TranscriptionAdminService {
   luxonPipe = inject(LuxonDatePipe);
   http = inject(HttpClient);
+  mapping = inject(MappingService);
 
   search(formValues: TranscriptionSearchFormValues): Observable<Transcription[]> {
     const body = this.mapSearchFormValuesToSearchRequest(formValues);
@@ -45,14 +47,15 @@ export class TranscriptionAdminService {
   getTranscriptionDetails(transcriptId: number): Observable<TranscriptionAdminDetails> {
     return this.http
       .get<TranscriptionAdminDetailsData>(`api/transcriptions/${transcriptId}`)
-      .pipe(map(this.mapTranscriptionDetails));
+      .pipe(map((t) => this.mapTranscriptionDetails(t)));
   }
 
-  getLatestTranscriptionWorkflowActor(current: boolean = false, transcriptionId: number): Observable<number> {
-    return this.getTranscriptionWorkflows(current, transcriptionId).pipe(
+  getLatestTranscriptionWorkflowActor(transcriptionId: number, current: boolean = false): Observable<number> {
+    return this.getTranscriptionWorkflows(transcriptionId, current).pipe(
       map((workflows) => {
-        const latestWorkflow = workflows.reduce((latest, current) =>
-          current.workflowTimestamp > latest.workflowTimestamp ? current : latest
+        const latestWorkflow = workflows.reduce(
+          (latest, current) => (current.workflowTimestamp > latest.workflowTimestamp ? current : latest),
+          workflows[0]
         );
         return latestWorkflow.workflowActor;
       })
@@ -85,7 +88,7 @@ export class TranscriptionAdminService {
     );
   }
 
-  getTranscriptionWorkflows(current: boolean = false, transcriptionId: number): Observable<TranscriptionWorkflow[]> {
+  getTranscriptionWorkflows(transcriptionId: number, current: boolean = false): Observable<TranscriptionWorkflow[]> {
     const params = new HttpParams()
       .set('current', current.toString())
       .set('transcription_id', transcriptionId.toString());
@@ -210,29 +213,13 @@ export class TranscriptionAdminService {
   }
 
   private mapTranscriptionDetails(transcription: TranscriptionAdminDetailsData): TranscriptionAdminDetails {
+    const baseDetails = this.mapping.mapBaseTranscriptionDetails(transcription);
     return {
-      caseReportingRestrictions: transcription.case_reporting_restrictions,
-      caseId: transcription.case_id,
-      caseNumber: transcription.case_number,
-      courthouse: transcription.courthouse,
-      courthouseId: transcription.courthouse_id,
-      status: transcription.status,
-      from: transcription.from,
-      received: transcription.received ? DateTime.fromISO(transcription.received) : undefined,
-      requestorComments: transcription.requestor_comments,
-      rejectionReason: transcription.rejection_reason,
-      defendants: transcription.defendants,
-      judges: transcription.judges,
-      transcriptFileName: transcription.transcript_file_name ?? 'Document not found',
-      hearingDate: DateTime.fromISO(transcription.hearing_date),
-      urgency: transcription.urgency,
-      requestType: transcription.request_type,
-      transcriptionId: transcription.transcription_id,
-      transcriptionStartTs: DateTime.fromISO(transcription.transcription_start_ts),
-      transcriptionEndTs: DateTime.fromISO(transcription.transcription_end_ts),
-      isManual: transcription.is_manual,
-      hearingId: transcription.hearing_id,
-      requestor: { fullName: transcription.requestor?.user_full_name, userId: transcription.requestor?.user_id },
+      ...baseDetails,
+      requestor: {
+        fullName: transcription.requestor?.user_full_name,
+        userId: transcription.requestor?.user_id,
+      },
     };
   }
 }
