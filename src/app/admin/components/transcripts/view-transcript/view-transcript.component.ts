@@ -6,7 +6,6 @@ import { DetailsTableComponent } from '@components/common/details-table/details-
 import { TabsComponent } from '@components/common/tabs/tabs.component';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { TabDirective } from '@directives/tab.directive';
-import { GroupsService } from '@services/groups/groups.service';
 import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { forkJoin, map, of, switchMap } from 'rxjs';
@@ -30,7 +29,6 @@ import { TranscriptDetailsComponent } from './transcript-details/transcript-deta
 export class ViewTranscriptComponent {
   route = inject(ActivatedRoute);
   userAdminService = inject(UserAdminService);
-  groupsService = inject(GroupsService);
   transcriptionAdminService = inject(TranscriptionAdminService);
 
   transcript$ = this.transcriptionAdminService.getTranscriptionDetails(this.route.snapshot.params.transcriptionId).pipe(
