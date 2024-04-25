@@ -49,7 +49,7 @@
         Apply filters
       </button>
 
-      @for (filter of filters; track filter.name) {
+      @for (filter of filters; track filter.name; let last = $last) {
         <div class="govuk-form-group">
           <fieldset class="govuk-fieldset">
             <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">{{ filter.displayName }}</legend>
@@ -86,6 +86,9 @@
               @if (filteredValues.length === 0) {
                 <p class="govuk-body">No results found</p>
               }
+            }
+            @if (filters.length > 1 && !last) {
+              <hr class="govuk-section-break govuk-section-break--visible" />
             }
           </fieldset>
         </div>
