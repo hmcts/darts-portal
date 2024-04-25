@@ -29,4 +29,95 @@ describe('Admin - Transcript requests', () => {
 
     cy.a11y();
   });
+
+  describe('View transcript', () => {
+    it('check template', () => {
+      cy.get('button').contains('Search').click();
+      cy.get('app-search-transcripts-results').get('a').contains('1').click();
+
+      cy.get('h1').contains('Transcript request');
+
+      cy.get('#status-details').contains('Status');
+      cy.get('#status-details').contains('With transcriber');
+
+      cy.get('#status-details').contains('Assigned to');
+      cy.get('#status-details').contains('Fallon Sherrock');
+      cy.get('#status-details').contains('(fallon.sherrock@darts.local)');
+
+      cy.get('#status-details').contains('Associated groups');
+      cy.get('#status-details').contains('Judiciary');
+      cy.get('#status-details').contains('Opus Transcribers');
+      cy.get('#status-details').contains('Super user (DARTS portal)');
+
+      cy.get('#request-details').contains('Request details');
+
+      cy.get('#request-details').contains('Hearing date');
+      cy.get('#request-details').contains('08 Nov 2023');
+
+      cy.get('#request-details').contains('Request type');
+      cy.get('#request-details').contains('Specified Times');
+
+      cy.get('#request-details').contains('Request method');
+      cy.get('#request-details').contains('Manual');
+
+      cy.get('#request-details').contains('Request ID');
+      cy.get('#request-details').contains('12345');
+
+      cy.get('#request-details').contains('Urgency');
+      cy.get('#request-details').contains('Standard');
+
+      cy.get('#request-details').contains('Audio for transcript');
+      cy.get('#request-details').contains('Start time 13:00:00 - End time 16:00:00');
+
+      cy.get('#request-details').contains('Requested by');
+      cy.get('#request-details').contains('Eric Bristow');
+      cy.get('#request-details').contains('(eric.bristow@darts.local)');
+
+      cy.get('#request-details').contains('Received');
+      cy.get('#request-details').contains('17 Nov 2023 12:53:07');
+
+      cy.get('#request-details').contains('Instructions');
+      cy.get('#request-details').contains('Please expedite my request');
+
+      cy.get('#request-details').contains('Judge approval');
+      cy.get('#request-details').contains('Yes');
+
+      cy.get('#case-details').contains('Case details');
+
+      cy.get('#case-details').contains('Case ID');
+      cy.get('#case-details').contains('C20220620001');
+
+      cy.get('#case-details').contains('Courthouse');
+      cy.get('#case-details').contains('Swansea');
+
+      cy.get('#case-details').contains('Judge(s)');
+      cy.get('#case-details').contains('HHJ M. Hussain KC Ray Bob');
+
+      cy.get('#case-details').contains('Defendant(s)');
+      cy.get('#case-details').contains('Defendant Dave Defendant Bob');
+
+      cy.a11y();
+    });
+
+    it('transcript links to associated group', () => {
+      cy.get('button').contains('Search').click();
+      cy.get('app-search-transcripts-results').get('a').contains('1').click();
+      cy.get('#status-details').contains('Associated groups').get('a').contains('Judiciary').click();
+      cy.url().should('include', '/admin/groups/1');
+    });
+
+    it('transcript links to assigned user', () => {
+      cy.get('button').contains('Search').click();
+      cy.get('app-search-transcripts-results').get('a').contains('1').click();
+      cy.get('#status-details').contains('Assigned to').get('a').contains('Fallon Sherrock').click();
+      cy.url().should('include', '/admin/users/2');
+    });
+
+    it('transcript links to requested user', () => {
+      cy.get('button').contains('Search').click();
+      cy.get('app-search-transcripts-results').get('a').contains('1').click();
+      cy.get('#request-details').contains('Requested by').get('a').contains('Eric Bristow').click();
+      cy.url().should('include', '/admin/users/1');
+    });
+  });
 });

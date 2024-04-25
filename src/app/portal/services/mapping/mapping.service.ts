@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Annotations } from '@portal-types/annotations/annotations.type';
 import { AnnotationsData } from '@portal-types/annotations/annotations-data.interface';
+import { Annotations } from '@portal-types/annotations/annotations.type';
+import { TranscriptionDetails, TranscriptionDetailsData } from '@portal-types/index';
 import { Transcript } from '@portal-types/transcriptions/transcript.type';
 import { TranscriptsRow } from '@portal-types/transcriptions/transcripts-row.type';
 import { DateTime } from 'luxon';
@@ -37,5 +38,31 @@ export class MappingService {
         uploadedTs: DateTime.fromISO(a.uploaded_ts),
       }))
     );
+  }
+
+  mapBaseTranscriptionDetails(transcription: TranscriptionDetailsData): TranscriptionDetails {
+    return {
+      caseReportingRestrictions: transcription.case_reporting_restrictions,
+      caseId: transcription.case_id,
+      caseNumber: transcription.case_number,
+      courthouse: transcription.courthouse,
+      status: transcription.status,
+      from: transcription.requestor?.user_full_name,
+      received: transcription.received ? DateTime.fromISO(transcription.received) : undefined,
+      requestorComments: transcription.requestor_comments,
+      rejectionReason: transcription.rejection_reason,
+      defendants: transcription.defendants,
+      judges: transcription.judges,
+      transcriptFileName: transcription.transcript_file_name ?? 'Document not found',
+      hearingDate: DateTime.fromISO(transcription.hearing_date),
+      urgency: transcription.urgency,
+      requestType: transcription.request_type,
+      transcriptionId: transcription.transcription_id,
+      transcriptionStartTs: DateTime.fromISO(transcription.transcription_start_ts),
+      transcriptionEndTs: DateTime.fromISO(transcription.transcription_end_ts),
+      isManual: transcription.is_manual,
+      hearingId: transcription.hearing_id,
+      courthouseId: transcription.courthouse_id,
+    };
   }
 }

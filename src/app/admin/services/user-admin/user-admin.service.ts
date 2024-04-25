@@ -31,6 +31,14 @@ export class UserAdminService {
       .pipe(map((users) => this.mapUsers(users)));
   }
 
+  getUsersById(userIds: number[]): Observable<User[]> {
+    return this.http
+      .post<
+        UserData[]
+      >(USER_ADMIN_SEARCH_PATH, { user_ids: userIds, full_name: null, email_address: null, active: null })
+      .pipe(map((users) => this.mapUsers(users)));
+  }
+
   getUser(userId: number): Observable<User> {
     return forkJoin({
       userData: this.http.get<UserData>(`${USER_ADMIN_PATH}/${userId}`),

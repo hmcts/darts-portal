@@ -189,6 +189,14 @@ export const ADMIN_ROUTES: Routes = [
         './components/retention-policies/create-edit-retention-policy/create-edit-retention-policy.component'
       ).then((c) => c.CreateEditRetentionPolicyComponent),
   },
+  {
+    path: 'admin/transcripts/:transcriptionId',
+    title: 'DARTS Admin View Transcription',
+    loadComponent: () =>
+      import('./components/transcripts/view-transcript/view-transcript.component').then(
+        (c) => c.ViewTranscriptComponent
+      ),
+  },
 ].map((route) => ({
   ...route,
   resolve: { userState: () => inject(UserService).userProfile$ },

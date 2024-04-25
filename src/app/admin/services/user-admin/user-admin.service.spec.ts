@@ -378,4 +378,45 @@ describe('UserAdminService', () => {
       });
     });
   });
+
+  describe('getUsersById', () => {
+    it('should fetch and map all users', () => {
+      const mockUserId = 1;
+      const mockUsersData: UserData[] = [
+        {
+          id: mockUserId,
+          last_login_at: '2020-01-01T00:00:00Z',
+          last_modified_at: '2020-01-02T00:00:00Z',
+          created_at: '2020-01-01T00:00:00Z',
+          full_name: 'John Doe',
+          email_address: 'email@email.com',
+          description: 'A test user',
+          active: true,
+          security_group_ids: [1, 2],
+        },
+      ];
+      const mockUserData = mockUsersData[0];
+      const mappedUsers: User[] = [
+        {
+          id: mockUserId,
+          lastLoginAt: DateTime.fromISO(mockUserData.last_login_at),
+          lastModifiedAt: DateTime.fromISO(mockUserData.last_modified_at),
+          createdAt: DateTime.fromISO(mockUserData.created_at),
+          fullName: 'John Doe',
+          emailAddress: 'email@email.com',
+          description: 'A test user',
+          active: true,
+          securityGroupIds: [1, 2],
+        },
+      ];
+
+      let result = [] as User[];
+      service.getUsersById([mockUserId]).subscribe((res: User[]) => (result = res));
+
+      const req = httpMock.expectOne('api/admin/users/search');
+      req.flush(mockUsersData);
+
+      expect(result).toEqual(mappedUsers);
+    });
+  });
 });

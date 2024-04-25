@@ -474,8 +474,8 @@ describe('TranscriptionService', () => {
 
     it('should transform TranscriptionDetails to a request details object', () => {
       const expectedResult = {
-        'Hearing Date': '08 Nov 2023',
-        'Request Type': 'Type A',
+        'Hearing date': '08 Nov 2023',
+        'Request type': 'Type A',
         'Request ID': 123456,
         Urgency: 'High',
         'Audio for transcript': 'Start time 13:00:00 - End time 16:00:00',
@@ -492,8 +492,8 @@ describe('TranscriptionService', () => {
 
     it('should correctly transform TranscriptionDetails to hearing request details', () => {
       const expectedResult = {
-        'Hearing Date': '08 Nov 2023',
-        'Request Type': 'Type A',
+        'Hearing date': '08 Nov 2023',
+        'Request type': 'Type A',
         'Request ID': 123456,
         Urgency: 'High',
         'Audio for transcript': 'Start time 13:00:00 - End time 16:00:00',
