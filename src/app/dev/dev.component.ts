@@ -144,7 +144,6 @@ export class DevComponent implements OnInit {
 
   timeline: TimelineItem[] = [
     {
-      id: 1,
       title: 'Rejected',
       dateTime: DateTime.now(),
       descriptionLines: ['Comment 1 here'],
@@ -155,7 +154,6 @@ export class DevComponent implements OnInit {
       },
     },
     {
-      id: 2,
       title: 'Approved',
       dateTime: DateTime.now(),
       descriptionLines: ['Comment 1 here', 'Comment 2 here'],
@@ -166,7 +164,6 @@ export class DevComponent implements OnInit {
       },
     },
     {
-      id: 3,
       title: 'Requested',
       dateTime: DateTime.now(),
       descriptionLines: ['Comment 1 here', 'Comment 2 here', 'Comment 3 here'],
