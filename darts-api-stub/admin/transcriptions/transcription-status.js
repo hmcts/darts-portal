@@ -1,44 +1,46 @@
 const express = require('express');
 
+const MOCK_STATUSES = [
+  {
+    id: 1,
+    type: 'Requested',
+    display_name: 'Requested',
+  },
+  {
+    id: 2,
+    type: 'Awaiting Authorisation',
+    display_name: 'Awaiting Authorisation',
+  },
+  {
+    id: 3,
+    type: 'Approved',
+    display_name: 'Approved',
+  },
+  {
+    id: 4,
+    type: 'Rejected',
+    display_name: 'Rejected',
+  },
+  {
+    id: 5,
+    type: 'With Transcriber',
+    display_name: 'With Transcriber',
+  },
+  {
+    id: 6,
+    type: 'Complete',
+    display_name: 'Complete',
+  },
+  {
+    id: 7,
+    type: 'Closed',
+    display_name: 'Closed',
+  },
+];
+
 const router = express.Router();
 router.get('/', (req, res) => {
-  res.send([
-    {
-      id: 1,
-      type: 'Requested',
-      display_name: 'Requested',
-    },
-    {
-      id: 2,
-      type: 'Awaiting Authorisation',
-      display_name: 'Awaiting Authorisation',
-    },
-    {
-      id: 3,
-      type: 'Approved',
-      display_name: 'Approved',
-    },
-    {
-      id: 4,
-      type: 'Rejected',
-      display_name: 'Rejected',
-    },
-    {
-      id: 5,
-      type: 'With Transcriber',
-      display_name: 'With Transcriber',
-    },
-    {
-      id: 6,
-      type: 'Complete',
-      display_name: 'Complete',
-    },
-    {
-      id: 7,
-      type: 'Closed',
-      display_name: 'Closed',
-    },
-  ]);
+  res.send(MOCK_STATUSES);
 });
 
-module.exports = router;
+module.exports = { router, MOCK_STATUSES };

@@ -34,7 +34,11 @@
         @if (getAction(detail.value); as action) {
           <dd class="govuk-summary-list__actions">
             @if (action?.url) {
-              <a class="govuk-link" [routerLink]="action.url" [fragment]="action.fragment"
+              <a
+                class="govuk-link"
+                [routerLink]="action.url"
+                [fragment]="action.fragment"
+                [queryParams]="action.queryParams"
                 >{{ action.text }}<span class="govuk-visually-hidden"> {{ detail.key }}</span></a
               >
             }

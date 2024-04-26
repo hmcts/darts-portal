@@ -3,6 +3,7 @@ import { TranscriptionWorkflow } from '@admin-types/transcription/transcription-
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
 import { TimelineComponent } from '@common/timeline/timeline.component';
 import { BreadcrumbComponent } from '@components/common/breadcrumb/breadcrumb.component';
 import { DetailsTableComponent } from '@components/common/details-table/details-table.component';
@@ -29,12 +30,14 @@ import { TranscriptDetailsComponent } from './transcript-details/transcript-deta
     DetailsTableComponent,
     TranscriptDetailsComponent,
     TimelineComponent,
+    GovukBannerComponent,
   ],
 })
 export class ViewTranscriptComponent {
   route = inject(ActivatedRoute);
   userAdminService = inject(UserAdminService);
   transcriptionAdminService = inject(TranscriptionAdminService);
+  statusUpdated$ = this.route.queryParams.pipe(map((params) => !!params.updatedStatus));
 
   history$ = this.transcriptionAdminService.getTranscriptionWorkflows(this.route.snapshot.params.transcriptionId).pipe(
     switchMap((workflows) => {

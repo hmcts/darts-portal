@@ -176,7 +176,7 @@ const mockTranscriptionDetails = {
   case_number: 'C20220620001',
   courthouse: 'Swansea',
   courthouse_id: 1,
-  status: 'With transcriber',
+  status: 'With Transcriber',
   from: 'MoJ CH Swansea',
   requestor: {
     user_id: 1,
@@ -196,7 +196,7 @@ const mockTranscriptionDetails = {
   },
   request_type: 'Specified Times',
   request_id: 123456789,
-  transcription_id: 12345,
+  transcription_id: 1,
   transcription_start_ts: '2023-06-26T13:00:00Z',
   transcription_end_ts: '2023-06-26T16:00:00Z',
   is_manual: true,
@@ -629,4 +629,4 @@ router.patch('/', (req, res) => {
   res.sendStatus(status);
 });
 
-module.exports = router;
+module.exports = { router, mockTranscriptionDetails };

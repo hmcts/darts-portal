@@ -6,9 +6,48 @@ import { DatePipe } from '@angular/common';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
+import { TranscriptStatus } from '@portal-types/index';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
 import { TranscriptionAdminService } from './transcription-admin.service';
+
+const MOCK_STATUSES: TranscriptionStatus[] = [
+  {
+    id: 1,
+    type: 'Requested',
+    displayName: 'Requested',
+  },
+  {
+    id: 2,
+    type: 'Awaiting Authorisation',
+    displayName: 'Awaiting Authorisation',
+  },
+  {
+    id: 3,
+    type: 'Approved',
+    displayName: 'Approved',
+  },
+  {
+    id: 4,
+    type: 'Rejected',
+    displayName: 'Rejected',
+  },
+  {
+    id: 5,
+    type: 'With Transcriber',
+    displayName: 'With Transcriber',
+  },
+  {
+    id: 6,
+    type: 'Complete',
+    displayName: 'Complete',
+  },
+  {
+    id: 7,
+    type: 'Closed',
+    displayName: 'Closed',
+  },
+];
 
 describe('TranscriptionAdminService', () => {
   let service: TranscriptionAdminService;
@@ -127,7 +166,7 @@ describe('TranscriptionAdminService', () => {
       case_number: 'C20220620001',
       courthouse: 'Swansea',
       courthouse_id: 1,
-      status: 'With transcriber',
+      status: 'With Transcriber',
       from: 'MoJ CH Swansea',
       received: '2023-11-17T12:53:07.468Z',
       requestor_comments: 'Please expedite my request',
@@ -167,7 +206,7 @@ describe('TranscriptionAdminService', () => {
       caseNumber: 'C20220620001',
       courthouse: 'Swansea',
       courthouseId: 1,
-      status: 'With transcriber',
+      status: 'With Transcriber',
       from: 'Eric Bristow',
       received: DateTime.fromISO('2023-11-17T12:53:07.468Z'),
       requestorComments: 'Please expedite my request',
@@ -317,7 +356,9 @@ describe('TranscriptionAdminService', () => {
 
   it('should return correct status and associated data based on transcript details', () => {
     const transcript = {
-      status: 'Awaiting authorisation',
+      transcriptionId: 1,
+      isManual: true,
+      status: 'Awaiting Authorisation',
       assignedTo: {
         userId: 1,
         fullName: 'John Doe',
@@ -331,9 +372,10 @@ describe('TranscriptionAdminService', () => {
 
     const result = service.getCurrentStatusFromTranscript(transcript);
 
-    expect(result.Status.value).toBe('Awaiting authorisation');
+    expect(result.Status.value).toBe('Awaiting Authorisation');
     expect(result.Status.action?.text).toBe('Change status');
-    expect(result.Status.action?.url).toBe('/temp-transcription-admin-service');
+    expect(result.Status.action?.url).toBe('/admin/transcripts/1/change-status');
+    expect(result.Status.action?.queryParams).toEqual({ status: 'Awaiting Authorisation', manual: true });
     expect(result['Assigned to'][0].href).toBe('/admin/users/1');
     expect(result['Assigned to'][0].value).toBe('John Doe');
     expect(result['Assigned to'][0].caption).toBe('john.doe@example.com');
@@ -370,6 +412,95 @@ describe('TranscriptionAdminService', () => {
       Received: '01 Jan 2024 13:30:00',
       Instructions: 'Need ASAP',
       'Judge approval': 'Yes',
+    });
+  });
+
+  describe('updateTranscriptionStatus', () => {
+    it('send patch request with correct body', () => {
+      const transcriptionId = 1;
+      const statusId = 2;
+      const comment = 'Test comment';
+
+      service.updateTranscriptionStatus(transcriptionId, statusId, comment).subscribe();
+
+      const req = httpMock.expectOne(`api/admin/transcriptions/${transcriptionId}`);
+      expect(req.request.method).toBe('PATCH');
+      expect(req.request.body).toEqual({ transcription_status_id: statusId, workflow_comment: comment });
+    });
+  });
+
+  describe('getAllowableTranscriptionStatuses', () => {
+    it('returns allowed statuses', () => {
+      jest.spyOn(service, 'getTranscriptionStatuses').mockReturnValue(of(MOCK_STATUSES));
+
+      const testCases = [
+        {
+          status: 'Requested',
+          isManual: true,
+          expected: [{ displayName: 'Closed', id: 7, type: 'Closed' }],
+        },
+        {
+          status: 'Awaiting Authorisation',
+          isManual: true,
+          expected: [
+            { displayName: 'Requested', id: 1, type: 'Requested' },
+            { displayName: 'Closed', id: 7, type: 'Closed' },
+          ],
+        },
+        {
+          status: 'Approved',
+          isManual: true,
+          expected: [{ displayName: 'Closed', id: 7, type: 'Closed' }],
+        },
+        {
+          status: 'Rejected',
+          isManual: true,
+          expected: [],
+        },
+        {
+          status: 'With Transcriber',
+          isManual: true,
+          expected: [
+            { displayName: 'Approved', id: 3, type: 'Approved' },
+            { displayName: 'Closed', id: 7, type: 'Closed' },
+          ],
+        },
+        // Not manual
+        {
+          status: 'Requested',
+          isManual: false,
+          expected: [{ displayName: 'Closed', id: 7, type: 'Closed' }],
+        },
+        {
+          status: 'Awaiting Authorisation',
+          isManual: false,
+          expected: [],
+        },
+        {
+          status: 'Approved',
+          isManual: false,
+          expected: [{ displayName: 'Closed', id: 7, type: 'Closed' }],
+        },
+        {
+          status: 'With Transcriber',
+          isManual: false,
+          expected: [
+            { displayName: 'Approved', id: 3, type: 'Approved' },
+            { displayName: 'Complete', id: 6, type: 'Complete' },
+            { displayName: 'Closed', id: 7, type: 'Closed' },
+          ],
+        },
+      ];
+
+      for (const testCase of testCases) {
+        let statuses: TranscriptionStatus[] = [];
+        service
+          .getAllowableTranscriptionStatuses(testCase.status as TranscriptStatus, testCase.isManual)
+          .subscribe((s) => (statuses = s));
+        expect(statuses).toEqual(testCase.expected);
+      }
+
+      expect(service.getTranscriptionStatuses).toHaveBeenCalledTimes(testCases.length);
     });
   });
 });

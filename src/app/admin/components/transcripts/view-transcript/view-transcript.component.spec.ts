@@ -56,7 +56,10 @@ describe('ViewTranscriptComponent', () => {
     providers = [
       DatePipe,
       LuxonDatePipe,
-      { provide: ActivatedRoute, useValue: { snapshot: { params: { transcriptionId: '1' } } } },
+      {
+        provide: ActivatedRoute,
+        useValue: { snapshot: { params: { transcriptionId: '1' } }, queryParams: of({ updatedStatus: true }) },
+      },
       { provide: UserAdminService, useValue: fakeUserAdminService },
       { provide: TranscriptionAdminService, useValue: fakeTranscriptionAdminService },
     ];
@@ -165,6 +168,20 @@ describe('ViewTranscriptComponent', () => {
           user: { id: 1, fullName: 'Test User', emailAddress: 'email@test.com' },
         },
       ]);
+    });
+  });
+
+  describe('statusUpdated$', () => {
+    it('should return true if updatedStatus query param is true', () => {
+      runInInjectionContext(Injector.create({ providers }), () => {
+        component = new ViewTranscriptComponent();
+      });
+
+      let result = false;
+
+      component.statusUpdated$.subscribe((res) => (result = res));
+
+      expect(result).toBe(true);
     });
   });
 });

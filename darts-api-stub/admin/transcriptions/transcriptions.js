@@ -1,6 +1,8 @@
 const express = require('express');
 const { userIdHasAnyRoles } = require('../../users');
 const { SUPER_ADMIN } = require('../../roles');
+const { mockTranscriptionDetails } = require('../../transcriptions/transcriptions');
+const { MOCK_STATUSES } = require('./transcription-status');
 
 const router = express.Router();
 
@@ -83,6 +85,16 @@ router.post('/search', (req, res) => {
   if (req.body.case_number) return res.send(transcripts.filter((t) => t.case_number === req.body.case_number));
 
   res.send(transcripts);
+});
+
+router.patch('/:transcription_id', (req, res) => {
+  authCheck(req, res);
+
+  const statusId = req.body.transcription_status_id;
+
+  mockTranscriptionDetails.status = MOCK_STATUSES.find((s) => s.id === statusId).display_name;
+
+  res.status(200).send();
 });
 
 module.exports = router;
