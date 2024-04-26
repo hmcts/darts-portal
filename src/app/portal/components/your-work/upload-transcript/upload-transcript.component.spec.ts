@@ -22,7 +22,11 @@ const MOCK_TRANSCRIPTION_DETAILS: TranscriptionDetails = {
   judges: ['HHJ M. Hussain KC', 'Ray Bob'],
   transcriptFileName: '',
   hearingDate: DateTime.fromISO('2023-06-26T00:00:00Z'),
-  urgency: 'Overnight',
+  urgency: {
+    transcription_urgency_id: 2,
+    description: 'Overnight',
+    priority_order: 2,
+  },
   requestType: 'Specified Times',
   transcriptionId: 1,
   transcriptionStartTs: DateTime.fromISO('2023-06-26T13:00:00Z'),

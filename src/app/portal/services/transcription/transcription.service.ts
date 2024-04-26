@@ -63,25 +63,19 @@ export class TranscriptionService {
 
   getYourTranscripts(): Observable<YourTranscripts> {
     return this.http.get<YourTranscriptsData>('/api/transcriptions').pipe(
-      switchMap((requests: YourTranscriptsData) =>
-        this.getUrgencies().pipe(
-          map((urgencies) => ({
-            requesterTranscriptions: this.mapYourTranscriptRequestData(requests.requester_transcriptions, urgencies),
-            approverTranscriptions: this.mapYourTranscriptRequestData(requests.approver_transcriptions, urgencies),
-          }))
-        )
-      )
+      map((requests: YourTranscriptsData) => {
+        return {
+          requesterTranscriptions: this.mapYourTranscriptRequestData(requests.requester_transcriptions),
+          approverTranscriptions: this.mapYourTranscriptRequestData(requests.approver_transcriptions),
+        };
+      })
     );
   }
 
   getWorkRequests(assigned = true): Observable<WorkRequest[]> {
     return this.http
       .get<WorkRequestData[]>('/api/transcriptions/transcriber-view', { params: { assigned } })
-      .pipe(
-        switchMap((requests) =>
-          this.getUrgencies().pipe(map((urgencies) => this.mapWorkRequestData(requests, urgencies)))
-        )
-      );
+      .pipe(map((requests) => this.mapWorkRequestData(requests)));
   }
 
   getTranscriptionDetails(transcriptId: number): Observable<TranscriptionDetails> {
@@ -166,7 +160,7 @@ export class TranscriptionService {
       'Hearing date': this.luxonPipe.transform(transcript.hearingDate, 'dd MMM yyyy'),
       'Request type': transcript.requestType,
       'Request ID': transcript.transcriptionId,
-      Urgency: transcript.urgency,
+      Urgency: transcript.urgency.description,
       'Audio for transcript':
         transcript.transcriptionStartTs && transcript.transcriptionEndTs
           ? 'Start time ' +
@@ -186,7 +180,7 @@ export class TranscriptionService {
       'Hearing date': this.luxonPipe.transform(transcript.hearingDate, 'dd MMM yyyy'),
       'Request type': transcript.requestType,
       'Request ID': transcript.transcriptionId,
-      Urgency: transcript.urgency,
+      Urgency: transcript.urgency.description,
       'Audio for transcript':
         transcript.transcriptionStartTs && transcript.transcriptionEndTs
           ? 'Start time ' +
@@ -197,17 +191,7 @@ export class TranscriptionService {
     };
   }
 
-  getUrgencyByDescription(urgencies: Urgency[], description: string): Urgency {
-    return (
-      urgencies.find((u) => u.description === description) ?? {
-        transcription_urgency_id: 0,
-        description: '-',
-        priority_order: 999,
-      }
-    );
-  }
-
-  private mapYourTranscriptRequestData(requests: TranscriptRequestData[], urgencies: Urgency[]): TranscriptRequest[] {
+  private mapYourTranscriptRequestData(requests: TranscriptRequestData[]): TranscriptRequest[] {
     return requests.map((r) => ({
       transcriptionId: r.transcription_id,
       caseId: r.case_id,
@@ -216,12 +200,12 @@ export class TranscriptionService {
       hearingDate: DateTime.fromISO(r.hearing_date),
       transcriptionType: r.transcription_type,
       status: r.status,
-      urgency: this.getUrgencyByDescription(urgencies, r.urgency),
+      urgency: r.transcription_urgency,
       requestedTs: DateTime.fromISO(r.requested_ts),
     }));
   }
 
-  private mapWorkRequestData(requests: WorkRequestData[], urgencies: Urgency[]): WorkRequest[] {
+  private mapWorkRequestData(requests: WorkRequestData[]): WorkRequest[] {
     return requests.map((r) => ({
       transcriptionId: r.transcription_id,
       caseId: r.case_id,
@@ -230,7 +214,7 @@ export class TranscriptionService {
       hearingDate: DateTime.fromISO(r.hearing_date),
       transcriptionType: r.transcription_type,
       status: r.status,
-      urgency: this.getUrgencyByDescription(urgencies, r.urgency),
+      urgency: r.transcription_urgency,
       requestedTs: DateTime.fromISO(r.requested_ts),
       stateChangeTs: DateTime.fromISO(r.state_change_ts),
       isManual: r.is_manual,

@@ -55,7 +55,7 @@ export class MappingService {
       judges: transcription.judges,
       transcriptFileName: transcription.transcript_file_name ?? 'Document not found',
       hearingDate: DateTime.fromISO(transcription.hearing_date),
-      urgency: transcription.urgency,
+      urgency: transcription.transcription_urgency,
       requestType: transcription.request_type,
       transcriptionId: transcription.transcription_id,
       transcriptionStartTs: DateTime.fromISO(transcription.transcription_start_ts),

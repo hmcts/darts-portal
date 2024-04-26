@@ -1,5 +1,6 @@
 import { ReportingRestriction } from '@core-types/reporting-restriction/reporting-restriction.interface';
 import { DateTime } from 'luxon';
+import { Urgency } from './transcription-urgency.interface';
 
 export type TranscriptionDetails = {
   caseReportingRestrictions?: ReportingRestriction[];
@@ -16,7 +17,7 @@ export type TranscriptionDetails = {
   judges: string[];
   transcriptFileName: string;
   hearingDate: DateTime;
-  urgency: string;
+  urgency: Urgency;
   requestType: string;
   transcriptionId: number;
   transcriptionStartTs: DateTime;

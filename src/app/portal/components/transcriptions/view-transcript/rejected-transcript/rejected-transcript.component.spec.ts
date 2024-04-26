@@ -32,7 +32,11 @@ describe('RejectedTranscriptComponent', () => {
     judges: ['HHJ M. Hussain KC	', 'Ray Bob'],
     transcriptFileName: 'C20220620001_0.docx',
     hearingDate: DateTime.fromISO('2023-11-08'),
-    urgency: 'Standard',
+    urgency: {
+      transcription_urgency_id: 1,
+      description: 'Standard',
+      priority_order: 1,
+    },
     requestType: 'Specified Times',
     transcriptionId: 12,
     transcriptionStartTs: DateTime.fromISO('2023-06-26T13:00:00Z'),

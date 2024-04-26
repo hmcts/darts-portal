@@ -13,7 +13,7 @@
         </dt>
         <dd class="govuk-summary-list__value">
           <!-- check if value is an array of links -->
-          @if (getLinkArray(detail.value)?.length) {
+          @if (getLinkArray(detail.value).length) {
             @for (item of getLinkArray(detail.value); track item) {
               @if (item.href) {
                 <a [href]="item.href" class="govuk-link">{{ item.value }}</a>
