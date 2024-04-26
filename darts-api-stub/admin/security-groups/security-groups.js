@@ -147,9 +147,23 @@ router.get('/:id', (req, res) => {
 
 router.get('/', (req, res) => {
   const roleIds = req?.query?.['role_ids'];
-  if (roleIds)
-    return res.send(securityGroups.value.filter((securityGroup) => roleIds.includes(securityGroup.security_role_id)));
-  res.send(securityGroups.value);
+  const courthouseId = req.query.courthouse_id;
+  if (!courthouseId && !roleIds) {
+    res.send(defaultSecurityGroups);
+    return;
+  }
+  if (courthouseId && roleIds) {
+    res.send(defaultSecurityGroups.filter((securityGroup) => securityGroup.courthouse_ids.includes(+courthouseId) && roleIds.includes(securityGroup.security_role_id)));
+    return;
+  }
+  if (courthouseId) {
+    res.send(defaultSecurityGroups.filter((securityGroup) => securityGroup.courthouse_ids.includes(+courthouseId)));
+    return;
+  }
+  if (roleIds) {
+    res.send(defaultSecurityGroups.filter((securityGroup) => roleIds.includes(securityGroup.security_role_id)));
+    return;
+  }
 });
 
 router.post('/', (req, res) => {
