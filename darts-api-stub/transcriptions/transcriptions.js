@@ -33,7 +33,7 @@ const yourTranscriptionsStub = {
       transcription_urgency: {
         transcription_urgency_id: 1,
         description: 'Up to 3 working days',
-        priority_order: 1,
+        priority_order: 3,
       },
       requested_ts: '2023-06-26T13:00:00Z',
     },
@@ -48,7 +48,7 @@ const yourTranscriptionsStub = {
       transcription_urgency: {
         transcription_urgency_id: 1,
         description: 'Up to 3 working days',
-        priority_order: 1,
+        priority_order: 3,
       },
       requested_ts: '2023-06-26T13:00:00Z',
     },
@@ -78,7 +78,7 @@ const yourTranscriptionsStub = {
       transcription_urgency: {
         transcription_urgency_id: 1,
         description: 'Up to 3 working days',
-        priority_order: 1,
+        priority_order: 3,
       },
       requested_ts: '2023-06-26T13:00:00Z',
     },
@@ -95,7 +95,7 @@ const yourTranscriptionsStub = {
       transcription_urgency: {
         transcription_urgency_id: 1,
         description: 'Up to 3 working days',
-        priority_order: 1,
+        priority_order: 3,
       },
       requested_ts: '2023-06-26T13:00:00Z',
     },
@@ -110,7 +110,7 @@ const yourTranscriptionsStub = {
       transcription_urgency: {
         transcription_urgency_id: 1,
         description: 'Up to 3 working days',
-        priority_order: 1,
+        priority_order: 3,
       },
       requested_ts: '2023-04-09T09:58:34Z',
     },
@@ -140,7 +140,7 @@ const yourTranscriptionsStub = {
       transcription_urgency: {
         transcription_urgency_id: 1,
         description: 'Up to 7 working days',
-        priority_order: 1,
+        priority_order: 7,
       },
       requested_ts: '2023-06-29T13:00:00Z',
     },
@@ -155,7 +155,7 @@ const yourTranscriptionsStub = {
       transcription_urgency: {
         transcription_urgency_id: 1,
         description: 'Up to 2 working days',
-        priority_order: 1,
+        priority_order: 2,
       },
       requested_ts: '2023-06-30T13:00:00Z',
     },
@@ -192,7 +192,7 @@ const mockTranscriptionDetails = {
   transcription_urgency: {
     transcription_urgency_id: 1,
     description: 'Standard',
-    priority_order: 1,
+    priority_order: 4,
   },
   request_type: 'Specified Times',
   request_id: 123456789,
@@ -236,7 +236,7 @@ const mockTranscriptionDetailsTwo = {
   transcription_urgency: {
     transcription_urgency_id: 1,
     description: 'Standard',
-    priority_order: 1,
+    priority_order: 4,
   },
   request_type: 'Specified Times',
   request_id: 123456789,
@@ -256,7 +256,7 @@ const mockTranscriptionDetailsNoName = {
   transcription_urgency: {
     transcription_urgency_id: 1,
     description: 'Standard',
-    priority_order: 1,
+    priority_order: 4,
   },
   request_type: 'Specified Times',
   transcription_start_ts: '2023-06-26T13:00:00Z',
@@ -284,7 +284,7 @@ let unassignedTranscriptions = [
     transcription_urgency: {
       transcription_urgency_id: 1,
       description: 'Up to 2 working days',
-      priority_order: 1,
+      priority_order: 2,
     },
     requested_ts: '2023-08-01T10:00:00Z',
     state_change_ts: '2023-06-27T13:00:00Z',
@@ -318,7 +318,7 @@ let unassignedTranscriptions = [
     transcription_urgency: {
       transcription_urgency_id: 1,
       description: 'Up to 3 working days',
-      priority_order: 1,
+      priority_order: 3,
     },
     requested_ts: '2022-02-28T13:00:00Z',
     state_change_ts: '2023-06-27T13:00:00Z',
@@ -335,7 +335,7 @@ let unassignedTranscriptions = [
     transcription_urgency: {
       transcription_urgency_id: 1,
       description: 'Up to 3 working days',
-      priority_order: 1,
+      priority_order: 3,
     },
     requested_ts: '2023-12-25T13:00:00Z',
     state_change_ts: '2023-06-27T13:00:00Z',
@@ -352,7 +352,7 @@ let unassignedTranscriptions = [
     transcription_urgency: {
       transcription_urgency_id: 1,
       description: 'Up to 3 working days',
-      priority_order: 1,
+      priority_order: 3,
     },
     requested_ts: '2021-09-09T13:00:00Z',
     state_change_ts: '2023-06-27T13:00:00Z',
@@ -372,7 +372,7 @@ let assignedTranscriptions = [
     transcription_urgency: {
       transcription_urgency_id: 1,
       description: 'Up to 12 working days',
-      priority_order: 1,
+      priority_order: 12,
     },
     requested_ts: '2024-01-10T10:00:00Z',
     state_change_ts: '2023-08-13T13:00:00Z',
@@ -406,7 +406,7 @@ let assignedTranscriptions = [
     transcription_urgency: {
       transcription_urgency_id: 1,
       description: 'Up to 3 working days',
-      priority_order: 1,
+      priority_order: 3,
     },
     requested_ts: '2023-08-21T14:00:00Z',
     state_change_ts: '2023-08-13T13:00:00Z',
@@ -423,7 +423,7 @@ let assignedTranscriptions = [
     transcription_urgency: {
       transcription_urgency_id: 1,
       description: 'Up to 3 working days',
-      priority_order: 1,
+      priority_order: 3,
     },
     requested_ts: '2023-06-27T16:00:00Z',
     state_change_ts: '2023-06-27T13:00:00Z',
