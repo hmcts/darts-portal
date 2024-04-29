@@ -65,7 +65,7 @@ export class UploadTranscriptComponent implements OnDestroy {
           'Request Type': data.requestType,
           'Request method': data.isManual ? 'Manual' : 'Automated',
           'Request ID': this.requestId,
-          Urgency: data.urgency,
+          Urgency: data.urgency.description,
           'Audio for transcript': startTime && endTime ? `Start time ${startTime} - End time ${endTime}` : '',
           From: data.from,
           Received: received,

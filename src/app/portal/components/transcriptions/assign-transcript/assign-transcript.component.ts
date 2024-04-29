@@ -83,7 +83,7 @@ export class AssignTranscriptComponent implements OnDestroy {
           'Request Type': data.requestType,
           'Request method': data.isManual ? 'Manual' : 'Automated',
           'Request ID': this.transcriptId,
-          Urgency: data.urgency,
+          Urgency: data.urgency.description,
           'Audio for transcript':
             this.startTime && this.endTime ? `Start time ${this.startTime} - End time ${this.endTime}` : '',
           From: data.from,

@@ -191,7 +191,7 @@ export class TranscriptionAdminService {
       'Request type': transcript.requestType,
       'Request method': transcript.isManual ? 'Manual' : 'Automated',
       'Request ID': transcript.transcriptionId,
-      Urgency: transcript.urgency,
+      Urgency: transcript.urgency.description,
       'Audio for transcript':
         transcript.transcriptionStartTs && transcript.transcriptionEndTs
           ? 'Start time ' +

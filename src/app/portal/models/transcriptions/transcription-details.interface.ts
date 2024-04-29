@@ -1,4 +1,5 @@
 import { ReportingRestriction } from '@core-types/reporting-restriction/reporting-restriction.interface';
+import { Urgency } from './transcription-urgency.interface';
 
 export interface TranscriptionDetailsData {
   case_reporting_restrictions?: ReportingRestriction[];
@@ -15,7 +16,7 @@ export interface TranscriptionDetailsData {
   judges: string[];
   transcript_file_name: string;
   hearing_date: string;
-  urgency: string;
+  transcription_urgency: Urgency;
   request_type: string;
   transcription_id: number;
   transcription_start_ts: string;
