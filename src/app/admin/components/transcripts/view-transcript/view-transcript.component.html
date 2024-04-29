@@ -1,3 +1,6 @@
+@if (statusUpdated$ | async) {
+  <app-govuk-banner>Status updated</app-govuk-banner>
+}
 @if (transcript$ | async; as transcript) {
   <app-breadcrumb>
     <ng-container *breadcrumb="['/admin/transcripts']">Search</ng-container>

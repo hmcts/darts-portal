@@ -197,6 +197,14 @@ export const ADMIN_ROUTES: Routes = [
         (c) => c.ViewTranscriptComponent
       ),
   },
+  {
+    path: 'admin/transcripts/:transcriptionId/change-status',
+    title: 'DARTS Admin Change Transcription Status',
+    loadComponent: () =>
+      import('./components/transcripts/change-transcript-status/change-transcript-status.component').then(
+        (c) => c.ChangeTranscriptStatusComponent
+      ),
+  },
 ].map((route) => ({
   ...route,
   resolve: { userState: () => inject(UserService).userProfile$ },

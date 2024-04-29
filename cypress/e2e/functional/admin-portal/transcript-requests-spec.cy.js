@@ -40,7 +40,7 @@ describe('Admin - Transcript requests', () => {
       cy.get('h1').contains('Transcript request');
 
       cy.get('#status-details').contains('Status');
-      cy.get('#status-details').contains('With transcriber');
+      cy.get('#status-details').contains('With Transcriber');
 
       cy.get('#status-details').contains('Assigned to');
       cy.get('#status-details').contains('Fallon Sherrock');
@@ -63,7 +63,7 @@ describe('Admin - Transcript requests', () => {
       cy.get('#request-details').contains('Manual');
 
       cy.get('#request-details').contains('Request ID');
-      cy.get('#request-details').contains('12345');
+      cy.get('#request-details').contains('1');
 
       cy.get('#request-details').contains('Urgency');
       cy.get('#request-details').contains('Standard');
@@ -136,6 +136,24 @@ describe('Admin - Transcript requests', () => {
     it('links to user', () => {
       cy.get('.moj-timeline__item').contains('Fallon Sherrock').click();
       cy.url().should('include', '/admin/users/2');
+    });
+  });
+
+  describe('Change status', () => {
+    beforeEach(() => {
+      cy.get('button').contains('Search').click();
+      cy.get('app-search-transcripts-results').get('a').contains('1').click();
+    });
+
+    it('changes status', () => {
+      cy.get('a').contains('Change status').click();
+      cy.get('#status').select('Approved');
+      cy.get('button').contains('Save changes').click();
+
+      cy.get('#status-details').contains('Status');
+      cy.get('#status-details').contains('Approved');
+
+      cy.get('app-govuk-banner').contains('Status updated');
     });
   });
 });

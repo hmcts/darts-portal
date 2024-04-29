@@ -1,5 +1,7 @@
+import { TranscriptStatus } from '@portal-types/index';
+
 export interface TranscriptionStatusData {
   id: number;
-  type: string;
+  type: TranscriptStatus;
   display_name: string;
 }
