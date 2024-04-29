@@ -12,6 +12,14 @@ export const GET_SECURITY_GROUPS_PATH = 'api/admin/security-groups';
 export class GroupsService {
   http = inject(HttpClient);
 
+  getGroupsByRoleIdsAndCourthouseId(roleIds: number[], courthouseId: number): Observable<SecurityGroup[]> {
+    return this.http
+      .get<SecurityGroupData[]>(`${GET_SECURITY_GROUPS_PATH}`, {
+        params: { role_ids: roleIds, courthouse_id: courthouseId },
+      })
+      .pipe(map((groups) => groups.map(this.mapGroupDataToGroup)));
+  }
+
   getGroup(id: number): Observable<SecurityGroup> {
     return this.http.get<SecurityGroupData>(`${GET_SECURITY_GROUPS_PATH}/${id}`).pipe(map(this.mapGroupDataToGroup));
   }

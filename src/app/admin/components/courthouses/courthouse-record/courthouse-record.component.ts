@@ -1,4 +1,5 @@
 import { SecurityGroup } from '@admin-types/groups/security-group.type';
+import { User } from '@admin-types/index';
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,7 +15,9 @@ import { DatatableColumn } from '@core-types/data-table/data-table-column.interf
 import { TabDirective } from '@directives/tab.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
-import { map } from 'rxjs';
+import { GroupsService } from '@services/groups/groups.service';
+import { UserAdminService } from '@services/user-admin/user-admin.service';
+import { map, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-courthouse',
@@ -38,7 +41,10 @@ export class CourthouseRecordComponent {
   courthouseService = inject(CourthouseService);
   route = inject(ActivatedRoute);
   router = inject(Router);
+  groupsService = inject(GroupsService);
+  usersService = inject(UserAdminService);
 
+  courthouseId = this.route.snapshot.params.courthouseId;
   selectedFilters: Filter[] | null = null;
 
   filters: Filter[] = [
@@ -80,11 +86,64 @@ export class CourthouseRecordComponent {
     { name: 'Role type', prop: 'roleType', sortable: true },
   ];
 
-  courthouse$ = this.courthouseService.getCourthouseWithRegionsAndSecurityGroups(
-    this.route.snapshot.params.courthouseId
-  );
+  courthouse$ = this.courthouseService.getCourthouseWithRegionsAndSecurityGroups(this.courthouseId);
   isNewCourthouse$ = this.route.queryParams?.pipe(map((params) => !!params.newCourthouse));
   isUpdatedCourthouse$ = this.route.queryParams?.pipe(map((params) => !!params.updated));
+  users$ = this.groupsService.getRoles().pipe(
+    switchMap((roles) => {
+      const requesterId = roles.find((role) => role.name === 'REQUESTER')?.id;
+      const approverId = roles.find((role) => role.name === 'APPROVER')?.id;
+      return this.groupsService.getGroupsByRoleIdsAndCourthouseId([requesterId!, approverId!], this.courthouseId).pipe(
+        switchMap((groups) => {
+          if (!groups.length) {
+            return [];
+          }
+
+          const approverUserIds: number[] = [];
+          const requesterUserIds: number[] = [];
+
+          groups.forEach((group) => {
+            if (group.securityRoleId === approverId) approverUserIds.push(...group.userIds);
+            if (group.securityRoleId === requesterId) requesterUserIds.push(...group.userIds);
+          });
+
+          return this.usersService.getUsersById([...approverUserIds, ...requesterUserIds]).pipe(
+            map((users) => {
+              const approvers: User[] = users
+                .filter((u) => approverUserIds.includes(u.id))
+                .map((u) => ({
+                  ...u,
+                  securityGroups: groups
+                    .filter((g) => u.securityGroupIds.includes(g.id))
+                    .filter((g) => g.securityRoleId === approverId),
+                }));
+
+              const requesters: User[] = users
+                .filter((u) => requesterUserIds.includes(u.id))
+                .map((u) => ({
+                  ...u,
+                  securityGroups: groups
+                    .filter((g) => u.securityGroupIds.includes(g.id))
+                    .filter((g) => g.securityRoleId === requesterId),
+                }));
+
+              console.log(approvers);
+              console.log(requesters);
+
+              return [...approvers, ...requesters].map((user) => {
+                const group = groups.find((group) => user.securityGroupIds.includes(group.id));
+                return {
+                  userName: user.fullName,
+                  email: user.emailAddress,
+                  roleType: roles.find((role) => role.id === group?.securityRoleId)?.displayName,
+                };
+              });
+            })
+          );
+        })
+      );
+    })
+  );
 
   formatSecurityGroupLinks(securityGroups: SecurityGroup[] | undefined) {
     if (securityGroups?.length)

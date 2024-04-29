@@ -81,7 +81,7 @@ router.get('/', (req, res) => {
   const userIds = req.query.user_ids;
 
   if (userIds) {
-    const users = USERS.filter((u) => userIds.includes(u.id));
+    const users = USERS.filter((u) => userIds.includes(u.id.toString()));
     res.send(users);
     return;
   }

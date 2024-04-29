@@ -11,18 +11,18 @@ const defaultSecurityGroups = [
     display_name: 'Judiciary',
     display_state: true,
     global_access: true,
-    courthouse_ids: [1],
-    user_ids: [1],
+    courthouse_ids: [0],
+    user_ids: [1, 2],
     description: 'Dummy description 1',
   },
   {
     id: 2,
-    security_role_id: 4,
+    security_role_id: 2,
     name: 'Opus Transcribers',
     display_name: 'Opus Transcribers',
     display_state: true,
     global_access: true,
-    courthouse_ids: [1, 2],
+    courthouse_ids: [0],
     user_ids: [1, 2],
     description: 'Dummy description 2',
   },
@@ -125,6 +125,28 @@ const defaultSecurityGroups = [
     user_ids: [1],
     description: 'Dummy description 11',
   },
+  {
+    id: 12,
+    security_role_id: 1,
+    name: 'Oxford Requesters',
+    display_name: 'Oxford Requesters',
+    display_state: true,
+    global_access: true,
+    courthouse_ids: [16],
+    user_ids: [1, 2],
+    description: 'Dummy description 1',
+  },
+  {
+    id: 13,
+    security_role_id: 2,
+    name: 'Oxford Approvers',
+    display_name: 'Oxford Approvers',
+    display_state: true,
+    global_access: true,
+    courthouse_ids: [16],
+    user_ids: [2, 4],
+    description: 'Dummy description 2',
+  },
 ];
 
 const securityGroups = localArray('securityGroups');
@@ -153,7 +175,7 @@ router.get('/', (req, res) => {
     return;
   }
   if (courthouseId && roleIds) {
-    res.send(defaultSecurityGroups.filter((securityGroup) => securityGroup.courthouse_ids.includes(+courthouseId) && roleIds.includes(securityGroup.security_role_id)));
+    res.send(defaultSecurityGroups.filter((securityGroup) => securityGroup.courthouse_ids.includes(+courthouseId) && roleIds.includes(securityGroup.security_role_id.toString())));
     return;
   }
   if (courthouseId) {
@@ -161,7 +183,7 @@ router.get('/', (req, res) => {
     return;
   }
   if (roleIds) {
-    res.send(defaultSecurityGroups.filter((securityGroup) => roleIds.includes(securityGroup.security_role_id)));
+    res.send(defaultSecurityGroups.filter((securityGroup) => roleIds.includes(+securityGroup.security_role_id.toString())));
     return;
   }
 });

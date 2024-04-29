@@ -67,7 +67,7 @@
               </button>
               <app-data-table
                 id="users-table"
-                [rows]="rows"
+                [rows]="(users$ | async) ?? []"
                 [columns]="columns"
                 [rowSelectable]="true"
               ></app-data-table>
