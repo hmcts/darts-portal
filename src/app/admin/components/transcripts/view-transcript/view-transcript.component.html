@@ -8,10 +8,7 @@
   <h1 class="govuk-heading-l">{{ transcript.transcriptFileName }}</h1>
 
   <app-tabs>
-    <div *tab="'Details'">
-      <app-transcript-details [transcript]="transcript"></app-transcript-details>
-    </div>
-
-    <div *tab="'History'"></div>
+    <app-transcript-details *tab="'Details'; id: 'details-tab'" [transcript]="transcript" />
+    <app-timeline *tab="'History'; id: 'history-tab'" [items]="(history$ | async) ?? []" />
   </app-tabs>
 }

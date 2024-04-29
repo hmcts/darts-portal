@@ -31,10 +31,12 @@ describe('Admin - Transcript requests', () => {
   });
 
   describe('View transcript', () => {
-    it('check template', () => {
+    beforeEach(() => {
       cy.get('button').contains('Search').click();
       cy.get('app-search-transcripts-results').get('a').contains('1').click();
+    });
 
+    it('check template', () => {
       cy.get('h1').contains('Transcript request');
 
       cy.get('#status-details').contains('Status');
@@ -100,24 +102,40 @@ describe('Admin - Transcript requests', () => {
     });
 
     it('transcript links to associated group', () => {
-      cy.get('button').contains('Search').click();
-      cy.get('app-search-transcripts-results').get('a').contains('1').click();
       cy.get('#status-details').contains('Associated groups').get('a').contains('Judiciary').click();
       cy.url().should('include', '/admin/groups/1');
     });
 
     it('transcript links to assigned user', () => {
-      cy.get('button').contains('Search').click();
-      cy.get('app-search-transcripts-results').get('a').contains('1').click();
       cy.get('#status-details').contains('Assigned to').get('a').contains('Fallon Sherrock').click();
       cy.url().should('include', '/admin/users/2');
     });
 
     it('transcript links to requested user', () => {
-      cy.get('button').contains('Search').click();
-      cy.get('app-search-transcripts-results').get('a').contains('1').click();
       cy.get('#request-details').contains('Requested by').get('a').contains('Eric Bristow').click();
       cy.url().should('include', '/admin/users/1');
+    });
+  });
+
+  describe('History', () => {
+    beforeEach(() => {
+      cy.get('button').contains('Search').click();
+      cy.get('app-search-transcripts-results').get('a').contains('1').click();
+      cy.get('#history-tab').click();
+    });
+
+    it('check template', () => {
+      cy.get('.moj-timeline__title').should((titles) => {
+        expect(titles).to.have.length(3);
+        expect(titles[2]).to.contain('Requested');
+        expect(titles[1]).to.contain('Awaiting Authorisation');
+        expect(titles[0]).to.contain('Comment');
+      });
+    });
+
+    it('links to user', () => {
+      cy.get('.moj-timeline__item').contains('Fallon Sherrock').click();
+      cy.url().should('include', '/admin/users/2');
     });
   });
 });

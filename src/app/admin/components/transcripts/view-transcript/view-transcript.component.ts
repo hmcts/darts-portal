@@ -1,9 +1,13 @@
+import { TranscriptionStatus, User } from '@admin-types/index';
+import { TranscriptionWorkflow } from '@admin-types/transcription/transcription-workflow';
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { TimelineComponent } from '@common/timeline/timeline.component';
 import { BreadcrumbComponent } from '@components/common/breadcrumb/breadcrumb.component';
 import { DetailsTableComponent } from '@components/common/details-table/details-table.component';
 import { TabsComponent } from '@components/common/tabs/tabs.component';
+import { TimelineItem } from '@core-types/index';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { TabDirective } from '@directives/tab.directive';
 import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
@@ -24,12 +28,24 @@ import { TranscriptDetailsComponent } from './transcript-details/transcript-deta
     TabDirective,
     DetailsTableComponent,
     TranscriptDetailsComponent,
+    TimelineComponent,
   ],
 })
 export class ViewTranscriptComponent {
   route = inject(ActivatedRoute);
   userAdminService = inject(UserAdminService);
   transcriptionAdminService = inject(TranscriptionAdminService);
+
+  history$ = this.transcriptionAdminService.getTranscriptionWorkflows(this.route.snapshot.params.transcriptionId).pipe(
+    switchMap((workflows) => {
+      const userIds = workflows.map((workflow) => workflow.workflowActor);
+      return forkJoin({
+        workflows: of(workflows),
+        users: this.userAdminService.getUsersById(userIds),
+        statuses: this.transcriptionAdminService.getTranscriptionStatuses(),
+      }).pipe(map(({ workflows, statuses, users }) => this.mapWorkflowsToTimeline(workflows, statuses, users)));
+    })
+  );
 
   transcript$ = this.transcriptionAdminService.getTranscriptionDetails(this.route.snapshot.params.transcriptionId).pipe(
     switchMap((transcription) => {
@@ -74,4 +90,17 @@ export class ViewTranscriptComponent {
       }
     })
   );
+
+  mapWorkflowsToTimeline(
+    workflows: TranscriptionWorkflow[],
+    statuses: TranscriptionStatus[],
+    users: User[]
+  ): TimelineItem[] {
+    return workflows.map((workflow) => ({
+      title: statuses.find((s) => workflow.statusId === s.id)?.displayName || 'Comment',
+      descriptionLines: workflow.comments.map((c) => c.comment),
+      dateTime: workflow.workflowTimestamp,
+      user: users.find((u) => workflow.workflowActor === u.id) as Pick<User, 'id' | 'fullName' | 'emailAddress'>,
+    }));
+  }
 }
