@@ -1,5 +1,5 @@
 import { SecurityGroup } from '@admin-types/groups/security-group.type';
-import { User } from '@admin-types/index';
+import { SecurityRole, User } from '@admin-types/index';
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,7 +17,7 @@ import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { GroupsService } from '@services/groups/groups.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
-import { map, switchMap } from 'rxjs';
+import { map, of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-courthouse',
@@ -89,61 +89,77 @@ export class CourthouseRecordComponent {
   courthouse$ = this.courthouseService.getCourthouseWithRegionsAndSecurityGroups(this.courthouseId);
   isNewCourthouse$ = this.route.queryParams?.pipe(map((params) => !!params.newCourthouse));
   isUpdatedCourthouse$ = this.route.queryParams?.pipe(map((params) => !!params.updated));
-  users$ = this.groupsService.getRoles().pipe(
-    switchMap((roles) => {
-      const requesterId = roles.find((role) => role.name === 'REQUESTER')?.id;
-      const approverId = roles.find((role) => role.name === 'APPROVER')?.id;
-      return this.groupsService.getGroupsByRoleIdsAndCourthouseId([requesterId!, approverId!], this.courthouseId).pipe(
-        switchMap((groups) => {
-          if (!groups.length) {
-            return [];
-          }
 
+  roles$ = this.groupsService.getRoles().pipe(
+    map((roles) => ({
+      roles,
+      requesterId: roles.find((role) => role.name === 'REQUESTER')!.id,
+      approverId: roles.find((role) => role.name === 'APPROVER')!.id,
+    }))
+  );
+
+  courthouseRequesterApproverGroups$ = this.roles$.pipe(
+    switchMap(({ roles, requesterId, approverId }) => {
+      return this.groupsService.getGroupsByRoleIdsAndCourthouseId([requesterId, approverId], this.courthouseId).pipe(
+        switchMap((groups) => {
           const approverUserIds: number[] = [];
           const requesterUserIds: number[] = [];
 
+          // Split userIds into approvers and requesters
           groups.forEach((group) => {
-            if (group.securityRoleId === approverId) approverUserIds.push(...group.userIds);
-            if (group.securityRoleId === requesterId) requesterUserIds.push(...group.userIds);
+            group.securityRoleId === approverId
+              ? approverUserIds.push(...group.userIds)
+              : requesterUserIds.push(...group.userIds);
           });
 
-          return this.usersService.getUsersById([...approverUserIds, ...requesterUserIds]).pipe(
-            map((users) => {
-              const approvers: User[] = users
-                .filter((u) => approverUserIds.includes(u.id))
-                .map((u) => ({
-                  ...u,
-                  securityGroups: groups
-                    .filter((g) => u.securityGroupIds.includes(g.id))
-                    .filter((g) => g.securityRoleId === approverId),
-                }));
-
-              const requesters: User[] = users
-                .filter((u) => requesterUserIds.includes(u.id))
-                .map((u) => ({
-                  ...u,
-                  securityGroups: groups
-                    .filter((g) => u.securityGroupIds.includes(g.id))
-                    .filter((g) => g.securityRoleId === requesterId),
-                }));
-
-              console.log(approvers);
-              console.log(requesters);
-
-              return [...approvers, ...requesters].map((user) => {
-                const group = groups.find((group) => user.securityGroupIds.includes(group.id));
-                return {
-                  userName: user.fullName,
-                  email: user.emailAddress,
-                  roleType: roles.find((role) => role.id === group?.securityRoleId)?.displayName,
-                };
-              });
-            })
-          );
+          return of({
+            roles,
+            requesterId,
+            approverId,
+            groups,
+            approverUserIds,
+            requesterUserIds,
+          });
         })
       );
     })
   );
+
+  users$ = this.courthouseRequesterApproverGroups$.pipe(
+    switchMap(({ roles, requesterId, approverId, groups, approverUserIds, requesterUserIds }) => {
+      return this.usersService.getUsersById([...approverUserIds, ...requesterUserIds]).pipe(
+        map((users) => {
+          // split users into approvers and requesters and add role display name
+          const approvers = this.getUsersWithRoleByGroup(users, approverUserIds, groups, approverId, roles);
+          const requesters = this.getUsersWithRoleByGroup(users, requesterUserIds, groups, requesterId, roles);
+
+          return [...approvers, ...requesters].map((user) => {
+            return {
+              userName: user.fullName,
+              email: user.emailAddress,
+              roleType: user.role,
+            };
+          });
+        })
+      );
+    })
+  );
+
+  getUsersWithRoleByGroup(
+    users: User[],
+    groupUserIds: number[],
+    groups: SecurityGroup[],
+    approverId: number,
+    roles: SecurityRole[]
+  ): (User & { role: string })[] {
+    return users
+      .filter((u) => groupUserIds.includes(u.id))
+      .map((u) => {
+        const group = groups.filter((g) => g.userIds.includes(u.id)).filter((g) => g.securityRoleId === approverId)[0];
+        const role = roles.find((role) => role.id === group.securityRoleId)?.displayName ?? '';
+        return { ...u, role };
+      });
+  }
 
   formatSecurityGroupLinks(securityGroups: SecurityGroup[] | undefined) {
     if (securityGroups?.length)

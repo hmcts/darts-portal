@@ -1,6 +1,4 @@
 const express = require('express');
-const { localArray } = require('../../localArray');
-
 const router = express.Router();
 
 const defaultSecurityGroups = [
@@ -12,7 +10,7 @@ const defaultSecurityGroups = [
     display_state: true,
     global_access: true,
     courthouse_ids: [0],
-    user_ids: [1, 2],
+    user_ids: [1],
     description: 'Dummy description 1',
   },
   {
@@ -133,7 +131,7 @@ const defaultSecurityGroups = [
     display_state: true,
     global_access: true,
     courthouse_ids: [16],
-    user_ids: [1, 2],
+    user_ids: [1, 3],
     description: 'Dummy description 1',
   },
   {
@@ -144,17 +142,14 @@ const defaultSecurityGroups = [
     display_state: true,
     global_access: true,
     courthouse_ids: [16],
-    user_ids: [2, 4],
+    user_ids: [2, 3],
     description: 'Dummy description 2',
   },
 ];
 
-const securityGroups = localArray('securityGroups');
-// Clear out old values on restart
-securityGroups.value = defaultSecurityGroups;
 router.patch('/:id', (req, res) => {
   const id = req.params.id;
-  const securityGroup = securityGroups.value.find((securityGroup) => securityGroup.id == id);
+  const securityGroup = securityGroups.find((securityGroup) => securityGroup.id == id);
   if (!securityGroup) return res.status(404).send('Security group not found');
   Object.assign(securityGroup, req.body);
   res.send(securityGroup);
@@ -162,7 +157,7 @@ router.patch('/:id', (req, res) => {
 
 router.get('/:id', (req, res) => {
   const id = req.params.id;
-  const securityGroup = securityGroups.value.find((securityGroup) => securityGroup.id == id);
+  const securityGroup = securityGroups.find((securityGroup) => securityGroup.id == id);
   if (!securityGroup) return res.status(404).send('Security group not found');
   res.send(securityGroup);
 });
@@ -175,7 +170,13 @@ router.get('/', (req, res) => {
     return;
   }
   if (courthouseId && roleIds) {
-    res.send(defaultSecurityGroups.filter((securityGroup) => securityGroup.courthouse_ids.includes(+courthouseId) && roleIds.includes(securityGroup.security_role_id.toString())));
+    res.send(
+      defaultSecurityGroups.filter(
+        (securityGroup) =>
+          securityGroup.courthouse_ids.includes(+courthouseId) &&
+          roleIds.includes(securityGroup.security_role_id.toString())
+      )
+    );
     return;
   }
   if (courthouseId) {
@@ -183,7 +184,9 @@ router.get('/', (req, res) => {
     return;
   }
   if (roleIds) {
-    res.send(defaultSecurityGroups.filter((securityGroup) => roleIds.includes(+securityGroup.security_role_id.toString())));
+    res.send(
+      defaultSecurityGroups.filter((securityGroup) => roleIds.includes(+securityGroup.security_role_id.toString()))
+    );
     return;
   }
 });
