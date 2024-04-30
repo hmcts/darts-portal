@@ -18,6 +18,7 @@ const subscribedEndpoints = [
   { endpoint: '/api/admin/retention-policy-types', responses: [400] },
   { endpoint: new RegExp(`/api/cases/${regexIdPlaceholder}/transcripts`), responses: [403] },
   { endpoint: new RegExp(`/api/hearings/${regexIdPlaceholder}/transcripts`), responses: [403] },
+  { endpoint: new RegExp(`/api/admin/automated-tasks/${regexIdPlaceholder}/run`), responses: [404, 409] },
 ];
 
 //Contains endpoints where errors will be ignored

@@ -6,7 +6,9 @@ import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.compo
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { TabDirective } from '@directives/tab.directive';
 import { map } from 'rxjs';
+import { AutomatedTasksComponent } from '../automated-tasks/automated-tasks.component';
 import { RetentionPoliciesComponent } from '../retention-policies/retention-policies.component';
+import { TaskRunStatus } from './../automated-tasks/automated-tasks.component';
 
 const tabUrlMap: { [key: string]: string } = {
   'Retention policies': '/admin/system-configuration/retention-policies',
@@ -23,6 +25,7 @@ const tabUrlMap: { [key: string]: string } = {
     TabDirective,
     GovukBannerComponent,
     AsyncPipe,
+    AutomatedTasksComponent,
   ],
   templateUrl: './system-configuration.component.html',
   styleUrl: './system-configuration.component.scss',
@@ -34,6 +37,7 @@ export class SystemConfigurationComponent {
   hasPolicyCreated$ = this.route.queryParams.pipe(map((params) => !!params.created));
   hasPolicyUpdated$ = this.route.queryParams.pipe(map((params) => !!params.updated));
   hasPolicyRevised$ = this.route.queryParams.pipe(map((params) => !!params.revised));
+  taskRunStatus: TaskRunStatus | null = null;
 
   currentTab = this.getTabFromUrl(this.router.url);
 
