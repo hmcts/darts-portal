@@ -1,0 +1,16 @@
+<app-govuk-heading tag="h2">Automated tasks</app-govuk-heading>
+
+<app-data-table [columns]="coloumns" [rows]="automatedTasks()">
+  <ng-template [tableRowTemplate]="automatedTasks()" let-row>
+    <td class="govuk-table__cell">{{ row.id }}</td>
+    <td class="govuk-table__cell">{{ row.name }}</td>
+    <td class="govuk-table__cell">{{ row.description }}</td>
+    <td class="govuk-table__cell">{{ row.cronExpression }}</td>
+    <td class="govuk-table__cell">{{ row.isActive ? 'Active' : 'Inactive' }}</td>
+    <td class="govuk-table__cell">
+      <button type="submit" class="govuk-button govuk-button--secondary" (click)="onRunTaskButtonClicked(row.id)">
+        Run task
+      </button>
+    </td>
+  </ng-template>
+</app-data-table>

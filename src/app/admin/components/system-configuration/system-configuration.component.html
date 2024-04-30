@@ -8,14 +8,24 @@
   <app-govuk-banner type="success">Retention policy version created</app-govuk-banner>
 }
 
+@if (taskRunStatus === 'success') {
+  <app-govuk-banner type="success">Task start request sent</app-govuk-banner>
+}
+@if (taskRunStatus === 'already-running') {
+  <app-govuk-banner type="warning">Task is already running</app-govuk-banner>
+}
+@if (taskRunStatus === 'not-found') {
+  <app-govuk-banner type="warning">Task not found</app-govuk-banner>
+}
+
 <app-govuk-heading tag="h1" size="xl">System configuration</app-govuk-heading>
 
 <app-tabs [default]="currentTab" (tabChange)="onTabChanged($event)">
   <app-retention-policies *tab="'Retention policies'" />
+
   <div *tab="'Event mapping'">
     <app-govuk-heading tag="h2">Event mapping</app-govuk-heading>
   </div>
-  <div *tab="'Automated tasks'">
-    <app-govuk-heading tag="h2">Automated tasks</app-govuk-heading>
-  </div>
+
+  <app-automated-tasks *tab="'Automated tasks'" (taskRun)="taskRunStatus = $event" />
 </app-tabs>
