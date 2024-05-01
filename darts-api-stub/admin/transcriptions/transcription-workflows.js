@@ -52,7 +52,7 @@ function authCheck(req, res) {
 
 router.get('/', (req, res) => {
   authCheck(req, res);
-  if (req.query.current && req.query.transcription_id) {
+  if (req.query.is_current && req.query.transcription_id) {
     res.send(workflow);
   } else {
     res.sendStatus(400);

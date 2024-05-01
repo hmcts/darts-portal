@@ -108,7 +108,7 @@ export class TranscriptionAdminService {
 
   getTranscriptionWorkflows(transcriptionId: number, current: boolean = false): Observable<TranscriptionWorkflow[]> {
     const params = new HttpParams()
-      .set('current', current.toString())
+      .set('is_current', current.toString())
       .set('transcription_id', transcriptionId.toString());
 
     return this.http

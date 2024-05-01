@@ -345,7 +345,7 @@ describe('TranscriptionAdminService', () => {
 
     const req = httpMock.expectOne((request) => request.url.includes('api/admin/transcription-workflows'));
     expect(req.request.method).toBe('GET');
-    expect(req.request.params.get('current')).toBe(String(current));
+    expect(req.request.params.get('is_current')).toBe(String(current));
     expect(req.request.params.get('transcription_id')).toBe(String(transcriptionId));
     req.flush(mockWorkflows);
 
