@@ -78,10 +78,18 @@ router.patch('/:userid', (req, res) => {
 
 router.get('/', (req, res) => {
   const email = req.headers['email-address'];
+  const userIds = req.query.user_ids;
 
   if (email) {
     const user = USERS.find((user) => user.email_address === email);
     res.send(user ? [user] : []);
+    return;
+  }
+
+  if (userIds) {
+    const idArray = userIds.split(',').map((id) => parseInt(id));
+    const matchedUsers = USERS.filter((user) => idArray.includes(user.id));
+    res.send(matchedUsers);
     return;
   }
 });
