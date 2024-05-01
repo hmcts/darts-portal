@@ -58,20 +58,9 @@
 
         <div *tab="'Users'">
           <div class="govuk-grid-row">
-            <div class="govuk-grid-column-one-third">
-              <app-filters (filterEvent)="getFilters($event)" [filters]="filters"></app-filters>
-            </div>
-            <div class="govuk-grid-column-two-thirds">
-              <button class="govuk-button govuk-button--secondary remove-users-button" data-module="govuk-button">
-                Remove user(s)
-              </button>
-              <app-data-table
-                id="users-table"
-                [rows]="(users$ | async) ?? []"
-                [columns]="columns"
-                [rowSelectable]="true"
-              ></app-data-table>
-            </div>
+            @if (users$ | async; as users) {
+              <app-courthouse-users [users]="users ?? []"></app-courthouse-users>
+            }
           </div>
         </div>
       </app-tabs>

@@ -1,0 +1,15 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-one-third">
+    <app-filters
+      (filterEvent)="setFilters($event)"
+      (clearFilterEvent)="clearFilters()"
+      [filters]="filters"
+    ></app-filters>
+  </div>
+  <div class="govuk-grid-column-two-thirds">
+    <button class="govuk-button govuk-button--secondary remove-users-button" data-module="govuk-button">
+      Remove user(s)
+    </button>
+    <app-data-table id="users-table" [rows]="users" [columns]="columns" [rowSelectable]="true"></app-data-table>
+  </div>
+</div>

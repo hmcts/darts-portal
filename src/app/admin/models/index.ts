@@ -7,6 +7,7 @@ export * from './retention-policies/retention-policy-data.interface';
 export * from './retention-policies/retention-policy-form.type';
 export * from './retention-policies/retention-policy.type';
 export * from './transcription/index';
+export * from './users/courthouse-user.type';
 export * from './users/create-update-user-form-values.type';
 export * from './users/create-user-request.type';
 export * from './users/security-role.interface';

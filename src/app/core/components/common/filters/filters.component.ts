@@ -13,6 +13,7 @@ import { Filter } from '@components/common/filters/filter.interface';
 export class FiltersComponent {
   @Input() filters!: Filter[];
   @Output() filterEvent = new EventEmitter<Filter[]>();
+  @Output() clearFilterEvent = new EventEmitter<void>();
   selectedFilters: Filter[] = [];
   searchTerms: { [key: string]: string } = {};
 
@@ -22,6 +23,7 @@ export class FiltersComponent {
     this.selectedFilters = [];
     this.searchTerms = {};
     this.uncheckAll();
+    this.clearFilterEvent.emit();
   }
 
   emitFilters() {
