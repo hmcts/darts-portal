@@ -1,5 +1,5 @@
 export interface Urgency {
   transcription_urgency_id: number;
-  description: string;
+  description?: string;
   priority_order?: number;
 }
