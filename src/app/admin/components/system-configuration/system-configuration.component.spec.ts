@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TabDirective } from '@directives/tab.directive';
 import { RetentionPoliciesService } from '@services/retention-policies/retention-policies.service';
 import { of } from 'rxjs';
+import { AutomatedTaskStatusComponent } from '../automated-tasks/automated-task-status/automated-task-status.component';
 import { SystemConfigurationComponent } from './system-configuration.component';
 
 describe('SystemConfigurationComponent', () => {
@@ -12,7 +13,7 @@ describe('SystemConfigurationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SystemConfigurationComponent],
+      imports: [SystemConfigurationComponent, AutomatedTaskStatusComponent],
       providers: [
         {
           provide: RetentionPoliciesService,
@@ -26,6 +27,7 @@ describe('SystemConfigurationComponent', () => {
 
     fixture = TestBed.createComponent(SystemConfigurationComponent);
     component = fixture.componentInstance;
+
     fixture.detectChanges();
   });
 

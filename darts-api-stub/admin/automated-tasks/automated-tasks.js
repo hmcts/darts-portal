@@ -1,4 +1,5 @@
 const express = require('express');
+const { DateTime } = require('luxon');
 const router = express.Router();
 
 const automatedTasks = [
@@ -12,7 +13,7 @@ const automatedTasks = [
     created_at: '2024-01-01T00:00:00Z',
     created_by: 1,
     last_modified_at: '2024-01-01T00:00:00Z',
-    last_modified_by: 1,
+    last_modified_by: 2,
   },
   {
     id: 2,
@@ -36,7 +37,7 @@ const automatedTasks = [
     created_at: '2024-01-03T00:00:00Z',
     created_by: 3,
     last_modified_at: '2024-01-03T00:00:00Z',
-    last_modified_by: 3,
+    last_modified_by: 4,
   },
 ];
 
@@ -56,4 +57,32 @@ router.post('/:id/run', (req, res) => {
       return res.sendStatus(404);
   }
 });
+
+router.patch('/:id', (req, res) => {
+  const id = req.params.id;
+  const { is_active } = req.body;
+
+  const task = automatedTasks.find((task) => task.id === Number(id));
+  if (!task) {
+    return res.sendStatus(404);
+  }
+
+  task.is_active = is_active;
+  task.last_modified_at = DateTime.now().toISO();
+  task.last_modified_by = 3;
+
+  return res.json(task);
+});
+
+router.get('/:id', (req, res) => {
+  const id = req.params.id;
+  const task = automatedTasks.find((task) => task.id === Number(id));
+
+  if (!task) {
+    return res.sendStatus(404);
+  }
+
+  return res.json(task);
+});
+
 module.exports = router;

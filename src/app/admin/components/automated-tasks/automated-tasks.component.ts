@@ -1,18 +1,17 @@
-import { JsonPipe } from '@angular/common';
+import { AutomatedTaskStatus } from '@admin-types/automated-task/automated-task-status';
 import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { DatatableColumn } from '@core-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { AutomatedTasksService } from '@services/automated-tasks/automated-tasks.service';
 
-export type TaskRunStatus = 'success' | 'not-found' | 'already-running';
-
 @Component({
   selector: 'app-automated-tasks',
   standalone: true,
-  imports: [GovukHeadingComponent, JsonPipe, DataTableComponent, TableRowTemplateDirective],
+  imports: [GovukHeadingComponent, DataTableComponent, TableRowTemplateDirective, RouterLink],
   templateUrl: './automated-tasks.component.html',
   styleUrl: './automated-tasks.component.scss',
 })
@@ -21,7 +20,7 @@ export class AutomatedTasksComponent {
 
   automatedTasks = toSignal(this.automatedTasksService.getTasks(), { initialValue: [] });
 
-  @Output() taskRun = new EventEmitter<TaskRunStatus>();
+  @Output() taskRun = new EventEmitter<AutomatedTaskStatus>();
 
   coloumns: DatatableColumn[] = [
     { name: 'ID', prop: 'id', sortable: true },

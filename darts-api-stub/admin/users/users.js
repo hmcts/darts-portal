@@ -38,6 +38,12 @@ router.post('/search', (req, res) => {
   const searchFullName = req?.body?.full_name?.toLowerCase() || '';
   const searchEmailAddress = req?.body?.email_address?.toLowerCase() || '';
   const active = req?.body?.active;
+  const ids = req?.body?.user_ids;
+
+  if (ids) {
+    const users = USERS.filter((user) => ids.includes(user.id));
+    return res.send(users);
+  }
 
   if (searchFullName === 'NO_RESULTS') {
     return res.send([]);
