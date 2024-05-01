@@ -87,17 +87,17 @@ describe('Admin - Automated tasks screen', () => {
     });
 
     it('runs task', () => {
-      cy.get('govuk-button').contains('Run task').click();
+      cy.get('.govuk-button').contains('Run task').click();
       cy.get('app-automated-task-status').contains('Task start request sent');
     });
 
     it('deactivates task', () => {
-      cy.get('govuk-button').contains('Make inactive').click();
+      cy.get('.govuk-button').contains('Make inactive').click();
       cy.get('app-automated-task-status').contains('Task 1 is inactive');
     });
 
     it('activates task', () => {
-      cy.get('govuk-button').contains('Make active').click();
+      cy.get('.govuk-button').contains('Make active').click();
       cy.get('app-automated-task-status').contains('Task 1 is active');
     });
   });
