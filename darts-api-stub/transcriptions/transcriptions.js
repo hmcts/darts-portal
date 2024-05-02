@@ -406,6 +406,11 @@ let assignedTranscriptions = [
     hearing_date: '2023-06-10',
     transcription_type: 'Court Log',
     status: 'Complete',
+    transcription_urgency: {
+      transcription_urgency_id: 1,
+      description: 'Up to 3 working days',
+      priority_order: 3,
+    },
     requested_ts: '2023-06-27T16:00:00Z',
     state_change_ts: '2023-06-27T13:00:00Z',
     is_manual: true,
