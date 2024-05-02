@@ -7,6 +7,7 @@ import {
   authenticationController,
   downloadController,
   userController,
+  stubDataController,
 } from './controllers';
 import { isAuthenticated } from './middleware';
 
@@ -18,7 +19,8 @@ export default (disableAuthentication = false): Router => {
     : isAuthenticated;
 
   // authenticated routes
-  router.use('/api', checkAuthenticated, apiController.init());
+  // temporary API stubbing in place, should be removed onces all API endpoints are available
+  router.use('/api', checkAuthenticated, stubDataController.init(), apiController.init());
   router.use('/user', checkAuthenticated, userController.init());
   router.use('/download', checkAuthenticated, downloadController.init());
 

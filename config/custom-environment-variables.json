@@ -19,5 +19,6 @@
   },
   "dynatrace": {
     "scriptUrl": "DARTS_DYNATRACE_SCRIPT_URL"
-  }
+  },
+  "allowStubData": "DARTS_PORTAL_ALLOW_STUB_DATA"
 }
