@@ -1,5 +1,6 @@
 import { JsonPipe, NgIf } from '@angular/common';
-import { Component, EventEmitter, Output, inject } from '@angular/core';
+import { Component, DestroyRef, EventEmitter, OnInit, Output, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { DatepickerComponent } from '@common/datepicker/datepicker.component';
 
@@ -10,8 +11,9 @@ import { DatepickerComponent } from '@common/datepicker/datepicker.component';
   templateUrl: './search-transcripts-form.component.html',
   styleUrl: './search-transcripts-form.component.scss',
 })
-export class SearchTranscriptsFormComponent {
+export class SearchTranscriptsFormComponent implements OnInit {
   fb = inject(FormBuilder);
+  destroyRef = inject(DestroyRef);
 
   form = this.fb.group({
     requestId: [''],
@@ -25,6 +27,14 @@ export class SearchTranscriptsFormComponent {
   });
 
   @Output() search = new EventEmitter<typeof this.form.value>();
+
+  ngOnInit(): void {
+    this.requestedDateTypeControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
+      this.requestedDateSpecificControl.setValue('');
+      this.requestedDateFromControl.setValue('');
+      this.requestedDateToControl.setValue('');
+    });
+  }
 
   isAdvancedSearch = false;
 
