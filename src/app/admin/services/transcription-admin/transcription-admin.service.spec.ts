@@ -387,6 +387,23 @@ describe('TranscriptionAdminService', () => {
     ]);
   });
 
+  it('should return correct status and associated data based on empty/null transcript details', () => {
+    const transcript = {
+      transcriptionId: 1,
+      isManual: true,
+      status: 'Complete',
+      assignedTo: {},
+      assignedGroups: [],
+    } as unknown as TranscriptionAdminDetails;
+
+    const result = service.getCurrentStatusFromTranscript(transcript);
+
+    expect(result.Status?.value).toBe('Complete');
+    expect(result.Status?.action).toBe(undefined);
+    expect(result['Assigned to']).toBe('Unassigned');
+    expect(result['Associated groups']).toEqual(null);
+  });
+
   it('should format transcription details correctly', () => {
     const transcript = {
       hearingDate: DateTime.fromISO('2024-01-01T00:00:00Z'),
