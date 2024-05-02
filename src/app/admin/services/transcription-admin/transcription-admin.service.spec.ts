@@ -372,17 +372,36 @@ describe('TranscriptionAdminService', () => {
 
     const result = service.getCurrentStatusFromTranscript(transcript);
 
-    expect(result.Status.value).toBe('Awaiting Authorisation');
-    expect(result.Status.action?.text).toBe('Change status');
-    expect(result.Status.action?.url).toBe('/admin/transcripts/1/change-status');
-    expect(result.Status.action?.queryParams).toEqual({ status: 'Awaiting Authorisation', manual: true });
-    expect(result['Assigned to'][0].href).toBe('/admin/users/1');
-    expect(result['Assigned to'][0].value).toBe('John Doe');
-    expect(result['Assigned to'][0].caption).toBe('john.doe@example.com');
+    expect(result.Status?.value).toBe('Awaiting Authorisation');
+    expect(result.Status?.action?.text).toBe('Change status');
+    expect(result.Status?.action?.url).toBe('/admin/transcripts/1/change-status');
+    expect(result.Status?.action?.queryParams).toEqual({ status: 'Awaiting Authorisation', manual: true });
+    if (typeof result['Assigned to'][0] !== 'string') {
+      expect(result['Assigned to'][0].href).toBe('/admin/users/1');
+      expect(result['Assigned to'][0].value).toBe('John Doe');
+      expect(result['Assigned to'][0].caption).toBe('john.doe@example.com');
+    }
     expect(result['Associated groups']).toEqual([
       { href: '/admin/groups/1', value: 'Group One' },
       { href: '/admin/groups/2', value: 'Group Two' },
     ]);
+  });
+
+  it('should return correct status and associated data based on empty/null transcript details', () => {
+    const transcript = {
+      transcriptionId: 1,
+      isManual: true,
+      status: 'Complete',
+      assignedTo: {},
+      assignedGroups: [],
+    } as unknown as TranscriptionAdminDetails;
+
+    const result = service.getCurrentStatusFromTranscript(transcript);
+
+    expect(result.Status?.value).toBe('Complete');
+    expect(result.Status?.action).toBe(undefined);
+    expect(result['Assigned to']).toBe('Unassigned');
+    expect(result['Associated groups']).toEqual(null);
   });
 
   it('should format transcription details correctly', () => {
