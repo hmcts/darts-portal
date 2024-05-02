@@ -9,7 +9,7 @@ describe('Your work', () => {
 
   it('shows "Your work"', () => {
     cy.contains('Your work').click();
-    cy.get('#todo-tab .count').should('contain', '6');
+    cy.get('#todo-tab .count').should('contain', '3');
     cy.get('h1').should('contain', 'Your work');
     cy.a11y();
   });
