@@ -9,6 +9,6 @@ export interface TranscriptRequestData {
   hearing_date: string;
   transcription_type: string;
   status: TranscriptStatus;
-  transcription_urgency: Urgency;
+  transcription_urgency?: Urgency;
   requested_ts: string;
 }

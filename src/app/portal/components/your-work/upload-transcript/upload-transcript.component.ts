@@ -52,6 +52,7 @@ export class UploadTranscriptComponent implements OnDestroy {
       const endTime = this.luxonPipe.transform(data.transcriptionEndTs, 'HH:mm:ss');
       const received = this.luxonPipe.transform(data.received, 'dd MMM yyyy HH:mm:ss');
 
+      //TO DO: Move this mapping into a service function so it's not missed in data changes
       const vm = {
         reportingRestrictions: data.caseReportingRestrictions ?? [],
         caseDetails: {
@@ -65,7 +66,7 @@ export class UploadTranscriptComponent implements OnDestroy {
           'Request Type': data.requestType,
           'Request method': data.isManual ? 'Manual' : 'Automated',
           'Request ID': this.requestId,
-          Urgency: data.urgency.description,
+          Urgency: data.urgency?.description,
           'Audio for transcript': startTime && endTime ? `Start time ${startTime} - End time ${endTime}` : '',
           From: data.from,
           Received: received,
