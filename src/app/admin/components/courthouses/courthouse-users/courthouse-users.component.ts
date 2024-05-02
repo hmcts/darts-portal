@@ -51,7 +51,7 @@ export class CourthouseUsersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.fullUsers = structuredClone(this.users);
+    this.fullUsers = this.users;
     this.uniqueUserNames = [...new Set(this.users.map((user) => user.userName))];
     this.filters = [
       {

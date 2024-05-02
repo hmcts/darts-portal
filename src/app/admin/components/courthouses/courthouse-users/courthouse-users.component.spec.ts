@@ -19,4 +19,6 @@ describe('CourthouseUsersComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('ngOnInit should initialize variables', () => {});
 });
