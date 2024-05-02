@@ -9,6 +9,7 @@ export type SummaryListAcion = {
   url?: string;
   fragment?: string;
   fn?: () => void;
+  queryParams?: { [key: string]: string };
 };
 
 @Component({

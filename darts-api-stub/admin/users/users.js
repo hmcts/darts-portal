@@ -80,19 +80,18 @@ router.get('/', (req, res) => {
   const email = req.headers['email-address'];
   const userIds = req.query.user_ids;
 
-  if (userIds) {
-    const users = USERS.filter((u) => userIds.includes(u.id.toString()));
-    res.send(users);
-    return;
-  }
-
   if (email) {
     const user = USERS.find((user) => user.email_address === email);
     res.send(user ? [user] : []);
     return;
   }
 
-  res.send(USERS);
+  if (userIds) {
+    const idArray = userIds.split(',').map((id) => parseInt(id));
+    const matchedUsers = USERS.filter((user) => idArray.includes(user.id));
+    res.send(matchedUsers);
+    return;
+  }
 });
 
 router.post('/', (req, res) => {

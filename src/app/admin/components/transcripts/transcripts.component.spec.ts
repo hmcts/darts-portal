@@ -22,7 +22,7 @@ describe('TranscriptsComponent', () => {
 
     const MOCK_SEARCH_RESULT = of([{ id: 1, courthouse: { id: 1 }, status: { id: 1 } } as Transcription]);
 
-    const MOCK_STATUSES = of([{ id: 1, type: 'Test type', displayName: 'Test display name' } as TranscriptionStatus]);
+    const MOCK_STATUSES = of([{ id: 1, type: 'Approved', displayName: 'Approved' } as TranscriptionStatus]);
 
     await TestBed.configureTestingModule({
       imports: [TranscriptsComponent],
@@ -98,7 +98,7 @@ describe('TranscriptsComponent', () => {
           displayName: 'Test display name',
           courthouseName: 'Test courthouse name',
         },
-        status: { id: 1, type: 'Test type', displayName: 'Test display name' },
+        status: { id: 1, type: 'Approved', displayName: 'Approved' },
       },
     ]);
   }));

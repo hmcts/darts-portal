@@ -92,7 +92,11 @@ describe('TranscriptionService', () => {
           hearing_date: '2023-11-01',
           transcription_type: 'Court log',
           status: 'With Transcriber',
-          urgency: 'Up to 2 working days',
+          transcription_urgency: {
+            transcription_urgency_id: 2,
+            description: 'Up to 2 working days',
+            priority_order: 2,
+          },
           requested_ts: '2023-11-01',
           state_change_ts: '2023-11-01',
           is_manual: false,
@@ -162,7 +166,11 @@ describe('TranscriptionService', () => {
         defendants: ['defendant1', 'defendant2'],
         judges: ['judge1', 'judge2'],
         hearing_date: '2023-02-21T18:00:00Z',
-        urgency: 'Overnight',
+        transcription_urgency: {
+          transcription_urgency_id: 1,
+          description: 'Overnight',
+          priority_order: 1,
+        },
         request_type: 'Specified Times',
         transcription_start_ts: '2023-06-26T13:00:00Z',
         transcription_end_ts: '2023-06-26T13:00:00Z',
@@ -184,7 +192,11 @@ describe('TranscriptionService', () => {
         defendants: ['defendant1', 'defendant2'],
         judges: ['judge1', 'judge2'],
         hearingDate: DateTime.fromISO('2023-02-21T18:00:00Z'),
-        urgency: 'Overnight',
+        urgency: {
+          transcription_urgency_id: 1,
+          description: 'Overnight',
+          priority_order: 1,
+        },
         requestType: 'Specified Times',
         transcriptionId: 4,
         transcriptionStartTs: DateTime.fromISO('2023-06-26T13:00:00Z'),
@@ -300,7 +312,11 @@ describe('TranscriptionService', () => {
             hearing_date: '2023-11-01',
             transcription_type: 'Type',
             status: 'Awaiting Authorisation',
-            urgency: 'Up to 2 working days',
+            transcription_urgency: {
+              transcription_urgency_id: 1,
+              description: 'Up to 2 working days',
+              priority_order: 1,
+            },
             requested_ts: '2023-11-01T00:00:00Z',
           },
         ],
@@ -313,7 +329,11 @@ describe('TranscriptionService', () => {
             hearing_date: '2023-11-01',
             transcription_type: 'Type',
             status: 'Awaiting Authorisation',
-            urgency: 'Up to 2 working days',
+            transcription_urgency: {
+              transcription_urgency_id: 1,
+              description: 'Up to 2 working days',
+              priority_order: 1,
+            },
             requested_ts: '2023-11-01T00:00:00Z',
           },
         ],
@@ -330,9 +350,9 @@ describe('TranscriptionService', () => {
             transcriptionType: 'Type',
             status: 'Awaiting Authorisation',
             urgency: {
-              transcription_urgency_id: 2,
+              transcription_urgency_id: 1,
               description: 'Up to 2 working days',
-              priority_order: 2,
+              priority_order: 1,
             },
             requestedTs: DateTime.fromISO('2023-11-01T00:00:00Z'),
           },
@@ -347,9 +367,9 @@ describe('TranscriptionService', () => {
             transcriptionType: 'Type',
             status: 'Awaiting Authorisation',
             urgency: {
-              transcription_urgency_id: 2,
+              transcription_urgency_id: 1,
               description: 'Up to 2 working days',
-              priority_order: 2,
+              priority_order: 1,
             },
             requestedTs: DateTime.fromISO('2023-11-01T00:00:00Z'),
           },
@@ -425,18 +445,6 @@ describe('TranscriptionService', () => {
     });
   });
 
-  describe('#getUrgencyByDescription', () => {
-    it('should return the TranscriptionUrgency object where the description matches', () => {
-      const response = service.getUrgencyByDescription(MOCK_URGENCIES, 'Up to 3 working days');
-      const result: Urgency = {
-        transcription_urgency_id: 3,
-        description: 'Up to 3 working days',
-        priority_order: 3,
-      };
-      expect(response).toEqual(result);
-    });
-  });
-
   describe('Mapping transcript request functions', () => {
     const mockTranscription: TranscriptionDetails = {
       caseId: 1,
@@ -445,7 +453,11 @@ describe('TranscriptionService', () => {
       defendants: ['John Doe', 'Jane Doe'],
       judges: ['Judge Judy', 'Judge Joe Brown'],
       hearingDate: DateTime.fromISO('2023-11-08'),
-      urgency: 'High',
+      urgency: {
+        transcription_urgency_id: 1,
+        description: 'High',
+        priority_order: 1,
+      },
       requestType: 'Type A',
       transcriptionId: 123456,
       transcriptionStartTs: DateTime.fromISO('2023-06-26T13:00:00Z'),

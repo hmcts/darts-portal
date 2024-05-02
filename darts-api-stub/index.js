@@ -34,7 +34,7 @@ app.use('/audio-requests', require('./audios/audio-requests'));
 // hearing APIs
 app.use('/hearings', require('./hearings/hearings'));
 // transcription APIs
-app.use('/transcriptions', require('./transcriptions/transcriptions'));
+app.use('/transcriptions', require('./transcriptions/transcriptions').router);
 // audio APIs
 app.use('/audio', require('./audios'));
 // annotation APIs
@@ -47,8 +47,9 @@ app.use('/admin/security-groups', require('./admin/security-groups/security-grou
 app.use('/admin/security-roles', require('./admin/security-roles/security-roles'));
 app.use('/admin/retention-policy-types', require('./admin/retention-policies/retention-policies'));
 app.use('/admin/transcriptions', require('./admin/transcriptions/transcriptions'));
-app.use('/admin/transcription-status', require('./admin/transcriptions/transcription-status'));
+app.use('/admin/transcription-status', require('./admin/transcriptions/transcription-status').router);
 app.use('/admin/transcription-workflows', require('./admin/transcriptions/transcription-workflows'));
+app.use('/admin/automated-tasks', require('./admin/automated-tasks/automated-tasks'));
 // proxy non-stubbed routes to the actual API
 app.use(
   createProxyMiddleware({

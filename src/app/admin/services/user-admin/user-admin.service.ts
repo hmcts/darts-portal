@@ -4,7 +4,7 @@ import { UserData } from '@admin-types/users/user-data.interface';
 import { UserSearchFormValues } from '@admin-types/users/user-search-form-values.type';
 import { UserSearchRequest } from '@admin-types/users/user-search-request.interface';
 import { User } from '@admin-types/users/user.type';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { GroupsService } from '@services/groups/groups.service';
 import { DateTime } from 'luxon';
@@ -32,9 +32,8 @@ export class UserAdminService {
   }
 
   getUsersById(userIds: number[]): Observable<User[]> {
-    return this.http
-      .get<UserData[]>(USER_ADMIN_PATH, { params: { user_ids: userIds } })
-      .pipe(map((users) => this.mapUsers(users)));
+    const params = new HttpParams().set('user_ids', userIds.join(','));
+    return this.http.get<UserData[]>(USER_ADMIN_PATH, { params }).pipe(map((users) => this.mapUsers(users)));
   }
 
   getUser(userId: number): Observable<User> {

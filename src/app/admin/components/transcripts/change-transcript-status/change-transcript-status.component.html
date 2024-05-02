@@ -1,0 +1,28 @@
+<app-govuk-heading>Change request status</app-govuk-heading>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="govuk-form-group">
+    <label class="govuk-label" for="status"> Select status </label>
+    <select class="govuk-select" id="status" formControlName="status">
+      @for (status of statuses$ | async; track status) {
+        <option value="{{ status.id }}">{{ status.displayName }}</option>
+      }
+    </select>
+  </div>
+
+  <label id="comment-label" class="govuk-label" for="comments">Comment (optional)</label>
+  <app-govuk-textarea
+    [control]="form.controls.comments"
+    id="comments"
+    name="comments"
+    ariaDescribedBy="comment-label"
+    [maxCharacterLimit]="256"
+  ></app-govuk-textarea>
+
+  <div class="govuk-button-group">
+    <button class="govuk-button" type="submit">Save changes</button>
+    <a class="govuk-link" href="javascript:void(0)" (click)="router.navigate(['/admin/transcripts', transcriptId])"
+      >Cancel</a
+    >
+  </div>
+</form>

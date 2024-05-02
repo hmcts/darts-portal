@@ -19,7 +19,6 @@ describe('TimelineComponent', () => {
       dateTime: time,
       title: 'Title 1',
       descriptionLines: ['Description 1'],
-      id: 1,
       user: {
         id: 1,
         fullName: 'Gary Smith',
@@ -30,7 +29,6 @@ describe('TimelineComponent', () => {
       dateTime: time,
       title: 'Title 2',
       descriptionLines: ['Description 2'],
-      id: 2,
       user: {
         id: 2,
         fullName: 'Max Payne',

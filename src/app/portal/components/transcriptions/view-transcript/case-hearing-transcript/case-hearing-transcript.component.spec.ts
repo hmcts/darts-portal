@@ -30,7 +30,11 @@ describe('CaseHearingTranscriptComponent', () => {
     judges: [],
     transcriptFileName: 'test-file-name.docx',
     hearingDate: DateTime.fromISO('2021-01-01'),
-    urgency: '',
+    urgency: {
+      transcription_urgency_id: 1,
+      description: 'Standard',
+      priority_order: 1,
+    },
     requestType: '',
     transcriptionId: 0,
     transcriptionStartTs: DateTime.fromISO('2021-01-01'),

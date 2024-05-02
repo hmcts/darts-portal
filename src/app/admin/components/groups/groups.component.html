@@ -20,7 +20,7 @@
 
     <label class="govuk-label" for="roles-filter">Role</label>
     <select class="govuk-select" id="roles-filter" name="transcription-type" [formControl]="rolesFormControl">
-      <option value="" selected></option>
+      <option value="" selected>All roles</option>
       @for (role of data.roles; track role.name) {
         <option [value]="role.name">{{ role.displayName }}</option>
       }

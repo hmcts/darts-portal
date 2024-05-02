@@ -6,22 +6,24 @@ import {
   TranscriptionData,
   TranscriptionSearchFormValues,
   TranscriptionSearchRequest,
-  TranscriptionStatus,
   TranscriptionStatusData,
+  UpdateTranscriptStatusRequest,
 } from '@admin-types/index';
 import { TranscriptionAdminDetails } from '@admin-types/transcription/transcription-details';
 import { TranscriptionAdminDetailsData } from '@admin-types/transcription/transcription-details-data.interface';
 import { TranscriptionWorkflow } from '@admin-types/transcription/transcription-workflow';
 import { TranscriptionWorkflowData } from '@admin-types/transcription/transcription-workflow-data.interface';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
+import { TranscriptStatus } from '@portal-types/transcriptions/transcript-status.type';
 import { GET_SECURITY_GROUPS_PATH } from '@services/courthouses/courthouses.service';
 import { GET_SECURITY_ROLES_PATH } from '@services/groups/groups.service';
 import { MappingService } from '@services/mapping/mapping.service';
 import { DateTime } from 'luxon';
 import { Observable, of, switchMap } from 'rxjs';
 import { map } from 'rxjs/internal/operators/map';
+import { TranscriptionStatus } from './../../models/transcription/transcription-status';
 
 @Injectable({
   providedIn: 'root',
@@ -42,6 +44,22 @@ export class TranscriptionAdminService {
     return this.http
       .get<TranscriptionStatusData[]>('api/admin/transcription-status')
       .pipe(map((res) => this.mapTransctiptionStatusDataToTranscriptionStatus(res)));
+  }
+
+  getAllowableTranscriptionStatuses(status: TranscriptStatus, isManual: boolean): Observable<TranscriptionStatus[]> {
+    const allowableStatusMap: Record<TranscriptStatus, TranscriptStatus[]> = {
+      Requested: ['Closed'],
+      'Awaiting Authorisation': isManual ? ['Requested', 'Closed'] : [],
+      Approved: ['Closed'],
+      Rejected: [],
+      'With Transcriber': isManual ? ['Approved', 'Closed'] : ['Approved', 'Closed', 'Complete'],
+      Complete: [],
+      Closed: [],
+    };
+
+    return this.getTranscriptionStatuses().pipe(
+      map((statuses) => statuses.filter((s) => allowableStatusMap[status].includes(s.type)))
+    );
   }
 
   getTranscriptionDetails(transcriptId: number): Observable<TranscriptionAdminDetails> {
@@ -90,12 +108,24 @@ export class TranscriptionAdminService {
 
   getTranscriptionWorkflows(transcriptionId: number, current: boolean = false): Observable<TranscriptionWorkflow[]> {
     const params = new HttpParams()
-      .set('current', current.toString())
+      .set('is_current', current.toString())
       .set('transcription_id', transcriptionId.toString());
 
     return this.http
       .get<TranscriptionWorkflowData[]>(`api/admin/transcription-workflows`, { params })
       .pipe(map(this.mapTranscriptionWorkflows));
+  }
+
+  updateTranscriptionStatus(
+    transcriptId: number,
+    statusId: number,
+    comments: string | null
+  ): Observable<HttpResponse<void>> {
+    const body: UpdateTranscriptStatusRequest = {
+      transcription_status_id: statusId,
+      workflow_comment: comments,
+    };
+    return this.http.patch<void>(`api/admin/transcriptions/${transcriptId}`, body, { observe: 'response' });
   }
 
   private mapTranscriptionWorkflows(data: TranscriptionWorkflowData[]): TranscriptionWorkflow[] {
@@ -166,10 +196,17 @@ export class TranscriptionAdminService {
       value: group.displayName,
     }));
 
-    const changeStatuses = ['Awaiting authorisation', 'With transcriber'];
+    const changeStatuses = ['Awaiting Authorisation', 'With Transcriber'];
     const statusData =
       changeStatuses.indexOf(transcript.status!) !== -1
-        ? { value: transcript.status, action: { text: 'Change status', url: '/temp-transcription-admin-service' } }
+        ? {
+            value: transcript.status,
+            action: {
+              text: 'Change status',
+              url: `/admin/transcripts/${transcript.transcriptionId}/change-status`,
+              queryParams: { manual: transcript.isManual, status: transcript.status },
+            },
+          }
         : { value: transcript.status };
 
     return {
@@ -191,7 +228,7 @@ export class TranscriptionAdminService {
       'Request type': transcript.requestType,
       'Request method': transcript.isManual ? 'Manual' : 'Automated',
       'Request ID': transcript.transcriptionId,
-      Urgency: transcript.urgency,
+      Urgency: transcript.urgency.description,
       'Audio for transcript':
         transcript.transcriptionStartTs && transcript.transcriptionEndTs
           ? 'Start time ' +
