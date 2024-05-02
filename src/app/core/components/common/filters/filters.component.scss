@@ -21,8 +21,7 @@
   color: #1d70b8;
 }
 
-.moj-pagination__item--prev .moj-pagination__link:before,
-.moj-pagination__item--next .moj-pagination__link:after {
+.moj-pagination__item--prev .moj-pagination__link:before {
   display: inline-block;
   height: 10px;
   width: 10px;
@@ -33,4 +32,21 @@
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
   content: '';
+  margin-right: 0;
+}
+
+.moj-pagination__item--prev .moj-pagination__link.flip:before {
+  -webkit-transform: rotate(225deg);
+  -ms-transform: rotate(225deg);
+  transform: rotate(225deg);
+  margin-bottom: 5px;
+}
+
+.govuk-form-group,
+.collapsed {
+  margin-bottom: 0px;
+}
+
+hr {
+  margin: 1rem 0;
 }
