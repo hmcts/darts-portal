@@ -194,10 +194,12 @@ export class TranscriptionAdminService {
   getCurrentStatusFromTranscript(transcript: TranscriptionAdminDetails) {
     const processGroups = (groups: SecurityGroup[] | undefined) =>
       groups && groups.length > 0
-        ? groups.map((group) => ({
-            href: `/admin/groups/${group.id}`,
-            value: group.displayName,
-          }))
+        ? groups
+            .filter((group) => group.displayName || group.name)
+            .map((group) => ({
+              href: `/admin/groups/${group.id}`,
+              value: group.displayName || group.name,
+            }))
         : null;
 
     const processStatus = (status: string | undefined) => {
