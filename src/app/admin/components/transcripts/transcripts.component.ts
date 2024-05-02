@@ -1,6 +1,7 @@
 import { Transcription, TranscriptionSearchFormValues, TranscriptionStatus } from '@admin-types/transcription';
 import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { CourthouseData } from '@core-types/index';
@@ -26,6 +27,7 @@ import { SearchTranscriptsResultsComponent } from './search-transcripts-results/
 export class TranscriptsComponent {
   transcriptService = inject(TranscriptionAdminService);
   courthouseService = inject(CourthouseService);
+  router = inject(Router);
 
   courthouses$ = this.courthouseService.getCourthouses().pipe(shareReplay(1));
   transcriptionStatuses$ = this.transcriptService.getTranscriptionStatuses().pipe(shareReplay(1));
@@ -47,7 +49,13 @@ export class TranscriptsComponent {
           .pipe(map((results) => this.mapResults(results, courthouses, statuses)))
       );
     }),
-    tap(() => this.stopLoading())
+    tap((results) => {
+      this.stopLoading();
+      if (results?.length === 1) {
+        //navigate to the transcript details page
+        this.router.navigate(['/admin/transcripts', results[0].id]);
+      }
+    })
   );
 
   startLoading() {

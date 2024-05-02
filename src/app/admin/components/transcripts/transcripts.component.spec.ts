@@ -11,19 +11,22 @@ describe('TranscriptsComponent', () => {
   let component: TranscriptsComponent;
   let fixture: ComponentFixture<TranscriptsComponent>;
 
+  const MOCK_SEARCH_RESULT = [
+    { id: 1, courthouse: { id: 1 }, status: { id: 1 } },
+    { id: 2, courthouse: { id: 1 }, status: { id: 1 } },
+  ] as Transcription[];
+
+  const MOCK_COURTHOUSES = of([
+    {
+      id: 1,
+      display_name: 'Test display name',
+      courthouse_name: 'Test courthouse name',
+    } as CourthouseData,
+  ]);
+
+  const MOCK_STATUSES = of([{ id: 1, type: 'Approved', displayName: 'Approved' } as TranscriptionStatus]);
+
   beforeEach(async () => {
-    const MOCK_COURTHOUSES = of([
-      {
-        id: 1,
-        display_name: 'Test display name',
-        courthouse_name: 'Test courthouse name',
-      } as CourthouseData,
-    ]);
-
-    const MOCK_SEARCH_RESULT = of([{ id: 1, courthouse: { id: 1 }, status: { id: 1 } } as Transcription]);
-
-    const MOCK_STATUSES = of([{ id: 1, type: 'Approved', displayName: 'Approved' } as TranscriptionStatus]);
-
     await TestBed.configureTestingModule({
       imports: [TranscriptsComponent],
       providers: [
@@ -31,7 +34,7 @@ describe('TranscriptsComponent', () => {
           provide: TranscriptionAdminService,
           useValue: {
             getTranscriptionStatuses: jest.fn().mockReturnValue(MOCK_STATUSES),
-            search: jest.fn().mockReturnValue(MOCK_SEARCH_RESULT),
+            search: jest.fn().mockReturnValue(of(MOCK_SEARCH_RESULT)),
           },
         },
         {
@@ -100,6 +103,15 @@ describe('TranscriptsComponent', () => {
         },
         status: { id: 1, type: 'Approved', displayName: 'Approved' },
       },
+      {
+        courthouse: {
+          id: 1,
+          displayName: 'Test display name',
+          courthouseName: 'Test courthouse name',
+        },
+        id: 2,
+        status: { id: 1, type: 'Approved', displayName: 'Approved' },
+      },
     ]);
   }));
 
@@ -117,5 +129,13 @@ describe('TranscriptsComponent', () => {
   it('should set isSubmitted to false when onClear is called', () => {
     component.onClear();
     expect(component.isSubmitted$.value).toBe(false);
+  });
+
+  it('should navigate to the transcript page if only one result is returned', () => {
+    jest.spyOn(component.router, 'navigate');
+    jest.spyOn(component.transcriptService, 'search').mockReturnValue(of([MOCK_SEARCH_RESULT[0]]));
+    component.search$.next({});
+    component.isSubmitted$.next(true);
+    expect(component.router.navigate).toHaveBeenCalledWith(['/admin/transcripts', 1]);
   });
 });
