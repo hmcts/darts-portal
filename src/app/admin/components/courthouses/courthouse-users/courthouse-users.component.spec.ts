@@ -67,6 +67,11 @@ describe('CourthouseUsersComponent', () => {
       component.setFilters(criteria);
       expect(component.users).toEqual(expectedUsers);
     });
+    it("shouldn't filter if there are no filters", () => {
+      const criteria: Filter[] = [];
+      component.setFilters(criteria);
+      expect(component.users).toEqual(component.fullUsers);
+    });
   });
 
   describe('clearFilters', () => {
