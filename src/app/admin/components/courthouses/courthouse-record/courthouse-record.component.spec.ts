@@ -386,7 +386,7 @@ describe('CourthouseRecordComponent', () => {
   });
 
   describe('getUsersWithRoleByGroup', () => {
-    it('should return users with requester permissions', () => {
+    it('should return users with approver permissions', () => {
       const pUsers: User[] = [
         {
           id: 1,
@@ -436,6 +436,7 @@ describe('CourthouseRecordComponent', () => {
           userIds: [1, 2],
         },
       ];
+      // role Id for Approver
       const pRoleId: number = 1;
       const pRoles: SecurityRole[] = [
         {
