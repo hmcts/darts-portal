@@ -52,40 +52,82 @@
       @for (filter of filters; track filter.name; let last = $last) {
         <div class="govuk-form-group">
           <fieldset class="govuk-fieldset">
-            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">{{ filter.displayName }}</legend>
-
             @if (filter.search) {
-              <input
-                class="govuk-input search-filter"
-                id="search-filter"
-                [name]="filter.name + 'search-filter'"
-                type="text"
-                [placeholder]="'Search for ' + filter.displayName.toLowerCase()"
-                [(ngModel)]="searchTerms[filter.name]"
-              />
-            }
-            @if (getFilteredValues(filter, searchTerms[filter.name]); as filteredValues) {
-              @for (value of filteredValues; track $index) {
-                <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
-                  <div class="govuk-checkboxes__item">
-                    <input
-                      #checkboxes
-                      class="govuk-checkboxes__input"
-                      [id]="'type-value-' + $index"
-                      [name]="filter.name"
-                      type="checkbox"
-                      [attr.aria-label]="'Select checkbox value ' + value"
-                      [value]="value"
-                      (change)="onCheckChanged(filter, value, $event)"
-                      [checked]="isChecked(filter.name, value)"
-                    />
-                    <label class="govuk-label govuk-checkboxes__label" for="type"> {{ value }} </label>
-                  </div>
-                </div>
-              }
-              @if (filteredValues.length === 0) {
-                <p class="govuk-body">No results found</p>
-              }
+              <label class="govuk-label govuk-label--m" for="search-filter">
+                <li class="moj-pagination__item moj-pagination__item--prev">
+                  <a class="moj-pagination__link" href="javascript:void(0)" (click)="toggleVisibility()"
+                    ><span class="govuk-visually-hidden"> Expand {{ filter.displayName }} </span></a
+                  >
+                </li>
+                {{ filter.displayName }}</label
+              >
+              <div class="content">
+                <input
+                  class="govuk-input search-filter"
+                  id="search-filter"
+                  [name]="filter.name + 'search-filter'"
+                  type="text"
+                  [placeholder]="'Search for ' + filter.displayName.toLowerCase()"
+                  [(ngModel)]="searchTerms[filter.name]"
+                />
+                @if (getFilteredValues(filter, searchTerms[filter.name]); as filteredValues) {
+                  @for (value of filteredValues; track $index) {
+                    <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                      <div class="govuk-checkboxes__item">
+                        <input
+                          #checkboxes
+                          class="govuk-checkboxes__input"
+                          [id]="'type-value-' + $index"
+                          [name]="filter.name"
+                          type="checkbox"
+                          [attr.aria-label]="'Select checkbox value ' + value"
+                          [value]="value"
+                          (change)="onCheckChanged(filter, value, $event)"
+                          [checked]="isChecked(filter.name, value)"
+                        />
+                        <label class="govuk-label govuk-checkboxes__label" for="type"> {{ value }} </label>
+                      </div>
+                    </div>
+                  }
+                  @if (filteredValues.length === 0) {
+                    <p class="govuk-body">No results found</p>
+                  }
+                }
+              </div>
+            } @else {
+              <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                <li class="moj-pagination__item moj-pagination__item--prev">
+                  <a class="moj-pagination__link" href="javascript:void(0)" (click)="toggleVisibility()"
+                    ><span class="govuk-visually-hidden"> Expand {{ filter.displayName }}</span></a
+                  >
+                </li>
+                {{ filter.displayName }}
+              </legend>
+              <div class="content">
+                @if (getFilteredValues(filter, searchTerms[filter.name]); as filteredValues) {
+                  @for (value of filteredValues; track $index) {
+                    <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                      <div class="govuk-checkboxes__item">
+                        <input
+                          #checkboxes
+                          class="govuk-checkboxes__input"
+                          [id]="'type-value-' + $index"
+                          [name]="filter.name"
+                          type="checkbox"
+                          [attr.aria-label]="'Select checkbox value ' + value"
+                          [value]="value"
+                          (change)="onCheckChanged(filter, value, $event)"
+                          [checked]="isChecked(filter.name, value)"
+                        />
+                        <label class="govuk-label govuk-checkboxes__label" for="type"> {{ value }} </label>
+                      </div>
+                    </div>
+                  }
+                  @if (filteredValues.length === 0) {
+                    <p class="govuk-body">No results found</p>
+                  }
+                }
+              </div>
             }
             @if (filters.length > 1 && !last) {
               <hr class="govuk-section-break govuk-section-break--visible" />

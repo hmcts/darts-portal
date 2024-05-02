@@ -19,6 +19,8 @@ export class FiltersComponent {
 
   @ViewChildren('checkboxes') checkboxes!: QueryList<ElementRef>;
 
+  toggleVisibility() {}
+
   clearFilters() {
     this.selectedFilters = [];
     this.searchTerms = {};
