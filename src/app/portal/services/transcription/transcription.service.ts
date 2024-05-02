@@ -160,7 +160,7 @@ export class TranscriptionService {
       'Hearing date': this.luxonPipe.transform(transcript.hearingDate, 'dd MMM yyyy'),
       'Request type': transcript.requestType,
       'Request ID': transcript.transcriptionId,
-      Urgency: transcript.urgency.description,
+      Urgency: transcript.urgency?.description ? transcript.urgency.description : null,
       'Audio for transcript':
         transcript.transcriptionStartTs && transcript.transcriptionEndTs
           ? 'Start time ' +
@@ -180,7 +180,7 @@ export class TranscriptionService {
       'Hearing date': this.luxonPipe.transform(transcript.hearingDate, 'dd MMM yyyy'),
       'Request type': transcript.requestType,
       'Request ID': transcript.transcriptionId,
-      Urgency: transcript.urgency.description,
+      Urgency: transcript.urgency?.description ? transcript.urgency.description : null,
       'Audio for transcript':
         transcript.transcriptionStartTs && transcript.transcriptionEndTs
           ? 'Start time ' +
@@ -200,7 +200,9 @@ export class TranscriptionService {
       hearingDate: DateTime.fromISO(r.hearing_date),
       transcriptionType: r.transcription_type,
       status: r.status,
-      urgency: r.transcription_urgency,
+      urgency: r.transcription_urgency
+        ? r.transcription_urgency
+        : { transcription_urgency_id: 0, description: '', priority_order: 0 },
       requestedTs: DateTime.fromISO(r.requested_ts),
     }));
   }
@@ -214,7 +216,9 @@ export class TranscriptionService {
       hearingDate: DateTime.fromISO(r.hearing_date),
       transcriptionType: r.transcription_type,
       status: r.status,
-      urgency: r.transcription_urgency,
+      urgency: r.transcription_urgency
+        ? r.transcription_urgency
+        : { transcription_urgency_id: 0, description: '', priority_order: 0 },
       requestedTs: DateTime.fromISO(r.requested_ts),
       stateChangeTs: DateTime.fromISO(r.state_change_ts),
       isManual: r.is_manual,
