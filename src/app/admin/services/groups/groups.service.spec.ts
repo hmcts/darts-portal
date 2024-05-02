@@ -340,4 +340,75 @@ describe('GroupsService', () => {
       req.flush(mockSecurityGroup);
     });
   });
+
+  describe('getGroupsAndRoles', () => {
+    it('should get security groups with role ids and a courthouse id', () => {
+      const roleIds = [1, 2];
+      const courthouseId = 16;
+
+      const mockExpectedGroups = [
+        {
+          id: 12,
+          security_role_id: 1,
+          name: 'Oxford Requesters',
+          display_name: 'Oxford Requesters',
+          display_state: true,
+          global_access: true,
+          courthouse_ids: [16],
+          user_ids: [1, 3],
+          description: 'Dummy description 1',
+        },
+        {
+          id: 13,
+          security_role_id: 2,
+          name: 'Oxford Approvers',
+          display_name: 'Oxford Approvers',
+          display_state: true,
+          global_access: true,
+          courthouse_ids: [16],
+          user_ids: [2, 3],
+          description: 'Dummy description 2',
+        },
+      ];
+
+      const expectedGroups = [
+        {
+          id: 12,
+          securityRoleId: 1,
+          name: 'Oxford Requesters',
+          displayName: 'Oxford Requesters',
+          displayState: true,
+          globalAccess: true,
+          courthouseIds: [16],
+          userIds: [1, 3],
+          description: 'Dummy description 1',
+        },
+        {
+          id: 13,
+          securityRoleId: 2,
+          name: 'Oxford Approvers',
+          displayName: 'Oxford Approvers',
+          displayState: true,
+          globalAccess: true,
+          courthouseIds: [16],
+          userIds: [2, 3],
+          description: 'Dummy description 2',
+        },
+      ];
+
+      let result;
+
+      service.getGroupsByRoleIdsAndCourthouseId(roleIds, courthouseId).subscribe((groups) => {
+        result = groups;
+      });
+
+      const req = httpMock.expectOne({
+        method: 'GET',
+        url: `${GET_SECURITY_GROUPS_PATH}?role_ids=1&role_ids=2&courthouse_id=16`,
+      });
+      req.flush(mockExpectedGroups);
+
+      expect(result).toEqual(expectedGroups);
+    });
+  });
 });

@@ -42,8 +42,6 @@ export class CourthouseUsersComponent implements OnInit {
     this.users = this.fullUsers
       .filter((user) => (userNameCriteria ? userNameCriteria.values.includes(user.userName) : true))
       .filter((user) => (roleTypeCriteria ? roleTypeCriteria.values.includes(user.roleType) : true));
-
-    // this.users = this.fullUsers.filter((user) => roleTypeDisplayCriteria?.values.includes(user.roleType));
   }
 
   clearFilters() {

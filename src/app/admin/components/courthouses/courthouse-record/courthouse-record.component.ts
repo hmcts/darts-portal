@@ -1,5 +1,4 @@
-import { SecurityGroup } from '@admin-types/groups/security-group.type';
-import { SecurityRole, User } from '@admin-types/index';
+import { SecurityGroup, SecurityRole, User } from '@admin-types/index';
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -109,13 +108,13 @@ export class CourthouseRecordComponent {
     users: User[],
     groupUserIds: number[],
     groups: SecurityGroup[],
-    approverId: number,
+    roleId: number,
     roles: SecurityRole[]
   ): (User & { role: string })[] {
     return users
       .filter((u) => groupUserIds.includes(u.id))
       .map((u) => {
-        const group = groups.filter((g) => g.userIds.includes(u.id)).filter((g) => g.securityRoleId === approverId)[0];
+        const group = groups.filter((g) => g.userIds.includes(u.id)).filter((g) => g.securityRoleId === roleId)[0];
         const role = roles.find((role) => role.id === group.securityRoleId)?.displayName ?? '';
         return { ...u, role };
       });
