@@ -195,10 +195,10 @@ export class TranscriptionAdminService {
     const processGroups = (groups: SecurityGroup[] | undefined) =>
       groups && groups.length > 0
         ? groups
-            .filter((group) => group.displayName)
+            .filter((group) => group.displayName || group.name)
             .map((group) => ({
               href: `/admin/groups/${group.id}`,
-              value: group.displayName,
+              value: group.displayName || group.name,
             }))
         : null;
 
