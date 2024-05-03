@@ -44,7 +44,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^17.3.6",
-    "@angular/cdk": "17.3.6",
+    "@angular/cdk": "17.3.7",
     "@angular/common": "^17.3.6",
     "@angular/compiler": "^17.3.6",
     "@angular/core": "^17.3.6",
@@ -125,5 +125,5 @@
     "typescript": "^5.2.2",
     "xunit-viewer": "^10.5.1"
   },
-  "packageManager": "yarn@3.8.1"
+  "packageManager": "yarn@3.8.2"
 }

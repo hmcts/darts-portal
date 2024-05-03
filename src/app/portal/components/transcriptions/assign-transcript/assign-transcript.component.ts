@@ -70,6 +70,7 @@ export class AssignTranscriptComponent implements OnDestroy {
       const hearingDate = this.luxonDatePipe.transform(data.hearingDate, 'dd MMM yyyy');
       const received = this.luxonDatePipe.transform(data.received, 'dd MMM yyyy HH:mm:ss');
 
+      //TO DO: Move this mapping into a service function so it's not missed in data changes
       const vm = {
         reportingRestrictions: data.caseReportingRestrictions ?? [],
         caseDetails: {
@@ -83,7 +84,7 @@ export class AssignTranscriptComponent implements OnDestroy {
           'Request Type': data.requestType,
           'Request method': data.isManual ? 'Manual' : 'Automated',
           'Request ID': this.transcriptId,
-          Urgency: data.urgency.description,
+          Urgency: data.urgency?.description,
           'Audio for transcript':
             this.startTime && this.endTime ? `Start time ${this.startTime} - End time ${this.endTime}` : '',
           From: data.from,

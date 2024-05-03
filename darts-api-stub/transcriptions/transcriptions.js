@@ -30,11 +30,6 @@ const yourTranscriptionsStub = {
       hearing_date: '2023-06-10',
       transcription_type: 'Court log',
       status: 'With Transcriber',
-      transcription_urgency: {
-        transcription_urgency_id: 1,
-        description: 'Up to 3 working days',
-        priority_order: 3,
-      },
       requested_ts: '2023-06-26T13:00:00Z',
     },
     {
@@ -233,11 +228,6 @@ const mockTranscriptionDetailsTwo = {
   judges: ['HHJ M. Hussain KC	', 'Ray Bob'],
   transcript_file_name: 'C20220620001_0.docx',
   hearing_date: '2023-08-07',
-  transcription_urgency: {
-    transcription_urgency_id: 1,
-    description: 'Standard',
-    priority_order: 4,
-  },
   request_type: 'Specified Times',
   request_id: 123456789,
   transcription_start_ts: '2023-06-26T13:00:00Z',
@@ -332,11 +322,7 @@ let unassignedTranscriptions = [
     hearing_date: '2023-11-03',
     transcription_type: 'Court Log',
     status: 'Approved',
-    transcription_urgency: {
-      transcription_urgency_id: 1,
-      description: 'Up to 3 working days',
-      priority_order: 3,
-    },
+    transcription_urgency: {},
     requested_ts: '2023-12-25T13:00:00Z',
     state_change_ts: '2023-06-27T13:00:00Z',
     is_manual: false,

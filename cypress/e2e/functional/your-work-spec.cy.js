@@ -7,6 +7,7 @@ describe('Your work', () => {
     cy.injectAxe();
   });
 
+  //TO DO: Tests should pass in isolation, count is 3 in isolation. 6 when run as suite.
   it('shows "Your work"', () => {
     cy.contains('Your work').click();
     cy.get('#todo-tab .count').should('contain', '6');

@@ -9,6 +9,7 @@ import {
   TranscriptionStatusData,
   UpdateTranscriptStatusRequest,
 } from '@admin-types/index';
+import { AssignedTo } from '@admin-types/transcription/transcription-assignee';
 import { TranscriptionAdminDetails } from '@admin-types/transcription/transcription-details';
 import { TranscriptionAdminDetailsData } from '@admin-types/transcription/transcription-details-data.interface';
 import { TranscriptionWorkflow } from '@admin-types/transcription/transcription-workflow';
@@ -191,34 +192,47 @@ export class TranscriptionAdminService {
   }
 
   getCurrentStatusFromTranscript(transcript: TranscriptionAdminDetails) {
-    const associatedGroups = transcript.assignedGroups?.map((group) => ({
-      href: `/admin/groups/${group.id}`,
-      value: group.displayName,
-    }));
+    const processGroups = (groups: SecurityGroup[] | undefined) =>
+      groups && groups.length > 0
+        ? groups
+            .filter((group) => group.displayName || group.name)
+            .map((group) => ({
+              href: `/admin/groups/${group.id}`,
+              value: group.displayName || group.name,
+            }))
+        : null;
 
-    const changeStatuses = ['Awaiting Authorisation', 'With Transcriber'];
-    const statusData =
-      changeStatuses.indexOf(transcript.status!) !== -1
-        ? {
-            value: transcript.status,
-            action: {
-              text: 'Change status',
-              url: `/admin/transcripts/${transcript.transcriptionId}/change-status`,
-              queryParams: { manual: transcript.isManual, status: transcript.status },
+    const processStatus = (status: string | undefined) => {
+      const changeStatuses = ['Awaiting Authorisation', 'With Transcriber'];
+      return status
+        ? changeStatuses.includes(status)
+          ? {
+              value: status,
+              action: {
+                text: 'Change status',
+                url: `/admin/transcripts/${transcript.transcriptionId}/change-status`,
+                queryParams: { manual: transcript.isManual, status },
+              },
+            }
+          : { value: status }
+        : null;
+    };
+
+    const processAssignedTo = (assignedTo: AssignedTo | undefined) =>
+      assignedTo?.userId
+        ? [
+            {
+              href: `/admin/users/${assignedTo.userId}`,
+              value: assignedTo.fullName,
+              caption: assignedTo.email,
             },
-          }
-        : { value: transcript.status };
+          ]
+        : 'Unassigned';
 
     return {
-      Status: statusData,
-      'Assigned to': [
-        {
-          href: `/admin/users/${transcript.assignedTo?.userId}`,
-          value: transcript.assignedTo?.fullName,
-          caption: transcript.assignedTo?.email,
-        },
-      ],
-      'Associated groups': associatedGroups,
+      Status: processStatus(transcript.status),
+      'Assigned to': processAssignedTo(transcript.assignedTo),
+      'Associated groups': processGroups(transcript.assignedGroups),
     };
   }
 
@@ -228,7 +242,7 @@ export class TranscriptionAdminService {
       'Request type': transcript.requestType,
       'Request method': transcript.isManual ? 'Manual' : 'Automated',
       'Request ID': transcript.transcriptionId,
-      Urgency: transcript.urgency.description,
+      Urgency: transcript.urgency?.description ? transcript.urgency.description : null,
       'Audio for transcript':
         transcript.transcriptionStartTs && transcript.transcriptionEndTs
           ? 'Start time ' +
