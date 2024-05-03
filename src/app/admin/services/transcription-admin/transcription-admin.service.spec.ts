@@ -49,6 +49,18 @@ const MOCK_STATUSES: TranscriptionStatus[] = [
   },
 ];
 
+const emptySearchRequestBody = {
+  transcription_id: null,
+  case_number: null,
+  courthouse_display_name: null,
+  hearing_date: null,
+  owner: null,
+  requested_at_from: null,
+  requested_at_to: null,
+  requested_by: null,
+  is_manual_transcription: null,
+};
+
 describe('TranscriptionAdminService', () => {
   let service: TranscriptionAdminService;
   let httpMock: HttpTestingController;
@@ -70,64 +82,116 @@ describe('TranscriptionAdminService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should send a POST request to search transcriptions', () => {
-    const formValues = {
-      requestId: '123',
-      caseId: '456',
-      courthouse: 'Test Courthouse',
-      hearingDate: '2022-01-01',
-      owner: 'Test Owner',
-      requestedBy: 'Test Requester',
-      requestedDate: { from: '2022-01-01', to: '2022-01-31' },
-      requestMethod: 'manual',
-    };
+  describe('search', () => {
+    it('should send a POST request to search transcriptions', () => {
+      const formValues = {
+        requestId: '123',
+        caseId: '456',
+        courthouse: 'Test Courthouse',
+        hearingDate: '01/01/2022',
+        owner: 'Test Owner',
+        requestedBy: 'Test Requester',
+        requestedDate: { from: '01/01/2022', to: '31/01/2022' },
+        requestMethod: 'manual',
+      };
 
-    const expectedBody = {
-      transcription_id: 123,
-      case_number: '456',
-      courthouse_display_name: 'Test Courthouse',
-      hearing_date: '2022-01-01',
-      owner: 'Test Owner',
-      requested_by: 'Test Requester',
-      requested_at_from: '2022-01-01',
-      requested_at_to: '2022-01-31',
-      is_manual_transcription: true,
-    };
-
-    const mockResponse = [
-      {
-        transcription_id: 1,
-        case_number: '123',
-        courthouse_id: 1,
-        hearing_date: '2022-01-01T00:00:00Z',
-        requested_at: '2022-01-01T00:00:00Z',
-        transcription_status_id: 1,
+      const expectedBody = {
+        transcription_id: 123,
+        case_number: '456',
+        courthouse_display_name: 'Test Courthouse',
+        hearing_date: '2022-01-01',
+        owner: 'Test Owner',
+        requested_by: 'Test Requester',
+        requested_at_from: '2022-01-01',
+        requested_at_to: '2022-01-31',
         is_manual_transcription: true,
-      },
-    ];
+      };
 
-    let mappedResult: Transcription[] = [];
+      const mockResponse = [
+        {
+          transcription_id: 1,
+          case_number: '123',
+          courthouse_id: 1,
+          hearing_date: '2022-01-01T00:00:00Z',
+          requested_at: '2022-01-01T00:00:00Z',
+          transcription_status_id: 1,
+          is_manual_transcription: true,
+        },
+      ];
 
-    service.search(formValues).subscribe((transcriptions) => {
-      mappedResult = transcriptions;
+      let mappedResult: Transcription[] = [];
+
+      service.search(formValues).subscribe((transcriptions) => {
+        mappedResult = transcriptions;
+      });
+
+      const req = httpMock.expectOne('api/admin/transcriptions/search');
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body).toEqual(expectedBody);
+      req.flush(mockResponse);
+
+      expect(mappedResult).toEqual([
+        {
+          id: 1,
+          caseNumber: '123',
+          courthouse: { id: 1 },
+          hearingDate: DateTime.fromISO('2022-01-01T00:00:00Z'),
+          requestedAt: DateTime.fromISO('2022-01-01T00:00:00Z'),
+          status: { id: 1 },
+          isManual: true,
+        },
+      ]);
     });
 
-    const req = httpMock.expectOne('api/admin/transcriptions/search');
-    expect(req.request.method).toBe('POST');
-    expect(req.request.body).toEqual(expectedBody);
-    req.flush(mockResponse);
+    it('should send a POST request to search transcriptions with empty values', () => {
+      const formValues = {
+        requestId: '',
+        caseId: '',
+        courthouse: '',
+        hearingDate: '',
+        owner: '',
+        requestedBy: '',
+        requestedDate: { from: '', to: '' },
+        requestMethod: '',
+      };
 
-    expect(mappedResult).toEqual([
-      {
-        id: 1,
-        caseNumber: '123',
-        courthouse: { id: 1 },
-        hearingDate: DateTime.fromISO('2022-01-01T00:00:00Z'),
-        requestedAt: DateTime.fromISO('2022-01-01T00:00:00Z'),
-        status: { id: 1 },
-        isManual: true,
-      },
-    ]);
+      service.search(formValues).subscribe();
+
+      const req = httpMock.expectOne('api/admin/transcriptions/search');
+      expect(req.request.body).toEqual(emptySearchRequestBody);
+    });
+
+    it('map specific date to requested_at_from', () => {
+      const formValues = {
+        requestedDate: { type: 'specific', specific: '01/01/2022', from: '', to: '' },
+      };
+
+      const expectedBody = {
+        ...emptySearchRequestBody,
+        requested_at_from: '2022-01-01',
+      };
+
+      service.search(formValues).subscribe();
+
+      const req = httpMock.expectOne('api/admin/transcriptions/search');
+      expect(req.request.body).toEqual(expectedBody);
+    });
+
+    it('map from date to requested_at_from', () => {
+      const formValues = {
+        requestedDate: { type: 'from', specific: '', from: '01/01/2022', to: '' },
+      };
+
+      const expectedBody = {
+        ...emptySearchRequestBody,
+        requested_at_from: '2022-01-01',
+      };
+
+      service.search(formValues).subscribe();
+
+      const req = httpMock.expectOne('api/admin/transcriptions/search');
+      expect(req.request.body).toEqual(expectedBody);
+    });
   });
 
   it('should send a GET request to fetch transcription statuses', () => {

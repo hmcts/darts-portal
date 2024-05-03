@@ -53,4 +53,18 @@ describe('SearchTranscriptsFormComponent', () => {
   it('#requestedDateSpecificControl', () => {
     expect(component.requestedDateSpecificControl).toBe(component.form.controls.requestedDate.controls.specific);
   });
+
+  describe('#ngOnInit', () => {
+    it('should reset date values when requested date type changes', () => {
+      component.requestedDateSpecificControl.setValue('test');
+      component.requestedDateFromControl.setValue('test');
+      component.requestedDateToControl.setValue('test');
+
+      component.requestedDateTypeControl.setValue('range');
+
+      expect(component.requestedDateSpecificControl.value).toBe('');
+      expect(component.requestedDateFromControl.value).toBe('');
+      expect(component.requestedDateToControl.value).toBe('');
+    });
+  });
 });

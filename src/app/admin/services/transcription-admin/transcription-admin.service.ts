@@ -173,11 +173,11 @@ export class TranscriptionAdminService {
       transcription_id: values.requestId || values.requestId === '0' ? Number(values.requestId) : null,
       case_number: values.caseId || null,
       courthouse_display_name: values.courthouse || null,
-      hearing_date: values.hearingDate || null,
+      hearing_date: this.formatDate(values.hearingDate),
       owner: values.owner || null,
       requested_by: values.requestedBy || null,
-      requested_at_from: values.requestedDate?.from || null,
-      requested_at_to: values.requestedDate?.to || null,
+      requested_at_from: this.formatDate(values.requestedDate?.specific) ?? this.formatDate(values.requestedDate?.from),
+      requested_at_to: this.formatDate(values.requestedDate?.to),
       is_manual_transcription:
         values.requestMethod === 'all' || !values.requestMethod
           ? null
@@ -272,5 +272,9 @@ export class TranscriptionAdminService {
         userId: transcription.requestor?.user_id,
       },
     };
+  }
+
+  private formatDate(date: string | null | undefined): string | null {
+    return date ? date.split('/').reverse().join('-') : null;
   }
 }
