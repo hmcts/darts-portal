@@ -1,29 +1,29 @@
 import { StubResponse } from '.';
-import { localArray } from './../../darts-api-stub/localArray';
+import data from '../../darts-api-stub/data/securityRoles.json';
 
 export const securityRoles: StubResponse[] = [
   {
     method: 'get',
     path: '/admin/security-roles',
-    response: localArray('securityRoles').value,
+    response: data,
     status: 200,
   },
   {
     method: 'get',
     path: '/admin/security-roles/:securityRoleId',
-    response: localArray('securityRoles').value[0],
+    response: data[0],
     status: 200,
   },
   {
     method: 'post',
     path: '/admin/security-roles',
-    response: localArray('securityRoles').value[0],
+    response: data[0],
     status: 201,
   },
   {
     method: 'patch',
     path: '/admin/security-roles/:securityRoleId',
-    response: localArray('securityRoles').value[0],
+    response: data[0],
     status: 200,
   },
   {

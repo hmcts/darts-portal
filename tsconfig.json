@@ -2,7 +2,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "allowJs": true,
     "baseUrl": "./",
     "paths": {
       "@services/*": ["src/app/core/services/*", "src/app/portal/services/*", "src/app/admin/services/*"],

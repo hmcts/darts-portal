@@ -4,10 +4,10 @@
     "files": true
   },
   "compilerOptions": {
+    "resolveJsonModule": true,
     "outDir": "../dist/server",
     "module": "commonjs",
     "esModuleInterop": true,
-    "lib": ["esnext"],
-  },
+    "lib": ["esnext"]
+  }
 }
-
