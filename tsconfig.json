@@ -2,6 +2,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "resolveJsonModule": true,
     "baseUrl": "./",
     "paths": {
       "@services/*": ["src/app/core/services/*", "src/app/portal/services/*", "src/app/admin/services/*"],
@@ -15,7 +16,8 @@
       "@interceptors/*": ["src/app/core/interceptors/*"],
       "@extensions/*": ["src/app/core/extensions/*"],
       "@directives/*": ["src/app/core/directives/*"],
-      "@constants/*": ["src/app/portal/constants/*", "src/app/core/constants/*", "src/app/admin/constants/*"]
+      "@constants/*": ["src/app/portal/constants/*", "src/app/core/constants/*", "src/app/admin/constants/*"],
+      "@stubs/*": ["darts-api-stub/data/*"]
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,

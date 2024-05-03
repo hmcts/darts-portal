@@ -4,13 +4,9 @@
     "files": true
   },
   "compilerOptions": {
-    "resolveJsonModule": true,
     "outDir": "../dist/server",
     "module": "commonjs",
     "esModuleInterop": true,
-    "lib": ["esnext"],
-    "paths": {
-      "@stubs/*": ["darts-api-stub/data/*"]
-    }
+    "lib": ["esnext"]
   }
 }
