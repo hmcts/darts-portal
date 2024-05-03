@@ -17,7 +17,11 @@
 
           <div class="moj-filter__heading-action clear-filter">
             <p>
-              <a class="govuk-link govuk-link--no-visited-state" href="javascript:void(0)" (click)="clearFilters()"
+              <a
+                id="clear-filters-button"
+                class="govuk-link govuk-link--no-visited-state"
+                href="javascript:void(0)"
+                (click)="clearFilters()"
                 >Clear filters</a
               >
             </p>
@@ -41,6 +45,7 @@
     <div class="moj-filter__options">
       <button
         type="submit"
+        id="apply-filters-button"
         class="govuk-button"
         data-module="govuk-button"
         (click)="emitFilters()"
