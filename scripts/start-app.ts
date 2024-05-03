@@ -1,4 +1,5 @@
 import { startServer } from '../dist/server/server';
+
 const PORT = 3000;
 const READY_MESSAGE = `> Ready on http://localhost:${PORT}`;
 

@@ -3,13 +3,11 @@
   "ts-node": {
     "files": true
   },
-  "include": [
-    "../server/types/*.d.ts",
-  ],
+  "include": ["../server/types/*.d.ts"],
   "compilerOptions": {
     "module": "commonjs",
     "esModuleInterop": true,
     "lib": ["esnext"],
-    "noImplicitAny": false,
-  },
+    "noImplicitAny": false
+  }
 }
