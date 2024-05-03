@@ -1,4 +1,7 @@
 const express = require('express');
+
+const { localArray } = require('../../localArray');
+
 const router = express.Router();
 
 const defaultSecurityGroups = [
@@ -147,9 +150,13 @@ const defaultSecurityGroups = [
   },
 ];
 
+const securityGroups = localArray('securityGroups');
+// Clear out old values on restart
+securityGroups.value = defaultSecurityGroups;
+
 router.patch('/:id', (req, res) => {
   const id = req.params.id;
-  const securityGroup = securityGroups.find((securityGroup) => securityGroup.id == id);
+  const securityGroup = securityGroups.value.find((securityGroup) => securityGroup.id == id);
   if (!securityGroup) return res.status(404).send('Security group not found');
   Object.assign(securityGroup, req.body);
   res.send(securityGroup);
@@ -157,7 +164,7 @@ router.patch('/:id', (req, res) => {
 
 router.get('/:id', (req, res) => {
   const id = req.params.id;
-  const securityGroup = securityGroups.find((securityGroup) => securityGroup.id == id);
+  const securityGroup = securityGroups.value.find((securityGroup) => securityGroup.id == id);
   if (!securityGroup) return res.status(404).send('Security group not found');
   res.send(securityGroup);
 });
