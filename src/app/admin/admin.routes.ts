@@ -174,6 +174,14 @@ export const ADMIN_ROUTES: Routes = [
       ),
   },
   {
+    path: 'admin/system-configuration/automated-tasks/:id',
+    title: 'DARTS Admin Automated Task',
+    loadComponent: () =>
+      import('./components/automated-tasks/view-automated-tasks/view-automated-tasks.component').then(
+        (c) => c.ViewAutomatedTasksComponent
+      ),
+  },
+  {
     path: 'admin/system-configuration/retention-policies/:id/create-revision',
     title: 'DARTS Admin New Version Retention Policy',
     loadComponent: () =>

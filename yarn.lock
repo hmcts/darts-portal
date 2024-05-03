@@ -68,7 +68,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular-devkit/build-angular@npm:^17.0.0":
+"@angular-devkit/build-angular@npm:^17.0.0, @angular-devkit/build-angular@npm:^17.3.6":
   version: 17.3.6
   resolution: "@angular-devkit/build-angular@npm:17.3.6"
   dependencies:
@@ -337,7 +337,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/animations@npm:^17.0.1":
+"@angular/animations@npm:^17.3.6":
   version: 17.3.7
   resolution: "@angular/animations@npm:17.3.7"
   dependencies:
@@ -365,7 +365,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/cli@npm:~17.3.0":
+"@angular/cli@npm:~17.3.6":
   version: 17.3.6
   resolution: "@angular/cli@npm:17.3.6"
   dependencies:
@@ -393,7 +393,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/common@npm:^17.0.1":
+"@angular/common@npm:^17.3.6":
   version: 17.3.7
   resolution: "@angular/common@npm:17.3.7"
   dependencies:
@@ -405,7 +405,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/compiler-cli@npm:^17.0.1":
+"@angular/compiler-cli@npm:^17.3.6":
   version: 17.3.7
   resolution: "@angular/compiler-cli@npm:17.3.7"
   dependencies:
@@ -428,7 +428,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/compiler@npm:^17.0.1":
+"@angular/compiler@npm:^17.3.6":
   version: 17.3.7
   resolution: "@angular/compiler@npm:17.3.7"
   dependencies:
@@ -442,7 +442,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/core@npm:^17.0.1":
+"@angular/core@npm:^17.3.6":
   version: 17.3.7
   resolution: "@angular/core@npm:17.3.7"
   dependencies:
@@ -454,7 +454,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/forms@npm:^17.0.1":
+"@angular/forms@npm:^17.3.6":
   version: 17.3.7
   resolution: "@angular/forms@npm:17.3.7"
   dependencies:
@@ -468,7 +468,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/platform-browser-dynamic@npm:^17.0.1":
+"@angular/platform-browser-dynamic@npm:^17.3.6":
   version: 17.3.7
   resolution: "@angular/platform-browser-dynamic@npm:17.3.7"
   dependencies:
@@ -482,7 +482,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/platform-browser@npm:^17.0.1":
+"@angular/platform-browser@npm:^17.3.6":
   version: 17.3.7
   resolution: "@angular/platform-browser@npm:17.3.7"
   dependencies:
@@ -498,7 +498,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/router@npm:^17.0.1":
+"@angular/router@npm:^17.3.6":
   version: 17.3.7
   resolution: "@angular/router@npm:17.3.7"
   dependencies:
@@ -4449,7 +4449,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jest@npm:^29.5.3":
+"@types/jest@npm:^29.5.12":
   version: 29.5.12
   resolution: "@types/jest@npm:29.5.12"
   dependencies:
@@ -4477,7 +4477,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/luxon@npm:^3.3.2":
+"@types/luxon@npm:^3.4.2":
   version: 3.4.2
   resolution: "@types/luxon@npm:3.4.2"
   checksum: 6f92d5bd02e89f310395753506bcd9cef3a56f5940f7a50db2a2b9822bce753553ac767d143cb5b4f9ed5ddd4a84e64f89ff538082ceb4d18739af7781b56925
@@ -6890,23 +6890,23 @@ __metadata:
     "@angular-builders/custom-webpack": ^17.0.0
     "@angular-builders/dev-server": ^7.3.1
     "@angular-devkit/architect": ^0.1703.0
-    "@angular-devkit/build-angular": ^17.0.0
+    "@angular-devkit/build-angular": ^17.3.6
     "@angular-eslint/builder": 17.3.0
     "@angular-eslint/eslint-plugin": 17.3.0
     "@angular-eslint/eslint-plugin-template": 17.3.0
     "@angular-eslint/schematics": 17.3.0
     "@angular-eslint/template-parser": 17.3.0
-    "@angular/animations": ^17.0.1
+    "@angular/animations": ^17.3.6
     "@angular/cdk": 17.3.7
-    "@angular/cli": ~17.3.0
-    "@angular/common": ^17.0.1
-    "@angular/compiler": ^17.0.1
-    "@angular/compiler-cli": ^17.0.1
-    "@angular/core": ^17.0.1
-    "@angular/forms": ^17.0.1
-    "@angular/platform-browser": ^17.0.1
-    "@angular/platform-browser-dynamic": ^17.0.1
-    "@angular/router": ^17.0.1
+    "@angular/cli": ~17.3.6
+    "@angular/common": ^17.3.6
+    "@angular/compiler": ^17.3.6
+    "@angular/compiler-cli": ^17.3.6
+    "@angular/core": ^17.3.6
+    "@angular/forms": ^17.3.6
+    "@angular/platform-browser": ^17.3.6
+    "@angular/platform-browser-dynamic": ^17.3.6
+    "@angular/router": ^17.3.6
     "@dynatrace/dtrum-api-types": ^1.283.3
     "@hmcts/nodejs-healthcheck": ^1.8.0
     "@hmcts/properties-volume": ^1.0.0
@@ -6919,8 +6919,8 @@ __metadata:
     "@types/cookie-parser": ^1.4.3
     "@types/express": ^4.17.17
     "@types/express-session": ^1.17.7
-    "@types/jest": ^29.5.3
-    "@types/luxon": ^3.3.2
+    "@types/jest": ^29.5.12
+    "@types/luxon": ^3.4.2
     "@types/node": ^20.0.0
     "@types/nunjucks": ^3.2.2
     "@types/redis": ^4.0.11
@@ -6946,9 +6946,9 @@ __metadata:
     http-proxy-middleware: ^2.0.6
     husky: ^9.0.0
     i: ^0.3.7
-    jest: ^29.6.3
-    jest-environment-jsdom: ^29.6.3
-    jest-preset-angular: ^14.0.0
+    jest: ^29.7
+    jest-environment-jsdom: ^29.7
+    jest-preset-angular: ^14.0.3
     junit-report-merger: ^6.0.2
     lodash: ^4.17.21
     luxon: ^3.4.3
@@ -6960,7 +6960,7 @@ __metadata:
     redis: ^4.6.7
     rxjs: ~7.8.0
     start-server-and-test: ^2.0.0
-    ts-jest: ^29.1.1
+    ts-jest: ^29.1.2
     ts-node: ^10.9.1
     tslib: ^2.3.0
     typescript: ^5.2.2
@@ -9829,7 +9829,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-environment-jsdom@npm:^29.0.0, jest-environment-jsdom@npm:^29.6.3":
+"jest-environment-jsdom@npm:^29.0.0, jest-environment-jsdom@npm:^29.7":
   version: 29.7.0
   resolution: "jest-environment-jsdom@npm:29.7.0"
   dependencies:
@@ -9956,7 +9956,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-preset-angular@npm:^14.0.0":
+"jest-preset-angular@npm:^14.0.3":
   version: 14.0.3
   resolution: "jest-preset-angular@npm:14.0.3"
   dependencies:
@@ -10169,7 +10169,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest@npm:^29.6.3":
+"jest@npm:^29.7":
   version: 29.7.0
   resolution: "jest@npm:29.7.0"
   dependencies:
@@ -14429,7 +14429,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-jest@npm:^29.0.0, ts-jest@npm:^29.1.1":
+"ts-jest@npm:^29.0.0, ts-jest@npm:^29.1.2":
   version: 29.1.2
   resolution: "ts-jest@npm:29.1.2"
   dependencies:
