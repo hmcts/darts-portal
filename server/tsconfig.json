@@ -8,6 +8,9 @@
     "outDir": "../dist/server",
     "module": "commonjs",
     "esModuleInterop": true,
-    "lib": ["esnext"]
+    "lib": ["esnext"],
+    "paths": {
+      "@stubs/*": ["darts-api-stub/data/*"]
+    }
   }
 }

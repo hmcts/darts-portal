@@ -6,12 +6,16 @@ import { Router, Request, Response } from 'express';
 import config from 'config';
 
 // stubs
-import { StubResponse, securityRoles } from '../stubs';
+import { StubResponse } from '../stubs';
+// import { StubResponse, securityRoles } from '../stubs';
 
 const STUB_ALLOWED = config.get('allowStubData') === 'true';
 
 // create stub files and add to this array to stub data
-const STUB_RESPONSES: StubResponse[] = [...securityRoles];
+const STUB_RESPONSES: StubResponse[] = [
+  // include stubs here like below
+  // ...securityRoles
+];
 
 function stubData(response: unknown, status: number) {
   return (req: Request, res: Response): void | Response<unknown, Record<string, unknown>> => {
