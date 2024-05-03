@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import config from 'config';
 import * as express from 'express';
 import { NextFunction, Request, Response, Router } from 'express';
-import SecurityToken from 'server/types/classes/securityToken';
+import SecurityToken from '../types/classes/securityToken';
 import { AuthenticationUtils } from '../utils/authentication-utils';
 
 const ERROR_CODES = {
