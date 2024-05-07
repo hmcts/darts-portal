@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
+import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { CourthouseData } from '@core-types/index';
 import { TabDirective } from '@directives/tab.directive';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
@@ -26,12 +27,14 @@ import { SearchTranscriptsResultsComponent } from './search-transcripts-results/
     AsyncPipe,
     TabsComponent,
     TabDirective,
+    ValidationErrorSummaryComponent,
   ],
 })
 export class TranscriptsComponent {
   transcriptService = inject(TranscriptionAdminService);
   courthouseService = inject(CourthouseService);
   router = inject(Router);
+  errors: { fieldId: string; message: string }[] = [];
 
   courthouses$ = this.courthouseService.getCourthouses().pipe(shareReplay(1));
   transcriptionStatuses$ = this.transcriptService.getTranscriptionStatuses().pipe(shareReplay(1));

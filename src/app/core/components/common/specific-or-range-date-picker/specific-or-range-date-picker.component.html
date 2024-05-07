@@ -1,0 +1,74 @@
+<div class="govuk-form-group" [formGroup]="form">
+  <label class="govuk-label govuk-!-font-weight-bold" for="specific-date-radio"> {{ label }} </label>
+  <div class="govuk-radios">
+    <div class="govuk-radios__item">
+      <input
+        class="govuk-radios__input"
+        id="specific-date-radio"
+        type="radio"
+        formControlName="type"
+        aria-label="Specific date radio button"
+        value="specific"
+      />
+      <label class="govuk-label govuk-radios__label" for="specific-date-radio"> Specific date </label>
+    </div>
+    @if (dateTypeControl.value === 'specific') {
+      <div
+        id="specific-date"
+        class="govuk-form-group input-group-indent-1"
+        [ngClass]="specificDateControl.valid ? 'govuk-details__text' : 'govuk-form-group--error'"
+      >
+        <app-datepicker
+          inputId="specific"
+          [control]="specificDateControl"
+          label="Enter a date"
+          (dateChange)="setInputValue($event, 'specific')"
+          [errors]="getControlErrorMessage(['specific'])"
+        />
+      </div>
+    }
+    <div class="govuk-radios__item">
+      <input
+        class="govuk-radios__input"
+        id="date-range-radio"
+        type="radio"
+        formControlName="type"
+        aria-label="Date range radio button"
+        value="range"
+      />
+      <label class="govuk-label govuk-radios__label" for="date-range-radio"> Date range </label>
+    </div>
+    @if (dateTypeControl.value === 'range') {
+      <div id="date-range-items">
+        <div
+          class="govuk-form-group input-group-indent-1"
+          [ngClass]="
+            fromDateControl.valid || fromDateControl.untouched ? 'govuk-details__text' : 'govuk-form-group--error'
+          "
+          id="range-date-items"
+        >
+          <app-datepicker
+            inputId="from"
+            [control]="fromDateControl"
+            label="Date from"
+            (dateChange)="setInputValue($event, 'from')"
+            [errors]="getControlErrorMessage(['from'])"
+          />
+        </div>
+
+        <div
+          class="govuk-form-group input-group-indent-1"
+          [ngClass]="toDateControl.valid || toDateControl.untouched ? 'govuk-details__text' : 'govuk-form-group--error'"
+        >
+          <app-datepicker
+            inputId="to"
+            [control]="toDateControl"
+            label="Date to"
+            (dateChange)="setInputValue($event, 'to')"
+            [errors]="getControlErrorMessage(['to'])"
+          />
+        </div>
+      </div>
+    }
+  </div>
+</div>
