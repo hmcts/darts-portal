@@ -14,7 +14,6 @@ const yourTranscriptionsStub = {
       hearing_date: '2023-06-10',
       transcription_type: 'Court log',
       status: 'Awaiting Authorisation',
-      urgency: 'Overnight',
       transcription_urgency: {
         transcription_urgency_id: 1,
         description: 'Overnight',
