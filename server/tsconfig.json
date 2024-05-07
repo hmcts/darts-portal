@@ -7,7 +7,7 @@
     "outDir": "../dist/server",
     "module": "commonjs",
     "esModuleInterop": true,
-    "lib": ["esnext"],
-  },
+    "resolveJsonModule": true,
+    "lib": ["esnext"]
+  }
 }
-

@@ -6,8 +6,7 @@
     "url": "http://localhost:4550"
   },
   "authentication": {
-    "azureAdB2cOriginHost": "*",
-    "allowAuthBootstrap": "false"
+    "azureAdB2cOriginHost": "*"
   },
   "session": {
     "prefix": "darts-portal-session",
@@ -21,6 +20,7 @@
   "dynatrace": {
     "scriptUrl": null
   },
+  "allowStubData": "false",
   "secrets": {
     "darts": {
       "AppInsightsInstrumentationKey": "00000000-0000-0000-0000-000000000000",
