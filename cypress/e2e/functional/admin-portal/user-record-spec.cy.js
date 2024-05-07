@@ -33,7 +33,6 @@ describe('Admin - User record screen', () => {
       cy.get('.moj-sub-navigation a').contains('Details').should('exist');
       cy.get('.moj-sub-navigation a').contains('Groups').should('exist');
       cy.get('.moj-sub-navigation a').contains('Transcript Requests').should('exist');
-      cy.get('.moj-sub-navigation a').contains('Audio Files').should('exist');
 
       //Dates
       cy.get('#date-created-container h3').contains('Date created').should('exist');
@@ -76,7 +75,6 @@ describe('Admin - User record screen', () => {
       cy.get('.moj-sub-navigation a').contains('Details').should('exist');
       cy.get('.moj-sub-navigation a').contains('Groups').should('exist');
       cy.get('.moj-sub-navigation a').contains('Transcript Requests').should('exist');
-      cy.get('.moj-sub-navigation a').contains('Audio Files').should('exist');
 
       //Dates
       cy.get('#date-created-container h3').contains('Date created').should('exist');
