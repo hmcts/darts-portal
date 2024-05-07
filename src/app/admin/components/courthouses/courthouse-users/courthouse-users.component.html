@@ -10,6 +10,12 @@
     <button class="govuk-button govuk-button--secondary remove-users-button" data-module="govuk-button">
       Remove user(s)
     </button>
-    <app-data-table id="users-table" [rows]="users" [columns]="columns" [rowSelectable]="true"></app-data-table>
+    <app-data-table
+      id="users-table"
+      noDataMessage="There are no users for this courthouse"
+      [rows]="users"
+      [columns]="columns"
+      [rowSelectable]="true"
+    ></app-data-table>
   </div>
 </div>
