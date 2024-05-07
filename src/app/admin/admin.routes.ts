@@ -5,6 +5,11 @@ import { authGuard } from '../core/auth/auth.guard';
 
 export const ADMIN_ROUTES: Routes = [
   {
+    path: 'admin/search',
+    title: 'DARTS Admin Search Audio, Events and Hearings',
+    loadComponent: () => import('./components/search/search.component').then((c) => c.SearchComponent),
+  },
+  {
     path: 'admin/users',
     title: 'DARTS Admin Search Users',
     loadComponent: () => import('./components/users/users.component').then((c) => c.UsersComponent),

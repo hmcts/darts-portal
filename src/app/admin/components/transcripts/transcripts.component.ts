@@ -4,25 +4,29 @@ import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
+import { TabsComponent } from '@common/tabs/tabs.component';
 import { CourthouseData } from '@core-types/index';
+import { TabDirective } from '@directives/tab.directive';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
+import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
 import { BehaviorSubject, Subject, combineLatest, map, of, shareReplay, switchMap, tap } from 'rxjs';
-import { TranscriptionAdminService } from './../../services/transcription-admin/transcription-admin.service';
 import { SearchTranscriptsFormComponent } from './search-transcripts-form/search-transcripts-form.component';
 import { SearchTranscriptsResultsComponent } from './search-transcripts-results/search-transcripts-results.component';
 
 @Component({
   selector: 'app-transcripts',
   standalone: true,
+  templateUrl: './transcripts.component.html',
+  styleUrl: './transcripts.component.scss',
   imports: [
     GovukHeadingComponent,
     SearchTranscriptsFormComponent,
     LoadingComponent,
     SearchTranscriptsResultsComponent,
     AsyncPipe,
+    TabsComponent,
+    TabDirective,
   ],
-  templateUrl: './transcripts.component.html',
-  styleUrl: './transcripts.component.scss',
 })
 export class TranscriptsComponent {
   transcriptService = inject(TranscriptionAdminService);
