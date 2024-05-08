@@ -79,4 +79,13 @@ describe('Admin - Courthouse record screen', () => {
         expect(rows.length).equal(5); // 5 including header row
       });
   });
+
+  it('should show a message for a courthouse with no users', () => {
+    cy.get('#courthouseName').type('Reading').click();
+    cy.get('button[type="submit"]').click();
+
+    cy.get('td').contains('READING').click();
+    cy.get('.moj-sub-navigation a').contains('Users').click();
+    cy.contains('There are no users for this courthouse').should('exist');
+  });
 });

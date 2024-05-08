@@ -58,7 +58,11 @@
 
         <div *tab="'Users'">
           <div class="govuk-grid-row">
-            <app-courthouse-users [users]="(users$ | async) ?? []"></app-courthouse-users>
+            @if (users$ | async; as users) {
+              <app-courthouse-users [users]="users"></app-courthouse-users>
+            } @else {
+              <app-courthouse-users [users]="[]"></app-courthouse-users>
+            }
           </div>
         </div>
       </app-tabs>
