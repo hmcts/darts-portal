@@ -3,6 +3,7 @@ import '../commands';
 
 describe('Admin - Courthouse record screen', () => {
   beforeEach(() => {
+    cy.viewport(1920, 1080);
     cy.login('admin');
     cy.injectAxe();
     cy.visit('/admin/courthouses');
