@@ -57,19 +57,19 @@
       @for (filter of filters; track filter.name; let index = $index; let last = $last) {
         <div class="govuk-form-group">
           <fieldset class="govuk-fieldset">
-            <legend class="govuk-fieldset__legend govuk-fieldset__legend--s" [class.collapsed]="!filter.isCollapsed">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--s" [class.collapsed]="!filter.isExpanded">
               <div class="moj-pagination__item moj-pagination__item--prev">
                 <a
                   class="moj-pagination__link"
-                  [class.flip]="!filter.isCollapsed"
+                  [class.flip]="!filter.isExpanded"
                   href="javascript:void(0)"
-                  (click)="filter.isCollapsed = !filter.isCollapsed"
+                  (click)="filter.isExpanded = !filter.isExpanded"
                   ><span class="govuk-visually-hidden"> Expand {{ filter.displayName }}</span></a
                 >
               </div>
               <label [for]="'search-filter-' + index">{{ filter.displayName }}</label>
             </legend>
-            @if (filter.isCollapsed) {
+            @if (filter.isExpanded) {
               @if (filter.search) {
                 <input
                   class="govuk-input search-filter"
