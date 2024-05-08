@@ -1,14 +1,14 @@
-import session from 'express-session';
-import RedisStore from 'connect-redis';
-import { createClient } from 'redis';
 import config from 'config';
+import RedisStore from 'connect-redis';
+import session from 'express-session';
+import { createClient } from 'redis';
 
 export default () => {
   const sessionMiddleware: session.SessionOptions = {
     secret: config.get('secrets.darts.darts-portal-session-secret'),
     resave: false,
     saveUninitialized: true,
-    cookie: {},
+    cookie: { sameSite: 'strict' },
     name: config.get('session.cookieName'),
   };
 
