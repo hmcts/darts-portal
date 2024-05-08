@@ -1,11 +1,19 @@
-<app-govuk-heading>Transcript requests</app-govuk-heading>
+<app-govuk-heading size="xl">Transcripts</app-govuk-heading>
 
-<app-search-transcripts-form (search)="onSearch($event)" />
+<app-tabs>
+  <div *tab="'Transcript requests'">
+    <app-govuk-heading>Transcript requests</app-govuk-heading>
 
-@if (loading$ | async) {
-  <app-loading text="Loading transcript requests..." />
-}
+    <app-search-transcripts-form (search)="onSearch($event)" />
 
-@if (results$ | async; as results) {
-  <app-search-transcripts-results [results]="results" [loading]="loading$ | async" />
-}
+    @if (loading$ | async) {
+      <app-loading text="Loading transcript requests..." />
+    }
+
+    @if (results$ | async; as results) {
+      <app-search-transcripts-results [results]="results" [loading]="loading$ | async" />
+    }
+  </div>
+
+  <div *tab="'Completed transcripts'"></div>
+</app-tabs>

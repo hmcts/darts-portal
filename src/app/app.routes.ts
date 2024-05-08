@@ -16,7 +16,7 @@ const openRoutes: Routes = [
   { path: 'internal-error', component: InternalErrorComponent, title: 'DARTS Internal Error' },
   { path: 'cookies', component: CookiesComponent, title: 'DARTS Cookie Policy' },
   { path: 'dev/components', loadComponent: () => import('./dev/dev.component').then((c) => c.DevComponent) },
-  { path: 'admin', redirectTo: '/admin/users', pathMatch: 'full' },
+  { path: 'admin', redirectTo: '/admin/search', pathMatch: 'full' },
   {
     path: 'admin/system-configuration',
     redirectTo: 'admin/system-configuration/retention-policies',
