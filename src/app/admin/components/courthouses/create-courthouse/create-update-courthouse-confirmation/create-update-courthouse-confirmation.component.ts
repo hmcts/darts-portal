@@ -30,7 +30,7 @@ export class CreateUpdateCourthouseConfirmationComponent {
   currentUrl = this.router.url.split('#')[0];
 
   get courthouseDetails() {
-    return this.mapFormValuesToDetailsTable(this.values);
+    return this.values && this.mapFormValuesToDetailsTable(this.values);
   }
 
   onReturnCourthouseName() {
@@ -61,10 +61,12 @@ export class CreateUpdateCourthouseConfirmationComponent {
       region = this.regions?.find((region) => region.id === parseInt(regionId));
     }
     const companyNumberIds = values?.securityGroupIds.map((companyId) => parseInt(companyId));
-    const selectedCompanies = this.companies.filter((company) => companyNumberIds.includes(company.id));
-    const selectedCompaniesNames = selectedCompanies.length
-      ? selectedCompanies.map((selectedCompany) => selectedCompany.name).join('\r\n')
-      : 'None';
+    const selectedCompanies =
+      companyNumberIds && this.companies.filter((company) => companyNumberIds.includes(company.id));
+    const selectedCompaniesNames =
+      selectedCompanies && selectedCompanies.length
+        ? selectedCompanies.map((selectedCompany) => selectedCompany.name).join('\r\n')
+        : 'None';
     const regionName = region?.name ?? 'No region';
 
     return {
