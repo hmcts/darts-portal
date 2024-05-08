@@ -61,12 +61,10 @@ export class CreateUpdateCourthouseConfirmationComponent {
       region = this.regions?.find((region) => region.id === parseInt(regionId));
     }
     const companyNumberIds = values?.securityGroupIds.map((companyId) => parseInt(companyId));
-    const selectedCompanies =
-      companyNumberIds && this.companies.filter((company) => companyNumberIds.includes(company.id));
-    const selectedCompaniesNames =
-      selectedCompanies && selectedCompanies.length
-        ? selectedCompanies.map((selectedCompany) => selectedCompany.name).join('\r\n')
-        : 'None';
+    const selectedCompanies = this.companies.filter((company) => companyNumberIds.includes(company.id));
+    const selectedCompaniesNames = selectedCompanies.length
+      ? selectedCompanies.map((selectedCompany) => selectedCompany.name).join('\r\n')
+      : 'None';
     const regionName = region?.name ?? 'No region';
 
     return {
