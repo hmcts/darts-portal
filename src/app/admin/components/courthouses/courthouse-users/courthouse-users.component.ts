@@ -53,14 +53,14 @@ export class CourthouseUsersComponent implements OnInit {
     this.uniqueUserNames = [...new Set(this.users.map((user) => user.userName))];
     this.filters = [
       {
-        displayName: 'User Name',
+        displayName: 'User name',
         name: this.userNameFilterName,
         values: [...this.uniqueUserNames],
         multiselect: true,
         search: true,
       },
       {
-        displayName: 'Role Type',
+        displayName: 'Role type',
         name: this.roleTypeFilterName,
         values: ['Requestor', 'Approver'],
         multiselect: true,
