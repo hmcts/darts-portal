@@ -2238,9 +2238,9 @@ __metadata:
   linkType: hard
 
 "@dynatrace/dtrum-api-types@npm:^1.283.3":
-  version: 1.283.3
-  resolution: "@dynatrace/dtrum-api-types@npm:1.283.3"
-  checksum: e0d1ad33cd97367d4658b590f0f2f9beaa3d5c329784397a3a786e418ee5ff91df582e76ab1c7cdd59a06bb970de588fa4b0114afb889c2cf2ae539eb84a262b
+  version: 1.291.1
+  resolution: "@dynatrace/dtrum-api-types@npm:1.291.1"
+  checksum: b91e928a7515ce4557178f9326db4036a5192bc552c9a430f781fa170d2b32921b096092e797b3e672b5d43561aa07ffcd928ea7d7c71564624fe820fd09680b
   languageName: node
   linkType: hard
 
