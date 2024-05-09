@@ -1,5 +1,5 @@
 import { StubResponse } from '.';
-import data from '../../darts-api-stub/data/securityRoles.json';
+import data from './data/securityRoles.json';
 
 export const securityRoles: StubResponse[] = [
   {
