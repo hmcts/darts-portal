@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { AfterViewChecked, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AfterViewChecked } from '@angular/core';
 import { initAll } from '@scottish-government/pattern-library/src/all';
 
 @Component({

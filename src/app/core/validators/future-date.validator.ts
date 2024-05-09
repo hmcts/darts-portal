@@ -8,10 +8,6 @@ export const futureDateValidator = (control: AbstractControl): ValidationErrors 
 
   const dateFormat = 'dd/MM/yyyy';
 
-  if (!DateTime.fromFormat(dateValue, dateFormat).isValid) {
-    return { pattern: true };
-  }
-
   const inputDate = DateTime.fromFormat(dateValue, dateFormat);
   const currentDate = DateTime.now();
 
