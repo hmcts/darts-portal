@@ -1,8 +1,9 @@
-import { SecurityGroup, SecurityRole, User } from '@admin-types/index';
+import { CourthouseUser, SecurityGroup, SecurityRole, User } from '@admin-types/index';
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
+import { DeleteComponent } from '@common/delete/delete.component';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
 import { FiltersComponent } from '@common/filters/filters.component';
 import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
@@ -34,6 +35,7 @@ import { CourthouseUsersComponent } from '../courthouse-users/courthouse-users.c
     FiltersComponent,
     DataTableComponent,
     CourthouseUsersComponent,
+    DeleteComponent,
   ],
 })
 export class CourthouseRecordComponent {
@@ -42,12 +44,20 @@ export class CourthouseRecordComponent {
   router = inject(Router);
   groupsService = inject(GroupsService);
   usersService = inject(UserAdminService);
+  isDeleting = false;
 
   courthouseId = this.route.snapshot.params.courthouseId;
 
   courthouse$ = this.courthouseService.getCourthouseWithRegionsAndSecurityGroups(this.courthouseId);
   isNewCourthouse$ = this.route.queryParams?.pipe(map((params) => !!params.newCourthouse));
   isUpdatedCourthouse$ = this.route.queryParams?.pipe(map((params) => !!params.updated));
+
+  selectedRows = [] as CourthouseUser[];
+
+  outputEvent(value: CourthouseUser[]) {
+    this.isDeleting = true;
+    console.log(value);
+  }
 
   roles$ = this.groupsService.getRoles().pipe(
     map((roles) => ({
@@ -127,5 +137,43 @@ export class CourthouseRecordComponent {
       });
     // Otherwise return "None"
     return 'None';
+  }
+
+  // onDeleteConfirmed() {
+  //   const idsToDelete = this.users.map((u) => u.transcriptionId);
+
+  //   this.transcriptService.deleteRequest(idsToDelete).subscribe({
+  //     next: () => {
+  //       this.isDeleting = false;
+  //       this.refresh$.next();
+  //     },
+  //     error: (error: HttpErrorResponse) => {
+  //       this.isDeleting = false;
+  //       if (error.status === 400) {
+  //         this.router.navigate(['transcriptions/delete-error']);
+  //       }
+  //     },
+  //   });
+  // }
+
+  // get deleteScreenTitle(): string {
+  //   return this.users.length === 1
+  //     ? `You are removing 1 user from Cardiff Crown Court`
+  //     : `You are removing ${this.users.length} users from Cardiff Crown Court`;
+  // }
+
+  // get deleteScreenText(): string {
+  //   return this.selectedRequests.length === 1
+  //     ? 'This action will remove this transcript request from your transcripts. You can still access it by searching at the hearing and case levels.'
+  //     : 'This action will remove these transcript requests from your transcripts. You can still access them by searching at the hearing and case levels.';
+  // }
+
+  // onDeleteClicked() {
+  //   if (this.users.length) {
+  //     this.isDeleting = true;
+  //   }
+  // }
+  onDeleteCancelled() {
+    this.isDeleting = false;
   }
 }
