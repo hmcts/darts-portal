@@ -1,4 +1,4 @@
-import { DATE_PIPE_DEFAULT_OPTIONS, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -171,7 +171,6 @@ describe('AudioViewComponent', () => {
           { provide: ErrorMessageService, useValue: fakeErrorMessageService },
           { provide: AppConfigService, useValue: appConfigServiceMock },
           DatePipe,
-          { provide: DATE_PIPE_DEFAULT_OPTIONS, useValue: { timezone: 'utc' } },
         ],
       });
 

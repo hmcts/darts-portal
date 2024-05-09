@@ -169,9 +169,8 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
     this.requestObj = {
       hearing_id: this.hearing.id,
       requestor: this.userState.userId,
-      // Remove milliseconds from ISO string e.g. 2023-05-31T12:00:00Z
-      start_time: startDateTime.toISO()?.split('.')[0] + 'Z',
-      end_time: endDateTime.toISO()?.split('.')[0] + 'Z',
+      start_time: startDateTime.toISO({ suppressMilliseconds: true, includeOffset: false }),
+      end_time: endDateTime.toISO({ suppressMilliseconds: true, includeOffset: false }),
       request_type: this.audioRequestForm.get('requestType')?.value,
     };
 

@@ -1,4 +1,4 @@
-import { DATE_PIPE_DEFAULT_OPTIONS, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -14,12 +14,12 @@ const MOCK_WORK_REQUESTS: WorkRequest[] = [
     caseId: 3,
     caseNumber: 'T2023453422',
     courthouseName: 'Reading',
-    hearingDate: DateTime.fromISO('2023-08-06T00:00:00Z'),
+    hearingDate: DateTime.fromISO('2023-08-06T00:00:00'),
     transcriptionType: 'Court Log',
     status: 'With Transcriber',
     urgency: { transcription_urgency_id: 1, description: 'Overnight', priority_order: 1 },
-    requestedTs: DateTime.fromISO('2023-08-12T13:00:00Z'),
-    stateChangeTs: DateTime.fromISO('2023-08-13T13:00:00Z'),
+    requestedTs: DateTime.fromISO('2023-08-12T13:00:00'),
+    stateChangeTs: DateTime.fromISO('2023-08-13T13:00:00'),
     isManual: true,
   },
   {
@@ -27,12 +27,12 @@ const MOCK_WORK_REQUESTS: WorkRequest[] = [
     caseId: 3,
     caseNumber: 'T2023453436',
     courthouseName: 'Swansea',
-    hearingDate: DateTime.fromISO('2023-06-10T00:00:00Z'),
+    hearingDate: DateTime.fromISO('2023-06-10T00:00:00'),
     transcriptionType: 'Court Log',
     status: 'Complete',
     urgency: { transcription_urgency_id: 1, description: 'Up to 3 Working days', priority_order: 1 },
-    requestedTs: DateTime.fromISO('2023-06-26T13:00:00Z'),
-    stateChangeTs: DateTime.fromISO('2023-06-27T13:00:00Z'),
+    requestedTs: DateTime.fromISO('2023-06-26T13:00:00'),
+    stateChangeTs: DateTime.fromISO('2023-06-27T13:00:00'),
     isManual: true,
   },
 ];
@@ -53,11 +53,7 @@ describe('YourWorkComponent', () => {
     beforeEach(async () => {
       await TestBed.configureTestingModule({
         imports: [YourWorkComponent, HttpClientTestingModule, RouterTestingModule],
-        providers: [
-          DatePipe,
-          { provide: DATE_PIPE_DEFAULT_OPTIONS, useValue: { timezone: 'utc' } },
-          { provide: TranscriptionService, useValue: fakeTranscriptService },
-        ],
+        providers: [DatePipe, { provide: TranscriptionService, useValue: fakeTranscriptService }],
       }).compileComponents();
 
       fixture = TestBed.createComponent(YourWorkComponent);
@@ -98,11 +94,7 @@ describe('YourWorkComponent', () => {
     beforeEach(async () => {
       await TestBed.configureTestingModule({
         imports: [YourWorkComponent, HttpClientTestingModule],
-        providers: [
-          DatePipe,
-          { provide: DATE_PIPE_DEFAULT_OPTIONS, useValue: { timezone: 'utc' } },
-          { provide: TranscriptionService, useValue: fakeTranscriptServiceNoRequests },
-        ],
+        providers: [DatePipe, { provide: TranscriptionService, useValue: fakeTranscriptServiceNoRequests }],
       }).compileComponents();
 
       fixture = TestBed.createComponent(YourWorkComponent);

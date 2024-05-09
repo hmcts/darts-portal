@@ -1,11 +1,9 @@
 import { CreateRetentionPolicy, RetentionPolicy, RetentionPolicyData } from '@admin-types/index';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { DateTime, Settings } from 'luxon';
+import { DateTime } from 'luxon';
 import { formDataFactory } from '../../components/retention-policies/retention-policy-form/retention-policy-form.component.spec';
 import { RetentionPoliciesService } from './retention-policies.service';
-
-Settings.defaultZone = 'utc';
 
 describe('RetentionPoliciesService', () => {
   let service: RetentionPoliciesService;
@@ -97,7 +95,7 @@ describe('RetentionPoliciesService', () => {
         description: 'test',
         fixed_policy_key: '1',
         duration: '1Y0M0D',
-        policy_start_at: '2025-01-01T11:11:00.000Z',
+        policy_start_at: '2025-01-01T11:11:00Z',
       };
 
       const expectedMappedPolicy: RetentionPolicy = {
@@ -107,7 +105,7 @@ describe('RetentionPoliciesService', () => {
         description: 'test',
         fixedPolicyKey: '1',
         duration: '1Y0M0D',
-        policyStartAt: DateTime.fromISO('2025-01-01T11:11:00.000Z'),
+        policyStartAt: DateTime.fromISO('2025-01-01T11:11:00Z'),
         policyEndAt: null,
       };
 

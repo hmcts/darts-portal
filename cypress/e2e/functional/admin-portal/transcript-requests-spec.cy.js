@@ -67,7 +67,7 @@ describe('Admin - Transcript requests', () => {
       cy.get('#request-details').contains('Standard');
 
       cy.get('#request-details').contains('Audio for transcript');
-      cy.get('#request-details').contains('Start time 13:00:00 - End time 16:00:00');
+      cy.get('#request-details').contains('Start time 14:00:00 - End time 17:00:00');
 
       cy.get('#request-details').contains('Requested by');
       cy.get('#request-details').contains('Eric Bristow');

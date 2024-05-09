@@ -100,7 +100,7 @@ export class DataTableComponent<TRow> implements OnChanges {
         return this.compareDates(column, valueA as DateTime, valueB as DateTime);
       } else if (isStrings && this.isDateTime(valueA) && this.isDateTime(valueB)) {
         // if both values are strings and luxon DateTime, compare them as DateTime
-        return this.compareDates(column, DateTime.fromISO(valueA).toUTC(), DateTime.fromISO(valueB).toUTC());
+        return this.compareDates(column, DateTime.fromISO(valueA), DateTime.fromISO(valueB));
       }
       // TO DO: To be removed and then passed in as custom sort function by the parent component
       else if (column === 'courtroom' && isStrings && this.isNumeric(valueA) && this.isNumeric(valueB)) {
@@ -162,7 +162,7 @@ export class DataTableComponent<TRow> implements OnChanges {
   }
 
   isDateTime(value: string): boolean {
-    return DateTime.fromISO(value).toUTC().isValid;
+    return DateTime.fromISO(value).isValid;
   }
 
   compareStrings(column: string, a: string, b: string): number {

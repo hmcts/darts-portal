@@ -22,7 +22,7 @@ describe('Your work', () => {
     cy.get('#todoTable').should('contain', 'Reading');
     cy.get('#todoTable').should('contain', '06 Aug 2023');
     cy.get('#todoTable').should('contain', 'Court Log');
-    cy.get('#todoTable').should('contain', '12 Aug 2023 13:00');
+    cy.get('#todoTable').should('contain', '12 Aug 2023 14:00');
     cy.get('#todoTable').should('contain', 'Overnight');
     cy.get('#todoTable').should('contain', 'View');
     cy.a11y();
@@ -36,7 +36,7 @@ describe('Your work', () => {
     cy.get('#completedTable').should('contain', 'Newcastle');
     cy.get('#completedTable').should('contain', '10 Jun 2023');
     cy.get('#completedTable').should('contain', 'Court Log');
-    cy.get('#completedTable').should('contain', '27 Jun 2023 16:00');
+    cy.get('#completedTable').should('contain', '27 Jun 2023 17:00');
     cy.get('#completedTable').should('contain', 'Up to 3 working days');
     cy.get('#completedTable').should('contain', 'View');
     cy.a11y();
