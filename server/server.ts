@@ -30,7 +30,7 @@ export const startServer = ({ disableAuthentication }: StartServerOptions = { di
 
   app.use(
     '/assets',
-    express.static(path.join(__dirname, './assets'), {
+    express.static(path.join(__dirname, '../assets'), {
       setHeaders: function (res) {
         // set CORS headers for assets so that they can be fetched from the Azure AD B2C login screen
         res.set('Access-Control-Allow-Origin', config.get('authentication.azureAdB2cOriginHost'));
