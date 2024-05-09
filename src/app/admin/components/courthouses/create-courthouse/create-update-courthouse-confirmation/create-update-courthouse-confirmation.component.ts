@@ -30,7 +30,7 @@ export class CreateUpdateCourthouseConfirmationComponent {
   currentUrl = this.router.url.split('#')[0];
 
   get courthouseDetails() {
-    return this.mapFormValuesToDetailsTable(this.values);
+    return this.values && this.mapFormValuesToDetailsTable(this.values);
   }
 
   onReturnCourthouseName() {
