@@ -1,4 +1,5 @@
 const express = require('express');
+
 const { localArray } = require('../../localArray');
 
 const router = express.Router();
@@ -125,11 +126,34 @@ const defaultSecurityGroups = [
     user_ids: [1],
     description: 'Dummy description 11',
   },
+  {
+    id: 12,
+    security_role_id: 1,
+    name: 'Oxford Requesters',
+    display_name: 'Oxford Requesters',
+    display_state: true,
+    global_access: true,
+    courthouse_ids: [16],
+    user_ids: [1, 3],
+    description: 'Dummy description 1',
+  },
+  {
+    id: 13,
+    security_role_id: 2,
+    name: 'Oxford Approvers',
+    display_name: 'Oxford Approvers',
+    display_state: true,
+    global_access: true,
+    courthouse_ids: [16],
+    user_ids: [2, 3],
+    description: 'Dummy description 2',
+  },
 ];
 
 const securityGroups = localArray('securityGroups');
 // Clear out old values on restart
 securityGroups.value = defaultSecurityGroups;
+
 router.patch('/:id', (req, res) => {
   const id = req.params.id;
   const securityGroup = securityGroups.value.find((securityGroup) => securityGroup.id == id);
@@ -147,9 +171,31 @@ router.get('/:id', (req, res) => {
 
 router.get('/', (req, res) => {
   const roleIds = req?.query?.['role_ids'];
-  if (roleIds)
-    return res.send(securityGroups.value.filter((securityGroup) => roleIds.includes(securityGroup.security_role_id)));
-  res.send(securityGroups.value);
+  const courthouseId = req.query.courthouse_id;
+  if (!courthouseId && !roleIds) {
+    res.send(defaultSecurityGroups);
+    return;
+  }
+  if (courthouseId && roleIds) {
+    res.send(
+      defaultSecurityGroups.filter(
+        (securityGroup) =>
+          securityGroup.courthouse_ids.includes(+courthouseId) &&
+          roleIds.includes(securityGroup.security_role_id.toString())
+      )
+    );
+    return;
+  }
+  if (courthouseId) {
+    res.send(defaultSecurityGroups.filter((securityGroup) => securityGroup.courthouse_ids.includes(+courthouseId)));
+    return;
+  }
+  if (roleIds) {
+    res.send(
+      defaultSecurityGroups.filter((securityGroup) => roleIds.includes(+securityGroup.security_role_id.toString()))
+    );
+    return;
+  }
 });
 
 router.post('/', (req, res) => {

@@ -56,7 +56,15 @@
           ></app-details-table>
         </div>
 
-        <div *tab="'Users'"></div>
+        <div *tab="'Users'">
+          <div class="govuk-grid-row">
+            @if (users$ | async; as users) {
+              <app-courthouse-users [users]="users"></app-courthouse-users>
+            } @else {
+              <app-courthouse-users [users]="[]"></app-courthouse-users>
+            }
+          </div>
+        </div>
       </app-tabs>
     </main>
   </div>

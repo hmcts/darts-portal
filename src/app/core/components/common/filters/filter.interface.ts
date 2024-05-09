@@ -4,4 +4,5 @@ export interface Filter {
   values: string[];
   multiselect?: boolean;
   search?: boolean;
+  isExpanded?: boolean;
 }
