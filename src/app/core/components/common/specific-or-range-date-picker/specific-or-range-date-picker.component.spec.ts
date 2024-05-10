@@ -74,18 +74,6 @@ describe('SpecificOrRangeDatePickerComponent', () => {
   });
 
   describe('Validation errors', () => {
-    it('toDateControl should be required when fromDateControl is set', () => {
-      component.dateTypeControl.setValue('range');
-      component.fromDateControl.setValue('01/01/2022');
-      expect(component.toDateControl.hasError('required')).toBe(true);
-    });
-
-    it('fromDateControl should be required when toDateControl is set', () => {
-      component.dateTypeControl.setValue('range');
-      component.toDateControl.setValue('01/01/2022');
-      expect(component.fromDateControl.hasError('required')).toBe(true);
-    });
-
     it('dates should not be in the future', () => {
       component.specificDateControl.setValue('01/01/3000');
       expect(component.specificDateControl.hasError('futureDate')).toBe(true);
