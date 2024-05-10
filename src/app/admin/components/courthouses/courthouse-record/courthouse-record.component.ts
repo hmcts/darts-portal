@@ -10,6 +10,7 @@ import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.componen
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { NotFoundComponent } from '@components/error/not-found/not-found.component';
+import { DatatableColumn } from '@core-types/index';
 import { TabDirective } from '@directives/tab.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
@@ -45,6 +46,7 @@ export class CourthouseRecordComponent {
   groupsService = inject(GroupsService);
   usersService = inject(UserAdminService);
   isDeleting = false;
+  tab = 'Users';
 
   courthouseId = this.route.snapshot.params.courthouseId;
 
@@ -52,12 +54,8 @@ export class CourthouseRecordComponent {
   isNewCourthouse$ = this.route.queryParams?.pipe(map((params) => !!params.newCourthouse));
   isUpdatedCourthouse$ = this.route.queryParams?.pipe(map((params) => !!params.updated));
 
-  selectedRows = [] as CourthouseUser[];
-
-  outputEvent(value: CourthouseUser[]) {
-    this.isDeleting = true;
-    console.log(value);
-  }
+  selectedUsers = [] as CourthouseUser[];
+  deleteColumns: DatatableColumn[] = [{ name: 'User name', prop: 'userName', sortable: false }];
 
   roles$ = this.groupsService.getRoles().pipe(
     map((roles) => ({
@@ -66,6 +64,11 @@ export class CourthouseRecordComponent {
       approverId: roles.find((role) => role.name === 'APPROVER')!.id,
     }))
   );
+
+  outputEvent(selectedUsers: CourthouseUser[]) {
+    this.isDeleting = true;
+    this.selectedUsers = selectedUsers;
+  }
 
   courthouseRequesterApproverGroups$ = this.roles$.pipe(
     switchMap(({ roles, requesterId, approverId }) => {
@@ -139,41 +142,31 @@ export class CourthouseRecordComponent {
     return 'None';
   }
 
-  // onDeleteConfirmed() {
-  //   const idsToDelete = this.users.map((u) => u.transcriptionId);
+  onDeleteConfirmed() {
+    const idsToDelete = this.selectedUsers.map((s) => s.email);
 
-  //   this.transcriptService.deleteRequest(idsToDelete).subscribe({
-  //     next: () => {
-  //       this.isDeleting = false;
-  //       this.refresh$.next();
-  //     },
-  //     error: (error: HttpErrorResponse) => {
-  //       this.isDeleting = false;
-  //       if (error.status === 400) {
-  //         this.router.navigate(['transcriptions/delete-error']);
-  //       }
-  //     },
-  //   });
-  // }
+    // this.transcriptService.deleteRequest(idsToDelete).subscribe({
+    //   next: () => {
+    //     this.isDeleting = false;
+    //     this.refresh$.next();
+    //   },
+    //   error: (error: HttpErrorResponse) => {
+    //     this.isDeleting = false;
+    //     if (error.status === 400) {
+    //       this.router.navigate(['transcriptions/delete-error']);
+    //     }
+    //   },
+    // });
+  }
 
-  // get deleteScreenTitle(): string {
-  //   return this.users.length === 1
-  //     ? `You are removing 1 user from Cardiff Crown Court`
-  //     : `You are removing ${this.users.length} users from Cardiff Crown Court`;
-  // }
+  deleteScreenTitle(courthouseName: string): string {
+    return this.selectedUsers.length === 1
+      ? `You are removing 1 user from ${courthouseName}`
+      : `You are removing ${this.selectedUsers.length} users from ${courthouseName}`;
+  }
 
-  // get deleteScreenText(): string {
-  //   return this.selectedRequests.length === 1
-  //     ? 'This action will remove this transcript request from your transcripts. You can still access it by searching at the hearing and case levels.'
-  //     : 'This action will remove these transcript requests from your transcripts. You can still access them by searching at the hearing and case levels.';
-  // }
-
-  // onDeleteClicked() {
-  //   if (this.users.length) {
-  //     this.isDeleting = true;
-  //   }
-  // }
   onDeleteCancelled() {
     this.isDeleting = false;
+    this.tab = 'Users';
   }
 }

@@ -11,28 +11,14 @@
   }
 
   @if (isDeleting) {
-    <!-- <app-delete
-      [numberOfItems]="users.length"
-      [title]="deleteScreenTitle"
+    <app-delete
+      [numberOfItems]="selectedUsers.length"
+      [title]="deleteScreenTitle(courthouse.displayName)"
       (confirm)="onDeleteConfirmed()"
       (cancel)="onDeleteCancelled()"
     >
-      <app-data-table
-        id="deletionTable"
-        [rows]="selectedRequests"
-        [columns]="deleteColumns"
-        class="govuk-grid-column-full"
-      >
-        <ng-template [tableRowTemplate]="selectedRequests" let-row>
-          <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
-        </ng-template>
-      </app-data-table>
-      <div class="govuk-grid-column-two-thirds">
-        <p class="govuk-body">
-          {{ deleteScreenText }}
-        </p>
-      </div>
-    </app-delete> -->
+      <app-data-table id="deletionTable" [rows]="selectedUsers" [columns]="deleteColumns" />
+    </app-delete>
   } @else {
     <div class="govuk-width-container">
       <main class="govuk-main-wrapper">
@@ -68,7 +54,7 @@
           </div>
         </div>
 
-        <app-tabs>
+        <app-tabs [default]="tab">
           <div *tab="'Details'">
             <app-details-table
               title="Details"
