@@ -1,9 +1,9 @@
-import express, { Request, Response } from 'express';
-import cookieParser from 'cookie-parser';
-import nunjucks from 'nunjucks';
-import config from 'config';
-import * as path from 'path';
 import healthCheck from '@hmcts/nodejs-healthcheck';
+import config from 'config';
+import cookieParser from 'cookie-parser';
+import express, { Request, Response } from 'express';
+import nunjucks from 'nunjucks';
+import * as path from 'path';
 
 import { session } from './middleware';
 import routes from './routes';
@@ -45,6 +45,9 @@ export const startServer = ({ disableAuthentication }: StartServerOptions = { di
   }
   app.use((req, res, next) => {
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+    if (req.secure) {
+      res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+    }
     next();
   });
   app.use(session());
