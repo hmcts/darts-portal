@@ -1,7 +1,7 @@
 import { JsonPipe, NgClass, NgIf } from '@angular/common';
 import { Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ControlContainer, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ControlContainer, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { DatepickerComponent } from '@common/datepicker/datepicker.component';
 import { TranscriptSearchFormErrorMessages } from '@constants/transcript-search-form-error-messages';
 
@@ -28,8 +28,6 @@ export class SpecificOrRangeDatePickerComponent implements OnInit {
     this.form = <FormGroup>this.controlContainer.control;
     this.resetDateControlsOnDateTypeChanges();
     this.setDateRangeErrorsOnChanges();
-    this.setRequiredValidatorsOnValueChanges(this.fromDateControl, this.toDateControl);
-    this.setRequiredValidatorsOnValueChanges(this.toDateControl, this.fromDateControl);
   }
 
   get dateTypeControl() {
@@ -62,23 +60,6 @@ export class SpecificOrRangeDatePickerComponent implements OnInit {
     const errorKey = Object.keys(errors)[0];
 
     return [TranscriptSearchFormErrorMessages[controlKey][errorKey]];
-  }
-
-  private setRequiredValidatorsOnValueChanges(sourceControl: FormControl, dependantControl: FormControl) {
-    sourceControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((value) => {
-      if (value) {
-        dependantControl.addValidators(Validators.required);
-      } else {
-        dependantControl.removeValidators(Validators.required);
-      }
-
-      if (dependantControl.value) {
-        sourceControl.addValidators(Validators.required);
-      }
-
-      sourceControl.updateValueAndValidity({ onlySelf: true, emitEvent: false });
-      dependantControl.updateValueAndValidity({ onlySelf: true, emitEvent: false });
-    });
   }
 
   private setDateRangeErrorsOnChanges() {
