@@ -16,7 +16,7 @@ import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { GroupsService } from '@services/groups/groups.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
-import { map, of, switchMap } from 'rxjs';
+import { BehaviorSubject, Observable, forkJoin, map, of, shareReplay, switchMap, tap } from 'rxjs';
 import { CourthouseUsersComponent } from '../courthouse-users/courthouse-users.component';
 
 @Component({
@@ -54,8 +54,11 @@ export class CourthouseRecordComponent {
   isNewCourthouse$ = this.route.queryParams?.pipe(map((params) => !!params.newCourthouse));
   isUpdatedCourthouse$ = this.route.queryParams?.pipe(map((params) => !!params.updated));
 
-  selectedUsers = [] as CourthouseUser[];
+  private refresh$ = new BehaviorSubject<void>(undefined);
+
+  selectedUsers: CourthouseUser[] = [];
   deleteColumns: DatatableColumn[] = [{ name: 'User name', prop: 'userName', sortable: false }];
+  approverRequesterGroups: SecurityGroup[] = [];
 
   roles$ = this.groupsService.getRoles().pipe(
     map((roles) => ({
@@ -72,32 +75,39 @@ export class CourthouseRecordComponent {
 
   courthouseRequesterApproverGroups$ = this.roles$.pipe(
     switchMap(({ roles, requesterId, approverId }) => {
-      return this.groupsService.getGroupsByRoleIdsAndCourthouseId([requesterId, approverId], this.courthouseId).pipe(
-        switchMap((groups) => {
-          const approverUserIds: number[] = [];
-          const requesterUserIds: number[] = [];
+      return this.groupsService
+        .getGroupsByRoleIdsAndCourthouseId([requesterId, approverId], this.courthouseId)
+        .pipe(
+          switchMap((groups) => {
+            const approverUserIds: number[] = [];
+            const requesterUserIds: number[] = [];
 
-          // Split userIds into approvers and requesters
-          groups.forEach((group) => {
-            group.securityRoleId === approverId
-              ? approverUserIds.push(...group.userIds)
-              : requesterUserIds.push(...group.userIds);
-          });
+            // Split userIds into approvers and requesters
+            groups.forEach((group) => {
+              group.securityRoleId === approverId
+                ? approverUserIds.push(...group.userIds)
+                : requesterUserIds.push(...group.userIds);
+            });
 
-          return of({
-            roles,
-            requesterId,
-            approverId,
-            groups,
-            approverUserIds,
-            requesterUserIds,
-          });
-        })
-      );
+            return of({
+              roles,
+              requesterId,
+              approverId,
+              groups,
+              approverUserIds,
+              requesterUserIds,
+            });
+          })
+        )
+        .pipe(
+          tap(({ groups }) => {
+            this.approverRequesterGroups = groups;
+          })
+        );
     })
   );
 
-  users$ = this.courthouseRequesterApproverGroups$.pipe(
+  fetchUsers$ = this.courthouseRequesterApproverGroups$.pipe(
     switchMap(({ roles, requesterId, approverId, groups, approverUserIds, requesterUserIds }) => {
       return this.usersService.getUsersById([...approverUserIds, ...requesterUserIds]).pipe(
         map((users) => {
@@ -110,11 +120,18 @@ export class CourthouseRecordComponent {
               userName: user.fullName,
               email: user.emailAddress,
               roleType: user.role,
+              userId: user.id,
+              groupId: user.groupId,
             };
           });
         })
       );
     })
+  );
+
+  users$ = this.refresh$.pipe(
+    switchMap(() => this.fetchUsers$),
+    shareReplay(1)
   );
 
   getUsersWithRoleByGroup(
@@ -123,13 +140,13 @@ export class CourthouseRecordComponent {
     groups: SecurityGroup[],
     roleId: number,
     roles: SecurityRole[]
-  ): (User & { role: string })[] {
+  ): (User & { role: string; groupId: number })[] {
     return users
       .filter((u) => groupUserIds.includes(u.id))
       .map((u) => {
         const group = groups.filter((g) => g.userIds.includes(u.id)).filter((g) => g.securityRoleId === roleId)[0];
         const role = roles.find((role) => role.id === group.securityRoleId)?.displayName ?? '';
-        return { ...u, role };
+        return { ...u, role, groupId: group.id };
       });
   }
 
@@ -143,20 +160,38 @@ export class CourthouseRecordComponent {
   }
 
   onDeleteConfirmed() {
-    const idsToDelete = this.selectedUsers.map((s) => s.email);
+    let deleteRequests: Observable<unknown>[] = [];
 
-    // this.transcriptService.deleteRequest(idsToDelete).subscribe({
-    //   next: () => {
-    //     this.isDeleting = false;
-    //     this.refresh$.next();
-    //   },
-    //   error: (error: HttpErrorResponse) => {
-    //     this.isDeleting = false;
-    //     if (error.status === 400) {
-    //       this.router.navigate(['transcriptions/delete-error']);
-    //     }
-    //   },
-    // });
+    const uniqueUserIdsToRemove = Array.from(
+      new Set(
+        this.selectedUsers.map((user) => {
+          return user.userId;
+        })
+      )
+    );
+
+    const uniqueSelectedGroups = Array.from(
+      new Set(
+        this.selectedUsers.map((user) => {
+          return this.approverRequesterGroups.find((group) => group.id === user.groupId);
+        })
+      )
+    );
+
+    const groupsDTO = uniqueSelectedGroups.map((group) => {
+      return {
+        groupId: group!.id,
+        userIds: group!.userIds.filter((u) => !uniqueUserIdsToRemove.includes(u)),
+      };
+    });
+
+    deleteRequests = groupsDTO.map((s) => this.groupsService.assignUsersToGroup(s.groupId!, s.userIds!));
+
+    forkJoin(deleteRequests).subscribe({
+      next: () => (this.isDeleting = false),
+      error: () => (this.isDeleting = false),
+      complete: () => this.refresh$.next(),
+    });
   }
 
   deleteScreenTitle(courthouseName: string): string {
