@@ -14,10 +14,14 @@
     <app-delete
       [numberOfItems]="selectedUsers.length"
       [title]="deleteScreenTitle(courthouse.displayName)"
+      deleteButtonTxt="Confirm"
+      [isRedDeleteButton]="false"
       (confirm)="onDeleteConfirmed()"
       (cancel)="onDeleteCancelled()"
     >
-      <app-data-table id="deletionTable" [rows]="selectedUsers" [columns]="deleteColumns" />
+      <div class="govuk-grid-column-one-half">
+        <app-data-table id="deletionTable" [rows]="selectedUsers" [columns]="deleteColumns"></app-data-table>
+      </div>
     </app-delete>
   } @else {
     <div class="govuk-width-container">

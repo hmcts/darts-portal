@@ -12,6 +12,7 @@ import { TabsComponent } from '@common/tabs/tabs.component';
 import { NotFoundComponent } from '@components/error/not-found/not-found.component';
 import { DatatableColumn } from '@core-types/index';
 import { TabDirective } from '@directives/tab.directive';
+import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { GroupsService } from '@services/groups/groups.service';
@@ -37,6 +38,7 @@ import { CourthouseUsersComponent } from '../courthouse-users/courthouse-users.c
     DataTableComponent,
     CourthouseUsersComponent,
     DeleteComponent,
+    TableRowTemplateDirective,
   ],
 })
 export class CourthouseRecordComponent {
@@ -57,7 +59,11 @@ export class CourthouseRecordComponent {
   private refresh$ = new BehaviorSubject<void>(undefined);
 
   selectedUsers: CourthouseUser[] = [];
-  deleteColumns: DatatableColumn[] = [{ name: 'User name', prop: 'userName', sortable: false }];
+  deleteColumns: DatatableColumn[] = [
+    { name: 'User name', prop: 'userName', sortable: false },
+    { name: 'Email', prop: 'email', sortable: false },
+    { name: 'Role type', prop: 'roleType', sortable: false },
+  ];
   approverRequesterGroups: SecurityGroup[] = [];
 
   roles$ = this.groupsService.getRoles().pipe(
@@ -188,8 +194,8 @@ export class CourthouseRecordComponent {
 
   deleteScreenTitle(courthouseName: string): string {
     return this.selectedUsers.length === 1
-      ? `You are removing 1 user from ${courthouseName}`
-      : `You are removing ${this.selectedUsers.length} users from ${courthouseName}`;
+      ? `You are removing 1 user role from ${courthouseName}`
+      : `You are removing ${this.selectedUsers.length} user roles from ${courthouseName}`;
   }
 
   onDeleteCancelled() {
