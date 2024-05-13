@@ -163,7 +163,7 @@ export const ADMIN_ROUTES: Routes = [
       ).then((c) => c.CreateEditRetentionPolicyComponent),
   },
   {
-    path: 'admin/system-configuration/event-mapping',
+    path: 'admin/system-configuration/event-mappings',
     title: 'DARTS Admin Event Mapping',
     loadComponent: () =>
       import('./components/system-configuration/system-configuration.component').then(

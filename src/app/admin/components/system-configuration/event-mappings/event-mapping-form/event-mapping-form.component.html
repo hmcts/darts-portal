@@ -1,0 +1,86 @@
+<form class="govuk-form" [formGroup]="form" (change)="onChange()">
+  <div class="govuk-form-group">
+    <label class="govuk-label" for="search">Filter by type, subtype, or name</label>
+    <input
+      class="govuk-input govuk-!-width-one-third"
+      type="text"
+      id="search"
+      formControlName="searchText"
+      (ngModelChange)="onChange()"
+    />
+  </div>
+
+  <div class="govuk-form-group">
+    <label class="govuk-label" for="event-search">Filter by event handler</label>
+
+    <select class="govuk-select" id="event-search" formControlName="eventHandler">
+      <option value="" disabled selected>Select</option>
+      <option value="">All</option>
+      @for (handler of eventHandlers; track handler) {
+        <option [value]="handler">
+          {{ handler }}
+        </option>
+      }
+    </select>
+  </div>
+
+  <div class="govuk-form-group">
+    <label class="govuk-label" for="event-search">Show</label>
+
+    <fieldset class="govuk-fieldset">
+      <legend class="govuk-visually-hidden">
+        <span class="govuk-fieldset__heading">Event status</span>
+      </legend>
+      <div class="govuk-radios govuk-radios--small govuk-radios--inline">
+        <div class="govuk-radios__item">
+          <input
+            class="govuk-radios__input"
+            type="radio"
+            id="activeEvents"
+            value="active"
+            formControlName="statusFilter"
+          />
+          <label class="govuk-label govuk-radios__label" for="activeEvents">Active only</label>
+        </div>
+        <div class="govuk-radios__item">
+          <input
+            class="govuk-radios__input"
+            type="radio"
+            id="activeAndInactiveEvents"
+            value="activeAndInactive"
+            formControlName="statusFilter"
+          />
+          <label class="govuk-label govuk-radios__label" for="activeAndInactiveEvents">Active and inactive</label>
+        </div>
+
+        <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+          <div class="govuk-checkboxes__item">
+            <input
+              class="govuk-checkboxes__input"
+              id="with-restrictions"
+              name="with-restrictions"
+              type="checkbox"
+              [value]="true"
+              formControlName="withRestrictions"
+            />
+            <label class="govuk-label govuk-checkboxes__label" for="with-restrictions"> With restrictions </label>
+          </div>
+        </div>
+
+        <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+          <div class="govuk-checkboxes__item">
+            <input
+              class="govuk-checkboxes__input"
+              id="without-restrictions"
+              name="without-restrictions"
+              type="checkbox"
+              [value]="true"
+              formControlName="withoutRestrictions"
+            />
+            <label class="govuk-label govuk-checkboxes__label" for="without-restrictions"> Without restrictions </label>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+</form>
