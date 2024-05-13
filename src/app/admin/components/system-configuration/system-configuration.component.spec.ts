@@ -45,8 +45,8 @@ describe('SystemConfigurationComponent', () => {
 
     it('should navigate to the event mapping tab', () => {
       const routerSpy = jest.spyOn(component.router, 'navigate');
-      component.onTabChanged({ name: 'Event mapping' } as unknown as TabDirective);
-      expect(routerSpy).toHaveBeenCalledWith(['/admin/system-configuration/event-mapping']);
+      component.onTabChanged({ name: 'Event mappings' } as unknown as TabDirective);
+      expect(routerSpy).toHaveBeenCalledWith(['/admin/system-configuration/event-mappings']);
     });
 
     it('should navigate to the automated tasks tab', () => {
@@ -70,8 +70,8 @@ describe('SystemConfigurationComponent', () => {
     });
 
     it('should return "Event mapping" if url is "/admin/system-configuration/event-mapping"', () => {
-      const tab = component.getTabFromUrl('/admin/system-configuration/event-mapping');
-      expect(tab).toBe('Event mapping');
+      const tab = component.getTabFromUrl('/admin/system-configuration/event-mappings');
+      expect(tab).toBe('Event mappings');
     });
 
     it('should return "Automated tasks" if url is "/admin/system-configuration/automated-tasks"', () => {
@@ -86,9 +86,9 @@ describe('SystemConfigurationComponent', () => {
       expect(url).toBe('/admin/system-configuration/retention-policies');
     });
 
-    it('should return "event-mapping" if tab is "Event mapping"', () => {
-      const url = component.getUrlFromTab('Event mapping');
-      expect(url).toBe('/admin/system-configuration/event-mapping');
+    it('should return "event-mappings" if tab is "Event mappings"', () => {
+      const url = component.getUrlFromTab('Event mappings');
+      expect(url).toBe('/admin/system-configuration/event-mappings');
     });
 
     it('should return "automated-tasks" if tab is "Automated tasks"', () => {
