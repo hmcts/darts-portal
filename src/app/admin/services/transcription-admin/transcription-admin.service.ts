@@ -203,7 +203,7 @@ export class TranscriptionAdminService {
         : null;
 
     const processStatus = (status: string | undefined) => {
-      const changeStatuses = ['Awaiting Authorisation', 'With Transcriber'];
+      const changeStatuses = ['Awaiting Authorisation', 'With Transcriber', 'Requested', 'Approved'];
       return status
         ? changeStatuses.includes(status)
           ? {
