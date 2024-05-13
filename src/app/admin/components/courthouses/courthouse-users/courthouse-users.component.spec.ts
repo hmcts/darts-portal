@@ -20,16 +20,22 @@ describe('CourthouseUsersComponent', () => {
         userName: 'Eric Bristow',
         email: 'eric.bristow@darts.local',
         roleType: 'Approver',
+        userId: 1,
+        groupId: 12,
       },
       {
-        userName: 'Eric Bristow',
-        email: 'eric.bristow@darts.local',
-        roleType: 'Requestor',
+        userName: 'Michael van Gerwen',
+        email: 'michael.vangerwen@darts.local',
+        roleType: 'Approver',
+        userId: 3,
+        groupId: 12,
       },
       {
         userName: 'Fallon Sherrock',
         email: 'fallon.sherrock@darts.local',
         roleType: 'Requestor',
+        userId: 2,
+        groupId: 13,
       },
     ];
     fixture.detectChanges();
@@ -51,7 +57,7 @@ describe('CourthouseUsersComponent', () => {
         {
           displayName: 'Role Type',
           name: 'roleType',
-          values: ['Requestor'],
+          values: ['Approver'],
           multiselect: true,
         },
       ];
@@ -60,7 +66,9 @@ describe('CourthouseUsersComponent', () => {
         {
           userName: 'Eric Bristow',
           email: 'eric.bristow@darts.local',
-          roleType: 'Requestor',
+          roleType: 'Approver',
+          userId: 1,
+          groupId: 12,
         },
       ];
 
@@ -81,6 +89,8 @@ describe('CourthouseUsersComponent', () => {
           userName: 'Eric Bristow',
           email: 'eric.bristow@darts.local',
           roleType: 'Approver',
+          userId: 1,
+          groupId: 12,
         },
       ];
 
@@ -91,16 +101,22 @@ describe('CourthouseUsersComponent', () => {
           userName: 'Eric Bristow',
           email: 'eric.bristow@darts.local',
           roleType: 'Approver',
+          userId: 1,
+          groupId: 12,
         },
         {
-          userName: 'Eric Bristow',
-          email: 'eric.bristow@darts.local',
-          roleType: 'Requestor',
+          userName: 'Michael van Gerwen',
+          email: 'michael.vangerwen@darts.local',
+          roleType: 'Approver',
+          userId: 3,
+          groupId: 12,
         },
         {
           userName: 'Fallon Sherrock',
           email: 'fallon.sherrock@darts.local',
           roleType: 'Requestor',
+          userId: 2,
+          groupId: 13,
         },
       ];
 

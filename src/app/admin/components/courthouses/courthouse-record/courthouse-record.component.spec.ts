@@ -261,7 +261,7 @@ describe('CourthouseRecordComponent', () => {
   });
 
   describe('courthouseRequesterApproverGroups$', () => {
-    it('should return an object containing roles, requesterId, approverId, groups, approverUserIds, requesterUserIds', () => {
+    it('should return an object containing roles, requesterId, approverId, groups, approverUserIds, requesterUserIds, groupId and userId', () => {
       const expectedResult = {
         roles: [
           {
@@ -361,16 +361,22 @@ describe('CourthouseRecordComponent', () => {
           userName: 'Eric Bristow',
           email: 'eric.bristow@darts.local',
           roleType: 'Approver',
+          groupId: 1,
+          userId: 1,
         },
         {
           userName: 'Eric Bristow',
           email: 'eric.bristow@darts.local',
           roleType: 'Requestor',
+          groupId: 2,
+          userId: 1,
         },
         {
           userName: 'Fallon Sherrock',
           email: 'fallon.sherrock@darts.local',
           roleType: 'Requestor',
+          groupId: 2,
+          userId: 2,
         },
       ];
 
@@ -497,6 +503,7 @@ describe('CourthouseRecordComponent', () => {
           lastModifiedAt: DateTime.fromISO('2020-01-21T00:00:00.000Z'),
           createdAt: DateTime.fromISO('2020-01-11T00:00:00.000Z'),
           fullName: 'Eric Bristow',
+          groupId: 1,
           emailAddress: 'eric.bristow@darts.local',
           description: 'Stub Active User',
           active: true,
