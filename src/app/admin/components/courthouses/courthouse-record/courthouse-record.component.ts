@@ -16,7 +16,7 @@ import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { GroupsService } from '@services/groups/groups.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
-import { BehaviorSubject, Observable, forkJoin, map, of, shareReplay, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, forkJoin, map, of, shareReplay, switchMap, tap } from 'rxjs';
 import { CourthouseUsersComponent } from '../courthouse-users/courthouse-users.component';
 
 @Component({
@@ -160,32 +160,24 @@ export class CourthouseRecordComponent {
   }
 
   onDeleteConfirmed() {
-    let deleteRequests: Observable<unknown>[] = [];
-
-    const uniqueUserIdsToRemove = Array.from(
-      new Set(
-        this.selectedUsers.map((user) => {
-          return user.userId;
-        })
-      )
+    const uniqueUserIdsToRemove = new Set(
+      this.selectedUsers.map((user) => {
+        return user.userId;
+      })
     );
 
-    const uniqueSelectedGroups = Array.from(
+    const deleteRequests = Array.from(
       new Set(
         this.selectedUsers.map((user) => {
           return this.approverRequesterGroups.find((group) => group.id === user.groupId);
         })
       )
-    );
-
-    const groupsDTO = uniqueSelectedGroups.map((group) => {
-      return {
+    )
+      .map((group) => ({
         groupId: group!.id,
-        userIds: group!.userIds.filter((u) => !uniqueUserIdsToRemove.includes(u)),
-      };
-    });
-
-    deleteRequests = groupsDTO.map((s) => this.groupsService.assignUsersToGroup(s.groupId!, s.userIds!));
+        userIds: group!.userIds.filter((u) => !uniqueUserIdsToRemove.has(u)),
+      }))
+      .map((s) => this.groupsService.assignUsersToGroup(s.groupId!, s.userIds!));
 
     forkJoin(deleteRequests).subscribe({
       next: () => (this.isDeleting = false),
