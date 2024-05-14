@@ -17,7 +17,7 @@ import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { GroupsService } from '@services/groups/groups.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
-import { BehaviorSubject, forkJoin, map, of, shareReplay, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, forkJoin, map, of, switchMap, tap } from 'rxjs';
 import { CourthouseUsersComponent } from '../courthouse-users/courthouse-users.component';
 
 @Component({
@@ -136,10 +136,7 @@ export class CourthouseRecordComponent {
     })
   );
 
-  users$ = this.refresh$.pipe(
-    switchMap(() => this.fetchUsers$),
-    shareReplay(1)
-  );
+  users$ = this.refresh$.pipe(switchMap(() => this.fetchUsers$));
 
   getUsersWithRoleByGroup(
     users: User[],
