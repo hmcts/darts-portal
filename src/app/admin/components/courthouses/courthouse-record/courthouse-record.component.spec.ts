@@ -1,5 +1,5 @@
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
-import { SecurityGroup, SecurityRole, User } from '@admin-types/index';
+import { CourthouseUser, SecurityGroup, SecurityRole, User } from '@admin-types/index';
 import { DatePipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -137,6 +137,7 @@ describe('CourthouseRecordComponent', () => {
     fakeGroupsService = {
       getRoles: jest.fn().mockReturnValue(of(mockRoles)),
       getGroupsByRoleIdsAndCourthouseId: jest.fn().mockReturnValue(of(mockRequesterApproverGroups)),
+      assignUsersToGroup: jest.fn(),
     };
     fakeUsersService = {
       getUsersById: jest.fn().mockReturnValue(of(mockUsers)),
@@ -190,6 +191,100 @@ describe('CourthouseRecordComponent', () => {
       { value: 'Group 1', href: '/admin/groups/1' },
       { value: 'Group 2', href: '/admin/groups/2' },
     ]);
+  });
+
+  describe('onDeleteClicked', () => {
+    it('should set isDeleting to true and set the selected Users in the component', () => {
+      const selectedRows: CourthouseUser[] = [
+        {
+          userName: 'Eric Bristow',
+          email: 'eric.bristow@darts.local',
+          roleType: 'Approver',
+          userId: 1,
+          groupId: 12,
+        },
+      ];
+      component.onDeleteClicked(selectedRows);
+      expect(component.isDeleting).toEqual(true);
+      expect(component.selectedUsers).toEqual(selectedRows);
+    });
+  });
+
+  describe('onDeleteConfirmed', () => {
+    it('should transform the data as required and make the required http calls to remove the selected user roles from the courthouse', () => {
+      const deleteSpy = jest.spyOn(fakeGroupsService, 'assignUsersToGroup');
+      const selectedRows: CourthouseUser[] = [
+        {
+          userName: 'Eric Bristow',
+          email: 'eric.bristow@darts.local',
+          roleType: 'Approver',
+          userId: 1,
+          groupId: 12,
+        },
+        {
+          userName: 'Fallon Sherrock',
+          email: 'fallon.sherrock@darts.local',
+          roleType: 'Requestor',
+          userId: 2,
+          groupId: 13,
+        },
+      ];
+      const approverRequesterGroups: SecurityGroup[] = [
+        {
+          id: 12,
+          name: 'Oxford Requesters',
+          displayName: 'Oxford Requesters',
+          description: 'Dummy description 1',
+          displayState: true,
+          globalAccess: true,
+          securityRoleId: 1,
+          courthouseIds: [16],
+          userIds: [1, 3],
+        },
+        {
+          id: 13,
+          name: 'Oxford Approvers',
+          displayName: 'Oxford Approvers',
+          description: 'Dummy description 2',
+          displayState: true,
+          globalAccess: true,
+          securityRoleId: 2,
+          courthouseIds: [16],
+          userIds: [2, 3],
+        },
+      ];
+      component.selectedUsers = selectedRows;
+      component.approverRequesterGroups = approverRequesterGroups;
+
+      component.onDeleteConfirmed();
+
+      expect(deleteSpy).toHaveBeenCalledTimes(2);
+      expect(deleteSpy).toHaveBeenCalledWith(12, [3]);
+      expect(deleteSpy).toHaveBeenCalledWith(13, [3]);
+    });
+  });
+
+  describe('deleteScreenTitle', () => {
+    it('should return a string of the delete screen title for one user role deletion', () => {
+      component.selectedUsers.length = 1;
+      const result = component.deleteScreenTitle('Oxford Court');
+      expect(result).toEqual('You are removing 1 user role from Oxford Court');
+    });
+    it('should return a string of the delete screen title for multiple user roles deletion', () => {
+      component.selectedUsers.length = 3;
+      const result = component.deleteScreenTitle('Oxford Court');
+      expect(result).toEqual('You are removing 3 user roles from Oxford Court');
+    });
+  });
+
+  describe('onDeleteCancelled', () => {
+    it('should cancel the deletion screen and maintain tab state', () => {
+      component.isDeleting = true;
+      component.tab = 'Details';
+      component.onDeleteCancelled();
+      expect(component.isDeleting).toEqual(false);
+      expect(component.tab).toEqual('Users');
+    });
   });
 
   describe('roles$', () => {

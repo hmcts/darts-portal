@@ -74,7 +74,7 @@ export class CourthouseRecordComponent {
     }))
   );
 
-  outputEvent(selectedUsers: CourthouseUser[]) {
+  onDeleteClicked(selectedUsers: CourthouseUser[]) {
     this.isDeleting = true;
     this.selectedUsers = selectedUsers;
   }
@@ -183,7 +183,7 @@ export class CourthouseRecordComponent {
         groupId: group!.id,
         userIds: group!.userIds.filter((u) => !uniqueUserIdsToRemove.has(u)),
       }))
-      .map((s) => this.groupsService.assignUsersToGroup(s.groupId!, s.userIds!));
+      .map((s) => this.groupsService.assignUsersToGroup(s.groupId, s.userIds));
 
     forkJoin(deleteRequests).subscribe({
       next: () => (this.isDeleting = false),

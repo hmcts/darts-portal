@@ -46,7 +46,7 @@ describe('CourthouseUsersComponent', () => {
   });
 
   describe('setFilters', () => {
-    it('should filter table based on selected filters', () => {
+    it('should filter table based on user name amd role filters', () => {
       const criteria: Filter[] = [
         {
           displayName: 'User Name',
@@ -75,10 +75,94 @@ describe('CourthouseUsersComponent', () => {
       component.setFilters(criteria);
       expect(component.users).toEqual(expectedUsers);
     });
+    it('should filter table based on user name filters', () => {
+      const criteria: Filter[] = [
+        {
+          displayName: 'User Name',
+          name: 'userName',
+          values: ['Eric Bristow'],
+          multiselect: true,
+        },
+      ];
+
+      const expectedUsers = [
+        {
+          userName: 'Eric Bristow',
+          email: 'eric.bristow@darts.local',
+          roleType: 'Approver',
+          userId: 1,
+          groupId: 12,
+        },
+      ];
+
+      component.setFilters(criteria);
+      expect(component.users).toEqual(expectedUsers);
+    });
+    it('should filter table based on role filters', () => {
+      const criteria: Filter[] = [
+        {
+          displayName: 'Role Type',
+          name: 'roleType',
+          values: ['Approver'],
+          multiselect: true,
+        },
+      ];
+
+      const expectedUsers = [
+        {
+          userName: 'Eric Bristow',
+          email: 'eric.bristow@darts.local',
+          roleType: 'Approver',
+          userId: 1,
+          groupId: 12,
+        },
+        {
+          email: 'michael.vangerwen@darts.local',
+          groupId: 12,
+          roleType: 'Approver',
+          userId: 3,
+          userName: 'Michael van Gerwen',
+        },
+      ];
+
+      component.setFilters(criteria);
+      expect(component.users).toEqual(expectedUsers);
+    });
     it("shouldn't filter if there are no filters", () => {
       const criteria: Filter[] = [];
       component.setFilters(criteria);
       expect(component.users).toEqual(component.fullUsers);
+    });
+  });
+
+  describe('outputSelectedRows', () => {
+    it('should emit a value if there are values selected', () => {
+      const emitSpy = jest.spyOn(component.selectRowsEvent, 'emit');
+      component.selectedRows = [
+        {
+          userName: 'Eric Bristow',
+          email: 'eric.bristow@darts.local',
+          roleType: 'Approver',
+          userId: 1,
+          groupId: 12,
+        },
+      ];
+      component.outputSelectedRows();
+      expect(emitSpy).toHaveBeenCalledWith([
+        {
+          userName: 'Eric Bristow',
+          email: 'eric.bristow@darts.local',
+          roleType: 'Approver',
+          userId: 1,
+          groupId: 12,
+        },
+      ]);
+    });
+    it('should not emit a value if there are no values selected', () => {
+      const emitSpy = jest.spyOn(component.selectRowsEvent, 'emit');
+      component.selectedRows = [];
+      component.outputSelectedRows();
+      expect(emitSpy).not.toHaveBeenCalled();
     });
   });
 
