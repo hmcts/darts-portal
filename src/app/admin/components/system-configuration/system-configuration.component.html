@@ -15,9 +15,7 @@
 <app-tabs [default]="currentTab" (tabChange)="onTabChanged($event)">
   <app-retention-policies *tab="'Retention policies'" />
 
-  <div *tab="'Event mapping'">
-    <app-govuk-heading tag="h2">Event mapping</app-govuk-heading>
-  </div>
+  <app-event-mapping *tab="'Event mappings'" />
 
   <app-automated-tasks *tab="'Automated tasks'" (taskRun)="taskStatus = $event" />
 </app-tabs>

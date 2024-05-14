@@ -1,11 +1,25 @@
 @if (rows.length) {
   <div [class.scrollable]="maxHeight" [style.max-height]="maxHeight">
-    <table class="govuk-table" data-module="moj-sortable-table">
-      <caption class="govuk-table__caption govuk-table__caption--m" [class.govuk-visually-hidden]="hiddenCaption">
+    @if (captionType === 'heading') {
+      <caption class="govuk-caption-m" [class.govuk-visually-hidden]="hiddenCaption">
+        Showing
         {{
-          caption
+          getCurrentPageCaptionCount()
+        }}
+        of
+        {{
+          rows.length
         }}
       </caption>
+    }
+    <table class="govuk-table" data-module="moj-sortable-table">
+      @if (captionType !== 'heading') {
+        <caption class="govuk-table__caption govuk-table__caption--m" [class.govuk-visually-hidden]="hiddenCaption">
+          {{
+            caption
+          }}
+        </caption>
+      }
       <thead class="govuk-table__head">
         <tr class="govuk-table__row header">
           <td *ngIf="rowSelectable" class="govuk-table__header">
