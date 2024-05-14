@@ -13,6 +13,7 @@ describe('Admin - Users screen', () => {
   });
 
   it('Search for users', () => {
+    cy.get('#allUsers').click();
     cy.get('#fullName').type('Eric');
     cy.get('button[type="submit"]').click();
 
