@@ -77,6 +77,12 @@ export class UserAdminService {
       .pipe(map((user) => this.mapUser(user)));
   }
 
+  deactivateUser(id: number): Observable<number[]> {
+    return this.http
+      .patch<UserData & { rolled_back_transcript_requests: number[] }>(`${USER_ADMIN_PATH}/${id}`, { active: false })
+      .pipe(map((user) => user.rolled_back_transcript_requests));
+  }
+
   private mapToCreateUserRequest(user: CreateUpdateUserFormValues): CreateUserRequest {
     return {
       full_name: user.fullName!,

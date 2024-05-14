@@ -419,4 +419,20 @@ describe('UserAdminService', () => {
       expect(result).toEqual(mappedUsers);
     });
   });
+
+  describe('deactivateUser', () => {
+    it('should send a PATCH request and map the rolled back transcript requests', () => {
+      const mockUserId = 1;
+      const mockRolledBackTranscriptRequests = [1, 2, 3];
+      let result = [] as number[];
+
+      service.deactivateUser(mockUserId).subscribe((res) => (result = res));
+
+      const req = httpMock.expectOne(`${USER_ADMIN_PATH}/${mockUserId}`);
+      expect(req.request.method).toEqual('PATCH');
+      req.flush({ rolled_back_transcript_requests: mockRolledBackTranscriptRequests });
+
+      expect(result).toEqual(mockRolledBackTranscriptRequests);
+    });
+  });
 });

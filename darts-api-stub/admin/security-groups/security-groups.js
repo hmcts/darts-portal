@@ -52,12 +52,12 @@ const defaultSecurityGroups = [
   {
     id: 5,
     security_role_id: 5,
-    name: 'Super admin (Admin portal)',
+    name: 'SUPER_ADMIN',
     display_name: 'Super admin (Admin portal)',
     display_state: true,
     global_access: true,
     courthouse_ids: [1, 2, 3, 4, 5],
-    user_ids: [1, 2, 3, 4, 5],
+    user_ids: [2],
     description: 'Dummy description 5',
   },
   {
@@ -171,7 +171,20 @@ router.get('/:id', (req, res) => {
 
 router.get('/', (req, res) => {
   const roleIds = req?.query?.['role_ids'];
+  const isSingletonUser = req?.query?.['singleton_user'];
+  const userId = req.query.user_id;
   const courthouseId = req.query.courthouse_id;
+
+  if (isSingletonUser && userId) {
+    // return groups where the user is the only member of the security group
+    res.send(
+      defaultSecurityGroups.filter(
+        (securityGroup) => securityGroup.user_ids.length === 1 && securityGroup.user_ids.includes(+userId)
+      )
+    );
+    return;
+  }
+
   if (!courthouseId && !roleIds) {
     res.send(defaultSecurityGroups);
     return;

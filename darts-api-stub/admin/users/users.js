@@ -30,6 +30,7 @@ const USERS = stubUsers.map((stubUser) => {
     email_address: stubUser.userState.userName,
     active: stubUser.active,
     security_group_ids: generateSecurityGroupIds(stubUser.userState.userId, defaultSecurityGroups.length),
+    rolled_back_transcript_requests: [1, 2, 3],
   };
 });
 

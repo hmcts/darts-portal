@@ -129,6 +129,59 @@ describe('Admin - User record screen', () => {
       cy.get('.govuk-tag').contains('Active user').should('exist');
     });
   });
+  describe('Deactivate user', () => {
+    it('when user has transcripts rolled back', () => {
+      cy.contains('Phil Taylor').parents('tr').contains('View').click();
+
+      cy.get('button').contains('Deactivate user').click();
+
+      cy.get('h1').should('contain', 'Deactivate user');
+      cy.get('h1').should('contain', 'Phil Taylor');
+
+      cy.get('#deactivate-button').click();
+
+      cy.get('app-govuk-banner').should('contain', 'User record deactivated');
+
+      cy.get('.govuk-tag--green').contains('User record').should('exist');
+      cy.get('.govuk-tag--grey').contains('Inactive').should('exist');
+    });
+
+    it('when user is the only member of groups', () => {
+      cy.get('app-user-search-results').should('contain', 'Eric Bristow');
+      cy.contains('Eric Bristow').parents('tr').contains('View').click();
+
+      cy.get('button').contains('Deactivate user').click();
+
+      cy.get('h1').should('contain', 'Deactivate user');
+      cy.get('h1').should('contain', 'Eric Bristow');
+
+      cy.get('.govuk-task-list').should('contain', 'Judiciary');
+      cy.get('.govuk-task-list').should('contain', 'Skriber Tech UK');
+
+      cy.a11y();
+
+      cy.get('#deactivate-button').click();
+
+      cy.get('app-govuk-banner').should('contain', 'User record deactivated');
+      cy.get('.govuk-tag--grey').contains('Inactive').should('exist');
+    });
+
+    it('when user is the only SUPER_ADMIN user', () => {
+      cy.contains('Fallon Sherrock').parents('tr').contains('View').click();
+      cy.get('button').contains('Deactivate user').click();
+
+      cy.get('app-govuk-heading').should('contain', 'You cannot deactivate this user');
+      cy.get('p.govuk-body').should(
+        'contain',
+        'This is the only active user in the Super Admin (Admin Portal) group. '
+      );
+      cy.a11y();
+
+      cy.get('#back-button').click();
+
+      cy.get('h1').should('contain', 'Fallon Sherrock');
+    });
+  });
 
   describe('Edit user', () => {
     it('No email change flow', () => {
@@ -156,6 +209,8 @@ describe('Admin - User record screen', () => {
     });
 
     it('Change email flow', () => {
+      cy.get('#allUsers').click();
+      cy.get('button[type="submit"]').click();
       cy.get('app-user-search-results').should('contain', 'phil.taylor@darts.local');
       cy.contains('phil.taylor@darts.local').parents('tr').contains('View').click();
 
