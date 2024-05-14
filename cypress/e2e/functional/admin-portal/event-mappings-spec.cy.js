@@ -64,7 +64,7 @@ describe('Admin - Event mappings screen', () => {
 
       cy.get('#search').type('Mapping entry 3');
 
-      cy.get('#no-data-message').contains('No data to display.');
+      cy.get('#no-data-message').contains('There are no matching results.');
     });
 
     it('Filter via search text', () => {
