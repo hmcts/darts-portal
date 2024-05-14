@@ -56,9 +56,9 @@ export class RequestTimesComponent {
 
   onEventRowSelected(events: HearingEvent[]) {
     if (events.length) {
-      const timestamps = events.map((event) => DateTime.fromISO(event.timestamp).toUTC().toUnixInteger());
-      const startTime = DateTime.fromSeconds(Math.min(...timestamps)).toUTC();
-      const endTime = DateTime.fromSeconds(Math.max(...timestamps)).toUTC();
+      const timestamps = events.map((event) => DateTime.fromISO(event.timestamp).toUnixInteger());
+      const startTime = DateTime.fromSeconds(Math.min(...timestamps));
+      const endTime = DateTime.fromSeconds(Math.max(...timestamps));
       this.setFormValues({ startTime, endTime });
     } else {
       this.setFormValues({ startTime: null, endTime: null });
@@ -137,10 +137,9 @@ export class RequestTimesComponent {
 
     const hearingDate = this.hearing.date.toFormat('yyyy-LL-dd');
 
-    const startTime = DateTime.fromISO(
-      `${hearingDate}T${startTimeHours}:${startTimeMinutes}:${startTimeSeconds}Z`
-    ).toUTC();
-    const endTime = DateTime.fromISO(`${hearingDate}T${endTimeHours}:${endTimeMinutes}:${endTimeSeconds}Z`).toUTC();
+    const startTime = DateTime.fromISO(`${hearingDate}T${startTimeHours}:${startTimeMinutes}:${startTimeSeconds}`);
+    const endTime = DateTime.fromISO(`${hearingDate}T${endTimeHours}:${endTimeMinutes}:${endTimeSeconds}`);
+
     return { startTime, endTime };
   }
 

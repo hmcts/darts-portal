@@ -416,7 +416,7 @@ describe('TranscriptionAdminService', () => {
 
     expect(wflows[0].workflowActor).toBe(1);
     expect(wflows[0].statusId).toBe(2);
-    expect(wflows[0].workflowTimestamp.toISO()).toBe('2021-01-01T00:00:00.000Z');
+    expect(wflows[0].workflowTimestamp.toISO({ includeOffset: false })).toBe('2021-01-01T00:00:00.000');
   });
 
   it('should return correct status and associated data based on transcript details', () => {

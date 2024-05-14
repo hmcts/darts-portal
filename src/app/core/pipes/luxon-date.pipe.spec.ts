@@ -1,15 +1,13 @@
 import { DatePipe } from '@angular/common';
-import { DateTime, Settings } from 'luxon';
+import { DateTime } from 'luxon';
 import { LuxonDatePipe } from './luxon-date.pipe';
-
-Settings.defaultZone = 'utc';
 
 describe('LuxonDatePipe', () => {
   let pipe: LuxonDatePipe;
   let datePipe: DatePipe;
 
   beforeEach(() => {
-    datePipe = new DatePipe('en-GB', 'utc');
+    datePipe = new DatePipe('en-GB');
     pipe = new LuxonDatePipe(datePipe);
   });
 

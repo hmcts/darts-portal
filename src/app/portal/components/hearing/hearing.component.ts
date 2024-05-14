@@ -197,18 +197,18 @@ export class HearingComponent implements OnInit {
     if (audioAndEvents.length) {
       audioAndEvents.forEach((audioAndEvent: AudioEventRow) => {
         if (audioAndEvent.timestamp) {
-          timestamps.push(DateTime.fromISO(audioAndEvent.timestamp).toUTC().toUnixInteger());
+          timestamps.push(DateTime.fromISO(audioAndEvent.timestamp).toUnixInteger());
         }
         if (audioAndEvent.media_start_timestamp) {
-          timestamps.push(DateTime.fromISO(audioAndEvent.media_start_timestamp).toUTC().toUnixInteger());
+          timestamps.push(DateTime.fromISO(audioAndEvent.media_start_timestamp).toUnixInteger());
         }
         if (audioAndEvent.media_end_timestamp) {
-          timestamps.push(DateTime.fromISO(audioAndEvent.media_end_timestamp).toUTC().toUnixInteger());
+          timestamps.push(DateTime.fromISO(audioAndEvent.media_end_timestamp).toUnixInteger());
         }
       });
 
-      const startDateTime = DateTime.fromSeconds(Math.min(...timestamps)).toUTC();
-      const endDateTime = DateTime.fromSeconds(Math.max(...timestamps)).toUTC();
+      const startDateTime = DateTime.fromSeconds(Math.min(...timestamps));
+      const endDateTime = DateTime.fromSeconds(Math.max(...timestamps));
 
       this.audioTimes = { startTime: startDateTime, endTime: endDateTime };
     } else {

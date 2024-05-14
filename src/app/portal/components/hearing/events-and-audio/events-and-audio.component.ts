@@ -143,12 +143,8 @@ export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
 
   private sortTableByTimeStamp(table: AudioEventRow[]) {
     table.sort((a, b) => {
-      const timestampA = DateTime.fromISO(a.timestamp ?? '')
-        .toUTC()
-        .toUnixInteger();
-      const timestampB = DateTime.fromISO(b.timestamp ?? '')
-        .toUTC()
-        .toUnixInteger();
+      const timestampA = DateTime.fromISO(a.timestamp ?? '').toUnixInteger();
+      const timestampB = DateTime.fromISO(b.timestamp ?? '').toUnixInteger();
 
       return timestampA - timestampB;
     });

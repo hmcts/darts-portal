@@ -16,7 +16,7 @@ import {
 } from '@portal-types/index';
 import { GET_COURTHOUSES_PATH } from '@services/courthouses/courthouses.service';
 import { MappingService } from '@services/mapping/mapping.service';
-import { DateTime, Settings } from 'luxon';
+import { DateTime } from 'luxon';
 import {
   ADVANCED_SEARCH_CASE_PATH,
   CaseService,
@@ -24,8 +24,6 @@ import {
   GET_CASE_RETENTION_HISTORY,
   GET_HEARINGS_PATH,
 } from './case.service';
-
-Settings.defaultZone = 'utc';
 
 describe('CaseService', () => {
   let service: CaseService;
@@ -221,6 +219,32 @@ describe('CaseService', () => {
       reportingRestrictions: [],
       retainUntilDateTime: DateTime.fromISO('2023-07-10T11:23:24Z'),
       retentionDateTimeApplied: DateTime.fromISO('2023-06-10T11:23:24Z'),
+      retentionPolicyApplied: 'MANUAL',
+    });
+  });
+
+  it('#mapCaseDataToCase', () => {
+    const data: CaseData = {
+      ...mockCaseData,
+      retain_until_date_time: undefined,
+      retention_date_time_applied: undefined,
+    };
+
+    const result = service['mapCaseDataToCase'](data);
+
+    expect(result).toEqual({
+      id: 1,
+      courthouse: 'Swansea',
+      number: 'CASE1001',
+      defendants: ['Defendant Dave', 'Defendant Debbie'],
+      judges: ['Judge Judy', 'Judge Jones'],
+      prosecutors: ['Polly Prosecutor'],
+      defenders: ['Derek Defender'],
+      retainUntil: '2023-08-10T11:23:24Z',
+      closedDateTime: undefined,
+      reportingRestrictions: [],
+      retainUntilDateTime: undefined,
+      retentionDateTimeApplied: undefined,
       retentionPolicyApplied: 'MANUAL',
     });
   });

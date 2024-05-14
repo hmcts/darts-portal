@@ -20,6 +20,8 @@ describe('DataTableComponent', () => {
       is_manual: true,
       transcription_count: 12,
       date: '11 Oct 2023',
+      luxonDateTime: DateTime.fromISO('2023-10-11T00:00:00'),
+      dateTimeString: '2023-10-11T00:00:00',
     },
     {
       case_id: 2,
@@ -30,6 +32,8 @@ describe('DataTableComponent', () => {
       is_manual: true,
       transcription_count: 101,
       date: '1 Sep 2023',
+      luxonDateTime: DateTime.fromISO('2023-09-01T00:00:00'),
+      dateTimeString: '2023-09-01T00:00:00',
     },
     {
       case_id: 3,
@@ -40,6 +44,8 @@ describe('DataTableComponent', () => {
       is_manual: false,
       transcription_count: 55,
       date: '10 Mar 2024',
+      luxonDateTime: DateTime.fromISO('2024-03-10T00:00:00'),
+      dateTimeString: '2024-03-10T00:00:00',
     },
     {
       case_id: 4,
@@ -50,6 +56,8 @@ describe('DataTableComponent', () => {
       is_manual: true,
       transcription_count: 8,
       date: '5 Jan 2024',
+      luxonDateTime: DateTime.fromISO('2024-01-05T00:00:00'),
+      dateTimeString: '2024-01-05T00:00:00',
     },
   ];
 
@@ -183,7 +191,6 @@ describe('DataTableComponent', () => {
       };
 
       expect(component.sorting).toEqual(expectedSorting);
-      expect(component.rows).toEqual(component.rows);
     });
 
     it('use a custom sorting function to sort in ascending order', () => {
@@ -414,6 +421,46 @@ describe('DataTableComponent', () => {
 
       expect(component.sorting).toEqual(expectedSorting);
       expect(component.rows).toEqual(expectedResult);
+    });
+
+    it('should sort by luxon DateTime', () => {
+      component.rows = [MOCK_ROWS[0], MOCK_ROWS[1]];
+      const column = 'luxonDateTime';
+
+      component.sorting = {
+        column,
+        order: 'desc',
+      };
+
+      component.sortTable(column);
+
+      const expectedSorting: SortingInterface<unknown> = {
+        column,
+        order: 'asc',
+      };
+
+      expect(component.sorting).toEqual(expectedSorting);
+      expect(component.rows).toEqual([MOCK_ROWS[1], MOCK_ROWS[0]]);
+    });
+
+    it('should sort by date string', () => {
+      component.rows = [MOCK_ROWS[0], MOCK_ROWS[1]];
+      const column = 'dateTimeString';
+
+      component.sorting = {
+        column,
+        order: 'desc',
+      };
+
+      component.sortTable(column);
+
+      const expectedSorting: SortingInterface<unknown> = {
+        column,
+        order: 'asc',
+      };
+
+      expect(component.sorting).toEqual(expectedSorting);
+      expect(component.rows).toEqual([MOCK_ROWS[1], MOCK_ROWS[0]]);
     });
 
     it('should set numeric sorting to ascending order for the courtroom string column', () => {

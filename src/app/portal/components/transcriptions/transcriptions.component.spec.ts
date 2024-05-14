@@ -1,4 +1,4 @@
-import { DATE_PIPE_DEFAULT_OPTIONS, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -33,40 +33,40 @@ const MOCK_REQUESTS: YourTranscripts = {
       transcriptionType: 'Court log',
       status: 'Awaiting Authorisation',
       urgency: { transcription_urgency_id: 3, description: 'Up to 7 working days', priority_order: 3 },
-      requestedTs: DateTime.fromISO('2023-06-26T13:00:00Z'),
+      requestedTs: DateTime.fromISO('2023-06-26T13:00:00'),
     },
     {
       transcriptionId: 2,
       caseId: 72346,
       caseNumber: 'T12345',
       courthouseName: 'NEWCASTLE',
-      hearingDate: DateTime.fromISO('2023-06-10T00:00:00Z'),
+      hearingDate: DateTime.fromISO('2023-06-10T00:00:00'),
       transcriptionType: 'Court log',
       status: 'With Transcriber',
       urgency: { transcription_urgency_id: 2, description: 'Up to 3 working days', priority_order: 2 },
-      requestedTs: DateTime.fromISO('2023-06-26T13:00:00Z'),
+      requestedTs: DateTime.fromISO('2023-06-26T13:00:00'),
     },
     {
       transcriptionId: 2,
       caseId: 72346,
       caseNumber: 'T12345',
       courthouseName: 'Newcastle',
-      hearingDate: DateTime.fromISO('2023-06-10T00:00:00Z'),
+      hearingDate: DateTime.fromISO('2023-06-10T00:00:00'),
       transcriptionType: 'Court log',
       status: 'Complete',
       urgency: { transcription_urgency_id: 2, description: 'Up to 3 working days', priority_order: 2 },
-      requestedTs: DateTime.fromISO('2023-06-26T13:00:00Z'),
+      requestedTs: DateTime.fromISO('2023-06-26T13:00:00'),
     },
     {
       transcriptionId: 2,
       caseId: 72346,
       caseNumber: 'T12345',
       courthouseName: 'Cardiff',
-      hearingDate: DateTime.fromISO('2023-06-10T00:00:00Z'),
+      hearingDate: DateTime.fromISO('2023-06-10T00:00:00'),
       transcriptionType: 'Court log',
       status: 'Rejected',
       urgency: { transcription_urgency_id: 1, description: 'Overnight', priority_order: 1 },
-      requestedTs: DateTime.fromISO('2023-06-26T13:00:00Z'),
+      requestedTs: DateTime.fromISO('2023-06-26T13:00:00'),
     },
   ],
   approverTranscriptions: [
@@ -75,11 +75,11 @@ const MOCK_REQUESTS: YourTranscripts = {
       caseId: 72345,
       caseNumber: 'T12345',
       courthouseName: 'Cardiff',
-      hearingDate: DateTime.fromISO('2023-06-10T00:00:00Z'),
+      hearingDate: DateTime.fromISO('2023-06-10T00:00:00'),
       transcriptionType: 'Court log',
       status: 'Complete',
       urgency: { transcription_urgency_id: 1, description: 'Overnight', priority_order: 1 },
-      requestedTs: DateTime.fromISO('2023-06-26T13:00:00Z'),
+      requestedTs: DateTime.fromISO('2023-06-26T13:00:00'),
     },
   ],
 };
@@ -120,7 +120,6 @@ describe('TranscriptionsComponent', () => {
         { provide: TranscriptionService, useValue: mockTranscriptionService },
         { provide: UserService, useValue: userServiceStub },
         DatePipe,
-        { provide: DATE_PIPE_DEFAULT_OPTIONS, useValue: { timezone: 'utc' } },
         { provide: AppConfigService, useValue: appConfigServiceMock },
       ],
     });
