@@ -1,3 +1,4 @@
 *
 !.gitignore
 !securityRoles.json
+!eventMappings.json
