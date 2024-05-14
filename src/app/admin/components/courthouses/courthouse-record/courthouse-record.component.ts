@@ -48,7 +48,7 @@ export class CourthouseRecordComponent {
   groupsService = inject(GroupsService);
   usersService = inject(UserAdminService);
   isDeleting = false;
-  tab = 'Users';
+  tab = 'Details';
 
   courthouseId = this.route.snapshot.params.courthouseId;
 
