@@ -55,6 +55,7 @@ describe('Admin - Automated tasks screen', () => {
     it('page elements', () => {
       cy.get('app-govuk-heading h1').contains('Task 1');
       cy.get('app-govuk-heading .caption').contains('Automated task');
+      cy.get('.govuk-tag').contains('Active');
 
       cy.get('app-details-table dt').contains('ID');
       cy.get('app-details-table dd').contains('1');
@@ -94,11 +95,13 @@ describe('Admin - Automated tasks screen', () => {
     it('deactivates task', () => {
       cy.get('.govuk-button').contains('Make inactive').click();
       cy.get('app-automated-task-status').contains('Task 1 is inactive');
+      cy.get('.govuk-tag.govuk-tag--grey').contains('Inactive');
     });
 
     it('activates task', () => {
       cy.get('.govuk-button').contains('Make active').click();
       cy.get('app-automated-task-status').contains('Task 1 is active');
+      cy.get('.govuk-tag').contains('Active');
     });
   });
 });

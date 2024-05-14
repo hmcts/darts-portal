@@ -3,3 +3,13 @@ header {
   align-items: center;
   justify-content: space-between;
 }
+
+:host ::ng-deep {
+  .govuk-heading-xl {
+    margin-bottom: 0;
+  }
+}
+
+.govuk-tag {
+  margin: 2rem 0;
+}
