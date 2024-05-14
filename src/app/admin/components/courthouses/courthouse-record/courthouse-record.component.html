@@ -9,6 +9,17 @@
       {{ courthouse.displayName + ' updated' }}
     </app-govuk-banner>
   }
+  @if (isDeletedUserRoles$ | async) {
+    <app-govuk-banner type="success">
+      {{
+        selectedUsers.length +
+          ' user ' +
+          (selectedUsers.length === 1 ? 'role' : 'roles') +
+          ' removed from ' +
+          courthouse.displayName
+      }}
+    </app-govuk-banner>
+  }
 
   @if (isDeleting) {
     <app-delete

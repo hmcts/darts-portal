@@ -55,6 +55,7 @@ export class CourthouseRecordComponent {
   courthouse$ = this.courthouseService.getCourthouseWithRegionsAndSecurityGroups(this.courthouseId);
   isNewCourthouse$ = this.route.queryParams?.pipe(map((params) => !!params.newCourthouse));
   isUpdatedCourthouse$ = this.route.queryParams?.pipe(map((params) => !!params.updated));
+  isDeletedUserRoles$ = this.route.queryParams?.pipe(map((params) => !!params.userRoleDeleteSuccess));
 
   private refresh$ = new BehaviorSubject<void>(undefined);
 
@@ -188,7 +189,13 @@ export class CourthouseRecordComponent {
     forkJoin(deleteRequests).subscribe({
       next: () => (this.isDeleting = false),
       error: () => (this.isDeleting = false),
-      complete: () => this.refresh$.next(),
+      complete: () => {
+        this.refresh$.next();
+        this.router.navigate([`/admin/courthouses/${this.courthouseId}`], {
+          queryParams: { userRoleDeleteSuccess: true },
+        });
+        this.tab = 'Users';
+      },
     });
   }
 
