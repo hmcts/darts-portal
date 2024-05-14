@@ -808,4 +808,42 @@ describe('DataTableComponent', () => {
       });
     });
   });
+
+  describe('Heading caption count', () => {
+    beforeEach(() => {
+      component.rows = new Array(11); // Set default rows for most tests
+    });
+
+    it('should display correct caption for the first page', () => {
+      component.currentPage = 1;
+      component.pageLimit = 5;
+      expect(component.getCurrentPageCaptionCount()).toBe('1-5');
+    });
+
+    it('should display correct caption for a middle page', () => {
+      component.currentPage = 2;
+      component.pageLimit = 5;
+      expect(component.getCurrentPageCaptionCount()).toBe('6-10');
+    });
+
+    it('should display correct caption for the last page', () => {
+      component.currentPage = 3;
+      component.pageLimit = 5;
+      expect(component.getCurrentPageCaptionCount()).toBe('11-11');
+    });
+
+    it('should display correct caption when all results fit on one page', () => {
+      component.rows = new Array(8); // Adjust rows for this specific test
+      component.currentPage = 1;
+      component.pageLimit = 10;
+      expect(component.getCurrentPageCaptionCount()).toBe('1-8');
+    });
+
+    it('should display correct caption for empty results', () => {
+      component.rows = []; // No rows
+      component.currentPage = 1;
+      component.pageLimit = 10;
+      expect(component.getCurrentPageCaptionCount()).toBe('1-0');
+    });
+  });
 });

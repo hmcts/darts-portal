@@ -27,6 +27,7 @@ import { DateTime } from 'luxon';
 export class DataTableComponent<TRow> implements OnChanges {
   @Input() rows: TRow[] = [];
   @Input() columns: DatatableColumn[] = [];
+  @Input() captionType = 'default';
   @Input() caption = '';
   @Input() rowSelectable = false;
   @Input() pagination = true;
@@ -206,6 +207,16 @@ export class DataTableComponent<TRow> implements OnChanges {
 
   private paginate(array: TRow[], pageSize: number, currentPage: number) {
     return array.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+  }
+
+  getCurrentPageCaptionCount() {
+    const earliestCaption = (this.currentPage - 1) * this.pageLimit + 1;
+    let latestCaption = this.currentPage * this.pageLimit;
+    if (latestCaption > this.rows.length) {
+      latestCaption = this.rows.length;
+    }
+
+    return `${earliestCaption}-${latestCaption}`;
   }
 }
 
