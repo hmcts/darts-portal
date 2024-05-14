@@ -9,7 +9,7 @@ export const eventMappings: StubResponse[] = [
     status: 200,
   },
   {
-    method: 'post',
+    method: 'get',
     path: '/admin/event-handlers',
     response: ['StandardEventHandler', 'TranscriptionRequestHandler'],
     status: 200,
