@@ -1,7 +1,5 @@
 const express = require('express');
 
-const { localArray } = require('../../localArray');
-
 const router = express.Router();
 
 const defaultSecurityGroups = [
@@ -160,10 +158,6 @@ const defaultSecurityGroups = [
     description: 'Dummy description 2',
   },
 ];
-
-// const securityGroups = localArray('securityGroups');
-// // Clear out old values on restart
-// securityGroups.value = defaultSecurityGroups;
 
 router.patch('/:id', (req, res) => {
   const id = req.params.id;
