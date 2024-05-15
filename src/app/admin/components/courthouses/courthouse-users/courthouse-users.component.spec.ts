@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { SecurityRole } from '@admin-types/index';
 import { Filter } from '@common/filters/filter.interface';
 import { CourthouseUsersComponent } from './courthouse-users.component';
 
@@ -20,22 +21,25 @@ describe('CourthouseUsersComponent', () => {
         userName: 'Eric Bristow',
         email: 'eric.bristow@darts.local',
         roleType: 'Approver',
-        userId: 1,
-        groupId: 12,
+        id: 1,
+        groups: [],
+        role: {} as SecurityRole,
       },
       {
         userName: 'Michael van Gerwen',
         email: 'michael.vangerwen@darts.local',
         roleType: 'Approver',
-        userId: 3,
-        groupId: 12,
+        id: 3,
+        groups: [],
+        role: {} as SecurityRole,
       },
       {
         userName: 'Fallon Sherrock',
         email: 'fallon.sherrock@darts.local',
         roleType: 'Requestor',
-        userId: 2,
-        groupId: 13,
+        id: 2,
+        groups: [],
+        role: {} as SecurityRole,
       },
     ];
     fixture.detectChanges();
@@ -67,8 +71,9 @@ describe('CourthouseUsersComponent', () => {
           userName: 'Eric Bristow',
           email: 'eric.bristow@darts.local',
           roleType: 'Approver',
-          userId: 1,
-          groupId: 12,
+          id: 1,
+          groups: [],
+          role: {},
         },
       ];
 
@@ -90,8 +95,9 @@ describe('CourthouseUsersComponent', () => {
           userName: 'Eric Bristow',
           email: 'eric.bristow@darts.local',
           roleType: 'Approver',
-          userId: 1,
-          groupId: 12,
+          id: 1,
+          groups: [],
+          role: {},
         },
       ];
 
@@ -113,15 +119,18 @@ describe('CourthouseUsersComponent', () => {
           userName: 'Eric Bristow',
           email: 'eric.bristow@darts.local',
           roleType: 'Approver',
-          userId: 1,
-          groupId: 12,
+          id: 1,
+          groups: [],
+          role: {},
         },
         {
           email: 'michael.vangerwen@darts.local',
-          groupId: 12,
+
           roleType: 'Approver',
-          userId: 3,
+          id: 3,
           userName: 'Michael van Gerwen',
+          groups: [],
+          role: {},
         },
       ];
 
@@ -143,8 +152,9 @@ describe('CourthouseUsersComponent', () => {
           userName: 'Eric Bristow',
           email: 'eric.bristow@darts.local',
           roleType: 'Approver',
-          userId: 1,
-          groupId: 12,
+          id: 1,
+          groups: [],
+          role: {} as SecurityRole,
         },
       ];
       component.outputSelectedRows();
@@ -153,8 +163,9 @@ describe('CourthouseUsersComponent', () => {
           userName: 'Eric Bristow',
           email: 'eric.bristow@darts.local',
           roleType: 'Approver',
-          userId: 1,
-          groupId: 12,
+          id: 1,
+          groups: [],
+          role: {},
         },
       ]);
     });
@@ -173,8 +184,9 @@ describe('CourthouseUsersComponent', () => {
           userName: 'Eric Bristow',
           email: 'eric.bristow@darts.local',
           roleType: 'Approver',
-          userId: 1,
-          groupId: 12,
+          id: 1,
+          groups: [],
+          role: {} as SecurityRole,
         },
       ];
 
@@ -185,22 +197,25 @@ describe('CourthouseUsersComponent', () => {
           userName: 'Eric Bristow',
           email: 'eric.bristow@darts.local',
           roleType: 'Approver',
-          userId: 1,
-          groupId: 12,
+          id: 1,
+          groups: [],
+          role: {},
         },
         {
           userName: 'Michael van Gerwen',
           email: 'michael.vangerwen@darts.local',
           roleType: 'Approver',
-          userId: 3,
-          groupId: 12,
+          id: 3,
+          groups: [],
+          role: {},
         },
         {
           userName: 'Fallon Sherrock',
           email: 'fallon.sherrock@darts.local',
           roleType: 'Requestor',
-          userId: 2,
-          groupId: 13,
+          id: 2,
+          groups: [],
+          role: {},
         },
       ];
 

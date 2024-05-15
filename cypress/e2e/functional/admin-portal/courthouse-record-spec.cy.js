@@ -4,8 +4,8 @@ import '../commands';
 describe('Admin - Courthouse record screen', () => {
   beforeEach(() => {
     cy.login('admin');
-    cy.injectAxe();
     cy.visit('/admin/courthouses');
+    cy.injectAxe();
   });
 
   it('View courthouse', () => {
@@ -215,5 +215,48 @@ describe('Admin - Courthouse record screen', () => {
 
     // TODO: Commented for now
     // cy.a11y();
+  });
+
+  describe('Delete courthouse users', () => {
+    beforeEach(() => {
+      cy.get('#courthouseName').type('Oxford').click();
+      cy.get('button[type="submit"]').click();
+
+      cy.get('td a').contains('OXFORD').click();
+      cy.contains('h1', 'Oxford').should('exist');
+
+      cy.get('#users-tab').click();
+    });
+
+    it('single user', () => {
+      cy.get('#0').click(); // select the first user
+      cy.get('#remove-users-button').click();
+
+      cy.get('h1').contains('You are removing 1 user role from Oxford');
+      cy.get('app-data-table').contains('fallon.sherrock@darts.local').should('exist');
+      cy.get('app-data-table').contains('Requestor').should('exist');
+
+      // cy.ally();
+
+      cy.get('button').contains('Confirm').click();
+
+      cy.get('app-govuk-banner').contains('1 user role removed from Oxford');
+    });
+
+    it('multiple users', () => {
+      cy.get('#0').click();
+      cy.get('#1').click();
+      cy.get('#remove-users-button').click();
+
+      cy.get('h1').contains('You are removing 2 user roles from Oxford');
+      cy.get('app-data-table').contains('michael.vangerwen@darts.local').should('exist');
+      cy.get('app-data-table').contains('Requestor').should('exist');
+      cy.get('app-data-table').contains('eric.bristow@darts.local').should('exist');
+      cy.get('app-data-table').contains('Approver').should('exist');
+
+      cy.get('button').contains('Confirm').click();
+
+      cy.get('app-govuk-banner').contains('2 user roles removed from Oxford');
+    });
   });
 });

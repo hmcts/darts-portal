@@ -82,7 +82,7 @@
             ></app-details-table>
           </div>
 
-          <div *tab="'Users'">
+          <div *tab="'Users'; id: 'users-tab'">
             <div class="govuk-grid-row">
               @if (users$ | async; as users) {
                 <app-courthouse-users [users]="users" (selectRowsEvent)="onDeleteClicked($event)" />
