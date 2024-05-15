@@ -76,6 +76,11 @@ export class CourthouseRecordComponent {
   );
 
   onDeleteClicked(selectedUsers: CourthouseUser[]) {
+    this.router.navigate([], {
+      queryParams: {
+        userRoleDeleteSuccess: null,
+      },
+    });
     this.isDeleting = true;
     this.selectedUsers = selectedUsers;
   }
