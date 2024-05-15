@@ -13,7 +13,7 @@
   <label id="comment-label" class="govuk-label" for="comments">Comment (optional)</label>
   <app-govuk-textarea
     [control]="form.controls.comments"
-    id="comments"
+    [id]="'comments'"
     name="comments"
     ariaDescribedBy="comment-label"
     [maxCharacterLimit]="256"
