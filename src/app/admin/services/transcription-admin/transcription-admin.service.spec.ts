@@ -161,7 +161,7 @@ describe('TranscriptionAdminService', () => {
       expect(req.request.body).toEqual(emptySearchRequestBody);
     });
 
-    it('map specific date to requested_at_from', () => {
+    it('map specific date to requested_at_from and requested_at_to', () => {
       const formValues = {
         requestedDate: { type: 'specific', specific: '01/01/2022', from: '', to: '' },
       };
@@ -169,6 +169,7 @@ describe('TranscriptionAdminService', () => {
       const expectedBody = {
         ...emptySearchRequestBody,
         requested_at_from: '2022-01-01',
+        requested_at_to: '2022-01-01',
       };
 
       service.search(formValues).subscribe();
@@ -415,7 +416,7 @@ describe('TranscriptionAdminService', () => {
 
     expect(wflows[0].workflowActor).toBe(1);
     expect(wflows[0].statusId).toBe(2);
-    expect(wflows[0].workflowTimestamp.toISO()).toBe('2021-01-01T00:00:00.000Z');
+    expect(wflows[0].workflowTimestamp.toISO({ includeOffset: false })).toBe('2021-01-01T00:00:00.000');
   });
 
   it('should return correct status and associated data based on transcript details', () => {

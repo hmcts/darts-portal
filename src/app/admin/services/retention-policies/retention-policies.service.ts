@@ -43,7 +43,10 @@ export class RetentionPoliciesService {
     const { hours, minutes } = policy.startTime;
 
     const policyStartAt =
-      DateTime.fromFormat(policy.startDate, 'dd/MM/yyyy').set({ hour: +hours, minute: +minutes }).toISO() ?? '';
+      DateTime.fromFormat(policy.startDate, 'dd/MM/yyyy')
+        .set({ hour: +hours, minute: +minutes })
+        .toUTC()
+        .toISO({ suppressMilliseconds: true }) ?? '';
 
     const createPolicyRequestBody: CreateRetentionPolicy = {
       name: policy.name,

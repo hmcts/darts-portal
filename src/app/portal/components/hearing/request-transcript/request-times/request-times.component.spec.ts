@@ -1,11 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HearingEvent } from '@portal-types/index';
-import { DateTime, Settings } from 'luxon';
+import { DateTime } from 'luxon';
 
 import { RequestTimesComponent } from './request-times.component';
-
-// set luxon zone
-Settings.defaultZone = 'utc';
 
 describe('RequestTimesComponent', () => {
   let component: RequestTimesComponent;
@@ -19,7 +16,7 @@ describe('RequestTimesComponent', () => {
     component = fixture.componentInstance;
     component.hearing = {
       id: 1,
-      date: DateTime.fromISO('2023-01-01T00:00:00Z'),
+      date: DateTime.fromISO('2023-01-01T00:00:00'),
       judges: ['Joseph', 'Judy'],
       courtroom: '3',
       transcriptCount: 99,
@@ -47,8 +44,8 @@ describe('RequestTimesComponent', () => {
         },
       };
 
-      const startTimestamp = '2023-01-01T01:15:30.000Z';
-      const endTimestamp = '2023-01-01T02:30:00.000Z';
+      const startTimestamp = '2023-01-01T01:15:30.000';
+      const endTimestamp = '2023-01-01T02:30:00.000';
 
       const audioRow: HearingEvent[] = [
         {
@@ -85,12 +82,12 @@ describe('RequestTimesComponent', () => {
         },
       };
 
-      const startTimestamp = '2023-01-01T01:15:30.000Z';
-      const endTimestamp = '2023-01-01T02:30:00.000Z';
+      const startTimestamp = '2023-01-01T01:15:30.000';
+      const endTimestamp = '2023-01-01T02:30:00.000';
 
       component.setFormValues({
-        startTime: DateTime.fromISO(startTimestamp).toUTC(),
-        endTime: DateTime.fromISO(endTimestamp).toUTC(),
+        startTime: DateTime.fromISO(startTimestamp),
+        endTime: DateTime.fromISO(endTimestamp),
       });
       expect(component.form.value).toEqual(expectedFormValues);
     });
@@ -215,8 +212,8 @@ describe('RequestTimesComponent', () => {
 
   describe('#getStartEndTimeFromForm', () => {
     it('should return the start and end time from the form', () => {
-      const expectedStartTimestamp = '2023-01-01T01:15:30.000Z';
-      const expectedEndTimestamp = '2023-01-01T02:30:00.000Z';
+      const expectedStartTimestamp = '2023-01-01T01:15:30.000';
+      const expectedEndTimestamp = '2023-01-01T02:30:00.000';
 
       component.form.patchValue({
         startTime: {
@@ -232,8 +229,8 @@ describe('RequestTimesComponent', () => {
       });
 
       const { startTime, endTime } = component.getStartEndTimeFromForm();
-      expect(startTime?.toISO()).toEqual(expectedStartTimestamp);
-      expect(endTime?.toISO()).toEqual(expectedEndTimestamp);
+      expect(startTime?.toISO({ includeOffset: false })).toEqual(expectedStartTimestamp);
+      expect(endTime?.toISO({ includeOffset: false })).toEqual(expectedEndTimestamp);
     });
   });
 

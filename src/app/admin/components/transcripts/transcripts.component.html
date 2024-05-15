@@ -1,10 +1,11 @@
+<app-validation-error-summary [errors]="errors"></app-validation-error-summary>
 <app-govuk-heading size="xl">Transcripts</app-govuk-heading>
 
 <app-tabs>
   <div *tab="'Transcript requests'">
     <app-govuk-heading>Transcript requests</app-govuk-heading>
 
-    <app-search-transcripts-form (search)="onSearch($event)" />
+    <app-search-transcripts-form (search)="onSearch($event)" (errors)="errors = $event" />
 
     @if (loading$ | async) {
       <app-loading text="Loading transcript requests..." />

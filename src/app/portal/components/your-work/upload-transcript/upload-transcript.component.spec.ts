@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DATE_PIPE_DEFAULT_OPTIONS, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -21,7 +21,7 @@ const MOCK_TRANSCRIPTION_DETAILS: TranscriptionDetails = {
   defendants: ['Defendant Dave', 'Defendant Bob'],
   judges: ['HHJ M. Hussain KC', 'Ray Bob'],
   transcriptFileName: '',
-  hearingDate: DateTime.fromISO('2023-06-26T00:00:00Z'),
+  hearingDate: DateTime.fromISO('2023-06-26T00:00:00'),
   urgency: {
     transcription_urgency_id: 2,
     description: 'Overnight',
@@ -29,8 +29,8 @@ const MOCK_TRANSCRIPTION_DETAILS: TranscriptionDetails = {
   },
   requestType: 'Specified Times',
   transcriptionId: 1,
-  transcriptionStartTs: DateTime.fromISO('2023-06-26T13:00:00Z'),
-  transcriptionEndTs: DateTime.fromISO('2023-06-26T16:00:00Z'),
+  transcriptionStartTs: DateTime.fromISO('2023-06-26T13:00:00'),
+  transcriptionEndTs: DateTime.fromISO('2023-06-26T16:00:00'),
   isManual: true,
   hearingId: 1,
   requestorComments: 'Please expedite my request',
@@ -73,7 +73,6 @@ describe('UploadTranscriptComponent', () => {
         { provide: TranscriptionService, useValue: fakeTranscriptionService },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         DatePipe,
-        { provide: DATE_PIPE_DEFAULT_OPTIONS, useValue: { timezone: 'utc' } },
         LuxonDatePipe,
       ],
     }).compileComponents();

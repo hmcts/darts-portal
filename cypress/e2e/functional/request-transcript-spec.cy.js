@@ -52,7 +52,7 @@ describe('Request Transcript', () => {
 
     cy.get('.govuk-label').should('contain', 'Request Type');
     cy.get('.govuk-label').should('contain', 'Urgency');
-    cy.get('.govuk-table__body > :nth-child(1) > :nth-child(1)').should('contain', '02:32:24');
+    cy.get('.govuk-table__body > :nth-child(1) > :nth-child(1)').should('contain', '03:32:24');
     cy.a11y();
   });
 

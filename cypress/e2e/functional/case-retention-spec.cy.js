@@ -35,7 +35,7 @@ describe('Case retention screen as standard user', () => {
       cy.get('.govuk-button-group').should('contain', 'Change retention date');
       cy.get('a.govuk-link').should('contain', 'Cancel');
 
-      cy.get('#retentionTable').should('contain', '11 Oct 2023 00:18:00');
+      cy.get('#retentionTable').should('contain', '11 Oct 2023 01:18:00');
       cy.a11y();
     });
   });

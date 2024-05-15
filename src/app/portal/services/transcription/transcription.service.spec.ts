@@ -1,4 +1,4 @@
-import { DATE_PIPE_DEFAULT_OPTIONS, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
@@ -35,7 +35,7 @@ describe('TranscriptionService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [LuxonDatePipe, DatePipe, { provide: DATE_PIPE_DEFAULT_OPTIONS, useValue: { timezone: 'utc' } }],
+      providers: [LuxonDatePipe, DatePipe],
     });
     service = TestBed.inject(TranscriptionService);
     httpMock = TestBed.inject(HttpTestingController);
@@ -460,9 +460,9 @@ describe('TranscriptionService', () => {
       },
       requestType: 'Type A',
       transcriptionId: 123456,
-      transcriptionStartTs: DateTime.fromISO('2023-06-26T13:00:00Z'),
-      transcriptionEndTs: DateTime.fromISO('2023-06-26T16:00:00Z'),
-      received: DateTime.fromISO('2023-11-17T12:53:07.468Z'),
+      transcriptionStartTs: DateTime.fromISO('2023-06-26T13:00:00'),
+      transcriptionEndTs: DateTime.fromISO('2023-06-26T16:00:00'),
+      received: DateTime.fromISO('2023-11-17T12:53:07.468'),
       from: 'MoJ CH Swansea',
       requestorComments: 'Please expedite my request',
       transcriptFileName: '',

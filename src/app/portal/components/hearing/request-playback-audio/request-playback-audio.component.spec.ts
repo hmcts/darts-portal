@@ -56,8 +56,8 @@ describe('RequestPlaybackAudioComponent', () => {
   describe('#ngOnChanges', () =>
     it('should call setTimes if requestAudioTimes has been set', () => {
       const audioTimes = {
-        startTime: DateTime.fromISO('2023-07-31T02:00:00.620').toUTC(),
-        endTime: DateTime.fromISO('2023-07-31T15:32:24.620').toUTC(),
+        startTime: DateTime.fromISO('2023-07-31T02:00:00.620'),
+        endTime: DateTime.fromISO('2023-07-31T15:32:24.620'),
       };
       const setTimesSpy = jest.spyOn(component, 'setTimes');
       component.ngOnChanges({ audioTimes: new SimpleChange(null, audioTimes, false) });
@@ -132,8 +132,8 @@ describe('RequestPlaybackAudioComponent', () => {
       const expectedResult = {
         hearing_id: 1,
         requestor: 1,
-        start_time: '2023-09-01T02:00:00Z',
-        end_time: '2023-09-01T15:32:24Z',
+        start_time: '2023-09-01T02:00:00',
+        end_time: '2023-09-01T15:32:24',
         request_type: 'PLAYBACK',
       };
       component.audioRequestForm.setValue(audioRequestForm);

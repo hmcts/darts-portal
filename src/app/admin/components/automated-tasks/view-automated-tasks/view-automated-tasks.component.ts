@@ -76,9 +76,8 @@ export class ViewAutomatedTasksComponent {
     return this.userAdminService.getUsersById([task.createdBy, task.lastModifiedBy]).pipe(
       map(([createdBy, lastModifiedBy]) => ({
         ...task,
-        createdByFullName: createdBy?.fullName,
-        // if lastModifiedBy is null, use createdBy as a fallback
-        modifiedByFullName: lastModifiedBy?.fullName || createdBy?.fullName,
+        createdByFullName: createdBy?.fullName || 'System',
+        modifiedByFullName: lastModifiedBy?.fullName || createdBy?.fullName || 'System',
       }))
     );
   }

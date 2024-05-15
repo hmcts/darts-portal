@@ -1,20 +1,19 @@
 // return stub data if enabled and response is mapped below
 // this is strictly temporary to enable building screens with stub data on deployed environments
 // should be removed onces all API endpoints are available
-import * as express from 'express';
-import { Router, Request, Response } from 'express';
 import config from 'config';
+import * as express from 'express';
+import { Request, Response, Router } from 'express';
 
 // stubs
-import { StubResponse } from '../stubs';
-// import { StubResponse, securityRoles } from '../stubs';
+import { StubResponse, eventMappings } from '../stubs';
 
 const STUB_ALLOWED = config.get('allowStubData') === 'true';
 
 // create stub files and add to this array to stub data
 const STUB_RESPONSES: StubResponse[] = [
   // include stubs here like below
-  // ...securityRoles
+  ...eventMappings,
 ];
 
 function stubData(response: unknown, status: number) {

@@ -1,11 +1,9 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed, discardPeriodicTasks, fakeAsync, tick } from '@angular/core/testing';
 import { PostAudioRequest, RequestedMedia, RequestedMediaData } from '@portal-types/index';
-import { DateTime, Settings } from 'luxon';
+import { DateTime } from 'luxon';
 import { of } from 'rxjs';
 import { AudioRequestService } from './audio-request.service';
-
-Settings.defaultZone = 'utc';
 
 describe('AudioService', () => {
   let service: AudioRequestService;

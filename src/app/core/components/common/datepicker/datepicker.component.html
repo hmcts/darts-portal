@@ -7,9 +7,7 @@
   @if (areDateErrors()) {
     <div [id]="inputId + '-errors'">
       @for (error of errors; track error) {
-        <p *ngFor="let error of errors" class="govuk-error-message">
-          <span class="govuk-visually-hidden">Error: </span>{{ error }}
-        </p>
+        <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ error }}</p>
       }
     </div>
   }

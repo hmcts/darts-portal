@@ -1,0 +1,29 @@
+@if (data$ | async; as data) {
+  <div class="heading-button-container">
+    <app-govuk-heading tag="h2">Event mappings</app-govuk-heading>
+    <button class="govuk-button govuk-button--secondary">Add event mapping</button>
+  </div>
+
+  <app-event-mapping-form (filterValues)="onFormValuesChange($event)" [eventHandlers]="data.eventHandlers" />
+
+  <app-data-table
+    captionType="heading"
+    id="events-mapping-table"
+    [columns]="columns"
+    [rows]="data.eventMappings"
+    noDataMessage="There are no matching results."
+  >
+    <ng-template [tableRowTemplate]="data.eventMappings" let-row>
+      <td class="govuk-table__cell">{{ row.type }}</td>
+      <td class="govuk-table__cell">{{ row.subType }}</td>
+      <td class="govuk-table__cell">{{ row.name }}</td>
+      <td class="govuk-table__cell">{{ row.handler }}</td>
+      <td class="govuk-table__cell">{{ row.hasRestrictions ? 'Yes' : 'No' }}</td>
+      <td class="govuk-table__cell">{{ row.createdAt | luxonDate: 'dd MMM yyyy' }}</td>
+      <td class="govuk-table__cell">{{ row.isActive ? 'Active' : 'Inactive' }}</td>
+      <td class="govuk-table__cell">
+        <a href="javascript:void(0)" class="govuk-link"> Change </a>
+      </td>
+    </ng-template>
+  </app-data-table>
+}

@@ -177,7 +177,7 @@ export class TranscriptionAdminService {
       owner: values.owner || null,
       requested_by: values.requestedBy || null,
       requested_at_from: this.formatDate(values.requestedDate?.specific) ?? this.formatDate(values.requestedDate?.from),
-      requested_at_to: this.formatDate(values.requestedDate?.to),
+      requested_at_to: this.formatDate(values.requestedDate?.specific) ?? this.formatDate(values.requestedDate?.to),
       is_manual_transcription:
         values.requestMethod === 'all' || !values.requestMethod
           ? null
@@ -203,7 +203,7 @@ export class TranscriptionAdminService {
         : null;
 
     const processStatus = (status: string | undefined) => {
-      const changeStatuses = ['Awaiting Authorisation', 'With Transcriber'];
+      const changeStatuses = ['Awaiting Authorisation', 'With Transcriber', 'Requested', 'Approved'];
       return status
         ? changeStatuses.includes(status)
           ? {

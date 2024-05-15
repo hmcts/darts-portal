@@ -363,4 +363,58 @@ describe('EventsAndAudioComponent', () => {
     ];
     expect(component.rows).toEqual(expectedRows);
   });
+
+  describe('#sortTableByTimeStamp', () => {
+    it('should sort the table by timestamp in ascending order', () => {
+      const table: AudioEventRow[] = [
+        {
+          id: 1,
+          timestamp: '2023-07-31T10:00:02',
+          name: 'Case called on',
+          text: 'Record: New Case',
+          type: 'event',
+        },
+        {
+          id: 2,
+          timestamp: '2023-07-31T10:00:01',
+          name: 'Case called on',
+          text: 'Record: New Case',
+          type: 'event',
+        },
+        {
+          id: 3,
+          timestamp: '2023-07-31T10:00:03',
+          name: 'Case called on',
+          text: 'Record: New Case',
+          type: 'event',
+        },
+      ];
+
+      component['sortTableByTimeStamp'](table);
+
+      expect(table).toEqual([
+        {
+          id: 2,
+          timestamp: '2023-07-31T10:00:01',
+          name: 'Case called on',
+          text: 'Record: New Case',
+          type: 'event',
+        },
+        {
+          id: 1,
+          timestamp: '2023-07-31T10:00:02',
+          name: 'Case called on',
+          text: 'Record: New Case',
+          type: 'event',
+        },
+        {
+          id: 3,
+          timestamp: '2023-07-31T10:00:03',
+          name: 'Case called on',
+          text: 'Record: New Case',
+          type: 'event',
+        },
+      ]);
+    });
+  });
 });

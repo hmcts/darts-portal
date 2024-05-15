@@ -10,15 +10,18 @@ import { map } from 'rxjs';
 import { AutomatedTaskStatusComponent } from '../automated-tasks/automated-task-status/automated-task-status.component';
 import { AutomatedTasksComponent } from '../automated-tasks/automated-tasks.component';
 import { RetentionPoliciesComponent } from '../retention-policies/retention-policies.component';
+import { EventMappingComponent } from './event-mappings/event-mappings.component';
 
 const tabUrlMap: { [key: string]: string } = {
   'Retention policies': '/admin/system-configuration/retention-policies',
-  'Event mapping': '/admin/system-configuration/event-mapping',
+  'Event mappings': '/admin/system-configuration/event-mappings',
   'Automated tasks': '/admin/system-configuration/automated-tasks',
 };
 @Component({
   selector: 'app-system-configuration',
   standalone: true,
+  templateUrl: './system-configuration.component.html',
+  styleUrl: './system-configuration.component.scss',
   imports: [
     GovukHeadingComponent,
     TabsComponent,
@@ -28,9 +31,8 @@ const tabUrlMap: { [key: string]: string } = {
     AsyncPipe,
     AutomatedTasksComponent,
     AutomatedTaskStatusComponent,
+    EventMappingComponent,
   ],
-  templateUrl: './system-configuration.component.html',
-  styleUrl: './system-configuration.component.scss',
 })
 export class SystemConfigurationComponent {
   router = inject(Router);

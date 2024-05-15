@@ -34,13 +34,19 @@
           type="text"
         />
       </div>
-      <app-datepicker
-        inputId="hearingDate"
-        [control]="form.controls.hearingDate"
-        name="hearingDate"
-        label="Hearing date"
-        (dateChange)="setInputValue($event, 'hearingDate')"
-      />
+      <div
+        class="govuk-form-group"
+        [class.govuk-form-group--error]="form.controls.hearingDate.invalid && form.controls.hearingDate.touched"
+      >
+        <app-datepicker
+          inputId="hearingDate"
+          [control]="form.controls.hearingDate"
+          name="hearingDate"
+          label="Hearing date"
+          (dateChange)="setInputValue($event, 'hearingDate')"
+          [errors]="getControlErrorMessage(['hearingDate'])"
+        />
+      </div>
       <div class="govuk-form-group">
         <label class="govuk-label" for="courthouse"> Owner </label>
         <input formControlName="owner" class="govuk-input govuk-input--width-20" id="owner" name="owner" type="text" />
@@ -55,64 +61,7 @@
           type="text"
         />
       </div>
-      <div class="govuk-form-group" formGroupName="requestedDate">
-        <label class="govuk-label govuk-!-font-weight-bold" for="specific-date-radio"> Date requested </label>
-        <div class="govuk-radios">
-          <div class="govuk-radios__item">
-            <input
-              class="govuk-radios__input"
-              id="specific-date-radio"
-              type="radio"
-              formControlName="type"
-              aria-label="Specific date radio button"
-              value="specific"
-            />
-            <label class="govuk-label govuk-radios__label" for="specific-date-radio"> Specific date </label>
-          </div>
-          @if (requestedDateTypeControl.value === 'specific') {
-            <div class="govuk-form-group input-group-indent-1 govuk-details__text" id="specific-date">
-              <app-datepicker
-                inputId="specific"
-                [control]="requestedDateSpecificControl"
-                label="Enter a date"
-                (dateChange)="setInputValue($event, 'requestedDate.specific')"
-              />
-            </div>
-          }
-          <div class="govuk-radios__item">
-            <input
-              class="govuk-radios__input"
-              id="date-range-radio"
-              type="radio"
-              formControlName="type"
-              aria-label="Date range radio button"
-              value="range"
-            />
-            <label class="govuk-label govuk-radios__label" for="date-range-radio"> Date range </label>
-          </div>
-          @if (requestedDateTypeControl.value === 'range') {
-            <div id="date-range-items">
-              <div class="govuk-form-group input-group-indent-1 govuk-details__text" id="range-date-items">
-                <app-datepicker
-                  inputId="from"
-                  [control]="form.controls.requestedDate.controls.from"
-                  label="Date from"
-                  (dateChange)="setInputValue($event, 'requestedDate.from')"
-                />
-              </div>
-
-              <div class="govuk-form-group input-group-indent-1 govuk-details__text">
-                <app-datepicker
-                  inputId="to"
-                  [control]="requestedDateToControl"
-                  label="Date to"
-                  (dateChange)="setInputValue($event, 'requestedDate.to')"
-                />
-              </div>
-            </div>
-          }
-        </div>
-      </div>
+      <app-specific-or-range-date-picker label="Date requested" formGroupName="requestedDate" />
       <div class="govuk-form-group">
         <label class="govuk-label govuk-!-font-weight-bold" for="requestMethod"> Request method </label>
         <div class="govuk-radios">
