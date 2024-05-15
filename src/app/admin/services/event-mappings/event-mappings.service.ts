@@ -1,3 +1,4 @@
+import { EventMappingFormValues } from '@admin-types/event-mappings/event-mapping-form-values.interface';
 import { EventMappingData } from '@admin-types/event-mappings/event-mapping.interface';
 import { EventMapping } from '@admin-types/event-mappings/event-mapping.type';
 import { HttpClient } from '@angular/common/http';
@@ -19,6 +20,22 @@ export class EventMappingsService {
 
   getEventHandlers(): Observable<string[]> {
     return this.http.get<string[]>(`api/admin/event-handlers`);
+  }
+
+  createEventMapping(eventMapping: EventMappingFormValues): Observable<EventMappingData> {
+    return this.http.post<EventMappingData>(`api/admin/event-mappings`, this.mapToEventMappingRequest(eventMapping), {
+      params: { is_revision: false },
+    });
+  }
+
+  private mapToEventMappingRequest(eventMapping: EventMappingFormValues): Partial<EventMappingData> {
+    return {
+      type: eventMapping.type,
+      sub_type: eventMapping.subType,
+      name: eventMapping.eventName,
+      handler: eventMapping.eventHandler,
+      has_restrictions: eventMapping.withRestrictions,
+    };
   }
 
   mapEventMappings(e: EventMappingData): EventMapping {

@@ -53,7 +53,7 @@ export class SystemConfigurationComponent {
   }
 
   getTabFromUrl(url: string) {
-    return Object.keys(tabUrlMap).find((key) => tabUrlMap[key] === url) ?? 'Retention policies';
+    return Object.keys(tabUrlMap).find((key) => url.indexOf(tabUrlMap[key]) !== -1) ?? 'Retention policies';
   }
 
   getUrlFromTab(tab: string) {
