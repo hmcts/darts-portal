@@ -69,77 +69,34 @@ export class CourthouseRecordComponent {
 
   roles$ = this.groupsService.getRoles().pipe(
     map((roles) => ({
-      roles,
-      requesterId: roles.find((role) => role.name === 'REQUESTER')!.id,
-      approverId: roles.find((role) => role.name === 'APPROVER')!.id,
+      requesterRole: roles.find((role) => role.name === 'REQUESTER')!,
+      approverRole: roles.find((role) => role.name === 'APPROVER')!,
     }))
   );
-  requesterGroup: { id: number; users: number[] } | null = null;
-  approverGroup: { id: number; users: number[] } | null = null;
-
-  onDeleteClicked(selectedUsers: CourthouseUser[]) {
-    this.router.navigate([], {
-      queryParams: {
-        userRoleDeleteSuccess: null,
-      },
-    });
-    this.isDeleting = true;
-    this.selectedUsers = selectedUsers;
-  }
 
   courthouseRequesterApproverGroups$ = this.roles$.pipe(
-    switchMap(({ roles, requesterId, approverId }) => {
+    switchMap(({ requesterRole, approverRole }) => {
       return this.groupsService
-        .getGroupsByRoleIdsAndCourthouseId([requesterId, approverId], this.courthouseId)
-        .pipe(
-          switchMap((groups) => {
-            const approverUserIds: number[] = [];
-            const requesterUserIds: number[] = [];
-
-            // Split userIds into approvers and requesters
-            groups.forEach((group) => {
-              group.securityRoleId === approverId
-                ? approverUserIds.push(...group.userIds)
-                : requesterUserIds.push(...group.userIds);
-            });
-
-            return of({
-              roles,
-              requesterId,
-              approverId,
-              groups,
-              approverUserIds,
-              requesterUserIds,
-            });
-          })
-        )
-        .pipe(
-          tap(({ groups, requesterId, approverId, approverUserIds, requesterUserIds }) => {
-            this.approverRequesterGroups = groups;
-            this.requesterGroup = { id: requesterId, users: requesterUserIds };
-            this.approverGroup = { id: approverId, users: approverUserIds };
-          })
-        );
+        .getGroupsByRoleIdsAndCourthouseId([requesterRole.id, approverRole.id], this.courthouseId)
+        .pipe(switchMap((groups) => of({ groups, approverRole, requesterRole })))
+        .pipe(tap(({ groups }) => (this.approverRequesterGroups = groups)));
     })
   );
 
   fetchUsers$ = this.courthouseRequesterApproverGroups$.pipe(
-    switchMap(({ roles, requesterId, approverId, groups, approverUserIds, requesterUserIds }) => {
-      return this.usersService.getUsersById([...approverUserIds, ...requesterUserIds]).pipe(
+    switchMap(({ groups, approverRole, requesterRole }) => {
+      return this.usersService.getUsersById(groups.flatMap((g) => g.userIds)).pipe(
         map((users) => {
-          // split users into approvers and requesters and add role display name
-          const approvers = this.getUsersWithRoleByGroup(users, approverUserIds, groups, approverId, roles);
-          const requesters = this.getUsersWithRoleByGroup(users, requesterUserIds, groups, requesterId, roles);
+          const requesterGroups = groups.filter((group) => group.securityRoleId === requesterRole.id);
+          const approverGroups = groups.filter((group) => group.securityRoleId === approverRole.id);
 
-          return [...approvers, ...requesters].map((user) => {
-            return {
-              userName: user.fullName,
-              email: user.emailAddress,
-              roleType: user.role,
-              userId: user.id,
-              groupId: user.groupId,
-            };
-          });
+          const requesterUserIds = requesterGroups.flatMap((group) => group.userIds);
+          const approverUserIds = approverGroups.flatMap((group) => group.userIds);
+
+          const requesterUsers = this.getUsersWithRoleByGroup(users, requesterUserIds, requesterGroups, requesterRole);
+          const approverUsers = this.getUsersWithRoleByGroup(users, approverUserIds, approverGroups, approverRole);
+
+          return [...requesterUsers, ...approverUsers];
         })
       );
     })
@@ -151,15 +108,20 @@ export class CourthouseRecordComponent {
     users: User[],
     groupUserIds: number[],
     groups: SecurityGroup[],
-    roleId: number,
-    roles: SecurityRole[]
-  ): (User & { role: string; groupId: number })[] {
+    role: SecurityRole
+  ): CourthouseUser[] {
     return users
       .filter((u) => groupUserIds.includes(u.id))
       .map((u) => {
-        const group = groups.filter((g) => g.userIds.includes(u.id)).filter((g) => g.securityRoleId === roleId)[0];
-        const role = roles.find((role) => role.id === group.securityRoleId)?.displayName ?? '';
-        return { ...u, role, groupId: group.id };
+        const usersGroups = groups.filter((g) => g.userIds.includes(u.id)).filter((g) => g.securityRoleId === role.id);
+        return {
+          id: u.id,
+          userName: u.fullName,
+          email: u.emailAddress,
+          roleType: role.displayName,
+          role,
+          groups: usersGroups,
+        };
       });
   }
 
@@ -172,25 +134,37 @@ export class CourthouseRecordComponent {
     return 'None';
   }
 
+  onDeleteClicked(selectedUsers: CourthouseUser[]) {
+    this.router.navigate([], {
+      queryParams: {
+        userRoleDeleteSuccess: null,
+      },
+    });
+    this.isDeleting = true;
+    this.selectedUsers = selectedUsers;
+  }
+
   onDeleteConfirmed() {
-    const uniqueUserIdsToRemove = new Set(
-      this.selectedUsers.map((user) => {
-        return user.userId;
-      })
+    const selectedGroupIds = this.selectedUsers.flatMap((user) => user.groups.map((group) => group.id));
+
+    const groupIdUserIdsMap = new Map<number, number[]>(
+      this.approverRequesterGroups.map((group) => [group.id, group.userIds])
     );
 
-    const deleteRequests = Array.from(
-      new Set(
-        this.selectedUsers.map((user) => {
-          return this.approverRequesterGroups.find((group) => group.id === user.groupId);
-        })
-      )
-    )
-      .map((group) => ({
-        groupId: group!.id,
-        userIds: group!.userIds.filter((u) => !uniqueUserIdsToRemove.has(u)),
-      }))
-      .map((s) => this.groupsService.assignUsersToGroup(s.groupId, s.userIds));
+    this.selectedUsers.forEach((user) => {
+      user.groups.forEach((group) => {
+        if (groupIdUserIdsMap.has(group.id)) {
+          groupIdUserIdsMap.set(
+            group.id,
+            groupIdUserIdsMap.get(group.id)!.filter((userId) => userId !== user.id)
+          );
+        }
+      });
+    });
+
+    const deleteRequests = Array.from(groupIdUserIdsMap.entries())
+      .filter(([groupid]) => selectedGroupIds.includes(groupid))
+      .map(([groupId, userIds]) => this.groupsService.assignUsersToGroup(groupId, userIds));
 
     forkJoin(deleteRequests).subscribe({
       next: () => (this.isDeleting = false),

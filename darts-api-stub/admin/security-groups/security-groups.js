@@ -148,6 +148,17 @@ const defaultSecurityGroups = [
     user_ids: [2, 3],
     description: 'Dummy description 2',
   },
+  {
+    id: 14,
+    security_role_id: 2,
+    name: 'Oxford Approvers 2',
+    display_name: 'Oxford Approvers 2',
+    display_state: true,
+    global_access: true,
+    courthouse_ids: [16],
+    user_ids: [3],
+    description: 'Dummy description 2',
+  },
 ];
 
 // const securityGroups = localArray('securityGroups');

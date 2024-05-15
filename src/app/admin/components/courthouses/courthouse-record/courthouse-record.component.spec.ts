@@ -200,8 +200,9 @@ describe('CourthouseRecordComponent', () => {
           userName: 'Eric Bristow',
           email: 'eric.bristow@darts.local',
           roleType: 'Approver',
-          userId: 1,
-          groupId: 12,
+          id: 1,
+          groups: [],
+          role: {} as SecurityRole,
         },
       ];
       component.onDeleteClicked(selectedRows);
@@ -215,52 +216,57 @@ describe('CourthouseRecordComponent', () => {
       const deleteSpy = jest.spyOn(fakeGroupsService, 'assignUsersToGroup');
       const selectedRows: CourthouseUser[] = [
         {
+          id: 1,
           userName: 'Eric Bristow',
-          email: 'eric.bristow@darts.local',
           roleType: 'Approver',
-          userId: 1,
-          groupId: 12,
+          groups: [{ id: 1 }],
         },
         {
-          userName: 'Fallon Sherrock',
-          email: 'fallon.sherrock@darts.local',
+          id: 1,
+          userName: 'Eric Bristow',
           roleType: 'Requestor',
-          userId: 2,
-          groupId: 13,
+          groups: [{ id: 2 }],
         },
-      ];
+        {
+          id: 2,
+          userName: 'Fallon Sherrock',
+          roleType: 'Approver',
+          groups: [{ id: 2 }],
+        },
+        {
+          id: 3,
+          userName: 'Phil Taylor',
+          roleType: 'Approver',
+          groups: [{ id: 3 }],
+        },
+      ] as CourthouseUser[];
       const approverRequesterGroups: SecurityGroup[] = [
         {
-          id: 12,
-          name: 'Oxford Requesters',
-          displayName: 'Oxford Requesters',
-          description: 'Dummy description 1',
-          displayState: true,
-          globalAccess: true,
-          securityRoleId: 1,
-          courthouseIds: [16],
-          userIds: [1, 3],
+          id: 1,
+          name: 'Requester group',
+          userIds: [1, 2],
         },
         {
-          id: 13,
-          name: 'Oxford Approvers',
-          displayName: 'Oxford Approvers',
-          description: 'Dummy description 2',
-          displayState: true,
-          globalAccess: true,
-          securityRoleId: 2,
-          courthouseIds: [16],
-          userIds: [2, 3],
+          id: 2,
+          name: 'Approver group',
+          userIds: [1, 2, 3],
         },
-      ];
+        {
+          id: 3,
+          name: 'Another Approver group',
+          userIds: [1, 2, 3],
+        },
+      ] as SecurityGroup[];
+
       component.selectedUsers = selectedRows;
       component.approverRequesterGroups = approverRequesterGroups;
 
       component.onDeleteConfirmed();
 
-      expect(deleteSpy).toHaveBeenCalledTimes(2);
-      expect(deleteSpy).toHaveBeenCalledWith(12, [3]);
-      expect(deleteSpy).toHaveBeenCalledWith(13, [3]);
+      expect(deleteSpy).toHaveBeenCalledTimes(3);
+      expect(deleteSpy).toHaveBeenCalledWith(1, [2]);
+      expect(deleteSpy).toHaveBeenCalledWith(2, [3]);
+      expect(deleteSpy).toHaveBeenCalledWith(3, [1, 2]);
     });
   });
 
@@ -288,60 +294,20 @@ describe('CourthouseRecordComponent', () => {
   });
 
   describe('roles$', () => {
-    it('should call getRoles() and return an array of Roles with approver and requester ids', () => {
+    it('should call getRoles() and return approver role and requester role object', () => {
       const expectedRoles = {
-        roles: [
-          {
-            id: 1,
-            name: 'APPROVER',
-            displayState: true,
-            displayName: 'Approver',
-          },
-          {
-            id: 2,
-            name: 'REQUESTER',
-            displayState: true,
-            displayName: 'Requestor',
-          },
-          {
-            id: 3,
-            name: 'JUDGE',
-            displayState: true,
-            displayName: 'Judge',
-          },
-          {
-            id: 4,
-            name: 'TRANSCRIBER',
-            displayState: true,
-            displayName: 'Transcriber',
-          },
-          {
-            id: 5,
-            name: 'TRANSLATION_QA',
-            displayState: true,
-            displayName: 'Translation QA',
-          },
-          {
-            id: 6,
-            name: 'RCJ APPEALS',
-            displayState: true,
-            displayName: 'RCJ Appeals',
-          },
-          {
-            id: 7,
-            name: 'ADMIN',
-            displayState: true,
-            displayName: 'Admin',
-          },
-          {
-            id: 8,
-            name: 'DONT DISPLAY ROLE',
-            displayState: false,
-            displayName: 'Dont Display Role',
-          },
-        ],
-        requesterId: 2,
-        approverId: 1,
+        approverRole: {
+          id: 1,
+          name: 'APPROVER',
+          displayState: true,
+          displayName: 'Approver',
+        },
+        requesterRole: {
+          id: 2,
+          name: 'REQUESTER',
+          displayState: true,
+          displayName: 'Requestor',
+        },
       };
 
       let result;
@@ -356,60 +322,20 @@ describe('CourthouseRecordComponent', () => {
   });
 
   describe('courthouseRequesterApproverGroups$', () => {
-    it('should return an object containing roles, requesterId, approverId, groups, approverUserIds, requesterUserIds, groupId and userId', () => {
+    it('should return an object containing groups, approver role and requester role', () => {
       const expectedResult = {
-        roles: [
-          {
-            id: 1,
-            name: 'APPROVER',
-            displayState: true,
-            displayName: 'Approver',
-          },
-          {
-            id: 2,
-            name: 'REQUESTER',
-            displayState: true,
-            displayName: 'Requestor',
-          },
-          {
-            id: 3,
-            name: 'JUDGE',
-            displayState: true,
-            displayName: 'Judge',
-          },
-          {
-            id: 4,
-            name: 'TRANSCRIBER',
-            displayState: true,
-            displayName: 'Transcriber',
-          },
-          {
-            id: 5,
-            name: 'TRANSLATION_QA',
-            displayState: true,
-            displayName: 'Translation QA',
-          },
-          {
-            id: 6,
-            name: 'RCJ APPEALS',
-            displayState: true,
-            displayName: 'RCJ Appeals',
-          },
-          {
-            id: 7,
-            name: 'ADMIN',
-            displayState: true,
-            displayName: 'Admin',
-          },
-          {
-            id: 8,
-            name: 'DONT DISPLAY ROLE',
-            displayState: false,
-            displayName: 'Dont Display Role',
-          },
-        ],
-        requesterId: 2,
-        approverId: 1,
+        approverRole: {
+          id: 1,
+          name: 'APPROVER',
+          displayState: true,
+          displayName: 'Approver',
+        },
+        requesterRole: {
+          id: 2,
+          name: 'REQUESTER',
+          displayState: true,
+          displayName: 'Requestor',
+        },
         groups: [
           {
             id: 1,
@@ -434,13 +360,11 @@ describe('CourthouseRecordComponent', () => {
             userIds: [1, 2],
           },
         ],
-        approverUserIds: [1],
-        requesterUserIds: [1, 2],
       };
 
       let result;
-      component.courthouseRequesterApproverGroups$.subscribe((returnArr) => {
-        result = returnArr;
+      component.courthouseRequesterApproverGroups$.subscribe((res) => {
+        result = res;
       });
 
       // params in call are [requesterId, approverId] and courthouseId
@@ -453,25 +377,79 @@ describe('CourthouseRecordComponent', () => {
     it('should return an array of users with their username, email address and role type where they are a requester or approver in the courthouse', () => {
       const expectedResult = [
         {
-          userName: 'Eric Bristow',
           email: 'eric.bristow@darts.local',
-          roleType: 'Approver',
-          groupId: 1,
-          userId: 1,
-        },
-        {
-          userName: 'Eric Bristow',
-          email: 'eric.bristow@darts.local',
+          groups: [
+            {
+              courthouseIds: [0],
+              description: 'Dummy description 2',
+              displayName: 'Opus Transcribers',
+              displayState: true,
+              globalAccess: true,
+              id: 2,
+              name: 'Opus Transcribers',
+              securityRoleId: 2,
+              userIds: [1, 2],
+            },
+          ],
+          id: 1,
+          role: {
+            displayName: 'Requestor',
+            displayState: true,
+            id: 2,
+            name: 'REQUESTER',
+          },
           roleType: 'Requestor',
-          groupId: 2,
-          userId: 1,
+          userName: 'Eric Bristow',
         },
         {
-          userName: 'Fallon Sherrock',
           email: 'fallon.sherrock@darts.local',
+          groups: [
+            {
+              courthouseIds: [0],
+              description: 'Dummy description 2',
+              displayName: 'Opus Transcribers',
+              displayState: true,
+              globalAccess: true,
+              id: 2,
+              name: 'Opus Transcribers',
+              securityRoleId: 2,
+              userIds: [1, 2],
+            },
+          ],
+          id: 2,
+          role: {
+            displayName: 'Requestor',
+            displayState: true,
+            id: 2,
+            name: 'REQUESTER',
+          },
           roleType: 'Requestor',
-          groupId: 2,
-          userId: 2,
+          userName: 'Fallon Sherrock',
+        },
+        {
+          email: 'eric.bristow@darts.local',
+          groups: [
+            {
+              courthouseIds: [0],
+              description: 'Dummy description 1',
+              displayName: 'Judiciary',
+              displayState: true,
+              globalAccess: true,
+              id: 1,
+              name: 'Judiciary',
+              securityRoleId: 1,
+              userIds: [1],
+            },
+          ],
+          id: 1,
+          role: {
+            displayName: 'Approver',
+            displayState: true,
+            id: 1,
+            name: 'APPROVER',
+          },
+          roleType: 'Approver',
+          userName: 'Eric Bristow',
         },
       ];
 
@@ -537,8 +515,7 @@ describe('CourthouseRecordComponent', () => {
           userIds: [1, 2],
         },
       ];
-      // role Id for Approver
-      const pRoleId: number = 1;
+
       const pRoles: SecurityRole[] = [
         {
           id: 1,
@@ -590,20 +567,32 @@ describe('CourthouseRecordComponent', () => {
         },
       ];
 
-      const results = component.getUsersWithRoleByGroup(pUsers, pGroupUserIds, pGroups, pRoleId, pRoles);
+      const results = component.getUsersWithRoleByGroup(pUsers, pGroupUserIds, pGroups, pRoles[0]);
       const expectedResult = [
         {
+          email: 'eric.bristow@darts.local',
+          groups: [
+            {
+              courthouseIds: [0],
+              description: 'Dummy description 1',
+              displayName: 'Judiciary',
+              displayState: true,
+              globalAccess: true,
+              id: 1,
+              name: 'Judiciary',
+              securityRoleId: 1,
+              userIds: [1],
+            },
+          ],
           id: 1,
-          lastLoginAt: DateTime.fromISO('2023-12-11T00:00:00.000Z'),
-          lastModifiedAt: DateTime.fromISO('2020-01-21T00:00:00.000Z'),
-          createdAt: DateTime.fromISO('2020-01-11T00:00:00.000Z'),
-          fullName: 'Eric Bristow',
-          groupId: 1,
-          emailAddress: 'eric.bristow@darts.local',
-          description: 'Stub Active User',
-          active: true,
-          securityGroupIds: [1],
-          role: 'Approver',
+          role: {
+            displayName: 'Approver',
+            displayState: true,
+            id: 1,
+            name: 'APPROVER',
+          },
+          roleType: 'Approver',
+          userName: 'Eric Bristow',
         },
       ];
       expect(results).toEqual(expectedResult);
