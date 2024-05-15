@@ -74,6 +74,8 @@ export class CourthouseRecordComponent {
       approverId: roles.find((role) => role.name === 'APPROVER')!.id,
     }))
   );
+  requesterGroup: { id: number; users: number[] } | null = null;
+  approverGroup: { id: number; users: number[] } | null = null;
 
   onDeleteClicked(selectedUsers: CourthouseUser[]) {
     this.router.navigate([], {
@@ -112,8 +114,10 @@ export class CourthouseRecordComponent {
           })
         )
         .pipe(
-          tap(({ groups }) => {
+          tap(({ groups, requesterId, approverId, approverUserIds, requesterUserIds }) => {
             this.approverRequesterGroups = groups;
+            this.requesterGroup = { id: requesterId, users: requesterUserIds };
+            this.approverGroup = { id: approverId, users: approverUserIds };
           })
         );
     })
