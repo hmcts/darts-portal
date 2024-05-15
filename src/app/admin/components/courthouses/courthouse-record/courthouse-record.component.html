@@ -87,7 +87,7 @@
               @if (users$ | async; as users) {
                 <app-courthouse-users [users]="users" (selectRowsEvent)="onDeleteClicked($event)" />
               } @else {
-                <app-courthouse-users [users]="[]" (selectRowsEvent)="onDeleteClicked($event)" />
+                <app-loading />
               }
             </div>
           </div>
