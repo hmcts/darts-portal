@@ -118,9 +118,12 @@ export const ADMIN_ROUTES: Routes = [
       ),
   },
   {
-    path: 'admin/events',
-    title: 'DARTS Admin Events',
-    loadComponent: () => import('./components/events/events.component').then((c) => c.EventsComponent),
+    path: 'admin/transformed-media',
+    title: 'DARTS Admin Transformed Media',
+    loadComponent: () =>
+      import('./components/transformed-media/search-transformed-media/search-transformed-media.component').then(
+        (c) => c.SearchTransformedMediaComponent
+      ),
   },
   {
     path: 'admin/audio-cache',
