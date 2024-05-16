@@ -39,3 +39,9 @@
 button.govuk-button.govuk-button--secondary.remove-users-button {
   margin-bottom: 0;
 }
+
+::ng-deep {
+  th {
+    color: black;
+  }
+}

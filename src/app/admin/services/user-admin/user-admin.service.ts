@@ -8,7 +8,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { GroupsService } from '@services/groups/groups.service';
 import { DateTime } from 'luxon';
-import { Observable, forkJoin, map } from 'rxjs';
+import { Observable, forkJoin, map, of } from 'rxjs';
 
 export const USER_ADMIN_SEARCH_PATH = 'api/admin/users/search';
 export const USER_ADMIN_PATH = 'api/admin/users';
@@ -32,6 +32,9 @@ export class UserAdminService {
   }
 
   getUsersById(userIds: number[]): Observable<User[]> {
+    if (!userIds?.length) {
+      return of([]);
+    }
     const params = new HttpParams().set('user_ids', userIds.join(','));
     return this.http.get<UserData[]>(USER_ADMIN_PATH, { params }).pipe(map((users) => this.mapUsers(users)));
   }
