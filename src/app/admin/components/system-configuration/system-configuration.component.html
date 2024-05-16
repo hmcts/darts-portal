@@ -8,6 +8,10 @@
   <app-govuk-banner type="success">Retention policy version created</app-govuk-banner>
 }
 
+@if (hasEventMappingCreated$ | async) {
+  <app-govuk-banner type="information">Event mapping added</app-govuk-banner>
+}
+
 <app-automated-task-status [status]="taskStatus" />
 
 <app-govuk-heading tag="h1" size="xl">System configuration</app-govuk-heading>

@@ -38,6 +38,8 @@ export class SystemConfigurationComponent {
   router = inject(Router);
   route = inject(ActivatedRoute);
 
+  hasEventMappingCreated$ = this.route.queryParams.pipe(map((params) => !!params.newEventMapping));
+
   hasPolicyCreated$ = this.route.queryParams.pipe(map((params) => !!params.created));
   hasPolicyUpdated$ = this.route.queryParams.pipe(map((params) => !!params.updated));
   hasPolicyRevised$ = this.route.queryParams.pipe(map((params) => !!params.revised));

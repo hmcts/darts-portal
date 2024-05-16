@@ -3,7 +3,7 @@ const router = express.Router();
 const { localArray } = require('../../localArray');
 const eventMappings = localArray('eventMappings');
 
-router.get('/', (_, res) => res.json(eventMappings));
+router.get('/', (_, res) => res.json(eventMappings.value));
 
 router.post('/', (req, res) => {
   const eventMapping = req.body;
@@ -16,6 +16,8 @@ router.post('/', (req, res) => {
 
   eventMapping.id = 1;
   eventMapping.created_at = new Date().toISOString();
+  eventMapping.is_active = true;
+  console.log(eventMapping);
   eventMappings.value.push(eventMapping);
   res.status(200).send(eventMapping);
 });
