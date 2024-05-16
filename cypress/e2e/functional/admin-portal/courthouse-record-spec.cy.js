@@ -239,7 +239,12 @@ describe('Admin - Courthouse record screen', () => {
 
       cy.get('button').contains('Confirm').click();
 
+      cy.get('#1').click(); // select the first user
+
       cy.get('app-govuk-banner').contains('1 user role removed from Slough');
+
+      cy.get('#remove-users-button').click();
+      cy.contains('1 user role removed from Slough').should('not.exist');
     });
 
     it('multiple users', () => {
