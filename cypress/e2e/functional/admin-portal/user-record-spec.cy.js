@@ -141,6 +141,11 @@ describe('Admin - User record screen', () => {
       cy.get('#deactivate-button').click();
 
       cy.get('app-govuk-banner').should('contain', 'User record deactivated');
+      cy.get('app-govuk-banner').should(
+        'contain',
+        'The following transcript requests have been moved back to the pool to be reallocated:'
+      );
+      cy.get('app-govuk-banner').should('contain', '1').and('contain', '2').and('contain', '3');
 
       cy.get('.govuk-tag--green').contains('User record').should('exist');
       cy.get('.govuk-tag--grey').contains('Inactive').should('exist');
