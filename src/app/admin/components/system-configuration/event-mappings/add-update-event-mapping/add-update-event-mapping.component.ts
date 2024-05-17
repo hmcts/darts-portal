@@ -33,11 +33,11 @@ export class AddUpdateEventMappingComponent implements OnInit, OnDestroy {
   cdr = inject(ChangeDetectorRef);
   destroyRef = inject(DestroyRef);
 
-  eventMappingsPath = 'admin/system-configuration/event-mappings';
-  eventHandlers$ = this.eventMappingsService.getEventHandlers();
-
   private mappingTypes: Partial<EventMapping[]> = [];
 
+  eventMappingsPath = 'admin/system-configuration/event-mappings';
+
+  eventHandlers$ = this.eventMappingsService.getEventHandlers();
   eventMappings$ = this.eventMappingsService
     .getEventMappings()
     .pipe(map((eventMappings) => this.assignTypes(eventMappings)));
@@ -161,7 +161,7 @@ export class AddUpdateEventMappingComponent implements OnInit, OnDestroy {
     this.form.controls.subType.setErrors({ unique: true });
   }
 
-  assignTypes(eventMappings: EventMapping[]) {
+  private assignTypes(eventMappings: EventMapping[]) {
     const types = eventMappings.map(({ type, subType }) => ({ type, subType })) as Partial<EventMapping[]>;
     this.mappingTypes = types;
 

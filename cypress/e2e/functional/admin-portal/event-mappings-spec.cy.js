@@ -75,4 +75,79 @@ describe('Admin - Event mappings screen', () => {
       cy.get('app-data-table').contains('StandardEventHandler');
     });
   });
+
+  describe('Add event mapping', () => {
+    beforeEach(() => {
+      cy.contains('Add event mapping').click();
+    });
+
+    it('should display validation errors for required fields', () => {
+      cy.get('#confirm-button').click();
+
+      cy.get('#type')
+        .parent()
+        .within(() => {
+          cy.get('.govuk-error-message').should('contain', 'Enter the event type');
+        });
+
+      cy.get('#eventName')
+        .parent()
+        .within(() => {
+          cy.get('.govuk-error-message').should('contain', 'Enter the event name');
+        });
+
+      cy.get('#event-handler-select')
+        .parent()
+        .within(() => {
+          cy.get('.govuk-error-message').should('contain', 'Select an event handler to map to');
+        });
+
+      cy.a11y();
+    });
+
+    it('should submit the form with valid data', () => {
+      cy.get('#type').type('Test Type');
+      cy.get('#subType').type('Test SubType');
+      cy.get('#eventName').type('Test Event Name');
+      cy.get('#event-handler-select').select('StandardEventHandler');
+      cy.get('#with-restrictions').check();
+
+      cy.get('#confirm-button').click();
+
+      cy.contains('Event mapping added').should('be.visible');
+    });
+
+    it('should not submit the form with invalid data', () => {
+      cy.get('#type').type('Invalid Type');
+      cy.get('#eventName').clear();
+
+      cy.get('#confirm-button').click();
+
+      cy.contains('Enter the event name').should('be.visible');
+      cy.contains('Select an event handler to map to').should('be.visible');
+    });
+
+    it('should not submit without unique combination of type and subtype', () => {
+      cy.get('#type').type('1000');
+      cy.get('#subType').type('1001');
+      cy.get('#eventName').type('Test Event Name');
+      cy.get('#event-handler-select').select('StandardEventHandler');
+      cy.get('#with-restrictions').check();
+
+      cy.get('#confirm-button').click();
+
+      cy.contains('The combination of event type and subtype should be unique').should('be.visible');
+
+      cy.get('#subType').type('1002');
+
+      cy.get('#confirm-button').click();
+
+      cy.contains('Event mapping added').should('be.visible');
+    });
+
+    it('should cancel the form and navigate back', () => {
+      cy.contains('Cancel').click();
+      cy.contains('System configuration').should('exist');
+    });
+  });
 });
