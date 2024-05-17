@@ -1,7 +1,5 @@
 const express = require('express');
 
-const { localArray } = require('../../localArray');
-
 const router = express.Router();
 
 const defaultSecurityGroups = [
@@ -52,12 +50,12 @@ const defaultSecurityGroups = [
   {
     id: 5,
     security_role_id: 5,
-    name: 'Super admin (Admin portal)',
+    name: 'SUPER_ADMIN',
     display_name: 'Super admin (Admin portal)',
     display_state: true,
     global_access: true,
     courthouse_ids: [1, 2, 3, 4, 5],
-    user_ids: [1, 2, 3, 4, 5],
+    user_ids: [2],
     description: 'Dummy description 5',
   },
   {
@@ -148,30 +146,61 @@ const defaultSecurityGroups = [
     user_ids: [2, 3],
     description: 'Dummy description 2',
   },
+  {
+    id: 14,
+    security_role_id: 2,
+    name: 'Oxford Approvers 2',
+    display_name: 'Oxford Approvers 2',
+    display_state: true,
+    global_access: true,
+    courthouse_ids: [16],
+    user_ids: [3],
+    description: 'Dummy description 2',
+  },
 ];
-
-const securityGroups = localArray('securityGroups');
-// Clear out old values on restart
-securityGroups.value = defaultSecurityGroups;
 
 router.patch('/:id', (req, res) => {
   const id = req.params.id;
-  const securityGroup = securityGroups.value.find((securityGroup) => securityGroup.id == id);
-  if (!securityGroup) return res.status(404).send('Security group not found');
-  Object.assign(securityGroup, req.body);
-  res.send(securityGroup);
+  const updatedUsers = req.body.user_ids;
+
+  if (id && updatedUsers) {
+    const index = defaultSecurityGroups.findIndex((group) => group.id.toString() === id);
+
+    defaultSecurityGroups[index] = { ...defaultSecurityGroups[index], user_ids: updatedUsers };
+    console.log(defaultSecurityGroups[index]);
+
+    res.send(defaultSecurityGroups[index]);
+  } else {
+    const securityGroup = defaultSecurityGroups.find((securityGroup) => securityGroup.id == id);
+    if (!securityGroup) return res.status(404).send('Security group not found');
+    Object.assign(securityGroup, req.body);
+    res.send(securityGroup);
+  }
 });
 
 router.get('/:id', (req, res) => {
   const id = req.params.id;
-  const securityGroup = securityGroups.value.find((securityGroup) => securityGroup.id == id);
+  const securityGroup = defaultSecurityGroups.find((securityGroup) => securityGroup.id == id);
   if (!securityGroup) return res.status(404).send('Security group not found');
   res.send(securityGroup);
 });
 
 router.get('/', (req, res) => {
   const roleIds = req?.query?.['role_ids'];
+  const isSingletonUser = req?.query?.['singleton_user'];
+  const userId = req.query.user_id;
   const courthouseId = req.query.courthouse_id;
+
+  if (isSingletonUser && userId) {
+    // return groups where the user is the only member of the security group
+    res.send(
+      defaultSecurityGroups.filter(
+        (securityGroup) => securityGroup.user_ids.length === 1 && securityGroup.user_ids.includes(+userId)
+      )
+    );
+    return;
+  }
+
   if (!courthouseId && !roleIds) {
     res.send(defaultSecurityGroups);
     return;
@@ -203,11 +232,11 @@ router.post('/', (req, res) => {
     ...req.body,
     global_access: true,
     display_state: true,
-    id: securityGroups.value.length + 1,
+    id: defaultSecurityGroups.length + 1,
     courthouse_ids: [],
     user_ids: [],
   };
-  securityGroups.value.push(group);
+  defaultSecurityGroups.push(group);
   res.send(group).status(201);
 });
 

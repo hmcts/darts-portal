@@ -1,21 +1,26 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-one-third">
-    <app-filters
-      (filterEvent)="setFilters($event)"
-      (clearFilterEvent)="clearFilters()"
-      [filters]="filters"
-    ></app-filters>
+    <app-filters (filterEvent)="setFilters($event)" (clearFilterEvent)="clearFilters()" [filters]="filters" />
   </div>
   <div class="govuk-grid-column-two-thirds">
-    <button class="govuk-button govuk-button--secondary remove-users-button" data-module="govuk-button">
-      Remove user(s)
-    </button>
+    @if (users.length) {
+      <button
+        class="govuk-button govuk-button--secondary remove-users-button"
+        data-module="govuk-button"
+        (click)="outputSelectedRows()"
+        id="remove-users-button"
+      >
+        Remove user role{{ selectedRows.length !== 1 ? 's' : '' }}
+      </button>
+    }
     <app-data-table
       id="users-table"
       noDataMessage="There are no users for this courthouse"
       [rows]="users"
       [columns]="columns"
       [rowSelectable]="true"
-    ></app-data-table>
+      (rowSelect)="selectedRows = $event"
+      [sortAndPaginateOnRowsChanged]="false"
+    />
   </div>
 </div>

@@ -9,65 +9,92 @@
       {{ courthouse.displayName + ' updated' }}
     </app-govuk-banner>
   }
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper">
-      <div class="govuk-grid-row">
-        <div class="courthouse-record-tags govuk-grid-column-one-third">
-          <strong class="govuk-tag govuk-tag--purple"> Courthouse record </strong>
-        </div>
+  @if (isDeletedUserRoles$ | async) {
+    <app-govuk-banner type="success">
+      {{
+        selectedUsers.length +
+          ' user ' +
+          (selectedUsers.length === 1 ? 'role' : 'roles') +
+          ' removed from ' +
+          courthouse.displayName
+      }}
+    </app-govuk-banner>
+  }
+
+  @if (isDeleting) {
+    <app-delete
+      [numberOfItems]="selectedUsers.length"
+      [title]="deleteScreenTitle(courthouse.displayName)"
+      deleteButtonTxt="Confirm"
+      [isRedDeleteButton]="false"
+      (confirm)="onDeleteConfirmed()"
+      (cancel)="onDeleteCancelled()"
+    >
+      <div class="govuk-grid-column-one-half">
+        <app-data-table id="deletionTable" [rows]="selectedUsers" [columns]="deleteColumns"></app-data-table>
       </div>
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-xl">{{ courthouse.displayName }}</h1>
-        </div>
-        <div class="govuk-grid-column-one-third">
-          <div class="button-container govuk-button-group">
-            <button
-              type="submit"
-              class="edit-button govuk-button govuk-button--secondary"
-              (click)="router.navigate(['admin/courthouses', courthouse.id, 'edit'], { state: { courthouse } })"
-            >
-              Edit courthouse
-            </button>
+    </app-delete>
+  } @else {
+    <div class="govuk-width-container">
+      <main class="govuk-main-wrapper">
+        <div class="govuk-grid-row">
+          <div class="courthouse-record-tags govuk-grid-column-one-third">
+            <strong class="govuk-tag govuk-tag--purple"> Courthouse record </strong>
           </div>
         </div>
-      </div>
-      <div class="courthouse-record-dates-container">
-        <div id="date-created-container">
-          <h3 class="govuk-heading-s">Date created</h3>
-          <p class="govuk-body">{{ courthouse.createdDateTime | luxonDate: 'EEE d MMM yyyy' }}</p>
-        </div>
-        <div id="last-updated-container">
-          <h3 class="govuk-heading-s">Last updated</h3>
-          <p class="govuk-body">{{ courthouse.lastModifiedDateTime | luxonDate: 'EEE d MMM yyyy' }}</p>
-        </div>
-      </div>
-
-      <app-tabs>
-        <div *tab="'Details'">
-          <app-details-table
-            title="Details"
-            [details]="{
-              'Database ID': courthouse.id,
-              'Courthouse name': courthouse.displayName,
-              Region: courthouse.region?.name,
-              Groups: formatSecurityGroupLinks(courthouse.securityGroups)
-            }"
-          ></app-details-table>
-        </div>
-
-        <div *tab="'Users'">
-          <div class="govuk-grid-row">
-            @if (users$ | async; as users) {
-              <app-courthouse-users [users]="users"></app-courthouse-users>
-            } @else {
-              <app-courthouse-users [users]="[]"></app-courthouse-users>
-            }
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-xl">{{ courthouse.displayName }}</h1>
+          </div>
+          <div class="govuk-grid-column-one-third">
+            <div class="button-container govuk-button-group">
+              <button
+                type="submit"
+                class="edit-button govuk-button govuk-button--secondary"
+                (click)="router.navigate(['admin/courthouses', courthouse.id, 'edit'], { state: { courthouse } })"
+              >
+                Edit courthouse
+              </button>
+            </div>
           </div>
         </div>
-      </app-tabs>
-    </main>
-  </div>
+        <div class="courthouse-record-dates-container">
+          <div id="date-created-container">
+            <h3 class="govuk-heading-s">Date created</h3>
+            <p class="govuk-body">{{ courthouse.createdDateTime | luxonDate: 'EEE d MMM yyyy' }}</p>
+          </div>
+          <div id="last-updated-container">
+            <h3 class="govuk-heading-s">Last updated</h3>
+            <p class="govuk-body">{{ courthouse.lastModifiedDateTime | luxonDate: 'EEE d MMM yyyy' }}</p>
+          </div>
+        </div>
+
+        <app-tabs [default]="tab">
+          <div *tab="'Details'">
+            <app-details-table
+              title="Details"
+              [details]="{
+                'Database ID': courthouse.id,
+                'Courthouse name': courthouse.displayName,
+                Region: courthouse.region?.name,
+                Groups: formatSecurityGroupLinks(courthouse.securityGroups)
+              }"
+            ></app-details-table>
+          </div>
+
+          <div *tab="'Users'; id: 'users-tab'">
+            <div class="govuk-grid-row">
+              @if (users$ | async; as users) {
+                <app-courthouse-users [users]="users" (selectRowsEvent)="onDeleteClicked($event)" />
+              } @else {
+                <app-loading />
+              }
+            </div>
+          </div>
+        </app-tabs>
+      </main>
+    </div>
+  }
 } @else {
   <app-loading />
 }

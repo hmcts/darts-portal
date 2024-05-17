@@ -48,6 +48,12 @@ export const ADMIN_ROUTES: Routes = [
       import('./components/users/activate-user/activate-user.component').then((c) => c.ActivateUserComponent),
   },
   {
+    path: 'admin/users/:userId/deactivate',
+    title: 'DARTS Admin Deactivate User',
+    loadComponent: () =>
+      import('./components/users/deactivate-user/deactivate-user.component').then((c) => c.DeactivateUserComponent),
+  },
+  {
     path: 'admin/users/:userId',
     title: 'DARTS Admin View User',
     loadComponent: () =>

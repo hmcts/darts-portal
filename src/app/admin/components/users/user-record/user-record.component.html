@@ -21,6 +21,23 @@
   @if (isUserActivated$ | async) {
     <app-govuk-banner type="success">User record activated</app-govuk-banner>
   }
+  @if (isUserDeactivated$ | async; as transcriptIds) {
+    <app-govuk-banner type="success">
+      User record deactivated
+      @if (transcriptIds?.length) {
+        <div class="deactivated-transcript-message">
+          <p class="govuk-body">
+            The following transcript requests have been moved back to the pool to be reallocated:
+          </p>
+          <ul class="govuk-list">
+            @for (id of transcriptIds; track id) {
+              <li>{{ id }}</li>
+            }
+          </ul>
+        </div>
+      }
+    </app-govuk-banner>
+  }
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper">
       <div class="govuk-grid-row">
@@ -46,17 +63,15 @@
             >
               Edit user
             </button>
-            @if (!user.active) {
-              <button
-                type="submit"
-                class="govuk-button govuk-button--secondary"
-                (click)="router.navigate(['admin/users', user.id, 'activate'], { state: { user } })"
-              >
-                Activate user
-              </button>
-            } @else {
-              <button type="submit" class="govuk-button govuk-button--secondary">Deactivate user</button>
-            }
+            <button
+              type="button"
+              class="govuk-button govuk-button--secondary"
+              (click)="
+                router.navigate(['admin/users', user.id, !user.active ? 'activate' : 'deactivate'], { state: { user } })
+              "
+            >
+              {{ !user.active ? 'Activate user' : 'Deactivate user' }}
+            </button>
           </div>
         </div>
       </div>

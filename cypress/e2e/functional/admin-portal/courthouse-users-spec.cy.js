@@ -22,7 +22,7 @@ describe('Admin - Courthouse record screen', () => {
     cy.contains('Michael van Gerwen')
       .parents('tr')
       .should('contain', 'michael.vangerwen@darts.local')
-      .should('contain', 'Approver');
+      .should('contain', 'Requestor');
   });
 
   it('should filter users based on user name and role type', () => {

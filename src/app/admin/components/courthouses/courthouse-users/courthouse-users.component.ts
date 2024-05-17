@@ -1,6 +1,6 @@
 import { CourthouseUser } from '@admin-types/index';
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { Filter } from '@common/filters/filter.interface';
 import { FiltersComponent } from '@common/filters/filters.component';
@@ -15,6 +15,9 @@ import { DatatableColumn } from '@core-types/data-table/data-table-column.interf
 })
 export class CourthouseUsersComponent implements OnInit {
   @Input() users: CourthouseUser[] = [];
+  @Output() selectRowsEvent = new EventEmitter<CourthouseUser[]>();
+  selectedRows = [] as CourthouseUser[];
+
   selectedFilters: Filter[] | null = null;
   fullUsers: CourthouseUser[] = [];
 
@@ -42,6 +45,12 @@ export class CourthouseUsersComponent implements OnInit {
     this.users = this.fullUsers
       .filter((user) => (userNameCriteria ? userNameCriteria.values.includes(user.userName) : true))
       .filter((user) => (roleTypeCriteria ? roleTypeCriteria.values.includes(user.roleType) : true));
+  }
+
+  outputSelectedRows() {
+    if (this.selectedRows.length) {
+      this.selectRowsEvent.emit(this.selectedRows);
+    }
   }
 
   clearFilters() {
