@@ -1,7 +1,7 @@
 import { EventMappingFormValues } from '@admin-types/event-mappings/event-mapping-form-values.interface';
 import { EventMapping } from '@admin-types/event-mappings/event-mapping.type';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, DestroyRef, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, DestroyRef, OnDestroy, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -30,7 +30,6 @@ export class AddUpdateEventMappingComponent implements OnInit, OnDestroy {
   eventMappingsService = inject(EventMappingsService);
   formService = inject(FormService);
   errorMessageService = inject(ErrorMessageService);
-  cdr = inject(ChangeDetectorRef);
   destroyRef = inject(DestroyRef);
 
   private mappingTypes: Partial<EventMapping[]> = [];
