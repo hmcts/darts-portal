@@ -1,80 +1,103 @@
-@if (isRevision) {
-  <app-govuk-heading caption="Event mapping">Prosecution opened</app-govuk-heading>
-} @else {
-  <app-govuk-heading>Add event mapping</app-govuk-heading>
-}
+<app-validation-error-summary [errors]="getErrorSummary()" />
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <div class="govuk-form-group">
-    <label for="type" class="govuk-label">Type</label>
+@if (data$ | async; as data) {
+  @if (isRevision) {
+    <app-govuk-heading caption="Event mapping">Prosecution opened</app-govuk-heading>
+  } @else {
+    <app-govuk-heading>Add event mapping</app-govuk-heading>
+  }
 
-    <!-- @for (error of getErrorMessages('displayName'); track error) {
-      <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ error }}</p>
-    } -->
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('type')">
+      <label for="type" class="govuk-label">Type</label>
 
-    <input type="text" id="type" name="type" formControlName="type" class="govuk-input govuk-input--width-10" />
-  </div>
-  <div class="govuk-form-group">
-    <label for="name" class="govuk-label">Subtype (optional)</label>
-    <!-- 
-    @for (error of getErrorMessages('name'); track error) {
-      <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ error }}</p>
-    } -->
+      @for (error of getErrorMessages('type'); track error) {
+        <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ error }}</p>
+      }
 
-    <input
-      type="text"
-      id="sub-type"
-      name="sub-type"
-      formControlName="subType"
-      class="govuk-input govuk-input--width-10"
-    />
-  </div>
-  <div class="govuk-form-group">
-    <label for="event-name" class="govuk-label">Event name</label>
+      <input
+        type="text"
+        id="type"
+        name="type"
+        formControlName="type"
+        class="govuk-input govuk-input--width-10"
+        [class.govuk-form-group--error]="isControlInvalid('type')"
+      />
+    </div>
+    <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('subType')">
+      <label for="name" class="govuk-label">Subtype (optional)</label>
 
-    <!-- @for (error of getErrorMessages('description'); track error) {
-      <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ error }}</p>
-    } -->
+      @for (error of getErrorMessages('subType'); track error) {
+        <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ error }}</p>
+      }
 
-    <input id="event-name" name="event-name" formControlName="eventName" class="govuk-input govuk-input--width-30" />
-  </div>
-  <div class="govuk-form-group">
-    <label for="event-handler-select" class="govuk-label">Map to event handler</label>
+      <input
+        type="text"
+        id="subType"
+        name="sub-type"
+        formControlName="subType"
+        class="govuk-input govuk-input--width-10"
+        [class.govuk-form-group--error]="isControlInvalid('subType')"
+      />
+    </div>
+    <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('eventName')">
+      <label for="event-name" class="govuk-label">Event name</label>
 
-    <!-- @for (error of getErrorMessages('fixedPolicyKey'); track error) {
-      <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ error }}</p>
-    } -->
-    @if (eventHandlers$ | async; as eventHandlers) {
-      <select class="govuk-select" id="event-handler-select" name="event-handler-select" formControlName="eventHandler">
-        <option value="" disabled selected>Select</option>
-        @for (handler of eventHandlers; track handler) {
+      @for (error of getErrorMessages('eventName'); track error) {
+        <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ error }}</p>
+      }
+
+      <input
+        id="eventName"
+        name="event-name"
+        formControlName="eventName"
+        class="govuk-input govuk-input--width-30"
+        [class.govuk-form-group--error]="isControlInvalid('eventName')"
+      />
+    </div>
+    <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('eventHandler')">
+      <label for="event-handler-select" class="govuk-label">Map to event handler</label>
+
+      @for (error of getErrorMessages('eventHandler'); track error) {
+        <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ error }}</p>
+      }
+
+      <select
+        class="govuk-select"
+        id="event-handler-select"
+        name="event-handler-select"
+        formControlName="eventHandler"
+        [class.govuk-form-group--error]="isControlInvalid('eventHandler')"
+      >
+        <option [value]="null" disabled selected>Select</option>
+        @for (handler of data.eventHandlers; track handler) {
           <option [value]="handler">
             {{ handler }}
           </option>
         }
       </select>
-    }
-  </div>
-  <div class="govuk-form-group">
-    <div class="govuk-checkboxes" data-module="govuk-checkboxes">
-      <div class="govuk-checkboxes__item">
-        <input
-          class="govuk-checkboxes__input"
-          id="with-restrictions"
-          name="with-restrictions"
-          type="checkbox"
-          [value]="true"
-          formControlName="withRestrictions"
-        />
-        <label class="govuk-label govuk-checkboxes__label" for="with-restrictions"
-          >Tick if this event mapping has reporting restrictions</label
-        >
+    </div>
+    <div class="govuk-form-group">
+      <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+        <div class="govuk-checkboxes__item">
+          <input
+            class="govuk-checkboxes__input"
+            id="with-restrictions"
+            name="with-restrictions"
+            type="checkbox"
+            [value]="true"
+            formControlName="withRestrictions"
+          />
+          <label class="govuk-label govuk-checkboxes__label" for="with-restrictions"
+            >Tick if this event mapping has reporting restrictions</label
+          >
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="govuk-button-group">
-    <button id="confirm-button" class="govuk-button" (mousedown)="(false)" type="submit">Add mapping</button>
-    <a class="govuk-link" href="javascript:void(0)" (click)="onCancel()">Cancel</a>
-  </div>
-</form>
+    <div class="govuk-button-group">
+      <button id="confirm-button" class="govuk-button" (mousedown)="(false)" type="submit">Add mapping</button>
+      <a class="govuk-link" href="javascript:void(0)" (click)="onCancel()">Cancel</a>
+    </div>
+  </form>
+}

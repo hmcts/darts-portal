@@ -4,7 +4,7 @@ import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
-import { DatatableColumn } from '@core-types/index';
+import { DatatableColumn, ErrorSummaryEntry } from '@core-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { EventMappingsService } from '@services/event-mappings/event-mappings.service';
@@ -29,6 +29,8 @@ export class EventMappingComponent {
   eventMappingService = inject(EventMappingsService);
   datePipe = inject(DatePipe);
   router = inject(Router);
+
+  errors: ErrorSummaryEntry[] = [];
 
   columns: DatatableColumn[] = [
     { name: 'Type', prop: 'type', sortable: true },

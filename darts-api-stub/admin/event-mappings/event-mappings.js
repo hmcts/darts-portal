@@ -14,10 +14,10 @@ router.post('/', (req, res) => {
     return res.sendStatus(409);
   }
 
+  if (!eventMapping.handler) eventMapping.handler = 'DartsEventNullHandler';
   eventMapping.id = 1;
   eventMapping.created_at = new Date().toISOString();
   eventMapping.is_active = true;
-  console.log(eventMapping);
   eventMappings.value.push(eventMapping);
   res.status(200).send(eventMapping);
 });

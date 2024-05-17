@@ -12,6 +12,8 @@ import { Observable, map } from 'rxjs';
 export class EventMappingsService {
   http = inject(HttpClient);
 
+  allTypes: Partial<EventMapping[]> = [];
+
   getEventMappings(): Observable<EventMapping[]> {
     return this.http
       .get<EventMappingData[]>(`api/admin/event-mappings`)
@@ -33,7 +35,7 @@ export class EventMappingsService {
       type: eventMapping.type,
       sub_type: eventMapping.subType,
       name: eventMapping.eventName,
-      handler: eventMapping.eventHandler,
+      handler: eventMapping.eventHandler ? eventMapping.eventHandler : null,
       has_restrictions: eventMapping.withRestrictions,
     };
   }
@@ -44,7 +46,7 @@ export class EventMappingsService {
       type: e.type,
       subType: e.sub_type,
       name: e.name,
-      handler: e.handler,
+      handler: e.handler!,
       isActive: e.is_active,
       hasRestrictions: e.has_restrictions,
       createdAt: DateTime.fromISO(e.created_at),
