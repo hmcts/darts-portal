@@ -3,6 +3,7 @@ const { userIdHasAnyRoles } = require('../../users');
 const { SUPER_ADMIN } = require('../../roles');
 const { mockTranscriptionDetails } = require('../../transcriptions/transcriptions');
 const { MOCK_STATUSES } = require('./transcription-status');
+const { DateTime } = require('luxon');
 
 const router = express.Router();
 
@@ -71,6 +72,12 @@ function authCheck(req, res) {
 }
 
 router.get('/', (req, res) => {
+  userId = req?.query?.['user_id'];
+  requestedAtFrom = req?.query?.['requested_at_from'];
+  if (userId && requestedAtFrom) {
+    res.send(transcripts.filter((transcript) => DateTime.fromISO(requestedAtFrom) <= DateTime.fromISO(transcript.requested_at)));
+    return;
+  }
   authCheck(req, res);
   res.send(transcripts);
 });
