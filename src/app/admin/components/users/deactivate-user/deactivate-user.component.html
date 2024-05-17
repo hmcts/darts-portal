@@ -1,0 +1,53 @@
+@if (isSuperAdminError()) {
+  <app-govuk-heading>You cannot deactivate this user</app-govuk-heading>
+
+  <p class="govuk-body two-third-width">
+    This is the only active user in the <strong>Super Admin (Admin Portal)</strong> group. There must be at least one
+    user in this group. You must assign another user to this group before this user can be deactivated.
+  </p>
+
+  <a id="back-button" class="govuk-link" href="javascript:void(0)" (click)="router.navigate(['admin/users', user.id])"
+    >Go back</a
+  >
+} @else {
+  <app-govuk-heading caption="Deactivate user">{{ user.fullName }}</app-govuk-heading>
+
+  <p class="govuk-body">Deactivating this user will remove their access to DARTS.</p>
+
+  @if (groups$ | async; as groups) {
+    @if (groups.length) {
+      @if (groups.length === 1) {
+        <p class="govuk-body">
+          This is the only active user in this group. Deactivating this user will result in no active users in this
+          group.
+        </p>
+      } @else {
+        <p class="govuk-body">
+          This is the only active user in these groups. Deactivating this user will result in no active users in these
+          groups.
+        </p>
+      }
+
+      <ul class="govuk-task-list">
+        @for (group of groups; track group.name) {
+          <li class="govuk-task-list__item">{{ group.name }}</li>
+        }
+      </ul>
+    }
+
+    <div class="govuk-button-group">
+      <button id="deactivate-button" class="govuk-button" type="button" (click)="deactivateUser()">
+        Deactivate user
+      </button>
+      <a
+        id="cancel-button"
+        class="govuk-link"
+        href="javascript:void(0)"
+        (click)="router.navigate(['admin/users', user.id])"
+        >Cancel</a
+      >
+    </div>
+  } @else {
+    <app-loading />
+  }
+}
