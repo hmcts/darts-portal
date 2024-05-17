@@ -129,6 +129,21 @@ export class TranscriptionAdminService {
     return this.http.patch<void>(`api/admin/transcriptions/${transcriptId}`, body, { observe: 'response' });
   }
 
+  getTranscriptiptionRequests(userId: number, requestedAtFrom?: string): Observable<Transcription[]> {
+    return this.http
+      .get<TranscriptionData[]>(
+        `api/admin/transcriptions`,
+        requestedAtFrom
+          ? {
+              params: { user_id: userId, requested_at_from: requestedAtFrom },
+            }
+          : {
+              params: { user_id: userId },
+            }
+      )
+      .pipe(map(this.mapTranscriptionDataToTranscription));
+  }
+
   private mapTranscriptionWorkflows(data: TranscriptionWorkflowData[]): TranscriptionWorkflow[] {
     return data.map((workflow) => ({
       workflowActor: workflow.workflow_actor,

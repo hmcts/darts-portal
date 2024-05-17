@@ -89,7 +89,9 @@
           <app-user-groups [user]="user" (errors)="errors = $event" />
         </div>
 
-        <div *tab="'Transcript Requests'"></div>
+        <div *tab="'Transcript Requests'">
+          <app-data-table id="transcriptRequestsTable" [rows]="selectedUsers" [columns]="columns"></app-data-table>
+        </div>
       </app-tabs>
     </main>
   </div>
