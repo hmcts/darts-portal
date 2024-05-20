@@ -192,8 +192,10 @@ export class TranscriptionAdminService {
   }
 
   getCurrentStatusFromTranscript(transcript: TranscriptionAdminDetails) {
-    const processGroups = (groups: SecurityGroup[] | undefined) =>
-      groups && groups.length > 0
+    const processGroups = (groups: SecurityGroup[] | undefined, status = '') => {
+      if (status === 'Approved' || status === 'Requested') return null;
+
+      return groups && groups.length > 0
         ? groups
             .filter((group) => group.displayName || group.name)
             .map((group) => ({
@@ -201,6 +203,7 @@ export class TranscriptionAdminService {
               value: group.displayName || group.name,
             }))
         : null;
+    };
 
     const processStatus = (status: string | undefined) => {
       const changeStatuses = ['Awaiting Authorisation', 'With Transcriber', 'Requested', 'Approved'];
@@ -232,7 +235,7 @@ export class TranscriptionAdminService {
     return {
       Status: processStatus(transcript.status),
       'Assigned to': processAssignedTo(transcript.assignedTo),
-      'Associated groups': processGroups(transcript.assignedGroups),
+      'Associated groups': processGroups(transcript.assignedGroups, transcript.status),
     };
   }
 
