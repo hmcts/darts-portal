@@ -52,6 +52,7 @@ app.use('/admin/transcription-workflows', require('./admin/transcriptions/transc
 app.use('/admin/automated-tasks', require('./admin/automated-tasks/automated-tasks'));
 app.use('/admin/event-mappings', require('./admin/event-mappings/event-mappings'));
 app.use('/admin/event-handlers', require('./admin/event-mappings/event-handlers'));
+app.use('/admin/transformed-medias', require('./admin/transformed-media/transformed-media'));
 // proxy non-stubbed routes to the actual API
 app.use(
   createProxyMiddleware({

@@ -15,6 +15,12 @@
   td {
     word-wrap: break-word;
   }
+  .moj-scrollable-pane {
+    th,
+    td.govuk-table__cell {
+      text-wrap: nowrap;
+    }
+  }
 }
 
 .govuk-caption-m {
@@ -76,4 +82,8 @@ td:has(input[type='checkbox']) {
 
 .scrollable {
   overflow-y: auto;
+}
+
+caption.govuk-heading-m {
+  text-align: left;
 }
