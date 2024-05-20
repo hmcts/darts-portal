@@ -51,15 +51,6 @@ export class SearchTransformedMediaFormComponent {
 
   isAdvancedSearch = false;
 
-  toggleAdvancedSearch() {
-    this.isAdvancedSearch = !this.isAdvancedSearch;
-  }
-
-  setInputValue(value: string, control: string) {
-    this.form.get(control)?.setValue(value);
-    this.form.get(control)?.markAsTouched();
-  }
-
   onSubmit() {
     this.form.markAllAsTouched();
     if (this.form.invalid) {
@@ -77,5 +68,13 @@ export class SearchTransformedMediaFormComponent {
       TransformedMediaSearchFormErrorMessages,
       controlPath
     );
+  }
+
+  toggleAdvancedSearch() {
+    this.isAdvancedSearch = !this.isAdvancedSearch;
+  }
+  setInputValue(value: string, control: string) {
+    this.form.get(control)?.setValue(value);
+    this.form.get(control)?.markAsTouched();
   }
 }
