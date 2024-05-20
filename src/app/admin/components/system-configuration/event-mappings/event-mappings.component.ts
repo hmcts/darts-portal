@@ -4,6 +4,7 @@ import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
+import { LoadingComponent } from '@common/loading/loading.component';
 import { DatatableColumn, ErrorSummaryEntry } from '@core-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
@@ -23,6 +24,7 @@ import { EventMappingForm, EventMappingFormComponent } from './event-mapping-for
     CommonModule,
     LuxonDatePipe,
     TableRowTemplateDirective,
+    LoadingComponent,
   ],
 })
 export class EventMappingComponent {

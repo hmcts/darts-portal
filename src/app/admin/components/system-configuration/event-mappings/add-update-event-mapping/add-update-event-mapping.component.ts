@@ -1,7 +1,7 @@
 import { EventMappingFormValues } from '@admin-types/event-mappings/event-mapping-form-values.interface';
 import { EventMapping } from '@admin-types/event-mappings/event-mapping.type';
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -30,7 +30,7 @@ import { Subscription, combineLatest, map } from 'rxjs';
     LoadingComponent,
   ],
 })
-export class AddUpdateEventMappingComponent implements OnInit, OnDestroy {
+export class AddUpdateEventMappingComponent implements OnInit {
   fb = inject(FormBuilder);
   router = inject(Router);
   headerService = inject(HeaderService);
@@ -93,15 +93,9 @@ export class AddUpdateEventMappingComponent implements OnInit, OnDestroy {
     this.headerService.hideNavigation();
     this.setUniqueTypeValidation();
 
-    this.errorSubscription = this.error$.subscribe((error) => {
+    this.errorSubscription = this.error$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((error) => {
       this.setResponseErrors(error);
     });
-  }
-
-  ngOnDestroy(): void {
-    if (this.errorSubscription) {
-      this.errorSubscription.unsubscribe();
-    }
   }
 
   private setUniqueTypeValidation() {
