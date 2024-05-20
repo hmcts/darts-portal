@@ -1,10 +1,11 @@
 import { JsonPipe, NgIf } from '@angular/common';
 import { Component, DestroyRef, EventEmitter, Output, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DatepickerComponent } from '@common/datepicker/datepicker.component';
 import { SpecificOrRangeDatePickerComponent } from '@common/specific-or-range-date-picker/specific-or-range-date-picker.component';
 import { TranscriptSearchFormErrorMessages } from '@constants/transcript-search-form-error-messages';
 import { ErrorSummaryEntry } from '@core-types/index';
+import { FormService } from '@services/form/form.service';
 import { dateRangeValidator } from '@validators/date-range.validator';
 import { futureDateValidator } from '@validators/future-date.validator';
 import { realDateValidator } from '@validators/real-date.validator';
@@ -25,6 +26,7 @@ export const transcriptSearchDateValidators = [
 export class SearchTranscriptsFormComponent {
   fb = inject(FormBuilder);
   destroyRef = inject(DestroyRef);
+  formService = inject(FormService);
 
   form = this.fb.group({
     requestId: [''],
@@ -56,48 +58,25 @@ export class SearchTranscriptsFormComponent {
 
   setInputValue(value: string, control: string) {
     this.form.get(control)?.setValue(value);
+    this.form.get(control)?.markAsTouched();
   }
 
   onSubmit() {
     this.form.markAllAsTouched();
     if (this.form.invalid) {
-      this.errors.emit(this.getErrorSummary(this.form));
+      this.errors.emit(this.formService.getErrorSummaryRecursively(this.form, TranscriptSearchFormErrorMessages));
       return;
     }
 
+    this.errors.emit([]);
     this.search.emit(this.form.value);
   }
 
   getControlErrorMessage(controlPath: string[]): string[] {
-    const control = this.form.get(controlPath);
-    const errors = control?.errors;
-
-    if (!errors || !control.touched) return [];
-
-    const controlKey = controlPath[controlPath.length - 1];
-    const errorKey = Object.keys(errors)[0];
-
-    return [TranscriptSearchFormErrorMessages[controlKey][errorKey]];
-  }
-
-  getErrorSummary(form: FormGroup, controlPath: string[] = []): ErrorSummaryEntry[] {
-    // recursively get all errors from all controls in the form including nested form group controls
-    const formControls = form.controls;
-
-    return Object.keys(formControls)
-      .filter((controlName) => formControls[controlName].invalid)
-      .map((controlName) => {
-        const control = formControls[controlName];
-
-        if (control instanceof FormGroup) {
-          return this.getErrorSummary(control, [...controlPath, controlName]);
-        }
-
-        return {
-          fieldId: controlName,
-          message: this.getControlErrorMessage([...controlPath, controlName])[0],
-        };
-      })
-      .flat();
+    return this.formService.getControlErrorMessageWithControlPath(
+      this.form,
+      TranscriptSearchFormErrorMessages,
+      controlPath
+    );
   }
 }

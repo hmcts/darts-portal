@@ -1,10 +1,11 @@
 import { NgIf } from '@angular/common';
 import { Component, DestroyRef, EventEmitter, Output, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DatepickerComponent } from '@common/datepicker/datepicker.component';
 import { SpecificOrRangeDatePickerComponent } from '@common/specific-or-range-date-picker/specific-or-range-date-picker.component';
 import { TransformedMediaSearchFormErrorMessages } from '@constants/transformed-media-search-form-error-messages';
 import { ErrorSummaryEntry } from '@core-types/index';
+import { FormService } from '@services/form/form.service';
 import { dateRangeValidator } from '@validators/date-range.validator';
 import { futureDateValidator } from '@validators/future-date.validator';
 import { realDateValidator } from '@validators/real-date.validator';
@@ -25,6 +26,7 @@ export const transformedMediaSearchDateValidators = [
 export class SearchTransformedMediaFormComponent {
   fb = inject(FormBuilder);
   destroyRef = inject(DestroyRef);
+  formService = inject(FormService);
 
   form = this.fb.group({
     requestId: [''],
@@ -55,47 +57,25 @@ export class SearchTransformedMediaFormComponent {
 
   setInputValue(value: string, control: string) {
     this.form.get(control)?.setValue(value);
+    this.form.get(control)?.markAsTouched();
   }
 
   onSubmit() {
     this.form.markAllAsTouched();
     if (this.form.invalid) {
-      this.errors.emit(this.getErrorSummary(this.form));
+      this.errors.emit(this.formService.getErrorSummaryRecursively(this.form, TransformedMediaSearchFormErrorMessages));
       return;
     }
 
+    this.errors.emit([]);
     this.search.emit(this.form.value);
   }
 
   getControlErrorMessage(controlPath: string[]): string[] {
-    const control = this.form.get(controlPath);
-    const errors = control?.errors;
-
-    if (!errors || !control.touched) return [];
-
-    const controlKey = controlPath[controlPath.length - 1];
-    const errorKey = Object.keys(errors)[0];
-
-    return [TransformedMediaSearchFormErrorMessages[controlKey][errorKey]];
-  }
-
-  getErrorSummary(form: FormGroup, controlPath: string[] = []): ErrorSummaryEntry[] {
-    const formControls = form.controls;
-
-    return Object.keys(formControls)
-      .filter((controlName) => formControls[controlName].invalid)
-      .map((controlName) => {
-        const control = formControls[controlName];
-
-        if (control instanceof FormGroup) {
-          return this.getErrorSummary(control, [...controlPath, controlName]);
-        }
-
-        return {
-          fieldId: controlName,
-          message: this.getControlErrorMessage([...controlPath, controlName])[0],
-        };
-      })
-      .flat();
+    return this.formService.getControlErrorMessageWithControlPath(
+      this.form,
+      TransformedMediaSearchFormErrorMessages,
+      controlPath
+    );
   }
 }

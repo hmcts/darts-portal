@@ -26,4 +26,40 @@ export class FormService {
       )
       .flat();
   }
+
+  getControlErrorMessageWithControlPath(
+    form: FormGroup,
+    errorMessages: Record<string, Record<string, string>>,
+    controlPath: string[]
+  ): string[] {
+    const controlKey = controlPath[controlPath.length - 1];
+    const control = form.get(controlKey);
+    const errors = control?.errors;
+
+    if (!errors || !control.touched) return [];
+    const errorKey = Object.keys(errors)[0];
+    return [errorMessages[controlKey][errorKey]];
+  }
+
+  getErrorSummaryRecursively(
+    form: FormGroup,
+    errorMessages: Record<string, Record<string, string>>,
+    controlPath: string[] = []
+  ): ErrorSummaryEntry[] {
+    const formControls = form.controls;
+
+    return Object.keys(formControls)
+      .filter((controlName) => formControls[controlName].errors)
+      .map((controlName) => {
+        const control = formControls[controlName];
+        if (control instanceof FormGroup) {
+          return this.getErrorSummaryRecursively(control, errorMessages, [...controlPath, controlName]);
+        }
+        return {
+          fieldId: controlName,
+          message: this.getControlErrorMessageWithControlPath(form, errorMessages, [...controlPath, controlName])[0],
+        };
+      })
+      .flat();
+  }
 }
