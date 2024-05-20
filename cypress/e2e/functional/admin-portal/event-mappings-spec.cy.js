@@ -27,7 +27,7 @@ describe('Admin - Event mappings screen', () => {
     it('Active only, with restrictions, without restrictions', () => {
       cy.get('#activeEvents').check();
       cy.get('#withRestrictions').check();
-      cy.get('#without-restrictions').check();
+      cy.get('#withoutRestrictions').check();
 
       cy.get('app-data-table').contains('Event map 1');
       cy.get('app-data-table').contains('Mapping entry 3');
@@ -44,7 +44,7 @@ describe('Admin - Event mappings screen', () => {
     it('Active and inactive, with restrictions', () => {
       cy.get('#activeAndInactiveEvents').check();
       cy.get('#withRestrictions').check();
-      cy.get('#without-restrictions').check();
+      cy.get('#withoutRestrictions').check();
 
       cy.get('app-data-table').contains('Event map 2');
       cy.get('app-data-table').contains('Mapping entry 3');
@@ -52,7 +52,7 @@ describe('Admin - Event mappings screen', () => {
     });
 
     it('Active and inactive, with restrictions, without restrictions, event handler set to StandardEventHandler', () => {
-      cy.get('#event-search').select('StandardEventHandler');
+      cy.get('#eventSearch').select('StandardEventHandler');
 
       cy.get('app-data-table').contains('Event map 1');
       cy.get('app-data-table').contains('Fourth event mapping');
@@ -60,7 +60,7 @@ describe('Admin - Event mappings screen', () => {
     });
 
     it('Filter via search text, no results', () => {
-      cy.get('#event-search').select('StandardEventHandler');
+      cy.get('#eventSearch').select('StandardEventHandler');
 
       cy.get('#search').type('Mapping entry 3');
 
@@ -82,7 +82,7 @@ describe('Admin - Event mappings screen', () => {
     });
 
     it('should display validation errors for required fields', () => {
-      cy.get('#confirm-button').click();
+      cy.get('#confirmButton').click();
 
       cy.get('#type')
         .parent()
@@ -138,6 +138,7 @@ describe('Admin - Event mappings screen', () => {
 
       cy.contains('The combination of event type and subtype should be unique').should('be.visible');
 
+      cy.get('#subType').clear();
       cy.get('#subType').type('1002');
 
       cy.get('#confirmButton').click();
