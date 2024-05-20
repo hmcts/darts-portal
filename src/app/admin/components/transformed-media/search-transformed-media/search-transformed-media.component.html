@@ -1,0 +1,5 @@
+<app-validation-error-summary [errors]="errors"></app-validation-error-summary>
+
+<app-govuk-heading>Transformed media</app-govuk-heading>
+
+<app-search-transformed-media-form (search)="onSearch($event)" (errors)="errors = $event" />

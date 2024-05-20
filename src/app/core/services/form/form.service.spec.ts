@@ -127,4 +127,74 @@ describe('FormService', () => {
       ]);
     });
   });
+
+  describe('getControlErrorMessageWithControlPath', () => {
+    it('should return an empty array if there are no errors', () => {
+      form.get(controlName)?.markAsUntouched();
+
+      const result = service.getControlErrorMessageWithControlPath(form, controlErrors, [controlName]);
+
+      expect(result).toEqual([]);
+    });
+
+    it('should return an array of error messages if there are errors', () => {
+      form.get(controlName)?.setErrors({ required: true });
+      form.get(controlName)?.markAsTouched();
+
+      const result = service.getControlErrorMessageWithControlPath(form, controlErrors, [controlName]);
+
+      expect(result).toEqual(['Email is required']);
+    });
+
+    it('should return an array of error messages for multiple errors', () => {
+      form.get(controlName)?.setErrors({ required: true, email: true });
+      form.get(controlName)?.markAsTouched();
+
+      const result = service.getControlErrorMessageWithControlPath(form, controlErrors, [controlName]);
+
+      expect(result).toEqual(['Email is required']);
+    });
+
+    it('should return an empty array if there are errors and control is untouched', () => {
+      form.get(controlName)?.setErrors({ required: true });
+      form.get(controlName)?.markAsUntouched();
+
+      const result = service.getControlErrorMessageWithControlPath(form, controlErrors, [controlName]);
+
+      expect(result).toEqual([]);
+    });
+  });
+
+  describe('getErrorSummaryRecursively', () => {
+    it('should return an empty array if there are no errors', () => {
+      form.setValue({ email: 'test@test.com', password: 'test123' });
+
+      const result = service.getErrorSummaryRecursively(form, controlErrors);
+      expect(result).toEqual([]);
+    });
+
+    it('should return an array of error summary entries if there are errors', () => {
+      form.get('email')?.setErrors({ required: true });
+      form.get('email')?.markAsTouched();
+      form.get('password')?.setValue('test123');
+
+      const result = service.getErrorSummaryRecursively(form, controlErrors);
+
+      expect(result).toEqual([{ fieldId: 'email', message: 'Email is required' }]);
+    });
+
+    it('should return an array of error summary entries for multiple errors', () => {
+      form.get('email')?.setErrors({ required: true, email: true });
+      form.get('password')?.setErrors({ required: true });
+
+      form.markAllAsTouched();
+
+      const result = service.getErrorSummaryRecursively(form, controlErrors);
+
+      expect(result).toEqual([
+        { fieldId: 'email', message: 'Email is required' },
+        { fieldId: 'password', message: 'Password is required' },
+      ]);
+    });
+  });
 });
