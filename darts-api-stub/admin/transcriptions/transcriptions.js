@@ -75,7 +75,9 @@ router.get('/', (req, res) => {
   userId = req?.query?.['user_id'];
   requestedAtFrom = req?.query?.['requested_at_from'];
   if (userId && requestedAtFrom) {
-    res.send(transcripts.filter((transcript) => DateTime.fromISO(requestedAtFrom) <= DateTime.fromISO(transcript.requested_at)));
+    res.send(
+      transcripts.filter((transcript) => DateTime.fromISO(requestedAtFrom) <= DateTime.fromISO(transcript.requested_at))
+    );
     return;
   }
   authCheck(req, res);

@@ -8,17 +8,16 @@ import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { NotFoundComponent } from '@components/error/not-found/not-found.component';
-import { DatatableColumn, ErrorSummaryEntry } from '@core-types/index';
+import { ErrorSummaryEntry } from '@core-types/index';
 import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
-import { CourthouseService } from '@services/courthouses/courthouses.service';
-import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { shareReplay } from 'rxjs';
 import { map } from 'rxjs/internal/operators/map';
 import { DataTableComponent } from '../../../../core/components/common/data-table/data-table.component';
 import { UserGroupsComponent } from '../user-groups/user-groups/user-groups.component';
+import { UserTranscriptsComponent } from '../user-transcripts/user-transcripts.component';
 
 @Component({
   selector: 'app-user-record',
@@ -39,12 +38,11 @@ import { UserGroupsComponent } from '../user-groups/user-groups/user-groups.comp
     TableRowTemplateDirective,
     UserGroupsComponent,
     ValidationErrorSummaryComponent,
+    UserTranscriptsComponent,
   ],
 })
 export class UserRecordComponent {
   userAdminSvc = inject(UserAdminService);
-  transcriptionAdminService = inject(TranscriptionAdminService);
-  courthouseService = inject(CourthouseService);
   route = inject(ActivatedRoute);
   router = inject(Router);
   errors: ErrorSummaryEntry[] = [];
@@ -56,14 +54,4 @@ export class UserRecordComponent {
   hasRemovedGroups$ = this.route.queryParams.pipe(map((params) => params.groupsRemoved));
   isUserActivated$ = this.route.queryParams.pipe(map((params) => params.activated));
   tab$ = this.route.queryParams.pipe(map((params) => params.tab));
-
-  columns: DatatableColumn[] = [
-    { name: 'Request ID', prop: 'transcriptionId', sortable: true },
-    { name: 'Case ID', prop: 'caseNumber', sortable: true },
-    { name: 'Courthouse', prop: 'courthouseId', sortable: true },
-    { name: 'Hearing date', prop: 'hearingDate', sortable: true },
-    { name: 'Requested on', prop: 'requestedAt', sortable: true },
-    { name: 'Status', prop: 'transcriptionStatusId', sortable: true },
-    { name: 'Request type', prop: 'isManualTranscription', sortable: true },
-  ];
 }
