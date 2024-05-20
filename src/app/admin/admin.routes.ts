@@ -48,6 +48,12 @@ export const ADMIN_ROUTES: Routes = [
       import('./components/users/activate-user/activate-user.component').then((c) => c.ActivateUserComponent),
   },
   {
+    path: 'admin/users/:userId/deactivate',
+    title: 'DARTS Admin Deactivate User',
+    loadComponent: () =>
+      import('./components/users/deactivate-user/deactivate-user.component').then((c) => c.DeactivateUserComponent),
+  },
+  {
     path: 'admin/users/:userId',
     title: 'DARTS Admin View User',
     loadComponent: () =>
@@ -172,6 +178,14 @@ export const ADMIN_ROUTES: Routes = [
       import('./components/system-configuration/system-configuration.component').then(
         (c) => c.SystemConfigurationComponent
       ),
+  },
+  {
+    path: 'admin/system-configuration/event-mappings/create',
+    title: 'DARTS Admin Add Event Mapping',
+    loadComponent: () =>
+      import(
+        './components/system-configuration/event-mappings/add-update-event-mapping/add-update-event-mapping.component'
+      ).then((c) => c.AddUpdateEventMappingComponent),
   },
   {
     path: 'admin/system-configuration/automated-tasks',

@@ -411,4 +411,53 @@ describe('GroupsService', () => {
       expect(result).toEqual(expectedGroups);
     });
   });
+
+  describe('getGroupsWhereUserIsTheOnlyMember', () => {
+    it('should return an array of mapped SecurityGroups', () => {
+      const mockSecurityGroups = [
+        {
+          id: 1,
+          name: 'Judiciary',
+          description: 'Judiciary group',
+          security_role_id: 1,
+        },
+        {
+          id: 2,
+          name: 'Opus Transcribers',
+          description: 'Opus Transcribers group',
+          security_role_id: 2,
+        },
+      ];
+
+      const expectedSecurityGroups = [
+        {
+          id: 1,
+          name: 'Judiciary',
+          description: 'Judiciary group',
+          securityRoleId: 1,
+        },
+        {
+          id: 2,
+          name: 'Opus Transcribers',
+          description: 'Opus Transcribers group',
+          securityRoleId: 2,
+        },
+      ];
+
+      let result;
+
+      service.getGroupsWhereUserIsTheOnlyMember(1).subscribe((groups) => {
+        result = groups;
+      });
+
+      const req = httpMock.expectOne({
+        url: `${GET_SECURITY_GROUPS_PATH}?user_id=1&singleton_user=true`,
+        method: 'GET',
+      });
+
+      req.flush(mockSecurityGroups);
+
+      expect(result).toEqual(expectedSecurityGroups);
+    });
+  });
 });

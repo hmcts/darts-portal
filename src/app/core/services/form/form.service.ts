@@ -62,4 +62,27 @@ export class FormService {
       })
       .flat();
   }
+
+  getUniqueErrorSummary(form: FormGroup, controlErrors: FieldErrors): ErrorSummaryEntry[] {
+    const formControls = form.controls;
+    const encounteredMessages = new Set<string>();
+
+    return Object.keys(formControls)
+      .filter((controlName) => formControls[controlName].errors)
+      .map((controlName) =>
+        this.getFormControlErrorMessages(form, controlName, controlErrors).map((message) => ({
+          fieldId: controlName,
+          message,
+        }))
+      )
+      .flat()
+      .filter((entry) => {
+        if (encounteredMessages.has(entry.message)) {
+          return false;
+        } else {
+          encounteredMessages.add(entry.message);
+          return true;
+        }
+      });
+  }
 }

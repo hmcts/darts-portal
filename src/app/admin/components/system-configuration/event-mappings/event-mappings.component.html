@@ -1,7 +1,12 @@
 @if (data$ | async; as data) {
   <div class="heading-button-container">
     <app-govuk-heading tag="h2">Event mappings</app-govuk-heading>
-    <button class="govuk-button govuk-button--secondary">Add event mapping</button>
+    <button
+      class="govuk-button govuk-button--secondary"
+      (click)="router.navigate(['admin/system-configuration/event-mappings/create'])"
+    >
+      Add event mapping
+    </button>
   </div>
 
   <app-event-mapping-form (filterValues)="onFormValuesChange($event)" [eventHandlers]="data.eventHandlers" />
@@ -22,8 +27,16 @@
       <td class="govuk-table__cell">{{ row.createdAt | luxonDate: 'dd MMM yyyy' }}</td>
       <td class="govuk-table__cell">{{ row.isActive ? 'Active' : 'Inactive' }}</td>
       <td class="govuk-table__cell">
-        <a href="javascript:void(0)" class="govuk-link"> Change </a>
+        <a
+          href="javascript:void(0)"
+          class="govuk-link"
+          (click)="router.navigate(['admin/system-configuration/event-mappings/edit', row.id])"
+        >
+          Change
+        </a>
       </td>
     </ng-template>
   </app-data-table>
+} @else {
+  <app-loading />
 }

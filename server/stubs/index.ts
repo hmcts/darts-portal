@@ -5,5 +5,4 @@ export interface StubResponse {
   status: number;
 }
 
-export * from './event-mappings';
 export * from './security-roles';

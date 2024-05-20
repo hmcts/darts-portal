@@ -25,7 +25,7 @@ describe('Admin - Groups screen', () => {
     cy.get('#groups-table').should('contain', 'Admin (Admin portal)');
     cy.get('#groups-table').should('contain', 'Transcriber');
 
-    cy.get('#groups-table').should('contain', 'Super admin (Admin portal)');
+    cy.get('#groups-table').should('contain', 'SUPER_ADMIN');
     cy.get('#groups-table').should('contain', 'Translation QA');
   });
 
