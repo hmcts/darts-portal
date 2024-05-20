@@ -1,9 +1,11 @@
 import { EventMapping } from '@admin-types/event-mappings/event-mapping.type';
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
-import { DatatableColumn } from '@core-types/index';
+import { LoadingComponent } from '@common/loading/loading.component';
+import { DatatableColumn, ErrorSummaryEntry } from '@core-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { EventMappingsService } from '@services/event-mappings/event-mappings.service';
@@ -22,11 +24,15 @@ import { EventMappingForm, EventMappingFormComponent } from './event-mapping-for
     CommonModule,
     LuxonDatePipe,
     TableRowTemplateDirective,
+    LoadingComponent,
   ],
 })
 export class EventMappingComponent {
   eventMappingService = inject(EventMappingsService);
   datePipe = inject(DatePipe);
+  router = inject(Router);
+
+  errors: ErrorSummaryEntry[] = [];
 
   columns: DatatableColumn[] = [
     { name: 'Type', prop: 'type', sortable: true },
@@ -65,9 +71,9 @@ export class EventMappingComponent {
     return mappings.filter((mapping) => {
       const matchesText =
         !form.searchText ||
-        mapping.name.toLowerCase().includes(form.searchText.toLowerCase()) ||
-        mapping.type.toLowerCase().includes(form.searchText.toLowerCase()) ||
-        mapping.subType.toLowerCase().includes(form.searchText.toLowerCase());
+        (mapping.name ?? '').toLowerCase().includes(form.searchText.toLowerCase()) ||
+        (mapping.type ?? '').toLowerCase().includes(form.searchText.toLowerCase()) ||
+        (mapping.subType ?? '').toLowerCase().includes(form.searchText.toLowerCase());
       const matchesHandler = !form.eventHandler || mapping.handler === form.eventHandler;
       const matchesStatus = form.statusFilter !== 'active' || mapping.isActive;
       const matchesRestrictions =

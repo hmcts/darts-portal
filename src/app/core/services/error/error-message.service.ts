@@ -16,6 +16,7 @@ const subscribedEndpoints = [
   { endpoint: '/api/retentions', responses: [403, 422] },
   { endpoint: '/api/admin/users', responses: [409] },
   { endpoint: '/api/admin/retention-policy-types', responses: [400] },
+  { endpoint: '/api/admin/event-mappings', responses: [409] },
   { endpoint: new RegExp(`/api/cases/${regexIdPlaceholder}/transcripts`), responses: [403] },
   { endpoint: new RegExp(`/api/hearings/${regexIdPlaceholder}/transcripts`), responses: [403] },
   { endpoint: new RegExp(`/api/admin/automated-tasks/${regexIdPlaceholder}/run`), responses: [404, 409] },

@@ -11,9 +11,9 @@
   </div>
 
   <div class="govuk-form-group">
-    <label class="govuk-label" for="event-search">Filter by event handler</label>
+    <label class="govuk-label" for="eventSearch">Filter by event handler</label>
 
-    <select class="govuk-select" id="event-search" formControlName="eventHandler">
+    <select class="govuk-select" id="eventSearch" formControlName="eventHandler">
       <option value="" disabled selected>Select</option>
       <option value="">All</option>
       @for (handler of eventHandlers; track handler) {
@@ -57,13 +57,13 @@
           <div class="govuk-checkboxes__item">
             <input
               class="govuk-checkboxes__input"
-              id="with-restrictions"
+              id="withRestrictions"
               name="with-restrictions"
               type="checkbox"
               [value]="true"
               formControlName="withRestrictions"
             />
-            <label class="govuk-label govuk-checkboxes__label" for="with-restrictions"> With restrictions </label>
+            <label class="govuk-label govuk-checkboxes__label" for="withRestrictions"> With restrictions </label>
           </div>
         </div>
 
@@ -71,13 +71,13 @@
           <div class="govuk-checkboxes__item">
             <input
               class="govuk-checkboxes__input"
-              id="without-restrictions"
+              id="withoutRestrictions"
               name="without-restrictions"
               type="checkbox"
               [value]="true"
               formControlName="withoutRestrictions"
             />
-            <label class="govuk-label govuk-checkboxes__label" for="without-restrictions"> Without restrictions </label>
+            <label class="govuk-label govuk-checkboxes__label" for="withoutRestrictions"> Without restrictions </label>
           </div>
         </div>
       </div>
