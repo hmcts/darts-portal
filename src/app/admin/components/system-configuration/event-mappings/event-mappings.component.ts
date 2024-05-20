@@ -69,9 +69,9 @@ export class EventMappingComponent {
     return mappings.filter((mapping) => {
       const matchesText =
         !form.searchText ||
-        mapping.name.toLowerCase().includes(form.searchText.toLowerCase()) ||
-        mapping.type.toLowerCase().includes(form.searchText.toLowerCase()) ||
-        mapping.subType.toLowerCase().includes(form.searchText.toLowerCase());
+        (mapping.name ?? '').toLowerCase().includes(form.searchText.toLowerCase()) ||
+        (mapping.type ?? '').toLowerCase().includes(form.searchText.toLowerCase()) ||
+        (mapping.subType ?? '').toLowerCase().includes(form.searchText.toLowerCase());
       const matchesHandler = !form.eventHandler || mapping.handler === form.eventHandler;
       const matchesStatus = form.statusFilter !== 'active' || mapping.isActive;
       const matchesRestrictions =

@@ -25,7 +25,7 @@
       />
     </div>
     <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('subType')">
-      <label for="name" class="govuk-label">Subtype (optional)</label>
+      <label for="subType" class="govuk-label">Subtype (optional)</label>
 
       @for (error of getErrorMessages('subType'); track error) {
         <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ error }}</p>
@@ -41,7 +41,7 @@
       />
     </div>
     <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('eventName')">
-      <label for="event-name" class="govuk-label">Event name</label>
+      <label for="eventName" class="govuk-label">Event name</label>
 
       @for (error of getErrorMessages('eventName'); track error) {
         <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ error }}</p>
@@ -56,7 +56,7 @@
       />
     </div>
     <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('eventHandler')">
-      <label for="event-handler-select" class="govuk-label">Map to event handler</label>
+      <label for="eventHandlerSelect" class="govuk-label">Map to event handler</label>
 
       @for (error of getErrorMessages('eventHandler'); track error) {
         <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ error }}</p>
@@ -64,7 +64,7 @@
 
       <select
         class="govuk-select"
-        id="event-handler-select"
+        id="eventHandlerSelect"
         name="event-handler-select"
         formControlName="eventHandler"
         [class.govuk-form-group--error]="isControlInvalid('eventHandler')"
@@ -82,13 +82,13 @@
         <div class="govuk-checkboxes__item">
           <input
             class="govuk-checkboxes__input"
-            id="with-restrictions"
+            id="withRestrictions"
             name="with-restrictions"
             type="checkbox"
             [value]="true"
             formControlName="withRestrictions"
           />
-          <label class="govuk-label govuk-checkboxes__label" for="with-restrictions"
+          <label class="govuk-label govuk-checkboxes__label" for="withRestrictions"
             >Tick if this event mapping has reporting restrictions</label
           >
         </div>
@@ -96,8 +96,12 @@
     </div>
 
     <div class="govuk-button-group">
-      <button id="confirm-button" class="govuk-button" (mousedown)="(false)" type="submit">Add mapping</button>
+      <button id="confirmButton" class="govuk-button" (mousedown)="(false)" type="submit">Add mapping</button>
       <a class="govuk-link" href="javascript:void(0)" (click)="onCancel()">Cancel</a>
     </div>
   </form>
+}
+ 
+@else {
+  <app-loading />
 }

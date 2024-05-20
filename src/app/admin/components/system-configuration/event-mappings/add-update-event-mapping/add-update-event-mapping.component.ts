@@ -6,6 +6,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
+import { LoadingComponent } from '@common/loading/loading.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { EventMappingFormErrorMessages } from '@constants/event-mapping-error-messages';
 import { ErrorMessage } from '@core-types/index';
@@ -21,7 +22,13 @@ import { Subscription, combineLatest, map } from 'rxjs';
   standalone: true,
   templateUrl: './add-update-event-mapping.component.html',
   styleUrl: './add-update-event-mapping.component.scss',
-  imports: [ReactiveFormsModule, GovukHeadingComponent, CommonModule, ValidationErrorSummaryComponent],
+  imports: [
+    ReactiveFormsModule,
+    GovukHeadingComponent,
+    CommonModule,
+    ValidationErrorSummaryComponent,
+    LoadingComponent,
+  ],
 })
 export class AddUpdateEventMappingComponent implements OnInit, OnDestroy {
   fb = inject(FormBuilder);
