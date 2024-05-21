@@ -193,7 +193,7 @@ export class TranscriptionAdminService {
 
   getCurrentStatusFromTranscript(transcript: TranscriptionAdminDetails) {
     const processGroups = (groups: SecurityGroup[] | undefined, status = '') => {
-      if (status === 'Approved' || status === 'Requested') return null;
+      if (status === 'Awaiting Authorisation' || status === 'Requested') return null;
 
       return groups && groups.length > 0
         ? groups
