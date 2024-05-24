@@ -1,7 +1,9 @@
-<header>
-  <app-govuk-heading tag="h2" size="m">{{ title }}</app-govuk-heading>
-  <div><ng-content></ng-content></div>
-</header>
+@if (title) {
+  <header>
+    <app-govuk-heading tag="h2" size="m">{{ title }}</app-govuk-heading>
+    <div><ng-content></ng-content></div>
+  </header>
+}
 
 <dl class="govuk-summary-list">
   @for (detail of details | keyvalue: originalOrder; track $index) {

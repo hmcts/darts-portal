@@ -36,7 +36,7 @@
     </app-delete>
   } @else {
     <div class="govuk-width-container">
-      <main class="govuk-main-wrapper">
+      <div class="govuk-main-wrapper">
         <div class="govuk-grid-row">
           <div class="courthouse-record-tags govuk-grid-column-one-third">
             <strong class="govuk-tag govuk-tag--purple"> Courthouse record </strong>
@@ -82,7 +82,7 @@
             ></app-details-table>
           </div>
 
-          <div *tab="'Users'; id: 'users-tab'">
+          <div *tab="'Users'; screenReaderText: 'Courthouse users'; id: 'users-tab'">
             <div class="govuk-grid-row">
               @if (users$ | async; as users) {
                 <app-courthouse-users [users]="users" (selectRowsEvent)="onDeleteClicked($event)" />
@@ -92,7 +92,7 @@
             </div>
           </div>
         </app-tabs>
-      </main>
+      </div>
     </div>
   }
 } @else {
