@@ -20,10 +20,10 @@ describe('Admin - Courthouse record screen', () => {
     cy.get('.moj-sub-navigation a').contains('Users').should('exist');
 
     // Dates
-    cy.get('#date-created-container h3').contains('Date created').should('exist');
-    cy.get('#last-updated-container h3').contains('Last updated').should('exist');
-    cy.get('#date-created-container p').contains('Fri 18 Aug 2023').should('exist');
-    cy.get('#last-updated-container p').contains('Fri 18 Aug 2023').should('exist');
+    cy.get('#date-created-container p.label').contains('Date created').should('exist');
+    cy.get('#last-updated-container p.label').contains('Last updated').should('exist');
+    cy.get('#date-created-container p.value').contains('Fri 18 Aug 2023').should('exist');
+    cy.get('#last-updated-container p.value').contains('Fri 18 Aug 2023').should('exist');
 
     // Table
     cy.get('app-details-table').contains('Details').should('be.visible');
