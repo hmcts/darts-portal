@@ -77,17 +77,23 @@
       </div>
       <div class="user-record-dates-container">
         <div id="date-created-container">
-          <h3 class="govuk-heading-s">Date created</h3>
-          <p class="govuk-body">{{ user.createdAt | luxonDate: 'EEE d MMM yyyy' }}</p>
+          <p class="label govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-0 govuk-!-padding-top-3">
+            Date created
+          </p>
+          <p class="value govuk-body">{{ user.createdAt | luxonDate: 'EEE d MMM yyyy' }}</p>
         </div>
         <div id="last-updated-container">
-          <h3 class="govuk-heading-s">Last updated</h3>
-          <p class="govuk-body">{{ user.lastModifiedAt | luxonDate: 'EEE d MMM yyyy' }}</p>
+          <p class="label govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-0 govuk-!-padding-top-3">
+            Last updated
+          </p>
+          <p class="value govuk-body">{{ user.lastModifiedAt | luxonDate: 'EEE d MMM yyyy' }}</p>
         </div>
         <div id="last-active-container">
-          <h3 class="govuk-heading-s">Last active</h3>
+          <p class="label govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-0 govuk-!-padding-top-3">
+            Last active
+          </p>
           @if (user.lastLoginAt) {
-            <p class="govuk-body">{{ user.lastLoginAt | luxonDate: 'EEE d MMM yyyy' }}</p>
+            <p class="value govuk-body">{{ user.lastLoginAt | luxonDate: 'EEE d MMM yyyy' }}</p>
           }
         </div>
       </div>

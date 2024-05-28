@@ -60,12 +60,16 @@
         </div>
         <div class="courthouse-record-dates-container">
           <div id="date-created-container">
-            <h3 class="govuk-heading-s">Date created</h3>
-            <p class="govuk-body">{{ courthouse.createdDateTime | luxonDate: 'EEE d MMM yyyy' }}</p>
+            <p class="label govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-0 govuk-!-padding-top-3">
+              Date created
+            </p>
+            <p class="value govuk-body">{{ courthouse.createdDateTime | luxonDate: 'EEE d MMM yyyy' }}</p>
           </div>
           <div id="last-updated-container">
-            <h3 class="govuk-heading-s">Last updated</h3>
-            <p class="govuk-body">{{ courthouse.lastModifiedDateTime | luxonDate: 'EEE d MMM yyyy' }}</p>
+            <p class="label govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-0 govuk-!-padding-top-3">
+              Last updated
+            </p>
+            <p class="value govuk-body">{{ courthouse.lastModifiedDateTime | luxonDate: 'EEE d MMM yyyy' }}</p>
           </div>
         </div>
 
