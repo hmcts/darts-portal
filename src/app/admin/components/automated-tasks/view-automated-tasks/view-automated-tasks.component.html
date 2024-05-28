@@ -4,8 +4,8 @@
   <header>
     <app-govuk-heading size="xl" caption="Automated task">{{ task.name }}</app-govuk-heading>
     <div class="govuk-button-group">
-      <button class="govuk-button govuk-button--secondary" (click)="onRunTaskButtonClicked()">Run task</button>
-      <button class="govuk-button govuk-button--secondary" (click)="onActivateDeactiveButtonClicked()">
+      <button class="govuk-button govuk-button--secondary" (click)="onRunTaskButtonClicked(task.name)">Run task</button>
+      <button class="govuk-button govuk-button--secondary" (click)="onActivateDeactiveButtonClicked(task.name)">
         Make {{ task.isActive ? 'inactive' : 'active' }}
       </button>
     </div>

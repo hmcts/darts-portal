@@ -14,23 +14,29 @@ export class AutomatedTaskStatusComponent {
   taskId = input<number | null>(null);
 
   text = computed(() => {
-    switch (this.status()) {
+    const statusGroup = this.status();
+    const taskName = statusGroup ? statusGroup[0] : null;
+    const status = statusGroup ? statusGroup[1] : null;
+    switch (status) {
       case 'success':
-        return 'Task start request sent';
+        return `Task start request sent: ${taskName}`;
       case 'not-found':
-        return 'Task not found';
+        return `Task not found: ${taskName}`;
       case 'already-running':
-        return 'Task is already running';
+        return `Task is already running: ${taskName}`;
       case 'inactive':
-        return `Task ${this.taskId()} is inactive`;
+        return `Task ${this.taskId()} is inactive: ${taskName}`;
       case 'active':
-        return `Task ${this.taskId()} is active`;
+        return `Task ${this.taskId()} is active: ${taskName}`;
       default:
         return '';
     }
   });
 
   banner = computed(() => {
-    return this.status() === 'not-found' || this.status() === 'already-running' ? 'warning' : 'success';
+    const statusGroup = this.status();
+    const status = statusGroup ? statusGroup[1] : null;
+    // const taskName = statusGroup ? statusGroup[0] : null;
+    return status === 'not-found' || status === 'already-running' ? 'warning' : 'success';
   });
 }

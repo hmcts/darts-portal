@@ -27,46 +27,46 @@ describe('AutomatedTaskStatusComponent', () => {
 
   describe('text signal', () => {
     it('should return "Task start request sent" when status is "success"', () => {
-      fixture.componentRef.setInput('status', 'success');
-      expect(component.text()).toBe('Task start request sent');
+      fixture.componentRef.setInput('status', ['TestTask', 'success']);
+      expect(component.text()).toBe('Task start request sent: TestTask');
     });
 
     it('should return "Task not found" when status is "not-found"', () => {
-      fixture.componentRef.setInput('status', 'not-found');
-      expect(component.text()).toBe('Task not found');
+      fixture.componentRef.setInput('status', ['TestTask', 'not-found']);
+      expect(component.text()).toBe('Task not found: TestTask');
     });
 
     it('should return "Task is already running" when status is "already-running"', () => {
-      fixture.componentRef.setInput('status', 'already-running');
-      expect(component.text()).toBe('Task is already running');
+      fixture.componentRef.setInput('status', ['TestTask', 'already-running']);
+      expect(component.text()).toBe('Task is already running: TestTask');
     });
 
     it('should return "Task {taskId} is inactive" when status is "inactive"', () => {
-      fixture.componentRef.setInput('status', 'inactive');
+      fixture.componentRef.setInput('status', ['TestTask', 'inactive']);
       fixture.componentRef.setInput('taskId', 1);
-      expect(component.text()).toBe('Task 1 is inactive');
+      expect(component.text()).toBe('Task 1 is inactive: TestTask');
     });
 
     it('should return "Task {taskId} is active" when status is "active"', () => {
-      fixture.componentRef.setInput('status', 'active');
+      fixture.componentRef.setInput('status', ['TestTask', 'active']);
       fixture.componentRef.setInput('taskId', 1);
-      expect(component.text()).toBe('Task 1 is active');
+      expect(component.text()).toBe('Task 1 is active: TestTask');
     });
   });
 
   describe('banner signal', () => {
     it('should return "success" when status is not "not-found" or "already-running"', () => {
-      fixture.componentRef.setInput('status', 'success');
+      fixture.componentRef.setInput('status', ['TestTask', 'success']);
       expect(component.banner()).toBe('success');
     });
 
     it('should return "warning" when status is "not-found"', () => {
-      fixture.componentRef.setInput('status', 'not-found');
+      fixture.componentRef.setInput('status', ['TestTask', 'not-found']);
       expect(component.banner()).toBe('warning');
     });
 
     it('should return "warning" when status is "already-running"', () => {
-      fixture.componentRef.setInput('status', 'already-running');
+      fixture.componentRef.setInput('status', ['TestTask', 'already-running']);
       expect(component.banner()).toBe('warning');
     });
   });
