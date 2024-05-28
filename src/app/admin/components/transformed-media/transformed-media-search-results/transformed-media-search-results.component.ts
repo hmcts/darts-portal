@@ -19,13 +19,13 @@ export class TransformedMediaSearchResultsComponent implements OnChanges {
   @Input() results: TransformedMediaAdmin[] = [];
 
   columns: DatatableColumn[] = [
-    { name: 'ID', prop: 'id', sortable: true },
-    { name: 'Case number', prop: 'caseNumber', sortable: true },
+    { name: 'Media ID', prop: 'id', sortable: true },
+    { name: 'Case ID', prop: 'caseNumber', sortable: true },
     { name: 'Courthouse', prop: 'courthouse', sortable: true },
     { name: 'Hearing date', prop: 'hearingDate', sortable: true },
     { name: 'Owner', prop: 'owner', sortable: true },
     { name: 'Requested by', prop: 'requestedBy', sortable: true },
-    { name: 'Requested date', prop: 'requestedDate', sortable: true },
+    { name: 'Date requested', prop: 'requestedDate', sortable: true },
     { name: 'Last accessed', prop: 'lastAccessed', sortable: true },
     { name: 'File type', prop: 'fileType', sortable: true },
     { name: 'Size', prop: 'size', sortable: true },
