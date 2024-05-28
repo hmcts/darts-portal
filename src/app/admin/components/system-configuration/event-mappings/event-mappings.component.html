@@ -17,6 +17,7 @@
     [columns]="columns"
     [rows]="data.eventMappings"
     noDataMessage="There are no matching results."
+    [sortAndPaginateOnRowsChanged]="false"
   >
     <ng-template [tableRowTemplate]="data.eventMappings" let-row>
       <td class="govuk-table__cell">{{ row.type }}</td>
