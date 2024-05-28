@@ -55,19 +55,19 @@ export class ViewAutomatedTasksComponent {
     'Modified by': this.task()?.modifiedByFullName,
   }));
 
-  onRunTaskButtonClicked(): void {
+  onRunTaskButtonClicked(taskName: string): void {
     this.taskService.runTask(this.taskId).subscribe({
-      next: () => this.taskRunStatus.set('success'),
-      error: (error) => this.taskRunStatus.set(error.status === 404 ? 'not-found' : 'already-running'),
+      next: () => this.taskRunStatus.set([taskName, 'success']),
+      error: (error) => this.taskRunStatus.set([taskName, error.status === 404 ? 'not-found' : 'already-running']),
     });
   }
 
-  onActivateDeactiveButtonClicked(): void {
+  onActivateDeactiveButtonClicked(taskName: string): void {
     this.taskService
       .toggleTaskActiveStatus(this.task()!)
       .pipe(switchMap((task) => this.addUserDetailsToTask(task)))
       .subscribe((updatedTask) => {
-        this.taskRunStatus.set(updatedTask.isActive ? 'active' : 'inactive');
+        this.taskRunStatus.set([taskName, updatedTask.isActive ? 'active' : 'inactive']);
         this.task.set(updatedTask);
       });
   }

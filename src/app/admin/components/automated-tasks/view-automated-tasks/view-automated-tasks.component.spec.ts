@@ -80,7 +80,7 @@ describe('ViewAutomatedTasksComponent', () => {
       const taskService = TestBed.inject(AutomatedTasksService);
       const runTaskSpy = jest.spyOn(taskService, 'runTask').mockReturnValue(of());
 
-      component.onRunTaskButtonClicked();
+      component.onRunTaskButtonClicked(task.name);
 
       expect(runTaskSpy).toHaveBeenCalledWith(1);
     });
@@ -89,27 +89,30 @@ describe('ViewAutomatedTasksComponent', () => {
       const taskService = TestBed.inject(AutomatedTasksService);
       jest.spyOn(taskService, 'runTask').mockReturnValue(of({} as HttpResponse<void>));
 
-      component.onRunTaskButtonClicked();
+      component.onRunTaskButtonClicked(task.name);
 
-      expect(component.taskRunStatus()).toBe('success');
+      expect(component.taskRunStatus()?.[0]).toBe(task.name);
+      expect(component.taskRunStatus()?.[1]).toBe('success');
     });
 
     it('should set the task run status to not-found', () => {
       const taskService = TestBed.inject(AutomatedTasksService);
       jest.spyOn(taskService, 'runTask').mockReturnValue(throwError(() => ({ status: 404 })));
 
-      component.onRunTaskButtonClicked();
+      component.onRunTaskButtonClicked(task.name);
 
-      expect(component.taskRunStatus()).toBe('not-found');
+      expect(component.taskRunStatus()?.[0]).toBe(task.name);
+      expect(component.taskRunStatus()?.[1]).toBe('not-found');
     });
 
     it('should set the task run status to already-running', () => {
       const taskService = TestBed.inject(AutomatedTasksService);
       jest.spyOn(taskService, 'runTask').mockReturnValue(throwError(() => ({ status: 409 })));
 
-      component.onRunTaskButtonClicked();
+      component.onRunTaskButtonClicked(task.name);
 
-      expect(component.taskRunStatus()).toBe('already-running');
+      expect(component.taskRunStatus()?.[0]).toBe(task.name);
+      expect(component.taskRunStatus()?.[1]).toBe('already-running');
     });
   });
 
@@ -118,9 +121,11 @@ describe('ViewAutomatedTasksComponent', () => {
       const taskService = TestBed.inject(AutomatedTasksService);
       jest.spyOn(taskService, 'toggleTaskActiveStatus').mockReturnValue(of(task));
 
-      component.onActivateDeactiveButtonClicked();
+      component.onActivateDeactiveButtonClicked(task.name);
 
-      expect(component.taskRunStatus()).toBe('active');
+      expect(component.taskRunStatus()?.[0]).toBe(task.name);
+      expect(component.taskRunStatus()?.[1]).toBe('active');
+
       expect(component.task()).toEqual({ ...task, createdByFullName: 'User 1', modifiedByFullName: 'User 2' });
     });
 
@@ -128,9 +133,10 @@ describe('ViewAutomatedTasksComponent', () => {
       const taskService = TestBed.inject(AutomatedTasksService);
       jest.spyOn(taskService, 'toggleTaskActiveStatus').mockReturnValue(of({ ...task, isActive: false }));
 
-      component.onActivateDeactiveButtonClicked();
+      component.onActivateDeactiveButtonClicked(task.name);
 
-      expect(component.taskRunStatus()).toBe('inactive');
+      expect(component.taskRunStatus()?.[0]).toBe(task.name);
+      expect(component.taskRunStatus()?.[1]).toBe('inactive');
     });
   });
 });

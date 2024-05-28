@@ -33,18 +33,18 @@ describe('Admin - Automated tasks screen', () => {
   describe('Run task', () => {
     it('Success', () => {
       cy.get('app-data-table').contains('Task 1').parents('tr').contains('Run task').click();
-      cy.get('app-automated-task-status').contains('Task start request sent');
+      cy.get('app-automated-task-status').contains('Task start request sent: Task 1');
       cy.a11y();
     });
 
     it('Not found', () => {
       cy.get('app-data-table').contains('Task 2').parents('tr').contains('Run task').click();
-      cy.get('app-automated-task-status').contains('Task not found');
+      cy.get('app-automated-task-status').contains('Task not found: Task 2');
     });
 
     it('Already running', () => {
       cy.get('app-data-table').contains('Task 3').parents('tr').contains('Run task').click();
-      cy.get('app-automated-task-status').contains('Task is already running');
+      cy.get('app-automated-task-status').contains('Task is already running: Task 3');
     });
   });
 
@@ -89,18 +89,18 @@ describe('Admin - Automated tasks screen', () => {
 
     it('runs task', () => {
       cy.get('.govuk-button').contains('Run task').click();
-      cy.get('app-automated-task-status').contains('Task start request sent');
+      cy.get('app-automated-task-status').contains('Task start request sent: Task 1');
     });
 
     it('deactivates task', () => {
       cy.get('.govuk-button').contains('Make inactive').click();
-      cy.get('app-automated-task-status').contains('Task 1 is inactive');
+      cy.get('app-automated-task-status').contains('Task 1 is inactive: Task 1');
       cy.get('.govuk-tag.govuk-tag--grey').contains('Inactive');
     });
 
     it('activates task', () => {
       cy.get('.govuk-button').contains('Make active').click();
-      cy.get('app-automated-task-status').contains('Task 1 is active');
+      cy.get('app-automated-task-status').contains('Task 1 is active: Task 1');
       cy.get('.govuk-tag').contains('Active');
     });
   });

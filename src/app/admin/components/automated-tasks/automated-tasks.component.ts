@@ -22,7 +22,7 @@ export class AutomatedTasksComponent {
 
   @Output() taskRun = new EventEmitter<AutomatedTaskStatus>();
 
-  coloumns: DatatableColumn[] = [
+  columns: DatatableColumn[] = [
     { name: 'ID', prop: 'id', sortable: true },
     { name: 'Name', prop: 'name', sortable: true },
     { name: 'Description', prop: 'description', sortable: true },
@@ -31,10 +31,10 @@ export class AutomatedTasksComponent {
     { name: '', prop: '' }, // Empty column for run task button
   ];
 
-  onRunTaskButtonClicked(taskId: number) {
+  onRunTaskButtonClicked(taskId: number, taskName: string) {
     this.automatedTasksService.runTask(taskId).subscribe({
-      next: () => this.taskRun.emit('success'),
-      error: (error) => this.taskRun.emit(error.status === 404 ? 'not-found' : 'already-running'),
+      next: () => this.taskRun.emit([taskName, 'success']),
+      error: (error) => this.taskRun.emit([taskName, error.status === 404 ? 'not-found' : 'already-running']),
     });
   }
 }
