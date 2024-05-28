@@ -53,7 +53,7 @@ export class SearchTransformedMediaComponent {
               mediaRequest: {
                 ...m.mediaRequest,
                 ownerUserName: owner?.fullName,
-                requestedByUserName: requestedBy?.fullName,
+                requestedByName: requestedBy?.fullName,
               },
             };
           })

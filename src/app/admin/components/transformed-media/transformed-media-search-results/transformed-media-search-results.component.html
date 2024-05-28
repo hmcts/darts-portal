@@ -2,7 +2,7 @@
 <app-data-table [rows]="rows" [columns]="columns" captionType="results" [isHorizontalScroll]="true">
   <ng-template [tableRowTemplate]="rows" let-row>
     <td class="govuk-table__cell">
-      <a href="#" class="govuk-link" [routerLink]="[row.id]"> {{ row.id }}</a>
+      <a href="javascript:void(0)" class="govuk-link view-link" [routerLink]="[row.id]"> {{ row.id }}</a>
     </td>
     <td class="govuk-table__cell">{{ row.caseNumber }}</td>
     <td class="govuk-table__cell">{{ row.courthouse }}</td>

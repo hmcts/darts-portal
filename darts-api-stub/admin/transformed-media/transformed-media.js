@@ -83,4 +83,13 @@ router.post('/search', (req, res) => {
   res.send(MOCK_MEDIA);
 });
 
+router.get('/:id', (req, res) => {
+  const id = +req.params.id;
+  const media = MOCK_MEDIA.find((media) => media.id === id);
+  if (!media) {
+    return res.status(404).send();
+  }
+  res.send(media);
+});
+
 module.exports = router;
