@@ -35,7 +35,7 @@ describe('Admin - Transcript requests', () => {
     });
 
     it('check template', () => {
-      cy.get('h1').contains('Transcript request');
+      cy.get('span.govuk-caption-l').contains('Transcript request');
 
       cy.get('#status-details').contains('Status');
       cy.get('#status-details').contains('With Transcriber');
