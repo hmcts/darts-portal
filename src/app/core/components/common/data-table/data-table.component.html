@@ -1,7 +1,10 @@
 @if (rows.length) {
-  <div [class.scrollable]="maxHeight" [style.max-height]="maxHeight">
-    @if (captionType === 'heading') {
-      <caption class="govuk-caption-m" [class.govuk-visually-hidden]="hiddenCaption">
+  <div [class.scrollable]="maxHeight" [style.max-height]="maxHeight" [class.moj-scrollable-pane]="isHorizontalScroll">
+    @if (captionType === 'heading' || captionType === 'results') {
+      <caption
+        [ngClass]="captionType === 'results' ? 'govuk-heading-m' : 'govuk-caption-m'"
+        [class.govuk-visually-hidden]="hiddenCaption"
+      >
         Showing
         {{
           getCurrentPageCaptionCount()
@@ -10,10 +13,13 @@
         {{
           rows.length
         }}
+        {{
+          captionType === 'results' ? (rows.length === 1 ? 'result' : 'results') : ''
+        }}
       </caption>
     }
-    <table class="govuk-table" data-module="moj-sortable-table">
-      @if (captionType !== 'heading') {
+    <table class="govuk-table">
+      @if (captionType !== 'heading' && captionType !== 'results') {
         <caption class="govuk-table__caption govuk-table__caption--m" [class.govuk-visually-hidden]="hiddenCaption">
           {{
             caption

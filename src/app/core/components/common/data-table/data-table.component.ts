@@ -27,7 +27,7 @@ import { DateTime } from 'luxon';
 export class DataTableComponent<TRow> implements OnChanges {
   @Input() rows: TRow[] = [];
   @Input() columns: DatatableColumn[] = [];
-  @Input() captionType = 'default';
+  @Input() captionType: 'default' | 'heading' | 'results' = 'default';
   @Input() caption = '';
   @Input() rowSelectable = false;
   @Input() pagination = true;
@@ -37,6 +37,7 @@ export class DataTableComponent<TRow> implements OnChanges {
   @Input() checkboxKey = '';
   @Input() sortAndPaginateOnRowsChanged = true; // To maintain the sorting and pagination when rows are changed e.g. polling updates the data
   @Input() hiddenCaption = false;
+  @Input() isHorizontalScroll = false;
   @Output() rowSelect = new EventEmitter<TRow[]>();
 
   // Two way binding for selected rows

@@ -14,6 +14,7 @@ const STUB_ALLOWED = config.get('allowStubData') === 'true';
 const STUB_RESPONSES: StubResponse[] = [
   // include stubs here like below
   // ...eventMappings,
+  // ...transformedMedia,
 ];
 
 function stubData(response: unknown, status: number) {

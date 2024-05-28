@@ -3,3 +3,11 @@
 <app-govuk-heading>Transformed media</app-govuk-heading>
 
 <app-search-transformed-media-form (search)="onSearch($event)" (errors)="errors = $event" />
+
+@if (isSearchFormSubmitted() && !isLoading()) {
+  <app-transformed-media-search-results [results]="results()" />
+}
+
+@if (isLoading()) {
+  <app-loading />
+}

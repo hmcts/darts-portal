@@ -1,0 +1,18 @@
+<hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
+<app-data-table [rows]="rows" [columns]="columns" captionType="results" [isHorizontalScroll]="true">
+  <ng-template [tableRowTemplate]="rows" let-row>
+    <td class="govuk-table__cell">
+      <a href="#" class="govuk-link" [routerLink]="[row.id]"> {{ row.id }}</a>
+    </td>
+    <td class="govuk-table__cell">{{ row.caseNumber }}</td>
+    <td class="govuk-table__cell">{{ row.courthouse }}</td>
+    <td class="govuk-table__cell">{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
+    <td class="govuk-table__cell">{{ row.owner }}</td>
+    <td class="govuk-table__cell">{{ row.requestedBy }}</td>
+    <td class="govuk-table__cell">{{ row.requestedDate | luxonDate: 'dd MMM yyyy' }}</td>
+    <td class="govuk-table__cell">{{ row.lastAccessed | luxonDate: 'dd MMM yyyy' }}</td>
+    <td class="govuk-table__cell">{{ row.fileType }}</td>
+    <td class="govuk-table__cell">{{ row.size | bytes | number: '1.1-1' }}MB</td>
+    <td class="govuk-table__cell">{{ row.filename }}</td>
+  </ng-template>
+</app-data-table>

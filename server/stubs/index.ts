@@ -6,3 +6,4 @@ export interface StubResponse {
 }
 
 export * from './security-roles';
+export * from './transformed-media';
