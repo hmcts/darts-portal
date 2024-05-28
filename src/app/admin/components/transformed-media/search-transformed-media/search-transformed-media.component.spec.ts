@@ -103,7 +103,7 @@ describe('SearchTransformedMediaComponent', () => {
           mediaRequest: {
             ...mockTransformedMedia[0].mediaRequest,
             ownerUserName: mockUsers[0].fullName,
-            requestedByUserName: mockUsers[0].fullName,
+            requestedByName: mockUsers[0].fullName,
           },
         },
       ]);

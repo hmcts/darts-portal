@@ -45,7 +45,7 @@ export class TransformedMediaSearchResultsComponent implements OnChanges {
       courthouse: result.courthouse.displayName,
       hearingDate: result.hearing.hearingDate,
       owner: result.mediaRequest.ownerUserName,
-      requestedBy: result.mediaRequest.ownerUserName,
+      requestedBy: result.mediaRequest.requestedByName,
       requestedDate: result.mediaRequest.requestedAt,
       lastAccessed: result.lastAccessedAt,
       fileType: result.fileFormat,
