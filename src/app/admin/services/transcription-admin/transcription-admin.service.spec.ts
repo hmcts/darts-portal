@@ -423,7 +423,7 @@ describe('TranscriptionAdminService', () => {
     const transcript = {
       transcriptionId: 1,
       isManual: true,
-      status: 'Awaiting Authorisation',
+      status: 'Approved',
       assignedTo: {
         userId: 1,
         fullName: 'John Doe',
@@ -437,10 +437,10 @@ describe('TranscriptionAdminService', () => {
 
     const result = service.getCurrentStatusFromTranscript(transcript);
 
-    expect(result.Status?.value).toBe('Awaiting Authorisation');
+    expect(result.Status?.value).toBe('Approved');
     expect(result.Status?.action?.text).toBe('Change status');
     expect(result.Status?.action?.url).toBe('/admin/transcripts/1/change-status');
-    expect(result.Status?.action?.queryParams).toEqual({ status: 'Awaiting Authorisation', manual: true });
+    expect(result.Status?.action?.queryParams).toEqual({ status: 'Approved', manual: true });
     if (typeof result['Assigned to'][0] !== 'string') {
       expect(result['Assigned to'][0].href).toBe('/admin/users/1');
       expect(result['Assigned to'][0].value).toBe('John Doe');
@@ -450,6 +450,56 @@ describe('TranscriptionAdminService', () => {
       { href: '/admin/groups/1', value: 'Group One' },
       { href: '/admin/groups/2', value: 'Group Two' },
     ]);
+  });
+
+  it('return no associated groups for "Awaiting Authorisation" status', () => {
+    const transcript = {
+      transcriptionId: 1,
+      isManual: true,
+      status: 'Awaiting Authorisation',
+      assignedTo: {
+        userId: 1,
+        fullName: 'John Doe',
+        email: 'email@email.com',
+      },
+      assignedGroups: [
+        { id: 1, displayName: 'Group One' },
+        { id: 2, displayName: 'Group Two' },
+      ],
+    } as unknown as TranscriptionAdminDetails;
+
+    const result = service.getCurrentStatusFromTranscript(transcript);
+
+    expect(result.Status?.value).toBe('Awaiting Authorisation');
+    expect(result.Status?.action?.text).toBe('Change status');
+    expect(result.Status?.action?.url).toBe('/admin/transcripts/1/change-status');
+
+    expect(result['Associated groups']).toBeFalsy();
+  });
+
+  it('return no associated groups for "Requested" status', () => {
+    const transcript = {
+      transcriptionId: 1,
+      isManual: true,
+      status: 'Requested',
+      assignedTo: {
+        userId: 1,
+        fullName: 'John Doe',
+        email: 'a@a.com',
+      },
+      assignedGroups: [
+        { id: 1, displayName: 'Group One' },
+        { id: 2, displayName: 'Group Two' },
+      ],
+    } as unknown as TranscriptionAdminDetails;
+
+    const result = service.getCurrentStatusFromTranscript(transcript);
+
+    expect(result.Status?.value).toBe('Requested');
+    expect(result.Status?.action?.text).toBe('Change status');
+    expect(result.Status?.action?.url).toBe('/admin/transcripts/1/change-status');
+
+    expect(result['Associated groups']).toBeFalsy();
   });
 
   it('should return correct status and associated data based on empty/null transcript details', () => {

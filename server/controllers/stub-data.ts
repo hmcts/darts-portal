@@ -6,14 +6,14 @@ import * as express from 'express';
 import { Request, Response, Router } from 'express';
 
 // stubs
-import { StubResponse, eventMappings } from '../stubs';
+import { StubResponse } from '../stubs';
 
 const STUB_ALLOWED = config.get('allowStubData') === 'true';
 
 // create stub files and add to this array to stub data
 const STUB_RESPONSES: StubResponse[] = [
   // include stubs here like below
-  ...eventMappings,
+  // ...eventMappings,
 ];
 
 function stubData(response: unknown, status: number) {

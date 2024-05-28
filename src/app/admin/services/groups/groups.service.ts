@@ -100,6 +100,14 @@ export class GroupsService {
       .pipe(map(this.mapGroupDataToGroup));
   }
 
+  getGroupsWhereUserIsTheOnlyMember(userId: number): Observable<SecurityGroup[]> {
+    return this.http
+      .get<SecurityGroupData[]>(`${GET_SECURITY_GROUPS_PATH}`, {
+        params: { user_id: userId, singleton_user: true },
+      })
+      .pipe(map((groups) => groups.map(this.mapGroupDataToGroup)));
+  }
+
   mapGroupDataToGroup(mapGroupDataToGroup: SecurityGroupData): SecurityGroup {
     return {
       id: mapGroupDataToGroup.id,

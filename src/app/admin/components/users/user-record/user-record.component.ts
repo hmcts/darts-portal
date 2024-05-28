@@ -13,7 +13,7 @@ import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
-import { shareReplay } from 'rxjs';
+import { Observable, shareReplay } from 'rxjs';
 import { map } from 'rxjs/internal/operators/map';
 import { DataTableComponent } from '../../../../core/components/common/data-table/data-table.component';
 import { UserGroupsComponent } from '../user-groups/user-groups/user-groups.component';
@@ -53,5 +53,12 @@ export class UserRecordComponent {
   hasAssignedGroups$ = this.route.queryParams.pipe(map((params) => params.assigned));
   hasRemovedGroups$ = this.route.queryParams.pipe(map((params) => params.groupsRemoved));
   isUserActivated$ = this.route.queryParams.pipe(map((params) => params.activated));
+  isUserDeactivated$: Observable<number[]> = this.route.queryParams.pipe(
+    map((params) => {
+      if (params.deactivated) {
+        return params.rolledBackTranscriptRequestIds ? params.rolledBackTranscriptRequestIds : [];
+      }
+    })
+  );
   tab$ = this.route.queryParams.pipe(map((params) => params.tab));
 }
