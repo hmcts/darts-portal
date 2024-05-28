@@ -61,4 +61,21 @@ router.get('/:id', (req, res) => {
   res.send(item);
 });
 
+router.patch('/:id', (req, res) => {
+  const owner_id = +req.body.owner_id;
+
+  if (owner_id === undefined) {
+    return res.status(400).send();
+  }
+
+  const id = +req.params.id;
+  const item = DATA.find((item) => item.id === id);
+  if (!item) {
+    return res.status(404).send();
+  }
+
+  item.owner_id = owner_id;
+  res.send(item);
+});
+
 module.exports = router;

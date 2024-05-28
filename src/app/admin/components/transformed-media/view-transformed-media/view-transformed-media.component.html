@@ -4,6 +4,10 @@
   <ng-container *breadcrumb>{{ transformedMediaId }}</ng-container>
 </app-breadcrumb>
 
+@if (hasChangedOwner$ | async; as owner) {
+  <app-govuk-banner>Changed media request owner to {{ owner }}</app-govuk-banner>
+}
+
 <app-govuk-heading caption="Transformed media">{{ transformedMediaId }}</app-govuk-heading>
 
 @if (data$ | async; as data) {
@@ -16,7 +20,14 @@
           {{ data.users.owner?.fullName }} ({{ data.users.owner?.emailAddress }})
         </dd>
         <dd class="govuk-summary-list__actions">
-          <a class="govuk-link" href="javascript:void(0)">Change<span class="govuk-visually-hidden"> owner</span></a>
+          <a
+            id="change-link"
+            class="govuk-link"
+            href="javascript:void(0)"
+            [routerLink]="['change-owner', data.mediaRequest.id]"
+            routerLinkActive="router-link-active"
+            >Change<span class="govuk-visually-hidden"> owner</span></a
+          >
         </dd>
       </div>
       <div class="govuk-summary-list__row">

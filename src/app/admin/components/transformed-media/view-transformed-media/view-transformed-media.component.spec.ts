@@ -116,6 +116,7 @@ describe('ViewTransformedMediaComponent', () => {
           id: 1,
         },
       },
+      queryParams: of(null),
     } as unknown as ActivatedRoute;
 
     await TestBed.configureTestingModule({

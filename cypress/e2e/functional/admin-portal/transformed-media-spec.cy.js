@@ -122,5 +122,22 @@ describe('Admin - Transformed media screen', () => {
       cy.get('.govuk-table__cell.courtroom').first().contains('courtroom 1');
       cy.get('.govuk-table__cell.channel').first().contains('1');
     });
+
+    it('change owner', () => {
+      cy.get('.view-link').first().click();
+
+      cy.get('#change-link').click();
+
+      cy.get('app-govuk-heading').should('contain', 'Change owner');
+
+      cy.get('app-auto-complete').should('contain', 'Search for a user');
+
+      cy.get('app-auto-complete').click();
+      cy.get('li').contains('Eric Bristow').click();
+
+      cy.get('#save-button').click();
+
+      cy.get('app-govuk-banner').should('contain', 'Changed media request owner to Eric Bristow');
+    });
   });
 });

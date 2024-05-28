@@ -362,4 +362,17 @@ describe('TransformedMediaService', () => {
       expect(result).toEqual(expectedMappedType);
     });
   });
+
+  describe('changeMediaRequestOwner', () => {
+    it('should call patch endpoint with mediaRequestId and newOwnerId', () => {
+      const mockMediaRequestId = 1;
+      const mockNewOwnerId = 2;
+
+      service.changeMediaRequestOwner(mockMediaRequestId, mockNewOwnerId).subscribe();
+
+      const req = httpMock.expectOne({ url: `/api/admin/media-requests/${mockMediaRequestId}`, method: 'PATCH' });
+      expect(req.request.body).toEqual({ owner_id: mockNewOwnerId });
+      req.flush({});
+    });
+  });
 });

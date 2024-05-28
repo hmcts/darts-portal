@@ -8,7 +8,7 @@ import { TransformedMediaSearchFormValues } from '@admin-types/transformed-media
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { DateTime } from 'luxon';
-import { Observable, map, tap } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -26,7 +26,6 @@ export class TransformedMediaService {
   getTransformedMediaById(id: number): Observable<TransformedMediaAdmin> {
     return this.http
       .get<TransformedMediaAdminData>(`/api/admin/transformed-medias/${id}`)
-      .pipe(tap(console.log))
       .pipe(map((data) => this.mapTransformedMedia(data)));
   }
 
@@ -40,6 +39,10 @@ export class TransformedMediaService {
     return this.http
       .get<AssociatedMediaData[]>('/api/admin/medias', { params: { transformed_media_id: id.toString() } })
       .pipe(map((data) => this.mapAssociatedMedias(data)));
+  }
+
+  changeMediaRequestOwner(mediaRequestId: number, newOwnerId: number): Observable<void> {
+    return this.http.patch<void>(`/api/admin/media-requests/${mediaRequestId}`, { owner_id: newOwnerId });
   }
 
   private mapAssociatedMedias(data: AssociatedMediaData[]): AssociatedMedia[] {
