@@ -1,7 +1,7 @@
 export interface EventMappingData {
   id: number;
   type: string;
-  sub_type: string;
+  sub_type: string | null;
   name: string;
   handler: string | null;
   is_active: boolean;
