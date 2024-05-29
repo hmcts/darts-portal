@@ -92,8 +92,6 @@ export class UserTranscriptsComponent implements OnInit {
     courthouses: CourthouseData[],
     statuses: TranscriptionStatus[]
   ): Transcription[] {
-    console.log(results);
-
     return results.map((result) => {
       const courthouse = courthouses.find((c) => c.id === result.courthouse.id);
       const status = statuses.find((s) => s.id === result.status.id);
