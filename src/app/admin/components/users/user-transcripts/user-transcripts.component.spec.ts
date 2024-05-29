@@ -93,8 +93,9 @@ describe('UserTranscriptsComponent', () => {
   });
 
   it('should calculate six months prior date correctly', () => {
-    const expectedDate = DateTime.now().minus({ months: 6 }).toFormat('yyyy-MM-dd');
-    expect(component.sixMonthsPrevious).toBe(expectedDate);
+    const expectedDate = DateTime.now().minus({ months: 6 });
+    const calculatedDate = DateTime.fromISO(component.sixMonthsPrevious);
+    expect(calculatedDate.hasSame(expectedDate, 'day')).toBe(true);
   });
 
   it('should fetch user transcripts based on showAll value', () => {
