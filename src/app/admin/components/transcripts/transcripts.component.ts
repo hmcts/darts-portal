@@ -1,4 +1,4 @@
-import { Transcription, TranscriptionSearchFormValues, TranscriptionStatus } from '@admin-types/transcription';
+import { TranscriptionSearchFormValues } from '@admin-types/transcription';
 import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
@@ -6,7 +6,6 @@ import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.compo
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
-import { CourthouseData } from '@core-types/index';
 import { TabDirective } from '@directives/tab.directive';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
@@ -53,7 +52,7 @@ export class TranscriptsComponent {
         this.transcriptService
           .search(values)
           // Map the results to include the courthouse and status data
-          .pipe(map((results) => this.mapResults(results, courthouses, statuses)))
+          .pipe(map((results) => this.transcriptService.mapResults(results, courthouses, statuses)))
       );
     }),
     tap((results) => {
@@ -83,29 +82,5 @@ export class TranscriptsComponent {
   onClear() {
     this.isSubmitted$.next(false);
     this.search$.next(null); // Clear the search
-  }
-
-  mapResults(
-    results: Transcription[],
-    courthouses: CourthouseData[],
-    statuses: TranscriptionStatus[]
-  ): Transcription[] {
-    return results.map((result) => {
-      const courthouse = courthouses.find((c) => c.id === result.courthouse.id);
-      const status = statuses.find((s) => s.id === result.status.id);
-      return {
-        ...result,
-        courthouse: {
-          id: courthouse?.id,
-          displayName: courthouse?.display_name,
-          courthouseName: courthouse?.courthouse_name,
-        },
-        status: {
-          id: status?.id,
-          type: status?.type,
-          displayName: status?.displayName,
-        },
-      };
-    });
   }
 }

@@ -16,6 +16,7 @@ import { TranscriptionWorkflow } from '@admin-types/transcription/transcription-
 import { TranscriptionWorkflowData } from '@admin-types/transcription/transcription-workflow-data.interface';
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
+import { CourthouseData } from '@core-types/index';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { TranscriptStatus } from '@portal-types/transcriptions/transcript-status.type';
 import { GET_SECURITY_GROUPS_PATH } from '@services/courthouses/courthouses.service';
@@ -294,5 +295,29 @@ export class TranscriptionAdminService {
 
   private formatDate(date: string | null | undefined): string | null {
     return date ? date.split('/').reverse().join('-') : null;
+  }
+
+  mapResults(
+    results: Transcription[],
+    courthouses: CourthouseData[],
+    statuses: TranscriptionStatus[]
+  ): Transcription[] {
+    return results.map((result) => {
+      const courthouse = courthouses.find((c) => c.id === result.courthouse.id);
+      const status = statuses.find((s) => s.id === result.status.id);
+      return {
+        ...result,
+        courthouse: {
+          id: courthouse?.id,
+          displayName: courthouse?.display_name,
+          courthouseName: courthouse?.courthouse_name,
+        },
+        status: {
+          id: status?.id,
+          type: status?.type,
+          displayName: status?.displayName,
+        },
+      };
+    });
   }
 }

@@ -77,7 +77,7 @@ export class UserTranscriptsComponent implements OnInit {
               showAll ? undefined : this.sixMonthsPrevious
             )
             // Map the results to include the courthouse and status data
-            .pipe(map((results) => this.mapResults(results, courthouses, statuses)))
+            .pipe(map((results) => this.transcriptionAdminService.mapResults(results, courthouses, statuses)))
         );
       })
     );
@@ -85,29 +85,5 @@ export class UserTranscriptsComponent implements OnInit {
 
   private calculateSixMonthsPrior() {
     return DateTime.now().minus({ months: 6 }).toFormat('yyyy-MM-dd');
-  }
-
-  mapResults(
-    results: Transcription[],
-    courthouses: CourthouseData[],
-    statuses: TranscriptionStatus[]
-  ): Transcription[] {
-    return results.map((result) => {
-      const courthouse = courthouses.find((c) => c.id === result.courthouse.id);
-      const status = statuses.find((s) => s.id === result.status.id);
-      return {
-        ...result,
-        courthouse: {
-          id: courthouse?.id,
-          displayName: courthouse?.display_name,
-          courthouseName: courthouse?.courthouse_name,
-        },
-        status: {
-          id: status?.id,
-          type: status?.type,
-          displayName: status?.displayName,
-        },
-      };
-    });
   }
 }
