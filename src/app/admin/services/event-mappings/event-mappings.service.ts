@@ -33,7 +33,7 @@ export class EventMappingsService {
   private mapToEventMappingRequest(eventMapping: EventMappingFormValues): Partial<EventMappingData> {
     return {
       type: eventMapping.type,
-      sub_type: eventMapping.subType,
+      sub_type: eventMapping.subType ? eventMapping.subType : null,
       name: eventMapping.eventName,
       handler: eventMapping.eventHandler ? eventMapping.eventHandler : null,
       has_restrictions: eventMapping.withRestrictions,
@@ -44,7 +44,7 @@ export class EventMappingsService {
     return {
       id: e.id,
       type: e.type,
-      subType: e.sub_type,
+      subType: e.sub_type!,
       name: e.name,
       handler: e.handler!,
       isActive: e.is_active,
