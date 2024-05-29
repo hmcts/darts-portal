@@ -375,4 +375,76 @@ describe('TransformedMediaService', () => {
       req.flush({});
     });
   });
+
+  describe('getAssociatedMediaByTranscriptionDocumentId', () => {
+    it('should call get endpoint with transcription_document_id', () => {
+      service.getAssociatedMediaByTranscriptionDocumentId(1).subscribe();
+
+      const req = httpMock.expectOne({ url: '/api/admin/medias?transcription_document_id=1', method: 'GET' });
+      req.flush([]);
+    });
+
+    it('should map response to AssociatedMedia[]', () => {
+      const mockId = 9;
+      const mockResponse = [
+        {
+          id: 1,
+          channel: 'channel',
+          start_at: '2024-01-01T00:00:00Z',
+          end_at: '2024-01-01T00:00:00Z',
+          case: {
+            id: 1,
+            case_number: 'CASE123',
+          },
+          hearing: {
+            id: 1,
+            hearing_date: '2024-01-01',
+          },
+          courthouse: {
+            id: 1,
+            display_name: 'Swansea',
+          },
+          courtroom: {
+            id: 1,
+            name: 'room',
+          },
+        },
+      ];
+
+      const expectedMappedType = [
+        {
+          id: 1,
+          channel: 'channel',
+          startAt: DateTime.fromISO('2024-01-01T00:00:00Z'),
+          endAt: DateTime.fromISO('2024-01-01T00:00:00Z'),
+          case: {
+            id: 1,
+            caseNumber: 'CASE123',
+          },
+          hearing: {
+            id: 1,
+            hearingDate: DateTime.fromISO('2024-01-01'),
+          },
+          courthouse: {
+            id: 1,
+            displayName: 'Swansea',
+          },
+          courtroom: {
+            id: 1,
+            name: 'room',
+          },
+        },
+      ];
+
+      let result: AssociatedMedia[] = [];
+      service.getAssociatedMediaByTranscriptionDocumentId(mockId).subscribe((media) => {
+        result = media;
+      });
+
+      const req = httpMock.expectOne({ url: '/api/admin/medias?transcription_document_id=9', method: 'GET' });
+      req.flush(mockResponse);
+
+      expect(result).toEqual(expectedMappedType);
+    });
+  });
 });

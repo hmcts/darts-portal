@@ -41,6 +41,12 @@ export class TransformedMediaService {
       .pipe(map((data) => this.mapAssociatedMedias(data)));
   }
 
+  getAssociatedMediaByTranscriptionDocumentId(id: number): Observable<AssociatedMedia[]> {
+    return this.http
+      .get<AssociatedMediaData[]>('/api/admin/medias', { params: { transcription_document_id: id.toString() } })
+      .pipe(map((data) => this.mapAssociatedMedias(data)));
+  }
+
   changeMediaRequestOwner(mediaRequestId: number, newOwnerId: number): Observable<void> {
     return this.http.patch<void>(`/api/admin/media-requests/${mediaRequestId}`, { owner_id: newOwnerId });
   }

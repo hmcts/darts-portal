@@ -1,4 +1,3 @@
-import { AssociatedMedia } from '@admin-types/transformed-media/associated-media';
 import { TransformedMediaAdmin } from '@admin-types/transformed-media/transformed-media-admin';
 import { AsyncPipe, DecimalPipe, JsonPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
@@ -7,7 +6,6 @@ import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
-import { DatatableColumn } from '@core-types/index';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { BytesPipe } from '@pipes/bytes.pipe';
@@ -17,6 +15,7 @@ import { CaseService } from '@services/case/case.service';
 import { TransformedMediaService } from '@services/transformed-media/transformed-media.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { forkJoin, map, switchMap } from 'rxjs';
+import { AssociatedAudioTableComponent } from '../associated-audio-table/associated-audio-table.component';
 
 @Component({
   selector: 'app-view-transformed-media',
@@ -35,6 +34,7 @@ import { forkJoin, map, switchMap } from 'rxjs';
     JoinPipe,
     RouterLink,
     GovukBannerComponent,
+    AssociatedAudioTableComponent,
   ],
   templateUrl: './view-transformed-media.component.html',
   styleUrl: './view-transformed-media.component.scss',
@@ -57,7 +57,7 @@ export class ViewTransformedMediaComponent {
       return forkJoin({ mediaRequest: $mediaRequest, case: $case, users: $users }).pipe(
         map(({ mediaRequest, case: c, users }) => ({
           transformedMedia,
-          associatedAudioRows: this.mapRows(associatedAudio),
+          associatedAudio,
           mediaRequest,
           case: c,
           users,
@@ -65,17 +65,6 @@ export class ViewTransformedMediaComponent {
       );
     })
   );
-
-  associatedAudioColumns: DatatableColumn[] = [
-    { name: 'Audio ID', prop: 'audioId', sortable: true },
-    { name: 'Case ID', prop: 'caseId', sortable: true },
-    { name: 'Hearing date', prop: 'hearingDate', sortable: true },
-    { name: 'Courthouse', prop: 'courthouse', sortable: true },
-    { name: 'Start time', prop: 'startTime', sortable: true },
-    { name: 'End time', prop: 'endTime', sortable: true },
-    { name: 'Courtoom', prop: 'courtroom', sortable: true },
-    { name: 'Channel number', prop: 'channelNumber', sortable: true },
-  ];
 
   private getMediaRequestAndCaseAndUsers(transformedMedia: TransformedMediaAdmin) {
     const mediaRequestId = transformedMedia.mediaRequest.id;
@@ -92,18 +81,5 @@ export class ViewTransformedMediaComponent {
       }))
     );
     return { $mediaRequest, $case, $users };
-  }
-
-  mapRows(associatedAudio: AssociatedMedia[]) {
-    return associatedAudio.map((audio) => ({
-      audioId: audio.id,
-      caseId: audio.case.id,
-      hearingDate: audio.hearing.hearingDate,
-      courthouse: audio.courthouse.displayName,
-      startTime: audio.startAt,
-      endTime: audio.endAt,
-      courtroom: audio.courtroom.name,
-      channelNumber: audio.channel,
-    }));
   }
 }

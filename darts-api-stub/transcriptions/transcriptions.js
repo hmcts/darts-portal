@@ -233,6 +233,12 @@ const mockTranscriptionDetailsTwo = {
   transcription_end_ts: '2023-06-26T16:00:00Z',
   is_manual: true,
   hearing_id: 1,
+  transcription_id: 789,
+  transcription_urgency: {
+    transcription_urgency_id: 1,
+    description: 'Standard',
+    priority_order: 4,
+  },
 };
 
 const mockTranscriptionDetailsNoName = {

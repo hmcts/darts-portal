@@ -1,4 +1,4 @@
-import { TranscriptionDocument } from '@admin-types/transcription';
+import { TranscriptionDocumentSearchResult } from '@admin-types/transcription';
 import { Component, Input, OnChanges } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
@@ -14,7 +14,7 @@ import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
   styleUrl: './search-completed-transcripts-results.component.scss',
 })
 export class SearchCompletedTranscriptsResultsComponent implements OnChanges {
-  @Input() results: TranscriptionDocument[] = [];
+  @Input() results: TranscriptionDocumentSearchResult[] = [];
 
   rows: ReturnType<typeof this.mapRows> = [];
 
@@ -30,7 +30,7 @@ export class SearchCompletedTranscriptsResultsComponent implements OnChanges {
     this.rows = this.mapRows(this.results);
   }
 
-  mapRows(results: TranscriptionDocument[]) {
+  mapRows(results: TranscriptionDocumentSearchResult[]) {
     return results.map((result) => ({
       id: result.transcriptionDocumentId,
       caseNumber: result.case.caseNumber,

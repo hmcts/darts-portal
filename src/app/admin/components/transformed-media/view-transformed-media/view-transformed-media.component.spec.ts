@@ -157,27 +157,14 @@ describe('ViewTransformedMediaComponent', () => {
       expect(getUsersByIdSpy).toHaveBeenCalledWith([1, 2]);
     });
 
-    it('should return view model containing mapped transformedMedia, associatedAudioRows, mediaRequest, case and users', () => {
+    it('should return view model containing mapped transformedMedia, associatedAudio, mediaRequest, case and users', () => {
       let streamResult = {};
 
       component.data$.subscribe((data) => (streamResult = data));
 
-      const expectedAssociatedAudioRows = [
-        {
-          audioId: 1,
-          caseId: 1,
-          hearingDate: DateTime.fromISO('2020-01-01'),
-          courthouse: 'courthouse',
-          startTime: DateTime.fromISO('2020-01-01T01:00:00Z'),
-          endTime: DateTime.fromISO('2020-01-01T02:00:00Z'),
-          courtroom: 'courtroom',
-          channelNumber: 1,
-        },
-      ];
-
       expect(streamResult).toEqual({
         transformedMedia: mockTransformedMedia,
-        associatedAudioRows: expectedAssociatedAudioRows,
+        associatedAudio: mockAssociatedMedia,
         mediaRequest: mockMediaRequest,
         case: mockCase,
         users: { owner: mockUsers[0], requestedBy: mockUsers[1] },

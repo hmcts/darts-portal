@@ -68,4 +68,17 @@ router.post('/search', (req, res) => {
   res.send(documents);
 });
 
+router.get('/:transcription_document_id', (req, res) => {
+  res.send({
+    transcription_document_id: 123,
+    transcription_id: 456,
+    file_type: 'DOC',
+    file_name: 'caseid_courthouse_filename.doc',
+    file_size_bytes: 3145728,
+    uploaded_at: '2008-05-18T15:00:00Z',
+    uploaded_by: 3,
+    is_hidden: false,
+  });
+});
+
 module.exports = router;
