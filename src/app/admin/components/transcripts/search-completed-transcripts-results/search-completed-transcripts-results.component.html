@@ -1,0 +1,12 @@
+<hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
+<app-data-table [rows]="rows" [columns]="columns" caption="Transcript search results" [hiddenCaption]="true">
+  <ng-template [tableRowTemplate]="rows" let-row>
+    <td class="govuk-table__cell">
+      <a href="#" class="govuk-link" [routerLink]="['document', row.id]"> {{ row.id }}</a>
+    </td>
+    <td class="govuk-table__cell">{{ row.caseNumber }}</td>
+    <td class="govuk-table__cell">{{ row.courthouse }}</td>
+    <td class="govuk-table__cell">{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
+    <td class="govuk-table__cell">{{ row.requestMethod ? 'Manual' : 'Automatic' }}</td>
+  </ng-template>
+</app-data-table>
