@@ -84,6 +84,6 @@ export class UserTranscriptsComponent implements OnInit {
   }
 
   private calculateSixMonthsPrior() {
-    return DateTime.now().minus({ months: 6 }).toFormat('yyyy-MM-dd');
+    return DateTime.now().minus({ months: 6 }).toISO();
   }
 }
