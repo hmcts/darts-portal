@@ -21,7 +21,7 @@
         name="type"
         formControlName="type"
         class="govuk-input govuk-input--width-10"
-        [class.govuk-form-group--error]="isControlInvalid('type')"
+        [class.govuk-input--error]="isControlInvalid('type')"
       />
     </div>
     <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('subType')">
@@ -37,7 +37,7 @@
         name="sub-type"
         formControlName="subType"
         class="govuk-input govuk-input--width-10"
-        [class.govuk-form-group--error]="isControlInvalid('subType')"
+        [class.govuk-input--error]="isControlInvalid('subType')"
       />
     </div>
     <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('eventName')">
@@ -52,7 +52,7 @@
         name="event-name"
         formControlName="eventName"
         class="govuk-input govuk-input--width-30"
-        [class.govuk-form-group--error]="isControlInvalid('eventName')"
+        [class.govuk-input--error]="isControlInvalid('eventName')"
       />
     </div>
     <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('eventHandler')">
@@ -67,7 +67,7 @@
         id="eventHandlerSelect"
         name="event-handler-select"
         formControlName="eventHandler"
-        [class.govuk-form-group--error]="isControlInvalid('eventHandler')"
+        [class.govuk-input--error]="isControlInvalid('eventHandler')"
       >
         <option [value]="null" disabled selected>Select</option>
         @for (handler of data.eventHandlers; track handler) {

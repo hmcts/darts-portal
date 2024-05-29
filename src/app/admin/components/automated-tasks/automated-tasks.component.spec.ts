@@ -36,10 +36,10 @@ describe('AutomatedTasksComponent', () => {
         .mockReturnValue(of({} as unknown as HttpResponse<void>));
       const taskRunSpy = jest.spyOn(component.taskRun, 'emit');
 
-      component.onRunTaskButtonClicked(1);
+      component.onRunTaskButtonClicked(1, 'TestTask');
 
       expect(runTaskSpy).toHaveBeenCalledWith(1);
-      expect(taskRunSpy).toHaveBeenCalledWith('success');
+      expect(taskRunSpy).toHaveBeenCalledWith(['TestTask', 'success']);
     });
 
     it('emits "not-found" when the task is not found', () => {
@@ -48,10 +48,10 @@ describe('AutomatedTasksComponent', () => {
         .mockReturnValue(throwError(() => ({ status: 404 }) as unknown as HttpResponse<void>));
       const taskRunSpy = jest.spyOn(component.taskRun, 'emit');
 
-      component.onRunTaskButtonClicked(2);
+      component.onRunTaskButtonClicked(2, 'TestTask');
 
       expect(runTaskSpy).toHaveBeenCalledWith(2);
-      expect(taskRunSpy).toHaveBeenCalledWith('not-found');
+      expect(taskRunSpy).toHaveBeenCalledWith(['TestTask', 'not-found']);
     });
 
     it('emits "already-running" when the task is already running', () => {
@@ -60,10 +60,10 @@ describe('AutomatedTasksComponent', () => {
         .mockReturnValue(throwError(() => ({ status: 409 }) as unknown as HttpResponse<void>));
       const taskRunSpy = jest.spyOn(component.taskRun, 'emit');
 
-      component.onRunTaskButtonClicked(3);
+      component.onRunTaskButtonClicked(3, 'TestTask');
 
       expect(runTaskSpy).toHaveBeenCalledWith(3);
-      expect(taskRunSpy).toHaveBeenCalledWith('already-running');
+      expect(taskRunSpy).toHaveBeenCalledWith(['TestTask', 'already-running']);
     });
   });
 });

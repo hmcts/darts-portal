@@ -36,7 +36,7 @@
     </app-delete>
   } @else {
     <div class="govuk-width-container">
-      <main class="govuk-main-wrapper">
+      <div class="govuk-main-wrapper">
         <div class="govuk-grid-row">
           <div class="courthouse-record-tags govuk-grid-column-one-third">
             <strong class="govuk-tag govuk-tag--purple"> Courthouse record </strong>
@@ -60,12 +60,16 @@
         </div>
         <div class="courthouse-record-dates-container">
           <div id="date-created-container">
-            <h3 class="govuk-heading-s">Date created</h3>
-            <p class="govuk-body">{{ courthouse.createdDateTime | luxonDate: 'EEE d MMM yyyy' }}</p>
+            <p class="label govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-0 govuk-!-padding-top-3">
+              Date created
+            </p>
+            <p class="value govuk-body">{{ courthouse.createdDateTime | luxonDate: 'EEE d MMM yyyy' }}</p>
           </div>
           <div id="last-updated-container">
-            <h3 class="govuk-heading-s">Last updated</h3>
-            <p class="govuk-body">{{ courthouse.lastModifiedDateTime | luxonDate: 'EEE d MMM yyyy' }}</p>
+            <p class="label govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-0 govuk-!-padding-top-3">
+              Last updated
+            </p>
+            <p class="value govuk-body">{{ courthouse.lastModifiedDateTime | luxonDate: 'EEE d MMM yyyy' }}</p>
           </div>
         </div>
 
@@ -82,7 +86,7 @@
             ></app-details-table>
           </div>
 
-          <div *tab="'Users'; id: 'users-tab'">
+          <div *tab="'Users'; screenReaderText: 'Courthouse users'; id: 'users-tab'">
             <div class="govuk-grid-row">
               @if (users$ | async; as users) {
                 <app-courthouse-users [users]="users" (selectRowsEvent)="onDeleteClicked($event)" />
@@ -92,7 +96,7 @@
             </div>
           </div>
         </app-tabs>
-      </main>
+      </div>
     </div>
   }
 } @else {

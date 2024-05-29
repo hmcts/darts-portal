@@ -17,6 +17,7 @@
     [columns]="columns"
     [rows]="data.eventMappings"
     noDataMessage="There are no matching results."
+    [sortAndPaginateOnRowsChanged]="false"
   >
     <ng-template [tableRowTemplate]="data.eventMappings" let-row>
       <td class="govuk-table__cell">{{ row.type }}</td>
@@ -27,13 +28,15 @@
       <td class="govuk-table__cell">{{ row.createdAt | luxonDate: 'dd MMM yyyy' }}</td>
       <td class="govuk-table__cell">{{ row.isActive ? 'Active' : 'Inactive' }}</td>
       <td class="govuk-table__cell">
-        <a
-          href="javascript:void(0)"
-          class="govuk-link"
-          (click)="router.navigate(['admin/system-configuration/event-mappings/edit', row.id])"
-        >
-          Change
-        </a>
+        @if (row.isActive) {
+          <a
+            href="javascript:void(0)"
+            class="govuk-link"
+            (click)="router.navigate(['admin/system-configuration/event-mappings/edit', row.id])"
+          >
+            Change
+          </a>
+        }
       </td>
     </ng-template>
   </app-data-table>

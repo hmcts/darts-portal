@@ -132,6 +132,14 @@ export const ADMIN_ROUTES: Routes = [
       ),
   },
   {
+    path: 'admin/transformed-media/:id',
+    title: 'DARTS Admin View Transformed Media',
+    loadComponent: () =>
+      import('./components/transformed-media/view-transformed-media/view-transformed-media.component').then(
+        (c) => c.ViewTransformedMediaComponent
+      ),
+  },
+  {
     path: 'admin/audio-cache',
     title: 'DARTS Admin Audio Cache',
     loadComponent: () => import('./components/audio-cache/audio-cache.component').then((c) => c.AudioCacheComponent),

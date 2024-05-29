@@ -1,0 +1,129 @@
+<app-breadcrumb>
+  <ng-container *breadcrumb="['/admin/transformed-media']">Search</ng-container>
+  <ng-container *breadcrumb>Transformed media</ng-container>
+  <ng-container *breadcrumb>{{ transformedMediaId }}</ng-container>
+</app-breadcrumb>
+
+<app-govuk-heading caption="Transformed media">{{ transformedMediaId }}</app-govuk-heading>
+
+@if (data$ | async; as data) {
+  <section id="request-details" class="details">
+    <app-govuk-heading class="no-margin border-bottom" tag="h2" size="m">Request details</app-govuk-heading>
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Owner</dt>
+        <dd class="govuk-summary-list__value">
+          {{ data.users.owner?.fullName }} ({{ data.users.owner?.emailAddress }})
+        </dd>
+        <dd class="govuk-summary-list__actions">
+          <a class="govuk-link" href="javascript:void(0)">Change<span class="govuk-visually-hidden"> owner</span></a>
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Requested by</dt>
+        <dd class="govuk-summary-list__value">
+          {{ data.users.requestedBy?.fullName }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Request ID</dt>
+        <dd class="govuk-summary-list__value">
+          {{ data.mediaRequest.id }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Date requested</dt>
+        <dd class="govuk-summary-list__value">
+          {{ data.mediaRequest.requestedAt | luxonDate: 'dd MMM yyyy' }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Hearing date</dt>
+        <dd class="govuk-summary-list__value">
+          {{ data.mediaRequest.hearing.hearingDate | luxonDate: 'dd MMM yyyy' }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Courtroom</dt>
+        <dd class="govuk-summary-list__value">
+          {{ data.mediaRequest.courtroom.name }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Audio requested</dt>
+        <dd class="govuk-summary-list__value">
+          Start time {{ data.mediaRequest.startAt | luxonDate: 'HH:mm' }} - End time
+          {{ data.mediaRequest.endAt | luxonDate: 'HH:mm' }}
+        </dd>
+      </div>
+    </dl>
+  </section>
+
+  <section id="case-details" class="details">
+    <app-govuk-heading class="no-margin border-bottom" tag="h2" size="m">Case details</app-govuk-heading>
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Case ID</dt>
+        <dd class="govuk-summary-list__value">
+          {{ data.case.number }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Courthouse</dt>
+        <dd class="govuk-summary-list__value">
+          {{ data.case.courthouse }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Judge(s)</dt>
+        <dd class="govuk-summary-list__value">
+          {{ data.case.judges | join }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Defendant(s)</dt>
+        <dd class="govuk-summary-list__value">
+          {{ data.case.defendants | join }}
+        </dd>
+      </div>
+    </dl>
+  </section>
+
+  <section id="media-details" class="details">
+    <app-govuk-heading class="no-margin border-bottom" tag="h2" size="m">Media details</app-govuk-heading>
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Filename</dt>
+        <dd class="govuk-summary-list__value">
+          {{ data.transformedMedia.fileName }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">File type</dt>
+        <dd class="govuk-summary-list__value">
+          {{ data.transformedMedia.fileFormat }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">File size</dt>
+        <dd class="govuk-summary-list__value">{{ data.transformedMedia.fileSizeBytes | bytes | number: '1.0-2' }}MB</dd>
+      </div>
+    </dl>
+  </section>
+
+  <section id="associated-audio-details">
+    <app-govuk-heading class="no-margin border-bottom" tag="h2" size="m">Associated audio</app-govuk-heading>
+    <app-data-table [columns]="associatedAudioColumns" [rows]="data.associatedAudioRows">
+      <ng-template [tableRowTemplate]="data.associatedAudioRows" let-row>
+        <td class="govuk-table__cell audio-id">{{ row.audioId }}</td>
+        <td class="govuk-table__cell case-id">{{ row.caseId }}</td>
+        <td class="govuk-table__cell hearing-date">{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
+        <td class="govuk-table__cell courthouse">{{ row.courthouse }}</td>
+        <td class="govuk-table__cell start-time">{{ row.startTime | luxonDate: 'HH:mm' }}</td>
+        <td class="govuk-table__cell end-time">{{ row.endTime | luxonDate: 'HH:mm' }}</td>
+        <td class="govuk-table__cell courtroom">{{ row.courtroom }}</td>
+        <td class="govuk-table__cell channel">{{ row.channelNumber }}</td>
+      </ng-template>
+    </app-data-table>
+  </section>
+}
