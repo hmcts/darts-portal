@@ -32,7 +32,7 @@ describe('Admin - User record screen', () => {
       //Check tabs
       cy.get('.moj-sub-navigation a').contains('Details').should('exist');
       cy.get('.moj-sub-navigation a').contains('Groups').should('exist');
-      cy.get('.moj-sub-navigation a').contains('Transcript Requests').should('exist');
+      cy.get('.moj-sub-navigation a').contains('Transcript requests').should('exist');
 
       //Dates
       cy.get('#date-created-container p.label').contains('Date created').should('exist');
@@ -74,7 +74,7 @@ describe('Admin - User record screen', () => {
       //Check tabs
       cy.get('.moj-sub-navigation a').contains('Details').should('exist');
       cy.get('.moj-sub-navigation a').contains('Groups').should('exist');
-      cy.get('.moj-sub-navigation a').contains('Transcript Requests').should('exist');
+      cy.get('.moj-sub-navigation a').contains('Transcript requests').should('exist');
 
       //Dates
       cy.get('#date-created-container p.label').contains('Date created').should('exist');
@@ -314,6 +314,84 @@ describe('Admin - User record screen', () => {
       cy.get('.govuk-table__body').contains('Judiciary').should('not.exist');
       cy.tableRowShouldContain('Opus Transcribers', 'Transcriber');
       cy.tableRowShouldContain('Super user (DARTS portal)', 'Judge');
+    });
+  });
+
+  describe('Transcript requests tab', () => {
+    it('Verify transcript requests tab', () => {
+      cy.get('app-user-search-results').should('contain', 'Fallon Sherrock');
+      cy.contains('Fallon Sherrock').parents('tr').contains('View').click();
+
+      cy.get('#transcripts-tab').click();
+
+      cy.get('#transcripts-tab .count').should('contain', '1');
+
+      cy.contains('h2', 'Transcript requests').should('exist');
+
+      cy.get('#showLastSixMonths').should('be.checked');
+      cy.get('#showAll').should('not.be.checked');
+
+      cy.get('#transcriptRequestsTable tbody tr').should('have.length', 1);
+
+      cy.get('#transcriptRequestsTable tbody tr')
+        .eq(0)
+        .within(() => {
+          cy.get('td').eq(0).should('contain.text', '7');
+          cy.get('td').eq(1).should('contain.text', 'C0000000007');
+          cy.get('td').eq(2).should('contain.text', 'Southampton');
+          cy.get('td').eq(3).should('contain.text', '06 Jan 2022');
+          cy.get('td').eq(5).should('contain.text', 'With Transcriber');
+          cy.get('td').eq(6).should('contain.text', 'Manual');
+        });
+
+      cy.a11y();
+    });
+
+    it('should display correct data and table headings', () => {
+      cy.get('app-user-search-results').should('contain', 'Fallon Sherrock');
+      cy.contains('Fallon Sherrock').parents('tr').contains('View').click();
+
+      cy.get('#transcripts-tab').click();
+
+      cy.get('#showAll').check();
+      cy.get('#transcripts-tab .count').should('contain', '7');
+
+      cy.get('#transcriptRequestsTable tbody tr').should('have.length', 7);
+      cy.get('#transcriptRequestsTable thead tr').within(() => {
+        cy.get('th').eq(0).should('contain.text', 'Request ID');
+        cy.get('th').eq(1).should('contain.text', 'Case ID');
+        cy.get('th').eq(2).should('contain.text', 'Courthouse');
+        cy.get('th').eq(3).should('contain.text', 'Hearing date');
+        cy.get('th').eq(4).should('contain.text', 'Requested on');
+        cy.get('th').eq(5).should('contain.text', 'Status');
+        cy.get('th').eq(6).should('contain.text', 'Request type');
+      });
+
+      cy.get('#transcriptRequestsTable tbody tr')
+        .eq(0)
+        .within(() => {
+          cy.get('td').eq(0).should('contain.text', '1');
+          cy.get('td').eq(1).should('contain.text', 'C0000000001');
+          cy.get('td').eq(2).should('contain.text', 'Slough');
+          cy.get('td').eq(3).should('contain.text', '01 Jan 2022');
+          cy.get('td').eq(4).should('contain.text', '01 Jan 2023 02:00');
+          cy.get('td').eq(5).should('contain.text', 'Requested');
+          cy.get('td').eq(6).should('contain.text', 'Manual');
+        });
+
+      cy.get('#transcriptRequestsTable tbody tr')
+        .eq(1)
+        .within(() => {
+          cy.get('td').eq(0).should('contain.text', '2');
+          cy.get('td').eq(1).should('contain.text', 'C0000000002');
+          cy.get('td').eq(2).should('contain.text', 'Kingston');
+          cy.get('td').eq(3).should('contain.text', '02 Jan 2022');
+          cy.get('td').eq(4).should('contain.text', '02 Jan 2023 04:00');
+          cy.get('td').eq(5).should('contain.text', 'Requested');
+          cy.get('td').eq(6).should('contain.text', 'Automatic');
+        });
+
+      cy.a11y();
     });
   });
 });

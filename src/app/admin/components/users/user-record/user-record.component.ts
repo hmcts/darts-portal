@@ -17,6 +17,7 @@ import { Observable, shareReplay } from 'rxjs';
 import { map } from 'rxjs/internal/operators/map';
 import { DataTableComponent } from '../../../../core/components/common/data-table/data-table.component';
 import { UserGroupsComponent } from '../user-groups/user-groups/user-groups.component';
+import { UserTranscriptsComponent } from '../user-transcripts/user-transcripts.component';
 
 @Component({
   selector: 'app-user-record',
@@ -37,6 +38,7 @@ import { UserGroupsComponent } from '../user-groups/user-groups/user-groups.comp
     TableRowTemplateDirective,
     UserGroupsComponent,
     ValidationErrorSummaryComponent,
+    UserTranscriptsComponent,
   ],
 })
 export class UserRecordComponent {
@@ -59,4 +61,9 @@ export class UserRecordComponent {
     })
   );
   tab$ = this.route.queryParams.pipe(map((params) => params.tab));
+  transcriptCount: number = 0;
+
+  handleTranscriptCount(count: number) {
+    this.transcriptCount = count;
+  }
 }

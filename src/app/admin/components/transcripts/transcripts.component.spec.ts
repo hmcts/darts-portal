@@ -1,7 +1,10 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Transcription, TranscriptionStatus } from '@admin-types/transcription';
+import { DatePipe } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 import { CourthouseData } from '@core-types/index';
+import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
 import { of } from 'rxjs';
@@ -26,14 +29,35 @@ describe('TranscriptsComponent', () => {
 
   const MOCK_STATUSES = of([{ id: 1, type: 'Approved', displayName: 'Approved' } as TranscriptionStatus]);
 
+  const MOCK_MAPPING = [
+    {
+      courthouse: { courthouseName: 'Test courthouse name', displayName: 'Test display name', id: 1 },
+      id: 1,
+      status: { displayName: 'Approved', id: 1, type: 'Approved' },
+    },
+  ];
+
+  const fakeActivatedRoute = {
+    snapshot: {
+      params: {
+        userId: 123,
+      },
+    },
+  } as unknown as ActivatedRoute;
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TranscriptsComponent],
       providers: [
         {
+          provide: ActivatedRoute,
+          useValue: fakeActivatedRoute,
+        },
+        {
           provide: TranscriptionAdminService,
           useValue: {
             getTranscriptionStatuses: jest.fn().mockReturnValue(MOCK_STATUSES),
+            mapResults: jest.fn().mockReturnValue(MOCK_MAPPING),
             search: jest.fn().mockReturnValue(of(MOCK_SEARCH_RESULT)),
           },
         },
@@ -43,6 +67,8 @@ describe('TranscriptsComponent', () => {
             getCourthouses: jest.fn().mockReturnValue(MOCK_COURTHOUSES),
           },
         },
+        DatePipe,
+        LuxonDatePipe,
       ],
     }).compileComponents();
 
@@ -83,37 +109,6 @@ describe('TranscriptsComponent', () => {
     fixture.detectChanges();
     expect(component.transcriptService.search).toHaveBeenCalledWith(searchValues);
   });
-
-  it('should map courthouses and statuses to search results', fakeAsync(() => {
-    let result;
-    component.results$.subscribe((results) => (result = results));
-
-    component.search$.next({});
-    component.isSubmitted$.next(true);
-
-    tick();
-
-    expect(result).toEqual([
-      {
-        id: 1,
-        courthouse: {
-          id: 1,
-          displayName: 'Test display name',
-          courthouseName: 'Test courthouse name',
-        },
-        status: { id: 1, type: 'Approved', displayName: 'Approved' },
-      },
-      {
-        courthouse: {
-          id: 1,
-          displayName: 'Test display name',
-          courthouseName: 'Test courthouse name',
-        },
-        id: 2,
-        status: { id: 1, type: 'Approved', displayName: 'Approved' },
-      },
-    ]);
-  }));
 
   it('should clear the search when onClear is called', () => {
     jest.spyOn(component.search$, 'next');

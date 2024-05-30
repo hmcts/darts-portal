@@ -1,0 +1,53 @@
+<app-govuk-heading tag="h2" size="m">Transcript requests</app-govuk-heading>
+
+<form [formGroup]="form">
+  <div class="govuk-form-group">
+    <fieldset class="govuk-fieldset">
+      <legend class="govuk-visually-hidden">
+        <span class="govuk-fieldset__heading">Transcription date filter</span>
+      </legend>
+      <div class="govuk-radios govuk-radios--small govuk-radios--inline">
+        <div class="govuk-radios__item">
+          <input
+            class="govuk-radios__input"
+            type="radio"
+            id="showLastSixMonths"
+            [value]="false"
+            formControlName="showAll"
+          />
+          <label class="govuk-label govuk-radios__label" for="showLastSixMonths">Show last 6 months</label>
+        </div>
+        <div class="govuk-radios__item">
+          <input class="govuk-radios__input" type="radio" id="showAll" [value]="true" formControlName="showAll" />
+          <label class="govuk-label govuk-radios__label" for="showAll">Show all</label>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+</form>
+@if (userTranscripts$ | async; as userTranscripts) {
+  <app-data-table
+    id="transcriptRequestsTable"
+    noDataMessage="There are no transcripts to display."
+    [rows]="mapRows(userTranscripts)"
+    [columns]="columns"
+    caption="Users transcript requests"
+    [hiddenCaption]="true"
+    [isHorizontalScroll]="true"
+    ><ng-template [tableRowTemplate]="rows" let-row>
+      <td class="govuk-table__cell">
+        <a href="#" class="govuk-link" [routerLink]="['/admin/transcripts/', row.id]"> {{ row.id }}</a>
+      </td>
+      <td class="govuk-table__cell">{{ row.caseNumber }}</td>
+      <td class="govuk-table__cell">{{ row.courthouse }}</td>
+      <td class="govuk-table__cell">{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
+      <td class="govuk-table__cell">{{ row.requestedAt | luxonDate: 'dd MMM yyyy HH:mm' }}</td>
+      <td class="govuk-table__cell">
+        <strong class="govuk-tag" [ngClass]="transcriptStatusClassMap[row.status ?? '']">{{ row.status }}</strong>
+      </td>
+      <td class="govuk-table__cell">{{ row.isManual ? 'Manual' : 'Automatic' }}</td>
+    </ng-template></app-data-table
+  >
+} @else {
+  <app-loading />
+}

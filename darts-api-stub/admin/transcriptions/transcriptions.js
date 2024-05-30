@@ -3,6 +3,7 @@ const { userIdHasAnyRoles } = require('../../users');
 const { SUPER_ADMIN } = require('../../roles');
 const { mockTranscriptionDetails } = require('../../transcriptions/transcriptions');
 const { MOCK_STATUSES } = require('./transcription-status');
+const { DateTime } = require('luxon');
 
 const router = express.Router();
 
@@ -61,6 +62,15 @@ const transcripts = [
     transcription_status_id: 5,
     is_manual_transcription: false,
   },
+  {
+    transcription_id: 7,
+    case_number: 'C0000000007',
+    courthouse_id: 6,
+    hearing_date: '2022-01-06T11:00:00Z',
+    requested_at: DateTime.now().minus({ months: 5 }).toISO(),
+    transcription_status_id: 5,
+    is_manual_transcription: true,
+  },
 ];
 
 function authCheck(req, res) {
@@ -71,6 +81,14 @@ function authCheck(req, res) {
 }
 
 router.get('/', (req, res) => {
+  userId = req?.query?.['user_id'];
+  requestedAtFrom = req?.query?.['requested_at_from'];
+  if (userId && requestedAtFrom) {
+    res.send(
+      transcripts.filter((transcript) => DateTime.fromISO(requestedAtFrom) <= DateTime.fromISO(transcript.requested_at))
+    );
+    return;
+  }
   authCheck(req, res);
   res.send(transcripts);
 });
