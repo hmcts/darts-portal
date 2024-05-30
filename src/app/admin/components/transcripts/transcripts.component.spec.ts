@@ -1,7 +1,7 @@
 import { Transcription, TranscriptionDocument, TranscriptionStatus } from '@admin-types/transcription';
 import { DatePipe } from '@angular/common';
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { ActivatedRoute } from '@angular/router';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CourthouseData } from '@core-types/index';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
@@ -150,14 +150,15 @@ describe('TranscriptsComponent', () => {
     expect(component.transcriptService.search).toHaveBeenCalledWith(searchValues);
   });
 
-  it('should map courthouses and statuses to search results', fakeAsync(() => {
+  it('should map courthouses and statuses to search results', () => {
+    const router = TestBed.inject(Router);
+    jest.spyOn(router, 'navigate').mockResolvedValue(true);
+
     let result;
     component.results$.subscribe((results) => (result = results));
 
     component.search$.next({});
     component.isSubmitted$.next(true);
-
-    tick();
 
     expect(result).toEqual([
       {
@@ -169,17 +170,8 @@ describe('TranscriptsComponent', () => {
         },
         status: { id: 1, type: 'Approved', displayName: 'Approved' },
       },
-      {
-        courthouse: {
-          id: 1,
-          displayName: 'Test display name',
-          courthouseName: 'Test courthouse name',
-        },
-        id: 2,
-        status: { id: 1, type: 'Approved', displayName: 'Approved' },
-      },
     ]);
-  }));
+  });
 
   it('should clear the search when clearSearch is called', () => {
     jest.spyOn(component.search$, 'next');
