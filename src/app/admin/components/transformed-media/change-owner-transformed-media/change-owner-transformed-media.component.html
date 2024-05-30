@@ -1,0 +1,24 @@
+<app-validation-error-summary [errors]="this.invalidUserSubmitted ? errors : []" />
+
+<app-govuk-heading>Change owner</app-govuk-heading>
+
+@if (autoCompleteUsers$ | async; as users) {
+  <div class="govuk-form-group" [class.govuk-form-group--error]="this.invalidUserSubmitted">
+    <app-auto-complete
+      dataType="users"
+      label="Search for a user"
+      [data]="users"
+      [isInvalid]="this.invalidUserSubmitted"
+      [errors]="['Select a user']"
+      [showAllValues]="true"
+      (dataSelect)="onUserSelect($event)"
+    ></app-auto-complete>
+  </div>
+} @else {
+  <app-loading />
+}
+
+<div class="govuk-button-group">
+  <button id="save-button" class="govuk-button" (click)="onSave()" type="button">Save change</button>
+  <a class="govuk-link" href="javascript:void(0)" (click)="onCancel()">Cancel</a>
+</div>

@@ -2,9 +2,10 @@ import { AssociatedMedia } from '@admin-types/transformed-media/associated-media
 import { TransformedMediaAdmin } from '@admin-types/transformed-media/transformed-media-admin';
 import { AsyncPipe, DecimalPipe, JsonPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
 import { DataTableComponent } from '@common/data-table/data-table.component';
+import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { DatatableColumn } from '@core-types/index';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
@@ -32,6 +33,8 @@ import { forkJoin, map, switchMap } from 'rxjs';
     AsyncPipe,
     JsonPipe,
     JoinPipe,
+    RouterLink,
+    GovukBannerComponent,
   ],
   templateUrl: './view-transformed-media.component.html',
   styleUrl: './view-transformed-media.component.scss',
@@ -40,8 +43,10 @@ export class ViewTransformedMediaComponent {
   transformedMediaService = inject(TransformedMediaService);
   caseService = inject(CaseService);
   userService = inject(UserAdminService);
+  route = inject(ActivatedRoute);
 
-  transformedMediaId = inject(ActivatedRoute).snapshot.params.id;
+  transformedMediaId = this.route.snapshot.params.id;
+  hasChangedOwner$ = this.route.queryParams.pipe(map((params) => params.ownerChanged));
 
   $transformedMedia = this.transformedMediaService.getTransformedMediaById(this.transformedMediaId);
   $associatedAudio = this.transformedMediaService.getAssociatedMediaByTransformedMediaId(this.transformedMediaId);

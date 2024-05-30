@@ -140,6 +140,14 @@ export const ADMIN_ROUTES: Routes = [
       ),
   },
   {
+    path: 'admin/transformed-media/:id/change-owner/:mediaRequestId',
+    title: 'DARTS Admin Change Media Request Owner',
+    loadComponent: () =>
+      import(
+        './components/transformed-media/change-owner-transformed-media/change-owner-transformed-media.component'
+      ).then((c) => c.ChangeOwnerTransformedMediaComponent),
+  },
+  {
     path: 'admin/audio-cache',
     title: 'DARTS Admin Audio Cache',
     loadComponent: () => import('./components/audio-cache/audio-cache.component').then((c) => c.AudioCacheComponent),
