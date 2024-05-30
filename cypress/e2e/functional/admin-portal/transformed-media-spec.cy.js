@@ -78,10 +78,10 @@ describe('Admin - Transformed media screen', () => {
       cy.get('#request-details dd').contains('1');
 
       cy.get('#request-details dt').contains('Date requested');
-      cy.get('#request-details dd').contains('01 Jan 2021');
+      cy.get('#request-details dd').contains('01 January 2021');
 
       cy.get('#request-details dt').contains('Hearing date');
-      cy.get('#request-details dd').contains('01 Jan 2021');
+      cy.get('#request-details dd').contains('01 January 2021');
 
       cy.get('#request-details dt').contains('Courtroom');
       cy.get('#request-details dd').contains('courtroom 1');
