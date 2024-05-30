@@ -1,4 +1,10 @@
-import { Transcription, TranscriptionStatus } from '@admin-types/index';
+import {
+  Transcription,
+  TranscriptionDocument,
+  TranscriptionDocumentData,
+  TranscriptionSearchFormValues,
+  TranscriptionStatus,
+} from '@admin-types/index';
 import { TranscriptionAdminDetails } from '@admin-types/transcription/transcription-details';
 import { TranscriptionAdminDetailsData } from '@admin-types/transcription/transcription-details-data.interface';
 import { TranscriptionWorkflow } from '@admin-types/transcription/transcription-workflow';
@@ -693,5 +699,101 @@ describe('TranscriptionAdminService', () => {
         isManual: true,
       },
     ]);
+  });
+
+  describe('searchCompletedTranscriptions', () => {
+    it('should send a POST request with correct body', () => {
+      const values: TranscriptionSearchFormValues = {
+        requestId: null,
+        caseId: '123',
+        courthouse: 'Test Courthouse',
+        hearingDate: '01/01/2022',
+        requestedDate: { from: '01/01/2022', to: '31/01/2022' },
+        requestedBy: 'Test Requester',
+        requestMethod: 'manual',
+        owner: 'Test Owner',
+      };
+
+      const expectedBody = {
+        transcription_id: null,
+        case_number: '123',
+        courthouse_display_name: 'Test Courthouse',
+        hearing_date: '2022-01-01',
+        requested_at_from: '2022-01-01',
+        requested_at_to: '2022-01-31',
+        requested_by: 'Test Requester',
+        is_manual_transcription: true,
+        owner: 'Test Owner',
+      };
+
+      service.searchCompletedTranscriptions(values).subscribe();
+
+      const req = httpMock.expectOne('api/admin/transcription-documents/search');
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body).toEqual(expectedBody);
+    });
+
+    it('should send a POST request with empty values', () => {
+      const values: TranscriptionSearchFormValues = {
+        requestId: null,
+        caseId: '',
+        courthouse: '',
+        hearingDate: '',
+        requestedDate: { from: '', to: '' },
+        requestedBy: '',
+        requestMethod: '',
+        owner: '',
+      };
+
+      service.searchCompletedTranscriptions(values).subscribe();
+
+      const req = httpMock.expectOne('api/admin/transcription-documents/search');
+      expect(req.request.body).toEqual({
+        case_number: null,
+        courthouse_display_name: null,
+        hearing_date: null,
+        requested_at_from: null,
+        requested_at_to: null,
+        requested_by: null,
+        is_manual_transcription: null,
+        owner: null,
+        transcription_id: null,
+      });
+    });
+
+    it('should map results correctly', () => {
+      const mockResponse: TranscriptionDocumentData[] = [
+        {
+          transcription_document_id: 1,
+          case: { id: 1, case_number: '123' },
+          courthouse: { id: 1, display_name: 'Test Courthouse' },
+          hearing: { id: 1, hearing_date: '2022-01-01T00:00:00Z' },
+          is_manual_transcription: true,
+          transcription_id: 0,
+          is_hidden: false,
+        },
+      ];
+
+      let results: TranscriptionDocument[] = [];
+      service.searchCompletedTranscriptions({}).subscribe((r) => (results = r));
+
+      const req = httpMock.expectOne('api/admin/transcription-documents/search');
+      req.flush(mockResponse);
+
+      expect(results).toEqual([
+        {
+          case: { id: 1, caseNumber: '123' },
+          courthouse: { id: 1, displayName: 'Test Courthouse' },
+          hearing: {
+            id: 1,
+            hearingDate: DateTime.fromISO('2022-01-01T00:00:00Z'),
+          },
+          isManualTranscription: true,
+          transcriptionId: 0,
+          transcriptionDocumentId: 1,
+          isHidden: false,
+        },
+      ]);
+    });
   });
 });

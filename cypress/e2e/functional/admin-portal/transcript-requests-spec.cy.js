@@ -154,4 +154,22 @@ describe('Admin - Transcript requests', () => {
       cy.get('app-govuk-banner').contains('Status updated');
     });
   });
+
+  describe('Search completed transcripts', () => {
+    it('searches for completed transcripts', () => {
+      cy.get('a').contains('Completed transcripts').click();
+      cy.get('button').contains('Search').click();
+      cy.get('app-search-completed-transcripts-results').contains('C0001');
+      cy.get('app-search-completed-transcripts-results').contains('Cardiff');
+      cy.get('app-search-completed-transcripts-results').contains('01 Jan 2021');
+      cy.get('app-search-completed-transcripts-results').contains('Manual');
+    });
+
+    it('redirects to transcript on 1 result', () => {
+      cy.get('a').contains('Completed transcripts').click();
+      cy.get('#caseId').clear().type('C0001');
+      cy.get('button').contains('Search').click();
+      cy.url().should('include', '/admin/transcripts/document/0');
+    });
+  });
 });

@@ -4,6 +4,8 @@ import {
   SecurityRoleData,
   Transcription,
   TranscriptionData,
+  TranscriptionDocument,
+  TranscriptionDocumentData,
   TranscriptionSearchFormValues,
   TranscriptionSearchRequest,
   TranscriptionStatusData,
@@ -145,6 +147,36 @@ export class TranscriptionAdminService {
       .pipe(map(this.mapTranscriptionDataToTranscription));
   }
 
+  searchCompletedTranscriptions(formValues: TranscriptionSearchFormValues): Observable<TranscriptionDocument[]> {
+    const body = this.mapSearchFormValuesToSearchRequest(formValues, true);
+    return this.http
+      .post<TranscriptionDocumentData[]>('api/admin/transcription-documents/search', body)
+      .pipe(map((res) => this.mapTranscriptionDocumentDataToTranscriptionDocument(res)));
+  }
+
+  private mapTranscriptionDocumentDataToTranscriptionDocument(
+    data: TranscriptionDocumentData[]
+  ): TranscriptionDocument[] {
+    return data.map((transcriptionDocumentData) => ({
+      transcriptionDocumentId: transcriptionDocumentData.transcription_document_id,
+      transcriptionId: transcriptionDocumentData.transcription_id,
+      case: {
+        id: transcriptionDocumentData.case.id,
+        caseNumber: transcriptionDocumentData.case.case_number,
+      },
+      courthouse: {
+        id: transcriptionDocumentData.courthouse.id,
+        displayName: transcriptionDocumentData.courthouse.display_name,
+      },
+      hearing: {
+        id: transcriptionDocumentData.hearing.id,
+        hearingDate: DateTime.fromISO(transcriptionDocumentData.hearing.hearing_date),
+      },
+      isManualTranscription: transcriptionDocumentData.is_manual_transcription,
+      isHidden: transcriptionDocumentData.is_hidden,
+    }));
+  }
+
   private mapTranscriptionWorkflows(data: TranscriptionWorkflowData[]): TranscriptionWorkflow[] {
     return data.map((workflow) => ({
       workflowActor: workflow.workflow_actor,
@@ -184,9 +216,14 @@ export class TranscriptionAdminService {
     }));
   }
 
-  private mapSearchFormValuesToSearchRequest(values: TranscriptionSearchFormValues): TranscriptionSearchRequest {
+  private mapSearchFormValuesToSearchRequest(
+    values: TranscriptionSearchFormValues,
+    isCompletedSearch = false
+  ): TranscriptionSearchRequest {
     return {
-      transcription_id: values.requestId || values.requestId === '0' ? Number(values.requestId) : null,
+      // if completed transcript search transcription_id is omitted
+      transcription_id:
+        !isCompletedSearch && (values.requestId || values.requestId === '0') ? Number(values.requestId) : null,
       case_number: values.caseId || null,
       courthouse_display_name: values.courthouse || null,
       hearing_date: this.formatDate(values.hearingDate),

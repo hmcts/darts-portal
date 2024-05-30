@@ -158,6 +158,30 @@ export const ADMIN_ROUTES: Routes = [
     loadComponent: () => import('./components/transcripts/transcripts.component').then((c) => c.TranscriptsComponent),
   },
   {
+    path: 'admin/transcripts/:transcriptionId',
+    title: 'DARTS Admin View Transcription',
+    loadComponent: () =>
+      import('./components/transcripts/view-transcript/view-transcript.component').then(
+        (c) => c.ViewTranscriptComponent
+      ),
+  },
+  {
+    path: 'admin/transcripts/:transcriptionId/change-status',
+    title: 'DARTS Admin Change Transcription Status',
+    loadComponent: () =>
+      import('./components/transcripts/change-transcript-status/change-transcript-status.component').then(
+        (c) => c.ChangeTranscriptStatusComponent
+      ),
+  },
+  {
+    path: 'admin/transcripts/document/:transcriptionDocumentId',
+    title: 'DARTS Admin View Transcription Document',
+    loadComponent: () =>
+      import('./components/transcripts/view-transcription-document/view-transcription-document.component').then(
+        (c) => c.ViewTranscriptionDocumentComponent
+      ),
+  },
+  {
     path: 'admin/file-deletion',
     title: 'DARTS Admin File Deletion',
     loadComponent: () =>
@@ -234,22 +258,6 @@ export const ADMIN_ROUTES: Routes = [
       import(
         './components/retention-policies/create-edit-retention-policy/create-edit-retention-policy.component'
       ).then((c) => c.CreateEditRetentionPolicyComponent),
-  },
-  {
-    path: 'admin/transcripts/:transcriptionId',
-    title: 'DARTS Admin View Transcription',
-    loadComponent: () =>
-      import('./components/transcripts/view-transcript/view-transcript.component').then(
-        (c) => c.ViewTranscriptComponent
-      ),
-  },
-  {
-    path: 'admin/transcripts/:transcriptionId/change-status',
-    title: 'DARTS Admin Change Transcription Status',
-    loadComponent: () =>
-      import('./components/transcripts/change-transcript-status/change-transcript-status.component').then(
-        (c) => c.ChangeTranscriptStatusComponent
-      ),
   },
 ].map((route) => ({
   ...route,

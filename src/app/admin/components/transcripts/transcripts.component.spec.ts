@@ -1,12 +1,12 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { Transcription, TranscriptionStatus } from '@admin-types/transcription';
+import { Transcription, TranscriptionDocument, TranscriptionStatus } from '@admin-types/transcription';
 import { DatePipe } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CourthouseData } from '@core-types/index';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
+import { DateTime } from 'luxon';
 import { of } from 'rxjs';
 import { TranscriptsComponent } from './transcripts.component';
 
@@ -18,6 +18,45 @@ describe('TranscriptsComponent', () => {
     { id: 1, courthouse: { id: 1 }, status: { id: 1 } },
     { id: 2, courthouse: { id: 1 }, status: { id: 1 } },
   ] as Transcription[];
+
+  const MOCK_COMPLETED_SEARCH_RESULT: TranscriptionDocument[] = [
+    {
+      transcriptionDocumentId: 0,
+      transcriptionId: 0,
+      case: {
+        id: 0,
+        caseNumber: 'caseNumber',
+      },
+      courthouse: {
+        id: 0,
+        displayName: 'courthouse',
+      },
+      hearing: {
+        id: 0,
+        hearingDate: DateTime.fromISO('2021-01-01'),
+      },
+      isManualTranscription: false,
+      isHidden: false,
+    },
+    {
+      transcriptionDocumentId: 1,
+      transcriptionId: 1,
+      case: {
+        id: 1,
+        caseNumber: 'caseNumber',
+      },
+      courthouse: {
+        id: 1,
+        displayName: 'courthouse',
+      },
+      hearing: {
+        id: 1,
+        hearingDate: DateTime.fromISO('2021-01-01'),
+      },
+      isManualTranscription: true,
+      isHidden: false,
+    },
+  ];
 
   const MOCK_COURTHOUSES = of([
     {
@@ -59,6 +98,7 @@ describe('TranscriptsComponent', () => {
             getTranscriptionStatuses: jest.fn().mockReturnValue(MOCK_STATUSES),
             mapResults: jest.fn().mockReturnValue(MOCK_MAPPING),
             search: jest.fn().mockReturnValue(of(MOCK_SEARCH_RESULT)),
+            searchCompletedTranscriptions: jest.fn().mockReturnValue(of(MOCK_COMPLETED_SEARCH_RESULT)),
           },
         },
         {
@@ -110,9 +150,32 @@ describe('TranscriptsComponent', () => {
     expect(component.transcriptService.search).toHaveBeenCalledWith(searchValues);
   });
 
-  it('should clear the search when onClear is called', () => {
+  it('should map courthouses and statuses to search results', () => {
+    const router = TestBed.inject(Router);
+    jest.spyOn(router, 'navigate').mockResolvedValue(true);
+
+    let result;
+    component.results$.subscribe((results) => (result = results));
+
+    component.search$.next({});
+    component.isSubmitted$.next(true);
+
+    expect(result).toEqual([
+      {
+        id: 1,
+        courthouse: {
+          id: 1,
+          displayName: 'Test display name',
+          courthouseName: 'Test courthouse name',
+        },
+        status: { id: 1, type: 'Approved', displayName: 'Approved' },
+      },
+    ]);
+  });
+
+  it('should clear the search when clearSearch is called', () => {
     jest.spyOn(component.search$, 'next');
-    component.onClear();
+    component.clearSearch();
     expect(component.search$.next).toHaveBeenCalledWith(null);
   });
 
@@ -121,9 +184,15 @@ describe('TranscriptsComponent', () => {
     expect(component.isSubmitted$.value).toBe(true);
   });
 
-  it('should set isSubmitted to false when onClear is called', () => {
-    component.onClear();
+  it('should set isSubmitted to false when clearSearch is called', () => {
+    component.clearSearch();
     expect(component.isSubmitted$.value).toBe(false);
+  });
+
+  it('clears errors when clearSearch is called', () => {
+    component.errors = [{ fieldId: '1', message: 'error' }];
+    component.clearSearch();
+    expect(component.errors).toEqual([]);
   });
 
   it('should navigate to the transcript page if only one result is returned', () => {
@@ -132,5 +201,34 @@ describe('TranscriptsComponent', () => {
     component.search$.next({});
     component.isSubmitted$.next(true);
     expect(component.router.navigate).toHaveBeenCalledWith(['/admin/transcripts', 1]);
+  });
+
+  describe('completedResults$', () => {
+    it('should return the results when the search is completed', () => {
+      let result;
+
+      component.completedResults$.subscribe((results) => (result = results));
+
+      component.search$.next({});
+      component.isSubmitted$.next(true);
+
+      expect(result).toEqual(MOCK_COMPLETED_SEARCH_RESULT);
+    });
+
+    it('redirects to the document page if only one result is returned', () => {
+      jest.spyOn(component.router, 'navigate');
+
+      const transcriptService = TestBed.inject(TranscriptionAdminService);
+      jest
+        .spyOn(transcriptService, 'searchCompletedTranscriptions')
+        .mockReturnValue(of([MOCK_COMPLETED_SEARCH_RESULT[0]]));
+
+      component.completedResults$.subscribe();
+
+      component.search$.next({});
+      component.isSubmitted$.next(true);
+
+      expect(component.router.navigate).toHaveBeenCalledWith(['/admin/transcripts/document', 0]);
+    });
   });
 });

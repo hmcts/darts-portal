@@ -10,6 +10,7 @@ import { TabDirective } from '@directives/tab.directive';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
 import { BehaviorSubject, Subject, combineLatest, map, of, shareReplay, switchMap, tap } from 'rxjs';
+import { SearchCompletedTranscriptsResultsComponent } from './search-completed-transcripts-results/search-completed-transcripts-results.component';
 import { SearchTranscriptsFormComponent } from './search-transcripts-form/search-transcripts-form.component';
 import { SearchTranscriptsResultsComponent } from './search-transcripts-results/search-transcripts-results.component';
 
@@ -23,6 +24,7 @@ import { SearchTranscriptsResultsComponent } from './search-transcripts-results/
     SearchTranscriptsFormComponent,
     LoadingComponent,
     SearchTranscriptsResultsComponent,
+    SearchCompletedTranscriptsResultsComponent,
     AsyncPipe,
     TabsComponent,
     TabDirective,
@@ -64,6 +66,23 @@ export class TranscriptsComponent {
     })
   );
 
+  completedResults$ = combineLatest([this.search$, this.isSubmitted$]).pipe(
+    tap(() => this.startLoading()),
+    switchMap(([values, isSubmitted]) => {
+      if (!values || !isSubmitted) {
+        return of(null);
+      }
+      return this.transcriptService.searchCompletedTranscriptions(values);
+    }),
+    tap(() => this.stopLoading()),
+    tap((results) => {
+      if (results?.length === 1) {
+        // navigate to the transcript document details page
+        this.router.navigate(['/admin/transcripts/document', results[0].transcriptionDocumentId]);
+      }
+    })
+  );
+
   startLoading() {
     this.loading$.next(true);
   }
@@ -79,8 +98,9 @@ export class TranscriptsComponent {
     this.search$.next(values); // Trigger the search
   }
 
-  onClear() {
+  clearSearch() {
     this.isSubmitted$.next(false);
-    this.search$.next(null); // Clear the search
+    this.search$.next(null);
+    this.errors = [];
   }
 }
