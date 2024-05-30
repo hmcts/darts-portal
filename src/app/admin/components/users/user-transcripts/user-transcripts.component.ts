@@ -1,6 +1,6 @@
 import { Transcription, TranscriptionStatus } from '@admin-types/transcription';
 import { CommonModule, NgClass } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
@@ -13,7 +13,7 @@ import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
 import { DateTime } from 'luxon';
-import { Observable, combineLatest, map, shareReplay, startWith, switchMap } from 'rxjs';
+import { Observable, combineLatest, map, shareReplay, startWith, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-user-transcripts',
@@ -50,16 +50,31 @@ export class UserTranscriptsComponent implements OnInit {
     .pipe(shareReplay(1));
 
   userTranscripts$!: Observable<Transcription[] | null>;
+  @Output() transcriptCount = new EventEmitter<number>();
 
   columns: DatatableColumn[] = [
     { name: 'Request ID', prop: 'id', sortable: true },
     { name: 'Case ID', prop: 'caseNumber', sortable: true },
-    { name: 'Courthouse', prop: 'courthouseId', sortable: true },
+    { name: 'Courthouse', prop: 'courthouse', sortable: true },
     { name: 'Hearing date', prop: 'hearingDate', sortable: true },
     { name: 'Requested on', prop: 'requestedAt', sortable: true },
-    { name: 'Status', prop: 'transcriptionStatusId', sortable: true },
-    { name: 'Request type', prop: 'isManualTranscription', sortable: true },
+    { name: 'Status', prop: 'status', sortable: true },
+    { name: 'Request type', prop: 'isManual', sortable: true },
   ];
+
+  rows: ReturnType<typeof this.mapRows> = [];
+
+  mapRows(results: Transcription[]) {
+    return results.map((result) => ({
+      id: result.id,
+      caseNumber: result.caseNumber,
+      courthouse: result.courthouse.displayName,
+      hearingDate: result.hearingDate,
+      requestedAt: result.requestedAt,
+      status: result.status.displayName,
+      isManual: result.isManual,
+    }));
+  }
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -77,7 +92,10 @@ export class UserTranscriptsComponent implements OnInit {
               showAll ? undefined : this.sixMonthsPrevious
             )
             // Map the results to include the courthouse and status data
-            .pipe(map((results) => this.transcriptionAdminService.mapResults(results, courthouses, statuses)))
+            .pipe(
+              map((results) => this.transcriptionAdminService.mapResults(results, courthouses, statuses)),
+              tap((mappedResults) => this.transcriptCount.emit(mappedResults.length))
+            )
         );
       })
     );

@@ -29,22 +29,21 @@
   <app-data-table
     id="transcriptRequestsTable"
     noDataMessage="There are no transcripts to display."
-    [rows]="userTranscripts"
+    [rows]="mapRows(userTranscripts)"
     [columns]="columns"
     caption="Users transcript requests"
     [hiddenCaption]="true"
-    ><ng-template [tableRowTemplate]="userTranscripts" let-row>
+    [isHorizontalScroll]="true"
+    ><ng-template [tableRowTemplate]="rows" let-row>
       <td class="govuk-table__cell">
-        <a href="#" class="govuk-link" [routerLink]="[row.id]"> {{ row.id }}</a>
+        <a href="#" class="govuk-link" [routerLink]="['/admin/transcripts/', row.id]"> {{ row.id }}</a>
       </td>
       <td class="govuk-table__cell">{{ row.caseNumber }}</td>
-      <td class="govuk-table__cell">{{ row.courthouse.displayName }}</td>
+      <td class="govuk-table__cell">{{ row.courthouse }}</td>
       <td class="govuk-table__cell">{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
       <td class="govuk-table__cell">{{ row.requestedAt | luxonDate: 'dd MMM yyyy HH:mm' }}</td>
       <td class="govuk-table__cell">
-        <strong class="govuk-tag" [ngClass]="transcriptStatusClassMap[row.status.displayName ?? '']">{{
-          row.status.displayName
-        }}</strong>
+        <strong class="govuk-tag" [ngClass]="transcriptStatusClassMap[row.status ?? '']">{{ row.status }}</strong>
       </td>
       <td class="govuk-table__cell">{{ row.isManual ? 'Manual' : 'Automatic' }}</td>
     </ng-template></app-data-table

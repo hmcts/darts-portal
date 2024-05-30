@@ -110,8 +110,15 @@
           <app-user-groups [user]="user" (errors)="errors = $event" />
         </div>
 
-        <div *tab="'Transcript requests'; screenReaderText: 'User transcript requests'; id: 'transcripts-tab'">
-          <app-user-transcripts />
+        <div
+          *tab="
+            'Transcript requests';
+            screenReaderText: 'User transcript requests';
+            id: 'transcripts-tab';
+            count: transcriptCount
+          "
+        >
+          <app-user-transcripts (transcriptCount)="handleTranscriptCount($event)" />
         </div>
       </app-tabs>
     </main>

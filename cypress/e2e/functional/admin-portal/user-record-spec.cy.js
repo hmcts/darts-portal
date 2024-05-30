@@ -324,12 +324,26 @@ describe('Admin - User record screen', () => {
 
       cy.get('#transcripts-tab').click();
 
+      cy.get('#transcripts-tab .count').should('contain', '1');
+
       cy.contains('h2', 'Transcript requests').should('exist');
 
       cy.get('#showLastSixMonths').should('be.checked');
       cy.get('#showAll').should('not.be.checked');
 
-      cy.get('#no-data-message').contains('There are no transcripts to display.');
+      cy.get('#transcriptRequestsTable tbody tr').should('have.length', 1);
+
+      cy.get('#transcriptRequestsTable tbody tr')
+        .eq(0)
+        .within(() => {
+          cy.get('td').eq(0).should('contain.text', '1');
+          cy.get('td').eq(1).should('contain.text', 'C0000000006');
+          cy.get('td').eq(2).should('contain.text', 'Southampton');
+          cy.get('td').eq(3).should('contain.text', '06 Jan 2022');
+          cy.get('td').eq(4).should('contain.text', '30 Dec 2023 08:32');
+          cy.get('td').eq(5).should('contain.text', 'With Transcriber');
+          cy.get('td').eq(6).should('contain.text', 'Automatic');
+        });
 
       cy.a11y();
     });
@@ -340,9 +354,11 @@ describe('Admin - User record screen', () => {
 
       cy.get('#transcripts-tab').click();
 
+      cy.get('#transcripts-tab .count').should('contain', '7');
+
       cy.get('#showAll').check();
 
-      cy.get('#transcriptRequestsTable tbody tr').should('have.length', 6);
+      cy.get('#transcriptRequestsTable tbody tr').should('have.length', 7);
       cy.get('#transcriptRequestsTable thead tr').within(() => {
         cy.get('th').eq(0).should('contain.text', 'Request ID');
         cy.get('th').eq(1).should('contain.text', 'Case ID');

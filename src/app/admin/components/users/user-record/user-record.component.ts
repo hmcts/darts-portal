@@ -61,4 +61,9 @@ export class UserRecordComponent {
     })
   );
   tab$ = this.route.queryParams.pipe(map((params) => params.tab));
+  transcriptCount: number = 0;
+
+  handleTranscriptCount(count: number) {
+    this.transcriptCount = count;
+  }
 }

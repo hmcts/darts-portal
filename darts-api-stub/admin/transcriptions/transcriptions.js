@@ -62,6 +62,15 @@ const transcripts = [
     transcription_status_id: 5,
     is_manual_transcription: false,
   },
+  {
+    transcription_id: 7,
+    case_number: 'C0000000007',
+    courthouse_id: 6,
+    hearing_date: '2022-01-06T11:00:00Z',
+    requested_at: DateTime.now().minus({ months: 5 }).toISO(),
+    transcription_status_id: 5,
+    is_manual_transcription: true,
+  },
 ];
 
 function authCheck(req, res) {
