@@ -3,6 +3,7 @@ import { EventMapping } from '@admin-types/event-mappings/event-mapping.type';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { ErrorMessage } from '@core-types/index';
 import { ErrorMessageService } from '@services/error/error-message.service';
 import { EventMappingsService } from '@services/event-mappings/event-mappings.service';
@@ -96,6 +97,7 @@ describe('AddUpdateEventMappingComponent', () => {
     await TestBed.configureTestingModule({
       imports: [AddUpdateEventMappingComponent, HttpClientTestingModule, ReactiveFormsModule],
       providers: [
+        { provide: ActivatedRoute, useValue: { snapshot: { params: { id: 1 } } } },
         { provide: EventMappingsService, useValue: eventMappingsService },
         { provide: ErrorMessageService, useValue: errorMessageService },
         { provide: HeaderService, useValue: headerService },
@@ -144,7 +146,7 @@ describe('AddUpdateEventMappingComponent', () => {
       withRestrictions: true,
     });
     component.onSubmit();
-    expect(eventMappingsService.createEventMapping).toHaveBeenCalledWith(component.form.value);
+    expect(eventMappingsService.createEventMapping).toHaveBeenCalledWith(component.form.value, false);
     expect(navigateSpy).toHaveBeenCalledWith([component.eventMappingsPath], { queryParams: { newEventMapping: true } });
   });
 
