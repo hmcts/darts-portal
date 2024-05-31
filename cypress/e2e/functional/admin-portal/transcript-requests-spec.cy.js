@@ -171,5 +171,99 @@ describe('Admin - Transcript requests', () => {
       cy.get('button').contains('Search').click();
       cy.url().should('include', '/admin/transcripts/document/0');
     });
+
+    it('view completed transcript / transcript file details', () => {
+      cy.get('a').contains('Completed transcripts').click();
+      cy.get('#caseId').clear().type('C0002');
+      cy.get('button').contains('Search').click();
+
+      // transcript-details
+      cy.get('#transcript-details').get('app-govuk-heading').contains('Transcript details');
+
+      cy.get('#transcript-details dt').eq(0).should('contain', 'ID');
+      cy.get('#transcript-details dd').eq(0).should('contain', '1');
+
+      cy.get('#transcript-details dt').eq(1).should('contain', 'Case ID');
+      cy.get('#transcript-details dd').eq(1).should('contain', 'C20220620001');
+
+      cy.get('#transcript-details dt').eq(2).should('contain', 'Courthouse');
+      cy.get('#transcript-details dd').eq(2).should('contain', 'Swansea');
+
+      cy.get('#transcript-details dt').eq(3).should('contain', 'Hearing date');
+      cy.get('#transcript-details dd').eq(3).should('contain', '07 August 2023');
+
+      cy.get('#transcript-details dt').eq(4).should('contain', 'Defendant(s)');
+      cy.get('#transcript-details dd').eq(4).should('contain', 'Defendant Dave, Defendant Bob');
+
+      cy.get('#transcript-details dt').eq(5).should('contain', 'Judge(s)');
+      cy.get('#transcript-details dd').eq(5).should('contain', 'Ray Bob');
+
+      // file-details
+      cy.get('#file-details').get('app-govuk-heading').contains('File details');
+
+      cy.get('#file-details dt').eq(0).should('contain', 'File size');
+      cy.get('#file-details dd').eq(0).should('contain', '3MB');
+
+      cy.get('#file-details dt').eq(1).should('contain', 'File type');
+      cy.get('#file-details dd').eq(1).should('contain', 'DOC');
+
+      cy.get('#file-details dt').eq(2).should('contain', 'Filename');
+      cy.get('#file-details dd').eq(2).should('contain', 'caseid_courthouse_filename.doc');
+
+      cy.get('#file-details dt').eq(3).should('contain', 'Date uploaded');
+      cy.get('#file-details dd').eq(3).should('contain', '18 May 2008');
+
+      cy.get('#file-details dt').eq(4).should('contain', 'Uploaded by');
+      cy.get('#file-details dd').eq(4).should('contain', 'Michael van Gerwen');
+
+      // request-details
+      cy.get('#request-details').get('app-govuk-heading').contains('Request details');
+
+      cy.get('#request-details dt').eq(0).should('contain', 'Request type');
+      cy.get('#request-details dd').eq(0).should('contain', 'Specified Times');
+
+      cy.get('#request-details dt').eq(1).should('contain', 'Request ID');
+      cy.get('#request-details dd').eq(1).should('contain', '789');
+
+      cy.get('#request-details dt').eq(2).should('contain', 'Urgency');
+      cy.get('#request-details dd').eq(2).should('contain', 'Standard');
+
+      cy.get('#request-details dt').eq(3).should('contain', 'Requested by');
+      cy.get('#request-details dd').eq(3).should('contain', 'Joe Smith');
+
+      cy.get('#request-details dt').eq(4).should('contain', 'Instructions');
+      cy.get('#request-details dd').eq(4).should('contain', 'Please expedite my request');
+
+      cy.get('#request-details dt').eq(5).should('contain', 'Judge approval');
+      cy.get('#request-details dd').eq(5).should('contain', 'Yes');
+
+      // associated-audio-details
+      cy.get('#associated-audio-details').get('app-govuk-heading').contains('Associated audio');
+      cy.get('app-associated-audio-table tr')
+        .eq(0)
+        .within(() => {
+          cy.get('th').eq(0).should('contain', 'Audio ID');
+          cy.get('th').eq(1).should('contain', 'Case ID');
+          cy.get('th').eq(2).should('contain', 'Hearing date');
+          cy.get('th').eq(3).should('contain', 'Courthouse');
+          cy.get('th').eq(4).should('contain', 'Start time');
+          cy.get('th').eq(5).should('contain', 'End time');
+          cy.get('th').eq(6).should('contain', 'Courtoom');
+          cy.get('th').eq(7).should('contain', 'Channel number');
+        });
+
+      cy.get('app-associated-audio-table tr')
+        .eq(1)
+        .within(() => {
+          cy.get('td').eq(0).should('contain', '1');
+          cy.get('td').eq(1).should('contain', '1');
+          cy.get('td').eq(2).should('contain', '01 Jun 2020');
+          cy.get('td').eq(3).should('contain', 'courthouse 1');
+          cy.get('td').eq(4).should('contain', '18:00');
+          cy.get('td').eq(5).should('contain', '19:00');
+          cy.get('td').eq(6).should('contain', 'courtroom 1');
+          cy.get('td').eq(7).should('contain', '1');
+        });
+    });
   });
 });
