@@ -1,7 +1,7 @@
 import { Transcription, TranscriptionStatus } from '@admin-types/transcription';
 import { CommonModule, NgClass } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -49,7 +49,7 @@ export class UserTranscriptsComponent implements OnInit {
     .getTranscriptionStatuses()
     .pipe(shareReplay(1));
 
-  userTranscripts$!: Observable<Transcription[] | null>;
+  userTranscripts$!: Observable<ReturnType<typeof this.mapRows> | null>;
   @Output() transcriptCount = new EventEmitter<number>();
 
   columns: DatatableColumn[] = [
@@ -78,7 +78,7 @@ export class UserTranscriptsComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      showAll: [false, Validators.required],
+      showAll: [false],
     });
 
     this.showAll$ = this.form.controls.showAll.valueChanges.pipe(startWith(this.form.controls.showAll.value));
@@ -96,6 +96,7 @@ export class UserTranscriptsComponent implements OnInit {
               map((results) => this.transcriptionAdminService.mapResults(results, courthouses, statuses)),
               tap((mappedResults) => this.transcriptCount.emit(mappedResults.length))
             )
+            .pipe(map((results) => this.mapRows(results)))
         );
       })
     );
