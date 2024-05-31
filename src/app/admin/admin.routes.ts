@@ -205,7 +205,7 @@ export const ADMIN_ROUTES: Routes = [
   },
 
   {
-    path: 'admin/system-configuration/event-mappings/edit/:id',
+    path: 'admin/system-configuration/event-mappings/:id/edit',
     title: 'DARTS Admin Edit Event Mapping',
     loadComponent: () =>
       import(

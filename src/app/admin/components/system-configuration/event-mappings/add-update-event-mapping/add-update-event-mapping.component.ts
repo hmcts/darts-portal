@@ -184,11 +184,6 @@ export class AddUpdateEventMappingComponent implements OnInit {
       // Type and subtype combination must be unique
       this.setTypeErrors();
     }
-
-    if (this.isRevision && error?.status === 409) {
-      // Mapping has no prior revision
-      // TBD as part of Edit ticket
-    }
   }
 
   private setTypeErrors() {

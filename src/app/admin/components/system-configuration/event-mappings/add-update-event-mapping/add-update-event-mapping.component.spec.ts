@@ -150,6 +150,36 @@ describe('AddUpdateEventMappingComponent', () => {
     expect(navigateSpy).toHaveBeenCalledWith([component.eventMappingsPath], { queryParams: { newEventMapping: true } });
   });
 
+  it('should assign id, and query params when in revision', () => {
+    const navigateSpy = jest.spyOn(component.router, 'navigate');
+
+    component.eventMapping = {
+      id: 99,
+    } as unknown as EventMapping;
+
+    const formValue = {
+      type: 'Test Type',
+      subType: 'Test SubType',
+      eventName: 'Test Event Name',
+      eventHandler: 'Test Event Handler',
+      withRestrictions: true,
+    };
+
+    component.form.setValue(formValue);
+    component.isRevision = true;
+    component.onSubmit();
+    expect(eventMappingsService.createEventMapping).toHaveBeenCalledWith({ ...formValue, id: 99 }, true);
+    expect(navigateSpy).toHaveBeenCalledWith([component.eventMappingsPath], { queryParams: { isRevision: true } });
+  });
+
+  it('should navigate on cancel', () => {
+    const navigateSpy = jest.spyOn(component.router, 'navigate');
+
+    component.onCancel();
+
+    expect(navigateSpy).toHaveBeenCalledWith([component.eventMappingsPath]);
+  });
+
   it('should set unique validation errors for type and subType', () => {
     component['mappingTypes'] = [{ type: 'Test Type', subType: 'Test SubType' }] as Partial<EventMapping[]>;
     component.form.controls.type.setValue('Test Type');

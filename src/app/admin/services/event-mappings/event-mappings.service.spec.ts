@@ -99,8 +99,9 @@ describe('EventMappingsService', () => {
       created_at: '2024-05-05T11:00:00Z',
     };
 
+    let result;
     service.createEventMapping(mockEventMappingForm).subscribe((response) => {
-      expect(response).toEqual(mockResponse);
+      result = response;
     });
 
     const req = httpMock.expectOne('api/admin/event-mappings?is_revision=false');
@@ -113,6 +114,8 @@ describe('EventMappingsService', () => {
       has_restrictions: false,
     });
     req.flush(mockResponse);
+
+    expect(result).toEqual(mockResponse);
   });
 
   it('should create event mapping with revision', () => {
@@ -135,8 +138,9 @@ describe('EventMappingsService', () => {
       created_at: '2024-05-05T11:00:00Z',
     };
 
+    let result;
     service.createEventMapping(mockEventMappingForm, true).subscribe((response) => {
-      expect(response).toEqual(mockResponse);
+      result = response;
     });
 
     const req = httpMock.expectOne('api/admin/event-mappings?is_revision=true');
@@ -149,6 +153,8 @@ describe('EventMappingsService', () => {
       has_restrictions: false,
     });
     req.flush(mockResponse);
+
+    expect(result).toEqual(mockResponse);
   });
 
   it('should retrieve a single event mapping', () => {
