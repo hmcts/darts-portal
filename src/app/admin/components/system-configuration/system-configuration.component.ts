@@ -39,6 +39,7 @@ export class SystemConfigurationComponent {
   route = inject(ActivatedRoute);
 
   hasEventMappingCreated$ = this.route.queryParams.pipe(map((params) => !!params.newEventMapping));
+  hasEventMappingUpdated$ = this.route.queryParams.pipe(map((params) => !!params.isRevision));
 
   hasPolicyCreated$ = this.route.queryParams.pipe(map((params) => !!params.created));
   hasPolicyUpdated$ = this.route.queryParams.pipe(map((params) => !!params.updated));

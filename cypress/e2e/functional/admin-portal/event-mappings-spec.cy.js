@@ -151,4 +151,55 @@ describe('Admin - Event mappings screen', () => {
       cy.contains('System configuration').should('exist');
     });
   });
+
+  describe('Change event mapping', () => {
+    beforeEach(() => {
+      cy.contains('tr', '1010').find('a.govuk-link').contains('Change').click();
+    });
+
+    it('should display current data', () => {
+      cy.get('#read-only-type').contains('1010');
+      cy.get('#read-only-subtype').contains('1011');
+      cy.get('#eventName').should('have.value', 'Mapping entry 3');
+      cy.get('#eventHandlerSelect').contains('TranscriptionRequestHandler');
+      cy.get('#read-only-reporting-restriction').contains('Yes');
+      cy.get('#read-only-created').contains('02 Apr 2024');
+    });
+
+    it('should display validation errors for required fields', () => {
+      cy.get('#eventName').clear();
+      cy.get('#confirmButton').click();
+
+      cy.get('#eventName')
+        .parent()
+        .within(() => {
+          cy.get('.govuk-error-message').should('contain', 'Enter the event name');
+        });
+
+      cy.a11y();
+    });
+
+    it('should submit the form with valid data and data should persist', () => {
+      cy.get('#eventName').clear().type('Changed name test');
+      cy.get('#eventHandlerSelect').select('StandardEventHandler');
+
+      cy.get('#confirmButton').click();
+
+      cy.contains('Saved new version of event mapping').should('be.visible');
+
+      cy.contains('tr', '1010').find('td').contains('Changed name test');
+      cy.contains('tr', '1010').find('td').contains('StandardEventHandler');
+    });
+
+    it('should cancel the form and navigate back', () => {
+      cy.contains('Cancel').click();
+      cy.contains('System configuration').should('exist');
+    });
+
+    it('should delete event mapping', () => {
+      cy.get('.delete-link').contains('Delete event mapping');
+
+      //TBD
+    });
+  });
 });

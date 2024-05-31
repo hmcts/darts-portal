@@ -4,18 +4,19 @@ import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { EventMappingFormErrorMessages } from '@constants/event-mapping-error-messages';
 import { ErrorMessage } from '@core-types/index';
+import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { ErrorMessageService } from '@services/error/error-message.service';
 import { EventMappingsService } from '@services/event-mappings/event-mappings.service';
 import { FormService } from '@services/form/form.service';
 import { HeaderService } from '@services/header/header.service';
 import { optionalMaxLengthValidator } from '@validators/optional-maxlength.validator';
-import { Subscription, combineLatest, map } from 'rxjs';
+import { Subscription, combineLatest, map, tap } from 'rxjs';
 
 @Component({
   selector: 'app-add-update-event-mapping',
@@ -28,6 +29,7 @@ import { Subscription, combineLatest, map } from 'rxjs';
     CommonModule,
     ValidationErrorSummaryComponent,
     LoadingComponent,
+    LuxonDatePipe,
   ],
 })
 export class AddUpdateEventMappingComponent implements OnInit {
@@ -38,26 +40,30 @@ export class AddUpdateEventMappingComponent implements OnInit {
   formService = inject(FormService);
   errorMessageService = inject(ErrorMessageService);
   destroyRef = inject(DestroyRef);
+  route = inject(ActivatedRoute);
 
   private mappingTypes: Partial<EventMapping[]> = [];
+
+  isSubmitted = false;
+  isRevision = this.router.url.includes('/edit') || false;
+  id = +this.route.snapshot.params.id;
 
   eventMappingsPath = 'admin/system-configuration/event-mappings';
 
   eventHandlers$ = this.eventMappingsService.getEventHandlers();
-  eventMappings$ = this.eventMappingsService
-    .getEventMappings()
-    .pipe(map((eventMappings) => this.assignTypes(eventMappings)));
+  eventMappings$ = this.eventMappingsService.getEventMappings().pipe(
+    tap((eventMappings) => this.setEventMapping(eventMappings)),
+    map((eventMappings) => this.assignTypes(eventMappings))
+  );
 
   error$ = this.errorMessageService.errorMessage$;
+
+  eventMapping: EventMapping | null = null;
 
   data$ = combineLatest({
     eventHandlers: this.eventHandlers$,
     eventMappings: this.eventMappings$,
   });
-
-  isSubmitted = false;
-  isRevision = false;
-  context: 'create' | 'edit' = 'create';
 
   errorSubscription: Subscription | null = null;
 
@@ -69,13 +75,47 @@ export class AddUpdateEventMappingComponent implements OnInit {
     withRestrictions: [false, [Validators.required]],
   });
 
+  //Sets event mapping object if this is a revision
+  private setEventMapping(eventMappings: EventMapping[]) {
+    if (this.id) {
+      this.eventMapping = eventMappings.find((eventMapping) => eventMapping.id === this.id)!;
+      this.setDefaultValues();
+    }
+  }
+
+  private setDefaultValues() {
+    if (this.isRevision && this.eventMapping) {
+      this.form.controls.type.setValue(this.eventMapping.type);
+      this.form.controls.subType.setValue(this.eventMapping.subType);
+      this.form.controls.eventName.setValue(this.eventMapping.name);
+      this.form.controls.eventHandler.setValue(this.eventMapping.handler);
+      this.form.controls.withRestrictions.setValue(this.eventMapping.hasRestrictions);
+    }
+  }
+
+  ngOnInit(): void {
+    this.headerService.hideNavigation();
+    this.setUniqueTypeValidation();
+
+    this.errorSubscription = this.error$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((error) => {
+      this.setResponseErrors(error);
+    });
+  }
+
   onSubmit() {
     this.errorMessageService.clearErrorMessage();
     this.form.markAllAsTouched();
 
     if (this.form.valid) {
-      this.eventMappingsService.createEventMapping(this.form.value as EventMappingFormValues).subscribe(() => {
-        this.router.navigate([this.eventMappingsPath], { queryParams: { newEventMapping: true } });
+      const formValues = this.form.value as EventMappingFormValues;
+      if (this.isRevision) formValues.id = this.eventMapping?.id;
+
+      this.eventMappingsService.createEventMapping(formValues, this.isRevision).subscribe(() => {
+        const queryParams = this.isRevision ? { isRevision: true } : { newEventMapping: true };
+
+        this.router.navigate([this.eventMappingsPath], {
+          queryParams: queryParams,
+        });
       });
     }
 
@@ -89,13 +129,8 @@ export class AddUpdateEventMappingComponent implements OnInit {
     this.router.navigate([this.eventMappingsPath]);
   }
 
-  ngOnInit(): void {
-    this.headerService.hideNavigation();
-    this.setUniqueTypeValidation();
-
-    this.errorSubscription = this.error$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((error) => {
-      this.setResponseErrors(error);
-    });
+  deleteEventMapping() {
+    //
   }
 
   private setUniqueTypeValidation() {
@@ -148,11 +183,6 @@ export class AddUpdateEventMappingComponent implements OnInit {
     if (!this.isRevision && error?.status === 409) {
       // Type and subtype combination must be unique
       this.setTypeErrors();
-    }
-
-    if (this.isRevision && error?.status === 409) {
-      // Mapping has no prior revision
-      // TBD as part of Edit ticket
     }
   }
 

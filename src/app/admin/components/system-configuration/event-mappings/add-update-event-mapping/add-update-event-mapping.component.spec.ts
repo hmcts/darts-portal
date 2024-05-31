@@ -3,6 +3,7 @@ import { EventMapping } from '@admin-types/event-mappings/event-mapping.type';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { ErrorMessage } from '@core-types/index';
 import { ErrorMessageService } from '@services/error/error-message.service';
 import { EventMappingsService } from '@services/event-mappings/event-mappings.service';
@@ -96,6 +97,7 @@ describe('AddUpdateEventMappingComponent', () => {
     await TestBed.configureTestingModule({
       imports: [AddUpdateEventMappingComponent, HttpClientTestingModule, ReactiveFormsModule],
       providers: [
+        { provide: ActivatedRoute, useValue: { snapshot: { params: { id: 1 } } } },
         { provide: EventMappingsService, useValue: eventMappingsService },
         { provide: ErrorMessageService, useValue: errorMessageService },
         { provide: HeaderService, useValue: headerService },
@@ -144,8 +146,38 @@ describe('AddUpdateEventMappingComponent', () => {
       withRestrictions: true,
     });
     component.onSubmit();
-    expect(eventMappingsService.createEventMapping).toHaveBeenCalledWith(component.form.value);
+    expect(eventMappingsService.createEventMapping).toHaveBeenCalledWith(component.form.value, false);
     expect(navigateSpy).toHaveBeenCalledWith([component.eventMappingsPath], { queryParams: { newEventMapping: true } });
+  });
+
+  it('should assign id, and query params when in revision', () => {
+    const navigateSpy = jest.spyOn(component.router, 'navigate');
+
+    component.eventMapping = {
+      id: 99,
+    } as unknown as EventMapping;
+
+    const formValue = {
+      type: 'Test Type',
+      subType: 'Test SubType',
+      eventName: 'Test Event Name',
+      eventHandler: 'Test Event Handler',
+      withRestrictions: true,
+    };
+
+    component.form.setValue(formValue);
+    component.isRevision = true;
+    component.onSubmit();
+    expect(eventMappingsService.createEventMapping).toHaveBeenCalledWith({ ...formValue, id: 99 }, true);
+    expect(navigateSpy).toHaveBeenCalledWith([component.eventMappingsPath], { queryParams: { isRevision: true } });
+  });
+
+  it('should navigate on cancel', () => {
+    const navigateSpy = jest.spyOn(component.router, 'navigate');
+
+    component.onCancel();
+
+    expect(navigateSpy).toHaveBeenCalledWith([component.eventMappingsPath]);
   });
 
   it('should set unique validation errors for type and subType', () => {

@@ -227,6 +227,15 @@ export const ADMIN_ROUTES: Routes = [
         './components/system-configuration/event-mappings/add-update-event-mapping/add-update-event-mapping.component'
       ).then((c) => c.AddUpdateEventMappingComponent),
   },
+
+  {
+    path: 'admin/system-configuration/event-mappings/:id/edit',
+    title: 'DARTS Admin Edit Event Mapping',
+    loadComponent: () =>
+      import(
+        './components/system-configuration/event-mappings/add-update-event-mapping/add-update-event-mapping.component'
+      ).then((c) => c.AddUpdateEventMappingComponent),
+  },
   {
     path: 'admin/system-configuration/automated-tasks',
     title: 'DARTS Admin Automated Tasks',

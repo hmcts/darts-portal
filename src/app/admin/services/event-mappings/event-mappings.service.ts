@@ -20,18 +20,23 @@ export class EventMappingsService {
       .pipe(map((eventMappings) => eventMappings.map(this.mapEventMappings)));
   }
 
+  getEventMapping(id: number): Observable<EventMapping> {
+    return this.http.get<EventMappingData>(`api/admin/event-mappings/${id}`).pipe(map(this.mapEventMappings));
+  }
+
   getEventHandlers(): Observable<string[]> {
     return this.http.get<string[]>(`api/admin/event-handlers`);
   }
 
-  createEventMapping(eventMapping: EventMappingFormValues): Observable<EventMappingData> {
+  createEventMapping(eventMapping: EventMappingFormValues, isRevision: boolean = false): Observable<EventMappingData> {
     return this.http.post<EventMappingData>(`api/admin/event-mappings`, this.mapToEventMappingRequest(eventMapping), {
-      params: { is_revision: false },
+      params: { is_revision: isRevision },
     });
   }
 
   private mapToEventMappingRequest(eventMapping: EventMappingFormValues): Partial<EventMappingData> {
     return {
+      id: eventMapping.id,
       type: eventMapping.type,
       sub_type: eventMapping.subType ? eventMapping.subType : null,
       name: eventMapping.eventName,
