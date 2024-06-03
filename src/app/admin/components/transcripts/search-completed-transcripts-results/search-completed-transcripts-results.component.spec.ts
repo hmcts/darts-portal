@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TranscriptionDocument } from '@admin-types/index';
+import { TranscriptionDocumentSearchResult } from '@admin-types/index';
 import { DateTime } from 'luxon';
 import { SearchCompletedTranscriptsResultsComponent } from './search-completed-transcripts-results.component';
 
@@ -32,7 +32,7 @@ describe('SearchCompletedTranscriptsResultsComponent', () => {
 
   describe('mapRows', () => {
     it('should return an array of objects with the correct properties', () => {
-      const results: TranscriptionDocument[] = [
+      const results: TranscriptionDocumentSearchResult[] = [
         {
           transcriptionDocumentId: 1,
           case: { id: 1, caseNumber: 'caseNumber' },

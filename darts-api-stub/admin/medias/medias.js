@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const DATA = [
+const media = [
   {
     id: 1,
     channel: 1,
@@ -71,8 +71,10 @@ const DATA = [
 ];
 
 router.get('/', (req, res) => {
-  const id = req.query.transformed_media_id;
-  res.send(DATA.filter((media) => media.id == id));
+  const transformed_media_id = req.query.transformed_media_id;
+  const transcription_document_id = req.query.transcription_document_id;
+
+  res.send(media);
 });
 
 module.exports = router;

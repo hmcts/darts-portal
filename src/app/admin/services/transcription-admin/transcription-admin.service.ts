@@ -6,6 +6,8 @@ import {
   TranscriptionData,
   TranscriptionDocument,
   TranscriptionDocumentData,
+  TranscriptionDocumentSearchResult,
+  TranscriptionDocumentSearchResultData,
   TranscriptionSearchFormValues,
   TranscriptionSearchRequest,
   TranscriptionStatusData,
@@ -147,16 +149,37 @@ export class TranscriptionAdminService {
       .pipe(map(this.mapTranscriptionDataToTranscription));
   }
 
-  searchCompletedTranscriptions(formValues: TranscriptionSearchFormValues): Observable<TranscriptionDocument[]> {
+  searchCompletedTranscriptions(
+    formValues: TranscriptionSearchFormValues
+  ): Observable<TranscriptionDocumentSearchResult[]> {
     const body = this.mapSearchFormValuesToSearchRequest(formValues, true);
     return this.http
-      .post<TranscriptionDocumentData[]>('api/admin/transcription-documents/search', body)
-      .pipe(map((res) => this.mapTranscriptionDocumentDataToTranscriptionDocument(res)));
+      .post<TranscriptionDocumentSearchResultData[]>('api/admin/transcription-documents/search', body)
+      .pipe(map((res) => this.mapCompletedTranscriptSearchResults(res)));
   }
 
-  private mapTranscriptionDocumentDataToTranscriptionDocument(
-    data: TranscriptionDocumentData[]
-  ): TranscriptionDocument[] {
+  getTranscriptionDocument(id: number): Observable<TranscriptionDocument> {
+    return this.http
+      .get<TranscriptionDocumentData>(`api/admin/transcription-documents/${id}`)
+      .pipe(map((res) => this.mapTranscriptionDocument(res)));
+  }
+
+  private mapTranscriptionDocument(res: TranscriptionDocumentData): TranscriptionDocument {
+    return {
+      transcriptionDocumentId: res.transcription_document_id,
+      transcriptionId: res.transcription_id,
+      fileType: res.file_type,
+      fileName: res.file_name,
+      fileSizeBytes: res.file_size_bytes,
+      uploadedAt: DateTime.fromISO(res.uploaded_at),
+      uploadedBy: res.uploaded_by,
+      isHidden: res.is_hidden,
+    };
+  }
+
+  private mapCompletedTranscriptSearchResults(
+    data: TranscriptionDocumentSearchResultData[]
+  ): TranscriptionDocumentSearchResult[] {
     return data.map((transcriptionDocumentData) => ({
       transcriptionDocumentId: transcriptionDocumentData.transcription_document_id,
       transcriptionId: transcriptionDocumentData.transcription_id,

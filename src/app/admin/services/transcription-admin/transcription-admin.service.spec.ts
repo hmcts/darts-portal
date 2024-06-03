@@ -1,7 +1,7 @@
 import {
   Transcription,
-  TranscriptionDocument,
-  TranscriptionDocumentData,
+  TranscriptionDocumentSearchResult,
+  TranscriptionDocumentSearchResultData,
   TranscriptionSearchFormValues,
   TranscriptionStatus,
 } from '@admin-types/index';
@@ -10,7 +10,7 @@ import { TranscriptionAdminDetailsData } from '@admin-types/transcription/transc
 import { TranscriptionWorkflow } from '@admin-types/transcription/transcription-workflow';
 import { DatePipe } from '@angular/common';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { CourthouseData } from '@core-types/index';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { TranscriptStatus } from '@portal-types/index';
@@ -762,7 +762,7 @@ describe('TranscriptionAdminService', () => {
     });
 
     it('should map results correctly', () => {
-      const mockResponse: TranscriptionDocumentData[] = [
+      const mockResponse: TranscriptionDocumentSearchResultData[] = [
         {
           transcription_document_id: 1,
           case: { id: 1, case_number: '123' },
@@ -774,7 +774,7 @@ describe('TranscriptionAdminService', () => {
         },
       ];
 
-      let results: TranscriptionDocument[] = [];
+      let results: TranscriptionDocumentSearchResult[] = [];
       service.searchCompletedTranscriptions({}).subscribe((r) => (results = r));
 
       const req = httpMock.expectOne('api/admin/transcription-documents/search');
@@ -795,5 +795,47 @@ describe('TranscriptionAdminService', () => {
         },
       ]);
     });
+  });
+  describe('getTranscriptionDocument', () => {
+    it('should send a GET request to fetch transcription document', () => {
+      service.getTranscriptionDocument(123).subscribe();
+
+      httpMock.expectOne({
+        url: `api/admin/transcription-documents/123`,
+        method: 'GET',
+      });
+    });
+
+    it('maps response to TranscriptionDocument', fakeAsync(() => {
+      const mockResponse = {
+        transcription_document_id: 1,
+        transcription_id: 2,
+        file_type: 'docx',
+        file_name: 'test.docx',
+        file_size_bytes: 123,
+        uploaded_at: '2022-01-01T00:00:00Z',
+        uploaded_by: 1,
+        is_hidden: false,
+      };
+
+      service.getTranscriptionDocument(1).subscribe((mappedResponse) =>
+        expect(mappedResponse).toEqual({
+          transcriptionDocumentId: 1,
+          transcriptionId: 2,
+          fileType: 'docx',
+          fileName: 'test.docx',
+          fileSizeBytes: 123,
+          uploadedAt: DateTime.fromISO('2022-01-01T00:00:00Z'),
+          uploadedBy: 1,
+          isHidden: false,
+        })
+      );
+
+      const req = httpMock.expectOne({ url: `api/admin/transcription-documents/1`, method: 'GET' });
+
+      req.flush(mockResponse);
+
+      tick();
+    }));
   });
 });

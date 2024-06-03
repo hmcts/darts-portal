@@ -124,17 +124,6 @@
 
   <section id="associated-audio-details">
     <app-govuk-heading class="no-margin border-bottom" tag="h2" size="m">Associated audio</app-govuk-heading>
-    <app-data-table [columns]="associatedAudioColumns" [rows]="data.associatedAudioRows">
-      <ng-template [tableRowTemplate]="data.associatedAudioRows" let-row>
-        <td class="govuk-table__cell audio-id">{{ row.audioId }}</td>
-        <td class="govuk-table__cell case-id">{{ row.caseId }}</td>
-        <td class="govuk-table__cell hearing-date">{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
-        <td class="govuk-table__cell courthouse">{{ row.courthouse }}</td>
-        <td class="govuk-table__cell start-time">{{ row.startTime | luxonDate: 'HH:mm' }}</td>
-        <td class="govuk-table__cell end-time">{{ row.endTime | luxonDate: 'HH:mm' }}</td>
-        <td class="govuk-table__cell courtroom">{{ row.courtroom }}</td>
-        <td class="govuk-table__cell channel">{{ row.channelNumber }}</td>
-      </ng-template>
-    </app-data-table>
+    <app-associated-audio-table [rows]="data.associatedAudio" />
   </section>
 }
