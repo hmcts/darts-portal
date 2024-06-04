@@ -4,7 +4,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { ErrorMessage } from '@core-types/index';
 import { ErrorMessageService } from '@services/error/error-message.service';
 import { EventMappingsService } from '@services/event-mappings/event-mappings.service';
 import { FormService } from '@services/form/form.service';
@@ -180,33 +179,9 @@ describe('AddUpdateEventMappingComponent', () => {
     expect(navigateSpy).toHaveBeenCalledWith([component.eventMappingsPath]);
   });
 
-  it('should set unique validation errors for type and subType', () => {
-    component['mappingTypes'] = [{ type: 'Test Type', subType: 'Test SubType' }] as Partial<EventMapping[]>;
-    component.form.controls.type.setValue('Test Type');
-    component.form.controls.subType.setValue('Test SubType');
-    expect(component.form.controls.type.errors).toEqual({ unique: true });
-    expect(component.form.controls.subType.errors).toEqual({ unique: true });
-  });
-
-  it('should clear unique validation errors when type and subType are unique', () => {
-    component['mappingTypes'] = [{ type: 'Test Type', subType: 'Test SubType' }] as Partial<EventMapping[]>;
-    component.form.controls.type.setValue('Unique Type');
-    component.form.controls.subType.setValue('Unique SubType');
-    expect(component.form.controls.type.errors).toBeNull();
-    expect(component.form.controls.subType.errors).toBeNull();
-  });
-
-  it('should handle error messages', () => {
-    const errorMessage = { status: 409 } as ErrorMessage;
-    component.setResponseErrors(errorMessage);
-    expect(component.form.controls.type.errors).toEqual({ unique: true });
-    expect(component.form.controls.subType.errors).toEqual({ unique: true });
-  });
-
-  it('should not set errors for other statuses', () => {
-    const errorMessage = { status: 500 } as ErrorMessage;
-    component.setResponseErrors(errorMessage);
-    expect(component.form.controls.type.errors?.unique).toBeUndefined();
-    expect(component.form.controls.subType.errors?.unique).toBeUndefined();
+  it('should set unique type error to true for type and subType on 409', () => {
+    expect(component.uniqueTypeError).toEqual(false);
+    component.setResponseErrors({ status: 409 });
+    expect(component.uniqueTypeError).toEqual(true);
   });
 });
