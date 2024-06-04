@@ -16,6 +16,10 @@
   <app-govuk-banner type="information">Saved new version of event mapping</app-govuk-banner>
 }
 
+@if (hasEventMappingDeleted$ | async) {
+  <app-govuk-banner type="information">Event mapping deleted</app-govuk-banner>
+}
+
 <app-automated-task-status [status]="taskStatus" />
 
 <app-govuk-heading tag="h1" size="xl">System configuration</app-govuk-heading>

@@ -7,4 +7,5 @@ export interface EventMappingData {
   is_active: boolean;
   has_restrictions: boolean;
   created_at: string;
+  has_events?: boolean;
 }
