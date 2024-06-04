@@ -197,9 +197,14 @@ describe('Admin - Event mappings screen', () => {
     });
 
     it('should delete event mapping', () => {
-      cy.get('.delete-link').contains('Delete event mapping');
+      cy.get('.delete-link').contains('Delete event mapping').click();
+      cy.get('.govuk-heading-l').contains('Are you sure want to delete this event mapping?');
 
-      //TBD
+      cy.get('app-data-table').contains('1010');
+      cy.get('app-data-table').contains('Changed name test');
+
+      cy.get('.govuk-button--warning').contains('Yes - delete').click();
+      cy.contains('Event mapping deleted').should('be.visible');
     });
   });
 });
