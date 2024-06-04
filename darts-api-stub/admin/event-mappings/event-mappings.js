@@ -5,9 +5,13 @@ const eventMappings = localArray('eventMappings');
 
 router.get('/', (_, res) => res.json(eventMappings.value));
 
-router.get('/:event_handler_id', (_, res) => {
+router.get('/:event_handler_id', (req, res) => {
   const policy = eventMappings.value.find((p) => p.id === parseInt(req.params.event_handler_id));
   res.json(policy);
+});
+
+router.delete('/:event_handler_id', (req, res) => {
+  res.sendStatus(200);
 });
 
 router.post('/', (req, res) => {

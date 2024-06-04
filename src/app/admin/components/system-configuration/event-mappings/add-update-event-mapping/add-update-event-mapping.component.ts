@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
@@ -30,6 +30,7 @@ import { Subscription, combineLatest, map, tap } from 'rxjs';
     ValidationErrorSummaryComponent,
     LoadingComponent,
     LuxonDatePipe,
+    RouterLink,
   ],
 })
 export class AddUpdateEventMappingComponent implements OnInit {
@@ -127,10 +128,6 @@ export class AddUpdateEventMappingComponent implements OnInit {
 
   onCancel() {
     this.router.navigate([this.eventMappingsPath]);
-  }
-
-  deleteEventMapping() {
-    //
   }
 
   private setUniqueTypeValidation() {

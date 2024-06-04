@@ -34,6 +34,10 @@ export class EventMappingsService {
     });
   }
 
+  deleteEventMapping(id: number) {
+    return this.http.delete(`api/admin/event-mappings/${id}`, { observe: 'response', responseType: 'text' });
+  }
+
   private mapToEventMappingRequest(eventMapping: EventMappingFormValues): Partial<EventMappingData> {
     return {
       id: eventMapping.id,
@@ -55,6 +59,7 @@ export class EventMappingsService {
       isActive: e.is_active,
       hasRestrictions: e.has_restrictions,
       createdAt: DateTime.fromISO(e.created_at),
+      hasEvents: e.has_events,
     };
   }
 }

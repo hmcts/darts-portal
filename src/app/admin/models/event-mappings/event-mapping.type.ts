@@ -9,4 +9,5 @@ export type EventMapping = {
   isActive: boolean;
   hasRestrictions: boolean;
   createdAt: DateTime;
+  hasEvents?: boolean;
 };

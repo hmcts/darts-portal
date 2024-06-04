@@ -197,9 +197,33 @@ describe('Admin - Event mappings screen', () => {
     });
 
     it('should delete event mapping', () => {
-      cy.get('.delete-link').contains('Delete event mapping');
+      cy.get('.delete-link').contains('Delete event mapping').click();
+      cy.get('.govuk-heading-l').contains('Are you sure want to delete this event mapping?');
 
-      //TBD
+      cy.get('app-data-table').contains('1010');
+      cy.get('app-data-table').contains('Changed name test');
+
+      cy.get('.govuk-button--warning').contains('Yes - delete').click();
+      cy.contains('Event mapping deleted').should('be.visible');
+    });
+  });
+
+  describe('You cannot delete this event mapping', () => {
+    beforeEach(() => {
+      cy.contains('tr', '1111').find('a.govuk-link').contains('Change').click();
+    });
+
+    it('should show the you cannot delete this event mapping page', () => {
+      cy.get('.govuk-heading-l').contains('Prosecution opened');
+      cy.get('.delete-link').contains('Delete event mapping').click();
+      cy.get('.govuk-heading-l').contains('You cannot delete this event mapping');
+      cy.get('.govuk-body').contains('This event mapping has been used and can no longer be deleted.');
+      cy.get('.govuk-body').contains(
+        `You can make changes and create a new version, or you can select the event handler 'No mapping'.`
+      );
+
+      cy.get('.govuk-link').contains('Go back').click();
+      cy.get('.govuk-heading-l').contains('Prosecution opened');
     });
   });
 });

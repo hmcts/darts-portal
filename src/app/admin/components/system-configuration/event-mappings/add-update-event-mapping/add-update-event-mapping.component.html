@@ -137,7 +137,10 @@
     @if (isRevision) {
       <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
       <div class="govuk-button-group">
-        <a class="govuk-link delete-link" href="javascript:void(0)" (click)="deleteEventMapping()"
+        <a
+          class="govuk-link delete-link"
+          href="javascript:void(0)"
+          [routerLink]="['/admin/system-configuration/event-mappings', id, 'delete']"
           >Delete event mapping</a
         >
       </div>

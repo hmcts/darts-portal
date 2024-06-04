@@ -13,6 +13,7 @@ export class DeleteComponent implements OnInit, OnDestroy {
   @Input() numberOfItems = 0;
   @Input() title = '';
   @Input() deleteButtonTxt = 'Yes - delete';
+  @Input() cancelButtonTxt = 'Cancel';
   @Input() isRedDeleteButton = true;
   @Output() confirm = new EventEmitter();
   @Output() cancel = new EventEmitter();
