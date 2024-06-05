@@ -70,14 +70,14 @@ describe('TransformedMediaService', () => {
       } as TransformedMediaSearchFormValues;
 
       const mockBody = {
-        case_number: undefined,
-        courthouse_display_name: undefined,
+        case_number: null,
+        courthouse_display_name: null,
         hearing_date: null,
-        media_request_id: undefined,
-        owner: undefined,
+        media_request_id: null,
+        owner: null,
         requested_at_from: '2021-01-01',
         requested_at_to: '2022-02-02',
-        requested_by: undefined,
+        requested_by: null,
       };
 
       service.searchTransformedMedia(mockCriteria).subscribe();
