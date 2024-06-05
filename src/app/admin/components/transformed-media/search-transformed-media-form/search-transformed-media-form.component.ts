@@ -29,7 +29,7 @@ export class SearchTransformedMediaFormComponent {
   formService = inject(FormService);
 
   form = this.fb.group({
-    requestId: [''],
+    requestId: ['', Validators.pattern(/^[0-9]*$/)],
     caseId: [''],
     courthouse: [''],
     hearingDate: ['', transformedMediaSearchDateValidators],
@@ -60,6 +60,14 @@ export class SearchTransformedMediaFormComponent {
 
     this.errors.emit([]);
     this.search.emit(this.form.value);
+  }
+
+  getFormControlErrorMessages(controlName: string): string[] {
+    return this.formService.getFormControlErrorMessages(
+      this.form,
+      controlName,
+      TransformedMediaSearchFormErrorMessages
+    );
   }
 
   getControlErrorMessage(controlPath: string[]): string[] {

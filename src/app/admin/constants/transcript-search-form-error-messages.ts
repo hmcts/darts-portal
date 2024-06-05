@@ -21,4 +21,7 @@ export const TranscriptSearchFormErrorMessages: Record<string, Record<string, st
     realDate: 'Enter a real date',
     dateRange: 'The end date must be after the start date',
   },
+  requestId: {
+    pattern: 'Request ID must only contain numbers',
+  },
 };
