@@ -147,8 +147,10 @@ function getIsAuthenticated(disableAuthentication = false): (req: Request, res: 
     res.header('Cache-Control', 'no-store, must-revalidate');
 
     if (!AuthenticationUtils.isJwtExpired(req.session?.securityToken?.accessToken) || disableAuthentication) {
+      console.log('getIsAuthenticated: true');
       res.status(200).send(true);
     } else {
+      console.log('getIsAuthenticated: false');
       res.status(200).send(false);
     }
   };

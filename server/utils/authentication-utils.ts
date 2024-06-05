@@ -14,12 +14,15 @@ export class AuthenticationUtils {
           const jwtExpiry = new Date(payload.exp * 1000);
           //If JWT expiry is after now, then return as valid
           if (jwtExpiry > new Date()) {
+            console.log('isJwtExpired: false - jwtExpiry > new Date()');
             return false;
           }
         }
       }
+      console.log('isJwtExpired: true - no error');
       return true;
-    } catch {
+    } catch (err) {
+      console.log('isJwtExpired: true - error', err);
       return true;
     }
   }

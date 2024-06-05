@@ -6,6 +6,11 @@ export default (req: Request, res: Response, next: NextFunction): void => {
     AuthenticationUtils.isJwtExpired(req.session?.securityToken?.accessToken) ||
     !req.session.securityToken?.userState?.userId
   ) {
+    console.log(
+      'is-authenticated: Is JWT expired: ',
+      AuthenticationUtils.isJwtExpired(req.session?.securityToken?.accessToken)
+    );
+    console.log('is-authenticated: UserState: ', req.session.securityToken?.userState);
     res.sendStatus(401);
   } else {
     next();
