@@ -23,10 +23,12 @@ export class AuthService {
     // Timestamp cache busting string eg: /auth/is-authenticated?t=1701426443869
     return this.http.get<boolean>(`${IS_AUTH_PATH}`, { params: { t: new Date().getTime() } }).pipe(
       map((isAuthenticated) => {
+        console.log('checkIsAuthenticated: ', isAuthenticated);
         this.isAuthenticated = isAuthenticated;
         return this.isAuthenticated;
       }),
-      catchError(() => {
+      catchError((err) => {
+        console.log('checkIsAuthenticated: false - with error', err);
         this.isAuthenticated = false;
         return of(false);
       })
