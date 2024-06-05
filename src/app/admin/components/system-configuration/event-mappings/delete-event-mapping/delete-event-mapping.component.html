@@ -1,0 +1,36 @@
+@if (eventMapping$ | async; as eventMapping) {
+  @if (eventMapping.hasEvents) {
+    <app-govuk-heading>You cannot delete this event mapping</app-govuk-heading>
+
+    <p class="govuk-body">This event mapping has been used and can no longer be deleted.</p>
+
+    <p class="govuk-body">
+      You can make changes and create a new version, or you can select the event handler 'No mapping'.
+    </p>
+
+    <div class="govuk-button-group">
+      <a href="#" (click)="$event.preventDefault(); onDeleteCancelled()" class="govuk-link">Go back</a>
+    </div>
+  } @else {
+    <app-delete
+      [title]="'Are you sure want to delete this event mapping?'"
+      deleteButtonTxt="Yes - delete"
+      cancelButtonTxt="No - cancel"
+      [isRedDeleteButton]="true"
+      (confirm)="onDeleteConfirmed()"
+      (cancel)="onDeleteCancelled()"
+    >
+      <app-data-table id="deletionTable" [rows]="[eventMapping]" [columns]="deleteColumns">
+        <ng-template [tableRowTemplate]="[eventMapping]" let-row>
+          <td class="govuk-table__cell">{{ row.type }}</td>
+          <td class="govuk-table__cell">{{ row.subType }}</td>
+          <td class="govuk-table__cell">{{ row.name }}</td>
+          <td class="govuk-table__cell">{{ row.handler }}</td>
+          <td class="govuk-table__cell">{{ row.hasRestrictions ? 'Yes' : 'No' }}</td>
+          <td class="govuk-table__cell">{{ row.createdAt | luxonDate: 'dd MMM yyyy' }}</td>
+          <td class="govuk-table__cell">{{ row.isActive ? 'Active' : 'Inactive' }}</td>
+        </ng-template></app-data-table
+      >
+    </app-delete>
+  }
+}

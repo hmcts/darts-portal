@@ -15,6 +15,6 @@
     <button class="govuk-button" [ngClass]="isRedDeleteButton ? 'govuk-button--warning' : ''" (click)="confirm.emit()">
       {{ deleteButtonTxt }}
     </button>
-    <a href="#" (click)="$event.preventDefault(); cancel.emit()" class="govuk-link">Cancel</a>
+    <a href="#" (click)="$event.preventDefault(); cancel.emit()" class="govuk-link">{{ cancelButtonTxt }}</a>
   </div>
 </div>

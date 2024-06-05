@@ -129,10 +129,6 @@ export class AddUpdateEventMappingComponent implements OnInit {
     this.router.navigate([this.eventMappingsPath]);
   }
 
-  deleteEventMapping() {
-    //
-  }
-
   getErrorMessages(controlKey: string): string[] {
     return this.formService.getFormControlErrorMessages(this.form, controlKey, EventMappingFormErrorMessages);
   }
