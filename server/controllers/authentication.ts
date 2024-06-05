@@ -82,9 +82,13 @@ function postAuthCallback(
         headers: { 'content-type': 'application/x-www-form-urlencoded' },
       });
       const securityToken = result.data;
+      console.log('postAuthCallback: securityToken', securityToken);
       req.session.userType = type;
       req.session.securityToken = securityToken;
+      console.log('postAuthCallback: session ID', req.sessionID, req.session?.id, req.session);
       req.session.save((err) => {
+        console.log('postAuthCallback: session.save - err', err);
+        console.log('postAuthCallback: session.save - req.session', req.sessionID, req.session?.id, req.session);
         if (err) {
           return next(err);
         }
