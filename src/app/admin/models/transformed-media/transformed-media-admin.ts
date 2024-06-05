@@ -7,23 +7,23 @@ export type TransformedMediaAdmin = {
   fileSizeBytes: number;
   mediaRequest: {
     id: number;
-    requestedAt: DateTime;
-    ownerUserId: number;
+    requestedAt?: DateTime;
+    ownerUserId?: number;
     ownerUserName?: string;
-    requestedByUserId: number;
+    requestedByUserId?: number;
     requestedByName?: string;
   };
   case: {
     id: number;
-    caseNumber: string;
+    caseNumber?: string;
   };
-  courthouse: {
+  courthouse?: {
     id: number;
-    displayName: string;
+    displayName?: string;
   };
-  hearing: {
+  hearing?: {
     id: number;
-    hearingDate: DateTime;
+    hearingDate?: DateTime;
   };
-  lastAccessedAt: DateTime;
+  lastAccessedAt?: DateTime;
 };

@@ -67,7 +67,7 @@ export class ViewTransformedMediaComponent {
   );
 
   private getMediaRequestAndCaseAndUsers(transformedMedia: TransformedMediaAdmin) {
-    const mediaRequestId = transformedMedia.mediaRequest.id;
+    const mediaRequestId = transformedMedia.id;
     const caseId = transformedMedia.case.id;
     const ownerUserId = transformedMedia.mediaRequest.ownerUserId;
     const requestedByUserId = transformedMedia.mediaRequest.requestedByUserId;

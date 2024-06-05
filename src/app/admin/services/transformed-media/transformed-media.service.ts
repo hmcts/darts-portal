@@ -91,12 +91,12 @@ export class TransformedMediaService {
     const requestedDateTo = searchCriteria.requestedDate?.to ? this.formatDate(searchCriteria.requestedDate?.to) : null;
 
     return {
-      media_request_id: searchCriteria.requestId,
-      case_number: searchCriteria.caseId,
-      courthouse_display_name: searchCriteria.courthouse,
+      media_request_id: searchCriteria.requestId ? searchCriteria.requestId : null,
+      case_number: searchCriteria.caseId ? searchCriteria.caseId : null,
+      courthouse_display_name: searchCriteria.courthouse ? searchCriteria.courthouse : null,
       hearing_date: hearingDate,
-      owner: searchCriteria.owner,
-      requested_by: searchCriteria.requestedBy,
+      owner: searchCriteria.owner ? searchCriteria.owner : null,
+      requested_by: searchCriteria.requestedBy ? searchCriteria.requestedBy : null,
       requested_at_from: requestedDateSpecific ?? requestedDateFrom ?? null,
       requested_at_to: requestedDateSpecific ?? requestedDateTo ?? null,
     };
@@ -107,30 +107,37 @@ export class TransformedMediaService {
   }
 
   private mapTransformedMedia(data: TransformedMediaAdminData): TransformedMediaAdmin {
+    console.log(data);
+
+    // const mediaRequest = data.media_request && {
+    //   id: data.media_request.id,
+    //   requestedAt: DateTime.fromISO(data.media_request.requested_at),
+    //   ownerUserId: data.media_request.owner_user_id,
+    //   requestedByUserId: data.media_request.requested_by_user_id,
+    // };
+
+    // const caseDetails = data.case && {
+    //   id: data.case.id,
+    //   caseNumber: data.case.case_number,
+    // };
+
+    // const courthouse = data.courthouse && {
+    //   id: data.courthouse.id,
+    //   displayName: data.courthouse.display_name,
+    // };
+
+    // const hearing = data.courthouse && {
+    //   id: data.courthouse.id,
+    //   displayName: data.courthouse.display_name,
+    // };
+
     return {
       id: data.id,
       fileName: data.file_name,
       fileFormat: data.file_format,
       fileSizeBytes: data.file_size_bytes,
-      mediaRequest: {
-        id: data.media_request.id,
-        requestedAt: DateTime.fromISO(data.media_request.requested_at),
-        ownerUserId: data.media_request.owner_user_id,
-        requestedByUserId: data.media_request.requested_by_user_id,
-      },
-      case: {
-        id: data.case.id,
-        caseNumber: data.case.case_number,
-      },
-      courthouse: {
-        id: data.courthouse.id,
-        displayName: data.courthouse.display_name,
-      },
-      hearing: {
-        id: data.hearing.id,
-        hearingDate: DateTime.fromISO(data.hearing.hearing_date),
-      },
-      lastAccessedAt: DateTime.fromISO(data.last_accessed_at),
+      mediaRequest: { id: data.media_request_id },
+      case: { id: data.case_id },
     };
   }
 
