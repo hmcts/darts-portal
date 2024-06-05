@@ -91,12 +91,12 @@ export class TransformedMediaService {
     const requestedDateTo = searchCriteria.requestedDate?.to ? this.formatDate(searchCriteria.requestedDate?.to) : null;
 
     return {
-      media_request_id: searchCriteria.requestId,
-      case_number: searchCriteria.caseId,
-      courthouse_display_name: searchCriteria.courthouse,
+      media_request_id: searchCriteria.requestId ? searchCriteria.requestId : null,
+      case_number: searchCriteria.caseId ? searchCriteria.caseId : null,
+      courthouse_display_name: searchCriteria.courthouse ? searchCriteria.courthouse : null,
       hearing_date: hearingDate,
-      owner: searchCriteria.owner,
-      requested_by: searchCriteria.requestedBy,
+      owner: searchCriteria.owner ? searchCriteria.owner : null,
+      requested_by: searchCriteria.requestedBy ? searchCriteria.requestedBy : null,
       requested_at_from: requestedDateSpecific ?? requestedDateFrom ?? null,
       requested_at_to: requestedDateSpecific ?? requestedDateTo ?? null,
     };
