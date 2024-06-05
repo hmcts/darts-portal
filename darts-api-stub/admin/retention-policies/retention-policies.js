@@ -92,19 +92,19 @@ router.patch('/:id', (req, res) => {
     });
 
   if (req.body.name === 'NON_UNIQUE_POLICY_NAME') {
-    return res.status(400).send({
+    return res.status(409).send({
       type: 'RETENTION_109',
     });
   }
 
   if (req.body.display_name === 'NON_UNIQUE_POLICY_DISPLAY_NAME') {
-    return res.status(400).send({
+    return res.status(409).send({
       type: 'RETENTION_110',
     });
   }
 
   if (req.body.fixed_policy_key === 'NON_UNIQUE_FIXED_POLICY_KEY') {
-    return res.status(400).send({
+    return res.status(409).send({
       type: 'RETENTION_114',
     });
   }
@@ -136,19 +136,19 @@ router.post('/', (req, res) => {
     });
 
   if (req.body.name === 'NON_UNIQUE_POLICY_NAME') {
-    return res.status(400).send({
+    return res.status(409).send({
       type: 'RETENTION_109',
     });
   }
 
   if (req.body.display_name === 'NON_UNIQUE_POLICY_DISPLAY_NAME') {
-    return res.status(400).send({
+    return res.status(409).send({
       type: 'RETENTION_110',
     });
   }
 
   if (req.body.fixed_policy_key === 'NON_UNIQUE_FIXED_POLICY_KEY') {
-    return res.status(400).send({
+    return res.status(409).send({
       type: 'RETENTION_114',
     });
   }
