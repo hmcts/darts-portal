@@ -1,12 +1,22 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <div class="govuk-form-group">
+  <div
+    class="govuk-form-group"
+    [class.govuk-form-group--error]="form.controls.requestId.invalid && form.controls.requestId.touched"
+  >
     <label class="govuk-label" for="requestId"> Request ID </label>
+    <!-- Inline Validation Errors -->
+    @for (error of getFormControlErrorMessages('requestId'); track error) {
+      <p class="govuk-error-message courthouse-name-error">
+        <span class="govuk-visually-hidden">Error:</span> {{ error }}
+      </p>
+    }
     <input
       formControlName="requestId"
       class="govuk-input govuk-input--width-20"
       id="requestId"
       name="requestId"
       type="text"
+      [class.govuk-input--error]="form.controls.requestId.errors && form.controls.requestId.touched"
     />
   </div>
   <details class="govuk-details" [open]="isAdvancedSearch">
