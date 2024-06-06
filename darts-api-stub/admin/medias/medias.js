@@ -21,7 +21,7 @@ const media = [
     },
     courtroom: {
       id: 1,
-      name: 'courtroom 1',
+      display_name: 'courtroom 1',
     },
   },
   {
@@ -43,7 +43,7 @@ const media = [
     },
     courtroom: {
       id: 2,
-      name: 'courtroom 2',
+      display_name: 'courtroom 2',
     },
   },
   {
@@ -65,7 +65,7 @@ const media = [
     },
     courtroom: {
       id: 3,
-      name: 'courtroom 3',
+      display_name: 'courtroom 3',
     },
   },
 ];

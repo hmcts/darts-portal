@@ -70,7 +70,7 @@ const mockAssociatedMedia: AssociatedMedia[] = [
     },
     courtroom: {
       id: 1,
-      name: 'courtroom',
+      displayName: 'courtroom',
     },
   },
 ];

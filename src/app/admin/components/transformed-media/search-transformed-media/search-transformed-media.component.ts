@@ -38,8 +38,7 @@ export class SearchTransformedMediaComponent {
       .pipe(tap(() => this.isLoading.set(true)))
       .pipe(
         switchMap((media) => {
-          // get an array of unique user ids from media ownerUserId and requestedByUserId
-          const userIds = this.getUniqueUserIds(media);
+          const userIds = this.getUniqueUserIds(media).filter((id) => id !== undefined) as number[];
           return this.userService.getUsersById(userIds).pipe(map((users) => ({ media, users })));
         })
       )

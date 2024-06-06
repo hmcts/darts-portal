@@ -89,7 +89,17 @@ router.get('/:id', (req, res) => {
   if (!media) {
     return res.status(404).send();
   }
-  res.send(media);
+
+  const mediaTransformed = {
+    id: media.id,
+    file_name: media.file_name,
+    file_format: media.file_format,
+    file_size_bytes: media.file_size_bytes,
+    case_id: media.case.id,
+    media_request_id: media.media_request.id,
+  };
+
+  res.send(mediaTransformed);
 });
 
 module.exports = router;

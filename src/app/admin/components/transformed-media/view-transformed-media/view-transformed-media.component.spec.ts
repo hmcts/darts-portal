@@ -65,7 +65,7 @@ const mockAssociatedMedia: AssociatedMedia[] = [
     },
     courtroom: {
       id: 1,
-      name: 'courtroom',
+      displayName: 'courtroom',
     },
   },
 ];
@@ -154,7 +154,7 @@ describe('ViewTransformedMediaComponent', () => {
       expect(getTransformedMediaByIdSpy).toHaveBeenCalledWith(1);
       expect(getAssociatedMediaByTransformedMediaIdSpy).toHaveBeenCalledWith(1);
       expect(getCaseSpy).toHaveBeenCalledWith(1);
-      expect(getUsersByIdSpy).toHaveBeenCalledWith([1, 2]);
+      expect(getUsersByIdSpy).toHaveBeenCalledWith([2, 1]);
     });
 
     it('should return view model containing mapped transformedMedia, associatedAudio, mediaRequest, case and users', () => {
@@ -167,7 +167,7 @@ describe('ViewTransformedMediaComponent', () => {
         associatedAudio: mockAssociatedMedia,
         mediaRequest: mockMediaRequest,
         case: mockCase,
-        users: { owner: mockUsers[0], requestedBy: mockUsers[1] },
+        users: { owner: mockUsers[1], requestedBy: mockUsers[0] },
       });
     });
   });

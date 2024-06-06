@@ -1,7 +1,10 @@
 import { AssociatedMedia } from '@admin-types/transformed-media/associated-media';
 import { AssociatedMediaData } from '@admin-types/transformed-media/associated-media-data.interface';
 import { TransformedMediaAdmin } from '@admin-types/transformed-media/transformed-media-admin';
-import { TransformedMediaAdminData } from '@admin-types/transformed-media/transformed-media-admin-data.interface';
+import {
+  TransformedMediaAdminData,
+  TransformedMediaByIdAdminData,
+} from '@admin-types/transformed-media/transformed-media-admin-data.interface';
 import { TransformedMediaRequest } from '@admin-types/transformed-media/transformed-media-request';
 import { TransformedMediaRequestData } from '@admin-types/transformed-media/transformed-media-request-data.interface';
 import { TransformedMediaSearchFormValues } from '@admin-types/transformed-media/transformed-media-search-form.values';
@@ -25,8 +28,8 @@ export class TransformedMediaService {
 
   getTransformedMediaById(id: number): Observable<TransformedMediaAdmin> {
     return this.http
-      .get<TransformedMediaAdminData>(`/api/admin/transformed-medias/${id}`)
-      .pipe(map((data) => this.mapTransformedMedia(data)));
+      .get<TransformedMediaByIdAdminData>(`/api/admin/transformed-medias/${id}`)
+      .pipe(map((data) => this.mapTransformedMediaById(data)));
   }
 
   getMediaRequestById(id: number): Observable<TransformedMediaRequest> {
@@ -75,7 +78,7 @@ export class TransformedMediaService {
       },
       courtroom: {
         id: data.courtroom.id,
-        name: data.courtroom.name,
+        displayName: data.courtroom.display_name,
       },
     };
   }
@@ -131,6 +134,17 @@ export class TransformedMediaService {
         hearingDate: DateTime.fromISO(data.hearing.hearing_date),
       },
       lastAccessedAt: DateTime.fromISO(data.last_accessed_at),
+    };
+  }
+
+  private mapTransformedMediaById(data: TransformedMediaByIdAdminData): TransformedMediaAdmin {
+    return {
+      id: data.id,
+      fileName: data.file_name,
+      fileFormat: data.file_format,
+      fileSizeBytes: data.file_size_bytes,
+      mediaRequest: { id: data.media_request_id },
+      case: { id: data.case_id },
     };
   }
 
