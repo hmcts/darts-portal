@@ -183,18 +183,24 @@ export class TranscriptionAdminService {
     return data.map((transcriptionDocumentData) => ({
       transcriptionDocumentId: transcriptionDocumentData.transcription_document_id,
       transcriptionId: transcriptionDocumentData.transcription_id,
-      case: {
-        id: transcriptionDocumentData.case.id,
-        caseNumber: transcriptionDocumentData.case.case_number,
-      },
-      courthouse: {
-        id: transcriptionDocumentData.courthouse.id,
-        displayName: transcriptionDocumentData.courthouse.display_name,
-      },
-      hearing: {
-        id: transcriptionDocumentData.hearing.id,
-        hearingDate: DateTime.fromISO(transcriptionDocumentData.hearing.hearing_date),
-      },
+      ...(transcriptionDocumentData.case && {
+        case: {
+          id: transcriptionDocumentData.case.id,
+          caseNumber: transcriptionDocumentData.case.case_number,
+        },
+      }),
+      ...(transcriptionDocumentData.courthouse && {
+        courthouse: {
+          id: transcriptionDocumentData.courthouse.id,
+          displayName: transcriptionDocumentData.courthouse.display_name,
+        },
+      }),
+      ...(transcriptionDocumentData.hearing && {
+        hearing: {
+          id: transcriptionDocumentData.hearing.id,
+          hearingDate: DateTime.fromISO(transcriptionDocumentData.hearing.hearing_date),
+        },
+      }),
       isManualTranscription: transcriptionDocumentData.is_manual_transcription,
       isHidden: transcriptionDocumentData.is_hidden,
     }));
@@ -244,9 +250,13 @@ export class TranscriptionAdminService {
     isCompletedSearch = false
   ): TranscriptionSearchRequest {
     return {
-      // if completed transcript search transcription_id is omitted
-      transcription_id:
-        !isCompletedSearch && (values.requestId || values.requestId === '0') ? Number(values.requestId) : null,
+      //Omit transcription_id completely on completed transcript search
+      ...(isCompletedSearch
+        ? {}
+        : {
+            transcription_id:
+              !isCompletedSearch && (values.requestId || values.requestId === '0') ? Number(values.requestId) : null,
+          }),
       case_number: values.caseId || null,
       courthouse_display_name: values.courthouse || null,
       hearing_date: this.formatDate(values.hearingDate),

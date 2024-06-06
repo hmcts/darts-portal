@@ -1,5 +1,5 @@
 export interface TranscriptionSearchRequest {
-  transcription_id: number | null;
+  transcription_id?: number | null;
   case_number: string | null;
   courthouse_display_name: string | null;
   hearing_date: string | null;
