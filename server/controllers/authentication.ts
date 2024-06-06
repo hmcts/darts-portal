@@ -92,7 +92,8 @@ function postAuthCallback(
         if (err) {
           return next(err);
         }
-        res.redirect('/');
+        // tiny wait in case there is a race condition with the session being stored in redis
+        setTimeout(() => res.redirect('/'), 250);
       });
     } catch (err) {
       console.error('Error on authentication callback', err);
