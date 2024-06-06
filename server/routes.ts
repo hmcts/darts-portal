@@ -3,7 +3,6 @@ import express, { NextFunction, Request, Response } from 'express';
 import {
   apiController,
   appController,
-  authController,
   authenticationController,
   downloadController,
   userController,
@@ -27,8 +26,6 @@ export default (disableAuthentication = false): Router => {
   // unauthenticated routes
   router.use('/auth', authenticationController.init(disableAuthentication));
   router.use('/app', appController.init());
-  // TODO: rename this, or move into authentication controller
-  router.use(authController.init());
 
   return router;
 };
