@@ -31,7 +31,7 @@ describe('AssociatedAudioTableComponent', () => {
         startAt: DateTime.fromISO('2020-01-01T12:00:00Z'),
         endAt: DateTime.fromISO('2020-01-01T14:00:00Z'),
         courtroom: {
-          name: 'Room 1',
+          displayName: 'Room 1',
         },
         channel: '4',
       },

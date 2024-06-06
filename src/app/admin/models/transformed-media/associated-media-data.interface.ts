@@ -17,6 +17,6 @@ export interface AssociatedMediaData {
   };
   courtroom: {
     id: number;
-    name: string;
+    display_name: string;
   };
 }

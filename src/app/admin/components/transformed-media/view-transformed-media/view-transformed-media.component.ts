@@ -49,37 +49,48 @@ export class ViewTransformedMediaComponent {
   hasChangedOwner$ = this.route.queryParams.pipe(map((params) => params.ownerChanged));
 
   $transformedMedia = this.transformedMediaService.getTransformedMediaById(this.transformedMediaId);
-  $associatedAudio = this.transformedMediaService.getAssociatedMediaByTransformedMediaId(this.transformedMediaId);
 
-  data$ = forkJoin({ transformedMedia: this.$transformedMedia, associatedAudio: this.$associatedAudio }).pipe(
-    switchMap(({ transformedMedia, associatedAudio }) => {
-      const { $mediaRequest, $case, $users } = this.getMediaRequestAndCaseAndUsers(transformedMedia);
-      return forkJoin({ mediaRequest: $mediaRequest, case: $case, users: $users }).pipe(
-        map(({ mediaRequest, case: c, users }) => ({
-          transformedMedia,
-          associatedAudio,
-          mediaRequest,
-          case: c,
-          users,
-        }))
+  data$ = this.$transformedMedia.pipe(
+    switchMap((transformedMedia) => {
+      const { $mediaRequest, $case } = this.getCaseAndMediaRequest(transformedMedia);
+
+      return forkJoin({ mediaRequest: $mediaRequest, case: $case }).pipe(
+        switchMap(({ mediaRequest, case: c }) => {
+          const ownerUserId = mediaRequest.ownerId;
+          const requestedByUserId = mediaRequest.requestedById;
+
+          const $users = this.userService.getUsersById([ownerUserId, requestedByUserId]).pipe(
+            map((users) => ({
+              owner: users.find((u) => u.id === ownerUserId),
+              requestedBy: users.find((u) => u.id === requestedByUserId),
+            }))
+          );
+
+          return forkJoin({ users: $users }).pipe(
+            switchMap(({ users }) =>
+              this.transformedMediaService.getAssociatedMediaByTransformedMediaId(this.transformedMediaId).pipe(
+                map((associatedAudio) => ({
+                  transformedMedia,
+                  associatedAudio,
+                  mediaRequest,
+                  case: c,
+                  users,
+                }))
+              )
+            )
+          );
+        })
       );
     })
   );
 
-  private getMediaRequestAndCaseAndUsers(transformedMedia: TransformedMediaAdmin) {
-    const mediaRequestId = transformedMedia.id;
+  private getCaseAndMediaRequest(transformedMedia: TransformedMediaAdmin) {
+    const mediaRequestId = transformedMedia.mediaRequest.id;
     const caseId = transformedMedia.case.id;
-    const ownerUserId = transformedMedia.mediaRequest.ownerUserId;
-    const requestedByUserId = transformedMedia.mediaRequest.requestedByUserId;
 
     const $mediaRequest = this.transformedMediaService.getMediaRequestById(mediaRequestId);
     const $case = this.caseService.getCase(caseId);
-    const $users = this.userService.getUsersById([ownerUserId, requestedByUserId]).pipe(
-      map((users) => ({
-        owner: users.find((u) => u.id === ownerUserId),
-        requestedBy: users.find((u) => u.id === requestedByUserId),
-      }))
-    );
-    return { $mediaRequest, $case, $users };
+
+    return { $mediaRequest, $case };
   }
 }

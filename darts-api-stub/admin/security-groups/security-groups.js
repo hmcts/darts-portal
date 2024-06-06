@@ -167,7 +167,6 @@ router.patch('/:id', (req, res) => {
     const index = defaultSecurityGroups.findIndex((group) => group.id.toString() === id);
 
     defaultSecurityGroups[index] = { ...defaultSecurityGroups[index], user_ids: updatedUsers };
-    console.log(defaultSecurityGroups[index]);
 
     res.send(defaultSecurityGroups[index]);
   } else {

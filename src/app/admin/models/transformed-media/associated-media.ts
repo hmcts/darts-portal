@@ -19,6 +19,6 @@ export type AssociatedMedia = {
   };
   courtroom: {
     id: number;
-    name: string;
+    displayName: string;
   };
 };

@@ -42,8 +42,8 @@ export class TransformedMediaSearchResultsComponent implements OnChanges {
     return results.map((result) => ({
       id: result.id,
       caseNumber: result.case.caseNumber,
-      courthouse: result.courthouse.displayName,
-      hearingDate: result.hearing.hearingDate,
+      courthouse: result.courthouse?.displayName,
+      hearingDate: result.hearing?.hearingDate,
       owner: result.mediaRequest.ownerUserName,
       requestedBy: result.mediaRequest.requestedByName,
       requestedDate: result.mediaRequest.requestedAt,

@@ -37,7 +37,7 @@ export class AssociatedAudioTableComponent {
       courthouse: audio.courthouse.displayName,
       startTime: audio.startAt,
       endTime: audio.endAt,
-      courtroom: audio.courtroom.name,
+      courtroom: audio.courtroom.displayName,
       channelNumber: audio.channel,
     }));
   }

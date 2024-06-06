@@ -70,14 +70,14 @@ describe('TransformedMediaService', () => {
       } as TransformedMediaSearchFormValues;
 
       const mockBody = {
-        case_number: undefined,
-        courthouse_display_name: undefined,
+        case_number: null,
+        courthouse_display_name: null,
         hearing_date: null,
-        media_request_id: undefined,
-        owner: undefined,
+        media_request_id: null,
+        owner: null,
         requested_at_from: '2021-01-01',
         requested_at_to: '2022-02-02',
-        requested_by: undefined,
+        requested_by: null,
       };
 
       service.searchTransformedMedia(mockCriteria).subscribe();
@@ -174,25 +174,8 @@ describe('TransformedMediaService', () => {
         file_name: 'filename.mp3',
         file_format: 'MP3',
         file_size_bytes: 2097152,
-        media_request: {
-          id: 1,
-          requested_at: '2024-01-01T00:00:00Z',
-          owner_user_id: 1,
-          requested_by_user_id: 1,
-        },
-        case: {
-          id: 1,
-          case_number: 'CASE123',
-        },
-        courthouse: {
-          id: 1,
-          display_name: 'Swansea',
-        },
-        hearing: {
-          id: 1,
-          hearing_date: '2024-01-01',
-        },
-        last_accessed_at: '2024-01-01T00:00:00Z',
+        case_id: 1,
+        media_request_id: 1,
       };
 
       const expectedMappedType: TransformedMediaAdmin = {
@@ -202,23 +185,10 @@ describe('TransformedMediaService', () => {
         fileSizeBytes: 2097152,
         mediaRequest: {
           id: 1,
-          requestedAt: DateTime.fromISO('2024-01-01T00:00:00Z'),
-          ownerUserId: 1,
-          requestedByUserId: 1,
         },
         case: {
           id: 1,
-          caseNumber: 'CASE123',
         },
-        courthouse: {
-          id: 1,
-          displayName: 'Swansea',
-        },
-        hearing: {
-          id: 1,
-          hearingDate: DateTime.fromISO('2024-01-01'),
-        },
-        lastAccessedAt: DateTime.fromISO('2024-01-01T00:00:00Z'),
       };
 
       let result: TransformedMediaAdmin = {} as TransformedMediaAdmin;
@@ -321,7 +291,7 @@ describe('TransformedMediaService', () => {
           },
           courtroom: {
             id: 1,
-            name: 'room',
+            display_name: 'room',
           },
         },
       ];
@@ -346,7 +316,7 @@ describe('TransformedMediaService', () => {
           },
           courtroom: {
             id: 1,
-            name: 'room',
+            displayName: 'room',
           },
         },
       ];
@@ -406,7 +376,7 @@ describe('TransformedMediaService', () => {
           },
           courtroom: {
             id: 1,
-            name: 'room',
+            display_name: 'room',
           },
         },
       ];
@@ -431,7 +401,7 @@ describe('TransformedMediaService', () => {
           },
           courtroom: {
             id: 1,
-            name: 'room',
+            displayName: 'room',
           },
         },
       ];
