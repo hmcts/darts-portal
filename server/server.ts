@@ -54,6 +54,11 @@ export const startServer = ({ disableAuthentication }: StartServerOptions = { di
   // setup the routes for Azure B2C template before session middleware
   app.use(authController.init());
   app.use(session());
+  app.use((req, res, next) => {
+    console.log('PROCESSING REQUEST:', req.originalUrl, req.cookies);
+    console.log('RESPONSE COOKIES:', res.req.sessionID, res.req.cookies);
+    next();
+  });
 
   nunjucks.configure('server/views', {
     autoescape: true,
