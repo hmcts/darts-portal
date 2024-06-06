@@ -7,6 +7,7 @@ import * as path from 'path';
 
 import { session } from './middleware';
 import routes from './routes';
+import { authController } from './controllers';
 
 /**
  * Options for starting the express server
@@ -50,6 +51,8 @@ export const startServer = ({ disableAuthentication }: StartServerOptions = { di
     }
     next();
   });
+  // setup the routes for Azure B2C template before session middleware
+  app.use(authController.init());
   app.use(session());
 
   nunjucks.configure('server/views', {
