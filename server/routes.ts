@@ -2,7 +2,6 @@ import type { Router } from 'express';
 import express, { NextFunction, Request, Response } from 'express';
 import {
   apiController,
-  appController,
   authenticationController,
   downloadController,
   userController,
@@ -25,7 +24,6 @@ export default (disableAuthentication = false): Router => {
 
   // unauthenticated routes
   router.use('/auth', authenticationController.init(disableAuthentication));
-  router.use('/app', appController.init());
 
   return router;
 };
