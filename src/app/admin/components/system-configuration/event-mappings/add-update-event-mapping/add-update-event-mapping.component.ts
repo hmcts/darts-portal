@@ -58,6 +58,7 @@ export class AddUpdateEventMappingComponent implements OnInit {
   );
 
   error$ = this.errorMessageService.errorMessage$;
+  uniqueTypeError = false;
 
   eventMapping: EventMapping | null = null;
 
@@ -96,8 +97,6 @@ export class AddUpdateEventMappingComponent implements OnInit {
 
   ngOnInit(): void {
     this.headerService.hideNavigation();
-    this.setUniqueTypeValidation();
-
     this.errorSubscription = this.error$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((error) => {
       this.setResponseErrors(error);
     });
@@ -130,40 +129,6 @@ export class AddUpdateEventMappingComponent implements OnInit {
     this.router.navigate([this.eventMappingsPath]);
   }
 
-  private setUniqueTypeValidation() {
-    const typeControl = this.form.get('type')!;
-    typeControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
-      if (!this.isNewTypeSubTypeUnique(this.form.controls.type.value, this.form.controls.subType.value)) {
-        this.setTypeErrors();
-      } else {
-        this.form.controls.subType.setErrors(null);
-        this.form.controls.type.setErrors(null);
-      }
-    });
-
-    const subTypeControl = this.form.controls.subType;
-    subTypeControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
-      if (!this.isNewTypeSubTypeUnique(this.form.controls.type.value, this.form.controls.subType.value)) {
-        this.setTypeErrors();
-      } else {
-        this.form.controls.subType.setErrors(null);
-        this.form.controls.type.setErrors(null);
-      }
-    });
-  }
-
-  private isNewTypeSubTypeUnique(newType: string, newSubType: string) {
-    const seen = new Set();
-
-    for (const mapping of this.mappingTypes) {
-      const combo = `${mapping?.type}-${mapping?.subType}`;
-      seen.add(combo);
-    }
-
-    const newCombo = `${newType}-${newSubType}`;
-    return !seen.has(newCombo);
-  }
-
   getErrorMessages(controlKey: string): string[] {
     return this.formService.getFormControlErrorMessages(this.form, controlKey, EventMappingFormErrorMessages);
   }
@@ -179,13 +144,8 @@ export class AddUpdateEventMappingComponent implements OnInit {
   setResponseErrors(error: ErrorMessage | null) {
     if (!this.isRevision && error?.status === 409) {
       // Type and subtype combination must be unique
-      this.setTypeErrors();
+      this.uniqueTypeError = true;
     }
-  }
-
-  private setTypeErrors() {
-    this.form.controls.type.setErrors({ unique: true });
-    this.form.controls.subType.setErrors({ unique: true });
   }
 
   private assignTypes(eventMappings: EventMapping[]) {

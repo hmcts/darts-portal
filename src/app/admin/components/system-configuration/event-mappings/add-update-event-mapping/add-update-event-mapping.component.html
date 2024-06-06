@@ -1,151 +1,169 @@
-<app-validation-error-summary [errors]="getErrorSummary()" />
-
 @if (data$ | async; as data) {
-  @if (isRevision) {
-    <app-govuk-heading caption="Event mapping">{{ eventMapping?.name }}</app-govuk-heading>
-  } @else {
-    <app-govuk-heading>Add event mapping</app-govuk-heading>
-  }
+  @if (uniqueTypeError) {
+    <app-govuk-heading>Type and subtype already in use</app-govuk-heading>
 
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('type')">
-      <label for="type" class="govuk-label" [ngClass]="{ 'govuk-label--s': isRevision }">Type</label>
+    <p class="govuk-body">The combination of type and subtype you entered are already in use.</p>
 
-      @for (error of getErrorMessages('type'); track error) {
-        <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ error }}</p>
-      }
-
-      @if (isRevision) {
-        <p id="read-only-type" class="govuk-body">{{ eventMapping?.type }}</p>
-      } @else {
-        <input
-          type="text"
-          id="type"
-          name="type"
-          formControlName="type"
-          class="govuk-input govuk-input--width-10"
-          [class.govuk-input--error]="isControlInvalid('type')"
-        />
-      }
-    </div>
-    <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('subType')">
-      @if (isRevision) {
-        <label class="govuk-label govuk-label--s">Subtype</label>
-      } @else {
-        <label for="subType" class="govuk-label">Subtype (optional)</label>
-      }
-
-      @for (error of getErrorMessages('subType'); track error) {
-        <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ error }}</p>
-      }
-
-      @if (isRevision) {
-        <p id="read-only-subtype" class="govuk-body">{{ eventMapping?.subType }}</p>
-      } @else {
-        <input
-          type="text"
-          id="subType"
-          name="sub-type"
-          formControlName="subType"
-          class="govuk-input govuk-input--width-10"
-          [class.govuk-input--error]="isControlInvalid('subType')"
-        />
-      }
-    </div>
-    <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('eventName')">
-      <label for="eventName" class="govuk-label">Event name</label>
-
-      @for (error of getErrorMessages('eventName'); track error) {
-        <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ error }}</p>
-      }
-
-      <input
-        id="eventName"
-        name="event-name"
-        formControlName="eventName"
-        class="govuk-input govuk-input--width-30"
-        [class.govuk-input--error]="isControlInvalid('eventName')"
-      />
-    </div>
-    <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('eventHandler')">
-      <label for="eventHandlerSelect" class="govuk-label">Map to event handler</label>
-
-      @for (error of getErrorMessages('eventHandler'); track error) {
-        <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ error }}</p>
-      }
-
-      <select
-        class="govuk-select"
-        id="eventHandlerSelect"
-        name="event-handler-select"
-        formControlName="eventHandler"
-        [class.govuk-input--error]="isControlInvalid('eventHandler')"
-      >
-        <option [value]="null" disabled selected>Select</option>
-        @for (handler of data.eventHandlers; track handler) {
-          <option [value]="handler">
-            {{ handler }}
-          </option>
-        }
-      </select>
-    </div>
-
-    @if (isRevision) {
-      <div class="govuk-form-group">
-        <label class="govuk-label govuk-label--s">Reporting restriction</label>
-        <p id="read-only-reporting-restriction" class="govuk-body">
-          {{ eventMapping?.hasRestrictions ? 'Yes' : 'No' }}
-        </p>
-      </div>
-    }
-
-    <div class="govuk-form-group">
-      @if (isRevision) {
-        <label class="govuk-label govuk-label--s">Date created</label>
-        <p id="read-only-created" class="govuk-body">{{ eventMapping?.createdAt | luxonDate: 'dd MMM yyyy' }}</p>
-      } @else {
-        <div class="govuk-checkboxes" data-module="govuk-checkboxes">
-          <div class="govuk-checkboxes__item">
-            <input
-              class="govuk-checkboxes__input"
-              id="withRestrictions"
-              name="with-restrictions"
-              type="checkbox"
-              [value]="true"
-              formControlName="withRestrictions"
-            />
-            <label class="govuk-label govuk-checkboxes__label" for="withRestrictions"
-              >Tick if this event mapping has reporting restrictions</label
-            >
-          </div>
-        </div>
-      }
-    </div>
+    <p class="govuk-body">Choose a different combination or make changes to the existing mapping.</p>
 
     <div class="govuk-button-group">
-      <button id="confirmButton" class="govuk-button" (mousedown)="(false)" type="submit">
-        @if (isRevision) {
-          Save as new version
-        } @else {
-          Add mapping
-        }
-      </button>
-
-      <a class="govuk-link" href="javascript:void(0)" (click)="onCancel()">Cancel</a>
+      <a
+        href="#"
+        (click)="$event.preventDefault(); uniqueTypeError = false"
+        [routerLink]="['/admin/system-configuration/event-mappings/create']"
+        class="govuk-link"
+        >Go back</a
+      >
     </div>
+  } @else {
+    <app-validation-error-summary [errors]="getErrorSummary()" />
 
     @if (isRevision) {
-      <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
-      <div class="govuk-button-group">
-        <a
-          class="govuk-link delete-link"
-          href="javascript:void(0)"
-          [routerLink]="['/admin/system-configuration/event-mappings', id, 'delete']"
-          >Delete event mapping</a
-        >
-      </div>
+      <app-govuk-heading caption="Event mapping">{{ eventMapping?.name }}</app-govuk-heading>
+    } @else {
+      <app-govuk-heading>Add event mapping</app-govuk-heading>
     }
-  </form>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('type')">
+        <label for="type" class="govuk-label" [ngClass]="{ 'govuk-label--s': isRevision }">Type</label>
+
+        @for (error of getErrorMessages('type'); track error) {
+          <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ error }}</p>
+        }
+
+        @if (isRevision) {
+          <p id="read-only-type" class="govuk-body">{{ eventMapping?.type }}</p>
+        } @else {
+          <input
+            type="text"
+            id="type"
+            name="type"
+            formControlName="type"
+            class="govuk-input govuk-input--width-10"
+            [class.govuk-input--error]="isControlInvalid('type')"
+          />
+        }
+      </div>
+      <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('subType')">
+        @if (isRevision) {
+          <label class="govuk-label govuk-label--s">Subtype</label>
+        } @else {
+          <label for="subType" class="govuk-label">Subtype (optional)</label>
+        }
+
+        @for (error of getErrorMessages('subType'); track error) {
+          <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ error }}</p>
+        }
+
+        @if (isRevision) {
+          <p id="read-only-subtype" class="govuk-body">{{ eventMapping?.subType }}</p>
+        } @else {
+          <input
+            type="text"
+            id="subType"
+            name="sub-type"
+            formControlName="subType"
+            class="govuk-input govuk-input--width-10"
+            [class.govuk-input--error]="isControlInvalid('subType')"
+          />
+        }
+      </div>
+      <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('eventName')">
+        <label for="eventName" class="govuk-label">Event name</label>
+
+        @for (error of getErrorMessages('eventName'); track error) {
+          <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ error }}</p>
+        }
+
+        <input
+          id="eventName"
+          name="event-name"
+          formControlName="eventName"
+          class="govuk-input govuk-input--width-30"
+          [class.govuk-input--error]="isControlInvalid('eventName')"
+        />
+      </div>
+      <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('eventHandler')">
+        <label for="eventHandlerSelect" class="govuk-label">Map to event handler</label>
+
+        @for (error of getErrorMessages('eventHandler'); track error) {
+          <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ error }}</p>
+        }
+
+        <select
+          class="govuk-select"
+          id="eventHandlerSelect"
+          name="event-handler-select"
+          formControlName="eventHandler"
+          [class.govuk-input--error]="isControlInvalid('eventHandler')"
+        >
+          <option [value]="null" disabled selected>Select</option>
+          @for (handler of data.eventHandlers; track handler) {
+            <option [value]="handler">
+              {{ handler }}
+            </option>
+          }
+        </select>
+      </div>
+
+      @if (isRevision) {
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-label--s">Reporting restriction</label>
+          <p id="read-only-reporting-restriction" class="govuk-body">
+            {{ eventMapping?.hasRestrictions ? 'Yes' : 'No' }}
+          </p>
+        </div>
+      }
+
+      <div class="govuk-form-group">
+        @if (isRevision) {
+          <label class="govuk-label govuk-label--s">Date created</label>
+          <p id="read-only-created" class="govuk-body">{{ eventMapping?.createdAt | luxonDate: 'dd MMM yyyy' }}</p>
+        } @else {
+          <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+            <div class="govuk-checkboxes__item">
+              <input
+                class="govuk-checkboxes__input"
+                id="withRestrictions"
+                name="with-restrictions"
+                type="checkbox"
+                [value]="true"
+                formControlName="withRestrictions"
+              />
+              <label class="govuk-label govuk-checkboxes__label" for="withRestrictions"
+                >Tick if this event mapping has reporting restrictions</label
+              >
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="govuk-button-group">
+        <button id="confirmButton" class="govuk-button" (mousedown)="(false)" type="submit">
+          @if (isRevision) {
+            Save as new version
+          } @else {
+            Add mapping
+          }
+        </button>
+
+        <a class="govuk-link" href="javascript:void(0)" (click)="onCancel()">Cancel</a>
+      </div>
+
+      @if (isRevision) {
+        <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
+        <div class="govuk-button-group">
+          <a
+            class="govuk-link delete-link"
+            href="javascript:void(0)"
+            [routerLink]="['/admin/system-configuration/event-mappings', id, 'delete']"
+            >Delete event mapping</a
+          >
+        </div>
+      }
+    </form>
+  }
 } @else {
   <app-loading />
 }

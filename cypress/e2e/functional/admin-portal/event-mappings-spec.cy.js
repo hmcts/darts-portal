@@ -127,7 +127,7 @@ describe('Admin - Event mappings screen', () => {
       cy.contains('Select an event handler to map to').should('be.visible');
     });
 
-    it('should not submit without unique combination of type and subtype', () => {
+    it('should display error screen when submitting without unique combination of type and subtype', () => {
       cy.get('#type').type('1000');
       cy.get('#subType').type('1001');
       cy.get('#eventName').type('Test Event Name');
@@ -136,7 +136,9 @@ describe('Admin - Event mappings screen', () => {
 
       cy.get('#confirmButton').click();
 
-      cy.contains('The combination of event type and subtype should be unique').should('be.visible');
+      cy.get('.govuk-heading-l').contains('Type and subtype already in use');
+      cy.get('.govuk-body').contains('The combination of type and subtype you entered are already in use.');
+      cy.get('.govuk-link').contains('Go back').click();
 
       cy.get('#subType').clear();
       cy.get('#subType').type('1002');
