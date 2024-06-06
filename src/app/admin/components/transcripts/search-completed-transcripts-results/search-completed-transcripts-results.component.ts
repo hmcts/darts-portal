@@ -33,9 +33,9 @@ export class SearchCompletedTranscriptsResultsComponent implements OnChanges {
   mapRows(results: TranscriptionDocumentSearchResult[]) {
     return results.map((result) => ({
       id: result.transcriptionDocumentId,
-      caseNumber: result.case.caseNumber,
-      courthouse: result.courthouse.displayName,
-      hearingDate: result.hearing.hearingDate,
+      caseNumber: result.case ? result.case.caseNumber : undefined,
+      courthouse: result.courthouse ? result.courthouse.displayName : undefined,
+      hearingDate: result.hearing ? result.hearing.hearingDate : undefined,
       requestMethod: result.isManualTranscription,
     }));
   }
