@@ -83,17 +83,13 @@ function postAuthCallback(
       });
       const securityToken = result.data;
       console.log('postAuthCallback: securityToken', securityToken);
-      req.session.userType = type;
-      req.session.securityToken = securityToken;
-      console.log('postAuthCallback: session ID', req.sessionID, req.session?.id, req.session);
-      req.session.save((err) => {
-        console.log('postAuthCallback: session.save - err', err);
-        console.log('postAuthCallback: session.save - req.session', req.sessionID, req.session?.id, req.session);
+      req.session.regenerate((err) => {
         if (err) {
           return next(err);
         }
-        // tiny wait in case there is a race condition with the session being stored in redis
-        setTimeout(() => res.redirect('/'), 250);
+        req.session.userType = type;
+        req.session.securityToken = securityToken;
+        res.redirect('/');
       });
     } catch (err) {
       console.error('Error on authentication callback', err);
