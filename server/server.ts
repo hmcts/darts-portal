@@ -46,11 +46,6 @@ export const startServer = ({ disableAuthentication }: StartServerOptions = { di
     app.set('trust proxy', 1); // trust first proxy
   }
   app.use((req, res, next) => {
-    console.log('PROCESSING REQUEST:', req.originalUrl, req.cookies);
-    console.log('RESPONSE COOKIES:', res.req.sessionID, res.req.cookies);
-    next();
-  });
-  app.use((req, res, next) => {
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
     if (req.secure) {
       res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');

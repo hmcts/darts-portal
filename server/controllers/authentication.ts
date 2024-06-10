@@ -82,7 +82,6 @@ function postAuthCallback(
         headers: { 'content-type': 'application/x-www-form-urlencoded' },
       });
       const securityToken = result.data;
-      console.log('postAuthCallback: securityToken', securityToken);
       req.session.regenerate((err) => {
         if (err) {
           return next(err);
@@ -147,12 +146,9 @@ function getIsAuthenticated(disableAuthentication = false): (req: Request, res: 
     // don't allow caching of this endpoint
     res.header('Cache-Control', 'no-store, must-revalidate');
 
-    console.log('getIsAuthenticated: session ID', req.session?.id, req.session);
     if (!AuthenticationUtils.isJwtExpired(req.session?.securityToken?.accessToken) || disableAuthentication) {
-      console.log('getIsAuthenticated: true');
       res.status(200).send(true);
     } else {
-      console.log('getIsAuthenticated: false');
       res.status(200).send(false);
     }
   };
