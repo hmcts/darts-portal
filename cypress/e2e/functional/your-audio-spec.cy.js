@@ -76,7 +76,7 @@ describe('Your audio', () => {
     cy.contains('C5_NoDownloadPermissions.mp3').should('exist');
     cy.contains('Download audio file').click();
     cy.get('.govuk-error-summary').contains('You do not have permission to view this file');
-    cy.get('.govuk-error-summary').contains('Email crownITsupport@justice.gov.uk to request access');
+    cy.get('.govuk-error-summary').contains('Email DTS-ITServiceDesk@justice.gov.uk to request access');
     cy.get('button.govuk-button').should('be.disabled');
 
     cy.a11y();
