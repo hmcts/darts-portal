@@ -10,6 +10,7 @@ export type CaseSearchResult = {
   judges?: string[];
   reportingRestriction?: string;
   hearings?: Hearing[];
+  courtrooms?: string[];
 };
 
 export type Case = {

@@ -176,6 +176,7 @@ export class CaseService {
       judges: c.judges,
       reportingRestriction: c.reporting_restriction,
       hearings: c.hearings,
+      courtrooms: c.hearings?.map((h) => h.courtroom),
     };
   }
 
