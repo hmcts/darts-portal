@@ -1,3 +1,5 @@
+import { HiddenReason } from '@admin-types/hidden-reasons/hidden-reason';
+import { HiddenReasonData } from '@admin-types/hidden-reasons/hidden-reason-data.interface';
 import {
   SecurityGroup,
   SecurityGroupData,
@@ -162,6 +164,28 @@ export class TranscriptionAdminService {
     return this.http
       .get<TranscriptionDocumentData>(`api/admin/transcription-documents/${id}`)
       .pipe(map((res) => this.mapTranscriptionDocument(res)));
+  }
+
+  hideTranscriptionDoucment(id: number): Observable<void> {
+    return this.http.post<void>(`api/admin/transcription-documents/${id}/hide`, null);
+  }
+
+  /**
+   *  Gets the reasons for hiding a transcription document or media file
+   */
+  getHiddenReasons(): Observable<HiddenReason[]> {
+    return this.http.get<HiddenReasonData[]>('api/admin/hidden-reasons').pipe(map((res) => this.mapHiddenReasons(res)));
+  }
+
+  private mapHiddenReasons(data: HiddenReasonData[]): HiddenReason[] {
+    return data.map((reason) => ({
+      id: reason.id,
+      reason: reason.reason,
+      displayName: reason.display_name,
+      displayState: reason.display_state,
+      displayOrder: reason.display_order,
+      markedForDeletion: reason.marked_for_deletion,
+    }));
   }
 
   private mapTranscriptionDocument(res: TranscriptionDocumentData): TranscriptionDocument {

@@ -1,0 +1,87 @@
+@if (!isSubmitted) {
+  <app-validation-error-summary [errors]="getErrorSummary()" />
+
+  <app-govuk-heading>Hide or delete file</app-govuk-heading>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('reason')">
+      <fieldset class="govuk-fieldset">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+          <h1 class="govuk-fieldset__heading">Select a reason</h1>
+        </legend>
+
+        @if (reasons$ | async; as reasons) {
+          @for (error of getErrorMessages('reason'); track error) {
+            <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ error }}</p>
+          }
+          <div class="govuk-radios" data-module="govuk-radios">
+            @for (reason of reasons; track reason) {
+              <div class="govuk-radios__item">
+                <input
+                  class="govuk-radios__input"
+                  [id]="'reason-' + reason.id"
+                  name="reason"
+                  type="radio"
+                  [value]="reason.id"
+                  formControlName="reason"
+                />
+                <label class="govuk-label govuk-radios__label" for="reason"> {{ reason.displayName }} </label>
+                <div [id]="'reason-hint-' + reason.id" class="govuk-hint govuk-radios__hint">
+                  @if (reason.markedForDeletion) {
+                    File will be hidden and marked for deletion
+                  } @else {
+                    File will be hidden only
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </fieldset>
+    </div>
+
+    <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('ticketReference')">
+      <label for="ticketReference" class="govuk-label">Enter ticket reference</label>
+
+      @for (error of getErrorMessages('ticketReference'); track error) {
+        <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ error }}</p>
+      }
+
+      <input
+        id="ticketReference"
+        name="ticket-reference"
+        formControlName="ticketReference"
+        class="govuk-input govuk-input--width-10"
+        [class.govuk-input--error]="isControlInvalid('ticketReference')"
+      />
+    </div>
+
+    <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('comments')">
+      <label id="comment-label" class="govuk-label" for="comments">Comments</label>
+
+      @for (error of getErrorMessages('comments'); track error) {
+        <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ error }}</p>
+      }
+
+      <app-govuk-textarea
+        [control]="form.controls.comments"
+        [id]="'comments'"
+        name="comments"
+        ariaDescribedBy="comment-label"
+        [maxCharacterLimit]="256"
+        (isInvalid)="isControlInvalid('comments')"
+      ></app-govuk-textarea>
+    </div>
+
+    <div class="govuk-button-group">
+      <button class="govuk-button" type="submit">Hide or delete</button>
+      <a class="govuk-link" href="javascript:void(0)" (click)="goBack()">Cancel</a>
+    </div>
+  </form>
+} @else {
+  <app-file-hide-or-delete-success
+    [fileType]="fileType"
+    [id]="id"
+    [continueLink]="continueLink"
+  ></app-file-hide-or-delete-success>
+}
