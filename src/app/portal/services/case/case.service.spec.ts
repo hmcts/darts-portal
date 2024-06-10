@@ -600,4 +600,37 @@ describe('CaseService', () => {
       });
     });
   });
+
+  describe('#mapTranscriptDataToTranscript', () => {
+    it('should map transcript data to transcript', () => {
+      const data: TranscriptData[] = [
+        {
+          transcription_id: 1,
+          hearing_id: 2,
+          hearing_date: '2023-10-12',
+          type: 'Sentencing remarks',
+          requested_on: '2023-10-12T00:00:00Z',
+          requested_by_name: 'Joe Bloggs',
+          status: 'Complete',
+        },
+      ];
+      expect(service['mapTranscriptDataToTranscript'](data)).toEqual([
+        {
+          id: 1,
+          hearingId: 2,
+          hearingDate: DateTime.fromISO('2023-10-12'),
+          type: 'Sentencing remarks',
+          requestedOn: DateTime.fromISO('2023-10-12T00:00:00Z'),
+          status: 'Complete',
+          requestedByName: 'Joe Bloggs',
+        },
+      ]);
+    });
+
+    it('should map Approved status to With Transcriber', () => {
+      const data = [{ status: 'Approved' }];
+      const mappedData = service['mapTranscriptDataToTranscript'](data as TranscriptData[]);
+      expect(mappedData[0].status).toEqual('With Transcriber');
+    });
+  });
 });

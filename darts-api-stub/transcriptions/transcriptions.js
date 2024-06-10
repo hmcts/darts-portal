@@ -76,6 +76,21 @@ const yourTranscriptionsStub = {
       },
       requested_ts: '2023-06-26T13:00:00Z',
     },
+    {
+      transcription_id: 6,
+      case_id: 123,
+      case_number: 'C123',
+      courthouse_name: 'Swansea',
+      hearing_date: '2023-06-10',
+      transcription_type: 'Court log',
+      status: 'Approved',
+      transcription_urgency: {
+        transcription_urgency_id: 1,
+        description: 'Overnight',
+        priority_order: 1,
+      },
+      requested_ts: '2024-02-21T15:00:00Z',
+    },
   ],
   approver_transcriptions: [
     {
