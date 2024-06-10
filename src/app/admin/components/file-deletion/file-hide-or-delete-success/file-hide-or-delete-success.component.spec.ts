@@ -8,10 +8,9 @@ describe('FileHideOrDeleteSuccessComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FileHideOrDeleteSuccessComponent]
-    })
-    .compileComponents();
-    
+      imports: [FileHideOrDeleteSuccessComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(FileHideOrDeleteSuccessComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
