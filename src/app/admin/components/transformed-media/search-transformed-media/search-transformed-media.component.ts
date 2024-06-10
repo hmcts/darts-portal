@@ -1,6 +1,7 @@
 import { TransformedMediaAdmin } from '@admin-types/transformed-media/transformed-media-admin';
 import { TransformedMediaSearchFormValues } from '@admin-types/transformed-media/transformed-media-search-form.values';
 import { Component, inject, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
@@ -26,6 +27,7 @@ import { TransformedMediaSearchResultsComponent } from '../transformed-media-sea
 })
 export class SearchTransformedMediaComponent {
   transformedMediaService = inject(TransformedMediaService);
+  router = inject(Router);
   userService = inject(UserAdminService);
   errors: ErrorSummaryEntry[] = [];
   isSearchFormSubmitted = signal<boolean>(false);
@@ -62,6 +64,11 @@ export class SearchTransformedMediaComponent {
       .subscribe((results) => {
         this.results.set(results);
         this.isSearchFormSubmitted.set(true);
+
+        if (results?.length === 1) {
+          // navigate to the transcript document details page
+          this.router.navigate(['/admin/transformed-media', results[0].id]);
+        }
       });
   }
 
