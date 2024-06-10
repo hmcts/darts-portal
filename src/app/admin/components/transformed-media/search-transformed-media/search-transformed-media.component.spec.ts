@@ -113,5 +113,11 @@ describe('SearchTransformedMediaComponent', () => {
       component.onSearch({});
       expect(component.isSearchFormSubmitted()).toBe(true);
     });
+
+    it('should navigate to the transcript page if only one result is returned', () => {
+      jest.spyOn(component.router, 'navigate');
+      component.onSearch({});
+      expect(component.router.navigate).toHaveBeenCalledWith(['/admin/transformed-media', 1]);
+    });
   });
 });
