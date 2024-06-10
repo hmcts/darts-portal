@@ -1,3 +1,4 @@
+import { FileHideOrDeleteFormValues } from '@admin-types/hidden-reasons/file-hide-or-delete-form-values';
 import { HiddenReason } from '@admin-types/hidden-reasons/hidden-reason';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
@@ -59,7 +60,14 @@ export class FileHideOrDeleteComponent implements OnInit {
     this.form.markAllAsTouched();
 
     if (this.form.valid) {
-      this.isSubmitted = true;
+      this.transcriptionAdminService
+        .hideTranscriptionDocument(this.id, {
+          ...this.form.value,
+          reason: Number(this.form.value.reason),
+        } as FileHideOrDeleteFormValues)
+        .subscribe(() => {
+          this.isSubmitted = true;
+        });
     }
   }
 

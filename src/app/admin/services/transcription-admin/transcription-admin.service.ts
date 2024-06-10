@@ -1,3 +1,6 @@
+import { FileHide } from '@admin-types/hidden-reasons/file-hide';
+import { FileHideData } from '@admin-types/hidden-reasons/file-hide-data.interface';
+import { FileHideOrDeleteFormValues } from '@admin-types/hidden-reasons/file-hide-or-delete-form-values';
 import { HiddenReason } from '@admin-types/hidden-reasons/hidden-reason';
 import { HiddenReasonData } from '@admin-types/hidden-reasons/hidden-reason-data.interface';
 import {
@@ -166,8 +169,41 @@ export class TranscriptionAdminService {
       .pipe(map((res) => this.mapTranscriptionDocument(res)));
   }
 
-  hideTranscriptionDoucment(id: number): Observable<void> {
-    return this.http.post<void>(`api/admin/transcription-documents/${id}/hide`, null);
+  hideTranscriptionDocument(id: number, formValues: FileHideOrDeleteFormValues): Observable<FileHide> {
+    const body = this.mapHidePostRequest(formValues);
+
+    return this.http
+      .post<FileHideData>(`api/admin/transcription-documents/${id}/hide`, body)
+      .pipe(map((res) => this.mapHideFileResponse(res)));
+  }
+
+  private mapHideFileResponse(res: FileHideData): FileHide {
+    return {
+      id: res.id,
+      isHidden: res.is_hidden,
+      adminAction: {
+        id: res.admin_action.id,
+        reasonId: res.admin_action.reason_id,
+        hiddenById: res.admin_action.hidden_by_id,
+        hiddenAt: DateTime.fromISO(res.admin_action.hidden_at),
+        isMarkedForManualDeletion: res.admin_action.is_marked_for_manual_deletion,
+        markedForManualDeletionById: res.admin_action.marked_for_manual_deletion_by_id,
+        markedForManualDeletionAt: DateTime.fromISO(res.admin_action.marked_for_manual_deletion_at),
+        ticketReference: res.admin_action.ticket_reference,
+        comments: res.admin_action.comments,
+      },
+    };
+  }
+
+  private mapHidePostRequest(body: FileHideOrDeleteFormValues) {
+    return {
+      is_hidden: true,
+      admin_action: {
+        reason_id: body.reason,
+        ticket_reference: body.ticketReference,
+        comments: body.comments,
+      },
+    };
   }
 
   /**
