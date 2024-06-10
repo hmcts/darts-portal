@@ -8,6 +8,8 @@ import {
   CaseData,
   CaseRetentionChange,
   CaseRetentionHistoryData,
+  CaseSearchResult,
+  CaseSearchResultData,
   Hearing,
   HearingData,
   SearchFormValues,
@@ -597,6 +599,61 @@ describe('CaseService', () => {
         judges: ['JUDGE'],
         number: '1',
         reportingRestriction: 'RESTRICTION',
+      });
+    });
+
+    describe('maps courtrooms', () => {
+      let data: CaseSearchResultData;
+      beforeEach(() => {
+        data = {
+          case_id: 1,
+          case_number: '1',
+          courthouse: 'COURTHOUSE',
+          defendants: ['DEFENDANT'],
+          judges: ['JUDGE'],
+          reporting_restriction: 'RESTRICTION',
+          hearings: [
+            {
+              id: 1,
+              date: DateTime.fromFormat('2024-06-09', 'YYYY-MM-DD'),
+              courtroom: '1',
+              judges: [],
+              transcriptCount: 0,
+            },
+          ],
+        };
+      });
+
+      it('single courtroom', () => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const mapped: CaseSearchResult = (service as any).mapCaseDataToCaseSearchResult(data);
+        expect(mapped.courtrooms).toEqual(['1']);
+      });
+
+      it('multiple identical courtrooms', () => {
+        data.hearings?.push({
+          id: 2,
+          date: DateTime.fromFormat('2024-06-10', 'YYYY-MM-DD'),
+          courtroom: '1',
+          judges: [],
+          transcriptCount: 0,
+        });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const mapped: CaseSearchResult = (service as any).mapCaseDataToCaseSearchResult(data);
+        expect(mapped.courtrooms).toEqual(['1', '1']);
+      });
+
+      it('multiple different courtrooms', () => {
+        data.hearings?.push({
+          id: 2,
+          date: DateTime.fromFormat('2024-06-10', 'YYYY-MM-DD'),
+          courtroom: '2',
+          judges: [],
+          transcriptCount: 0,
+        });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const mapped: CaseSearchResult = (service as any).mapCaseDataToCaseSearchResult(data);
+        expect(mapped.courtrooms).toEqual(['1', '2']);
       });
     });
   });
