@@ -4,6 +4,7 @@ export interface DatatableColumn {
   sortable?: boolean;
   customSortFn?: CustomSort<unknown>;
   width?: string;
+  hidden?: boolean;
 }
 
 export type CustomSort<T> = (a: T, b: T, order: Order) => number;

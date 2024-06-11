@@ -67,7 +67,11 @@ export class AudiosComponent {
     { name: 'Status', prop: 'status', sortable: true },
   ];
 
-  readyColumns = [{ name: '', prop: '' }, ...this.columns, { name: '', prop: '' }]; //Empty columns for unread icon and view link
+  readyColumns = [
+    { name: 'Unread notification column', prop: '', hidden: true },
+    ...this.columns,
+    { name: 'View audio links', prop: '', hidden: true },
+  ]; //Empty columns for unread icon and view link
 
   constructor() {
     this.audioRequests$ = this.refresh$.pipe(
