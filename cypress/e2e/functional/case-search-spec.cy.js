@@ -30,12 +30,26 @@ describe('Case search', () => {
     cy.get('button').contains('Search').click();
 
     cy.get('#search-results').should('contain', '1 result');
-    cy.get('.govuk-table__row').contains('C20220620001');
-    cy.get('.govuk-table__row').contains('Swansea');
-    cy.get('.govuk-table__row').contains('1');
-    cy.get('.govuk-table__row').contains('Judge Judy');
-    cy.get('.govuk-table__row').contains('Defendant Dave');
+    cy.get('.govuk-table__row .case_number a').contains('C20220620001');
+    cy.get('.govuk-table__row .courthouse').contains('Swansea');
+    cy.get('.govuk-table__row .courtroom').contains('3');
+    cy.get('.govuk-table__row .judges').contains('Judge Judy');
+    cy.get('.govuk-table__row .defendants').contains('Defendant Dave');
     cy.get('.restriction-row').should('contain', 'There are restrictions against this case');
+  });
+
+  it('single case with multiple courtrooms, judges and defendants', () => {
+    cy.contains('Search').click();
+    cy.get('h1').should('contain', 'Search for a case');
+    cy.get('#case_number').type('C20220620004');
+    cy.get('button').contains('Search').click();
+
+    cy.get('#search-results').should('contain', '1 result');
+    cy.get('.govuk-table__row .case_number a').contains('C20220620004');
+    cy.get('.govuk-table__row .courthouse').contains('Windsor');
+    cy.get('.govuk-table__row .courtroom').contains('Multiple');
+    cy.get('.govuk-table__row .judges').contains('Multiple');
+    cy.get('.govuk-table__row .defendants').contains('Multiple');
   });
 
   it('advanced search fields and multiple results', () => {

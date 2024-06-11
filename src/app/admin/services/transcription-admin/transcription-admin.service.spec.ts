@@ -716,7 +716,6 @@ describe('TranscriptionAdminService', () => {
       };
 
       const expectedBody = {
-        transcription_id: null,
         case_number: '123',
         courthouse_display_name: 'Test Courthouse',
         hearing_date: '2022-01-01',
@@ -758,7 +757,6 @@ describe('TranscriptionAdminService', () => {
         requested_by: null,
         is_manual_transcription: null,
         owner: null,
-        transcription_id: null,
       });
     });
 

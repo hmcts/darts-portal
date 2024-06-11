@@ -199,7 +199,7 @@ export class TranscriptionService {
       courthouseName: r.courthouse_name,
       hearingDate: DateTime.fromISO(r.hearing_date),
       transcriptionType: r.transcription_type,
-      status: r.status,
+      status: r.status === 'Approved' ? 'With Transcriber' : r.status,
       urgency: r.transcription_urgency
         ? r.transcription_urgency
         : { transcription_urgency_id: 0, description: '', priority_order: 0 },

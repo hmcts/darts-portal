@@ -7,7 +7,7 @@ import * as path from 'path';
 
 import { session } from './middleware';
 import routes from './routes';
-import { authController } from './controllers';
+import { appController, authController } from './controllers';
 
 /**
  * Options for starting the express server
@@ -28,6 +28,7 @@ export const startServer = ({ disableAuthentication }: StartServerOptions = { di
   };
 
   healthCheck.addTo(appHealth, healthConfig);
+  app.use(appHealth);
 
   app.use(
     '/assets',
@@ -51,16 +52,17 @@ export const startServer = ({ disableAuthentication }: StartServerOptions = { di
     }
     next();
   });
-  // setup the routes for Azure B2C template before session middleware
-  app.use(authController.init());
-  app.use(session());
 
   nunjucks.configure('server/views', {
     autoescape: true,
     express: app,
   });
 
-  app.use(appHealth);
+  // setup the routes for Azure B2C template and app config before session middleware
+  app.use(authController.init());
+  app.use('/app', appController.init());
+
+  app.use(session());
   app.use(routes(disableAuthentication));
 
   // if routes not handles above, they should be handled by angular

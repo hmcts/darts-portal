@@ -163,7 +163,7 @@ export class CaseService {
       type: t.type,
       requestedOn: DateTime.fromISO(t.requested_on),
       requestedByName: t.requested_by_name,
-      status: t.status,
+      status: t.status === 'Approved' ? 'With Transcriber' : t.status,
     }));
   }
 
@@ -176,6 +176,7 @@ export class CaseService {
       judges: c.judges,
       reportingRestriction: c.reporting_restriction,
       hearings: c.hearings,
+      courtrooms: c.hearings?.map((h) => h.courtroom),
     };
   }
 

@@ -8,6 +8,8 @@ import {
   CaseData,
   CaseRetentionChange,
   CaseRetentionHistoryData,
+  CaseSearchResult,
+  CaseSearchResultData,
   Hearing,
   HearingData,
   SearchFormValues,
@@ -598,6 +600,94 @@ describe('CaseService', () => {
         number: '1',
         reportingRestriction: 'RESTRICTION',
       });
+    });
+
+    describe('maps courtrooms', () => {
+      let data: CaseSearchResultData;
+      beforeEach(() => {
+        data = {
+          case_id: 1,
+          case_number: '1',
+          courthouse: 'COURTHOUSE',
+          defendants: ['DEFENDANT'],
+          judges: ['JUDGE'],
+          reporting_restriction: 'RESTRICTION',
+          hearings: [
+            {
+              id: 1,
+              date: DateTime.fromFormat('2024-06-09', 'YYYY-MM-DD'),
+              courtroom: '1',
+              judges: [],
+              transcriptCount: 0,
+            },
+          ],
+        };
+      });
+
+      it('single courtroom', () => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const mapped: CaseSearchResult = (service as any).mapCaseDataToCaseSearchResult(data);
+        expect(mapped.courtrooms).toEqual(['1']);
+      });
+
+      it('multiple identical courtrooms', () => {
+        data.hearings?.push({
+          id: 2,
+          date: DateTime.fromFormat('2024-06-10', 'YYYY-MM-DD'),
+          courtroom: '1',
+          judges: [],
+          transcriptCount: 0,
+        });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const mapped: CaseSearchResult = (service as any).mapCaseDataToCaseSearchResult(data);
+        expect(mapped.courtrooms).toEqual(['1', '1']);
+      });
+
+      it('multiple different courtrooms', () => {
+        data.hearings?.push({
+          id: 2,
+          date: DateTime.fromFormat('2024-06-10', 'YYYY-MM-DD'),
+          courtroom: '2',
+          judges: [],
+          transcriptCount: 0,
+        });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const mapped: CaseSearchResult = (service as any).mapCaseDataToCaseSearchResult(data);
+        expect(mapped.courtrooms).toEqual(['1', '2']);
+      });
+    });
+  });
+
+  describe('#mapTranscriptDataToTranscript', () => {
+    it('should map transcript data to transcript', () => {
+      const data: TranscriptData[] = [
+        {
+          transcription_id: 1,
+          hearing_id: 2,
+          hearing_date: '2023-10-12',
+          type: 'Sentencing remarks',
+          requested_on: '2023-10-12T00:00:00Z',
+          requested_by_name: 'Joe Bloggs',
+          status: 'Complete',
+        },
+      ];
+      expect(service['mapTranscriptDataToTranscript'](data)).toEqual([
+        {
+          id: 1,
+          hearingId: 2,
+          hearingDate: DateTime.fromISO('2023-10-12'),
+          type: 'Sentencing remarks',
+          requestedOn: DateTime.fromISO('2023-10-12T00:00:00Z'),
+          status: 'Complete',
+          requestedByName: 'Joe Bloggs',
+        },
+      ]);
+    });
+
+    it('should map Approved status to With Transcriber', () => {
+      const data = [{ status: 'Approved' }];
+      const mappedData = service['mapTranscriptDataToTranscript'](data as TranscriptData[]);
+      expect(mappedData[0].status).toEqual('With Transcriber');
     });
   });
 });

@@ -3,6 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import {
+  TranscriptRequestData,
   TranscriptionDetails,
   TranscriptionDetailsData,
   TranscriptionRequest,
@@ -514,6 +515,14 @@ describe('TranscriptionService', () => {
       const result = service.getHearingRequestDetailsFromTranscript(mockTranscription);
 
       expect(result).toEqual(expectedResult);
+    });
+  });
+
+  describe('#mapYourTranscriptRequestData', () => {
+    it('should map Approved status to With Transcriber', () => {
+      const data = [{ status: 'Approved' }] as TranscriptRequestData[];
+      const mappedData = service['mapYourTranscriptRequestData'](data);
+      expect(mappedData[0].status).toEqual('With Transcriber');
     });
   });
 });

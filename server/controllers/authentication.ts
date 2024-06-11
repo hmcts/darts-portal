@@ -82,16 +82,12 @@ function postAuthCallback(
         headers: { 'content-type': 'application/x-www-form-urlencoded' },
       });
       const securityToken = result.data;
-      console.log('postAuthCallback: securityToken', securityToken);
-      req.session.userType = type;
-      req.session.securityToken = securityToken;
-      console.log('postAuthCallback: session ID', req.sessionID, req.session?.id, req.session);
-      req.session.save((err) => {
-        console.log('postAuthCallback: session.save - err', err);
-        console.log('postAuthCallback: session.save - req.session', req.sessionID, req.session?.id, req.session);
+      req.session.regenerate((err) => {
         if (err) {
           return next(err);
         }
+        req.session.userType = type;
+        req.session.securityToken = securityToken;
         res.redirect('/');
       });
     } catch (err) {
@@ -150,12 +146,9 @@ function getIsAuthenticated(disableAuthentication = false): (req: Request, res: 
     // don't allow caching of this endpoint
     res.header('Cache-Control', 'no-store, must-revalidate');
 
-    console.log('getIsAuthenticated: session ID', req.session?.id, req.session);
     if (!AuthenticationUtils.isJwtExpired(req.session?.securityToken?.accessToken) || disableAuthentication) {
-      console.log('getIsAuthenticated: true');
       res.status(200).send(true);
     } else {
-      console.log('getIsAuthenticated: false');
       res.status(200).send(false);
     }
   };
