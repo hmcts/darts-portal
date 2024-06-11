@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const { DateTime } = require('luxon');
 
 const documents = [
   {
@@ -79,6 +80,28 @@ router.get('/:transcription_document_id', (req, res) => {
     uploaded_by: 3,
     is_hidden: false,
   });
+});
+
+router.post('/:transcription_document_id/hide', (req, res) => {
+  const body = req.body;
+
+  const response = {
+    id: 0,
+    is_hidden: true,
+    admin_action: {
+      id: 0,
+      reason_id: body.admin_action.reason_id,
+      hidden_by_id: 0,
+      hidden_at: DateTime.now().toISO(),
+      is_marked_for_manual_deletion: false,
+      marked_for_manual_deletion_by_id: 0,
+      marked_for_manual_deletion_at: DateTime.now().toISO(),
+      ticket_reference: body.admin_action.ticket_reference,
+      comments: body.admin_action.comments,
+    },
+  };
+
+  res.send(response);
 });
 
 module.exports = router;

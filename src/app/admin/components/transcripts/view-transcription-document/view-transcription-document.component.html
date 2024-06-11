@@ -4,7 +4,21 @@
   <ng-container *breadcrumb>{{ transcriptionDocumentId }}</ng-container>
 </app-breadcrumb>
 
-<app-govuk-heading caption="Transcript file">{{ transcriptionDocumentId }}</app-govuk-heading>
+<div class="heading-button-container">
+  <app-govuk-heading caption="Transcript file">{{ transcriptionDocumentId }}</app-govuk-heading>
+  <button
+    class="govuk-button govuk-button--secondary"
+    (click)="
+      router.navigate(['admin/file', transcriptionDocumentId, 'hide-or-delete'], {
+        state: { fileType: 'transcription_document' }
+      })
+    "
+  >
+    Hide or delete
+  </button>
+</div>
+
+<div></div>
 
 @if (loading()) {
   <app-loading text="Loading transcription details..." />

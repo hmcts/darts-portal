@@ -1,6 +1,6 @@
 import { AsyncPipe, DecimalPipe } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -40,6 +40,7 @@ import { AssociatedAudioTableComponent } from '../../transformed-media/associate
 })
 export class ViewTranscriptionDocumentComponent {
   route = inject(ActivatedRoute);
+  router = inject(Router);
   transcriptionAdminService = inject(TranscriptionAdminService);
   transcriptionService = inject(TranscriptionService);
   transformedMediaService = inject(TransformedMediaService);
