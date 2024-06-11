@@ -6540,10 +6540,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:~11.1.0":
-  version: 11.1.0
-  resolution: "commander@npm:11.1.0"
-  checksum: fd1a8557c6b5b622c89ecdfde703242ab7db3b628ea5d1755784c79b8e7cb0d74d65b4a262289b533359cd58e1bfc0bf50245dfbcd2954682a6f367c828b79ef
+"commander@npm:~12.0.0":
+  version: 12.0.0
+  resolution: "commander@npm:12.0.0"
+  checksum: bce9e243dc008baba6b8d923f95b251ad115e6e7551a15838d7568abebcca0fc832da1800cf37caf37852f35ce4b7fb794ba7a4824b88c5adb1395f9268642df
   languageName: node
   linkType: hard
 
@@ -7084,7 +7084,7 @@ __metadata:
     jest: ^29.7
     jest-environment-jsdom: ^29.7
     jest-preset-angular: ^14.0.3
-    junit-report-merger: ^6.0.2
+    junit-report-merger: ^7.0.0
     lodash: ^4.17.21
     luxon: ^3.4.3
     ngx-cookie-service: ^17.1.0
@@ -10582,17 +10582,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"junit-report-merger@npm:^6.0.2":
-  version: 6.0.4
-  resolution: "junit-report-merger@npm:6.0.4"
+"junit-report-merger@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "junit-report-merger@npm:7.0.0"
   dependencies:
-    commander: ~11.1.0
+    commander: ~12.0.0
     fast-glob: ~3.3.0
     xmlbuilder2: 3.1.1
   bin:
     jrm: cli.js
     junit-report-merger: cli.js
-  checksum: 1eeeec39c7cf34b421ca91ea4a72902159d9f3d850ec2d4d456342c73e6446722a577b28e01425671f8502ff8995d0a5a73d4191ecceba1d8279ffb345132e65
+  checksum: ea552692904dd6d1bcb2dcd28e4439466fa431e36028d0dded2c0aaa13328b5092e5e39a6b65dbd607cc416d5c08b0ada9d78318ab26ca79957b6e8329075f34
   languageName: node
   linkType: hard
 
