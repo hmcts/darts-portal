@@ -8,6 +8,7 @@ import { DatatableColumn } from '@core-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 
+type UserWithCheckboxLabel = User & { checkboxLabel?: string };
 @Component({
   selector: 'app-group-users',
   standalone: true,
@@ -24,7 +25,7 @@ import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 })
 export class GroupUsersComponent implements OnInit {
   @Input() allUsers: User[] = [];
-  @Input() groupUsers: User[] = [];
+  @Input({ transform: addCheckboxLabelToUsers }) groupUsers: UserWithCheckboxLabel[] = [];
   @Output() update = new EventEmitter<number[]>();
   @Output() remove = new EventEmitter<{ groupUsers: User[]; userIdsToRemove: number[] }>();
 
@@ -76,4 +77,8 @@ export class GroupUsersComponent implements OnInit {
 
     this.remove.emit({ groupUsers: this.groupUsers, userIdsToRemove: userIdsToRemove });
   }
+}
+
+function addCheckboxLabelToUsers(users: User[]): UserWithCheckboxLabel[] {
+  return users.map((u) => ({ ...u, checkboxLabel: `Select user: ${u.fullName}` }));
 }

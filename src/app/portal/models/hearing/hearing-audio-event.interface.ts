@@ -7,4 +7,5 @@ export type AudioEventRow = Partial<HearingEvent> &
     id: number;
     type: 'event' | 'audio';
     audioIsReady$?: Observable<number>;
+    checkboxLabel?: string;
   };

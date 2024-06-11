@@ -99,6 +99,7 @@ describe('EventsAndAudioComponent', () => {
         timestamp: '2023-07-31T10:00:01.620Z',
         type: 'audio',
         audioIsReady$: of(200),
+        checkboxLabel: 'Select audio from 11:00:01 to 15:32:24',
       },
       {
         id: 8,
@@ -106,6 +107,7 @@ describe('EventsAndAudioComponent', () => {
         name: 'Case called on',
         text: 'Record: New Case',
         type: 'event',
+        checkboxLabel: 'Select event at 11:00:02',
       },
       {
         id: 9,
@@ -113,6 +115,7 @@ describe('EventsAndAudioComponent', () => {
         name: 'Case called on',
         text: 'Record: New Case',
         type: 'event',
+        checkboxLabel: 'Select event at 11:00:03',
       },
       {
         id: 2,
@@ -121,6 +124,7 @@ describe('EventsAndAudioComponent', () => {
         timestamp: '2023-07-31T10:00:04.620Z',
         type: 'audio',
         audioIsReady$: of(200),
+        checkboxLabel: 'Select audio from 11:00:04 to 15:32:24',
       },
       {
         id: 3,
@@ -129,6 +133,7 @@ describe('EventsAndAudioComponent', () => {
         timestamp: '2023-07-31T10:00:06.620Z',
         type: 'audio',
         audioIsReady$: of(200),
+        checkboxLabel: 'Select audio from 11:00:06 to 15:32:24',
       },
       {
         id: 10,
@@ -136,6 +141,7 @@ describe('EventsAndAudioComponent', () => {
         name: 'Case called on',
         text: 'Record: New Case',
         type: 'event',
+        checkboxLabel: 'Select event at 11:00:07',
       },
     ];
 
@@ -355,10 +361,12 @@ describe('EventsAndAudioComponent', () => {
         type: 'audio',
         timestamp: audioItem.media_start_timestamp,
         audioIsReady$: expect.anything(),
+        checkboxLabel: 'Select audio from 11:00:01 to 15:32:24',
       })),
       ...events.map((eventItem) => ({
         ...eventItem,
         type: 'event',
+        checkboxLabel: 'Select event at 11:00:02',
       })),
     ];
     expect(component.rows).toEqual(expectedRows);

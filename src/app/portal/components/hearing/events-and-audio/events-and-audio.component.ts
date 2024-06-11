@@ -136,8 +136,13 @@ export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
         type: HearingEventTypeEnum.Audio,
         timestamp: audio.media_start_timestamp,
         audioIsReady$: this.audioPreviewService.isAudioPreviewReady(audio.id),
+        checkboxLabel: `Select audio from ${this.getTimeFromTimestamp(audio.media_start_timestamp)} to ${this.getTimeFromTimestamp(audio.media_end_timestamp)}`,
       })),
-      ...this.events.map((event) => ({ ...event, type: HearingEventTypeEnum.Event })),
+      ...this.events.map((event) => ({
+        ...event,
+        type: HearingEventTypeEnum.Event,
+        checkboxLabel: `Select event at ${this.getTimeFromTimestamp(event.timestamp)}`,
+      })),
     ];
   }
 
@@ -148,6 +153,10 @@ export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
 
       return timestampA - timestampB;
     });
+  }
+
+  getTimeFromTimestamp(timestamp: string): string {
+    return DateTime.fromISO(timestamp).toFormat('HH:mm:ss');
   }
 
   ngOnDestroy(): void {
