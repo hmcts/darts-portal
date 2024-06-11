@@ -14,8 +14,8 @@
     "cookieName": "darts_session"
   },
   "support": {
-    "name": "Crown IT Support",
-    "emailAddress": "crownITsupport@justice.gov.uk"
+    "name": "DTS-IT Service Desk",
+    "emailAddress": "DTS-ITServiceDesk@justice.gov.uk"
   },
   "dynatrace": {
     "scriptUrl": null
