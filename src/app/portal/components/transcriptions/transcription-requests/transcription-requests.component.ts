@@ -30,7 +30,7 @@ export class TranscriptionRequestsComponent {
       sortable: true,
       customSortFn: this.sortService.sortByUrgencyPriorityOrder,
     },
-    { name: '', prop: '' },
+    { name: 'View request links', prop: '', hidden: true },
   ];
 
   transcriptRequests$ = this.transcriptionService.unassignedRequests$;

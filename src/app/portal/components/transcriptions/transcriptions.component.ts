@@ -57,7 +57,7 @@ export class TranscriptionsComponent {
       customSortFn: this.sortService.sortByUrgencyPriorityOrder,
     },
   ];
-  readyColumns = [...this.columns, { name: '', prop: '' }]; //Empty column header for view link
+  readyColumns = [...this.columns, { name: 'View request links', prop: '', hidden: true }]; //Empty column header for view link
   approverColumns = this.readyColumns.map((c) =>
     // swap status column for request id column
     c.name === 'Status' ? { name: 'Request ID', prop: 'transcriptionId', sortable: true } : c

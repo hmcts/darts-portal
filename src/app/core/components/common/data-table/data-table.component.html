@@ -65,7 +65,9 @@
               class="govuk-table__header"
               [ngStyle]="{ width: column.width }"
             >
-              {{ column.name }}
+              <span [class.govuk-visually-hidden]="column.hidden">
+                {{ column.name }}
+              </span>
             </th>
             <td
               *ngIf="!column.sortable && !column.name"

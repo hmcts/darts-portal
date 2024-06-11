@@ -46,7 +46,7 @@ export class YourWorkComponent {
     },
   ];
 
-  readyColumns = [...this.columns, { name: '', prop: '' }]; // Empty column header for view link
+  readyColumns = [...this.columns, { name: 'View request links', prop: '', hidden: true }]; // Empty column header for view link
 
   requests$ = this.transcriptionService.assignedRequests$
     .pipe(takeUntilDestroyed(this.destroyRef))
