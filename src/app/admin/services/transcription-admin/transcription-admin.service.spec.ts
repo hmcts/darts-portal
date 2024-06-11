@@ -1,3 +1,4 @@
+import { FileHideOrDeleteFormValues } from '@admin-types/hidden-reasons/file-hide-or-delete-form-values';
 import {
   Transcription,
   TranscriptionDocumentSearchResult,
@@ -837,5 +838,31 @@ describe('TranscriptionAdminService', () => {
 
       tick();
     }));
+  });
+
+  describe('hideTranscriptionDocument', () => {
+    it('should send a POST request to hide the transcription document', () => {
+      const id = 1;
+      const formValues = {
+        reason: 1,
+        ticketReference: 'ABC123',
+        comments: 'Some comments',
+      } as FileHideOrDeleteFormValues;
+
+      const expectedRequestBody = {
+        is_hidden: true,
+        admin_action: {
+          reason_id: formValues.reason,
+          ticket_reference: formValues.ticketReference,
+          comments: formValues.comments,
+        },
+      };
+
+      service.hideTranscriptionDocument(id, formValues).subscribe();
+
+      const req = httpMock.expectOne(`api/admin/transcription-documents/${id}/hide`);
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body).toEqual(expectedRequestBody);
+    });
   });
 });
