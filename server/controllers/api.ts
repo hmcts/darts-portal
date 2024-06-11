@@ -1,6 +1,6 @@
-import * as express from 'express';
 import config from 'config';
-import { Router } from 'express';
+import * as express from 'express';
+import { Request, Router } from 'express';
 
 import { createProxyMiddleware } from 'http-proxy-middleware';
 
@@ -11,16 +11,18 @@ function proxyMiddleware() {
     pathRewrite: {
       '^/api': '',
     },
-    logLevel: 'debug',
-    onProxyReq: (proxyReq, req) => {
-      if (req.session.securityToken) {
-        if (req.session.securityToken.accessToken) {
-          proxyReq.setHeader('Authorization', `Bearer ${req.session.securityToken.accessToken}`);
+    logger: console,
+    on: {
+      proxyReq: (proxyReq, req: Request) => {
+        if (req.session.securityToken) {
+          if (req.session.securityToken.accessToken) {
+            proxyReq.setHeader('Authorization', `Bearer ${req.session.securityToken.accessToken}`);
+          }
+          if (req.session.securityToken.userState?.userId) {
+            proxyReq.setHeader('user_id', req.session.securityToken.userState.userId);
+          }
         }
-        if (req.session.securityToken.userState?.userId) {
-          proxyReq.setHeader('user_id', req.session.securityToken.userState.userId);
-        }
-      }
+      },
     },
   });
 }
