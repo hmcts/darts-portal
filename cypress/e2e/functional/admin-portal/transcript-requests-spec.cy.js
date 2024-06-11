@@ -248,7 +248,7 @@ describe('Admin - Transcript requests', () => {
           cy.get('th').eq(3).should('contain', 'Courthouse');
           cy.get('th').eq(4).should('contain', 'Start time');
           cy.get('th').eq(5).should('contain', 'End time');
-          cy.get('th').eq(6).should('contain', 'Courtoom');
+          cy.get('th').eq(6).should('contain', 'Courtroom');
           cy.get('th').eq(7).should('contain', 'Channel number');
         });
 
