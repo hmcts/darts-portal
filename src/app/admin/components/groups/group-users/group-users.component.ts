@@ -79,6 +79,6 @@ export class GroupUsersComponent implements OnInit {
   }
 }
 
-function addCheckboxLabelToUsers(users: User[]): UserWithCheckboxLabel[] {
+export function addCheckboxLabelToUsers(users: User[]): UserWithCheckboxLabel[] {
   return users.map((u) => ({ ...u, checkboxLabel: `Select user: ${u.fullName}` }));
 }
