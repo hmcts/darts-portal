@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { User } from '@admin-types/index';
-import { GroupUsersComponent } from './group-users.component';
+import { GroupUsersComponent, addCheckboxLabelToUsers } from './group-users.component';
 
 describe('GroupUsersComponent', () => {
   let component: GroupUsersComponent;
@@ -134,6 +134,21 @@ describe('GroupUsersComponent', () => {
       component.onRemoveUsersButtonClicked();
 
       expect(component.remove.emit).toHaveBeenCalledWith({ groupUsers: [user1, user2], userIdsToRemove: [1] });
+    });
+  });
+
+  describe('addCheckboxLabelToUsers', () => {
+    it('should add checkboxLabel to user', () => {
+      const user1 = { id: 1, fullName: 'user 1', emailAddress: '' } as User;
+      const user2 = { id: 2, fullName: 'user 2', emailAddress: '' } as User;
+      const users = [user1, user2];
+
+      const result = addCheckboxLabelToUsers(users);
+
+      expect(result).toEqual([
+        { id: 1, fullName: 'user 1', emailAddress: '', checkboxLabel: 'Select user: user 1' },
+        { id: 2, fullName: 'user 2', emailAddress: '', checkboxLabel: 'Select user: user 2' },
+      ]);
     });
   });
 });
