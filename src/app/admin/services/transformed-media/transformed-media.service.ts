@@ -1,3 +1,4 @@
+import { AudioFile, AudioFileData } from '@admin-types/index';
 import { AssociatedMedia } from '@admin-types/transformed-media/associated-media';
 import { AssociatedMediaData } from '@admin-types/transformed-media/associated-media-data.interface';
 import { TransformedMediaAdmin } from '@admin-types/transformed-media/transformed-media-admin';
@@ -36,6 +37,10 @@ export class TransformedMediaService {
     return this.http
       .get<TransformedMediaRequestData>(`/api/admin/media-requests/${id}`)
       .pipe(map((data) => this.mapTransformedMediaRequest(data)));
+  }
+
+  getMediaById(id: number): Observable<AudioFile> {
+    return this.http.get<AudioFileData>(`/api/admin/medias/${id}`).pipe(map((data) => this.mapAudioFileData(data)));
   }
 
   getAssociatedMediaByTransformedMediaId(id: number): Observable<AssociatedMedia[]> {
@@ -170,5 +175,59 @@ export class TransformedMediaService {
   // takes a date of format DD/MM/YYYY and returns YYYY-MM-DD
   private formatDate(date: string): string {
     return date.split('/').reverse().join('-');
+  }
+
+  private mapAudioFileData(data: AudioFileData): AudioFile {
+    return {
+      id: data.id,
+      startAt: DateTime.fromISO(data.start_at),
+      endAt: DateTime.fromISO(data.end_at),
+      channel: data.channel,
+      totalChannels: data.total_channels,
+      mediaType: data.media_type,
+      mediaFormat: data.media_format,
+      fileSizeBytes: data.file_size_bytes,
+      filename: data.filename,
+      mediaObjectId: data.media_object_id,
+      contentObjectId: data.content_object_id,
+      clipId: data.clip_id,
+      referenceId: data.reference_id,
+      checksum: data.checksum,
+      mediaStatus: data.media_status,
+      isHidden: data.is_hidden,
+      isDeleted: data.is_deleted,
+      adminAction: {
+        id: data.admin_action.id,
+        reasonId: data.admin_action.reason_id,
+        hiddenById: data.admin_action.hidden_by_id,
+        hiddenAt: DateTime.fromISO(data.admin_action.hidden_at),
+        isMarkedForManualDeletion: data.admin_action.is_marked_for_manual_deletion,
+        markedForManualDeletionById: data.admin_action.marked_for_manual_deletion_by_id,
+        markedForManualDeletionAt: DateTime.fromISO(data.admin_action.marked_for_manual_deletion_at),
+        ticketReference: data.admin_action.ticket_reference,
+        comments: data.admin_action.comments,
+      },
+      version: data.version,
+      chronicleId: data.chronicle_id,
+      antecedentId: data.antecedent_id,
+      retainUntil: DateTime.fromISO(data.retain_until),
+      createdAt: DateTime.fromISO(data.created_at),
+      createdById: data.created_by_id,
+      lastModifiedAt: DateTime.fromISO(data.last_modified_at),
+      lastModifiedById: data.last_modified_by_id,
+      courthouse: {
+        id: data.courthouse.id,
+        displayName: data.courthouse.display_name,
+      },
+      courtroom: {
+        id: data.courtroom.id,
+        name: data.courtroom.name,
+      },
+      hearings: data.hearings.map((hearing) => ({
+        id: hearing.id,
+        hearingDate: DateTime.fromISO(hearing.hearing_date),
+        caseId: hearing.case_id,
+      })),
+    };
   }
 }

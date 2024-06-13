@@ -2,3 +2,8 @@
   margin-top: 50px;
   max-width: 760px;
 }
+
+:host-context(.no-max-width) .govuk-notification-banner,
+p {
+  max-width: none;
+}

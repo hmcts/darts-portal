@@ -213,6 +213,10 @@ export class TranscriptionAdminService {
     return this.http.get<HiddenReasonData[]>('api/admin/hidden-reasons').pipe(map((res) => this.mapHiddenReasons(res)));
   }
 
+  getHiddenReason(id: number): Observable<HiddenReason | undefined> {
+    return this.getHiddenReasons().pipe(map((reasons) => reasons.find((reason) => reason.id === id)));
+  }
+
   private mapHiddenReasons(data: HiddenReasonData[]): HiddenReason[] {
     return data.map((reason) => ({
       id: reason.id,

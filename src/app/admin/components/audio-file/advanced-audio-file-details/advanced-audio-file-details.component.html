@@ -1,0 +1,134 @@
+<section id="basic-details" class="details">
+  <app-govuk-heading class="no-margin border-bottom" tag="h2" size="m">Advanced details</app-govuk-heading>
+  <dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Media object ID</dt>
+      <dd class="govuk-summary-list__value">
+        {{ audioFile.mediaObjectId }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Content object ID</dt>
+      <dd class="govuk-summary-list__value">
+        {{ audioFile.contentObjectId }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Clip ID</dt>
+      <dd class="govuk-summary-list__value">
+        {{ audioFile.clipId }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Reference ID</dt>
+      <dd class="govuk-summary-list__value">
+        {{ audioFile.referenceId }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Checksum</dt>
+      <dd class="govuk-summary-list__value">
+        {{ audioFile.checksum }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Media status</dt>
+      <dd class="govuk-summary-list__value">
+        {{ audioFile.mediaStatus }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Audio hidden?</dt>
+      <dd class="govuk-summary-list__value">
+        {{ audioFile.isHidden ? 'Yes' : 'No' }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Hidden by</dt>
+      <dd class="govuk-summary-list__value">
+        {{ audioFile.adminAction.hiddenBy }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Date hidden</dt>
+      <dd class="govuk-summary-list__value">
+        {{ audioFile.adminAction.hiddenAt | luxonDate: "dd MMMM yyyy 'at' hh:mm a" }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Audio deleted?</dt>
+      <dd class="govuk-summary-list__value">
+        {{ audioFile.isDeleted ? 'Yes' : 'No' }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Date deleted</dt>
+      <dd class="govuk-summary-list__value">
+        {{ audioFile.adminAction.markedForManualDeletionAt | luxonDate: "dd MMMM yyyy 'at' hh:mm a" }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Deleted by</dt>
+      <dd class="govuk-summary-list__value">
+        {{ audioFile.adminAction.markedForManualDeletionBy }}
+      </dd>
+    </div>
+  </dl>
+</section>
+
+<section id="version-details" class="details">
+  <div class="heading-link-container">
+    <app-govuk-heading class="no-margin" tag="h2" size="m">Version details</app-govuk-heading>
+    <a href="javascript:void(0)" class="govuk-link" [routerLink]="['.']">Show versions</a>
+  </div>
+  <dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Version</dt>
+      <dd class="govuk-summary-list__value">
+        {{ audioFile.version }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Chronicle ID</dt>
+      <dd class="govuk-summary-list__value">
+        {{ audioFile.chronicleId }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Antecedent ID</dt>
+      <dd class="govuk-summary-list__value">
+        {{ audioFile.antecedentId }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Retain until</dt>
+      <dd class="govuk-summary-list__value">
+        {{ audioFile.retainUntil | luxonDate: "dd MMMM yyyy 'at' hh:mm a" }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Created by</dt>
+      <dd class="govuk-summary-list__value">
+        {{ audioFile.createdBy }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Date created</dt>
+      <dd class="govuk-summary-list__value">
+        {{ audioFile.createdAt | luxonDate: "dd MMMM yyyy 'at' hh:mm a" }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Last modified by</dt>
+      <dd class="govuk-summary-list__value">
+        {{ audioFile.lastModifiedBy }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Date last modified</dt>
+      <dd class="govuk-summary-list__value">
+        {{ audioFile.lastModifiedAt | luxonDate: "dd MMMM yyyy 'at' hh:mm a" }}
+      </dd>
+    </div>
+  </dl>
+</section>
