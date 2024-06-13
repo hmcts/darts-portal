@@ -1,150 +1,39 @@
-<app-breadcrumb>
-  <ng-container *breadcrumb="['/admin/transcripts']">Search</ng-container>
-  <ng-container *breadcrumb>Transcripts</ng-container>
-  <ng-container *breadcrumb>{{ transcriptionDocumentId }}</ng-container>
-</app-breadcrumb>
-
-<div class="heading-button-container">
-  <app-govuk-heading caption="Transcript file">{{ transcriptionDocumentId }}</app-govuk-heading>
-  <button
-    class="govuk-button govuk-button--secondary"
-    (click)="
-      router.navigate(['admin/file', transcriptionDocumentId, 'hide-or-delete'], {
-        state: { fileType: 'transcription_document' }
-      })
-    "
-  >
-    Hide or delete
-  </button>
-</div>
-
-<div></div>
+<a href="javascript:void(0)" (click)="onBack()" class="govuk-back-link">Back</a>
 
 @if (loading()) {
   <app-loading text="Loading transcription details..." />
 }
 
 @if (data$ | async; as vm) {
-  <section id="transcript-details" class="details">
-    <app-govuk-heading class="no-margin border-bottom" tag="h2" size="m">Transcript details</app-govuk-heading>
-    <dl class="govuk-summary-list">
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">ID</dt>
-        <dd class="govuk-summary-list__value">
-          {{ transcriptionDocumentId }}
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Case ID</dt>
-        <dd class="govuk-summary-list__value">
-          <a
-            id="case-link"
-            class="govuk-link"
-            href="javascript:void(0)"
-            [routerLink]="['case', vm.transcription.details.caseId]"
-            >{{ vm.transcription.details.caseNumber }}</a
-          >
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Courthouse</dt>
-        <dd class="govuk-summary-list__value">
-          {{ vm.transcription.details.courthouse }}
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Hearing date</dt>
-        <dd class="govuk-summary-list__value">
-          {{ vm.transcription.details.hearingDate | luxonDate: 'dd MMMM yyyy' }}
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Defendant(s)</dt>
-        <dd class="govuk-summary-list__value">
-          {{ vm.transcription.details.defendants | join }}
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Judge(s)</dt>
-        <dd class="govuk-summary-list__value">
-          {{ vm.transcription.details.judges | join }}
-        </dd>
-      </div>
-    </dl>
-  </section>
+  @if (vm.transcription.document.isHidden) {
+    <app-hidden-file-banner [transcription]="vm.transcription" />
+  }
 
-  <section id="file-details" class="details">
-    <app-govuk-heading class="no-margin border-bottom" tag="h2" size="m">File details</app-govuk-heading>
-    <dl class="govuk-summary-list">
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">File size</dt>
-        <dd class="govuk-summary-list__value">
-          {{ vm.transcription.document.fileSizeBytes | bytes | number: '1.0-2' }}MB
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">File type</dt>
-        <dd class="govuk-summary-list__value">
-          {{ vm.transcription.document.fileType }}
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Filename</dt>
-        <dd class="govuk-summary-list__value">
-          {{ vm.transcription.document.fileName }}
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Date uploaded</dt>
-        <dd class="govuk-summary-list__value">
-          {{ vm.transcription.document.uploadedAt | luxonDate: 'dd MMM yyyy' }}
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Uploaded by</dt>
-        <dd class="govuk-summary-list__value">
-          {{ vm.transcription.uploadedByUser.fullName }}
-        </dd>
-      </div>
-    </dl>
-  </section>
+  <div class="heading-button-container">
+    <app-govuk-heading caption="Transcript file">{{ transcriptionDocumentId }}</app-govuk-heading>
+    <button
+      class="govuk-button govuk-button--secondary"
+      (click)="
+        router.navigate(['admin/file', transcriptionDocumentId, 'hide-or-delete'], {
+          state: { fileType: 'transcription_document' }
+        })
+      "
+    >
+      {{ vm.transcription.document.isHidden ? 'Unmark for deletion and unhide' : 'Hide or delete' }}
+    </button>
+  </div>
 
-  <section id="request-details" class="details">
-    <app-govuk-heading class="no-margin border-bottom" tag="h2" size="m">Request details</app-govuk-heading>
-    <dl class="govuk-summary-list">
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Request type</dt>
-        <dd class="govuk-summary-list__value">
-          {{ vm.transcription.details.requestType }}
-        </dd>
+  @if (userService.isSuperUser() && !userService.isAdmin()) {
+    <app-transcript-file-basic-detail [transcription]="vm.transcription" />
+  } @else {
+    <app-tabs>
+      <div *tab="'Basic details'">
+        <app-transcript-file-basic-detail [transcription]="vm.transcription" />
       </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Request ID</dt>
-        <dd class="govuk-summary-list__value">
-          {{ vm.transcription.details.transcriptionId }}
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Urgency</dt>
-        <dd class="govuk-summary-list__value">{{ vm.transcription.details.urgency.description }}</dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Requested by</dt>
-        <dd class="govuk-summary-list__value">{{ vm.transcription.details.from }}</dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Instructions</dt>
-        <dd class="govuk-summary-list__value">{{ vm.transcription.details.requestorComments }}</dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Judge approval</dt>
-        <dd class="govuk-summary-list__value">Yes</dd>
-      </div>
-    </dl>
-  </section>
 
-  <section id="associated-audio-details">
-    <app-govuk-heading class="no-margin border-bottom" tag="h2" size="m">Associated audio</app-govuk-heading>
-    <app-associated-audio-table [rows]="vm.associatedAudio"></app-associated-audio-table>
-  </section>
+      <div *tab="'Advanced details'">
+        <app-transcript-file-advanced-detail [transcription]="vm.transcription" />
+      </div>
+    </app-tabs>
+  }
 }

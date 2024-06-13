@@ -1,0 +1,93 @@
+<section id="transcript-details" class="details">
+  <app-govuk-heading class="no-margin border-bottom" tag="h2" size="m">Basic details</app-govuk-heading>
+  <dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Transcript ID</dt>
+      <dd class="govuk-summary-list__value">
+        {{ transcription.document.transcriptionDocumentId }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Case ID</dt>
+      <dd class="govuk-summary-list__value">
+        <a
+          id="case-link"
+          class="govuk-link"
+          href="javascript:void(0)"
+          [routerLink]="['/case', transcription.details.caseId]"
+          >{{ transcription.details.caseNumber }}</a
+        >
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Hearing date</dt>
+      <dd class="govuk-summary-list__value">
+        <a
+          id="hearing-link"
+          class="govuk-link"
+          href="javascript:void(0)"
+          [routerLink]="['/case', transcription.details.caseId, 'hearing', transcription.details.hearingId]"
+          >{{ transcription.details.hearingDate | luxonDate: 'dd MMM yyyy' }}
+        </a>
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Courthouse</dt>
+      <dd class="govuk-summary-list__value">
+        {{ transcription.details.courthouse }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Courtroom</dt>
+      <dd class="govuk-summary-list__value">
+        {{ transcription.details.courtroom }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Defendant(s)</dt>
+      <dd class="govuk-summary-list__value">
+        {{ transcription.details.defendants | join }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Judge(s)</dt>
+      <dd class="govuk-summary-list__value">
+        {{ transcription.details.judges | join }}
+      </dd>
+    </div>
+  </dl>
+</section>
+
+<section id="request-details" class="details">
+  <app-govuk-heading class="no-margin border-bottom" tag="h2" size="m">Request details</app-govuk-heading>
+  <dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Request type</dt>
+      <dd class="govuk-summary-list__value">
+        {{ transcription.details.requestType }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Request ID</dt>
+      <dd class="govuk-summary-list__value">
+        {{ transcription.details.transcriptionId }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Urgency</dt>
+      <dd class="govuk-summary-list__value">{{ transcription.details.urgency.description }}</dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Requested by</dt>
+      <dd class="govuk-summary-list__value">{{ transcription.details.from }}</dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Instructions</dt>
+      <dd class="govuk-summary-list__value">{{ transcription.details.requestorComments }}</dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Judge approval</dt>
+      <dd class="govuk-summary-list__value">Yes</dd>
+    </div>
+  </dl>
+</section>

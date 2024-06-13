@@ -1,0 +1,48 @@
+<app-notification-banner
+  [maxWidth]="true"
+  [heading]="
+    transcription.document.adminAction.isMarkedForManualDeletion
+      ? 'This file is hidden in DARTS and is marked for manual deletion'
+      : 'This file is hidden in DARTS'
+  "
+  [list]="[
+    {
+      name: 'Marked for manual deletion by',
+      value: transcription.hiddenByUser?.fullName ?? ''
+    },
+    {
+      name: 'Reason',
+      value: transcription.hiddenReason?.displayName ?? ''
+    },
+    {
+      name: transcription.document.adminAction.ticketReference,
+      value: transcription.document.adminAction.comments
+    }
+  ]"
+>
+  @if (transcription.document.adminAction.isMarkedForManualDeletion) {
+    DARTS user cannot view this file. You can
+    <a
+      class="govuk-link"
+      (click)="
+        router.navigate(['admin/file', transcription.document.transcriptionDocumentId, 'hide-or-delete'], {
+          state: { fileType: 'transcription_document' }
+        })
+      "
+      >unmark for deletion</a
+    >
+    and it will no longer be hidden.
+  } @else {
+    DARTS users cannot view this file. You can
+    <a
+      class="govuk-link"
+      (click)="
+        router.navigate(['admin/file', transcription.document.transcriptionDocumentId, 'hide-or-delete'], {
+          state: { fileType: 'transcription_document' }
+        })
+      "
+      >unhide</a
+    >
+    the file
+  }
+</app-notification-banner>

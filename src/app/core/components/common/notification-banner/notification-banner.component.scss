@@ -2,3 +2,11 @@
   margin-top: 50px;
   max-width: 760px;
 }
+
+.govuk-notification-banner--max-width {
+  max-width: 100%;
+}
+
+.govuk-notification-banner__content--max-width > * {
+  max-width: 100%;
+}

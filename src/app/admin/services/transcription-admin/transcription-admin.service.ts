@@ -213,6 +213,10 @@ export class TranscriptionAdminService {
     return this.http.get<HiddenReasonData[]>('api/admin/hidden-reasons').pipe(map((res) => this.mapHiddenReasons(res)));
   }
 
+  getHiddenReason(id: number): Observable<HiddenReason | undefined> {
+    return this.getHiddenReasons().pipe(map((reasons) => reasons.find((reason) => reason.id === id)));
+  }
+
   private mapHiddenReasons(data: HiddenReasonData[]): HiddenReason[] {
     return data.map((reason) => ({
       id: reason.id,
@@ -234,6 +238,23 @@ export class TranscriptionAdminService {
       uploadedAt: DateTime.fromISO(res.uploaded_at),
       uploadedBy: res.uploaded_by,
       isHidden: res.is_hidden,
+      retainUntil: DateTime.fromISO(res.retain_until),
+      contentObjectId: res.content_object_id,
+      checksum: res.checksum,
+      clipId: res.clip_id,
+      lastModifiedAt: DateTime.fromISO(res.last_modified_at),
+      lastModifiedBy: res.last_modified_by,
+      adminAction: {
+        id: res.admin_action.id,
+        reasonId: res.admin_action.reason_id,
+        hiddenById: res.admin_action.hidden_by_id,
+        hiddenAt: DateTime.fromISO(res.admin_action.hidden_at),
+        isMarkedForManualDeletion: res.admin_action.is_marked_for_manual_deletion,
+        markedForManualDeletionById: res.admin_action.marked_for_manual_deletion_by_id,
+        markedForManualDeletionAt: DateTime.fromISO(res.admin_action.marked_for_manual_deletion_at),
+        ticketReference: res.admin_action.ticket_reference,
+        comments: res.admin_action.comments,
+      },
     };
   }
 
