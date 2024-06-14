@@ -47,9 +47,9 @@
           id="uploaded-by-link"
           class="govuk-link"
           href="javascript:void(0)"
-          [routerLink]="['/admin/users', transcription.uploadedByUser.id]"
+          [routerLink]="['/admin/users', transcription.document.uploadedBy]"
         >
-          {{ transcription.uploadedByUser.fullName }}
+          {{ transcription.document.uploadedByName }}
         </a>
       </dd>
     </div>
@@ -67,9 +67,9 @@
           id="modified-by-link"
           class="govuk-link"
           href="javascript:void(0)"
-          [routerLink]="['/admin/users', transcription.lastModifiedByUser.id]"
+          [routerLink]="['/admin/users', transcription.document.lastModifiedBy]"
         >
-          {{ transcription.lastModifiedByUser.fullName }}
+          {{ transcription.document.lastModifiedByName }}
         </a>
       </dd>
     </div>

@@ -25,6 +25,8 @@ describe('ViewTranscriptComponent', () => {
     caseId: 0,
     caseNumber: '',
     courthouse: '',
+    transcriptionObjectId: 1,
+    courtroom: '',
     defendants: [],
     judges: [],
     transcriptFileName: 'test-file-name.docx',

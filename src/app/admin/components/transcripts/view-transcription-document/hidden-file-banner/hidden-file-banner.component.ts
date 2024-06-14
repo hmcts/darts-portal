@@ -1,5 +1,4 @@
 import { HiddenReason } from '@admin-types/hidden-reasons/hidden-reason';
-import { User } from '@admin-types/index';
 import { TranscriptionDocument } from '@admin-types/transcription';
 import { Component, Input, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
@@ -19,7 +18,6 @@ export class HiddenFileBannerComponent {
   @Input() transcription!: {
     document: TranscriptionDocument;
     details: TranscriptionDetails;
-    hiddenByUser: User | null;
     hiddenReason: HiddenReason | null | undefined;
   };
 }

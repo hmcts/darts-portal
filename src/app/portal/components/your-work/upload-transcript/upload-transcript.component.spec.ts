@@ -31,6 +31,8 @@ const MOCK_TRANSCRIPTION_DETAILS: TranscriptionDetails = {
   transcriptionId: 1,
   transcriptionStartTs: DateTime.fromISO('2023-06-26T13:00:00'),
   transcriptionEndTs: DateTime.fromISO('2023-06-26T16:00:00'),
+  transcriptionObjectId: 1,
+  courtroom: '1',
   isManual: true,
   hearingId: 1,
   requestorComments: 'Please expedite my request',

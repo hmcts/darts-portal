@@ -27,11 +27,11 @@
     <app-transcript-file-basic-detail [transcription]="vm.transcription" />
   } @else {
     <app-tabs>
-      <div *tab="'Basic details'">
+      <div *tab="'Basic details'; id: 'basic-tab'">
         <app-transcript-file-basic-detail [transcription]="vm.transcription" />
       </div>
 
-      <div *tab="'Advanced details'">
+      <div *tab="'Advanced details'; id: 'advanced-tab'">
         <app-transcript-file-advanced-detail [transcription]="vm.transcription" />
       </div>
     </app-tabs>

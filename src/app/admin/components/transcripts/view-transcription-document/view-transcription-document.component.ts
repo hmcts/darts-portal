@@ -1,3 +1,4 @@
+import { TranscriptionDocument } from '@admin-types/transcription';
 import { AsyncPipe, CommonModule, DecimalPipe } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -18,7 +19,7 @@ import { TranscriptionService } from '@services/transcription/transcription.serv
 import { TransformedMediaService } from '@services/transformed-media/transformed-media.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { UserService } from '@services/user/user.service';
-import { finalize, forkJoin, map, of, switchMap } from 'rxjs';
+import { Observable, finalize, forkJoin, map, of, switchMap } from 'rxjs';
 import { AssociatedAudioTableComponent } from '../../transformed-media/associated-audio-table/associated-audio-table.component';
 import { HiddenFileBannerComponent } from './hidden-file-banner/hidden-file-banner.component';
 import { TranscriptFileAdvancedDetailComponent } from './transcript-file-advanced-detail/transcript-file-advanced-detail.component';
@@ -69,33 +70,58 @@ export class ViewTranscriptionDocumentComponent {
     this.transcriptionDocumentId
   );
 
-  transcription$ = this.transcriptionAdminService.getTranscriptionDocument(this.transcriptionDocumentId).pipe(
-    switchMap((document) =>
-      forkJoin({
-        details: this.transcriptionService.getTranscriptionDetails(document.transcriptionId),
-        //REFACTOR - this should be a single call to get all users
-        uploadedByUser: this.userAdminService.getUser(document.uploadedBy),
-        lastModifiedByUser: this.userAdminService.getUser(document.lastModifiedBy),
-        hiddenByUser: document.isHidden ? this.userAdminService.getUser(document.adminAction.hiddenById) : of(null),
-        hiddenReason: document.isHidden
-          ? this.transcriptionAdminService.getHiddenReason(document.adminAction.reasonId)
-          : of(null),
-      }).pipe(
-        map(({ details, uploadedByUser, lastModifiedByUser, hiddenByUser, hiddenReason }) => ({
-          document,
-          details,
-          uploadedByUser,
-          lastModifiedByUser,
-          hiddenByUser,
-          hiddenReason,
-        }))
+  transcription$ = this.transcriptionAdminService
+    .getTranscriptionDocument(this.transcriptionDocumentId)
+    .pipe(switchMap((document) => this.getUserNames(document)))
+    .pipe(
+      switchMap((document: TranscriptionDocument) =>
+        forkJoin({
+          document: of(document),
+          details: this.transcriptionService.getTranscriptionDetails(document.transcriptionId),
+          hiddenReason: document.isHidden
+            ? this.transcriptionAdminService.getHiddenReason(document.adminAction.reasonId)
+            : of(null),
+        }).pipe(
+          map(({ document, details, hiddenReason }) => ({
+            document,
+            details,
+            hiddenReason,
+          }))
+        )
       )
-    )
-  );
+    );
 
   data$ = forkJoin({ transcription: this.transcription$, associatedAudio: this.associatedAudio$ }).pipe(
     finalize(() => this.loading.set(false))
   );
+
+  private getUserNames(document: TranscriptionDocument): Observable<TranscriptionDocument> {
+    const userIds = [
+      ...new Set([
+        document.uploadedBy,
+        document.lastModifiedBy,
+        document.adminAction.hiddenById,
+        document.adminAction.markedForManualDeletionById,
+      ]),
+    ];
+    return this.userAdminService.getUsersById(userIds).pipe(
+      map((users) => {
+        const uploadedByName = users.find((u) => u.id == document.uploadedBy)?.fullName;
+        const lastModifiedByName = users.find((u) => u.id == document.lastModifiedBy)?.fullName;
+        const hiddenByName = users.find((u) => u.id == document.adminAction.hiddenById)?.fullName;
+        const markedForManualDeletionBy = users.find(
+          (u) => u.id == document.adminAction.markedForManualDeletionById
+        )?.fullName;
+
+        return {
+          ...document,
+          uploadedByName,
+          lastModifiedByName,
+          adminAction: { ...document.adminAction, hiddenByName, markedForManualDeletionBy },
+        };
+      })
+    );
+  }
 
   onBack() {
     this.router.navigate(['/admin/transcripts']);

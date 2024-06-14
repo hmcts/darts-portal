@@ -7,8 +7,10 @@
   "
   [list]="[
     {
-      name: 'Marked for manual deletion by',
-      value: transcription.hiddenByUser?.fullName ?? ''
+      name: transcription.document.adminAction.isMarkedForManualDeletion
+        ? 'Marked for manual deletion by'
+        : 'Hidden by',
+      value: transcription.document.adminAction.hiddenByName ?? ''
     },
     {
       name: 'Reason',

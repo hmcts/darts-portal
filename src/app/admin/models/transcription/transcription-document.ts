@@ -8,6 +8,7 @@ export type TranscriptionDocument = {
   fileSizeBytes: number;
   uploadedAt: DateTime;
   uploadedBy: number;
+  uploadedByName?: string;
   isHidden: boolean;
   retainUntil: DateTime;
   contentObjectId: string;
@@ -15,11 +16,13 @@ export type TranscriptionDocument = {
   clipId: string;
   lastModifiedAt: DateTime;
   lastModifiedBy: number;
+  lastModifiedByName?: string;
   adminAction: {
     id: number;
     reasonId: number;
     hiddenById: number;
     hiddenAt: DateTime;
+    hiddenByName?: string;
     isMarkedForManualDeletion: boolean;
     markedForManualDeletionById: number;
     markedForManualDeletionAt: DateTime;

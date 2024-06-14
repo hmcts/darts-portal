@@ -23,6 +23,8 @@ describe('RejectedTranscriptComponent', () => {
     caseId: 1,
     caseNumber: 'C20220620001',
     courthouse: 'Swansea',
+    transcriptionObjectId: 1,
+    courtroom: '1',
     status: 'Rejected',
     from: 'MoJ CH Swansea',
     received: DateTime.fromISO('2023-11-17T12:53:07.468Z'),

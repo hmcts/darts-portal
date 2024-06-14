@@ -1,4 +1,3 @@
-import { User } from '@admin-types/index';
 import { TranscriptionDocument } from '@admin-types/transcription';
 import { DecimalPipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
@@ -19,7 +18,5 @@ export class TranscriptFileAdvancedDetailComponent {
   @Input() transcription!: {
     document: TranscriptionDocument;
     details: TranscriptionDetails;
-    uploadedByUser: User;
-    lastModifiedByUser: User;
   };
 }

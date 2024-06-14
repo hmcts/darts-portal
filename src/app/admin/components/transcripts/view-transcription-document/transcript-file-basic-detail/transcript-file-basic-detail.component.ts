@@ -1,4 +1,3 @@
-import { User } from '@admin-types/index';
 import { TranscriptionDocument } from '@admin-types/transcription/transcription-document';
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -18,6 +17,5 @@ export class TranscriptFileBasicDetailComponent {
   @Input() transcription!: {
     document: TranscriptionDocument;
     details: TranscriptionDetails;
-    uploadedByUser: User;
   };
 }

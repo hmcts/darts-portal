@@ -27,6 +27,8 @@ describe('CaseHearingTranscriptComponent', () => {
     caseNumber: '',
     courthouse: '',
     defendants: [],
+    transcriptionObjectId: 1,
+    courtroom: '1',
     judges: [],
     transcriptFileName: 'test-file-name.docx',
     hearingDate: DateTime.fromISO('2021-01-01'),
