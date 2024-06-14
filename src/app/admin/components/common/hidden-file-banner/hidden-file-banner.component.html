@@ -7,7 +7,9 @@
       DARTS users cannot view this file. You can <a class="govuk-link" (click)="onHideOrDelete()">unhide</a> the file
     }
     <ul class="govuk-list">
-      <li><strong>Marked for manual deletion by</strong> - {{ file.markedForManualDeletionBy }}</li>
+      @if (file.isMarkedForManualDeletion) {
+        <li><strong>Marked for manual deletion by</strong> - {{ file.markedForManualDeletionBy }}</li>
+      }
       <li><strong>Reason</strong> - {{ file.hiddenReason }}</li>
       <li>
         <strong>{{ file.ticketReference }}</strong> - {{ file.comments }}

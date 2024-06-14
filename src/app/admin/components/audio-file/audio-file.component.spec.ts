@@ -80,8 +80,8 @@ describe('AudioFileComponent', () => {
   let component: AudioFileComponent;
   let fixture: ComponentFixture<AudioFileComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [AudioFileComponent],
       providers: [
         { provide: ActivatedRoute, useValue: { snapshot: { params: { id: 100 } } } },
@@ -101,7 +101,7 @@ describe('AudioFileComponent', () => {
         },
         DatePipe,
       ],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(AudioFileComponent);
     component = fixture.componentInstance;
@@ -203,6 +203,26 @@ describe('AudioFileComponent', () => {
         expect(result).toEqual(expected);
       });
       tick();
+    }));
+  });
+
+  describe('hide or delete button', () => {
+    it('"Unhide" text when hidden', fakeAsync(() => {
+      jest
+        .spyOn(component.transformedMediaService, 'getMediaById')
+        .mockReturnValue(of({ ...audioFile, isHidden: true }));
+      fixture = TestBed.createComponent(AudioFileComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.querySelector('button').textContent).toContain('Unhide');
+    }));
+
+    it('"Hide" text when not hidden', fakeAsync(() => {
+      component.audioFile$ = of({ ...audioFile, isHidden: false });
+      fixture.detectChanges();
+      tick();
+      expect(fixture.nativeElement.querySelector('button').textContent).toContain('Hide or delete');
     }));
   });
 });
