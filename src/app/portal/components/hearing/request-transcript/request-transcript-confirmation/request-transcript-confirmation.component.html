@@ -5,7 +5,7 @@
   [details]="{
     'Case ID': case.number,
     Courthouse: case.courthouse,
-    'Defendant(s)': case.defendants?.join(', ')
+    'Defendant(s)': case.defendants?.join(', '),
   }"
 />
 
@@ -15,7 +15,7 @@
     'Hearing date': hearing.date | luxonDate: 'dd MMM yyyy',
     'Request type': transcriptionType,
     Urgency: urgency,
-    'Audio for Transcript': audioTimesString || null
+    'Audio for Transcript': audioTimesString || null,
   }"
 />
 

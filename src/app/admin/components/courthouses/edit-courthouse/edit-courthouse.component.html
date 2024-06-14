@@ -10,7 +10,7 @@
       courthouseName: courthouse.courthouseName,
       displayName: courthouse.displayName,
       regionId: courthouse.region?.id,
-      securityGroupIds: getSecurityGroupIds(courthouse.securityGroups)
+      securityGroupIds: getSecurityGroupIds(courthouse.securityGroups),
     }"
     [hasData]="courthouse.hasData || false"
     [hidden]="!!isConfirmation"
