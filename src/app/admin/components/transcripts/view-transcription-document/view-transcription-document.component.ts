@@ -16,7 +16,6 @@ import { JoinPipe } from '@pipes/join';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
-import { TransformedMediaService } from '@services/transformed-media/transformed-media.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { UserService } from '@services/user/user.service';
 import { Observable, finalize, forkJoin, map, of, switchMap } from 'rxjs';
@@ -58,17 +57,12 @@ export class ViewTranscriptionDocumentComponent {
   router = inject(Router);
   transcriptionAdminService = inject(TranscriptionAdminService);
   transcriptionService = inject(TranscriptionService);
-  transformedMediaService = inject(TransformedMediaService);
   userAdminService = inject(UserAdminService);
   userService = inject(UserService);
 
   transcriptionDocumentId = Number(this.route.snapshot.params.transcriptionDocumentId);
 
   loading = signal(true);
-
-  associatedAudio$ = this.transformedMediaService.getAssociatedMediaByTranscriptionDocumentId(
-    this.transcriptionDocumentId
-  );
 
   transcription$ = this.transcriptionAdminService
     .getTranscriptionDocument(this.transcriptionDocumentId)
@@ -88,12 +82,9 @@ export class ViewTranscriptionDocumentComponent {
             hiddenReason,
           }))
         )
-      )
+      ),
+      finalize(() => this.loading.set(false))
     );
-
-  data$ = forkJoin({ transcription: this.transcription$, associatedAudio: this.associatedAudio$ }).pipe(
-    finalize(() => this.loading.set(false))
-  );
 
   private getUserNames(document: TranscriptionDocument): Observable<TranscriptionDocument> {
     const userIds = [

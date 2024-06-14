@@ -4,9 +4,9 @@
   <app-loading text="Loading transcription details..." />
 }
 
-@if (data$ | async; as vm) {
-  @if (vm.transcription.document.isHidden) {
-    <app-hidden-file-banner [transcription]="vm.transcription" />
+@if (transcription$ | async; as vm) {
+  @if (vm.document.isHidden) {
+    <app-hidden-file-banner [transcription]="vm" />
   }
 
   <div class="heading-button-container">
@@ -19,20 +19,20 @@
         })
       "
     >
-      {{ vm.transcription.document.isHidden ? 'Unmark for deletion and unhide' : 'Hide or delete' }}
+      {{ vm.document.isHidden ? 'Unmark for deletion and unhide' : 'Hide or delete' }}
     </button>
   </div>
 
   @if (userService.isSuperUser() && !userService.isAdmin()) {
-    <app-transcript-file-basic-detail [transcription]="vm.transcription" />
+    <app-transcript-file-basic-detail [transcription]="vm" />
   } @else {
     <app-tabs>
       <div *tab="'Basic details'; id: 'basic-tab'">
-        <app-transcript-file-basic-detail [transcription]="vm.transcription" />
+        <app-transcript-file-basic-detail [transcription]="vm" />
       </div>
 
       <div *tab="'Advanced details'; id: 'advanced-tab'">
-        <app-transcript-file-advanced-detail [transcription]="vm.transcription" />
+        <app-transcript-file-advanced-detail [transcription]="vm" />
       </div>
     </app-tabs>
   }

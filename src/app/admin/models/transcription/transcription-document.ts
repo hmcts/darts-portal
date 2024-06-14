@@ -25,6 +25,7 @@ export type TranscriptionDocument = {
     hiddenByName?: string;
     isMarkedForManualDeletion: boolean;
     markedForManualDeletionById: number;
+    markedForManualDeletionBy?: string;
     markedForManualDeletionAt: DateTime;
     ticketReference: string;
     comments: string;

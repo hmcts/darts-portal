@@ -30,6 +30,7 @@ describe('TranscriptDetailsComponent', () => {
       caseNumber: 'Swansea_case_1',
       courthouseId: 1,
       courthouse: 'Swansea',
+      courtroom: '1',
       caseReportingRestrictions: [
         {
           hearing_id: 1,
@@ -61,6 +62,7 @@ describe('TranscriptDetailsComponent', () => {
       isManual: false,
       transcriptionStartTs: DateTime.fromISO('2023-06-26T13:00:00Z'),
       transcriptionEndTs: DateTime.fromISO('2023-06-26T13:00:00Z'),
+      transcriptionObjectId: 1,
     };
     fixture.detectChanges();
   });
