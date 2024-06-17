@@ -77,4 +77,67 @@ router.get('/', (req, res) => {
   res.send(media);
 });
 
+router.get('/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+
+  res.send({
+    id,
+    start_at: '2024-06-11T09:55:18.404Z',
+    end_at: '2024-06-11T10:55:18.404Z',
+    channel: 4,
+    total_channels: 16,
+    media_type: 'Audio',
+    media_format: 'MP3',
+    file_size_bytes: 123456789,
+    filename: 'filename.mp3',
+    media_object_id: '123',
+    content_object_id: '456',
+    clip_id: '789',
+    reference_id: 'ABC',
+    checksum: '2963841',
+    media_status: 'media status',
+    is_hidden: true,
+    is_deleted: true,
+    admin_action: {
+      id: 0,
+      reason_id: 2,
+      hidden_by_id: 4,
+      hidden_at: '2024-06-11T07:55:18.404Z',
+      is_marked_for_manual_deletion: true,
+      marked_for_manual_deletion_by_id: 3,
+      marked_for_manual_deletion_at: '2024-06-11T07:55:18.404Z',
+      ticket_reference: 'ref123',
+      comments: 'This is a test comment',
+    },
+    version: 'v2',
+    chronicle_id: '33',
+    antecedent_id: '44',
+    retain_until: '2030-06-11T07:55:18.404Z',
+    created_at: '2024-06-11T17:55:18.404Z',
+    created_by_id: 1,
+    last_modified_at: '2023-03-03T03:30:18.404Z',
+    last_modified_by_id: 2,
+    courthouse: {
+      id: 0,
+      display_name: 'Cardiff',
+    },
+    courtroom: {
+      id: 0,
+      name: 'Courtroom 1',
+    },
+    hearings: [
+      {
+        id: 0,
+        hearing_date: '2020-02-20',
+        case_id: 0,
+      },
+      {
+        id: 1,
+        hearing_date: '2020-03-25',
+        case_id: 1,
+      },
+    ],
+  });
+});
+
 module.exports = router;

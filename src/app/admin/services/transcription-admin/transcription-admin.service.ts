@@ -181,17 +181,19 @@ export class TranscriptionAdminService {
     return {
       id: res.id,
       isHidden: res.is_hidden,
-      adminAction: {
-        id: res.admin_action.id,
-        reasonId: res.admin_action.reason_id,
-        hiddenById: res.admin_action.hidden_by_id,
-        hiddenAt: DateTime.fromISO(res.admin_action.hidden_at),
-        isMarkedForManualDeletion: res.admin_action.is_marked_for_manual_deletion,
-        markedForManualDeletionById: res.admin_action.marked_for_manual_deletion_by_id,
-        markedForManualDeletionAt: DateTime.fromISO(res.admin_action.marked_for_manual_deletion_at),
-        ticketReference: res.admin_action.ticket_reference,
-        comments: res.admin_action.comments,
-      },
+      adminAction: res.admin_action
+        ? {
+            id: res.admin_action.id,
+            reasonId: res.admin_action.reason_id,
+            hiddenById: res.admin_action.hidden_by_id,
+            hiddenAt: DateTime.fromISO(res.admin_action.hidden_at),
+            isMarkedForManualDeletion: res.admin_action.is_marked_for_manual_deletion,
+            markedForManualDeletionById: res.admin_action.marked_for_manual_deletion_by_id,
+            markedForManualDeletionAt: DateTime.fromISO(res.admin_action.marked_for_manual_deletion_at),
+            ticketReference: res.admin_action.ticket_reference,
+            comments: res.admin_action.comments,
+          }
+        : undefined,
     };
   }
 
@@ -211,6 +213,10 @@ export class TranscriptionAdminService {
    */
   getHiddenReasons(): Observable<HiddenReason[]> {
     return this.http.get<HiddenReasonData[]>('api/admin/hidden-reasons').pipe(map((res) => this.mapHiddenReasons(res)));
+  }
+
+  getHiddenReason(id: number): Observable<HiddenReason | undefined> {
+    return this.getHiddenReasons().pipe(map((reasons) => reasons.find((reason) => reason.id === id)));
   }
 
   private mapHiddenReasons(data: HiddenReasonData[]): HiddenReason[] {

@@ -124,6 +124,11 @@ export const ADMIN_ROUTES: Routes = [
       ),
   },
   {
+    path: 'admin/audio-file/:id',
+    title: 'DARTS Admin View Audio File',
+    loadComponent: () => import('./components/audio-file/audio-file.component').then((c) => c.AudioFileComponent),
+  },
+  {
     path: 'admin/transformed-media',
     title: 'DARTS Admin Transformed Media',
     loadComponent: () =>
@@ -146,11 +151,6 @@ export const ADMIN_ROUTES: Routes = [
       import(
         './components/transformed-media/change-owner-transformed-media/change-owner-transformed-media.component'
       ).then((c) => c.ChangeOwnerTransformedMediaComponent),
-  },
-  {
-    path: 'admin/audio-cache',
-    title: 'DARTS Admin Audio Cache',
-    loadComponent: () => import('./components/audio-cache/audio-cache.component').then((c) => c.AudioCacheComponent),
   },
   {
     path: 'admin/transcripts',

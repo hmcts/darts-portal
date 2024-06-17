@@ -1,0 +1,75 @@
+<section id="basic-details" class="details">
+  <app-govuk-heading class="no-margin border-bottom" tag="h2" size="m">Basic details</app-govuk-heading>
+
+  <dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Courthouse</dt>
+      <dd class="govuk-summary-list__value">
+        {{ audioFile.courthouse.displayName }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Courtroom</dt>
+      <dd class="govuk-summary-list__value">
+        {{ audioFile.courtroom.name }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Start time</dt>
+      <dd class="govuk-summary-list__value">
+        {{ audioFile.startAt | luxonDate: "dd MMM yyyy 'at' hh:mma" }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">End time</dt>
+      <dd class="govuk-summary-list__value">
+        {{ audioFile.endAt | luxonDate: "dd MMM yyyy 'at' hh:mma" }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Channel number</dt>
+      <dd class="govuk-summary-list__value">
+        {{ audioFile.channel }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Total channels</dt>
+      <dd class="govuk-summary-list__value">
+        {{ audioFile.totalChannels }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Media type</dt>
+      <dd class="govuk-summary-list__value">
+        {{ audioFile.mediaType }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">File type</dt>
+      <dd class="govuk-summary-list__value">
+        {{ audioFile.mediaFormat }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">File size</dt>
+      <dd class="govuk-summary-list__value">{{ audioFile.fileSizeBytes | bytes | number: '1.0-2' }}MB</dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Filename</dt>
+      <dd class="govuk-summary-list__value">
+        {{ audioFile.filename }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Date created</dt>
+      <dd class="govuk-summary-list__value">
+        {{ audioFile.createdAt | luxonDate: "dd MMM yyyy 'at' hh:mma" }}
+      </dd>
+    </div>
+  </dl>
+</section>
+
+<section id="associated-cases" class="details">
+  <app-govuk-heading class="no-margin border-bottom" tag="h2" size="m">Associated cases</app-govuk-heading>
+  <app-associated-cases-table [rows]="associatedCases" />
+</section>
