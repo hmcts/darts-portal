@@ -1,0 +1,44 @@
+<app-breadcrumb>
+  <ng-container *breadcrumb="['/admin/search']">Search</ng-container>
+  <ng-container *breadcrumb="['.']">Audio files</ng-container>
+  <ng-container *breadcrumb="['.']">{{ audioFileId }}</ng-container>
+</app-breadcrumb>
+
+@if (data$ | async; as data) {
+  <app-hidden-file-banner [file]="data.hiddenFileBanner" />
+
+  <div class="heading-button-container">
+    <app-govuk-heading caption="Audio file">{{ audioFileId }}</app-govuk-heading>
+    <button
+      class="govuk-button govuk-button--secondary"
+      (click)="
+        router.navigate(['admin/file', audioFileId, 'hide-or-delete'], {
+          state: { fileType: 'audio_file' },
+        })
+      "
+    >
+      @if (data.audioFile.isHidden) {
+        @if (data.audioFile.adminAction?.isMarkedForManualDeletion) {
+          Unmark for deletion and unhide
+        } @else {
+          Unhide
+        }
+      } @else {
+        Hide or delete
+      }
+    </button>
+  </div>
+
+  @if (isAdmin) {
+    <app-tabs>
+      <app-basic-audio-file-details
+        *tab="'Basic details'"
+        [audioFile]="data.audioFile"
+        [associatedCases]="data.associatedCases"
+      />
+      <app-advanced-audio-file-details *tab="'Advanced details'" [audioFile]="data.audioFile" />
+    </app-tabs>
+  } @else {
+    <app-basic-audio-file-details [audioFile]="data.audioFile" [associatedCases]="data.associatedCases" />
+  }
+}

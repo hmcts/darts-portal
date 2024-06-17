@@ -5,9 +5,7 @@
 }
 
 @if (transcription$ | async; as vm) {
-  @if (vm.document.isHidden) {
-    <app-hidden-file-banner [transcription]="vm" />
-  }
+  <app-hidden-file-banner [file]="vm.fileBanner" />
 
   <div class="heading-button-container">
     <app-govuk-heading caption="Transcript file">{{ transcriptionDocumentId }}</app-govuk-heading>
@@ -15,7 +13,7 @@
       class="govuk-button govuk-button--secondary"
       (click)="
         router.navigate(['admin/file', transcriptionDocumentId, 'hide-or-delete'], {
-          state: { fileType: 'transcription_document' },
+          state: { fileType: 'transcription_document' }
         })
       "
     >

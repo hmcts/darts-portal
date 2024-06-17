@@ -3,10 +3,7 @@
   max-width: 760px;
 }
 
-.govuk-notification-banner--max-width {
-  max-width: 100%;
-}
-
-.govuk-notification-banner__content--max-width > * {
-  max-width: 100%;
+:host-context(.no-max-width) .govuk-notification-banner,
+p {
+  max-width: none;
 }

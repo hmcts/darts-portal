@@ -1,3 +1,4 @@
+import { HiddenFileBanner } from '@admin-types/common/hidden-file-banner';
 import { TranscriptionDocument } from '@admin-types/transcription';
 import { AsyncPipe, CommonModule, DecimalPipe } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
@@ -5,6 +6,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
+import { HiddenFileBannerComponent } from '@common/hidden-file-banner/hidden-file-banner.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { NotificationBannerComponent } from '@common/notification-banner/notification-banner.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
@@ -20,7 +22,6 @@ import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { UserService } from '@services/user/user.service';
 import { Observable, finalize, forkJoin, map, of, switchMap } from 'rxjs';
 import { AssociatedAudioTableComponent } from '../../transformed-media/associated-audio-table/associated-audio-table.component';
-import { HiddenFileBannerComponent } from './hidden-file-banner/hidden-file-banner.component';
 import { TranscriptFileAdvancedDetailComponent } from './transcript-file-advanced-detail/transcript-file-advanced-detail.component';
 import { TranscriptFileBasicDetailComponent } from './transcript-file-basic-detail/transcript-file-basic-detail.component';
 
@@ -72,20 +73,37 @@ export class ViewTranscriptionDocumentComponent {
         forkJoin({
           document: of(document),
           details: this.transcriptionService.getTranscriptionDetails(document.transcriptionId),
-          hiddenReason:
-            document.adminAction && document.isHidden
-              ? this.transcriptionAdminService.getHiddenReason(document.adminAction?.reasonId)
-              : of(null),
+          fileBanner: this.getHiddenFileBanner(document),
         }).pipe(
-          map(({ document, details, hiddenReason }) => ({
+          map(({ document, details, fileBanner }) => ({
             document,
             details,
-            hiddenReason,
+            fileBanner,
           }))
         )
       ),
       finalize(() => this.loading.set(false))
     );
+
+  private getHiddenFileBanner(document: TranscriptionDocument): Observable<HiddenFileBanner | null> {
+    return document.adminAction && document.isHidden
+      ? this.transcriptionAdminService.getHiddenReason(document.adminAction.reasonId).pipe(
+          map(
+            (reason): HiddenFileBanner => ({
+              id: document.transcriptionId,
+              isHidden: document.isHidden,
+              isMarkedForManualDeletion: document.adminAction?.isMarkedForManualDeletion ?? false,
+              markedForManualDeletionBy: document.adminAction?.markedForManualDeletionBy ?? 'Unknown',
+              hiddenReason: reason?.displayName ?? 'Unknown',
+              hiddenByName: document.adminAction?.hiddenByName ?? 'Unknown',
+              ticketReference: document.adminAction?.ticketReference ?? 'Unknown',
+              comments: document.adminAction?.comments ?? 'Unknown',
+              fileType: 'transcription_document',
+            })
+          )
+        )
+      : of(null);
+  }
 
   private getUserNames(document: TranscriptionDocument): Observable<TranscriptionDocument> {
     const userIds = [
