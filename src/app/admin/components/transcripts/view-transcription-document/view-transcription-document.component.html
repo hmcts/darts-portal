@@ -19,7 +19,15 @@
         })
       "
     >
-      {{ vm.document.isHidden ? 'Unmark for deletion and unhide' : 'Hide or delete' }}
+      @if (vm.document.isHidden) {
+        @if (vm.document.adminAction.isMarkedForManualDeletion) {
+          Unmark for deletion and unhide
+        } @else {
+          Unhide
+        }
+      } @else {
+        Hide or delete
+      }
     </button>
   </div>
 

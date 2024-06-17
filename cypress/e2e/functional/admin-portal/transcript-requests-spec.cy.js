@@ -277,7 +277,7 @@ describe('Admin - Transcript requests', () => {
       cy.get('#file-details dt').eq(13).should('contain', 'Retain until');
       cy.get('#file-details dd').eq(13).should('contain', '01 Jan 2034 at 9:00AM');
 
-      cy.get('.govuk-button').should('contain', 'Unmark for deletion and unhide');
+      cy.get('.govuk-button').should('contain', 'Unhide');
 
       cy.get('.govuk-notification-banner').should('exist');
 
