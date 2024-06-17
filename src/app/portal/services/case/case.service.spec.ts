@@ -599,6 +599,7 @@ describe('CaseService', () => {
         judges: ['JUDGE'],
         number: '1',
         reportingRestriction: 'RESTRICTION',
+        courtrooms: [],
       });
     });
 
@@ -640,7 +641,7 @@ describe('CaseService', () => {
         });
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const mapped: CaseSearchResult = (service as any).mapCaseDataToCaseSearchResult(data);
-        expect(mapped.courtrooms).toEqual(['1', '1']);
+        expect(mapped.courtrooms).toEqual(['1']);
       });
 
       it('multiple different courtrooms', () => {
