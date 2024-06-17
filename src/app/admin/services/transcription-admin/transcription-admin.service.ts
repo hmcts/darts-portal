@@ -244,17 +244,19 @@ export class TranscriptionAdminService {
       clipId: res.clip_id,
       lastModifiedAt: DateTime.fromISO(res.last_modified_at),
       lastModifiedBy: res.last_modified_by,
-      adminAction: {
-        id: res.admin_action.id,
-        reasonId: res.admin_action.reason_id,
-        hiddenById: res.admin_action.hidden_by_id,
-        hiddenAt: DateTime.fromISO(res.admin_action.hidden_at),
-        isMarkedForManualDeletion: res.admin_action.is_marked_for_manual_deletion,
-        markedForManualDeletionById: res.admin_action.marked_for_manual_deletion_by_id,
-        markedForManualDeletionAt: DateTime.fromISO(res.admin_action.marked_for_manual_deletion_at),
-        ticketReference: res.admin_action.ticket_reference,
-        comments: res.admin_action.comments,
-      },
+      ...(res.admin_action && {
+        adminAction: {
+          id: res.admin_action.id,
+          reasonId: res.admin_action.reason_id,
+          hiddenById: res.admin_action.hidden_by_id,
+          hiddenAt: DateTime.fromISO(res.admin_action.hidden_at),
+          isMarkedForManualDeletion: res.admin_action.is_marked_for_manual_deletion,
+          markedForManualDeletionById: res.admin_action.marked_for_manual_deletion_by_id,
+          markedForManualDeletionAt: DateTime.fromISO(res.admin_action.marked_for_manual_deletion_at),
+          ticketReference: res.admin_action.ticket_reference,
+          comments: res.admin_action.comments,
+        },
+      }),
     };
   }
 

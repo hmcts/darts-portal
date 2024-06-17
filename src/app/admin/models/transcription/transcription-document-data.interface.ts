@@ -13,7 +13,7 @@ export interface TranscriptionDocumentData {
   clip_id: string;
   last_modified_at: string;
   last_modified_by: number;
-  admin_action: {
+  admin_action?: {
     id: number;
     reason_id: number;
     hidden_by_id: number;

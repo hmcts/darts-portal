@@ -72,9 +72,10 @@ export class ViewTranscriptionDocumentComponent {
         forkJoin({
           document: of(document),
           details: this.transcriptionService.getTranscriptionDetails(document.transcriptionId),
-          hiddenReason: document.isHidden
-            ? this.transcriptionAdminService.getHiddenReason(document.adminAction.reasonId)
-            : of(null),
+          hiddenReason:
+            document.adminAction && document.isHidden
+              ? this.transcriptionAdminService.getHiddenReason(document.adminAction?.reasonId)
+              : of(null),
         }).pipe(
           map(({ document, details, hiddenReason }) => ({
             document,
@@ -91,17 +92,18 @@ export class ViewTranscriptionDocumentComponent {
       ...new Set([
         document.uploadedBy,
         document.lastModifiedBy,
-        document.adminAction.hiddenById,
-        document.adminAction.markedForManualDeletionById,
+        document.adminAction && document.adminAction?.hiddenById,
+        document.adminAction && document.adminAction?.markedForManualDeletionById,
       ]),
-    ];
+    ] as number[];
+
     return this.userAdminService.getUsersById(userIds).pipe(
       map((users) => {
         const uploadedByName = users.find((u) => u.id == document.uploadedBy)?.fullName;
         const lastModifiedByName = users.find((u) => u.id == document.lastModifiedBy)?.fullName;
-        const hiddenByName = users.find((u) => u.id == document.adminAction.hiddenById)?.fullName;
+        const hiddenByName = users.find((u) => u.id == document.adminAction?.hiddenById)?.fullName;
         const markedForManualDeletionBy = users.find(
-          (u) => u.id == document.adminAction.markedForManualDeletionById
+          (u) => u.id == document.adminAction?.markedForManualDeletionById
         )?.fullName;
 
         return {
@@ -109,7 +111,7 @@ export class ViewTranscriptionDocumentComponent {
           uploadedByName,
           lastModifiedByName,
           adminAction: { ...document.adminAction, hiddenByName, markedForManualDeletionBy },
-        };
+        } as TranscriptionDocument;
       })
     );
   }

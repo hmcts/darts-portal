@@ -17,7 +17,7 @@ export type TranscriptionDocument = {
   lastModifiedAt: DateTime;
   lastModifiedBy: number;
   lastModifiedByName?: string;
-  adminAction: {
+  adminAction?: {
     id: number;
     reasonId: number;
     hiddenById: number;

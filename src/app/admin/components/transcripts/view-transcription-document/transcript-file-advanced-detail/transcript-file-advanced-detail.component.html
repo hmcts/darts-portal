@@ -83,8 +83,8 @@
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Date hidden</dt>
       <dd class="govuk-summary-list__value">
-        {{ transcription.document.adminAction.hiddenAt | luxonDate: 'dd MMM yyyy' }} at
-        {{ transcription.document.adminAction.hiddenAt | luxonDate: 'h:mma' }}
+        {{ transcription.document.adminAction?.hiddenAt | luxonDate: 'dd MMM yyyy' }} at
+        {{ transcription.document.adminAction?.hiddenAt | luxonDate: 'h:mma' }}
       </dd>
     </div>
     <div class="govuk-summary-list__row">

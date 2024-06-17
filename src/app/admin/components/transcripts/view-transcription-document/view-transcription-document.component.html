@@ -20,7 +20,7 @@
       "
     >
       @if (vm.document.isHidden) {
-        @if (vm.document.adminAction.isMarkedForManualDeletion) {
+        @if (vm.document.adminAction?.isMarkedForManualDeletion) {
           Unmark for deletion and unhide
         } @else {
           Unhide
