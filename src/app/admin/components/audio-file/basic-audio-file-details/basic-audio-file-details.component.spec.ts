@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AudioFile } from '@admin-types/index';
+import { AudioFile, User } from '@admin-types/index';
 import { DatePipe } from '@angular/common';
 import { DateTime } from 'luxon';
 import { BasicAudioFileDetailsComponent } from './basic-audio-file-details.component';
@@ -27,11 +27,11 @@ export const mockAudioFile: AudioFile = {
     id: 0,
     reasonId: 0,
     hiddenById: 0,
-    hiddenBy: 'Them',
+    hiddenBy: { id: 1, fullName: 'Them' } as User,
     hiddenAt: DateTime.fromISO('2021-01-01T00:00:00.000Z'),
     isMarkedForManualDeletion: false,
     markedForManualDeletionById: 0,
-    markedForManualDeletionBy: 'You',
+    markedForManualDeletionBy: { id: 1, fullName: 'You' } as User,
     markedForManualDeletionAt: DateTime.fromISO('2021-01-07T00:00:00.000Z'),
     ticketReference: '',
     comments: '',
