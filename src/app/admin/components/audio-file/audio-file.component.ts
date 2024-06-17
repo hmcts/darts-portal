@@ -108,7 +108,7 @@ export class AudioFileComponent {
         audioFile.adminAction?.hiddenById ?? null,
         audioFile.adminAction?.markedForManualDeletionById ?? null,
       ]),
-    ].filter((id) => id !== null) as number[];
+    ].filter((id) => id === null) as number[];
     return this.UserAdminService.getUsersById(userIds).pipe(
       map((users) => {
         const createdBy = users.find((u) => u.id == audioFile.createdById);
