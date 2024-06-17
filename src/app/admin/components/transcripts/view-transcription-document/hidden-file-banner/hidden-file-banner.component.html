@@ -10,16 +10,16 @@
       name: transcription.document.adminAction?.isMarkedForManualDeletion
         ? 'Marked for manual deletion by'
         : 'Hidden by',
-      value: transcription.document.adminAction?.hiddenByName ?? ''
+      value: transcription.document.adminAction?.hiddenByName ?? '',
     },
     {
       name: 'Reason',
-      value: transcription.hiddenReason?.displayName ?? ''
+      value: transcription.hiddenReason?.displayName ?? '',
     },
     {
       name: transcription.document.adminAction?.ticketReference ?? '',
-      value: transcription.document.adminAction?.comments ?? ''
-    }
+      value: transcription.document.adminAction?.comments ?? '',
+    },
   ]"
 >
   @if (transcription.document.adminAction?.isMarkedForManualDeletion) {
@@ -28,7 +28,7 @@
       class="govuk-link"
       (click)="
         router.navigate(['admin/file', transcription.document.transcriptionDocumentId, 'hide-or-delete'], {
-          state: { fileType: 'transcription_document' }
+          state: { fileType: 'transcription_document' },
         })
       "
       >unmark for deletion</a
@@ -40,7 +40,7 @@
       class="govuk-link"
       (click)="
         router.navigate(['admin/file', transcription.document.transcriptionDocumentId, 'hide-or-delete'], {
-          state: { fileType: 'transcription_document' }
+          state: { fileType: 'transcription_document' },
         })
       "
       >unhide</a
