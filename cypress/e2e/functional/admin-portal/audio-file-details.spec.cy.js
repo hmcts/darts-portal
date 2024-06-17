@@ -17,20 +17,21 @@ describe('Admin - Audio file details screen', () => {
 
       cy.get('dt').contains('Courthouse').next('dd').should('contain', 'Cardiff');
       cy.get('dt').contains('Courtroom').next('dd').should('contain', 'Courtroom 1');
-      cy.get('dt').contains('Start time').next('dd').should('contain', '11 June 2024 at 10:55 AM');
-      cy.get('dt').contains('End time').next('dd').should('contain', '11 June 2024 at 11:55 AM');
+      cy.get('dt').contains('Start time').next('dd').should('contain', '11 Jun 2024 at 10:55AM');
+      cy.get('dt').contains('End time').next('dd').should('contain', '11 Jun 2024 at 11:55AM');
       cy.get('dt').contains('Channel number').next('dd').should('contain', '4');
       cy.get('dt').contains('Total channels').next('dd').should('contain', '16');
       cy.get('dt').contains('Media type').next('dd').should('contain', 'Audio');
       cy.get('dt').contains('File type').next('dd').should('contain', 'MP3');
       cy.get('dt').contains('File size').next('dd').should('contain', '117.74MB');
       cy.get('dt').contains('Filename').next('dd').should('contain', 'filename.mp3');
-      cy.get('dt').contains('Date created').next('dd').should('contain', '11 June 2024 at 06:55 PM');
+      cy.get('dt').contains('Date created').next('dd').should('contain', '11 Jun 2024 at 06:55PM');
 
       cy.get('#associated-cases app-govuk-heading h2').contains('Associated cases');
 
       cy.get('td')
         .contains('0')
+        .parent()
         .next('td')
         .should('contain', '20 Feb 2020')
         .next('td')
@@ -56,21 +57,21 @@ describe('Admin - Audio file details screen', () => {
       cy.get('dt').contains('Media status').next('dd').should('contain', 'media status');
       cy.get('dt').contains('Audio hidden?').next('dd').should('contain', 'Yes');
       cy.get('dt').contains('Hidden by').next('dd').should('contain', 'Trina Gulliver');
-      cy.get('dt').contains('Date hidden').next('dd').should('contain', '11 June 2024 at 08:55 AM');
+      cy.get('dt').contains('Date hidden').next('dd').should('contain', '11 Jun 2024 at 08:55AM');
       cy.get('dt').contains('Audio deleted?').next('dd').should('contain', 'Yes');
-      cy.get('dt').contains('Date deleted').next('dd').should('contain', '11 June 2024 at 08:55 AM');
+      cy.get('dt').contains('Date deleted').next('dd').should('contain', '11 Jun 2024 at 08:55AM');
       cy.get('dt').contains('Deleted by').next('dd').should('contain', 'Michael van Gerwen');
 
-      cy.get('#version-details h2').contains('Version details');
+      cy.get('#version-details h2').contains('Version data');
 
       cy.get('dt').contains('Version').next('dd').should('contain', 'v2');
       cy.get('dt').contains('Chronicle ID').next('dd').should('contain', '33');
       cy.get('dt').contains('Antecedent ID').next('dd').should('contain', '44');
-      cy.get('dt').contains('Retain until').next('dd').should('contain', '11 June 2030 at 08:55 AM');
+      cy.get('dt').contains('Retain until').next('dd').should('contain', '11 Jun 2030 at 08:55AM');
       cy.get('dt').contains('Created by').next('dd').should('contain', 'Eric Bristow');
-      cy.get('dt').contains('Date created').next('dd').should('contain', '11 June 2024 at 06:55 PM');
+      cy.get('dt').contains('Date created').next('dd').should('contain', '11 Jun 2024 at 06:55PM');
       cy.get('dt').contains('Last modified by').next('dd').should('contain', 'Fallon Sherrock');
-      cy.get('dt').contains('Date last modified').next('dd').should('contain', '03 March 2023 at 03:30 AM');
+      cy.get('dt').contains('Date last modified').next('dd').should('contain', '03 Mar 2023 at 03:30AM');
 
       cy.a11y();
     });
