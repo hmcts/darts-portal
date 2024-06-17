@@ -1,18 +1,1 @@
-{
-  "actions": [],
-  "advisories": {},
-  "muted": [],
-  "metadata": {
-    "vulnerabilities": {
-      "info": 0,
-      "low": 0,
-      "moderate": 0,
-      "high": 1,
-      "critical": 0
-    },
-    "dependencies": 223,
-    "devDependencies": 2,
-    "optionalDependencies": 0,
-    "totalDependencies": 225
-  }
-}
+{"actions":[],"advisories":{"1097544":{"findings":[{"version":"2.6.4","paths":["@hmcts/properties-volume>@azure/identity>@azure/msal-node"]}],"metadata":null,"vulnerable_versions":"<2.9.2","module_name":"@azure/msal-node","severity":"moderate","github_advisory_id":"GHSA-m5vv-6r4h-3vj9","cves":["CVE-2024-35255"],"access":"public","patched_versions":">=2.9.2","cvss":{"score":5.5,"vectorString":"CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N"},"updated":"2024-06-11T21:37:41.000Z","recommendation":"Upgrade to version 2.9.2 or later","cwe":["CWE-362"],"found_by":null,"deleted":null,"id":1097544,"references":"- https://nvd.nist.gov/vuln/detail/CVE-2024-35255\n- https://msrc.microsoft.com/update-guide/vulnerability/CVE-2024-35255\n- https://github.com/Azure/azure-sdk-for-go/commit/50774cd9709905523136fb05e8c85a50e8984499\n- https://github.com/Azure/azure-sdk-for-js/commit/c6aa75d312ae463e744163cedfd8fc480cc8d492\n- https://github.com/Azure/azure-sdk-for-python/commit/cb065acd7d0f957327dc4f02d1646d4e51a94178\n- https://github.com/advisories/GHSA-m5vv-6r4h-3vj9","created":"2024-06-11T18:30:50.000Z","reported_by":null,"title":"Azure Identity Libraries and Microsoft Authentication Library Elevation of Privilege Vulnerability","npm_advisory_id":null,"overview":"Azure Identity Libraries and Microsoft Authentication Library Elevation of Privilege Vulnerability ","url":"https://github.com/advisories/GHSA-m5vv-6r4h-3vj9"},"1097545":{"findings":[{"version":"4.0.1","paths":["@hmcts/properties-volume>@azure/identity"]}],"metadata":null,"vulnerable_versions":"<4.2.1","module_name":"@azure/identity","severity":"moderate","github_advisory_id":"GHSA-m5vv-6r4h-3vj9","cves":["CVE-2024-35255"],"access":"public","patched_versions":">=4.2.1","cvss":{"score":5.5,"vectorString":"CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N"},"updated":"2024-06-11T21:37:41.000Z","recommendation":"Upgrade to version 4.2.1 or later","cwe":["CWE-362"],"found_by":null,"deleted":null,"id":1097545,"references":"- https://nvd.nist.gov/vuln/detail/CVE-2024-35255\n- https://msrc.microsoft.com/update-guide/vulnerability/CVE-2024-35255\n- https://github.com/Azure/azure-sdk-for-go/commit/50774cd9709905523136fb05e8c85a50e8984499\n- https://github.com/Azure/azure-sdk-for-js/commit/c6aa75d312ae463e744163cedfd8fc480cc8d492\n- https://github.com/Azure/azure-sdk-for-python/commit/cb065acd7d0f957327dc4f02d1646d4e51a94178\n- https://github.com/advisories/GHSA-m5vv-6r4h-3vj9","created":"2024-06-11T18:30:50.000Z","reported_by":null,"title":"Azure Identity Libraries and Microsoft Authentication Library Elevation of Privilege Vulnerability","npm_advisory_id":null,"overview":"Azure Identity Libraries and Microsoft Authentication Library Elevation of Privilege Vulnerability ","url":"https://github.com/advisories/GHSA-m5vv-6r4h-3vj9"}},"muted":[],"metadata":{"vulnerabilities":{"info":0,"low":0,"moderate":2,"high":0,"critical":0},"dependencies":222,"devDependencies":2,"optionalDependencies":0,"totalDependencies":224}}

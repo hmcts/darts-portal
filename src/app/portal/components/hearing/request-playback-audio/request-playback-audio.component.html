@@ -10,7 +10,7 @@
           <div
             class="govuk-form-group"
             [ngClass]="{
-              'govuk-form-group--error': audioRequestForm.controls['startTime'].invalid && isSubmitted
+              'govuk-form-group--error': audioRequestForm.controls['startTime'].invalid && isSubmitted,
             }"
           >
             <h3 class="govuk-heading-s">Start Time</h3>
@@ -39,7 +39,7 @@
             [ngClass]="{
               'govuk-form-group--error':
                 (audioRequestForm.controls['endTime'].invalid && isSubmitted) ||
-                (audioRequestForm.hasError('endTimeBeforeStartTime') && isSubmitted)
+                (audioRequestForm.hasError('endTimeBeforeStartTime') && isSubmitted),
             }"
           >
             <h3 class="govuk-heading-s">End Time</h3>
@@ -81,7 +81,7 @@
             class="govuk-form-group"
             [ngClass]="{
               'govuk-form-group--error error-box-height':
-                audioRequestForm.controls['requestType'].invalid && isSubmitted
+                audioRequestForm.controls['requestType'].invalid && isSubmitted,
             }"
           >
             <fieldset class="govuk-fieldset">
