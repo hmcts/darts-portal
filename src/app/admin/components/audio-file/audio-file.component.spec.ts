@@ -87,7 +87,11 @@ describe('AudioFileComponent', () => {
         { provide: ActivatedRoute, useValue: { snapshot: { params: { id: 100 } } } },
         {
           provide: CaseService,
-          useValue: { getCase: jest.fn().mockReturnValue(of({ id: 0, defendants: ['defendant'], judges: ['judge'] })) },
+          useValue: {
+            getCase: jest
+              .fn()
+              .mockReturnValue(of({ id: 0, number: 'C1', defendants: ['defendant'], judges: ['judge'] })),
+          },
         },
         { provide: UserService, useValue: { isAdmin: () => true } },
         {
@@ -133,14 +137,15 @@ describe('AudioFileComponent', () => {
     });
 
     it('resolves user full name properties', fakeAsync(() => {
+      const fakeUser = { id: 99, fullName: 'full name' };
       const expected = {
         ...audioFile,
-        createdBy: 'full name',
-        lastModifiedBy: 'full name',
+        createdBy: fakeUser,
+        lastModifiedBy: fakeUser,
         adminAction: {
           ...audioFile.adminAction,
-          hiddenBy: 'full name',
-          markedForManualDeletionBy: 'full name',
+          hiddenBy: fakeUser,
+          markedForManualDeletionBy: fakeUser,
         },
       };
 
@@ -187,12 +192,16 @@ describe('AudioFileComponent', () => {
       const expected = [
         {
           caseId: 0,
+          hearingId: 0,
+          caseNumber: 'C1',
           hearingDate: dateTime,
           defendants: ['defendant'],
           judges: ['judge'],
         },
         {
           caseId: 0,
+          hearingId: 1,
+          caseNumber: 'C1',
           hearingDate: dateTime,
           defendants: ['defendant'],
           judges: ['judge'],
@@ -223,6 +232,21 @@ describe('AudioFileComponent', () => {
       fixture.detectChanges();
       tick();
       expect(fixture.nativeElement.querySelector('button').textContent).toContain('Hide or delete');
+    }));
+
+    it('"Unmark for manual deletion and" text when marked for manual deletion and hidden', fakeAsync(() => {
+      jest.spyOn(component.transformedMediaService, 'getMediaById').mockReturnValue(
+        of({
+          ...audioFile,
+          isHidden: true,
+          adminAction: { ...audioFile.adminAction, isMarkedForManualDeletion: true },
+        })
+      );
+      fixture = TestBed.createComponent(AudioFileComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.querySelector('button').textContent).toContain('Unmark for deletion and unhide');
     }));
   });
 });

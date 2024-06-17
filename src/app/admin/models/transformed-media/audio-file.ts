@@ -1,3 +1,4 @@
+import { User } from '@admin-types/users/user.type';
 import { DateTime } from 'luxon';
 
 export type AudioFile = {
@@ -22,11 +23,11 @@ export type AudioFile = {
     id: number;
     reasonId: number;
     hiddenById: number;
-    hiddenBy?: string;
+    hiddenBy?: User;
     hiddenAt: DateTime;
     isMarkedForManualDeletion: boolean;
     markedForManualDeletionById: number;
-    markedForManualDeletionBy?: string;
+    markedForManualDeletionBy?: User;
     markedForManualDeletionAt: DateTime;
     ticketReference: string;
     comments: string;
@@ -37,10 +38,10 @@ export type AudioFile = {
   retainUntil: DateTime;
   createdAt: DateTime;
   createdById: number;
-  createdBy?: string;
+  createdBy?: User;
   lastModifiedAt: DateTime;
   lastModifiedById: number;
-  lastModifiedBy?: string;
+  lastModifiedBy?: User;
   courthouse: {
     id: number;
     displayName: string;

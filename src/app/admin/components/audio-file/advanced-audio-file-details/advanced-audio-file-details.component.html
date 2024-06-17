@@ -46,13 +46,15 @@
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Hidden by</dt>
       <dd class="govuk-summary-list__value">
-        {{ audioFile.adminAction.hiddenBy }}
+        <a class="govuk-link" [routerLink]="['/admin/users', audioFile.adminAction.hiddenBy?.id]">
+          {{ audioFile.adminAction.hiddenBy?.fullName }}
+        </a>
       </dd>
     </div>
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Date hidden</dt>
       <dd class="govuk-summary-list__value">
-        {{ audioFile.adminAction.hiddenAt | luxonDate: "dd MMMM yyyy 'at' hh:mm a" }}
+        {{ audioFile.adminAction.hiddenAt | luxonDate: "dd MMM yyyy 'at' hh:mma" }}
       </dd>
     </div>
     <div class="govuk-summary-list__row">
@@ -64,13 +66,15 @@
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Date deleted</dt>
       <dd class="govuk-summary-list__value">
-        {{ audioFile.adminAction.markedForManualDeletionAt | luxonDate: "dd MMMM yyyy 'at' hh:mm a" }}
+        {{ audioFile.adminAction.markedForManualDeletionAt | luxonDate: "dd MMM yyyy 'at' hh:mma" }}
       </dd>
     </div>
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Deleted by</dt>
       <dd class="govuk-summary-list__value">
-        {{ audioFile.adminAction.markedForManualDeletionBy }}
+        <a class="govuk-link" [routerLink]="['/admin/users', audioFile.adminAction.markedForManualDeletionBy?.id]">
+          {{ audioFile.adminAction.markedForManualDeletionBy?.fullName }}
+        </a>
       </dd>
     </div>
   </dl>
@@ -78,8 +82,8 @@
 
 <section id="version-details" class="details">
   <div class="heading-link-container">
-    <app-govuk-heading class="no-margin" tag="h2" size="m">Version details</app-govuk-heading>
-    <a href="javascript:void(0)" class="govuk-link" [routerLink]="['.']">Show versions</a>
+    <app-govuk-heading class="no-margin" tag="h2" size="m">Version data</app-govuk-heading>
+    <a class="govuk-link" [routerLink]="['.']">Show versions</a>
   </div>
   <dl class="govuk-summary-list">
     <div class="govuk-summary-list__row">
@@ -103,31 +107,35 @@
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Retain until</dt>
       <dd class="govuk-summary-list__value">
-        {{ audioFile.retainUntil | luxonDate: "dd MMMM yyyy 'at' hh:mm a" }}
-      </dd>
-    </div>
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Created by</dt>
-      <dd class="govuk-summary-list__value">
-        {{ audioFile.createdBy }}
+        {{ audioFile.retainUntil | luxonDate: "dd MMM yyyy 'at' hh:mma" }}
       </dd>
     </div>
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Date created</dt>
       <dd class="govuk-summary-list__value">
-        {{ audioFile.createdAt | luxonDate: "dd MMMM yyyy 'at' hh:mm a" }}
+        {{ audioFile.createdAt | luxonDate: "dd MMM yyyy 'at' hh:mma" }}
       </dd>
     </div>
     <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Last modified by</dt>
+      <dt class="govuk-summary-list__key">Created by</dt>
       <dd class="govuk-summary-list__value">
-        {{ audioFile.lastModifiedBy }}
+        <a class="govuk-link" [routerLink]="['/admin/users', audioFile.createdBy?.id]">
+          {{ audioFile.createdBy?.fullName }}
+        </a>
       </dd>
     </div>
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Date last modified</dt>
       <dd class="govuk-summary-list__value">
-        {{ audioFile.lastModifiedAt | luxonDate: "dd MMMM yyyy 'at' hh:mm a" }}
+        {{ audioFile.lastModifiedAt | luxonDate: "dd MMM yyyy 'at' hh:mma" }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Last modified by</dt>
+      <dd class="govuk-summary-list__value">
+        <a class="govuk-link" [routerLink]="['/admin/users', audioFile.lastModifiedBy?.id]">
+          {{ audioFile.lastModifiedBy?.fullName }}
+        </a>
       </dd>
     </div>
   </dl>

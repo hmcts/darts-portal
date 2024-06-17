@@ -51,7 +51,7 @@ export class AudioFileComponent {
 
   audioFile$ = this.transformedMediaService
     .getMediaById(this.audioFileId)
-    .pipe(switchMap((audioFile) => this.getUserNames(audioFile)))
+    .pipe(switchMap((audioFile) => this.getUsers(audioFile)))
     .pipe(shareReplay(1));
 
   fileBanner$: Observable<HiddenFileBanner> = this.audioFile$.pipe(
@@ -62,7 +62,7 @@ export class AudioFileComponent {
             id: audioFile.id,
             isHidden: audioFile.isHidden,
             isMarkedForManualDeletion: audioFile.adminAction.isMarkedForManualDeletion,
-            markedForManualDeletionBy: audioFile.adminAction.markedForManualDeletionBy ?? 'Unknown',
+            markedForManualDeletionBy: audioFile.adminAction.markedForManualDeletionBy?.fullName ?? 'Unknown',
             hiddenReason: reason?.displayName ?? 'Unknown',
             ticketReference: audioFile.adminAction.ticketReference,
             comments: audioFile.adminAction.comments,
@@ -88,6 +88,8 @@ export class AudioFileComponent {
       map((cases) => {
         return audioFile.hearings.map((h) => ({
           caseId: h.caseId,
+          hearingId: h.id,
+          caseNumber: cases.find((c) => c.id == h.caseId)?.number ?? 'Unknown',
           hearingDate: h.hearingDate,
           defendants: cases.find((c) => c.id == h.caseId)?.defendants,
           judges: cases.find((c) => c.id == h.caseId)?.judges,
@@ -96,7 +98,7 @@ export class AudioFileComponent {
     );
   }
 
-  private getUserNames(audioFile: AudioFile): Observable<AudioFile> {
+  private getUsers(audioFile: AudioFile): Observable<AudioFile> {
     const userIds = [
       ...new Set([
         audioFile.createdById,
@@ -107,12 +109,10 @@ export class AudioFileComponent {
     ];
     return this.UserAdminService.getUsersById(userIds).pipe(
       map((users) => {
-        const createdBy = users.find((u) => u.id == audioFile.createdById)?.fullName;
-        const lastModifiedBy = users.find((u) => u.id == audioFile.lastModifiedById)?.fullName;
-        const hiddenBy = users.find((u) => u.id == audioFile.adminAction.hiddenById)?.fullName;
-        const markedForManualDeletionBy = users.find(
-          (u) => u.id == audioFile.adminAction.markedForManualDeletionById
-        )?.fullName;
+        const createdBy = users.find((u) => u.id == audioFile.createdById);
+        const lastModifiedBy = users.find((u) => u.id == audioFile.lastModifiedById);
+        const hiddenBy = users.find((u) => u.id == audioFile.adminAction.hiddenById);
+        const markedForManualDeletionBy = users.find((u) => u.id == audioFile.adminAction.markedForManualDeletionById);
 
         return {
           ...audioFile,
