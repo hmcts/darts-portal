@@ -13,12 +13,12 @@
       class="govuk-button govuk-button--secondary"
       (click)="
         router.navigate(['admin/file', audioFileId, 'hide-or-delete'], {
-          state: { fileType: 'audio_file' },
+          state: { fileType: 'audio_file' }
         })
       "
     >
       @if (data.audioFile.isHidden) {
-        @if (data.audioFile.adminAction.isMarkedForManualDeletion) {
+        @if (data.audioFile.adminAction?.isMarkedForManualDeletion) {
           Unmark for deletion and unhide
         } @else {
           Unhide

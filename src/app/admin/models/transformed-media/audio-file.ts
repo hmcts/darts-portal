@@ -19,7 +19,7 @@ export type AudioFile = {
   mediaStatus: string;
   isHidden: boolean;
   isDeleted: boolean;
-  adminAction: {
+  adminAction?: {
     id: number;
     reasonId: number;
     hiddenById: number;

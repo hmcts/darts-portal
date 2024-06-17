@@ -1,18 +1,18 @@
-@if (file.isHidden) {
+@if (file?.isHidden) {
   <app-notification-banner [heading]="heading" class="no-max-width">
-    @if (file.isMarkedForManualDeletion) {
+    @if (file?.isMarkedForManualDeletion) {
       DARTS user cannot view this file. You can
       <a class="govuk-link" (click)="onHideOrDelete()">unmark for deletion</a> and it will no longer be hidden.
     } @else {
       DARTS users cannot view this file. You can <a class="govuk-link" (click)="onHideOrDelete()">unhide</a> the file
     }
     <ul class="govuk-list">
-      @if (file.isMarkedForManualDeletion) {
-        <li><strong>Marked for manual deletion by</strong> - {{ file.markedForManualDeletionBy }}</li>
+      @if (file?.isMarkedForManualDeletion) {
+        <li><strong>Marked for manual deletion by</strong> - {{ file?.markedForManualDeletionBy }}</li>
       }
-      <li><strong>Reason</strong> - {{ file.hiddenReason }}</li>
+      <li><strong>Reason</strong> - {{ file?.hiddenReason }}</li>
       <li>
-        <strong>{{ file.ticketReference }}</strong> - {{ file.comments }}
+        <strong>{{ file?.ticketReference }}</strong> - {{ file?.comments }}
       </li>
     </ul>
   </app-notification-banner>

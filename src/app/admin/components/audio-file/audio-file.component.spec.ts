@@ -239,7 +239,9 @@ describe('AudioFileComponent', () => {
         of({
           ...audioFile,
           isHidden: true,
-          adminAction: { ...audioFile.adminAction, isMarkedForManualDeletion: true },
+          adminAction: audioFile.adminAction
+            ? { ...audioFile.adminAction, isMarkedForManualDeletion: true }
+            : undefined,
         })
       );
       fixture = TestBed.createComponent(AudioFileComponent);

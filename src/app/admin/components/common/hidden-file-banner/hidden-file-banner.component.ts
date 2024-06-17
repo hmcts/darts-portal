@@ -11,19 +11,19 @@ import { NotificationBannerComponent } from '@common/notification-banner/notific
   styleUrl: './hidden-file-banner.component.scss',
 })
 export class HiddenFileBannerComponent {
-  @Input() file!: HiddenFileBanner;
+  @Input() file: HiddenFileBanner | null = null;
 
   router = inject(Router);
 
   get heading() {
-    return this.file.isMarkedForManualDeletion
+    return this.file?.isMarkedForManualDeletion
       ? 'This file is hidden in DARTS and is marked for manual deletion'
       : 'This file is hidden in DARTS';
   }
 
   onHideOrDelete() {
-    this.router.navigate(['admin/file', this.file.id, 'hide-or-delete'], {
-      state: { fileType: this.file.fileType },
+    this.router.navigate(['admin/file', this.file?.id, 'hide-or-delete'], {
+      state: { fileType: this.file?.fileType },
     });
   }
 }

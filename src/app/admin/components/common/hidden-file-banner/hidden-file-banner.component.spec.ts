@@ -55,7 +55,9 @@ describe('HiddenFileBannerComponent', () => {
 
   describe('is not hidden', () => {
     beforeEach(() => {
-      component.file.isHidden = false;
+      if (component.file) {
+        component.file.isHidden = false;
+      }
       fixture.detectChanges();
     });
 
@@ -67,8 +69,10 @@ describe('HiddenFileBannerComponent', () => {
 
   describe('is hidden and not marked for deletion', () => {
     beforeEach(() => {
-      component.file.isHidden = true;
-      component.file.isMarkedForManualDeletion = false;
+      if (component.file) {
+        component.file.isHidden = true;
+        component.file.isMarkedForManualDeletion = false;
+      }
       fixture.detectChanges();
     });
 
@@ -96,8 +100,10 @@ describe('HiddenFileBannerComponent', () => {
 
   describe('is hidden and marked for deletion', () => {
     beforeEach(() => {
-      component.file.isHidden = true;
-      component.file.isMarkedForManualDeletion = true;
+      if (component.file) {
+        component.file.isHidden = true;
+        component.file.isMarkedForManualDeletion = true;
+      }
       fixture.detectChanges();
     });
 

@@ -13,7 +13,7 @@ import { CaseService } from '@services/case/case.service';
 import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
 import { TransformedMediaService } from '@services/transformed-media/transformed-media.service';
 import { UserService } from '@services/user/user.service';
-import { Observable, forkJoin, map, shareReplay, switchMap } from 'rxjs';
+import { Observable, forkJoin, map, of, shareReplay, switchMap } from 'rxjs';
 import { HiddenFileBannerComponent } from '../common/hidden-file-banner/hidden-file-banner.component';
 import { UserAdminService } from './../../services/user-admin/user-admin.service';
 import { AdvancedAudioFileDetailsComponent } from './advanced-audio-file-details/advanced-audio-file-details.component';
@@ -54,22 +54,24 @@ export class AudioFileComponent {
     .pipe(switchMap((audioFile) => this.getUsers(audioFile)))
     .pipe(shareReplay(1));
 
-  fileBanner$: Observable<HiddenFileBanner> = this.audioFile$.pipe(
+  fileBanner$: Observable<HiddenFileBanner | null> = this.audioFile$.pipe(
     switchMap((audioFile) =>
-      this.transcriptionAdminService.getHiddenReason(audioFile.adminAction.reasonId).pipe(
-        map(
-          (reason): HiddenFileBanner => ({
-            id: audioFile.id,
-            isHidden: audioFile.isHidden,
-            isMarkedForManualDeletion: audioFile.adminAction.isMarkedForManualDeletion,
-            markedForManualDeletionBy: audioFile.adminAction.markedForManualDeletionBy?.fullName ?? 'Unknown',
-            hiddenReason: reason?.displayName ?? 'Unknown',
-            ticketReference: audioFile.adminAction.ticketReference,
-            comments: audioFile.adminAction.comments,
-            fileType: 'audio_file',
-          })
-        )
-      )
+      audioFile.adminAction
+        ? this.transcriptionAdminService.getHiddenReason(audioFile.adminAction.reasonId).pipe(
+            map(
+              (reason): HiddenFileBanner => ({
+                id: audioFile.id,
+                isHidden: audioFile.isHidden,
+                isMarkedForManualDeletion: audioFile.adminAction?.isMarkedForManualDeletion ?? false,
+                markedForManualDeletionBy: audioFile.adminAction?.markedForManualDeletionBy?.fullName ?? 'Unknown',
+                hiddenReason: reason?.displayName ?? 'Unknown',
+                ticketReference: audioFile.adminAction?.ticketReference ?? 'Unknown',
+                comments: audioFile.adminAction?.comments ?? 'Unknown',
+                fileType: 'audio_file',
+              })
+            )
+          )
+        : of(null)
     )
   );
 
@@ -103,22 +105,26 @@ export class AudioFileComponent {
       ...new Set([
         audioFile.createdById,
         audioFile.lastModifiedById,
-        audioFile.adminAction.hiddenById,
-        audioFile.adminAction.markedForManualDeletionById,
+        audioFile.adminAction?.hiddenById ?? null,
+        audioFile.adminAction?.markedForManualDeletionById ?? null,
       ]),
-    ];
+    ].filter((id) => id !== null) as number[];
     return this.UserAdminService.getUsersById(userIds).pipe(
       map((users) => {
         const createdBy = users.find((u) => u.id == audioFile.createdById);
         const lastModifiedBy = users.find((u) => u.id == audioFile.lastModifiedById);
-        const hiddenBy = users.find((u) => u.id == audioFile.adminAction.hiddenById);
-        const markedForManualDeletionBy = users.find((u) => u.id == audioFile.adminAction.markedForManualDeletionById);
+        const hiddenBy = users.find((u) => u.id == audioFile?.adminAction?.hiddenById);
+        const markedForManualDeletionBy = users.find(
+          (u) => u.id == audioFile?.adminAction?.markedForManualDeletionById
+        );
 
         return {
           ...audioFile,
           createdBy,
           lastModifiedBy,
-          adminAction: { ...audioFile.adminAction, hiddenBy, markedForManualDeletionBy },
+          adminAction: audioFile.adminAction
+            ? { ...audioFile.adminAction, hiddenBy, markedForManualDeletionBy }
+            : undefined,
         };
       })
     );

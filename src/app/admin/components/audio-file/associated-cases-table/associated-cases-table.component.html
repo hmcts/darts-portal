@@ -1,7 +1,7 @@
 <app-data-table [columns]="columns" [rows]="rows()">
   <ng-template [tableRowTemplate]="rows()" let-row>
     <td class="govuk-table__cell case-id">
-      <a class="govuk-link" [routerLink]="['/case', row.caseId]"> {{ row.caseId }}</a>
+      <a class="govuk-link" [routerLink]="['/case', row.caseId]"> {{ row.caseNumber }}</a>
     </td>
     <td class="govuk-table__cell hearing-date">
       <a class="govuk-link" [routerLink]="['/case', row.caseId, 'hearing', row.hearingId]"
