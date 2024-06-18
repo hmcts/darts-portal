@@ -858,7 +858,7 @@ describe('TranscriptionAdminService', () => {
 
       service.hideTranscriptionDocument(id, formValues).subscribe();
 
-      const req = httpMock.expectOne(`api/admin/transcription-documents/${id}/hide`);
+      const req = httpMock.expectOne(`api/admin/transcription-document/${id}/hide`);
       expect(req.request.method).toBe('POST');
       expect(req.request.body).toEqual(expectedRequestBody);
     });

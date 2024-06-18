@@ -173,7 +173,7 @@ export class TranscriptionAdminService {
     const body = this.mapHidePostRequest(formValues);
 
     return this.http
-      .post<FileHideData>(`api/admin/transcription-documents/${id}/hide`, body)
+      .post<FileHideData>(`api/admin/transcription-document/${id}/hide`, body)
       .pipe(map((res) => this.mapHideFileResponse(res)));
   }
 
