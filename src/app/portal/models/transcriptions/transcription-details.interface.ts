@@ -6,6 +6,7 @@ export interface TranscriptionDetailsData {
   case_id: number;
   case_number: string;
   courthouse: string;
+  courtroom: string;
   courthouse_id: number;
   status?: string;
   from?: string;
@@ -21,6 +22,7 @@ export interface TranscriptionDetailsData {
   transcription_id: number;
   transcription_start_ts: string;
   transcription_end_ts: string;
+  transcription_object_id: number;
   is_manual: boolean;
   hearing_id: number;
   requestor?: {

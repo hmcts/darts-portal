@@ -1,5 +1,5 @@
-import { User } from '@admin-types/users/user.type';
 import { DateTime } from 'luxon';
+import { AdminAction } from './admin-action';
 
 export type AudioFile = {
   id: number;
@@ -19,29 +19,17 @@ export type AudioFile = {
   mediaStatus: string;
   isHidden: boolean;
   isDeleted: boolean;
-  adminAction?: {
-    id: number;
-    reasonId: number;
-    hiddenById: number;
-    hiddenBy?: User;
-    hiddenAt: DateTime;
-    isMarkedForManualDeletion: boolean;
-    markedForManualDeletionById: number;
-    markedForManualDeletionBy?: User;
-    markedForManualDeletionAt: DateTime;
-    ticketReference: string;
-    comments: string;
-  };
+  adminAction?: AdminAction | null;
   version: string;
   chronicleId: string;
   antecedentId: string;
   retainUntil: DateTime;
   createdAt: DateTime;
   createdById: number;
-  createdBy?: User;
+  createdBy?: string;
   lastModifiedAt: DateTime;
   lastModifiedById: number;
-  lastModifiedBy?: User;
+  lastModifiedBy?: string;
   courthouse: {
     id: number;
     displayName: string;
