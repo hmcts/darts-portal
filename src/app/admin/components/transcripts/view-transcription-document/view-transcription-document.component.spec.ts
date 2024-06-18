@@ -1,23 +1,40 @@
 import { TranscriptionDocument, User } from '@admin-types/index';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
-import { AssociatedMedia } from '@admin-types/transformed-media/associated-media';
+import { HiddenReason } from '@admin-types/hidden-reasons/hidden-reason';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { TranscriptionDetails } from '@portal-types/index';
 import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
-import { TransformedMediaService } from '@services/transformed-media/transformed-media.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
+import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
 import { ViewTranscriptionDocumentComponent } from './view-transcription-document.component';
 
-const mockUser: User = {
-  id: 1,
-  fullName: 'Dean',
-} as User;
+const mockUsers: User[] = [
+  {
+    id: 1,
+    fullName: 'Dean',
+  },
+  {
+    id: 2,
+    fullName: 'Dave',
+  },
+] as User[];
+
+const hiddenReasons = [
+  {
+    id: 1,
+    displayName: 'Reason 1',
+  },
+  {
+    id: 2,
+    displayName: 'Reason 2',
+  },
+] as unknown as HiddenReason[];
 
 const mockTranscriptionDocument: TranscriptionDocument = {
   transcriptionId: 1,
@@ -26,14 +43,36 @@ const mockTranscriptionDocument: TranscriptionDocument = {
   fileName: '',
   fileSizeBytes: 0,
   uploadedAt: DateTime.fromISO('2020-01-01'),
-  uploadedBy: 0,
-  isHidden: false,
+  uploadedBy: 2,
+  isHidden: true,
+  retainUntil: DateTime.fromISO('2020-01-01'),
+  contentObjectId: '',
+  checksum: '',
+  clipId: '',
+  lastModifiedAt: DateTime.fromISO('2020-01-01'),
+  lastModifiedBy: 1,
+  lastModifiedByName: 'Dean',
+  uploadedByName: 'Dave',
+  adminAction: {
+    id: 0,
+    reasonId: 1,
+    hiddenById: 1,
+    markedForManualDeletionBy: 'Dave',
+    hiddenByName: 'Dean',
+    hiddenAt: DateTime.fromISO('2020-01-01'),
+    isMarkedForManualDeletion: false,
+    markedForManualDeletionById: 2,
+    markedForManualDeletionAt: DateTime.fromISO('2020-01-01'),
+    ticketReference: '',
+    comments: '',
+  },
 };
 
 const mockTranscriptionDetails: TranscriptionDetails = {
   caseId: 0,
   caseNumber: '',
   courthouse: '',
+  courtroom: '',
   defendants: [],
   judges: [],
   transcriptFileName: '',
@@ -46,34 +85,10 @@ const mockTranscriptionDetails: TranscriptionDetails = {
   transcriptionId: 0,
   transcriptionStartTs: DateTime.fromISO('2020-01-01'),
   transcriptionEndTs: DateTime.fromISO('2020-01-01'),
+  transcriptionObjectId: 0,
   isManual: false,
   hearingId: 0,
 };
-
-const mockAssociatedMedia: AssociatedMedia[] = [
-  {
-    id: 1,
-    channel: 1,
-    startAt: DateTime.fromISO('2020-01-01T01:00:00Z'),
-    endAt: DateTime.fromISO('2020-01-01T02:00:00Z'),
-    case: {
-      id: 1,
-      caseNumber: 'case-number',
-    },
-    hearing: {
-      id: 1,
-      hearingDate: DateTime.fromISO('2020-01-01'),
-    },
-    courthouse: {
-      id: 1,
-      displayName: 'courthouse',
-    },
-    courtroom: {
-      id: 1,
-      displayName: 'courtroom',
-    },
-  },
-];
 
 describe('ViewTranscriptionDocumentComponent', () => {
   let component: ViewTranscriptionDocumentComponent;
@@ -99,6 +114,7 @@ describe('ViewTranscriptionDocumentComponent', () => {
           provide: TranscriptionAdminService,
           useValue: {
             getTranscriptionDocument: jest.fn().mockReturnValue(of(mockTranscriptionDocument)),
+            getHiddenReason: jest.fn().mockReturnValue(of(hiddenReasons[0])),
           },
         },
         {
@@ -108,15 +124,16 @@ describe('ViewTranscriptionDocumentComponent', () => {
           },
         },
         {
-          provide: TransformedMediaService,
+          provide: UserAdminService,
           useValue: {
-            getAssociatedMediaByTranscriptionDocumentId: jest.fn().mockReturnValue(of(mockAssociatedMedia)),
+            getUsersById: jest.fn().mockReturnValue(of(mockUsers)),
           },
         },
         {
-          provide: UserAdminService,
+          provide: UserService,
           useValue: {
-            getUser: jest.fn().mockReturnValue(of(mockUser)),
+            isAdmin: jest.fn().mockReturnValue(true),
+            isSuperUser: jest.fn().mockReturnValue(true),
           },
         },
       ],
@@ -131,22 +148,37 @@ describe('ViewTranscriptionDocumentComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('data$', () => {
+  describe('transcription$', () => {
     it('should load the transcription document and associated audio', fakeAsync(() => {
-      component.data$.subscribe((data) => {
-        expect(data.transcription.document).toEqual(mockTranscriptionDocument);
-        expect(data.transcription.details).toEqual(mockTranscriptionDetails);
-        expect(data.transcription.uploadedByUser).toEqual(mockUser);
-        expect(data.associatedAudio).toEqual(mockAssociatedMedia);
+      component.transcription$.subscribe((data) => {
+        expect(data.document).toEqual(mockTranscriptionDocument);
+        expect(data.details).toEqual(mockTranscriptionDetails);
+        expect(data.fileBanner).toEqual({
+          id: mockTranscriptionDocument.transcriptionId,
+          isHidden: mockTranscriptionDocument.isHidden,
+          isMarkedForManualDeletion: mockTranscriptionDocument.adminAction?.isMarkedForManualDeletion,
+          markedForManualDeletionBy: mockTranscriptionDocument.adminAction?.markedForManualDeletionBy,
+          hiddenReason: hiddenReasons[0]?.displayName,
+          hiddenByName: mockTranscriptionDocument.adminAction?.hiddenByName,
+          ticketReference: mockTranscriptionDocument.adminAction?.ticketReference,
+          comments: mockTranscriptionDocument.adminAction?.comments,
+          fileType: 'transcription_document',
+        });
       });
       tick();
     }));
 
     it('should set loading to false', fakeAsync(() => {
-      component.data$.subscribe(() => {
+      component.transcription$.subscribe(() => {
         expect(component.loading()).toBe(false);
       });
       tick();
     }));
+  });
+
+  it('should navigate to "/admin/transcripts" when onBack is called', () => {
+    const routerSpy = jest.spyOn(component.router, 'navigate');
+    component.onBack();
+    expect(routerSpy).toHaveBeenCalledWith(['/admin/transcripts']);
   });
 });

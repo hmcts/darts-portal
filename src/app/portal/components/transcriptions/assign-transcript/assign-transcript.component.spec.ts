@@ -48,6 +48,8 @@ describe('AssignTranscriptComponent', () => {
     caseId: 2,
     caseNumber: 'C20220620001',
     courthouse: 'Swansea',
+    transcriptionObjectId: 1,
+    courtroom: '1',
     status: 'Rejected',
     from: 'MoJ CH Swansea',
     received: undefined,

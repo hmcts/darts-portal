@@ -184,6 +184,7 @@ const mockTranscriptionDetails = {
   ],
   case_number: 'C20220620001',
   courthouse: 'Swansea',
+  courtroom: '5',
   courthouse_id: 1,
   status: 'With Transcriber',
   from: 'MoJ CH Swansea',
@@ -208,6 +209,7 @@ const mockTranscriptionDetails = {
   transcription_id: 1,
   transcription_start_ts: '2023-06-26T13:00:00Z',
   transcription_end_ts: '2023-06-26T16:00:00Z',
+  transcription_object_id: 109,
   is_manual: true,
   hearing_id: 1,
   requestor: {
@@ -229,6 +231,7 @@ const mockTranscriptionDetailsTwo = {
   ],
   case_number: 'C20220620001',
   courthouse: 'Swansea',
+  courtroom: '3',
   status: 'Complete',
   from: 'MoJ CH Swansea',
   requestor: {
@@ -246,6 +249,7 @@ const mockTranscriptionDetailsTwo = {
   request_id: 123456789,
   transcription_start_ts: '2023-06-26T13:00:00Z',
   transcription_end_ts: '2023-06-26T16:00:00Z',
+  transcription_object_id: 32,
   is_manual: true,
   hearing_id: 1,
   transcription_id: 789,
@@ -260,6 +264,7 @@ const mockTranscriptionDetailsNoName = {
   case_id: 1,
   case_number: 'C20220620001',
   courthouse: 'Swansea',
+  courtroom: '9',
   defendants: ['Defendant Dave'],
   judges: ['HHJ M. Hussain KC	'],
   hearing_date: '2023-11-08',
@@ -271,6 +276,7 @@ const mockTranscriptionDetailsNoName = {
   request_type: 'Specified Times',
   transcription_start_ts: '2023-06-26T13:00:00Z',
   transcription_end_ts: '2023-06-26T16:00:00Z',
+  transcription_object_id: 99,
   case_reporting_restrictions: [
     {
       hearing_id: 1,

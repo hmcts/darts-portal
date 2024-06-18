@@ -5,6 +5,8 @@ const documents = [
   {
     transcription_document_id: 0,
     transcription_id: 0,
+    is_manual_transcription: true,
+    is_hidden: false,
     case: {
       id: 0,
       case_number: 'C0001',
@@ -17,12 +19,23 @@ const documents = [
       id: 0,
       hearing_date: '2021-01-01',
     },
-    is_manual_transcription: true,
-    is_hidden: false,
+    admin_action: {
+      id: 1,
+      reason_id: 1,
+      hidden_by_id: 1,
+      hidden_at: '2024-01-01T00:00:00Z',
+      is_marked_for_manual_deletion: false,
+      marked_for_manual_deletion_by_id: 0,
+      marked_for_manual_deletion_at: '2024-01-01T00:00:00Z',
+      ticket_reference: 'string',
+      comments: 'string',
+    },
   },
   {
     transcription_document_id: 1,
     transcription_id: 1,
+    is_manual_transcription: false,
+    is_hidden: false,
     case: {
       id: 1,
       case_number: 'C0002',
@@ -35,8 +48,6 @@ const documents = [
       id: 1,
       hearing_date: '2022-02-02',
     },
-    is_manual_transcription: false,
-    is_hidden: false,
   },
   {
     transcription_document_id: 2,
@@ -70,16 +81,93 @@ router.post('/search', (req, res) => {
 });
 
 router.get('/:transcription_document_id', (req, res) => {
-  res.send({
-    transcription_document_id: 123,
-    transcription_id: 456,
-    file_type: 'DOC',
-    file_name: 'caseid_courthouse_filename.doc',
-    file_size_bytes: 3145728,
-    uploaded_at: '2008-05-18T15:00:00Z',
-    uploaded_by: 3,
-    is_hidden: false,
-  });
+  const id = req.params.transcription_document_id;
+
+  if (id === '0') {
+    return res.send({
+      transcription_document_id: 123,
+      transcription_id: 456,
+      file_type: 'DOC',
+      file_name: 'caseid_courthouse_filename.doc',
+      file_size_bytes: 3145728,
+      uploaded_at: '2008-05-18T15:00:00Z',
+      uploaded_by: 3,
+      retain_until: '2034-01-01T09:00:00Z',
+      content_object_id: 'ABC12343211',
+      checksum: '2AGSGAQ27277178AA',
+      clip_id: '123112DDE',
+      last_modified_at: '2024-01-01T13:52:00Z',
+      last_modified_by: 1,
+      is_hidden: false,
+      admin_action: {
+        id: 1,
+        reason_id: 1,
+        hidden_by_id: 1,
+        hidden_at: '2024-01-01T07:10:00Z',
+        is_marked_for_manual_deletion: false,
+        marked_for_manual_deletion_by_id: 0,
+        marked_for_manual_deletion_at: '2024-01-01T18:30:00Z',
+        ticket_reference: 'Ticket Reference 1232',
+        comments: 'This is a comment',
+      },
+    });
+  } else if (id === '1') {
+    return res.send({
+      transcription_document_id: 123,
+      transcription_id: 456,
+      file_type: 'DOC',
+      file_name: 'caseid_courthouse_filename.doc',
+      file_size_bytes: 3145728,
+      uploaded_at: '2008-05-18T15:00:00Z',
+      uploaded_by: 3,
+      retain_until: '2034-01-01T09:00:00Z',
+      content_object_id: 'ABC12343211',
+      checksum: '2AGSGAQ27277178AA',
+      clip_id: '123112DDE',
+      last_modified_at: '2024-01-01T13:52:00Z',
+      last_modified_by: 1,
+      is_hidden: true,
+      admin_action: {
+        id: 1,
+        reason_id: 1,
+        hidden_by_id: 1,
+        hidden_at: '2024-01-01T07:10:00Z',
+        is_marked_for_manual_deletion: false,
+        marked_for_manual_deletion_by_id: 0,
+        marked_for_manual_deletion_at: '2024-01-01T18:30:00Z',
+        ticket_reference: 'Ticket Reference 1232',
+        comments: 'This is a comment',
+      },
+    });
+  } else {
+    return res.send({
+      transcription_document_id: 123,
+      transcription_id: 456,
+      file_type: 'DOC',
+      file_name: 'caseid_courthouse_filename.doc',
+      file_size_bytes: 3145728,
+      uploaded_at: '2008-05-18T15:00:00Z',
+      uploaded_by: 3,
+      retain_until: '2034-01-01T09:00:00Z',
+      content_object_id: 'ABC12343211',
+      checksum: '2AGSGAQ27277178AA',
+      clip_id: '123112DDE',
+      last_modified_at: '2024-01-01T13:52:00Z',
+      last_modified_by: 1,
+      is_hidden: true,
+      admin_action: {
+        id: 1,
+        reason_id: 1,
+        hidden_by_id: 1,
+        hidden_at: '2024-01-01T07:10:00Z',
+        is_marked_for_manual_deletion: true,
+        marked_for_manual_deletion_by_id: 1,
+        marked_for_manual_deletion_at: '2024-01-01T18:30:00Z',
+        ticket_reference: 'Ticket Reference 1232',
+        comments: 'This is a comment',
+      },
+    });
+  }
 });
 
 router.post('/:transcription_document_id/hide', (req, res) => {

@@ -1,0 +1,98 @@
+<section id="file-details" class="details">
+  <app-govuk-heading class="no-margin border-bottom" tag="h2" size="m">Advanced details</app-govuk-heading>
+  <dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Transcription object ID</dt>
+      <dd class="govuk-summary-list__value">{{ transcription.details.transcriptionObjectId }}</dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Content object ID</dt>
+      <dd class="govuk-summary-list__value">{{ transcription.document.contentObjectId }}</dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Clip ID</dt>
+      <dd class="govuk-summary-list__value">{{ transcription.document.clipId }}</dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Checksum</dt>
+      <dd class="govuk-summary-list__value">{{ transcription.document.checksum }}</dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">File size</dt>
+      <dd class="govuk-summary-list__value">{{ transcription.document.fileSizeBytes | bytes | number: '1.0-2' }}MB</dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">File type</dt>
+      <dd class="govuk-summary-list__value">
+        {{ transcription.document.fileType }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Filename</dt>
+      <dd class="govuk-summary-list__value">
+        {{ transcription.document.fileName }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Date uploaded</dt>
+      <dd class="govuk-summary-list__value">
+        {{ transcription.document.uploadedAt | luxonDate: 'dd MMM yyyy' }} at
+        {{ transcription.document.uploadedAt | luxonDate: 'h:mma' }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Uploaded by</dt>
+      <dd class="govuk-summary-list__value">
+        <a
+          id="uploaded-by-link"
+          class="govuk-link"
+          href="javascript:void(0)"
+          [routerLink]="['/admin/users', transcription.document.uploadedBy]"
+        >
+          {{ transcription.document.uploadedByName }}
+        </a>
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Date created</dt>
+      <dd class="govuk-summary-list__value">
+        {{ transcription.document.uploadedAt | luxonDate: 'dd MMM yyyy' }} at
+        {{ transcription.document.uploadedAt | luxonDate: 'h:mma' }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Last modified by</dt>
+      <dd class="govuk-summary-list__value">
+        <a
+          id="modified-by-link"
+          class="govuk-link"
+          href="javascript:void(0)"
+          [routerLink]="['/admin/users', transcription.document.lastModifiedBy]"
+        >
+          {{ transcription.document.lastModifiedByName }}
+        </a>
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Date last modified</dt>
+      <dd class="govuk-summary-list__value">
+        {{ transcription.document.lastModifiedAt | luxonDate: 'dd MMM yyyy' }} at
+        {{ transcription.document.lastModifiedAt | luxonDate: 'h:mma' }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Date hidden</dt>
+      <dd class="govuk-summary-list__value">
+        {{ transcription.document.adminAction?.hiddenAt | luxonDate: 'dd MMM yyyy' }} at
+        {{ transcription.document.adminAction?.hiddenAt | luxonDate: 'h:mma' }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Retain until</dt>
+      <dd class="govuk-summary-list__value">
+        {{ transcription.document.retainUntil | luxonDate: 'dd MMM yyyy' }} at
+        {{ transcription.document.retainUntil | luxonDate: 'h:mma' }}
+      </dd>
+    </div>
+  </dl>
+</section>

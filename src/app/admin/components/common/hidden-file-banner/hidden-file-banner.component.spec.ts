@@ -19,6 +19,7 @@ describe('HiddenFileBannerComponent', () => {
       isHidden: true,
       isMarkedForManualDeletion: true,
       markedForManualDeletionBy: 'me',
+      hiddenByName: 'you',
       hiddenReason: 'because',
       ticketReference: 'refy ref',
       comments: 'commenty comment',

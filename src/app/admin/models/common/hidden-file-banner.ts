@@ -3,6 +3,7 @@ export type HiddenFileBanner = {
   isHidden: boolean;
   isMarkedForManualDeletion: boolean;
   markedForManualDeletionBy: string;
+  hiddenByName: string;
   hiddenReason: string;
   ticketReference: string;
   comments: string;

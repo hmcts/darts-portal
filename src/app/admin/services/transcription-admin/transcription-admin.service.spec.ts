@@ -1,4 +1,6 @@
 import { FileHideOrDeleteFormValues } from '@admin-types/hidden-reasons/file-hide-or-delete-form-values';
+import { HiddenReason } from '@admin-types/hidden-reasons/hidden-reason';
+import { HiddenReasonData } from '@admin-types/hidden-reasons/hidden-reason-data.interface';
 import {
   Transcription,
   TranscriptionDocumentSearchResult,
@@ -238,6 +240,7 @@ describe('TranscriptionAdminService', () => {
       ],
       case_number: 'C20220620001',
       courthouse: 'Swansea',
+      courtroom: 'Courtroom 1',
       courthouse_id: 1,
       status: 'With Transcriber',
       from: 'MoJ CH Swansea',
@@ -258,6 +261,7 @@ describe('TranscriptionAdminService', () => {
       transcription_id: 12345,
       transcription_start_ts: '2023-06-26T13:00:00Z',
       transcription_end_ts: '2023-06-26T16:00:00Z',
+      transcription_object_id: 1,
       is_manual: true,
       hearing_id: 1,
       requestor: {
@@ -265,6 +269,7 @@ describe('TranscriptionAdminService', () => {
         user_full_name: 'Eric Bristow',
       },
     } as TranscriptionAdminDetailsData;
+
     const expectedData = {
       caseReportingRestrictions: [
         {
@@ -278,6 +283,7 @@ describe('TranscriptionAdminService', () => {
       caseId: 1,
       caseNumber: 'C20220620001',
       courthouse: 'Swansea',
+      courtroom: 'Courtroom 1',
       courthouseId: 1,
       status: 'With Transcriber',
       from: 'Eric Bristow',
@@ -297,6 +303,7 @@ describe('TranscriptionAdminService', () => {
       transcriptionId: 12345,
       transcriptionStartTs: DateTime.fromISO('2023-06-26T13:00:00.000Z'),
       transcriptionEndTs: DateTime.fromISO('2023-06-26T16:00:00.000Z'),
+      transcriptionObjectId: 1,
       isManual: true,
       hearingId: 1,
       requestor: {
@@ -815,6 +822,23 @@ describe('TranscriptionAdminService', () => {
         uploaded_at: '2022-01-01T00:00:00Z',
         uploaded_by: 1,
         is_hidden: false,
+        checksum: undefined,
+        clip_id: undefined,
+        content_object_id: undefined,
+        last_modified_at: '2022-01-01T00:00:00Z',
+        last_modified_by: undefined,
+        retain_until: '2020-01-01T00:00:00Z',
+        admin_action: {
+          id: 0,
+          reason_id: 1,
+          ticket_reference: 'ABC123',
+          comments: 'Some comments',
+          hidden_by_id: 0,
+          hidden_at: '2020-01-01T00:00:00Z',
+          is_marked_for_manual_deletion: false,
+          marked_for_manual_deletion_by_id: 0,
+          marked_for_manual_deletion_at: '2020-01-01T00:00:00Z',
+        },
       };
 
       service.getTranscriptionDocument(1).subscribe((mappedResponse) =>
@@ -827,6 +851,23 @@ describe('TranscriptionAdminService', () => {
           uploadedAt: DateTime.fromISO('2022-01-01T00:00:00Z'),
           uploadedBy: 1,
           isHidden: false,
+          lastModifiedAt: DateTime.fromISO('2022-01-01T00:00:00Z'),
+          lastModifiedBy: undefined,
+          retainUntil: DateTime.fromISO('2020-01-01T00:00:00Z'),
+          checksum: undefined,
+          clipId: undefined,
+          contentObjectId: undefined,
+          adminAction: {
+            id: 0,
+            reasonId: 1,
+            ticketReference: 'ABC123',
+            comments: 'Some comments',
+            hiddenById: 0,
+            hiddenAt: DateTime.fromISO('2020-01-01T00:00:00Z'),
+            isMarkedForManualDeletion: false,
+            markedForManualDeletionById: 0,
+            markedForManualDeletionAt: DateTime.fromISO('2020-01-01T00:00:00Z'),
+          },
         })
       );
 
@@ -861,6 +902,112 @@ describe('TranscriptionAdminService', () => {
       const req = httpMock.expectOne(`api/admin/transcription-documents/${id}/hide`);
       expect(req.request.method).toBe('POST');
       expect(req.request.body).toEqual(expectedRequestBody);
+    });
+  });
+
+  describe('getHiddenReasons', () => {
+    it('should return an observable of hidden reasons', fakeAsync(() => {
+      const hiddenReasons: HiddenReasonData[] = [
+        {
+          id: 1,
+          reason: 'Reason 1',
+          display_name: 'Display Reason 1',
+          display_state: true,
+          display_order: 1,
+          marked_for_deletion: false,
+        },
+        {
+          id: 2,
+          reason: 'Reason 2',
+          display_name: 'Display Reason 2',
+          display_state: true,
+          display_order: 2,
+          marked_for_deletion: false,
+        },
+      ];
+
+      const expectedResponse = hiddenReasons.map((reason) => ({
+        id: reason.id,
+        reason: reason.reason,
+        displayName: reason.display_name,
+        displayState: reason.display_state,
+        displayOrder: reason.display_order,
+        markedForDeletion: reason.marked_for_deletion,
+      }));
+
+      service.getHiddenReasons().subscribe((response) => {
+        expect(response).toEqual(expectedResponse);
+      });
+
+      const req = httpMock.expectOne({ url: `api/admin/hidden-reasons`, method: 'GET' });
+      req.flush(hiddenReasons);
+      tick();
+    }));
+  });
+
+  describe('getHiddenReason', () => {
+    it('should return the hidden reason with the specified id', fakeAsync(() => {
+      const hiddenReasons: HiddenReason[] = [
+        {
+          id: 1,
+          reason: 'Reason 1',
+          displayName: 'Display Reason 1',
+          displayState: true,
+          displayOrder: 1,
+          markedForDeletion: false,
+        },
+        {
+          id: 2,
+          reason: 'Reason 2',
+          displayName: 'Display Reason 2',
+          displayState: true,
+          displayOrder: 2,
+          markedForDeletion: false,
+        },
+      ];
+
+      const expectedReason = {
+        id: 1,
+        reason: 'Reason 1',
+        displayName: 'Display Reason 1',
+        displayState: true,
+        displayOrder: 1,
+        markedForDeletion: false,
+      };
+
+      jest.spyOn(service, 'getHiddenReasons').mockReturnValue(of(hiddenReasons));
+
+      service.getHiddenReason(1).subscribe((response) => {
+        expect(response).toEqual(expectedReason);
+      });
+
+      tick();
+    }));
+
+    it('should return undefined if the hidden reason with the specified id is not found', () => {
+      const hiddenReasons = [
+        {
+          id: 1,
+          reason: 'Reason 1',
+          displayName: 'Display Reason 1',
+          displayState: 'Active',
+          displayOrder: 1,
+          markedForDeletion: false,
+        },
+        {
+          id: 2,
+          reason: 'Reason 2',
+          displayName: 'Display Reason 2',
+          displayState: 'Active',
+          displayOrder: 2,
+          markedForDeletion: false,
+        },
+      ] as unknown as HiddenReason[];
+      jest.spyOn(service, 'getHiddenReasons').mockReturnValue(of(hiddenReasons));
+
+      service.getHiddenReason(3).subscribe((response) => {
+        expect(response).toBeUndefined();
+      });
     });
   });
 });

@@ -35,7 +35,7 @@ const audioFile: AudioFile = {
     id: 0,
     reasonId: 0,
     hiddenById: 99,
-    hiddenBy: undefined,
+    hiddenByName: undefined,
     hiddenAt: dateTime,
     isMarkedForManualDeletion: false,
     markedForManualDeletionById: 99,
@@ -137,15 +137,14 @@ describe('AudioFileComponent', () => {
     });
 
     it('resolves user full name properties', fakeAsync(() => {
-      const fakeUser = { id: 99, fullName: 'full name' };
       const expected = {
         ...audioFile,
-        createdBy: fakeUser,
-        lastModifiedBy: fakeUser,
+        createdBy: 'full name',
+        lastModifiedBy: 'full name',
         adminAction: {
           ...audioFile.adminAction,
-          hiddenBy: fakeUser,
-          markedForManualDeletionBy: fakeUser,
+          hiddenByName: 'full name',
+          markedForManualDeletionBy: 'full name',
         },
       };
 
@@ -168,6 +167,7 @@ describe('AudioFileComponent', () => {
         isHidden: false,
         isMarkedForManualDeletion: false,
         markedForManualDeletionBy: 'full name',
+        hiddenByName: 'full name',
         hiddenReason: 'because of reasons',
         ticketReference: 'refy ref',
         comments: 'commenty comment',

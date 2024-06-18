@@ -9,6 +9,8 @@
     <ul class="govuk-list">
       @if (file?.isMarkedForManualDeletion) {
         <li><strong>Marked for manual deletion by</strong> - {{ file?.markedForManualDeletionBy }}</li>
+      } @else {
+        <li><strong>Hidden by</strong> - {{ file?.hiddenByName }}</li>
       }
       <li><strong>Reason</strong> - {{ file?.hiddenReason }}</li>
       <li>

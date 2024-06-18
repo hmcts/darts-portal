@@ -22,6 +22,7 @@ describe('ViewTranscriptComponent', () => {
     caseId: 0,
     caseNumber: '',
     courthouse: '',
+    courtroom: '',
     defendants: [],
     judges: [],
     transcriptFileName: '',
@@ -35,6 +36,7 @@ describe('ViewTranscriptComponent', () => {
     transcriptionId: 0,
     transcriptionStartTs: DateTime.fromISO('2021-01-01T09:00:00Z'),
     transcriptionEndTs: DateTime.fromISO('2021-01-01T10:00:00Z'),
+    transcriptionObjectId: 0,
     isManual: false,
     hearingId: 0,
   };
