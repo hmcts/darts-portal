@@ -63,9 +63,9 @@ export class AudioFileComponent {
                 id: audioFile.id,
                 isHidden: audioFile.isHidden,
                 isMarkedForManualDeletion: audioFile.adminAction?.isMarkedForManualDeletion ?? false,
-                markedForManualDeletionBy: audioFile.adminAction?.markedForManualDeletionBy?.fullName ?? 'Unknown',
+                markedForManualDeletionBy: audioFile.adminAction?.markedForManualDeletionBy ?? 'Unknown',
                 hiddenReason: reason?.displayName ?? 'Unknown',
-                hiddenByName: audioFile.adminAction?.hiddenBy?.fullName ?? 'Unknown',
+                hiddenByName: audioFile.adminAction?.hiddenByName ?? 'Unknown',
                 ticketReference: audioFile.adminAction?.ticketReference ?? 'Unknown',
                 comments: audioFile.adminAction?.comments ?? 'Unknown',
                 fileType: 'audio_file',
@@ -109,22 +109,23 @@ export class AudioFileComponent {
         audioFile.adminAction?.hiddenById ?? null,
         audioFile.adminAction?.markedForManualDeletionById ?? null,
       ]),
-    ].filter((id) => id === null) as number[];
+    ] as number[];
+
     return this.UserAdminService.getUsersById(userIds).pipe(
       map((users) => {
-        const createdBy = users.find((u) => u.id == audioFile.createdById);
-        const lastModifiedBy = users.find((u) => u.id == audioFile.lastModifiedById);
-        const hiddenBy = users.find((u) => u.id == audioFile?.adminAction?.hiddenById);
+        const createdBy = users.find((u) => u.id == audioFile.createdById)?.fullName;
+        const lastModifiedBy = users.find((u) => u.id == audioFile.lastModifiedById)?.fullName;
+        const hiddenByName = users.find((u) => u.id == audioFile?.adminAction?.hiddenById)?.fullName;
         const markedForManualDeletionBy = users.find(
           (u) => u.id == audioFile?.adminAction?.markedForManualDeletionById
-        );
+        )?.fullName;
 
         return {
           ...audioFile,
           createdBy,
           lastModifiedBy,
           adminAction: audioFile.adminAction
-            ? { ...audioFile.adminAction, hiddenBy, markedForManualDeletionBy }
+            ? { ...audioFile.adminAction, hiddenByName, markedForManualDeletionBy }
             : undefined,
         };
       })

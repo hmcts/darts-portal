@@ -11,7 +11,7 @@ const config: Config = {
       '<rootDir>/src/app/portal/services/$1',
       '<rootDir>/src/app/admin/services/$1',
     ],
-    '^@common/(.*)$': '<rootDir>/src/app/core/components/common/$1',
+    '^@common/(.*)$': ['<rootDir>/src/app/core/components/common/$1', '<rootDir>/src/app/admin/components/common/$1'],
     '^@components/(.*)$': ['<rootDir>/src/app/core/components/$1', '<rootDir>/src/app/portal/components/$1'],
     '^@core-types/(.*)$': '<rootDir>/src/app/core/models/$1',
     '^@portal-types/(.*)$': '<rootDir>/src/app/portal/models/$1',

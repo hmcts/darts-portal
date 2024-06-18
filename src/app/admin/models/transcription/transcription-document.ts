@@ -1,3 +1,4 @@
+import { AdminAction } from '@admin-types/transformed-media/admin-action';
 import { DateTime } from 'luxon';
 
 export type TranscriptionDocument = {
@@ -17,17 +18,5 @@ export type TranscriptionDocument = {
   lastModifiedAt: DateTime;
   lastModifiedBy: number;
   lastModifiedByName?: string;
-  adminAction?: {
-    id: number;
-    reasonId: number;
-    hiddenById: number;
-    hiddenAt: DateTime;
-    hiddenByName?: string;
-    isMarkedForManualDeletion: boolean;
-    markedForManualDeletionById: number;
-    markedForManualDeletionBy?: string;
-    markedForManualDeletionAt: DateTime;
-    ticketReference: string;
-    comments: string;
-  };
+  adminAction?: AdminAction;
 };

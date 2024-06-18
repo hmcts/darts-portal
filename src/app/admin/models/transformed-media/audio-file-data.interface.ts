@@ -1,3 +1,5 @@
+import { AdminActionData } from './admin-action-data.interface';
+
 export interface AudioFileData {
   id: number;
   start_at: string;
@@ -16,17 +18,7 @@ export interface AudioFileData {
   media_status: string;
   is_hidden: boolean;
   is_deleted: boolean;
-  admin_action: {
-    id: number;
-    reason_id: number;
-    hidden_by_id: number;
-    hidden_at: string;
-    is_marked_for_manual_deletion: boolean;
-    marked_for_manual_deletion_by_id: number;
-    marked_for_manual_deletion_at: string;
-    ticket_reference: string;
-    comments: string;
-  };
+  admin_action: AdminActionData;
   version: string;
   chronicle_id: string;
   antecedent_id: string;

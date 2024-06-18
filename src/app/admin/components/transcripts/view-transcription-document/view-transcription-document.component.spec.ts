@@ -153,7 +153,17 @@ describe('ViewTranscriptionDocumentComponent', () => {
       component.transcription$.subscribe((data) => {
         expect(data.document).toEqual(mockTranscriptionDocument);
         expect(data.details).toEqual(mockTranscriptionDetails);
-        expect(data.hiddenReason).toEqual(hiddenReasons[0]);
+        expect(data.fileBanner).toEqual({
+          id: mockTranscriptionDocument.transcriptionId,
+          isHidden: mockTranscriptionDocument.isHidden,
+          isMarkedForManualDeletion: mockTranscriptionDocument.adminAction?.isMarkedForManualDeletion,
+          markedForManualDeletionBy: mockTranscriptionDocument.adminAction?.markedForManualDeletionBy,
+          hiddenReason: hiddenReasons[0]?.displayName,
+          hiddenByName: mockTranscriptionDocument.adminAction?.hiddenByName,
+          ticketReference: mockTranscriptionDocument.adminAction?.ticketReference,
+          comments: mockTranscriptionDocument.adminAction?.comments,
+          fileType: 'transcription_document',
+        });
       });
       tick();
     }));
