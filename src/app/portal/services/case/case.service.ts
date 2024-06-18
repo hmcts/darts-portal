@@ -176,7 +176,7 @@ export class CaseService {
       judges: c.judges,
       reportingRestriction: c.reporting_restriction,
       hearings: c.hearings,
-      courtrooms: c.hearings?.map((h) => h.courtroom),
+      courtrooms: Array.from(new Set(c.hearings?.map((h) => h.courtroom))),
     };
   }
 
