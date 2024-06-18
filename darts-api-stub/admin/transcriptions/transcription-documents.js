@@ -161,7 +161,7 @@ router.get('/:transcription_document_id', (req, res) => {
         hidden_by_id: 1,
         hidden_at: '2024-01-01T07:10:00Z',
         is_marked_for_manual_deletion: true,
-        marked_for_manual_deletion_by_id: 0,
+        marked_for_manual_deletion_by_id: 1,
         marked_for_manual_deletion_at: '2024-01-01T18:30:00Z',
         ticket_reference: 'Ticket Reference 1232',
         comments: 'This is a comment',
