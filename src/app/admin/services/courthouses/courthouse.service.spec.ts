@@ -397,9 +397,30 @@ describe('CourthouseService', () => {
 
   describe('mapCourthouseDataToCourthouses', () => {
     it('should map courthouse data to courthouses', () => {
-      const result = service.mapCourthouseDataToCourthouses(courthouseData);
+      const result = service.mapCourthouseDataToCourthouses([
+        {
+          id: 1,
+          courthouse_name: 'READING',
+          display_name: 'Reading',
+          code: 0,
+          region_id: 0,
+          created_date_time: '2023-08-18T09:48:29.728Z',
+          last_modified_date_time: '2023-08-18T09:48:29.728Z',
+          has_data: true,
+        },
+      ]);
 
-      expect(result).toEqual(courthouses);
+      expect(result).toEqual([
+        {
+          id: 1,
+          courthouseName: 'READING',
+          displayName: 'Reading',
+          code: 0,
+          createdDateTime: DateTime.fromISO('2023-08-18T09:48:29.728Z'),
+          lastModifiedDateTime: DateTime.fromISO('2023-08-18T09:48:29.728Z'),
+          hasData: true,
+        },
+      ]);
     });
   });
 });
