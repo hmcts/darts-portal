@@ -50,7 +50,6 @@ app.use('/admin/transcriptions', require('./admin/transcriptions/transcriptions'
 app.use('/admin/transcription-status', require('./admin/transcriptions/transcription-status').router);
 app.use('/admin/transcription-workflows', require('./admin/transcriptions/transcription-workflows'));
 app.use('/admin/transcription-documents', require('./admin/transcriptions/transcription-documents'));
-app.use('/admin/transcription-document', require('./admin/transcriptions/transcription-documents'));
 app.use('/admin/automated-tasks', require('./admin/automated-tasks/automated-tasks'));
 app.use('/admin/event-mappings', require('./admin/event-mappings/event-mappings'));
 app.use('/admin/event-handlers', require('./admin/event-mappings/event-handlers'));
