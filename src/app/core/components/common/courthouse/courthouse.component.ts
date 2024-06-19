@@ -15,6 +15,7 @@ export class CourthouseComponent implements AfterViewInit, OnChanges {
 
   @Input() courthouses: CourthouseData[] = [];
   @Input() courthouse = '';
+  @Input() label = 'Courthouse';
   @Input() isInvalid = false;
   @Input() errors: string[] = [];
   @Output() courthouseSelect = new EventEmitter<string>();

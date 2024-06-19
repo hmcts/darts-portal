@@ -1,0 +1,98 @@
+<p class="govuk-body">You can search for cases, hearings, events and audio.</p>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <app-auto-complete
+    [data]="courthouseAutoCompleteItems()"
+    label="Filter by courthouse"
+    dataType="courthouse"
+    (dataSelect)="updateSelectedCourthouses($event)"
+    [showAllValues]="true"
+  />
+
+  @if (selectedCourthouses().length > 0) {
+    <p class="govuk-body">Filter results for these courthouses</p>
+
+    <ul class="govuk-list">
+      @for (courthouse of selectedCourthouses(); track courthouse.id) {
+        <li class="selected-courthouse">
+          <span aria-label="Courthouse name">{{ courthouse.displayName }}</span>
+          <a class="govuk-link" href="javascript:void(0)" (click)="removeSelectedCourthouse(courthouse.id)">Remove</a>
+        </li>
+      }
+    </ul>
+  }
+
+  <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible" />
+
+  <div class="govuk-form-group">
+    <label class="govuk-label" for="caseId"> Case ID </label>
+    <input formControlName="caseId" class="govuk-input govuk-input--width-20" id="caseId" name="caseId" type="text" />
+  </div>
+
+  <div class="govuk-form-group">
+    <label class="govuk-label" for="courtroom"> Courtroom </label>
+    <input
+      formControlName="courtroom"
+      class="govuk-input govuk-input--width-20"
+      id="courtroom"
+      name="courtroom"
+      type="text"
+    />
+  </div>
+
+  <app-specific-or-range-date-picker label="Hearing date" formGroupName="hearingDate" />
+
+  <div class="govuk-form-group">
+    <fieldset class="govuk-fieldset">
+      <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+        <label class="govuk-fieldset__heading" for="cases-option">First show results for</label>
+      </legend>
+      <div class="govuk-radios govuk-radios--small">
+        <div class="govuk-radios__item">
+          <input
+            class="govuk-radios__input"
+            type="radio"
+            id="cases-option"
+            value="cases"
+            formControlName="resultsFor"
+          />
+          <label class="govuk-label govuk-radios__label" for="cases-option">Cases</label>
+        </div>
+        <div class="govuk-radios__item">
+          <input
+            class="govuk-radios__input"
+            type="radio"
+            id="hearings-option"
+            value="hearings"
+            formControlName="resultsFor"
+          />
+          <label class="govuk-label govuk-radios__label" for="hearings-option">Hearings</label>
+        </div>
+        <div class="govuk-radios__item">
+          <input
+            class="govuk-radios__input"
+            type="radio"
+            id="events-option"
+            value="events"
+            formControlName="resultsFor"
+          />
+          <label class="govuk-label govuk-radios__label" for="events-option">Events</label>
+        </div>
+        <div class="govuk-radios__item">
+          <input
+            class="govuk-radios__input"
+            type="radio"
+            id="audio-option"
+            value="audio"
+            formControlName="resultsFor"
+          />
+          <label class="govuk-label govuk-radios__label" for="audio-option">Audio</label>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+
+  <div class="govuk-button-group">
+    <button id="confirm-button" class="govuk-button" (mousedown)="(false)" type="submit">Search</button>
+  </div>
+</form>

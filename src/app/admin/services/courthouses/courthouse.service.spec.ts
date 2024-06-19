@@ -394,4 +394,12 @@ describe('CourthouseService', () => {
       expect(result).toEqual([]);
     });
   });
+
+  describe('mapCourthouseDataToCourthouses', () => {
+    it('should map courthouse data to courthouses', () => {
+      const result = service.mapCourthouseDataToCourthouses(courthouseData);
+
+      expect(result).toEqual(courthouses);
+    });
+  });
 });
