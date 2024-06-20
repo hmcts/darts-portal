@@ -1,0 +1,80 @@
+name: PR Tasks
+on:
+    pull_request:
+        types:
+            - closed
+
+permissions:
+    id-token: write
+    contents: read
+
+jobs:
+    deployment:
+        runs-on: ubuntu-latest
+        #environment: dev
+        steps:
+            - name: 'Az CLI login'
+              uses: azure/login@v2
+              with:
+                  client-id: ${{ secrets.AZURE_CLIENT_ID }}
+                  tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+                  subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID_STG }}
+
+            - uses: Azure/get-keyvault-secrets@v1
+              with:
+                  keyvault: 'darts-portal-stg-kv'
+                  secrets: 'b2c-jenkins-tenant-id, b2c-jenkins-client-id, b2c-jenkins-client-secret'
+              id: bootstrapKv
+
+            - run: |
+                  mediaSignInUrl="https://darts-portal-pr-${PR_NUMBER}.dev.platform.hmcts.net/login/return"
+                  adminSignInUrl="https://darts-portal-pr-${PR_NUMBER}.dev.platform.hmcts.net/login/admin/return"
+                  adminPasswordResetUrl="https://darts-portal-pr-${PR_NUMBER}.dev.platform.hmcts.net/password-change-confirmation/true"
+                  mediaPasswordResetUrl="https://darts-portal-pr-${PR_NUMBER}.dev.platform.hmcts.net/password-change-confirmation/false"
+                  targetAppName="darts-portal-stg"
+
+                  azureClientId="${B2C_CLIENT_ID}"
+                  azureClientSecret="${B2C_CLIENT_PWD}"
+                  azureTenant="${B2C_TENANT_ID}"
+
+                  echo "Login to $azureTenant with $azureClientId"
+                  az login --service-principal --username $azureClientId -p=$azureClientSecret --tenant $azureTenant --allow-no-subscriptions
+
+                  appId=$(az ad app list --all --filter "displayname eq '${targetAppName}'" --query "[0].appId" -o tsv --only-show-errors )
+                  appId=${appId//[$'\t\r\n']/}
+                  echo "App ID $appId"
+
+                  replyUrls=$(az ad app show --id "$appId" --query "web.redirectUris" -o json --only-show-errors)
+
+                  echo "Found Reply URLs"
+                  echo $replyUrls
+                  if [[ "${replyUrls}" =~ "${mediaSignInUrl}" || "${replyUrls}" =~ "${adminSignInUrl}" || "${replyUrls}" =~ "${adminPasswordResetUrl}" || "${replyUrls}" =~ "${mediaPasswordResetUrl}" ]]; then
+                      echo "Reply URLs contains $mediaSignInUrl, $adminSignInUrl, $adminPasswordResetUrl or $mediaPasswordResetUrl"
+                      readarray -t my_array < <(echo "$replyUrls" | jq -c '.[]')
+                      for item in "${my_array[@]}"; do
+                          if [[ $item != "\"$mediaSignInUrl\"" && $item != "\"$adminSignInUrl\"" && $item != "\"$adminPasswordResetUrl\"" && $item != "\"$mediaPasswordResetUrl\"" ]]; then
+                              if [[ "$replayUrlsStr" != "" ]]; then
+                                  replayUrlsStr="$replayUrlsStr,"
+                              fi
+                              replayUrlsStr="$replayUrlsStr $item"
+                          fi
+                      done
+                      echo "reply String: $replayUrlsStr"
+
+                      objectId=$(az ad app list --all --filter "displayname eq '${targetAppName}'" --query "[0].id" -o tsv --only-show-errors)
+                      objectId=${objectId//[$'\t\r\n']/}
+                      echo "Object ID $objectId"
+
+                      restUrl="https://graph.microsoft.com/v1.0/applications/${objectId//[$'\t\r\n']/}"
+                      echo "Calling: $restUrl"
+
+                      az rest --method PATCH --header "Content-Type=application/json" --uri $restUrl --body "{\"web\":{\"redirectUris\":[$replayUrlsStr]}}" #--debug
+                  else
+                      echo "Reply URLs DOES NOT contains $mediaSignInUrl, $adminSignInUrl, $adminPasswordResetUrl and $mediaPasswordResetUrl"
+                  fi
+
+              env:
+                  PR_NUMBER: ${{ github.event.number }}
+                  B2C_TENANT_ID: ${{ steps.bootstrapKv.outputs.b2c-jenkins-tenant-id }}
+                  B2C_CLIENT_ID: ${{ steps.bootstrapKv.outputs.b2c-jenkins-client-id }}
+                  B2C_CLIENT_PWD: ${{ steps.bootstrapKv.outputs.b2c-jenkins-client-secret }}
