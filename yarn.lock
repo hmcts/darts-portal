@@ -58,13 +58,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular-devkit/architect@npm:0.1800.4, @angular-devkit/architect@npm:>=0.1800.0 < 0.1900.0, @angular-devkit/architect@npm:^0.1800.4":
+"@angular-devkit/architect@npm:0.1800.4":
   version: 0.1800.4
   resolution: "@angular-devkit/architect@npm:0.1800.4"
   dependencies:
     "@angular-devkit/core": 18.0.4
     rxjs: 7.8.1
   checksum: f441e58e53b5f4fe8fd5157d3264262994953a9df833260cef93ac1bb97f9c7175aa5c0854ac730ceda8ca4c357c909c7549530f5fc9f49309f3c541fbf935cb
+  languageName: node
+  linkType: hard
+
+"@angular-devkit/architect@npm:0.1800.5, @angular-devkit/architect@npm:>=0.1800.0 < 0.1900.0, @angular-devkit/architect@npm:^0.1800.4":
+  version: 0.1800.5
+  resolution: "@angular-devkit/architect@npm:0.1800.5"
+  dependencies:
+    "@angular-devkit/core": 18.0.5
+    rxjs: 7.8.1
+  checksum: 3756202053f1ea030febddf16b44d83d2873fc848e1104b694ff2bbd77b2b32e8b54b762045735f3ed478d19c47170d6eaaadc335de4f2ddd7727f2df4fd1656
   languageName: node
   linkType: hard
 
@@ -213,16 +223,35 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular-devkit/schematics@npm:18.0.4":
-  version: 18.0.4
-  resolution: "@angular-devkit/schematics@npm:18.0.4"
+"@angular-devkit/core@npm:18.0.5":
+  version: 18.0.5
+  resolution: "@angular-devkit/core@npm:18.0.5"
   dependencies:
-    "@angular-devkit/core": 18.0.4
+    ajv: 8.13.0
+    ajv-formats: 3.0.1
+    jsonc-parser: 3.2.1
+    picomatch: 4.0.2
+    rxjs: 7.8.1
+    source-map: 0.7.4
+  peerDependencies:
+    chokidar: ^3.5.2
+  peerDependenciesMeta:
+    chokidar:
+      optional: true
+  checksum: 1d106cace6f6d65233e09cd8ea4b30ee4e94cdeb06829edebdd0ed1e0d4fb1d60719336909d7739040460b4542132aecda7537c706fcc92f1739af23096261e9
+  languageName: node
+  linkType: hard
+
+"@angular-devkit/schematics@npm:18.0.5":
+  version: 18.0.5
+  resolution: "@angular-devkit/schematics@npm:18.0.5"
+  dependencies:
+    "@angular-devkit/core": 18.0.5
     jsonc-parser: 3.2.1
     magic-string: 0.30.10
     ora: 5.4.1
     rxjs: 7.8.1
-  checksum: 071732c0c53b1423f849d71018bceda16b030454d702cc635ea9e2ba4c8762023d04bf14c081deec0bb04026c40540105ad24e4047974e022d00464808c58c57
+  checksum: ef10bbc169745f7800ae8e32988ae9bd65fc694190d80e3079acc7bb660573e0743e6a497a3b0c5b8948d0071c3a486414cc4db7cf0e5097b6b027af79557c8b
   languageName: node
   linkType: hard
 
@@ -331,7 +360,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/build@npm:18.0.4, @angular/build@npm:^18.0.4":
+"@angular/build@npm:18.0.4":
   version: 18.0.4
   resolution: "@angular/build@npm:18.0.4"
   dependencies:
@@ -386,6 +415,61 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@angular/build@npm:^18.0.4":
+  version: 18.0.5
+  resolution: "@angular/build@npm:18.0.5"
+  dependencies:
+    "@ampproject/remapping": 2.3.0
+    "@angular-devkit/architect": 0.1800.5
+    "@babel/core": 7.24.5
+    "@babel/helper-annotate-as-pure": 7.22.5
+    "@babel/helper-split-export-declaration": 7.24.5
+    "@vitejs/plugin-basic-ssl": 1.1.0
+    ansi-colors: 4.1.3
+    browserslist: ^4.23.0
+    critters: 0.0.22
+    esbuild: 0.21.3
+    fast-glob: 3.3.2
+    https-proxy-agent: 7.0.4
+    inquirer: 9.2.22
+    lmdb: 3.0.8
+    magic-string: 0.30.10
+    mrmime: 2.0.0
+    ora: 5.4.1
+    parse5-html-rewriting-stream: 7.0.0
+    picomatch: 4.0.2
+    piscina: 4.5.0
+    sass: 1.77.2
+    semver: 7.6.2
+    undici: 6.18.0
+    vite: 5.2.11
+    watchpack: 2.4.1
+  peerDependencies:
+    "@angular/compiler-cli": ^18.0.0
+    "@angular/localize": ^18.0.0
+    "@angular/platform-server": ^18.0.0
+    "@angular/service-worker": ^18.0.0
+    less: ^4.2.0
+    postcss: ^8.4.0
+    tailwindcss: ^2.0.0 || ^3.0.0
+    typescript: ">=5.4 <5.5"
+  peerDependenciesMeta:
+    "@angular/localize":
+      optional: true
+    "@angular/platform-server":
+      optional: true
+    "@angular/service-worker":
+      optional: true
+    less:
+      optional: true
+    postcss:
+      optional: true
+    tailwindcss:
+      optional: true
+  checksum: 07c148492e2dcf5cb75976a91d0124fc528c7f2cec649ef8190fcc77a83b627fe1f80d69e8842de71c5cdff181a3fa5de8c3c5dd72df56d2938d0501aaf4b3a8
+  languageName: node
+  linkType: hard
+
 "@angular/cdk@npm:^18.0.3":
   version: 18.0.3
   resolution: "@angular/cdk@npm:18.0.3"
@@ -404,13 +488,13 @@ __metadata:
   linkType: hard
 
 "@angular/cli@npm:^18.0.4":
-  version: 18.0.4
-  resolution: "@angular/cli@npm:18.0.4"
+  version: 18.0.5
+  resolution: "@angular/cli@npm:18.0.5"
   dependencies:
-    "@angular-devkit/architect": 0.1800.4
-    "@angular-devkit/core": 18.0.4
-    "@angular-devkit/schematics": 18.0.4
-    "@schematics/angular": 18.0.4
+    "@angular-devkit/architect": 0.1800.5
+    "@angular-devkit/core": 18.0.5
+    "@angular-devkit/schematics": 18.0.5
+    "@schematics/angular": 18.0.5
     "@yarnpkg/lockfile": 1.1.0
     ansi-colors: 4.1.3
     ini: 4.1.2
@@ -426,7 +510,7 @@ __metadata:
     yargs: 17.7.2
   bin:
     ng: bin/ng.js
-  checksum: 75a0bbb6017b291ffd28c2a4085e4c6cf454b8f7dfd5cf39c5260fc1554c85f99adc65fde5b824443e9621467db87c83ecd87a9473a8883f733c9372eb00ec9d
+  checksum: 1bd3ce8d544ad4ad1077be43ed68b7bd6dd0d22bbbbb52335d8b1000d8005d9ae1b49c11c4131afe2393cb4e7ba77d77832da0c3702aea01010562f73b6081df
   languageName: node
   linkType: hard
 
@@ -4450,14 +4534,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@schematics/angular@npm:18.0.4":
-  version: 18.0.4
-  resolution: "@schematics/angular@npm:18.0.4"
+"@schematics/angular@npm:18.0.5":
+  version: 18.0.5
+  resolution: "@schematics/angular@npm:18.0.5"
   dependencies:
-    "@angular-devkit/core": 18.0.4
-    "@angular-devkit/schematics": 18.0.4
+    "@angular-devkit/core": 18.0.5
+    "@angular-devkit/schematics": 18.0.5
     jsonc-parser: 3.2.1
-  checksum: 6667e7b1c733a86647bf8ec62f18cdedba2eae7e3495b0e65ca91a4e1358f5f161abdf07adc149f185f02442b6e5712a2c560ca1385ec8f0365206da4c348a8d
+  checksum: abccd2d83af9cbd2297fe539214dc79231b753e813d8eca3fdeb4cf3343b25b1f824e9d5cf8e3e976156d0a6ef01d2f75eea504621c2c5da35569f2bd27a6a6d
   languageName: node
   linkType: hard
 
