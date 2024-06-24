@@ -2,8 +2,9 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { DateTime } from 'luxon';
 import { AdminSearchFormValues } from '../../components/search/search-form/search-form.component';
-import { ADMIN_CASE_SEARCH_PATH, AdminSearchService } from './admin-search.service';
+import { ADMIN_CASE_SEARCH_PATH, ADMIN_EVENT_SEARCH_PATH, AdminSearchService } from './admin-search.service';
 
 const mockCaseSearchRespone = [
   {
@@ -24,7 +25,7 @@ const mockCaseSearchRespone = [
   },
 ];
 
-const mockCaseSearchFormValues: AdminSearchFormValues = {
+const mockSearchFormValues: AdminSearchFormValues = {
   caseId: '654321',
   courtroom: '2',
   courthouses: [{ id: 2, displayName: 'Courthouse 2' } as Courthouse],
@@ -58,12 +59,12 @@ describe('AdminSearchService', () => {
 
   describe('getCases', () => {
     it('should call the correct endpoint', () => {
-      service.getCases(mockCaseSearchFormValues).subscribe();
+      service.getCases(mockSearchFormValues).subscribe();
       httpMock.expectOne({ url: ADMIN_CASE_SEARCH_PATH, method: 'POST' });
     });
 
     it('map response', fakeAsync(() => {
-      service.getCases(mockCaseSearchFormValues).subscribe((cases) => {
+      service.getCases(mockSearchFormValues).subscribe((cases) => {
         expect(cases).toEqual([
           {
             id: 2,
@@ -83,7 +84,7 @@ describe('AdminSearchService', () => {
     }));
 
     it('map specific date request', () => {
-      service.getCases(mockCaseSearchFormValues).subscribe();
+      service.getCases(mockSearchFormValues).subscribe();
 
       const req = httpMock.expectOne(ADMIN_CASE_SEARCH_PATH);
       expect(req.request.body).toEqual({
@@ -98,7 +99,7 @@ describe('AdminSearchService', () => {
     it('map range date request', () => {
       service
         .getCases({
-          ...mockCaseSearchFormValues,
+          ...mockSearchFormValues,
           hearingDate: {
             type: 'range',
             specific: '',
@@ -117,5 +118,51 @@ describe('AdminSearchService', () => {
         hearing_end_at: '2021-01-02',
       });
     });
+  });
+
+  describe('getEvents', () => {
+    it('should call the correct endpoint', () => {
+      service.getEvents(mockSearchFormValues).subscribe();
+      httpMock.expectOne({ url: ADMIN_EVENT_SEARCH_PATH, method: 'POST' });
+    });
+
+    it('map response', fakeAsync(() => {
+      service.getEvents(mockSearchFormValues).subscribe((events) => {
+        expect(events).toEqual([
+          {
+            id: 2,
+            createdAt: DateTime.fromISO('2021-01-01T00:00:00.000Z'),
+            name: 'Event 2',
+            text: 'Event 2 text',
+            chronicleId: 2,
+            antecedentId: 2,
+            courthouse: 'Courthouse 2',
+            courtroom: 'Courtroom 2',
+          },
+        ]);
+      });
+
+      const req = httpMock.expectOne(ADMIN_EVENT_SEARCH_PATH);
+      req.flush([
+        {
+          id: 2,
+          created_at: '2021-01-01T00:00:00.000Z',
+          name: 'Event 2',
+          text: 'Event 2 text',
+          chronicle_id: 2,
+          antecedent_id: 2,
+          courthouse: {
+            id: 2,
+            display_name: 'Courthouse 2',
+          },
+          courtroom: {
+            id: 2,
+            name: 'Courtroom 2',
+          },
+        },
+      ]);
+
+      tick();
+    }));
   });
 });

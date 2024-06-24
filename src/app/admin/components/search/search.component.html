@@ -15,21 +15,23 @@
     @if (isLoading()) {
       <app-loading />
     }
+    <span error>{{ searchError() }}</span>
 
     <div *tab="'Cases'">
       @if (cases().length) {
         <app-case-search-results [cases]="cases()" captionType="heading" [showRestrictions]="false" />
       }
       @if (!cases().length && !searchError()) {
-        {{ 'No results found.' }}
+        {{ 'No results found' }}
       }
-      {{ searchError() }}
     </div>
     <div *tab="'Hearings'">
       <!-- <app-hearing-search-results /> -->
     </div>
     <div *tab="'Events'">
-      <!-- <app-event-search-results /> -->
+      @if (!searchError()) {
+        <app-event-search-results [events]="events()" />
+      }
     </div>
     <div *tab="'Audio'">
       <!-- <app-audio-search-results /> -->

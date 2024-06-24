@@ -46,7 +46,7 @@ router.post('/search', (req, res) => {
     return;
   }
 
-  if (req.body.case_number === '400') {
+  if (req.body.case_number === 'TOO_MANY_RESULTS') {
     res.status(400).send('Too many results found. Please refine your search.');
     return;
   }

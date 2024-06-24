@@ -1,3 +1,4 @@
+import { AdminEventSearchResult } from '@admin-types/search/admin-event-search-result';
 import { JsonPipe } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -12,6 +13,7 @@ import { CaseSearchResult } from '@portal-types/index';
 import { catchError, finalize, map, of } from 'rxjs';
 import { AdminSearchService } from './../../services/admin-search/admin-search.service';
 import { CourthouseService } from './../../services/courthouses/courthouses.service';
+import { EventSearchResultsComponent } from './event-search-results/event-search-results.component';
 import { AdminSearchFormValues, SearchFormComponent } from './search-form/search-form.component';
 
 type SearchResultsTab = 'Cases' | 'Hearings' | 'Events' | 'Audio';
@@ -29,6 +31,7 @@ type SearchResultsTab = 'Cases' | 'Hearings' | 'Events' | 'Audio';
     LoadingComponent,
     JsonPipe,
     ValidationErrorSummaryComponent,
+    EventSearchResultsComponent,
   ],
 })
 export class SearchComponent {
@@ -40,6 +43,18 @@ export class SearchComponent {
   isLoading = signal<boolean>(false);
   isSubmitted = signal<boolean>(false);
   formValidationErrors = signal<ErrorSummaryEntry[]>([]);
+  lastSearchFormValues = signal<AdminSearchFormValues>({
+    courthouses: [],
+    caseId: '',
+    courtroom: '',
+    hearingDate: {
+      type: '',
+      specific: '',
+      from: '',
+      to: '',
+    },
+    resultsFor: 'Cases',
+  });
 
   courthouses$ = this.courthouseService
     .getCourthouses()
@@ -51,28 +66,49 @@ export class SearchComponent {
 
   cases = signal<CaseSearchResult[]>([]);
   // hearings = signal<HearingSearchResult[]>([]);
-  // events = signal<EventSearchResult[]>([]);
+  events = signal<AdminEventSearchResult[]>([]);
   // audio = signal<AudioSearchResult[]>([]);
 
   onSearch(searchFormValues: AdminSearchFormValues) {
     const resultsFor = searchFormValues.resultsFor as SearchResultsTab;
     this.tab.set(resultsFor);
+    this.lastSearchFormValues.set(searchFormValues);
     this.isSubmitted.set(true);
     this.isLoading.set(true);
     this.searchError.set(null);
 
-    if (resultsFor === 'Cases') {
-      this.cases.set([]);
-      this.searchService
-        .getCases(searchFormValues)
-        .pipe(
-          catchError(() => this.handleError()),
-          finalize(() => this.isLoading.set(false))
-        )
-        .subscribe((data) => this.cases.set(data));
-    } else {
-      this.isLoading.set(false);
+    switch (resultsFor) {
+      case 'Cases':
+        this.searchCases(searchFormValues);
+        break;
+      case 'Events':
+        this.searchEvents(searchFormValues);
+        break;
+      default:
+        this.isLoading.set(false);
     }
+  }
+
+  searchCases(searchFormValues: AdminSearchFormValues) {
+    this.cases.set([]);
+    this.searchService
+      .getCases(searchFormValues)
+      .pipe(
+        catchError(() => this.handleError()),
+        finalize(() => this.isLoading.set(false))
+      )
+      .subscribe((data) => this.cases.set(data));
+  }
+
+  searchEvents(searchFormValues: AdminSearchFormValues) {
+    this.events.set([]);
+    this.searchService
+      .getEvents(searchFormValues)
+      .pipe(
+        catchError(() => this.handleError()),
+        finalize(() => this.isLoading.set(false))
+      )
+      .subscribe((data) => this.events.set(data));
   }
 
   handleError() {
@@ -82,5 +118,9 @@ export class SearchComponent {
 
   tabChange(tab: TabDirective) {
     this.tab.set(tab.name as SearchResultsTab);
+
+    this.lastSearchFormValues.update((formValues) => ({ ...formValues, resultsFor: tab.name }));
+
+    this.onSearch(this.lastSearchFormValues());
   }
 }
