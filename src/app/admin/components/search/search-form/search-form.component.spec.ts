@@ -61,23 +61,32 @@ describe('SearchFormComponent', () => {
 
   describe('onSubmit', () => {
     it('log form value and selected courthouses', () => {
-      jest.spyOn(console, 'log');
+      const searchSpy = jest.spyOn(component.search, 'emit');
       component.form.get('caseId')?.setValue('123');
       component.form.get('courtroom')?.setValue('1');
       component.form.get('hearingDate.type')?.setValue('specific');
-      component.form.get('hearingDate.specific')?.setValue('2021-01-01');
-      component.form.get('resultsFor')?.setValue('cases');
+      component.form.get('hearingDate.specific')?.setValue('01/01/2021');
+      component.form.get('resultsFor')?.setValue('Cases');
       component.selectedCourthouses.set([{ id: 1, displayName: 'Courthouse 1' } as Courthouse]);
 
       component.onSubmit();
 
-      expect(console.log).toHaveBeenCalledWith({
+      expect(searchSpy).toHaveBeenCalledWith({
         caseId: '123',
         courtroom: '1',
-        hearingDate: { type: 'specific', specific: '2021-01-01', from: '', to: '' },
-        resultsFor: 'cases',
+        hearingDate: { type: 'specific', specific: '01/01/2021', from: '', to: '' },
+        resultsFor: 'Cases',
+        courthouses: [{ id: 1, displayName: 'Courthouse 1' }],
       });
-      expect(console.log).toHaveBeenCalledWith([{ id: 1, displayName: 'Courthouse 1' }]);
+    });
+
+    it('emit errors if form is invalid', () => {
+      jest.spyOn(component.errors, 'emit');
+
+      component.form.controls.hearingDate.controls.specific.setErrors({ pattern: true });
+      component.form.updateValueAndValidity();
+      component.onSubmit();
+      expect(component.errors.emit).toHaveBeenCalled();
     });
   });
 });

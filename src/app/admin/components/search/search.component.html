@@ -1,2 +1,38 @@
+<app-validation-error-summary [errors]="formValidationErrors()" />
+
 <app-govuk-heading>Search</app-govuk-heading>
-<app-search-form [courthouses]="courthouses()" />
+
+<app-search-form
+  [courthouses]="courthouses()"
+  (search)="onSearch($event)"
+  [(resultsFor)]="tab"
+  (errors)="formValidationErrors.set($event)"
+/>
+
+@if (isSubmitted()) {
+  <app-govuk-tabs [default]="tab()" (tabChange)="tabChange($event)">
+    <app-govuk-heading tabTitle tag="h2" size="s"> {{ tab() }} </app-govuk-heading>
+    @if (isLoading()) {
+      <app-loading />
+    }
+
+    <div *tab="'Cases'">
+      @if (cases().length) {
+        <app-case-search-results [cases]="cases()" captionType="heading" [showRestrictions]="false" />
+      }
+      @if (!cases().length && !searchError()) {
+        {{ 'No results found.' }}
+      }
+      {{ searchError() }}
+    </div>
+    <div *tab="'Hearings'">
+      <!-- <app-hearing-search-results /> -->
+    </div>
+    <div *tab="'Events'">
+      <!-- <app-event-search-results /> -->
+    </div>
+    <div *tab="'Audio'">
+      <!-- <app-audio-search-results /> -->
+    </div>
+  </app-govuk-tabs>
+}

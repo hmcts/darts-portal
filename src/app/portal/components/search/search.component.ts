@@ -11,7 +11,7 @@ import { CaseService } from '@services/case/case.service';
 import { ErrorMessageService } from '@services/error/error-message.service';
 import { futureDateValidator } from '@validators/future-date.validator';
 import { Subscription, catchError, of } from 'rxjs';
-import { ResultsComponent } from './results/results.component';
+import { CaseSearchResultsComponent } from './case-search-results/case-search-results.component';
 import { SearchErrorComponent } from './search-error/search-error.component';
 
 const fieldErrors: FieldErrors = {
@@ -42,7 +42,7 @@ const fieldErrors: FieldErrors = {
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    ResultsComponent,
+    CaseSearchResultsComponent,
     CourthouseComponent,
     SearchErrorComponent,
     LoadingComponent,

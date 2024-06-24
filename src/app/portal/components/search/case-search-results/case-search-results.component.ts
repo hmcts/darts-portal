@@ -8,17 +8,18 @@ import { ArrayDisplayPipe } from '@pipes/array-display.pipe';
 import { CaseSearchResult } from '@portal-types/index';
 
 @Component({
-  selector: 'app-results',
-  templateUrl: './results.component.html',
-  styleUrls: ['./results.component.scss'],
+  selector: 'app-case-search-results',
+  templateUrl: './case-search-results.component.html',
+  styleUrls: ['./case-search-results.component.scss'],
   imports: [NgIf, NgFor, RouterLink, DataTableComponent, TableBodyTemplateDirective, ArrayDisplayPipe],
   standalone: true,
 })
-export class ResultsComponent implements OnChanges {
+export class CaseSearchResultsComponent implements OnChanges {
   @Input() cases: CaseSearchResult[] = [];
-  @Input() loaded = false;
-  @Input() errorType = '';
-  caption = '';
+  @Input() caption = '';
+  @Input() captionType: 'default' | 'heading' | 'results' = 'default';
+  @Input() showRestrictions = true;
+
   columns: DatatableColumn[] = [
     { name: 'Case ID', prop: 'number', sortable: true },
     { name: 'Courthouse', prop: 'courthouse', sortable: true },

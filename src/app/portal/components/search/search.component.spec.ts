@@ -11,7 +11,7 @@ import { CaseService } from '@services/case/case.service';
 import { ErrorMessageService } from '@services/error/error-message.service';
 import { HeaderService } from '@services/header/header.service';
 import { of, throwError } from 'rxjs';
-import { ResultsComponent } from './results/results.component';
+import { CaseSearchResultsComponent } from './case-search-results/case-search-results.component';
 import { SearchComponent } from './search.component';
 
 describe('SearchComponent', () => {
@@ -51,7 +51,7 @@ describe('SearchComponent', () => {
         FormsModule,
         HttpClientModule,
         SearchComponent,
-        ResultsComponent,
+        CaseSearchResultsComponent,
         CourthouseComponent,
       ],
       providers: [
