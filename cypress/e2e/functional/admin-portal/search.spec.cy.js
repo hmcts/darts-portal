@@ -70,6 +70,4 @@ describe('Admin - Search screen', () => {
       cy.get('app-govuk-tabs').contains('No results found');
     });
   });
-
-  it('tab change updates the search form for Cases, Hearings, Events, and Audio', () => {});
 });
