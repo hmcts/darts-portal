@@ -3,6 +3,7 @@ import { DateTime } from 'luxon';
 export type FileHide = {
   id: number;
   isHidden: boolean;
+  isDeleted?: boolean;
   adminAction?: {
     id: number;
     reasonId: number;

@@ -1,5 +1,6 @@
 import { FileHideOrDeleteFormValues } from '@admin-types/hidden-reasons/file-hide-or-delete-form-values';
 import { HiddenReason } from '@admin-types/hidden-reasons/hidden-reason';
+import { AssociatedMedia } from '@admin-types/transformed-media/associated-media';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -8,12 +9,15 @@ import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.compo
 import { GovukTextareaComponent } from '@common/govuk-textarea/govuk-textarea.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { FileHideOrDeleteFormErrorMessages } from '@constants/file-hide-or-delete-error-messages';
+import { ErrorSummaryEntry } from '@core-types/index';
 import { FormService } from '@services/form/form.service';
 import { HeaderService } from '@services/header/header.service';
 import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
-import { map } from 'rxjs';
+import { TransformedMediaService } from '@services/transformed-media/transformed-media.service';
+import { DateTime } from 'luxon';
+import { Observable, map, of } from 'rxjs';
+import { AssociatedAudioHideDeleteComponent } from '../../transformed-media/associated-audio-hide-delete/associated-audio-hide-delete.component';
 import { FileHideOrDeleteSuccessComponent } from '../file-hide-or-delete-success/file-hide-or-delete-success.component';
-
 @Component({
   selector: 'app-file-hide-or-delete',
   standalone: true,
@@ -26,6 +30,7 @@ import { FileHideOrDeleteSuccessComponent } from '../file-hide-or-delete-success
     CommonModule,
     ValidationErrorSummaryComponent,
     FileHideOrDeleteSuccessComponent,
+    AssociatedAudioHideDeleteComponent,
   ],
 })
 export class FileHideOrDeleteComponent implements OnInit {
@@ -34,12 +39,21 @@ export class FileHideOrDeleteComponent implements OnInit {
   route = inject(ActivatedRoute);
   headerService = inject(HeaderService);
   transcriptionAdminService = inject(TranscriptionAdminService);
+  transformedMediaService = inject(TransformedMediaService);
   formService = inject(FormService);
 
+  errors: ErrorSummaryEntry[] = [];
+
+  associatedAudioSearch = this.getAssociatedAudioSearch();
+  associatedAudio$: Observable<AssociatedMedia[]> = of([]);
+  audioHideComplete = false;
+
   fileType = this.router.getCurrentNavigation()?.extras?.state?.fileType ?? null;
+
   id = +this.route.snapshot.params.id;
 
   isSubmitted = false;
+  isAssociatedAudio = false;
   continueLink = this.getContinueLink();
 
   reasons$ = this.transcriptionAdminService
@@ -52,31 +66,64 @@ export class FileHideOrDeleteComponent implements OnInit {
     reason: ['', [Validators.required]],
   });
 
+  hideFormValues!: FileHideOrDeleteFormValues;
+
   ngOnInit(): void {
+    if (!this.fileType) {
+      this.router.navigate(['/admin']);
+    }
     this.headerService.hideNavigation();
   }
 
   onSubmit() {
     this.form.markAllAsTouched();
+    this.getErrorSummary();
 
     if (this.form.valid) {
-      this.transcriptionAdminService
-        .hideTranscriptionDocument(this.id, {
-          ...this.form.value,
-          reason: Number(this.form.value.reason),
-        } as FileHideOrDeleteFormValues)
-        .subscribe(() => {
-          this.isSubmitted = true;
-        });
+      this.hideFormValues = {
+        ...this.form.value,
+        reason: Number(this.form.value.reason),
+      } as FileHideOrDeleteFormValues;
+
+      if (this.fileType === 'transcription_document') {
+        this.hideTranscriptionDocument();
+      } else if (this.fileType === 'audio_file') {
+        this.transformedMediaService
+          .checkAssociatedAudioExists(
+            this.id,
+            this.associatedAudioSearch.hearingIds,
+            this.associatedAudioSearch.startAt,
+            this.associatedAudioSearch.endAt
+          )
+          .subscribe((associatedAudio) => {
+            // If there are associated audio files, show the associated audio files
+            if (associatedAudio.exists) {
+              this.isSubmitted = true;
+              this.isAssociatedAudio = true;
+              this.associatedAudio$ = associatedAudio.media;
+            }
+          });
+      }
     }
+  }
+
+  getMediaById(media: AssociatedMedia[]): AssociatedMedia[] {
+    const result = media.filter((media) => media.id === this.id);
+    return result ? result : [];
+  }
+
+  private hideTranscriptionDocument() {
+    this.hideFormValues &&
+      this.transcriptionAdminService.hideTranscriptionDocument(this.id, this.hideFormValues).subscribe(() => {
+        this.isSubmitted = true;
+      });
   }
 
   private getContinueLink() {
     if (this.fileType === 'transcription_document') {
       return `/admin/transcripts/document/${this.id}`;
     } else if (this.fileType === 'audio_file') {
-      // TODO: Add back link for Audio file when it exists
-      return '';
+      return `/admin/audio-file/${this.id}`;
     } else {
       return '/admin';
     }
@@ -95,11 +142,25 @@ export class FileHideOrDeleteComponent implements OnInit {
   }
 
   getErrorSummary() {
-    return this.formService.getUniqueErrorSummary(this.form, FileHideOrDeleteFormErrorMessages);
+    this.errors = this.formService.getUniqueErrorSummary(this.form, FileHideOrDeleteFormErrorMessages);
   }
 
   // Only return reasons that are marked for display, and sort based on display order
   private sortAndFilterReasons(reasons: HiddenReason[]): HiddenReason[] {
     return reasons.filter((reason) => reason.displayState).sort((a, b) => a.displayOrder - b.displayOrder);
+  }
+
+  private getAssociatedAudioSearch() {
+    const hearings = this.router.getCurrentNavigation()?.extras?.state?.hearings;
+    const dates = hearings?.map((hearing: { hearingDate: string }) => DateTime.fromISO(hearing.hearingDate));
+    const earliestDate = dates ? DateTime.min(...dates) : null;
+    const latestDate = dates ? DateTime.max(...dates) : null;
+
+    return {
+      hearingIds:
+        this.router.getCurrentNavigation()?.extras?.state?.hearings?.flatMap((h: { id: number }) => h.id) ?? '',
+      startAt: earliestDate?.toISO() ?? '',
+      endAt: latestDate?.toISO() ?? '',
+    };
   }
 }

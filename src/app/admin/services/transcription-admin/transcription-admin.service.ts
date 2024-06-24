@@ -198,6 +198,7 @@ export class TranscriptionAdminService {
   }
 
   private mapHidePostRequest(body: FileHideOrDeleteFormValues) {
+    //TBD in future, deleting audio files
     return {
       is_hidden: true,
       admin_action: {

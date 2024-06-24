@@ -1,3 +1,6 @@
+import { FileHide } from '@admin-types/hidden-reasons/file-hide';
+import { FileHideData } from '@admin-types/hidden-reasons/file-hide-data.interface';
+import { FileHideOrDeleteFormValues } from '@admin-types/hidden-reasons/file-hide-or-delete-form-values';
 import { AudioFile, AudioFileData } from '@admin-types/index';
 import { AssociatedMedia } from '@admin-types/transformed-media/associated-media';
 import { AssociatedMediaData } from '@admin-types/transformed-media/associated-media-data.interface';
@@ -12,7 +15,7 @@ import { TransformedMediaSearchFormValues } from '@admin-types/transformed-media
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { DateTime } from 'luxon';
-import { Observable, map } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -55,8 +58,71 @@ export class TransformedMediaService {
       .pipe(map((data) => this.mapAssociatedMedias(data)));
   }
 
+  getAssociatedMediaByHearingId(ids: string, startAt: string, endAt: string): Observable<AssociatedMedia[]> {
+    return this.http
+      .get<
+        AssociatedMediaData[]
+      >('/api/admin/medias', { params: { hearing_ids: ids, start_at: startAt, end_at: endAt } })
+      .pipe(map((data) => this.mapAssociatedMedias(data)));
+  }
+
+  checkAssociatedAudioExists(
+    mediaId: number,
+    hearingIds: number[],
+    startAt: string,
+    endAt: string
+  ): Observable<{ exists: boolean; media: Observable<AssociatedMedia[]> }> {
+    return this.getAssociatedMediaByHearingId(hearingIds.toString(), startAt, endAt).pipe(
+      map((media) => {
+        const hasAssociatedMedia = media.some((m) => m.id !== mediaId);
+        return { exists: hasAssociatedMedia, media: of(media) };
+      })
+    );
+  }
+
   changeMediaRequestOwner(mediaRequestId: number, newOwnerId: number): Observable<void> {
     return this.http.patch<void>(`/api/admin/media-requests/${mediaRequestId}`, { owner_id: newOwnerId });
+  }
+
+  hideAudioFile(id: number, formValues: FileHideOrDeleteFormValues): Observable<FileHide> {
+    const body = this.mapHidePostRequest(formValues);
+
+    return this.http
+      .post<FileHideData>(`api/admin/medias/${id}/hide`, body)
+      .pipe(map((res) => this.mapHideFileResponse(res)));
+  }
+
+  private mapHidePostRequest(body: FileHideOrDeleteFormValues) {
+    //TBD in future, deleting audio files
+    return {
+      is_hidden: true,
+      admin_action: {
+        reason_id: body.reason,
+        ticket_reference: body.ticketReference,
+        comments: body.comments,
+      },
+    };
+  }
+
+  private mapHideFileResponse(res: FileHideData): FileHide {
+    return {
+      id: res.id,
+      isHidden: res.is_hidden,
+      isDeleted: res.is_deleted,
+      adminAction: res.admin_action
+        ? {
+            id: res.admin_action.id,
+            reasonId: res.admin_action.reason_id,
+            hiddenById: res.admin_action.hidden_by_id,
+            hiddenAt: DateTime.fromISO(res.admin_action.hidden_at),
+            isMarkedForManualDeletion: res.admin_action.is_marked_for_manual_deletion,
+            markedForManualDeletionById: res.admin_action.marked_for_manual_deletion_by_id,
+            markedForManualDeletionAt: DateTime.fromISO(res.admin_action.marked_for_manual_deletion_at),
+            ticketReference: res.admin_action.ticket_reference,
+            comments: res.admin_action.comments,
+          }
+        : undefined,
+    };
   }
 
   private mapAssociatedMedias(data: AssociatedMediaData[]): AssociatedMedia[] {

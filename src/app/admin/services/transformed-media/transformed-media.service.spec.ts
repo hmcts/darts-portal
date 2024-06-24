@@ -1,12 +1,17 @@
 import { TestBed } from '@angular/core/testing';
 import { TransformedMediaRequestData } from './../../models/transformed-media/transformed-media-request-data.interface';
 
+import { FileHide } from '@admin-types/hidden-reasons/file-hide';
+import { FileHideData } from '@admin-types/hidden-reasons/file-hide-data.interface';
+import { FileHideOrDeleteFormValues } from '@admin-types/hidden-reasons/file-hide-or-delete-form-values';
 import { AssociatedMedia } from '@admin-types/transformed-media/associated-media';
 import { TransformedMediaAdmin } from '@admin-types/transformed-media/transformed-media-admin';
 import { TransformedMediaRequest } from '@admin-types/transformed-media/transformed-media-request';
 import { TransformedMediaSearchFormValues } from '@admin-types/transformed-media/transformed-media-search-form.values';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { DateTime } from 'luxon';
+import { Observable, of } from 'rxjs';
 import { TransformedMediaService } from './transformed-media.service';
 
 describe('TransformedMediaService', () => {
@@ -15,7 +20,8 @@ describe('TransformedMediaService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [],
+      providers: [provideHttpClient(), provideHttpClientTesting()],
     });
     service = TestBed.inject(TransformedMediaService);
     httpMock = TestBed.inject(HttpTestingController);
@@ -415,6 +421,280 @@ describe('TransformedMediaService', () => {
       req.flush(mockResponse);
 
       expect(result).toEqual(expectedMappedType);
+    });
+  });
+
+  describe('checkAssociatedAudioExists', () => {
+    it('should return exists as true if there are associated media', () => {
+      const mediaId = 1;
+      const hearingIds = [1, 2, 3];
+      const startAt = '2022-01-01';
+      const endAt = '2022-01-02';
+
+      const mockAssociatedMedia: AssociatedMedia[] = [
+        {
+          id: 2,
+          channel: 1,
+          startAt: DateTime.fromISO('2022-01-01T00:00:00Z'),
+          endAt: DateTime.fromISO('2022-01-01T00:00:00Z'),
+          case: {
+            id: 1,
+            caseNumber: 'CASE123',
+          },
+          hearing: {
+            id: 1,
+            hearingDate: DateTime.fromISO('2022-01-01'),
+          },
+          courthouse: {
+            id: 1,
+            displayName: 'Swansea',
+          },
+          courtroom: {
+            id: 1,
+            displayName: 'room',
+          },
+        },
+        {
+          id: 1,
+          channel: 1,
+          startAt: DateTime.fromISO('2022-01-01T00:00:00Z'),
+          endAt: DateTime.fromISO('2022-01-01T00:00:00Z'),
+          case: {
+            id: 1,
+            caseNumber: 'CASE123',
+          },
+          hearing: {
+            id: 2,
+            hearingDate: DateTime.fromISO('2022-01-01'),
+          },
+          courthouse: {
+            id: 1,
+            displayName: 'Swansea',
+          },
+          courtroom: {
+            id: 1,
+            displayName: 'room',
+          },
+        },
+        {
+          id: 5,
+          channel: 1,
+          startAt: DateTime.fromISO('2022-01-01T00:00:00Z'),
+          endAt: DateTime.fromISO('2022-01-01T00:00:00Z'),
+          case: {
+            id: 1,
+            caseNumber: 'CASE123',
+          },
+          hearing: {
+            id: 3,
+            hearingDate: DateTime.fromISO('2022-01-01'),
+          },
+          courthouse: {
+            id: 1,
+            displayName: 'Swansea',
+          },
+          courtroom: {
+            id: 1,
+            displayName: 'room',
+          },
+        },
+      ];
+
+      jest.spyOn(service, 'getAssociatedMediaByHearingId').mockReturnValue(of(mockAssociatedMedia));
+
+      let result = {} as { exists: boolean; media: Observable<AssociatedMedia[]> };
+      service.checkAssociatedAudioExists(mediaId, hearingIds, startAt, endAt).subscribe((res) => {
+        result = res;
+      });
+
+      let mediaResult: AssociatedMedia[] = [];
+      result.media.subscribe((media) => {
+        mediaResult = media;
+      });
+
+      expect(result.exists).toBe(true);
+      expect(mediaResult).toEqual(mockAssociatedMedia);
+    });
+
+    it('should return exists as false if there are no associated media', () => {
+      const mediaId = 1;
+      const hearingIds = [1, 2, 3];
+      const startAt = '2022-01-01';
+      const endAt = '2022-01-02';
+
+      const mockAssociatedMedia: AssociatedMedia[] = [];
+
+      jest.spyOn(service, 'getAssociatedMediaByHearingId').mockReturnValue(of(mockAssociatedMedia));
+
+      let result = {} as { exists: boolean; media: Observable<AssociatedMedia[]> };
+      service.checkAssociatedAudioExists(mediaId, hearingIds, startAt, endAt).subscribe((res) => {
+        result = res;
+      });
+
+      let mediaResult: AssociatedMedia[] = [];
+      result.media.subscribe((media) => {
+        mediaResult = media;
+      });
+
+      expect(result.exists).toBe(false);
+      expect(mediaResult).toEqual(mockAssociatedMedia);
+    });
+  });
+
+  describe('getAssociatedMediaByHearingId', () => {
+    it('should call get endpoint with hearing_ids, start_at, and end_at', () => {
+      const mockIds = '1,2,3';
+      const mockStartAt = '2022-01-01';
+      const mockEndAt = '2022-01-02';
+
+      service.getAssociatedMediaByHearingId(mockIds, mockStartAt, mockEndAt).subscribe();
+
+      const req = httpMock.expectOne((req) => {
+        return (
+          req.url === '/api/admin/medias' &&
+          req.method === 'GET' &&
+          req.params.get('hearing_ids') === mockIds &&
+          req.params.get('start_at') === mockStartAt &&
+          req.params.get('end_at') === mockEndAt
+        );
+      });
+      req.flush([]);
+    });
+
+    it('should map response to AssociatedMedia[]', () => {
+      const mockIds = '1,2,3';
+      const mockStartAt = '2022-01-01';
+      const mockEndAt = '2022-01-02';
+      const mockResponse = [
+        {
+          id: 1,
+          channel: 'channel',
+          start_at: '2024-01-01T00:00:00Z',
+          end_at: '2024-01-01T00:00:00Z',
+          case: {
+            id: 1,
+            case_number: 'CASE123',
+          },
+          hearing: {
+            id: 1,
+            hearing_date: '2024-01-01',
+          },
+          courthouse: {
+            id: 1,
+            display_name: 'Swansea',
+          },
+          courtroom: {
+            id: 1,
+            display_name: 'room',
+          },
+        },
+      ];
+
+      const expectedMappedType = [
+        {
+          id: 1,
+          channel: 'channel',
+          startAt: DateTime.fromISO('2024-01-01T00:00:00Z'),
+          endAt: DateTime.fromISO('2024-01-01T00:00:00Z'),
+          case: {
+            id: 1,
+            caseNumber: 'CASE123',
+          },
+          hearing: {
+            id: 1,
+            hearingDate: DateTime.fromISO('2024-01-01'),
+          },
+          courthouse: {
+            id: 1,
+            displayName: 'Swansea',
+          },
+          courtroom: {
+            id: 1,
+            displayName: 'room',
+          },
+        },
+      ];
+
+      let result: AssociatedMedia[] = [];
+      service.getAssociatedMediaByHearingId(mockIds, mockStartAt, mockEndAt).subscribe((media) => {
+        result = media;
+      });
+
+      const req = httpMock.expectOne((req) => {
+        return (
+          req.url === '/api/admin/medias' &&
+          req.method === 'GET' &&
+          req.params.get('hearing_ids') === mockIds &&
+          req.params.get('start_at') === mockStartAt &&
+          req.params.get('end_at') === mockEndAt
+        );
+      });
+      req.flush(mockResponse);
+
+      expect(result).toEqual(expectedMappedType);
+    });
+  });
+
+  describe('hideAudioFile', () => {
+    it('should hide the audio file', () => {
+      const mockId = 1;
+      const mockFormValues: FileHideOrDeleteFormValues = {
+        reason: 1,
+        ticketReference: 'TICKET123',
+        comments: 'This file needs to be hidden.',
+      };
+
+      const mockRequestBody = {
+        is_hidden: true,
+        admin_action: {
+          reason_id: mockFormValues.reason,
+          ticket_reference: mockFormValues.ticketReference,
+          comments: mockFormValues.comments,
+        },
+      };
+
+      const mockResponse: FileHideData = {
+        id: mockId,
+        is_hidden: true,
+        is_deleted: false,
+        admin_action: {
+          id: 1,
+          reason_id: mockFormValues.reason,
+          hidden_by_id: 1,
+          hidden_at: '2022-01-01T00:00:00Z',
+          is_marked_for_manual_deletion: false,
+          marked_for_manual_deletion_by_id: 0,
+          marked_for_manual_deletion_at: '2022-01-01T00:00:00Z',
+          ticket_reference: mockFormValues.ticketReference,
+          comments: mockFormValues.comments,
+        },
+      };
+
+      let result: FileHide = {} as FileHide;
+      service.hideAudioFile(mockId, mockFormValues).subscribe((fileHide) => {
+        result = fileHide;
+      });
+
+      const req = httpMock.expectOne({ url: `api/admin/medias/${mockId}/hide`, method: 'POST' });
+      expect(req.request.body).toEqual(mockRequestBody);
+      req.flush(mockResponse);
+
+      expect(result).toEqual({
+        id: mockId,
+        isHidden: true,
+        isDeleted: false,
+        adminAction: {
+          id: 1,
+          reasonId: mockFormValues.reason,
+          hiddenById: 1,
+          hiddenAt: DateTime.fromISO('2022-01-01T00:00:00Z'),
+          isMarkedForManualDeletion: false,
+          markedForManualDeletionById: 0,
+          markedForManualDeletionAt: DateTime.fromISO('2022-01-01T00:00:00Z'),
+          ticketReference: mockFormValues.ticketReference,
+          comments: mockFormValues.comments,
+        },
+      });
     });
   });
 });
