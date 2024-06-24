@@ -8,9 +8,8 @@ describe('EventSearchResultsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EventSearchResultsComponent]
-    })
-    .compileComponents();
+      imports: [EventSearchResultsComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(EventSearchResultsComponent);
     component = fixture.componentInstance;

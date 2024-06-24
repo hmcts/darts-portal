@@ -40,7 +40,7 @@ export class SearchComponent {
 
   tab = signal<SearchResultsTab>('Cases');
   searchError = signal<string | null>(null);
-  isLoading = signal<boolean>(false);
+  isLoading = signal<boolean>(true);
   isSubmitted = signal<boolean>(false);
   formValidationErrors = signal<ErrorSummaryEntry[]>([]);
   lastSearchFormValues = signal<AdminSearchFormValues>({
@@ -56,9 +56,10 @@ export class SearchComponent {
     resultsFor: 'Cases',
   });
 
-  courthouses$ = this.courthouseService
-    .getCourthouses()
-    .pipe(map((data) => this.courthouseService.mapCourthouseDataToCourthouses(data)));
+  courthouses$ = this.courthouseService.getCourthouses().pipe(
+    map((data) => this.courthouseService.mapCourthouseDataToCourthouses(data)),
+    finalize(() => this.isLoading.set(false))
+  );
 
   courthouses = toSignal(this.courthouses$, {
     initialValue: [],
