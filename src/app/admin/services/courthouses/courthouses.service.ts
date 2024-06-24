@@ -183,4 +183,22 @@ export class CourthouseService {
 
     return of(filteredCourthouses);
   }
+
+  mapCourthouseDataToCourthouses(courthouses: CourthouseData[]): Courthouse[] {
+    return courthouses.map((c) => this.mapCourthouseDataToCourthouse(c));
+  }
+
+  mapCourthouseDataToCourthouse(courthouse: CourthouseData): Courthouse {
+    return {
+      id: courthouse.id,
+      courthouseName: courthouse.courthouse_name,
+      displayName: courthouse.display_name,
+      code: courthouse.code,
+      createdDateTime: DateTime.fromISO(courthouse.created_date_time),
+      lastModifiedDateTime: courthouse.last_modified_date_time
+        ? DateTime.fromISO(courthouse.last_modified_date_time)
+        : undefined,
+      hasData: courthouse.has_data,
+    };
+  }
 }
