@@ -9,6 +9,15 @@ nodejs:
         - AppInsightsInstrumentationKey
         - redis-connection-string
         - darts-portal-session-secret
+        - name: AzureADTenantId
+          alias: TENANT_ID
+        - name: AzureADClientId
+          alias: CLIENT_ID
+        - name: AzureAdB2CClientId
+          alias: B2C_CLIENT_ID
+        - name: AzureAdB2CTenantId
+          alias: B2C_CLIENT_ID
+           
   environment:
     ALLOW_CONFIG_MUTATIONS: true
     DARTS_PORTAL_URL: https://darts.{{ .Values.global.environment }}.apps.hmcts.net
