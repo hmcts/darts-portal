@@ -28,21 +28,34 @@
         <span class="moj-header__link moj-header__link--service-name">DARTS</span>
       </a>
     </div>
-    <div *ngIf="isAuthenticated" class="moj-header__content">
-      <nav class="moj-header__navigation" aria-label="Account navigation">
-        <ul class="moj-header__navigation-list">
-          <li class="moj-header__navigation-item">
-            <a id="logout-link" class="moj-header__navigation-link" href="/auth/logout">Sign out</a>
-          </li>
-        </ul>
-      </nav>
-    </div>
+    @if (isAuthenticated) {
+      <div class="moj-header__content">
+        <nav class="moj-header__navigation" aria-label="Account navigation">
+          <ul class="moj-header__navigation-list">
+            @if (!router.url.startsWith('/admin') && (userService.isAdmin() || userService.isSuperUser())) {
+              <li class="moj-header__navigation-item">
+                <a id="admin-portal-link" class="moj-header__navigation-link" href="/admin">Admin portal</a>
+              </li>
+            }
+            @if (isAdminNavigation()) {
+              <li class="moj-header__navigation-item">
+                <a id="user-portal-link" class="moj-header__navigation-link" href="/">User portal</a>
+              </li>
+            }
+            <li class="moj-header__navigation-item">
+              <a id="logout-link" class="moj-header__navigation-link" href="/auth/logout">Sign out</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    }
   </div>
 </header>
-<div *ngIf="isAuthenticated && (isVisible$ | async)">
+
+@if (isAuthenticated && (isVisible$ | async)) {
   @if (isAdminNavigation()) {
     <app-admin-navigation />
   } @else {
     <app-portal-navigation />
   }
-</div>
+}
