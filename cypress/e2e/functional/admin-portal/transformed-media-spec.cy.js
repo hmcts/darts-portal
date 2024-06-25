@@ -113,13 +113,13 @@ describe('Admin - Transformed media screen', () => {
       cy.get('#media-details dd').contains('2MB');
 
       cy.get('#associated-audio-details h2').contains('Associated audio');
-      cy.get('.govuk-table__cell.audio-id').first().contains('1');
-      cy.get('.govuk-table__cell.case-id').first().contains('1');
+      cy.get('.govuk-table__cell.audio-id').first().contains('0');
+      cy.get('.govuk-table__cell.case-id').first().contains('001');
       cy.get('.govuk-table__cell.hearing-date').first().contains('01 Jun 2020');
-      cy.get('.govuk-table__cell.courthouse').first().contains('courthouse 1');
-      cy.get('.govuk-table__cell.start-time').first().contains('18:00');
-      cy.get('.govuk-table__cell.end-time').first().contains('19:00');
-      cy.get('.govuk-table__cell.courtroom').first().contains('courtroom 1');
+      cy.get('.govuk-table__cell.courthouse').first().contains('courthouse 12');
+      cy.get('.govuk-table__cell.start-time').first().contains('6:00PM');
+      cy.get('.govuk-table__cell.end-time').first().contains('7:00PM');
+      cy.get('.govuk-table__cell.courtroom').first().contains('courtroom 11');
       cy.get('.govuk-table__cell.channel').first().contains('1');
     });
 
