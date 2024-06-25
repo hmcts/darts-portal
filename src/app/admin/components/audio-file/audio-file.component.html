@@ -15,7 +15,8 @@
         router.navigate(['admin/file', audioFileId, 'hide-or-delete'], {
           state: {
             fileType: 'audio_file',
-            hearings: convertHearingDatesToString(data.audioFile.hearings),
+            hearings: getHearingIds(data.audioFile.hearings),
+            dates: { startAt: data.audioFile.startAt.toISO(), endAt: data.audioFile.endAt.toISO() },
           },
         })
       "

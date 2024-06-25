@@ -14,7 +14,6 @@ import { FormService } from '@services/form/form.service';
 import { HeaderService } from '@services/header/header.service';
 import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
 import { TransformedMediaService } from '@services/transformed-media/transformed-media.service';
-import { DateTime } from 'luxon';
 import { Observable, map, of } from 'rxjs';
 import { AssociatedAudioHideDeleteComponent } from '../../transformed-media/associated-audio-hide-delete/associated-audio-hide-delete.component';
 import { FileHideOrDeleteSuccessComponent } from '../file-hide-or-delete-success/file-hide-or-delete-success.component';
@@ -155,16 +154,14 @@ export class FileHideOrDeleteComponent implements OnInit {
   }
 
   private getAssociatedAudioSearch() {
-    const hearings = this.router.getCurrentNavigation()?.extras?.state?.hearings;
-    const dates = hearings?.map((hearing: { hearingDate: string }) => DateTime.fromISO(hearing.hearingDate));
-    const earliestDate = dates ? DateTime.min(...dates) : null;
-    const latestDate = dates ? DateTime.max(...dates) : null;
+    const hearingIds = this.router.getCurrentNavigation()?.extras?.state?.hearings;
+    const startAt = this.router.getCurrentNavigation()?.extras?.state?.dates.startAt;
+    const endAt = this.router.getCurrentNavigation()?.extras?.state?.dates.endAt;
 
     return {
-      hearingIds:
-        this.router.getCurrentNavigation()?.extras?.state?.hearings?.flatMap((h: { id: number }) => h.id) ?? '',
-      startAt: earliestDate?.toISO() ?? '',
-      endAt: latestDate?.toISO() ?? '',
+      hearingIds: hearingIds,
+      startAt: startAt ?? '',
+      endAt: endAt ?? '',
     };
   }
 }

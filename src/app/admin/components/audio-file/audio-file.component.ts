@@ -133,17 +133,13 @@ export class AudioFileComponent {
     );
   }
 
-  //Required as DateTime does not reliably pass via state, consider creating a stateService
-  convertHearingDatesToString(
+  getHearingIds(
     hearings: {
       id: number;
       hearingDate: DateTime<boolean>;
       caseId: number;
     }[]
   ) {
-    return hearings.map((hearing) => ({
-      ...hearing,
-      hearingDate: hearing.hearingDate.toISO(),
-    }));
+    return hearings.flatMap((hearing) => hearing.id);
   }
 }
