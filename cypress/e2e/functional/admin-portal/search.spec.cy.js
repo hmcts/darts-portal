@@ -137,6 +137,68 @@ describe('Admin - Search screen', () => {
       .should('contain', 'Room 3');
   });
 
+  it('audio search and results', () => {
+    cy.get('#audio-option').click();
+
+    cy.get('#confirm-button').click();
+
+    cy.a11y();
+
+    cy.get('app-audio-search-results td')
+      .contains('101')
+      .parent()
+      .next('td')
+      .should('contain', 'Birmingham')
+      .next('td')
+      .should('contain', 'Room A')
+      .next('td')
+      .should('contain', '01 Jan 2024')
+      .next('td')
+      .should('contain', '11:00AM')
+      .next('td')
+      .should('contain', '12:00PM')
+      .next('td')
+      .should('contain', '4')
+      .next('td')
+      .should('contain', 'No');
+
+    cy.get('app-audio-search-results td')
+      .contains('102')
+      .parent()
+      .next('td')
+      .should('contain', 'Cardiff')
+      .next('td')
+      .should('contain', 'Room B')
+      .next('td')
+      .should('contain', '08 Jan 2023')
+      .next('td')
+      .should('contain', '03:30PM')
+      .next('td')
+      .should('contain', '04:15PM')
+      .next('td')
+      .should('contain', '5')
+      .next('td')
+      .should('contain', 'Yes');
+
+    cy.get('app-audio-search-results td')
+      .contains('103')
+      .parent()
+      .next('td')
+      .should('contain', 'Edinburgh')
+      .next('td')
+      .should('contain', 'Room C')
+      .next('td')
+      .should('contain', '01 Sep 2022')
+      .next('td')
+      .should('contain', '02:15PM')
+      .next('td')
+      .should('contain', '03:00PM')
+      .next('td')
+      .should('contain', '6')
+      .next('td')
+      .should('contain', 'No');
+  });
+
   it('too many results', () => {
     cy.get('#caseId').type('TOO_MANY_RESULTS');
     cy.get('#confirm-button').click();
