@@ -2,6 +2,8 @@ import { AdminCaseSearchResult } from '@admin-types/search/admin-case-search-res
 import { AdminCaseSearchResultData } from '@admin-types/search/admin-case-search-result-data.interface';
 import { AdminEventSearchResult } from '@admin-types/search/admin-event-search-result';
 import { AdminEventSearchResultData } from '@admin-types/search/admin-event-search-result-data.interface';
+import { AdminHearingSearchResult } from '@admin-types/search/admin-hearing-search-result';
+import { AdminHearingSearchResultData } from '@admin-types/search/admin-hearing-search-result-data.interface';
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { DateTime } from 'luxon';
@@ -10,6 +12,7 @@ import { AdminSearchFormValues } from '../../components/search/search-form/searc
 
 export const ADMIN_CASE_SEARCH_PATH = '/api/admin/cases/search';
 export const ADMIN_EVENT_SEARCH_PATH = '/api/admin/events/search';
+export const ADMIN_HEARING_SEARCH_PATH = '/api/admin/hearings/search';
 
 @Injectable({
   providedIn: 'root',
@@ -31,6 +34,13 @@ export class AdminSearchService {
       .pipe(map((results) => this.mapEventDataToEventSearchResult(results)));
   }
 
+  getHearings(formValues: AdminSearchFormValues): Observable<AdminHearingSearchResult[]> {
+    const requestBody = this.mapAdminSearchFormValuesToSearchRequest(formValues);
+    return this.http
+      .post<AdminHearingSearchResultData[]>(ADMIN_HEARING_SEARCH_PATH, requestBody)
+      .pipe(map((results) => this.mapHearingDataToHearingSearchResult(results)));
+  }
+
   private mapCaseDataToCaseSearchResult(results: AdminCaseSearchResultData[]): AdminCaseSearchResult[] {
     return results.map((result) => ({
       id: result.id,
@@ -50,6 +60,17 @@ export class AdminSearchService {
       text: result.text,
       chronicleId: result.chronicle_id,
       antecedentId: result.antecedent_id,
+      courthouse: result.courthouse.display_name,
+      courtroom: result.courtroom.name,
+    }));
+  }
+
+  private mapHearingDataToHearingSearchResult(results: AdminHearingSearchResultData[]): AdminHearingSearchResult[] {
+    return results.map((result) => ({
+      caseId: result.case.id,
+      caseNumber: result.case.case_number,
+      hearingId: result.id,
+      hearingDate: DateTime.fromFormat(result.hearing_date, 'yyyy-MM-dd'),
       courthouse: result.courthouse.display_name,
       courtroom: result.courtroom.name,
     }));

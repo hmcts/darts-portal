@@ -102,6 +102,41 @@ describe('Admin - Search screen', () => {
       .should('contain', 'This is yet another event');
   });
 
+  it('hearing search and results', () => {
+    cy.get('#hearings-option').click();
+
+    cy.get('#confirm-button').click();
+
+    cy.a11y();
+
+    cy.get('app-hearing-search-results td')
+      .contains('123')
+      .next('td')
+      .should('contain', '01/01/2024')
+      .next('td')
+      .should('contain', 'Cardiff')
+      .next('td')
+      .should('contain', 'Room 1');
+
+    cy.get('app-hearing-search-results td')
+      .contains('456')
+      .next('td')
+      .should('contain', '02/01/2024')
+      .next('td')
+      .should('contain', 'Swansea')
+      .next('td')
+      .should('contain', 'Room 2');
+
+    cy.get('app-hearing-search-results td')
+      .contains('789')
+      .next('td')
+      .should('contain', '03/01/2024')
+      .next('td')
+      .should('contain', 'Newport')
+      .next('td')
+      .should('contain', 'Room 3');
+  });
+
   it('too many results', () => {
     cy.get('#caseId').type('TOO_MANY_RESULTS');
     cy.get('#confirm-button').click();

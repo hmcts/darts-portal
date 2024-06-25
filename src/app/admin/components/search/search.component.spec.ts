@@ -6,6 +6,7 @@ import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { TabDirective } from '@directives/tab.directive';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { of, throwError } from 'rxjs';
+import { AdminSearchFormValues } from './search-form/search-form.component';
 import { SearchComponent } from './search.component';
 
 const fakeCourthouseService = {
@@ -16,6 +17,7 @@ const fakeCourthouseService = {
 const fakeAdminSearchService = {
   getCases: jest.fn().mockReturnValue(of([])),
   getEvents: jest.fn().mockReturnValue(of([])),
+  getHearings: jest.fn().mockReturnValue(of([])),
 };
 
 describe('SearchComponent', () => {
@@ -102,13 +104,7 @@ describe('SearchComponent', () => {
         jest.spyOn(fakeAdminSearchService, 'getCases').mockReturnValue(throwError(() => 'error'));
         const handleErrorSpy = jest.spyOn(component, 'handleError');
 
-        component.onSearch({
-          caseId: '123',
-          courtroom: '1',
-          courthouses: [{ id: 1, displayName: 'Courthouse 1' } as Courthouse],
-          hearingDate: { type: 'specific', specific: '01/01/2021', from: '', to: '' },
-          resultsFor: 'Cases',
-        });
+        component.onSearch({ resultsFor: 'Cases' } as AdminSearchFormValues);
 
         tick();
 
@@ -121,20 +117,15 @@ describe('SearchComponent', () => {
 
     describe('event search', () => {
       it('call getEvents with correct values', () => {
-        component.onSearch({
-          caseId: '123',
-          courtroom: '1',
-          courthouses: [{ id: 1, displayName: 'Courthouse 1' } as Courthouse],
-          hearingDate: { type: 'specific', specific: '01/01/2021', from: '', to: '' },
-          resultsFor: 'Events',
-        });
-        expect(fakeAdminSearchService.getEvents).toHaveBeenCalledWith({
-          caseId: '123',
-          courtroom: '1',
-          courthouses: [{ id: 1, displayName: 'Courthouse 1' } as Courthouse],
-          hearingDate: { type: 'specific', specific: '01/01/2021', from: '', to: '' },
-          resultsFor: 'Events',
-        });
+        component.onSearch({ resultsFor: 'Events' } as AdminSearchFormValues);
+        expect(fakeAdminSearchService.getEvents).toHaveBeenCalledWith({ resultsFor: 'Events' });
+      });
+    });
+
+    describe('hearing search', () => {
+      it('call getHearings with correct values', () => {
+        component.onSearch({ resultsFor: 'Hearings' } as AdminSearchFormValues);
+        expect(fakeAdminSearchService.getHearings).toHaveBeenCalledWith({ resultsFor: 'Hearings' });
       });
     });
 

@@ -26,7 +26,9 @@
       }
     </div>
     <div *tab="'Hearings'">
-      <!-- <app-hearing-search-results /> -->
+      @if (!searchError()) {
+        <app-hearing-search-results [hearings]="hearings()" />
+      }
     </div>
     <div *tab="'Events'">
       @if (!searchError()) {
