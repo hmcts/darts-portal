@@ -79,7 +79,7 @@ describe('FileHideOrDeleteComponent', () => {
     checkAssociatedAudioExists: jest.fn().mockReturnValue(
       of({
         exists: true,
-        media: [, { id: 2 }, { id: 3 }] as AssociatedMedia[],
+        media: [{ id: 2 }, { id: 3 }] as AssociatedMedia[],
         audioFile: [{ id: 1 }] as AssociatedMedia[],
       })
     ),
@@ -202,7 +202,7 @@ describe('FileHideOrDeleteComponent', () => {
     expect(component.associatedAudio).toEqual({
       audioFile: [{ id: 1 }],
       exists: true,
-      media: [, { id: 2 }, { id: 3 }],
+      media: [{ id: 2 }, { id: 3 }],
     });
     expect(checkAssociatedAudioExistsSpy).toHaveBeenCalledWith(
       component.id,
