@@ -15,7 +15,7 @@ import { TransformedMediaSearchFormValues } from '@admin-types/transformed-media
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { DateTime } from 'luxon';
-import { Observable, map, of } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -71,11 +71,13 @@ export class TransformedMediaService {
     hearingIds: number[],
     startAt: string,
     endAt: string
-  ): Observable<{ exists: boolean; media: Observable<AssociatedMedia[]> }> {
+  ): Observable<{ exists: boolean; media: AssociatedMedia[]; audioFile: AssociatedMedia[] }> {
     return this.getAssociatedMediaByHearingId(hearingIds.toString(), startAt, endAt).pipe(
       map((media) => {
-        const hasAssociatedMedia = media.some((m) => m.id !== mediaId);
-        return { exists: hasAssociatedMedia, media: of(media) };
+        const audioFile = media.filter((m) => m.id === mediaId);
+        const associatedMedia = media.filter((m) => m.id !== mediaId);
+        const hasAssociatedMedia = associatedMedia.length > 0;
+        return { exists: hasAssociatedMedia, media: associatedMedia, audioFile: audioFile };
       })
     );
   }

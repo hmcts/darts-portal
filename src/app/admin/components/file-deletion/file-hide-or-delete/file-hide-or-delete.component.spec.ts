@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
 import { TransformedMediaService } from '@services/transformed-media/transformed-media.service';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { FileHideOrDeleteComponent } from './file-hide-or-delete.component';
 
 describe('FileHideOrDeleteComponent', () => {
@@ -62,6 +62,8 @@ describe('FileHideOrDeleteComponent', () => {
       extras: {
         state: {
           fileType: 'transcription_document',
+          hearingIds: [12322, 1232],
+          dates: { startAt: '2021-01-01T00:00:00Z', endAt: '2021-01-01T00:00:00Z' },
         },
       },
     }),
@@ -77,7 +79,8 @@ describe('FileHideOrDeleteComponent', () => {
     checkAssociatedAudioExists: jest.fn().mockReturnValue(
       of({
         exists: true,
-        media: of([{ id: 1 }, { id: 2 }, { id: 3 }]) as Observable<AssociatedMedia[]>,
+        media: [, { id: 2 }, { id: 3 }] as AssociatedMedia[],
+        audioFile: [{ id: 1 }] as AssociatedMedia[],
       })
     ),
   } as unknown as TransformedMediaService;
@@ -196,12 +199,11 @@ describe('FileHideOrDeleteComponent', () => {
 
     component.onSubmit();
 
-    let results;
-    component.associatedAudio$.subscribe((media) => {
-      results = media;
+    expect(component.associatedAudio).toEqual({
+      audioFile: [{ id: 1 }],
+      exists: true,
+      media: [, { id: 2 }, { id: 3 }],
     });
-
-    expect(results).toEqual([{ id: 1 }, { id: 2 }, { id: 3 }]);
     expect(checkAssociatedAudioExistsSpy).toHaveBeenCalledWith(
       component.id,
       component.associatedAudioSearch.hearingIds,

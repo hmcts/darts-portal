@@ -11,7 +11,7 @@ import { TransformedMediaSearchFormValues } from '@admin-types/transformed-media
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { DateTime } from 'luxon';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { TransformedMediaService } from './transformed-media.service';
 
 describe('TransformedMediaService', () => {
@@ -433,28 +433,6 @@ describe('TransformedMediaService', () => {
 
       const mockAssociatedMedia: AssociatedMedia[] = [
         {
-          id: 2,
-          channel: 1,
-          startAt: DateTime.fromISO('2022-01-01T00:00:00Z'),
-          endAt: DateTime.fromISO('2022-01-01T00:00:00Z'),
-          case: {
-            id: 1,
-            caseNumber: 'CASE123',
-          },
-          hearing: {
-            id: 1,
-            hearingDate: DateTime.fromISO('2022-01-01'),
-          },
-          courthouse: {
-            id: 1,
-            displayName: 'Swansea',
-          },
-          courtroom: {
-            id: 1,
-            displayName: 'room',
-          },
-        },
-        {
           id: 1,
           channel: 1,
           startAt: DateTime.fromISO('2022-01-01T00:00:00Z'),
@@ -476,6 +454,29 @@ describe('TransformedMediaService', () => {
             displayName: 'room',
           },
         },
+        {
+          id: 2,
+          channel: 1,
+          startAt: DateTime.fromISO('2022-01-01T00:00:00Z'),
+          endAt: DateTime.fromISO('2022-01-01T00:00:00Z'),
+          case: {
+            id: 1,
+            caseNumber: 'CASE123',
+          },
+          hearing: {
+            id: 1,
+            hearingDate: DateTime.fromISO('2022-01-01'),
+          },
+          courthouse: {
+            id: 1,
+            displayName: 'Swansea',
+          },
+          courtroom: {
+            id: 1,
+            displayName: 'room',
+          },
+        },
+
         {
           id: 5,
           channel: 1,
@@ -502,18 +503,14 @@ describe('TransformedMediaService', () => {
 
       jest.spyOn(service, 'getAssociatedMediaByHearingId').mockReturnValue(of(mockAssociatedMedia));
 
-      let result = {} as { exists: boolean; media: Observable<AssociatedMedia[]> };
+      let result = {} as { exists: boolean; media: AssociatedMedia[]; audioFile: AssociatedMedia[] };
       service.checkAssociatedAudioExists(mediaId, hearingIds, startAt, endAt).subscribe((res) => {
         result = res;
       });
 
-      let mediaResult: AssociatedMedia[] = [];
-      result.media.subscribe((media) => {
-        mediaResult = media;
-      });
-
       expect(result.exists).toBe(true);
-      expect(mediaResult).toEqual(mockAssociatedMedia);
+      expect(result.media).toEqual(mockAssociatedMedia.filter((media) => mediaId !== media.id));
+      expect(result.audioFile).toEqual(mockAssociatedMedia.filter((media) => mediaId === media.id));
     });
 
     it('should return exists as false if there are no associated media', () => {
@@ -526,18 +523,13 @@ describe('TransformedMediaService', () => {
 
       jest.spyOn(service, 'getAssociatedMediaByHearingId').mockReturnValue(of(mockAssociatedMedia));
 
-      let result = {} as { exists: boolean; media: Observable<AssociatedMedia[]> };
+      let result = {} as { exists: boolean; media: AssociatedMedia[]; audioFile: AssociatedMedia[] };
       service.checkAssociatedAudioExists(mediaId, hearingIds, startAt, endAt).subscribe((res) => {
         result = res;
       });
 
-      let mediaResult: AssociatedMedia[] = [];
-      result.media.subscribe((media) => {
-        mediaResult = media;
-      });
-
       expect(result.exists).toBe(false);
-      expect(mediaResult).toEqual(mockAssociatedMedia);
+      expect(result.media).toEqual(mockAssociatedMedia);
     });
   });
 

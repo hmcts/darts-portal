@@ -14,7 +14,7 @@ import { FormService } from '@services/form/form.service';
 import { HeaderService } from '@services/header/header.service';
 import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
 import { TransformedMediaService } from '@services/transformed-media/transformed-media.service';
-import { Observable, map, of } from 'rxjs';
+import { map } from 'rxjs';
 import { AssociatedAudioHideDeleteComponent } from '../../transformed-media/associated-audio-hide-delete/associated-audio-hide-delete.component';
 import { FileHideOrDeleteSuccessComponent } from '../file-hide-or-delete-success/file-hide-or-delete-success.component';
 @Component({
@@ -44,7 +44,11 @@ export class FileHideOrDeleteComponent implements OnInit {
   errors: ErrorSummaryEntry[] = [];
 
   associatedAudioSearch = this.getAssociatedAudioSearch();
-  associatedAudio$: Observable<AssociatedMedia[]> = of([]);
+  associatedAudio: {
+    media: AssociatedMedia[];
+    audioFile: AssociatedMedia[];
+  } = { media: [], audioFile: [] };
+
   audioHideComplete = false;
 
   fileType = this.router.getCurrentNavigation()?.extras?.state?.fileType ?? null;
@@ -99,7 +103,7 @@ export class FileHideOrDeleteComponent implements OnInit {
             if (associatedAudio.exists) {
               this.isSubmitted = true;
               this.isAssociatedAudio = true;
-              this.associatedAudio$ = associatedAudio.media;
+              this.associatedAudio = associatedAudio;
             } else {
               this.transformedMediaService.hideAudioFile(this.id, this.hideFormValues).subscribe(() => {
                 this.isSubmitted = true;

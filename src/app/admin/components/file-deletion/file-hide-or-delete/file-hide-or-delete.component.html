@@ -80,11 +80,11 @@
   </form>
 } @else {
   @if (isAssociatedAudio && !audioHideComplete) {
-    @if (associatedAudio$ | async; as media) {
+    @if (associatedAudio) {
       <app-associated-audio-hide-delete
         (errors)="errors = $event"
-        [audioFile]="getMediaById(media)"
-        [media]="media"
+        [audioFile]="associatedAudio.audioFile"
+        [media]="associatedAudio.media"
         [id]="id"
         [fileFormValues]="hideFormValues"
         (successResponse)="audioHideComplete = $event"
