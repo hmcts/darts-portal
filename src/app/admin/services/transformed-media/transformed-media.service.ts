@@ -87,6 +87,7 @@ export class TransformedMediaService {
   hideAudioFile(id: number, formValues: FileHideOrDeleteFormValues): Observable<FileHide> {
     const body = this.mapHidePostRequest(formValues);
 
+    console.log(body);
     return this.http
       .post<FileHideData>(`api/admin/medias/${id}/hide`, body)
       .pipe(map((res) => this.mapHideFileResponse(res)));

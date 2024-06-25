@@ -102,8 +102,9 @@ export class FileHideOrDeleteComponent implements OnInit {
               this.isAssociatedAudio = true;
               this.associatedAudio$ = associatedAudio.media;
             } else {
-              this.isSubmitted = true;
-              this.transformedMediaService.hideAudioFile(this.id, this.hideFormValues);
+              this.transformedMediaService.hideAudioFile(this.id, this.hideFormValues).subscribe(() => {
+                this.isSubmitted = true;
+              });
             }
           });
       }
