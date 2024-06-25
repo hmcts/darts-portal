@@ -21,7 +21,7 @@
       @if (cases().length) {
         <app-case-search-results [cases]="cases()" captionType="heading" [showRestrictions]="false" />
       }
-      @if (!cases().length && !searchError()) {
+      @if (!cases().length && !searchError() && !isLoading()) {
         {{ 'No results found' }}
       }
     </div>
