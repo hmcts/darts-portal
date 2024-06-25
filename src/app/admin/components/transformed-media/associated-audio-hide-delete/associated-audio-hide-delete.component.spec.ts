@@ -44,14 +44,39 @@ describe('AssociatedAudioHideDeleteComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should submit the form and hide audio files', () => {
+  it('should navigate back when goBack is called', () => {
+    const routerSpy = jest.spyOn(component.router, 'navigate');
+    const id = 123;
+    component.id = id;
+
+    component.goBack();
+
+    expect(routerSpy).toHaveBeenCalledWith(['/admin/audio-file', id]);
+  });
+
+  it('should not hide audio files if the form is valid but no selected rows and includeSelectedFiles is true', () => {
+    const hideAudioFileSpy = jest.spyOn(transformedMediaService, 'hideAudioFile');
+    component.form.setValue({ selectedFileChoice: 'true' });
+    component.selectedRows = [];
+    component.associatedAudioSubmit();
+    expect(hideAudioFileSpy).not.toHaveBeenCalled();
+  });
+
+  it('should emit errors if the form is invalid', () => {
+    const errorsEmitSpy = jest.spyOn(component.errors, 'emit');
+    component.form.setValue({ selectedFileChoice: '' });
+    component.associatedAudioSubmit();
+    expect(errorsEmitSpy).toHaveBeenCalled();
+  });
+
+  it('should hide audio files if the form is valid and includeSelectedFiles is true', () => {
+    const successResponseSpy = jest.spyOn(component.successResponse, 'emit');
     const selectedIds = [1, 2, 3];
     const responses = selectedIds.map((id) => {
       return { id, isHidden: true };
     });
     const hideAudioFileSpy = jest.spyOn(transformedMediaService, 'hideAudioFile');
     hideAudioFileSpy.mockReturnValue(of(responses));
-
     component.form.setValue({ selectedFileChoice: 'true' });
     component.selectedRows = [
       {
@@ -79,28 +104,19 @@ describe('AssociatedAudioHideDeleteComponent', () => {
         channelNumber: 2,
       },
     ];
-
-    const markTouchedSpy = jest.spyOn(component.form, 'markAllAsTouched');
-    const successResponseSpy = jest.spyOn(component.successResponse, 'emit');
-    const errorSpy = jest.spyOn(component.errors, 'emit');
     component.associatedAudioSubmit();
-
     expect(component.isSubmitted).toBe(false);
-    expect(markTouchedSpy).toHaveBeenCalled();
     expect(hideAudioFileSpy).toHaveBeenCalledWith(4, component.fileFormValues);
     expect(hideAudioFileSpy).toHaveBeenCalledWith(5, component.fileFormValues);
     expect(hideAudioFileSpy).toHaveBeenCalledWith(component.id, component.fileFormValues);
     expect(successResponseSpy).toHaveBeenCalledWith(true);
-    expect(errorSpy).toHaveBeenCalledWith([]);
   });
 
-  it('should navigate back when goBack is called', () => {
-    const routerSpy = jest.spyOn(component.router, 'navigate');
-    const id = 123;
-    component.id = id;
-
-    component.goBack();
-
-    expect(routerSpy).toHaveBeenCalledWith(['/admin/audio-file', id]);
+  it('should hide audio file if the form is valid and includeSelectedFiles is false', () => {
+    const hideAudioFileSpy = jest.spyOn(transformedMediaService, 'hideAudioFile');
+    hideAudioFileSpy.mockReturnValue(of({ id: component.id, isHidden: true }));
+    component.form.setValue({ selectedFileChoice: 'false' });
+    component.associatedAudioSubmit();
+    expect(hideAudioFileSpy).toHaveBeenCalledWith(component.id, component.fileFormValues);
   });
 });

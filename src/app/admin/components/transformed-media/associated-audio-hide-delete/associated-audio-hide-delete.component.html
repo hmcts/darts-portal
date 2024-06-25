@@ -13,10 +13,11 @@
     }
 
     <p class="govuk-heading-m title-underline">The file you are hiding and/or deleting</p>
-    <app-associated-audio-table [rowSelect]="false" [hideOrDeleteView]="true" [rows]="audioFile" />
+    <app-associated-audio-table id="hideFileTable" [rowSelect]="false" [hideOrDeleteView]="true" [rows]="audioFile" />
 
     <p class="govuk-heading-m title-underline">Associated audio files</p>
     <app-associated-audio-table
+      id="associatedAudioTable"
       [rowSelect]="true"
       [hideOrDeleteView]="true"
       [rows]="media"

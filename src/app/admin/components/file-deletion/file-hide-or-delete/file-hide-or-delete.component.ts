@@ -101,6 +101,9 @@ export class FileHideOrDeleteComponent implements OnInit {
               this.isSubmitted = true;
               this.isAssociatedAudio = true;
               this.associatedAudio$ = associatedAudio.media;
+            } else {
+              this.isSubmitted = true;
+              this.transformedMediaService.hideAudioFile(this.id, this.hideFormValues);
             }
           });
       }
@@ -108,8 +111,8 @@ export class FileHideOrDeleteComponent implements OnInit {
   }
 
   getMediaById(media: AssociatedMedia[]): AssociatedMedia[] {
-    const result = media.filter((media) => media.id === this.id);
-    return result ? result : [];
+    const results = media.filter((media) => media.id === this.id);
+    return results;
   }
 
   private hideTranscriptionDocument() {
@@ -130,7 +133,7 @@ export class FileHideOrDeleteComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate([this.continueLink]);
+    this.router.navigate([this.getContinueLink()]);
   }
 
   getErrorMessages(controlKey: string): string[] {
