@@ -1,6 +1,7 @@
 export interface FileHideData {
   id: number;
   is_hidden: boolean;
+  is_deleted?: boolean;
   admin_action: {
     id: number;
     reason_id: number;

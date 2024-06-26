@@ -1,7 +1,30 @@
 const express = require('express');
 const router = express.Router();
+const { DateTime } = require('luxon');
 
 const media = [
+  {
+    id: 0,
+    channel: 1,
+    start_at: '2020-06-01T17:00:00Z',
+    end_at: '2020-06-01T18:00:00Z',
+    case: {
+      id: 1,
+      case_number: '001',
+    },
+    hearing: {
+      id: 1,
+      hearing_date: '2020-06-01',
+    },
+    courthouse: {
+      id: 1,
+      display_name: 'courthouse 12',
+    },
+    courtroom: {
+      id: 1,
+      display_name: 'courtroom 11',
+    },
+  },
   {
     id: 1,
     channel: 1,
@@ -122,14 +145,40 @@ const mediaSearchResults = [
 router.get('/', (req, res) => {
   const transformed_media_id = req.query.transformed_media_id;
   const transcription_document_id = req.query.transcription_document_id;
+  const hearingIds = req.query.hearing_ids;
+  const startAt = req.query.start_at;
+  const endAt = req.query.end_at;
 
   res.send(media);
+});
+
+router.post('/:id/hide', (req, res) => {
+  const body = req.body;
+
+  const response = {
+    id: 0,
+    is_hidden: true,
+    is_deleted: false,
+    admin_action: {
+      id: 0,
+      reason_id: body.admin_action.reason_id,
+      hidden_by_id: 0,
+      hidden_at: DateTime.now().toISO(),
+      is_marked_for_manual_deletion: false,
+      marked_for_manual_deletion_by_id: 0,
+      marked_for_manual_deletion_at: DateTime.now().toISO(),
+      ticket_reference: body.admin_action.ticket_reference,
+      comments: body.admin_action.comments,
+    },
+  };
+
+  res.send(response);
 });
 
 router.get('/:id', (req, res) => {
   const id = parseInt(req.params.id);
 
-  res.send({
+  const media = {
     id,
     start_at: '2024-06-11T09:55:18.404Z',
     end_at: '2024-06-11T10:55:18.404Z',
@@ -186,7 +235,15 @@ router.get('/:id', (req, res) => {
         case_id: 1,
       },
     ],
-  });
+  };
+
+  if (id === 0) {
+    media.is_hidden = false;
+    media.is_deleted = false;
+    media.admin_action.is_marked_for_manual_deletion = false;
+  }
+
+  res.send(media);
 });
 
 router.post('/search', (req, res) => {

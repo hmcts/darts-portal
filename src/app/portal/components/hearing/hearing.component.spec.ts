@@ -165,6 +165,7 @@ describe('HearingComponent', () => {
         permissions: [],
       },
     ],
+    isActive: true,
   });
 
   beforeEach(() => {
