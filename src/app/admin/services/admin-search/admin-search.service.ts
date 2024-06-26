@@ -4,6 +4,8 @@ import { AdminEventSearchResult } from '@admin-types/search/admin-event-search-r
 import { AdminEventSearchResultData } from '@admin-types/search/admin-event-search-result-data.interface';
 import { AdminHearingSearchResult } from '@admin-types/search/admin-hearing-search-result';
 import { AdminHearingSearchResultData } from '@admin-types/search/admin-hearing-search-result-data.interface';
+import { AdminMediaSearchResult } from '@admin-types/search/admin-media-search-result';
+import { AdminMediaSearchResultData } from '@admin-types/search/admin-media-search-result-data.inerface';
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { DateTime } from 'luxon';
@@ -13,6 +15,7 @@ import { AdminSearchFormValues } from '../../components/search/search-form/searc
 export const ADMIN_CASE_SEARCH_PATH = '/api/admin/cases/search';
 export const ADMIN_EVENT_SEARCH_PATH = '/api/admin/events/search';
 export const ADMIN_HEARING_SEARCH_PATH = '/api/admin/hearings/search';
+export const ADMIN_MEDIA_SEARCH_PATH = '/api/admin/medias/search';
 
 @Injectable({
   providedIn: 'root',
@@ -39,6 +42,13 @@ export class AdminSearchService {
     return this.http
       .post<AdminHearingSearchResultData[]>(ADMIN_HEARING_SEARCH_PATH, requestBody)
       .pipe(map((results) => this.mapHearingDataToHearingSearchResult(results)));
+  }
+
+  getAudioMedia(formValues: AdminSearchFormValues): Observable<AdminMediaSearchResult[]> {
+    const requestBody = this.mapAdminSearchFormValuesToSearchRequest(formValues);
+    return this.http
+      .post<AdminMediaSearchResultData[]>(ADMIN_MEDIA_SEARCH_PATH, requestBody)
+      .pipe(map((results) => this.mapMediaDataToMediaSearchResult(results)));
   }
 
   private mapCaseDataToCaseSearchResult(results: AdminCaseSearchResultData[]): AdminCaseSearchResult[] {
@@ -73,6 +83,19 @@ export class AdminSearchService {
       hearingDate: DateTime.fromFormat(result.hearing_date, 'yyyy-MM-dd'),
       courthouse: result.courthouse.display_name,
       courtroom: result.courtroom.name,
+    }));
+  }
+
+  mapMediaDataToMediaSearchResult(results: AdminMediaSearchResultData[]): AdminMediaSearchResult[] {
+    return results.map((result) => ({
+      id: result.id,
+      courthouse: result.courthouse.display_name,
+      courtroom: result.courtroom.name,
+      hearingDate: DateTime.fromISO(result.start_at),
+      startAt: DateTime.fromISO(result.start_at),
+      endAt: DateTime.fromISO(result.end_at),
+      channel: result.channel,
+      isHidden: result.is_hidden,
     }));
   }
 

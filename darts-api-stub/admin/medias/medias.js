@@ -93,6 +93,55 @@ const media = [
   },
 ];
 
+const mediaSearchResults = [
+  {
+    id: 101,
+    courthouse: {
+      id: 1,
+      display_name: 'Birmingham',
+    },
+    courtroom: {
+      id: 1,
+      name: 'Room A',
+    },
+    start_at: '2024-01-01T11:00:00Z',
+    end_at: '2024-01-01T12:00:00Z',
+    channel: 4,
+    is_hidden: false,
+  },
+
+  {
+    id: 102,
+    courthouse: {
+      id: 2,
+      display_name: 'Cardiff',
+    },
+    courtroom: {
+      id: 2,
+      name: 'Room B',
+    },
+    start_at: '2023-01-08T15:30:00Z',
+    end_at: '2023-01-08T16:15:00Z',
+    channel: 5,
+    is_hidden: true,
+  },
+  {
+    id: 103,
+    courthouse: {
+      id: 3,
+      display_name: 'Edinburgh',
+    },
+    courtroom: {
+      id: 3,
+      name: 'Room C',
+    },
+    start_at: '2022-09-01T13:15:00Z',
+    end_at: '2022-09-01T14:00:00Z',
+    channel: 6,
+    is_hidden: false,
+  },
+];
+
 router.get('/', (req, res) => {
   const transformed_media_id = req.query.transformed_media_id;
   const transcription_document_id = req.query.transcription_document_id;
@@ -195,6 +244,20 @@ router.get('/:id', (req, res) => {
   }
 
   res.send(media);
+});
+
+router.post('/search', (req, res) => {
+  if (req.body.case_number === 'NO_RESULTS') {
+    res.send([]);
+    return;
+  }
+
+  if (req.body.case_number === 'TOO_MANY_RESULTS') {
+    res.status(400).send('Too many results found. Please refine your search.');
+    return;
+  }
+
+  res.send(mediaSearchResults);
 });
 
 module.exports = router;

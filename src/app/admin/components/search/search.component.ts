@@ -1,5 +1,6 @@
 import { AdminEventSearchResult } from '@admin-types/search/admin-event-search-result';
 import { AdminHearingSearchResult } from '@admin-types/search/admin-hearing-search-result';
+import { AdminMediaSearchResult } from '@admin-types/search/admin-media-search-result';
 import { JsonPipe } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -14,6 +15,7 @@ import { CaseSearchResult } from '@portal-types/index';
 import { AdminSearchService } from '@services/admin-search/admin-search.service';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { catchError, finalize, map, of } from 'rxjs';
+import { AudioSearchResultsComponent } from './audio-search-results/audio-search-results.component';
 import { EventSearchResultsComponent } from './event-search-results/event-search-results.component';
 import { HearingSearchResultsComponent } from './hearing-search-results/hearing-search-results.component';
 import { AdminSearchFormValues, SearchFormComponent } from './search-form/search-form.component';
@@ -29,12 +31,13 @@ type SearchResultsTab = 'Cases' | 'Hearings' | 'Events' | 'Audio';
     SearchFormComponent,
     GovukTabsComponent,
     TabDirective,
-    CaseSearchResultsComponent,
     LoadingComponent,
     JsonPipe,
     ValidationErrorSummaryComponent,
-    EventSearchResultsComponent,
+    CaseSearchResultsComponent,
     HearingSearchResultsComponent,
+    EventSearchResultsComponent,
+    AudioSearchResultsComponent,
   ],
 })
 export class SearchComponent {
@@ -71,7 +74,7 @@ export class SearchComponent {
   cases = signal<CaseSearchResult[]>([]);
   hearings = signal<AdminHearingSearchResult[]>([]);
   events = signal<AdminEventSearchResult[]>([]);
-  // audio = signal<AudioSearchResult[]>([]);
+  audio = signal<AdminMediaSearchResult[]>([]);
 
   onSearch(searchFormValues: AdminSearchFormValues) {
     const resultsFor = searchFormValues.resultsFor as SearchResultsTab;
@@ -90,6 +93,9 @@ export class SearchComponent {
         break;
       case 'Events':
         this.searchEvents(searchFormValues);
+        break;
+      case 'Audio':
+        this.searchAudio(searchFormValues);
         break;
       default:
         this.isLoading.set(false);
@@ -127,6 +133,17 @@ export class SearchComponent {
         finalize(() => this.isLoading.set(false))
       )
       .subscribe((data) => this.hearings.set(data));
+  }
+
+  searchAudio(searchFormValues: AdminSearchFormValues) {
+    this.audio.set([]);
+    this.searchService
+      .getAudioMedia(searchFormValues)
+      .pipe(
+        catchError(() => this.handleError()),
+        finalize(() => this.isLoading.set(false))
+      )
+      .subscribe((data) => this.audio.set(data));
   }
 
   handleError() {

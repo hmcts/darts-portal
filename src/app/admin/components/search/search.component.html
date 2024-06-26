@@ -36,7 +36,9 @@
       }
     </div>
     <div *tab="'Audio'">
-      <!-- <app-audio-search-results /> -->
+      @if (!searchError()) {
+        <app-audio-search-results [audio]="audio()" />
+      }
     </div>
   </app-govuk-tabs>
 }
