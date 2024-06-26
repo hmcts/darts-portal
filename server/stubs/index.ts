@@ -6,5 +6,6 @@ export interface StubResponse {
 }
 
 export * from './events';
+export * from './hearings';
 export * from './security-roles';
 export * from './transformed-media';

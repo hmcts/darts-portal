@@ -4,7 +4,12 @@ import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { DateTime } from 'luxon';
 import { AdminSearchFormValues } from '../../components/search/search-form/search-form.component';
-import { ADMIN_CASE_SEARCH_PATH, ADMIN_EVENT_SEARCH_PATH, AdminSearchService } from './admin-search.service';
+import {
+  ADMIN_CASE_SEARCH_PATH,
+  ADMIN_EVENT_SEARCH_PATH,
+  ADMIN_HEARING_SEARCH_PATH,
+  AdminSearchService,
+} from './admin-search.service';
 
 const mockCaseSearchRespone = [
   {
@@ -151,6 +156,50 @@ describe('AdminSearchService', () => {
           text: 'Event 2 text',
           chronicle_id: 2,
           antecedent_id: 2,
+          courthouse: {
+            id: 2,
+            display_name: 'Courthouse 2',
+          },
+          courtroom: {
+            id: 2,
+            name: 'Courtroom 2',
+          },
+        },
+      ]);
+
+      tick();
+    }));
+  });
+
+  describe('getHearings', () => {
+    it('should call the correct endpoint', () => {
+      service.getHearings(mockSearchFormValues).subscribe();
+      httpMock.expectOne({ url: ADMIN_HEARING_SEARCH_PATH, method: 'POST' });
+    });
+
+    it('map response', fakeAsync(() => {
+      service.getHearings(mockSearchFormValues).subscribe((hearings) => {
+        expect(hearings).toEqual([
+          {
+            caseId: 2,
+            caseNumber: '654321',
+            hearingId: 2,
+            hearingDate: DateTime.fromFormat('2021-01-01', 'yyyy-MM-dd'),
+            courthouse: 'Courthouse 2',
+            courtroom: 'Courtroom 2',
+          },
+        ]);
+      });
+
+      const req = httpMock.expectOne(ADMIN_HEARING_SEARCH_PATH);
+      req.flush([
+        {
+          id: 2,
+          case: {
+            id: 2,
+            case_number: '654321',
+          },
+          hearing_date: '2021-01-01',
           courthouse: {
             id: 2,
             display_name: 'Courthouse 2',

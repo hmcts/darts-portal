@@ -1,4 +1,5 @@
 import { AdminEventSearchResult } from '@admin-types/search/admin-event-search-result';
+import { AdminHearingSearchResult } from '@admin-types/search/admin-hearing-search-result';
 import { JsonPipe } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -14,6 +15,7 @@ import { AdminSearchService } from '@services/admin-search/admin-search.service'
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { catchError, finalize, map, of } from 'rxjs';
 import { EventSearchResultsComponent } from './event-search-results/event-search-results.component';
+import { HearingSearchResultsComponent } from './hearing-search-results/hearing-search-results.component';
 import { AdminSearchFormValues, SearchFormComponent } from './search-form/search-form.component';
 
 type SearchResultsTab = 'Cases' | 'Hearings' | 'Events' | 'Audio';
@@ -32,6 +34,7 @@ type SearchResultsTab = 'Cases' | 'Hearings' | 'Events' | 'Audio';
     JsonPipe,
     ValidationErrorSummaryComponent,
     EventSearchResultsComponent,
+    HearingSearchResultsComponent,
   ],
 })
 export class SearchComponent {
@@ -66,7 +69,7 @@ export class SearchComponent {
   });
 
   cases = signal<CaseSearchResult[]>([]);
-  // hearings = signal<HearingSearchResult[]>([]);
+  hearings = signal<AdminHearingSearchResult[]>([]);
   events = signal<AdminEventSearchResult[]>([]);
   // audio = signal<AudioSearchResult[]>([]);
 
@@ -81,6 +84,9 @@ export class SearchComponent {
     switch (resultsFor) {
       case 'Cases':
         this.searchCases(searchFormValues);
+        break;
+      case 'Hearings':
+        this.searchHearings(searchFormValues);
         break;
       case 'Events':
         this.searchEvents(searchFormValues);
@@ -110,6 +116,17 @@ export class SearchComponent {
         finalize(() => this.isLoading.set(false))
       )
       .subscribe((data) => this.events.set(data));
+  }
+
+  searchHearings(searchFormValues: AdminSearchFormValues) {
+    this.hearings.set([]);
+    this.searchService
+      .getHearings(searchFormValues)
+      .pipe(
+        catchError(() => this.handleError()),
+        finalize(() => this.isLoading.set(false))
+      )
+      .subscribe((data) => this.hearings.set(data));
   }
 
   handleError() {
