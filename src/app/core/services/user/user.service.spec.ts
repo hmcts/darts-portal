@@ -122,7 +122,7 @@ describe('UserService', () => {
         roles: [
           {
             roleId: 123,
-            roleName: 'JUDGE',
+            roleName: 'JUDICIARY',
             permissions: [],
           },
         ],
@@ -361,13 +361,13 @@ describe('UserService', () => {
       const judge: UserState = {
         userName: '',
         userId: 1,
-        roles: [{ roleId: 123, roleName: 'JUDGE', courthouseIds: [courthouseId] }],
         isActive: true,
+        roles: [{ roleId: 123, roleName: 'JUDICIARY', courthouseIds: [courthouseId] }],
       };
 
       service.userState.set(judge);
 
-      expect(service.hasCourthouse('JUDGE', courthouseId)).toBe(true);
+      expect(service.hasCourthouse('JUDICIARY', courthouseId)).toBe(true);
     });
 
     it('should return false if user does not have access to a specific courthouse', () => {
@@ -375,13 +375,13 @@ describe('UserService', () => {
       const judge: UserState = {
         userName: '',
         userId: 1,
-        roles: [{ roleId: 123, roleName: 'JUDGE', courthouseIds: [200] }],
         isActive: true,
+        roles: [{ roleId: 123, roleName: 'JUDICIARY', courthouseIds: [200] }],
       };
 
       service.userState.set(judge);
 
-      expect(service.hasCourthouse('JUDGE', courthouseId)).toBe(false);
+      expect(service.hasCourthouse('JUDICIARY', courthouseId)).toBe(false);
     });
 
     it('should return false if user does not have role', () => {
@@ -389,13 +389,13 @@ describe('UserService', () => {
       const judge: UserState = {
         userName: '',
         userId: 1,
-        roles: [{ roleId: 123, roleName: 'JUDGE', courthouseIds: [200] }],
         isActive: true,
+        roles: [{ roleId: 123, roleName: 'JUDICIARY', courthouseIds: [200] }],
       };
 
       service.userState.set(judge);
 
-      expect(service.hasCourthouse('CLERK', courthouseId)).toBe(false);
+      expect(service.hasCourthouse('TRANSCRIBER', courthouseId)).toBe(false);
     });
   });
 
@@ -421,8 +421,8 @@ describe('UserService', () => {
       const judge: UserState = {
         userName: '',
         userId: 1,
-        roles: [{ roleId: 123, roleName: 'JUDGE', globalAccess: false, courthouseIds: [200] }],
         isActive: true,
+        roles: [{ roleId: 123, roleName: 'JUDICIARY', globalAccess: false, courthouseIds: [200] }],
       };
 
       service.userState.set(judge);
@@ -438,8 +438,8 @@ describe('UserService', () => {
       const judge: UserState = {
         userName: '',
         userId: 1,
-        roles: [{ roleId: 123, roleName: 'JUDGE', globalAccess: false, courthouseIds: [courthouseId] }],
         isActive: true,
+        roles: [{ roleId: 123, roleName: 'JUDICIARY', globalAccess: false, courthouseIds: [courthouseId] }],
       };
 
       service.userState.set(judge);
@@ -453,8 +453,8 @@ describe('UserService', () => {
       const judge: UserState = {
         userName: '',
         userId: 1,
-        roles: [{ roleId: 123, roleName: 'JUDGE', globalAccess: true, courthouseIds: [200] }],
         isActive: true,
+        roles: [{ roleId: 123, roleName: 'JUDICIARY', globalAccess: true, courthouseIds: [200] }],
       };
 
       service.userState.set(judge);
@@ -468,8 +468,8 @@ describe('UserService', () => {
       const judge: UserState = {
         userName: '',
         userId: 1,
-        roles: [{ roleId: 123, roleName: 'JUDGE', globalAccess: false, courthouseIds: [200] }],
         isActive: true,
+        roles: [{ roleId: 123, roleName: 'JUDICIARY', globalAccess: false, courthouseIds: [200] }],
       };
 
       service.userState.set(judge);
@@ -483,8 +483,8 @@ describe('UserService', () => {
       const judge: UserState = {
         userName: 'user',
         userId: 1,
-        roles: [{ roleId: 123, roleName: 'JUDGE', globalAccess: true }],
         isActive: true,
+        roles: [{ roleId: 123, roleName: 'JUDICIARY', globalAccess: true }],
       };
 
       service.userState.set(judge);
@@ -496,8 +496,8 @@ describe('UserService', () => {
       const judge: UserState = {
         userName: 'user',
         userId: 1,
-        roles: [{ roleId: 123, roleName: 'JUDGE', globalAccess: false }],
         isActive: true,
+        roles: [{ roleId: 123, roleName: 'JUDICIARY', globalAccess: false }],
       };
 
       service.userState.set(judge);

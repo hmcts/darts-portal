@@ -20,7 +20,7 @@ const TRANSCRIBER = {
 
 const JUDGE = {
   roleId: 4,
-  roleName: 'JUDGE',
+  roleName: 'JUDICIARY',
   permissions,
   courthouseIds: [1, 2, 3, 4],
 };
@@ -47,9 +47,18 @@ const SUPER_USER = {
 
 const GLOBAL_JUDGE = {
   roleId: 8,
-  roleName: 'JUDGE',
+  roleName: 'JUDICIARY',
   permissions,
   globalAccess: true,
 };
 
-module.exports = { GLOBAL_JUDGE, JUDGE, TRANSCRIBER, APPROVER, REQUESTER, SUPER_ADMIN, TRANSLATION_QA, SUPER_USER };
+module.exports = {
+  GLOBAL_JUDGE,
+  JUDGE,
+  TRANSCRIBER,
+  APPROVER,
+  REQUESTER,
+  SUPER_ADMIN,
+  TRANSLATION_QA,
+  SUPER_USER,
+};
