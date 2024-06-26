@@ -17,6 +17,7 @@ const fakeAdminSearchService = {
   getCases: jest.fn().mockReturnValue(of([])),
   getEvents: jest.fn().mockReturnValue(of([])),
   getHearings: jest.fn().mockReturnValue(of([])),
+  getAudioMedia: jest.fn().mockReturnValue(of([])),
 };
 
 describe('SearchComponent', () => {
@@ -125,6 +126,13 @@ describe('SearchComponent', () => {
       it('call getHearings with correct values', () => {
         component.onSearch({ resultsFor: 'Hearings' } as AdminSearchFormValues);
         expect(fakeAdminSearchService.getHearings).toHaveBeenCalledWith({ resultsFor: 'Hearings' });
+      });
+    });
+
+    describe('audio search', () => {
+      it('call getAudio with correct values', () => {
+        component.onSearch({ resultsFor: 'Audio' } as AdminSearchFormValues);
+        expect(fakeAdminSearchService.getAudioMedia).toHaveBeenCalledWith({ resultsFor: 'Audio' });
       });
     });
 

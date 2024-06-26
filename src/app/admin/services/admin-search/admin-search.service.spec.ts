@@ -8,6 +8,7 @@ import {
   ADMIN_CASE_SEARCH_PATH,
   ADMIN_EVENT_SEARCH_PATH,
   ADMIN_HEARING_SEARCH_PATH,
+  ADMIN_MEDIA_SEARCH_PATH,
   AdminSearchService,
 } from './admin-search.service';
 
@@ -87,42 +88,6 @@ describe('AdminSearchService', () => {
 
       tick();
     }));
-
-    it('map specific date request', () => {
-      service.getCases(mockSearchFormValues).subscribe();
-
-      const req = httpMock.expectOne(ADMIN_CASE_SEARCH_PATH);
-      expect(req.request.body).toEqual({
-        case_number: '654321',
-        courthouse_ids: [2],
-        courtroom_name: '2',
-        hearing_end_at: '2021-01-01',
-        hearing_start_at: '2021-01-01',
-      });
-    });
-
-    it('map range date request', () => {
-      service
-        .getCases({
-          ...mockSearchFormValues,
-          hearingDate: {
-            type: 'range',
-            specific: '',
-            from: '01/01/2021',
-            to: '02/01/2021',
-          },
-        })
-        .subscribe();
-
-      const req = httpMock.expectOne(ADMIN_CASE_SEARCH_PATH);
-      expect(req.request.body).toEqual({
-        case_number: '654321',
-        courthouse_ids: [2],
-        courtroom_name: '2',
-        hearing_start_at: '2021-01-01',
-        hearing_end_at: '2021-01-02',
-      });
-    });
   });
 
   describe('getEvents', () => {
@@ -213,5 +178,88 @@ describe('AdminSearchService', () => {
 
       tick();
     }));
+  });
+
+  describe('getAudioMedia', () => {
+    it('should call the correct endpoint', () => {
+      service.getAudioMedia(mockSearchFormValues).subscribe();
+      httpMock.expectOne({ url: ADMIN_MEDIA_SEARCH_PATH, method: 'POST' });
+    });
+
+    it('map response', fakeAsync(() => {
+      service.getAudioMedia(mockSearchFormValues).subscribe((media) => {
+        expect(media).toEqual([
+          {
+            id: 2,
+            courthouse: 'Courthouse 2',
+            courtroom: 'Courtroom 2',
+            startAt: DateTime.fromISO('2021-01-01T00:00:00.000Z'),
+            endAt: DateTime.fromISO('2021-01-01T00:00:00.000Z'),
+            channel: 'Channel 2',
+            isHidden: false,
+            hearingDate: DateTime.fromISO('2021-01-01T00:00:00.000Z'),
+          },
+        ]);
+      });
+
+      const req = httpMock.expectOne(ADMIN_MEDIA_SEARCH_PATH);
+      req.flush([
+        {
+          id: 2,
+          courthouse: {
+            id: 2,
+            display_name: 'Courthouse 2',
+          },
+          courtroom: {
+            id: 2,
+            name: 'Courtroom 2',
+          },
+          start_at: '2021-01-01T00:00:00.000Z',
+          end_at: '2021-01-01T00:00:00.000Z',
+          channel: 'Channel 2',
+          is_hidden: false,
+          hearingDate: '2021-01-01T00:00:00.000Z',
+        },
+      ]);
+
+      tick();
+    }));
+  });
+
+  describe('mapAdminSearchFormValuesToSearchRequest', () => {
+    it('should map the form values to request object ', () => {
+      const result = service['mapAdminSearchFormValuesToSearchRequest'](mockSearchFormValues);
+
+      expect(result).toEqual({
+        case_number: '654321',
+        courtroom_name: '2',
+        courthouse_ids: [2],
+        hearing_start_at: '2021-01-01',
+        hearing_end_at: '2021-01-01',
+      });
+    });
+
+    it('should map the form values to request object with empty values', () => {
+      const result = service['mapAdminSearchFormValuesToSearchRequest']({
+        caseId: '',
+        courtroom: '',
+        courthouses: [],
+        hearingDate: {
+          type: '',
+          specific: '',
+          from: '',
+          to: '',
+        },
+        resultsFor: 'Cases',
+      });
+
+      expect(result).toEqual({
+        case_number: null,
+        courtroom_name: null,
+        courthouse_ids: [],
+        hearing_start_at: null,
+        hearing_end_at: null,
+      });
+    });
   });
 });
