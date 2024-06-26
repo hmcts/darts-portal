@@ -17,8 +17,8 @@ const stubUsers = [
       userId: 1,
       userName: 'eric.bristow@darts.local',
       roles: [REQUESTER],
+      isActive: true,
     },
-    active: true,
   },
   {
     name: 'Fallon Sherrock',
@@ -27,8 +27,8 @@ const stubUsers = [
       userId: 2,
       userName: 'fallon.sherrock@darts.local',
       roles: [APPROVER],
+      isActive: true,
     },
-    active: true,
   },
   {
     name: 'Michael van Gerwen',
@@ -37,8 +37,8 @@ const stubUsers = [
       userId: 3,
       userName: 'michael.vangerwen@darts.local',
       roles: [REQUESTER, APPROVER],
+      isActive: true,
     },
-    active: true,
   },
   {
     name: 'Trina Gulliver',
@@ -47,8 +47,8 @@ const stubUsers = [
       userId: 4,
       userName: 'trina.gulliver@darts.local',
       roles: [TRANSCRIBER],
+      isActive: true,
     },
-    active: true,
   },
   {
     name: 'Phil Taylor',
@@ -57,8 +57,8 @@ const stubUsers = [
       userId: 5,
       userName: 'phil.taylor@darts.local',
       roles: [REQUESTER, APPROVER, TRANSCRIBER, SUPER_ADMIN, SUPER_USER],
+      isActive: true,
     },
-    active: true,
   },
   {
     name: 'Nigel Justice',
@@ -67,8 +67,8 @@ const stubUsers = [
       userId: 6,
       userName: 'nigel.justice@darts.local',
       roles: [GLOBAL_JUDGE],
+      isActive: true,
     },
-    active: true,
   },
   {
     name: 'Martin Adams',
@@ -77,8 +77,8 @@ const stubUsers = [
       userId: 7,
       userName: 'martin.adams@darts.local',
       roles: [JUDGE, APPROVER],
+      isActive: true,
     },
-    active: true,
   },
   {
     name: 'Luke Littler',
@@ -87,18 +87,18 @@ const stubUsers = [
       userId: 8,
       userName: 'luke.littler@darts.local',
       roles: [SUPER_ADMIN],
+      isActive: true,
     },
-    active: true,
   },
   {
-    name: 'Peter Wright',
+    name: 'Peter Wright (Inactive)',
     code: 'non-active',
     userState: {
       userId: 9,
       userName: 'peter.wright@darts.local',
       roles: [],
+      isActive: false,
     },
-    active: false,
   },
   {
     name: 'John Lowe',
@@ -107,8 +107,8 @@ const stubUsers = [
       userId: 10,
       userName: 'john.lowe@darts.local',
       roles: [TRANSLATION_QA],
+      isActive: true,
     },
-    active: true,
   },
   {
     name: 'Gary Anderson',
@@ -117,8 +117,8 @@ const stubUsers = [
       userId: 11,
       userName: 'gary.anderson@darts.local',
       roles: [SUPER_USER],
+      isActive: true,
     },
-    active: true,
   },
 ];
 
