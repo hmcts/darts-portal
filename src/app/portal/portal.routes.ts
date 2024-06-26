@@ -42,14 +42,14 @@ export const PORTAL_ROUTES: Routes = [
   {
     path: 'transcriptions',
     title: 'DARTS Your Transcripts',
-    data: { allowedRoles: ['APPROVER', 'REQUESTER', 'JUDGE', 'SUPER_USER'] },
+    data: { allowedRoles: ['APPROVER', 'REQUESTER', 'JUDICIARY', 'SUPER_USER'] },
     loadComponent: () =>
       import('../portal/components/transcriptions/transcriptions.component').then((c) => c.TranscriptionsComponent),
   },
   {
     path: 'transcriptions/delete-error',
     title: 'DARTS Delete Transcript Error',
-    data: { allowedRoles: ['APPROVER', 'REQUESTER', 'JUDGE'] },
+    data: { allowedRoles: ['APPROVER', 'REQUESTER', 'JUDICIARY'] },
     loadComponent: () =>
       import('../portal/components/transcriptions/error/partial-delete-error/partial-delete-error.component').then(
         (c) => c.PartialDeleteErrorComponent
@@ -86,7 +86,7 @@ export const PORTAL_ROUTES: Routes = [
   {
     path: 'case/:caseId/retention',
     title: 'DARTS Case Retention',
-    data: { allowedRoles: ['APPROVER', 'REQUESTER', 'JUDGE', 'SUPER_ADMIN', 'SUPER_USER'] },
+    data: { allowedRoles: ['APPROVER', 'REQUESTER', 'JUDICIARY', 'SUPER_ADMIN', 'SUPER_USER'] },
     loadComponent: () =>
       import('../portal/components/case/case-retention-date/case-retention-date.component').then(
         (c) => c.CaseRetentionDateComponent
@@ -100,7 +100,7 @@ export const PORTAL_ROUTES: Routes = [
   {
     path: 'case/:caseId/hearing/:hearing_id/add-annotation',
     title: 'DARTS Add Annotation',
-    data: { allowedRoles: ['JUDGE', 'SUPER_ADMIN'] },
+    data: { allowedRoles: ['JUDICIARY', 'SUPER_ADMIN'] },
     loadComponent: () =>
       import('../portal/components/hearing/add-annotation/add-annotation.component').then(
         (c) => c.AddAnnotationComponent

@@ -44,7 +44,7 @@ describe('CourthouseRecordComponent', () => {
     },
     {
       id: 3,
-      name: 'JUDGE',
+      name: 'JUDICIARY',
       displayState: true,
       displayName: 'Judge',
     },
