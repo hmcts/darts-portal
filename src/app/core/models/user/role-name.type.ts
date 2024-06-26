@@ -1,7 +1,7 @@
 export type RoleName =
   | 'TRANSCRIBER'
   | 'APPROVER'
-  | 'JUDGE'
+  | 'JUDICIARY'
   | 'REQUESTER'
   | 'TRANSLATION_QA'
   | 'SUPER_ADMIN'

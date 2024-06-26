@@ -39,7 +39,7 @@ export class UserService {
   }
 
   public isJudge(): boolean {
-    return this.hasRole('JUDGE');
+    return this.hasRole('JUDICIARY');
   }
 
   public isAdmin(): boolean {
@@ -63,12 +63,12 @@ export class UserService {
   }
 
   public isGlobalJudge(): boolean {
-    return this.hasGlobalRole('JUDGE');
+    return this.hasGlobalRole('JUDICIARY');
   }
 
   public isCourthouseJudge(courthouseId?: number): boolean {
     if (courthouseId) {
-      return this.isGlobalJudge() || this.hasCourthouse('JUDGE', courthouseId);
+      return this.isGlobalJudge() || this.hasCourthouse('JUDICIARY', courthouseId);
     }
     return this.isGlobalJudge();
   }
@@ -77,7 +77,7 @@ export class UserService {
     return this.userState() ? roles.some((role) => this.userState()!.roles.some((x) => x.roleName === role)) : false;
   }
 
-  public hasCourthouse(role: string, courthouseId: number): boolean {
+  public hasCourthouse(role: RoleName, courthouseId: number): boolean {
     return this.userState()
       ? this.userState()!.roles.some((x) => x.roleName === role && x.courthouseIds?.includes(courthouseId))
       : false;

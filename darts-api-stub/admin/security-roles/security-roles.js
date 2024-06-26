@@ -18,7 +18,7 @@ const defaultSecurityRoles = [
   },
   {
     id: 3,
-    role_name: 'JUDGE',
+    role_name: 'JUDICIARY',
     display_name: 'Judge',
     display_state: true,
   },
