@@ -187,6 +187,11 @@ describe('FileHideOrDeleteComponent', () => {
   });
 
   it('should show associated audio files if they exist', () => {
+    component.associatedAudioSearch = {
+      hearingIds: [12322, 1232],
+      startAt: '2021-01-01T00:00:00Z',
+      endAt: '2021-01-01T00:00:00Z',
+    };
     component.fileType = 'audio_file';
     component.form.markAllAsTouched();
     component.form.setValue({
