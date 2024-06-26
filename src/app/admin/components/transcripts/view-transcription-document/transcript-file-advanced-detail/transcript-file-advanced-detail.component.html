@@ -36,8 +36,7 @@
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Date uploaded</dt>
       <dd class="govuk-summary-list__value">
-        {{ transcription.document.uploadedAt | luxonDate: 'dd MMM yyyy' }} at
-        {{ transcription.document.uploadedAt | luxonDate: 'h:mma' }}
+        {{ transcription.document.uploadedAt | luxonDate: "dd MMM yyyy 'at' h:mma" }}
       </dd>
     </div>
     <div class="govuk-summary-list__row">
@@ -56,8 +55,7 @@
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Date created</dt>
       <dd class="govuk-summary-list__value">
-        {{ transcription.document.uploadedAt | luxonDate: 'dd MMM yyyy' }} at
-        {{ transcription.document.uploadedAt | luxonDate: 'h:mma' }}
+        {{ transcription.document.uploadedAt | luxonDate: "dd MMM yyyy 'at' h:mma" }}
       </dd>
     </div>
     <div class="govuk-summary-list__row">
@@ -76,22 +74,19 @@
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Date last modified</dt>
       <dd class="govuk-summary-list__value">
-        {{ transcription.document.lastModifiedAt | luxonDate: 'dd MMM yyyy' }} at
-        {{ transcription.document.lastModifiedAt | luxonDate: 'h:mma' }}
+        {{ transcription.document.lastModifiedAt | luxonDate: "dd MMM yyyy 'at' h:mma" }}
       </dd>
     </div>
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Date hidden</dt>
       <dd class="govuk-summary-list__value">
-        {{ transcription.document.adminAction?.hiddenAt | luxonDate: 'dd MMM yyyy' }} at
-        {{ transcription.document.adminAction?.hiddenAt | luxonDate: 'h:mma' }}
+        {{ transcription.document.adminAction?.hiddenAt | luxonDate: "dd MMM yyyy 'at' h:mma " }}
       </dd>
     </div>
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Retain until</dt>
       <dd class="govuk-summary-list__value">
-        {{ transcription.document.retainUntil | luxonDate: 'dd MMM yyyy' }} at
-        {{ transcription.document.retainUntil | luxonDate: 'h:mma' }}
+        {{ transcription.document.retainUntil | luxonDate: "dd MMM yyyy 'at' h:mma" }}
       </dd>
     </div>
   </dl>

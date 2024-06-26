@@ -22,4 +22,12 @@ describe('JoinPipe', () => {
   it('handles undefined', () => {
     expect(pipe.transform(undefined)).toBe('');
   });
+
+  it('handles custom undefined', () => {
+    expect(pipe.transform(undefined, ', ', 'BANANA')).toBe('BANANA');
+  });
+
+  it('handles empty array as undefined', () => {
+    expect(pipe.transform([], ', ', 'MANGO')).toBe('MANGO');
+  });
 });
