@@ -4,4 +4,5 @@ export interface UserState {
   userId: number;
   userName: string;
   roles: Role[];
+  isActive: boolean;
 }

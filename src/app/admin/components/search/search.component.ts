@@ -11,9 +11,9 @@ import { CaseSearchResultsComponent } from '@components/search/case-search-resul
 import { ErrorSummaryEntry } from '@core-types/index';
 import { TabDirective } from '@directives/tab.directive';
 import { CaseSearchResult } from '@portal-types/index';
+import { AdminSearchService } from '@services/admin-search/admin-search.service';
+import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { catchError, finalize, map, of } from 'rxjs';
-import { AdminSearchService } from './../../services/admin-search/admin-search.service';
-import { CourthouseService } from './../../services/courthouses/courthouses.service';
 import { EventSearchResultsComponent } from './event-search-results/event-search-results.component';
 import { HearingSearchResultsComponent } from './hearing-search-results/hearing-search-results.component';
 import { AdminSearchFormValues, SearchFormComponent } from './search-form/search-form.component';

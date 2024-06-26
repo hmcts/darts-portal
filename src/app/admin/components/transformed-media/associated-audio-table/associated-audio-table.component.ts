@@ -1,6 +1,6 @@
 import { AssociatedMedia } from '@admin-types/transformed-media/associated-media';
 import { DecimalPipe } from '@angular/common';
-import { Component, input } from '@angular/core';
+import { Component, EventEmitter, Input, Output, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DatatableColumn } from '@core-types/index';
@@ -16,6 +16,11 @@ import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
   styleUrl: './associated-audio-table.component.scss',
 })
 export class AssociatedAudioTableComponent {
+  @Input() hideOrDeleteView = false;
+  @Input() rowSelect = false;
+
+  @Output() selectedRows = new EventEmitter<ReturnType<typeof this.mapRows>>();
+
   rows = input([], { transform: this.mapRows });
 
   columns: DatatableColumn[] = [
@@ -29,11 +34,17 @@ export class AssociatedAudioTableComponent {
     { name: 'Channel number', prop: 'channelNumber', sortable: true },
   ];
 
+  setSelectedRows(selectedRows: ReturnType<typeof this.mapRows>) {
+    this.selectedRows.emit(selectedRows);
+  }
+
   mapRows(associatedAudio: AssociatedMedia[]) {
     return associatedAudio.map((audio) => ({
       audioId: audio.id,
       caseId: audio.case.id,
+      caseNumber: audio.case.caseNumber,
       hearingDate: audio.hearing.hearingDate,
+      hearingId: audio.hearing.id,
       courthouse: audio.courthouse.displayName,
       startTime: audio.startAt,
       endTime: audio.endAt,

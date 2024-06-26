@@ -1,9 +1,8 @@
+import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { CourthouseData } from '@core-types/courthouse/courthouse.interface';
-import { AdminSearchService } from './../../services/admin-search/admin-search.service';
-
-import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { TabDirective } from '@directives/tab.directive';
+import { AdminSearchService } from '@services/admin-search/admin-search.service';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { of, throwError } from 'rxjs';
 import { AdminSearchFormValues } from './search-form/search-form.component';

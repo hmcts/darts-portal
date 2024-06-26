@@ -4,11 +4,11 @@
 <h3 class="govuk-heading-s">Courthouse</h3>
 <p class="govuk-body">{{ caseFile.courthouse }}</p>
 <h3 class="govuk-heading-s">Prosecutor(s)</h3>
-<p class="govuk-body">{{ caseFile.prosecutors | join }}</p>
+<p class="govuk-body">{{ caseFile.prosecutors | join: ', ' : '-' }}</p>
 <h3 class="govuk-heading-s">Defence(s)</h3>
-<p class="govuk-body">{{ caseFile.defenders | join }}</p>
+<p class="govuk-body">{{ caseFile.defenders | join: ', ' : '-' }}</p>
 <h3 class="govuk-heading-s">Defendant(s)</h3>
-<p class="govuk-body">{{ caseFile.defendants | join }}</p>
+<p class="govuk-body">{{ caseFile.defendants | join: ', ' : '-' }}</p>
 
 @if (
   userService.isRequester() ||
