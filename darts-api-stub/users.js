@@ -19,6 +19,7 @@ const stubUsers = [
       roles: [REQUESTER],
       isActive: true,
     },
+    active: true,
   },
   {
     name: 'Fallon Sherrock',
@@ -29,6 +30,7 @@ const stubUsers = [
       roles: [APPROVER],
       isActive: true,
     },
+    active: true,
   },
   {
     name: 'Michael van Gerwen',
@@ -39,6 +41,7 @@ const stubUsers = [
       roles: [REQUESTER, APPROVER],
       isActive: true,
     },
+    active: true,
   },
   {
     name: 'Trina Gulliver',
@@ -49,6 +52,7 @@ const stubUsers = [
       roles: [TRANSCRIBER],
       isActive: true,
     },
+    active: true,
   },
   {
     name: 'Phil Taylor',
@@ -59,6 +63,7 @@ const stubUsers = [
       roles: [REQUESTER, APPROVER, TRANSCRIBER, SUPER_ADMIN, SUPER_USER],
       isActive: true,
     },
+    active: true,
   },
   {
     name: 'Nigel Justice',
@@ -69,6 +74,7 @@ const stubUsers = [
       roles: [GLOBAL_JUDGE],
       isActive: true,
     },
+    active: true,
   },
   {
     name: 'Martin Adams',
@@ -79,6 +85,7 @@ const stubUsers = [
       roles: [JUDGE, APPROVER],
       isActive: true,
     },
+    active: true,
   },
   {
     name: 'Luke Littler',
@@ -89,6 +96,7 @@ const stubUsers = [
       roles: [SUPER_ADMIN],
       isActive: true,
     },
+    active: true,
   },
   {
     name: 'Peter Wright (Inactive)',
@@ -99,6 +107,7 @@ const stubUsers = [
       roles: [],
       isActive: false,
     },
+    active: false,
   },
   {
     name: 'John Lowe',
@@ -109,6 +118,7 @@ const stubUsers = [
       roles: [TRANSLATION_QA],
       isActive: true,
     },
+    active: true,
   },
   {
     name: 'Gary Anderson',
@@ -119,6 +129,7 @@ const stubUsers = [
       roles: [SUPER_USER],
       isActive: true,
     },
+    active: true,
   },
 ];
 
