@@ -53,12 +53,6 @@
       </dd>
     </div>
     <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Date created</dt>
-      <dd class="govuk-summary-list__value">
-        {{ transcription.document.uploadedAt | luxonDate: "dd MMM yyyy 'at' h:mma" }}
-      </dd>
-    </div>
-    <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Last modified by</dt>
       <dd class="govuk-summary-list__value">
         <a
@@ -75,6 +69,18 @@
       <dt class="govuk-summary-list__key">Date last modified</dt>
       <dd class="govuk-summary-list__value">
         {{ transcription.document.lastModifiedAt | luxonDate: "dd MMM yyyy 'at' h:mma" }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Transcription hidden?</dt>
+      <dd class="govuk-summary-list__value">
+        {{ transcription.document.isHidden ? 'Yes' : 'No' }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Hidden by</dt>
+      <dd class="govuk-summary-list__value">
+        {{ transcription.document.adminAction?.hiddenByName ?? '' }}
       </dd>
     </div>
     <div class="govuk-summary-list__row">

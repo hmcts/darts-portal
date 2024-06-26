@@ -255,24 +255,27 @@ describe('Admin - Transcript requests', () => {
         .should('contain', 'Michael van Gerwen')
         .and('have.attr', 'href', '/admin/users/3');
 
-      cy.get('#file-details dt').eq(9).should('contain', 'Date created');
-      cy.get('#file-details dd').eq(9).should('contain', '18 May 2008 at 4:00PM');
-
-      cy.get('#file-details dt').eq(10).should('contain', 'Last modified by');
+      cy.get('#file-details dt').eq(9).should('contain', 'Last modified by');
       cy.get('#file-details dd')
-        .eq(10)
+        .eq(9)
         .find('a')
         .should('contain', 'Eric Bristow')
         .and('have.attr', 'href', '/admin/users/1');
 
-      cy.get('#file-details dt').eq(11).should('contain', 'Date last modified');
-      cy.get('#file-details dd').eq(11).should('contain', '01 Jan 2024 at 1:52PM');
+      cy.get('#file-details dt').eq(10).should('contain', 'Date last modified');
+      cy.get('#file-details dd').eq(10).should('contain', '01 Jan 2024 at 1:52PM');
 
-      cy.get('#file-details dt').eq(12).should('contain', 'Date hidden');
-      cy.get('#file-details dd').eq(12).should('contain', '01 Jan 2024 at 7:10AM');
+      cy.get('#file-details dt').eq(11).should('contain', 'Transcription hidden?');
+      cy.get('#file-details dd').eq(11).should('contain', 'Yes');
 
-      cy.get('#file-details dt').eq(13).should('contain', 'Retain until');
-      cy.get('#file-details dd').eq(13).should('contain', '01 Jan 2034 at 9:00AM');
+      cy.get('#file-details dt').eq(12).should('contain', 'Hidden by');
+      cy.get('#file-details dd').eq(12).should('contain', 'Eric Bristow');
+
+      cy.get('#file-details dt').eq(13).should('contain', 'Date hidden');
+      cy.get('#file-details dd').eq(13).should('contain', '01 Jan 2024 at 7:10AM');
+
+      cy.get('#file-details dt').eq(14).should('contain', 'Retain until');
+      cy.get('#file-details dd').eq(14).should('contain', '01 Jan 2034 at 9:00AM');
 
       cy.get('.govuk-button').should('contain', 'Unhide');
 
