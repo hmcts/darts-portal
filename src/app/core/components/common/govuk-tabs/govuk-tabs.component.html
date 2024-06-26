@@ -1,0 +1,24 @@
+<div class="govuk-tabs">
+  <ul class="govuk-tabs__list" role="tablist">
+    @for (tab of tabs(); track tab.name) {
+      <li
+        class="govuk-tabs__list-item"
+        [class.govuk-tabs__list-item--selected]="tab.template === currentTab()"
+        role="presentation"
+      >
+        <a class="govuk-tabs__tab" [id]="tab.id || null" href="#" (click)="onTabClick($event, tab)">
+          @if (tab.screenReaderText) {
+            <span class="govuk-visually-hidden">{{ tab.screenReaderText }}</span>
+          }
+          {{ tab.name }}
+        </a>
+      </li>
+    }
+  </ul>
+
+  <div class="govuk-tabs__panel">
+    <ng-content select="[tabTitle]"></ng-content>
+    <ng-content select="app-loading"></ng-content>
+    <ng-container [ngTemplateOutlet]="currentTab()"></ng-container>
+  </div>
+</div>

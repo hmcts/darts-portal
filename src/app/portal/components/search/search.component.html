@@ -193,13 +193,15 @@
   </div>
 </form>
 
-<app-results *ngIf="searchResults$ | async as cases; else loadingOrError" [cases]="cases"></app-results>
-
-<ng-template #loadingOrError>
-  <ng-container *ngIf="isSubmitted && form.valid">
-    <app-search-error *ngIf="searchError$ | async as error; else loading" [error]="error"></app-search-error>
-    <ng-template #loading>
-      <app-loading text="Loading search results ..."></app-loading>
-    </ng-template>
-  </ng-container>
-</ng-template>
+@if (searchResults$ | async; as cases) {
+  <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
+  <app-case-search-results [cases]="cases" />
+} @else {
+  @if (isSubmitted && form.valid) {
+    @if (searchError$ | async; as error) {
+      <app-search-error [error]="error" />
+    } @else {
+      <app-loading text="Loading search results ..." />
+    }
+  }
+}

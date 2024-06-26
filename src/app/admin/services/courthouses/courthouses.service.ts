@@ -185,7 +185,7 @@ export class CourthouseService {
   }
 
   mapCourthouseDataToCourthouses(courthouses: CourthouseData[]): Courthouse[] {
-    return courthouses.map((c) => this.mapCourthouseDataToCourthouse(c));
+    return courthouses.map((c) => this.mapCourthouseDataToCourthouse(c)).filter((c) => c.displayName);
   }
 
   mapCourthouseDataToCourthouse(courthouse: CourthouseData): Courthouse {

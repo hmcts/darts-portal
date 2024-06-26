@@ -1,17 +1,17 @@
 import { DatePipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ResultsComponent } from './results.component';
+import { CaseSearchResultsComponent } from './case-search-results.component';
 
 describe('ResultsComponent', () => {
-  let component: ResultsComponent;
-  let fixture: ComponentFixture<ResultsComponent>;
+  let component: CaseSearchResultsComponent;
+  let fixture: ComponentFixture<CaseSearchResultsComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ResultsComponent],
+      imports: [CaseSearchResultsComponent],
       providers: [DatePipe],
     });
-    fixture = TestBed.createComponent(ResultsComponent);
+    fixture = TestBed.createComponent(CaseSearchResultsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

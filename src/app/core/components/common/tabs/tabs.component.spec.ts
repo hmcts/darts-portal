@@ -36,9 +36,9 @@ describe('TabsComponent', () => {
 
   it('should set the first tab as the current tab after content initialization', () => {
     const firstTabContent = 'Content for Tab 1';
-    const firstTabTemplate = component.tabs.first.template;
+    const firstTabTemplate = component.tabs()[0].template;
 
-    expect(component.currentTab).toBe(firstTabTemplate);
+    expect(component.currentTab()).toBe(firstTabTemplate);
 
     const renderedContent = fixture.nativeElement.querySelector('.tab-container').textContent.trim();
     expect(renderedContent).toBe(firstTabContent);
@@ -46,13 +46,13 @@ describe('TabsComponent', () => {
 
   it('should switch tabs when a tab is clicked', () => {
     const secondTabContent = 'Content for Tab 2';
-    const secondTabTemplate = component.tabs.get(1)?.template;
+    const secondTabTemplate = component.tabs()[1]?.template;
 
     const secondTabLink = fixture.nativeElement.querySelectorAll('.moj-sub-navigation__link')[1];
     secondTabLink.click();
     fixture.detectChanges();
 
-    expect(component.currentTab).toBe(secondTabTemplate);
+    expect(component.currentTab()).toBe(secondTabTemplate);
 
     const renderedContent = fixture.nativeElement.querySelector('.tab-container').textContent.trim();
     expect(renderedContent).toBe(secondTabContent);
