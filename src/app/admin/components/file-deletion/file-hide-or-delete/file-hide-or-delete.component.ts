@@ -43,15 +43,15 @@ export class FileHideOrDeleteComponent implements OnInit {
 
   errors: ErrorSummaryEntry[] = [];
 
-  associatedAudioSearch = this.getAssociatedAudioSearch();
+  fileType = this.router.getCurrentNavigation()?.extras?.state?.fileType ?? null;
+
+  associatedAudioSearch = this.fileType === 'audio_file' && this.getAssociatedAudioSearch();
   associatedAudio: {
     media: AssociatedMedia[];
     audioFile: AssociatedMedia[];
   } = { media: [], audioFile: [] };
 
   audioHideComplete = false;
-
-  fileType = this.router.getCurrentNavigation()?.extras?.state?.fileType ?? null;
 
   id = +this.route.snapshot.params.id;
 
@@ -90,7 +90,7 @@ export class FileHideOrDeleteComponent implements OnInit {
 
       if (this.fileType === 'transcription_document') {
         this.hideTranscriptionDocument();
-      } else if (this.fileType === 'audio_file') {
+      } else if (this.fileType === 'audio_file' && this.associatedAudioSearch) {
         this.transformedMediaService
           .checkAssociatedAudioExists(
             this.id,
