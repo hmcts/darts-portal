@@ -26,7 +26,7 @@ describe('App Routes', () => {
     } as unknown as AuthService;
 
     mockUserService = {
-      userProfile$: of({ userId: 123, userName: 'Dean', roles: [{ roleId: 1, roleName: 'APPROVER' }] }),
+      userProfile$: of({ userId: 123, userName: 'Dean', roles: [{ roleId: 1, roleName: 'APPROVER' }], isActive: true }),
       hasRoles: jest.fn(),
       userState: userStateSignal,
     };
@@ -47,7 +47,12 @@ describe('App Routes', () => {
 
     router = TestBed.inject(Router);
     location = TestBed.inject(Location);
-    mockUserService.userState?.set({ userId: 123, userName: 'Dean', roles: [{ roleId: 1, roleName: 'APPROVER' }] });
+    mockUserService.userState?.set({
+      userId: 123,
+      userName: 'Dean',
+      roles: [{ roleId: 1, roleName: 'APPROVER' }],
+      isActive: true,
+    });
     router.initialNavigation();
   });
 

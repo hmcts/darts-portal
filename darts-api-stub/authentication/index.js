@@ -1,9 +1,5 @@
-const express = require('express');
+const router = require('express').Router();
 const { stubUsers } = require('../users');
-
-const router = express.Router();
-// Filter out only active users
-const activeUsers = stubUsers.filter((stubUser) => stubUser.active);
 
 router.get('/login-or-refresh', (_, res) => {
   res.header('Location', 'http://localhost:4545/external-user/login');
@@ -12,7 +8,7 @@ router.get('/login-or-refresh', (_, res) => {
 
 router.post('/handle-oauth-code', (req, res, next) => {
   const code = req.body.code;
-  const user = activeUsers.find((u) => u.code === code);
+  const user = stubUsers.find((u) => u.code === code);
   if (!user) {
     return next(`Could not find stub user for code ${code}`);
   }
@@ -31,7 +27,7 @@ router.get('/logout', (_, res) => {
 });
 
 router.get('/login', (_, res) => {
-  res.render('login', { callbackUrl: 'http://localhost:3000/auth/callback', activeUsers });
+  res.render('login', { callbackUrl: 'http://localhost:3000/auth/callback', stubUsers });
 });
 
 router.get('/handle-logout', (_, res) => {

@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, signal } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { RoleName, UserState } from '@core-types/index';
 import { shareReplay, tap } from 'rxjs';
 
@@ -12,6 +13,8 @@ export const REFRESH_USER_PROFILE_PATH = '/user/refresh-profile';
 export class UserService {
   constructor(private http: HttpClient) {}
 
+  router = inject(Router);
+
   public readonly userState = signal<UserState | null>(null);
 
   userProfile$ = this.http
@@ -21,7 +24,9 @@ export class UserService {
 
   public refreshUserProfile(): void {
     if (this.hasUserState()) {
-      this.http.post<UserState>(REFRESH_USER_PROFILE_PATH, null).subscribe();
+      this.http
+        .post<UserState>(REFRESH_USER_PROFILE_PATH, null)
+        .subscribe((userState) => !userState.isActive && this.router.navigate(['/forbidden']));
     }
   }
 

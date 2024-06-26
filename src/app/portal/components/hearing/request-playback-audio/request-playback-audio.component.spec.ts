@@ -13,7 +13,7 @@ describe('RequestPlaybackAudioComponent', () => {
   let fixture: ComponentFixture<RequestPlaybackAudioComponent>;
 
   beforeEach(() => {
-    const userState: UserState = { userName: 'test@test.com', userId: 123, roles: [] };
+    const userState: UserState = { userName: 'test@test.com', userId: 123, roles: [], isActive: true };
     const userServiceStub = {
       userProfile$: of(userState),
       isCourthouseTranscriber: jest.fn(),
@@ -27,7 +27,7 @@ describe('RequestPlaybackAudioComponent', () => {
     });
     fixture = TestBed.createComponent(RequestPlaybackAudioComponent);
     component = fixture.componentInstance;
-    component.userState = { userId: 1, userName: 'Dean', roles: [] };
+    component.userState = { userId: 1, userName: 'Dean', roles: [], isActive: true };
     fixture.detectChanges();
   });
 

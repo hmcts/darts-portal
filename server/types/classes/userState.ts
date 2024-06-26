@@ -2,6 +2,7 @@ class UserState {
   userId!: number;
   userName!: string;
   roles?: Role[];
+  isActive!: boolean;
 }
 
 class Role {
