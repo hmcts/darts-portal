@@ -1,7 +1,6 @@
+import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { CourthouseData } from '@core-types/courthouse/courthouse.interface';
-
-import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { TabDirective } from '@directives/tab.directive';
 import { AdminSearchService } from '@services/admin-search/admin-search.service';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
@@ -15,6 +14,7 @@ const fakeCourthouseService = {
 
 const fakeAdminSearchService = {
   getCases: jest.fn().mockReturnValue(of([])),
+  getEvents: jest.fn().mockReturnValue(of([])),
 };
 
 describe('SearchComponent', () => {
@@ -118,10 +118,50 @@ describe('SearchComponent', () => {
       }));
     });
 
+    describe('event search', () => {
+      it('call getEvents with correct values', () => {
+        component.onSearch({
+          caseId: '123',
+          courtroom: '1',
+          courthouses: [{ id: 1, displayName: 'Courthouse 1' } as Courthouse],
+          hearingDate: { type: 'specific', specific: '01/01/2021', from: '', to: '' },
+          resultsFor: 'Events',
+        });
+        expect(fakeAdminSearchService.getEvents).toHaveBeenCalledWith({
+          caseId: '123',
+          courtroom: '1',
+          courthouses: [{ id: 1, displayName: 'Courthouse 1' } as Courthouse],
+          hearingDate: { type: 'specific', specific: '01/01/2021', from: '', to: '' },
+          resultsFor: 'Events',
+        });
+      });
+    });
+
     describe('tabChange', () => {
       it('set tab', () => {
         component.tabChange({ name: 'Cases' } as TabDirective);
         expect(component.tab()).toBe('Cases');
+      });
+
+      it('triggers search with last search form values', () => {
+        const onSearchSpy = jest.spyOn(component, 'onSearch');
+        component.lastSearchFormValues.set({
+          caseId: '123',
+          courtroom: '1',
+          courthouses: [{ id: 1, displayName: 'Courthouse 1' } as Courthouse],
+          hearingDate: { type: 'specific', specific: '01/01/2021', from: '', to: '' },
+          resultsFor: 'Cases',
+        });
+
+        component.tabChange({ name: 'Hearings' } as TabDirective);
+
+        expect(onSearchSpy).toHaveBeenCalledWith({
+          caseId: '123',
+          courtroom: '1',
+          courthouses: [{ id: 1, displayName: 'Courthouse 1' } as Courthouse],
+          hearingDate: { type: 'specific', specific: '01/01/2021', from: '', to: '' },
+          resultsFor: 'Hearings',
+        });
       });
     });
   });

@@ -58,6 +58,7 @@ app.use('/admin/medias', require('./admin/medias/medias'));
 app.use('/admin/media-requests', require('./admin/media-requests/media-requests'));
 app.use('/admin/hidden-reasons', require('./admin//transcriptions/hidden-reasons'));
 app.use('/admin/cases', require('./admin/cases/cases'));
+app.use('/admin/events', require('./admin/events/events'));
 // proxy non-stubbed routes to the actual API
 app.use(
   createProxyMiddleware({

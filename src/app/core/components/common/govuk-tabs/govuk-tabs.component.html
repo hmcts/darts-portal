@@ -19,6 +19,7 @@
   <div class="govuk-tabs__panel">
     <ng-content select="[tabTitle]"></ng-content>
     <ng-content select="app-loading"></ng-content>
+    <ng-content select="[error]"></ng-content>
     <ng-container [ngTemplateOutlet]="currentTab()"></ng-container>
   </div>
 </div>
