@@ -129,7 +129,7 @@ const stubUsers = [
       roles: [SUPER_USER],
       isActive: true,
     },
-    active: true,
+    active: false,
   },
 ];
 

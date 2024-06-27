@@ -1,4 +1,5 @@
 import { User } from '@admin-types/index';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -18,8 +19,15 @@ export class ActivateUserComponent {
   user = this.router.getCurrentNavigation()?.extras?.state?.user as User;
 
   activateUser() {
-    this.userAdminService.activateUser(this.user.id).subscribe(() => {
-      this.router.navigate(['/admin/users', this.user.id], { queryParams: { activated: true } });
+    this.userAdminService.activateUser(this.user.id).subscribe({
+      next: () => {
+        this.router.navigate(['/admin/users', this.user.id], { queryParams: { activated: true } });
+      },
+      error: (error: HttpErrorResponse) => {
+        if (error.status === 409) {
+          this.router.navigate(['/admin/users', this.user.id], { queryParams: { error: 409 } });
+        }
+      },
     });
   }
 }

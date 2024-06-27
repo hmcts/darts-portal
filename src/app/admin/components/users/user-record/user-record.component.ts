@@ -1,5 +1,6 @@
+import { User } from '@admin-types/index';
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
 import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
@@ -62,8 +63,19 @@ export class UserRecordComponent {
   );
   tab$ = this.route.queryParams.pipe(map((params) => params.tab));
   transcriptCount: number = 0;
+  activationError = signal(Boolean(this.route.snapshot.queryParams?.error));
 
   handleTranscriptCount(count: number) {
     this.transcriptCount = count;
+  }
+
+  onActivateDeactivateUser(user: User) {
+    // If the user is not active and the full name or email address is missing, show an error
+    if ((!user.fullName || !user.emailAddress) && !user.active) {
+      this.activationError.set(true);
+      return;
+    }
+
+    this.router.navigate(['admin/users', user.id, !user.active ? 'activate' : 'deactivate'], { state: { user } });
   }
 }
