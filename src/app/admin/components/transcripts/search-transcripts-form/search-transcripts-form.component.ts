@@ -92,9 +92,4 @@ export class SearchTranscriptsFormComponent {
       controlPath
     );
   }
-
-  onCourthouseSelected(courthouse: string) {
-    this.form.get('courthouse')?.patchValue(courthouse);
-    this.form.get('courthouse')?.markAsDirty();
-  }
 }

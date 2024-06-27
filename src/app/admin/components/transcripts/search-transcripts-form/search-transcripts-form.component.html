@@ -43,7 +43,7 @@
           <app-courthouse-field
             [courthouses]="courthouses"
             [courthouse]="form.controls.courthouse.value!"
-            (courthouseSelect)="onCourthouseSelected($event)"
+            (courthouseSelect)="form.get('courthouse')?.patchValue($event); form.get('courthouse')?.markAsDirty()"
             [isInvalid]="form.controls.courthouse.invalid && form.controls.courthouse.touched"
             [errors]="getControlErrorMessage(['courthouse'])"
           ></app-courthouse-field>

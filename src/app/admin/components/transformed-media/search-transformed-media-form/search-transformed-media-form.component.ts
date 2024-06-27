@@ -97,9 +97,4 @@ export class SearchTransformedMediaFormComponent {
     this.form.get(control)?.setValue(value);
     this.form.get(control)?.markAsTouched();
   }
-
-  onCourthouseSelected(courthouse: string) {
-    this.form.get('courthouse')?.patchValue(courthouse);
-    this.form.get('courthouse')?.markAsDirty();
-  }
 }
