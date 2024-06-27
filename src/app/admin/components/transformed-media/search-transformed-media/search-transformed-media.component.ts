@@ -1,11 +1,13 @@
 import { TransformedMediaAdmin } from '@admin-types/transformed-media/transformed-media-admin';
 import { TransformedMediaSearchFormValues } from '@admin-types/transformed-media/transformed-media-search-form.values';
+import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { ErrorSummaryEntry } from '@core-types/index';
+import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { TransformedMediaService } from '@services/transformed-media/transformed-media.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { map, switchMap, tap } from 'rxjs';
@@ -21,15 +23,20 @@ import { TransformedMediaSearchResultsComponent } from '../transformed-media-sea
     LoadingComponent,
     ValidationErrorSummaryComponent,
     TransformedMediaSearchResultsComponent,
+    CommonModule,
   ],
   templateUrl: './search-transformed-media.component.html',
   styleUrl: './search-transformed-media.component.scss',
 })
 export class SearchTransformedMediaComponent {
   transformedMediaService = inject(TransformedMediaService);
+  courthouseService = inject(CourthouseService);
   router = inject(Router);
   userService = inject(UserAdminService);
+
   errors: ErrorSummaryEntry[] = [];
+  courthouses$ = this.courthouseService.getCourthouses();
+
   isSearchFormSubmitted = signal<boolean>(false);
   isLoading = signal<boolean>(false);
   results = signal<TransformedMediaAdmin[]>([]);

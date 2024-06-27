@@ -1,10 +1,11 @@
-import { NgIf } from '@angular/common';
-import { Component, DestroyRef, EventEmitter, Output, inject } from '@angular/core';
+import { CommonModule, NgIf } from '@angular/common';
+import { Component, DestroyRef, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CourthouseComponent } from '@common/courthouse/courthouse.component';
 import { DatepickerComponent } from '@common/datepicker/datepicker.component';
 import { SpecificOrRangeDatePickerComponent } from '@common/specific-or-range-date-picker/specific-or-range-date-picker.component';
 import { TransformedMediaSearchFormErrorMessages } from '@constants/transformed-media-search-form-error-messages';
-import { ErrorSummaryEntry } from '@core-types/index';
+import { CourthouseData, ErrorSummaryEntry } from '@core-types/index';
 import { FormService } from '@services/form/form.service';
 import { dateRangeValidator } from '@validators/date-range.validator';
 import { futureDateValidator } from '@validators/future-date.validator';
@@ -19,19 +20,28 @@ export const transformedMediaSearchDateValidators = [
 @Component({
   selector: 'app-search-transformed-media-form',
   standalone: true,
-  imports: [ReactiveFormsModule, SpecificOrRangeDatePickerComponent, DatepickerComponent, NgIf],
   templateUrl: './search-transformed-media-form.component.html',
   styleUrl: './search-transformed-media-form.component.scss',
+  imports: [
+    ReactiveFormsModule,
+    SpecificOrRangeDatePickerComponent,
+    DatepickerComponent,
+    NgIf,
+    CourthouseComponent,
+    CommonModule,
+  ],
 })
 export class SearchTransformedMediaFormComponent {
   fb = inject(FormBuilder);
   destroyRef = inject(DestroyRef);
   formService = inject(FormService);
 
+  @Input() courthouses: CourthouseData[] = [];
+
   form = this.fb.group({
     requestId: ['', Validators.pattern(/^[0-9]*$/)],
     caseId: [''],
-    courthouse: [''],
+    selectedCourthouse: [''],
     hearingDate: ['', transformedMediaSearchDateValidators],
     owner: [''],
     requestedBy: [''],
@@ -81,6 +91,7 @@ export class SearchTransformedMediaFormComponent {
   toggleAdvancedSearch() {
     this.isAdvancedSearch = !this.isAdvancedSearch;
   }
+
   setInputValue(value: string, control: string) {
     this.form.get(control)?.setValue(value);
     this.form.get(control)?.markAsTouched();

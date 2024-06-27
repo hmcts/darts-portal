@@ -35,14 +35,16 @@
         </div>
       }
 
-      <div class="govuk-form-group">
-        <label class="govuk-label" for="courthouse"> Courthouse </label>
-        <input
-          formControlName="courthouse"
-          class="govuk-input govuk-input--width-20"
-          id="courthouse"
-          name="courthouse"
-          type="text"
+      <div
+        class="govuk-form-group"
+        [class.govuk-form-group--error]="form.controls.courthouseName.invalid && form.controls.courthouseName.touched"
+      >
+        <app-courthouse-field
+          [courthouses]="courthouses"
+          [courthouse]="form.controls.courthouseName.value!"
+          (courthouseSelect)="form.get('courthouseName')?.patchValue($event); form.get('courthouseName')?.markAsDirty()"
+          [isInvalid]="form.controls.courthouseName.invalid && form.controls.courthouseName.touched"
+          [errors]="getControlErrorMessage(['courthouseName'])"
         />
       </div>
       <div
