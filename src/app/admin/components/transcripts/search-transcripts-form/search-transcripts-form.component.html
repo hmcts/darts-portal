@@ -39,17 +39,13 @@
         class="govuk-form-group"
         [class.govuk-form-group--error]="form.controls.courthouseName.invalid && form.controls.courthouseName.touched"
       >
-        @if (courthouses$ | async; as courthouseValues) {
-          <app-courthouse-field
-            [courthouses]="courthouseValues"
-            [courthouse]="form.controls.courthouseName.value!"
-            (courthouseSelect)="
-              form.get('courthouseName')?.patchValue($event); form.get('courthouseName')?.markAsDirty()
-            "
-            [isInvalid]="form.controls.courthouseName.invalid && form.controls.courthouseName.touched"
-            [errors]="getControlErrorMessage(['courthouseName'])"
-          />
-        }
+        <app-courthouse-field
+          [courthouses]="courthouses"
+          [courthouse]="form.controls.courthouseName.value!"
+          (courthouseSelect)="form.get('courthouseName')?.patchValue($event); form.get('courthouseName')?.markAsDirty()"
+          [isInvalid]="form.controls.courthouseName.invalid && form.controls.courthouseName.touched"
+          [errors]="getControlErrorMessage(['courthouseName'])"
+        />
       </div>
       <div
         class="govuk-form-group"

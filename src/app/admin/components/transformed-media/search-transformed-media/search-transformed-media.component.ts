@@ -1,5 +1,6 @@
 import { TransformedMediaAdmin } from '@admin-types/transformed-media/transformed-media-admin';
 import { TransformedMediaSearchFormValues } from '@admin-types/transformed-media/transformed-media-search-form.values';
+import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -22,6 +23,7 @@ import { TransformedMediaSearchResultsComponent } from '../transformed-media-sea
     LoadingComponent,
     ValidationErrorSummaryComponent,
     TransformedMediaSearchResultsComponent,
+    CommonModule,
   ],
   templateUrl: './search-transformed-media.component.html',
   styleUrl: './search-transformed-media.component.scss',

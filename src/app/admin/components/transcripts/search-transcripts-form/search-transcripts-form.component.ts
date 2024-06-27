@@ -10,7 +10,6 @@ import { FormService } from '@services/form/form.service';
 import { dateRangeValidator } from '@validators/date-range.validator';
 import { futureDateValidator } from '@validators/future-date.validator';
 import { realDateValidator } from '@validators/real-date.validator';
-import { Observable, of } from 'rxjs';
 
 export const transcriptSearchDateValidators = [
   Validators.pattern(/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/),
@@ -39,7 +38,7 @@ export class SearchTranscriptsFormComponent {
   formService = inject(FormService);
 
   @Input() isCompletedTranscriptSearch = false;
-  @Input() courthouses$: Observable<CourthouseData[]> = of([]);
+  @Input() courthouses: CourthouseData[] = [];
 
   form = this.fb.group({
     requestId: [''],
