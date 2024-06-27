@@ -44,7 +44,7 @@ export class SearchTranscriptsFormComponent {
   form = this.fb.group({
     requestId: [''],
     caseId: [''],
-    courthouse: [''],
+    courthouseName: [''],
     hearingDate: ['', transcriptSearchDateValidators],
     owner: [''],
     requestedBy: [''],
