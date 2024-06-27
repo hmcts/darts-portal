@@ -35,13 +35,15 @@
         />
       </div>
       <div class="govuk-form-group">
-        @if (courthouses$ | async; as courthouses) {
+        @if (courthouses$ | async; as courthouseList) {
           <app-courthouse-field
-            [courthouses]="courthouses"
-            [courthouse]="form.controls.courthouse.value!"
-            (courthouseSelect)="form.get('courthouse')?.patchValue($event); form.get('courthouse')?.markAsDirty()"
-            [isInvalid]="form.controls.courthouse.invalid && form.controls.courthouse.touched"
-            [errors]="getControlErrorMessage(['courthouse'])"
+            [courthouses]="courthouseList"
+            [courthouse]="form.controls.selectedCourthouse.value!"
+            (courthouseSelect)="
+              form.get('selectedCourthouse')?.patchValue($event); form.get('selectedCourthouse')?.markAsDirty()
+            "
+            [isInvalid]="form.controls.selectedCourthouse.invalid && form.controls.selectedCourthouse.touched"
+            [errors]="getControlErrorMessage(['selectedCourthouse'])"
           ></app-courthouse-field>
         }
       </div>

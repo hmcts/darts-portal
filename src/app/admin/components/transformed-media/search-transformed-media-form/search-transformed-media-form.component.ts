@@ -42,7 +42,7 @@ export class SearchTransformedMediaFormComponent {
   form = this.fb.group({
     requestId: ['', Validators.pattern(/^[0-9]*$/)],
     caseId: [''],
-    courthouse: [''],
+    selectedCourthouse: [''],
     hearingDate: ['', transformedMediaSearchDateValidators],
     owner: [''],
     requestedBy: [''],
