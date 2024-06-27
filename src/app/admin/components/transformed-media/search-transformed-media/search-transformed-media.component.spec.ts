@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { User } from '@admin-types/index';
 import { TransformedMediaAdmin } from '@admin-types/transformed-media/transformed-media-admin';
 import { TransformedMediaSearchFormValues } from '@admin-types/transformed-media/transformed-media-search-form.values';
+import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { TransformedMediaService } from '@services/transformed-media/transformed-media.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { DateTime } from 'luxon';
@@ -49,6 +50,7 @@ describe('SearchTransformedMediaComponent', () => {
   let fixture: ComponentFixture<SearchTransformedMediaComponent>;
   let fakeTransformedMediaService: Partial<TransformedMediaService>;
   let fakeUserAdminService: Partial<UserAdminService>;
+  let fakeCourthouseService: Partial<CourthouseService>;
 
   beforeEach(async () => {
     fakeTransformedMediaService = {
@@ -59,11 +61,16 @@ describe('SearchTransformedMediaComponent', () => {
       getUsersById: jest.fn().mockReturnValue(of(mockUsers)),
     };
 
+    fakeCourthouseService = {
+      getCourthouses: jest.fn().mockReturnValue(of([])),
+    };
+
     await TestBed.configureTestingModule({
       imports: [SearchTransformedMediaComponent],
       providers: [
         { provide: TransformedMediaService, useValue: fakeTransformedMediaService },
         { provide: UserAdminService, useValue: fakeUserAdminService },
+        { provide: CourthouseService, useValue: fakeCourthouseService },
       ],
     }).compileComponents();
 

@@ -6,6 +6,7 @@ import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.compo
 import { LoadingComponent } from '@common/loading/loading.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { ErrorSummaryEntry } from '@core-types/index';
+import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { TransformedMediaService } from '@services/transformed-media/transformed-media.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { map, switchMap, tap } from 'rxjs';
@@ -27,9 +28,13 @@ import { TransformedMediaSearchResultsComponent } from '../transformed-media-sea
 })
 export class SearchTransformedMediaComponent {
   transformedMediaService = inject(TransformedMediaService);
+  courthouseService = inject(CourthouseService);
   router = inject(Router);
   userService = inject(UserAdminService);
+
   errors: ErrorSummaryEntry[] = [];
+  courthouses$ = this.courthouseService.getCourthouses();
+
   isSearchFormSubmitted = signal<boolean>(false);
   isLoading = signal<boolean>(false);
   results = signal<TransformedMediaAdmin[]>([]);

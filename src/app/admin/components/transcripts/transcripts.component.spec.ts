@@ -13,6 +13,7 @@ import { TranscriptsComponent } from './transcripts.component';
 describe('TranscriptsComponent', () => {
   let component: TranscriptsComponent;
   let fixture: ComponentFixture<TranscriptsComponent>;
+  let fakeCourthouseService: Partial<CourthouseService>;
 
   const MOCK_SEARCH_RESULT = [
     { id: 1, courthouse: { id: 1 }, status: { id: 1 } },
@@ -84,6 +85,10 @@ describe('TranscriptsComponent', () => {
     },
   } as unknown as ActivatedRoute;
 
+  fakeCourthouseService = {
+    getCourthouses: jest.fn().mockReturnValue(of([])),
+  };
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TranscriptsComponent],
@@ -107,6 +112,7 @@ describe('TranscriptsComponent', () => {
             getCourthouses: jest.fn().mockReturnValue(MOCK_COURTHOUSES),
           },
         },
+        { provide: CourthouseService, useValue: fakeCourthouseService },
         DatePipe,
         LuxonDatePipe,
       ],

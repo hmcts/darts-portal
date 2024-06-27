@@ -35,15 +35,19 @@
         </div>
       }
 
-      <div class="govuk-form-group">
-        <label class="govuk-label" for="courthouse"> Courthouse </label>
-        <input
-          formControlName="courthouse"
-          class="govuk-input govuk-input--width-20"
-          id="courthouse"
-          name="courthouse"
-          type="text"
-        />
+      <div
+        class="govuk-form-group"
+        [class.govuk-form-group--error]="form.controls.courthouse.invalid && form.controls.courthouse.touched"
+      >
+        @if (courthouses$ | async; as courthouses) {
+          <app-courthouse-field
+            [courthouses]="courthouses"
+            [courthouse]="form.controls.courthouse.value!"
+            (courthouseSelect)="onCourthouseSelected($event)"
+            [isInvalid]="form.controls.courthouse.invalid && form.controls.courthouse.touched"
+            [errors]="getControlErrorMessage(['courthouse'])"
+          ></app-courthouse-field>
+        }
       </div>
       <div
         class="govuk-form-group"
