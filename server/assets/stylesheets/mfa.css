@@ -94,7 +94,6 @@ a {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-weight: 500;
-    font-size: 16px;
     font-size: 1.20rem;
     line-height: 1.1875;
     box-sizing: border-box;
@@ -154,7 +153,6 @@ input#otpCode.textInput {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-weight: 400;
-    font-size: 16px;
     font-size: 1rem;
     line-height: 1.25;
     box-sizing: border-box;
