@@ -1,6 +1,7 @@
 import * as express from 'express';
 import { Request, Response, Router } from 'express';
 import path from 'path';
+import config from 'config';
 
 export function init(): Router {
   const router = express.Router();
@@ -15,7 +16,12 @@ export function init(): Router {
       return;
     }
 
-    res.sendFile(path.join(__dirname, '../downloads', 'AnnotationsTemplateExample.docx'));
+    // handle the differing locations of the downloads directory when building
+    if (config.get('node-env') === 'development') {
+      res.sendFile(path.join(__dirname, '../downloads', 'AnnotationsTemplateExample.docx'));
+    } else {
+      res.sendFile(path.join(__dirname, '../../downloads', 'AnnotationsTemplateExample.docx'));
+    }
   });
 
   return router;
