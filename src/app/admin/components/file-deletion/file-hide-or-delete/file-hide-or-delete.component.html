@@ -25,7 +25,9 @@
                   [value]="reason.id"
                   formControlName="reason"
                 />
-                <label class="govuk-label govuk-radios__label" for="reason"> {{ reason.displayName }} </label>
+                <label class="govuk-label govuk-radios__label" [for]="'reason-' + reason.id">
+                  {{ reason.displayName }}
+                </label>
                 <div [id]="'reason-hint-' + reason.id" class="govuk-hint govuk-radios__hint">
                   @if (reason.markedForDeletion) {
                     File will be hidden and marked for deletion
