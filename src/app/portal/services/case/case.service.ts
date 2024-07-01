@@ -63,8 +63,12 @@ export class CaseService {
     return this.http.get<CaseData>(apiURL).pipe(map(this.mapCaseDataToCase));
   }
 
+  //Returns hearings in a sorted ascending order
   getCaseHearings(caseId: number): Observable<Hearing[]> {
-    return this.http.get<HearingData[]>(`${GET_CASE_PATH}/${caseId}/hearings`).pipe(map(this.mapHearingDataToHearing));
+    return this.http.get<HearingData[]>(`${GET_CASE_PATH}/${caseId}/hearings`).pipe(
+      map(this.mapHearingDataToHearing),
+      map((hearings) => hearings.sort((a, b) => a.date.toMillis() - b.date.toMillis()))
+    );
   }
 
   getCaseAnnotations(caseId: number): Observable<Annotations[]> {
