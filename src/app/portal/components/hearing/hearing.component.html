@@ -79,6 +79,8 @@
                 id="transcriptsTable"
                 [rows]="transcripts"
                 [columns]="transcriptColumns"
+                caption="Transcripts from this hearing"
+                [hiddenCaption]="true"
                 noDataMessage="There are no transcripts for this hearing."
               >
                 <ng-template [tableRowTemplate]="transcripts" let-row>
@@ -131,6 +133,8 @@
                 id="annotationsTable"
                 [rows]="vm.annotations"
                 [columns]="annotationColumns"
+                caption="Annotations associated with the hearing"
+                [hiddenCaption]="true"
                 noDataMessage="There are no annotations for this hearing."
               >
                 <ng-template [tableRowTemplate]="vm.annotations" let-row>

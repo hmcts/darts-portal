@@ -82,6 +82,8 @@
         id="audio-table"
         [rows]="vm.audioRows"
         [columns]="transcriptRequestColumns"
+        caption="List of available audio that can be requested for transcription"
+        [hiddenCaption]="true"
         [pagination]="true"
         [pageLimit]="15"
       >
