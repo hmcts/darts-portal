@@ -35,6 +35,8 @@
     [rows]="filteredRows"
     [columns]="columns"
     [rowSelectable]="true"
+    caption="Events and audio for this hearing"
+    [hiddenCaption]="true"
     (rowSelect)="onRowSelect($event)"
   >
     <ng-template [tableRowTemplate]="filteredRows" let-row let-index>

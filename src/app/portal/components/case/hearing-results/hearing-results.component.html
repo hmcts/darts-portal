@@ -1,6 +1,12 @@
 <app-tabs [default]="tab">
   <div *tab="'Hearings'">
-    <app-data-table id="hearingsTable" [rows]="hearings" [columns]="hearingsColumns">
+    <app-data-table
+      id="hearingsTable"
+      [rows]="hearings"
+      [columns]="hearingsColumns"
+      [hiddenCaption]="true"
+      caption="Hearings associated with case"
+    >
       <ng-template [tableRowTemplate]="hearings" let-row>
         <td class="govuk-table__cell">
           <a class="govuk-link" [routerLink]="['/case', caseId, 'hearing', row.id]">{{
@@ -20,6 +26,8 @@
         id="transcriptsTable"
         [rows]="transcripts"
         [columns]="transcriptColumns"
+        caption="Transcripts associated with case"
+        [hiddenCaption]="true"
         noDataMessage="There are no transcripts for this case."
       >
         <ng-template [tableRowTemplate]="transcripts" let-row>
@@ -46,6 +54,8 @@
         id="annotationsTable"
         [rows]="annotations"
         [columns]="annotationColumns"
+        [hiddenCaption]="true"
+        caption="Annotations associated with case"
         noDataMessage="There are no annotations for this case. Annotations added to hearings will be listed here."
       >
         <ng-template [tableRowTemplate]="annotations" let-row>
