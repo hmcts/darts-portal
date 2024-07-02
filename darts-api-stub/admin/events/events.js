@@ -1,0 +1,68 @@
+const router = require('express').Router();
+
+const events = [
+  {
+    id: 111,
+    created_at: '2024-01-01T00:00:00Z',
+    name: 'Event 1',
+    text: 'This is an event',
+    chronicle_id: '123',
+    antecedent_id: '456',
+    courthouse: {
+      id: 1,
+      display_name: 'Cardiff',
+    },
+    courtroom: {
+      id: 1,
+      name: 'Room 1',
+    },
+  },
+  {
+    id: 222,
+    created_at: '2024-01-02T00:00:00Z',
+    name: 'Event 2',
+    text: 'This is another event',
+    chronicle_id: '789',
+    antecedent_id: '012',
+    courthouse: {
+      id: 2,
+      display_name: 'Swansea',
+    },
+    courtroom: {
+      id: 2,
+      name: 'Room 2',
+    },
+  },
+  {
+    id: 333,
+    created_at: '2024-01-03T00:00:00Z',
+    name: 'Event 3',
+    text: 'This is yet another event',
+    chronicle_id: '345',
+    antecedent_id: '678',
+    courthouse: {
+      id: 3,
+      display_name: 'Newport',
+    },
+    courtroom: {
+      id: 3,
+      name: 'Room 3',
+    },
+  },
+];
+
+router.post('/search', (req, res) => {
+  if (req.body.case_number === 'NO_RESULTS') {
+    res.send([]);
+    return;
+  }
+
+  if (req.body.case_number === 'TOO_MANY_RESULTS') {
+    res.status(400).send('Too many results found. Please refine your search.');
+    return;
+  }
+
+  res.send(events);
+});
+
+module.exports = router;

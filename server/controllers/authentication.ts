@@ -76,6 +76,7 @@ function postAuthCallback(
         return res.redirect('/login');
       }
     }
+
     try {
       const url = type === 'internal' ? INTERNAL_USER_CALLBACK : EXTERNAL_USER_CALLBACK;
       const result = await axios.post<SecurityToken>(url, req.body, {
@@ -88,7 +89,11 @@ function postAuthCallback(
         }
         req.session.userType = type;
         req.session.securityToken = securityToken;
-        res.redirect('/');
+        if (req.session.securityToken.userState?.isActive) {
+          res.redirect('/');
+        } else {
+          res.redirect('/forbidden');
+        }
       });
     } catch (err) {
       console.error('Error on authentication callback', err);

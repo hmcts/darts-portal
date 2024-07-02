@@ -7,6 +7,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 //Contains endpoints where errors are handled in their component
 const regexIdPlaceholder = '\\d+';
+const regexWordPlaceholder = '\\w+';
 const subscribedEndpoints = [
   { endpoint: '/api/cases/search', responses: [204, 400, 500] },
   { endpoint: '/api/audio-requests/playback', responses: [403, 404, 500, 502, 504] },
@@ -17,6 +18,7 @@ const subscribedEndpoints = [
   { endpoint: '/api/admin/users', responses: [409] },
   { endpoint: '/api/admin/retention-policy-types', responses: [400, 409] },
   { endpoint: '/api/admin/event-mappings', responses: [409] },
+  { endpoint: new RegExp(`/api/admin/${regexWordPlaceholder}/search`), responses: [400] },
   { endpoint: new RegExp(`/api/cases/${regexIdPlaceholder}/transcripts`), responses: [403] },
   { endpoint: new RegExp(`/api/hearings/${regexIdPlaceholder}/transcripts`), responses: [403] },
   { endpoint: new RegExp(`/api/admin/automated-tasks/${regexIdPlaceholder}/run`), responses: [404, 409] },

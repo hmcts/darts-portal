@@ -1,7 +1,30 @@
 const express = require('express');
 const router = express.Router();
+const { DateTime } = require('luxon');
 
 const media = [
+  {
+    id: 0,
+    channel: 1,
+    start_at: '2020-06-01T17:00:00Z',
+    end_at: '2020-06-01T18:00:00Z',
+    case: {
+      id: 1,
+      case_number: '001',
+    },
+    hearing: {
+      id: 1,
+      hearing_date: '2020-06-01',
+    },
+    courthouse: {
+      id: 1,
+      display_name: 'courthouse 12',
+    },
+    courtroom: {
+      id: 1,
+      display_name: 'courtroom 11',
+    },
+  },
   {
     id: 1,
     channel: 1,
@@ -70,17 +93,92 @@ const media = [
   },
 ];
 
+const mediaSearchResults = [
+  {
+    id: 101,
+    courthouse: {
+      id: 1,
+      display_name: 'Birmingham',
+    },
+    courtroom: {
+      id: 1,
+      name: 'Room A',
+    },
+    start_at: '2024-01-01T11:00:00Z',
+    end_at: '2024-01-01T12:00:00Z',
+    channel: 4,
+    is_hidden: false,
+  },
+
+  {
+    id: 102,
+    courthouse: {
+      id: 2,
+      display_name: 'Cardiff',
+    },
+    courtroom: {
+      id: 2,
+      name: 'Room B',
+    },
+    start_at: '2023-01-08T15:30:00Z',
+    end_at: '2023-01-08T16:15:00Z',
+    channel: 5,
+    is_hidden: true,
+  },
+  {
+    id: 103,
+    courthouse: {
+      id: 3,
+      display_name: 'Edinburgh',
+    },
+    courtroom: {
+      id: 3,
+      name: 'Room C',
+    },
+    start_at: '2022-09-01T13:15:00Z',
+    end_at: '2022-09-01T14:00:00Z',
+    channel: 6,
+    is_hidden: false,
+  },
+];
+
 router.get('/', (req, res) => {
   const transformed_media_id = req.query.transformed_media_id;
   const transcription_document_id = req.query.transcription_document_id;
+  const hearingIds = req.query.hearing_ids;
+  const startAt = req.query.start_at;
+  const endAt = req.query.end_at;
 
   res.send(media);
+});
+
+router.post('/:id/hide', (req, res) => {
+  const body = req.body;
+
+  const response = {
+    id: 0,
+    is_hidden: true,
+    is_deleted: false,
+    admin_action: {
+      id: 0,
+      reason_id: body.admin_action.reason_id,
+      hidden_by_id: 0,
+      hidden_at: DateTime.now().toISO(),
+      is_marked_for_manual_deletion: false,
+      marked_for_manual_deletion_by_id: 0,
+      marked_for_manual_deletion_at: DateTime.now().toISO(),
+      ticket_reference: body.admin_action.ticket_reference,
+      comments: body.admin_action.comments,
+    },
+  };
+
+  res.send(response);
 });
 
 router.get('/:id', (req, res) => {
   const id = parseInt(req.params.id);
 
-  res.send({
+  const media = {
     id,
     start_at: '2024-06-11T09:55:18.404Z',
     end_at: '2024-06-11T10:55:18.404Z',
@@ -137,7 +235,29 @@ router.get('/:id', (req, res) => {
         case_id: 1,
       },
     ],
-  });
+  };
+
+  if (id === 0) {
+    media.is_hidden = false;
+    media.is_deleted = false;
+    media.admin_action.is_marked_for_manual_deletion = false;
+  }
+
+  res.send(media);
+});
+
+router.post('/search', (req, res) => {
+  if (req.body.case_number === 'NO_RESULTS') {
+    res.send([]);
+    return;
+  }
+
+  if (req.body.case_number === 'TOO_MANY_RESULTS') {
+    res.status(400).send('Too many results found. Please refine your search.');
+    return;
+  }
+
+  res.send(mediaSearchResults);
 });
 
 module.exports = router;

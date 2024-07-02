@@ -1,10 +1,11 @@
-import { JsonPipe, NgIf } from '@angular/common';
+import { CommonModule, JsonPipe, NgIf } from '@angular/common';
 import { Component, DestroyRef, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CourthouseComponent } from '@common/courthouse/courthouse.component';
 import { DatepickerComponent } from '@common/datepicker/datepicker.component';
 import { SpecificOrRangeDatePickerComponent } from '@common/specific-or-range-date-picker/specific-or-range-date-picker.component';
 import { TranscriptSearchFormErrorMessages } from '@constants/transcript-search-form-error-messages';
-import { ErrorSummaryEntry } from '@core-types/index';
+import { CourthouseData, ErrorSummaryEntry } from '@core-types/index';
 import { FormService } from '@services/form/form.service';
 import { dateRangeValidator } from '@validators/date-range.validator';
 import { futureDateValidator } from '@validators/future-date.validator';
@@ -19,9 +20,17 @@ export const transcriptSearchDateValidators = [
 @Component({
   selector: 'app-search-transcripts-form',
   standalone: true,
-  imports: [ReactiveFormsModule, DatepickerComponent, NgIf, JsonPipe, SpecificOrRangeDatePickerComponent],
   templateUrl: './search-transcripts-form.component.html',
   styleUrl: './search-transcripts-form.component.scss',
+  imports: [
+    ReactiveFormsModule,
+    DatepickerComponent,
+    NgIf,
+    JsonPipe,
+    SpecificOrRangeDatePickerComponent,
+    CourthouseComponent,
+    CommonModule,
+  ],
 })
 export class SearchTranscriptsFormComponent {
   fb = inject(FormBuilder);
@@ -29,11 +38,12 @@ export class SearchTranscriptsFormComponent {
   formService = inject(FormService);
 
   @Input() isCompletedTranscriptSearch = false;
+  @Input() courthouses: CourthouseData[] = [];
 
   form = this.fb.group({
     requestId: [''],
     caseId: [''],
-    courthouse: [''],
+    courthouseName: [''],
     hearingDate: ['', transcriptSearchDateValidators],
     owner: [''],
     requestedBy: [''],

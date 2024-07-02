@@ -13,6 +13,7 @@ import { CaseService } from '@services/case/case.service';
 import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
 import { TransformedMediaService } from '@services/transformed-media/transformed-media.service';
 import { UserService } from '@services/user/user.service';
+import { DateTime } from 'luxon';
 import { Observable, forkJoin, map, of, shareReplay, switchMap } from 'rxjs';
 import { HiddenFileBannerComponent } from '../common/hidden-file-banner/hidden-file-banner.component';
 import { UserAdminService } from './../../services/user-admin/user-admin.service';
@@ -22,6 +23,8 @@ import { BasicAudioFileDetailsComponent } from './basic-audio-file-details/basic
 @Component({
   selector: 'app-audio-file',
   standalone: true,
+  templateUrl: './audio-file.component.html',
+  styleUrl: './audio-file.component.scss',
   imports: [
     GovukHeadingComponent,
     TabsComponent,
@@ -34,8 +37,6 @@ import { BasicAudioFileDetailsComponent } from './basic-audio-file-details/basic
     JsonPipe,
     HiddenFileBannerComponent,
   ],
-  templateUrl: './audio-file.component.html',
-  styleUrl: './audio-file.component.scss',
 })
 export class AudioFileComponent {
   router = inject(Router);
@@ -130,5 +131,15 @@ export class AudioFileComponent {
         };
       })
     );
+  }
+
+  getHearingIds(
+    hearings: {
+      id: number;
+      hearingDate: DateTime<boolean>;
+      caseId: number;
+    }[]
+  ) {
+    return hearings.flatMap((hearing) => hearing.id);
   }
 }

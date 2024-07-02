@@ -5,5 +5,8 @@ export interface StubResponse {
   status: number;
 }
 
+export * from './events';
+export * from './hearings';
+export * from './medias';
 export * from './security-roles';
 export * from './transformed-media';

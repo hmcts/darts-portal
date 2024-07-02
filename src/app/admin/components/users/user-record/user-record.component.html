@@ -38,6 +38,11 @@
       }
     </app-govuk-banner>
   }
+  @if (activationError()) {
+    <app-govuk-banner type="warning">
+      User cannot be activated without a full name and valid email address.
+    </app-govuk-banner>
+  }
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper">
       <div class="govuk-grid-row">
@@ -63,13 +68,7 @@
             >
               Edit user
             </button>
-            <button
-              type="button"
-              class="govuk-button govuk-button--secondary"
-              (click)="
-                router.navigate(['admin/users', user.id, !user.active ? 'activate' : 'deactivate'], { state: { user } })
-              "
-            >
+            <button type="button" class="govuk-button govuk-button--secondary" (click)="onActivateDeactivateUser(user)">
               {{ !user.active ? 'Activate user' : 'Deactivate user' }}
             </button>
           </div>

@@ -1,14 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-  AfterContentInit,
-  Component,
-  ContentChildren,
-  EventEmitter,
-  Input,
-  Output,
-  QueryList,
-  TemplateRef,
-} from '@angular/core';
+import { Component, computed, contentChildren, model, output } from '@angular/core';
 import { TabDirective } from '@directives/tab.directive';
 
 @Component({
@@ -18,27 +9,12 @@ import { TabDirective } from '@directives/tab.directive';
   templateUrl: './tabs.component.html',
   styleUrls: ['./tabs.component.scss'],
 })
-export class TabsComponent implements AfterContentInit {
-  @ContentChildren(TabDirective) tabs!: QueryList<TabDirective>;
-  currentTab!: TemplateRef<unknown>;
-  @Output() tabChange = new EventEmitter();
-  @Input() default?: string;
-
-  ngAfterContentInit(): void {
-    this.tabs.changes.subscribe((tabs: TabDirective[]) => {
-      this.selectDefaultTab(tabs);
-    });
-    this.selectDefaultTab(this.tabs.toArray());
-  }
-
-  selectDefaultTab(tabs: TabDirective[]): void {
-    const defaultTab = tabs.find((t) => t.name === this.default);
-    const firstTab = tabs[0];
-    const tabToSelect = defaultTab || firstTab;
-    if (tabToSelect) {
-      this.selectTab(tabToSelect);
-    }
-  }
+export class TabsComponent {
+  tabs = contentChildren(TabDirective);
+  default = model('');
+  // currentTab is either the tab with the name that matches the default input or the first tab
+  currentTab = computed(() => this.tabs().find((t) => t.name === this.default())?.template || this.tabs()[0].template);
+  tabChange = output<TabDirective>();
 
   onTabClick(event: MouseEvent, tab: TabDirective) {
     event.preventDefault();
@@ -46,7 +22,7 @@ export class TabsComponent implements AfterContentInit {
   }
 
   selectTab(tab: TabDirective) {
-    this.currentTab = tab.template;
+    this.default.set(tab.name);
     this.tabChange.emit(tab);
   }
 }

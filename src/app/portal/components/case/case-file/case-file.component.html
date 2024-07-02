@@ -1,13 +1,13 @@
 <app-reporting-restriction [restrictions]="caseFile.reportingRestrictions"></app-reporting-restriction>
 
 <app-govuk-heading caption="Case ID">{{ caseFile.number }}</app-govuk-heading>
-<h3 class="govuk-heading-s">Courthouse</h3>
+<h2 class="govuk-heading-s">Courthouse</h2>
 <p class="govuk-body">{{ caseFile.courthouse }}</p>
-<h3 class="govuk-heading-s">Prosecutor(s)</h3>
+<h2 class="govuk-heading-s">Prosecutor(s)</h2>
 <p class="govuk-body">{{ caseFile.prosecutors | join: ', ' : '-' }}</p>
-<h3 class="govuk-heading-s">Defence(s)</h3>
+<h2 class="govuk-heading-s">Defence(s)</h2>
 <p class="govuk-body">{{ caseFile.defenders | join: ', ' : '-' }}</p>
-<h3 class="govuk-heading-s">Defendant(s)</h3>
+<h2 class="govuk-heading-s">Defendant(s)</h2>
 <p class="govuk-body">{{ caseFile.defendants | join: ', ' : '-' }}</p>
 
 @if (

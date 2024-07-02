@@ -180,26 +180,23 @@ describe('Admin - Transcript requests', () => {
       // transcript-details
       cy.get('#transcript-details').get('app-govuk-heading').contains('Basic details');
 
-      cy.get('#transcript-details dt').eq(0).should('contain', 'ID');
-      cy.get('#transcript-details dd').eq(0).should('contain', '1');
+      cy.get('#transcript-details dt').eq(0).should('contain', 'Case ID');
+      cy.get('#transcript-details dd').eq(0).should('contain', 'C20220620001');
 
-      cy.get('#transcript-details dt').eq(1).should('contain', 'Case ID');
-      cy.get('#transcript-details dd').eq(1).should('contain', 'C20220620001');
+      cy.get('#transcript-details dt').eq(1).should('contain', 'Hearing date');
+      cy.get('#transcript-details dd').eq(1).should('contain', '07 Aug 2023');
 
-      cy.get('#transcript-details dt').eq(2).should('contain', 'Hearing date');
-      cy.get('#transcript-details dd').eq(2).should('contain', '07 Aug 2023');
+      cy.get('#transcript-details dt').eq(2).should('contain', 'Courthouse');
+      cy.get('#transcript-details dd').eq(2).should('contain', 'Swansea');
 
-      cy.get('#transcript-details dt').eq(3).should('contain', 'Courthouse');
-      cy.get('#transcript-details dd').eq(3).should('contain', 'Swansea');
+      cy.get('#transcript-details dt').eq(3).should('contain', 'Courtroom');
+      cy.get('#transcript-details dd').eq(3).should('contain', '3');
 
-      cy.get('#transcript-details dt').eq(4).should('contain', 'Courtroom');
-      cy.get('#transcript-details dd').eq(4).should('contain', '3');
+      cy.get('#transcript-details dt').eq(4).should('contain', 'Defendant(s)');
+      cy.get('#transcript-details dd').eq(4).should('contain', 'Defendant Dave, Defendant Bob');
 
-      cy.get('#transcript-details dt').eq(5).should('contain', 'Defendant(s)');
-      cy.get('#transcript-details dd').eq(5).should('contain', 'Defendant Dave, Defendant Bob');
-
-      cy.get('#transcript-details dt').eq(6).should('contain', 'Judge(s)');
-      cy.get('#transcript-details dd').eq(6).should('contain', 'Ray Bob');
+      cy.get('#transcript-details dt').eq(5).should('contain', 'Judge(s)');
+      cy.get('#transcript-details dd').eq(5).should('contain', 'Ray Bob');
 
       // request-details
       cy.get('#request-details').get('app-govuk-heading').contains('Request details');
@@ -258,24 +255,27 @@ describe('Admin - Transcript requests', () => {
         .should('contain', 'Michael van Gerwen')
         .and('have.attr', 'href', '/admin/users/3');
 
-      cy.get('#file-details dt').eq(9).should('contain', 'Date created');
-      cy.get('#file-details dd').eq(9).should('contain', '18 May 2008 at 4:00PM');
-
-      cy.get('#file-details dt').eq(10).should('contain', 'Last modified by');
+      cy.get('#file-details dt').eq(9).should('contain', 'Last modified by');
       cy.get('#file-details dd')
-        .eq(10)
+        .eq(9)
         .find('a')
         .should('contain', 'Eric Bristow')
         .and('have.attr', 'href', '/admin/users/1');
 
-      cy.get('#file-details dt').eq(11).should('contain', 'Date last modified');
-      cy.get('#file-details dd').eq(11).should('contain', '01 Jan 2024 at 1:52PM');
+      cy.get('#file-details dt').eq(10).should('contain', 'Date last modified');
+      cy.get('#file-details dd').eq(10).should('contain', '01 Jan 2024 at 1:52PM');
 
-      cy.get('#file-details dt').eq(12).should('contain', 'Date hidden');
-      cy.get('#file-details dd').eq(12).should('contain', '01 Jan 2024 at 7:10AM');
+      cy.get('#file-details dt').eq(11).should('contain', 'Transcription hidden?');
+      cy.get('#file-details dd').eq(11).should('contain', 'Yes');
 
-      cy.get('#file-details dt').eq(13).should('contain', 'Retain until');
-      cy.get('#file-details dd').eq(13).should('contain', '01 Jan 2034 at 9:00AM');
+      cy.get('#file-details dt').eq(12).should('contain', 'Hidden by');
+      cy.get('#file-details dd').eq(12).should('contain', 'Eric Bristow');
+
+      cy.get('#file-details dt').eq(13).should('contain', 'Date hidden');
+      cy.get('#file-details dd').eq(13).should('contain', '01 Jan 2024 at 7:10AM');
+
+      cy.get('#file-details dt').eq(14).should('contain', 'Retain until');
+      cy.get('#file-details dd').eq(14).should('contain', '01 Jan 2034 at 9:00AM');
 
       cy.get('.govuk-button').should('contain', 'Unhide');
 

@@ -1,36 +1,39 @@
 <app-validation-error-summary [errors]="errors"></app-validation-error-summary>
 <app-govuk-heading size="xl">Transcripts</app-govuk-heading>
 
-<app-tabs (tabChange)="clearSearch()">
-  <div *tab="'Requests'">
-    <app-govuk-heading>Transcript requests</app-govuk-heading>
+@if (courthouses$ | async; as courthouses) {
+  <app-tabs (tabChange)="clearSearch()">
+    <div *tab="'Requests'">
+      <app-govuk-heading>Transcript requests</app-govuk-heading>
 
-    <app-search-transcripts-form (search)="onSearch($event)" (errors)="errors = $event" />
+      <app-search-transcripts-form [courthouses]="courthouses" (search)="onSearch($event)" (errors)="errors = $event" />
 
-    @if (results$ | async; as results) {
-      <app-search-transcripts-results [results]="results" />
-    }
+      @if (results$ | async; as results) {
+        <app-search-transcripts-results [results]="results" />
+      }
 
-    @if (loading$ | async) {
-      <app-loading text="Searching transcript requests..." />
-    }
-  </div>
+      @if (loading$ | async) {
+        <app-loading text="Searching transcript requests..." />
+      }
+    </div>
 
-  <div *tab="'Completed transcripts'">
-    <app-govuk-heading>Completed transcripts</app-govuk-heading>
+    <div *tab="'Completed transcripts'">
+      <app-govuk-heading>Completed transcripts</app-govuk-heading>
 
-    <app-search-transcripts-form
-      [isCompletedTranscriptSearch]="true"
-      (search)="onSearch($event)"
-      (errors)="errors = $event"
-    />
+      <app-search-transcripts-form
+        [courthouses]="courthouses"
+        [isCompletedTranscriptSearch]="true"
+        (search)="onSearch($event)"
+        (errors)="errors = $event"
+      />
 
-    @if (completedResults$ | async; as results) {
-      <app-search-completed-transcripts-results [results]="results" />
-    }
+      @if (completedResults$ | async; as results) {
+        <app-search-completed-transcripts-results [results]="results" />
+      }
 
-    @if (loading$ | async) {
-      <app-loading text="Searching completed transcripts..." />
-    }
-  </div>
-</app-tabs>
+      @if (loading$ | async) {
+        <app-loading text="Searching completed transcripts..." />
+      }
+    </div>
+  </app-tabs>
+}

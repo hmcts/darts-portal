@@ -6,7 +6,7 @@
   >
   </app-delete>
 } @else {
-  <ng-container *ngIf="caseFile$ | async as caseFile; else loading">
+  @if (caseFile$ | async; as caseFile) {
     <app-breadcrumb>
       <ng-container *breadcrumb="['/search']">Search</ng-container>
       <ng-container *breadcrumb>{{ caseFile.number }}</ng-container>
@@ -21,9 +21,7 @@
       [tab]="tab"
       (deleteAnnotationEvent)="onDeleteClicked($event)"
     ></app-hearing-results>
-  </ng-container>
-
-  <ng-template #loading>
+  } @else {
     <app-loading text="Loading case details..."></app-loading>
-  </ng-template>
+  }
 }

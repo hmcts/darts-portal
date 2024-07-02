@@ -101,7 +101,9 @@ describe('Admin - User record screen', () => {
 
       cy.a11y();
     });
+  });
 
+  describe('Activate user', () => {
     it('Reactivate user', () => {
       cy.get('#inactiveUsers').click();
       cy.get('button[type="submit"]').click();
@@ -128,7 +130,30 @@ describe('Admin - User record screen', () => {
       cy.get('.govuk-tag--green').contains('User record').should('exist');
       cy.get('.govuk-tag').contains('Active user').should('exist');
     });
+
+    it('error if user does not have email or full name on activate user', () => {
+      cy.get('#inactiveUsers').click();
+      cy.get('button[type="submit"]').click();
+
+      cy.contains('Gary Anderson').parents('tr').contains('View').click();
+
+      cy.get('button').contains('Activate user').click();
+
+      cy.get('h1').should('contain', 'Reactivate user');
+      cy.get('h1').should('contain', 'Gary Anderson');
+
+      cy.get('#activate-button').click();
+
+      cy.get('app-govuk-banner').should(
+        'contain',
+        'User cannot be activated without a full name and valid email address.'
+      );
+
+      cy.get('.govuk-tag--green').contains('User record').should('exist');
+      cy.get('.govuk-tag--grey').contains('Inactive').should('exist');
+    });
   });
+
   describe('Deactivate user', () => {
     it('when user has transcripts rolled back', () => {
       cy.contains('Phil Taylor').parents('tr').contains('View').click();

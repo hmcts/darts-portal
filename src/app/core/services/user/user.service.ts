@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, signal } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { RoleName, UserState } from '@core-types/index';
 import { shareReplay, tap } from 'rxjs';
 
@@ -12,6 +13,8 @@ export const REFRESH_USER_PROFILE_PATH = '/user/refresh-profile';
 export class UserService {
   constructor(private http: HttpClient) {}
 
+  router = inject(Router);
+
   public readonly userState = signal<UserState | null>(null);
 
   userProfile$ = this.http
@@ -21,7 +24,9 @@ export class UserService {
 
   public refreshUserProfile(): void {
     if (this.hasUserState()) {
-      this.http.post<UserState>(REFRESH_USER_PROFILE_PATH, null).subscribe();
+      this.http
+        .post<UserState>(REFRESH_USER_PROFILE_PATH, null)
+        .subscribe((userState) => !userState.isActive && this.router.navigate(['/forbidden']));
     }
   }
 
@@ -34,7 +39,7 @@ export class UserService {
   }
 
   public isJudge(): boolean {
-    return this.hasRole('JUDGE');
+    return this.hasRole('JUDICIARY');
   }
 
   public isAdmin(): boolean {
@@ -58,12 +63,12 @@ export class UserService {
   }
 
   public isGlobalJudge(): boolean {
-    return this.hasGlobalRole('JUDGE');
+    return this.hasGlobalRole('JUDICIARY');
   }
 
   public isCourthouseJudge(courthouseId?: number): boolean {
     if (courthouseId) {
-      return this.isGlobalJudge() || this.hasCourthouse('JUDGE', courthouseId);
+      return this.isGlobalJudge() || this.hasCourthouse('JUDICIARY', courthouseId);
     }
     return this.isGlobalJudge();
   }
@@ -72,7 +77,7 @@ export class UserService {
     return this.userState() ? roles.some((role) => this.userState()!.roles.some((x) => x.roleName === role)) : false;
   }
 
-  public hasCourthouse(role: string, courthouseId: number): boolean {
+  public hasCourthouse(role: RoleName, courthouseId: number): boolean {
     return this.userState()
       ? this.userState()!.roles.some((x) => x.roleName === role && x.courthouseIds?.includes(courthouseId))
       : false;

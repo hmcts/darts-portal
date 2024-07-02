@@ -84,6 +84,10 @@ describe('TranscriptsComponent', () => {
     },
   } as unknown as ActivatedRoute;
 
+  const fakeCourthouseService = {
+    getCourthouses: jest.fn().mockReturnValue(of([])),
+  } as unknown as CourthouseService;
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TranscriptsComponent],
@@ -107,6 +111,7 @@ describe('TranscriptsComponent', () => {
             getCourthouses: jest.fn().mockReturnValue(MOCK_COURTHOUSES),
           },
         },
+        { provide: CourthouseService, useValue: fakeCourthouseService },
         DatePipe,
         LuxonDatePipe,
       ],

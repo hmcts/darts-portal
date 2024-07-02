@@ -72,6 +72,12 @@ router.get('/:userid', (req, res) => {
 router.patch('/:userid', (req, res) => {
   const id = req.params.userid;
   const updatedUser = req.body;
+  // Activate/deactivate Gary Anderson to simulate a 409
+  if (id === '11') {
+    res.sendStatus(409);
+    return;
+  }
+
   if (id) {
     const index = USERS.findIndex((user) => user.id.toString() === id);
 
