@@ -24,6 +24,7 @@ export class SearchCompletedTranscriptsResultsComponent implements OnChanges {
     { name: 'Courthouse', prop: 'courthouse', sortable: true },
     { name: 'Hearing Date', prop: 'hearingDate', sortable: true },
     { name: 'Request Method', prop: 'requestMethod', sortable: true },
+    { name: 'Is hidden', prop: 'isHidden', sortable: true },
   ];
 
   ngOnChanges() {
@@ -37,6 +38,7 @@ export class SearchCompletedTranscriptsResultsComponent implements OnChanges {
       courthouse: result.courthouse ? result.courthouse.displayName : undefined,
       hearingDate: result.hearing ? result.hearing.hearingDate : undefined,
       requestMethod: result.isManualTranscription,
+      isHidden: result.isHidden,
     }));
   }
 }
