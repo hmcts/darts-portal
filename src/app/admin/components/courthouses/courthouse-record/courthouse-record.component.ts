@@ -99,7 +99,8 @@ export class CourthouseRecordComponent {
           return [...requesterUsers, ...approverUsers];
         })
       );
-    })
+    }),
+    map((users) => users.map((user) => ({ ...user, checkboxLabel: `Select ${user.userName} for deletion` })))
   );
 
   users$ = this.refresh$.pipe(switchMap(() => this.fetchUsers$));

@@ -400,6 +400,7 @@ describe('CourthouseRecordComponent', () => {
           },
           roleType: 'Requestor',
           userName: 'Eric Bristow',
+          checkboxLabel: 'Select Eric Bristow for deletion',
         },
         {
           email: 'fallon.sherrock@darts.local',
@@ -425,6 +426,7 @@ describe('CourthouseRecordComponent', () => {
           },
           roleType: 'Requestor',
           userName: 'Fallon Sherrock',
+          checkboxLabel: 'Select Fallon Sherrock for deletion',
         },
         {
           email: 'eric.bristow@darts.local',
@@ -450,6 +452,7 @@ describe('CourthouseRecordComponent', () => {
           },
           roleType: 'Approver',
           userName: 'Eric Bristow',
+          checkboxLabel: 'Select Eric Bristow for deletion',
         },
       ];
 
