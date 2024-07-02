@@ -21,6 +21,7 @@
         <app-datepicker
           inputId="specific"
           [control]="specificDateControl"
+          ariaLabel="Enter a specific date in dd/mm/yyyy format"
           label="Enter a date"
           (dateChange)="setInputValue($event, 'specific')"
           [errors]="getControlErrorMessage(['specific'])"
@@ -49,6 +50,7 @@
         >
           <app-datepicker
             inputId="from"
+            ariaLabel="Enter a date from in dd/mm/yyyy format"
             [control]="fromDateControl"
             label="Date from"
             (dateChange)="setInputValue($event, 'from')"
@@ -62,6 +64,7 @@
         >
           <app-datepicker
             inputId="to"
+            ariaLabel="Enter a date to in dd/mm/yyyy format"
             [control]="toDateControl"
             label="Date to"
             (dateChange)="setInputValue($event, 'to')"
