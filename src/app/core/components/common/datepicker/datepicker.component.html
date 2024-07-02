@@ -13,7 +13,7 @@
   }
   <div class="ds_input__wrapper">
     <input
-      aria-label="Enter a date in dd/mm/yyyy format"
+      [attr.aria-label]="ariaLabel"
       [formControl]="control"
       [name]="name"
       [id]="inputId"

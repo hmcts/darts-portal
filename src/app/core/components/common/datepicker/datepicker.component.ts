@@ -15,6 +15,7 @@ export class DatepickerComponent implements AfterViewChecked {
   @Input() inputId: string | null = null;
   @Input() name: string | null = null;
   @Input() label!: string;
+  @Input() ariaLabel: string = 'Enter a date in dd/mm/yyyy format';
   @Input() hint!: string;
   @Input() errors: string[] | null = null;
   @Output() dateChange = new EventEmitter<string>();
