@@ -50,6 +50,7 @@ describe('SearchCompletedTranscriptsResultsComponent', () => {
           courthouse: 'courthouse',
           hearingDate: DateTime.fromISO('2021-01-01'),
           requestMethod: true,
+          isHidden: false,
         },
       ];
       expect(component.mapRows(results)).toEqual(expected);
