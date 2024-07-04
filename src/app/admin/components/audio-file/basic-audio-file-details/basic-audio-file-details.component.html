@@ -17,13 +17,13 @@
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Start time</dt>
       <dd class="govuk-summary-list__value">
-        {{ audioFile.startAt | luxonDate: "dd MMM yyyy 'at' hh:mma" }}
+        {{ audioFile.startAt | luxonDate: "dd MMM yyyy 'at' hh:mm:ssa" }}
       </dd>
     </div>
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">End time</dt>
       <dd class="govuk-summary-list__value">
-        {{ audioFile.endAt | luxonDate: "dd MMM yyyy 'at' hh:mma" }}
+        {{ audioFile.endAt | luxonDate: "dd MMM yyyy 'at' hh:mm:ssa" }}
       </dd>
     </div>
     <div class="govuk-summary-list__row">
@@ -63,7 +63,7 @@
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Date created</dt>
       <dd class="govuk-summary-list__value">
-        {{ audioFile.createdAt | luxonDate: "dd MMM yyyy 'at' hh:mma" }}
+        {{ audioFile.createdAt | luxonDate: "dd MMM yyyy 'at' hh:mm:ssa" }}
       </dd>
     </div>
   </dl>

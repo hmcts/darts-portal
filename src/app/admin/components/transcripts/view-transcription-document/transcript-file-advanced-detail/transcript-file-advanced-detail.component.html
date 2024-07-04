@@ -36,7 +36,7 @@
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Date uploaded</dt>
       <dd class="govuk-summary-list__value">
-        {{ transcription.document.uploadedAt | luxonDate: "dd MMM yyyy 'at' h:mma" }}
+        {{ transcription.document.uploadedAt | luxonDate: "dd MMM yyyy 'at' h:mm:ssa" }}
       </dd>
     </div>
     <div class="govuk-summary-list__row">
@@ -68,7 +68,7 @@
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Date last modified</dt>
       <dd class="govuk-summary-list__value">
-        {{ transcription.document.lastModifiedAt | luxonDate: "dd MMM yyyy 'at' h:mma" }}
+        {{ transcription.document.lastModifiedAt | luxonDate: "dd MMM yyyy 'at' h:mm:ssa" }}
       </dd>
     </div>
     <div class="govuk-summary-list__row">
@@ -86,13 +86,13 @@
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Date hidden</dt>
       <dd class="govuk-summary-list__value">
-        {{ transcription.document.adminAction?.hiddenAt | luxonDate: "dd MMM yyyy 'at' h:mma " }}
+        {{ transcription.document.adminAction?.hiddenAt | luxonDate: "dd MMM yyyy 'at' h:mm:ssa " }}
       </dd>
     </div>
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Retain until</dt>
       <dd class="govuk-summary-list__value">
-        {{ transcription.document.retainUntil | luxonDate: "dd MMM yyyy 'at' h:mma" }}
+        {{ transcription.document.retainUntil | luxonDate: "dd MMM yyyy 'at' h:mm:ssa" }}
       </dd>
     </div>
   </dl>

@@ -246,7 +246,7 @@ describe('Admin - Transcript requests', () => {
       cy.get('#file-details dd').eq(6).should('contain', 'caseid_courthouse_filename.doc');
 
       cy.get('#file-details dt').eq(7).should('contain', 'Date uploaded');
-      cy.get('#file-details dd').eq(7).should('contain', '18 May 2008 at 4:00PM');
+      cy.get('#file-details dd').eq(7).should('contain', '18 May 2008 at 4:00:00PM');
 
       cy.get('#file-details dt').eq(8).should('contain', 'Uploaded by');
       cy.get('#file-details dd')
@@ -263,7 +263,7 @@ describe('Admin - Transcript requests', () => {
         .and('have.attr', 'href', '/admin/users/1');
 
       cy.get('#file-details dt').eq(10).should('contain', 'Date last modified');
-      cy.get('#file-details dd').eq(10).should('contain', '01 Jan 2024 at 1:52PM');
+      cy.get('#file-details dd').eq(10).should('contain', '01 Jan 2024 at 1:52:00PM');
 
       cy.get('#file-details dt').eq(11).should('contain', 'Transcription hidden?');
       cy.get('#file-details dd').eq(11).should('contain', 'Yes');
@@ -272,10 +272,10 @@ describe('Admin - Transcript requests', () => {
       cy.get('#file-details dd').eq(12).should('contain', 'Eric Bristow');
 
       cy.get('#file-details dt').eq(13).should('contain', 'Date hidden');
-      cy.get('#file-details dd').eq(13).should('contain', '01 Jan 2024 at 7:10AM');
+      cy.get('#file-details dd').eq(13).should('contain', '01 Jan 2024 at 7:10:00AM');
 
       cy.get('#file-details dt').eq(14).should('contain', 'Retain until');
-      cy.get('#file-details dd').eq(14).should('contain', '01 Jan 2034 at 9:00AM');
+      cy.get('#file-details dd').eq(14).should('contain', '01 Jan 2034 at 9:00:00AM');
 
       cy.get('.govuk-button').should('contain', 'Unhide');
 
