@@ -55,7 +55,7 @@
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Date hidden</dt>
         <dd class="govuk-summary-list__value">
-          {{ audioFile.adminAction.hiddenAt | luxonDate: "dd MMM yyyy 'at' hh:mma" }}
+          {{ audioFile.adminAction.hiddenAt | luxonDate: "dd MMM yyyy 'at' hh:mm:ssa" }}
         </dd>
       </div>
     }
@@ -69,7 +69,7 @@
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Date deleted</dt>
         <dd class="govuk-summary-list__value">
-          {{ audioFile.adminAction.markedForManualDeletionAt | luxonDate: "dd MMM yyyy 'at' hh:mma" }}
+          {{ audioFile.adminAction.markedForManualDeletionAt | luxonDate: "dd MMM yyyy 'at' hh:mm:ssa" }}
         </dd>
       </div>
       <div class="govuk-summary-list__row">
@@ -111,13 +111,13 @@
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Retain until</dt>
       <dd class="govuk-summary-list__value">
-        {{ audioFile.retainUntil | luxonDate: "dd MMM yyyy 'at' hh:mma" }}
+        {{ audioFile.retainUntil | luxonDate: "dd MMM yyyy 'at' hh:mm:ssa" }}
       </dd>
     </div>
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Date created</dt>
       <dd class="govuk-summary-list__value">
-        {{ audioFile.createdAt | luxonDate: "dd MMM yyyy 'at' hh:mma" }}
+        {{ audioFile.createdAt | luxonDate: "dd MMM yyyy 'at' hh:mm:ssa" }}
       </dd>
     </div>
     <div class="govuk-summary-list__row">
@@ -131,7 +131,7 @@
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Date last modified</dt>
       <dd class="govuk-summary-list__value">
-        {{ audioFile.lastModifiedAt | luxonDate: "dd MMM yyyy 'at' hh:mma" }}
+        {{ audioFile.lastModifiedAt | luxonDate: "dd MMM yyyy 'at' hh:mm:ssa" }}
       </dd>
     </div>
     <div class="govuk-summary-list__row">
