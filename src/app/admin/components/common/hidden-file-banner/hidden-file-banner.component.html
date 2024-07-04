@@ -2,9 +2,10 @@
   <app-notification-banner [heading]="heading" class="no-max-width">
     @if (file?.isMarkedForManualDeletion) {
       DARTS user cannot view this file. You can
-      <a class="govuk-link" (click)="onHideOrDelete()">unmark for deletion</a> and it will no longer be hidden.
+      <a class="govuk-link" (click)="unhideOrUndelete.emit()">unmark for deletion</a> and it will no longer be hidden.
     } @else {
-      DARTS users cannot view this file. You can <a class="govuk-link" (click)="onHideOrDelete()">unhide</a> the file
+      DARTS users cannot view this file. You can <a class="govuk-link" (click)="unhideOrUndelete.emit()">unhide</a> the
+      file
     }
     <ul class="govuk-list">
       @if (file?.isMarkedForManualDeletion) {

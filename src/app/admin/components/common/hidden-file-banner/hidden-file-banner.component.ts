@@ -1,5 +1,5 @@
 import { HiddenFileBanner } from '@admin-types/common/hidden-file-banner';
-import { Component, Input, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { NotificationBannerComponent } from '@common/notification-banner/notification-banner.component';
 
@@ -12,6 +12,8 @@ import { NotificationBannerComponent } from '@common/notification-banner/notific
 })
 export class HiddenFileBannerComponent {
   @Input() file: HiddenFileBanner | null = null;
+
+  @Output() unhideOrUndelete = new EventEmitter<void>();
 
   router = inject(Router);
 

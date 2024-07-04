@@ -5,22 +5,11 @@
 </app-breadcrumb>
 
 @if (data$ | async; as data) {
-  <app-hidden-file-banner [file]="data.hiddenFileBanner" />
+  <app-hidden-file-banner (unhideOrUndelete)="hideOrUnhideFile(data.audioFile)" [file]="data.hiddenFileBanner" />
 
   <div class="heading-button-container">
     <app-govuk-heading caption="Audio file">{{ audioFileId }}</app-govuk-heading>
-    <button
-      class="govuk-button govuk-button--secondary"
-      (click)="
-        router.navigate(['admin/file', audioFileId, 'hide-or-delete'], {
-          state: {
-            fileType: 'audio_file',
-            hearings: getHearingIds(data.audioFile.hearings),
-            dates: { startAt: data.audioFile.startAt.toISO(), endAt: data.audioFile.endAt.toISO() },
-          },
-        })
-      "
-    >
+    <button class="govuk-button govuk-button--secondary" (click)="hideOrUnhideFile(data.audioFile)">
       @if (data.audioFile.isHidden) {
         @if (data.audioFile.adminAction?.isMarkedForManualDeletion) {
           Unmark for deletion and unhide

@@ -1,3 +1,4 @@
+import { FileHide } from '@admin-types/hidden-reasons/file-hide';
 import { AudioFile } from '@admin-types/index';
 import { DatePipe } from '@angular/common';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
@@ -11,7 +12,7 @@ import { DateTime } from 'luxon';
 import { of } from 'rxjs';
 import { AudioFileComponent } from './audio-file.component';
 
-const dateTime = DateTime.now();
+const dateTime = DateTime.fromISO('2024-07-04T11:24:12.101+01:00');
 
 const audioFile: AudioFile = {
   id: 100,
@@ -76,6 +77,23 @@ const audioFile: AudioFile = {
   ],
 };
 
+const fileHide: FileHide = {
+  id: 100,
+  isHidden: false,
+  isDeleted: false,
+  adminAction: {
+    id: 0,
+    reasonId: 0,
+    hiddenById: 99,
+    hiddenAt: dateTime,
+    isMarkedForManualDeletion: false,
+    markedForManualDeletionById: 99,
+    markedForManualDeletionAt: dateTime,
+    ticketReference: 'refy ref',
+    comments: 'commenty comment',
+  },
+};
+
 describe('AudioFileComponent', () => {
   let component: AudioFileComponent;
   let fixture: ComponentFixture<AudioFileComponent>;
@@ -98,7 +116,13 @@ describe('AudioFileComponent', () => {
           provide: UserAdminService,
           useValue: { getUsersById: jest.fn().mockReturnValue(of([{ id: 99, fullName: 'full name' }])) },
         },
-        { provide: TransformedMediaService, useValue: { getMediaById: jest.fn().mockReturnValue(of(audioFile)) } },
+        {
+          provide: TransformedMediaService,
+          useValue: {
+            unhideAudioFile: jest.fn().mockReturnValue(of(fileHide)),
+            getMediaById: jest.fn().mockReturnValue(of(audioFile)),
+          },
+        },
         {
           provide: TranscriptionAdminService,
           useValue: { getHiddenReason: jest.fn().mockReturnValue(of({ displayName: 'because of reasons' })) },
@@ -250,5 +274,42 @@ describe('AudioFileComponent', () => {
 
       expect(fixture.nativeElement.querySelector('button').textContent).toContain('Unmark for deletion and unhide');
     }));
+  });
+
+  describe('hideOrUnhideFile', () => {
+    it('should unhide the audio file if it is hidden', () => {
+      const file = {
+        ...audioFile,
+        isHidden: true,
+        adminAction: audioFile.adminAction ? { ...audioFile.adminAction, isMarkedForManualDeletion: true } : undefined,
+      };
+
+      const unhideAudioSpy = jest.spyOn(component.transformedMediaService, 'unhideAudioFile');
+      component.hideOrUnhideFile(file);
+
+      expect(unhideAudioSpy).toHaveBeenCalledWith(100);
+    });
+
+    it('should navigate to the hide-or-delete page if the audio file is not hidden', () => {
+      const routerSpy = jest.spyOn(component.router, 'navigate');
+
+      const file = {
+        ...audioFile,
+        isHidden: false,
+      };
+
+      component.hideOrUnhideFile(file);
+
+      expect(routerSpy).toHaveBeenCalledWith(['admin/file', 100, 'hide-or-delete'], {
+        state: {
+          fileType: 'audio_file',
+          hearings: [0, 1],
+          dates: {
+            startAt: '2024-07-04T11:24:12.101+01:00',
+            endAt: '2024-07-04T11:24:12.101+01:00',
+          },
+        },
+      });
+    });
   });
 });
