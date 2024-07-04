@@ -50,32 +50,9 @@ export class AudioFileComponent {
 
   audioFileId = Number(this.route.snapshot.params.id);
 
-  audioFile$ = this.transformedMediaService
-    .getMediaById(this.audioFileId)
-    .pipe(switchMap((audioFile) => this.getUsers(audioFile)))
-    .pipe(shareReplay(1));
+  audioFile$ = this.getAudioFile();
 
-  fileBanner$: Observable<HiddenFileBanner | null> = this.audioFile$.pipe(
-    switchMap((audioFile) =>
-      audioFile.adminAction
-        ? this.transcriptionAdminService.getHiddenReason(audioFile.adminAction.reasonId).pipe(
-            map(
-              (reason): HiddenFileBanner => ({
-                id: audioFile.id,
-                isHidden: audioFile.isHidden,
-                isMarkedForManualDeletion: audioFile.adminAction?.isMarkedForManualDeletion ?? false,
-                markedForManualDeletionBy: audioFile.adminAction?.markedForManualDeletionBy ?? 'Unknown',
-                hiddenReason: reason?.displayName ?? 'Unknown',
-                hiddenByName: audioFile.adminAction?.hiddenByName ?? 'Unknown',
-                ticketReference: audioFile.adminAction?.ticketReference ?? 'Unknown',
-                comments: audioFile.adminAction?.comments ?? 'Unknown',
-                fileType: 'audio_file',
-              })
-            )
-          )
-        : of(null)
-    )
-  );
+  fileBanner$: Observable<HiddenFileBanner | null> = this.getFileBanner();
 
   associatedCases$ = this.audioFile$.pipe(switchMap((audioFile) => this.getAssociatedCasesFromAudioFile(audioFile)));
 
@@ -141,5 +118,56 @@ export class AudioFileComponent {
     }[]
   ) {
     return hearings.flatMap((hearing) => hearing.id);
+  }
+
+  private getAudioFile(): Observable<AudioFile> {
+    return (this.audioFile$ = this.transformedMediaService
+      .getMediaById(this.audioFileId)
+      .pipe(switchMap((audioFile) => this.getUsers(audioFile)))
+      .pipe(shareReplay(1)));
+  }
+
+  private getFileBanner(): Observable<HiddenFileBanner | null> {
+    return this.audioFile$.pipe(
+      switchMap((audioFile) =>
+        audioFile.adminAction
+          ? this.transcriptionAdminService.getHiddenReason(audioFile.adminAction.reasonId).pipe(
+              map(
+                (reason): HiddenFileBanner => ({
+                  id: audioFile.id,
+                  isHidden: audioFile.isHidden,
+                  isMarkedForManualDeletion: audioFile.adminAction?.isMarkedForManualDeletion ?? false,
+                  markedForManualDeletionBy: audioFile.adminAction?.markedForManualDeletionBy ?? 'Unknown',
+                  hiddenReason: reason?.displayName ?? 'Unknown',
+                  hiddenByName: audioFile.adminAction?.hiddenByName ?? 'Unknown',
+                  ticketReference: audioFile.adminAction?.ticketReference ?? 'Unknown',
+                  comments: audioFile.adminAction?.comments ?? 'Unknown',
+                  fileType: 'audio_file',
+                })
+              )
+            )
+          : of(null)
+      )
+    );
+  }
+
+  hideOrUnhideFile(audioFile: AudioFile) {
+    if (audioFile.isHidden) {
+      this.transformedMediaService.unhideAudioFile(this.audioFileId).subscribe(() => {
+        this.data$ = forkJoin({
+          audioFile: this.getAudioFile(),
+          associatedCases: this.associatedCases$,
+          hiddenFileBanner: this.getFileBanner(),
+        });
+      });
+    } else {
+      this.router.navigate(['admin/file', this.audioFileId, 'hide-or-delete'], {
+        state: {
+          fileType: 'audio_file',
+          hearings: this.getHearingIds(audioFile.hearings),
+          dates: { startAt: audioFile.startAt.toISO(), endAt: audioFile.endAt.toISO() },
+        },
+      });
+    }
   }
 }

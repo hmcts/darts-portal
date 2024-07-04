@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { DateTime } = require('luxon');
 
-const media = [
+const medias = [
   {
     id: 0,
     channel: 1,
@@ -142,6 +142,65 @@ const mediaSearchResults = [
   },
 ];
 
+const media = {
+  id: 0,
+  start_at: '2024-06-11T09:55:18.404Z',
+  end_at: '2024-06-11T10:55:18.404Z',
+  channel: 4,
+  total_channels: 16,
+  media_type: 'Audio',
+  media_format: 'MP3',
+  file_size_bytes: 123456789,
+  filename: 'filename.mp3',
+  media_object_id: '123',
+  content_object_id: '456',
+  clip_id: '789',
+  reference_id: 'ABC',
+  checksum: '2963841',
+  media_status: 'media status',
+  is_hidden: true,
+  is_deleted: true,
+  admin_action: {
+    id: 0,
+    reason_id: 2,
+    hidden_by_id: 4,
+    hidden_at: '2024-06-11T07:55:18.404Z',
+    is_marked_for_manual_deletion: true,
+    marked_for_manual_deletion_by_id: 3,
+    marked_for_manual_deletion_at: '2024-06-11T07:55:18.404Z',
+    ticket_reference: 'ref123',
+    comments: 'This is a test comment',
+  },
+  version: 'v2',
+  chronicle_id: '33',
+  antecedent_id: '44',
+  retain_until: '2030-06-11T07:55:18.404Z',
+  created_at: '2024-06-11T17:55:18.404Z',
+  created_by_id: 1,
+  last_modified_at: '2023-03-03T03:30:18.404Z',
+  last_modified_by_id: 2,
+  courthouse: {
+    id: 0,
+    display_name: 'Cardiff',
+  },
+  courtroom: {
+    id: 0,
+    name: 'Courtroom 1',
+  },
+  hearings: [
+    {
+      id: 0,
+      hearing_date: '2020-02-20',
+      case_id: 0,
+    },
+    {
+      id: 1,
+      hearing_date: '2020-03-25',
+      case_id: 1,
+    },
+  ],
+};
+
 router.get('/', (req, res) => {
   const transformed_media_id = req.query.transformed_media_id;
   const transcription_document_id = req.query.transcription_document_id;
@@ -149,98 +208,58 @@ router.get('/', (req, res) => {
   const startAt = req.query.start_at;
   const endAt = req.query.end_at;
 
-  res.send(media);
+  res.send(medias);
 });
 
 router.post('/:id/hide', (req, res) => {
   const body = req.body;
+  let response;
 
-  const response = {
-    id: 0,
-    is_hidden: true,
-    is_deleted: false,
-    admin_action: {
+  if (body.is_hidden) {
+    response = {
       id: 0,
-      reason_id: body.admin_action.reason_id,
-      hidden_by_id: 0,
-      hidden_at: DateTime.now().toISO(),
-      is_marked_for_manual_deletion: false,
-      marked_for_manual_deletion_by_id: 0,
-      marked_for_manual_deletion_at: DateTime.now().toISO(),
-      ticket_reference: body.admin_action.ticket_reference,
-      comments: body.admin_action.comments,
-    },
-  };
+      is_hidden: true,
+      is_deleted: false,
+      admin_action: {
+        id: 0,
+        reason_id: body.admin_action.reason_id,
+        hidden_by_id: 0,
+        hidden_at: DateTime.now().toISO(),
+        is_marked_for_manual_deletion: false,
+        marked_for_manual_deletion_by_id: 0,
+        marked_for_manual_deletion_at: DateTime.now().toISO(),
+        ticket_reference: body.admin_action.ticket_reference,
+        comments: body.admin_action.comments,
+      },
+    };
+  } else {
+    media.is_hidden = false;
+    media.is_deleted = false;
+    media.admin_action.is_marked_for_manual_deletion = false;
+    updatedMedia.push(parseInt(req.params.id));
+
+    response = {
+      id: 0,
+      is_hidden: false,
+      is_deleted: false,
+    };
+  }
 
   res.send(response);
 });
 
+const updatedMedia = [];
 router.get('/:id', (req, res) => {
-  const id = parseInt(req.params.id);
+  media.id = parseInt(req.params.id);
 
-  const media = {
-    id,
-    start_at: '2024-06-11T09:55:18.404Z',
-    end_at: '2024-06-11T10:55:18.404Z',
-    channel: 4,
-    total_channels: 16,
-    media_type: 'Audio',
-    media_format: 'MP3',
-    file_size_bytes: 123456789,
-    filename: 'filename.mp3',
-    media_object_id: '123',
-    content_object_id: '456',
-    clip_id: '789',
-    reference_id: 'ABC',
-    checksum: '2963841',
-    media_status: 'media status',
-    is_hidden: true,
-    is_deleted: true,
-    admin_action: {
-      id: 0,
-      reason_id: 2,
-      hidden_by_id: 4,
-      hidden_at: '2024-06-11T07:55:18.404Z',
-      is_marked_for_manual_deletion: true,
-      marked_for_manual_deletion_by_id: 3,
-      marked_for_manual_deletion_at: '2024-06-11T07:55:18.404Z',
-      ticket_reference: 'ref123',
-      comments: 'This is a test comment',
-    },
-    version: 'v2',
-    chronicle_id: '33',
-    antecedent_id: '44',
-    retain_until: '2030-06-11T07:55:18.404Z',
-    created_at: '2024-06-11T17:55:18.404Z',
-    created_by_id: 1,
-    last_modified_at: '2023-03-03T03:30:18.404Z',
-    last_modified_by_id: 2,
-    courthouse: {
-      id: 0,
-      display_name: 'Cardiff',
-    },
-    courtroom: {
-      id: 0,
-      name: 'Courtroom 1',
-    },
-    hearings: [
-      {
-        id: 0,
-        hearing_date: '2020-02-20',
-        case_id: 0,
-      },
-      {
-        id: 1,
-        hearing_date: '2020-03-25',
-        case_id: 1,
-      },
-    ],
-  };
-
-  if (id === 0) {
+  if (media.id === 0) {
     media.is_hidden = false;
     media.is_deleted = false;
     media.admin_action.is_marked_for_manual_deletion = false;
+  } else if (!updatedMedia.includes(media.id)) {
+    media.is_hidden = true;
+    media.is_deleted = true;
+    media.admin_action.is_marked_for_manual_deletion = true;
   }
 
   res.send(media);

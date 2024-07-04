@@ -94,6 +94,12 @@ export class TransformedMediaService {
       .pipe(map((res) => this.mapHideFileResponse(res)));
   }
 
+  unhideAudioFile(id: number): Observable<FileHide> {
+    return this.http
+      .post<FileHideData>(`api/admin/medias/${id}/hide`, { is_hidden: false })
+      .pipe(map((res) => this.mapHideFileResponse(res)));
+  }
+
   private mapHidePostRequest(body: FileHideOrDeleteFormValues) {
     //TBD in future, deleting audio files
     return {

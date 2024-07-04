@@ -689,4 +689,13 @@ describe('TransformedMediaService', () => {
       });
     });
   });
+
+  describe('unhideAudioFile', () => {
+    it('should unhide the audio file', () => {
+      const mockId = 1;
+      service.unhideAudioFile(mockId).subscribe();
+      const req = httpMock.expectOne({ url: `api/admin/medias/${mockId}/hide`, method: 'POST' });
+      req.flush({});
+    });
+  });
 });
