@@ -26,17 +26,17 @@
       }
     </div>
     <div *tab="'Hearings'">
-      @if (!searchError()) {
+      @if (!searchError() && !isLoading()) {
         <app-hearing-search-results [hearings]="hearings()" />
       }
     </div>
     <div *tab="'Events'">
-      @if (!searchError()) {
+      @if (!searchError() && !isLoading()) {
         <app-event-search-results [events]="events()" />
       }
     </div>
     <div *tab="'Audio'">
-      @if (!searchError()) {
+      @if (!searchError() && !isLoading()) {
         <app-audio-search-results [audio]="audio()" />
       }
     </div>
