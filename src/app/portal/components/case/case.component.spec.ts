@@ -1,11 +1,12 @@
 import { DatePipe } from '@angular/common';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { AnnotationsData, Case, Hearing, TranscriptData } from '@portal-types/index';
 import { AnnotationService } from '@services/annotation/annotation.service';
 import { CaseService } from '@services/case/case.service';
+import { FileDownloadService } from '@services/file-download/file-download.service';
 import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
 import { Observable, of } from 'rxjs';
@@ -15,6 +16,7 @@ describe('CaseComponent', () => {
   let component: CaseComponent;
   let fixture: ComponentFixture<CaseComponent>;
   let fakeUserService: Partial<UserService>;
+  let fakeFileDownloadService: Partial<FileDownloadService>;
 
   const fakeAnnotationService = {
     downloadAnnotationDocument: jest.fn().mockReturnValue(of({})),
@@ -109,6 +111,7 @@ describe('CaseComponent', () => {
     getCaseHearings: jest.fn(),
     getCaseTranscripts: jest.fn(),
     getCaseAnnotations: jest.fn(),
+    getCaseEvents: jest.fn(),
   };
 
   const mockActivatedRoute = {
@@ -131,6 +134,10 @@ describe('CaseComponent', () => {
       isCourthouseJudge: jest.fn(() => false),
     };
 
+    fakeFileDownloadService = {
+      saveAs: jest.fn(),
+    };
+
     TestBed.configureTestingModule({
       imports: [CaseComponent],
       providers: [
@@ -140,6 +147,7 @@ describe('CaseComponent', () => {
         { provide: CaseService, useValue: caseServiceMock },
         { provide: UserService, useValue: fakeUserService },
         { provide: AnnotationService, useValue: fakeAnnotationService },
+        { provide: FileDownloadService, useValue: fakeFileDownloadService },
         { provide: DatePipe },
       ],
     });
@@ -148,6 +156,7 @@ describe('CaseComponent', () => {
     jest.spyOn(caseServiceMock, 'getCaseHearings').mockReturnValue(mockSingleCaseTwoHearings);
     jest.spyOn(caseServiceMock, 'getCaseTranscripts').mockReturnValue(mockTranscript);
     jest.spyOn(caseServiceMock, 'getCaseAnnotations').mockReturnValue(mockAnnotation);
+    jest.spyOn(caseServiceMock, 'getCaseEvents').mockReturnValue(of([]));
 
     fixture = TestBed.createComponent(CaseComponent);
     component = fixture.componentInstance;
@@ -174,7 +183,7 @@ describe('CaseComponent', () => {
 
   describe('#onDeleteClicked', () => {
     it('should set the ID in the selectedAnnotationsforDeletion array', () => {
-      component.onDeleteClicked(345);
+      component.onDeleteAnnotation(345);
       expect(component.selectedAnnotationsforDeletion).toEqual([345]);
     });
   });
@@ -182,7 +191,7 @@ describe('CaseComponent', () => {
   describe('#onDeleteConfirmed', () => {
     it('should use the IDs in the selectedAnnotationsforDeletion array and call the backend', () => {
       const annotationId = 123;
-      component.onDeleteClicked(annotationId);
+      component.onDeleteAnnotation(annotationId);
       component.onDeleteConfirmed();
       expect(fakeAnnotationService.deleteAnnotation).toHaveBeenCalledWith(annotationId);
       expect(component.tab).toEqual('All annotations');
@@ -216,5 +225,14 @@ describe('CaseComponent', () => {
       component.annotations$.subscribe((r) => (result = r));
       expect(result).toEqual(null);
     });
+  });
+
+  describe('onDownloadAnnotation', () => {
+    it('should call the downloadAnnotationDocument method', fakeAsync(() => {
+      component.onDownloadAnnotation({ annotationId: 1, annotationDocumentId: 1, fileName: 'file.pdf' });
+      expect(fakeAnnotationService.downloadAnnotationDocument).toHaveBeenCalledWith(1, 1);
+      tick();
+      expect(fakeFileDownloadService.saveAs).toHaveBeenCalledWith({}, 'file.pdf');
+    }));
   });
 });

@@ -3,25 +3,37 @@
     [numberOfItems]="selectedAnnotationsforDeletion.length"
     (confirm)="onDeleteConfirmed()"
     (cancel)="onDeleteCancelled()"
-  >
-  </app-delete>
+  />
 } @else {
-  @if (caseFile$ | async; as caseFile) {
+  @if (data$ | async; as data) {
     <app-breadcrumb>
       <ng-container *breadcrumb="['/search']">Search</ng-container>
-      <ng-container *breadcrumb>{{ caseFile.number }}</ng-container>
+      <ng-container *breadcrumb>{{ data.caseFile.number }}</ng-container>
     </app-breadcrumb>
 
-    <app-case-file [caseFile]="caseFile" />
-    <app-hearing-results
-      *ngIf="data$ | async as data"
-      [hearings]="data.hearings"
-      [events]="data.events"
-      [transcripts]="data.transcripts"
-      [annotations]="data.annotations"
-      [tab]="tab"
-      (deleteAnnotationEvent)="onDeleteClicked($event)"
-    ></app-hearing-results>
+    <app-case-file [caseFile]="data.caseFile" />
+
+    <app-tabs [(default)]="tab">
+      <app-case-hearings-table *tab="'Hearings'" [hearings]="data.hearings" [caseId]="caseId" />
+
+      <app-case-events-table *tab="'Court log'" [events]="data.events" [caseId]="caseId" />
+
+      @if (data.transcripts) {
+        <app-case-transcripts-table
+          *tab="'All Transcripts'; count: data.transcripts.length; id: 'transcripts-tab'"
+          [transcripts]="data.transcripts"
+        />
+      }
+
+      @if (data.annotations) {
+        <app-case-annotations-table
+          *tab="'All annotations'; count: data.annotations.length; id: 'annotations-tab'"
+          [annotations]="data.annotations"
+          (deleteAnnotation)="onDeleteAnnotation($event)"
+          (downloadAnnotation)="onDownloadAnnotation($event)"
+        />
+      }
+    </app-tabs>
   } @else {
     <app-loading text="Loading case details..."></app-loading>
   }
