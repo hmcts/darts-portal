@@ -1,6 +1,7 @@
 import { TranscriptionDocument, User } from '@admin-types/index';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
+import { FileHide } from '@admin-types/hidden-reasons/file-hide';
 import { HiddenReason } from '@admin-types/hidden-reasons/hidden-reason';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
@@ -90,6 +91,23 @@ const mockTranscriptionDetails: TranscriptionDetails = {
   hearingId: 0,
 };
 
+const fileHide: FileHide = {
+  id: 100,
+  isHidden: false,
+  isDeleted: false,
+  adminAction: {
+    id: 0,
+    reasonId: 0,
+    hiddenById: 99,
+    hiddenAt: DateTime.fromISO('2024-07-04T11:24:12.101+01:00'),
+    isMarkedForManualDeletion: false,
+    markedForManualDeletionById: 99,
+    markedForManualDeletionAt: DateTime.fromISO('2024-07-04T11:24:12.101+01:00'),
+    ticketReference: 'refy ref',
+    comments: 'commenty comment',
+  },
+};
+
 describe('ViewTranscriptionDocumentComponent', () => {
   let component: ViewTranscriptionDocumentComponent;
   let fixture: ComponentFixture<ViewTranscriptionDocumentComponent>;
@@ -115,6 +133,7 @@ describe('ViewTranscriptionDocumentComponent', () => {
           useValue: {
             getTranscriptionDocument: jest.fn().mockReturnValue(of(mockTranscriptionDocument)),
             getHiddenReason: jest.fn().mockReturnValue(of(hiddenReasons[0])),
+            unhideTranscriptionDocument: jest.fn().mockReturnValue(of(fileHide)),
           },
         },
         {
@@ -180,5 +199,25 @@ describe('ViewTranscriptionDocumentComponent', () => {
     const routerSpy = jest.spyOn(component.router, 'navigate');
     component.onBack();
     expect(routerSpy).toHaveBeenCalledWith(['/admin/transcripts']);
+  });
+
+  describe('hideOrUnhideFile', () => {
+    it('should unhide the transcription document if it is currently hidden', () => {
+      const unhideSpy = jest.spyOn(component.transcriptionAdminService, 'unhideTranscriptionDocument');
+
+      component.hideOrUnhideFile(mockTranscriptionDocument);
+
+      expect(unhideSpy).toHaveBeenCalledWith(component.transcriptionDocumentId);
+    });
+
+    it('should navigate to the hide-or-delete page if the transcription document is not hidden', () => {
+      const navigateSpy = jest.spyOn(component.router, 'navigate');
+
+      component.hideOrUnhideFile({ ...mockTranscriptionDocument, isHidden: false });
+
+      expect(navigateSpy).toHaveBeenCalledWith(['admin/file', component.transcriptionDocumentId, 'hide-or-delete'], {
+        state: { fileType: 'transcription_document' },
+      });
+    });
   });
 });

@@ -177,6 +177,12 @@ export class TranscriptionAdminService {
       .pipe(map((res) => this.mapHideFileResponse(res)));
   }
 
+  unhideTranscriptionDocument(id: number): Observable<FileHide> {
+    return this.http
+      .post<FileHideData>(`api/admin/transcription-documents/${id}/hide`, { is_hidden: false })
+      .pipe(map((res) => this.mapHideFileResponse(res)));
+  }
+
   private mapHideFileResponse(res: FileHideData): FileHide {
     return {
       id: res.id,

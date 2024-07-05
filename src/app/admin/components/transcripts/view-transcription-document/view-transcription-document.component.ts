@@ -65,25 +65,29 @@ export class ViewTranscriptionDocumentComponent {
 
   loading = signal(true);
 
-  transcription$ = this.transcriptionAdminService
-    .getTranscriptionDocument(this.transcriptionDocumentId)
-    .pipe(switchMap((document) => this.getUserNames(document)))
-    .pipe(
-      switchMap((document: TranscriptionDocument) =>
-        forkJoin({
-          document: of(document),
-          details: this.transcriptionService.getTranscriptionDetails(document.transcriptionId),
-          fileBanner: this.getHiddenFileBanner(document),
-        }).pipe(
-          map(({ document, details, fileBanner }) => ({
-            document,
-            details,
-            fileBanner,
-          }))
-        )
-      ),
-      finalize(() => this.loading.set(false))
-    );
+  transcription$ = this.getTranscriptionDocument();
+
+  private getTranscriptionDocument() {
+    return this.transcriptionAdminService
+      .getTranscriptionDocument(this.transcriptionDocumentId)
+      .pipe(switchMap((document) => this.getUserNames(document)))
+      .pipe(
+        switchMap((document: TranscriptionDocument) =>
+          forkJoin({
+            document: of(document),
+            details: this.transcriptionService.getTranscriptionDetails(document.transcriptionId),
+            fileBanner: this.getHiddenFileBanner(document),
+          }).pipe(
+            map(({ document, details, fileBanner }) => ({
+              document,
+              details,
+              fileBanner,
+            }))
+          )
+        ),
+        finalize(() => this.loading.set(false))
+      );
+  }
 
   private getHiddenFileBanner(document: TranscriptionDocument): Observable<HiddenFileBanner | null> {
     return document.adminAction && document.isHidden
@@ -132,6 +136,18 @@ export class ViewTranscriptionDocumentComponent {
         } as TranscriptionDocument;
       })
     );
+  }
+
+  hideOrUnhideFile(document: TranscriptionDocument) {
+    if (document.isHidden) {
+      this.transcriptionAdminService.unhideTranscriptionDocument(this.transcriptionDocumentId).subscribe(() => {
+        this.transcription$ = this.getTranscriptionDocument();
+      });
+    } else {
+      this.router.navigate(['admin/file', this.transcriptionDocumentId, 'hide-or-delete'], {
+        state: { fileType: 'transcription_document' },
+      });
+    }
   }
 
   onBack() {

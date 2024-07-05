@@ -5,18 +5,11 @@
 }
 
 @if (transcription$ | async; as vm) {
-  <app-hidden-file-banner [file]="vm.fileBanner" />
+  <app-hidden-file-banner (unhideOrUndelete)="hideOrUnhideFile(vm.document)" [file]="vm.fileBanner" />
 
   <div class="heading-button-container">
     <app-govuk-heading caption="Transcript file">{{ transcriptionDocumentId }}</app-govuk-heading>
-    <button
-      class="govuk-button govuk-button--secondary"
-      (click)="
-        router.navigate(['admin/file', transcriptionDocumentId, 'hide-or-delete'], {
-          state: { fileType: 'transcription_document' },
-        })
-      "
-    >
+    <button class="govuk-button govuk-button--secondary" (click)="hideOrUnhideFile(vm.document)">
       @if (vm.document.isHidden) {
         @if (vm.document.adminAction?.isMarkedForManualDeletion) {
           Unmark for deletion and unhide
