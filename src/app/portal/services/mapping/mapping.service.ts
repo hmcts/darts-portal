@@ -65,6 +65,7 @@ export class MappingService {
       isManual: transcription.is_manual,
       hearingId: transcription.hearing_id,
       courthouseId: transcription.courthouse_id,
+      isRemovedFromUserTranscripts: transcription.hide_request_from_requestor,
     };
   }
 }

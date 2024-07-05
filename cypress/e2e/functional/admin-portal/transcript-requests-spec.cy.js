@@ -204,20 +204,32 @@ describe('Admin - Transcript requests', () => {
       cy.get('#request-details dt').eq(0).should('contain', 'Request type');
       cy.get('#request-details dd').eq(0).should('contain', 'Specified Times');
 
-      cy.get('#request-details dt').eq(1).should('contain', 'Request ID');
-      cy.get('#request-details dd').eq(1).should('contain', '789');
+      cy.get('#request-details dt').eq(1).should('contain', 'Audio for transcript');
+      cy.get('#request-details dd').eq(1).should('contain', 'Start time 14:00:00 - End time 17:00:00');
 
-      cy.get('#request-details dt').eq(2).should('contain', 'Urgency');
-      cy.get('#request-details dd').eq(2).should('contain', 'Standard');
+      cy.get('#request-details dt').eq(2).should('contain', 'Requested date');
+      cy.get('#request-details dd').eq(2).should('contain', '17 Nov 2023');
 
-      cy.get('#request-details dt').eq(3).should('contain', 'Requested by');
-      cy.get('#request-details dd').eq(3).should('contain', 'Joe Smith');
+      cy.get('#request-details dt').eq(3).should('contain', 'Request method');
+      cy.get('#request-details dd').eq(3).should('contain', 'Manual');
 
-      cy.get('#request-details dt').eq(4).should('contain', 'Instructions');
-      cy.get('#request-details dd').eq(4).should('contain', 'Please expedite my request');
+      cy.get('#request-details dt').eq(4).should('contain', 'Request ID');
+      cy.get('#request-details dd').eq(4).should('contain', '789');
 
-      cy.get('#request-details dt').eq(5).should('contain', 'Judge approval');
-      cy.get('#request-details dd').eq(5).should('contain', 'Yes');
+      cy.get('#request-details dt').eq(5).should('contain', 'Urgency');
+      cy.get('#request-details dd').eq(5).should('contain', 'Standard');
+
+      cy.get('#request-details dt').eq(6).should('contain', 'Requested by');
+      cy.get('#request-details dd').eq(6).should('contain', 'Joe Smith');
+
+      cy.get('#request-details dt').eq(7).should('contain', 'Instructions');
+      cy.get('#request-details dd').eq(7).should('contain', 'Please expedite my request');
+
+      cy.get('#request-details dt').eq(8).should('contain', 'Judge approval');
+      cy.get('#request-details dd').eq(8).should('contain', 'Yes');
+
+      cy.get('#request-details dt').eq(9).should('contain', 'Removed from user transcripts');
+      cy.get('#request-details dd').eq(9).should('contain', 'Yes');
 
       // Advanced details
       cy.get('#advanced-tab').click();

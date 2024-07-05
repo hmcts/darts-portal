@@ -258,6 +258,7 @@ const mockTranscriptionDetailsTwo = {
     description: 'Standard',
     priority_order: 4,
   },
+  hide_request_from_requestor: true,
 };
 
 const mockTranscriptionDetailsNoName = {
