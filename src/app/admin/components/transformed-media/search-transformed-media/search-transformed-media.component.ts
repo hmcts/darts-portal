@@ -10,7 +10,7 @@ import { ErrorSummaryEntry } from '@core-types/index';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { TransformedMediaService } from '@services/transformed-media/transformed-media.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
-import { map, switchMap, tap } from 'rxjs';
+import { finalize, map, switchMap } from 'rxjs';
 import { SearchTransformedMediaFormComponent } from '../search-transformed-media-form/search-transformed-media-form.component';
 import { TransformedMediaSearchResultsComponent } from '../transformed-media-search-results/transformed-media-search-results.component';
 
@@ -42,9 +42,9 @@ export class SearchTransformedMediaComponent {
   results = signal<TransformedMediaAdmin[]>([]);
 
   onSearch(values: TransformedMediaSearchFormValues) {
+    this.isLoading.set(true);
     this.transformedMediaService
       .searchTransformedMedia(values)
-      .pipe(tap(() => this.isLoading.set(true)))
       .pipe(
         switchMap((media) => {
           const userIds = this.getUniqueUserIds(media).filter((id) => id !== undefined) as number[];
@@ -67,7 +67,7 @@ export class SearchTransformedMediaComponent {
           })
         )
       )
-      .pipe(tap(() => this.isLoading.set(false)))
+      .pipe(finalize(() => this.isLoading.set(false)))
       .subscribe((results) => {
         this.results.set(results);
         this.isSearchFormSubmitted.set(true);
