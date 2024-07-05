@@ -114,7 +114,8 @@ router.get('/:transcription_document_id', (req, res) => {
   if (id === '0') {
     transcription.is_hidden = false;
     transcription.admin_action.is_marked_for_manual_deletion = false;
-  } else if (id === '1' && !updatedDocs.includes(parseInt(id))) {
+  } else if ((id === '1' || id === '11') && !updatedDocs.includes(parseInt(id))) {
+    //For hidden but not marked for deletion scenarios
     transcription.is_hidden = true;
     transcription.admin_action.is_marked_for_manual_deletion = false;
   } else if (updatedDocs.includes(parseInt(id))) {

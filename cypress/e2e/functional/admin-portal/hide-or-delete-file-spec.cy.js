@@ -200,14 +200,14 @@ describe('Admin - Hide or delete file', () => {
 
   describe('Transcription document - unhide file', () => {
     it('should unhide transcript document via unhide button', () => {
-      cy.visit('/admin/transcripts/document/1');
+      cy.visit('/admin/transcripts/document/11');
       cy.get('.govuk-button').contains('Unhide').click();
       cy.get('.govuk-notification-banner').should('not.exist');
       cy.get('.govuk-button').contains('Hide or delete').should('exist');
     });
 
     it('should unhide transcript document via unhide link', () => {
-      cy.visit('/admin/transcripts/document/2');
+      cy.visit('/admin/transcripts/document/9');
       cy.get('.govuk-notification-banner__body .govuk-link').contains('unmark for deletion').click();
       cy.get('.govuk-notification-banner').should('not.exist');
       cy.get('.govuk-button').contains('Hide or delete').should('exist');
