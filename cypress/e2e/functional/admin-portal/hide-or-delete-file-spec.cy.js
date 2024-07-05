@@ -183,14 +183,32 @@ describe('Admin - Hide or delete file', () => {
   });
 
   describe('Audio file - unhide file', () => {
-    beforeEach(() => {
+    it('should unhide audio file via unhide button', () => {
       cy.visit('/admin/audio-file/5');
-
-      cy.injectAxe();
+      cy.get('.govuk-button').contains('Unmark for deletion and unhide').click();
+      cy.get('.govuk-notification-banner').should('not.exist');
+      cy.get('.govuk-button').contains('Hide or delete').should('exist');
     });
 
-    it('should unhide audio file', () => {
-      cy.get('.govuk-button').contains('Unmark for deletion and unhide').click();
+    it('should unhide audio file via unhide link', () => {
+      cy.visit('/admin/audio-file/6');
+      cy.get('.govuk-notification-banner__body .govuk-link').contains('unmark for deletion').click();
+      cy.get('.govuk-notification-banner').should('not.exist');
+      cy.get('.govuk-button').contains('Hide or delete').should('exist');
+    });
+  });
+
+  describe('Transcription document - unhide file', () => {
+    it('should unhide transcript document via unhide button', () => {
+      cy.visit('/admin/transcripts/document/11');
+      cy.get('.govuk-button').contains('Unhide').click();
+      cy.get('.govuk-notification-banner').should('not.exist');
+      cy.get('.govuk-button').contains('Hide or delete').should('exist');
+    });
+
+    it('should unhide transcript document via unhide link', () => {
+      cy.visit('/admin/transcripts/document/9');
+      cy.get('.govuk-notification-banner__body .govuk-link').contains('unmark for deletion').click();
       cy.get('.govuk-notification-banner').should('not.exist');
       cy.get('.govuk-button').contains('Hide or delete').should('exist');
     });
