@@ -181,4 +181,18 @@ describe('Admin - Hide or delete file', () => {
       cy.get('#success-message').contains('File(s) successfully hidden or marked for deletion');
     });
   });
+
+  describe('Audio file - unhide file', () => {
+    beforeEach(() => {
+      cy.visit('/admin/audio-file/5');
+
+      cy.injectAxe();
+    });
+
+    it('should unhide audio file', () => {
+      cy.get('.govuk-button').contains('Unmark for deletion and unhide').click();
+      cy.get('.govuk-notification-banner').should('not.exist');
+      cy.get('.govuk-button').contains('Hide or delete').should('exist');
+    });
+  });
 });
