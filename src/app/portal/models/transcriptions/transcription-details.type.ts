@@ -26,4 +26,5 @@ export type TranscriptionDetails = {
   transcriptionObjectId: number;
   isManual: boolean;
   hearingId: number;
+  isRemovedFromUserTranscripts?: boolean;
 };

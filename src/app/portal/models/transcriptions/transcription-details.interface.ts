@@ -29,4 +29,5 @@ export interface TranscriptionDetailsData {
     user_id: number;
     user_full_name: string;
   };
+  hide_request_from_requestor?: boolean;
 }
