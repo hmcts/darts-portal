@@ -1,6 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CourthouseData } from '@core-types/index';
+import { CaseEvent } from '@portal-types/events/case-event';
+import { CaseEventData } from '@portal-types/events/case-event-data.interface';
 import {
   Annotations,
   AnnotationsData,
@@ -69,6 +71,12 @@ export class CaseService {
       map(this.mapHearingDataToHearing),
       map((hearings) => hearings.sort((a, b) => a.date.toMillis() - b.date.toMillis()))
     );
+  }
+
+  getCaseEvents(caseId: number): Observable<CaseEvent[]> {
+    return this.http
+      .get<CaseEventData[]>(`${GET_CASE_PATH}/${caseId}/events`)
+      .pipe(map((events) => this.mapCaseEventData(events)));
   }
 
   getCaseAnnotations(caseId: number): Observable<Annotations[]> {
@@ -203,5 +211,16 @@ export class CaseService {
         : undefined,
       retentionPolicyApplied: c.retention_policy_applied,
     };
+  }
+
+  private mapCaseEventData(events: CaseEventData[]) {
+    return events.map((e) => ({
+      id: e.id,
+      hearingId: e.hearing_id,
+      hearingDate: DateTime.fromISO(e.hearing_date),
+      timestamp: DateTime.fromISO(e.timestamp),
+      name: e.name,
+      text: e.text,
+    }));
   }
 }

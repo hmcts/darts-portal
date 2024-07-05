@@ -44,6 +44,7 @@ export class CaseComponent {
   public caseId = this.route.snapshot.params.caseId;
   public caseFile$ = this.caseService.getCase(this.caseId);
   public hearings$ = this.caseService.getCaseHearings(this.caseId);
+  public events$ = this.caseService.getCaseEvents(this.caseId);
   public transcripts$ = this.caseService
     .getCaseTranscripts(this.caseId)
     .pipe(map((transcript) => this.mappingService.mapTranscriptRequestToRows(transcript)));
@@ -66,6 +67,7 @@ export class CaseComponent {
     hearings: this.hearings$,
     transcripts: this.transcripts$.pipe(catchError(() => of(null))),
     annotations: this.annotations$,
+    events: this.events$,
   });
 
   onDeleteClicked(annotationId: number) {
@@ -79,6 +81,7 @@ export class CaseComponent {
           hearings: this.hearings$,
           transcripts: this.transcripts$,
           annotations: this.annotations$,
+          events: this.events$,
         });
         this.selectedAnnotationsforDeletion = [];
         this.tab = 'All annotations';

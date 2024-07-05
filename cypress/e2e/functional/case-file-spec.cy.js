@@ -68,6 +68,24 @@ describe('Case file screen', () => {
       });
     });
 
+    describe('Court log tab', () => {
+      it('Tab exists', () => {
+        cy.get('a.moj-sub-navigation__link').eq(1).should('contain', 'Court log');
+      });
+
+      it('Displays table of court log', () => {
+        cy.injectAxe();
+        cy.contains('Court log').click();
+        cy.get('#court-log-table')
+          .find('.govuk-table__row')
+          .then((rows) => {
+            expect(rows.length).equal(4);
+          });
+
+        cy.a11y();
+      });
+    });
+
     describe('Transcripts Tab', () => {
       it('Tab exists', () => {
         cy.get('a.moj-sub-navigation__link').should('contain', 'All Transcripts');

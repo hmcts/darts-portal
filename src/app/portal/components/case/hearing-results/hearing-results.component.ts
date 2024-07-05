@@ -10,10 +10,12 @@ import { DatatableColumn } from '@core-types/index';
 import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
+import { CaseEvent } from '@portal-types/events/case-event';
 import { Annotations, Hearing, TranscriptsRow } from '@portal-types/index';
 import { AnnotationService } from '@services/annotation/annotation.service';
 import { FileDownloadService } from '@services/file-download/file-download.service';
 import { UserService } from '@services/user/user.service';
+import { CaseEventsTableComponent } from '../case-file/case-events-table/case-events-table.component';
 
 @Component({
   selector: 'app-hearing-results',
@@ -28,6 +30,7 @@ import { UserService } from '@services/user/user.service';
     LuxonDatePipe,
     GovukHeadingComponent,
     DeleteComponent,
+    CaseEventsTableComponent,
   ],
   templateUrl: './hearing-results.component.html',
   styleUrls: ['./hearing-results.component.scss'],
@@ -38,6 +41,7 @@ export class HearingResultsComponent {
   AnnotationService = inject(AnnotationService);
   fileDownloadService = inject(FileDownloadService);
   @Input() hearings: Hearing[] = [];
+  @Input() events: CaseEvent[] = [];
   @Input() transcripts: TranscriptsRow[] | null = [];
   @Input() annotations: Annotations[] | null = [];
   @Input() tab!: string;

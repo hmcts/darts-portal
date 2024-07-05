@@ -12,10 +12,11 @@
       <ng-container *breadcrumb>{{ caseFile.number }}</ng-container>
     </app-breadcrumb>
 
-    <app-case-file [caseFile]="caseFile"></app-case-file>
+    <app-case-file [caseFile]="caseFile" />
     <app-hearing-results
       *ngIf="data$ | async as data"
       [hearings]="data.hearings"
+      [events]="data.events"
       [transcripts]="data.transcripts"
       [annotations]="data.annotations"
       [tab]="tab"
