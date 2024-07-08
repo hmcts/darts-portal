@@ -41,7 +41,7 @@ export class SearchTransformedMediaFormComponent {
   form = this.fb.group({
     requestId: ['', Validators.pattern(/^[0-9]*$/)],
     caseId: [''],
-    selectedCourthouse: [''],
+    courthouse: [''],
     hearingDate: ['', transformedMediaSearchDateValidators],
     owner: [''],
     requestedBy: [''],
