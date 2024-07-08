@@ -341,7 +341,6 @@ export class TranscriptionAdminService {
     values: TranscriptionSearchFormValues,
     isCompletedSearch = false
   ): TranscriptionSearchRequest {
-    console.log(values); //remove me
     return {
       //Omit transcription_id completely on completed transcript search
       ...(isCompletedSearch
