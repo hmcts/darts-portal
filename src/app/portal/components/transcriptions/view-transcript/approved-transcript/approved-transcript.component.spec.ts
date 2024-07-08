@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DatePipe } from '@angular/common';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ActivatedRoute } from '@angular/router';
 import { TranscriptionDetails } from '@portal-types/transcriptions/transcription-details.type';
 import { FileDownloadService } from '@services/file-download/file-download.service';
@@ -56,8 +57,10 @@ describe('ApprovedTranscriptComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ApprovedTranscriptComponent, HttpClientTestingModule],
+      imports: [ApprovedTranscriptComponent],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
         { provide: DatePipe },
         {

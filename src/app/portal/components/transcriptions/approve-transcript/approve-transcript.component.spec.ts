@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DatePipe } from '@angular/common';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ActivatedRoute } from '@angular/router';
 import { TranscriptionDetails } from '@portal-types/transcriptions/transcription-details.type';
 import { ErrorMessageService } from '@services/error/error-message.service';
@@ -73,8 +74,10 @@ describe('ApproveTranscriptComponent', () => {
     jest.spyOn(fakeTranscriptionService, 'getTranscriptionDetails').mockReturnValue(of(mockTranscriptionDetails));
 
     await TestBed.configureTestingModule({
-      imports: [ApproveTranscriptComponent, HttpClientTestingModule],
+      imports: [ApproveTranscriptComponent],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
         { provide: DatePipe },
         { provide: TranscriptionService, useValue: fakeTranscriptionService },

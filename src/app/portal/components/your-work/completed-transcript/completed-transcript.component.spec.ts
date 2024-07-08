@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { CompletedTranscriptComponent } from './completed-transcript.component';
 
 describe('CompletedTranscriptComponent', () => {
@@ -9,7 +9,8 @@ describe('CompletedTranscriptComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CompletedTranscriptComponent, RouterTestingModule],
+      imports: [CompletedTranscriptComponent],
+      providers: [provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(CompletedTranscriptComponent);

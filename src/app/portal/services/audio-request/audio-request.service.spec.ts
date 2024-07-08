@@ -1,4 +1,5 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed, discardPeriodicTasks, fakeAsync, tick } from '@angular/core/testing';
 import { PostAudioRequest, RequestedMedia, RequestedMediaData } from '@portal-types/index';
 import { DateTime } from 'luxon';
@@ -82,8 +83,7 @@ describe('AudioService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [AudioRequestService],
+      providers: [provideHttpClient(), provideHttpClientTesting(), AudioRequestService],
     });
 
     service = TestBed.inject(AudioRequestService);

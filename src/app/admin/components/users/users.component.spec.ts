@@ -1,4 +1,5 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { of } from 'rxjs';
@@ -11,8 +12,12 @@ describe('UsersComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UsersComponent, HttpClientTestingModule],
-      providers: [{ provide: UserAdminService, useValue: { searchUsers: jest.fn() } }],
+      imports: [UsersComponent],
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        { provide: UserAdminService, useValue: { searchUsers: jest.fn() } },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(UsersComponent);

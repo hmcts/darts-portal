@@ -1,4 +1,3 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { AudioEventRow, Case, Hearing, HearingAudio, HearingEvent } from '@portal-types/index';
@@ -8,6 +7,8 @@ import { TranscriptionService } from '@services/transcription/transcription.serv
 import { DateTime } from 'luxon';
 import { Observable, of } from 'rxjs';
 
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { RequestTranscriptComponent } from './request-transcript.component';
 
 describe('RequestTranscriptComponent', () => {
@@ -91,8 +92,10 @@ describe('RequestTranscriptComponent', () => {
     jest.spyOn(fakeHearingService, 'getEvents').mockReturnValue(ehd);
 
     TestBed.configureTestingModule({
-      imports: [RequestTranscriptComponent, HttpClientTestingModule],
+      imports: [RequestTranscriptComponent],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
         { provide: CaseService, useValue: fakeCaseService },
         { provide: HearingService, useValue: fakeHearingService },

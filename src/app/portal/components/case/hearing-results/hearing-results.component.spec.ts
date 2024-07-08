@@ -1,7 +1,8 @@
 import { DatePipe } from '@angular/common';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { Hearing } from '@portal-types/index';
 import { AnnotationService } from '@services/annotation/annotation.service';
 import { FileDownloadService } from '@services/file-download/file-download.service';
@@ -27,8 +28,11 @@ describe('HearingResultsComponent', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [HearingResultsComponent, RouterTestingModule, HttpClientTestingModule],
+      imports: [HearingResultsComponent],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        provideRouter([]),
         { provide: DatePipe },
         {
           provide: AnnotationService,

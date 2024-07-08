@@ -1,7 +1,8 @@
 import { DatePipe } from '@angular/common';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { WorkRequest } from '@portal-types/index';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { DateTime } from 'luxon';
@@ -52,8 +53,14 @@ describe('YourWorkComponent', () => {
   describe('When Work Requests returned', () => {
     beforeEach(async () => {
       await TestBed.configureTestingModule({
-        imports: [YourWorkComponent, HttpClientTestingModule, RouterTestingModule],
-        providers: [DatePipe, { provide: TranscriptionService, useValue: fakeTranscriptService }],
+        imports: [YourWorkComponent],
+        providers: [
+          DatePipe,
+          { provide: TranscriptionService, useValue: fakeTranscriptService },
+          provideHttpClient(),
+          provideHttpClientTesting(),
+          provideRouter([]),
+        ],
       }).compileComponents();
 
       fixture = TestBed.createComponent(YourWorkComponent);
@@ -93,8 +100,13 @@ describe('YourWorkComponent', () => {
   describe('When NO work requests returned', () => {
     beforeEach(async () => {
       await TestBed.configureTestingModule({
-        imports: [YourWorkComponent, HttpClientTestingModule],
-        providers: [DatePipe, { provide: TranscriptionService, useValue: fakeTranscriptServiceNoRequests }],
+        imports: [YourWorkComponent],
+        providers: [
+          provideHttpClient(),
+          provideHttpClientTesting(),
+          DatePipe,
+          { provide: TranscriptionService, useValue: fakeTranscriptServiceNoRequests },
+        ],
       }).compileComponents();
 
       fixture = TestBed.createComponent(YourWorkComponent);

@@ -1,12 +1,12 @@
-import { of, throwError } from 'rxjs';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { UserService } from '@services/user/user.service';
-import { CaseRetentionChangeComponent } from './case-retention-change.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DatePipe } from '@angular/common';
+import { HttpErrorResponse, provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CaseService } from '@services/case/case.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
+import { of, throwError } from 'rxjs';
+import { CaseRetentionChangeComponent } from './case-retention-change.component';
 
 describe('CaseRetentionComponent', () => {
   let component: CaseRetentionChangeComponent;
@@ -43,8 +43,10 @@ describe('CaseRetentionComponent', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [CaseRetentionChangeComponent, HttpClientTestingModule],
+      imports: [CaseRetentionChangeComponent],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: UserService, useValue: mockUserService },
         { provide: DatePipe },
         { provide: CaseService, useValue: mockCaseService },

@@ -1,7 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
 import { AutomatedTask, AutomatedTaskDetails } from '@admin-types/automated-task/automated-task';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { DateTime } from 'luxon';
 import { AutomatedTasksService } from './automated-tasks.service';
 
@@ -10,8 +11,8 @@ describe('AutomatedTasksService', () => {
   let httpMock: HttpTestingController;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [AutomatedTasksService],
+      imports: [],
+      providers: [provideHttpClient(), provideHttpClientTesting(), AutomatedTasksService],
     });
 
     service = TestBed.inject(AutomatedTasksService);

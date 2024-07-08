@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SecurityGroup } from '@admin-types/index';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { GroupsService } from '@services/groups/groups.service';
 import { of } from 'rxjs';
 import { GroupsComponent } from './groups.component';
@@ -32,9 +32,10 @@ describe('GroupsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GroupsComponent, RouterTestingModule],
+      imports: [GroupsComponent],
       providers: [
         { provide: GroupsService, useValue: { getGroupsAndRoles: jest.fn().mockReturnValue(of(mockGroupsAndRoles)) } },
+        provideRouter([]),
       ],
     }).compileComponents();
 

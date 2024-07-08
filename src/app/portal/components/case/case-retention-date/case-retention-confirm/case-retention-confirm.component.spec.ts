@@ -1,5 +1,6 @@
 import { DatePipe } from '@angular/common';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { CaseService } from '@services/case/case.service';
@@ -21,8 +22,10 @@ describe('CaseRetentionComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CaseRententionConfirmComponent, HttpClientTestingModule],
+      imports: [CaseRententionConfirmComponent],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: Router, useValue: fakeRouter },
         { provide: CaseService, useValue: fakeCaseService },
         { provide: DatePipe },

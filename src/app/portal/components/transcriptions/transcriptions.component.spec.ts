@@ -1,9 +1,9 @@
 import { DatePipe } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpErrorResponse, provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { TranscriptRequest, YourTranscripts } from '@portal-types/index';
 import { Urgency } from '@portal-types/transcriptions/transcription-urgency.interface';
 import { AppConfigService } from '@services/app-config/app-config.service';
@@ -115,12 +115,15 @@ describe('TranscriptionsComponent', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [TranscriptionsComponent, HttpClientTestingModule, RouterTestingModule],
+      imports: [TranscriptionsComponent],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: TranscriptionService, useValue: mockTranscriptionService },
         { provide: UserService, useValue: userServiceStub },
         DatePipe,
         { provide: AppConfigService, useValue: appConfigServiceMock },
+        provideRouter([]),
       ],
     });
 

@@ -2,8 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { User } from '@admin-types/index';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Navigation, Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Navigation, Router, provideRouter } from '@angular/router';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { of, throwError } from 'rxjs';
 import { EditUserComponent } from './edit-user.component';
@@ -25,8 +24,8 @@ describe('EditUserComponent', () => {
       updateUser: () => of({} as User),
     };
     await TestBed.configureTestingModule({
-      imports: [EditUserComponent, RouterTestingModule],
-      providers: [{ provide: UserAdminService, useValue: fakeUserAdminService }],
+      imports: [EditUserComponent],
+      providers: [{ provide: UserAdminService, useValue: fakeUserAdminService }, provideRouter([])],
     }).compileComponents();
 
     router = TestBed.inject(Router);

@@ -1,4 +1,5 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
 import { ForbiddenComponent } from '@components/error/forbidden/forbidden.component';
@@ -14,8 +15,13 @@ describe('UserService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [UserService, provideRouter([{ path: 'forbidden', component: ForbiddenComponent }])],
+      imports: [],
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        UserService,
+        provideRouter([{ path: 'forbidden', component: ForbiddenComponent }]),
+      ],
     });
 
     service = TestBed.inject(UserService);

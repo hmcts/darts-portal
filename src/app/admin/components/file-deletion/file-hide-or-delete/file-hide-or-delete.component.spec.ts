@@ -2,7 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AssociatedMedia } from '@admin-types/transformed-media/associated-media';
 import { DatePipe } from '@angular/common';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
@@ -87,8 +88,10 @@ describe('FileHideOrDeleteComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FileHideOrDeleteComponent, HttpClientTestingModule],
+      imports: [FileHideOrDeleteComponent],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: TranscriptionAdminService, useValue: fakeTranscriptionAdminService },
         { provide: TransformedMediaService, useValue: fakeTransformedMediaService },

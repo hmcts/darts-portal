@@ -1,9 +1,10 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { of } from 'rxjs/internal/observable/of';
 
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideRouter } from '@angular/router';
 import { ApproveTranscriptButtonsComponent } from './approve-transcript-buttons.component';
 
 describe('ApproveTranscriptButtonsComponent', () => {
@@ -16,8 +17,13 @@ describe('ApproveTranscriptButtonsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ApproveTranscriptButtonsComponent, HttpClientTestingModule, RouterTestingModule],
-      providers: [{ provide: TranscriptionService, useValue: fakeTranscriptionService }],
+      imports: [ApproveTranscriptButtonsComponent],
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        { provide: TranscriptionService, useValue: fakeTranscriptionService },
+        provideRouter([]),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ApproveTranscriptButtonsComponent);

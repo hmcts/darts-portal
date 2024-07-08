@@ -1,7 +1,8 @@
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { CourthouseUser, SecurityGroup, SecurityRole, User } from '@admin-types/index';
 import { DatePipe } from '@angular/common';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
@@ -154,8 +155,10 @@ describe('CourthouseRecordComponent', () => {
     } as unknown as ActivatedRoute;
 
     await TestBed.configureTestingModule({
-      imports: [CourthouseRecordComponent, HttpClientTestingModule],
+      imports: [CourthouseRecordComponent],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         {
           provide: CourthouseService,

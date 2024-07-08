@@ -1,4 +1,5 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { AuthService, IS_AUTH_PATH } from './auth.service';
 
@@ -8,8 +9,8 @@ describe('AuthService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [AuthService],
+      imports: [],
+      providers: [provideHttpClient(), provideHttpClientTesting(), AuthService],
     });
 
     authService = TestBed.inject(AuthService);

@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DatePipe } from '@angular/common';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ActivatedRoute, Navigation, Router } from '@angular/router';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { AnnotationService } from '@services/annotation/annotation.service';
@@ -40,8 +41,10 @@ describe('AddAnnotationComponent', () => {
     } as unknown as AnnotationService;
 
     await TestBed.configureTestingModule({
-      imports: [AddAnnotationComponent, HttpClientTestingModule],
+      imports: [AddAnnotationComponent],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         LuxonDatePipe,
         DatePipe,
         { provide: AnnotationService, useValue: fakeAnnotationService },

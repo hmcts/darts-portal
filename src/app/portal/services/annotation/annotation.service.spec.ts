@@ -1,4 +1,5 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { AnnotationService } from '@services/annotation/annotation.service';
 import { of } from 'rxjs';
@@ -9,8 +10,7 @@ describe('AnnotationService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [AnnotationService],
+      providers: [provideHttpClient(), provideHttpClientTesting(), AnnotationService],
     });
     service = TestBed.inject(AnnotationService);
     httpTestingController = TestBed.inject(HttpTestingController);

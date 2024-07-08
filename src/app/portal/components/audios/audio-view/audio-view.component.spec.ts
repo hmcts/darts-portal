@@ -1,9 +1,8 @@
 import { DatePipe } from '@angular/common';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpErrorResponse, HttpResponse, provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute, Navigation, Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute, Navigation, Router, provideRouter } from '@angular/router';
 import { AudioPlayerComponent } from '@components/common/audio-player/audio-player.component';
 import { PlayButtonComponent } from '@components/common/play-button/play-button.component';
 import { HearingEvent } from '@portal-types/hearing/hearing-event.interface';
@@ -156,14 +155,11 @@ describe('AudioViewComponent', () => {
       patchAudioRequestLastAccessSpy?.mockClear();
       isAudioPlaybackAvailableSpy?.mockClear();
       TestBed.configureTestingModule({
-        imports: [
-          AudioViewComponent,
-          PlayButtonComponent,
-          AudioPlayerComponent,
-          HttpClientTestingModule,
-          RouterTestingModule,
-        ],
+        imports: [AudioViewComponent, PlayButtonComponent, AudioPlayerComponent],
         providers: [
+          provideHttpClient(),
+          provideHttpClientTesting(),
+          provideRouter([]),
           { provide: ActivatedRoute, useValue: mockActivatedRoute },
           { provide: AudioRequestService, useValue: fakeAudioRequestService },
           { provide: HearingService, useValue: fakeHearingService },
@@ -291,8 +287,11 @@ describe('AudioViewComponent', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [AudioViewComponent, HttpClientTestingModule, RouterTestingModule],
+        imports: [AudioViewComponent],
         providers: [
+          provideHttpClient(),
+          provideHttpClientTesting(),
+          provideRouter([]),
           { provide: ActivatedRoute, useValue: mockActivatedRoute },
           { provide: AudioRequestService, useValue: audioRequestService },
           { provide: AppConfigService, useValue: appConfigServiceMock },
@@ -329,8 +328,11 @@ describe('AudioViewComponent', () => {
     beforeEach(() => {
       isAudioPlaybackAvailableSpy?.mockClear();
       TestBed.configureTestingModule({
-        imports: [AudioViewComponent, HttpClientTestingModule, RouterTestingModule],
+        imports: [AudioViewComponent],
         providers: [
+          provideHttpClient(),
+          provideHttpClientTesting(),
+          provideRouter([]),
           { provide: ActivatedRoute, useValue: mockActivatedRoute },
           { provide: AudioRequestService, useValue: audioRequestService },
           { provide: AppConfigService, useValue: appConfigServiceMock },
