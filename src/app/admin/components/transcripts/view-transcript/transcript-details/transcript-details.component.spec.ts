@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DatePipe } from '@angular/common';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ActivatedRoute } from '@angular/router';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { DateTime } from 'luxon';
@@ -13,8 +14,10 @@ describe('TranscriptDetailsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranscriptDetailsComponent, HttpClientTestingModule],
+      imports: [TranscriptDetailsComponent],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         LuxonDatePipe,
         DatePipe,
         { provide: ActivatedRoute, useValue: { snapshot: { params: { transcriptionId: '1' } } } },

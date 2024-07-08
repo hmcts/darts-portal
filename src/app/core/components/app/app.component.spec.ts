@@ -1,4 +1,5 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, ActivatedRouteSnapshot, Event, NavigationEnd, Router } from '@angular/router';
 import { AppConfigService } from '@services/app-config/app-config.service';
@@ -31,8 +32,10 @@ describe('AppComponent', () => {
     routerEventsSubject = new Subject<NavigationEnd>();
 
     TestBed.configureTestingModule({
-      imports: [HeaderComponent, ContentComponent, FooterComponent, AppComponent, HttpClientTestingModule],
+      imports: [HeaderComponent, ContentComponent, FooterComponent, AppComponent],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: HeaderService, useValue: fakeHeaderService },
         { provide: AppInsightsService, useValue: fakeAppInsightsService },
         { provide: UserService, useValue: fakeUserService },

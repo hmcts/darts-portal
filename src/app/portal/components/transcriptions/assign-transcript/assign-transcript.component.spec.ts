@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { DatePipe } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
@@ -78,12 +78,13 @@ describe('AssignTranscriptComponent', () => {
     jest.spyOn(fakeTranscriptionService, 'getTranscriptionDetails').mockReturnValue(of(transcriptionDetail));
 
     await TestBed.configureTestingModule({
-      imports: [AssignTranscriptComponent, HttpClientModule, RouterTestingModule],
+      imports: [AssignTranscriptComponent, RouterTestingModule],
       providers: [
         DatePipe,
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
         { provide: TranscriptionService, useValue: fakeTranscriptionService },
         LuxonDatePipe,
+        provideHttpClient(),
       ],
     }).compileComponents();
 

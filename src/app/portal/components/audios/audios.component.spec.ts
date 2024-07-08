@@ -1,7 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute, provideRouter } from '@angular/router';
 import { MediaRequest, RequestedMedia, TransformedMedia } from '@portal-types/index';
 import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { DateTime } from 'luxon';
@@ -101,11 +100,12 @@ describe('AudiosComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AudiosComponent, RouterTestingModule],
+      imports: [AudiosComponent],
       providers: [
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
         { provide: AudioRequestService, useValue: audioServiceStub },
         DatePipe,
+        provideRouter([]),
       ],
     }).compileComponents();
 

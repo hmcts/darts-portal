@@ -1,8 +1,7 @@
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Router, provideRouter } from '@angular/router';
 import { InternalErrorComponent } from '@components/error/internal-server/internal-error.component';
 import { ErrorMessage } from '@core-types/error/error-message.interface';
 import { AppConfigService } from '@services/app-config/app-config.service';
@@ -26,11 +25,12 @@ describe('SearchErrorComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        SearchErrorComponent,
-        RouterTestingModule.withRoutes([{ path: 'internal-error', component: InternalErrorComponent }]),
+      imports: [SearchErrorComponent],
+      providers: [
+        HeaderService,
+        { provide: AppConfigService, useValue: appConfigServiceMock },
+        provideRouter([{ path: 'internal-error', component: InternalErrorComponent }]),
       ],
-      providers: [HeaderService, { provide: AppConfigService, useValue: appConfigServiceMock }],
     });
     fixture = TestBed.createComponent(SearchErrorComponent);
     component = fixture.componentInstance;

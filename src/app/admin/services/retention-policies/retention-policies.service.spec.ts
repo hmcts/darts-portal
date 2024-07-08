@@ -1,5 +1,6 @@
 import { CreateRetentionPolicy, RetentionPolicy, RetentionPolicyData } from '@admin-types/index';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { DateTime } from 'luxon';
 import { formDataFactory } from '../../components/retention-policies/retention-policy-form/retention-policy-form.component.spec';
@@ -10,7 +11,7 @@ describe('RetentionPoliciesService', () => {
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ imports: [HttpClientTestingModule] });
+    TestBed.configureTestingModule({ imports: [], providers: [provideHttpClient(), provideHttpClientTesting()] });
     service = TestBed.inject(RetentionPoliciesService);
     httpMock = TestBed.inject(HttpTestingController);
   });

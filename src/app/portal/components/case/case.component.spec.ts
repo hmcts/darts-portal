@@ -1,5 +1,6 @@
 import { DatePipe } from '@angular/common';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { AnnotationsData, Case, Hearing, TranscriptData } from '@portal-types/index';
@@ -131,8 +132,10 @@ describe('CaseComponent', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [CaseComponent, HttpClientTestingModule],
+      imports: [CaseComponent],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
         { provide: CaseService, useValue: caseServiceMock },
         { provide: UserService, useValue: fakeUserService },

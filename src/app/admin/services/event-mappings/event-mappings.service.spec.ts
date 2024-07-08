@@ -3,7 +3,8 @@ import { TestBed } from '@angular/core/testing';
 import { EventMappingFormValues } from '@admin-types/event-mappings/event-mapping-form-values.interface';
 import { EventMappingData } from '@admin-types/event-mappings/event-mapping.interface';
 import { EventMapping } from '@admin-types/event-mappings/event-mapping.type';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { DateTime } from 'luxon';
 import { EventMappingsService } from './event-mappings.service';
 
@@ -12,7 +13,7 @@ describe('EventMappingsService', () => {
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ imports: [HttpClientTestingModule] });
+    TestBed.configureTestingModule({ imports: [], providers: [provideHttpClient(), provideHttpClientTesting()] });
     service = TestBed.inject(EventMappingsService);
     httpMock = TestBed.inject(HttpTestingController);
   });

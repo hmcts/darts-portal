@@ -12,7 +12,8 @@ import { TranscriptionAdminDetails } from '@admin-types/transcription/transcript
 import { TranscriptionAdminDetailsData } from '@admin-types/transcription/transcription-details-data.interface';
 import { TranscriptionWorkflow } from '@admin-types/transcription/transcription-workflow';
 import { DatePipe } from '@angular/common';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { CourthouseData } from '@core-types/index';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
@@ -77,8 +78,8 @@ describe('TranscriptionAdminService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [TranscriptionAdminService, LuxonDatePipe, DatePipe],
+      imports: [],
+      providers: [provideHttpClient(), provideHttpClientTesting(), TranscriptionAdminService, LuxonDatePipe, DatePipe],
     });
     service = TestBed.inject(TranscriptionAdminService);
     httpMock = TestBed.inject(HttpTestingController);

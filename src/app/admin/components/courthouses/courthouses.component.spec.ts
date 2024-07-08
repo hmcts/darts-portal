@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
@@ -42,8 +43,10 @@ describe('CourthousesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CourthousesComponent, HttpClientTestingModule],
+      imports: [CourthousesComponent],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         {
           provide: CourthouseService,
           useValue: {

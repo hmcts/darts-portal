@@ -1,8 +1,7 @@
 import { Location } from '@angular/common';
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { Route, Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Route, Router, provideRouter } from '@angular/router';
 import { UserState } from '@core-types/user/user-state.interface';
 import { UserService } from '@services/user/user.service';
 import { of } from 'rxjs/internal/observable/of';
@@ -32,7 +31,6 @@ describe('App Routes', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes(APP_ROUTES)],
       providers: [
         {
           provide: AuthService,
@@ -42,6 +40,7 @@ describe('App Routes', () => {
           provide: UserService,
           useValue: mockUserService,
         },
+        provideRouter(APP_ROUTES),
       ],
     });
 

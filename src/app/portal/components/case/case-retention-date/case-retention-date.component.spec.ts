@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DatePipe } from '@angular/common';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ActivatedRoute } from '@angular/router';
 import { CaseRetentionHistoryData } from '@portal-types/case/case-retention-history.interface';
 import { CaseRetentionHistory } from '@portal-types/case/case-retention-history.type';
@@ -105,8 +106,10 @@ describe('CaseRetentionDateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CaseRetentionDateComponent, HttpClientTestingModule],
+      imports: [CaseRetentionDateComponent],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
         { provide: DatePipe },
         { provide: CaseService, useValue: mockCaseService },

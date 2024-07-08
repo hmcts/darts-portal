@@ -2,7 +2,8 @@ import { CreateUpdateUserFormValues, SecurityGroup } from '@admin-types/index';
 import { UserData } from '@admin-types/users/user-data.interface';
 import { UserSearchFormValues } from '@admin-types/users/user-search-form-values.type';
 import { User } from '@admin-types/users/user.type';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed, fakeAsync } from '@angular/core/testing';
 import { GroupsService } from '@services/groups/groups.service';
 import { DateTime } from 'luxon';
@@ -55,8 +56,10 @@ describe('UserAdminService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         {
           provide: GroupsService,
           useValue: { getGroupsAndRoles: jest.fn().mockReturnValue(of({ groups: mockSecurityGroups, roles: [] })) },

@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { Case, PostAudioRequest } from '@portal-types/index';
 import { HeaderService } from '@services/header/header.service';
 import { OrderConfirmationComponent } from './order-confirmation.component';
@@ -28,7 +28,7 @@ describe('OrderConfirmationComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [OrderConfirmationComponent],
-      providers: [HeaderService, RouterTestingModule, DatePipe],
+      providers: [HeaderService, DatePipe, provideRouter([])],
     });
     fixture = TestBed.createComponent(OrderConfirmationComponent);
     component = fixture.componentInstance;

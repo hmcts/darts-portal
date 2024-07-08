@@ -1,5 +1,6 @@
 import { DatePipe } from '@angular/common';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import {
@@ -35,8 +36,7 @@ describe('TranscriptionService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [LuxonDatePipe, DatePipe],
+      providers: [provideHttpClient(), provideHttpClientTesting(), LuxonDatePipe, DatePipe],
     });
     service = TestBed.inject(TranscriptionService);
     httpMock = TestBed.inject(HttpTestingController);

@@ -1,5 +1,6 @@
 import { DatePipe } from '@angular/common';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
@@ -50,8 +51,14 @@ describe('RejectedTranscriptComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RejectedTranscriptComponent, HttpClientTestingModule],
-      providers: [{ provide: ActivatedRoute, useValue: mockActivatedRoute }, DatePipe, LuxonDatePipe],
+      imports: [RejectedTranscriptComponent],
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        { provide: ActivatedRoute, useValue: mockActivatedRoute },
+        DatePipe,
+        LuxonDatePipe,
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(RejectedTranscriptComponent);

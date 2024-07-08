@@ -1,5 +1,5 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpErrorResponse, provideHttpClient } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Annotations } from '@portal-types/annotations/annotations.type';
 import { AnnotationsData, HearingAudio, HearingEvent } from '@portal-types/index';
@@ -14,8 +14,7 @@ describe('HearingService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [HearingService],
+      providers: [provideHttpClient(), provideHttpClientTesting(), HearingService],
     });
     service = TestBed.inject(HearingService);
     httpTestingController = TestBed.inject(HttpTestingController);

@@ -2,8 +2,7 @@ import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { Region } from '@admin-types/courthouses/region.interface';
 import { SecurityGroup } from '@admin-types/index';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Navigation, Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Navigation, Router, provideRouter } from '@angular/router';
 import { CourthouseData } from '@core-types/index';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { DateTime } from 'luxon';
@@ -29,8 +28,8 @@ describe('EditCourthouseComponent', () => {
       getCourthouseTranscriptionCompanies: () => of([] as SecurityGroup[]),
     };
     await TestBed.configureTestingModule({
-      imports: [EditCourthouseComponent, RouterTestingModule],
-      providers: [{ provide: CourthouseService, useValue: fakeCourthouseService }],
+      imports: [EditCourthouseComponent],
+      providers: [{ provide: CourthouseService, useValue: fakeCourthouseService }, provideRouter([])],
     }).compileComponents();
 
     router = TestBed.inject(Router);

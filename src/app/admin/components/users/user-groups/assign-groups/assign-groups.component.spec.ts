@@ -1,6 +1,6 @@
 import { SecurityGroup, User } from '@admin-types/index';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { GroupsService } from '@services/groups/groups.service';
 import { HeaderService } from '@services/header/header.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
@@ -58,11 +58,12 @@ describe('AssignGroupsComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [AssignGroupsComponent, RouterTestingModule],
+      imports: [AssignGroupsComponent],
       providers: [
         { provide: UserAdminService, useValue: userAdminService },
         { provide: GroupsService, useValue: groupsService },
         HeaderService,
+        provideRouter([]),
       ],
     }).compileComponents();
 

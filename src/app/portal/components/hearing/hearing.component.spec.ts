@@ -1,10 +1,9 @@
 import { DatePipe } from '@angular/common';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpClient, HttpErrorResponse, provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute, Router, provideRouter } from '@angular/router';
 import { UserState } from '@core-types/user/user-state.interface';
 import { Annotations } from '@portal-types/annotations/annotations.type';
 import { AudioEventRow } from '@portal-types/hearing/hearing-audio-event.interface';
@@ -206,8 +205,11 @@ describe('HearingComponent', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [HearingComponent, HearingFileComponent, RouterTestingModule, HttpClientTestingModule],
+      imports: [HearingComponent, HearingFileComponent],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        provideRouter([]),
         { provide: AppInsightsService, useValue: fakeAppInsightsService },
         { provide: CaseService, useValue: caseService },
         { provide: HearingService, useValue: hearingService },

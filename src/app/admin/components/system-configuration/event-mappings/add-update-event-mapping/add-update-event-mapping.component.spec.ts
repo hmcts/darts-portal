@@ -1,6 +1,7 @@
 import { EventMappingData } from '@admin-types/event-mappings/event-mapping.interface';
 import { EventMapping } from '@admin-types/event-mappings/event-mapping.type';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -94,8 +95,10 @@ describe('AddUpdateEventMappingComponent', () => {
     jest.spyOn(formService, 'getUniqueErrorSummary').mockReturnValue({ fieldId: 'id', message: 'message' });
 
     await TestBed.configureTestingModule({
-      imports: [AddUpdateEventMappingComponent, HttpClientTestingModule, ReactiveFormsModule],
+      imports: [AddUpdateEventMappingComponent, ReactiveFormsModule],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: ActivatedRoute, useValue: { snapshot: { params: { id: 1 } } } },
         { provide: EventMappingsService, useValue: eventMappingsService },
         { provide: ErrorMessageService, useValue: errorMessageService },
