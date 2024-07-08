@@ -1,5 +1,32 @@
 import { StubResponse } from '.';
 
+const events = [
+  {
+    id: 1,
+    hearing_id: 1,
+    hearing_date: '2024-04-24',
+    timestamp: '2024-04-24T14:30:00Z',
+    name: 'Event one name',
+    text: 'Event one text',
+  },
+  {
+    id: 2,
+    hearing_id: 1,
+    hearing_date: '2024-04-24',
+    timestamp: '2024-04-24T14:31:00Z',
+    name: 'Event two name',
+    text: 'Event two text',
+  },
+  {
+    id: 3,
+    hearing_id: 1,
+    hearing_date: '2024-04-24',
+    timestamp: '2024-04-24T14:32:00Z',
+    name: 'Event three name',
+    text: 'Event three text',
+  },
+];
+
 export const eventsStubResponses: StubResponse[] = [
   {
     method: 'post',
@@ -54,6 +81,12 @@ export const eventsStubResponses: StubResponse[] = [
         },
       },
     ],
+    status: 200,
+  },
+  {
+    method: 'get',
+    path: '/cases/:caseId/events',
+    response: events,
     status: 200,
   },
 ];
