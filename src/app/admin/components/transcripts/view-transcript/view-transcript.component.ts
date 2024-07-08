@@ -2,7 +2,7 @@ import { TranscriptionStatus, User } from '@admin-types/index';
 import { TranscriptionWorkflow } from '@admin-types/transcription/transcription-workflow';
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
 import { TimelineComponent } from '@common/timeline/timeline.component';
 import { BreadcrumbComponent } from '@components/common/breadcrumb/breadcrumb.component';
@@ -31,6 +31,7 @@ import { TranscriptDetailsComponent } from './transcript-details/transcript-deta
     TranscriptDetailsComponent,
     TimelineComponent,
     GovukBannerComponent,
+    RouterLink,
   ],
 })
 export class ViewTranscriptComponent {
@@ -39,7 +40,9 @@ export class ViewTranscriptComponent {
   transcriptionAdminService = inject(TranscriptionAdminService);
   statusUpdated$ = this.route.queryParams.pipe(map((params) => !!params.updatedStatus));
 
-  history$ = this.transcriptionAdminService.getTranscriptionWorkflows(this.route.snapshot.params.transcriptionId).pipe(
+  readonly transcriptionId = this.route.snapshot.params.transcriptionId;
+
+  history$ = this.transcriptionAdminService.getTranscriptionWorkflows(this.transcriptionId).pipe(
     switchMap((workflows) => {
       const userIds = workflows.map((workflow) => workflow.workflowActor);
       return forkJoin({
@@ -50,46 +53,44 @@ export class ViewTranscriptComponent {
     })
   );
 
-  transcript$ = this.transcriptionAdminService.getTranscriptionDetails(this.route.snapshot.params.transcriptionId).pipe(
+  transcript$ = this.transcriptionAdminService.getTranscriptionDetails(this.transcriptionId).pipe(
     switchMap((transcription) => {
       if (!transcription.requestor && !transcription.courthouseId) {
         return of(transcription);
       } else {
-        return this.transcriptionAdminService
-          .getLatestTranscriptionWorkflowActor(this.route.snapshot.params.transcriptionId, true)
-          .pipe(
-            switchMap((workflowUserId) => {
-              const userIds = transcription.requestor?.userId
-                ? [workflowUserId, transcription.requestor?.userId]
-                : [workflowUserId];
+        return this.transcriptionAdminService.getLatestTranscriptionWorkflowActor(this.transcriptionId, true).pipe(
+          switchMap((workflowUserId) => {
+            const userIds = transcription.requestor?.userId
+              ? [workflowUserId, transcription.requestor?.userId]
+              : [workflowUserId];
 
-              return forkJoin({
-                users: this.userAdminService.getUsersById(userIds),
-                securityGroups: this.transcriptionAdminService.getTranscriptionSecurityGroups(
-                  transcription.courthouseId!
-                ),
-              }).pipe(
-                map(({ users, securityGroups }) => {
-                  const requestor = users.find((u) => u.id === transcription.requestor?.userId);
-                  const assignee = users.find((u) => u.id === workflowUserId);
-                  return {
-                    ...transcription,
-                    assignedGroups: securityGroups || [],
-                    requestor: {
-                      email: requestor?.emailAddress,
-                      userId: transcription.requestor?.userId,
-                      fullName: transcription.requestor?.fullName,
-                    },
-                    assignedTo: {
-                      email: assignee?.emailAddress,
-                      userId: assignee?.id,
-                      fullName: assignee?.fullName,
-                    },
-                  };
-                })
-              );
-            })
-          );
+            return forkJoin({
+              users: this.userAdminService.getUsersById(userIds),
+              securityGroups: this.transcriptionAdminService.getTranscriptionSecurityGroups(
+                transcription.courthouseId!
+              ),
+            }).pipe(
+              map(({ users, securityGroups }) => {
+                const requestor = users.find((u) => u.id === transcription.requestor?.userId);
+                const assignee = users.find((u) => u.id === workflowUserId);
+                return {
+                  ...transcription,
+                  assignedGroups: securityGroups || [],
+                  requestor: {
+                    email: requestor?.emailAddress,
+                    userId: transcription.requestor?.userId,
+                    fullName: transcription.requestor?.fullName,
+                  },
+                  assignedTo: {
+                    email: assignee?.emailAddress,
+                    userId: assignee?.id,
+                    fullName: assignee?.fullName,
+                  },
+                };
+              })
+            );
+          })
+        );
       }
     })
   );
