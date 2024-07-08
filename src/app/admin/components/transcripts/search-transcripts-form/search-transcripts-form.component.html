@@ -37,14 +37,14 @@
 
       <div
         class="govuk-form-group"
-        [class.govuk-form-group--error]="form.controls.courthouseName.invalid && form.controls.courthouseName.touched"
+        [class.govuk-form-group--error]="form.controls.courthouse.invalid && form.controls.courthouse.touched"
       >
         <app-courthouse-field
           [courthouses]="courthouses"
-          [courthouse]="form.controls.courthouseName.value!"
-          (courthouseSelect)="form.get('courthouseName')?.patchValue($event); form.get('courthouseName')?.markAsDirty()"
-          [isInvalid]="form.controls.courthouseName.invalid && form.controls.courthouseName.touched"
-          [errors]="getControlErrorMessage(['courthouseName'])"
+          [courthouse]="form.controls.courthouse.value!"
+          (courthouseSelect)="form.get('courthouse')?.patchValue($event); form.get('courthouse')?.markAsDirty()"
+          [isInvalid]="form.controls.courthouse.invalid && form.controls.courthouse.touched"
+          [errors]="getControlErrorMessage(['courthouse'])"
         />
       </div>
       <div
