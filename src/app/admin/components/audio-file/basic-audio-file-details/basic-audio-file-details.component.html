@@ -52,7 +52,13 @@
     </div>
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">File size</dt>
-      <dd class="govuk-summary-list__value">{{ audioFile.fileSizeBytes | bytes | number: '1.0-2' }}MB</dd>
+      <dd class="govuk-summary-list__value">
+        @if (audioFile.fileSizeBytes < bytesInMb) {
+          {{ audioFile.fileSizeBytes | bytes: 'KB' | number: '1.0-2' }}KB
+        } @else {
+          {{ audioFile.fileSizeBytes | bytes: 'MB' | number: '1.0-2' }}MB
+        }
+      </dd>
     </div>
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Filename</dt>
