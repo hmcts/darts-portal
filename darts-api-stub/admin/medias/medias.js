@@ -142,7 +142,7 @@ const mediaSearchResults = [
   },
 ];
 
-const media = {
+const defaultMedia = {
   id: 0,
   start_at: '2024-06-11T09:55:18.404Z',
   end_at: '2024-06-11T10:55:18.404Z',
@@ -201,6 +201,15 @@ const media = {
   ],
 };
 
+let updatedMedia = [];
+let media = { ...defaultMedia };
+
+router.get('/reset', (req, res) => {
+  media = { ...defaultMedia };
+  updatedMedia = [];
+  res.sendStatus(202);
+});
+
 router.get('/', (req, res) => {
   const transformed_media_id = req.query.transformed_media_id;
   const transcription_document_id = req.query.transcription_document_id;
@@ -248,7 +257,6 @@ router.post('/:id/hide', (req, res) => {
   res.send(response);
 });
 
-const updatedMedia = [];
 router.get('/:id', (req, res) => {
   media.id = parseInt(req.params.id);
 

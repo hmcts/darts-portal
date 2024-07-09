@@ -69,7 +69,7 @@ const documents = [
   },
 ];
 
-const transcription = {
+const defaultTranscription = {
   transcription_document_id: 123,
   transcription_id: 456,
   file_type: 'DOC',
@@ -96,6 +96,17 @@ const transcription = {
     comments: 'This is a comment',
   },
 };
+
+let transcription = { ...defaultTranscription };
+
+let updatedDocs = [];
+
+router.get('/reset', (req, res) => {
+  transcription = { ...defaultTranscription };
+  updatedDocs = [];
+  console.log('reset transcription documents');
+  res.sendStatus(202);
+});
 
 router.post('/search', (req, res) => {
   const { case_number } = req.body;
@@ -128,7 +139,6 @@ router.get('/:transcription_document_id', (req, res) => {
   return res.send(transcription);
 });
 
-const updatedDocs = [];
 router.post('/:transcription_document_id/hide', (req, res) => {
   const body = req.body;
   let response;

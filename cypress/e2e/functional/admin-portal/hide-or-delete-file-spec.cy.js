@@ -213,4 +213,9 @@ describe('Admin - Hide or delete file', () => {
       cy.get('.govuk-button').contains('Hide or delete').should('exist');
     });
   });
+
+  after(() => {
+    cy.request('api/admin/transcription-documents/reset');
+    cy.request('api/admin/medias/reset');
+  });
 });
