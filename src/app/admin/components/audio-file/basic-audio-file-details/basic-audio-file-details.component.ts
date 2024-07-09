@@ -17,4 +17,6 @@ import { AssociatedCasesTableComponent } from '../associated-cases-table/associa
 export class BasicAudioFileDetailsComponent {
   @Input() audioFile!: AudioFile;
   @Input() associatedCases: AssociatedCase[] = [];
+
+  bytesInMb = 1024 * 1024;
 }
