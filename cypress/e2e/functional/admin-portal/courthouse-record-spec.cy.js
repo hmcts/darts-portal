@@ -5,7 +5,6 @@ describe('Admin - Courthouse record screen', () => {
   beforeEach(() => {
     cy.login('admin');
     cy.visit('/admin/courthouses');
-    cy.injectAxe();
   });
 
   it('View courthouse', () => {
@@ -15,6 +14,7 @@ describe('Admin - Courthouse record screen', () => {
     cy.get('td').contains('READING').click();
     cy.contains('h1', 'Reading').should('exist');
 
+    cy.injectAxe();
     // Check tabs
     cy.get('.moj-sub-navigation a').contains('Details').should('exist');
     cy.get('.moj-sub-navigation a').contains('Users').should('exist');
@@ -42,8 +42,7 @@ describe('Admin - Courthouse record screen', () => {
     // Buttons
     cy.contains('button', 'Edit courthouse').should('exist');
 
-    // TODO: Commented for now
-    // cy.a11y();
+    cy.a11y();
   });
 
   it('Edit courthouse - with data associated', () => {
@@ -55,6 +54,8 @@ describe('Admin - Courthouse record screen', () => {
     cy.get('td').contains(courthouseName).click();
     cy.contains('h1', displayName).should('exist');
     cy.contains('button', 'Edit courthouse').click();
+
+    cy.injectAxe();
 
     cy.contains('span', 'Edit courthouse').should('exist');
     cy.contains('h1', 'Courthouse details').should('exist');
@@ -89,8 +90,7 @@ describe('Admin - Courthouse record screen', () => {
     cy.contains('.govuk-button', 'Update courthouse').click();
     cy.get('#success-message').contains(`${displayName} updated`);
 
-    // TODO: Commented for now
-    // cy.a11y();
+    cy.a11y();
   });
 
   it('Edit courthouse - with no data associated', () => {
@@ -115,6 +115,8 @@ describe('Admin - Courthouse record screen', () => {
     cy.contains('.govuk-button', 'Continue').click();
     cy.contains('h1', 'Check details').should('exist');
 
+    cy.injectAxe();
+
     // Confirmation screen
     cy.get('dt').contains('Transcription companies').should('exist');
     cy.get('dd').contains(courthouseName).should('exist');
@@ -136,8 +138,7 @@ describe('Admin - Courthouse record screen', () => {
     cy.contains('.govuk-button', 'Update courthouse').click();
     cy.get('#success-message').contains(`${displayName} updated`);
 
-    // TODO: Commented for now
-    // cy.a11y();
+    cy.a11y();
   });
 
   it('Create courthouse', () => {
@@ -150,6 +151,7 @@ describe('Admin - Courthouse record screen', () => {
 
     cy.contains('button.govuk-button', 'Continue').click();
 
+    cy.injectAxe();
     // Errors
     cy.get('.govuk-error-summary').should('contain', 'Enter a courthouse code');
     cy.get('.courthouse-name-error').should('contain', 'Enter a courthouse code');
@@ -168,6 +170,7 @@ describe('Admin - Courthouse record screen', () => {
     cy.get('.display-name-error').should('contain', 'The display name you entered exists already');
     cy.get('#display-name').clear();
 
+    cy.a11y();
     // Select options
     cy.get('#courthouse-name').type(courthouseName);
     cy.get('#display-name').type(displayName);
@@ -212,9 +215,6 @@ describe('Admin - Courthouse record screen', () => {
     // Click create button
     cy.contains('.govuk-button', 'Create courthouse').click();
     cy.get('#success-message').contains(`Created ${displayName}`);
-
-    // TODO: Commented for now
-    // cy.a11y();
   });
 
   describe('Delete courthouse users', () => {
@@ -231,11 +231,13 @@ describe('Admin - Courthouse record screen', () => {
       cy.get('#0').click(); // select the first user
       cy.get('#remove-users-button').click();
 
+      cy.injectAxe();
+
       cy.get('h1').contains('You are removing 1 user role from Slough');
       cy.get('app-data-table').contains('eric.bristow@darts.local').should('exist');
       cy.get('app-data-table').contains('Requestor').should('exist');
 
-      // cy.ally();
+      cy.a11y();
 
       cy.get('button').contains('Confirm').click();
 

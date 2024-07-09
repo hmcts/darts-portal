@@ -5,8 +5,8 @@ describe('Admin - Transformed media screen', () => {
   beforeEach(() => {
     cy.viewport(1920, 1080);
     cy.login('admin');
-    cy.injectAxe();
     cy.visit('/admin/transformed-media');
+    cy.injectAxe();
   });
 
   it('page elements', () => {
@@ -53,7 +53,7 @@ describe('Admin - Transformed media screen', () => {
       cy.get('app-data-table').contains('1.0MB');
       cy.get('app-data-table').contains('3.0MB');
 
-      // cy.a11y(); // TODO: Fix
+      cy.a11y();
     });
   });
 
@@ -121,6 +121,8 @@ describe('Admin - Transformed media screen', () => {
       cy.get('.govuk-table__cell.end-time').first().contains('7:00PM');
       cy.get('.govuk-table__cell.courtroom').first().contains('courtroom 11');
       cy.get('.govuk-table__cell.channel').first().contains('1');
+
+      cy.a11y();
     });
 
     it('change owner', () => {
@@ -138,6 +140,7 @@ describe('Admin - Transformed media screen', () => {
       cy.get('#save-button').click();
 
       cy.get('app-govuk-banner').should('contain', 'Changed media request owner to Eric Bristow');
+      cy.a11y();
     });
   });
 });
