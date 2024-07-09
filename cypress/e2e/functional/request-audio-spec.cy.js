@@ -199,6 +199,10 @@ describe('Request audio', () => {
       cy.get('audio').should('have.prop', 'paused', false);
     });
   });
+
+  after(() => {
+    cy.request('/api/audio/preview/reset');
+  });
 });
 
 describe('Audio request type - Role checks', () => {
