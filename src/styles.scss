@@ -64,3 +64,8 @@ a.govuk-back-link:hover {
   display: block;
   margin-bottom: 1.5rem;
 }
+
+#content:has(.govuk-back-link) {
+  margin-top: 0;
+  padding-top: 0;
+}

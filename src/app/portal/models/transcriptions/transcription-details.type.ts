@@ -21,8 +21,8 @@ export type TranscriptionDetails = {
   urgency: Urgency;
   requestType: string;
   transcriptionId: number;
-  transcriptionStartTs: DateTime;
-  transcriptionEndTs: DateTime;
+  transcriptionStartTs?: DateTime;
+  transcriptionEndTs?: DateTime;
   transcriptionObjectId: number;
   isManual: boolean;
   hearingId: number;

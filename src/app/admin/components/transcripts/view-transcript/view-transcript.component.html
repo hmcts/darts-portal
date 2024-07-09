@@ -2,13 +2,10 @@
   <app-govuk-banner>Status updated</app-govuk-banner>
 }
 @if (transcript$ | async; as transcript) {
-  <app-breadcrumb>
-    <ng-container *breadcrumb="['/admin/transcripts']">Search</ng-container>
-    <ng-container *breadcrumb>Transcript ID</ng-container>
-  </app-breadcrumb>
+  <a [routerLink]="['../']" class="govuk-back-link">Back</a>
 
   <span class="govuk-caption-l">Transcript request</span>
-  <h1 class="govuk-heading-l">{{ transcript.transcriptFileName }}</h1>
+  <h1 class="govuk-heading-l">{{ transcriptionId }}</h1>
 
   <app-tabs>
     <app-transcript-details *tab="'Details'; id: 'details-tab'" [transcript]="transcript" />

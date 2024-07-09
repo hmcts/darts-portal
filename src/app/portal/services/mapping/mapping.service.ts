@@ -59,8 +59,12 @@ export class MappingService {
       urgency: transcription.transcription_urgency,
       requestType: transcription.request_type,
       transcriptionId: transcription.transcription_id,
-      transcriptionStartTs: DateTime.fromISO(transcription.transcription_start_ts),
-      transcriptionEndTs: DateTime.fromISO(transcription.transcription_end_ts),
+      transcriptionStartTs: transcription.transcription_start_ts
+        ? DateTime.fromISO(transcription.transcription_start_ts)
+        : undefined,
+      transcriptionEndTs: transcription.transcription_end_ts
+        ? DateTime.fromISO(transcription.transcription_end_ts)
+        : undefined,
       transcriptionObjectId: transcription.transcription_object_id,
       isManual: transcription.is_manual,
       hearingId: transcription.hearing_id,
