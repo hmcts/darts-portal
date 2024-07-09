@@ -2,19 +2,25 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DeleteComponent } from '@common/delete/delete.component';
+import { TabsComponent } from '@common/tabs/tabs.component';
 import { BreadcrumbComponent } from '@components/common/breadcrumb/breadcrumb.component';
 import { LoadingComponent } from '@components/common/loading/loading.component';
 import { ForbiddenComponent } from '@components/error/forbidden/forbidden.component';
 import { InternalErrorComponent } from '@components/error/internal-server/internal-error.component';
 import { NotFoundComponent } from '@components/error/not-found/not-found.component';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
+import { TabDirective } from '@directives/tab.directive';
 import { AnnotationService } from '@services/annotation/annotation.service';
 import { CaseService } from '@services/case/case.service';
+import { FileDownloadService } from '@services/file-download/file-download.service';
 import { MappingService } from '@services/mapping/mapping.service';
 import { UserService } from '@services/user/user.service';
 import { catchError, combineLatest, map, of, switchMap } from 'rxjs';
+import { CaseAnnotationsTableComponent } from './case-file/case-annotations-table/case-annotations-table.component';
+import { CaseEventsTableComponent } from './case-file/case-events-table/case-events-table.component';
 import { CaseFileComponent } from './case-file/case-file.component';
-import { HearingResultsComponent } from './hearing-results/hearing-results.component';
+import { CaseHearingsTableComponent } from './case-file/case-hearings-table/case-hearings-table.component';
+import { CaseTranscriptsTableComponent } from './case-file/case-transcripts-table/case-transcripts-table.component';
 
 @Component({
   selector: 'app-case',
@@ -22,7 +28,6 @@ import { HearingResultsComponent } from './hearing-results/hearing-results.compo
   imports: [
     CommonModule,
     CaseFileComponent,
-    HearingResultsComponent,
     BreadcrumbComponent,
     BreadcrumbDirective,
     LoadingComponent,
@@ -30,6 +35,12 @@ import { HearingResultsComponent } from './hearing-results/hearing-results.compo
     ForbiddenComponent,
     InternalErrorComponent,
     DeleteComponent,
+    CaseEventsTableComponent,
+    CaseHearingsTableComponent,
+    CaseTranscriptsTableComponent,
+    CaseAnnotationsTableComponent,
+    TabsComponent,
+    TabDirective,
   ],
   templateUrl: './case.component.html',
   styleUrls: ['./case.component.scss'],
@@ -40,10 +51,12 @@ export class CaseComponent {
   private mappingService = inject(MappingService);
   private userService = inject(UserService);
   private annotationService = inject(AnnotationService);
+  private fileDownloadService = inject(FileDownloadService);
 
   public caseId = this.route.snapshot.params.caseId;
   public caseFile$ = this.caseService.getCase(this.caseId);
   public hearings$ = this.caseService.getCaseHearings(this.caseId);
+  public events$ = this.caseService.getCaseEvents(this.caseId);
   public transcripts$ = this.caseService
     .getCaseTranscripts(this.caseId)
     .pipe(map((transcript) => this.mappingService.mapTranscriptRequestToRows(transcript)));
@@ -63,12 +76,14 @@ export class CaseComponent {
   tab!: string;
 
   data$ = combineLatest({
+    caseFile: this.caseFile$,
     hearings: this.hearings$,
     transcripts: this.transcripts$.pipe(catchError(() => of(null))),
     annotations: this.annotations$,
+    events: this.events$,
   });
 
-  onDeleteClicked(annotationId: number) {
+  onDeleteAnnotation(annotationId: number) {
     this.selectedAnnotationsforDeletion = [annotationId];
   }
 
@@ -76,9 +91,11 @@ export class CaseComponent {
     this.selectedAnnotationsforDeletion.forEach((annotationId) => {
       this.annotationService.deleteAnnotation(annotationId).subscribe(() => {
         this.data$ = combineLatest({
+          caseFile: this.caseFile$,
           hearings: this.hearings$,
           transcripts: this.transcripts$,
           annotations: this.annotations$,
+          events: this.events$,
         });
         this.selectedAnnotationsforDeletion = [];
         this.tab = 'All annotations';
@@ -89,5 +106,13 @@ export class CaseComponent {
   onDeleteCancelled() {
     this.selectedAnnotationsforDeletion = [];
     this.tab = 'All annotations';
+  }
+
+  onDownloadAnnotation(e: { annotationId: number; annotationDocumentId: number; fileName: string }) {
+    this.annotationService
+      .downloadAnnotationDocument(e.annotationId, e.annotationDocumentId)
+      .subscribe((blob: Blob) => {
+        this.fileDownloadService.saveAs(blob, e.fileName);
+      });
   }
 }

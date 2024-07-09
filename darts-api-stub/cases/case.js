@@ -611,6 +611,33 @@ const defaultAnnotations = [
   },
 ];
 
+const events = [
+  {
+    id: 1,
+    hearing_id: 1,
+    hearing_date: '2024-04-24',
+    timestamp: '2024-04-24T14:30:00Z',
+    name: 'Event one name',
+    text: 'Event one text',
+  },
+  {
+    id: 2,
+    hearing_id: 1,
+    hearing_date: '2024-04-24',
+    timestamp: '2024-04-24T14:31:00Z',
+    name: 'Event two name',
+    text: 'Event two text',
+  },
+  {
+    id: 3,
+    hearing_id: 1,
+    hearing_date: '2024-04-24',
+    timestamp: '2024-04-24T14:32:00Z',
+    name: 'Event three name',
+    text: 'Event three text',
+  },
+];
+
 const hearings = localArray('hearings');
 // Clear out old values on restart
 hearings.value = defaultCaseHearings;
@@ -789,6 +816,10 @@ router.get('/:caseId/annotations', (req, res) => {
       res.send(annotations);
       break;
   }
+});
+
+router.get('/:caseId/events', (_, res) => {
+  res.send(events);
 });
 
 // TODO: is this correct?

@@ -1,0 +1,20 @@
+<app-govuk-heading tag="h2" size="m">Court log for this case</app-govuk-heading>
+
+<app-data-table
+  id="court-log-table"
+  [rows]="events()"
+  [columns]="columns"
+  [hiddenCaption]="true"
+  caption="Court log / events associated with case"
+>
+  <ng-template [tableRowTemplate]="events()" let-row>
+    <td class="govuk-table__cell">
+      <a class="govuk-link" [routerLink]="['/case', caseId(), 'hearing', row.hearingId]">{{
+        row.hearingDate | luxonDate: 'd MMM y'
+      }}</a>
+    </td>
+    <td class="govuk-table__cell">{{ row.timestamp | luxonDate: 'HH:mm:ss' }}</td>
+    <td class="govuk-table__cell">{{ row.name }}</td>
+    <td class="govuk-table__cell">{{ row.text }}</td>
+  </ng-template>
+</app-data-table>
