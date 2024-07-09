@@ -3,7 +3,7 @@ import { AudioFile } from '@admin-types/index';
 import { AssociatedCase } from '@admin-types/transformed-media/associated-case';
 import { AsyncPipe, JsonPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
@@ -36,6 +36,7 @@ import { BasicAudioFileDetailsComponent } from './basic-audio-file-details/basic
     AsyncPipe,
     JsonPipe,
     HiddenFileBannerComponent,
+    RouterLink,
   ],
 })
 export class AudioFileComponent {

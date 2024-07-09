@@ -1,8 +1,4 @@
-<app-breadcrumb>
-  <ng-container *breadcrumb="['/admin/search']">Search</ng-container>
-  <ng-container *breadcrumb="['.']">Audio files</ng-container>
-  <ng-container *breadcrumb="['.']">{{ audioFileId }}</ng-container>
-</app-breadcrumb>
+<a [routerLink]="['/admin']" class="govuk-back-link">Back</a>
 
 @if (data$ | async; as data) {
   <app-hidden-file-banner (unhideOrUndelete)="hideOrUnhideFile(data.audioFile)" [file]="data.hiddenFileBanner" />
