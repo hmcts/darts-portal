@@ -103,7 +103,12 @@ router.get('/hearings/:hearingId/audios', (req, res) => {
   }
 });
 
-const requestCounts = {};
+let requestCounts = {};
+router.get('/preview/reset', (req, res) => {
+  requestCounts = {};
+  res.sendStatus(202);
+});
+
 router.get('/preview/:mediaId', async (req, res) => {
   const largeRequestCount = 6; // Assuming 5 seconds per request
   const smallRequestCount = 3;
