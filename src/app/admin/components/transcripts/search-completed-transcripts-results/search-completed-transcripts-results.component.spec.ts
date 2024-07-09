@@ -46,6 +46,7 @@ describe('SearchCompletedTranscriptsResultsComponent', () => {
       const expected = [
         {
           id: 1,
+          requestId: 0,
           caseNumber: 'caseNumber',
           courthouse: 'courthouse',
           hearingDate: DateTime.fromISO('2021-01-01'),
