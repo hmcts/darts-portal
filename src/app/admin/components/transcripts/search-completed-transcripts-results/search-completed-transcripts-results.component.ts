@@ -20,6 +20,7 @@ export class SearchCompletedTranscriptsResultsComponent implements OnChanges {
 
   columns: DatatableColumn[] = [
     { name: 'Transcript ID', prop: 'id', sortable: true },
+    { name: 'Request ID', prop: 'requestId', sortable: true },
     { name: 'Case ID', prop: 'caseNumber', sortable: true },
     { name: 'Courthouse', prop: 'courthouse', sortable: true },
     { name: 'Hearing Date', prop: 'hearingDate', sortable: true },
@@ -34,6 +35,7 @@ export class SearchCompletedTranscriptsResultsComponent implements OnChanges {
   mapRows(results: TranscriptionDocumentSearchResult[]) {
     return results.map((result) => ({
       id: result.transcriptionDocumentId,
+      requestId: result.transcriptionId,
       caseNumber: result.case ? result.case.caseNumber : undefined,
       courthouse: result.courthouse ? result.courthouse.displayName : undefined,
       hearingDate: result.hearing ? result.hearing.hearingDate : undefined,
