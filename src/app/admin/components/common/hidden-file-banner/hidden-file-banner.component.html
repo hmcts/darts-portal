@@ -5,7 +5,7 @@
       <a class="govuk-link" (click)="unhideOrUndelete.emit()">unmark for deletion</a> and it will no longer be hidden.
     } @else {
       DARTS users cannot view this file. You can <a class="govuk-link" (click)="unhideOrUndelete.emit()">unhide</a> the
-      file
+      file.
     }
     <ul class="govuk-list">
       @if (file?.isMarkedForManualDeletion) {
