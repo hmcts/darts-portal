@@ -14,7 +14,6 @@ export type AudioFile = {
   mediaObjectId: string;
   contentObjectId: string;
   clipId: string;
-  referenceId: string;
   checksum: string;
   mediaStatus: string;
   isHidden: boolean;

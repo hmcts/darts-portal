@@ -18,7 +18,6 @@ export const mockAudioFile: AudioFile = {
   mediaObjectId: '',
   contentObjectId: '',
   clipId: '',
-  referenceId: '',
   checksum: '',
   mediaStatus: '',
   isHidden: false,

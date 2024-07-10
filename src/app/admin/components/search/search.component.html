@@ -19,7 +19,12 @@
 
     <div *tab="'Cases'">
       @if (cases().length) {
-        <app-case-search-results [cases]="cases()" captionType="heading" [showRestrictions]="false" />
+        <app-case-search-results
+          [adminPortal]="true"
+          [cases]="cases()"
+          captionType="heading"
+          [showRestrictions]="false"
+        />
       }
       @if (!cases().length && !searchError() && !isLoading()) {
         {{ 'No results found' }}
