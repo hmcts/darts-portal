@@ -13,7 +13,6 @@ export interface AudioFileData {
   media_object_id: string;
   content_object_id: string;
   clip_id: string;
-  reference_id: string;
   checksum: string;
   media_status: string;
   is_hidden: boolean;

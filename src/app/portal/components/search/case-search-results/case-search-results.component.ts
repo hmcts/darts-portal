@@ -17,6 +17,7 @@ import { CaseSearchResult } from '@portal-types/index';
 export class CaseSearchResultsComponent implements OnChanges {
   @Input() cases: CaseSearchResult[] = [];
   @Input() caption = '';
+  @Input() adminPortal = false;
   @Input() captionType: 'default' | 'heading' | 'results' = 'default';
   @Input() showRestrictions = true;
 

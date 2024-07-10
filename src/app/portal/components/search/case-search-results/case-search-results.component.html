@@ -14,7 +14,11 @@
       <ng-template [tableBodyTemplate] let-row>
         <tr class="govuk-table__row">
           <td class="govuk-table__cell case_number">
-            <a class="govuk-link" [routerLink]="['/case', row.id]">{{ row.number }}</a>
+            @if (adminPortal) {
+              {{ row.number }}
+            } @else {
+              <a class="govuk-link" [routerLink]="['/case', row.id]">{{ row.number }}</a>
+            }
           </td>
           <td class="govuk-table__cell courthouse">{{ row.courthouse }}</td>
           <td class="govuk-table__cell courtroom">{{ row.courtrooms | arrayDisplay }}</td>

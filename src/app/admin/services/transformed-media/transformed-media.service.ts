@@ -265,7 +265,6 @@ export class TransformedMediaService {
       mediaObjectId: data.media_object_id,
       contentObjectId: data.content_object_id,
       clipId: data.clip_id,
-      referenceId: data.reference_id,
       checksum: data.checksum,
       mediaStatus: data.media_status,
       isHidden: data.is_hidden,

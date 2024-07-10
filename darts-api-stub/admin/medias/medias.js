@@ -155,7 +155,6 @@ const defaultMedia = {
   media_object_id: '123',
   content_object_id: '456',
   clip_id: '789',
-  reference_id: 'ABC',
   checksum: '2963841',
   media_status: 'media status',
   is_hidden: true,
