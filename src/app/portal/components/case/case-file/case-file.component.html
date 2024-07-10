@@ -17,7 +17,7 @@
   userService.isAdmin() ||
   userService.isSuperUser()
 ) {
-  <h3 class="govuk-heading-s">Retained until</h3>
+  <h2 class="govuk-heading-s">Retained until</h2>
   <p class="govuk-body">
     @if (caseFile.retainUntilDateTime) {
       {{ caseFile.retainUntilDateTime | dateTime: 'd MMM y' }}

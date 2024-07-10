@@ -50,6 +50,7 @@
         <app-datepicker
           inputId="hearingDate"
           [control]="form.controls.hearingDate"
+          ariaLabel="Enter a hearing date in dd/mm/yyyy format"
           name="hearingDate"
           label="Hearing date"
           (dateChange)="setInputValue($event, 'hearingDate')"
