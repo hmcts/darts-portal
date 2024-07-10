@@ -264,3 +264,17 @@ describe('AdminSearchService', () => {
     });
   });
 });
+
+//  it('errors', fakeAsync(() => {
+//    jest.spyOn(fakeAdminSearchService, 'getCases').mockReturnValue(throwError(() => 'error'));
+//    const handleErrorSpy = jest.spyOn(component, 'handleError');
+
+//    component.onSearch({ resultsFor: 'Cases' } as AdminSearchFormValues);
+
+//    tick();
+
+//    expect(handleErrorSpy).toHaveBeenCalled();
+//    expect(component.isLoading()).toBe(false);
+//    expect(component.cases()).toEqual([]);
+//    expect(component.searchError()).toBe('There are more than 500 results. Refine your search.');
+//  }));

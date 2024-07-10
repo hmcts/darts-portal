@@ -9,11 +9,11 @@
     [showAllValues]="true"
   />
 
-  @if (selectedCourthouses().length > 0) {
+  @if (formValues().courthouses.length > 0) {
     <p class="govuk-body">Filter results for these courthouses</p>
 
     <ul class="govuk-list">
-      @for (courthouse of selectedCourthouses(); track courthouse.id) {
+      @for (courthouse of formValues().courthouses; track courthouse.id) {
         <li class="selected-courthouse">
           <span aria-label="Courthouse name">{{ courthouse.displayName }}</span>
           <a class="govuk-link" href="javascript:void(0)" (click)="removeSelectedCourthouse(courthouse.id)">Remove</a>

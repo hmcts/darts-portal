@@ -1,11 +1,12 @@
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { JsonPipe } from '@angular/common';
-import { Component, computed, effect, inject, input, model, output, signal } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { Component, computed, effect, inject, input, model, output } from '@angular/core';
+import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { AutoCompleteComponent, AutoCompleteItem } from '@common/auto-complete/auto-complete.component';
 import { SpecificOrRangeDatePickerComponent } from '@common/specific-or-range-date-picker/specific-or-range-date-picker.component';
 import { AdminSearchFormErrorMessages } from '@constants/admin-search-form-error-messages';
 import { ErrorSummaryEntry } from '@core-types/index';
+import { defaultFormValues } from '@services/admin-search/admin-search.service';
 import { FormService } from '@services/form/form.service';
 import { dateRangeValidator } from '@validators/date-range.validator';
 import { transformedMediaSearchDateValidators } from '../../transformed-media/search-transformed-media-form/search-transformed-media-form.component';
@@ -30,15 +31,15 @@ export type AdminSearchFormValues = {
   styleUrl: './search-form.component.scss',
 })
 export class SearchFormComponent {
+  formValues = model<AdminSearchFormValues>(defaultFormValues);
   courthouses = input<Courthouse[]>([]);
-  resultsFor = model('Cases');
-  selectedCourthouses = signal<Courthouse[]>([]);
   search = output<AdminSearchFormValues>();
   errors = output<ErrorSummaryEntry[]>();
   formService = inject(FormService);
   fb = inject(FormBuilder);
 
   form = this.fb.nonNullable.group({
+    courthouses: new FormControl<Courthouse[]>([]),
     caseId: [''],
     courtroom: [''],
     hearingDate: this.fb.nonNullable.group(
@@ -50,32 +51,36 @@ export class SearchFormComponent {
       },
       { validators: [dateRangeValidator('from', 'to')] }
     ),
-    resultsFor: [this.resultsFor()],
+    resultsFor: [''],
   });
 
   constructor() {
-    effect(() => this.form.controls.resultsFor.setValue(this.resultsFor()));
+    // if formValues change in the service or parent update the form
+    effect(() => this.form.patchValue(this.formValues()));
   }
 
   courthouseAutoCompleteItems = computed(() =>
     this.courthouses()
       .map((c) => ({ id: c.id, name: c.displayName }))
-      .filter((c) => !this.selectedCourthouses().some((sc) => sc.id === c.id))
+      .filter((c) => !this.formValues()?.courthouses?.some((sc) => sc.id === c.id))
   );
 
   updateSelectedCourthouses(selectedCourthouse: AutoCompleteItem | null) {
     if (!selectedCourthouse) return;
 
     const courthouse = this.courthouses().find((c) => c.id === selectedCourthouse.id);
-    const isAlreadySelected = this.selectedCourthouses().some((c) => c.id === selectedCourthouse?.id);
+    const isAlreadySelected = this.formValues().courthouses.some((c) => c.id === selectedCourthouse?.id);
 
     if (courthouse && !isAlreadySelected) {
-      this.selectedCourthouses.update((courthouses) => [...courthouses, courthouse]);
+      this.formValues.update((values) => ({ ...values, courthouses: [...values.courthouses, courthouse] }));
     }
   }
 
   removeSelectedCourthouse(courthouseId: number) {
-    this.selectedCourthouses.update((courthouses) => courthouses.filter((c) => c.id !== courthouseId));
+    this.formValues.update((values) => ({
+      ...values,
+      courthouses: values.courthouses.filter((c) => c.id !== courthouseId),
+    }));
   }
 
   onSubmit() {
@@ -88,17 +93,6 @@ export class SearchFormComponent {
 
     this.errors.emit([]);
 
-    this.search.emit({
-      caseId: this.form.controls.caseId.value,
-      courtroom: this.form.controls.courtroom.value,
-      hearingDate: {
-        type: this.form.controls.hearingDate.controls.type.value,
-        specific: this.form.controls.hearingDate.controls.specific.value,
-        from: this.form.controls.hearingDate.controls.from.value,
-        to: this.form.controls.hearingDate.controls.to.value,
-      },
-      resultsFor: this.form.controls.resultsFor.value,
-      courthouses: this.selectedCourthouses(),
-    });
+    this.search.emit(this.form.value as AdminSearchFormValues);
   }
 }

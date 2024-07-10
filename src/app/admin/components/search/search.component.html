@@ -5,44 +5,46 @@
 <app-search-form
   [courthouses]="courthouses()"
   (search)="onSearch($event)"
-  [(resultsFor)]="tab"
+  [formValues]="searchService.formValues()"
   (errors)="formValidationErrors.set($event)"
 />
 
-@if (isSubmitted()) {
-  <app-govuk-tabs [default]="tab()" (tabChange)="tabChange($event)">
-    <app-govuk-heading tabTitle tag="h2" size="s"> {{ tab() }} </app-govuk-heading>
-    @if (isLoading()) {
+@if (searchService.hasFormBeenSubmitted()) {
+  <app-govuk-tabs [default]="searchService.formValues().resultsFor" (tabChange)="tabChange($event)">
+    <app-govuk-heading tabTitle tag="h2" size="s">
+      {{ searchService.formValues().resultsFor }}
+    </app-govuk-heading>
+    @if (searchService.isLoading()) {
       <app-loading />
     }
-    <span error>{{ searchError() }}</span>
+    <span error>{{ searchService.searchError() }}</span>
 
     <div *tab="'Cases'">
-      @if (cases().length) {
+      @if (searchService.cases().length) {
         <app-case-search-results
           [adminPortal]="true"
-          [cases]="cases()"
+          [cases]="searchService.cases()"
           captionType="heading"
           [showRestrictions]="false"
         />
       }
-      @if (!cases().length && !searchError() && !isLoading()) {
+      @if (!searchService.cases().length && isSearchOk()) {
         {{ 'No results found' }}
       }
     </div>
     <div *tab="'Hearings'">
-      @if (!searchError() && !isLoading()) {
-        <app-hearing-search-results [hearings]="hearings()" />
+      @if (isSearchOk()) {
+        <app-hearing-search-results [hearings]="searchService.hearings()" />
       }
     </div>
     <div *tab="'Events'">
-      @if (!searchError() && !isLoading()) {
-        <app-event-search-results [events]="events()" />
+      @if (isSearchOk()) {
+        <app-event-search-results [events]="searchService.events()" />
       }
     </div>
     <div *tab="'Audio'">
-      @if (!searchError() && !isLoading()) {
-        <app-audio-search-results [audio]="audio()" />
+      @if (isSearchOk()) {
+        <app-audio-search-results [audio]="searchService.audio()" />
       }
     </div>
   </app-govuk-tabs>
