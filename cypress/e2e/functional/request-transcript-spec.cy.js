@@ -67,6 +67,8 @@ describe('Request Transcript', () => {
     cy.get('app-hearing-file').should('contain', '3');
     cy.get('app-hearing-file').should('contain', 'Judge(s)');
     cy.get('app-hearing-file').should('contain', 'HHJ M. Hussain KC');
+
+    cy.get('#transcripts-tab').click();
     cy.get('.flex-space-between > .govuk-heading-m').should('contain', 'Transcripts for this hearing');
     cy.get('.govuk-table__body > :nth-child(1) > :nth-child(1)').should('contain', 'Sentencing remarks');
     cy.get('.govuk-button').should('contain', 'Request a new transcript');
