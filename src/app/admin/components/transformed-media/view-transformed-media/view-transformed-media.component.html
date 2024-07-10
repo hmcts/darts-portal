@@ -1,8 +1,4 @@
-<app-breadcrumb>
-  <ng-container *breadcrumb="['/admin/transformed-media']">Search</ng-container>
-  <ng-container *breadcrumb>Transformed media</ng-container>
-  <ng-container *breadcrumb>{{ transformedMediaId }}</ng-container>
-</app-breadcrumb>
+<a [routerLink]="['/admin/transformed-media']" class="govuk-back-link">Back</a>
 
 @if (hasChangedOwner$ | async; as owner) {
   <app-govuk-banner>Changed media request owner to {{ owner }}</app-govuk-banner>
