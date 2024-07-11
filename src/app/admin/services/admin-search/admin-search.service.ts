@@ -44,7 +44,7 @@ export class AdminSearchService {
   hearings = signal<AdminHearingSearchResult[]>([]);
   audio = signal<AdminMediaSearchResult[]>([]);
   searchError = signal<string | null>(null);
-  isLoading = signal<boolean>(true);
+  isLoading = signal<boolean>(false);
 
   getCases(formValues: AdminSearchFormValues): Observable<AdminCaseSearchResult[]> {
     const requestBody = this.mapAdminSearchFormValuesToSearchRequest(formValues);
@@ -84,6 +84,17 @@ export class AdminSearchService {
       tap((results) => this.audio.set(results)),
       finalize(() => this.isLoading.set(false))
     );
+  }
+
+  clearSearch() {
+    this.cases.set([]);
+    this.events.set([]);
+    this.hearings.set([]);
+    this.audio.set([]);
+    this.searchError.set(null);
+    this.isLoading.set(false);
+    this.formValues.set(defaultFormValues);
+    this.hasFormBeenSubmitted.set(false);
   }
 
   private handleSearchError() {

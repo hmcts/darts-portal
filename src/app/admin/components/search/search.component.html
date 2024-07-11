@@ -4,8 +4,9 @@
 
 <app-search-form
   [courthouses]="courthouses()"
-  (search)="onSearch($event)"
   [formValues]="searchService.formValues()"
+  (search)="onSearch($event)"
+  (clear)="searchService.clearSearch()"
   (errors)="formValidationErrors.set($event)"
 />
 

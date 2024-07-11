@@ -35,6 +35,7 @@ export class SearchFormComponent {
   courthouses = input<Courthouse[]>([]);
   search = output<AdminSearchFormValues>();
   errors = output<ErrorSummaryEntry[]>();
+  clear = output<void>();
   formService = inject(FormService);
   fb = inject(FormBuilder);
 
@@ -55,7 +56,7 @@ export class SearchFormComponent {
   });
 
   constructor() {
-    // if formValues change in the service or parent update the form
+    // if formValues are passed in update the form
     effect(() => this.form.patchValue(this.formValues()));
   }
 
