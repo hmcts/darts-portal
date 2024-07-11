@@ -16,7 +16,7 @@ const STUB_RESPONSES: StubResponse[] = [
   // include stubs here like below
   // ...eventMappings,
   // ...transformedMedia,
-  ...eventsStubResponses,
+  // ...eventsStubResponses,
   // ...hearingsStubResponses,
   // ...mediasStubResponses,
 ];
