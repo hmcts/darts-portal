@@ -83,4 +83,10 @@ export const eventsStubResponses: StubResponse[] = [
     ],
     status: 200,
   },
+  {
+    method: 'get',
+    path: '/cases/:caseId/events',
+    response: events,
+    status: 200,
+  },
 ];
