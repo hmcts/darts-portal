@@ -19,7 +19,7 @@
       [class.govuk-input--error]="form.controls.requestId.errors && form.controls.requestId.touched"
     />
   </div>
-  <details class="govuk-details" [open]="isAdvancedSearch">
+  <details class="govuk-details" [open]="isAdvancedSearch()">
     <summary class="govuk-details__summary" (click)="$event.preventDefault(); toggleAdvancedSearch()">
       <span class="govuk-details__summary-text"> Advanced search </span>
     </summary>
@@ -37,7 +37,7 @@
       <div class="govuk-form-group">
         <app-courthouse-field
           [courthouses]="courthouses"
-          [courthouse]="form.controls.courthouse.value!"
+          [courthouse]="formValues()!.courthouse!"
           (courthouseSelect)="form.get('courthouse')?.patchValue($event); form.get('courthouse')?.markAsDirty()"
           [isInvalid]="form.controls.courthouse.invalid && form.controls.courthouse.touched"
           [errors]="getControlErrorMessage(['courthouse'])"
@@ -76,5 +76,6 @@
   </details>
   <div class="govuk-button-group">
     <button type="submit" class="govuk-button">Search</button>
+    <a class="govuk-link" href="javascript:void(0)" (click)="clear.emit()">Clear search</a>
   </div>
 </form>

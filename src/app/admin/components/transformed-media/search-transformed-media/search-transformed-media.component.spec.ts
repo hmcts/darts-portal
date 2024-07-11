@@ -3,8 +3,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { User } from '@admin-types/index';
 import { TransformedMediaAdmin } from '@admin-types/transformed-media/transformed-media-admin';
 import { TransformedMediaSearchFormValues } from '@admin-types/transformed-media/transformed-media-search-form.values';
+import { signal } from '@angular/core';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
-import { TransformedMediaService } from '@services/transformed-media/transformed-media.service';
+import { TransformedMediaService, defaultFormValues } from '@services/transformed-media/transformed-media.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
@@ -55,6 +56,9 @@ describe('SearchTransformedMediaComponent', () => {
   beforeEach(async () => {
     fakeTransformedMediaService = {
       searchTransformedMedia: jest.fn().mockReturnValue(of(mockTransformedMedia)),
+      isSearchFormSubmitted: signal<boolean>(false),
+      searchResults: signal<TransformedMediaAdmin[]>([]),
+      searchFormValues: signal<TransformedMediaSearchFormValues>(defaultFormValues),
     };
 
     fakeUserAdminService = {
@@ -104,7 +108,7 @@ describe('SearchTransformedMediaComponent', () => {
     it('map results with user details', () => {
       component.onSearch({});
 
-      expect(component.results()).toEqual([
+      expect(component.transformedMediaService.searchResults()).toEqual([
         {
           ...mockTransformedMedia[0],
           mediaRequest: {
@@ -118,7 +122,7 @@ describe('SearchTransformedMediaComponent', () => {
 
     it('set isSearchFormSubmitted to true', () => {
       component.onSearch({});
-      expect(component.isSearchFormSubmitted()).toBe(true);
+      expect(component.transformedMediaService.isSearchFormSubmitted()).toBe(true);
     });
 
     it('should navigate to the transcript page if only one result is returned', () => {

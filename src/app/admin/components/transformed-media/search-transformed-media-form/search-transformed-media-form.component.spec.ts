@@ -22,9 +22,9 @@ describe('SearchTransformedMediaFormComponent', () => {
 
   it('should toggle advanced search', () => {
     component.toggleAdvancedSearch();
-    expect(component.isAdvancedSearch).toBe(true);
+    expect(component.isAdvancedSearch()).toBe(true);
     component.toggleAdvancedSearch();
-    expect(component.isAdvancedSearch).toBe(false);
+    expect(component.isAdvancedSearch()).toBe(false);
   });
 
   it('#onSubmit', () => {

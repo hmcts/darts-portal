@@ -55,6 +55,39 @@ describe('Admin - Transformed media screen', () => {
 
       cy.a11y();
     });
+
+    it('persists search criteria and results', () => {
+      cy.get('#requestId').type('1');
+
+      cy.get('summary').contains('Advanced search').click();
+
+      cy.get('#caseId').type('1');
+      cy.get('#courthouse').type('Swansea');
+      cy.get('#hearingDate').type('01/01/2021');
+      cy.get('#owner').type('Phil Taylor');
+      cy.get('#requestedBy').type('Martin Adams');
+
+      cy.get('#specific-date-radio').click();
+      cy.get('#specific').type('01/01/2021');
+
+      cy.get('[data-button="button-search"]').click();
+
+      cy.get('caption').contains('Showing 1-3 of 3 results');
+
+      cy.get('app-data-table').get('a').contains('1').click();
+
+      cy.get('.govuk-back-link').click();
+
+      cy.get('#requestId').should('have.value', '1');
+      cy.get('#caseId').should('have.value', '1');
+      cy.get('#courthouse').should('have.value', 'Swansea');
+      cy.get('#hearingDate').should('have.value', '01/01/2021');
+      cy.get('#owner').should('have.value', 'Phil Taylor');
+      cy.get('#requestedBy').should('have.value', 'Martin Adams');
+      cy.get('#specific').should('have.value', '01/01/2021');
+
+      cy.get('app-data-table').contains('filename.mp3');
+    });
   });
 
   describe('view transformed media', () => {

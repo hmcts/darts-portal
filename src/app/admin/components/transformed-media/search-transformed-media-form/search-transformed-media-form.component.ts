@@ -1,5 +1,6 @@
+import { TransformedMediaSearchFormValues } from '@admin-types/transformed-media/transformed-media-search-form.values';
 import { CommonModule, NgIf } from '@angular/common';
-import { Component, DestroyRef, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, DestroyRef, EventEmitter, Input, Output, effect, inject, model, output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CourthouseComponent } from '@common/courthouse/courthouse.component';
 import { DatepickerComponent } from '@common/datepicker/datepicker.component';
@@ -7,6 +8,7 @@ import { SpecificOrRangeDatePickerComponent } from '@common/specific-or-range-da
 import { TransformedMediaSearchFormErrorMessages } from '@constants/transformed-media-search-form-error-messages';
 import { CourthouseData, ErrorSummaryEntry } from '@core-types/index';
 import { FormService } from '@services/form/form.service';
+import { defaultFormValues } from '@services/transformed-media/transformed-media.service';
 import { dateRangeValidator } from '@validators/date-range.validator';
 import { futureDateValidator } from '@validators/future-date.validator';
 import { realDateValidator } from '@validators/real-date.validator';
@@ -35,6 +37,7 @@ export class SearchTransformedMediaFormComponent {
   fb = inject(FormBuilder);
   destroyRef = inject(DestroyRef);
   formService = inject(FormService);
+  formValues = model<TransformedMediaSearchFormValues>(defaultFormValues);
 
   @Input() courthouses: CourthouseData[] = [];
 
@@ -56,10 +59,15 @@ export class SearchTransformedMediaFormComponent {
     ),
   });
 
+  constructor() {
+    effect(() => this.form.patchValue(this.formValues()!));
+  }
+
   @Output() search = new EventEmitter<typeof this.form.value>();
   @Output() errors = new EventEmitter<ErrorSummaryEntry[]>();
+  clear = output();
 
-  isAdvancedSearch = false;
+  isAdvancedSearch = model(false);
 
   onSubmit() {
     this.form.markAllAsTouched();
@@ -89,7 +97,7 @@ export class SearchTransformedMediaFormComponent {
   }
 
   toggleAdvancedSearch() {
-    this.isAdvancedSearch = !this.isAdvancedSearch;
+    this.isAdvancedSearch.set(!this.isAdvancedSearch());
   }
 
   setInputValue(value: string, control: string) {

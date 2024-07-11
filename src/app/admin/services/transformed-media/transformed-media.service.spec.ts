@@ -12,7 +12,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
-import { TransformedMediaService } from './transformed-media.service';
+import { TransformedMediaService, defaultFormValues } from './transformed-media.service';
 
 describe('TransformedMediaService', () => {
   let service: TransformedMediaService;
@@ -161,6 +161,25 @@ describe('TransformedMediaService', () => {
       req.flush(mockResponse);
 
       expect(result).toEqual(expectedMappedType);
+    });
+
+    it('sets formValues with search criteria', () => {
+      const mockCriteria = {
+        caseId: '123',
+        courthouse: 'courthouse',
+        hearingDate: '01/01/2021',
+        owner: 'owner',
+        requestedBy: 'requestedBy',
+        requestedDate: {
+          specific: '02/02/2022',
+        },
+      } as TransformedMediaSearchFormValues;
+
+      service.searchTransformedMedia(mockCriteria).subscribe();
+
+      httpMock.expectOne({ url: '/api/admin/transformed-medias/search', method: 'POST' });
+
+      expect(service.searchFormValues()).toEqual(mockCriteria);
     });
   });
 
@@ -696,6 +715,22 @@ describe('TransformedMediaService', () => {
       service.unhideAudioFile(mockId).subscribe();
       const req = httpMock.expectOne({ url: `api/admin/medias/${mockId}/hide`, method: 'POST' });
       req.flush({});
+    });
+  });
+
+  describe('clearSearch', () => {
+    it('should clear search results and reset search for state', () => {
+      service.searchResults.set([{} as TransformedMediaAdmin]);
+      service.isSearchFormSubmitted.set(true);
+      service.isAdvancedSearch.set(true);
+      service.searchFormValues.set({} as TransformedMediaSearchFormValues);
+
+      service.clearSearch();
+
+      expect(service.searchResults()).toEqual([]);
+      expect(service.isSearchFormSubmitted()).toBe(false);
+      expect(service.isAdvancedSearch()).toBe(false);
+      expect(service.searchFormValues()).toEqual(defaultFormValues);
     });
   });
 });
