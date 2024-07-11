@@ -32,7 +32,6 @@ describe('Admin - Search screen', () => {
 
     cy.get('app-case-search-results td')
       .contains('123456')
-      .parent()
       .next('td')
       .should('contain', 'Courthouse 1')
       .next('td')
@@ -44,7 +43,6 @@ describe('Admin - Search screen', () => {
 
     cy.get('app-case-search-results td')
       .contains('654321')
-      .parent()
       .next('td')
       .should('contain', 'Courthouse 2')
       .next('td')
@@ -152,8 +150,6 @@ describe('Admin - Search screen', () => {
       .next('td')
       .should('contain', 'Room A')
       .next('td')
-      .should('contain', '01 Jan 2024')
-      .next('td')
       .should('contain', '01 Jan 2024 at 11:00:00')
       .next('td')
       .should('contain', '01 Jan 2024 at 12:00:00')
@@ -170,8 +166,6 @@ describe('Admin - Search screen', () => {
       .next('td')
       .should('contain', 'Room B')
       .next('td')
-      .should('contain', '08 Jan 2023')
-      .next('td')
       .should('contain', '08 Jan 2023 at 15:30:00')
       .next('td')
       .should('contain', '08 Jan 2023 at 16:15:00')
@@ -187,8 +181,6 @@ describe('Admin - Search screen', () => {
       .should('contain', 'Edinburgh')
       .next('td')
       .should('contain', 'Room C')
-      .next('td')
-      .should('contain', '01 Sep 2022')
       .next('td')
       .should('contain', '01 Sep 2022 at 14:15:00')
       .next('td')
@@ -211,5 +203,36 @@ describe('Admin - Search screen', () => {
     cy.get('#confirm-button').click();
 
     cy.get('app-govuk-tabs').contains('No results found');
+  });
+
+  it('retains form state and results on back button', () => {
+    // Fill in form
+    cy.get('#courthouse-autocomplete').click();
+    cy.get('li').contains('Cardiff').click();
+    cy.get('#caseId').type('123456');
+    cy.get('#courtroom').type('1');
+    cy.get('#specific-date-radio').click();
+    cy.get('[data-button="datepicker-specific-toggle"]').click();
+    cy.get('.ds_datepicker__today').click();
+    cy.get('#audio-option').click();
+
+    cy.get('#confirm-button').click();
+
+    // Click on a result
+    cy.get('app-audio-search-results td').contains('101').click();
+
+    // Go back
+    cy.get('.govuk-back-link').click();
+
+    // Check form values are retained
+    cy.get('.selected-courthouse').should('contain', 'Cardiff');
+    cy.get('#caseId').should('have.value', '123456');
+    cy.get('#courtroom').should('have.value', '1');
+    cy.get('#specific-date-radio').should('be.checked');
+
+    cy.get('#audio-option').should('be.checked');
+
+    cy.get('.govuk-tabs__list-item--selected').contains('Audio');
+    cy.get('app-audio-search-results td').contains('101');
   });
 });
