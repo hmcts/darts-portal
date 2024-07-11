@@ -62,7 +62,7 @@ describe('Admin - Hide or delete file', () => {
 
       cy.get('.govuk-button').contains('Hide or delete').click();
 
-      cy.get('#success-message').contains('File(s) successfully hidden or marked for deletion');
+      cy.get('#success-message').contains('Files successfully hidden or marked for deletion');
       cy.get('.govuk-heading-l').contains('Check for associated files');
       cy.get('.govuk-body').contains(
         'There may be other associated audio or transcript files that also need hiding or deleting.'
@@ -178,7 +178,7 @@ describe('Admin - Hide or delete file', () => {
 
       cy.get('.govuk-button').contains('Continue').click();
 
-      cy.get('#success-message').contains('File(s) successfully hidden or marked for deletion');
+      cy.get('#success-message').contains('Files successfully hidden or marked for deletion');
     });
   });
 
