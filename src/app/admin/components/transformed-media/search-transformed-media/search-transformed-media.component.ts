@@ -36,10 +36,7 @@ export class SearchTransformedMediaComponent {
 
   errors: ErrorSummaryEntry[] = [];
   courthouses$ = this.courthouseService.getCourthouses();
-
-  isSearchFormSubmitted = signal<boolean>(false);
   isLoading = signal<boolean>(false);
-  results = signal<TransformedMediaAdmin[]>([]);
 
   onSearch(values: TransformedMediaSearchFormValues) {
     this.isLoading.set(true);
@@ -69,8 +66,8 @@ export class SearchTransformedMediaComponent {
       )
       .pipe(finalize(() => this.isLoading.set(false)))
       .subscribe((results) => {
-        this.results.set(results);
-        this.isSearchFormSubmitted.set(true);
+        this.transformedMediaService.searchResults.set(results);
+        this.transformedMediaService.isSearchFormSubmitted.set(true);
 
         if (results?.length === 1) {
           // navigate to the transcript document details page

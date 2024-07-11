@@ -13,9 +13,24 @@ import { TransformedMediaRequest } from '@admin-types/transformed-media/transfor
 import { TransformedMediaRequestData } from '@admin-types/transformed-media/transformed-media-request-data.interface';
 import { TransformedMediaSearchFormValues } from '@admin-types/transformed-media/transformed-media-search-form.values';
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { DateTime } from 'luxon';
 import { Observable, map } from 'rxjs';
+
+export const defaultFormValues: TransformedMediaSearchFormValues = {
+  requestId: '',
+  caseId: '',
+  courthouse: '',
+  hearingDate: '',
+  owner: '',
+  requestedBy: '',
+  requestedDate: {
+    type: '',
+    specific: '',
+    from: '',
+    to: '',
+  },
+};
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +38,13 @@ import { Observable, map } from 'rxjs';
 export class TransformedMediaService {
   http = inject(HttpClient);
 
+  searchResults = signal<TransformedMediaAdmin[]>([]);
+  searchFormValues = signal<TransformedMediaSearchFormValues>(defaultFormValues);
+  isSearchFormSubmitted = signal<boolean>(false);
+  isAdvancedSearch = signal<boolean>(false);
+
   searchTransformedMedia(searchCriteria: TransformedMediaSearchFormValues): Observable<TransformedMediaAdmin[]> {
+    this.searchFormValues.set(searchCriteria);
     const body = this.mapSearchCriteriaToSearchRequest(searchCriteria);
     return this.http
       .post<TransformedMediaAdminData[]>('/api/admin/transformed-medias/search', body)
@@ -98,6 +119,13 @@ export class TransformedMediaService {
     return this.http
       .post<FileHideData>(`api/admin/medias/${id}/hide`, { is_hidden: false })
       .pipe(map((res) => this.mapHideFileResponse(res)));
+  }
+
+  clearSearch() {
+    this.searchResults.set([]);
+    this.isSearchFormSubmitted.set(false);
+    this.isAdvancedSearch.set(false);
+    this.searchFormValues.set(defaultFormValues);
   }
 
   private mapHidePostRequest(body: FileHideOrDeleteFormValues) {

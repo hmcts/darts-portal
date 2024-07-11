@@ -5,13 +5,16 @@
 @if (courthouses$ | async; as courthouses) {
   <app-search-transformed-media-form
     [courthouses]="courthouses"
+    [formValues]="transformedMediaService.searchFormValues()"
+    [(isAdvancedSearch)]="transformedMediaService.isAdvancedSearch"
     (search)="onSearch($event)"
+    (clear)="transformedMediaService.clearSearch()"
     (errors)="errors = $event"
   />
 }
 
-@if (isSearchFormSubmitted() && !isLoading()) {
-  <app-transformed-media-search-results [results]="results()" />
+@if (transformedMediaService.isSearchFormSubmitted() && !isLoading()) {
+  <app-transformed-media-search-results [results]="transformedMediaService.searchResults()" />
 }
 
 @if (isLoading()) {
