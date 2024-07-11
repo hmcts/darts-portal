@@ -178,7 +178,7 @@ describe('Admin - Hide or delete file', () => {
 
       cy.get('.govuk-button').contains('Continue').click();
 
-      cy.get('#success-message').contains('File(s) successfully hidden or marked for deletion');
+      cy.get('#success-message').contains('Files successfully hidden or marked for deletion');
     });
   });
 
