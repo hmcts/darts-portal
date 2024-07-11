@@ -1,10 +1,11 @@
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
+import { signal } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { CourthouseData } from '@core-types/courthouse/courthouse.interface';
 import { TabDirective } from '@directives/tab.directive';
-import { AdminSearchService } from '@services/admin-search/admin-search.service';
+import { AdminSearchService, defaultFormValues } from '@services/admin-search/admin-search.service';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
-import { of, throwError } from 'rxjs';
+import { of } from 'rxjs';
 import { AdminSearchFormValues } from './search-form/search-form.component';
 import { SearchComponent } from './search.component';
 
@@ -18,6 +19,14 @@ const fakeAdminSearchService = {
   getEvents: jest.fn().mockReturnValue(of([])),
   getHearings: jest.fn().mockReturnValue(of([])),
   getAudioMedia: jest.fn().mockReturnValue(of([])),
+  formValues: signal({ ...defaultFormValues }),
+  isLoading: signal(false),
+  hasFormBeenSubmitted: signal(false),
+  searchError: signal(null),
+  cases: signal([]),
+  events: signal([]),
+  hearings: signal([]),
+  audio: signal([]),
 };
 
 describe('SearchComponent', () => {
@@ -60,10 +69,10 @@ describe('SearchComponent', () => {
 
   describe('onSearch', () => {
     it('set flags', fakeAsync(() => {
-      const isLoadingSpy = jest.spyOn(component.isLoading, 'set');
-      const isSubmitedSpy = jest.spyOn(component.isSubmitted, 'set');
-      const searchErrorSpy = jest.spyOn(component.searchError, 'set');
-      const tabSpy = jest.spyOn(component.tab, 'set');
+      const isLoadingSpy = jest.spyOn(component.searchService.isLoading, 'set');
+      const isSubmitedSpy = jest.spyOn(component.searchService.hasFormBeenSubmitted, 'set');
+      const searchErrorSpy = jest.spyOn(component.searchService.searchError, 'set');
+      const formValuesSpy = jest.spyOn(component.searchService.formValues, 'set');
 
       component.onSearch({
         caseId: '123',
@@ -76,10 +85,16 @@ describe('SearchComponent', () => {
       tick();
 
       expect(isLoadingSpy).toHaveBeenCalledWith(true);
-      expect(isLoadingSpy).toHaveBeenCalledTimes(2);
+      expect(isLoadingSpy).toHaveBeenCalledTimes(1);
       expect(isSubmitedSpy).toHaveBeenCalledWith(true);
       expect(searchErrorSpy).toHaveBeenCalledWith(null);
-      expect(tabSpy).toHaveBeenCalledWith('Cases');
+      expect(formValuesSpy).toHaveBeenCalledWith({
+        caseId: '123',
+        courtroom: '1',
+        courthouses: [{ id: 1, displayName: 'Courthouse 1' } as Courthouse],
+        hearingDate: { type: 'specific', specific: '01/01/2021', from: '', to: '' },
+        resultsFor: 'Cases',
+      });
     }));
 
     describe('case search', () => {
@@ -99,68 +114,60 @@ describe('SearchComponent', () => {
           resultsFor: 'Cases',
         });
       });
-
-      it('errors', fakeAsync(() => {
-        jest.spyOn(fakeAdminSearchService, 'getCases').mockReturnValue(throwError(() => 'error'));
-        const handleErrorSpy = jest.spyOn(component, 'handleError');
-
-        component.onSearch({ resultsFor: 'Cases' } as AdminSearchFormValues);
-
-        tick();
-
-        expect(handleErrorSpy).toHaveBeenCalled();
-        expect(component.isLoading()).toBe(false);
-        expect(component.cases()).toEqual([]);
-        expect(component.searchError()).toBe('There are more than 500 results. Refine your search.');
-      }));
     });
 
     describe('event search', () => {
       it('call getEvents with correct values', () => {
-        component.onSearch({ resultsFor: 'Events' } as AdminSearchFormValues);
-        expect(fakeAdminSearchService.getEvents).toHaveBeenCalledWith({ resultsFor: 'Events' });
+        component.onSearch({ ...defaultFormValues, resultsFor: 'Events' } as AdminSearchFormValues);
+        expect(fakeAdminSearchService.getEvents).toHaveBeenCalledWith({ ...defaultFormValues, resultsFor: 'Events' });
       });
     });
 
     describe('hearing search', () => {
       it('call getHearings with correct values', () => {
-        component.onSearch({ resultsFor: 'Hearings' } as AdminSearchFormValues);
-        expect(fakeAdminSearchService.getHearings).toHaveBeenCalledWith({ resultsFor: 'Hearings' });
+        component.onSearch({ ...defaultFormValues, resultsFor: 'Hearings' } as AdminSearchFormValues);
+        expect(fakeAdminSearchService.getHearings).toHaveBeenCalledWith({
+          ...defaultFormValues,
+          resultsFor: 'Hearings',
+        });
       });
     });
 
     describe('audio search', () => {
       it('call getAudio with correct values', () => {
-        component.onSearch({ resultsFor: 'Audio' } as AdminSearchFormValues);
-        expect(fakeAdminSearchService.getAudioMedia).toHaveBeenCalledWith({ resultsFor: 'Audio' });
+        component.onSearch({ ...defaultFormValues, resultsFor: 'Audio' } as AdminSearchFormValues);
+        expect(fakeAdminSearchService.getAudioMedia).toHaveBeenCalledWith({
+          ...defaultFormValues,
+          resultsFor: 'Audio',
+        });
       });
     });
+  });
 
-    describe('tabChange', () => {
-      it('set tab', () => {
-        component.tabChange({ name: 'Cases' } as TabDirective);
-        expect(component.tab()).toBe('Cases');
+  describe('tabChange', () => {
+    it('updates formValues', () => {
+      component.tabChange({ name: 'Cases' } as TabDirective);
+      expect(component.searchService.formValues().resultsFor).toBe('Cases');
+    });
+
+    it('triggers search with last search form values', () => {
+      const onSearchSpy = jest.spyOn(component, 'onSearch');
+      component.searchService.formValues.set({
+        caseId: '123',
+        courtroom: '1',
+        courthouses: [{ id: 1, displayName: 'Courthouse 1' } as Courthouse],
+        hearingDate: { type: 'specific', specific: '01/01/2021', from: '', to: '' },
+        resultsFor: 'Cases',
       });
 
-      it('triggers search with last search form values', () => {
-        const onSearchSpy = jest.spyOn(component, 'onSearch');
-        component.lastSearchFormValues.set({
-          caseId: '123',
-          courtroom: '1',
-          courthouses: [{ id: 1, displayName: 'Courthouse 1' } as Courthouse],
-          hearingDate: { type: 'specific', specific: '01/01/2021', from: '', to: '' },
-          resultsFor: 'Cases',
-        });
+      component.tabChange({ name: 'Hearings' } as TabDirective);
 
-        component.tabChange({ name: 'Hearings' } as TabDirective);
-
-        expect(onSearchSpy).toHaveBeenCalledWith({
-          caseId: '123',
-          courtroom: '1',
-          courthouses: [{ id: 1, displayName: 'Courthouse 1' } as Courthouse],
-          hearingDate: { type: 'specific', specific: '01/01/2021', from: '', to: '' },
-          resultsFor: 'Hearings',
-        });
+      expect(onSearchSpy).toHaveBeenCalledWith({
+        caseId: '123',
+        courtroom: '1',
+        courthouses: [{ id: 1, displayName: 'Courthouse 1' } as Courthouse],
+        hearingDate: { type: 'specific', specific: '01/01/2021', from: '', to: '' },
+        resultsFor: 'Hearings',
       });
     });
   });

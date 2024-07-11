@@ -7,9 +7,9 @@ import { AdminHearingSearchResultData } from '@admin-types/search/admin-hearing-
 import { AdminMediaSearchResult } from '@admin-types/search/admin-media-search-result';
 import { AdminMediaSearchResultData } from '@admin-types/search/admin-media-search-result-data.inerface';
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { DateTime } from 'luxon';
-import { Observable, map } from 'rxjs';
+import { Observable, catchError, finalize, map, of, tap } from 'rxjs';
 import { AdminSearchFormValues } from '../../components/search/search-form/search-form.component';
 
 export const ADMIN_CASE_SEARCH_PATH = '/api/admin/cases/search';
@@ -17,38 +17,89 @@ export const ADMIN_EVENT_SEARCH_PATH = '/api/admin/events/search';
 export const ADMIN_HEARING_SEARCH_PATH = '/api/admin/hearings/search';
 export const ADMIN_MEDIA_SEARCH_PATH = '/api/admin/medias/search';
 
+export const defaultFormValues: AdminSearchFormValues = {
+  courthouses: [],
+  caseId: '',
+  courtroom: '',
+  hearingDate: {
+    type: '',
+    specific: '',
+    from: '',
+    to: '',
+  },
+  resultsFor: 'Cases',
+};
+
 @Injectable({
   providedIn: 'root',
 })
 export class AdminSearchService {
   http = inject(HttpClient);
 
+  // signals to store previous search results and search form state
+  formValues = signal<AdminSearchFormValues>(defaultFormValues);
+  hasFormBeenSubmitted = signal<boolean>(false);
+  cases = signal<AdminCaseSearchResult[]>([]);
+  events = signal<AdminEventSearchResult[]>([]);
+  hearings = signal<AdminHearingSearchResult[]>([]);
+  audio = signal<AdminMediaSearchResult[]>([]);
+  searchError = signal<string | null>(null);
+  isLoading = signal<boolean>(false);
+
   getCases(formValues: AdminSearchFormValues): Observable<AdminCaseSearchResult[]> {
     const requestBody = this.mapAdminSearchFormValuesToSearchRequest(formValues);
-    return this.http
-      .post<AdminCaseSearchResultData[]>(ADMIN_CASE_SEARCH_PATH, requestBody)
-      .pipe(map((results) => this.mapCaseDataToCaseSearchResult(results)));
+    return this.http.post<AdminCaseSearchResultData[]>(ADMIN_CASE_SEARCH_PATH, requestBody).pipe(
+      map((results) => this.mapCaseDataToCaseSearchResult(results)),
+      catchError(() => this.handleSearchError()),
+      tap((results) => this.cases.set(results)),
+      finalize(() => this.isLoading.set(false))
+    );
   }
 
   getEvents(formValues: AdminSearchFormValues): Observable<AdminEventSearchResult[]> {
     const requestBody = this.mapAdminSearchFormValuesToSearchRequest(formValues);
-    return this.http
-      .post<AdminEventSearchResultData[]>(ADMIN_EVENT_SEARCH_PATH, requestBody)
-      .pipe(map((results) => this.mapEventDataToEventSearchResult(results)));
+    return this.http.post<AdminEventSearchResultData[]>(ADMIN_EVENT_SEARCH_PATH, requestBody).pipe(
+      map((results) => this.mapEventDataToEventSearchResult(results)),
+      catchError(() => this.handleSearchError()),
+      tap((results) => this.events.set(results)),
+      finalize(() => this.isLoading.set(false))
+    );
   }
 
   getHearings(formValues: AdminSearchFormValues): Observable<AdminHearingSearchResult[]> {
     const requestBody = this.mapAdminSearchFormValuesToSearchRequest(formValues);
-    return this.http
-      .post<AdminHearingSearchResultData[]>(ADMIN_HEARING_SEARCH_PATH, requestBody)
-      .pipe(map((results) => this.mapHearingDataToHearingSearchResult(results)));
+    return this.http.post<AdminHearingSearchResultData[]>(ADMIN_HEARING_SEARCH_PATH, requestBody).pipe(
+      map((results) => this.mapHearingDataToHearingSearchResult(results)),
+      catchError(() => this.handleSearchError()),
+      tap((results) => this.hearings.set(results)),
+      finalize(() => this.isLoading.set(false))
+    );
   }
 
   getAudioMedia(formValues: AdminSearchFormValues): Observable<AdminMediaSearchResult[]> {
     const requestBody = this.mapAdminSearchFormValuesToSearchRequest(formValues);
-    return this.http
-      .post<AdminMediaSearchResultData[]>(ADMIN_MEDIA_SEARCH_PATH, requestBody)
-      .pipe(map((results) => this.mapMediaDataToMediaSearchResult(results)));
+    return this.http.post<AdminMediaSearchResultData[]>(ADMIN_MEDIA_SEARCH_PATH, requestBody).pipe(
+      map((results) => this.mapMediaDataToMediaSearchResult(results)),
+      catchError(() => this.handleSearchError()),
+      tap((results) => this.audio.set(results)),
+      finalize(() => this.isLoading.set(false))
+    );
+  }
+
+  clearSearch() {
+    this.cases.set([]);
+    this.events.set([]);
+    this.hearings.set([]);
+    this.audio.set([]);
+    this.searchError.set(null);
+    this.isLoading.set(false);
+    this.formValues.set(defaultFormValues);
+    this.hasFormBeenSubmitted.set(false);
+  }
+
+  private handleSearchError() {
+    this.searchError.set('There are more than 500 results. Refine your search.');
+    return of([]);
   }
 
   private mapCaseDataToCaseSearchResult(results: AdminCaseSearchResultData[]): AdminCaseSearchResult[] {
@@ -86,7 +137,7 @@ export class AdminSearchService {
     }));
   }
 
-  mapMediaDataToMediaSearchResult(results: AdminMediaSearchResultData[]): AdminMediaSearchResult[] {
+  private mapMediaDataToMediaSearchResult(results: AdminMediaSearchResultData[]): AdminMediaSearchResult[] {
     return results.map((result) => ({
       id: result.id,
       courthouse: result.courthouse.display_name,

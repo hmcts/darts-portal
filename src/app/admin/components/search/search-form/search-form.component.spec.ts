@@ -30,7 +30,10 @@ describe('SearchFormComponent', () => {
 
     it('filter out already selected courthouses', () => {
       fixture.componentRef.setInput('courthouses', [{ id: 1, displayName: 'Courthouse 1' }]);
-      component.selectedCourthouses.set([{ id: 1, displayName: 'Courthouse 1' } as Courthouse]);
+      component.formValues.update((v) => ({
+        ...v,
+        courthouses: [{ id: 1, displayName: 'Courthouse 1' } as Courthouse],
+      }));
       fixture.detectChanges();
       expect(component.courthouseAutoCompleteItems()).toEqual([]);
     });
@@ -40,22 +43,28 @@ describe('SearchFormComponent', () => {
     it('add courthouse to selectedCourthouses', () => {
       fixture.componentRef.setInput('courthouses', [{ id: 1, displayName: 'Courthouse 1' }]);
       component.updateSelectedCourthouses({ id: 1, name: 'Courthouse 1' });
-      expect(component.selectedCourthouses()).toEqual([{ id: 1, displayName: 'Courthouse 1' }]);
+      expect(component.formValues().courthouses).toEqual([{ id: 1, displayName: 'Courthouse 1' }]);
     });
 
     it('do not add courthouse if already selected', () => {
       fixture.componentRef.setInput('courthouses', [{ id: 1, displayName: 'Courthouse 1' }]);
-      component.selectedCourthouses.set([{ id: 1, displayName: 'Courthouse 1' } as Courthouse]);
+      component.formValues.update((v) => ({
+        ...v,
+        courthouses: [{ id: 1, displayName: 'Courthouse 1' } as Courthouse],
+      }));
       component.updateSelectedCourthouses({ id: 1, name: 'Courthouse 1' });
-      expect(component.selectedCourthouses()).toEqual([{ id: 1, displayName: 'Courthouse 1' }]);
+      expect(component.formValues().courthouses).toEqual([{ id: 1, displayName: 'Courthouse 1' }]);
     });
   });
 
   describe('removeSelectedCourthouse', () => {
     it('remove courthouse from selectedCourthouses', () => {
-      component.selectedCourthouses.set([{ id: 1, displayName: 'Courthouse 1' } as Courthouse]);
+      component.formValues.update((v) => ({
+        ...v,
+        courthouses: [{ id: 1, displayName: 'Courthouse 1' } as Courthouse],
+      }));
       component.removeSelectedCourthouse(1);
-      expect(component.selectedCourthouses()).toEqual([]);
+      expect(component.formValues().courthouses).toEqual([]);
     });
   });
 
@@ -67,7 +76,7 @@ describe('SearchFormComponent', () => {
       component.form.get('hearingDate.type')?.setValue('specific');
       component.form.get('hearingDate.specific')?.setValue('01/01/2021');
       component.form.get('resultsFor')?.setValue('Cases');
-      component.selectedCourthouses.set([{ id: 1, displayName: 'Courthouse 1' } as Courthouse]);
+      component.form.get('courthouses')?.setValue([{ id: 1, displayName: 'Courthouse 1' } as Courthouse]);
 
       component.onSubmit();
 

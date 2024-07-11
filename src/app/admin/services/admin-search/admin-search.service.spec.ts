@@ -1,6 +1,10 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
+import { AdminCaseSearchResult } from '@admin-types/search/admin-case-search-result';
+import { AdminEventSearchResult } from '@admin-types/search/admin-event-search-result';
+import { AdminHearingSearchResult } from '@admin-types/search/admin-hearing-search-result';
+import { AdminMediaSearchResult } from '@admin-types/search/admin-media-search-result';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { DateTime } from 'luxon';
@@ -260,6 +264,48 @@ describe('AdminSearchService', () => {
         courthouse_ids: [],
         hearing_start_at: null,
         hearing_end_at: null,
+      });
+    });
+  });
+
+  describe('clearSearch', () => {
+    it('should clear the search results', () => {
+      service.cases.set([{} as AdminCaseSearchResult]);
+      service.events.set([{} as AdminEventSearchResult]);
+      service.hearings.set([{} as AdminHearingSearchResult]);
+      service.audio.set([{} as AdminMediaSearchResult]);
+      service.searchError.set('error');
+      service.isLoading.set(true);
+      service.formValues.set(mockSearchFormValues);
+
+      service.clearSearch();
+
+      expect(service.cases()).toEqual([]);
+      expect(service.events()).toEqual([]);
+      expect(service.hearings()).toEqual([]);
+      expect(service.audio()).toEqual([]);
+      expect(service.searchError()).toBeNull();
+      expect(service.isLoading()).toBe(false);
+      expect(service.formValues()).toEqual({
+        caseId: '',
+        courtroom: '',
+        courthouses: [],
+        hearingDate: {
+          type: '',
+          specific: '',
+          from: '',
+          to: '',
+        },
+        resultsFor: 'Cases',
+      });
+    });
+  });
+
+  describe('handleSearchError', () => {
+    it('should set the error message', () => {
+      service['handleSearchError']().subscribe((result) => {
+        expect(result).toEqual([]);
+        expect(service.searchError()).toEqual('There are more than 500 results. Refine your search.');
       });
     });
   });
