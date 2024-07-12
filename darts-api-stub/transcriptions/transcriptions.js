@@ -288,8 +288,7 @@ const mockTranscriptionDetailsNoName = {
     },
   ],
 };
-
-let unassignedTranscriptions = [
+const defaultUnassignedTranscriptions = [
   {
     transcription_id: 4,
     case_id: 72345,
@@ -373,7 +372,7 @@ let unassignedTranscriptions = [
   },
 ];
 
-let assignedTranscriptions = [
+const defaultAssignedTranscriptions = [
   {
     transcription_id: 0,
     case_id: 3,
@@ -510,6 +509,16 @@ router.get('/urgencies', (req, res) => {
       priority_order: 6,
     },
   ]);
+});
+
+let assignedTranscriptions = [...defaultAssignedTranscriptions];
+let unassignedTranscriptions = [...defaultUnassignedTranscriptions];
+
+router.get('/reset', (req, res) => {
+  assignedTranscriptions = [...defaultAssignedTranscriptions];
+  unassignedTranscriptions = [...defaultUnassignedTranscriptions];
+
+  res.sendStatus(200);
 });
 
 router.get('/transcriber-counts', (req, res) => {
