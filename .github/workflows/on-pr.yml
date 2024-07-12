@@ -24,8 +24,8 @@ jobs:
 
             - uses: Azure/get-keyvault-secrets@v1
               with:
-                  keyvault: 'pip-bootstrap-stg-kv'
-                  secrets: 'b2c-jenkins-tenant-id, b2c-jenkins-client-id, b2c-jenkins-client-secret'
+                  keyvault: 'darts-stg'
+                  secrets: 'AzureAdB2CTenantId, AzureAdB2CClientId, AzureAdB2CClientSecret'
               id: bootstrapKv
 
             - run: |
