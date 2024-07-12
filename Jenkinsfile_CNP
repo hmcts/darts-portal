@@ -9,6 +9,24 @@ def component = "portal"
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 def branchesToSync = ['demo', 'perftest']
 
+
+
+  // azureKeyVault(
+  //     keyVaultURL: "https://darts-${env}.vault.azure.net/",
+  //     secrets: [
+  //         secret('b2c-test-account', 'B2C_USERNAME'),
+  //         secret('b2c-test-account-pwd', 'B2C_PASSWORD'),
+  //         secret('b2c-test-admin-account', 'B2C_ADMIN_USERNAME'),
+  //         secret('b2c-test-admin-account-pwd', 'B2C_ADMIN_PASSWORD'),
+  //         secret('b2c-test-system-admin-account', 'B2C_SYSTEM_ADMIN_USERNAME'), 
+  //         secret('b2c-test-system-admin-account-pwd', 'B2C_SYSTEM_ADMIN_PASSWORD'),
+  //         secret('b2c-test-system-admin-account-provenance-id', 'SYSTEM_ADMIN_PROVENANCE_ID'),
+  //         secret('test-user-id', 'VERIFIED_USER_ID'),
+  //         secret('test-system-admin-id', 'SYSTEM_ADMIN_USER_ID'),
+  //         secret('app-tenant', 'TENANT_ID'),
+  //         secret('auto-generated-test-user-pwd','TEST_USER_PASSWORD')
+  //     ]) 
+
 withPipeline(type, product, component) {
   enableSlackNotifications('#darts-builds')
   disableCleanupOfHelmReleaseOnFailure()
