@@ -40,7 +40,7 @@ jobs:
                   azureTenant="${B2C_TENANT_ID}"
 
                   echo "Login to $azureTenant with $azureClientId"
-                  az login --service-principal --username $azureClientId -p=$azureClientSecret --tenant $azureTenant --allow-no-subscriptions
+                  az login --service-principal --username $azureClientId -password=$azureClientSecret --tenant $azureTenant --allow-no-subscriptions
 
                   az ad app list --all --filter "displayname eq '${targetAppName}'"
                   appId=$(az ad app list --all --filter "displayname eq '${targetAppName}'" --query "[0].appId" -o tsv --only-show-errors )
