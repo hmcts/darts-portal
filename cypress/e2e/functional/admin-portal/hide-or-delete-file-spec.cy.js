@@ -130,8 +130,8 @@ describe('Admin - Hide or delete file', () => {
         .find('.govuk-table__cell')
         .eq(3)
         .should('contain', 'courthouse 12');
-      cy.get('#hideFileTable .govuk-table__row').eq(1).find('.govuk-table__cell').eq(4).should('contain', '6:00PM');
-      cy.get('#hideFileTable .govuk-table__row').eq(1).find('.govuk-table__cell').eq(5).should('contain', '7:00PM');
+      cy.get('#hideFileTable .govuk-table__row').eq(1).find('.govuk-table__cell').eq(4).should('contain', '6:00:00PM');
+      cy.get('#hideFileTable .govuk-table__row').eq(1).find('.govuk-table__cell').eq(5).should('contain', '7:00:00PM');
       cy.get('#hideFileTable .govuk-table__row')
         .eq(1)
         .find('.govuk-table__cell')
@@ -155,12 +155,12 @@ describe('Admin - Hide or delete file', () => {
         .eq(1)
         .find('.govuk-table__cell')
         .eq(5)
-        .should('contain', '6:00PM');
+        .should('contain', '6:00:00PM');
       cy.get('#associatedAudioTable .govuk-table__row')
         .eq(1)
         .find('.govuk-table__cell')
         .eq(6)
-        .should('contain', '7:00PM');
+        .should('contain', '7:00:00PM');
       cy.get('#associatedAudioTable .govuk-table__row')
         .eq(1)
         .find('.govuk-table__cell')
