@@ -50,8 +50,6 @@ export class CreateUserComponent {
   onConfirmUserDetails() {
     this.userAdminService.createUser(this.formValues!).subscribe((user) => {
       this.router.navigate(['/admin/users', user.id], { queryParams: { newUser: true } });
-
-      //TO DO: Unhappy path
     });
   }
 
