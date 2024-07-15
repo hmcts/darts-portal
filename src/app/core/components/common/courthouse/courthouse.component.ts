@@ -49,7 +49,7 @@ export class CourthouseComponent implements AfterViewInit, OnChanges {
   ngAfterViewInit(): void {
     if (this.courthouses.length) {
       this.props.element = this.autocompleteContainer.nativeElement;
-      this.props.source = this.courthouses.map((courthouse) => courthouse.courthouse_name);
+      this.props.source = this.courthouses.map((courthouse) => courthouse.display_name);
       this.props.defaultValue = this.courthouse;
       accessibleAutocomplete(this.props);
     }
