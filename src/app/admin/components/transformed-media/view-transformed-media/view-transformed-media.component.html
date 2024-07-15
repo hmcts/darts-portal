@@ -59,8 +59,8 @@
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Audio requested</dt>
         <dd class="govuk-summary-list__value">
-          Start time {{ data.mediaRequest.startAt | luxonDate: 'HH:mm' }} - End time
-          {{ data.mediaRequest.endAt | luxonDate: 'HH:mm' }}
+          Start time {{ data.mediaRequest.startAt | luxonDate: 'h:mm:ssa' }} - End time
+          {{ data.mediaRequest.endAt | luxonDate: 'h:mm:ssa' }}
         </dd>
       </div>
     </dl>
