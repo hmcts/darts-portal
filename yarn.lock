@@ -299,7 +299,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular-eslint/builder@npm:^18.0.1":
+"@angular-eslint/builder@npm:^18.1.0":
   version: 18.1.0
   resolution: "@angular-eslint/builder@npm:18.1.0"
   dependencies:
@@ -319,7 +319,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular-eslint/eslint-plugin-template@npm:18.1.0, @angular-eslint/eslint-plugin-template@npm:^18.0.1":
+"@angular-eslint/eslint-plugin-template@npm:18.1.0, @angular-eslint/eslint-plugin-template@npm:^18.1.0":
   version: 18.1.0
   resolution: "@angular-eslint/eslint-plugin-template@npm:18.1.0"
   dependencies:
@@ -335,7 +335,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular-eslint/eslint-plugin@npm:18.1.0, @angular-eslint/eslint-plugin@npm:^18.0.1":
+"@angular-eslint/eslint-plugin@npm:18.1.0, @angular-eslint/eslint-plugin@npm:^18.1.0":
   version: 18.1.0
   resolution: "@angular-eslint/eslint-plugin@npm:18.1.0"
   dependencies:
@@ -349,7 +349,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular-eslint/schematics@npm:^18.0.1":
+"@angular-eslint/schematics@npm:^18.1.0":
   version: 18.1.0
   resolution: "@angular-eslint/schematics@npm:18.1.0"
   dependencies:
@@ -367,7 +367,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular-eslint/template-parser@npm:^18.0.1":
+"@angular-eslint/template-parser@npm:^18.1.0":
   version: 18.1.0
   resolution: "@angular-eslint/template-parser@npm:18.1.0"
   dependencies:
@@ -393,7 +393,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/animations@npm:^18.0.3":
+"@angular/animations@npm:^18.1.0":
   version: 18.1.0
   resolution: "@angular/animations@npm:18.1.0"
   dependencies:
@@ -459,7 +459,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/build@npm:^18.0.4":
+"@angular/build@npm:^18.1.0":
   version: 18.1.0
   resolution: "@angular/build@npm:18.1.0"
   dependencies:
@@ -521,7 +521,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/cdk@npm:^18.0.3":
+"@angular/cdk@npm:^18.1.0":
   version: 18.1.0
   resolution: "@angular/cdk@npm:18.1.0"
   dependencies:
@@ -538,7 +538,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/cli@npm:^18.0.4":
+"@angular/cli@npm:^18.1.0":
   version: 18.1.0
   resolution: "@angular/cli@npm:18.1.0"
   dependencies:
@@ -570,7 +570,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/common@npm:^18.0.3":
+"@angular/common@npm:^18.1.0":
   version: 18.1.0
   resolution: "@angular/common@npm:18.1.0"
   dependencies:
@@ -582,7 +582,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/compiler-cli@npm:^18.0.3":
+"@angular/compiler-cli@npm:^18.1.0":
   version: 18.1.0
   resolution: "@angular/compiler-cli@npm:18.1.0"
   dependencies:
@@ -605,7 +605,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/compiler@npm:^18.0.3":
+"@angular/compiler@npm:^18.1.0":
   version: 18.1.0
   resolution: "@angular/compiler@npm:18.1.0"
   dependencies:
@@ -619,7 +619,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/core@npm:^18.0.3":
+"@angular/core@npm:^18.1.0":
   version: 18.1.0
   resolution: "@angular/core@npm:18.1.0"
   dependencies:
@@ -631,7 +631,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/forms@npm:^18.0.3":
+"@angular/forms@npm:^18.1.0":
   version: 18.1.0
   resolution: "@angular/forms@npm:18.1.0"
   dependencies:
@@ -645,7 +645,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/platform-browser-dynamic@npm:^18.0.3":
+"@angular/platform-browser-dynamic@npm:^18.1.0":
   version: 18.1.0
   resolution: "@angular/platform-browser-dynamic@npm:18.1.0"
   dependencies:
@@ -659,7 +659,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/platform-browser@npm:^18.0.3":
+"@angular/platform-browser@npm:^18.1.0":
   version: 18.1.0
   resolution: "@angular/platform-browser@npm:18.1.0"
   dependencies:
@@ -675,7 +675,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/router@npm:^18.0.3":
+"@angular/router@npm:^18.1.0":
   version: 18.1.0
   resolution: "@angular/router@npm:18.1.0"
   dependencies:
@@ -7857,7 +7857,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cypress@npm:^13.11.0":
+"cypress@npm:^13.13.0":
   version: 13.13.0
   resolution: "cypress@npm:13.13.0"
   dependencies:
@@ -7916,23 +7916,23 @@ __metadata:
     "@angular-builders/custom-webpack": ^18.0.0
     "@angular-builders/dev-server": ^7.3.1
     "@angular-devkit/architect": ^0.1801.0
-    "@angular-eslint/builder": ^18.0.1
-    "@angular-eslint/eslint-plugin": ^18.0.1
-    "@angular-eslint/eslint-plugin-template": ^18.0.1
-    "@angular-eslint/schematics": ^18.0.1
-    "@angular-eslint/template-parser": ^18.0.1
-    "@angular/animations": ^18.0.3
-    "@angular/build": ^18.0.4
-    "@angular/cdk": ^18.0.3
-    "@angular/cli": ^18.0.4
-    "@angular/common": ^18.0.3
-    "@angular/compiler": ^18.0.3
-    "@angular/compiler-cli": ^18.0.3
-    "@angular/core": ^18.0.3
-    "@angular/forms": ^18.0.3
-    "@angular/platform-browser": ^18.0.3
-    "@angular/platform-browser-dynamic": ^18.0.3
-    "@angular/router": ^18.0.3
+    "@angular-eslint/builder": ^18.1.0
+    "@angular-eslint/eslint-plugin": ^18.1.0
+    "@angular-eslint/eslint-plugin-template": ^18.1.0
+    "@angular-eslint/schematics": ^18.1.0
+    "@angular-eslint/template-parser": ^18.1.0
+    "@angular/animations": ^18.1.0
+    "@angular/build": ^18.1.0
+    "@angular/cdk": ^18.1.0
+    "@angular/cli": ^18.1.0
+    "@angular/common": ^18.1.0
+    "@angular/compiler": ^18.1.0
+    "@angular/compiler-cli": ^18.1.0
+    "@angular/core": ^18.1.0
+    "@angular/forms": ^18.1.0
+    "@angular/platform-browser": ^18.1.0
+    "@angular/platform-browser-dynamic": ^18.1.0
+    "@angular/router": ^18.1.0
     "@dynatrace/dtrum-api-types": ^1.291.1
     "@hmcts/nodejs-healthcheck": ^1.8.5
     "@hmcts/properties-volume": ^1.1.0
@@ -7963,9 +7963,9 @@ __metadata:
     config: ^3.3.11
     connect-redis: ^7.1.1
     cookie-parser: ^1.4.6
-    cypress: ^13.11.0
+    cypress: ^13.13.0
     cypress-axe: ^1.5.0
-    ejs: ^3.1.9
+    ejs: ^3.1.10
     eslint: ^9.5
     express: ^4.19.2
     express-session: ^1.18.0
@@ -7975,7 +7975,7 @@ __metadata:
     i: ^0.3.7
     jest: ^29.7
     jest-environment-jsdom: ^29.7
-    jest-preset-angular: ^14.1.0
+    jest-preset-angular: ^14.1.1
     junit-report-merger: ^7.0.0
     lodash: ^4.17.21
     luxon: ^3.4.4
@@ -7990,7 +7990,7 @@ __metadata:
     ts-jest: ^29.1.5
     ts-node: ^10.9.2
     tslib: ^2.6.3
-    typescript: ^5.4.5
+    typescript: ^5.5.3
     xunit-viewer: ^10.6.1
     zone.js: ~0.14.7
   languageName: unknown
@@ -8396,7 +8396,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ejs@npm:^3.0.0, ejs@npm:^3.1.7, ejs@npm:^3.1.9":
+"ejs@npm:^3.0.0, ejs@npm:^3.1.10, ejs@npm:^3.1.7":
   version: 3.1.10
   resolution: "ejs@npm:3.1.10"
   dependencies:
@@ -11149,7 +11149,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-preset-angular@npm:^14.1.0":
+"jest-preset-angular@npm:^14.1.1":
   version: 14.1.1
   resolution: "jest-preset-angular@npm:14.1.1"
   dependencies:
@@ -16221,7 +16221,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.4.5":
+"typescript@npm:^5.5.3":
   version: 5.5.3
   resolution: "typescript@npm:5.5.3"
   bin:
@@ -16231,7 +16231,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^5.4.5#~builtin<compat/typescript>":
+"typescript@patch:typescript@^5.5.3#~builtin<compat/typescript>":
   version: 5.5.3
   resolution: "typescript@patch:typescript@npm%3A5.5.3#~builtin<compat/typescript>::version=5.5.3&hash=379a07"
   bin:
