@@ -101,6 +101,6 @@ jobs:
 
               env:
                   PR_NUMBER: ${{ github.event.number }}
-                  B2C_TENANT_ID: ${{ steps.dartsStgKV.outputs.AzureADB2CTenneantID }}
-                  B2C_CLIENT_ID: ${{ steps.dartsStgKV.outputs.AzureADB2CClientID }}
-                  B2C_CLIENT_PWD: ${{ steps.dartsStgKV.outputs.AzureADB2CClientSecret }}
+                  B2C_TENANT_ID: ${{ steps.dartsStgKV.outputs.AzureAdB2CTenneantID }}
+                  B2C_CLIENT_ID: ${{ steps.dartsStgKV.outputs.AzureAdB2CClientID }}
+                  B2C_CLIENT_PWD: ${{ steps.dartsStgKV.outputs.AzureAdB2CClientSecret }}
