@@ -619,9 +619,12 @@ router.get('/:transcriptId', (req, res) => {
 });
 
 router.patch('/:transcriptId/document', (req, res) => {
-  assignedTranscriptions = assignedTranscriptions.map((t) => {
+  let assignedTranscriptionsCopy = [...defaultAssignedTranscriptions];
+
+  assignedTranscriptionsCopy = assignedTranscriptionsCopy.map((t) => {
     if (t.transcription_id == req.params.transcriptId) {
-      t.status = 'Complete';
+      const updatedTranscription = { ...t, status: 'Complete' };
+      return updatedTranscription;
     }
     return t;
   });
@@ -629,9 +632,12 @@ router.patch('/:transcriptId/document', (req, res) => {
 });
 
 router.post('/:transcriptId/document', (req, res) => {
-  assignedTranscriptions = assignedTranscriptions.map((t) => {
+  let assignedTranscriptionsCopy = [...defaultAssignedTranscriptions];
+
+  assignedTranscriptionsCopy = assignedTranscriptionsCopy.map((t) => {
     if (t.transcription_id == req.params.transcriptId) {
-      t.status = 'Complete';
+      const updatedTranscription = { ...t, status: 'Complete' };
+      return updatedTranscription;
     }
     return t;
   });

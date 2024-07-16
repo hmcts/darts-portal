@@ -36,4 +36,8 @@ describe('Upload transcript', () => {
     cy.get('#end-time-minutes-input').should('have.value', '00');
     cy.get('#end-time-seconds-input').should('have.value', '00');
   });
+
+  after(() => {
+    cy.request('/api/transcriptions/reset');
+  });
 });
