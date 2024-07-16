@@ -186,6 +186,53 @@ const mockTranscriptionDetails = {
   courthouse: 'Swansea',
   courtroom: '5',
   courthouse_id: 1,
+  status: 'With Transcriber',
+  from: 'MoJ CH Swansea',
+  requestor: {
+    user_id: 1,
+    user_full_name: 'Joe Smith',
+  },
+  received: '2023-11-17T12:53:07.468Z',
+  requestor_comments: 'Please expedite my request',
+  rejection_reason: 'This request will take longer to transcribe within the urgency level you require.',
+  defendants: ['Defendant Dave', 'Defendant Bob'],
+  judges: ['HHJ M. Hussain KC	', 'Ray Bob'],
+  transcript_file_name: 'C20220620001_0.docx',
+  hearing_date: '2023-11-08',
+  transcription_urgency: {
+    transcription_urgency_id: 1,
+    description: 'Standard',
+    priority_order: 4,
+  },
+  request_type: 'Specified Times',
+  request_id: 123456789,
+  transcription_id: 1,
+  transcription_start_ts: '2023-06-26T13:00:00Z',
+  transcription_end_ts: '2023-06-26T16:00:00Z',
+  transcription_object_id: 109,
+  is_manual: true,
+  hearing_id: 1,
+  requestor: {
+    user_id: 1,
+    user_full_name: 'Eric Bristow',
+  },
+};
+
+const mockTranscriptionDetailsRejected = {
+  case_id: 1,
+  case_reporting_restrictions: [
+    {
+      hearing_id: 1,
+      event_id: 123,
+      event_name: 'Section 4(2) of the Contempt of Court Act 1981',
+      event_text: '',
+      event_ts: '2023-08-07T09:00:00Z',
+    },
+  ],
+  case_number: 'C20220620001',
+  courthouse: 'Swansea',
+  courtroom: '5',
+  courthouse_id: 1,
   status: 'Rejected',
   from: 'MoJ CH Swansea',
   requestor: {
@@ -564,7 +611,7 @@ router.get('/:transcriptId', (req, res) => {
       res.status(200).send(mockTranscriptionDetailsNoName);
       break;
     case '4':
-      res.status(200).send(mockTranscriptionDetails);
+      res.status(200).send(mockTranscriptionDetailsRejected);
       break;
     default:
       res.status(200).send(mockTranscriptionDetailsTwo);
