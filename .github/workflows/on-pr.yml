@@ -26,7 +26,7 @@ jobs:
                   adminSignInUrl="https://darts-portal-pr-${PR_NUMBER}.dev.platform.hmcts.net/login/admin/return"
                   adminPasswordResetUrl="https://darts-portal-pr-${PR_NUMBER}.dev.platform.hmcts.net/password-change-confirmation/true"
                   mediaPasswordResetUrl="https://darts-portal-pr-${PR_NUMBER}.dev.platform.hmcts.net/password-change-confirmation/false"
-                  targetAppName="darts-portal-stg"
+                  targetAppName="darts-stg"
 
                   echo "Login to $azureTenant with $azureClientId"
                   az login --service-principal --username ${{ secrets.B2C_AZURE_CLIENT_ID}} -p=${{ secrets.B2C_AZURE_CLIENT_SECRET}} --tenant ${{ secrets.B2C_AZURE_TENANT_ID}} --allow-no-subscriptions
