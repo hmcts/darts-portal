@@ -1,13 +1,17 @@
 import { Transcription, TranscriptionDocumentSearchResult, TranscriptionStatus } from '@admin-types/transcription';
 import { DatePipe } from '@angular/common';
-import { ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
+import { signal } from '@angular/core';
+import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourthouseData } from '@core-types/index';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
-import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
+import {
+  defaultFormValues,
+  TranscriptionAdminService,
+} from '@services/transcription-admin/transcription-admin.service';
 import { DateTime } from 'luxon';
-import { of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { TranscriptsComponent } from './transcripts.component';
 
 describe('TranscriptsComponent', () => {
@@ -103,6 +107,12 @@ describe('TranscriptsComponent', () => {
             mapResults: jest.fn().mockReturnValue(MOCK_MAPPING),
             search: jest.fn().mockReturnValue(of(MOCK_SEARCH_RESULT)),
             searchCompletedTranscriptions: jest.fn().mockReturnValue(of(MOCK_COMPLETED_SEARCH_RESULT)),
+            searchFormValues: signal(defaultFormValues),
+            searchResults: signal([]),
+            completedSearchResults: signal([]),
+            tab: signal('Requests'),
+            isAdvancedSearch: signal(false),
+            hasSearchFormBeenSubmitted$: new BehaviorSubject<boolean>(false),
           },
         },
         {

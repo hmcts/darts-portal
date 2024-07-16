@@ -1,6 +1,7 @@
 import { TranscriptionSearchFormValues } from '@admin-types/transcription';
 import { AsyncPipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
@@ -8,8 +9,11 @@ import { TabsComponent } from '@common/tabs/tabs.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { TabDirective } from '@directives/tab.directive';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
-import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
-import { BehaviorSubject, Subject, combineLatest, map, of, shareReplay, switchMap, tap } from 'rxjs';
+import {
+  defaultFormValues,
+  TranscriptionAdminService,
+} from '@services/transcription-admin/transcription-admin.service';
+import { combineLatest, map, of, shareReplay, Subject, switchMap, tap } from 'rxjs';
 import { SearchCompletedTranscriptsResultsComponent } from './search-completed-transcripts-results/search-completed-transcripts-results.component';
 import { SearchTranscriptsFormComponent } from './search-transcripts-form/search-transcripts-form.component';
 import { SearchTranscriptsResultsComponent } from './search-transcripts-results/search-transcripts-results.component';
@@ -41,8 +45,8 @@ export class TranscriptsComponent {
   transcriptionStatuses$ = this.transcriptService.getTranscriptionStatuses().pipe(shareReplay(1));
 
   search$ = new Subject<TranscriptionSearchFormValues | null>();
-  loading$ = new Subject<boolean>();
-  isSubmitted$ = new BehaviorSubject<boolean>(false);
+  isLoading = signal(false);
+  isSubmitted$ = this.transcriptService.hasSearchFormBeenSubmitted$;
 
   results$ = combineLatest([this.search$, this.isSubmitted$, this.courthouses$, this.transcriptionStatuses$]).pipe(
     tap(() => this.startLoading()),
@@ -57,6 +61,7 @@ export class TranscriptsComponent {
           .pipe(map((results) => this.transcriptService.mapResults(results, courthouses, statuses)))
       );
     }),
+    takeUntilDestroyed(),
     tap((results) => {
       this.stopLoading();
       if (results?.length === 1) {
@@ -83,24 +88,41 @@ export class TranscriptsComponent {
     })
   );
 
+  constructor() {
+    this.results$.subscribe((results) => results && this.transcriptService.searchResults.set(results));
+    this.completedResults$.subscribe(
+      (results) => results && this.transcriptService.completedSearchResults.set(results)
+    );
+  }
+
   startLoading() {
-    this.loading$.next(true);
+    this.isLoading.set(true);
   }
 
   stopLoading() {
-    this.loading$.next(false);
+    this.isLoading.set(false);
   }
 
   onSearch(values: TranscriptionSearchFormValues) {
-    if (this.isSubmitted$.value === false) {
+    if (this.isSubmitted$.getValue() === false) {
       this.isSubmitted$.next(true);
     }
+    this.transcriptService.searchFormValues.set(values); // save form state
     this.search$.next(values); // Trigger the search
   }
 
   clearSearch() {
-    this.isSubmitted$.next(false);
+    this.transcriptService.searchFormValues.set(defaultFormValues);
+    this.transcriptService.searchResults.set(null);
+    this.transcriptService.isAdvancedSearch.set(false);
+    this.transcriptService.completedSearchResults.set(null);
+    this.transcriptService.hasSearchFormBeenSubmitted$.next(false);
     this.search$.next(null);
     this.errors = [];
+  }
+
+  onTabChanged(tab: string) {
+    this.clearSearch();
+    this.transcriptService.tab.set(tab);
   }
 }
