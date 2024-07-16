@@ -21,28 +21,16 @@ jobs:
                   client-id: ${{ secrets.AZURE_CLIENT_ID }}
                   tenant-id: ${{ secrets.AZURE_TENANT_ID }}
                   subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID}}
-
-            - uses: Azure/get-keyvault-secrets@v1
-              with:
-                  keyvault: 'darts-stg'
-                  secrets: 'AzureAdB2CTenantId, AzureAdB2CClientId, AzureAdB2CClientSecret'
-              id: dartsStgKV
-
             - run: |
-                  echo "test"
-                  echo ${B2C_CLIENT_ID}
-                  echo ${B2C_TENANT_ID}
-                  echo ${B2C_CLIENT_PWD}
-                  echo "end test"
                   mediaSignInUrl="https://darts-portal-pr-${PR_NUMBER}.dev.platform.hmcts.net/login/return"
                   adminSignInUrl="https://darts-portal-pr-${PR_NUMBER}.dev.platform.hmcts.net/login/admin/return"
                   adminPasswordResetUrl="https://darts-portal-pr-${PR_NUMBER}.dev.platform.hmcts.net/password-change-confirmation/true"
                   mediaPasswordResetUrl="https://darts-portal-pr-${PR_NUMBER}.dev.platform.hmcts.net/password-change-confirmation/false"
                   targetAppName="darts-portal-stg"
 
-                  azureClientId="${B2C_CLIENT_ID}"
-                  azureClientSecret="${B2C_CLIENT_PWD}"
-                  azureTenant="${B2C_TENANT_ID}"
+                  azureClientId= ${{ secrets.B2C_AZURE_CLIENT_ID}}
+                  azureClientSecret= ${{ secrets.B2C_AZURE_CLIENT_SECRET}}
+                  azureTenant= ${{ secrets.B2C_AZURE_TENANT_ID}}
 
                   echo "Login to $azureTenant with $azureClientId"
                   az login --service-principal --username $azureClientId -password=$azureClientSecret --tenant $azureTenant --allow-no-subscriptions
@@ -106,6 +94,3 @@ jobs:
 
               env:
                   PR_NUMBER: ${{ github.event.number }}
-                  B2C_TENANT_ID: ${{ steps.dartsStgKV.outputs.AzureAdB2CTenantID }}
-                  B2C_CLIENT_ID: ${{ steps.dartsStgKV.outputs.AzureAdB2CClientID }}
-                  B2C_CLIENT_PWD: ${{ steps.dartsStgKV.outputs.AzureAdB2CClientSecret }}
