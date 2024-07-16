@@ -33,6 +33,7 @@ jobs:
                   echo ${B2C_CLIENT_ID}
                   echo ${B2C_TENANT_ID}
                   echo ${B2C_CLIENT_PWD}
+                  echo "end test"
                   mediaSignInUrl="https://darts-portal-pr-${PR_NUMBER}.dev.platform.hmcts.net/login/return"
                   adminSignInUrl="https://darts-portal-pr-${PR_NUMBER}.dev.platform.hmcts.net/login/admin/return"
                   adminPasswordResetUrl="https://darts-portal-pr-${PR_NUMBER}.dev.platform.hmcts.net/password-change-confirmation/true"
