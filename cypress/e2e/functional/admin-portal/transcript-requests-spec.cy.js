@@ -33,7 +33,7 @@ describe('Admin - Transcript requests', () => {
       cy.get('summary').contains('Advanced search').click();
 
       cy.get('#courthouse').type('Slough');
-      cy.get('li').contains('SLOUGH').click();
+      cy.get('li').contains('Slough').click();
       cy.get('#hearingDate').type('01/01/2022');
       cy.get('#owner').type('Phil Taylor');
       cy.get('#requestedBy').type('Martin Adams');
@@ -50,7 +50,7 @@ describe('Admin - Transcript requests', () => {
       cy.get('.govuk-back-link').click();
 
       cy.get('#requestId').should('have.value', '1');
-      cy.get('#courthouse').should('have.value', 'SLOUGH');
+      cy.get('#courthouse').should('have.value', 'Slough');
       cy.get('#hearingDate').should('have.value', '01/01/2022');
       cy.get('#owner').should('have.value', 'Phil Taylor');
       cy.get('#requestedBy').should('have.value', 'Martin Adams');
