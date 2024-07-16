@@ -335,6 +335,7 @@ const mockTranscriptionDetailsNoName = {
     },
   ],
 };
+
 const defaultUnassignedTranscriptions = [
   {
     transcription_id: 4,
@@ -613,6 +614,13 @@ router.get('/:transcriptId', (req, res) => {
     case '4':
       res.status(200).send(mockTranscriptionDetailsRejected);
       break;
+    case '5':
+      res.status(200).send({
+        ...mockTranscriptionDetails,
+        transcription_start_ts: null,
+        transcription_end_ts: null,
+        request_type: 'Sentencing Remarks',
+      });
     default:
       res.status(200).send(mockTranscriptionDetailsTwo);
   }
