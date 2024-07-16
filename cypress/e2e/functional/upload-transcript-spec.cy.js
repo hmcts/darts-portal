@@ -28,11 +28,11 @@ describe('Upload transcript', () => {
   it('"Get audio for request" button should navigate to hearing and prefill start and end time for audio request', () => {
     cy.get('#get-audio-button').click();
 
-    cy.get('#start-time-hour-input').should('have.value', '13');
+    cy.get('#start-time-hour-input').should('have.value', '14');
     cy.get('#start-time-minutes-input').should('have.value', '00');
     cy.get('#start-time-seconds-input').should('have.value', '00');
 
-    cy.get('#end-time-hour-input').should('have.value', '16');
+    cy.get('#end-time-hour-input').should('have.value', '17');
     cy.get('#end-time-minutes-input').should('have.value', '00');
     cy.get('#end-time-seconds-input').should('have.value', '00');
   });

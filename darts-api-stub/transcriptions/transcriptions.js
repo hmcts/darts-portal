@@ -186,7 +186,7 @@ const mockTranscriptionDetails = {
   courthouse: 'Swansea',
   courtroom: '5',
   courthouse_id: 1,
-  status: 'With Transcriber',
+  status: 'Rejected',
   from: 'MoJ CH Swansea',
   requestor: {
     user_id: 1,
