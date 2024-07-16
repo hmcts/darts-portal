@@ -28,6 +28,9 @@ jobs:
                   mediaPasswordResetUrl="https://darts-portal-pr-${PR_NUMBER}.dev.platform.hmcts.net/password-change-confirmation/false"
                   targetAppName="darts-stg"
 
+                  echo "Login to $azureTenant with $azureClientId"
+                  az login --service-principal --username ${{ secrets.SP_CLIENT_ID}} -p=${{ secrets.SP_SECRET_KEY}} --tenant ${{ secrets.SP_TENANT_ID}} --allow-no-subscriptions
+
                   az ad app list --all --filter "displayname eq '${targetAppName}'"
                   appId=$(az ad app list --all --filter "displayname eq '${targetAppName}'" --query "[0].appId" -o tsv --only-show-errors )
                   appId=${appId//[$'\t\r\n']/}
