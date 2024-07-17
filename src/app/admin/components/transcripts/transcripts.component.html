@@ -1,18 +1,32 @@
-<app-validation-error-summary [errors]="errors"></app-validation-error-summary>
+@let courthouses = courthouses$ | async;
+@let isAdvancedSearch = transcriptService.isAdvancedSearch;
+@let formValues = transcriptService.searchFormValues();
+@let results = transcriptService.searchResults();
+@let completedResults = transcriptService.completedSearchResults();
+@let loading = isLoading();
+
+<app-validation-error-summary [errors]="errors" />
 <app-govuk-heading size="xl">Transcripts</app-govuk-heading>
 
-@if (courthouses$ | async; as courthouses) {
-  <app-tabs (tabChange)="clearSearch()">
+@if (courthouses) {
+  <app-tabs (tabChange)="onTabChanged($event.name)" [default]="tab()">
     <div *tab="'Requests'">
       <app-govuk-heading>Transcript requests</app-govuk-heading>
 
-      <app-search-transcripts-form [courthouses]="courthouses" (search)="onSearch($event)" (errors)="errors = $event" />
+      <app-search-transcripts-form
+        [courthouses]="courthouses"
+        [formValues]="formValues"
+        (search)="onSearch($event)"
+        (errors)="errors = $event"
+        (clear)="clearSearch()"
+        [(isAdvancedSearch)]="isAdvancedSearch"
+      />
 
-      @if (results$ | async; as results) {
+      @if (results) {
         <app-search-transcripts-results [results]="results" />
       }
 
-      @if (loading$ | async) {
+      @if (loading) {
         <app-loading text="Searching transcript requests..." />
       }
     </div>
@@ -23,15 +37,18 @@
       <app-search-transcripts-form
         [courthouses]="courthouses"
         [isCompletedTranscriptSearch]="true"
+        [formValues]="formValues"
         (search)="onSearch($event)"
         (errors)="errors = $event"
+        (clear)="clearSearch()"
+        [(isAdvancedSearch)]="isAdvancedSearch"
       />
 
-      @if (completedResults$ | async; as results) {
-        <app-search-completed-transcripts-results [results]="results" />
+      @if (completedResults) {
+        <app-search-completed-transcripts-results [results]="completedResults" />
       }
 
-      @if (loading$ | async) {
+      @if (loading) {
         <app-loading text="Searching completed transcripts..." />
       }
     </div>

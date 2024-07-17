@@ -1,5 +1,6 @@
-import { CommonModule, JsonPipe, NgIf } from '@angular/common';
-import { Component, DestroyRef, EventEmitter, Input, Output, inject } from '@angular/core';
+import { TranscriptionSearchFormValues } from '@admin-types/index';
+import { CommonModule, NgIf } from '@angular/common';
+import { Component, DestroyRef, effect, inject, input, model, output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CourthouseComponent } from '@common/courthouse/courthouse.component';
 import { DatepickerComponent } from '@common/datepicker/datepicker.component';
@@ -7,6 +8,7 @@ import { SpecificOrRangeDatePickerComponent } from '@common/specific-or-range-da
 import { TranscriptSearchFormErrorMessages } from '@constants/transcript-search-form-error-messages';
 import { CourthouseData, ErrorSummaryEntry } from '@core-types/index';
 import { FormService } from '@services/form/form.service';
+import { defaultFormValues } from '@services/transcription-admin/transcription-admin.service';
 import { dateRangeValidator } from '@validators/date-range.validator';
 import { futureDateValidator } from '@validators/future-date.validator';
 import { realDateValidator } from '@validators/real-date.validator';
@@ -26,7 +28,6 @@ export const transcriptSearchDateValidators = [
     ReactiveFormsModule,
     DatepickerComponent,
     NgIf,
-    JsonPipe,
     SpecificOrRangeDatePickerComponent,
     CourthouseComponent,
     CommonModule,
@@ -37,8 +38,9 @@ export class SearchTranscriptsFormComponent {
   destroyRef = inject(DestroyRef);
   formService = inject(FormService);
 
-  @Input() isCompletedTranscriptSearch = false;
-  @Input() courthouses: CourthouseData[] = [];
+  isCompletedTranscriptSearch = input(false);
+  courthouses = input<CourthouseData[]>([]);
+  formValues = model<TranscriptionSearchFormValues>(defaultFormValues);
 
   form = this.fb.group({
     requestId: [''],
@@ -59,13 +61,18 @@ export class SearchTranscriptsFormComponent {
     requestMethod: [''],
   });
 
-  @Output() search = new EventEmitter<typeof this.form.value>();
-  @Output() errors = new EventEmitter<ErrorSummaryEntry[]>();
+  search = output<typeof this.form.value>();
+  errors = output<ErrorSummaryEntry[]>();
+  clear = output();
 
-  isAdvancedSearch = false;
+  isAdvancedSearch = model(false);
+
+  constructor() {
+    effect(() => this.form.patchValue(this.formValues()));
+  }
 
   toggleAdvancedSearch() {
-    this.isAdvancedSearch = !this.isAdvancedSearch;
+    this.isAdvancedSearch.set(!this.isAdvancedSearch());
   }
 
   setInputValue(value: string, control: string) {

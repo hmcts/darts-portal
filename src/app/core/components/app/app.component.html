@@ -1,9 +1,13 @@
 @if (showCookieBanner) {
-  <app-cookie-banner></app-cookie-banner>
+  <app-cookie-banner />
 }
-<a [routerLink]="[currentUrl]" fragment="content" class="govuk-skip-link" data-module="govuk-skip-link"
-  >Skip to main content</a
->
-<app-header></app-header>
-<app-content></app-content>
-<app-footer></app-footer>
+
+<a [routerLink]="[currentUrl]" fragment="content" class="govuk-skip-link" data-module="govuk-skip-link">
+  Skip to main content
+</a>
+
+<app-header />
+
+<app-content />
+
+<app-footer />
