@@ -46,10 +46,8 @@ export class AssignTranscriptComponent implements OnDestroy {
   errorMsgService = inject(ErrorMessageService);
   hearingId: number | null = null;
   caseId: number | null = null;
-  startTime: string | null = null;
-  endTime: string | null = null;
   caseNumber: string | null = null;
-  getAudioQueryParams: { startTime: string; endTime: string } | null = null;
+  getAudioQueryParams: { startTime: string | null; endTime: string | null } | null = null;
   isSubmitted = false;
   errors: { fieldId: string; message: string }[] = [];
   error$ = this.errorMsgService.errorMessage$;
@@ -61,43 +59,15 @@ export class AssignTranscriptComponent implements OnDestroy {
       this.caseNumber = data.caseNumber;
       this.hearingId = data.hearingId;
       this.caseId = data.caseId;
-      this.startTime = this.luxonDatePipe.transform(data.transcriptionStartTs, 'HH:mm:ss');
-      this.endTime = this.luxonDatePipe.transform(data.transcriptionEndTs, 'HH:mm:ss');
       this.getAudioQueryParams =
-        this.startTime && this.endTime ? { startTime: this.startTime, endTime: this.endTime } : null;
+        data.transcriptionStartTs && data.transcriptionEndTs
+          ? {
+              startTime: this.luxonDatePipe.transform(data.transcriptionStartTs, 'HH:mm:ss'),
+              endTime: this.luxonDatePipe.transform(data.transcriptionEndTs, 'HH:mm:ss'),
+            }
+          : null;
     }),
-    map((data: TranscriptionDetails) => {
-      const hearingDate = this.luxonDatePipe.transform(data.hearingDate, 'dd MMM yyyy');
-      const received = this.luxonDatePipe.transform(data.received, 'dd MMM yyyy HH:mm:ss');
-
-      //TO DO: Move this mapping into a service function so it's not missed in data changes
-      const vm = {
-        reportingRestrictions: data.caseReportingRestrictions ?? [],
-        caseDetails: {
-          'Case ID': data.caseNumber,
-          Courthouse: data.courthouse,
-          'Judge(s)': data.judges,
-          'Defendant(s)': data.defendants,
-        },
-        hearingDetails: {
-          'Hearing Date': hearingDate,
-          'Request Type': data.requestType,
-          'Request method': data.isManual ? 'Manual' : 'Automated',
-          'Request ID': this.transcriptId,
-          Urgency: data.urgency?.description,
-          'Audio for transcript':
-            this.startTime && this.endTime ? `Start time ${this.startTime} - End time ${this.endTime}` : '',
-          From: data.from,
-          Received: received,
-          Instructions: data.requestorComments,
-          'Judge approval': 'Yes',
-        },
-        hearingId: data.hearingId,
-        caseId: data.caseId,
-      };
-
-      return vm;
-    })
+    map((t) => this.transcriptionService.getAssignDetailsFromTranscript(t))
   );
 
   onAssignTranscript() {
