@@ -1,3 +1,4 @@
+const s = require('connect-redis');
 const express = require('express');
 const router = express.Router();
 const path = require('path');
@@ -620,6 +621,7 @@ router.get('/:transcriptId', (req, res) => {
         transcription_start_ts: null,
         transcription_end_ts: null,
         request_type: 'Sentencing Remarks',
+        status: 'Complete',
       });
     default:
       res.status(200).send(mockTranscriptionDetailsTwo);
