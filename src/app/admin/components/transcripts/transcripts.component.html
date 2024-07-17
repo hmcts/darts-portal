@@ -4,13 +4,12 @@
 @let results = transcriptService.searchResults();
 @let completedResults = transcriptService.completedSearchResults();
 @let loading = isLoading();
-@let tab = transcriptService.tab();
 
 <app-validation-error-summary [errors]="errors" />
 <app-govuk-heading size="xl">Transcripts</app-govuk-heading>
 
 @if (courthouses) {
-  <app-tabs (tabChange)="onTabChanged($event.name)" [default]="tab">
+  <app-tabs (tabChange)="onTabChanged($event.name)" [default]="tab()">
     <div *tab="'Requests'">
       <app-govuk-heading>Transcript requests</app-govuk-heading>
 

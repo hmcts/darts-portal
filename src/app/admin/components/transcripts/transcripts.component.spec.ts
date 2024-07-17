@@ -1,7 +1,7 @@
 import { Transcription, TranscriptionDocumentSearchResult, TranscriptionStatus } from '@admin-types/transcription';
 import { DatePipe } from '@angular/common';
 import { signal } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourthouseData } from '@core-types/index';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
@@ -17,6 +17,7 @@ import { TranscriptsComponent } from './transcripts.component';
 describe('TranscriptsComponent', () => {
   let component: TranscriptsComponent;
   let fixture: ComponentFixture<TranscriptsComponent>;
+  let router: Router;
 
   const MOCK_SEARCH_RESULT = [
     { id: 1, courthouse: { id: 1 }, status: { id: 1 } },
@@ -129,6 +130,8 @@ describe('TranscriptsComponent', () => {
 
     fixture = TestBed.createComponent(TranscriptsComponent);
     component = fixture.componentInstance;
+    router = TestBed.inject(Router);
+    jest.spyOn(router, 'navigate').mockResolvedValue(true);
     fixture.detectChanges();
   });
 
@@ -207,6 +210,7 @@ describe('TranscriptsComponent', () => {
     component.errors = [{ fieldId: '1', message: 'error' }];
     component.clearSearch();
     expect(component.errors).toEqual([]);
+    fakeAsync;
   });
 
   it('should navigate to the transcript page if only one result is returned', () => {
@@ -217,12 +221,37 @@ describe('TranscriptsComponent', () => {
     expect(component.router.navigate).toHaveBeenCalledWith(['/admin/transcripts', 1]);
   });
 
+  it('only search request search if the tab is "Requests"', fakeAsync(() => {
+    jest.spyOn(component.transcriptService, 'search');
+    component.tab.set('Requests');
+    component.isSubmitted$.next(true);
+    component.search$.next({});
+
+    tick();
+
+    expect(component.transcriptService.search).toHaveBeenCalled();
+    expect(component.transcriptService.searchCompletedTranscriptions).not.toHaveBeenCalled();
+  }));
+
+  it('only search for completed transcripts if the tab is "Completed transcripts"', fakeAsync(() => {
+    jest.spyOn(component.transcriptService, 'searchCompletedTranscriptions').mockReturnValue(of([]));
+    component.tab.set('Completed transcripts');
+    component.isSubmitted$.next(true);
+    component.search$.next({});
+
+    tick();
+
+    expect(component.transcriptService.searchCompletedTranscriptions).toHaveBeenCalled();
+    expect(component.transcriptService.search).not.toHaveBeenCalled();
+  }));
+
   describe('completedResults$', () => {
     it('should return the results when the search is completed', () => {
       let result;
 
       component.completedResults$.subscribe((results) => (result = results));
 
+      component.tab.set('Completed transcripts');
       component.search$.next({});
       component.isSubmitted$.next(true);
 
@@ -239,6 +268,7 @@ describe('TranscriptsComponent', () => {
 
       component.completedResults$.subscribe();
 
+      component.tab.set('Completed transcripts');
       component.search$.next({});
       component.isSubmitted$.next(true);
 
