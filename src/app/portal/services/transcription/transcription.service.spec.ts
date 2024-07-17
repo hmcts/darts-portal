@@ -531,4 +531,60 @@ describe('TranscriptionService', () => {
       expect(mappedData[0].status).toEqual('With Transcriber');
     });
   });
+
+  describe('#getAssignDetailsFromTranscript', () => {
+    it('should return the assign details from the transcript', () => {
+      const transcript: TranscriptionDetails = {
+        hearingId: 1,
+        caseId: 1,
+        caseNumber: '123',
+        courthouse: 'Swansea',
+        courtroom: '2',
+        defendants: ['John Doe', 'Jane Doe'],
+        judges: ['Judge Judy', 'Judge Joe Brown'],
+        transcriptFileName: '',
+        hearingDate: DateTime.fromISO('2023-11-08'),
+        urgency: {
+          transcription_urgency_id: 1,
+          description: 'High',
+          priority_order: 1,
+        },
+        requestType: 'Type A',
+        transcriptionId: 123456,
+        transcriptionStartTs: DateTime.fromISO('2023-06-26T13:00:00'),
+        transcriptionEndTs: DateTime.fromISO('2023-06-26T18:00:00'),
+        transcriptionObjectId: 2,
+        received: DateTime.fromISO('2023-11-17T12:53:07.468'),
+        from: 'MoJ CH Swansea',
+        requestorComments: 'Please expedite my request',
+        isManual: false,
+      };
+
+      const assignDetails = service.getAssignDetailsFromTranscript(transcript);
+
+      expect(assignDetails).toEqual({
+        reportingRestrictions: [],
+        caseDetails: {
+          'Case ID': '123',
+          Courthouse: 'Swansea',
+          'Judge(s)': ['Judge Judy', 'Judge Joe Brown'],
+          'Defendant(s)': ['John Doe', 'Jane Doe'],
+        },
+        hearingDetails: {
+          'Hearing date': '08 Nov 2023',
+          'Request type': 'Type A',
+          'Request method': 'Automated',
+          'Request ID': 123456,
+          Urgency: 'High',
+          'Audio for transcript': 'Start time 13:00:00 - End time 18:00:00',
+          From: 'MoJ CH Swansea',
+          Received: '17 Nov 2023 12:53:07',
+          Instructions: 'Please expedite my request',
+          'Judge approval': 'Yes',
+        },
+        hearingId: 1,
+        caseId: 1,
+      });
+    });
+  });
 });
