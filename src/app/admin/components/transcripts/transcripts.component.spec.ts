@@ -221,7 +221,7 @@ describe('TranscriptsComponent', () => {
     expect(component.router.navigate).toHaveBeenCalledWith(['/admin/transcripts', 1]);
   });
 
-  it('only search request search if the tab is "Requests"', fakeAsync(() => {
+  it('only search for transcript requests if the tab is "Requests"', fakeAsync(() => {
     jest.spyOn(component.transcriptService, 'search');
     component.tab.set('Requests');
     component.isSubmitted$.next(true);
