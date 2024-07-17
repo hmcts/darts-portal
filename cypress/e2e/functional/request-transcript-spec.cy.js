@@ -17,8 +17,13 @@ describe('Request Transcript', () => {
   });
 
   it('should get to hearing transcripts tab', () => {
-    cy.get('#hearingsTable a').contains('1 Sep 2023').click();
-    cy.get(':nth-child(2) > .moj-sub-navigation__link').click();
+    cy.get('#hearingsTable a')
+      .contains('1 Sep 2023')
+      .click()
+      .then(() => {
+        cy.get('#transcripts-tab').click();
+      });
+
     cy.get('.govuk-caption-l').should('contain', 'Hearing');
     cy.get('.govuk-heading-l').should('contain', '1 Sep 2023');
     cy.get('app-hearing-file').should('contain', 'Courthouse');
@@ -27,14 +32,20 @@ describe('Request Transcript', () => {
     cy.get('app-hearing-file').should('contain', '3');
     cy.get('app-hearing-file').should('contain', 'Judge(s)');
     cy.get('app-hearing-file').should('contain', 'HHJ M. Hussain KC');
+    cy.get('#transcripts-tab').click();
     cy.get('.flex-space-between > .govuk-heading-m').should('contain', 'Transcripts for this hearing');
     cy.get('.govuk-table__body > :nth-child(1) > :nth-child(1)').should('contain', 'Sentencing remarks');
     cy.get('.govuk-button').should('contain', 'Request a new transcript');
   });
 
   it('should get to the request transcript page', () => {
-    cy.get('#hearingsTable a').contains('1 Sep 2023').click();
-    cy.get(':nth-child(2) > .moj-sub-navigation__link').click();
+    cy.get('#hearingsTable a')
+      .contains('1 Sep 2023')
+      .click()
+      .then(() => {
+        cy.get('#transcripts-tab').click();
+      });
+
     cy.get('.govuk-caption-l').should('contain', 'Hearing');
     cy.get('.govuk-heading-l').should('contain', '1 Sep 2023');
     cy.get('app-hearing-file').should('contain', 'Courthouse');
@@ -57,8 +68,13 @@ describe('Request Transcript', () => {
   });
 
   it('should return to the hearing transcripts tab', () => {
-    cy.get('#hearingsTable a').contains('1 Sep 2023').click();
-    cy.get(':nth-child(2) > .moj-sub-navigation__link').click();
+    cy.get('#hearingsTable a')
+      .contains('1 Sep 2023')
+      .click()
+      .then(() => {
+        cy.get('#transcripts-tab').click();
+      });
+
     cy.get('.govuk-caption-l').should('contain', 'Hearing');
     cy.get('.govuk-heading-l').should('contain', '1 Sep 2023');
     cy.get('app-hearing-file').should('contain', 'Courthouse');
@@ -68,7 +84,6 @@ describe('Request Transcript', () => {
     cy.get('app-hearing-file').should('contain', 'Judge(s)');
     cy.get('app-hearing-file').should('contain', 'HHJ M. Hussain KC');
 
-    cy.get('#transcripts-tab').click();
     cy.get('.flex-space-between > .govuk-heading-m').should('contain', 'Transcripts for this hearing');
     cy.get('.govuk-table__body > :nth-child(1) > :nth-child(1)').should('contain', 'Sentencing remarks');
     cy.get('.govuk-button').should('contain', 'Request a new transcript');
@@ -118,8 +133,12 @@ describe('Request Transcript', () => {
 
   it('open the request times page if "court log" is selected', () => {
     // Get to the request transcript page
-    cy.get('#hearingsTable a').contains('1 Sep 2023').click();
-    cy.get(':nth-child(2) > .moj-sub-navigation__link').click();
+    cy.get('#hearingsTable a')
+      .contains('1 Sep 2023')
+      .click()
+      .then(() => {
+        cy.get('#transcripts-tab').click();
+      });
     cy.get('.govuk-button').should('contain', 'Request a new transcript').click();
 
     // Confirm we are in the right place
@@ -136,8 +155,12 @@ describe('Request Transcript', () => {
 
   it('open the request times page if "specified times" is selected', () => {
     // Get to the request transcript page
-    cy.get('#hearingsTable a').contains('1 Sep 2023').click();
-    cy.get(':nth-child(2) > .moj-sub-navigation__link').click();
+    cy.get('#hearingsTable a')
+      .contains('1 Sep 2023')
+      .click()
+      .then(() => {
+        cy.get('#transcripts-tab').click();
+      });
     cy.get('.govuk-button').should('contain', 'Request a new transcript').click();
 
     // Confirm we are in the right place
@@ -155,8 +178,13 @@ describe('Request Transcript', () => {
 
   it('open the confirmation page if neither "court log" or "specified times" is selected', () => {
     // Get to the request transcript page
-    cy.get('#hearingsTable a').contains('1 Sep 2023').click();
-    cy.get(':nth-child(2) > .moj-sub-navigation__link').click();
+    cy.get('#hearingsTable a')
+      .contains('1 Sep 2023')
+      .click()
+      .then(() => {
+        cy.get('#transcripts-tab').click();
+      });
+
     cy.get('.govuk-button').should('contain', 'Request a new transcript').click();
 
     // Confirm we are in the right place
@@ -173,8 +201,13 @@ describe('Request Transcript', () => {
 
   it('submit a transcript request', () => {
     // Get to the request transcript page
-    cy.get('#hearingsTable a').contains('1 Sep 2023').click();
-    cy.get(':nth-child(2) > .moj-sub-navigation__link').click();
+    cy.get('#hearingsTable a')
+      .contains('1 Sep 2023')
+      .click()
+      .then(() => {
+        cy.get('#transcripts-tab').click();
+      });
+
     cy.get('.govuk-button').should('contain', 'Request a new transcript').click();
 
     // Confirm we are in the right place
@@ -200,8 +233,13 @@ describe('Request Transcript', () => {
   describe('Duplicate Transcripts', () => {
     it('should show duplicate error message during normal transcript request', () => {
       // Get to the request transcript page
-      cy.get('#hearingsTable a').contains('1 Sep 2023').click();
-      cy.get(':nth-child(2) > .moj-sub-navigation__link').click();
+      cy.get('#hearingsTable a')
+        .contains('1 Sep 2023')
+        .click()
+        .then(() => {
+          cy.get('#transcripts-tab').click();
+        });
+
       cy.get('.govuk-button').should('contain', 'Request a new transcript').click();
 
       // Confirm we are in the right place
@@ -224,8 +262,13 @@ describe('Request Transcript', () => {
     });
 
     it('should show duplicate error message during court log transcript request', () => {
-      cy.get('#hearingsTable a').contains('1 Sep 2023').click();
-      cy.get(':nth-child(2) > .moj-sub-navigation__link').click();
+      cy.get('#hearingsTable a')
+        .contains('1 Sep 2023')
+        .click()
+        .then(() => {
+          cy.get('#transcripts-tab').click();
+        });
+
       cy.get('.govuk-button').should('contain', 'Request a new transcript').click();
 
       // Confirm we are in the right place
@@ -260,8 +303,13 @@ describe('Request Transcript', () => {
     });
 
     it('should route to hearings list on duplicate error page', () => {
-      cy.get('#hearingsTable a').contains('1 Sep 2023').click();
-      cy.get(':nth-child(2) > .moj-sub-navigation__link').click();
+      cy.get('#hearingsTable a')
+        .contains('1 Sep 2023')
+        .click()
+        .then(() => {
+          cy.get('#transcripts-tab').click();
+        });
+
       cy.get('.govuk-button').should('contain', 'Request a new transcript').click();
 
       // Confirm we are in the right place
@@ -284,8 +332,13 @@ describe('Request Transcript', () => {
     });
 
     it('should route to specific transcript on duplicate error page', () => {
-      cy.get('#hearingsTable a').contains('1 Sep 2023').click();
-      cy.get(':nth-child(2) > .moj-sub-navigation__link').click();
+      cy.get('#hearingsTable a')
+        .contains('1 Sep 2023')
+        .click()
+        .then(() => {
+          cy.get('#transcripts-tab').click();
+        });
+
       cy.get('.govuk-button').should('contain', 'Request a new transcript').click();
 
       // Confirm we are in the right place
