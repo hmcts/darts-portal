@@ -47,11 +47,12 @@ export class TranscriptsComponent {
   search$ = new Subject<TranscriptionSearchFormValues | null>();
   isLoading = signal(false);
   isSubmitted$ = this.transcriptService.hasSearchFormBeenSubmitted$;
+  tab = this.transcriptService.tab;
 
   results$ = combineLatest([this.search$, this.isSubmitted$, this.courthouses$, this.transcriptionStatuses$]).pipe(
     tap(() => this.startLoading()),
     switchMap(([values, isSubmitted, courthouses, statuses]) => {
-      if (!values || !isSubmitted) {
+      if (!values || !isSubmitted || this.tab() === 'Completed transcripts') {
         return of(null);
       }
       return (
@@ -74,11 +75,12 @@ export class TranscriptsComponent {
   completedResults$ = combineLatest([this.search$, this.isSubmitted$]).pipe(
     tap(() => this.startLoading()),
     switchMap(([values, isSubmitted]) => {
-      if (!values || !isSubmitted) {
+      if (!values || !isSubmitted || this.tab() === 'Requests') {
         return of(null);
       }
       return this.transcriptService.searchCompletedTranscriptions(values);
     }),
+    takeUntilDestroyed(),
     tap(() => this.stopLoading()),
     tap((results) => {
       if (results?.length === 1) {
