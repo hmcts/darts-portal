@@ -54,8 +54,13 @@
               class="govuk-table__header"
               [attr.aria-sort]="getAriaSort(column.prop)"
               [ngStyle]="{ width: column.width }"
+              [attr.aria-label]="column.name + ' column header'"
             >
-              <button type="button" (click)="sortTable(column.prop, column.customSortFn)">
+              <button
+                type="button"
+                [attr.aria-label]="'Sortable column for ' + column.name"
+                (click)="sortTable(column.prop, column.customSortFn)"
+              >
                 {{ column.name }}
               </button>
             </th>
@@ -64,6 +69,7 @@
               scope="col"
               class="govuk-table__header"
               [ngStyle]="{ width: column.width }"
+              [attr.aria-label]="column.name + ' column header'"
             >
               <span [class.govuk-visually-hidden]="column.hidden">
                 {{ column.name }}
