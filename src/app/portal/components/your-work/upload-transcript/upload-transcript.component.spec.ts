@@ -48,6 +48,42 @@ const MOCK_TRANSCRIPTION_DETAILS: TranscriptionDetails = {
   courthouseId: 1,
 };
 
+const MOCK_TABLE_DETAILS = {
+  reportingRestrictions: [
+    {
+      hearing_id: 1,
+      event_id: 123,
+      event_name: 'Section 4(2) of the Contempt of Court Act 1981',
+      event_text: '',
+      event_ts: '2023-08-07T09:00:00Z',
+    },
+  ],
+  caseDetails: {
+    'Case ID': '123',
+    Courthouse: 'Swansea',
+    'Judge(s)': ['HHJ M. Hussain KC\t', 'Ray Bob'],
+    'Defendant(s)': ['Defendant Dave', 'Defendant Bob'],
+  },
+  hearingDetails: {
+    'Hearing date': '26 Jun 2023',
+    'Request type': 'Specified Times',
+    'Request method': 'Manual',
+    'Request ID': 789,
+    Urgency: 'Overnight',
+    'Audio for transcript': 'Start time 13:00:00 - End time 16:00:00',
+    From: 'Joe Smith',
+    Received: '17 Nov 2023 12:53:07',
+    Instructions: 'Please expedite my request',
+    'Judge approval': 'Yes',
+  },
+  hearingId: 1,
+  caseId: 2,
+  getAudioQueryParams: {
+    startTime: '14:00:00',
+    endTime: '17:00:00',
+  },
+};
+
 describe('UploadTranscriptComponent', () => {
   let component: UploadTranscriptComponent;
   let fixture: ComponentFixture<UploadTranscriptComponent>;
@@ -67,6 +103,7 @@ describe('UploadTranscriptComponent', () => {
       getTranscriptionDetails: jest.fn().mockReturnValue(of(MOCK_TRANSCRIPTION_DETAILS)),
       uploadTranscript: jest.fn().mockReturnValue(of({})),
       completeTranscriptionRequest: jest.fn().mockReturnValue(of({})),
+      getAssignDetailsFromTranscript: jest.fn().mockReturnValue(MOCK_TABLE_DETAILS),
     } as unknown as TranscriptionService;
 
     await TestBed.configureTestingModule({
@@ -209,9 +246,9 @@ describe('UploadTranscriptComponent', () => {
 
     it('render request details', () => {
       const requestDetails = fixture.debugElement.queryAll(By.directive(DetailsTableComponent))[1].nativeElement;
-      expect(requestDetails.textContent).toContain('Hearing Date');
+      expect(requestDetails.textContent).toContain('Hearing date');
       expect(requestDetails.textContent).toContain('26 Jun 2023');
-      expect(requestDetails.textContent).toContain('Request Type');
+      expect(requestDetails.textContent).toContain('Request type');
       expect(requestDetails.textContent).toContain('Specified Times');
       expect(requestDetails.textContent).toContain('Request ID');
       expect(requestDetails.textContent).toContain('1');

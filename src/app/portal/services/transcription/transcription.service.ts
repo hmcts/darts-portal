@@ -191,6 +191,30 @@ export class TranscriptionService {
     };
   }
 
+  getAssignDetailsFromTranscript(transcript: TranscriptionDetails) {
+    return {
+      reportingRestrictions: transcript.caseReportingRestrictions ?? [],
+      caseDetails: this.getCaseDetailsFromTranscript(transcript),
+      hearingDetails: {
+        'Hearing date': this.luxonPipe.transform(transcript.hearingDate, 'dd MMM yyyy'),
+        'Request type': transcript.requestType,
+        'Request method': transcript.isManual ? 'Manual' : 'Automated',
+        'Request ID': transcript.transcriptionId,
+        Urgency: transcript.urgency?.description,
+        'Audio for transcript':
+          transcript.transcriptionStartTs && transcript.transcriptionEndTs
+            ? `Start time ${this.luxonPipe.transform(transcript.transcriptionStartTs, 'HH:mm:ss')} - End time ${this.luxonPipe.transform(transcript.transcriptionEndTs, 'HH:mm:ss')}`
+            : '',
+        From: transcript.from,
+        Received: this.luxonPipe.transform(transcript.received, 'dd MMM yyyy HH:mm:ss'),
+        Instructions: transcript.requestorComments,
+        'Judge approval': 'Yes',
+      },
+      hearingId: transcript.hearingId,
+      caseId: transcript.caseId,
+    };
+  }
+
   private mapYourTranscriptRequestData(requests: TranscriptRequestData[]): TranscriptRequest[] {
     return requests.map((r) => ({
       transcriptionId: r.transcription_id,
