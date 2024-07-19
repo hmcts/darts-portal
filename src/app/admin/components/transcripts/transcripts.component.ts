@@ -45,13 +45,16 @@ export class TranscriptsComponent {
   transcriptionStatuses$ = this.transcriptService.getTranscriptionStatuses().pipe(shareReplay(1));
 
   search$ = new Subject<TranscriptionSearchFormValues | null>();
-  isLoading = signal(false);
   isSubmitted$ = this.transcriptService.hasSearchFormBeenSubmitted$;
   tab = this.transcriptService.tab;
 
-  // TO DO: Figure out why loading is not working
+  loadingResults = signal(false);
+  loadingCompletedResults = signal(false);
+
   results$ = combineLatest([this.search$, this.isSubmitted$, this.courthouses$, this.transcriptionStatuses$]).pipe(
-    tap(() => this.startLoading()),
+    tap(() => {
+      this.loadingResults.set(true);
+    }),
     switchMap(([values, isSubmitted, courthouses, statuses]) => {
       if (!values || !isSubmitted || this.tab() === 'Completed transcripts') {
         return of(null);
@@ -65,7 +68,7 @@ export class TranscriptsComponent {
     }),
     takeUntilDestroyed(),
     tap((results) => {
-      this.stopLoading();
+      this.loadingResults.set(false);
       if (results?.length === 1) {
         //navigate to the transcript details page
         this.router.navigate(['/admin/transcripts', results[0].id]);
@@ -74,7 +77,9 @@ export class TranscriptsComponent {
   );
 
   completedResults$ = combineLatest([this.search$, this.isSubmitted$]).pipe(
-    tap(() => this.startLoading()),
+    tap(() => {
+      this.loadingCompletedResults.set(true);
+    }),
     switchMap(([values, isSubmitted]) => {
       if (!values || !isSubmitted || this.tab() === 'Requests') {
         return of(null);
@@ -83,7 +88,7 @@ export class TranscriptsComponent {
     }),
     takeUntilDestroyed(),
     tap((results) => {
-      this.stopLoading();
+      this.loadingCompletedResults.set(false);
       if (results?.length === 1) {
         // navigate to the transcript document details page
         this.router.navigate(['/admin/transcripts/document', results[0].transcriptionDocumentId]);
@@ -96,14 +101,6 @@ export class TranscriptsComponent {
     this.completedResults$.subscribe(
       (results) => results && this.transcriptService.completedSearchResults.set(results)
     );
-  }
-
-  startLoading() {
-    this.isLoading.set(true);
-  }
-
-  stopLoading() {
-    this.isLoading.set(false);
   }
 
   onSearch(values: TranscriptionSearchFormValues) {
