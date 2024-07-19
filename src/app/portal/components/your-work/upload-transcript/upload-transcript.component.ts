@@ -6,6 +6,7 @@ import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
 import { FileUploadComponent } from '@common/file-upload/file-upload.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
+import { LoadingComponent } from '@common/loading/loading.component';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
@@ -29,6 +30,7 @@ import { map } from 'rxjs/internal/operators/map';
     RouterLink,
     ReactiveFormsModule,
     AsyncPipe,
+    LoadingComponent,
   ],
   templateUrl: './upload-transcript.component.html',
   styleUrl: './upload-transcript.component.scss',

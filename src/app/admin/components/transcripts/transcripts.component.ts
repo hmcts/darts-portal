@@ -49,6 +49,7 @@ export class TranscriptsComponent {
   isSubmitted$ = this.transcriptService.hasSearchFormBeenSubmitted$;
   tab = this.transcriptService.tab;
 
+  // TO DO: Figure out why loading is not working
   results$ = combineLatest([this.search$, this.isSubmitted$, this.courthouses$, this.transcriptionStatuses$]).pipe(
     tap(() => this.startLoading()),
     switchMap(([values, isSubmitted, courthouses, statuses]) => {
@@ -81,8 +82,8 @@ export class TranscriptsComponent {
       return this.transcriptService.searchCompletedTranscriptions(values);
     }),
     takeUntilDestroyed(),
-    tap(() => this.stopLoading()),
     tap((results) => {
+      this.stopLoading();
       if (results?.length === 1) {
         // navigate to the transcript document details page
         this.router.navigate(['/admin/transcripts/document', results[0].transcriptionDocumentId]);
