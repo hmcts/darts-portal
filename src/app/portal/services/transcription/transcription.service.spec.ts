@@ -522,6 +522,17 @@ describe('TranscriptionService', () => {
 
       expect(result).toEqual(expectedResult);
     });
+
+    it('sets "audio for transcript" to null if transcriptionStartTs and transcriptionEndTs are not defined', () => {
+      const mockTranscriptionWithoutAudio = {
+        transcriptionStartTs: undefined,
+        transcriptionEndTs: undefined,
+      } as TranscriptionDetails;
+
+      const result = service.getRequestDetailsFromTranscript(mockTranscriptionWithoutAudio);
+
+      expect(result['Audio for transcript']).toEqual(null);
+    });
   });
 
   describe('#mapYourTranscriptRequestData', () => {
