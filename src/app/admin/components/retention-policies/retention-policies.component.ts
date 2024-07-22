@@ -4,6 +4,7 @@ import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
+import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { DatatableColumn } from '@core-types/index';
 import { TabDirective } from '@directives/tab.directive';
@@ -27,6 +28,7 @@ import { combineLatest, map } from 'rxjs';
     DurationPipe,
     GovukHeadingComponent,
     RouterLink,
+    LoadingComponent,
   ],
   templateUrl: './retention-policies.component.html',
   styleUrl: './retention-policies.component.scss',

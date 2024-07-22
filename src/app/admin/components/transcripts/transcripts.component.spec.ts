@@ -140,16 +140,16 @@ describe('TranscriptsComponent', () => {
   });
 
   it('should start loading when search is triggered', () => {
-    jest.spyOn(component, 'startLoading');
+    component.loadingResults.set = jest.fn();
     component.search$.next({});
-    expect(component.startLoading).toHaveBeenCalled();
+    expect(component.loadingResults.set).toHaveBeenCalledWith(true);
   });
 
   it('should stop loading after search is completed', () => {
-    jest.spyOn(component, 'stopLoading');
+    component.loadingResults.set = jest.fn();
     jest.spyOn(component.transcriptService, 'search').mockReturnValue(of([]));
     component.search$.next({});
-    expect(component.stopLoading).toHaveBeenCalled();
+    expect(component.loadingResults.set).toHaveBeenCalledWith(false);
   });
 
   it('should call search when search is triggered', () => {

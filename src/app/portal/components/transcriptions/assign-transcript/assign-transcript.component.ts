@@ -5,6 +5,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
+import { LoadingComponent } from '@common/loading/loading.component';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { ConflictComponent } from '@components/error/conflict/conflict.component';
@@ -30,6 +31,7 @@ import { tap } from 'rxjs/internal/operators/tap';
     ReactiveFormsModule,
     ValidationErrorSummaryComponent,
     ConflictComponent,
+    LoadingComponent,
   ],
   templateUrl: './assign-transcript.component.html',
   styleUrl: './assign-transcript.component.scss',

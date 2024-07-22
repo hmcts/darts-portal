@@ -3,7 +3,8 @@
 @let formValues = transcriptService.searchFormValues();
 @let results = transcriptService.searchResults();
 @let completedResults = transcriptService.completedSearchResults();
-@let loading = isLoading();
+@let isLoadingResults = loadingResults();
+@let isLoadingCompletedResults = loadingCompletedResults();
 
 <app-validation-error-summary [errors]="errors" />
 <app-govuk-heading size="xl">Transcripts</app-govuk-heading>
@@ -26,7 +27,7 @@
         <app-search-transcripts-results [results]="results" />
       }
 
-      @if (loading) {
+      @if (isLoadingResults) {
         <app-loading text="Searching transcript requests..." />
       }
     </div>
@@ -48,7 +49,7 @@
         <app-search-completed-transcripts-results [results]="completedResults" />
       }
 
-      @if (loading) {
+      @if (isLoadingCompletedResults) {
         <app-loading text="Searching completed transcripts..." />
       }
     </div>

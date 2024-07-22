@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
+import { LoadingComponent } from '@common/loading/loading.component';
 import { TimelineComponent } from '@common/timeline/timeline.component';
 import { BreadcrumbComponent } from '@components/common/breadcrumb/breadcrumb.component';
 import { DetailsTableComponent } from '@components/common/details-table/details-table.component';
@@ -32,6 +33,7 @@ import { TranscriptDetailsComponent } from './transcript-details/transcript-deta
     TimelineComponent,
     GovukBannerComponent,
     RouterLink,
+    LoadingComponent,
   ],
 })
 export class ViewTranscriptComponent {

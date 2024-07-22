@@ -11,4 +11,6 @@
     <app-transcript-details *tab="'Details'; id: 'details-tab'" [transcript]="transcript" />
     <app-timeline *tab="'History'; id: 'history-tab'" [items]="(history$ | async) ?? []" />
   </app-tabs>
+} @else {
+  <app-loading text="Loading transcript request..." />
 }
