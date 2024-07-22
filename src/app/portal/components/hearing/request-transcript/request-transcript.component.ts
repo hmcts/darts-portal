@@ -147,6 +147,12 @@ export class RequestTranscriptComponent implements OnInit, OnDestroy {
     return this.validationErrors.find((x) => x.fieldId === fieldId)?.message ?? '';
   }
 
+  getUniqueErrorSummary() {
+    return this.validationErrors.filter((error, index, self) => {
+      return index === self.findIndex((e) => e.message === error.message);
+    });
+  }
+
   mapEventsAndAudioToTable(audio: HearingAudio[]): AudioEventRow[] {
     return audio.map((audio) => ({
       ...audio,

@@ -20,14 +20,14 @@
     <p *ngIf="isSubmitted && fieldHasError('start-hour-input')" id="start-time-error" class="govuk-error-message">
       <span class="govuk-visually-hidden">Error:</span> {{ getValidationMessage('start-hour-input') }}
     </p>
-    <app-time-input formGroupName="startTime" idStringPrepend="start" [isSubmitted]="isSubmitted"></app-time-input>
+    <app-time-input formGroupName="startTime" idStringPrepend="start" [isSubmitted]="isSubmitted" />
   </div>
   <div class="govuk-form-group" [class.govuk-form-group--error]="isSubmitted && fieldHasError('end-hour-input')">
     <label class="govuk-label" for="end-hour-input">End time</label>
     <p *ngIf="isSubmitted && fieldHasError('end-hour-input')" id="end-time-error" class="govuk-error-message">
       <span class="govuk-visually-hidden">Error:</span> {{ getValidationMessage('end-hour-input') }}
     </p>
-    <app-time-input formGroupName="endTime" idStringPrepend="end" [isSubmitted]="isSubmitted"></app-time-input>
+    <app-time-input formGroupName="endTime" idStringPrepend="end" [isSubmitted]="isSubmitted" />
   </div>
 </form>
 

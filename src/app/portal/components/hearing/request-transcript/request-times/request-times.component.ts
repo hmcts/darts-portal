@@ -116,15 +116,52 @@ export class RequestTimesComponent {
       }
     }
 
+    const { startTime, endTime } = this.getStartEndTimeFromForm();
+
+    this.isTimeOutside(startTime) &&
+      this.validationErrors.push({
+        fieldId: 'start-hour-input',
+        message:
+          'Audio not available for timing entered. You must specify a time that matches the audio time available',
+      });
+
+    this.isTimeOutside(endTime) &&
+      this.validationErrors.push({
+        fieldId: 'end-hour-input',
+        message:
+          'Audio not available for timing entered. You must specify a time that matches the audio time available',
+      });
+
     this.errors.emit(this.validationErrors);
 
     if (this.validationErrors.length) {
       return;
     }
 
-    const { startTime, endTime } = this.getStartEndTimeFromForm();
-
     this.continue.emit({ startTime, endTime });
+  }
+
+  isTimeOutside(time: DateTime): boolean {
+    if (this.events.length === 0) {
+      return true;
+    }
+
+    const eventTimes = this.events
+      .map((event) => DateTime.fromISO(event.timestamp))
+      .sort((a, b) => a.toMillis() - b.toMillis());
+
+    const firstEventStartTime = eventTimes[0];
+    const lastEventEndTime = eventTimes[eventTimes.length - 1];
+
+    const timeString = time.toLocaleString(DateTime.TIME_24_WITH_SECONDS);
+    const firstEventTimeString = firstEventStartTime.toLocaleString(DateTime.TIME_24_WITH_SECONDS);
+    const lastEventTimeString = lastEventEndTime.toLocaleString(DateTime.TIME_24_WITH_SECONDS);
+
+    if (timeString >= firstEventTimeString && timeString <= lastEventTimeString) {
+      return false; // Times are within the first and last event
+    }
+
+    return true; // Times are outside the first and last event
   }
 
   getStartEndTimeFromForm() {
