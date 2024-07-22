@@ -1,4 +1,3 @@
-const s = require('connect-redis');
 const express = require('express');
 const router = express.Router();
 const path = require('path');
@@ -623,6 +622,7 @@ router.get('/:transcriptId', (req, res) => {
         request_type: 'Sentencing Remarks',
         status: 'Complete',
       });
+      break;
     default:
       res.status(200).send(mockTranscriptionDetailsTwo);
   }
