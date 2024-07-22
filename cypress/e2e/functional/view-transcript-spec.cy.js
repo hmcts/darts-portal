@@ -49,7 +49,7 @@ describe('View Transcript', () => {
     cy.get('#hearingsTable').should('contain', '1 Sep 2023');
     cy.get('#hearingsTable a').contains('1 Sep 2023').click();
     cy.get('.govuk-caption-l').should('contain', 'Hearing');
-    cy.get('#transcripts-tab').contains('Transcripts').click();
+    cy.get('#hearing-transcripts-tab').contains('Transcripts').click();
     cy.get('.flex-space-between > .govuk-heading-m').should('contain', 'Transcripts for this hearing');
     cy.contains('Complete').parents('tr').should('contain', 'Sentencing remarks');
     cy.get('.govuk-button').should('contain', 'Request a new transcript');
