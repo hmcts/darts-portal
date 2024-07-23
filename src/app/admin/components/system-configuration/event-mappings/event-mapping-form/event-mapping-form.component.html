@@ -18,7 +18,7 @@
       <option value="">All</option>
       @for (handler of eventHandlers; track handler) {
         <option [value]="handler">
-          {{ handler }}
+          {{ handler | humanizeInitCap }}
         </option>
       }
     </select>

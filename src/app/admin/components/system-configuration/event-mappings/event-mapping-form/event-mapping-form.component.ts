@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { HumanizeInitCapPipe } from '@pipes/humanizeInitCap';
 
 export type EventMappingForm = {
   searchText: string;
@@ -14,7 +15,7 @@ export type EventMappingForm = {
   standalone: true,
   templateUrl: './event-mapping-form.component.html',
   styleUrl: './event-mapping-form.component.scss',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, HumanizeInitCapPipe],
 })
 export class EventMappingFormComponent implements OnInit {
   form!: FormGroup;

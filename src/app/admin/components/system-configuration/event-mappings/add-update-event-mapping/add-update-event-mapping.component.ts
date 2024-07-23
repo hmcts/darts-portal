@@ -17,6 +17,7 @@ import { FormService } from '@services/form/form.service';
 import { HeaderService } from '@services/header/header.service';
 import { optionalMaxLengthValidator } from '@validators/optional-maxlength.validator';
 import { Subscription, combineLatest, map, tap } from 'rxjs';
+import { HumanizeInitCapPipe } from '@pipes/humanizeInitCap';
 
 @Component({
   selector: 'app-add-update-event-mapping',
@@ -31,6 +32,7 @@ import { Subscription, combineLatest, map, tap } from 'rxjs';
     LoadingComponent,
     LuxonDatePipe,
     RouterLink,
+    HumanizeInitCapPipe,
   ],
 })
 export class AddUpdateEventMappingComponent implements OnInit {
