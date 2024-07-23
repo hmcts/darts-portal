@@ -110,6 +110,7 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
     if (this.audioCount === 0) {
       this.audioRequestForm.controls.startTime.setErrors({ unavailable: true });
       this.audioRequestForm.controls.endTime.setErrors({ unavailable: true });
+      this.audioRequestForm.setErrors({ invalid: true });
       errorMessages.push({
         fieldId: 'start-time-hour-input',
         message: fieldErrors.startTime.unavailable,
@@ -189,7 +190,8 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
       !startDateTime.isValid ||
       !endDateTime.isValid ||
       this.audioRequestForm.get('requestType')?.invalid ||
-      this.audioRequestForm.errors?.endTimeBeforeStartTime
+      this.audioRequestForm.errors?.endTimeBeforeStartTime ||
+      this.audioRequestForm.invalid
     )
       return;
 
