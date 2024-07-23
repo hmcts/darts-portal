@@ -21,6 +21,20 @@ describe('RequestTimesComponent', () => {
       courtroom: '3',
       transcriptCount: 99,
     };
+    component.events = [
+      {
+        id: 1,
+        timestamp: '2023-01-01T01:00:00.000',
+        name: 'event 1',
+        text: 'event 1 text',
+      },
+      {
+        id: 2,
+        timestamp: '2023-01-01T02:30:00.000',
+        name: 'event 2',
+        text: 'event 2 text',
+      },
+    ];
 
     fixture.detectChanges();
   });
@@ -152,6 +166,16 @@ describe('RequestTimesComponent', () => {
           fieldId: 'end-hour-input',
           message: 'Select an end time',
         },
+        {
+          fieldId: 'start-hour-input',
+          message:
+            'Audio not available for timing entered. You must specify a time that matches the audio time available',
+        },
+        {
+          fieldId: 'end-hour-input',
+          message:
+            'Audio not available for timing entered. You must specify a time that matches the audio time available',
+        },
       ];
       component.onContinue();
       expect(component.validationErrors).toEqual(expectedValidationErrors);
@@ -275,6 +299,25 @@ describe('RequestTimesComponent', () => {
         },
       ];
       expect(component.getValidationMessage('some-other-field')).toBe('');
+    });
+  });
+
+  describe('#isTimeOutside', () => {
+    it('should return true if events array is empty', () => {
+      component.events = [];
+      fixture.detectChanges();
+      const time = DateTime.fromISO('2023-01-01T01:15:30.000');
+      expect(component.isTimeOutside(time)).toBe(true);
+    });
+
+    it('should return false if time is within the first and last event', () => {
+      const time = DateTime.fromISO('2023-01-01T01:30:00.000');
+      expect(component.isTimeOutside(time)).toBe(false);
+    });
+
+    it('should return true if time is outside the first and last event', () => {
+      const time = DateTime.fromISO('2023-01-01T03:00:00.000');
+      expect(component.isTimeOutside(time)).toBe(true);
     });
   });
 });
