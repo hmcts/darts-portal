@@ -6,7 +6,7 @@ import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
 
-import { RequestPlaybackAudioComponent } from './request-playback-audio.component';
+import { fieldErrors, RequestPlaybackAudioComponent } from './request-playback-audio.component';
 
 describe('RequestPlaybackAudioComponent', () => {
   let component: RequestPlaybackAudioComponent;
@@ -28,6 +28,7 @@ describe('RequestPlaybackAudioComponent', () => {
     fixture = TestBed.createComponent(RequestPlaybackAudioComponent);
     component = fixture.componentInstance;
     component.userState = { userId: 1, userName: 'Dean', roles: [], isActive: true };
+    component.validationErrorEvent.emit = jest.fn();
     fixture.detectChanges();
   });
 
@@ -165,6 +166,38 @@ describe('RequestPlaybackAudioComponent', () => {
       component.audioRequestForm.setValue(audioRequestForm);
       component.onSubmit();
       expect(component.requestObj).toEqual(undefined);
+    });
+  });
+
+  describe('#onValidationError', () => {
+    it('should emit validation errors when audio count is 0', () => {
+      component.audioCount = 0;
+      const validationErrorSpy = jest.spyOn(component.validationErrorEvent, 'emit');
+
+      component.onValidationError();
+
+      expect(component.audioRequestForm.controls.startTime.errors).toEqual({ unavailable: true });
+      expect(component.audioRequestForm.controls.endTime.errors).toEqual({ unavailable: true });
+      expect(validationErrorSpy).toHaveBeenCalledWith([
+        { fieldId: 'start-time-hour-input', message: fieldErrors.startTime.unavailable },
+        { fieldId: 'end-time-hour-input', message: fieldErrors.endTime.unavailable },
+      ]);
+    });
+
+    it('should emit validation errors for invalid form fields and unavailable audio', () => {
+      component.audioCount = 0;
+      component.audioRequestForm.controls.startTime.setErrors({ required: true });
+      component.audioRequestForm.controls.endTime.setErrors({ required: true });
+      const validationErrorSpy = jest.spyOn(component.validationErrorEvent, 'emit');
+
+      component.onValidationError();
+
+      expect(component.audioRequestForm.controls.startTime.errors).toEqual({ unavailable: true });
+      expect(component.audioRequestForm.controls.endTime.errors).toEqual({ unavailable: true });
+      expect(validationErrorSpy).toHaveBeenCalledWith([
+        { fieldId: 'start-time-hour-input', message: fieldErrors.startTime.unavailable },
+        { fieldId: 'end-time-hour-input', message: fieldErrors.endTime.unavailable },
+      ]);
     });
   });
 });

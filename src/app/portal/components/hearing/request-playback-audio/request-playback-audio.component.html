@@ -14,18 +14,12 @@
             }"
           >
             <h3 class="govuk-heading-s">Start Time</h3>
-            <p
-              *ngIf="
-                (audioRequestForm.get('startTime.hours')?.hasError('required') ||
-                  audioRequestForm.get('startTime.minutes')?.hasError('required') ||
-                  audioRequestForm.get('startTime.seconds')?.hasError('required')) &&
-                isSubmitted
-              "
-              id="start-time-error"
-              class="govuk-error-message"
-            >
-              <span class="govuk-visually-hidden">Error:</span> You must include a start time for your audio recording
-            </p>
+            @for (error of getFieldErrorMessages('startTime'); track error) {
+              <p id="start-time-error" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span> {{ error }}
+              </p>
+            }
+
             <app-time-input
               formGroupName="startTime"
               [isSubmitted]="isSubmitted"
@@ -43,25 +37,11 @@
             }"
           >
             <h3 class="govuk-heading-s">End Time</h3>
-            <p
-              *ngIf="
-                (audioRequestForm.get('endTime.hours')?.hasError('required') ||
-                  audioRequestForm.get('endTime.minutes')?.hasError('required') ||
-                  audioRequestForm.get('endTime.seconds')?.hasError('required')) &&
-                isSubmitted
-              "
-              class="end-time-error"
-              class="govuk-error-message"
-            >
-              <span class="govuk-visually-hidden">Error:</span> You must include an end time for your audio recording
-            </p>
-            <p
-              *ngIf="audioRequestForm.hasError('endTimeBeforeStartTime') && isSubmitted"
-              class="end-time-error"
-              class="govuk-error-message"
-            >
-              <span class="govuk-visually-hidden">Error:</span> End time must be after start time
-            </p>
+            @for (error of getFieldErrorMessages('endTime'); track error) {
+              <p id="end-time-error" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span> {{ error }}
+              </p>
+            }
             <app-time-input
               formGroupName="endTime"
               [isSubmitted]="isSubmitted"
@@ -81,20 +61,22 @@
             class="govuk-form-group"
             [ngClass]="{
               'govuk-form-group--error error-box-height':
-                audioRequestForm.controls['requestType'].invalid && isSubmitted,
+                audioRequestForm.controls['requestType'].invalid &&
+                isSubmitted &&
+                !audioRequestForm.controls.startTime.errors?.unavailable,
             }"
           >
             <fieldset class="govuk-fieldset">
               <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                 <h3 class="govuk-heading-s">Request Type</h3>
               </legend>
-              <p
-                *ngIf="audioRequestForm.get('requestType')?.hasError('required') && isSubmitted"
-                id="request-type-error"
-                class="govuk-error-message"
-              >
-                <span class="govuk-visually-hidden">Error:</span> You must select a request type
-              </p>
+              @if (!audioRequestForm.controls.startTime.errors?.unavailable) {
+                @for (error of getFieldErrorMessages('requestType'); track error) {
+                  <p id="request-time-error" class="govuk-error-message">
+                    <span class="govuk-visually-hidden">Error:</span> {{ error }}
+                  </p>
+                }
+              }
               <div class="govuk-radios govuk-radios--small" data-module="govuk-radios">
                 <div class="govuk-radios__item">
                   <input

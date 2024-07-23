@@ -270,7 +270,7 @@ router.post('/download', (req, res) => {
     case 3:
       res.sendStatus(403);
       break;
-    case 4:
+    case 5:
       res.sendStatus(409);
       break;
     default:
@@ -283,7 +283,7 @@ router.post('/playback', (req, res) => {
     case 3:
       res.sendStatus(403);
       break;
-    case 4:
+    case 5:
       res.sendStatus(409);
       break;
     default:
