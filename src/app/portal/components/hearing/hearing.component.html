@@ -48,6 +48,7 @@
           <app-request-playback-audio
             [courthouseId]="courthouseId!"
             [hearing]="vm.hearing!"
+            [audioCount]="vm.audios.length"
             [audioTimes]="audioTimes"
             [userState]="userState"
             (audioRequest)="onAudioRequest($event)"

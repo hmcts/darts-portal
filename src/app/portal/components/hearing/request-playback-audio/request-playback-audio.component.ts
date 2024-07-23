@@ -19,12 +19,15 @@ import { timeGroupValidator } from '@validators/time-group.validator';
 import { DateTime } from 'luxon';
 import { TimeInputComponent, timeInputFormControls } from './time-input/time-input.component';
 
-const fieldErrors: FieldErrors = {
+export const fieldErrors: FieldErrors = {
   startTime: {
     required: 'You must include a start time for your audio recording',
+    unavailable: 'There is no audio available for this start time',
   },
   endTime: {
     required: 'You must include an end time for your audio recording',
+    unavailable: 'There is no audio available for this end time',
+    endTimeAfterStart: 'End time must be after start time',
   },
   requestType: {
     required: 'You must select a request type',
@@ -42,6 +45,7 @@ const fieldErrors: FieldErrors = {
 export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
   @Input() courthouseId!: number;
   @Input() hearing!: Hearing;
+  @Input() audioCount!: number;
   @Input() audioTimes: { startTime: DateTime; endTime: DateTime } | null = null;
   @Input() userState!: UserState;
   audioRequestForm: FormGroup;
@@ -50,6 +54,8 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
   @Output() validationErrorEvent = new EventEmitter<ErrorSummaryEntry[]>();
   public isSubmitted = false;
   errorSummary: ErrorSummaryEntry[] = [];
+
+  fieldErrors = fieldErrors;
 
   constructor(
     private fb: FormBuilder,
@@ -84,7 +90,7 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
   getFieldErrorMessages(fieldName: string): string[] {
     const errors = this.f[fieldName].errors;
 
-    if (!errors) {
+    if (!errors || !this.isSubmitted) {
       return [];
     }
     return Object.keys(errors).map((errorType) => fieldErrors[fieldName][errorType]);
@@ -98,7 +104,27 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
     idHashMap.set('endTime', 'end-time-hour-input');
     idHashMap.set('requestType', 'playback-radio');
 
-    const errorMessages: ErrorSummaryEntry[] = Object.keys(formControls)
+    let errorMessages: ErrorSummaryEntry[] = [];
+
+    //No audio available validation
+    if (this.audioCount === 0) {
+      this.audioRequestForm.controls.startTime.setErrors({ unavailable: true });
+      this.audioRequestForm.controls.endTime.setErrors({ unavailable: true });
+      errorMessages.push({
+        fieldId: 'start-time-hour-input',
+        message: fieldErrors.startTime.unavailable,
+      });
+      errorMessages.push({
+        fieldId: 'end-time-hour-input',
+        message: fieldErrors.endTime.unavailable,
+      });
+
+      this.validationErrorEvent.emit(errorMessages);
+      return;
+    }
+
+    //Gets Validation field errors generically for all fields
+    errorMessages = Object.keys(formControls)
       .filter((fieldId) => formControls[fieldId].errors)
       .map((fieldId) =>
         this.getFieldErrorMessages(fieldId).map((message) => ({ fieldId: idHashMap.get(fieldId) ?? '', message }))
@@ -107,9 +133,10 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
 
     if (this.audioRequestForm.invalid) {
       if (!this.audioRequestForm.controls.endTime.invalid && this.audioRequestForm.errors?.endTimeBeforeStartTime) {
+        this.audioRequestForm.controls.endTime.setErrors({ endTimeAfterStart: true });
         errorMessages.push({
           fieldId: 'end-time-hour-input',
-          message: 'End time must be after start time',
+          message: fieldErrors.endTime.endTimeAfterStart,
         });
       }
     }

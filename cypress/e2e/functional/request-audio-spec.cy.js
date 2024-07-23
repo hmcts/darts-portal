@@ -17,6 +17,29 @@ describe('Request audio', () => {
     cy.get('h1').should('contain', 'C20220620001');
   });
 
+  it('should show error for no audio', () => {
+    cy.get('#hearingsTable').should('contain', '1 Dec 2023');
+    cy.get('#hearingsTable a').contains('1 Dec 2023').click();
+    cy.get('.button').contains('Get Audio').click();
+    cy.get('.govuk-error-summary').should('contain', 'There is no audio available for this start time');
+    cy.get('.govuk-error-summary').should('contain', 'There is no audio available for this end time');
+    cy.get('#end-time-error').should('contain', 'There is no audio available for this end time');
+    cy.get('#start-time-error').should('contain', 'There is no audio available for this start time');
+
+    cy.get('#start-time-hour-input').type('08');
+    cy.get('#start-time-minutes-input').type('59');
+    cy.get('#start-time-seconds-input').type('24');
+    cy.get('#end-time-hour-input').type('09');
+    cy.get('#end-time-minutes-input').type('00');
+    cy.get('#end-time-seconds-input').type('24');
+
+    cy.get('.button').contains('Get Audio').click();
+    cy.get('.govuk-error-summary').should('contain', 'There is no audio available for this start time');
+    cy.get('.govuk-error-summary').should('contain', 'There is no audio available for this end time');
+    cy.get('#end-time-error').should('contain', 'There is no audio available for this end time');
+    cy.get('#start-time-error').should('contain', 'There is no audio available for this start time');
+  });
+
   it('should request audio', () => {
     cy.get('#hearingsTable').should('contain', '1 Sep 2023');
     cy.get('#hearingsTable a').contains('1 Sep 2023').click();
