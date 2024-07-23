@@ -30,7 +30,7 @@ jobs:
                   adminSignInUrl="https://darts-portal-pr-${PR_NUMBER}.dev.platform.hmcts.net/login/admin/return"
                   adminPasswordResetUrl="https://darts-portal-pr-${PR_NUMBER}.dev.platform.hmcts.net/password-change-confirmation/true"
                   mediaPasswordResetUrl="https://darts-portal-pr-${PR_NUMBER}.dev.platform.hmcts.net/password-change-confirmation/false"
-                  targetAppName="darts-portal-stg"
+                  targetAppName="darts-stg"
 
                   azureClientId="${B2C_CLIENT_ID}"
                   azureClientSecret="${B2C_CLIENT_PWD}"
