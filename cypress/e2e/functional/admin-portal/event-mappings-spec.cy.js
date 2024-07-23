@@ -51,8 +51,8 @@ describe('Admin - Event mappings screen', () => {
       cy.get('app-data-table').contains('Prosecution opened');
     });
 
-    it('Active and inactive, with restrictions, without restrictions, event handler set to StandardEventHandler', () => {
-      cy.get('#eventSearch').select('StandardEventHandler');
+    it('Active and inactive, with restrictions, without restrictions, event handler set to Standard Event Handler', () => {
+      cy.get('#eventSearch').select('Standard Event Handler');
 
       cy.get('app-data-table').contains('Event map 1');
       cy.get('app-data-table').contains('Fourth event mapping');
@@ -60,7 +60,7 @@ describe('Admin - Event mappings screen', () => {
     });
 
     it('Filter via search text, no results', () => {
-      cy.get('#eventSearch').select('StandardEventHandler');
+      cy.get('#eventSearch').select('Standard Event Handler');
 
       cy.get('#search').type('Mapping entry 3');
 
@@ -72,7 +72,7 @@ describe('Admin - Event mappings screen', () => {
 
       cy.get('app-data-table').contains('01 Feb 2024');
       cy.get('app-data-table').contains('Prosecution opened');
-      cy.get('app-data-table').contains('StandardEventHandler');
+      cy.get('app-data-table').contains('Standard Event Handler');
     });
   });
 
@@ -109,7 +109,7 @@ describe('Admin - Event mappings screen', () => {
       cy.get('#type').type('Test Type');
       cy.get('#subType').type('Test SubType');
       cy.get('#eventName').type('Test Event Name');
-      cy.get('#eventHandlerSelect').select('StandardEventHandler');
+      cy.get('#eventHandlerSelect').select('Standard Event Handler');
       cy.get('#withRestrictions').check();
 
       cy.get('#confirmButton').click();
@@ -131,7 +131,7 @@ describe('Admin - Event mappings screen', () => {
       cy.get('#type').type('1000');
       cy.get('#subType').type('1001');
       cy.get('#eventName').type('Test Event Name');
-      cy.get('#eventHandlerSelect').select('StandardEventHandler');
+      cy.get('#eventHandlerSelect').select('Standard Event Handler');
       cy.get('#withRestrictions').check();
 
       cy.get('#confirmButton').click();
@@ -163,7 +163,7 @@ describe('Admin - Event mappings screen', () => {
       cy.get('#read-only-type').contains('1010');
       cy.get('#read-only-subtype').contains('1011');
       cy.get('#eventName').should('have.value', 'Mapping entry 3');
-      cy.get('#eventHandlerSelect').contains('TranscriptionRequestHandler');
+      cy.get('#eventHandlerSelect').contains('Transcription Request Handler');
       cy.get('#read-only-reporting-restriction').contains('Yes');
       cy.get('#read-only-created').contains('02 Apr 2024');
     });
@@ -183,14 +183,14 @@ describe('Admin - Event mappings screen', () => {
 
     it('should submit the form with valid data and data should persist', () => {
       cy.get('#eventName').clear().type('Changed name test');
-      cy.get('#eventHandlerSelect').select('StandardEventHandler');
+      cy.get('#eventHandlerSelect').select('Standard Event Handler');
 
       cy.get('#confirmButton').click();
 
       cy.contains('Saved new version of event mapping').should('be.visible');
 
       cy.contains('tr', '1010').find('td').contains('Changed name test');
-      cy.contains('tr', '1010').find('td').contains('StandardEventHandler');
+      cy.contains('tr', '1010').find('td').contains('Standard Event Handler');
     });
 
     it('should cancel the form and navigate back', () => {

@@ -11,6 +11,7 @@ import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { EventMappingsService } from '@services/event-mappings/event-mappings.service';
 import { BehaviorSubject, combineLatest, map } from 'rxjs';
 import { EventMappingForm, EventMappingFormComponent } from './event-mapping-form/event-mapping-form.component';
+import { HumanizeInitCapPipe } from '@pipes/humanizeInitCap';
 
 @Component({
   selector: 'app-event-mapping',
@@ -25,6 +26,7 @@ import { EventMappingForm, EventMappingFormComponent } from './event-mapping-for
     LuxonDatePipe,
     TableRowTemplateDirective,
     LoadingComponent,
+    HumanizeInitCapPipe,
   ],
 })
 export class EventMappingComponent {
