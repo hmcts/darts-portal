@@ -1,7 +1,6 @@
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { CourthouseData } from '@core-types/index';
 import {
   Annotations,
   AnnotationsData,
@@ -17,7 +16,6 @@ import {
   Transcript,
   TranscriptData,
 } from '@portal-types/index';
-import { GET_COURTHOUSES_PATH } from '@services/courthouses/courthouses.service';
 import { MappingService } from '@services/mapping/mapping.service';
 import { DateTime } from 'luxon';
 import {
@@ -154,45 +152,6 @@ describe('CaseService', () => {
 
   it('should be created', () => {
     expect(service).toBeTruthy();
-  });
-
-  describe('#getCourthouses', () => {
-    it('should get courthouses', () => {
-      const mockCourthouses: CourthouseData[] = [
-        {
-          id: 1,
-          courthouse_name: 'COURTHOUSENAME',
-          display_name: 'DISPLAYNAME',
-          code: 1,
-          created_date_time: '2024-01-01',
-          last_modified_date_time: 'string',
-          region_id: 1,
-          security_group_ids: [1],
-          has_data: false,
-        },
-      ];
-
-      service.getCourthouses().subscribe((courthouses: CourthouseData[]) => {
-        expect(courthouses).toEqual(mockCourthouses);
-      });
-
-      const req = httpMock.expectOne(GET_COURTHOUSES_PATH);
-      expect(req.request.method).toBe('GET');
-
-      req.flush(mockCourthouses);
-    });
-
-    it('on error', () => {
-      let mockCourthouses!: CourthouseData[];
-
-      service.getCourthouses().subscribe((courthouses) => (mockCourthouses = courthouses));
-
-      const req = httpMock.expectOne(GET_COURTHOUSES_PATH);
-      expect(req.request.method).toBe('GET');
-      req.flush(null, { status: 500, statusText: 'Server Error' });
-
-      expect(mockCourthouses).toEqual([]);
-    });
   });
 
   it('#getCase', () => {
