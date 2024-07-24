@@ -39,7 +39,7 @@ export class TransformedMediaService {
   http = inject(HttpClient);
 
   searchResults = signal<TransformedMediaAdmin[]>([]);
-  searchFormValues = signal<TransformedMediaSearchFormValues>(defaultFormValues);
+  searchFormValues = signal<TransformedMediaSearchFormValues>({ ...defaultFormValues });
   isSearchFormSubmitted = signal<boolean>(false);
   isAdvancedSearch = signal<boolean>(false);
 
@@ -125,7 +125,7 @@ export class TransformedMediaService {
     this.searchResults.set([]);
     this.isSearchFormSubmitted.set(false);
     this.isAdvancedSearch.set(false);
-    this.searchFormValues.set(defaultFormValues);
+    this.searchFormValues.set({ ...defaultFormValues });
   }
 
   private mapHidePostRequest(body: FileHideOrDeleteFormValues) {

@@ -11,6 +11,7 @@ import { CaseService } from '@services/case/case.service';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { ErrorMessageService } from '@services/error/error-message.service';
 import { HeaderService } from '@services/header/header.service';
+import { ScrollService } from '@services/scroll/scroll.service';
 import { of, throwError } from 'rxjs';
 import { CaseSearchResultsComponent } from './case-search-results/case-search-results.component';
 import { SearchComponent } from './search.component';
@@ -56,6 +57,7 @@ describe('SearchComponent', () => {
         { provide: CaseService, useValue: caseService },
         { provide: CourthouseService, useValue: courthouseService },
         { provide: ErrorMessageService, useValue: errorMsgService },
+        { provide: ScrollService, useValue: { scrollTo: jest.fn() } },
         provideHttpClient(),
       ],
     });
@@ -213,6 +215,31 @@ describe('SearchComponent', () => {
       component.onSubmit();
 
       expect(component.isAdvancedSearch).toEqual(true);
+    });
+
+    it('scroll to top when search button is clicked and fields are filled incorrectly', () => {
+      const scrollService = TestBed.inject(ScrollService);
+      jest.spyOn(scrollService, 'scrollTo');
+
+      component.form.controls['date_to'].setValue('INVALID');
+      component.form.controls['date_from'].setValue('INVALID');
+
+      component.onSubmit();
+
+      expect(scrollService.scrollTo).toHaveBeenCalledWith('app-validation-error-summary');
+    });
+
+    it('scroll to results when search button is clicked and fields are filled correctly', () => {
+      const scrollService = TestBed.inject(ScrollService);
+      jest.spyOn(scrollService, 'scrollTo');
+
+      component.form.controls['case_number'].setValue('1');
+
+      component.form.markAllAsTouched();
+
+      component.onSubmit();
+
+      expect(scrollService.scrollTo).toHaveBeenCalledWith('#results');
     });
   });
 

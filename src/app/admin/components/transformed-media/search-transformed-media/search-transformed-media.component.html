@@ -1,4 +1,4 @@
-<app-validation-error-summary [errors]="errors"></app-validation-error-summary>
+<app-validation-error-summary [errors]="errors()" />
 
 <app-govuk-heading>Transformed media</app-govuk-heading>
 
@@ -8,15 +8,17 @@
     [formValues]="transformedMediaService.searchFormValues()"
     [(isAdvancedSearch)]="transformedMediaService.isAdvancedSearch"
     (search)="onSearch($event)"
-    (clear)="transformedMediaService.clearSearch()"
-    (errors)="errors = $event"
+    (clear)="onClear()"
+    (errors)="onErrors($event)"
   />
 }
 
-@if (transformedMediaService.isSearchFormSubmitted() && !isLoading()) {
-  <app-transformed-media-search-results [results]="transformedMediaService.searchResults()" />
-}
+<div id="results">
+  @if (transformedMediaService.isSearchFormSubmitted() && !isLoading()) {
+    <app-transformed-media-search-results [results]="transformedMediaService.searchResults()" />
+  }
 
-@if (isLoading()) {
-  <app-loading text="Searching transformed media results..." />
-}
+  @if (isLoading()) {
+    <app-loading text="Searching transformed media results..." />
+  }
+</div>

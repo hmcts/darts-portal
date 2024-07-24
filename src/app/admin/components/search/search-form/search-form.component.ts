@@ -1,5 +1,4 @@
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
-import { JsonPipe } from '@angular/common';
 import { Component, computed, effect, inject, input, model, output } from '@angular/core';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { AutoCompleteComponent, AutoCompleteItem } from '@common/auto-complete/auto-complete.component';
@@ -26,7 +25,7 @@ export type AdminSearchFormValues = {
 @Component({
   selector: 'app-search-form',
   standalone: true,
-  imports: [AutoCompleteComponent, SpecificOrRangeDatePickerComponent, ReactiveFormsModule, JsonPipe],
+  imports: [AutoCompleteComponent, SpecificOrRangeDatePickerComponent, ReactiveFormsModule],
   templateUrl: './search-form.component.html',
   styleUrl: './search-form.component.scss',
 })
@@ -95,5 +94,10 @@ export class SearchFormComponent {
     this.errors.emit([]);
 
     this.search.emit(this.form.value as AdminSearchFormValues);
+  }
+
+  onClear() {
+    this.errors.emit([]);
+    this.clear.emit();
   }
 }

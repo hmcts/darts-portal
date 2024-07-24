@@ -8,6 +8,7 @@ import { LoadingComponent } from '@common/loading/loading.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { ErrorSummaryEntry } from '@core-types/index';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
+import { ScrollService } from '@services/scroll/scroll.service';
 import { TransformedMediaService } from '@services/transformed-media/transformed-media.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { finalize, map, switchMap } from 'rxjs';
@@ -33,10 +34,21 @@ export class SearchTransformedMediaComponent {
   courthouseService = inject(CourthouseService);
   router = inject(Router);
   userService = inject(UserAdminService);
+  scrollService = inject(ScrollService);
 
-  errors: ErrorSummaryEntry[] = [];
+  errors = signal<ErrorSummaryEntry[]>([]);
   courthouses$ = this.courthouseService.getCourthouses();
   isLoading = signal<boolean>(false);
+
+  onErrors(errors: ErrorSummaryEntry[]) {
+    this.errors.set(errors);
+    this.scrollService.scrollTo('app-validation-error-summary');
+  }
+
+  onClear() {
+    this.errors.set([]);
+    this.transformedMediaService.clearSearch();
+  }
 
   onSearch(values: TransformedMediaSearchFormValues) {
     this.isLoading.set(true);
@@ -68,7 +80,7 @@ export class SearchTransformedMediaComponent {
       .subscribe((results) => {
         this.transformedMediaService.searchResults.set(results);
         this.transformedMediaService.isSearchFormSubmitted.set(true);
-
+        this.scrollService.scrollTo('#results');
         if (results?.length === 1) {
           // navigate to the transcript document details page
           this.router.navigate(['/admin/transformed-media', results[0].id]);

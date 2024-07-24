@@ -4,7 +4,7 @@
   </h1>
 
   <!-- Validation Error Summary Component -->
-  <app-validation-error-summary [errors]="errorSummary"></app-validation-error-summary>
+  <app-validation-error-summary [errors]="errorSummary" />
 
   <div class="govuk-form-group" [ngClass]="{ 'govuk-form-group--error': isSubmitted && f.case_number.errors }">
     <label class="govuk-label" for="case_number"> Case ID </label>
@@ -193,15 +193,17 @@
   </div>
 </form>
 
-@if (searchResults$ | async; as cases) {
-  <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
-  <app-case-search-results [cases]="cases" />
-} @else {
-  @if (isSubmitted && form.valid) {
-    @if (searchError$ | async; as error) {
-      <app-search-error [error]="error" />
-    } @else {
-      <app-loading text="Loading search results ..." />
+<div id="results">
+  @if (searchResults$ | async; as cases) {
+    <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
+    <app-case-search-results [cases]="cases" />
+  } @else {
+    @if (isSubmitted && form.valid) {
+      @if (searchError$ | async; as error) {
+        <app-search-error [error]="error" />
+      } @else {
+        <app-loading text="Loading search results ..." />
+      }
     }
   }
-}
+</div>
