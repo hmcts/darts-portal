@@ -7,7 +7,7 @@
   [formValues]="searchService.formValues()"
   (search)="onSearch($event)"
   (clear)="searchService.clearSearch()"
-  (errors)="formValidationErrors.set($event)"
+  (errors)="onValidationErrors($event)"
 />
 
 @if (searchService.hasFormBeenSubmitted()) {

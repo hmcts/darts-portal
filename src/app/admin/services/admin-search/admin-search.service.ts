@@ -37,7 +37,7 @@ export class AdminSearchService {
   http = inject(HttpClient);
 
   // signals to store previous search results and search form state
-  formValues = signal<AdminSearchFormValues>(defaultFormValues);
+  formValues = signal<AdminSearchFormValues>({ ...defaultFormValues });
   hasFormBeenSubmitted = signal<boolean>(false);
   cases = signal<AdminCaseSearchResult[]>([]);
   events = signal<AdminEventSearchResult[]>([]);
@@ -93,7 +93,7 @@ export class AdminSearchService {
     this.audio.set([]);
     this.searchError.set(null);
     this.isLoading.set(false);
-    this.formValues.set(defaultFormValues);
+    this.formValues.set({ ...defaultFormValues });
     this.hasFormBeenSubmitted.set(false);
   }
 

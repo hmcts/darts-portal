@@ -1,5 +1,5 @@
 import { JsonPipe } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { GovukTabsComponent } from '@common/govuk-tabs/govuk-tabs.component';
@@ -10,6 +10,7 @@ import { ErrorSummaryEntry } from '@core-types/index';
 import { TabDirective } from '@directives/tab.directive';
 import { AdminSearchService } from '@services/admin-search/admin-search.service';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
+import { ScrollService } from '@services/scroll/scroll.service';
 import { finalize, map } from 'rxjs';
 import { AudioSearchResultsComponent } from './audio-search-results/audio-search-results.component';
 import { EventSearchResultsComponent } from './event-search-results/event-search-results.component';
@@ -38,7 +39,12 @@ import { AdminSearchFormValues, SearchFormComponent } from './search-form/search
 export class SearchComponent {
   courthouseService = inject(CourthouseService);
   searchService = inject(AdminSearchService);
+  scrollService = inject(ScrollService);
+
   formValidationErrors = signal<ErrorSummaryEntry[]>([]);
+
+  readonly validationSummarySelector = 'app-validation-error-summary';
+  readonly resultsSelector = 'app-govuk-tabs';
 
   courthouses$ = this.courthouseService.getCourthouses().pipe(
     map((data) => this.courthouseService.mapCourthouseDataToCourthouses(data)),
@@ -48,6 +54,11 @@ export class SearchComponent {
   courthouses = toSignal(this.courthouses$, {
     initialValue: [],
   });
+
+  onValidationErrors(errors: ErrorSummaryEntry[]) {
+    this.formValidationErrors.set(errors);
+    this.scrollService.scrollTo(this.validationSummarySelector);
+  }
 
   onSearch(searchFormValues: AdminSearchFormValues) {
     this.searchService.formValues.set(searchFormValues);
@@ -71,11 +82,11 @@ export class SearchComponent {
       default:
         this.searchService.isLoading.set(false);
     }
+
+    this.scrollService.scrollTo(this.resultsSelector);
   }
 
-  isSearchOk() {
-    return !this.searchService.isLoading() && !this.searchService.searchError();
-  }
+  isSearchOk = computed(() => !this.searchService.isLoading() && !this.searchService.searchError());
 
   tabChange(tab: TabDirective) {
     this.searchService.formValues.update((formValues) => ({ ...formValues, resultsFor: tab.name }));
