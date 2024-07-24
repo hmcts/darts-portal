@@ -8,6 +8,7 @@ import { ValidationErrorSummaryComponent } from '@components/common/validation-e
 import { ErrorSummaryEntry, FieldErrors } from '@core-types/index';
 import { SearchFormValues } from '@portal-types/index';
 import { CaseService } from '@services/case/case.service';
+import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { ErrorMessageService } from '@services/error/error-message.service';
 import { futureDateValidator } from '@validators/future-date.validator';
 import { Subscription, catchError, of } from 'rxjs';
@@ -59,7 +60,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   isAdvancedSearch = false;
   datePatternValidator = Validators.pattern(/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/);
   dateValidators = [this.datePatternValidator, futureDateValidator];
-  courthouses$ = this.caseService.getCourthouses();
+  courthouses$ = this.courthouseService.getCourthouses();
   courthouse = '';
 
   // Retrieve Previous Search Results
@@ -69,6 +70,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   constructor(
     private caseService: CaseService,
+    private courthouseService: CourthouseService,
     private errorMsgService: ErrorMessageService
   ) {}
 

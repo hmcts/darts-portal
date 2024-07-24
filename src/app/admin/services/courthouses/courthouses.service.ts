@@ -12,7 +12,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CourthouseData } from '@core-types/index';
 import { DateTime } from 'luxon';
-import { Observable, catchError, forkJoin, map, of, switchMap } from 'rxjs';
+import { Observable, catchError, forkJoin, map, of, switchMap, tap } from 'rxjs';
 
 export const GET_COURTHOUSE_REGIONS_PATH = '/api/admin/regions';
 export const GET_COURTHOUSES_PATH = '/api/courthouses';
@@ -24,6 +24,8 @@ export const GET_SECURITY_ROLES_PATH = '/api/admin/security-roles';
   providedIn: 'root',
 })
 export class CourthouseService {
+  private cachedCourthouses: CourthouseData[] | null = null;
+
   constructor(private readonly http: HttpClient) {}
 
   createCourthouse(courthouse: CreateUpdateCourthouseFormValues): Observable<CourthouseData> {
@@ -45,11 +47,22 @@ export class CourthouseService {
   }
 
   getCourthouses(): Observable<CourthouseData[]> {
+    if (this.cachedCourthouses) {
+      return of(this.cachedCourthouses);
+    }
+
     return this.http.get<CourthouseData[]>(GET_COURTHOUSES_PATH).pipe(
+      tap((courthouses) => {
+        this.cachedCourthouses = courthouses;
+      }),
       catchError(() => {
         return of([]);
       })
     );
+  }
+
+  clearCourthouseCache(): void {
+    this.cachedCourthouses = null;
   }
 
   getCourthouseRegions(): Observable<Region[]> {

@@ -202,17 +202,32 @@ describe('CourthouseService', () => {
   });
 
   describe('#getCourthouses', () => {
-    it('should return proper courthouse data', () => {
-      const mockCourthouses: CourthouseData[] = [];
+    it('should return cached value without firing request if cache exists', () => {
+      service['cachedCourthouses'] = courthouseData; // Set the cached data
 
+      let courthouseList;
       service.getCourthouses().subscribe((courthouses: CourthouseData[]) => {
-        expect(courthouses).toEqual(mockCourthouses);
+        courthouseList = courthouses;
       });
+      expect(courthouseList).toEqual(courthouseData);
+
+      httpMock.expectNone(GET_COURTHOUSES_PATH);
+    });
+
+    it('should return courthouses and send API request', () => {
+      service.clearCourthouseCache();
+
+      let courthouses: CourthouseData[] = [];
+
+      service.getCourthouses().subscribe((response: CourthouseData[]) => {
+        courthouses = response;
+      });
+
+      expect(courthouses).toEqual([]);
 
       const req = httpMock.expectOne(GET_COURTHOUSES_PATH);
       expect(req.request.method).toBe('GET');
-
-      req.flush(mockCourthouses);
+      req.flush(courthouses);
     });
 
     it('should return empty array on error', () => {
