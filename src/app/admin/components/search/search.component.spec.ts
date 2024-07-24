@@ -132,7 +132,7 @@ describe('SearchComponent', () => {
     it('scrolls to search results', () => {
       const scrollToSpy = jest.spyOn(component.scrollService, 'scrollTo');
       component.onSearch({ ...defaultFormValues } as AdminSearchFormValues);
-      expect(scrollToSpy).toHaveBeenCalledWith(component.resultsSelector);
+      expect(scrollToSpy).toHaveBeenCalledWith('#results');
     });
   });
 

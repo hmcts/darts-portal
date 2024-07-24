@@ -37,7 +37,7 @@
       <div class="govuk-form-group">
         <app-courthouse-field
           [courthouses]="courthouses"
-          [courthouse]="formValues()!.courthouse!"
+          [courthouse]="formValues().courthouse!"
           (courthouseSelect)="form.get('courthouse')?.patchValue($event); form.get('courthouse')?.markAsDirty()"
           [isInvalid]="form.controls.courthouse.invalid && form.controls.courthouse.touched"
           [errors]="getControlErrorMessage(['courthouse'])"

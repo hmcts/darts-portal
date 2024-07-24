@@ -44,7 +44,6 @@ export class SearchComponent {
   formValidationErrors = signal<ErrorSummaryEntry[]>([]);
 
   readonly validationSummarySelector = 'app-validation-error-summary';
-  readonly resultsSelector = 'app-govuk-tabs';
 
   courthouses$ = this.courthouseService.getCourthouses().pipe(
     map((data) => this.courthouseService.mapCourthouseDataToCourthouses(data)),
@@ -83,7 +82,7 @@ export class SearchComponent {
         this.searchService.isLoading.set(false);
     }
 
-    this.scrollService.scrollTo(this.resultsSelector);
+    this.scrollService.scrollTo('#results');
   }
 
   isSearchOk = computed(() => !this.searchService.isLoading() && !this.searchService.searchError());
