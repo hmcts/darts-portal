@@ -119,7 +119,9 @@ export class AudioRequestService {
         transformedMediaId: transformedMedia.transformed_media_id,
         transformedMediaFilename: transformedMedia.transformed_media_filename,
         transformedMediaFormat: transformedMedia.transformed_media_format,
-        transformedMediaExpiryTs: DateTime.fromISO(transformedMedia.transformed_media_expiry_ts),
+        transformedMediaExpiryTs: transformedMedia.transformed_media_expiry_ts
+          ? DateTime.fromISO(transformedMedia.transformed_media_expiry_ts)
+          : undefined,
         lastAccessedTs: transformedMedia.last_accessed_ts
           ? DateTime.fromISO(transformedMedia.last_accessed_ts)
           : undefined,
