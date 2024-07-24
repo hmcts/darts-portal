@@ -1,4 +1,4 @@
-import { HttpClient, HttpClientModule, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, provideHttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed, fakeAsync, flush, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -8,6 +8,7 @@ import { CourthouseData, ErrorMessage, ErrorSummaryEntry } from '@core-types/ind
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
 import { CaseService } from '@services/case/case.service';
+import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { ErrorMessageService } from '@services/error/error-message.service';
 import { HeaderService } from '@services/header/header.service';
 import { of, throwError } from 'rxjs';
@@ -24,6 +25,7 @@ describe('SearchComponent', () => {
   let caseService: CaseService;
   let errorMsgService: ErrorMessageService;
   let headerService: HeaderService;
+  let courthouseService: CourthouseService;
   const courts = [
     { courthouse_name: 'Reading', id: 0, created_date_time: 'mock' },
     { courthouse_name: 'Slough', id: 1, created_date_time: 'mock' },
@@ -42,23 +44,19 @@ describe('SearchComponent', () => {
     headerService = new HeaderService();
     errorMsgService = new ErrorMessageService(headerService, mockRouter);
     caseService = new CaseService(httpClientSpy);
+    courthouseService = new CourthouseService(httpClientSpy);
     jest.spyOn(caseService, 'searchCases').mockReturnValue(of([]));
-    jest.spyOn(caseService, 'getCourthouses').mockReturnValue(of(courts));
+    jest.spyOn(courthouseService, 'getCourthouses').mockReturnValue(of(courts));
 
     TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
-        FormsModule,
-        HttpClientModule,
-        SearchComponent,
-        CaseSearchResultsComponent,
-        CourthouseComponent,
-      ],
+      imports: [ReactiveFormsModule, FormsModule, SearchComponent, CaseSearchResultsComponent, CourthouseComponent],
       providers: [
         { provide: AppInsightsService, useValue: fakeAppInsightsService },
         { provide: AppConfigService, useValue: fakeAppConfigService },
         { provide: CaseService, useValue: caseService },
+        { provide: CourthouseService, useValue: courthouseService },
         { provide: ErrorMessageService, useValue: errorMsgService },
+        provideHttpClient(),
       ],
     });
     fixture = TestBed.createComponent(SearchComponent);
