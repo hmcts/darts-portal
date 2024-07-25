@@ -5,6 +5,6 @@ export type TransformedMedia = MediaRequest & {
   transformedMediaId: number;
   transformedMediaFilename: string;
   transformedMediaFormat: string;
-  transformedMediaExpiryTs: DateTime;
+  transformedMediaExpiryTs?: DateTime;
   lastAccessedTs?: DateTime;
 };

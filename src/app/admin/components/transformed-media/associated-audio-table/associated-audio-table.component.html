@@ -28,8 +28,8 @@
       }
     </td>
     <td class="govuk-table__cell courthouse">{{ row.courthouse }}</td>
-    <td class="govuk-table__cell start-time">{{ row.startTime | luxonDate: 'h:mma' }}</td>
-    <td class="govuk-table__cell end-time">{{ row.endTime | luxonDate: 'h:mma' }}</td>
+    <td class="govuk-table__cell start-time">{{ row.startTime | luxonDate: 'h:mm:ssa' }}</td>
+    <td class="govuk-table__cell end-time">{{ row.endTime | luxonDate: 'h:mm:ssa' }}</td>
     <td class="govuk-table__cell courtroom">{{ row.courtroom }}</td>
     <td class="govuk-table__cell channel">{{ row.channelNumber }}</td>
   </ng-template>

@@ -67,7 +67,7 @@
   <div class="govuk-form-group" formGroupName="duration" [class.govuk-form-group--error]="isControlInvalid('duration')">
     <fieldset class="govuk-fieldset" role="group">
       <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-        <h4 class="govuk-fieldset__heading">Duration</h4>
+        <h2 class="govuk-fieldset__heading">Duration</h2>
       </legend>
 
       @for (error of getErrorMessages('duration'); track error) {
@@ -127,7 +127,7 @@
   </div>
   <fieldset class="govuk-fieldset" role="group">
     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m underline">
-      <h4 class="govuk-fieldset__heading">Policy start</h4>
+      <h2 class="govuk-fieldset__heading">Policy start</h2>
     </legend>
 
     <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('startDate')">

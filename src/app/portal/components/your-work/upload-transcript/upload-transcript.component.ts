@@ -6,6 +6,7 @@ import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
 import { FileUploadComponent } from '@common/file-upload/file-upload.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
+import { LoadingComponent } from '@common/loading/loading.component';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
@@ -14,7 +15,6 @@ import { TranscriptionDetails } from '@portal-types/index';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { maxFileSizeValidator } from '@validators/max-file-size.validator';
 import { map } from 'rxjs/internal/operators/map';
-import { tap } from 'rxjs/internal/operators/tap';
 
 @Component({
   selector: 'app-upload-transcript',
@@ -30,6 +30,7 @@ import { tap } from 'rxjs/internal/operators/tap';
     RouterLink,
     ReactiveFormsModule,
     AsyncPipe,
+    LoadingComponent,
   ],
   templateUrl: './upload-transcript.component.html',
   styleUrl: './upload-transcript.component.scss',
@@ -45,42 +46,18 @@ export class UploadTranscriptComponent implements OnDestroy {
   isManualRequest = false;
 
   vm$ = this.transcriptionService.getTranscriptionDetails(this.requestId).pipe(
-    tap((data: TranscriptionDetails) => (this.isManualRequest = data.isManual)),
     map((data: TranscriptionDetails) => {
-      const hearingDate = this.luxonPipe.transform(data.hearingDate, 'dd MMM yyyy');
-      const startTime = this.luxonPipe.transform(data.transcriptionStartTs, 'HH:mm:ss');
-      const endTime = this.luxonPipe.transform(data.transcriptionEndTs, 'HH:mm:ss');
-      const received = this.luxonPipe.transform(data.received, 'dd MMM yyyy HH:mm:ss');
-
-      //TO DO: Move this mapping into a service function so it's not missed in data changes
-      const vm = {
-        reportingRestrictions: data.caseReportingRestrictions ?? [],
-        caseDetails: {
-          'Case ID': data.caseNumber,
-          Courthouse: data.courthouse,
-          'Judge(s)': data.judges.join(', '),
-          'Defendant(s)': data.defendants.join(', '),
-        },
-        requestDetails: {
-          'Hearing Date': hearingDate,
-          'Request Type': data.requestType,
-          'Request method': data.isManual ? 'Manual' : 'Automated',
-          'Request ID': this.requestId,
-          Urgency: data.urgency?.description,
-          'Audio for transcript': startTime && endTime ? `Start time ${startTime} - End time ${endTime}` : '',
-          From: data.from,
-          Received: received,
-          Instructions: data.requestorComments,
-          'Judge approval': 'Yes',
-        },
-        startTime,
-        endTime,
-        hearingId: data.hearingId,
-        caseId: data.caseId,
-        getAudioQueryParams: startTime && endTime ? { startTime, endTime } : null,
+      this.isManualRequest = data.isManual;
+      return {
+        ...this.transcriptionService.getAssignDetailsFromTranscript(data),
+        getAudioQueryParams:
+          data.transcriptionStartTs && data.transcriptionEndTs
+            ? {
+                startTime: this.luxonPipe.transform(data.transcriptionStartTs, 'HH:mm:ss'),
+                endTime: this.luxonPipe.transform(data.transcriptionEndTs, 'HH:mm:ss'),
+              }
+            : null,
       };
-
-      return vm;
     })
   );
 

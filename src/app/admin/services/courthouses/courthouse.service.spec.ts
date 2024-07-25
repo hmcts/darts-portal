@@ -158,14 +158,17 @@ describe('CourthouseService', () => {
       securityGroupIds: ['1', '2', '3'],
     };
 
-    service.createCourthouse(newCourthouse).subscribe((courthouse: CourthouseData) => {
-      expect(courthouse).toEqual(newCourthouse);
+    let courthouse;
+    service.createCourthouse(newCourthouse).subscribe((courthouseResult: CourthouseData) => {
+      courthouse = courthouseResult;
     });
 
     const req = httpMock.expectOne(`${COURTHOUSES_ADMIN_PATH}`);
     expect(req.request.method).toBe('POST');
 
     req.flush(newCourthouse);
+
+    expect(courthouse).toEqual(newCourthouse);
   });
 
   it('#updateCourthouse', () => {
@@ -176,43 +179,63 @@ describe('CourthouseService', () => {
       securityGroupIds: ['1', '2', '3'],
     };
     const courthouseId = 1;
-
-    service.updateCourthouse(courthouseId, newCourthouse).subscribe((courthouse: CourthouseData) => {
-      expect(courthouse).toEqual(newCourthouse);
+    let courthouse;
+    service.updateCourthouse(courthouseId, newCourthouse).subscribe((courthouseResult: CourthouseData) => {
+      courthouse = courthouseResult;
     });
 
     const req = httpMock.expectOne(`${COURTHOUSES_ADMIN_PATH}/${courthouseId}`);
     expect(req.request.method).toBe('PATCH');
 
     req.flush(newCourthouse);
+
+    expect(courthouse).toEqual(newCourthouse);
   });
 
   it('#getCourthouse', () => {
+    let courthouse;
     const mockCourthouse = {};
     const courthouseId = 1;
 
-    service.getCourthouse(1).subscribe((courthouse: CourthouseData) => {
-      expect(courthouse).toEqual(mockCourthouse);
+    service.getCourthouse(1).subscribe((courthouseResult: CourthouseData) => {
+      courthouse = courthouseResult;
     });
 
     const req = httpMock.expectOne(`${COURTHOUSES_ADMIN_PATH}/${courthouseId}`);
     expect(req.request.method).toBe('GET');
 
     req.flush(mockCourthouse);
+
+    expect(courthouse).toEqual(mockCourthouse);
   });
 
   describe('#getCourthouses', () => {
-    it('should return proper courthouse data', () => {
-      const mockCourthouses: CourthouseData[] = [];
+    it('should return cached value without firing request if cache exists', () => {
+      service['cachedCourthouses'] = courthouseData; // Set the cached data
 
+      let courthouseList;
       service.getCourthouses().subscribe((courthouses: CourthouseData[]) => {
-        expect(courthouses).toEqual(mockCourthouses);
+        courthouseList = courthouses;
       });
+      expect(courthouseList).toEqual(courthouseData);
+
+      httpMock.expectNone(GET_COURTHOUSES_PATH);
+    });
+
+    it('should return courthouses and send API request', () => {
+      service.clearCourthouseCache();
+
+      let courthouses: CourthouseData[] = [];
+
+      service.getCourthouses().subscribe((response: CourthouseData[]) => {
+        courthouses = response;
+      });
+
+      expect(courthouses).toEqual([]);
 
       const req = httpMock.expectOne(GET_COURTHOUSES_PATH);
       expect(req.request.method).toBe('GET');
-
-      req.flush(mockCourthouses);
+      req.flush(courthouses);
     });
 
     it('should return empty array on error', () => {
@@ -232,14 +255,17 @@ describe('CourthouseService', () => {
     it('getCourthouseRegions', () => {
       const mockRegions: Region[] = [];
 
-      service.getCourthouseRegions().subscribe((regions: Region[]) => {
-        expect(regions).toEqual(mockRegions);
+      let regions;
+      service.getCourthouseRegions().subscribe((regionResults: Region[]) => {
+        regions = regionResults;
       });
 
       const req = httpMock.expectOne(GET_COURTHOUSE_REGIONS_PATH);
       expect(req.request.method).toBe('GET');
 
       req.flush(mockRegions);
+
+      expect(regions).toEqual(mockRegions);
     });
 
     it('should return empty array on error', () => {
@@ -270,17 +296,7 @@ describe('CourthouseService', () => {
 
   describe('#getCourthouseTranscriptionCompanies', () => {
     it('should return companies if there is a transcriber role', () => {
-      const mockSecurityRoles: SecurityRoleData[] = [
-        { id: 99, role_name: 'TRANSCRIBER', display_name: 'Transcriber', display_state: true },
-      ];
-
-      service.getCourthouseTranscriptionCompanies().subscribe((securityGroups: SecurityGroup[]) => {
-        expect(securityGroups).toEqual(mockSecurityRoles);
-      });
-
-      httpMock.expectOne(`${GET_SECURITY_ROLES_PATH}`).flush(mockSecurityRoles);
-
-      httpMock.expectOne(`${GET_SECURITY_GROUPS_PATH}?role_ids=99`).flush([
+      const secGroups = [
         {
           id: 1,
           name: 'Company 1',
@@ -291,6 +307,31 @@ describe('CourthouseService', () => {
           name: 'Company 2',
           security_role_id: 2,
         },
+      ];
+      const mockSecurityRoles: SecurityRoleData[] = [
+        { id: 99, role_name: 'TRANSCRIBER', display_name: 'Transcriber', display_state: true },
+      ];
+
+      let securityGroups;
+      service.getCourthouseTranscriptionCompanies().subscribe((securityGroupResults: SecurityGroup[]) => {
+        securityGroups = securityGroupResults;
+      });
+
+      httpMock.expectOne(`${GET_SECURITY_ROLES_PATH}`).flush(mockSecurityRoles);
+
+      httpMock.expectOne(`${GET_SECURITY_GROUPS_PATH}?role_ids=99`).flush(secGroups);
+
+      expect(securityGroups).toEqual([
+        {
+          id: 1,
+          name: 'Company 1',
+          securityRoleId: 1,
+        },
+        {
+          id: 2,
+          name: 'Company 2',
+          securityRoleId: 2,
+        },
       ]);
     });
 
@@ -299,11 +340,14 @@ describe('CourthouseService', () => {
         { id: 1, role_name: 'NOT A TRANSCRIBER', display_name: 'I am not a Transcriber', display_state: true },
       ];
 
-      service.getCourthouseTranscriptionCompanies().subscribe((securityGroups: SecurityGroup[]) => {
-        expect(securityGroups).toEqual(mockSecurityRoles);
+      let companies;
+      service.getCourthouseTranscriptionCompanies().subscribe((results: SecurityGroup[]) => {
+        companies = results;
       });
 
       httpMock.expectOne(`${GET_SECURITY_ROLES_PATH}`).flush(mockSecurityRoles);
+
+      expect(companies).toEqual([]);
 
       httpMock.expectNone(`${GET_SECURITY_GROUPS_PATH}?role_ids=99`);
     });

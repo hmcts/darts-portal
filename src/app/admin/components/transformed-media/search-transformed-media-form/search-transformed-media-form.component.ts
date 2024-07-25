@@ -1,6 +1,17 @@
 import { TransformedMediaSearchFormValues } from '@admin-types/transformed-media/transformed-media-search-form.values';
 import { CommonModule, NgIf } from '@angular/common';
-import { Component, DestroyRef, EventEmitter, Input, Output, effect, inject, model, output } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  EventEmitter,
+  Input,
+  Output,
+  effect,
+  inject,
+  input,
+  model,
+  output,
+} from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CourthouseComponent } from '@common/courthouse/courthouse.component';
 import { DatepickerComponent } from '@common/datepicker/datepicker.component';
@@ -37,7 +48,7 @@ export class SearchTransformedMediaFormComponent {
   fb = inject(FormBuilder);
   destroyRef = inject(DestroyRef);
   formService = inject(FormService);
-  formValues = model<TransformedMediaSearchFormValues>(defaultFormValues);
+  formValues = input<TransformedMediaSearchFormValues>({ ...defaultFormValues });
 
   @Input() courthouses: CourthouseData[] = [];
 
@@ -78,6 +89,10 @@ export class SearchTransformedMediaFormComponent {
 
     this.errors.emit([]);
     this.search.emit(this.form.value);
+  }
+
+  onClear() {
+    this.clear.emit();
   }
 
   getFormControlErrorMessages(controlName: string): string[] {

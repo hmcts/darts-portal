@@ -47,7 +47,7 @@ describe('Admin - Groups screen', () => {
 
     cy.get('#group-users-table').should('contain', 'Phil Taylor');
 
-    cy.get('#group-users-table').contains('Phil Taylor').siblings('td').find('input').check();
+    cy.get('#group-users-table').contains('Phil Taylor').parents('tr').find('input').check();
 
     cy.get('button').contains('Remove users').click();
 

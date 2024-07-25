@@ -5,9 +5,18 @@ import { CourthouseData } from '@core-types/courthouse/courthouse.interface';
 import { TabDirective } from '@directives/tab.directive';
 import { AdminSearchService, defaultFormValues } from '@services/admin-search/admin-search.service';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
+import { ScrollService } from '@services/scroll/scroll.service';
 import { of } from 'rxjs';
 import { AdminSearchFormValues } from './search-form/search-form.component';
 import { SearchComponent } from './search.component';
+
+const mockFormValues: AdminSearchFormValues = {
+  caseId: '123',
+  courtroom: '1',
+  courthouses: [{ id: 1, displayName: 'Courthouse 1' } as Courthouse],
+  hearingDate: { type: 'specific', specific: '01/01/2021', from: '', to: '' },
+  resultsFor: 'Cases',
+};
 
 const fakeCourthouseService = {
   getCourthouses: jest.fn().mockReturnValue(of([{ id: 1, display_name: 'Courthouse 1' }] as CourthouseData[])),
@@ -39,6 +48,7 @@ describe('SearchComponent', () => {
       providers: [
         { provide: CourthouseService, useValue: fakeCourthouseService },
         { provide: AdminSearchService, useValue: fakeAdminSearchService },
+        { provide: ScrollService, useValue: { scrollTo: jest.fn() } },
       ],
     }).compileComponents();
 
@@ -74,13 +84,7 @@ describe('SearchComponent', () => {
       const searchErrorSpy = jest.spyOn(component.searchService.searchError, 'set');
       const formValuesSpy = jest.spyOn(component.searchService.formValues, 'set');
 
-      component.onSearch({
-        caseId: '123',
-        courtroom: '1',
-        courthouses: [{ id: 1, displayName: 'Courthouse 1' } as Courthouse],
-        hearingDate: { type: 'specific', specific: '01/01/2021', from: '', to: '' },
-        resultsFor: 'Cases',
-      });
+      component.onSearch(mockFormValues);
 
       tick();
 
@@ -88,31 +92,13 @@ describe('SearchComponent', () => {
       expect(isLoadingSpy).toHaveBeenCalledTimes(1);
       expect(isSubmitedSpy).toHaveBeenCalledWith(true);
       expect(searchErrorSpy).toHaveBeenCalledWith(null);
-      expect(formValuesSpy).toHaveBeenCalledWith({
-        caseId: '123',
-        courtroom: '1',
-        courthouses: [{ id: 1, displayName: 'Courthouse 1' } as Courthouse],
-        hearingDate: { type: 'specific', specific: '01/01/2021', from: '', to: '' },
-        resultsFor: 'Cases',
-      });
+      expect(formValuesSpy).toHaveBeenCalledWith(mockFormValues);
     }));
 
     describe('case search', () => {
       it('call getCases with correct values', () => {
-        component.onSearch({
-          caseId: '123',
-          courtroom: '1',
-          courthouses: [{ id: 1, displayName: 'Courthouse 1' } as Courthouse],
-          hearingDate: { type: 'specific', specific: '01/01/2021', from: '', to: '' },
-          resultsFor: 'Cases',
-        });
-        expect(fakeAdminSearchService.getCases).toHaveBeenCalledWith({
-          caseId: '123',
-          courtroom: '1',
-          courthouses: [{ id: 1, displayName: 'Courthouse 1' } as Courthouse],
-          hearingDate: { type: 'specific', specific: '01/01/2021', from: '', to: '' },
-          resultsFor: 'Cases',
-        });
+        component.onSearch(mockFormValues);
+        expect(fakeAdminSearchService.getCases).toHaveBeenCalledWith(mockFormValues);
       });
     });
 
@@ -142,6 +128,25 @@ describe('SearchComponent', () => {
         });
       });
     });
+
+    it('scrolls to search results', () => {
+      const scrollToSpy = jest.spyOn(component.scrollService, 'scrollTo');
+      component.onSearch({ ...defaultFormValues } as AdminSearchFormValues);
+      expect(scrollToSpy).toHaveBeenCalledWith('#results');
+    });
+  });
+
+  describe('onValidationErrors', () => {
+    it('set formValidationErrors', () => {
+      component.onValidationErrors([{ fieldId: 'error', message: 'error' }]);
+      expect(component.formValidationErrors()).toEqual([{ fieldId: 'error', message: 'error' }]);
+    });
+
+    it('scrolls to validation errors', () => {
+      const scrollToSpy = jest.spyOn(component.scrollService, 'scrollTo');
+      component.onValidationErrors([{ fieldId: 'error', message: 'error' }]);
+      expect(scrollToSpy).toHaveBeenCalledWith(component.validationSummarySelector);
+    });
   });
 
   describe('tabChange', () => {
@@ -152,21 +157,12 @@ describe('SearchComponent', () => {
 
     it('triggers search with last search form values', () => {
       const onSearchSpy = jest.spyOn(component, 'onSearch');
-      component.searchService.formValues.set({
-        caseId: '123',
-        courtroom: '1',
-        courthouses: [{ id: 1, displayName: 'Courthouse 1' } as Courthouse],
-        hearingDate: { type: 'specific', specific: '01/01/2021', from: '', to: '' },
-        resultsFor: 'Cases',
-      });
+      component.searchService.formValues.set(mockFormValues);
 
       component.tabChange({ name: 'Hearings' } as TabDirective);
 
       expect(onSearchSpy).toHaveBeenCalledWith({
-        caseId: '123',
-        courtroom: '1',
-        courthouses: [{ id: 1, displayName: 'Courthouse 1' } as Courthouse],
-        hearingDate: { type: 'specific', specific: '01/01/2021', from: '', to: '' },
+        ...mockFormValues,
         resultsFor: 'Hearings',
       });
     });

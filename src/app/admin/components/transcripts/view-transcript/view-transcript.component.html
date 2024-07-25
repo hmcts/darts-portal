@@ -4,11 +4,12 @@
 @if (transcript$ | async; as transcript) {
   <a [routerLink]="['../']" class="govuk-back-link">Back</a>
 
-  <span class="govuk-caption-l">Transcript request</span>
-  <h1 class="govuk-heading-l">{{ transcriptionId }}</h1>
+  <app-govuk-heading caption="Transcript request">{{ transcriptionId }}</app-govuk-heading>
 
   <app-tabs>
     <app-transcript-details *tab="'Details'; id: 'details-tab'" [transcript]="transcript" />
     <app-timeline *tab="'History'; id: 'history-tab'" [items]="(history$ | async) ?? []" />
   </app-tabs>
+} @else {
+  <app-loading text="Loading transcript request..." />
 }

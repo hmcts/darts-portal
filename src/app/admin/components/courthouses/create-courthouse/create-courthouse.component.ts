@@ -72,8 +72,7 @@ export class CreateCourthouseComponent {
     if (!createCourthouse.regionId) delete createCourthouse.regionId;
     this.courthouseService.createCourthouse(createCourthouse).subscribe((courthouse) => {
       this.router.navigate(['/admin/courthouses', courthouse.id], { queryParams: { newCourthouse: true } });
-
-      // TODO: Unhappy path
+      this.courthouseService.clearCourthouseCache();
     });
   }
 

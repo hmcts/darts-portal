@@ -48,6 +48,7 @@
           <app-request-playback-audio
             [courthouseId]="courthouseId!"
             [hearing]="vm.hearing!"
+            [audioCount]="vm.audios.length"
             [audioTimes]="audioTimes"
             [userState]="userState"
             (audioRequest)="onAudioRequest($event)"
@@ -63,7 +64,7 @@
         </div>
         <ng-container *ngIf="transcripts$ | async as transcripts">
           @if (transcripts) {
-            <div *tab="'Transcripts'; count: transcripts.length; id: 'transcripts-tab'">
+            <div *tab="'Transcripts'; count: transcripts.length; id: 'hearing-transcripts-tab'">
               <div class="flex-space-between">
                 <h2 class="govuk-heading-m">Transcripts for this hearing</h2>
                 <button

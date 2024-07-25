@@ -70,7 +70,8 @@
             <a
               class="govuk-link"
               data-cy="preview-link-button"
-              (click)="($event.preventDefault); onPreviewAudio(row.id)"
+              href="javascript:void(0)"
+              (click)="onPreviewAudio(row.id)"
               >Play preview</a
             >
           }

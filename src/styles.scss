@@ -1,3 +1,4 @@
+$govuk-suppressed-warnings: ('govuk-typography-scale-14');
 @import 'govuk-frontend/dist/govuk/all';
 @import '@ministryofjustice/frontend/moj/all';
 @import 'accessible-autocomplete';
@@ -7,7 +8,7 @@
 .govuk-width-container,
 .moj-header__container,
 .moj-primary-navigation__container {
-  max-width: 1280px;
+  @include govuk-width-container(1280px);
 }
 
 .moj-header__navigation-link {

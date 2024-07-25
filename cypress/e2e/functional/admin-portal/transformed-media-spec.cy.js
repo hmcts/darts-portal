@@ -120,7 +120,7 @@ describe('Admin - Transformed media screen', () => {
       cy.get('#request-details dd').contains('courtroom 1');
 
       cy.get('#request-details dt').contains('Audio requested');
-      cy.get('#request-details dd').contains('Start time 09:30 - End time 10:00');
+      cy.get('#request-details dd').contains('Start time 9:30:00AM - End time 10:00:00AM');
 
       cy.get('#case-details h2').contains('Case details');
       cy.get('#case-details dt').contains('Case ID');
@@ -150,8 +150,8 @@ describe('Admin - Transformed media screen', () => {
       cy.get('.govuk-table__cell.case-id').first().contains('001');
       cy.get('.govuk-table__cell.hearing-date').first().contains('01 Jun 2020');
       cy.get('.govuk-table__cell.courthouse').first().contains('courthouse 12');
-      cy.get('.govuk-table__cell.start-time').first().contains('6:00PM');
-      cy.get('.govuk-table__cell.end-time').first().contains('7:00PM');
+      cy.get('.govuk-table__cell.start-time').first().contains('6:00:00PM');
+      cy.get('.govuk-table__cell.end-time').first().contains('7:00:00PM');
       cy.get('.govuk-table__cell.courtroom').first().contains('courtroom 11');
       cy.get('.govuk-table__cell.channel').first().contains('1');
 

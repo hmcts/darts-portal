@@ -23,8 +23,8 @@ export class SearchCompletedTranscriptsResultsComponent implements OnChanges {
     { name: 'Request ID', prop: 'requestId', sortable: true },
     { name: 'Case ID', prop: 'caseNumber', sortable: true },
     { name: 'Courthouse', prop: 'courthouse', sortable: true },
-    { name: 'Hearing Date', prop: 'hearingDate', sortable: true },
-    { name: 'Request Method', prop: 'requestMethod', sortable: true },
+    { name: 'Hearing date', prop: 'hearingDate', sortable: true },
+    { name: 'Request method', prop: 'requestMethod', sortable: true },
     { name: 'Is hidden', prop: 'isHidden', sortable: true },
   ];
 

@@ -26,6 +26,39 @@ describe('Admin - Transcript requests', () => {
 
       cy.a11y();
     });
+
+    it('form state and results are persisted', () => {
+      cy.get('#requestId').type('1');
+
+      cy.get('summary').contains('Advanced search').click();
+
+      cy.get('#courthouse').type('Slough');
+      cy.get('li').contains('Slough').click();
+      cy.get('#hearingDate').type('01/01/2022');
+      cy.get('#owner').type('Phil Taylor');
+      cy.get('#requestedBy').type('Martin Adams');
+      cy.get('#specific-date-radio').click();
+      cy.get('#specific').type('01/01/2022');
+      cy.get('#requestMethodAll').click();
+
+      cy.get('[data-button="button-search"]').contains('Search').click();
+
+      // navigate to transcript
+      cy.get('app-data-table td a').contains(1).click();
+
+      // go back to form and results
+      cy.get('.govuk-back-link').click();
+
+      cy.get('#requestId').should('have.value', '1');
+      cy.get('#courthouse').should('have.value', 'Slough');
+      cy.get('#hearingDate').should('have.value', '01/01/2022');
+      cy.get('#owner').should('have.value', 'Phil Taylor');
+      cy.get('#requestedBy').should('have.value', 'Martin Adams');
+      cy.get('#specific').should('have.value', '01/01/2022');
+      cy.get('#requestMethodAll').should('be.checked');
+
+      cy.get('app-search-transcripts-results').contains('C0000000001');
+    });
   });
 
   describe('View transcript', () => {

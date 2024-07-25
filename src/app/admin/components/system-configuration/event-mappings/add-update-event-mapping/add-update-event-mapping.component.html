@@ -101,7 +101,7 @@
           <option [value]="null" disabled selected>Select</option>
           @for (handler of data.eventHandlers; track handler) {
             <option [value]="handler">
-              {{ handler }}
+              {{ handler | humanizeInitCap }}
             </option>
           }
         </select>

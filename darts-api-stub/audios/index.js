@@ -74,6 +74,23 @@ router.get('/hearings/:hearingId/audios', (req, res) => {
       ];
       res.send(body3);
       break;
+    case '5':
+      const body5 = [
+        {
+          id: 1,
+          media_start_timestamp: '2023-07-21T08:32:24.620Z',
+          media_end_timestamp: '2023-07-21T08:36:24.620Z',
+          is_available: true,
+        },
+        {
+          id: 7,
+          media_start_timestamp: '2023-07-21T09:32:24.620Z',
+          media_end_timestamp: '2023-07-21T09:36:24.620Z',
+          is_available: true,
+        },
+      ];
+      res.send(body5);
+      break;
     case '6':
       const body6 = [
         {
@@ -111,7 +128,7 @@ router.get('/preview/reset', (req, res) => {
 
 router.get('/preview/:mediaId', async (req, res) => {
   const largeRequestCount = 6; // Assuming 5 seconds per request
-  const smallRequestCount = 3;
+  const smallRequestCount = 2;
   const { mediaId } = req.params;
 
   // Initialize or increment the request count for the given mediaId

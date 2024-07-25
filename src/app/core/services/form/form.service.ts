@@ -49,7 +49,7 @@ export class FormService {
     const formControls = form.controls;
 
     return Object.keys(formControls)
-      .filter((controlName) => formControls[controlName].errors)
+      .filter((controlName) => formControls[controlName].invalid)
       .map((controlName) => {
         const control = formControls[controlName];
         if (control instanceof FormGroup) {

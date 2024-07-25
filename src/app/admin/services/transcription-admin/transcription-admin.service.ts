@@ -24,7 +24,7 @@ import { TranscriptionAdminDetailsData } from '@admin-types/transcription/transc
 import { TranscriptionWorkflow } from '@admin-types/transcription/transcription-workflow';
 import { TranscriptionWorkflowData } from '@admin-types/transcription/transcription-workflow-data.interface';
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { CourthouseData } from '@core-types/index';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { TranscriptStatus } from '@portal-types/transcriptions/transcript-status.type';
@@ -32,9 +32,25 @@ import { GET_SECURITY_GROUPS_PATH } from '@services/courthouses/courthouses.serv
 import { GET_SECURITY_ROLES_PATH } from '@services/groups/groups.service';
 import { MappingService } from '@services/mapping/mapping.service';
 import { DateTime } from 'luxon';
-import { Observable, of, switchMap } from 'rxjs';
+import { BehaviorSubject, Observable, of, switchMap } from 'rxjs';
 import { map } from 'rxjs/internal/operators/map';
 import { TranscriptionStatus } from './../../models/transcription/transcription-status';
+
+export const defaultFormValues = {
+  requestId: '',
+  caseId: '',
+  courthouse: '',
+  hearingDate: '',
+  owner: '',
+  requestedBy: '',
+  requestedDate: {
+    type: '',
+    specific: '',
+    from: '',
+    to: '',
+  },
+  requestMethod: '',
+};
 
 @Injectable({
   providedIn: 'root',
@@ -43,6 +59,13 @@ export class TranscriptionAdminService {
   luxonPipe = inject(LuxonDatePipe);
   http = inject(HttpClient);
   mapping = inject(MappingService);
+
+  searchResults = signal<Transcription[] | null>(null);
+  completedSearchResults = signal<TranscriptionDocumentSearchResult[] | null>(null);
+  searchFormValues = signal<TranscriptionSearchFormValues>(defaultFormValues);
+  isAdvancedSearch = signal(false);
+  hasSearchFormBeenSubmitted$ = new BehaviorSubject<boolean>(false);
+  tab = signal<string>('Requests');
 
   search(formValues: TranscriptionSearchFormValues): Observable<Transcription[]> {
     const body = this.mapSearchFormValuesToSearchRequest(formValues);

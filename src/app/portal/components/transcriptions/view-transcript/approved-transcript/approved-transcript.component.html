@@ -7,7 +7,7 @@
   class="margin-bottom"
   [restrictions]="transcript.caseReportingRestrictions"
   [hearingId]="transcript.hearingId"
-></app-reporting-restriction>
+/>
 
 <app-govuk-heading caption="Transcript file"> {{ transcript.caseNumber }} </app-govuk-heading>
 
@@ -18,8 +18,8 @@
   }}</strong>
 }
 
-<app-details-table title="Case details" [details]="caseDetails"></app-details-table>
+<app-details-table title="Case details" [details]="caseDetails" />
 
-<app-details-table title="Request details" [details]="requestDetails"></app-details-table>
+<app-details-table title="Request details" [details]="requestDetails" />
 
 <button id="download-button" class="govuk-button" (click)="onDownloadClicked()">Download transcript file</button>

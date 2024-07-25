@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CourthouseComponent } from '@components/common/courthouse/courthouse.component';
 import { DatepickerComponent } from '@components/common/datepicker/datepicker.component';
@@ -8,9 +8,11 @@ import { ValidationErrorSummaryComponent } from '@components/common/validation-e
 import { ErrorSummaryEntry, FieldErrors } from '@core-types/index';
 import { SearchFormValues } from '@portal-types/index';
 import { CaseService } from '@services/case/case.service';
+import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { ErrorMessageService } from '@services/error/error-message.service';
+import { ScrollService } from '@services/scroll/scroll.service';
 import { futureDateValidator } from '@validators/future-date.validator';
-import { Subscription, catchError, of } from 'rxjs';
+import { catchError, of, Subscription } from 'rxjs';
 import { CaseSearchResultsComponent } from './case-search-results/case-search-results.component';
 import { SearchErrorComponent } from './search-error/search-error.component';
 
@@ -53,24 +55,24 @@ const fieldErrors: FieldErrors = {
 export class SearchComponent implements OnInit, OnDestroy {
   @ViewChild(CourthouseComponent) courthouseComponent!: CourthouseComponent;
 
+  caseService = inject(CaseService);
+  courthouseService = inject(CourthouseService);
+  errorMsgService = inject(ErrorMessageService);
+  scrollService = inject(ScrollService);
+
   dateInputType: 'specific' | 'range' | undefined;
   isSubmitted = false;
   errorSummary: ErrorSummaryEntry[] = [];
   isAdvancedSearch = false;
   datePatternValidator = Validators.pattern(/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/);
   dateValidators = [this.datePatternValidator, futureDateValidator];
-  courthouses$ = this.caseService.getCourthouses();
+  courthouses$ = this.courthouseService.getCourthouses();
   courthouse = '';
 
   // Retrieve Previous Search Results
   searchResults$ = this.caseService.searchResults$;
   searchError$ = this.errorMsgService.errorMessage$;
   subs: Subscription[] = [];
-
-  constructor(
-    private caseService: CaseService,
-    private errorMsgService: ErrorMessageService
-  ) {}
 
   form: FormGroup = new FormGroup({
     case_number: new FormControl(),
@@ -133,6 +135,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.form.updateValueAndValidity();
 
     if (this.form.invalid) {
+      this.scrollService.scrollTo('app-validation-error-summary');
       this.isAdvancedSearch = true;
       return;
     }
@@ -153,6 +156,8 @@ export class SearchComponent implements OnInit, OnDestroy {
         return of(null);
       })
     );
+
+    this.scrollService.scrollTo('#results');
   }
 
   toggleRadioSelected(type: 'specific' | 'range') {

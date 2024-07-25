@@ -1,12 +1,12 @@
-<a [routerLink]="['/admin/transformed-media']" class="govuk-back-link">Back</a>
-
-@if (hasChangedOwner$ | async; as owner) {
-  <app-govuk-banner>Changed media request owner to {{ owner }}</app-govuk-banner>
-}
-
-<app-govuk-heading caption="Transformed media">{{ transformedMediaId }}</app-govuk-heading>
-
 @if (data$ | async; as data) {
+  <a [routerLink]="['/admin/transformed-media']" class="govuk-back-link">Back</a>
+
+  @if (hasChangedOwner$ | async; as owner) {
+    <app-govuk-banner>Changed media request owner to {{ owner }}</app-govuk-banner>
+  }
+
+  <app-govuk-heading caption="Transformed media">{{ transformedMediaId }}</app-govuk-heading>
+
   <section id="request-details" class="details">
     <app-govuk-heading class="no-margin border-bottom" tag="h2" size="m">Request details</app-govuk-heading>
     <dl class="govuk-summary-list">
@@ -59,8 +59,8 @@
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Audio requested</dt>
         <dd class="govuk-summary-list__value">
-          Start time {{ data.mediaRequest.startAt | luxonDate: 'HH:mm' }} - End time
-          {{ data.mediaRequest.endAt | luxonDate: 'HH:mm' }}
+          Start time {{ data.mediaRequest.startAt | luxonDate: 'h:mm:ssa' }} - End time
+          {{ data.mediaRequest.endAt | luxonDate: 'h:mm:ssa' }}
         </dd>
       </div>
     </dl>
@@ -122,4 +122,6 @@
     <app-govuk-heading class="no-margin border-bottom" tag="h2" size="m">Associated audio</app-govuk-heading>
     <app-associated-audio-table [rows]="data.associatedAudio" />
   </section>
+} @else {
+  <app-loading text="Loading transformed media..." />
 }
