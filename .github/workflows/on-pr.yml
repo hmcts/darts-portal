@@ -31,7 +31,7 @@ jobs:
                   echo "Found Reply URLs"
                   echo $replyUrls
 
-                  if [[ "${replyUrls}" =~ "${mediaSignInUrl}"]]; then
+                  if [[ "${replyUrls}" =~ "${mediaSignInUrl}"  ]]; then
                     echo "Reply URLs contain $mediaSignInUrl"
                   elif [ -z $replyUrls ]; then
                     echo "No Reply URLs Found. ISSUE!!"
