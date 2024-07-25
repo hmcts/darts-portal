@@ -9,6 +9,7 @@ import { TabsComponent } from '@common/tabs/tabs.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { TabDirective } from '@directives/tab.directive';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
+import { ScrollService } from '@services/scroll/scroll.service';
 import {
   defaultFormValues,
   TranscriptionAdminService,
@@ -38,6 +39,8 @@ import { SearchTranscriptsResultsComponent } from './search-transcripts-results/
 export class TranscriptsComponent {
   transcriptService = inject(TranscriptionAdminService);
   courthouseService = inject(CourthouseService);
+  scrollService = inject(ScrollService);
+
   router = inject(Router);
   errors: { fieldId: string; message: string }[] = [];
 
@@ -109,6 +112,7 @@ export class TranscriptsComponent {
     }
     this.transcriptService.searchFormValues.set(values); // save form state
     this.search$.next(values); // Trigger the search
+    this.scrollService.scrollTo('.results');
   }
 
   clearSearch() {
@@ -124,5 +128,10 @@ export class TranscriptsComponent {
   onTabChanged(tab: string) {
     this.clearSearch();
     this.transcriptService.tab.set(tab);
+  }
+
+  onErrors(errors: { fieldId: string; message: string }[]) {
+    this.errors = errors;
+    this.scrollService.scrollTo('app-validation-error-summary');
   }
 }

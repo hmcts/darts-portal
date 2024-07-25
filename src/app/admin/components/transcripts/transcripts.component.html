@@ -18,18 +18,20 @@
         [courthouses]="courthouses"
         [formValues]="formValues"
         (search)="onSearch($event)"
-        (errors)="errors = $event"
+        (errors)="onErrors($event)"
         (clear)="clearSearch()"
         [(isAdvancedSearch)]="isAdvancedSearch"
       />
 
-      @if (results) {
-        <app-search-transcripts-results [results]="results" />
-      }
+      <div class="results">
+        @if (results) {
+          <app-search-transcripts-results [results]="results" />
+        }
 
-      @if (isLoadingResults) {
-        <app-loading text="Searching transcript requests..." />
-      }
+        @if (isLoadingResults) {
+          <app-loading text="Searching transcript requests..." />
+        }
+      </div>
     </div>
 
     <div *tab="'Completed transcripts'">
@@ -40,18 +42,20 @@
         [isCompletedTranscriptSearch]="true"
         [formValues]="formValues"
         (search)="onSearch($event)"
-        (errors)="errors = $event"
+        (errors)="onErrors($event)"
         (clear)="clearSearch()"
         [(isAdvancedSearch)]="isAdvancedSearch"
       />
 
-      @if (completedResults) {
-        <app-search-completed-transcripts-results [results]="completedResults" />
-      }
+      <div class="results">
+        @if (completedResults) {
+          <app-search-completed-transcripts-results [results]="completedResults" />
+        }
 
-      @if (isLoadingCompletedResults) {
-        <app-loading text="Searching completed transcripts..." />
-      }
+        @if (isLoadingCompletedResults) {
+          <app-loading text="Searching completed transcripts..." />
+        }
+      </div>
     </div>
   </app-tabs>
 }
