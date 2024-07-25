@@ -263,5 +263,13 @@ describe('Admin - Courthouse record screen', () => {
 
       cy.get('app-govuk-banner').contains('2 user roles removed from Slough');
     });
+
+    after(() => {
+      cy.request('/api//admin/security-groups/reset');
+    });
+  });
+
+  after(() => {
+    cy.request('/api/admin/courthouses/reset');
   });
 });
