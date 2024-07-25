@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, effect, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -16,6 +16,7 @@ import { CaseService } from '@services/case/case.service';
 import { ErrorMessageService } from '@services/error/error-message.service';
 import { HeaderService } from '@services/header/header.service';
 import { HearingService } from '@services/hearing/hearing.service';
+import { ScrollService } from '@services/scroll/scroll.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { DateTime } from 'luxon';
 import { combineLatest, map, Observable } from 'rxjs';
@@ -58,6 +59,7 @@ export class RequestTranscriptComponent implements OnInit, OnDestroy {
   headerService = inject(HeaderService);
   transcriptionService = inject(TranscriptionService);
   errorMsgService = inject(ErrorMessageService);
+  scrollService = inject(ScrollService);
 
   hearingId = this.route.snapshot.params.hearing_id;
   caseId = this.route.snapshot.params.caseId;
@@ -95,8 +97,15 @@ export class RequestTranscriptComponent implements OnInit, OnDestroy {
     { name: 'Title', prop: '', hidden: true },
   ];
 
-  step = 1;
+  step = signal(1);
   transcriptRequestId!: number;
+
+  constructor() {
+    effect(() => {
+      // Scroll to top when step changes
+      this.step() && this.scrollService.scrollToTop();
+    });
+  }
 
   ngOnInit(): void {
     this.headerService.hideNavigation();
@@ -126,13 +135,14 @@ export class RequestTranscriptComponent implements OnInit, OnDestroy {
           message: 'Please select an urgency',
         });
       }
+      this.scrollService.scrollTo('app-validation-error-summary');
       return;
     }
 
     if (this.isSpecifiedTimesOrCourtLog()) {
-      this.step = 2;
+      this.step.set(2);
     } else {
-      this.step = 3;
+      this.step.set(3);
     }
   }
 
@@ -163,20 +173,20 @@ export class RequestTranscriptComponent implements OnInit, OnDestroy {
 
   onRequestTimeContinue({ startTime, endTime }: { startTime: DateTime | null; endTime: DateTime | null }) {
     this.audioTimes = { startTime, endTime };
-    this.step = 3;
+    this.step.set(3);
   }
 
   onRequestTimeCancel() {
     this.audioTimes = undefined;
     this.validationErrors = [];
-    this.step = 1;
+    this.step.set(1);
   }
 
   onConfirmationCancel() {
     if (this.isSpecifiedTimesOrCourtLog()) {
-      this.step = 2;
+      this.step.set(2);
     } else {
-      this.step = 1;
+      this.step.set(1);
     }
   }
 
@@ -195,7 +205,7 @@ export class RequestTranscriptComponent implements OnInit, OnDestroy {
       .postTranscriptionRequest(transcriptionRequest)
       .subscribe((response: { transcription_id: number }) => {
         this.transcriptRequestId = response.transcription_id;
-        this.step = 4;
+        this.step.set(4);
       });
   }
 }

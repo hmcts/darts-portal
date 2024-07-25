@@ -13,7 +13,7 @@
 
     <app-case-file [caseFile]="data.caseFile" />
 
-    <app-tabs [(default)]="tab">
+    <app-tabs [(default)]="tab" (tabChange)="onTabChange($event)">
       <app-case-hearings-table *tab="'Hearings'" [hearings]="data.hearings" [caseId]="caseId" />
 
       <app-case-events-table *tab="'Court log'" [events]="data.events" [caseId]="caseId" />
@@ -29,6 +29,7 @@
         <app-case-annotations-table
           *tab="'All annotations'; count: data.annotations.length; id: 'annotations-tab'"
           [annotations]="data.annotations"
+          [caseId]="caseId"
           (deleteAnnotation)="onDeleteAnnotation($event)"
           (downloadAnnotation)="onDownloadAnnotation($event)"
         />

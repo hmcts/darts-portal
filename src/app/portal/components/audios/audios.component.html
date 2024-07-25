@@ -13,9 +13,7 @@
 </ng-template>
 
 @if (!isDeleting) {
-  <h1 class="govuk-label-wrapper">
-    <label class="govuk-label govuk-label--l" for="case-search">Your audio</label>
-  </h1>
+  <app-govuk-heading>Your audio</app-govuk-heading>
   @if (data$ | async; as data) {
     <app-tabs (tabChange)="onTabChanged()">
       <div *tab="'Current'">

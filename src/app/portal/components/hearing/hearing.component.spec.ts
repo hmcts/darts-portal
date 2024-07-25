@@ -15,6 +15,7 @@ import {
   PostAudioRequest,
   Transcript,
 } from '@portal-types/index';
+import { ActiveTabService } from '@services/active-tab/active-tab.service';
 import { AnnotationService } from '@services/annotation/annotation.service';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
@@ -221,6 +222,7 @@ describe('HearingComponent', () => {
         { provide: MappingService },
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
         { provide: AppConfigService, useValue: appConfigServiceMock },
+        { provide: ActiveTabService, useValue: { activeTabs: jest.fn().mockReturnValue({}), setActiveTab: jest.fn() } },
         { provide: DatePipe },
       ],
     });
@@ -572,18 +574,6 @@ describe('HearingComponent', () => {
       expect(component.selectedAnnotationsforDeletion).toEqual(ids);
       component.onDeleteCancelled();
       expect(component.selectedAnnotationsforDeletion).toEqual([]);
-    });
-  });
-
-  describe('#ngOnInit', () => {
-    it('should set the tab to transcripts if the url contains ?tab=Transcripts', () => {
-      fixture.detectChanges();
-      expect(component.defaultTab).toEqual('Transcripts');
-    });
-    it('should set the tab to annotations if the url contains ?tab=Annotations', () => {
-      mockActivatedRoute.snapshot.queryParams = { tab: 'Annotations', startTime: '2024-01-01', endTime: '2024-01-02' };
-      fixture.detectChanges();
-      expect(component.defaultTab).toEqual('Annotations');
     });
   });
 });

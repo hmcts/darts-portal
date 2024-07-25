@@ -7,7 +7,7 @@
     [hearingId]="vm.hearing?.id"
   ></app-reporting-restriction>
 
-  <ng-container *ngIf="step === 1">
+  <ng-container *ngIf="step() === 1">
     <ng-container *ngIf="!vm.audioRows.length">
       <h2 class="govuk-heading-m">Audio list</h2>
       <p class="govuk-body">There is no audio for this hearing date.</p>
@@ -116,7 +116,7 @@
     (continue)="onRequestTimeContinue($event)"
     (cancel)="onRequestTimeCancel()"
     (errors)="validationErrors = $event"
-    [hidden]="!(step === 2)"
+    [hidden]="!(step() === 2)"
   >
   </app-request-times>
 
@@ -131,12 +131,12 @@
     (errors)="validationErrors = $event"
     (cancel)="onConfirmationCancel()"
     (confirm)="onConfirm($event)"
-    [hidden]="!(step === 3) || vm.error?.status"
+    [hidden]="!(step() === 3) || vm.error?.status"
   ></app-request-transcript-confirmation>
 
   <app-request-transcript-success
     [transcriptRequestId]="transcriptRequestId"
-    [hidden]="!(step === 4) || vm.error?.status"
+    [hidden]="!(step() === 4) || vm.error?.status"
   ></app-request-transcript-success>
 
   <ng-container *ngIf="vm.error && vm.error.detail">
