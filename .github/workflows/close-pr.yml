@@ -26,7 +26,7 @@ jobs:
               id: bootstrapKv
 
             - run: |
-                  mediaSignInUrl="https://darts-pr-${PR_NUMBER}.dev.apps.hmcts.net/login"
+                  mediaSignInUrl="https://darts-pr-${PR_NUMBER}.dev.platform.hmcts.net/login"
                   targetAppName="darts-stg"
 
                   azureClientId="${B2C_CLIENT_ID}"
