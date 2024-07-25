@@ -1,0 +1,18 @@
+# On push to master trigger the action to update all PRs with their latest destination branch
+name: PR Auto Update
+on:
+    push:
+        branches:
+            - master
+jobs:
+    autoupdate:
+        name: autoupdate
+        runs-on: ubuntu-latest
+        steps:
+            - uses: docker://chinthakagodawita/autoupdate-action:v1
+              id: autoupdate
+              env:
+                  GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}' # GitHub token used for auto updating
+                  MERGE_CONFLICT_ACTION: 'ignore' # Don't fail the action if there are merge conflicts on the branch
+                  EXCLUDED_LABELS: 'dependencies' # Ignore all PRs that have at least one of these labels
+                  PR_READY_STATE: 'ready_for_review' # The State the PR must be in for this action to run on it
