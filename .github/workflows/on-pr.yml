@@ -15,10 +15,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - run: |
-                  mediaSignInUrl="https://darts-portal-pr-${PR_NUMBER}.dev.platform.hmcts.net/login/return"
-                  adminSignInUrl="https://darts-portal-pr-${PR_NUMBER}.dev.platform.hmcts.net/login/admin/return"
-                  adminPasswordResetUrl="https://darts-portal-pr-${PR_NUMBER}.dev.platform.hmcts.net/password-change-confirmation/true"
-                  mediaPasswordResetUrl="https://darts-portal-pr-${PR_NUMBER}.dev.platform.hmcts.net/password-change-confirmation/false"
+                  mediaSignInUrl="https://darts-pr-${PR_NUMBER}.dev.apps.hmcts.net/login"
                   targetAppName="darts-stg"
 
                   az login --service-principal --username ${{ secrets.SP_CLIENT_ID}} -p=${{ secrets.SP_SECRET_KEY}} --tenant ${{ secrets.SP_TENANT_ID}} --allow-no-subscriptions
@@ -34,8 +31,8 @@ jobs:
                   echo "Found Reply URLs"
                   echo $replyUrls
 
-                  if [[ "${replyUrls}" =~ "${mediaSignInUrl}" && "${replyUrls}" =~ "${adminSignInUrl}" && "${replyUrls}" =~ "${adminPasswordResetUrl}" && "${replyUrls}" =~ "${mediaPasswordResetUrl}" ]]; then
-                    echo "Reply URLs contain $mediaSignInUrl, $adminSignInUrl, adminPasswordResetUrl and mediaPasswordResetUrl"
+                  if [[ "${replyUrls}" =~ "${mediaSignInUrl}"]]; then
+                    echo "Reply URLs contain $mediaSignInUrl"
                   elif [ -z $replyUrls ]; then
                     echo "No Reply URLs Found. ISSUE!!"
                   else
@@ -47,27 +44,6 @@ jobs:
 
                     if [[ ! "${replyUrls}" =~ "${mediaSignInUrl}" ]]; then
                       replyUrlString+="\"$mediaSignInUrl\""
-                    fi
-
-                    if [[ ! "${replyUrls}" =~ "${adminSignInUrl}" ]]; then
-                      if [[ ! ${replyUrlString: -1} == "," ]]; then
-                        replyUrlString+=","
-                      fi
-                      replyUrlString+="\"$adminSignInUrl\""
-                    fi
-
-                    if [[ ! "${replyUrls}" =~ "${adminPasswordResetUrl}" ]]; then
-                      if [[ ! ${replyUrlString: -1} == "," ]]; then
-                        replyUrlString+=","
-                      fi
-                      replyUrlString+="\"$adminPasswordResetUrl\""
-                    fi
-
-                    if [[ ! "${replyUrls}" =~ "${mediaPasswordResetUrl}" ]]; then
-                      if [[ ! ${replyUrlString: -1} == "," ]]; then
-                        replyUrlString+=","
-                      fi
-                      replyUrlString+="\"$mediaPasswordResetUrl\""
                     fi
 
                     echo "reply String: $replyUrlString"

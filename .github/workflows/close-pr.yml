@@ -26,10 +26,7 @@ jobs:
               id: bootstrapKv
 
             - run: |
-                  mediaSignInUrl="https://darts-portal-pr-${PR_NUMBER}.dev.platform.hmcts.net/login/return"
-                  adminSignInUrl="https://darts-portal-pr-${PR_NUMBER}.dev.platform.hmcts.net/login/admin/return"
-                  adminPasswordResetUrl="https://darts-portal-pr-${PR_NUMBER}.dev.platform.hmcts.net/password-change-confirmation/true"
-                  mediaPasswordResetUrl="https://darts-portal-pr-${PR_NUMBER}.dev.platform.hmcts.net/password-change-confirmation/false"
+                  mediaSignInUrl="https://darts-pr-${PR_NUMBER}.dev.apps.hmcts.net/login"
                   targetAppName="darts-stg"
 
                   azureClientId="${B2C_CLIENT_ID}"
@@ -47,11 +44,11 @@ jobs:
 
                   echo "Found Reply URLs"
                   echo $replyUrls
-                  if [[ "${replyUrls}" =~ "${mediaSignInUrl}" || "${replyUrls}" =~ "${adminSignInUrl}" || "${replyUrls}" =~ "${adminPasswordResetUrl}" || "${replyUrls}" =~ "${mediaPasswordResetUrl}" ]]; then
-                      echo "Reply URLs contains $mediaSignInUrl, $adminSignInUrl, $adminPasswordResetUrl or $mediaPasswordResetUrl"
+                  if [[ "${replyUrls}" =~ "${mediaSignInUrl}" ]]; then
+                      echo "Reply URLs contains $mediaSignInUrl"
                       readarray -t my_array < <(echo "$replyUrls" | jq -c '.[]')
                       for item in "${my_array[@]}"; do
-                          if [[ $item != "\"$mediaSignInUrl\"" && $item != "\"$adminSignInUrl\"" && $item != "\"$adminPasswordResetUrl\"" && $item != "\"$mediaPasswordResetUrl\"" ]]; then
+                          if [[ $item != "\"$mediaSignInUrl\"" ]]; then
                               if [[ "$replayUrlsStr" != "" ]]; then
                                   replayUrlsStr="$replayUrlsStr,"
                               fi
@@ -69,7 +66,7 @@ jobs:
 
                       az rest --method PATCH --header "Content-Type=application/json" --uri $restUrl --body "{\"web\":{\"redirectUris\":[$replayUrlsStr]}}" #--debug
                   else
-                      echo "Reply URLs DOES NOT contains $mediaSignInUrl, $adminSignInUrl, $adminPasswordResetUrl and $mediaPasswordResetUrl"
+                      echo "Reply URLs DOES NOT contains $mediaSignInUrl"
                   fi
 
               env:
