@@ -1,7 +1,5 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <h1 class="govuk-label-wrapper">
-    <label class="govuk-label govuk-label--l" for="case-search"> Search for a case </label>
-  </h1>
+  <app-govuk-heading>Search for a case</app-govuk-heading>
 
   <!-- Validation Error Summary Component -->
   <app-validation-error-summary [errors]="errorSummary" />
@@ -195,7 +193,7 @@
 
 <div id="results">
   @if (searchResults$ | async; as cases) {
-    <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
+    <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible" />
     <app-case-search-results [cases]="cases" />
   } @else {
     @if (isSubmitted && form.valid) {

@@ -18,7 +18,7 @@ describe('Login', () => {
 
     cy.get('h1').should('contain', 'Stub login page');
     cy.get('#login-admin').click();
-    cy.get('.govuk-label-wrapper > .govuk-label').should('contain', 'Search for a case');
+    cy.get('app-govuk-heading').should('contain', 'Search for a case');
 
     cy.contains('Sign out').should('be.visible').click();
 
