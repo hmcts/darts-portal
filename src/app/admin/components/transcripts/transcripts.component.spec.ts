@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CourthouseData } from '@core-types/index';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
+import { ScrollService } from '@services/scroll/scroll.service';
 import {
   defaultFormValues,
   TranscriptionAdminService,
@@ -123,6 +124,7 @@ describe('TranscriptsComponent', () => {
           },
         },
         { provide: CourthouseService, useValue: fakeCourthouseService },
+        { provide: ScrollService, useValue: { scrollTo: jest.fn() } },
         DatePipe,
         LuxonDatePipe,
       ],
@@ -245,6 +247,13 @@ describe('TranscriptsComponent', () => {
     expect(component.transcriptService.search).not.toHaveBeenCalled();
   }));
 
+  it('scroll to results when search is completed', () => {
+    const scrollService = TestBed.inject(ScrollService);
+    jest.spyOn(scrollService, 'scrollTo');
+    component.onSearch({});
+    expect(scrollService.scrollTo).toHaveBeenCalledWith('.results');
+  });
+
   describe('completedResults$', () => {
     it('should return the results when the search is completed', () => {
       let result;
@@ -273,6 +282,20 @@ describe('TranscriptsComponent', () => {
       component.isSubmitted$.next(true);
 
       expect(component.router.navigate).toHaveBeenCalledWith(['/admin/transcripts/document', 0]);
+    });
+  });
+
+  describe('onErrors', () => {
+    it('should set errors', () => {
+      component.onErrors([{ fieldId: '1', message: 'error' }]);
+      expect(component.errors).toEqual([{ fieldId: '1', message: 'error' }]);
+    });
+
+    it('should scroll to error summary', () => {
+      const scrollService = TestBed.inject(ScrollService);
+      jest.spyOn(scrollService, 'scrollTo');
+      component.onErrors([{ fieldId: '1', message: 'error' }]);
+      expect(scrollService.scrollTo).toHaveBeenCalledWith('app-validation-error-summary');
     });
   });
 });
