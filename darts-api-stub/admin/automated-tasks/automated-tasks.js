@@ -1,8 +1,9 @@
 const express = require('express');
+const _ = require('lodash');
 const { DateTime } = require('luxon');
 const router = express.Router();
 
-const automatedTasks = [
+const defaultAutomatedTasks = [
   {
     id: 1,
     name: 'Task 1',
@@ -40,6 +41,13 @@ const automatedTasks = [
     last_modified_by: 4,
   },
 ];
+
+let automatedTasks = _.cloneDeep(defaultAutomatedTasks);
+
+router.get('/reset', (req, res) => {
+  automatedTasks = _.cloneDeep(defaultAutomatedTasks);
+  res.sendStatus(200);
+});
 
 router.get('/', (_, res) => res.json(automatedTasks));
 
