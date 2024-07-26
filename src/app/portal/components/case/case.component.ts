@@ -10,6 +10,7 @@ import { InternalErrorComponent } from '@components/error/internal-server/intern
 import { NotFoundComponent } from '@components/error/not-found/not-found.component';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { TabDirective } from '@directives/tab.directive';
+import { ActiveTabService } from '@services/active-tab/active-tab.service';
 import { AnnotationService } from '@services/annotation/annotation.service';
 import { CaseService } from '@services/case/case.service';
 import { FileDownloadService } from '@services/file-download/file-download.service';
@@ -52,6 +53,7 @@ export class CaseComponent {
   private userService = inject(UserService);
   private annotationService = inject(AnnotationService);
   private fileDownloadService = inject(FileDownloadService);
+  private tabsService = inject(ActiveTabService);
 
   public caseId = this.route.snapshot.params.caseId;
   public caseFile$ = this.caseService.getCase(this.caseId);
@@ -72,8 +74,10 @@ export class CaseComponent {
     })
   );
 
+  private readonly screenId = 'case';
+
   selectedAnnotationsforDeletion: number[] = [];
-  tab!: string;
+  tab = this.tabsService.activeTabs()[this.screenId] ?? 'Hearings';
 
   data$ = combineLatest({
     caseFile: this.caseFile$,
@@ -114,5 +118,9 @@ export class CaseComponent {
       .subscribe((blob: Blob) => {
         this.fileDownloadService.saveAs(blob, e.fileName);
       });
+  }
+
+  onTabChange($event: TabDirective) {
+    this.tabsService.setActiveTab(this.screenId, $event.name);
   }
 }

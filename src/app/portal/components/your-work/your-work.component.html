@@ -14,7 +14,7 @@
   </td>
 </ng-template>
 
-<h1 class="govuk-heading-l">Your work</h1>
+<app-govuk-heading>Your work</app-govuk-heading>
 <ng-container *ngIf="requesterRequests$ | async as requests; else loading">
   <app-tabs>
     <div *tab="'To do'; id: 'todo-tab'; count: requests.todoRequests.length">

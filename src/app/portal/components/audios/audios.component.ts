@@ -4,6 +4,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DeleteComponent } from '@common/delete/delete.component';
+import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { DatatableColumn } from '@core-types/index';
@@ -32,6 +33,7 @@ import { BehaviorSubject, Observable, combineLatest, forkJoin, map, shareReplay,
     TabDirective,
     DeleteComponent,
     LuxonDatePipe,
+    GovukHeadingComponent,
   ],
 })
 export class AudiosComponent {

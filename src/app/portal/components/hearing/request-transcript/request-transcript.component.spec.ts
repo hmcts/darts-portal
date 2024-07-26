@@ -9,6 +9,7 @@ import { Observable, of } from 'rxjs';
 
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { ScrollService } from '@services/scroll/scroll.service';
 import { RequestTranscriptComponent } from './request-transcript.component';
 
 describe('RequestTranscriptComponent', () => {
@@ -100,6 +101,7 @@ describe('RequestTranscriptComponent', () => {
         { provide: CaseService, useValue: fakeCaseService },
         { provide: HearingService, useValue: fakeHearingService },
         { provide: TranscriptionService, useValue: fakeTranscriptionService },
+        { provide: ScrollService, useValue: { scrollToTop: jest.fn(), scrollTo: jest.fn() } },
       ],
     });
     fixture = TestBed.createComponent(RequestTranscriptComponent);
@@ -158,19 +160,19 @@ describe('RequestTranscriptComponent', () => {
       component.transcriptionTypeFormControl.patchValue('5');
       component.urgencyFormControl.patchValue('2');
       component.onNextStep();
-      expect(component.step).toEqual(2);
+      expect(component.step()).toEqual(2);
     });
     it('should set step to 2 if specific times has been selected as the transcription type', () => {
       component.transcriptionTypeFormControl.patchValue('9');
       component.urgencyFormControl.patchValue('2');
       component.onNextStep();
-      expect(component.step).toEqual(2);
+      expect(component.step()).toEqual(2);
     });
     it('should set step to 3 if anything other than court log and specified times has been selected', () => {
       component.transcriptionTypeFormControl.patchValue('3');
       component.urgencyFormControl.patchValue('2');
       component.onNextStep();
-      expect(component.step).toEqual(3);
+      expect(component.step()).toEqual(3);
     });
   });
 
@@ -229,7 +231,7 @@ describe('RequestTranscriptComponent', () => {
     it('should set step to 4', () => {
       jest.spyOn(fakeTranscriptionService, 'postTranscriptionRequest').mockReturnValue(of({ transcription_id: 1 }));
       component.onConfirm('test');
-      expect(component.step).toEqual(4);
+      expect(component.step()).toEqual(4);
     });
     it('should call postTranscriptionRequest', () => {
       jest.spyOn(fakeTranscriptionService, 'postTranscriptionRequest').mockReturnValue(of({ transcription_id: 1 }));
@@ -263,7 +265,7 @@ describe('RequestTranscriptComponent', () => {
         startTime: DateTime.fromISO('2023-02-21T13:00:00Z'),
         endTime: DateTime.fromISO('2023-02-21T18:00:00Z'),
       });
-      expect(component.step).toEqual(3);
+      expect(component.step()).toEqual(3);
     });
     it('should set audioTimes', () => {
       component.onRequestTimeContinue({
@@ -280,7 +282,7 @@ describe('RequestTranscriptComponent', () => {
   describe('#onRequestTimeCancel', () => {
     it('should set step to 1', () => {
       component.onRequestTimeCancel();
-      expect(component.step).toEqual(1);
+      expect(component.step()).toEqual(1);
     });
     it('should set audioTimes to undefined', () => {
       component.onRequestTimeCancel();
@@ -296,17 +298,17 @@ describe('RequestTranscriptComponent', () => {
     it('should set step to 2 if transcription type is court log', () => {
       component.transcriptionTypeFormControl.patchValue('5');
       component.onConfirmationCancel();
-      expect(component.step).toEqual(2);
+      expect(component.step()).toEqual(2);
     });
     it('should set step to 2 if transcription type is specified times', () => {
       component.transcriptionTypeFormControl.patchValue('9');
       component.onConfirmationCancel();
-      expect(component.step).toEqual(2);
+      expect(component.step()).toEqual(2);
     });
     it('should set step to 1 if transcription type is anything other than court log or specified times', () => {
       component.transcriptionTypeFormControl.patchValue('3');
       component.onConfirmationCancel();
-      expect(component.step).toEqual(1);
+      expect(component.step()).toEqual(1);
     });
   });
 
@@ -314,7 +316,7 @@ describe('RequestTranscriptComponent', () => {
     it('should set step to 4', () => {
       jest.spyOn(fakeTranscriptionService, 'postTranscriptionRequest').mockReturnValue(of({ transcription_id: 1 }));
       component.onConfirm('test');
-      expect(component.step).toEqual(4);
+      expect(component.step()).toEqual(4);
     });
 
     it('should call postTranscriptionRequest', () => {
@@ -340,6 +342,16 @@ describe('RequestTranscriptComponent', () => {
 
       component.onConfirm('test');
       expect(fakeTranscriptionService.postTranscriptionRequest).toHaveBeenCalledWith(expectedRequestObject);
+    });
+  });
+
+  describe('constructor', () => {
+    it('call scrollToTop on step change', () => {
+      const scrollService = TestBed.inject(ScrollService);
+      jest.spyOn(scrollService, 'scrollToTop');
+      component.step.set(2);
+      fixture.detectChanges();
+      expect(scrollService.scrollToTop).toHaveBeenCalledTimes(2);
     });
   });
 });

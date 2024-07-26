@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
+import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { DataTableComponent } from '@components/common/data-table/data-table.component';
 import { LoadingComponent } from '@components/common/loading/loading.component';
 import { TabsComponent } from '@components/common/tabs/tabs.component';
@@ -29,6 +30,7 @@ import { combineLatest, map, shareReplay } from 'rxjs';
     TabDirective,
     TableRowTemplateDirective,
     LuxonDatePipe,
+    GovukHeadingComponent,
   ],
 })
 export class YourWorkComponent {
