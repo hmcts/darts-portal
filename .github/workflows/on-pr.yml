@@ -16,7 +16,7 @@ jobs:
         steps:
             - run: |
                   mediaSignInUrl="https://darts-pr-${PR_NUMBER}.dev.apps.hmcts.net/login"
-                  targetAppName="darts-stg"
+                  targetAppName="darts"
 
                   az login --service-principal --username ${{ secrets.SP_CLIENT_ID}} -p=${{ secrets.SP_SECRET_KEY}} --tenant ${{ secrets.SP_TENANT_ID}} --allow-no-subscriptions
                   az account show
