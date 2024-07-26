@@ -1,12 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const { localArray } = require('../../localArray');
-const eventMappings = localArray('eventMappings');
 
-router.get('/', (_, res) => res.json(eventMappings.value));
+const defaultEventMappings = localArray('eventMappings').value;
+let eventMappings = structuredClone(defaultEventMappings);
+
+router.get('/', (_, res) => res.json(eventMappings));
+
+router.get('/reset', (req, res) => {
+  eventMappings = structuredClone(defaultEventMappings);
+  res.sendStatus(200);
+});
 
 router.get('/:event_handler_id', (req, res) => {
-  const policy = eventMappings.value.find((p) => p.id === parseInt(req.params.event_handler_id));
+  const policy = eventMappings.find((p) => p.id === parseInt(req.params.event_handler_id));
   res.json(policy);
 });
 
@@ -28,10 +35,10 @@ router.post('/', (req, res) => {
     eventMapping.id = 99;
     eventMapping.created_at = new Date().toISOString();
     eventMapping.is_active = true;
-    eventMappings.value.push(eventMapping);
+    eventMappings.push(eventMapping);
     res.status(200).send(eventMapping);
   } else {
-    const event = eventMappings.value.find((p) => p.id === eventMapping.id);
+    const event = eventMappings.find((p) => p.id === eventMapping.id);
     if (event) {
       Object.assign(event, eventMapping);
       res.status(200).send(event);
@@ -44,7 +51,7 @@ router.post('/', (req, res) => {
 function isNewTypeSubTypeUnique(newType, newSubType) {
   const seen = new Set();
 
-  for (const mapping of eventMappings.value) {
+  for (const mapping of eventMappings) {
     const combo = `${mapping.type}-${mapping.sub_type}`;
     seen.add(combo);
   }
