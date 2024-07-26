@@ -104,4 +104,8 @@ describe('Admin - Automated tasks screen', () => {
       cy.get('.govuk-tag').contains('Active');
     });
   });
+
+  after(() => {
+    cy.request('/api/admin/automated-tasks/reset');
+  });
 });
