@@ -14,4 +14,8 @@ export class ScrollService {
       }
     }, 100);
   }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0 });
+  }
 }
