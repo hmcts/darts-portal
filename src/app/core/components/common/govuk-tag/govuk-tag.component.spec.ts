@@ -8,9 +8,8 @@ describe('GovukTagComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GovukTagComponent]
-    })
-    .compileComponents();
+      imports: [GovukTagComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(GovukTagComponent);
     component = fixture.componentInstance;
