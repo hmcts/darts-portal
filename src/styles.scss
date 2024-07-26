@@ -25,6 +25,22 @@ a.govuk-link {
   color: #1d70b8;
 }
 
+td {
+  @extend .govuk-table__cell;
+  padding-left: 10px;
+  vertical-align: middle;
+}
+
+th {
+  @extend .govuk-table__header;
+  padding-left: 10px;
+  vertical-align: middle;
+}
+
+p {
+  @extend .govuk-body;
+}
+
 .govuk-table__head {
   color: #1d70b8;
 }

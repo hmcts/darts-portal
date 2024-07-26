@@ -41,11 +41,11 @@
   >
     <ng-template [tableRowTemplate]="filteredRows" let-row let-index>
       <ng-container *ngIf="row.type === 'audio'">
-        <td class="govuk-table__cell audio-row">
+        <td class="audio-row">
           <div>{{ row.timestamp | date: 'HH:mm:ss' }} - {{ row.media_end_timestamp | date: 'HH:mm:ss' }}</div>
         </td>
-        <td class="govuk-table__cell">Audio recording</td>
-        <td class="govuk-table__cell">
+        <td>Audio recording</td>
+        <td>
           @if (isAudioInPreview(row.id)) {
             @if (row.audioIsReady$ | async; as audioCode) {
               @if (audioCode === 202) {
@@ -78,9 +78,9 @@
         </td>
       </ng-container>
       <ng-container *ngIf="row.type === 'event'">
-        <td class="govuk-table__cell">{{ row.timestamp | date: 'HH:mm:ss' }}</td>
-        <td class="govuk-table__cell">{{ row.name }}</td>
-        <td class="govuk-table__cell">{{ row.text }}</td>
+        <td>{{ row.timestamp | date: 'HH:mm:ss' }}</td>
+        <td>{{ row.name }}</td>
+        <td>{{ row.text }}</td>
       </ng-container>
     </ng-template>
   </app-data-table>

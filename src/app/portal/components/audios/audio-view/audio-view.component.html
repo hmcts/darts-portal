@@ -72,7 +72,7 @@
 
       <app-data-table [rows]="data.rows" [columns]="columns" [pagination]="true">
         <ng-template [tableRowTemplate]="data.rows" let-row let-index>
-          <td class="govuk-table__cell play-cell">
+          <td class="play-cell">
             <app-play-button
               tabindex="0"
               (keydown.enter)="onSkip(row.startTime, isRowPlaying(row))"
@@ -82,9 +82,9 @@
               (click)="onSkip(row.startTime, isRowPlaying(row))"
             ></app-play-button>
           </td>
-          <td class="govuk-table__cell">{{ row.eventType }}</td>
-          <td class="govuk-table__cell">{{ row.eventTime | date: 'HH:mm:ss' }}</td>
-          <td class="govuk-table__cell">
+          <td>{{ row.eventType }}</td>
+          <td>{{ row.eventTime | date: 'HH:mm:ss' }}</td>
+          <td>
             <a href="#" (click)="$event.preventDefault(); onSkip(row.startTime, false)" class="govuk-link">
               {{ row.audioTime }}
             </a>

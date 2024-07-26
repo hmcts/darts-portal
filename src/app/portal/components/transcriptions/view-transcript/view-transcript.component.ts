@@ -5,7 +5,6 @@ import { BreadcrumbComponent } from '@components/common/breadcrumb/breadcrumb.co
 import { DetailsTableComponent } from '@components/common/details-table/details-table.component';
 import { LoadingComponent } from '@components/common/loading/loading.component';
 import { ReportingRestrictionComponent } from '@components/common/reporting-restriction/reporting-restriction.component';
-import { transcriptStatusClassMap } from '@constants/transcript-status-class-map';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { JoinPipe } from '@pipes/join';
 import { TranscriptionService } from '@services/transcription/transcription.service';
@@ -36,7 +35,6 @@ export class ViewTranscriptComponent {
   route = inject(ActivatedRoute);
 
   transcriptionService = inject(TranscriptionService);
-  transcriptStatusClassMap = transcriptStatusClassMap;
   transcriptId = this.route.snapshot.params.transcriptId;
   transcript$ = this.transcriptionService.getTranscriptionDetails(this.transcriptId);
 }

@@ -7,14 +7,14 @@
   noDataMessage="No results found"
 >
   <ng-template [tableRowTemplate]="audio()" let-row>
-    <td class="govuk-table__cell">
+    <td>
       <a class="govuk-link" [routerLink]="['/admin/audio-file', row.id]">{{ row.id }}</a>
     </td>
-    <td class="govuk-table__cell">{{ row.courthouse }}</td>
-    <td class="govuk-table__cell">{{ row.courtroom }}</td>
-    <td class="govuk-table__cell">{{ row.startAt | luxonDate: "dd MMM yyyy 'at' HH:mm:ss" }}</td>
-    <td class="govuk-table__cell">{{ row.endAt | luxonDate: "dd MMM yyyy 'at' HH:mm:ss" }}</td>
-    <td class="govuk-table__cell">{{ row.channel }}</td>
-    <td class="govuk-table__cell">{{ row.isHidden ? 'Yes' : 'No' }}</td>
+    <td>{{ row.courthouse }}</td>
+    <td>{{ row.courtroom }}</td>
+    <td>{{ row.startAt | luxonDate: "dd MMM yyyy 'at' HH:mm:ss" }}</td>
+    <td>{{ row.endAt | luxonDate: "dd MMM yyyy 'at' HH:mm:ss" }}</td>
+    <td>{{ row.channel }}</td>
+    <td>{{ row.isHidden ? 'Yes' : 'No' }}</td>
   </ng-template>
 </app-data-table>

@@ -13,20 +13,20 @@
     >
       <ng-template [tableBodyTemplate] let-row>
         <tr class="govuk-table__row">
-          <td class="govuk-table__cell case_number">
+          <td class="case_number">
             @if (adminPortal) {
               {{ row.number }}
             } @else {
               <a class="govuk-link" [routerLink]="['/case', row.id]">{{ row.number }}</a>
             }
           </td>
-          <td class="govuk-table__cell courthouse">{{ row.courthouse }}</td>
-          <td class="govuk-table__cell courtroom">{{ row.courtrooms | arrayDisplay }}</td>
-          <td class="govuk-table__cell judges">{{ row.judges | arrayDisplay }}</td>
-          <td class="govuk-table__cell defendants">{{ row.defendants | arrayDisplay }}</td>
+          <td class="courthouse">{{ row.courthouse }}</td>
+          <td class="courtroom">{{ row.courtrooms | arrayDisplay }}</td>
+          <td class="judges">{{ row.judges | arrayDisplay }}</td>
+          <td class="defendants">{{ row.defendants | arrayDisplay }}</td>
         </tr>
         <tr *ngIf="row.reportingRestriction && showRestrictions" class="restriction-row govuk-table__row">
-          <td class="govuk-table__cell" colspan="6">
+          <td colspan="6">
             <div class="govuk-warning-text">
               <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
               <span class="govuk-warning-text__text">

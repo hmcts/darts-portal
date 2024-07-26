@@ -11,14 +11,14 @@
     } @else {
       <app-data-table [rows]="results" [columns]="columns" [caption]="caption" [sortAndPaginateOnRowsChanged]="false">
         <ng-template [tableRowTemplate]="results" let-row>
-          <td class="govuk-table__cell">{{ row.fullName }}</td>
-          <td class="govuk-table__cell">{{ row.emailAddress }}</td>
-          <td class="govuk-table__cell">
-            <strong class="govuk-tag" [ngClass]="{ 'govuk-tag--green': row.active, 'govuk-tag--red': !row.active }">
+          <td>{{ row.fullName }}</td>
+          <td>{{ row.emailAddress }}</td>
+          <td>
+            <app-govuk-tag [colour]="row.active ? 'green' : 'red'">
               {{ row.active ? 'Active' : 'Inactive' }}
-            </strong>
+            </app-govuk-tag>
           </td>
-          <td class="govuk-table__cell">
+          <td>
             <a class="govuk-link" href="javascript:void(0);" [routerLink]="[row.id]">View</a>
           </td>
         </ng-template>

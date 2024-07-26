@@ -9,7 +9,7 @@
   noDataMessage="There are no annotations for this case. Annotations added to hearings will be listed here."
 >
   <ng-template [tableRowTemplate]="annotations()" let-row>
-    <td class="govuk-table__cell">
+    <td>
       <a
         class="govuk-link"
         [routerLink]="['/case', caseId(), 'hearing', row.hearingId]"
@@ -17,13 +17,13 @@
         >{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</a
       >
     </td>
-    <td class="govuk-table__cell">{{ row.fileName }}</td>
-    <td class="govuk-table__cell">
+    <td>{{ row.fileName }}</td>
+    <td>
       {{ row.fileType === 'DOC' || 'DOCX' ? 'Word Document' : '-' }}
     </td>
-    <td class="govuk-table__cell">{{ row.uploadedTs | luxonDate: 'dd MMM yyyy' }}</td>
-    <td class="govuk-table__cell">{{ row.annotationText }}</td>
-    <td class="govuk-table__cell">
+    <td>{{ row.uploadedTs | luxonDate: 'dd MMM yyyy' }}</td>
+    <td>{{ row.annotationText }}</td>
+    <td>
       <a
         href="javascript:void(0)"
         class="govuk-link"
@@ -31,7 +31,7 @@
         >Download</a
       >
     </td>
-    <td class="govuk-table__cell">
+    <td>
       <a class="govuk-link" href="javascript:void(0)" (click)="onDeleteClicked(row.annotationId)">Delete</a>
     </td>
   </ng-template>

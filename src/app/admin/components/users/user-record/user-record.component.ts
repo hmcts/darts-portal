@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
 import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
+import { GovukTagComponent } from '@common/govuk-tag/govuk-tag.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
@@ -40,6 +41,7 @@ import { UserTranscriptsComponent } from '../user-transcripts/user-transcripts.c
     UserGroupsComponent,
     ValidationErrorSummaryComponent,
     UserTranscriptsComponent,
+    GovukTagComponent,
   ],
 })
 export class UserRecordComponent {

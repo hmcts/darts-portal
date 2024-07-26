@@ -11,11 +11,8 @@
 
 <app-govuk-heading caption="Transcript file"> {{ transcript.caseNumber }} </app-govuk-heading>
 
-<!-- TODO: This could be refactored into it's own component -->
 @if (transcript.status) {
-  <strong class="govuk-tag" [ngClass]="transcriptStatusClassMap[transcript.status]" style="margin-bottom: 30px">{{
-    transcript.status
-  }}</strong>
+  <app-govuk-tag [colour]="statusColours[transcript.status]">{{ transcript.status }}</app-govuk-tag>
 }
 
 <app-details-table title="Case details" [details]="caseDetails" />

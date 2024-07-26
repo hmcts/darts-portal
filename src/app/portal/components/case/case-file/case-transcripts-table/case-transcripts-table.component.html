@@ -9,16 +9,14 @@
   noDataMessage="There are no transcripts for this case."
 >
   <ng-template [tableRowTemplate]="transcripts()" let-row>
-    <td class="govuk-table__cell">{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
-    <td class="govuk-table__cell">{{ row.type }}</td>
-    <td class="govuk-table__cell">{{ row.requestedOn | luxonDate: 'dd MMM yyyy HH:mm:ss' }}</td>
-    <td class="govuk-table__cell">{{ row.requestedBy }}</td>
-    <td class="govuk-table__cell">
-      <strong class="govuk-tag" [ngClass]="transcriptStatusClassMap[row.status]">
-        {{ row.status }}
-      </strong>
+    <td>{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
+    <td>{{ row.type }}</td>
+    <td>{{ row.requestedOn | luxonDate: 'dd MMM yyyy HH:mm:ss' }}</td>
+    <td>{{ row.requestedBy }}</td>
+    <td>
+      <app-govuk-tag [colour]="statusColours[row.status]">{{ row.status }}</app-govuk-tag>
     </td>
-    <td class="govuk-table__cell">
+    <td>
       @if (row.status === 'Complete') {
         <a class="govuk-link" [routerLink]="['transcripts', row.id]">View</a>
       }

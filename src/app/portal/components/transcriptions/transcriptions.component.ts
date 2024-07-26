@@ -2,19 +2,20 @@ import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { GovukTagComponent } from '@common/govuk-tag/govuk-tag.component';
 import { DataTableComponent } from '@components/common/data-table/data-table.component';
 import { DeleteComponent } from '@components/common/delete/delete.component';
 import { GovukHeadingComponent } from '@components/common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@components/common/loading/loading.component';
 import { TabsComponent } from '@components/common/tabs/tabs.component';
 import { ForbiddenComponent } from '@components/error/forbidden/forbidden.component';
-import { transcriptStatusClassMap } from '@constants/transcript-status-class-map';
+import { transcriptStatusTagColours } from '@constants/transcript-status-tag-colours';
 import { transcriptTableColumns } from '@constants/transcription-columns';
-import { DatatableColumn } from '@core-types/index';
+import { DatatableColumn, TagColour } from '@core-types/index';
 import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
-import { TranscriptRequest } from '@portal-types/index';
+import { TranscriptRequest, TranscriptStatus } from '@portal-types/index';
 import { SortService } from '@services/sort/sort.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { UserService } from '@services/user/user.service';
@@ -37,6 +38,7 @@ import { BehaviorSubject, combineLatest, map, shareReplay, switchMap } from 'rxj
     ForbiddenComponent,
     GovukHeadingComponent,
     LuxonDatePipe,
+    GovukTagComponent,
   ],
 })
 export class TranscriptionsComponent {
@@ -45,7 +47,7 @@ export class TranscriptionsComponent {
   userState = inject(ActivatedRoute).snapshot.data.userState;
   sortService = inject(SortService);
   router = inject(Router);
-  transcriptStatusClassMap = transcriptStatusClassMap;
+  statusColours = transcriptStatusTagColours;
 
   columns: DatatableColumn[] = [
     ...transcriptTableColumns,
@@ -122,6 +124,10 @@ export class TranscriptionsComponent {
 
   onTabChanged() {
     this.selectedRequests = [];
+  }
+
+  getColourByStatus(status: TranscriptStatus): TagColour {
+    return this.statusColours[status];
   }
 
   get deleteScreenTitle(): string {

@@ -112,8 +112,8 @@
           @for (company of selectedCompanies; track company) {
             <!-- Single column message -->
             <tr class="govuk-table__row">
-              <td class="govuk-table__cell table-width">{{ company.name }}</td>
-              <td class="govuk-table__cell table-width">
+              <td class="table-width">{{ company.name }}</td>
+              <td class="table-width">
                 <a
                   href="javascript:void(0)"
                   (click)="$event.preventDefault(); removeCompany(company.id)"

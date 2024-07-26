@@ -11,15 +11,15 @@
       [columns]="activeColumns"
     >
       <ng-template [tableRowTemplate]="rows.activeRetentionPolicies" let-row>
-        <td class="govuk-table__cell">{{ row.displayName }}</td>
-        <td class="govuk-table__cell">{{ row.description }}</td>
-        <td class="govuk-table__cell">{{ row.fixedPolicyKey }}</td>
-        <td class="govuk-table__cell">{{ row.duration | duration }}</td>
-        <td class="govuk-table__cell">{{ row.policyStartAt | luxonDate: 'dd MMM yyyy h:mm a' }}</td>
-        <td class="govuk-table__cell">
+        <td>{{ row.displayName }}</td>
+        <td>{{ row.description }}</td>
+        <td>{{ row.fixedPolicyKey }}</td>
+        <td>{{ row.duration | duration }}</td>
+        <td>{{ row.policyStartAt | luxonDate: 'dd MMM yyyy h:mm a' }}</td>
+        <td>
           {{ row.policyEndAt ? (row.policyEndAt | luxonDate: 'dd MMM yyyy h:mm a') : '-' }}
         </td>
-        <td class="govuk-table__cell">
+        <td>
           @if (isPolicyActive(row.policyStartAt)) {
             <a href="javascript:void(0)" class="govuk-link" (click)="onEditClick(row, rows.activeRetentionPolicies)">
               Edit Policy
@@ -43,12 +43,12 @@
       [columns]="inActiveColumns"
     >
       <ng-template [tableRowTemplate]="rows.inactiveRetentionPolicies" let-row>
-        <td class="govuk-table__cell">{{ row.displayName }}</td>
-        <td class="govuk-table__cell">{{ row.description }}</td>
-        <td class="govuk-table__cell">{{ row.fixedPolicyKey }}</td>
-        <td class="govuk-table__cell">{{ row.duration | duration }}</td>
-        <td class="govuk-table__cell">{{ row.policyStartAt | luxonDate: 'dd MMM yyyy h:mm a' }}</td>
-        <td class="govuk-table__cell">
+        <td>{{ row.displayName }}</td>
+        <td>{{ row.description }}</td>
+        <td>{{ row.fixedPolicyKey }}</td>
+        <td>{{ row.duration | duration }}</td>
+        <td>{{ row.policyStartAt | luxonDate: 'dd MMM yyyy h:mm a' }}</td>
+        <td>
           {{ row.policyEndAt ? (row.policyEndAt | luxonDate: 'dd MMM yyyy h:mm a') : '-' }}
         </td>
       </ng-template>

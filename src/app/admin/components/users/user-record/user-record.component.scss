@@ -3,11 +3,9 @@
 }
 
 .user-record-tags {
-  margin-bottom: 20px;
-}
-
-.user-record-tags strong {
-  margin-right: 15px;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 
 .selected-group-count {

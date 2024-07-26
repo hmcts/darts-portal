@@ -35,19 +35,19 @@
     [hiddenCaption]="true"
     [isHorizontalScroll]="true"
     ><ng-template [tableRowTemplate]="userTranscripts" let-row>
-      <td class="govuk-table__cell">
+      <td>
         <a href="javascript:void(0);" class="govuk-link" [routerLink]="['/admin/transcripts/', row.id]">
           {{ row.id }}</a
         >
       </td>
-      <td class="govuk-table__cell">{{ row.caseNumber }}</td>
-      <td class="govuk-table__cell">{{ row.courthouse }}</td>
-      <td class="govuk-table__cell">{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
-      <td class="govuk-table__cell">{{ row.requestedAt | luxonDate: 'dd MMM yyyy HH:mm' }}</td>
-      <td class="govuk-table__cell">
-        <strong class="govuk-tag" [ngClass]="transcriptStatusClassMap[row.status ?? '']">{{ row.status }}</strong>
+      <td>{{ row.caseNumber }}</td>
+      <td>{{ row.courthouse }}</td>
+      <td>{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
+      <td>{{ row.requestedAt | luxonDate: 'dd MMM yyyy HH:mm' }}</td>
+      <td>
+        <app-govuk-tag [colour]="statusColours[row.status]">{{ row.status }}</app-govuk-tag>
       </td>
-      <td class="govuk-table__cell">{{ row.isManual ? 'Manual' : 'Automatic' }}</td>
+      <td>{{ row.isManual ? 'Manual' : 'Automatic' }}</td>
     </ng-template></app-data-table
   >
 } @else {

@@ -1,13 +1,13 @@
 <ng-template #tableTemplatePartial let-row>
-  <td class="govuk-table__cell">{{ row.caseNumber }}</td>
-  <td class="govuk-table__cell">{{ row.courthouseName }}</td>
-  <td class="govuk-table__cell">{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
-  <td class="govuk-table__cell">{{ row.transcriptionType }}</td>
-  <td class="govuk-table__cell">{{ row.requestedTs | luxonDate: 'dd MMM yyyy HH:mm' }}</td>
-  <td class="govuk-table__cell">
-    <strong class="govuk-tag" [ngClass]="transcriptStatusClassMap[row.status]">{{ row.status }}</strong>
+  <td>{{ row.caseNumber }}</td>
+  <td>{{ row.courthouseName }}</td>
+  <td>{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
+  <td>{{ row.transcriptionType }}</td>
+  <td>{{ row.requestedTs | luxonDate: 'dd MMM yyyy HH:mm' }}</td>
+  <td>
+    <app-govuk-tag [colour]="getColourByStatus(row.status)">{{ row.status }}</app-govuk-tag>
   </td>
-  <td class="govuk-table__cell">
+  <td>
     <span [ngClass]="row.urgency.description === 'Overnight' ? 'moj-badge moj-badge--red' : ''">{{
       row.urgency.description
     }}</span>
@@ -99,7 +99,7 @@
       >
         <ng-template [tableRowTemplate]="vm.completedRequests" let-row>
           <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
-          <td class="govuk-table__cell">
+          <td>
             <a class="govuk-link" [routerLink]="['transcripts', row.transcriptionId]">View</a>
           </td>
         </ng-template>
@@ -128,18 +128,18 @@
         [pageLimit]="15"
       >
         <ng-template [tableRowTemplate]="approverRequests" let-row>
-          <td class="govuk-table__cell">{{ row.caseNumber }}</td>
-          <td class="govuk-table__cell">{{ row.courthouseName }}</td>
-          <td class="govuk-table__cell">{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
-          <td class="govuk-table__cell">{{ row.transcriptionType }}</td>
-          <td class="govuk-table__cell">{{ row.requestedTs | luxonDate: 'dd MMM yyyy HH:mm' }}</td>
-          <td class="govuk-table__cell">{{ row.transcriptionId }}</td>
-          <td class="govuk-table__cell">
+          <td>{{ row.caseNumber }}</td>
+          <td>{{ row.courthouseName }}</td>
+          <td>{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
+          <td>{{ row.transcriptionType }}</td>
+          <td>{{ row.requestedTs | luxonDate: 'dd MMM yyyy HH:mm' }}</td>
+          <td>{{ row.transcriptionId }}</td>
+          <td>
             <span [ngClass]="row.urgency.description === 'Overnight' ? 'moj-badge moj-badge--red' : ''">{{
               row.urgency.description
             }}</span>
           </td>
-          <td class="govuk-table__cell">
+          <td>
             <a class="govuk-link" [routerLink]="['approve-transcript', row.transcriptionId]">View</a>
           </td>
         </ng-template>

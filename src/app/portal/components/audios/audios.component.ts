@@ -5,6 +5,7 @@ import { Router, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DeleteComponent } from '@common/delete/delete.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
+import { GovukTagComponent } from '@common/govuk-tag/govuk-tag.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { DatatableColumn } from '@core-types/index';
@@ -34,6 +35,7 @@ import { BehaviorSubject, Observable, combineLatest, forkJoin, map, shareReplay,
     DeleteComponent,
     LuxonDatePipe,
     GovukHeadingComponent,
+    GovukTagComponent,
   ],
 })
 export class AudiosComponent {
