@@ -146,14 +146,14 @@ describe('Admin - Transformed media screen', () => {
       cy.get('#media-details dd').contains('2MB');
 
       cy.get('#associated-audio-details h2').contains('Associated audio');
-      cy.get('.govuk-table__cell.audio-id').first().contains('0');
-      cy.get('.govuk-table__cell.case-id').first().contains('001');
-      cy.get('.govuk-table__cell.hearing-date').first().contains('01 Jun 2020');
-      cy.get('.govuk-table__cell.courthouse').first().contains('courthouse 12');
-      cy.get('.govuk-table__cell.start-time').first().contains('6:00:00PM');
-      cy.get('.govuk-table__cell.end-time').first().contains('7:00:00PM');
-      cy.get('.govuk-table__cell.courtroom').first().contains('courtroom 11');
-      cy.get('.govuk-table__cell.channel').first().contains('1');
+      cy.get('td.audio-id').first().contains('0');
+      cy.get('td.case-id').first().contains('001');
+      cy.get('td.hearing-date').first().contains('01 Jun 2020');
+      cy.get('td.courthouse').first().contains('courthouse 12');
+      cy.get('td.start-time').first().contains('6:00:00PM');
+      cy.get('td.end-time').first().contains('7:00:00PM');
+      cy.get('td.courtroom').first().contains('courtroom 11');
+      cy.get('td.channel').first().contains('1');
 
       cy.a11y();
     });

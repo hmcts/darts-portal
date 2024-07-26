@@ -27,14 +27,16 @@ a.govuk-link {
 
 td {
   @extend .govuk-table__cell;
-  padding-left: 10px;
-  vertical-align: middle;
 }
 
 th {
   @extend .govuk-table__header;
-  padding-left: 10px;
-  vertical-align: middle;
+}
+
+td,
+th {
+  padding-left: 10px !important;
+  vertical-align: middle !important;
 }
 
 p {

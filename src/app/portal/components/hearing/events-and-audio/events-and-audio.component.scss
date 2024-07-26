@@ -2,11 +2,6 @@
   margin-bottom: 0;
 }
 
-.govuk-table__cell {
-  vertical-align: middle;
-  padding: 10px;
-}
-
 .govuk-table__header {
   vertical-align: middle;
 }
@@ -14,6 +9,10 @@
 .govuk-checkboxes--small .govuk-checkboxes__item {
   min-height: 40px;
   margin-left: 10px;
+}
+
+.govuk-radios__item {
+  text-wrap: nowrap;
 }
 
 .preview-audio-container {
