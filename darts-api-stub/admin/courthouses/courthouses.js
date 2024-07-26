@@ -6,184 +6,23 @@ const { DateTime } = require('luxon');
 
 const router = express.Router();
 
-const defaultCourthouses = [
-  {
-    courthouse_name: 'READING',
-    display_name: 'Reading',
-    id: 0,
-    created_date_time: '2023-08-18T09:48:29.728Z',
-    last_modified_date_time: '2023-08-18T09:48:29.728Z',
-    region_id: 4,
-    security_group_ids: [1, 2, 3, 4, 5],
-    has_data: true,
-  },
-  {
-    courthouse_name: 'SLOUGH',
-    display_name: 'Slough',
-    id: 1,
-    created_date_time: '2023-08-18T09:48:29.728Z',
-    last_modified_date_time: '2023-08-18T09:48:29.728Z',
-    region_id: 4,
-    security_group_ids: [1, 2, 3, 4, 5],
-    has_data: true,
-  },
-  {
-    courthouse_name: 'KINGSTON',
-    display_name: 'Kingston',
-    id: 2,
-    created_date_time: '2023-08-18T09:48:29.728Z',
-    last_modified_date_time: '2023-08-18T09:48:29.728Z',
-    region_id: 0,
-    security_group_ids: [1, 2, 3, 4, 5],
-    has_data: true,
-  },
-  {
-    courthouse_name: 'MAIDENHEAD',
-    display_name: 'Maidenhead',
-    id: 3,
-    created_date_time: '2023-08-18T09:48:29.728Z',
-    last_modified_date_time: '2023-08-18T09:48:29.728Z',
-    region_id: 4,
-    security_group_ids: [1, 2, 3, 4, 5],
-    has_data: true,
-  },
-  {
-    courthouse_name: 'BASINGSTOKE',
-    display_name: 'Basingstoke',
-    id: 4,
-    created_date_time: '2023-08-18T09:48:29.728Z',
-    last_modified_date_time: '2023-08-18T09:48:29.728Z',
-    region_id: 1,
-    security_group_ids: [1, 2, 3, 4, 5],
-    has_data: true,
-  },
-  {
-    courthouse_name: 'BOURNEMOUTH',
-    display_name: 'Bournemouth',
-    id: 5,
-    created_date_time: '2023-08-18T09:48:29.728Z',
-    last_modified_date_time: '2023-08-18T09:48:29.728Z',
-    region_id: 3,
-    security_group_ids: [1, 2, 3, 4, 5],
-    has_data: true,
-  },
-  {
-    courthouse_name: 'SOUTHAMPTON',
-    display_name: 'Southampton',
-    id: 6,
-    created_date_time: '2023-08-18T09:48:29.728Z',
-    last_modified_date_time: '2023-08-18T09:48:29.728Z',
-    region_id: 4,
-    security_group_ids: [1, 2, 3, 4, 5],
-    has_data: true,
-  },
-  {
-    courthouse_name: 'CARDIFF',
-    display_name: 'Cardiff',
-    id: 7,
-    created_date_time: '2023-08-18T09:48:29.728Z',
-    last_modified_date_time: '2023-08-18T09:48:29.728Z',
-    region_id: 6,
-    security_group_ids: [1, 2, 3, 4, 5, 6, 7],
-    has_data: true,
-  },
-  {
-    courthouse_name: 'BRIDGEND',
-    display_name: 'Bridgend',
-    id: 8,
-    created_date_time: '2023-08-18T09:48:29.728Z',
-    last_modified_date_time: '2023-08-18T09:48:29.728Z',
-    region_id: 6,
-    security_group_ids: [1, 2, 3, 4, 5],
-    has_data: true,
-  },
-  {
-    courthouse_name: 'GLOUCESTER',
-    display_name: 'Gloucester',
-    id: 9,
-    created_date_time: '2023-08-18T09:48:29.728Z',
-    last_modified_date_time: '2023-08-18T09:48:29.728Z',
-    region_id: 4,
-    security_group_ids: [1, 2, 3, 4, 5],
-    has_data: true,
-  },
-  {
-    courthouse_name: 'MILTON KEYNES',
-    display_name: 'Milton Keynes',
-    id: 10,
-    created_date_time: '2023-08-18T09:48:29.728Z',
-    last_modified_date_time: '2023-08-18T09:48:29.728Z',
-    region_id: 5,
-    security_group_ids: [1, 2, 3, 4, 5],
-    has_data: true,
-  },
-  {
-    courthouse_name: 'ANDOVER',
-    display_name: 'Andover',
-    id: 11,
-    created_date_time: '2023-08-18T09:48:29.728Z',
-    last_modified_date_time: '2023-08-18T09:48:29.728Z',
-    region_id: 4,
-    security_group_ids: [1, 2, 3, 4, 5],
-    has_data: true,
-  },
-  {
-    courthouse_name: 'WINDSOR',
-    display_name: 'Windsor',
-    id: 12,
-    created_date_time: '2023-08-18T09:48:29.728Z',
-    last_modified_date_time: '2023-08-18T09:48:29.728Z',
-    region_id: 4,
-    security_group_ids: [1, 2, 3, 4, 5],
-    has_data: true,
-  },
-  {
-    courthouse_name: 'ETON',
-    display_name: 'Eton',
-    id: 13,
-    created_date_time: '2023-08-18T09:48:29.728Z',
-    last_modified_date_time: '2023-08-18T09:48:29.728Z',
-    region_id: 4,
-    security_group_ids: [1, 2, 3, 4, 5],
-    has_data: true,
-  },
-  {
-    courthouse_name: 'COURTSVILLE',
-    display_name: 'Courtsville',
-    id: 14,
-    created_date_time: '2023-08-18T09:48:29.728Z',
-    last_modified_date_time: '2023-08-18T09:48:29.728Z',
-    security_group_ids: [1, 2, 3, 4, 5],
-    has_data: false,
-  },
-  {
-    courthouse_name: 'MUMBOLAND',
-    display_name: 'Mumboland',
-    id: 15,
-    created_date_time: '2023-08-18T09:48:29.728Z',
-    last_modified_date_time: '2023-08-18T09:48:29.728Z',
-    security_group_ids: [1, 2, 3, 4, 5],
-    has_data: false,
-  },
-  {
-    courthouse_name: 'OXFORD',
-    display_name: 'Oxford',
-    id: 16,
-    created_date_time: '2023-08-18T09:48:29.728Z',
-    last_modified_date_time: '2023-08-18T09:48:29.728Z',
-    region_id: 2,
-    security_group_ids: [1, 2, 3, 4, 5],
-    has_data: true,
-  },
-];
+const courthousesArray = localArray('courthouses').value;
 
-const courthouses = localArray('courthouses');
-// Clear out old values on restart
-courthouses.value = defaultCourthouses;
+//Prevents original array being modified
+const defaultCourthouses = structuredClone(courthousesArray);
+
+let courthouseList = defaultCourthouses;
 
 const getCourthouseByCourthouseId = (courthouseId) => {
-  return courthouses.value.find((courthouse) => courthouse.id === parseInt(courthouseId));
+  //Prevents original array being modified
+  const courthouses = structuredClone(courthouseList);
+  return courthouses.find((courthouse) => courthouse.id === parseInt(courthouseId));
 };
+
+router.get('/reset', (req, res) => {
+  courthouseList = defaultCourthouses;
+  res.sendStatus(200);
+});
 
 router.get('/:courthouseId', (req, res) => {
   if (!userIdHasAnyRoles([SUPER_ADMIN], req.headers.user_id))
@@ -240,7 +79,7 @@ router.post('/', (req, res) => {
       title: 'Bad request',
       detail: `Required keys (${requiredKeys}) not in request`,
     });
-  const highestIdCourthouse = courthouses.value.reduce((prev, current) => (+prev.id > +current.id ? prev : current));
+  const highestIdCourthouse = courthouseList.reduce((prev, current) => (+prev.id > +current.id ? prev : current));
   // Generate a timestamp
   const dateTimeNowIso = DateTime.now().toISO({ setZone: true });
   const { courthouse_name, display_name, region_id, security_group_ids } = req?.body;
@@ -260,7 +99,7 @@ router.post('/', (req, res) => {
   courthouse.created_date_time = dateTimeNowIso;
   courthouse.last_modified_date_time = dateTimeNowIso;
 
-  courthouses.value.push(courthouse);
+  courthouseList.push(courthouse);
   res.send(courthouse);
 });
 
