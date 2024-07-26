@@ -1,5 +1,4 @@
 const express = require('express');
-const _ = require('lodash');
 const { localArray } = require('../../localArray');
 const { SUPER_ADMIN } = require('../../roles');
 const { userIdHasAnyRoles } = require('../../users');
@@ -10,12 +9,13 @@ const router = express.Router();
 const courthousesArray = localArray('courthouses').value;
 
 //Prevents original array being modified
-const defaultCourthouses = _.cloneDeep(courthousesArray);
+const defaultCourthouses = structuredClone(courthousesArray);
+
 let courthouseList = defaultCourthouses;
 
 const getCourthouseByCourthouseId = (courthouseId) => {
   //Prevents original array being modified
-  const courthouses = _.cloneDeep(courthouseList);
+  const courthouses = structuredClone(courthouseList);
   return courthouses.find((courthouse) => courthouse.id === parseInt(courthouseId));
 };
 
