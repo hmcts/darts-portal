@@ -43,7 +43,7 @@ describe('TranscriptDetailsComponent', () => {
           event_ts: '2023-08-21T09:00:00Z',
         },
       ],
-      status: 'With transcriber',
+      status: 'With Transcriber',
       from: 'string',
       received: DateTime.fromISO('2024-04-18T14:11:11.781Z'),
       requestor: {

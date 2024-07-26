@@ -244,46 +244,46 @@ describe('AudiosComponent', () => {
   });
 
   describe('#getStatusClass', () => {
-    it('should return "govuk-tag--yellow" for status "OPEN"', () => {
+    it('should return "yellow" for status "OPEN"', () => {
       const status = 'OPEN';
       const result = component.getStatusClass(status);
-      expect(result).toBe('govuk-tag--yellow');
+      expect(result).toBe('yellow');
     });
 
-    it('should return "govuk-tag--yellow" for status "PROCESSING"', () => {
+    it('should return "yellow" for status "PROCESSING"', () => {
       const status = 'PROCESSING';
       const result = component.getStatusClass(status);
-      expect(result).toBe('govuk-tag--yellow');
+      expect(result).toBe('yellow');
     });
 
-    it('should return "govuk-tag--yellow" for status "OPEN"', () => {
+    it('should return "yellow" for status "OPEN"', () => {
       const status = 'PROCESSING';
       const result = component.getStatusClass(status);
-      expect(result).toBe('govuk-tag--yellow');
+      expect(result).toBe('yellow');
     });
 
-    it('should return "govuk-tag--red" for status "FAILED"', () => {
+    it('should return "red" for status "FAILED"', () => {
       const status = 'FAILED';
       const result = component.getStatusClass(status);
-      expect(result).toBe('govuk-tag--red');
+      expect(result).toBe('red');
     });
 
-    it('should return "govuk-tag--green" for status "COMPLETED"', () => {
+    it('should return "green" for status "COMPLETED"', () => {
       const status = 'COMPLETED';
       const result = component.getStatusClass(status);
-      expect(result).toBe('govuk-tag--green');
+      expect(result).toBe('green');
     });
 
-    it('should return "govuk-tag--grey" for status "EXPIRED"', () => {
+    it('should return "grey" for status "EXPIRED"', () => {
       const status = 'EXPIRED';
       const result = component.getStatusClass(status);
-      expect(result).toBe('govuk-tag--grey');
+      expect(result).toBe('grey');
     });
 
-    it('should return "govuk-tag--blue" for unknown status', () => {
+    it('should return "blue" for unknown status', () => {
       const status = 'UNKNOWN';
       const result = component.getStatusClass(status);
-      expect(result).toBe('govuk-tag--blue');
+      expect(result).toBe('blue');
     });
   });
 

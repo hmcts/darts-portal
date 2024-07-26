@@ -8,7 +8,7 @@ import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.compo
 import { GovukTagComponent } from '@common/govuk-tag/govuk-tag.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
-import { DatatableColumn } from '@core-types/index';
+import { DatatableColumn, TagColour } from '@core-types/index';
 import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { UnreadIconDirective } from '@directives/unread-icon.directive';
@@ -143,20 +143,20 @@ export class AudiosComponent {
     this.isDeleting = true;
   }
 
-  getStatusClass(status: string): string {
+  getStatusClass(status: string): TagColour {
     switch (status) {
       case 'OPEN':
-        return 'govuk-tag--yellow';
+        return 'yellow';
       case 'PROCESSING':
-        return 'govuk-tag--yellow';
+        return 'yellow';
       case 'FAILED':
-        return 'govuk-tag--red';
+        return 'red';
       case 'COMPLETED':
-        return 'govuk-tag--green';
+        return 'green';
       case 'EXPIRED':
-        return 'govuk-tag--grey';
+        return 'grey';
       default:
-        return 'govuk-tag--blue';
+        return 'blue';
     }
   }
 
