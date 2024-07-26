@@ -27,7 +27,7 @@ jobs:
 
             - run: |
                   mediaSignInUrl="https://darts-pr-${PR_NUMBER}.dev.platform.hmcts.net/login"
-                  targetAppName="darts"
+                  targetAppName="darts-stg"
 
                   azureClientId="${B2C_CLIENT_ID}"
                   azureClientSecret="${B2C_CLIENT_PWD}"
