@@ -159,18 +159,25 @@ const defaultSecurityGroups = [
   },
 ];
 
+let securityGroups = [...defaultSecurityGroups];
+
+router.get('/reset', (req, res) => {
+  securityGroups = [...defaultSecurityGroups];
+  res.sendStatus(200);
+});
+
 router.patch('/:id', (req, res) => {
   const id = req.params.id;
   const updatedUsers = req.body.user_ids;
 
   if (id && updatedUsers) {
-    const index = defaultSecurityGroups.findIndex((group) => group.id.toString() === id);
+    const index = securityGroups.findIndex((group) => group.id.toString() === id);
 
-    defaultSecurityGroups[index] = { ...defaultSecurityGroups[index], user_ids: updatedUsers };
+    securityGroups[index] = { ...securityGroups[index], user_ids: updatedUsers };
 
-    res.send(defaultSecurityGroups[index]);
+    res.send(securityGroups[index]);
   } else {
-    const securityGroup = defaultSecurityGroups.find((securityGroup) => securityGroup.id == id);
+    const securityGroup = securityGroups.find((securityGroup) => securityGroup.id == id);
     if (!securityGroup) return res.status(404).send('Security group not found');
     Object.assign(securityGroup, req.body);
     res.send(securityGroup);
@@ -179,7 +186,7 @@ router.patch('/:id', (req, res) => {
 
 router.get('/:id', (req, res) => {
   const id = req.params.id;
-  const securityGroup = defaultSecurityGroups.find((securityGroup) => securityGroup.id == id);
+  const securityGroup = securityGroups.find((securityGroup) => securityGroup.id == id);
   if (!securityGroup) return res.status(404).send('Security group not found');
   res.send(securityGroup);
 });
@@ -193,7 +200,7 @@ router.get('/', (req, res) => {
   if (isSingletonUser && userId) {
     // return groups where the user is the only member of the security group
     res.send(
-      defaultSecurityGroups.filter(
+      securityGroups.filter(
         (securityGroup) => securityGroup.user_ids.length === 1 && securityGroup.user_ids.includes(+userId)
       )
     );
@@ -201,12 +208,12 @@ router.get('/', (req, res) => {
   }
 
   if (!courthouseId && !roleIds) {
-    res.send(defaultSecurityGroups);
+    res.send(securityGroups);
     return;
   }
   if (courthouseId && roleIds) {
     res.send(
-      defaultSecurityGroups.filter(
+      securityGroups.filter(
         (securityGroup) =>
           securityGroup.courthouse_ids.includes(+courthouseId) &&
           roleIds.includes(securityGroup.security_role_id.toString())
@@ -215,13 +222,11 @@ router.get('/', (req, res) => {
     return;
   }
   if (courthouseId) {
-    res.send(defaultSecurityGroups.filter((securityGroup) => securityGroup.courthouse_ids.includes(+courthouseId)));
+    res.send(securityGroups.filter((securityGroup) => securityGroup.courthouse_ids.includes(+courthouseId)));
     return;
   }
   if (roleIds) {
-    res.send(
-      defaultSecurityGroups.filter((securityGroup) => roleIds.includes(+securityGroup.security_role_id.toString()))
-    );
+    res.send(securityGroups.filter((securityGroup) => roleIds.includes(+securityGroup.security_role_id.toString())));
     return;
   }
 });
@@ -231,11 +236,11 @@ router.post('/', (req, res) => {
     ...req.body,
     global_access: true,
     display_state: true,
-    id: defaultSecurityGroups.length + 1,
+    id: securityGroups.length + 1,
     courthouse_ids: [],
     user_ids: [],
   };
-  defaultSecurityGroups.push(group);
+  securityGroups.push(group);
   res.send(group).status(201);
 });
 
