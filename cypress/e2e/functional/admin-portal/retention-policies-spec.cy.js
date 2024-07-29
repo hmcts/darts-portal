@@ -138,4 +138,8 @@ describe('Admin - Retention Policies screen', () => {
 
     cy.get('app-govuk-banner').contains('Retention policy updated');
   });
+
+  after(() => {
+    cy.request('/api/admin/retention-policy-types/reset');
+  });
 });
