@@ -5,6 +5,7 @@ import { AudioPlayerComponent } from '@common/audio-player/audio-player.componen
 import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DeleteComponent } from '@common/delete/delete.component';
+import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { PlayButtonComponent } from '@common/play-button/play-button.component';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
@@ -40,6 +41,7 @@ import { combineLatest, map, Observable } from 'rxjs';
     PlayButtonComponent,
     ValidationErrorSummaryComponent,
     LuxonDatePipe,
+    GovukHeadingComponent,
   ],
   templateUrl: './audio-view.component.html',
   styleUrls: ['./audio-view.component.scss'],

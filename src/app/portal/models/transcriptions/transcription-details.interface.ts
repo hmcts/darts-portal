@@ -1,4 +1,5 @@
 import { ReportingRestriction } from '@core-types/reporting-restriction/reporting-restriction.interface';
+import { TranscriptStatus } from './transcript-status.type';
 import { Urgency } from './transcription-urgency.interface';
 
 export interface TranscriptionDetailsData {
@@ -8,7 +9,7 @@ export interface TranscriptionDetailsData {
   courthouse: string;
   courtroom: string;
   courthouse_id: number;
-  status?: string;
+  status?: TranscriptStatus;
   from?: string;
   received?: string;
   requestor_comments?: string;

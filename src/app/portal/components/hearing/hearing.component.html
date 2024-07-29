@@ -85,15 +85,15 @@
                 noDataMessage="There are no transcripts for this hearing."
               >
                 <ng-template [tableRowTemplate]="transcripts" let-row>
-                  <td class="govuk-table__cell">{{ row.type }}</td>
-                  <td class="govuk-table__cell">{{ row.requestedOn | luxonDate: 'dd MMM yyyy HH:mm:ss' }}</td>
-                  <td class="govuk-table__cell">{{ row.requestedBy }}</td>
-                  <td class="govuk-table__cell">
-                    <strong class="govuk-tag" [ngClass]="statusTagStyleMap[row.status]">
+                  <td>{{ row.type }}</td>
+                  <td>{{ row.requestedOn | luxonDate: 'dd MMM yyyy HH:mm:ss' }}</td>
+                  <td>{{ row.requestedBy }}</td>
+                  <td>
+                    <app-govuk-tag [colour]="statusColours[row.status]">
                       {{ row.status }}
-                    </strong>
+                    </app-govuk-tag>
                   </td>
-                  <td class="govuk-table__cell">
+                  <td>
                     <a class="govuk-link" *ngIf="row.status === 'Complete'" [routerLink]="['transcripts', row.id]"
                       >View</a
                     >
@@ -139,15 +139,15 @@
                 noDataMessage="There are no annotations for this hearing."
               >
                 <ng-template [tableRowTemplate]="vm.annotations" let-row>
-                  <td class="govuk-table__cell">{{ row.fileName }}</td>
-                  <td class="govuk-table__cell">
+                  <td>{{ row.fileName }}</td>
+                  <td>
                     {{ row.fileType === 'DOC' || 'DOCX' ? 'Word Document' : '-' }}
                   </td>
-                  <td class="govuk-table__cell">
+                  <td>
                     {{ row.uploadedTs | luxonDate: 'dd MMM yyyy' }}
                   </td>
-                  <td class="govuk-table__cell">{{ row.annotationText }}</td>
-                  <td class="govuk-table__cell">
+                  <td>{{ row.annotationText }}</td>
+                  <td>
                     <a
                       class="govuk-link"
                       href="javascript:void(0)"
@@ -155,7 +155,7 @@
                       >Download</a
                     >
                   </td>
-                  <td class="govuk-table__cell">
+                  <td>
                     <a class="govuk-link" href="javascript:void(0)" (click)="onDeleteClicked(row.annotationId)"
                       >Delete</a
                     >

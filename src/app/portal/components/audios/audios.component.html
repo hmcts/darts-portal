@@ -1,13 +1,13 @@
 <ng-template #tableTemplatePartial let-row>
-  <td class="govuk-table__cell">
+  <td>
     <a class="govuk-link" [routerLink]="['/case', row.caseId]"> {{ row.caseNumber }}</a>
   </td>
-  <td class="govuk-table__cell">{{ row.courthouseName }}</td>
-  <td class="govuk-table__cell">{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
-  <td class="govuk-table__cell">{{ row.startTime | luxonDate: 'HH:mm:ss' }}</td>
-  <td class="govuk-table__cell">{{ row.endTime | luxonDate: 'HH:mm:ss' }}</td>
-  <td class="govuk-table__cell">{{ row.mediaRequestId }}</td>
-  <td class="govuk-table__cell">
+  <td>{{ row.courthouseName }}</td>
+  <td>{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
+  <td>{{ row.startTime | luxonDate: 'HH:mm:ss' }}</td>
+  <td>{{ row.endTime | luxonDate: 'HH:mm:ss' }}</td>
+  <td>{{ row.mediaRequestId }}</td>
+  <td>
     {{ row.transformedMediaExpiryTs ? (row.transformedMediaExpiryTs | luxonDate: 'HH:mm:ss dd/MM/yyyy') : '-' }}
   </td>
 </ng-template>
@@ -35,11 +35,9 @@
               <!-- Partial template for duplicated cells -->
               <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
 
-              <td class="govuk-table__cell">
+              <td>
                 <div class="status-cell">
-                  <strong class="govuk-tag" [ngClass]="getStatusClass(row.status)">
-                    {{ getStatusText(row.status) }}
-                  </strong>
+                  <app-govuk-tag [colour]="getStatusColour(row.status)">{{ getStatusText(row.status) }}</app-govuk-tag>
                   <a *ngIf="row.status === 'FAILED'" href="#" (click)="onClearClicked($event, row)" class="govuk-link">
                     Clear
                   </a>
@@ -68,16 +66,16 @@
             (rowSelect)="onSelectedAudio($event)"
           >
             <ng-template [tableRowTemplate]="data.completedRows" let-row>
-              <td class="govuk-table__cell">
+              <td>
                 <span unreadIcon [class.unread]="!row.lastAccessedTs" *ngIf="!row.lastAccessedTs"> </span>
               </td>
               <!-- Partial template for duplicated cells -->
               <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
 
-              <td class="govuk-table__cell">
-                <strong class="govuk-tag govuk-tag--green"> READY </strong>
+              <td>
+                <app-govuk-tag colour="green"> READY </app-govuk-tag>
               </td>
-              <td class="govuk-table__cell">
+              <td>
                 <a href="#" (click)="onViewTransformedMedia($event, row)" class="govuk-link view-link">View</a>
               </td>
             </ng-template>
@@ -107,9 +105,9 @@
               <!-- Partial template for duplicated cells -->
               <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
 
-              <td class="govuk-table__cell">
+              <td>
                 <div class="status-cell">
-                  <strong class="govuk-tag govuk-tag--grey"> EXPIRED </strong>
+                  <app-govuk-tag colour="grey"> EXPIRED </app-govuk-tag>
                 </div>
               </td>
             </ng-template>
@@ -136,17 +134,17 @@
       [hiddenCaption]="true"
     >
       <ng-template [tableRowTemplate]="selectedAudioRequests" let-row>
-        <td class="govuk-table__cell">{{ row.caseNumber }}</td>
-        <td class="govuk-table__cell">{{ row.courthouseName }}</td>
-        <td class="govuk-table__cell">{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
-        <td class="govuk-table__cell">{{ row.startTime | luxonDate: 'hh:mm:ss' }}</td>
-        <td class="govuk-table__cell">{{ row.endTime | luxonDate: 'hh:mm:ss' }}</td>
-        <td class="govuk-table__cell">{{ row.mediaRequestId }}</td>
-        <td class="govuk-table__cell">{{ row.transformedMediaExpiryTs | luxonDate: 'hh:mm:ss dd/MM/yyyy' }}</td>
-        <td class="govuk-table__cell">
-          <strong class="govuk-tag" [ngClass]="getStatusClass(row.status)">
+        <td>{{ row.caseNumber }}</td>
+        <td>{{ row.courthouseName }}</td>
+        <td>{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
+        <td>{{ row.startTime | luxonDate: 'hh:mm:ss' }}</td>
+        <td>{{ row.endTime | luxonDate: 'hh:mm:ss' }}</td>
+        <td>{{ row.mediaRequestId }}</td>
+        <td>{{ row.transformedMediaExpiryTs | luxonDate: 'hh:mm:ss dd/MM/yyyy' }}</td>
+        <td>
+          <app-govuk-tag [colour]="getStatusColour(row.status)">
             {{ getStatusText(row.status) }}
-          </strong>
+          </app-govuk-tag>
         </td>
       </ng-template>
     </app-data-table>

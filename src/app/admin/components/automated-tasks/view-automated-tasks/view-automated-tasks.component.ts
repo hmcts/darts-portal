@@ -6,6 +6,7 @@ import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
 import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
+import { GovukTagComponent } from '@common/govuk-tag/govuk-tag.component';
 import { AutomatedTasksService } from '@services/automated-tasks/automated-tasks.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { Observable, map, switchMap } from 'rxjs';
@@ -20,6 +21,7 @@ import { AutomatedTaskStatusComponent } from '../automated-task-status/automated
     DetailsTableComponent,
     GovukBannerComponent,
     AutomatedTaskStatusComponent,
+    GovukTagComponent,
   ],
   templateUrl: './view-automated-tasks.component.html',
   styleUrl: './view-automated-tasks.component.scss',

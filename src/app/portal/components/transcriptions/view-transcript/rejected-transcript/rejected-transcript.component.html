@@ -7,15 +7,12 @@
   class="margin-bottom"
   [restrictions]="transcript.caseReportingRestrictions"
   [hearingId]="transcript.hearingId"
-></app-reporting-restriction>
+/>
 
 <app-govuk-heading caption="Transcript request"> {{ transcript.caseNumber }} </app-govuk-heading>
 
-<!-- TODO: This could be refactored into it's own component -->
 @if (transcript.status) {
-  <strong class="govuk-tag" [ngClass]="transcriptStatusClassMap[transcript.status]" style="margin-bottom: 30px">{{
-    transcript.status
-  }}</strong>
+  <app-govuk-tag [colour]="statusColours[transcript.status]">{{ transcript.status }}</app-govuk-tag>
 }
 
 <h1 class="govuk-heading-m">Your request was rejected</h1>
