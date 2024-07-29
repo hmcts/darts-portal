@@ -7,7 +7,7 @@ describe('Login', () => {
   });
 
   it('loads login page', () => {
-    cy.get('h1').should('contain', 'Sign in to the DARTS Portal TEST');
+    cy.get('h1').should('contain', 'Sign in to the DARTS Portal');
     cy.a11y();
   });
 
