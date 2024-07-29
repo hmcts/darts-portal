@@ -40,7 +40,7 @@
 
     <div [hidden]="state !== 'Default'">
       <app-hearing-file [case]="vm.case" [hearing]="vm.hearing"></app-hearing-file>
-      <app-tabs [default]="defaultTab">
+      <app-tabs [default]="tab" (tabChange)="onTabChange($event.name)">
         <div *tab="'Events and Audio'">
           <!-- Hearing Screen -->
           <h2 id="events-audio-heading" class="govuk-heading-m">Events and audio recordings</h2>

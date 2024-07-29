@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { CourthouseComponent } from '@components/common/courthouse/courthouse.component';
 import { DatepickerComponent } from '@components/common/datepicker/datepicker.component';
 import { LoadingComponent } from '@components/common/loading/loading.component';
@@ -50,6 +51,7 @@ const fieldErrors: FieldErrors = {
     LoadingComponent,
     ValidationErrorSummaryComponent,
     DatepickerComponent,
+    GovukHeadingComponent,
   ],
 })
 export class SearchComponent implements OnInit, OnDestroy {

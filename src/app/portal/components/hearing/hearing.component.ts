@@ -22,6 +22,7 @@ import {
   PostAudioResponse,
   TranscriptsRow,
 } from '@portal-types/index';
+import { ActiveTabService } from '@services/active-tab/active-tab.service';
 import { AnnotationService } from '@services/annotation/annotation.service';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { AudioRequestService } from '@services/audio-request/audio-request.service';
@@ -78,6 +79,8 @@ export class HearingComponent implements OnInit {
   userService = inject(UserService);
   mappingService = inject(MappingService);
   errorMsgService = inject(ErrorMessageService);
+  activeTabService = inject(ActiveTabService);
+
   audioTimes: { startTime: DateTime; endTime: DateTime } | null = null;
   private _state: HearingPageState = 'Default';
   public errorSummary: ErrorSummaryEntry[] = [];
@@ -86,7 +89,8 @@ export class HearingComponent implements OnInit {
   userState = this.route.snapshot.data.userState;
   transcripts: TranscriptsRow[] = [];
   rows: AudioEventRow[] = [];
-  defaultTab = 'Events and Audio';
+  readonly screenId = 'hearingScreen';
+  tab = this.activeTabService.activeTabs()[this.screenId] ?? 'Events and Audio';
   selectedAnnotationsforDeletion: number[] = [];
 
   public transcripts$ = this.caseService.getHearingTranscripts(this.hearingId).pipe(
@@ -177,7 +181,7 @@ export class HearingComponent implements OnInit {
     const tab = this.route.snapshot.queryParams.tab;
 
     if (tab === 'Transcripts' || tab === 'Annotations') {
-      this.defaultTab = tab;
+      this.tab = tab;
     }
 
     const startTime = this.route.snapshot.queryParams.startTime;
@@ -274,14 +278,14 @@ export class HearingComponent implements OnInit {
           error: this.error$,
         });
         this.selectedAnnotationsforDeletion = [];
-        this.defaultTab = 'Annotations';
+        this.tab = 'Annotations';
       });
     });
   }
 
   onDeleteCancelled() {
     this.selectedAnnotationsforDeletion = [];
-    this.defaultTab = 'Annotations';
+    this.tab = 'Annotations';
   }
 
   downloadAnnotationTemplate(caseId: string, hearingDate: DateTime = DateTime.now()) {
@@ -297,5 +301,10 @@ export class HearingComponent implements OnInit {
         return r.hearing_id == hearingId;
       })
       .map((r) => ({ ...r, event_ts: '' })); // timestamp is not required in hearing screen
+  }
+
+  onTabChange(tabName: string) {
+    this.activeTabService.setActiveTab(this.screenId, tabName);
+    this.errorSummary = [];
   }
 }

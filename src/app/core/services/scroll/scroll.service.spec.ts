@@ -8,15 +8,7 @@ describe('ScrollService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(ScrollService);
-  });
-
-  beforeAll(() => {
     HTMLElement.prototype.scrollIntoView = jest.fn();
-  });
-
-  // After all tests, clean up the mock
-  afterAll(() => {
-    jest.restoreAllMocks();
   });
 
   it('should be created', () => {
@@ -45,5 +37,13 @@ describe('ScrollService', () => {
 
       expect(consoleErrorSpy).toHaveBeenCalledWith('Element with selector #none not found');
     }));
+  });
+
+  describe('scrollToTop', () => {
+    it('should scroll to the top of the page', () => {
+      jest.spyOn(window, 'scrollTo').mockImplementation(() => {});
+      service.scrollToTop();
+      expect(window.scrollTo).toHaveBeenCalledWith({ top: 0 });
+    });
   });
 });

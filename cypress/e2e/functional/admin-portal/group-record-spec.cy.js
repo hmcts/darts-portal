@@ -103,4 +103,8 @@ describe('Admin - Groups screen', () => {
 
     cy.get('.fullName-error').should('contain', 'There is an existing group with this name');
   });
+
+  after(() => {
+    cy.request('/api/admin/security-groups/reset');
+  });
 });

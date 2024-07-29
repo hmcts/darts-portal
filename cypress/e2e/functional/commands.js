@@ -11,7 +11,7 @@ Cypress.Commands.add('login', (roleCode = 'admin', loginType = 'internal') => {
 
   cy.get('h1').should('contain', 'Stub login page');
   cy.get(`#login-${roleCode}`).click();
-  cy.get('.govuk-label-wrapper > .govuk-label').should('contain', 'Search for a case');
+  cy.get('app-govuk-heading').should('contain', 'Search for a case');
 });
 
 Cypress.Commands.add('logout', () => {
