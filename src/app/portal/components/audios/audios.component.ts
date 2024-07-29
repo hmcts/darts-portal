@@ -143,7 +143,7 @@ export class AudiosComponent {
     this.isDeleting = true;
   }
 
-  getStatusClass(status: string): TagColour {
+  getStatusColour(status: string): TagColour {
     switch (status) {
       case 'OPEN':
         return 'yellow';

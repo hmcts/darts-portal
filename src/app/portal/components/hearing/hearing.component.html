@@ -89,9 +89,9 @@
                   <td>{{ row.requestedOn | luxonDate: 'dd MMM yyyy HH:mm:ss' }}</td>
                   <td>{{ row.requestedBy }}</td>
                   <td>
-                    <strong class="govuk-tag" [ngClass]="statusTagStyleMap[row.status]">
+                    <app-govuk-tag [colour]="statusColours[row.status]">
                       {{ row.status }}
-                    </strong>
+                    </app-govuk-tag>
                   </td>
                   <td>
                     <a class="govuk-link" *ngIf="row.status === 'Complete'" [routerLink]="['transcripts', row.id]"

@@ -243,46 +243,46 @@ describe('AudiosComponent', () => {
     });
   });
 
-  describe('#getStatusClass', () => {
+  describe('#getStatusColour', () => {
     it('should return "yellow" for status "OPEN"', () => {
       const status = 'OPEN';
-      const result = component.getStatusClass(status);
+      const result = component.getStatusColour(status);
       expect(result).toBe('yellow');
     });
 
     it('should return "yellow" for status "PROCESSING"', () => {
       const status = 'PROCESSING';
-      const result = component.getStatusClass(status);
+      const result = component.getStatusColour(status);
       expect(result).toBe('yellow');
     });
 
     it('should return "yellow" for status "OPEN"', () => {
       const status = 'PROCESSING';
-      const result = component.getStatusClass(status);
+      const result = component.getStatusColour(status);
       expect(result).toBe('yellow');
     });
 
     it('should return "red" for status "FAILED"', () => {
       const status = 'FAILED';
-      const result = component.getStatusClass(status);
+      const result = component.getStatusColour(status);
       expect(result).toBe('red');
     });
 
     it('should return "green" for status "COMPLETED"', () => {
       const status = 'COMPLETED';
-      const result = component.getStatusClass(status);
+      const result = component.getStatusColour(status);
       expect(result).toBe('green');
     });
 
     it('should return "grey" for status "EXPIRED"', () => {
       const status = 'EXPIRED';
-      const result = component.getStatusClass(status);
+      const result = component.getStatusColour(status);
       expect(result).toBe('grey');
     });
 
     it('should return "blue" for unknown status', () => {
       const status = 'UNKNOWN';
-      const result = component.getStatusClass(status);
+      const result = component.getStatusColour(status);
       expect(result).toBe('blue');
     });
   });

@@ -37,7 +37,7 @@
 
               <td>
                 <div class="status-cell">
-                  <app-govuk-tag [colour]="getStatusClass(row.status)">{{ getStatusText(row.status) }}</app-govuk-tag>
+                  <app-govuk-tag [colour]="getStatusColour(row.status)">{{ getStatusText(row.status) }}</app-govuk-tag>
                   <a *ngIf="row.status === 'FAILED'" href="#" (click)="onClearClicked($event, row)" class="govuk-link">
                     Clear
                   </a>
@@ -142,9 +142,9 @@
         <td>{{ row.mediaRequestId }}</td>
         <td>{{ row.transformedMediaExpiryTs | luxonDate: 'hh:mm:ss dd/MM/yyyy' }}</td>
         <td>
-          <strong class="govuk-tag" [ngClass]="getStatusClass(row.status)">
+          <app-govuk-tag [colour]="getStatusColour(row.status)">
             {{ getStatusText(row.status) }}
-          </strong>
+          </app-govuk-tag>
         </td>
       </ng-template>
     </app-data-table>

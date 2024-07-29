@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DeleteComponent } from '@common/delete/delete.component';
+import { GovukTagComponent } from '@common/govuk-tag/govuk-tag.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { BreadcrumbComponent } from '@components/common/breadcrumb/breadcrumb.component';
 import { DataTableComponent } from '@components/common/data-table/data-table.component';
@@ -9,6 +10,7 @@ import { ReportingRestrictionComponent } from '@components/common/reporting-rest
 import { TabsComponent } from '@components/common/tabs/tabs.component';
 import { ValidationErrorSummaryComponent } from '@components/common/validation-error-summary/validation-error-summary.component';
 import { ForbiddenComponent } from '@components/error/forbidden/forbidden.component';
+import { transcriptStatusTagColours } from '@constants/transcript-status-tag-colours';
 import { DatatableColumn, ErrorSummaryEntry, ReportingRestriction } from '@core-types/index';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { TabDirective } from '@directives/tab.directive';
@@ -65,6 +67,7 @@ import { RequestPlaybackAudioComponent } from './request-playback-audio/request-
     JoinPipe,
     LuxonDatePipe,
     DeleteComponent,
+    GovukTagComponent,
   ],
 })
 export class HearingComponent implements OnInit {
@@ -92,6 +95,7 @@ export class HearingComponent implements OnInit {
   readonly screenId = 'hearingScreen';
   tab = this.activeTabService.activeTabs()[this.screenId] ?? 'Events and Audio';
   selectedAnnotationsforDeletion: number[] = [];
+  statusColours = transcriptStatusTagColours;
 
   public transcripts$ = this.caseService.getHearingTranscripts(this.hearingId).pipe(
     map((transcript) => this.mappingService.mapTranscriptRequestToRows(transcript)),
@@ -115,18 +119,7 @@ export class HearingComponent implements OnInit {
     { name: '', prop: '' },
   ];
 
-  statusTagStyleMap: { [key: string]: string } = {
-    Requested: 'govuk-tag--blue',
-    'Awaiting Authorisation': 'govuk-tag--yellow',
-    Approved: 'govuk-tag--turquoise',
-    Rejected: 'govuk-tag--red',
-    'With Transcriber': 'govuk-tag--purple',
-    Complete: 'govuk-tag--green',
-    Closed: 'govuk-tag--grey',
-  };
-
   requestId!: number;
-
   requestObject!: PostAudioRequest;
 
   case$ = this.caseService.getCase(this.caseId).pipe(shareReplay(1));
