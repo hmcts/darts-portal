@@ -228,4 +228,8 @@ describe('Admin - Event mappings screen', () => {
       cy.get('.govuk-heading-l').contains('Prosecution opened');
     });
   });
+
+  after(() => {
+    cy.request('/api/admin/event-mappings/reset');
+  });
 });
