@@ -3,7 +3,8 @@ import { Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
-import { transcriptStatusClassMap } from '@constants/transcript-status-class-map';
+import { GovukTagComponent } from '@common/govuk-tag/govuk-tag.component';
+import { transcriptStatusTagColours } from '@constants/transcript-status-tag-colours';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { TranscriptsRow } from '@portal-types/index';
@@ -11,7 +12,15 @@ import { TranscriptsRow } from '@portal-types/index';
 @Component({
   selector: 'app-case-transcripts-table',
   standalone: true,
-  imports: [DataTableComponent, TableRowTemplateDirective, RouterLink, GovukHeadingComponent, LuxonDatePipe, NgClass],
+  imports: [
+    DataTableComponent,
+    TableRowTemplateDirective,
+    RouterLink,
+    GovukHeadingComponent,
+    LuxonDatePipe,
+    NgClass,
+    GovukTagComponent,
+  ],
   templateUrl: './case-transcripts-table.component.html',
   styleUrl: './case-transcripts-table.component.scss',
 })
@@ -19,7 +28,7 @@ export class CaseTranscriptsTableComponent {
   transcripts = input<TranscriptsRow[]>([]);
   caseId = input<number>();
 
-  transcriptStatusClassMap = transcriptStatusClassMap;
+  statusColours = transcriptStatusTagColours;
 
   columns = [
     { name: 'Hearing date', prop: 'hearingDate', sortable: true },

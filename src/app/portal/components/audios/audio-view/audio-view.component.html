@@ -17,8 +17,7 @@
     ></app-validation-error-summary>
   </ng-container>
 
-  <span class="govuk-caption-l">Audio File</span>
-  <h1 class="govuk-heading-l">{{ transformedMedia.transformedMediaFilename }}</h1>
+  <app-govuk-heading caption="Audio File">{{ transformedMedia.transformedMediaFilename }}</app-govuk-heading>
 
   <h2 class="govuk-heading-m">Case details</h2>
   <div class="details-container">
@@ -72,7 +71,7 @@
 
       <app-data-table [rows]="data.rows" [columns]="columns" [pagination]="true">
         <ng-template [tableRowTemplate]="data.rows" let-row let-index>
-          <td class="govuk-table__cell play-cell">
+          <td class="play-cell">
             <app-play-button
               tabindex="0"
               (keydown.enter)="onSkip(row.startTime, isRowPlaying(row))"
@@ -82,9 +81,9 @@
               (click)="onSkip(row.startTime, isRowPlaying(row))"
             ></app-play-button>
           </td>
-          <td class="govuk-table__cell">{{ row.eventType }}</td>
-          <td class="govuk-table__cell">{{ row.eventTime | date: 'HH:mm:ss' }}</td>
-          <td class="govuk-table__cell">
+          <td>{{ row.eventType }}</td>
+          <td>{{ row.eventTime | date: 'HH:mm:ss' }}</td>
+          <td>
             <a href="#" (click)="$event.preventDefault(); onSkip(row.startTime, false)" class="govuk-link">
               {{ row.audioTime }}
             </a>

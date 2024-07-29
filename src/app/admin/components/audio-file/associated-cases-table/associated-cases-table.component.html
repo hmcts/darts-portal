@@ -1,14 +1,14 @@
 <app-data-table [columns]="columns" [rows]="rows()">
   <ng-template [tableRowTemplate]="rows()" let-row>
-    <td class="govuk-table__cell case-id">
+    <td class="case-id">
       <a class="govuk-link" [routerLink]="['/case', row.caseId]"> {{ row.caseNumber }}</a>
     </td>
-    <td class="govuk-table__cell hearing-date">
+    <td class="hearing-date">
       <a class="govuk-link" [routerLink]="['/case', row.caseId, 'hearing', row.hearingId]"
         >{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}
       </a>
     </td>
-    <td class="govuk-table__cell defendants">{{ row.defendants | join }}</td>
-    <td class="govuk-table__cell judges">{{ row.judges | join }}</td>
+    <td class="defendants">{{ row.defendants | join }}</td>
+    <td class="judges">{{ row.judges | join }}</td>
   </ng-template>
 </app-data-table>

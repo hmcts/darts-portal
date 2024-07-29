@@ -6,13 +6,13 @@
   caption="Hearings associated with case"
 >
   <ng-template [tableRowTemplate]="hearings()" let-row>
-    <td class="govuk-table__cell">
+    <td>
       <a class="govuk-link" [routerLink]="['/case', caseId(), 'hearing', row.id]">{{
         row.date | luxonDate: 'd MMM y'
       }}</a>
     </td>
-    <td class="govuk-table__cell">{{ row.judges }}</td>
-    <td class="govuk-table__cell">{{ row.courtroom }}</td>
-    <td class="govuk-table__cell">{{ row.transcriptCount }}</td>
+    <td>{{ row.judges }}</td>
+    <td>{{ row.courtroom }}</td>
+    <td>{{ row.transcriptCount }}</td>
   </ng-template>
 </app-data-table>

@@ -7,13 +7,13 @@
   noDataMessage="No results found"
 >
   <ng-template [tableRowTemplate]="events()" let-row>
-    <td class="govuk-table__cell">{{ row.id }}</td>
-    <td class="govuk-table__cell">{{ row.createdAt | luxonDate: "dd MMM yyyy 'at' hh:mm:ss" }}</td>
-    <td class="govuk-table__cell">{{ row.name }}</td>
-    <td class="govuk-table__cell">{{ row.courthouse }}</td>
-    <td class="govuk-table__cell">{{ row.courtroom }}</td>
-    <td class="govuk-table__cell">{{ row.text }}</td>
-    <td class="govuk-table__cell">{{ row.antecedentId }}</td>
-    <td class="govuk-table__cell">{{ row.chronicleId }}</td>
+    <td>{{ row.id }}</td>
+    <td>{{ row.createdAt | luxonDate: "dd MMM yyyy 'at' hh:mm:ss" }}</td>
+    <td>{{ row.name }}</td>
+    <td>{{ row.courthouse }}</td>
+    <td>{{ row.courtroom }}</td>
+    <td>{{ row.text }}</td>
+    <td>{{ row.antecedentId }}</td>
+    <td>{{ row.chronicleId }}</td>
   </ng-template>
 </app-data-table>

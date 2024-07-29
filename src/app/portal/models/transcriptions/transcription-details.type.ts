@@ -1,5 +1,6 @@
 import { ReportingRestriction } from '@core-types/reporting-restriction/reporting-restriction.interface';
 import { DateTime } from 'luxon';
+import { TranscriptStatus } from './transcript-status.type';
 import { Urgency } from './transcription-urgency.interface';
 
 export type TranscriptionDetails = {
@@ -9,7 +10,7 @@ export type TranscriptionDetails = {
   courthouse: string;
   courtroom: string;
   courthouseId?: number;
-  status?: string;
+  status?: TranscriptStatus;
   from?: string;
   received?: DateTime;
   requestorComments?: string;

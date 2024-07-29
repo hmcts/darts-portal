@@ -1,6 +1,6 @@
 <app-data-table [rowSelectable]="rowSelect" [columns]="columns" [rows]="rows()" (rowSelect)="setSelectedRows($event)">
   <ng-template [tableRowTemplate]="rows()" let-row>
-    <td class="govuk-table__cell audio-id">
+    <td class="audio-id">
       @if (hideOrDeleteView) {
         <a class="govuk-link" [routerLink]="['/admin/audio-file', row.audioId]">
           {{ row.audioId }}
@@ -9,7 +9,7 @@
         {{ row.audioId }}
       }
     </td>
-    <td class="govuk-table__cell case-id">
+    <td class="case-id">
       @if (hideOrDeleteView) {
         <a class="govuk-link" [routerLink]="['/case', row.caseId]">
           {{ row.caseNumber }}
@@ -18,7 +18,7 @@
         {{ row.caseNumber }}
       }
     </td>
-    <td class="govuk-table__cell hearing-date">
+    <td class="hearing-date">
       @if (hideOrDeleteView) {
         <a class="govuk-link" [routerLink]="['/case', row.caseId, 'hearing', row.hearingId]">
           {{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}
@@ -27,10 +27,10 @@
         {{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}
       }
     </td>
-    <td class="govuk-table__cell courthouse">{{ row.courthouse }}</td>
-    <td class="govuk-table__cell start-time">{{ row.startTime | luxonDate: 'h:mm:ssa' }}</td>
-    <td class="govuk-table__cell end-time">{{ row.endTime | luxonDate: 'h:mm:ssa' }}</td>
-    <td class="govuk-table__cell courtroom">{{ row.courtroom }}</td>
-    <td class="govuk-table__cell channel">{{ row.channelNumber }}</td>
+    <td class="courthouse">{{ row.courthouse }}</td>
+    <td class="start-time">{{ row.startTime | luxonDate: 'h:mm:ssa' }}</td>
+    <td class="end-time">{{ row.endTime | luxonDate: 'h:mm:ssa' }}</td>
+    <td class="courtroom">{{ row.courtroom }}</td>
+    <td class="channel">{{ row.channelNumber }}</td>
   </ng-template>
 </app-data-table>

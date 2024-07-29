@@ -3,13 +3,14 @@ import { NgClass } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
+import { GovukTagComponent } from '@common/govuk-tag/govuk-tag.component';
 import { DatatableColumn } from '@core-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 
 @Component({
   selector: 'app-user-search-results',
   standalone: true,
-  imports: [DataTableComponent, TableRowTemplateDirective, NgClass, RouterLink],
+  imports: [DataTableComponent, TableRowTemplateDirective, NgClass, RouterLink, GovukTagComponent],
   templateUrl: './user-search-results.component.html',
   styleUrl: './user-search-results.component.scss',
 })

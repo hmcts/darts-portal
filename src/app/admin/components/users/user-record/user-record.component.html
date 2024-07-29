@@ -47,12 +47,10 @@
     <main class="govuk-main-wrapper">
       <div class="govuk-grid-row">
         <div class="user-record-tags govuk-grid-column-one-third">
-          <strong class="govuk-tag govuk-tag--green"> User record </strong>
-          @if (user.active) {
-            <strong class="govuk-tag"> Active user </strong>
-          } @else {
-            <strong class="govuk-tag govuk-tag--grey"> Inactive </strong>
-          }
+          <app-govuk-tag colour="green"> User record </app-govuk-tag>
+          <app-govuk-tag [colour]="user.active ? 'blue' : 'grey'">
+            {{ user.active ? 'Active user' : 'Inactive' }}
+          </app-govuk-tag>
         </div>
       </div>
       <div class="govuk-grid-row">

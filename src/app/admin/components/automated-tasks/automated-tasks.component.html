@@ -3,14 +3,14 @@
 
   <app-data-table [columns]="columns" [rows]="automatedTasks()">
     <ng-template [tableRowTemplate]="automatedTasks()" let-row>
-      <td class="govuk-table__cell">
+      <td>
         <a class="govuk-link" [routerLink]="[row.id]"> {{ row.id }}</a>
       </td>
-      <td class="govuk-table__cell">{{ row.name }}</td>
-      <td class="govuk-table__cell">{{ row.description }}</td>
-      <td class="govuk-table__cell">{{ row.cronExpression }}</td>
-      <td class="govuk-table__cell">{{ row.isActive ? 'Active' : 'Inactive' }}</td>
-      <td class="govuk-table__cell">
+      <td>{{ row.name }}</td>
+      <td>{{ row.description }}</td>
+      <td>{{ row.cronExpression }}</td>
+      <td>{{ row.isActive ? 'Active' : 'Inactive' }}</td>
+      <td>
         <button class="govuk-button govuk-button--secondary" (click)="onRunTaskButtonClicked(row.id, row.name)">
           Run task
         </button>

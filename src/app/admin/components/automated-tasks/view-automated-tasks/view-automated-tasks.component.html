@@ -11,9 +11,7 @@
     </div>
   </header>
 
-  <strong class="govuk-tag" [class.govuk-tag--grey]="!task.isActive">
-    {{ task.isActive ? 'Active' : 'Inactive' }}</strong
-  >
+  <app-govuk-tag [colour]="task.isActive ? 'blue' : 'grey'">{{ task.isActive ? 'Active' : 'Inactive' }}</app-govuk-tag>
 
   <app-details-table title="" [details]="details()"></app-details-table>
 }
