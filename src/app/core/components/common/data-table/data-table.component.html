@@ -90,7 +90,7 @@
           ></ng-container>
           <ng-template #defaultBodyTemplate let-row let-index>
             <tr class="govuk-table__row">
-              <td *ngIf="rowSelectable" class="govuk-table__cell">
+              <td *ngIf="rowSelectable">
                 <div class="govuk-checkboxes govuk-checkboxes--small">
                   <div class="govuk-checkboxes__item">
                     <input
@@ -118,7 +118,7 @@
           </ng-template>
         </ng-container>
         <ng-template #defaultRowTemplate let-row let-index>
-          <td *ngFor="let column of columns" class="govuk-table__cell">
+          <td *ngFor="let column of columns">
             {{ row[column.prop] }}
           </td>
         </ng-template>

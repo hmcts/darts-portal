@@ -7,6 +7,7 @@ import { DeleteComponent } from '@common/delete/delete.component';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
 import { FiltersComponent } from '@common/filters/filters.component';
 import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
+import { GovukTagComponent } from '@common/govuk-tag/govuk-tag.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { NotFoundComponent } from '@components/error/not-found/not-found.component';
@@ -39,6 +40,7 @@ import { CourthouseUsersComponent } from '../courthouse-users/courthouse-users.c
     CourthouseUsersComponent,
     DeleteComponent,
     TableRowTemplateDirective,
+    GovukTagComponent,
   ],
 })
 export class CourthouseRecordComponent {

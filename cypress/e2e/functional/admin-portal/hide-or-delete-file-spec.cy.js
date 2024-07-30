@@ -118,55 +118,23 @@ describe('Admin - Hide or delete file', () => {
 
       cy.get('.govuk-heading-m').contains('The file you are hiding and/or deleting');
 
-      cy.get('#hideFileTable .govuk-table__row').eq(1).find('.govuk-table__cell').eq(0).should('contain', '0');
-      cy.get('#hideFileTable .govuk-table__row').eq(1).find('.govuk-table__cell').eq(1).should('contain', '001');
-      cy.get('#hideFileTable .govuk-table__row')
-        .eq(1)
-        .find('.govuk-table__cell')
-        .eq(2)
-        .should('contain', '01 Jun 2020');
-      cy.get('#hideFileTable .govuk-table__row')
-        .eq(1)
-        .find('.govuk-table__cell')
-        .eq(3)
-        .should('contain', 'courthouse 12');
-      cy.get('#hideFileTable .govuk-table__row').eq(1).find('.govuk-table__cell').eq(4).should('contain', '6:00:00PM');
-      cy.get('#hideFileTable .govuk-table__row').eq(1).find('.govuk-table__cell').eq(5).should('contain', '7:00:00PM');
-      cy.get('#hideFileTable .govuk-table__row')
-        .eq(1)
-        .find('.govuk-table__cell')
-        .eq(6)
-        .should('contain', 'courtroom 11');
-      cy.get('#hideFileTable .govuk-table__row').eq(1).find('.govuk-table__cell').eq(7).should('contain', '1');
+      cy.get('#hideFileTable .govuk-table__row').eq(1).find('td').eq(0).should('contain', '0');
+      cy.get('#hideFileTable .govuk-table__row').eq(1).find('td').eq(1).should('contain', '001');
+      cy.get('#hideFileTable .govuk-table__row').eq(1).find('td').eq(2).should('contain', '01 Jun 2020');
+      cy.get('#hideFileTable .govuk-table__row').eq(1).find('td').eq(3).should('contain', 'courthouse 12');
+      cy.get('#hideFileTable .govuk-table__row').eq(1).find('td').eq(4).should('contain', '6:00:00PM');
+      cy.get('#hideFileTable .govuk-table__row').eq(1).find('td').eq(5).should('contain', '7:00:00PM');
+      cy.get('#hideFileTable .govuk-table__row').eq(1).find('td').eq(6).should('contain', 'courtroom 11');
+      cy.get('#hideFileTable .govuk-table__row').eq(1).find('td').eq(7).should('contain', '1');
 
-      cy.get('#associatedAudioTable .govuk-table__row').eq(1).find('.govuk-table__cell').eq(1).should('contain', '1');
-      cy.get('#associatedAudioTable .govuk-table__row').eq(1).find('.govuk-table__cell').eq(2).should('contain', '123');
-      cy.get('#associatedAudioTable .govuk-table__row')
-        .eq(1)
-        .find('.govuk-table__cell')
-        .eq(3)
-        .should('contain', '01 Jun 2020');
-      cy.get('#associatedAudioTable .govuk-table__row')
-        .eq(1)
-        .find('.govuk-table__cell')
-        .eq(4)
-        .should('contain', 'courthouse 1');
-      cy.get('#associatedAudioTable .govuk-table__row')
-        .eq(1)
-        .find('.govuk-table__cell')
-        .eq(5)
-        .should('contain', '6:00:00PM');
-      cy.get('#associatedAudioTable .govuk-table__row')
-        .eq(1)
-        .find('.govuk-table__cell')
-        .eq(6)
-        .should('contain', '7:00:00PM');
-      cy.get('#associatedAudioTable .govuk-table__row')
-        .eq(1)
-        .find('.govuk-table__cell')
-        .eq(7)
-        .should('contain', 'courtroom 1');
-      cy.get('#associatedAudioTable .govuk-table__row').eq(1).find('.govuk-table__cell').eq(8).should('contain', '1');
+      cy.get('#associatedAudioTable .govuk-table__row').eq(1).find('td').eq(1).should('contain', '1');
+      cy.get('#associatedAudioTable .govuk-table__row').eq(1).find('td').eq(2).should('contain', '123');
+      cy.get('#associatedAudioTable .govuk-table__row').eq(1).find('td').eq(3).should('contain', '01 Jun 2020');
+      cy.get('#associatedAudioTable .govuk-table__row').eq(1).find('td').eq(4).should('contain', 'courthouse 1');
+      cy.get('#associatedAudioTable .govuk-table__row').eq(1).find('td').eq(5).should('contain', '6:00:00PM');
+      cy.get('#associatedAudioTable .govuk-table__row').eq(1).find('td').eq(6).should('contain', '7:00:00PM');
+      cy.get('#associatedAudioTable .govuk-table__row').eq(1).find('td').eq(7).should('contain', 'courtroom 1');
+      cy.get('#associatedAudioTable .govuk-table__row').eq(1).find('td').eq(8).should('contain', '1');
 
       cy.get('#associatedAudioTable .govuk-checkboxes__input').eq(1).check();
       cy.get('#associatedAudioTable .govuk-checkboxes__input').eq(2).check();

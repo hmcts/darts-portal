@@ -1,16 +1,16 @@
 <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
 <app-data-table [rows]="rows" [columns]="columns" caption="Transcript search results" [hiddenCaption]="true">
   <ng-template [tableRowTemplate]="rows" let-row>
-    <td class="govuk-table__cell">
+    <td>
       <a href="#" class="govuk-link" [routerLink]="[row.id]"> {{ row.id }}</a>
     </td>
-    <td class="govuk-table__cell">{{ row.caseNumber }}</td>
-    <td class="govuk-table__cell">{{ row.courthouse }}</td>
-    <td class="govuk-table__cell">{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
-    <td class="govuk-table__cell">{{ row.requestedOn | luxonDate: 'dd MMM yyyy HH:mm' }}</td>
-    <td class="govuk-table__cell">
-      <strong class="govuk-tag" [ngClass]="transcriptStatusClassMap[row.status ?? '']">{{ row.status }}</strong>
+    <td>{{ row.caseNumber }}</td>
+    <td>{{ row.courthouse }}</td>
+    <td>{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
+    <td>{{ row.requestedOn | luxonDate: 'dd MMM yyyy HH:mm' }}</td>
+    <td>
+      <app-govuk-tag [colour]="transcriptStatusClassMap[row.status]">{{ row.status }}</app-govuk-tag>
     </td>
-    <td class="govuk-table__cell">{{ row.requestMethod ? 'Manual' : 'Automatic' }}</td>
+    <td>{{ row.requestMethod ? 'Manual' : 'Automatic' }}</td>
   </ng-template>
 </app-data-table>

@@ -5,11 +5,13 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
+import { GovukTagComponent } from '@common/govuk-tag/govuk-tag.component';
 import { LoadingComponent } from '@common/loading/loading.component';
-import { transcriptStatusClassMap } from '@constants/transcript-status-class-map';
+import { transcriptStatusTagColours } from '@constants/transcript-status-tag-colours';
 import { CourthouseData, DatatableColumn } from '@core-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
+import { TranscriptStatus } from '@portal-types/index';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
 import { DateTime } from 'luxon';
@@ -30,6 +32,7 @@ import { Observable, combineLatest, map, shareReplay, startWith, switchMap, tap 
     LuxonDatePipe,
     TableRowTemplateDirective,
     NgClass,
+    GovukTagComponent,
   ],
 })
 export class UserTranscriptsComponent implements OnInit {
@@ -41,7 +44,7 @@ export class UserTranscriptsComponent implements OnInit {
   form!: FormGroup;
 
   sixMonthsPrevious = this.calculateSixMonthsPrior();
-  transcriptStatusClassMap = transcriptStatusClassMap;
+  statusColours = transcriptStatusTagColours;
 
   showAll$!: Observable<boolean>;
   courthouses$: Observable<CourthouseData[]> = this.courthouseService.getCourthouses().pipe(shareReplay(1));
@@ -71,7 +74,7 @@ export class UserTranscriptsComponent implements OnInit {
       courthouse: result.courthouse.displayName,
       hearingDate: result.hearingDate,
       requestedAt: result.requestedAt,
-      status: result.status.displayName,
+      status: result.status.displayName as TranscriptStatus,
       isManual: result.isManual,
     }));
   }

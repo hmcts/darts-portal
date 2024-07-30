@@ -3,15 +3,17 @@ import { NgClass } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
-import { transcriptStatusClassMap } from '@constants/transcript-status-class-map';
+import { GovukTagComponent } from '@common/govuk-tag/govuk-tag.component';
+import { transcriptStatusTagColours } from '@constants/transcript-status-tag-colours';
 import { DatatableColumn } from '@core-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
+import { TranscriptStatus } from '@portal-types/index';
 
 @Component({
   selector: 'app-search-transcripts-results',
   standalone: true,
-  imports: [DataTableComponent, TableRowTemplateDirective, LuxonDatePipe, NgClass, RouterLink],
+  imports: [DataTableComponent, TableRowTemplateDirective, LuxonDatePipe, NgClass, RouterLink, GovukTagComponent],
   templateUrl: './search-transcripts-results.component.html',
   styleUrl: './search-transcripts-results.component.scss',
 })
@@ -30,7 +32,7 @@ export class SearchTranscriptsResultsComponent implements OnChanges {
 
   rows: ReturnType<typeof this.mapRows> = [];
 
-  transcriptStatusClassMap = transcriptStatusClassMap;
+  transcriptStatusClassMap = transcriptStatusTagColours;
 
   ngOnChanges(): void {
     this.rows = this.mapRows(this.results);
@@ -43,7 +45,7 @@ export class SearchTranscriptsResultsComponent implements OnChanges {
       courthouse: result.courthouse.displayName,
       hearingDate: result.hearingDate,
       requestedOn: result.requestedAt,
-      status: result.status.displayName,
+      status: result.status.displayName as TranscriptStatus,
       requestMethod: result.isManual,
     }));
   }

@@ -22,13 +22,13 @@
     >
       <app-data-table id="deletionTable" [rows]="[eventMapping]" [columns]="deleteColumns">
         <ng-template [tableRowTemplate]="[eventMapping]" let-row>
-          <td class="govuk-table__cell">{{ row.type }}</td>
-          <td class="govuk-table__cell">{{ row.subType }}</td>
-          <td class="govuk-table__cell">{{ row.name }}</td>
-          <td class="govuk-table__cell">{{ row.handler }}</td>
-          <td class="govuk-table__cell">{{ row.hasRestrictions ? 'Yes' : 'No' }}</td>
-          <td class="govuk-table__cell">{{ row.createdAt | luxonDate: 'dd MMM yyyy' }}</td>
-          <td class="govuk-table__cell">{{ row.isActive ? 'Active' : 'Inactive' }}</td>
+          <td>{{ row.type }}</td>
+          <td>{{ row.subType }}</td>
+          <td>{{ row.name }}</td>
+          <td>{{ row.handler }}</td>
+          <td>{{ row.hasRestrictions ? 'Yes' : 'No' }}</td>
+          <td>{{ row.createdAt | luxonDate: 'dd MMM yyyy' }}</td>
+          <td>{{ row.isActive ? 'Active' : 'Inactive' }}</td>
         </ng-template></app-data-table
       >
     </app-delete>

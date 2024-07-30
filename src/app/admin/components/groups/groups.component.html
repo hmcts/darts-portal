@@ -28,11 +28,11 @@
 
     <app-data-table id="groups-table" [columns]="columns" [rows]="data.groups">
       <ng-template [tableRowTemplate]="data.groups" let-row>
-        <td class="govuk-table__cell">
+        <td>
           <a class="govuk-link" [routerLink]="[row.id]">{{ row.name }}</a>
         </td>
-        <td class="govuk-table__cell">{{ row.description }}</td>
-        <td class="govuk-table__cell">{{ row.role?.displayName }}</td>
+        <td>{{ row.description }}</td>
+        <td>{{ row.role?.displayName }}</td>
       </ng-template>
     </app-data-table>
   </div>

@@ -2,6 +2,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
+import { GovukTagComponent } from '@common/govuk-tag/govuk-tag.component';
 import { BreadcrumbComponent } from '@components/common/breadcrumb/breadcrumb.component';
 import { DataTableComponent } from '@components/common/data-table/data-table.component';
 import { DetailsTableComponent } from '@components/common/details-table/details-table.component';
@@ -39,6 +40,7 @@ import { CaseRententionConfirmComponent } from './case-retention-confirm/case-re
     CaseRententionConfirmComponent,
     GovukBannerComponent,
     LuxonDatePipe,
+    GovukTagComponent,
   ],
 })
 export class CaseRetentionDateComponent implements OnInit {

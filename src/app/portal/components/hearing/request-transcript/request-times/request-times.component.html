@@ -7,9 +7,9 @@
 <h2 class="govuk-heading-m">Audio list</h2>
 <app-data-table id="audio-table" [rows]="audioRows" [columns]="audioColumns" [pagination]="true" [pageLimit]="15">
   <ng-template [tableRowTemplate]="audioRows" let-row>
-    <td class="govuk-table__cell">{{ row.media_start_timestamp | date: 'HH:mm:ss' }}</td>
-    <td class="govuk-table__cell">{{ row.media_end_timestamp | date: 'HH:mm:ss' }}</td>
-    <td class="govuk-table__cell">{{ row.name }}</td>
+    <td>{{ row.media_start_timestamp | date: 'HH:mm:ss' }}</td>
+    <td>{{ row.media_end_timestamp | date: 'HH:mm:ss' }}</td>
+    <td>{{ row.name }}</td>
   </ng-template>
 </app-data-table>
 
@@ -44,9 +44,9 @@
   [pageLimit]="15"
 >
   <ng-template [tableRowTemplate]="events" let-row>
-    <td class="govuk-table__cell">{{ row.timestamp | date: 'HH:mm:ss' }}</td>
-    <td class="govuk-table__cell">{{ row.name }}</td>
-    <td class="govuk-table__cell">{{ row.text }}</td>
+    <td>{{ row.timestamp | date: 'HH:mm:ss' }}</td>
+    <td>{{ row.name }}</td>
+    <td>{{ row.text }}</td>
   </ng-template>
 </app-data-table>
 

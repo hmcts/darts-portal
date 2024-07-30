@@ -3419,14 +3419,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/config-array@npm:^0.17.0":
-  version: 0.17.0
-  resolution: "@eslint/config-array@npm:0.17.0"
+"@eslint/config-array@npm:^0.17.1":
+  version: 0.17.1
+  resolution: "@eslint/config-array@npm:0.17.1"
   dependencies:
     "@eslint/object-schema": ^2.1.4
     debug: ^4.3.1
     minimatch: ^3.1.2
-  checksum: 4a7eea8e8531045ae6836c7b899776663f120b75a074fd09c5bfa52304ee969053d1daad35c30e3f657ef578078c14fe277a5ff625bceb4166c6196ff44e5d02
+  checksum: b678a7af5b0be8f1b29deaf751c77c365cf0b24bead3add677edbc7c7793dfb3eb423e33395787ff86fdbd85117a571f2f338d612a23210d9771aedf765d5482
   languageName: node
   linkType: hard
 
@@ -3447,10 +3447,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/js@npm:9.7.0":
-  version: 9.7.0
-  resolution: "@eslint/js@npm:9.7.0"
-  checksum: 384fb151c0719c8949b9c4245ffee311c67e43700867b83027a8b9249a71414d7d1b2406189800e578beaa47cf22ee13c87a578e626c189c679f56ecad147674
+"@eslint/js@npm:9.8.0":
+  version: 9.8.0
+  resolution: "@eslint/js@npm:9.8.0"
+  checksum: 8b6e809127edea3bf5b5b3c01ae75290afe5044f950642445a50cb4b86c153ad1512fc417d3cb7b79eb7cd0ce06acd858946b6497ea912750aa54de609064f63
   languageName: node
   linkType: hard
 
@@ -5636,12 +5636,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>=10.0.0, @types/node@npm:^20.14.2, @types/node@npm:^20.14.9":
-  version: 20.14.12
-  resolution: "@types/node@npm:20.14.12"
+"@types/node@npm:*, @types/node@npm:>=10.0.0":
+  version: 22.0.0
+  resolution: "@types/node@npm:22.0.0"
+  dependencies:
+    undici-types: ~6.11.1
+  checksum: ef58d59bbffd9a79449ef632ea9a4f3b006496926cac2717368f80fdd152b1937e44093c17c9fac74650309c9d5387bb5c5bf4fd304adafebcbda1e6e4435fe4
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^20.14.2, @types/node@npm:^20.14.9":
+  version: 20.14.13
+  resolution: "@types/node@npm:20.14.13"
   dependencies:
     undici-types: ~5.26.4
-  checksum: 1dd493d9e27da43fc374b17cf4b956dbd1dfe20ecf4749408a1db046c79b5a39261a2aa7a3f59b79fd1b5632b861ba72837779d812e0d3b6cf5b22f1650fe722
+  checksum: 928e877aadfea75f3a14c38223674b3a9fb206340ab7b2af3ffe7040c384a55678f235860f6652d18026fd59e44c237d060e3f5ce7b62b1b9e6fb593c9ef39b9
   languageName: node
   linkType: hard
 
@@ -8216,15 +8225,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:4.3.5":
-  version: 4.3.5
-  resolution: "debug@npm:4.3.5"
+"debug@npm:4.3.6":
+  version: 4.3.6
+  resolution: "debug@npm:4.3.6"
   dependencies:
     ms: 2.1.2
   peerDependenciesMeta:
     supports-color:
       optional: true
-  checksum: 7c002b51e256257f936dda09eb37167df952758c57badf6bf44bdc40b89a4bcb8e5a0a2e4c7b53f97c69e2970dd5272d33a757378a12c8f8e64ea7bf99e8e86e
+  checksum: 1630b748dea3c581295e02137a9f5cbe2c1d85fea35c1e6597a65ca2b16a6fce68cec61b299d480787ef310ba927dc8c92d3061faba0ad06c6a724672f66be7f
   languageName: node
   linkType: hard
 
@@ -9111,14 +9120,14 @@ __metadata:
   linkType: hard
 
 "eslint@npm:^9.5":
-  version: 9.7.0
-  resolution: "eslint@npm:9.7.0"
+  version: 9.8.0
+  resolution: "eslint@npm:9.8.0"
   dependencies:
     "@eslint-community/eslint-utils": ^4.2.0
     "@eslint-community/regexpp": ^4.11.0
-    "@eslint/config-array": ^0.17.0
+    "@eslint/config-array": ^0.17.1
     "@eslint/eslintrc": ^3.1.0
-    "@eslint/js": 9.7.0
+    "@eslint/js": 9.8.0
     "@humanwhocodes/module-importer": ^1.0.1
     "@humanwhocodes/retry": ^0.3.0
     "@nodelib/fs.walk": ^1.2.8
@@ -9150,7 +9159,7 @@ __metadata:
     text-table: ^0.2.0
   bin:
     eslint: bin/eslint.js
-  checksum: 36ece28b0966d30071574635b57e28926166e8be624059a271e3c2b64f8915bc3893b18bf27aa90467beafe70b84d177e47debf7e635ac7459d906eee067dfbd
+  checksum: 3fdcf4047ccb2e18bf5d072542d41bd60b5816a68bfbe95dff17cc680c90c29dfb9c595f9691db290190e55219a8088cf09c675095790c80db58f1b4560b8a14
   languageName: node
   linkType: hard
 
@@ -10405,11 +10414,11 @@ __metadata:
   linkType: hard
 
 "husky@npm:^9.0.0":
-  version: 9.1.2
-  resolution: "husky@npm:9.1.2"
+  version: 9.1.4
+  resolution: "husky@npm:9.1.4"
   bin:
     husky: bin.js
-  checksum: 850662c21b425edf17f81175b109b946a065e2f5509462afce2be466d82a15f5694efcecd41ad2bdfcc304530b3e0e7504392c0e2173a6de72f01c250b4dca57
+  checksum: 7608a6dfac264876a2ff37f2db8520e0f9f0ea2b810a9ca151548327e9eca0b7ed58a63e0a208d20d3f43b191d8f111edcab46c3c8132c95e10ef7bd7115ee9b
   languageName: node
   linkType: hard
 
@@ -15706,13 +15715,13 @@ __metadata:
   linkType: hard
 
 "start-server-and-test@npm:^2.0.4":
-  version: 2.0.4
-  resolution: "start-server-and-test@npm:2.0.4"
+  version: 2.0.5
+  resolution: "start-server-and-test@npm:2.0.5"
   dependencies:
     arg: ^5.0.2
     bluebird: 3.7.2
     check-more-types: 2.24.0
-    debug: 4.3.5
+    debug: 4.3.6
     execa: 5.1.1
     lazy-ass: 1.6.0
     ps-tree: 1.2.0
@@ -15721,7 +15730,7 @@ __metadata:
     server-test: src/bin/start.js
     start-server-and-test: src/bin/start.js
     start-test: src/bin/start.js
-  checksum: 081dead161ebc425cef5807fd27ea24a883033937be88089de51d12c7e091f33b256312ce15df13db05a62f4c69a879770a95fa11c13a690be0bfc4fdb752065
+  checksum: 68bf24575d08aa06683f144631069c66e0829d30b28b76a8757718c950b3b724065932eabea35f345893bc26c4690332c7e5f9c46175031772e8c482ce383540
   languageName: node
   linkType: hard
 
@@ -16433,6 +16442,13 @@ __metadata:
   version: 5.26.5
   resolution: "undici-types@npm:5.26.5"
   checksum: 3192ef6f3fd5df652f2dc1cd782b49d6ff14dc98e5dced492aa8a8c65425227da5da6aafe22523c67f035a272c599bb89cfe803c1db6311e44bed3042fc25487
+  languageName: node
+  linkType: hard
+
+"undici-types@npm:~6.11.1":
+  version: 6.11.1
+  resolution: "undici-types@npm:6.11.1"
+  checksum: d7fc11bded93bc55ef3b88464e856ab061a747cf50ef2eff5df5ba3be18b9fcafe60e1b36a8c99e28aac2eade12891d32a504f2a32422452c44662e598e3b188
   languageName: node
   linkType: hard
 
