@@ -4,7 +4,7 @@ const { SUPER_ADMIN } = require('../../roles');
 const { DateTime } = require('luxon');
 const router = express.Router();
 
-const retentionPolicies = [
+const defaultRetentionPolicies = [
   {
     id: 0,
     name: 'DARTS Permanent Retention v3',
@@ -56,6 +56,13 @@ const retentionPolicies = [
     policy_end_at: '2024-01-31T00:00:00Z',
   },
 ];
+
+let retentionPolicies = structuredClone(defaultRetentionPolicies);
+
+router.get('/reset', (req, res) => {
+  retentionPolicies = structuredClone(defaultRetentionPolicies);
+  res.sendStatus(200);
+});
 
 router.get('/', (req, res) => {
   if (!userIdHasAnyRoles([SUPER_ADMIN], req.headers.user_id))
