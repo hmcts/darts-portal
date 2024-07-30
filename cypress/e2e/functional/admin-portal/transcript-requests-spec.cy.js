@@ -7,6 +7,7 @@ describe('Admin - Transcript requests', () => {
     cy.visit('/admin/transcripts');
     cy.injectAxe();
   });
+
   describe('search form', () => {
     it('searches for a transcripts', () => {
       cy.get('button').contains('Search').click();
@@ -366,5 +367,9 @@ describe('Admin - Transcript requests', () => {
       cy.get('.govuk-list').should('contain', 'Reason - Public interest immunity');
       cy.get('.govuk-list').should('contain', 'Ticket Reference 1232 - This is a comment');
     });
+  });
+
+  after(() => {
+    cy.request('/api/transcriptions/reset');
   });
 });

@@ -1,7 +1,7 @@
 const express = require('express');
 const { userIdHasAnyRoles } = require('../../users');
 const { SUPER_ADMIN } = require('../../roles');
-const { mockTranscriptionDetails } = require('../../transcriptions/transcriptions');
+const { getMockTranscriptionDetails } = require('../../transcriptions/transcriptions');
 const { MOCK_STATUSES } = require('./transcription-status');
 const { DateTime } = require('luxon');
 
@@ -110,7 +110,7 @@ router.patch('/:transcription_id', (req, res) => {
 
   const statusId = req.body.transcription_status_id;
 
-  mockTranscriptionDetails.status = MOCK_STATUSES.find((s) => s.id === statusId).display_name;
+  getMockTranscriptionDetails().status = MOCK_STATUSES.find((s) => s.id === statusId).display_name;
 
   res.status(200).send();
 });

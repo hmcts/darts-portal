@@ -171,7 +171,7 @@ const yourTranscriptionsStub = {
   ],
 };
 
-const mockTranscriptionDetails = {
+const defaultMockTranscriptionDetails = {
   case_id: 1,
   case_reporting_restrictions: [
     {
@@ -217,6 +217,7 @@ const mockTranscriptionDetails = {
     user_full_name: 'Eric Bristow',
   },
 };
+let mockTranscriptionDetails = { ...defaultMockTranscriptionDetails };
 
 const mockTranscriptionDetailsRejected = {
   case_id: 1,
@@ -562,9 +563,14 @@ router.get('/urgencies', (req, res) => {
 let assignedTranscriptions = [...defaultAssignedTranscriptions];
 let unassignedTranscriptions = [...defaultUnassignedTranscriptions];
 
+function getMockTranscriptionDetails() {
+  return mockTranscriptionDetails;
+}
+
 router.get('/reset', (req, res) => {
   assignedTranscriptions = [...defaultAssignedTranscriptions];
   unassignedTranscriptions = [...defaultUnassignedTranscriptions];
+  mockTranscriptionDetails = { ...defaultMockTranscriptionDetails };
 
   res.sendStatus(200);
 });
@@ -714,4 +720,4 @@ router.patch('/', (req, res) => {
   res.sendStatus(status);
 });
 
-module.exports = { router, mockTranscriptionDetails };
+module.exports = { router, getMockTranscriptionDetails };
