@@ -169,12 +169,12 @@ describe('RequestTimesComponent', () => {
         {
           fieldId: 'start-hour-input',
           message:
-            'Audio not available for timing entered. You must specify a time that matches the audio time available',
+            'Audio not available for timing entered. You must specify a time that matches the audio times available',
         },
         {
           fieldId: 'end-hour-input',
           message:
-            'Audio not available for timing entered. You must specify a time that matches the audio time available',
+            'Audio not available for timing entered. You must specify a time that matches the audio times available',
         },
       ];
       component.onContinue();

@@ -122,14 +122,14 @@ export class RequestTimesComponent {
       this.validationErrors.push({
         fieldId: 'start-hour-input',
         message:
-          'Audio not available for timing entered. You must specify a time that matches the audio time available',
+          'Audio not available for timing entered. You must specify a time that matches the audio times available',
       });
 
     this.isTimeOutside(endTime) &&
       this.validationErrors.push({
         fieldId: 'end-hour-input',
         message:
-          'Audio not available for timing entered. You must specify a time that matches the audio time available',
+          'Audio not available for timing entered. You must specify a time that matches the audio times available',
       });
 
     this.errors.emit(this.validationErrors);
