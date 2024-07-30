@@ -60,4 +60,8 @@ describe('Admin - Users screen', () => {
 
     cy.get('.email-error').should('contain', 'Enter a unique email address');
   });
+
+  after(() => {
+    cy.request('/api/admin/users/reset');
+  });
 });
