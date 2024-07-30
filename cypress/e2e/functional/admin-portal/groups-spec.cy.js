@@ -66,4 +66,8 @@ describe('Admin - Groups screen', () => {
     cy.get('#group-description').should('contain', 'Test description');
     cy.get('#group-role').should('contain', 'Transcriber');
   });
+
+  after(() => {
+    cy.request('/api/admin/security-groups/reset');
+  });
 });
