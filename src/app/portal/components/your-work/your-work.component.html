@@ -11,7 +11,7 @@
         [columns]="readyColumns"
         [pagination]="false"
       >
-        <ng-template [tableRowTemplate]="requests.completedRequests" let-row>
+        <ng-template [tableRowTemplate]="requests.todoRequests" let-row>
           <td>{{ row.caseNumber }}</td>
           <td>{{ row.courthouseName }}</td>
           <td>{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
