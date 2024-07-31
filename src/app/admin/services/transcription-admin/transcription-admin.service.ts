@@ -109,7 +109,7 @@ export class TranscriptionAdminService {
           (latest, current) => (current.workflowTimestamp > latest.workflowTimestamp ? current : latest),
           workflows[0]
         );
-        return latestWorkflow.workflowActor;
+        return latestWorkflow?.workflowActor ?? 0;
       })
     );
   }
