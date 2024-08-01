@@ -93,12 +93,12 @@ export const PORTAL_ROUTES: Routes = [
       ),
   },
   {
-    path: 'case/:caseId/hearing/:hearing_id',
+    path: 'case/:caseId/hearing/:hearingId',
     title: 'DARTS Hearing Details',
     loadComponent: () => import('../portal/components/hearing/hearing.component').then((c) => c.HearingComponent),
   },
   {
-    path: 'case/:caseId/hearing/:hearing_id/add-annotation',
+    path: 'case/:caseId/hearing/:hearingId/add-annotation',
     title: 'DARTS Add Annotation',
     data: { allowedRoles: ['JUDICIARY', 'SUPER_ADMIN'] },
     loadComponent: () =>
@@ -107,7 +107,7 @@ export const PORTAL_ROUTES: Routes = [
       ),
   },
   {
-    path: 'case/:caseId/hearing/:hearing_id/request-transcript',
+    path: 'case/:caseId/hearing/:hearingId/request-transcript',
     title: 'DARTS Request Transcript',
     loadComponent: () =>
       import('../portal/components/hearing/request-transcript/request-transcript.component').then(
@@ -123,7 +123,7 @@ export const PORTAL_ROUTES: Routes = [
       ),
   },
   {
-    path: 'case/:caseId/hearing/:hearing_id/transcripts/:transcriptId',
+    path: 'case/:caseId/hearing/:hearingId/transcripts/:transcriptId',
     title: 'DARTS View Transcript File',
     loadComponent: () =>
       import('../portal/components/transcriptions/view-transcript/view-transcript.component').then(

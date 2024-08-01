@@ -1,4 +1,6 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { JsonPipe } from '@angular/common';
+import { Component, OnInit, computed, inject, input, numberAttribute } from '@angular/core';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
@@ -8,9 +10,10 @@ import { GovukTextareaComponent } from '@common/govuk-textarea/govuk-textarea.co
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { AnnotationService } from '@services/annotation/annotation.service';
+import { CaseService } from '@services/case/case.service';
 import { HeaderService } from '@services/header/header.service';
 import { maxFileSizeValidator } from '@validators/max-file-size.validator';
-import { DateTime } from 'luxon';
+import { switchMap, tap } from 'rxjs';
 import { AddAnnotationSuccessComponent } from './add-annotation-success/add-annotation-success.component';
 
 @Component({
@@ -26,41 +29,45 @@ import { AddAnnotationSuccessComponent } from './add-annotation-success/add-anno
     GovukTextareaComponent,
     RouterLink,
     AddAnnotationSuccessComponent,
+    JsonPipe,
   ],
   templateUrl: './add-annotation.component.html',
   styleUrl: './add-annotation.component.scss',
 })
 export class AddAnnotationComponent implements OnInit {
-  caseId!: string;
-  caseNumber!: number;
-  hearingDate!: DateTime;
-  hearingId!: number;
-
-  headerService = inject(HeaderService);
   router = inject(Router);
+  caseService = inject(CaseService);
+  headerService = inject(HeaderService);
   annotationService = inject(AnnotationService);
+
+  // URL params bind to the component signal inputs
+  // /case/{caseId}/hearing/{hearingId}/annotation?caseNumber=123456
+  caseId = input.required({ transform: numberAttribute });
+  hearingId = input.required({ transform: numberAttribute });
+  caseNumber = input('');
+
+  ids = computed(() => [this.caseId(), this.hearingId()]);
+
+  hearing = toSignal(
+    toObservable(this.ids).pipe(
+      switchMap(([caseId, hearingId]) => this.caseService.getHearingById(caseId, hearingId)),
+      tap((hearing) => hearing ?? this.router.navigate(['/page-not-found']))
+    )
+  );
 
   fileControl = new FormControl<File | null>(null, [Validators.required, maxFileSizeValidator(20)]);
   annotationComments = new FormControl('');
   step = 1;
 
-  constructor() {
-    const state = this.router.getCurrentNavigation()?.extras.state;
-    this.caseId = state!.caseId;
-    this.caseNumber = state!.caseNumber;
-    this.hearingDate = state!.hearingDate;
-    this.hearingId = state!.hearingId;
-  }
-
   onComplete() {
     if (this.annotationComments.value) {
       this.annotationService
-        .uploadAnnotationDocument(this.fileControl.value!, this.hearingId, this.annotationComments.value)
+        .uploadAnnotationDocument(this.fileControl.value!, this.hearingId(), this.annotationComments.value)
         .subscribe(() => {
           this.goToSuccessScreen();
         });
     } else {
-      this.annotationService.uploadAnnotationDocument(this.fileControl.value!, this.hearingId).subscribe(() => {
+      this.annotationService.uploadAnnotationDocument(this.fileControl.value!, this.hearingId()).subscribe(() => {
         this.goToSuccessScreen();
       });
     }

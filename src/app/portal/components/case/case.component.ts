@@ -16,7 +16,7 @@ import { CaseService } from '@services/case/case.service';
 import { FileDownloadService } from '@services/file-download/file-download.service';
 import { MappingService } from '@services/mapping/mapping.service';
 import { UserService } from '@services/user/user.service';
-import { catchError, combineLatest, map, of, switchMap } from 'rxjs';
+import { catchError, combineLatest, map, of, shareReplay, switchMap } from 'rxjs';
 import { CaseAnnotationsTableComponent } from './case-file/case-annotations-table/case-annotations-table.component';
 import { CaseEventsTableComponent } from './case-file/case-events-table/case-events-table.component';
 import { CaseFileComponent } from './case-file/case-file.component';
@@ -56,7 +56,7 @@ export class CaseComponent {
   private tabsService = inject(ActiveTabService);
 
   public caseId = this.route.snapshot.params.caseId;
-  public caseFile$ = this.caseService.getCase(this.caseId);
+  public caseFile$ = this.caseService.getCase(this.caseId).pipe(shareReplay(1));
   public hearings$ = this.caseService.getCaseHearings(this.caseId);
   public events$ = this.caseService.getCaseEvents(this.caseId);
   public transcripts$ = this.caseService
