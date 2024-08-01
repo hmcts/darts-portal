@@ -26,7 +26,8 @@ jobs:
               id: bootstrapKv
 
             - run: |
-                  mediaSignInUrl="https://darts-pr-${PR_NUMBER}.dev.platform.hmcts.net/login"
+                  mediaSignInUrl="https://darts-pr-${PR_NUMBER}.dev.apps.hmcts.net/auth/callback"
+                  adminSignInUrl="https://darts-pr-${PR_NUMBER}.dev.apps.hmcts.net/auth/-logout-callback"
                   targetAppName="darts-stg"
 
                   azureClientId="${B2C_CLIENT_ID}"
@@ -44,11 +45,11 @@ jobs:
 
                   echo "Found Reply URLs"
                   echo $replyUrls
-                  if [[ "${replyUrls}" =~ "${mediaSignInUrl}" ]]; then
+                  if [[ "${replyUrls}" =~ "${mediaSignInUrl}"  || "${replyUrls}" =~ "${adminSignInUrl}"]]; then
                       echo "Reply URLs contains $mediaSignInUrl"
                       readarray -t my_array < <(echo "$replyUrls" | jq -c '.[]')
                       for item in "${my_array[@]}"; do
-                          if [[ $item != "\"$mediaSignInUrl\"" ]]; then
+                          if [[ $item != "\"$mediaSignInUrl\"" && $item != "\"$adminSignInUrl\""]]; then
                               if [[ "$replayUrlsStr" != "" ]]; then
                                   replayUrlsStr="$replayUrlsStr,"
                               fi
@@ -66,7 +67,7 @@ jobs:
 
                       az rest --method PATCH --header "Content-Type=application/json" --uri $restUrl --body "{\"web\":{\"redirectUris\":[$replayUrlsStr]}}" #--debug
                   else
-                      echo "Reply URLs DOES NOT contains $mediaSignInUrl"
+                      echo "Reply URLs DOES NOT contains $mediaSignInUrl, $adminSignInUrl"
                   fi
 
               env:

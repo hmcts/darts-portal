@@ -15,7 +15,8 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - run: |
-                  mediaSignInUrl="https://darts-pr-${PR_NUMBER}.dev.apps.hmcts.net/login"
+                  mediaSignInUrl="https://darts-pr-${PR_NUMBER}.dev.apps.hmcts.net/auth/callback"
+                  adminSignInUrl="https://darts-pr-${PR_NUMBER}.dev.apps.hmcts.net/auth/-logout-callback"
                   targetAppName="darts-stg"
 
                   az login --service-principal --username ${{ secrets.SP_CLIENT_ID}} -p=${{ secrets.SP_SECRET_KEY}} --tenant ${{ secrets.SP_TENANT_ID}} --allow-no-subscriptions
@@ -31,8 +32,8 @@ jobs:
                   echo "Found Reply URLs"
                   echo $replyUrls
 
-                  if [[ "${replyUrls}" =~ "${mediaSignInUrl}"  ]]; then
-                    echo "Reply URLs contain $mediaSignInUrl"
+                  if [[ "${replyUrls}" =~ "${mediaSignInUrl}"  =~ "${adminSignInUrl}" && "${replyUrls}"]]; then
+                    echo "Reply URLs contain $mediaSignInUrl, $adminSignInUrl"
                   elif [ -z $replyUrls ]; then
                     echo "No Reply URLs Found. ISSUE!!"
                   else
@@ -44,6 +45,12 @@ jobs:
 
                     if [[ ! "${replyUrls}" =~ "${mediaSignInUrl}" ]]; then
                       replyUrlString+="\"$mediaSignInUrl\""
+                    fi
+                    if [[ ! "${replyUrls}" =~ "${adminSignInUrl}" ]]; then
+                      if [[ ! ${replyUrlString: -1} == "," ]]; then
+                        replyUrlString+=","
+                      fi
+                      replyUrlString+="\"$adminSignInUrl\""
                     fi
 
                     echo "reply String: $replyUrlString"
