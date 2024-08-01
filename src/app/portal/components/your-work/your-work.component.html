@@ -1,3 +1,21 @@
+<ng-template #tableRowTemplate let-row let-requestStatus="requestStatus">
+  <td>{{ row.caseNumber }}</td>
+  <td>{{ row.courthouseName }}</td>
+  <td>{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
+  <td>{{ row.transcriptionType }}</td>
+  <td>{{ row.requestedTs | luxonDate: 'dd MMM yyyy HH:mm' }}</td>
+  <td>
+    <span [ngClass]="row.urgency.description === 'Overnight' ? 'moj-badge moj-badge--red' : ''">{{
+      row.urgency.description
+    }}</span>
+  </td>
+  <td>
+    <a class="govuk-link" [routerLink]="['/work', row.transcriptionId]" [state]="{ requestStatus: requestStatus }"
+      >View</a
+    >
+  </td>
+</ng-template>
+
 <app-govuk-heading>Your work</app-govuk-heading>
 
 @if (requesterRequests$ | async; as requests) {
@@ -12,24 +30,13 @@
         [pagination]="false"
       >
         <ng-template [tableRowTemplate]="requests.todoRequests" let-row>
-          <td>{{ row.caseNumber }}</td>
-          <td>{{ row.courthouseName }}</td>
-          <td>{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
-          <td>{{ row.transcriptionType }}</td>
-          <td>{{ row.requestedTs | luxonDate: 'dd MMM yyyy HH:mm' }}</td>
-          <td>
-            <span [ngClass]="row.urgency.description === 'Overnight' ? 'moj-badge moj-badge--red' : ''">{{
-              row.urgency.description
-            }}</span>
-          </td>
-          <td>
-            <a class="govuk-link" [routerLink]="['/work', row.transcriptionId]" [state]="{ requestStatus: 'TO_DO' }"
-              >View</a
-            >
-          </td>
+          <ng-container
+            *ngTemplateOutlet="tableRowTemplate; context: { $implicit: row, requestStatus: 'TO_DO' }"
+          ></ng-container>
         </ng-template>
       </app-data-table>
     </div>
+
     <div *tab="'Completed today'; id: 'completed-tab'">
       <h2 class="govuk-heading-m" tabindex="0">Completed today</h2>
       <app-data-table
@@ -40,21 +47,9 @@
         [pagination]="false"
       >
         <ng-template [tableRowTemplate]="requests.completedRequests" let-row>
-          <td>{{ row.caseNumber }}</td>
-          <td>{{ row.courthouseName }}</td>
-          <td>{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
-          <td>{{ row.transcriptionType }}</td>
-          <td>{{ row.requestedTs | luxonDate: 'dd MMM yyyy HH:mm' }}</td>
-          <td>
-            <span [ngClass]="row.urgency.description === 'Overnight' ? 'moj-badge moj-badge--red' : ''">{{
-              row.urgency.description
-            }}</span>
-          </td>
-          <td>
-            <a class="govuk-link" [routerLink]="['/work', row.transcriptionId]" [state]="{ requestStatus: 'COMPLETED' }"
-              >View</a
-            >
-          </td>
+          <ng-container
+            *ngTemplateOutlet="tableRowTemplate; context: { $implicit: row, requestStatus: 'COMPLETED' }"
+          ></ng-container>
         </ng-template>
       </app-data-table>
     </div>
