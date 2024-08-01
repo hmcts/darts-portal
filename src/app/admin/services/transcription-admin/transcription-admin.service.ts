@@ -109,7 +109,7 @@ export class TranscriptionAdminService {
           (latest, current) => (current.workflowTimestamp > latest.workflowTimestamp ? current : latest),
           workflows[0]
         );
-        return latestWorkflow.workflowActor;
+        return latestWorkflow?.workflowActor ?? 0;
       })
     );
   }
@@ -227,7 +227,6 @@ export class TranscriptionAdminService {
   }
 
   private mapHidePostRequest(body: FileHideOrDeleteFormValues) {
-    //TBD in future, deleting audio files
     return {
       is_hidden: true,
       admin_action: {

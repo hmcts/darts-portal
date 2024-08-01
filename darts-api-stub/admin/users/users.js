@@ -17,7 +17,7 @@ generateSecurityGroupIds = (id, numberOfSecurityGroups) => {
 
 const router = express.Router();
 
-const USERS = stubUsers.map((stubUser) => {
+const DEFAULT_USERS = stubUsers.map((stubUser) => {
   return {
     id: stubUser.userState.userId,
     description: stubUser.active ? 'Stub Active User' : undefined,
@@ -32,6 +32,12 @@ const USERS = stubUsers.map((stubUser) => {
     security_group_ids: generateSecurityGroupIds(stubUser.userState.userId, defaultSecurityGroups.length),
     rolled_back_transcript_requests: [1, 2, 3],
   };
+});
+let USERS = [...DEFAULT_USERS];
+
+router.get('/reset', (req, res) => {
+  USERS = [...DEFAULT_USERS];
+  res.sendStatus(200);
 });
 
 // api/admin/users/search

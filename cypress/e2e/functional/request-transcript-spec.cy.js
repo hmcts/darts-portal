@@ -167,12 +167,12 @@ describe('Request Transcript', () => {
 
     cy.get('#start-time-error').should(
       'contain',
-      'Audio not available for timing entered. You must specify a time that matches the audio time available'
+      'Audio not available for timing entered. You must specify a time that matches the audio times available'
     );
 
     cy.get('ul.govuk-error-summary__list > li').should(
       'contain.text',
-      'Audio not available for timing entered. You must specify a time that matches the audio time available'
+      'Audio not available for timing entered. You must specify a time that matches the audio times available'
     );
   });
 
