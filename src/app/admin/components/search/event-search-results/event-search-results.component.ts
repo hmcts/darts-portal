@@ -17,7 +17,7 @@ export class EventSearchResultsComponent {
   caption = computed(() => `${this.events().length} result${this.events().length > 1 ? 's' : ''}`);
 
   columns: DatatableColumn[] = [
-    { name: 'Event ID', prop: 'number', sortable: true },
+    { name: 'Event ID', prop: 'id', sortable: true },
     { name: 'Time stamp', prop: 'createdAt', sortable: true },
     { name: 'Name', prop: 'name', sortable: true },
     { name: 'Courthouse', prop: 'courthouse', sortable: true },

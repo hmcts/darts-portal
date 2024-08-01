@@ -12,6 +12,7 @@ import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { WorkRequest } from '@portal-types/index';
+import { ActiveTabService } from '@services/active-tab/active-tab.service';
 import { SortService } from '@services/sort/sort.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { combineLatest, map, shareReplay } from 'rxjs';
@@ -35,8 +36,12 @@ import { combineLatest, map, shareReplay } from 'rxjs';
 })
 export class YourWorkComponent {
   transcriptionService = inject(TranscriptionService);
+  tabsService = inject(ActiveTabService);
   sortService = inject(SortService);
   destroyRef = inject(DestroyRef);
+
+  private readonly screenId = 'your-work';
+  tab = this.tabsService.activeTabs()[this.screenId] ?? 'To do';
 
   columns: DatatableColumn[] = [
     ...transcriptTableColumns,
@@ -65,5 +70,9 @@ export class YourWorkComponent {
 
   private filterCompletedRequests(requests: WorkRequest[]): WorkRequest[] {
     return requests.filter((r) => r.status === 'Complete');
+  }
+
+  onTabChange($event: TabDirective) {
+    this.tabsService.setActiveTab(this.screenId, $event.name);
   }
 }

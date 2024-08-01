@@ -419,4 +419,8 @@ describe('Admin - User record screen', () => {
       cy.a11y();
     });
   });
+
+  after(() => {
+    cy.request('/api/admin/users/reset');
+  });
 });
