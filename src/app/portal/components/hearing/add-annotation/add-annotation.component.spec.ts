@@ -56,7 +56,12 @@ describe('AddAnnotationComponent', () => {
     jest.spyOn(router, 'getCurrentNavigation').mockReturnValue(mockNavigationExtras as unknown as Navigation);
 
     fixture = TestBed.createComponent(AddAnnotationComponent);
+    fixture.componentRef.setInput('caseId', 1);
+    fixture.componentRef.setInput('hearingId', 3);
+    fixture.componentRef.setInput('caseNumber', 'C20220620001');
+
     component = fixture.componentInstance;
+
     fixture.detectChanges();
   });
 

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DeleteComponent } from '@common/delete/delete.component';
 import { GovukTagComponent } from '@common/govuk-tag/govuk-tag.component';
 import { LoadingComponent } from '@common/loading/loading.component';
@@ -36,7 +36,7 @@ import { HearingService } from '@services/hearing/hearing.service';
 import { MappingService } from '@services/mapping/mapping.service';
 import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
-import { catchError, combineLatest, map, of, shareReplay, switchMap } from 'rxjs';
+import { catchError, combineLatest, map, of, shareReplay, switchMap, tap } from 'rxjs';
 import { EventsAndAudioComponent } from './events-and-audio/events-and-audio.component';
 import { HearingFileComponent } from './hearing-file/hearing-file.component';
 import { OrderConfirmationComponent } from './order-confirmation/order-confirmation.component';
@@ -72,6 +72,7 @@ import { RequestPlaybackAudioComponent } from './request-playback-audio/request-
 })
 export class HearingComponent implements OnInit {
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private caseService = inject(CaseService);
   private appConfigService = inject(AppConfigService);
   annotationService = inject(AnnotationService);
@@ -87,7 +88,7 @@ export class HearingComponent implements OnInit {
   audioTimes: { startTime: DateTime; endTime: DateTime } | null = null;
   private _state: HearingPageState = 'Default';
   public errorSummary: ErrorSummaryEntry[] = [];
-  hearingId = this.route.snapshot.params.hearing_id as number;
+  hearingId = this.route.snapshot.params.hearingId as number;
   caseId = this.route.snapshot.params.caseId;
   userState = this.route.snapshot.data.userState;
   transcripts: TranscriptsRow[] = [];
@@ -123,7 +124,9 @@ export class HearingComponent implements OnInit {
   requestObject!: PostAudioRequest;
 
   case$ = this.caseService.getCase(this.caseId).pipe(shareReplay(1));
-  hearing$ = this.caseService.getHearingById(this.caseId, this.hearingId);
+  hearing$ = this.caseService
+    .getHearingById(this.caseId, this.hearingId)
+    .pipe(tap((hearing) => hearing ?? this.router.navigate(['/page-not-found'])));
   audio$ = this.hearingService.getAudio(this.hearingId);
   courthouseId!: number | undefined;
 

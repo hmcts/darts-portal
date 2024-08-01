@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, effect, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { DataTableComponent } from '@components/common/data-table/data-table.component';
 import { LoadingComponent } from '@components/common/loading/loading.component';
@@ -19,7 +19,7 @@ import { HearingService } from '@services/hearing/hearing.service';
 import { ScrollService } from '@services/scroll/scroll.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { DateTime } from 'luxon';
-import { combineLatest, map, Observable } from 'rxjs';
+import { combineLatest, map, Observable, tap } from 'rxjs';
 import { RequestTimesComponent } from './request-times/request-times.component';
 import { RequestTranscriptConfirmationComponent } from './request-transcript-confirmation/request-transcript-confirmation.component';
 import { RequestTranscriptExistsComponent } from './request-transcript-exists/request-transcript-exists.component';
@@ -54,6 +54,7 @@ enum TranscriptionType {
 })
 export class RequestTranscriptComponent implements OnInit, OnDestroy {
   route = inject(ActivatedRoute);
+  router = inject(Router);
   caseService = inject(CaseService);
   hearingService = inject(HearingService);
   headerService = inject(HeaderService);
@@ -61,7 +62,7 @@ export class RequestTranscriptComponent implements OnInit, OnDestroy {
   errorMsgService = inject(ErrorMessageService);
   scrollService = inject(ScrollService);
 
-  hearingId = this.route.snapshot.params.hearing_id;
+  hearingId = this.route.snapshot.params.hearingId;
   caseId = this.route.snapshot.params.caseId;
 
   urgencyFormControl = new FormControl('', [Validators.required]);
@@ -73,7 +74,9 @@ export class RequestTranscriptComponent implements OnInit, OnDestroy {
 
   error$ = this.errorMsgService.errorMessage$;
   case$ = this.caseService.getCase(this.caseId);
-  hearing$ = this.caseService.getHearingById(this.caseId, this.hearingId);
+  hearing$ = this.caseService
+    .getHearingById(this.caseId, this.hearingId)
+    .pipe(tap((hearing) => hearing ?? this.router.navigate(['/page-not-found'])));
   urgencies$ = this.transcriptionService.getUrgencies();
   transcriptionTypes$ = this.transcriptionService.getTranscriptionTypes();
   events$ = this.hearingService.getEvents(this.hearingId);
