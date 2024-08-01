@@ -110,13 +110,9 @@
               <div class="govuk-button-group">
                 <button
                   class="govuk-button govuk-button--secondary"
-                  data-module="govuk-button"
                   [routerLink]="['./add-annotation']"
-                  [state]="{
-                    caseId: vm.case.id.toString(),
+                  [queryParams]="{
                     caseNumber: vm.case.number,
-                    hearingDate: vm.hearing?.date,
-                    hearingId: vm.hearing?.id,
                   }"
                 >
                   Upload annotation
@@ -124,7 +120,6 @@
                 <button
                   (click)="downloadAnnotationTemplate(vm.case.number, vm.hearing?.date)"
                   class="govuk-button govuk-button--secondary"
-                  data-module="govuk-button"
                 >
                   Download annotation template
                 </button>
