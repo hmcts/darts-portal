@@ -2,7 +2,7 @@ import { DatePipe } from '@angular/common';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { APP_INITIALIZER, ErrorHandler, LOCALE_ID } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
-import { provideRouter, withInMemoryScrolling } from '@angular/router';
+import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
 import { ErrorInterceptor } from '@interceptors/error/error.interceptor';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { AppConfigService } from '@services/app-config/app-config.service';
@@ -26,7 +26,8 @@ bootstrapApplication(AppComponent, {
     },
     provideRouter(
       APP_ROUTES,
-      withInMemoryScrolling({ anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled' })
+      withInMemoryScrolling({ anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled' }),
+      withComponentInputBinding()
     ),
     AppInsightsService,
     { provide: ErrorHandler, useClass: ErrorHandlerService },
