@@ -5,9 +5,9 @@ import express, { Request, Response } from 'express';
 import nunjucks from 'nunjucks';
 import * as path from 'path';
 
+import { appController, authController } from './controllers';
 import { session } from './middleware';
 import routes from './routes';
-import { appController, authController } from './controllers';
 
 /**
  * Options for starting the express server
@@ -47,6 +47,12 @@ export const startServer = ({ disableAuthentication }: StartServerOptions = { di
   }
   app.use((req, res, next) => {
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+
+    //Prevents framing / iframe completely
+    res.setHeader('X-Frame-Options', 'DENY');
+    res.setHeader('Content-Security-Policy', "frame-ancestors 'none'");
+    res.removeHeader('X-Powered-By');
+
     if (req.secure) {
       res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
     }
