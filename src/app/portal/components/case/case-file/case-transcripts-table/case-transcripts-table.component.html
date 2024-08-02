@@ -18,7 +18,7 @@
     </td>
     <td>
       @if (row.status === 'Complete') {
-        <a class="govuk-link" [routerLink]="['transcripts', row.id]">View</a>
+        <a class="govuk-link" [routerLink]="['transcripts', row.id]" [queryParams]="{ linkedFrom: 'case' }">View</a>
       }
     </td>
   </ng-template>

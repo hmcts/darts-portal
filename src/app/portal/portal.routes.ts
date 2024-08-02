@@ -123,7 +123,7 @@ export const PORTAL_ROUTES: Routes = [
       ),
   },
   {
-    path: 'case/:caseId/hearing/:hearing_id/transcripts/:transcriptId',
+    path: 'case/:caseId/hearing/:hearingId/transcripts/:transcriptId',
     title: 'DARTS View Transcript File',
     loadComponent: () =>
       import('../portal/components/transcriptions/view-transcript/view-transcript.component').then(

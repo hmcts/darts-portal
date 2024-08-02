@@ -1,17 +1,16 @@
-@if (transcript$ | async; as vm) {
-  <!-- If coming from case file or hearing file page -->
-  @if (router.url.includes('case') && router.url.includes('transcripts')) {
-    <app-case-hearing-transcript [transcript]="vm"></app-case-hearing-transcript>
+@let t = transcript();
+@if (t) {
+  @if (isLinkedFromCase() || isLinkedFromHearing()) {
+    <app-case-hearing-transcript [transcript]="t" />
   }
 
-  <!-- If coming from your-transcripts -->
-  @if (router.url.includes('transcriptions/transcripts/')) {
-    @if (vm.status?.toUpperCase() === 'REJECTED') {
-      <app-rejected-transcript [transcript]="vm"> </app-rejected-transcript>
+  @if (isLinkedFromYourTranscripts()) {
+    @if (isTranscriptRejected()) {
+      <app-rejected-transcript [transcript]="t" />
     } @else {
-      <app-approved-transcript [transcript]="vm"> </app-approved-transcript>
+      <app-approved-transcript [transcript]="t" />
     }
   }
 } @else {
-  <app-loading text="Loading transcript details..."></app-loading>
+  <app-loading text="Loading transcript details..." />
 }
