@@ -38,13 +38,12 @@ export class ViewTranscriptComponent {
 
   transcriptionService = inject(TranscriptionService);
 
-  // url from Case: /case/{caseId}/transcripts/{transcriptId}?linkedFrom='case'
-  // url from Hearing: /case/{caseId}/hearings/{hearingId}/transcripts/{transcriptId}?linkedFrom='hearing'
-  // url from Your Work: /transcriptions/transcripts/{transcriptId}?linkedFrom='your-work'
+  // url from Case: /case/{caseId}/transcripts/{transcriptId}
+  // url from Hearing: /case/{caseId}/hearings/{hearingId}/transcripts/{transcriptId}
+  // url from Your Work: /transcriptions/transcripts/{transcriptId}
   transcriptId = input(0, { transform: numberAttribute });
   caseId = input(0, { transform: numberAttribute });
   hearingId = input(0, { transform: numberAttribute });
-  linkedFrom = input();
 
   transcript = toSignal(
     toObservable(this.transcriptId).pipe(
@@ -52,9 +51,6 @@ export class ViewTranscriptComponent {
     )
   );
 
-  isLinkedFromCase = computed(() => this.linkedFrom() === 'case');
-  isLinkedFromHearing = computed(() => this.linkedFrom() === 'hearing');
-  isLinkedFromYourTranscripts = computed(() => this.linkedFrom() === 'your-transcripts');
   isTranscriptRejected = computed(() => this.transcript()?.status?.toUpperCase() === 'REJECTED');
 
   constructor() {

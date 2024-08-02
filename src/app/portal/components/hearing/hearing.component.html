@@ -94,11 +94,7 @@
                     </app-govuk-tag>
                   </td>
                   <td>
-                    <a
-                      class="govuk-link"
-                      *ngIf="row.status === 'Complete'"
-                      [routerLink]="['transcripts', row.id]"
-                      [queryParams]="{ linkedFrom: 'hearing' }"
+                    <a class="govuk-link" *ngIf="row.status === 'Complete'" [routerLink]="['transcripts', row.id]"
                       >View</a
                     >
                   </td>

@@ -1,10 +1,10 @@
 @let t = transcript();
 @if (t) {
-  @if (isLinkedFromCase() || isLinkedFromHearing()) {
+  @if (router.url.includes('case') && router.url.includes('transcripts')) {
     <app-case-hearing-transcript [transcript]="t" />
   }
 
-  @if (isLinkedFromYourTranscripts()) {
+  @if (router.url.includes('transcriptions/transcripts/')) {
     @if (isTranscriptRejected()) {
       <app-rejected-transcript [transcript]="t" />
     } @else {

@@ -100,12 +100,7 @@
         <ng-template [tableRowTemplate]="vm.completedRequests" let-row>
           <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
           <td>
-            <a
-              class="govuk-link"
-              [routerLink]="['transcripts', row.transcriptionId]"
-              [queryParams]="{ linkedFrom: 'your-transcripts' }"
-              >View</a
-            >
+            <a class="govuk-link" [routerLink]="['transcripts', row.transcriptionId]">View</a>
           </td>
         </ng-template>
       </app-data-table>
