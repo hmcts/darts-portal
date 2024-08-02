@@ -74,7 +74,7 @@ jobs:
                   echo "Found Reply URLs"
                   echo $replyUrls
 
-                  if [[  "${adminSignInUrl}" && "${replyUrls}"]]; then
+                  if [[ "${replyUrls}" =~ "${adminSignInUrl}" && "${replyUrls}"]]; then
                     echo "Reply URLs contain $adminSignInUrl"
                   elif [ -z $replyUrls ]; then
                     echo "No Reply URLs Found. ISSUE!!"
