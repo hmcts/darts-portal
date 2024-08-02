@@ -20,7 +20,7 @@ jobs:
                   targetAppName="darts-stg"
 
                   az login --service-principal --username ${{ secrets.SP_CLIENT_ID}} -p=${{ secrets.SP_SECRET_KEY}} --tenant ${{ secrets.SP_TENANT_ID}} --allow-no-subscriptions
-                  az login --service-principal --username ${{ secrets.B2C_AZURE_CLIENT_ID}} -p=${{ secrets.B2C_AZURE_CLIENT_SECRET}} --tenant ${{ secrets.B2C_AZURE_TENANT_ID}} --allow-no-subscriptions
+                  az login --service-principal --username ${{ secrets.B2C_AZURE_CLIENT_ID}} -p=${{ secrets.SP_SECRET_KEY}} --tenant ${{ secrets.B2C_AZURE_TENANT_ID}} --allow-no-subscriptions
                   az account show
                   
                   appId=$(az ad app list --all --filter "displayname eq '${targetAppName}'" --query "[0].appId" -o tsv --only-show-errors )
