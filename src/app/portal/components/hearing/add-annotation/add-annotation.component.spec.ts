@@ -81,7 +81,12 @@ describe('AddAnnotationComponent', () => {
       const file = new File(['test'], 'test.txt', { type: 'text/plain' });
       component.fileControl.setValue(file);
       component.onComplete();
-      expect(fakeAnnotationService.uploadAnnotationDocument).toHaveBeenCalledWith(file, 3);
+      expect(fakeAnnotationService.uploadAnnotationDocument).toHaveBeenCalledWith(file, 3, null);
+    });
+    it('does not upload if form is invalid', () => {
+      component.fileControl.setValue(null);
+      component.onComplete();
+      expect(fakeAnnotationService.uploadAnnotationDocument).not.toHaveBeenCalled();
     });
   });
 
@@ -133,6 +138,27 @@ describe('AddAnnotationComponent', () => {
       const fileControl = component.fileControl;
       fileControl.setValue(file);
       expect(fileControl.valid).toBe(true);
+    });
+
+    describe('Error messages', () => {
+      it('set error message when fileControl is required', () => {
+        component.fileControl.setValue(null);
+        expect(component.errors()[0].message).toBe('You must upload a file to complete this request');
+      });
+
+      it('set error message when filesize is too large', () => {
+        const file = new File(['test'], 'test.txt', { type: 'text/plain' });
+        Object.defineProperty(file, 'size', { value: 22 * 1024 * 1024 }); // 22MB file size
+        component.fileControl.setValue(file);
+
+        expect(component.errors()[0].message).toBe('The selected file must be smaller than 20MB.');
+      });
+
+      it('does not set error message when fileControl is valid', () => {
+        const file = new File(['test'], 'test.txt', { type: 'text/plain' });
+        component.fileControl.setValue(file);
+        expect(component.errors()).toEqual([]);
+      });
     });
   });
 });
