@@ -1,5 +1,4 @@
-import { JsonPipe } from '@angular/common';
-import { Component, OnInit, computed, inject, input, numberAttribute } from '@angular/core';
+import { Component, OnDestroy, OnInit, computed, inject, input, numberAttribute, signal } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -7,6 +6,8 @@ import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
 import { FileUploadComponent } from '@common/file-upload/file-upload.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { GovukTextareaComponent } from '@common/govuk-textarea/govuk-textarea.component';
+import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
+import { ErrorSummaryEntry } from '@core-types/index';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { AnnotationService } from '@services/annotation/annotation.service';
@@ -29,12 +30,12 @@ import { AddAnnotationSuccessComponent } from './add-annotation-success/add-anno
     GovukTextareaComponent,
     RouterLink,
     AddAnnotationSuccessComponent,
-    JsonPipe,
+    ValidationErrorSummaryComponent,
   ],
   templateUrl: './add-annotation.component.html',
   styleUrl: './add-annotation.component.scss',
 })
-export class AddAnnotationComponent implements OnInit {
+export class AddAnnotationComponent implements OnInit, OnDestroy {
   router = inject(Router);
   caseService = inject(CaseService);
   headerService = inject(HeaderService);
@@ -45,6 +46,7 @@ export class AddAnnotationComponent implements OnInit {
   caseId = input.required({ transform: numberAttribute });
   hearingId = input.required({ transform: numberAttribute });
   caseNumber = input('');
+  errors = signal<ErrorSummaryEntry[]>([]);
 
   ids = computed(() => [this.caseId(), this.hearingId()]);
 
@@ -56,21 +58,36 @@ export class AddAnnotationComponent implements OnInit {
   );
 
   fileControl = new FormControl<File | null>(null, [Validators.required, maxFileSizeValidator(20)]);
-  annotationComments = new FormControl('');
+  annotationComments = new FormControl<string | null>(null);
   step = 1;
 
+  fileControlSub = this.fileControl.events.subscribe(() => {
+    if (this.fileControl.valid) {
+      this.errors.set([]);
+      return;
+    }
+
+    if (this.fileControl.errors?.required) {
+      this.errors.set([
+        { fieldId: 'file-upload-annotation', message: 'You must upload a file to complete this request' },
+      ]);
+    }
+
+    if (this.fileControl.errors?.maxFileSize) {
+      this.errors.set([{ fieldId: 'file-upload-annotation', message: this.fileControl.errors?.maxFileSize.message }]);
+    }
+  });
+
   onComplete() {
-    if (this.annotationComments.value) {
-      this.annotationService
-        .uploadAnnotationDocument(this.fileControl.value!, this.hearingId(), this.annotationComments.value)
-        .subscribe(() => {
-          this.goToSuccessScreen();
-        });
-    } else {
-      this.annotationService.uploadAnnotationDocument(this.fileControl.value!, this.hearingId()).subscribe(() => {
+    if (this.fileControl.invalid) return;
+
+    const comments = this.annotationComments.value;
+
+    this.annotationService
+      .uploadAnnotationDocument(this.fileControl.value!, this.hearingId(), comments)
+      .subscribe(() => {
         this.goToSuccessScreen();
       });
-    }
   }
 
   public goToSuccessScreen() {
@@ -79,5 +96,9 @@ export class AddAnnotationComponent implements OnInit {
 
   ngOnInit(): void {
     setTimeout(() => this.headerService.hideNavigation(), 0);
+  }
+
+  ngOnDestroy() {
+    this.fileControlSub.unsubscribe();
   }
 }

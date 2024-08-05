@@ -19,7 +19,7 @@ export class AnnotationService {
     });
   }
 
-  uploadAnnotationDocument(file: File, hearingId: number, comment?: string) {
+  uploadAnnotationDocument(file: File, hearingId: number, comment: string | null) {
     const postDTO = {
       hearing_id: hearingId,
       comment: comment,

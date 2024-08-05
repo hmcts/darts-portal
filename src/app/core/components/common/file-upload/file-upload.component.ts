@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, forwardRef } from '@angular/core';
+import { Component, Input, computed, forwardRef, input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
@@ -17,15 +17,15 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@a
   ],
 })
 export class FileUploadComponent implements ControlValueAccessor {
-  @Input() id = '1';
+  id = input('1');
   @Input() label = 'Upload file';
   @Input() hint = '';
   @Input() errorMessage = '';
   @Input() isInvalid = false;
   @Input() allowedFileTypes = '.doc,.docx,.zip';
 
-  controlId = `file-upload-${this.id}`;
-  controlErrorId = `${this.controlId}-error`;
+  controlId = computed(() => `file-upload-${this.id()}`);
+  controlErrorId = computed(() => `${this.controlId()}-error`);
 
   // Implementing ControlValueAccessor interface boilerplate
   onChange: (value: File | null) => void = () => {};
