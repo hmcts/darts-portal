@@ -34,7 +34,9 @@
     >
       <ng-template [tableRowTemplate]="userGroups" let-row>
         <td>
-          <a class="govuk-link" href="javascript:void(0)">{{ row.name }}</a>
+          <a class="govuk-link" href="javascript:void(0)" (click)="router.navigate(['admin/groups', row.id])">{{
+            row.name
+          }}</a>
         </td>
         <td>{{ row.role?.displayName }}</td>
       </ng-template>

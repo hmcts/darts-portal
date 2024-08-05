@@ -44,6 +44,7 @@ export class UploadTranscriptComponent implements OnDestroy {
   errors: { fieldId: string; message: string }[] = [];
 
   isManualRequest = false;
+  requestStatus: 'TO_DO' | 'COMPLETED' = this.router.getCurrentNavigation()?.extras?.state?.requestStatus;
 
   vm$ = this.transcriptionService.getTranscriptionDetails(this.requestId).pipe(
     map((data: TranscriptionDetails) => {

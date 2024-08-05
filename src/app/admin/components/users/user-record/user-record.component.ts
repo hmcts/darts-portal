@@ -9,6 +9,7 @@ import { GovukTagComponent } from '@common/govuk-tag/govuk-tag.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
+import { DataTableComponent } from '@components/common/data-table/data-table.component';
 import { NotFoundComponent } from '@components/error/not-found/not-found.component';
 import { ErrorSummaryEntry } from '@core-types/index';
 import { TabDirective } from '@directives/tab.directive';
@@ -17,7 +18,6 @@ import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { Observable, shareReplay } from 'rxjs';
 import { map } from 'rxjs/internal/operators/map';
-import { DataTableComponent } from '../../../../core/components/common/data-table/data-table.component';
 import { UserGroupsComponent } from '../user-groups/user-groups/user-groups.component';
 import { UserTranscriptsComponent } from '../user-transcripts/user-transcripts.component';
 

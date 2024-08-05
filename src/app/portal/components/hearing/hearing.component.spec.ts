@@ -1,9 +1,9 @@
 import { DatePipe } from '@angular/common';
 import { HttpClient, HttpErrorResponse, provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ActivatedRoute, Router, provideRouter } from '@angular/router';
+import { ActivatedRoute, provideRouter, Router } from '@angular/router';
 import { UserState } from '@core-types/user/user-state.interface';
 import { Annotations } from '@portal-types/annotations/annotations.type';
 import { AudioEventRow } from '@portal-types/hearing/hearing-audio-event.interface';
@@ -72,7 +72,7 @@ describe('HearingComponent', () => {
       },
       params: {
         caseId: '1',
-        hearing_id: '1',
+        hearingId: '1',
       },
       queryParams: { tab: 'Transcripts', startTime: '2024-01-01', endTime: '2024-01-02' },
     },
@@ -147,13 +147,13 @@ describe('HearingComponent', () => {
     },
   ];
 
-  const shd = of({
+  const shd: Hearing = {
     id: 1,
     date: DateTime.fromISO('2023-02-21'),
     judges: ['Joseph', 'Judy'],
     courtroom: '3',
     transcriptCount: 99,
-  }) as Observable<Hearing>;
+  };
 
   const mockUser: Observable<UserState> = of({
     userId: 123,
@@ -191,7 +191,7 @@ describe('HearingComponent', () => {
     jest.spyOn(caseService, 'getCase').mockReturnValue(of(cd1));
     jest.spyOn(caseService, 'getCaseHearings').mockReturnValue(hd);
     jest.spyOn(caseService, 'getHearingTranscripts').mockReturnValue(mockTranscript);
-    jest.spyOn(caseService, 'getHearingById').mockReturnValue(shd);
+    jest.spyOn(caseService, 'getHearingById').mockReturnValue(of(shd));
     jest.spyOn(hearingService, 'getAudio').mockReturnValue(ad);
     jest.spyOn(hearingService, 'getEvents').mockReturnValue(ed);
     jest.spyOn(hearingService, 'getAnnotations').mockReturnValue(of(mockAnnotations));
@@ -278,10 +278,12 @@ describe('HearingComponent', () => {
   });
 
   describe('Parent case and hearings', () => {
-    it('should load via api', () => {
+    it('should load via api', fakeAsync(() => {
       expect(component.case$).toBeDefined();
-      expect(component.hearing$).toEqual(shd);
-    });
+
+      component.hearing$.subscribe((res) => expect(res).toEqual(shd));
+      tick();
+    }));
   });
 
   describe('#annotations', () => {
