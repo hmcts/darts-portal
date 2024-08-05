@@ -41,9 +41,11 @@
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Hidden by</dt>
         <dd class="govuk-summary-list__value">
-          <a class="govuk-link" [routerLink]="['/admin/users', audioFile.adminAction.hiddenById]">
-            {{ audioFile.adminAction.hiddenByName }}
-          </a>
+          @if (audioFile.adminAction.hiddenById) {
+            <a class="govuk-link" [routerLink]="['/admin/users', audioFile.adminAction.hiddenById]">
+              {{ audioFile.adminAction.hiddenByName }}
+            </a>
+          }
         </dd>
       </div>
       <div class="govuk-summary-list__row">
@@ -69,9 +71,11 @@
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Deleted by</dt>
         <dd class="govuk-summary-list__value">
-          <a class="govuk-link" [routerLink]="['/admin/users', audioFile.adminAction.markedForManualDeletionById]">
-            {{ audioFile.adminAction.markedForManualDeletionBy }}
-          </a>
+          @if (audioFile.adminAction.markedForManualDeletionById) {
+            <a class="govuk-link" [routerLink]="['/admin/users', audioFile.adminAction.markedForManualDeletionById]">
+              {{ audioFile.adminAction.markedForManualDeletionBy }}
+            </a>
+          }
         </dd>
       </div>
     }
@@ -114,9 +118,11 @@
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Created by</dt>
       <dd class="govuk-summary-list__value">
-        <a class="govuk-link" [routerLink]="['/admin/users', audioFile.createdById]">
-          {{ audioFile.createdBy }}
-        </a>
+        @if (audioFile.createdById) {
+          <a class="govuk-link" [routerLink]="['/admin/users', audioFile.createdById]">
+            {{ audioFile.createdBy }}
+          </a>
+        }
       </dd>
     </div>
     <div class="govuk-summary-list__row">
@@ -128,9 +134,11 @@
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Last modified by</dt>
       <dd class="govuk-summary-list__value">
-        <a class="govuk-link" [routerLink]="['/admin/users', audioFile.lastModifiedById]">
-          {{ audioFile.lastModifiedBy }}
-        </a>
+        @if (audioFile.lastModifiedById) {
+          <a class="govuk-link" [routerLink]="['/admin/users', audioFile.lastModifiedById]">
+            {{ audioFile.lastModifiedBy }}
+          </a>
+        }
       </dd>
     </div>
   </dl>
