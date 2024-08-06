@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: >
-          mediaSignInUrl="https://darts-pr-${PR_NUMBER}.dev.apps.hmcts.net/login"
+          mediaSignInUrl="https://darts-pr-${PR_NUMBER}.dev.apps.hmcts.net/auth/callback"
 
 
           targetAppName="darts-stg"
