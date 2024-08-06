@@ -83,6 +83,10 @@ export class UserService {
       : false;
   }
 
+  public hasMatchingUserId(userId: number): boolean {
+    return this.userState() ? this.userState()!.userId === userId : false;
+  }
+
   private hasUserState(): boolean {
     return Boolean(this.userState());
   }
