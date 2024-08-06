@@ -1,5 +1,5 @@
 <div class="govuk-form-group" [formGroup]="form">
-  <label class="govuk-label govuk-!-font-weight-bold" for="specific-date-radio"> {{ label }} </label>
+  <h4 class="govuk-label govuk-!-font-weight-bold">{{ label }}</h4>
   <div class="govuk-radios">
     <div class="govuk-radios__item">
       <input
@@ -7,7 +7,6 @@
         id="specific-date-radio"
         type="radio"
         formControlName="type"
-        aria-label="Specific date radio button"
         value="specific"
       />
       <label class="govuk-label govuk-radios__label" for="specific-date-radio"> Specific date </label>
@@ -29,14 +28,7 @@
       </div>
     }
     <div class="govuk-radios__item">
-      <input
-        class="govuk-radios__input"
-        id="date-range-radio"
-        type="radio"
-        formControlName="type"
-        aria-label="Date range radio button"
-        value="range"
-      />
+      <input class="govuk-radios__input" id="date-range-radio" type="radio" formControlName="type" value="range" />
       <label class="govuk-label govuk-radios__label" for="date-range-radio"> Date range </label>
     </div>
     @if (dateTypeControl.value === 'range') {
