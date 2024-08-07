@@ -213,4 +213,67 @@ describe('RequestPlaybackAudioComponent', () => {
       ]);
     });
   });
+  describe('#outsideAudioTimesValidation', () => {
+    beforeEach(() => {
+      component.hearing = {
+        id: 1,
+        date: DateTime.fromISO('2023-09-01'),
+        judges: ['HHJ M. Hussain KC'],
+        courtroom: '3',
+        transcriptCount: 1,
+      };
+
+      fixture.detectChanges();
+    });
+
+    it('should set errors and emit validation errors when start time is outside the available audio times', () => {
+      const errorSummaryEntry = { fieldId: 'start-time-hour-input', message: fieldErrors.startTime.unavailable };
+      const validationErrorSpy = jest.spyOn(component.validationErrorEvent, 'emit');
+
+      const audioRequestForm = {
+        startTime: {
+          hours: '01',
+          minutes: '59',
+          seconds: '30',
+        },
+        endTime: {
+          hours: '15',
+          minutes: '20',
+          seconds: '22',
+        },
+        requestType: 'PLAYBACK',
+      };
+      component.audioRequestForm.setValue(audioRequestForm);
+      component.onSubmit();
+
+      expect(component.audioRequestForm.controls.startTime.errors).toEqual({ unavailable: true });
+      expect(component.audioRequestForm.errors).toEqual({ invalid: true });
+      expect(validationErrorSpy).toHaveBeenCalledWith([errorSummaryEntry, ...component.errorSummary]);
+    });
+
+    it('should set errors and emit validation errors when end time is outside the available audio times', () => {
+      const errorSummaryEntry = { fieldId: 'end-time-hour-input', message: fieldErrors.endTime.unavailable };
+      const validationErrorSpy = jest.spyOn(component.validationErrorEvent, 'emit');
+
+      const audioRequestForm = {
+        startTime: {
+          hours: '02',
+          minutes: '59',
+          seconds: '30',
+        },
+        endTime: {
+          hours: '17',
+          minutes: '20',
+          seconds: '22',
+        },
+        requestType: 'PLAYBACK',
+      };
+      component.audioRequestForm.setValue(audioRequestForm);
+      component.onSubmit();
+
+      expect(component.audioRequestForm.controls.endTime.errors).toEqual({ unavailable: true });
+      expect(component.audioRequestForm.errors).toEqual({ invalid: true });
+      expect(validationErrorSpy).toHaveBeenCalledWith([errorSummaryEntry, ...component.errorSummary]);
+    });
+  });
 });
