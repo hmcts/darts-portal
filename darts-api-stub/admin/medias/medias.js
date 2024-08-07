@@ -93,6 +93,84 @@ const medias = [
   },
 ];
 
+const defaultMarkedForDeletionMedia = [
+  {
+    media_id: 0,
+    channel: 5,
+    start_at: '2024-01-01T10:00:00Z',
+    end_at: '2024-01-01T11:30:00Z',
+    courthouse: {
+      id: 0,
+      display_name: 'Cardiff',
+    },
+    courtroom: {
+      id: 0,
+      name: '9',
+    },
+    admin_action: {
+      id: 0,
+      reason_id: 3,
+      hidden_by_id: 1,
+      hidden_at: '2024-05-01T00:00:00Z',
+      is_marked_for_manual_deletion: false,
+      marked_for_manual_deletion_by_id: 1,
+      marked_for_manual_deletion_at: '2024-05-01T00:00:00Z',
+      ticket_reference: '1234REF1',
+      comments: 'This is an example comment',
+    },
+  },
+  {
+    media_id: 1,
+    channel: 5,
+    start_at: '2024-03-01T11:00:00Z',
+    end_at: '2024-03-01T11:30:00Z',
+    courthouse: {
+      id: 0,
+      display_name: 'Birmingham',
+    },
+    courtroom: {
+      id: 0,
+      name: '11',
+    },
+    admin_action: {
+      id: 0,
+      reason_id: 1,
+      hidden_by_id: 2,
+      hidden_at: '2024-04-01T00:00:00Z',
+      is_marked_for_manual_deletion: false,
+      marked_for_manual_deletion_by_id: 2,
+      marked_for_manual_deletion_at: '2024-04-01T00:00:00Z',
+      ticket_reference: '9987REF00',
+      comments: 'This has been marked for deletion',
+    },
+  },
+  {
+    media_id: 3,
+    channel: 2,
+    start_at: '2024-03-03T15:00:00Z',
+    end_at: '2024-03-03T15:22:00Z',
+    courthouse: {
+      id: 0,
+      display_name: 'Manchester',
+    },
+    courtroom: {
+      id: 0,
+      name: '11',
+    },
+    admin_action: {
+      id: 0,
+      reason_id: 2,
+      hidden_by_id: 5,
+      hidden_at: '2024-04-03T19:00:00Z',
+      is_marked_for_manual_deletion: false,
+      marked_for_manual_deletion_by_id: 5,
+      marked_for_manual_deletion_at: '2024-04-03T1930:00:00Z',
+      ticket_reference: '122REF224',
+      comments: 'Manchester audio file marked for deletion',
+    },
+  },
+];
+
 const mediaSearchResults = [
   {
     id: 101,
@@ -202,9 +280,11 @@ const defaultMedia = {
 
 let updatedMedia = [];
 let media = { ...defaultMedia };
+let markedForDeletionMedia = [...defaultMarkedForDeletionMedia];
 
 router.get('/reset', (req, res) => {
   media = { ...defaultMedia };
+  markedForDeletionMedia = [...defaultMarkedForDeletionMedia];
   updatedMedia = [];
   res.sendStatus(202);
 });
@@ -217,6 +297,10 @@ router.get('/', (req, res) => {
   const endAt = req.query.end_at;
 
   res.send(medias);
+});
+
+router.get('/marked-for-deletion', (req, res) => {
+  res.send(markedForDeletionMedia);
 });
 
 router.post('/:id/hide', (req, res) => {
