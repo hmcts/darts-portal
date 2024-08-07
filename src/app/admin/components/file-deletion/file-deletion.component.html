@@ -1,10 +1,29 @@
-<app-govuk-heading tag="h1" size="xl">File deletion</app-govuk-heading>
+<app-govuk-heading tag="h1" size="xl">Files marked for deletion</app-govuk-heading>
 
-<app-tabs>
-  <div *tab="'Audio files'">
-    <app-govuk-heading tag="h2">Audio files</app-govuk-heading>
-  </div>
-  <div *tab="'Transcripts'">
-    <app-govuk-heading tag="h2">Transcripts</app-govuk-heading>
-  </div>
-</app-tabs>
+@if (!isLoading()) {
+  <app-tabs>
+    <div
+      *tab="
+        'Audio files';
+        screenReaderText: 'Audio files marked for deletion';
+        id: 'audio-files-deletion-tab';
+        count: audioCount()
+      "
+    >
+      <app-govuk-heading tag="h2">Audio files</app-govuk-heading>
+
+      <app-audio-file-results [rows]="audioFiles()" />
+    </div>
+    <div
+      *tab="
+        'Transcripts';
+        screenReaderText: 'Transcript files marked for deletion';
+        id: 'transcript-files-deletion-tab'
+      "
+    >
+      <app-govuk-heading tag="h2">Transcripts</app-govuk-heading>
+    </div>
+  </app-tabs>
+} @else {
+  <app-loading text="Loading marked for deletion files..."></app-loading>
+}
