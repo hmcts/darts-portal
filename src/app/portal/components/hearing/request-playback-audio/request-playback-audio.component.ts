@@ -169,7 +169,7 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
   }
 
   private outsideAudioTimesValidation(startTime: DateTime, endTime: DateTime): void {
-    let errorMessages: ErrorSummaryEntry[] = [];
+    const errorMessages: ErrorSummaryEntry[] = [];
 
     const sortedAudioDates = this.audios
       .map((audio) => [DateTime.fromISO(audio.media_start_timestamp), DateTime.fromISO(audio.media_end_timestamp)])
