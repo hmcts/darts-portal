@@ -1,6 +1,6 @@
-import { FieldErrors } from '@core-types/index';
+import { FormErrorMessages } from '@core-types/index';
 
-export const EventMappingFormErrorMessages: FieldErrors = {
+export const EventMappingFormErrorMessages: FormErrorMessages = {
   type: {
     required: 'Enter the event type',
     unique: 'The combination of event type and subtype should be unique',

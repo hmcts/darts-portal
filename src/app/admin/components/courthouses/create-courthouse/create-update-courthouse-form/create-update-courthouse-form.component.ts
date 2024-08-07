@@ -4,7 +4,7 @@ import { Component, DestroyRef, ElementRef, EventEmitter, Input, OnInit, Output,
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DataTableComponent } from '@common/data-table/data-table.component';
-import { CourthouseData, ErrorSummaryEntry, FieldErrors } from '@core-types/index';
+import { CourthouseData, ErrorSummaryEntry, FormErrorMessages } from '@core-types/index';
 import { FormService } from '@services/form/form.service';
 import {
   courthouseNameExistsValidator,
@@ -12,7 +12,7 @@ import {
   valueIsNull,
 } from '@validators/courthouse.validator';
 
-const controlErrors: FieldErrors = {
+const controlErrors: FormErrorMessages = {
   courthouseName: {
     required: 'Enter a courthouse code',
     courthouseNameExists: 'The courthouse code you entered exists already',
