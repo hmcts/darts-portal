@@ -1,11 +1,11 @@
-import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Validators } from '@angular/forms';
 import { UserState } from '@core-types/user/user-state.interface';
 import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
 
+import { SimpleChange } from '@angular/core';
+import { Validators } from '@angular/forms';
 import { fieldErrors, RequestPlaybackAudioComponent } from './request-playback-audio.component';
 
 describe('RequestPlaybackAudioComponent', () => {
@@ -27,9 +27,15 @@ describe('RequestPlaybackAudioComponent', () => {
     });
     fixture = TestBed.createComponent(RequestPlaybackAudioComponent);
     component = fixture.componentInstance;
+    component.audios = [
+      {
+        id: 0,
+        media_start_timestamp: '2023-07-31T02:00:00.000',
+        media_end_timestamp: '2023-07-31T15:45:00.000',
+      },
+    ];
     component.userState = { userId: 1, userName: 'Dean', roles: [], isActive: true };
     component.validationErrorEvent.emit = jest.fn();
-    fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -49,6 +55,7 @@ describe('RequestPlaybackAudioComponent', () => {
       };
 
       component.audioTimes = audioTimes;
+      fixture.detectChanges();
       component.setTimes();
       expect(component.audioRequestForm.value).toEqual(expectedResult);
     });
@@ -62,6 +69,7 @@ describe('RequestPlaybackAudioComponent', () => {
       };
       const setTimesSpy = jest.spyOn(component, 'setTimes');
       component.ngOnChanges({ audioTimes: new SimpleChange(null, audioTimes, false) });
+      fixture.detectChanges();
       expect(setTimesSpy).toHaveBeenCalled();
     }));
   it('should reset the start and end times on the form if requestAudioTimes is empty', () => {
@@ -77,6 +85,7 @@ describe('RequestPlaybackAudioComponent', () => {
     };
     component.audioRequestForm.setValue(initialForm);
     component.ngOnChanges({ audioTimes: new SimpleChange(null, null, false) });
+    fixture.detectChanges();
     expect(component.audioRequestForm.value).toEqual(expectedResult);
   });
 
@@ -110,6 +119,7 @@ describe('RequestPlaybackAudioComponent', () => {
   describe('#onSubmit', () => {
     it('should create the request object when values are submitted', () => {
       const audioRequestSpy = jest.spyOn(component.audioRequest, 'emit');
+
       component.hearing = {
         id: 1,
         date: DateTime.fromISO('2023-09-01'),
@@ -138,6 +148,7 @@ describe('RequestPlaybackAudioComponent', () => {
         request_type: 'PLAYBACK',
       };
       component.audioRequestForm.setValue(audioRequestForm);
+      fixture.detectChanges();
       component.onSubmit();
       expect(component.requestObj).toEqual(expectedResult);
       expect(audioRequestSpy).toHaveBeenCalledWith(component.requestObj);
@@ -171,7 +182,8 @@ describe('RequestPlaybackAudioComponent', () => {
 
   describe('#onValidationError', () => {
     it('should emit validation errors when audio count is 0', () => {
-      component.audioCount = 0;
+      component.audios = [];
+      fixture.detectChanges();
       const validationErrorSpy = jest.spyOn(component.validationErrorEvent, 'emit');
 
       component.onValidationError();
@@ -185,7 +197,8 @@ describe('RequestPlaybackAudioComponent', () => {
     });
 
     it('should emit validation errors for invalid form fields and unavailable audio', () => {
-      component.audioCount = 0;
+      component.audios = [];
+      fixture.detectChanges();
       component.audioRequestForm.controls.startTime.setErrors({ required: true });
       component.audioRequestForm.controls.endTime.setErrors({ required: true });
       const validationErrorSpy = jest.spyOn(component.validationErrorEvent, 'emit');
