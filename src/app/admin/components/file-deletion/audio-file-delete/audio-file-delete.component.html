@@ -1,0 +1,17 @@
+@if (!isPermitted) {
+  <app-govuk-heading tag="h2">You cannot delete this file</app-govuk-heading>
+
+  <p class="govuk-body">You cannot delete an audio that you marked for deletion.</p>
+
+  <p class="govuk-body">Another administrator will need to check the file can be deleted and can complete this step.</p>
+
+  <div class="govuk-button-group">
+    <a href="#" class="govuk-link" [routerLink]="['/admin/file-deletion']">Go back</a>
+  </div>
+} @else {
+  <app-govuk-heading tag="h2">Delete logic to be done</app-govuk-heading>
+
+  <div class="govuk-button-group">
+    <a href="#" class="govuk-link" [routerLink]="['/admin/file-deletion']">Go back</a>
+  </div>
+}
