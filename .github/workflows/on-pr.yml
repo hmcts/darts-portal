@@ -43,7 +43,7 @@ jobs:
           echo $replyUrls
 
 
-          if [[ "${replyUrls}" =~ "${mediaSignInUrl}" && "${replyUrls}"]]; then
+          if [[ "$replyUrls" =~ "$mediaSignInUrl" && "$replyUrls"]]; then
             echo "Reply URLs contain $mediaSignInUrl"
           elif [ -z $replyUrls ]; then
             echo "No Reply URLs Found. ISSUE!!"
@@ -54,7 +54,7 @@ jobs:
               replyUrlString+="$item,"
             done
 
-            if [[ ! "${replyUrls}" =~ "${mediaSignInUrl}" ]]; then
+            if [[ ! "$replyUrls" =~ "$mediaSignInUrl" ]]; then
               replyUrlString+="\"$mediaSignInUrl\""
             fi
 
