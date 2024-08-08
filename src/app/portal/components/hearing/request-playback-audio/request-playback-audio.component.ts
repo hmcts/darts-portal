@@ -204,7 +204,10 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
     }
 
     if (errorMessages.length > 0) {
-      this.validationErrorEvent.emit([...errorMessages, ...this.errorSummary]);
+      const uniqueErrorMessages = [
+        ...new Map([...errorMessages, ...this.errorSummary].map((entry) => [entry.message, entry])).values(),
+      ];
+      this.validationErrorEvent.emit(uniqueErrorMessages);
     }
   }
 
