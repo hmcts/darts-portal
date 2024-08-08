@@ -45,12 +45,12 @@ export class FileDeletionService {
   }
 
   private mapMarkedByName(audioFiles: AudioFileMarkedDeletion[]): Observable<AudioFileMarkedDeletion[]> {
-    const userIds = [...new Set(audioFiles.map((audioFile) => audioFile.markedById))] as number[];
+    const userIds = [...new Set(audioFiles.map((audioFile) => audioFile.hiddenById))] as number[];
 
     return this.userAdminService.getUsersById(userIds).pipe(
       map((users) => {
         return audioFiles.map((audioFile) => {
-          const markDeletedBy = users.find((u) => u.id == audioFile?.markedById);
+          const markDeletedBy = users.find((u) => u.id == audioFile?.hiddenById);
 
           return {
             ...audioFile,
@@ -84,6 +84,7 @@ export class FileDeletionService {
       endAt: DateTime.fromISO(audioFile.end_at),
       courthouse: audioFile.courthouse.display_name,
       courtroom: audioFile.courtroom.name,
+      hiddenById: audioFile.admin_action.hidden_by_id,
       markedById: audioFile.admin_action.marked_for_manual_deletion_by_id,
       comments: audioFile.admin_action.comments,
       ticketReference: audioFile.admin_action.ticket_reference,
