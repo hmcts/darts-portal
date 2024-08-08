@@ -22,7 +22,7 @@ export class AssociatedCasesTableComponent {
   columns: DatatableColumn[] = [
     { name: 'Case ID', prop: 'caseId', sortable: true },
     { name: 'Hearing date', prop: 'hearingDate', sortable: true },
-    { name: 'Defendants(s)', prop: 'defendants', sortable: true },
-    { name: 'Judges(s)', prop: 'judges', sortable: true },
+    { name: 'Defendant(s)', prop: 'defendants', sortable: true },
+    { name: 'Judge(s)', prop: 'judges', sortable: true },
   ];
 }

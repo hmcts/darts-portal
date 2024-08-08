@@ -188,6 +188,14 @@ export const ADMIN_ROUTES: Routes = [
       import('./components/file-deletion/file-deletion.component').then((c) => c.FileDeletionComponent),
   },
   {
+    path: 'admin/file-deletion/audio-file/:id',
+    title: 'DARTS Admin Audio File Deletion',
+    loadComponent: () =>
+      import('./components/file-deletion/audio-file-delete/audio-file-delete.component').then(
+        (c) => c.AudioFileDeleteComponent
+      ),
+  },
+  {
     path: 'admin/file/:id/hide-or-delete',
     title: 'DARTS Admin Hide or Delete File',
     loadComponent: () =>

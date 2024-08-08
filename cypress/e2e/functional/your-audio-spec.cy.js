@@ -99,17 +99,16 @@ describe('Your audio', () => {
     cy.contains('C4_Playback').parents('tr').contains('View').click();
     cy.contains('C4_Playback.mp3').should('exist');
 
-    // TO DO: fix intermittent failure
-    // cy.get('audio').then(([audioEl]) => {
-    //   expect(audioEl.paused).to.equal(true);
-    // });
+    cy.get('audio').then(([audioEl]) => {
+      expect(audioEl.paused).to.equal(true);
+    });
 
     cy.get('app-play-button').should('have.length', 5);
     cy.get('app-play-button').first().click();
 
-    // cy.get('audio').then(([audioEl]) => {
-    //   expect(audioEl.paused).to.equal(false);
-    // });
+    cy.get('audio').then(([audioEl]) => {
+      expect(audioEl.paused).to.equal(false);
+    });
 
     //click third play button to skip to 20 seconds
     cy.get('app-play-button').eq(2).click();
