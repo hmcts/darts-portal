@@ -36,10 +36,7 @@ export class TranscriptionService {
   private readonly urgencies$ = this.http.get<Urgency[]>('/api/transcriptions/urgencies').pipe(shareReplay(1));
 
   unassignedRequests$ = timer(0, this.DATA_POLL_INTERVAL_SECS * 1000).pipe(
-    switchMap(() => this.getWorkRequests(false)),
-    tap((requests: WorkRequest[]) => {
-      this.countService.setUnassignedTranscriptCount(requests.length);
-    })
+    switchMap(() => this.getWorkRequests(false))
   );
 
   assignedRequests$ = timer(0, this.DATA_POLL_INTERVAL_SECS * 1000).pipe(
