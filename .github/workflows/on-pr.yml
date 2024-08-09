@@ -19,22 +19,19 @@ jobs:
 
           az login --service-principal --username ${{ secrets.SP_CLIENT_ID}} -p=${{ secrets.SP_SECRET_KEY}} --tenant ${{ secrets.SP_TENANT_ID}} --allow-no-subscriptions
           az account show
-
-
+          
           appId=$(az ad app list --all --filter "displayname eq '${targetAppName}'" --query "[0].appId" -o tsv --only-show-errors )
           appId=${appId//[$'\t\r\n']/}
           echo "App ID $appId"
 
-
           az ad app show --id "$appId"
           replyUrls=$(az ad app show --id "$appId" --query "web.redirectUris" -o json --only-show-errors)
-
 
           echo "Found Reply URLs"
           echo $replyUrls
 
 
-          if [[ "$replyUrls" =~ "$mediaSignInUrl"]; then
+          if [[ "${replyUrls}" =~ "${mediaSignInUrl}"  ]]; then
             echo "Reply URLs contain $mediaSignInUrl"
           elif [ -z $replyUrls ]; then
             echo "No Reply URLs Found. ISSUE!!"
@@ -45,7 +42,7 @@ jobs:
               replyUrlString+="$item,"
             done
 
-            if [[ ! "$replyUrls" =~ "$mediaSignInUrl" ]]; then
+            if [[ ! "${replyUrls}" =~ "${mediaSignInUrl}" ]]; then
               replyUrlString+="\"$mediaSignInUrl\""
             fi
 
