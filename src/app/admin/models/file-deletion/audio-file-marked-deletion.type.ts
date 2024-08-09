@@ -7,7 +7,8 @@ export type AudioFileMarkedDeletion = {
   courthouse: string;
   courtroom: string;
   channel: number;
-  markedById: number;
+  hiddenById: number;
+  markedById?: number;
   markedByName?: string;
   comments: string;
   ticketReference: string;
