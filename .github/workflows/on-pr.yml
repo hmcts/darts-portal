@@ -49,7 +49,7 @@ jobs:
             echo "No Reply URLs Found. ISSUE!!"
           else
             readarray -t my_array < <(echo "$replyUrls" | jq -c '.[]')
-            for $item in "${my_array[@]}"; do
+            for item in "${my_array[@]}"; do
               echo "Url: $item"
               replyUrlString+="$item,"
             done
