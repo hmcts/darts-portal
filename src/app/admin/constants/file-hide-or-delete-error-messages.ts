@@ -1,6 +1,6 @@
-import { FieldErrors } from '@core-types/index';
+import { FormErrorMessages } from '@core-types/index';
 
-export const FileHideOrDeleteFormErrorMessages: FieldErrors = {
+export const FileHideOrDeleteFormErrorMessages: FormErrorMessages = {
   reason: {
     required: 'Select a reason for hiding and/or deleting the file',
   },

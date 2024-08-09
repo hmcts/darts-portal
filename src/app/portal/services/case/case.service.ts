@@ -10,15 +10,17 @@ import {
   CaseRetentionChange,
   CaseRetentionHistory,
   CaseRetentionHistoryData,
+  CaseSearchFormValues,
+  CaseSearchRequest,
   CaseSearchResult,
   CaseSearchResultData,
   Hearing,
   HearingData,
-  SearchFormValues,
   Transcript,
   TranscriptData,
 } from '@portal-types/index';
 import { MappingService } from '@services/mapping/mapping.service';
+import { formatDate } from '@utils/index';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs/internal/operators/map';
@@ -35,10 +37,6 @@ export const GET_CASE_RETENTION_HISTORY = '/api/retentions';
 })
 export class CaseService {
   constructor(private readonly http: HttpClient) {}
-
-  // Store for previous search results and form values
-  searchResults$: Observable<CaseSearchResult[] | null> | null = null;
-  searchFormValues: SearchFormValues | null = null;
 
   getHearingTranscripts(hearingId: number): Observable<Transcript[]> {
     const url = `${GET_HEARINGS_PATH}/${hearingId}/transcripts`;
@@ -76,37 +74,12 @@ export class CaseService {
       .pipe(map(mappingService.mapAnnotationsDataToAnnotations));
   }
 
-  searchCases(searchForm: SearchFormValues): Observable<CaseSearchResult[] | null> {
-    // Save search form values
-    this.searchFormValues = searchForm;
-    // Deep copy form to create Post Obj DTO
-    const body: SearchFormValues = { ...searchForm };
-
-    // if there is a specific date, set both date from and date to as the same value, to the correct backend format of YYYY-MM-DD
-    if (body.specific_date) {
-      const specificDate = this.formatDate(body.specific_date);
-      body.date_from = specificDate;
-      body.date_to = specificDate;
-    } else {
-      // otherwise set date range values to the correct backend format
-      if (body.date_from) body.date_from = this.formatDate(body.date_from);
-      if (body.date_to) body.date_to = this.formatDate(body.date_to);
-    }
-
-    // remove the specific date property before sending
-    delete body.specific_date;
-
-    // Store results in service for retrieval
-    this.searchResults$ = this.http
+  searchCases(searchFormValues: CaseSearchFormValues): Observable<CaseSearchResult[] | null> {
+    const body = this.mapSearchFormValuesToCaseSearchRequest(searchFormValues);
+    return this.http
       .post<CaseData[]>(ADVANCED_SEARCH_CASE_PATH, body)
       .pipe(map((results) => results.map(this.mapCaseDataToCaseSearchResult)))
       .pipe(shareReplay(1));
-    return this.searchResults$;
-  }
-
-  // takes a date of format DD/MM/YYYY and returns YYYY-MM-DD
-  formatDate(date: string): string {
-    return date.split('/').reverse().join('-');
   }
 
   /**
@@ -212,5 +185,31 @@ export class CaseService {
       name: e.name,
       text: e.text,
     }));
+  }
+
+  private mapSearchFormValuesToCaseSearchRequest(searchFormValues: CaseSearchFormValues): CaseSearchRequest {
+    // if there is a specific date, set both date from and date to as the same value, to the correct backend format of YYYY-MM-DD
+    let dateFrom, dateTo;
+
+    if (searchFormValues.hearingDate.type === 'specific') {
+      dateFrom = formatDate(searchFormValues.hearingDate.specific);
+      dateTo = formatDate(searchFormValues.hearingDate.specific);
+    }
+
+    if (searchFormValues.hearingDate.type === 'range') {
+      dateFrom = formatDate(searchFormValues.hearingDate.from);
+      dateTo = formatDate(searchFormValues.hearingDate.to);
+    }
+
+    return {
+      case_number: searchFormValues.caseNumber || null,
+      courthouse: searchFormValues.courthouse || null,
+      courtroom: searchFormValues.courtroom || null,
+      date_from: dateFrom || null,
+      date_to: dateTo || null,
+      judge_name: searchFormValues.judgeName || null,
+      defendant_name: searchFormValues.defendantName || null,
+      event_text_contains: searchFormValues.eventTextContains || null,
+    };
   }
 }

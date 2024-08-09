@@ -1,7 +1,7 @@
 import { startServer } from './server';
 
-import config from 'config';
 import * as propertiesVolume from '@hmcts/properties-volume';
+import config from 'config';
 propertiesVolume.addTo(config);
 
 const PORT = config.get('port');

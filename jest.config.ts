@@ -21,6 +21,7 @@ const config: Config = {
     '^@extensions/(.*)$': '<rootDir>/src/app/core/extensions/$1',
     '^@directives/(.*)$': '<rootDir>/src/app/core/directives/$1',
     '^@constants/(.*)$': ['<rootDir>/src/app/portal/constants/$1', '<rootDir>/src/app/admin/constants/$1'],
+    '^@utils/(.*)$': '<rootDir>/src/app/core/utils/$1',
   },
 };
 

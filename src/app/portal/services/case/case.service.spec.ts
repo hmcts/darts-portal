@@ -1,6 +1,6 @@
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import {
   Annotations,
   AnnotationsData,
@@ -8,6 +8,7 @@ import {
   CaseData,
   CaseRetentionChange,
   CaseRetentionHistoryData,
+  CaseSearchFormValues,
   CaseSearchResult,
   CaseSearchResultData,
   Hearing,
@@ -372,16 +373,20 @@ describe('CaseService', () => {
   });
 
   describe('#searchCases', () => {
-    it('for date ranges', () => {
-      const mockSearchForm: SearchFormValues = {
-        case_number: '123',
+    it('for date ranges', fakeAsync(() => {
+      const mockSearchForm: CaseSearchFormValues = {
+        caseNumber: '123',
         courthouse: 'Court A',
         courtroom: 'Room B',
-        judge_name: 'Judge C',
-        defendant_name: 'Defendant D',
-        date_from: '01/01/2023',
-        date_to: '31/12/2023',
-        event_text_contains: 'Event Text',
+        judgeName: 'Judge C',
+        defendantName: 'Defendant D',
+        hearingDate: {
+          type: 'range',
+          from: '01/01/2023',
+          to: '31/12/2023',
+          specific: '',
+        },
+        eventTextContains: 'Event Text',
       };
       const mockCases: Case[] = [];
 
@@ -408,16 +413,23 @@ describe('CaseService', () => {
       expect(req.request.body).toEqual(expectedBody);
 
       req.flush(mockCases);
-    });
+      tick();
+    }));
+
     it('for specific date', () => {
-      const mockSearchForm: SearchFormValues = {
-        case_number: '123',
+      const mockSearchForm: CaseSearchFormValues = {
+        caseNumber: '123',
         courthouse: 'Court A',
         courtroom: 'Room B',
-        judge_name: 'Judge C',
-        defendant_name: 'Defendant D',
-        specific_date: '01/01/2023',
-        event_text_contains: 'Event Text',
+        judgeName: 'Judge C',
+        defendantName: 'Defendant D',
+        hearingDate: {
+          type: 'specific',
+          specific: '01/01/2023',
+          from: '',
+          to: '',
+        },
+        eventTextContains: 'Event Text',
       };
       const mockCases: Case[] = [];
 
@@ -440,20 +452,10 @@ describe('CaseService', () => {
         return request.url === ADVANCED_SEARCH_CASE_PATH && request.method === 'POST';
       });
 
-      expect(req.request.body).not.toHaveProperty('specific_date');
       expect(req.request.method).toBe('POST');
       expect(req.request.body).toEqual(expectedBody);
 
       req.flush(mockCases);
-    });
-  });
-
-  describe('#formatDate', () => {
-    it('should return YYYY-MM-DD when sent a string of DD/MM/YYYY', () => {
-      const date = '18/05/1990';
-      const result = service.formatDate(date);
-      const expectedResult = '1990-05-18';
-      expect(result).toEqual(expectedResult);
     });
   });
 

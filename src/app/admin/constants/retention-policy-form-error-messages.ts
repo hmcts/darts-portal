@@ -1,6 +1,6 @@
-import { FieldErrors } from '@core-types/index';
+import { FormErrorMessages } from '@core-types/index';
 
-export const RetentionPolicyFormErrorMessages: FieldErrors = {
+export const RetentionPolicyFormErrorMessages: FormErrorMessages = {
   displayName: {
     required: 'Enter a display name',
     unique: 'Enter a unique display name',

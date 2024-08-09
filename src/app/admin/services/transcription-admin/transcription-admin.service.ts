@@ -31,6 +31,7 @@ import { TranscriptStatus } from '@portal-types/transcriptions/transcript-status
 import { GET_SECURITY_GROUPS_PATH } from '@services/courthouses/courthouses.service';
 import { GET_SECURITY_ROLES_PATH } from '@services/groups/groups.service';
 import { MappingService } from '@services/mapping/mapping.service';
+import { formatDate } from '@utils/date.utils';
 import { DateTime } from 'luxon';
 import { BehaviorSubject, Observable, of, switchMap } from 'rxjs';
 import { map } from 'rxjs/internal/operators/map';
@@ -373,11 +374,11 @@ export class TranscriptionAdminService {
           }),
       case_number: values.caseId || null,
       courthouse_display_name: values.courthouse || null,
-      hearing_date: this.formatDate(values.hearingDate),
+      hearing_date: formatDate(values.hearingDate),
       owner: values.owner || null,
       requested_by: values.requestedBy || null,
-      requested_at_from: this.formatDate(values.requestedDate?.specific) ?? this.formatDate(values.requestedDate?.from),
-      requested_at_to: this.formatDate(values.requestedDate?.specific) ?? this.formatDate(values.requestedDate?.to),
+      requested_at_from: formatDate(values.requestedDate?.specific) ?? formatDate(values.requestedDate?.from),
+      requested_at_to: formatDate(values.requestedDate?.specific) ?? formatDate(values.requestedDate?.to),
       is_manual_transcription:
         values.requestMethod === 'all' || !values.requestMethod
           ? null
@@ -475,10 +476,6 @@ export class TranscriptionAdminService {
         userId: transcription.requestor?.user_id,
       },
     };
-  }
-
-  private formatDate(date: string | null | undefined): string | null {
-    return date ? date.split('/').reverse().join('-') : null;
   }
 
   mapResults(

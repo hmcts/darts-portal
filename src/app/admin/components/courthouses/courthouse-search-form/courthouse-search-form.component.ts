@@ -1,10 +1,10 @@
 import { CourthouseSearchFormValues } from '@admin-types/courthouses/courthouse-search-form-values.type';
 import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { FieldErrors } from '@core-types/index';
+import { FormErrorMessages } from '@core-types/index';
 import { optionalMaxLengthValidator } from '@validators/optional-maxlength.validator';
 
-const controlErrors: FieldErrors = {
+const controlErrors: FormErrorMessages = {
   courthouseName: {
     maxlength: 'Must be less than 256 characters',
   },

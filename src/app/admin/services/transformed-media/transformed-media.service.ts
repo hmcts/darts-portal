@@ -14,6 +14,7 @@ import { TransformedMediaRequestData } from '@admin-types/transformed-media/tran
 import { TransformedMediaSearchFormValues } from '@admin-types/transformed-media/transformed-media-search-form.values';
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject, signal } from '@angular/core';
+import { formatDate } from '@utils/date.utils';
 import { DateTime } from 'luxon';
 import { Observable, map } from 'rxjs';
 
@@ -190,14 +191,14 @@ export class TransformedMediaService {
   }
 
   private mapSearchCriteriaToSearchRequest(searchCriteria: TransformedMediaSearchFormValues) {
-    const hearingDate = searchCriteria.hearingDate ? this.formatDate(searchCriteria.hearingDate) : null;
+    const hearingDate = searchCriteria.hearingDate ? formatDate(searchCriteria.hearingDate) : null;
     const requestedDateSpecific = searchCriteria.requestedDate?.specific
-      ? this.formatDate(searchCriteria.requestedDate?.specific)
+      ? formatDate(searchCriteria.requestedDate?.specific)
       : null;
     const requestedDateFrom = searchCriteria.requestedDate?.from
-      ? this.formatDate(searchCriteria.requestedDate?.from)
+      ? formatDate(searchCriteria.requestedDate?.from)
       : null;
-    const requestedDateTo = searchCriteria.requestedDate?.to ? this.formatDate(searchCriteria.requestedDate?.to) : null;
+    const requestedDateTo = searchCriteria.requestedDate?.to ? formatDate(searchCriteria.requestedDate?.to) : null;
 
     return {
       media_request_id: searchCriteria.requestId ? searchCriteria.requestId : null,
@@ -271,11 +272,6 @@ export class TransformedMediaService {
       requestedById: data.requested_by_id,
       ownerId: data.owner_id,
     };
-  }
-
-  // takes a date of format DD/MM/YYYY and returns YYYY-MM-DD
-  private formatDate(date: string): string {
-    return date.split('/').reverse().join('-');
   }
 
   private mapAudioFileData(data: AudioFileData): AudioFile {

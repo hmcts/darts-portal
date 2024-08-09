@@ -6,13 +6,13 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
-import { ErrorSummaryEntry, FieldErrors } from '@core-types/index';
+import { ErrorSummaryEntry, FormErrorMessages } from '@core-types/index';
 import { FormService } from '@services/form/form.service';
 import { TransformedMediaService } from '@services/transformed-media/transformed-media.service';
 import { forkJoin } from 'rxjs';
 import { AssociatedAudioTableComponent } from '../associated-audio-table/associated-audio-table.component';
 
-const controlErrors: FieldErrors = {
+const controlErrors: FormErrorMessages = {
   selectedFileChoice: {
     required: 'Choose if you want to include associated files or not',
   },

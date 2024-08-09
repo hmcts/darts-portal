@@ -8,6 +8,7 @@ import { AdminMediaSearchResult } from '@admin-types/search/admin-media-search-r
 import { AdminMediaSearchResultData } from '@admin-types/search/admin-media-search-result-data.inerface';
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject, signal } from '@angular/core';
+import { formatDate } from '@utils/date.utils';
 import { DateTime } from 'luxon';
 import { Observable, catchError, finalize, map, of, tap } from 'rxjs';
 import { AdminSearchFormValues } from '../../components/search/search-form/search-form.component';
@@ -156,12 +157,12 @@ export class AdminSearchService {
 
     switch (hearingDate.type) {
       case 'specific':
-        hearing_start_at = this.formatDate(hearingDate.specific);
-        hearing_end_at = this.formatDate(hearingDate.specific);
+        hearing_start_at = formatDate(hearingDate.specific);
+        hearing_end_at = formatDate(hearingDate.specific);
         break;
       case 'range':
-        hearing_start_at = this.formatDate(hearingDate.from);
-        hearing_end_at = this.formatDate(hearingDate.to);
+        hearing_start_at = formatDate(hearingDate.from);
+        hearing_end_at = formatDate(hearingDate.to);
         break;
     }
 
@@ -172,10 +173,5 @@ export class AdminSearchService {
       hearing_start_at: hearing_start_at ?? null,
       hearing_end_at: hearing_end_at ?? null,
     };
-  }
-
-  // takes a date of format DD/MM/YYYY and returns YYYY-MM-DD
-  private formatDate(date: string): string {
-    return date.split('/').reverse().join('-');
   }
 }

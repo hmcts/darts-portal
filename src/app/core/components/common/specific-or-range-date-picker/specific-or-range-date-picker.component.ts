@@ -16,6 +16,7 @@ export class SpecificOrRangeDatePickerComponent implements OnInit {
   controlContainer = inject(ControlContainer);
   destroyRef = inject(DestroyRef);
   @Input() label = '';
+  @Input() formErrorMessages = TranscriptSearchFormErrorMessages;
 
   form!: FormGroup<{
     type: FormControl<string | null>;
@@ -59,7 +60,7 @@ export class SpecificOrRangeDatePickerComponent implements OnInit {
     const controlKey = controlPath[controlPath.length - 1];
     const errorKey = Object.keys(errors)[0];
 
-    return [TranscriptSearchFormErrorMessages[controlKey][errorKey]];
+    return [this.formErrorMessages[controlKey][errorKey]];
   }
 
   private setDateRangeErrorsOnChanges() {

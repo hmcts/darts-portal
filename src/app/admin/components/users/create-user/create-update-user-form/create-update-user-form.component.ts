@@ -3,12 +3,12 @@ import { NgFor } from '@angular/common';
 import { Component, DestroyRef, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ErrorSummaryEntry, FieldErrors } from '@core-types/index';
+import { ErrorSummaryEntry, FormErrorMessages } from '@core-types/index';
 import { FormService } from '@services/form/form.service';
 import { emailExistsValidator } from '@validators/email-exists.validator';
 import { optionalMaxLengthValidator } from '@validators/optional-maxlength.validator';
 
-const controlErrors: FieldErrors = {
+const controlErrors: FormErrorMessages = {
   fullName: {
     required: 'Enter a full name',
   },
