@@ -4,6 +4,7 @@ export * from './transcript.interface';
 export * from './transcript.type';
 export * from './transcription-details.interface';
 export * from './transcription-details.type';
+export * from './transcription-request-counts.interface';
 export * from './transcription-request.interface';
 export * from './transcription-type.interface';
 export * from './transcription-urgency.interface';

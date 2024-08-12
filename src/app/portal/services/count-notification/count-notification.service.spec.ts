@@ -1,11 +1,15 @@
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TranscriptRequestCounts } from '@portal-types/index';
+import { of } from 'rxjs';
 import {
   CountNotificationService,
   TRANSCRIPTION_COUNT_PATH,
   UNREAD_AUDIO_COUNT_PATH,
 } from './count-notification.service';
+
+const THIRTY_SECONDS = 30000;
 
 describe('CountNotificationService', () => {
   let service: CountNotificationService;
@@ -27,69 +31,138 @@ describe('CountNotificationService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should decrement unread audio count', () => {
-    const initialValue = 8;
-    service.setUnreadAudioCount(initialValue);
+  it('should fetch transcript counts', fakeAsync(() => {
+    const mockCounts: TranscriptRequestCounts = { assigned: 5, unassigned: 3 };
+
+    service.getTranscriptCount().subscribe((counts) => expect(counts).toEqual(mockCounts));
+
+    const req = httpMock.expectOne({ url: TRANSCRIPTION_COUNT_PATH, method: 'GET' });
+    req.flush(mockCounts);
+    tick();
+  }));
+
+  it('should fetch unread audio count', fakeAsync(() => {
+    const mockCount = { count: 10 };
+
+    service.getUnreadAudioCount().subscribe((count) => expect(count).toBe(10));
+
+    const req = httpMock.expectOne({ url: UNREAD_AUDIO_COUNT_PATH, method: 'GET' });
+    req.flush(mockCount);
+    tick();
+  }));
+
+  it('should decrement unread audio count', fakeAsync(() => {
+    service.setUnreadAudioCount(5);
     service.decrementUnreadAudioCount();
-    service.unreadAudio$.subscribe((count) => {
-      expect(count).toBe(initialValue - 1);
-    });
-  });
 
-  it('should set unread audio count', () => {
-    const count = 3;
-    service.setUnreadAudioCount(count);
-    service.unreadAudio$.subscribe((updatedCount) => {
-      expect(updatedCount).toBe(count);
-    });
-  });
+    service.unreadAudio$.subscribe((count) => expect(count).toBe(4)).unsubscribe();
+    tick();
+  }));
 
-  it('should set assigned transcript count', () => {
-    const count = 7;
-    service.setAssignedTranscriptCount(count);
-    service.assignedTranscripts$.subscribe((updatedCount) => {
-      expect(updatedCount).toBe(count);
-    });
-  });
+  it('should decrement unassigned transcript count', fakeAsync(() => {
+    service.setTranscriptCounts({ assigned: 5, unassigned: 3 });
+    service.decrementUnassignedTranscriptCount();
 
-  it('should set unassigned transcript count', () => {
-    const count = 4;
-    service.setUnassignedTranscriptCount(count);
-    service.unassignedTranscripts$.subscribe((updatedCount) => {
-      expect(updatedCount).toBe(count);
-    });
-  });
+    service.transcriptCount$.subscribe((counts) => expect(counts.unassigned).toBe(2)).unsubscribe();
+    tick();
+  }));
 
-  it('should get assigned transcript count', () => {
-    const count = 5;
-    service.getAssignedTranscriptCount().subscribe((response) => {
-      expect(response).toBe(count);
-    });
+  it('should decrement assigned transcript count', fakeAsync(() => {
+    service.setTranscriptCounts({ assigned: 5, unassigned: 3 });
+    service.decrementAssignedTranscriptCount();
 
-    const req = httpMock.expectOne(TRANSCRIPTION_COUNT_PATH);
-    expect(req.request.method).toBe('GET');
-    req.flush({ assigned: count });
-  });
+    service.transcriptCount$.subscribe((counts) => expect(counts.assigned).toBe(4)).unsubscribe();
+    tick();
+  }));
 
-  it('should get unassigned transcript count', () => {
-    const count = 10;
-    service.getUnassignedTranscriptCount().subscribe((response) => {
-      expect(response).toBe(count);
-    });
+  it('should increment assigned transcript count', fakeAsync(() => {
+    service.setTranscriptCounts({ assigned: 5, unassigned: 3 });
+    service.incrementAssignedTranscriptCount();
 
-    const req = httpMock.expectOne(TRANSCRIPTION_COUNT_PATH);
-    expect(req.request.method).toBe('GET');
-    req.flush({ unassigned: count });
-  });
+    service.transcriptCount$.subscribe((counts) => expect(counts.assigned).toBe(6)).unsubscribe();
+    tick();
+  }));
 
-  it('should get unread audio count', () => {
-    const count = 8;
-    service.getUnreadAudioCount().subscribe((response) => {
-      expect(response).toBe(count);
-    });
+  it('should set unread audio count', fakeAsync(() => {
+    service.setUnreadAudioCount(44);
+    service.unreadAudio$.subscribe((count) => expect(count).toBe(44)).unsubscribe();
+    tick();
+  }));
 
-    const req = httpMock.expectOne(UNREAD_AUDIO_COUNT_PATH);
-    expect(req.request.method).toBe('GET');
-    req.flush({ count });
-  });
+  it('should set assigned transcript count', fakeAsync(() => {
+    service.setTranscriptCounts({ assigned: 5, unassigned: 3 });
+    service.setAssignedTranscriptCount(9);
+
+    service.transcriptCount$.subscribe((counts) => expect(counts.assigned).toBe(9)).unsubscribe();
+    tick();
+  }));
+
+  it('should set unassigned transcript count', fakeAsync(() => {
+    service.setTranscriptCounts({ assigned: 5, unassigned: 3 });
+    service.setUnassignedTranscriptCount(9);
+
+    service.transcriptCount$.subscribe((counts) => expect(counts.unassigned).toBe(9)).unsubscribe();
+    tick();
+  }));
+
+  it('should set transcript counts', fakeAsync(() => {
+    service.setTranscriptCounts({ assigned: 5, unassigned: 3 });
+
+    service.transcriptCount$
+      .subscribe((counts) => expect(counts).toEqual({ assigned: 5, unassigned: 3 }))
+      .unsubscribe();
+    tick();
+  }));
+
+  it('should poll unread audio counts every 30 seconds', fakeAsync(() => {
+    jest
+      .spyOn(service, 'getUnreadAudioCount')
+      .mockReturnValueOnce(of(10))
+      .mockReturnValueOnce(of(20))
+      .mockReturnValueOnce(of(30));
+
+    let count = 0;
+
+    const sub = service.unreadAudio$.subscribe((c) => (count = c));
+
+    tick();
+
+    expect(count).toBe(10);
+
+    tick(THIRTY_SECONDS); // simulate 30 seconds
+
+    expect(count).toBe(20);
+
+    tick(THIRTY_SECONDS);
+
+    expect(count).toBe(30);
+
+    sub.unsubscribe();
+  }));
+
+  it('should poll transcript counts every 30 seconds', fakeAsync(() => {
+    jest
+      .spyOn(service, 'getTranscriptCount')
+      .mockReturnValueOnce(of({ assigned: 5, unassigned: 3 }))
+      .mockReturnValueOnce(of({ assigned: 6, unassigned: 4 }))
+      .mockReturnValueOnce(of({ assigned: 7, unassigned: 5 }));
+
+    let counts: TranscriptRequestCounts = { assigned: 0, unassigned: 0 };
+
+    const sub = service.transcriptCount$.subscribe((c) => (counts = c));
+
+    tick();
+
+    expect(counts).toEqual({ assigned: 5, unassigned: 3 });
+
+    tick(THIRTY_SECONDS);
+
+    expect(counts).toEqual({ assigned: 6, unassigned: 4 });
+
+    tick(THIRTY_SECONDS);
+
+    expect(counts).toEqual({ assigned: 7, unassigned: 5 });
+
+    sub.unsubscribe();
+  }));
 });
