@@ -10,7 +10,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ErrorSummaryEntry, FieldErrors } from '@core-types/index';
+import { ErrorSummaryEntry, FormErrorMessages } from '@core-types/index';
 import { UserState } from '@core-types/user/user-state.interface';
 import { Hearing, HearingAudio, PostAudioRequest } from '@portal-types/index';
 import { UserService } from '@services/user/user.service';
@@ -19,7 +19,7 @@ import { timeGroupValidator } from '@validators/time-group.validator';
 import { DateTime } from 'luxon';
 import { TimeInputComponent, timeInputFormControls } from './time-input/time-input.component';
 
-export const fieldErrors: FieldErrors = {
+export const fieldErrors: FormErrorMessages = {
   startTime: {
     required: 'You must include a start time for your audio recording',
     unavailable: 'There is no audio available for this start time',

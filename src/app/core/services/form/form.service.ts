@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ErrorSummaryEntry, FieldErrors } from '@core-types/index';
+import { ErrorSummaryEntry, FormErrorMessages } from '@core-types/index';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FormService {
-  getFormControlErrorMessages(form: FormGroup, controlName: string, controlErrors: FieldErrors): string[] {
+  getFormControlErrorMessages(form: FormGroup, controlName: string, controlErrors: FormErrorMessages): string[] {
     const errors = form.get(controlName)?.errors;
     if (!errors || form.get(controlName)?.untouched) {
       return [];
@@ -14,7 +14,7 @@ export class FormService {
     return Object.keys(errors).map((error) => controlErrors[controlName][error]);
   }
 
-  getErrorSummary(form: FormGroup, controlErrors: FieldErrors): ErrorSummaryEntry[] {
+  getErrorSummary(form: FormGroup, controlErrors: FormErrorMessages): ErrorSummaryEntry[] {
     const formControls = form.controls;
     return Object.keys(formControls)
       .filter((controlName) => formControls[controlName].errors)
@@ -63,7 +63,7 @@ export class FormService {
       .flat();
   }
 
-  getUniqueErrorSummary(form: FormGroup, controlErrors: FieldErrors): ErrorSummaryEntry[] {
+  getUniqueErrorSummary(form: FormGroup, controlErrors: FormErrorMessages): ErrorSummaryEntry[] {
     const formControls = form.controls;
     const encounteredMessages = new Set<string>();
 
