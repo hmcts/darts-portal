@@ -45,8 +45,10 @@ describe('AudioFileResultsComponent', () => {
 
     component.deleteAudioFile(audioFile);
 
+    const audioFileState = { ...audioFile, startAt: audioFile.startAt.toISOTime(), endAt: audioFile.endAt.toISOTime() };
+
     expect(component.router.navigate).toHaveBeenCalledWith(['/admin/file-deletion/audio-file', audioFile.mediaId], {
-      state: { isPermitted: true },
+      state: { isPermitted: true, file: audioFileState },
     });
   });
 });

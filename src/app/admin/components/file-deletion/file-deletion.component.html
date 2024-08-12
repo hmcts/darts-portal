@@ -1,3 +1,11 @@
+@if (approvedForDeletion$ | async) {
+  <app-govuk-banner type="success">Audio file deleted</app-govuk-banner>
+}
+
+@if (unmarkedAndUnhidden$ | async) {
+  <app-govuk-banner type="success">Audio file unmarked for deletion and unhidden</app-govuk-banner>
+}
+
 <app-govuk-heading tag="h1" size="xl">Files marked for deletion</app-govuk-heading>
 
 @if (!isLoading()) {

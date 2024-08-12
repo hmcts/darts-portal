@@ -9,6 +9,45 @@ import { TableRowTemplateDirective } from '@directives/table-row-template.direct
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { UserService } from '@services/user/user.service';
 
+export const audioFileDeletionColumns: DatatableColumn[] = [
+  {
+    prop: 'mediaId',
+    name: 'Audio ID',
+  },
+  {
+    prop: 'courthouse',
+    name: 'Courthouse',
+  },
+  {
+    prop: 'hearingDate',
+    name: 'Hearing date',
+  },
+  {
+    prop: 'startTime',
+    name: 'Start time',
+  },
+  {
+    prop: 'endTime',
+    name: 'End time',
+  },
+  {
+    prop: 'courtroom',
+    name: 'Courtroom',
+  },
+  {
+    prop: 'channel',
+    name: 'Channel',
+  },
+  {
+    prop: 'markedByName',
+    name: 'Marked by',
+  },
+  {
+    prop: 'comments',
+    name: 'Comments',
+  },
+];
+
 @Component({
   selector: 'app-audio-file-results',
   standalone: true,
@@ -29,44 +68,9 @@ export class AudioFileResultsComponent {
 
   rows = input<AudioFileMarkedDeletion[]>([]);
 
-  columns: DatatableColumn[] = [
-    {
-      prop: 'mediaId',
-      name: 'Audio ID',
-    },
-    {
-      prop: 'courthouse',
-      name: 'Courthouse',
-    },
-    {
-      prop: 'hearingDate',
-      name: 'Hearing date',
-    },
-    {
-      prop: 'startTime',
-      name: 'Start time',
-    },
-    {
-      prop: 'endTime',
-      name: 'End time',
-    },
-    {
-      prop: 'courtroom',
-      name: 'Courtroom',
-    },
-    {
-      prop: 'channel',
-      name: 'Channel',
-    },
-    {
-      prop: 'markedByName',
-      name: 'Marked by',
-    },
-    {
-      prop: 'comments',
-      name: 'Comments',
-    },
-    //For delete button
+  //For delete button
+  columns = [
+    ...audioFileDeletionColumns,
     {
       prop: '',
       name: '',
@@ -75,9 +79,19 @@ export class AudioFileResultsComponent {
 
   deleteAudioFile(audioFile: AudioFileMarkedDeletion): void {
     const userPermitted = !this.userService.hasMatchingUserId(audioFile.markedById);
+    const audioFileStringified = this.stringifyDates(audioFile);
 
     this.router.navigate(['/admin/file-deletion/audio-file', audioFile.mediaId], {
-      state: { isPermitted: userPermitted },
+      state: { isPermitted: userPermitted, file: audioFileStringified },
     });
+  }
+
+  //Required for reliably passing audio file through state
+  private stringifyDates(audioFile: AudioFileMarkedDeletion) {
+    return {
+      ...audioFile,
+      startAt: audioFile.startAt.toISOTime(),
+      endAt: audioFile.endAt.toISOTime(),
+    };
   }
 }
