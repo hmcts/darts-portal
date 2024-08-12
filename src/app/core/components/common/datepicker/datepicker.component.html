@@ -6,7 +6,7 @@
   <!-- Error message if date invalid -->
   @if (areDateErrors()) {
     <div [id]="inputId + '-errors'">
-      @for (error of errors; track error) {
+      @for (error of errors; track $index) {
         <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ error }}</p>
       }
     </div>

@@ -59,10 +59,10 @@ describe('Case search', () => {
     cy.get('#courthouse');
     cy.get('#courtroom');
     cy.get('#specific-date-radio').click({ force: true });
-    cy.get('#specific_date');
+    cy.get('#specific');
     cy.get('#date-range-radio').click({ force: true });
-    cy.get('#date_from');
-    cy.get('#date_to');
+    cy.get('#from');
+    cy.get('#to');
     cy.get('#defendant');
     cy.get('#judge').type('Judge Judy');
     cy.get('#keywords');
@@ -95,27 +95,30 @@ describe('Case search', () => {
     cy.get('a').contains('Clear search').click();
 
     // specific date invalid
+    cy.contains('Advanced search').click();
     cy.get('#specific-date-radio').click({ force: true });
-    cy.get('#specific_date').type('blah');
+    cy.get('#specific').type('blah');
     cy.get('button').contains('Search').click();
-    cy.get('#specific_date-errors').should('contain', DATE_INVALID);
+    cy.get('#specific-errors').should('contain', DATE_INVALID);
     cy.get('.govuk-error-summary').should('contain', DATE_INVALID);
     cy.get('a').contains('Clear search').click();
 
     // specific date in future
+    cy.contains('Advanced search').click();
     cy.get('#specific-date-radio').click({ force: true });
-    cy.get('#specific_date').type(TOMORROW);
+    cy.get('#specific').type(TOMORROW);
     cy.get('button').contains('Search').click();
-    cy.get('#specific_date-errors').should('contain', DATE_FUTURE);
+    cy.get('#specific-errors').should('contain', DATE_FUTURE);
     cy.get('.govuk-error-summary').should('contain', DATE_FUTURE);
     cy.get('a').contains('Clear search').click();
 
     // date range from date invalid
+    cy.contains('Advanced search').click();
     cy.get('#date-range-radio').click({ force: true });
-    cy.get('#date_from').type('blah');
+    cy.get('#from').type('blah');
     cy.get('button').contains('Search').click();
-    cy.get('#date_from-errors').should('contain', DATE_INVALID);
-    cy.get('#date_to-errors').should(
+    cy.get('#from-errors').should('contain', DATE_INVALID);
+    cy.get('#to-errors').should(
       'contain',
       'You have not selected an end date. Select an end date to define your search'
     );
@@ -125,31 +128,49 @@ describe('Case search', () => {
     cy.get('a').contains('Clear search').click();
 
     // date range from date in future
+    cy.contains('Advanced search').click();
     cy.get('#date-range-radio').click({ force: true });
-    cy.get('#date_from').type(TOMORROW);
+    cy.get('#from').type(TOMORROW);
     cy.get('button').contains('Search').click();
-    cy.get('#date_from-errors').should('contain', DATE_FUTURE);
+    cy.get('#from-errors').should('contain', DATE_FUTURE);
     cy.get('.govuk-error-summary').should('contain', DATE_FUTURE);
     cy.get('a').contains('Clear search').click();
 
     // date range to date invalid
+    cy.contains('Advanced search').click();
     cy.get('#date-range-radio').click({ force: true });
-    cy.get('#date_to').type('blah');
+    cy.get('#to').type('blah');
     cy.get('button').contains('Search').click();
-    cy.get('#date_to-errors').should('contain', DATE_INVALID);
+    cy.get('#to-errors').should('contain', DATE_INVALID);
     cy.get('.govuk-error-summary')
       .should('contain', DATE_INVALID)
       .should('contain', 'You have not selected a start date. Select a start date to define your search');
     cy.get('a').contains('Clear search').click();
 
     // date range to date in future
+    cy.contains('Advanced search').click();
     cy.get('#date-range-radio').click({ force: true });
-    cy.get('#date_to').type(TOMORROW);
+    cy.get('#to').type(TOMORROW);
     cy.get('button').contains('Search').click();
-    cy.get('#date_to-errors').should('contain', DATE_FUTURE);
+    cy.get('#to-errors').should('contain', DATE_FUTURE);
     cy.get('.govuk-error-summary').should('contain', DATE_FUTURE);
     cy.get('a').contains('Clear search').click();
     cy.a11y();
+
+    //date from is after to
+    cy.contains('Advanced search').click();
+    cy.get('#date-range-radio').click({ force: true });
+    cy.get('#from').type('01/01/2021');
+    cy.get('#to').type('01/01/2020');
+    cy.get('button').contains('Search').click();
+    cy.get('#to-errors').should('contain', 'The end date must be after the start date');
+
+    // date to is before from
+    cy.get('#to').clear().type('01/01/2020');
+    cy.get('button').contains('Search').click();
+    cy.get('#from-errors').should('contain', 'The start date must be before the end date');
+    cy.get('.govuk-error-summary').should('contain', 'The start date must be before the end date');
+    cy.get('.govuk-error-summary').should('contain', 'The end date must be after the start date');
   });
 
   it('internal error', () => {
@@ -178,7 +199,7 @@ describe('Case search', () => {
     cy.get('#courthouse').type('Cardiff');
     cy.get('#courtroom').type('2');
     cy.get('#specific-date-radio').click({ force: true });
-    cy.get('#specific_date').type('03/07/2021');
+    cy.get('#specific').type('03/07/2021');
     cy.get('#defendant').type('Dean');
     cy.get('#judge').type('Judge Dredd');
     cy.get('#keywords').type('Daffy duck');
@@ -205,7 +226,7 @@ describe('Case search', () => {
     cy.get('#case_number').should('have.value', 'C20220620001');
     cy.get('#courthouse').should('have.value', 'Cardiff');
     cy.get('#courtroom').should('have.value', '2');
-    cy.get('#specific_date').should('have.value', '03/07/2021');
+    cy.get('#specific').should('have.value', '03/07/2021');
     cy.get('#defendant').should('have.value', 'Dean');
     cy.get('#judge').should('have.value', 'Judge Dredd');
     cy.get('#keywords').should('have.value', 'Daffy duck');
