@@ -18,6 +18,9 @@ jobs:
           targetAppName="darts-stg"
 
           az login --service-principal --username ${{ secrets.SP_CLIENT_ID}} -p=${{ secrets.SP_SECRET_KEY}} --tenant ${{ secrets.SP_TENANT_ID}} --allow-no-subscriptions
+          
+          
+          
           az account show
           
           appId=$(az ad app list --all --filter "displayname eq '${targetAppName}'" --query "[0].appId" -o tsv --only-show-errors )
@@ -31,7 +34,7 @@ jobs:
           echo $replyUrls
 
 
-          if [[ "${replyUrls}" =~ "${mediaSignInUrl}"  ]]; then
+          if [[ "${replyUrls}" =~ "${mediaSignInUrl}"  && "${replyUrls}"]]; then ]]; then
             echo "Reply URLs contain $mediaSignInUrl"
           elif [ -z $replyUrls ]; then
             echo "No Reply URLs Found. ISSUE!!"
