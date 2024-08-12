@@ -78,8 +78,8 @@ export class AudioFileResultsComponent {
   ];
 
   deleteAudioFile(audioFile: AudioFileMarkedDeletion): void {
-    const userPermitted = !this.userService.hasMatchingUserId(audioFile.markedById);
     const audioFileStringified = this.stringifyDates(audioFile);
+    const userPermitted = !this.userService.hasMatchingUserId(audioFile.hiddenById);
 
     this.router.navigate(['/admin/file-deletion/audio-file', audioFile.mediaId], {
       state: { isPermitted: userPermitted, file: audioFileStringified },

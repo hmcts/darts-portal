@@ -30,7 +30,7 @@ describe('AudioFileResultsComponent', () => {
   it('should navigate to the correct URL with the correct state', () => {
     const audioFile: AudioFileMarkedDeletion = {
       mediaId: 123,
-      markedById: 1,
+      hiddenById: 1,
       startAt: DateTime.fromISO('2022-01-01T00:00:00.000Z'),
       endAt: DateTime.fromISO('2022-01-01T01:00:00.000Z'),
       courthouse: '',

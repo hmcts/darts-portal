@@ -5,7 +5,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
-import { FieldErrors } from '@core-types/index';
+import { FormErrorMessages } from '@core-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { FileDeletionService } from '@services/file-deletion/file-deletion.service';
@@ -14,7 +14,7 @@ import { TransformedMediaService } from '@services/transformed-media/transformed
 import { DateTime } from 'luxon';
 import { audioFileDeletionColumns } from '../audio-file-results/audio-file-results.component';
 
-const controlErrors: FieldErrors = {
+const controlErrors: FormErrorMessages = {
   deletionApproval: {
     required: 'Select your decision',
   },

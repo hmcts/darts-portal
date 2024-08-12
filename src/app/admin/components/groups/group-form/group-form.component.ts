@@ -3,11 +3,11 @@ import { SecurityGroup, SecurityRole } from '@admin-types/index';
 import { JsonPipe } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ErrorSummaryEntry, FieldErrors } from '@core-types/index';
+import { ErrorSummaryEntry, FormErrorMessages } from '@core-types/index';
 import { groupNameExistsValidator } from '@validators/group-name.validator';
 import { optionalMaxLengthValidator } from '@validators/optional-maxlength.validator';
 
-const formControlErrorMessages: FieldErrors = {
+const formControlErrorMessages: FormErrorMessages = {
   name: {
     required: 'Enter a group name',
     groupNameExists: 'There is an existing group with this name',
