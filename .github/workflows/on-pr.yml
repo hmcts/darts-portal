@@ -28,7 +28,7 @@ jobs:
           echo "App ID $appId"
 
           az ad app show --id "$appId"
-          replyUrls=$(az ad app show --id "$appId" --query "web.redirectUris" -o json --only-show-errors)
+          # replyUrls=$(az ad app show --id "$appId" --query "web.redirectUris" -o json --only-show-errors)
 
           echo "Found Reply URLs"
           echo $replyUrls
