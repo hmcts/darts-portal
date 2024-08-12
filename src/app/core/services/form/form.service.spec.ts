@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { FieldErrors } from '@core-types/index';
+import { FormErrorMessages } from '@core-types/index';
 import { FormService } from './form.service';
 
 describe('FormService', () => {
   let service: FormService;
   let form: FormGroup;
   let controlName: string;
-  let controlErrors: FieldErrors;
+  let controlErrors: FormErrorMessages;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
