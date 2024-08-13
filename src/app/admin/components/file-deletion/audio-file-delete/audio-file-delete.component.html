@@ -1,5 +1,5 @@
 @if (!isPermitted) {
-  <app-govuk-heading tag="h2">You cannot delete this file</app-govuk-heading>
+  <app-govuk-heading tag="h1">You cannot delete this file</app-govuk-heading>
 
   <p class="govuk-body">You cannot delete an audio that you marked for deletion.</p>
 
@@ -9,9 +9,53 @@
     <a href="#" class="govuk-link" [routerLink]="['/admin/file-deletion']">Go back</a>
   </div>
 } @else {
-  <app-govuk-heading tag="h2">Delete logic to be done</app-govuk-heading>
+  <app-validation-error-summary [errors]="getErrorSummary()" />
+
+  <app-govuk-heading tag="h1" size="xl">Delete audio file</app-govuk-heading>
+
+  <app-audio-file-results [rows]="[audioFile]" [showDeleteButton]="false" />
+
+  <div class="govuk-form-group" [class.govuk-form-group--error]="deletionApproval.errors && deletionApproval.touched">
+    <fieldset class="govuk-fieldset">
+      <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+        <h2 class="govuk-fieldset__heading" for="cases-option">Approve or reject file deletion?</h2>
+        @for (error of getApprovalChoiceErrors(); track error) {
+          <p class="govuk-error-message approval-error">
+            <span class="govuk-visually-hidden">Error:</span> {{ error }}
+          </p>
+        }
+      </legend>
+      <div class="govuk-radios govuk-radios--large">
+        <div class="govuk-radios__item">
+          <input
+            class="govuk-radios__input"
+            type="radio"
+            name="deletionApproval"
+            id="approve-option"
+            [value]="true"
+            [formControl]="deletionApproval"
+          />
+          <label class="govuk-label govuk-radios__label" for="cases-option">Approve</label>
+        </div>
+        <div class="govuk-radios__item">
+          <input
+            class="govuk-radios__input"
+            type="radio"
+            name="deletionApproval"
+            id="reject-unhide-option"
+            [value]="false"
+            [formControl]="deletionApproval"
+          />
+          <label class="govuk-label govuk-radios__label" for="reject-unhide-option">Reject and unhide</label>
+        </div>
+      </div>
+    </fieldset>
+  </div>
 
   <div class="govuk-button-group">
-    <a href="#" class="govuk-link" [routerLink]="['/admin/file-deletion']">Go back</a>
+    <button id="confirm-button" class="govuk-button" (click)="confirm()">Confirm</button>
+    <div class="govuk-button-group">
+      <a href="#" class="govuk-link" [routerLink]="['/admin/file-deletion']">Cancel</a>
+    </div>
   </div>
 }

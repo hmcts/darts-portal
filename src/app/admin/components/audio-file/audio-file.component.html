@@ -1,4 +1,4 @@
-<a [routerLink]="['/admin']" class="govuk-back-link">Back</a>
+<a [routerLink]="[backUrl()]" class="govuk-back-link">Back</a>
 
 @if (data$ | async; as data) {
   <app-hidden-file-banner (unhideOrUndelete)="hideOrUnhideFile(data.audioFile)" [file]="data.hiddenFileBanner" />
