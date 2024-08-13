@@ -50,12 +50,16 @@ jobs:
 
             echo "reply String: $replyUrlString"
 
-            objectId=$(az ad app list --all --filter "displayname eq '${targetAppName}'" --query "[0].id" -o tsv --only-show-errors)
+            objectId=$(az ad app list --all --query "[?appId=='$appId'].id | [0]" -o tsv --only-show-errors)
             objectId=${objectId//[$'\t\r\n']/}
-            echo "Object ID $objectId"
-            restUrl="https://graph.microsoft.com/v1.0/applications/${objectId//[$'\t\r\n']/}"
+            echo "Object ID: $objectId"
+
+            # Construct the REST URL
+            restUrl="https://graph.microsoft.com/v1.0/applications/$objectId"
             echo "Calling: $restUrl"
-            az rest --method PATCH --header "Content-Type=application/json" --uri $restUrl --body "{\"web\":{\"redirectUris\":[$replyUrlString]}}" --debug
+
+            # Make the PATCH request to update the redirect URIs
+            az rest --method PATCH --header "Content-Type=application/json" --uri "$restUrl"
           fi
       - run: >
           adminSignInUrl="https://darts-pr-${PR_NUMBER}.dev.apps.hmcts.net/auth/-logout-callback"
