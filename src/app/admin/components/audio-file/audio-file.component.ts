@@ -2,7 +2,7 @@ import { HiddenFileBanner } from '@admin-types/common/hidden-file-banner';
 import { AudioFile } from '@admin-types/index';
 import { AssociatedCase } from '@admin-types/transformed-media/associated-case';
 import { AsyncPipe, JsonPipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -46,6 +46,9 @@ export class AudioFileComponent {
   UserAdminService = inject(UserAdminService);
   transformedMediaService = inject(TransformedMediaService);
   transcriptionAdminService = inject(TranscriptionAdminService);
+
+  // back button url defaults to /admin if not provided in query param
+  backUrl = input('', { transform: (value) => value ?? '/admin' });
 
   isAdmin = inject(UserService).isAdmin();
 

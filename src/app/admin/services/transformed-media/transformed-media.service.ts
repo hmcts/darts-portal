@@ -14,6 +14,7 @@ import { TransformedMediaRequestData } from '@admin-types/transformed-media/tran
 import { TransformedMediaSearchFormValues } from '@admin-types/transformed-media/transformed-media-search-form.values';
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject, signal } from '@angular/core';
+import { MappingService } from '@services/mapping/mapping.service';
 import { formatDate } from '@utils/date.utils';
 import { DateTime } from 'luxon';
 import { Observable, map } from 'rxjs';
@@ -38,6 +39,7 @@ export const defaultFormValues: TransformedMediaSearchFormValues = {
 })
 export class TransformedMediaService {
   http = inject(HttpClient);
+  mappingService = inject(MappingService);
 
   searchResults = signal<TransformedMediaAdmin[]>([]);
   searchFormValues = signal<TransformedMediaSearchFormValues>({ ...defaultFormValues });
@@ -113,13 +115,13 @@ export class TransformedMediaService {
 
     return this.http
       .post<FileHideData>(`api/admin/medias/${id}/hide`, body)
-      .pipe(map((res) => this.mapHideFileResponse(res)));
+      .pipe(map((res) => this.mappingService.mapHideFileResponse(res)));
   }
 
   unhideAudioFile(id: number): Observable<FileHide> {
     return this.http
       .post<FileHideData>(`api/admin/medias/${id}/hide`, { is_hidden: false })
-      .pipe(map((res) => this.mapHideFileResponse(res)));
+      .pipe(map((res) => this.mappingService.mapHideFileResponse(res)));
   }
 
   clearSearch() {
@@ -137,27 +139,6 @@ export class TransformedMediaService {
         ticket_reference: body.ticketReference,
         comments: body.comments,
       },
-    };
-  }
-
-  private mapHideFileResponse(res: FileHideData): FileHide {
-    return {
-      id: res.id,
-      isHidden: res.is_hidden,
-      isDeleted: res.is_deleted,
-      adminAction: res.admin_action
-        ? {
-            id: res.admin_action.id,
-            reasonId: res.admin_action.reason_id,
-            hiddenById: res.admin_action.hidden_by_id,
-            hiddenAt: DateTime.fromISO(res.admin_action.hidden_at),
-            isMarkedForManualDeletion: res.admin_action.is_marked_for_manual_deletion,
-            markedForManualDeletionById: res.admin_action.marked_for_manual_deletion_by_id,
-            markedForManualDeletionAt: DateTime.fromISO(res.admin_action.marked_for_manual_deletion_at),
-            ticketReference: res.admin_action.ticket_reference,
-            comments: res.admin_action.comments,
-          }
-        : undefined,
     };
   }
 
