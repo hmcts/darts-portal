@@ -16,17 +16,14 @@ jobs:
       - run: >
           mediaSignInUrl="https://darts-pr-${PR_NUMBER}.dev.apps.hmcts.net/auth/callback"
           targetAppName="darts-stg"
-
-          # Azure login
-          az login --service-principal --username "${{ secrets.SP_CLIENT_ID }}" -p="${{ secrets.SP_SECRET_KEY }}" --tenant "${{ secrets.SP_TENANT_ID }}" --allow-no-subscriptions
-
-          # Show account details (for debugging purposes)
+          appId="dec3be30-6325-4335-b898-eb01985d6c90"
+          az login --service-principal --username ${{ secrets.SP_CLIENT_ID}} -p=${{ secrets.SP_SECRET_KEY}} --tenant ${{ secrets.SP_TENANT_ID}} --allow-no-subscriptions
+          
+          
+          
           az account show
-
-          # Get App ID
-          appId=$(az ad app list --all --query "[?displayName=='${targetAppName}'].appId | [0]" -o tsv --only-show-errors)
-          appId=${appId//[$'\t\r\n']/}
-          echo "App ID: $appId"
+        
+          echo "App ID $appId"
 
           # Get Reply URLs
           replyUrls=$(az ad app show --id "$appId" --query "web.redirectUris" -o json --only-show-errors)
