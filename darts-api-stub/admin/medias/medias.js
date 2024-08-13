@@ -356,6 +356,24 @@ router.get('/:id', (req, res) => {
   res.send(media);
 });
 
+router.post('/:id/approve-deletion', (req, res) => {
+  const id = req.params.id;
+
+  const index = markedForDeletionMedia.findIndex((m) => m.media_id === parseInt(id));
+
+  if (index !== -1) {
+    markedForDeletionMedia[index].admin_action.is_marked_for_manual_deletion = true;
+    markedForDeletionMedia[index].admin_action.marked_for_manual_deletion_by_id = 1;
+    markedForDeletionMedia[index].admin_action.marked_for_manual_deletion_at = DateTime.now().toISO();
+
+    console.log(JSON.stringify({ is_hidden: true, is_deleted: false, ...markedForDeletionMedia[index] }));
+
+    return res.send({ is_hidden: true, is_deleted: false, ...markedForDeletionMedia[index] });
+  }
+
+  res.sendStatus(200);
+});
+
 router.post('/search', (req, res) => {
   if (req.body.case_number === 'NO_RESULTS') {
     res.send([]);

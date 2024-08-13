@@ -1,7 +1,13 @@
-<app-data-table noDataMessage="There are no files marked for deletion." [rows]="rows()" [columns]="columns">
+<app-data-table noDataMessage="There are no files marked for deletion." [rows]="rows()" [columns]="columns()">
   <ng-template [tableRowTemplate]="rows()" let-row>
     <td>
-      <a class="govuk-link" [routerLink]="['/admin/audio-file', row.mediaId]"> {{ row.mediaId }}</a>
+      <a
+        class="govuk-link"
+        [routerLink]="['/admin/audio-file', row.mediaId]"
+        [queryParams]="{ backUrl: '/admin/file-deletion' }"
+      >
+        {{ row.mediaId }}</a
+      >
     </td>
     <td>{{ row.courthouse }}</td>
     <td>{{ row.startAt | luxonDate: 'd MMM yyyy' }}</td>
@@ -17,8 +23,10 @@
       <br />
       {{ row.comments }}
     </td>
-    <td>
-      <button class="govuk-button govuk-button--secondary" (click)="deleteAudioFile(row)">Delete</button>
-    </td>
+    @if (showDeleteButton()) {
+      <td>
+        <button class="govuk-button govuk-button--secondary" (click)="deleteAudioFile(row)">Delete</button>
+      </td>
+    }
   </ng-template>
 </app-data-table>

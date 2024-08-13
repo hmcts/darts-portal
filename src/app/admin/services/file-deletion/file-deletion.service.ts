@@ -1,12 +1,16 @@
 import { AudioFileMarkedDeletionData } from '@admin-types/file-deletion/audio-file-marked-deletion.interface';
 import { AudioFileMarkedDeletion } from '@admin-types/file-deletion/audio-file-marked-deletion.type';
+import { FileHide } from '@admin-types/hidden-reasons/file-hide';
+import { FileHideData } from '@admin-types/hidden-reasons/file-hide-data.interface';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { MappingService } from '@services/mapping/mapping.service';
 import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { DateTime } from 'luxon';
 import { forkJoin, map, mergeMap, Observable } from 'rxjs';
 
+const MEDIAS_BASE_PATH = '/api/admin/medias';
 const MARKED_FOR_DELETION_AUDIO_FILES_PATH = '/api/admin/medias/marked-for-deletion';
 
 @Injectable({
@@ -16,7 +20,8 @@ export class FileDeletionService {
   constructor(
     private readonly http: HttpClient,
     private readonly userAdminService: UserAdminService,
-    private readonly transcriptionAdminService: TranscriptionAdminService
+    private readonly transcriptionAdminService: TranscriptionAdminService,
+    private readonly mappingService: MappingService
   ) {}
 
   getAudioFilesMarkedForDeletion(): Observable<AudioFileMarkedDeletion[]> {
@@ -42,6 +47,12 @@ export class FileDeletionService {
         );
       })
     );
+  }
+
+  approveAudioFileDeletion(mediaId: number): Observable<FileHide> {
+    return this.http
+      .post<FileHideData>(`${MEDIAS_BASE_PATH}/${mediaId}/approve-deletion`, {})
+      .pipe(map((res) => this.mappingService.mapHideFileResponse(res)));
   }
 
   private mapMarkedByName(audioFiles: AudioFileMarkedDeletion[]): Observable<AudioFileMarkedDeletion[]> {
