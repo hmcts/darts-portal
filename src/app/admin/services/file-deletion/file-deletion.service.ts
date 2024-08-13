@@ -4,6 +4,7 @@ import { FileHide } from '@admin-types/hidden-reasons/file-hide';
 import { FileHideData } from '@admin-types/hidden-reasons/file-hide-data.interface';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { MappingService } from '@services/mapping/mapping.service';
 import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { DateTime } from 'luxon';
@@ -19,7 +20,8 @@ export class FileDeletionService {
   constructor(
     private readonly http: HttpClient,
     private readonly userAdminService: UserAdminService,
-    private readonly transcriptionAdminService: TranscriptionAdminService
+    private readonly transcriptionAdminService: TranscriptionAdminService,
+    private readonly mappingService: MappingService
   ) {}
 
   getAudioFilesMarkedForDeletion(): Observable<AudioFileMarkedDeletion[]> {
@@ -50,7 +52,7 @@ export class FileDeletionService {
   approveAudioFileDeletion(mediaId: number): Observable<FileHide> {
     return this.http
       .post<FileHideData>(`${MEDIAS_BASE_PATH}/${mediaId}/approve-deletion`, {})
-      .pipe(map((res) => this.mapDeletedFileResponse(res)));
+      .pipe(map((res) => this.mappingService.mapHideFileResponse(res)));
   }
 
   private mapMarkedByName(audioFiles: AudioFileMarkedDeletion[]): Observable<AudioFileMarkedDeletion[]> {
@@ -83,27 +85,6 @@ export class FileDeletionService {
         });
       })
     );
-  }
-
-  private mapDeletedFileResponse(res: FileHideData): FileHide {
-    return {
-      id: res.id,
-      isHidden: res.is_hidden,
-      isDeleted: res.is_deleted,
-      adminAction: res.admin_action
-        ? {
-            id: res.admin_action.id,
-            reasonId: res.admin_action.reason_id,
-            hiddenById: res.admin_action.hidden_by_id,
-            hiddenAt: DateTime.fromISO(res.admin_action.hidden_at),
-            isMarkedForManualDeletion: res.admin_action.is_marked_for_manual_deletion,
-            markedForManualDeletionById: res.admin_action.marked_for_manual_deletion_by_id,
-            markedForManualDeletionAt: DateTime.fromISO(res.admin_action.marked_for_manual_deletion_at),
-            ticketReference: res.admin_action.ticket_reference,
-            comments: res.admin_action.comments,
-          }
-        : undefined,
-    };
   }
 
   mapMarkedAudioFiles(audioFile: AudioFileMarkedDeletionData): AudioFileMarkedDeletion {
