@@ -40,5 +40,5 @@ export class FileDeletionComponent {
     { initialValue: [] }
   );
 
-  audioCount = computed(() => (this.audioFiles().length > 0 ? this.audioFiles().length : 0));
+  audioCount = computed(() => this.audioFiles().length);
 }

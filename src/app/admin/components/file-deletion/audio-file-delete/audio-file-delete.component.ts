@@ -12,7 +12,10 @@ import { FileDeletionService } from '@services/file-deletion/file-deletion.servi
 import { HeaderService } from '@services/header/header.service';
 import { TransformedMediaService } from '@services/transformed-media/transformed-media.service';
 import { DateTime } from 'luxon';
-import { audioFileDeletionColumns } from '../audio-file-results/audio-file-results.component';
+import {
+  audioFileDeletionColumns,
+  AudioFileResultsComponent,
+} from '../audio-file-results/audio-file-results.component';
 
 const controlErrors: FormErrorMessages = {
   deletionApproval: {
@@ -31,6 +34,7 @@ const controlErrors: FormErrorMessages = {
     LuxonDatePipe,
     TableRowTemplateDirective,
     ValidationErrorSummaryComponent,
+    AudioFileResultsComponent,
   ],
   templateUrl: './audio-file-delete.component.html',
   styleUrl: './audio-file-delete.component.scss',

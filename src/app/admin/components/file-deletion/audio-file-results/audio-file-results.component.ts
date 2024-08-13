@@ -67,6 +67,7 @@ export class AudioFileResultsComponent {
   router = inject(Router);
 
   rows = input<AudioFileMarkedDeletion[]>([]);
+  showDeleteButton = input(true);
 
   //For delete button
   columns = [

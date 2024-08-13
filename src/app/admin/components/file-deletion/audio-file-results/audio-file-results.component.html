@@ -24,7 +24,9 @@
       {{ row.comments }}
     </td>
     <td>
-      <button class="govuk-button govuk-button--secondary" (click)="deleteAudioFile(row)">Delete</button>
+      @if (showDeleteButton()) {
+        <button class="govuk-button govuk-button--secondary" (click)="deleteAudioFile(row)">Delete</button>
+      }
     </td>
   </ng-template>
 </app-data-table>
