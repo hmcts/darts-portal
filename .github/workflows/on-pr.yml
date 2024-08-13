@@ -34,7 +34,7 @@ jobs:
           echo $replyUrls
 
 
-          if [[ "${replyUrls}" =~ "${mediaSignInUrl}"  && "${replyUrls}"]];  then
+          if [[ "${replyUrls}" =~ "${mediaSignInUrl}" && -n "${replyUrls}" ]]; then
             echo "Reply URLs contain $mediaSignInUrl"
           elif [ -z $replyUrls ]; then
             echo "No Reply URLs Found. ISSUE!!"
@@ -42,7 +42,7 @@ jobs:
             readarray -t my_array < <(echo "$replyUrls" | jq -c '.[]')
             for item in "${my_array[@]}"; do
               echo "Url: $item"
-              replyUrlString+="$item,"
+              replyUrlString="${replyUrlString}\"$item\","
             done
 
             if [[ ! "${replyUrls}" =~ "${mediaSignInUrl}" ]]; then
@@ -56,7 +56,7 @@ jobs:
             echo "Object ID $objectId"
             restUrl="https://graph.microsoft.com/v1.0/applications/${objectId//[$'\t\r\n']/}"
             echo "Calling: $restUrl"
-            az rest --method PATCH --header "Content-Type=application/json" --uri $restUrl --body "{\"web\":{\"redirectUris\":[$replyUrlString]}}" #--debug
+            az rest --method PATCH --header "Content-Type=application/json" --uri $restUrl --body "{\"web\":{\"redirectUris\":[$replyUrlString]}}" --debug
           fi
       - run: >
           adminSignInUrl="https://darts-pr-${PR_NUMBER}.dev.apps.hmcts.net/auth/-logout-callback"
