@@ -17,48 +17,40 @@ jobs:
           mediaSignInUrl="https://darts-pr-${PR_NUMBER}.dev.apps.hmcts.net/auth/callback"
           targetAppName="darts-stg"
 
-          az login --service-principal --username ${{ secrets.SP_CLIENT_ID}} -p=${{ secrets.SP_SECRET_KEY}} --tenant ${{ secrets.SP_TENANT_ID}} --allow-no-subscriptions
-          
-          
-          
+          # Azure login
+          az login --service-principal --username "${{ secrets.SP_CLIENT_ID }}" -p="${{ secrets.SP_SECRET_KEY }}" --tenant "${{ secrets.SP_TENANT_ID }}" --allow-no-subscriptions
+
+          # Show account details (for debugging purposes)
           az account show
-          
-          # appId=$(az ad app list --all --filter "displayname eq '${targetAppName}'" --query "[0].appId" -o tsv --only-show-errors )
+
+          # Get App ID
           appId=$(az ad app list --all --query "[?displayName=='${targetAppName}'].appId | [0]" -o tsv --only-show-errors)
           appId=${appId//[$'\t\r\n']/}
-          echo "App ID $appId"
+          echo "App ID: $appId"
 
-          az ad app show --id "$appId"
-          # replyUrls=$(az ad app show --id "$appId" --query "web.redirectUris" -o json --only-show-errors)
+          # Get Reply URLs
           replyUrls=$(az ad app show --id "$appId" --query "web.redirectUris" -o json --only-show-errors)
+          echo "Found Reply URLs: $replyUrls"
 
-          echo "Found Reply URLs"
-          echo $replyUrls
-
-
-          if [[ "${replyUrls}" =~ "${mediaSignInUrl}" && -n "${replyUrls}" ]]; then
-            echo "Reply URLs contain $mediaSignInUrl"
-          elif [ -z $replyUrls ]; then
-            echo "No Reply URLs Found. ISSUE!!"
+          if [[ -z "$replyUrls" ]]; then
+              echo "No Reply URLs Found. ISSUE!!"
           else
-            readarray -t my_array < <(echo "$replyUrls" | jq -c '.[]')
-            for item in "${my_array[@]}"; do
-              echo "Url: $item"
-              replyUrlString="${replyUrlString}\"$item\","
-            done
+              replyUrlString=$(echo "$replyUrls" | jq -c '.[]' | tr '\n' ',' | sed 's/,$//')
+              if [[ ! "$replyUrls" =~ "$mediaSignInUrl" ]]; then
+                  replyUrlString+=",\"$mediaSignInUrl\""
+              fi
 
-            if [[ ! "${replyUrls}" =~ "${mediaSignInUrl}" ]]; then
-              replyUrlString+="\"$mediaSignInUrl\""
-            fi
+              replyUrlString="[$replyUrlString]"
+              echo "Updated Reply URL String: $replyUrlString"
 
-            echo "reply String: $replyUrlString"
+              # Get Object ID
+              objectId=$(az ad app list --all --query "[?appId=='$appId'].id | [0]" -o tsv --only-show-errors)
+              objectId=${objectId//[$'\t\r\n']/}
+              echo "Object ID: $objectId"
 
-            objectId=$(az ad app list --all --filter "displayname eq '${targetAppName}'" --query "[0].id" -o tsv --only-show-errors)
-            objectId=${objectId//[$'\t\r\n']/}
-            echo "Object ID $objectId"
-            restUrl="https://graph.microsoft.com/v1.0/applications/${objectId//[$'\t\r\n']/}"
-            echo "Calling: $restUrl"
-            az rest --method PATCH --header "Content-Type=application/json" --uri $restUrl --body "{\"web\":{\"redirectUris\":[$replyUrlString]}}" --debug
+              # Update the application with the new redirect URIs
+              restUrl="https://graph.microsoft.com/v1.0/applications/$objectId"
+              az rest --method PATCH --header "Content-Type=application/json" --uri "$restUrl" --body "{\"web\":{\"redirectUris\":$replyUrlString}}"
           fi
       - run: >
           adminSignInUrl="https://darts-pr-${PR_NUMBER}.dev.apps.hmcts.net/auth/-logout-callback"
