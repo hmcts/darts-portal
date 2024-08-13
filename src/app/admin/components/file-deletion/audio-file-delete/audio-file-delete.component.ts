@@ -12,10 +12,7 @@ import { FileDeletionService } from '@services/file-deletion/file-deletion.servi
 import { HeaderService } from '@services/header/header.service';
 import { TransformedMediaService } from '@services/transformed-media/transformed-media.service';
 import { DateTime } from 'luxon';
-import {
-  audioFileDeletionColumns,
-  AudioFileResultsComponent,
-} from '../audio-file-results/audio-file-results.component';
+import { AudioFileResultsComponent } from '../audio-file-results/audio-file-results.component';
 
 const controlErrors: FormErrorMessages = {
   deletionApproval: {
@@ -45,8 +42,6 @@ export class AudioFileDeleteComponent implements OnInit {
   headerService = inject(HeaderService);
   fileDeletionService = inject(FileDeletionService);
   transformedMediaService = inject(TransformedMediaService);
-
-  columns = audioFileDeletionColumns;
 
   isPermitted = this.router.getCurrentNavigation()?.extras?.state?.isPermitted;
   audioFileState = this.router.getCurrentNavigation()?.extras?.state?.file;

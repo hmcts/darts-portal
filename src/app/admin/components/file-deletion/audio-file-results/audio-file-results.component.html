@@ -1,4 +1,4 @@
-<app-data-table noDataMessage="There are no files marked for deletion." [rows]="rows()" [columns]="columns">
+<app-data-table noDataMessage="There are no files marked for deletion." [rows]="rows()" [columns]="columns()">
   <ng-template [tableRowTemplate]="rows()" let-row>
     <td>
       <a
@@ -23,10 +23,10 @@
       <br />
       {{ row.comments }}
     </td>
-    <td>
-      @if (showDeleteButton()) {
+    @if (showDeleteButton()) {
+      <td>
         <button class="govuk-button govuk-button--secondary" (click)="deleteAudioFile(row)">Delete</button>
-      }
-    </td>
+      </td>
+    }
   </ng-template>
 </app-data-table>
