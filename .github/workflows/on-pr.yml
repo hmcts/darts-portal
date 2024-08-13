@@ -14,6 +14,50 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: >
+          mediaSignInUrl="https://darts-pr-${PR_NUMBER}.dev.apps.hmcts.net/auth/callback"
+          targetAppName="darts-stg"
+          appId="dec3be30-6325-4335-b898-eb01985d6c90"
+          az login --service-principal --username ${{ secrets.SP_CLIENT_ID}} -p=${{ secrets.SP_SECRET_KEY}} --tenant ${{ secrets.SP_TENANT_ID}} --allow-no-subscriptions
+          
+          
+          
+          az account show
+        
+          echo "App ID $appId"
+
+          az ad app show --id "$appId"
+          # replyUrls=$(az ad app show --id "$appId" --query "web.redirectUris" -o json --only-show-errors)
+          replyUrls=$(az ad app show --id "$appId" --query "web.redirectUris" -o json --only-show-errors)
+
+          echo "Found Reply URLs"
+          echo $replyUrls
+
+
+          if [[ "${replyUrls}" =~ "${mediaSignInUrl}" && -n "${replyUrls}" ]]; then
+            echo "Reply URLs contain $mediaSignInUrl"
+          elif [ -z $replyUrls ]; then
+            echo "No Reply URLs Found. ISSUE!!"
+          else
+            readarray -t my_array < <(echo "$replyUrls" | jq -c '.[]')
+            for item in "${my_array[@]}"; do
+              echo "Url: $item"
+              replyUrlString="${replyUrlString}\"$item\","
+            done
+
+            if [[ ! "${replyUrls}" =~ "${mediaSignInUrl}" ]]; then
+              replyUrlString+="\"$mediaSignInUrl\""
+            fi
+
+            echo "reply String: $replyUrlString"
+
+            objectId=$(az ad app list --all --filter "displayname eq '${targetAppName}'" --query "[0].id" -o tsv --only-show-errors)
+            objectId=${objectId//[$'\t\r\n']/}
+            echo "Object ID $objectId"
+            restUrl="https://graph.microsoft.com/v1.0/applications/${objectId//[$'\t\r\n']/}"
+            echo "Calling: $restUrl"
+            az rest --method PATCH --header "Content-Type=application/json" --uri $restUrl --body "{\"web\":{\"redirectUris\":[$replyUrlString]}}" #--debug
+          fi
+      - run: >
           adminSignInUrl="https://darts-pr-${PR_NUMBER}.dev.apps.hmcts.net/auth/-logout-callback"
 
           targetAppName="darts-stg"
@@ -57,50 +101,6 @@ jobs:
                 replyUrlString+=","
               fi
               replyUrlString+="\"$adminSignInUrl\""
-            fi
-
-            echo "reply String: $replyUrlString"
-
-            objectId=$(az ad app list --all --filter "displayname eq '${targetAppName}'" --query "[0].id" -o tsv --only-show-errors)
-            objectId=${objectId//[$'\t\r\n']/}
-            echo "Object ID $objectId"
-            restUrl="https://graph.microsoft.com/v1.0/applications/${objectId//[$'\t\r\n']/}"
-            echo "Calling: $restUrl"
-            az rest --method PATCH --header "Content-Type=application/json" --uri $restUrl --body "{\"web\":{\"redirectUris\":[$replyUrlString]}}" #--debug
-          fi
-      - run: >
-          mediaSignInUrl="https://darts-pr-${PR_NUMBER}.dev.apps.hmcts.net/auth/callback"
-          targetAppName="darts-stg"
-          appId="dec3be30-6325-4335-b898-eb01985d6c90"
-          az login --service-principal --username ${{ secrets.SP_CLIENT_ID}} -p=${{ secrets.SP_SECRET_KEY}} --tenant ${{ secrets.SP_TENANT_ID}} --allow-no-subscriptions
-          
-          
-          
-          az account show
-        
-          echo "App ID $appId"
-
-          az ad app show --id "$appId"
-          # replyUrls=$(az ad app show --id "$appId" --query "web.redirectUris" -o json --only-show-errors)
-          replyUrls=$(az ad app show --id "$appId" --query "web.redirectUris" -o json --only-show-errors)
-
-          echo "Found Reply URLs"
-          echo $replyUrls
-
-
-          if [[ "${replyUrls}" =~ "${mediaSignInUrl}" && -n "${replyUrls}" ]]; then
-            echo "Reply URLs contain $mediaSignInUrl"
-          elif [ -z $replyUrls ]; then
-            echo "No Reply URLs Found. ISSUE!!"
-          else
-            readarray -t my_array < <(echo "$replyUrls" | jq -c '.[]')
-            for item in "${my_array[@]}"; do
-              echo "Url: $item"
-              replyUrlString="${replyUrlString}\"$item\","
-            done
-
-            if [[ ! "${replyUrls}" =~ "${mediaSignInUrl}" ]]; then
-              replyUrlString+="\"$mediaSignInUrl\""
             fi
 
             echo "reply String: $replyUrlString"
