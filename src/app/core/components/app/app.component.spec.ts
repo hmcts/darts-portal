@@ -5,6 +5,7 @@ import { ActivatedRoute, ActivatedRouteSnapshot, Event, NavigationEnd, Router } 
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
 import { DynatraceService } from '@services/dynatrace/dynatrace.service';
+import { ErrorMessageService } from '@services/error/error-message.service';
 import { HeaderService } from '@services/header/header.service';
 import { UserService } from '@services/user/user.service';
 import { Subject } from 'rxjs';
@@ -19,6 +20,8 @@ describe('AppComponent', () => {
   const fakeAppConfigService = { getAppConfig: jest.fn() } as unknown as AppConfigService;
   const fakeUserService = { refreshUserProfile: jest.fn() } as unknown as UserService;
   const fakeDtService = { addDynatraceScript: jest.fn() } as unknown as DynatraceService;
+  const fakeErrorMessageService = { clearErrorMessage: jest.fn() };
+
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
   let routerEventsSubject: Subject<NavigationEnd>;
@@ -42,6 +45,7 @@ describe('AppComponent', () => {
         { provide: ActivatedRoute, useValue: { snapshot: mockRoute } },
         { provide: AppConfigService, useValue: fakeAppConfigService },
         { provide: DynatraceService, useValue: fakeDtService },
+        { provide: ErrorMessageService, useValue: fakeErrorMessageService },
       ],
     });
 
@@ -103,5 +107,15 @@ describe('AppComponent', () => {
     routerEventsSubject.next(navigationEndEvent);
 
     expect(fakeUserService.refreshUserProfile).toHaveBeenCalled();
+  });
+
+  it('clear error message from error message service on route change', () => {
+    const url = '/something';
+    jest.spyOn(fakeErrorMessageService, 'clearErrorMessage');
+    const navigationEndEvent = new NavigationEnd(1, url, url);
+    (TestBed.inject(Router).events as unknown as Subject<Event>).next(navigationEndEvent as Event);
+    routerEventsSubject.next(navigationEndEvent);
+
+    expect(fakeErrorMessageService.clearErrorMessage).toHaveBeenCalled();
   });
 });
