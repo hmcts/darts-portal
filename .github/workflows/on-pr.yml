@@ -13,7 +13,7 @@ jobs:
   deployment:
     runs-on: ubuntu-latest
     steps:
-      - run: >
+      - run: |
           mediaSignInUrl="https://darts-pr-${PR_NUMBER}.dev.apps.hmcts.net/auth/callback"
           targetAppName="darts-stg"
           appId="dec3be30-6325-4335-b898-eb01985d6c90"
@@ -57,7 +57,7 @@ jobs:
             echo "Calling: $restUrl"
             az rest --method PATCH --header "Content-Type=application/json" --uri $restUrl --body "{\"web\":{\"redirectUris\":[$replyUrlString]}}" #--debug
           fi
-      - run: >
+      - run: |
           adminSignInUrl="https://darts-pr-${PR_NUMBER}.dev.apps.hmcts.net/auth/-logout-callback"
 
           targetAppName="darts-stg"
