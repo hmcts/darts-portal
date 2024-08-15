@@ -206,9 +206,10 @@ describe('HearingComponent', () => {
       isTranslationQA: () => false,
       isCourthouseJudge: () => false,
       isCourthouseTranscriber: () => false,
+      isSuperUser: () => false,
     };
 
-    fakeActiveTabService = { activeTabs: signal({ hearingScreen: 'Transcripts' }), setActiveTab: jest.fn() };
+    fakeActiveTabService = { activeTabs: signal({}), setActiveTab: jest.fn() };
 
     TestBed.configureTestingModule({
       imports: [HearingComponent, HearingFileComponent],
@@ -237,7 +238,7 @@ describe('HearingComponent', () => {
     describe('No audio', () => {
       it('should display a message if there is no audio', () => {
         jest.spyOn(hearingService, 'getAudio').mockReturnValue(of([]));
-        fakeActiveTabService.activeTabs = signal({ hearingScreen: 'Events and Audio' });
+        mockActivatedRoute.snapshot.queryParams.tab = 'Events and Audio';
 
         fixture = TestBed.createComponent(HearingComponent);
         component = fixture.componentInstance;
