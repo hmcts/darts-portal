@@ -25,7 +25,7 @@ describe('HeaderComponent', () => {
     fakeAuthService = {
       getAuthenticated: jest.fn(() => true),
     };
-    fakeCountService = { assignedTranscripts$: of(3), unassignedTranscripts$: of(2), unreadAudio$: of(1) };
+    fakeCountService = { transcriptCount$: of({ assigned: 3, unassigned: 2 }), unreadAudio$: of(1) };
     fakeUserService = {
       isTranscriber: jest.fn(() => false),
       isJudge: jest.fn(() => false),

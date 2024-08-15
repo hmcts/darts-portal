@@ -1,6 +1,6 @@
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { TestBed, discardPeriodicTasks, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { PostAudioRequest, RequestedMedia, RequestedMediaData } from '@portal-types/index';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
@@ -149,7 +149,7 @@ describe('AudioService', () => {
       it('should emit audio requests periodically', fakeAsync(() => {
         const audioSpy = jest.spyOn(service, 'getAudioRequests').mockReturnValue(of(MOCK_MEDIA_REQUESTS));
 
-        service.audioRequests$.subscribe();
+        const sub = service.audioRequests$.subscribe();
 
         tick();
 
@@ -165,7 +165,7 @@ describe('AudioService', () => {
 
         expect(audioSpy).toHaveBeenCalledTimes(3);
         expect(audioSpy).toHaveBeenCalledWith(false);
-        discardPeriodicTasks();
+        sub.unsubscribe();
       }));
 
       it('updates unread count', fakeAsync(() => {
@@ -173,13 +173,13 @@ describe('AudioService', () => {
 
         const countSpy = jest.spyOn(service['countService'], 'setUnreadAudioCount');
 
-        service.audioRequests$.subscribe();
+        const sub = service.audioRequests$.subscribe();
 
         tick();
 
         expect(countSpy).toHaveBeenCalledTimes(1);
         expect(countSpy).toHaveBeenCalledWith(1);
-        discardPeriodicTasks();
+        sub.unsubscribe();
       }));
     });
 
@@ -254,13 +254,13 @@ describe('AudioService', () => {
   it('expiredAudioRequests$ should call getAudioRequests', fakeAsync(() => {
     const audioSpy = jest.spyOn(service, 'getAudioRequests');
 
-    service.expiredAudioRequests$.subscribe();
+    const sub = service.expiredAudioRequests$.subscribe();
 
     tick();
 
     expect(audioSpy).toHaveBeenCalledTimes(1);
     expect(audioSpy).toHaveBeenCalledWith(true);
-    discardPeriodicTasks();
+    sub.unsubscribe();
   }));
 
   it('#downloadAudio', () => {

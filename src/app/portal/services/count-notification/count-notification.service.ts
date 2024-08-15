@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { TranscriberRequestCounts } from '@portal-types/transcriptions/transcription-request-counts.interface';
+
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { Observable } from 'rxjs/internal/Observable';
 import { merge } from 'rxjs/internal/observable/merge';
@@ -8,6 +8,7 @@ import { timer } from 'rxjs/internal/observable/timer';
 import { map } from 'rxjs/internal/operators/map';
 import { switchMap } from 'rxjs/internal/operators/switchMap';
 import { tap } from 'rxjs/internal/operators/tap';
+import { TranscriptRequestCounts } from '../../models';
 
 export const UNREAD_AUDIO_COUNT_PATH = 'api/audio-requests/not-accessed-count';
 export const TRANSCRIPTION_COUNT_PATH = 'api/transcriptions/transcriber-counts';
@@ -20,29 +21,30 @@ export class CountNotificationService {
 
   private readonly POLL_INTERVAL_SECS = 30;
 
-  private readonly assignedTranscriptCount = new BehaviorSubject<number>(0);
-  private readonly unassignedTranscriptCount = new BehaviorSubject<number>(0);
+  private readonly transcriptRequestCountsSubject = new BehaviorSubject<TranscriptRequestCounts>({
+    assigned: 0,
+    unassigned: 0,
+  });
+
   private readonly unreadAudioCount = new BehaviorSubject<number>(0);
 
-  private readonly assignedTranscriptCount$ = this.assignedTranscriptCount.asObservable();
-  private readonly unassignedTranscriptCount$ = this.unassignedTranscriptCount.asObservable();
+  private readonly transcriptRequestCounts$ = this.transcriptRequestCountsSubject.asObservable();
   private readonly unreadAudioCount$ = this.unreadAudioCount.asObservable();
 
   private readonly timer$ = timer(0, this.POLL_INTERVAL_SECS * 1000);
 
-  private readonly pollAssignedTranscriptCount$ = this.timer$.pipe(
-    switchMap(() => this.getAssignedTranscriptCount()),
-    tap((count) => this.setAssignedTranscriptCount(count))
+  private readonly pollTranscriptCount$ = this.timer$.pipe(
+    switchMap(() => this.getTranscriptCount()),
+    tap((counts) => this.setTranscriptCounts(counts))
   );
-  private readonly pollUnassignedTranscriptCount$ = this.timer$.pipe(
-    switchMap(() => this.getUnassignedTranscriptCount()),
-    tap((count) => this.setUnassignedTranscriptCount(count))
-  );
+
   private readonly pollUnreadAudioCount$ = this.timer$.pipe(switchMap(() => this.getUnreadAudioCount()));
 
-  assignedTranscripts$ = merge(this.pollAssignedTranscriptCount$, this.assignedTranscriptCount$);
+  getTranscriptCount() {
+    return this.http.get<TranscriptRequestCounts>(TRANSCRIPTION_COUNT_PATH);
+  }
 
-  unassignedTranscripts$ = merge(this.pollUnassignedTranscriptCount$, this.unassignedTranscriptCount$);
+  transcriptCount$ = merge(this.pollTranscriptCount$, this.transcriptRequestCounts$);
 
   unreadAudio$ = merge(this.pollUnreadAudioCount$, this.unreadAudioCount$);
 
@@ -51,37 +53,36 @@ export class CountNotificationService {
   }
 
   decrementUnassignedTranscriptCount() {
-    this.unassignedTranscriptCount.next(this.unassignedTranscriptCount.value - 1);
+    const { assigned, unassigned } = this.transcriptRequestCountsSubject.value;
+    this.transcriptRequestCountsSubject.next({ assigned, unassigned: unassigned - 1 });
   }
 
   decrementAssignedTranscriptCount() {
-    this.assignedTranscriptCount.next(this.assignedTranscriptCount.value - 1);
+    const { assigned, unassigned } = this.transcriptRequestCountsSubject.value;
+    this.transcriptRequestCountsSubject.next({ unassigned, assigned: assigned - 1 });
   }
 
   incrementAssignedTranscriptCount() {
-    this.assignedTranscriptCount.next(this.assignedTranscriptCount.value + 1);
+    const { assigned, unassigned } = this.transcriptRequestCountsSubject.value;
+    this.transcriptRequestCountsSubject.next({ unassigned, assigned: assigned + 1 });
   }
 
   setUnreadAudioCount(count: number) {
     this.unreadAudioCount.next(count);
   }
 
-  setAssignedTranscriptCount(count: number): void {
-    this.assignedTranscriptCount.next(count);
+  setAssignedTranscriptCount(assigned: number) {
+    const { unassigned } = this.transcriptRequestCountsSubject.value;
+    this.transcriptRequestCountsSubject.next({ unassigned, assigned });
   }
 
-  setUnassignedTranscriptCount(count: number): void {
-    this.unassignedTranscriptCount.next(count);
+  setUnassignedTranscriptCount(unassigned: number) {
+    const { assigned } = this.transcriptRequestCountsSubject.value;
+    this.transcriptRequestCountsSubject.next({ assigned, unassigned });
   }
 
-  getTranscriptCounts$ = this.http.get<TranscriberRequestCounts>(TRANSCRIPTION_COUNT_PATH);
-
-  getAssignedTranscriptCount(): Observable<number> {
-    return this.getTranscriptCounts$.pipe(map((res) => res.assigned));
-  }
-
-  getUnassignedTranscriptCount(): Observable<number> {
-    return this.getTranscriptCounts$.pipe(map((res) => res.unassigned));
+  setTranscriptCounts(counts: TranscriptRequestCounts) {
+    this.transcriptRequestCountsSubject.next(counts);
   }
 
   getUnreadAudioCount(): Observable<number> {
