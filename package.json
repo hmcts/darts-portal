@@ -60,7 +60,7 @@
     "@scottish-government/pattern-library": "^0.0.381",
     "@types/config": "^3.3.4",
     "accessible-autocomplete": "^3.0.0",
-    "axios": "^1.7.2",
+    "axios": "^1.7.4",
     "body-parser": "^1.20.2",
     "config": "^3.3.11",
     "connect-redis": "^7.1.1",
