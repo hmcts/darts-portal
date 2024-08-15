@@ -300,7 +300,6 @@ export class HearingComponent implements OnInit {
   }
 
   onTabChange(tabName: string) {
-    console.log(tabName);
     this.activeTabService.setActiveTab(this.screenId, tabName);
     this.errorSummary = [];
   }
