@@ -3,6 +3,7 @@ import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
 import { CookiesService } from '@services/cookies/cookies.service';
 import { DynatraceService } from '@services/dynatrace/dynatrace.service';
+import { ErrorMessageService } from '@services/error/error-message.service';
 import { HeaderService } from '@services/header/header.service';
 import { UserService } from '@services/user/user.service';
 import { filter } from 'rxjs';
@@ -25,6 +26,7 @@ export class AppComponent implements OnInit {
   private dynatraceService = inject(DynatraceService);
   private userService = inject(UserService);
   private cookiesService = inject(CookiesService);
+  private errorMessageService = inject(ErrorMessageService);
 
   public showCookieBanner: boolean = false;
 
@@ -41,6 +43,8 @@ export class AppComponent implements OnInit {
       this.appInsightsService.logPageView(this.currentUrl, this.currentUrl);
       // refresh the user profile/userstate, including roles/permissions
       this.userService.refreshUserProfile();
+      // clear any error messages on route change
+      this.errorMessageService.clearErrorMessage();
     });
     this.dynatraceService.addDynatraceScript();
     this.showCookieBanner = !this.cookiesService.doesCookiePolicyExist();
