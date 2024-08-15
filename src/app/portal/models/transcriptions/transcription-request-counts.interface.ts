@@ -1,4 +1,4 @@
-export interface TranscriberRequestCounts {
+export interface TranscriptRequestCounts {
   unassigned: number;
   assigned: number;
 }
