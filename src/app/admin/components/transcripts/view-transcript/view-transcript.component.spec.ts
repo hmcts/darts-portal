@@ -1,11 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 import { TranscriptFacadeService } from 'src/app/admin/facades/transcript/transcript-facade.service';
 import { ViewTranscriptComponent } from './view-transcript.component';
 
 const transcriptFacadeServiceMock = {
-  getTranscript: jest.fn().mockReturnValue(null),
-  getHistory: jest.fn().mockReturnValue([]),
+  getTranscript: jest.fn().mockReturnValue(of(null)),
+  getHistory: jest.fn().mockReturnValue(of([])),
 };
 
 const activatedRouteMock = {
@@ -50,8 +51,8 @@ describe('ViewTranscriptComponent', () => {
     });
 
     it('set transcript and history from facade', () => {
-      expect(component.transcript).toBe(null);
-      expect(component.history).toEqual([]);
+      expect(component.transcript()).toBe(null);
+      expect(component.history()).toEqual([]);
     });
   });
 
