@@ -1,7 +1,7 @@
 import { SecurityGroup, TranscriptionStatus, User } from '@admin-types/index';
 import { TranscriptionAdminDetails } from '@admin-types/transcription/transcription-details';
 import { TranscriptionWorkflow } from '@admin-types/transcription/transcription-workflow';
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { TimelineItem } from '@core-types/index';
 import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
@@ -12,11 +12,8 @@ export class TranscriptFacadeService {
   transcriptionAdminService = inject(TranscriptionAdminService);
   userAdminService = inject(UserAdminService);
 
-  history = signal<TimelineItem[]>([]);
-  transcript = signal<TranscriptionAdminDetails | null>(null);
-
   getHistory(transcriptionId: number) {
-    const history$ = this.transcriptionAdminService.getTranscriptionWorkflows(transcriptionId).pipe(
+    return this.transcriptionAdminService.getTranscriptionWorkflows(transcriptionId).pipe(
       switchMap((workflows) => {
         const userIds = workflows.map((workflow) => workflow.workflowActor);
         return forkJoin({
@@ -26,14 +23,10 @@ export class TranscriptFacadeService {
         }).pipe(map(({ workflows, statuses, users }) => this.mapWorkflowsToTimeline(workflows, statuses, users)));
       })
     );
-
-    history$.subscribe((history) => this.history.set(history));
-
-    return this.history.asReadonly();
   }
 
   getTranscript(transcriptionId: number) {
-    const transcript$ = this.transcriptionAdminService.getTranscriptionDetails(transcriptionId).pipe(
+    return this.transcriptionAdminService.getTranscriptionDetails(transcriptionId).pipe(
       switchMap((transcription) => {
         if (!transcription.requestor && !transcription.courthouseId) {
           return of(transcription);
@@ -42,10 +35,6 @@ export class TranscriptFacadeService {
         }
       })
     );
-
-    transcript$.subscribe((transcript) => this.transcript.set(transcript));
-
-    return this.transcript.asReadonly();
   }
 
   private getAdditionalTranscriptionDetails(transcription: TranscriptionAdminDetails) {

@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -40,6 +41,6 @@ export class ViewTranscriptComponent {
   transcriptionId = Number(this.route.snapshot.params.transcriptionId);
   updatedStatus = Boolean(this.route.snapshot.queryParams.updatedStatus);
 
-  transcript = this.transcriptFacade.getTranscript(this.transcriptionId);
-  history = this.transcriptFacade.getHistory(this.transcriptionId);
+  transcript = toSignal(this.transcriptFacade.getTranscript(this.transcriptionId));
+  history = toSignal(this.transcriptFacade.getHistory(this.transcriptionId), { initialValue: [] });
 }
