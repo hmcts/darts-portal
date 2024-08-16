@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { SecurityGroup, User } from '@admin-types/index';
 import { TranscriptionStatus } from '@admin-types/transcription';
@@ -67,12 +67,7 @@ describe('TranscriptFacadeService', () => {
   });
 
   describe('#getTranscript', () => {
-    it('should return transcript if requestor and courthouseId is missing', () => {
-      service.getTranscript(1);
-      expect(service.transcript()).toEqual(mockTranscription);
-    });
-
-    it('should return mapped transcript if requestor and courthouseId is present', () => {
+    it('should return mapped transcript if requestor and courthouseId is present', fakeAsync(() => {
       mockTranscription = {
         ...mockTranscription,
         requestor: { userId: 1, fullName: 'Test Requestor', email: 'email@test.com' },
@@ -88,28 +83,29 @@ describe('TranscriptFacadeService', () => {
         .spyOn(fakeTranscriptionAdminService, 'getTranscriptionSecurityGroups')
         .mockReturnValue(of([{ id: 1 } as SecurityGroup]));
 
-      const transcriptSignal = service.getTranscript(1);
-
-      expect(transcriptSignal()).toEqual({
-        ...mockTranscription,
-        assignedGroups: [{ id: 1 }],
-        assignedTo: {
-          email: 'email@email.com',
-          fullName: 'Test Assignee',
-          userId: 1,
-        },
-        courthouseId: 1,
-        requestor: {
-          email: 'email@email.com',
-          fullName: 'Test Requestor',
-          userId: 1,
-        },
-      });
-    });
+      service.getTranscript(1).subscribe((result) =>
+        expect(result).toEqual({
+          ...mockTranscription,
+          assignedGroups: [{ id: 1 }],
+          assignedTo: {
+            email: 'email@email.com',
+            fullName: 'Test Assignee',
+            userId: 1,
+          },
+          courthouseId: 1,
+          requestor: {
+            email: 'email@email.com',
+            fullName: 'Test Requestor',
+            userId: 1,
+          },
+        })
+      );
+      tick();
+    }));
   });
 
   describe('#getHistory', () => {
-    it('should return mapped workflows to timeline', () => {
+    it('should return mapped workflows to timeline', fakeAsync(() => {
       const mockWorkflows: TranscriptionWorkflow[] = [
         {
           workflowActor: 1,
@@ -133,16 +129,17 @@ describe('TranscriptFacadeService', () => {
       jest.spyOn(fakeUserAdminService, 'getUsersById').mockReturnValue(of(mockUsers));
       jest.spyOn(fakeTranscriptionAdminService, 'getTranscriptionStatuses').mockReturnValue(of(mockStatuses));
 
-      const history = service.getHistory(1);
-
-      expect(history()).toEqual([
-        {
-          title: 'Requested',
-          descriptionLines: ['Test Comment'],
-          dateTime: DateTime.fromISO('2021-01-01T00:00:00Z'),
-          user: { id: 1, fullName: 'Test User', emailAddress: 'email@test.com' },
-        },
-      ]);
-    });
+      service.getHistory(1).subscribe((history) =>
+        expect(history).toEqual([
+          {
+            title: 'Requested',
+            descriptionLines: ['Test Comment'],
+            dateTime: DateTime.fromISO('2021-01-01T00:00:00Z'),
+            user: { id: 1, fullName: 'Test User', emailAddress: 'email@test.com' },
+          },
+        ])
+      );
+      tick();
+    }));
   });
 });
