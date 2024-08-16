@@ -45,6 +45,10 @@
           <!-- Hearing Screen -->
           <h2 id="events-audio-heading" class="govuk-heading-m">Events and audio recordings</h2>
 
+          @if (!vm.audios.length) {
+            <p id="no-audio-error-message" class="govuk-error-message">There is no audio for this hearing date</p>
+          }
+
           <app-request-playback-audio
             [courthouseId]="courthouseId!"
             [hearing]="vm.hearing!"
