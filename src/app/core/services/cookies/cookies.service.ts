@@ -56,7 +56,7 @@ export class CookiesService {
       secure: true,
     });
 
-    !appInsightsEnabled && this.deleteAppInsightsCookies();
-    !dynatraceEnabled && this.deleteDynatraceCookies();
+    if (!appInsightsEnabled) this.deleteAppInsightsCookies();
+    if (!dynatraceEnabled) this.deleteDynatraceCookies();
   }
 }

@@ -228,7 +228,7 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
     const endDateTime = DateTime.fromISO(`${hearingDate}T${endTimeHours}:${endTimeMinutes}:${endTimeSeconds}`);
 
     //If times are outside
-    this.audios.length > 0 && this.outsideAudioTimesValidation(startDateTime, endDateTime);
+    if (this.audios.length > 0) this.outsideAudioTimesValidation(startDateTime, endDateTime);
 
     //Refuse to submit if form is invalid
     if (

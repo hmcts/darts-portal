@@ -106,7 +106,9 @@ export class RequestTranscriptComponent implements OnInit, OnDestroy {
   constructor() {
     effect(() => {
       // Scroll to top when step changes
-      this.step() && this.scrollService.scrollToTop();
+      if (this.step()) {
+        this.scrollService.scrollToTop();
+      }
     });
   }
 

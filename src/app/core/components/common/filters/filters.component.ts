@@ -38,9 +38,8 @@ export class FiltersComponent {
       if (filter.multiselect) selected.multiselect = true;
       this.selectedFilters.push(selected);
     } else {
-      filter.multiselect
-        ? this.selectedFilters[index].values.push(value)
-        : this.selectSingle(index, filter.name, value);
+      if (filter.multiselect) this.selectedFilters[index].values.push(value);
+      else this.selectSingle(index, filter.name, value);
     }
   }
 
@@ -55,7 +54,7 @@ export class FiltersComponent {
       //Get index in values array, if values is empty, then splice filter entirely
       const valueIndex = this.selectedFilters[index].values.findIndex((sValue) => sValue === value);
       this.selectedFilters[index].values.splice(valueIndex, 1);
-      this.selectedFilters[index].values.length === 0 && this.selectedFilters.splice(index, 1);
+      if (this.selectedFilters[index].values.length === 0) this.selectedFilters.splice(index, 1);
     }
   }
 
@@ -67,7 +66,8 @@ export class FiltersComponent {
 
   onCheckChanged(filter: Filter, value: string, event: Event) {
     const ischecked = (<HTMLInputElement>event.target).checked;
-    ischecked ? this.selectFilter(filter, value) : this.unselectFilter(filter, value);
+    if (ischecked) this.selectFilter(filter, value);
+    else this.unselectFilter(filter, value);
   }
 
   uncheckAll() {

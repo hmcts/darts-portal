@@ -118,19 +118,21 @@ export class RequestTimesComponent {
 
     const { startTime, endTime } = this.getStartEndTimeFromForm();
 
-    this.isTimeOutside(startTime) &&
+    if (this.isTimeOutside(startTime)) {
       this.validationErrors.push({
         fieldId: 'start-hour-input',
         message:
           'Audio not available for timing entered. You must specify a time that matches the audio times available',
       });
+    }
 
-    this.isTimeOutside(endTime) &&
+    if (this.isTimeOutside(endTime)) {
       this.validationErrors.push({
         fieldId: 'end-hour-input',
         message:
           'Audio not available for timing entered. You must specify a time that matches the audio times available',
       });
+    }
 
     this.errors.emit(this.validationErrors);
 

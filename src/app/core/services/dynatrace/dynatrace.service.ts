@@ -25,9 +25,11 @@ export class DynatraceService {
       document.head.appendChild(script);
 
       script.onload = () => {
-        this.cookieService.getCookiePolicy()?.dynatraceCookiesEnabled
-          ? (window as Window).dtrum?.enable()
-          : (window as Window).dtrum?.disable();
+        if (this.cookieService.getCookiePolicy()?.dynatraceCookiesEnabled) {
+          (window as Window).dtrum?.enable();
+        } else {
+          (window as Window).dtrum?.disable();
+        }
       };
     }
   }

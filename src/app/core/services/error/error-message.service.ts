@@ -42,7 +42,7 @@ export class ErrorMessageService {
   ) {}
 
   handleErrorMessage(error: HttpErrorResponse) {
-    error.error && this.setErrorMessage({ status: error.status, detail: error.error });
+    if (error.error) this.setErrorMessage({ status: error.status, detail: error.error });
     this.handleOtherPages(error);
   }
 
