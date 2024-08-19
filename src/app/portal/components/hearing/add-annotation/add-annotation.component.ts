@@ -79,6 +79,8 @@ export class AddAnnotationComponent implements OnInit, OnDestroy {
   });
 
   onComplete() {
+    this.fileControl.markAsTouched();
+
     if (this.fileControl.invalid) return;
 
     const comments = this.annotationComments.value;
