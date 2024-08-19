@@ -143,7 +143,7 @@ describe('AddAnnotationComponent', () => {
     describe('Error messages', () => {
       it('set error message when fileControl is required', () => {
         component.fileControl.setValue(null);
-        expect(component.errors()[0].message).toBe('You must upload a file to complete this request');
+        expect(component.errors()[0].message).toBe('You need to upload a file');
       });
 
       it('set error message when filesize is too large', () => {
