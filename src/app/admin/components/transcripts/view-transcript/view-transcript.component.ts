@@ -11,7 +11,7 @@ import { DetailsTableComponent } from '@components/common/details-table/details-
 import { TabsComponent } from '@components/common/tabs/tabs.component';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { TabDirective } from '@directives/tab.directive';
-import { TranscriptFacadeService } from './../../../facades/transcript/transcript-facade.service';
+import { TranscriptFacadeService } from '@facades/transcript/transcript-facade.service';
 import { TranscriptDetailsComponent } from './transcript-details/transcript-details.component';
 
 @Component({
