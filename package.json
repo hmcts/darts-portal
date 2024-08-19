@@ -10,6 +10,7 @@
     "dev:ng": "ng serve",
     "dev:node": "nodemon",
     "dev": "concurrently --names \"NODE,ANGULAR\" -c \"bgBlue.bold,bgGreen.bold\" \"yarn dev:node\" \"yarn watch\"",
+    "dev:darts-api-demo": "DARTS_API_URL=https://darts-api.demo.platform.hmcts.net concurrently --names \"VERIFY-STG-ACCESS,NODE,ANGULAR\" -c \"bgRed.bold,bgBlue.bold,bgGreen.bold\" \"yarn verify-stg-access\" \"yarn dev:node\" \"yarn watch\"",
     "dev:darts-api-stg": "DARTS_API_URL=https://darts-api.staging.platform.hmcts.net concurrently --names \"VERIFY-STG-ACCESS,NODE,ANGULAR\" -c \"bgRed.bold,bgBlue.bold,bgGreen.bold\" \"yarn verify-stg-access\" \"yarn dev:node\" \"yarn watch\"",
     "dev:darts-api-stub": "DARTS_API_URL=http://localhost:4545 concurrently --names \"DARTS-API-STUB,NODE,ANGULAR\" -c \"bgRed.bold,bgBlue.bold,bgGreen.bold\" \"yarn darts-api-stub\" \"yarn dev:node\" \"yarn watch\"",
     "darts-api-stub": "node darts-api-stub",
@@ -79,7 +80,7 @@
   "devDependencies": {
     "@angular-builders/custom-webpack": "^18.0.0",
     "@angular-builders/dev-server": "^7.3.1",
-    "@angular-devkit/architect": "^0.1801.0",
+    "@angular-devkit/architect": "^0.1802.0",
     "@angular-eslint/builder": "^18.1.0",
     "@angular-eslint/eslint-plugin": "^18.1.0",
     "@angular-eslint/eslint-plugin-template": "^18.1.0",
