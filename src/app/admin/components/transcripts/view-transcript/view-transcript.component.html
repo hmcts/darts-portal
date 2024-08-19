@@ -1,14 +1,15 @@
-@if (statusUpdated$ | async) {
+<a [routerLink]="['../']" class="govuk-back-link">Back</a>
+
+@if (updatedStatus) {
   <app-govuk-banner>Status updated</app-govuk-banner>
 }
-@if (transcript$ | async; as transcript) {
-  <a [routerLink]="['../']" class="govuk-back-link">Back</a>
 
-  <app-govuk-heading caption="Transcript request">{{ transcriptionId }}</app-govuk-heading>
+<app-govuk-heading caption="Transcript request">{{ transcriptionId }}</app-govuk-heading>
 
+@if (transcript()) {
   <app-tabs>
-    <app-transcript-details *tab="'Details'; id: 'details-tab'" [transcript]="transcript" />
-    <app-timeline *tab="'History'; id: 'history-tab'" [items]="(history$ | async) ?? []" />
+    <app-transcript-details *tab="'Details'; id: 'details-tab'" [transcript]="transcript()!" />
+    <app-timeline *tab="'History'; id: 'history-tab'" [items]="history()" />
   </app-tabs>
 } @else {
   <app-loading text="Loading transcript request..." />
