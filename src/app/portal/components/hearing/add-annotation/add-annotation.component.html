@@ -17,6 +17,7 @@
     hint="This must be in a doc or docx format. Maximum file size 20MB."
     [isInvalid]="this.fileControl.invalid && this.fileControl.touched"
     [errorMessage]="errors().length ? errors()[0].message : ''"
+    allowedFileTypes=".doc,.docx"
   />
 
   <label for="annotation-comments">

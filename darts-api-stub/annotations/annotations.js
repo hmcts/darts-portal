@@ -22,7 +22,7 @@ const getAnnotationDocumentByAnnotationAndDocumentId = (annotationId, annotation
 };
 
 router.post('', (req, res) => {
-  res.status(201).send({
+  res.status(200).send({
     annotation_id: 1,
   });
 });
