@@ -68,9 +68,7 @@ export class AddAnnotationComponent implements OnInit, OnDestroy {
     }
 
     if (this.fileControl.errors?.required) {
-      this.errors.set([
-        { fieldId: 'file-upload-annotation', message: 'You must upload a file to complete this request' },
-      ]);
+      this.errors.set([{ fieldId: 'file-upload-annotation', message: 'You need to upload a file' }]);
     }
 
     if (this.fileControl.errors?.maxFileSize) {
