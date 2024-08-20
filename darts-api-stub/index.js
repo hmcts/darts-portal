@@ -5,6 +5,14 @@ const bodyParser = require('body-parser');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const app = express();
+app.disable('x-powered-by');
+
+app.use((_, res, next) => {
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('Content-Security-Policy', "frame-ancestors 'none'");
+  next();
+});
 
 // specify this if you want to overwrite the entire DARTS API URL to proxy to
 const proxyToApi = process.env.PROXY_TO_API_URL;

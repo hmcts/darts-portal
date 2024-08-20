@@ -5,6 +5,7 @@
     "baseUrl": "./",
     "paths": {
       "@services/*": ["src/app/core/services/*", "src/app/portal/services/*", "src/app/admin/services/*"],
+      "@facades/*": ["src/app/core/facades/*", "src/app/portal/facades/*", "src/app/admin/facades/*"],
       "@common/*": ["src/app/core/components/common/*", "src/app/admin/components/common/*"],
       "@components/*": ["src/app/core/components/*", "src/app/portal/components/*"],
       "@core-types/*": ["src/app/core/models/*"],
