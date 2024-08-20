@@ -29,7 +29,9 @@ export class CourthouseService {
   constructor(private readonly http: HttpClient) {}
 
   createCourthouse(courthouse: CreateUpdateCourthouseFormValues): Observable<CourthouseData> {
-    return this.http.post<CourthouseData>(`${COURTHOUSES_ADMIN_PATH}`, this.mapToCreateCourthouseRequest(courthouse));
+    return this.http
+      .post<CourthouseData>(`${COURTHOUSES_ADMIN_PATH}`, this.mapToCreateCourthouseRequest(courthouse))
+      .pipe(tap(() => this.clearCourthouseCache()));
   }
 
   updateCourthouse(courthouseId: number, courthouse: CreateUpdateCourthouseFormValues): Observable<CourthouseData> {
@@ -39,7 +41,9 @@ export class CourthouseService {
       region_id: courthouse?.regionId,
       security_group_ids: courthouse?.securityGroupIds,
     };
-    return this.http.patch<CourthouseData>(`${COURTHOUSES_ADMIN_PATH}/${courthouseId}`, updatedCourthouse);
+    return this.http
+      .patch<CourthouseData>(`${COURTHOUSES_ADMIN_PATH}/${courthouseId}`, updatedCourthouse)
+      .pipe(tap(() => this.clearCourthouseCache()));
   }
 
   getCourthouse(courthouseId: number): Observable<CourthouseData> {
