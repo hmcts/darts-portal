@@ -7,6 +7,8 @@ import * as path from 'path';
 
 import { appController, authController } from './controllers';
 import { session } from './middleware';
+
+import setHeaders from './middleware/set-headers';
 import routes from './routes';
 
 /**
@@ -27,6 +29,13 @@ export const startServer = ({ disableAuthentication }: StartServerOptions = { di
     buildInfo: {},
   };
 
+  // disable the x-powered-by header
+  app.disable('x-powered-by');
+  appHealth.disable('x-powered-by');
+
+  // set security headers
+  app.use(setHeaders);
+
   healthCheck.addTo(appHealth, healthConfig);
   app.use(appHealth);
 
@@ -45,19 +54,6 @@ export const startServer = ({ disableAuthentication }: StartServerOptions = { di
   if (app.get('env') === 'production') {
     app.set('trust proxy', 1); // trust first proxy
   }
-  app.use((req, res, next) => {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
-
-    //Prevents framing / iframe completely
-    res.setHeader('X-Frame-Options', 'DENY');
-    res.setHeader('Content-Security-Policy', "frame-ancestors 'none'");
-    res.removeHeader('X-Powered-By');
-
-    if (req.secure) {
-      res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
-    }
-    next();
-  });
 
   nunjucks.configure('server/views', {
     autoescape: true,
