@@ -1,6 +1,6 @@
 const express = require('express');
 const { userIdHasAnyRoles } = require('../../users');
-const { SUPER_ADMIN } = require('../../roles');
+const { SUPER_ADMIN, SUPER_USER } = require('../../roles');
 const { getMockTranscriptionDetails } = require('../../transcriptions/transcriptions');
 const { MOCK_STATUSES } = require('./transcription-status');
 const { DateTime } = require('luxon');
@@ -74,7 +74,7 @@ const transcripts = [
 ];
 
 function authCheck(req, res) {
-  if (!userIdHasAnyRoles([SUPER_ADMIN], req.headers.user_id))
+  if (!userIdHasAnyRoles([SUPER_ADMIN, SUPER_USER], req.headers.user_id))
     return res.status(403).send({
       detail: `You do not have permission`,
     });
