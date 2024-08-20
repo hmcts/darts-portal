@@ -22,7 +22,7 @@
       <span class="govuk-details__summary-text"> Advanced search </span>
     </summary>
     <div class="govuk-details__text">
-      @if (!isCompletedTranscriptSearch) {
+      @if (!isCompletedTranscriptSearch()) {
         <div class="govuk-form-group">
           <label class="govuk-label" for="caseId"> Case ID </label>
           <input
