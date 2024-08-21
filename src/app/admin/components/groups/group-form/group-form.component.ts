@@ -13,7 +13,7 @@ const formControlErrorMessages: FormErrorMessages = {
     groupNameExists: 'There is an existing group with this name',
   },
   description: {
-    maxlength: 'Description must be less than 255 characters',
+    maxlength: 'Description must be less than 256 characters',
   },
   role: {
     required: 'Select a role',
