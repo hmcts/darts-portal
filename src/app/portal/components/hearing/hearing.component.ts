@@ -303,4 +303,8 @@ export class HearingComponent implements OnInit {
     this.activeTabService.setActiveTab(this.screenId, tabName);
     this.errorSummary = [];
   }
+
+  isUserAllowedToRequestTranscripts(): boolean {
+    return this.userService.isRequester() || this.userService.isApprover() || this.userService.isGlobalJudge();
+  }
 }
