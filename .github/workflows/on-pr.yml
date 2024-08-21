@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          mediaSignInUrl="https://darts-portal-pr-${PR_NUMBER}.dev.platform.hmcts.net/auth/callback"
+          mediaSignInUrl="https://darts-portal-pr-${PR_NUMBER}.dev.platform.hmcts.net/auth/internal/callback"
           targetAppName="darts-stg"
           appId="dec3be30-6325-4335-b898-eb01985d6c90"
           az login --service-principal --username ${{ secrets.SP_CLIENT_ID}} -p=${{ secrets.SP_SECRET_KEY}} --tenant ${{ secrets.SP_TENANT_ID}} --allow-no-subscriptions
@@ -60,7 +60,7 @@ jobs:
         env:
           PR_NUMBER: ${{ github.event.number }}
       - run: |
-          adminSignInUrl="https://darts-portal-pr-${PR_NUMBER}.dev.platform.hmcts.net/auth/logout-callback"
+          adminSignInUrl="https://darts-portal-pr-${PR_NUMBER}.dev.platform.hmcts.net/auth/internal/logout-callback"
           targetAppName="darts-stg"
           appId="dec3be30-6325-4335-b898-eb01985d6c90"
           az login --service-principal --username ${{ secrets.SP_CLIENT_ID}} -p=${{ secrets.SP_SECRET_KEY}} --tenant ${{ secrets.SP_TENANT_ID}} --allow-no-subscriptions
