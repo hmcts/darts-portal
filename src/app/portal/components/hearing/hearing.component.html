@@ -72,13 +72,15 @@
             <div *tab="'Transcripts'; count: transcripts.length; id: 'hearing-transcripts-tab'">
               <div class="flex-space-between">
                 <h2 class="govuk-heading-m">Transcripts for this hearing</h2>
-                <button
-                  class="govuk-button govuk-button--secondary"
-                  data-module="govuk-button"
-                  routerLink="./request-transcript"
-                >
-                  Request a new transcript
-                </button>
+                @if (isUserAllowedToRequestTranscripts()) {
+                  <button
+                    class="govuk-button govuk-button--secondary"
+                    data-module="govuk-button"
+                    routerLink="./request-transcript"
+                  >
+                    Request a new transcript
+                  </button>
+                }
               </div>
 
               <app-data-table
