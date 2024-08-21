@@ -11,7 +11,7 @@
 
 @if (courthouses) {
   <app-tabs (tabChange)="onTabChanged($event.name)" [default]="tab()">
-    <div *tab="'Requests'">
+    <div *tab="'Transcript requests'">
       <app-govuk-heading>Transcript requests</app-govuk-heading>
 
       <app-search-transcripts-form
