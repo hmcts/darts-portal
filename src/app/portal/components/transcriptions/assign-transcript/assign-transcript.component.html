@@ -61,19 +61,21 @@
               Assign to me and get audio
             </label>
           </div>
-          <div class="govuk-radios__item">
-            <input
-              class="govuk-radios__input"
-              id="transcriptionOption-3"
-              name="transcriptionOptions"
-              type="radio"
-              [value]="ASSIGN_UPLOAD"
-              [formControl]="selectedOption"
-            />
-            <label class="govuk-label govuk-radios__label" for="transcriptionOption-3">
-              Assign to me and upload a transcript
-            </label>
-          </div>
+          @if (vm.hearingDetails['Request method'] === 'Manual') {
+            <div class="govuk-radios__item">
+              <input
+                class="govuk-radios__input"
+                id="transcriptionOption-3"
+                name="transcriptionOptions"
+                type="radio"
+                [value]="ASSIGN_UPLOAD"
+                [formControl]="selectedOption"
+              />
+              <label class="govuk-label govuk-radios__label" for="transcriptionOption-3">
+                Assign to me and upload a transcript
+              </label>
+            </div>
+          }
         </div>
       </fieldset>
     </div>
