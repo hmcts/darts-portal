@@ -96,7 +96,7 @@ export class DataTableComponent<TRow> implements OnChanges {
       const valueB = (b as { [key: string]: unknown })[column];
 
       // Move falsy values, excluding 0, (undefined, null, '') to start or end
-      const falsyComparison = this.compareFalsyValues(column, valueA, valueB);
+      const falsyComparison = this.compareFalsyValues(valueA, valueB, this.isAscSorting(column));
       if (falsyComparison !== 0) {
         return falsyComparison;
       }
@@ -184,14 +184,14 @@ export class DataTableComponent<TRow> implements OnChanges {
     return this.isAscSorting(column) ? a.toUnixInteger() - b.toUnixInteger() : b.toUnixInteger() - a.toUnixInteger();
   }
 
-  compareFalsyValues = (column: string, valueA: unknown, valueB: unknown): number => {
+  compareFalsyValues = (valueA: unknown, valueB: unknown, isAscending: boolean): number => {
     const isFalsyA = valueA === undefined || valueA === null || valueA === '';
     const isFalsyB = valueB === undefined || valueB === null || valueB === '';
 
     if (isFalsyA && !isFalsyB) {
-      return this.isAscSorting(column) ? -1 : 1;
+      return isAscending ? -1 : 1;
     } else if (!isFalsyA && isFalsyB) {
-      return this.isAscSorting(column) ? 1 : -1;
+      return isAscending ? 1 : -1;
     } else {
       return 0;
     }

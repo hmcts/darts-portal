@@ -893,4 +893,50 @@ describe('DataTableComponent', () => {
       expect(component.getCurrentPageCaptionCount()).toBe('1-0');
     });
   });
+
+  describe('#compareFalsyValues', () => {
+    describe('when sorting in ascending order', () => {
+      it('0 if both values are falsy', () => {
+        const result = component.compareFalsyValues(null, null, true);
+        expect(result).toBe(0);
+      });
+
+      it('-1 if only the first value is falsy', () => {
+        const result = component.compareFalsyValues(null, 1, true);
+        expect(result).toBe(-1);
+      });
+
+      it('1 if only the second value is falsy', () => {
+        const result = component.compareFalsyValues(1, null, true);
+        expect(result).toBe(1);
+      });
+
+      it('0 if both values are truthy', () => {
+        const result = component.compareFalsyValues(1, 1, true);
+        expect(result).toBe(0);
+      });
+    });
+
+    describe('when sorting in descending order', () => {
+      it('0 if both values are falsy', () => {
+        const result = component.compareFalsyValues(null, null, false);
+        expect(result).toBe(0);
+      });
+
+      it('1 if only the first value is falsy', () => {
+        const result = component.compareFalsyValues(null, 1, false);
+        expect(result).toBe(1);
+      });
+
+      it('-1 if only the second value is falsy', () => {
+        const result = component.compareFalsyValues(1, null, false);
+        expect(result).toBe(-1);
+      });
+
+      it('0 if both values are truthy', () => {
+        const result = component.compareFalsyValues(1, 1, false);
+        expect(result).toBe(0);
+      });
+    });
+  });
 });
