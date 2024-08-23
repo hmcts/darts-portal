@@ -9,7 +9,7 @@
   [hearingId]="transcript.hearingId"
 />
 
-<app-govuk-heading caption="Transcript file"> {{ transcript.caseNumber }} </app-govuk-heading>
+<app-govuk-heading caption="Transcript file"> {{ transcript.transcriptFileName }} </app-govuk-heading>
 
 @if (transcript.status) {
   <app-govuk-tag [colour]="statusColours[transcript.status]">{{ transcript.status }}</app-govuk-tag>
