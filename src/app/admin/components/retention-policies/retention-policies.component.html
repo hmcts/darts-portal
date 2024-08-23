@@ -12,6 +12,7 @@
     >
       <ng-template [tableRowTemplate]="rows.activeRetentionPolicies" let-row>
         <td>{{ row.displayName }}</td>
+        <td>{{ row.name }}</td>
         <td>{{ row.description }}</td>
         <td>{{ row.fixedPolicyKey }}</td>
         <td>{{ row.duration | duration }}</td>
@@ -44,6 +45,7 @@
     >
       <ng-template [tableRowTemplate]="rows.inactiveRetentionPolicies" let-row>
         <td>{{ row.displayName }}</td>
+        <td>{{ row.name }}</td>
         <td>{{ row.description }}</td>
         <td>{{ row.fixedPolicyKey }}</td>
         <td>{{ row.duration | duration }}</td>

@@ -46,6 +46,7 @@ export class RetentionPoliciesComponent {
   });
 
   inActiveColumns: DatatableColumn[] = [
+    { name: 'Display name', prop: 'displayName', sortable: false },
     { name: 'Name', prop: 'name', sortable: false },
     { name: 'Description', prop: 'description', sortable: false },
     { name: 'Fixed policy key', prop: 'fixedPolicyKey', sortable: false },
