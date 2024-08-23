@@ -1,6 +1,6 @@
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
-import { NgClass } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { JsonPipe, NgClass } from '@angular/common';
+import { Component, computed, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DatatableColumn } from '@core-types/index';
@@ -11,19 +11,18 @@ import { TableRowTemplateDirective } from '@directives/table-row-template.direct
   standalone: true,
   templateUrl: './courthouse-search-results.component.html',
   styleUrl: './courthouse-search-results.component.scss',
-  imports: [DataTableComponent, NgClass, RouterLink, TableRowTemplateDirective],
+  imports: [DataTableComponent, NgClass, RouterLink, TableRowTemplateDirective, JsonPipe],
 })
 export class CourthouseSearchResultsComponent {
-  @Input() results: Courthouse[] = [];
-  @Input() show = false;
+  results = input<Courthouse[]>([]);
+  show = input(false);
+
+  rows = computed(() => this.results().map((result) => ({ ...result, regionName: result.region?.name })));
+  caption = computed(() => `${this.results().length} result${this.results().length > 1 ? 's' : ''}`);
 
   columns: DatatableColumn[] = [
     { name: 'Courthouse name', prop: 'courthouseName', sortable: true },
     { name: 'Display name', prop: 'displayName', sortable: true },
     { name: 'Region', prop: 'regionName', sortable: true },
   ];
-
-  get caption() {
-    return `${this.results.length} result${this.results.length > 1 ? 's' : ''}`;
-  }
 }
