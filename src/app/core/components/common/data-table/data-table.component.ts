@@ -94,6 +94,13 @@ export class DataTableComponent<TRow> implements OnChanges {
     this.rows.sort((a: TRow, b: TRow) => {
       const valueA = (a as { [key: string]: unknown })[column];
       const valueB = (b as { [key: string]: unknown })[column];
+
+      // Move falsy values, excluding 0, (undefined, null, '') to start or end
+      const falsyComparison = this.compareFalsyValues(valueA, valueB, this.isAscSorting(column));
+      if (falsyComparison !== 0) {
+        return falsyComparison;
+      }
+
       const isStrings = typeof valueA === 'string' && typeof valueB === 'string';
       const isNumbers = typeof valueA === 'number' && typeof valueB === 'number';
 
@@ -176,6 +183,19 @@ export class DataTableComponent<TRow> implements OnChanges {
   compareDates(column: string, a: DateTime, b: DateTime): number {
     return this.isAscSorting(column) ? a.toUnixInteger() - b.toUnixInteger() : b.toUnixInteger() - a.toUnixInteger();
   }
+
+  compareFalsyValues = (valueA: unknown, valueB: unknown, isAscending: boolean): number => {
+    const isFalsyA = valueA === undefined || valueA === null || valueA === '';
+    const isFalsyB = valueB === undefined || valueB === null || valueB === '';
+
+    if (isFalsyA && !isFalsyB) {
+      return isAscending ? -1 : 1;
+    } else if (!isFalsyA && isFalsyB) {
+      return isAscending ? 1 : -1;
+    } else {
+      return 0;
+    }
+  };
 
   isNumeric(num: string) {
     return !isNaN(parseFloat(String(num)));
