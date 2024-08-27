@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { CourthouseSearchResultsComponent } from './courthouse-search-results.component';
-import { DateTime } from 'luxon';
 
 describe('CourthouseSearchResultsComponent', () => {
   let component: CourthouseSearchResultsComponent;
@@ -21,29 +21,26 @@ describe('CourthouseSearchResultsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should generate result(s) string', () => {
-    const courthouses = [
-      {
-        courthouseName: 'name',
-        displayName: 'NAME',
-        code: 1,
-        id: 1,
-        createdDateTime: DateTime.now(),
-        lastModifiedDateTime: DateTime.now(),
-      },
-      {
-        courthouseName: 'name',
-        displayName: 'NAME',
-        code: 1,
-        id: 1,
-        createdDateTime: DateTime.now(),
-        lastModifiedDateTime: DateTime.now(),
-      },
-    ];
-    component.results = courthouses;
-    expect(component.caption).toEqual('2 results');
-    // Just extract the first item in the array above
-    component.results = [courthouses[0]];
-    expect(component.caption).toEqual('1 result');
+  describe('rows', () => {
+    it('maps results', () => {
+      const courthouse = { courthouseName: 'name', displayName: 'display', region: { name: 'Wales' } } as Courthouse;
+      fixture.componentRef.setInput('results', [courthouse]);
+      fixture.detectChanges();
+      expect(component.rows()).toEqual([{ ...courthouse, regionName: 'Wales' }]);
+    });
+  });
+
+  describe('computed caption', () => {
+    it('singular', () => {
+      fixture.componentRef.setInput('results', [{}]);
+      fixture.detectChanges();
+      expect(component.caption()).toEqual('1 result');
+    });
+
+    it('plural', () => {
+      fixture.componentRef.setInput('results', [{}, {}]);
+      fixture.detectChanges();
+      expect(component.caption()).toEqual('2 results');
+    });
   });
 });
