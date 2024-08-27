@@ -10,6 +10,11 @@ export const minimumDurationValidator: ValidatorFn = (control: AbstractControl):
     return { minimumDuration: true };
   }
 
+  // check for negative values
+  if (years?.value < 0 || months?.value < 0 || days?.value < 0) {
+    return { minimumDuration: true };
+  }
+
   // check if each field is at least 1
   if (years?.value < 1 && months?.value < 1 && days?.value < 1) {
     return { minimumDuration: true };
