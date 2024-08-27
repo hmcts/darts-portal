@@ -77,6 +77,9 @@
     "tslib": "^2.6.3",
     "zone.js": "~0.15.0"
   },
+  "resolutions": {
+    "micromatch": "^4.0.8"
+  },
   "devDependencies": {
     "@angular-builders/custom-webpack": "^18.0.0",
     "@angular-builders/dev-server": "^7.3.1",
