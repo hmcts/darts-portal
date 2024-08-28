@@ -302,11 +302,12 @@ describe('AdminSearchService', () => {
   });
 
   describe('handleSearchError', () => {
-    it('should set the error message', () => {
+    it('should set the error message', fakeAsync(() => {
       service['handleSearchError']().subscribe((result) => {
         expect(result).toEqual([]);
-        expect(service.searchError()).toEqual('There are more than 500 results. Refine your search.');
+        expect(service.searchError()).toEqual('There are more than 1000 results. Refine your search.');
       });
-    });
+      tick();
+    }));
   });
 });
