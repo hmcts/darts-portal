@@ -3,7 +3,7 @@
     <app-filters (filterEvent)="setFilters($event)" (clearFilterEvent)="clearFilters()" [filters]="filters" />
   </div>
   <div class="govuk-grid-column-two-thirds">
-    @if (users.length) {
+    @if (users.length && userService.isAdmin()) {
       <button
         class="govuk-button govuk-button--secondary remove-users-button"
         data-module="govuk-button"
@@ -18,7 +18,7 @@
       noDataMessage="There are no users for this courthouse"
       [rows]="users"
       [columns]="columns"
-      [rowSelectable]="true"
+      [rowSelectable]="userService.isAdmin()"
       (rowSelect)="selectedRows = $event"
       [sortAndPaginateOnRowsChanged]="false"
     />

@@ -21,15 +21,17 @@
               >Users</a
             >
           </li>
-          <li class="moj-primary-navigation__item">
-            <a
-              class="moj-primary-navigation__link"
-              routerLink="admin/groups"
-              routerLinkActive="active"
-              ariaCurrentWhenActive="page"
-              >Groups</a
-            >
-          </li>
+          @if (userService.isAdmin()) {
+            <li class="moj-primary-navigation__item">
+              <a
+                class="moj-primary-navigation__link"
+                routerLink="admin/groups"
+                routerLinkActive="active"
+                ariaCurrentWhenActive="page"
+                >Groups</a
+              >
+            </li>
+          }
           <li class="moj-primary-navigation__item">
             <a
               class="moj-primary-navigation__link"
@@ -57,24 +59,27 @@
               >Transcripts</a
             >
           </li>
-          <li class="moj-primary-navigation__item">
-            <a
-              class="moj-primary-navigation__link"
-              routerLink="admin/file-deletion"
-              routerLinkActive="active"
-              ariaCurrentWhenActive="page"
-              >File deletion</a
-            >
-          </li>
-          <li class="moj-primary-navigation__item">
-            <a
-              class="moj-primary-navigation__link"
-              routerLink="admin/system-configuration"
-              routerLinkActive="active"
-              ariaCurrentWhenActive="page"
-              >System configuration</a
-            >
-          </li>
+          @if (userService.isAdmin()) {
+            <li class="moj-primary-navigation__item">
+              <a
+                class="moj-primary-navigation__link"
+                routerLink="admin/file-deletion"
+                routerLinkActive="active"
+                ariaCurrentWhenActive="page"
+                >File deletion</a
+              >
+            </li>
+
+            <li class="moj-primary-navigation__item">
+              <a
+                class="moj-primary-navigation__link"
+                routerLink="admin/system-configuration"
+                routerLinkActive="active"
+                ariaCurrentWhenActive="page"
+                >System configuration</a
+              >
+            </li>
+          }
         </ul>
       </nav>
     </div>

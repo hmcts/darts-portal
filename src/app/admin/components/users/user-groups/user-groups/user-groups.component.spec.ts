@@ -1,6 +1,7 @@
 import { SecurityGroup, User } from '@admin-types/index';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
+import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
 import { UserGroupsComponent } from './user-groups.component';
 
@@ -39,6 +40,7 @@ describe('UserGroupsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [UserGroupsComponent],
+      providers: [{ provide: UserService, useValue: { isAdmin: jest.fn().mockReturnValue(true) } }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(UserGroupsComponent);

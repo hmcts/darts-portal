@@ -1,34 +1,40 @@
 <div class="assign-button-container">
   <app-govuk-heading tag="h2" size="m" class="no-margin">Groups</app-govuk-heading>
-  <button
-    class="govuk-button"
-    (click)="router.navigate(['admin/users/', user.id, 'assign-groups'], { state: { user } })"
-  >
-    Assign groups
-  </button>
+  @if (userService.isAdmin()) {
+    <button
+      class="govuk-button"
+      (click)="router.navigate(['admin/users/', user.id, 'assign-groups'], { state: { user } })"
+    >
+      Assign groups
+    </button>
+  }
 </div>
 
 @if (userGroups.length) {
-  <button
-    id="remove-groups-button"
-    type="button"
-    class="govuk-button govuk-button--secondary"
-    (click)="onRemoveGroups()"
-  >
-    Remove groups
-  </button>
+  @if (userService.isAdmin()) {
+    <button
+      id="remove-groups-button"
+      type="button"
+      class="govuk-button govuk-button--secondary"
+      (click)="onRemoveGroups()"
+    >
+      Remove groups
+    </button>
+  }
   <div class="govuk-form-group" [class.govuk-form-group--error]="removeError">
-    @if (removeError) {
-      <p class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> Select one or more groups</p>
+    @if (userService.isAdmin()) {
+      @if (removeError) {
+        <p class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> Select one or more groups</p>
+      }
+      <p class="govuk-body selected-group-count" role="status" [attr.aria-label]="selectedGroupsCountText">
+        {{ selectedGroupsCountText }}
+      </p>
     }
-    <p class="govuk-body selected-group-count" role="status" [attr.aria-label]="selectedGroupsCountText">
-      {{ selectedGroupsCountText }}
-    </p>
     <app-data-table
       id="userGroupTable"
       [columns]="groupColumns"
       [rows]="userGroups"
-      [rowSelectable]="true"
+      [rowSelectable]="userService.isAdmin()"
       [pageLimit]="15"
       [(selectedRows)]="selectedGroups"
     >

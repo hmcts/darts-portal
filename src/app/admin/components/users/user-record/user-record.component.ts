@@ -16,6 +16,7 @@ import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
+import { UserService } from '@services/user/user.service';
 import { Observable, shareReplay } from 'rxjs';
 import { map } from 'rxjs/internal/operators/map';
 import { UserGroupsComponent } from '../user-groups/user-groups/user-groups.component';
@@ -45,6 +46,7 @@ import { UserTranscriptsComponent } from '../user-transcripts/user-transcripts.c
   ],
 })
 export class UserRecordComponent {
+  userService = inject(UserService);
   userAdminSvc = inject(UserAdminService);
   route = inject(ActivatedRoute);
   router = inject(Router);
