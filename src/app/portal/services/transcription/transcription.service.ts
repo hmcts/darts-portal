@@ -166,7 +166,7 @@ export class TranscriptionService {
       'Request ID': transcript.transcriptionId,
       Urgency: transcript.urgency?.description ? transcript.urgency.description : null,
       'Audio for transcript': audioForTranscript,
-      Requested: transcript.from,
+      'Requested by': transcript.from,
       Received: this.luxonPipe.transform(transcript.received, 'dd MMM yyyy HH:mm:ss'),
       Instructions: transcript.requestorComments,
       'Judge approval': 'Yes',
@@ -203,7 +203,7 @@ export class TranscriptionService {
           transcript.transcriptionStartTs && transcript.transcriptionEndTs
             ? `Start time ${this.luxonPipe.transform(transcript.transcriptionStartTs, 'HH:mm:ss')} - End time ${this.luxonPipe.transform(transcript.transcriptionEndTs, 'HH:mm:ss')}`
             : '',
-        From: transcript.from,
+        'Requested by': transcript.from,
         Received: this.luxonPipe.transform(transcript.received, 'dd MMM yyyy HH:mm:ss'),
         Instructions: transcript.requestorComments,
         'Judge approval': 'Yes',
