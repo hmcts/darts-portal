@@ -15,6 +15,7 @@ import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { CaseService } from '@services/case/case.service';
 import { TransformedMediaService } from '@services/transformed-media/transformed-media.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
+import { UserService } from '@services/user/user.service';
 import { forkJoin, map, switchMap } from 'rxjs';
 import { AssociatedAudioTableComponent } from '../associated-audio-table/associated-audio-table.component';
 
@@ -44,7 +45,8 @@ import { AssociatedAudioTableComponent } from '../associated-audio-table/associa
 export class ViewTransformedMediaComponent {
   transformedMediaService = inject(TransformedMediaService);
   caseService = inject(CaseService);
-  userService = inject(UserAdminService);
+  userService = inject(UserService);
+  userAdminService = inject(UserAdminService);
   route = inject(ActivatedRoute);
 
   transformedMediaId = this.route.snapshot.params.id;
@@ -61,7 +63,7 @@ export class ViewTransformedMediaComponent {
           const ownerUserId = mediaRequest.ownerId;
           const requestedByUserId = mediaRequest.requestedById;
 
-          const $users = this.userService.getUsersById([ownerUserId, requestedByUserId]).pipe(
+          const $users = this.userAdminService.getUsersById([ownerUserId, requestedByUserId]).pipe(
             map((users) => ({
               owner: users.find((u) => u.id === ownerUserId),
               requestedBy: users.find((u) => u.id === requestedByUserId),

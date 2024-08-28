@@ -156,7 +156,7 @@ describe('AudioFileComponent', () => {
       component.audioFile$.subscribe();
 
       expect(component.transformedMediaService.getMediaById).toHaveBeenCalledTimes(1);
-      expect(component.UserAdminService.getUsersById).toHaveBeenCalledTimes(1);
+      expect(component.userAdminService.getUsersById).toHaveBeenCalledTimes(1);
     });
 
     it('resolves user full name properties', fakeAsync(() => {

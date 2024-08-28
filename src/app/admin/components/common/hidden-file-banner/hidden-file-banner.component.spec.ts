@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HiddenFileBanner } from '@admin-types/common/hidden-file-banner';
+import { UserService } from '@services/user/user.service';
 import { HiddenFileBannerComponent } from './hidden-file-banner.component';
 
 describe('HiddenFileBannerComponent', () => {
@@ -10,6 +11,7 @@ describe('HiddenFileBannerComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HiddenFileBannerComponent],
+      providers: [{ provide: UserService, useValue: { isAdmin: jest.fn().mockReturnValue(true) } }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HiddenFileBannerComponent);
@@ -89,7 +91,8 @@ describe('HiddenFileBannerComponent', () => {
 
     it('should render the correct message', () => {
       const message = fixture.nativeElement.querySelector('app-notification-banner');
-      expect(message.textContent).toContain('DARTS users cannot view this file. You can unhide the file');
+      expect(message.textContent).toContain('DARTS users cannot view this file.');
+      expect(message.textContent).toContain('You can unhide the file');
     });
 
     it('should render the correct details', () => {
@@ -120,9 +123,8 @@ describe('HiddenFileBannerComponent', () => {
 
     it('should render the correct message', () => {
       const message = fixture.nativeElement.querySelector('app-notification-banner');
-      expect(message.textContent).toContain(
-        'DARTS user cannot view this file. You can unmark for deletion and it will no longer be hidden.'
-      );
+      expect(message.textContent).toContain('DARTS user cannot view this file.');
+      expect(message.textContent).toContain('You can unmark for deletion and it will no longer be hidden.');
     });
 
     it('should render the correct details', () => {
@@ -130,6 +132,58 @@ describe('HiddenFileBannerComponent', () => {
       expect(details.textContent).toContain('Marked for manual deletion by - me');
       expect(details.textContent).toContain('Reason - because');
       expect(details.textContent).toContain('refy ref - commenty comment');
+    });
+  });
+
+  describe('is hidden and marked for deletion and is not admin', () => {
+    beforeEach(() => {
+      if (component.file) {
+        component.file.isHidden = true;
+        component.file.isMarkedForManualDeletion = true;
+      }
+      component.userService.isAdmin = jest.fn().mockReturnValue(false);
+      fixture.detectChanges();
+    });
+
+    it('render banner', () => {
+      const banner = fixture.nativeElement.querySelector('app-notification-banner');
+      expect(banner).toBeTruthy();
+    });
+
+    it('render title', () => {
+      const title = fixture.nativeElement.querySelector('app-notification-banner');
+      expect(title.textContent).toContain('This file is hidden in DARTS and is marked for manual deletion');
+    });
+
+    it('should render the correct message', () => {
+      const message = fixture.nativeElement.querySelector('app-notification-banner');
+      expect(message.textContent).not.toContain('You can unmark for deletion and it will no longer be hidden.');
+    });
+  });
+
+  describe('is hidden and is not admin', () => {
+    beforeEach(() => {
+      if (component.file) {
+        component.file.isHidden = true;
+        component.file.isMarkedForManualDeletion = false;
+      }
+      component.userService.isAdmin = jest.fn().mockReturnValue(false);
+      fixture.detectChanges();
+    });
+
+    it('render banner', () => {
+      const banner = fixture.nativeElement.querySelector('app-notification-banner');
+      expect(banner).toBeTruthy();
+    });
+
+    it('render title', () => {
+      const title = fixture.nativeElement.querySelector('app-notification-banner');
+      expect(title.textContent).toContain('This file is hidden in DARTS');
+    });
+
+    it('should render the correct message', () => {
+      const message = fixture.nativeElement.querySelector('app-notification-banner');
+      expect(message.textContent).not.toContain('You can unhide the file.');
     });
   });
 });

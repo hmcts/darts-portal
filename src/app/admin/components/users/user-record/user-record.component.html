@@ -59,16 +59,31 @@
         </div>
         <div class="govuk-grid-column-one-third">
           <div class="button-container govuk-button-group">
-            <button
-              type="submit"
-              class="edit-button govuk-button govuk-button--secondary"
-              (click)="router.navigate(['admin/users/edit', user.id], { state: { user } })"
-            >
-              Edit user
-            </button>
-            <button type="button" class="govuk-button govuk-button--secondary" (click)="onActivateDeactivateUser(user)">
-              {{ !user.active ? 'Activate user' : 'Deactivate user' }}
-            </button>
+            @if (userService.isAdmin()) {
+              <button
+                type="submit"
+                class="edit-button govuk-button govuk-button--secondary"
+                (click)="router.navigate(['admin/users/edit', user.id], { state: { user } })"
+              >
+                Edit user
+              </button>
+
+              <button
+                type="button"
+                class="govuk-button govuk-button--secondary"
+                (click)="onActivateDeactivateUser(user)"
+              >
+                {{ !user.active ? 'Activate user' : 'Deactivate user' }}
+              </button>
+            } @else if (userService.isSuperUser() && user.active) {
+              <button
+                type="button"
+                class="govuk-button govuk-button--secondary"
+                (click)="onActivateDeactivateUser(user)"
+              >
+                {{ 'Deactivate user' }}
+              </button>
+            }
           </div>
         </div>
       </div>

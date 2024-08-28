@@ -1,8 +1,10 @@
 <div class="space-between">
   <app-govuk-heading>Courthouses</app-govuk-heading>
-  <button class="govuk-button govuk-button--secondary" (click)="router.navigate(['admin/courthouses/create'])">
-    Create new courthouse
-  </button>
+  @if (userService.isAdmin()) {
+    <button class="govuk-button govuk-button--secondary" (click)="router.navigate(['admin/courthouses/create'])">
+      Create new courthouse
+    </button>
+  }
 </div>
 <app-govuk-heading tag="h2" size="m">Search for courthouse</app-govuk-heading>
 

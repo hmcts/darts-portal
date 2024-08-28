@@ -1,15 +1,16 @@
+import { UserSearchFormValues } from '@admin-types/users/user-search-form-values.type';
 import { AsyncPipe, JsonPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
+import { UserAdminService } from '@services/user-admin/user-admin.service';
+import { UserService } from '@services/user/user.service';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { Subject } from 'rxjs/internal/Subject';
 import { of } from 'rxjs/internal/observable/of';
 import { switchMap } from 'rxjs/internal/operators/switchMap';
 import { tap } from 'rxjs/internal/operators/tap';
-import { UserSearchFormValues } from '@admin-types/users/user-search-form-values.type';
-import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { UserSearchFormComponent } from './user-search-form/user-search-form.component';
 import { UserSearchResultsComponent } from './user-search-results/user-search-results.component';
 
@@ -28,6 +29,7 @@ import { UserSearchResultsComponent } from './user-search-results/user-search-re
   styleUrl: './users.component.scss',
 })
 export class UsersComponent {
+  userService = inject(UserService);
   userAdminService = inject(UserAdminService);
   router = inject(Router);
 

@@ -15,16 +15,18 @@
         <dd class="govuk-summary-list__value">
           {{ data.users.owner?.fullName }} ({{ data.users.owner?.emailAddress }})
         </dd>
-        <dd class="govuk-summary-list__actions">
-          <a
-            id="change-link"
-            class="govuk-link"
-            href="javascript:void(0)"
-            [routerLink]="['change-owner', data.mediaRequest.id]"
-            routerLinkActive="router-link-active"
-            >Change<span class="govuk-visually-hidden"> owner</span></a
-          >
-        </dd>
+        @if (userService.isAdmin()) {
+          <dd class="govuk-summary-list__actions">
+            <a
+              id="change-link"
+              class="govuk-link"
+              href="javascript:void(0)"
+              [routerLink]="['change-owner', data.mediaRequest.id]"
+              routerLinkActive="router-link-active"
+              >Change<span class="govuk-visually-hidden"> owner</span></a
+            >
+          </dd>
+        }
       </div>
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Requested by</dt>

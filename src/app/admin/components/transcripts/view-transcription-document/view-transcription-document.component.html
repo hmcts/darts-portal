@@ -9,17 +9,19 @@
 
   <div class="heading-button-container">
     <app-govuk-heading caption="Transcript file">{{ transcriptionDocumentId }}</app-govuk-heading>
-    <button class="govuk-button govuk-button--secondary" (click)="hideOrUnhideFile(vm.document)">
-      @if (vm.document.isHidden) {
-        @if (vm.document.adminAction?.isMarkedForManualDeletion) {
-          Unmark for deletion and unhide
+    @if (userService.isAdmin()) {
+      <button class="govuk-button govuk-button--secondary" (click)="hideOrUnhideFile(vm.document)">
+        @if (vm.document.isHidden) {
+          @if (vm.document.adminAction?.isMarkedForManualDeletion) {
+            Unmark for deletion and unhide
+          } @else {
+            Unhide
+          }
         } @else {
-          Unhide
+          Hide or delete
         }
-      } @else {
-        Hide or delete
-      }
-    </button>
+      </button>
+    }
   </div>
 
   @if (userService.isSuperUser() && !userService.isAdmin()) {

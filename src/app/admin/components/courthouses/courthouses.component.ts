@@ -1,10 +1,11 @@
-import { Router } from '@angular/router';
 import { CourthouseSearchFormValues } from '@admin-types/courthouses/courthouse-search-form-values.type';
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
+import { UserService } from '@services/user/user.service';
 import { BehaviorSubject, Observable, Subject, combineLatest, of, switchMap, tap } from 'rxjs';
 import { CourthouseSearchFormComponent } from './courthouse-search-form/courthouse-search-form.component';
 import { CourthouseSearchResultsComponent } from './courthouse-search-results/courthouse-search-results.component';
@@ -17,6 +18,7 @@ import { CourthouseSearchResultsComponent } from './courthouse-search-results/co
   styleUrl: './courthouses.component.scss',
 })
 export class CourthousesComponent {
+  userService = inject(UserService);
   courthouseService = inject(CourthouseService);
   router = inject(Router);
 
