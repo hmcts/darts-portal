@@ -5,6 +5,7 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourthouseData } from '@core-types/index';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
+import { ActiveTabService } from '@services/active-tab/active-tab.service';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { ScrollService } from '@services/scroll/scroll.service';
 import {
@@ -112,7 +113,6 @@ describe('TranscriptsComponent', () => {
             searchFormValues: signal(defaultFormValues),
             searchResults: signal([]),
             completedSearchResults: signal([]),
-            tab: signal('Requests'),
             isAdvancedSearch: signal(false),
             hasSearchFormBeenSubmitted$: new BehaviorSubject<boolean>(false),
           },
@@ -125,6 +125,10 @@ describe('TranscriptsComponent', () => {
         },
         { provide: CourthouseService, useValue: fakeCourthouseService },
         { provide: ScrollService, useValue: { scrollTo: jest.fn() } },
+        {
+          provide: ActiveTabService,
+          useValue: { activeTabs: jest.fn().mockReturnValue({}), setActiveTabs: jest.fn() },
+        },
         DatePipe,
         LuxonDatePipe,
       ],
@@ -225,7 +229,7 @@ describe('TranscriptsComponent', () => {
 
   it('only search for transcript requests if the tab is "Requests"', fakeAsync(() => {
     jest.spyOn(component.transcriptService, 'search');
-    component.tab.set('Requests');
+    component['tab'] = signal('Transcript requests');
     component.isSubmitted$.next(true);
     component.search$.next({});
 
@@ -237,7 +241,7 @@ describe('TranscriptsComponent', () => {
 
   it('only search for completed transcripts if the tab is "Completed transcripts"', fakeAsync(() => {
     jest.spyOn(component.transcriptService, 'searchCompletedTranscriptions').mockReturnValue(of([]));
-    component.tab.set('Completed transcripts');
+    component['tab'] = signal('Completed transcripts');
     component.isSubmitted$.next(true);
     component.search$.next({});
 
@@ -260,7 +264,7 @@ describe('TranscriptsComponent', () => {
 
       component.completedResults$.subscribe((results) => (result = results));
 
-      component.tab.set('Completed transcripts');
+      component['tab'] = signal('Completed transcripts');
       component.search$.next({});
       component.isSubmitted$.next(true);
 
@@ -277,7 +281,7 @@ describe('TranscriptsComponent', () => {
 
       component.completedResults$.subscribe();
 
-      component.tab.set('Completed transcripts');
+      component['tab'] = signal('Completed transcripts');
       component.search$.next({});
       component.isSubmitted$.next(true);
 
