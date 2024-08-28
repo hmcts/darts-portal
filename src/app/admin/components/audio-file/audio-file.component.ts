@@ -43,7 +43,7 @@ export class AudioFileComponent {
   router = inject(Router);
   route = inject(ActivatedRoute);
   caseService = inject(CaseService);
-  UserAdminService = inject(UserAdminService);
+  userAdminService = inject(UserAdminService);
   transformedMediaService = inject(TransformedMediaService);
   transcriptionAdminService = inject(TranscriptionAdminService);
 
@@ -93,7 +93,7 @@ export class AudioFileComponent {
       ]),
     ] as number[];
 
-    return this.UserAdminService.getUsersById(userIds).pipe(
+    return this.userAdminService.getUsersById(userIds).pipe(
       map((users) => {
         const createdBy = users.find((u) => u.id == audioFile.createdById)?.fullName;
         const lastModifiedBy = users.find((u) => u.id == audioFile.lastModifiedById)?.fullName;

@@ -18,6 +18,7 @@ import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { GroupsService } from '@services/groups/groups.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
+import { UserService } from '@services/user/user.service';
 import { BehaviorSubject, forkJoin, map, of, switchMap, tap } from 'rxjs';
 import { CourthouseUsersComponent } from '../courthouse-users/courthouse-users.component';
 
@@ -48,7 +49,8 @@ export class CourthouseRecordComponent {
   route = inject(ActivatedRoute);
   router = inject(Router);
   groupsService = inject(GroupsService);
-  usersService = inject(UserAdminService);
+  userService = inject(UserService);
+  userAdminService = inject(UserAdminService);
   isDeleting = false;
   tab = 'Details';
 
@@ -87,7 +89,7 @@ export class CourthouseRecordComponent {
 
   fetchUsers$ = this.courthouseRequesterApproverGroups$.pipe(
     switchMap(({ groups, approverRole, requesterRole }) => {
-      return this.usersService.getUsersById(groups.flatMap((g) => g.userIds)).pipe(
+      return this.userAdminService.getUsersById(groups.flatMap((g) => g.userIds)).pipe(
         map((users) => {
           const requesterGroups = groups.filter((group) => group.securityRoleId === requesterRole.id);
           const approverGroups = groups.filter((group) => group.securityRoleId === approverRole.id);

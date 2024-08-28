@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SecurityRole } from '@admin-types/index';
 import { Filter } from '@common/filters/filter.interface';
+import { UserService } from '@services/user/user.service';
 import { CourthouseUsersComponent } from './courthouse-users.component';
 
 describe('CourthouseUsersComponent', () => {
@@ -11,6 +12,7 @@ describe('CourthouseUsersComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CourthouseUsersComponent],
+      providers: [{ provide: UserService, useValue: { isAdmin: jest.fn().mockReturnValue(true) } }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(CourthouseUsersComponent);

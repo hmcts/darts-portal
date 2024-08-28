@@ -10,6 +10,7 @@ import { Case } from '@portal-types/index';
 import { CaseService } from '@services/case/case.service';
 import { TransformedMediaService } from '@services/transformed-media/transformed-media.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
+import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
 import { ViewTransformedMediaComponent } from './view-transformed-media.component';
@@ -126,6 +127,7 @@ describe('ViewTransformedMediaComponent', () => {
         { provide: CaseService, useValue: fakeCaseService },
         { provide: UserAdminService, useValue: fakeUserAdminService },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        { provide: UserService, useValue: { isAdmin: jest.fn() } },
         DatePipe,
       ],
     }).compileComponents();

@@ -356,9 +356,11 @@ describe('Admin - Transcript requests', () => {
         'This file is hidden in DARTS and is marked for manual deletion'
       );
 
+      cy.get('.govuk-notification-banner__body').should('contain', 'DARTS user cannot view this file.');
+
       cy.get('.govuk-notification-banner__body').should(
         'contain',
-        'DARTS user cannot view this file. You can unmark for deletion and it will no longer be hidden.'
+        'You can unmark for deletion and it will no longer be hidden.'
       );
 
       cy.get('.govuk-notification-banner__body').contains('unmark for deletion').should('exist');

@@ -5,17 +5,19 @@
 
   <div class="heading-button-container">
     <app-govuk-heading caption="Audio file">{{ audioFileId }}</app-govuk-heading>
-    <button class="govuk-button govuk-button--secondary" (click)="hideOrUnhideFile(data.audioFile)">
-      @if (data.audioFile.isHidden) {
-        @if (data.audioFile.adminAction?.isMarkedForManualDeletion) {
-          Unmark for deletion and unhide
+    @if (isAdmin) {
+      <button class="govuk-button govuk-button--secondary" (click)="hideOrUnhideFile(data.audioFile)">
+        @if (data.audioFile.isHidden) {
+          @if (data.audioFile.adminAction?.isMarkedForManualDeletion) {
+            Unmark for deletion and unhide
+          } @else {
+            Unhide
+          }
         } @else {
-          Unhide
+          Hide or delete
         }
-      } @else {
-        Hide or delete
-      }
-    </button>
+      </button>
+    }
   </div>
 
   @if (isAdmin) {
