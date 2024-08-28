@@ -99,7 +99,7 @@ export class AdminSearchService {
   }
 
   private handleSearchError() {
-    this.searchError.set('There are more than 500 results. Refine your search.');
+    this.searchError.set('There are more than 1000 results. Refine your search.');
     return of([]);
   }
 

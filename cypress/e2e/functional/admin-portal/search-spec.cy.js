@@ -195,7 +195,7 @@ describe('Admin - Search screen', () => {
     cy.get('#caseId').type('TOO_MANY_RESULTS');
     cy.get('#confirm-button').click();
 
-    cy.get('app-govuk-tabs').contains('There are more than 500 results. Refine your search.');
+    cy.get('app-govuk-tabs').contains('There are more than 1000 results. Refine your search.');
   });
 
   it('no results', () => {
