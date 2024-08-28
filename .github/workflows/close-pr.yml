@@ -1,77 +1,77 @@
 name: PR Tasks
 on:
-    pull_request:
-        types:
-            - closed
+  pull_request:
+    types:
+      - closed
 
 permissions:
-    id-token: write
-    contents: read
+  id-token: write
+  contents: read
 
 jobs:
-    deployment:
-        runs-on: ubuntu-latest
-        steps:
-            - name: 'Az CLI login'
-              uses: azure/login@v2
-              with:
-                  client-id: ${{ secrets.AZURE_CLIENT_ID }}
-                  tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-                  subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  remove-internal-ad-callback-urls:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Remove Internal AD callback URLs
+        run: |
+          authCallbackUrl="https://darts-portal-pr-${PR_NUMBER}.dev.platform.hmcts.net/auth/internal/callback"
+          logoutUrl="https://darts-portal-pr-${PR_NUMBER}.dev.platform.hmcts.net/auth/internal/logout-callback"
+          targetAppName="darts-stg"
+          appId="dec3be30-6325-4335-b898-eb01985d6c90"
 
-            - uses: Azure/get-keyvault-secrets@v1
-              with:
-                  keyvault: 'darts-portal-stg-kv'
-                  secrets: 'b2c-jenkins-tenant-id, b2c-jenkins-client-id, b2c-jenkins-client-secret'
-              id: bootstrapKv
+          az login --service-principal --username ${{ secrets.SP_CLIENT_ID}} -p=${{ secrets.SP_SECRET_KEY}} --tenant ${{ secrets.SP_TENANT_ID}} --allow-no-subscriptions
+        
+          replyUrls=$(az ad app show --id "$appId" --query "web.redirectUris" -o json --only-show-errors)
+          echo "Found callback URLs"
+          echo $replyUrls
 
-            - run: |
-                  mediaSignInUrl="https://darts-portal-pr-${PR_NUMBER}.dev.platform.hmcts.net/auth/callback"
-                  adminSignInUrl="https://darts-portal-pr-${PR_NUMBER}.dev.platform.hmcts.net/auth/logout-callback"
-                  targetAppName="darts-stg"
+          readarray -t my_array < <(echo "$replyUrls" | jq -c '.[]')
+          for item in "${my_array[@]}"; do
+            if [[ $item != "\"$authCallbackUrl\"" && $item != "\"$logoutUrl\"" ]]; then
+              replyUrlString+="$item,"
+            fi
+          done
 
-                  azureClientId="${B2C_CLIENT_ID}"
-                  azureClientSecret="${B2C_CLIENT_PWD}"
-                  azureTenant="${B2C_TENANT_ID}"
+          echo "Setting callback URLs: $replyUrlString"
 
-                  echo "Login to $azureTenant with $azureClientId"
-                  az login --service-principal --username $azureClientId -p=$azureClientSecret --tenant $azureTenant --allow-no-subscriptions
+          objectId=$(az ad app list --all --filter "displayname eq '${targetAppName}'" --query "[0].id" -o tsv --only-show-errors)
+          objectId=${objectId//[$'\t\r\n']/}
+          echo "Object ID: $objectId"
+          restUrl="https://graph.microsoft.com/v1.0/applications/${objectId//[$'\t\r\n']/}"
+          echo "Calling: $restUrl"
+          az rest --method PATCH --header "Content-Type=application/json" --uri $restUrl --body "{\"web\":{\"redirectUris\":[$replyUrlString]}}" #--debug
+        env:
+          PR_NUMBER: ${{ github.event.number }}
+  remove-external-ad-b2c-callback-urls:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Remove External AD B2C callback URLs
+        run: |
+          authCallbackUrl="https://darts-portal-pr-${PR_NUMBER}.dev.platform.hmcts.net/auth/callback"
+          logoutUrl="https://darts-portal-pr-${PR_NUMBER}.dev.platform.hmcts.net/auth/logout-callback"
+          targetAppName="darts"
+          appId="363c11cb-48b9-44bf-9d06-9a3973f6f413"
 
-                  appId=$(az ad app list --all --filter "displayname eq '${targetAppName}'" --query "[0].appId" -o tsv --only-show-errors )
-                  appId=${appId//[$'\t\r\n']/}
-                  echo "App ID $appId"
+          az login --service-principal --username ${{ secrets.SP_CLIENT_ID_B2C}} -p=${{ secrets.SP_SECRET_KEY_B2C}} --tenant ${{ secrets.SP_TENANT_ID_B2C}} --allow-no-subscriptions
+        
+          replyUrls=$(az ad app show --id "$appId" --query "web.redirectUris" -o json --only-show-errors)
+          echo "Found callback URLs"
+          echo $replyUrls
 
-                  replyUrls=$(az ad app show --id "$appId" --query "web.redirectUris" -o json --only-show-errors)
+          readarray -t my_array < <(echo "$replyUrls" | jq -c '.[]')
+          for item in "${my_array[@]}"; do
+            if [[ $item != "\"$authCallbackUrl\"" && $item != "\"$logoutUrl\"" ]]; then
+              replyUrlString+="$item,"
+            fi
+          done
 
-                  echo "Found Reply URLs"
-                  echo $replyUrls
-                  if [[ "${replyUrls}" =~ "${mediaSignInUrl}"  || "${replyUrls}" =~ "${adminSignInUrl}"]]; then
-                      echo "Reply URLs contains $mediaSignInUrl"
-                      readarray -t my_array < <(echo "$replyUrls" | jq -c '.[]')
-                      for item in "${my_array[@]}"; do
-                          if [[ $item != "\"$mediaSignInUrl\"" && $item != "\"$adminSignInUrl\""]]; then
-                              if [[ "$replayUrlsStr" != "" ]]; then
-                                  replayUrlsStr="$replayUrlsStr,"
-                              fi
-                              replayUrlsStr="$replayUrlsStr $item"
-                          fi
-                      done
-                      echo "reply String: $replayUrlsStr"
+          echo "Setting callback URLs: $replyUrlString"
 
-                      objectId=$(az ad app list --all --filter "displayname eq '${targetAppName}'" --query "[0].id" -o tsv --only-show-errors)
-                      objectId=${objectId//[$'\t\r\n']/}
-                      echo "Object ID $objectId"
-
-                      restUrl="https://graph.microsoft.com/v1.0/applications/${objectId//[$'\t\r\n']/}"
-                      echo "Calling: $restUrl"
-
-                      az rest --method PATCH --header "Content-Type=application/json" --uri $restUrl --body "{\"web\":{\"redirectUris\":[$replayUrlsStr]}}" #--debug
-                  else
-                      echo "Reply URLs DOES NOT contains $mediaSignInUrl, $adminSignInUrl"
-                  fi
-
-              env:
-                  PR_NUMBER: ${{ github.event.number }}
-                  B2C_TENANT_ID: ${{ steps.bootstrapKv.outputs.b2c-jenkins-tenant-id }}
-                  B2C_CLIENT_ID: ${{ steps.bootstrapKv.outputs.b2c-jenkins-client-id }}
-                  B2C_CLIENT_PWD: ${{ steps.bootstrapKv.outputs.b2c-jenkins-client-secret }}
+          objectId=$(az ad app list --all --filter "displayname eq '${targetAppName}'" --query "[0].id" -o tsv --only-show-errors)
+          objectId=${objectId//[$'\t\r\n']/}
+          echo "Object ID: $objectId"
+          restUrl="https://graph.microsoft.com/v1.0/applications/${objectId//[$'\t\r\n']/}"
+          echo "Calling: $restUrl"
+          az rest --method PATCH --header "Content-Type=application/json" --uri $restUrl --body "{\"web\":{\"redirectUris\":[$replyUrlString]}}" #--debug
+        env:
+          PR_NUMBER: ${{ github.event.number }}
