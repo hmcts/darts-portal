@@ -5,6 +5,7 @@ import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { ErrorSummaryEntry } from '@core-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
+import { UserService } from '@services/user/user.service';
 
 @Component({
   selector: 'app-user-groups',
@@ -15,6 +16,7 @@ import { TableRowTemplateDirective } from '@directives/table-row-template.direct
 })
 export class UserGroupsComponent implements OnInit {
   router = inject(Router);
+  userService = inject(UserService);
 
   @Input({ required: true }) user!: User;
   @Output() errors = new EventEmitter<ErrorSummaryEntry[]>();

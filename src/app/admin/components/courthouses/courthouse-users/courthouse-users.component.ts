@@ -1,10 +1,11 @@
 import { CourthouseUser } from '@admin-types/index';
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { Filter } from '@common/filters/filter.interface';
 import { FiltersComponent } from '@common/filters/filters.component';
 import { DatatableColumn } from '@core-types/data-table/data-table-column.interface';
+import { UserService } from '@services/user/user.service';
 
 @Component({
   selector: 'app-courthouse-users',
@@ -17,6 +18,8 @@ export class CourthouseUsersComponent implements OnInit {
   @Input() users: CourthouseUser[] = [];
   @Output() selectRowsEvent = new EventEmitter<CourthouseUser[]>();
   selectedRows = [] as CourthouseUser[];
+
+  userService = inject(UserService);
 
   selectedFilters: Filter[] | null = null;
   fullUsers: CourthouseUser[] = [];

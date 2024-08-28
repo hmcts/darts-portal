@@ -1,7 +1,7 @@
 const express = require('express');
 const _ = require('lodash');
 const { localArray } = require('../../localArray');
-const { SUPER_ADMIN } = require('../../roles');
+const { SUPER_ADMIN, SUPER_USER } = require('../../roles');
 const { userIdHasAnyRoles } = require('../../users');
 const { DateTime } = require('luxon');
 
@@ -26,7 +26,7 @@ router.get('/reset', (req, res) => {
 });
 
 router.get('/:courthouseId', (req, res) => {
-  if (!userIdHasAnyRoles([SUPER_ADMIN], req.headers.user_id))
+  if (!userIdHasAnyRoles([SUPER_ADMIN, SUPER_USER], req.headers.user_id))
     return res.status(403).send({
       detail: `You do not have permission`,
     });
