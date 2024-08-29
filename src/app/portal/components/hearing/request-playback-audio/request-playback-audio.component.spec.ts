@@ -227,17 +227,20 @@ describe('RequestPlaybackAudioComponent', () => {
     });
 
     it('should set errors and emit validation errors when start time is outside the available audio times', () => {
-      const errorSummaryEntry = { fieldId: 'start-time-hour-input', message: fieldErrors.startTime.unavailable };
+      const errorSummaryEntry = [
+        { fieldId: 'start-time-hour-input', message: fieldErrors.startTime.unavailable },
+        { fieldId: 'end-time-hour-input', message: fieldErrors.endTime.unavailable },
+      ];
       const validationErrorSpy = jest.spyOn(component.validationErrorEvent, 'emit');
 
       const audioRequestForm = {
         startTime: {
-          hours: '01',
+          hours: '00',
           minutes: '59',
           seconds: '30',
         },
         endTime: {
-          hours: '15',
+          hours: '01',
           minutes: '20',
           seconds: '22',
         },
@@ -248,22 +251,25 @@ describe('RequestPlaybackAudioComponent', () => {
 
       expect(component.audioRequestForm.controls.startTime.errors).toEqual({ unavailable: true });
       expect(component.audioRequestForm.errors).toEqual({ invalid: true });
-      expect(validationErrorSpy).toHaveBeenCalledWith([errorSummaryEntry, ...component.errorSummary]);
+      expect(validationErrorSpy).toHaveBeenCalledWith(errorSummaryEntry);
     });
 
     it('should set errors and emit validation errors when end time is outside the available audio times', () => {
-      const errorSummaryEntry = { fieldId: 'end-time-hour-input', message: fieldErrors.endTime.unavailable };
+      const errorSummaryEntry = [
+        { fieldId: 'start-time-hour-input', message: fieldErrors.startTime.unavailable },
+        { fieldId: 'end-time-hour-input', message: fieldErrors.endTime.unavailable },
+      ];
       const validationErrorSpy = jest.spyOn(component.validationErrorEvent, 'emit');
 
       const audioRequestForm = {
         startTime: {
-          hours: '02',
-          minutes: '59',
+          hours: '17',
+          minutes: '10',
           seconds: '30',
         },
         endTime: {
           hours: '17',
-          minutes: '20',
+          minutes: '55',
           seconds: '22',
         },
         requestType: 'PLAYBACK',
@@ -273,7 +279,7 @@ describe('RequestPlaybackAudioComponent', () => {
 
       expect(component.audioRequestForm.controls.endTime.errors).toEqual({ unavailable: true });
       expect(component.audioRequestForm.errors).toEqual({ invalid: true });
-      expect(validationErrorSpy).toHaveBeenCalledWith([errorSummaryEntry, ...component.errorSummary]);
+      expect(validationErrorSpy).toHaveBeenCalledWith(errorSummaryEntry);
     });
   });
 });

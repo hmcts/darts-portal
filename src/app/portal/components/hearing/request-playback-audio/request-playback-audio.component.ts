@@ -98,12 +98,6 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
 
   public onValidationError() {
     this.errorSummary = [];
-    const formControls = this.f;
-    const idHashMap = new Map<string, string>();
-
-    idHashMap.set('startTime', 'start-time-hour-input');
-    idHashMap.set('endTime', 'end-time-hour-input');
-    idHashMap.set('requestType', 'playback-radio');
 
     //No audio available validation
     if (this.audios.length === 0) {
@@ -123,13 +117,7 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
       return;
     }
 
-    //Gets Validation field errors generically for all fields
-    this.errorSummary = Object.keys(formControls)
-      .filter((fieldId) => formControls[fieldId].errors)
-      .map((fieldId) =>
-        this.getFieldErrorMessages(fieldId).map((message) => ({ fieldId: idHashMap.get(fieldId) ?? '', message }))
-      )
-      .flat();
+    this.errorSummary = this.getErrorSummary();
 
     if (this.audioRequestForm.invalid) {
       if (!this.audioRequestForm.controls.endTime.invalid && this.audioRequestForm.errors?.endTimeBeforeStartTime) {
@@ -141,7 +129,7 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
       }
     }
 
-    this.validationErrorEvent.emit(this.errorSummary);
+    this.errorSummary.length > 0 && this.validationErrorEvent.emit(this.errorSummary);
   }
 
   public setTimes(): void {
@@ -168,39 +156,69 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
     }
   }
 
+  //Gets Validation field errors generically for all fields
+  private getErrorSummary() {
+    const formControls = this.f;
+    const idHashMap = new Map<string, string>();
+
+    idHashMap.set('startTime', 'start-time-hour-input');
+    idHashMap.set('endTime', 'end-time-hour-input');
+    idHashMap.set('requestType', 'playback-radio');
+
+    return Object.keys(formControls)
+      .filter((fieldId) => formControls[fieldId].errors)
+      .map((fieldId) =>
+        this.getFieldErrorMessages(fieldId).map((message) => ({ fieldId: idHashMap.get(fieldId) ?? '', message }))
+      )
+      .flat();
+  }
+
+  //Checks if audio exists within the range of the times
   private outsideAudioTimesValidation(startTime: DateTime, endTime: DateTime): void {
     const errorMessages: ErrorSummaryEntry[] = [];
-
-    const sortedAudioDates = this.audios
-      .map((audio) => [DateTime.fromISO(audio.media_start_timestamp), DateTime.fromISO(audio.media_end_timestamp)])
-      .flat()
-      .sort((a, b) => a.toMillis() - b.toMillis());
-
-    const earliestDate = sortedAudioDates[0];
-    const latestDate = sortedAudioDates[sortedAudioDates.length - 1];
+    let isAudioWithinRange = false;
 
     //Comparing only times not dates
     const startTimeOnly = startTime.set({ year: 0, month: 1, day: 1, millisecond: 0 });
     const endTimeOnly = endTime.set({ year: 0, month: 1, day: 1, millisecond: 0 });
-    const earliestTime = earliestDate.set({ year: 0, month: 1, day: 1, millisecond: 0 });
-    const latestTime = latestDate.set({ year: 0, month: 1, day: 1, millisecond: 0 });
 
-    if (startTimeOnly < earliestTime || startTimeOnly > latestTime) {
+    //Check there is at least one audio within start/end range
+    isAudioWithinRange = this.audios.some((audio) => {
+      const audioStartTime = DateTime.fromISO(audio.media_start_timestamp).set({
+        year: 0,
+        month: 1,
+        day: 1,
+        millisecond: 0,
+      });
+      const audioEndTime = DateTime.fromISO(audio.media_end_timestamp).set({
+        year: 0,
+        month: 1,
+        day: 1,
+        millisecond: 0,
+      });
+      return (
+        (startTimeOnly <= audioStartTime && endTimeOnly >= audioStartTime) ||
+        (startTimeOnly <= audioEndTime && endTimeOnly >= audioEndTime)
+      );
+    });
+
+    if (!isAudioWithinRange) {
       this.audioRequestForm.controls.startTime.setErrors({ unavailable: true });
+      this.audioRequestForm.controls.endTime.setErrors({ unavailable: true });
       this.audioRequestForm.setErrors({ invalid: true });
       errorMessages.push({
         fieldId: 'start-time-hour-input',
         message: fieldErrors.startTime.unavailable,
       });
-    }
-
-    if (endTimeOnly < earliestTime || endTimeOnly > latestTime) {
-      this.audioRequestForm.controls.endTime.setErrors({ unavailable: true });
-      this.audioRequestForm.setErrors({ invalid: true });
       errorMessages.push({
         fieldId: 'end-time-hour-input',
         message: fieldErrors.endTime.unavailable,
       });
+    } else {
+      //Reset in case of previous stored errors
+      this.audioRequestForm.controls.startTime.setErrors(null);
+      this.audioRequestForm.controls.endTime.setErrors(null);
+      this.validationErrorEvent.emit(this.getErrorSummary());
     }
 
     if (errorMessages.length > 0) {
@@ -209,6 +227,12 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
       ];
       this.validationErrorEvent.emit(uniqueErrorMessages);
     }
+  }
+
+  private clearErrors(): void {
+    this.audioRequestForm.controls.startTime.setErrors(null);
+    this.audioRequestForm.controls.endTime.setErrors(null);
+    this.validationErrorEvent.emit([]);
   }
 
   onSubmit() {
@@ -228,7 +252,9 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
     const endDateTime = DateTime.fromISO(`${hearingDate}T${endTimeHours}:${endTimeMinutes}:${endTimeSeconds}`);
 
     //If times are outside
-    this.audios.length > 0 && this.outsideAudioTimesValidation(startDateTime, endDateTime);
+    this.audios.length > 0 &&
+      !this.audioRequestForm.errors?.endTimeBeforeStartTime &&
+      this.outsideAudioTimesValidation(startDateTime, endDateTime);
 
     //Refuse to submit if form is invalid
     if (
@@ -239,6 +265,8 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
       this.audioRequestForm.invalid
     )
       return;
+
+    this.clearErrors();
 
     this.requestObj = {
       hearing_id: this.hearing.id,
