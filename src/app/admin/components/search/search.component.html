@@ -22,7 +22,7 @@
       <span error>{{ searchService.searchError() }}</span>
 
       <div *tab="'Cases'">
-        @if (searchService.cases().length) {
+        @if (searchService.cases().length && !searchService.isLoading()) {
           <app-case-search-results
             [adminPortal]="true"
             [cases]="searchService.cases()"
