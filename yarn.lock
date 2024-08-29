@@ -486,8 +486,8 @@ __metadata:
   linkType: hard
 
 "@angular/cdk@npm:^18.1.0":
-  version: 18.2.1
-  resolution: "@angular/cdk@npm:18.2.1"
+  version: 18.2.2
+  resolution: "@angular/cdk@npm:18.2.2"
   dependencies:
     parse5: ^7.1.2
     tslib: ^2.3.0
@@ -498,7 +498,7 @@ __metadata:
   dependenciesMeta:
     parse5:
       optional: true
-  checksum: d3f36505e8f564c70aa23c0c03886de466984ee8b47a0764ed6d5a99ed173f54903c36e780cd3aaab4fd2dc94d57da594fbe1c6a6aa1615b839b297807e4a21c
+  checksum: 0e563117910104cacbba11081df4bdd9ed1966e20f530f266468ca114e3d9b24dcc819b4e257505f9c0f31e5097816372339af64b25d5c793fb45b3e728a3288
   languageName: node
   linkType: hard
 
