@@ -1,4 +1,4 @@
-<a [routerLink]="['../']" class="govuk-back-link">Back</a>
+<a href="javascript:void(0)" (click)="location.back()" class="govuk-back-link">Back</a>
 
 @if (updatedStatus) {
   <app-govuk-banner>Status updated</app-govuk-banner>
