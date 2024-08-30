@@ -142,6 +142,14 @@ export const ADMIN_ROUTES: Routes = [
       ),
   },
   {
+    path: 'admin/events/:id',
+    title: 'DARTS Admin View Event',
+    data: { allowedRoles: ['SUPER_ADMIN', 'SUPER_USER'] },
+    loadComponent: () =>
+      import('./components/events/view-event/view-event.component').then((c) => c.ViewEventComponent),
+  },
+
+  {
     path: 'admin/audio-file/:id',
     title: 'DARTS Admin View Audio File',
     data: { allowedRoles: ['SUPER_ADMIN', 'SUPER_USER'] },

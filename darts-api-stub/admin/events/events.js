@@ -65,4 +65,29 @@ router.post('/search', (req, res) => {
   res.send(events);
 });
 
+const viewEvents = events.map((event) => ({
+  ...event,
+  event_mapping: {
+    id: 1,
+  },
+  is_log_entry: false,
+  version: 'v1',
+  is_data_anonymised: false,
+  created_by: 1,
+  last_modified_by: 2,
+  last_modified_at: '2024-06-01T13:00:00Z',
+  documentum_id: '123456',
+  message_id: '654321',
+  source_id: 'source123',
+}));
+
+router.get('/:id', (req, res) => {
+  const viewEvent = viewEvents.find((event) => event.id === Number(req.params.id));
+  if (!viewEvent) {
+    res.status(404).send('Event not found');
+    return;
+  }
+  res.send(viewEvent);
+});
+
 module.exports = router;

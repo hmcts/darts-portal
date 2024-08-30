@@ -1,0 +1,18 @@
+<a [routerLink]="['/admin/search']" class="govuk-back-link">Back</a>
+
+@let e = event();
+
+@if (e) {
+  <app-govuk-heading caption="Event">{{ e.id }}</app-govuk-heading>
+
+  @if (userService.isAdmin()) {
+    <app-tabs>
+      <app-basic-event-details [event]="e" *tab="'Basic details'" />
+      <app-advanced-event-details [event]="e" *tab="'Advanced details'" />
+    </app-tabs>
+  } @else {
+    <app-basic-event-details [event]="e" />
+  }
+} @else {
+  <app-loading />
+}
