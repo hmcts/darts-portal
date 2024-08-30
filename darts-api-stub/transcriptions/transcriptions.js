@@ -690,8 +690,9 @@ router.patch('/:transcriptId', (req, res) => {
 
 router.post('/', (req, res) => {
   //If start time is below then return 409
-  const exists = req.body.start_date_time.indexOf('03:33:33Z') !== -1 && true;
-  const dupe = req.body.transcription_type_id == 0 && true;
+  const exists =
+    req.body.start_date_time.indexOf('03:33:33Z') !== -1 || req.body.start_date_time.indexOf('02:33:33Z') !== -1;
+  const dupe = req.body.transcription_type_id == 0;
 
   if (exists || dupe) {
     res.status(409).send({ duplicate_transcription_id: 1, detail: 'Duplicated' });
