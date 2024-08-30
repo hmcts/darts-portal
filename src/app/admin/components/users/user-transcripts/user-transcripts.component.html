@@ -36,9 +36,7 @@
     [isHorizontalScroll]="true"
     ><ng-template [tableRowTemplate]="userTranscripts" let-row>
       <td>
-        <a href="javascript:void(0);" class="govuk-link" [routerLink]="['/admin/transcripts/', row.id]">
-          {{ row.id }}</a
-        >
+        <a class="govuk-link" [routerLink]="['/admin/transcripts/', row.id]"> {{ row.id }}</a>
       </td>
       <td>{{ row.caseNumber }}</td>
       <td>{{ row.courthouse }}</td>

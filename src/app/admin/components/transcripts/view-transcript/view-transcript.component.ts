@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -37,6 +37,7 @@ import { TranscriptDetailsComponent } from './transcript-details/transcript-deta
 export class ViewTranscriptComponent {
   transcriptFacade = inject(TranscriptFacadeService);
   route = inject(ActivatedRoute);
+  location = inject(Location);
 
   transcriptionId = Number(this.route.snapshot.params.transcriptionId);
   updatedStatus = Boolean(this.route.snapshot.queryParams.updatedStatus);
