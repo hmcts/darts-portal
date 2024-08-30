@@ -1,9 +1,8 @@
 <div id="search-results">
-  <div *ngIf="cases.length === 0">
+  @if (cases.length === 0) {
     <h2 class="govuk-heading-m">No search results</h2>
     <p class="govuk-body">Review the case ID, case reference or court reference you entered and try again.</p>
-  </div>
-  <div *ngIf="cases.length">
+  } @else {
     <app-data-table
       [rows]="cases"
       [columns]="columns"
@@ -25,18 +24,41 @@
           <td class="judges">{{ row.judges | arrayDisplay }}</td>
           <td class="defendants">{{ row.defendants | arrayDisplay }}</td>
         </tr>
-        <tr *ngIf="row.reportingRestriction && showRestrictions" class="restriction-row govuk-table__row">
-          <td colspan="6">
-            <div class="govuk-warning-text">
-              <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-              <span class="govuk-warning-text__text">
-                <span class="govuk-warning-text__assistive govuk-visually-hidden">Restriction</span>
-                There are restrictions against this case
-              </span>
-            </div>
-          </td>
-        </tr>
+        @if (row.reportingRestriction && showRestrictions) {
+          <tr class="restriction-row govuk-table__row">
+            <td colspan="6">
+              <div class="govuk-warning-text">
+                <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+                <span class="govuk-warning-text__text">
+                  <span class="govuk-warning-text__assistive govuk-visually-hidden">Restriction</span>
+                  There are restrictions against this case
+                </span>
+              </div>
+            </td>
+          </tr>
+        }
+        @if (row.isDataAnonymised) {
+          <tr class="expired-row govuk-table__row">
+            <td colspan="6">
+              <div role="region" aria-label="Case has expired">
+                <svg
+                  class="expired-icon moj-banner__icon"
+                  role="presentation"
+                  focusable="false"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 25 25"
+                  height="25"
+                  width="25"
+                >
+                  <path d="M13.6,15.4h-2.3v-4.5h2.3V15.4z M13.6,19.8h-2.3v-2.2h2.3V19.8z M0,23.2h25L12.5,2L0,23.2z" />
+                </svg>
+                <span class="govuk-visually-hidden">Expired</span>
+                <div class="moj-banner__message">This case has passed its retention date</div>
+              </div>
+            </td>
+          </tr>
+        }
       </ng-template>
     </app-data-table>
-  </div>
+  }
 </div>

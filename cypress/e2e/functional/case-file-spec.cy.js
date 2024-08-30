@@ -32,6 +32,28 @@ describe('Case file screen', () => {
     });
   });
 
+  describe('expired cases', () => {
+    beforeEach(() => {
+      cy.login();
+    });
+
+    it('should show limited information for an expired case', () => {
+      cy.visit('/case/10');
+      cy.injectAxe();
+      cy.get('h1').should('contain', 'C20220622031');
+
+      cy.get('.govuk-body').should('contain', 'Swansea');
+      cy.get('.govuk-body').should('contain', '10 Aug 2023');
+
+      //Should not contain
+
+      cy.get('a.govuk-link').should('not.exist'); //View or change
+      cy.get('a.moj-sub-navigation__link').should('not.exist'); //Tabs
+
+      cy.a11y();
+    });
+  });
+
   describe('valid cases', () => {
     beforeEach(() => {
       cy.login();

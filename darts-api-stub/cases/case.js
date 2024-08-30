@@ -108,6 +108,20 @@ const singleCaseFive = {
   defenders: ['Derek Defender'],
 };
 
+const singleCaseTen = {
+  case_id: 10,
+  courthouse: 'Swansea',
+  courthouse_id: 5,
+  case_number: 'C20220622031',
+  defendants: ['Defendant Dennis'],
+  judges: ['Judge Julie'],
+  prosecutors: ['Paddy Prosecutor'],
+  defenders: ['Dileep Defender'],
+  is_data_anonymised: true,
+  retain_until_date_time: '2023-08-10T11:23:24.858Z',
+  data_anonymised_at: '2023-08-10T11:53:24.858Z',
+};
+
 const defaultCaseHearings = [
   {
     case_id: 2,
@@ -331,6 +345,8 @@ const multipleCases = [
     defendants: ['Defendant Derren'],
     judges: ['Judge Juniper'],
     hearings: [],
+    is_data_anonymised: true,
+    data_anonymised_at: '2023-08-10T11:53:24.858Z',
   },
   {
     case_id: 11,
@@ -748,6 +764,9 @@ router.get('/:caseId', (req, res) => {
       break;
     case '5':
       res.send(singleCaseFive);
+      break;
+    case '10':
+      res.send(singleCaseTen);
       break;
     default:
       res.send(singleCase);
