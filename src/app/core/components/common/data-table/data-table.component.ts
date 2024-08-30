@@ -51,6 +51,7 @@ export class DataTableComponent<TRow> implements OnChanges {
   rowTemplate?: TemplateRef<TRow>;
 
   pagedRows: TRow[] = [];
+  initialRows: TRow[] = [];
   currentPage = 1;
 
   sorting: SortingInterface<TRow> = {
@@ -63,6 +64,9 @@ export class DataTableComponent<TRow> implements OnChanges {
     if (!changes.rows) {
       return;
     }
+
+    this.initialRows = [...this.rows];
+
     if (!this.sortAndPaginateOnRowsChanged) {
       this.sorting.column = '';
       this.currentPage = 1;
@@ -78,7 +82,13 @@ export class DataTableComponent<TRow> implements OnChanges {
     this.updatePagedData();
   }
 
+  resetRows() {
+    this.rows = [...this.initialRows];
+  }
+
   sortTable(column: string, sortFn?: CustomSort<TRow>): void {
+    this.resetRows();
+
     this.sorting = {
       column: column,
       order: this.isDescSorting(column) ? 'asc' : 'desc',
@@ -86,12 +96,12 @@ export class DataTableComponent<TRow> implements OnChanges {
     };
 
     if (sortFn) {
-      this.rows = this.rows.sort((a: TRow, b: TRow) => sortFn(a, b, this.sorting.order));
+      this.rows = this.rows.toSorted((a: TRow, b: TRow) => sortFn(a, b, this.sorting.order));
       this.updatePagedData();
       return;
     }
 
-    this.rows.sort((a: TRow, b: TRow) => {
+    this.rows = this.rows.toSorted((a: TRow, b: TRow) => {
       const valueA = (a as { [key: string]: unknown })[column];
       const valueB = (b as { [key: string]: unknown })[column];
 
