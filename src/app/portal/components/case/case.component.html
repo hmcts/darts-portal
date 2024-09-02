@@ -15,9 +15,13 @@
 
     @if (!data.caseFile.isDataAnonymised) {
       <app-tabs [(default)]="tab" (tabChange)="onTabChange($event)">
-        <app-case-hearings-table *tab="'Hearings'" [hearings]="data.hearings" [caseId]="caseId" />
+        @if (data.hearings) {
+          <app-case-hearings-table *tab="'Hearings'" [hearings]="data.hearings" [caseId]="caseId" />
+        }
 
-        <app-case-events-table *tab="'Court log'" [events]="data.events" [caseId]="caseId" />
+        @if (data.events) {
+          <app-case-events-table *tab="'Court log'" [events]="data.events" [caseId]="caseId" />
+        }
 
         @if (data.transcripts) {
           <app-case-transcripts-table

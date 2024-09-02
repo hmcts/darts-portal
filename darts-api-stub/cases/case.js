@@ -11,6 +11,12 @@ const resBody104 = {
   status: 404,
 };
 
+const resBody404 = {
+  type: 'CASE_123',
+  title: 'Case has expired',
+  status: 404,
+};
+
 const resBodyAuth100 = {
   type: 'AUTHORISATION_100',
   title: 'User is not authorised for the associated courthouse',
@@ -794,6 +800,9 @@ router.get('/:caseId/transcripts', (req, res) => {
     case '1':
       res.send(transcriptOne);
       break;
+    case '10':
+      res.status(404).send(resBody404);
+      break;
     default:
       res.send(transcriptTwo);
       break;
@@ -811,6 +820,9 @@ router.get('/:caseId/hearings', (req, res) => {
       break;
     case '2':
       res.send(getHearingsByCaseId(caseId));
+      break;
+    case '10':
+      res.status(404).send(resBody404);
       break;
     default:
       // Just leaving this as 1 at the moment to replicate
@@ -830,6 +842,9 @@ router.get('/:caseId/annotations', (req, res) => {
     case '404':
       res.status(404).send(resBody104);
       break;
+    case '10':
+      res.status(404).send(resBody404);
+      break;
     default:
       const annotations = getAnnotationsByCaseId(caseId);
       res.send(annotations);
@@ -837,8 +852,17 @@ router.get('/:caseId/annotations', (req, res) => {
   }
 });
 
-router.get('/:caseId/events', (_, res) => {
-  res.send(events);
+router.get('/:caseId/events', (req, res) => {
+  const caseId = req.params?.caseId;
+
+  switch (caseId) {
+    case '10':
+      res.status(404).send(resBody404);
+      break;
+    default:
+      res.send(events);
+      break;
+  }
 });
 
 module.exports = router;
