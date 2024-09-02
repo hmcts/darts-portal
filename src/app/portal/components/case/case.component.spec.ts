@@ -14,8 +14,6 @@ import { CaseComponent } from './case.component';
 
 describe('CaseComponent', () => {
   let fixture: ComponentFixture<CaseComponent>;
-  let fakeUserService: Partial<UserService>;
-  let fakeFileDownloadService: Partial<FileDownloadService>;
 
   const fakeAnnotationService = {
     downloadAnnotationDocument: jest.fn().mockReturnValue(of({})),
@@ -145,7 +143,7 @@ describe('CaseComponent', () => {
     },
   };
 
-  fakeUserService = {
+  const fakeUserService = {
     isSuperUser: jest.fn(() => true),
     isTranscriber: jest.fn(() => false),
     isJudge: jest.fn(() => true),
@@ -156,7 +154,7 @@ describe('CaseComponent', () => {
     isCourthouseJudge: jest.fn(() => false),
   };
 
-  fakeFileDownloadService = {
+  const fakeFileDownloadService = {
     saveAs: jest.fn(),
   };
 
