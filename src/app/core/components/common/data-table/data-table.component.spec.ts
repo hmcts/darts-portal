@@ -296,6 +296,7 @@ describe('DataTableComponent', () => {
           return 0;
         }
       };
+      component.ngOnChanges({ rows: {} } as unknown as SimpleChanges);
       component.sortTable(column, sortFn);
 
       const expectedSorting: SortingInterface<unknown> = {
@@ -411,6 +412,7 @@ describe('DataTableComponent', () => {
           return 0;
         }
       };
+      component.ngOnChanges({ rows: {} } as unknown as SimpleChanges);
       component.sortTable(column, sortFn);
 
       const expectedSorting: SortingInterface<unknown> = {
@@ -432,6 +434,7 @@ describe('DataTableComponent', () => {
         order: 'desc',
       };
 
+      component.ngOnChanges({ rows: {} } as unknown as SimpleChanges);
       component.sortTable(column);
 
       const expectedSorting: SortingInterface<unknown> = {
@@ -451,6 +454,8 @@ describe('DataTableComponent', () => {
         column,
         order: 'desc',
       };
+
+      component.ngOnChanges({ rows: {} } as unknown as SimpleChanges);
 
       component.sortTable(column);
 
