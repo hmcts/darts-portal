@@ -6,6 +6,8 @@ import {
   AnnotationsData,
   Case,
   CaseData,
+  CaseEvent,
+  CaseEventData,
   CaseRetentionChange,
   CaseRetentionHistoryData,
   CaseSearchFormValues,
@@ -657,5 +659,57 @@ describe('CaseService', () => {
       const mappedData = service['mapTranscriptDataToTranscript'](data as TranscriptData[]);
       expect(mappedData[0].status).toEqual('With Transcriber');
     });
+  });
+
+  it('#getCaseEvents', () => {
+    const mockCaseId = 123;
+    const mockEvents: CaseEventData[] = [
+      {
+        id: 1,
+        hearing_id: 2,
+        hearing_date: '2023-10-12',
+        timestamp: '2023-10-12T00:00:00Z',
+        name: 'Event 1',
+        text: 'Event 1 description',
+      },
+      {
+        id: 2,
+        hearing_id: 2,
+        hearing_date: '2023-10-12',
+        timestamp: '2023-10-12T00:00:00Z',
+        name: 'Event 2',
+        text: 'Event 2 description',
+      },
+    ];
+
+    let eventsResponse!: CaseEvent[];
+
+    service.getCaseEvents(mockCaseId).subscribe((events) => {
+      eventsResponse = events;
+    });
+
+    const req = httpMock.expectOne(`${GET_CASE_PATH}/${mockCaseId}/events`);
+    expect(req.request.method).toBe('GET');
+
+    req.flush(mockEvents);
+
+    expect(eventsResponse).toEqual([
+      {
+        id: 1,
+        hearingId: 2,
+        hearingDate: DateTime.fromISO('2023-10-12'),
+        timestamp: DateTime.fromISO('2023-10-12T00:00:00Z'),
+        name: 'Event 1',
+        text: 'Event 1 description',
+      },
+      {
+        id: 2,
+        hearingId: 2,
+        hearingDate: DateTime.fromISO('2023-10-12'),
+        timestamp: DateTime.fromISO('2023-10-12T00:00:00Z'),
+        name: 'Event 2',
+        text: 'Event 2 description',
+      },
+    ]);
   });
 });
