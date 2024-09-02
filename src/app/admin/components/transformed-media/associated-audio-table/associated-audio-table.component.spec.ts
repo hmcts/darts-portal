@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DatePipe } from '@angular/common';
+import { provideRouter } from '@angular/router';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { DateTime } from 'luxon';
 import { AssociatedAudioTableComponent } from './associated-audio-table.component';
@@ -12,7 +13,7 @@ describe('AssociatedAudioTableComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AssociatedAudioTableComponent],
-      providers: [DatePipe, LuxonDatePipe],
+      providers: [DatePipe, LuxonDatePipe, provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AssociatedAudioTableComponent);
