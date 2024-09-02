@@ -260,6 +260,21 @@ describe('CaseComponent', () => {
   describe('Expired case', () => {
     let component: CaseComponent;
 
+    it('should initialize data$ with the correct values', () => {
+      fixture = setup();
+      component = fixture.componentInstance;
+
+      component.data$.subscribe((data) => {
+        expect(data).toEqual({
+          caseFile: mockCaseFile,
+          hearings: mockSingleCaseTwoHearings,
+          transcripts: mockTranscript,
+          annotations: mockAnnotation,
+          events: mockEvents,
+        });
+      });
+    });
+
     it('should handle errors in caseService.getCaseHearings, caseService.getCaseTranscripts, caseService.getCaseAnnotations, and caseService.getCaseEvents', fakeAsync(() => {
       fixture = setup(true);
       component = fixture.componentInstance;
