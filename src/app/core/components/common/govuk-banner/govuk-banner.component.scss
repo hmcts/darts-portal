@@ -8,3 +8,7 @@
 .govuk-notification-banner {
   margin-bottom: 0;
 }
+
+:host {
+  display: block;
+}

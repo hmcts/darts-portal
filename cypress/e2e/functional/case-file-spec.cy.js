@@ -50,6 +50,11 @@ describe('Case file screen', () => {
       cy.get('a.govuk-link').should('not.exist'); //View or change
       cy.get('a.moj-sub-navigation__link').should('not.exist'); //Tabs
 
+      cy.get('#warning-message').should(
+        'contain',
+        'This case has passed its retention date on 10 Aug 2023. Data was deleted in line with HMCTS policy.'
+      );
+
       cy.a11y();
     });
   });
