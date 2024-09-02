@@ -45,6 +45,8 @@ describe('CaseService', () => {
     retain_until_date_time: '2023-07-10T11:23:24Z',
     retention_date_time_applied: '2023-06-10T11:23:24Z',
     retention_policy_applied: 'MANUAL',
+    is_data_anonymised: true,
+    data_anonymised_at: '2023-06-10T11:23:24Z',
   };
 
   const mockTranscriptData: TranscriptData[] = [
@@ -182,6 +184,8 @@ describe('CaseService', () => {
       retainUntilDateTime: DateTime.fromISO('2023-07-10T11:23:24Z'),
       retentionDateTimeApplied: DateTime.fromISO('2023-06-10T11:23:24Z'),
       retentionPolicyApplied: 'MANUAL',
+      isDataAnonymised: true,
+      dataAnonymisedAt: DateTime.fromISO('2023-06-10T11:23:24Z'),
     });
   });
 
@@ -208,6 +212,8 @@ describe('CaseService', () => {
       retainUntilDateTime: undefined,
       retentionDateTimeApplied: undefined,
       retentionPolicyApplied: 'MANUAL',
+      isDataAnonymised: true,
+      dataAnonymisedAt: DateTime.fromISO('2023-06-10T11:23:24Z'),
     });
   });
 
