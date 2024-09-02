@@ -5700,6 +5700,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/http-proxy@npm:^1.17.15":
+  version: 1.17.15
+  resolution: "@types/http-proxy@npm:1.17.15"
+  dependencies:
+    "@types/node": "*"
+  checksum: d96eaf4e22232b587b46256b89c20525c453216684481015cf50fb385b0b319b883749ccb77dee9af57d107e8440cdacd56f4234f65176d317e9777077ff5bf3
+  languageName: node
+  linkType: hard
+
 "@types/istanbul-lib-coverage@npm:*, @types/istanbul-lib-coverage@npm:^2.0.0, @types/istanbul-lib-coverage@npm:^2.0.1":
   version: 2.0.6
   resolution: "@types/istanbul-lib-coverage@npm:2.0.6"
@@ -8373,7 +8382,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:4.3.6":
+"debug@npm:4.3.6, debug@npm:^4.3.6":
   version: 4.3.6
   resolution: "debug@npm:4.3.6"
   dependencies:
@@ -10505,7 +10514,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"http-proxy-middleware@npm:*, http-proxy-middleware@npm:3.0.0, http-proxy-middleware@npm:^3.0.0":
+"http-proxy-middleware@npm:*, http-proxy-middleware@npm:^3.0.0":
+  version: 3.0.1
+  resolution: "http-proxy-middleware@npm:3.0.1"
+  dependencies:
+    "@types/http-proxy": ^1.17.15
+    debug: ^4.3.6
+    http-proxy: ^1.18.1
+    is-glob: ^4.0.3
+    is-plain-obj: ^3.0.0
+    micromatch: ^4.0.8
+  checksum: de16ff055b860a034b52040e67d2b4eaca7fa74154058178efa9e1befbe6bb6c8b2728f005ad29cf9373abcbdcfa47c742f1eec82243bb01655fbe9f25e83653
+  languageName: node
+  linkType: hard
+
+"http-proxy-middleware@npm:3.0.0":
   version: 3.0.0
   resolution: "http-proxy-middleware@npm:3.0.0"
   dependencies:
