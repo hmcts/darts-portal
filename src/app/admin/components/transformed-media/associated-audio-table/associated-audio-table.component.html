@@ -1,13 +1,9 @@
 <app-data-table [rowSelectable]="rowSelect" [columns]="columns" [rows]="rows()" (rowSelect)="setSelectedRows($event)">
   <ng-template [tableRowTemplate]="rows()" let-row>
     <td class="audio-id">
-      @if (hideOrDeleteView) {
-        <a class="govuk-link" [routerLink]="['/admin/audio-file', row.audioId]">
-          {{ row.audioId }}
-        </a>
-      } @else {
+      <a class="govuk-link" [routerLink]="['/admin/audio-file', row.audioId]">
         {{ row.audioId }}
-      }
+      </a>
     </td>
     <td class="case-id">
       @if (hideOrDeleteView) {
