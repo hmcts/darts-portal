@@ -111,6 +111,8 @@ export class AdminSearchService {
       courtrooms: result.courtrooms.map((c) => c.name),
       judges: result.judges,
       defendants: result.defendants,
+      isDataAnonymised: result.is_data_anonymised,
+      dataAnonymisedAt: result.data_anonymised_at ? DateTime.fromISO(result.data_anonymised_at) : undefined,
     }));
   }
 

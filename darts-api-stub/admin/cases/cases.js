@@ -38,6 +38,24 @@ const caseSearchResults = [
     judges: ['Judge 3'],
     defendants: ['Defendant 3'],
   },
+  {
+    id: 3,
+    case_number: '8714155',
+    courthouse: {
+      id: 3,
+      display_name: 'Courthouse 3',
+    },
+    courtrooms: [
+      {
+        id: 3,
+        name: 'Courtroom 3',
+      },
+    ],
+    judges: ['Judge 4'],
+    defendants: ['Defendant 4'],
+    is_data_anonymised: true,
+    data_anonymised_at: '2023-08-10T11:53:24.858Z',
+  },
 ];
 
 router.post('/search', (req, res) => {

@@ -1,3 +1,5 @@
+import { DateTime } from 'luxon';
+
 export type AdminCaseSearchResult = {
   id: number;
   number: string;
@@ -5,4 +7,6 @@ export type AdminCaseSearchResult = {
   courtrooms: string[];
   judges: string[];
   defendants: string[];
+  isDataAnonymised?: boolean;
+  dataAnonymisedAt?: DateTime;
 };
