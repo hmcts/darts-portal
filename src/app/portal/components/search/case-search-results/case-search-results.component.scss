@@ -1,5 +1,16 @@
 .restriction-row {
   background: rgba(29, 112, 184, 0.1);
+  border-top: hidden;
+}
+
+.expired-row {
+  background: rgb(251, 235, 232);
+  border-top: hidden;
+}
+
+.expired-icon {
+  fill: #d0331b;
+  margin-left: 5px;
 }
 
 .remove-bottom-border td {

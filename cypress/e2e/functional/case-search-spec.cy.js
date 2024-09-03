@@ -38,6 +38,20 @@ describe('Case search', () => {
     cy.get('.restriction-row').should('contain', 'There are restrictions against this case');
   });
 
+  it('single expired case', () => {
+    cy.contains('Search').click();
+    cy.get('h1').should('contain', 'Search for a case');
+    cy.get('#case_number').type('C20220620010');
+    cy.get('button').contains('Search').click();
+
+    cy.get('#search-results').should('contain', '1 result');
+    cy.get('.govuk-table__row .case_number a').contains('C20220620010');
+    cy.get('.govuk-table__row .courthouse').contains('Slough');
+    cy.get('.govuk-table__row .judges').contains('Judge Juniper');
+    cy.get('.govuk-table__row .defendants').contains('Defendant Derren');
+    cy.get('.expired-row').should('contain', 'This case has passed its retention date');
+  });
+
   it('single case with multiple courtrooms, judges and defendants', () => {
     cy.contains('Search').click();
     cy.get('h1').should('contain', 'Search for a case');

@@ -11,6 +11,8 @@ export type CaseSearchResult = {
   reportingRestriction?: string;
   hearings?: Hearing[];
   courtrooms?: string[];
+  isDataAnonymised?: boolean;
+  dataAnonymisedAt?: DateTime;
 };
 
 export type Case = {
@@ -28,4 +30,6 @@ export type Case = {
   closedDateTime?: DateTime;
   retentionDateTimeApplied?: DateTime;
   retentionPolicyApplied?: string;
+  isDataAnonymised?: boolean;
+  dataAnonymisedAt?: DateTime;
 };

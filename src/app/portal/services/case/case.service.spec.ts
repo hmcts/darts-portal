@@ -6,6 +6,8 @@ import {
   AnnotationsData,
   Case,
   CaseData,
+  CaseEvent,
+  CaseEventData,
   CaseRetentionChange,
   CaseRetentionHistoryData,
   CaseSearchFormValues,
@@ -45,6 +47,8 @@ describe('CaseService', () => {
     retain_until_date_time: '2023-07-10T11:23:24Z',
     retention_date_time_applied: '2023-06-10T11:23:24Z',
     retention_policy_applied: 'MANUAL',
+    is_data_anonymised: true,
+    data_anonymised_at: '2023-06-10T11:23:24Z',
   };
 
   const mockTranscriptData: TranscriptData[] = [
@@ -182,6 +186,8 @@ describe('CaseService', () => {
       retainUntilDateTime: DateTime.fromISO('2023-07-10T11:23:24Z'),
       retentionDateTimeApplied: DateTime.fromISO('2023-06-10T11:23:24Z'),
       retentionPolicyApplied: 'MANUAL',
+      isDataAnonymised: true,
+      dataAnonymisedAt: DateTime.fromISO('2023-06-10T11:23:24Z'),
     });
   });
 
@@ -208,6 +214,38 @@ describe('CaseService', () => {
       retainUntilDateTime: undefined,
       retentionDateTimeApplied: undefined,
       retentionPolicyApplied: 'MANUAL',
+      isDataAnonymised: true,
+      dataAnonymisedAt: DateTime.fromISO('2023-06-10T11:23:24Z'),
+    });
+  });
+
+  it('#mapCaseDataToCase should return undefined anonymised data if it does not exist', () => {
+    const data: CaseData = {
+      ...mockCaseData,
+      retain_until_date_time: undefined,
+      retention_date_time_applied: undefined,
+      is_data_anonymised: false,
+      data_anonymised_at: '',
+    };
+
+    const result = service['mapCaseDataToCase'](data);
+
+    expect(result).toEqual({
+      id: 1,
+      courthouse: 'Swansea',
+      number: 'CASE1001',
+      defendants: ['Defendant Dave', 'Defendant Debbie'],
+      judges: ['Judge Judy', 'Judge Jones'],
+      prosecutors: ['Polly Prosecutor'],
+      defenders: ['Derek Defender'],
+      retainUntil: '2023-08-10T11:23:24Z',
+      closedDateTime: undefined,
+      reportingRestrictions: [],
+      retainUntilDateTime: undefined,
+      retentionDateTimeApplied: undefined,
+      retentionPolicyApplied: 'MANUAL',
+      isDataAnonymised: false,
+      dataAnonymisedAt: undefined,
     });
   });
 
@@ -551,6 +589,8 @@ describe('CaseService', () => {
           defendants: ['DEFENDANT'],
           judges: ['JUDGE'],
           reporting_restriction: 'RESTRICTION',
+          is_data_anonymised: true,
+          data_anonymised_at: '2023-06-10T11:23:24Z',
         })
       ).toEqual({
         courthouse: 'COURTHOUSE',
@@ -561,6 +601,35 @@ describe('CaseService', () => {
         number: '1',
         reportingRestriction: 'RESTRICTION',
         courtrooms: [],
+        isDataAnonymised: true,
+        dataAnonymisedAt: DateTime.fromISO('2023-06-10T11:23:24Z'),
+      });
+    });
+
+    it('should have undefined anonymised data if empty', () => {
+      expect(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (service as any).mapCaseDataToCaseSearchResult({
+          case_id: 1,
+          case_number: '1',
+          courthouse: 'COURTHOUSE',
+          defendants: ['DEFENDANT'],
+          judges: ['JUDGE'],
+          reporting_restriction: 'RESTRICTION',
+          is_data_anonymised: false,
+          data_anonymised_at: '',
+        })
+      ).toEqual({
+        courthouse: 'COURTHOUSE',
+        defendants: ['DEFENDANT'],
+        hearings: undefined,
+        id: 1,
+        judges: ['JUDGE'],
+        number: '1',
+        reportingRestriction: 'RESTRICTION',
+        courtrooms: [],
+        isDataAnonymised: false,
+        dataAnonymisedAt: undefined,
       });
     });
 
@@ -651,5 +720,57 @@ describe('CaseService', () => {
       const mappedData = service['mapTranscriptDataToTranscript'](data as TranscriptData[]);
       expect(mappedData[0].status).toEqual('With Transcriber');
     });
+  });
+
+  it('#getCaseEvents', () => {
+    const mockCaseId = 123;
+    const mockEvents: CaseEventData[] = [
+      {
+        id: 1,
+        hearing_id: 2,
+        hearing_date: '2023-10-12',
+        timestamp: '2023-10-12T00:00:00Z',
+        name: 'Event 1',
+        text: 'Event 1 description',
+      },
+      {
+        id: 2,
+        hearing_id: 2,
+        hearing_date: '2023-10-12',
+        timestamp: '2023-10-12T00:00:00Z',
+        name: 'Event 2',
+        text: 'Event 2 description',
+      },
+    ];
+
+    let eventsResponse!: CaseEvent[];
+
+    service.getCaseEvents(mockCaseId).subscribe((events) => {
+      eventsResponse = events;
+    });
+
+    const req = httpMock.expectOne(`${GET_CASE_PATH}/${mockCaseId}/events`);
+    expect(req.request.method).toBe('GET');
+
+    req.flush(mockEvents);
+
+    expect(eventsResponse).toEqual([
+      {
+        id: 1,
+        hearingId: 2,
+        hearingDate: DateTime.fromISO('2023-10-12'),
+        timestamp: DateTime.fromISO('2023-10-12T00:00:00Z'),
+        name: 'Event 1',
+        text: 'Event 1 description',
+      },
+      {
+        id: 2,
+        hearingId: 2,
+        hearingDate: DateTime.fromISO('2023-10-12'),
+        timestamp: DateTime.fromISO('2023-10-12T00:00:00Z'),
+        name: 'Event 2',
+        text: 'Event 2 description',
+      },
+    ]);
   });
 });

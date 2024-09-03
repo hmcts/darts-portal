@@ -152,6 +152,8 @@ export class CaseService {
       reportingRestriction: c.reporting_restriction,
       hearings: c.hearings,
       courtrooms: Array.from(new Set(c.hearings?.map((h) => h.courtroom))),
+      isDataAnonymised: c.is_data_anonymised,
+      dataAnonymisedAt: c.data_anonymised_at ? DateTime.fromISO(c.data_anonymised_at) : undefined,
     };
   }
 
@@ -173,6 +175,8 @@ export class CaseService {
         ? DateTime.fromISO(c.retention_date_time_applied)
         : undefined,
       retentionPolicyApplied: c.retention_policy_applied,
+      isDataAnonymised: c.is_data_anonymised,
+      dataAnonymisedAt: c.data_anonymised_at ? DateTime.fromISO(c.data_anonymised_at) : undefined,
     };
   }
 

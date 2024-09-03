@@ -1,14 +1,25 @@
-<app-reporting-restriction [restrictions]="caseFile.reportingRestrictions"></app-reporting-restriction>
+@if (!caseFile.isDataAnonymised) {
+  <app-reporting-restriction [restrictions]="caseFile.reportingRestrictions"></app-reporting-restriction>
+} @else {
+  @let retentionDate = caseFile.retainUntilDateTime && caseFile.retainUntilDateTime | dateTime: 'd MMM y';
+  <app-govuk-banner type="warning">
+    <ng-content
+      >This case has passed its retention date on {{ retentionDate }}. Data was deleted in line with HMCTS policy.
+    </ng-content>
+  </app-govuk-banner>
+}
 
 <app-govuk-heading caption="Case ID">{{ caseFile.number }}</app-govuk-heading>
 <h2 class="govuk-heading-s">Courthouse</h2>
 <p class="govuk-body">{{ caseFile.courthouse }}</p>
-<h2 class="govuk-heading-s">Prosecutor(s)</h2>
-<p class="govuk-body">{{ caseFile.prosecutors | join: ', ' : '-' }}</p>
-<h2 class="govuk-heading-s">Defence(s)</h2>
-<p class="govuk-body">{{ caseFile.defenders | join: ', ' : '-' }}</p>
-<h2 class="govuk-heading-s">Defendant(s)</h2>
-<p class="govuk-body">{{ caseFile.defendants | join: ', ' : '-' }}</p>
+@if (!caseFile.isDataAnonymised) {
+  <h2 class="govuk-heading-s">Prosecutor(s)</h2>
+  <p class="govuk-body">{{ caseFile.prosecutors | join: ', ' : '-' }}</p>
+  <h2 class="govuk-heading-s">Defence(s)</h2>
+  <p class="govuk-body">{{ caseFile.defenders | join: ', ' : '-' }}</p>
+  <h2 class="govuk-heading-s">Defendant(s)</h2>
+  <p class="govuk-body">{{ caseFile.defendants | join: ', ' : '-' }}</p>
+}
 
 @if (
   userService.isRequester() ||
@@ -25,6 +36,8 @@
       No date applied
     }
 
-    <a routerLink="retention" class="govuk-link retention-link">View or change</a>
+    @if (!caseFile.isDataAnonymised) {
+      <a routerLink="retention" class="govuk-link retention-link">View or change</a>
+    }
   </p>
 }

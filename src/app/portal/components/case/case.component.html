@@ -13,28 +13,34 @@
 
     <app-case-file [caseFile]="data.caseFile" />
 
-    <app-tabs [(default)]="tab" (tabChange)="onTabChange($event)">
-      <app-case-hearings-table *tab="'Hearings'" [hearings]="data.hearings" [caseId]="caseId" />
+    @if (!data.caseFile.isDataAnonymised) {
+      <app-tabs [(default)]="tab" (tabChange)="onTabChange($event)">
+        @if (data.hearings) {
+          <app-case-hearings-table *tab="'Hearings'" [hearings]="data.hearings" [caseId]="caseId" />
+        }
 
-      <app-case-events-table *tab="'Court log'" [events]="data.events" [caseId]="caseId" />
+        @if (data.events) {
+          <app-case-events-table *tab="'Court log'" [events]="data.events" [caseId]="caseId" />
+        }
 
-      @if (data.transcripts) {
-        <app-case-transcripts-table
-          *tab="'All Transcripts'; count: data.transcripts.length; id: 'transcripts-tab'"
-          [transcripts]="data.transcripts"
-        />
-      }
+        @if (data.transcripts) {
+          <app-case-transcripts-table
+            *tab="'All Transcripts'; count: data.transcripts.length; id: 'transcripts-tab'"
+            [transcripts]="data.transcripts"
+          />
+        }
 
-      @if (data.annotations) {
-        <app-case-annotations-table
-          *tab="'All annotations'; count: data.annotations.length; id: 'annotations-tab'"
-          [annotations]="data.annotations"
-          [caseId]="caseId"
-          (deleteAnnotation)="onDeleteAnnotation($event)"
-          (downloadAnnotation)="onDownloadAnnotation($event)"
-        />
-      }
-    </app-tabs>
+        @if (data.annotations) {
+          <app-case-annotations-table
+            *tab="'All annotations'; count: data.annotations.length; id: 'annotations-tab'"
+            [annotations]="data.annotations"
+            [caseId]="caseId"
+            (deleteAnnotation)="onDeleteAnnotation($event)"
+            (downloadAnnotation)="onDownloadAnnotation($event)"
+          />
+        }
+      </app-tabs>
+    }
   } @else {
     <app-loading text="Loading case details..."></app-loading>
   }

@@ -9,6 +9,8 @@ export interface CaseSearchResultData {
   judges?: string[];
   reporting_restriction?: string;
   hearings?: Hearing[];
+  is_data_anonymised?: boolean;
+  data_anonymised_at?: string;
 }
 
 export interface CaseData {
@@ -26,4 +28,6 @@ export interface CaseData {
   case_closed_date_time?: string;
   retention_date_time_applied?: string;
   retention_policy_applied?: string;
+  is_data_anonymised?: boolean;
+  data_anonymised_at?: string;
 }

@@ -11,6 +11,12 @@ const resBody104 = {
   status: 404,
 };
 
+const resBody404 = {
+  type: 'CASE_123',
+  title: 'Case has expired',
+  status: 404,
+};
+
 const resBodyAuth100 = {
   type: 'AUTHORISATION_100',
   title: 'User is not authorised for the associated courthouse',
@@ -106,6 +112,20 @@ const singleCaseFive = {
   judges: ['Judge Judy'],
   prosecutors: ['Patrick Prosecutor'],
   defenders: ['Derek Defender'],
+};
+
+const singleCaseTen = {
+  case_id: 10,
+  courthouse: 'Swansea',
+  courthouse_id: 5,
+  case_number: 'C20220622031',
+  defendants: ['Defendant Dennis'],
+  judges: ['Judge Julie'],
+  prosecutors: ['Paddy Prosecutor'],
+  defenders: ['Dileep Defender'],
+  is_data_anonymised: true,
+  retain_until_date_time: '2023-08-10T11:23:24.858Z',
+  data_anonymised_at: '2023-08-10T11:53:24.858Z',
 };
 
 const defaultCaseHearings = [
@@ -331,6 +351,8 @@ const multipleCases = [
     defendants: ['Defendant Derren'],
     judges: ['Judge Juniper'],
     hearings: [],
+    is_data_anonymised: true,
+    data_anonymised_at: '2023-08-10T11:53:24.858Z',
   },
   {
     case_id: 11,
@@ -749,6 +771,9 @@ router.get('/:caseId', (req, res) => {
     case '5':
       res.send(singleCaseFive);
       break;
+    case '10':
+      res.send(singleCaseTen);
+      break;
     default:
       res.send(singleCase);
       break;
@@ -775,6 +800,9 @@ router.get('/:caseId/transcripts', (req, res) => {
     case '1':
       res.send(transcriptOne);
       break;
+    case '10':
+      res.status(404).send(resBody404);
+      break;
     default:
       res.send(transcriptTwo);
       break;
@@ -792,6 +820,9 @@ router.get('/:caseId/hearings', (req, res) => {
       break;
     case '2':
       res.send(getHearingsByCaseId(caseId));
+      break;
+    case '10':
+      res.status(404).send(resBody404);
       break;
     default:
       // Just leaving this as 1 at the moment to replicate
@@ -811,6 +842,9 @@ router.get('/:caseId/annotations', (req, res) => {
     case '404':
       res.status(404).send(resBody104);
       break;
+    case '10':
+      res.status(404).send(resBody404);
+      break;
     default:
       const annotations = getAnnotationsByCaseId(caseId);
       res.send(annotations);
@@ -818,8 +852,17 @@ router.get('/:caseId/annotations', (req, res) => {
   }
 });
 
-router.get('/:caseId/events', (_, res) => {
-  res.send(events);
+router.get('/:caseId/events', (req, res) => {
+  const caseId = req.params?.caseId;
+
+  switch (caseId) {
+    case '10':
+      res.status(404).send(resBody404);
+      break;
+    default:
+      res.send(events);
+      break;
+  }
 });
 
 module.exports = router;

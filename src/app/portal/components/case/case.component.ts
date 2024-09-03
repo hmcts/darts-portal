@@ -81,10 +81,10 @@ export class CaseComponent {
 
   data$ = combineLatest({
     caseFile: this.caseFile$,
-    hearings: this.hearings$,
+    hearings: this.hearings$.pipe(catchError(() => of(null))),
     transcripts: this.transcripts$.pipe(catchError(() => of(null))),
-    annotations: this.annotations$,
-    events: this.events$,
+    annotations: this.annotations$.pipe(catchError(() => of(null))),
+    events: this.events$.pipe(catchError(() => of(null))),
   });
 
   onDeleteAnnotation(annotationId: number) {

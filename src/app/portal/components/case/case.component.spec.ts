@@ -1,22 +1,19 @@
 import { DatePipe } from '@angular/common';
-import { provideHttpClient } from '@angular/common/http';
+import { HttpResponse, provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { AnnotationsData, Case, Hearing, TranscriptData } from '@portal-types/index';
+import { AnnotationsData, Case, CaseEvent, Hearing, TranscriptData } from '@portal-types/index';
 import { AnnotationService } from '@services/annotation/annotation.service';
 import { CaseService } from '@services/case/case.service';
 import { FileDownloadService } from '@services/file-download/file-download.service';
 import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { CaseComponent } from './case.component';
 
 describe('CaseComponent', () => {
-  let component: CaseComponent;
   let fixture: ComponentFixture<CaseComponent>;
-  let fakeUserService: Partial<UserService>;
-  let fakeFileDownloadService: Partial<FileDownloadService>;
 
   const fakeAnnotationService = {
     downloadAnnotationDocument: jest.fn().mockReturnValue(of({})),
@@ -35,6 +32,17 @@ describe('CaseComponent', () => {
     defenders: ['Derek Defender'],
     retainUntil: '2023-08-10T11:23:24.858Z',
   };
+
+  const mockEvents: CaseEvent[] = [
+    {
+      id: 1,
+      hearingId: 1,
+      hearingDate: DateTime.fromISO('2023-09-01'),
+      timestamp: DateTime.fromISO('2023-09-01T12:00:00'),
+      name: 'Hearing',
+      text: 'Hearing 1',
+    },
+  ];
 
   const mockCaseFileNoCourthouseId: Case = {
     id: 1,
@@ -107,11 +115,23 @@ describe('CaseComponent', () => {
   ];
 
   const caseServiceMock = {
-    getCase: jest.fn(),
-    getCaseHearings: jest.fn(),
-    getCaseTranscripts: jest.fn(),
-    getCaseAnnotations: jest.fn(),
-    getCaseEvents: jest.fn(),
+    getCase: jest.fn().mockReturnValue(of(mockCaseFile)),
+    getCaseHearings: jest.fn().mockReturnValue(mockSingleCaseTwoHearings),
+    getCaseTranscripts: jest.fn().mockReturnValue(mockTranscript),
+    getCaseAnnotations: jest.fn().mockReturnValue(mockAnnotation),
+    getCaseEvents: jest.fn().mockReturnValue(of([])),
+  };
+
+  const caseServiceMockError = {
+    getCase: jest
+      .fn()
+      .mockReturnValue(
+        of({ ...mockCaseFile, isDataAnonymised: true, dataAnonymisedAt: DateTime.fromISO('2023-08-10T11:23:24.858Z') })
+      ),
+    getCaseHearings: jest.fn().mockReturnValue(throwError(() => ({ status: 404 }) as unknown as HttpResponse<void>)),
+    getCaseTranscripts: jest.fn().mockReturnValue(throwError(() => ({ status: 404 }) as unknown as HttpResponse<void>)),
+    getCaseAnnotations: jest.fn().mockReturnValue(throwError(() => ({ status: 404 }) as unknown as HttpResponse<void>)),
+    getCaseEvents: jest.fn().mockReturnValue(throwError(() => ({ status: 404 }) as unknown as HttpResponse<void>)),
   };
 
   const mockActivatedRoute = {
@@ -123,116 +143,158 @@ describe('CaseComponent', () => {
     },
   };
 
-  beforeEach(() => {
-    fakeUserService = {
-      isTranscriber: jest.fn(() => false),
-      isJudge: jest.fn(() => true),
-      isApprover: jest.fn(() => false),
-      isRequester: jest.fn(() => false),
-      isAdmin: jest.fn(() => true),
-      isTranslationQA: jest.fn(() => false),
-      isCourthouseJudge: jest.fn(() => false),
-    };
+  const fakeUserService = {
+    isSuperUser: jest.fn(() => true),
+    isTranscriber: jest.fn(() => false),
+    isJudge: jest.fn(() => true),
+    isApprover: jest.fn(() => false),
+    isRequester: jest.fn(() => false),
+    isAdmin: jest.fn(() => true),
+    isTranslationQA: jest.fn(() => false),
+    isCourthouseJudge: jest.fn(() => false),
+  };
 
-    fakeFileDownloadService = {
-      saveAs: jest.fn(),
-    };
+  const fakeFileDownloadService = {
+    saveAs: jest.fn(),
+  };
 
-    TestBed.configureTestingModule({
+  const setup = (throwError = false) => {
+    return TestBed.configureTestingModule({
       imports: [CaseComponent],
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
-        { provide: CaseService, useValue: caseServiceMock },
+        { provide: CaseService, useValue: !throwError ? caseServiceMock : caseServiceMockError },
         { provide: UserService, useValue: fakeUserService },
         { provide: AnnotationService, useValue: fakeAnnotationService },
         { provide: FileDownloadService, useValue: fakeFileDownloadService },
         { provide: DatePipe },
       ],
+    }).createComponent(CaseComponent);
+  };
+
+  describe('Expired case', () => {
+    let component: CaseComponent;
+
+    beforeEach(() => {
+      component = setup().componentInstance;
     });
 
-    jest.spyOn(caseServiceMock, 'getCase').mockReturnValue(of(mockCaseFile));
-    jest.spyOn(caseServiceMock, 'getCaseHearings').mockReturnValue(mockSingleCaseTwoHearings);
-    jest.spyOn(caseServiceMock, 'getCaseTranscripts').mockReturnValue(mockTranscript);
-    jest.spyOn(caseServiceMock, 'getCaseAnnotations').mockReturnValue(mockAnnotation);
-    jest.spyOn(caseServiceMock, 'getCaseEvents').mockReturnValue(of([]));
-
-    fixture = TestBed.createComponent(CaseComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
-  it('caseId should be set', () => {
-    expect(component.caseId).toEqual(1);
-  });
-
-  it('caseFile$ should be set', () => {
-    let result;
-    component.caseFile$.subscribe((r) => (result = r));
-    expect(result).toEqual(mockCaseFile);
-  });
-
-  it('hearings$ should be set', () => {
-    expect(component.hearings$).toEqual(mockSingleCaseTwoHearings);
-  });
-
-  describe('#onDeleteClicked', () => {
-    it('should set the ID in the selectedAnnotationsforDeletion array', () => {
-      component.onDeleteAnnotation(345);
-      expect(component.selectedAnnotationsforDeletion).toEqual([345]);
+    it('should create', () => {
+      expect(component).toBeTruthy();
     });
-  });
 
-  describe('#onDeleteConfirmed', () => {
-    it('should use the IDs in the selectedAnnotationsforDeletion array and call the backend', () => {
-      const annotationId = 123;
-      component.onDeleteAnnotation(annotationId);
-      component.onDeleteConfirmed();
-      expect(fakeAnnotationService.deleteAnnotation).toHaveBeenCalledWith(annotationId);
-      expect(component.tab).toEqual('All annotations');
+    it('caseId should be set', () => {
+      expect(component.caseId).toEqual(1);
     });
-  });
 
-  describe('#onDeleteCancelled', () => {
-    it('should clear the ID in selectedAnnotationsforDeletion array', () => {
-      const ids = [123, 321];
-      component.selectedAnnotationsforDeletion = ids;
-      expect(component.selectedAnnotationsforDeletion).toEqual(ids);
-      component.onDeleteCancelled();
-      expect(component.selectedAnnotationsforDeletion).toEqual([]);
-      expect(component.tab).toEqual('All annotations');
-    });
-  });
-
-  describe('#annotations', () => {
-    it('annotations$ should be set if user is an admin or courthouse judge', () => {
+    it('caseFile$ should be set', () => {
       let result;
-      component.annotations$.subscribe((r) => (result = r));
-      expect([result]).toStrictEqual(mockAnnotation);
+      component.caseFile$.subscribe((r) => (result = r));
+      expect(result).toEqual(mockCaseFile);
     });
 
-    it('annotations$ should not be set if user has no admin or courthouse judge role', () => {
-      jest.spyOn(caseServiceMock, 'getCase').mockReturnValue(of(mockCaseFileNoCourthouseId));
-      jest.spyOn(fakeUserService, 'isAdmin').mockReturnValue(false);
-      jest.spyOn(fakeUserService, 'isCourthouseJudge').mockReturnValue(false);
+    it('hearings$ should be set', () => {
+      expect(component.hearings$).toEqual(mockSingleCaseTwoHearings);
+    });
 
-      let result;
-      component.annotations$.subscribe((r) => (result = r));
-      expect(result).toEqual(null);
+    describe('#onDeleteClicked', () => {
+      it('should set the ID in the selectedAnnotationsforDeletion array', () => {
+        component.onDeleteAnnotation(345);
+        expect(component.selectedAnnotationsforDeletion).toEqual([345]);
+      });
+    });
+
+    describe('#onDeleteConfirmed', () => {
+      it('should use the IDs in the selectedAnnotationsforDeletion array and call the backend', () => {
+        const annotationId = 123;
+        component.onDeleteAnnotation(annotationId);
+        component.onDeleteConfirmed();
+        expect(fakeAnnotationService.deleteAnnotation).toHaveBeenCalledWith(annotationId);
+        expect(component.tab).toEqual('All annotations');
+      });
+    });
+
+    describe('#onDeleteCancelled', () => {
+      it('should clear the ID in selectedAnnotationsforDeletion array', () => {
+        const ids = [123, 321];
+        component.selectedAnnotationsforDeletion = ids;
+        expect(component.selectedAnnotationsforDeletion).toEqual(ids);
+        component.onDeleteCancelled();
+        expect(component.selectedAnnotationsforDeletion).toEqual([]);
+        expect(component.tab).toEqual('All annotations');
+      });
+    });
+
+    describe('#annotations', () => {
+      it('annotations$ should be set if user is an admin or courthouse judge', () => {
+        let result;
+        component.annotations$.subscribe((r) => (result = r));
+        expect([result]).toStrictEqual(mockAnnotation);
+      });
+
+      it('annotations$ should not be set if user has no admin or courthouse judge role', () => {
+        jest.spyOn(caseServiceMock, 'getCase').mockReturnValue(of(mockCaseFileNoCourthouseId));
+        jest.spyOn(fakeUserService, 'isAdmin').mockReturnValue(false);
+        jest.spyOn(fakeUserService, 'isCourthouseJudge').mockReturnValue(false);
+
+        let result;
+        component.annotations$.subscribe((r) => (result = r));
+        expect(result).toEqual(null);
+      });
+    });
+
+    describe('onDownloadAnnotation', () => {
+      it('should call the downloadAnnotationDocument method', fakeAsync(() => {
+        component.onDownloadAnnotation({ annotationId: 1, annotationDocumentId: 1, fileName: 'file.pdf' });
+        expect(fakeAnnotationService.downloadAnnotationDocument).toHaveBeenCalledWith(1, 1);
+        tick();
+        expect(fakeFileDownloadService.saveAs).toHaveBeenCalledWith({}, 'file.pdf');
+      }));
     });
   });
 
-  describe('onDownloadAnnotation', () => {
-    it('should call the downloadAnnotationDocument method', fakeAsync(() => {
-      component.onDownloadAnnotation({ annotationId: 1, annotationDocumentId: 1, fileName: 'file.pdf' });
-      expect(fakeAnnotationService.downloadAnnotationDocument).toHaveBeenCalledWith(1, 1);
+  describe('Expired case', () => {
+    let component: CaseComponent;
+
+    it('should initialize data$ with the correct values', () => {
+      fixture = setup();
+      component = fixture.componentInstance;
+
+      component.data$.subscribe((data) => {
+        expect(data).toEqual({
+          caseFile: mockCaseFile,
+          hearings: mockSingleCaseTwoHearings,
+          transcripts: mockTranscript,
+          annotations: mockAnnotation,
+          events: mockEvents,
+        });
+      });
+    });
+
+    it('should handle errors in caseService.getCaseHearings, caseService.getCaseTranscripts, caseService.getCaseAnnotations, and caseService.getCaseEvents', fakeAsync(() => {
+      fixture = setup(true);
+      component = fixture.componentInstance;
+
+      fixture.detectChanges();
+
+      let result;
+      component.data$.subscribe((data) => (result = data));
+
       tick();
-      expect(fakeFileDownloadService.saveAs).toHaveBeenCalledWith({}, 'file.pdf');
+
+      expect(result).toEqual({
+        caseFile: {
+          ...mockCaseFile,
+          isDataAnonymised: true,
+          dataAnonymisedAt: DateTime.fromISO('2023-08-10T11:23:24.858Z'),
+        },
+        hearings: null,
+        transcripts: null,
+        annotations: null,
+        events: null,
+      });
     }));
   });
 });
