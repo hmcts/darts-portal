@@ -51,6 +51,8 @@ describe('Admin - Search screen', () => {
       .should('contain', 'Judge 3')
       .next('td')
       .should('contain', 'Defendant 3');
+
+    cy.get('.expired-row').contains('This case has passed its retention date');
   });
 
   it('event search and results', () => {

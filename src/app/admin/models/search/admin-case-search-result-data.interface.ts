@@ -11,4 +11,6 @@ export interface AdminCaseSearchResultData {
   }[];
   judges: string[];
   defendants: string[];
+  is_data_anonymised?: boolean;
+  data_anonymised_at?: string;
 }
