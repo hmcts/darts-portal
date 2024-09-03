@@ -105,6 +105,7 @@ describe('Your audio', () => {
 
     cy.get('app-play-button').should('have.length', 5);
     cy.get('app-play-button').first().click();
+    cy.get('.govuk-link').contains('00:00:00').click();
 
     cy.get('audio').then(([audioEl]) => {
       expect(audioEl.paused).to.equal(false);
@@ -143,6 +144,10 @@ describe('Your audio', () => {
     cy.contains('Your audio').click();
     cy.contains('C1').click();
     cy.get('h1.govuk-heading-l').contains('C20220620001');
+  });
+
+  after(() => {
+    cy.request('/api/audio-requests/reset');
   });
 });
 

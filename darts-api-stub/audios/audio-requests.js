@@ -15,7 +15,7 @@ const audioRequestOne = {
   end_time: '2023-09-20T10:00:00Z',
 };
 
-const mediaRequests = {
+const defaultMediaRequests = {
   media_request_details: [
     {
       case_id: 1,
@@ -143,6 +143,8 @@ const mediaRequests = {
   ],
 };
 
+let mediaRequests = structuredClone(defaultMediaRequests);
+
 const expiredMediaRequests = {
   // media_request_details: [], isn't returned by the API when expired=true
   transformed_media_details: [
@@ -165,6 +167,11 @@ const expiredMediaRequests = {
     },
   ],
 };
+
+router.get('/reset', (req, res) => {
+  mediaRequests = structuredClone(defaultMediaRequests);
+  res.sendStatus(200);
+});
 
 router.delete('/transformed_media/:transformedMediaId', (req, res) => {
   let id = req.params.transformedMediaId;
