@@ -1,0 +1,99 @@
+<app-govuk-heading class="no-margin border-bottom" tag="h2" size="m">Advanced details</app-govuk-heading>
+
+<dl class="govuk-summary-list">
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Documentum ID</dt>
+    <dd class="govuk-summary-list__value">
+      {{ event().documentumId }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Source event ID</dt>
+    <dd class="govuk-summary-list__value">
+      {{ event().sourceId }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Message ID</dt>
+    <dd class="govuk-summary-list__value">
+      {{ event().messageId }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Type</dt>
+    <dd class="govuk-summary-list__value">
+      {{ event().eventMapping.type }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Subtype</dt>
+    <dd class="govuk-summary-list__value">
+      {{ event().eventMapping.subType }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Event Handler</dt>
+    <dd class="govuk-summary-list__value">
+      {{ event().eventMapping.handler }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Reporting restriction?</dt>
+    <dd class="govuk-summary-list__value">
+      {{ event().eventMapping.hasRestrictions ? 'Yes' : 'No' }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Log entry?</dt>
+    <dd class="govuk-summary-list__value">
+      {{ event().isLogEntry ? 'Yes' : 'No' }}
+    </dd>
+  </div>
+</dl>
+
+<app-govuk-heading class="no-margin border-bottom" tag="h2" size="m">Version data</app-govuk-heading>
+
+<dl class="govuk-summary-list">
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Version</dt>
+    <dd class="govuk-summary-list__value">
+      {{ event().version }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Chronicle ID</dt>
+    <dd class="govuk-summary-list__value">
+      {{ event().chronicleId }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Antecedent ID</dt>
+    <dd class="govuk-summary-list__value">
+      {{ event().antecedentId }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Date created</dt>
+    <dd class="govuk-summary-list__value">
+      {{ event().createdAt | luxonDate: "dd MMM yyyy 'at' HH:mm:ss" }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Created by</dt>
+    <dd class="govuk-summary-list__value">
+      {{ event().createdBy?.fullName }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Date last modified</dt>
+    <dd class="govuk-summary-list__value">
+      {{ event().lastModifiedAt | luxonDate: "dd MMM yyyy 'at' HH:mm:ss" }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Last modified by</dt>
+    <dd class="govuk-summary-list__value">
+      {{ event().lastModifiedBy?.fullName }}
+    </dd>
+  </div>
+</dl>

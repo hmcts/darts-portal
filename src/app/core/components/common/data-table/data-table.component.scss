@@ -10,8 +10,10 @@
   td {
     word-wrap: break-word;
   }
+  th {
+    text-wrap: nowrap;
+  }
   .moj-scrollable-pane {
-    th,
     td.govuk-table__cell {
       text-wrap: nowrap;
     }

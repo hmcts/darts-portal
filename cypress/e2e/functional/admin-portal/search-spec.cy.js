@@ -60,8 +60,9 @@ describe('Admin - Search screen', () => {
 
     cy.a11y();
 
-    cy.get('app-event-search-results td')
+    cy.get('app-event-search-results td a')
       .contains('111')
+      .parent()
       .next('td')
       .should('contain', '01 Jan 2024 at 12:00:00')
       .next('td')
@@ -73,8 +74,9 @@ describe('Admin - Search screen', () => {
       .next('td')
       .should('contain', 'This is an event');
 
-    cy.get('app-event-search-results td')
+    cy.get('app-event-search-results td a')
       .contains('222')
+      .parent()
       .next('td')
       .should('contain', '02 Jan 2024 at 12:00:00')
       .next('td')
@@ -86,8 +88,9 @@ describe('Admin - Search screen', () => {
       .next('td')
       .should('contain', 'This is another event');
 
-    cy.get('app-event-search-results td')
+    cy.get('app-event-search-results td a')
       .contains('333')
+      .parent()
       .next('td')
       .should('contain', '03 Jan 2024 at 12:00:00')
       .next('td')
@@ -98,6 +101,45 @@ describe('Admin - Search screen', () => {
       .should('contain', 'Room 3')
       .next('td')
       .should('contain', 'This is yet another event');
+  });
+
+  it('view event details', () => {
+    cy.get('#events-option').click();
+
+    cy.get('#confirm-button').click();
+
+    cy.get('app-event-search-results td a').contains('111').click();
+
+    cy.get('app-govuk-heading .caption').contains('Event');
+    cy.get('app-govuk-heading h1').contains('111');
+
+    // Basic details
+    cy.get('dt').contains('Name').next('dd').should('contain', 'Event map 1');
+    cy.get('dt').contains('Text').next('dd').should('contain', 'This is an event');
+    cy.get('dt').contains('Courthouse').next('dd').should('contain', 'Cardiff');
+    cy.get('dt').contains('Courtroom').next('dd').should('contain', 'Room 1');
+    cy.get('dt').contains('Time stamp').next('dd').should('contain', '01 Jan 2024 at 00:00:00');
+
+    // Advanced details
+    cy.get('.moj-sub-navigation__link').contains('Advanced details').click();
+
+    cy.get('dt').contains('Documentum ID').next('dd').should('contain', '123456');
+    cy.get('dt').contains('Source event ID').next('dd').should('contain', 'source123');
+    cy.get('dt').contains('Message ID').next('dd').should('contain', '654321');
+    cy.get('dt').contains('Type').next('dd').should('contain', '1000');
+    cy.get('dt').contains('Subtype').next('dd').should('contain', '1001');
+    cy.get('dt').contains('Event Handler').next('dd').should('contain', 'StandardEventHandler');
+    cy.get('dt').contains('Reporting restriction?').next('dd').should('contain', 'No');
+    cy.get('dt').contains('Log entry?').next('dd').should('contain', 'No');
+
+    // Version data
+    cy.get('dt').contains('Version').next('dd').should('contain', 'v1');
+    cy.get('dt').contains('Chronicle ID').next('dd').should('contain', '123');
+    cy.get('dt').contains('Antecedent ID').next('dd').should('contain', '456');
+    cy.get('dt').contains('Date created').next('dd').should('contain', '01 Jan 2024 at 00:00:00');
+    cy.get('dt').contains('Created by').next('dd').should('contain', 'Eric Bristow');
+    cy.get('dt').contains('Date last modified').next('dd').should('contain', '01 Jan 2024 at 00:00:00');
+    cy.get('dt').contains('Last modified by').next('dd').should('contain', 'Fallon Sherrock');
   });
 
   it('hearing search and results', () => {

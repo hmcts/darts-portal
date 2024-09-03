@@ -1,0 +1,34 @@
+<app-govuk-heading class="no-margin border-bottom" tag="h2" size="m">Basic details</app-govuk-heading>
+
+<dl class="govuk-summary-list">
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Name</dt>
+    <dd class="govuk-summary-list__value">
+      {{ event().eventMapping.name }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Text</dt>
+    <dd class="govuk-summary-list__value">
+      {{ event().text }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Courthouse</dt>
+    <dd class="govuk-summary-list__value">
+      {{ event().courthouse.displayName }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Courtroom</dt>
+    <dd class="govuk-summary-list__value">
+      {{ event().courtroom.name }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Time stamp</dt>
+    <dd class="govuk-summary-list__value">
+      {{ event().createdAt | luxonDate: "dd MMM yyyy 'at' HH:mm:ss" }}
+    </dd>
+  </div>
+</dl>
