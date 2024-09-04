@@ -122,7 +122,7 @@
 
   <section id="associated-audio-details">
     <app-govuk-heading class="no-margin border-bottom" tag="h2" size="m">Associated audio</app-govuk-heading>
-    <app-associated-audio-table [rows]="data.associatedAudio" />
+    <app-associated-audio-table [transformedMediaId]="transformedMediaId" [rows]="data.associatedAudio" />
   </section>
 } @else {
   <app-loading text="Loading transformed media..." />

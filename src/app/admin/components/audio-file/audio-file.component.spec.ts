@@ -290,6 +290,7 @@ describe('AudioFileComponent', () => {
     });
 
     it('should navigate to the hide-or-delete page if the audio file is not hidden', () => {
+      component.mediaId = 2;
       const routerSpy = jest.spyOn(component.router, 'navigate');
 
       const file = {
@@ -307,6 +308,7 @@ describe('AudioFileComponent', () => {
             startAt: '2024-07-04T11:24:12.101+01:00',
             endAt: '2024-07-04T11:24:12.101+01:00',
           },
+          mediaId: 2,
         },
       });
     });

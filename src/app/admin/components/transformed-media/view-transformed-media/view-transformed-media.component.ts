@@ -49,7 +49,7 @@ export class ViewTransformedMediaComponent {
   userAdminService = inject(UserAdminService);
   route = inject(ActivatedRoute);
 
-  transformedMediaId = this.route.snapshot.params.id;
+  transformedMediaId = +this.route.snapshot.params.id;
   hasChangedOwner$ = this.route.queryParams.pipe(map((params) => params.ownerChanged));
 
   $transformedMedia = this.transformedMediaService.getTransformedMediaById(this.transformedMediaId);
