@@ -4,7 +4,8 @@
   @let retentionDate = caseFile.retainUntilDateTime && caseFile.retainUntilDateTime | dateTime: 'd MMM y';
   <app-govuk-banner type="warning">
     <ng-content
-      >This case has passed its retention date on {{ retentionDate }}. Data was deleted in line with HMCTS policy.
+      ><strong>Expired: </strong>This case has passed its retention date on {{ retentionDate }}. Data was deleted in
+      line with HMCTS policy.
     </ng-content>
   </app-govuk-banner>
 }
