@@ -13,7 +13,7 @@ import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.compo
 export class FileHideOrDeleteSuccessComponent {
   router = inject(Router);
 
-  @Input() transformedMediaId!: number;
+  @Input() transformedMediaId: number | null = null;
   @Input() id!: number;
   @Input() fileType: string = 'transcription_document';
   @Input() continueLink: string = '/admin';
