@@ -1,7 +1,7 @@
 import { AssociatedMedia } from '@admin-types/transformed-media/associated-media';
 import { DecimalPipe } from '@angular/common';
-import { Component, EventEmitter, Input, Output, input } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, EventEmitter, Input, Output, inject, input } from '@angular/core';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DatatableColumn } from '@core-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
@@ -16,8 +16,12 @@ import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
   styleUrl: './associated-audio-table.component.scss',
 })
 export class AssociatedAudioTableComponent {
+  router = inject(Router);
+  route = inject(ActivatedRoute);
+
   @Input() hideOrDeleteView = false;
   @Input() rowSelect = false;
+  @Input() transformedMediaId!: number;
 
   @Output() selectedRows = new EventEmitter<ReturnType<typeof this.mapRows>>();
 

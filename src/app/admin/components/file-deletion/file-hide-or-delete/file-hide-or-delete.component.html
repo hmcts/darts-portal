@@ -84,6 +84,7 @@
   @if (isAssociatedAudio && !audioHideComplete) {
     @if (associatedAudio) {
       <app-associated-audio-hide-delete
+        [transformedMediaId]="mediaId"
         (errors)="errors = $event"
         [audioFile]="associatedAudio.audioFile"
         [media]="associatedAudio.media"
@@ -94,6 +95,7 @@
     }
   } @else {
     <app-file-hide-or-delete-success
+      [transformedMediaId]="mediaId"
       [fileType]="fileType"
       [id]="id"
       [continueLink]="continueLink"

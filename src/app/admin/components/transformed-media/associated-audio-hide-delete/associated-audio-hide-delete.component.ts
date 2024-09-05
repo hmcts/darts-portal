@@ -1,5 +1,6 @@
 import { FileHideOrDeleteFormValues } from '@admin-types/hidden-reasons/file-hide-or-delete-form-values';
 import { AssociatedMedia } from '@admin-types/transformed-media/associated-media';
+import { Location } from '@angular/common';
 import { Component, DestroyRef, EventEmitter, Input, Output, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -29,11 +30,13 @@ const controlErrors: FormErrorMessages = {
   imports: [GovukHeadingComponent, DataTableComponent, AssociatedAudioTableComponent, ReactiveFormsModule],
 })
 export class AssociatedAudioHideDeleteComponent {
+  location = inject(Location);
   transformedMediaService = inject(TransformedMediaService);
   router = inject(Router);
   formService = inject(FormService);
   destroyRef = inject(DestroyRef);
 
+  @Input() transformedMediaId!: number;
   @Input() audioFile: AssociatedMedia[] = [];
   @Input() media: AssociatedMedia[] = [];
   @Input() id!: number;
@@ -102,7 +105,7 @@ export class AssociatedAudioHideDeleteComponent {
   }
 
   goBack() {
-    this.router.navigate(['/admin/audio-file', this.id]);
+    this.location.back();
   }
 
   getErrorMessages(controlKey: string): string[] {

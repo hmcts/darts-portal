@@ -1,8 +1,8 @@
 import { HiddenFileBanner } from '@admin-types/common/hidden-file-banner';
 import { AudioFile } from '@admin-types/index';
 import { AssociatedCase } from '@admin-types/transformed-media/associated-case';
-import { AsyncPipe, JsonPipe } from '@angular/common';
-import { Component, inject, input } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -34,7 +34,6 @@ import { BasicAudioFileDetailsComponent } from './basic-audio-file-details/basic
     BreadcrumbComponent,
     BreadcrumbDirective,
     AsyncPipe,
-    JsonPipe,
     HiddenFileBannerComponent,
     RouterLink,
   ],
@@ -47,8 +46,8 @@ export class AudioFileComponent {
   transformedMediaService = inject(TransformedMediaService);
   transcriptionAdminService = inject(TranscriptionAdminService);
 
-  // back button url defaults to /admin if not provided in query param
-  backUrl = input('', { transform: (value) => value ?? '/admin' });
+  mediaId = +this.router.getCurrentNavigation()?.extras.state?.mediaId;
+  backUrl = this.mediaId ? `/admin/transformed-media/${this.mediaId}` : '/admin';
 
   isAdmin = inject(UserService).isAdmin();
 
@@ -170,6 +169,7 @@ export class AudioFileComponent {
           fileType: 'audio_file',
           hearings: this.getHearingIds(audioFile.hearings),
           dates: { startAt: audioFile.startAt.toISO(), endAt: audioFile.endAt.toISO() },
+          mediaId: this.mediaId,
         },
       });
     }

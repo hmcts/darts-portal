@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FileHide } from '@admin-types/hidden-reasons/file-hide';
+import { provideRouter } from '@angular/router';
 import { TransformedMediaService } from '@services/transformed-media/transformed-media.service';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
@@ -32,7 +33,7 @@ describe('AssociatedAudioHideDeleteComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AssociatedAudioHideDeleteComponent],
-      providers: [{ provide: TransformedMediaService, useValue: transformedMediaService }],
+      providers: [{ provide: TransformedMediaService, useValue: transformedMediaService }, provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AssociatedAudioHideDeleteComponent);
@@ -44,14 +45,14 @@ describe('AssociatedAudioHideDeleteComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should navigate back when goBack is called', () => {
-    const routerSpy = jest.spyOn(component.router, 'navigate');
-    const id = 123;
-    component.id = id;
+  it('should call location back when goBack is called', () => {
+    component.id = 123;
+
+    const locationSpy = jest.spyOn(component.location, 'back');
 
     component.goBack();
 
-    expect(routerSpy).toHaveBeenCalledWith(['/admin/audio-file', id]);
+    expect(locationSpy).toHaveBeenCalled();
   });
 
   it('should not hide audio files if the form is valid but no selected rows and includeSelectedFiles is true', () => {

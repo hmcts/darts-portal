@@ -140,37 +140,14 @@ describe('FileHideOrDeleteComponent', () => {
     });
   });
 
-  it('should navigate to the transcription document continue link when goBack is called', () => {
+  it('should call location back when goBack is called', () => {
     component.fileType = 'transcription_document';
 
-    const routerSpy = jest.spyOn(fakeRouter, 'navigate');
-    const continueLink = '/admin/transcripts/document/1';
+    const locationSpy = jest.spyOn(component.location, 'back');
 
     component.goBack();
 
-    expect(routerSpy).toHaveBeenCalledWith([continueLink]);
-  });
-
-  it('should navigate to the audio file continue link when goBack is called', () => {
-    component.fileType = 'audio_file';
-
-    const routerSpy = jest.spyOn(fakeRouter, 'navigate');
-    const audioContinueLink = '/admin/audio-file/1';
-
-    component.goBack();
-
-    expect(routerSpy).toHaveBeenCalledWith([audioContinueLink]);
-  });
-
-  it('should navigate to the default continue link when goBack is called', () => {
-    component.fileType = 'other_file';
-
-    const routerSpy = jest.spyOn(fakeRouter, 'navigate');
-    const defaultLink = '/admin';
-
-    component.goBack();
-
-    expect(routerSpy).toHaveBeenCalledWith([defaultLink]);
+    expect(locationSpy).toHaveBeenCalled();
   });
 
   it('should return media with matching id', () => {

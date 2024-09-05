@@ -1,7 +1,7 @@
 import { FileHideOrDeleteFormValues } from '@admin-types/hidden-reasons/file-hide-or-delete-form-values';
 import { HiddenReason } from '@admin-types/hidden-reasons/hidden-reason';
 import { AssociatedMedia } from '@admin-types/transformed-media/associated-media';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -33,6 +33,7 @@ import { FileHideOrDeleteSuccessComponent } from '../file-hide-or-delete-success
   ],
 })
 export class FileHideOrDeleteComponent implements OnInit {
+  location = inject(Location);
   fb = inject(FormBuilder);
   router = inject(Router);
   route = inject(ActivatedRoute);
@@ -43,6 +44,7 @@ export class FileHideOrDeleteComponent implements OnInit {
 
   errors: ErrorSummaryEntry[] = [];
 
+  mediaId = this.router.getCurrentNavigation()?.extras.state?.mediaId ?? null;
   fileType = this.router.getCurrentNavigation()?.extras?.state?.fileType ?? null;
 
   associatedAudioSearch = this.fileType === 'audio_file' && this.getAssociatedAudioSearch();
@@ -137,7 +139,7 @@ export class FileHideOrDeleteComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate([this.getContinueLink()]);
+    this.location.back();
   }
 
   getErrorMessages(controlKey: string): string[] {

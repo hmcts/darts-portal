@@ -1,7 +1,14 @@
 <app-data-table [rowSelectable]="rowSelect" [columns]="columns" [rows]="rows()" (rowSelect)="setSelectedRows($event)">
   <ng-template [tableRowTemplate]="rows()" let-row>
     <td class="audio-id">
-      <a class="govuk-link" [routerLink]="['/admin/audio-file', row.audioId]">
+      <a
+        class="govuk-link"
+        (click)="
+          router.navigate(['admin/audio-file', row.audioId], {
+            state: { mediaId: transformedMediaId },
+          })
+        "
+      >
         {{ row.audioId }}
       </a>
     </td>
