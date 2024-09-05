@@ -81,7 +81,7 @@
   <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">Created by</dt>
     <dd class="govuk-summary-list__value">
-      {{ event().createdBy?.fullName }}
+      {{ event().createdBy?.fullName ?? 'System' }}
     </dd>
   </div>
   <div class="govuk-summary-list__row">
@@ -93,7 +93,7 @@
   <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">Last modified by</dt>
     <dd class="govuk-summary-list__value">
-      {{ event().lastModifiedBy?.fullName }}
+      {{ event().lastModifiedBy?.fullName ?? 'System' }}
     </dd>
   </div>
 </dl>
