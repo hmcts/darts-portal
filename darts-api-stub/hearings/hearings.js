@@ -141,12 +141,6 @@ router.get('/:hearingId/events', (req, res) => {
     case '1':
       const body1 = [
         {
-          id: 1,
-          timestamp: '2023-07-31T01:00:00.620Z',
-          name: 'Case called on',
-          text: 'Record: New Case',
-        },
-        {
           id: 2,
           timestamp: '2023-07-31T03:00:00.620Z',
           name: 'Case called on',
@@ -155,6 +149,12 @@ router.get('/:hearingId/events', (req, res) => {
         {
           id: 3,
           timestamp: '2023-07-31T08:00:24.620Z',
+          name: 'Case called on',
+          text: 'Record: New Case',
+        },
+        {
+          id: 1,
+          timestamp: '2023-07-31T01:00:00.620Z',
           name: 'Case called on',
           text: 'Record: New Case',
         },
