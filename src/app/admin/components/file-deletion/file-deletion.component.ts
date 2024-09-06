@@ -1,15 +1,19 @@
+import { TranscriptionDocumentForDeletion } from '@admin-types/file-deletion';
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { TabDirective } from '@directives/tab.directive';
+import { ActiveTabService } from '@services/active-tab/active-tab.service';
 import { FileDeletionService } from '@services/file-deletion/file-deletion.service';
-import { finalize, map } from 'rxjs';
+import { UserService } from '@services/user/user.service';
+import { map } from 'rxjs';
 import { AudioFileResultsComponent } from './audio-file-results/audio-file-results.component';
+import { TranscriptsForDeletionComponent } from './transcripts-for-deletion/transcripts-for-deletion.component';
 
 @Component({
   selector: 'app-file-deletion',
@@ -22,23 +26,43 @@ import { AudioFileResultsComponent } from './audio-file-results/audio-file-resul
     LoadingComponent,
     GovukBannerComponent,
     CommonModule,
+    TranscriptsForDeletionComponent,
   ],
   templateUrl: './file-deletion.component.html',
   styleUrl: './file-deletion.component.scss',
 })
 export class FileDeletionComponent {
-  fileDeletionService = inject(FileDeletionService);
-  route = inject(ActivatedRoute);
+  private readonly activeTabKey = 'file-deletion';
 
-  isLoading = signal(true);
+  readonly tabNames = {
+    audioFiles: 'Audio files',
+    transcripts: 'Transcripts',
+  } as const;
+
+  fileDeletionService = inject(FileDeletionService);
+  userService = inject(UserService);
+  router = inject(Router);
+  route = inject(ActivatedRoute);
+  activeTabService = inject(ActiveTabService);
 
   approvedForDeletion$ = this.route.queryParams.pipe(map((params) => !!params.approvedForDeletion));
   unmarkedAndUnhidden$ = this.route.queryParams.pipe(map((params) => !!params.unmarkedAndUnhidden));
 
-  audioFiles = toSignal(
-    this.fileDeletionService.getAudioFilesMarkedForDeletion().pipe(finalize(() => this.isLoading.set(false))),
-    { initialValue: [] }
-  );
+  audioFiles = toSignal(this.fileDeletionService.getAudioFilesMarkedForDeletion());
+  transcripts = toSignal(this.fileDeletionService.getTranscriptionDocumentsMarkedForDeletion());
 
-  audioCount = computed(() => this.audioFiles().length);
+  audioCount = computed(() => this.audioFiles()?.length);
+  transcriptCount = computed(() => this.transcripts()?.length);
+  isLoading = computed(() => !(this.audioFiles() && this.transcripts()));
+  tab = computed(() => this.activeTabService.activeTabs()[this.activeTabKey] ?? this.tabNames.audioFiles);
+
+  onTabChange(tab: string) {
+    this.activeTabService.setActiveTab(this.activeTabKey, tab);
+  }
+
+  onDeleteTranscript(transcript: TranscriptionDocumentForDeletion) {
+    if (this.userService.hasMatchingUserId(transcript.hiddenById)) {
+      this.router.navigate(['/admin/file-deletion/unauthorised']);
+    }
+  }
 }

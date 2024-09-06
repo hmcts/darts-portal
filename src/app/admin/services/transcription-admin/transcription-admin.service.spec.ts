@@ -3,6 +3,7 @@ import { HiddenReason } from '@admin-types/hidden-reasons/hidden-reason';
 import { HiddenReasonData } from '@admin-types/hidden-reasons/hidden-reason-data.interface';
 import {
   Transcription,
+  TranscriptionDocumentForDeletionData,
   TranscriptionDocumentSearchResult,
   TranscriptionDocumentSearchResultData,
   TranscriptionSearchFormValues,
@@ -1010,5 +1011,75 @@ describe('TranscriptionAdminService', () => {
         expect(response).toBeUndefined();
       });
     });
+  });
+
+  describe('getTranscriptionsMarkedForDeletion', () => {
+    it('call api endpoint', fakeAsync(() => {
+      service.getTranscriptionsMarkedForDeletion().subscribe();
+
+      const req = httpMock.expectOne('api/admin/transcription-documents/marked-for-deletion');
+      expect(req.request.method).toBe('GET');
+      tick();
+    }));
+
+    it('maps response', fakeAsync(() => {
+      const mockResponse: TranscriptionDocumentForDeletionData[] = [
+        {
+          transcription_document_id: 1,
+          transcription: {
+            id: 2,
+          },
+          case: {
+            id: 3,
+            case_number: 'case1',
+          },
+          hearing: {
+            id: 4,
+            hearing_date: '2021-01-01',
+          },
+          courthouse: {
+            id: 5,
+            display_name: 'courthouse1',
+          },
+          courtroom: {
+            id: 6,
+            name: 'courtroom1',
+          },
+          admin_action: {
+            id: 7,
+            reason_id: 8,
+            hidden_by_id: 9,
+            hidden_at: '2021-02-01T00:00:00Z',
+            is_marked_for_manual_deletion: false,
+            marked_for_manual_deletion_by_id: 10,
+            marked_for_manual_deletion_at: '2021-03-01T00:00:00Z',
+            ticket_reference: 't',
+            comments: 'c',
+          },
+        },
+      ];
+
+      service.getTranscriptionsMarkedForDeletion().subscribe((transcriptions) =>
+        expect(transcriptions).toEqual([
+          {
+            transcriptionDocumentId: 1,
+            transcriptionId: 2,
+            caseNumber: 'case1',
+            hearingDate: DateTime.fromISO('2021-01-01'),
+            courthouse: 'courthouse1',
+            courtroom: 'courtroom1',
+            hiddenById: 9,
+            markedById: 10,
+            comments: 'c',
+            ticketReference: 't',
+            reasonId: 8,
+          },
+        ])
+      );
+
+      const req = httpMock.expectOne('api/admin/transcription-documents/marked-for-deletion');
+      req.flush(mockResponse);
+      tick();
+    }));
   });
 });

@@ -9,10 +9,10 @@
 <app-govuk-heading tag="h1" size="xl">Files marked for deletion</app-govuk-heading>
 
 @if (!isLoading()) {
-  <app-tabs>
+  <app-tabs [default]="tab()" (tabChange)="onTabChange($event.name)">
     <div
       *tab="
-        'Audio files';
+        tabNames.audioFiles;
         screenReaderText: 'Audio files marked for deletion';
         id: 'audio-files-deletion-tab';
         count: audioCount()
@@ -20,16 +20,19 @@
     >
       <app-govuk-heading tag="h2">Audio files</app-govuk-heading>
 
-      <app-audio-file-results [rows]="audioFiles()" />
+      <app-audio-file-results [rows]="audioFiles()!" />
     </div>
     <div
       *tab="
-        'Transcripts';
+        tabNames.transcripts;
         screenReaderText: 'Transcript files marked for deletion';
-        id: 'transcript-files-deletion-tab'
+        id: 'transcript-files-deletion-tab';
+        count: transcriptCount()
       "
     >
       <app-govuk-heading tag="h2">Transcripts</app-govuk-heading>
+
+      <app-transcripts-for-deletion [rows]="transcripts()!" (deletion)="onDeleteTranscript($event)" />
     </div>
   </app-tabs>
 } @else {

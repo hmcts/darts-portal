@@ -1,12 +1,12 @@
 import { DateTime } from 'luxon';
 
-export type AudioFileMarkedDeletion = {
-  mediaId: number;
-  startAt: DateTime;
-  endAt: DateTime;
+export type TranscriptionDocumentForDeletion = {
+  transcriptionDocumentId: number;
+  transcriptionId: number;
+  caseNumber: string;
+  hearingDate: DateTime;
   courthouse: string;
   courtroom: string;
-  channel: number;
   hiddenById: number;
   markedById?: number;
   markedHiddenBy?: string;
