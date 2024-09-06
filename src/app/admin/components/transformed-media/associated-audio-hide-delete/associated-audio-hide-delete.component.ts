@@ -76,7 +76,7 @@ export class AssociatedAudioHideDeleteComponent {
 
   private hideAudioFiles(includeSelectedFiles: boolean) {
     if (includeSelectedFiles) {
-      const selectedIds = this.selectedRows.map((row) => row.audioId);
+      const selectedIds = [...new Set(this.selectedRows.filter((row) => !row.isHidden).map((row) => row.audioId))];
       selectedIds.push(this.id);
 
       const responses = selectedIds.map((id) => {
@@ -84,6 +84,9 @@ export class AssociatedAudioHideDeleteComponent {
       });
       forkJoin(responses).subscribe({
         next: () => {
+          this.successResponse.emit(true);
+        },
+        error: () => {
           this.successResponse.emit(true);
         },
       });

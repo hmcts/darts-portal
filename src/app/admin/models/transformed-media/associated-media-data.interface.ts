@@ -19,4 +19,5 @@ export interface AssociatedMediaData {
     id: number;
     display_name: string;
   };
+  is_hidden: boolean;
 }

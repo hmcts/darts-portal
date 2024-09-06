@@ -168,6 +168,7 @@ export class TransformedMediaService {
         id: data.courtroom.id,
         displayName: data.courtroom.display_name,
       },
+      isHidden: data.is_hidden,
     };
   }
 

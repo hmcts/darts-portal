@@ -54,6 +54,7 @@ export class AssociatedAudioTableComponent {
       endTime: audio.endAt,
       courtroom: audio.courtroom.displayName,
       channelNumber: audio.channel,
+      isHidden: audio.isHidden,
     }));
   }
 }
