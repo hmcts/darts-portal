@@ -57,7 +57,7 @@ export const ADMIN_ROUTES: Routes = [
   {
     path: 'admin/users/:userId/deactivate',
     title: 'DARTS Admin Deactivate User',
-    data: { allowedRoles: ['SUPER_ADMIN'] },
+    data: { allowedRoles: ['SUPER_ADMIN', 'SUPER_USER'] },
     loadComponent: () =>
       import('./components/users/deactivate-user/deactivate-user.component').then((c) => c.DeactivateUserComponent),
   },
