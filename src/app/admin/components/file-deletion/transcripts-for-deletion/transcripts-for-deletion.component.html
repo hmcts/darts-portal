@@ -1,0 +1,24 @@
+<app-data-table noDataMessage="There are no transcripts marked for deletion." [rows]="rows()" [columns]="columns()">
+  <ng-template [tableRowTemplate]="rows()" let-row>
+    <td>
+      <a class="govuk-link" [routerLink]="['/admin/transcripts/document/', row.transcriptionDocumentId]">
+        {{ row.transcriptionDocumentId }}</a
+      >
+    </td>
+    <td>{{ row.caseNumber }}</td>
+    <td>{{ row.hearingDate | luxonDate: 'd MMM yyyy' }}</td>
+    <td>{{ row.courthouse }}</td>
+    <td>{{ row.courtroom }}</td>
+    <td>{{ row.markedHiddenBy }}</td>
+    <td>
+      <strong>{{ row.reasonName }}</strong>
+      <br />
+      {{ row.ticketReference }}
+      <br />
+      {{ row.comments }}
+    </td>
+    <td>
+      <button class="govuk-button govuk-button--secondary" (click)="deleteTranscript(row)">Delete</button>
+    </td>
+  </ng-template>
+</app-data-table>

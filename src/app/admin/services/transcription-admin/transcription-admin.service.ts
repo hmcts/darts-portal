@@ -11,10 +11,13 @@ import {
   TranscriptionData,
   TranscriptionDocument,
   TranscriptionDocumentData,
+  TranscriptionDocumentForDeletion,
+  TranscriptionDocumentForDeletionData,
   TranscriptionDocumentSearchResult,
   TranscriptionDocumentSearchResultData,
   TranscriptionSearchFormValues,
   TranscriptionSearchRequest,
+  TranscriptionStatus,
   TranscriptionStatusData,
   UpdateTranscriptStatusRequest,
 } from '@admin-types/index';
@@ -35,7 +38,6 @@ import { formatDate } from '@utils/date.utils';
 import { DateTime } from 'luxon';
 import { BehaviorSubject, Observable, of, switchMap } from 'rxjs';
 import { map } from 'rxjs/internal/operators/map';
-import { TranscriptionStatus } from './../../models/transcription/transcription-status';
 
 export const defaultFormValues = {
   requestId: '',
@@ -192,6 +194,12 @@ export class TranscriptionAdminService {
       .pipe(map((res) => this.mapTranscriptionDocument(res)));
   }
 
+  getTranscriptionsMarkedForDeletion(): Observable<TranscriptionDocumentForDeletion[]> {
+    return this.http
+      .get<TranscriptionDocumentForDeletionData[]>(`api/admin/transcription-documents/marked-for-deletion`)
+      .pipe(map((res) => this.mapTranscriptionForDeletionData(res)));
+  }
+
   hideTranscriptionDocument(id: number, formValues: FileHideOrDeleteFormValues): Observable<FileHide> {
     const body = this.mapHidePostRequest(formValues);
 
@@ -204,6 +212,116 @@ export class TranscriptionAdminService {
     return this.http
       .post<FileHideData>(`api/admin/transcription-documents/${id}/hide`, { is_hidden: false })
       .pipe(map((res) => this.mapHideFileResponse(res)));
+  }
+
+  /**
+   *  Gets the reasons for hiding a transcription document or media file
+   */
+  getHiddenReasons(): Observable<HiddenReason[]> {
+    return this.http.get<HiddenReasonData[]>('api/admin/hidden-reasons').pipe(map((res) => this.mapHiddenReasons(res)));
+  }
+
+  getHiddenReason(id: number): Observable<HiddenReason | undefined> {
+    return this.getHiddenReasons().pipe(map((reasons) => reasons.find((reason) => reason.id === id)));
+  }
+
+  getCurrentStatusFromTranscript(transcript: TranscriptionAdminDetails) {
+    const processGroups = (groups: SecurityGroup[] | undefined, status = '') => {
+      if (status === 'Awaiting Authorisation' || status === 'Requested') return null;
+
+      return groups && groups.length > 0
+        ? groups
+            .filter((group) => group.displayName || group.name)
+            .map((group) => ({
+              href: `/admin/groups/${group.id}`,
+              value: group.displayName || group.name,
+            }))
+        : null;
+    };
+
+    const processStatus = (status: string | undefined) => {
+      const changeStatuses = ['Awaiting Authorisation', 'With Transcriber', 'Requested', 'Approved'];
+      return status
+        ? changeStatuses.includes(status)
+          ? {
+              value: status,
+              action: {
+                text: 'Change status',
+                url: `/admin/transcripts/${transcript.transcriptionId}/change-status`,
+                queryParams: { manual: transcript.isManual, status },
+              },
+            }
+          : { value: status }
+        : null;
+    };
+
+    const processAssignedTo = (assignedTo: AssignedTo | undefined) =>
+      assignedTo?.userId
+        ? [
+            {
+              href: `/admin/users/${assignedTo.userId}`,
+              value: assignedTo.fullName,
+              caption: assignedTo.email,
+            },
+          ]
+        : 'Unassigned';
+
+    return {
+      Status: processStatus(transcript.status),
+      'Assigned to': processAssignedTo(transcript.assignedTo),
+      'Associated groups': processGroups(transcript.assignedGroups, transcript.status),
+    };
+  }
+
+  getRequestDetailsFromTranscript(transcript: TranscriptionAdminDetails) {
+    return {
+      'Hearing date': this.luxonPipe.transform(transcript.hearingDate, 'dd MMM yyyy'),
+      'Request type': transcript.requestType,
+      'Request method': transcript.isManual ? 'Manual' : 'Automated',
+      'Request ID': transcript.transcriptionId,
+      Urgency: transcript.urgency?.description ? transcript.urgency.description : null,
+      'Audio for transcript':
+        transcript.transcriptionStartTs && transcript.transcriptionEndTs
+          ? 'Start time ' +
+            this.luxonPipe.transform(transcript.transcriptionStartTs, 'HH:mm:ss') +
+            ' - End time ' +
+            this.luxonPipe.transform(transcript.transcriptionEndTs, 'HH:mm:ss')
+          : '',
+      'Requested by': [
+        {
+          href: `/admin/users/${transcript.requestor?.userId}`,
+          value: transcript.requestor?.fullName,
+          caption: transcript.requestor?.email,
+        },
+      ],
+      Received: this.luxonPipe.transform(transcript.received, 'dd MMM yyyy HH:mm:ss'),
+      Instructions: transcript.requestorComments,
+      'Judge approval': 'Yes',
+    };
+  }
+
+  mapResults(
+    results: Transcription[],
+    courthouses: CourthouseData[],
+    statuses: TranscriptionStatus[]
+  ): Transcription[] {
+    return results.map((result) => {
+      const courthouse = courthouses.find((c) => c.id === result.courthouse.id);
+      const status = statuses.find((s) => s.id === result.status.id);
+      return {
+        ...result,
+        courthouse: {
+          id: courthouse?.id,
+          displayName: courthouse?.display_name,
+          courthouseName: courthouse?.courthouse_name,
+        },
+        status: {
+          id: status?.id,
+          type: status?.type,
+          displayName: status?.displayName,
+        },
+      };
+    });
   }
 
   private mapHideFileResponse(res: FileHideData): FileHide {
@@ -235,17 +353,6 @@ export class TranscriptionAdminService {
         comments: body.comments,
       },
     };
-  }
-
-  /**
-   *  Gets the reasons for hiding a transcription document or media file
-   */
-  getHiddenReasons(): Observable<HiddenReason[]> {
-    return this.http.get<HiddenReasonData[]>('api/admin/hidden-reasons').pipe(map((res) => this.mapHiddenReasons(res)));
-  }
-
-  getHiddenReason(id: number): Observable<HiddenReason | undefined> {
-    return this.getHiddenReasons().pipe(map((reasons) => reasons.find((reason) => reason.id === id)));
   }
 
   private mapHiddenReasons(data: HiddenReasonData[]): HiddenReason[] {
@@ -391,81 +498,6 @@ export class TranscriptionAdminService {
     return data.map((status) => ({ id: status.id, type: status.type, displayName: status.display_name }));
   }
 
-  getCurrentStatusFromTranscript(transcript: TranscriptionAdminDetails) {
-    const processGroups = (groups: SecurityGroup[] | undefined, status = '') => {
-      if (status === 'Awaiting Authorisation' || status === 'Requested') return null;
-
-      return groups && groups.length > 0
-        ? groups
-            .filter((group) => group.displayName || group.name)
-            .map((group) => ({
-              href: `/admin/groups/${group.id}`,
-              value: group.displayName || group.name,
-            }))
-        : null;
-    };
-
-    const processStatus = (status: string | undefined) => {
-      const changeStatuses = ['Awaiting Authorisation', 'With Transcriber', 'Requested', 'Approved'];
-      return status
-        ? changeStatuses.includes(status)
-          ? {
-              value: status,
-              action: {
-                text: 'Change status',
-                url: `/admin/transcripts/${transcript.transcriptionId}/change-status`,
-                queryParams: { manual: transcript.isManual, status },
-              },
-            }
-          : { value: status }
-        : null;
-    };
-
-    const processAssignedTo = (assignedTo: AssignedTo | undefined) =>
-      assignedTo?.userId
-        ? [
-            {
-              href: `/admin/users/${assignedTo.userId}`,
-              value: assignedTo.fullName,
-              caption: assignedTo.email,
-            },
-          ]
-        : 'Unassigned';
-
-    return {
-      Status: processStatus(transcript.status),
-      'Assigned to': processAssignedTo(transcript.assignedTo),
-      'Associated groups': processGroups(transcript.assignedGroups, transcript.status),
-    };
-  }
-
-  getRequestDetailsFromTranscript(transcript: TranscriptionAdminDetails) {
-    return {
-      'Hearing date': this.luxonPipe.transform(transcript.hearingDate, 'dd MMM yyyy'),
-      'Request type': transcript.requestType,
-      'Request method': transcript.isManual ? 'Manual' : 'Automated',
-      'Request ID': transcript.transcriptionId,
-      Urgency: transcript.urgency?.description ? transcript.urgency.description : null,
-      'Audio for transcript':
-        transcript.transcriptionStartTs && transcript.transcriptionEndTs
-          ? 'Start time ' +
-            this.luxonPipe.transform(transcript.transcriptionStartTs, 'HH:mm:ss') +
-            ' - End time ' +
-            this.luxonPipe.transform(transcript.transcriptionEndTs, 'HH:mm:ss')
-          : '',
-      'Requested by': [
-        {
-          href: `/admin/users/${transcript.requestor?.userId}`,
-          value: transcript.requestor?.fullName,
-          caption: transcript.requestor?.email,
-        },
-      ],
-      Received: this.luxonPipe.transform(transcript.received, 'dd MMM yyyy HH:mm:ss'),
-      Instructions: transcript.requestorComments,
-      'Judge approval': 'Yes',
-    };
-  }
-
   private mapTranscriptionDetails(transcription: TranscriptionAdminDetailsData): TranscriptionAdminDetails {
     const baseDetails = this.mapping.mapBaseTranscriptionDetails(transcription);
     return {
@@ -477,27 +509,21 @@ export class TranscriptionAdminService {
     };
   }
 
-  mapResults(
-    results: Transcription[],
-    courthouses: CourthouseData[],
-    statuses: TranscriptionStatus[]
-  ): Transcription[] {
-    return results.map((result) => {
-      const courthouse = courthouses.find((c) => c.id === result.courthouse.id);
-      const status = statuses.find((s) => s.id === result.status.id);
-      return {
-        ...result,
-        courthouse: {
-          id: courthouse?.id,
-          displayName: courthouse?.display_name,
-          courthouseName: courthouse?.courthouse_name,
-        },
-        status: {
-          id: status?.id,
-          type: status?.type,
-          displayName: status?.displayName,
-        },
-      };
-    });
+  private mapTranscriptionForDeletionData(
+    data: TranscriptionDocumentForDeletionData[]
+  ): TranscriptionDocumentForDeletion[] {
+    return data.map((t) => ({
+      transcriptionDocumentId: t.transcription_document_id,
+      transcriptionId: t.transcription.id,
+      caseNumber: t.case.case_number,
+      hearingDate: DateTime.fromISO(t.hearing.hearing_date),
+      courthouse: t.courthouse.display_name,
+      courtroom: t.courtroom.name,
+      hiddenById: t.admin_action.hidden_by_id,
+      markedById: t.admin_action.marked_for_manual_deletion_by_id,
+      comments: t.admin_action.comments,
+      ticketReference: t.admin_action.ticket_reference,
+      reasonId: t.admin_action.reason_id,
+    }));
   }
 }

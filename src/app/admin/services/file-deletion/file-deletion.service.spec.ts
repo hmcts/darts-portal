@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
+import { TranscriptionDocumentForDeletion } from '@admin-types/file-deletion';
 import { AudioFileMarkedDeletionData } from '@admin-types/file-deletion/audio-file-marked-deletion.interface';
 import { AudioFileMarkedDeletion } from '@admin-types/file-deletion/audio-file-marked-deletion.type';
 import { FileHide } from '@admin-types/hidden-reasons/file-hide';
@@ -13,6 +14,21 @@ import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
 import { FileDeletionService } from './file-deletion.service';
+
+const mockTranscriptionDocuments: TranscriptionDocumentForDeletion[] = [
+  {
+    transcriptionDocumentId: 1,
+    transcriptionId: 2,
+    caseNumber: 'cn',
+    hearingDate: DateTime.fromISO('2022-01-01T00:00:00.000Z'),
+    courthouse: 'ch',
+    courtroom: 'cr',
+    hiddenById: 3,
+    comments: 'cm',
+    ticketReference: 'tr',
+    reasonId: 4,
+  },
+];
 
 describe('FileDeletionService', () => {
   let service: FileDeletionService;
@@ -41,6 +57,7 @@ describe('FileDeletionService', () => {
                 { id: 2, displayName: 'Reason 2' },
               ])
             ),
+            getTranscriptionsMarkedForDeletion: jest.fn().mockReturnValue(of(mockTranscriptionDocuments)),
           },
         },
         LuxonDatePipe,
@@ -98,7 +115,7 @@ describe('FileDeletionService', () => {
         reasonId: 2,
       };
 
-      const result = service.mapMarkedAudioFiles(audioFileData);
+      const result = service['mapMarkedAudioFiles'](audioFileData);
 
       expect(result).toEqual(expectedAudioFile);
     });
@@ -141,7 +158,7 @@ describe('FileDeletionService', () => {
           comments: 'Comments',
           ticketReference: 'Ticket Reference',
           reasonId: 2,
-          markedByName: 'John Doe',
+          markedHiddenBy: 'John Doe',
           reasonName: 'Reason 2',
         },
       ];
@@ -217,6 +234,31 @@ describe('FileDeletionService', () => {
       req.flush(mockResponse);
 
       expect(approvalResponse).toEqual(expectedResponse);
+    });
+  });
+
+  describe('getTranscriptionDocumentsMarkedForDeletion', () => {
+    it('gets data and resolves users and reasons', () => {
+      const expectedMappedTranscriptionDocuments: TranscriptionDocumentForDeletion[] = [
+        {
+          transcriptionDocumentId: 1,
+          transcriptionId: 2,
+          caseNumber: 'cn',
+          hearingDate: DateTime.fromISO('2022-01-01T00:00:00.000Z'),
+          courthouse: 'ch',
+          courtroom: 'cr',
+          hiddenById: 3,
+          comments: 'cm',
+          ticketReference: 'tr',
+          reasonId: 4,
+          markedHiddenBy: 'John Doe',
+          reasonName: 'Reason 4',
+        },
+      ];
+
+      service.getTranscriptionDocumentsMarkedForDeletion().subscribe((transcriptions) => {
+        expect(transcriptions).toEqual(expectedMappedTranscriptionDocuments);
+      });
     });
   });
 });

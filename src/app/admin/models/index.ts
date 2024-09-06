@@ -1,5 +1,6 @@
 export * from './courthouses/create-update-courthouse-form-values.type';
 export * from './events/index';
+export * from './file-deletion/index';
 export * from './groups/security-group-form-values.type';
 export * from './groups/security-group.interface';
 export * from './groups/security-group.type';

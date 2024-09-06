@@ -232,6 +232,15 @@ export const ADMIN_ROUTES: Routes = [
       ),
   },
   {
+    path: 'admin/file-deletion/unauthorised',
+    title: 'DARTS Admin Unauthorised Transcription Deletion',
+    data: { allowedRoles: ['SUPER_ADMIN'] },
+    loadComponent: () =>
+      import(
+        './components/file-deletion/unauthorised-transcript-deletion/unauthorised-transcript-deletion.component'
+      ).then((c) => c.UnauthorisedTranscriptDeletionComponent),
+  },
+  {
     path: 'admin/file/:id/hide-or-delete',
     title: 'DARTS Admin Hide or Delete File',
     data: { allowedRoles: ['SUPER_ADMIN'] },

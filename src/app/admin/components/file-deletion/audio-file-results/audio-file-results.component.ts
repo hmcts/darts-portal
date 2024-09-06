@@ -39,7 +39,7 @@ export class AudioFileResultsComponent {
       { prop: 'endTime', name: 'End time' },
       { prop: 'courtroom', name: 'Courtroom' },
       { prop: 'channel', name: 'Channel' },
-      { prop: 'markedByName', name: 'Marked by' },
+      { prop: 'markedHiddenBy', name: 'Marked by' },
       { prop: 'comments', name: 'Comments' },
     ];
     if (this.showDeleteButton()) {
