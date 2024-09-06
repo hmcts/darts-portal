@@ -68,6 +68,7 @@ const mockAssociatedMedia: AssociatedMedia[] = [
       id: 1,
       displayName: 'courtroom',
     },
+    isHidden: false,
   },
 ];
 

@@ -91,6 +91,7 @@ describe('AssociatedAudioHideDeleteComponent', () => {
         endTime: DateTime.fromISO('2022-01-01T00:00:00.000Z'),
         courtroom: '6',
         channelNumber: 3,
+        isHidden: false,
       },
       {
         audioId: 5,
@@ -103,6 +104,7 @@ describe('AssociatedAudioHideDeleteComponent', () => {
         endTime: DateTime.fromISO('2022-01-01T00:00:00.000Z'),
         courtroom: '11',
         channelNumber: 2,
+        isHidden: false,
       },
     ];
     component.associatedAudioSubmit();
