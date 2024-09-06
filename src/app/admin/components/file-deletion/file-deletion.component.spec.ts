@@ -8,6 +8,7 @@ import { provideRouter } from '@angular/router';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { ActiveTabService } from '@services/active-tab/active-tab.service';
 import { FileDeletionService } from '@services/file-deletion/file-deletion.service';
+import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
 import { FileDeletionComponent } from './file-deletion.component';
@@ -139,7 +140,7 @@ describe('FileDeletionComponent', () => {
       const transcript = transcriptionDocuments[0];
       component.userService = {
         hasMatchingUserId: jest.fn().mockReturnValue(true),
-      } as any;
+      } as unknown as UserService;
       const routerSpy = jest.spyOn(component.router, 'navigate');
 
       component.onDeleteTranscript(transcript);
@@ -150,7 +151,7 @@ describe('FileDeletionComponent', () => {
       const transcript = transcriptionDocuments[0];
       component.userService = {
         hasMatchingUserId: jest.fn().mockReturnValue(false),
-      } as any;
+      } as unknown as UserService;
       const routerSpy = jest.spyOn(component.router, 'navigate');
 
       component.onDeleteTranscript(transcript);
