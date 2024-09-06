@@ -1,7 +1,7 @@
 import config from 'config';
 import RedisStore from 'connect-redis';
 import session from 'express-session';
-import { createClient } from 'redis';
+import { Redis } from 'ioredis';
 
 export default () => {
   const sessionMiddleware: session.SessionOptions = {
@@ -13,14 +13,12 @@ export default () => {
   };
 
   if (config.get('node-env') === 'production') {
-    const redisClient = createClient({ url: config.get('secrets.darts.redis-connection-string') });
-    redisClient.connect().catch(console.error);
-    redisClient.on('error', (err) => console.error('REDIS ERROR', err));
-    redisClient.on('reconnecting', () => console.error('REDIS RECONNECTING'));
-    redisClient.on('end', () => console.error('REDIS ERROR'));
+    const redis = new Redis(config.get('secrets.darts.redis-connection-string'));
+    redis.on('error', (err) => console.error('REDIS ERROR', err));
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const redisStore = new (RedisStore as any)({
-      client: redisClient,
+      client: redis,
       prefix: config.get('session.prefix') + ':',
       ttl: config.get('session.ttlInSeconds'),
     });
