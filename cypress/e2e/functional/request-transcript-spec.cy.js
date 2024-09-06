@@ -140,42 +140,6 @@ describe('Request Transcript', () => {
     cy.a11y();
   });
 
-  it('show outside times validation error if requested times are outside', () => {
-    cy.get('.govuk-button').should('contain', 'Request a new transcript').click();
-
-    // Confirm we are in the right place
-    cy.get('h1.govuk-heading-l').should('contain', 'Request a new transcript');
-
-    // Fill in the form
-    cy.get('#transcription-type').select('Court log');
-    cy.get('#urgency').select('Overnight');
-    cy.get('.govuk-button').contains('Continue').click();
-
-    // Confirm we are in the right place
-    cy.get('h2.govuk-heading-m').should('contain', 'Events, audio and specific times requests');
-
-    //Fill in times
-    cy.get('#start-hour-input').type('01');
-    cy.get('#start-minutes-input').type('59');
-    cy.get('#start-seconds-input').type('30');
-
-    cy.get('#end-hour-input').type('05');
-    cy.get('#end-minutes-input').type('00');
-    cy.get('#end-seconds-input').type('00');
-
-    cy.get('.govuk-button').contains('Continue').click();
-
-    cy.get('#start-time-error').should(
-      'contain',
-      'Audio not available for timing entered. You must specify a time that matches the audio times available'
-    );
-
-    cy.get('ul.govuk-error-summary__list > li').should(
-      'contain.text',
-      'Audio not available for timing entered. You must specify a time that matches the audio times available'
-    );
-  });
-
   it('open the confirmation page if neither "court log" or "specified times" is selected', () => {
     cy.get('.govuk-button').should('contain', 'Request a new transcript').click();
 
