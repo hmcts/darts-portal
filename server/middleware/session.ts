@@ -15,6 +15,9 @@ export default () => {
   if (config.get('node-env') === 'production') {
     const redisClient = createClient({ url: config.get('secrets.darts.redis-connection-string') });
     redisClient.connect().catch(console.error);
+    redisClient.on('error', (err) => console.error('REDIS ERROR', err));
+    redisClient.on('reconnecting', () => console.error('REDIS RECONNECTING'));
+    redisClient.on('end', () => console.error('REDIS ERROR'));
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const redisStore = new (RedisStore as any)({
       client: redisClient,
