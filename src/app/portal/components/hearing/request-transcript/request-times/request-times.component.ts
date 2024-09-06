@@ -58,7 +58,11 @@ export class RequestTimesComponent {
     if (events.length) {
       const timestamps = events.map((event) => DateTime.fromISO(event.timestamp).toUnixInteger());
       const startTime = DateTime.fromSeconds(Math.min(...timestamps));
-      const endTime = DateTime.fromSeconds(Math.max(...timestamps));
+
+      const endTime =
+        events.length === 1
+          ? DateTime.fromObject({ hour: 23, minute: 59, second: 59 })
+          : DateTime.fromSeconds(Math.max(...timestamps));
       this.setFormValues({ startTime, endTime });
     } else {
       this.setFormValues({ startTime: null, endTime: null });
@@ -118,20 +122,6 @@ export class RequestTimesComponent {
 
     const { startTime, endTime } = this.getStartEndTimeFromForm();
 
-    this.isTimeOutside(startTime) &&
-      this.validationErrors.push({
-        fieldId: 'start-hour-input',
-        message:
-          'Audio not available for timing entered. You must specify a time that matches the audio times available',
-      });
-
-    this.isTimeOutside(endTime) &&
-      this.validationErrors.push({
-        fieldId: 'end-hour-input',
-        message:
-          'Audio not available for timing entered. You must specify a time that matches the audio times available',
-      });
-
     this.errors.emit(this.validationErrors);
 
     if (this.validationErrors.length) {
@@ -139,29 +129,6 @@ export class RequestTimesComponent {
     }
 
     this.continue.emit({ startTime, endTime });
-  }
-
-  isTimeOutside(time: DateTime): boolean {
-    if (this.events.length === 0) {
-      return true;
-    }
-
-    const eventTimes = this.events
-      .map((event) => DateTime.fromISO(event.timestamp))
-      .sort((a, b) => a.toMillis() - b.toMillis());
-
-    const firstEventStartTime = eventTimes[0];
-    const lastEventEndTime = eventTimes[eventTimes.length - 1];
-
-    const timeString = time.toLocaleString(DateTime.TIME_24_WITH_SECONDS);
-    const firstEventTimeString = firstEventStartTime.toLocaleString(DateTime.TIME_24_WITH_SECONDS);
-    const lastEventTimeString = lastEventEndTime.toLocaleString(DateTime.TIME_24_WITH_SECONDS);
-
-    if (timeString >= firstEventTimeString && timeString <= lastEventTimeString) {
-      return false; // Times are within the first and last event
-    }
-
-    return true; // Times are outside the first and last event
   }
 
   getStartEndTimeFromForm() {

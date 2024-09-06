@@ -44,6 +44,35 @@ describe('RequestTimesComponent', () => {
   });
 
   describe('onEventRowSelected', () => {
+    it('should set the end time to 23:59:59 if a single event is selected', () => {
+      const expectedFormValues = {
+        startTime: {
+          hours: '01',
+          minutes: '15',
+          seconds: '30',
+        },
+        endTime: {
+          hours: '23',
+          minutes: '59',
+          seconds: '59',
+        },
+      };
+
+      const startTimestamp = '2023-01-01T01:15:30.000';
+
+      const audioRow: HearingEvent[] = [
+        {
+          id: 1,
+          timestamp: startTimestamp,
+          name: 'event 1',
+          text: 'event 1 text',
+        },
+      ];
+
+      component.onEventRowSelected(audioRow);
+      expect(component.form.value).toEqual(expectedFormValues);
+    });
+
     it('should set the start and end time from the selected row', () => {
       const expectedFormValues = {
         startTime: {
@@ -165,16 +194,6 @@ describe('RequestTimesComponent', () => {
         {
           fieldId: 'end-hour-input',
           message: 'Select an end time',
-        },
-        {
-          fieldId: 'start-hour-input',
-          message:
-            'Audio not available for timing entered. You must specify a time that matches the audio times available',
-        },
-        {
-          fieldId: 'end-hour-input',
-          message:
-            'Audio not available for timing entered. You must specify a time that matches the audio times available',
         },
       ];
       component.onContinue();
@@ -299,25 +318,6 @@ describe('RequestTimesComponent', () => {
         },
       ];
       expect(component.getValidationMessage('some-other-field')).toBe('');
-    });
-  });
-
-  describe('#isTimeOutside', () => {
-    it('should return true if events array is empty', () => {
-      component.events = [];
-      fixture.detectChanges();
-      const time = DateTime.fromISO('2023-01-01T01:15:30.000');
-      expect(component.isTimeOutside(time)).toBe(true);
-    });
-
-    it('should return false if time is within the first and last event', () => {
-      const time = DateTime.fromISO('2023-01-01T01:30:00.000');
-      expect(component.isTimeOutside(time)).toBe(false);
-    });
-
-    it('should return true if time is outside the first and last event', () => {
-      const time = DateTime.fromISO('2023-01-01T03:00:00.000');
-      expect(component.isTimeOutside(time)).toBe(true);
     });
   });
 });
