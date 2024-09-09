@@ -92,7 +92,7 @@ export class AudioViewComponent implements OnDestroy {
   constructor(private errorMsgService: ErrorMessageService) {
     this.transformedMedia = this.router.getCurrentNavigation()?.extras?.state?.transformedMedia;
 
-    if (!this.transformedMedia) {
+    if (this.isInvalidTransformedMedia(this.transformedMedia)) {
       this.router.navigate(['/audios']);
     } else {
       this.requestId = this.transformedMedia.mediaRequestId;
@@ -186,5 +186,14 @@ export class AudioViewComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.errorMsgService.clearErrorMessage();
+  }
+
+  isInvalidTransformedMedia(transformedMedia: TransformedMedia) {
+    return (
+      !transformedMedia ||
+      !transformedMedia.startTime.toISO ||
+      !transformedMedia.endTime.toISO ||
+      !transformedMedia.hearingDate.toISO
+    );
   }
 }
