@@ -24,6 +24,7 @@ const medias = [
       id: 1,
       display_name: 'courtroom 11',
     },
+    is_hidden: false,
   },
   {
     id: 1,
@@ -46,6 +47,7 @@ const medias = [
       id: 1,
       display_name: 'courtroom 1',
     },
+    is_hidden: false,
   },
   {
     id: 2,
@@ -68,6 +70,30 @@ const medias = [
       id: 2,
       display_name: 'courtroom 2',
     },
+    is_hidden: false,
+  },
+  {
+    id: 2,
+    channel: 2,
+    start_at: '2020-01-01T19:00:00Z',
+    end_at: '2020-01-01T20:00:00Z',
+    case: {
+      id: 2,
+      case_number: '456',
+    },
+    hearing: {
+      id: 2,
+      hearing_date: '2020-06-01',
+    },
+    courthouse: {
+      id: 2,
+      display_name: 'courthouse 2',
+    },
+    courtroom: {
+      id: 2,
+      display_name: 'courtroom 2',
+    },
+    is_hidden: false,
   },
   {
     id: 3,
@@ -90,6 +116,30 @@ const medias = [
       id: 3,
       display_name: 'courtroom 3',
     },
+    is_hidden: true,
+  },
+  {
+    id: 409,
+    channel: 4,
+    start_at: '2020-08-01T16:00:00Z',
+    end_at: '2020-08-01T17:00:00Z',
+    case: {
+      id: 4,
+      case_number: '101',
+    },
+    hearing: {
+      id: 4,
+      hearing_date: '2020-09-01',
+    },
+    courthouse: {
+      id: 4,
+      display_name: 'courthouse 4',
+    },
+    courtroom: {
+      id: 4,
+      display_name: 'courtroom 4',
+    },
+    is_hidden: false,
   },
 ];
 
@@ -306,6 +356,11 @@ router.get('/marked-for-deletion', (req, res) => {
 router.post('/:id/hide', (req, res) => {
   const body = req.body;
   let response;
+
+  if (req.params.id === '409') {
+    res.sendStatus(409);
+    return;
+  }
 
   if (body.is_hidden) {
     response = {

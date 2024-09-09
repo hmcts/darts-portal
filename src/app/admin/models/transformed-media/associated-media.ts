@@ -21,4 +21,5 @@ export type AssociatedMedia = {
     id: number;
     displayName: string;
   };
+  isHidden: boolean;
 };

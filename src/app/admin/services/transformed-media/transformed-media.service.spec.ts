@@ -472,6 +472,7 @@ describe('TransformedMediaService', () => {
             id: 1,
             displayName: 'room',
           },
+          isHidden: false,
         },
         {
           id: 2,
@@ -494,6 +495,7 @@ describe('TransformedMediaService', () => {
             id: 1,
             displayName: 'room',
           },
+          isHidden: true,
         },
 
         {
@@ -517,6 +519,7 @@ describe('TransformedMediaService', () => {
             id: 1,
             displayName: 'room',
           },
+          isHidden: true,
         },
       ];
 
