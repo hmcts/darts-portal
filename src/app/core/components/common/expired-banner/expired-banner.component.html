@@ -1,0 +1,6 @@
+@if (isExpired()) {
+  <app-govuk-banner type="warning">
+    <strong>Expired: </strong>This case has passed its retention date on {{ expiryDate() | luxonDate: 'd MMM y' }}. Data
+    was deleted in line with HMCTS policy.
+  </app-govuk-banner>
+}

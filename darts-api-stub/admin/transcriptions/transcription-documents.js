@@ -209,6 +209,15 @@ router.get('/:transcription_document_id', (req, res) => {
     transcription.is_hidden = true;
     transcription.admin_action.is_marked_for_manual_deletion = true;
   }
+
+  if (id === '2') {
+    // for expired transcription
+    return res.send({
+      ...transcription,
+      retain_until: '2022-02-02T09:00:00Z',
+    });
+  }
+
   return res.send(transcription);
 });
 

@@ -408,6 +408,12 @@ router.get('/:id', (req, res) => {
     media.admin_action.is_marked_for_manual_deletion = true;
   }
 
+  if (media.id === 2) {
+    // Set expired banner
+    res.send({ ...media, retain_until: '2022-02-02T09:00:00Z' });
+    return;
+  }
+
   res.send(media);
 });
 
