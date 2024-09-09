@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
+import { ExpiredBannerComponent } from '@common/expired-banner/expired-banner.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
 import { DateTimePipe } from '@pipes/dateTime.pipe';
@@ -19,7 +19,7 @@ import { UserService } from '@services/user/user.service';
     RouterLink,
     DateTimePipe,
     GovukHeadingComponent,
-    GovukBannerComponent,
+    ExpiredBannerComponent,
   ],
   templateUrl: './case-file.component.html',
   styleUrls: ['./case-file.component.scss'],

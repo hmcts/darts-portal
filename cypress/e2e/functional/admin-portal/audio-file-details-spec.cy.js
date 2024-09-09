@@ -89,4 +89,14 @@ describe('Admin - Audio file details screen', () => {
       cy.a11y();
     });
   });
+
+  describe('Expired banner', () => {
+    it('elements', () => {
+      cy.visit('/admin/audio-file/2');
+
+      cy.get('app-expired-banner').contains(
+        'Expired: This case has passed its retention date on 2 Feb 2022. Data was deleted in line with HMCTS policy.'
+      );
+    });
+  });
 });

@@ -5,6 +5,7 @@ import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
+import { ExpiredBannerComponent } from '@common/expired-banner/expired-banner.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
@@ -36,6 +37,7 @@ import { BasicAudioFileDetailsComponent } from './basic-audio-file-details/basic
     AsyncPipe,
     HiddenFileBannerComponent,
     RouterLink,
+    ExpiredBannerComponent,
   ],
 })
 export class AudioFileComponent {
@@ -173,5 +175,9 @@ export class AudioFileComponent {
         },
       });
     }
+  }
+
+  isAudioFileExpired(audioFile: AudioFile) {
+    return audioFile.retainUntil < DateTime.now();
   }
 }

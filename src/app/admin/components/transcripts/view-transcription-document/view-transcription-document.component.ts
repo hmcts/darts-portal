@@ -5,6 +5,7 @@ import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
 import { DataTableComponent } from '@common/data-table/data-table.component';
+import { ExpiredBannerComponent } from '@common/expired-banner/expired-banner.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { HiddenFileBannerComponent } from '@common/hidden-file-banner/hidden-file-banner.component';
 import { LoadingComponent } from '@common/loading/loading.component';
@@ -51,6 +52,7 @@ import { TranscriptFileBasicDetailComponent } from './transcript-file-basic-deta
     TranscriptFileAdvancedDetailComponent,
     NotificationBannerComponent,
     HiddenFileBannerComponent,
+    ExpiredBannerComponent,
   ],
 })
 export class ViewTranscriptionDocumentComponent {
