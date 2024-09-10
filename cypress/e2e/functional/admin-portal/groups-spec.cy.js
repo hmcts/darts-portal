@@ -17,7 +17,7 @@ describe('Admin - Groups screen', () => {
     cy.get('#groups-table').should('contain', 'Approver');
 
     cy.get('#groups-table').should('contain', 'Opus Transcribers');
-    cy.get('#groups-table').should('contain', 'Requestor');
+    cy.get('#groups-table').should('contain', 'Requester');
 
     cy.get('#groups-table').should('contain', 'Super user (DARTS portal)');
     cy.get('#groups-table').should('contain', 'Judge');
@@ -37,7 +37,7 @@ describe('Admin - Groups screen', () => {
     cy.get('#groups-table').should('contain', 'Approver');
 
     cy.get('#groups-table').should('not.contain', 'Opus Transcribers');
-    cy.get('#groups-table').should('not.contain', 'Requestor');
+    cy.get('#groups-table').should('not.contain', 'Requester');
   });
 
   it('view group details', () => {

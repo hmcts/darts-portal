@@ -74,7 +74,7 @@ export class CourthouseUsersComponent implements OnInit {
       {
         displayName: 'Role type',
         name: this.roleTypeFilterName,
-        values: ['Requestor', 'Approver'],
+        values: ['Requester', 'Approver'],
         multiselect: true,
       },
     ];

@@ -41,7 +41,7 @@ describe('CourthouseRecordComponent', () => {
       id: 2,
       name: 'REQUESTER',
       displayState: true,
-      displayName: 'Requestor',
+      displayName: 'Requester',
     },
     {
       id: 3,
@@ -227,7 +227,7 @@ describe('CourthouseRecordComponent', () => {
         {
           id: 1,
           userName: 'Eric Bristow',
-          roleType: 'Requestor',
+          roleType: 'Requester',
           groups: [{ id: 2 }],
         },
         {
@@ -309,7 +309,7 @@ describe('CourthouseRecordComponent', () => {
           id: 2,
           name: 'REQUESTER',
           displayState: true,
-          displayName: 'Requestor',
+          displayName: 'Requester',
         },
       };
 
@@ -337,7 +337,7 @@ describe('CourthouseRecordComponent', () => {
           id: 2,
           name: 'REQUESTER',
           displayState: true,
-          displayName: 'Requestor',
+          displayName: 'Requester',
         },
         groups: [
           {
@@ -396,12 +396,12 @@ describe('CourthouseRecordComponent', () => {
           ],
           id: 1,
           role: {
-            displayName: 'Requestor',
+            displayName: 'Requester',
             displayState: true,
             id: 2,
             name: 'REQUESTER',
           },
-          roleType: 'Requestor',
+          roleType: 'Requester',
           userName: 'Eric Bristow',
           checkboxLabel: 'Select Eric Bristow for deletion',
         },
@@ -422,12 +422,12 @@ describe('CourthouseRecordComponent', () => {
           ],
           id: 2,
           role: {
-            displayName: 'Requestor',
+            displayName: 'Requester',
             displayState: true,
             id: 2,
             name: 'REQUESTER',
           },
-          roleType: 'Requestor',
+          roleType: 'Requester',
           userName: 'Fallon Sherrock',
           checkboxLabel: 'Select Fallon Sherrock for deletion',
         },
@@ -533,7 +533,7 @@ describe('CourthouseRecordComponent', () => {
           id: 2,
           name: 'REQUESTER',
           displayState: true,
-          displayName: 'Requestor',
+          displayName: 'Requester',
         },
         {
           id: 3,

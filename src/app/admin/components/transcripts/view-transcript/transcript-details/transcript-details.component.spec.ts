@@ -50,7 +50,7 @@ describe('TranscriptDetailsComponent', () => {
         userId: 1,
         fullName: 'Joe Bloggs',
       },
-      requestorComments: 'This is a requestor comment',
+      requestorComments: 'This is a requester comment',
       rejectionReason: 'This is a rejection reason',
       defendants: ['Dave Defendant'],
       judges: ['Judge Judy'],

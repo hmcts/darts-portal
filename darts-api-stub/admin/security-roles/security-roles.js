@@ -13,7 +13,7 @@ const defaultSecurityRoles = [
   {
     id: 2,
     role_name: 'REQUESTER',
-    display_name: 'Requestor',
+    display_name: 'Requester',
     display_state: true,
   },
   {

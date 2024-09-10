@@ -38,7 +38,7 @@ describe('CourthouseUsersComponent', () => {
       {
         userName: 'Fallon Sherrock',
         email: 'fallon.sherrock@darts.local',
-        roleType: 'Requestor',
+        roleType: 'Requester',
         id: 2,
         groups: [],
         role: {} as SecurityRole,
@@ -214,7 +214,7 @@ describe('CourthouseUsersComponent', () => {
         {
           userName: 'Fallon Sherrock',
           email: 'fallon.sherrock@darts.local',
-          roleType: 'Requestor',
+          roleType: 'Requester',
           id: 2,
           groups: [],
           role: {},

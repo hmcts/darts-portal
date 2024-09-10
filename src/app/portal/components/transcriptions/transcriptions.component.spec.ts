@@ -282,7 +282,7 @@ describe('TranscriptionsComponent', () => {
     });
   });
 
-  it('Tabs if both APPROVER and REQUESTOR', () => {
+  it('Tabs if both APPROVER and REQUESTER', () => {
     fixture.detectChanges();
 
     component.isRequester = true;
@@ -295,7 +295,7 @@ describe('TranscriptionsComponent', () => {
     expect(tabs).toBeTruthy();
   });
 
-  it('No tabs if REQUESTOR only', () => {
+  it('No tabs if REQUESTER only', () => {
     fixture.detectChanges();
 
     component.isRequester = true;
@@ -321,7 +321,7 @@ describe('TranscriptionsComponent', () => {
     expect(tabs).toBeFalsy();
   });
 
-  it('Requestor view and no tabs if JUDGE only', () => {
+  it('Requester view and no tabs if JUDGE only', () => {
     fixture.detectChanges();
 
     component.isRequester = false;
@@ -337,7 +337,7 @@ describe('TranscriptionsComponent', () => {
     expect(table).toBeTruthy();
   });
 
-  it('Requestor view and no tabs if SUPER_USER only', () => {
+  it('Requester view and no tabs if SUPER_USER only', () => {
     fixture.detectChanges();
 
     component.isRequester = false;

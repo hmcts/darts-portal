@@ -12,7 +12,7 @@ const {
 const stubUsers = [
   {
     name: 'Eric Bristow',
-    code: 'requestor',
+    code: 'requester',
     userState: {
       userId: 1,
       userName: 'eric.bristow@darts.local',
@@ -34,7 +34,7 @@ const stubUsers = [
   },
   {
     name: 'Michael van Gerwen',
-    code: 'requestor-approver',
+    code: 'requester-approver',
     userState: {
       userId: 3,
       userName: 'michael.vangerwen@darts.local',
