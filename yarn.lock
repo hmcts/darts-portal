@@ -6781,7 +6781,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.6.1, axios@npm:^1.7.2":
+"axios@npm:^1.7.2, axios@npm:^1.7.4":
   version: 1.7.7
   resolution: "axios@npm:1.7.7"
   dependencies:
@@ -11781,16 +11781,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"joi@npm:^17.11.0":
-  version: 17.12.2
-  resolution: "joi@npm:17.12.2"
+"joi@npm:^17.13.3":
+  version: 17.13.3
+  resolution: "joi@npm:17.13.3"
   dependencies:
     "@hapi/hoek": ^9.3.0
     "@hapi/topo": ^5.1.0
     "@sideway/address": ^4.1.5
     "@sideway/formula": ^3.0.1
     "@sideway/pinpoint": ^2.0.0
-  checksum: 5a5213c56d3a3b769b4cb999756a226d090421693443a405a9f1063443941a8b920c731b0c2cad526163726494c2da9858d38a98d39bd516df60e9ef49f0125a
+  checksum: 66ed454fee3d8e8da1ce21657fd2c7d565d98f3e539d2c5c028767e5f38cbd6297ce54df8312d1d094e62eb38f9452ebb43da4ce87321df66cf5e3f128cbc400
   languageName: node
   linkType: hard
 
@@ -15939,8 +15939,8 @@ __metadata:
   linkType: hard
 
 "start-server-and-test@npm:^2.0.4":
-  version: 2.0.6
-  resolution: "start-server-and-test@npm:2.0.6"
+  version: 2.0.7
+  resolution: "start-server-and-test@npm:2.0.7"
   dependencies:
     arg: ^5.0.2
     bluebird: 3.7.2
@@ -15949,12 +15949,12 @@ __metadata:
     execa: 5.1.1
     lazy-ass: 1.6.0
     ps-tree: 1.2.0
-    wait-on: 7.2.0
+    wait-on: 8.0.0
   bin:
     server-test: src/bin/start.js
     start-server-and-test: src/bin/start.js
     start-test: src/bin/start.js
-  checksum: 86c8d410f7ca0c11eb69231bf915201e3789d0316db80f89b8eaee1c7e77b9398bccdc3dd21be43641404f0c876f83cc9d41c2b73a21e3eb676bc307fb0bf397
+  checksum: b8f214afbd7780e687a08f36aa38a5f927978208c56fca7239e1b9d9320f2912ae340e7563d6a3aecd8eccd7168785b7446e7fb04d3e201f13b0ddac040074af
   languageName: node
   linkType: hard
 
@@ -16958,18 +16958,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"wait-on@npm:7.2.0":
-  version: 7.2.0
-  resolution: "wait-on@npm:7.2.0"
+"wait-on@npm:8.0.0":
+  version: 8.0.0
+  resolution: "wait-on@npm:8.0.0"
   dependencies:
-    axios: ^1.6.1
-    joi: ^17.11.0
+    axios: ^1.7.4
+    joi: ^17.13.3
     lodash: ^4.17.21
     minimist: ^1.2.8
     rxjs: ^7.8.1
   bin:
     wait-on: bin/wait-on
-  checksum: 69ec1432bb4479363fdd71f2f3f501a98aa356a562781108a4a89ef8fdf1e3d5fd0c2fd56c4cc5902abbb662065f1f22d4e436a1e6fc9331ce8b575eb023325e
+  checksum: a4894dd1aad71e1c1b0be599e070c848ed3b29c4ac5634553f09561fe17c38fd99906779840e7fbb739a9b943d2d3542af697ec8f856d6244f640895962cb477
   languageName: node
   linkType: hard
 
