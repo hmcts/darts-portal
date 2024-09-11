@@ -6,7 +6,8 @@
     "url": "http://localhost:4550"
   },
   "authentication": {
-    "azureAdB2cOriginHost": "*"
+    "azureAdB2cOriginHost": "*",
+    "azureAdB2cHostname": "http://localhost:3000"
   },
   "session": {
     "prefix": "darts-portal-session",
