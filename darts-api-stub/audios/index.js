@@ -11,6 +11,7 @@ router.get('/hearings/:hearingId/audios', (req, res) => {
           media_start_timestamp: '2023-07-31T02:32:24.620Z',
           media_end_timestamp: '2023-07-31T14:32:24.620Z',
           is_available: true,
+          is_archived: false,
         },
         {
           id: 2,
@@ -23,30 +24,42 @@ router.get('/hearings/:hearingId/audios', (req, res) => {
           media_start_timestamp: '2023-07-31T05:32:24.620Z',
           media_end_timestamp: '2023-07-31T14:32:24.620Z',
           is_available: true,
+          is_archived: false,
         },
         {
           id: 4,
           media_start_timestamp: '2023-07-31T18:00:00.620Z',
           media_end_timestamp: '2023-07-31T18:01:00.620Z',
           is_available: true,
+          is_archived: false,
         },
         {
           id: 5,
           media_start_timestamp: '2023-07-31T19:00:00.620Z',
           media_end_timestamp: '2023-07-31T19:01:00.620Z',
           is_available: true,
+          is_archived: false,
         },
         {
           id: 6,
           media_start_timestamp: '2023-07-31T20:00:00.620Z',
           media_end_timestamp: '2023-07-31T20:01:00.620Z',
           is_available: true,
+          is_archived: false,
         },
         {
           id: 7,
           media_start_timestamp: '2023-07-31T20:32:24.620Z',
           media_end_timestamp: '2023-07-31T20:35:24.620Z',
           is_available: false,
+          is_archived: false,
+        },
+        {
+          id: 8,
+          media_start_timestamp: '2023-07-31T20:50:00.000Z',
+          media_end_timestamp: '2023-07-31T20:55:00.000Z',
+          is_available: false,
+          is_archived: true,
         },
       ];
       res.send(body1);

@@ -198,8 +198,13 @@ describe('Request audio', () => {
     });
 
     it('should show audio archived message', () => {
-      cy.get('#hearingsTable a').contains('10 Oct 2023').click();
-      cy.get('.govuk-hint').contains('Audio archived. Preview not available.');
+      cy.get('#hearingsTable a').contains('1 Sep 2023').click();
+      cy.get('td')
+        .contains('21:50:00 - 21:55:00')
+        .next('td')
+        .contains('Audio recording')
+        .next('td')
+        .contains('Audio archived. Preview not available.');
     });
 
     it('should show audio is not available message', () => {

@@ -42,14 +42,14 @@
     <ng-template [tableRowTemplate]="filteredRows" let-row let-index>
       <ng-container *ngIf="row.type === 'audio'">
         <td class="audio-row">
-          <div>{{ row.timestamp | date: 'HH:mm:ss' }} - {{ row.media_end_timestamp | date: 'HH:mm:ss' }}</div>
+          {{ row.timestamp | date: 'HH:mm:ss' }} - {{ row.media_end_timestamp | date: 'HH:mm:ss' }}
         </td>
         <td>Audio recording</td>
         <td>
           @if (isAudioInPreview(row.id)) {
             @if (row.audioIsReady$ | async; as audioCode) {
               @if (audioCode === 202) {
-                <div class="loading govuk-hint">Loading preview</div>
+                <div class="loading govuk-hint no-margin">Loading preview</div>
               } @else {
                 <app-audio-player
                   [id]="row.id"
@@ -60,12 +60,12 @@
                 />
               }
             } @else {
-              <div class="loading govuk-hint">Loading preview</div>
+              <div class="loading govuk-hint no-margin">Loading preview</div>
             }
-          } @else if (!row.is_available) {
-            <p class="govuk-hint">This audio is not currently available in DARTS, please try again later.</p>
           } @else if (row.is_archived) {
-            <p class="govuk-hint">Audio archived. Preview not available.</p>
+            <p class="govuk-hint no-margin">Audio archived. Preview not available.</p>
+          } @else if (!row.is_available) {
+            <p class="govuk-hint no-margin">This audio is not currently available in DARTS, please try again later.</p>
           } @else {
             <a
               class="govuk-link"
