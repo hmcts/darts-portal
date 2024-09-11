@@ -78,7 +78,8 @@
     "zone.js": "~0.15.0"
   },
   "resolutions": {
-    "micromatch": "^4.0.8"
+    "micromatch": "^4.0.8",
+    "send": "^0.19.0"
   },
   "devDependencies": {
     "@angular-builders/custom-webpack": "^18.0.0",
