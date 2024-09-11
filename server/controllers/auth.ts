@@ -11,7 +11,10 @@ function getAzureAdLogin(req: Request, res: Response): void {
   res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
   // do this whilst the page is being developed to prevent caching on the platform
   res.header('Cache-Control', 'no-store, must-revalidate');
-  res.render('azuread-b2c-login.html', { hostname: config.get('hostname'), screen: req.query.screenName });
+  res.render('azuread-b2c-login.html', {
+    hostname: config.get('authentication.azureAdB2cHostname'),
+    screen: req.query.screenName,
+  });
 }
 
 export function init(): Router {

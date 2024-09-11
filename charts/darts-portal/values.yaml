@@ -15,3 +15,4 @@ nodejs:
     DARTS_PORTAL_URL: https://darts.{{ .Values.global.environment }}.apps.hmcts.net
     DARTS_API_URL: https://darts-api.{{ .Values.global.environment }}.platform.hmcts.net
     DARTS_AZUREAD_B2C_ORIGIN_HOST: https://hmctsstgextid.b2clogin.com
+    DARTS_AZUREAD_B2C_HOSTNAME: https://darts.{{ .Values.global.environment }}.apps.hmcts.net
