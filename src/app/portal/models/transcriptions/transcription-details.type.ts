@@ -1,3 +1,4 @@
+import { Requestor } from '@admin-types/transcription/transcription-requestor';
 import { ReportingRestriction } from '@core-types/reporting-restriction/reporting-restriction.interface';
 import { DateTime } from 'luxon';
 import { TranscriptStatus } from './transcript-status.type';
@@ -28,4 +29,5 @@ export type TranscriptionDetails = {
   isManual: boolean;
   hearingId: number;
   isRemovedFromUserTranscripts?: boolean;
+  requestor?: Requestor;
 };

@@ -74,6 +74,9 @@ export class MappingService {
       hearingId: transcription.hearing_id,
       courthouseId: transcription.courthouse_id,
       isRemovedFromUserTranscripts: transcription.hide_request_from_requestor,
+      requestor: transcription.requestor
+        ? { userId: transcription.requestor?.user_id, fullName: transcription.requestor?.user_full_name }
+        : undefined,
     };
   }
 

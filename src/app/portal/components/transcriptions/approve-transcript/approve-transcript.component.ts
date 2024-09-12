@@ -1,6 +1,6 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -13,7 +13,8 @@ import { TranscriptionDetails } from '@portal-types/index';
 import { ErrorMessageService } from '@services/error/error-message.service';
 import { HeaderService } from '@services/header/header.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
-import { map } from 'rxjs';
+import { UserService } from '@services/user/user.service';
+import { map, tap } from 'rxjs';
 import { ApproveTranscriptButtonsComponent } from './approve-transcript-buttons/approve-transcript-buttons.component';
 
 @Component({
@@ -40,12 +41,23 @@ export class ApproveTranscriptComponent implements OnInit, OnDestroy {
   transcriptionService = inject(TranscriptionService);
   datePipe = inject(DatePipe);
   errorMsgService = inject(ErrorMessageService);
+  userService = inject(UserService);
+  router = inject(Router);
 
   transcriptId = this.route.snapshot.params.transcriptId;
   approvalErrors: { fieldId: string; message: string }[] = [];
   error$ = this.errorMsgService.errorMessage$;
 
   vm$ = this.transcriptionService.getTranscriptionDetails(this.transcriptId).pipe(
+    tap((data: TranscriptionDetails) => {
+      // Users can't approve their own transcript requests
+      if (this.isRequesterCurrentUser(data)) {
+        this.router.navigate(['/forbidden']);
+      }
+      if (this.isNotAwaitingAuthorisation(data)) {
+        this.router.navigate(['/not-found']);
+      }
+    }),
     map((data: TranscriptionDetails) => {
       return {
         hearingId: data.hearingId,
@@ -56,8 +68,16 @@ export class ApproveTranscriptComponent implements OnInit, OnDestroy {
     })
   );
 
+  private isRequesterCurrentUser(transcript: TranscriptionDetails) {
+    return transcript.requestor?.userId === this.userService.userState()?.userId;
+  }
+
+  private isNotAwaitingAuthorisation(transcript: TranscriptionDetails) {
+    return !(transcript.status === 'Awaiting Authorisation');
+  }
+
   ngOnInit(): void {
-    setTimeout(() => this.headerService.hideNavigation(), 0);
+    this.headerService.hideNavigation();
   }
 
   ngOnDestroy(): void {
