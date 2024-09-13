@@ -73,6 +73,7 @@ describe('EventsFacadeService', () => {
         isDataAnonymised: false,
         createdAt: DateTime.fromISO('2024-05-05T11:00:00Z'),
         lastModifiedAt: DateTime.fromISO('2024-05-05T11:00:00Z'),
+        caseExpiredAt: DateTime.fromISO('2024-05-05T11:00:00Z'),
       };
 
       const mockUsers: User[] = [

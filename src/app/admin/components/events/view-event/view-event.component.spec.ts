@@ -1,9 +1,10 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 
 import { Event } from '@admin-types/events';
 import { DatePipe } from '@angular/common';
 import { By } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
+import { ExpiredBannerComponent } from '@common/expired-banner/expired-banner.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { EventsFacadeService } from '@facades/events/events-facade.service';
 import { UserService } from '@services/user/user.service';
@@ -39,6 +40,7 @@ const mockEvent: Event = {
   createdById: 0,
   lastModifiedAt: DateTime.fromISO('2024-05-05T11:00:00Z'),
   lastModifiedById: 0,
+  caseExpiredAt: DateTime.fromISO('2024-05-05T11:00:00Z'),
 };
 
 describe('ViewEventComponent', () => {
@@ -60,32 +62,38 @@ describe('ViewEventComponent', () => {
     fixture.componentRef.setInput('id', '1');
     component = fixture.componentInstance;
     fixture.detectChanges();
-    return { fixture, component };
   };
 
   it('should create', () => {
-    const { component } = setup(true, mockEvent);
+    setup(true, mockEvent);
     expect(component.id()).toBe(1);
     expect(component.event()).toEqual(mockEvent);
     expect(component).toBeTruthy;
   });
 
   it('basic and advanced tabs for admin users', () => {
-    const { fixture } = setup(true, mockEvent);
+    setup(true, mockEvent);
     fixture.detectChanges();
     expect(fixture.debugElement.query(By.directive(TabsComponent))).toBeTruthy();
     expect(fixture.debugElement.query(By.directive(BasicEventDetailsComponent))).toBeTruthy();
   });
 
   it('No tabs for non-admin users', () => {
-    const { fixture } = setup(false, mockEvent);
+    setup(false, mockEvent);
     fixture.detectChanges();
     expect(fixture.debugElement.query(By.directive(TabsComponent))).toBeFalsy();
     expect(fixture.debugElement.query(By.directive(BasicEventDetailsComponent))).toBeTruthy();
   });
 
   it('calls getEvent', () => {
-    const { component } = setup(true, mockEvent);
+    setup(true, mockEvent);
     expect(component.eventsFacadeService.getEvent).toHaveBeenCalledWith(1);
   });
+
+  it('shows expired banner when data is annonymised', fakeAsync(() => {
+    setup(true, { ...mockEvent, isDataAnonymised: true });
+    fixture.detectChanges();
+    const expiredBanner = fixture.debugElement.query(By.directive(ExpiredBannerComponent));
+    expect(expiredBanner).toBeTruthy();
+  }));
 });

@@ -73,6 +73,7 @@ const viewEvents = events.map((event) => ({
   is_log_entry: false,
   version: 'v1',
   is_data_anonymised: false,
+  case_expired_at: undefined,
   created_by: 1,
   last_modified_by: 2,
   last_modified_at: '2024-06-01T13:00:00Z',
@@ -82,11 +83,16 @@ const viewEvents = events.map((event) => ({
 }));
 
 router.get('/:id', (req, res) => {
+  const id = Number(req.params.id);
   const viewEvent = viewEvents.find((event) => event.id === Number(req.params.id));
   if (!viewEvent) {
-    res.status(404).send('Event not found');
-    return;
+    return res.status(404).send('Event not found');
   }
+
+  if (id === 333) {
+    return res.send({ ...viewEvent, is_data_anonymised: true });
+  }
+
   res.send(viewEvent);
 });
 

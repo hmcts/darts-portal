@@ -51,6 +51,7 @@ describe('EventsService', () => {
         created_by: 1,
         last_modified_at: '2024-05-05T11:00:00Z',
         last_modified_by: 1,
+        case_expired_at: '2024-05-05T11:00:00Z',
       };
 
       let event;
@@ -84,6 +85,7 @@ describe('EventsService', () => {
         createdById: 1,
         lastModifiedAt: DateTime.fromISO('2024-05-05T11:00:00Z'),
         lastModifiedById: 1,
+        caseExpiredAt: DateTime.fromISO('2024-05-05T11:00:00Z'),
       };
 
       const req = httpMock.expectOne('/api/admin/events/1');
