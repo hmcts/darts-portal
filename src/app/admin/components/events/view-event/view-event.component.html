@@ -3,6 +3,10 @@
 @let e = event();
 
 @if (e) {
+  @if (e.isDataAnonymised) {
+    <app-expired-banner [expiryDate]="e.caseExpiredAt" />
+  }
+
   <app-govuk-heading caption="Event">{{ e.id }}</app-govuk-heading>
 
   @if (userService.isAdmin()) {

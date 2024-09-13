@@ -42,6 +42,7 @@ export class EventsService {
       createdById: event.created_by,
       lastModifiedAt: DateTime.fromISO(event.created_at),
       lastModifiedById: event.last_modified_by,
+      caseExpiredAt: DateTime.fromISO(event.case_expired_at),
     };
   }
 }
