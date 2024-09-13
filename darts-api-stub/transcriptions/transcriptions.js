@@ -629,6 +629,7 @@ router.get('/:transcriptId', (req, res) => {
         transcription_start_ts: null,
         transcription_end_ts: null,
         request_type: 'Sentencing Remarks',
+        status: 'Complete',
       });
     case '6':
       res.status(200).send({ ...mockTranscriptionDetails, status: 'With Transcriber' });
