@@ -4,6 +4,7 @@
   <div class="govuk-form-group">
     <label class="govuk-label" for="status"> Select status </label>
     <select class="govuk-select" id="status" formControlName="status">
+      <option value="" disabled selected>Select status</option>
       @for (status of statuses$ | async; track status) {
         <option value="{{ status.id }}">{{ status.displayName }}</option>
       }
