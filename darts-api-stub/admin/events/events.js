@@ -73,7 +73,7 @@ const viewEvents = events.map((event) => ({
   is_log_entry: false,
   version: 'v1',
   is_data_anonymised: false,
-  case_expired_at: undefined,
+  case_expired_at: '2024-06-01T13:00:00Z',
   created_by: 1,
   last_modified_by: 2,
   last_modified_at: '2024-06-01T13:00:00Z',
