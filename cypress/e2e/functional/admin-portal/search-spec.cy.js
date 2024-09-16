@@ -103,6 +103,10 @@ describe('Admin - Search screen', () => {
       .should('contain', 'Room 3')
       .next('td')
       .should('contain', 'This is yet another event');
+
+    cy.get('app-event-search-results tr')
+      .should('have.class', 'expired-row')
+      .contains('This case has passed its retention date');
   });
 
   it('view event details', () => {

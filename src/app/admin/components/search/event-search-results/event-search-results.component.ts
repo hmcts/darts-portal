@@ -3,13 +3,13 @@ import { Component, computed, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DatatableColumn } from '@core-types/index';
-import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
+import { TableBodyTemplateDirective } from '@directives/table-body-template.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 
 @Component({
   selector: 'app-event-search-results',
   standalone: true,
-  imports: [DataTableComponent, TableRowTemplateDirective, LuxonDatePipe, RouterLink],
+  imports: [DataTableComponent, TableBodyTemplateDirective, LuxonDatePipe, RouterLink],
   templateUrl: './event-search-results.component.html',
   styleUrl: './event-search-results.component.scss',
 })

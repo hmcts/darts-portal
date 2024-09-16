@@ -6,16 +6,40 @@
   [sortAndPaginateOnRowsChanged]="false"
   noDataMessage="No results found"
 >
-  <ng-template [tableRowTemplate]="events()" let-row>
-    <td>
-      <a class="govuk-link" [routerLink]="['/admin/events', row.id]">{{ row.id }}</a>
-    </td>
-    <td>{{ row.createdAt | luxonDate: "dd MMM yyyy 'at' hh:mm:ss" }}</td>
-    <td>{{ row.name }}</td>
-    <td>{{ row.courthouse }}</td>
-    <td>{{ row.courtroom }}</td>
-    <td>{{ row.text }}</td>
-    <td>{{ row.antecedentId }}</td>
-    <td>{{ row.chronicleId }}</td>
+  <ng-template [tableBodyTemplate] let-row>
+    <tr>
+      <td>
+        <a class="govuk-link" [routerLink]="['/admin/events', row.id]">{{ row.id }}</a>
+      </td>
+      <td>{{ row.createdAt | luxonDate: "dd MMM yyyy 'at' hh:mm:ss" }}</td>
+      <td>{{ row.name }}</td>
+      <td>{{ row.courthouse }}</td>
+      <td>{{ row.courtroom }}</td>
+      <td>{{ row.text }}</td>
+      <td>{{ row.antecedentId }}</td>
+      <td>{{ row.chronicleId }}</td>
+    </tr>
+    @if (row.isCaseExpired) {
+      <tr class="expired-row govuk-table__row">
+        <td colspan="8">
+          <div role="region" aria-label="Case has expired">
+            <svg
+              class="expired-icon moj-banner__icon"
+              role="presentation"
+              focusable="false"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 25 25"
+              height="25"
+              width="25"
+            >
+              <path d="M13.6,15.4h-2.3v-4.5h2.3V15.4z M13.6,19.8h-2.3v-2.2h2.3V19.8z M0,23.2h25L12.5,2L0,23.2z" />
+            </svg>
+            <div class="moj-banner__message">
+              <strong>Expired: </strong>This case has passed its retention date and event text has been anonymised
+            </div>
+          </div>
+        </td>
+      </tr>
+    }
   </ng-template>
 </app-data-table>
