@@ -16,6 +16,14 @@
   font-family: 'GDS Transport', arial, sans-serif;
 }
 
+.govuk-checkboxes__label {
+  max-width: calc(100% - 50px);
+}
+
+.govuk-label {
+  overflow-wrap: anywhere;
+}
+
 .govuk-fieldset__legend,
 .govuk-label.govuk-label--m {
   color: #1d70b8;
