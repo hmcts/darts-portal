@@ -5,7 +5,7 @@ const navigationSelector = '.moj-primary-navigation';
 
 describe('Your transcripts', () => {
   beforeEach(() => {
-    cy.login('requestor-approver');
+    cy.login('requester-approver');
     cy.injectAxe();
     cy.contains('Your transcripts').click();
   });

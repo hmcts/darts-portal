@@ -5,7 +5,7 @@ const downloadsFolder = Cypress.config('downloadsFolder');
 
 describe('View Transcript', () => {
   beforeEach(() => {
-    cy.login('requestor-approver');
+    cy.login('requester-approver');
     cy.injectAxe();
     cy.contains('Search').click();
     cy.get('h1').should('contain', 'Search for a case');

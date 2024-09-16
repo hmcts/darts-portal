@@ -359,7 +359,7 @@ describe('Audio request type - Role checks', () => {
   });
 
   it('should hide request type for requester role', () => {
-    cy.login('requestor');
+    cy.login('requester');
     cy.contains('Search').click();
     cy.get('h1').should('contain', 'Search for a case');
     cy.get('#case_number').type('C20220620001');

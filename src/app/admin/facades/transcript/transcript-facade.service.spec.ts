@@ -67,10 +67,10 @@ describe('TranscriptFacadeService', () => {
   });
 
   describe('#getTranscript', () => {
-    it('should return mapped transcript if requestor and courthouseId is present', fakeAsync(() => {
+    it('should return mapped transcript if requester and courthouseId is present', fakeAsync(() => {
       mockTranscription = {
         ...mockTranscription,
-        requestor: { userId: 1, fullName: 'Test Requestor', email: 'email@test.com' },
+        requestor: { userId: 1, fullName: 'Test Requester', email: 'email@test.com' },
         courthouseId: 1,
       };
 
@@ -95,7 +95,7 @@ describe('TranscriptFacadeService', () => {
           courthouseId: 1,
           requestor: {
             email: 'email@email.com',
-            fullName: 'Test Requestor',
+            fullName: 'Test Requester',
             userId: 1,
           },
         })

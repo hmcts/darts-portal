@@ -22,7 +22,7 @@ describe('Admin - Courthouse record screen', () => {
     cy.contains('Michael van Gerwen')
       .parents('tr')
       .should('contain', 'michael.vangerwen@darts.local')
-      .should('contain', 'Requestor');
+      .should('contain', 'Requester');
   });
 
   it('should filter users based on user name and role type', () => {
@@ -42,7 +42,7 @@ describe('Admin - Courthouse record screen', () => {
     cy.get('.govuk-checkboxes__item').get('.govuk-checkboxes__input').first().click();
     cy.get('#apply-filters-button').click();
 
-    cy.get('#users-table').should('contain', 'Requestor');
+    cy.get('#users-table').should('contain', 'Requester');
     cy.get('#users-table').should('contain', 'Approver');
 
     cy.get('#users-table')
@@ -54,7 +54,7 @@ describe('Admin - Courthouse record screen', () => {
     cy.get('.govuk-checkboxes__item').get('.govuk-checkboxes__input').eq(2).click();
     cy.get('#apply-filters-button').click();
 
-    cy.get('#users-table').contains('Requestor').should('not.exist');
+    cy.get('#users-table').contains('Requester').should('not.exist');
     cy.get('#users-table').should('contain', 'Approver');
 
     cy.get('#users-table')

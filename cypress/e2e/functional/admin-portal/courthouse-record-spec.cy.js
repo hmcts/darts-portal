@@ -235,7 +235,7 @@ describe('Admin - Courthouse record screen', () => {
 
       cy.get('h1').contains('You are removing 1 user role from Slough');
       cy.get('app-data-table').contains('eric.bristow@darts.local').should('exist');
-      cy.get('app-data-table').contains('Requestor').should('exist');
+      cy.get('app-data-table').contains('Requester').should('exist');
 
       cy.a11y();
 
@@ -257,7 +257,7 @@ describe('Admin - Courthouse record screen', () => {
       cy.get('h1').contains('You are removing 2 user roles from Slough');
       cy.get('app-data-table').contains('michael.vangerwen@darts.local').should('exist');
       cy.get('app-data-table').contains('fallon.sherrock@darts.local').should('exist');
-      cy.get('app-data-table').contains('Requestor').should('exist');
+      cy.get('app-data-table').contains('Requester').should('exist');
 
       cy.get('button').contains('Confirm').click();
 
