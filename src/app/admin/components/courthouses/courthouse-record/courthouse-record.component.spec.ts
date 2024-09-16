@@ -465,7 +465,7 @@ describe('CourthouseRecordComponent', () => {
       });
 
       // params in call are user ids of users with requester and approver permissions
-      expect(fakeUsersService.getUsersById).toHaveBeenCalledWith([1, 1, 2]);
+      expect(fakeUsersService.getUsersById).toHaveBeenCalledWith([1, 2]);
       expect(result).toEqual(expectedResult);
     });
   });
