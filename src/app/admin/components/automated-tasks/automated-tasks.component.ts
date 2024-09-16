@@ -33,7 +33,7 @@ export class AutomatedTasksComponent {
     { name: 'Description', prop: 'description', sortable: true },
     { name: 'Cron expression', prop: 'cronExpression' },
     { name: 'Status', prop: 'isActive', sortable: true },
-    { name: 'Run task', prop: '', hidden: true }, // Empty column header for run task buttons
+    { name: 'Run task', prop: '' },
   ];
 
   onRunTaskButtonClicked(taskId: number, taskName: string) {
