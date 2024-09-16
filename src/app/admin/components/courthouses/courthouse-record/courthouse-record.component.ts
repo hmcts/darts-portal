@@ -89,7 +89,8 @@ export class CourthouseRecordComponent {
 
   fetchUsers$ = this.courthouseRequesterApproverGroups$.pipe(
     switchMap(({ groups, approverRole, requesterRole }) => {
-      return this.userAdminService.getUsersById(groups.flatMap((g) => g.userIds)).pipe(
+      const uniqueUserIds = Array.from(new Set(groups.flatMap((g) => g.userIds)));
+      return this.userAdminService.getUsersById(uniqueUserIds).pipe(
         map((users) => {
           const requesterGroups = groups.filter((group) => group.securityRoleId === requesterRole.id);
           const approverGroups = groups.filter((group) => group.securityRoleId === approverRole.id);
