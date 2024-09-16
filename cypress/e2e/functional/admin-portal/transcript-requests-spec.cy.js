@@ -64,7 +64,7 @@ describe('Admin - Transcript requests', () => {
 
   describe('View transcript', () => {
     beforeEach(() => {
-      cy.get('#requestId').clear().type('1');
+      cy.get('#requestId').clear().type('6');
       cy.get('button').contains('Search').click();
     });
 
@@ -174,7 +174,7 @@ describe('Admin - Transcript requests', () => {
   describe('Change status', () => {
     beforeEach(() => {
       cy.get('button').contains('Search').click();
-      cy.get('app-search-transcripts-results').get('a').contains('1').click();
+      cy.get('app-search-transcripts-results').get('a').contains('6').click();
     });
 
     it('changes status', () => {

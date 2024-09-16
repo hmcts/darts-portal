@@ -179,6 +179,7 @@ describe('TranscriptionService', () => {
         transcript_file_name: '',
         transcription_id: 4,
         transcription_object_id: 2,
+        case_reporting_restrictions: [],
         is_manual: false,
         hearing_id: 3,
         courthouse_id: 2,
@@ -186,6 +187,10 @@ describe('TranscriptionService', () => {
           user_id: 3,
           user_full_name: 'test user',
         },
+        hide_request_from_requestor: false,
+        status: 'Awaiting Authorisation',
+        requestor_comments: 'comment',
+        received: '2023-06-01T00:00:00Z',
       };
 
       const mappedTranscription: TranscriptionDetails = {
@@ -211,6 +216,16 @@ describe('TranscriptionService', () => {
         hearingId: 3,
         courthouseId: 2,
         from: 'test user',
+        status: 'Awaiting Authorisation',
+        requestorComments: 'comment',
+        received: DateTime.fromISO('2023-06-01T00:00:00Z'),
+        caseReportingRestrictions: [],
+        isRemovedFromUserTranscripts: false,
+        rejectionReason: undefined,
+        requestor: {
+          userId: 3,
+          fullName: 'test user',
+        },
       };
 
       let result = {} as TranscriptionDetails;

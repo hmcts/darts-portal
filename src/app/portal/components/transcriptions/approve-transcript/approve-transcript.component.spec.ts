@@ -3,10 +3,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DatePipe } from '@angular/common';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { ActivatedRoute } from '@angular/router';
+import { signal } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranscriptionDetails } from '@portal-types/transcriptions/transcription-details.type';
 import { ErrorMessageService } from '@services/error/error-message.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
+import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
 import { ApproveTranscriptComponent } from './approve-transcript.component';
@@ -14,7 +16,8 @@ import { ApproveTranscriptComponent } from './approve-transcript.component';
 describe('ApproveTranscriptComponent', () => {
   let component: ApproveTranscriptComponent;
   let fixture: ComponentFixture<ApproveTranscriptComponent>;
-  let fakeTranscriptionService: Partial<TranscriptionService>;
+  let routerNavigateSpy: jest.SpyInstance;
+
   const mockActivatedRoute = {
     snapshot: {
       data: {
@@ -32,7 +35,7 @@ describe('ApproveTranscriptComponent', () => {
     courthouse: 'Swansea',
     transcriptionObjectId: 1,
     courtroom: '1',
-    status: 'Rejected',
+    status: 'Awaiting Authorisation',
     from: 'MoJ CH Swansea',
     received: DateTime.fromISO('2023-11-17T12:53:07.468Z'),
     requestorComments: 'Please expedite my request',
@@ -64,16 +67,16 @@ describe('ApproveTranscriptComponent', () => {
     courthouseId: 1,
   };
 
-  beforeEach(async () => {
-    fakeTranscriptionService = {
-      getTranscriptionDetails: jest.fn(),
-      getCaseDetailsFromTranscript: jest.fn(),
-      getRequestDetailsFromTranscript: jest.fn(),
-    };
+  const fakeTranscriptionService = {
+    getTranscriptionDetails: jest.fn(),
+    getCaseDetailsFromTranscript: jest.fn(),
+    getRequestDetailsFromTranscript: jest.fn(),
+  };
 
-    jest.spyOn(fakeTranscriptionService, 'getTranscriptionDetails').mockReturnValue(of(mockTranscriptionDetails));
+  const setup = (mockTranscriptionDetails: TranscriptionDetails) => {
+    fakeTranscriptionService.getTranscriptionDetails.mockReturnValue(of(mockTranscriptionDetails));
 
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [ApproveTranscriptComponent],
       providers: [
         provideHttpClient(),
@@ -81,19 +84,23 @@ describe('ApproveTranscriptComponent', () => {
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
         { provide: DatePipe },
         { provide: TranscriptionService, useValue: fakeTranscriptionService },
+        { provide: UserService, useValue: { userState: signal({ userId: 123 }) } },
       ],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(ApproveTranscriptComponent);
     component = fixture.componentInstance;
+    routerNavigateSpy = jest.spyOn(TestBed.inject(Router), 'navigate');
     fixture.detectChanges();
-  });
+  };
 
   it('should create', () => {
+    setup(mockTranscriptionDetails);
     expect(component).toBeTruthy();
   });
 
   it('should set caseDetails & requestDetails & reportingRestrictions', () => {
+    setup(mockTranscriptionDetails);
     const caseDetails = {
       'Case ID': 'C20220620001',
       Courthouse: 'Swansea',
@@ -142,6 +149,7 @@ describe('ApproveTranscriptComponent', () => {
   });
 
   it('should clear error message on destroy', () => {
+    setup(mockTranscriptionDetails);
     const errorMessageService = TestBed.inject(ErrorMessageService);
     const clearErrorMessageSpy = jest.spyOn(errorMessageService, 'clearErrorMessage');
     component.ngOnDestroy();
@@ -149,8 +157,24 @@ describe('ApproveTranscriptComponent', () => {
   });
 
   it('should handle incoming error', () => {
+    setup(mockTranscriptionDetails);
     const errors = [{ fieldId: 'Test', message: 'Message' }];
     component.handleRejectError(errors);
     expect(component.approvalErrors).toEqual(errors);
+  });
+
+  it('redirect to forbidden if user is requester', () => {
+    setup({ ...mockTranscriptionDetails, requestor: { userId: 123 } });
+    expect(routerNavigateSpy).toHaveBeenCalledWith(['/forbidden']);
+  });
+
+  it('redirect to not-found if transcript status is not Awaiting Authorisation', () => {
+    setup({ ...mockTranscriptionDetails, status: 'Approved' });
+    expect(routerNavigateSpy).toHaveBeenCalledWith(['/not-found']);
+  });
+
+  it('does not redirect if user is not requester and transcript is Awaiting Authorisation', () => {
+    setup(mockTranscriptionDetails);
+    expect(routerNavigateSpy).not.toHaveBeenCalled();
   });
 });

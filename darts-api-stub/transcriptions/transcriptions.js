@@ -186,7 +186,7 @@ const defaultMockTranscriptionDetails = {
   courthouse: 'Swansea',
   courtroom: '5',
   courthouse_id: 1,
-  status: 'With Transcriber',
+  status: 'Awaiting Authorisation',
   from: 'MoJ CH Swansea',
   requestor: {
     user_id: 1,
@@ -280,7 +280,7 @@ const mockTranscriptionDetailsTwo = {
   case_number: 'C20220620001',
   courthouse: 'Swansea',
   courtroom: '3',
-  status: 'Complete',
+  status: 'Awaiting Authorisation',
   from: 'MoJ CH Swansea',
   requestor: {
     user_id: 1,
@@ -315,6 +315,7 @@ const mockTranscriptionDetailsNoName = {
   courthouse: 'Swansea',
   hearing_id: 1,
   courtroom: '9',
+  status: 'Awaiting Authorisation',
   defendants: ['Defendant Dave'],
   judges: ['HHJ M. Hussain KC	'],
   hearing_date: '2023-11-08',
@@ -630,6 +631,8 @@ router.get('/:transcriptId', (req, res) => {
         request_type: 'Sentencing Remarks',
         status: 'Complete',
       });
+    case '6':
+      res.status(200).send({ ...mockTranscriptionDetails, status: 'With Transcriber' });
       break;
     default:
       res.status(200).send(mockTranscriptionDetailsTwo);
