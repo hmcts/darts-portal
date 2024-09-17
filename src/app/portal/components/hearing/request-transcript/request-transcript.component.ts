@@ -97,7 +97,7 @@ export class RequestTranscriptComponent implements OnInit, OnDestroy {
   transcriptRequestColumns: DatatableColumn[] = [
     { name: 'Start Time', prop: 'media_start_timestamp', sortable: true },
     { name: 'End Time', prop: 'media_end_timestamp', sortable: true },
-    { name: 'Title', prop: '', hidden: true },
+    { name: 'Audio recording', prop: '' },
   ];
 
   step = signal(1);
