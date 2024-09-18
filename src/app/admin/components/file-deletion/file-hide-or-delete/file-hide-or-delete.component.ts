@@ -2,8 +2,9 @@ import { FileHideOrDeleteFormValues } from '@admin-types/hidden-reasons/file-hid
 import { HiddenReason } from '@admin-types/hidden-reasons/hidden-reason';
 import { AssociatedMedia } from '@admin-types/transformed-media/associated-media';
 import { CommonModule, Location } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, effect, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { GovukTextareaComponent } from '@common/govuk-textarea/govuk-textarea.component';
@@ -41,6 +42,7 @@ export class FileHideOrDeleteComponent implements OnInit {
   transcriptionAdminService = inject(TranscriptionAdminService);
   transformedMediaService = inject(TransformedMediaService);
   formService = inject(FormService);
+  title = inject(Title);
 
   errors: ErrorSummaryEntry[] = [];
 
@@ -53,13 +55,22 @@ export class FileHideOrDeleteComponent implements OnInit {
     audioFile: AssociatedMedia[];
   } = { media: [], audioFile: [] };
 
-  audioHideComplete = false;
-
   id = +this.route.snapshot.params.id;
 
-  isSubmitted = false;
-  isAssociatedAudio = false;
+  audioHideComplete = signal(false);
+  isSubmitted = signal(false);
+  isAssociatedAudio = signal(false);
   continueLink = this.getContinueLink();
+
+  eff = effect(() => {
+    if (this.isAssociatedAudio()) {
+      this.title.setTitle('DARTS Associated Audio Files');
+    } else if (this.audioHideComplete()) {
+      this.title.setTitle('DARTS Check for associated files');
+    } else {
+      this.title.setTitle('DARTS Hide or Delete Reason');
+    }
+  });
 
   reasons$ = this.transcriptionAdminService
     .getHiddenReasons()
@@ -103,12 +114,12 @@ export class FileHideOrDeleteComponent implements OnInit {
           .subscribe((associatedAudio) => {
             // If there are associated audio files, show the associated audio files
             if (associatedAudio.exists) {
-              this.isSubmitted = true;
-              this.isAssociatedAudio = true;
+              this.isSubmitted.set(true);
+              this.isAssociatedAudio.set(true);
               this.associatedAudio = associatedAudio;
             } else {
               this.transformedMediaService.hideAudioFile(this.id, this.hideFormValues).subscribe(() => {
-                this.isSubmitted = true;
+                this.isSubmitted.set(true);
               });
             }
           });
@@ -124,7 +135,7 @@ export class FileHideOrDeleteComponent implements OnInit {
   private hideTranscriptionDocument() {
     this.hideFormValues &&
       this.transcriptionAdminService.hideTranscriptionDocument(this.id, this.hideFormValues).subscribe(() => {
-        this.isSubmitted = true;
+        this.isSubmitted.set(true);
       });
   }
 

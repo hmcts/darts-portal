@@ -12,7 +12,7 @@
   </td>
 </ng-template>
 
-@if (!isDeleting) {
+@if (!isDeleting()) {
   <app-govuk-heading>Your audio</app-govuk-heading>
   @if (data$ | async; as data) {
     <app-tabs (tabChange)="onTabChanged()">
@@ -120,7 +120,7 @@
   }
 }
 
-@if (isDeleting) {
+@if (isDeleting()) {
   <app-delete
     [numberOfItems]="selectedAudioRequests.length"
     (confirm)="onDeleteConfirmed()"

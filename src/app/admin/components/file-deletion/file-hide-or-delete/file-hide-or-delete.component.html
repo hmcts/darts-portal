@@ -1,6 +1,6 @@
 <app-validation-error-summary [errors]="errors" />
 
-@if (!isSubmitted) {
+@if (!isSubmitted()) {
   <app-govuk-heading>Hide or delete file</app-govuk-heading>
 
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
@@ -81,7 +81,7 @@
     </div>
   </form>
 } @else {
-  @if (isAssociatedAudio && !audioHideComplete) {
+  @if (isAssociatedAudio() && !audioHideComplete()) {
     @if (associatedAudio) {
       <app-associated-audio-hide-delete
         [transformedMediaId]="mediaId"
@@ -90,7 +90,7 @@
         [media]="associatedAudio.media"
         [id]="id"
         [fileFormValues]="hideFormValues"
-        (successResponse)="audioHideComplete = $event"
+        (successResponse)="audioHideComplete.set($event)"
       />
     }
   } @else {
