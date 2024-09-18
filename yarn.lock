@@ -4527,14 +4527,14 @@ __metadata:
   linkType: hard
 
 "@ministryofjustice/frontend@npm:^2.1.3":
-  version: 2.2.0
-  resolution: "@ministryofjustice/frontend@npm:2.2.0"
+  version: 2.2.1
+  resolution: "@ministryofjustice/frontend@npm:2.2.1"
   dependencies:
     govuk-frontend: ^5.0.0
     moment: ^2.27.0
   peerDependencies:
     jquery: ^3.6.0
-  checksum: 6bb8b3a23ca49edc74f1aea81713d70a67b720ca3f65db8bcee35a5a916ef4c35d9b92b1e1cf05c350dc5dde27bf91f4f3261a140053225ef01b00f70f193490
+  checksum: dafeb5e31206ca26e35bb3975ff5d3ebc53b159a7fdfb8aa7de6f44c0867af1e93e1847bbb72424c70192b79147c4938d1444c9cfa2ac5f7b6b29ad6d4385c43
   languageName: node
   linkType: hard
 
