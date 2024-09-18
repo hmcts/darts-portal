@@ -2,9 +2,7 @@
 <app-data-table [rows]="rows" [columns]="columns" caption="Transcript search results" [hiddenCaption]="true">
   <ng-template [tableRowTemplate]="rows" let-row>
     <td>
-      <a href="#" class="govuk-link" [routerLink]="[row.id]" [queryParams]="{ backUrl: '/admin/transcripts' }">
-        {{ row.id }}</a
-      >
+      <a class="govuk-link" [routerLink]="[row.id]" [queryParams]="{ backUrl: '/admin/transcripts' }"> {{ row.id }}</a>
     </td>
     <td>{{ row.caseNumber }}</td>
     <td>{{ row.courthouse }}</td>
