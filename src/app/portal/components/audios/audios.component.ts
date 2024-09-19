@@ -77,7 +77,7 @@ export class AudiosComponent {
     { name: 'Start time', prop: 'startTime', sortable: true },
     { name: 'End time', prop: 'endTime', sortable: true },
     { name: 'Request ID', prop: 'mediaRequestId', sortable: true },
-    { name: 'Expiry date', prop: 'transformedMediaExpiryTs', sortable: true },
+    { name: 'Last accessed', prop: 'lastAccessedTs', sortable: true },
     { name: 'Status', prop: 'status', sortable: true },
   ];
 
