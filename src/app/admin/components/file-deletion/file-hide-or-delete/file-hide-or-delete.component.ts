@@ -65,7 +65,7 @@ export class FileHideOrDeleteComponent implements OnInit {
   eff = effect(() => {
     if (this.isAssociatedAudio() && !this.audioHideComplete()) {
       this.title.setTitle('DARTS Associated Audio Files');
-    } else if (this.audioHideComplete()) {
+    } else if (this.audioHideComplete() || this.isSubmitted()) {
       this.title.setTitle('DARTS Check For Associated Files');
     } else {
       this.title.setTitle('DARTS Hide or Delete Reason');
