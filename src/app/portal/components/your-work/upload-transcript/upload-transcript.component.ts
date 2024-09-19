@@ -12,6 +12,7 @@ import { ValidationErrorSummaryComponent } from '@common/validation-error-summar
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { TranscriptionDetails } from '@portal-types/index';
+import { HeaderService } from '@services/header/header.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { maxFileSizeValidator } from '@validators/max-file-size.validator';
 import { map } from 'rxjs/internal/operators/map';
@@ -37,6 +38,7 @@ import { map } from 'rxjs/internal/operators/map';
 })
 export class UploadTranscriptComponent implements OnDestroy {
   transcriptionService = inject(TranscriptionService);
+  headerService = inject(HeaderService);
   requestId = inject(ActivatedRoute).snapshot.params.requestId;
   router = inject(Router);
   datePipe = inject(DatePipe);
@@ -87,8 +89,14 @@ export class UploadTranscriptComponent implements OnDestroy {
       return;
     }
     if (this.isManualRequest) {
-      this.transcriptionService.uploadTranscript(this.requestId, this.fileControl.value!).subscribe(() => {
-        this.goToCompletedScreen();
+      this.transcriptionService.uploadTranscript(this.requestId, this.fileControl.value!).subscribe({
+        next: () => {
+          this.goToCompletedScreen();
+        },
+        error: () => {
+          this.router.navigate(['/internal-error']);
+          setTimeout(() => this.headerService.hideNavigation(), 0);
+        },
       });
     } else {
       this.transcriptionService.completeTranscriptionRequest(this.requestId).subscribe(() => {
