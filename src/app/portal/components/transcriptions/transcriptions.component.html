@@ -14,7 +14,7 @@
   </td>
 </ng-template>
 
-@if (isDeleting) {
+@if (isDeleting()) {
   <app-delete
     [numberOfItems]="selectedRequests.length"
     [title]="deleteScreenTitle"

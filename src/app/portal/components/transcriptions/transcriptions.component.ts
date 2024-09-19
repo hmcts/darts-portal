@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { GovukTagComponent } from '@common/govuk-tag/govuk-tag.component';
 import { DataTableComponent } from '@components/common/data-table/data-table.component';
@@ -47,6 +48,7 @@ export class TranscriptionsComponent {
   userState = inject(ActivatedRoute).snapshot.data.userState;
   sortService = inject(SortService);
   router = inject(Router);
+  title = inject(Title);
   statusColours = transcriptStatusTagColours;
 
   columns: DatatableColumn[] = [
@@ -66,8 +68,16 @@ export class TranscriptionsComponent {
   );
   deleteColumns = this.columns.map((c) => ({ ...c, sortable: false }));
 
-  isDeleting = false;
+  isDeleting = signal(false);
   selectedRequests = [] as TranscriptRequest[];
+
+  eff = effect(() => {
+    if (this.isDeleting()) {
+      this.title.setTitle('DARTS Delete Transcript Requests');
+    } else {
+      this.title.setTitle('DARTS Your Transcripts');
+    }
+  });
 
   private refresh$ = new BehaviorSubject<void>(undefined);
 
@@ -97,7 +107,7 @@ export class TranscriptionsComponent {
 
   onDeleteClicked() {
     if (this.selectedRequests.length) {
-      this.isDeleting = true;
+      this.isDeleting.set(true);
     }
   }
 
@@ -106,11 +116,11 @@ export class TranscriptionsComponent {
 
     this.transcriptService.deleteRequest(idsToDelete).subscribe({
       next: () => {
-        this.isDeleting = false;
+        this.isDeleting.set(false);
         this.refresh$.next();
       },
       error: (error: HttpErrorResponse) => {
-        this.isDeleting = false;
+        this.isDeleting.set(false);
         if (error.status === 400) {
           this.router.navigate(['transcriptions/delete-error']);
         }
@@ -119,7 +129,7 @@ export class TranscriptionsComponent {
   }
 
   onDeleteCancelled() {
-    this.isDeleting = false;
+    this.isDeleting.set(false);
   }
 
   onTabChanged() {

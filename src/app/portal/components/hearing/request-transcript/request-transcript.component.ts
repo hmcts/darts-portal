@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, effect, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { DataTableComponent } from '@components/common/data-table/data-table.component';
@@ -61,6 +62,7 @@ export class RequestTranscriptComponent implements OnInit, OnDestroy {
   transcriptionService = inject(TranscriptionService);
   errorMsgService = inject(ErrorMessageService);
   scrollService = inject(ScrollService);
+  title = inject(Title);
 
   hearingId = this.route.snapshot.params.hearingId;
   caseId = this.route.snapshot.params.caseId;
@@ -105,6 +107,19 @@ export class RequestTranscriptComponent implements OnInit, OnDestroy {
 
   constructor() {
     effect(() => {
+      switch (this.step()) {
+        case 1:
+          this.title.setTitle('DARTS Request Transcript Type');
+          break;
+        case 2:
+          this.title.setTitle('DARTS Request Transcript Events, Audio And Specific Times');
+          break;
+        case 3:
+          this.title.setTitle('DARTS Confirm Transcript Request');
+          break;
+        default:
+          this.title.setTitle('DARTS Transcript Request Complete');
+      }
       // Scroll to top when step changes
       this.step() && this.scrollService.scrollToTop();
     });

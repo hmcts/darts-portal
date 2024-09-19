@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DeleteComponent } from '@common/delete/delete.component';
 import { GovukTagComponent } from '@common/govuk-tag/govuk-tag.component';
@@ -84,6 +85,7 @@ export class HearingComponent implements OnInit {
   mappingService = inject(MappingService);
   errorMsgService = inject(ErrorMessageService);
   activeTabService = inject(ActiveTabService);
+  title = inject(Title);
 
   audioTimes: { startTime: DateTime; endTime: DateTime } | null = null;
   private _state: HearingPageState = 'Default';
@@ -165,6 +167,7 @@ export class HearingComponent implements OnInit {
 
   // overriding state setter to call show/hide navigation
   public set state(value: HearingPageState) {
+    this.setTitle(value);
     if (value === 'Default') {
       this.headerService.showNavigation();
     } else {
@@ -306,5 +309,18 @@ export class HearingComponent implements OnInit {
 
   isUserAllowedToRequestTranscripts(): boolean {
     return this.userService.isRequester() || this.userService.isApprover() || this.userService.isGlobalJudge();
+  }
+
+  setTitle(value: HearingPageState) {
+    switch (value) {
+      case 'OrderSummary':
+        this.title.setTitle('DARTS Confirm Audio ');
+        break;
+      case 'OrderConfirmation':
+        this.title.setTitle('DARTS Audio Request Complete');
+        break;
+      default:
+        this.title.setTitle('DARTS Hearing Details');
+    }
   }
 }

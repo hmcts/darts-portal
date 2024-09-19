@@ -140,7 +140,7 @@ describe('AudiosComponent', () => {
     it('should not set isDeleting to true if audio requests are not selected', () => {
       component.onDeleteClicked();
 
-      expect(component.isDeleting).toBeFalsy();
+      expect(component.isDeleting()).toBeFalsy();
     });
   });
 
@@ -184,7 +184,7 @@ describe('AudiosComponent', () => {
     it('should not set isDeleting to true if audio requests are not selected', () => {
       component.onDeleteClicked();
 
-      expect(component.isDeleting).toBeFalsy();
+      expect(component.isDeleting()).toBeFalsy();
     });
   });
 
@@ -214,17 +214,17 @@ describe('AudiosComponent', () => {
 
       component.onClearClicked(event, row);
 
-      expect(component.isDeleting).toBe(true);
+      expect(component.isDeleting()).toBe(true);
     });
   });
 
   describe('#onDeleteCancelled', () => {
     it('should set isDeleting to false', () => {
-      component.isDeleting = true;
+      component.isDeleting.set(true);
 
       component.onDeleteCancelled();
 
-      expect(component.isDeleting).toBeFalsy();
+      expect(component.isDeleting()).toBeFalsy();
     });
   });
 

@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject } from '@angular/core';
+import { Component, DestroyRef, effect, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Title } from '@angular/platform-browser';
 import { Router, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DeleteComponent } from '@common/delete/delete.component';
@@ -43,13 +44,22 @@ export class AudiosComponent {
   audioService = inject(AudioRequestService);
   router = inject(Router);
   destroyRef = inject(DestroyRef);
+  title = inject(Title);
 
   private refresh$ = new BehaviorSubject<void>(undefined);
 
   selectedAudioRequests: TransformedMedia[] = [];
 
-  isDeleting = false;
+  isDeleting = signal(false);
   isAudioRequest = false;
+
+  eff = effect(() => {
+    if (this.isDeleting()) {
+      this.title.setTitle('DARTS Delete Audio Items');
+    } else {
+      this.title.setTitle('DARTS Your Audio');
+    }
+  });
 
   audioRequests$: Observable<RequestedMedia>;
   expiredAudioRequests$: Observable<RequestedMedia>;
@@ -108,7 +118,7 @@ export class AudiosComponent {
 
   onDeleteClicked() {
     if (this.selectedAudioRequests.length) {
-      this.isDeleting = true;
+      this.isDeleting.set(true);
     }
   }
 
@@ -122,14 +132,14 @@ export class AudiosComponent {
       );
     }
     forkJoin(deleteRequests).subscribe({
-      next: () => (this.isDeleting = false),
-      error: () => (this.isDeleting = false),
+      next: () => this.isDeleting.set(false),
+      error: () => this.isDeleting.set(false),
       complete: () => this.refresh$.next(),
     });
   }
 
   onDeleteCancelled() {
-    this.isDeleting = false;
+    this.isDeleting.set(false);
   }
 
   onTabChanged() {
@@ -140,7 +150,7 @@ export class AudiosComponent {
     this.isAudioRequest = true;
     event.preventDefault();
     this.selectedAudioRequests = [row as TransformedMedia];
-    this.isDeleting = true;
+    this.isDeleting.set(true);
   }
 
   getStatusColour(status: string): TagColour {

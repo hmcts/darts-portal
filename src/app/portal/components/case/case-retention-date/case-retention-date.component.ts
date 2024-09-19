@@ -1,5 +1,6 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
 import { GovukTagComponent } from '@common/govuk-tag/govuk-tag.component';
@@ -52,6 +53,7 @@ export class CaseRetentionDateComponent implements OnInit {
   route = inject(ActivatedRoute);
   caseService = inject(CaseService);
   datePipe = inject(DatePipe);
+  title = inject(Title);
 
   caseId = this.route.snapshot.params.caseId;
 
@@ -83,8 +85,26 @@ export class CaseRetentionDateComponent implements OnInit {
     return this._state;
   }
 
-  // overriding state setter to call show/hide navigation
   public set state(value: CaseRetentionPageState) {
+    this.toggleNavigation(value);
+    this.updateTitle(value);
+    this._state = value;
+  }
+
+  updateTitle(value: CaseRetentionPageState) {
+    switch (value) {
+      case 'Change':
+        this.title.setTitle('DARTS Change Case Retention Date');
+        break;
+      case 'Confirm':
+        this.title.setTitle('DARTS Check Retention Date Change');
+        break;
+      default:
+        this.title.setTitle('DARTS Case Retention Date');
+    }
+  }
+
+  private toggleNavigation(value: CaseRetentionPageState) {
     switch (value) {
       case 'Success':
       case 'Default':
@@ -93,7 +113,6 @@ export class CaseRetentionDateComponent implements OnInit {
       default:
         this.headerService.hideNavigation();
     }
-    this._state = value;
   }
 
   infoBannerHide(rows: CaseRetentionHistory[]): boolean {
