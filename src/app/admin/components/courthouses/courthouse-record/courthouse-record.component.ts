@@ -132,10 +132,19 @@ export class CourthouseRecordComponent {
   }
 
   formatSecurityGroupLinks(securityGroups: SecurityGroup[] | undefined) {
-    if (securityGroups?.length)
+    if (securityGroups?.length) {
+      if (!this.userService.isAdmin()) {
+        //Link is only available to admin users
+        return securityGroups.map((securityGroup) => securityGroup.name);
+      }
+
       return securityGroups?.map((securityGroup) => {
-        return { value: securityGroup.name, href: `/admin/groups/${securityGroup.id}` };
+        return {
+          value: securityGroup.name,
+          href: `/admin/groups/${securityGroup.id}`,
+        };
       });
+    }
     // Otherwise return "None"
     return 'None';
   }
