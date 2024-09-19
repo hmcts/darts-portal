@@ -9,7 +9,7 @@
   <ng-template #transcript>
     <app-breadcrumb>
       <ng-container *breadcrumb="['../']">Transcript requests</ng-container>
-      <ng-container *breadcrumb="['.']">{{ caseNumber }}</ng-container>
+      <ng-container *breadcrumb="['.']">{{ vm.hearingDetails['Request ID'] }}</ng-container>
     </app-breadcrumb>
 
     <app-validation-error-summary [errors]="errors"></app-validation-error-summary>
