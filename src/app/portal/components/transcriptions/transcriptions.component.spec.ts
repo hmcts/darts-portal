@@ -227,13 +227,13 @@ describe('TranscriptionsComponent', () => {
       fixture.detectChanges();
       component.selectedRequests = [{} as TranscriptRequest];
       component.onDeleteClicked();
-      expect(component.isDeleting).toEqual(true);
+      expect(component.isDeleting()).toEqual(true);
     });
     it('should not set isDeleting to true if no requests are selected', () => {
       fixture.detectChanges();
       component.selectedRequests = [];
       component.onDeleteClicked();
-      expect(component.isDeleting).toEqual(false);
+      expect(component.isDeleting()).toEqual(false);
     });
   });
 
@@ -253,11 +253,11 @@ describe('TranscriptionsComponent', () => {
     it('should set isDeleting to false', () => {
       fixture.detectChanges();
       component.selectedRequests = [{} as TranscriptRequest];
-      component.isDeleting = true;
+      component.isDeleting.set(true);
 
       component.onDeleteConfirmed();
 
-      expect(component.isDeleting).toEqual(false);
+      expect(component.isDeleting()).toEqual(false);
     });
     it('should navigate to /delete-error when a 400 is received and set isDeleting to false', () => {
       fixture.detectChanges();
@@ -268,7 +268,7 @@ describe('TranscriptionsComponent', () => {
 
       component.onDeleteConfirmed();
 
-      expect(component.isDeleting).toEqual(false);
+      expect(component.isDeleting()).toEqual(false);
       expect(routerSpy).toHaveBeenCalledWith(['transcriptions/delete-error']);
     });
   });
@@ -276,9 +276,9 @@ describe('TranscriptionsComponent', () => {
   describe('#onDeleteCancelled', () => {
     it('should set isDeleting to false', () => {
       fixture.detectChanges();
-      component.isDeleting = true;
+      component.isDeleting.set(true);
       component.onDeleteCancelled();
-      expect(component.isDeleting).toEqual(false);
+      expect(component.isDeleting()).toEqual(false);
     });
   });
 
