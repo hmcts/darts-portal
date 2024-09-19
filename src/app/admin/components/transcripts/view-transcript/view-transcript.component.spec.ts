@@ -1,5 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
+import { HistoryService } from '@services/history/history.service';
 import { of } from 'rxjs';
 import { TranscriptFacadeService } from 'src/app/admin/facades/transcript/transcript-facade.service';
 import { ViewTranscriptComponent } from './view-transcript.component';
@@ -16,30 +17,45 @@ const activatedRouteMock = {
   },
 };
 
-const setup = (activatedRoute: unknown, transcripFacadeService: unknown) => {
-  return TestBed.configureTestingModule({
-    providers: [
-      ViewTranscriptComponent,
-      { provide: TranscriptFacadeService, useValue: transcripFacadeService },
-      { provide: ActivatedRoute, useValue: activatedRoute },
-    ],
-  }).createComponent(ViewTranscriptComponent);
+const historyServiceMock = {
+  getBackUrl: jest.fn(),
 };
 
 describe('ViewTranscriptComponent', () => {
   let component: ViewTranscriptComponent;
+  let fixture: ComponentFixture<ViewTranscriptComponent>;
+
+  const setup = (
+    activatedRoute: unknown,
+    transcriptFacadeService: unknown,
+    historyService: unknown,
+    updatedStatusQueryParam?: 'true' | 'false'
+  ) => {
+    TestBed.configureTestingModule({
+      providers: [
+        ViewTranscriptComponent,
+        { provide: TranscriptFacadeService, useValue: transcriptFacadeService },
+        { provide: ActivatedRoute, useValue: activatedRoute },
+        { provide: HistoryService, useValue: historyService },
+      ],
+    });
+
+    fixture = TestBed.createComponent(ViewTranscriptComponent);
+    fixture.componentRef.setInput('updatedStatus', updatedStatusQueryParam);
+    component = fixture.componentInstance;
+  };
 
   describe('default init', () => {
     beforeEach(() => {
-      component = setup(activatedRouteMock, transcriptFacadeServiceMock).componentInstance;
+      setup(activatedRouteMock, transcriptFacadeServiceMock, historyServiceMock);
     });
 
     it('set transcriptionId from route param', () => {
       expect(component.transcriptionId).toBe(123);
     });
 
-    it('set updatedStatus to false if not present in route param', () => {
-      expect(component.updatedStatus).toBe(false);
+    it('set updatedStatus to null if not present in route param', () => {
+      expect(component.updatedStatus()).toBe(null);
     });
 
     it('get transcript from facade with transcriptionId', () => {
@@ -54,14 +70,37 @@ describe('ViewTranscriptComponent', () => {
       expect(component.transcript()).toBe(null);
       expect(component.history()).toEqual([]);
     });
+
+    it('set backUrl to be default', () => {
+      expect(component.backUrl).toBe('/admin/transcripts');
+    });
   });
 
-  it('set updatedStatus to true if present in route param', () => {
-    const activatedRoute = {
-      ...activatedRouteMock,
-      snapshot: { ...activatedRouteMock.snapshot, queryParams: { updatedStatus: true } },
-    };
-    component = setup(activatedRoute, transcriptFacadeServiceMock).componentInstance;
-    expect(component.updatedStatus).toBe(true);
+  describe('when updatedStatus is true', () => {
+    it('set updatedStatus to true', () => {
+      setup(activatedRouteMock, transcriptFacadeServiceMock, historyServiceMock, 'true');
+      expect(component.updatedStatus()).toBe(true);
+    });
+  });
+
+  describe('when updatedStatus is false', () => {
+    it('set updatedStatus to false', () => {
+      setup(activatedRouteMock, transcriptFacadeServiceMock, historyServiceMock, 'false');
+      expect(component.updatedStatus()).toBe(false);
+    });
+  });
+
+  describe('when backUrl is set in history service', () => {
+    it('should set backUrl to the value returned from history service', () => {
+      historyServiceMock.getBackUrl.mockReturnValue('/back-url');
+      setup(activatedRouteMock, transcriptFacadeServiceMock, historyServiceMock);
+      expect(component.backUrl).toBe('/back-url');
+    });
+
+    it('should set backUrl to default if history service returns null', () => {
+      historyServiceMock.getBackUrl.mockReturnValue(null);
+      setup(activatedRouteMock, transcriptFacadeServiceMock, historyServiceMock);
+      expect(component.backUrl).toBe('/admin/transcripts');
+    });
   });
 });

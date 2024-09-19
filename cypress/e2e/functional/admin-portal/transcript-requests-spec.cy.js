@@ -133,6 +133,11 @@ describe('Admin - Transcript requests', () => {
       cy.a11y();
     });
 
+    it('back link', () => {
+      cy.get('a').contains('Back').click();
+      cy.url().should('include', '/admin/transcripts');
+    });
+
     it('transcript links to associated group', () => {
       cy.get('#status-details').contains('Associated groups').get('a').contains('Judiciary').click();
       cy.url().should('include', '/admin/groups/1');

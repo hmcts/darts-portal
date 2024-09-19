@@ -1,7 +1,7 @@
 import { AsyncPipe, JsonPipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { GovukTextareaComponent } from '@common/govuk-textarea/govuk-textarea.component';
 import { TranscriptStatus } from '@portal-types/index';
@@ -11,7 +11,7 @@ import { TranscriptionAdminService } from '@services/transcription-admin/transcr
 @Component({
   selector: 'app-change-transcript-status',
   standalone: true,
-  imports: [ReactiveFormsModule, GovukHeadingComponent, GovukTextareaComponent, AsyncPipe, JsonPipe],
+  imports: [ReactiveFormsModule, GovukHeadingComponent, GovukTextareaComponent, AsyncPipe, JsonPipe, RouterLink],
   templateUrl: './change-transcript-status.component.html',
   styleUrl: './change-transcript-status.component.scss',
 })
