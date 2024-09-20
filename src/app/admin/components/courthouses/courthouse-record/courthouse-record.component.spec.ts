@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { GroupsService } from '@services/groups/groups.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
+import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
 import { CourthouseRecordComponent } from './courthouse-record.component';
@@ -18,6 +19,7 @@ describe('CourthouseRecordComponent', () => {
   let fakeCourthouseAdminService: Partial<CourthouseService>;
   let fakeGroupsService: Partial<GroupsService>;
   let fakeUsersService: Partial<UserAdminService>;
+  let fakeUserPermissionService: Partial<UserService>;
   let fakeActivatedRoute: ActivatedRoute;
 
   const TEST_COURTHOUSE: Courthouse = {
@@ -143,6 +145,9 @@ describe('CourthouseRecordComponent', () => {
     fakeUsersService = {
       getUsersById: jest.fn().mockReturnValue(of(mockUsers)),
     };
+    fakeUserPermissionService = {
+      isAdmin: jest.fn().mockReturnValue(of(true)),
+    };
     fakeActivatedRoute = {
       snapshot: {
         params: {
@@ -171,6 +176,10 @@ describe('CourthouseRecordComponent', () => {
         {
           provide: UserAdminService,
           useValue: fakeUsersService,
+        },
+        {
+          provide: UserService,
+          useValue: fakeUserPermissionService,
         },
         DatePipe,
       ],
