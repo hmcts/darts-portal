@@ -83,11 +83,13 @@ export class AddAnnotationComponent implements OnInit, OnDestroy {
 
     const comments = this.annotationComments.value;
 
-    this.annotationService
-      .uploadAnnotationDocument(this.fileControl.value!, this.hearingId(), comments)
-      .subscribe(() => {
-        this.goToSuccessScreen();
-      });
+    this.annotationService.uploadAnnotationDocument(this.fileControl.value!, this.hearingId(), comments).subscribe({
+      next: () => this.goToSuccessScreen(),
+      error: () => {
+        this.router.navigate(['/internal-error']);
+        setTimeout(() => this.headerService.hideNavigation(), 0);
+      },
+    });
   }
 
   public goToSuccessScreen() {

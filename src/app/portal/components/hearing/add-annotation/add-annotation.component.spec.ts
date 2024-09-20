@@ -7,7 +7,7 @@ import { ActivatedRoute, Navigation, Router } from '@angular/router';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { AnnotationService } from '@services/annotation/annotation.service';
 import { DateTime } from 'luxon';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { AddAnnotationComponent } from './add-annotation.component';
 
 describe('AddAnnotationComponent', () => {
@@ -54,6 +54,7 @@ describe('AddAnnotationComponent', () => {
 
     router = TestBed.inject(Router);
     jest.spyOn(router, 'getCurrentNavigation').mockReturnValue(mockNavigationExtras as unknown as Navigation);
+    jest.spyOn(router, 'navigate');
 
     fixture = TestBed.createComponent(AddAnnotationComponent);
     fixture.componentRef.setInput('caseId', 1);
@@ -77,12 +78,25 @@ describe('AddAnnotationComponent', () => {
       component.onComplete();
       expect(fakeAnnotationService.uploadAnnotationDocument).toHaveBeenCalledWith(file, 3, 'test');
     });
+
     it('should upload a document without comments ', () => {
       const file = new File(['test'], 'test.txt', { type: 'text/plain' });
       component.fileControl.setValue(file);
       component.onComplete();
       expect(fakeAnnotationService.uploadAnnotationDocument).toHaveBeenCalledWith(file, 3, null);
     });
+
+    it('handles upload errors', () => {
+      fakeAnnotationService.uploadAnnotationDocument = jest
+        .fn()
+        .mockReturnValue(throwError(() => new Error('Mock error')));
+      const file = new File(['test'], 'test.txt', { type: 'text/plain' });
+      component.fileControl.setValue(file);
+      component.onComplete();
+      expect(fakeAnnotationService.uploadAnnotationDocument).toHaveBeenCalledWith(file, 3, null);
+      expect(router.navigate).toHaveBeenCalledWith(['/internal-error']);
+    });
+
     it('does not upload if form is invalid', () => {
       component.fileControl.setValue(null);
       component.onComplete();

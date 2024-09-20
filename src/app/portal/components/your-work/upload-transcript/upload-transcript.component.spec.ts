@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DatePipe } from '@angular/common';
 import { By } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
 import { FileUploadComponent } from '@common/file-upload/file-upload.component';
@@ -13,6 +13,7 @@ import { TranscriptionService } from '@services/transcription/transcription.serv
 import { DateTime } from 'luxon';
 import { of } from 'rxjs/internal/observable/of';
 import { UploadTranscriptComponent } from './upload-transcript.component';
+import { throwError } from 'rxjs';
 
 const MOCK_TRANSCRIPTION_DETAILS: TranscriptionDetails = {
   caseId: 1,
@@ -89,6 +90,7 @@ describe('UploadTranscriptComponent', () => {
   let fixture: ComponentFixture<UploadTranscriptComponent>;
   let fakeTranscriptionService: TranscriptionService;
   let fakeActivatedRoute: ActivatedRoute;
+  let router: Router;
 
   beforeEach(async () => {
     fakeActivatedRoute = {
@@ -115,6 +117,9 @@ describe('UploadTranscriptComponent', () => {
         LuxonDatePipe,
       ],
     }).compileComponents();
+
+    router = TestBed.inject(Router);
+    jest.spyOn(router, 'navigate');
 
     fixture = TestBed.createComponent(UploadTranscriptComponent);
     component = fixture.componentInstance;
@@ -228,6 +233,15 @@ describe('UploadTranscriptComponent', () => {
       component.fileControl.patchValue(new File(['test'], 'test.txt', { type: 'text/plain' }));
       component.onComplete();
       expect(spy).toHaveBeenCalledWith(['/work', 1, 'complete']);
+    });
+
+    it('handles upload errors', () => {
+      fakeTranscriptionService.uploadTranscript = jest.fn().mockReturnValue(throwError(() => new Error('Mock error')));
+      const file = new File(['test'], 'test.txt', { type: 'text/plain' });
+      component.fileControl.setValue(file);
+      component.onComplete();
+      expect(fakeTranscriptionService.uploadTranscript).toHaveBeenCalled();
+      expect(router.navigate).toHaveBeenCalledWith(['/internal-error']);
     });
   });
 
