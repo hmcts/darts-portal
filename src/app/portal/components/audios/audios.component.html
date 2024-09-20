@@ -7,9 +7,6 @@
   <td>{{ row.startTime | luxonDate: 'HH:mm:ss' }}</td>
   <td>{{ row.endTime | luxonDate: 'HH:mm:ss' }}</td>
   <td>{{ row.mediaRequestId }}</td>
-  <td>
-    {{ row.transformedMediaExpiryTs ? (row.transformedMediaExpiryTs | luxonDate: 'HH:mm:ss dd/MM/yyyy') : '-' }}
-  </td>
 </ng-template>
 
 @if (!isDeleting()) {
@@ -34,7 +31,8 @@
             <ng-template [tableRowTemplate]="data.inProgressRows" let-row>
               <!-- Partial template for duplicated cells -->
               <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
-
+              <td>-</td>
+              <!-- Last accessed is always blank as the audio is in progress-->
               <td>
                 <div class="status-cell">
                   <app-govuk-tag [colour]="getStatusColour(row.status)">{{ getStatusText(row.status) }}</app-govuk-tag>
@@ -71,13 +69,9 @@
               </td>
               <!-- Partial template for duplicated cells -->
               <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
-
-              <td>
-                <app-govuk-tag colour="green"> READY </app-govuk-tag>
-              </td>
-              <td>
-                <a href="#" (click)="onViewTransformedMedia($event, row)" class="govuk-link view-link">View</a>
-              </td>
+              <td>{{ row.lastAccessedTs ? (row.lastAccessedTs | luxonDate: 'HH:mm:ss dd/MM/yyyy') : '-' }}</td>
+              <td><app-govuk-tag colour="green"> READY </app-govuk-tag></td>
+              <td><a href="#" (click)="onViewTransformedMedia($event, row)" class="govuk-link view-link">View</a></td>
             </ng-template>
           </app-data-table>
         </ng-container>
@@ -95,7 +89,7 @@
           <app-data-table
             id="expiredTable"
             [rows]="data.expiredRows"
-            [columns]="columns"
+            [columns]="expiredColumns"
             caption="Your expired audio requests"
             [hiddenCaption]="true"
             [rowSelectable]="true"
@@ -104,11 +98,13 @@
             <ng-template [tableRowTemplate]="data.expiredRows" let-row>
               <!-- Partial template for duplicated cells -->
               <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
-
               <td>
-                <div class="status-cell">
-                  <app-govuk-tag colour="grey"> EXPIRED </app-govuk-tag>
-                </div>
+                {{
+                  row.transformedMediaExpiryTs ? (row.transformedMediaExpiryTs | luxonDate: 'HH:mm:ss dd/MM/yyyy') : '-'
+                }}
+              </td>
+              <td>
+                <div class="status-cell"><app-govuk-tag colour="grey"> EXPIRED </app-govuk-tag></div>
               </td>
             </ng-template>
           </app-data-table>

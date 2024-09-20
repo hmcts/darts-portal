@@ -87,6 +87,13 @@ export class AudiosComponent {
     { name: 'View audio links', prop: '', hidden: true },
   ]; //Empty columns for unread icon and view link
 
+  //columns, replace last accessed with expiry date
+  expiredColumns = this.columns.map((column) =>
+    column.prop === 'lastAccessedTs'
+      ? { name: 'Expiry date', prop: 'transformedMediaExpiryTs', sortable: true }
+      : column
+  );
+
   constructor() {
     this.audioRequests$ = this.refresh$.pipe(
       switchMap(() => this.audioService.audioRequests$.pipe(takeUntilDestroyed(this.destroyRef))),
