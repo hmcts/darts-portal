@@ -57,6 +57,38 @@ describe('Case file screen', () => {
 
       cy.a11y();
     });
+
+    it('should route to expired case page for expired case links', () => {
+      cy.visit('/case/10/transcripts/1');
+      cy.get('.govuk-heading-xl').contains('The page you are looking for no longer exists');
+      cy.get('.govuk-body').contains('The case has passed its retention date and expired.');
+      cy.get('.govuk-link').contains('Go back');
+
+      cy.visit('/case/10/retention');
+      cy.get('.govuk-heading-xl').contains('The page you are looking for no longer exists');
+      cy.get('.govuk-body').contains('The case has passed its retention date and expired.');
+      cy.get('.govuk-link').contains('Go back');
+
+      cy.visit('/case/10/hearing/1');
+      cy.get('.govuk-heading-xl').contains('The page you are looking for no longer exists');
+      cy.get('.govuk-body').contains('The case has passed its retention date and expired.');
+      cy.get('.govuk-link').contains('Go back');
+
+      cy.visit('/case/10/hearing/1/request-transcript');
+      cy.get('.govuk-heading-xl').contains('The page you are looking for no longer exists');
+      cy.get('.govuk-body').contains('The case has passed its retention date and expired.');
+      cy.get('.govuk-link').contains('Go back');
+
+      cy.visit('/case/10/hearing/1/transcript/1');
+      cy.get('.govuk-heading-xl').contains('The page you are looking for no longer exists');
+      cy.get('.govuk-body').contains('The case has passed its retention date and expired.');
+      cy.get('.govuk-link').contains('Go back');
+
+      cy.visit('/case/10/hearing/1/add-annotation');
+      cy.get('.govuk-heading-xl').contains('The page you are looking for no longer exists');
+      cy.get('.govuk-body').contains('The case has passed its retention date and expired.');
+      cy.get('.govuk-link').contains('Go back');
+    });
   });
 
   describe('valid cases', () => {
