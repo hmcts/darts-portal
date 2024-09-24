@@ -79,7 +79,7 @@ describe('Case file screen', () => {
       cy.get('.govuk-body').contains('The case has passed its retention date and expired.');
       cy.get('.govuk-link').contains('Go back');
 
-      cy.visit('/case/10/hearing/1/transcript/1');
+      cy.visit('/case/10/hearing/1/transcripts/1');
       cy.get('.govuk-heading-xl').contains('The page you are looking for no longer exists');
       cy.get('.govuk-body').contains('The case has passed its retention date and expired.');
       cy.get('.govuk-link').contains('Go back');
