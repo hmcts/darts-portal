@@ -16,14 +16,14 @@
 <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
 <form [formGroup]="form">
   <div class="govuk-form-group" [class.govuk-form-group--error]="isSubmitted && fieldHasError('start-hour-input')">
-    <label class="govuk-label" for="start-hour-input">Start time</label>
+    <p class="govuk-label">Start time</p>
     <p *ngIf="isSubmitted && fieldHasError('start-hour-input')" id="start-time-error" class="govuk-error-message">
       <span class="govuk-visually-hidden">Error:</span> {{ getValidationMessage('start-hour-input') }}
     </p>
     <app-time-input formGroupName="startTime" idStringPrepend="start" [isSubmitted]="isSubmitted" />
   </div>
   <div class="govuk-form-group" [class.govuk-form-group--error]="isSubmitted && fieldHasError('end-hour-input')">
-    <label class="govuk-label" for="end-hour-input">End time</label>
+    <p class="govuk-label">End time</p>
     <p *ngIf="isSubmitted && fieldHasError('end-hour-input')" id="end-time-error" class="govuk-error-message">
       <span class="govuk-visually-hidden">Error:</span> {{ getValidationMessage('end-hour-input') }}
     </p>
