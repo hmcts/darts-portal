@@ -124,7 +124,7 @@ describe('Admin - Search screen', () => {
     cy.get('dt').contains('Text').next('dd').should('contain', 'This is an event');
     cy.get('dt').contains('Courthouse').next('dd').should('contain', 'Cardiff');
     cy.get('dt').contains('Courtroom').next('dd').should('contain', 'Room 1');
-    cy.get('dt').contains('Time stamp').next('dd').should('contain', '01 Jan 2024 at 00:00:00');
+    cy.get('dt').contains('Time stamp').next('dd').should('contain', '01 Jan 2024 at 04:14:44');
 
     // Advanced details
     cy.get('.moj-sub-navigation__link').contains('Advanced details').click();
