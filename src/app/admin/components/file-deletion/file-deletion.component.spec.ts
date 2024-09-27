@@ -144,10 +144,10 @@ describe('FileDeletionComponent', () => {
       const routerSpy = jest.spyOn(component.router, 'navigate');
 
       component.onDeleteTranscript(transcript);
-      expect(routerSpy).toHaveBeenCalledWith(['/admin/file-deletion/unauthorised']);
+      expect(routerSpy).toHaveBeenCalledWith(['/admin/file-deletion/unauthorised'], { state: { type: 'transcript' } });
     });
 
-    it('does not navigate to the unauthorised page if the user has not hidden the transcript', () => {
+    it('does navigate to the delete page if the user has not hidden the transcript', () => {
       const transcript = transcriptionDocuments[0];
       component.userService = {
         hasMatchingUserId: jest.fn().mockReturnValue(false),
@@ -156,7 +156,51 @@ describe('FileDeletionComponent', () => {
 
       component.onDeleteTranscript(transcript);
 
-      expect(routerSpy).not.toHaveBeenCalled();
+      expect(routerSpy).toHaveBeenCalledWith(['/admin/file-deletion/transcript', 1], {
+        state: {
+          file: {
+            caseNumber: '123',
+            comments: 'Commenty comment',
+            courthouse: 'Cardiff',
+            courtroom: 'Room 1',
+            hearingDate: DateTime.fromISO('2022-01-01T00:00:00.000+00:00'),
+            hiddenById: 3,
+            reasonId: 4,
+            ticketReference: 'REF123',
+            transcriptionDocumentId: 1,
+            transcriptionId: 2,
+          },
+        },
+      });
+    });
+  });
+
+  describe('onDeleteAudio', () => {
+    it('navigates to the unauthorised page if the user has hidden the audio', () => {
+      const audio = audioFiles[0];
+      component.userService = {
+        hasMatchingUserId: jest.fn().mockReturnValue(true),
+      } as unknown as UserService;
+      const routerSpy = jest.spyOn(component.router, 'navigate');
+
+      component.onDeleteAudio(audio);
+      expect(routerSpy).toHaveBeenCalledWith(['/admin/file-deletion/unauthorised'], { state: { type: 'audio' } });
+    });
+
+    it('does navigate to the delete page if the user has not hidden the transcript', () => {
+      const audio = audioFiles[0];
+      component.userService = {
+        hasMatchingUserId: jest.fn().mockReturnValue(false),
+      } as unknown as UserService;
+      const routerSpy = jest.spyOn(component.router, 'navigate');
+
+      component.onDeleteAudio(audio);
+
+      expect(routerSpy).toHaveBeenCalledWith(['/admin/file-deletion/audio', 1], {
+        state: {
+          file: audio,
+        },
+      });
     });
   });
 });

@@ -17,8 +17,10 @@
       <br />
       {{ row.comments }}
     </td>
-    <td>
-      <button class="govuk-button govuk-button--secondary" (click)="deleteTranscript(row)">Delete</button>
-    </td>
+    @if (showDeleteButton()) {
+      <td>
+        <button class="govuk-button govuk-button--secondary" (click)="deleteTranscript(row)">Delete</button>
+      </td>
+    }
   </ng-template>
 </app-data-table>

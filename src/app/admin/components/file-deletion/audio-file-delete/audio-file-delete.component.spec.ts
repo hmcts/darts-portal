@@ -70,10 +70,6 @@ describe('AudioFileDeleteComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should hide navigation on initialization', () => {
     const headerServiceSpy = jest.spyOn(component.headerService, 'hideNavigation');
     component.ngOnInit();
@@ -86,28 +82,21 @@ describe('AudioFileDeleteComponent', () => {
     expect(component.audioFile).toEqual(audioFile);
   });
 
-  it('should return approval choice errors', () => {
-    component.deletionApproval.setErrors({ required: true });
-    component.confirm();
-    const errors = component.getApprovalChoiceErrors();
-    expect(errors).toContain('Select your decision');
-  });
-
   it('should navigate to /admin/file-deletion with approvedForDeletion query param when deletionApproval is true', () => {
     const approveRadioButton: HTMLInputElement = fixture.nativeElement.querySelector('#approve-option');
     approveRadioButton.click();
     fixture.detectChanges();
 
-    const touchedSpy = jest.spyOn(component.deletionApproval, 'markAllAsTouched');
     const routerSpy = jest.spyOn(component.router, 'navigate');
     const fileDeletionServiceSpy = jest
       .spyOn(component.fileDeletionService, 'approveAudioFileDeletion')
       .mockReturnValue(of({} as FileHide));
 
-    component.confirm();
-    expect(touchedSpy).toHaveBeenCalled();
-    expect(fileDeletionServiceSpy).toHaveBeenCalledWith(component.audioFile.mediaId);
-    expect(routerSpy).toHaveBeenCalledWith(['/admin/file-deletion'], { queryParams: { approvedForDeletion: true } });
+    component.confirmAudio(true);
+    expect(fileDeletionServiceSpy).toHaveBeenCalledWith(component.audioFile?.mediaId);
+    expect(routerSpy).toHaveBeenCalledWith(['/admin/file-deletion'], {
+      queryParams: { approvedForDeletion: true, type: 'Audio' },
+    });
   });
 
   it('should navigate to /admin/file-deletion with unmarkedAndUnhidden query param when deletionApproval is false', () => {
@@ -115,22 +104,28 @@ describe('AudioFileDeleteComponent', () => {
     unmarkRadioButton.click();
     fixture.detectChanges();
 
-    const touchedSpy = jest.spyOn(component.deletionApproval, 'markAllAsTouched');
     const routerSpy = jest.spyOn(component.router, 'navigate');
     const transformedMediaServiceSpy = jest
       .spyOn(component.transformedMediaService, 'unhideAudioFile')
       .mockReturnValue(of({} as FileHide));
 
-    component.confirm();
-    expect(touchedSpy).toHaveBeenCalled();
-    expect(transformedMediaServiceSpy).toHaveBeenCalledWith(component.audioFile.mediaId);
-    expect(routerSpy).toHaveBeenCalledWith(['/admin/file-deletion'], { queryParams: { unmarkedAndUnhidden: true } });
+    component.confirmAudio(false);
+    expect(transformedMediaServiceSpy).toHaveBeenCalledWith(component.audioFile?.mediaId);
+    expect(routerSpy).toHaveBeenCalledWith(['/admin/file-deletion'], {
+      queryParams: { unmarkedAndUnhidden: true, type: 'Audio' },
+    });
   });
 
-  it('should return error summary with approval choice error', () => {
-    component.deletionApproval.setErrors({ required: true });
-    component.confirm();
-    const errorSummary = component.getErrorSummary();
-    expect(errorSummary).toEqual([{ fieldId: 'deletionApproval', message: 'Select your decision' }]);
+  describe('getErrorSummary', () => {
+    it('should set errorSummary correctly when there are errors', () => {
+      const errors = ['Error 1'];
+      component.getErrorSummary(errors);
+      expect(component.errorSummary).toEqual([{ fieldId: 'deletionApproval', message: 'Error 1' }]);
+    });
+
+    it('should clear errorSummary when there are no errors', () => {
+      component.getErrorSummary([]);
+      expect(component.errorSummary).toEqual([]);
+    });
   });
 });

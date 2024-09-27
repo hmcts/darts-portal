@@ -17,6 +17,8 @@ export class TranscriptsForDeletionComponent {
   rows = input<TranscriptionDocumentForDeletion[]>([]);
   deletion = output<TranscriptionDocumentForDeletion>();
 
+  showDeleteButton = input(true);
+
   columns = signal<DatatableColumn[]>([
     { prop: 'transcriptId', name: 'Transcript ID' },
     { prop: 'caseId', name: 'Case ID' },

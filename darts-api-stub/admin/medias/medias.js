@@ -427,8 +427,6 @@ router.post('/:id/approve-deletion', (req, res) => {
     markedForDeletionMedia[index].admin_action.marked_for_manual_deletion_by_id = 1;
     markedForDeletionMedia[index].admin_action.marked_for_manual_deletion_at = DateTime.now().toISO();
 
-    console.log(JSON.stringify({ is_hidden: true, is_deleted: false, ...markedForDeletionMedia[index] }));
-
     return res.send({ is_hidden: true, is_deleted: false, ...markedForDeletionMedia[index] });
   }
 

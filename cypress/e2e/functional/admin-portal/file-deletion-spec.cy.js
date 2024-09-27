@@ -39,7 +39,7 @@ describe('Admin - Groups screen', () => {
     it('should reject same marked user deletion', () => {
       cy.get('.govuk-table__row').eq(3).find('.govuk-button.govuk-button--secondary').click();
 
-      cy.get('.govuk-heading-l').should('contain', 'You cannot delete this file');
+      cy.get('.govuk-heading-l').should('contain', 'You cannot delete this audio file');
     });
 
     it('should delete file', () => {
@@ -139,7 +139,64 @@ describe('Admin - Groups screen', () => {
     it('should reject same marked user deletion', () => {
       cy.get('.govuk-table__row').eq(2).find('.govuk-button.govuk-button--secondary').click();
 
-      cy.get('.govuk-heading-l').should('contain', 'You cannot delete this transcript');
+      cy.get('.govuk-heading-l').should('contain', 'You cannot delete this transcript file');
+    });
+
+    it('should validate required input', () => {
+      cy.get('.govuk-table__row').eq(1).find('.govuk-button.govuk-button--secondary').click();
+
+      cy.get('#confirm-button').click();
+
+      cy.get('.govuk-error-message').should('contain', 'Select your decision');
+      cy.get('.govuk-error-summary__list').should('contain', 'Select your decision');
+    });
+
+    it('should delete file', () => {
+      cy.get('.govuk-table__row').eq(1).find('.govuk-button.govuk-button--secondary').click();
+
+      cy.get('.govuk-heading-xl').should('contain', 'Delete transcript file');
+
+      cy.get('.govuk-table__header').should('have.length', 8);
+      cy.get('.govuk-table__header').eq(0).should('contain', 'Transcript ID');
+      cy.get('.govuk-table__header').eq(1).should('contain', 'Case ID');
+      cy.get('.govuk-table__header').eq(2).should('contain', 'Hearing date');
+      cy.get('.govuk-table__header').eq(3).should('contain', 'Courthouse');
+      cy.get('.govuk-table__header').eq(4).should('contain', 'Courtroom');
+      cy.get('.govuk-table__header').eq(5).should('contain', 'Marked by');
+      cy.get('.govuk-table__header').eq(6).should('contain', 'Comments');
+
+      cy.get('.govuk-table__row').should('have.length', 2);
+      cy.get('.govuk-table__row').eq(1).should('contain', '1');
+
+      cy.get('#approve-option').click();
+
+      cy.get('#confirm-button').click();
+
+      cy.get('#success-message').should('contain', 'Transcript file deleted');
+    });
+
+    it('should reject and unhide file', () => {
+      cy.get('.govuk-table__row').eq(1).find('.govuk-button.govuk-button--secondary').click();
+
+      cy.get('.govuk-heading-xl').should('contain', 'Delete transcript file');
+
+      cy.get('.govuk-table__header').should('have.length', 8);
+      cy.get('.govuk-table__header').eq(0).should('contain', 'Transcript ID');
+      cy.get('.govuk-table__header').eq(1).should('contain', 'Case ID');
+      cy.get('.govuk-table__header').eq(2).should('contain', 'Hearing date');
+      cy.get('.govuk-table__header').eq(3).should('contain', 'Courthouse');
+      cy.get('.govuk-table__header').eq(4).should('contain', 'Courtroom');
+      cy.get('.govuk-table__header').eq(5).should('contain', 'Marked by');
+      cy.get('.govuk-table__header').eq(6).should('contain', 'Comments');
+
+      cy.get('.govuk-table__row').should('have.length', 2);
+      cy.get('.govuk-table__row').eq(1).should('contain', '1');
+
+      cy.get('#reject-unhide-option').click();
+
+      cy.get('#confirm-button').click();
+
+      cy.get('#success-message').should('contain', 'Transcript file unmarked for deletion and unhidden');
     });
   });
 });

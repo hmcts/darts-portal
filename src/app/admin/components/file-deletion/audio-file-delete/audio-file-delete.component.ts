@@ -1,56 +1,54 @@
 import { AudioFileMarkedDeletion } from '@admin-types/file-deletion/audio-file-marked-deletion.type';
 import { Component, inject, OnInit } from '@angular/core';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { DataTableComponent } from '@common/data-table/data-table.component';
+import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
-import { FormErrorMessages } from '@core-types/index';
-import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
-import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { FileDeletionService } from '@services/file-deletion/file-deletion.service';
 import { HeaderService } from '@services/header/header.service';
 import { TransformedMediaService } from '@services/transformed-media/transformed-media.service';
+import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
+import { ApproveRejectFileDeleteComponent } from '../approve-reject-file-delete/approve-reject-file-delete.component';
 import { AudioFileResultsComponent } from '../audio-file-results/audio-file-results.component';
-
-const controlErrors: FormErrorMessages = {
-  deletionApproval: {
-    required: 'Select your decision',
-  },
-};
+import { UnauthorisedDeletionComponent } from '../unauthorised-deletion/unauthorised-deletion.component';
 
 @Component({
   selector: 'app-audio-file-delete',
   standalone: true,
   imports: [
     GovukHeadingComponent,
-    ReactiveFormsModule,
-    RouterLink,
-    DataTableComponent,
-    LuxonDatePipe,
-    TableRowTemplateDirective,
     ValidationErrorSummaryComponent,
     AudioFileResultsComponent,
+    UnauthorisedDeletionComponent,
+    ApproveRejectFileDeleteComponent,
   ],
   templateUrl: './audio-file-delete.component.html',
   styleUrl: './audio-file-delete.component.scss',
 })
 export class AudioFileDeleteComponent implements OnInit {
-  route = inject(ActivatedRoute);
+  userService = inject(UserService);
   router = inject(Router);
   headerService = inject(HeaderService);
   fileDeletionService = inject(FileDeletionService);
   transformedMediaService = inject(TransformedMediaService);
 
-  isPermitted = this.router.getCurrentNavigation()?.extras?.state?.isPermitted;
   audioFileState = this.router.getCurrentNavigation()?.extras?.state?.file;
-  audioFile = this.parseAudioFileDates(this.audioFileState);
+  audioFile: AudioFileMarkedDeletion | null = null;
 
-  deletionApproval = new FormControl(null, [Validators.required]);
+  errorSummary: { fieldId: string; message: string }[] = [];
 
   ngOnInit(): void {
-    !this.audioFile && this.router.navigate(['/admin/file-deletion']);
+    if (!this.audioFileState) {
+      this.router.navigate(['/admin/file-deletion']);
+      return;
+    }
+
+    this.audioFile = this.parseAudioFileDates(this.audioFileState);
+
+    this.audioFile &&
+      this.userService.hasMatchingUserId(this.audioFile.hiddenById) &&
+      this.router.navigate(['/admin/file-deletion/unauthorised'], { state: { type: 'audio' } });
+
     this.headerService.hideNavigation();
   }
 
@@ -63,33 +61,21 @@ export class AudioFileDeleteComponent implements OnInit {
     };
   }
 
-  getApprovalChoiceErrors(): string[] {
-    return this.deletionApproval.errors?.length > 0 || this.deletionApproval.touched
-      ? Object.keys(this.deletionApproval.errors || {}).map((error) => controlErrors['deletionApproval'][error])
-      : [];
-  }
-
-  confirm() {
-    this.deletionApproval.markAllAsTouched();
-
-    if (!this.deletionApproval.valid) {
-      return;
-    } else {
-      if (this.deletionApproval.value) {
+  confirmAudio(approveDeletion: boolean) {
+    if (approveDeletion) {
+      this.audioFile &&
         this.fileDeletionService.approveAudioFileDeletion(this.audioFile.mediaId).subscribe(() => {
-          this.router.navigate(['/admin/file-deletion'], { queryParams: { approvedForDeletion: true } });
+          this.router.navigate(['/admin/file-deletion'], { queryParams: { approvedForDeletion: true, type: 'Audio' } });
         });
-      } else {
+    } else {
+      this.audioFile &&
         this.transformedMediaService.unhideAudioFile(this.audioFile.mediaId).subscribe(() => {
-          this.router.navigate(['/admin/file-deletion'], { queryParams: { unmarkedAndUnhidden: true } });
+          this.router.navigate(['/admin/file-deletion'], { queryParams: { unmarkedAndUnhidden: true, type: 'Audio' } });
         });
-      }
     }
   }
 
-  getErrorSummary() {
-    return this.getApprovalChoiceErrors().length > 0
-      ? [{ fieldId: 'deletionApproval', message: this.getApprovalChoiceErrors()[0] }]
-      : [];
+  getErrorSummary(errors: string[]) {
+    this.errorSummary = errors.length > 0 ? [{ fieldId: 'deletionApproval', message: errors[0] }] : [];
   }
 }
