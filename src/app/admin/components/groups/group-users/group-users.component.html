@@ -39,7 +39,7 @@
   <ng-template let-row [tableRowTemplate]="groupUsers">
     <td>{{ row.fullName }}</td>
     <td>{{ row.emailAddress }}</td>
-    <td>{{ row.lastLoginAt | luxonDate: 'dd/MM/yy hh:mm' }}</td>
+    <td>{{ row.lastLoginAt | luxonDate: 'dd/MM/yy HH:mm' }}</td>
     <td>{{ row.active ? 'Active' : 'Inactive' }}</td>
   </ng-template>
 </app-data-table>
