@@ -11,7 +11,7 @@
       <td>
         <a class="govuk-link" [routerLink]="['/admin/events', row.id]">{{ row.id }}</a>
       </td>
-      <td>{{ row.createdAt | luxonDate: "dd MMM yyyy 'at' hh:mm:ss" }}</td>
+      <td>{{ row.eventTs | luxonDate: "dd MMM yyyy 'at' HH:mm:ss" }}</td>
       <td>{{ row.name }}</td>
       <td>{{ row.courthouse }}</td>
       <td>{{ row.courtroom }}</td>
