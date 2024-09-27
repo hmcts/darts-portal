@@ -66,7 +66,7 @@ describe('Admin - Search screen', () => {
       .contains('111')
       .parent()
       .next('td')
-      .should('contain', '01 Jan 2024 at 12:00:00')
+      .should('contain', '01 Jan 2024 at 04:14:44')
       .next('td')
       .should('contain', 'Event 1')
       .next('td')
@@ -80,7 +80,7 @@ describe('Admin - Search screen', () => {
       .contains('222')
       .parent()
       .next('td')
-      .should('contain', '02 Jan 2024 at 12:00:00')
+      .should('contain', '02 Jan 2024 at 11:23:47')
       .next('td')
       .should('contain', 'Event 2')
       .next('td')
@@ -94,7 +94,7 @@ describe('Admin - Search screen', () => {
       .contains('333')
       .parent()
       .next('td')
-      .should('contain', '03 Jan 2024 at 12:00:00')
+      .should('contain', '03 Jan 2024 at 23:30:15')
       .next('td')
       .should('contain', 'Event 3')
       .next('td')
@@ -142,9 +142,9 @@ describe('Admin - Search screen', () => {
     cy.get('dt').contains('Version').next('dd').should('contain', 'v1');
     cy.get('dt').contains('Chronicle ID').next('dd').should('contain', '123');
     cy.get('dt').contains('Antecedent ID').next('dd').should('contain', '456');
-    cy.get('dt').contains('Date created').next('dd').should('contain', '01 Jan 2024 at 00:00:00');
+    cy.get('dt').contains('Date created').next('dd').should('contain', '01 Jan 2024 at 04:14:51');
     cy.get('dt').contains('Created by').next('dd').should('contain', 'Eric Bristow');
-    cy.get('dt').contains('Date last modified').next('dd').should('contain', '01 Jan 2024 at 00:00:00');
+    cy.get('dt').contains('Date last modified').next('dd').should('contain', '01 Jan 2024 at 04:14:51');
     cy.get('dt').contains('Last modified by').next('dd').should('contain', 'Fallon Sherrock');
   });
 
