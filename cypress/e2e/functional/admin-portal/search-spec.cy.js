@@ -144,7 +144,7 @@ describe('Admin - Search screen', () => {
     cy.get('dt').contains('Antecedent ID').next('dd').should('contain', '456');
     cy.get('dt').contains('Date created').next('dd').should('contain', '01 Jan 2024 at 04:14:51');
     cy.get('dt').contains('Created by').next('dd').should('contain', 'Eric Bristow');
-    cy.get('dt').contains('Date last modified').next('dd').should('contain', '01 Jan 2024 at 04:14:51');
+    cy.get('dt').contains('Date last modified').next('dd').should('contain', '01 Jun 2024 at 14:00:00');
     cy.get('dt').contains('Last modified by').next('dd').should('contain', 'Fallon Sherrock');
   });
 
