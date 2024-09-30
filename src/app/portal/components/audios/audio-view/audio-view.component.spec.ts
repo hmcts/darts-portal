@@ -53,7 +53,6 @@ describe('AudioViewComponent', () => {
       id: 0,
       timestamp: '2023-11-13T09:00:00.000Z',
       name: 'Case called on',
-      text: 'Record: New Case',
     },
     {
       id: 1,
@@ -210,6 +209,13 @@ describe('AudioViewComponent', () => {
       });
       it('sets audioSource', () => {
         expect(component.audioSource).toBe('/api/audio-requests/playback?transformed_media_id=1');
+      });
+      it('should set hearingEvents$ event text only if present', (done) => {
+        component.eventRows$.subscribe((events) => {
+          expect(events[0].eventType).toBe('Case called on');
+          expect(events[1].eventType).toBe('Case called on - Record: New Case');
+          done();
+        });
       });
     });
 
