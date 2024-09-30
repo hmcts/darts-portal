@@ -24,6 +24,7 @@ export type Event = {
   chronicleId: string;
   antecedentId: string;
   isDataAnonymised: boolean;
+  eventTs: DateTime;
   createdAt: DateTime;
   createdById: number;
   createdBy?: User;
