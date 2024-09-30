@@ -341,7 +341,7 @@ describe('Admin - Transcript requests', () => {
       cy.get('.govuk-notification-banner__body').contains('unhide').should('exist');
 
       cy.get('.govuk-list').should('contain', 'Hidden by - Eric Bristow');
-      cy.get('.govuk-list').should('contain', 'Reason - Public interest immunity');
+      cy.get('.govuk-list').should('contain', 'Reason - Other reason to hide only');
       cy.get('.govuk-list').should('contain', 'Ticket Reference 1232 - This is a comment');
     });
 
