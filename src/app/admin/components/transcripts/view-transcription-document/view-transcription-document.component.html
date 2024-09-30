@@ -14,7 +14,7 @@
     @if (userService.isAdmin()) {
       <button class="govuk-button govuk-button--secondary" (click)="hideOrUnhideFile(vm.document)">
         @if (vm.document.isHidden) {
-          @if (vm.document.adminAction?.isMarkedForManualDeletion) {
+          @if (vm.fileBanner?.isMarkedForDeletion) {
             Unmark for deletion and unhide
           } @else {
             Unhide

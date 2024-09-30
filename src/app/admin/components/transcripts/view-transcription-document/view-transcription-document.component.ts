@@ -98,8 +98,9 @@ export class ViewTranscriptionDocumentComponent {
             (reason): HiddenFileBanner => ({
               id: document.transcriptionId,
               isHidden: document.isHidden,
-              isMarkedForManualDeletion: document.adminAction?.isMarkedForManualDeletion ?? false,
+              isApprovedForManualDeletion: document.adminAction?.isMarkedForManualDeletion ?? false,
               markedForManualDeletionBy: document.adminAction?.markedForManualDeletionBy ?? 'Unknown',
+              isMarkedForDeletion: reason?.markedForDeletion ?? false,
               hiddenReason: reason?.displayName ?? 'Unknown',
               hiddenByName: document.adminAction?.hiddenByName ?? 'Unknown',
               ticketReference: document.adminAction?.ticketReference ?? 'Unknown',

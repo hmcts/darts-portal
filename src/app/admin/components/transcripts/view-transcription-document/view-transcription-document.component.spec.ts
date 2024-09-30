@@ -30,10 +30,12 @@ const hiddenReasons = [
   {
     id: 1,
     displayName: 'Reason 1',
+    markedForDeletion: false,
   },
   {
     id: 2,
     displayName: 'Reason 2',
+    markedForDeletion: false,
   },
 ] as unknown as HiddenReason[];
 
@@ -175,8 +177,9 @@ describe('ViewTranscriptionDocumentComponent', () => {
         expect(data.fileBanner).toEqual({
           id: mockTranscriptionDocument.transcriptionId,
           isHidden: mockTranscriptionDocument.isHidden,
-          isMarkedForManualDeletion: mockTranscriptionDocument.adminAction?.isMarkedForManualDeletion,
+          isApprovedForManualDeletion: mockTranscriptionDocument.adminAction?.isMarkedForManualDeletion,
           markedForManualDeletionBy: mockTranscriptionDocument.adminAction?.markedForManualDeletionBy,
+          isMarkedForDeletion: hiddenReasons[0]?.markedForDeletion,
           hiddenReason: hiddenReasons[0]?.displayName,
           hiddenByName: mockTranscriptionDocument.adminAction?.hiddenByName,
           ticketReference: mockTranscriptionDocument.adminAction?.ticketReference,

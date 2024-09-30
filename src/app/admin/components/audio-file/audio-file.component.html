@@ -10,7 +10,7 @@
     @if (isAdmin) {
       <button class="govuk-button govuk-button--secondary" (click)="hideOrUnhideFile(data.audioFile)">
         @if (data.audioFile.isHidden) {
-          @if (data.audioFile.adminAction?.isMarkedForManualDeletion) {
+          @if (data.hiddenFileBanner?.isMarkedForDeletion) {
             Unmark for deletion and unhide
           } @else {
             Unhide
