@@ -1,7 +1,8 @@
 export type HiddenFileBanner = {
   id: number;
   isHidden: boolean;
-  isMarkedForManualDeletion: boolean;
+  isApprovedForManualDeletion: boolean;
+  isMarkedForDeletion: boolean;
   markedForManualDeletionBy: string;
   hiddenByName: string;
   hiddenReason: string;

@@ -7,17 +7,17 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
 import { ExpiredBannerComponent } from '@common/expired-banner/expired-banner.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
+import { HiddenFileBannerComponent } from '@common/hidden-file-banner/hidden-file-banner.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { TabDirective } from '@directives/tab.directive';
 import { CaseService } from '@services/case/case.service';
 import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
 import { TransformedMediaService } from '@services/transformed-media/transformed-media.service';
+import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
 import { Observable, forkJoin, map, of, shareReplay, switchMap } from 'rxjs';
-import { HiddenFileBannerComponent } from '../common/hidden-file-banner/hidden-file-banner.component';
-import { UserAdminService } from './../../services/user-admin/user-admin.service';
 import { AdvancedAudioFileDetailsComponent } from './advanced-audio-file-details/advanced-audio-file-details.component';
 import { BasicAudioFileDetailsComponent } from './basic-audio-file-details/basic-audio-file-details.component';
 
@@ -141,8 +141,9 @@ export class AudioFileComponent {
                 (reason): HiddenFileBanner => ({
                   id: audioFile.id,
                   isHidden: audioFile.isHidden,
-                  isMarkedForManualDeletion: audioFile.adminAction?.isMarkedForManualDeletion ?? false,
+                  isApprovedForManualDeletion: audioFile.adminAction?.isMarkedForManualDeletion ?? false,
                   markedForManualDeletionBy: audioFile.adminAction?.markedForManualDeletionBy ?? 'Unknown',
+                  isMarkedForDeletion: reason?.markedForDeletion ?? false,
                   hiddenReason: reason?.displayName ?? 'Unknown',
                   hiddenByName: audioFile.adminAction?.hiddenByName ?? 'Unknown',
                   ticketReference: audioFile.adminAction?.ticketReference ?? 'Unknown',

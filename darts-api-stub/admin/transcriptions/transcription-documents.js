@@ -173,7 +173,7 @@ let updatedDocs = [];
 router.get('/reset', (req, res) => {
   transcription = { ...defaultTranscription };
   updatedDocs = [];
-  console.log('reset transcription documents');
+
   res.sendStatus(202);
 });
 
@@ -201,12 +201,15 @@ router.get('/:transcription_document_id', (req, res) => {
   } else if ((id === '1' || id === '11') && !updatedDocs.includes(parseInt(id))) {
     //For hidden but not marked for deletion scenarios
     transcription.is_hidden = true;
+    transcription.admin_action.reason_id = 5;
     transcription.admin_action.is_marked_for_manual_deletion = false;
   } else if (updatedDocs.includes(parseInt(id))) {
     transcription.is_hidden = false;
+    transcription.admin_action.reason_id = 5;
     transcription.admin_action.is_marked_for_manual_deletion = false;
   } else if (!updatedDocs.includes(transcription.id)) {
     transcription.is_hidden = true;
+    transcription.admin_action.reason_id = 1;
     transcription.admin_action.is_marked_for_manual_deletion = true;
   }
 
