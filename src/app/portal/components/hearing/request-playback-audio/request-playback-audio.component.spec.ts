@@ -117,66 +117,187 @@ describe('RequestPlaybackAudioComponent', () => {
   });
 
   describe('#onSubmit', () => {
-    it('should create the request object when values are submitted', () => {
-      const audioRequestSpy = jest.spyOn(component.audioRequest, 'emit');
+    describe('with valid request times', () => {
+      let audioRequestSpy: jest.SpyInstance;
 
-      component.hearing = {
-        id: 1,
-        date: DateTime.fromISO('2023-09-01'),
-        judges: ['HHJ M. Hussain KC'],
-        courtroom: '3',
-        transcriptCount: 1,
-      };
-      const audioRequestForm = {
-        startTime: {
-          hours: '02',
-          minutes: '00',
-          seconds: '00',
-        },
-        endTime: {
-          hours: '15',
-          minutes: '32',
-          seconds: '24',
-        },
-        requestType: 'PLAYBACK',
-      };
-      const expectedResult = {
-        hearing_id: 1,
-        requestor: 1,
-        start_time: '2023-09-01T02:00:00',
-        end_time: '2023-09-01T15:32:24',
-        request_type: 'PLAYBACK',
-      };
-      component.audioRequestForm.setValue(audioRequestForm);
-      fixture.detectChanges();
-      component.onSubmit();
-      expect(component.requestObj).toEqual(expectedResult);
-      expect(audioRequestSpy).toHaveBeenCalledWith(component.requestObj);
+      beforeEach(() => {
+        audioRequestSpy = jest.spyOn(component.audioRequest, 'emit');
+        component.hearing = {
+          id: 1,
+          date: DateTime.fromISO('2023-09-01'),
+          judges: ['HHJ M. Hussain KC'],
+          courtroom: '3',
+          transcriptCount: 1,
+        };
+      });
+
+      it('exact match', () => {
+        const audioRequestForm = {
+          startTime: {
+            hours: '02',
+            minutes: '00',
+            seconds: '00',
+          },
+          endTime: {
+            hours: '15',
+            minutes: '32',
+            seconds: '24',
+          },
+          requestType: 'PLAYBACK',
+        };
+        const expectedResult = {
+          hearing_id: 1,
+          requestor: 1,
+          start_time: '2023-09-01T02:00:00',
+          end_time: '2023-09-01T15:32:24',
+          request_type: 'PLAYBACK',
+        };
+        component.audioRequestForm.setValue(audioRequestForm);
+        fixture.detectChanges();
+        component.onSubmit();
+        expect(component.requestObj).toEqual(expectedResult);
+        expect(audioRequestSpy).toHaveBeenCalledWith(component.requestObj);
+      });
+
+      it('overlapping', () => {
+        const audioRequestForm = {
+          startTime: {
+            hours: '01',
+            minutes: '00',
+            seconds: '00',
+          },
+          endTime: {
+            hours: '17',
+            minutes: '00',
+            seconds: '00',
+          },
+          requestType: 'PLAYBACK',
+        };
+        const expectedResult = {
+          hearing_id: 1,
+          requestor: 1,
+          start_time: '2023-09-01T01:00:00',
+          end_time: '2023-09-01T17:00:00',
+          request_type: 'PLAYBACK',
+        };
+        component.audioRequestForm.setValue(audioRequestForm);
+        fixture.detectChanges();
+        component.onSubmit();
+        expect(component.requestObj).toEqual(expectedResult);
+        expect(audioRequestSpy).toHaveBeenCalledWith(component.requestObj);
+      });
+
+      it('overlapping start', () => {
+        const audioRequestForm = {
+          startTime: {
+            hours: '01',
+            minutes: '00',
+            seconds: '00',
+          },
+          endTime: {
+            hours: '03',
+            minutes: '00',
+            seconds: '00',
+          },
+          requestType: 'PLAYBACK',
+        };
+        const expectedResult = {
+          hearing_id: 1,
+          requestor: 1,
+          start_time: '2023-09-01T01:00:00',
+          end_time: '2023-09-01T03:00:00',
+          request_type: 'PLAYBACK',
+        };
+        component.audioRequestForm.setValue(audioRequestForm);
+        fixture.detectChanges();
+        component.onSubmit();
+        expect(component.requestObj).toEqual(expectedResult);
+        expect(audioRequestSpy).toHaveBeenCalledWith(component.requestObj);
+      });
+
+      it('overlapping end', () => {
+        const audioRequestForm = {
+          startTime: {
+            hours: '15',
+            minutes: '00',
+            seconds: '00',
+          },
+          endTime: {
+            hours: '17',
+            minutes: '00',
+            seconds: '00',
+          },
+          requestType: 'PLAYBACK',
+        };
+        const expectedResult = {
+          hearing_id: 1,
+          requestor: 1,
+          start_time: '2023-09-01T15:00:00',
+          end_time: '2023-09-01T17:00:00',
+          request_type: 'PLAYBACK',
+        };
+        component.audioRequestForm.setValue(audioRequestForm);
+        fixture.detectChanges();
+        component.onSubmit();
+        expect(component.requestObj).toEqual(expectedResult);
+        expect(audioRequestSpy).toHaveBeenCalledWith(component.requestObj);
+      });
+
+      it('within', () => {
+        const audioRequestForm = {
+          startTime: {
+            hours: '09',
+            minutes: '00',
+            seconds: '00',
+          },
+          endTime: {
+            hours: '11',
+            minutes: '00',
+            seconds: '00',
+          },
+          requestType: 'PLAYBACK',
+        };
+        const expectedResult = {
+          hearing_id: 1,
+          requestor: 1,
+          start_time: '2023-09-01T09:00:00',
+          end_time: '2023-09-01T11:00:00',
+          request_type: 'PLAYBACK',
+        };
+        component.audioRequestForm.setValue(audioRequestForm);
+        fixture.detectChanges();
+        component.onSubmit();
+        expect(component.requestObj).toEqual(expectedResult);
+        expect(audioRequestSpy).toHaveBeenCalledWith(component.requestObj);
+      });
     });
-    it('should return null when nothing is submitted', () => {
-      component.hearing = {
-        id: 1,
-        date: DateTime.fromISO('2023-09-01'),
-        judges: ['HHJ M. Hussain KC'],
-        courtroom: '3',
-        transcriptCount: 1,
-      };
-      const audioRequestForm = {
-        startTime: {
-          hours: '',
-          minutes: '',
-          seconds: '',
-        },
-        endTime: {
-          hours: '',
-          minutes: '',
-          seconds: '',
-        },
-        requestType: 'PLAYBACK',
-      };
-      component.audioRequestForm.setValue(audioRequestForm);
-      component.onSubmit();
-      expect(component.requestObj).toEqual(undefined);
+
+    describe('with empty values', () => {
+      it('returns null', () => {
+        component.hearing = {
+          id: 1,
+          date: DateTime.fromISO('2023-09-01'),
+          judges: ['HHJ M. Hussain KC'],
+          courtroom: '3',
+          transcriptCount: 1,
+        };
+        const audioRequestForm = {
+          startTime: {
+            hours: '',
+            minutes: '',
+            seconds: '',
+          },
+          endTime: {
+            hours: '',
+            minutes: '',
+            seconds: '',
+          },
+          requestType: 'PLAYBACK',
+        };
+        component.audioRequestForm.setValue(audioRequestForm);
+        component.onSubmit();
+        expect(component.requestObj).toEqual(undefined);
+      });
     });
   });
 
