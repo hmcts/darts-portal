@@ -112,6 +112,7 @@ describe('TranscriptionsComponent', () => {
       isJudge: () => false,
       isTranscriber: () => false,
       isSuperUser: () => false,
+      isAdmin: () => false,
     };
 
     TestBed.configureTestingModule({
@@ -308,7 +309,7 @@ describe('TranscriptionsComponent', () => {
     expect(tabs).toBeFalsy();
   });
 
-  it('No tabs if APPROVER only', () => {
+  it('Both tabs if APPROVER only', () => {
     fixture.detectChanges();
 
     component.isRequester = false;
@@ -318,7 +319,7 @@ describe('TranscriptionsComponent', () => {
 
     const compiled = fixture.nativeElement;
     const tabs = compiled.querySelector('app-tabs');
-    expect(tabs).toBeFalsy();
+    expect(tabs).toBeTruthy();
   });
 
   it('Requester view and no tabs if JUDGE only', () => {
@@ -337,7 +338,7 @@ describe('TranscriptionsComponent', () => {
     expect(table).toBeTruthy();
   });
 
-  it('Requester view and no tabs if SUPER_USER only', () => {
+  it('Both tabs if SUPER_USER only', () => {
     fixture.detectChanges();
 
     component.isRequester = false;
@@ -349,9 +350,23 @@ describe('TranscriptionsComponent', () => {
 
     const compiled = fixture.nativeElement;
     const tabs = compiled.querySelector('app-tabs');
-    const table = compiled.querySelector('#in-progress-table');
-    expect(tabs).toBeFalsy();
-    expect(table).toBeTruthy();
+    expect(tabs).toBeTruthy();
+  });
+
+  it('Both tabs if SUPER_ADMIN only', () => {
+    fixture.detectChanges();
+
+    component.isRequester = false;
+    component.isApprover = false;
+    component.isJudge = false;
+    component.isSuperUser = false;
+    component.isSuperAdmin = true;
+
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement;
+    const tabs = compiled.querySelector('app-tabs');
+    expect(tabs).toBeTruthy();
   });
 
   it('Tabbed view if JUDGE and APPROVER', () => {
