@@ -42,7 +42,9 @@ export const PORTAL_ROUTES: Routes = [
   {
     path: 'transcriptions',
     title: 'DARTS Your Transcripts',
-    data: { allowedRoles: ['APPROVER', 'REQUESTER', 'JUDICIARY', 'SUPER_USER'] },
+    data: {
+      allowedRoles: ['APPROVER', 'REQUESTER', 'JUDICIARY', 'SUPER_USER', 'SUPER_ADMIN'],
+    },
     loadComponent: () =>
       import('../portal/components/transcriptions/transcriptions.component').then((c) => c.TranscriptionsComponent),
   },
