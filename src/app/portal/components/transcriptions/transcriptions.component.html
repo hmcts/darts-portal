@@ -40,7 +40,7 @@
 } @else {
   <app-govuk-heading>Your transcripts</app-govuk-heading>
 
-  @if (isApprover || isSuperUser || isSuperAdmin) {
+  @if ((isApprover && (isRequester || isJudge)) || isSuperUser || isSuperAdmin) {
     <app-tabs>
       <div *tab="'Transcript requests'">
         <ng-template [ngTemplateOutlet]="RequesterTemplate"></ng-template>
@@ -49,6 +49,8 @@
         <ng-template [ngTemplateOutlet]="ApproverTemplate"></ng-template>
       </div>
     </app-tabs>
+  } @else if (isApprover) {
+    <ng-template [ngTemplateOutlet]="ApproverTemplate"></ng-template>
   } @else if (isRequester || isJudge) {
     <ng-template [ngTemplateOutlet]="RequesterTemplate"></ng-template>
   }

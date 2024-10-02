@@ -296,7 +296,7 @@ describe('TranscriptionsComponent', () => {
     expect(tabs).toBeTruthy();
   });
 
-  it('No tabs if REQUESTER only', () => {
+  it('No tabs, in progress table if REQUESTER only', () => {
     fixture.detectChanges();
 
     component.isRequester = true;
@@ -306,10 +306,12 @@ describe('TranscriptionsComponent', () => {
 
     const compiled = fixture.nativeElement;
     const tabs = compiled.querySelector('app-tabs');
+    const table = fixture.nativeElement.querySelector('#in-progress-table');
     expect(tabs).toBeFalsy();
+    expect(table).toBeTruthy();
   });
 
-  it('Both tabs if APPROVER only', () => {
+  it('No tabs, approver table if APPROVER only', () => {
     fixture.detectChanges();
 
     component.isRequester = false;
@@ -319,7 +321,9 @@ describe('TranscriptionsComponent', () => {
 
     const compiled = fixture.nativeElement;
     const tabs = compiled.querySelector('app-tabs');
-    expect(tabs).toBeTruthy();
+    const table = fixture.nativeElement.querySelector('#approver-table');
+    expect(tabs).toBeFalsy();
+    expect(table).toBeTruthy();
   });
 
   it('Requester view and no tabs if JUDGE only', () => {
