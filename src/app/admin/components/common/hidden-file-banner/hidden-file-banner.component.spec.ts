@@ -130,7 +130,7 @@ describe('HiddenFileBannerComponent', () => {
 
     it('should render the correct details', () => {
       const details = fixture.nativeElement.querySelector('app-notification-banner');
-      expect(details.textContent).toContain('Marked for manual deletion by - me');
+      expect(details.textContent).toContain('Marked for manual deletion by - you');
       expect(details.textContent).toContain('Reason - because');
       expect(details.textContent).toContain('refy ref - commenty comment');
     });
