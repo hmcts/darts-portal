@@ -82,7 +82,7 @@ describe('Admin - Audio file details screen', () => {
       cy.get('app-hidden-file-banner').contains(
         'DARTS user cannot view this file. You can unmark for deletion and it will no longer be hidden.'
       );
-      cy.get('app-hidden-file-banner').contains('Marked for manual deletion by - Michael van Gerwen');
+      cy.get('app-hidden-file-banner').contains('Marked for manual deletion by - Trina Gulliver');
       cy.get('app-hidden-file-banner').contains('Reason - Classified above official');
       cy.get('app-hidden-file-banner').contains('ref123 - This is a test comment');
 
