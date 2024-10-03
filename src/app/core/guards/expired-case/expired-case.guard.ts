@@ -14,9 +14,8 @@ export const expiredCaseGuard: CanActivateFn = (route: ActivatedRouteSnapshot) =
         // Redirect to expired case screen
         router.navigate(['/expired-case']);
         return false;
-      } else {
-        return true;
       }
+      return true;
     })
   );
 };
