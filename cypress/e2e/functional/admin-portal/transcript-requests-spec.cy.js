@@ -116,6 +116,10 @@ describe('Admin - Transcript requests', () => {
       cy.get('#request-details').contains('Judge approval');
       cy.get('#request-details').contains('Yes');
 
+      cy.get('#request-details').contains('Migrated legacy data comments');
+      cy.get('#request-details').contains('This is a legacy comment');
+      cy.get('#request-details').contains('This is another legacy comment');
+
       cy.get('#case-details').contains('Case details');
 
       cy.get('#case-details').contains('Case ID');

@@ -203,6 +203,7 @@ router.get('/:transcription_document_id', (req, res) => {
     transcription.is_hidden = true;
     transcription.admin_action.reason_id = 5;
     transcription.admin_action.is_marked_for_manual_deletion = false;
+    transcription.transcription_id = 1;
   } else if (updatedDocs.includes(parseInt(id))) {
     transcription.is_hidden = false;
     transcription.admin_action.reason_id = 5;
