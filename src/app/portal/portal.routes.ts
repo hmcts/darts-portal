@@ -1,7 +1,8 @@
 import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
 import { UserService } from '@services/user/user.service';
-import { authGuard } from '../core/auth/auth.guard';
+import { authGuard } from '../core/guards/auth/auth.guard';
+import { expiredCaseGuard } from '../core/guards/expired-case/expired-case.guard';
 
 export const PORTAL_ROUTES: Routes = [
   {
@@ -87,6 +88,7 @@ export const PORTAL_ROUTES: Routes = [
   },
   {
     path: 'case/:caseId/retention',
+    canActivate: [expiredCaseGuard],
     title: 'DARTS Case Retention',
     data: { allowedRoles: ['APPROVER', 'REQUESTER', 'JUDICIARY', 'SUPER_ADMIN', 'SUPER_USER'] },
     loadComponent: () =>
@@ -96,11 +98,13 @@ export const PORTAL_ROUTES: Routes = [
   },
   {
     path: 'case/:caseId/hearing/:hearingId',
+    canActivate: [expiredCaseGuard],
     title: 'DARTS Hearing Details',
     loadComponent: () => import('../portal/components/hearing/hearing.component').then((c) => c.HearingComponent),
   },
   {
     path: 'case/:caseId/hearing/:hearingId/add-annotation',
+    canActivate: [expiredCaseGuard],
     title: 'DARTS Add Annotation',
     data: { allowedRoles: ['JUDICIARY', 'SUPER_ADMIN'] },
     loadComponent: () =>
@@ -110,6 +114,7 @@ export const PORTAL_ROUTES: Routes = [
   },
   {
     path: 'case/:caseId/hearing/:hearingId/request-transcript',
+    canActivate: [expiredCaseGuard],
     title: 'DARTS Request Transcript',
     loadComponent: () =>
       import('../portal/components/hearing/request-transcript/request-transcript.component').then(
@@ -118,6 +123,7 @@ export const PORTAL_ROUTES: Routes = [
   },
   {
     path: 'case/:caseId/transcripts/:transcriptId',
+    canActivate: [expiredCaseGuard],
     title: 'DARTS View Transcript File',
     loadComponent: () =>
       import('../portal/components/transcriptions/view-transcript/view-transcript.component').then(
@@ -126,6 +132,7 @@ export const PORTAL_ROUTES: Routes = [
   },
   {
     path: 'case/:caseId/hearing/:hearingId/transcripts/:transcriptId',
+    canActivate: [expiredCaseGuard],
     title: 'DARTS View Transcript File',
     loadComponent: () =>
       import('../portal/components/transcriptions/view-transcript/view-transcript.component').then(
@@ -152,5 +159,5 @@ export const PORTAL_ROUTES: Routes = [
 ].map((route) => ({
   ...route,
   resolve: { userState: () => inject(UserService).userProfile$ },
-  canActivate: [authGuard],
+  canActivate: [...(route.canActivate || []), authGuard],
 }));

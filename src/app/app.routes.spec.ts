@@ -1,8 +1,11 @@
 import { Location } from '@angular/common';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Route, Router, provideRouter } from '@angular/router';
 import { UserState } from '@core-types/user/user-state.interface';
+import { CaseService } from '@services/case/case.service';
 import { UserService } from '@services/user/user.service';
 import { of } from 'rxjs/internal/observable/of';
 import { ADMIN_ROUTES } from './admin/admin.routes';
@@ -15,6 +18,7 @@ describe('App Routes', () => {
   let location: Location;
 
   let mockAuthService: AuthService;
+  let mockCaseService: CaseService;
   let mockUserService: Partial<UserService>;
   const userStateSignal = signal<UserState | null>(null);
 
@@ -23,6 +27,10 @@ describe('App Routes', () => {
       checkIsAuthenticated: () => of(true),
       getAuthenticated: jest.fn(),
     } as unknown as AuthService;
+
+    mockCaseService = {
+      getCase: jest.fn().mockReturnValue(of({ isDataAnonymised: false })),
+    } as unknown as CaseService;
 
     mockUserService = {
       userProfile$: of({ userId: 123, userName: 'Dean', roles: [{ roleId: 1, roleName: 'APPROVER' }], isActive: true }),
@@ -37,10 +45,16 @@ describe('App Routes', () => {
           useValue: mockAuthService,
         },
         {
+          provide: CaseService,
+          useValue: mockCaseService,
+        },
+        {
           provide: UserService,
           useValue: mockUserService,
         },
         provideRouter(APP_ROUTES),
+        provideHttpClient(),
+        provideHttpClientTesting(),
       ],
     });
 

@@ -12,7 +12,7 @@ const resBody104 = {
 };
 
 const resBody404 = {
-  type: 'CASE_123',
+  type: 'CASE_108',
   title: 'Case has expired',
   status: 404,
 };

@@ -20,11 +20,10 @@ const subscribedEndpoints = [
   { endpoint: '/api/admin/event-mappings', responses: [409] },
   { endpoint: new RegExp(`/api/admin/medias/${regexIdPlaceholder}/hide`), responses: [409] },
   { endpoint: new RegExp(`/api/admin/${regexWordPlaceholder}/search`), responses: [400] },
-  { endpoint: new RegExp(`/api/cases/${regexIdPlaceholder}/transcripts`), responses: [403] },
   { endpoint: new RegExp(`/api/hearings/${regexIdPlaceholder}/transcripts`), responses: [403] },
   { endpoint: new RegExp(`/api/admin/automated-tasks/${regexIdPlaceholder}/run`), responses: [404, 409] },
   { endpoint: new RegExp(`/api/cases/${regexIdPlaceholder}/hearings`), responses: [404] },
-  { endpoint: new RegExp(`/api/cases/${regexIdPlaceholder}/transcripts`), responses: [404] },
+  { endpoint: new RegExp(`/api/cases/${regexIdPlaceholder}/transcripts`), responses: [403, 404] },
   { endpoint: new RegExp(`/api/cases/${regexIdPlaceholder}/events`), responses: [404] },
   { endpoint: new RegExp(`/api/cases/${regexIdPlaceholder}/annotations`), responses: [404] },
 ];
