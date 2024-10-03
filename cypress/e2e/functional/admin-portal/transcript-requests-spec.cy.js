@@ -227,16 +227,16 @@ describe('Admin - Transcript requests', () => {
       cy.get('#transcript-details dd').eq(0).should('contain', 'C20220620001');
 
       cy.get('#transcript-details dt').eq(1).should('contain', 'Hearing date');
-      cy.get('#transcript-details dd').eq(1).should('contain', '07 Aug 2023');
+      cy.get('#transcript-details dd').eq(1).should('contain', '08 Nov 2023');
 
       cy.get('#transcript-details dt').eq(2).should('contain', 'Courthouse');
       cy.get('#transcript-details dd').eq(2).should('contain', 'Swansea');
 
       cy.get('#transcript-details dt').eq(3).should('contain', 'Courtroom');
-      cy.get('#transcript-details dd').eq(3).should('contain', '3');
+      cy.get('#transcript-details dd').eq(3).should('contain', '5');
 
       cy.get('#transcript-details dt').eq(4).should('contain', 'Defendant(s)');
-      cy.get('#transcript-details dd').eq(4).should('contain', 'Defendant Dave, Defendant Bob');
+      cy.get('#transcript-details dd').eq(4).should('contain', 'Defendant Dave Defendant Bob');
 
       cy.get('#transcript-details dt').eq(5).should('contain', 'Judge(s)');
       cy.get('#transcript-details dd').eq(5).should('contain', 'Ray Bob');
@@ -257,13 +257,13 @@ describe('Admin - Transcript requests', () => {
       cy.get('#request-details dd').eq(3).should('contain', 'Manual');
 
       cy.get('#request-details dt').eq(4).should('contain', 'Request ID');
-      cy.get('#request-details dd').eq(4).should('contain', '789');
+      cy.get('#request-details dd').eq(4).should('contain', '1');
 
       cy.get('#request-details dt').eq(5).should('contain', 'Urgency');
       cy.get('#request-details dd').eq(5).should('contain', 'Standard');
 
       cy.get('#request-details dt').eq(6).should('contain', 'Requested by');
-      cy.get('#request-details dd').eq(6).should('contain', 'Joe Smith');
+      cy.get('#request-details dd').eq(6).should('contain', 'Eric Bristow');
 
       cy.get('#request-details dt').eq(7).should('contain', 'Instructions');
       cy.get('#request-details dd').eq(7).should('contain', 'Please expedite my request');
@@ -272,7 +272,10 @@ describe('Admin - Transcript requests', () => {
       cy.get('#request-details dd').eq(8).should('contain', 'Yes');
 
       cy.get('#request-details dt').eq(9).should('contain', 'Removed from user transcripts');
-      cy.get('#request-details dd').eq(9).should('contain', 'Yes');
+      cy.get('#request-details dd').eq(9).should('contain', 'No');
+
+      cy.get('#request-details dt').eq(10).should('contain', 'Migrated legacy data comments');
+      cy.get('#request-details dd').eq(10).should('contain', 'This is a legacy comment This is another legacy comment');
 
       // Advanced details
       cy.get('#advanced-tab').click();
@@ -280,7 +283,7 @@ describe('Admin - Transcript requests', () => {
       cy.get('.govuk-heading-m').contains('Advanced details');
 
       cy.get('#file-details dt').eq(0).should('contain', 'Transcription object ID');
-      cy.get('#file-details dd').eq(0).should('contain', '32');
+      cy.get('#file-details dd').eq(0).should('contain', '109');
 
       cy.get('#file-details dt').eq(1).should('contain', 'Content object ID');
       cy.get('#file-details dd').eq(1).should('contain', 'ABC12343211');

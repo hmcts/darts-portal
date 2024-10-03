@@ -53,7 +53,7 @@ export class TranscriptFileBasicDetailComponent implements OnInit {
       'Request type': transcript.requestType,
       'Audio for transcript': `Start time ${this.luxonPipe.transform(transcript.transcriptionStartTs, 'HH:mm:ss')} - End time ${this.luxonPipe.transform(transcript.transcriptionEndTs, 'HH:mm:ss')}`,
       'Requested date': this.luxonPipe.transform(transcript.received, 'dd MMM yyyy'),
-      'Requested method': transcript.isManual ? 'Manual' : 'Automatic',
+      'Request method': transcript.isManual ? 'Manual' : 'Automatic',
       'Request ID': transcript.transcriptionId,
       Urgency: transcript.urgency.description,
       'Requested by': transcript.from,
