@@ -6,9 +6,14 @@
       >
     </td>
     <td>{{ row.caseNumber }}</td>
-    <td>{{ row.hearingDate | luxonDate: 'd MMM yyyy' }}</td>
-    <td>{{ row.courthouse }}</td>
-    <td>{{ row.courtroom }}</td>
+    @if (showDeleteButton()) {
+      <td>{{ row.hearingDate | luxonDate: 'd MMM yyyy' }}</td>
+      <td>{{ row.courthouse }}</td>
+      <td>{{ row.courtroom }}</td>
+    } @else {
+      <td>{{ row.courthouse }}</td>
+      <td>{{ row.hearingDate | luxonDate: 'd MMM yyyy' }}</td>
+    }
     <td>{{ row.markedHiddenBy }}</td>
     <td>
       <strong>{{ row.reasonName }}</strong>

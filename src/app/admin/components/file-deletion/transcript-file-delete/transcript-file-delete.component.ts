@@ -7,6 +7,7 @@ import { FileDeletionService } from '@services/file-deletion/file-deletion.servi
 import { HeaderService } from '@services/header/header.service';
 import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
 import { UserService } from '@services/user/user.service';
+import { DateTime } from 'luxon';
 import { ApproveRejectFileDeleteComponent } from '../approve-reject-file-delete/approve-reject-file-delete.component';
 import { TranscriptsForDeletionComponent } from '../transcripts-for-deletion/transcripts-for-deletion.component';
 
@@ -29,14 +30,20 @@ export class TranscriptFileDeleteComponent implements OnInit {
   headerService = inject(HeaderService);
   fileDeletionService = inject(FileDeletionService);
   transcriptionService = inject(TranscriptionAdminService);
-  transcriptFile: TranscriptionDocumentForDeletion = this.router.getCurrentNavigation()?.extras?.state?.file;
+
+  transcriptFileState = this.router.getCurrentNavigation()?.extras?.state?.file;
+  transcriptFile: TranscriptionDocumentForDeletion | null = null;
+
   errorSummary: { fieldId: string; message: string }[] = [];
 
   ngOnInit(): void {
-    if (!this.transcriptFile) {
+    if (!this.transcriptFileState) {
       this.router.navigate(['/admin/file-deletion']);
       return;
     }
+
+    this.transcriptFile = this.parseTranscriptFile(this.transcriptFileState);
+
     this.transcriptFile &&
       this.userService.hasMatchingUserId(this.transcriptFile.hiddenById) &&
       this.router.navigate(['/admin/file-deletion/unauthorised'], { state: { type: 'transcript' } });
@@ -64,6 +71,15 @@ export class TranscriptFileDeleteComponent implements OnInit {
           });
     }
   }
+
+  //Required to enable display of dates upon refresh, due to passing through state
+  private parseTranscriptFile(transcript: typeof this.transcriptFileState): TranscriptionDocumentForDeletion {
+    return {
+      ...transcript,
+      hearingDate: DateTime.fromISO(transcript.hearingDate),
+    };
+  }
+
   getErrorSummary(errors: string[]) {
     this.errorSummary = errors.length > 0 ? [{ fieldId: 'deletionApproval', message: errors[0] }] : [];
   }

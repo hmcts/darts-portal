@@ -66,7 +66,7 @@ export class FileDeletionComponent {
       this.router.navigate(['/admin/file-deletion/unauthorised'], { state: { type: 'audio' } });
     } else {
       this.router.navigate(['/admin/file-deletion/audio', audio.mediaId], {
-        state: { file: audio },
+        state: { file: { ...audio, startAt: audio.startAt.toISO(), endAt: audio.endAt.toISO() } },
       });
     }
   }
@@ -76,7 +76,7 @@ export class FileDeletionComponent {
       this.router.navigate(['/admin/file-deletion/unauthorised'], { state: { type: 'transcript' } });
     } else {
       this.router.navigate(['/admin/file-deletion/transcript', transcript.transcriptionDocumentId], {
-        state: { file: transcript },
+        state: { file: { ...transcript, hearingDate: transcript.hearingDate.toISO() } },
       });
     }
   }

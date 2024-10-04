@@ -163,7 +163,7 @@ describe('FileDeletionComponent', () => {
             comments: 'Commenty comment',
             courthouse: 'Cardiff',
             courtroom: 'Room 1',
-            hearingDate: DateTime.fromISO('2022-01-01T00:00:00.000+00:00'),
+            hearingDate: transcript.hearingDate.toISO(),
             hiddenById: 3,
             reasonId: 4,
             ticketReference: 'REF123',
@@ -194,11 +194,13 @@ describe('FileDeletionComponent', () => {
       } as unknown as UserService;
       const routerSpy = jest.spyOn(component.router, 'navigate');
 
+      const expectedAudio = { ...audio, startAt: audio.startAt.toISO(), endAt: audio.endAt.toISO() };
+
       component.onDeleteAudio(audio);
 
       expect(routerSpy).toHaveBeenCalledWith(['/admin/file-deletion/audio', 1], {
         state: {
-          file: audio,
+          file: expectedAudio,
         },
       });
     });
