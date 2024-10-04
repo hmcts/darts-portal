@@ -156,14 +156,13 @@ describe('Admin - Groups screen', () => {
 
       cy.get('.govuk-heading-xl').should('contain', 'Delete transcript file');
 
-      cy.get('.govuk-table__header').should('have.length', 8);
+      cy.get('.govuk-table__header').should('have.length', 6);
       cy.get('.govuk-table__header').eq(0).should('contain', 'Transcript ID');
       cy.get('.govuk-table__header').eq(1).should('contain', 'Case ID');
-      cy.get('.govuk-table__header').eq(2).should('contain', 'Hearing date');
-      cy.get('.govuk-table__header').eq(3).should('contain', 'Courthouse');
-      cy.get('.govuk-table__header').eq(4).should('contain', 'Courtroom');
-      cy.get('.govuk-table__header').eq(5).should('contain', 'Marked by');
-      cy.get('.govuk-table__header').eq(6).should('contain', 'Comments');
+      cy.get('.govuk-table__header').eq(2).should('contain', 'Courthouse');
+      cy.get('.govuk-table__header').eq(3).should('contain', 'Hearing date');
+      cy.get('.govuk-table__header').eq(4).should('contain', 'Marked by');
+      cy.get('.govuk-table__header').eq(5).should('contain', 'Comments');
 
       cy.get('.govuk-table__row').should('have.length', 2);
       cy.get('.govuk-table__row').eq(1).should('contain', '1');
@@ -180,14 +179,13 @@ describe('Admin - Groups screen', () => {
 
       cy.get('.govuk-heading-xl').should('contain', 'Delete transcript file');
 
-      cy.get('.govuk-table__header').should('have.length', 8);
+      cy.get('.govuk-table__header').should('have.length', 6);
       cy.get('.govuk-table__header').eq(0).should('contain', 'Transcript ID');
       cy.get('.govuk-table__header').eq(1).should('contain', 'Case ID');
-      cy.get('.govuk-table__header').eq(2).should('contain', 'Hearing date');
-      cy.get('.govuk-table__header').eq(3).should('contain', 'Courthouse');
-      cy.get('.govuk-table__header').eq(4).should('contain', 'Courtroom');
-      cy.get('.govuk-table__header').eq(5).should('contain', 'Marked by');
-      cy.get('.govuk-table__header').eq(6).should('contain', 'Comments');
+      cy.get('.govuk-table__header').eq(2).should('contain', 'Courthouse');
+      cy.get('.govuk-table__header').eq(3).should('contain', 'Hearing date');
+      cy.get('.govuk-table__header').eq(4).should('contain', 'Marked by');
+      cy.get('.govuk-table__header').eq(5).should('contain', 'Comments');
 
       cy.get('.govuk-table__row').should('have.length', 2);
       cy.get('.govuk-table__row').eq(1).should('contain', '1');
