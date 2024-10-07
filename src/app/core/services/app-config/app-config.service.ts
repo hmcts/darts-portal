@@ -15,8 +15,8 @@ export interface AppConfig {
   features: {
     manualDeletion: {
       enabled: boolean;
-    }
-  }
+    };
+  };
 }
 
 const CONFIG_PATH = '/app/config';

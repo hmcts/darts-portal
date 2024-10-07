@@ -1,9 +1,9 @@
 import { inject } from '@angular/core';
-import {ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot} from '@angular/router';
+import { CanActivateFn, Router } from '@angular/router';
 
-import {FeatureFlagService} from '@services/app-config/feature-flag.service';
+import { FeatureFlagService } from '@services/app-config/feature-flag.service';
 
-export const manualDeletionGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+export const manualDeletionGuard: CanActivateFn = () => {
   const featureFlagService = inject(FeatureFlagService);
   const router = inject(Router);
 

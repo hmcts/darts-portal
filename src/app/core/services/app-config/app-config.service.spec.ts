@@ -29,9 +29,9 @@ describe('AppConfigService', () => {
       dynatrace: { scriptUrl: 'script' },
       features: {
         manualDeletion: {
-          enabled: false
-        }
-      }
+          enabled: false,
+        },
+      },
     };
     jest.spyOn(httpClientSpy, 'get').mockReturnValue(of(testData));
     await appConfigService.loadAppConfig();

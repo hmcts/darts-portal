@@ -8,14 +8,11 @@ describe('FeatureFlagService', () => {
 
   beforeEach(() => {
     appConfigServiceMock = {
-      getAppConfig: jest.fn()
+      getAppConfig: jest.fn(),
     };
 
     TestBed.configureTestingModule({
-      providers: [
-        FeatureFlagService,
-        { provide: AppConfigService, useValue: appConfigServiceMock }
-      ]
+      providers: [FeatureFlagService, { provide: AppConfigService, useValue: appConfigServiceMock }],
     });
 
     service = TestBed.inject(FeatureFlagService);
@@ -28,21 +25,21 @@ describe('FeatureFlagService', () => {
   describe('isManualDeletionEnabled', () => {
     it('should return true when manualDeletion is enabled', () => {
       appConfigServiceMock.getAppConfig.mockReturnValue({
-        features: { manualDeletion: { enabled: true } }
+        features: { manualDeletion: { enabled: true } },
       });
       expect(service.isManualDeletionEnabled()).toBe(true);
     });
 
     it('should return false when manualDeletion is disabled', () => {
       appConfigServiceMock.getAppConfig.mockReturnValue({
-        features: { manualDeletion: { enabled: false } }
+        features: { manualDeletion: { enabled: false } },
       });
       expect(service.isManualDeletionEnabled()).toBe(false);
     });
 
     it('should return false when manualDeletion is undefined', () => {
       appConfigServiceMock.getAppConfig.mockReturnValue({
-        features: {}
+        features: {},
       });
       expect(service.isManualDeletionEnabled()).toBe(false);
     });
@@ -59,21 +56,21 @@ describe('FeatureFlagService', () => {
 
     it('should return false when enabled is null', () => {
       appConfigServiceMock.getAppConfig.mockReturnValue({
-        features: { manualDeletion: { enabled: null } }
+        features: { manualDeletion: { enabled: null } },
       });
       expect(service.isManualDeletionEnabled()).toBe(false);
     });
 
     it('should return true for truthy non-boolean values', () => {
       appConfigServiceMock.getAppConfig.mockReturnValue({
-        features: { manualDeletion: { enabled: 1 } }
+        features: { manualDeletion: { enabled: 1 } },
       });
       expect(service.isManualDeletionEnabled()).toBe(true);
     });
 
     it('should return false for falsy non-boolean values', () => {
       appConfigServiceMock.getAppConfig.mockReturnValue({
-        features: { manualDeletion: { enabled: 0 } }
+        features: { manualDeletion: { enabled: 0 } },
       });
       expect(service.isManualDeletionEnabled()).toBe(false);
     });
