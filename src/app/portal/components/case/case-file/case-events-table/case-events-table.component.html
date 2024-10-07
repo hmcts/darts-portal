@@ -11,7 +11,7 @@
   <ng-template [tableRowTemplate]="events()" let-row>
     <td>
       <a class="govuk-link" [routerLink]="['/case', caseId(), 'hearing', row.hearingId]">{{
-        row.hearingDate | luxonDate: 'd MMM y'
+        row.hearingDate | luxonDate: 'dd MMM y'
       }}</a>
     </td>
     <td>{{ row.timestamp | luxonDate: 'HH:mm:ss' }}</td>
