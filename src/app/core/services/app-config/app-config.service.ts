@@ -12,6 +12,11 @@ export interface AppConfig {
   dynatrace: {
     scriptUrl: string;
   };
+  features: {
+    manualDeletion: {
+      enabled: boolean;
+    }
+  }
 }
 
 const CONFIG_PATH = '/app/config';
