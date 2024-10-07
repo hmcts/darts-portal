@@ -79,7 +79,8 @@
   },
   "resolutions": {
     "micromatch": "^4.0.8",
-    "send": "^0.19.0"
+    "send": "^0.19.0",
+    "cookie": "^0.7.2"
   },
   "devDependencies": {
     "@angular-builders/custom-webpack": "^18.0.0",
