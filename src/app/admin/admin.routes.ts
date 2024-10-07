@@ -2,6 +2,7 @@ import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
 import { UserService } from '@services/user/user.service';
 import { authGuard } from '../core/guards/auth/auth.guard';
+import { manualDeletionGuard } from '../core/guards/manual-deletion.guard';
 
 export const ADMIN_ROUTES: Routes = [
   {
@@ -351,5 +352,5 @@ export const ADMIN_ROUTES: Routes = [
 ].map((route) => ({
   ...route,
   resolve: { userState: () => inject(UserService).userProfile$ },
-  canActivate: [authGuard],
+  canActivate: [authGuard, ...(route.path.startsWith('admin/file-deletion') ? [manualDeletionGuard] : [])],
 }));
