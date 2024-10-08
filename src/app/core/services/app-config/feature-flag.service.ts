@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@angular/core';
 import { AppConfigService } from '@services/app-config/app-config.service';
 
-@Injectable()
+@Injectable({ providedIn: "root" })
 export class FeatureFlagService {
-  constructor(@Inject(AppConfigService) private appConfigService: AppConfigService) {}
+  constructor(@Inject(AppConfigService) private appConfigService: AppConfigService) { }
 
   isManualDeletionEnabled(): boolean {
     const enabled = this.appConfigService.getAppConfig()?.features?.manualDeletion?.enabled;

@@ -20,7 +20,7 @@
   },
   "features": {
     "manualDeletion": {
-      "enabled": "false"
+      "enabled": false
     }
   },
   "dynatrace": {
