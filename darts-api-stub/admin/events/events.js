@@ -3,7 +3,8 @@ const router = require('express').Router();
 const events = [
   {
     id: 111,
-    created_at: '2024-01-01T00:00:00Z',
+    created_at: '2024-01-01T04:14:51Z',
+    event_ts: '2024-01-01T04:14:44Z',
     name: 'Event 1',
     text: 'This is an event',
     chronicle_id: '123',
@@ -19,7 +20,8 @@ const events = [
   },
   {
     id: 222,
-    created_at: '2024-01-02T00:00:00Z',
+    created_at: '2024-01-02T11:24:01Z',
+    event_ts: '2024-01-02T11:23:47Z',
     name: 'Event 2',
     text: 'This is another event',
     chronicle_id: '789',
@@ -35,7 +37,8 @@ const events = [
   },
   {
     id: 333,
-    created_at: '2024-01-03T00:00:00Z',
+    created_at: '2024-01-02T23:30:17Z',
+    event_ts: '2024-01-03T23:30:15Z',
     name: 'Event 3',
     text: 'This is yet another event',
     chronicle_id: '345',

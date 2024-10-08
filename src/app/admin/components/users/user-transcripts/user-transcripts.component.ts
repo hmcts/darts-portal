@@ -2,7 +2,7 @@ import { Transcription, TranscriptionStatus } from '@admin-types/transcription';
 import { CommonModule, NgClass } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { GovukTagComponent } from '@common/govuk-tag/govuk-tag.component';
@@ -40,6 +40,7 @@ export class UserTranscriptsComponent implements OnInit {
   route = inject(ActivatedRoute);
   courthouseService = inject(CourthouseService);
   fb = inject(FormBuilder);
+  url = inject(Router).url;
 
   form!: FormGroup;
 

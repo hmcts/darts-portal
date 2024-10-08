@@ -119,7 +119,7 @@ export class AdminSearchService {
   private mapEventDataToEventSearchResult(results: AdminEventSearchResultData[]): AdminEventSearchResult[] {
     return results.map((result) => ({
       id: result.id,
-      createdAt: DateTime.fromISO(result.created_at),
+      eventTs: DateTime.fromISO(result.event_ts),
       name: result.name,
       text: result.text,
       chronicleId: result.chronicle_id,

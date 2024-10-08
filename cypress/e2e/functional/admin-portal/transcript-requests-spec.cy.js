@@ -133,6 +133,11 @@ describe('Admin - Transcript requests', () => {
       cy.a11y();
     });
 
+    it('back link', () => {
+      cy.get('a').contains('Back').click();
+      cy.url().should('include', '/admin/transcripts');
+    });
+
     it('transcript links to associated group', () => {
       cy.get('#status-details').contains('Associated groups').get('a').contains('Judiciary').click();
       cy.url().should('include', '/admin/groups/1');
@@ -336,7 +341,7 @@ describe('Admin - Transcript requests', () => {
       cy.get('.govuk-notification-banner__body').contains('unhide').should('exist');
 
       cy.get('.govuk-list').should('contain', 'Hidden by - Eric Bristow');
-      cy.get('.govuk-list').should('contain', 'Reason - Public interest immunity');
+      cy.get('.govuk-list').should('contain', 'Reason - Other reason to hide only');
       cy.get('.govuk-list').should('contain', 'Ticket Reference 1232 - This is a comment');
     });
 

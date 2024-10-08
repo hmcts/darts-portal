@@ -1,6 +1,6 @@
 @if (file?.isHidden) {
   <app-notification-banner [heading]="heading" class="no-max-width">
-    @if (file?.isMarkedForManualDeletion) {
+    @if (file?.isMarkedForDeletion) {
       DARTS user cannot view this file.
       @if (userService.isAdmin()) {
         You can
@@ -13,8 +13,8 @@
       }
     }
     <ul class="govuk-list">
-      @if (file?.isMarkedForManualDeletion) {
-        <li><strong>Marked for manual deletion by</strong> - {{ file?.markedForManualDeletionBy }}</li>
+      @if (file?.isMarkedForDeletion) {
+        <li><strong>Marked for manual deletion by</strong> - {{ file?.hiddenByName }}</li>
       } @else {
         <li><strong>Hidden by</strong> - {{ file?.hiddenByName }}</li>
       }

@@ -16,6 +16,10 @@ header {
 }
 .govuk-summary-list__value {
   white-space: pre-line;
+
+  span {
+    display: block;
+  }
 }
 
 a {

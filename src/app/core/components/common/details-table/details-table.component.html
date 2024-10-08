@@ -16,14 +16,15 @@
         <dd class="govuk-summary-list__value">
           <!-- check if value is an array of links -->
           @if (getLinkArray(detail.value).length) {
-            @for (item of getLinkArray(detail.value); track item) {
+            @for (item of getLinkArray(detail.value); track item.value ? item.value : item) {
               @if (item.href) {
-                <a [href]="item.href" class="govuk-link">{{ item.value }}</a>
+                <a [routerLink]="item.href" class="govuk-link">{{ item.value }}</a>
                 @if (item.caption) {
                   <span class="value-caption govuk-caption-m"> ({{ item.caption }})</span>
                 }
                 <br />
               } @else {
+                <!-- Handles flat arrays -->
                 <span>{{ item }} </span>
               }
             }

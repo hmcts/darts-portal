@@ -36,6 +36,7 @@ const mockEvent: Event = {
   chronicleId: '',
   antecedentId: '',
   isDataAnonymised: false,
+  eventTs: DateTime.fromISO('2024-05-05T11:00:00Z'),
   createdAt: DateTime.fromISO('2024-05-05T11:00:00Z'),
   createdById: 0,
   lastModifiedAt: DateTime.fromISO('2024-05-05T11:00:00Z'),

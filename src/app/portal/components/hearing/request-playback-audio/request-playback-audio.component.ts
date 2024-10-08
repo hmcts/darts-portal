@@ -198,7 +198,8 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
       });
       return (
         (startTimeOnly <= audioStartTime && endTimeOnly >= audioStartTime) ||
-        (startTimeOnly <= audioEndTime && endTimeOnly >= audioEndTime)
+        (startTimeOnly <= audioEndTime && endTimeOnly >= audioEndTime) ||
+        (startTimeOnly >= audioStartTime && endTimeOnly <= audioEndTime)
       );
     });
 

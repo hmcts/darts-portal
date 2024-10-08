@@ -112,6 +112,7 @@ describe('TranscriptionsComponent', () => {
       isJudge: () => false,
       isTranscriber: () => false,
       isSuperUser: () => false,
+      isAdmin: () => false,
     };
 
     TestBed.configureTestingModule({
@@ -227,13 +228,13 @@ describe('TranscriptionsComponent', () => {
       fixture.detectChanges();
       component.selectedRequests = [{} as TranscriptRequest];
       component.onDeleteClicked();
-      expect(component.isDeleting).toEqual(true);
+      expect(component.isDeleting()).toEqual(true);
     });
     it('should not set isDeleting to true if no requests are selected', () => {
       fixture.detectChanges();
       component.selectedRequests = [];
       component.onDeleteClicked();
-      expect(component.isDeleting).toEqual(false);
+      expect(component.isDeleting()).toEqual(false);
     });
   });
 
@@ -253,11 +254,11 @@ describe('TranscriptionsComponent', () => {
     it('should set isDeleting to false', () => {
       fixture.detectChanges();
       component.selectedRequests = [{} as TranscriptRequest];
-      component.isDeleting = true;
+      component.isDeleting.set(true);
 
       component.onDeleteConfirmed();
 
-      expect(component.isDeleting).toEqual(false);
+      expect(component.isDeleting()).toEqual(false);
     });
     it('should navigate to /delete-error when a 400 is received and set isDeleting to false', () => {
       fixture.detectChanges();
@@ -268,7 +269,7 @@ describe('TranscriptionsComponent', () => {
 
       component.onDeleteConfirmed();
 
-      expect(component.isDeleting).toEqual(false);
+      expect(component.isDeleting()).toEqual(false);
       expect(routerSpy).toHaveBeenCalledWith(['transcriptions/delete-error']);
     });
   });
@@ -276,9 +277,9 @@ describe('TranscriptionsComponent', () => {
   describe('#onDeleteCancelled', () => {
     it('should set isDeleting to false', () => {
       fixture.detectChanges();
-      component.isDeleting = true;
+      component.isDeleting.set(true);
       component.onDeleteCancelled();
-      expect(component.isDeleting).toEqual(false);
+      expect(component.isDeleting()).toEqual(false);
     });
   });
 
@@ -295,7 +296,7 @@ describe('TranscriptionsComponent', () => {
     expect(tabs).toBeTruthy();
   });
 
-  it('No tabs if REQUESTER only', () => {
+  it('No tabs, in progress table if REQUESTER only', () => {
     fixture.detectChanges();
 
     component.isRequester = true;
@@ -305,10 +306,12 @@ describe('TranscriptionsComponent', () => {
 
     const compiled = fixture.nativeElement;
     const tabs = compiled.querySelector('app-tabs');
+    const table = fixture.nativeElement.querySelector('#in-progress-table');
     expect(tabs).toBeFalsy();
+    expect(table).toBeTruthy();
   });
 
-  it('No tabs if APPROVER only', () => {
+  it('No tabs, approver table if APPROVER only', () => {
     fixture.detectChanges();
 
     component.isRequester = false;
@@ -318,7 +321,9 @@ describe('TranscriptionsComponent', () => {
 
     const compiled = fixture.nativeElement;
     const tabs = compiled.querySelector('app-tabs');
+    const table = fixture.nativeElement.querySelector('#approver-table');
     expect(tabs).toBeFalsy();
+    expect(table).toBeTruthy();
   });
 
   it('Requester view and no tabs if JUDGE only', () => {
@@ -337,7 +342,7 @@ describe('TranscriptionsComponent', () => {
     expect(table).toBeTruthy();
   });
 
-  it('Requester view and no tabs if SUPER_USER only', () => {
+  it('Both tabs if SUPER_USER only', () => {
     fixture.detectChanges();
 
     component.isRequester = false;
@@ -349,9 +354,23 @@ describe('TranscriptionsComponent', () => {
 
     const compiled = fixture.nativeElement;
     const tabs = compiled.querySelector('app-tabs');
-    const table = compiled.querySelector('#in-progress-table');
-    expect(tabs).toBeFalsy();
-    expect(table).toBeTruthy();
+    expect(tabs).toBeTruthy();
+  });
+
+  it('Both tabs if SUPER_ADMIN only', () => {
+    fixture.detectChanges();
+
+    component.isRequester = false;
+    component.isApprover = false;
+    component.isJudge = false;
+    component.isSuperUser = false;
+    component.isSuperAdmin = true;
+
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement;
+    const tabs = compiled.querySelector('app-tabs');
+    expect(tabs).toBeTruthy();
   });
 
   it('Tabbed view if JUDGE and APPROVER', () => {

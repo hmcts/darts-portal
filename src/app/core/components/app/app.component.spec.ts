@@ -1,12 +1,21 @@
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute, ActivatedRouteSnapshot, Event, NavigationEnd, Router } from '@angular/router';
+import {
+  ActivatedRoute,
+  ActivatedRouteSnapshot,
+  Event,
+  NavigationEnd,
+  NavigationStart,
+  Router,
+  RouterEvent,
+} from '@angular/router';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
 import { DynatraceService } from '@services/dynatrace/dynatrace.service';
 import { ErrorMessageService } from '@services/error/error-message.service';
 import { HeaderService } from '@services/header/header.service';
+import { HistoryService } from '@services/history/history.service';
 import { UserService } from '@services/user/user.service';
 import { Subject } from 'rxjs';
 import { ContentComponent } from '../layout/content/content.component';
@@ -24,7 +33,7 @@ describe('AppComponent', () => {
 
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
-  let routerEventsSubject: Subject<NavigationEnd>;
+  let routerEventsSubject: Subject<RouterEvent>;
   let mockRoute: ActivatedRouteSnapshot;
 
   beforeEach(() => {
@@ -32,7 +41,7 @@ describe('AppComponent', () => {
     (fakeAppInsightsService.logPageView as jest.Mock).mockClear();
     (fakeUserService.refreshUserProfile as jest.Mock).mockClear();
     (fakeDtService.addDynatraceScript as jest.Mock).mockClear();
-    routerEventsSubject = new Subject<NavigationEnd>();
+    routerEventsSubject = new Subject<RouterEvent>();
 
     TestBed.configureTestingModule({
       imports: [HeaderComponent, ContentComponent, FooterComponent, AppComponent],
@@ -117,5 +126,27 @@ describe('AppComponent', () => {
     routerEventsSubject.next(navigationEndEvent);
 
     expect(fakeErrorMessageService.clearErrorMessage).toHaveBeenCalled();
+  });
+
+  it('should add backUrl to history on NavigationStart event', () => {
+    const url = '/something?backUrl=/previous';
+    const navigationStartEvent = new NavigationStart(1, url);
+    const historyService = TestBed.inject(HistoryService);
+    const addBackUrlSpy = jest.spyOn(historyService, 'addBackUrl');
+    (TestBed.inject(Router).events as unknown as Subject<Event>).next(navigationStartEvent);
+    routerEventsSubject.next(navigationStartEvent);
+
+    expect(addBackUrlSpy).toHaveBeenCalledWith('/something', '/previous');
+  });
+
+  it('should not add backUrl to history if not present', () => {
+    const url = '/something';
+    const navigationStartEvent = new NavigationStart(1, url);
+    const historyService = TestBed.inject(HistoryService);
+    const addBackUrlSpy = jest.spyOn(historyService, 'addBackUrl');
+    (TestBed.inject(Router).events as unknown as Subject<Event>).next(navigationStartEvent);
+    routerEventsSubject.next(navigationStartEvent);
+
+    expect(addBackUrlSpy).not.toHaveBeenCalled();
   });
 });

@@ -34,6 +34,7 @@
         [errorMessage]="errors.length ? errors[0].message : ''"
         label="Upload transcript file"
         hint="This must be in a doc or docx format. Maximum file size 10MB."
+        allowedFileTypes=".doc,.docx"
       ></app-file-upload>
     } @else {
       <p class="govuk-body">

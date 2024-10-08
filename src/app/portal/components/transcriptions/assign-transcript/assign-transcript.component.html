@@ -9,7 +9,7 @@
   <ng-template #transcript>
     <app-breadcrumb>
       <ng-container *breadcrumb="['../']">Transcript requests</ng-container>
-      <ng-container *breadcrumb="['.']">{{ caseNumber }}</ng-container>
+      <ng-container *breadcrumb="['.']">{{ vm.hearingDetails['Request ID'] }}</ng-container>
     </app-breadcrumb>
 
     <app-validation-error-summary [errors]="errors"></app-validation-error-summary>
@@ -20,7 +20,7 @@
       [hearingId]="vm.hearingId"
     ></app-reporting-restriction>
 
-    <app-govuk-heading>Transcript Request</app-govuk-heading>
+    <app-govuk-heading>Transcript request</app-govuk-heading>
 
     <app-details-table title="Case details" [details]="vm.caseDetails" />
 

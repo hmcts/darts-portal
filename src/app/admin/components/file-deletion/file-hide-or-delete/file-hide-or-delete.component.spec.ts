@@ -195,7 +195,7 @@ describe('FileHideOrDeleteComponent', () => {
       component.associatedAudioSearch.startAt,
       component.associatedAudioSearch.endAt
     );
-    expect(component.isSubmitted).toBe(true);
-    expect(component.isAssociatedAudio).toBe(true);
+    expect(component.isSubmitted()).toBe(true);
+    expect(component.isAssociatedAudio()).toBe(true);
   });
 });
