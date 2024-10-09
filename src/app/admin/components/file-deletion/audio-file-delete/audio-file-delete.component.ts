@@ -50,7 +50,9 @@ export class AudioFileDeleteComponent implements OnInit {
   deletionApproval = new FormControl(null, [Validators.required]);
 
   ngOnInit(): void {
-    !this.audioFile && this.router.navigate(['/admin/file-deletion']);
+    if (!this.audioFile) {
+      this.router.navigate(['/admin/file-deletion']);
+    }
     this.headerService.hideNavigation();
   }
 

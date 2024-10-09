@@ -69,7 +69,7 @@ describe('ViewEventComponent', () => {
     setup(true, mockEvent);
     expect(component.id()).toBe(1);
     expect(component.event()).toEqual(mockEvent);
-    expect(component).toBeTruthy;
+    expect(component).toBeTruthy();
   });
 
   it('basic and advanced tabs for admin users', () => {

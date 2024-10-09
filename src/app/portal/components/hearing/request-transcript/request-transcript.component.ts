@@ -121,7 +121,7 @@ export class RequestTranscriptComponent implements OnInit, OnDestroy {
           this.title.setTitle('DARTS Transcript Request Complete');
       }
       // Scroll to top when step changes
-      this.step() && this.scrollService.scrollToTop();
+      if (this.step()) this.scrollService.scrollToTop();
     });
   }
 
