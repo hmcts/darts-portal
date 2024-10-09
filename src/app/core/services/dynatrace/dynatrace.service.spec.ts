@@ -57,6 +57,62 @@ describe('DynatraceService', () => {
     expect(script?.src).toBe('https://dynatrace.com/script.js');
   });
 
+  it('should enable dtrum if cookie policy allows it', () => {
+    jest
+      .spyOn(cookiesService, 'getCookiePolicy')
+      .mockReturnValue({ dynatraceCookiesEnabled: true, appInsightsCookiesEnabled: false });
+
+    jest.spyOn(appConfigService, 'getAppConfig').mockReturnValue({
+      dynatrace: { scriptUrl: 'https://dynatrace.com/script.js' },
+      appInsightsKey: 'X',
+      environment: 'env',
+      support: { name: 'name', emailAddress: 'email' },
+    });
+
+    const mockDtrum = {
+      enable: jest.fn(),
+      disable: jest.fn(),
+    };
+
+    (window as any).dtrum = mockDtrum;
+
+    service.addDynatraceScript();
+
+    const script = document.getElementById('dynatrace-script') as HTMLScriptElement;
+    script.onload?.(new Event('load'));
+
+    expect(mockDtrum.enable).toHaveBeenCalled();
+    expect(mockDtrum.disable).not.toHaveBeenCalled();
+  });
+
+  it('should disable dtrum if cookie policy disallows it', () => {
+    jest
+      .spyOn(cookiesService, 'getCookiePolicy')
+      .mockReturnValue({ dynatraceCookiesEnabled: false, appInsightsCookiesEnabled: false });
+
+    jest.spyOn(appConfigService, 'getAppConfig').mockReturnValue({
+      dynatrace: { scriptUrl: 'https://dynatrace.com/script.js' },
+      appInsightsKey: 'X',
+      environment: 'env',
+      support: { name: 'name', emailAddress: 'email' },
+    });
+
+    const mockDtrum = {
+      enable: jest.fn(),
+      disable: jest.fn(),
+    };
+
+    (window as any).dtrum = mockDtrum;
+
+    service.addDynatraceScript();
+
+    const script = document.getElementById('dynatrace-script') as HTMLScriptElement;
+    script.onload?.(new Event('load'));
+
+    expect(mockDtrum.disable).toHaveBeenCalled();
+    expect(mockDtrum.enable).not.toHaveBeenCalled();
+  });
+
   afterEach(() => {
     // Cleanup any script elements added to document.head to ensure tests are isolated
     const script = document.getElementById('dynatrace-script');

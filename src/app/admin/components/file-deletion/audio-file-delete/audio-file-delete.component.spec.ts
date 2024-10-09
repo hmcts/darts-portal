@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FileHide } from '@admin-types/hidden-reasons/file-hide';
+import { AudioFileMarkedDeletion } from '@admin-types/index';
 import { DatePipe } from '@angular/common';
 import { provideHttpClient } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -132,5 +133,19 @@ describe('AudioFileDeleteComponent', () => {
     component.confirm();
     const errorSummary = component.getErrorSummary();
     expect(errorSummary).toEqual([{ fieldId: 'deletionApproval', message: 'Select your decision' }]);
+  });
+
+  it('should navigate to /admin/file-deletion if audioFile is not defined', () => {
+    component.audioFile = null as unknown as AudioFileMarkedDeletion;
+    const routerSpy = jest.spyOn(component.router, 'navigate');
+    component.ngOnInit();
+    expect(routerSpy).toHaveBeenCalledWith(['/admin/file-deletion']);
+  });
+
+  it('should not navigate if audioFile is defined', () => {
+    component.audioFile = audioFile as AudioFileMarkedDeletion;
+    const routerSpy = jest.spyOn(component.router, 'navigate');
+    component.ngOnInit();
+    expect(routerSpy).not.toHaveBeenCalled();
   });
 });

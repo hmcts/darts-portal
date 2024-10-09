@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { ErrorMessage } from '@core-types/index';
 import { HeaderService } from '@services/header/header.service';
 import { ErrorMessageService } from './error-message.service';
 
@@ -89,11 +90,69 @@ describe('ErrorMessageService', () => {
 
     it('should route to internal-error page on unhandled error response, e.g. 409', () => {
       const error = new HttpErrorResponse({ status: 409 });
-      const navigateSpy = jest.spyOn(mockRouter, 'navigateByUrl');
+    });
+  });
+
+  describe('updateDisplayType', () => {
+    it('should update the display type of the current error message to PAGE', () => {
+      const errorMessage: ErrorMessage = { status: 500, statusText: 'Internal Server Error', display: 'COMPONENT' };
+      service.setErrorMessage(errorMessage);
+
+      service.updateDisplayType('PAGE');
+
+      const updatedErrorMessage = service['errorMessage'].getValue();
+      expect(updatedErrorMessage?.display).toBe('PAGE');
+    });
+
+    it('should update the display type of the current error message to COMPONENT', () => {
+      const errorMessage: ErrorMessage = { status: 500, statusText: 'Internal Server Error', display: 'PAGE' };
+      service.setErrorMessage(errorMessage);
+
+      service.updateDisplayType('COMPONENT');
+
+      const updatedErrorMessage = service['errorMessage'].getValue();
+      expect(updatedErrorMessage?.display).toBe('COMPONENT');
+    });
+
+    it('should not update the display type if there is no current error message', () => {
+      service.clearErrorMessage();
+
+      service.updateDisplayType('PAGE');
+
+      const updatedErrorMessage = service['errorMessage'].getValue();
+      expect(updatedErrorMessage).toBeNull();
+    });
+  });
+  describe('handleErrorMessage', () => {
+    it('should set error message and handle other pages for a given error', () => {
+      const error = new HttpErrorResponse({ status: 500, error: 'Internal Server Error' });
+      const setErrorMessageSpy = jest.spyOn(service, 'setErrorMessage');
+      const handleOtherPagesSpy = jest.spyOn(service as any, 'handleOtherPages');
 
       service.handleErrorMessage(error);
 
-      expect(navigateSpy).toHaveBeenCalledWith('internal-error');
+      expect(setErrorMessageSpy).toHaveBeenCalledWith({ status: 500, detail: 'Internal Server Error' });
+      expect(handleOtherPagesSpy).toHaveBeenCalledWith(error);
+    });
+
+    it('should not set error message if error.error is not present', () => {
+      const error = new HttpErrorResponse({ status: 500 });
+      const setErrorMessageSpy = jest.spyOn(service, 'setErrorMessage');
+      const handleOtherPagesSpy = jest.spyOn(service as any, 'handleOtherPages');
+
+      service.handleErrorMessage(error);
+
+      expect(setErrorMessageSpy).not.toHaveBeenCalled();
+      expect(handleOtherPagesSpy).toHaveBeenCalledWith(error);
+    });
+
+    it('should handle other pages for a given error', () => {
+      const error = new HttpErrorResponse({ status: 404, error: 'Not Found' });
+      const handleOtherPagesSpy = jest.spyOn(service as any, 'handleOtherPages');
+
+      service.handleErrorMessage(error);
+
+      expect(handleOtherPagesSpy).toHaveBeenCalledWith(error);
     });
   });
 });
