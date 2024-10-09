@@ -1,9 +1,10 @@
 # DARTS portal
 
-This is primarily an Angular app, but runs through a node.js server. There are two main reasons for the node.js server
+This is primarily an Angular app that runs through a node.js server. There are three main reasons for the node.js express server
 
 - the web server for when the app is deployed in Kubernetes
 - to proxy API requests to internally-facing backend API services, such as the DARTS API
+- to provide a stubbed API for development
 
 ## Getting Started
 
@@ -13,7 +14,7 @@ Running the application requires the following tools to be installed in your env
 
 - [Node.js](https://nodejs.org/) v20.0.0 or later
 - [yarn](https://yarnpkg.com/) v3
-- [Docker](https://www.docker.com)
+- [Docker](https://www.docker.com)(optional)
 
 ### Install Dependencies
 
@@ -25,9 +26,33 @@ yarn
 
 ### Local Development Strategies
 
-There are three different approaches to develop locally:
+There are four different ways to develop locally:
 
-## 1. darts-portal with darts-api
+## 1. API Stub
+
+To run darts-portal against node.js API stub:
+
+```bash
+yarn dev:darts-api-stub
+```
+
+## 2. Staging environment
+
+To run darts-portal against staging API:
+
+```bash
+yarn dev:darts-api-stg
+```
+
+## 3. Demo environment
+
+To run darts-portal locally against demo API:
+
+```bash
+yarn dev:darts-api-demo
+```
+
+## 4. Local darts-portal with local darts-api
 
 To run darts-portal Angular & node.js frontend with [darts-api](https://github.com/hmcts/darts-api):
 
@@ -38,22 +63,6 @@ yarn dev
 The applications's home page will be available at https://localhost:3000.
 
 Note this is running both node.js and Angular and expects the ([darts-api](https://github.com/hmcts/darts-api)) to also be running locally to function correctly
-
-## 2. darts-portal with stub API
-
-To run darts-portal against node.js API stub:
-
-```bash
-yarn dev:darts-api-stub
-```
-
-## 3. darts-portal with staging API
-
-To run darts-portal against staging API:
-
-```bash
-yarn dev:dev:darts-api-stg
-```
 
 ## Build
 
