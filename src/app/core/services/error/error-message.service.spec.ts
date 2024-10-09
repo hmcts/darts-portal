@@ -87,10 +87,6 @@ describe('ErrorMessageService', () => {
 
       expect(navigateSpy).toHaveBeenCalledWith('page-not-found');
     });
-
-    it('should route to internal-error page on unhandled error response, e.g. 409', () => {
-      const error = new HttpErrorResponse({ status: 409 });
-    });
   });
 
   describe('updateDisplayType', () => {
@@ -127,7 +123,10 @@ describe('ErrorMessageService', () => {
     it('should set error message and handle other pages for a given error', () => {
       const error = new HttpErrorResponse({ status: 500, error: 'Internal Server Error' });
       const setErrorMessageSpy = jest.spyOn(service, 'setErrorMessage');
-      const handleOtherPagesSpy = jest.spyOn(service as any, 'handleOtherPages');
+      const handleOtherPagesSpy = jest.spyOn(
+        service as unknown as { handleOtherPages: (error: HttpErrorResponse) => void },
+        'handleOtherPages'
+      );
 
       service.handleErrorMessage(error);
 
@@ -138,7 +137,10 @@ describe('ErrorMessageService', () => {
     it('should not set error message if error.error is not present', () => {
       const error = new HttpErrorResponse({ status: 500 });
       const setErrorMessageSpy = jest.spyOn(service, 'setErrorMessage');
-      const handleOtherPagesSpy = jest.spyOn(service as any, 'handleOtherPages');
+      const handleOtherPagesSpy = jest.spyOn(
+        service as unknown as { handleOtherPages: (error: HttpErrorResponse) => void },
+        'handleOtherPages'
+      );
 
       service.handleErrorMessage(error);
 
@@ -148,7 +150,10 @@ describe('ErrorMessageService', () => {
 
     it('should handle other pages for a given error', () => {
       const error = new HttpErrorResponse({ status: 404, error: 'Not Found' });
-      const handleOtherPagesSpy = jest.spyOn(service as any, 'handleOtherPages');
+      const handleOtherPagesSpy = jest.spyOn(
+        service as unknown as { handleOtherPages: (error: HttpErrorResponse) => void },
+        'handleOtherPages'
+      );
 
       service.handleErrorMessage(error);
 

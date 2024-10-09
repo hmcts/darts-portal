@@ -3,6 +3,11 @@ import { AppConfigService } from '@services/app-config/app-config.service';
 import { CookiesService } from '@services/cookies/cookies.service';
 import { DynatraceService } from './dynatrace.service';
 
+interface Dtrum {
+  enable: () => void;
+  disable: () => void;
+}
+
 describe('DynatraceService', () => {
   let service: DynatraceService;
   let cookiesService: CookiesService;
@@ -74,7 +79,7 @@ describe('DynatraceService', () => {
       disable: jest.fn(),
     };
 
-    (window as any).dtrum = mockDtrum;
+    (window as unknown as { dtrum: Dtrum }).dtrum = mockDtrum;
 
     service.addDynatraceScript();
 
@@ -102,7 +107,7 @@ describe('DynatraceService', () => {
       disable: jest.fn(),
     };
 
-    (window as any).dtrum = mockDtrum;
+    (window as unknown as { dtrum: Dtrum }).dtrum = mockDtrum;
 
     service.addDynatraceScript();
 
