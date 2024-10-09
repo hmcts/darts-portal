@@ -19,12 +19,10 @@ export class EventSearchResultsComponent {
 
   columns: DatatableColumn[] = [
     { name: 'Event ID', prop: 'id', sortable: true },
-    { name: 'Time stamp', prop: 'createdAt', sortable: true },
+    { name: 'Time stamp', prop: 'eventTs', sortable: true, sortOnLoad: true },
     { name: 'Name', prop: 'name', sortable: true },
     { name: 'Courthouse', prop: 'courthouse', sortable: true },
     { name: 'Courtroom', prop: 'courtroom', sortable: true },
     { name: 'Text', prop: 'text', sortable: true },
-    { name: 'Chronicle ID', prop: 'chronicleId', sortable: true },
-    { name: 'Antecedent ID', prop: 'antecedentId', sortable: true },
   ];
 }

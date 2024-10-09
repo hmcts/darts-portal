@@ -6,6 +6,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnInit,
   Output,
   SimpleChanges,
   TemplateRef,
@@ -24,7 +25,7 @@ import { DateTime } from 'luxon';
   styleUrls: ['./data-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DataTableComponent<TRow> implements OnChanges {
+export class DataTableComponent<TRow> implements OnChanges, OnInit {
   @Input() rows: TRow[] = [];
   @Input() columns: DatatableColumn[] = [];
   @Input() captionType: 'default' | 'heading' | 'results' = 'default';
@@ -60,6 +61,14 @@ export class DataTableComponent<TRow> implements OnChanges {
     sortFn: undefined,
   };
 
+  ngOnInit(): void {
+    const columnToSort = this.columns.find((column) => column.sortOnLoad);
+
+    if (columnToSort) {
+      this.sortTable(columnToSort.prop, undefined, 'asc');
+    }
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes.rows) {
       return;
@@ -86,12 +95,12 @@ export class DataTableComponent<TRow> implements OnChanges {
     this.rows = [...this.initialRows];
   }
 
-  sortTable(column: string, sortFn?: CustomSort<TRow>): void {
+  sortTable(column: string, sortFn?: CustomSort<TRow>, order?: 'asc' | 'desc'): void {
     this.resetRows();
 
     this.sorting = {
       column: column,
-      order: this.isDescSorting(column) ? 'asc' : 'desc',
+      order: order || this.isDescSorting(column) ? 'asc' : 'desc',
       sortFn: sortFn,
     };
 
