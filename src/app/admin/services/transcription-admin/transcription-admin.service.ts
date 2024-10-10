@@ -297,6 +297,7 @@ export class TranscriptionAdminService {
       Received: this.luxonPipe.transform(transcript.received, 'dd MMM yyyy HH:mm:ss'),
       Instructions: transcript.requestorComments,
       'Judge approval': 'Yes',
+      'Migrated legacy data comments': transcript.legacyComments ? transcript.legacyComments : undefined,
     };
   }
 

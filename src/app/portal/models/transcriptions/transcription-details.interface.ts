@@ -31,4 +31,5 @@ export interface TranscriptionDetailsData {
     user_full_name: string;
   };
   hide_request_from_requestor?: boolean;
+  legacy_comments?: string[];
 }

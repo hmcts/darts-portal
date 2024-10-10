@@ -524,6 +524,27 @@ describe('TranscriptionService', () => {
       expect(result).toEqual(expectedResult);
     });
 
+    it('should include legacy comments in request details if it exists', () => {
+      const expectedResult = {
+        'Hearing date': '08 Nov 2023',
+        'Request type': 'Type A',
+        'Request ID': 123456,
+        Urgency: 'High',
+        'Audio for transcript': 'Start time 13:00:00 - End time 16:00:00',
+        'Requested by': 'MoJ CH Swansea',
+        Received: '17 Nov 2023 12:53:07',
+        Instructions: 'Please expedite my request',
+        'Judge approval': 'Yes',
+        'Migrated legacy data comments': ['Legacy comment 1', 'Legacy comment 2'],
+      };
+
+      mockTranscription.legacyComments = ['Legacy comment 1', 'Legacy comment 2'];
+
+      const result = service.getRequestDetailsFromTranscript(mockTranscription);
+
+      expect(result).toEqual(expectedResult);
+    });
+
     it('should correctly transform TranscriptionDetails to hearing request details', () => {
       const expectedResult = {
         'Hearing date': '08 Nov 2023',

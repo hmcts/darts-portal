@@ -30,4 +30,5 @@ export type TranscriptionDetails = {
   hearingId: number;
   isRemovedFromUserTranscripts?: boolean;
   requestor?: Requestor;
+  legacyComments?: string[];
 };

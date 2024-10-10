@@ -216,6 +216,7 @@ const defaultMockTranscriptionDetails = {
     user_id: 1,
     user_full_name: 'Eric Bristow',
   },
+  legacy_comments: ['This is a legacy comment', 'This is another legacy comment'],
 };
 let mockTranscriptionDetails = { ...defaultMockTranscriptionDetails };
 
@@ -264,6 +265,7 @@ const mockTranscriptionDetailsRejected = {
     user_id: 1,
     user_full_name: 'Eric Bristow',
   },
+  legacy_comments: ['This is a legacy comment', 'This is another legacy comment'],
 };
 
 const mockTranscriptionDetailsTwo = {
@@ -631,6 +633,7 @@ router.get('/:transcriptId', (req, res) => {
         request_type: 'Sentencing Remarks',
         status: 'Complete',
       });
+      break;
     case '6':
       res.status(200).send({ ...mockTranscriptionDetails, status: 'With Transcriber' });
       break;
