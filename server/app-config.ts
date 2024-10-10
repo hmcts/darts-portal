@@ -7,4 +7,5 @@ export default () => ({
   support: config.get('support'),
   environment: config.get('node-env'),
   dynatrace: config.get('dynatrace'),
+  features: config.get('features'),
 });
