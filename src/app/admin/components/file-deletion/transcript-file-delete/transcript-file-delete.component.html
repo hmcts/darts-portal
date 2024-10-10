@@ -1,0 +1,9 @@
+<app-validation-error-summary [errors]="errorSummary" />
+
+<app-govuk-heading tag="h1" size="xl">Delete transcript file</app-govuk-heading>
+
+@if (transcriptFile) {
+  <app-transcripts-for-deletion [rows]="[transcriptFile]" [showDeleteButton]="false" />
+}
+
+<app-approve-reject-file-delete (confirmation)="confirmTranscript($event)" (errors)="getErrorSummary($event)" />
