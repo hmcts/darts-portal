@@ -216,7 +216,6 @@ describe('TranscriptsComponent', () => {
     component.errors = [{ fieldId: '1', message: 'error' }];
     component.clearSearch();
     expect(component.errors).toEqual([]);
-    fakeAsync;
   });
 
   it('should navigate to the transcript page if only one result is returned', () => {

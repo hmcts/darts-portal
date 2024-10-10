@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { CookiesComponent } from '@components/cookies/cookies.component';
 import { ForbiddenComponent } from '@components/error/forbidden/forbidden.component';
 import { InternalErrorComponent } from '@components/error/internal-server/internal-error.component';
+import { ExpiredCaseComponent } from '@components/error/not-found/expired-case/expired-case.component';
 import { NotFoundComponent } from '@components/error/not-found/not-found.component';
 import { LoginComponent } from '@components/login/login.component';
 import { ADMIN_ROUTES } from './admin/admin.routes';
@@ -12,6 +13,7 @@ const openRoutes: Routes = [
   { path: 'login', component: LoginComponent, title: 'DARTS Portal Login' },
   { path: '', redirectTo: '/search', pathMatch: 'full' },
   { path: 'page-not-found', component: NotFoundComponent, title: 'DARTS Page Not Found' },
+  { path: 'expired-case', component: ExpiredCaseComponent, title: 'DARTS Expired Case' },
   { path: 'forbidden', component: ForbiddenComponent, title: 'DARTS Forbidden' },
   { path: 'internal-error', component: InternalErrorComponent, title: 'DARTS Internal Error' },
   { path: 'cookies', component: CookiesComponent, title: 'DARTS Cookie Policy' },

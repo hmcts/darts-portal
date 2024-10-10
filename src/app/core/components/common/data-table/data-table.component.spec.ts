@@ -942,6 +942,30 @@ describe('DataTableComponent', () => {
         const result = component.compareFalsyValues(1, 1, false);
         expect(result).toBe(0);
       });
+
+      describe('ngOnInit', () => {
+        it('should sort the table by the column with sortOnLoad set to true', () => {
+          const columnToSort = { name: 'Case Number', prop: 'case_number', sortable: true, sortOnLoad: true };
+          component.columns = [columnToSort, { name: 'Courthouse', prop: 'courthouse', sortable: true }];
+          const sortTableSpy = jest.spyOn(component, 'sortTable');
+
+          component.ngOnInit();
+
+          expect(sortTableSpy).toHaveBeenCalledWith(columnToSort.prop, undefined, 'asc');
+        });
+
+        it('should not sort the table if no column has sortOnLoad set to true', () => {
+          component.columns = [
+            { name: 'Case Number', prop: 'case_number', sortable: true },
+            { name: 'Courthouse', prop: 'courthouse', sortable: true },
+          ];
+          const sortTableSpy = jest.spyOn(component, 'sortTable');
+
+          component.ngOnInit();
+
+          expect(sortTableSpy).not.toHaveBeenCalled();
+        });
+      });
     });
   });
 });

@@ -138,7 +138,7 @@ export class AudioViewComponent implements OnDestroy {
       const eventAudioEndTime = eventEndTime.diff(audioStartTime, ['hours', 'minutes', 'seconds']);
 
       return {
-        eventType: `${event.name} - ${event.text}`,
+        eventType: event.text ? `${event.name} - ${event.text}` : event.name,
         eventTime: event.timestamp,
         audioTime: eventAudioStartTime.toFormat('hh:mm:ss'),
         startTime: eventAudioStartTime.as('seconds'), // used to calculate if row is playing
@@ -148,13 +148,14 @@ export class AudioViewComponent implements OnDestroy {
   }
 
   onDeleteConfirmed() {
-    this.transformedMedia.transformedMediaId &&
+    if (this.transformedMedia.transformedMediaId) {
       this.audioRequestService.deleteTransformedMedia(this.transformedMedia.transformedMediaId).subscribe({
         next: () => {
           this.router.navigate(['/audios']);
         },
         error: () => (this.isDeleting = false),
       });
+    }
   }
 
   onDownloadClicked() {

@@ -136,7 +136,7 @@
         <td>{{ row.startTime | luxonDate: 'hh:mm:ss' }}</td>
         <td>{{ row.endTime | luxonDate: 'hh:mm:ss' }}</td>
         <td>{{ row.mediaRequestId }}</td>
-        <td>{{ row.transformedMediaExpiryTs | luxonDate: 'hh:mm:ss dd/MM/yyyy' }}</td>
+        <td>{{ row.transformedMediaExpiryTs | luxonDate: 'HH:mm:ss dd/MM/yyyy' }}</td>
         <td>
           <app-govuk-tag [colour]="getStatusColour(row.status)">
             {{ getStatusText(row.status) }}

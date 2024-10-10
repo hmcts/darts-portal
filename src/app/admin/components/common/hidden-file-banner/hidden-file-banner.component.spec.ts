@@ -19,7 +19,8 @@ describe('HiddenFileBannerComponent', () => {
     component.file = {
       id: 1,
       isHidden: true,
-      isMarkedForManualDeletion: true,
+      isApprovedForManualDeletion: false,
+      isMarkedForDeletion: true,
       markedForManualDeletionBy: 'me',
       hiddenByName: 'you',
       hiddenReason: 'because',
@@ -36,12 +37,12 @@ describe('HiddenFileBannerComponent', () => {
 
   describe('heading', () => {
     it('should return the correct heading when the file is marked for manual deletion', () => {
-      component.file = { isMarkedForManualDeletion: true } as HiddenFileBanner;
+      component.file = { isMarkedForDeletion: true } as HiddenFileBanner;
       expect(component.heading).toBe('This file is hidden in DARTS and is marked for manual deletion');
     });
 
     it('should return the correct heading when the file is not marked for manual deletion', () => {
-      component.file = { isMarkedForManualDeletion: false } as HiddenFileBanner;
+      component.file = { isMarkedForDeletion: false } as HiddenFileBanner;
       expect(component.heading).toBe('This file is hidden in DARTS');
     });
   });
@@ -74,7 +75,7 @@ describe('HiddenFileBannerComponent', () => {
     beforeEach(() => {
       if (component.file) {
         component.file.isHidden = true;
-        component.file.isMarkedForManualDeletion = false;
+        component.file.isMarkedForDeletion = false;
       }
       fixture.detectChanges();
     });
@@ -106,7 +107,7 @@ describe('HiddenFileBannerComponent', () => {
     beforeEach(() => {
       if (component.file) {
         component.file.isHidden = true;
-        component.file.isMarkedForManualDeletion = true;
+        component.file.isMarkedForDeletion = true;
       }
       fixture.detectChanges();
     });
@@ -129,7 +130,7 @@ describe('HiddenFileBannerComponent', () => {
 
     it('should render the correct details', () => {
       const details = fixture.nativeElement.querySelector('app-notification-banner');
-      expect(details.textContent).toContain('Marked for manual deletion by - me');
+      expect(details.textContent).toContain('Marked for manual deletion by - you');
       expect(details.textContent).toContain('Reason - because');
       expect(details.textContent).toContain('refy ref - commenty comment');
     });
@@ -139,7 +140,7 @@ describe('HiddenFileBannerComponent', () => {
     beforeEach(() => {
       if (component.file) {
         component.file.isHidden = true;
-        component.file.isMarkedForManualDeletion = true;
+        component.file.isMarkedForDeletion = true;
       }
       component.userService.isAdmin = jest.fn().mockReturnValue(false);
       fixture.detectChanges();
@@ -165,7 +166,7 @@ describe('HiddenFileBannerComponent', () => {
     beforeEach(() => {
       if (component.file) {
         component.file.isHidden = true;
-        component.file.isMarkedForManualDeletion = false;
+        component.file.isMarkedForDeletion = false;
       }
       component.userService.isAdmin = jest.fn().mockReturnValue(false);
       fixture.detectChanges();

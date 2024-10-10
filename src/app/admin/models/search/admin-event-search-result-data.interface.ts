@@ -1,6 +1,6 @@
 export interface AdminEventSearchResultData {
   id: number;
-  created_at: string;
+  event_ts: string;
   name: string;
   text: string;
   chronicle_id: string;

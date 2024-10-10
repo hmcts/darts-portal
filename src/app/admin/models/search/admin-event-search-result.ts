@@ -2,7 +2,7 @@ import { DateTime } from 'luxon';
 
 export type AdminEventSearchResult = {
   id: number;
-  createdAt: DateTime;
+  eventTs: DateTime;
   name: string;
   text: string;
   chronicleId: string;

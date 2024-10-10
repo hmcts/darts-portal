@@ -1,4 +1,6 @@
+import { HiddenFileBanner } from '@admin-types/common/hidden-file-banner';
 import { FileHide } from '@admin-types/hidden-reasons/file-hide';
+import { HiddenReason } from '@admin-types/hidden-reasons/hidden-reason';
 import { AudioFile } from '@admin-types/index';
 import { DatePipe } from '@angular/common';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
@@ -185,16 +187,17 @@ describe('AudioFileComponent', () => {
     });
 
     it('maps the audioFile details to a HiddenFileBanner', fakeAsync(() => {
-      const expected = {
+      const expected: HiddenFileBanner = {
         id: 100,
         isHidden: false,
-        isMarkedForManualDeletion: false,
+        isApprovedForManualDeletion: false,
         markedForManualDeletionBy: 'full name',
         hiddenByName: 'full name',
         hiddenReason: 'because of reasons',
         ticketReference: 'refy ref',
         comments: 'commenty comment',
         fileType: 'audio_file',
+        isMarkedForDeletion: false,
       };
 
       component.fileBanner$.subscribe((result) => {
@@ -258,12 +261,15 @@ describe('AudioFileComponent', () => {
     }));
 
     it('"Unmark for manual deletion and" text when marked for manual deletion and hidden', fakeAsync(() => {
+      jest
+        .spyOn(component.transcriptionAdminService, 'getHiddenReason')
+        .mockReturnValue(of({ displayName: 'reason 1', markedForDeletion: true } as HiddenReason));
       jest.spyOn(component.transformedMediaService, 'getMediaById').mockReturnValue(
         of({
           ...audioFile,
           isHidden: true,
           adminAction: audioFile.adminAction
-            ? { ...audioFile.adminAction, isMarkedForManualDeletion: true }
+            ? { ...audioFile.adminAction, isApprovedForManualDeletion: false }
             : undefined,
         })
       );

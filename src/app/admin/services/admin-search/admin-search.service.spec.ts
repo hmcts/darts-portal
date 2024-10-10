@@ -106,7 +106,7 @@ describe('AdminSearchService', () => {
         expect(events).toEqual([
           {
             id: 2,
-            createdAt: DateTime.fromISO('2021-01-01T00:00:00.000Z'),
+            eventTs: DateTime.fromISO('2021-01-01T00:00:00.000Z'),
             name: 'Event 2',
             text: 'Event 2 text',
             chronicleId: 2,
@@ -121,6 +121,7 @@ describe('AdminSearchService', () => {
       req.flush([
         {
           id: 2,
+          event_ts: '2021-01-01T00:00:00.000Z',
           created_at: '2021-01-01T00:00:00.000Z',
           name: 'Event 2',
           text: 'Event 2 text',

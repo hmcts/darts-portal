@@ -90,7 +90,7 @@ export class RetentionPolicyFormComponent implements OnInit, OnChanges {
 
     this.setValidators(this.policies, this.context, this.policy);
 
-    this.policy && this.populateForm(this.policy, this.context);
+    if (this.policy) this.populateForm(this.policy, this.context);
 
     this.form.controls.startDate.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.form.controls.startTime.setErrors(null);

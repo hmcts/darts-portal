@@ -129,7 +129,7 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
       }
     }
 
-    this.errorSummary.length > 0 && this.validationErrorEvent.emit(this.errorSummary);
+    if (this.errorSummary.length > 0) this.validationErrorEvent.emit(this.errorSummary);
   }
 
   public setTimes(): void {
@@ -198,7 +198,8 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
       });
       return (
         (startTimeOnly <= audioStartTime && endTimeOnly >= audioStartTime) ||
-        (startTimeOnly <= audioEndTime && endTimeOnly >= audioEndTime)
+        (startTimeOnly <= audioEndTime && endTimeOnly >= audioEndTime) ||
+        (startTimeOnly >= audioStartTime && endTimeOnly <= audioEndTime)
       );
     });
 
@@ -252,9 +253,9 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
     const endDateTime = DateTime.fromISO(`${hearingDate}T${endTimeHours}:${endTimeMinutes}:${endTimeSeconds}`);
 
     //If times are outside
-    this.audios.length > 0 &&
-      !this.audioRequestForm.errors?.endTimeBeforeStartTime &&
+    if (this.audios.length > 0 && !this.audioRequestForm.errors?.endTimeBeforeStartTime) {
       this.outsideAudioTimesValidation(startDateTime, endDateTime);
+    }
 
     //Refuse to submit if form is invalid
     if (

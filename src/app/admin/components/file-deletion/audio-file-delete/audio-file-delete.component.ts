@@ -45,9 +45,9 @@ export class AudioFileDeleteComponent implements OnInit {
 
     this.audioFile = this.parseAudioFileDates(this.audioFileState);
 
-    this.audioFile &&
-      this.userService.hasMatchingUserId(this.audioFile.hiddenById) &&
+    if (this.audioFile && this.userService.hasMatchingUserId(this.audioFile.hiddenById)) {
       this.router.navigate(['/admin/file-deletion/unauthorised'], { state: { type: 'audio' } });
+    }
 
     this.headerService.hideNavigation();
   }

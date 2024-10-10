@@ -20,7 +20,7 @@ export class HiddenFileBannerComponent {
   router = inject(Router);
 
   get heading() {
-    return this.file?.isMarkedForManualDeletion
+    return this.file?.isMarkedForDeletion
       ? 'This file is hidden in DARTS and is marked for manual deletion'
       : 'This file is hidden in DARTS';
   }

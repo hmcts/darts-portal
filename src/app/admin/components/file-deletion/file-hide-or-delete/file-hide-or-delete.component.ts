@@ -133,10 +133,11 @@ export class FileHideOrDeleteComponent implements OnInit {
   }
 
   private hideTranscriptionDocument() {
-    this.hideFormValues &&
+    if (this.hideFormValues) {
       this.transcriptionAdminService.hideTranscriptionDocument(this.id, this.hideFormValues).subscribe(() => {
         this.isSubmitted.set(true);
       });
+    }
   }
 
   private getContinueLink() {
