@@ -8,6 +8,7 @@ import {
   stubDataController,
 } from './controllers';
 import { isAuthenticated } from './middleware';
+import bodyParser from 'body-parser';
 
 export default (disableAuthentication = false): Router => {
   const router = express.Router();
@@ -24,6 +25,11 @@ export default (disableAuthentication = false): Router => {
 
   // unauthenticated routes
   router.use('/auth', authenticationController.init(disableAuthentication));
+
+  router.post('/debug', bodyParser.json(), (req: Request, res: Response) => {
+    console.log('req.body', req.body);
+    res.send();
+  });
 
   return router;
 };
