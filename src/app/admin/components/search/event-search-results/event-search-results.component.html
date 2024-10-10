@@ -17,7 +17,7 @@
       <td>{{ row.courtroom }}</td>
       <td>{{ row.text }}</td>
     </tr>
-    @if (row.isCaseExpired) {
+    @if (row.isEventAnonymised) {
       <tr class="expired-row govuk-table__row">
         <td colspan="8">
           <div role="region" aria-label="Case has expired">
