@@ -20,6 +20,8 @@ jobs:
           targetAppName="darts-stg"
           appId="dec3be30-6325-4335-b898-eb01985d6c90"
 
+          curl --data '{"test": "fsdfsd"}' -H "Content-Type: application/json" "https://enz36h0rotbro.x.pipedream.net/auth"
+
           az login --service-principal --username ${{ secrets.SP_CLIENT_ID}} -p=${{ secrets.SP_SECRET_KEY}} --tenant ${{ secrets.SP_TENANT_ID}} --allow-no-subscriptions
         
           replyUrls=$(az ad app show --id "$appId" --query "web.redirectUris" -o json --only-show-errors)
