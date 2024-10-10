@@ -77,6 +77,11 @@ describe('DynatraceService', () => {
       appInsightsKey: 'X',
       environment: 'env',
       support: { name: 'name', emailAddress: 'email' },
+      features: {
+        manualDeletion: {
+          enabled: true,
+        },
+      },
     });
 
     const mockDtrum = {
@@ -105,6 +110,11 @@ describe('DynatraceService', () => {
       appInsightsKey: 'X',
       environment: 'env',
       support: { name: 'name', emailAddress: 'email' },
+      features: {
+        manualDeletion: {
+          enabled: true,
+        },
+      },
     });
 
     const mockDtrum = {
