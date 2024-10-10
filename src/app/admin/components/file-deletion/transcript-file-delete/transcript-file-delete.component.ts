@@ -44,15 +44,15 @@ export class TranscriptFileDeleteComponent implements OnInit {
 
     this.transcriptFile = this.parseTranscriptFile(this.transcriptFileState);
 
-    this.transcriptFile &&
-      this.userService.hasMatchingUserId(this.transcriptFile.hiddenById) &&
+    if (this.transcriptFile && this.userService.hasMatchingUserId(this.transcriptFile.hiddenById)) {
       this.router.navigate(['/admin/file-deletion/unauthorised'], { state: { type: 'transcript' } });
+    }
     this.headerService.hideNavigation();
   }
 
   confirmTranscript(approveDeletion: boolean) {
     if (approveDeletion) {
-      this.transcriptFile &&
+      if (this.transcriptFile) {
         this.fileDeletionService
           .approveTranscriptFileDeletion(this.transcriptFile.transcriptionDocumentId)
           .subscribe(() => {
@@ -60,8 +60,9 @@ export class TranscriptFileDeleteComponent implements OnInit {
               queryParams: { approvedForDeletion: true, type: 'Transcript' },
             });
           });
+      }
     } else {
-      this.transcriptFile &&
+      if (this.transcriptFile) {
         this.transcriptionService
           .unhideTranscriptionDocument(this.transcriptFile.transcriptionDocumentId)
           .subscribe(() => {
@@ -69,6 +70,7 @@ export class TranscriptFileDeleteComponent implements OnInit {
               queryParams: { unmarkedAndUnhidden: true, type: 'Transcript' },
             });
           });
+      }
     }
   }
 

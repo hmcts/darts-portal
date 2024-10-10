@@ -19,8 +19,10 @@ export class UnauthorisedDeletionComponent implements OnInit {
   type = this.router.getCurrentNavigation()?.extras?.state?.type;
 
   ngOnInit(): void {
-    this.type === 'transcript'
-      ? this.title.setTitle('DARTS Admin Unauthorised Transcription Deletion')
-      : this.title.setTitle('DARTS Admin Unauthorised Audio Deletion');
+    if (this.type === 'transcript') {
+      this.title.setTitle('DARTS Admin Unauthorised Transcription Deletion');
+    } else {
+      this.title.setTitle('DARTS Admin Unauthorised Audio Deletion');
+    }
   }
 }

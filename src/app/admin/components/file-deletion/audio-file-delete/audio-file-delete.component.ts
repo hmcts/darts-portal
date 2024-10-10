@@ -63,15 +63,17 @@ export class AudioFileDeleteComponent implements OnInit {
 
   confirmAudio(approveDeletion: boolean) {
     if (approveDeletion) {
-      this.audioFile &&
+      if (this.audioFile) {
         this.fileDeletionService.approveAudioFileDeletion(this.audioFile.mediaId).subscribe(() => {
           this.router.navigate(['/admin/file-deletion'], { queryParams: { approvedForDeletion: true, type: 'Audio' } });
         });
+      }
     } else {
-      this.audioFile &&
+      if (this.audioFile) {
         this.transformedMediaService.unhideAudioFile(this.audioFile.mediaId).subscribe(() => {
           this.router.navigate(['/admin/file-deletion'], { queryParams: { unmarkedAndUnhidden: true, type: 'Audio' } });
         });
+      }
     }
   }
 
