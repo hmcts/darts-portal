@@ -106,7 +106,7 @@ describe('Admin - Search screen', () => {
 
     cy.get('app-event-search-results tr')
       .should('have.class', 'expired-row')
-      .contains('This case has passed its retention date');
+      .contains('The event text has been anonymised');
   });
 
   it('view event details', () => {

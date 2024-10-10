@@ -9,6 +9,6 @@ export type AdminEventSearchResult = {
   antecedentId: string;
   courthouse: string;
   courtroom: string;
-  isManuallyAnonymised?: boolean;
+  isEventAnonymised?: boolean;
   isCaseExpired?: boolean;
 };

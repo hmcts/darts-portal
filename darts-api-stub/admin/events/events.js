@@ -51,7 +51,7 @@ const events = [
       id: 3,
       name: 'Room 3',
     },
-    is_manually_anonymised: true,
+    is_event_anonymised: true,
     is_case_expired: true,
   },
 ];
