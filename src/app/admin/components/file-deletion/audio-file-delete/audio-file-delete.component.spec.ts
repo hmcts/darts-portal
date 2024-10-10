@@ -130,15 +130,15 @@ describe('AudioFileDeleteComponent', () => {
     });
   });
 
-  it('should navigate to /admin/file-deletion if audioFile is not defined', () => {
-    component.audioFile = null as unknown as AudioFileMarkedDeletion;
+  it('should navigate to /admin/file-deletion if audioFileState is not defined', () => {
+    component.audioFileState = null as unknown as AudioFileMarkedDeletion;
     const routerSpy = jest.spyOn(component.router, 'navigate');
     component.ngOnInit();
     expect(routerSpy).toHaveBeenCalledWith(['/admin/file-deletion']);
   });
 
   it('should not navigate if audioFile is defined', () => {
-    component.audioFile = audioFile as AudioFileMarkedDeletion;
+    component.audioFileState = audioFile as AudioFileMarkedDeletion;
     const routerSpy = jest.spyOn(component.router, 'navigate');
     component.ngOnInit();
     expect(routerSpy).not.toHaveBeenCalled();
