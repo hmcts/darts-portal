@@ -17,7 +17,7 @@ describe('Admin - Manual Deletion - Disabled', () => {
         },
         features: {
           manualDeletion: {
-            enabled: false,
+            enabled: 'false',
           },
         },
       },
