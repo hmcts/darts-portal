@@ -2,7 +2,7 @@
   "allowStubData": "true",
   "features": {
     "manualDeletion": {
-      "enabled": "false"
+      "enabled": "true"
     }
   }
 }
