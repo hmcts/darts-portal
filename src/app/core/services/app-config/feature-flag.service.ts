@@ -10,6 +10,6 @@ export class FeatureFlagService {
     if (enabled === undefined || enabled === null) {
       return false;
     }
-    return Boolean(enabled);
+    return enabled === 'true';
   }
 }

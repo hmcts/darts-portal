@@ -14,7 +14,7 @@ export interface AppConfig {
   };
   features: {
     manualDeletion: {
-      enabled: boolean;
+      enabled: string;
     };
   };
 }

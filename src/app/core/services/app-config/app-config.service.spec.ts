@@ -29,7 +29,7 @@ describe('AppConfigService', () => {
       dynatrace: { scriptUrl: 'script' },
       features: {
         manualDeletion: {
-          enabled: false,
+          enabled: 'false',
         },
       },
     };

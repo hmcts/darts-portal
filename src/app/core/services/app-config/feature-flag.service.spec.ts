@@ -25,7 +25,7 @@ describe('FeatureFlagService', () => {
   describe('isManualDeletionEnabled', () => {
     it('should return true when manualDeletion is enabled', () => {
       appConfigServiceMock.getAppConfig.mockReturnValue({
-        features: { manualDeletion: { enabled: true } },
+        features: { manualDeletion: { enabled: 'true' } },
       });
       expect(service.isManualDeletionEnabled()).toBe(true);
     });
@@ -63,7 +63,7 @@ describe('FeatureFlagService', () => {
 
     it('should return true for truthy non-boolean values', () => {
       appConfigServiceMock.getAppConfig.mockReturnValue({
-        features: { manualDeletion: { enabled: 1 } },
+        features: { manualDeletion: { enabled: 'true' } },
       });
       expect(service.isManualDeletionEnabled()).toBe(true);
     });
