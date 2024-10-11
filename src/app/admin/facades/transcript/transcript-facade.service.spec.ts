@@ -141,5 +141,59 @@ describe('TranscriptFacadeService', () => {
       );
       tick();
     }));
+
+    describe('#sortWorkflowsByTimestampAndStatus', () => {
+      it('should sort workflows by timestamp in descending order', () => {
+        const workflows: TranscriptionWorkflow[] = [
+          {
+            workflowActor: 1,
+            statusId: 1,
+            workflowTimestamp: DateTime.fromISO('2021-01-02T00:00:00Z'),
+            comments: [],
+          },
+          {
+            workflowActor: 2,
+            statusId: 2,
+            workflowTimestamp: DateTime.fromISO('2021-01-01T00:00:00Z'),
+            comments: [],
+          },
+        ];
+
+        const sortedWorkflows = service.sortWorkflowsByTimestampAndStatus(workflows);
+
+        expect(sortedWorkflows[0].workflowTimestamp.toISO()).toBe('2021-01-02T00:00:00.000+00:00');
+        expect(sortedWorkflows[1].workflowTimestamp.toISO()).toBe('2021-01-01T00:00:00.000+00:00');
+      });
+
+      it('should sort workflows by statusId if timestamps are equal', () => {
+        const workflows: TranscriptionWorkflow[] = [
+          {
+            workflowActor: 1,
+            statusId: 2,
+            workflowTimestamp: DateTime.fromISO('2021-01-01T00:00:00Z'),
+            comments: [],
+          },
+          {
+            workflowActor: 2,
+            statusId: 1,
+            workflowTimestamp: DateTime.fromISO('2021-01-01T00:00:00Z'),
+            comments: [],
+          },
+        ];
+
+        const sortedWorkflows = service.sortWorkflowsByTimestampAndStatus(workflows);
+
+        expect(sortedWorkflows[0].statusId).toBe(2);
+        expect(sortedWorkflows[1].statusId).toBe(1);
+      });
+
+      it('should handle empty workflows array', () => {
+        const workflows: TranscriptionWorkflow[] = [];
+
+        const sortedWorkflows = service.sortWorkflowsByTimestampAndStatus(workflows);
+
+        expect(sortedWorkflows).toEqual([]);
+      });
+    });
   });
 });
