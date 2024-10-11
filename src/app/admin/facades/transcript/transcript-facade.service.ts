@@ -16,9 +16,6 @@ export class TranscriptFacadeService {
     return this.transcriptionAdminService.getTranscriptionWorkflows(transcriptionId).pipe(
       switchMap((workflows) => {
         const sortedWorkflows = this.sortWorkflowsByTimestampAndStatus(workflows);
-
-        console.log('sortedWorkflows', sortedWorkflows);
-
         const userIds = workflows.map((workflow) => workflow.workflowActor);
         return forkJoin({
           workflows: of(sortedWorkflows),
