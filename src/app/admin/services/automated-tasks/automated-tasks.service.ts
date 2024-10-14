@@ -51,6 +51,7 @@ export class AutomatedTasksService {
       cronExpression: task.cron_expression,
       isActive: task.is_active,
       isCronEditable: task.is_cron_editable,
+      batchSize: task.batchSize,
       createdAt: DateTime.fromISO(task.created_at),
       createdBy: task.created_by,
       lastModifiedAt: DateTime.fromISO(task.last_modified_at),
