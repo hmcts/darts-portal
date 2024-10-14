@@ -7,7 +7,7 @@ import { Request, Response, Router } from 'express';
 
 // stubs
 
-import { mediasStubResponses, StubResponse } from '../stubs';
+import { StubResponse } from '../stubs';
 
 const STUB_ALLOWED = config.get('allowStubData') === 'true';
 
@@ -18,7 +18,6 @@ const STUB_RESPONSES: StubResponse[] = [
   // ...transformedMedia,
   // ...eventsStubResponses,
   // ...hearingsStubResponses,
-  ...mediasStubResponses,
 ];
 
 function stubData(response: unknown, status: number) {
