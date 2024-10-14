@@ -4,12 +4,29 @@
       DARTS user cannot view this file.
       @if (userService.isAdmin()) {
         You can
-        <a class="govuk-link" (click)="unhideOrUndelete.emit()">unmark for deletion</a> and it will no longer be hidden.
+        <a
+          class="govuk-link"
+          role="button"
+          tabindex="0"
+          (keydown)="handleKeydown($event)"
+          (click)="unhideOrUndelete.emit()"
+          >unmark for deletion</a
+        >
+        and it will no longer be hidden.
       }
     } @else {
       DARTS users cannot view this file.
       @if (userService.isAdmin()) {
-        You can <a class="govuk-link" (click)="unhideOrUndelete.emit()">unhide</a> the file.
+        You can
+        <a
+          class="govuk-link"
+          role="button"
+          tabindex="0"
+          (keydown)="handleKeydown($event)"
+          (click)="unhideOrUndelete.emit()"
+          >unhide</a
+        >
+        the file.
       }
     }
     <ul class="govuk-list">

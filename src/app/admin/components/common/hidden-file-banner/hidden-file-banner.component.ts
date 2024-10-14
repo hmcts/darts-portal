@@ -30,4 +30,10 @@ export class HiddenFileBannerComponent {
       state: { fileType: this.file?.fileType },
     });
   }
+
+  handleKeydown(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      this.unhideOrUndelete.emit();
+    }
+  }
 }
