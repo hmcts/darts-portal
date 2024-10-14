@@ -1,0 +1,17 @@
+@let e = event();
+
+@if (e) {
+  <app-govuk-heading>Are you sure you want to obfuscate the event text?</app-govuk-heading>
+  <p class="govuk-body">The following event text will be irreversibly obfuscated</p>
+
+  <p id="event-text" class="govuk-body">
+    {{ e.text }}
+  </p>
+
+  <div class="govuk-button-group">
+    <button id="confirm-button" class="govuk-button" type="button" (click)="onContinue()">Continue</button>
+    <a [routerLink]="['../']" class="govuk-link">Cancel</a>
+  </div>
+} @else {
+  <app-loading />
+}
