@@ -138,7 +138,7 @@ describe('Case file screen', () => {
         cy.get('#court-log-table')
           .find('.govuk-table__row')
           .then((rows) => {
-            expect(rows.length).equal(4);
+            expect(rows.length).equal(5);
           });
 
         cy.a11y();
