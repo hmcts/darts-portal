@@ -188,6 +188,7 @@ export class CaseService {
       timestamp: DateTime.fromISO(e.timestamp),
       name: e.name,
       text: e.text,
+      isDataAnonymised: e.is_data_anonymised,
     }));
   }
 

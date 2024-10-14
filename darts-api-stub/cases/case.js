@@ -658,6 +658,15 @@ const events = [
     name: 'Event three name',
     text: 'Event three text',
   },
+  {
+    id: 4,
+    hearing_id: 1,
+    hearing_date: '2024-04-24',
+    timestamp: '2024-04-24T15:32:00Z',
+    name: 'Event four name',
+    text: 'Event four text',
+    is_data_anonymised: true,
+  },
 ];
 
 const hearings = localArray('hearings');
