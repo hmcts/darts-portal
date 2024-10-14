@@ -10,7 +10,7 @@
   <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">Text</dt>
     <dd class="govuk-summary-list__value">
-      {{ event().text }}
+      {{ event().isDataAnonymised ? 'This event has been anonymised in line with HMCTS policy' : event().text }}
     </dd>
   </div>
   <div class="govuk-summary-list__row">

@@ -70,6 +70,18 @@ router.post('/search', (req, res) => {
   res.send(events);
 });
 
+router.post('/obfuscate', (req, res) => {
+  const ids = req.body.eve_ids;
+  ids.forEach((id) => {
+    const eventsIndex = events.findIndex((event) => event.id === id);
+    const viewEventIndex = viewEvents.findIndex((event) => event.id === id);
+
+    events[eventsIndex].is_data_anonymised = true;
+    viewEvents[viewEventIndex].is_data_anonymised = true;
+  });
+  res.status(200).send();
+});
+
 const viewEvents = events.map((event) => ({
   ...event,
   event_mapping: {
@@ -78,7 +90,6 @@ const viewEvents = events.map((event) => ({
   is_log_entry: false,
   version: 'v1',
   is_data_anonymised: false,
-  case_expired_at: '2024-06-01T13:00:00Z',
   created_by: 1,
   last_modified_by: 2,
   last_modified_at: '2024-06-01T13:00:00Z',
@@ -88,17 +99,24 @@ const viewEvents = events.map((event) => ({
   is_current: true,
 }));
 
+router.get('/reset', (req, res) => {
+  events.forEach((event) => {
+    event.is_data_anonymised = false;
+  });
+
+  viewEvents.forEach((event) => {
+    event.is_data_anonymised = false;
+  });
+
+  res.status(200).send();
+});
+
 router.get('/:id', (req, res) => {
   const id = Number(req.params.id);
   const viewEvent = viewEvents.find((event) => event.id === Number(req.params.id));
   if (!viewEvent) {
     return res.status(404).send('Event not found');
   }
-
-  if (id === 333) {
-    return res.send({ ...viewEvent, is_data_anonymised: true });
-  }
-
   res.send(viewEvent);
 });
 
