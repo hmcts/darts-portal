@@ -8,7 +8,7 @@ export interface AutomatedTaskData {
 
 export interface AutomatedTaskDetailsData extends AutomatedTaskData {
   is_cron_editable: boolean;
-  batchSize: number;
+  batch_size: number;
   created_at: string;
   created_by: number;
   last_modified_at: string;
