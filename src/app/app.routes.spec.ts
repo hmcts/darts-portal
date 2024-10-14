@@ -10,7 +10,8 @@ import { UserService } from '@services/user/user.service';
 import { of } from 'rxjs/internal/observable/of';
 import { ADMIN_ROUTES } from './admin/admin.routes';
 import { APP_ROUTES } from './app.routes';
-import { AuthService } from './core/services/auth/auth.service';
+import { AuthService } from '@services/auth/auth.service';
+import { FeatureFlagService } from '@services/app-config/feature-flag.service';
 import { PORTAL_ROUTES } from './portal/portal.routes';
 
 describe('App Routes', () => {
@@ -20,6 +21,7 @@ describe('App Routes', () => {
   let mockAuthService: AuthService;
   let mockCaseService: CaseService;
   let mockUserService: Partial<UserService>;
+  let mockFeatureFlagService: Partial<FeatureFlagService>;
   const userStateSignal = signal<UserState | null>(null);
 
   beforeEach(() => {
@@ -38,6 +40,10 @@ describe('App Routes', () => {
       userState: userStateSignal,
     };
 
+    mockFeatureFlagService = {
+      isManualDeletionEnabled: jest.fn().mockReturnValue(true),
+    };
+
     TestBed.configureTestingModule({
       providers: [
         {
@@ -51,6 +57,10 @@ describe('App Routes', () => {
         {
           provide: UserService,
           useValue: mockUserService,
+        },
+        {
+          provide: FeatureFlagService,
+          useValue: mockFeatureFlagService,
         },
         provideRouter(APP_ROUTES),
         provideHttpClient(),

@@ -18,6 +18,11 @@
     "name": "DTS-IT Service Desk",
     "emailAddress": "DTS-ITServiceDesk@justice.gov.uk"
   },
+  "features": {
+    "manualDeletion": {
+      "enabled": "false"
+    }
+  },
   "dynatrace": {
     "scriptUrl": null
   },

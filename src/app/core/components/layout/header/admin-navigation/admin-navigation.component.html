@@ -60,16 +60,17 @@
             >
           </li>
           @if (userService.isAdmin()) {
-            <li class="moj-primary-navigation__item">
-              <a
-                class="moj-primary-navigation__link"
-                routerLink="admin/file-deletion"
-                routerLinkActive="active"
-                ariaCurrentWhenActive="page"
-                >File deletion</a
-              >
-            </li>
-
+            @if (featureFlagService.isManualDeletionEnabled()) {
+              <li class="moj-primary-navigation__item">
+                <a
+                  class="moj-primary-navigation__link"
+                  routerLink="admin/file-deletion"
+                  routerLinkActive="active"
+                  ariaCurrentWhenActive="page"
+                  >File deletion</a
+                >
+              </li>
+            }
             <li class="moj-primary-navigation__item">
               <a
                 class="moj-primary-navigation__link"
