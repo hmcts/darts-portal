@@ -170,6 +170,7 @@ export class TranscriptionService {
       Received: this.luxonPipe.transform(transcript.received, 'dd MMM yyyy HH:mm:ss'),
       Instructions: transcript.requestorComments,
       'Judge approval': 'Yes',
+      'Migrated legacy data comments': transcript.legacyComments ? transcript.legacyComments : undefined,
     };
   }
 
@@ -207,6 +208,7 @@ export class TranscriptionService {
         Received: this.luxonPipe.transform(transcript.received, 'dd MMM yyyy HH:mm:ss'),
         Instructions: transcript.requestorComments,
         'Judge approval': 'Yes',
+        'Migrated legacy data comments': transcript.legacyComments ? transcript.legacyComments : undefined,
       },
       hearingId: transcript.hearingId,
       caseId: transcript.caseId,

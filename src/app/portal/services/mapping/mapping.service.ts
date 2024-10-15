@@ -77,6 +77,7 @@ export class MappingService {
       requestor: transcription.requestor
         ? { userId: transcription.requestor?.user_id, fullName: transcription.requestor?.user_full_name }
         : undefined,
+      legacyComments: transcription.legacy_comments ? transcription.legacy_comments : undefined,
     };
   }
 

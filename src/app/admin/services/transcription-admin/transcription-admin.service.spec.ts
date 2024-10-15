@@ -566,6 +566,38 @@ describe('TranscriptionAdminService', () => {
     });
   });
 
+  it('should include legacy comments if it exists', () => {
+    const transcript = {
+      hearingDate: DateTime.fromISO('2024-01-01T00:00:00Z'),
+      requestType: 'Type1',
+      isManual: true,
+      transcriptionId: 123,
+      urgency: { description: 'High' },
+      transcriptionStartTs: DateTime.fromISO('2024-03-03T09:00:00Z'),
+      transcriptionEndTs: DateTime.fromISO('2024-03-03T10:00:00Z'),
+      requestor: { userId: 1, fullName: 'John Doe', email: 'john@example.com' },
+      received: DateTime.fromISO('2024-01-01T13:30:00Z'),
+      requestorComments: 'Need ASAP',
+      legacyComments: ['Legacy comment 1', 'Legacy comment 2'],
+    } as unknown as TranscriptionAdminDetails;
+
+    const details = service.getRequestDetailsFromTranscript(transcript);
+
+    expect(details).toEqual({
+      'Hearing date': '01 Jan 2024',
+      'Request type': 'Type1',
+      'Request method': 'Manual',
+      'Request ID': 123,
+      Urgency: 'High',
+      'Audio for transcript': 'Start time 09:00:00 - End time 10:00:00',
+      'Requested by': [{ href: '/admin/users/1', value: 'John Doe', caption: 'john@example.com' }],
+      Received: '01 Jan 2024 13:30:00',
+      Instructions: 'Need ASAP',
+      'Judge approval': 'Yes',
+      'Migrated legacy data comments': ['Legacy comment 1', 'Legacy comment 2'],
+    });
+  });
+
   describe('updateTranscriptionStatus', () => {
     it('send patch request with correct body', () => {
       const transcriptionId = 1;

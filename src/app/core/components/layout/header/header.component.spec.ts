@@ -8,6 +8,7 @@ import { CountNotificationService } from '@services/count-notification/count-not
 import { UserService } from '@services/user/user.service';
 import { of } from 'rxjs';
 import { HeaderComponent } from './header.component';
+import { FeatureFlagService } from '@services/app-config/feature-flag.service';
 
 @Component({ template: '' })
 class DummyComponent {}
@@ -17,6 +18,7 @@ describe('HeaderComponent', () => {
   let fixture: ComponentFixture<HeaderComponent>;
   let fakeAuthService: Partial<AuthService>;
   let fakeUserService: Partial<UserService>;
+  let fakeFeatureFlagService: Partial<FeatureFlagService>;
   let fakeCountService: Partial<CountNotificationService>;
   let router: Router;
 
@@ -35,6 +37,10 @@ describe('HeaderComponent', () => {
       isSuperUser: jest.fn(() => false),
     };
 
+    fakeFeatureFlagService = {
+      isManualDeletionEnabled: jest.fn(() => true),
+    };
+
     await TestBed.configureTestingModule({
       imports: [HeaderComponent],
       providers: [
@@ -43,6 +49,7 @@ describe('HeaderComponent', () => {
         { provide: AuthService, useValue: fakeAuthService },
         { provide: CountNotificationService, useValue: fakeCountService },
         { provide: UserService, useValue: fakeUserService },
+        { provide: FeatureFlagService, useValue: fakeFeatureFlagService },
       ],
     }).compileComponents();
     router = TestBed.inject(Router);
