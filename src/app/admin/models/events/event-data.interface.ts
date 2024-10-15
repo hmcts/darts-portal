@@ -26,4 +26,5 @@ export interface EventData {
   last_modified_at: string;
   last_modified_by: number;
   case_expired_at: string;
+  is_current: boolean;
 }

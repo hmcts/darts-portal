@@ -85,6 +85,7 @@ const viewEvents = events.map((event) => ({
   documentum_id: '123456',
   message_id: '654321',
   source_id: 'source123',
+  is_current: true,
 }));
 
 router.get('/:id', (req, res) => {

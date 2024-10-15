@@ -137,6 +137,7 @@ describe('Admin - Search screen', () => {
     cy.get('dt').contains('Event Handler').next('dd').should('contain', 'StandardEventHandler');
     cy.get('dt').contains('Reporting restriction?').next('dd').should('contain', 'No');
     cy.get('dt').contains('Log entry?').next('dd').should('contain', 'No');
+    cy.get('dt').contains('Is current?').next('dd').should('contain', 'Yes');
 
     // Version data
     cy.get('dt').contains('Version').next('dd').should('contain', 'v1');
