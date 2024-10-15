@@ -146,7 +146,7 @@ describe('Case file screen', () => {
 
       it('should show message for anonymised events', () => {
         cy.contains('Court log').click();
-        cy.get('.govuk-hint').contains('The event text has been anonymised in line with HMCTS policy.');
+        cy.get('.govuk-hint').contains('The event text has been anonymised in line with HMCTS policy');
       });
     });
 
