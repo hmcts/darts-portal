@@ -116,6 +116,7 @@ export const PORTAL_ROUTES: Routes = [
     path: 'case/:caseId/hearing/:hearingId/request-transcript',
     canActivate: [expiredCaseGuard],
     title: 'DARTS Request Transcript',
+    data: { allowedRoles: ['APPROVER', 'REQUESTER', 'JUDICIARY', 'SUPER_ADMIN', 'SUPER_USER'] },
     loadComponent: () =>
       import('../portal/components/hearing/request-transcript/request-transcript.component').then(
         (c) => c.RequestTranscriptComponent
