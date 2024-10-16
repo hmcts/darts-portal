@@ -187,4 +187,20 @@ describe('HiddenFileBannerComponent', () => {
       expect(message.textContent).not.toContain('You can unhide the file.');
     });
   });
+
+  describe('handleKeydown', () => {
+    it('should emit unhideOrUndelete when Enter key is pressed', () => {
+      const emitSpy = jest.spyOn(component.unhideOrUndelete, 'emit');
+      const event = new KeyboardEvent('keydown', { key: 'Enter' });
+      component.handleKeydown(event);
+      expect(emitSpy).toHaveBeenCalled();
+    });
+
+    it('should not emit unhideOrUndelete when a key other than Enter is pressed', () => {
+      const emitSpy = jest.spyOn(component.unhideOrUndelete, 'emit');
+      const event = new KeyboardEvent('keydown', { key: 'Escape' });
+      component.handleKeydown(event);
+      expect(emitSpy).not.toHaveBeenCalled();
+    });
+  });
 });
