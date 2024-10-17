@@ -20,7 +20,7 @@ export class CaseEventsTableComponent {
 
   columns: DatatableColumn[] = [
     { name: 'Hearing date', prop: 'hearingDate', sortable: true },
-    { name: 'Time', prop: 'timestamp', sortable: true },
+    { name: 'Time', prop: 'timestamp', sortable: true, sortOnLoad: 'desc' },
     { name: 'Event', prop: 'name', sortable: true },
     { name: 'Text', prop: 'text', sortable: false },
   ];
