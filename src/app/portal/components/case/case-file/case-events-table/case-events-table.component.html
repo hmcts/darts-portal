@@ -16,6 +16,12 @@
     </td>
     <td>{{ row.timestamp | luxonDate: 'HH:mm:ss' }}</td>
     <td>{{ row.name }}</td>
-    <td>{{ row.text }}</td>
+    <td>
+      @if (row.isDataAnonymised) {
+        <p class="govuk-hint no-margin">The event text has been anonymised in line with HMCTS policy</p>
+      } @else {
+        {{ row.text }}
+      }
+    </td>
   </ng-template>
 </app-data-table>
