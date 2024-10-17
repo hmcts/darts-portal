@@ -15,14 +15,25 @@ export class TranscriptFacadeService {
   getHistory(transcriptionId: number) {
     return this.transcriptionAdminService.getTranscriptionWorkflows(transcriptionId).pipe(
       switchMap((workflows) => {
+        const sortedWorkflows = this.sortWorkflowsByTimestampAndStatus(workflows);
         const userIds = workflows.map((workflow) => workflow.workflowActor);
         return forkJoin({
-          workflows: of(workflows),
+          workflows: of(sortedWorkflows),
           users: this.userAdminService.getUsersById(userIds),
           statuses: this.transcriptionAdminService.getTranscriptionStatuses(),
         }).pipe(map(({ workflows, statuses, users }) => this.mapWorkflowsToTimeline(workflows, statuses, users)));
       })
     );
+  }
+
+  sortWorkflowsByTimestampAndStatus(workflows: TranscriptionWorkflow[]): TranscriptionWorkflow[] {
+    return workflows.sort((a, b) => {
+      const dateComparison = b.workflowTimestamp.toMillis() - a.workflowTimestamp.toMillis();
+      if (dateComparison !== 0) {
+        return dateComparison;
+      }
+      return b.statusId - a.statusId;
+    });
   }
 
   getTranscript(transcriptionId: number) {
