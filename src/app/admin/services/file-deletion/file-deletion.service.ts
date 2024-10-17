@@ -12,6 +12,7 @@ import { DateTime } from 'luxon';
 import { forkJoin, map, Observable, switchMap } from 'rxjs';
 
 const MEDIAS_BASE_PATH = '/api/admin/medias';
+const TRANSCRIPTS_BASE_PATH = '/api/admin/transcription-documents';
 const MARKED_FOR_DELETION_AUDIO_FILES_PATH = '/api/admin/medias/marked-for-deletion';
 
 @Injectable({
@@ -39,6 +40,12 @@ export class FileDeletionService {
   approveAudioFileDeletion(mediaId: number): Observable<FileHide> {
     return this.http
       .post<FileHideData>(`${MEDIAS_BASE_PATH}/${mediaId}/approve-deletion`, {})
+      .pipe(map((res) => this.mappingService.mapHideFileResponse(res)));
+  }
+
+  approveTranscriptFileDeletion(transcriptId: number): Observable<FileHide> {
+    return this.http
+      .post<FileHideData>(`${TRANSCRIPTS_BASE_PATH}/${transcriptId}/approve-deletion`, {})
       .pipe(map((res) => this.mappingService.mapHideFileResponse(res)));
   }
 

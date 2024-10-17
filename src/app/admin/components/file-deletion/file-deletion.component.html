@@ -1,9 +1,13 @@
 @if (approvedForDeletion$ | async) {
-  <app-govuk-banner type="success">Audio file deleted</app-govuk-banner>
+  @if (fileType$ | async; as fileType) {
+    <app-govuk-banner type="success">{{ fileType }} file deleted</app-govuk-banner>
+  }
 }
 
 @if (unmarkedAndUnhidden$ | async) {
-  <app-govuk-banner type="success">Audio file unmarked for deletion and unhidden</app-govuk-banner>
+  @if (fileType$ | async; as fileType) {
+    <app-govuk-banner type="success">{{ fileType }} file unmarked for deletion and unhidden</app-govuk-banner>
+  }
 }
 
 <app-govuk-heading tag="h1" size="xl">Files marked for deletion</app-govuk-heading>
@@ -20,7 +24,7 @@
     >
       <app-govuk-heading tag="h2">Audio files</app-govuk-heading>
 
-      <app-audio-file-results [rows]="audioFiles()!" />
+      <app-audio-file-results [rows]="audioFiles()!" (deletion)="onDeleteAudio($event)" />
     </div>
     <div
       *tab="

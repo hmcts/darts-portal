@@ -188,6 +188,22 @@ router.post('/search', (req, res) => {
   res.send(documents);
 });
 
+router.post('/:id/approve-deletion', (req, res) => {
+  const id = req.params.id;
+
+  const index = markedForDeletion.findIndex((m) => m.transcription_document_id === parseInt(id));
+
+  if (index !== -1) {
+    markedForDeletion[index].admin_action.is_marked_for_manual_deletion = true;
+    markedForDeletion[index].admin_action.marked_for_manual_deletion_by_id = 1;
+    markedForDeletion[index].admin_action.marked_for_manual_deletion_at = DateTime.now().toISO();
+
+    return res.send({ is_hidden: true, is_deleted: false, ...markedForDeletion[index] });
+  }
+
+  res.sendStatus(200);
+});
+
 router.get('/marked-for-deletion', (req, res) => {
   return res.send(markedForDeletion);
 });
