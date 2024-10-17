@@ -158,6 +158,13 @@ router.get('/:hearingId/events', (req, res) => {
           name: 'Case called on',
           text: 'Record: New Case',
         },
+        {
+          id: 4,
+          timestamp: '2023-07-31T11:00:00.620Z',
+          name: 'Old event',
+          text: 'Old case',
+          is_data_anonymised: true,
+        },
       ];
       res.send(body1);
       break;
