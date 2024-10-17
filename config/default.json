@@ -11,7 +11,7 @@
   },
   "session": {
     "prefix": "darts-portal-session",
-    "ttlInSeconds": 1200,
+    "ttlInSeconds": 43200,
     "cookieName": "darts_session"
   },
   "support": {
