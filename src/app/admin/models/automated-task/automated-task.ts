@@ -10,6 +10,7 @@ export type AutomatedTask = {
 
 export type AutomatedTaskDetails = AutomatedTask & {
   isCronEditable: boolean;
+  batchSize: number;
   createdAt: DateTime;
   createdBy: number;
   lastModifiedAt: DateTime;

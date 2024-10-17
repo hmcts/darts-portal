@@ -51,6 +51,7 @@ export class ViewAutomatedTasksComponent {
     Description: this.task()?.description,
     'Cron expression': this.task()?.cronExpression,
     'Cron editable': this.task()?.isCronEditable ? 'Yes' : 'No',
+    'Batch size': this.task()?.batchSize,
     'Date created': this.task()?.createdAt.toFormat(this.dateFormat),
     'Created by': this.task()?.createdByFullName,
     'Date modified': this.task()?.lastModifiedAt.toFormat(this.dateFormat),
