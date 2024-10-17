@@ -62,10 +62,10 @@ export class DataTableComponent<TRow> implements OnChanges, OnInit {
   };
 
   ngOnInit(): void {
-    const columnToSort = this.columns.find((column) => column.sortOnLoad);
+    const columnToSort = this.columns.find((column) => column.sortOnLoad !== undefined);
 
     if (columnToSort) {
-      this.sortTable(columnToSort.prop, undefined, 'asc');
+      this.sortTable(columnToSort.prop, undefined, columnToSort.sortOnLoad);
     }
   }
 
@@ -100,7 +100,7 @@ export class DataTableComponent<TRow> implements OnChanges, OnInit {
 
     this.sorting = {
       column: column,
-      order: order || this.isDescSorting(column) ? 'asc' : 'desc',
+      order: order || (this.isDescSorting(column) ? 'asc' : 'desc'),
       sortFn: sortFn,
     };
 

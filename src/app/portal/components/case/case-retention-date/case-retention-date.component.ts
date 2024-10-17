@@ -184,10 +184,10 @@ export class CaseRetentionDateComponent implements OnInit {
   });
 
   columns: DatatableColumn[] = [
-    { name: 'Date retention changed', prop: 'retention_last_changed_date', sortable: true },
-    { name: 'Retention date', prop: 'retention_date', sortable: false },
-    { name: 'Amended by', prop: 'amended_by', sortable: false },
-    { name: 'Retention policy', prop: 'retention_policy_applied', sortable: false },
+    { name: 'Date retention changed', prop: 'retentionLastChangedDate', sortable: true, sortOnLoad: 'desc' },
+    { name: 'Retention date', prop: 'retentionDate', sortable: false },
+    { name: 'Amended by', prop: 'amendedBy', sortable: false },
+    { name: 'Retention policy', prop: 'retentionPolicyApplied', sortable: false },
     { name: 'Comments', prop: 'comments', sortable: false },
     { name: 'Status', prop: 'status', sortable: false },
   ];

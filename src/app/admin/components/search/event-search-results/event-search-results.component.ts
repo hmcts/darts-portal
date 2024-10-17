@@ -19,7 +19,7 @@ export class EventSearchResultsComponent {
 
   columns: DatatableColumn[] = [
     { name: 'Event ID', prop: 'id', sortable: true },
-    { name: 'Time stamp', prop: 'eventTs', sortable: true, sortOnLoad: true },
+    { name: 'Time stamp', prop: 'eventTs', sortable: true, sortOnLoad: 'asc' },
     { name: 'Name', prop: 'name', sortable: true },
     { name: 'Courthouse', prop: 'courthouse', sortable: true },
     { name: 'Courtroom', prop: 'courtroom', sortable: true },

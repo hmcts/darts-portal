@@ -3,7 +3,7 @@ import { DateTime } from 'luxon';
 
 import { SimpleChanges } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { Order } from '@core-types/data-table/data-table-column.interface';
+import { DatatableColumn, Order } from '@core-types/data-table/data-table-column.interface';
 import { Urgency } from '@portal-types/transcriptions/transcription-urgency.interface';
 import { DataTableComponent, SortingInterface } from './data-table.component';
 
@@ -944,8 +944,13 @@ describe('DataTableComponent', () => {
       });
 
       describe('ngOnInit', () => {
-        it('should sort the table by the column with sortOnLoad set to true', () => {
-          const columnToSort = { name: 'Case Number', prop: 'case_number', sortable: true, sortOnLoad: true };
+        it('should sort the table asc by the column with sortOnLoad set to asc', () => {
+          const columnToSort: DatatableColumn = {
+            name: 'Case Number',
+            prop: 'case_number',
+            sortable: true,
+            sortOnLoad: 'asc',
+          };
           component.columns = [columnToSort, { name: 'Courthouse', prop: 'courthouse', sortable: true }];
           const sortTableSpy = jest.spyOn(component, 'sortTable');
 
@@ -954,7 +959,22 @@ describe('DataTableComponent', () => {
           expect(sortTableSpy).toHaveBeenCalledWith(columnToSort.prop, undefined, 'asc');
         });
 
-        it('should not sort the table if no column has sortOnLoad set to true', () => {
+        it('should sort the table asc by the column with sortOnLoad set to desc', () => {
+          const columnToSort: DatatableColumn = {
+            name: 'Case Number',
+            prop: 'case_number',
+            sortable: true,
+            sortOnLoad: 'desc',
+          };
+          component.columns = [columnToSort, { name: 'Courthouse', prop: 'courthouse', sortable: true }];
+          const sortTableSpy = jest.spyOn(component, 'sortTable');
+
+          component.ngOnInit();
+
+          expect(sortTableSpy).toHaveBeenCalledWith(columnToSort.prop, undefined, 'desc');
+        });
+
+        it('should not sort the table if no column has sortOnLoad set', () => {
           component.columns = [
             { name: 'Case Number', prop: 'case_number', sortable: true },
             { name: 'Courthouse', prop: 'courthouse', sortable: true },
