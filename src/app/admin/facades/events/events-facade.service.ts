@@ -19,6 +19,10 @@ export class EventsFacadeService {
     return this.eventsService.getEvent(id).pipe(switchMap((event) => this.getAssociatedData(event)));
   }
 
+  obfuscateEventText(id: number) {
+    return this.eventsService.obfuscateEventTexts([id]);
+  }
+
   private getAssociatedData(event: Event) {
     const userIds = [event.createdById, event.lastModifiedById];
 

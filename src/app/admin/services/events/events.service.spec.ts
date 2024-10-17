@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
@@ -52,7 +52,6 @@ describe('EventsService', () => {
         created_by: 1,
         last_modified_at: '2024-05-05T11:00:00Z',
         last_modified_by: 1,
-        case_expired_at: '2024-05-05T11:00:00Z',
       };
 
       let event;
@@ -87,7 +86,6 @@ describe('EventsService', () => {
         createdById: 1,
         lastModifiedAt: DateTime.fromISO('2024-05-05T11:00:00Z'),
         lastModifiedById: 1,
-        caseExpiredAt: DateTime.fromISO('2024-05-05T11:00:00Z'),
       };
 
       const req = httpMock.expectOne('/api/admin/events/1');
@@ -97,5 +95,20 @@ describe('EventsService', () => {
 
       expect(event).toEqual(expectedEvent);
     });
+  });
+
+  describe('#obfuscateEventTexts', () => {
+    it('should send a POST request to obfuscate event texts', fakeAsync(() => {
+      const eventIds = [1, 2, 3];
+
+      service.obfuscateEventTexts(eventIds).subscribe();
+      tick();
+
+      const req = httpMock.expectOne('/api/admin/events/obfuscate');
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body).toEqual({ eve_ids: eventIds });
+
+      req.flush(null);
+    }));
   });
 });

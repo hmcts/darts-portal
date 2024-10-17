@@ -3,11 +3,22 @@
 @let e = event();
 
 @if (e) {
-  @if (e.isDataAnonymised) {
-    <app-expired-banner [expiryDate]="e.caseExpiredAt" />
+  @if (isObfuscationSuccess()) {
+    <app-govuk-banner type="success"> Event text successfully obfuscated </app-govuk-banner>
   }
 
-  <app-govuk-heading caption="Event">{{ e.id }}</app-govuk-heading>
+  @if (showAnonymisedTextBanner()) {
+    <app-govuk-banner type="warning"> This event text has been anonymised in line with HMCTS policy. </app-govuk-banner>
+  }
+
+  <div class="heading-button-container">
+    <app-govuk-heading caption="Event">{{ e.id }}</app-govuk-heading>
+    @if (showObfuscateButton()) {
+      <button id="obfuscate-button" class="govuk-button govuk-button--secondary" (click)="onObfuscateEventText()">
+        Obfuscate event text
+      </button>
+    }
+  </div>
 
   @if (userService.isAdmin()) {
     <app-tabs>
