@@ -549,7 +549,6 @@ describe('TranscriptionService', () => {
       const expectedResult = {
         'Hearing date': '08 Nov 2023',
         'Request type': 'Type A',
-        'Request ID': 123456,
         Urgency: 'High',
         'Audio for transcript': 'Start time 13:00:00 - End time 16:00:00',
       };

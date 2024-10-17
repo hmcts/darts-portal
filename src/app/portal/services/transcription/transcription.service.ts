@@ -178,7 +178,6 @@ export class TranscriptionService {
     return {
       'Hearing date': this.luxonPipe.transform(transcript.hearingDate, 'dd MMM yyyy'),
       'Request type': transcript.requestType,
-      'Request ID': transcript.transcriptionId,
       Urgency: transcript.urgency?.description ? transcript.urgency.description : null,
       'Audio for transcript':
         transcript.transcriptionStartTs && transcript.transcriptionEndTs
