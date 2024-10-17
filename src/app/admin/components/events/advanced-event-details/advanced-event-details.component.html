@@ -49,6 +49,12 @@
       {{ event().isLogEntry ? 'Yes' : 'No' }}
     </dd>
   </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Is current?</dt>
+    <dd class="govuk-summary-list__value">
+      {{ event().isCurrentVersion ? 'Yes' : 'No' }}
+    </dd>
+  </div>
 </dl>
 
 <app-govuk-heading class="no-margin border-bottom" tag="h2" size="m">Version data</app-govuk-heading>

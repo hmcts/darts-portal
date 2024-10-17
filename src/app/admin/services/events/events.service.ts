@@ -44,6 +44,7 @@ export class EventsService {
       lastModifiedAt: DateTime.fromISO(event.last_modified_at),
       lastModifiedById: event.last_modified_by,
       caseExpiredAt: DateTime.fromISO(event.case_expired_at),
+      isCurrentVersion: event.is_current,
     };
   }
 }
