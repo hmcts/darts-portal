@@ -126,7 +126,7 @@ export class AdminSearchService {
       antecedentId: result.antecedent_id,
       courthouse: result.courthouse.display_name,
       courtroom: result.courtroom.name,
-      isManuallyAnonymised: result.is_manually_anonymised,
+      isEventAnonymised: result.is_event_anonymised,
       isCaseExpired: result.is_case_expired,
     }));
   }

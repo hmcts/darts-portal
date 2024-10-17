@@ -2,6 +2,7 @@ import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
 import { UserService } from '@services/user/user.service';
 import { authGuard } from '../core/guards/auth/auth.guard';
+import { manualDeletionGuard } from '../core/guards/manual-deletion/manual-deletion.guard';
 
 export const ADMIN_ROUTES: Routes = [
   {
@@ -357,8 +358,16 @@ export const ADMIN_ROUTES: Routes = [
         './components/retention-policies/create-edit-retention-policy/create-edit-retention-policy.component'
       ).then((c) => c.CreateEditRetentionPolicyComponent),
   },
-].map((route) => ({
-  ...route,
-  resolve: { userState: () => inject(UserService).userProfile$ },
-  canActivate: [authGuard],
-}));
+].map((route) => {
+  const updatedRoute = {
+    ...route,
+    resolve: { userState: () => inject(UserService).userProfile$ },
+    canActivate: [authGuard],
+  };
+
+  if (route.path && route.path.startsWith('admin/file-deletion')) {
+    updatedRoute.canActivate = [...updatedRoute.canActivate, manualDeletionGuard];
+  }
+
+  return updatedRoute;
+});

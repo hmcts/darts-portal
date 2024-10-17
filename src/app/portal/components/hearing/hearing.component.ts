@@ -308,7 +308,13 @@ export class HearingComponent implements OnInit {
   }
 
   isUserAllowedToRequestTranscripts(): boolean {
-    return this.userService.isRequester() || this.userService.isApprover() || this.userService.isGlobalJudge();
+    return (
+      this.userService.isRequester() ||
+      this.userService.isApprover() ||
+      this.userService.isGlobalJudge() ||
+      this.userService.isSuperUser() ||
+      this.userService.isAdmin()
+    );
   }
 
   setTitle(value: HearingPageState) {
