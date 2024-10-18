@@ -4,6 +4,7 @@ This is primarily an Angular app that runs through a node.js server. There are t
 
 - the web server for when the app is deployed in Kubernetes
 - to proxy API requests to internally-facing backend API services, such as the DARTS API
+- handle auth session
 - to provide a stubbed API for development
 
 ## Getting Started
