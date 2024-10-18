@@ -1,10 +1,10 @@
 # DARTS portal
 
-This is primarily an Angular app that runs through a node.js server. There are three main reasons for the node.js express server
+This is primarily an Angular app that runs through a node.js server. There are four main reasons for the node.js express server
 
-- the web server for when the app is deployed in Kubernetes
+- to serve the angular app when deployed in Kubernetes
 - to proxy API requests to internally-facing backend API services, such as the DARTS API
-- handle auth session
+- to handle auth / user session
 - to provide a stubbed API for development
 
 ## Getting Started
