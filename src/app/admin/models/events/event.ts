@@ -32,4 +32,5 @@ export type Event = {
   lastModifiedById: number;
   lastModifiedBy?: User;
   caseExpiredAt: DateTime;
+  isCurrentVersion: boolean;
 };

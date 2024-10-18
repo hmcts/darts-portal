@@ -42,6 +42,7 @@ const mockEvent: Event = {
   lastModifiedAt: DateTime.fromISO('2024-05-05T11:00:00Z'),
   lastModifiedById: 0,
   caseExpiredAt: DateTime.fromISO('2024-05-05T11:00:00Z'),
+  isCurrentVersion: true,
 };
 
 describe('ViewEventComponent', () => {
