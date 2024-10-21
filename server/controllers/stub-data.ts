@@ -32,7 +32,9 @@ export function init(): Router {
   const router = express.Router();
   if (STUB_ALLOWED) {
     STUB_RESPONSES.forEach((stub) => {
-      router[stub.method](stub.path, stubData(stub.response, stub.status));
+      router[stub.method](stub.path, (req: Request, res: Response) => {
+        stubData(stub.response, stub.status)(req, res);
+      });
     });
   }
   return router;
