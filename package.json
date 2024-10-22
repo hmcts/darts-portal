@@ -65,7 +65,7 @@
     "config": "^3.3.11",
     "connect-redis": "^7.1.1",
     "cookie-parser": "^1.4.6",
-    "express": "^4.19.2",
+    "express": "^5.0.1",
     "express-session": "^1.18.0",
     "govuk-frontend": "^5.4.0",
     "http-proxy-middleware": "^3.0.0",

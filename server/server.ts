@@ -68,7 +68,7 @@ export const startServer = ({ disableAuthentication }: StartServerOptions = { di
   app.use(routes(disableAuthentication));
 
   // if routes not handles above, they should be handled by angular
-  app.get('*', (_: Request, res: Response) => {
+  app.get('*splat', (_: Request, res: Response) => {
     res.sendFile(path.resolve('dist/darts-portal/index.html'));
   });
   return app;
