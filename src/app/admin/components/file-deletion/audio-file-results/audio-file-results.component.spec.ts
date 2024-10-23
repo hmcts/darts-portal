@@ -27,28 +27,25 @@ describe('AudioFileResultsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should navigate to the correct URL with the correct state', () => {
+  it('should emit deletion event when deleteAudioFile is called', () => {
     const audioFile: AudioFileMarkedDeletion = {
       mediaId: 123,
-      hiddenById: 1,
-      startAt: DateTime.fromISO('2022-01-01T00:00:00.000Z'),
-      endAt: DateTime.fromISO('2022-01-01T01:00:00.000Z'),
-      courthouse: '',
-      courtroom: '',
+      courthouse: 'Courthouse A',
+      startAt: DateTime.fromISO('2023-01-01'),
+      endAt: DateTime.fromISO('2023-01-03'),
+      courtroom: 'Room 1',
       channel: 11,
-      comments: '',
+      markedHiddenBy: 'User A',
+      comments: 'Test comment',
+      hiddenById: 0,
       ticketReference: '',
-      reasonId: 3,
+      reasonId: 0,
     };
 
-    jest.spyOn(component.router, 'navigate');
+    jest.spyOn(component.deletion, 'emit');
 
     component.deleteAudioFile(audioFile);
 
-    const audioFileState = { ...audioFile, startAt: audioFile.startAt.toISOTime(), endAt: audioFile.endAt.toISOTime() };
-
-    expect(component.router.navigate).toHaveBeenCalledWith(['/admin/file-deletion/audio-file', audioFile.mediaId], {
-      state: { isPermitted: true, file: audioFileState },
-    });
+    expect(component.deletion.emit).toHaveBeenCalledWith(audioFile);
   });
 });
