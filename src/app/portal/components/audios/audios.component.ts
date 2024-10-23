@@ -112,11 +112,19 @@ export class AudiosComponent {
         map((medias) =>
           medias.map((media) => ({
             ...media,
-            checkboxLabel: `Select delete checkbox for case ${media.caseNumber}`,
+            checkboxLabel: `Select delete audio checkbox for case ${media.caseNumber}`,
           }))
         )
       ),
-      expiredRows: this.expiredAudioRequests$.pipe(map((requestedMedia) => requestedMedia.transformedMedia)),
+      expiredRows: this.expiredAudioRequests$.pipe(
+        map((requestedMedia) => requestedMedia.transformedMedia),
+        map((medias) =>
+          medias.map((media) => ({
+            ...media,
+            checkboxLabel: `Select delete audio checkbox for case ${media.caseNumber}`,
+          }))
+        )
+      ),
     });
   }
 

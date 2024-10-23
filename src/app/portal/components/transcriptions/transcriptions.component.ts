@@ -95,7 +95,7 @@ export class TranscriptionsComponent {
       map((requests) =>
         requests.map((request) => ({
           ...request,
-          checkboxLabel: `Select delete checkbox for transcript in case ${request.caseNumber}`,
+          checkboxLabel: `Select delete transcript checkbox for case ${request.caseNumber}`,
         }))
       )
     ),
