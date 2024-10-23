@@ -107,7 +107,15 @@ export class AudiosComponent {
 
     this.data$ = combineLatest({
       inProgressRows: this.audioRequests$.pipe(map((requestedMedia) => requestedMedia.mediaRequests)),
-      completedRows: this.audioRequests$.pipe(map((requestedMedia) => requestedMedia.transformedMedia)),
+      completedRows: this.audioRequests$.pipe(
+        map((requestedMedia) => requestedMedia.transformedMedia),
+        map((medias) =>
+          medias.map((media) => ({
+            ...media,
+            checkboxLabel: `Select delete checkbox for case ${media.caseNumber}`,
+          }))
+        )
+      ),
       expiredRows: this.expiredAudioRequests$.pipe(map((requestedMedia) => requestedMedia.transformedMedia)),
     });
   }

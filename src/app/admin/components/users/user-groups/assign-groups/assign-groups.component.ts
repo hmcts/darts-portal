@@ -28,10 +28,16 @@ export class AssignGroupsComponent implements OnInit, OnDestroy {
   // store the hidden groups so we can put them back in when assigning
   usersHiddenGroups = this.user?.securityGroups?.filter((group) => !group.role?.displayState) ?? [];
 
-  groups$: Observable<UserGroup[]> = this.groupsService
-    .getGroupsAndRoles()
-    .pipe(map((data) => this.mapSecurityGroupsToUserGroups(data.groups))) // flatten view model
-    .pipe(map((groups) => groups.filter((group) => group.displayState))); // filter out hidden groups for the UI
+  groups$: Observable<UserGroup[]> = this.groupsService.getGroupsAndRoles().pipe(
+    map((data) => this.mapSecurityGroupsToUserGroups(data.groups)),
+    map((groups) => groups.filter((group) => group.displayState)),
+    map((groups) =>
+      groups.map((group) => ({
+        ...group,
+        checkboxLabel: `Select checkbox value ${group.name} for role ${group.role}`,
+      }))
+    )
+  );
 
   ngOnInit() {
     if (!this.user) {
@@ -67,8 +73,8 @@ export class AssignGroupsComponent implements OnInit, OnDestroy {
     return groups.map((group) => ({
       id: group.id,
       name: group.name,
-      role: group.role?.displayName as string,
-      displayState: group.role?.displayState as boolean,
+      role: group.role?.displayName ?? 'Unknown role',
+      displayState: group.role?.displayState ?? false,
     }));
   }
 }
