@@ -182,19 +182,19 @@ describe('Request audio', () => {
     it('should show Error message when preview audio returns 403', () => {
       cy.get('#hearingsTable a').contains('1 Sep 2023').click();
       cy.get(previewLinkSelector).eq(3).click();
-      cy.get('.govuk-table tr').eq(7).contains('p', 'You do not have permission to preview.');
+      cy.get('.govuk-table tr').eq(8).contains('p', 'You do not have permission to preview.');
     });
 
     it('should show Error message when preview audio returns 404', () => {
       cy.get('#hearingsTable a').contains('1 Sep 2023').click();
       cy.get(previewLinkSelector).eq(4).click();
-      cy.get('.govuk-table tr').eq(8).contains('p', 'Preview not found');
+      cy.get('.govuk-table tr').eq(9).contains('p', 'Preview not found');
     });
 
     it('should show Error message when preview audio returns 500', () => {
       cy.get('#hearingsTable a').contains('1 Sep 2023').click();
       cy.get(previewLinkSelector).eq(5).click();
-      cy.get('.govuk-table tr').eq(9).contains('p', 'An error has occurred.');
+      cy.get('.govuk-table tr').eq(10).contains('p', 'An error has occurred.');
     });
 
     it('should show audio archived message', () => {
@@ -223,6 +223,11 @@ describe('Request audio', () => {
       cy.get('audio').should('be.visible');
       // check audio player is playing
       cy.get('audio').should('have.prop', 'paused', false);
+    });
+
+    it('should show message for anonymised events', () => {
+      cy.get('#hearingsTable a').contains('1 Sep 2023').click();
+      cy.get('.govuk-hint').contains('The event text has been anonymised in line with HMCTS policy.');
     });
   });
 
