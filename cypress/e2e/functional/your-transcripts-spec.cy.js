@@ -94,6 +94,43 @@ describe('Your transcripts', () => {
     cy.get('#return-link').should('contain', 'Return to your transcripts');
   });
 
+  it('should return to tab after approving transcript', () => {
+    cy.contains('Your transcripts').click();
+    cy.contains('Transcript requests to review').click();
+    cy.get('h2').should('contain', 'Requests to approve or reject');
+    cy.get('#approver-table').should('contain', 'Request ID');
+    cy.contains('T12345').parents('tr').contains('View').click();
+    cy.a11y();
+
+    cy.get('h1').should('contain', 'Approve transcript request');
+    cy.get('dl dd').should('contain', 'C20220620001');
+    cy.get('h1').should('contain', 'Do you approve this request?');
+    cy.get('#approve-radio').click({ force: true });
+    cy.get('#submit-button').click();
+
+    //Back to approver table
+    cy.get('h2').should('contain', 'Requests to approve or reject');
+  });
+
+  it('should return to tab after rejecting transcript', () => {
+    cy.contains('Your transcripts').click();
+    cy.contains('Transcript requests to review').click();
+    cy.get('h2').should('contain', 'Requests to approve or reject');
+    cy.get('#approver-table').should('contain', 'Request ID');
+    cy.contains('T12345').parents('tr').contains('View').click();
+    cy.a11y();
+
+    cy.get('h1').should('contain', 'Approve transcript request');
+    cy.get('dl dd').should('contain', 'C20220620001');
+    cy.get('h1').should('contain', 'Do you approve this request?');
+    cy.get('#reject-radio').click({ force: true });
+    cy.get('#reject-reason').type('I do not approve this request');
+    cy.get('#submit-button').click();
+
+    //Back to approver table
+    cy.get('h2').should('contain', 'Requests to approve or reject');
+  });
+
   it('should navigate to partial delete error screen on error status code 400 and be able to navigate back to transcriptions', () => {
     cy.contains('Your transcripts').click();
 
@@ -111,5 +148,9 @@ describe('Your transcripts', () => {
     cy.contains('Your transcripts').should('exist');
 
     cy.a11y();
+  });
+
+  after(() => {
+    cy.request('/api/transcriptions/reset');
   });
 });
