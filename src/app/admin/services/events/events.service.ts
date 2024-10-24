@@ -15,6 +15,10 @@ export class EventsService {
     return this.http.get<EventData>(`/api/admin/events/${id}`).pipe(map((event) => this.mapEventDataToEvent(event)));
   }
 
+  obfuscateEventTexts(ids: number[]) {
+    return this.http.post<void>('/api/admin/events/obfuscate', { eve_ids: ids });
+  }
+
   mapEventDataToEvent(event: EventData): Event {
     return {
       id: event.id,
@@ -43,7 +47,6 @@ export class EventsService {
       createdById: event.created_by,
       lastModifiedAt: DateTime.fromISO(event.last_modified_at),
       lastModifiedById: event.last_modified_by,
-      caseExpiredAt: DateTime.fromISO(event.case_expired_at),
       isCurrentVersion: event.is_current,
     };
   }

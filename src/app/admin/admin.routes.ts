@@ -149,7 +149,16 @@ export const ADMIN_ROUTES: Routes = [
     loadComponent: () =>
       import('./components/events/view-event/view-event.component').then((c) => c.ViewEventComponent),
   },
-
+  {
+    path: 'admin/events/:id/obfuscate',
+    title: 'DARTS Admin Obfuscate Event Text',
+    data: { allowedRoles: ['SUPER_ADMIN'] },
+    loadComponent: () =>
+      import('./components/events/obfuscate-event-text/obfuscate-event-text.component').then(
+        (c) => c.ObfuscateEventTextComponent
+      ),
+    canActivate: [manualDeletionGuard], // manual deletion feature flag must be enabled
+  },
   {
     path: 'admin/audio-file/:id',
     title: 'DARTS Admin View Audio File',
@@ -353,7 +362,7 @@ export const ADMIN_ROUTES: Routes = [
   const updatedRoute = {
     ...route,
     resolve: { userState: () => inject(UserService).userProfile$ },
-    canActivate: [authGuard],
+    canActivate: route.canActivate ? [authGuard, ...route.canActivate] : [authGuard],
   };
 
   if (route.path && route.path.startsWith('admin/file-deletion')) {
