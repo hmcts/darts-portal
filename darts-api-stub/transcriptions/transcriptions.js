@@ -4,7 +4,7 @@ const path = require('path');
 
 router.use(express.json());
 
-const yourTranscriptionsStub = {
+const defaultYourTranscriptionsStub = {
   requester_transcriptions: [
     {
       transcription_id: 1,
@@ -170,6 +170,8 @@ const yourTranscriptionsStub = {
     },
   ],
 };
+
+let yourTranscriptionsStub = structuredClone(defaultYourTranscriptionsStub);
 
 const defaultMockTranscriptionDetails = {
   case_id: 1,
@@ -576,6 +578,7 @@ router.get('/reset', (req, res) => {
   assignedTranscriptions = [...defaultAssignedTranscriptions];
   unassignedTranscriptions = [...defaultUnassignedTranscriptions];
   mockTranscriptionDetails = { ...defaultMockTranscriptionDetails };
+  yourTranscriptionsStub = structuredClone(defaultYourTranscriptionsStub);
 
   res.sendStatus(200);
 });

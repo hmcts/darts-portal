@@ -41,7 +41,7 @@
   <app-govuk-heading>Your transcripts</app-govuk-heading>
 
   @if ((isApprover && (isRequester || isJudge)) || isSuperUser || isSuperAdmin) {
-    <app-tabs>
+    <app-tabs [default]="tab()" (tabChange)="onTabChange($event.name)">
       <div *tab="'Transcript requests'">
         <ng-template [ngTemplateOutlet]="RequesterTemplate"></ng-template>
       </div>
