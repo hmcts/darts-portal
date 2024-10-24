@@ -72,6 +72,9 @@ describe('Admin - Automated tasks screen', () => {
       cy.get('app-details-table dt').contains('Cron editable');
       cy.get('app-details-table dd').contains('Yes');
 
+      cy.get('app-details-table dt').contains('Batch size');
+      cy.get('app-details-table dd').contains('1000');
+
       cy.get('app-details-table dt').contains('Date created');
       cy.get('app-details-table dd').contains('Mon 1 Jan 2024 at 00:00:00');
 
