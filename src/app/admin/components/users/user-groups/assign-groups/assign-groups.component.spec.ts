@@ -122,12 +122,13 @@ describe('AssignGroupsComponent', () => {
 
   describe('groups$', () => {
     it('should fetch security groups with roles and transform them into filtered UserGroups', fakeAsync(() => {
-      const expectedUserGroups: UserGroup[] = [
+      const expectedUserGroups = [
         {
           id: 1,
           name: 'Group 1',
           role: 'Role 1',
           displayState: true,
+          checkboxLabel: 'Select checkbox value Group 1 for role Role 1',
         },
       ];
 
