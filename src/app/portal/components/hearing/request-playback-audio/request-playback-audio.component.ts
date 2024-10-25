@@ -23,11 +23,13 @@ export const fieldErrors: FormErrorMessages = {
   startTime: {
     required: 'You must include a start time for your audio recording',
     unavailable: 'There is no audio available for this start time',
+    invalidTime: 'Enter a time in the correct format (for example 15:11:11)',
   },
   endTime: {
     required: 'You must include an end time for your audio recording',
     unavailable: 'There is no audio available for this end time',
     endTimeAfterStart: 'End time must be after start time',
+    invalidTime: 'Enter a time in the correct format (for example 15:11:11)',
   },
   requestType: {
     required: 'You must select a request type',
@@ -120,6 +122,20 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
     this.errorSummary = this.getErrorSummary();
 
     if (this.audioRequestForm.invalid) {
+      if (!this.audioRequestForm.controls.startTime.errors?.invalidTime) {
+        this.errorSummary.push({
+          fieldId: 'start-time-hour-input',
+          message: fieldErrors.startTime.invalidTime,
+        });
+      }
+
+      if (!this.audioRequestForm.controls.endTime.errors?.invalidTime) {
+        this.errorSummary.push({
+          fieldId: 'end-time-hour-input',
+          message: fieldErrors.endTime.invalidTime,
+        });
+      }
+
       if (!this.audioRequestForm.controls.endTime.invalid && this.audioRequestForm.errors?.endTimeBeforeStartTime) {
         this.audioRequestForm.controls.endTime.setErrors({ endTimeAfterStart: true });
         this.errorSummary.push({
@@ -129,7 +145,11 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
       }
     }
 
-    if (this.errorSummary.length > 0) this.validationErrorEvent.emit(this.errorSummary);
+    // if (this.errorSummary.length > 0) this.validationErrorEvent.emit(this.errorSummary);
+    if (this.errorSummary.length > 0) {
+      const uniqueErrorMessages = [...new Map([...this.errorSummary].map((entry) => [entry.message, entry])).values()];
+      this.validationErrorEvent.emit(uniqueErrorMessages);
+    }
   }
 
   public setTimes(): void {
@@ -253,7 +273,12 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
     const endDateTime = DateTime.fromISO(`${hearingDate}T${endTimeHours}:${endTimeMinutes}:${endTimeSeconds}`);
 
     //If times are outside
-    if (this.audios.length > 0 && !this.audioRequestForm.errors?.endTimeBeforeStartTime) {
+    if (
+      this.audios.length > 0 &&
+      !this.audioRequestForm.errors?.endTimeBeforeStartTime &&
+      startDateTime.isValid &&
+      endDateTime.isValid
+    ) {
       this.outsideAudioTimesValidation(startDateTime, endDateTime);
     }
 
