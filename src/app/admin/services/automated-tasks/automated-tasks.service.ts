@@ -33,6 +33,10 @@ export class AutomatedTasksService {
       .pipe(map((task) => this.mapTaskDetails(task)));
   }
 
+  changeBatchSize(id: number, value: number) {
+    return this.http.patch<void>(`/api/admin/automated-tasks/${id}`, { batch_size: value });
+  }
+
   private mapTask(task: AutomatedTaskData): AutomatedTask {
     return {
       id: task.id,

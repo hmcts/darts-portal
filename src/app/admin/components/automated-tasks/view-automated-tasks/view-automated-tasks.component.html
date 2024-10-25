@@ -1,5 +1,9 @@
 <app-automated-task-status [taskId]="taskId" [status]="taskRunStatus()" />
 
+@if (batchSizeChanged()) {
+  <app-govuk-banner type="success"> Batch size successfully updated </app-govuk-banner>
+}
+
 @if (task(); as task) {
   <header>
     <app-govuk-heading size="xl" caption="Automated task">{{ task.name }}</app-govuk-heading>
