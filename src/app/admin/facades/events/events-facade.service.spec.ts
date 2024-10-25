@@ -74,7 +74,6 @@ describe('EventsFacadeService', () => {
         eventTs: DateTime.fromISO('2024-05-05T11:00:00Z'),
         createdAt: DateTime.fromISO('2024-05-05T11:00:00Z'),
         lastModifiedAt: DateTime.fromISO('2024-05-05T11:00:00Z'),
-        caseExpiredAt: DateTime.fromISO('2024-05-05T11:00:00Z'),
         isCurrentVersion: false,
       };
 
@@ -103,5 +102,15 @@ describe('EventsFacadeService', () => {
       });
       tick();
     }));
+  });
+
+  describe('obfuscateEventText', () => {
+    it('calls events service to obfuscate event text', () => {
+      eventsService.obfuscateEventTexts = jest.fn();
+
+      service.obfuscateEventText(1);
+
+      expect(eventsService.obfuscateEventTexts).toHaveBeenCalledWith([1]);
+    });
   });
 });
