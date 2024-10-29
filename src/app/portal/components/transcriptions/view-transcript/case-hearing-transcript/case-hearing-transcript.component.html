@@ -1,6 +1,11 @@
 <app-breadcrumb>
   <ng-container *breadcrumb="['/search']">Search</ng-container>
   <ng-container *breadcrumb="['/case', transcript.caseId.toString()]">{{ transcript.caseNumber }}</ng-container>
+  @if (showHearingBreadcrumb) {
+    <ng-container *breadcrumb="['/case', transcript.caseId.toString(), 'hearing', transcript.hearingId.toString()]">{{
+      transcript.hearingDate | luxonDate: 'dd MMM yyyy'
+    }}</ng-container>
+  }
   <ng-container *breadcrumb="['.']">{{ transcript.transcriptFileName }}</ng-container>
 </app-breadcrumb>
 

@@ -4,6 +4,7 @@ import { BreadcrumbComponent } from '@components/common/breadcrumb/breadcrumb.co
 import { DetailsTableComponent } from '@components/common/details-table/details-table.component';
 import { ReportingRestrictionComponent } from '@components/common/reporting-restriction/reporting-restriction.component';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
+import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { TranscriptionDetails } from '@portal-types/transcriptions/transcription-details.type';
 import { FileDownloadService } from '@services/file-download/file-download.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
@@ -13,7 +14,13 @@ import { TranscriptionService } from '@services/transcription/transcription.serv
   standalone: true,
   templateUrl: './case-hearing-transcript.component.html',
   styleUrl: './case-hearing-transcript.component.scss',
-  imports: [ReportingRestrictionComponent, DetailsTableComponent, BreadcrumbComponent, BreadcrumbDirective],
+  imports: [
+    ReportingRestrictionComponent,
+    DetailsTableComponent,
+    BreadcrumbComponent,
+    BreadcrumbDirective,
+    LuxonDatePipe,
+  ],
 })
 export class CaseHearingTranscriptComponent implements OnInit {
   route = inject(ActivatedRoute);
@@ -23,6 +30,7 @@ export class CaseHearingTranscriptComponent implements OnInit {
   @Input() fileName!: string;
   @Input() transcript!: TranscriptionDetails;
 
+  showHearingBreadcrumb = this.route.snapshot.params.hearingId ? true : false;
   transcriptId = this.route.snapshot.params.transcriptId;
 
   caseDetails = {};
