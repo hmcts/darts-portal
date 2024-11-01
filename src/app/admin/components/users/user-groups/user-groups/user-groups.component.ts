@@ -31,7 +31,7 @@ export class UserGroupsComponent implements OnInit {
   removeError = false;
 
   ngOnInit() {
-    this.userGroups = this.removeHiddenSecurityGroups(this.user.securityGroups ?? []);
+    this.userGroups = this.filterUserGroups(this.user.securityGroups ?? []);
   }
 
   onRemoveGroups() {
@@ -47,6 +47,13 @@ export class UserGroupsComponent implements OnInit {
 
   get selectedGroupsCountText() {
     return `${this.selectedGroups.length} of ${this.userGroups.length} groups selected`;
+  }
+
+  private filterUserGroups(userGroups: SecurityGroup[]) {
+    return this.removeHiddenSecurityGroups(userGroups).map((group) => ({
+      ...group,
+      checkboxLabel: `Select checkbox value ${group.displayName} for role ${group.role?.displayName}`,
+    }));
   }
 
   private removeHiddenSecurityGroups(userGroups: SecurityGroup[]): SecurityGroup[] {

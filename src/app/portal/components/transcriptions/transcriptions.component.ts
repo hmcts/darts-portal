@@ -102,7 +102,13 @@ export class TranscriptionsComponent {
       map((requests) => this.filterInProgressRequests(requests.requesterTranscriptions))
     ),
     completedRequests: this.requests$.pipe(
-      map((requests) => this.filterReadyRequests(requests.requesterTranscriptions))
+      map((requests) => this.filterReadyRequests(requests.requesterTranscriptions)),
+      map((requests) =>
+        requests.map((request) => ({
+          ...request,
+          checkboxLabel: `Select delete transcript checkbox for case ${request.caseNumber}`,
+        }))
+      )
     ),
     approverRequests: this.requests$.pipe(map((requests) => requests.approverTranscriptions)),
   });
