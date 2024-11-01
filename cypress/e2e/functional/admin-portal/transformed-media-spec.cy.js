@@ -31,7 +31,7 @@ describe('Admin - Transformed media screen', () => {
 
       cy.get('[data-button="button-search"]').click();
 
-      cy.get('caption').contains('Showing 1-3 of 3 results');
+      cy.get('caption').contains('Showing 1-3 of 3 transformed media results');
 
       cy.get('app-data-table').contains('filename.mp3');
       cy.get('app-data-table').contains('filename2.mp3');
@@ -72,7 +72,7 @@ describe('Admin - Transformed media screen', () => {
 
       cy.get('[data-button="button-search"]').click();
 
-      cy.get('caption').contains('Showing 1-3 of 3 results');
+      cy.get('caption').contains('Showing 1-3 of 3 transformed media results');
 
       cy.get('app-data-table').get('a').contains('1').click();
 
