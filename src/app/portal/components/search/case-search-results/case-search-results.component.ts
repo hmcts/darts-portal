@@ -30,6 +30,10 @@ export class CaseSearchResultsComponent implements OnChanges {
   ];
 
   ngOnChanges(): void {
-    this.caption = `${this.cases.length} result${this.cases.length > 1 ? 's' : ''}`;
+    if (this.adminPortal) {
+      this.caption = `case result${this.cases.length > 1 ? 's' : ''}`;
+    } else {
+      this.caption = `${this.cases.length} result${this.cases.length > 1 ? 's' : ''}`;
+    }
   }
 }

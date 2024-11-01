@@ -14,7 +14,7 @@ import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 })
 export class HearingSearchResultsComponent {
   hearings = input<AdminHearingSearchResult[]>([]);
-  caption = computed(() => `${this.hearings().length} result${this.hearings().length > 1 ? 's' : ''}`);
+  caption = computed(() => `hearing result${this.hearings().length > 1 ? 's' : ''}`);
 
   columns: DatatableColumn[] = [
     { name: 'Case ID', prop: 'caseNumber', sortable: true },

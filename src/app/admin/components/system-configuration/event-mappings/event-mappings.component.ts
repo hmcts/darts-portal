@@ -7,11 +7,11 @@ import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.compo
 import { LoadingComponent } from '@common/loading/loading.component';
 import { DatatableColumn, ErrorSummaryEntry } from '@core-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
+import { HumanizeInitCapPipe } from '@pipes/humanizeInitCap';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { EventMappingsService } from '@services/event-mappings/event-mappings.service';
 import { BehaviorSubject, combineLatest, map } from 'rxjs';
 import { EventMappingForm, EventMappingFormComponent } from './event-mapping-form/event-mapping-form.component';
-import { HumanizeInitCapPipe } from '@pipes/humanizeInitCap';
 
 @Component({
   selector: 'app-event-mapping',

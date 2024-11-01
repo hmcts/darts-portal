@@ -1,24 +1,31 @@
 @if (rows.length) {
   <div [class.scrollable]="maxHeight" [style.max-height]="maxHeight" [class.moj-scrollable-pane]="isHorizontalScroll">
-    @if (captionType === 'heading' || captionType === 'results') {
-      <caption
-        [ngClass]="captionType === 'results' ? 'govuk-heading-m' : 'govuk-caption-m'"
-        [class.govuk-visually-hidden]="hiddenCaption"
-      >
-        Showing
-        {{
-          getCurrentPageCaptionCount()
-        }}
-        of
-        {{
-          rows.length
-        }}
-        {{
-          captionType === 'results' ? (rows.length === 1 ? 'result' : 'results') : ''
-        }}
-      </caption>
-    }
     <table class="govuk-table">
+      @if (captionType === 'heading' || captionType === 'results') {
+        <caption
+          class="heading-caption"
+          [ngClass]="{
+            'govuk-heading-m': captionType === 'results',
+            'govuk-caption-m': captionType !== 'results',
+          }"
+          [class.govuk-visually-hidden]="hiddenCaption"
+        >
+          Showing
+          {{
+            getCurrentPageCaptionCount()
+          }}
+          of
+          {{
+            rows.length
+          }}
+          @if (caption) {
+            <span class="govuk-visually-hidden"> {{ caption }} </span>
+          }
+          {{
+            captionType === 'results' ? (rows.length === 1 ? 'result' : 'results') : ''
+          }}
+        </caption>
+      }
       @if (captionType !== 'heading' && captionType !== 'results') {
         <caption class="govuk-table__caption govuk-table__caption--m" [class.govuk-visually-hidden]="hiddenCaption">
           {{
