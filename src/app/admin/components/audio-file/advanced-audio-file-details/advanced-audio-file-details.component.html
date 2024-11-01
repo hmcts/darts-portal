@@ -118,7 +118,7 @@
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Created by</dt>
       <dd class="govuk-summary-list__value">
-        @if (audioFile.createdById) {
+        @if (audioFile.createdBy) {
           <a class="govuk-link" [routerLink]="['/admin/users', audioFile.createdById]">
             {{ audioFile.createdBy }}
           </a>
@@ -134,7 +134,7 @@
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Last modified by</dt>
       <dd class="govuk-summary-list__value">
-        @if (audioFile.lastModifiedById) {
+        @if (audioFile.lastModifiedBy) {
           <a class="govuk-link" [routerLink]="['/admin/users', audioFile.lastModifiedById]">
             {{ audioFile.lastModifiedBy }}
           </a>
