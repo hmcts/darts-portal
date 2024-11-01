@@ -5,7 +5,7 @@
 @if (task) {
   <app-govuk-heading size="xl" caption="Automated task">{{ task.name }}</app-govuk-heading>
 
-  <div class="govuk-form-group" [class.govuk-form-group--error]="batchSizeInput.errors">
+  <div class="govuk-form-group" [class.govuk-form-group--error]="batchSizeInput.errors && isSubmitted()">
     <label class="govuk-label" for="batch-size">Batch size</label>
 
     @if (validationErrorSummary.length > 0) {
@@ -19,7 +19,7 @@
       type="text"
       id="batch-size"
       [formControl]="batchSizeInput"
-      [class.govuk-input--error]="batchSizeInput.errors"
+      [class.govuk-input--error]="batchSizeInput.errors && isSubmitted()"
     />
   </div>
 

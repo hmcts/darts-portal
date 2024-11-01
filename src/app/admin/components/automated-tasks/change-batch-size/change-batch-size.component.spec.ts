@@ -51,18 +51,28 @@ describe('ChangeBatchSizeComponent', () => {
 
     it('batch size less than 0', () => {
       component.batchSizeInput.setValue(0);
+      component.onSubmit();
       expect(component.validationErrorSummary.length).toBe(1);
       expect(component.validationErrorSummary[0].message).toBe(component.minimumErrorMessage);
     });
 
+    it('batch is greater than 2,147,483,647', () => {
+      component.batchSizeInput.setValue(2147483648);
+      component.onSubmit();
+      expect(component.validationErrorSummary.length).toBe(1);
+      expect(component.validationErrorSummary[0].message).toBe(component.maximumErrorMessage);
+    });
+
     it('batch size not an integer', () => {
       component.batchSizeInput.setValue('abc' as unknown as number);
+      component.onSubmit();
       expect(component.validationErrorSummary.length).toBe(1);
       expect(component.validationErrorSummary[0].message).toBe(component.nonIntegerErrorMessage);
     });
 
     it('batch size is required', () => {
       component.batchSizeInput.setValue(null as unknown as number);
+      component.onSubmit();
       expect(component.validationErrorSummary.length).toBe(1);
       expect(component.validationErrorSummary[0].message).toBe(component.requiredErrorMessage);
     });

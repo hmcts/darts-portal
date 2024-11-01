@@ -1,5 +1,5 @@
 import { AutomatedTaskDetails } from '@admin-types/automated-task/automated-task';
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -24,11 +24,19 @@ export class ChangeBatchSizeComponent {
   task: AutomatedTaskDetails;
   validationErrorSummary: ErrorSummaryEntry[] = [];
 
+  readonly maxBatchSize = 2147483647;
   readonly requiredErrorMessage = 'Batch size must be set';
   readonly minimumErrorMessage = 'Batch size must be greater than 0';
   readonly nonIntegerErrorMessage = 'Batch size must be an integer';
+  readonly maximumErrorMessage = `Batch size must be less than ${this.maxBatchSize}`;
 
-  batchSizeInput = this.fb.control(0, [Validators.required, Validators.min(1), Validators.pattern(/^-?\d+$/)]);
+  batchSizeInput = this.fb.control(0, [
+    Validators.required,
+    Validators.min(1),
+    Validators.max(this.maxBatchSize),
+    Validators.pattern(/^-?\d+$/),
+  ]);
+  isSubmitted = signal(false);
 
   constructor() {
     this.task = this.router.getCurrentNavigation()?.extras.state?.task;
@@ -40,7 +48,7 @@ export class ChangeBatchSizeComponent {
     }
 
     this.batchSizeInput.events.pipe(takeUntilDestroyed()).subscribe(({ source }) => {
-      if (source.errors) {
+      if (source.errors && this.isSubmitted()) {
         this.validationErrorSummary = this.getErrorSummary(source.errors);
       } else {
         this.validationErrorSummary = [];
@@ -49,6 +57,9 @@ export class ChangeBatchSizeComponent {
   }
 
   onSubmit() {
+    this.isSubmitted.set(true);
+    this.batchSizeInput.updateValueAndValidity();
+
     if (this.batchSizeInput.invalid) return;
 
     this.automatedTasksService
@@ -67,6 +78,10 @@ export class ChangeBatchSizeComponent {
 
     if (errors?.min) {
       summary.push({ message: this.minimumErrorMessage, fieldId: 'batch-size' });
+    }
+
+    if (errors?.max) {
+      summary.push({ message: this.maximumErrorMessage, fieldId: 'batch-size' });
     }
 
     if (errors?.pattern) {
