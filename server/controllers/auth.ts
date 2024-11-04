@@ -1,6 +1,6 @@
-import * as express from 'express';
-import { Router, Request, Response } from 'express';
 import config from 'config';
+import * as express from 'express';
+import { Request, Response, Router } from 'express';
 
 /*
   This is for proof-of-concept purposes to see how Azure AD can use
@@ -12,6 +12,7 @@ function getAzureAdLogin(req: Request, res: Response): void {
   // do this whilst the page is being developed to prevent caching on the platform
   res.header('Cache-Control', 'no-store, must-revalidate');
   res.render('azuread-b2c-login.html', {
+    baseUrl: config.get('hostname'),
     hostname: config.get('authentication.azureAdB2cHostname'),
     screen: req.query.screenName,
   });
