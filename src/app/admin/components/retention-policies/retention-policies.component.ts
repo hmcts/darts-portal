@@ -13,7 +13,7 @@ import { DurationPipe } from '@pipes/duration.pipe';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { RetentionPoliciesService } from '@services/retention-policies/retention-policies.service';
 import { DateTime } from 'luxon';
-import { combineLatest, map } from 'rxjs';
+import { combineLatest, map, shareReplay } from 'rxjs';
 
 @Component({
   selector: 'app-retention-policies',
@@ -37,7 +37,7 @@ export class RetentionPoliciesComponent {
   private retentionPoliciesService = inject(RetentionPoliciesService);
   router = inject(Router);
   route = inject(ActivatedRoute);
-  retentionPoliciesData$ = this.retentionPoliciesService.getRetentionPolicyTypes();
+  retentionPoliciesData$ = this.retentionPoliciesService.getRetentionPolicyTypes().pipe(shareReplay(1));
   retentionPoliciesPath = 'admin/system-configuration/retention-policies';
 
   retentionPolicies$ = combineLatest({

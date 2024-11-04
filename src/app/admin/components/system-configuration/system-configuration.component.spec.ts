@@ -1,5 +1,5 @@
+import { Location } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ActivatedRoute } from '@angular/router';
 import { TabDirective } from '@directives/tab.directive';
 import { RetentionPoliciesService } from '@services/retention-policies/retention-policies.service';
@@ -10,6 +10,7 @@ import { SystemConfigurationComponent } from './system-configuration.component';
 describe('SystemConfigurationComponent', () => {
   let component: SystemConfigurationComponent;
   let fixture: ComponentFixture<SystemConfigurationComponent>;
+  let locationReplaceStateSpy: jest.SpyInstance;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -25,6 +26,8 @@ describe('SystemConfigurationComponent', () => {
       ],
     }).compileComponents();
 
+    locationReplaceStateSpy = jest.spyOn(TestBed.inject(Location), 'replaceState');
+
     fixture = TestBed.createComponent(SystemConfigurationComponent);
     component = fixture.componentInstance;
 
@@ -36,30 +39,32 @@ describe('SystemConfigurationComponent', () => {
   });
 
   describe('onTabChange', () => {
-    it('should navigate to the retention policies tab', () => {
-      const routerSpy = jest.spyOn(component.router, 'navigate');
+    it('should change url to /retention-policies', () => {
       component.currentTab = 'different tab';
       component.onTabChanged({ name: 'Retention policies' } as unknown as TabDirective);
-      expect(routerSpy).toHaveBeenCalledWith(['/admin/system-configuration/retention-policies']);
+      expect(locationReplaceStateSpy).toHaveBeenCalledWith('/admin/system-configuration/retention-policies');
     });
 
-    it('should navigate to the event mapping tab', () => {
-      const routerSpy = jest.spyOn(component.router, 'navigate');
+    it('should change url to /event-mappings', () => {
       component.onTabChanged({ name: 'Event mappings' } as unknown as TabDirective);
-      expect(routerSpy).toHaveBeenCalledWith(['/admin/system-configuration/event-mappings']);
+      expect(locationReplaceStateSpy).toHaveBeenCalledWith('/admin/system-configuration/event-mappings');
     });
 
-    it('should navigate to the automated tasks tab', () => {
-      const routerSpy = jest.spyOn(component.router, 'navigate');
+    it('should change url to /automated-tasks', () => {
       component.onTabChanged({ name: 'Automated tasks' } as unknown as TabDirective);
-      expect(routerSpy).toHaveBeenCalledWith(['/admin/system-configuration/automated-tasks']);
+      expect(locationReplaceStateSpy).toHaveBeenCalledWith('/admin/system-configuration/automated-tasks');
+    });
+
+    it('updates the current tab', () => {
+      component.currentTab = 'different tab';
+      component.onTabChanged({ name: 'Event mappings' } as unknown as TabDirective);
+      expect(component.currentTab).toBe('Event mappings');
     });
 
     it('should not navigate if the tab is the same as the current tab', () => {
-      const routerSpy = jest.spyOn(component.router, 'navigate');
       component.currentTab = 'Retention policies';
       component.onTabChanged({ name: 'Retention policies' } as unknown as TabDirective);
-      expect(routerSpy).not.toHaveBeenCalled();
+      expect(locationReplaceStateSpy).not.toHaveBeenCalled();
     });
   });
 

@@ -1,5 +1,5 @@
 import { AutomatedTaskStatus } from '@admin-types/automated-task/automated-task-status';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, Location } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
@@ -37,6 +37,7 @@ const tabUrlMap: { [key: string]: string } = {
 export class SystemConfigurationComponent {
   router = inject(Router);
   route = inject(ActivatedRoute);
+  location = inject(Location);
 
   hasEventMappingCreated$ = this.route.queryParams.pipe(map((params) => !!params.newEventMapping));
   hasEventMappingUpdated$ = this.route.queryParams.pipe(map((params) => !!params.isRevision));
@@ -52,7 +53,8 @@ export class SystemConfigurationComponent {
   onTabChanged(tab: TabDirective) {
     if (this.currentTab !== tab.name) {
       const url = this.getUrlFromTab(tab.name);
-      this.router.navigate([url]);
+      this.location.replaceState(url); // Update the URL without navigating to prevent additional network calls
+      this.currentTab = tab.name;
     }
   }
 
