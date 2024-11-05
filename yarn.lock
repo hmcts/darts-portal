@@ -4566,15 +4566,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ministryofjustice/frontend@npm:^2.1.3":
-  version: 2.2.5
-  resolution: "@ministryofjustice/frontend@npm:2.2.5"
+"@ministryofjustice/frontend@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@ministryofjustice/frontend@npm:3.0.0"
   dependencies:
     govuk-frontend: ^5.0.0
     moment: ^2.27.0
   peerDependencies:
     jquery: ^3.6.0
-  checksum: ee6c0a666ef255926133842575d9d6506765e4e46912563897d1edbb2b8991a8292504836c55082ecabb8c7fb66f3b39f2592e42f3873e0dd08c515e3e7562cc
+  checksum: e1a10579321a19b34799e69ad0b7ec12931704bb397334c442adc410abfef718cdb67abd543498f785901465d15864ee266134444b411c5aa8be8c0a9ae66e5d
   languageName: node
   linkType: hard
 
@@ -8445,7 +8445,7 @@ __metadata:
     "@hmcts/nodejs-healthcheck": ^1.8.5
     "@hmcts/properties-volume": ^1.1.0
     "@microsoft/applicationinsights-web": ^3.2.2
-    "@ministryofjustice/frontend": ^2.1.3
+    "@ministryofjustice/frontend": ^3.0.0
     "@scottish-government/pattern-library": ^0.0.381
     "@types/body-parser": ^1.19.5
     "@types/config": ^3.3.4
