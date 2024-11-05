@@ -131,7 +131,9 @@ export class AudioViewComponent implements OnDestroy {
     return events.map((event, index) => {
       const eventStartTime = DateTime.fromISO(event.timestamp);
       // as there is no event end timestamp, use the next event's start time, if there is no next event, use the audio file's end time
-      const eventEndTime = DateTime.fromISO(events[index + 1]?.timestamp) || this.transformedMedia.endTime;
+      const eventEndTime = events[index + 1]?.timestamp
+        ? DateTime.fromISO(events[index + 1]?.timestamp)
+        : this.transformedMedia.endTime;
       const audioStartTime = this.transformedMedia.startTime;
 
       const eventAudioStartTime = eventStartTime.diff(audioStartTime, ['hours', 'minutes', 'seconds']);
