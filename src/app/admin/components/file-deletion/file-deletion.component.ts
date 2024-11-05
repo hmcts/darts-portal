@@ -1,4 +1,4 @@
-import { TranscriptionDocumentForDeletion } from '@admin-types/file-deletion';
+import { AudioFileMarkedDeletion, TranscriptionDocumentForDeletion } from '@admin-types/file-deletion';
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -47,6 +47,7 @@ export class FileDeletionComponent {
 
   approvedForDeletion$ = this.route.queryParams.pipe(map((params) => !!params.approvedForDeletion));
   unmarkedAndUnhidden$ = this.route.queryParams.pipe(map((params) => !!params.unmarkedAndUnhidden));
+  fileType$ = this.route.queryParams.pipe(map((params) => params.type));
 
   audioFiles = toSignal(this.fileDeletionService.getAudioFilesMarkedForDeletion());
   transcripts = toSignal(this.fileDeletionService.getTranscriptionDocumentsMarkedForDeletion());
@@ -60,9 +61,23 @@ export class FileDeletionComponent {
     this.activeTabService.setActiveTab(this.activeTabKey, tab);
   }
 
+  onDeleteAudio(audio: AudioFileMarkedDeletion) {
+    if (this.userService.hasMatchingUserId(audio.hiddenById)) {
+      this.router.navigate(['/admin/file-deletion/unauthorised'], { state: { type: 'audio' } });
+    } else {
+      this.router.navigate(['/admin/file-deletion/audio', audio.mediaId], {
+        state: { file: { ...audio, startAt: audio.startAt.toISO(), endAt: audio.endAt.toISO() } },
+      });
+    }
+  }
+
   onDeleteTranscript(transcript: TranscriptionDocumentForDeletion) {
     if (this.userService.hasMatchingUserId(transcript.hiddenById)) {
-      this.router.navigate(['/admin/file-deletion/unauthorised']);
+      this.router.navigate(['/admin/file-deletion/unauthorised'], { state: { type: 'transcript' } });
+    } else {
+      this.router.navigate(['/admin/file-deletion/transcript', transcript.transcriptionDocumentId], {
+        state: { file: { ...transcript, hearingDate: transcript.hearingDate.toISO() } },
+      });
     }
   }
 }

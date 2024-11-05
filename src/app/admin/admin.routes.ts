@@ -233,7 +233,7 @@ export const ADMIN_ROUTES: Routes = [
       import('./components/file-deletion/file-deletion.component').then((c) => c.FileDeletionComponent),
   },
   {
-    path: 'admin/file-deletion/audio-file/:id',
+    path: 'admin/file-deletion/audio/:id',
     title: 'DARTS Admin Audio File Deletion',
     data: { allowedRoles: ['SUPER_ADMIN'] },
     loadComponent: () =>
@@ -242,13 +242,22 @@ export const ADMIN_ROUTES: Routes = [
       ),
   },
   {
-    path: 'admin/file-deletion/unauthorised',
-    title: 'DARTS Admin Unauthorised Transcription Deletion',
+    path: 'admin/file-deletion/transcript/:id',
+    title: 'DARTS Admin Transcript File Deletion',
     data: { allowedRoles: ['SUPER_ADMIN'] },
     loadComponent: () =>
-      import(
-        './components/file-deletion/unauthorised-transcript-deletion/unauthorised-transcript-deletion.component'
-      ).then((c) => c.UnauthorisedTranscriptDeletionComponent),
+      import('./components/file-deletion/transcript-file-delete/transcript-file-delete.component').then(
+        (c) => c.TranscriptFileDeleteComponent
+      ),
+  },
+  {
+    path: 'admin/file-deletion/unauthorised',
+    title: 'DARTS Admin Unauthorised Deletion',
+    data: { allowedRoles: ['SUPER_ADMIN'] },
+    loadComponent: () =>
+      import('./components/file-deletion/unauthorised-deletion/unauthorised-deletion.component').then(
+        (c) => c.UnauthorisedDeletionComponent
+      ),
   },
   {
     path: 'admin/file/:id/hide-or-delete',

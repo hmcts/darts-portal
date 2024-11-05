@@ -1,6 +1,6 @@
 import { AudioFileMarkedDeletion } from '@admin-types/file-deletion/audio-file-marked-deletion.type';
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, computed, inject, input, output } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DatatableColumn } from '@core-types/index';
@@ -28,6 +28,8 @@ export class AudioFileResultsComponent {
   router = inject(Router);
 
   rows = input<AudioFileMarkedDeletion[]>([]);
+  deletion = output<AudioFileMarkedDeletion>();
+
   showDeleteButton = input(true);
 
   columns = computed<DatatableColumn[]>(() => {
@@ -49,20 +51,6 @@ export class AudioFileResultsComponent {
   });
 
   deleteAudioFile(audioFile: AudioFileMarkedDeletion): void {
-    const audioFileStringified = this.stringifyDates(audioFile);
-    const userPermitted = !this.userService.hasMatchingUserId(audioFile.hiddenById);
-
-    this.router.navigate(['/admin/file-deletion/audio-file', audioFile.mediaId], {
-      state: { isPermitted: userPermitted, file: audioFileStringified },
-    });
-  }
-
-  //Required for reliably passing audio file through state
-  private stringifyDates(audioFile: AudioFileMarkedDeletion) {
-    return {
-      ...audioFile,
-      startAt: audioFile.startAt.toISOTime(),
-      endAt: audioFile.endAt.toISOTime(),
-    };
+    this.deletion.emit(audioFile);
   }
 }
