@@ -12,6 +12,7 @@
   <app-event-mapping-form (filterValues)="onFormValuesChange($event)" [eventHandlers]="data.eventHandlers" />
 
   <app-data-table
+    caption="event mapping results"
     captionType="heading"
     id="events-mapping-table"
     [columns]="columns"

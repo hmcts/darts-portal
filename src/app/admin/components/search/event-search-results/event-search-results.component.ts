@@ -15,7 +15,7 @@ import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 })
 export class EventSearchResultsComponent {
   events = input<AdminEventSearchResult[]>([]);
-  caption = computed(() => `${this.events().length} result${this.events().length > 1 ? 's' : ''}`);
+  caption = computed(() => `event result${this.events().length > 1 ? 's' : ''}`);
 
   columns: DatatableColumn[] = [
     { name: 'Event ID', prop: 'id', sortable: true },

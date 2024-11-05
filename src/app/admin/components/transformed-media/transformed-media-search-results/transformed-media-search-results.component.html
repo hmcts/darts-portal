@@ -1,5 +1,11 @@
 <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
-<app-data-table [rows]="rows" [columns]="columns" captionType="results" [isHorizontalScroll]="true">
+<app-data-table
+  [rows]="rows"
+  [columns]="columns"
+  caption="transformed media"
+  captionType="results"
+  [isHorizontalScroll]="true"
+>
   <ng-template [tableRowTemplate]="rows" let-row>
     <td>
       <a href="javascript:void(0)" class="govuk-link view-link" [routerLink]="[row.id]"> {{ row.id }}</a>

@@ -15,7 +15,7 @@ import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 })
 export class AudioSearchResultsComponent {
   audio = input<AdminMediaSearchResult[]>([]);
-  caption = computed(() => `${this.audio().length} result${this.audio().length > 1 ? 's' : ''}`);
+  caption = computed(() => `audio result${this.audio().length > 1 ? 's' : ''}`);
 
   columns: DatatableColumn[] = [
     { name: 'Audio ID', prop: 'id', sortable: true },
