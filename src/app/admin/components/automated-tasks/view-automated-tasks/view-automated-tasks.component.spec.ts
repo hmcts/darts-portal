@@ -68,7 +68,13 @@ describe('ViewAutomatedTasksComponent', () => {
         Description: 'Task 1 description',
         'Cron expression': '1 0 0 * * *',
         'Cron editable': 'Yes',
-        'Batch size': 1000,
+        'Batch size': {
+          action: {
+            fn: expect.any(Function),
+            text: 'Change',
+          },
+          value: 1000,
+        },
         'Date created': 'Fri 1 Jan 2021 at 00:00:00',
         'Created by': 'User 1',
         'Date modified': 'Fri 1 Jan 2021 at 00:00:00',

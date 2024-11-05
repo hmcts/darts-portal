@@ -108,6 +108,17 @@ describe('Admin - Automated tasks screen', () => {
     });
   });
 
+  describe('Change batch size', () => {
+    it('Success', () => {
+      cy.get('app-data-table').contains('Task 1').parents('tr').get('a').contains('1').click();
+      cy.get('.govuk-link').contains('Change').click();
+      cy.get('#batch-size').clear().type('2000');
+      cy.get('.govuk-button').contains('Confirm').click();
+      cy.get('app-govuk-banner').contains('Batch size successfully updated');
+      cy.get('app-details-table dt').contains('Batch size').parents('div').get('dd').contains('2000');
+    });
+  });
+
   after(() => {
     cy.request('/api/admin/automated-tasks/reset');
   });

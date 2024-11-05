@@ -1,0 +1,30 @@
+<a [routerLink]="['../']" class="govuk-back-link">Back</a>
+
+<app-validation-error-summary [errors]="validationErrorSummary" />
+
+@if (task) {
+  <app-govuk-heading size="xl" caption="Automated task">{{ task.name }}</app-govuk-heading>
+
+  <div class="govuk-form-group" [class.govuk-form-group--error]="batchSizeInput.errors && isSubmitted()">
+    <label class="govuk-label" for="batch-size">Batch size</label>
+
+    @if (validationErrorSummary.length > 0) {
+      <p class="govuk-error-message batch-size-error">
+        <span class="govuk-visually-hidden">Error:</span>{{ validationErrorSummary[0].message }}
+      </p>
+    }
+
+    <input
+      class="govuk-input govuk-input--width-4"
+      type="text"
+      id="batch-size"
+      [formControl]="batchSizeInput"
+      [class.govuk-input--error]="batchSizeInput.errors && isSubmitted()"
+    />
+  </div>
+
+  <div class="govuk-button-group">
+    <button class="govuk-button" type="submit" (mousedown)="(false)" (click)="onSubmit()">Confirm</button>
+    <a [routerLink]="['../']" class="govuk-link">Cancel</a>
+  </div>
+}

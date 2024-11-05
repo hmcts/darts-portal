@@ -70,14 +70,15 @@ router.post('/:id/run', (req, res) => {
 
 router.patch('/:id', (req, res) => {
   const id = req.params.id;
-  const { is_active } = req.body;
+  const { is_active, batch_size } = req.body;
 
   const task = automatedTasks.find((task) => task.id === Number(id));
-  if (!task) {
-    return res.sendStatus(404);
-  }
+  if (!task) return res.sendStatus(404);
 
-  task.is_active = is_active;
+  if (batch_size) task.batch_size = Number(batch_size);
+
+  if (is_active != undefined) task.is_active = is_active;
+
   task.last_modified_at = DateTime.now().toISO();
   task.last_modified_by = 3;
 
