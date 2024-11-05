@@ -1,7 +1,7 @@
 <div class="govuk-form-group" [class.govuk-form-group--error]="deletionApproval.errors && deletionApproval.touched">
   <fieldset class="govuk-fieldset">
     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-      <h2 class="govuk-fieldset__heading" for="cases-option">Approve or reject file deletion?</h2>
+      <h2 class="govuk-fieldset__heading">Approve or reject file deletion?</h2>
       @for (error of getApprovalChoiceErrors(); track error) {
         <p class="govuk-error-message approval-error"><span class="govuk-visually-hidden">Error:</span> {{ error }}</p>
       }
@@ -16,7 +16,7 @@
           [value]="true"
           [formControl]="deletionApproval"
         />
-        <label class="govuk-label govuk-radios__label" for="cases-option">Approve</label>
+        <label class="govuk-label govuk-radios__label" for="approve-option">Approve</label>
       </div>
       <div class="govuk-radios__item">
         <input
