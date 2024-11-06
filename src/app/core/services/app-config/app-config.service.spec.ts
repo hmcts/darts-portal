@@ -31,6 +31,9 @@ describe('AppConfigService', () => {
         manualDeletion: {
           enabled: 'false',
         },
+        eventObfuscation: {
+          enabled: 'false',
+        },
       },
     };
     jest.spyOn(httpClientSpy, 'get').mockReturnValue(of(testData));

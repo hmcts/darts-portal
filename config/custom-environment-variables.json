@@ -16,6 +16,9 @@
   "features": {
     "manualDeletion": {
       "enabled": "MANUAL_DELETION_ENABLED"
+    },
+    "eventObfuscation": {
+      "enabled": "EVENT_OBFUSCATION_ENABLED"
     }
   },
   "support": {

@@ -6,3 +6,4 @@ nodejs:
     DARTS_API_URL: https://darts-api.staging.platform.hmcts.net
     DARTS_PORTAL_URL: https://darts-staging.staging.apps.hmcts.net
     MANUAL_DELETION_ENABLED: false
+    EVENT_OBFUSCATION_ENABLED: false

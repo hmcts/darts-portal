@@ -12,4 +12,12 @@ export class FeatureFlagService {
     }
     return enabled === 'true';
   }
+
+  isEventObfuscationEnabled(): boolean {
+    const enabled = this.appConfigService.getAppConfig()?.features?.eventObfuscation?.enabled;
+    if (enabled === undefined || enabled === null) {
+      return false;
+    }
+    return enabled === 'true';
+  }
 }

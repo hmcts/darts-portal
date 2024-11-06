@@ -2,6 +2,7 @@ import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
 import { UserService } from '@services/user/user.service';
 import { authGuard } from '../core/guards/auth/auth.guard';
+import { eventObfuscationGuard } from '../core/guards/event-obfuscation/event-obfuscation-guard';
 import { manualDeletionGuard } from '../core/guards/manual-deletion/manual-deletion.guard';
 
 export const ADMIN_ROUTES: Routes = [
@@ -157,7 +158,7 @@ export const ADMIN_ROUTES: Routes = [
       import('./components/events/obfuscate-event-text/obfuscate-event-text.component').then(
         (c) => c.ObfuscateEventTextComponent
       ),
-    canActivate: [manualDeletionGuard], // manual deletion feature flag must be enabled
+    canActivate: [eventObfuscationGuard], // event obfuscation feature flag must be enabled
   },
   {
     path: 'admin/audio-file/:id',

@@ -16,6 +16,9 @@ export interface AppConfig {
     manualDeletion: {
       enabled: string;
     };
+    eventObfuscation: {
+      enabled: string;
+    };
   };
 }
 
