@@ -14,7 +14,7 @@ export class EditEmailConfirmationComponent implements OnInit, OnDestroy {
   @Input() newEmail = '';
   @Input() oldEmail = '';
   @Output() confirm = new EventEmitter<void>();
-  @Output() cancel = new EventEmitter<void>();
+  @Output() cancelled = new EventEmitter<void>();
   @Output() errors = new EventEmitter<ErrorSummaryEntry[]>();
 
   headerService = inject(HeaderService);

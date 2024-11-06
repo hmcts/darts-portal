@@ -114,7 +114,7 @@
     [events]="vm.events"
     [hearing]="vm.hearing!"
     (continue)="onRequestTimeContinue($event)"
-    (cancel)="onRequestTimeCancel()"
+    (cancelled)="onRequestTimeCancel()"
     (errors)="validationErrors = $event"
     [hidden]="!(step() === 2)"
   >
@@ -129,7 +129,7 @@
     [urgencyId]="+urgencyFormControl.value!"
     [audioTimes]="audioTimes"
     (errors)="validationErrors = $event"
-    (cancel)="onConfirmationCancel()"
+    (cancelled)="onConfirmationCancel()"
     (confirm)="onConfirm($event)"
     [hidden]="!(step() === 3) || vm.error?.status"
   ></app-request-transcript-confirmation>

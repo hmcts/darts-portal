@@ -19,7 +19,7 @@ export class CreateUpdateUserConfirmationComponent implements OnChanges {
   @Input() values: CreateUpdateUserFormValues = { fullName: null, email: null, description: null };
   @Output() confirm = new EventEmitter<void>();
   @Output() back = new EventEmitter<void>();
-  @Output() cancel = new EventEmitter<void>();
+  @Output() cancelled = new EventEmitter<void>();
   userDetails!: userDetailsVM;
 
   ngOnChanges() {

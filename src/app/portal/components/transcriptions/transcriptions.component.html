@@ -19,7 +19,7 @@
     [numberOfItems]="selectedRequests.length"
     [title]="deleteScreenTitle"
     (confirm)="onDeleteConfirmed()"
-    (cancel)="onDeleteCancelled()"
+    (cancelled)="onDeleteCancelled()"
   >
     <app-data-table
       id="deletionTable"

@@ -11,7 +11,7 @@
 <app-create-update-user-form
   (submitForm)="onSubmit($event)"
   (errors)="errors = $event"
-  (cancel)="onCancel()"
+  (cancelled)="onCancel()"
   [hidden]="!!isConfirmation"
 />
 
@@ -19,6 +19,6 @@
   [values]="formValues"
   (confirm)="onConfirmUserDetails()"
   (back)="onBack()"
-  (cancel)="onCancel()"
+  (cancelled)="onCancel()"
   [hidden]="!isConfirmation"
 />

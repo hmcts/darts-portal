@@ -32,7 +32,7 @@ export class GroupFormComponent implements OnInit {
   @Input() allGroups: SecurityGroup[] = [];
   @Input() roles: SecurityRole[] = [];
   @Output() saveGroup = new EventEmitter<GroupFormValue>();
-  @Output() cancel = new EventEmitter<void>();
+  @Output() cancelled = new EventEmitter<void>();
   @Output() errors = new EventEmitter<ErrorSummaryEntry[]>();
 
   fb = inject(FormBuilder);
@@ -71,7 +71,7 @@ export class GroupFormComponent implements OnInit {
   }
 
   onCancel() {
-    this.cancel.emit();
+    this.cancelled.emit();
   }
 
   getFormControlErrorMessages(controlName: string): string[] {

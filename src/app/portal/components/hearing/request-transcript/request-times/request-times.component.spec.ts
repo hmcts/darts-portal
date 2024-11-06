@@ -156,9 +156,9 @@ describe('RequestTimesComponent', () => {
 
   describe('#onCancel', () => {
     it('should emit the cancel event', () => {
-      jest.spyOn(component.cancel, 'emit');
+      jest.spyOn(component.cancelled, 'emit');
       component.onCancel();
-      expect(component.cancel.emit).toHaveBeenCalled();
+      expect(component.cancelled.emit).toHaveBeenCalled();
     });
   });
 

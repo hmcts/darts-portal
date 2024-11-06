@@ -103,5 +103,5 @@
 </ng-container>
 
 @if (isDeleting && transformedMedia) {
-  <app-delete [numberOfItems]="1" (confirm)="onDeleteConfirmed()" (cancel)="isDeleting = false"></app-delete>
+  <app-delete [numberOfItems]="1" (confirm)="onDeleteConfirmed()" (cancelled)="isDeleting = false"></app-delete>
 }

@@ -18,7 +18,7 @@
       cancelButtonTxt="No - cancel"
       [isRedDeleteButton]="true"
       (confirm)="onDeleteConfirmed()"
-      (cancel)="onDeleteCancelled()"
+      (cancelled)="onDeleteCancelled()"
     >
       <app-data-table id="deletionTable" [rows]="[eventMapping]" [columns]="deleteColumns">
         <ng-template [tableRowTemplate]="[eventMapping]" let-row>

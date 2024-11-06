@@ -36,7 +36,7 @@ export class SecurityGroupSelectorComponent implements OnInit {
   @Input() groups: UserGroup[] = [];
   @Input() selectedGroupIds: number[] = [];
   @Output() assign = new EventEmitter<UserGroup[]>();
-  @Output() cancel = new EventEmitter<void>();
+  @Output() cancelled = new EventEmitter<void>();
 
   filteredGroups: UserGroup[] = [];
   selectedGroups: UserGroup[] = [];

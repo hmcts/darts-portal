@@ -28,7 +28,7 @@
       deleteButtonTxt="Confirm"
       [isRedDeleteButton]="false"
       (confirm)="onDeleteConfirmed()"
-      (cancel)="onDeleteCancelled()"
+      (cancelled)="onDeleteCancelled()"
     >
       <div class="govuk-grid-column-one-half">
         <app-data-table id="deletionTable" [rows]="selectedUsers" [columns]="deleteColumns"></app-data-table>

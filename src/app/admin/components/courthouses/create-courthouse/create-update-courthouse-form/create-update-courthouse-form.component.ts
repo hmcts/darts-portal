@@ -36,7 +36,7 @@ const controlErrors: FormErrorMessages = {
 export class CreateUpdateCourthouseFormComponent implements OnInit {
   constructor(private elementRef: ElementRef<HTMLElement>) {}
   @Output() submitForm = new EventEmitter<CreateUpdateCourthouseFormValues>();
-  @Output() cancel = new EventEmitter<void>();
+  @Output() cancelled = new EventEmitter<void>();
   @Output() errors = new EventEmitter<ErrorSummaryEntry[]>();
 
   @Input() updateCourthouse: CreateUpdateCourthouseFormValues | null = null;
@@ -116,7 +116,7 @@ export class CreateUpdateCourthouseFormComponent implements OnInit {
   }
 
   onCancel() {
-    this.cancel.emit();
+    this.cancelled.emit();
   }
 
   getFormControlErrorMessages(controlName: string): string[] {

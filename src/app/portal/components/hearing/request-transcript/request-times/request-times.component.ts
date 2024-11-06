@@ -28,7 +28,7 @@ export class RequestTimesComponent {
   @Input() events: HearingEvent[] = [];
   @Input() hearing!: Hearing;
   @Output() continue = new EventEmitter<{ startTime: DateTime | null; endTime: DateTime | null }>();
-  @Output() cancel = new EventEmitter<void>();
+  @Output() cancelled = new EventEmitter<void>();
   @Output() errors = new EventEmitter<{ fieldId: string; message: string }[]>();
 
   validationErrors: { fieldId: string; message: string }[] = [];
@@ -93,7 +93,7 @@ export class RequestTimesComponent {
     this.form.reset();
     this.eventTable.onSelectAllChanged(false);
     this.isSubmitted = false;
-    this.cancel.emit();
+    this.cancelled.emit();
   }
 
   onContinue() {
