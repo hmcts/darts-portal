@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } fr
 import { FeatureFlagService } from '@services/app-config/feature-flag.service';
 import { eventObfuscationGuard } from './event-obfuscation-guard';
 
-describe('eventObfucationGuard', () => {
+describe('eventObfuscationGuard', () => {
   const mockRouteSnapshot = {} as ActivatedRouteSnapshot;
   const mockStateRouter = {} as RouterStateSnapshot;
 
@@ -22,7 +22,7 @@ describe('eventObfucationGuard', () => {
         {
           provide: FeatureFlagService,
           useValue: {
-            isManualDeletionEnabled: jest.fn().mockReturnValue(isObfuscationEnabled),
+            isEventObfuscationEnabled: jest.fn().mockReturnValue(isObfuscationEnabled),
           },
         },
       ],
@@ -41,7 +41,7 @@ describe('eventObfucationGuard', () => {
     expect(result).toBe(false);
   });
 
-  it('should navigate to page-not-found if event obfucation is disabled', () => {
+  it('should navigate to page-not-found if event obfuscation is disabled', () => {
     prepareGuard(false);
     const router = TestBed.inject(Router);
     const navigateSpy = jest.spyOn(router, 'navigateByUrl');
@@ -51,7 +51,7 @@ describe('eventObfucationGuard', () => {
     expect(navigateSpy).toHaveBeenCalledWith('page-not-found');
   });
 
-  it('should not navigate if manual deletion is enabled', () => {
+  it('should not navigate if event obfuscation is enabled', () => {
     prepareGuard(true);
     const router = TestBed.inject(Router);
     const navigateSpy = jest.spyOn(router, 'navigateByUrl');
@@ -61,10 +61,10 @@ describe('eventObfucationGuard', () => {
     expect(navigateSpy).not.toHaveBeenCalled();
   });
 
-  it('should call isManualDeletionEnabled on FeatureFlagService', () => {
+  it('should call isEventObfuscationEnabled on FeatureFlagService', () => {
     prepareGuard(true);
     const featureFlagService = TestBed.inject(FeatureFlagService);
-    const spy = jest.spyOn(featureFlagService, 'isManualDeletionEnabled');
+    const spy = jest.spyOn(featureFlagService, 'isEventObfuscationEnabled');
 
     executeGuard(mockRouteSnapshot, mockStateRouter);
 

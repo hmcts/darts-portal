@@ -56,6 +56,9 @@ describe('DynatraceService', () => {
         manualDeletion: {
           enabled: 'true',
         },
+        eventObfuscation: {
+          enabled: 'true',
+        },
       },
     });
 
@@ -79,6 +82,9 @@ describe('DynatraceService', () => {
       support: { name: 'name', emailAddress: 'email' },
       features: {
         manualDeletion: {
+          enabled: 'true',
+        },
+        eventObfuscation: {
           enabled: 'true',
         },
       },
@@ -112,6 +118,9 @@ describe('DynatraceService', () => {
       support: { name: 'name', emailAddress: 'email' },
       features: {
         manualDeletion: {
+          enabled: 'true',
+        },
+        eventObfuscation: {
           enabled: 'true',
         },
       },

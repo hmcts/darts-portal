@@ -49,7 +49,7 @@ describe('ViewEventComponent', () => {
   let component: ViewEventComponent;
   let fixture: ComponentFixture<ViewEventComponent>;
 
-  const setup = (isAdmin: boolean, event: Event, isManualDeletionEnabled = true) => {
+  const setup = (isAdmin: boolean, event: Event, isManualDeletionEnabled = true, isEventObfuscationEnabled = true) => {
     TestBed.configureTestingModule({
       imports: [ViewEventComponent],
       providers: [
@@ -57,7 +57,10 @@ describe('ViewEventComponent', () => {
         { provide: UserService, useValue: { isAdmin: jest.fn().mockReturnValue(isAdmin) } },
         {
           provide: FeatureFlagService,
-          useValue: { isManualDeletionEnabled: jest.fn().mockReturnValue(isManualDeletionEnabled) },
+          useValue: {
+            isManualDeletionEnabled: jest.fn().mockReturnValue(isManualDeletionEnabled),
+            isEventObfuscationEnabled: jest.fn().mockReturnValue(isEventObfuscationEnabled),
+          },
         },
         DatePipe,
         provideRouter([]),
@@ -142,7 +145,7 @@ describe('ViewEventComponent', () => {
   });
 
   it('does not show obfuscate button when feature flag is disabled', () => {
-    setup(true, mockEvent, false);
+    setup(true, mockEvent, false, false);
     fixture.detectChanges();
     const deleteButton = fixture.debugElement.query(By.css('#obfuscate-button'));
     expect(deleteButton).toBeFalsy();
