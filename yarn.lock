@@ -68,7 +68,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular-devkit/architect@npm:0.1802.11, @angular-devkit/architect@npm:>=0.1800.0 < 0.1900.0, @angular-devkit/architect@npm:^0.1802.11":
+"@angular-devkit/architect@npm:0.1802.11, @angular-devkit/architect@npm:>=0.1800.0 < 0.1900.0, @angular-devkit/architect@npm:^0.1802.0":
   version: 0.1802.11
   resolution: "@angular-devkit/architect@npm:0.1802.11"
   dependencies:
@@ -270,7 +270,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular-eslint/builder@npm:^18.4.0":
+"@angular-eslint/builder@npm:^18.1.0":
   version: 18.4.0
   resolution: "@angular-eslint/builder@npm:18.4.0"
   peerDependencies:
@@ -287,7 +287,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular-eslint/eslint-plugin-template@npm:18.4.0, @angular-eslint/eslint-plugin-template@npm:^18.4.0":
+"@angular-eslint/eslint-plugin-template@npm:18.4.0, @angular-eslint/eslint-plugin-template@npm:^18.1.0":
   version: 18.4.0
   resolution: "@angular-eslint/eslint-plugin-template@npm:18.4.0"
   dependencies:
@@ -304,7 +304,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular-eslint/eslint-plugin@npm:18.4.0, @angular-eslint/eslint-plugin@npm:^18.4.0":
+"@angular-eslint/eslint-plugin@npm:18.4.0, @angular-eslint/eslint-plugin@npm:^18.1.0":
   version: 18.4.0
   resolution: "@angular-eslint/eslint-plugin@npm:18.4.0"
   dependencies:
@@ -318,7 +318,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular-eslint/schematics@npm:^18.4.0":
+"@angular-eslint/schematics@npm:^18.1.0":
   version: 18.4.0
   resolution: "@angular-eslint/schematics@npm:18.4.0"
   dependencies:
@@ -334,7 +334,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular-eslint/template-parser@npm:^18.4.0":
+"@angular-eslint/template-parser@npm:^18.1.0":
   version: 18.4.0
   resolution: "@angular-eslint/template-parser@npm:18.4.0"
   dependencies:
@@ -360,7 +360,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/animations@npm:^18.2.10":
+"@angular/animations@npm:^18.1.0":
   version: 18.2.11
   resolution: "@angular/animations@npm:18.2.11"
   dependencies:
@@ -426,7 +426,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/build@npm:^18.2.11":
+"@angular/build@npm:^18.1.0":
   version: 18.2.11
   resolution: "@angular/build@npm:18.2.11"
   dependencies:
@@ -486,7 +486,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/cdk@npm:^18.2.11":
+"@angular/cdk@npm:^18.1.0":
   version: 18.2.12
   resolution: "@angular/cdk@npm:18.2.12"
   dependencies:
@@ -503,7 +503,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/cli@npm:^18.2.11":
+"@angular/cli@npm:^18.1.0":
   version: 18.2.11
   resolution: "@angular/cli@npm:18.2.11"
   dependencies:
@@ -535,7 +535,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/common@npm:^18.2.10":
+"@angular/common@npm:^18.1.0":
   version: 18.2.11
   resolution: "@angular/common@npm:18.2.11"
   dependencies:
@@ -547,7 +547,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/compiler-cli@npm:^18.2.10":
+"@angular/compiler-cli@npm:^18.1.0":
   version: 18.2.11
   resolution: "@angular/compiler-cli@npm:18.2.11"
   dependencies:
@@ -570,7 +570,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/compiler@npm:^18.2.10":
+"@angular/compiler@npm:^18.1.0":
   version: 18.2.11
   resolution: "@angular/compiler@npm:18.2.11"
   dependencies:
@@ -584,7 +584,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/core@npm:^18.2.10":
+"@angular/core@npm:^18.1.0":
   version: 18.2.11
   resolution: "@angular/core@npm:18.2.11"
   dependencies:
@@ -596,7 +596,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/forms@npm:^18.2.10":
+"@angular/forms@npm:^18.1.0":
   version: 18.2.11
   resolution: "@angular/forms@npm:18.2.11"
   dependencies:
@@ -610,7 +610,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/platform-browser-dynamic@npm:^18.2.10":
+"@angular/platform-browser-dynamic@npm:^18.1.0":
   version: 18.2.11
   resolution: "@angular/platform-browser-dynamic@npm:18.2.11"
   dependencies:
@@ -624,7 +624,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/platform-browser@npm:^18.2.10":
+"@angular/platform-browser@npm:^18.1.0":
   version: 18.2.11
   resolution: "@angular/platform-browser@npm:18.2.11"
   dependencies:
@@ -640,7 +640,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/router@npm:^18.2.10":
+"@angular/router@npm:^18.1.0":
   version: 18.2.11
   resolution: "@angular/router@npm:18.2.11"
   dependencies:
@@ -8422,24 +8422,24 @@ __metadata:
   dependencies:
     "@angular-builders/custom-webpack": ^18.0.0
     "@angular-builders/dev-server": ^7.3.1
-    "@angular-devkit/architect": ^0.1802.11
-    "@angular-eslint/builder": ^18.4.0
-    "@angular-eslint/eslint-plugin": ^18.4.0
-    "@angular-eslint/eslint-plugin-template": ^18.4.0
-    "@angular-eslint/schematics": ^18.4.0
-    "@angular-eslint/template-parser": ^18.4.0
-    "@angular/animations": ^18.2.10
-    "@angular/build": ^18.2.11
-    "@angular/cdk": ^18.2.11
-    "@angular/cli": ^18.2.11
-    "@angular/common": ^18.2.10
-    "@angular/compiler": ^18.2.10
-    "@angular/compiler-cli": ^18.2.10
-    "@angular/core": ^18.2.10
-    "@angular/forms": ^18.2.10
-    "@angular/platform-browser": ^18.2.10
-    "@angular/platform-browser-dynamic": ^18.2.10
-    "@angular/router": ^18.2.10
+    "@angular-devkit/architect": ^0.1802.0
+    "@angular-eslint/builder": ^18.1.0
+    "@angular-eslint/eslint-plugin": ^18.1.0
+    "@angular-eslint/eslint-plugin-template": ^18.1.0
+    "@angular-eslint/schematics": ^18.1.0
+    "@angular-eslint/template-parser": ^18.1.0
+    "@angular/animations": ^18.1.0
+    "@angular/build": ^18.1.0
+    "@angular/cdk": ^18.1.0
+    "@angular/cli": ^18.1.0
+    "@angular/common": ^18.1.0
+    "@angular/compiler": ^18.1.0
+    "@angular/compiler-cli": ^18.1.0
+    "@angular/core": ^18.1.0
+    "@angular/forms": ^18.1.0
+    "@angular/platform-browser": ^18.1.0
+    "@angular/platform-browser-dynamic": ^18.1.0
+    "@angular/router": ^18.1.0
     "@dynatrace/dtrum-api-types": ^1.291.1
     "@hmcts/nodejs-healthcheck": ^1.8.5
     "@hmcts/properties-volume": ^1.1.0
