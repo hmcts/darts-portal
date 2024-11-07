@@ -17,5 +17,86 @@
 
   <app-govuk-tag [colour]="task.isActive ? 'blue' : 'grey'">{{ task.isActive ? 'Active' : 'Inactive' }}</app-govuk-tag>
 
-  <app-details-table title="" [details]="details()"></app-details-table>
+  <dl govukSummaryList>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Task ID</dt>
+      <dd govukSummaryValue>{{ task.id }}</dd>
+    </div>
+
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Name</dt>
+      <dd govukSummaryValue>{{ task.name }}</dd>
+    </div>
+
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Description</dt>
+      <dd govukSummaryValue>{{ task.description }}</dd>
+    </div>
+
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Cron expression</dt>
+      <dd govukSummaryValue>{{ task.cronExpression }}</dd>
+    </div>
+
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Cron editable</dt>
+      <dd govukSummaryValue>{{ task.isCronEditable ? 'Yes' : 'No' }}</dd>
+    </div>
+
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Batch size</dt>
+      <dd govukSummaryValue>{{ task.batchSize }}</dd>
+      <dd govukSummaryAction>
+        <a class="govuk-link" [routerLink]="['change-batch-size']" [state]="{ task }">Change</a>
+      </dd>
+    </div>
+
+    @if (task.armAttributeType === 'RPO') {
+      @if (task.rpoCsvStartHour && task.rpoCsvEndHour) {
+        <div govukSummaryListRow>
+          <dt govukSummaryKey>RPO CSV start hour</dt>
+          <dd govukSummaryValue>{{ task.rpoCsvStartHour | luxonDate: dateFormat }}</dd>
+        </div>
+
+        <div govukSummaryListRow>
+          <dt govukSummaryKey>RPO CSV end hour</dt>
+          <dd govukSummaryValue>{{ task.rpoCsvEndHour | luxonDate: dateFormat }}</dd>
+        </div>
+      }
+    }
+
+    @if (task.armAttributeType === 'REPLAY') {
+      @if (task.armReplayStartTs && task.armReplayEndTs) {
+        <div govukSummaryListRow>
+          <dt govukSummaryKey>ARM Replay start time</dt>
+          <dd govukSummaryValue>{{ task.armReplayStartTs | luxonDate: dateFormat }}</dd>
+        </div>
+
+        <div govukSummaryListRow>
+          <dt govukSummaryKey>ARM Replay end time</dt>
+          <dd govukSummaryValue>{{ task.armReplayEndTs | luxonDate: dateFormat }}</dd>
+        </div>
+      }
+    }
+
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Date created</dt>
+      <dd govukSummaryValue>{{ task.createdAt | luxonDate: dateFormat }}</dd>
+    </div>
+
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Created by</dt>
+      <dd govukSummaryValue>{{ task.createdByFullName }}</dd>
+    </div>
+
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Date modified</dt>
+      <dd govukSummaryValue>{{ task.lastModifiedAt | luxonDate: dateFormat }}</dd>
+    </div>
+
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Modified by</dt>
+      <dd govukSummaryValue>{{ task.modifiedByFullName }}</dd>
+    </div>
+  </dl>
 }

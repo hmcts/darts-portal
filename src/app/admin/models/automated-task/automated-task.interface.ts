@@ -13,4 +13,9 @@ export interface AutomatedTaskDetailsData extends AutomatedTaskData {
   created_by: number;
   last_modified_at: string;
   last_modified_by: number;
+  rpo_csv_start_hour?: string;
+  rpo_csv_end_hour?: string;
+  arm_replay_start_ts?: string;
+  arm_replay_end_ts?: string;
+  arm_attribute_type?: 'RPO' | 'REPLAY';
 }

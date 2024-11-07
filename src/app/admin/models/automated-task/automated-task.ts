@@ -17,4 +17,9 @@ export type AutomatedTaskDetails = AutomatedTask & {
   lastModifiedBy: number;
   createdByFullName?: string;
   modifiedByFullName?: string;
+  rpoCsvStartHour?: DateTime;
+  rpoCsvEndHour?: DateTime;
+  armReplayStartTs?: DateTime;
+  armReplayEndTs?: DateTime;
+  armAttributeType?: 'RPO' | 'REPLAY';
 };
