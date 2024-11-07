@@ -48,6 +48,8 @@
       <h2 class="govuk-heading-m">Retention audit history</h2>
       <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
       <app-data-table
+        caption="Retention audit history for this case"
+        [hiddenCaption]="true"
         id="retentionTable"
         noDataMessage="No history to show"
         [columns]="columns"

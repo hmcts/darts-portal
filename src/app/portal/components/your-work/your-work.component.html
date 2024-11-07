@@ -23,6 +23,8 @@
     <div *tab="'To do'; id: 'todo-tab'; count: requests.todoRequests.length">
       <h2 class="govuk-heading-m">To do</h2>
       <app-data-table
+        caption="Oustanding transcript requests to complete"
+        [hiddenCaption]="true"
         id="todoTable"
         noDataMessage="There are no outstanding transcript requests"
         [rows]="requests.todoRequests"
@@ -40,6 +42,8 @@
     <div *tab="'Completed today'; id: 'completed-tab'">
       <h2 class="govuk-heading-m" tabindex="0">Completed today</h2>
       <app-data-table
+        caption="Transcript requests completed today"
+        [hiddenCaption]="true"
         id="completedTable"
         noDataMessage="There are no transcript requests completed today"
         [rows]="requests.completedRequests"

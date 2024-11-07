@@ -1,4 +1,4 @@
-<app-data-table [columns]="columns" [rows]="rows()">
+<app-data-table caption="Cases associated with the audio" [hiddenCaption]="true" [columns]="columns" [rows]="rows()">
   <ng-template [tableRowTemplate]="rows()" let-row>
     <td class="case-id">
       <a class="govuk-link" [routerLink]="['/case', row.caseId]"> {{ row.caseNumber }}</a>

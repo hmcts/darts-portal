@@ -1,4 +1,11 @@
-<app-data-table [rowSelectable]="rowSelect" [columns]="columns" [rows]="rows()" (rowSelect)="setSelectedRows($event)">
+<app-data-table
+  caption="Associated audio based on time and location"
+  [hiddenCaption]="true"
+  [rowSelectable]="rowSelect"
+  [columns]="columns"
+  [rows]="rows()"
+  (rowSelect)="setSelectedRows($event)"
+>
   <ng-template [tableRowTemplate]="rows()" let-row>
     <td class="audio-id">
       <a
