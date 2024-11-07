@@ -5,13 +5,13 @@ import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Route, Router, provideRouter } from '@angular/router';
 import { UserState } from '@core-types/user/user-state.interface';
+import { FeatureFlagService } from '@services/app-config/feature-flag.service';
+import { AuthService } from '@services/auth/auth.service';
 import { CaseService } from '@services/case/case.service';
 import { UserService } from '@services/user/user.service';
 import { of } from 'rxjs/internal/observable/of';
 import { ADMIN_ROUTES } from './admin/admin.routes';
 import { APP_ROUTES } from './app.routes';
-import { AuthService } from '@services/auth/auth.service';
-import { FeatureFlagService } from '@services/app-config/feature-flag.service';
 import { PORTAL_ROUTES } from './portal/portal.routes';
 
 describe('App Routes', () => {
@@ -42,6 +42,7 @@ describe('App Routes', () => {
 
     mockFeatureFlagService = {
       isManualDeletionEnabled: jest.fn().mockReturnValue(true),
+      isEventObfuscationEnabled: jest.fn().mockReturnValue(true),
     };
 
     TestBed.configureTestingModule({

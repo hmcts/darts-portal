@@ -21,6 +21,9 @@
   "features": {
     "manualDeletion": {
       "enabled": "false"
+    },
+    "eventObfuscation": {
+      "enabled": "false"
     }
   },
   "dynatrace": {

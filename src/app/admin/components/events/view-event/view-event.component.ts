@@ -36,16 +36,16 @@ export class ViewEventComponent {
   eventsFacadeService = inject(EventsFacadeService);
   userService = inject(UserService);
   router = inject(Router);
-  isManualDeletionEnabled = inject(FeatureFlagService).isManualDeletionEnabled();
+  isEventObfuscationEnabled = inject(FeatureFlagService).isEventObfuscationEnabled();
 
   id = input(0, { transform: numberAttribute });
   isObfuscationSuccess = input(null, { transform: optionalStringToBooleanOrNull });
 
   event = toSignal(toObservable(this.id).pipe(switchMap((id) => this.eventsFacadeService.getEvent(id))));
 
-  // manual deletion feature flag must be enabled, user must be SUPER_ADMIN, event is not already obfuscated
+  // event obfuscation feature flag must be enabled, user must be SUPER_ADMIN, event is not already obfuscated
   showObfuscateButton = computed(
-    () => this.isManualDeletionEnabled && this.userService.isAdmin() && !this.event()?.isDataAnonymised
+    () => this.isEventObfuscationEnabled && this.userService.isAdmin() && !this.event()?.isDataAnonymised
   );
 
   showAnonymisedTextBanner = computed(() => this.event()?.isDataAnonymised);
