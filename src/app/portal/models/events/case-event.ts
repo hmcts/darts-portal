@@ -7,4 +7,5 @@ export type CaseEvent = {
   timestamp: DateTime;
   name: string;
   text: string;
+  isDataAnonymised?: boolean;
 };

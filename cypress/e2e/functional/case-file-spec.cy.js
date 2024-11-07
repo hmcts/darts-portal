@@ -138,10 +138,15 @@ describe('Case file screen', () => {
         cy.get('#court-log-table')
           .find('.govuk-table__row')
           .then((rows) => {
-            expect(rows.length).equal(4);
+            expect(rows.length).equal(5);
           });
 
         cy.a11y();
+      });
+
+      it('should show message for anonymised events', () => {
+        cy.contains('Court log').click();
+        cy.get('.govuk-hint').contains('The event text has been anonymised in line with HMCTS policy');
       });
     });
 
