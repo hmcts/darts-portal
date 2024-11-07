@@ -5,7 +5,7 @@
     [groups]="groups"
     [selectedGroupIds]="user.securityGroupIds"
     (assign)="onAssign($event)"
-    (cancel)="onCancel()"
+    (cancelled)="onCancel()"
   ></app-security-group-selector>
 } @else {
   <app-loading text="Loading security groups" />

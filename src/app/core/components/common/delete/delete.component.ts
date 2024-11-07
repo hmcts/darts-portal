@@ -16,7 +16,7 @@ export class DeleteComponent implements OnInit, OnDestroy {
   @Input() cancelButtonTxt = 'Cancel';
   @Input() isRedDeleteButton = true;
   @Output() confirm = new EventEmitter();
-  @Output() cancel = new EventEmitter();
+  @Output() cancelled = new EventEmitter();
 
   headerService = inject(HeaderService);
 

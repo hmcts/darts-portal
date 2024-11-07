@@ -8,7 +8,7 @@
     [allGroups]="data.groups"
     [roles]="data.roles"
     (saveGroup)="onSave($event)"
-    (cancel)="cancel()"
+    (cancelled)="cancel()"
     (errors)="errors = $event"
   />
 } @else {

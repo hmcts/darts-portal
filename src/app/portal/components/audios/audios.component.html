@@ -120,7 +120,7 @@
   <app-delete
     [numberOfItems]="selectedAudioRequests.length"
     (confirm)="onDeleteConfirmed()"
-    (cancel)="onDeleteCancelled()"
+    (cancelled)="onDeleteCancelled()"
   >
     <app-data-table
       id="deletionTable"

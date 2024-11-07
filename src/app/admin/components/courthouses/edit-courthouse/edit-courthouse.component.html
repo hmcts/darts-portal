@@ -16,7 +16,7 @@
     [hidden]="!!isConfirmation"
     (submitForm)="onSubmit($event)"
     (errors)="errors = $event"
-    (cancel)="onCancel()"
+    (cancelled)="onCancel()"
     [regions]="vm.regions"
     [companies]="vm.companies"
   />
@@ -25,7 +25,7 @@
     [values]="updateCourthouse"
     (confirm)="saveCourthouse()"
     (back)="onBack()"
-    (cancel)="onCancel()"
+    (cancelled)="onCancel()"
     [hidden]="!isConfirmation"
     [regions]="vm.regions"
     [companies]="vm.companies"

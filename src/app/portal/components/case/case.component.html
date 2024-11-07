@@ -2,7 +2,7 @@
   <app-delete
     [numberOfItems]="selectedAnnotationsforDeletion.length"
     (confirm)="onDeleteConfirmed()"
-    (cancel)="onDeleteCancelled()"
+    (cancelled)="onDeleteCancelled()"
   />
 } @else {
   @if (data$ | async; as data) {

@@ -34,7 +34,7 @@ export class RequestTranscriptConfirmationComponent {
   @Input() transcriptionTypes: TranscriptionType[] = [];
   @Input() audioTimes?: { startTime: DateTime | null; endTime: DateTime | null };
 
-  @Output() cancel = new EventEmitter<void>();
+  @Output() cancelled = new EventEmitter<void>();
   @Output() confirm = new EventEmitter<string>();
   @Output() errors = new EventEmitter<{ fieldId: string; message: string }[]>();
 
@@ -72,6 +72,6 @@ export class RequestTranscriptConfirmationComponent {
   }
 
   onCancel() {
-    this.cancel.emit();
+    this.cancelled.emit();
   }
 }

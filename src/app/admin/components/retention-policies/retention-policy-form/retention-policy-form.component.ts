@@ -46,7 +46,7 @@ export class RetentionPolicyFormComponent implements OnInit, OnChanges {
   @Input() policies: RetentionPolicy[] = [];
   @Input() savePolicyError: RetentionPolicyErrorCode | null = null; // Pass in server side error
   @Output() submitPolicy = new EventEmitter<RetentionPolicyForm>();
-  @Output() cancel = new EventEmitter<void>();
+  @Output() cancelled = new EventEmitter<void>();
   @Output() errors = new EventEmitter<ErrorSummaryEntry[]>(); // emit frontend form validation errors
 
   isSubmitted = false;

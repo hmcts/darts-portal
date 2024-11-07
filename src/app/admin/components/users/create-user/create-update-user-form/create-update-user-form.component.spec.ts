@@ -143,10 +143,10 @@ describe('CreateUpdateUserFormComponent', () => {
 
   describe('#onCancel', () => {
     it('emits cancel event', () => {
-      jest.spyOn(component.cancel, 'emit');
+      jest.spyOn(component.cancelled, 'emit');
       component.onCancel();
 
-      expect(component.cancel.emit).toHaveBeenCalled();
+      expect(component.cancelled.emit).toHaveBeenCalled();
     });
   });
 

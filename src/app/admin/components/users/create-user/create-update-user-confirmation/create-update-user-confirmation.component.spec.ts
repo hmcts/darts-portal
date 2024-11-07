@@ -58,9 +58,9 @@ describe('CreateUpdateUserConfirmationComponent', () => {
     });
 
     it('should emit cancel event', () => {
-      jest.spyOn(component.cancel, 'emit');
+      jest.spyOn(component.cancelled, 'emit');
       fixture.nativeElement.querySelector('#cancel-link').click();
-      expect(component.cancel.emit).toHaveBeenCalled();
+      expect(component.cancelled.emit).toHaveBeenCalled();
     });
   });
 

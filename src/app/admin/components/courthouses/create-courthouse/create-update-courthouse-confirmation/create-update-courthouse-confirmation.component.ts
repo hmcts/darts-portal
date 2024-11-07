@@ -24,7 +24,7 @@ export class CreateUpdateCourthouseConfirmationComponent {
   @Input() hasData: boolean = false;
   @Output() confirm = new EventEmitter<void>();
   @Output() back = new EventEmitter<void>();
-  @Output() cancel = new EventEmitter<void>();
+  @Output() cancelled = new EventEmitter<void>();
 
   router = inject(Router);
   currentUrl = this.router.url.split('#')[0];

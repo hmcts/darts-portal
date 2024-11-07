@@ -31,7 +31,7 @@ const controlErrors: FormErrorMessages = {
 })
 export class CreateUpdateUserFormComponent implements OnInit {
   @Output() submitForm = new EventEmitter<CreateUpdateUserFormValues>();
-  @Output() cancel = new EventEmitter<void>();
+  @Output() cancelled = new EventEmitter<void>();
   @Output() errors = new EventEmitter<ErrorSummaryEntry[]>();
 
   @Input() updateUser: CreateUpdateUserFormValues | null = null;
@@ -98,7 +98,7 @@ export class CreateUpdateUserFormComponent implements OnInit {
   }
 
   onCancel() {
-    this.cancel.emit();
+    this.cancelled.emit();
   }
 
   getFormControlErrorMessages(controlName: string): string[] {

@@ -2,7 +2,7 @@
   <app-delete
     [numberOfItems]="selectedAnnotationsforDeletion.length"
     (confirm)="onDeleteConfirmed()"
-    (cancel)="onDeleteCancelled()"
+    (cancelled)="onDeleteCancelled()"
   >
     <app-data-table id="deletionTable" [rows]="selectedAnnotationsforDeletion"> </app-data-table>
   </app-delete>
