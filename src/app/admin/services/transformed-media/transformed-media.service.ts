@@ -185,7 +185,7 @@ export class TransformedMediaService {
     return {
       media_request_id: searchCriteria.requestId ? searchCriteria.requestId : null,
       case_number: searchCriteria.caseId ? searchCriteria.caseId : null,
-      courthouse_display_name: searchCriteria.courthouse ? searchCriteria.courthouse : null,
+      courthouse_display_name: searchCriteria.courthouse ? searchCriteria.courthouse.toUpperCase() : null,
       hearing_date: hearingDate,
       owner: searchCriteria.owner ? searchCriteria.owner : null,
       requested_by: searchCriteria.requestedBy ? searchCriteria.requestedBy : null,

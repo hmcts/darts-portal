@@ -208,8 +208,8 @@ export class CaseService {
 
     return {
       case_number: searchFormValues.caseNumber || null,
-      courthouse: searchFormValues.courthouse || null,
-      courtroom: searchFormValues.courtroom || null,
+      courthouse: searchFormValues.courthouse.toUpperCase() || null,
+      courtroom: searchFormValues.courtroom.toUpperCase() || null,
       date_from: dateFrom || null,
       date_to: dateTo || null,
       judge_name: searchFormValues.judgeName || null,
