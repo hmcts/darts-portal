@@ -2,6 +2,8 @@
 
 @if (transcriptRequests$ | async; as rows) {
   <app-data-table
+    caption="Unassigned transcript requests"
+    [hiddenCaption]="true"
     id="transcript-requests-table"
     [rows]="rows"
     [columns]="columns"

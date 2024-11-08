@@ -1,4 +1,10 @@
-<app-data-table noDataMessage="There are no files marked for deletion." [rows]="rows()" [columns]="columns()">
+<app-data-table
+  caption="Audio files marked for deletion"
+  [hiddenCaption]="true"
+  noDataMessage="There are no files marked for deletion."
+  [rows]="rows()"
+  [columns]="columns()"
+>
   <ng-template [tableRowTemplate]="rows()" let-row>
     <td>
       <a

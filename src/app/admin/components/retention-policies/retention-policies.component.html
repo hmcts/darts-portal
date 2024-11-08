@@ -6,6 +6,8 @@
   <app-tabs>
     <app-data-table
       *tab="'Active'"
+      caption="Active retention policies"
+      [hiddenCaption]="true"
       id="active-policies-table"
       [rows]="rows.activeRetentionPolicies"
       [columns]="activeColumns"
@@ -39,6 +41,8 @@
     </app-data-table>
     <app-data-table
       *tab="'Inactive'"
+      caption="Inactive retention policies"
+      [hiddenCaption]="true"
       id="inactive-policies-table"
       [rows]="rows.inactiveRetentionPolicies"
       [columns]="inActiveColumns"

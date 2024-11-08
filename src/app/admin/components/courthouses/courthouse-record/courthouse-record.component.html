@@ -31,7 +31,13 @@
       (cancelled)="onDeleteCancelled()"
     >
       <div class="govuk-grid-column-one-half">
-        <app-data-table id="deletionTable" [rows]="selectedUsers" [columns]="deleteColumns"></app-data-table>
+        <app-data-table
+          caption="Selected user(s) to be removed from courthouse"
+          [hiddenCaption]="true"
+          id="deletionTable"
+          [rows]="selectedUsers"
+          [columns]="deleteColumns"
+        ></app-data-table>
       </div>
     </app-delete>
   } @else {

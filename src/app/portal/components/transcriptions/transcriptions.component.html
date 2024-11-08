@@ -22,6 +22,8 @@
     (cancelled)="onDeleteCancelled()"
   >
     <app-data-table
+      caption="Transcript request(s) to delete"
+      [hiddenCaption]="true"
       id="deletionTable"
       [rows]="selectedRequests"
       [columns]="deleteColumns"
