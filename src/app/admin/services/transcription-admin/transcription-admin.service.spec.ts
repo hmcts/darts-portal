@@ -110,7 +110,7 @@ describe('TranscriptionAdminService', () => {
       const expectedBody = {
         transcription_id: 123,
         case_number: '456',
-        courthouse_display_name: 'Test Courthouse',
+        courthouse_display_name: 'TEST COURTHOUSE',
         hearing_date: '2022-01-01',
         owner: 'Test Owner',
         requested_by: 'Test Requester',
@@ -758,7 +758,7 @@ describe('TranscriptionAdminService', () => {
 
       const expectedBody = {
         case_number: '123',
-        courthouse_display_name: 'Test Courthouse',
+        courthouse_display_name: 'TEST COURTHOUSE',
         hearing_date: '2022-01-01',
         requested_at_from: '2022-01-01',
         requested_at_to: '2022-01-31',

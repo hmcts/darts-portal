@@ -434,8 +434,8 @@ describe('CaseService', () => {
 
       const expectedBody: SearchFormValues = {
         case_number: '123',
-        courthouse: 'Court A',
-        courtroom: 'Room B',
+        courthouse: 'COURT A',
+        courtroom: 'ROOM B',
         judge_name: 'Judge C',
         defendant_name: 'Defendant D',
         date_from: '2023-01-01',
@@ -477,8 +477,8 @@ describe('CaseService', () => {
 
       const expectedBody: SearchFormValues = {
         case_number: '123',
-        courthouse: 'Court A',
-        courtroom: 'Room B',
+        courthouse: 'COURT A',
+        courtroom: 'ROOM B',
         judge_name: 'Judge C',
         defendant_name: 'Defendant D',
         date_from: '2023-01-01',
