@@ -480,7 +480,7 @@ export class TranscriptionAdminService {
               !isCompletedSearch && (values.requestId || values.requestId === '0') ? Number(values.requestId) : null,
           }),
       case_number: values.caseId || null,
-      courthouse_display_name: values.courthouse || null,
+      courthouse_display_name: values.courthouse?.toUpperCase() || null,
       hearing_date: formatDate(values.hearingDate),
       owner: values.owner || null,
       requested_by: values.requestedBy || null,

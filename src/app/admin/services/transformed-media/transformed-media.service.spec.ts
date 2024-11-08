@@ -52,7 +52,7 @@ describe('TransformedMediaService', () => {
       const mockBody = {
         media_request_id: '123',
         case_number: '456',
-        courthouse_display_name: 'courthouse',
+        courthouse_display_name: 'COURTHOUSE',
         hearing_date: '2021-01-01',
         owner: 'owner',
         requested_by: 'requestedBy',

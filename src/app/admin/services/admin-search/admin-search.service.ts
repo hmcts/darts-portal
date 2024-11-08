@@ -173,7 +173,7 @@ export class AdminSearchService {
     return {
       courthouse_ids: courthouses.map((c) => c.id),
       case_number: caseId ? caseId : null,
-      courtroom_name: courtroom ? courtroom : null,
+      courtroom_name: courtroom ? courtroom.toUpperCase() : null,
       hearing_start_at: hearing_start_at ?? null,
       hearing_end_at: hearing_end_at ?? null,
     };
