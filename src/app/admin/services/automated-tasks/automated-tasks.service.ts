@@ -60,6 +60,11 @@ export class AutomatedTasksService {
       createdBy: task.created_by,
       lastModifiedAt: DateTime.fromISO(task.last_modified_at),
       lastModifiedBy: task.last_modified_by,
+      armAttributeType: task.arm_attribute_type,
+      rpoCsvStartHour: task.rpo_csv_start_hour ? DateTime.fromISO(task.rpo_csv_start_hour) : undefined,
+      rpoCsvEndHour: task.rpo_csv_end_hour ? DateTime.fromISO(task.rpo_csv_end_hour) : undefined,
+      armReplayStartTs: task.arm_replay_start_ts ? DateTime.fromISO(task.arm_replay_start_ts) : undefined,
+      armReplayEndTs: task.arm_replay_end_ts ? DateTime.fromISO(task.arm_replay_end_ts) : undefined,
     };
   }
 }

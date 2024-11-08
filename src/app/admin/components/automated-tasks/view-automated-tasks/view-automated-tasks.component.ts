@@ -1,12 +1,14 @@
 import { AutomatedTaskDetails } from '@admin-types/automated-task/automated-task';
 import { AutomatedTaskStatus } from '@admin-types/automated-task/automated-task-status';
-import { Component, computed, inject, input, signal } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, inject, input, signal } from '@angular/core';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
 import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { GovukTagComponent } from '@common/govuk-tag/govuk-tag.component';
+import { GovukSummaryListDirectives } from '@directives/govuk-summary-list';
+import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { AutomatedTasksService } from '@services/automated-tasks/automated-tasks.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { optionalStringToBooleanOrNull } from '@utils/transform.utils';
@@ -23,6 +25,9 @@ import { AutomatedTaskStatusComponent } from '../automated-task-status/automated
     GovukBannerComponent,
     AutomatedTaskStatusComponent,
     GovukTagComponent,
+    RouterLink,
+    LuxonDatePipe,
+    GovukSummaryListDirectives,
   ],
   templateUrl: './view-automated-tasks.component.html',
   styleUrl: './view-automated-tasks.component.scss',
@@ -47,25 +52,6 @@ export class ViewAutomatedTasksComponent {
   }
 
   readonly dateFormat = "EEE d LLL yyyy 'at' HH:mm:ss";
-
-  details = computed(() => ({
-    ID: this.task()?.id,
-    Name: this.task()?.name,
-    Description: this.task()?.description,
-    'Cron expression': this.task()?.cronExpression,
-    'Cron editable': this.task()?.isCronEditable ? 'Yes' : 'No',
-    'Batch size': {
-      value: this.task()?.batchSize,
-      action: {
-        text: 'Change',
-        fn: () => this.router.navigate(['change-batch-size'], { relativeTo: this.route, state: { task: this.task() } }),
-      },
-    },
-    'Date created': this.task()?.createdAt.toFormat(this.dateFormat),
-    'Created by': this.task()?.createdByFullName,
-    'Date modified': this.task()?.lastModifiedAt.toFormat(this.dateFormat),
-    'Modified by': this.task()?.modifiedByFullName,
-  }));
 
   onRunTaskButtonClicked(taskName: string): void {
     this.taskService.runTask(this.taskId).subscribe({

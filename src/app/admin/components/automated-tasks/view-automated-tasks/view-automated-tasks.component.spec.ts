@@ -2,8 +2,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AutomatedTaskDetails } from '@admin-types/automated-task/automated-task';
 import { User } from '@admin-types/index';
+import { DatePipe } from '@angular/common';
 import { HttpResponse } from '@angular/common/http';
+import { By } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+import { GovukSummaryListRowDirective } from '@directives/govuk-summary-list';
 import { AutomatedTasksService } from '@services/automated-tasks/automated-tasks.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { DateTime } from 'luxon';
@@ -48,6 +51,7 @@ describe('ViewAutomatedTasksComponent', () => {
           },
         },
         { provide: UserAdminService, useValue: { getUsersById: jest.fn().mockReturnValue(of(users)) } },
+        DatePipe,
       ],
     }).compileComponents();
 
@@ -60,26 +64,43 @@ describe('ViewAutomatedTasksComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('task details', () => {
-    it('should return the task details', () => {
-      expect(component.details()).toEqual({
-        ID: 1,
-        Name: 'Task 1',
-        Description: 'Task 1 description',
-        'Cron expression': '1 0 0 * * *',
-        'Cron editable': 'Yes',
-        'Batch size': {
-          action: {
-            fn: expect.any(Function),
-            text: 'Change',
-          },
-          value: 1000,
-        },
-        'Date created': 'Fri 1 Jan 2021 at 00:00:00',
-        'Created by': 'User 1',
-        'Date modified': 'Fri 1 Jan 2021 at 00:00:00',
-        'Modified by': 'User 2',
+  describe('armAttributeType is REPLAY', () => {
+    it('displays arm replay start and end times', () => {
+      component.task.set({
+        ...task,
+        armAttributeType: 'REPLAY',
+        armReplayStartTs: DateTime.fromISO('2021-01-01T01:00:00Z'),
+        armReplayEndTs: DateTime.fromISO('2021-01-01T02:00:00Z'),
       });
+
+      fixture.detectChanges();
+
+      const rows = fixture.debugElement.queryAll(By.directive(GovukSummaryListRowDirective));
+      const startTimeRow = rows.find((row) => row.nativeElement.textContent.includes('ARM Replay start time'));
+      const endTimeRow = rows.find((row) => row.nativeElement.textContent.includes('ARM Replay end time'));
+
+      expect(startTimeRow?.nativeElement.textContent).toContain('Fri 1 Jan 2021 at 01:00:00');
+      expect(endTimeRow?.nativeElement.textContent).toContain('Fri 1 Jan 2021 at 02:00:00');
+    });
+  });
+
+  describe('armAttributeType is RPO', () => {
+    it('displays RPO CSV start and end time', () => {
+      component.task.set({
+        ...task,
+        armAttributeType: 'RPO',
+        rpoCsvStartHour: DateTime.fromISO('2021-01-01T03:00:00Z'),
+        rpoCsvEndHour: DateTime.fromISO('2021-01-01T04:00:00Z'),
+      });
+
+      fixture.detectChanges();
+
+      const rows = fixture.debugElement.queryAll(By.directive(GovukSummaryListRowDirective));
+      const startTimeRow = rows.find((row) => row.nativeElement.textContent.includes('RPO CSV start hour'));
+      const endTimeRow = rows.find((row) => row.nativeElement.textContent.includes('RPO CSV end hour'));
+
+      expect(startTimeRow?.nativeElement.textContent).toContain('Fri 1 Jan 2021 at 03:00:00');
+      expect(endTimeRow?.nativeElement.textContent).toContain('Fri 1 Jan 2021 at 04:00:00');
     });
   });
 

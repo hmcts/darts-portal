@@ -24,7 +24,7 @@
 
 <app-govuk-heading tag="h1" size="xl">System configuration</app-govuk-heading>
 
-<app-tabs [default]="currentTab" (tabChange)="onTabChanged($event)">
+<app-tabs [default]="currentTab" [routedTabs]="true" (tabChange)="onTabChanged($event)">
   <app-retention-policies *tab="'Retention policies'" />
 
   <app-event-mapping *tab="'Event mappings'" />

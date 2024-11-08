@@ -12,6 +12,12 @@ export type SummaryListAcion = {
   queryParams?: { [key: string]: string };
 };
 
+/**
+ * @deprecated This component is deprecated and will be removed in future versions.
+ *
+ * Use the GovukSummaryListDirectives instead for the same functionality.
+ * @see GovukSummaryListDirectives
+ */
 @Component({
   selector: 'app-details-table',
   standalone: true,

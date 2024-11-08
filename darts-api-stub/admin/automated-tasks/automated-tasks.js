@@ -15,6 +15,9 @@ const defaultAutomatedTasks = [
     created_by: 1,
     last_modified_at: '2024-01-01T00:00:00Z',
     last_modified_by: 2,
+    rpo_csv_start_hour: '2024-02-01T02:00:00Z',
+    rpo_csv_end_hour: '2024-02-01T03:00:00Z',
+    arm_attribute_type: 'RPO',
   },
   {
     id: 2,
@@ -28,6 +31,9 @@ const defaultAutomatedTasks = [
     created_by: 2,
     last_modified_at: '2024-01-02T00:00:00Z',
     last_modified_by: 2,
+    arm_replay_start_ts: '2024-02-02T02:00:00Z',
+    arm_replay_end_ts: '2024-02-02T03:00:00Z',
+    arm_attribute_type: 'REPLAY',
   },
   {
     id: 3,

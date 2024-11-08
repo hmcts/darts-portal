@@ -1,6 +1,8 @@
 import 'cypress-axe';
 import '../commands';
 
+const rowSelector = '[govukSummaryListRow]';
+
 describe('Admin - Automated tasks screen', () => {
   beforeEach(() => {
     cy.login('admin');
@@ -57,35 +59,18 @@ describe('Admin - Automated tasks screen', () => {
       cy.get('app-govuk-heading .caption').contains('Automated task');
       cy.get('.govuk-tag').contains('Active');
 
-      cy.get('app-details-table dt').contains('ID');
-      cy.get('app-details-table dd').contains('1');
-
-      cy.get('app-details-table dt').contains('Name');
-      cy.get('app-details-table dd').contains('Task 1');
-
-      cy.get('app-details-table dt').contains('Description');
-      cy.get('app-details-table dd').contains('Simulate 202 success');
-
-      cy.get('app-details-table dt').contains('Cron expression');
-      cy.get('app-details-table dd').contains('0 0 1 * * *');
-
-      cy.get('app-details-table dt').contains('Cron editable');
-      cy.get('app-details-table dd').contains('Yes');
-
-      cy.get('app-details-table dt').contains('Batch size');
-      cy.get('app-details-table dd').contains('1000');
-
-      cy.get('app-details-table dt').contains('Date created');
-      cy.get('app-details-table dd').contains('Mon 1 Jan 2024 at 00:00:00');
-
-      cy.get('app-details-table dt').contains('Created by');
-      cy.get('app-details-table dd').contains('Eric Bristow');
-
-      cy.get('app-details-table dt').contains('Date modified');
-      cy.get('app-details-table dd').contains('Mon 1 Jan 2024 at 00:00:00');
-
-      cy.get('app-details-table dt').contains('Modified by');
-      cy.get('app-details-table dd').contains('Fallon Sherrock');
+      cy.get(rowSelector).contains('ID').parent().get('dd').contains('1');
+      cy.get(rowSelector).contains('Name').parent().get('dd').contains('Task 1');
+      cy.get(rowSelector).contains('Description').parent().get('dd').contains('Simulate 202 success');
+      cy.get(rowSelector).contains('Cron expression').parent().get('dd').contains('0 0 1 * * *');
+      cy.get(rowSelector).contains('Cron editable').parent().get('dd').contains('Yes');
+      cy.get(rowSelector).contains('Batch size').parent().get('dd').contains('1000');
+      cy.get(rowSelector).contains('RPO CSV start hour').parent().get('dd').contains('Thu 1 Feb 2024 at 02:00:00');
+      cy.get(rowSelector).contains('RPO CSV end hour').parent().get('dd').contains('Thu 1 Feb 2024 at 03:00:00');
+      cy.get(rowSelector).contains('Date created').parent().get('dd').contains('Mon 1 Jan 2024 at 00:00:00');
+      cy.get(rowSelector).contains('Created by').parent().get('dd').contains('Eric Bristow');
+      cy.get(rowSelector).contains('Date modified').parent().get('dd').contains('Mon 1 Jan 2024 at 00:00:00');
+      cy.get(rowSelector).contains('Modified by').parent().get('dd').contains('Fallon Sherrock');
 
       cy.a11y();
     });
@@ -115,7 +100,7 @@ describe('Admin - Automated tasks screen', () => {
       cy.get('#batch-size').clear().type('2000');
       cy.get('.govuk-button').contains('Confirm').click();
       cy.get('app-govuk-banner').contains('Batch size successfully updated');
-      cy.get('app-details-table dt').contains('Batch size').parents('div').get('dd').contains('2000');
+      cy.get(rowSelector).contains('Batch size').parents().get('dd').contains('2000');
     });
   });
 

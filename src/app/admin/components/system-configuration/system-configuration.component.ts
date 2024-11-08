@@ -51,11 +51,7 @@ export class SystemConfigurationComponent {
   currentTab = this.getTabFromUrl(this.router.url);
 
   onTabChanged(tab: TabDirective) {
-    if (this.currentTab !== tab.name) {
-      const url = this.getUrlFromTab(tab.name);
-      this.location.replaceState(url); // Update the URL without navigating to prevent additional network calls
-      this.currentTab = tab.name;
-    }
+    this.router.navigate([this.getUrlFromTab(tab.name)], { onSameUrlNavigation: 'ignore' });
   }
 
   getTabFromUrl(url: string) {
