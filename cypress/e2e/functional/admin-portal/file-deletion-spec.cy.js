@@ -34,7 +34,7 @@ describe('Admin - Groups screen', () => {
     it('load results', () => {
       cy.get('h2').should('contain', 'Audio files');
 
-      cy.get('.govuk-table__header').should('have.length', 10);
+      cy.get('.govuk-table__header').should('have.length', 11);
       cy.get('.govuk-table__header').eq(0).should('contain', 'Audio ID');
       cy.get('.govuk-table__header').eq(1).should('contain', 'Courthouse');
       cy.get('.govuk-table__header').eq(2).should('contain', 'Hearing date');
@@ -44,6 +44,7 @@ describe('Admin - Groups screen', () => {
       cy.get('.govuk-table__header').eq(6).should('contain', 'Channel');
       cy.get('.govuk-table__header').eq(7).should('contain', 'Marked by');
       cy.get('.govuk-table__header').eq(8).should('contain', 'Comments');
+      cy.get('.govuk-table__header').eq(9).should('contain', 'Delete');
 
       cy.get('.govuk-table__row').should('have.length', 4);
       cy.get('.govuk-table__row').eq(1).should('contain', '0');
@@ -66,7 +67,7 @@ describe('Admin - Groups screen', () => {
 
       cy.get('.govuk-heading-xl').should('contain', 'Delete audio file');
 
-      cy.get('.govuk-table__header').should('have.length', 9);
+      cy.get('.govuk-table__header').should('have.length', 10);
       cy.get('.govuk-table__header').eq(0).should('contain', 'Audio ID');
       cy.get('.govuk-table__header').eq(1).should('contain', 'Courthouse');
       cy.get('.govuk-table__header').eq(2).should('contain', 'Hearing date');
@@ -76,6 +77,7 @@ describe('Admin - Groups screen', () => {
       cy.get('.govuk-table__header').eq(6).should('contain', 'Channel');
       cy.get('.govuk-table__header').eq(7).should('contain', 'Marked by');
       cy.get('.govuk-table__header').eq(8).should('contain', 'Comments');
+      cy.get('.govuk-table__header').eq(9).should('contain', 'Delete');
 
       cy.get('.govuk-table__row').should('have.length', 2);
       cy.get('.govuk-table__row').eq(1).should('contain', '1');
@@ -92,7 +94,7 @@ describe('Admin - Groups screen', () => {
 
       cy.get('.govuk-heading-xl').should('contain', 'Delete audio file');
 
-      cy.get('.govuk-table__header').should('have.length', 9);
+      cy.get('.govuk-table__header').should('have.length', 10);
       cy.get('.govuk-table__header').eq(0).should('contain', 'Audio ID');
       cy.get('.govuk-table__header').eq(1).should('contain', 'Courthouse');
       cy.get('.govuk-table__header').eq(2).should('contain', 'Hearing date');
@@ -102,6 +104,7 @@ describe('Admin - Groups screen', () => {
       cy.get('.govuk-table__header').eq(6).should('contain', 'Channel');
       cy.get('.govuk-table__header').eq(7).should('contain', 'Marked by');
       cy.get('.govuk-table__header').eq(8).should('contain', 'Comments');
+      cy.get('.govuk-table__header').eq(9).should('contain', 'Delete');
 
       cy.get('.govuk-table__row').should('have.length', 2);
       cy.get('.govuk-table__row').eq(1).should('contain', '1');

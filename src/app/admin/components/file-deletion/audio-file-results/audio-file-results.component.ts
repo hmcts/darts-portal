@@ -43,6 +43,7 @@ export class AudioFileResultsComponent {
       { prop: 'channel', name: 'Channel' },
       { prop: 'markedHiddenBy', name: 'Marked by' },
       { prop: 'comments', name: 'Comments' },
+      { prop: '', name: 'Delete' },
     ];
     if (this.showDeleteButton()) {
       columns.push({ prop: '', name: '' });
