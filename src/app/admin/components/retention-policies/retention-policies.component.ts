@@ -55,7 +55,7 @@ export class RetentionPoliciesComponent {
     { name: 'Policy end', prop: 'policyEnd', sortable: false },
   ];
 
-  activeColumns: DatatableColumn[] = [...this.inActiveColumns, { name: '', prop: '', sortable: false }];
+  activeColumns: DatatableColumn[] = [...this.inActiveColumns, { name: 'Action', prop: '', sortable: false }];
 
   isPolicyActive(policyStartDate: DateTime): boolean {
     return policyStartDate > DateTime.now();

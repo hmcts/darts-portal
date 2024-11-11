@@ -44,7 +44,7 @@ export class EventMappingComponent {
     { name: 'Restrictions', prop: 'hasRestrictions', sortable: true },
     { name: 'Date created', prop: 'createdAt', sortable: true },
     { name: 'Status', prop: 'isActive', sortable: true },
-    { name: '', prop: '', sortable: false },
+    { name: 'Change', prop: '', sortable: false },
   ];
 
   formValues = new BehaviorSubject<EventMappingForm>({

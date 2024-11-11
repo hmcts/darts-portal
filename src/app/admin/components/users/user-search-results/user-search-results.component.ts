@@ -22,7 +22,7 @@ export class UserSearchResultsComponent {
     { name: 'Full name', prop: 'fullName', sortable: true },
     { name: 'Email', prop: 'emailAddress', sortable: true },
     { name: 'Status', prop: 'active', sortable: true },
-    { name: '', prop: '' },
+    { name: 'View', prop: '' },
   ];
 
   get caption() {

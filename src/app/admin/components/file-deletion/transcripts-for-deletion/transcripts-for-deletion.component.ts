@@ -40,7 +40,7 @@ export class TranscriptsForDeletionComponent implements OnInit {
     { prop: 'courtroom', name: 'Courtroom' },
     { prop: 'markedHiddenBy', name: 'Marked by' },
     { prop: 'comments', name: 'Comments' },
-    { prop: '', name: '' },
+    { prop: '', name: 'Delete' },
   ];
 
   ngOnInit(): void {
