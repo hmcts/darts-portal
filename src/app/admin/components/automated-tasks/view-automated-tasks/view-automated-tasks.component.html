@@ -4,6 +4,10 @@
   <app-govuk-banner type="success"> Batch size successfully updated </app-govuk-banner>
 }
 
+@if (dateChanged()) {
+  <app-govuk-banner type="success"> {{ label() }} successfully updated </app-govuk-banner>
+}
+
 @if (task(); as task) {
   <header>
     <app-govuk-heading size="xl" caption="Automated task">{{ task.name }}</app-govuk-heading>
@@ -47,7 +51,7 @@
       <dt govukSummaryKey>Batch size</dt>
       <dd govukSummaryValue>{{ task.batchSize }}</dd>
       <dd govukSummaryAction>
-        <a class="govuk-link" [routerLink]="['change-batch-size']" [state]="{ task }">Change</a>
+        <a class="govuk-link" [routerLink]="['edit']" [state]="{ automatedTask: task, edit: 'BATCH_SIZE' }">Change</a>
       </dd>
     </div>
 
@@ -56,11 +60,27 @@
         <div govukSummaryListRow>
           <dt govukSummaryKey>RPO CSV start hour</dt>
           <dd govukSummaryValue>{{ task.rpoCsvStartHour | luxonDate: dateFormat }}</dd>
+          <dd govukSummaryAction>
+            <a
+              class="govuk-link"
+              [routerLink]="['edit']"
+              [state]="{ automatedTask: stringifyDates(task), edit: 'RPO_START_TIME' }"
+              >Change</a
+            >
+          </dd>
         </div>
 
         <div govukSummaryListRow>
           <dt govukSummaryKey>RPO CSV end hour</dt>
           <dd govukSummaryValue>{{ task.rpoCsvEndHour | luxonDate: dateFormat }}</dd>
+          <dd govukSummaryAction>
+            <a
+              class="govuk-link"
+              [routerLink]="['edit']"
+              [state]="{ automatedTask: stringifyDates(task), edit: 'RPO_END_TIME' }"
+              >Change</a
+            >
+          </dd>
         </div>
       }
     }
@@ -70,11 +90,27 @@
         <div govukSummaryListRow>
           <dt govukSummaryKey>ARM Replay start time</dt>
           <dd govukSummaryValue>{{ task.armReplayStartTs | luxonDate: dateFormat }}</dd>
+          <dd govukSummaryAction>
+            <a
+              class="govuk-link"
+              [routerLink]="['edit']"
+              [state]="{ automatedTask: stringifyDates(task), edit: 'ARM_START_TIME' }"
+              >Change</a
+            >
+          </dd>
         </div>
 
         <div govukSummaryListRow>
           <dt govukSummaryKey>ARM Replay end time</dt>
           <dd govukSummaryValue>{{ task.armReplayEndTs | luxonDate: dateFormat }}</dd>
+          <dd govukSummaryAction>
+            <a
+              class="govuk-link"
+              [routerLink]="['edit']"
+              [state]="{ automatedTask: stringifyDates(task), edit: 'ARM_END_TIME' }"
+              >Change</a
+            >
+          </dd>
         </div>
       }
     }

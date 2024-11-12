@@ -4,18 +4,18 @@ import { AutomatedTaskDetails } from '@admin-types/automated-task/automated-task
 import { ActivatedRoute, Navigation, provideRouter, Router } from '@angular/router';
 import { AutomatedTasksService } from '@services/automated-tasks/automated-tasks.service';
 import { of } from 'rxjs';
-import { ChangeBatchSizeComponent } from './change-batch-size.component';
+import { EditAutomatedTaskComponent } from './edit-automated-task.component';
 
 describe('ChangeBatchSizeComponent', () => {
-  let component: ChangeBatchSizeComponent;
-  let fixture: ComponentFixture<ChangeBatchSizeComponent>;
+  let component: EditAutomatedTaskComponent;
+  let fixture: ComponentFixture<EditAutomatedTaskComponent>;
   let router: Router;
   let automatedTasksService: AutomatedTasksService;
   let routerNavigateSpy: jest.SpyInstance;
 
   const setup = (task?: Partial<AutomatedTaskDetails>) => {
     TestBed.configureTestingModule({
-      imports: [ChangeBatchSizeComponent],
+      imports: [EditAutomatedTaskComponent],
       providers: [
         provideRouter([]),
         { provide: ActivatedRoute, useValue: { snapshot: {} } },
@@ -29,7 +29,7 @@ describe('ChangeBatchSizeComponent', () => {
       .spyOn(router, 'getCurrentNavigation')
       .mockReturnValue({ extras: { state: { task } } } as unknown as Navigation);
 
-    fixture = TestBed.createComponent(ChangeBatchSizeComponent);
+    fixture = TestBed.createComponent(EditAutomatedTaskComponent);
     component = fixture.componentInstance;
     component.task = task as AutomatedTaskDetails;
 

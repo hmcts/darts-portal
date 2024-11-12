@@ -37,6 +37,10 @@ export class AutomatedTasksService {
     return this.http.patch<void>(`/api/admin/automated-tasks/${id}`, { batch_size: value });
   }
 
+  changeDateTime(id: number, key: string, date: string) {
+    return this.http.patch<void>(`/api/admin/automated-tasks/${id}`, { [key]: date });
+  }
+
   private mapTask(task: AutomatedTaskData): AutomatedTask {
     return {
       id: task.id,
