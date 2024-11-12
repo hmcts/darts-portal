@@ -20,8 +20,8 @@ describe('Admin - Search screen', () => {
     cy.get('#courtroom').type('1');
 
     cy.get('#specific-date-radio').click();
-    cy.get('[data-button="datepicker-specific-toggle"]').click();
-    cy.get('.ds_datepicker__today').click();
+    cy.get('.moj-js-datepicker-toggle').click();
+    cy.get('.moj-datepicker__button--today').click();
 
     // Cases checked by default
     cy.get('#cases-option').should('be.checked');
@@ -261,8 +261,8 @@ describe('Admin - Search screen', () => {
     cy.get('#caseId').type('123456');
     cy.get('#courtroom').type('1');
     cy.get('#specific-date-radio').click();
-    cy.get('[data-button="datepicker-specific-toggle"]').click();
-    cy.get('.ds_datepicker__today').click();
+    cy.get('.moj-js-datepicker-toggle').click();
+    cy.get('.moj-datepicker__button--today').click();
     cy.get('#audio-option').click();
 
     cy.get('#confirm-button').click();

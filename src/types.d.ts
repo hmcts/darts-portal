@@ -2,6 +2,6 @@ declare module 'govuk-frontend' {
   export function initAll(): void;
 }
 
-declare module '@scottish-government/pattern-library/src/all' {
+declare module '@ministryofjustice/frontend' {
   export function initAll(): void;
 }
