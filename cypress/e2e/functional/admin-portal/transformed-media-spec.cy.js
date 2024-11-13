@@ -29,7 +29,7 @@ describe('Admin - Transformed media screen', () => {
       cy.get('#specific-date-radio').click();
       cy.get('#specific').type('01/01/2021');
 
-      cy.get('[data-button="button-search"]').click();
+      cy.get('#search').click();
 
       cy.get('caption').contains('Showing 1-3 of 3 transformed media results');
 
@@ -70,7 +70,7 @@ describe('Admin - Transformed media screen', () => {
       cy.get('#specific-date-radio').click();
       cy.get('#specific').type('01/01/2021');
 
-      cy.get('[data-button="button-search"]').click();
+      cy.get('#search').click();
 
       cy.get('caption').contains('Showing 1-3 of 3 transformed media results');
 
@@ -92,7 +92,7 @@ describe('Admin - Transformed media screen', () => {
 
   describe('view transformed media', () => {
     beforeEach(() => {
-      cy.get('[data-button="button-search"]').click();
+      cy.get('#search').click();
     });
 
     it('renders', () => {
