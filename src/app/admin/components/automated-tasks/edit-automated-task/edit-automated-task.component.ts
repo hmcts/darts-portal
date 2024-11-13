@@ -1,15 +1,25 @@
 import { AutomatedTaskDetails, AutomatedTaskDetailsState } from '@admin-types/automated-task/automated-task';
 import { Component, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { NonNullableFormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DatepickerComponent } from '@common/datepicker/datepicker.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { TimeInputComponent } from '@components/hearing/request-playback-audio/time-input/time-input.component';
+import { AutomatedTaskEditFormErrorMessages, maxBatchSize } from '@constants/automated-task-edit-error-messages';
 import { ErrorSummaryEntry } from '@core-types/index';
 import { AutomatedTasksService } from '@services/automated-tasks/automated-tasks.service';
+import { FormService } from '@services/form/form.service';
+import { realDateValidator } from '@validators/real-date.validator';
+import { timeGroupValidator } from '@validators/time-group.validator';
 import { DateTime } from 'luxon';
+
+export const dateValidators = [
+  Validators.required,
+  Validators.pattern(/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/),
+  realDateValidator,
+];
 
 type DateKey = 'rpoCsvStartHour' | 'rpoCsvEndHour' | 'armReplayStartTs' | 'armReplayEndTs';
 
@@ -32,6 +42,7 @@ export class EditAutomatedTaskComponent {
   route = inject(ActivatedRoute);
   automatedTasksService = inject(AutomatedTasksService);
   fb = inject(NonNullableFormBuilder);
+  formService = inject(FormService);
 
   task: AutomatedTaskDetails;
   taskState: AutomatedTaskDetailsState = this.router.getCurrentNavigation()?.extras.state?.automatedTask;
@@ -39,26 +50,22 @@ export class EditAutomatedTaskComponent {
   dateLabel = '';
   validationErrorSummary: ErrorSummaryEntry[] = [];
 
-  readonly maxBatchSize = 2147483647;
-  readonly requiredErrorMessage = 'Batch size must be set';
-  readonly minimumErrorMessage = 'Batch size must be greater than 0';
-  readonly nonIntegerErrorMessage = 'Batch size must be an integer';
-  readonly maximumErrorMessage = `Batch size must be less than ${this.maxBatchSize}`;
-
-  batchSizeInput = this.fb.control(0, [
-    Validators.required,
-    Validators.min(1),
-    Validators.max(this.maxBatchSize),
-    Validators.pattern(/^-?\d+$/),
-  ]);
-
-  dateForm = this.fb.group({
-    dateInput: ['', [Validators.required]],
-    timeInput: this.fb.group({
-      hours: ['', [Validators.required, Validators.min(0), Validators.max(23), Validators.pattern(/^\d{2}$/)]],
-      minutes: ['', [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
-      seconds: ['', [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
-    }),
+  form = this.fb.group({
+    batchSize: this.fb.control(0, [
+      Validators.required,
+      Validators.min(1),
+      Validators.max(maxBatchSize),
+      Validators.pattern(/^-?\d+$/),
+    ]),
+    date: ['', dateValidators],
+    time: this.fb.group(
+      {
+        hours: ['', [Validators.required, Validators.min(0), Validators.max(23), Validators.pattern(/^\d{2}$/)]],
+        minutes: ['', [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
+        seconds: ['', [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
+      },
+      { validators: timeGroupValidator }
+    ),
   });
 
   isSubmitted = signal(false);
@@ -71,23 +78,45 @@ export class EditAutomatedTaskComponent {
       this.router.navigate(['../'], { relativeTo: this.route });
     } else {
       if (this.edit !== 'BATCH_SIZE') {
+        (this.form as FormGroup).removeControl('batchSize');
         this.loadDateValues();
+
+        this.form.controls.date.events.pipe(takeUntilDestroyed()).subscribe(({ source }) => {
+          if (source.errors && this.isSubmitted()) {
+            this.validationErrorSummary = this.getErrorSummary();
+          } else {
+            this.validationErrorSummary = [];
+          }
+        });
+
+        this.form.controls.time.events.pipe(takeUntilDestroyed()).subscribe(({ source }) => {
+          if (source.errors && this.isSubmitted()) {
+            this.validationErrorSummary = this.getErrorSummary();
+          } else {
+            this.validationErrorSummary = [];
+          }
+        });
       } else {
-        this.batchSizeInput.setValue(this.task.batchSize);
+        (this.form as FormGroup).removeControl('date');
+        (this.form as FormGroup).removeControl('time');
+        this.form.controls.batchSize.setValue(this.task.batchSize);
+
+        this.form.controls.batchSize.events.pipe(takeUntilDestroyed()).subscribe(({ source }) => {
+          if (source.errors && this.isSubmitted()) {
+            this.validationErrorSummary = this.getErrorSummary();
+          } else {
+            this.validationErrorSummary = [];
+          }
+        });
       }
     }
-
-    this.batchSizeInput.events.pipe(takeUntilDestroyed()).subscribe(({ source }) => {
-      if (source.errors && this.isSubmitted()) {
-        this.validationErrorSummary = this.getErrorSummary(source.errors);
-      } else {
-        this.validationErrorSummary = [];
-      }
-    });
   }
 
   onSubmit() {
+    this.form.markAllAsTouched();
     this.isSubmitted.set(true);
+    this.form.updateValueAndValidity();
+    this.validationErrorSummary = this.getErrorSummary();
 
     if (this.edit === 'BATCH_SIZE') {
       this.updateBatchSize();
@@ -97,21 +126,17 @@ export class EditAutomatedTaskComponent {
   }
 
   private updateBatchSize() {
-    this.batchSizeInput.updateValueAndValidity();
-
-    if (this.batchSizeInput.invalid) return;
+    if (this.form.controls.batchSize.invalid) return;
 
     this.automatedTasksService
-      .changeBatchSize(this.task.id, this.batchSizeInput.value)
+      .changeBatchSize(this.task.id, this.form.controls.batchSize.value)
       .subscribe(() =>
         this.router.navigate(['../'], { relativeTo: this.route, queryParams: { batchSizeChanged: true } })
       );
   }
 
   private updateDateValues() {
-    this.dateForm.updateValueAndValidity();
-
-    if (this.dateForm.invalid) return;
+    if (this.form.controls.date.invalid || this.form.controls.time.invalid) return;
 
     const date = this.getUTCISODateString();
     if (date) {
@@ -124,38 +149,28 @@ export class EditAutomatedTaskComponent {
     }
   }
 
-  getErrorSummary(errors: ValidationErrors): ErrorSummaryEntry[] {
-    const summary = [];
+  getErrorSummary(): ErrorSummaryEntry[] {
+    return this.formService.getErrorSummary(this.form, AutomatedTaskEditFormErrorMessages);
+  }
 
-    if (errors?.required) {
-      summary.push({ message: this.requiredErrorMessage, fieldId: 'batch-size' });
-    }
+  getErrorMessages(controlKey: string): string[] {
+    return this.formService.getFormControlErrorMessages(this.form, controlKey, AutomatedTaskEditFormErrorMessages);
+  }
 
-    if (errors?.min) {
-      summary.push({ message: this.minimumErrorMessage, fieldId: 'batch-size' });
-    }
-
-    if (errors?.max) {
-      summary.push({ message: this.maximumErrorMessage, fieldId: 'batch-size' });
-    }
-
-    if (errors?.pattern) {
-      summary.push({ message: this.nonIntegerErrorMessage, fieldId: 'batch-size' });
-    }
-
-    return summary;
+  isControlInvalid(control: string) {
+    return this.form.get(control)?.invalid && this.form.get(control)?.touched;
   }
 
   private loadDateValues() {
     this.dateLabel = this.getDateLabel();
     const dateKey = this.getDateKey();
-    let existingDateTime = dateKey ? this.task[dateKey] : null;
+    const existingDateTime = dateKey ? this.task[dateKey] : null;
 
     if (existingDateTime && dateKey) {
       const formattedDate = existingDateTime.toFormat('dd/MM/yyyy');
-      this.dateForm.patchValue({
-        dateInput: formattedDate,
-        timeInput: {
+      this.form.patchValue({
+        date: formattedDate,
+        time: {
           hours: existingDateTime.hour.toString().padStart(2, '0'),
           minutes: existingDateTime.minute.toString().padStart(2, '0'),
           seconds: existingDateTime.second.toString().padStart(2, '0'),
@@ -221,8 +236,8 @@ export class EditAutomatedTaskComponent {
   }
 
   private getUTCISODateString(): string | null {
-    const dateValue = this.dateForm.get('dateInput')?.value;
-    const timeGroup = this.dateForm.get('timeInput')?.value;
+    const dateValue = this.form.get('date')?.value;
+    const timeGroup = this.form.get('time')?.value;
 
     //Assume inputs exist due to form validation
     const [day, month, year] = dateValue!.split('/').map(Number);

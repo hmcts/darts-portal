@@ -3,70 +3,69 @@
 <app-validation-error-summary [errors]="validationErrorSummary" />
 
 @if (task) {
-  <app-govuk-heading size="xl" caption="Automated task">{{ task.name }}</app-govuk-heading>
+  <form [formGroup]="form">
+    <app-govuk-heading size="xl" caption="Automated task">{{ task.name }}</app-govuk-heading>
 
-  @if (edit === 'BATCH_SIZE') {
-    <div class="govuk-form-group" [class.govuk-form-group--error]="batchSizeInput.errors && isSubmitted()">
-      <label class="govuk-label" for="batch-size">Batch size</label>
+    @if (edit === 'BATCH_SIZE') {
+      <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('batchSize')">
+        <label class="govuk-label" for="batchSize">Batch size</label>
 
-      @if (validationErrorSummary.length > 0) {
-        <p class="govuk-error-message batch-size-error">
-          <span class="govuk-visually-hidden">Error:</span>{{ validationErrorSummary[0].message }}
-        </p>
-      }
+        @for (error of getErrorMessages('batchSize'); track $index) {
+          <p class="govuk-error-message batch-size-error">
+            <span class="govuk-visually-hidden">Error: </span>{{ error }}
+          </p>
+        }
 
-      <input
-        class="govuk-input govuk-input--width-4"
-        type="text"
-        id="batch-size"
-        [formControl]="batchSizeInput"
-        [class.govuk-input--error]="batchSizeInput.errors && isSubmitted()"
-      />
-    </div>
-  } @else {
-    <!-- Assume date time change -->
-    <form [formGroup]="dateForm" (ngSubmit)="onSubmit()">
+        <input
+          class="govuk-input govuk-input--width-4"
+          type="text"
+          id="batchSize"
+          [formControl]="form.controls.batchSize"
+          [class.govuk-input--error]="form.controls.batchSize.errors && isSubmitted()"
+        />
+      </div>
+    } @else {
+      <!-- Assume date time change -->
       <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
         <h2 class="govuk-fieldset__heading" for="date-edit">{{ dateLabel }}</h2>
         <label class="govuk-label govuk-visually-hidden" for="date-edit"> {{ dateLabel }} </label>
       </legend>
 
-      <div class="govuk-form-group" [class.govuk-form-group--error]="batchSizeInput.errors && isSubmitted()">
-        @if (validationErrorSummary.length > 0) {
-          <p class="govuk-error-message date-edit-error">
-            <span class="govuk-visually-hidden">Error:</span>{{ validationErrorSummary[0].message }}
-          </p>
-        }
-
+      <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('date')">
         <app-datepicker
-          inputId="dateInput"
+          inputId="date"
           ariaLabel="Enter a date in dd/mm/yyyy format"
-          [control]="dateForm.controls.dateInput"
-          name="dateInput"
+          [control]="form.controls.date"
+          name="date"
           label="Enter a date"
-          (dateChange)="dateForm.controls.dateInput.setValue($event)"
+          [errors]="getErrorMessages('date')"
+          (dateChange)="form.controls.date.setValue($event)"
         />
       </div>
 
-      <div class="govuk-form-group">
+      <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('time')">
         <label class="govuk-label" for="edit-time">Enter a time</label>
 
+        @for (error of getErrorMessages('time'); track $index) {
+          <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ error }}</p>
+        }
+
         <app-time-input
-          id="timeEditInput"
+          id="time"
           idStringPrepend="edit-time"
-          formGroupName="timeInput"
+          formGroupName="time"
           [isSubmitted]="
-            !!dateForm.get('timeInput.hours')?.touched &&
-            !!dateForm.get('timeInput.minutes')?.touched &&
-            !!dateForm.get('timeInput.seconds')?.touched
+            !!form.get('time.hours')?.touched &&
+            !!form.get('time.minutes')?.touched &&
+            !!form.get('time.seconds')?.touched
           "
         />
       </div>
-    </form>
-  }
+    }
 
-  <div class="govuk-button-group">
-    <button class="govuk-button" type="submit" (mousedown)="(false)" (click)="onSubmit()">Confirm</button>
-    <a [routerLink]="['../']" class="govuk-link">Cancel</a>
-  </div>
+    <div class="govuk-button-group">
+      <button class="govuk-button" type="submit" (mousedown)="(false)" (click)="onSubmit()">Confirm</button>
+      <a [routerLink]="['../']" class="govuk-link">Cancel</a>
+    </div>
+  </form>
 }
