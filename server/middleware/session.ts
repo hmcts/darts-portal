@@ -13,7 +13,11 @@ export default () => {
   };
 
   if (config.get('node-env') === 'production') {
-    const redis = new Redis(config.get('secrets.darts.redis-connection-string'));
+    // if the redis connection string is overridden, use it
+    const redisConnectionString: string =
+      config.get('session.overriddenNotSecretRedisConnectionString') ||
+      config.get('secrets.darts.redis-connection-string');
+    const redis = new Redis(redisConnectionString);
     redis.on('error', (err) => console.error('REDIS ERROR', err));
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

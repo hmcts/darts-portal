@@ -11,7 +11,8 @@
   },
   "session": {
     "prefix": "DARTS_SESSION_PREFIX",
-    "ttlInSeconds": "DARTS_SESSION_TTL"
+    "ttlInSeconds": "DARTS_SESSION_TTL",
+    "overriddenNotSecretRedisConnectionString": "DARTS_SESSION_REDIS_CONNECTION_STRING"
   },
   "features": {
     "manualDeletion": {
