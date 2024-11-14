@@ -12,7 +12,8 @@
   "session": {
     "prefix": "darts-portal-session",
     "ttlInSeconds": 1200,
-    "cookieName": "darts_session"
+    "cookieName": "darts_session",
+    "overriddenNotSecretRedisConnectionString": null
   },
   "support": {
     "name": "DTS-IT Service Desk",
