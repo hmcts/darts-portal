@@ -42,7 +42,7 @@ describe('Admin - Transcript requests', () => {
       cy.get('#specific').type('01/01/2022');
       cy.get('#requestMethodAll').click();
 
-      cy.get('[data-button="button-search"]').contains('Search').click();
+      cy.get('#search').contains('Search').click();
 
       // navigate to transcript
       cy.get('app-data-table td a').contains(1).click();
@@ -65,7 +65,7 @@ describe('Admin - Transcript requests', () => {
   describe('View transcript', () => {
     beforeEach(() => {
       cy.get('#requestId').clear().type('6');
-      cy.get('button').contains('Search').click();
+      cy.get('#search').contains('Search').click();
     });
 
     it('check template', () => {
@@ -160,7 +160,7 @@ describe('Admin - Transcript requests', () => {
 
   describe('History', () => {
     beforeEach(() => {
-      cy.get('button').contains('Search').click();
+      cy.get('#search').contains('Search').click();
       cy.get('app-search-transcripts-results').get('a').contains('1').click();
       cy.get('#history-tab').click();
     });
@@ -182,7 +182,7 @@ describe('Admin - Transcript requests', () => {
 
   describe('Change status', () => {
     beforeEach(() => {
-      cy.get('button').contains('Search').click();
+      cy.get('#search').contains('Search').click();
       cy.get('app-search-transcripts-results').get('a').contains('6').click();
     });
 
@@ -201,7 +201,7 @@ describe('Admin - Transcript requests', () => {
   describe('Search completed transcripts', () => {
     it('searches for completed transcripts', () => {
       cy.get('a').contains('Completed transcripts').click();
-      cy.get('button').contains('Search').click();
+      cy.get('#search').contains('Search').click();
       cy.get('app-search-completed-transcripts-results').contains('C0001');
       cy.get('app-search-completed-transcripts-results').contains('Cardiff');
       cy.get('app-search-completed-transcripts-results').contains('01 Jan 2021');
@@ -211,14 +211,14 @@ describe('Admin - Transcript requests', () => {
     it('redirects to transcript on 1 result', () => {
       cy.get('a').contains('Completed transcripts').click();
       cy.get('#caseId').clear().type('C0001');
-      cy.get('button').contains('Search').click();
+      cy.get('#search').contains('Search').click();
       cy.url().should('include', '/admin/transcripts/document/0');
     });
 
     it('view completed transcript / transcript file details, hidden but not marked', () => {
       cy.get('a').contains('Completed transcripts').click();
       cy.get('#caseId').clear().type('C0002');
-      cy.get('button').contains('Search').click();
+      cy.get('#search').contains('Search').click();
 
       // transcript-details
       cy.get('#transcript-details').get('app-govuk-heading').contains('Basic details');
@@ -355,7 +355,7 @@ describe('Admin - Transcript requests', () => {
     it('view completed transcript / transcript file details, hidden and marked for deletion', () => {
       cy.get('a').contains('Completed transcripts').click();
       cy.get('#caseId').clear().type('C0003');
-      cy.get('button').contains('Search').click();
+      cy.get('#search').contains('Search').click();
 
       cy.get('.govuk-button').should('contain', 'Unmark for deletion and unhide');
 

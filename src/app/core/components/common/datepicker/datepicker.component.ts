@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewChecked, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { initAll } from '@scottish-government/pattern-library/src/all';
+import { initAll } from '@ministryofjustice/frontend';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-datepicker',
@@ -15,13 +16,17 @@ export class DatepickerComponent implements AfterViewChecked {
   @Input() inputId: string | null = null;
   @Input() name: string | null = null;
   @Input() label!: string;
-  @Input() ariaLabel: string = 'Enter a date in dd/mm/yyyy format';
-  @Input() hint!: string;
+  @Input() ariaLabel: string = 'Enter a date in dd/mm/yyyy format.';
+  @Input() hint: string = 'For example, 17/5/2024.';
   @Input() errors: string[] | null = null;
   @Output() dateChange = new EventEmitter<string>();
 
   setDateValue(value: string) {
-    this.dateChange.emit(value);
+    const dateValue = DateTime.fromFormat(value, 'd/M/yyyy');
+    if (dateValue.isValid) {
+      const zeroPaddedDate = dateValue.toFormat('dd/MM/yyyy');
+      this.dateChange.emit(zeroPaddedDate);
+    }
   }
 
   areDateErrors() {

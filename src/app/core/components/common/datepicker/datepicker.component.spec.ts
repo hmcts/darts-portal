@@ -1,13 +1,13 @@
-import * as scottishGovernment from '@scottish-government/pattern-library/src/all';
+import * as mojFrontend from '@ministryofjustice/frontend';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DatepickerComponent } from './datepicker.component';
 
 // Mock the initAll function
-jest.mock('@scottish-government/pattern-library/src/all', () => ({
+jest.mock('@ministryofjustice/frontend', () => ({
   initAll: jest.fn(),
 }));
 
-describe('AudioPlayerComponent', () => {
+describe('DatepickerComponent', () => {
   let fixture: ComponentFixture<DatepickerComponent>;
   let component: DatepickerComponent;
 
@@ -25,9 +25,9 @@ describe('AudioPlayerComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should initialise Scottish Government Pattern Library', () => {
+  it('should initialise MoJ frontend', () => {
     component.ngAfterViewChecked();
-    const spy = jest.spyOn(scottishGovernment, 'initAll');
+    const spy = jest.spyOn(mojFrontend, 'initAll');
     expect(spy).toHaveBeenCalled();
   });
 
@@ -57,13 +57,52 @@ describe('AudioPlayerComponent', () => {
   });
 
   describe('#setDateValue', () => {
-    it('should emit the value event', () => {
+    it('should not emit the date value when the date is invalid', () => {
+      const dateValue = 'abc';
+      const stateChangeSpy = jest.spyOn(component.dateChange, 'emit');
+
+      component.setDateValue(dateValue);
+
+      expect(stateChangeSpy).not.toHaveBeenCalled();
+    });
+
+    it('should emit the date value', () => {
       const dateValue = '01/01/2024';
       const stateChangeSpy = jest.spyOn(component.dateChange, 'emit');
 
       component.setDateValue(dateValue);
 
       expect(stateChangeSpy).toHaveBeenCalledWith(dateValue);
+    });
+
+    it('zero-pads the date (day and month)', () => {
+      const dateValue = '1/1/2024';
+      const zeroPaddedDateValue = '01/01/2024';
+      const stateChangeSpy = jest.spyOn(component.dateChange, 'emit');
+
+      component.setDateValue(dateValue);
+
+      expect(stateChangeSpy).toHaveBeenCalledWith(zeroPaddedDateValue);
+    });
+
+    it('zero-pads the date (day only)', () => {
+      const dateValue = '1/01/2024';
+      const zeroPaddedDateValue = '01/01/2024';
+      const stateChangeSpy = jest.spyOn(component.dateChange, 'emit');
+
+      component.setDateValue(dateValue);
+
+      expect(stateChangeSpy).toHaveBeenCalledWith(zeroPaddedDateValue);
+    });
+
+    it('zero-pads the date (month only)', () => {
+      const dateValue = '01/1/2024';
+      const zeroPaddedDateValue = '01/01/2024';
+      const stateChangeSpy = jest.spyOn(component.dateChange, 'emit');
+
+      component.setDateValue(dateValue);
+
+      expect(stateChangeSpy).toHaveBeenCalledWith(zeroPaddedDateValue);
     });
   });
 });

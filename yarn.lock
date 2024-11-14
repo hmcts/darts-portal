@@ -5400,13 +5400,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@scottish-government/pattern-library@npm:^0.0.381":
-  version: 0.0.381
-  resolution: "@scottish-government/pattern-library@npm:0.0.381"
-  checksum: c624b8871f81e2f46ce1240bf3a94f3b690f5dd44a2c3f4c090591e2340fc85daa25951c893bce9092d98bcd4ecc697f0349c2934612e32b5def2a34181ea75d
-  languageName: node
-  linkType: hard
-
 "@sideway/address@npm:^4.1.5":
   version: 4.1.5
   resolution: "@sideway/address@npm:4.1.5"
@@ -8445,7 +8438,6 @@ __metadata:
     "@hmcts/properties-volume": ^1.1.0
     "@microsoft/applicationinsights-web": ^3.2.2
     "@ministryofjustice/frontend": ^3.0.0
-    "@scottish-government/pattern-library": ^0.0.381
     "@types/body-parser": ^1.19.5
     "@types/config": ^3.3.4
     "@types/connect-redis": ^0.0.23

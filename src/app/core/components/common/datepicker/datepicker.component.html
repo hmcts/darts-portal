@@ -1,26 +1,27 @@
-<div data-module="ds-datepicker" class="ds_datepicker">
-  <label class="govuk-label" [for]="inputId">{{ label }}</label>
-  @if (hint) {
-    <p class="ds_hint-text">{{ hint }}</p>
-  }
-  <!-- Error message if date invalid -->
-  @if (areDateErrors()) {
-    <div [id]="inputId + '-errors'">
-      @for (error of errors; track $index) {
-        <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ error }}</p>
-      }
-    </div>
-  }
-  <div class="ds_input__wrapper">
+<div class="moj-datepicker" data-module="moj-date-picker">
+  <div class="govuk-form-group">
+    <label class="govuk-label" [for]="inputId">{{ label }}</label>
+    <div id="date-hint" class="govuk-hint">{{ hint }}</div>
+    <!-- Error message if date invalid -->
+    @if (areDateErrors()) {
+      <div [id]="inputId + '-errors'">
+        @for (error of errors; track $index) {
+          <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ error }}</p>
+        }
+      </div>
+    }
     <input
-      [attr.aria-label]="ariaLabel"
-      [formControl]="control"
+      class="govuk-input moj-js-datepicker-input"
       [name]="name"
       [id]="inputId"
+      [formControl]="control"
       type="text"
-      class="ds_input ds_input--fixed-10"
+      aria-describedby="date-hint"
+      [attr.aria-label]="ariaLabel"
+      (keyup)="setDateValue($any($event).target.value)"
       (change)="setDateValue($any($event).target.value)"
       [class.govuk-input--error]="areDateErrors()"
+      autocomplete="off"
     />
   </div>
 </div>
