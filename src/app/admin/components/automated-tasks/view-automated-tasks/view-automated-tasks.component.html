@@ -56,63 +56,67 @@
     </div>
 
     @if (task.armAttributeType === 'RPO') {
-      @if (task.rpoCsvStartHour && task.rpoCsvEndHour) {
-        <div govukSummaryListRow>
-          <dt govukSummaryKey>RPO CSV start hour</dt>
-          <dd govukSummaryValue>{{ task.rpoCsvStartHour | luxonDate: dateFormat }}</dd>
-          <dd govukSummaryAction>
-            <a
-              class="govuk-link"
-              [routerLink]="['edit']"
-              [state]="{ automatedTask: stringifyDates(task), edit: 'RPO_START_TIME' }"
-              >Change</a
-            >
-          </dd>
-        </div>
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>RPO CSV start hour</dt>
+        <dd govukSummaryValue>
+          {{ task.rpoCsvStartHour | luxonDate: dateFormat }}
+        </dd>
+        <dd govukSummaryAction>
+          <a
+            class="govuk-link"
+            [routerLink]="['edit']"
+            [state]="{ automatedTask: stringifyDates(task), edit: 'RPO_START_TIME' }"
+            >Change</a
+          >
+        </dd>
+      </div>
 
-        <div govukSummaryListRow>
-          <dt govukSummaryKey>RPO CSV end hour</dt>
-          <dd govukSummaryValue>{{ task.rpoCsvEndHour | luxonDate: dateFormat }}</dd>
-          <dd govukSummaryAction>
-            <a
-              class="govuk-link"
-              [routerLink]="['edit']"
-              [state]="{ automatedTask: stringifyDates(task), edit: 'RPO_END_TIME' }"
-              >Change</a
-            >
-          </dd>
-        </div>
-      }
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>RPO CSV end hour</dt>
+        <dd govukSummaryValue>
+          {{ task.rpoCsvEndHour | luxonDate: dateFormat }}
+        </dd>
+        <dd govukSummaryAction>
+          <a
+            class="govuk-link"
+            [routerLink]="['edit']"
+            [state]="{ automatedTask: stringifyDates(task), edit: 'RPO_END_TIME' }"
+            >Change</a
+          >
+        </dd>
+      </div>
     }
 
     @if (task.armAttributeType === 'REPLAY') {
-      @if (task.armReplayStartTs && task.armReplayEndTs) {
-        <div govukSummaryListRow>
-          <dt govukSummaryKey>ARM Replay start time</dt>
-          <dd govukSummaryValue>{{ task.armReplayStartTs | luxonDate: dateFormat }}</dd>
-          <dd govukSummaryAction>
-            <a
-              class="govuk-link"
-              [routerLink]="['edit']"
-              [state]="{ automatedTask: stringifyDates(task), edit: 'ARM_START_TIME' }"
-              >Change</a
-            >
-          </dd>
-        </div>
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>ARM Replay start time</dt>
+        <dd govukSummaryValue>
+          {{ task.armReplayStartTs | luxonDate: dateFormat }}
+        </dd>
+        <dd govukSummaryAction>
+          <a
+            class="govuk-link"
+            [routerLink]="['edit']"
+            [state]="{ automatedTask: stringifyDates(task), edit: 'ARM_START_TIME' }"
+            >Change</a
+          >
+        </dd>
+      </div>
 
-        <div govukSummaryListRow>
-          <dt govukSummaryKey>ARM Replay end time</dt>
-          <dd govukSummaryValue>{{ task.armReplayEndTs | luxonDate: dateFormat }}</dd>
-          <dd govukSummaryAction>
-            <a
-              class="govuk-link"
-              [routerLink]="['edit']"
-              [state]="{ automatedTask: stringifyDates(task), edit: 'ARM_END_TIME' }"
-              >Change</a
-            >
-          </dd>
-        </div>
-      }
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>ARM Replay end time</dt>
+        <dd govukSummaryValue>
+          {{ task.armReplayEndTs | luxonDate: dateFormat }}
+        </dd>
+        <dd govukSummaryAction>
+          <a
+            class="govuk-link"
+            [routerLink]="['edit']"
+            [state]="{ automatedTask: stringifyDates(task), edit: 'ARM_END_TIME' }"
+            >Change</a
+          >
+        </dd>
+      </div>
     }
 
     <div govukSummaryListRow>
