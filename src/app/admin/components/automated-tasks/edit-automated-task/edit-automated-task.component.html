@@ -24,7 +24,7 @@
           [class.govuk-input--error]="form.controls.batchSize.errors && isSubmitted()"
         />
       </div>
-    } @else {
+    } @else if (isDateTimeEdit()) {
       <!-- Assume date time change -->
       <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
         <h2 class="govuk-fieldset__heading" for="date-edit">{{ dateLabel }}</h2>
@@ -46,14 +46,11 @@
       <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('time')">
         <label class="govuk-label" for="edit-time">Enter a time</label>
 
-        @for (error of getErrorMessages('time'); track $index) {
-          <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ error }}</p>
-        }
-
         <app-time-input
           id="time"
           idStringPrepend="edit-time"
           formGroupName="time"
+          [errors]="getErrorMessages('time')"
           [isSubmitted]="
             !!form.get('time.hours')?.touched &&
             !!form.get('time.minutes')?.touched &&

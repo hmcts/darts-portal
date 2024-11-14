@@ -21,7 +21,16 @@ export const dateValidators = [
   realDateValidator,
 ];
 
-type DateKey = 'rpoCsvStartHour' | 'rpoCsvEndHour' | 'armReplayStartTs' | 'armReplayEndTs';
+const datePropertyMap = {
+  RPO_START_TIME: { label: 'RPO CSV start hour', key: 'rpoCsvStartHour', api_key: 'rpo_csv_start_hour' },
+  RPO_END_TIME: { label: 'RPO CSV end hour', key: 'rpoCsvEndHour', api_key: 'rpo_csv_end_hour' },
+  ARM_START_TIME: { label: 'ARM Replay start time', key: 'armReplayStartTs', api_key: 'arm_replay_start_ts' },
+  ARM_END_TIME: { label: 'ARM Replay end time', key: 'armReplayEndTs', api_key: 'arm_replay_end_ts' },
+};
+
+type DatePropertyMap = typeof datePropertyMap;
+type DateKey = DatePropertyMap[keyof DatePropertyMap]['key'];
+type EditType = keyof typeof datePropertyMap | 'BATCH_SIZE';
 
 @Component({
   selector: 'app-edit-automated-task',
@@ -46,7 +55,7 @@ export class EditAutomatedTaskComponent {
 
   task: AutomatedTaskDetails;
   taskState: AutomatedTaskDetailsState = this.router.getCurrentNavigation()?.extras.state?.automatedTask;
-  edit: 'RPO_START_TIME' | 'RPO_END_TIME' | 'ARM_START_TIME' | 'ARM_END_TIME' | 'BATCH_SIZE';
+  edit: EditType;
   dateLabel = '';
   validationErrorSummary: ErrorSummaryEntry[] = [];
 
@@ -77,7 +86,7 @@ export class EditAutomatedTaskComponent {
     if (!this.taskState || !this.edit) {
       this.router.navigate(['../'], { relativeTo: this.route });
     } else {
-      if (this.edit !== 'BATCH_SIZE') {
+      if (this.isDateTimeEdit()) {
         (this.form as FormGroup).removeControl('batchSize');
         this.loadDateValues();
 
@@ -96,7 +105,7 @@ export class EditAutomatedTaskComponent {
             this.validationErrorSummary = [];
           }
         });
-      } else {
+      } else if (this.edit === 'BATCH_SIZE') {
         (this.form as FormGroup).removeControl('date');
         (this.form as FormGroup).removeControl('time');
         this.form.controls.batchSize.setValue(this.task.batchSize);
@@ -120,7 +129,7 @@ export class EditAutomatedTaskComponent {
 
     if (this.edit === 'BATCH_SIZE') {
       this.updateBatchSize();
-    } else {
+    } else if (this.isDateTimeEdit()) {
       this.updateDateValues();
     }
   }
@@ -138,7 +147,7 @@ export class EditAutomatedTaskComponent {
   private updateDateValues() {
     if (this.form.controls.date.invalid || this.form.controls.time.invalid) return;
 
-    const date = this.getUTCISODateString();
+    const date = this.getDateFromForm();
     if (date) {
       this.automatedTasksService.changeDateTime(this.task.id, this.getServerSideKey()!, date).subscribe(() =>
         this.router.navigate(['../'], {
@@ -164,9 +173,9 @@ export class EditAutomatedTaskComponent {
   private loadDateValues() {
     this.dateLabel = this.getDateLabel();
     const dateKey = this.getDateKey();
-    const existingDateTime = dateKey ? this.task[dateKey] : null;
+    const existingDateTime = dateKey ? this.task[dateKey as keyof AutomatedTaskDetails] : null;
 
-    if (existingDateTime && dateKey) {
+    if (existingDateTime instanceof DateTime) {
       const formattedDate = existingDateTime.toFormat('dd/MM/yyyy');
       this.form.patchValue({
         date: formattedDate,
@@ -190,52 +199,28 @@ export class EditAutomatedTaskComponent {
     };
   }
 
-  private getDateLabel() {
-    switch (this.edit) {
-      case 'RPO_START_TIME':
-        return 'RPO CSV start hour';
-      case 'RPO_END_TIME':
-        return 'RPO CSV end hour';
-      case 'ARM_START_TIME':
-        return 'ARM Replay start time';
-      case 'ARM_END_TIME':
-        return 'ARM Replay end time';
-      default:
-        return '';
-    }
+  isDateTimeEdit() {
+    return (
+      this.edit === 'RPO_START_TIME' ||
+      this.edit === 'RPO_END_TIME' ||
+      this.edit === 'ARM_START_TIME' ||
+      this.edit === 'ARM_END_TIME'
+    );
+  }
+
+  private getDateLabel(): string {
+    return datePropertyMap[this.edit as keyof typeof datePropertyMap]?.label || '';
   }
 
   private getDateKey(): DateKey | null {
-    switch (this.edit) {
-      case 'RPO_START_TIME':
-        return 'rpoCsvStartHour';
-      case 'RPO_END_TIME':
-        return 'rpoCsvEndHour';
-      case 'ARM_START_TIME':
-        return 'armReplayStartTs';
-      case 'ARM_END_TIME':
-        return 'armReplayEndTs';
-      default:
-        return null;
-    }
+    return datePropertyMap[this.edit as keyof typeof datePropertyMap]?.key || null;
   }
 
   private getServerSideKey(): string | null {
-    switch (this.edit) {
-      case 'RPO_START_TIME':
-        return 'rpo_csv_start_hour';
-      case 'RPO_END_TIME':
-        return 'rpo_csv_end_hour';
-      case 'ARM_START_TIME':
-        return 'arm_replay_start_ts';
-      case 'ARM_END_TIME':
-        return 'arm_replay_end_ts';
-      default:
-        return null;
-    }
+    return datePropertyMap[this.edit as keyof typeof datePropertyMap]?.api_key || null;
   }
 
-  private getUTCISODateString(): string | null {
+  private getDateFromForm(): DateTime | null {
     const dateValue = this.form.get('date')?.value;
     const timeGroup = this.form.get('time')?.value;
 
@@ -243,8 +228,8 @@ export class EditAutomatedTaskComponent {
     const [day, month, year] = dateValue!.split('/').map(Number);
     const { hours, minutes, seconds } = timeGroup!;
 
-    const dateTime = DateTime.local(year, month, day, +hours, +minutes, +seconds).toUTC();
+    const dateTime = DateTime.local(year, month, day, +hours, +minutes, +seconds);
 
-    return dateTime.isValid ? dateTime.toISO() : null;
+    return dateTime.isValid ? dateTime : null;
   }
 }

@@ -1,4 +1,10 @@
 <ng-container [formGroup]="form">
+  @if (errors) {
+    @for (error of errors; track $index) {
+      <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ error }}</p>
+    }
+  }
+
   <div class="govuk-date-input" [id]="idStringPrepend + '-time-picker'">
     <div class="govuk-date-input__item">
       <div class="govuk-form-group">

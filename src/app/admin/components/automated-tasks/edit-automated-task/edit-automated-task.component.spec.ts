@@ -155,7 +155,7 @@ describe('ChangeBatchSizeComponent', () => {
       expect(automatedTasksService.changeDateTime).toHaveBeenCalledWith(
         1,
         'rpo_csv_end_hour',
-        '2023-01-09T18:30:45.000Z'
+        DateTime.fromISO('2023-01-09T18:30:45.000Z')
       );
       expect(routerNavigateSpy).toHaveBeenCalledWith(['../'], {
         relativeTo: TestBed.inject(ActivatedRoute),
