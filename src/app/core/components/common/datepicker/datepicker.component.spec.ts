@@ -57,7 +57,16 @@ describe('DatepickerComponent', () => {
   });
 
   describe('#setDateValue', () => {
-    it('should emit the value event', () => {
+    it('should not emit the date value when the date is invalid', () => {
+      const dateValue = 'abc';
+      const stateChangeSpy = jest.spyOn(component.dateChange, 'emit');
+
+      component.setDateValue(dateValue);
+
+      expect(stateChangeSpy).not.toHaveBeenCalled();
+    });
+
+    it('should emit the date value', () => {
       const dateValue = '01/01/2024';
       const stateChangeSpy = jest.spyOn(component.dateChange, 'emit');
 

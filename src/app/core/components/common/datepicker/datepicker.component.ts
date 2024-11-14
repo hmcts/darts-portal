@@ -22,8 +22,11 @@ export class DatepickerComponent implements AfterViewChecked {
   @Output() dateChange = new EventEmitter<string>();
 
   setDateValue(value: string) {
-    const zeroPaddedDate = DateTime.fromFormat(value, 'd/M/yyyy').toFormat('dd/MM/yyyy');
-    this.dateChange.emit(zeroPaddedDate);
+    const dateValue = DateTime.fromFormat(value, 'd/M/yyyy');
+    if (dateValue.isValid) {
+      const zeroPaddedDate = dateValue.toFormat('dd/MM/yyyy');
+      this.dateChange.emit(zeroPaddedDate);
+    }
   }
 
   areDateErrors() {

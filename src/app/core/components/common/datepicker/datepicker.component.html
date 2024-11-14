@@ -18,6 +18,7 @@
       type="text"
       aria-describedby="date-hint"
       [attr.aria-label]="ariaLabel"
+      (keyup)="setDateValue($any($event).target.value)"
       (change)="setDateValue($any($event).target.value)"
       [class.govuk-input--error]="areDateErrors()"
       autocomplete="off"
