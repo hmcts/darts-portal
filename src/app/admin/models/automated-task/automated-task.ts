@@ -23,3 +23,10 @@ export type AutomatedTaskDetails = AutomatedTask & {
   armReplayEndTs?: DateTime;
   armAttributeType?: 'RPO' | 'REPLAY';
 };
+
+export type AutomatedTaskDetailsState = AutomatedTaskDetails & {
+  rpoCsvStartHour?: string;
+  rpoCsvEndHour?: string;
+  armReplayStartTs?: string;
+  armReplayEndTs?: string;
+};

@@ -351,12 +351,12 @@ export const ADMIN_ROUTES: Routes = [
       ),
   },
   {
-    path: 'admin/system-configuration/automated-tasks/:id/change-batch-size',
-    title: 'DARTS Admin Change Automated Task Batch Size',
+    path: 'admin/system-configuration/automated-tasks/:id/edit',
+    title: 'DARTS Admin Change Automated Task',
     data: { allowedRoles: ['SUPER_ADMIN'] },
     loadComponent: () =>
-      import('./components/automated-tasks/change-batch-size/change-batch-size.component').then(
-        (c) => c.ChangeBatchSizeComponent
+      import('./components/automated-tasks/edit-automated-task/edit-automated-task.component').then(
+        (c) => c.EditAutomatedTaskComponent
       ),
   },
   {

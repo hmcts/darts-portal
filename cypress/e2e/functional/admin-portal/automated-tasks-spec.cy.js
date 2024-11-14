@@ -97,10 +97,94 @@ describe('Admin - Automated tasks screen', () => {
     it('Success', () => {
       cy.get('app-data-table').contains('Task 1').parents('tr').get('a').contains('1').click();
       cy.get('.govuk-link').contains('Change').click();
-      cy.get('#batch-size').clear().type('2000');
+      cy.get('#batchSize').clear().type('2000');
       cy.get('.govuk-button').contains('Confirm').click();
       cy.get('app-govuk-banner').contains('Batch size successfully updated');
       cy.get(rowSelector).contains('Batch size').parents().get('dd').contains('2000');
+    });
+  });
+
+  describe('Change RPO CSV start hour', () => {
+    it('Success', () => {
+      cy.get('app-data-table').contains('Task 1').parents('tr').get('a').contains('1').click();
+
+      cy.contains('dt.govuk-summary-list__key', 'RPO CSV start hour')
+        .parents('div.govuk-summary-list__row')
+        .find('a.govuk-link')
+        .click();
+
+      cy.get('#date').clear().type('20/02/2024');
+
+      cy.get('#edit-time-hour-input').clear().type('18');
+      cy.get('#edit-time-minutes-input').clear().type('35');
+      cy.get('#edit-time-seconds-input').clear().type('59');
+
+      cy.get('.govuk-button').contains('Confirm').click();
+      cy.get('app-govuk-banner').contains('RPO CSV start hour successfully updated');
+      cy.get(rowSelector).contains('RPO CSV start hour').parents().get('dd').contains('Tue 20 Feb 2024 at 18:35:59');
+    });
+  });
+
+  describe('Change RPO CSV end hour', () => {
+    it('Success', () => {
+      cy.get('app-data-table').contains('Task 1').parents('tr').get('a').contains('1').click();
+
+      cy.contains('dt.govuk-summary-list__key', 'RPO CSV end hour')
+        .parents('div.govuk-summary-list__row')
+        .find('a.govuk-link')
+        .click();
+
+      cy.get('#date').clear().type('04/05/2024');
+
+      cy.get('#edit-time-hour-input').clear().type('16');
+      cy.get('#edit-time-minutes-input').clear().type('30');
+      cy.get('#edit-time-seconds-input').clear().type('11');
+
+      cy.get('.govuk-button').contains('Confirm').click();
+      cy.get('app-govuk-banner').contains('RPO CSV end hour successfully updated');
+      cy.get(rowSelector).contains('RPO CSV end hour').parents().get('dd').contains('Sat 4 May 2024 at 16:30:11');
+    });
+  });
+
+  describe('Change ARM Replay start time', () => {
+    it('Success', () => {
+      cy.get('app-data-table').contains('Task 2').parents('tr').get('a').contains('2').click();
+
+      cy.contains('dt.govuk-summary-list__key', 'ARM Replay start time')
+        .parents('div.govuk-summary-list__row')
+        .find('a.govuk-link')
+        .click();
+
+      cy.get('#date').clear().type('21/05/2024');
+
+      cy.get('#edit-time-hour-input').clear().type('17');
+      cy.get('#edit-time-minutes-input').clear().type('30');
+      cy.get('#edit-time-seconds-input').clear().type('11');
+
+      cy.get('.govuk-button').contains('Confirm').click();
+      cy.get('app-govuk-banner').contains('ARM Replay start time successfully updated');
+      cy.get(rowSelector).contains('ARM Replay start time').parents().get('dd').contains('Tue 21 May 2024 at 17:30:11');
+    });
+  });
+
+  describe('Change ARM Replay end time', () => {
+    it('Success', () => {
+      cy.get('app-data-table').contains('Task 2').parents('tr').get('a').contains('2').click();
+
+      cy.contains('dt.govuk-summary-list__key', 'ARM Replay end time')
+        .parents('div.govuk-summary-list__row')
+        .find('a.govuk-link')
+        .click();
+
+      cy.get('#date').clear().type('21/10/2024');
+
+      cy.get('#edit-time-hour-input').clear().type('09');
+      cy.get('#edit-time-minutes-input').clear().type('00');
+      cy.get('#edit-time-seconds-input').clear().type('31');
+
+      cy.get('.govuk-button').contains('Confirm').click();
+      cy.get('app-govuk-banner').contains('ARM Replay end time successfully updated');
+      cy.get(rowSelector).contains('ARM Replay end time').parents().get('dd').contains('Mon 21 Oct 2024 at 09:00:31');
     });
   });
 

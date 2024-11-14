@@ -76,19 +76,25 @@ router.post('/:id/run', (req, res) => {
 
 router.patch('/:id', (req, res) => {
   const id = req.params.id;
-  const { is_active, batch_size } = req.body;
+  const { is_active, batch_size, rpo_csv_start_hour, rpo_csv_end_hour, arm_replay_start_ts, arm_replay_end_ts } =
+    req.body;
 
   const task = automatedTasks.find((task) => task.id === Number(id));
   if (!task) return res.sendStatus(404);
 
   if (batch_size) task.batch_size = Number(batch_size);
 
+  if (rpo_csv_start_hour) task.rpo_csv_start_hour = rpo_csv_start_hour;
+  if (rpo_csv_end_hour) task.rpo_csv_end_hour = rpo_csv_end_hour;
+  if (arm_replay_start_ts) task.arm_replay_start_ts = arm_replay_start_ts;
+  if (arm_replay_end_ts) task.arm_replay_end_ts = arm_replay_end_ts;
+
   if (is_active != undefined) task.is_active = is_active;
 
   task.last_modified_at = DateTime.now().toISO();
   task.last_modified_by = 3;
 
-  return res.json(task);
+  return res.json({ ...task });
 });
 
 router.get('/:id', (req, res) => {

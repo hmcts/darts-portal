@@ -12,7 +12,7 @@ import { ControlContainer, FormGroup, FormsModule, ReactiveFormsModule, Validato
 })
 export class TimeInputComponent implements OnInit {
   form!: FormGroup;
-  @Input() errors!: boolean;
+  @Input() errors: string[] | null = null;
   @Input() isSubmitted = false;
   @Input() idStringPrepend!: string;
 

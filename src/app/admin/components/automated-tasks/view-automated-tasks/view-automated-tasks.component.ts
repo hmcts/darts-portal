@@ -43,6 +43,8 @@ export class ViewAutomatedTasksComponent {
   task = signal<AutomatedTaskDetails | null>(null);
   taskRunStatus = signal<AutomatedTaskStatus | null>(null);
   batchSizeChanged = input(null, { transform: optionalStringToBooleanOrNull });
+  dateChanged = input(null, { transform: optionalStringToBooleanOrNull });
+  label = input(null);
 
   constructor() {
     this.taskService
@@ -78,5 +80,16 @@ export class ViewAutomatedTasksComponent {
         modifiedByFullName: lastModifiedBy?.fullName || createdBy?.fullName || 'System',
       }))
     );
+  }
+
+  //Required as DateTime is changed when passed through state
+  stringifyDates(task: AutomatedTaskDetails) {
+    return {
+      ...task,
+      rpoCsvStartHour: task.rpoCsvStartHour?.toISO(),
+      rpoCsvEndHour: task.rpoCsvEndHour?.toISO(),
+      armReplayStartTs: task.armReplayStartTs?.toISO(),
+      armReplayEndTs: task.armReplayEndTs?.toISO(),
+    };
   }
 }

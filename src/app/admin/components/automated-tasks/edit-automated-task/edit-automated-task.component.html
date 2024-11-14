@@ -1,0 +1,68 @@
+<a [routerLink]="['../']" class="govuk-back-link">Back</a>
+
+<app-validation-error-summary [errors]="validationErrorSummary" />
+
+@if (task) {
+  <form [formGroup]="form">
+    <app-govuk-heading size="xl" caption="Automated task">{{ task.name }}</app-govuk-heading>
+
+    @if (edit === 'BATCH_SIZE') {
+      <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('batchSize')">
+        <label class="govuk-label" for="batchSize">Batch size</label>
+
+        @for (error of getErrorMessages('batchSize'); track $index) {
+          <p class="govuk-error-message batch-size-error">
+            <span class="govuk-visually-hidden">Error: </span>{{ error }}
+          </p>
+        }
+
+        <input
+          class="govuk-input govuk-input--width-4"
+          type="text"
+          id="batchSize"
+          [formControl]="form.controls.batchSize"
+          [class.govuk-input--error]="form.controls.batchSize.errors && isSubmitted()"
+        />
+      </div>
+    } @else if (isDateTimeEdit()) {
+      <!-- Assume date time change -->
+      <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+        <h2 class="govuk-fieldset__heading" for="date-edit">{{ dateLabel }}</h2>
+        <label class="govuk-label govuk-visually-hidden" for="date-edit"> {{ dateLabel }} </label>
+      </legend>
+
+      <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('date')">
+        <app-datepicker
+          inputId="date"
+          ariaLabel="Enter a date in dd/mm/yyyy format"
+          [control]="form.controls.date"
+          name="date"
+          label="Enter a date"
+          [errors]="getErrorMessages('date')"
+          (dateChange)="form.controls.date.setValue($event)"
+        />
+      </div>
+
+      <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('time')">
+        <label class="govuk-label" for="edit-time">Enter a time</label>
+
+        <app-time-input
+          id="time"
+          idStringPrepend="edit-time"
+          formGroupName="time"
+          [errors]="getErrorMessages('time')"
+          [isSubmitted]="
+            !!form.get('time.hours')?.touched &&
+            !!form.get('time.minutes')?.touched &&
+            !!form.get('time.seconds')?.touched
+          "
+        />
+      </div>
+    }
+
+    <div class="govuk-button-group">
+      <button class="govuk-button" type="submit" (mousedown)="(false)" (click)="onSubmit()">Confirm</button>
+      <a [routerLink]="['../']" class="govuk-link">Cancel</a>
+    </div>
+  </form>
+}
