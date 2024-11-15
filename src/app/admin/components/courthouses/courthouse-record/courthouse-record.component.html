@@ -1,3 +1,5 @@
+<a [routerLink]="['../']" class="govuk-back-link">Back</a>
+
 @if (courthouse$ | async; as courthouse) {
   @if (isNewCourthouse$ | async) {
     <app-govuk-banner type="success">

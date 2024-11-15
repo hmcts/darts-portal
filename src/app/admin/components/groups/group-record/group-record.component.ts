@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
@@ -28,6 +28,7 @@ import { GroupUsersComponent } from '../group-users/group-users.component';
     GroupCourthousesComponent,
     GroupUsersComponent,
     GovukBannerComponent,
+    RouterLink,
   ],
   templateUrl: './group-record.component.html',
   styleUrl: './group-record.component.scss',
