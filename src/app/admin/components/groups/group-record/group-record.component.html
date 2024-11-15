@@ -1,3 +1,5 @@
+<a [routerLink]="['../']" class="govuk-back-link">Back</a>
+
 @if (hasRemovedUsers$ | async; as count) {
   <app-govuk-banner type="success">{{ count }} {{ +count === 1 ? 'user' : 'users' }} removed</app-govuk-banner>
 }
