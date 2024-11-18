@@ -8,7 +8,9 @@
 >
   <ng-template [tableRowTemplate]="audio()" let-row>
     <td>
-      <a class="govuk-link" [routerLink]="['/admin/audio-file', row.id]">{{ row.id }}</a>
+      <a class="govuk-link" [routerLink]="['/admin/audio-file', row.id]" [queryParams]="{ backUrl: '/admin' }">{{
+        row.id
+      }}</a>
     </td>
     <td>{{ row.courthouse }}</td>
     <td>{{ row.courtroom }}</td>

@@ -198,12 +198,6 @@ describe('ViewTranscriptionDocumentComponent', () => {
     }));
   });
 
-  it('should navigate to "/admin/transcripts" when onBack is called', () => {
-    const routerSpy = jest.spyOn(component.router, 'navigate');
-    component.onBack();
-    expect(routerSpy).toHaveBeenCalledWith(['/admin/transcripts']);
-  });
-
   describe('hideOrUnhideFile', () => {
     it('should unhide the transcription document if it is currently hidden', () => {
       const unhideSpy = jest.spyOn(component.transcriptionAdminService, 'unhideTranscriptionDocument');

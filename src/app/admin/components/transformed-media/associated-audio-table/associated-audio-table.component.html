@@ -13,6 +13,7 @@
         (click)="
           router.navigate(['admin/audio-file', row.audioId], {
             state: { mediaId: transformedMediaId },
+            queryParams: { backUrl: router.url },
           })
         "
       >

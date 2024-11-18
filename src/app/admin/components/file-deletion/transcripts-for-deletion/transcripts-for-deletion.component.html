@@ -7,7 +7,11 @@
 >
   <ng-template [tableRowTemplate]="rows()" let-row>
     <td>
-      <a class="govuk-link" [routerLink]="['/admin/transcripts/document/', row.transcriptionDocumentId]">
+      <a
+        class="govuk-link"
+        [routerLink]="['/admin/transcripts/document/', row.transcriptionDocumentId]"
+        [queryParams]="{ backUrl: '/admin/file-deletion' }"
+      >
         {{ row.transcriptionDocumentId }}</a
       >
     </td>

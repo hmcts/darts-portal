@@ -12,6 +12,7 @@ import { TabsComponent } from '@common/tabs/tabs.component';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { TabDirective } from '@directives/tab.directive';
 import { CaseService } from '@services/case/case.service';
+import { HistoryService } from '@services/history/history.service';
 import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
 import { TransformedMediaService } from '@services/transformed-media/transformed-media.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
@@ -47,9 +48,12 @@ export class AudioFileComponent {
   userAdminService = inject(UserAdminService);
   transformedMediaService = inject(TransformedMediaService);
   transcriptionAdminService = inject(TranscriptionAdminService);
+  historyService = inject(HistoryService);
+  url = inject(Router).url;
 
   mediaId = +this.router.getCurrentNavigation()?.extras.state?.mediaId;
-  backUrl = this.mediaId ? `/admin/transformed-media/${this.mediaId}` : '/admin';
+
+  backUrl = this.historyService.getBackUrl(this.url) ?? '/admin';
 
   isAdmin = inject(UserService).isAdmin();
 

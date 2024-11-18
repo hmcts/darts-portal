@@ -17,6 +17,7 @@ import { TableRowTemplateDirective } from '@directives/table-row-template.direct
 import { BytesPipe } from '@pipes/bytes.pipe';
 import { JoinPipe } from '@pipes/join';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
+import { HistoryService } from '@services/history/history.service';
 import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
@@ -62,6 +63,10 @@ export class ViewTranscriptionDocumentComponent {
   transcriptionService = inject(TranscriptionService);
   userAdminService = inject(UserAdminService);
   userService = inject(UserService);
+  historyService = inject(HistoryService);
+  url = inject(Router).url;
+
+  backUrl = this.historyService.getBackUrl(this.url) ?? '/admin/transcripts';
 
   transcriptionDocumentId = Number(this.route.snapshot.params.transcriptionDocumentId);
 
@@ -151,9 +156,5 @@ export class ViewTranscriptionDocumentComponent {
         state: { fileType: 'transcription_document' },
       });
     }
-  }
-
-  onBack() {
-    this.router.navigate(['/admin/transcripts']);
   }
 }
