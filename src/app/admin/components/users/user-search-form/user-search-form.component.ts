@@ -1,5 +1,5 @@
 import { UserSearchFormValues } from '@admin-types/users/user-search-form-values.type';
-import { Component, EventEmitter, Output, inject, input } from '@angular/core';
+import { Component, EventEmitter, Output, inject, input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormErrorMessages } from '@core-types/index';
 import { optionalMaxLengthValidator } from '@validators/optional-maxlength.validator';
@@ -19,7 +19,7 @@ const controlErrors: FormErrorMessages = {
   templateUrl: './user-search-form.component.html',
   styleUrl: './user-search-form.component.scss',
 })
-export class UserSearchFormComponent {
+export class UserSearchFormComponent implements OnInit {
   formValues = input.required<UserSearchFormValues>();
 
   @Output() submitForm = new EventEmitter<UserSearchFormValues>();
