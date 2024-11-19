@@ -9,7 +9,7 @@
 </div>
 <app-govuk-heading tag="h2" size="m">Search for user</app-govuk-heading>
 
-<app-user-search-form (submitForm)="onSubmit($event)" (clear)="onClear()" />
+<app-user-search-form [formValues]="formValues()" (submitForm)="onSubmit($event)" (clear)="onClear()" />
 
 @if (loading$ | async) {
   <app-loading />

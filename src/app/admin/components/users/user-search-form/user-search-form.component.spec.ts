@@ -12,6 +12,7 @@ describe('UserSearchFormComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(UserSearchFormComponent);
+    fixture.componentRef.setInput('formValues', { fullName: null, email: null, userStatus: 'active' });
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -46,7 +47,7 @@ describe('UserSearchFormComponent', () => {
     expect(component.clear.emit).toHaveBeenCalled();
   });
 
-  it('should generate error if over 26 characters', () => {
+  it('should generate error if over 256 characters', () => {
     // Generate string that is over 256 characters
     // 257 "a" characters will do
     const characters = 257;

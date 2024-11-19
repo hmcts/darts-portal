@@ -1,7 +1,6 @@
 import { UserSearchFormValues } from '@admin-types/users/user-search-form-values.type';
-import { JsonPipe, NgClass } from '@angular/common';
-import { Component, EventEmitter, Output, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { Component, EventEmitter, Output, inject, input } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormErrorMessages } from '@core-types/index';
 import { optionalMaxLengthValidator } from '@validators/optional-maxlength.validator';
 
@@ -16,23 +15,26 @@ const controlErrors: FormErrorMessages = {
 @Component({
   selector: 'app-user-search-form',
   standalone: true,
-  imports: [ReactiveFormsModule, JsonPipe, NgClass],
+  imports: [ReactiveFormsModule],
   templateUrl: './user-search-form.component.html',
   styleUrl: './user-search-form.component.scss',
 })
 export class UserSearchFormComponent {
+  formValues = input.required<UserSearchFormValues>();
+
   @Output() submitForm = new EventEmitter<UserSearchFormValues>();
   @Output() clear = new EventEmitter<void>();
 
-  formDefaultValues: UserSearchFormValues = { fullName: null, email: null, userStatus: 'active' };
-
   fb = inject(FormBuilder);
+  form!: FormGroup;
 
-  form = this.fb.group({
-    fullName: [this.formDefaultValues.fullName, [optionalMaxLengthValidator(256)]],
-    email: [this.formDefaultValues.email, [optionalMaxLengthValidator(256)]],
-    userStatus: this.formDefaultValues.userStatus,
-  });
+  ngOnInit() {
+    this.form = this.fb.group({
+      fullName: [this.formValues().fullName, [optionalMaxLengthValidator(256)]],
+      email: [this.formValues().email, [optionalMaxLengthValidator(256)]],
+      userStatus: this.formValues().userStatus,
+    });
+  }
 
   onSubmit() {
     if (this.form.valid) {
@@ -41,7 +43,7 @@ export class UserSearchFormComponent {
   }
 
   clearSearch() {
-    this.form.reset(this.formDefaultValues);
+    this.form.reset({ email: null, fullName: null, userStatus: 'active' });
     this.clear.emit();
   }
 
