@@ -271,28 +271,28 @@ __metadata:
   linkType: hard
 
 "@angular-eslint/builder@npm:^18.1.0":
-  version: 18.4.0
-  resolution: "@angular-eslint/builder@npm:18.4.0"
+  version: 18.4.1
+  resolution: "@angular-eslint/builder@npm:18.4.1"
   peerDependencies:
     eslint: ^8.57.0 || ^9.0.0
     typescript: "*"
-  checksum: 26aa2f9ff190d86fcc66e6b29d2b375b62d32fc671ee44b5286153a15cc6f41e44029bbfb304abaf247e52c8d958687e7280b33f47563895bbe7d36a059f9805
+  checksum: 25028d55a931a7c1c18caeef6a11dca216d9257cf56add23c0eac842516994d095e5476f23ae820ab08ecea5a504648d752f014297352978509baaceb807ed35
   languageName: node
   linkType: hard
 
-"@angular-eslint/bundled-angular-compiler@npm:18.4.0":
-  version: 18.4.0
-  resolution: "@angular-eslint/bundled-angular-compiler@npm:18.4.0"
-  checksum: dba410200cd51f56caaf3a999a65af76d23b155464d8c1a54d2ad55e3717ff8df2ef81584dc3dc39777d6228dffb87ea17b59e6838b28146ff9dbf900f1ee407
+"@angular-eslint/bundled-angular-compiler@npm:18.4.1":
+  version: 18.4.1
+  resolution: "@angular-eslint/bundled-angular-compiler@npm:18.4.1"
+  checksum: b2355eec884ade4a711e4ff8d34c15b0ac6b617e87887b1209332df440092c3e6a143aef818503bfc276043dbcc450bd03f1733d647024e2a83a84375208c410
   languageName: node
   linkType: hard
 
-"@angular-eslint/eslint-plugin-template@npm:18.4.0, @angular-eslint/eslint-plugin-template@npm:^18.1.0":
-  version: 18.4.0
-  resolution: "@angular-eslint/eslint-plugin-template@npm:18.4.0"
+"@angular-eslint/eslint-plugin-template@npm:18.4.1, @angular-eslint/eslint-plugin-template@npm:^18.1.0":
+  version: 18.4.1
+  resolution: "@angular-eslint/eslint-plugin-template@npm:18.4.1"
   dependencies:
-    "@angular-eslint/bundled-angular-compiler": 18.4.0
-    "@angular-eslint/utils": 18.4.0
+    "@angular-eslint/bundled-angular-compiler": 18.4.1
+    "@angular-eslint/utils": 18.4.1
     aria-query: 5.3.2
     axobject-query: 4.1.0
   peerDependencies:
@@ -300,63 +300,63 @@ __metadata:
     "@typescript-eslint/utils": ^7.11.0 || ^8.0.0
     eslint: ^8.57.0 || ^9.0.0
     typescript: "*"
-  checksum: 92c3deb0b9b33c42aab65fc89320a51a8faa1029e9994683ac1ddea5d2b9098fabfb3c27e71555809c44bb776e25b909b1f8d51a77a74d7afac3fedb84dbee19
+  checksum: 6615fd9a2eb425c9d30823c47bf75b485f386f58c592a7ea7f528f3a57afce7a2a24a82f44bb45d0072b0130e617dddb2a53faa80d24d165725459a2aef14964
   languageName: node
   linkType: hard
 
-"@angular-eslint/eslint-plugin@npm:18.4.0, @angular-eslint/eslint-plugin@npm:^18.1.0":
-  version: 18.4.0
-  resolution: "@angular-eslint/eslint-plugin@npm:18.4.0"
+"@angular-eslint/eslint-plugin@npm:18.4.1, @angular-eslint/eslint-plugin@npm:^18.1.0":
+  version: 18.4.1
+  resolution: "@angular-eslint/eslint-plugin@npm:18.4.1"
   dependencies:
-    "@angular-eslint/bundled-angular-compiler": 18.4.0
-    "@angular-eslint/utils": 18.4.0
+    "@angular-eslint/bundled-angular-compiler": 18.4.1
+    "@angular-eslint/utils": 18.4.1
   peerDependencies:
     "@typescript-eslint/utils": ^7.11.0 || ^8.0.0
     eslint: ^8.57.0 || ^9.0.0
     typescript: "*"
-  checksum: 03e51a365f711fcee4375fae68d2efd8352b2e13abfdeea9aa9cc77b082fc082e64feeb12eaafb29cbcdcd2c84faf1befa2114f5cef1f4f9f41ca2d075888a7d
+  checksum: 7a47cbfa3f2e198786f1c50ada21da17f2cdd2dab234616888d969b6d4b9c78bf0b070eea9087c366385881b214e496e2dd93e5bcbcb60a39bedd88b97c7eec3
   languageName: node
   linkType: hard
 
 "@angular-eslint/schematics@npm:^18.1.0":
-  version: 18.4.0
-  resolution: "@angular-eslint/schematics@npm:18.4.0"
+  version: 18.4.1
+  resolution: "@angular-eslint/schematics@npm:18.4.1"
   dependencies:
-    "@angular-eslint/eslint-plugin": 18.4.0
-    "@angular-eslint/eslint-plugin-template": 18.4.0
-    ignore: 5.3.2
+    "@angular-eslint/eslint-plugin": 18.4.1
+    "@angular-eslint/eslint-plugin-template": 18.4.1
+    ignore: 6.0.2
     semver: 7.6.3
     strip-json-comments: 3.1.1
   peerDependencies:
     "@angular-devkit/core": ">= 18.0.0 < 19.0.0"
     "@angular-devkit/schematics": ">= 18.0.0 < 19.0.0"
-  checksum: 34fa69dc923e6576825435198f81906e256b2451e514c3c63501c2cc935f21587d145eb28b268a41f662c7063973330c31f3c184dfbaba57528c8d7cd846371b
+  checksum: d4dff94b2091edf2f0af8c1d9875bde86becdcc29b14481ec20b6b05dc30f98ca10c9fd121808bc75fda7e0ec3cdfadbe7ffa772626c9e5fffa5aca8b2446c07
   languageName: node
   linkType: hard
 
 "@angular-eslint/template-parser@npm:^18.1.0":
-  version: 18.4.0
-  resolution: "@angular-eslint/template-parser@npm:18.4.0"
+  version: 18.4.1
+  resolution: "@angular-eslint/template-parser@npm:18.4.1"
   dependencies:
-    "@angular-eslint/bundled-angular-compiler": 18.4.0
+    "@angular-eslint/bundled-angular-compiler": 18.4.1
     eslint-scope: ^8.0.2
   peerDependencies:
     eslint: ^8.57.0 || ^9.0.0
     typescript: "*"
-  checksum: ae8f1de3f66e94372dcd7b6420c7cd23c9fa4570cdf51c7673d8659de4f35363039d266cd432a31758020a2ad3bad6b595f3c4f1c0d1700ef1e541c37b851196
+  checksum: 392c0dde6bf6793caf003005c13fca84ad08a058b09dce2645358f19b1f427abcb2c33b4df717b42429a6627cd4727b85e08e1e0752f52d18b147b7a73b25609
   languageName: node
   linkType: hard
 
-"@angular-eslint/utils@npm:18.4.0":
-  version: 18.4.0
-  resolution: "@angular-eslint/utils@npm:18.4.0"
+"@angular-eslint/utils@npm:18.4.1":
+  version: 18.4.1
+  resolution: "@angular-eslint/utils@npm:18.4.1"
   dependencies:
-    "@angular-eslint/bundled-angular-compiler": 18.4.0
+    "@angular-eslint/bundled-angular-compiler": 18.4.1
   peerDependencies:
     "@typescript-eslint/utils": ^7.11.0 || ^8.0.0
     eslint: ^8.57.0 || ^9.0.0
     typescript: "*"
-  checksum: 2fc984d266c8fd6b15f6e3fc8105bf53c625013d69e19dd029329c2f9aac4f67515ac6c085ff0f80942fc37d4b2e7f7f584f55218db464f048b7c4f84d28b1d5
+  checksum: 6f8bf7fd939748f4a794fc3e1b5a8dcd9cae562176ec7a58446d58e26b7d43f53d09b6bb1d6a47065eba3b010bfd405f144808a75141dc42969c969d5677ca87
   languageName: node
   linkType: hard
 
@@ -10953,10 +10953,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ignore@npm:5.3.2":
-  version: 5.3.2
-  resolution: "ignore@npm:5.3.2"
-  checksum: 2acfd32a573260ea522ea0bfeff880af426d68f6831f973129e2ba7363f422923cf53aab62f8369cbf4667c7b25b6f8a3761b34ecdb284ea18e87a5262a865be
+"ignore@npm:6.0.2":
+  version: 6.0.2
+  resolution: "ignore@npm:6.0.2"
+  checksum: b5dfb811428a067d79c128144814d3d20f01ef21e19c2b2e5bc270895995ce352da9b0e1c46a33de7daaf214bf0cf59d3353c78cdf9e365aaea677db729c721e
   languageName: node
   linkType: hard
 
