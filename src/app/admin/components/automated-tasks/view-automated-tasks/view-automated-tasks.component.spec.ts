@@ -3,14 +3,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AutomatedTaskDetails } from '@admin-types/automated-task/automated-task';
 import { User } from '@admin-types/index';
 import { DatePipe } from '@angular/common';
-import { HttpResponse } from '@angular/common/http';
+import { signal } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GovukSummaryListRowDirective } from '@directives/govuk-summary-list';
 import { AutomatedTasksService } from '@services/automated-tasks/automated-tasks.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { DateTime } from 'luxon';
-import { of, throwError } from 'rxjs';
+import { of } from 'rxjs';
 import { AutomatedTaskStatusComponent } from '../automated-task-status/automated-task-status.component';
 import { ViewAutomatedTasksComponent } from './view-automated-tasks.component';
 
@@ -36,6 +36,7 @@ const users = [
 describe('ViewAutomatedTasksComponent', () => {
   let component: ViewAutomatedTasksComponent;
   let fixture: ComponentFixture<ViewAutomatedTasksComponent>;
+  let routerNavigateSpy: jest.SpyInstance;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -46,8 +47,10 @@ describe('ViewAutomatedTasksComponent', () => {
           provide: AutomatedTasksService,
           useValue: {
             getTask: jest.fn().mockReturnValue(of(task)),
-            runTask: jest.fn(),
+            runTask: jest.fn().mockReturnValue(of({})),
             toggleTaskActiveStatus: jest.fn().mockReturnValue(of(task)),
+            getLatestTaskStatus: jest.fn().mockReturnValue(signal(null)),
+            clearLatestTaskStatus: jest.fn(),
           },
         },
         { provide: UserAdminService, useValue: { getUsersById: jest.fn().mockReturnValue(of(users)) } },
@@ -56,6 +59,7 @@ describe('ViewAutomatedTasksComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(ViewAutomatedTasksComponent);
+    routerNavigateSpy = jest.spyOn(TestBed.inject(Router), 'navigate');
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -105,67 +109,49 @@ describe('ViewAutomatedTasksComponent', () => {
   });
 
   describe('onRunTaskButtonClicked', () => {
-    it('should run the task', () => {
-      const taskService = TestBed.inject(AutomatedTasksService);
-      const runTaskSpy = jest.spyOn(taskService, 'runTask').mockReturnValue(of());
+    it('runs the task if it is active', () => {
+      component.task.set({ ...task, isActive: true });
 
-      component.onRunTaskButtonClicked(task.name);
+      component.onRunTaskButtonClicked(task);
 
-      expect(runTaskSpy).toHaveBeenCalledWith(1);
+      expect(component.taskService.runTask).toHaveBeenCalledWith(task);
     });
 
-    it('should set the task run status to success', () => {
-      const taskService = TestBed.inject(AutomatedTasksService);
-      jest.spyOn(taskService, 'runTask').mockReturnValue(of({} as HttpResponse<void>));
+    it('navigates to the confirmation page if the task is not active', () => {
+      component.task.set({ ...task, isActive: false });
 
-      component.onRunTaskButtonClicked(task.name);
+      component.onRunTaskButtonClicked(task);
 
-      expect(component.taskRunStatus()?.[0]).toBe(task.name);
-      expect(component.taskRunStatus()?.[1]).toBe('success');
-    });
-
-    it('should set the task run status to not-found', () => {
-      const taskService = TestBed.inject(AutomatedTasksService);
-      jest.spyOn(taskService, 'runTask').mockReturnValue(throwError(() => ({ status: 404 })));
-
-      component.onRunTaskButtonClicked(task.name);
-
-      expect(component.taskRunStatus()?.[0]).toBe(task.name);
-      expect(component.taskRunStatus()?.[1]).toBe('not-found');
-    });
-
-    it('should set the task run status to already-running', () => {
-      const taskService = TestBed.inject(AutomatedTasksService);
-      jest.spyOn(taskService, 'runTask').mockReturnValue(throwError(() => ({ status: 409 })));
-
-      component.onRunTaskButtonClicked(task.name);
-
-      expect(component.taskRunStatus()?.[0]).toBe(task.name);
-      expect(component.taskRunStatus()?.[1]).toBe('already-running');
+      expect(routerNavigateSpy).toHaveBeenCalledWith(['admin/system-configuration/automated-tasks', task.id, 'run'], {
+        queryParams: { backUrl: component.router.url },
+        state: { task },
+      });
     });
   });
 
   describe('onActivateDeactiveButtonClicked', () => {
-    it('should toggle the task active status', () => {
-      const taskService = TestBed.inject(AutomatedTasksService);
-      jest.spyOn(taskService, 'toggleTaskActiveStatus').mockReturnValue(of(task));
+    it('toggles the task active status', () => {
+      component.onActivateDeactiveButtonClicked();
 
-      component.onActivateDeactiveButtonClicked(task.name);
+      expect(component.taskService.toggleTaskActiveStatus).toHaveBeenCalledWith({
+        ...task,
+        createdByFullName: 'User 1',
+        modifiedByFullName: 'User 2',
+      });
+    });
 
-      expect(component.taskRunStatus()?.[0]).toBe(task.name);
-      expect(component.taskRunStatus()?.[1]).toBe('active');
+    it('updates the task after toggling the active status', () => {
+      component.onActivateDeactiveButtonClicked();
 
       expect(component.task()).toEqual({ ...task, createdByFullName: 'User 1', modifiedByFullName: 'User 2' });
     });
+  });
 
-    it('should set the task run status to inactive', () => {
-      const taskService = TestBed.inject(AutomatedTasksService);
-      jest.spyOn(taskService, 'toggleTaskActiveStatus').mockReturnValue(of({ ...task, isActive: false }));
+  describe('ngOnDestroy', () => {
+    it('clears the latest task status', () => {
+      component.ngOnDestroy();
 
-      component.onActivateDeactiveButtonClicked(task.name);
-
-      expect(component.taskRunStatus()?.[0]).toBe(task.name);
-      expect(component.taskRunStatus()?.[1]).toBe('inactive');
+      expect(component.taskService.clearLatestTaskStatus).toHaveBeenCalled();
     });
   });
 });

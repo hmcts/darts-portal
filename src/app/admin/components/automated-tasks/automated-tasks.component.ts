@@ -1,7 +1,7 @@
-import { AutomatedTaskStatus } from '@admin-types/automated-task/automated-task-status';
-import { Component, EventEmitter, Output, inject, signal } from '@angular/core';
+import { AutomatedTask } from '@admin-types/automated-task/automated-task';
+import { Component, inject, signal, OnDestroy } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
@@ -17,15 +17,15 @@ import { tap } from 'rxjs';
   templateUrl: './automated-tasks.component.html',
   styleUrl: './automated-tasks.component.scss',
 })
-export class AutomatedTasksComponent {
+export class AutomatedTasksComponent implements OnDestroy {
   automatedTasksService = inject(AutomatedTasksService);
+  router = inject(Router);
+  route = inject(ActivatedRoute);
 
   isLoading = signal(true);
   automatedTasks = toSignal(this.automatedTasksService.getTasks().pipe(tap(() => this.isLoading.set(false))), {
     initialValue: [],
   });
-
-  @Output() taskRun = new EventEmitter<AutomatedTaskStatus>();
 
   columns: DatatableColumn[] = [
     { name: 'ID', prop: 'id', sortable: true },
@@ -36,10 +36,19 @@ export class AutomatedTasksComponent {
     { name: 'Run task', prop: '' },
   ];
 
-  onRunTaskButtonClicked(taskId: number, taskName: string) {
-    this.automatedTasksService.runTask(taskId).subscribe({
-      next: () => this.taskRun.emit([taskName, 'success']),
-      error: (error) => this.taskRun.emit([taskName, error.status === 404 ? 'not-found' : 'already-running']),
-    });
+  onRunTaskButtonClicked(task: AutomatedTask) {
+    // If the task is active, run it immediately. Otherwise, navigate to the confirmation page.
+    if (task.isActive) {
+      this.automatedTasksService.runTask(task).subscribe();
+    } else {
+      this.router.navigate(['admin/system-configuration/automated-tasks', task.id, 'run'], {
+        queryParams: { backUrl: this.router.url },
+        state: { task },
+      });
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.automatedTasksService.clearLatestTaskStatus();
   }
 }

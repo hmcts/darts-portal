@@ -1,6 +1,6 @@
 <a [routerLink]="['../']" class="govuk-back-link">Back</a>
 
-<app-automated-task-status [taskId]="taskId" [status]="taskRunStatus()" />
+<app-automated-task-status [latestTaskStatus]="taskStatus()" />
 
 @if (batchSizeChanged()) {
   <app-govuk-banner type="success"> Batch size successfully updated </app-govuk-banner>
@@ -14,8 +14,8 @@
   <header>
     <app-govuk-heading size="xl" caption="Automated task">{{ task.name }}</app-govuk-heading>
     <div class="govuk-button-group">
-      <button class="govuk-button govuk-button--secondary" (click)="onRunTaskButtonClicked(task.name)">Run task</button>
-      <button class="govuk-button govuk-button--secondary" (click)="onActivateDeactiveButtonClicked(task.name)">
+      <button class="govuk-button govuk-button--secondary" (click)="onRunTaskButtonClicked(task)">Run task</button>
+      <button class="govuk-button govuk-button--secondary" (click)="onActivateDeactiveButtonClicked()">
         Make {{ task.isActive ? 'inactive' : 'active' }}
       </button>
     </div>

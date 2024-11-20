@@ -360,6 +360,15 @@ export const ADMIN_ROUTES: Routes = [
       ),
   },
   {
+    path: 'admin/system-configuration/automated-tasks/:id/run',
+    title: 'DARTS Admin Run Automated Task',
+    data: { allowedRoles: ['SUPER_ADMIN'] },
+    loadComponent: () =>
+      import('./components/automated-tasks/run-automated-task/run-automated-task.component').then(
+        (c) => c.RunAutomatedTaskComponent
+      ),
+  },
+  {
     path: 'admin/system-configuration/retention-policies/:id/create-revision',
     title: 'DARTS Admin New Version Retention Policy',
     data: { allowedRoles: ['SUPER_ADMIN'] },

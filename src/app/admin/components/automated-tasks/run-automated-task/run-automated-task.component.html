@@ -1,0 +1,10 @@
+@if (task) {
+  <app-govuk-heading class="two-thirds" style="display: block">
+    Are you sure you want to run the {{ task.isActive ? 'active' : 'inactive' }} task "{{ task.name }}"?
+  </app-govuk-heading>
+
+  <div class="govuk-button-group">
+    <button class="govuk-button govuk-button--warning" type="submit" (click)="onConfirm(task)">Yes - run task</button>
+    <a [routerLink]="[backUrl]" class="govuk-link">Cancel</a>
+  </div>
+}
