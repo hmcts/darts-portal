@@ -48,12 +48,14 @@ export class GroupsComponent {
     role: '',
   });
 
-  eff = effect(() => {
-    if (this.previousformValues()) {
-      this.form.controls.search.setValue(this.previousformValues()!.search);
-      this.form.controls.role.setValue(this.previousformValues()!.role);
-    }
-  });
+  constructor() {
+    effect(() => {
+      if (this.previousformValues()) {
+        this.form.controls.search.setValue(this.previousformValues()!.search);
+        this.form.controls.role.setValue(this.previousformValues()!.role);
+      }
+    });
+  }
 
   columns: DatatableColumn[] = [
     { name: 'Name', prop: 'name', sortable: false },

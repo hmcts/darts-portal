@@ -55,12 +55,14 @@ export class CourthousesComponent {
     tap(() => this.stopLoading())
   );
 
-  eff = effect(() => {
-    if (this.previousformValues()) {
-      this.search$.next(this.formValues());
-      this.isSubmitted$.next(true);
-    }
-  });
+  constructor() {
+    effect(() => {
+      if (this.previousformValues()) {
+        this.search$.next(this.formValues());
+        this.isSubmitted$.next(true);
+      }
+    });
+  }
 
   startLoading() {
     this.loading$.next(true);

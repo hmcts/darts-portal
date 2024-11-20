@@ -50,9 +50,11 @@ export class UsersComponent {
     tap(() => this.stopLoading())
   );
 
-  eff = effect(() => {
-    this.search$.next(this.previousformValues());
-  });
+  constructor() {
+    effect(() => {
+      this.search$.next(this.previousformValues());
+    });
+  }
 
   startLoading() {
     this.loading$.next(true);
