@@ -1,5 +1,4 @@
 import { User } from '@admin-types/index';
-import { NgClass } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
@@ -10,7 +9,7 @@ import { TableRowTemplateDirective } from '@directives/table-row-template.direct
 @Component({
   selector: 'app-user-search-results',
   standalone: true,
-  imports: [DataTableComponent, TableRowTemplateDirective, NgClass, RouterLink, GovukTagComponent],
+  imports: [DataTableComponent, TableRowTemplateDirective, RouterLink, GovukTagComponent],
   templateUrl: './user-search-results.component.html',
   styleUrl: './user-search-results.component.scss',
 })

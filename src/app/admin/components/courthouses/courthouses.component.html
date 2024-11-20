@@ -8,7 +8,7 @@
 </div>
 <app-govuk-heading tag="h2" size="m">Search for courthouse</app-govuk-heading>
 
-<app-courthouse-search-form (submitForm)="onSubmit($event)" (clear)="onClear()"></app-courthouse-search-form>
+<app-courthouse-search-form [formValues]="formValues()" (submitForm)="onSubmit($event)" (clear)="onClear()" />
 
 @if (results$ | async; as results) {
   <app-courthouse-search-results [results]="results" [show]="(isSubmitted$ | async) ?? false" />

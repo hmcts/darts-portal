@@ -12,6 +12,7 @@ describe('CourthouseSearchFormComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(CourthouseSearchFormComponent);
+    fixture.componentRef.setInput('formValues', { courthouseName: null, displayName: null, region: null });
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

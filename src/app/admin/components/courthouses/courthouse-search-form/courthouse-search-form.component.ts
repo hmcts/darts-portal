@@ -1,6 +1,6 @@
 import { CourthouseSearchFormValues } from '@admin-types/courthouses/courthouse-search-form-values.type';
-import { Component, EventEmitter, Output, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { Component, EventEmitter, OnInit, Output, inject, input } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormErrorMessages } from '@core-types/index';
 import { optionalMaxLengthValidator } from '@validators/optional-maxlength.validator';
 
@@ -22,19 +22,21 @@ const controlErrors: FormErrorMessages = {
   templateUrl: './courthouse-search-form.component.html',
   styleUrl: './courthouse-search-form.component.scss',
 })
-export class CourthouseSearchFormComponent {
+export class CourthouseSearchFormComponent implements OnInit {
+  formValues = input.required<CourthouseSearchFormValues>();
   @Output() submitForm = new EventEmitter<CourthouseSearchFormValues>();
   @Output() clear = new EventEmitter<void>();
 
-  formDefaultValues: CourthouseSearchFormValues = { courthouseName: null, displayName: null, region: null };
-
   fb = inject(FormBuilder);
+  form!: FormGroup;
 
-  form = this.fb.group({
-    courthouseName: [this.formDefaultValues.courthouseName, [optionalMaxLengthValidator(256)]],
-    displayName: [this.formDefaultValues.displayName, [optionalMaxLengthValidator(256)]],
-    region: [this.formDefaultValues.region, [optionalMaxLengthValidator(256)]],
-  });
+  ngOnInit() {
+    this.form = this.fb.group({
+      courthouseName: [this.formValues().courthouseName, [optionalMaxLengthValidator(256)]],
+      displayName: [this.formValues().displayName, [optionalMaxLengthValidator(256)]],
+      region: [this.formValues().region, [optionalMaxLengthValidator(256)]],
+    });
+  }
 
   getFormControlErrorMessages(controlName: string): string[] {
     const errors = this.form.get(controlName)?.errors;
@@ -51,7 +53,7 @@ export class CourthouseSearchFormComponent {
   }
 
   clearSearch() {
-    this.form.reset(this.formDefaultValues);
+    this.form.reset();
     this.clear.emit();
   }
 }
