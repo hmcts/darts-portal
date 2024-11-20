@@ -4,11 +4,15 @@
 
 @if (e) {
   @if (isObfuscationSuccess()) {
-    <app-govuk-banner type="success"> Event text successfully obfuscated </app-govuk-banner>
+    <app-govuk-banner type="success" ariaLabel="Event text obfuscated banner">
+      Event text successfully obfuscated
+    </app-govuk-banner>
   }
 
   @if (showAnonymisedTextBanner()) {
-    <app-govuk-banner type="warning"> This event text has been anonymised in line with HMCTS policy. </app-govuk-banner>
+    <app-govuk-banner type="warning" ariaLabel="Event text anonymised banner">
+      This event text has been anonymised in line with HMCTS policy.
+    </app-govuk-banner>
   }
 
   <div class="heading-button-container">
