@@ -17,8 +17,9 @@ export class ErrorInterceptor implements HttpInterceptor {
         if (error.status === 401) {
           console.log('Unauthorized access error: redirecting to login');
           this.window.location.href = '/login';
+        } else {
+          this.errorMessageService.handleErrorMessage(error);
         }
-        this.errorMessageService.handleErrorMessage(error);
         this.errorHandlerService.handleError(error);
         return throwError(() => error);
       })
