@@ -68,7 +68,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular-devkit/architect@npm:0.1802.12, @angular-devkit/architect@npm:>=0.1800.0 < 0.1900.0, @angular-devkit/architect@npm:^0.1802.0":
+"@angular-devkit/architect@npm:0.1802.12, @angular-devkit/architect@npm:>=0.1800.0 < 0.1900.0":
   version: 0.1802.12
   resolution: "@angular-devkit/architect@npm:0.1802.12"
   dependencies:
@@ -80,6 +80,21 @@ __metadata:
     puppeteer:
       built: true
   checksum: c83ef1adb1e323f8810af7cbcac5282371bb643e8aee42653fd328d8fca891bb16c48ee391929c6bcd79df5d56b5e4b7efeef674b45be1e4fe36b61be5a2d0ff
+  languageName: node
+  linkType: hard
+
+"@angular-devkit/architect@npm:^0.1900.0":
+  version: 0.1900.0
+  resolution: "@angular-devkit/architect@npm:0.1900.0"
+  dependencies:
+    "@angular-devkit/core": 19.0.0
+    rxjs: 7.8.1
+  dependenciesMeta:
+    esbuild:
+      built: true
+    puppeteer:
+      built: true
+  checksum: df5be0e341bda8c27781210748b0b67031a3a7dfba1276ca9efc9ffb59f0c8fddc36cc629f4e96ac0235d09e95ccfd212afc859a01fa4114c11d7429c3f187da
   languageName: node
   linkType: hard
 
@@ -249,6 +264,30 @@ __metadata:
     chokidar:
       optional: true
   checksum: 9d55f4d87ca9ebc32b8a882bf453b83babd75eb355bcfcf460d91a8f853762564bc40b597a195ae3b2323c492a945225601b501ff1559d9c2ef7fe0025500219
+  languageName: node
+  linkType: hard
+
+"@angular-devkit/core@npm:19.0.0":
+  version: 19.0.0
+  resolution: "@angular-devkit/core@npm:19.0.0"
+  dependencies:
+    ajv: 8.17.1
+    ajv-formats: 3.0.1
+    jsonc-parser: 3.3.1
+    picomatch: 4.0.2
+    rxjs: 7.8.1
+    source-map: 0.7.4
+  peerDependencies:
+    chokidar: ^4.0.0
+  dependenciesMeta:
+    esbuild:
+      built: true
+    puppeteer:
+      built: true
+  peerDependenciesMeta:
+    chokidar:
+      optional: true
+  checksum: cb3a1ffa338493c25957102dcf33c4ffb25e5276cbb1a4944c063aa642312657b80cb0d93aa6b80372adc3b1c4cb2c9814ca741a653c6bc3dc41c4b03dcd2cf7
   languageName: node
   linkType: hard
 
@@ -8415,7 +8454,7 @@ __metadata:
   dependencies:
     "@angular-builders/custom-webpack": ^18.0.0
     "@angular-builders/dev-server": ^7.3.1
-    "@angular-devkit/architect": ^0.1802.0
+    "@angular-devkit/architect": ^0.1900.0
     "@angular-eslint/builder": ^18.1.0
     "@angular-eslint/eslint-plugin": ^18.1.0
     "@angular-eslint/eslint-plugin-template": ^18.1.0
