@@ -287,6 +287,7 @@ const defaultMedia = {
   media_status: 'media status',
   is_hidden: true,
   is_deleted: true,
+  is_current: true,
   admin_action: {
     id: 0,
     reason_id: 2,

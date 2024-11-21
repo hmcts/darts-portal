@@ -58,6 +58,7 @@ describe('Admin - Audio file details screen', () => {
       cy.get('dt').contains('Hidden by').next('dd').should('contain', 'Trina Gulliver');
       cy.get('dt').contains('Date hidden').next('dd').should('contain', '11 Jun 2024 at 8:55:18AM');
       cy.get('dt').contains('Audio deleted?').next('dd').should('contain', 'Yes');
+      cy.get('dt').contains('Is current?').next('dd').should('contain', 'Yes');
       cy.get('dt').contains('Date deleted').next('dd').should('contain', '11 Jun 2024 at 8:55:18AM');
       cy.get('dt').contains('Deleted by').next('dd').should('contain', 'Michael van Gerwen');
 

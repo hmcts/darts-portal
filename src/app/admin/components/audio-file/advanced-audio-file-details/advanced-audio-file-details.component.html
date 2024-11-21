@@ -61,6 +61,14 @@
         {{ audioFile.isDeleted ? 'Yes' : 'No' }}
       </dd>
     </div>
+    @if (audioFile.isCurrent) {
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Is current?</dt>
+        <dd class="govuk-summary-list__value">
+          {{ audioFile.isCurrent ? 'Yes' : 'No' }}
+        </dd>
+      </div>
+    }
     @if (audioFile.adminAction) {
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Date deleted</dt>

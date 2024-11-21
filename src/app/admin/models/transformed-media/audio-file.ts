@@ -18,6 +18,7 @@ export type AudioFile = {
   mediaStatus: string;
   isHidden: boolean;
   isDeleted: boolean;
+  isCurrent?: boolean;
   adminAction?: AdminAction | null;
   version: string;
   chronicleId: string;
