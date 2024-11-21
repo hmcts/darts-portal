@@ -274,6 +274,7 @@ export class TransformedMediaService {
       mediaStatus: data.media_status,
       isHidden: data.is_hidden,
       isDeleted: data.is_deleted,
+      isCurrent: data.is_current,
       adminAction: !data.admin_action
         ? undefined
         : {
