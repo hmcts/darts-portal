@@ -11855,8 +11855,8 @@ __metadata:
   linkType: hard
 
 "jest-preset-angular@npm:^14.1.1":
-  version: 14.3.2
-  resolution: "jest-preset-angular@npm:14.3.2"
+  version: 14.3.3
+  resolution: "jest-preset-angular@npm:14.3.3"
   dependencies:
     bs-logger: ^0.2.6
     esbuild: ">=0.15.13"
@@ -11875,7 +11875,7 @@ __metadata:
   dependenciesMeta:
     esbuild:
       optional: true
-  checksum: 1e41225240c1b9e1bf53f59c4f6c0bbe3f20c91d89852d6be2d9b91eda79e6f3b92c3a22841bd6ffc557526ad9e46dcb8824816e8d2aac976ffff16f38efe811
+  checksum: 0acff4a6e942d32e2420687cd59472a042d5349f03be0d46dcc5a0cc1e135f54171ffb9b34fc2bc262a709b127ad0f21847ee62008d8694468d9c9c56bc8b502
   languageName: node
   linkType: hard
 
