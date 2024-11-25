@@ -16,9 +16,7 @@
       <td>{{ row.cronExpression }}</td>
       <td>{{ row.isActive ? 'Active' : 'Inactive' }}</td>
       <td>
-        <button class="govuk-button govuk-button--secondary" (click)="onRunTaskButtonClicked(row.id, row.name)">
-          Run task
-        </button>
+        <button class="govuk-button govuk-button--secondary" (click)="onRunTaskButtonClicked(row)">Run task</button>
       </td>
     </ng-template>
   </app-data-table>

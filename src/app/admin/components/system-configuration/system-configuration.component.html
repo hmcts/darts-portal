@@ -20,7 +20,7 @@
   <app-govuk-banner type="information">Event mapping deleted</app-govuk-banner>
 }
 
-<app-automated-task-status [status]="taskStatus" />
+<app-automated-task-status [latestTaskStatus]="taskStatus()" />
 
 <app-govuk-heading tag="h1" size="xl">System configuration</app-govuk-heading>
 
@@ -29,5 +29,5 @@
 
   <app-event-mapping *tab="'Event mappings'" />
 
-  <app-automated-tasks *tab="'Automated tasks'" (taskRun)="taskStatus = $event" />
+  <app-automated-tasks *tab="'Automated tasks'" />
 </app-tabs>

@@ -1,15 +1,19 @@
 import { AutomatedTask, AutomatedTaskDetails } from '@admin-types/automated-task/automated-task';
+import { AutomatedTaskStatus } from '@admin-types/automated-task/automated-task-status';
 import { AutomatedTaskData, AutomatedTaskDetailsData } from '@admin-types/automated-task/automated-task.interface';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Injectable, Signal, inject, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { DateTime } from 'luxon';
-import { Observable, map } from 'rxjs';
+import { Observable, catchError, map, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AutomatedTasksService {
   http = inject(HttpClient);
+  router = inject(Router);
+  private latestTaskStatus = signal<AutomatedTaskStatus | null>(null);
 
   getTasks(): Observable<AutomatedTask[]> {
     return this.http
@@ -23,14 +27,33 @@ export class AutomatedTasksService {
       .pipe(map((task) => this.mapTaskDetails(task)));
   }
 
-  runTask(taskId: number): Observable<HttpResponse<void>> {
-    return this.http.post<void>(`/api/admin/automated-tasks/${taskId}/run`, {}, { observe: 'response' });
+  runTask({ id, name }: AutomatedTask) {
+    return this.http.post<void>(`/api/admin/automated-tasks/${id}/run`, {}, { observe: 'response' }).pipe(
+      tap(() => this.latestTaskStatus.set({ taskId: id, taskName: name, status: 'success' })),
+      catchError((error) => {
+        this.latestTaskStatus.set({
+          taskId: id,
+          taskName: name,
+          status: error.status === 404 ? 'not-found' : 'already-running',
+        });
+        throw error;
+      })
+    );
   }
 
   toggleTaskActiveStatus(task: AutomatedTaskDetails): Observable<AutomatedTaskDetails> {
     return this.http
       .patch<AutomatedTaskDetailsData>(`/api/admin/automated-tasks/${task.id}`, { is_active: !task.isActive })
-      .pipe(map((task) => this.mapTaskDetails(task)));
+      .pipe(
+        map((task) => this.mapTaskDetails(task)),
+        tap((task) =>
+          this.latestTaskStatus.set({
+            taskId: task.id,
+            taskName: task.name,
+            status: task.isActive ? 'active' : 'inactive',
+          })
+        )
+      );
   }
 
   changeBatchSize(id: number, value: number) {
@@ -39,6 +62,14 @@ export class AutomatedTasksService {
 
   changeDateTime(id: number, key: string, date: DateTime) {
     return this.http.patch<void>(`/api/admin/automated-tasks/${id}`, { [key]: date.toUTC().toISO() });
+  }
+
+  getLatestTaskStatus(): Signal<AutomatedTaskStatus | null> {
+    return this.latestTaskStatus.asReadonly();
+  }
+
+  clearLatestTaskStatus() {
+    this.latestTaskStatus.set(null);
   }
 
   private mapTask(task: AutomatedTaskData): AutomatedTask {

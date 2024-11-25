@@ -80,10 +80,53 @@ describe('AutomatedTasksService', () => {
 
   describe('runTask', () => {
     it('calls POST "/api/admin/automated-tasks/:taskId/run" endpoint', () => {
-      service.runTask(1).subscribe();
+      service.runTask({ id: 1, name: 'test' } as AutomatedTask).subscribe();
       const req = httpMock.expectOne('/api/admin/automated-tasks/1/run');
       expect(req.request.method).toBe('POST');
       req.flush({});
+    });
+
+    it('sets the latest task status', () => {
+      service.runTask({ id: 1, name: 'test' } as AutomatedTask).subscribe();
+
+      const req = httpMock.expectOne('/api/admin/automated-tasks/1/run');
+      req.flush({});
+
+      expect(service.getLatestTaskStatus()()).toEqual({
+        taskId: 1,
+        taskName: 'test',
+        status: 'success',
+      });
+    });
+
+    it('handles 404 error and sets latest task status', () => {
+      const errorResponse = { status: 404, statusText: 'Not Found' };
+
+      service.runTask({ id: 1, name: 'test' } as AutomatedTask).subscribe();
+
+      const req = httpMock.expectOne('/api/admin/automated-tasks/1/run');
+      req.flush({}, errorResponse);
+
+      expect(service.getLatestTaskStatus()()).toEqual({
+        taskId: 1,
+        taskName: 'test',
+        status: 'not-found',
+      });
+    });
+
+    it('handles 409 error and sets latest task status', () => {
+      const errorResponse = { status: 409, statusText: 'Conflict' };
+
+      service.runTask({ id: 1, name: 'test' } as AutomatedTask).subscribe();
+
+      const req = httpMock.expectOne('/api/admin/automated-tasks/1/run');
+      req.flush({}, errorResponse);
+
+      expect(service.getLatestTaskStatus()()).toEqual({
+        taskId: 1,
+        taskName: 'test',
+        status: 'already-running',
+      });
     });
   });
 
@@ -98,16 +141,18 @@ describe('AutomatedTasksService', () => {
 
       const req = httpMock.expectOne('/api/admin/automated-tasks/1');
       expect(req.request.method).toBe('PATCH');
+      expect(req.request.body).toEqual({ is_active: false });
 
       req.flush({});
     });
 
-    it('toggles the active status', () => {
+    it('toggles the active status and maps results', () => {
       let result = {} as AutomatedTaskDetails;
 
       service
         .toggleTaskActiveStatus({
           id: 1,
+          name: 'name',
           isActive: true,
         } as AutomatedTaskDetails)
         .subscribe((task) => (result = task));
@@ -115,11 +160,17 @@ describe('AutomatedTasksService', () => {
       const req = httpMock.expectOne('/api/admin/automated-tasks/1');
       req.flush({
         id: 1,
+        name: 'name',
         is_active: false,
       });
 
       expect(result.id).toBe(1);
       expect(result.isActive).toBe(false);
+      expect(service.getLatestTaskStatus()()).toEqual({
+        taskId: 1,
+        taskName: 'name',
+        status: 'inactive',
+      });
     });
 
     it('maps the response to AutomatedTaskDetails', () => {

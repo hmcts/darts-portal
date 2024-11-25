@@ -26,7 +26,7 @@ const defaultAutomatedTasks = [
     cron_expression: '0 0 2 * * *',
     is_cron_editable: true,
     batch_size: 500,
-    is_active: false,
+    is_active: true,
     created_at: '2024-01-02T00:00:00Z',
     created_by: 2,
     last_modified_at: '2024-01-02T00:00:00Z',
@@ -47,6 +47,19 @@ const defaultAutomatedTasks = [
     created_by: 3,
     last_modified_at: '2024-01-03T00:00:00Z',
     last_modified_by: 4,
+  },
+  {
+    id: 4,
+    name: 'Task 4',
+    description: 'Simulate running inactive task',
+    cron_expression: '0 0 4 * * *',
+    is_cron_editable: true,
+    batch_size: 100,
+    is_active: false,
+    created_at: '2024-01-04T00:00:00Z',
+    created_by: 4,
+    last_modified_at: '2024-01-04T00:00:00Z',
+    last_modified_by: 5,
   },
 ];
 
@@ -69,6 +82,8 @@ router.post('/:id/run', (req, res) => {
       return res.sendStatus(404);
     case '3':
       return res.sendStatus(409);
+    case '4':
+      return res.status(202).end();
     default:
       return res.sendStatus(404);
   }

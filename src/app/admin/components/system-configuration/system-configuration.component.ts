@@ -1,4 +1,3 @@
-import { AutomatedTaskStatus } from '@admin-types/automated-task/automated-task-status';
 import { AsyncPipe, Location } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,6 +5,7 @@ import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.componen
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { TabDirective } from '@directives/tab.directive';
+import { AutomatedTasksService } from '@services/automated-tasks/automated-tasks.service';
 import { map } from 'rxjs';
 import { AutomatedTaskStatusComponent } from '../automated-tasks/automated-task-status/automated-task-status.component';
 import { AutomatedTasksComponent } from '../automated-tasks/automated-tasks.component';
@@ -39,6 +39,8 @@ export class SystemConfigurationComponent {
   route = inject(ActivatedRoute);
   location = inject(Location);
 
+  taskStatus = inject(AutomatedTasksService).getLatestTaskStatus();
+
   hasEventMappingCreated$ = this.route.queryParams.pipe(map((params) => !!params.newEventMapping));
   hasEventMappingUpdated$ = this.route.queryParams.pipe(map((params) => !!params.isRevision));
   hasEventMappingDeleted$ = this.route.queryParams.pipe(map((params) => !!params.deleteEventMapping));
@@ -46,7 +48,6 @@ export class SystemConfigurationComponent {
   hasPolicyCreated$ = this.route.queryParams.pipe(map((params) => !!params.created));
   hasPolicyUpdated$ = this.route.queryParams.pipe(map((params) => !!params.updated));
   hasPolicyRevised$ = this.route.queryParams.pipe(map((params) => !!params.revised));
-  taskStatus: AutomatedTaskStatus | null = null;
 
   currentTab = this.getTabFromUrl(this.router.url);
 

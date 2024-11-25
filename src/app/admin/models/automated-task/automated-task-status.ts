@@ -1,4 +1,5 @@
-export type AutomatedTaskStatus = [
-  taskName: string,
-  'success' | 'not-found' | 'already-running' | 'inactive' | 'active',
-];
+export type AutomatedTaskStatus = {
+  taskId: number;
+  taskName: string;
+  status: 'success' | 'not-found' | 'already-running' | 'inactive' | 'active';
+};

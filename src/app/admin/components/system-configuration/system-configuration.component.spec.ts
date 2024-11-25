@@ -1,6 +1,8 @@
+import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TabDirective } from '@directives/tab.directive';
+import { AutomatedTasksService } from '@services/automated-tasks/automated-tasks.service';
 import { RetentionPoliciesService } from '@services/retention-policies/retention-policies.service';
 import { of } from 'rxjs';
 import { AutomatedTaskStatusComponent } from '../automated-tasks/automated-task-status/automated-task-status.component';
@@ -22,6 +24,10 @@ describe('SystemConfigurationComponent', () => {
           },
         },
         { provide: ActivatedRoute, useValue: { queryParams: of({}) } },
+        {
+          provide: AutomatedTasksService,
+          useValue: { getLatestTaskStatus: jest.fn().mockReturnValue(signal(null)) },
+        },
       ],
     }).compileComponents();
 
