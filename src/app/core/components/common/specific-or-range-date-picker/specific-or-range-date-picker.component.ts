@@ -1,4 +1,4 @@
-import { JsonPipe, NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlContainer, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -8,7 +8,7 @@ import { TranscriptSearchFormErrorMessages } from '@constants/transcript-search-
 @Component({
   selector: 'app-specific-or-range-date-picker',
   standalone: true,
-  imports: [ReactiveFormsModule, DatepickerComponent, NgIf, NgClass, JsonPipe],
+  imports: [ReactiveFormsModule, DatepickerComponent, NgClass],
   templateUrl: './specific-or-range-date-picker.component.html',
   styleUrl: './specific-or-range-date-picker.component.scss',
 })
@@ -71,6 +71,14 @@ export class SpecificOrRangeDatePickerComponent implements OnInit {
 
         this.toDateControl.setErrors({ dateRange: true });
         this.toDateControl.markAsTouched();
+      } else {
+        // remove residual errors from child controls if neccessary preserving the error state
+        if (this.fromDateControl.hasError('dateRange')) {
+          this.fromDateControl.updateValueAndValidity();
+        }
+        if (this.toDateControl.hasError('dateRange')) {
+          this.toDateControl.updateValueAndValidity();
+        }
       }
     });
   }
