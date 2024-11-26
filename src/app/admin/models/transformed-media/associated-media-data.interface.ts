@@ -20,4 +20,5 @@ export interface AssociatedMediaData {
     display_name: string;
   };
   is_hidden: boolean;
+  is_current: boolean;
 }

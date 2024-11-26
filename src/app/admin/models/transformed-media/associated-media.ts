@@ -22,4 +22,7 @@ export type AssociatedMedia = {
     displayName: string;
   };
   isHidden: boolean;
+  isCurrent: boolean;
+  courthouseName: string;
+  courtroomName: string;
 };

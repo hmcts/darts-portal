@@ -15,7 +15,7 @@ import { FormService } from '@services/form/form.service';
 import { HeaderService } from '@services/header/header.service';
 import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
 import { TransformedMediaService } from '@services/transformed-media/transformed-media.service';
-import { map } from 'rxjs';
+import { map, of, switchMap } from 'rxjs';
 import { AssociatedAudioHideDeleteComponent } from '../../transformed-media/associated-audio-hide-delete/associated-audio-hide-delete.component';
 import { FileHideOrDeleteSuccessComponent } from '../file-hide-or-delete-success/file-hide-or-delete-success.component';
 @Component({
@@ -50,10 +50,7 @@ export class FileHideOrDeleteComponent implements OnInit {
   fileType = this.router.getCurrentNavigation()?.extras?.state?.fileType ?? null;
 
   associatedAudioSearch = this.fileType === 'audio_file' && this.getAssociatedAudioSearch();
-  associatedAudio: {
-    media: AssociatedMedia[];
-    audioFile: AssociatedMedia[];
-  } = { media: [], audioFile: [] };
+  media: AssociatedMedia[] = [];
 
   id = +this.route.snapshot.params.id;
 
@@ -61,16 +58,19 @@ export class FileHideOrDeleteComponent implements OnInit {
   isSubmitted = signal(false);
   isAssociatedAudio = signal(false);
   continueLink = this.getContinueLink();
+  selectedMedia = signal<AssociatedMedia[]>([]);
 
-  eff = effect(() => {
-    if (this.isAssociatedAudio() && !this.audioHideComplete()) {
-      this.title.setTitle('DARTS Associated Audio Files');
-    } else if (this.audioHideComplete() || this.isSubmitted()) {
-      this.title.setTitle('DARTS Check For Associated Files');
-    } else {
-      this.title.setTitle('DARTS Hide or Delete Reason');
-    }
-  });
+  constructor() {
+    effect(() => {
+      if (this.isAssociatedAudio() && !this.audioHideComplete()) {
+        this.title.setTitle('DARTS Associated Audio Files');
+      } else if (this.audioHideComplete() || this.isSubmitted()) {
+        this.title.setTitle('DARTS Check For Associated Files');
+      } else {
+        this.title.setTitle('DARTS Hide or Delete Reason');
+      }
+    });
+  }
 
   reasons$ = this.transcriptionAdminService
     .getHiddenReasons()
@@ -103,7 +103,10 @@ export class FileHideOrDeleteComponent implements OnInit {
 
       if (this.fileType === 'transcription_document') {
         this.hideTranscriptionDocument();
-      } else if (this.fileType === 'audio_file' && this.associatedAudioSearch) {
+        return;
+      }
+
+      if (this.fileType === 'audio_file' && this.associatedAudioSearch) {
         this.transformedMediaService
           .checkAssociatedAudioExists(
             this.id,
@@ -111,16 +114,23 @@ export class FileHideOrDeleteComponent implements OnInit {
             this.associatedAudioSearch.startAt,
             this.associatedAudioSearch.endAt
           )
+          .pipe(
+            switchMap((associatedAudio) => {
+              if (!associatedAudio.exists) {
+                return this.transformedMediaService
+                  .hideAudioFile(this.id, this.hideFormValues)
+                  .pipe(map(() => associatedAudio));
+              } else {
+                return of(associatedAudio);
+              }
+            })
+          )
           .subscribe((associatedAudio) => {
+            this.isSubmitted.set(true);
             // If there are associated audio files, show the associated audio files
             if (associatedAudio.exists) {
-              this.isSubmitted.set(true);
               this.isAssociatedAudio.set(true);
-              this.associatedAudio = associatedAudio;
-            } else {
-              this.transformedMediaService.hideAudioFile(this.id, this.hideFormValues).subscribe(() => {
-                this.isSubmitted.set(true);
-              });
+              this.media = [...associatedAudio.audioFile, ...associatedAudio.media];
             }
           });
       }
