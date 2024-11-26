@@ -34,7 +34,11 @@ describe('AssociatedAudioTableComponent', () => {
         courtroom: {
           displayName: 'Room 1',
         },
-        channel: '4',
+        channel: 4,
+        isHidden: false,
+        isCurrent: false,
+        courthouseName: 'Swansea',
+        courtroomName: 'Room 1',
       },
     ]);
     component = fixture.componentInstance;
@@ -43,20 +47,5 @@ describe('AssociatedAudioTableComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('transforms signal input rows', () => {
-    expect(component.rows()).toEqual([
-      {
-        audioId: 1,
-        caseId: 1,
-        hearingDate: DateTime.fromISO('2020-01-01'),
-        courthouse: 'Swansea',
-        startTime: DateTime.fromISO('2020-01-01T12:00:00Z'),
-        endTime: DateTime.fromISO('2020-01-01T14:00:00Z'),
-        courtroom: 'Room 1',
-        channelNumber: '4',
-      },
-    ]);
   });
 });

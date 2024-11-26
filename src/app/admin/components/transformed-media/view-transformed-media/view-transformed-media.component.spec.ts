@@ -69,6 +69,9 @@ const mockAssociatedMedia: AssociatedMedia[] = [
       displayName: 'courtroom',
     },
     isHidden: false,
+    isCurrent: false,
+    courthouseName: 'courthouse',
+    courtroomName: 'courtroom',
   },
 ];
 

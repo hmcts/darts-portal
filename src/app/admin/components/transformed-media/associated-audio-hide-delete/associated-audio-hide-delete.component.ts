@@ -1,35 +1,39 @@
 import { FileHideOrDeleteFormValues } from '@admin-types/hidden-reasons/file-hide-or-delete-form-values';
 import { AssociatedMedia } from '@admin-types/transformed-media/associated-media';
 import { Location } from '@angular/common';
-import { Component, DestroyRef, EventEmitter, Input, Output, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  Component,
+  DestroyRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  inject,
+  input,
+  model,
+  signal,
+} from '@angular/core';
 import { Router } from '@angular/router';
-import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
-import { ErrorSummaryEntry, FormErrorMessages } from '@core-types/index';
+import { ErrorSummaryEntry } from '@core-types/index';
 import { FormService } from '@services/form/form.service';
 import { TransformedMediaService } from '@services/transformed-media/transformed-media.service';
-import { forkJoin } from 'rxjs';
+import { finalize, forkJoin } from 'rxjs';
 import { AssociatedAudioTableComponent } from '../associated-audio-table/associated-audio-table.component';
-
-const controlErrors: FormErrorMessages = {
-  selectedFileChoice: {
-    required: 'Choose if you want to include associated files or not',
+const controlError = [
+  {
+    fieldId: 'associatedAudioTable',
+    message: 'Select files to include',
   },
-  selectedFiles: {
-    required: 'Select files to include',
-  },
-};
-
+];
 @Component({
   selector: 'app-associated-audio-hide-delete',
   standalone: true,
   templateUrl: './associated-audio-hide-delete.component.html',
   styleUrl: './associated-audio-hide-delete.component.scss',
-  imports: [GovukHeadingComponent, DataTableComponent, AssociatedAudioTableComponent, ReactiveFormsModule],
+  imports: [GovukHeadingComponent, AssociatedAudioTableComponent],
 })
-export class AssociatedAudioHideDeleteComponent {
+export class AssociatedAudioHideDeleteComponent implements OnInit {
   location = inject(Location);
   transformedMediaService = inject(TransformedMediaService);
   router = inject(Router);
@@ -37,85 +41,49 @@ export class AssociatedAudioHideDeleteComponent {
   destroyRef = inject(DestroyRef);
 
   @Input() transformedMediaId!: number;
-  @Input() audioFile: AssociatedMedia[] = [];
-  @Input() media: AssociatedMedia[] = [];
-  @Input() id!: number;
   @Input() fileFormValues!: FileHideOrDeleteFormValues;
 
   @Output() errors = new EventEmitter<ErrorSummaryEntry[]>();
   @Output() successResponse = new EventEmitter<boolean>();
 
-  selectedRows: ReturnType<AssociatedAudioTableComponent['mapRows']> = [];
-  controlErrors = controlErrors;
-  isSubmitted = false;
+  media = input.required<AssociatedMedia[]>();
+  selectedRows = model<AssociatedMedia[]>([]);
+  isSubmitted = signal(false);
 
-  form = new FormGroup({
-    selectedFileChoice: new FormControl('', Validators.required),
-  });
+  ngOnInit(): void {
+    this.selectedRows.set(this.media());
+  }
 
   associatedAudioSubmit() {
-    this.isSubmitted = true;
-    this.form.markAllAsTouched();
-    const includeSelectedFiles = Boolean(this.form.value.selectedFileChoice);
+    this.isSubmitted.set(true);
 
-    if (this.form.invalid) {
-      this.form.statusChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
-        this.errors.emit(this.getErrorSummary());
-      });
-      this.form.updateValueAndValidity();
+    if (this.selectedRows().length === 0) {
+      this.errors.emit(controlError);
       return;
     }
 
-    if (this.selectedRows.length === 0 && includeSelectedFiles) return;
+    const selectedIds = [
+      ...new Set(
+        this.selectedRows()
+          .filter((row) => !row.isHidden)
+          .map((row) => row.id)
+      ),
+    ];
 
-    this.hideAudioFiles(includeSelectedFiles);
+    const requests = selectedIds.map((id) => this.transformedMediaService.hideAudioFile(id, this.fileFormValues));
 
-    this.errors.emit([]);
-    this.isSubmitted = false;
-  }
-
-  private hideAudioFiles(includeSelectedFiles: boolean) {
-    if (includeSelectedFiles) {
-      const selectedIds = [...new Set(this.selectedRows.filter((row) => !row.isHidden).map((row) => row.audioId))];
-      selectedIds.push(this.id);
-
-      const responses = selectedIds.map((id) => {
-        return this.transformedMediaService.hideAudioFile(id, this.fileFormValues);
-      });
-      forkJoin(responses).subscribe({
-        next: () => {
+    forkJoin(requests)
+      .pipe(
+        finalize(() => {
           this.successResponse.emit(true);
-        },
-        error: () => {
-          this.successResponse.emit(true);
-        },
-      });
-    } else {
-      this.transformedMediaService.hideAudioFile(this.id, this.fileFormValues).subscribe(() => {
-        this.successResponse.emit(true);
-      });
-    }
-  }
-
-  private getErrorSummary() {
-    const errors: ErrorSummaryEntry[] = this.formService.getErrorSummary(this.form, controlErrors);
-
-    if (this.form.controls.selectedFileChoice.value && this.selectedRows.length === 0) {
-      errors.push({ fieldId: 'selectedFiles', message: controlErrors.selectedFiles.required });
-    }
-
-    return errors;
+          this.errors.emit([]);
+          this.isSubmitted.set(false);
+        })
+      )
+      .subscribe();
   }
 
   goBack() {
     this.location.back();
-  }
-
-  getErrorMessages(controlKey: string): string[] {
-    return this.formService.getFormControlErrorMessages(this.form, controlKey, controlErrors);
-  }
-
-  isControlInvalid(control: string) {
-    return this.form.get(control)?.invalid && this.form.get(control)?.touched;
   }
 }

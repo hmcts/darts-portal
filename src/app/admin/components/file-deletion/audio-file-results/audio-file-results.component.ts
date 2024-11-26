@@ -4,7 +4,6 @@ import { Component, computed, inject, input, output } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DatatableColumn } from '@core-types/index';
-import { TableBodyTemplateDirective } from '@directives/table-body-template.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { UserService } from '@services/user/user.service';
@@ -12,14 +11,7 @@ import { UserService } from '@services/user/user.service';
 @Component({
   selector: 'app-audio-file-results',
   standalone: true,
-  imports: [
-    DataTableComponent,
-    TableBodyTemplateDirective,
-    TableRowTemplateDirective,
-    RouterLink,
-    CommonModule,
-    LuxonDatePipe,
-  ],
+  imports: [DataTableComponent, TableRowTemplateDirective, RouterLink, CommonModule, LuxonDatePipe],
   templateUrl: './audio-file-results.component.html',
   styleUrl: './audio-file-results.component.scss',
 })
@@ -43,10 +35,9 @@ export class AudioFileResultsComponent {
       { prop: 'channel', name: 'Channel' },
       { prop: 'markedHiddenBy', name: 'Marked by' },
       { prop: 'comments', name: 'Comments' },
-      { prop: '', name: 'Delete' },
     ];
     if (this.showDeleteButton()) {
-      columns.push({ prop: '', name: '' });
+      columns.push({ prop: '', name: 'Delete' });
     }
     return columns;
   });

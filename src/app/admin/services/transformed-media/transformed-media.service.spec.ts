@@ -5,6 +5,7 @@ import { FileHide } from '@admin-types/hidden-reasons/file-hide';
 import { FileHideData } from '@admin-types/hidden-reasons/file-hide-data.interface';
 import { FileHideOrDeleteFormValues } from '@admin-types/hidden-reasons/file-hide-or-delete-form-values';
 import { AssociatedMedia } from '@admin-types/transformed-media/associated-media';
+import { AssociatedMediaData } from '@admin-types/transformed-media/associated-media-data.interface';
 import { TransformedMediaAdmin } from '@admin-types/transformed-media/transformed-media-admin';
 import { TransformedMediaRequest } from '@admin-types/transformed-media/transformed-media-request';
 import { TransformedMediaSearchFormValues } from '@admin-types/transformed-media/transformed-media-search-form.values';
@@ -296,10 +297,10 @@ describe('TransformedMediaService', () => {
 
     it('should map response to AssociatedMedia[]', () => {
       const mockId = 9;
-      const mockResponse = [
+      const mockResponse: AssociatedMediaData[] = [
         {
           id: 1,
-          channel: 'channel',
+          channel: 1,
           start_at: '2024-01-01T00:00:00Z',
           end_at: '2024-01-01T00:00:00Z',
           case: {
@@ -318,13 +319,15 @@ describe('TransformedMediaService', () => {
             id: 1,
             display_name: 'room',
           },
+          is_hidden: false,
+          is_current: true,
         },
       ];
 
-      const expectedMappedType = [
+      const expectedMappedType: AssociatedMedia[] = [
         {
           id: 1,
-          channel: 'channel',
+          channel: 1,
           startAt: DateTime.fromISO('2024-01-01T00:00:00Z'),
           endAt: DateTime.fromISO('2024-01-01T00:00:00Z'),
           case: {
@@ -343,6 +346,10 @@ describe('TransformedMediaService', () => {
             id: 1,
             displayName: 'room',
           },
+          isHidden: false,
+          isCurrent: true,
+          courthouseName: 'Swansea',
+          courtroomName: 'room',
         },
       ];
 
@@ -381,10 +388,10 @@ describe('TransformedMediaService', () => {
 
     it('should map response to AssociatedMedia[]', () => {
       const mockId = 9;
-      const mockResponse = [
+      const mockResponse: AssociatedMediaData[] = [
         {
           id: 1,
-          channel: 'channel',
+          channel: 1,
           start_at: '2024-01-01T00:00:00Z',
           end_at: '2024-01-01T00:00:00Z',
           case: {
@@ -403,13 +410,15 @@ describe('TransformedMediaService', () => {
             id: 1,
             display_name: 'room',
           },
+          is_hidden: false,
+          is_current: true,
         },
       ];
 
-      const expectedMappedType = [
+      const expectedMappedType: AssociatedMedia[] = [
         {
           id: 1,
-          channel: 'channel',
+          channel: 1,
           startAt: DateTime.fromISO('2024-01-01T00:00:00Z'),
           endAt: DateTime.fromISO('2024-01-01T00:00:00Z'),
           case: {
@@ -428,6 +437,10 @@ describe('TransformedMediaService', () => {
             id: 1,
             displayName: 'room',
           },
+          isHidden: false,
+          isCurrent: true,
+          courthouseName: 'Swansea',
+          courtroomName: 'room',
         },
       ];
 
@@ -473,6 +486,9 @@ describe('TransformedMediaService', () => {
             displayName: 'room',
           },
           isHidden: false,
+          isCurrent: true,
+          courthouseName: 'Swansea',
+          courtroomName: 'room',
         },
         {
           id: 2,
@@ -496,8 +512,10 @@ describe('TransformedMediaService', () => {
             displayName: 'room',
           },
           isHidden: true,
+          isCurrent: true,
+          courthouseName: 'Swansea',
+          courtroomName: 'room',
         },
-
         {
           id: 5,
           channel: 1,
@@ -520,6 +538,9 @@ describe('TransformedMediaService', () => {
             displayName: 'room',
           },
           isHidden: true,
+          isCurrent: true,
+          courthouseName: 'Swansea',
+          courtroomName: 'room',
         },
       ];
 
@@ -579,10 +600,10 @@ describe('TransformedMediaService', () => {
       const mockIds = '1,2,3';
       const mockStartAt = '2022-01-01';
       const mockEndAt = '2022-01-02';
-      const mockResponse = [
+      const mockResponse: AssociatedMediaData[] = [
         {
           id: 1,
-          channel: 'channel',
+          channel: 4,
           start_at: '2024-01-01T00:00:00Z',
           end_at: '2024-01-01T00:00:00Z',
           case: {
@@ -601,13 +622,15 @@ describe('TransformedMediaService', () => {
             id: 1,
             display_name: 'room',
           },
+          is_hidden: false,
+          is_current: false,
         },
       ];
 
-      const expectedMappedType = [
+      const expectedMappedType: AssociatedMedia[] = [
         {
           id: 1,
-          channel: 'channel',
+          channel: 4,
           startAt: DateTime.fromISO('2024-01-01T00:00:00Z'),
           endAt: DateTime.fromISO('2024-01-01T00:00:00Z'),
           case: {
@@ -626,6 +649,10 @@ describe('TransformedMediaService', () => {
             id: 1,
             displayName: 'room',
           },
+          isHidden: false,
+          isCurrent: false,
+          courthouseName: 'Swansea',
+          courtroomName: 'room',
         },
       ];
 

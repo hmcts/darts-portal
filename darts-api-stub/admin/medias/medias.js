@@ -25,6 +25,7 @@ const medias = [
       display_name: 'courtroom 11',
     },
     is_hidden: false,
+    is_current: true,
   },
   {
     id: 1,
@@ -48,6 +49,7 @@ const medias = [
       display_name: 'courtroom 1',
     },
     is_hidden: false,
+    is_current: true,
   },
   {
     id: 2,
@@ -71,6 +73,7 @@ const medias = [
       display_name: 'courtroom 2',
     },
     is_hidden: false,
+    is_current: true,
   },
   {
     id: 2,
@@ -94,6 +97,7 @@ const medias = [
       display_name: 'courtroom 2',
     },
     is_hidden: false,
+    is_current: false,
   },
   {
     id: 3,
@@ -117,6 +121,7 @@ const medias = [
       display_name: 'courtroom 3',
     },
     is_hidden: true,
+    is_current: false,
   },
   {
     id: 409,
@@ -140,6 +145,7 @@ const medias = [
       display_name: 'courtroom 4',
     },
     is_hidden: false,
+    is_current: false,
   },
 ];
 
