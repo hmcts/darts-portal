@@ -5,13 +5,12 @@ import { Redis } from 'ioredis';
 
 export default () => {
   const sessionTtl: number = parseInt(config.get('session.ttlInSeconds'), 10);
-  const maxAgeInMs = sessionTtl * 1000;
 
   const sessionMiddleware: session.SessionOptions = {
     secret: config.get('secrets.darts.darts-portal-session-secret'),
     resave: false,
     saveUninitialized: true,
-    cookie: { sameSite: 'strict', maxAge: maxAgeInMs },
+    cookie: { sameSite: 'strict' },
     name: config.get('session.cookieName'),
   };
 

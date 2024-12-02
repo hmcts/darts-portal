@@ -2,6 +2,7 @@ import axios from 'axios';
 import bodyParser from 'body-parser';
 import config from 'config';
 import * as express from 'express';
+import { DateTime } from 'luxon';
 import { NextFunction, Request, Response, Router } from 'express';
 import SecurityToken from '../types/classes/securityToken';
 import { AuthenticationUtils } from '../utils/authentication-utils';
@@ -92,6 +93,9 @@ function postAuthCallback(
         }
         req.session.userType = type;
         req.session.securityToken = securityToken;
+        req.session.expiry = DateTime.now()
+          .plus({ seconds: config.get('session.ttlInSeconds') })
+          .toISO();
         if (req.session.securityToken.userState?.isActive) {
           res.redirect('/');
         } else {
