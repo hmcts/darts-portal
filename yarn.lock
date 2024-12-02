@@ -11936,8 +11936,8 @@ __metadata:
   linkType: hard
 
 "jest-preset-angular@npm:^14.1.1":
-  version: 14.4.0
-  resolution: "jest-preset-angular@npm:14.4.0"
+  version: 14.4.1
+  resolution: "jest-preset-angular@npm:14.4.1"
   dependencies:
     bs-logger: ^0.2.6
     esbuild: ">=0.15.13"
@@ -11947,7 +11947,6 @@ __metadata:
     pretty-format: ^29.0.0
     ts-jest: ^29.0.0
   peerDependencies:
-    "@angular-devkit/build-angular": ">=15.0.0 <20.0.0"
     "@angular/compiler-cli": ">=15.0.0 <20.0.0"
     "@angular/core": ">=15.0.0 <20.0.0"
     "@angular/platform-browser-dynamic": ">=15.0.0 <20.0.0"
@@ -11956,7 +11955,7 @@ __metadata:
   dependenciesMeta:
     esbuild:
       optional: true
-  checksum: 8f0eded77e57162885482c09182c42f21ed2ff461654229448ab19533ca492cfec4719c55c2955e4c92a50b2659963c99e6fc5e07be9bbef40f38fce20137b92
+  checksum: 57e8ce48c594f378ac59d5a9f4cdf91e84fdef1cf9298fdb4994fc46aa2e9281155e69e1c1702a49552d37efec46068911a6d20a89f0ddfc19a3c3431c6f364b
   languageName: node
   linkType: hard
 
