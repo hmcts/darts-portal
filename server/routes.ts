@@ -16,7 +16,7 @@ export default (disableAuthentication = false): Router => {
     if (disableAuthentication) {
       return next();
     }
-    await isAuthenticated(req);
+    await isAuthenticated(req, res);
     next();
   };
 
