@@ -146,14 +146,17 @@ function getIsAuthenticated(disableAuthentication = false): (req: Request, res: 
     const expiry = req.session?.expiry;
     const sessionExpired = expiry && DateTime.now() > DateTime.fromISO(expiry);
     const userIdNotPresent = !req.session.securityToken?.userState?.userId;
-    const refreshToken = req.session.securityToken?.refreshToken;
-    if (sessionExpired || userIdNotPresent || !refreshToken) {
-      console.log('Session expired, userType not found, userId not found, or refresh token not found');
-      res.status(200).send(false);
-      return;
+    if (sessionExpired || userIdNotPresent) {
+      console.log('Session expired or userId not found.');
+      return res.status(200).send(false);
     }
 
     if (AuthenticationUtils.isJwtExpired(req.session?.securityToken?.accessToken)) {
+      const refreshToken = req.session.securityToken?.refreshToken;
+      if (!refreshToken) {
+        return res.status(200).send(false);
+      }
+
       const userType = req.session.userType;
       try {
         const securityToken = await AuthenticationUtils.refreshJwt(
@@ -162,13 +165,13 @@ function getIsAuthenticated(disableAuthentication = false): (req: Request, res: 
         );
         req.session.securityToken = securityToken;
         console.log('Refreshed access token using refresh token');
-        res.status(200).send(true);
+        return res.status(200).send(true);
       } catch (err) {
         console.log('Error refreshing access token using refresh token', err);
-        res.status(200).send(false);
+        return res.status(200).send(false);
       }
     } else {
-      res.status(200).send(true);
+      return res.status(200).send(true);
     }
   };
 }
