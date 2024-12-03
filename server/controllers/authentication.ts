@@ -150,6 +150,7 @@ function getIsAuthenticated(disableAuthentication = false): (req: Request, res: 
     if (sessionExpired || userIdNotPresent || !refreshToken) {
       console.log('Session expired, userType not found, userId not found, or refresh token not found');
       res.status(200).send(false);
+      return;
     }
 
     if (AuthenticationUtils.isJwtExpired(req.session?.securityToken?.accessToken)) {
