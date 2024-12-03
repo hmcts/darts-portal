@@ -13,10 +13,12 @@ const ERROR_CODES = {
 
 const EXTERNAL_USER_LOGIN = `${config.get('darts-api.url')}/external-user/login-or-refresh`;
 const EXTERNAL_USER_CALLBACK = `${config.get('darts-api.url')}/external-user/handle-oauth-code`;
+const EXTERNAL_REFRESH_ACCESS_TOKEN = `${config.get('darts-api.url')}/external-user/refresh-access-token`;
 const EXTERNAL_USER_RESET_PWD = `${config.get('darts-api.url')}/external-user/reset-password`;
 const EXTERNAL_USER_LOGOUT = `${config.get('darts-api.url')}/external-user/logout`;
 
 const INTERNAL_USER_LOGIN = `${config.get('darts-api.url')}/internal-user/login-or-refresh`;
+const INTERNAL_REFRESH_ACCESS_TOKEN = `${config.get('darts-api.url')}/internal-user/refresh-access-token`;
 const INTERNAL_USER_LOGOUT = `${config.get('darts-api.url')}/internal-user/logout`;
 const INTERNAL_USER_CALLBACK = `${config.get('darts-api.url')}/internal-user/handle-oauth-code`;
 
@@ -154,14 +156,52 @@ function logoutCallback(): (req: Request, res: Response, next: NextFunction) => 
 }
 
 function getIsAuthenticated(disableAuthentication = false): (req: Request, res: Response) => void {
-  return (req: Request, res: Response) => {
+  return async (req: Request, res: Response) => {
     // don't allow caching of this endpoint
     res.header('Cache-Control', 'no-store, must-revalidate');
 
-    if (!AuthenticationUtils.isJwtExpired(req.session?.securityToken?.accessToken) || disableAuthentication) {
+    if (disableAuthentication) {
       res.status(200).send(true);
-    } else {
+    }
+
+    const expiry = req.session?.expiry;
+    const sessionExpired = expiry && DateTime.now() > DateTime.fromISO(expiry);
+    const userIdNotPresent = !req.session.securityToken?.userState?.userId;
+    const refreshTokenNotPresent = !req.session.securityToken?.refreshToken;
+
+    console.log('getIsAuthenticated::accessToken', req.session?.securityToken?.accessToken);
+    if (sessionExpired || userIdNotPresent || refreshTokenNotPresent) {
+      console.log(
+        'getIsAuthenticated::FALSE sessionExpired=',
+        sessionExpired,
+        'userIdNotPresent=',
+        userIdNotPresent,
+        'refreshTokenNotPresent=',
+        refreshTokenNotPresent
+      );
       res.status(200).send(false);
+    }
+    if (AuthenticationUtils.isJwtExpired(req.session?.securityToken?.accessToken) || Math.random() <= 0.2) {
+      const refreshToken = req.session.securityToken?.refreshToken;
+      if (!refreshToken) {
+        console.log('Cannot refresh access token, no refresh token found');
+        res.status(200).send(false);
+        return;
+      }
+
+      console.log('getIsAuthenticated::JWT expired, using refresh token');
+      const userType = req.session.userType;
+      const url = userType === 'internal' ? INTERNAL_REFRESH_ACCESS_TOKEN : EXTERNAL_REFRESH_ACCESS_TOKEN;
+      try {
+        const securityToken = await AuthenticationUtils.refreshJwt(url, refreshToken);
+        req.session.securityToken = securityToken;
+        res.status(200).send(true);
+      } catch (err) {
+        console.log('Error refreshing access token using refresh token', err);
+        res.status(200).send(false);
+      }
+    } else {
+      res.status(200).send(true);
     }
   };
 }

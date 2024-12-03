@@ -1,3 +1,6 @@
+import axios from 'axios';
+import SecurityToken from 'server/types/classes/securityToken';
+
 export class AuthenticationUtils {
   //Returns payload of JWT
   static parseJwt(token: string) {
@@ -22,5 +25,19 @@ export class AuthenticationUtils {
     } catch (err) {
       return true;
     }
+  }
+
+  static async refreshJwt(url: string, refreshToken: string): Promise<SecurityToken> {
+    const result = await axios.post<SecurityToken>(
+      url,
+      {
+        refresh_token: refreshToken,
+      },
+      {
+        headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      }
+    );
+    const securityToken = result.data;
+    return securityToken;
   }
 }
