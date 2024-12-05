@@ -147,13 +147,12 @@ describe('Admin - Transformed media screen', () => {
 
       cy.get('#associated-audio-details h2').contains('Associated audio');
       cy.get('td.audio-id').first().contains('0');
-      cy.get('td.case-id').first().contains('001');
-      cy.get('td.hearing-date').first().contains('01 Jun 2020');
       cy.get('td.courthouse').first().contains('courthouse 12');
-      cy.get('td.start-time').first().contains('6:00:00PM');
-      cy.get('td.end-time').first().contains('7:00:00PM');
       cy.get('td.courtroom').first().contains('courtroom 11');
+      cy.get('td.start-time').first().contains('1 Jun 2020 18:00:00');
+      cy.get('td.end-time').first().contains('1 Jun 2020 19:00:00');
       cy.get('td.channel').first().contains('1');
+      cy.get('td.is-current').first().contains('Yes');
 
       cy.a11y();
     });

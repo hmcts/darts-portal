@@ -94,55 +94,69 @@ describe('Admin - Hide or delete file', () => {
 
       cy.get('.govuk-button').contains('Hide or delete').click();
 
+      cy.get('#selectAll').uncheck();
+
       cy.get('.govuk-button').contains('Continue').click();
-      cy.get('.govuk-list.govuk-error-summary__list').contains('Choose if you want to include associated files or not');
+      cy.get('.govuk-list.govuk-error-summary__list').contains('Select files to include');
       cy.get('.govuk-error-message').contains('Select files to include');
 
       cy.a11y();
     });
 
-    it('Hide or delete file audio file', () => {
+    it('Hide or delete audio file with associated audio', () => {
+      // When an audio file has associated audio files,
+      // there is an extra step to select associated audio files to hide or delete
       cy.get('.govuk-button').contains('Hide or delete').click();
-
       cy.get('#reason-2').check();
-
       cy.get('#ticketReference').type('TR120001');
-
       cy.get('#comments').type('This is a test comment');
-
       cy.get('.govuk-button').contains('Hide or delete').click();
 
       cy.get('.govuk-heading-l').contains(
         'There are other audio files associated with the file you are hiding and/or deleting'
       );
 
-      cy.get('.govuk-heading-m').contains('The file you are hiding and/or deleting');
+      cy.get('.govuk-heading-m').contains('The files you are hiding and/or deleting');
 
-      cy.get('#hideFileTable .govuk-table__row').eq(1).find('td').eq(0).should('contain', '0');
-      cy.get('#hideFileTable .govuk-table__row').eq(1).find('td').eq(1).should('contain', '001');
-      cy.get('#hideFileTable .govuk-table__row').eq(1).find('td').eq(2).should('contain', '01 Jun 2020');
-      cy.get('#hideFileTable .govuk-table__row').eq(1).find('td').eq(3).should('contain', 'courthouse 12');
-      cy.get('#hideFileTable .govuk-table__row').eq(1).find('td').eq(4).should('contain', '6:00:00PM');
-      cy.get('#hideFileTable .govuk-table__row').eq(1).find('td').eq(5).should('contain', '7:00:00PM');
-      cy.get('#hideFileTable .govuk-table__row').eq(1).find('td').eq(6).should('contain', 'courtroom 11');
-      cy.get('#hideFileTable .govuk-table__row').eq(1).find('td').eq(7).should('contain', '1');
-
-      cy.get('#associatedAudioTable .govuk-table__row').eq(1).find('td').eq(1).should('contain', '1');
-      cy.get('#associatedAudioTable .govuk-table__row').eq(1).find('td').eq(2).should('contain', '123');
-      cy.get('#associatedAudioTable .govuk-table__row').eq(1).find('td').eq(3).should('contain', '01 Jun 2020');
-      cy.get('#associatedAudioTable .govuk-table__row').eq(1).find('td').eq(4).should('contain', 'courthouse 1');
-      cy.get('#associatedAudioTable .govuk-table__row').eq(1).find('td').eq(5).should('contain', '6:00:00PM');
-      cy.get('#associatedAudioTable .govuk-table__row').eq(1).find('td').eq(6).should('contain', '7:00:00PM');
-      cy.get('#associatedAudioTable .govuk-table__row').eq(1).find('td').eq(7).should('contain', 'courtroom 1');
-      cy.get('#associatedAudioTable .govuk-table__row').eq(1).find('td').eq(8).should('contain', '1');
-
-      cy.get('#associatedAudioTable .govuk-checkboxes__input').eq(1).check();
-      cy.get('#associatedAudioTable .govuk-checkboxes__input').eq(2).check();
-      cy.get('#associatedAudioTable .govuk-checkboxes__input').eq(3).check();
-
-      cy.get('#do-include').click();
+      cy.get('#associatedAudioTable a')
+        .contains('0')
+        .parent()
+        .next('td')
+        .contains('courthouse 12')
+        .next('td')
+        .contains('courtroom 11')
+        .next('td')
+        .contains('1 Jun 2020 18:00:00')
+        .next('td')
+        .contains('1 Jun 2020 19:00:00')
+        .next('td')
+        .contains('1')
+        .next('td')
+        .contains('Yes');
 
       cy.a11y();
+
+      cy.get('.govuk-button').contains('Continue').click();
+
+      cy.get('#success-message').contains('Files successfully hidden or marked for deletion');
+    });
+
+    it('Hide or delete audio file with no associated audio', () => {
+      // Simulate no associated audio files for the audio file,
+      // so the extra step to select associated audio files is not shown
+      cy.intercept(
+        {
+          method: 'GET',
+          url: 'api/admin/medias',
+        },
+        []
+      ).as('associated-medias');
+
+      cy.get('.govuk-button').contains('Hide or delete').click();
+      cy.get('#reason-2').check();
+      cy.get('#ticketReference').type('TR120001');
+      cy.get('#comments').type('This is a test comment');
+      cy.get('.govuk-button').contains('Hide or delete').click();
 
       cy.get('.govuk-button').contains('Continue').click();
 

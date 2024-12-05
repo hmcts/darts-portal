@@ -184,11 +184,7 @@ describe('FileHideOrDeleteComponent', () => {
 
     component.onSubmit();
 
-    expect(component.associatedAudio).toEqual({
-      audioFile: [{ id: 1 }],
-      exists: true,
-      media: [{ id: 2 }, { id: 3 }],
-    });
+    expect(component.media).toEqual([{ id: 1 }, { id: 2 }, { id: 3 }]);
     expect(checkAssociatedAudioExistsSpy).toHaveBeenCalledWith(
       component.id,
       component.associatedAudioSearch.hearingIds,
