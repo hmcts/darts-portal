@@ -84,17 +84,17 @@ __metadata:
   linkType: hard
 
 "@angular-devkit/architect@npm:^0.1900.0":
-  version: 0.1900.2
-  resolution: "@angular-devkit/architect@npm:0.1900.2"
+  version: 0.1900.3
+  resolution: "@angular-devkit/architect@npm:0.1900.3"
   dependencies:
-    "@angular-devkit/core": 19.0.2
+    "@angular-devkit/core": 19.0.3
     rxjs: 7.8.1
   dependenciesMeta:
     esbuild:
       built: true
     puppeteer:
       built: true
-  checksum: 8674da96d196496db98ac4f32bb31ece3115fcad39756b82e0d305afa009c6b987f6dabceaf92e240d77f61765000320a0b1fa5596e83ad20bb028585ba1adf7
+  checksum: 8a906a8caf032cfbe23db06171f400358ea78fb1004b236c394bce8a3f662ce46ee10b99d0ad6a13db8f8b74d28a1f39427c955f682c967177db1a52a95a9931
   languageName: node
   linkType: hard
 
@@ -267,9 +267,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular-devkit/core@npm:19.0.2":
-  version: 19.0.2
-  resolution: "@angular-devkit/core@npm:19.0.2"
+"@angular-devkit/core@npm:19.0.3":
+  version: 19.0.3
+  resolution: "@angular-devkit/core@npm:19.0.3"
   dependencies:
     ajv: 8.17.1
     ajv-formats: 3.0.1
@@ -287,7 +287,7 @@ __metadata:
   peerDependenciesMeta:
     chokidar:
       optional: true
-  checksum: 3f5858e6736916efdddc57ebd0c3fd65152eb391f3f3875f961fe4acaa84abd8eb66f2de197332a19216f817dae90be15457ee85d7e7721d40e8cf88ff03620b
+  checksum: e3eab5139d04ccafc5d888979bd15e5669cbe29da7588183b9cfe2fd79490e42dcdadcaabceead71e2003caea9f0b8bf4b32f9d66bd25672dda833fd056ff417
   languageName: node
   linkType: hard
 
