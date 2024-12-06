@@ -4895,6 +4895,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@npmcli/map-workspaces@npm:^4.0.2":
+  version: 4.0.2
+  resolution: "@npmcli/map-workspaces@npm:4.0.2"
+  dependencies:
+    "@npmcli/name-from-folder": ^3.0.0
+    "@npmcli/package-json": ^6.0.0
+    glob: ^10.2.2
+    minimatch: ^9.0.0
+  checksum: 1dba46e94b1e53b59e9b735f89b93ba39c5925120d3f27acb122033833c0e36e5017ab5bdbb0b5dc190300a4359eb4ef9c3539e36e7e2484875b9ac0c75fcfd6
+  languageName: node
+  linkType: hard
+
 "@npmcli/metavuln-calculator@npm:^8.0.0":
   version: 8.0.0
   resolution: "@npmcli/metavuln-calculator@npm:8.0.0"
@@ -4971,6 +4983,21 @@ __metadata:
     proc-log: ^5.0.0
     semver: ^7.5.3
   checksum: cd2c7f62450ebf08f58bc434bbe4ebd2200c699707c50e51b7d597524ca5aa7184a348207e72925658decb383c3f5f60b407b8cb2c6a8f04a7dccd6e3c7eff5b
+  languageName: node
+  linkType: hard
+
+"@npmcli/package-json@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "@npmcli/package-json@npm:6.1.0"
+  dependencies:
+    "@npmcli/git": ^6.0.0
+    glob: ^10.2.2
+    hosted-git-info: ^8.0.0
+    json-parse-even-better-errors: ^4.0.0
+    normalize-package-data: ^7.0.0
+    proc-log: ^5.0.0
+    semver: ^7.5.3
+  checksum: 645ce40b159de40f292f0a12a6957eed5127ad1d8aada3f519279cf8700b629e1f51f8215532f33a0094337be571044f8e1a9066b45196447f54440c1326baaf
   languageName: node
   linkType: hard
 
@@ -11184,9 +11211,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"init-package-json@npm:^7.0.1":
-  version: 7.0.1
-  resolution: "init-package-json@npm:7.0.1"
+"init-package-json@npm:^7.0.2":
+  version: 7.0.2
+  resolution: "init-package-json@npm:7.0.2"
   dependencies:
     "@npmcli/package-json": ^6.0.0
     npm-package-arg: ^12.0.0
@@ -11195,7 +11222,7 @@ __metadata:
     semver: ^7.3.5
     validate-npm-package-license: ^3.0.4
     validate-npm-package-name: ^6.0.0
-  checksum: 6992237d9a66ff5caebc0b07c792ef2de00dd1b23c519d365cd9c901d222dcf644b2b08f4c0685fd3a74e2949bd1a79412df45de5ce2c8119ed7878a6660589a
+  checksum: b8321d8c32f689665e9a8669fd16e46ba38fe4c5dfb6acd4f695bbc1178f1960942839c99ff8ab1766ba77b0c676aee47b88f5105532b35e7a82f98b2f70a27c
   languageName: node
   linkType: hard
 
@@ -13843,23 +13870,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-gyp@npm:^10.2.0":
-  version: 10.2.0
-  resolution: "node-gyp@npm:10.2.0"
+"node-gyp@npm:^11.0.0":
+  version: 11.0.0
+  resolution: "node-gyp@npm:11.0.0"
   dependencies:
     env-paths: ^2.2.0
     exponential-backoff: ^3.1.1
     glob: ^10.3.10
     graceful-fs: ^4.2.6
-    make-fetch-happen: ^13.0.0
-    nopt: ^7.0.0
-    proc-log: ^4.1.0
+    make-fetch-happen: ^14.0.3
+    nopt: ^8.0.0
+    proc-log: ^5.0.0
     semver: ^7.3.5
-    tar: ^6.2.1
-    which: ^4.0.0
+    tar: ^7.4.3
+    which: ^5.0.0
   bin:
     node-gyp: bin/node-gyp.js
-  checksum: 0233759d8c19765f7fdc259a35eb046ad86c3d09e22f7384613ae2b89647dd27fcf833fdf5293d9335041e91f9b1c539494225959cdb312a5c8080b7534b926f
+  checksum: d7d5055ccc88177f721c7cd4f8f9440c29a0eb40e7b79dba89ef882ec957975dfc1dcb8225e79ab32481a02016eb13bbc051a913ea88d482d3cbdf2131156af4
   languageName: node
   linkType: hard
 
@@ -14198,15 +14225,15 @@ __metadata:
   linkType: hard
 
 "npm@npm:^10.8.1":
-  version: 10.9.1
-  resolution: "npm@npm:10.9.1"
+  version: 10.9.2
+  resolution: "npm@npm:10.9.2"
   dependencies:
     "@isaacs/string-locale-compare": ^1.1.0
     "@npmcli/arborist": ^8.0.0
     "@npmcli/config": ^9.0.0
     "@npmcli/fs": ^4.0.0
-    "@npmcli/map-workspaces": ^4.0.1
-    "@npmcli/package-json": ^6.0.1
+    "@npmcli/map-workspaces": ^4.0.2
+    "@npmcli/package-json": ^6.1.0
     "@npmcli/promise-spawn": ^8.0.2
     "@npmcli/redact": ^3.0.0
     "@npmcli/run-script": ^9.0.1
@@ -14223,7 +14250,7 @@ __metadata:
     graceful-fs: ^4.2.11
     hosted-git-info: ^8.0.2
     ini: ^5.0.0
-    init-package-json: ^7.0.1
+    init-package-json: ^7.0.2
     is-cidr: ^5.1.0
     json-parse-even-better-errors: ^4.0.0
     libnpmaccess: ^9.0.0
@@ -14242,7 +14269,7 @@ __metadata:
     minipass: ^7.1.1
     minipass-pipeline: ^1.2.4
     ms: ^2.1.2
-    node-gyp: ^10.2.0
+    node-gyp: ^11.0.0
     nopt: ^8.0.0
     normalize-package-data: ^7.0.0
     npm-audit-report: ^6.0.0
@@ -14272,7 +14299,7 @@ __metadata:
   bin:
     npm: bin/npm-cli.js
     npx: bin/npx-cli.js
-  checksum: 12fee36e7985b8b2ff67ecb639b2e0f3e0692a09ff2e02c24985bfd1ddacf57dad89be56a052dfb8b6bb7a1472203362e536a92488c54f506ceffdeb172466c6
+  checksum: 38bfc63f64610f2b8d879719b102827e0423a13291cfda0196b3ea25bfbe01518d1f9aa24ec44beb462769e1bbc6ab854ca0449def21e94008c8d582b7b7866f
   languageName: node
   linkType: hard
 
@@ -15069,7 +15096,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"proc-log@npm:^4.0.0, proc-log@npm:^4.1.0":
+"proc-log@npm:^4.0.0":
   version: 4.2.0
   resolution: "proc-log@npm:4.2.0"
   checksum: 98f6cd012d54b5334144c5255ecb941ee171744f45fca8b43b58ae5a0c1af07352475f481cadd9848e7f0250376ee584f6aa0951a856ff8f021bdfbff4eb33fc
