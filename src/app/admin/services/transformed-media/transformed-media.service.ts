@@ -169,6 +169,9 @@ export class TransformedMediaService {
         displayName: data.courtroom.display_name,
       },
       isHidden: data.is_hidden,
+      isCurrent: data.is_current,
+      courtroomName: data.courtroom.display_name,
+      courthouseName: data.courthouse.display_name,
     };
   }
 

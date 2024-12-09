@@ -72,7 +72,7 @@
         ariaDescribedBy="comment-label"
         [maxCharacterLimit]="256"
         (isInvalid)="isControlInvalid('comments')"
-      ></app-govuk-textarea>
+      />
     </div>
 
     <div class="govuk-button-group">
@@ -82,14 +82,13 @@
   </form>
 } @else {
   @if (isAssociatedAudio() && !audioHideComplete()) {
-    @if (associatedAudio) {
+    @if (media.length) {
       <app-associated-audio-hide-delete
-        [transformedMediaId]="mediaId"
-        (errors)="errors = $event"
-        [audioFile]="associatedAudio.audioFile"
-        [media]="associatedAudio.media"
         [id]="id"
+        [transformedMediaId]="mediaId"
+        [media]="media"
         [fileFormValues]="hideFormValues"
+        (errors)="errors = $event"
         (successResponse)="audioHideComplete.set($event)"
       />
     }
@@ -99,6 +98,6 @@
       [fileType]="fileType"
       [id]="id"
       [continueLink]="continueLink"
-    ></app-file-hide-or-delete-success>
+    />
   }
 }
