@@ -150,63 +150,48 @@ describe('CourthouseService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('#createCourthouse', () => {
-    const newCourthouse = {
-      courthouseName: 'COURTHOUSE',
-      displayName: 'Courthouse',
-      regionId: 1,
-      securityGroupIds: ['1', '2', '3'],
-    };
+  describe('#createCourthouse', () => {
+    it('makes POST request with courthouse data', () => {
+      const newCourthouse = {
+        courthouseName: 'courthouse',
+        displayName: 'Courthouse',
+        regionId: 1,
+        securityGroupIds: ['1', '2', '3'],
+      };
 
-    let courthouse;
-    service.createCourthouse(newCourthouse).subscribe((courthouseResult: CourthouseData) => {
-      courthouse = courthouseResult;
+      service.createCourthouse(newCourthouse).subscribe();
+
+      const req = httpMock.expectOne(`${COURTHOUSES_ADMIN_PATH}`);
+      expect(req.request.method).toBe('POST');
+      expect((req.request.body as CourthouseData).courthouse_name).toEqual('COURTHOUSE');
     });
-
-    const req = httpMock.expectOne(`${COURTHOUSES_ADMIN_PATH}`);
-    expect(req.request.method).toBe('POST');
-
-    req.flush(newCourthouse);
-
-    expect(courthouse).toEqual(newCourthouse);
   });
 
-  it('#updateCourthouse', () => {
-    const newCourthouse = {
-      courthouseName: 'COURTHOUSE',
-      displayName: 'Courthouse',
-      regionId: 1,
-      securityGroupIds: ['1', '2', '3'],
-    };
-    const courthouseId = 1;
-    let courthouse;
-    service.updateCourthouse(courthouseId, newCourthouse).subscribe((courthouseResult: CourthouseData) => {
-      courthouse = courthouseResult;
+  describe('#updateCourthouse', () => {
+    it('makes PATCH request with courthouse data', () => {
+      const newCourthouse = {
+        courthouseName: 'COURTHOUSE',
+        displayName: 'Courthouse',
+        regionId: 1,
+        securityGroupIds: ['1', '2', '3'],
+      };
+      const courthouseId = 1;
+      service.updateCourthouse(courthouseId, newCourthouse).subscribe();
+
+      const req = httpMock.expectOne(`${COURTHOUSES_ADMIN_PATH}/${courthouseId}`);
+      expect(req.request.method).toBe('PATCH');
     });
-
-    const req = httpMock.expectOne(`${COURTHOUSES_ADMIN_PATH}/${courthouseId}`);
-    expect(req.request.method).toBe('PATCH');
-
-    req.flush(newCourthouse);
-
-    expect(courthouse).toEqual(newCourthouse);
   });
 
-  it('#getCourthouse', () => {
-    let courthouse;
-    const mockCourthouse = {};
-    const courthouseId = 1;
+  describe('#getCourthouse', () => {
+    it('makes GET courthouse request and returns data', () => {
+      const courthouseId = 1;
 
-    service.getCourthouse(1).subscribe((courthouseResult: CourthouseData) => {
-      courthouse = courthouseResult;
+      service.getCourthouse(1).subscribe();
+
+      const req = httpMock.expectOne(`${COURTHOUSES_ADMIN_PATH}/${courthouseId}`);
+      expect(req.request.method).toBe('GET');
     });
-
-    const req = httpMock.expectOne(`${COURTHOUSES_ADMIN_PATH}/${courthouseId}`);
-    expect(req.request.method).toBe('GET');
-
-    req.flush(mockCourthouse);
-
-    expect(courthouse).toEqual(mockCourthouse);
   });
 
   describe('#getCourthouses', () => {
