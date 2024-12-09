@@ -124,6 +124,14 @@ describe('CreateUpdateCourthouseFormComponent', () => {
     }));
   });
 
+  it('converts courthouse name to UPPER CASE', fakeAsync(() => {
+    const courthouseNameElement = fixture.nativeElement.querySelector('input#courthouse-name');
+    courthouseNameElement.value = 'should be UPPER case';
+    courthouseNameElement.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    expect(component.courthouseNameControl.getRawValue()).toBe('SHOULD BE UPPER CASE');
+  }));
+
   describe('#formatNameToId', () => {
     it('Should change name to id radio style', () => {
       expect(component.formatNameToRadioId('Test ID')).toEqual('test-id-radio');

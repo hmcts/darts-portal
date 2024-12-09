@@ -135,7 +135,7 @@ export class CourthouseService {
 
   private mapToCreateCourthouseRequest(courthouse: CreateUpdateCourthouseFormValues): CreateCourthouseRequest {
     return {
-      courthouse_name: courthouse.courthouseName!,
+      courthouse_name: courthouse.courthouseName!.toUpperCase(),
       display_name: courthouse.displayName!,
       region_id: courthouse?.regionId ? +courthouse.regionId : undefined,
       security_group_ids: courthouse?.securityGroupIds.map((securityGroupId) => parseInt(securityGroupId)),

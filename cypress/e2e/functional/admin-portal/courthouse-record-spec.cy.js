@@ -30,7 +30,7 @@ describe('Admin - Courthouse record screen', () => {
     cy.get('dt').contains('Database ID').should('be.visible');
     cy.get('dd').contains('0').should('be.visible');
     cy.get('dt').contains('Courthouse name').should('be.visible');
-    cy.get('dd').contains('Reading').should('be.visible');
+    cy.get('dd').contains('READING').should('be.visible');
     cy.get('dt').contains('Region').should('be.visible');
     cy.get('dd').contains('South west').should('be.visible');
     cy.get('dt').contains('Groups').should('be.visible');
