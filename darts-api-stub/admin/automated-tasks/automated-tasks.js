@@ -15,8 +15,8 @@ const defaultAutomatedTasks = [
     created_by: 1,
     last_modified_at: '2024-01-01T00:00:00Z',
     last_modified_by: 2,
-    rpo_csv_start_hour: '2024-02-01T02:00:00Z',
-    rpo_csv_end_hour: '2024-02-01T03:00:00Z',
+    rpo_csv_start_hour: 24,
+    rpo_csv_end_hour: 72,
     arm_attribute_type: 'RPO',
   },
   {

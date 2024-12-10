@@ -8,7 +8,6 @@ import { GovukSummaryListDirectives } from '@directives/govuk-summary-list';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { AutomatedTasksService } from '@services/automated-tasks/automated-tasks.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
-import { optionalStringToBooleanOrNull } from '@utils/transform.utils';
 import { map, Observable, switchMap } from 'rxjs';
 import { AutomatedTaskStatusComponent } from '../automated-task-status/automated-task-status.component';
 
@@ -36,9 +35,7 @@ export class ViewAutomatedTasksComponent implements OnDestroy {
   taskId = this.route.snapshot.params.id;
 
   task = signal<AutomatedTaskDetails | null>(null);
-  batchSizeChanged = input(null, { transform: optionalStringToBooleanOrNull });
-  dateChanged = input(null, { transform: optionalStringToBooleanOrNull });
-  label = input(null);
+  labelChanged = input(null);
   taskStatus = this.taskService.getLatestTaskStatus();
 
   constructor() {
@@ -83,8 +80,6 @@ export class ViewAutomatedTasksComponent implements OnDestroy {
   stringifyDates(task: AutomatedTaskDetails) {
     return {
       ...task,
-      rpoCsvStartHour: task.rpoCsvStartHour?.toISO(),
-      rpoCsvEndHour: task.rpoCsvEndHour?.toISO(),
       armReplayStartTs: task.armReplayStartTs?.toISO(),
       armReplayEndTs: task.armReplayEndTs?.toISO(),
     };

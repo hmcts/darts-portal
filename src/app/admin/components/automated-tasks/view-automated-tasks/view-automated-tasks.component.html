@@ -2,12 +2,8 @@
 
 <app-automated-task-status [latestTaskStatus]="taskStatus()" />
 
-@if (batchSizeChanged()) {
-  <app-govuk-banner type="success"> Batch size successfully updated </app-govuk-banner>
-}
-
-@if (dateChanged()) {
-  <app-govuk-banner type="success"> {{ label() }} successfully updated </app-govuk-banner>
+@if (labelChanged()) {
+  <app-govuk-banner type="success"> {{ labelChanged() }} successfully updated </app-govuk-banner>
 }
 
 @if (task(); as task) {
@@ -61,13 +57,13 @@
       <div govukSummaryListRow>
         <dt govukSummaryKey>RPO CSV start hour</dt>
         <dd govukSummaryValue>
-          {{ task.rpoCsvStartHour | luxonDate: dateFormat }}
+          {{ task.rpoCsvStartHour }}
         </dd>
         <dd govukSummaryAction>
           <a
             class="govuk-link"
             [routerLink]="['edit']"
-            [state]="{ automatedTask: stringifyDates(task), edit: 'RPO_START_TIME' }"
+            [state]="{ automatedTask: task, edit: 'ARM_RPO_CSV_START_HOUR' }"
             >Change</a
           >
         </dd>
@@ -76,13 +72,10 @@
       <div govukSummaryListRow>
         <dt govukSummaryKey>RPO CSV end hour</dt>
         <dd govukSummaryValue>
-          {{ task.rpoCsvEndHour | luxonDate: dateFormat }}
+          {{ task.rpoCsvEndHour }}
         </dd>
         <dd govukSummaryAction>
-          <a
-            class="govuk-link"
-            [routerLink]="['edit']"
-            [state]="{ automatedTask: stringifyDates(task), edit: 'RPO_END_TIME' }"
+          <a class="govuk-link" [routerLink]="['edit']" [state]="{ automatedTask: task, edit: 'ARM_RPO_CSV_END_HOUR' }"
             >Change</a
           >
         </dd>
@@ -99,7 +92,7 @@
           <a
             class="govuk-link"
             [routerLink]="['edit']"
-            [state]="{ automatedTask: stringifyDates(task), edit: 'ARM_START_TIME' }"
+            [state]="{ automatedTask: stringifyDates(task), edit: 'ARM_REPLAY_START_TIME' }"
             >Change</a
           >
         </dd>
@@ -114,7 +107,7 @@
           <a
             class="govuk-link"
             [routerLink]="['edit']"
-            [state]="{ automatedTask: stringifyDates(task), edit: 'ARM_END_TIME' }"
+            [state]="{ automatedTask: stringifyDates(task), edit: 'ARM_REPLAY_END_TIME' }"
             >Change</a
           >
         </dd>

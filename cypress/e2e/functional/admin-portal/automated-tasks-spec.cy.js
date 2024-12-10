@@ -70,8 +70,8 @@ describe('Admin - Automated tasks screen', () => {
       cy.get(rowSelector).contains('Cron expression').parent().get('dd').contains('0 0 1 * * *');
       cy.get(rowSelector).contains('Cron editable').parent().get('dd').contains('Yes');
       cy.get(rowSelector).contains('Batch size').parent().get('dd').contains('1000');
-      cy.get(rowSelector).contains('RPO CSV start hour').parent().get('dd').contains('Thu 1 Feb 2024 at 02:00:00');
-      cy.get(rowSelector).contains('RPO CSV end hour').parent().get('dd').contains('Thu 1 Feb 2024 at 03:00:00');
+      cy.get(rowSelector).contains('RPO CSV start hour').parent().get('dd').contains('24');
+      cy.get(rowSelector).contains('RPO CSV end hour').parent().get('dd').contains('72');
       cy.get(rowSelector).contains('Date created').parent().get('dd').contains('Mon 1 Jan 2024 at 00:00:00');
       cy.get(rowSelector).contains('Created by').parent().get('dd').contains('Eric Bristow');
       cy.get(rowSelector).contains('Date modified').parent().get('dd').contains('Mon 1 Jan 2024 at 00:00:00');
@@ -129,15 +129,10 @@ describe('Admin - Automated tasks screen', () => {
         .find('a.govuk-link')
         .click();
 
-      cy.get('#date').clear().type('20/02/2024');
-
-      cy.get('#edit-time-hour-input').clear().type('18');
-      cy.get('#edit-time-minutes-input').clear().type('35');
-      cy.get('#edit-time-seconds-input').clear().type('59');
-
+      cy.get('#rpoCsvStartHour').clear().type('30');
       cy.get('.govuk-button').contains('Confirm').click();
       cy.get('app-govuk-banner').contains('RPO CSV start hour successfully updated');
-      cy.get(rowSelector).contains('RPO CSV start hour').parents().get('dd').contains('Tue 20 Feb 2024 at 18:35:59');
+      cy.get(rowSelector).contains('RPO CSV start hour').parents().get('dd').contains('30');
     });
   });
 
@@ -150,15 +145,11 @@ describe('Admin - Automated tasks screen', () => {
         .find('a.govuk-link')
         .click();
 
-      cy.get('#date').clear().type('04/05/2024');
-
-      cy.get('#edit-time-hour-input').clear().type('16');
-      cy.get('#edit-time-minutes-input').clear().type('30');
-      cy.get('#edit-time-seconds-input').clear().type('11');
+      cy.get('#rpoCsvEndHour').clear().type('99');
 
       cy.get('.govuk-button').contains('Confirm').click();
       cy.get('app-govuk-banner').contains('RPO CSV end hour successfully updated');
-      cy.get(rowSelector).contains('RPO CSV end hour').parents().get('dd').contains('Sat 4 May 2024 at 16:30:11');
+      cy.get(rowSelector).contains('RPO CSV end hour').parents().get('dd').contains('99');
     });
   });
 

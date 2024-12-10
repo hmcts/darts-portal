@@ -93,18 +93,18 @@ describe('ViewAutomatedTasksComponent', () => {
       component.task.set({
         ...task,
         armAttributeType: 'RPO',
-        rpoCsvStartHour: DateTime.fromISO('2021-01-01T03:00:00Z'),
-        rpoCsvEndHour: DateTime.fromISO('2021-01-01T04:00:00Z'),
+        rpoCsvStartHour: 24,
+        rpoCsvEndHour: 72,
       });
 
       fixture.detectChanges();
 
       const rows = fixture.debugElement.queryAll(By.directive(GovukSummaryListRowDirective));
-      const startTimeRow = rows.find((row) => row.nativeElement.textContent.includes('RPO CSV start hour'));
-      const endTimeRow = rows.find((row) => row.nativeElement.textContent.includes('RPO CSV end hour'));
+      const startHourRow = rows.find((row) => row.nativeElement.textContent.includes('RPO CSV start hour'));
+      const endHourRow = rows.find((row) => row.nativeElement.textContent.includes('RPO CSV end hour'));
 
-      expect(startTimeRow?.nativeElement.textContent).toContain('Fri 1 Jan 2021 at 03:00:00');
-      expect(endTimeRow?.nativeElement.textContent).toContain('Fri 1 Jan 2021 at 04:00:00');
+      expect(startHourRow?.nativeElement.textContent).toContain('24');
+      expect(endHourRow?.nativeElement.textContent).toContain('72');
     });
   });
 
@@ -126,6 +126,17 @@ describe('ViewAutomatedTasksComponent', () => {
         queryParams: { backUrl: component.router.url },
         state: { task },
       });
+    });
+  });
+
+  describe('with labelChanged input', () => {
+    it('displays success banner', () => {
+      fixture.componentRef.setInput('labelChanged', 'Label text');
+      fixture.detectChanges();
+      component.task.set(task);
+
+      const banner = fixture.debugElement.query(By.css('#success-message'));
+      expect(banner.nativeElement.textContent).toContain('Label text successfully updated');
     });
   });
 
