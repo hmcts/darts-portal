@@ -30,7 +30,8 @@ export default () => {
     });
     sessionMiddleware.store = redisStore;
 
-    if (sessionMiddleware.cookie) {
+    const isSecureHost = (config.get('hostname') as string).startsWith('https://');
+    if (isSecureHost && sessionMiddleware.cookie) {
       sessionMiddleware.cookie.secure = true; // serve secure cookies
     }
   }
