@@ -17,16 +17,16 @@ export type AutomatedTaskDetails = AutomatedTask & {
   lastModifiedBy: number;
   createdByFullName?: string;
   modifiedByFullName?: string;
-  rpoCsvStartHour?: DateTime;
-  rpoCsvEndHour?: DateTime;
+  rpoCsvStartHour?: number;
+  rpoCsvEndHour?: number;
   armReplayStartTs?: DateTime;
   armReplayEndTs?: DateTime;
   armAttributeType?: 'RPO' | 'REPLAY';
 };
 
 export type AutomatedTaskDetailsState = AutomatedTaskDetails & {
-  rpoCsvStartHour?: string;
-  rpoCsvEndHour?: string;
+  rpoCsvStartHour?: number;
+  rpoCsvEndHour?: number;
   armReplayStartTs?: string;
   armReplayEndTs?: string;
 };

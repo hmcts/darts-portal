@@ -1,13 +1,25 @@
 import { FormErrorMessages } from '@core-types/index';
 
-export const maxBatchSize = 2147483647;
+export const maxIntegerSize = 2147483647;
 
 export const AutomatedTaskEditFormErrorMessages: FormErrorMessages = {
   batchSize: {
     required: 'Batch size must be set',
     min: 'Batch size must be greater than 0',
-    max: `Batch size must be less than ${maxBatchSize}`,
+    max: `Batch size must be less than ${maxIntegerSize}`,
     pattern: 'Batch size must be an integer',
+  },
+  rpoCsvStartHour: {
+    required: 'RPO CSV start hour must be set',
+    min: 'RPO CSV start hour must be greater than 0',
+    max: `RPO CSV start hour must be less than ${maxIntegerSize}`,
+    pattern: 'RPO CSV start hour must be an integer',
+  },
+  rpoCsvEndHour: {
+    required: 'RPO CSV end hour must be set',
+    min: 'RPO CSV end hour must be greater than 0',
+    max: `RPO CSV end hour must be less than ${maxIntegerSize}`,
+    pattern: 'RPO CSV end hour must be an integer',
   },
   date: {
     required: 'You must include a date',

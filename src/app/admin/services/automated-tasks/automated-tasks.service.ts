@@ -56,12 +56,9 @@ export class AutomatedTasksService {
       );
   }
 
-  changeBatchSize(id: number, value: number) {
-    return this.http.patch<void>(`/api/admin/automated-tasks/${id}`, { batch_size: value });
-  }
-
-  changeDateTime(id: number, key: string, date: DateTime) {
-    return this.http.patch<void>(`/api/admin/automated-tasks/${id}`, { [key]: date.toUTC().toISO() });
+  changeFieldValue(id: number, key: string, rawValue: number | string | DateTime) {
+    const value = rawValue instanceof DateTime ? rawValue.toUTC().toISO() : rawValue;
+    return this.http.patch<void>(`/api/admin/automated-tasks/${id}`, { [key]: value });
   }
 
   getLatestTaskStatus(): Signal<AutomatedTaskStatus | null> {
@@ -96,8 +93,8 @@ export class AutomatedTasksService {
       lastModifiedAt: DateTime.fromISO(task.last_modified_at),
       lastModifiedBy: task.last_modified_by,
       armAttributeType: task.arm_attribute_type,
-      rpoCsvStartHour: task.rpo_csv_start_hour ? DateTime.fromISO(task.rpo_csv_start_hour) : undefined,
-      rpoCsvEndHour: task.rpo_csv_end_hour ? DateTime.fromISO(task.rpo_csv_end_hour) : undefined,
+      rpoCsvStartHour: task.rpo_csv_start_hour,
+      rpoCsvEndHour: task.rpo_csv_end_hour,
       armReplayStartTs: task.arm_replay_start_ts ? DateTime.fromISO(task.arm_replay_start_ts) : undefined,
       armReplayEndTs: task.arm_replay_end_ts ? DateTime.fromISO(task.arm_replay_end_ts) : undefined,
     };

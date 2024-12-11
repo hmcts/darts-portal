@@ -7,7 +7,16 @@ import { AutomatedTaskEditFormErrorMessages } from '@constants/automated-task-ed
 import { AutomatedTasksService } from '@services/automated-tasks/automated-tasks.service';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
-import { EditAutomatedTaskComponent } from './edit-automated-task.component';
+import { EDIT_PROPERTY_MAP, EditAutomatedTaskComponent, type EditType } from './edit-automated-task.component';
+
+const INPUT_TYPE_PROPERTIES = Object.fromEntries(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  Object.entries(EDIT_PROPERTY_MAP).filter(([_, value]) => ['number', 'string'].includes(value.type))
+);
+const DATETIME_TYPE_PROPERTIES = Object.fromEntries(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  Object.entries(EDIT_PROPERTY_MAP).filter(([_, value]) => value.type === 'datetime')
+);
 
 describe('ChangeBatchSizeComponent', () => {
   let component: EditAutomatedTaskComponent;
@@ -35,10 +44,7 @@ describe('ChangeBatchSizeComponent', () => {
     return result;
   };
 
-  const setup = (
-    edit?: 'RPO_START_TIME' | 'RPO_END_TIME' | 'ARM_START_TIME' | 'ARM_END_TIME' | 'BATCH_SIZE',
-    task?: Partial<AutomatedTaskDetails>
-  ) => {
+  const setup = (edit?: EditType, task?: Partial<AutomatedTaskDetails>) => {
     TestBed.configureTestingModule({
       imports: [EditAutomatedTaskComponent],
       providers: [
@@ -47,8 +53,7 @@ describe('ChangeBatchSizeComponent', () => {
         {
           provide: AutomatedTasksService,
           useValue: {
-            changeBatchSize: jest.fn().mockReturnValue(of({})),
-            changeDateTime: jest.fn().mockReturnValue(of({})),
+            changeFieldValue: jest.fn().mockReturnValue(of({})),
           },
         },
       ],
@@ -69,61 +74,73 @@ describe('ChangeBatchSizeComponent', () => {
     fixture.detectChanges();
   };
 
-  describe('BATCH_SIZE edit - task provided', () => {
-    beforeEach(() => {
-      setup('BATCH_SIZE', { id: 1, batchSize: 10 });
-    });
-    it('should create', () => {
-      expect(component).toBeTruthy();
-    });
-
-    it('should set batchSize value to task.batchSize', () => {
-      expect(component.form.controls.batchSize.value).toBe(10);
-    });
-
-    it('batch size less than 0', () => {
-      component.form.controls.batchSize.setValue(0);
-      component.onSubmit();
-      expect(component.validationErrorSummary.length).toBe(1);
-      expect(component.validationErrorSummary[0].message).toBe(AutomatedTaskEditFormErrorMessages.batchSize.min);
-    });
-
-    it('batch is greater than 2,147,483,647', () => {
-      component.form.controls.batchSize.setValue(2147483648);
-      component.onSubmit();
-      expect(component.validationErrorSummary.length).toBe(1);
-      expect(component.validationErrorSummary[0].message).toBe(AutomatedTaskEditFormErrorMessages.batchSize.max);
-    });
-
-    it('batch size not an integer', () => {
-      component.form.controls.batchSize.setValue('abc' as unknown as number);
-      component.onSubmit();
-      expect(component.validationErrorSummary.length).toBe(1);
-      expect(component.validationErrorSummary[0].message).toBe(AutomatedTaskEditFormErrorMessages.batchSize.pattern);
-    });
-
-    it('batch size is required', () => {
-      component.form.controls.batchSize.setValue(null as unknown as number);
-      component.onSubmit();
-      expect(component.validationErrorSummary.length).toBe(1);
-      expect(component.validationErrorSummary[0].message).toBe(AutomatedTaskEditFormErrorMessages.batchSize.required);
-    });
-
-    it('should call changeBatchSize and navigate on valid submit', () => {
-      component.form.controls.batchSize.setValue(5);
-      component.onSubmit();
-      expect(automatedTasksService.changeBatchSize).toHaveBeenCalledWith(1, 5);
-      expect(routerNavigateSpy).toHaveBeenCalledWith(['../'], {
-        relativeTo: TestBed.inject(ActivatedRoute),
-        queryParams: { batchSizeChanged: true },
+  Object.keys(INPUT_TYPE_PROPERTIES).forEach((key: EditType) => {
+    const editProperty = INPUT_TYPE_PROPERTIES[key];
+    describe(`${key} edit - task provided`, () => {
+      beforeEach(() => {
+        setup(key, { id: 1, [editProperty.key]: 10 });
       });
-    });
 
-    it('should not call changeBatchSize and navigate on invalid submit', () => {
-      component.form.controls.batchSize.setValue(0);
-      component.onSubmit();
-      expect(automatedTasksService.changeBatchSize).not.toHaveBeenCalled();
-      expect(routerNavigateSpy).not.toHaveBeenCalled();
+      it('should create', () => {
+        expect(component).toBeTruthy();
+      });
+
+      it('should set form value to existing task value', () => {
+        expect(component.form.controls[editProperty.key].value).toBe(10);
+      });
+
+      it('less than 0', () => {
+        component.form.get(editProperty.key)?.setValue(0);
+        component.onSubmit();
+        expect(component.validationErrorSummary.length).toBe(1);
+        expect(component.validationErrorSummary[0].message).toBe(
+          AutomatedTaskEditFormErrorMessages[editProperty.key].min
+        );
+      });
+
+      it('greater than 2,147,483,647', () => {
+        component.form.get(editProperty.key)?.setValue(2147483648);
+        component.onSubmit();
+        expect(component.validationErrorSummary.length).toBe(1);
+        expect(component.validationErrorSummary[0].message).toBe(
+          AutomatedTaskEditFormErrorMessages[editProperty.key].max
+        );
+      });
+
+      it('not an integer', () => {
+        component.form.get(editProperty.key)?.setValue('abc' as unknown as number);
+        component.onSubmit();
+        expect(component.validationErrorSummary.length).toBe(1);
+        expect(component.validationErrorSummary[0].message).toBe(
+          AutomatedTaskEditFormErrorMessages[editProperty.key].pattern
+        );
+      });
+
+      it('required', () => {
+        component.form.get(editProperty.key)?.setValue(null as unknown as number);
+        component.onSubmit();
+        expect(component.validationErrorSummary.length).toBe(1);
+        expect(component.validationErrorSummary[0].message).toBe(
+          AutomatedTaskEditFormErrorMessages[editProperty.key].required
+        );
+      });
+
+      it('should call changeFieldValue and navigate on valid submit', () => {
+        component.form.get(editProperty.key)?.setValue(5);
+        component.onSubmit();
+        expect(automatedTasksService.changeFieldValue).toHaveBeenCalledWith(1, editProperty.api_key, 5);
+        expect(routerNavigateSpy).toHaveBeenCalledWith(['../'], {
+          relativeTo: TestBed.inject(ActivatedRoute),
+          queryParams: { labelChanged: editProperty.label },
+        });
+      });
+
+      it('should not call changeBatchSize and navigate on invalid submit', () => {
+        component.form.get(editProperty.key)?.setValue(0);
+        component.onSubmit();
+        expect(automatedTasksService.changeFieldValue).not.toHaveBeenCalled();
+        expect(routerNavigateSpy).not.toHaveBeenCalled();
+      });
     });
   });
 
@@ -134,125 +151,117 @@ describe('ChangeBatchSizeComponent', () => {
     });
   });
 
-  describe('Valid Date/time edit', () => {
-    beforeEach(() => {
-      setup('RPO_END_TIME', { id: 1, rpoCsvEndHour: DateTime.fromISO('2023-01-01T12:30:00.000Z') });
-    });
+  Object.keys(DATETIME_TYPE_PROPERTIES).forEach((key: EditType) => {
+    const editProperty = DATETIME_TYPE_PROPERTIES[key];
 
-    it('should set date and time input value non-BST', () => {
-      expect(component.form.controls.date.value).toBe('01/01/2023');
-      expect(component.form.controls.time.value).toEqual({ hours: '12', minutes: '30', seconds: '00' });
-    });
-
-    it('should call changeDateTime and navigate on valid submit', () => {
-      component.form.controls.date.setValue('09/01/2023');
-      const timeGroup = component.form.controls.time as FormGroup;
-      timeGroup.controls.hours.setValue('18');
-      timeGroup.controls.minutes.setValue('30');
-      timeGroup.controls.seconds.setValue('45');
-      component.onSubmit();
-      expect(component.dateLabel).toBe('RPO CSV end hour');
-      expect(automatedTasksService.changeDateTime).toHaveBeenCalledWith(
-        1,
-        'rpo_csv_end_hour',
-        DateTime.fromISO('2023-01-09T18:30:45.000Z')
-      );
-      expect(routerNavigateSpy).toHaveBeenCalledWith(['../'], {
-        relativeTo: TestBed.inject(ActivatedRoute),
-        queryParams: { dateChanged: true, label: 'RPO CSV end hour' },
+    describe(`${key} valid datetime edit`, () => {
+      beforeEach(() => {
+        setup(key, { id: 1, [editProperty.key]: DateTime.fromISO('2023-01-01T12:30:00.000Z') });
       });
-    });
-  });
 
-  describe('Date/time edit validation - task provided', () => {
-    beforeEach(() => {
-      setup('ARM_START_TIME', { id: 1, armReplayStartTs: DateTime.fromISO('2023-05-15T13:30:00.000Z') });
-    });
+      it('should set date and time input value non-BST', () => {
+        expect(component.form.controls.date.value).toBe('01/01/2023');
+        expect(component.form.controls.time.value).toEqual({ hours: '12', minutes: '30', seconds: '00' });
+      });
 
-    it('should set date and time input value BST', () => {
-      expect(component.form.controls.date.value).toBe('15/05/2023');
-      expect(component.form.controls.time.value).toEqual({ hours: '14', minutes: '30', seconds: '00' });
-      expect(component.dateLabel).toBe('ARM Replay start time');
-    });
+      it('date is required', () => {
+        component.form.controls.date.setValue('');
+        component.onSubmit();
+        expect(component.validationErrorSummary.length).toBe(1);
+        expect(component.validationErrorSummary[0].message).toBe(AutomatedTaskEditFormErrorMessages.date.required);
+      });
 
-    it('date is required', () => {
-      component.form.controls.date.setValue('');
-      component.onSubmit();
-      expect(component.validationErrorSummary.length).toBe(1);
-      expect(component.validationErrorSummary[0].message).toBe(AutomatedTaskEditFormErrorMessages.date.required);
-    });
+      it('date is not in the correct format', () => {
+        component.form.controls.date.setValue('2023-05-15');
+        component.onSubmit();
+        expect(component.validationErrorSummary.length).toBeGreaterThan(0);
+        expect(component.validationErrorSummary[0].message).toBe(AutomatedTaskEditFormErrorMessages.date.pattern);
+      });
 
-    it('date is not in the correct format', () => {
-      component.form.controls.date.setValue('2023-05-15');
-      component.onSubmit();
-      expect(component.validationErrorSummary.length).toBeGreaterThan(0);
-      expect(component.validationErrorSummary[0].message).toBe(AutomatedTaskEditFormErrorMessages.date.pattern);
-    });
+      it('date is invalid (e.g., 31/02/2023)', () => {
+        component.form.controls.date.setValue('31/02/2023');
+        component.onSubmit();
+        expect(component.validationErrorSummary.length).toBe(1);
+        expect(component.validationErrorSummary[0].message).toBe(AutomatedTaskEditFormErrorMessages.date.invalidDate);
+      });
 
-    it('date is invalid (e.g., 31/02/2023)', () => {
-      component.form.controls.date.setValue('31/02/2023');
-      component.onSubmit();
-      expect(component.validationErrorSummary.length).toBe(1);
-      expect(component.validationErrorSummary[0].message).toBe(AutomatedTaskEditFormErrorMessages.date.invalidDate);
-    });
+      it('date is required', () => {
+        const timeGroup = component.form.controls.time as FormGroup;
+        timeGroup.controls.hours.setValue('');
+        timeGroup.controls.minutes.setValue('');
+        timeGroup.controls.seconds.setValue('');
 
-    it('date is required', () => {
-      const timeGroup = component.form.controls.time as FormGroup;
-      timeGroup.controls.hours.setValue('');
-      timeGroup.controls.minutes.setValue('');
-      timeGroup.controls.seconds.setValue('');
+        component.onSubmit();
+        expect(component.validationErrorSummary.length).toBe(1);
+        expect(component.validationErrorSummary[0].message).toBe(AutomatedTaskEditFormErrorMessages.time.required);
+      });
 
-      component.onSubmit();
-      expect(component.validationErrorSummary.length).toBe(1);
-      expect(component.validationErrorSummary[0].message).toBe(AutomatedTaskEditFormErrorMessages.time.required);
-    });
+      it('hours are out of range', () => {
+        const timeGroup = component.form.controls.time as FormGroup;
+        timeGroup.controls.hours.setValue('24'); // Invalid hour
+        component.onSubmit();
+        expect(component.validationErrorSummary.length).toBe(1);
+        expect(component.validationErrorSummary[0].message).toBe(AutomatedTaskEditFormErrorMessages.time.invalidTime);
+      });
 
-    it('hours are out of range', () => {
-      const timeGroup = component.form.controls.time as FormGroup;
-      timeGroup.controls.hours.setValue('24'); // Invalid hour
-      component.onSubmit();
-      expect(component.validationErrorSummary.length).toBe(1);
-      expect(component.validationErrorSummary[0].message).toBe(AutomatedTaskEditFormErrorMessages.time.invalidTime);
-    });
+      it('minutes are out of range', () => {
+        const timeGroup = component.form.controls.time as FormGroup;
+        timeGroup.controls.minutes.setValue('60'); // Invalid minute
+        component.onSubmit();
+        expect(component.validationErrorSummary.length).toBe(1);
+        expect(component.validationErrorSummary[0].message).toBe(AutomatedTaskEditFormErrorMessages.time.invalidTime);
+      });
 
-    it('minutes are out of range', () => {
-      const timeGroup = component.form.controls.time as FormGroup;
-      timeGroup.controls.minutes.setValue('60'); // Invalid minute
-      component.onSubmit();
-      expect(component.validationErrorSummary.length).toBe(1);
-      expect(component.validationErrorSummary[0].message).toBe(AutomatedTaskEditFormErrorMessages.time.invalidTime);
-    });
+      it('seconds are out of range', () => {
+        const timeGroup = component.form.controls.time as FormGroup;
+        timeGroup.controls.seconds.setValue('60'); // Invalid second
+        component.onSubmit();
+        expect(component.validationErrorSummary.length).toBe(1);
+        expect(component.validationErrorSummary[0].message).toBe(AutomatedTaskEditFormErrorMessages.time.invalidTime);
+      });
 
-    it('seconds are out of range', () => {
-      const timeGroup = component.form.controls.time as FormGroup;
-      timeGroup.controls.seconds.setValue('60'); // Invalid second
-      component.onSubmit();
-      expect(component.validationErrorSummary.length).toBe(1);
-      expect(component.validationErrorSummary[0].message).toBe(AutomatedTaskEditFormErrorMessages.time.invalidTime);
-    });
+      it('hours do not match pattern (e.g., single-digit hour)', () => {
+        const timeGroup = component.form.controls.time as FormGroup;
+        timeGroup.controls.hours.setValue('5'); // Should be two digits
+        component.onSubmit();
+        expect(component.validationErrorSummary.length).toBe(1);
+        expect(component.validationErrorSummary[0].message).toBe(AutomatedTaskEditFormErrorMessages.time.pattern);
+      });
 
-    it('hours do not match pattern (e.g., single-digit hour)', () => {
-      const timeGroup = component.form.controls.time as FormGroup;
-      timeGroup.controls.hours.setValue('5'); // Should be two digits
-      component.onSubmit();
-      expect(component.validationErrorSummary.length).toBe(1);
-      expect(component.validationErrorSummary[0].message).toBe(AutomatedTaskEditFormErrorMessages.time.pattern);
-    });
+      it('minutes do not match pattern (e.g., single-digit minute)', () => {
+        const timeGroup = component.form.controls.time as FormGroup;
+        timeGroup.controls.minutes.setValue('5'); // Should be two digits
+        component.onSubmit();
+        expect(component.validationErrorSummary.length).toBe(1);
+        expect(component.validationErrorSummary[0].message).toBe(AutomatedTaskEditFormErrorMessages.time.pattern);
+      });
 
-    it('minutes do not match pattern (e.g., single-digit minute)', () => {
-      const timeGroup = component.form.controls.time as FormGroup;
-      timeGroup.controls.minutes.setValue('5'); // Should be two digits
-      component.onSubmit();
-      expect(component.validationErrorSummary.length).toBe(1);
-      expect(component.validationErrorSummary[0].message).toBe(AutomatedTaskEditFormErrorMessages.time.pattern);
-    });
+      it('seconds do not match pattern (e.g., single-digit second)', () => {
+        const timeGroup = component.form.controls.time as FormGroup;
+        timeGroup.controls.seconds.setValue('5'); // Should be two digits
+        component.onSubmit();
+        expect(component.validationErrorSummary.length).toBe(1);
+        expect(component.validationErrorSummary[0].message).toBe(AutomatedTaskEditFormErrorMessages.time.pattern);
+      });
 
-    it('seconds do not match pattern (e.g., single-digit second)', () => {
-      const timeGroup = component.form.controls.time as FormGroup;
-      timeGroup.controls.seconds.setValue('5'); // Should be two digits
-      component.onSubmit();
-      expect(component.validationErrorSummary.length).toBe(1);
-      expect(component.validationErrorSummary[0].message).toBe(AutomatedTaskEditFormErrorMessages.time.pattern);
+      it('should call changeDateTime and navigate on valid submit', () => {
+        component.form.controls.date.setValue('09/01/2023');
+        const timeGroup = component.form.controls.time as FormGroup;
+        timeGroup.controls.hours.setValue('18');
+        timeGroup.controls.minutes.setValue('30');
+        timeGroup.controls.seconds.setValue('45');
+        component.onSubmit();
+        expect(component.dateLabel).toBe(editProperty.label);
+        expect(automatedTasksService.changeFieldValue).toHaveBeenCalledWith(
+          1,
+          editProperty.api_key,
+          DateTime.fromISO('2023-01-09T18:30:45.000Z')
+        );
+        expect(routerNavigateSpy).toHaveBeenCalledWith(['../'], {
+          relativeTo: TestBed.inject(ActivatedRoute),
+          queryParams: { labelChanged: editProperty.label },
+        });
+      });
     });
   });
 });

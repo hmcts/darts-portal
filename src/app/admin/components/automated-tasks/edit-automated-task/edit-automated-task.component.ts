@@ -1,13 +1,13 @@
 import { AutomatedTaskDetails, AutomatedTaskDetailsState } from '@admin-types/automated-task/automated-task';
 import { Component, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormGroup, NonNullableFormBuilder, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DatepickerComponent } from '@common/datepicker/datepicker.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { TimeInputComponent } from '@components/hearing/request-playback-audio/time-input/time-input.component';
-import { AutomatedTaskEditFormErrorMessages, maxBatchSize } from '@constants/automated-task-edit-error-messages';
+import { AutomatedTaskEditFormErrorMessages, maxIntegerSize } from '@constants/automated-task-edit-error-messages';
 import { ErrorSummaryEntry } from '@core-types/index';
 import { AutomatedTasksService } from '@services/automated-tasks/automated-tasks.service';
 import { FormService } from '@services/form/form.service';
@@ -15,22 +15,55 @@ import { realDateValidator } from '@validators/real-date.validator';
 import { timeGroupValidator } from '@validators/time-group.validator';
 import { DateTime } from 'luxon';
 
-export const dateValidators = [
-  Validators.required,
-  Validators.pattern(/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/),
-  realDateValidator,
-];
+interface EditPropertyMap {
+  [key: string]: EditProperty;
+}
 
-const datePropertyMap = {
-  RPO_START_TIME: { label: 'RPO CSV start hour', key: 'rpoCsvStartHour', api_key: 'rpo_csv_start_hour' },
-  RPO_END_TIME: { label: 'RPO CSV end hour', key: 'rpoCsvEndHour', api_key: 'rpo_csv_end_hour' },
-  ARM_START_TIME: { label: 'ARM Replay start time', key: 'armReplayStartTs', api_key: 'arm_replay_start_ts' },
-  ARM_END_TIME: { label: 'ARM Replay end time', key: 'armReplayEndTs', api_key: 'arm_replay_end_ts' },
+interface EditProperty {
+  label: string;
+  key: string;
+  api_key: string;
+  type: 'number' | 'string' | 'datetime';
+  validators?: ValidatorFn[];
+}
+
+export const EDIT_PROPERTY_MAP: EditPropertyMap = {
+  BATCH_SIZE: {
+    label: 'Batch size',
+    key: 'batchSize',
+    api_key: 'batch_size',
+    type: 'number',
+    validators: [Validators.required, Validators.min(1), Validators.max(maxIntegerSize), Validators.pattern(/^-?\d+$/)],
+  },
+  ARM_RPO_CSV_START_HOUR: {
+    label: 'RPO CSV start hour',
+    key: 'rpoCsvStartHour',
+    api_key: 'rpo_csv_start_hour',
+    type: 'number',
+    validators: [Validators.required, Validators.min(1), Validators.max(maxIntegerSize), Validators.pattern(/^-?\d+$/)],
+  },
+  ARM_RPO_CSV_END_HOUR: {
+    label: 'RPO CSV end hour',
+    key: 'rpoCsvEndHour',
+    api_key: 'rpo_csv_end_hour',
+    type: 'number',
+    validators: [Validators.required, Validators.min(1), Validators.max(maxIntegerSize), Validators.pattern(/^-?\d+$/)],
+  },
+  ARM_REPLAY_START_TIME: {
+    label: 'ARM Replay start time',
+    key: 'armReplayStartTs',
+    api_key: 'arm_replay_start_ts',
+    type: 'datetime',
+  },
+  ARM_REPLAY_END_TIME: {
+    label: 'ARM Replay end time',
+    key: 'armReplayEndTs',
+    api_key: 'arm_replay_end_ts',
+    type: 'datetime',
+  },
 };
 
-type DatePropertyMap = typeof datePropertyMap;
-type DateKey = DatePropertyMap[keyof DatePropertyMap]['key'];
-type EditType = keyof typeof datePropertyMap | 'BATCH_SIZE';
+export type EditType = keyof typeof EDIT_PROPERTY_MAP;
 
 @Component({
   selector: 'app-edit-automated-task',
@@ -58,24 +91,7 @@ export class EditAutomatedTaskComponent {
   edit: EditType;
   dateLabel = '';
   validationErrorSummary: ErrorSummaryEntry[] = [];
-
-  form = this.fb.group({
-    batchSize: this.fb.control(0, [
-      Validators.required,
-      Validators.min(1),
-      Validators.max(maxBatchSize),
-      Validators.pattern(/^-?\d+$/),
-    ]),
-    date: ['', dateValidators],
-    time: this.fb.group(
-      {
-        hours: ['', [Validators.required, Validators.min(0), Validators.max(23), Validators.pattern(/^\d{2}$/)]],
-        minutes: ['', [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
-        seconds: ['', [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
-      },
-      { validators: timeGroupValidator }
-    ),
-  });
+  form!: FormGroup;
 
   isSubmitted = signal(false);
 
@@ -86,38 +102,8 @@ export class EditAutomatedTaskComponent {
     if (!this.taskState || !this.edit) {
       this.router.navigate(['../'], { relativeTo: this.route });
     } else {
-      if (this.isDateTimeEdit()) {
-        (this.form as FormGroup).removeControl('batchSize');
-        this.loadDateValues();
-
-        this.form.controls.date.events.pipe(takeUntilDestroyed()).subscribe(({ source }) => {
-          if (source.errors && this.isSubmitted()) {
-            this.validationErrorSummary = this.getErrorSummary();
-          } else {
-            this.validationErrorSummary = [];
-          }
-        });
-
-        this.form.controls.time.events.pipe(takeUntilDestroyed()).subscribe(({ source }) => {
-          if (source.errors && this.isSubmitted()) {
-            this.validationErrorSummary = this.getErrorSummary();
-          } else {
-            this.validationErrorSummary = [];
-          }
-        });
-      } else if (this.edit === 'BATCH_SIZE') {
-        (this.form as FormGroup).removeControl('date');
-        (this.form as FormGroup).removeControl('time');
-        this.form.controls.batchSize.setValue(this.task.batchSize);
-
-        this.form.controls.batchSize.events.pipe(takeUntilDestroyed()).subscribe(({ source }) => {
-          if (source.errors && this.isSubmitted()) {
-            this.validationErrorSummary = this.getErrorSummary();
-          } else {
-            this.validationErrorSummary = [];
-          }
-        });
-      }
+      this.setupFormControls();
+      this.loadFormControlValues();
     }
   }
 
@@ -126,33 +112,60 @@ export class EditAutomatedTaskComponent {
     this.isSubmitted.set(true);
     this.form.updateValueAndValidity();
     this.validationErrorSummary = this.getErrorSummary();
+    this.updateEditField();
+  }
 
-    if (this.edit === 'BATCH_SIZE') {
-      this.updateBatchSize();
-    } else if (this.isDateTimeEdit()) {
-      this.updateDateValues();
+  private setupFormControls() {
+    if (this.isDateTimeEdit) {
+      this.form = this.fb.group({
+        date: [
+          '',
+          [
+            Validators.required,
+            Validators.pattern(/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/),
+            realDateValidator,
+          ],
+        ],
+        time: this.fb.group(
+          {
+            hours: ['', [Validators.required, Validators.min(0), Validators.max(23), Validators.pattern(/^\d{2}$/)]],
+            minutes: ['', [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
+            seconds: ['', [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern(/^\d{2}$/)]],
+          },
+          { validators: timeGroupValidator }
+        ),
+      });
+    } else {
+      const editProperty = EDIT_PROPERTY_MAP[this.edit];
+      this.form = this.fb.group({
+        [editProperty.key]: this.fb.control(0, editProperty.validators),
+      });
     }
   }
 
-  private updateBatchSize() {
-    if (this.form.controls.batchSize.invalid) return;
+  private updateEditField() {
+    const fieldKey = this.getEditFieldKey();
+    if (this.form.get(fieldKey)?.invalid) return;
 
-    this.automatedTasksService
-      .changeBatchSize(this.task.id, this.form.controls.batchSize.value)
-      .subscribe(() =>
-        this.router.navigate(['../'], { relativeTo: this.route, queryParams: { batchSizeChanged: true } })
-      );
-  }
-
-  private updateDateValues() {
-    if (this.form.controls.date.invalid || this.form.controls.time.invalid) return;
-
-    const date = this.getDateFromForm();
-    if (date) {
-      this.automatedTasksService.changeDateTime(this.task.id, this.getServerSideKey()!, date).subscribe(() =>
+    const fieldType = this.getEditFieldType();
+    const fieldApiKey = this.getEditFieldApiKey();
+    if (fieldType === 'datetime') {
+      const date = this.getDateFromForm();
+      if (date) {
+        this.automatedTasksService.changeFieldValue(this.task.id, fieldApiKey, date).subscribe(() =>
+          this.router.navigate(['../'], {
+            relativeTo: this.route,
+            queryParams: { labelChanged: this.getEditFieldLabel() },
+          })
+        );
+      }
+    } else {
+      const formValue = this.form.get(fieldKey)?.value;
+      const value = fieldType === 'number' ? parseInt(formValue, 10) : formValue;
+      this.automatedTasksService.changeFieldValue(this.task.id, fieldApiKey, value).subscribe(() =>
         this.router.navigate(['../'], {
           relativeTo: this.route,
-          queryParams: { dateChanged: true, label: this.getDateLabel() },
+          queryParams: { labelChanged: this.getEditFieldLabel() },
         })
       );
     }
@@ -170,9 +183,17 @@ export class EditAutomatedTaskComponent {
     return this.form.get(control)?.invalid && this.form.get(control)?.touched;
   }
 
-  private loadDateValues() {
-    this.dateLabel = this.getDateLabel();
-    const dateKey = this.getDateKey();
+  private loadFormControlValues() {
+    if (this.isDateTimeEdit) {
+      this.loadDateValue();
+    } else {
+      this.loadInputValue();
+    }
+  }
+
+  private loadDateValue() {
+    this.dateLabel = this.getEditFieldLabel();
+    const dateKey = this.getEditFieldKey();
     const existingDateTime = dateKey ? this.task[dateKey as keyof AutomatedTaskDetails] : null;
 
     if (existingDateTime instanceof DateTime) {
@@ -186,38 +207,75 @@ export class EditAutomatedTaskComponent {
         },
       });
     }
+
+    this.form.controls.date.events.pipe(takeUntilDestroyed()).subscribe(({ source }) => {
+      if (source.errors && this.isSubmitted()) {
+        this.validationErrorSummary = this.getErrorSummary();
+      } else {
+        this.validationErrorSummary = [];
+      }
+    });
+
+    this.form.controls.time.events.pipe(takeUntilDestroyed()).subscribe(({ source }) => {
+      if (source.errors && this.isSubmitted()) {
+        this.validationErrorSummary = this.getErrorSummary();
+      } else {
+        this.validationErrorSummary = [];
+      }
+    });
+  }
+
+  private loadInputValue() {
+    const fieldKey = this.getEditFieldKey();
+    this.form.get(fieldKey)?.setValue(this.task[fieldKey as keyof AutomatedTaskDetails]);
+
+    this.form
+      .get(fieldKey)
+      ?.events.pipe(takeUntilDestroyed())
+      .subscribe(({ source }) => {
+        if (source.errors && this.isSubmitted()) {
+          this.validationErrorSummary = this.getErrorSummary();
+        } else {
+          this.validationErrorSummary = [];
+        }
+      });
   }
 
   //Ensures datetime persist on refresh after being passed through state
   private parseDateValues(taskState: AutomatedTaskDetailsState): AutomatedTaskDetails {
     return {
       ...taskState,
-      rpoCsvStartHour: taskState.rpoCsvStartHour ? DateTime.fromISO(taskState.rpoCsvStartHour) : undefined,
-      rpoCsvEndHour: taskState.rpoCsvEndHour ? DateTime.fromISO(taskState.rpoCsvEndHour) : undefined,
       armReplayStartTs: taskState.armReplayStartTs ? DateTime.fromISO(taskState.armReplayStartTs) : undefined,
       armReplayEndTs: taskState.armReplayEndTs ? DateTime.fromISO(taskState.armReplayEndTs) : undefined,
     };
   }
 
-  isDateTimeEdit() {
-    return (
-      this.edit === 'RPO_START_TIME' ||
-      this.edit === 'RPO_END_TIME' ||
-      this.edit === 'ARM_START_TIME' ||
-      this.edit === 'ARM_END_TIME'
-    );
+  get isDateTimeEdit() {
+    return this.getEditFieldType() === 'datetime';
   }
 
-  private getDateLabel(): string {
-    return datePropertyMap[this.edit as keyof typeof datePropertyMap]?.label || '';
+  get fieldLabel() {
+    return this.getEditFieldLabel();
   }
 
-  private getDateKey(): DateKey | null {
-    return datePropertyMap[this.edit as keyof typeof datePropertyMap]?.key || null;
+  get fieldKey() {
+    return this.getEditFieldKey();
   }
 
-  private getServerSideKey(): string | null {
-    return datePropertyMap[this.edit as keyof typeof datePropertyMap]?.api_key || null;
+  private getEditFieldLabel(): EditProperty['label'] {
+    return EDIT_PROPERTY_MAP[this.edit].label;
+  }
+
+  private getEditFieldKey(): EditProperty['key'] {
+    return EDIT_PROPERTY_MAP[this.edit].key;
+  }
+
+  private getEditFieldApiKey(): EditProperty['api_key'] {
+    return EDIT_PROPERTY_MAP[this.edit].api_key;
+  }
+
+  private getEditFieldType(): EditProperty['type'] {
+    return EDIT_PROPERTY_MAP[this.edit].type;
   }
 
   private getDateFromForm(): DateTime | null {
