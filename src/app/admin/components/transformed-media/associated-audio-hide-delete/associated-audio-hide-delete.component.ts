@@ -11,6 +11,7 @@ import {
   inject,
   input,
   model,
+  output,
   signal,
 } from '@angular/core';
 import { Router } from '@angular/router';
@@ -49,6 +50,8 @@ export class AssociatedAudioHideDeleteComponent implements OnInit {
   media = input.required<AssociatedMedia[]>();
   selectedRows = model<AssociatedMedia[]>([]);
   isSubmitted = signal(false);
+  isUnhideOrUnmarkForDeletion = input(false);
+  confirmSelection = output<number[]>();
 
   ngOnInit(): void {
     this.selectedRows.set(this.media());
@@ -65,10 +68,17 @@ export class AssociatedAudioHideDeleteComponent implements OnInit {
     const selectedIds = [
       ...new Set(
         this.selectedRows()
-          .filter((row) => !row.isHidden)
+          // get hidden rows when unhidding or unmarking for deletion
+          // get non-hidden rows when hiding or marking for deletion
+          .filter((row) => (this.isUnhideOrUnmarkForDeletion() ? row.isHidden : !row.isHidden))
           .map((row) => row.id)
       ),
     ];
+
+    if (this.isUnhideOrUnmarkForDeletion()) {
+      this.confirmSelection.emit(selectedIds);
+      return;
+    }
 
     const requests = selectedIds.map((id) => this.transformedMediaService.hideAudioFile(id, this.fileFormValues));
 

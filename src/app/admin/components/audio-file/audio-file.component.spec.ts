@@ -122,6 +122,7 @@ describe('AudioFileComponent', () => {
           useValue: {
             unhideAudioFile: jest.fn().mockReturnValue(of(fileHide)),
             getMediaById: jest.fn().mockReturnValue(of(audioFile)),
+            checkAssociatedAudioExists: jest.fn().mockReturnValue(of({ exists: true })),
           },
         },
         {
