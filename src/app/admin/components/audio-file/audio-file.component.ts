@@ -18,7 +18,7 @@ import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { UserService } from '@services/user/user.service';
 import { optionalStringToBooleanOrNull } from '@utils/transform.utils';
 import { DateTime } from 'luxon';
-import { BehaviorSubject, Observable, forkJoin, map, of, shareReplay, switchMap } from 'rxjs';
+import { Observable, forkJoin, map, of, shareReplay, switchMap } from 'rxjs';
 import { AdvancedAudioFileDetailsComponent } from './advanced-audio-file-details/advanced-audio-file-details.component';
 import { BasicAudioFileDetailsComponent } from './basic-audio-file-details/basic-audio-file-details.component';
 
@@ -66,17 +66,11 @@ export class AudioFileComponent {
 
   associatedCases$ = this.audioFile$.pipe(switchMap((audioFile) => this.getAssociatedCasesFromAudioFile(audioFile)));
 
-  private refresh$ = new BehaviorSubject<void>(undefined);
-
-  data$ = this.refresh$.pipe(
-    switchMap(() =>
-      forkJoin({
-        audioFile: this.audioFile$,
-        associatedCases: this.associatedCases$,
-        hiddenFileBanner: this.fileBanner$,
-      })
-    )
-  );
+  data$ = forkJoin({
+    audioFile: this.audioFile$,
+    associatedCases: this.associatedCases$,
+    hiddenFileBanner: this.fileBanner$,
+  });
 
   private getAssociatedCasesFromAudioFile(audioFile: AudioFile): Observable<AssociatedCase[]> {
     const caseIds = [...new Set(audioFile.hearings.map((h) => h.caseId))];
@@ -178,7 +172,13 @@ export class AudioFileComponent {
             return this.transformedMediaService.unhideAudioFile(this.audioFileId);
           })
         )
-        .subscribe(() => this.refresh$.next());
+        .subscribe(() => {
+          this.data$ = forkJoin({
+            audioFile: this.getAudioFile(),
+            associatedCases: this.associatedCases$,
+            hiddenFileBanner: this.getFileBanner(),
+          });
+        });
     } else {
       this.router.navigate(['admin/file', this.audioFileId, 'hide-or-delete'], {
         state: {

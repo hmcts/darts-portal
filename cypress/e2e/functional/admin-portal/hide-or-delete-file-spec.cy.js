@@ -166,17 +166,47 @@ describe('Admin - Hide or delete file', () => {
 
   describe('Audio file - unhide file', () => {
     it('should unhide audio file via unhide button', () => {
-      cy.visit('/admin/audio-file/5');
+      cy.visit('/admin/audio-file/11');
       cy.get('.govuk-button').contains('Unmark for deletion and unhide').click();
       cy.get('.govuk-notification-banner').should('not.exist');
       cy.get('.govuk-button').contains('Hide or delete').should('exist');
+
+      cy.request('api/admin/medias/reset');
     });
 
     it('should unhide audio file via unhide link', () => {
-      cy.visit('/admin/audio-file/6');
+      cy.visit('/admin/audio-file/11');
       cy.get('.govuk-notification-banner__body .govuk-link').contains('unmark for deletion').click();
       cy.get('.govuk-notification-banner').should('not.exist');
       cy.get('.govuk-button').contains('Hide or delete').should('exist');
+
+      cy.request('api/admin/medias/reset');
+    });
+
+    it('should show associated audio when unhiding / undeleting audio file with associated audio', () => {
+      cy.visit('/admin/file-deletion');
+
+      cy.get('table')
+        .find('tr')
+        .eq(3)
+        .find('a.govuk-link')
+        .should('have.attr', 'href', '/admin/audio-file/3?backUrl=%2Fadmin%2Ffile-deletion')
+        .click();
+
+      cy.get('.govuk-button').contains('Unmark for deletion and unhide').click();
+
+      cy.get('.govuk-heading-l').contains(
+        'There are other audio files associated with the file you are unhiding/unmarking for deletion'
+      );
+      cy.get('.title-underline').contains('The files you are unhiding and/or unmarking for deletion');
+      cy.get('table.govuk-table tbody tr').should('have.length', 6);
+
+      cy.get('.govuk-button').contains('Continue').click();
+      cy.get('#success-message').contains('Audio file(s) unhidden / unmarked for deletion');
+      cy.get('.govuk-notification-banner').should('not.exist');
+
+      cy.get('.govuk-back-link').click();
+      cy.get('.govuk-heading-xl').contains('Files marked for deletion');
     });
   });
 
