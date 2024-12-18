@@ -123,6 +123,19 @@ export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
+  isNoAudio(row: AudioEventRow) {
+    if (row.media_start_timestamp && row.media_end_timestamp) {
+      const start = DateTime.fromISO(row.media_start_timestamp).toUTC().toFormat("yyyy-LL-dd'T'HH:mm:ss");
+      const end = DateTime.fromISO(row.media_end_timestamp).toUTC().toFormat("yyyy-LL-dd'T'HH:mm:ss");
+
+      const areEqualToSecond = start === end;
+
+      return areEqualToSecond;
+    }
+
+    return false;
+  }
+
   private constructTable() {
     this.mapEventsAndAudioToTable();
     this.sortTableByTimeStamp(this.rows);

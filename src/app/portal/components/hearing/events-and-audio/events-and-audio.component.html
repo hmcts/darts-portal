@@ -66,6 +66,8 @@
             <p class="govuk-hint no-margin">Audio archived. Preview not available.</p>
           } @else if (!row.is_available) {
             <p class="govuk-hint no-margin">This audio is not currently available in DARTS, please try again later.</p>
+          } @else if (isNoAudio(row)) {
+            <p class="govuk-hint no-margin">No audio found. Preview not available.</p>
           } @else {
             <a
               class="govuk-link"
