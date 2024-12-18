@@ -242,9 +242,17 @@ describe('Request audio', () => {
       cy.get('audio').should('have.prop', 'paused', false);
     });
 
-    it('should show message for anonymised events', () => {
+    it('should show no audio found message for audio with same start/end timestamps', () => {
       cy.get('#hearingsTable a').contains('1 Sep 2023').click();
-      cy.get('.govuk-hint').contains('The event text has been anonymised in line with HMCTS policy.');
+
+      cy.get('table.govuk-table')
+        .find('tr')
+        .last()
+        .within(() => {
+          cy.get('.audio-row').should('contain.text', '23:31:31 - 23:31:31');
+          cy.get('td').eq(2).should('contain.text', 'Audio recording');
+          cy.get('p.govuk-hint.no-margin').should('contain.text', 'No audio found. Preview not available');
+        });
     });
   });
 

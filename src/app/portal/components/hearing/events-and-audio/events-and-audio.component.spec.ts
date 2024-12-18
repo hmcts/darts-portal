@@ -372,6 +372,26 @@ describe('EventsAndAudioComponent', () => {
     expect(component.rows).toEqual(expectedRows);
   });
 
+  describe('#isNoAudio', () => {
+    it('should return true when timestamps are identical to the second', () => {
+      const row = {
+        media_start_timestamp: '2023-07-31T22:31:31.000Z',
+        media_end_timestamp: '2023-07-31T22:31:31.000Z',
+      } as AudioEventRow;
+
+      expect(component.isNoAudio(row)).toBe(true);
+    });
+
+    it('should return true when timestamps differ by milliseconds but match to the second', () => {
+      const row = {
+        media_start_timestamp: '2023-07-31T22:31:31.000Z',
+        media_end_timestamp: '2023-07-31T22:31:31.999Z',
+      } as AudioEventRow;
+
+      expect(component.isNoAudio(row)).toBe(true);
+    });
+  });
+
   describe('#sortTableByTimeStamp', () => {
     it('should sort the table by timestamp in ascending order', () => {
       const table: AudioEventRow[] = [

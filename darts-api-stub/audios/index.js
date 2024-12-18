@@ -61,6 +61,13 @@ router.get('/hearings/:hearingId/audios', (req, res) => {
           is_available: false,
           is_archived: true,
         },
+        {
+          id: 9,
+          media_start_timestamp: '2023-07-31T22:31:31.000Z',
+          media_end_timestamp: '2023-07-31T22:31:31.000Z',
+          is_available: true,
+          is_archived: false,
+        },
       ];
       res.send(body1);
       break;
