@@ -38,9 +38,27 @@ export type AudioFile = {
     id: number;
     name: string;
   };
+  cases: {
+    id: number;
+    courthouse: {
+      id: number;
+      displayName: string;
+    };
+    caseNumber: string;
+    source: string;
+  }[];
   hearings: {
     id: number;
     hearingDate: DateTime;
     caseId: number;
+    caseNumber: string;
+    courthouse: {
+      id: number;
+      displayName: string;
+    };
+    courtroom: {
+      id: number;
+      name: string;
+    };
   }[];
 };
