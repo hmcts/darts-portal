@@ -1,0 +1,14 @@
+<app-data-table caption="Hearings associated with the audio" [hiddenCaption]="true" [columns]="columns" [rows]="rows()">
+  <ng-template [tableRowTemplate]="rows()" let-row>
+    <td class="case-id">
+      <a class="govuk-link" [routerLink]="['/case', row.caseId]"> {{ row.caseNumber }}</a>
+    </td>
+    <td class="hearing-date">
+      <a class="govuk-link" [routerLink]="['/case', row.caseId, 'hearing', row.hearingId]"
+        >{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}
+      </a>
+    </td>
+    <td>{{ row.courthouse }}</td>
+    <td>{{ row.courtroom }}</td>
+  </ng-template>
+</app-data-table>
