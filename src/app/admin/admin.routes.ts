@@ -167,6 +167,15 @@ export const ADMIN_ROUTES: Routes = [
     loadComponent: () => import('./components/audio-file/audio-file.component').then((c) => c.AudioFileComponent),
   },
   {
+    path: 'admin/audio-file/:id/associated-audio/unhide-or-unmark-for-deletion',
+    title: 'DARTS Admin Unhide or Unmark Associated Audio for Deletion',
+    data: { allowedRoles: ['SUPER_ADMIN'] },
+    loadComponent: () =>
+      import('./components/file-deletion/file-unhide-or-undelete/file-unhide-or-undelete.component').then(
+        (c) => c.FileUnhideOrUndeleteComponent
+      ),
+  },
+  {
     path: 'admin/transformed-media',
     title: 'DARTS Admin Transformed Media',
     data: { allowedRoles: ['SUPER_ADMIN', 'SUPER_USER'] },

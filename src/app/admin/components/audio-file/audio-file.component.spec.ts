@@ -122,6 +122,7 @@ describe('AudioFileComponent', () => {
           useValue: {
             unhideAudioFile: jest.fn().mockReturnValue(of(fileHide)),
             getMediaById: jest.fn().mockReturnValue(of(audioFile)),
+            checkAssociatedAudioExists: jest.fn().mockReturnValue(of({ exists: true })),
           },
         },
         {
@@ -282,12 +283,42 @@ describe('AudioFileComponent', () => {
   });
 
   describe('hideOrUnhideFile', () => {
+    it('should route to associated audio unhide component if file has associated media', () => {
+      const routerSpy = jest.spyOn(component.router, 'navigate');
+      jest
+        .spyOn(component.transformedMediaService, 'checkAssociatedAudioExists')
+        .mockReturnValue(of({ exists: true, audioFile: [], media: [] }));
+
+      const file = {
+        ...audioFile,
+        isHidden: true,
+        adminAction: audioFile.adminAction ? { ...audioFile.adminAction, isMarkedForManualDeletion: true } : undefined,
+      };
+
+      component.hideOrUnhideFile(file);
+
+      expect(routerSpy).toHaveBeenCalledWith(
+        ['/admin/audio-file', 100, 'associated-audio', 'unhide-or-unmark-for-deletion'],
+        {
+          state: {
+            media: [],
+          },
+        }
+      );
+    });
+
     it('should unhide the audio file if it is hidden', () => {
       const file = {
         ...audioFile,
         isHidden: true,
         adminAction: audioFile.adminAction ? { ...audioFile.adminAction, isMarkedForManualDeletion: true } : undefined,
       };
+
+      jest
+        .spyOn(component.transformedMediaService, 'checkAssociatedAudioExists')
+        .mockReturnValue(of({ exists: false, audioFile: [], media: [] }));
+
+      fixture.detectChanges();
 
       const unhideAudioSpy = jest.spyOn(component.transformedMediaService, 'unhideAudioFile');
       component.hideOrUnhideFile(file);

@@ -1,5 +1,6 @@
 <app-govuk-heading class="two-thirds">
-  There are other audio files associated with the file you are hiding and/or deleting
+  There are other audio files associated with the file you are
+  {{ isUnhideOrUnmarkForDeletion() ? 'unhiding/unmarking for deletion' : 'hiding and/or deleting' }}
 </app-govuk-heading>
 
 <div [class.govuk-form-group--error]="selectedRows().length === 0 && isSubmitted()">
@@ -9,7 +10,10 @@
     <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span> Select files to include</p>
   }
 
-  <p class="govuk-heading-m title-underline">The files you are hiding and/or deleting</p>
+  <p class="govuk-heading-m title-underline">
+    The files you are
+    {{ isUnhideOrUnmarkForDeletion() ? 'unhiding and/or unmarking for deletion' : 'hiding and/or deleting' }}
+  </p>
 
   <app-associated-audio-table
     id="associatedAudioTable"

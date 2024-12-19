@@ -1,6 +1,6 @@
 import { AssociatedMedia } from '@admin-types/transformed-media/associated-media';
 import { Component, Input, inject, input, model } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DatatableColumn } from '@core-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
@@ -15,7 +15,6 @@ import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 })
 export class AssociatedAudioTableComponent {
   router = inject(Router);
-  route = inject(ActivatedRoute);
 
   @Input() hideOrDeleteView = false;
   @Input() rowSelect = false;

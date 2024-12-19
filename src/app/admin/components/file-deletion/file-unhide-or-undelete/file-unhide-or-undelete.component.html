@@ -1,0 +1,6 @@
+<app-associated-audio-hide-delete
+  [media]="media"
+  (errors)="errors.set($event)"
+  (confirmSelection)="onSelectionConfirmed($event)"
+  [isUnhideOrUnmarkForDeletion]="true"
+/>

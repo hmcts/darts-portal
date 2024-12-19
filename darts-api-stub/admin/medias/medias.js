@@ -349,9 +349,13 @@ router.get('/reset', (req, res) => {
 router.get('/', (req, res) => {
   const transformed_media_id = req.query.transformed_media_id;
   const transcription_document_id = req.query.transcription_document_id;
-  const hearingIds = req.query.hearing_ids;
+  const hearingIds = +req.query.hearing_ids;
   const startAt = req.query.start_at;
   const endAt = req.query.end_at;
+
+  if (hearingIds === 11) {
+    return res.send([{ ...medias[0], id: 11 }]);
+  }
 
   res.send(medias);
 });
@@ -418,6 +422,21 @@ router.get('/:id', (req, res) => {
   if (media.id === 2) {
     // Set expired banner
     res.send({ ...media, retain_until: '2022-02-02T09:00:00Z' });
+    return;
+  }
+
+  if (media.id === 11) {
+    // Set hearing id to 11 to ensure no associated audio
+    res.send({
+      ...media,
+      hearings: [
+        {
+          id: 11,
+          hearing_date: '2020-02-20',
+          case_id: 0,
+        },
+      ],
+    });
     return;
   }
 

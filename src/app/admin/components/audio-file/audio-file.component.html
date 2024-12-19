@@ -1,6 +1,10 @@
 <a [routerLink]="[backUrl]" class="govuk-back-link">Back</a>
 
 @if (data$ | async; as data) {
+  @if (unhiddenOrUnmarkedForDeletion()) {
+    <app-govuk-banner type="success"> Audio file(s) unhidden / unmarked for deletion </app-govuk-banner>
+  }
+
   <app-expired-banner [expiryDate]="data.audioFile.retainUntil" />
 
   <app-hidden-file-banner (unhideOrUndelete)="hideOrUnhideFile(data.audioFile)" [file]="data.hiddenFileBanner" />
