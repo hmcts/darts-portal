@@ -457,7 +457,7 @@ describe('TransformedMediaService', () => {
   });
 
   describe('checkAssociatedAudioExists', () => {
-    it('should return exists as true if there are associated media', () => {
+    it('should return exists as true if there are associated media with matching is_hidden', () => {
       const mediaId = 1;
       const hearingIds = [1, 2, 3];
       const startAt = '2022-01-01';
@@ -511,7 +511,7 @@ describe('TransformedMediaService', () => {
             id: 1,
             displayName: 'room',
           },
-          isHidden: true,
+          isHidden: false,
           isCurrent: true,
           courthouseName: 'Swansea',
           courtroomName: 'room',
@@ -537,7 +537,7 @@ describe('TransformedMediaService', () => {
             id: 1,
             displayName: 'room',
           },
-          isHidden: true,
+          isHidden: false,
           isCurrent: true,
           courthouseName: 'Swansea',
           courtroomName: 'room',
@@ -553,6 +553,105 @@ describe('TransformedMediaService', () => {
 
       expect(result.exists).toBe(true);
       expect(result.media).toEqual(mockAssociatedMedia.filter((media) => mediaId !== media.id));
+      expect(result.audioFile).toEqual(mockAssociatedMedia.filter((media) => mediaId === media.id));
+    });
+
+    it('should return exists as false if there are no associated media with matching is_hidden', () => {
+      const mediaId = 1;
+      const hearingIds = [1, 2, 3];
+      const startAt = '2022-01-01';
+      const endAt = '2022-01-02';
+
+      const mockAssociatedMedia: AssociatedMedia[] = [
+        {
+          id: 1,
+          channel: 1,
+          startAt: DateTime.fromISO('2022-01-01T00:00:00Z'),
+          endAt: DateTime.fromISO('2022-01-01T00:00:00Z'),
+          case: {
+            id: 1,
+            caseNumber: 'CASE123',
+          },
+          hearing: {
+            id: 2,
+            hearingDate: DateTime.fromISO('2022-01-01'),
+          },
+          courthouse: {
+            id: 1,
+            displayName: 'Swansea',
+          },
+          courtroom: {
+            id: 1,
+            displayName: 'room',
+          },
+          isHidden: true,
+          isCurrent: true,
+          courthouseName: 'Swansea',
+          courtroomName: 'room',
+        },
+        {
+          id: 2,
+          channel: 1,
+          startAt: DateTime.fromISO('2022-01-01T00:00:00Z'),
+          endAt: DateTime.fromISO('2022-01-01T00:00:00Z'),
+          case: {
+            id: 1,
+            caseNumber: 'CASE123',
+          },
+          hearing: {
+            id: 1,
+            hearingDate: DateTime.fromISO('2022-01-01'),
+          },
+          courthouse: {
+            id: 1,
+            displayName: 'Swansea',
+          },
+          courtroom: {
+            id: 1,
+            displayName: 'room',
+          },
+          isHidden: false,
+          isCurrent: true,
+          courthouseName: 'Swansea',
+          courtroomName: 'room',
+        },
+        {
+          id: 5,
+          channel: 1,
+          startAt: DateTime.fromISO('2022-01-01T00:00:00Z'),
+          endAt: DateTime.fromISO('2022-01-01T00:00:00Z'),
+          case: {
+            id: 1,
+            caseNumber: 'CASE123',
+          },
+          hearing: {
+            id: 3,
+            hearingDate: DateTime.fromISO('2022-01-01'),
+          },
+          courthouse: {
+            id: 1,
+            displayName: 'Swansea',
+          },
+          courtroom: {
+            id: 1,
+            displayName: 'room',
+          },
+          isHidden: false,
+          isCurrent: true,
+          courthouseName: 'Swansea',
+          courtroomName: 'room',
+        },
+      ];
+
+      jest.spyOn(service, 'getAssociatedMediaByHearingId').mockReturnValue(of(mockAssociatedMedia));
+
+      let result = {} as { exists: boolean; media: AssociatedMedia[]; audioFile: AssociatedMedia[] };
+      service.checkAssociatedAudioExists(mediaId, hearingIds, startAt, endAt).subscribe((res) => {
+        result = res;
+      });
+
+      expect(result.exists).toBe(false);
+      expect(result.media).toEqual([]);
       expect(result.audioFile).toEqual(mockAssociatedMedia.filter((media) => mediaId === media.id));
     });
 
