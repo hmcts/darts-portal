@@ -199,7 +199,7 @@ describe('Admin - Hide or delete file', () => {
         'There are other audio files associated with the file you are unhiding/unmarking for deletion'
       );
       cy.get('.title-underline').contains('The files you are unhiding and/or unmarking for deletion');
-      cy.get('table.govuk-table tbody tr').should('have.length', 6);
+      cy.get('table.govuk-table tbody tr').should('have.length', 2);
 
       cy.get('.govuk-button').contains('Continue').click();
       cy.get('#success-message').contains('Audio file(s) unhidden / unmarked for deletion');

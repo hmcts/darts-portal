@@ -98,12 +98,21 @@ export class TransformedMediaService {
   ): Observable<{ exists: boolean; media: AssociatedMedia[]; audioFile: AssociatedMedia[] }> {
     return this.getAssociatedMediaByHearingId(hearingIds.toString(), startAt, endAt).pipe(
       map((media) => {
-        const audioFile = media.filter((m) => m.id === mediaId);
-        const associatedMedia = media.filter((m) => m.id !== mediaId);
+        const filteredMedia = this.filterHiddenUnhiddenFiles(mediaId, media);
+        const audioFile = filteredMedia.filter((m) => m.id === mediaId);
+        const associatedMedia = filteredMedia.filter((m) => m.id !== mediaId);
         const hasAssociatedMedia = associatedMedia.length > 0;
         return { exists: hasAssociatedMedia, media: associatedMedia, audioFile: audioFile };
       })
     );
+  }
+
+  //This function will filter out files that do not match the is_hidden property of the media ID object
+  //e.g. When unhiding an audio file, we want to filter out files that are already unhidden
+  //e.g. When hiding an audio file, we want to filter out files that are already hidden
+  private filterHiddenUnhiddenFiles(mediaId: number, files: AssociatedMedia[]): AssociatedMedia[] {
+    const mediaIdObject = files.find((file) => file.id === mediaId);
+    return files.filter((file) => file.isHidden === mediaIdObject?.isHidden);
   }
 
   changeMediaRequestOwner(mediaRequestId: number, newOwnerId: number): Observable<void> {

@@ -124,6 +124,30 @@ const medias = [
     is_current: false,
   },
   {
+    id: 4,
+    channel: 3,
+    start_at: '2020-07-01T14:00:00Z',
+    end_at: '2020-07-01T15:00:00Z',
+    case: {
+      id: 3,
+      case_number: '789',
+    },
+    hearing: {
+      id: 3,
+      hearing_date: '2020-08-01',
+    },
+    courthouse: {
+      id: 3,
+      display_name: 'courthouse 3',
+    },
+    courtroom: {
+      id: 3,
+      display_name: 'courtroom 3',
+    },
+    is_hidden: true,
+    is_current: false,
+  },
+  {
     id: 409,
     channel: 4,
     start_at: '2020-08-01T16:00:00Z',
