@@ -1,6 +1,6 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, Input, OnInit, inject } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { GovukTagComponent } from '@common/govuk-tag/govuk-tag.component';
 import { BreadcrumbComponent } from '@components/common/breadcrumb/breadcrumb.component';
 import { DetailsTableComponent } from '@components/common/details-table/details-table.component';
@@ -22,7 +22,6 @@ import { TranscriptionService } from '@services/transcription/transcription.serv
     DetailsTableComponent,
     GovukHeadingComponent,
     ReportingRestrictionComponent,
-    RouterLink,
     GovukTagComponent,
   ],
   templateUrl: './approved-transcript.component.html',

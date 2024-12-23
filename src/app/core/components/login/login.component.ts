@@ -1,7 +1,6 @@
 import { NgClass, NgIf } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { AuthService } from '@services/auth/auth.service';
 
@@ -10,7 +9,7 @@ import { AuthService } from '@services/auth/auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
   standalone: true,
-  imports: [NgIf, RouterLink, ReactiveFormsModule, NgClass, ValidationErrorSummaryComponent],
+  imports: [NgIf, ReactiveFormsModule, NgClass, ValidationErrorSummaryComponent],
 })
 export class LoginComponent {
   form = new FormGroup({

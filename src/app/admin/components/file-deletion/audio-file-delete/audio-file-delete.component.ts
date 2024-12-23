@@ -10,7 +10,6 @@ import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
 import { ApproveRejectFileDeleteComponent } from '../approve-reject-file-delete/approve-reject-file-delete.component';
 import { AudioFileResultsComponent } from '../audio-file-results/audio-file-results.component';
-import { UnauthorisedDeletionComponent } from '../unauthorised-deletion/unauthorised-deletion.component';
 
 @Component({
   selector: 'app-audio-file-delete',
@@ -19,7 +18,6 @@ import { UnauthorisedDeletionComponent } from '../unauthorised-deletion/unauthor
     GovukHeadingComponent,
     ValidationErrorSummaryComponent,
     AudioFileResultsComponent,
-    UnauthorisedDeletionComponent,
     ApproveRejectFileDeleteComponent,
   ],
   templateUrl: './audio-file-delete.component.html',

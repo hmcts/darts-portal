@@ -2,12 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, effect, inject, input, numberAttribute } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
-import { BreadcrumbComponent } from '@components/common/breadcrumb/breadcrumb.component';
-import { DetailsTableComponent } from '@components/common/details-table/details-table.component';
 import { LoadingComponent } from '@components/common/loading/loading.component';
-import { ReportingRestrictionComponent } from '@components/common/reporting-restriction/reporting-restriction.component';
-import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
-import { JoinPipe } from '@pipes/join';
 import { TranscriptionDetails } from '@portal-types/index';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { switchMap } from 'rxjs';
@@ -22,14 +17,9 @@ import { RejectedTranscriptComponent } from './rejected-transcript/rejected-tran
   styleUrls: ['./view-transcript.component.scss'],
   imports: [
     CommonModule,
-    JoinPipe,
-    BreadcrumbComponent,
-    BreadcrumbDirective,
-    ReportingRestrictionComponent,
     LoadingComponent,
     ApprovedTranscriptComponent,
     RejectedTranscriptComponent,
-    DetailsTableComponent,
     CaseHearingTranscriptComponent,
   ],
 })

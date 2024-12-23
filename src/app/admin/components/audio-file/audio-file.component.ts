@@ -33,7 +33,10 @@ import { BasicAudioFileDetailsComponent } from './basic-audio-file-details/basic
     TabDirective,
     BasicAudioFileDetailsComponent,
     AdvancedAudioFileDetailsComponent,
+<<<<<<< HEAD
     GovukBannerComponent,
+=======
+>>>>>>> 87bcb413 (resolved build warnings)
     AsyncPipe,
     HiddenFileBannerComponent,
     RouterLink,

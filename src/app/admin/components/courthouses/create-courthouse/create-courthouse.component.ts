@@ -1,5 +1,5 @@
 import { CreateUpdateCourthouseFormValues } from '@admin-types/index';
-import { CommonModule, JsonPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -20,7 +20,6 @@ import { CreateUpdateCourthouseFormComponent } from './create-update-courthouse-
     CreateUpdateCourthouseFormComponent,
     ValidationErrorSummaryComponent,
     CreateUpdateCourthouseConfirmationComponent,
-    JsonPipe,
     CommonModule,
     LoadingComponent,
   ],
