@@ -32,11 +32,7 @@ const controlError = [
   standalone: true,
   templateUrl: './associated-audio-hide-delete.component.html',
   styleUrl: './associated-audio-hide-delete.component.scss',
-<<<<<<< HEAD
   imports: [GovukHeadingComponent, AssociatedAudioTableComponent],
-=======
-  imports: [GovukHeadingComponent, AssociatedAudioTableComponent, ReactiveFormsModule],
->>>>>>> 87bcb413 (resolved build warnings)
 })
 export class AssociatedAudioHideDeleteComponent implements OnInit {
   location = inject(Location);
