@@ -39,7 +39,6 @@ export class CaseSearchFormComponent implements OnInit {
 
   search = output<CaseSearchFormValues>();
   validationError = output<ErrorSummaryEntry[]>();
-  error = output();
   clear = output();
 
   courthouse = signal('');
