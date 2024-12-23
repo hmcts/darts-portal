@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, effect, inject, signal } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Title } from '@angular/platform-browser';
 import { Router, RouterLink } from '@angular/router';
@@ -15,9 +15,10 @@ import { TableRowTemplateDirective } from '@directives/table-row-template.direct
 import { UnreadIconDirective } from '@directives/unread-icon.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { MediaRequest, RequestedMedia, TransformedMedia } from '@portal-types/index';
+import { ActiveTabService } from '@services/active-tab/active-tab.service';
 import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { HeaderService } from '@services/header/header.service';
-import { BehaviorSubject, Observable, combineLatest, forkJoin, map, shareReplay, switchMap } from 'rxjs';
+import { BehaviorSubject, combineLatest, forkJoin, map, Observable, shareReplay, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-audios',
@@ -40,15 +41,25 @@ import { BehaviorSubject, Observable, combineLatest, forkJoin, map, shareReplay,
   ],
 })
 export class AudiosComponent {
+  private readonly activeTabKey = 'current';
+
+  readonly tabNames = {
+    currentAudio: 'Current',
+    expiredAudio: 'Expired',
+  } as const;
+
   headerService = inject(HeaderService);
   audioService = inject(AudioRequestService);
   router = inject(Router);
   destroyRef = inject(DestroyRef);
   title = inject(Title);
+  activeTabService = inject(ActiveTabService);
 
   private refresh$ = new BehaviorSubject<void>(undefined);
 
   selectedAudioRequests: TransformedMedia[] = [];
+
+  tab = computed(() => this.activeTabService.activeTabs()[this.activeTabKey] ?? this.tabNames.currentAudio);
 
   isDeleting = signal(false);
   isAudioRequest = false;
@@ -165,8 +176,9 @@ export class AudiosComponent {
     this.isDeleting.set(false);
   }
 
-  onTabChanged() {
+  onTabChanged(tab: string) {
     this.selectedAudioRequests = [];
+    this.activeTabService.setActiveTab(this.activeTabKey, tab);
   }
 
   onClearClicked(event: MouseEvent, row: MediaRequest) {
