@@ -99,6 +99,36 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@angular-devkit/architect@npm:0.1900.6":
+  version: 0.1900.6
+  resolution: "@angular-devkit/architect@npm:0.1900.6"
+  dependencies:
+    "@angular-devkit/core": 19.0.6
+    rxjs: 7.8.1
+  dependenciesMeta:
+    esbuild:
+      built: true
+    puppeteer:
+      built: true
+  checksum: 36213a2eab668caced7449d6bf3466a67904fc30c57f37ecec95170398efdfe3fabddc23c61020598ecc8753e37b8ea5a8cec5a10c173a0182bbd8ebae48ca46
+  languageName: node
+  linkType: hard
+
+"@angular-devkit/architect@npm:>=0.1800.0 < 0.1900.0":
+  version: 0.1802.12
+  resolution: "@angular-devkit/architect@npm:0.1802.12"
+  dependencies:
+    "@angular-devkit/core": 18.2.12
+    rxjs: 7.8.1
+  dependenciesMeta:
+    esbuild:
+      built: true
+    puppeteer:
+      built: true
+  checksum: c83ef1adb1e323f8810af7cbcac5282371bb643e8aee42653fd328d8fca891bb16c48ee391929c6bcd79df5d56b5e4b7efeef674b45be1e4fe36b61be5a2d0ff
+  languageName: node
+  linkType: hard
+
 "@angular-devkit/architect@npm:^0.1900.0":
   version: 0.1900.6
   resolution: "@angular-devkit/architect@npm:0.1900.6"
@@ -317,8 +347,37 @@ __metadata:
   resolution: "@angular-devkit/schematics@npm:18.2.12"
 >>>>>>> af94698f (Update angular-eslint monorepo to v18.4.3 (#1683))
   dependencies:
+<<<<<<< HEAD
     "@angular-devkit/core": 19.0.6
     jsonc-parser: 3.3.1
+=======
+    ajv: 8.17.1
+    ajv-formats: 3.0.1
+    jsonc-parser: 3.3.1
+    picomatch: 4.0.2
+    rxjs: 7.8.1
+    source-map: 0.7.4
+  peerDependencies:
+    chokidar: ^4.0.0
+  dependenciesMeta:
+    esbuild:
+      built: true
+    puppeteer:
+      built: true
+  peerDependenciesMeta:
+    chokidar:
+      optional: true
+  checksum: 66b2cee4ea61d38548a07e5dd4538b42e2abd018b2bd097c92f9a375c669087ad23790257eb97ee3601e13ba3afb70de163c5eb909eb1569492ae1080dc1fb8a
+  languageName: node
+  linkType: hard
+
+"@angular-devkit/schematics@npm:19.0.6":
+  version: 19.0.6
+  resolution: "@angular-devkit/schematics@npm:19.0.6"
+  dependencies:
+    "@angular-devkit/core": 19.0.6
+    jsonc-parser: 3.3.1
+>>>>>>> 417bf22e (conflicts)
     magic-string: 0.30.12
     ora: 5.4.1
     rxjs: 7.8.1
