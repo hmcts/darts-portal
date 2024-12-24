@@ -5,15 +5,12 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DeleteComponent } from '@common/delete/delete.component';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
-import { FiltersComponent } from '@common/filters/filters.component';
 import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
 import { GovukTagComponent } from '@common/govuk-tag/govuk-tag.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
-import { NotFoundComponent } from '@components/error/not-found/not-found.component';
 import { DatatableColumn } from '@core-types/index';
 import { TabDirective } from '@directives/tab.directive';
-import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { GroupsService } from '@services/groups/groups.service';
@@ -33,14 +30,11 @@ import { CourthouseUsersComponent } from '../courthouse-users/courthouse-users.c
     TabsComponent,
     TabDirective,
     DetailsTableComponent,
-    NotFoundComponent,
     LoadingComponent,
     GovukBannerComponent,
-    FiltersComponent,
     DataTableComponent,
     CourthouseUsersComponent,
     DeleteComponent,
-    TableRowTemplateDirective,
     GovukTagComponent,
     RouterLink,
   ],

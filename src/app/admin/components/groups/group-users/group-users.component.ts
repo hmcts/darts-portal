@@ -1,5 +1,4 @@
 import { User } from '@admin-types/index';
-import { JsonPipe } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AutoCompleteComponent, AutoCompleteItem } from '@common/auto-complete/auto-complete.component';
 import { DataTableComponent } from '@common/data-table/data-table.component';
@@ -12,14 +11,7 @@ type UserWithCheckboxLabel = User & { checkboxLabel?: string };
 @Component({
   selector: 'app-group-users',
   standalone: true,
-  imports: [
-    GovukHeadingComponent,
-    JsonPipe,
-    AutoCompleteComponent,
-    DataTableComponent,
-    TableRowTemplateDirective,
-    LuxonDatePipe,
-  ],
+  imports: [GovukHeadingComponent, AutoCompleteComponent, DataTableComponent, TableRowTemplateDirective, LuxonDatePipe],
   templateUrl: './group-users.component.html',
   styleUrl: './group-users.component.scss',
 })

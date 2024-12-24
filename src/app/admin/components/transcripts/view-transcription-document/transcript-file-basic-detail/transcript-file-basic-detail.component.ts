@@ -1,9 +1,6 @@
 import { TranscriptionDocument } from '@admin-types/transcription/transcription-document';
 import { Component, inject, Input, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
-import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
-import { JoinPipe } from '@pipes/join';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { TranscriptionDetails } from '@portal-types/index';
 import { MappingService } from '@services/mapping/mapping.service';
@@ -13,7 +10,7 @@ import { MappingService } from '@services/mapping/mapping.service';
   standalone: true,
   templateUrl: './transcript-file-basic-detail.component.html',
   styleUrl: './transcript-file-basic-detail.component.scss',
-  imports: [GovukHeadingComponent, RouterLink, LuxonDatePipe, JoinPipe, DetailsTableComponent],
+  imports: [DetailsTableComponent],
 })
 export class TranscriptFileBasicDetailComponent implements OnInit {
   luxonPipe = inject(LuxonDatePipe);

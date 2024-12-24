@@ -1,9 +1,6 @@
 import { TranscriptionDocument } from '@admin-types/transcription';
-import { DecimalPipe } from '@angular/common';
 import { Component, inject, Input, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
-import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { BytesPipe } from '@pipes/bytes.pipe';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { TranscriptionDetails } from '@portal-types/index';
@@ -13,7 +10,7 @@ import { TranscriptionDetails } from '@portal-types/index';
   standalone: true,
   templateUrl: './transcript-file-advanced-detail.component.html',
   styleUrl: './transcript-file-advanced-detail.component.scss',
-  imports: [GovukHeadingComponent, BytesPipe, LuxonDatePipe, DecimalPipe, RouterLink, DetailsTableComponent],
+  imports: [DetailsTableComponent],
   providers: [BytesPipe],
 })
 export class TranscriptFileAdvancedDetailComponent implements OnInit {

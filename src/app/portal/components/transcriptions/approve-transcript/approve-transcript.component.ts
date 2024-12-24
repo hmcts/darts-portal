@@ -7,7 +7,6 @@ import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.compo
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { ConflictComponent } from '@components/error/conflict/conflict.component';
-import { ViewTranscriptComponent } from '@components/transcriptions/view-transcript/view-transcript.component';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { TranscriptionDetails } from '@portal-types/index';
 import { ErrorMessageService } from '@services/error/error-message.service';
@@ -22,7 +21,6 @@ import { ApproveTranscriptButtonsComponent } from './approve-transcript-buttons/
   standalone: true,
   imports: [
     CommonModule,
-    ViewTranscriptComponent,
     ApproveTranscriptButtonsComponent,
     DetailsTableComponent,
     GovukHeadingComponent,

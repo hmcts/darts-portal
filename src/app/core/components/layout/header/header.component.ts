@@ -1,6 +1,6 @@
-import { CommonModule, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, DoCheck, inject } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '@services/auth/auth.service';
 import { HeaderService } from '@services/header/header.service';
 import { UserService } from '@services/user/user.service';
@@ -12,7 +12,7 @@ import { PortalNavigationComponent } from './portal-navigation/portal-navigation
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
   standalone: true,
-  imports: [NgIf, RouterLink, RouterLinkActive, CommonModule, AdminNavigationComponent, PortalNavigationComponent],
+  imports: [RouterLink, CommonModule, AdminNavigationComponent, PortalNavigationComponent],
 })
 export class HeaderComponent implements DoCheck {
   userService = inject(UserService);

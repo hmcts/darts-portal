@@ -16,7 +16,6 @@ import { DatatableColumn, ErrorSummaryEntry, ReportingRestriction } from '@core-
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
-import { JoinPipe } from '@pipes/join';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import {
   AudioEventRow,
@@ -65,7 +64,6 @@ import { RequestPlaybackAudioComponent } from './request-playback-audio/request-
     TabDirective,
     DataTableComponent,
     TableRowTemplateDirective,
-    JoinPipe,
     LuxonDatePipe,
     DeleteComponent,
     GovukTagComponent,

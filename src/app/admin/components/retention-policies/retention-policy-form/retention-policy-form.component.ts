@@ -1,5 +1,4 @@
 import { RetentionPolicy, RetentionPolicyForm } from '@admin-types/index';
-import { JsonPipe } from '@angular/common';
 import {
   Component,
   DestroyRef,
@@ -14,7 +13,6 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DatepickerComponent } from '@common/datepicker/datepicker.component';
-import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { TimeInputComponent } from '@components/hearing/request-playback-audio/time-input/time-input.component';
 import { RetentionPolicyErrorCode } from '@constants/retention-policy-error-codes';
 import { RetentionPolicyFormErrorMessages } from '@constants/retention-policy-form-error-messages';
@@ -32,7 +30,7 @@ import { RetentionFormContext } from '../create-edit-retention-policy/create-edi
 @Component({
   selector: 'app-retention-policy-form',
   standalone: true,
-  imports: [ReactiveFormsModule, GovukHeadingComponent, DatepickerComponent, TimeInputComponent, JsonPipe],
+  imports: [ReactiveFormsModule, DatepickerComponent, TimeInputComponent],
   templateUrl: './retention-policy-form.component.html',
   styleUrl: './retention-policy-form.component.scss',
 })

@@ -4,7 +4,6 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { GovukTextareaComponent } from '@components/common/govuk-textarea/govuk-textarea.component';
-import { JoinPipe } from '@pipes/join';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { Case, Hearing, TranscriptionType, Urgency } from '@portal-types/index';
 import { DateTime } from 'luxon';
@@ -14,7 +13,6 @@ import { DateTime } from 'luxon';
   standalone: true,
   imports: [
     CommonModule,
-    JoinPipe,
     ReactiveFormsModule,
     GovukTextareaComponent,
     LuxonDatePipe,

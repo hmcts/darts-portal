@@ -1,7 +1,6 @@
 import { Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
-import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { DatatableColumn } from '@core-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
@@ -10,7 +9,7 @@ import { Hearing } from '@portal-types/index';
 @Component({
   selector: 'app-case-hearings-table',
   standalone: true,
-  imports: [DataTableComponent, TableRowTemplateDirective, RouterLink, GovukHeadingComponent, LuxonDatePipe],
+  imports: [DataTableComponent, TableRowTemplateDirective, RouterLink, LuxonDatePipe],
   templateUrl: './case-hearings-table.component.html',
   styleUrl: './case-hearings-table.component.scss',
 })

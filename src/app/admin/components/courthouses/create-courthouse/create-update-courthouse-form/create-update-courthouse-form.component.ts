@@ -3,7 +3,6 @@ import { CreateUpdateCourthouseFormValues, SecurityGroup } from '@admin-types/in
 import { Component, DestroyRef, ElementRef, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { DataTableComponent } from '@common/data-table/data-table.component';
 import { CourthouseData, ErrorSummaryEntry, FormErrorMessages } from '@core-types/index';
 import { FormService } from '@services/form/form.service';
 import {
@@ -29,7 +28,7 @@ const controlErrors: FormErrorMessages = {
 @Component({
   selector: 'app-create-update-courthouse-form',
   standalone: true,
-  imports: [ReactiveFormsModule, DataTableComponent],
+  imports: [ReactiveFormsModule],
   templateUrl: './create-update-courthouse-form.component.html',
   styleUrl: './create-update-courthouse-form.component.scss',
 })

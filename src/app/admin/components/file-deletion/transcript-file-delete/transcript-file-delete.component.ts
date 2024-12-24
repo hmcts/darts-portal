@@ -1,6 +1,6 @@
 import { TranscriptionDocumentForDeletion } from '@admin-types/file-deletion';
 import { Component, inject, OnInit } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { FileDeletionService } from '@services/file-deletion/file-deletion.service';
@@ -19,7 +19,6 @@ import { TranscriptsForDeletionComponent } from '../transcripts-for-deletion/tra
     TranscriptsForDeletionComponent,
     GovukHeadingComponent,
     ValidationErrorSummaryComponent,
-    RouterLink,
   ],
   templateUrl: './transcript-file-delete.component.html',
   styleUrl: './transcript-file-delete.component.scss',

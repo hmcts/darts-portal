@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, OnDestroy, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AudioPlayerComponent } from '@common/audio-player/audio-player.component';
 import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
 import { DataTableComponent } from '@common/data-table/data-table.component';
@@ -30,7 +30,6 @@ import { combineLatest, map, Observable } from 'rxjs';
   standalone: true,
   imports: [
     CommonModule,
-    RouterLink,
     ReportingRestrictionComponent,
     DeleteComponent,
     BreadcrumbComponent,
