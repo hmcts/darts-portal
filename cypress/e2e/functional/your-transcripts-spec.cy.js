@@ -34,7 +34,7 @@ describe('Your transcripts', () => {
   });
 
   it('shows approvers table', () => {
-    cy.contains('Transcript requests to review').click();
+    cy.contains('Transcript requests to authorise').click();
     cy.get('h2').should('contain', 'Requests to approve or reject');
     cy.get('#approver-table').should('contain', 'Request ID');
     cy.get('#approver-table').should('contain', 'View');
@@ -55,7 +55,7 @@ describe('Your transcripts', () => {
 
   it('shows approvers table', () => {
     cy.contains('Your transcripts').click();
-    cy.contains('Transcript requests to review').click();
+    cy.contains('Transcript requests to authorise').click();
     cy.get('h2').should('contain', 'Requests to approve or reject');
     cy.get('#approver-table').should('contain', 'Request ID');
     cy.get('#approver-table').should('contain', 'View');
@@ -63,7 +63,7 @@ describe('Your transcripts', () => {
 
   it('should go to approve transcript view', () => {
     cy.contains('Your transcripts').click();
-    cy.contains('Transcript requests to review').click();
+    cy.contains('Transcript requests to authorise').click();
     cy.get('h2').should('contain', 'Requests to approve or reject');
     cy.get('#approver-table').should('contain', 'Request ID');
     cy.contains('T12345').parents('tr').contains('View').click();
@@ -78,7 +78,7 @@ describe('Your transcripts', () => {
 
   it('should show error message if transcript already approved', () => {
     cy.contains('Your transcripts').click();
-    cy.contains('Transcript requests to review').click();
+    cy.contains('Transcript requests to authorise').click();
     cy.get('h2').should('contain', 'Requests to approve or reject');
     cy.get('#approver-table').should('contain', 'Request ID');
     cy.contains('CXYZ12345').parents('tr').contains('View').click();
@@ -96,7 +96,7 @@ describe('Your transcripts', () => {
 
   it('should return to tab after approving transcript', () => {
     cy.contains('Your transcripts').click();
-    cy.contains('Transcript requests to review').click();
+    cy.contains('Transcript requests to authorise').click();
     cy.get('h2').should('contain', 'Requests to approve or reject');
     cy.get('#approver-table').should('contain', 'Request ID');
     cy.contains('T12345').parents('tr').contains('View').click();
@@ -114,7 +114,7 @@ describe('Your transcripts', () => {
 
   it('should return to tab after rejecting transcript', () => {
     cy.contains('Your transcripts').click();
-    cy.contains('Transcript requests to review').click();
+    cy.contains('Transcript requests to authorise').click();
     cy.get('h2').should('contain', 'Requests to approve or reject');
     cy.get('#approver-table').should('contain', 'Request ID');
     cy.contains('T12345').parents('tr').contains('View').click();
