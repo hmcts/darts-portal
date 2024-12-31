@@ -88,6 +88,52 @@ describe('Admin - Transformed media screen', () => {
 
       cy.get('app-data-table').contains('filename.mp3');
     });
+
+    it('verifies form validation', () => {
+      const invalidCaseId = '1234567890123456789012345678901234567890';
+      const invalidOwnerRequestedBy =
+        'ygiwbwgguwnpmqgknvwfykbtvgkcrfupxwnvzqfxtappimhyyizcfrukguwkekegpgfpkymhieamuzwrrixumbtbwznmcyjgqxhquapfqrxrgxyeqckhcpfgqbhggwwmmwkdihtyqrcujcvbifmbfdkwhiwdiyimbutmrmqdcckwtyvrnivzyvmvhwgcenkpqrjmieyxypgmpxgmxtvawfhekayirmyhpiavcqjiknknjxmnhtaxjfwiqedjphewqfpyzphccefwiqebekxhhpyawqpzmznexvcwjtdtbbanmqbqgvgttdhjimjngmxmddkukeupjaprjxhcwpabdtqzwbqtaqggfktqkubvdtcuukiwxjenpfwxitftkydqtqaunzqgyzfzjkbrqyrfpxpwnnnzyrvnkhcdghpgxharjtvfqihqtfigtjyptcjnxvfzenityqmyvbhyaxjqpqcbvikbnapwaqzfvjkwwuptjdfwfrvdwzdzmnnbgcuaxyapvkpvfkdhzhcimznyjgxxwgqjacyryjxtgbdvyvdxdbmxifewpeyjbgtjmhecxzwcqqknwpaxthctpihdfnicvqxfkqcgbnmykmjxbnchiyzdgcgjkbvargvazckhjaakdrrbeznurnchynkykhwxvrjjxiznrxuiqgybihegynvtttdmhhmjvdmtuvmeattmrxfpimyiikzucujbmtzrpfnixvtqmrjfkjyiwnfwhmptpqzenrcwtuqykkkkirzqvycginnfmfkqzcktvcwqbjxcgqbceichqwhnmautknvmyaqyfwhdgyuwhkvwguavvjmwdvqwyheadnwmdwdkzkewdqnwgmvmgqguxevqbjucqcnnqmhebrqcwpmgwzvkamwgbuziyfbrtniemikryxptrgqmnfypbtzxruabxkebvuwratkmcrjjnrmznxfffvgahkkxfrepkpxrfaxzerbjhvxbqzzkbezghdqmkedpifurchfufmidckrbgwdmxvjmfddfckbprjxjhyrjkquatzhnfwmxciarhrnxgitjnhfptfahytfcpkrpgukaegjxbkyujpapqzryzykkbvhdrbbdmtdpieptvhxkwbhqhefbrqyjzexbcbwrfjgtjxkjgacmhdnpkjkbwmxapinapwwakrygzufkubtfqknrwmwqhpuahpzpjapdtzbphivxyripfdvmqidhanqwwpfuxavnajhbeydvxaftmpqztncfkvzhepprvtxnpcjctynhwivkbhqtgiuzcybijwceghvtdvcpnctnhupdkdvmenixbipxjkiiudaurdmzihyjhyrwaqjdwmtmrqffkgjqafbatemtxgytigqpvairfpvgatadiamdhdhfumkkjgxqundbtrymhcxmpygeczakbknmqnghahvbaprcqauhnuugtcmuyddizupeaxycveiuhkcybcdxiuzandewzpemdkmmkebaqhzvxgxqrcvhknzexmczpmtmarwitvtqiixtrpqerikqxkgqyggjdrfhqwtaxhcdkxprfzcxxcqidabdjurncmugfdjzhiyfcftjxqhxtcuiyxnkvmhyhhrbejgnduebmwitrrifgrmjqbbyiwtuzrbymtvdfvwpcjjheqzwxmugtymeruuepjudemxrecnuprzzrjtutatigtffhrhignrfvyvcdccrwczyzwwhffenexnhcnamxrfycqwvqmmdmxqtqpjnxyakyqdrebrjhfhwixbxbtgcdjeavahxgrarryxrfvwnarxjyuiwhkyrgamvzqhdxvfcfanzudnghtyygujnhmxmcjrggzfqniggvyjviwdmekyjtpzjyrvkwkzzcipdnhrvvambbnetfknmkqhqqrkyaityhhrevvceynizrhwtcakhcubxqqpbirbzpkvctbujdpbfxivjatunenbaadbbvvwyjewhkyzvu';
+
+      cy.get('summary').contains('Advanced search').click();
+
+      cy.get('#requestId').type('AAA');
+      cy.get('#caseId').type(invalidCaseId);
+      cy.get('#owner').invoke('val', invalidOwnerRequestedBy).type('1');
+      cy.get('#requestedBy').invoke('val', invalidOwnerRequestedBy).type('1');
+
+      cy.get('#search').click({ force: true });
+
+      cy.get('.govuk-error-summary__list').should('contain', 'Request ID must only contain numbers');
+      cy.get('.govuk-error-summary__list').should('contain', 'Case ID must be less than 33 characters');
+      cy.get('.govuk-error-summary__list').should('contain', 'Owner must be less than 2001 characters');
+      cy.get('.govuk-error-summary__list').should('contain', 'Requested by must be less than 2001 characters');
+
+      cy.get('.requestid-name-error').should('contain', 'Request ID must only contain numbers');
+      cy.get('.caseid-name-error').should('contain', 'Case ID must be less than 33 characters');
+      cy.get('.owner-name-error').should('contain', 'Owner must be less than 2001 characters');
+      cy.get('.requestedby-name-error').should('contain', 'Requested by must be less than 2001 characters');
+
+      cy.get('#requestId').clear().type('0');
+      cy.get('#search').click();
+
+      cy.get('.govuk-error-summary__list').should('contain', 'Request ID must be greater than 0');
+      cy.get('.requestid-name-error').should('contain', 'Request ID must be greater than 0');
+
+      cy.get('#requestId').clear().type('2147483649');
+      cy.get('#search').click();
+
+      cy.get('.govuk-error-summary__list').should('contain', 'Request ID must be less than 2147483648');
+      cy.get('.requestid-name-error').should('contain', 'Request ID must be less than 2147483648');
+
+      cy.get('#requestId').clear().type('1234');
+      cy.get('#caseId').clear().type('ABC123CASE');
+      cy.get('#owner').clear().type('Terry Jenkins');
+      cy.get('#requestedBy').clear().type('John Lowe');
+
+      cy.get('#search').click();
+
+      cy.get('.heading-caption').should('contain', 'Showing 1-3 of 3');
+    });
   });
 
   describe('view transformed media', () => {

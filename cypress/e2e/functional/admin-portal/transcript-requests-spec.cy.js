@@ -60,6 +60,52 @@ describe('Admin - Transcript requests', () => {
 
       cy.get('app-search-transcripts-results').contains('C0000000001');
     });
+
+    it('verifies form validation', () => {
+      const invalidCaseId = '1234567890123456789012345678901234567890';
+      const invalidOwnerRequestedBy =
+        'ygiwbwgguwnpmqgknvwfykbtvgkcrfupxwnvzqfxtappimhyyizcfrukguwkekegpgfpkymhieamuzwrrixumbtbwznmcyjgqxhquapfqrxrgxyeqckhcpfgqbhggwwmmwkdihtyqrcujcvbifmbfdkwhiwdiyimbutmrmqdcckwtyvrnivzyvmvhwgcenkpqrjmieyxypgmpxgmxtvawfhekayirmyhpiavcqjiknknjxmnhtaxjfwiqedjphewqfpyzphccefwiqebekxhhpyawqpzmznexvcwjtdtbbanmqbqgvgttdhjimjngmxmddkukeupjaprjxhcwpabdtqzwbqtaqggfktqkubvdtcuukiwxjenpfwxitftkydqtqaunzqgyzfzjkbrqyrfpxpwnnnzyrvnkhcdghpgxharjtvfqihqtfigtjyptcjnxvfzenityqmyvbhyaxjqpqcbvikbnapwaqzfvjkwwuptjdfwfrvdwzdzmnnbgcuaxyapvkpvfkdhzhcimznyjgxxwgqjacyryjxtgbdvyvdxdbmxifewpeyjbgtjmhecxzwcqqknwpaxthctpihdfnicvqxfkqcgbnmykmjxbnchiyzdgcgjkbvargvazckhjaakdrrbeznurnchynkykhwxvrjjxiznrxuiqgybihegynvtttdmhhmjvdmtuvmeattmrxfpimyiikzucujbmtzrpfnixvtqmrjfkjyiwnfwhmptpqzenrcwtuqykkkkirzqvycginnfmfkqzcktvcwqbjxcgqbceichqwhnmautknvmyaqyfwhdgyuwhkvwguavvjmwdvqwyheadnwmdwdkzkewdqnwgmvmgqguxevqbjucqcnnqmhebrqcwpmgwzvkamwgbuziyfbrtniemikryxptrgqmnfypbtzxruabxkebvuwratkmcrjjnrmznxfffvgahkkxfrepkpxrfaxzerbjhvxbqzzkbezghdqmkedpifurchfufmidckrbgwdmxvjmfddfckbprjxjhyrjkquatzhnfwmxciarhrnxgitjnhfptfahytfcpkrpgukaegjxbkyujpapqzryzykkbvhdrbbdmtdpieptvhxkwbhqhefbrqyjzexbcbwrfjgtjxkjgacmhdnpkjkbwmxapinapwwakrygzufkubtfqknrwmwqhpuahpzpjapdtzbphivxyripfdvmqidhanqwwpfuxavnajhbeydvxaftmpqztncfkvzhepprvtxnpcjctynhwivkbhqtgiuzcybijwceghvtdvcpnctnhupdkdvmenixbipxjkiiudaurdmzihyjhyrwaqjdwmtmrqffkgjqafbatemtxgytigqpvairfpvgatadiamdhdhfumkkjgxqundbtrymhcxmpygeczakbknmqnghahvbaprcqauhnuugtcmuyddizupeaxycveiuhkcybcdxiuzandewzpemdkmmkebaqhzvxgxqrcvhknzexmczpmtmarwitvtqiixtrpqerikqxkgqyggjdrfhqwtaxhcdkxprfzcxxcqidabdjurncmugfdjzhiyfcftjxqhxtcuiyxnkvmhyhhrbejgnduebmwitrrifgrmjqbbyiwtuzrbymtvdfvwpcjjheqzwxmugtymeruuepjudemxrecnuprzzrjtutatigtffhrhignrfvyvcdccrwczyzwwhffenexnhcnamxrfycqwvqmmdmxqtqpjnxyakyqdrebrjhfhwixbxbtgcdjeavahxgrarryxrfvwnarxjyuiwhkyrgamvzqhdxvfcfanzudnghtyygujnhmxmcjrggzfqniggvyjviwdmekyjtpzjyrvkwkzzcipdnhrvvambbnetfknmkqhqqrkyaityhhrevvceynizrhwtcakhcubxqqpbirbzpkvctbujdpbfxivjatunenbaadbbvvwyjewhkyzvu';
+
+      cy.get('summary').contains('Advanced search').click();
+
+      cy.get('#requestId').type('AAA');
+      cy.get('#caseId').type(invalidCaseId);
+      cy.get('#owner').invoke('val', invalidOwnerRequestedBy).type('1');
+      cy.get('#requestedBy').invoke('val', invalidOwnerRequestedBy).type('1');
+
+      cy.get('#search').click({ force: true });
+
+      cy.get('.govuk-error-summary__list').should('contain', 'Request ID must only contain numbers');
+      cy.get('.govuk-error-summary__list').should('contain', 'Case ID must be less than 33 characters');
+      cy.get('.govuk-error-summary__list').should('contain', 'Owner must be less than 2001 characters');
+      cy.get('.govuk-error-summary__list').should('contain', 'Requested by must be less than 2001 characters');
+
+      cy.get('.requestid-name-error').should('contain', 'Request ID must only contain numbers');
+      cy.get('.caseid-name-error').should('contain', 'Case ID must be less than 33 characters');
+      cy.get('.owner-name-error').should('contain', 'Owner must be less than 2001 characters');
+      cy.get('.requestedby-name-error').should('contain', 'Requested by must be less than 2001 characters');
+
+      cy.get('#requestId').clear().type('0');
+      cy.get('#search').click();
+
+      cy.get('.govuk-error-summary__list').should('contain', 'Request ID must be greater than 0');
+      cy.get('.requestid-name-error').should('contain', 'Request ID must be greater than 0');
+
+      cy.get('#requestId').clear().type('2147483649');
+      cy.get('#search').click();
+
+      cy.get('.govuk-error-summary__list').should('contain', 'Request ID must be less than 2147483648');
+      cy.get('.requestid-name-error').should('contain', 'Request ID must be less than 2147483648');
+
+      cy.get('#requestId').clear().type('1234');
+      cy.get('#caseId').clear().type('ABC123CASE');
+      cy.get('#owner').clear().type('Terry Jenkins');
+      cy.get('#requestedBy').clear().type('John Lowe');
+
+      cy.get('#search').click();
+
+      cy.get('app-data-table').should('exist');
+    });
   });
 
   describe('View transcript', () => {
@@ -350,6 +396,38 @@ describe('Admin - Transcript requests', () => {
       cy.get('.govuk-list').should('contain', 'Hidden by - Eric Bristow');
       cy.get('.govuk-list').should('contain', 'Reason - Other reason to hide only');
       cy.get('.govuk-list').should('contain', 'Ticket Reference 1232 - This is a comment');
+    });
+
+    it('verifies form validation', () => {
+      cy.get('a').contains('Completed transcripts').click();
+
+      const invalidCaseId = '1234567890123456789012345678901234567890';
+      const invalidOwnerRequestedBy =
+        'ygiwbwgguwnpmqgknvwfykbtvgkcrfupxwnvzqfxtappimhyyizcfrukguwkekegpgfpkymhieamuzwrrixumbtbwznmcyjgqxhquapfqrxrgxyeqckhcpfgqbhggwwmmwkdihtyqrcujcvbifmbfdkwhiwdiyimbutmrmqdcckwtyvrnivzyvmvhwgcenkpqrjmieyxypgmpxgmxtvawfhekayirmyhpiavcqjiknknjxmnhtaxjfwiqedjphewqfpyzphccefwiqebekxhhpyawqpzmznexvcwjtdtbbanmqbqgvgttdhjimjngmxmddkukeupjaprjxhcwpabdtqzwbqtaqggfktqkubvdtcuukiwxjenpfwxitftkydqtqaunzqgyzfzjkbrqyrfpxpwnnnzyrvnkhcdghpgxharjtvfqihqtfigtjyptcjnxvfzenityqmyvbhyaxjqpqcbvikbnapwaqzfvjkwwuptjdfwfrvdwzdzmnnbgcuaxyapvkpvfkdhzhcimznyjgxxwgqjacyryjxtgbdvyvdxdbmxifewpeyjbgtjmhecxzwcqqknwpaxthctpihdfnicvqxfkqcgbnmykmjxbnchiyzdgcgjkbvargvazckhjaakdrrbeznurnchynkykhwxvrjjxiznrxuiqgybihegynvtttdmhhmjvdmtuvmeattmrxfpimyiikzucujbmtzrpfnixvtqmrjfkjyiwnfwhmptpqzenrcwtuqykkkkirzqvycginnfmfkqzcktvcwqbjxcgqbceichqwhnmautknvmyaqyfwhdgyuwhkvwguavvjmwdvqwyheadnwmdwdkzkewdqnwgmvmgqguxevqbjucqcnnqmhebrqcwpmgwzvkamwgbuziyfbrtniemikryxptrgqmnfypbtzxruabxkebvuwratkmcrjjnrmznxfffvgahkkxfrepkpxrfaxzerbjhvxbqzzkbezghdqmkedpifurchfufmidckrbgwdmxvjmfddfckbprjxjhyrjkquatzhnfwmxciarhrnxgitjnhfptfahytfcpkrpgukaegjxbkyujpapqzryzykkbvhdrbbdmtdpieptvhxkwbhqhefbrqyjzexbcbwrfjgtjxkjgacmhdnpkjkbwmxapinapwwakrygzufkubtfqknrwmwqhpuahpzpjapdtzbphivxyripfdvmqidhanqwwpfuxavnajhbeydvxaftmpqztncfkvzhepprvtxnpcjctynhwivkbhqtgiuzcybijwceghvtdvcpnctnhupdkdvmenixbipxjkiiudaurdmzihyjhyrwaqjdwmtmrqffkgjqafbatemtxgytigqpvairfpvgatadiamdhdhfumkkjgxqundbtrymhcxmpygeczakbknmqnghahvbaprcqauhnuugtcmuyddizupeaxycveiuhkcybcdxiuzandewzpemdkmmkebaqhzvxgxqrcvhknzexmczpmtmarwitvtqiixtrpqerikqxkgqyggjdrfhqwtaxhcdkxprfzcxxcqidabdjurncmugfdjzhiyfcftjxqhxtcuiyxnkvmhyhhrbejgnduebmwitrrifgrmjqbbyiwtuzrbymtvdfvwpcjjheqzwxmugtymeruuepjudemxrecnuprzzrjtutatigtffhrhignrfvyvcdccrwczyzwwhffenexnhcnamxrfycqwvqmmdmxqtqpjnxyakyqdrebrjhfhwixbxbtgcdjeavahxgrarryxrfvwnarxjyuiwhkyrgamvzqhdxvfcfanzudnghtyygujnhmxmcjrggzfqniggvyjviwdmekyjtpzjyrvkwkzzcipdnhrvvambbnetfknmkqhqqrkyaityhhrevvceynizrhwtcakhcubxqqpbirbzpkvctbujdpbfxivjatunenbaadbbvvwyjewhkyzvu';
+
+      cy.get('summary').contains('Advanced search').click();
+
+      cy.get('#caseId').type(invalidCaseId);
+      cy.get('#owner').invoke('val', invalidOwnerRequestedBy).type('1');
+      cy.get('#requestedBy').invoke('val', invalidOwnerRequestedBy).type('1');
+
+      cy.get('#search').click({ force: true });
+
+      cy.get('.govuk-error-summary__list').should('contain', 'Case ID must be less than 33 characters');
+      cy.get('.govuk-error-summary__list').should('contain', 'Owner must be less than 2001 characters');
+      cy.get('.govuk-error-summary__list').should('contain', 'Requested by must be less than 2001 characters');
+
+      cy.get('.caseid-name-error').should('contain', 'Case ID must be less than 33 characters');
+      cy.get('.owner-name-error').should('contain', 'Owner must be less than 2001 characters');
+      cy.get('.requestedby-name-error').should('contain', 'Requested by must be less than 2001 characters');
+
+      cy.get('#caseId').clear().type('123');
+      cy.get('#owner').clear().type('Terry Jenkins');
+      cy.get('#requestedBy').clear().type('John Lowe');
+
+      cy.get('#search').click();
+
+      cy.get('#no-data-message').should('contain', 'No data to display.');
     });
 
     it('view completed transcript / transcript file details, hidden and marked for deletion', () => {

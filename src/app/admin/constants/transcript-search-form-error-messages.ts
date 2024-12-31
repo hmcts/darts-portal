@@ -22,6 +22,11 @@ export const TranscriptSearchFormErrorMessages: Record<string, Record<string, st
     dateRange: 'The end date must be after the start date',
   },
   requestId: {
+    min: 'Request ID must be greater than 0',
+    max: 'Request ID must be less than 2147483648',
     pattern: 'Request ID must only contain numbers',
   },
+  caseId: { maxlength: 'Case ID must be less than 33 characters' },
+  owner: { maxlength: 'Owner must be less than 2001 characters' },
+  requestedBy: { maxlength: 'Requested by must be less than 2001 characters' },
 };

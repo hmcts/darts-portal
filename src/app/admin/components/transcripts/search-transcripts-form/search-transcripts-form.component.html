@@ -2,11 +2,23 @@
   @if (isCompletedTranscriptSearch()) {
     <div class="govuk-form-group">
       <label class="govuk-label" for="caseId"> Case ID </label>
+      <!-- Inline Validation Errors -->
+      @for (error of getControlErrorMessage(['caseId']); track error) {
+        <p class="govuk-error-message caseid-name-error">
+          <span class="govuk-visually-hidden">Error:</span> {{ error }}
+        </p>
+      }
       <input formControlName="caseId" class="govuk-input govuk-input--width-20" id="caseId" name="caseId" type="text" />
     </div>
   } @else {
     <div class="govuk-form-group">
       <label class="govuk-label" for="requestId"> Request ID </label>
+      <!-- Inline Validation Errors -->
+      @for (error of getControlErrorMessage(['requestId']); track error) {
+        <p class="govuk-error-message requestid-name-error">
+          <span class="govuk-visually-hidden">Error:</span> {{ error }}
+        </p>
+      }
       <input
         formControlName="requestId"
         class="govuk-input govuk-input--width-20"
@@ -25,6 +37,12 @@
       @if (!isCompletedTranscriptSearch()) {
         <div class="govuk-form-group">
           <label class="govuk-label" for="caseId"> Case ID </label>
+          <!-- Inline Validation Errors -->
+          @for (error of getControlErrorMessage(['caseId']); track error) {
+            <p class="govuk-error-message caseid-name-error">
+              <span class="govuk-visually-hidden">Error:</span> {{ error }}
+            </p>
+          }
           <input
             formControlName="caseId"
             class="govuk-input govuk-input--width-20"
@@ -63,10 +81,22 @@
       </div>
       <div class="govuk-form-group">
         <label class="govuk-label" for="owner"> Owner </label>
+        <!-- Inline Validation Errors -->
+        @for (error of getControlErrorMessage(['owner']); track error) {
+          <p class="govuk-error-message owner-name-error">
+            <span class="govuk-visually-hidden">Error:</span> {{ error }}
+          </p>
+        }
         <input formControlName="owner" class="govuk-input govuk-input--width-20" id="owner" name="owner" type="text" />
       </div>
       <div class="govuk-form-group">
         <label class="govuk-label" for="requestedBy"> Requested by </label>
+        <!-- Inline Validation Errors -->
+        @for (error of getControlErrorMessage(['requestedBy']); track error) {
+          <p class="govuk-error-message requestedby-name-error">
+            <span class="govuk-visually-hidden">Error:</span> {{ error }}
+          </p>
+        }
         <input
           formControlName="requestedBy"
           class="govuk-input govuk-input--width-20"
