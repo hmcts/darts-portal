@@ -5519,16 +5519,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< HEAD
 "@types/node@npm:*, @types/node@npm:>=10.0.0":
   version: 22.10.9
   resolution: "@types/node@npm:22.10.9"
   dependencies:
     undici-types: ~6.20.0
   checksum: bd9a94fe5de516dcf13b4e9268696a99be3ba7146322c92b5ca3ea5368846cbb851843e2dda7030636653738405ea67e7bd972c630733420f84e199ad2c440ec
+=======
+"@types/node@npm:*, @types/node@npm:>=10.0.0, @types/node@npm:^22.1.0":
+  version: 22.10.3
+  resolution: "@types/node@npm:22.10.3"
+  dependencies:
+    undici-types: ~6.20.0
+  checksum: f42264d5afadb7eece4f068a9028cf752174796fe424f5f7385b6f700037240dc7bc6acd8ab11641424c39452dcf4d85be229f51dcc73ccd931eaa29924ffda7
+>>>>>>> 7db58910 (Update dependency @types/node to v20.17.11 (#1745))
   languageName: node
   linkType: hard
 
 "@types/node@npm:^20.14.2":
+<<<<<<< HEAD
   version: 20.17.16
   resolution: "@types/node@npm:20.17.16"
   dependencies:
@@ -5543,6 +5553,13 @@ __metadata:
   dependencies:
     undici-types: ~6.20.0
   checksum: 2f6dd04abebc456900f7dab2311f63ab361818cd3ecf5078b72c63ed416a38a3e72711669a26cec070e0d2e09d7661976f7d1fa3fc029eb9383f0f7e421a1d55
+=======
+  version: 20.17.11
+  resolution: "@types/node@npm:20.17.11"
+  dependencies:
+    undici-types: ~6.19.2
+  checksum: 8841a85ce5cbc402d87492527721d32b2c3ab9159a362a6ba05e957807e1991a056df61ce5e58166489d07d90f1ad61516121d6fd4c9e62c5429ce67f4b82d98
+>>>>>>> 7db58910 (Update dependency @types/node to v20.17.11 (#1745))
   languageName: node
   linkType: hard
 
