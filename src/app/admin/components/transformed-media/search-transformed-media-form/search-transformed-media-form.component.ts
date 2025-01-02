@@ -22,6 +22,7 @@ import { FormService } from '@services/form/form.service';
 import { defaultFormValues } from '@services/transformed-media/transformed-media.service';
 import { dateRangeValidator } from '@validators/date-range.validator';
 import { futureDateValidator } from '@validators/future-date.validator';
+import { optionalMaxLengthValidator } from '@validators/optional-maxlength.validator';
 import { realDateValidator } from '@validators/real-date.validator';
 
 export const transformedMediaSearchDateValidators = [
@@ -53,12 +54,12 @@ export class SearchTransformedMediaFormComponent {
   @Input() courthouses: CourthouseData[] = [];
 
   form = this.fb.group({
-    requestId: ['', Validators.pattern(/^[0-9]*$/)],
-    caseId: [''],
+    requestId: ['', [Validators.pattern(/^[0-9]*$/), Validators.min(1), Validators.max(2147483647)]],
+    caseId: ['', [optionalMaxLengthValidator(32)]],
     courthouse: [''],
     hearingDate: ['', transformedMediaSearchDateValidators],
-    owner: [''],
-    requestedBy: [''],
+    owner: ['', [optionalMaxLengthValidator(2000)]],
+    requestedBy: ['', [optionalMaxLengthValidator(2000)]],
     requestedDate: this.fb.group(
       {
         type: [''],

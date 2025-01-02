@@ -11,6 +11,7 @@ import { FormService } from '@services/form/form.service';
 import { defaultFormValues } from '@services/transcription-admin/transcription-admin.service';
 import { dateRangeValidator } from '@validators/date-range.validator';
 import { futureDateValidator } from '@validators/future-date.validator';
+import { optionalMaxLengthValidator } from '@validators/optional-maxlength.validator';
 import { realDateValidator } from '@validators/real-date.validator';
 
 export const transcriptSearchDateValidators = [
@@ -43,12 +44,12 @@ export class SearchTranscriptsFormComponent {
   formValues = model<TranscriptionSearchFormValues>(defaultFormValues);
 
   form = this.fb.group({
-    requestId: [''],
-    caseId: [''],
+    requestId: ['', [Validators.pattern(/^[0-9]*$/), Validators.min(1), Validators.max(2147483647)]],
+    caseId: ['', [optionalMaxLengthValidator(32)]],
     courthouse: [''],
     hearingDate: ['', transcriptSearchDateValidators],
-    owner: [''],
-    requestedBy: [''],
+    owner: ['', [optionalMaxLengthValidator(2001)]],
+    requestedBy: ['', [optionalMaxLengthValidator(2001)]],
     requestedDate: this.fb.group(
       {
         type: [''],
