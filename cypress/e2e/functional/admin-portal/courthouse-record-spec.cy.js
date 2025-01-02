@@ -141,7 +141,8 @@ describe('Admin - Courthouse record screen', () => {
     cy.a11y();
   });
 
-  it('Create courthouse', () => {
+  it('Create courthouse & validation', () => {
+    const invalidCourthouseName = ';hK+aySS}Q+b4@qrMczv9n.Kt0cHxNGr=#ZD%_&ugBg6h_qgy[vQ)TzH6@nZ?W45#'; //65 characters
     const courthouseName = 'COURTHOUSE';
     const displayName = 'Courthouse';
     cy.contains('button.govuk-button', 'Create new courthouse').click();
@@ -172,7 +173,7 @@ describe('Admin - Courthouse record screen', () => {
 
     cy.a11y();
     // Select options
-    cy.get('#courthouse-name').type(courthouseName);
+    cy.get('#courthouse-name').type(invalidCourthouseName);
     cy.get('#display-name').type(displayName);
     cy.get('#wales-radio').click();
 
@@ -199,6 +200,15 @@ describe('Admin - Courthouse record screen', () => {
     cy.get('#company-table').contains(company1).should('not.exist');
 
     cy.contains('.govuk-button', 'Continue').click();
+
+    //Verify max length errors
+    cy.get('.govuk-error-summary').should('contain', 'Courthouse code must be less than 64 characters');
+    cy.get('.courthouse-name-error').should('contain', 'Courthouse code must be less than 64 characters');
+
+    cy.get('#courthouse-name').clear().type(courthouseName);
+
+    cy.contains('.govuk-button', 'Continue').click();
+
     cy.contains('h1', 'Check details').should('exist');
 
     // Confirmation screen

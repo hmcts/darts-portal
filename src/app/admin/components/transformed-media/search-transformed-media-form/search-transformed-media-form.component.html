@@ -6,7 +6,7 @@
     <label class="govuk-label" for="requestId"> Request ID </label>
     <!-- Inline Validation Errors -->
     @for (error of getFormControlErrorMessages('requestId'); track error) {
-      <p class="govuk-error-message courthouse-name-error">
+      <p class="govuk-error-message requestid-name-error">
         <span class="govuk-visually-hidden">Error:</span> {{ error }}
       </p>
     }
@@ -26,6 +26,12 @@
     <div class="govuk-details__text">
       <div class="govuk-form-group">
         <label class="govuk-label" for="caseId"> Case ID </label>
+        <!-- Inline Validation Errors -->
+        @for (error of getFormControlErrorMessages('caseId'); track error) {
+          <p class="govuk-error-message caseid-name-error">
+            <span class="govuk-visually-hidden">Error:</span> {{ error }}
+          </p>
+        }
         <input
           formControlName="caseId"
           class="govuk-input govuk-input--width-20"
@@ -59,10 +65,22 @@
       </div>
       <div class="govuk-form-group">
         <label class="govuk-label" for="owner"> Owner </label>
+        <!-- Inline Validation Errors -->
+        @for (error of getFormControlErrorMessages('owner'); track error) {
+          <p class="govuk-error-message owner-name-error">
+            <span class="govuk-visually-hidden">Error:</span> {{ error }}
+          </p>
+        }
         <input formControlName="owner" class="govuk-input govuk-input--width-20" id="owner" name="owner" type="text" />
       </div>
       <div class="govuk-form-group">
         <label class="govuk-label" for="requestedBy"> Requested by </label>
+        <!-- Inline Validation Errors -->
+        @for (error of getFormControlErrorMessages('requestedBy'); track error) {
+          <p class="govuk-error-message requestedby-name-error">
+            <span class="govuk-visually-hidden">Error:</span> {{ error }}
+          </p>
+        }
         <input
           formControlName="requestedBy"
           class="govuk-input govuk-input--width-20"
