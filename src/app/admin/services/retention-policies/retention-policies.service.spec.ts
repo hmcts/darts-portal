@@ -96,7 +96,7 @@ describe('RetentionPoliciesService', () => {
         description: 'test',
         fixed_policy_key: '1',
         duration: '1Y0M0D',
-        policy_start_at: '2025-01-01T11:11:00Z',
+        policy_start_at: '2200-01-01T11:11:00Z',
       };
 
       const expectedMappedPolicy: RetentionPolicy = {
@@ -106,7 +106,7 @@ describe('RetentionPoliciesService', () => {
         description: 'test',
         fixedPolicyKey: '1',
         duration: '1Y0M0D',
-        policyStartAt: DateTime.fromISO('2025-01-01T11:11:00Z'),
+        policyStartAt: DateTime.fromISO('2200-01-01T11:11:00Z'),
         policyEndAt: null,
       };
 
