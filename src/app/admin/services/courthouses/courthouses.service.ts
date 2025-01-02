@@ -202,7 +202,10 @@ export class CourthouseService {
   }
 
   mapCourthouseDataToCourthouses(courthouses: CourthouseData[]): Courthouse[] {
-    return courthouses.map((c) => this.mapCourthouseDataToCourthouse(c)).filter((c) => c.displayName);
+    return courthouses
+      .map((c) => this.mapCourthouseDataToCourthouse(c))
+      .filter((c) => c.displayName)
+      .sort((a, b) => a.displayName.localeCompare(b.displayName));
   }
 
   mapCourthouseDataToCourthouse(courthouse: CourthouseData): Courthouse {
