@@ -13,6 +13,7 @@ import { FormService } from '@services/form/form.service';
 import { ScrollService } from '@services/scroll/scroll.service';
 import { dateRangeValidator } from '@validators/date-range.validator';
 import { futureDateValidator } from '@validators/future-date.validator';
+import { optionalMaxLengthValidator } from '@validators/optional-maxlength.validator';
 import { transformedMediaSearchDateValidators } from 'src/app/admin/components/transformed-media/search-transformed-media-form/search-transformed-media-form.component';
 
 @Component({
@@ -51,7 +52,7 @@ export class CaseSearchFormComponent implements OnInit {
   form: CaseSearchForm = this.fb.group({
     caseNumber: [''],
     courthouse: [''],
-    courtroom: [''],
+    courtroom: ['', optionalMaxLengthValidator(64)],
     hearingDate: this.fb.group(
       {
         type: [''],
@@ -61,9 +62,9 @@ export class CaseSearchFormComponent implements OnInit {
       },
       { validators: [dateRangeValidator('from', 'to')] }
     ),
-    judgeName: [''],
-    defendantName: [''],
-    eventTextContains: [''],
+    judgeName: ['', optionalMaxLengthValidator(2000)],
+    defendantName: ['', optionalMaxLengthValidator(2000)],
+    eventTextContains: ['', optionalMaxLengthValidator(2000)],
   });
 
   ngOnInit() {
