@@ -3,14 +3,13 @@ import { AudioFile } from '@admin-types/index';
 import { AssociatedCase } from '@admin-types/transformed-media/associated-case';
 import { AssociatedHearing } from '@admin-types/transformed-media/associated-hearing';
 import { AsyncPipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
 import { ExpiredBannerComponent } from '@common/expired-banner/expired-banner.component';
+import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { HiddenFileBannerComponent } from '@common/hidden-file-banner/hidden-file-banner.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
-import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { TabDirective } from '@directives/tab.directive';
 import { CaseService } from '@services/case/case.service';
 import { HistoryService } from '@services/history/history.service';
@@ -18,6 +17,7 @@ import { TranscriptionAdminService } from '@services/transcription-admin/transcr
 import { TransformedMediaService } from '@services/transformed-media/transformed-media.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { UserService } from '@services/user/user.service';
+import { optionalStringToBooleanOrNull } from '@utils/transform.utils';
 import { DateTime } from 'luxon';
 import { Observable, forkJoin, map, of, shareReplay, switchMap } from 'rxjs';
 import { AdvancedAudioFileDetailsComponent } from './advanced-audio-file-details/advanced-audio-file-details.component';
@@ -34,8 +34,7 @@ import { BasicAudioFileDetailsComponent } from './basic-audio-file-details/basic
     TabDirective,
     BasicAudioFileDetailsComponent,
     AdvancedAudioFileDetailsComponent,
-    BreadcrumbComponent,
-    BreadcrumbDirective,
+    GovukBannerComponent,
     AsyncPipe,
     HiddenFileBannerComponent,
     RouterLink,
@@ -63,6 +62,8 @@ export class AudioFileComponent {
   audioFile$ = this.getAudioFile();
 
   fileBanner$: Observable<HiddenFileBanner | null> = this.getFileBanner();
+
+  unhiddenOrUnmarkedForDeletion = input(null, { transform: optionalStringToBooleanOrNull });
 
   associatedCases$ = this.audioFile$.pipe(switchMap((audioFile) => this.getAssociatedCasesFromAudioFile(audioFile)));
   associatedHearings$ = this.audioFile$.pipe(
@@ -131,16 +132,6 @@ export class AudioFileComponent {
     );
   }
 
-  getHearingIds(
-    hearings: {
-      id: number;
-      hearingDate: DateTime<boolean>;
-      caseId: number;
-    }[]
-  ) {
-    return hearings.flatMap((hearing) => hearing.id);
-  }
-
   private getAudioFile(): Observable<AudioFile> {
     return (this.audioFile$ = this.transformedMediaService
       .getMediaById(this.audioFileId)
@@ -175,19 +166,37 @@ export class AudioFileComponent {
 
   hideOrUnhideFile(audioFile: AudioFile) {
     if (audioFile.isHidden) {
-      this.transformedMediaService.unhideAudioFile(this.audioFileId).subscribe(() => {
-        this.data$ = forkJoin({
-          audioFile: this.getAudioFile(),
-          associatedCases: this.associatedCases$,
-          associatedHearings: this.associatedHearings$,
-          hiddenFileBanner: this.getFileBanner(),
+      this.transformedMediaService
+        .checkAssociatedAudioExists(
+          audioFile.id,
+          audioFile.hearings.map((h) => h.id),
+          audioFile.startAt.toISO()!,
+          audioFile.endAt.toISO()!
+        )
+        .pipe(
+          switchMap((associatedMedia) => {
+            if (associatedMedia.exists) {
+              return this.router.navigate(
+                ['/admin/audio-file', audioFile.id, 'associated-audio', 'unhide-or-unmark-for-deletion'],
+                { state: { media: [...associatedMedia.audioFile, ...associatedMedia.media] } }
+              );
+            }
+            return this.transformedMediaService.unhideAudioFile(this.audioFileId);
+          })
+        )
+        .subscribe(() => {
+          this.data$ = forkJoin({
+            audioFile: this.getAudioFile(),
+            associatedCases: this.associatedCases$,
+            associatedHearings: this.associatedHearings$,
+            hiddenFileBanner: this.getFileBanner(),
+          });
         });
-      });
     } else {
       this.router.navigate(['admin/file', this.audioFileId, 'hide-or-delete'], {
         state: {
           fileType: 'audio_file',
-          hearings: this.getHearingIds(audioFile.hearings),
+          hearings: audioFile.hearings.map((h) => h.id),
           dates: { startAt: audioFile.startAt.toISO(), endAt: audioFile.endAt.toISO() },
           mediaId: this.mediaId,
         },
