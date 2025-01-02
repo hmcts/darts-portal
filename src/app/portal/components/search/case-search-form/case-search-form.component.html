@@ -32,14 +32,14 @@
         }
       </div>
 
-      <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('courthouse')">
+      <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('courtroom')">
         <label class="govuk-label" for="courtroom"> Courtroom </label>
         <div id="courtroom-search-hint" class="govuk-hint">For example, 3</div>
-        <div *ngIf="isControlInvalid('courtroom')" id="courtroom-errors">
-          <p *ngFor="let error of getFieldErrorMessages('courtroom')" class="govuk-error-message">
+        @for (error of getFieldErrorMessages('courtroom'); track error) {
+          <p class="govuk-error-message courtroom-error">
             <span class="govuk-visually-hidden">Error:</span> {{ error }}
           </p>
-        </div>
+        }
         <input
           minlength="1"
           formControlName="courtroom"
@@ -58,8 +58,13 @@
         [formErrorMessages]="CaseSearchFormErrorMessages"
       />
 
-      <div class="govuk-form-group">
+      <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('defendantName')">
         <label class="govuk-label" for="defendant"> Defendant's name </label>
+        @for (error of getFieldErrorMessages('defendantName'); track error) {
+          <p class="govuk-error-message defendant-error">
+            <span class="govuk-visually-hidden">Error:</span> {{ error }}
+          </p>
+        }
         <input
           formControlName="defendantName"
           class="govuk-input govuk-input--width-20"
@@ -69,8 +74,11 @@
         />
       </div>
 
-      <div class="govuk-form-group">
+      <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('judgeName')">
         <label class="govuk-label" for="judge"> Judge's name </label>
+        @for (error of getFieldErrorMessages('judgeName'); track error) {
+          <p class="govuk-error-message judge-error"><span class="govuk-visually-hidden">Error:</span> {{ error }}</p>
+        }
         <input
           formControlName="judgeName"
           class="govuk-input govuk-input--width-20"
@@ -80,8 +88,11 @@
         />
       </div>
 
-      <div class="govuk-form-group">
+      <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('eventTextContains')">
         <label class="govuk-label" for="keywords"> Keywords </label>
+        @for (error of getFieldErrorMessages('eventTextContains'); track error) {
+          <p class="govuk-error-message keyword-error"><span class="govuk-visually-hidden">Error:</span> {{ error }}</p>
+        }
         <input
           formControlName="eventTextContains"
           class="govuk-input govuk-input--width-20"
