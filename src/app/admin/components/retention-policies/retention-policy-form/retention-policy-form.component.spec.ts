@@ -30,7 +30,7 @@ export const formDataFactory = (data?: Partial<RetentionPolicyForm>): RetentionP
     months: '0',
     days: '0',
   },
-  startDate: '01/01/2025',
+  startDate: '01/01/2200',
   startTime: {
     hours: '11',
     minutes: '11',
@@ -207,6 +207,7 @@ describe('RetentionPolicyFormComponent', () => {
       it(test.name, () => {
         component.context = test.context || 'create';
         component.form.setValue(test.data);
+
         expect(component.form.valid).toBe(test.validity);
 
         if (test.onSubmit) {
