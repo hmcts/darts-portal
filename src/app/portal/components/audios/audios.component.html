@@ -12,8 +12,8 @@
 @if (!isDeleting()) {
   <app-govuk-heading>Your audio</app-govuk-heading>
   @if (data$ | async; as data) {
-    <app-tabs (tabChange)="onTabChanged()">
-      <div *tab="'Current'">
+    <app-tabs [default]="tab()" (tabChange)="onTabChanged($event.name)">
+      <div *tab="tabNames.currentAudio; screenReaderText: 'Current audio files'; id: 'current-audio-tab'">
         <p *ngIf="!data.inProgressRows.length && !data.completedRows.length" class="govuk-body">
           There are no audio files in progress or ready
         </p>
@@ -77,7 +77,7 @@
         </ng-container>
       </div>
 
-      <div *tab="'Expired'">
+      <div *tab="tabNames.expiredAudio; screenReaderText: 'Expired audio files'; id: 'expired-audio-tab'">
         @if (!data.expiredRows.length) {
           <p class="govuk-body">There are no expired audio files</p>
         } @else {
