@@ -3256,10 +3256,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< HEAD
 "@eslint/js@npm:9.19.0":
   version: 9.19.0
   resolution: "@eslint/js@npm:9.19.0"
   checksum: bf4077b390894408408c8b5ca48c2cdaf91bce94e0a3b7ff4e79a2cb2d3ecc76d87b52b30af812285acf550e7a849138d2aad2cab0b0b5c0c9f7944fd45ba31f
+=======
+"@eslint/js@npm:9.17.0":
+  version: 9.17.0
+  resolution: "@eslint/js@npm:9.17.0"
+  checksum: b68a14ff518ffa12e3b85fa9c72b818faeff092285acfbf02da2d0fb12a681b76651638881e98845f2df2ed346ed0d33faeb1d9caac163daf232c223b7efe89c
+>>>>>>> 8a44f1b5 (Update dependency eslint to v9.17.0 (#1749))
   languageName: node
   linkType: hard
 
@@ -9036,16 +9043,26 @@ __metadata:
   linkType: hard
 
 "eslint@npm:^9.5":
+<<<<<<< HEAD
   version: 9.19.0
   resolution: "eslint@npm:9.19.0"
+=======
+  version: 9.17.0
+  resolution: "eslint@npm:9.17.0"
+>>>>>>> 8a44f1b5 (Update dependency eslint to v9.17.0 (#1749))
   dependencies:
     "@eslint-community/eslint-utils": ^4.2.0
     "@eslint-community/regexpp": ^4.12.1
     "@eslint/config-array": ^0.19.0
     "@eslint/core": ^0.10.0
     "@eslint/eslintrc": ^3.2.0
+<<<<<<< HEAD
     "@eslint/js": 9.19.0
     "@eslint/plugin-kit": ^0.2.5
+=======
+    "@eslint/js": 9.17.0
+    "@eslint/plugin-kit": ^0.2.3
+>>>>>>> 8a44f1b5 (Update dependency eslint to v9.17.0 (#1749))
     "@humanfs/node": ^0.16.6
     "@humanwhocodes/module-importer": ^1.0.1
     "@humanwhocodes/retry": ^0.4.1
@@ -9080,7 +9097,11 @@ __metadata:
       optional: true
   bin:
     eslint: bin/eslint.js
+<<<<<<< HEAD
   checksum: 173c77ac3fd8fa69a9367c457f8048088450911f6f927b189bcc2fd1dcca71422346952cdb7217948d692f67b3e36238f5264717187e83a1cdbd1b37b89e3877
+=======
+  checksum: 0caae58c53bf4dc9b4893d75e62339e4c40fe5589652a3cb63f30a15bad1f34f8f784ca4fca471bbffedabee516a9f9620ebc33818b55e1b715e8f000865c851
+>>>>>>> 8a44f1b5 (Update dependency eslint to v9.17.0 (#1749))
   languageName: node
   linkType: hard
 
