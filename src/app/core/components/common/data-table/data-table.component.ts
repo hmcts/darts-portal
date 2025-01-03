@@ -100,7 +100,7 @@ export class DataTableComponent<TRow> implements OnChanges, OnInit {
 
     this.sorting = {
       column: column,
-      order: order || (this.isDescSorting(column) ? 'asc' : 'desc'),
+      order: order || (this.isAscSorting(column) ? 'desc' : 'asc'),
       sortFn: sortFn,
     };
 
