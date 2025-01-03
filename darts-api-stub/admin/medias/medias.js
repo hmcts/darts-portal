@@ -497,6 +497,14 @@ router.get('/:id', (req, res) => {
           id: 11,
           hearing_date: '2020-02-20',
           case_id: 0,
+          courthouse: {
+            id: 0,
+            display_name: 'Courthouse 321',
+          },
+          courtroom: {
+            id: 0,
+            name: 'Courtroom 1',
+          },
         },
       ],
     });
