@@ -12,6 +12,7 @@ import {
   TemplateRef,
 } from '@angular/core';
 import { PaginationComponent } from '@components/common/pagination/pagination.component';
+import { dateTimeKeys } from '@constants/datetime-keys';
 import { CustomSort, DatatableColumn } from '@core-types/index';
 import { TableBodyTemplateDirective } from '@directives/table-body-template.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
@@ -95,12 +96,20 @@ export class DataTableComponent<TRow> implements OnChanges, OnInit {
     this.rows = [...this.initialRows];
   }
 
+  private sortOrder(column: string): 'asc' | 'desc' {
+    if (this.isDateColumn(column)) {
+      return this.sorting?.column === column && this.sorting?.order === 'desc' ? 'asc' : 'desc';
+    }
+
+    return this.sorting?.column === column && this.sorting?.order === 'asc' ? 'desc' : 'asc';
+  }
+
   sortTable(column: string, sortFn?: CustomSort<TRow>, order?: 'asc' | 'desc'): void {
     this.resetRows();
 
     this.sorting = {
       column: column,
-      order: order || (this.isAscSorting(column) ? 'desc' : 'asc'),
+      order: order || this.sortOrder(column),
       sortFn: sortFn,
     };
 
@@ -148,6 +157,11 @@ export class DataTableComponent<TRow> implements OnChanges, OnInit {
       }
     });
     this.updatePagedData();
+  }
+
+  private isDateColumn(column: string): boolean {
+    const dateColumns = dateTimeKeys;
+    return dateColumns.includes(column);
   }
 
   private isBoolean(valueA: unknown, valueB: unknown): boolean {

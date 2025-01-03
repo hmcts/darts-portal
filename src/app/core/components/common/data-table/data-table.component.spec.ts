@@ -193,6 +193,19 @@ describe('DataTableComponent', () => {
       expect(component.sorting).toEqual(expectedSorting);
     });
 
+    it('should default to descending order for date columns', () => {
+      const column = 'createdAt';
+      const sortOrderSpy = jest.spyOn(component as any, 'sortOrder');
+
+      component.sortTable(column);
+
+      expect(sortOrderSpy).toHaveBeenCalledWith(column);
+      expect(component.sorting).toEqual({
+        column,
+        order: 'desc',
+      });
+    });
+
     it('use a custom sorting function to sort in ascending order', () => {
       component.rows = [
         {
