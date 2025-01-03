@@ -69,11 +69,49 @@ const audioFile: AudioFile = {
       id: 0,
       hearingDate: dateTime,
       caseId: 0,
+      caseNumber: 'C1',
+      courthouse: {
+        id: 0,
+        displayName: 'Courthouse 1',
+      },
+      courtroom: {
+        id: 0,
+        name: 'Courtroom 1',
+      },
     },
     {
       id: 1,
       hearingDate: dateTime,
-      caseId: 0,
+      caseId: 1,
+      caseNumber: 'C2',
+      courthouse: {
+        id: 1,
+        displayName: 'Courthouse 2',
+      },
+      courtroom: {
+        id: 1,
+        name: 'Courtroom 2',
+      },
+    },
+  ],
+  cases: [
+    {
+      id: 0,
+      courthouse: {
+        id: 0,
+        displayName: 'Courthouse 1',
+      },
+      caseNumber: 'C1',
+      source: 'Source 1',
+    },
+    {
+      id: 1,
+      courthouse: {
+        id: 1,
+        displayName: 'Courthouse 2',
+      },
+      caseNumber: 'C2',
+      source: 'Source 2',
     },
   ],
 };
@@ -209,35 +247,54 @@ describe('AudioFileComponent', () => {
   });
 
   describe('associatedCases$', () => {
-    it('calls getCase for each caseId', () => {
-      component.associatedCases$.subscribe();
-      expect(component.caseService.getCase).toHaveBeenCalledWith(0);
-      expect(component.caseService.getCase).toHaveBeenCalledTimes(2);
-    });
-
-    it('maps judges and defendents to associated cases', fakeAsync(() => {
+    it('maps source and courthouse to associated cases', fakeAsync(() => {
       const expected = [
         {
           caseId: 0,
-          hearingId: 0,
           caseNumber: 'C1',
-          hearingDate: dateTime,
-          defendants: ['defendant'],
-          judges: ['judge'],
+          courthouse: 'Courthouse 1',
+          source: 'Source 1',
         },
         {
-          caseId: 0,
-          hearingId: 1,
-          caseNumber: 'C1',
-          hearingDate: dateTime,
-          defendants: ['defendant'],
-          judges: ['judge'],
+          caseId: 1,
+          caseNumber: 'C2',
+          courthouse: 'Courthouse 2',
+          source: 'Source 2',
         },
       ];
 
       component.associatedCases$.subscribe((result) => {
         expect(result).toEqual(expected);
       });
+      tick();
+    }));
+  });
+
+  describe('associatedHearings$', () => {
+    it('maps hearing date, courthouse and courtroom to associated hearings', fakeAsync(() => {
+      const expected = [
+        {
+          caseId: 0,
+          hearingId: 0,
+          caseNumber: 'C1',
+          courthouse: 'Courthouse 1',
+          hearingDate: dateTime,
+          courtroom: 'Courtroom 1',
+        },
+        {
+          caseId: 1,
+          hearingId: 1,
+          caseNumber: 'C2',
+          courthouse: 'Courthouse 2',
+          hearingDate: dateTime,
+          courtroom: 'Courtroom 2',
+        },
+      ];
+
+      component.associatedHearings$.subscribe((result) => {
+        expect(result).toEqual(expected);
+      });
+
       tick();
     }));
   });

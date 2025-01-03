@@ -1,6 +1,7 @@
 import { HiddenFileBanner } from '@admin-types/common/hidden-file-banner';
 import { AudioFile } from '@admin-types/index';
 import { AssociatedCase } from '@admin-types/transformed-media/associated-case';
+import { AssociatedHearing } from '@admin-types/transformed-media/associated-hearing';
 import { AsyncPipe } from '@angular/common';
 import { Component, inject, input } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -65,27 +66,38 @@ export class AudioFileComponent {
   unhiddenOrUnmarkedForDeletion = input(null, { transform: optionalStringToBooleanOrNull });
 
   associatedCases$ = this.audioFile$.pipe(switchMap((audioFile) => this.getAssociatedCasesFromAudioFile(audioFile)));
+  associatedHearings$ = this.audioFile$.pipe(
+    switchMap((audioFile) => this.getAssociatedHearingsFromAudioFile(audioFile))
+  );
 
   data$ = forkJoin({
     audioFile: this.audioFile$,
     associatedCases: this.associatedCases$,
+    associatedHearings: this.associatedHearings$,
     hiddenFileBanner: this.fileBanner$,
   });
 
   private getAssociatedCasesFromAudioFile(audioFile: AudioFile): Observable<AssociatedCase[]> {
-    const caseIds = [...new Set(audioFile.hearings.map((h) => h.caseId))];
-    const cases$ = caseIds.map((caseId) => this.caseService.getCase(caseId));
-    return forkJoin(cases$).pipe(
-      map((cases) => {
-        return audioFile.hearings.map((h) => ({
-          caseId: h.caseId,
-          hearingId: h.id,
-          caseNumber: cases.find((c) => c.id == h.caseId)?.number ?? 'Unknown',
-          hearingDate: h.hearingDate,
-          defendants: cases.find((c) => c.id == h.caseId)?.defendants,
-          judges: cases.find((c) => c.id == h.caseId)?.judges,
-        }));
-      })
+    return of(
+      audioFile.cases.map((c) => ({
+        caseId: c.id,
+        caseNumber: c.caseNumber ?? 'Unknown',
+        courthouse: c.courthouse.displayName ?? 'Unknown',
+        source: c.source ?? 'Unknown',
+      }))
+    );
+  }
+
+  private getAssociatedHearingsFromAudioFile(audioFile: AudioFile): Observable<AssociatedHearing[]> {
+    return of(
+      audioFile.hearings.map((h) => ({
+        caseId: h.caseId,
+        hearingId: h.id,
+        caseNumber: h.caseNumber ?? 'Unknown',
+        hearingDate: h.hearingDate,
+        courthouse: h.courthouse.displayName ?? 'Unknown',
+        courtroom: h.courtroom?.name ?? 'Unknown',
+      }))
     );
   }
 
@@ -176,6 +188,7 @@ export class AudioFileComponent {
           this.data$ = forkJoin({
             audioFile: this.getAudioFile(),
             associatedCases: this.associatedCases$,
+            associatedHearings: this.associatedHearings$,
             hiddenFileBanner: this.getFileBanner(),
           });
         });
