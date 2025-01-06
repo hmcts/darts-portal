@@ -4,4 +4,5 @@ export const transcriptTableColumns = [
   { name: 'Hearing date', prop: 'hearingDate', sortable: true },
   { name: 'Type', prop: 'transcriptionType', sortable: true },
   { name: 'Requested on', prop: 'requestedTs', sortable: true },
+  { name: 'Approved on', prop: 'approvedTs', sortable: true },
 ];

@@ -71,10 +71,10 @@ export class TranscriptionsComponent {
     },
   ];
   readyColumns = [...this.columns, { name: 'View request links', prop: '', hidden: true }]; //Empty column header for view link
-  approverColumns = this.readyColumns.map((c) =>
-    // swap status column for request id column
-    c.name === 'Status' ? { name: 'Request ID', prop: 'transcriptionId', sortable: true } : c
-  );
+  approverColumns = this.readyColumns
+    .map((c) => (c.name === 'Status' ? { name: 'Request ID', prop: 'transcriptionId', sortable: true } : c)) // swap status column for request id column
+    .filter((c) => c.name !== 'Approved on'); // remove approved on column
+
   deleteColumns = this.columns.map((c) => ({ ...c, sortable: false }));
 
   isDeleting = signal(false);

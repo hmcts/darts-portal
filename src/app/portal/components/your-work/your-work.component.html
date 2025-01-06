@@ -4,6 +4,7 @@
   <td>{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
   <td>{{ row.transcriptionType }}</td>
   <td>{{ row.requestedTs | luxonDate: 'dd MMM yyyy HH:mm' }}</td>
+  <td>{{ row.approvedTs | luxonDate: 'dd MMM yyyy HH:mm' }}</td>
   <td>
     <span [ngClass]="row.urgency.description === 'Overnight' ? 'moj-badge moj-badge--red' : ''">{{
       row.urgency.description
