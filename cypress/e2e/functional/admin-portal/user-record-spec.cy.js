@@ -358,6 +358,14 @@ describe('Admin - User record screen', () => {
 
       cy.get('#transcriptRequestsTable tbody tr').should('have.length', 1);
 
+      //Date 5 months prior due to dynamic creation in stub
+      const currentDate = new Date();
+      currentDate.setMonth(currentDate.getMonth() - 5); // Subtract 5 months
+
+      // Format the date to "DD MMM YYYY"
+      const options = { day: '2-digit', month: 'short', year: 'numeric' };
+      const requestedDate = currentDate.toLocaleDateString('en-GB', options);
+
       cy.get('#transcriptRequestsTable tbody tr')
         .eq(0)
         .within(() => {
@@ -365,7 +373,7 @@ describe('Admin - User record screen', () => {
           cy.get('td').eq(1).should('contain.text', 'C0000000007');
           cy.get('td').eq(2).should('contain.text', 'Southampton');
           cy.get('td').eq(3).should('contain.text', '06 Jan 2022');
-          cy.get('td').eq(4).should('contain.text', '07 Aug 2024 11:33');
+          cy.get('td').eq(4).should('contain.text', requestedDate);
           cy.get('td').eq(5).should('contain.text', '06 Jan 2023 13:00');
           cy.get('td').eq(6).should('contain.text', 'With Transcriber');
           cy.get('td').eq(7).should('contain.text', 'Manual');
