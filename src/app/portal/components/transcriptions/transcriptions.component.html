@@ -115,7 +115,7 @@
 <ng-template #ApproverTemplate>
   @if (approverRequests$ | async; as approverRequests) {
     @if (!approverRequests.length) {
-      <p id="no-requests-message" class="govuk-body">There are no transcription requests to review</p>
+      <p id="no-requests-message" class="govuk-body">There are no transcription requests to authorise</p>
     }
     @if (approverRequests.length) {
       <h2 class="govuk-heading-m">Requests to approve or reject</h2>
