@@ -365,8 +365,10 @@ describe('Admin - User record screen', () => {
           cy.get('td').eq(1).should('contain.text', 'C0000000007');
           cy.get('td').eq(2).should('contain.text', 'Southampton');
           cy.get('td').eq(3).should('contain.text', '06 Jan 2022');
-          cy.get('td').eq(5).should('contain.text', 'With Transcriber');
-          cy.get('td').eq(6).should('contain.text', 'Manual');
+          cy.get('td').eq(4).should('contain.text', '06 Aug 2024 17:54');
+          cy.get('td').eq(5).should('contain.text', '06 Jan 2023 13:00');
+          cy.get('td').eq(6).should('contain.text', 'With Transcriber');
+          cy.get('td').eq(7).should('contain.text', 'Manual');
         });
 
       cy.a11y();
@@ -388,8 +390,9 @@ describe('Admin - User record screen', () => {
         cy.get('th').eq(2).should('contain.text', 'Courthouse');
         cy.get('th').eq(3).should('contain.text', 'Hearing date');
         cy.get('th').eq(4).should('contain.text', 'Requested on');
-        cy.get('th').eq(5).should('contain.text', 'Status');
-        cy.get('th').eq(6).should('contain.text', 'Request type');
+        cy.get('th').eq(5).should('contain.text', 'Approved on');
+        cy.get('th').eq(6).should('contain.text', 'Status');
+        cy.get('th').eq(7).should('contain.text', 'Request type');
       });
 
       cy.get('#transcriptRequestsTable tbody tr')
@@ -400,8 +403,9 @@ describe('Admin - User record screen', () => {
           cy.get('td').eq(2).should('contain.text', 'Slough');
           cy.get('td').eq(3).should('contain.text', '01 Jan 2022');
           cy.get('td').eq(4).should('contain.text', '01 Jan 2023 02:00');
-          cy.get('td').eq(5).should('contain.text', 'Requested');
-          cy.get('td').eq(6).should('contain.text', 'Manual');
+          cy.get('td').eq(5).should('contain.text', '01 Jan 2023 08:00');
+          cy.get('td').eq(6).should('contain.text', 'Requested');
+          cy.get('td').eq(7).should('contain.text', 'Manual');
         });
 
       cy.get('#transcriptRequestsTable tbody tr')
@@ -412,8 +416,9 @@ describe('Admin - User record screen', () => {
           cy.get('td').eq(2).should('contain.text', 'Kingston');
           cy.get('td').eq(3).should('contain.text', '02 Jan 2022');
           cy.get('td').eq(4).should('contain.text', '02 Jan 2023 04:00');
-          cy.get('td').eq(5).should('contain.text', 'Requested');
-          cy.get('td').eq(6).should('contain.text', 'Automatic');
+          cy.get('td').eq(5).should('contain.text', '02 Jan 2023 08:00');
+          cy.get('td').eq(6).should('contain.text', 'Requested');
+          cy.get('td').eq(7).should('contain.text', 'Automatic');
         });
 
       cy.a11y();
