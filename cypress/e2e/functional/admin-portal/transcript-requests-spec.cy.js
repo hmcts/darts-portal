@@ -1,4 +1,5 @@
 import 'cypress-axe';
+import { LONG_STRING_2K } from '../../constants/validation-constants';
 import '../commands';
 
 describe('Admin - Transcript requests', () => {
@@ -77,12 +78,15 @@ describe('Admin - Transcript requests', () => {
       cy.get('.govuk-error-summary__list').should('contain', 'Request ID must only contain numbers');
       cy.get('.govuk-error-summary__list').should('contain', 'Case ID must be less than or equal to 32 characters');
       cy.get('.govuk-error-summary__list').should('contain', 'Owner must be less than or equal to 2000 characters');
-      cy.get('.govuk-error-summary__list').should('contain', 'Requested by must be less than 2001 characters');
+      cy.get('.govuk-error-summary__list').should(
+        'contain',
+        'Requested by must be less than or equal to 2000 characters'
+      );
 
       cy.get('.requestid-name-error').should('contain', 'Request ID must only contain numbers');
       cy.get('.caseid-name-error').should('contain', 'Case ID must be less than or equal to 32 characters');
       cy.get('.owner-name-error').should('contain', 'Owner must be less than or equal to 2000 characters');
-      cy.get('.requestedby-name-error').should('contain', 'Requested by must be less than 2001 characters');
+      cy.get('.requestedby-name-error').should('contain', 'Requested by must be less than or equal to 2000 characters');
 
       cy.get('#requestId').clear().type('0');
       cy.get('#search').click();
