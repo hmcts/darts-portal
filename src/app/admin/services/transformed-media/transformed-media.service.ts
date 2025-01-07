@@ -316,10 +316,28 @@ export class TransformedMediaService {
         id: data.courtroom.id,
         name: data.courtroom.name,
       },
+      cases: data.cases.map((c) => ({
+        id: c.id,
+        courthouse: {
+          id: c.courthouse.id,
+          displayName: c.courthouse.display_name,
+        },
+        caseNumber: c.case_number,
+        source: c.source,
+      })),
       hearings: data.hearings.map((hearing) => ({
         id: hearing.id,
         hearingDate: DateTime.fromISO(hearing.hearing_date),
         caseId: hearing.case_id,
+        caseNumber: hearing.case_number,
+        courthouse: {
+          id: hearing.courthouse.id,
+          displayName: hearing.courthouse.display_name,
+        },
+        courtroom: {
+          id: hearing.courtroom.id,
+          name: hearing.courtroom.name,
+        },
       })),
     };
   }
