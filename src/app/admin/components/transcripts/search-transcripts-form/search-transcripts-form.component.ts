@@ -44,7 +44,7 @@ export class SearchTranscriptsFormComponent {
   formValues = model<TranscriptionSearchFormValues>(defaultFormValues);
 
   form = this.fb.group({
-    requestId: ['', [Validators.pattern(/^[0-9]*$/), Validators.min(1), Validators.max(2147483647)]],
+    requestId: ['', [Validators.pattern(/^-?[0-9]*$/), Validators.min(1), Validators.max(2147483647)]],
     caseId: ['', [optionalMaxLengthValidator(32)]],
     courthouse: [''],
     hearingDate: ['', transcriptSearchDateValidators],

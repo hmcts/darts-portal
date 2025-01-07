@@ -63,8 +63,7 @@ describe('Admin - Transcript requests', () => {
 
     it('verifies form validation', () => {
       const invalidCaseId = '1234567890123456789012345678901234567890';
-      const invalidOwnerRequestedBy =
-        'ygiwbwgguwnpmqgknvwfykbtvgkcrfupxwnvzqfxtappimhyyizcfrukguwkekegpgfpkymhieamuzwrrixumbtbwznmcyjgqxhquapfqrxrgxyeqckhcpfgqbhggwwmmwkdihtyqrcujcvbifmbfdkwhiwdiyimbutmrmqdcckwtyvrnivzyvmvhwgcenkpqrjmieyxypgmpxgmxtvawfhekayirmyhpiavcqjiknknjxmnhtaxjfwiqedjphewqfpyzphccefwiqebekxhhpyawqpzmznexvcwjtdtbbanmqbqgvgttdhjimjngmxmddkukeupjaprjxhcwpabdtqzwbqtaqggfktqkubvdtcuukiwxjenpfwxitftkydqtqaunzqgyzfzjkbrqyrfpxpwnnnzyrvnkhcdghpgxharjtvfqihqtfigtjyptcjnxvfzenityqmyvbhyaxjqpqcbvikbnapwaqzfvjkwwuptjdfwfrvdwzdzmnnbgcuaxyapvkpvfkdhzhcimznyjgxxwgqjacyryjxtgbdvyvdxdbmxifewpeyjbgtjmhecxzwcqqknwpaxthctpihdfnicvqxfkqcgbnmykmjxbnchiyzdgcgjkbvargvazckhjaakdrrbeznurnchynkykhwxvrjjxiznrxuiqgybihegynvtttdmhhmjvdmtuvmeattmrxfpimyiikzucujbmtzrpfnixvtqmrjfkjyiwnfwhmptpqzenrcwtuqykkkkirzqvycginnfmfkqzcktvcwqbjxcgqbceichqwhnmautknvmyaqyfwhdgyuwhkvwguavvjmwdvqwyheadnwmdwdkzkewdqnwgmvmgqguxevqbjucqcnnqmhebrqcwpmgwzvkamwgbuziyfbrtniemikryxptrgqmnfypbtzxruabxkebvuwratkmcrjjnrmznxfffvgahkkxfrepkpxrfaxzerbjhvxbqzzkbezghdqmkedpifurchfufmidckrbgwdmxvjmfddfckbprjxjhyrjkquatzhnfwmxciarhrnxgitjnhfptfahytfcpkrpgukaegjxbkyujpapqzryzykkbvhdrbbdmtdpieptvhxkwbhqhefbrqyjzexbcbwrfjgtjxkjgacmhdnpkjkbwmxapinapwwakrygzufkubtfqknrwmwqhpuahpzpjapdtzbphivxyripfdvmqidhanqwwpfuxavnajhbeydvxaftmpqztncfkvzhepprvtxnpcjctynhwivkbhqtgiuzcybijwceghvtdvcpnctnhupdkdvmenixbipxjkiiudaurdmzihyjhyrwaqjdwmtmrqffkgjqafbatemtxgytigqpvairfpvgatadiamdhdhfumkkjgxqundbtrymhcxmpygeczakbknmqnghahvbaprcqauhnuugtcmuyddizupeaxycveiuhkcybcdxiuzandewzpemdkmmkebaqhzvxgxqrcvhknzexmczpmtmarwitvtqiixtrpqerikqxkgqyggjdrfhqwtaxhcdkxprfzcxxcqidabdjurncmugfdjzhiyfcftjxqhxtcuiyxnkvmhyhhrbejgnduebmwitrrifgrmjqbbyiwtuzrbymtvdfvwpcjjheqzwxmugtymeruuepjudemxrecnuprzzrjtutatigtffhrhignrfvyvcdccrwczyzwwhffenexnhcnamxrfycqwvqmmdmxqtqpjnxyakyqdrebrjhfhwixbxbtgcdjeavahxgrarryxrfvwnarxjyuiwhkyrgamvzqhdxvfcfanzudnghtyygujnhmxmcjrggzfqniggvyjviwdmekyjtpzjyrvkwkzzcipdnhrvvambbnetfknmkqhqqrkyaityhhrevvceynizrhwtcakhcubxqqpbirbzpkvctbujdpbfxivjatunenbaadbbvvwyjewhkyzvu';
+      const invalidOwnerRequestedBy = LONG_STRING_2K;
 
       cy.get('summary').contains('Advanced search').click();
 
@@ -76,13 +75,13 @@ describe('Admin - Transcript requests', () => {
       cy.get('#search').click({ force: true });
 
       cy.get('.govuk-error-summary__list').should('contain', 'Request ID must only contain numbers');
-      cy.get('.govuk-error-summary__list').should('contain', 'Case ID must be less than 33 characters');
-      cy.get('.govuk-error-summary__list').should('contain', 'Owner must be less than 2001 characters');
+      cy.get('.govuk-error-summary__list').should('contain', 'Case ID must be less than or equal to 32 characters');
+      cy.get('.govuk-error-summary__list').should('contain', 'Owner must be less than or equal to 2000 characters');
       cy.get('.govuk-error-summary__list').should('contain', 'Requested by must be less than 2001 characters');
 
       cy.get('.requestid-name-error').should('contain', 'Request ID must only contain numbers');
-      cy.get('.caseid-name-error').should('contain', 'Case ID must be less than 33 characters');
-      cy.get('.owner-name-error').should('contain', 'Owner must be less than 2001 characters');
+      cy.get('.caseid-name-error').should('contain', 'Case ID must be less than or equal to 32 characters');
+      cy.get('.owner-name-error').should('contain', 'Owner must be less than or equal to 2000 characters');
       cy.get('.requestedby-name-error').should('contain', 'Requested by must be less than 2001 characters');
 
       cy.get('#requestId').clear().type('0');
@@ -402,8 +401,7 @@ describe('Admin - Transcript requests', () => {
       cy.get('a').contains('Completed transcripts').click();
 
       const invalidCaseId = '1234567890123456789012345678901234567890';
-      const invalidOwnerRequestedBy =
-        'ygiwbwgguwnpmqgknvwfykbtvgkcrfupxwnvzqfxtappimhyyizcfrukguwkekegpgfpkymhieamuzwrrixumbtbwznmcyjgqxhquapfqrxrgxyeqckhcpfgqbhggwwmmwkdihtyqrcujcvbifmbfdkwhiwdiyimbutmrmqdcckwtyvrnivzyvmvhwgcenkpqrjmieyxypgmpxgmxtvawfhekayirmyhpiavcqjiknknjxmnhtaxjfwiqedjphewqfpyzphccefwiqebekxhhpyawqpzmznexvcwjtdtbbanmqbqgvgttdhjimjngmxmddkukeupjaprjxhcwpabdtqzwbqtaqggfktqkubvdtcuukiwxjenpfwxitftkydqtqaunzqgyzfzjkbrqyrfpxpwnnnzyrvnkhcdghpgxharjtvfqihqtfigtjyptcjnxvfzenityqmyvbhyaxjqpqcbvikbnapwaqzfvjkwwuptjdfwfrvdwzdzmnnbgcuaxyapvkpvfkdhzhcimznyjgxxwgqjacyryjxtgbdvyvdxdbmxifewpeyjbgtjmhecxzwcqqknwpaxthctpihdfnicvqxfkqcgbnmykmjxbnchiyzdgcgjkbvargvazckhjaakdrrbeznurnchynkykhwxvrjjxiznrxuiqgybihegynvtttdmhhmjvdmtuvmeattmrxfpimyiikzucujbmtzrpfnixvtqmrjfkjyiwnfwhmptpqzenrcwtuqykkkkirzqvycginnfmfkqzcktvcwqbjxcgqbceichqwhnmautknvmyaqyfwhdgyuwhkvwguavvjmwdvqwyheadnwmdwdkzkewdqnwgmvmgqguxevqbjucqcnnqmhebrqcwpmgwzvkamwgbuziyfbrtniemikryxptrgqmnfypbtzxruabxkebvuwratkmcrjjnrmznxfffvgahkkxfrepkpxrfaxzerbjhvxbqzzkbezghdqmkedpifurchfufmidckrbgwdmxvjmfddfckbprjxjhyrjkquatzhnfwmxciarhrnxgitjnhfptfahytfcpkrpgukaegjxbkyujpapqzryzykkbvhdrbbdmtdpieptvhxkwbhqhefbrqyjzexbcbwrfjgtjxkjgacmhdnpkjkbwmxapinapwwakrygzufkubtfqknrwmwqhpuahpzpjapdtzbphivxyripfdvmqidhanqwwpfuxavnajhbeydvxaftmpqztncfkvzhepprvtxnpcjctynhwivkbhqtgiuzcybijwceghvtdvcpnctnhupdkdvmenixbipxjkiiudaurdmzihyjhyrwaqjdwmtmrqffkgjqafbatemtxgytigqpvairfpvgatadiamdhdhfumkkjgxqundbtrymhcxmpygeczakbknmqnghahvbaprcqauhnuugtcmuyddizupeaxycveiuhkcybcdxiuzandewzpemdkmmkebaqhzvxgxqrcvhknzexmczpmtmarwitvtqiixtrpqerikqxkgqyggjdrfhqwtaxhcdkxprfzcxxcqidabdjurncmugfdjzhiyfcftjxqhxtcuiyxnkvmhyhhrbejgnduebmwitrrifgrmjqbbyiwtuzrbymtvdfvwpcjjheqzwxmugtymeruuepjudemxrecnuprzzrjtutatigtffhrhignrfvyvcdccrwczyzwwhffenexnhcnamxrfycqwvqmmdmxqtqpjnxyakyqdrebrjhfhwixbxbtgcdjeavahxgrarryxrfvwnarxjyuiwhkyrgamvzqhdxvfcfanzudnghtyygujnhmxmcjrggzfqniggvyjviwdmekyjtpzjyrvkwkzzcipdnhrvvambbnetfknmkqhqqrkyaityhhrevvceynizrhwtcakhcubxqqpbirbzpkvctbujdpbfxivjatunenbaadbbvvwyjewhkyzvu';
+      const invalidOwnerRequestedBy = LONG_STRING_2K;
 
       cy.get('summary').contains('Advanced search').click();
 
@@ -413,13 +411,16 @@ describe('Admin - Transcript requests', () => {
 
       cy.get('#search').click({ force: true });
 
-      cy.get('.govuk-error-summary__list').should('contain', 'Case ID must be less than 33 characters');
-      cy.get('.govuk-error-summary__list').should('contain', 'Owner must be less than 2001 characters');
-      cy.get('.govuk-error-summary__list').should('contain', 'Requested by must be less than 2001 characters');
+      cy.get('.govuk-error-summary__list').should('contain', 'Case ID must be less than or equal to 32 characters');
+      cy.get('.govuk-error-summary__list').should('contain', 'Owner must be less than or equal to 2000 characters');
+      cy.get('.govuk-error-summary__list').should(
+        'contain',
+        'Requested by must be less than or equal to 2000 characters'
+      );
 
-      cy.get('.caseid-name-error').should('contain', 'Case ID must be less than 33 characters');
-      cy.get('.owner-name-error').should('contain', 'Owner must be less than 2001 characters');
-      cy.get('.requestedby-name-error').should('contain', 'Requested by must be less than 2001 characters');
+      cy.get('.caseid-name-error').should('contain', 'Case ID must be less than or equal to 32 characters');
+      cy.get('.owner-name-error').should('contain', 'Owner must be less than or equal to 2000 characters');
+      cy.get('.requestedby-name-error').should('contain', 'Requested by must be less than or equal to 2000 characters');
 
       cy.get('#caseId').clear().type('123');
       cy.get('#owner').clear().type('Terry Jenkins');

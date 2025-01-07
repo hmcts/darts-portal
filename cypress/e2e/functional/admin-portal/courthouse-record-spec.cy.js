@@ -154,8 +154,8 @@ describe('Admin - Courthouse record screen', () => {
 
     cy.injectAxe();
     // Errors
-    cy.get('.govuk-error-summary').should('contain', 'Enter a courthouse code');
-    cy.get('.courthouse-name-error').should('contain', 'Enter a courthouse code');
+    cy.get('.govuk-error-summary').should('contain', 'Enter a courthouse name');
+    cy.get('.courthouse-name-error').should('contain', 'Enter a courthouse name');
     cy.get('.govuk-error-summary').should('contain', 'Enter a display name');
     cy.get('.display-name-error').should('contain', 'Enter a display name');
     cy.get('.govuk-error-summary').should('contain', 'Select a region');
@@ -202,8 +202,8 @@ describe('Admin - Courthouse record screen', () => {
     cy.contains('.govuk-button', 'Continue').click();
 
     //Verify max length errors
-    cy.get('.govuk-error-summary').should('contain', 'Courthouse code must be less than 64 characters');
-    cy.get('.courthouse-name-error').should('contain', 'Courthouse code must be less than 64 characters');
+    cy.get('.govuk-error-summary').should('contain', 'Courtroom name must be 64 characters or less');
+    cy.get('.courthouse-name-error').should('contain', 'Courtroom name must be 64 characters or less');
 
     cy.get('#courthouse-name').clear().type(courthouseName);
 
