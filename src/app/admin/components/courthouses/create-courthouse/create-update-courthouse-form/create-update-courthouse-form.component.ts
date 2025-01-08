@@ -17,7 +17,7 @@ const controlErrors: FormErrorMessages = {
   courthouseName: {
     required: 'Enter a courthouse name',
     courthouseNameExists: 'The courthouse name you entered exists already',
-    maxlength: 'Courtroom name must be 64 characters or less',
+    maxlength: 'Courtroom name must be less than or equal to 64 characters',
   },
   displayName: {
     required: 'Enter a display name',
