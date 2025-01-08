@@ -11,11 +11,13 @@ import {
   displayNameExistsValidator,
   valueIsNull,
 } from '@validators/courthouse.validator';
+import { optionalMaxLengthValidator } from '@validators/optional-maxlength.validator';
 
 const controlErrors: FormErrorMessages = {
   courthouseName: {
-    required: 'Enter a courthouse code',
-    courthouseNameExists: 'The courthouse code you entered exists already',
+    required: 'Enter a courthouse name',
+    courthouseNameExists: 'The courthouse name you entered exists already',
+    maxlength: 'Courtroom name must be less than or equal to 64 characters',
   },
   displayName: {
     required: 'Enter a display name',
@@ -69,7 +71,7 @@ export class CreateUpdateCourthouseFormComponent implements OnInit {
     this.form = this.fb.group({
       courthouseName: [
         this.formDefaultValues.courthouseName,
-        [Validators.required, courthouseNameExistsValidator(this.courthouses)],
+        [Validators.required, courthouseNameExistsValidator(this.courthouses), optionalMaxLengthValidator(64)],
       ],
       displayName: [
         this.formDefaultValues.displayName,
