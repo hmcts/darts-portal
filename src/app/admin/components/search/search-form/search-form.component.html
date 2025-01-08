@@ -31,6 +31,10 @@
 
   <div class="govuk-form-group">
     <label class="govuk-label" for="courtroom"> Courtroom </label>
+    <!-- Inline Validation Errors -->
+    @for (error of getFormControlErrorMessages('courtroom'); track error) {
+      <p class="govuk-error-message courtroom-error"><span class="govuk-visually-hidden">Error:</span> {{ error }}</p>
+    }
     <input
       formControlName="courtroom"
       class="govuk-input govuk-input--width-20"
