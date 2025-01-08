@@ -93,6 +93,7 @@ describe('TranscriptsComponent', () => {
 
   const fakeCourthouseService = {
     getCourthouses: jest.fn().mockReturnValue(of([])),
+    mapCourthouseDataToCourthouses: jest.fn().mockReturnValue([]),
   } as unknown as CourthouseService;
 
   beforeEach(async () => {
