@@ -154,12 +154,12 @@
           <ul class="moj-header__navigation-list">
             @if (!router.url.startsWith('/admin') && (userService.isAdmin() || userService.isSuperUser())) {
               <li class="moj-header__navigation-item">
-                <a id="admin-portal-link" class="moj-header__navigation-link" href="/admin">Admin portal</a>
+                <a id="admin-portal-link" class="moj-header__navigation-link" href="/admin">Switch to Admin Portal</a>
               </li>
             }
             @if (isAdminNavigation()) {
               <li class="moj-header__navigation-item">
-                <a id="user-portal-link" class="moj-header__navigation-link" href="/">User portal</a>
+                <a id="user-portal-link" class="moj-header__navigation-link" href="/">Switch to User Portal</a>
               </li>
             }
             <li class="moj-header__navigation-item">
