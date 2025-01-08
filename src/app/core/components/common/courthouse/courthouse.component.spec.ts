@@ -1,6 +1,7 @@
+import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { CourthouseData } from '@core-types/index';
+import { DateTime } from 'luxon';
 import { CourthouseComponent } from './courthouse.component';
 
 describe('CourthouseComponent', () => {
@@ -8,10 +9,10 @@ describe('CourthouseComponent', () => {
   let fixture: ComponentFixture<CourthouseComponent>;
 
   const courts = [
-    { courthouse_name: 'Reading', id: 0, created_date_time: 'mock' },
-    { courthouse_name: 'Slough', id: 1, created_date_time: 'mock' },
-    { courthouse_name: 'Ascot', id: 2, created_date_time: 'mock' },
-  ] as CourthouseData[];
+    { courthouseName: 'Reading', id: 0, createdDateTime: DateTime.now() },
+    { courthouseName: 'Slough', id: 1, createdDateTime: DateTime.now() },
+    { courthouseName: 'Ascot', id: 2, createdDateTime: DateTime.now() },
+  ] as Courthouse[];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -30,15 +31,15 @@ describe('CourthouseComponent', () => {
   describe('AccessibleAutocomplete props', () => {
     it('should have correct default properties', () => {
       fixture.detectChanges();
-      expect(component.props.id).toBe('courthouse');
-      expect(component.props.name).toBe('courthouse');
-      expect(component.props.minLength).toBe(1);
+      expect(component.props?.id).toBe('courthouse');
+      expect(component.props?.name).toBe('courthouse');
+      expect(component.props?.minLength).toBe(1);
     });
 
     it('has correct default value if courthouse is pre-populated', () => {
       component.courthouse = 'Swansea';
       fixture.detectChanges();
-      expect(component.props.defaultValue).toBe('Swansea');
+      expect(component.props?.defaultValue).toBe('Swansea');
     });
   });
 

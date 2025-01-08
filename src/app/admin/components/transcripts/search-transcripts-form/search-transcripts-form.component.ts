@@ -1,3 +1,4 @@
+import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { TranscriptionSearchFormValues } from '@admin-types/index';
 import { CommonModule, NgIf } from '@angular/common';
 import { Component, DestroyRef, effect, inject, input, model, output } from '@angular/core';
@@ -6,7 +7,7 @@ import { CourthouseComponent } from '@common/courthouse/courthouse.component';
 import { DatepickerComponent } from '@common/datepicker/datepicker.component';
 import { SpecificOrRangeDatePickerComponent } from '@common/specific-or-range-date-picker/specific-or-range-date-picker.component';
 import { TranscriptSearchFormErrorMessages } from '@constants/transcript-search-form-error-messages';
-import { CourthouseData, ErrorSummaryEntry } from '@core-types/index';
+import { ErrorSummaryEntry } from '@core-types/index';
 import { FormService } from '@services/form/form.service';
 import { defaultFormValues } from '@services/transcription-admin/transcription-admin.service';
 import { dateRangeValidator } from '@validators/date-range.validator';
@@ -40,7 +41,7 @@ export class SearchTranscriptsFormComponent {
   formService = inject(FormService);
 
   isCompletedTranscriptSearch = input(false);
-  courthouses = input<CourthouseData[]>([]);
+  courthouses = input<Courthouse[]>([]);
   formValues = model<TranscriptionSearchFormValues>(defaultFormValues);
 
   form = this.fb.group({
