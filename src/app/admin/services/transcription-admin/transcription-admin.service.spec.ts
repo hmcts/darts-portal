@@ -1,3 +1,4 @@
+import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { FileHideOrDeleteFormValues } from '@admin-types/hidden-reasons/file-hide-or-delete-form-values';
 import { HiddenReason } from '@admin-types/hidden-reasons/hidden-reason';
 import { HiddenReasonData } from '@admin-types/hidden-reasons/hidden-reason-data.interface';
@@ -16,7 +17,6 @@ import { DatePipe } from '@angular/common';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { CourthouseData } from '@core-types/index';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { TranscriptStatus } from '@portal-types/index';
 import { DateTime } from 'luxon';
@@ -710,9 +710,9 @@ describe('TranscriptionAdminService', () => {
     ] as unknown as Transcription[];
 
     const courthouses = [
-      { id: 1, display_name: 'Courthouse 1', courthouse_name: 'Main Courthouse' },
-      { id: 2, display_name: 'Courthouse 2', courthouse_name: 'Secondary Courthouse' },
-    ] as CourthouseData[];
+      { id: 1, displayName: 'Courthouse 1', courthouseName: 'Main Courthouse' },
+      { id: 2, displayName: 'Courthouse 2', courthouseName: 'Secondary Courthouse' },
+    ] as Courthouse[];
 
     const statuses = [
       { id: 1, type: 'Requested', displayName: 'Status 1' },

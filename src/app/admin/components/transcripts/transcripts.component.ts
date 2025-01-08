@@ -46,7 +46,10 @@ export class TranscriptsComponent {
   router = inject(Router);
   errors: { fieldId: string; message: string }[] = [];
 
-  courthouses$ = this.courthouseService.getCourthouses().pipe(shareReplay(1));
+  courthouses$ = this.courthouseService.getCourthouses().pipe(
+    map((data) => this.courthouseService.mapCourthouseDataToCourthouses(data)),
+    shareReplay(1)
+  );
   transcriptionStatuses$ = this.transcriptService.getTranscriptionStatuses().pipe(shareReplay(1));
 
   search$ = new Subject<TranscriptionSearchFormValues | null>();

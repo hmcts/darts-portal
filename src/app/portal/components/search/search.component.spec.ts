@@ -1,3 +1,4 @@
+import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { provideHttpClient } from '@angular/common/http';
 import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -11,11 +12,17 @@ import { CaseSearchService } from '../../services/case-search/case-search.servic
 import { CaseSearchResultsComponent } from './case-search-results/case-search-results.component';
 import { SearchComponent } from './search.component';
 
-const mockCourthouses = [
+const mockCourthousesData = [
   { courthouse_name: 'Reading', id: 0 },
   { courthouse_name: 'Slough', id: 1 },
   { courthouse_name: 'Ascot', id: 2 },
 ] as CourthouseData[];
+
+const mockCourthouses = [
+  { courthouseName: 'Reading', id: 0 },
+  { courthouseName: 'Slough', id: 1 },
+  { courthouseName: 'Ascot', id: 2 },
+] as Courthouse[];
 
 const mockFormValues: CaseSearchFormValues = {
   caseNumber: '1',
@@ -48,7 +55,8 @@ describe('SearchComponent', () => {
     } as unknown as CaseSearchService;
 
     const fakeCourtHouseService = {
-      getCourthouses: jest.fn().mockReturnValue(of(mockCourthouses)),
+      getCourthouses: jest.fn().mockReturnValue(of(mockCourthousesData)),
+      mapCourthouseDataToCourthouses: jest.fn().mockReturnValue(mockCourthouses),
     } as unknown as CourthouseService;
 
     const fakeErrorMsgService = {
