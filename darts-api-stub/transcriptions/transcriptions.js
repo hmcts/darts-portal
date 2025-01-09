@@ -347,6 +347,8 @@ const mockTranscriptionDetailsNoName = {
       event_ts: '2023-11-08T09:00:00Z',
     },
   ],
+  received: '2023-11-17T12:53:07.468Z',
+  approved: '2023-11-17T14:53:07.468Z',
 };
 
 const defaultUnassignedTranscriptions = [
