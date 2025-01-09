@@ -561,6 +561,23 @@ describe('TranscriptionService', () => {
       expect(result).toEqual(expectedResult);
     });
 
+    it('should not map audio for transcript values if either time is undefined', () => {
+      const expectedResult = {
+        'Hearing date': '08 Nov 2023',
+        'Request type': 'Type A',
+        Urgency: 'High',
+        'Audio for transcript': '',
+      };
+
+      const result = service.getHearingRequestDetailsFromTranscript({
+        ...mockTranscription,
+        transcriptionStartTs: undefined,
+        transcriptionEndTs: undefined,
+      });
+
+      expect(result).toEqual(expectedResult);
+    });
+
     it('sets "audio for transcript" to null if transcriptionStartTs and transcriptionEndTs are not defined', () => {
       const mockTranscriptionWithoutAudio = {
         transcriptionStartTs: undefined,
@@ -608,6 +625,7 @@ describe('TranscriptionService', () => {
         from: 'MoJ CH Swansea',
         requestorComments: 'Please expedite my request',
         isManual: false,
+        legacyComments: ['Comment 1', 'Comment 2'],
       };
 
       const assignDetails = service.getAssignDetailsFromTranscript(transcript);
@@ -632,6 +650,65 @@ describe('TranscriptionService', () => {
           'Approved on': '17 Nov 2023 15:53:07',
           Instructions: 'Please expedite my request',
           'Judge approval': 'Yes',
+          'Migrated legacy data comments': ['Comment 1', 'Comment 2'],
+        },
+        hearingId: 1,
+        caseId: 1,
+      });
+    });
+
+    it('should not assign undefined values', () => {
+      const transcript: TranscriptionDetails = {
+        hearingId: 1,
+        caseId: 1,
+        caseNumber: '123',
+        courthouse: 'Swansea',
+        courtroom: '2',
+        defendants: ['John Doe', 'Jane Doe'],
+        judges: ['Judge Judy', 'Judge Joe Brown'],
+        transcriptFileName: '',
+        hearingDate: DateTime.fromISO('2023-11-08'),
+        urgency: {
+          transcription_urgency_id: 1,
+          description: 'High',
+          priority_order: 1,
+        },
+        requestType: 'Type A',
+        transcriptionId: 123456,
+        transcriptionStartTs: DateTime.fromISO('2023-06-26T13:00:00'),
+        transcriptionEndTs: DateTime.fromISO('2023-06-26T18:00:00'),
+        transcriptionObjectId: 2,
+        received: DateTime.fromISO('2023-11-17T12:53:07.468'),
+        approved: undefined,
+        from: 'MoJ CH Swansea',
+        requestorComments: 'Please expedite my request',
+        isManual: false,
+        legacyComments: undefined,
+      };
+
+      const assignDetails = service.getAssignDetailsFromTranscript(transcript);
+
+      expect(assignDetails).toEqual({
+        reportingRestrictions: [],
+        caseDetails: {
+          'Case ID': '123',
+          Courthouse: 'Swansea',
+          'Judge(s)': ['Judge Judy', 'Judge Joe Brown'],
+          'Defendant(s)': ['John Doe', 'Jane Doe'],
+        },
+        hearingDetails: {
+          'Hearing date': '08 Nov 2023',
+          'Request type': 'Type A',
+          'Request method': 'Automated',
+          'Request ID': 123456,
+          Urgency: 'High',
+          'Audio for transcript': 'Start time 13:00:00 - End time 18:00:00',
+          'Requested by': 'MoJ CH Swansea',
+          Received: '17 Nov 2023 12:53:07',
+          'Approved on': undefined,
+          Instructions: 'Please expedite my request',
+          'Judge approval': 'Yes',
+          'Migrated legacy data comments': undefined,
         },
         hearingId: 1,
         caseId: 1,
