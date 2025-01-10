@@ -345,16 +345,55 @@ const defaultMedia = {
     id: 0,
     name: 'Courtroom 1',
   },
-  hearings: [
+  cases: [
     {
-      id: 0,
-      hearing_date: '2020-02-20',
-      case_id: 0,
+      id: null,
+      case_number: 'CASE1',
+      source: 'Add Audio Metadata',
+      courthouse: {
+        id: 0,
+        display_name: 'Courthouse 321',
+      },
     },
     {
       id: 1,
-      hearing_date: '2020-03-25',
+      case_number: 'CASE2',
+      source: 'Source Type 3',
+      courthouse: {
+        id: 1,
+        display_name: 'Courthouse 123',
+      },
+    },
+  ],
+
+  hearings: [
+    {
+      id: 0,
+      case_id: 0,
+      case_number: 'CASE1',
+      hearing_date: '2024-06-11',
+      courthouse: {
+        id: 0,
+        display_name: 'Courthouse 321',
+      },
+      courtroom: {
+        id: 0,
+        name: 'Courtroom 1',
+      },
+    },
+    {
+      id: 1,
       case_id: 1,
+      case_number: 'CASE2',
+      hearing_date: '2024-06-11',
+      courthouse: {
+        id: 1,
+        display_name: 'Courthouse 123',
+      },
+      courtroom: {
+        id: 1,
+        name: 'Courtroom 2',
+      },
     },
   ],
 };
@@ -458,6 +497,14 @@ router.get('/:id', (req, res) => {
           id: 11,
           hearing_date: '2020-02-20',
           case_id: 0,
+          courthouse: {
+            id: 0,
+            display_name: 'Courthouse 321',
+          },
+          courtroom: {
+            id: 0,
+            name: 'Courtroom 1',
+          },
         },
       ],
     });

@@ -70,7 +70,7 @@
     "http-proxy-middleware": "^3.0.0",
     "ioredis": "^5.4.1",
     "luxon": "^3.4.4",
-    "ngx-cookie-service": "^18.0.0",
+    "ngx-cookie-service": "^19.0.0",
     "nunjucks": "^3.2.4",
     "rxjs": "~7.8.1",
     "tslib": "^2.6.3",

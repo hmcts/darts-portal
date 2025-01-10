@@ -51,11 +51,31 @@ export const mockAudioFile: AudioFile = {
     id: 0,
     name: '',
   },
+  cases: [
+    {
+      id: 1,
+      courthouse: {
+        id: 1,
+        displayName: 'Courthouse A',
+      },
+      caseNumber: 'CASE123',
+      source: 'Source A',
+    },
+  ],
   hearings: [
     {
-      id: 0,
-      hearingDate: DateTime.fromISO('2021-01-01T00:00:00.000Z'),
-      caseId: 0,
+      id: 1,
+      hearingDate: DateTime.fromISO('2021-01-03T00:00:00.000Z'),
+      caseId: 1,
+      caseNumber: 'CASE123',
+      courthouse: {
+        id: 1,
+        displayName: 'Courthouse A',
+      },
+      courtroom: {
+        id: 1,
+        name: 'Courtroom 1',
+      },
     },
   ],
 };

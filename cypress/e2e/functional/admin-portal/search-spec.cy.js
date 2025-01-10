@@ -292,8 +292,18 @@ describe('Admin - Search screen', () => {
     cy.get('#confirm-button').click();
 
     //Verify error message
+<<<<<<< HEAD
     cy.get('.courtroom-error').should('exist').should('contain', 'Courtroom name must be less than 64 characters');
     cy.get('.govuk-error-summary__list').should('contain', 'Courtroom name must be less than 64 characters');
+=======
+    cy.get('.courtroom-error')
+      .should('exist')
+      .should('contain', 'Courtroom name must be less than or equal to 64 characters');
+    cy.get('.govuk-error-summary__list').should(
+      'contain',
+      'Courtroom name must be less than or equal to 64 characters'
+    );
+>>>>>>> master
 
     //Valid input
     cy.get('#courtroom').clear();
