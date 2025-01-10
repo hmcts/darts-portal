@@ -227,6 +227,7 @@ export class TranscriptionService {
         ? r.transcription_urgency
         : { transcription_urgency_id: 0, description: '', priority_order: 0 },
       requestedTs: DateTime.fromISO(r.requested_ts),
+      approvedTs: r.approved_ts ? DateTime.fromISO(r.approved_ts) : undefined,
     }));
   }
 
@@ -243,6 +244,7 @@ export class TranscriptionService {
         ? r.transcription_urgency
         : { transcription_urgency_id: 0, description: '', priority_order: 0 },
       requestedTs: DateTime.fromISO(r.requested_ts),
+      approvedTs: r.approved_ts ? DateTime.fromISO(r.approved_ts) : undefined,
       stateChangeTs: DateTime.fromISO(r.state_change_ts),
       isManual: r.is_manual,
     }));

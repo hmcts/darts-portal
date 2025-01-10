@@ -23,10 +23,16 @@ Cypress.Commands.add('acceptCookies', () => {
 });
 
 Cypress.Commands.add('a11y', () => {
-  cy.checkA11y(null, {
-    runOnly: {
-      type: 'tag',
-      values: ['wcag22aa', 'wcag21aa', 'wcag2aa'],
+  cy.checkA11y(
+    null,
+    {
+      runOnly: {
+        type: 'tag',
+        values: ['wcag22aa', 'wcag21aa', 'wcag2aa'],
+      },
     },
-  });
+    (violations) => {
+      cy.log(violations);
+    }
+  );
 });
