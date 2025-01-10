@@ -66,6 +66,7 @@ export class UserTranscriptsComponent implements OnInit {
     { name: 'Courthouse', prop: 'courthouse', sortable: true },
     { name: 'Hearing date', prop: 'hearingDate', sortable: true },
     { name: 'Requested on', prop: 'requestedAt', sortable: true },
+    { name: 'Approved on', prop: 'approvedAt', sortable: true },
     { name: 'Status', prop: 'status', sortable: true },
     { name: 'Request type', prop: 'isManual', sortable: true },
   ];
@@ -79,6 +80,7 @@ export class UserTranscriptsComponent implements OnInit {
       courthouse: result.courthouse.displayName,
       hearingDate: result.hearingDate,
       requestedAt: result.requestedAt,
+      approvedAt: result.approvedAt,
       status: result.status.displayName as TranscriptStatus,
       isManual: result.isManual,
     }));

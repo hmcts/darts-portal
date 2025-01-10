@@ -9,6 +9,7 @@ export type Transcription = {
   courthouse: Partial<Pick<Courthouse, 'id' | 'displayName' | 'courthouseName'>>;
   hearingDate: DateTime;
   requestedAt: DateTime;
+  approvedAt?: DateTime;
   status: Partial<TranscriptionStatus>;
   isManual: boolean;
 };

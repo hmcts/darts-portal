@@ -31,4 +31,5 @@ export type TranscriptionDetails = {
   isRemovedFromUserTranscripts?: boolean;
   requestor?: Requestor;
   legacyComments?: string[];
+  approved?: DateTime;
 };

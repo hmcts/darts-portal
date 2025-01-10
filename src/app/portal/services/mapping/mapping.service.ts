@@ -78,6 +78,7 @@ export class MappingService {
         ? { userId: transcription.requestor?.user_id, fullName: transcription.requestor?.user_full_name }
         : undefined,
       legacyComments: transcription.legacy_comments ? transcription.legacy_comments : undefined,
+      approved: transcription.approved ? DateTime.fromISO(transcription.approved) : undefined,
     };
   }
 

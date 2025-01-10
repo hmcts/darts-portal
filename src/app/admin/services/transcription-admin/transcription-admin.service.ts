@@ -295,6 +295,9 @@ export class TranscriptionAdminService {
         },
       ],
       Received: this.luxonPipe.transform(transcript.received, 'dd MMM yyyy HH:mm:ss'),
+      'Approved on': transcript.approved
+        ? this.luxonPipe.transform(transcript.approved, 'dd MMM yyyy HH:mm:ss')
+        : undefined,
       Instructions: transcript.requestorComments,
       'Judge approval': 'Yes',
       'Migrated legacy data comments': transcript.legacyComments ? transcript.legacyComments : undefined,
@@ -444,6 +447,7 @@ export class TranscriptionAdminService {
       courthouse: { id: transcriptionData.courthouse_id },
       hearingDate: DateTime.fromISO(transcriptionData.hearing_date),
       requestedAt: DateTime.fromISO(transcriptionData.requested_at),
+      approvedAt: transcriptionData.approved_at ? DateTime.fromISO(transcriptionData.approved_at) : undefined,
       status: { id: transcriptionData.transcription_status_id },
       isManual: transcriptionData.is_manual_transcription,
     }));
