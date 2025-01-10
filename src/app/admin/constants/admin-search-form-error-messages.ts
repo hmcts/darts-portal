@@ -1,10 +1,6 @@
 export const AdminSearchFormErrorMessages = {
   courtroom: {
-<<<<<<< HEAD
-    maxlength: 'Courtroom name must be less than 64 characters',
-=======
     maxlength: 'Courtroom name must be less than or equal to 64 characters',
->>>>>>> master
   },
   specific: {
     pattern: 'You have not entered a recognised date in the correct format (for example 31/01/2023)',

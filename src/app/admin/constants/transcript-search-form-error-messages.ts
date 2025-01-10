@@ -26,13 +26,7 @@ export const TranscriptSearchFormErrorMessages: Record<string, Record<string, st
     max: 'Request ID must be less than 2147483648',
     pattern: 'Request ID must only contain numbers',
   },
-<<<<<<< HEAD
-  caseId: { maxlength: 'Case ID must be less than 33 characters' },
-  owner: { maxlength: 'Owner must be less than 2001 characters' },
-  requestedBy: { maxlength: 'Requested by must be less than 2001 characters' },
-=======
   caseId: { maxlength: 'Case ID must be less than or equal to 32 characters' },
   owner: { maxlength: 'Owner must be less than or equal to 2000 characters' },
   requestedBy: { maxlength: 'Requested by must be less than or equal to 2000 characters' },
->>>>>>> master
 };

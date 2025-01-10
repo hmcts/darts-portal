@@ -15,15 +15,9 @@ import { optionalMaxLengthValidator } from '@validators/optional-maxlength.valid
 
 const controlErrors: FormErrorMessages = {
   courthouseName: {
-<<<<<<< HEAD
-    required: 'Enter a courthouse code',
-    courthouseNameExists: 'The courthouse code you entered exists already',
-    maxlength: 'Courthouse code must be less than 64 characters',
-=======
     required: 'Enter a courthouse name',
     courthouseNameExists: 'The courthouse name you entered exists already',
     maxlength: 'Courtroom name must be less than or equal to 64 characters',
->>>>>>> master
   },
   displayName: {
     required: 'Enter a display name',

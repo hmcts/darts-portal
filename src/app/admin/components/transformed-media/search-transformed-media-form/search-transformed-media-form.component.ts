@@ -55,11 +55,7 @@ export class SearchTransformedMediaFormComponent {
   @Input() courthouses: Courthouse[] = [];
 
   form = this.fb.group({
-<<<<<<< HEAD
-    requestId: ['', [Validators.pattern(/^[0-9]*$/), Validators.min(1), Validators.max(2147483647)]],
-=======
     requestId: ['', [Validators.pattern(/^-?[0-9]*$/), Validators.min(1), Validators.max(2147483647)]],
->>>>>>> master
     caseId: ['', [optionalMaxLengthValidator(32)]],
     courthouse: [''],
     hearingDate: ['', transformedMediaSearchDateValidators],
