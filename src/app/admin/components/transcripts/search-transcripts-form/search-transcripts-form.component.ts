@@ -49,8 +49,8 @@ export class SearchTranscriptsFormComponent {
     caseId: ['', [optionalMaxLengthValidator(32)]],
     courthouse: [''],
     hearingDate: ['', transcriptSearchDateValidators],
-    owner: ['', [optionalMaxLengthValidator(2001)]],
-    requestedBy: ['', [optionalMaxLengthValidator(2001)]],
+    owner: ['', [optionalMaxLengthValidator(2000)]],
+    requestedBy: ['', [optionalMaxLengthValidator(2000)]],
     requestedDate: this.fb.group(
       {
         type: [''],
