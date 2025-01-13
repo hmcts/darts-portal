@@ -202,8 +202,8 @@ describe('Admin - Courthouse record screen', () => {
     cy.contains('.govuk-button', 'Continue').click();
 
     //Verify max length errors
-    cy.get('.govuk-error-summary').should('contain', 'Courtroom name must be less than or equal to 64 characters');
-    cy.get('.courthouse-name-error').should('contain', 'Courtroom name must be less than or equal to 64 characters');
+    cy.get('.govuk-error-summary').should('contain', 'Courtroom name must be less than or equal to 255 characters');
+    cy.get('.courthouse-name-error').should('contain', 'Courtroom name must be less than or equal to 255 characters');
 
     cy.get('#courthouse-name').clear().type(courthouseName);
 
