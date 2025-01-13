@@ -1,16 +1,20 @@
 import { AudioFileMarkedDeletion } from '@admin-types/file-deletion/audio-file-marked-deletion.type';
+import { Media } from '@admin-types/file-deletion/media.type';
 import { Component, inject, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
+import { GovukSummaryListDirectives } from '@directives/govuk-summary-list';
+import { JoinPipe } from '@pipes/join';
+import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { FileDeletionService } from '@services/file-deletion/file-deletion.service';
 import { HeaderService } from '@services/header/header.service';
 import { TransformedMediaService } from '@services/transformed-media/transformed-media.service';
 import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
+import { forkJoin } from 'rxjs';
 import { ApproveRejectFileDeleteComponent } from '../approve-reject-file-delete/approve-reject-file-delete.component';
 import { AudioFileResultsComponent } from '../audio-file-results/audio-file-results.component';
-import { UnauthorisedDeletionComponent } from '../unauthorised-deletion/unauthorised-deletion.component';
 
 @Component({
   selector: 'app-audio-file-delete',
@@ -19,8 +23,11 @@ import { UnauthorisedDeletionComponent } from '../unauthorised-deletion/unauthor
     GovukHeadingComponent,
     ValidationErrorSummaryComponent,
     AudioFileResultsComponent,
-    UnauthorisedDeletionComponent,
     ApproveRejectFileDeleteComponent,
+    RouterLink,
+    GovukSummaryListDirectives,
+    LuxonDatePipe,
+    JoinPipe,
   ],
   templateUrl: './audio-file-delete.component.html',
   styleUrl: './audio-file-delete.component.scss',
@@ -34,6 +41,7 @@ export class AudioFileDeleteComponent implements OnInit {
 
   audioFileState = this.router.getCurrentNavigation()?.extras?.state?.file;
   audioFile: AudioFileMarkedDeletion | null = null;
+  medias: Media[] = [];
 
   errorSummary: { fieldId: string; message: string }[] = [];
 
@@ -44,6 +52,7 @@ export class AudioFileDeleteComponent implements OnInit {
     }
 
     this.audioFile = this.parseAudioFileDates(this.audioFileState);
+    this.medias = this.audioFile?.media || [];
 
     if (this.audioFile && this.userService.hasMatchingUserId(this.audioFile.hiddenById)) {
       this.router.navigate(['/admin/file-deletion/unauthorised'], { state: { type: 'audio' } });
@@ -63,13 +72,19 @@ export class AudioFileDeleteComponent implements OnInit {
 
   confirmAudio(approveDeletion: boolean) {
     if (approveDeletion) {
-      if (this.audioFile) {
-        this.fileDeletionService.approveAudioFileDeletion(this.audioFile.mediaId).subscribe(() => {
-          this.router.navigate(['/admin/file-deletion'], { queryParams: { approvedForDeletion: true, type: 'Audio' } });
+      const mediaIds = this.getMediaIds();
+
+      if (this.audioFile && mediaIds.length > 0) {
+        forkJoin(mediaIds.map((mediaId) => this.fileDeletionService.approveAudioFileDeletion(mediaId))).subscribe({
+          next: () => {
+            this.router.navigate(['/admin/file-deletion'], {
+              queryParams: { approvedForDeletion: true, type: 'Audio' },
+            });
+          },
         });
       }
     } else {
-      if (this.audioFile) {
+      if (this.audioFile && this.audioFile.mediaId) {
         this.transformedMediaService.unhideAudioFile(this.audioFile.mediaId).subscribe(() => {
           this.router.navigate(['/admin/file-deletion'], { queryParams: { unmarkedAndUnhidden: true, type: 'Audio' } });
         });
@@ -77,7 +92,11 @@ export class AudioFileDeleteComponent implements OnInit {
     }
   }
 
-  getErrorSummary(errors: string[]) {
-    this.errorSummary = errors.length > 0 ? [{ fieldId: 'deletionApproval', message: errors[0] }] : [];
+  getMediaIds(): number[] {
+    return this.medias.map((media) => media.id);
+  }
+
+  getErrorSummary(errors: { fieldId: string; message: string }[]): void {
+    this.errorSummary = errors;
   }
 }

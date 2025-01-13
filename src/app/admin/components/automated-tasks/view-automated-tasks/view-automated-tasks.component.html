@@ -19,119 +19,124 @@
 
   <app-govuk-tag [colour]="task.isActive ? 'blue' : 'grey'">{{ task.isActive ? 'Active' : 'Inactive' }}</app-govuk-tag>
 
-  <dl govukSummaryList>
-    <div govukSummaryListRow>
-      <dt govukSummaryKey>Task ID</dt>
-      <dd govukSummaryValue>{{ task.id }}</dd>
-    </div>
-
-    <div govukSummaryListRow>
-      <dt govukSummaryKey>Name</dt>
-      <dd govukSummaryValue>{{ task.name }}</dd>
-    </div>
-
-    <div govukSummaryListRow>
-      <dt govukSummaryKey>Description</dt>
-      <dd govukSummaryValue>{{ task.description }}</dd>
-    </div>
-
-    <div govukSummaryListRow>
-      <dt govukSummaryKey>Cron expression</dt>
-      <dd govukSummaryValue>{{ task.cronExpression }}</dd>
-    </div>
-
-    <div govukSummaryListRow>
-      <dt govukSummaryKey>Cron editable</dt>
-      <dd govukSummaryValue>{{ task.isCronEditable ? 'Yes' : 'No' }}</dd>
-    </div>
-
-    <div govukSummaryListRow>
-      <dt govukSummaryKey>Batch size</dt>
-      <dd govukSummaryValue>{{ task.batchSize }}</dd>
-      <dd govukSummaryAction>
-        <a class="govuk-link" [routerLink]="['edit']" [state]="{ automatedTask: task, edit: 'BATCH_SIZE' }">Change</a>
-      </dd>
-    </div>
-
-    @if (task.armAttributeType === 'RPO') {
+  <div govukSummaryContainer>
+    <dl govukSummaryList>
       <div govukSummaryListRow>
-        <dt govukSummaryKey>RPO CSV start hour</dt>
-        <dd govukSummaryValue>
-          {{ task.rpoCsvStartHour }}
-        </dd>
-        <dd govukSummaryAction>
-          <a
-            class="govuk-link"
-            [routerLink]="['edit']"
-            [state]="{ automatedTask: task, edit: 'ARM_RPO_CSV_START_HOUR' }"
-            >Change</a
-          >
-        </dd>
+        <dt govukSummaryKey>Task ID</dt>
+        <dd govukSummaryValue>{{ task.id }}</dd>
       </div>
 
       <div govukSummaryListRow>
-        <dt govukSummaryKey>RPO CSV end hour</dt>
-        <dd govukSummaryValue>
-          {{ task.rpoCsvEndHour }}
-        </dd>
-        <dd govukSummaryAction>
-          <a class="govuk-link" [routerLink]="['edit']" [state]="{ automatedTask: task, edit: 'ARM_RPO_CSV_END_HOUR' }"
-            >Change</a
-          >
-        </dd>
-      </div>
-    }
-
-    @if (task.armAttributeType === 'REPLAY') {
-      <div govukSummaryListRow>
-        <dt govukSummaryKey>ARM Replay start time</dt>
-        <dd govukSummaryValue>
-          {{ task.armReplayStartTs | luxonDate: dateFormat }}
-        </dd>
-        <dd govukSummaryAction>
-          <a
-            class="govuk-link"
-            [routerLink]="['edit']"
-            [state]="{ automatedTask: stringifyDates(task), edit: 'ARM_REPLAY_START_TIME' }"
-            >Change</a
-          >
-        </dd>
+        <dt govukSummaryKey>Name</dt>
+        <dd govukSummaryValue>{{ task.name }}</dd>
       </div>
 
       <div govukSummaryListRow>
-        <dt govukSummaryKey>ARM Replay end time</dt>
-        <dd govukSummaryValue>
-          {{ task.armReplayEndTs | luxonDate: dateFormat }}
-        </dd>
+        <dt govukSummaryKey>Description</dt>
+        <dd govukSummaryValue>{{ task.description }}</dd>
+      </div>
+
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Cron expression</dt>
+        <dd govukSummaryValue>{{ task.cronExpression }}</dd>
+      </div>
+
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Cron editable</dt>
+        <dd govukSummaryValue>{{ task.isCronEditable ? 'Yes' : 'No' }}</dd>
+      </div>
+
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Batch size</dt>
+        <dd govukSummaryValue>{{ task.batchSize }}</dd>
         <dd govukSummaryAction>
-          <a
-            class="govuk-link"
-            [routerLink]="['edit']"
-            [state]="{ automatedTask: stringifyDates(task), edit: 'ARM_REPLAY_END_TIME' }"
-            >Change</a
-          >
+          <a class="govuk-link" [routerLink]="['edit']" [state]="{ automatedTask: task, edit: 'BATCH_SIZE' }">Change</a>
         </dd>
       </div>
-    }
 
-    <div govukSummaryListRow>
-      <dt govukSummaryKey>Date created</dt>
-      <dd govukSummaryValue>{{ task.createdAt | luxonDate: dateFormat }}</dd>
-    </div>
+      @if (task.armAttributeType === 'RPO') {
+        <div govukSummaryListRow>
+          <dt govukSummaryKey>RPO CSV start hour</dt>
+          <dd govukSummaryValue>
+            {{ task.rpoCsvStartHour }}
+          </dd>
+          <dd govukSummaryAction>
+            <a
+              class="govuk-link"
+              [routerLink]="['edit']"
+              [state]="{ automatedTask: task, edit: 'ARM_RPO_CSV_START_HOUR' }"
+              >Change</a
+            >
+          </dd>
+        </div>
 
-    <div govukSummaryListRow>
-      <dt govukSummaryKey>Created by</dt>
-      <dd govukSummaryValue>{{ task.createdByFullName }}</dd>
-    </div>
+        <div govukSummaryListRow>
+          <dt govukSummaryKey>RPO CSV end hour</dt>
+          <dd govukSummaryValue>
+            {{ task.rpoCsvEndHour }}
+          </dd>
+          <dd govukSummaryAction>
+            <a
+              class="govuk-link"
+              [routerLink]="['edit']"
+              [state]="{ automatedTask: task, edit: 'ARM_RPO_CSV_END_HOUR' }"
+              >Change</a
+            >
+          </dd>
+        </div>
+      }
 
-    <div govukSummaryListRow>
-      <dt govukSummaryKey>Date modified</dt>
-      <dd govukSummaryValue>{{ task.lastModifiedAt | luxonDate: dateFormat }}</dd>
-    </div>
+      @if (task.armAttributeType === 'REPLAY') {
+        <div govukSummaryListRow>
+          <dt govukSummaryKey>ARM Replay start time</dt>
+          <dd govukSummaryValue>
+            {{ task.armReplayStartTs | luxonDate: dateFormat }}
+          </dd>
+          <dd govukSummaryAction>
+            <a
+              class="govuk-link"
+              [routerLink]="['edit']"
+              [state]="{ automatedTask: stringifyDates(task), edit: 'ARM_REPLAY_START_TIME' }"
+              >Change</a
+            >
+          </dd>
+        </div>
 
-    <div govukSummaryListRow>
-      <dt govukSummaryKey>Modified by</dt>
-      <dd govukSummaryValue>{{ task.modifiedByFullName }}</dd>
-    </div>
-  </dl>
+        <div govukSummaryListRow>
+          <dt govukSummaryKey>ARM Replay end time</dt>
+          <dd govukSummaryValue>
+            {{ task.armReplayEndTs | luxonDate: dateFormat }}
+          </dd>
+          <dd govukSummaryAction>
+            <a
+              class="govuk-link"
+              [routerLink]="['edit']"
+              [state]="{ automatedTask: stringifyDates(task), edit: 'ARM_REPLAY_END_TIME' }"
+              >Change</a
+            >
+          </dd>
+        </div>
+      }
+
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Date created</dt>
+        <dd govukSummaryValue>{{ task.createdAt | luxonDate: dateFormat }}</dd>
+      </div>
+
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Created by</dt>
+        <dd govukSummaryValue>{{ task.createdByFullName }}</dd>
+      </div>
+
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Date modified</dt>
+        <dd govukSummaryValue>{{ task.lastModifiedAt | luxonDate: dateFormat }}</dd>
+      </div>
+
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Modified by</dt>
+        <dd govukSummaryValue>{{ task.modifiedByFullName }}</dd>
+      </div>
+    </dl>
+  </div>
 }

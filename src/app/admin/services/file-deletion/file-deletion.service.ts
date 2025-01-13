@@ -51,8 +51,13 @@ export class FileDeletionService {
 
   private mapMarkedAudioFiles(audioFile: AudioFileMarkedDeletionData): AudioFileMarkedDeletion {
     return {
-      mediaId: audioFile.media_id,
-      channel: audioFile.channel,
+      media: audioFile.media.map((media) => ({
+        id: media.id,
+        channel: media.channel,
+        totalChannels: media.total_channels,
+        isCurrent: media.is_current,
+        versionCount: media.version_count,
+      })),
       startAt: DateTime.fromISO(audioFile.start_at),
       endAt: DateTime.fromISO(audioFile.end_at),
       courthouse: audioFile.courthouse.display_name,

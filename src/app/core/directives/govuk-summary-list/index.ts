@@ -1,10 +1,12 @@
 import { GovukSummaryActionDirective } from './govuk-summary-action.directive';
+import { GovukSummaryContainerDirective } from './govuk-summary-container.directive';
 import { GovukSummaryKeyDirective } from './govuk-summary-key.directive';
 import { GovukSummaryListRowDirective } from './govuk-summary-list-row.directive';
 import { GovukSummaryListDirective } from './govuk-summary-list.directive';
 import { GovukSummaryValueDirective } from './govuk-summary-value.directive';
 
 export * from './govuk-summary-action.directive';
+export * from './govuk-summary-container.directive';
 export * from './govuk-summary-key.directive';
 export * from './govuk-summary-list-row.directive';
 export * from './govuk-summary-list.directive';
@@ -21,6 +23,7 @@ export * from './govuk-summary-value.directive';
  *   imports: [GovukSummaryListDirectives]
  * })
  *
+ * <div govukSummaryContainer>
  * <dl govukSummaryList>
  *  <div govukSummaryListRow>
  *    <dt govukSummaryKey> Name </dt>
@@ -32,6 +35,7 @@ export * from './govuk-summary-value.directive';
  *    </dd>
  *  </div>
  * </dl>
+ * </div>
  */
 export const GovukSummaryListDirectives = [
   GovukSummaryListDirective,
@@ -39,4 +43,5 @@ export const GovukSummaryListDirectives = [
   GovukSummaryKeyDirective,
   GovukSummaryValueDirective,
   GovukSummaryActionDirective,
+  GovukSummaryContainerDirective,
 ];
