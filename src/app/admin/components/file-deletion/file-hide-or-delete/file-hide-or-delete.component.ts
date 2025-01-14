@@ -77,8 +77,8 @@ export class FileHideOrDeleteComponent implements OnInit {
     .pipe(map((reasons) => this.sortAndFilterReasons(reasons)));
 
   form = this.fb.group({
-    ticketReference: ['', [Validators.required, Validators.maxLength(256)]],
-    comments: ['', [Validators.required, Validators.maxLength(256)]],
+    ticketReference: ['', [Validators.required, Validators.maxLength(255)]],
+    comments: ['', [Validators.required, Validators.maxLength(255)]],
     reason: ['', [Validators.required]],
   });
 

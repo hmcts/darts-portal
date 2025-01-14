@@ -1,5 +1,5 @@
 import { UserSearchFormValues } from '@admin-types/users/user-search-form-values.type';
-import { Component, EventEmitter, Output, inject, input, OnInit } from '@angular/core';
+import { Component, EventEmitter, inject, input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormErrorMessages } from '@core-types/index';
 import { optionalMaxLengthValidator } from '@validators/optional-maxlength.validator';
@@ -30,8 +30,8 @@ export class UserSearchFormComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.fb.group({
-      fullName: [this.formValues().fullName, [optionalMaxLengthValidator(256)]],
-      email: [this.formValues().email, [optionalMaxLengthValidator(256)]],
+      fullName: [this.formValues().fullName, [optionalMaxLengthValidator(255)]],
+      email: [this.formValues().email, [optionalMaxLengthValidator(255)]],
       userStatus: this.formValues().userStatus,
     });
   }
