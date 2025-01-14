@@ -1,5 +1,6 @@
 import { AudioFileMarkedDeletion } from '@admin-types/file-deletion/audio-file-marked-deletion.type';
 import { Media } from '@admin-types/file-deletion/media.type';
+import { AssociatedMedia } from '@admin-types/transformed-media/associated-media';
 import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -84,9 +85,12 @@ export class AudioFileDeleteComponent implements OnInit {
         });
       }
     } else {
-      if (this.audioFile && this.audioFile.mediaId) {
-        this.transformedMediaService.unhideAudioFile(this.audioFile.mediaId).subscribe(() => {
-          this.router.navigate(['/admin/file-deletion'], { queryParams: { unmarkedAndUnhidden: true, type: 'Audio' } });
+      if (this.audioFile) {
+        const associatedMedia = this.mapToAssociatedMedia(this.audioFile);
+        const firstId = associatedMedia[0]?.id;
+
+        this.router.navigate(['/admin/audio-file', firstId, 'associated-audio', 'unhide-or-unmark-for-deletion'], {
+          state: { media: associatedMedia },
         });
       }
     }
@@ -98,5 +102,25 @@ export class AudioFileDeleteComponent implements OnInit {
 
   getErrorSummary(errors: { fieldId: string; message: string }[]): void {
     this.errorSummary = errors;
+  }
+
+  private mapToAssociatedMedia(audioFile: AudioFileMarkedDeletion): Partial<AssociatedMedia[]> {
+    if (!audioFile.media) {
+      return [];
+    }
+
+    return audioFile.media.map(
+      (media) =>
+        ({
+          id: media.id,
+          channel: media.channel,
+          startAt: audioFile.startAt,
+          endAt: audioFile.endAt,
+          courthouseName: audioFile.courthouse,
+          courtroomName: audioFile.courtroom,
+          isCurrent: media.isCurrent,
+          isHidden: true,
+        }) as AssociatedMedia
+    );
   }
 }

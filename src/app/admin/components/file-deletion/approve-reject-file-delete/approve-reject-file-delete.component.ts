@@ -88,9 +88,6 @@ export class ApproveRejectFileDeleteComponent implements OnInit {
       this.authorisationCheckbox?.markAllAsTouched();
     }
 
-    console.log(this.authorisationCheckbox?.valid);
-    console.log(this.authorisationCheckbox?.errors);
-
     if (!this.deletionApproval.valid || (this.screen() === 'audio' && !this.authorisationCheckbox?.valid)) {
       this.errors.emit(this.getErrorSummary());
       return;
