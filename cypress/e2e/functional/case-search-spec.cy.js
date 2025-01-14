@@ -1,18 +1,17 @@
 import 'cypress-axe';
 import { DateTime } from 'luxon';
+import { LONG_STRING_2K } from '../constants/validation-constants';
 import './commands';
 
 const TOMORROW = DateTime.now().plus({ days: 1 }).startOf('day').toFormat('dd/MM/yyyy');
 
 const COURTHOUSE_MISSING = 'You must also enter a courthouse';
-const COURTHOUSE_LENGTH = 'Courtroom must be less than 65 characters';
+const COURTHOUSE_LENGTH = 'Courtroom must be less than or equal to 64 characters';
 const DATE_INVALID = 'You have not entered a recognised date in the correct format (for example 31/01/2023)';
 const DATE_FUTURE = 'You have selected a date in the future. The hearing date must be in the past';
-const DEFENDANT_LENGTH = `Defendant's name must be less than 2001 characters`;
-const JUDGE_LENGTH = `Judge's name must be less than 2001 characters`;
-const KEYWORDS_LENGTH = 'Keywords must be less than 2001 characters';
-const LONG_STRING_2K =
-  'ygiwbwgguwnpmqgknvwfykbtvgkcrfupxwnvzqfxtappimhyyizcfrukguwkekegpgfpkymhieamuzwrrixumbtbwznmcyjgqxhquapfqrxrgxyeqckhcpfgqbhggwwmmwkdihtyqrcujcvbifmbfdkwhiwdiyimbutmrmqdcckwtyvrnivzyvmvhwgcenkpqrjmieyxypgmpxgmxtvawfhekayirmyhpiavcqjiknknjxmnhtaxjfwiqedjphewqfpyzphccefwiqebekxhhpyawqpzmznexvcwjtdtbbanmqbqgvgttdhjimjngmxmddkukeupjaprjxhcwpabdtqzwbqtaqggfktqkubvdtcuukiwxjenpfwxitftkydqtqaunzqgyzfzjkbrqyrfpxpwnnnzyrvnkhcdghpgxharjtvfqihqtfigtjyptcjnxvfzenityqmyvbhyaxjqpqcbvikbnapwaqzfvjkwwuptjdfwfrvdwzdzmnnbgcuaxyapvkpvfkdhzhcimznyjgxxwgqjacyryjxtgbdvyvdxdbmxifewpeyjbgtjmhecxzwcqqknwpaxthctpihdfnicvqxfkqcgbnmykmjxbnchiyzdgcgjkbvargvazckhjaakdrrbeznurnchynkykhwxvrjjxiznrxuiqgybihegynvtttdmhhmjvdmtuvmeattmrxfpimyiikzucujbmtzrpfnixvtqmrjfkjyiwnfwhmptpqzenrcwtuqykkkkirzqvycginnfmfkqzcktvcwqbjxcgqbceichqwhnmautknvmyaqyfwhdgyuwhkvwguavvjmwdvqwyheadnwmdwdkzkewdqnwgmvmgqguxevqbjucqcnnqmhebrqcwpmgwzvkamwgbuziyfbrtniemikryxptrgqmnfypbtzxruabxkebvuwratkmcrjjnrmznxfffvgahkkxfrepkpxrfaxzerbjhvxbqzzkbezghdqmkedpifurchfufmidckrbgwdmxvjmfddfckbprjxjhyrjkquatzhnfwmxciarhrnxgitjnhfptfahytfcpkrpgukaegjxbkyujpapqzryzykkbvhdrbbdmtdpieptvhxkwbhqhefbrqyjzexbcbwrfjgtjxkjgacmhdnpkjkbwmxapinapwwakrygzufkubtfqknrwmwqhpuahpzpjapdtzbphivxyripfdvmqidhanqwwpfuxavnajhbeydvxaftmpqztncfkvzhepprvtxnpcjctynhwivkbhqtgiuzcybijwceghvtdvcpnctnhupdkdvmenixbipxjkiiudaurdmzihyjhyrwaqjdwmtmrqffkgjqafbatemtxgytigqpvairfpvgatadiamdhdhfumkkjgxqundbtrymhcxmpygeczakbknmqnghahvbaprcqauhnuugtcmuyddizupeaxycveiuhkcybcdxiuzandewzpemdkmmkebaqhzvxgxqrcvhknzexmczpmtmarwitvtqiixtrpqerikqxkgqyggjdrfhqwtaxhcdkxprfzcxxcqidabdjurncmugfdjzhiyfcftjxqhxtcuiyxnkvmhyhhrbejgnduebmwitrrifgrmjqbbyiwtuzrbymtvdfvwpcjjheqzwxmugtymeruuepjudemxrecnuprzzrjtutatigtffhrhignrfvyvcdccrwczyzwwhffenexnhcnamxrfycqwvqmmdmxqtqpjnxyakyqdrebrjhfhwixbxbtgcdjeavahxgrarryxrfvwnarxjyuiwhkyrgamvzqhdxvfcfanzudnghtyygujnhmxmcjrggzfqniggvyjviwdmekyjtpzjyrvkwkzzcipdnhrvvambbnetfknmkqhqqrkyaityhhrevvceynizrhwtcakhcubxqqpbirbzpkvctbujdpbfxivjatunenbaadbbvvwyjewhkyzvu';
+const DEFENDANT_LENGTH = `Defendant's name must be less than or equal to 2000 characters`;
+const JUDGE_LENGTH = `Judge's name must be less than or equal to 2000 characters`;
+const KEYWORDS_LENGTH = 'Keywords must be less than or equal to 2000 characters';
 
 describe('Case search', () => {
   beforeEach(() => {
@@ -219,10 +218,10 @@ describe('Case search', () => {
 
     // keywords length check over 2k characters
     cy.contains('Advanced search').click();
-    cy.get('#judge').invoke('val', LONG_STRING_2K).type('1');
+    cy.get('#keywords').invoke('val', LONG_STRING_2K).type('1');
     cy.get('button').contains('Search').click({ force: true });
-    cy.get('.judge-error').should('contain', JUDGE_LENGTH);
-    cy.get('.govuk-error-summary').should('contain', JUDGE_LENGTH);
+    cy.get('.keyword-error').should('contain', KEYWORDS_LENGTH);
+    cy.get('.govuk-error-summary').should('contain', KEYWORDS_LENGTH);
     cy.get('a').contains('Clear search').click();
   });
 

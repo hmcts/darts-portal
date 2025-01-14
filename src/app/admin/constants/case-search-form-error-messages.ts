@@ -5,7 +5,7 @@ export const CaseSearchFormErrorMessages: FormErrorMessages = {
     required: 'You must also enter a courthouse',
   },
   courtroom: {
-    maxlength: 'Courtroom must be less than 65 characters',
+    maxlength: 'Courtroom must be less than or equal to 64 characters',
   },
   specific: {
     pattern: 'You have not entered a recognised date in the correct format (for example 31/01/2023)',
@@ -24,12 +24,12 @@ export const CaseSearchFormErrorMessages: FormErrorMessages = {
     dateRange: 'The end date must be after the start date',
   },
   judgeName: {
-    maxlength: `Judge's name must be less than 2001 characters`,
+    maxlength: `Judge's name must be less than or equal to 2000 characters`,
   },
   defendantName: {
-    maxlength: `Defendant's name must be less than 2001 characters`,
+    maxlength: `Defendant's name must be less than or equal to 2000 characters`,
   },
   eventTextContains: {
-    maxlength: `Keywords must be less than 2001 characters`,
+    maxlength: `Keywords must be less than or equal to 2000 characters`,
   },
 };
