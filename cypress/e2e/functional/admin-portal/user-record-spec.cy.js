@@ -1,4 +1,5 @@
 import 'cypress-axe';
+import { DateTime } from 'luxon';
 import '../commands';
 
 Cypress.Commands.add('tableRowShouldContain', (groupName, role) => {
@@ -358,13 +359,10 @@ describe('Admin - User record screen', () => {
 
       cy.get('#transcriptRequestsTable tbody tr').should('have.length', 1);
 
-      //Date 5 months prior due to dynamic creation in stub
-      const currentDate = new Date();
-      currentDate.setMonth(currentDate.getMonth() - 5); // Subtract 5 months
-
-      // Format the date to "DD MMM YYYY"
-      const options = { day: '2-digit', month: 'short', year: 'numeric' };
-      const requestedDate = currentDate.toLocaleDateString('en-GB', options);
+      // Date 5 months prior using Luxon
+      const requestedDate = DateTime.now()
+        .minus({ months: 5 }) // Subtract 5 months
+        .toFormat('dd MMM yyyy'); // Format the date to "DD MMM YYYY"
 
       cy.get('#transcriptRequestsTable tbody tr')
         .eq(0)
