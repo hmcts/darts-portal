@@ -32,9 +32,9 @@ export class CourthouseSearchFormComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.fb.group({
-      courthouseName: [this.formValues().courthouseName, [optionalMaxLengthValidator(256)]],
-      displayName: [this.formValues().displayName, [optionalMaxLengthValidator(256)]],
-      region: [this.formValues().region, [optionalMaxLengthValidator(256)]],
+      courthouseName: [this.formValues().courthouseName, [optionalMaxLengthValidator(255)]],
+      displayName: [this.formValues().displayName, [optionalMaxLengthValidator(255)]],
+      region: [this.formValues().region, [optionalMaxLengthValidator(255)]],
     });
   }
 
