@@ -63,7 +63,6 @@ export class FileDeletionService {
       courthouse: audioFile.courthouse.display_name,
       courtroom: audioFile.courtroom.name,
       hiddenById: audioFile.admin_action.hidden_by_id,
-      markedById: audioFile.admin_action.marked_for_manual_deletion_by_id,
       comments: audioFile.admin_action.comments,
       ticketReference: audioFile.admin_action.ticket_reference,
       reasonId: audioFile.admin_action.reason_id,

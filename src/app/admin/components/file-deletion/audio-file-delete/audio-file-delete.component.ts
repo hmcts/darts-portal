@@ -91,6 +91,7 @@ export class AudioFileDeleteComponent implements OnInit {
 
         this.router.navigate(['/admin/audio-file', firstId, 'associated-audio', 'unhide-or-unmark-for-deletion'], {
           state: { media: associatedMedia },
+          queryParams: { backUrl: '/admin/file-deletion' },
         });
       }
     }

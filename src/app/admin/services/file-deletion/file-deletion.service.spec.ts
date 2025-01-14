@@ -82,35 +82,57 @@ describe('FileDeletionService', () => {
   describe('mapMarkedAudioFiles', () => {
     it('should map the audio file data correctly', () => {
       const audioFileData: AudioFileMarkedDeletionData = {
-        media_id: 123,
-        channel: 11,
+        media: [
+          {
+            id: 123,
+            channel: 11,
+            total_channels: 4,
+            is_current: true,
+            version_count: 1,
+          },
+          {
+            id: 124,
+            channel: 12,
+            total_channels: 4,
+            is_current: true,
+            version_count: 1,
+          },
+        ],
         start_at: '2022-01-01T00:00:00.000Z',
         end_at: '2022-01-01T01:00:00.000Z',
         courthouse: { id: 1, display_name: 'Courthouse' },
         courtroom: { id: 1, name: 'Courtroom' },
         admin_action: {
-          marked_for_manual_deletion_by_id: 3,
-          comments: 'Comments',
+          comments: ['Comments', 'Comments 1'],
           ticket_reference: 'Ticket Reference',
           reason_id: 2,
-          id: 0,
           hidden_by_id: 1,
-          hidden_at: '',
-          is_marked_for_manual_deletion: false,
-          marked_for_manual_deletion_at: '',
         },
       };
 
       const expectedAudioFile: AudioFileMarkedDeletion = {
-        mediaId: 123,
-        channel: 11,
+        media: [
+          {
+            id: 123,
+            channel: 11,
+            totalChannels: 4,
+            isCurrent: true,
+            versionCount: 1,
+          },
+          {
+            id: 124,
+            channel: 12,
+            totalChannels: 4,
+            isCurrent: true,
+            versionCount: 1,
+          },
+        ],
         startAt: DateTime.fromISO('2022-01-01T00:00:00.000Z'),
         endAt: DateTime.fromISO('2022-01-01T01:00:00.000Z'),
         courthouse: 'Courthouse',
         courtroom: 'Courtroom',
         hiddenById: 1,
-        markedById: 3,
-        comments: 'Comments',
+        comments: ['Comments', 'Comments 1'],
         ticketReference: 'Ticket Reference',
         reasonId: 2,
       };
@@ -125,40 +147,68 @@ describe('FileDeletionService', () => {
     it('should return an observable of marked audio files with additional information', () => {
       const mockAudioFiles: AudioFileMarkedDeletionData[] = [
         {
-          media_id: 123,
-          channel: 11,
-          start_at: '2022-01-01T00:00:00.000Z',
-          end_at: '2022-01-01T01:00:00.000Z',
-          courthouse: { id: 1, display_name: 'Courthouse' },
-          courtroom: { id: 1, name: 'Courtroom' },
-          admin_action: {
-            marked_for_manual_deletion_by_id: 0,
-            comments: 'Comments',
-            ticket_reference: 'Ticket Reference',
-            reason_id: 2,
+          media: [
+            {
+              id: 1,
+              channel: 1,
+              total_channels: 4,
+              is_current: true,
+              version_count: 1,
+            },
+            {
+              id: 2,
+              channel: 2,
+              total_channels: 4,
+              is_current: true,
+              version_count: 1,
+            },
+          ],
+          start_at: '2024-03-03T15:00:00Z',
+          end_at: '2024-03-03T15:22:00Z',
+          courthouse: {
             id: 0,
-            hidden_by_id: 1,
-            hidden_at: '',
-            is_marked_for_manual_deletion: false,
-            marked_for_manual_deletion_at: '',
+            display_name: 'Manchester',
+          },
+          courtroom: {
+            id: 0,
+            name: '11',
+          },
+          admin_action: {
+            reason_id: 2,
+            hidden_by_id: 5,
+            ticket_reference: '122REF224',
+            comments: ['Manchester audio file marked for deletion'],
           },
         },
       ];
 
       const expectedMappedAudioFiles = [
         {
-          mediaId: 123,
-          channel: 11,
-          startAt: DateTime.fromISO('2022-01-01T00:00:00.000Z'),
-          endAt: DateTime.fromISO('2022-01-01T01:00:00.000Z'),
-          courthouse: 'Courthouse',
-          courtroom: 'Courtroom',
-          hiddenById: 1,
-          markedById: 0,
-          comments: 'Comments',
-          ticketReference: 'Ticket Reference',
+          media: [
+            {
+              id: 1,
+              channel: 1,
+              totalChannels: 4,
+              isCurrent: true,
+              versionCount: 1,
+            },
+            {
+              id: 2,
+              channel: 2,
+              totalChannels: 4,
+              isCurrent: true,
+              versionCount: 1,
+            },
+          ],
+          startAt: DateTime.fromISO('2024-03-03T15:00:00.000Z'),
+          endAt: DateTime.fromISO('2024-03-03T15:22:00.000Z'),
+          courthouse: 'Manchester',
+          courtroom: '11',
+          hiddenById: 5,
+          comments: ['Manchester audio file marked for deletion'],
+          ticketReference: '122REF224',
           reasonId: 2,
-          markedHiddenBy: 'John Doe',
+          markedHiddenBy: 'System',
           reasonName: 'Reason 2',
         },
       ];
