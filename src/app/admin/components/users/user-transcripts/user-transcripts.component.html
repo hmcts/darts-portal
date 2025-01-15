@@ -44,6 +44,7 @@
       <td>{{ row.courthouse }}</td>
       <td>{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
       <td>{{ row.requestedAt | luxonDate: 'dd MMM yyyy HH:mm' }}</td>
+      <td>{{ row.approvedAt | luxonDate: 'dd MMM yyyy HH:mm' }}</td>
       <td>
         <app-govuk-tag [colour]="statusColours[row.status]">{{ row.status }}</app-govuk-tag>
       </td>
