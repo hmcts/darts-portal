@@ -11,4 +11,5 @@ export interface TranscriptRequestData {
   status: TranscriptStatus;
   transcription_urgency?: Urgency;
   requested_ts: string;
+  approved_ts?: string;
 }

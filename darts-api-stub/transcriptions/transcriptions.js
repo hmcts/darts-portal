@@ -20,6 +20,7 @@ const defaultYourTranscriptionsStub = {
         priority_order: 1,
       },
       requested_ts: '2023-06-26T13:00:00Z',
+      approved_ts: '2023-06-26T15:00:00Z',
     },
     {
       transcription_id: 2,
@@ -30,6 +31,7 @@ const defaultYourTranscriptionsStub = {
       transcription_type: 'Court log',
       status: 'With Transcriber',
       requested_ts: '2023-06-26T13:00:00Z',
+      approved_ts: '2023-06-26T15:00:00Z',
     },
     {
       transcription_id: 3,
@@ -45,6 +47,7 @@ const defaultYourTranscriptionsStub = {
         priority_order: 3,
       },
       requested_ts: '2023-06-26T13:00:00Z',
+      approved_ts: '2023-06-26T15:00:00Z',
     },
     {
       transcription_id: 4,
@@ -60,6 +63,7 @@ const defaultYourTranscriptionsStub = {
         priority_order: 1,
       },
       requested_ts: '2023-06-26T13:00:00Z',
+      approved_ts: '2023-06-26T15:00:00Z',
     },
     {
       transcription_id: 5,
@@ -219,6 +223,7 @@ const defaultMockTranscriptionDetails = {
     user_full_name: 'Eric Bristow',
   },
   legacy_comments: ['This is a legacy comment', 'This is another legacy comment'],
+  approved: '2023-11-17T14:53:07.468Z',
 };
 let mockTranscriptionDetails = { ...defaultMockTranscriptionDetails };
 
@@ -361,6 +366,7 @@ const defaultUnassignedTranscriptions = [
     requested_ts: '2023-08-01T10:00:00Z',
     state_change_ts: '2023-06-27T13:00:00Z',
     is_manual: true,
+    approved_ts: '2023-08-13T14:00:00Z',
   },
   {
     transcription_id: 54,
@@ -378,6 +384,7 @@ const defaultUnassignedTranscriptions = [
     requested_ts: '2022-06-27T12:00:00Z',
     state_change_ts: '2023-06-27T13:00:00Z',
     is_manual: true,
+    approved_ts: '2023-08-13T14:00:00Z',
   },
   {
     transcription_id: 6,
@@ -395,6 +402,7 @@ const defaultUnassignedTranscriptions = [
     requested_ts: '2022-02-28T13:00:00Z',
     state_change_ts: '2023-06-27T13:00:00Z',
     is_manual: true,
+    approved_ts: '2023-08-13T14:00:00Z',
   },
   {
     transcription_id: 7,
@@ -408,6 +416,7 @@ const defaultUnassignedTranscriptions = [
     requested_ts: '2023-12-25T13:00:00Z',
     state_change_ts: '2023-06-27T13:00:00Z',
     is_manual: false,
+    approved_ts: '2023-08-13T14:00:00Z',
   },
   {
     transcription_id: 10,
@@ -445,6 +454,7 @@ const defaultAssignedTranscriptions = [
     requested_ts: '2024-01-10T10:00:00Z',
     state_change_ts: '2023-08-13T13:00:00Z',
     is_manual: false,
+    approved_ts: '2023-08-13T14:00:00Z',
   },
   {
     transcription_id: 1,
@@ -462,6 +472,7 @@ const defaultAssignedTranscriptions = [
     requested_ts: '2023-08-12T13:00:00Z',
     state_change_ts: '2023-08-13T13:00:00Z',
     is_manual: true,
+    approved_ts: '2023-08-13T14:00:00Z',
   },
   {
     transcription_id: 2,
@@ -479,6 +490,7 @@ const defaultAssignedTranscriptions = [
     requested_ts: '2023-08-21T14:00:00Z',
     state_change_ts: '2023-08-13T13:00:00Z',
     is_manual: false,
+    approved_ts: '2023-08-13T14:00:00Z',
   },
   {
     transcription_id: 3,
@@ -496,6 +508,7 @@ const defaultAssignedTranscriptions = [
     requested_ts: '2023-06-27T16:00:00Z',
     state_change_ts: '2023-06-27T13:00:00Z',
     is_manual: true,
+    approved_ts: '2023-08-13T14:00:00Z',
   },
   {
     transcription_id: 4,

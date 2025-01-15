@@ -12,4 +12,5 @@ export type TranscriptRequest = {
   status: TranscriptStatus;
   urgency: Urgency;
   requestedTs: DateTime;
+  approvedTs?: DateTime;
 };

@@ -34,6 +34,7 @@ const MOCK_REQUESTS: YourTranscripts = {
       status: 'Awaiting Authorisation',
       urgency: { transcription_urgency_id: 3, description: 'Up to 7 working days', priority_order: 3 },
       requestedTs: DateTime.fromISO('2023-06-26T13:00:00'),
+      approvedTs: DateTime.fromISO('2023-06-26T15:00:00'),
     },
     {
       transcriptionId: 2,
@@ -45,6 +46,7 @@ const MOCK_REQUESTS: YourTranscripts = {
       status: 'With Transcriber',
       urgency: { transcription_urgency_id: 2, description: 'Up to 3 working days', priority_order: 2 },
       requestedTs: DateTime.fromISO('2023-06-26T13:00:00'),
+      approvedTs: DateTime.fromISO('2023-06-26T15:00:00'),
     },
     {
       transcriptionId: 2,
@@ -56,6 +58,7 @@ const MOCK_REQUESTS: YourTranscripts = {
       status: 'Complete',
       urgency: { transcription_urgency_id: 2, description: 'Up to 3 working days', priority_order: 2 },
       requestedTs: DateTime.fromISO('2023-06-26T13:00:00'),
+      approvedTs: DateTime.fromISO('2023-06-26T15:00:00'),
     },
     {
       transcriptionId: 2,
@@ -67,6 +70,7 @@ const MOCK_REQUESTS: YourTranscripts = {
       status: 'Rejected',
       urgency: { transcription_urgency_id: 1, description: 'Overnight', priority_order: 1 },
       requestedTs: DateTime.fromISO('2023-06-26T13:00:00'),
+      approvedTs: DateTime.fromISO('2023-06-26T15:00:00'),
     },
   ],
   approverTranscriptions: [
@@ -165,14 +169,15 @@ describe('TranscriptionsComponent', () => {
     const firstRow = tableRows[1];
     expect(firstRow).toBeTruthy();
     const cells = firstRow.querySelectorAll('td');
-    expect(cells.length).toEqual(7);
+    expect(cells.length).toEqual(8);
     expect(cells[0].textContent).toEqual('T12345');
     expect(cells[1].textContent).toEqual('Swansea');
     expect(cells[2].textContent).toEqual('10 Jun 2023');
     expect(cells[3].textContent).toEqual('Court log');
     expect(cells[4].textContent).toEqual('26 Jun 2023 13:00');
-    expect(cells[5].textContent).toEqual('Awaiting Authorisation');
-    expect(cells[6].textContent).toEqual('Up to 7 working days');
+    expect(cells[5].textContent).toEqual('26 Jun 2023 15:00');
+    expect(cells[6].textContent).toEqual('Awaiting Authorisation');
+    expect(cells[7].textContent).toEqual('Up to 7 working days');
   });
 
   it('render ready requests table', () => {
@@ -185,15 +190,16 @@ describe('TranscriptionsComponent', () => {
     const firstRow = tableRows[1];
     expect(firstRow).toBeTruthy();
     const cells = firstRow.querySelectorAll('td');
-    expect(cells.length).toEqual(9);
+    expect(cells.length).toEqual(10);
     expect(cells[1].textContent).toEqual('T12345');
     expect(cells[2].textContent).toEqual('Newcastle');
     expect(cells[3].textContent).toEqual('10 Jun 2023');
     expect(cells[4].textContent).toEqual('Court log');
     expect(cells[5].textContent).toEqual('26 Jun 2023 13:00');
-    expect(cells[6].textContent).toEqual('Complete');
-    expect(cells[7].textContent).toEqual('Up to 3 working days');
-    expect(cells[8].textContent).toEqual('View');
+    expect(cells[6].textContent).toEqual('26 Jun 2023 15:00');
+    expect(cells[7].textContent).toEqual('Complete');
+    expect(cells[8].textContent).toEqual('Up to 3 working days');
+    expect(cells[9].textContent).toEqual('View');
   });
 
   it('render approver requests table', () => {
