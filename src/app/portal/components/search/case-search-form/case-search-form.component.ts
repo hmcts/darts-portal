@@ -1,3 +1,4 @@
+import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Component, DestroyRef, inject, input, model, OnInit, output, signal, ViewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -5,7 +6,7 @@ import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angula
 import { CourthouseComponent } from '@common/courthouse/courthouse.component';
 import { SpecificOrRangeDatePickerComponent } from '@common/specific-or-range-date-picker/specific-or-range-date-picker.component';
 import { CaseSearchFormErrorMessages } from '@constants/case-search-form-error-messages';
-import { CourthouseData, ErrorSummaryEntry } from '@core-types/index';
+import { ErrorSummaryEntry } from '@core-types/index';
 import { NestedKeys } from '@core-types/utils/nested-keys.type';
 import { CaseSearchForm, CaseSearchFormValues } from '@portal-types/index';
 import { ErrorMessageService } from '@services/error/error-message.service';
@@ -13,6 +14,7 @@ import { FormService } from '@services/form/form.service';
 import { ScrollService } from '@services/scroll/scroll.service';
 import { dateRangeValidator } from '@validators/date-range.validator';
 import { futureDateValidator } from '@validators/future-date.validator';
+import { optionalMaxLengthValidator } from '@validators/optional-maxlength.validator';
 import { transformedMediaSearchDateValidators } from 'src/app/admin/components/transformed-media/search-transformed-media-form/search-transformed-media-form.component';
 
 @Component({
@@ -32,7 +34,7 @@ export class CaseSearchFormComponent implements OnInit {
   errorMsgService = inject(ErrorMessageService);
 
   formValues = input<CaseSearchFormValues | null>(null);
-  courthouses = input<CourthouseData[]>([]);
+  courthouses = input<Courthouse[]>([]);
 
   isSubmitted = model(false);
   isAdvancedSearch = model(false);
@@ -51,7 +53,7 @@ export class CaseSearchFormComponent implements OnInit {
   form: CaseSearchForm = this.fb.group({
     caseNumber: [''],
     courthouse: [''],
-    courtroom: [''],
+    courtroom: ['', optionalMaxLengthValidator(64)],
     hearingDate: this.fb.group(
       {
         type: [''],
@@ -61,9 +63,9 @@ export class CaseSearchFormComponent implements OnInit {
       },
       { validators: [dateRangeValidator('from', 'to')] }
     ),
-    judgeName: [''],
-    defendantName: [''],
-    eventTextContains: [''],
+    judgeName: ['', optionalMaxLengthValidator(2000)],
+    defendantName: ['', optionalMaxLengthValidator(2000)],
+    eventTextContains: ['', optionalMaxLengthValidator(2000)],
   });
 
   ngOnInit() {

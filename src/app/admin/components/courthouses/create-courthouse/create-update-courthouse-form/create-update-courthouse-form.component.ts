@@ -1,6 +1,6 @@
 import { Region } from '@admin-types/courthouses/region.interface';
 import { CreateUpdateCourthouseFormValues, SecurityGroup } from '@admin-types/index';
-import { Component, DestroyRef, ElementRef, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import { Component, DestroyRef, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DataTableComponent } from '@common/data-table/data-table.component';
@@ -11,11 +11,13 @@ import {
   displayNameExistsValidator,
   valueIsNull,
 } from '@validators/courthouse.validator';
+import { optionalMaxLengthValidator } from '@validators/optional-maxlength.validator';
 
 const controlErrors: FormErrorMessages = {
   courthouseName: {
-    required: 'Enter a courthouse code',
-    courthouseNameExists: 'The courthouse code you entered exists already',
+    required: 'Enter a courthouse name',
+    courthouseNameExists: 'The courthouse name you entered exists already',
+    maxlength: 'Courtroom name must be less than or equal to 255 characters',
   },
   displayName: {
     required: 'Enter a display name',
@@ -34,7 +36,6 @@ const controlErrors: FormErrorMessages = {
   styleUrl: './create-update-courthouse-form.component.scss',
 })
 export class CreateUpdateCourthouseFormComponent implements OnInit {
-  constructor(private elementRef: ElementRef<HTMLElement>) {}
   @Output() submitForm = new EventEmitter<CreateUpdateCourthouseFormValues>();
   @Output() cancelled = new EventEmitter<void>();
   @Output() errors = new EventEmitter<ErrorSummaryEntry[]>();
@@ -69,7 +70,7 @@ export class CreateUpdateCourthouseFormComponent implements OnInit {
     this.form = this.fb.group({
       courthouseName: [
         this.formDefaultValues.courthouseName,
-        [Validators.required, courthouseNameExistsValidator(this.courthouses)],
+        [Validators.required, courthouseNameExistsValidator(this.courthouses), optionalMaxLengthValidator(255)],
       ],
       displayName: [
         this.formDefaultValues.displayName,

@@ -8,6 +8,7 @@ import { ErrorSummaryEntry } from '@core-types/index';
 import { defaultFormValues } from '@services/admin-search/admin-search.service';
 import { FormService } from '@services/form/form.service';
 import { dateRangeValidator } from '@validators/date-range.validator';
+import { optionalMaxLengthValidator } from '@validators/optional-maxlength.validator';
 import { transformedMediaSearchDateValidators } from '../../transformed-media/search-transformed-media-form/search-transformed-media-form.component';
 
 export type AdminSearchFormValues = {
@@ -22,6 +23,8 @@ export type AdminSearchFormValues = {
   };
   resultsFor: string;
 };
+
+type AdminSearchFormControl = keyof typeof AdminSearchFormErrorMessages;
 @Component({
   selector: 'app-search-form',
   standalone: true,
@@ -41,7 +44,7 @@ export class SearchFormComponent {
   form = this.fb.nonNullable.group({
     courthouses: new FormControl<Courthouse[]>([]),
     caseId: [''],
-    courtroom: [''],
+    courtroom: ['', optionalMaxLengthValidator(64)],
     hearingDate: this.fb.nonNullable.group(
       {
         type: [''],
@@ -81,6 +84,19 @@ export class SearchFormComponent {
       ...values,
       courthouses: values.courthouses.filter((c) => c.id !== courthouseId),
     }));
+  }
+
+  getFormControlErrorMessages(controlName: AdminSearchFormControl): string[] {
+    const errors = this.form.get(controlName)?.errors;
+    if (!errors) {
+      return [];
+    }
+    return Object.keys(errors).map(
+      (error) =>
+        AdminSearchFormErrorMessages[controlName][
+          error as keyof (typeof AdminSearchFormErrorMessages)[typeof controlName]
+        ]
+    );
   }
 
   onSubmit() {

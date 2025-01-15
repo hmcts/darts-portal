@@ -130,6 +130,21 @@ describe('Your audio', () => {
     cy.a11y();
   });
 
+  it('should delete selected expired audio requests', () => {
+    cy.contains('Your audio').click();
+    cy.contains('Expired').click();
+    cy.contains('C99').parents('tr').find('input[type="checkbox"]').click({ force: true });
+    cy.get('.govuk-button--secondary').contains('Delete').click();
+    cy.get(navigationSelector).should('not.exist');
+    cy.contains('Are you sure you want to delete this item');
+    cy.get('button.govuk-button--warning').click();
+    cy.contains('DeleteMe').should('not.exist');
+    cy.get(navigationSelector).should('exist');
+
+    cy.contains('There are no expired audio files');
+    cy.a11y();
+  });
+
   it('should clear failed audio requests', () => {
     cy.contains('Your audio').click();
     cy.contains('Clear').click();

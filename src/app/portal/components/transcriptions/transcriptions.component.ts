@@ -48,7 +48,7 @@ export class TranscriptionsComponent {
 
   readonly tabNames = {
     transcriptRequests: 'Transcript requests',
-    transcriptReview: 'Transcript requests to review',
+    transcriptReview: 'Transcript requests to authorise',
   } as const;
 
   transcriptService = inject(TranscriptionService);

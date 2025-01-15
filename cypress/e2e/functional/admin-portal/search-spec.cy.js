@@ -284,4 +284,28 @@ describe('Admin - Search screen', () => {
     cy.get('.govuk-tabs__list-item--selected').contains('Audio');
     cy.get('app-audio-search-results td').contains('101');
   });
+
+  it('verifies search validation', () => {
+    // Test max length of 64 characters for Courtroom field with a 65 character string
+    cy.get('#courtroom').type(';hK+aySS}Q+b4@qrMczv9n.Kt0cHxNGr=#ZD%_&ugBg6h_qgy[vQ)TzH6@nZ?W45#');
+
+    cy.get('#confirm-button').click();
+
+    //Verify error message
+    cy.get('.courtroom-error')
+      .should('exist')
+      .should('contain', 'Courtroom name must be less than or equal to 64 characters');
+    cy.get('.govuk-error-summary__list').should(
+      'contain',
+      'Courtroom name must be less than or equal to 64 characters'
+    );
+
+    //Valid input
+    cy.get('#courtroom').clear();
+    cy.get('#courtroom').type('name value');
+
+    cy.get('#confirm-button').click();
+
+    cy.get('.heading-caption').should('contain', 'Showing 1-3 of 3');
+  });
 });
