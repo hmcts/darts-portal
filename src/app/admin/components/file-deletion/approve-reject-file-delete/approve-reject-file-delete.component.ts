@@ -2,6 +2,7 @@ import { Component, input, OnInit, output } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { FormErrorMessages } from '@core-types/index';
+import { mustBeTrueValidator } from '@validators/checkbox-true.validator';
 
 const controlErrors: FormErrorMessages = {
   deletionApproval: {
@@ -31,7 +32,7 @@ export class ApproveRejectFileDeleteComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.screen() === 'audio') {
-      this.authorisationCheckbox = new FormControl<boolean | null>(null, [Validators.required]);
+      this.authorisationCheckbox = new FormControl<boolean | null>(null, mustBeTrueValidator());
     }
   }
 
