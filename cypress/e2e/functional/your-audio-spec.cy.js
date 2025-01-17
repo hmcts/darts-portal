@@ -82,6 +82,35 @@ describe('Your audio', () => {
     cy.a11y();
   });
 
+  it('should validate delete action', () => {
+    cy.contains('Your audio').click();
+
+    cy.get('.govuk-button--secondary').contains('Delete').click();
+
+    cy.get('.govuk-error-summary').contains('You must select at least one audio to delete');
+    cy.a11y();
+  });
+
+  it('should validate expiry delete action', () => {
+    cy.contains('Your audio').click();
+    cy.contains('Expired').click();
+
+    cy.get('.govuk-button--secondary').contains('Delete').click();
+
+    cy.get('.govuk-error-summary').contains('You must select at least one audio to delete');
+
+    cy.a11y();
+  });
+
+  it('should validate bulk download action', () => {
+    cy.contains('Your audio').click();
+
+    cy.get('.govuk-button--secondary').contains('Bulk download').click();
+
+    cy.get('.govuk-error-summary').contains('You must select at least one audio to download');
+    cy.a11y();
+  });
+
   it('View audio request and delete', () => {
     cy.contains('Your audio').click();
     cy.contains('C6_ViewAndDeleteMe').parents('tr').find('.view-link').click();
