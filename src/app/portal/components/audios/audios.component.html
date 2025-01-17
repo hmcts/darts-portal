@@ -58,6 +58,7 @@
                 name="bulkDelete"
                 class="govuk-button govuk-button--secondary"
                 (click)="onDeleteClicked()"
+                [disabled]="isDownloading"
               >
                 Delete
               </button>
@@ -66,6 +67,7 @@
                 name="bulkDownload"
                 class="govuk-button govuk-button--secondary"
                 (click)="onDownloadConfirmed()"
+                [disabled]="isDownloading"
               >
                 Bulk download
               </button>
@@ -79,6 +81,7 @@
             [hiddenCaption]="true"
             [rowSelectable]="true"
             [pageLimit]="15"
+            [(selectedRows)]="selectedAudioRequests"
             (rowSelect)="onSelectedAudio($event)"
           >
             <ng-template [tableRowTemplate]="data.completedRows" let-row>

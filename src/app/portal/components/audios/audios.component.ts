@@ -81,6 +81,7 @@ export class AudiosComponent {
   errors = signal<ErrorSummaryEntry[]>([]);
   isDeleting = signal(false);
   isAudioRequest = false;
+  isDownloading = false;
 
   eff = effect(() => {
     if (this.isDeleting()) {
@@ -204,6 +205,8 @@ export class AudiosComponent {
     this.setErrorSummary('bulkDownload');
 
     if (this.selectedAudioRequests.length && this.errors().length === 0) {
+      this.isDownloading = true;
+
       //Downloads in parallel
       const downloadRequests = this.selectedAudioRequests.map((audio) =>
         this.audioService.downloadAudio(audio.transformedMediaId, audio.requestType).pipe(
@@ -214,9 +217,13 @@ export class AudiosComponent {
       );
 
       forkJoin(downloadRequests).subscribe({
-        complete: () => this.clearSelectedAudio(),
+        complete: () => {
+          this.clearSelectedAudio();
+          this.isDownloading = false;
+        },
         error: () => {
           this.errors.set([{ fieldId: 'bulkDownload', message: audiosErrorMessages.bulkDownload.error }]);
+          this.isDownloading = false;
         },
       });
     }
