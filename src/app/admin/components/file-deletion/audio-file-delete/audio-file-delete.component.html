@@ -45,7 +45,7 @@
 
       <div govukSummaryListRow>
         <dt govukSummaryKey>Comments</dt>
-        <dd govukSummaryValue>{{ audioFile.comments | join }}</dd>
+        <dd govukSummaryValue class="comments">{{ audioFile.comments | join: undefined : undefined : true }}</dd>
       </div>
     </dl>
   </div>
