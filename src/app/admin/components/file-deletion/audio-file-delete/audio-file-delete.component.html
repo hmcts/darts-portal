@@ -1,9 +1,63 @@
+<a [routerLink]="['..']" class="govuk-back-link">Back</a>
+
 <app-validation-error-summary [errors]="errorSummary" />
 
 <app-govuk-heading tag="h1" size="xl">Delete audio file</app-govuk-heading>
 
 @if (audioFile) {
-  <app-audio-file-results [rows]="[audioFile]" [showDeleteButton]="false" />
+  <div govukSummaryContainer>
+    <app-govuk-heading class="no-margin border-bottom" tag="h2" size="m">Audio file deletion details</app-govuk-heading>
+    <dl govukSummaryList>
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Courthouse</dt>
+        <dd govukSummaryValue>{{ audioFile.courthouse }}</dd>
+      </div>
+
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Courtroom</dt>
+        <dd govukSummaryValue>{{ audioFile.courtroom }}</dd>
+      </div>
+
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Start time</dt>
+        <dd govukSummaryValue>{{ audioFile.startAt | luxonDate: 'd MMM yyyy hh:mm:ss' }}</dd>
+      </div>
+
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>End time</dt>
+        <dd govukSummaryValue>{{ audioFile.endAt | luxonDate: 'd MMM yyyy hh:mm:ss' }}</dd>
+      </div>
+
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Marked by</dt>
+        <dd govukSummaryValue>{{ audioFile.markedHiddenBy }}</dd>
+      </div>
+
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Deletion reason</dt>
+        <dd govukSummaryValue>{{ audioFile.reasonName }}</dd>
+      </div>
+
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Ticket reference</dt>
+        <dd govukSummaryValue>{{ audioFile.ticketReference }}</dd>
+      </div>
+
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Comments</dt>
+        <dd govukSummaryValue class="comments">{{ audioFile.comments | join: undefined : undefined : true }}</dd>
+      </div>
+    </dl>
+  </div>
+
+  <app-govuk-heading class="no-margin border-bottom" tag="h2" size="m"
+    >Audio files marked for deletion</app-govuk-heading
+  >
+  <app-audio-file-results [rows]="medias" [showDeleteButton]="false" [approveScreen]="true" />
 }
 
-<app-approve-reject-file-delete (confirmation)="confirmAudio($event)" (errors)="getErrorSummary($event)" />
+<app-approve-reject-file-delete
+  screen="audio"
+  (confirmation)="confirmAudio($event)"
+  (errors)="getErrorSummary($event)"
+/>

@@ -36,7 +36,10 @@ export class FileUnhideOrUndeleteComponent implements OnInit {
         finalize(() =>
           this.router.navigate(['../../'], {
             relativeTo: this.route,
-            queryParams: { unhiddenOrUnmarkedForDeletion: true },
+            queryParams: {
+              unhiddenOrUnmarkedForDeletion: true,
+              backUrl: this.route.snapshot.queryParamMap.get('backUrl'),
+            },
           })
         )
       )

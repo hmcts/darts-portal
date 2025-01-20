@@ -34,17 +34,15 @@ describe('Admin - Groups screen', () => {
     it('load results', () => {
       cy.get('h2').should('contain', 'Audio files');
 
-      cy.get('.govuk-table__header').should('have.length', 10);
-      cy.get('.govuk-table__header').eq(0).should('contain', 'Audio ID');
-      cy.get('.govuk-table__header').eq(1).should('contain', 'Courthouse');
-      cy.get('.govuk-table__header').eq(2).should('contain', 'Hearing date');
-      cy.get('.govuk-table__header').eq(3).should('contain', 'Start time');
-      cy.get('.govuk-table__header').eq(4).should('contain', 'End time');
-      cy.get('.govuk-table__header').eq(5).should('contain', 'Courtroom');
-      cy.get('.govuk-table__header').eq(6).should('contain', 'Channel');
-      cy.get('.govuk-table__header').eq(7).should('contain', 'Marked by');
-      cy.get('.govuk-table__header').eq(8).should('contain', 'Comments');
-      cy.get('.govuk-table__header').eq(9).should('contain', 'Delete');
+      cy.get('.govuk-table__header').should('have.length', 8);
+      cy.get('.govuk-table__header').eq(0).should('contain', 'Courthouse');
+      cy.get('.govuk-table__header').eq(1).should('contain', 'Courtroom');
+      cy.get('.govuk-table__header').eq(2).should('contain', 'Start time');
+      cy.get('.govuk-table__header').eq(3).should('contain', 'End time');
+      cy.get('.govuk-table__header').eq(4).should('contain', 'No. of channels');
+      cy.get('.govuk-table__header').eq(5).should('contain', 'Marked by');
+      cy.get('.govuk-table__header').eq(6).should('contain', 'Comments');
+      cy.get('.govuk-table__header').eq(7).should('contain', 'Delete');
 
       cy.get('.govuk-table__row').should('have.length', 4);
       cy.get('.govuk-table__row').eq(1).should('contain', '0');
@@ -62,26 +60,40 @@ describe('Admin - Groups screen', () => {
       cy.get('.govuk-heading-l').should('contain', 'You cannot delete this audio file');
     });
 
+    it('should validate required input', () => {
+      cy.get('.govuk-table__row').eq(1).find('.govuk-button.govuk-button--secondary').click();
+
+      cy.get('#confirm-button').click();
+
+      cy.get('.govuk-error-message').should(
+        'contain',
+        'You must confirm that you have reviewed all versions and understand that all versions of the listed audio file(s) will be deleted'
+      );
+      cy.get('.govuk-error-message').should('contain', 'Select your decision');
+      cy.get('.govuk-error-summary__list').should('contain', 'Select your decision');
+      cy.get('.govuk-error-summary__list').should(
+        'contain',
+        'You must confirm that you have reviewed all versions and understand that all versions of the listed audio file(s) will be deleted'
+      );
+    });
+
     it('should delete file', () => {
       cy.get('.govuk-table__row').eq(2).find('.govuk-button.govuk-button--secondary').click();
 
       cy.get('.govuk-heading-xl').should('contain', 'Delete audio file');
 
-      cy.get('.govuk-table__header').should('have.length', 9);
+      cy.get('.govuk-table__header').should('have.length', 5);
       cy.get('.govuk-table__header').eq(0).should('contain', 'Audio ID');
-      cy.get('.govuk-table__header').eq(1).should('contain', 'Courthouse');
-      cy.get('.govuk-table__header').eq(2).should('contain', 'Hearing date');
-      cy.get('.govuk-table__header').eq(3).should('contain', 'Start time');
-      cy.get('.govuk-table__header').eq(4).should('contain', 'End time');
-      cy.get('.govuk-table__header').eq(5).should('contain', 'Courtroom');
-      cy.get('.govuk-table__header').eq(6).should('contain', 'Channel');
-      cy.get('.govuk-table__header').eq(7).should('contain', 'Marked by');
-      cy.get('.govuk-table__header').eq(8).should('contain', 'Comments');
+      cy.get('.govuk-table__header').eq(1).should('contain', 'Channel');
+      cy.get('.govuk-table__header').eq(2).should('contain', 'Max channel');
+      cy.get('.govuk-table__header').eq(3).should('contain', 'Is current?');
+      cy.get('.govuk-table__header').eq(4).should('contain', 'No. of versions');
 
-      cy.get('.govuk-table__row').should('have.length', 2);
+      cy.get('.govuk-table__row').should('have.length', 4);
       cy.get('.govuk-table__row').eq(1).should('contain', '1');
 
       cy.get('#approve-option').click();
+      cy.get('#authorisation').click();
 
       cy.get('#confirm-button').click();
 
@@ -93,25 +105,36 @@ describe('Admin - Groups screen', () => {
 
       cy.get('.govuk-heading-xl').should('contain', 'Delete audio file');
 
-      cy.get('.govuk-table__header').should('have.length', 9);
+      cy.get('.govuk-table__header').should('have.length', 5);
       cy.get('.govuk-table__header').eq(0).should('contain', 'Audio ID');
-      cy.get('.govuk-table__header').eq(1).should('contain', 'Courthouse');
-      cy.get('.govuk-table__header').eq(2).should('contain', 'Hearing date');
-      cy.get('.govuk-table__header').eq(3).should('contain', 'Start time');
-      cy.get('.govuk-table__header').eq(4).should('contain', 'End time');
-      cy.get('.govuk-table__header').eq(5).should('contain', 'Courtroom');
-      cy.get('.govuk-table__header').eq(6).should('contain', 'Channel');
-      cy.get('.govuk-table__header').eq(7).should('contain', 'Marked by');
-      cy.get('.govuk-table__header').eq(8).should('contain', 'Comments');
+      cy.get('.govuk-table__header').eq(1).should('contain', 'Channel');
+      cy.get('.govuk-table__header').eq(2).should('contain', 'Max channel');
+      cy.get('.govuk-table__header').eq(3).should('contain', 'Is current?');
+      cy.get('.govuk-table__header').eq(4).should('contain', 'No. of versions');
 
-      cy.get('.govuk-table__row').should('have.length', 2);
+      cy.get('.govuk-table__row').should('have.length', 4);
       cy.get('.govuk-table__row').eq(1).should('contain', '1');
 
+      cy.get('#authorisation').click();
       cy.get('#reject-unhide-option').click();
 
       cy.get('#confirm-button').click();
 
-      cy.get('#success-message').should('contain', 'Audio file unmarked for deletion and unhidden');
+      //Taken to unhide-undelete screen with associated audio
+      cy.get('.govuk-heading-l').should(
+        'contain',
+        'There are other audio files associated with the file you are unhiding/unmarking for deletion'
+      );
+
+      cy.get('.title-underline').contains('The files you are unhiding and/or unmarking for deletion');
+      cy.get('table.govuk-table tbody tr').should('have.length', 3);
+
+      cy.get('.govuk-button').contains('Continue').click();
+      cy.get('#success-message').contains('Audio file(s) unhidden / unmarked for deletion');
+
+      //Back link should go to file deletion screen
+      cy.get('.govuk-back-link').click();
+      cy.get('.govuk-heading-xl').should('contain', 'Files marked for deletion');
     });
   });
   describe('Transcripts tab', () => {

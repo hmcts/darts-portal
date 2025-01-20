@@ -1,8 +1,34 @@
+@if (authorisationCheckbox) {
+  <div
+    class="govuk-form-group"
+    [class.govuk-form-group--error]="authorisationCheckbox.errors && authorisationCheckbox.touched"
+  >
+    @for (error of getErrorMessages('authorisationCheckbox'); track error) {
+      <p class="govuk-error-message approval-error"><span class="govuk-visually-hidden">Error:</span> {{ error }}</p>
+    }
+    <div class="govuk-checkboxes">
+      <div class="govuk-checkboxes__item">
+        <input
+          [formControl]="authorisationCheckbox"
+          name="authorisationCheckbox"
+          class="govuk-checkboxes__input"
+          id="authorisation"
+          type="checkbox"
+        />
+        <label class="govuk-label govuk-checkboxes__label" for="authorisation">
+          By checking this box, you are confirming that you have reviewed all versions of the above audio file(s) marked
+          to be deleted and understand that by deleting the audio file(s), all versions of the file(s) will be deleted.
+        </label>
+      </div>
+    </div>
+  </div>
+}
+
 <div class="govuk-form-group" [class.govuk-form-group--error]="deletionApproval.errors && deletionApproval.touched">
   <fieldset class="govuk-fieldset">
     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
       <h2 class="govuk-fieldset__heading">Approve or reject file deletion?</h2>
-      @for (error of getApprovalChoiceErrors(); track error) {
+      @for (error of getErrorMessages('deletionApproval'); track error) {
         <p class="govuk-error-message approval-error"><span class="govuk-visually-hidden">Error:</span> {{ error }}</p>
       }
     </legend>

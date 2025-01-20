@@ -15,38 +15,59 @@ import { FileDeletionComponent } from './file-deletion.component';
 
 const audioFiles: AudioFileMarkedDeletion[] = [
   {
-    mediaId: 1,
-    channel: 2,
+    media: [
+      {
+        id: 1,
+        channel: 2,
+        totalChannels: 3,
+        isCurrent: true,
+        versionCount: 4,
+      },
+    ],
     startAt: DateTime.fromISO('2022-01-01T00:00:00.000Z'),
     endAt: DateTime.fromISO('2022-01-01T01:00:00.000Z'),
     courthouse: 'Courthouse A',
     courtroom: 'Courtroom 1',
     hiddenById: 3,
-    comments: 'Audio file marked for deletion',
+    comments: ['Audio file marked for deletion'],
     ticketReference: 'TICKET-001',
     reasonId: 4,
   },
   {
-    mediaId: 5,
-    channel: 6,
+    media: [
+      {
+        id: 5,
+        channel: 6,
+        totalChannels: 7,
+        isCurrent: true,
+        versionCount: 8,
+      },
+    ],
     startAt: DateTime.fromISO('2022-01-01T00:00:00.000Z'),
     endAt: DateTime.fromISO('2022-01-01T01:00:00.000Z'),
     courthouse: 'Courthouse B',
     courtroom: 'Courtroom 2',
     hiddenById: 7,
-    comments: 'Audio file marked for deletion',
+    comments: ['Audio file marked for deletion'],
     ticketReference: 'TICKET-002',
     reasonId: 8,
   },
   {
-    mediaId: 9,
-    channel: 10,
+    media: [
+      {
+        id: 9,
+        channel: 10,
+        totalChannels: 11,
+        isCurrent: true,
+        versionCount: 12,
+      },
+    ],
     startAt: DateTime.fromISO('2022-01-01T00:00:00.000Z'),
     endAt: DateTime.fromISO('2022-01-01T01:00:00.000Z'),
     courthouse: 'Courthouse C',
     courtroom: 'Courtroom 3',
     hiddenById: 11,
-    comments: 'Audio file marked for deletion',
+    comments: ['Audio file marked for deletion'],
     ticketReference: 'TICKET-003',
     reasonId: 12,
   },
@@ -187,7 +208,7 @@ describe('FileDeletionComponent', () => {
       expect(routerSpy).toHaveBeenCalledWith(['/admin/file-deletion/unauthorised'], { state: { type: 'audio' } });
     });
 
-    it('does navigate to the delete page if the user has not hidden the transcript', () => {
+    it('does navigate to the delete page if the user has not hidden the audio', () => {
       const audio = audioFiles[0];
       component.userService = {
         hasMatchingUserId: jest.fn().mockReturnValue(false),
@@ -198,7 +219,7 @@ describe('FileDeletionComponent', () => {
 
       component.onDeleteAudio(audio);
 
-      expect(routerSpy).toHaveBeenCalledWith(['/admin/file-deletion/audio', 1], {
+      expect(routerSpy).toHaveBeenCalledWith(['/admin/file-deletion/audio'], {
         state: {
           file: expectedAudio,
         },

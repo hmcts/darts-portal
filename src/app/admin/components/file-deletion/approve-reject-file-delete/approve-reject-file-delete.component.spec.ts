@@ -29,7 +29,12 @@ describe('ApproveRejectFileDeleteComponent', () => {
     jest.spyOn(component.errors, 'emit');
     component.deletionApproval.setErrors({ required: true });
     component.confirm();
-    expect(component.errors.emit).toHaveBeenCalledWith(['Select your decision']);
+    expect(component.errors.emit).toHaveBeenCalledWith([
+      {
+        fieldId: 'deletionApproval',
+        message: 'Select your decision',
+      },
+    ]);
   });
 
   it('should emit confirmation with approval choice value', () => {
@@ -44,7 +49,12 @@ describe('ApproveRejectFileDeleteComponent', () => {
     component.deletionApproval.setErrors({ required: true });
     component.confirm();
     expect(component.deletionApproval.touched).toBeTruthy();
-    expect(component.errors.emit).toHaveBeenCalledWith(['Select your decision']);
+    expect(component.errors.emit).toHaveBeenCalledWith([
+      {
+        fieldId: 'deletionApproval',
+        message: 'Select your decision',
+      },
+    ]);
   });
 
   it('should not emit errors if valid', () => {

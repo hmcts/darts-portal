@@ -29,7 +29,7 @@ export class AssociatedAudioTableComponent {
     { name: 'Courtroom', prop: 'courtroomName', sortable: true },
     { name: 'Start time', prop: 'startAt', sortable: true },
     { name: 'End time', prop: 'endAt', sortable: true },
-    { name: 'Channel number', prop: 'channelNumber', sortable: true },
+    { name: 'Channel number', prop: 'channel', sortable: true },
     { name: 'Is current?', prop: 'isCurrent' },
   ];
 }

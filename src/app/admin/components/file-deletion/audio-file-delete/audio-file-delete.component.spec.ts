@@ -20,29 +20,45 @@ describe('AudioFileDeleteComponent', () => {
   let router: Router;
 
   const audioFileState = {
-    mediaId: 123,
+    media: [
+      {
+        id: 123,
+        channel: 11,
+        totalChannels: 1,
+        isCurrent: true,
+        versionCount: 1,
+      },
+    ],
     markedById: 1,
     startAt: '2022-01-01T00:00:00.000Z',
     endAt: '2022-01-01T01:00:00.000Z',
     courthouse: '',
     courtroom: '',
-    channel: 11,
-    comments: '',
+    comments: [''],
     ticketReference: '',
     reasonId: 3,
+    hiddenById: 11,
   };
 
-  const audioFile = {
-    mediaId: 123,
+  const audioFile: AudioFileMarkedDeletion = {
+    media: [
+      {
+        id: 123,
+        channel: 11,
+        totalChannels: 1,
+        isCurrent: true,
+        versionCount: 1,
+      },
+    ],
     markedById: 1,
     startAt: DateTime.fromISO('2022-01-01T00:00:00.000Z'),
     endAt: DateTime.fromISO('2022-01-01T01:00:00.000Z'),
     courthouse: '',
     courtroom: '',
-    channel: 11,
-    comments: '',
+    comments: [''],
     ticketReference: '',
     reasonId: 3,
+    hiddenById: 11,
   };
 
   beforeEach(async () => {
@@ -94,32 +110,45 @@ describe('AudioFileDeleteComponent', () => {
       .mockReturnValue(of({} as FileHide));
 
     component.confirmAudio(true);
-    expect(fileDeletionServiceSpy).toHaveBeenCalledWith(component.audioFile?.mediaId);
+    expect(fileDeletionServiceSpy).toHaveBeenCalledWith(component.audioFile?.media?.[0].id);
     expect(routerSpy).toHaveBeenCalledWith(['/admin/file-deletion'], {
       queryParams: { approvedForDeletion: true, type: 'Audio' },
     });
   });
 
-  it('should navigate to /admin/file-deletion with unmarkedAndUnhidden query param when deletionApproval is false', () => {
+  it('should navigate to /admin/audio-file/:id/associated-audio/unhide-or-unmark-for-deletion when deletionApproval is false and pass in associatedMedia', () => {
     const unmarkRadioButton: HTMLInputElement = fixture.nativeElement.querySelector('#reject-unhide-option');
     unmarkRadioButton.click();
     fixture.detectChanges();
 
     const routerSpy = jest.spyOn(component.router, 'navigate');
-    const transformedMediaServiceSpy = jest
-      .spyOn(component.transformedMediaService, 'unhideAudioFile')
-      .mockReturnValue(of({} as FileHide));
 
     component.confirmAudio(false);
-    expect(transformedMediaServiceSpy).toHaveBeenCalledWith(component.audioFile?.mediaId);
-    expect(routerSpy).toHaveBeenCalledWith(['/admin/file-deletion'], {
-      queryParams: { unmarkedAndUnhidden: true, type: 'Audio' },
-    });
+    expect(routerSpy).toHaveBeenCalledWith(
+      ['/admin/audio-file', 123, 'associated-audio', 'unhide-or-unmark-for-deletion'],
+      {
+        state: {
+          media: [
+            {
+              channel: 11,
+              courthouseName: '',
+              courtroomName: '',
+              endAt: DateTime.fromISO('2022-01-01T01:00:00.000+00:00'),
+              id: 123,
+              isCurrent: true,
+              isHidden: true,
+              startAt: DateTime.fromISO('2022-01-01T00:00:00.000+00:00'),
+            },
+          ],
+        },
+        queryParams: { backUrl: '/admin/file-deletion' },
+      }
+    );
   });
 
   describe('getErrorSummary', () => {
     it('should set errorSummary correctly when there are errors', () => {
-      const errors = ['Error 1'];
+      const errors = [{ fieldId: 'deletionApproval', message: 'Error 1' }];
       component.getErrorSummary(errors);
       expect(component.errorSummary).toEqual([{ fieldId: 'deletionApproval', message: 'Error 1' }]);
     });
