@@ -1,8 +1,8 @@
-import { AdminActionData } from '@admin-types/transformed-media/admin-action-data.interface';
+import { AdminActionAudioData } from '@admin-types/transformed-media/admin-action-data.interface';
+import { MediaData } from './media.interface';
 
 export interface AudioFileMarkedDeletionData {
-  media_id: number;
-  channel: number;
+  media: MediaData[];
   start_at: string;
   end_at: string;
   courthouse: {
@@ -13,5 +13,5 @@ export interface AudioFileMarkedDeletionData {
     id: number;
     name: string;
   };
-  admin_action: AdminActionData;
+  admin_action: AdminActionAudioData;
 }

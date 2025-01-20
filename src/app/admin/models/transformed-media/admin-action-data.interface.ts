@@ -9,3 +9,9 @@ export interface AdminActionData {
   ticket_reference: string;
   comments: string;
 }
+export interface AdminActionAudioData {
+  reason_id: number;
+  hidden_by_id: number;
+  ticket_reference: string;
+  comments: string[];
+}

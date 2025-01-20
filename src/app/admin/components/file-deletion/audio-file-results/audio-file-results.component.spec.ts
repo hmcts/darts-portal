@@ -29,14 +29,21 @@ describe('AudioFileResultsComponent', () => {
 
   it('should emit deletion event when deleteAudioFile is called', () => {
     const audioFile: AudioFileMarkedDeletion = {
-      mediaId: 123,
+      media: [
+        {
+          id: 0,
+          channel: 1,
+          totalChannels: 1,
+          isCurrent: true,
+          versionCount: 1,
+        },
+      ],
       courthouse: 'Courthouse A',
       startAt: DateTime.fromISO('2023-01-01'),
       endAt: DateTime.fromISO('2023-01-03'),
       courtroom: 'Room 1',
-      channel: 11,
       markedHiddenBy: 'User A',
-      comments: 'Test comment',
+      comments: ['Test comment', 'Another test comment'],
       hiddenById: 0,
       ticketReference: '',
       reasonId: 0,

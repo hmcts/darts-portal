@@ -82,7 +82,7 @@ export class TranscriptFileDeleteComponent implements OnInit {
     };
   }
 
-  getErrorSummary(errors: string[]) {
-    this.errorSummary = errors.length > 0 ? [{ fieldId: 'deletionApproval', message: errors[0] }] : [];
+  getErrorSummary(errors: { fieldId: string; message: string }[]): void {
+    this.errorSummary = errors;
   }
 }

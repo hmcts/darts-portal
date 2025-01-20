@@ -129,7 +129,7 @@ describe('TranscriptFileDeleteComponent', () => {
 
   describe('getErrorSummary', () => {
     it('should set errorSummary correctly when there are errors', () => {
-      const errors = ['Error 1'];
+      const errors = [{ fieldId: 'deletionApproval', message: 'Error 1' }];
       component.getErrorSummary(errors);
       expect(component.errorSummary).toEqual([{ fieldId: 'deletionApproval', message: 'Error 1' }]);
     });
