@@ -302,29 +302,32 @@ describe('Admin - Transcript requests', () => {
       cy.get('#request-details dt').eq(2).should('contain', 'Requested date');
       cy.get('#request-details dd').eq(2).should('contain', '17 Nov 2023');
 
-      cy.get('#request-details dt').eq(3).should('contain', 'Request method');
-      cy.get('#request-details dd').eq(3).should('contain', 'Manual');
+      cy.get('#request-details dt').eq(3).should('contain', 'Approved on');
+      cy.get('#request-details dd').eq(3).should('contain', '17 Nov 2023');
 
-      cy.get('#request-details dt').eq(4).should('contain', 'Request ID');
-      cy.get('#request-details dd').eq(4).should('contain', '1');
+      cy.get('#request-details dt').eq(4).should('contain', 'Request method');
+      cy.get('#request-details dd').eq(4).should('contain', 'Manual');
 
-      cy.get('#request-details dt').eq(5).should('contain', 'Urgency');
-      cy.get('#request-details dd').eq(5).should('contain', 'Standard');
+      cy.get('#request-details dt').eq(5).should('contain', 'Request ID');
+      cy.get('#request-details dd').eq(5).should('contain', '1');
 
-      cy.get('#request-details dt').eq(6).should('contain', 'Requested by');
-      cy.get('#request-details dd').eq(6).should('contain', 'Eric Bristow');
+      cy.get('#request-details dt').eq(6).should('contain', 'Urgency');
+      cy.get('#request-details dd').eq(6).should('contain', 'Standard');
 
-      cy.get('#request-details dt').eq(7).should('contain', 'Instructions');
-      cy.get('#request-details dd').eq(7).should('contain', 'Please expedite my request');
+      cy.get('#request-details dt').eq(7).should('contain', 'Requested by');
+      cy.get('#request-details dd').eq(7).should('contain', 'Eric Bristow');
 
-      cy.get('#request-details dt').eq(8).should('contain', 'Judge approval');
-      cy.get('#request-details dd').eq(8).should('contain', 'Yes');
+      cy.get('#request-details dt').eq(8).should('contain', 'Instructions');
+      cy.get('#request-details dd').eq(8).should('contain', 'Please expedite my request');
 
-      cy.get('#request-details dt').eq(9).should('contain', 'Removed from user transcripts');
-      cy.get('#request-details dd').eq(9).should('contain', 'No');
+      cy.get('#request-details dt').eq(9).should('contain', 'Judge approval');
+      cy.get('#request-details dd').eq(9).should('contain', 'Yes');
 
-      cy.get('#request-details dt').eq(10).should('contain', 'Migrated legacy data comments');
-      cy.get('#request-details dd').eq(10).should('contain', 'This is a legacy comment This is another legacy comment');
+      cy.get('#request-details dt').eq(10).should('contain', 'Removed from user transcripts');
+      cy.get('#request-details dd').eq(10).should('contain', 'No');
+
+      cy.get('#request-details dt').eq(11).should('contain', 'Migrated legacy data comments');
+      cy.get('#request-details dd').eq(11).should('contain', 'This is a legacy comment This is another legacy comment');
 
       // Advanced details
       cy.get('#advanced-tab').click();

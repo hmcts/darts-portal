@@ -168,6 +168,9 @@ export class TranscriptionService {
       'Audio for transcript': audioForTranscript,
       'Requested by': transcript.from,
       Received: this.luxonPipe.transform(transcript.received, 'dd MMM yyyy HH:mm:ss'),
+      'Approved on': transcript.approved
+        ? this.luxonPipe.transform(transcript.approved, 'dd MMM yyyy HH:mm:ss')
+        : undefined,
       Instructions: transcript.requestorComments,
       'Judge approval': 'Yes',
       'Migrated legacy data comments': transcript.legacyComments ? transcript.legacyComments : undefined,
@@ -205,6 +208,9 @@ export class TranscriptionService {
             : '',
         'Requested by': transcript.from,
         Received: this.luxonPipe.transform(transcript.received, 'dd MMM yyyy HH:mm:ss'),
+        'Approved on': transcript.approved
+          ? this.luxonPipe.transform(transcript.approved, 'dd MMM yyyy HH:mm:ss')
+          : undefined,
         Instructions: transcript.requestorComments,
         'Judge approval': 'Yes',
         'Migrated legacy data comments': transcript.legacyComments ? transcript.legacyComments : undefined,

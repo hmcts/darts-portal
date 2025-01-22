@@ -547,6 +547,7 @@ describe('TranscriptionAdminService', () => {
       transcriptionEndTs: DateTime.fromISO('2024-03-03T10:00:00Z'),
       requestor: { userId: 1, fullName: 'John Doe', email: 'john@example.com' },
       received: DateTime.fromISO('2024-01-01T13:30:00Z'),
+      approved: DateTime.fromISO('2024-01-01T15:30:00Z'),
       requestorComments: 'Need ASAP',
     } as unknown as TranscriptionAdminDetails;
 
@@ -561,6 +562,7 @@ describe('TranscriptionAdminService', () => {
       'Audio for transcript': 'Start time 09:00:00 - End time 10:00:00',
       'Requested by': [{ href: '/admin/users/1', value: 'John Doe', caption: 'john@example.com' }],
       Received: '01 Jan 2024 13:30:00',
+      'Approved on': '01 Jan 2024 15:30:00',
       Instructions: 'Need ASAP',
       'Judge approval': 'Yes',
     });

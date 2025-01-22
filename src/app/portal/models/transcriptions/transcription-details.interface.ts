@@ -32,4 +32,5 @@ export interface TranscriptionDetailsData {
   };
   hide_request_from_requestor?: boolean;
   legacy_comments?: string[];
+  approved?: string;
 }
