@@ -1,10 +1,12 @@
 import { DatePipe } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, provideRouter } from '@angular/router';
 import { MediaRequest, RequestedMedia, TransformedMedia } from '@portal-types/index';
 import { AudioRequestService } from '@services/audio-request/audio-request.service';
+import { FileDownloadService } from '@services/file-download/file-download.service';
 import { DateTime } from 'luxon';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { AudiosComponent } from './audios.component';
 
 describe('AudiosComponent', () => {
@@ -96,6 +98,11 @@ describe('AudiosComponent', () => {
     deleteAudioRequests: jest.fn(),
     deleteTransformedMedia: jest.fn(),
     setAudioRequest: jest.fn(),
+    downloadAudio: jest.fn().mockReturnValue(of(new Blob())),
+  };
+
+  const downloadService = {
+    saveAs: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -104,6 +111,7 @@ describe('AudiosComponent', () => {
       providers: [
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
         { provide: AudioRequestService, useValue: audioServiceStub },
+        { provide: FileDownloadService, useValue: downloadService },
         DatePipe,
         provideRouter([]),
       ],
@@ -111,6 +119,7 @@ describe('AudiosComponent', () => {
 
     fixture = TestBed.createComponent(AudiosComponent);
     component = fixture.componentInstance;
+
     fixture.detectChanges();
   });
 
@@ -240,6 +249,198 @@ describe('AudiosComponent', () => {
       expect(navigateSpy).toHaveBeenCalledWith(['./audios', transformedMedia.mediaRequestId], {
         state: { transformedMedia },
       });
+    });
+  });
+
+  describe('#onDownloadConfirmed', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it('should not download if errors exist', () => {
+      component.selectedAudioRequests = [];
+
+      const downloadAudioSpy = jest.spyOn(audioServiceStub, 'downloadAudio');
+      const saveAsSpy = jest.spyOn(downloadService, 'saveAs');
+
+      component.onDownloadConfirmed();
+
+      expect(downloadAudioSpy).not.toHaveBeenCalled();
+      expect(saveAsSpy).not.toHaveBeenCalled();
+    });
+
+    it('should download all selected audio files when no errors exist', () => {
+      component.selectedAudioRequests = [
+        {
+          transformedMediaId: 1,
+          transformedMediaFilename: 'audio1.mp3',
+          requestType: 'DOWNLOAD',
+        } as TransformedMedia,
+        {
+          transformedMediaId: 2,
+          transformedMediaFilename: 'audio2.mp3',
+          requestType: 'DOWNLOAD',
+        } as TransformedMedia,
+      ];
+
+      const downloadAudioSpy = jest.spyOn(audioServiceStub, 'downloadAudio');
+
+      component.onDownloadConfirmed();
+
+      expect(downloadAudioSpy).toHaveBeenCalledTimes(2);
+      expect(downloadAudioSpy).toHaveBeenCalledWith(1, 'DOWNLOAD');
+      expect(downloadAudioSpy).toHaveBeenCalledWith(2, 'DOWNLOAD');
+    });
+
+    it('should set errors if there are issues during download', () => {
+      component.selectedAudioRequests = [
+        {
+          transformedMediaId: 1,
+          transformedMediaFilename: 'audio1.mp3',
+          requestType: 'DOWNLOAD',
+        } as TransformedMedia,
+        {
+          transformedMediaId: 2,
+          transformedMediaFilename: 'audio2.mp3',
+          requestType: 'DOWNLOAD',
+        } as TransformedMedia,
+      ];
+
+      const errorSpy = jest.spyOn(component.errors, 'set');
+      const errorResponse = new HttpErrorResponse({ error: { type: 'some-error' } });
+
+      const downloadAudioSpy = jest.spyOn(audioServiceStub, 'downloadAudio');
+      downloadAudioSpy.mockReturnValue(throwError(() => errorResponse)); // Simulate an error for the second download
+
+      component.onDownloadConfirmed();
+
+      expect(errorSpy).toHaveBeenCalledWith([
+        { fieldId: 'bulkDownload', message: 'There has been an error downloading audio' },
+      ]);
+    });
+
+    it('should set errors if there are more than 20 selected files for download', () => {
+      component.selectedAudioRequests = [
+        {
+          transformedMediaId: 1,
+          transformedMediaFilename: 'audio1.mp3',
+          requestType: 'DOWNLOAD',
+        } as TransformedMedia,
+        {
+          transformedMediaId: 2,
+          transformedMediaFilename: 'audio2.mp3',
+          requestType: 'DOWNLOAD',
+        } as TransformedMedia,
+        {
+          transformedMediaId: 3,
+          transformedMediaFilename: 'audio3.mp3',
+          requestType: 'DOWNLOAD',
+        } as TransformedMedia,
+        {
+          transformedMediaId: 4,
+          transformedMediaFilename: 'audio4.mp3',
+          requestType: 'DOWNLOAD',
+        } as TransformedMedia,
+        {
+          transformedMediaId: 5,
+          transformedMediaFilename: 'audio5.mp3',
+          requestType: 'DOWNLOAD',
+        } as TransformedMedia,
+        {
+          transformedMediaId: 6,
+          transformedMediaFilename: 'audio6.mp3',
+          requestType: 'DOWNLOAD',
+        } as TransformedMedia,
+        {
+          transformedMediaId: 7,
+          transformedMediaFilename: 'audio7.mp3',
+          requestType: 'DOWNLOAD',
+        } as TransformedMedia,
+        {
+          transformedMediaId: 8,
+          transformedMediaFilename: 'audio8.mp3',
+          requestType: 'DOWNLOAD',
+        } as TransformedMedia,
+        {
+          transformedMediaId: 9,
+          transformedMediaFilename: 'audio9.mp3',
+          requestType: 'DOWNLOAD',
+        } as TransformedMedia,
+        {
+          transformedMediaId: 10,
+          transformedMediaFilename: 'audio10.mp3',
+          requestType: 'DOWNLOAD',
+        } as TransformedMedia,
+        {
+          transformedMediaId: 11,
+          transformedMediaFilename: 'audio11.mp3',
+          requestType: 'DOWNLOAD',
+        } as TransformedMedia,
+        {
+          transformedMediaId: 12,
+          transformedMediaFilename: 'audio12.mp3',
+          requestType: 'DOWNLOAD',
+        } as TransformedMedia,
+        {
+          transformedMediaId: 13,
+          transformedMediaFilename: 'audio13.mp3',
+          requestType: 'DOWNLOAD',
+        } as TransformedMedia,
+        {
+          transformedMediaId: 14,
+          transformedMediaFilename: 'audio14.mp3',
+          requestType: 'DOWNLOAD',
+        } as TransformedMedia,
+        {
+          transformedMediaId: 15,
+          transformedMediaFilename: 'audio15.mp3',
+          requestType: 'DOWNLOAD',
+        } as TransformedMedia,
+        {
+          transformedMediaId: 16,
+          transformedMediaFilename: 'audio16.mp3',
+          requestType: 'DOWNLOAD',
+        } as TransformedMedia,
+        {
+          transformedMediaId: 17,
+          transformedMediaFilename: 'audio17.mp3',
+          requestType: 'DOWNLOAD',
+        } as TransformedMedia,
+        {
+          transformedMediaId: 18,
+          transformedMediaFilename: 'audio18.mp3',
+          requestType: 'DOWNLOAD',
+        } as TransformedMedia,
+        {
+          transformedMediaId: 19,
+          transformedMediaFilename: 'audio19.mp3',
+          requestType: 'DOWNLOAD',
+        } as TransformedMedia,
+        {
+          transformedMediaId: 20,
+          transformedMediaFilename: 'audio20.mp3',
+          requestType: 'DOWNLOAD',
+        } as TransformedMedia,
+        {
+          transformedMediaId: 21,
+          transformedMediaFilename: 'audio21.mp3',
+          requestType: 'DOWNLOAD',
+        } as TransformedMedia,
+      ];
+
+      const errorSpy = jest.spyOn(component.errors, 'set');
+      // const errorResponse = new HttpErrorResponse({ error: { type: 'some-error' } });
+
+      const downloadAudioSpy = jest.spyOn(audioServiceStub, 'downloadAudio');
+      component.onDownloadConfirmed();
+
+      expect(downloadAudioSpy).not.toHaveBeenCalled();
+      expect(errorSpy).toHaveBeenCalledWith([
+        {
+          fieldId: 'bulkDownload',
+          message: 'There is a maximum of 20 files that can be selected for bulk download in one go',
+        },
+      ]);
     });
   });
 

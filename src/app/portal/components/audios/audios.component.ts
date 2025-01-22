@@ -9,7 +9,8 @@ import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.compo
 import { GovukTagComponent } from '@common/govuk-tag/govuk-tag.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
-import { DatatableColumn, TagColour } from '@core-types/index';
+import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
+import { DatatableColumn, ErrorSummaryEntry, FormErrorMessages, TagColour } from '@core-types/index';
 import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { UnreadIconDirective } from '@directives/unread-icon.directive';
@@ -17,9 +18,22 @@ import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { MediaRequest, RequestedMedia, TransformedMedia } from '@portal-types/index';
 import { ActiveTabService } from '@services/active-tab/active-tab.service';
 import { AudioRequestService } from '@services/audio-request/audio-request.service';
+import { FileDownloadService } from '@services/file-download/file-download.service';
 import { HeaderService } from '@services/header/header.service';
-import { BehaviorSubject, combineLatest, forkJoin, map, Observable, shareReplay, switchMap } from 'rxjs';
+import { ScrollService } from '@services/scroll/scroll.service';
+import { BehaviorSubject, combineLatest, forkJoin, map, Observable, shareReplay, switchMap, tap } from 'rxjs';
 
+const MAX_DOWNLOAD_LIMIT = 20;
+const audiosErrorMessages: FormErrorMessages = {
+  bulkDownload: {
+    required: 'You must select at least one audio to download',
+    maxlength: `There is a maximum of ${MAX_DOWNLOAD_LIMIT} files that can be selected for bulk download in one go`,
+    error: 'There has been an error downloading audio',
+  },
+  bulkDelete: {
+    required: 'You must select at least one audio to delete',
+  },
+};
 @Component({
   selector: 'app-audios',
   templateUrl: './audios.component.html',
@@ -38,6 +52,7 @@ import { BehaviorSubject, combineLatest, forkJoin, map, Observable, shareReplay,
     LuxonDatePipe,
     GovukHeadingComponent,
     GovukTagComponent,
+    ValidationErrorSummaryComponent,
   ],
 })
 export class AudiosComponent {
@@ -50,6 +65,8 @@ export class AudiosComponent {
 
   headerService = inject(HeaderService);
   audioService = inject(AudioRequestService);
+  downloadService = inject(FileDownloadService);
+  scrollService = inject(ScrollService);
   router = inject(Router);
   destroyRef = inject(DestroyRef);
   title = inject(Title);
@@ -61,8 +78,10 @@ export class AudiosComponent {
 
   tab = computed(() => this.activeTabService.activeTabs()[this.activeTabKey] ?? this.tabNames.currentAudio);
 
+  errors = signal<ErrorSummaryEntry[]>([]);
   isDeleting = signal(false);
   isAudioRequest = false;
+  isDownloading = false;
 
   eff = effect(() => {
     if (this.isDeleting()) {
@@ -150,9 +169,63 @@ export class AudiosComponent {
     this.selectedAudioRequests = selectedAudio;
   }
 
+  private clearSelectedAudio() {
+    this.selectedAudioRequests = [];
+  }
+
   onDeleteClicked() {
-    if (this.selectedAudioRequests.length) {
+    this.setErrorSummary('bulkDelete');
+
+    if (this.selectedAudioRequests.length && this.errors().length === 0) {
       this.isDeleting.set(true);
+    }
+  }
+
+  private setErrorSummary(type: 'bulkDownload' | 'bulkDelete'): void {
+    this.errors.set([]);
+    const errors: ErrorSummaryEntry[] = [];
+
+    if (type === 'bulkDownload' && this.selectedAudioRequests.length === 0) {
+      errors.push({ fieldId: 'bulkDownload', message: audiosErrorMessages.bulkDownload.required });
+    }
+    if (type === 'bulkDownload' && this.selectedAudioRequests.length > MAX_DOWNLOAD_LIMIT) {
+      errors.push({ fieldId: 'bulkDownload', message: audiosErrorMessages.bulkDownload.maxlength });
+    }
+    if (type === 'bulkDelete' && this.selectedAudioRequests.length === 0) {
+      errors.push({ fieldId: 'bulkDelete', message: audiosErrorMessages.bulkDelete.required });
+    }
+
+    if (errors.length) {
+      this.errors.set(errors);
+      this.scrollService.scrollTo('#error-summary');
+    }
+  }
+
+  onDownloadConfirmed() {
+    this.setErrorSummary('bulkDownload');
+
+    if (this.selectedAudioRequests.length && this.errors().length === 0) {
+      this.isDownloading = true;
+
+      //Downloads in parallel
+      const downloadRequests = this.selectedAudioRequests.map((audio) =>
+        this.audioService.downloadAudio(audio.transformedMediaId, audio.requestType).pipe(
+          tap((blob: Blob) => {
+            this.downloadService.saveAs(blob, audio.transformedMediaFilename);
+          })
+        )
+      );
+
+      forkJoin(downloadRequests).subscribe({
+        complete: () => {
+          this.clearSelectedAudio();
+          this.isDownloading = false;
+        },
+        error: () => {
+          this.errors.set([{ fieldId: 'bulkDownload', message: audiosErrorMessages.bulkDownload.error }]);
+          this.isDownloading = false;
+        },
+      });
     }
   }
 
@@ -168,16 +241,20 @@ export class AudiosComponent {
     forkJoin(deleteRequests).subscribe({
       next: () => this.isDeleting.set(false),
       error: () => this.isDeleting.set(false),
-      complete: () => this.refresh$.next(),
+      complete: () => {
+        this.clearSelectedAudio();
+        this.refresh$.next();
+      },
     });
   }
 
   onDeleteCancelled() {
+    this.clearSelectedAudio();
     this.isDeleting.set(false);
   }
 
   onTabChanged(tab: string) {
-    this.selectedAudioRequests = [];
+    this.clearSelectedAudio();
     this.activeTabService.setActiveTab(this.activeTabKey, tab);
   }
 
