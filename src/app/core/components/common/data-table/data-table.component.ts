@@ -21,7 +21,7 @@ import { DateTime } from 'luxon';
 @Component({
   selector: 'app-data-table',
   standalone: true,
-  imports: [CommonModule, PaginationComponent, TableRowTemplateDirective, TableBodyTemplateDirective],
+  imports: [CommonModule, PaginationComponent],
   templateUrl: './data-table.component.html',
   styleUrls: ['./data-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

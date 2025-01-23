@@ -2,7 +2,6 @@ import { CreateUpdateUserFormValues, User } from '@admin-types/index';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { ErrorSummaryEntry } from '@core-types/index';
@@ -19,7 +18,6 @@ import { EditEmailConfirmationComponent } from './edit-email-confirmation/edit-e
     ValidationErrorSummaryComponent,
     GovukHeadingComponent,
     EditEmailConfirmationComponent,
-    GovukBannerComponent,
   ],
   templateUrl: './edit-user.component.html',
   styleUrl: './edit-user.component.scss',

@@ -1,6 +1,6 @@
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { TransformedMediaSearchFormValues } from '@admin-types/transformed-media/transformed-media-search-form.values';
-import { CommonModule, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import {
   Component,
   DestroyRef,
@@ -41,7 +41,6 @@ export const transformedMediaSearchDateValidators = [
     ReactiveFormsModule,
     SpecificOrRangeDatePickerComponent,
     DatepickerComponent,
-    NgIf,
     CourthouseComponent,
     CommonModule,
   ],

@@ -4,8 +4,6 @@ import { Component, effect, inject, signal } from '@angular/core';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
-import { CheckboxListComponent } from '@common/filters/checkbox-list/checkbox-list.component';
-import { GovukDetailsComponent } from '@common/govuk-details/govuk-details.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { DatatableColumn } from '@core-types/index';
@@ -23,8 +21,6 @@ import { BehaviorSubject, combineLatest, map, shareReplay, startWith, tap } from
     TableRowTemplateDirective,
     ReactiveFormsModule,
     AsyncPipe,
-    CheckboxListComponent,
-    GovukDetailsComponent,
     LoadingComponent,
     RouterLink,
   ],

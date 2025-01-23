@@ -1,6 +1,6 @@
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { TranscriptionSearchFormValues } from '@admin-types/index';
-import { CommonModule, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, effect, inject, input, model, output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CourthouseComponent } from '@common/courthouse/courthouse.component';
@@ -29,7 +29,6 @@ export const transcriptSearchDateValidators = [
   imports: [
     ReactiveFormsModule,
     DatepickerComponent,
-    NgIf,
     SpecificOrRangeDatePickerComponent,
     CourthouseComponent,
     CommonModule,

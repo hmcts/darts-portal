@@ -1,13 +1,13 @@
 import { Location } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 
 @Component({
   selector: 'app-unauthorised-deletion',
   standalone: true,
-  imports: [GovukHeadingComponent, RouterLink],
+  imports: [GovukHeadingComponent],
   templateUrl: './unauthorised-deletion.component.html',
   styleUrl: './unauthorised-deletion.component.scss',
 })

@@ -1,4 +1,3 @@
-import { JsonPipe } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -28,7 +27,6 @@ import { AdminSearchFormValues, SearchFormComponent } from './search-form/search
     GovukTabsComponent,
     TabDirective,
     LoadingComponent,
-    JsonPipe,
     ValidationErrorSummaryComponent,
     CaseSearchResultsComponent,
     HearingSearchResultsComponent,
