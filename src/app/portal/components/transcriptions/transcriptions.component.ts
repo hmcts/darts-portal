@@ -9,6 +9,7 @@ import { DeleteComponent } from '@components/common/delete/delete.component';
 import { GovukHeadingComponent } from '@components/common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@components/common/loading/loading.component';
 import { TabsComponent } from '@components/common/tabs/tabs.component';
+import { ForbiddenComponent } from '@components/error/forbidden/forbidden.component';
 import { transcriptStatusTagColours } from '@constants/transcript-status-tag-colours';
 import { transcriptTableColumns } from '@constants/transcription-columns';
 import { DatatableColumn, TagColour } from '@core-types/index';
@@ -36,6 +37,7 @@ import { BehaviorSubject, combineLatest, map, shareReplay, switchMap } from 'rxj
     RouterLink,
     TabDirective,
     DeleteComponent,
+    ForbiddenComponent,
     GovukHeadingComponent,
     LuxonDatePipe,
     GovukTagComponent,

@@ -1,3 +1,4 @@
+import { NgFor } from '@angular/common';
 import { Component, DestroyRef, EventEmitter, Input, OnInit, Output, forwardRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
@@ -14,7 +15,7 @@ import { CheckboxListItem } from './checkbox-list-item.type';
 @Component({
   selector: 'app-checkbox-list',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, NgFor],
   templateUrl: './checkbox-list.component.html',
   styleUrl: './checkbox-list.component.scss',
   providers: [

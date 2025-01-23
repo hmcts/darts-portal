@@ -1,10 +1,14 @@
 import { TransformedMediaAdmin } from '@admin-types/transformed-media/transformed-media-admin';
-import { AsyncPipe, DecimalPipe } from '@angular/common';
+import { AsyncPipe, DecimalPipe, JsonPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
+import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
+import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
+import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { BytesPipe } from '@pipes/bytes.pipe';
 import { JoinPipe } from '@pipes/join';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
@@ -22,10 +26,15 @@ import { AssociatedAudioTableComponent } from '../associated-audio-table/associa
   styleUrl: './view-transformed-media.component.scss',
   imports: [
     GovukHeadingComponent,
+    BreadcrumbComponent,
+    BreadcrumbDirective,
+    DataTableComponent,
     LuxonDatePipe,
     BytesPipe,
     DecimalPipe,
+    TableRowTemplateDirective,
     AsyncPipe,
+    JsonPipe,
     JoinPipe,
     RouterLink,
     GovukBannerComponent,

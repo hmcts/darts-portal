@@ -1,5 +1,5 @@
 import { RetentionPolicyForm } from '@admin-types/index';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, JsonPipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -22,6 +22,7 @@ export type RetentionFormContext = 'create' | 'edit' | 'create-revision' | 'edit
     RetentionPolicyFormComponent,
     AsyncPipe,
     ValidationErrorSummaryComponent,
+    JsonPipe,
   ],
   templateUrl: './create-edit-retention-policy.component.html',
   styleUrl: './create-edit-retention-policy.component.scss',

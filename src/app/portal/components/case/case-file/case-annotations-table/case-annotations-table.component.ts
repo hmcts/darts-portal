@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common';
 import { Component, input, output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
@@ -9,7 +10,7 @@ import { Annotations } from '@portal-types/index';
 @Component({
   selector: 'app-case-annotations-table',
   standalone: true,
-  imports: [DataTableComponent, TableRowTemplateDirective, RouterLink, GovukHeadingComponent, LuxonDatePipe],
+  imports: [DataTableComponent, TableRowTemplateDirective, RouterLink, GovukHeadingComponent, LuxonDatePipe, NgClass],
   templateUrl: './case-annotations-table.component.html',
   styleUrl: './case-annotations-table.component.scss',
 })

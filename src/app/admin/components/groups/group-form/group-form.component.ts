@@ -1,5 +1,6 @@
 import { GroupFormValue } from '@admin-types/groups/security-group-form-values.type';
 import { SecurityGroup, SecurityRole } from '@admin-types/index';
+import { JsonPipe } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ErrorSummaryEntry, FormErrorMessages } from '@core-types/index';
@@ -22,7 +23,7 @@ const formControlErrorMessages: FormErrorMessages = {
 @Component({
   selector: 'app-group-form',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, JsonPipe],
   templateUrl: './group-form.component.html',
   styleUrl: './group-form.component.scss',
 })

@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, JsonPipe, NgFor } from '@angular/common';
 import { Component, DestroyRef, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { DataTableComponent } from '@common/data-table/data-table.component';
@@ -7,6 +7,7 @@ import { CheckboxListComponent } from '@common/filters/checkbox-list/checkbox-li
 import { GovukDetailsComponent } from '@common/govuk-details/govuk-details.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { DatatableColumn } from '@core-types/index';
+import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { Observable, combineLatest, map, of, startWith } from 'rxjs';
 
 export type UserGroup = { id: number; name: string; role: string; displayState: boolean };
@@ -18,7 +19,10 @@ export type UserGroup = { id: number; name: string; role: string; displayState: 
     GovukHeadingComponent,
     DataTableComponent,
     ReactiveFormsModule,
+    TableRowTemplateDirective,
+    NgFor,
     GovukDetailsComponent,
+    JsonPipe,
     CheckboxListComponent,
     AsyncPipe,
   ],

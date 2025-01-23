@@ -6,7 +6,7 @@ import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 @Component({
   selector: 'app-breadcrumb',
   standalone: true,
-  imports: [RouterLink, NgForOf, NgTemplateOutlet],
+  imports: [BreadcrumbDirective, RouterLink, NgForOf, NgTemplateOutlet],
   templateUrl: './breadcrumb.component.html',
   styleUrls: ['./breadcrumb.component.scss'],
 })

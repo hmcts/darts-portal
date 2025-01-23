@@ -1,6 +1,7 @@
 import { Component, computed, inject, input, numberAttribute } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
+import { ExpiredBannerComponent } from '@common/expired-banner/expired-banner.component';
 import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
@@ -25,6 +26,7 @@ import { BasicEventDetailsComponent } from '../basic-event-details/basic-event-d
     TabDirective,
     BasicEventDetailsComponent,
     AdvancedEventDetailsComponent,
+    ExpiredBannerComponent,
     GovukBannerComponent,
   ],
   templateUrl: './view-event.component.html',

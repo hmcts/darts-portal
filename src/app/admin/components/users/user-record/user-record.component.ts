@@ -4,12 +4,16 @@ import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
 import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
+import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { GovukTagComponent } from '@common/govuk-tag/govuk-tag.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
+import { DataTableComponent } from '@components/common/data-table/data-table.component';
+import { NotFoundComponent } from '@components/error/not-found/not-found.component';
 import { ErrorSummaryEntry } from '@core-types/index';
 import { TabDirective } from '@directives/tab.directive';
+import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { UserService } from '@services/user/user.service';
@@ -29,8 +33,12 @@ import { UserTranscriptsComponent } from '../user-transcripts/user-transcripts.c
     TabsComponent,
     TabDirective,
     DetailsTableComponent,
+    NotFoundComponent,
     LoadingComponent,
     GovukBannerComponent,
+    DataTableComponent,
+    GovukHeadingComponent,
+    TableRowTemplateDirective,
     UserGroupsComponent,
     ValidationErrorSummaryComponent,
     UserTranscriptsComponent,

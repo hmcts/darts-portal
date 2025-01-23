@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, JsonPipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -11,7 +11,7 @@ import { TranscriptionAdminService } from '@services/transcription-admin/transcr
 @Component({
   selector: 'app-change-transcript-status',
   standalone: true,
-  imports: [ReactiveFormsModule, GovukHeadingComponent, GovukTextareaComponent, AsyncPipe, RouterLink],
+  imports: [ReactiveFormsModule, GovukHeadingComponent, GovukTextareaComponent, AsyncPipe, JsonPipe, RouterLink],
   templateUrl: './change-transcript-status.component.html',
   styleUrl: './change-transcript-status.component.scss',
 })

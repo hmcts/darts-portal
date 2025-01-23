@@ -5,7 +5,7 @@ import { TabDirective } from '@directives/tab.directive';
 @Component({
   selector: 'app-tabs',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TabDirective],
   templateUrl: './tabs.component.html',
   styleUrls: ['./tabs.component.scss'],
 })

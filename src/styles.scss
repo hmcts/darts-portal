@@ -1,15 +1,13 @@
 $govuk-suppressed-warnings: ('govuk-typography-scale-14');
-@use 'govuk-frontend/dist/govuk/all' as govuk;
-@use '@ministryofjustice/frontend/moj/all' as moj;
-@use 'accessible-autocomplete' as autocomplete;
+@import 'govuk-frontend/dist/govuk/all';
+@import '@ministryofjustice/frontend/moj/all';
+@import 'accessible-autocomplete';
 
 // Override global container widths
-@mixin global-container-widths {
-  .govuk-width-container,
-  .moj-header__container,
-  .moj-primary-navigation__container {
-    @include govuk-width-container(1280px);
-  }
+.govuk-width-container,
+.moj-header__container,
+.moj-primary-navigation__container {
+  @include govuk-width-container(1280px);
 }
 
 .moj-header__navigation-link {

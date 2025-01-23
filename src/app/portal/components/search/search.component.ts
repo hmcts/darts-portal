@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -26,6 +27,7 @@ import { SearchErrorComponent } from './search-error/search-error.component';
     ValidationErrorSummaryComponent,
     GovukHeadingComponent,
     CaseSearchFormComponent,
+    AsyncPipe,
   ],
 })
 export class SearchComponent {

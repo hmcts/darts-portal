@@ -3,6 +3,7 @@ import { CreateUpdateCourthouseFormValues, SecurityGroup } from '@admin-types/in
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
@@ -21,6 +22,7 @@ import { CreateUpdateCourthouseFormComponent } from '../create-courthouse/create
     CreateUpdateCourthouseConfirmationComponent,
     ValidationErrorSummaryComponent,
     GovukHeadingComponent,
+    GovukBannerComponent,
     CommonModule,
     LoadingComponent,
   ],

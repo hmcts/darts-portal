@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common';
 import { Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
@@ -17,6 +18,7 @@ import { TranscriptsRow } from '@portal-types/index';
     RouterLink,
     GovukHeadingComponent,
     LuxonDatePipe,
+    NgClass,
     GovukTagComponent,
   ],
   templateUrl: './case-transcripts-table.component.html',

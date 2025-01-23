@@ -5,6 +5,9 @@ import { DeleteComponent } from '@common/delete/delete.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { BreadcrumbComponent } from '@components/common/breadcrumb/breadcrumb.component';
 import { LoadingComponent } from '@components/common/loading/loading.component';
+import { ForbiddenComponent } from '@components/error/forbidden/forbidden.component';
+import { InternalErrorComponent } from '@components/error/internal-server/internal-error.component';
+import { NotFoundComponent } from '@components/error/not-found/not-found.component';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { TabDirective } from '@directives/tab.directive';
 import { ActiveTabService } from '@services/active-tab/active-tab.service';
@@ -29,6 +32,9 @@ import { CaseTranscriptsTableComponent } from './case-file/case-transcripts-tabl
     BreadcrumbComponent,
     BreadcrumbDirective,
     LoadingComponent,
+    NotFoundComponent,
+    ForbiddenComponent,
+    InternalErrorComponent,
     DeleteComponent,
     CaseEventsTableComponent,
     CaseHearingsTableComponent,

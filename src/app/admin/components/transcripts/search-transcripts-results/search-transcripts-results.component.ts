@@ -1,4 +1,5 @@
 import { Transcription } from '@admin-types/index';
+import { NgClass } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
@@ -12,7 +13,7 @@ import { TranscriptStatus } from '@portal-types/index';
 @Component({
   selector: 'app-search-transcripts-results',
   standalone: true,
-  imports: [DataTableComponent, TableRowTemplateDirective, LuxonDatePipe, RouterLink, GovukTagComponent],
+  imports: [DataTableComponent, TableRowTemplateDirective, LuxonDatePipe, NgClass, RouterLink, GovukTagComponent],
   templateUrl: './search-transcripts-results.component.html',
   styleUrl: './search-transcripts-results.component.scss',
 })

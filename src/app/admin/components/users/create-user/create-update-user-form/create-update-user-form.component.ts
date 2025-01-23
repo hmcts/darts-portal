@@ -1,4 +1,5 @@
 import { CreateUpdateUserFormValues } from '@admin-types/index';
+import { NgFor } from '@angular/common';
 import { Component, DestroyRef, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -24,7 +25,7 @@ const controlErrors: FormErrorMessages = {
 @Component({
   selector: 'app-create-update-user-form',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, NgFor],
   templateUrl: './create-update-user-form.component.html',
   styleUrl: './create-update-user-form.component.scss',
 })

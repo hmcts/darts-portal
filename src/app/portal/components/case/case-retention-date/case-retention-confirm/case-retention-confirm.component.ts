@@ -3,6 +3,8 @@ import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
+import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
+import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { CaseRetentionChange } from 'src/app/portal/models/case/case-retention-change.interface';
 import { CaseRetentionPageState } from 'src/app/portal/models/case/case-retention-page-state.type';
 import { CaseService } from 'src/app/portal/services/case/case.service';
@@ -10,7 +12,13 @@ import { CaseService } from 'src/app/portal/services/case/case.service';
 @Component({
   selector: 'app-case-retention-confirm',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, DetailsTableComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    ReportingRestrictionComponent,
+    ValidationErrorSummaryComponent,
+    DetailsTableComponent,
+  ],
   templateUrl: './case-retention-confirm.component.html',
   styleUrls: ['./case-retention-confirm.component.scss'],
 })

@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
 import { CookiesService } from '@services/cookies/cookies.service';
 
 @Component({
@@ -8,7 +9,7 @@ import { CookiesService } from '@services/cookies/cookies.service';
   standalone: true,
   templateUrl: './cookies.component.html',
   styleUrl: './cookies.component.scss',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, GovukBannerComponent],
 })
 export class CookiesComponent implements OnInit {
   fb = inject(FormBuilder);

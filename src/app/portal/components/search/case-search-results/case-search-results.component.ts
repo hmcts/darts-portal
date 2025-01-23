@@ -1,3 +1,4 @@
+import { NgFor, NgIf } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
@@ -10,7 +11,7 @@ import { CaseSearchResult } from '@portal-types/index';
   selector: 'app-case-search-results',
   templateUrl: './case-search-results.component.html',
   styleUrls: ['./case-search-results.component.scss'],
-  imports: [RouterLink, DataTableComponent, TableBodyTemplateDirective, ArrayDisplayPipe],
+  imports: [NgIf, NgFor, RouterLink, DataTableComponent, TableBodyTemplateDirective, ArrayDisplayPipe],
   standalone: true,
 })
 export class CaseSearchResultsComponent implements OnChanges {
