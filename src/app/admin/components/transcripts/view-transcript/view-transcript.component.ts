@@ -6,10 +6,7 @@ import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.componen
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TimelineComponent } from '@common/timeline/timeline.component';
-import { BreadcrumbComponent } from '@components/common/breadcrumb/breadcrumb.component';
-import { DetailsTableComponent } from '@components/common/details-table/details-table.component';
 import { TabsComponent } from '@components/common/tabs/tabs.component';
-import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { TabDirective } from '@directives/tab.directive';
 import { TranscriptFacadeService } from '@facades/transcript/transcript-facade.service';
 import { HistoryService } from '@services/history/history.service';
@@ -23,11 +20,8 @@ import { TranscriptDetailsComponent } from './transcript-details/transcript-deta
   styleUrl: './view-transcript.component.scss',
   imports: [
     CommonModule,
-    BreadcrumbComponent,
-    BreadcrumbDirective,
     TabsComponent,
     TabDirective,
-    DetailsTableComponent,
     TranscriptDetailsComponent,
     TimelineComponent,
     GovukBannerComponent,

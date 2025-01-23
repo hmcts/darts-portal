@@ -1,5 +1,4 @@
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
-import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Component, DestroyRef, inject, input, model, OnInit, output, signal, ViewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -20,7 +19,7 @@ import { transformedMediaSearchDateValidators } from 'src/app/admin/components/t
 @Component({
   selector: 'app-case-search-form',
   standalone: true,
-  imports: [CourthouseComponent, NgClass, ReactiveFormsModule, NgFor, NgIf, SpecificOrRangeDatePickerComponent],
+  imports: [CourthouseComponent, ReactiveFormsModule, SpecificOrRangeDatePickerComponent],
   templateUrl: './case-search-form.component.html',
   styleUrl: './case-search-form.component.scss',
 })

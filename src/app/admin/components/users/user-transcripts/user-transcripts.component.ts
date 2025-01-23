@@ -1,6 +1,6 @@
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { Transcription, TranscriptionStatus } from '@admin-types/transcription';
-import { CommonModule, NgClass } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -32,7 +32,6 @@ import { Observable, combineLatest, map, shareReplay, startWith, switchMap, tap 
     RouterLink,
     LuxonDatePipe,
     TableRowTemplateDirective,
-    NgClass,
     GovukTagComponent,
   ],
 })
