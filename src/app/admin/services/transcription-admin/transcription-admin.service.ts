@@ -1,3 +1,4 @@
+import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { FileHide } from '@admin-types/hidden-reasons/file-hide';
 import { FileHideData } from '@admin-types/hidden-reasons/file-hide-data.interface';
 import { FileHideOrDeleteFormValues } from '@admin-types/hidden-reasons/file-hide-or-delete-form-values';
@@ -28,7 +29,6 @@ import { TranscriptionWorkflow } from '@admin-types/transcription/transcription-
 import { TranscriptionWorkflowData } from '@admin-types/transcription/transcription-workflow-data.interface';
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable, inject, signal } from '@angular/core';
-import { CourthouseData } from '@core-types/index';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { TranscriptStatus } from '@portal-types/transcriptions/transcript-status.type';
 import { GET_SECURITY_GROUPS_PATH } from '@services/courthouses/courthouses.service';
@@ -295,17 +295,16 @@ export class TranscriptionAdminService {
         },
       ],
       Received: this.luxonPipe.transform(transcript.received, 'dd MMM yyyy HH:mm:ss'),
+      'Approved on': transcript.approved
+        ? this.luxonPipe.transform(transcript.approved, 'dd MMM yyyy HH:mm:ss')
+        : undefined,
       Instructions: transcript.requestorComments,
       'Judge approval': 'Yes',
       'Migrated legacy data comments': transcript.legacyComments ? transcript.legacyComments : undefined,
     };
   }
 
-  mapResults(
-    results: Transcription[],
-    courthouses: CourthouseData[],
-    statuses: TranscriptionStatus[]
-  ): Transcription[] {
+  mapResults(results: Transcription[], courthouses: Courthouse[], statuses: TranscriptionStatus[]): Transcription[] {
     return results.map((result) => {
       const courthouse = courthouses.find((c) => c.id === result.courthouse.id);
       const status = statuses.find((s) => s.id === result.status.id);
@@ -313,8 +312,8 @@ export class TranscriptionAdminService {
         ...result,
         courthouse: {
           id: courthouse?.id,
-          displayName: courthouse?.display_name,
-          courthouseName: courthouse?.courthouse_name,
+          displayName: courthouse?.displayName,
+          courthouseName: courthouse?.courthouseName,
         },
         status: {
           id: status?.id,
@@ -448,6 +447,7 @@ export class TranscriptionAdminService {
       courthouse: { id: transcriptionData.courthouse_id },
       hearingDate: DateTime.fromISO(transcriptionData.hearing_date),
       requestedAt: DateTime.fromISO(transcriptionData.requested_at),
+      approvedAt: transcriptionData.approved_at ? DateTime.fromISO(transcriptionData.approved_at) : undefined,
       status: { id: transcriptionData.transcription_status_id },
       isManual: transcriptionData.is_manual_transcription,
     }));

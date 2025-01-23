@@ -65,7 +65,7 @@ export class FileDeletionComponent {
     if (this.userService.hasMatchingUserId(audio.hiddenById)) {
       this.router.navigate(['/admin/file-deletion/unauthorised'], { state: { type: 'audio' } });
     } else {
-      this.router.navigate(['/admin/file-deletion/audio', audio.mediaId], {
+      this.router.navigate(['/admin/file-deletion/audio'], {
         state: { file: { ...audio, startAt: audio.startAt.toISO(), endAt: audio.endAt.toISO() } },
       });
     }

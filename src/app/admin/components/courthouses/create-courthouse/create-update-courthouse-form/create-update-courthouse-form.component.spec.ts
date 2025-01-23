@@ -101,7 +101,7 @@ describe('CreateUpdateCourthouseFormComponent', () => {
       component.onSubmit();
 
       expect(component.errors.emit).toHaveBeenCalledWith([
-        { fieldId: 'courthouseName', message: 'Enter a courthouse code' },
+        { fieldId: 'courthouseName', message: 'Enter a courthouse name' },
         { fieldId: 'displayName', message: 'Enter a display name' },
         { fieldId: 'regionId', message: 'Select a region' },
       ]);

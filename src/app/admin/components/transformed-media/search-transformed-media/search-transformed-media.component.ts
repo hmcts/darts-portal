@@ -37,7 +37,9 @@ export class SearchTransformedMediaComponent {
   scrollService = inject(ScrollService);
 
   errors = signal<ErrorSummaryEntry[]>([]);
-  courthouses$ = this.courthouseService.getCourthouses();
+  courthouses$ = this.courthouseService
+    .getCourthouses()
+    .pipe(map((data) => this.courthouseService.mapCourthouseDataToCourthouses(data)));
   isLoading = signal<boolean>(false);
 
   onErrors(errors: ErrorSummaryEntry[]) {

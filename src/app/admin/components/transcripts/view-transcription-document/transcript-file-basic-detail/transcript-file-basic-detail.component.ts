@@ -56,6 +56,7 @@ export class TranscriptFileBasicDetailComponent implements OnInit {
             this.luxonPipe.transform(transcript.transcriptionEndTs, 'HH:mm:ss')
           : '',
       'Requested date': this.luxonPipe.transform(transcript.received, 'dd MMM yyyy'),
+      'Approved on': transcript.approved ? this.luxonPipe.transform(transcript.approved, 'dd MMM yyyy') : undefined,
       'Request method': transcript.isManual ? 'Manual' : 'Automatic',
       'Request ID': transcript.transcriptionId,
       Urgency: transcript.urgency.description,

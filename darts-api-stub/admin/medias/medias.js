@@ -175,8 +175,36 @@ const medias = [
 
 const defaultMarkedForDeletionMedia = [
   {
-    media_id: 0,
-    channel: 5,
+    media: [
+      {
+        id: 1,
+        channel: 1,
+        total_channels: 4,
+        is_current: true,
+        version_count: 1,
+      },
+      {
+        id: 2,
+        channel: 2,
+        total_channels: 4,
+        is_current: true,
+        version_count: 1,
+      },
+      {
+        id: 3,
+        channel: 3,
+        total_channels: 4,
+        is_current: true,
+        version_count: 1,
+      },
+      {
+        id: 4,
+        channel: 4,
+        total_channels: 4,
+        is_current: true,
+        version_count: 1,
+      },
+    ],
     start_at: '2024-01-01T10:00:00Z',
     end_at: '2024-01-01T11:30:00Z',
     courthouse: {
@@ -188,20 +216,36 @@ const defaultMarkedForDeletionMedia = [
       name: '9',
     },
     admin_action: {
-      id: 0,
       reason_id: 3,
       hidden_by_id: 1,
-      hidden_at: '2024-05-01T00:00:00Z',
-      is_marked_for_manual_deletion: false,
-      marked_for_manual_deletion_by_id: null,
-      marked_for_manual_deletion_at: '2024-05-01T00:00:00Z',
       ticket_reference: '1234REF1',
-      comments: 'This is an example comment',
+      comments: ['This has been marked for deletion', 'This is a test comment'],
     },
   },
   {
-    media_id: 1,
-    channel: 5,
+    media: [
+      {
+        id: 1,
+        channel: 1,
+        total_channels: 4,
+        is_current: true,
+        version_count: 1,
+      },
+      {
+        id: 2,
+        channel: 2,
+        total_channels: 4,
+        is_current: true,
+        version_count: 1,
+      },
+      {
+        id: 3,
+        channel: 3,
+        total_channels: 4,
+        is_current: true,
+        version_count: 1,
+      },
+    ],
     start_at: '2024-03-01T11:00:00Z',
     end_at: '2024-03-01T11:30:00Z',
     courthouse: {
@@ -213,20 +257,29 @@ const defaultMarkedForDeletionMedia = [
       name: '11',
     },
     admin_action: {
-      id: 0,
+      hidden_by_id: 1,
       reason_id: 1,
-      hidden_by_id: 2,
-      hidden_at: '2024-04-01T00:00:00Z',
-      is_marked_for_manual_deletion: false,
-      marked_for_manual_deletion_by_id: null,
-      marked_for_manual_deletion_at: '2024-04-01T00:00:00Z',
       ticket_reference: '9987REF00',
-      comments: 'This has been marked for deletion',
+      comments: ['This has been marked for deletion', 'This is a test comment'],
     },
   },
   {
-    media_id: 3,
-    channel: 2,
+    media: [
+      {
+        id: 1,
+        channel: 1,
+        total_channels: 4,
+        is_current: true,
+        version_count: 1,
+      },
+      {
+        id: 2,
+        channel: 2,
+        total_channels: 4,
+        is_current: true,
+        version_count: 1,
+      },
+    ],
     start_at: '2024-03-03T15:00:00Z',
     end_at: '2024-03-03T15:22:00Z',
     courthouse: {
@@ -238,15 +291,10 @@ const defaultMarkedForDeletionMedia = [
       name: '11',
     },
     admin_action: {
-      id: 0,
       reason_id: 2,
       hidden_by_id: 5,
-      hidden_at: '2024-04-03T19:00:00Z',
-      is_marked_for_manual_deletion: false,
-      marked_for_manual_deletion_by_id: null,
-      marked_for_manual_deletion_at: '2024-04-03T1930:00:00Z',
       ticket_reference: '122REF224',
-      comments: 'Manchester audio file marked for deletion',
+      comments: ['Manchester audio file marked for deletion'],
     },
   },
 ];
@@ -345,16 +393,55 @@ const defaultMedia = {
     id: 0,
     name: 'Courtroom 1',
   },
-  hearings: [
+  cases: [
     {
-      id: 0,
-      hearing_date: '2020-02-20',
-      case_id: 0,
+      id: null,
+      case_number: 'CASE1',
+      source: 'Add Audio Metadata',
+      courthouse: {
+        id: 0,
+        display_name: 'Courthouse 321',
+      },
     },
     {
       id: 1,
-      hearing_date: '2020-03-25',
+      case_number: 'CASE2',
+      source: 'Source Type 3',
+      courthouse: {
+        id: 1,
+        display_name: 'Courthouse 123',
+      },
+    },
+  ],
+
+  hearings: [
+    {
+      id: 0,
+      case_id: 0,
+      case_number: 'CASE1',
+      hearing_date: '2024-06-11',
+      courthouse: {
+        id: 0,
+        display_name: 'Courthouse 321',
+      },
+      courtroom: {
+        id: 0,
+        name: 'Courtroom 1',
+      },
+    },
+    {
+      id: 1,
       case_id: 1,
+      case_number: 'CASE2',
+      hearing_date: '2024-06-11',
+      courthouse: {
+        id: 1,
+        display_name: 'Courthouse 123',
+      },
+      courtroom: {
+        id: 1,
+        name: 'Courtroom 2',
+      },
     },
   ],
 };
@@ -458,6 +545,14 @@ router.get('/:id', (req, res) => {
           id: 11,
           hearing_date: '2020-02-20',
           case_id: 0,
+          courthouse: {
+            id: 0,
+            display_name: 'Courthouse 321',
+          },
+          courtroom: {
+            id: 0,
+            name: 'Courtroom 1',
+          },
         },
       ],
     });
@@ -470,7 +565,7 @@ router.get('/:id', (req, res) => {
 router.post('/:id/approve-deletion', (req, res) => {
   const id = req.params.id;
 
-  const index = markedForDeletionMedia.findIndex((m) => m.media_id === parseInt(id));
+  const index = markedForDeletionMedia.findIndex((m) => m.media.some((media) => media.id === parseInt(id)));
 
   if (index !== -1) {
     markedForDeletionMedia[index].admin_action.is_marked_for_manual_deletion = true;

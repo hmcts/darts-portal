@@ -16,6 +16,7 @@ const transcripts = [
     requested_at: '2023-01-01T02:00:00Z',
     transcription_status_id: 1,
     is_manual_transcription: true,
+    approved_at: '2023-01-01T08:00:00Z',
   },
   {
     transcription_id: 2,
@@ -25,6 +26,7 @@ const transcripts = [
     requested_at: '2023-01-02T04:00:00Z',
     transcription_status_id: 1,
     is_manual_transcription: false,
+    approved_at: '2023-01-02T08:00:00Z',
   },
   {
     transcription_id: 3,
@@ -34,6 +36,7 @@ const transcripts = [
     requested_at: '2023-01-03T06:00:00Z',
     transcription_status_id: 2,
     is_manual_transcription: true,
+    approved_at: '2023-01-03T08:00:00Z',
   },
   {
     transcription_id: 4,
@@ -43,6 +46,7 @@ const transcripts = [
     requested_at: '2023-01-04T08:00:00Z',
     transcription_status_id: 3,
     is_manual_transcription: false,
+    approved_at: '2023-01-04T10:00:00Z',
   },
   {
     transcription_id: 5,
@@ -52,6 +56,7 @@ const transcripts = [
     requested_at: '2023-01-05T10:00:00Z',
     transcription_status_id: 4,
     is_manual_transcription: true,
+    approved_at: '2023-01-05T13:00:00Z',
   },
   {
     transcription_id: 6,
@@ -70,6 +75,7 @@ const transcripts = [
     requested_at: DateTime.now().minus({ months: 5 }).toISO(),
     transcription_status_id: 5,
     is_manual_transcription: true,
+    approved_at: '2023-01-06T13:00:00Z',
   },
 ];
 

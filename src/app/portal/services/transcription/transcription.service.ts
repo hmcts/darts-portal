@@ -168,6 +168,9 @@ export class TranscriptionService {
       'Audio for transcript': audioForTranscript,
       'Requested by': transcript.from,
       Received: this.luxonPipe.transform(transcript.received, 'dd MMM yyyy HH:mm:ss'),
+      'Approved on': transcript.approved
+        ? this.luxonPipe.transform(transcript.approved, 'dd MMM yyyy HH:mm:ss')
+        : undefined,
       Instructions: transcript.requestorComments,
       'Judge approval': 'Yes',
       'Migrated legacy data comments': transcript.legacyComments ? transcript.legacyComments : undefined,
@@ -205,6 +208,9 @@ export class TranscriptionService {
             : '',
         'Requested by': transcript.from,
         Received: this.luxonPipe.transform(transcript.received, 'dd MMM yyyy HH:mm:ss'),
+        'Approved on': transcript.approved
+          ? this.luxonPipe.transform(transcript.approved, 'dd MMM yyyy HH:mm:ss')
+          : undefined,
         Instructions: transcript.requestorComments,
         'Judge approval': 'Yes',
         'Migrated legacy data comments': transcript.legacyComments ? transcript.legacyComments : undefined,
@@ -227,6 +233,7 @@ export class TranscriptionService {
         ? r.transcription_urgency
         : { transcription_urgency_id: 0, description: '', priority_order: 0 },
       requestedTs: DateTime.fromISO(r.requested_ts),
+      approvedTs: r.approved_ts ? DateTime.fromISO(r.approved_ts) : undefined,
     }));
   }
 
@@ -243,6 +250,7 @@ export class TranscriptionService {
         ? r.transcription_urgency
         : { transcription_urgency_id: 0, description: '', priority_order: 0 },
       requestedTs: DateTime.fromISO(r.requested_ts),
+      approvedTs: r.approved_ts ? DateTime.fromISO(r.approved_ts) : undefined,
       stateChangeTs: DateTime.fromISO(r.state_change_ts),
       isManual: r.is_manual,
     }));

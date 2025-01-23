@@ -4,6 +4,7 @@
   <td>{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
   <td>{{ row.transcriptionType }}</td>
   <td>{{ row.requestedTs | luxonDate: 'dd MMM yyyy HH:mm' }}</td>
+  <td>{{ row.approvedTs | luxonDate: 'dd MMM yyyy HH:mm' }}</td>
   <td>
     <app-govuk-tag [colour]="getColourByStatus(row.status)">{{ row.status }}</app-govuk-tag>
   </td>
@@ -47,7 +48,7 @@
       <div *tab="'Transcript requests'">
         <ng-template [ngTemplateOutlet]="RequesterTemplate"></ng-template>
       </div>
-      <div *tab="'Transcript requests to review'">
+      <div *tab="'Transcript requests to authorise'">
         <ng-template [ngTemplateOutlet]="ApproverTemplate"></ng-template>
       </div>
     </app-tabs>
@@ -115,7 +116,7 @@
 <ng-template #ApproverTemplate>
   @if (approverRequests$ | async; as approverRequests) {
     @if (!approverRequests.length) {
-      <p id="no-requests-message" class="govuk-body">There are no transcription requests to review</p>
+      <p id="no-requests-message" class="govuk-body">There are no transcription requests to authorise</p>
     }
     @if (approverRequests.length) {
       <h2 class="govuk-heading-m">Requests to approve or reject</h2>

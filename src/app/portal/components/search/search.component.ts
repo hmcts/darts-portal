@@ -9,6 +9,7 @@ import { CaseSearchService } from '@services/case-search/case-search.service';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { ErrorMessageService } from '@services/error/error-message.service';
 import { ScrollService } from '@services/scroll/scroll.service';
+import { map } from 'rxjs';
 import { CaseSearchFormComponent } from './case-search-form/case-search-form.component';
 import { CaseSearchResultsComponent } from './case-search-results/case-search-results.component';
 import { SearchErrorComponent } from './search-error/search-error.component';
@@ -33,7 +34,12 @@ export class SearchComponent {
   errorMsgService = inject(ErrorMessageService);
   scrollService = inject(ScrollService);
 
-  courthouses = toSignal(this.courthouseService.getCourthouses(), { initialValue: [] });
+  courthouses = toSignal(
+    this.courthouseService
+      .getCourthouses()
+      .pipe(map((data) => this.courthouseService.mapCourthouseDataToCourthouses(data))),
+    { initialValue: [] }
+  );
   errorSummary = signal<ErrorSummaryEntry[]>([]);
 
   results = toSignal(this.caseSearchService.results$, { initialValue: null });

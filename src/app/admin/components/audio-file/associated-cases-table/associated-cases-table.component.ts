@@ -4,13 +4,11 @@ import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DatatableColumn } from '@core-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
-import { JoinPipe } from '@pipes/join';
-import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 
 @Component({
   selector: 'app-associated-cases-table',
   standalone: true,
-  imports: [DataTableComponent, TableRowTemplateDirective, LuxonDatePipe, RouterLink, JoinPipe],
+  imports: [DataTableComponent, TableRowTemplateDirective, RouterLink],
   templateUrl: './associated-cases-table.component.html',
   styleUrl: './associated-cases-table.component.scss',
 })
@@ -19,8 +17,7 @@ export class AssociatedCasesTableComponent {
 
   columns: DatatableColumn[] = [
     { name: 'Case ID', prop: 'caseId', sortable: true },
-    { name: 'Hearing date', prop: 'hearingDate', sortable: true },
-    { name: 'Defendant(s)', prop: 'defendants', sortable: true },
-    { name: 'Judge(s)', prop: 'judges', sortable: true },
+    { name: 'Courthouse', prop: 'courthouse', sortable: true },
+    { name: 'Source', prop: 'source', sortable: true },
   ];
 }

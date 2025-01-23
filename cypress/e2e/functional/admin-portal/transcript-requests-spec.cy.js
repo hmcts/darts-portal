@@ -1,4 +1,5 @@
 import 'cypress-axe';
+import { LONG_STRING_2K } from '../../constants/validation-constants';
 import '../commands';
 
 describe('Admin - Transcript requests', () => {
@@ -59,6 +60,54 @@ describe('Admin - Transcript requests', () => {
       cy.get('#requestMethodAll').should('be.checked');
 
       cy.get('app-search-transcripts-results').contains('C0000000001');
+    });
+
+    it('verifies form validation', () => {
+      const invalidCaseId = '1234567890123456789012345678901234567890';
+      const invalidOwnerRequestedBy = LONG_STRING_2K;
+
+      cy.get('summary').contains('Advanced search').click();
+
+      cy.get('#requestId').type('AAA');
+      cy.get('#caseId').type(invalidCaseId);
+      cy.get('#owner').invoke('val', invalidOwnerRequestedBy).type('1');
+      cy.get('#requestedBy').invoke('val', invalidOwnerRequestedBy).type('1');
+
+      cy.get('#search').click({ force: true });
+
+      cy.get('.govuk-error-summary__list').should('contain', 'Request ID must only contain numbers');
+      cy.get('.govuk-error-summary__list').should('contain', 'Case ID must be less than or equal to 32 characters');
+      cy.get('.govuk-error-summary__list').should('contain', 'Owner must be less than or equal to 2000 characters');
+      cy.get('.govuk-error-summary__list').should(
+        'contain',
+        'Requested by must be less than or equal to 2000 characters'
+      );
+
+      cy.get('.requestid-name-error').should('contain', 'Request ID must only contain numbers');
+      cy.get('.caseid-name-error').should('contain', 'Case ID must be less than or equal to 32 characters');
+      cy.get('.owner-name-error').should('contain', 'Owner must be less than or equal to 2000 characters');
+      cy.get('.requestedby-name-error').should('contain', 'Requested by must be less than or equal to 2000 characters');
+
+      cy.get('#requestId').clear().type('0');
+      cy.get('#search').click();
+
+      cy.get('.govuk-error-summary__list').should('contain', 'Request ID must be greater than 0');
+      cy.get('.requestid-name-error').should('contain', 'Request ID must be greater than 0');
+
+      cy.get('#requestId').clear().type('2147483649');
+      cy.get('#search').click();
+
+      cy.get('.govuk-error-summary__list').should('contain', 'Request ID must be less than 2147483648');
+      cy.get('.requestid-name-error').should('contain', 'Request ID must be less than 2147483648');
+
+      cy.get('#requestId').clear().type('1234');
+      cy.get('#caseId').clear().type('ABC123CASE');
+      cy.get('#owner').clear().type('Terry Jenkins');
+      cy.get('#requestedBy').clear().type('John Lowe');
+
+      cy.get('#search').click();
+
+      cy.get('app-data-table').should('exist');
     });
   });
 
@@ -253,29 +302,32 @@ describe('Admin - Transcript requests', () => {
       cy.get('#request-details dt').eq(2).should('contain', 'Requested date');
       cy.get('#request-details dd').eq(2).should('contain', '17 Nov 2023');
 
-      cy.get('#request-details dt').eq(3).should('contain', 'Request method');
-      cy.get('#request-details dd').eq(3).should('contain', 'Manual');
+      cy.get('#request-details dt').eq(3).should('contain', 'Approved on');
+      cy.get('#request-details dd').eq(3).should('contain', '17 Nov 2023');
 
-      cy.get('#request-details dt').eq(4).should('contain', 'Request ID');
-      cy.get('#request-details dd').eq(4).should('contain', '1');
+      cy.get('#request-details dt').eq(4).should('contain', 'Request method');
+      cy.get('#request-details dd').eq(4).should('contain', 'Manual');
 
-      cy.get('#request-details dt').eq(5).should('contain', 'Urgency');
-      cy.get('#request-details dd').eq(5).should('contain', 'Standard');
+      cy.get('#request-details dt').eq(5).should('contain', 'Request ID');
+      cy.get('#request-details dd').eq(5).should('contain', '1');
 
-      cy.get('#request-details dt').eq(6).should('contain', 'Requested by');
-      cy.get('#request-details dd').eq(6).should('contain', 'Eric Bristow');
+      cy.get('#request-details dt').eq(6).should('contain', 'Urgency');
+      cy.get('#request-details dd').eq(6).should('contain', 'Standard');
 
-      cy.get('#request-details dt').eq(7).should('contain', 'Instructions');
-      cy.get('#request-details dd').eq(7).should('contain', 'Please expedite my request');
+      cy.get('#request-details dt').eq(7).should('contain', 'Requested by');
+      cy.get('#request-details dd').eq(7).should('contain', 'Eric Bristow');
 
-      cy.get('#request-details dt').eq(8).should('contain', 'Judge approval');
-      cy.get('#request-details dd').eq(8).should('contain', 'Yes');
+      cy.get('#request-details dt').eq(8).should('contain', 'Instructions');
+      cy.get('#request-details dd').eq(8).should('contain', 'Please expedite my request');
 
-      cy.get('#request-details dt').eq(9).should('contain', 'Removed from user transcripts');
-      cy.get('#request-details dd').eq(9).should('contain', 'No');
+      cy.get('#request-details dt').eq(9).should('contain', 'Judge approval');
+      cy.get('#request-details dd').eq(9).should('contain', 'Yes');
 
-      cy.get('#request-details dt').eq(10).should('contain', 'Migrated legacy data comments');
-      cy.get('#request-details dd').eq(10).should('contain', 'This is a legacy comment This is another legacy comment');
+      cy.get('#request-details dt').eq(10).should('contain', 'Removed from user transcripts');
+      cy.get('#request-details dd').eq(10).should('contain', 'No');
+
+      cy.get('#request-details dt').eq(11).should('contain', 'Migrated legacy data comments');
+      cy.get('#request-details dd').eq(11).should('contain', 'This is a legacy comment This is another legacy comment');
 
       // Advanced details
       cy.get('#advanced-tab').click();
@@ -350,6 +402,40 @@ describe('Admin - Transcript requests', () => {
       cy.get('.govuk-list').should('contain', 'Hidden by - Eric Bristow');
       cy.get('.govuk-list').should('contain', 'Reason - Other reason to hide only');
       cy.get('.govuk-list').should('contain', 'Ticket Reference 1232 - This is a comment');
+    });
+
+    it('verifies form validation', () => {
+      cy.get('a').contains('Completed transcripts').click();
+
+      const invalidCaseId = '1234567890123456789012345678901234567890';
+      const invalidOwnerRequestedBy = LONG_STRING_2K;
+
+      cy.get('summary').contains('Advanced search').click();
+
+      cy.get('#caseId').type(invalidCaseId);
+      cy.get('#owner').invoke('val', invalidOwnerRequestedBy).type('1');
+      cy.get('#requestedBy').invoke('val', invalidOwnerRequestedBy).type('1');
+
+      cy.get('#search').click({ force: true });
+
+      cy.get('.govuk-error-summary__list').should('contain', 'Case ID must be less than or equal to 32 characters');
+      cy.get('.govuk-error-summary__list').should('contain', 'Owner must be less than or equal to 2000 characters');
+      cy.get('.govuk-error-summary__list').should(
+        'contain',
+        'Requested by must be less than or equal to 2000 characters'
+      );
+
+      cy.get('.caseid-name-error').should('contain', 'Case ID must be less than or equal to 32 characters');
+      cy.get('.owner-name-error').should('contain', 'Owner must be less than or equal to 2000 characters');
+      cy.get('.requestedby-name-error').should('contain', 'Requested by must be less than or equal to 2000 characters');
+
+      cy.get('#caseId').clear().type('123');
+      cy.get('#owner').clear().type('Terry Jenkins');
+      cy.get('#requestedBy').clear().type('John Lowe');
+
+      cy.get('#search').click();
+
+      cy.get('#no-data-message').should('contain', 'No data to display.');
     });
 
     it('view completed transcript / transcript file details, hidden and marked for deletion', () => {

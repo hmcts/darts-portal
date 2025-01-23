@@ -31,6 +31,7 @@ const subscribedEndpoints = [
 //Contains endpoints where errors will be ignored
 const ignoredEndpoints = [
   { endpoint: '/api/audio-requests/not-accessed-count', responses: [400, 401, 403, 404, 500, 502, 504] },
+  { endpoint: '/api/transcriptions/transcriber-counts', responses: [401, 403, 500, 502, 504] },
 ];
 
 @Injectable({

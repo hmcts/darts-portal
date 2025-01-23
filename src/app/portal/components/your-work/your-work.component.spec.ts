@@ -20,6 +20,7 @@ const MOCK_WORK_REQUESTS: WorkRequest[] = [
     status: 'With Transcriber',
     urgency: { transcription_urgency_id: 1, description: 'Overnight', priority_order: 1 },
     requestedTs: DateTime.fromISO('2023-08-12T13:00:00'),
+    approvedTs: DateTime.fromISO('2024-06-26T15:00:00'),
     stateChangeTs: DateTime.fromISO('2023-08-13T13:00:00'),
     isManual: true,
   },
@@ -33,6 +34,7 @@ const MOCK_WORK_REQUESTS: WorkRequest[] = [
     status: 'Complete',
     urgency: { transcription_urgency_id: 1, description: 'Up to 3 Working days', priority_order: 1 },
     requestedTs: DateTime.fromISO('2023-06-26T13:00:00'),
+    approvedTs: DateTime.fromISO('2024-06-26T15:00:00'),
     stateChangeTs: DateTime.fromISO('2023-06-27T13:00:00'),
     isManual: true,
   },
@@ -86,14 +88,15 @@ describe('YourWorkComponent', () => {
       const firstRow = tableRows[1];
       expect(firstRow).toBeTruthy();
       const cells = firstRow.querySelectorAll('td');
-      expect(cells.length).toEqual(7);
+      expect(cells.length).toEqual(8);
       expect(cells[0].textContent).toEqual('T2023453422');
       expect(cells[1].textContent).toEqual('Reading');
       expect(cells[2].textContent).toEqual('06 Aug 2023');
       expect(cells[3].textContent).toEqual('Court Log');
       expect(cells[4].textContent).toEqual('12 Aug 2023 13:00');
-      expect(cells[5].textContent).toEqual('Overnight');
-      expect(cells[6].textContent).toEqual('View');
+      expect(cells[5].textContent).toEqual('26 Jun 2024 15:00');
+      expect(cells[6].textContent).toEqual('Overnight');
+      expect(cells[7].textContent).toEqual('View');
     });
   });
 

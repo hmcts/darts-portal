@@ -143,7 +143,7 @@ describe('FileUnhideOrUndeleteComponent', () => {
 
     expect(routerSpy).toHaveBeenCalledWith(['../../'], {
       relativeTo: component.route,
-      queryParams: { unhiddenOrUnmarkedForDeletion: true },
+      queryParams: { unhiddenOrUnmarkedForDeletion: true, backUrl: null },
     });
   });
 });

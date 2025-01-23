@@ -6,7 +6,7 @@
     <label class="govuk-label" for="requestId"> Request ID </label>
     <!-- Inline Validation Errors -->
     @for (error of getFormControlErrorMessages('requestId'); track error) {
-      <p class="govuk-error-message courthouse-name-error">
+      <p class="govuk-error-message requestid-name-error">
         <span class="govuk-visually-hidden">Error:</span> {{ error }}
       </p>
     }
@@ -24,14 +24,24 @@
       <span class="govuk-details__summary-text"> Advanced search </span>
     </summary>
     <div class="govuk-details__text">
-      <div class="govuk-form-group">
+      <div
+        class="govuk-form-group"
+        [class.govuk-form-group--error]="form.controls.caseId.invalid && form.controls.caseId.touched"
+      >
         <label class="govuk-label" for="caseId"> Case ID </label>
+        <!-- Inline Validation Errors -->
+        @for (error of getFormControlErrorMessages('caseId'); track error) {
+          <p class="govuk-error-message caseid-name-error">
+            <span class="govuk-visually-hidden">Error:</span> {{ error }}
+          </p>
+        }
         <input
           formControlName="caseId"
           class="govuk-input govuk-input--width-20"
           id="caseId"
           name="caseId"
           type="text"
+          [class.govuk-input--error]="form.controls.caseId.errors && form.controls.caseId.touched"
         />
       </div>
       <div class="govuk-form-group">
@@ -57,18 +67,44 @@
           [errors]="getControlErrorMessage(['hearingDate'])"
         />
       </div>
-      <div class="govuk-form-group">
+      <div
+        class="govuk-form-group"
+        [class.govuk-form-group--error]="form.controls.owner.invalid && form.controls.owner.touched"
+      >
         <label class="govuk-label" for="owner"> Owner </label>
-        <input formControlName="owner" class="govuk-input govuk-input--width-20" id="owner" name="owner" type="text" />
+        <!-- Inline Validation Errors -->
+        @for (error of getFormControlErrorMessages('owner'); track error) {
+          <p class="govuk-error-message owner-name-error">
+            <span class="govuk-visually-hidden">Error:</span> {{ error }}
+          </p>
+        }
+        <input
+          formControlName="owner"
+          class="govuk-input govuk-input--width-20"
+          id="owner"
+          name="owner"
+          type="text"
+          [class.govuk-input--error]="form.controls.owner.errors && form.controls.owner.touched"
+        />
       </div>
-      <div class="govuk-form-group">
+      <div
+        class="govuk-form-group"
+        [class.govuk-form-group--error]="form.controls.requestedBy.invalid && form.controls.requestedBy.touched"
+      >
         <label class="govuk-label" for="requestedBy"> Requested by </label>
+        <!-- Inline Validation Errors -->
+        @for (error of getFormControlErrorMessages('requestedBy'); track error) {
+          <p class="govuk-error-message requestedby-name-error">
+            <span class="govuk-visually-hidden">Error:</span> {{ error }}
+          </p>
+        }
         <input
           formControlName="requestedBy"
           class="govuk-input govuk-input--width-20"
           id="requestedBy"
           name="requestedBy"
           type="text"
+          [class.govuk-input--error]="form.controls.requestedBy.errors && form.controls.requestedBy.touched"
         />
       </div>
       <app-specific-or-range-date-picker label="Date requested" formGroupName="requestedDate" />

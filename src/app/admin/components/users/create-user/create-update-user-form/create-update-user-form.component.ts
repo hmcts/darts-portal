@@ -45,7 +45,7 @@ export class CreateUpdateUserFormComponent implements OnInit {
   form = this.fb.group({
     fullName: [this.formDefaultValues.fullName, Validators.required],
     email: [this.formDefaultValues.email, [Validators.required, Validators.email], [this.emailExistsValidator]],
-    description: [this.formDefaultValues.description, [optionalMaxLengthValidator(256)]],
+    description: [this.formDefaultValues.description, [optionalMaxLengthValidator(255)]],
   });
 
   ngOnInit(): void {

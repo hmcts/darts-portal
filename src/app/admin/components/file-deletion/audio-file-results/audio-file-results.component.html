@@ -1,38 +1,53 @@
-<app-data-table
-  caption="Audio files marked for deletion"
-  [hiddenCaption]="true"
-  noDataMessage="There are no files marked for deletion."
-  [rows]="rows()"
-  [columns]="columns()"
->
-  <ng-template [tableRowTemplate]="rows()" let-row>
-    <td>
-      <a
-        class="govuk-link"
-        [routerLink]="['/admin/audio-file', row.mediaId]"
-        [queryParams]="{ backUrl: '/admin/file-deletion' }"
-      >
-        {{ row.mediaId }}</a
-      >
-    </td>
-    <td>{{ row.courthouse }}</td>
-    <td>{{ row.startAt | luxonDate: 'd MMM yyyy' }}</td>
-    <td>{{ row.startAt | luxonDate: 'h:mma' }}</td>
-    <td>{{ row.endAt | luxonDate: 'h:mma' }}</td>
-    <td>{{ row.courtroom }}</td>
-    <td>{{ row.channel }}</td>
-    <td>{{ row.markedHiddenBy }}</td>
-    <td>
-      <strong>{{ row.reasonName }}</strong>
-      <br />
-      {{ row.ticketReference }}
-      <br />
-      {{ row.comments }}
-    </td>
-    @if (showDeleteButton()) {
-      <td>
-        <button class="govuk-button govuk-button--secondary" (click)="deleteAudioFile(row)">Delete</button>
+@if (approveScreen()) {
+  <app-data-table
+    caption="Audio files marked for deletion"
+    [hiddenCaption]="true"
+    noDataMessage="There are no files marked for deletion."
+    [rows]="getMediaRows()"
+    [columns]="columns()"
+  >
+    <ng-template [tableRowTemplate]="getMediaRows()" let-row
+      ><td>
+        <a
+          class="govuk-link"
+          [routerLink]="['/admin/audio-file', row.id]"
+          [queryParams]="{ backUrl: '/admin/file-deletion' }"
+          >{{ row.id }}</a
+        >
       </td>
-    }
-  </ng-template>
-</app-data-table>
+      <td>{{ row.channel }}</td>
+      <td>{{ row.totalChannels }}</td>
+      <td>{{ row.isCurrent ? 'Yes' : 'No' }}</td>
+      <td>{{ row.versionCount }}</td>
+    </ng-template>
+  </app-data-table>
+} @else {
+  <app-data-table
+    caption="Audio files marked for deletion"
+    [hiddenCaption]="true"
+    noDataMessage="There are no files marked for deletion."
+    [rows]="getAudioFileMarkedDeletionRows()"
+    [columns]="columns()"
+  >
+    <ng-template [tableRowTemplate]="getAudioFileMarkedDeletionRows()" let-row>
+      <td>{{ row.courthouse }}</td>
+      <td>{{ row.courtroom }}</td>
+      <td>{{ row.startAt | luxonDate: 'd MMM yyyy hh:mm:ss' }}</td>
+      <td>{{ row.endAt | luxonDate: 'd MMM yyyy hh:mm:ss' }}</td>
+      <td>{{ row.media?.length }}</td>
+      <td>{{ row.markedHiddenBy }}</td>
+      <td class="comments">
+        <strong>{{ row.reasonName }}</strong>
+        <br />
+        {{ row.ticketReference }}
+        <br />
+        {{ row.comments }}
+      </td>
+      @if (showDeleteButton()) {
+        <td>
+          <button class="govuk-button govuk-button--secondary" (click)="deleteAudioFile(row)">Delete</button>
+        </td>
+      }
+    </ng-template>
+  </app-data-table>
+}

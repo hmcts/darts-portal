@@ -13,3 +13,17 @@ export type AdminAction = {
   ticketReference: string;
   comments: string;
 };
+
+export type AdminActionAudio = {
+  id: number;
+  reasonId: number;
+  hiddenById: number;
+  hiddenByName?: string;
+  hiddenAt: DateTime;
+  isMarkedForManualDeletion: boolean;
+  markedForManualDeletionById: number;
+  markedForManualDeletionBy?: string;
+  markedForManualDeletionAt: DateTime;
+  ticketReference: string;
+  comments: string[];
+};

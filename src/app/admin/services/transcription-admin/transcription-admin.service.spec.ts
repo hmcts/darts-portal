@@ -1,3 +1,4 @@
+import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { FileHideOrDeleteFormValues } from '@admin-types/hidden-reasons/file-hide-or-delete-form-values';
 import { HiddenReason } from '@admin-types/hidden-reasons/hidden-reason';
 import { HiddenReasonData } from '@admin-types/hidden-reasons/hidden-reason-data.interface';
@@ -16,7 +17,6 @@ import { DatePipe } from '@angular/common';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { CourthouseData } from '@core-types/index';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { TranscriptStatus } from '@portal-types/index';
 import { DateTime } from 'luxon';
@@ -547,6 +547,7 @@ describe('TranscriptionAdminService', () => {
       transcriptionEndTs: DateTime.fromISO('2024-03-03T10:00:00Z'),
       requestor: { userId: 1, fullName: 'John Doe', email: 'john@example.com' },
       received: DateTime.fromISO('2024-01-01T13:30:00Z'),
+      approved: DateTime.fromISO('2024-01-01T15:30:00Z'),
       requestorComments: 'Need ASAP',
     } as unknown as TranscriptionAdminDetails;
 
@@ -561,6 +562,7 @@ describe('TranscriptionAdminService', () => {
       'Audio for transcript': 'Start time 09:00:00 - End time 10:00:00',
       'Requested by': [{ href: '/admin/users/1', value: 'John Doe', caption: 'john@example.com' }],
       Received: '01 Jan 2024 13:30:00',
+      'Approved on': '01 Jan 2024 15:30:00',
       Instructions: 'Need ASAP',
       'Judge approval': 'Yes',
     });
@@ -710,9 +712,9 @@ describe('TranscriptionAdminService', () => {
     ] as unknown as Transcription[];
 
     const courthouses = [
-      { id: 1, display_name: 'Courthouse 1', courthouse_name: 'Main Courthouse' },
-      { id: 2, display_name: 'Courthouse 2', courthouse_name: 'Secondary Courthouse' },
-    ] as CourthouseData[];
+      { id: 1, displayName: 'Courthouse 1', courthouseName: 'Main Courthouse' },
+      { id: 2, displayName: 'Courthouse 2', courthouseName: 'Secondary Courthouse' },
+    ] as Courthouse[];
 
     const statuses = [
       { id: 1, type: 'Requested', displayName: 'Status 1' },

@@ -1,3 +1,4 @@
+import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { Transcription, TranscriptionStatus } from '@admin-types/transcription';
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
@@ -8,7 +9,7 @@ import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.compo
 import { GovukTagComponent } from '@common/govuk-tag/govuk-tag.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { transcriptStatusTagColours } from '@constants/transcript-status-tag-colours';
-import { CourthouseData, DatatableColumn } from '@core-types/index';
+import { DatatableColumn } from '@core-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { TranscriptStatus } from '@portal-types/index';
@@ -47,7 +48,10 @@ export class UserTranscriptsComponent implements OnInit {
   statusColours = transcriptStatusTagColours;
 
   showAll$!: Observable<boolean>;
-  courthouses$: Observable<CourthouseData[]> = this.courthouseService.getCourthouses().pipe(shareReplay(1));
+  courthouses$: Observable<Courthouse[]> = this.courthouseService.getCourthouses().pipe(
+    map((data) => this.courthouseService.mapCourthouseDataToCourthouses(data)),
+    shareReplay(1)
+  );
   transcriptionStatuses$: Observable<TranscriptionStatus[]> = this.transcriptionAdminService
     .getTranscriptionStatuses()
     .pipe(shareReplay(1));
@@ -61,6 +65,7 @@ export class UserTranscriptsComponent implements OnInit {
     { name: 'Courthouse', prop: 'courthouse', sortable: true },
     { name: 'Hearing date', prop: 'hearingDate', sortable: true },
     { name: 'Requested on', prop: 'requestedAt', sortable: true },
+    { name: 'Approved on', prop: 'approvedAt', sortable: true },
     { name: 'Status', prop: 'status', sortable: true },
     { name: 'Request type', prop: 'isManual', sortable: true },
   ];
@@ -74,6 +79,7 @@ export class UserTranscriptsComponent implements OnInit {
       courthouse: result.courthouse.displayName,
       hearingDate: result.hearingDate,
       requestedAt: result.requestedAt,
+      approvedAt: result.approvedAt,
       status: result.status.displayName as TranscriptStatus,
       isManual: result.isManual,
     }));
