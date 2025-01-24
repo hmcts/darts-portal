@@ -21,6 +21,25 @@ describe('Admin - Users screen', () => {
     cy.a11y();
   });
 
+  it('Retain user search results', () => {
+    cy.get('#allUsers').click();
+    cy.get('#fullName').type('p');
+    cy.get('#email').type('p');
+    cy.get('button[type="submit"]').click();
+
+    cy.get('app-user-search-results').should('contain', 'Phil Taylor');
+    cy.get('app-user-search-results').should('contain', 'Peter Wright');
+
+    cy.contains('Phil Taylor').parents('tr').contains('View').click();
+    cy.get('.govuk-back-link').click();
+
+    cy.get('#fullName').should('have.value', 'p');
+    cy.get('#email').should('have.value', 'p');
+
+    cy.get('app-user-search-results').should('contain', 'Phil Taylor');
+    cy.get('app-user-search-results').should('contain', 'Peter Wright');
+  });
+
   it('No search results', () => {
     cy.get('#fullName').type('NO_RESULTS');
     cy.get('button[type="submit"]').click();

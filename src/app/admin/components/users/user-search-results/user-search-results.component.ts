@@ -1,5 +1,5 @@
 import { User } from '@admin-types/index';
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukTagComponent } from '@common/govuk-tag/govuk-tag.component';
@@ -14,8 +14,8 @@ import { TableRowTemplateDirective } from '@directives/table-row-template.direct
   styleUrl: './user-search-results.component.scss',
 })
 export class UserSearchResultsComponent {
-  @Input() results: User[] = [];
-  @Input() loading: boolean | null = false;
+  results = input<User[]>([]);
+  show = input(false);
 
   columns: DatatableColumn[] = [
     { name: 'Full name', prop: 'fullName', sortable: true },
@@ -25,6 +25,6 @@ export class UserSearchResultsComponent {
   ];
 
   get caption() {
-    return `${this.results.length} result${this.results.length > 1 ? 's' : ''}`;
+    return `${this.results().length} result${this.results().length > 1 ? 's' : ''}`;
   }
 }
