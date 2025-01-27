@@ -1,6 +1,6 @@
 import { SecurityGroup } from '@admin-types/index';
 import { AsyncPipe } from '@angular/common';
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
@@ -40,18 +40,9 @@ export class GroupsComponent {
   );
 
   form = this.fb.group({
-    search: '',
-    role: '',
+    search: this.previousformValues()?.search ?? '',
+    role: this.previousformValues()?.role ?? '',
   });
-
-  constructor() {
-    effect(() => {
-      if (this.previousformValues()) {
-        this.form.controls.search.setValue(this.previousformValues()!.search);
-        this.form.controls.role.setValue(this.previousformValues()!.role);
-      }
-    });
-  }
 
   columns: DatatableColumn[] = [
     { name: 'Name', prop: 'name', sortable: false },
@@ -66,8 +57,8 @@ export class GroupsComponent {
 
   filteredGroups$ = combineLatest([
     this.groups$,
-    this.searchFormControl.valueChanges.pipe(startWith('')),
-    this.rolesFormControl.valueChanges.pipe(startWith('')),
+    this.searchFormControl.valueChanges.pipe(startWith(this.previousformValues()?.search ?? '')),
+    this.rolesFormControl.valueChanges.pipe(startWith(this.previousformValues()?.role ?? '')),
   ]).pipe(
     map(([groups, search, role]) => {
       this.formStateService.setFormValues(this.groupSearchFormKey, { search, role });
