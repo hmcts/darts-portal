@@ -8,9 +8,12 @@ $govuk-suppressed-warnings: ('govuk-typography-scale-14');
   .govuk-width-container,
   .moj-header__container,
   .moj-primary-navigation__container {
-    @include govuk-width-container(1280px);
+    @include govuk.govuk-width-container(1280px);
+    @include moj.moj-width-container(1280px);
   }
 }
+
+@include global-container-widths();
 
 .moj-header__navigation-link {
   text-decoration: none;
