@@ -40,6 +40,20 @@ describe('Admin - Groups screen', () => {
     cy.get('#groups-table').should('not.contain', 'Requester');
   });
 
+  it('should retain search input and filtered groups', () => {
+    cy.get('#search').type('Judiciary');
+    cy.get('#roles-filter').select('Approver');
+
+    cy.get('#groups-table').contains('Judiciary').click();
+
+    cy.get('.govuk-back-link').click();
+
+    cy.get('#search').should('have.value', 'Judiciary');
+    cy.get('#roles-filter').should('have.value', 'APPROVER');
+
+    cy.get('#groups-table').should('contain', 'Judiciary');
+  });
+
   it('view group details', () => {
     cy.get('#groups-table').contains('Judiciary').click();
 
