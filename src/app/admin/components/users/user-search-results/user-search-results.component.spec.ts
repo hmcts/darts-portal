@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UserSearchResultsComponent } from './user-search-results.component';
 import { DateTime } from 'luxon';
+import { UserSearchResultsComponent } from './user-search-results.component';
 
 describe('UserSearchResultsComponent', () => {
   let component: UserSearchResultsComponent;
@@ -46,10 +46,10 @@ describe('UserSearchResultsComponent', () => {
         securityGroupIds: [],
       },
     ];
-    component.results = users;
+    fixture.componentRef.setInput('results', users);
     expect(component.caption).toEqual('2 results');
     // Just extract the first item in the array above
-    component.results = [users[0]];
+    fixture.componentRef.setInput('results', [users[0]]);
     expect(component.caption).toEqual('1 result');
   });
 });

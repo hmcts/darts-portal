@@ -65,6 +65,25 @@ describe('Admin - Courthouses screen', () => {
     cy.a11y();
   });
 
+  it('Retains search results and forms', () => {
+    cy.get('#courthouseName').type('a');
+    cy.get('#displayName').type('a');
+    cy.get('#region').type('w');
+    cy.get('button[type="submit"]').click();
+
+    cy.get('.govuk-table__caption').should('contain', '5 results');
+
+    cy.get('app-courthouse-search-results').find('a.govuk-link').contains('READING').should('exist').click();
+    cy.get('.govuk-back-link').click();
+
+    cy.get('#courthouseName').should('have.value', 'a');
+    cy.get('#displayName').should('have.value', 'a');
+    cy.get('#region').should('have.value', 'w');
+    cy.get('.govuk-table__caption').should('contain', '5 results');
+
+    cy.a11y();
+  });
+
   it('No search results', () => {
     cy.get('#courthouseName').type('ZZZZZZZZZ');
     cy.get('button[type="submit"]').click();

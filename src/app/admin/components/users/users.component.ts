@@ -7,6 +7,7 @@ import { LoadingComponent } from '@common/loading/loading.component';
 import { FormStateService } from '@services/form-state.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { UserService } from '@services/user/user.service';
+import { BehaviorSubject } from 'rxjs';
 import { Subject } from 'rxjs/internal/Subject';
 import { of } from 'rxjs/internal/observable/of';
 import { switchMap } from 'rxjs/internal/operators/switchMap';
@@ -38,8 +39,9 @@ export class UsersComponent {
 
   router = inject(Router);
 
-  search$ = new Subject<UserSearchFormValues | null>();
+  search$ = new BehaviorSubject<UserSearchFormValues | null>(null);
   loading$ = new Subject<boolean>();
+  isSubmitted$ = new BehaviorSubject<boolean>(false);
 
   results$ = this.search$.pipe(
     tap(() => this.startLoading()),
@@ -53,24 +55,31 @@ export class UsersComponent {
   constructor() {
     effect(() => {
       this.search$.next(this.previousformValues());
+      this.isSubmitted$.next(true);
     });
   }
 
   startLoading() {
-    this.loading$.next(true);
+    setTimeout(() => {
+      this.loading$.next(true);
+    });
   }
 
   stopLoading() {
-    this.loading$.next(false);
+    setTimeout(() => {
+      this.loading$.next(false);
+    });
   }
 
   onSubmit(values: UserSearchFormValues) {
     this.formStateService.setFormValues(this.usersSearchKey, values);
+    this.isSubmitted$.next(true);
     this.search$.next(values); // Trigger the search
   }
 
   onClear() {
     this.formStateService.clearFormValues(this.usersSearchKey);
+    this.isSubmitted$.next(false);
     this.search$.next(null); // Clear the search
   }
 }

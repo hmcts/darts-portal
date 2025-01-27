@@ -37,7 +37,7 @@ export class CourthousesComponent {
 
   formValues = computed(() => this.previousformValues() ?? this.defaultFormValues);
 
-  search$ = new Subject<CourthouseSearchFormValues | null>();
+  search$ = new BehaviorSubject<CourthouseSearchFormValues | null>(null);
   loading$ = new Subject<boolean>();
   isSubmitted$ = new BehaviorSubject<boolean>(false);
 

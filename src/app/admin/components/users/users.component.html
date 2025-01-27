@@ -16,5 +16,5 @@
 }
 
 @if (results$ | async; as results) {
-  <app-user-search-results [results]="results" [loading]="loading$ | async" />
+  <app-user-search-results [results]="results" [show]="(isSubmitted$ | async) ?? false" />
 }

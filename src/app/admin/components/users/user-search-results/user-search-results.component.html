@@ -1,16 +1,16 @@
-@if (!loading) {
+@if (show()) {
   <!-- Results -->
   <div id="search-results">
     <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
 
-    @if (!results.length) {
+    @if (!results().length) {
       <h2 class="govuk-heading-m">No search results</h2>
       <p class="govuk-body">
         No users can be found with the search details provided. Review your search criteria and try again.
       </p>
     } @else {
-      <app-data-table [rows]="results" [columns]="columns" [caption]="caption" [sortAndPaginateOnRowsChanged]="false">
-        <ng-template [tableRowTemplate]="results" let-row>
+      <app-data-table [rows]="results()" [columns]="columns" [caption]="caption" [sortAndPaginateOnRowsChanged]="false">
+        <ng-template [tableRowTemplate]="results()" let-row>
           <td>{{ row.fullName }}</td>
           <td>{{ row.emailAddress }}</td>
           <td>
