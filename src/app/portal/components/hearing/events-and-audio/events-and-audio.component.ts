@@ -129,8 +129,9 @@ export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
       const end = DateTime.fromISO(row.media_end_timestamp).toUTC().toFormat("yyyy-LL-dd'T'HH:mm:ss");
 
       const areEqualToSecond = start === end;
+      const startAfterEnd = start > end;
 
-      return areEqualToSecond;
+      return areEqualToSecond || startAfterEnd;
     }
 
     return false;
