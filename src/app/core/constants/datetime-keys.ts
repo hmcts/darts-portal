@@ -31,6 +31,8 @@ export const dateTimeKeys = [
   'retentionDateTimeApplied',
   'dataAnonymisedAt',
   'approvedTs',
+  'approvedAt',
+  'approved',
   'timestamp',
   'date',
   'startTime',
