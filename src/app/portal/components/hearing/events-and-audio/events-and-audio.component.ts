@@ -164,7 +164,8 @@ export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
       const timestampA = DateTime.fromISO(a.timestamp ?? '').toUnixInteger();
       const timestampB = DateTime.fromISO(b.timestamp ?? '').toUnixInteger();
 
-      return timestampA - timestampB;
+      //Descending order
+      return timestampB - timestampA;
     });
   }
 

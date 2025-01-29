@@ -160,8 +160,16 @@ export class DataTableComponent<TRow> implements OnChanges, OnInit {
   }
 
   private isDateColumn(column: string): boolean {
-    const dateColumns = dateTimeKeys;
-    return dateColumns.includes(column);
+    if (dateTimeKeys.includes(column)) {
+      return true;
+    }
+
+    // Fallback to dynamic inference (inspect first 3 rows)
+    const rowsToCheck = this.rows.slice(0, 3);
+    return rowsToCheck.some((row) => {
+      const value = (row as { [key: string]: unknown })[column];
+      return this.isLuxonDateTime(value);
+    });
   }
 
   private isBoolean(valueA: unknown, valueB: unknown): boolean {
