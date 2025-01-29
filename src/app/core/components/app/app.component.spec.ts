@@ -42,6 +42,9 @@ describe('AppComponent', () => {
     (fakeUserService.refreshUserProfile as jest.Mock).mockClear();
     (fakeDtService.addDynatraceScript as jest.Mock).mockClear();
     routerEventsSubject = new Subject<RouterEvent>();
+    mockRoute = {
+      data: {},
+    } as ActivatedRouteSnapshot;
 
     TestBed.configureTestingModule({
       imports: [HeaderComponent, ContentComponent, FooterComponent, AppComponent],
