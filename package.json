@@ -83,7 +83,7 @@
     "express/path-to-regexp": "^0.1.12"
   },
   "devDependencies": {
-    "@angular-builders/custom-webpack": "^18.0.0",
+    "@angular-builders/custom-webpack": "^19.0.0",
     "@angular-builders/dev-server": "^7.3.1",
     "@angular-devkit/architect": "^0.1901.0",
     "@angular-eslint/builder": "^19.0.0",
