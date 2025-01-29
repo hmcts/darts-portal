@@ -93,21 +93,28 @@ describe('EventsAndAudioComponent', () => {
 
     const expectedTable: AudioEventRow[] = [
       {
-        id: 1,
-        media_start_timestamp: '2023-07-31T10:00:01.620Z',
-        media_end_timestamp: '2023-07-31T14:32:24.620Z',
-        timestamp: '2023-07-31T10:00:01.620Z',
-        type: 'audio',
-        audioIsReady$: of(200),
-        checkboxLabel: 'Select audio from 11:00:01 to 15:32:24',
-      },
-      {
-        id: 8,
-        timestamp: '2023-07-31T10:00:02.620Z',
+        id: 10,
+        timestamp: '2023-07-31T10:00:07.620Z',
         name: 'Case called on',
         text: 'Record: New Case',
         type: 'event',
-        checkboxLabel: 'Select event at 11:00:02',
+        checkboxLabel: 'Select event at 11:00:07',
+      },
+      {
+        id: 3,
+        media_start_timestamp: '2023-07-31T10:00:06.620Z',
+        media_end_timestamp: '2023-07-31T14:32:24.620Z',
+        timestamp: '2023-07-31T10:00:06.620Z',
+        type: 'audio',
+        checkboxLabel: 'Select audio from 11:00:06 to 15:32:24',
+      },
+      {
+        id: 2,
+        media_start_timestamp: '2023-07-31T10:00:04.620Z',
+        media_end_timestamp: '2022-07-31T14:32:24.620Z',
+        timestamp: '2023-07-31T10:00:04.620Z',
+        type: 'audio',
+        checkboxLabel: 'Select audio from 11:00:04 to 15:32:24',
       },
       {
         id: 9,
@@ -118,30 +125,20 @@ describe('EventsAndAudioComponent', () => {
         checkboxLabel: 'Select event at 11:00:03',
       },
       {
-        id: 2,
-        media_start_timestamp: '2023-07-31T10:00:04.620Z',
-        media_end_timestamp: '2022-07-31T14:32:24.620Z',
-        timestamp: '2023-07-31T10:00:04.620Z',
-        type: 'audio',
-        audioIsReady$: of(200),
-        checkboxLabel: 'Select audio from 11:00:04 to 15:32:24',
-      },
-      {
-        id: 3,
-        media_start_timestamp: '2023-07-31T10:00:06.620Z',
-        media_end_timestamp: '2023-07-31T14:32:24.620Z',
-        timestamp: '2023-07-31T10:00:06.620Z',
-        type: 'audio',
-        audioIsReady$: of(200),
-        checkboxLabel: 'Select audio from 11:00:06 to 15:32:24',
-      },
-      {
-        id: 10,
-        timestamp: '2023-07-31T10:00:07.620Z',
+        id: 8,
+        timestamp: '2023-07-31T10:00:02.620Z',
         name: 'Case called on',
         text: 'Record: New Case',
         type: 'event',
-        checkboxLabel: 'Select event at 11:00:07',
+        checkboxLabel: 'Select event at 11:00:02',
+      },
+      {
+        id: 1,
+        media_start_timestamp: '2023-07-31T10:00:01.620Z',
+        media_end_timestamp: '2023-07-31T14:32:24.620Z',
+        timestamp: '2023-07-31T10:00:01.620Z',
+        type: 'audio',
+        checkboxLabel: 'Select audio from 11:00:01 to 15:32:24',
       },
     ];
 
@@ -393,7 +390,7 @@ describe('EventsAndAudioComponent', () => {
   });
 
   describe('#sortTableByTimeStamp', () => {
-    it('should sort the table by timestamp in ascending order', () => {
+    it('should sort the table by timestamp in descending order', () => {
       const table: AudioEventRow[] = [
         {
           id: 1,
@@ -422,8 +419,8 @@ describe('EventsAndAudioComponent', () => {
 
       expect(table).toEqual([
         {
-          id: 2,
-          timestamp: '2023-07-31T10:00:01',
+          id: 3,
+          timestamp: '2023-07-31T10:00:03',
           name: 'Case called on',
           text: 'Record: New Case',
           type: 'event',
@@ -436,8 +433,8 @@ describe('EventsAndAudioComponent', () => {
           type: 'event',
         },
         {
-          id: 3,
-          timestamp: '2023-07-31T10:00:03',
+          id: 2,
+          timestamp: '2023-07-31T10:00:01',
           name: 'Case called on',
           text: 'Record: New Case',
           type: 'event',
