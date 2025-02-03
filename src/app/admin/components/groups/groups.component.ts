@@ -52,7 +52,7 @@ export class GroupsComponent {
 
   loading$ = new BehaviorSubject<boolean>(true);
   groupsAndRoles$ = this.groupsService.getGroupsAndRoles().pipe(shareReplay(1));
-  groups$ = this.groupsAndRoles$.pipe(map((security) => security.groups.filter((group) => group.role?.displayState)));
+  groups$ = this.groupsAndRoles$.pipe(map((security) => security.groups.filter((group) => group.displayState)));
   roles$ = this.groupsAndRoles$.pipe(map((security) => security.roles.filter((role) => role.displayState)));
 
   filteredGroups$ = combineLatest([

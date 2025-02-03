@@ -14,19 +14,37 @@ describe('GroupsComponent', () => {
       {
         id: 1,
         name: 'Group 1',
+        displayState: true,
         securityRoleId: 1,
         role: { id: 1, displayName: 'Role 1', displayState: true },
       },
       {
         id: 2,
         name: 'Group 2',
+        displayState: false,
         securityRoleId: 2,
         role: { id: 2, displayName: 'Role 2', displayState: false },
+      },
+      {
+        id: 3,
+        name: 'Group 3 visible',
+        displayState: true,
+        securityRoleId: 2,
+        role: { id: 2, displayName: 'Role 4', displayState: false },
+      },
+      {
+        id: 4,
+        name: 'Group 4 not visible',
+        displayState: false,
+        securityRoleId: 2,
+        role: { id: 1, displayName: 'Role 3', displayState: true },
       },
     ],
     roles: [
       { id: 1, displayName: 'Role 1', displayState: true },
       { id: 2, displayName: 'Role 2', displayState: false },
+      { id: 2, displayName: 'Role 3', displayState: true },
+      { id: 2, displayName: 'Role 4', displayState: false },
     ],
   };
 
@@ -57,6 +75,10 @@ describe('GroupsComponent', () => {
 
     expect(groupsTable.textContent).toContain('Role 1');
     expect(groupsTable.textContent).not.toContain('Role 2');
+
+    expect(groupsTable.textContent).toContain('Group 3');
+
+    expect(groupsTable.textContent).not.toContain('Group 4');
   });
 
   it('should filter groups based on search and role', () => {
@@ -71,7 +93,7 @@ describe('GroupsComponent', () => {
       filterResults = filteredGroups;
     });
 
-    expect(filterResults.length).toEqual(1);
+    expect(filterResults.length).toEqual(2);
     expect(filterResults[0].name).toEqual('Group 1');
   });
 

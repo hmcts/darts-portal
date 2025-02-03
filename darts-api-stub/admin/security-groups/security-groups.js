@@ -157,6 +157,28 @@ const defaultSecurityGroups = [
     user_ids: [3],
     description: 'Dummy description 2',
   },
+  {
+    id: 15,
+    security_role_id: 8,
+    name: 'Shown with hidden role',
+    display_name: 'Shown with hidden role',
+    display_state: true,
+    global_access: true,
+    courthouse_ids: [16],
+    user_ids: [3],
+    description: 'Dummy description 2',
+  },
+  {
+    id: 16,
+    security_role_id: 7,
+    name: 'Hidden group with shown role',
+    display_name: 'Hidden group with shown role',
+    display_state: false,
+    global_access: true,
+    courthouse_ids: [16],
+    user_ids: [3],
+    description: 'Dummy description 2',
+  },
 ];
 
 let securityGroups = [...defaultSecurityGroups];
