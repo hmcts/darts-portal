@@ -4,5 +4,7 @@ export type RoleName =
   | 'JUDICIARY'
   | 'REQUESTER'
   | 'TRANSLATION_QA'
+  | 'RCJ_APPEALS'
+  | 'MEDIA_IN_PERPETUITY'
   | 'SUPER_ADMIN'
   | 'SUPER_USER';

@@ -7,6 +7,7 @@ const {
   SUPER_ADMIN,
   TRANSLATION_QA,
   SUPER_USER,
+  RCJ_APPEALS,
 } = require('./roles');
 
 const stubUsers = [
@@ -130,6 +131,18 @@ const stubUsers = [
       isActive: true,
     },
     active: false,
+  },
+
+  {
+    name: 'Dennis Priestley',
+    code: 'rcj-appeals',
+    userState: {
+      userId: 10,
+      userName: 'dennis.priestley@darts.local',
+      roles: [RCJ_APPEALS],
+      isActive: true,
+    },
+    active: true,
   },
 ];
 

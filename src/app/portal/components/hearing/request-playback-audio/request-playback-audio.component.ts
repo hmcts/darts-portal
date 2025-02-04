@@ -59,6 +59,8 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
 
   fieldErrors = fieldErrors;
 
+  requestTypeRequired = false;
+
   constructor(
     private fb: FormBuilder,
     public userService: UserService
@@ -73,11 +75,14 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
     );
   }
   ngOnInit(): void {
-    const requestTypeRequired =
+    // Roles that allow selection of request type
+    this.requestTypeRequired =
       this.userService.isCourthouseTranscriber(this.courthouseId) ||
       this.userService.isAdmin() ||
-      this.userService.isSuperUser();
-    if (requestTypeRequired) {
+      this.userService.isSuperUser() ||
+      this.userService.isRCJAppeals();
+
+    if (this.requestTypeRequired) {
       this.audioRequestForm.get('requestType')?.setValidators(Validators.required);
     } else {
       this.audioRequestForm.get('requestType')?.patchValue('PLAYBACK');
