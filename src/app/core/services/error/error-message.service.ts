@@ -30,8 +30,8 @@ const subscribedEndpoints = [
 
 //Contains endpoints where errors will be ignored
 const ignoredEndpoints = [
-  { endpoint: '/api/audio-requests/not-accessed-count', responses: [400, 401, 403, 404, 500, 502, 504] },
-  { endpoint: '/api/transcriptions/transcriber-counts', responses: [401, 403, 500, 502, 504] },
+  { endpoint: 'api/audio-requests/not-accessed-count', responses: [0, 400, 401, 403, 404, 500, 502, 504] },
+  { endpoint: 'api/transcriptions/transcriber-counts', responses: [0, 401, 403, 500, 502, 504] },
 ];
 
 @Injectable({
@@ -47,7 +47,9 @@ export class ErrorMessageService {
   ) {}
 
   handleErrorMessage(error: HttpErrorResponse) {
-    if (error.error) this.setErrorMessage({ status: error.status, detail: error.error });
+    if (!this.isIgnored(error) && error.error) {
+      this.setErrorMessage({ status: error.status, detail: error.error });
+    }
     this.handleOtherPages(error);
   }
 

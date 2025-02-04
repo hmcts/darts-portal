@@ -148,6 +148,20 @@ describe('ErrorMessageService', () => {
       expect(handleOtherPagesSpy).toHaveBeenCalledWith(error);
     });
 
+    it('should not set error message if endpoint is ignored', () => {
+      const error = new HttpErrorResponse({ status: 500, url: 'api/audio-requests/not-accessed-count' });
+      const setErrorMessageSpy = jest.spyOn(service, 'setErrorMessage');
+      const handleOtherPagesSpy = jest.spyOn(
+        service as unknown as { handleOtherPages: (error: HttpErrorResponse) => void },
+        'handleOtherPages'
+      );
+
+      service.handleErrorMessage(error);
+
+      expect(setErrorMessageSpy).not.toHaveBeenCalled();
+      expect(handleOtherPagesSpy).toHaveBeenCalledWith(error);
+    });
+
     it('should handle other pages for a given error', () => {
       const error = new HttpErrorResponse({ status: 404, error: 'Not Found' });
       const handleOtherPagesSpy = jest.spyOn(
