@@ -66,6 +66,10 @@ export class UserService {
     return this.hasGlobalRole('JUDICIARY');
   }
 
+  public isRCJAppeals(): boolean {
+    return this.hasRole('RCJ_APPEALS');
+  }
+
   public isCourthouseJudge(courthouseId?: number): boolean {
     if (courthouseId) {
       return this.isGlobalJudge() || this.hasCourthouse('JUDICIARY', courthouseId);

@@ -19,6 +19,7 @@ describe('RequestPlaybackAudioComponent', () => {
       isCourthouseTranscriber: jest.fn(),
       isAdmin: jest.fn(),
       isSuperUser: jest.fn(),
+      isRCJAppeals: jest.fn(),
     };
 
     TestBed.configureTestingModule({

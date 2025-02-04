@@ -3,7 +3,7 @@ import './commands';
 
 const previewLinkSelector = 'a[data-cy="preview-link-button"]';
 
-describe('Request audio', () => {
+describe('Request audio functionality', () => {
   beforeEach(() => {
     cy.login();
     cy.injectAxe();
@@ -262,6 +262,48 @@ describe('Request audio', () => {
 });
 
 describe('Audio request type - Role checks', () => {
+  it('should show request type for rcj appeals role', () => {
+    cy.login('rcj-appeals');
+    cy.contains('Search').click();
+    cy.get('h1').should('contain', 'Search for a case');
+    cy.get('#case_number').type('C20220620001');
+    cy.get('button').contains('Search').click();
+
+    cy.get('.govuk-table__row').contains('C20220620001');
+    cy.get('a').contains('C20220620001').click();
+    cy.get('h1').should('contain', 'C20220620001');
+
+    cy.get('#hearingsTable').should('contain', '1 Sep 2023');
+    cy.get('#hearingsTable a').contains('1 Sep 2023').click();
+
+    cy.get('.button').contains('Get Audio').click();
+    cy.get('.govuk-error-summary').should('contain', 'You must include a start time for your audio recording');
+    cy.get('.govuk-error-summary').should('contain', 'You must include an end time for your audio recording');
+    cy.get('.govuk-error-summary').should('contain', 'You must select a request type');
+
+    cy.get('#eventAudioTable .govuk-table__row:nth-child(12) .govuk-checkboxes__item').click();
+    cy.get('#start-time-hour-input').should('have.value', '03');
+    cy.get('#start-time-minutes-input').should('have.value', '32');
+    cy.get('#start-time-seconds-input').should('have.value', '24');
+    cy.get('#end-time-hour-input').should('have.value', '15');
+    cy.get('#end-time-minutes-input').should('have.value', '32');
+    cy.get('#end-time-seconds-input').should('have.value', '24');
+
+    cy.get('#download-radio').click({ force: true });
+
+    cy.get('.button > .govuk-button').contains('Get Audio').click();
+
+    cy.get('.govuk-button-group > .govuk-button').contains('Confirm').click();
+
+    cy.get('.govuk-grid-column-two-thirds > :nth-child(4)').should('contain', 'C20220620001');
+    cy.get('.govuk-grid-column-two-thirds > :nth-child(6)').should('contain', 'Swansea');
+    cy.get('.govuk-grid-column-two-thirds > :nth-child(8)').should('contain', 'Defendant Dave');
+    cy.get('.govuk-grid-column-two-thirds > :nth-child(11)').should('contain', '1 Sep 2023');
+    cy.get('.govuk-grid-column-two-thirds > :nth-child(13)').should('contain', '03:32:24');
+    cy.get('.govuk-grid-column-two-thirds > :nth-child(15)').should('contain', '15:32:24');
+    cy.get(':nth-child(18) > strong').should('contain', 'dennis.priestley@darts.local');
+  });
+
   it('should show request type for transcriber role', () => {
     cy.login('transcriber');
     cy.contains('Search').click();

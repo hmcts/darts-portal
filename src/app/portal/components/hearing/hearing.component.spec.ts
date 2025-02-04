@@ -207,6 +207,7 @@ describe('HearingComponent', () => {
       isCourthouseJudge: () => false,
       isCourthouseTranscriber: () => false,
       isSuperUser: () => false,
+      isRCJAppeals: () => false,
     };
 
     fakeActiveTabService = { activeTabs: signal({}), setActiveTab: jest.fn() };

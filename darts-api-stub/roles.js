@@ -52,6 +52,12 @@ const GLOBAL_JUDGE = {
   globalAccess: true,
 };
 
+const RCJ_APPEALS = {
+  roleId: 9,
+  roleName: 'RCJ_APPEALS',
+  permissions,
+};
+
 module.exports = {
   GLOBAL_JUDGE,
   JUDGE,
@@ -61,4 +67,5 @@ module.exports = {
   SUPER_ADMIN,
   TRANSLATION_QA,
   SUPER_USER,
+  RCJ_APPEALS,
 };

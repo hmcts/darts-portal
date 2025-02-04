@@ -49,14 +49,7 @@
             ></app-time-input>
           </div>
         </div>
-        <div
-          class="govuk-grid-column-one-quarter requestType"
-          [ngClass]="
-            userService.isCourthouseTranscriber(courthouseId) || userService.isAdmin() || userService.isSuperUser()
-              ? ''
-              : 'hidden'
-          "
-        >
+        <div class="govuk-grid-column-one-quarter requestType" [ngClass]="requestTypeRequired ? '' : 'hidden'">
           <div
             class="govuk-form-group"
             [ngClass]="{
