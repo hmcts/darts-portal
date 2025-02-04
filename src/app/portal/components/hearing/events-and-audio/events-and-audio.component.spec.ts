@@ -387,6 +387,15 @@ describe('EventsAndAudioComponent', () => {
 
       expect(component.isNoAudio(row)).toBe(true);
     });
+
+    it('should return true when start is after end', () => {
+      const row = {
+        media_start_timestamp: '2023-07-31T22:32:31.000Z',
+        media_end_timestamp: '2023-07-31T22:31:31.999Z',
+      } as AudioEventRow;
+
+      expect(component.isNoAudio(row)).toBe(true);
+    });
   });
 
   describe('#sortTableByTimeStamp', () => {
