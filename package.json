@@ -80,7 +80,7 @@
     "micromatch": "^4.0.8",
     "send": "^1.0.0",
     "cookie": "^1.0.0",
-    "express/path-to-regexp": "^0.1.12"
+    "express/path-to-regexp": "^0.2.0"
   },
   "devDependencies": {
     "@angular-builders/custom-webpack": "^19.0.0",
