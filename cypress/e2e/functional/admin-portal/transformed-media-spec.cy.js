@@ -16,6 +16,37 @@ describe('Admin - Transformed media screen', () => {
   });
 
   describe('search form', () => {
+    it('fill in form and clear search, check inputs are empty', () => {
+      cy.get('#requestId').type('1');
+
+      cy.get('summary').contains('Advanced search').click();
+
+      cy.get('#caseId').type('1');
+      cy.get('#courthouse').type('Swansea');
+      cy.get('#hearingDate').type('01/01/2021');
+      cy.get('#owner').type('Phil Taylor');
+      cy.get('#requestedBy').type('Martin Adams');
+
+      cy.get('#specific-date-radio').click();
+      cy.get('#specific').type('01/01/2021');
+
+      cy.get('#search').click();
+
+      cy.get('.govuk-link').contains('Clear search').click();
+      cy.get('summary').contains('Advanced search').click();
+
+      cy.get('#caseId').should('have.value', '');
+      cy.get('#courthouse').should('have.value', '');
+      cy.get('#hearingDate').should('have.value', '');
+      cy.get('#owner').should('have.value', '');
+      cy.get('#requestedBy').should('have.value', '');
+
+      cy.get('#specific-date-radio').click();
+      cy.get('#specific').should('have.value', '');
+
+      cy.a11y();
+    });
+
     it('fill in form and perform search, check results', () => {
       cy.get('#requestId').type('1');
 

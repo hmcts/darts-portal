@@ -10,6 +10,34 @@ describe('Admin - Transcript requests', () => {
   });
 
   describe('search form', () => {
+    it('clears all input when clearing search', () => {
+      cy.get('#requestId').type('9');
+
+      cy.get('summary').contains('Advanced search').click();
+
+      cy.get('#courthouse').type('Slough');
+      cy.get('#hearingDate').type('01/01/2022');
+      cy.get('#owner').type('Phil Taylor');
+      cy.get('#requestedBy').type('Martin Adams');
+      cy.get('#specific-date-radio').click();
+      cy.get('#specific').type('01/01/2022');
+      cy.get('#requestMethodAll').click();
+
+      cy.get('#search').click();
+
+      cy.get('.govuk-link').contains('Clear search').click();
+      cy.get('summary').contains('Advanced search').click();
+
+      cy.get('#requestId').should('have.value', '');
+      cy.get('#courthouse').should('have.value', '');
+      cy.get('#hearingDate').should('have.value', '');
+      cy.get('#owner').should('have.value', '');
+      cy.get('#requestedBy').should('have.value', '');
+      cy.get('#specific-date-radio').click();
+      cy.get('#specific').should('have.value', '');
+      cy.get('#requestMethodAll').should('not.be.checked');
+    });
+
     it('searches for a transcripts', () => {
       cy.get('button').contains('Search').click();
       cy.get('app-search-transcripts-results').contains('C0000000001');
@@ -248,6 +276,35 @@ describe('Admin - Transcript requests', () => {
   });
 
   describe('Search completed transcripts', () => {
+    it('clears all input when clearing search', () => {
+      cy.get('a').contains('Completed transcripts').click();
+      cy.get('#caseId').type('9');
+
+      cy.get('summary').contains('Advanced search').click();
+
+      cy.get('#courthouse').type('Slough');
+      cy.get('#hearingDate').type('01/01/2022');
+      cy.get('#owner').type('Phil Taylor');
+      cy.get('#requestedBy').type('Martin Adams');
+      cy.get('#specific-date-radio').click();
+      cy.get('#specific').type('01/01/2022');
+      cy.get('#requestMethodAll').click();
+
+      cy.get('#search').click();
+
+      cy.get('.govuk-link').contains('Clear search').click();
+      cy.get('summary').contains('Advanced search').click();
+
+      cy.get('#caseId').should('have.value', '');
+      cy.get('#courthouse').should('have.value', '');
+      cy.get('#hearingDate').should('have.value', '');
+      cy.get('#owner').should('have.value', '');
+      cy.get('#requestedBy').should('have.value', '');
+      cy.get('#specific-date-radio').click();
+      cy.get('#specific').should('have.value', '');
+      cy.get('#requestMethodAll').should('not.be.checked');
+    });
+
     it('searches for completed transcripts', () => {
       cy.get('a').contains('Completed transcripts').click();
       cy.get('#search').contains('Search').click();

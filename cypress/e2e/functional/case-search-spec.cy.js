@@ -19,6 +19,32 @@ describe('Case search', () => {
     cy.injectAxe();
   });
 
+  it('should clear input fields', () => {
+    cy.contains('Search').click();
+    cy.get('h1').should('contain', 'Search for a case');
+    cy.contains('Advanced search').click();
+    cy.get('#courthouse').type('Courthouse 1');
+    cy.get('#courtroom').type('Courtroom 1');
+    cy.get('#specific-date-radio').click({ force: true });
+    cy.get('#specific').type('01/01/2021');
+    cy.get('#defendant').type('Defendant 1');
+    cy.get('#judge').type('Judge Judy');
+    cy.get('#keywords').type('Keywords 1');
+
+    cy.get('button').contains('Search').click();
+
+    cy.get('a').contains('Clear search').click();
+    cy.contains('Advanced search').click();
+
+    cy.get('#courthouse').should('have.value', '');
+    cy.get('#courtroom').should('have.value', '');
+    cy.get('#specific-date-radio').click({ force: true });
+    cy.get('#specific').should('have.value', '');
+    cy.get('#defendant').should('have.value', '');
+    cy.get('#judge').should('have.value', '');
+    cy.get('#keywords').should('have.value', '');
+  });
+
   it('no search criteria', () => {
     cy.contains('Search').click();
     cy.get('h1').should('contain', 'Search for a case');

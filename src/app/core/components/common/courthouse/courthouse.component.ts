@@ -9,6 +9,7 @@ import {
   OnChanges,
   OnInit,
   Output,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import accessibleAutocomplete, { AccessibleAutocompleteProps } from 'accessible-autocomplete';
@@ -48,7 +49,11 @@ export class CourthouseComponent implements AfterViewInit, OnChanges, OnInit {
     };
   }
 
-  ngOnChanges(): void {
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['courthouse']?.currentValue === '') {
+      this.reset();
+    }
+
     if (document.querySelector('input[name=courthouse]')) {
       if (this.isInvalid) {
         (document.querySelector('input[name=courthouse]') as HTMLInputElement).style.borderColor = '#d4351c';
@@ -59,11 +64,17 @@ export class CourthouseComponent implements AfterViewInit, OnChanges, OnInit {
   }
 
   reset() {
-    (document.querySelector('input[name=courthouse]') as HTMLInputElement).value = '';
+    this.configureAutocomplete();
   }
 
   ngAfterViewInit(): void {
+    this.configureAutocomplete();
+  }
+
+  configureAutocomplete() {
     if (this.courthouses.length && this.props) {
+      this.autocompleteContainer.nativeElement.innerHTML = '';
+
       this.props.element = this.autocompleteContainer.nativeElement;
       this.props.source = this.courthouses.map((courthouse) => courthouse.displayName);
       this.props.defaultValue = this.courthouse;
