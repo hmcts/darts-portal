@@ -58,6 +58,13 @@ describe('ErrorMessageService', () => {
       service.handleErrorMessage(error);
       expect(navigateSpy).not.toHaveBeenCalled();
     });
+
+    it('should not change route on the ignored endpoints, for transcriber-counts', () => {
+      const error = new HttpErrorResponse({ status: 404, url: '/api/transcriptions/transcriber-counts' });
+      const navigateSpy = jest.spyOn(mockRouter, 'navigateByUrl');
+      service.handleErrorMessage(error);
+      expect(navigateSpy).not.toHaveBeenCalled();
+    });
   });
 
   describe('Global error handling', () => {
