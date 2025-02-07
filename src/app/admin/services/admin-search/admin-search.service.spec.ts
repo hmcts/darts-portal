@@ -16,8 +16,10 @@ import {
   ADMIN_MEDIA_SEARCH_PATH,
   AdminSearchService,
 } from './admin-search.service';
+import { AppInsightsService } from '@services/app-insights/app-insights.service';
+import { UserService } from '@services/user/user.service';
 
-const mockCaseSearchRespone = [
+const mockCaseSearchResponse = [
   {
     id: 2,
     case_number: '654321',
@@ -52,12 +54,29 @@ const mockSearchFormValues: AdminSearchFormValues = {
 describe('AdminSearchService', () => {
   let service: AdminSearchService;
   let httpMock: HttpTestingController;
+  let appInsightsService: AppInsightsService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ imports: [], providers: [provideHttpClient(), provideHttpClientTesting()] });
+    const fakeAppInsightsService = {
+      logEvent: jest.fn().mockImplementation(),
+    };
+    const fakeUserService = {
+      userState: jest.fn().mockReturnValue({ userId: 1 }),
+    };
+
+    TestBed.configureTestingModule({
+      imports: [],
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        { provide: AppInsightsService, useValue: fakeAppInsightsService },
+        { provide: UserService, useValue: fakeUserService },
+      ],
+    });
 
     service = TestBed.inject(AdminSearchService);
     httpMock = TestBed.inject(HttpTestingController);
+    appInsightsService = TestBed.inject(AppInsightsService);
   });
 
   afterEach(() => {
@@ -89,10 +108,23 @@ describe('AdminSearchService', () => {
       });
 
       const req = httpMock.expectOne(ADMIN_CASE_SEARCH_PATH);
-      req.flush(mockCaseSearchRespone);
+      req.flush(mockCaseSearchResponse);
 
       tick();
     }));
+
+    it('logs event', () => {
+      service.getCases(mockSearchFormValues).subscribe();
+      httpMock.expectOne({ url: ADMIN_CASE_SEARCH_PATH, method: 'POST' });
+      expect(appInsightsService.logEvent).toHaveBeenCalledWith('ADMIN_PORTAL::CASE_SEARCH', {
+        userId: 1,
+        case_number: '654321',
+        courthouse_ids: [2],
+        courtroom_name: '2',
+        hearing_end_at: '2021-01-01',
+        hearing_start_at: '2021-01-01',
+      });
+    });
   });
 
   describe('getEvents', () => {
@@ -140,6 +172,19 @@ describe('AdminSearchService', () => {
 
       tick();
     }));
+
+    it('logs event', () => {
+      service.getEvents(mockSearchFormValues).subscribe();
+      httpMock.expectOne({ url: ADMIN_EVENT_SEARCH_PATH, method: 'POST' });
+      expect(appInsightsService.logEvent).toHaveBeenCalledWith('ADMIN_PORTAL::EVENT_SEARCH', {
+        userId: 1,
+        case_number: '654321',
+        courthouse_ids: [2],
+        courtroom_name: '2',
+        hearing_end_at: '2021-01-01',
+        hearing_start_at: '2021-01-01',
+      });
+    });
   });
 
   describe('getHearings', () => {
@@ -184,6 +229,19 @@ describe('AdminSearchService', () => {
 
       tick();
     }));
+
+    it('logs event', () => {
+      service.getHearings(mockSearchFormValues).subscribe();
+      httpMock.expectOne({ url: ADMIN_HEARING_SEARCH_PATH, method: 'POST' });
+      expect(appInsightsService.logEvent).toHaveBeenCalledWith('ADMIN_PORTAL::HEARING_SEARCH', {
+        userId: 1,
+        case_number: '654321',
+        courthouse_ids: [2],
+        courtroom_name: '2',
+        hearing_end_at: '2021-01-01',
+        hearing_start_at: '2021-01-01',
+      });
+    });
   });
 
   describe('getAudioMedia', () => {
@@ -230,6 +288,19 @@ describe('AdminSearchService', () => {
 
       tick();
     }));
+
+    it('logs event', () => {
+      service.getAudioMedia(mockSearchFormValues).subscribe();
+      httpMock.expectOne({ url: ADMIN_MEDIA_SEARCH_PATH, method: 'POST' });
+      expect(appInsightsService.logEvent).toHaveBeenCalledWith('ADMIN_PORTAL::AUDIO_SEARCH', {
+        userId: 1,
+        case_number: '654321',
+        courthouse_ids: [2],
+        courtroom_name: '2',
+        hearing_end_at: '2021-01-01',
+        hearing_start_at: '2021-01-01',
+      });
+    });
   });
 
   describe('mapAdminSearchFormValuesToSearchRequest', () => {

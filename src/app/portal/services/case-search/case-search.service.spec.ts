@@ -3,6 +3,8 @@ import { CaseSearchFormValues, CaseSearchResult } from '@portal-types/case';
 import { CaseService } from '@services/case/case.service';
 import { of, throwError } from 'rxjs';
 import { CaseSearchService } from './case-search.service';
+import { AppInsightsService } from '@services/app-insights/app-insights.service';
+import { UserService } from '@services/user/user.service';
 
 const mockFormValues: CaseSearchFormValues = {
   caseNumber: '',
@@ -29,18 +31,31 @@ const mockCaseSearchResults: CaseSearchResult[] = [
 describe('CaseSearchService', () => {
   let service: CaseSearchService;
   let caseService: CaseService;
+  let appInsightsService: AppInsightsService;
 
   beforeEach(() => {
     const fakeCaseService = {
       searchCases: jest.fn().mockReturnValue(of(mockCaseSearchResults)),
     } as unknown as CaseSearchService;
+    const fakeAppInsightsService = {
+      logEvent: jest.fn().mockImplementation(),
+    };
+    const fakeUserService = {
+      userState: jest.fn().mockReturnValue({ userId: 1 }),
+    };
 
     TestBed.configureTestingModule({
-      providers: [CaseSearchService, { provide: CaseService, useValue: fakeCaseService }],
+      providers: [
+        CaseSearchService,
+        { provide: AppInsightsService, useValue: fakeAppInsightsService },
+        { provide: UserService, useValue: fakeUserService },
+        { provide: CaseService, useValue: fakeCaseService },
+      ],
     });
 
     service = TestBed.inject(CaseSearchService);
     caseService = TestBed.inject(CaseService);
+    appInsightsService = TestBed.inject(AppInsightsService);
   });
 
   it('should be created', () => {
@@ -118,6 +133,14 @@ describe('CaseSearchService', () => {
       tick();
       expect(searchCasesSpy).toHaveBeenCalledWith(mockFormValues);
     }));
+
+    it('logs event', () => {
+      service.searchCases(mockFormValues);
+      expect(appInsightsService.logEvent).toHaveBeenCalledWith('USER_PORTAL::CASE_SEARCH', {
+        userId: 1,
+        ...mockFormValues,
+      });
+    });
   });
 
   describe('#clearSearch', () => {
