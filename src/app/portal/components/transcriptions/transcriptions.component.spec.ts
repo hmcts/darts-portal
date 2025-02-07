@@ -348,7 +348,7 @@ describe('TranscriptionsComponent', () => {
     expect(table).toBeTruthy();
   });
 
-  it('Both tabs if SUPER_USER only', () => {
+  it('Requester view and no tabs if SUPER_USER only', () => {
     fixture.detectChanges();
 
     component.isRequester = false;
@@ -360,10 +360,12 @@ describe('TranscriptionsComponent', () => {
 
     const compiled = fixture.nativeElement;
     const tabs = compiled.querySelector('app-tabs');
-    expect(tabs).toBeTruthy();
+    const table = compiled.querySelector('#in-progress-table');
+    expect(tabs).toBeFalsy();
+    expect(table).toBeTruthy();
   });
 
-  it('Both tabs if SUPER_ADMIN only', () => {
+  it('Requester view and no tabs if SUPER_ADMIN only', () => {
     fixture.detectChanges();
 
     component.isRequester = false;
@@ -376,7 +378,9 @@ describe('TranscriptionsComponent', () => {
 
     const compiled = fixture.nativeElement;
     const tabs = compiled.querySelector('app-tabs');
-    expect(tabs).toBeTruthy();
+    const table = compiled.querySelector('#in-progress-table');
+    expect(tabs).toBeFalsy();
+    expect(table).toBeTruthy();
   });
 
   it('Tabbed view if JUDGE and APPROVER', () => {
