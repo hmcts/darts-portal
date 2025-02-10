@@ -23,6 +23,16 @@ function proxyMiddleware() {
           }
         }
       },
+      proxyRes: (proxyRes, req, res) => {
+        if (![200, 201].includes(proxyRes.statusCode as number)) {
+          console.log(
+            `[RESPONSE] HTTP proxy middleware: method=${req.method}, url=${req.url}, code=${proxyRes.statusCode}, msg=${proxyRes.statusMessage}`
+          );
+        }
+      },
+      error: (err, req) => {
+        console.error(`[ERROR] HTTP proxy middleware: method=${req.method}, url=${req.url}`, err);
+      },
     },
   });
 }
