@@ -20,7 +20,7 @@ const defaultSecurityGroups = [
     name: 'Opus Transcribers',
     display_name: 'Opus Transcribers',
     display_state: true,
-    global_access: true,
+    global_access: false,
     courthouse_ids: [1, 2],
     user_ids: [1, 2],
     description: 'Dummy description 2',

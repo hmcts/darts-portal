@@ -12,6 +12,7 @@ import { TableRowTemplateDirective } from '@directives/table-row-template.direct
   styleUrl: './group-courthouses.component.scss',
 })
 export class GroupCourthousesComponent {
+  @Input() globalAccess: boolean = false;
   @Input() allCourthouses: CourthouseData[] = [];
   @Input() selectedCourthouses: CourthouseData[] = [];
   @Output() update = new EventEmitter<number[]>();
