@@ -27,7 +27,7 @@ enum SearchType {
   AUDIO = 'AUDIO',
 }
 
-interface SearchResultBody {
+interface SearchRequestBody {
   courthouse_ids: number[];
   case_number: string | null;
   courtroom_name: string | null;
@@ -121,7 +121,7 @@ export class AdminSearchService {
     this.hasFormBeenSubmitted.set(false);
   }
 
-  private logSearchEvent(type: SearchType, formValues: SearchResultBody) {
+  private logSearchEvent(type: SearchType, formValues: SearchRequestBody) {
     this.appInsightsService.logEvent(`ADMIN_PORTAL::${type}_SEARCH`, {
       userId: this.userService.userState()?.userId,
       ...formValues,
@@ -185,7 +185,7 @@ export class AdminSearchService {
     }));
   }
 
-  private mapAdminSearchFormValuesToSearchRequest(formValues: AdminSearchFormValues): SearchResultBody {
+  private mapAdminSearchFormValuesToSearchRequest(formValues: AdminSearchFormValues): SearchRequestBody {
     const { hearingDate, courthouses, caseId, courtroom } = formValues;
     let hearing_start_at, hearing_end_at;
 
