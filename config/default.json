@@ -50,6 +50,7 @@
   "secrets": {
     "darts": {
       "AppInsightsInstrumentationKey": "00000000-0000-0000-0000-000000000000",
+      "app-insights-connection-string": "",
       "redis-connection-string": "redis://localhost:6379",
       "darts-portal-session-secret": "supersecret"
     }
