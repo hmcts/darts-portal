@@ -12,11 +12,28 @@ import { formatDate } from '@utils/date.utils';
 import { DateTime } from 'luxon';
 import { Observable, catchError, finalize, map, of, tap } from 'rxjs';
 import { AdminSearchFormValues } from '../../components/search/search-form/search-form.component';
+import { AppInsightsService } from '@services/app-insights/app-insights.service';
+import { UserService } from '@services/user/user.service';
 
 export const ADMIN_CASE_SEARCH_PATH = '/api/admin/cases/search';
 export const ADMIN_EVENT_SEARCH_PATH = '/api/admin/events/search';
 export const ADMIN_HEARING_SEARCH_PATH = '/api/admin/hearings/search';
 export const ADMIN_MEDIA_SEARCH_PATH = '/api/admin/medias/search';
+
+enum SearchType {
+  CASE = 'CASE',
+  HEARING = 'HEARING',
+  EVENT = 'EVENT',
+  AUDIO = 'AUDIO',
+}
+
+interface SearchResultBody {
+  courthouse_ids: number[];
+  case_number: string | null;
+  courtroom_name: string | null;
+  hearing_start_at: string | null;
+  hearing_end_at: string | null;
+}
 
 export const defaultFormValues: AdminSearchFormValues = {
   courthouses: [],
@@ -36,6 +53,8 @@ export const defaultFormValues: AdminSearchFormValues = {
 })
 export class AdminSearchService {
   http = inject(HttpClient);
+  appInsightsService = inject(AppInsightsService);
+  userService = inject(UserService);
 
   // signals to store previous search results and search form state
   formValues = signal<AdminSearchFormValues>({ ...defaultFormValues });
@@ -49,6 +68,7 @@ export class AdminSearchService {
 
   getCases(formValues: AdminSearchFormValues): Observable<AdminCaseSearchResult[]> {
     const requestBody = this.mapAdminSearchFormValuesToSearchRequest(formValues);
+    this.logSearchEvent(SearchType.CASE, requestBody);
     return this.http.post<AdminCaseSearchResultData[]>(ADMIN_CASE_SEARCH_PATH, requestBody).pipe(
       map((results) => this.mapCaseDataToCaseSearchResult(results)),
       catchError(() => this.handleSearchError()),
@@ -59,6 +79,7 @@ export class AdminSearchService {
 
   getEvents(formValues: AdminSearchFormValues): Observable<AdminEventSearchResult[]> {
     const requestBody = this.mapAdminSearchFormValuesToSearchRequest(formValues);
+    this.logSearchEvent(SearchType.EVENT, requestBody);
     return this.http.post<AdminEventSearchResultData[]>(ADMIN_EVENT_SEARCH_PATH, requestBody).pipe(
       map((results) => this.mapEventDataToEventSearchResult(results)),
       catchError(() => this.handleSearchError()),
@@ -69,6 +90,7 @@ export class AdminSearchService {
 
   getHearings(formValues: AdminSearchFormValues): Observable<AdminHearingSearchResult[]> {
     const requestBody = this.mapAdminSearchFormValuesToSearchRequest(formValues);
+    this.logSearchEvent(SearchType.HEARING, requestBody);
     return this.http.post<AdminHearingSearchResultData[]>(ADMIN_HEARING_SEARCH_PATH, requestBody).pipe(
       map((results) => this.mapHearingDataToHearingSearchResult(results)),
       catchError(() => this.handleSearchError()),
@@ -79,6 +101,7 @@ export class AdminSearchService {
 
   getAudioMedia(formValues: AdminSearchFormValues): Observable<AdminMediaSearchResult[]> {
     const requestBody = this.mapAdminSearchFormValuesToSearchRequest(formValues);
+    this.logSearchEvent(SearchType.AUDIO, requestBody);
     return this.http.post<AdminMediaSearchResultData[]>(ADMIN_MEDIA_SEARCH_PATH, requestBody).pipe(
       map((results) => this.mapMediaDataToMediaSearchResult(results)),
       catchError(() => this.handleSearchError()),
@@ -96,6 +119,13 @@ export class AdminSearchService {
     this.isLoading.set(false);
     this.formValues.set({ ...defaultFormValues });
     this.hasFormBeenSubmitted.set(false);
+  }
+
+  private logSearchEvent(type: SearchType, formValues: SearchResultBody) {
+    this.appInsightsService.logEvent(`ADMIN_PORTAL::${type}_SEARCH`, {
+      userId: this.userService.userState()?.userId,
+      ...formValues,
+    });
   }
 
   private handleSearchError() {
@@ -155,7 +185,7 @@ export class AdminSearchService {
     }));
   }
 
-  private mapAdminSearchFormValuesToSearchRequest(formValues: AdminSearchFormValues) {
+  private mapAdminSearchFormValuesToSearchRequest(formValues: AdminSearchFormValues): SearchResultBody {
     const { hearingDate, courthouses, caseId, courtroom } = formValues;
     let hearing_start_at, hearing_end_at;
 

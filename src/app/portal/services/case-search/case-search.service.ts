@@ -1,7 +1,9 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { CaseSearchFormValues } from '@portal-types/case';
+import { AppInsightsService } from '@services/app-insights/app-insights.service';
 import { CaseService } from '@services/case/case.service';
 import { ErrorMessageService } from '@services/error/error-message.service';
+import { UserService } from '@services/user/user.service';
 import { BehaviorSubject, catchError, of, shareReplay, switchMap, tap } from 'rxjs';
 
 @Injectable({
@@ -10,6 +12,8 @@ import { BehaviorSubject, catchError, of, shareReplay, switchMap, tap } from 'rx
 export class CaseSearchService {
   caseService = inject(CaseService);
   errorMsgService = inject(ErrorMessageService);
+  appInsightsService = inject(AppInsightsService);
+  userService = inject(UserService);
 
   private readonly previousSearchFormValues = signal<CaseSearchFormValues | null>(null);
 
@@ -37,6 +41,10 @@ export class CaseSearchService {
     .pipe(shareReplay(1));
 
   searchCases(searchFormValues: CaseSearchFormValues) {
+    this.appInsightsService.logEvent('USER_PORTAL::CASE_SEARCH', {
+      userId: this.userService.userState()?.userId,
+      ...searchFormValues,
+    });
     this.errorMsgService.clearErrorMessage();
     this.previousSearchFormValues.set(searchFormValues);
     this.search$.next(searchFormValues);
