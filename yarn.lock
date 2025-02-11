@@ -10839,6 +10839,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"isarray@npm:0.0.1":
+  version: 0.0.1
+  resolution: "isarray@npm:0.0.1"
+  checksum: 49191f1425681df4a18c2f0f93db3adb85573bcdd6a4482539d98eac9e705d8961317b01175627e860516a2fc45f8f9302db26e5a380a97a520e272e2a40a8d4
+  languageName: node
+  linkType: hard
+
 "isarray@npm:~1.0.0":
   version: 1.0.0
   resolution: "isarray@npm:1.0.0"
@@ -13904,10 +13911,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"path-to-regexp@npm:^0.2.0":
-  version: 0.2.5
-  resolution: "path-to-regexp@npm:0.2.5"
-  checksum: 44adcbd847d170786490de80d2abc4762d5e65cd8857f230b87bdff6ab1bd17a91baa201fea549954b4cbfd208ae021a3a4ebac19a69ebdf3fdc628c8344ad39
+"path-to-regexp@npm:^1.9.0":
+  version: 1.9.0
+  resolution: "path-to-regexp@npm:1.9.0"
+  dependencies:
+    isarray: 0.0.1
+  checksum: 5b2ac9cab2a9f82effd30a35164b20998b18d99d96608281dd2cab6e66c0e4536187970369b185ab21d3815da1ecb7dcb2d5f97a4bf0ee6e31a9612299fca147
   languageName: node
   linkType: hard
 
