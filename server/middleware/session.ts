@@ -1,5 +1,5 @@
 import config from 'config';
-import RedisStore from 'connect-redis';
+import { RedisStore } from 'connect-redis';
 import session from 'express-session';
 import { Redis } from 'ioredis';
 
@@ -22,8 +22,7 @@ export default () => {
     const redis = new Redis(redisConnectionString);
     redis.on('error', (err) => console.error('REDIS ERROR', err));
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const redisStore = new (RedisStore as any)({
+    const redisStore = new RedisStore({
       client: redis,
       prefix: config.get('session.prefix') + ':',
       ttl: sessionTtl,
