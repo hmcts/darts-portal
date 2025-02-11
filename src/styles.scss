@@ -1,5 +1,5 @@
 $govuk-suppressed-warnings: ('govuk-typography-scale-14');
-@use 'govuk-frontend/dist/govuk/all' as govuk;
+@use 'govuk-frontend/dist/govuk/index' as govuk;
 @use '@ministryofjustice/frontend/moj/all' as moj;
 @use 'accessible-autocomplete' as autocomplete;
 
