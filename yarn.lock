@@ -5323,19 +5323,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/connect-redis@npm:^0.0.23":
-  version: 0.0.23
-  resolution: "@types/connect-redis@npm:0.0.23"
-  dependencies:
-    "@types/express": "*"
-    "@types/express-session": "*"
-    "@types/node": "*"
-    "@types/redis": ^2.8.0
-    ioredis: ^5.3.0
-  checksum: 56ae04700217e579e47b14711f3d7ffd21c54ced77ab0ebf3feb8d8903a0c854c6a63bb2f7d27f0eaec3224a7b725b14e52ebfbecd529e38c05b6e6e5947c1dd
-  languageName: node
-  linkType: hard
-
 "@types/connect@npm:*":
   version: 3.4.38
   resolution: "@types/connect@npm:3.4.38"
@@ -5421,7 +5408,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/express-session@npm:*, @types/express-session@npm:^1.17.7":
+"@types/express-session@npm:^1.17.7":
   version: 1.18.1
   resolution: "@types/express-session@npm:1.18.1"
   dependencies:
@@ -5616,15 +5603,6 @@ __metadata:
   version: 1.2.7
   resolution: "@types/range-parser@npm:1.2.7"
   checksum: 95640233b689dfbd85b8c6ee268812a732cf36d5affead89e806fe30da9a430767af8ef2cd661024fd97e19d61f3dec75af2df5e80ec3bea000019ab7028629a
-  languageName: node
-  linkType: hard
-
-"@types/redis@npm:^2.8.0":
-  version: 2.8.32
-  resolution: "@types/redis@npm:2.8.32"
-  dependencies:
-    "@types/node": "*"
-  checksum: 2b12103e05977941870c9a248f6ea51f4b7ad7e0f16a7403799c2ed1b3e63b60f693c39f9186be0ea02776934c4595ddcd2a5bde41e530aaad42d26449f6a669
   languageName: node
   linkType: hard
 
@@ -7629,12 +7607,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"connect-redis@npm:^7.1.1":
-  version: 7.1.1
-  resolution: "connect-redis@npm:7.1.1"
+"connect-redis@npm:^8.0.0":
+  version: 8.0.1
+  resolution: "connect-redis@npm:8.0.1"
   peerDependencies:
     express-session: ">=1"
-  checksum: ac91ee818d0f467866b6982f66b3423fee58de9da3562618f6d1df2ddeea426354c1efe70b3f799be1b52e3cc67f2043b9ae203678fd3ff9db5dff44b078f0ca
+  checksum: 34bb1203e28fb186af9a2dfb01ad19773ab7dbd21d8ddee8f1aed332441abd19621798b2c160a65ceb65dcb610baf5af13c609454a40cfb5b4fa5528ee264a96
   languageName: node
   linkType: hard
 
@@ -8034,7 +8012,6 @@ __metadata:
     "@ministryofjustice/frontend": ^3.0.0
     "@types/body-parser": ^1.19.5
     "@types/config": ^3.3.4
-    "@types/connect-redis": ^0.0.23
     "@types/cookie-parser": ^1.4.7
     "@types/express": ^5.0.0
     "@types/express-session": ^1.17.7
@@ -8053,7 +8030,7 @@ __metadata:
     body-parser: ^1.20.2
     concurrently: ^9.0.0
     config: ^3.3.11
-    connect-redis: ^7.1.1
+    connect-redis: ^8.0.0
     cookie-parser: ^1.4.6
     cypress: ^13.13.0
     cypress-axe: ^1.5.0
@@ -10561,7 +10538,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ioredis@npm:^5.3.0, ioredis@npm:^5.4.1":
+"ioredis@npm:^5.4.1":
   version: 5.4.2
   resolution: "ioredis@npm:5.4.2"
   dependencies:
