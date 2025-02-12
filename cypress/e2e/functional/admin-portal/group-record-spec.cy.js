@@ -12,6 +12,17 @@ describe('Admin - Groups screen', () => {
     cy.a11y();
   });
 
+  it('disables courthouse edits for global access groups', () => {
+    cy.visit('/admin/groups/1');
+
+    cy.get('#case_number-hint').should('not.exist');
+    cy.get('.add-courthouse-button').should('not.exist');
+    cy.get('.global-access-text').should(
+      'contain',
+      'This is a global access group, data from all courthouses is visible to members of this group.'
+    );
+  });
+
   it('assigns courthouse to group', () => {
     cy.get('#select-courthouse').select('Cardiff');
 

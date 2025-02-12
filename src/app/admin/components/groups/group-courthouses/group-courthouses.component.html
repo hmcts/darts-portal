@@ -1,40 +1,46 @@
 <app-govuk-heading tag="h2" size="m">Courthouses</app-govuk-heading>
 
-<div class="govuk-form-group">
-  <label class="govuk-body" for="select-courthouse">Select courthouses</label>
-  <div id="case_number-hint" class="govuk-hint">You can select and add multiple courthouses</div>
+@if (globalAccess) {
+  <p class="govuk-body global-access-text">
+    This is a global access group, data from all courthouses is visible to members of this group.
+  </p>
+} @else {
+  <div class="govuk-form-group">
+    <label class="govuk-body" for="select-courthouse">Select courthouses</label>
+    <div id="case_number-hint" class="govuk-hint">You can select and add multiple courthouses</div>
 
-  <div class="select-button-container">
-    <select class="govuk-select" id="select-courthouse" name="select-courthouse" #selectCourthouse>
-      <option value="" disabled selected></option>
-      @for (courthouse of allCourthouses; track courthouse.id) {
-        <option [value]="courthouse.id">
-          {{ courthouse.display_name }}
-        </option>
-      }
-    </select>
+    <div class="select-button-container">
+      <select class="govuk-select" id="select-courthouse" name="select-courthouse" #selectCourthouse>
+        <option value="" disabled selected></option>
+        @for (courthouse of allCourthouses; track courthouse.id) {
+          <option [value]="courthouse.id">
+            {{ courthouse.display_name }}
+          </option>
+        }
+      </select>
 
-    <button
-      (click)="onAddCourthouse(selectCourthouse.value)"
-      class="add-courthouse-button govuk-button govuk-button--primary"
+      <button
+        (click)="onAddCourthouse(selectCourthouse.value)"
+        class="add-courthouse-button govuk-button govuk-button--primary"
+      >
+        Add courthouse
+      </button>
+    </div>
+
+    <app-data-table
+      caption="Courthouses assigned to group"
+      [hiddenCaption]="true"
+      id="courthouse-table"
+      [rows]="selectedCourthouses"
+      [pagination]="true"
+      noDataMessage="There are no courthouses assigned to this group."
     >
-      Add courthouse
-    </button>
+      <ng-template let-row [tableRowTemplate]="selectedCourthouses">
+        <td [attr.aria-label]="row.display_name">{{ row.display_name }}</td>
+        <td class="right-align-text">
+          <a href="javascript:void(0)" (click)="onRemoveCourthouse(row.id)" class="govuk-link"> Remove </a>
+        </td>
+      </ng-template>
+    </app-data-table>
   </div>
-
-  <app-data-table
-    caption="Courthouses assigned to group"
-    [hiddenCaption]="true"
-    id="courthouse-table"
-    [rows]="selectedCourthouses"
-    [pagination]="true"
-    noDataMessage="There are no courthouses assigned to this group."
-  >
-    <ng-template let-row [tableRowTemplate]="selectedCourthouses">
-      <td [attr.aria-label]="row.display_name">{{ row.display_name }}</td>
-      <td class="right-align-text">
-        <a href="javascript:void(0)" (click)="onRemoveCourthouse(row.id)" class="govuk-link"> Remove </a>
-      </td>
-    </ng-template>
-  </app-data-table>
-</div>
+}

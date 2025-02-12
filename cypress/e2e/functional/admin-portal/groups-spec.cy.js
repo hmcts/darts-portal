@@ -55,13 +55,14 @@ describe('Admin - Groups screen', () => {
   });
 
   it('view group details', () => {
-    cy.get('#groups-table').contains('Judiciary').click();
+    cy.get('#groups-table').contains('Opus Transcribers').click();
 
     cy.get('h1').should('contain', 'Group details');
-    cy.get('app-group-record').should('contain', 'Judiciary');
-    cy.get('app-group-record').should('contain', 'Approver');
+    cy.get('app-group-record').should('contain', 'Opus Transcribers');
+    cy.get('app-group-record').should('contain', 'Transcriber');
 
     cy.get('#courthouse-table').should('contain', 'Slough');
+    cy.get('#courthouse-table').should('contain', 'Kingston');
   });
 
   it('creates new group', () => {
