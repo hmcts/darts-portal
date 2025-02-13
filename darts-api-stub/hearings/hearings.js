@@ -1,6 +1,7 @@
 const express = require('express');
 const { localArray } = require('../localArray');
 const { getRolesByUserId } = require('../users');
+const { DateTime } = require('luxon');
 
 const router = express.Router();
 
@@ -181,6 +182,19 @@ router.get('/:hearingId/events', (req, res) => {
       break;
     case '4':
       res.send(events);
+      break;
+    case '16':
+      const manyEvents = [];
+      for (var x = 0; x < 25; x++) {
+        const event = {
+          id: x,
+          timestamp: DateTime.now().plus({ minutes: x }).toISO(),
+          name: 'Case called on',
+          text: 'Record: New Case',
+        };
+        manyEvents.push(event);
+      }
+      res.send(manyEvents);
       break;
     default:
       res.send(events);

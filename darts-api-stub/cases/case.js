@@ -193,6 +193,14 @@ const defaultCaseHearings = [
     judges: ['Zach Attack'],
     transcript_count: 51,
   },
+  {
+    case_id: 16,
+    id: 16,
+    date: '2025-01-10',
+    courtroom: '99',
+    judges: ['Chris Huw'],
+    transcript_count: 9,
+  },
 ];
 
 const multipleCases = [
@@ -833,11 +841,13 @@ router.get('/:caseId/hearings', (req, res) => {
     case '10':
       res.status(404).send(resBody404);
       break;
+    case '16':
+      res.send(getHearingsByCaseId(16));
+      break;
     default:
       // Just leaving this as 1 at the moment to replicate
       // existing data, for potential future expansion
-      const caseHearings = getHearingsByCaseId(1);
-      res.send(caseHearings);
+      res.send(getHearingsByCaseId(1));
       break;
   }
 });

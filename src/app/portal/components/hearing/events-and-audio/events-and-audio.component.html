@@ -38,6 +38,7 @@
     caption="Events and audio for this hearing"
     [hiddenCaption]="true"
     (rowSelect)="onRowSelect($event)"
+    [sortAndPaginateOnRowsChanged]="false"
   >
     <ng-template [tableRowTemplate]="filteredRows" let-row let-index>
       <ng-container *ngIf="row.type === 'audio'">
