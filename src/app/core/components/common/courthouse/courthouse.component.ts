@@ -50,7 +50,7 @@ export class CourthouseComponent implements AfterViewInit, OnChanges, OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['courthouse']?.currentValue === '') {
+    if (changes.data && !changes.data.isFirstChange()) {
       this.reset();
     }
 
