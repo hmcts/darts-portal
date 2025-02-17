@@ -85,8 +85,9 @@ export class SearchTranscriptsFormComponent implements OnInit {
   }
 
   clearSearch() {
-    this.courthouseComponent.reset();
     this.clear.emit();
+    this.courthouseComponent.reset();
+    this.form.reset();
   }
 
   toggleAdvancedSearch() {

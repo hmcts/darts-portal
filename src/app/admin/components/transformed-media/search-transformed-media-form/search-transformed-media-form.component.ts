@@ -108,6 +108,7 @@ export class SearchTransformedMediaFormComponent implements OnInit {
   onClear() {
     this.courthouseComponent.reset();
     this.clear.emit();
+    this.form.reset();
   }
 
   getFormControlErrorMessages(controlName: string): string[] {
