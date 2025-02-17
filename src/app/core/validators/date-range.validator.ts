@@ -6,6 +6,10 @@ export function dateRangeValidator(startDateControlKey: string, endDateControlKe
     const startDate = control.get(startDateControlKey)?.value;
     const endDate = control.get(endDateControlKey)?.value;
 
+    if (!startDate || !endDate) {
+      return null;
+    }
+
     const startDateTime = DateTime.fromFormat(startDate, 'dd/MM/yyyy');
     const endDateTime = DateTime.fromFormat(endDate, 'dd/MM/yyyy');
 

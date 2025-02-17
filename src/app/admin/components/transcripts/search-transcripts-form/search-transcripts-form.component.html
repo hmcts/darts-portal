@@ -77,7 +77,7 @@
       >
         <app-courthouse-field
           [courthouses]="courthouses()"
-          [courthouse]="formValues().courthouse!"
+          [courthouse]="courthouse()"
           (courthouseSelect)="form.get('courthouse')?.patchValue($event); form.get('courthouse')?.markAsDirty()"
           [isInvalid]="form.controls.courthouse.invalid && form.controls.courthouse.touched"
           [errors]="getControlErrorMessage(['courthouse'])"
@@ -180,6 +180,6 @@
   </details>
   <div class="govuk-button-group">
     <button type="submit" class="govuk-button" id="search">Search</button>
-    <a class="govuk-link" href="javascript:void(0)" (click)="clear.emit()">Clear search</a>
+    <a class="govuk-link" href="javascript:void(0)" (click)="clearSearch()">Clear search</a>
   </div>
 </form>

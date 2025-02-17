@@ -6,12 +6,13 @@ import {
   DestroyRef,
   EventEmitter,
   Input,
+  OnInit,
   Output,
-  effect,
+  ViewChild,
   inject,
-  input,
   model,
   output,
+  signal,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CourthouseComponent } from '@common/courthouse/courthouse.component';
@@ -45,11 +46,13 @@ export const transformedMediaSearchDateValidators = [
     CommonModule,
   ],
 })
-export class SearchTransformedMediaFormComponent {
+export class SearchTransformedMediaFormComponent implements OnInit {
+  @ViewChild(CourthouseComponent) courthouseComponent!: CourthouseComponent;
+
   fb = inject(FormBuilder);
   destroyRef = inject(DestroyRef);
   formService = inject(FormService);
-  formValues = input<TransformedMediaSearchFormValues>({ ...defaultFormValues });
+  formValues = model<TransformedMediaSearchFormValues>({ ...defaultFormValues });
 
   @Input() courthouses: Courthouse[] = [];
 
@@ -71,8 +74,18 @@ export class SearchTransformedMediaFormComponent {
     ),
   });
 
-  constructor() {
-    effect(() => this.form.patchValue(this.formValues()!));
+  courthouse = signal('');
+
+  ngOnInit() {
+    this.restoreFormValues();
+  }
+
+  restoreFormValues() {
+    const formValues = this.formValues();
+    if (formValues.courthouse) {
+      this.courthouse.set(formValues.courthouse!);
+    }
+    this.form.patchValue(this.formValues());
   }
 
   @Output() search = new EventEmitter<typeof this.form.value>();
@@ -93,7 +106,9 @@ export class SearchTransformedMediaFormComponent {
   }
 
   onClear() {
+    this.courthouseComponent.reset();
     this.clear.emit();
+    this.form.reset();
   }
 
   getFormControlErrorMessages(controlName: string): string[] {

@@ -1,7 +1,7 @@
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { TranscriptionSearchFormValues } from '@admin-types/index';
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, effect, inject, input, model, output } from '@angular/core';
+import { Component, DestroyRef, inject, input, model, OnInit, output, signal, ViewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CourthouseComponent } from '@common/courthouse/courthouse.component';
 import { DatepickerComponent } from '@common/datepicker/datepicker.component';
@@ -34,7 +34,9 @@ export const transcriptSearchDateValidators = [
     CommonModule,
   ],
 })
-export class SearchTranscriptsFormComponent {
+export class SearchTranscriptsFormComponent implements OnInit {
+  @ViewChild(CourthouseComponent) courthouseComponent!: CourthouseComponent;
+
   fb = inject(FormBuilder);
   destroyRef = inject(DestroyRef);
   formService = inject(FormService);
@@ -42,6 +44,8 @@ export class SearchTranscriptsFormComponent {
   isCompletedTranscriptSearch = input(false);
   courthouses = input<Courthouse[]>([]);
   formValues = model<TranscriptionSearchFormValues>(defaultFormValues);
+
+  courthouse = signal('');
 
   form = this.fb.group({
     requestId: ['', [Validators.pattern(/^-?[0-9]*$/), Validators.min(1), Validators.max(2147483647)]],
@@ -68,8 +72,22 @@ export class SearchTranscriptsFormComponent {
 
   isAdvancedSearch = model(false);
 
-  constructor() {
-    effect(() => this.form.patchValue(this.formValues()));
+  ngOnInit() {
+    this.restoreFormValues();
+  }
+
+  restoreFormValues() {
+    const formValues = this.formValues();
+    if (formValues.courthouse) {
+      this.courthouse.set(formValues.courthouse!);
+    }
+    this.form.patchValue(this.formValues());
+  }
+
+  clearSearch() {
+    this.clear.emit();
+    this.courthouseComponent.reset();
+    this.form.reset();
   }
 
   toggleAdvancedSearch() {

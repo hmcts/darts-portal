@@ -24,7 +24,7 @@
         @if (courthouses().length) {
           <app-courthouse-field
             [courthouses]="courthouses()"
-            [courthouse]="form.controls.courthouse.value"
+            [courthouse]="courthouse()"
             [isInvalid]="isControlInvalid('courthouse')"
             [errors]="getFieldErrorMessages('courthouse')"
             (courthouseSelect)="onCourthouseSelected($event)"

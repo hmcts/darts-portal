@@ -37,4 +37,46 @@ describe('SearchTranscriptsFormComponent', () => {
     component.setInputValue('test', 'requestId');
     expect(component.form.get('requestId')?.value).toBe('test');
   });
+
+  describe('#restoreFormValues', () => {
+    it('should restore form values and set courthouse if provided', () => {
+      const mockFormValues = {
+        requestId: '123',
+        caseId: 'ABC',
+        courthouse: 'Reading',
+        hearingDate: '01/01/2023',
+        owner: 'John Doe',
+        requestedBy: 'Jane Doe',
+        requestedDate: { type: '', specific: '', from: '', to: '' },
+        requestMethod: 'Manual',
+      };
+
+      component.formValues.set(mockFormValues);
+
+      component.restoreFormValues();
+
+      expect(component.form.value).toEqual(mockFormValues);
+      expect(component.courthouse()).toBe('Reading');
+    });
+
+    it('should not set courthouse if it is not provided', () => {
+      const mockFormValues = {
+        requestId: '123',
+        caseId: 'ABC',
+        courthouse: '',
+        hearingDate: '01/01/2023',
+        owner: 'John Doe',
+        requestedBy: 'Jane Doe',
+        requestedDate: { type: '', specific: '', from: '', to: '' },
+        requestMethod: 'Manual',
+      };
+
+      component.formValues.set(mockFormValues);
+
+      component.restoreFormValues();
+
+      expect(component.form.value).toEqual(mockFormValues);
+      expect(component.courthouse()).toBe('');
+    });
+  });
 });
