@@ -78,4 +78,36 @@ describe('CourthouseComponent', () => {
       expect(error).toBeNull();
     });
   });
+
+  describe('ngOnChanges', () => {
+    it('should call reset when data input changes and is not the first change', () => {
+      jest.spyOn(component, 'reset');
+
+      component.ngOnChanges({
+        data: {
+          currentValue: {},
+          previousValue: {},
+          firstChange: false,
+          isFirstChange: () => false,
+        },
+      });
+
+      expect(component.reset).toHaveBeenCalled();
+    });
+
+    it('should not call reset when data input changes for the first time', () => {
+      jest.spyOn(component, 'reset');
+
+      component.ngOnChanges({
+        data: {
+          currentValue: {},
+          previousValue: undefined,
+          firstChange: true,
+          isFirstChange: () => true,
+        },
+      });
+
+      expect(component.reset).not.toHaveBeenCalled();
+    });
+  });
 });
