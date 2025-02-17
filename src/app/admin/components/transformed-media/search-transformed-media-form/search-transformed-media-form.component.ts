@@ -81,7 +81,7 @@ export class SearchTransformedMediaFormComponent {
     effect(() => this.restoreFormValues());
   }
 
-  restoreFormValues() {
+  private restoreFormValues() {
     const formValues = this.formValues();
     if (formValues.courthouse) {
       this.courthouse.set(formValues.courthouse!);
