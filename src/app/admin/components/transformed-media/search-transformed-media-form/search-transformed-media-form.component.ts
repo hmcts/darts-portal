@@ -6,11 +6,10 @@ import {
   DestroyRef,
   EventEmitter,
   Input,
+  OnInit,
   Output,
   ViewChild,
-  effect,
   inject,
-  input,
   model,
   output,
   signal,
@@ -47,13 +46,13 @@ export const transformedMediaSearchDateValidators = [
     CommonModule,
   ],
 })
-export class SearchTransformedMediaFormComponent {
+export class SearchTransformedMediaFormComponent implements OnInit {
   @ViewChild(CourthouseComponent) courthouseComponent!: CourthouseComponent;
 
   fb = inject(FormBuilder);
   destroyRef = inject(DestroyRef);
   formService = inject(FormService);
-  formValues = input<TransformedMediaSearchFormValues>({ ...defaultFormValues });
+  formValues = model<TransformedMediaSearchFormValues>({ ...defaultFormValues });
 
   @Input() courthouses: Courthouse[] = [];
 
@@ -77,11 +76,11 @@ export class SearchTransformedMediaFormComponent {
 
   courthouse = signal('');
 
-  constructor() {
-    effect(() => this.restoreFormValues());
+  ngOnInit() {
+    this.restoreFormValues();
   }
 
-  private restoreFormValues() {
+  restoreFormValues() {
     const formValues = this.formValues();
     if (formValues.courthouse) {
       this.courthouse.set(formValues.courthouse!);
@@ -107,8 +106,8 @@ export class SearchTransformedMediaFormComponent {
   }
 
   onClear() {
-    this.clear.emit();
     this.courthouseComponent.reset();
+    this.clear.emit();
   }
 
   getFormControlErrorMessages(controlName: string): string[] {
