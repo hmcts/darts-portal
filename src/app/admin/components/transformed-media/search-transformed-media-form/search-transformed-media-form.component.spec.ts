@@ -37,4 +37,44 @@ describe('SearchTransformedMediaFormComponent', () => {
     component.setInputValue('test', 'requestId');
     expect(component.form.get('requestId')?.value).toBe('test');
   });
+
+  describe('#restoreFormValues', () => {
+    it('should restore form values and set courthouse if provided', () => {
+      const mockFormValues = {
+        requestId: '123',
+        caseId: 'XYZ',
+        courthouse: 'Manchester',
+        hearingDate: '15/08/2023',
+        owner: 'John Doe',
+        requestedBy: 'Jane Doe',
+        requestedDate: { type: '', specific: '', from: '', to: '' },
+      };
+
+      component.formValues.set(mockFormValues);
+
+      component.restoreFormValues();
+
+      expect(component.form.value).toEqual(expect.objectContaining(mockFormValues));
+      expect(component.courthouse()).toBe('Manchester');
+    });
+
+    it('should not set courthouse if it is not provided', () => {
+      const mockFormValues = {
+        requestId: '456',
+        caseId: 'ABC',
+        courthouse: '',
+        hearingDate: '10/07/2023',
+        owner: 'Alice Smith',
+        requestedBy: 'Bob Johnson',
+        requestedDate: { type: '', specific: '', from: '', to: '' },
+      };
+
+      component.formValues.set(mockFormValues);
+
+      component.restoreFormValues();
+
+      expect(component.form.value).toEqual(expect.objectContaining(mockFormValues));
+      expect(component.courthouse()).toBe('');
+    });
+  });
 });
