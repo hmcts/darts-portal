@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, computed, inject, input, numberAttribute } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -11,7 +12,14 @@ import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-show-versions',
-  imports: [RouterLink, GovukHeadingComponent, DataTableComponent, TableRowTemplateDirective, LuxonDatePipe],
+  imports: [
+    RouterLink,
+    GovukHeadingComponent,
+    DataTableComponent,
+    TableRowTemplateDirective,
+    LuxonDatePipe,
+    CommonModule,
+  ],
   templateUrl: './show-versions.component.html',
   styleUrl: './show-versions.component.scss',
 })

@@ -1,3 +1,16 @@
+<ng-template #eventRowTemplate let-row>
+  @if (row) {
+    <td class="event-id">
+      <a class="govuk-link" [routerLink]="['/admin', 'events', id()]"> {{ row.id }}</a>
+    </td>
+    <td>{{ row.timestamp | luxonDate: "dd MMM yyyy 'at' HH:mm:ss" }}</td>
+    <td>{{ row.name }}</td>
+    <td>{{ row.courthouse }}</td>
+    <td>{{ row.courtroom }}</td>
+    <td>{{ row.text }}</td>
+  }
+</ng-template>
+
 <a [routerLink]="['../']" class="govuk-back-link">Back</a>
 
 <app-govuk-heading tag="h1" size="l">All versions of this event</app-govuk-heading>
@@ -13,16 +26,7 @@
   [hiddenCaption]="true"
 >
   <ng-template [tableRowTemplate]="[currentVersion()]" let-row>
-    @if (row) {
-      <td class="event-id">
-        <a class="govuk-link" [routerLink]="['/admin', 'events', id()]"> {{ row.id }}</a>
-      </td>
-      <td>{{ row.timestamp | luxonDate: "dd MMM yyyy 'at' HH:mm:ss" }}</td>
-      <td>{{ row.name }}</td>
-      <td>{{ row.courthouse }}</td>
-      <td>{{ row.courtroom }}</td>
-      <td>{{ row.text }}</td>
-    }
+    <ng-container *ngTemplateOutlet="eventRowTemplate; context: { $implicit: row }"></ng-container>
   </ng-template>
 </app-data-table>
 
@@ -34,16 +38,7 @@
   [hiddenCaption]="true"
 >
   <ng-template [tableRowTemplate]="previousVersions()" let-row>
-    @if (row) {
-      <td class="event-id">
-        <a class="govuk-link" [routerLink]="['/admin', 'events', id()]"> {{ row.id }}</a>
-      </td>
-      <td>{{ row.timestamp | luxonDate: "dd MMM yyyy 'at' HH:mm:ss" }}</td>
-      <td>{{ row.name }}</td>
-      <td>{{ row.courthouse }}</td>
-      <td>{{ row.courtroom }}</td>
-      <td>{{ row.text }}</td>
-    }
+    <ng-container *ngTemplateOutlet="eventRowTemplate; context: { $implicit: row }"></ng-container>
   </ng-template>
 </app-data-table>
 
