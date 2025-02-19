@@ -6,6 +6,7 @@ export interface EventData {
   text: string;
   event_mapping: {
     id: number;
+    name?: string;
   };
   is_log_entry: boolean;
   courthouse: {

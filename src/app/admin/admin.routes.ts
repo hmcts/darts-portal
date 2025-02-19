@@ -150,6 +150,14 @@ export const ADMIN_ROUTES: Routes = [
     loadComponent: () =>
       import('./components/events/view-event/view-event.component').then((c) => c.ViewEventComponent),
   },
+
+  {
+    path: 'admin/events/:id/versions',
+    title: 'DARTS Admin View Versions',
+    data: { allowedRoles: ['SUPER_ADMIN'] },
+    loadComponent: () =>
+      import('./components/events/show-versions/show-versions.component').then((c) => c.ShowVersionsComponent),
+  },
   {
     path: 'admin/events/:id/obfuscate',
     title: 'DARTS Admin Obfuscate Event Text',

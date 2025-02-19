@@ -1,5 +1,6 @@
 import { EventMapping } from '@admin-types/event-mappings/event-mapping.type';
 import { Event } from '@admin-types/events';
+import { EventVersions } from '@admin-types/events/event-versions';
 import { User } from '@admin-types/index';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { EventMappingsService } from '@services/event-mappings/event-mappings.service';
@@ -18,6 +19,7 @@ describe('EventsFacadeService', () => {
   beforeEach(() => {
     const eventsServiceMock = {
       getEvent: jest.fn(),
+      getEventVersions: jest.fn(),
     };
 
     const userAdminServiceMock = {
@@ -111,6 +113,85 @@ describe('EventsFacadeService', () => {
       service.obfuscateEventText(1);
 
       expect(eventsService.obfuscateEventTexts).toHaveBeenCalledWith([1]);
+    });
+  });
+
+  describe('#getEventVersions', () => {
+    it('should retrieve event versions and map them correctly', fakeAsync(() => {
+      const mockResponse: EventVersions = {
+        currentVersion: {
+          id: 1,
+          eventTs: DateTime.fromISO('2024-05-10T12:00:00Z'),
+          eventMapping: { id: 1, name: 'Current Event' },
+          courthouse: { id: 1, displayName: 'Current Courthouse' },
+          courtroom: { id: 1, name: 'Current Courtroom' },
+          text: 'Current Event Text',
+        } as Event,
+        previousVersions: [
+          {
+            id: 2,
+            eventTs: DateTime.fromISO('2024-04-10T10:00:00Z'),
+            eventMapping: { id: 2, name: 'Previous Event' },
+            courthouse: { id: 2, displayName: 'Previous Courthouse' },
+            courtroom: { id: 2, name: 'Previous Courtroom' },
+            text: 'Previous Event Text',
+          } as Event,
+        ],
+      };
+
+      eventsService.getEventVersions.mockReturnValue(of(mockResponse));
+
+      let eventVersions;
+      service.getEventVersions(1).subscribe((versions) => {
+        eventVersions = versions;
+      });
+
+      tick();
+
+      expect(eventsService.getEventVersions).toHaveBeenCalledWith(1);
+
+      const expectedEventVersions = {
+        currentVersion: {
+          id: 1,
+          timestamp: DateTime.fromISO('2024-05-10T12:00:00Z'),
+          name: 'Current Event',
+          courthouse: 'Current Courthouse',
+          courtroom: 'Current Courtroom',
+          text: 'Current Event Text',
+        },
+        previousVersions: [
+          {
+            id: 2,
+            timestamp: DateTime.fromISO('2024-04-10T10:00:00Z'),
+            name: 'Previous Event',
+            courthouse: 'Previous Courthouse',
+            courtroom: 'Previous Courtroom',
+            text: 'Previous Event Text',
+          },
+        ],
+      };
+
+      expect(eventVersions).toEqual(expectedEventVersions);
+    }));
+  });
+
+  describe('#mapEventVersions', () => {
+    it('should correctly map event versions data', () => {
+      const mockEventVersions: EventVersions = {
+        currentVersion: {
+          id: 1,
+          eventTs: DateTime.fromISO('2024-05-10T12:00:00Z'),
+          eventMapping: { id: 1, name: 'Event Name' },
+          courthouse: { id: 1, displayName: 'Courthouse' },
+          courtroom: { id: 1, name: 'Courtroom' },
+          text: 'Current Event',
+        } as Event,
+        previousVersions: [],
+      };
+
+      const result = service['mapEventVersions'](mockEventVersions);
+      expect(result.currentVersion.text).toBe('Current Event');
+      expect(result.previousVersions.length).toBe(0);
     });
   });
 });

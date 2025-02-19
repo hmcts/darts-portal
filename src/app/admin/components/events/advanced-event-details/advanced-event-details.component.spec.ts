@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Event } from '@admin-types/events';
 import { DatePipe } from '@angular/common';
+import { provideHttpClient } from '@angular/common/http';
 import { DateTime } from 'luxon';
 import { AdvancedEventDetailsComponent } from './advanced-event-details.component';
 
@@ -42,7 +43,7 @@ describe('AdvancedEventDetailsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AdvancedEventDetailsComponent],
-      providers: [DatePipe],
+      providers: [DatePipe, provideHttpClient()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AdvancedEventDetailsComponent);
