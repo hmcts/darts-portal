@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import { Component, computed, inject, input, numberAttribute } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -18,7 +18,7 @@ import { switchMap } from 'rxjs';
     DataTableComponent,
     TableRowTemplateDirective,
     LuxonDatePipe,
-    CommonModule,
+    NgTemplateOutlet,
   ],
   templateUrl: './show-versions.component.html',
   styleUrl: './show-versions.component.scss',
