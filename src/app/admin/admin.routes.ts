@@ -153,7 +153,7 @@ export const ADMIN_ROUTES: Routes = [
 
   {
     path: 'admin/events/:id/versions',
-    title: 'DARTS Admin View Versions',
+    title: 'DARTS Admin View Event Versions',
     data: { allowedRoles: ['SUPER_ADMIN'] },
     loadComponent: () =>
       import('./components/events/show-versions/show-versions.component').then((c) => c.ShowVersionsComponent),
