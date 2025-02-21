@@ -7,6 +7,7 @@ import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { TabDirective } from '@directives/tab.directive';
 import { EventsFacadeService } from '@facades/events/events-facade.service';
+import { ActiveTabService } from '@services/active-tab/active-tab.service';
 import { FeatureFlagService } from '@services/app-config/feature-flag.service';
 import { UserService } from '@services/user/user.service';
 import { optionalStringToBooleanOrNull } from '@utils/index';
@@ -31,15 +32,25 @@ import { BasicEventDetailsComponent } from '../basic-event-details/basic-event-d
   styleUrl: './view-event.component.scss',
 })
 export class ViewEventComponent {
+  private readonly activeTabKey = 'event-details';
+
+  readonly tabNames = {
+    basic: 'Basic details',
+    advanced: 'Advanced details',
+  } as const;
+
   eventsFacadeService = inject(EventsFacadeService);
   userService = inject(UserService);
   router = inject(Router);
   isEventObfuscationEnabled = inject(FeatureFlagService).isEventObfuscationEnabled();
+  activeTabService = inject(ActiveTabService);
 
   id = input(0, { transform: numberAttribute });
   isObfuscationSuccess = input(null, { transform: optionalStringToBooleanOrNull });
 
   event = toSignal(toObservable(this.id).pipe(switchMap((id) => this.eventsFacadeService.getEvent(id))));
+
+  tab = computed(() => this.activeTabService.activeTabs()[this.activeTabKey] ?? this.tabNames.basic);
 
   // event obfuscation feature flag must be enabled, user must be SUPER_ADMIN, event is not already obfuscated
   showObfuscateButton = computed(
@@ -50,5 +61,9 @@ export class ViewEventComponent {
 
   onObfuscateEventText() {
     this.router.navigate(['/admin/events', this.id(), 'obfuscate']);
+  }
+
+  onTabChange(tab: string) {
+    this.activeTabService.setActiveTab(this.activeTabKey, tab);
   }
 }

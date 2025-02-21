@@ -21,7 +21,7 @@ describe('Admin - Event details', () => {
       cy.get('dt').contains('Text').next('dd').should('contain.text', 'This is an event');
       cy.get('dt').contains('Courthouse').next('dd').should('contain.text', 'Cardiff');
       cy.get('dt').contains('Courtroom').next('dd').should('contain.text', 'Room 1');
-      cy.get('dt').contains('Time stamp').next('dd').should('contain.text', '01 Jan 2024 at 04:14:44');
+      cy.get('dt').contains('Timestamp').next('dd').should('contain.text', '01 Jan 2024 at 04:14:44');
     });
   });
 

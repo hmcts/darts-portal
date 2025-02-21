@@ -4,6 +4,7 @@ import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
+import { LoadingComponent } from '@common/loading/loading.component';
 import { DatatableColumn } from '@core-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { EventsFacadeService } from '@facades/events/events-facade.service';
@@ -19,6 +20,7 @@ import { switchMap } from 'rxjs';
     TableRowTemplateDirective,
     LuxonDatePipe,
     NgTemplateOutlet,
+    LoadingComponent,
   ],
   templateUrl: './show-versions.component.html',
   styleUrl: './show-versions.component.scss',
@@ -34,11 +36,13 @@ export class ShowVersionsComponent {
     { name: 'Timestamp', prop: 'timestamp', sortable: true },
     { name: 'Name', prop: 'name', sortable: true },
     { name: 'Courthouse', prop: 'courthouse', sortable: true },
-    { name: 'Courtroom', prop: 'courtroom' },
+    { name: 'Courtroom', prop: 'courtroom', sortable: true },
     { name: 'Text', prop: 'text', sortable: true },
   ];
 
   versions = toSignal(toObservable(this.id).pipe(switchMap((id) => this.eventsFacadeService.getEventVersions(id))));
   currentVersion = computed(() => this.versions()?.currentVersion);
   previousVersions = computed(() => this.versions()?.previousVersions ?? []);
+
+  isLoading = computed(() => !(this.currentVersion() && this.previousVersions()));
 }
