@@ -34,6 +34,7 @@ import { TranscriptStatus } from '@portal-types/transcriptions/transcript-status
 import { GET_SECURITY_GROUPS_PATH } from '@services/courthouses/courthouses.service';
 import { GET_SECURITY_ROLES_PATH } from '@services/groups/groups.service';
 import { MappingService } from '@services/mapping/mapping.service';
+import { UserService } from '@services/user/user.service';
 import { formatDate } from '@utils/date.utils';
 import { DateTime } from 'luxon';
 import { BehaviorSubject, Observable, of, switchMap } from 'rxjs';
@@ -62,6 +63,7 @@ export class TranscriptionAdminService {
   luxonPipe = inject(LuxonDatePipe);
   http = inject(HttpClient);
   mapping = inject(MappingService);
+  userService = inject(UserService);
 
   searchResults = signal<Transcription[] | null>(null);
   completedSearchResults = signal<TranscriptionDocumentSearchResult[] | null>(null);
@@ -229,14 +231,18 @@ export class TranscriptionAdminService {
     const processGroups = (groups: SecurityGroup[] | undefined, status = '') => {
       if (status === 'Awaiting Authorisation' || status === 'Requested') return null;
 
-      return groups && groups.length > 0
-        ? groups
-            .filter((group) => group.displayName || group.name)
-            .map((group) => ({
-              href: `/admin/groups/${group.id}`,
-              value: group.displayName || group.name,
-            }))
-        : null;
+      if (this.userService.isAdmin()) {
+        return groups && groups.length > 0
+          ? groups
+              .filter((group) => group.displayName || group.name)
+              .map((group) => ({
+                href: `/admin/groups/${group.id}`,
+                value: group.displayName || group.name,
+              }))
+          : null;
+      } else {
+        return groups && groups.length > 0 ? groups.map((group) => group.displayName || group.name) : null;
+      }
     };
 
     const processStatus = (status: string | undefined) => {

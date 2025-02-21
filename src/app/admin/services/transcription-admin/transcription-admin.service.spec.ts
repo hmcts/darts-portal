@@ -19,6 +19,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { TranscriptStatus } from '@portal-types/index';
+import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
 import { TranscriptionAdminService } from './transcription-admin.service';
@@ -76,14 +77,23 @@ const emptySearchRequestBody = {
 describe('TranscriptionAdminService', () => {
   let service: TranscriptionAdminService;
   let httpMock: HttpTestingController;
+  let userService: jest.Mocked<UserService>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [],
-      providers: [provideHttpClient(), provideHttpClientTesting(), TranscriptionAdminService, LuxonDatePipe, DatePipe],
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        TranscriptionAdminService,
+        LuxonDatePipe,
+        DatePipe,
+        { provide: UserService, useValue: { isAdmin: jest.fn().mockReturnValue(true) } },
+      ],
     });
     service = TestBed.inject(TranscriptionAdminService);
     httpMock = TestBed.inject(HttpTestingController);
+    userService = TestBed.inject(UserService) as jest.Mocked<UserService>;
   });
 
   afterEach(() => {
@@ -467,6 +477,38 @@ describe('TranscriptionAdminService', () => {
       { href: '/admin/groups/1', value: 'Group One' },
       { href: '/admin/groups/2', value: 'Group Two' },
     ]);
+  });
+
+  it('should return correct status and associated data based on transcript details for super user', () => {
+    userService.isAdmin.mockReturnValueOnce(false);
+
+    const transcript = {
+      transcriptionId: 1,
+      isManual: true,
+      status: 'Approved',
+      assignedTo: {
+        userId: 1,
+        fullName: 'John Doe',
+        email: 'john.doe@example.com',
+      },
+      assignedGroups: [
+        { id: 1, displayName: 'Group One' },
+        { id: 2, displayName: 'Group Two' },
+      ],
+    } as unknown as TranscriptionAdminDetails;
+
+    const result = service.getCurrentStatusFromTranscript(transcript);
+
+    expect(result.Status?.value).toBe('Approved');
+    expect(result.Status?.action?.text).toBe('Change status');
+    expect(result.Status?.action?.url).toBe('/admin/transcripts/1/change-status');
+    expect(result.Status?.action?.queryParams).toEqual({ status: 'Approved', manual: true });
+    if (typeof result['Assigned to'][0] !== 'string') {
+      expect(result['Assigned to'][0].href).toBe('/admin/users/1');
+      expect(result['Assigned to'][0].value).toBe('John Doe');
+      expect(result['Assigned to'][0].caption).toBe('john.doe@example.com');
+    }
+    expect(result['Associated groups']).toEqual(['Group One', 'Group Two']);
   });
 
   it('return no associated groups for "Awaiting Authorisation" status', () => {
