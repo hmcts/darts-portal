@@ -46,7 +46,7 @@ export class AssignTranscriptComponent implements OnDestroy {
   luxonDatePipe = inject(LuxonDatePipe);
   router = inject(Router);
   errorMsgService = inject(ErrorMessageService);
-  hearingId: number | null = null;
+  hearingId: number | undefined | null = null;
   caseId: number | null = null;
   caseNumber: string | null = null;
   getAudioQueryParams: { startTime: string | null; endTime: string | null } | null = null;

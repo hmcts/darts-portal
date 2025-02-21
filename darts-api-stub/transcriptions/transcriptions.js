@@ -655,6 +655,10 @@ router.get('/:transcriptId', (req, res) => {
     case '6':
       res.status(200).send({ ...mockTranscriptionDetails, status: 'With Transcriber' });
       break;
+    case '7':
+      res.status(200).send({ ...mockTranscriptionDetails, hearing_id: undefined });
+      break;
+    case '':
     default:
       res.status(200).send(mockTranscriptionDetailsTwo);
   }

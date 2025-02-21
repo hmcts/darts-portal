@@ -42,7 +42,7 @@ describe('TranscriptFileBasicDetailComponent', () => {
 
   const details: TranscriptionDetails = {
     caseId: 0,
-    caseNumber: '',
+    caseNumber: 'CASE1',
     courthouse: '',
     courtroom: '',
     defendants: [],
@@ -82,5 +82,17 @@ describe('TranscriptFileBasicDetailComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('basic details', () => {
+    it('links to hearing', () => {
+      expect(component.basicDetails?.['Hearing date']).toEqual([{ href: '/case/0/hearing/0', value: '01 Jan 2020' }]);
+    });
+
+    it('does not link to hearing if no ID is found', () => {
+      component.transcription.details = { ...details, hearingId: undefined };
+      component.ngOnInit();
+      expect(component.basicDetails?.['Hearing date']).toBe('01 Jan 2020');
+    });
   });
 });

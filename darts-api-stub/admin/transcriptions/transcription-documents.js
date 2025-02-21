@@ -67,6 +67,24 @@ const documents = [
     is_manual_transcription: true,
     is_hidden: true,
   },
+  {
+    transcription_document_id: 3,
+    transcription_id: 7,
+    case: {
+      id: 3,
+      case_number: 'C0004',
+    },
+    courthouse: {
+      id: 2,
+      display_name: 'Newport',
+    },
+    hearing: {
+      id: 2,
+      hearing_date: '2015-06-15',
+    },
+    is_manual_transcription: true,
+    is_hidden: false,
+  },
 ];
 
 const defaultTranscription = {
@@ -210,8 +228,9 @@ router.get('/marked-for-deletion', (req, res) => {
 
 router.get('/:transcription_document_id', (req, res) => {
   const id = req.params.transcription_document_id;
+  const document = documents.find((d) => d.transcription_document_id === parseInt(id, 10));
 
-  if (id === '0') {
+  if (id === '0' || id === '3') {
     transcription.is_hidden = false;
     transcription.admin_action.is_marked_for_manual_deletion = false;
   } else if ((id === '1' || id === '11') && !updatedDocs.includes(parseInt(id))) {
@@ -238,6 +257,9 @@ router.get('/:transcription_document_id', (req, res) => {
     });
   }
 
+  if (document?.transcription_id) {
+    return res.send({ ...transcription, transcription_id: document.transcription_id });
+  }
   return res.send(transcription);
 });
 
