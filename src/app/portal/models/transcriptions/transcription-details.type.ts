@@ -27,7 +27,7 @@ export type TranscriptionDetails = {
   transcriptionEndTs?: DateTime;
   transcriptionObjectId: number;
   isManual: boolean;
-  hearingId: number;
+  hearingId?: number;
   isRemovedFromUserTranscripts?: boolean;
   requestor?: Requestor;
   legacyComments?: string[];

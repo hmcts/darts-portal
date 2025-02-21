@@ -32,12 +32,15 @@ export class TranscriptFileBasicDetailComponent implements OnInit {
   private mapBasicTranscriptionDetails(transcript: TranscriptionDetails) {
     return {
       'Case ID': [{ href: `/case/${transcript.caseId}`, value: transcript.caseNumber }],
-      'Hearing date': [
-        {
-          href: `/case/${transcript.caseId}/hearing/${transcript.hearingId}`,
-          value: this.luxonPipe.transform(transcript.hearingDate, 'dd MMM yyyy'),
-        },
-      ],
+      'Hearing date':
+        transcript.hearingId != null // intentional use of != to match undefined/null
+          ? [
+              {
+                href: `/case/${transcript.caseId}/hearing/${transcript.hearingId}`,
+                value: this.luxonPipe.transform(transcript.hearingDate, 'dd MMM yyyy'),
+              },
+            ]
+          : this.luxonPipe.transform(transcript.hearingDate, 'dd MMM yyyy'),
       Courthouse: transcript.courthouse,
       Courtroom: transcript.courtroom,
       'Defendant(s)': transcript.defendants,
