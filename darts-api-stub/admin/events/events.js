@@ -56,6 +56,159 @@ const events = [
   },
 ];
 
+const versions = {
+  current_version: {
+    id: 1001,
+    documentum_id: 'DOC-20240217-001',
+    source_id: 2001,
+    message_id: 'MSG-20240217-001',
+    text: 'Defendant entered the courtroom and proceedings began.',
+    event_mapping: {
+      id: 3001,
+      type: 'Hearing',
+      sub_type: 'Initial Appearance',
+      name: 'Defendant Appearance',
+      handler: 'Court Clerk',
+      is_active: true,
+      has_restrictions: false,
+      created_at: '2024-05-09T14:26:31.118Z',
+      has_events: true,
+    },
+    is_log_entry: true,
+    courthouse: {
+      id: 4001,
+      display_name: 'Manchester Crown Court',
+    },
+    courtroom: {
+      id: 5001,
+      name: 'Courtroom 3',
+    },
+    version: '1.3',
+    chronicle_id: 'CHRON-20240217-001',
+    antecedent_id: 'ANT-20240217-001',
+    is_data_anonymised: false,
+    event_ts: '2025-02-17T15:34:55.786Z',
+    is_current: true,
+    created_at: '2025-02-17T15:34:55.786Z',
+    created_by: 101,
+    last_modified_at: '2025-02-17T15:34:55.786Z',
+    last_modified_by: 102,
+  },
+  previous_versions: [
+    {
+      id: 1000,
+      documentum_id: 'DOC-20240210-001',
+      source_id: 2000,
+      message_id: 'MSG-20240210-001',
+      text: 'Proceedings started at 10:00 AM with the judge presiding.',
+      event_mapping: {
+        id: 3000,
+        type: 'Hearing',
+        sub_type: 'Preliminary Hearing',
+        name: 'Judge Seated',
+        handler: 'Court Clerk',
+        is_active: true,
+        has_restrictions: false,
+        created_at: '2024-05-08T10:15:00.000Z',
+        has_events: true,
+      },
+      is_log_entry: true,
+      courthouse: {
+        id: 4000,
+        display_name: 'Manchester Crown Court',
+      },
+      courtroom: {
+        id: 5000,
+        name: 'Courtroom 3',
+      },
+      version: '1.2',
+      chronicle_id: 'CHRON-20240210-001',
+      antecedent_id: 'ANT-20240210-001',
+      is_data_anonymised: false,
+      event_ts: '2025-02-10T10:30:00.000Z',
+      is_current: false,
+      created_at: '2025-02-10T10:30:00.000Z',
+      created_by: 103,
+      last_modified_at: '2025-02-15T11:45:00.000Z',
+      last_modified_by: 104,
+    },
+    {
+      id: 999,
+      documentum_id: 'DOC-20240130-001',
+      source_id: 1999,
+      message_id: 'MSG-20240130-001',
+      text: 'Courtroom preparation completed, awaiting judge arrival.',
+      event_mapping: {
+        id: 2999,
+        type: 'Setup',
+        sub_type: 'Preparation',
+        name: 'Courtroom Prepared',
+        handler: 'Bailiff',
+        is_active: true,
+        has_restrictions: false,
+        created_at: '2024-01-30T08:45:00.000Z',
+        has_events: true,
+      },
+      is_log_entry: true,
+      courthouse: {
+        id: 3999,
+        display_name: 'Manchester Crown Court',
+      },
+      courtroom: {
+        id: 4999,
+        name: 'Courtroom 3',
+      },
+      version: '1.1',
+      chronicle_id: 'CHRON-20240130-001',
+      antecedent_id: 'ANT-20240130-001',
+      is_data_anonymised: false,
+      event_ts: '2025-01-30T09:00:00.000Z',
+      is_current: false,
+      created_at: '2025-01-30T09:00:00.000Z',
+      created_by: 105,
+      last_modified_at: '2025-02-01T12:00:00.000Z',
+      last_modified_by: 106,
+    },
+    {
+      id: 998,
+      documentum_id: 'DOC-20240120-001',
+      source_id: 1998,
+      message_id: 'MSG-20240120-001',
+      text: 'Case scheduled for upcoming trial session.',
+      event_mapping: {
+        id: 2998,
+        type: 'Scheduling',
+        sub_type: 'Trial Setup',
+        name: 'Trial Scheduled',
+        handler: 'Court Administrator',
+        is_active: true,
+        has_restrictions: false,
+        created_at: '2024-01-20T07:30:00.000Z',
+        has_events: true,
+      },
+      is_log_entry: true,
+      courthouse: {
+        id: 3998,
+        display_name: 'Manchester Crown Court',
+      },
+      courtroom: {
+        id: 4998,
+        name: 'Courtroom 3',
+      },
+      version: '1.0',
+      chronicle_id: 'CHRON-20240120-001',
+      antecedent_id: 'ANT-20240120-001',
+      is_data_anonymised: false,
+      event_ts: '2025-01-20T08:00:00.000Z',
+      is_current: false,
+      created_at: '2025-01-20T08:00:00.000Z',
+      created_by: 107,
+      last_modified_at: '2025-01-25T13:15:00.000Z',
+      last_modified_by: 108,
+    },
+  ],
+};
+
 router.post('/search', (req, res) => {
   if (req.body.case_number === 'NO_RESULTS') {
     res.send([]);
@@ -118,6 +271,10 @@ router.get('/:id', (req, res) => {
     return res.status(404).send('Event not found');
   }
   res.send(viewEvent);
+});
+
+router.get('/:id/versions', (req, res) => {
+  res.send(versions);
 });
 
 module.exports = router;

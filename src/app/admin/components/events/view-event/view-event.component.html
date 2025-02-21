@@ -25,9 +25,15 @@
   </div>
 
   @if (userService.isAdmin()) {
-    <app-tabs>
-      <app-basic-event-details [event]="e" *tab="'Basic details'" />
-      <app-advanced-event-details [event]="e" *tab="'Advanced details'" />
+    <app-tabs [default]="tab()" (tabChange)="onTabChange($event.name)">
+      <app-basic-event-details
+        [event]="e"
+        *tab="tabNames.basic; screenReaderText: 'Basic event details'; id: 'basic-details-tab'"
+      />
+      <app-advanced-event-details
+        [event]="e"
+        *tab="tabNames.advanced; screenReaderText: 'Advanced event details'; id: 'advanced-details-tab'"
+      />
     </app-tabs>
   } @else {
     <app-basic-event-details [event]="e" />

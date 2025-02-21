@@ -2,7 +2,7 @@ import { EventMapping } from '@admin-types/event-mappings/event-mapping.type';
 import { User } from '@admin-types/users/user.type';
 import { DateTime } from 'luxon';
 
-type OptionalEventMapping = Partial<Omit<EventMapping, 'id'>> & { id: number };
+type OptionalEventMapping = Partial<Omit<EventMapping, 'id'>> & { id: number; name?: string };
 
 export type Event = {
   id: number;

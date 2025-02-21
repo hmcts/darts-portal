@@ -1,11 +1,12 @@
 import { EventMapping } from '@admin-types/event-mappings/event-mapping.type';
 import { Event } from '@admin-types/events';
+import { EventVersions } from '@admin-types/events/event-versions';
 import { User } from '@admin-types/index';
 import { inject, Injectable } from '@angular/core';
 import { EventMappingsService } from '@services/event-mappings/event-mappings.service';
 import { EventsService } from '@services/events/events.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
-import { forkJoin, map, switchMap } from 'rxjs';
+import { forkJoin, map, of, switchMap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +22,28 @@ export class EventsFacadeService {
 
   obfuscateEventText(id: number) {
     return this.eventsService.obfuscateEventTexts([id]);
+  }
+
+  getEventVersions(id: number) {
+    return this.eventsService.getEventVersions(id).pipe(switchMap((event) => of(this.mapEventVersions(event))));
+  }
+
+  private mapEventVersions(eventVersions: EventVersions) {
+    return {
+      currentVersion: this.mapEventTableData(eventVersions.currentVersion),
+      previousVersions: eventVersions.previousVersions.map((event) => this.mapEventTableData(event)),
+    };
+  }
+
+  private mapEventTableData(event: Event) {
+    return {
+      id: event.id,
+      timestamp: event.eventTs,
+      name: event.eventMapping.name,
+      courthouse: event.courthouse.displayName,
+      courtroom: event.courtroom.name,
+      text: event.text,
+    };
   }
 
   private getAssociatedData(event: Event) {

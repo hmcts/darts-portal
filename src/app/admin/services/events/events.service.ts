@@ -1,4 +1,6 @@
 import { Event, EventData } from '@admin-types/events';
+import { EventVersions } from '@admin-types/events/event-versions';
+import { EventVersionsData } from '@admin-types/events/event-versions.interface';
 
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
@@ -19,6 +21,19 @@ export class EventsService {
     return this.http.post<void>('/api/admin/events/obfuscate', { eve_ids: ids });
   }
 
+  getEventVersions(id: number) {
+    return this.http
+      .get<EventVersionsData>(`/api/admin/events/${id}/versions`)
+      .pipe(map((versions) => this.mapEventVersions(versions)));
+  }
+
+  mapEventVersions(event: EventVersionsData): EventVersions {
+    return {
+      currentVersion: this.mapEventDataToEvent(event.current_version),
+      previousVersions: event.previous_versions.map((event) => this.mapEventDataToEvent(event)),
+    };
+  }
+
   mapEventDataToEvent(event: EventData): Event {
     return {
       id: event.id,
@@ -28,6 +43,7 @@ export class EventsService {
       text: event.text,
       eventMapping: {
         id: event.event_mapping.id,
+        name: event.event_mapping.name,
       },
       isLogEntry: event.is_log_entry,
       courthouse: {

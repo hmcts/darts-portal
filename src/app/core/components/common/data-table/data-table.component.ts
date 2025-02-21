@@ -167,6 +167,7 @@ export class DataTableComponent<TRow> implements OnChanges, OnInit {
     // Fallback to dynamic inference (inspect first 3 rows)
     const rowsToCheck = this.rows.slice(0, 3);
     return rowsToCheck.some((row) => {
+      if (!row) return false;
       const value = (row as { [key: string]: unknown })[column];
       return this.isLuxonDateTime(value);
     });

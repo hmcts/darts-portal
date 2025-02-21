@@ -57,7 +57,12 @@
   </div>
 </dl>
 
-<app-govuk-heading class="no-margin border-bottom" tag="h2" size="m">Version data</app-govuk-heading>
+<div class="versions-heading border">
+  <app-govuk-heading class="no-margin no-border" tag="h2" size="m">Version data</app-govuk-heading>
+  @if (userService.isAdmin()) {
+    <a class="govuk-link" [routerLink]="['versions']"> Show versions</a>
+  }
+</div>
 
 <dl class="govuk-summary-list">
   <div class="govuk-summary-list__row">

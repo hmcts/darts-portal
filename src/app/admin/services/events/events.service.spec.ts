@@ -1,5 +1,6 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
+import { EventVersionsData } from '@admin-types/events/event-versions.interface';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { DateTime } from 'luxon';
@@ -110,5 +111,135 @@ describe('EventsService', () => {
 
       req.flush(null);
     }));
+  });
+
+  describe('#getEventVersions', () => {
+    it('should retrieve event versions and map them correctly', fakeAsync(() => {
+      const mockResponse = {
+        current_version: {
+          id: 1,
+          documentum_id: 1,
+          source_id: 1,
+          message_id: 1,
+          text: 'Current Event Text',
+          event_mapping: { id: 1, name: 'Current Event' },
+          is_log_entry: true,
+          courthouse: { id: 1, display_name: 'Current Courthouse' },
+          courtroom: { id: 1, name: 'Current Courtroom' },
+          version: 'v2',
+          chronicle_id: 'chronicle_2',
+          antecedent_id: 'antecedent_2',
+          is_data_anonymised: false,
+          event_ts: '2024-05-10T12:00:00Z',
+          created_at: '2024-05-10T12:00:00Z',
+          created_by: 2,
+          last_modified_at: '2024-05-10T12:00:00Z',
+          last_modified_by: 2,
+          is_current: true,
+        },
+        previous_versions: [
+          {
+            id: 2,
+            documentum_id: 2,
+            source_id: 2,
+            message_id: 2,
+            text: 'Previous Event Text',
+            event_mapping: { id: 2, name: 'Previous Event' },
+            is_log_entry: false,
+            courthouse: { id: 2, display_name: 'Previous Courthouse' },
+            courtroom: { id: 2, name: 'Previous Courtroom' },
+            version: 'v1',
+            chronicle_id: 'chronicle_1',
+            antecedent_id: 'antecedent_1',
+            is_data_anonymised: true,
+            event_ts: '2024-04-10T10:00:00Z',
+            created_at: '2024-04-10T10:00:00Z',
+            created_by: 3,
+            last_modified_at: '2024-04-10T10:00:00Z',
+            last_modified_by: 3,
+            is_current: false,
+          },
+        ],
+      };
+
+      let eventVersions;
+      service.getEventVersions(1).subscribe((versions) => {
+        eventVersions = versions;
+      });
+
+      const req = httpMock.expectOne('/api/admin/events/1/versions');
+      expect(req.request.method).toBe('GET');
+
+      req.flush(mockResponse);
+
+      const expectedEventVersions = {
+        currentVersion: {
+          id: 1,
+          documentumId: 1,
+          sourceId: 1,
+          messageId: 1,
+          text: 'Current Event Text',
+          eventMapping: { id: 1, name: 'Current Event' },
+          isLogEntry: true,
+          courthouse: { id: 1, displayName: 'Current Courthouse' },
+          courtroom: { id: 1, name: 'Current Courtroom' },
+          version: 'v2',
+          chronicleId: 'chronicle_2',
+          antecedentId: 'antecedent_2',
+          isDataAnonymised: false,
+          eventTs: DateTime.fromISO('2024-05-10T12:00:00Z'),
+          createdAt: DateTime.fromISO('2024-05-10T12:00:00Z'),
+          createdById: 2,
+          lastModifiedAt: DateTime.fromISO('2024-05-10T12:00:00Z'),
+          lastModifiedById: 2,
+          isCurrentVersion: true,
+        },
+        previousVersions: [
+          {
+            id: 2,
+            documentumId: 2,
+            sourceId: 2,
+            messageId: 2,
+            text: 'Previous Event Text',
+            eventMapping: { id: 2, name: 'Previous Event' },
+            isLogEntry: false,
+            courthouse: { id: 2, displayName: 'Previous Courthouse' },
+            courtroom: { id: 2, name: 'Previous Courtroom' },
+            version: 'v1',
+            chronicleId: 'chronicle_1',
+            antecedentId: 'antecedent_1',
+            isDataAnonymised: true,
+            eventTs: DateTime.fromISO('2024-04-10T10:00:00Z'),
+            createdAt: DateTime.fromISO('2024-04-10T10:00:00Z'),
+            createdById: 3,
+            lastModifiedAt: DateTime.fromISO('2024-04-10T10:00:00Z'),
+            lastModifiedById: 3,
+            isCurrentVersion: false,
+          },
+        ],
+      };
+
+      expect(eventVersions).toEqual(expectedEventVersions);
+    }));
+  });
+
+  describe('#mapEventVersions', () => {
+    it('should correctly map event versions data', () => {
+      const mockEventVersions = {
+        current_version: {
+          id: 1,
+          event_mapping: { id: 1, name: 'Event Name' },
+          courthouse: { id: 1, display_name: 'Courthouse' },
+          courtroom: { id: 1, name: 'Courtroom' },
+          text: 'Current Event',
+          event_ts: '2024-05-10T12:00:00Z',
+        },
+        previous_versions: [],
+      } as unknown as EventVersionsData;
+
+      const result = service.mapEventVersions(mockEventVersions);
+      expect(result.currentVersion.text).toBe('Current Event');
+      expect(result.previousVersions.length).toBe(0);
+    });
   });
 });
