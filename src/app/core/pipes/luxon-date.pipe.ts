@@ -10,7 +10,7 @@ export class LuxonDatePipe implements PipeTransform {
   constructor(private datePipe: DatePipe) {}
 
   transform(value: DateTime | undefined, format: string): string | null {
-    if (!value) {
+    if (!value?.isValid) {
       return null;
     }
     return this.datePipe.transform(value.toISO(), format);
