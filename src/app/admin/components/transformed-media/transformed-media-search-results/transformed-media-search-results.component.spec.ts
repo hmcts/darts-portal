@@ -2,7 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TransformedMediaAdmin } from '@admin-types/transformed-media/transformed-media-admin';
 import { DateTime } from 'luxon';
-import { TransformedMediaSearchResultsComponent } from './transformed-media-search-results.component';
+import {
+  TransformedMediaRow,
+  TransformedMediaSearchResultsComponent,
+} from './transformed-media-search-results.component';
 
 describe('TransformedMediaSearchResultsComponent', () => {
   let component: TransformedMediaSearchResultsComponent;
@@ -69,6 +72,36 @@ describe('TransformedMediaSearchResultsComponent', () => {
       ];
 
       expect(component.mapRows(results)).toEqual(expectedRows);
+    });
+  });
+
+  describe('onDeleteClicked', () => {
+    it('emits to delete', () => {
+      const emitSpy = jest.spyOn(component.delete, 'emit');
+      component.onDeleteClicked();
+
+      expect(emitSpy).toHaveBeenCalled();
+    });
+  });
+
+  describe('onSelectedMedia', () => {
+    it('assigns selectedMedia', () => {
+      component.selectedMedia = [{ id: 999, size: 1020 }];
+      const media: TransformedMediaRow[] = [
+        {
+          id: 1,
+          size: 1234,
+        },
+        {
+          id: 2,
+          size: 12345,
+        },
+      ];
+      const emitSpy = jest.spyOn(component.selectedMediaChange, 'emit');
+      component.onSelectedMedia(media);
+
+      expect(emitSpy).toHaveBeenCalled();
+      expect(component.selectedMedia).toEqual(media);
     });
   });
 });

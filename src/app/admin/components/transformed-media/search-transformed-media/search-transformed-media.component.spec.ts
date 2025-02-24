@@ -3,12 +3,15 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { User } from '@admin-types/index';
 import { TransformedMediaAdmin } from '@admin-types/transformed-media/transformed-media-admin';
 import { TransformedMediaSearchFormValues } from '@admin-types/transformed-media/transformed-media-search-form.values';
+import { provideHttpClient } from '@angular/common/http';
 import { signal } from '@angular/core';
+import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { TransformedMediaService, defaultFormValues } from '@services/transformed-media/transformed-media.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
+import { TransformedMediaRow } from '../transformed-media-search-results/transformed-media-search-results.component';
 import { SearchTransformedMediaComponent } from './search-transformed-media.component';
 
 const mockTransformedMedia: TransformedMediaAdmin[] = [
@@ -39,6 +42,17 @@ const mockTransformedMedia: TransformedMediaAdmin[] = [
   },
 ];
 
+const mockSelectedMedia: TransformedMediaRow[] = [
+  {
+    id: 1,
+    size: 1234,
+  },
+  {
+    id: 2,
+    size: 1234,
+  },
+];
+
 const mockUsers: User[] = [
   {
     id: 1,
@@ -52,8 +66,13 @@ describe('SearchTransformedMediaComponent', () => {
   let fakeTransformedMediaService: Partial<TransformedMediaService>;
   let fakeUserAdminService: Partial<UserAdminService>;
   let fakeCourthouseService: Partial<CourthouseService>;
+  let fakeAudioRequestService: Partial<AudioRequestService>;
 
   beforeEach(async () => {
+    fakeAudioRequestService = {
+      deleteTransformedMedia: jest.fn().mockReturnValue(of(null)),
+    };
+
     fakeTransformedMediaService = {
       searchTransformedMedia: jest.fn().mockReturnValue(of(mockTransformedMedia)),
       isSearchFormSubmitted: signal<boolean>(false),
@@ -75,6 +94,8 @@ describe('SearchTransformedMediaComponent', () => {
         { provide: TransformedMediaService, useValue: fakeTransformedMediaService },
         { provide: UserAdminService, useValue: fakeUserAdminService },
         { provide: CourthouseService, useValue: fakeCourthouseService },
+        { provide: AudioRequestService, useValue: fakeAudioRequestService },
+        provideHttpClient(),
       ],
     }).compileComponents();
 
@@ -129,6 +150,53 @@ describe('SearchTransformedMediaComponent', () => {
       jest.spyOn(component.router, 'navigate');
       component.onSearch({});
       expect(component.router.navigate).toHaveBeenCalledWith(['/admin/transformed-media', 1]);
+    });
+  });
+
+  describe('onDelete()', () => {
+    it('should set isDeleting to true when media is selected', () => {
+      component.selectedMedia.set(mockSelectedMedia);
+      component.onDelete();
+      expect(component.isDeleting()).toBe(true);
+    });
+
+    it('should not set isDeleting if no media is selected', () => {
+      component.selectedMedia.set([]);
+      component.onDelete();
+      expect(component.isDeleting()).toBe(false);
+    });
+  });
+
+  describe('onSelectedMediaChange()', () => {
+    it('should update selectedMedia', () => {
+      component.onSelectedMediaChange(mockSelectedMedia);
+      expect(component.selectedMedia()).toEqual(mockSelectedMedia);
+    });
+  });
+
+  describe('onDeleteConfirmed()', () => {
+    it('should not proceed if no media is selected', () => {
+      component.selectedMedia.set([]);
+      component.onDeleteConfirmed();
+      expect(fakeAudioRequestService.deleteTransformedMedia).not.toHaveBeenCalled();
+    });
+
+    it('should delete selected media and refresh search results', () => {
+      jest.spyOn(component, 'onSearch');
+      component.selectedMedia.set(mockSelectedMedia);
+
+      component.onDeleteConfirmed();
+      expect(fakeAudioRequestService.deleteTransformedMedia).toHaveBeenCalledTimes(2);
+      expect(fakeAudioRequestService.deleteTransformedMedia).toHaveBeenCalledWith(1);
+      expect(fakeAudioRequestService.deleteTransformedMedia).toHaveBeenCalledWith(2);
+    });
+  });
+
+  describe('onDeleteCancelled()', () => {
+    it('should set isDeleting to false', () => {
+      component.isDeleting.set(true);
+      component.onDeleteCancelled();
+      expect(component.isDeleting()).toBe(false);
     });
   });
 });

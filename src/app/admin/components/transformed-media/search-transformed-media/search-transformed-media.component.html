@@ -1,24 +1,59 @@
-<app-validation-error-summary [errors]="errors()" />
+@if (isDeleting()) {
+  <app-delete
+    [numberOfItems]="selectedMedia().length"
+    deleteButtonTxt="Confirm"
+    [isRedDeleteButton]="true"
+    (confirm)="onDeleteConfirmed()"
+    (cancelled)="onDeleteCancelled()"
+  >
+    <div class="govuk-grid-column-full">
+      <app-data-table
+        caption="Selected media(s) to be deleted"
+        [hiddenCaption]="true"
+        id="deletionTable"
+        [rows]="selectedMedia()"
+        [columns]="deleteColumns"
+      >
+        <ng-template [tableRowTemplate]="selectedMedia()" let-row>
+          <td>{{ row.id }}</td>
+          <td>{{ row.caseNumber }}</td>
+          <td>{{ row.courthouse }}</td>
+          <td>{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
+          <td>{{ row.owner }}</td>
+          <td>{{ row.requestedBy }}</td>
+          <td>{{ row.requestedDate | luxonDate: 'dd MMM yyyy' }}</td>
+        </ng-template>
+      </app-data-table>
+    </div>
+  </app-delete>
+} @else {
+  <app-validation-error-summary [errors]="errors()" />
 
-<app-govuk-heading>Transformed media</app-govuk-heading>
+  <app-govuk-heading>Transformed media</app-govuk-heading>
 
-@if (courthouses$ | async; as courthouses) {
-  <app-search-transformed-media-form
-    [courthouses]="courthouses"
-    [formValues]="transformedMediaService.searchFormValues()"
-    [(isAdvancedSearch)]="transformedMediaService.isAdvancedSearch"
-    (search)="onSearch($event)"
-    (clear)="onClear()"
-    (errors)="onErrors($event)"
-  />
+  @if (courthouses$ | async; as courthouses) {
+    <app-search-transformed-media-form
+      [courthouses]="courthouses"
+      [formValues]="transformedMediaService.searchFormValues()"
+      [(isAdvancedSearch)]="transformedMediaService.isAdvancedSearch"
+      (search)="onSearch($event)"
+      (clear)="onClear()"
+      (errors)="onErrors($event)"
+    />
+  }
+
+  <div id="results">
+    @if (transformedMediaService.isSearchFormSubmitted() && !isLoading()) {
+      <app-transformed-media-search-results
+        [results]="transformedMediaService.searchResults()"
+        [deletePermissions]="userPermissions.isAdmin()"
+        (delete)="onDelete()"
+        (selectedMediaChange)="onSelectedMediaChange($event)"
+      />
+    }
+
+    @if (isLoading()) {
+      <app-loading text="Searching transformed media results..." />
+    }
+  </div>
 }
-
-<div id="results">
-  @if (transformedMediaService.isSearchFormSubmitted() && !isLoading()) {
-    <app-transformed-media-search-results [results]="transformedMediaService.searchResults()" />
-  }
-
-  @if (isLoading()) {
-    <app-loading text="Searching transformed media results..." />
-  }
-</div>
