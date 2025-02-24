@@ -32,4 +32,13 @@ describe('LuxonDatePipe', () => {
 
     expect(result).toBeNull();
   });
+
+  it('should return null when the datetime value is invalid', () => {
+    const dateTime = DateTime.fromISO('');
+    const format = 'yyyy-MM-dd HH:mm:ss';
+
+    const result = pipe.transform(dateTime, format);
+
+    expect(result).toBeNull();
+  });
 });
