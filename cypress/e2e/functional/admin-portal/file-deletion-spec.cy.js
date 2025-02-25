@@ -97,7 +97,7 @@ describe('Admin - Groups screen', () => {
 
       cy.get('#confirm-button').click();
 
-      cy.get('#success-message').should('contain', 'Audio file deleted');
+      cy.get('#success-message').should('contain', 'All versions of the audio file have been deleted');
     });
 
     it('should reject and unhide file', () => {
