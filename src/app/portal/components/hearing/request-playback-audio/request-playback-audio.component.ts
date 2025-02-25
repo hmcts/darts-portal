@@ -74,6 +74,7 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
       { validators: beforeTimeValidator }
     );
   }
+
   ngOnInit(): void {
     // Roles that allow selection of request type
     this.requestTypeRequired =
@@ -88,6 +89,11 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
       this.audioRequestForm.get('requestType')?.patchValue('PLAYBACK');
     }
     this.audioRequestForm.get('requestType')?.updateValueAndValidity();
+
+    this.audioRequestForm.get('requestType')?.valueChanges.subscribe(() => {
+      this.audioRequestForm.get('endTime')?.updateValueAndValidity();
+      this.audioRequestForm.get('startTime')?.updateValueAndValidity();
+    });
   }
 
   get f() {

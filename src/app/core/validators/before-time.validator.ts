@@ -5,6 +5,13 @@ export const beforeTimeValidator = (control: AbstractControl): ValidationErrors 
   const startTimeCtrl = control.get('startTime');
   const endTimeCtrl = control.get('endTime');
 
+  if (!startTimeCtrl || !endTimeCtrl) return null;
+
+  if (startTimeCtrl.dirty || endTimeCtrl.dirty) {
+    startTimeCtrl.updateValueAndValidity({ onlySelf: true });
+    endTimeCtrl.updateValueAndValidity({ onlySelf: true });
+  }
+
   if (startTimeCtrl?.invalid || endTimeCtrl?.invalid) {
     return null;
   }
