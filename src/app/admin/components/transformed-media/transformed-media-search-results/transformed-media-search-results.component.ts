@@ -1,12 +1,27 @@
 import { TransformedMediaAdmin } from '@admin-types/transformed-media/transformed-media-admin';
 import { DecimalPipe } from '@angular/common';
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, input, OnChanges, output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DatatableColumn } from '@core-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { BytesPipe } from '@pipes/bytes.pipe';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
+import { DateTime } from 'luxon';
+
+export type TransformedMediaRow = {
+  id: number;
+  caseNumber?: string;
+  courthouse?: string;
+  hearingDate?: DateTime;
+  owner?: string;
+  requestedBy?: string;
+  requestedDate?: DateTime;
+  lastAccessed?: DateTime;
+  fileType?: string;
+  size: number;
+  filename?: string;
+};
 
 @Component({
   selector: 'app-transformed-media-search-results',
@@ -16,7 +31,13 @@ import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
   styleUrl: './transformed-media-search-results.component.scss',
 })
 export class TransformedMediaSearchResultsComponent implements OnChanges {
-  @Input() results: TransformedMediaAdmin[] = [];
+  results = input<TransformedMediaAdmin[]>([]);
+  deletePermissions = input(false);
+
+  selectedMedia: TransformedMediaRow[] = [];
+  selectedMediaChange = output<TransformedMediaRow[]>();
+
+  delete = output<boolean>();
 
   columns: DatatableColumn[] = [
     { name: 'Media ID', prop: 'id', sortable: true },
@@ -32,13 +53,13 @@ export class TransformedMediaSearchResultsComponent implements OnChanges {
     { name: 'Filename', prop: 'filename', sortable: true },
   ];
 
-  rows: ReturnType<typeof this.mapRows> = [];
+  rows: TransformedMediaRow[] = [];
 
   ngOnChanges(): void {
-    this.rows = this.mapRows(this.results);
+    this.rows = this.mapRows(this.results());
   }
 
-  mapRows(results: TransformedMediaAdmin[]) {
+  mapRows(results: TransformedMediaAdmin[]): TransformedMediaRow[] {
     return results.map((result) => ({
       id: result.id,
       caseNumber: result.case.caseNumber,
@@ -52,5 +73,14 @@ export class TransformedMediaSearchResultsComponent implements OnChanges {
       size: result.fileSizeBytes,
       filename: result.fileName,
     }));
+  }
+
+  onDeleteClicked() {
+    this.delete.emit(true);
+  }
+
+  onSelectedMedia(media: TransformedMediaRow[]) {
+    this.selectedMedia = media;
+    this.selectedMediaChange.emit(media);
   }
 }

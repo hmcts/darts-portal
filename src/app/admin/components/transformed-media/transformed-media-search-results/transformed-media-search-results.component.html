@@ -1,10 +1,19 @@
 <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
+
+<div class="action-container">
+  <button id="delete-button" name="bulkDelete" class="govuk-button govuk-button--secondary" (click)="onDeleteClicked()">
+    Delete
+  </button>
+</div>
 <app-data-table
   [rows]="rows"
   [columns]="columns"
   caption="transformed media"
   captionType="results"
   [isHorizontalScroll]="true"
+  [rowSelectable]="deletePermissions()"
+  [(selectedRows)]="selectedMedia"
+  (rowSelect)="onSelectedMedia($event)"
 >
   <ng-template [tableRowTemplate]="rows" let-row>
     <td>
