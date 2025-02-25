@@ -1,6 +1,10 @@
 @if (approvedForDeletion$ | async) {
   @if (fileType$ | async; as fileType) {
-    <app-govuk-banner type="success">{{ fileType }} file deleted</app-govuk-banner>
+    @if (fileType === 'Audio') {
+      <app-govuk-banner type="success">All versions of the audio file have been deleted</app-govuk-banner>
+    } @else {
+      <app-govuk-banner type="success">Transcript file deleted</app-govuk-banner>
+    }
   }
 }
 
