@@ -1,0 +1,39 @@
+<app-govuk-heading caption="Case">{{ caseFile()?.caseNumber }}</app-govuk-heading>
+
+<div govukSummaryContainer>
+  <app-govuk-heading class="no-margin border-bottom" tag="h2" size="m">Case details</app-govuk-heading>
+  <dl govukSummaryList>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Case ID</dt>
+      <dd govukSummaryValue>{{ caseFile()?.caseNumber }}</dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Courthouse</dt>
+      <dd govukSummaryValue>{{ caseFile()?.courthouse?.displayName }}</dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Judge(s)</dt>
+      <dd govukSummaryValue>{{ caseFile()?.judges | join }}</dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Defendant(s)</dt>
+      <dd govukSummaryValue>{{ caseFile()?.defendants | join }}</dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Defence</dt>
+      <dd govukSummaryValue>{{ caseFile()?.defenders | join }}</dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Prosecutor(s)</dt>
+      <dd govukSummaryValue>{{ caseFile()?.prosecutors | join }}</dd>
+    </div>
+
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Retained until</dt>
+      <dd govukSummaryValue>{{ caseFile()?.retainUntilDateTime | dateTime: 'd MMM y' }}</dd>
+      <dd govukSummaryAction>
+        <a class="govuk-link" [routerLink]="['/case', caseFile()?.id, 'retention']">View or change</a>
+      </dd>
+    </div>
+  </dl>
+</div>
