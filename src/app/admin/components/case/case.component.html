@@ -4,17 +4,19 @@
   <app-case-file [caseFile]="caseFile" />
 
   <app-tabs>
-    <div *tab="'Hearings'"></div>
+    <div *tab="'Hearings'; id: 'hearings-tab'"></div>
 
-    <div *tab="'Audio'"></div>
+    <div *tab="'Audio'; id: 'audio-tab'"></div>
 
-    <div *tab="'Events'"></div>
+    <div *tab="'Events'; id: 'events-tab'"></div>
 
-    <div *tab="'Transcripts'"></div>
+    <div *tab="'Transcripts'; id: 'transcripts-tab'"></div>
 
-    <div *tab="'Annotations'"></div>
+    <div *tab="'Annotations'; id: 'annotations-tab'"></div>
 
-    <div *tab="'Additional case details'"></div>
+    <div *tab="'Additional case details'; id: 'additional-tab'">
+      <app-case-additional-details [caseFile]="caseFile"></app-case-additional-details>
+    </div>
   </app-tabs>
 } @else {
   <app-loading />

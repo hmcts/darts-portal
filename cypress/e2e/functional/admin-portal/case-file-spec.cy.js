@@ -83,4 +83,112 @@ describe('Case file screen', () => {
 
     cy.a11y();
   });
+
+  describe('Case file tabs', () => {
+    it('should verify additional case details', () => {
+      cy.visit('admin/case/1');
+      cy.injectAxe();
+
+      cy.get('#additional-tab').click();
+
+      cy.get('h2.govuk-heading-m').should('contain.text', 'Additional case details');
+
+      cy.get('.govuk-summary-list')
+        .eq(1)
+        .within(() => {
+          cy.get('.govuk-summary-list__row')
+            .eq(0)
+            .within(() => {
+              cy.get('.govuk-summary-list__key').should('have.text', 'Database ID');
+              cy.get('.govuk-summary-list__value').should('contain.text', '1');
+            });
+
+          cy.get('.govuk-summary-list__row')
+            .eq(1)
+            .within(() => {
+              cy.get('.govuk-summary-list__key').should('have.text', 'Case object ID');
+              cy.get('.govuk-summary-list__value').should('contain.text', '12345');
+            });
+
+          cy.get('.govuk-summary-list__row')
+            .eq(2)
+            .within(() => {
+              cy.get('.govuk-summary-list__key').should('have.text', 'Case status');
+              cy.get('.govuk-summary-list__value').should('contain.text', 'OPEN');
+            });
+
+          cy.get('.govuk-summary-list__row')
+            .eq(3)
+            .within(() => {
+              cy.get('.govuk-summary-list__key').should('have.text', 'Date created');
+              cy.get('.govuk-summary-list__value').should('contain.text', '01/01/2024');
+            });
+
+          cy.get('.govuk-summary-list__row')
+            .eq(4)
+            .within(() => {
+              cy.get('.govuk-summary-list__key').should('have.text', 'Created by');
+              cy.get('.govuk-summary-list__value').should('contain.text', 'Phil Taylor');
+            });
+
+          cy.get('.govuk-summary-list__row')
+            .eq(5)
+            .within(() => {
+              cy.get('.govuk-summary-list__key').should('have.text', 'Date last modified');
+              cy.get('.govuk-summary-list__value').should('contain.text', '01/01/2024');
+            });
+
+          cy.get('.govuk-summary-list__row')
+            .eq(6)
+            .within(() => {
+              cy.get('.govuk-summary-list__key').should('have.text', 'Last modified by');
+              cy.get('.govuk-summary-list__value').should('contain.text', 'Phil Taylor');
+            });
+
+          cy.get('.govuk-summary-list__row')
+            .eq(7)
+            .within(() => {
+              cy.get('.govuk-summary-list__key').should('have.text', 'Date case closed');
+              cy.get('.govuk-summary-list__value').should('contain.text', '20/07/2023');
+            });
+
+          cy.get('.govuk-summary-list__row')
+            .eq(8)
+            .within(() => {
+              cy.get('.govuk-summary-list__key').should('have.text', 'Case deleted?');
+              cy.get('.govuk-summary-list__value').should('contain.text', 'No');
+            });
+
+          cy.get('.govuk-summary-list__row')
+            .eq(9)
+            .within(() => {
+              cy.get('.govuk-summary-list__key').should('have.text', 'Date deleted');
+              cy.get('.govuk-summary-list__value').should('contain.text', '01/01/2024');
+            });
+
+          cy.get('.govuk-summary-list__row')
+            .eq(10)
+            .within(() => {
+              cy.get('.govuk-summary-list__key').should('have.text', 'Case anonymised?');
+              cy.get('.govuk-summary-list__value').should('contain.text', 'No');
+            });
+
+          cy.get('.govuk-summary-list__row')
+            .eq(11)
+            .within(() => {
+              cy.get('.govuk-summary-list__key').should('have.text', 'Date anonymised');
+              cy.get('.govuk-summary-list__value').should('contain.text', '01/01/2024');
+            });
+
+          cy.get('.govuk-summary-list__row')
+            .eq(12)
+            .within(() => {
+              cy.get('.govuk-summary-list__key').should('have.text', 'Interpreter used?');
+              cy.get('.govuk-summary-list__value').should('contain.text', 'No');
+            });
+        });
+
+      cy.a11y();
+    });
+  });
 });
