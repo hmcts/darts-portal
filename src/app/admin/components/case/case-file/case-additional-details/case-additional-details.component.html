@@ -1,0 +1,71 @@
+<div govukSummaryContainer>
+  <app-govuk-heading class="no-margin border-bottom" tag="h2" size="m">Additional case details</app-govuk-heading>
+  <dl govukSummaryList>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Database ID</dt>
+      <dd govukSummaryValue>{{ caseFile()?.id ?? '-' }}</dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Case object ID</dt>
+      <dd govukSummaryValue>{{ caseFile()?.caseObjectId ?? '-' }}</dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Case status</dt>
+      <dd govukSummaryValue>{{ caseFile()?.caseStatus ?? '-' }}</dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Date created</dt>
+      <dd govukSummaryValue>{{ caseFile()?.createdAt ? (caseFile()?.createdAt | dateTime: 'dd/MM/yyyy') : '-' }}</dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Created by</dt>
+      <dd govukSummaryValue>{{ caseFile()?.createdBy ?? '-' }}</dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Date last modified</dt>
+      <dd govukSummaryValue>
+        {{ caseFile()?.lastModifiedAt ? (caseFile()?.lastModifiedAt | dateTime: 'dd/MM/yyyy') : '-' }}
+      </dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Last modified by</dt>
+      <dd govukSummaryValue>{{ caseFile()?.lastModifiedBy ?? '-' }}</dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Date case closed</dt>
+      <dd govukSummaryValue>
+        {{ caseFile()?.caseClosedDateTime ? (caseFile()?.caseClosedDateTime | dateTime: 'dd/MM/yyyy') : '-' }}
+      </dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Case deleted?</dt>
+      <dd govukSummaryValue>
+        {{ caseFile()?.isDeleted !== undefined ? (caseFile()?.isDeleted ? 'Yes' : 'No') : '-' }}
+      </dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Date deleted</dt>
+      <dd govukSummaryValue>
+        {{ caseFile()?.caseDeletedAt ? (caseFile()?.caseDeletedAt | dateTime: 'dd/MM/yyyy') : '-' }}
+      </dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Case anonymised?</dt>
+      <dd govukSummaryValue>
+        {{ caseFile()?.isDataAnonymised !== undefined ? (caseFile()?.isDataAnonymised ? 'Yes' : 'No') : '-' }}
+      </dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Date anonymised</dt>
+      <dd govukSummaryValue>
+        {{ caseFile()?.dataAnonymisedAt ? (caseFile()?.dataAnonymisedAt | dateTime: 'dd/MM/yyyy') : '-' }}
+      </dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Interpreter used?</dt>
+      <dd govukSummaryValue>
+        {{ caseFile()?.isInterpreterUsed !== undefined ? (caseFile()?.isInterpreterUsed ? 'Yes' : 'No') : '-' }}
+      </dd>
+    </div>
+  </dl>
+</div>
