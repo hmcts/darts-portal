@@ -4,7 +4,7 @@
   <ng-template #eventRowTemplate let-row>
     @if (row) {
       <td class="event-id">
-        <a class="govuk-link" [routerLink]="['/admin', 'events', id()]"> {{ row.id }}</a>
+        <a class="govuk-link" [routerLink]="['/admin', 'events', row.id]"> {{ row.id }}</a>
       </td>
       <td>{{ row.timestamp | luxonDate: "dd MMM yyyy 'at' HH:mm:ss" }}</td>
       <td>{{ row.name }}</td>
