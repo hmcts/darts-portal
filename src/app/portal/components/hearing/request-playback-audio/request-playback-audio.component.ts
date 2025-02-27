@@ -133,14 +133,14 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
     this.errorSummary = this.getErrorSummary();
 
     if (this.audioRequestForm.invalid) {
-      if (!this.audioRequestForm.controls.startTime.errors?.invalidTime) {
+      if (this.audioRequestForm.controls.startTime.errors?.invalidTime) {
         this.errorSummary.push({
           fieldId: 'start-time-hour-input',
           message: fieldErrors.startTime.invalidTime,
         });
       }
 
-      if (!this.audioRequestForm.controls.endTime.errors?.invalidTime) {
+      if (this.audioRequestForm.controls.endTime.errors?.invalidTime) {
         this.errorSummary.push({
           fieldId: 'end-time-hour-input',
           message: fieldErrors.endTime.invalidTime,
@@ -156,7 +156,6 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
       }
     }
 
-    // if (this.errorSummary.length > 0) this.validationErrorEvent.emit(this.errorSummary);
     if (this.errorSummary.length > 0) {
       const uniqueErrorMessages = [...new Map([...this.errorSummary].map((entry) => [entry.message, entry])).values()];
       this.validationErrorEvent.emit(uniqueErrorMessages);
