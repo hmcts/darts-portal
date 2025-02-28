@@ -107,16 +107,15 @@ export class RequestTimesComponent {
           message: 'Select a start time',
         });
       }
-      if (this.form.controls.endTime.invalid) {
-        this.validationErrors.push({
-          fieldId: 'end-hour-input',
-          message: 'Select an end time',
-        });
-      }
-      if (!this.form.controls.endTime.invalid && this.form.errors?.endTimeBeforeStartTime) {
+      if (this.form.errors?.endTimeBeforeStartTime) {
         this.validationErrors.push({
           fieldId: 'end-hour-input',
           message: 'End time must be after start time',
+        });
+      } else if (this.form.controls.endTime.invalid) {
+        this.validationErrors.push({
+          fieldId: 'end-hour-input',
+          message: 'Select an end time',
         });
       }
     }
