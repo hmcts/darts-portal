@@ -73,6 +73,7 @@ describe('RequestPlaybackAudioComponent', () => {
       fixture.detectChanges();
       expect(setTimesSpy).toHaveBeenCalled();
     }));
+
   it('should reset the start and end times on the form if requestAudioTimes is empty', () => {
     const initialForm = {
       startTime: { hours: '02', minutes: '00', seconds: '00' },
@@ -98,6 +99,7 @@ describe('RequestPlaybackAudioComponent', () => {
       component.ngOnInit();
       expect(component.audioRequestForm.get('requestType')?.hasValidator(Validators.required)).toBeTruthy();
     });
+
     it('should set request type as required if the user is a admin or super user', () => {
       jest.spyOn(component.userService, 'isCourthouseTranscriber').mockReturnValue(false);
       jest.spyOn(component.userService, 'isAdmin').mockReturnValue(true);
@@ -108,12 +110,44 @@ describe('RequestPlaybackAudioComponent', () => {
       component.ngOnInit();
       expect(component.audioRequestForm.get('requestType')?.hasValidator(Validators.required)).toBeTruthy();
     });
+
     it('should not set any validators on request type if the user is not a transcriber, or admin, or super user', () => {
       jest.spyOn(component.userService, 'isCourthouseTranscriber').mockReturnValue(false);
       jest.spyOn(component.userService, 'isAdmin').mockReturnValue(false);
       jest.spyOn(component.userService, 'isSuperUser').mockReturnValue(false);
       component.ngOnInit();
       expect(component.audioRequestForm.get('requestType')?.hasValidator(Validators.required)).toBeFalsy();
+    });
+
+    it('should preserve endTimeAfterStart error when requestType changes', () => {
+      const startTimeCtrl = component.audioRequestForm.get('startTime');
+      const endTimeCtrl = component.audioRequestForm.get('endTime');
+
+      startTimeCtrl?.setValue({ hours: '14', minutes: '30', seconds: '00' });
+      endTimeCtrl?.setValue({ hours: '12', minutes: '30', seconds: '00' });
+
+      endTimeCtrl?.setErrors({ endTimeAfterStart: true });
+
+      const updateSpy = jest.spyOn(endTimeCtrl!, 'updateValueAndValidity');
+      const setErrorsSpy = jest.spyOn(endTimeCtrl!, 'setErrors');
+
+      component.audioRequestForm.get('requestType')?.setValue('DOWNLOAD');
+
+      fixture.detectChanges();
+
+      expect(updateSpy).toHaveBeenCalled();
+      expect(setErrorsSpy).toHaveBeenCalledWith(expect.objectContaining({ endTimeAfterStart: true }));
+    });
+
+    it('should remove endTimeAfterStart error when endTime is corrected', () => {
+      const endTimeCtrl = component.audioRequestForm.get('endTime');
+
+      endTimeCtrl?.setErrors({ endTimeAfterStart: true });
+
+      endTimeCtrl?.setValue({ hours: '12', minutes: '30', seconds: '00' });
+      component.audioRequestForm.get('requestType')?.setValue('PLAYBACK');
+
+      expect(endTimeCtrl?.errors).toBeNull();
     });
   });
 
@@ -334,7 +368,82 @@ describe('RequestPlaybackAudioComponent', () => {
         { fieldId: 'end-time-hour-input', message: fieldErrors.endTime.unavailable },
       ]);
     });
+
+    it('should add invalidTime error message when startTime is invalid', () => {
+      component.audios = [
+        {
+          id: 1,
+          media_start_timestamp: '',
+          media_end_timestamp: '',
+        },
+      ];
+
+      fixture.detectChanges();
+
+      // Set invalidTime error on startTime
+      component.audioRequestForm.controls.startTime.setErrors({ invalidTime: true });
+      const validationErrorSpy = jest.spyOn(component.validationErrorEvent, 'emit');
+
+      component.onValidationError();
+
+      expect(component.errorSummary).toContainEqual({
+        fieldId: 'start-time-hour-input',
+        message: fieldErrors.startTime.invalidTime,
+      });
+      expect(validationErrorSpy).toHaveBeenCalledWith(
+        expect.arrayContaining([{ fieldId: 'start-time-hour-input', message: fieldErrors.startTime.invalidTime }])
+      );
+    });
+
+    it('should add invalidTime error message when endTime is invalid', () => {
+      component.audios = [
+        {
+          id: 1,
+          media_start_timestamp: '',
+          media_end_timestamp: '',
+        },
+      ];
+      fixture.detectChanges();
+
+      // Set invalidTime error on endTime
+      component.audioRequestForm.controls.endTime.setErrors({ invalidTime: true });
+      const validationErrorSpy = jest.spyOn(component.validationErrorEvent, 'emit');
+
+      component.onValidationError();
+
+      expect(component.errorSummary).toContainEqual({
+        fieldId: 'end-time-hour-input',
+        message: fieldErrors.endTime.invalidTime,
+      });
+      expect(validationErrorSpy).toHaveBeenCalledWith(
+        expect.arrayContaining([{ fieldId: 'end-time-hour-input', message: fieldErrors.endTime.invalidTime }])
+      );
+    });
+
+    it('should not add endTimeBeforeStartTime error if endTime is already invalid', () => {
+      component.audios = [
+        {
+          id: 1,
+          media_start_timestamp: '',
+          media_end_timestamp: '',
+        },
+      ];
+      fixture.detectChanges();
+
+      // Set another error first
+      component.audioRequestForm.controls.endTime.setErrors({ invalidTime: true });
+      component.audioRequestForm.setErrors({ endTimeBeforeStartTime: true });
+
+      component.onValidationError();
+
+      expect(component.audioRequestForm.controls.endTime.errors).toEqual({ invalidTime: true });
+      expect(component.errorSummary).not.toContainEqual({
+        fieldId: 'end-time-hour-input',
+        message: fieldErrors.endTime.endTimeAfterStart,
+      });
+    });
   });
+
   describe('#outsideAudioTimesValidation', () => {
     beforeEach(() => {
       component.hearing = {
