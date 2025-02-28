@@ -1,5 +1,3 @@
-import { Event } from '@admin-types/events/event';
-import { EventVersions } from '@admin-types/events/event-versions';
 import { DatePipe } from '@angular/common';
 import { provideHttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -9,6 +7,8 @@ import { EventsFacadeService } from '@facades/events/events-facade.service';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
 import { ShowVersionsComponent } from './show-versions.component';
+import { By } from '@angular/platform-browser';
+import { EventVersionData } from '@admin-types/events';
 
 jest.mock('@facades/events/events-facade.service');
 describe('ShowVersionsComponent', () => {
@@ -16,58 +16,36 @@ describe('ShowVersionsComponent', () => {
   let fixture: ComponentFixture<ShowVersionsComponent>;
   let mockEventsFacadeService: jest.Mocked<EventsFacadeService>;
 
-  const mockCurrentVersion: Event = {
+  const mockCurrentVersion: EventVersionData = {
     id: 1,
-    documentumId: 'doc123',
-    sourceId: 1001,
-    messageId: 'msg-001',
+    event_id: 1001,
+    timestamp: DateTime.now(),
+    name: 'Event Mapping 1',
+    courthouse: 'Central Courthouse',
+    courtroom: 'Room A',
     text: 'Test event text',
-    eventMapping: { id: 101, name: 'Event Mapping 1' },
-    isLogEntry: false,
-    courthouse: { id: 1, displayName: 'Central Courthouse' },
-    courtroom: { id: 10, name: 'Room A' },
-    version: 'v1.0',
-    chronicleId: 'chron-001',
-    antecedentId: 'ant-001',
-    isDataAnonymised: false,
-    eventTs: DateTime.now(),
-    createdAt: DateTime.now().minus({ days: 1 }),
-    createdById: 100,
-    lastModifiedAt: DateTime.now(),
-    lastModifiedById: 101,
-    isCurrentVersion: true,
   };
 
-  const mockPreviousVersions: Event[] = [
+  const mockPreviousVersions: EventVersionData[] = [
     {
       id: 2,
-      documentumId: 'doc124',
-      sourceId: 1002,
-      messageId: 'msg-002',
+      event_id: 1001,
+      timestamp: DateTime.now().minus({ days: 2 }),
+      name: 'Event Mapping 2',
+      courthouse: 'Central Courthouse',
+      courtroom: 'Room A',
       text: 'Previous event text',
-      eventMapping: { id: 102, name: 'Event Mapping 2' },
-      isLogEntry: false,
-      courthouse: { id: 1, displayName: 'Central Courthouse' },
-      courtroom: { id: 10, name: 'Room A' },
-      version: 'v0.9',
-      chronicleId: 'chron-002',
-      antecedentId: 'ant-002',
-      isDataAnonymised: false,
-      eventTs: DateTime.now().minus({ days: 2 }),
-      createdAt: DateTime.now().minus({ days: 3 }),
-      createdById: 102,
-      lastModifiedAt: DateTime.now().minus({ days: 1 }),
-      lastModifiedById: 103,
-      isCurrentVersion: false,
     },
   ];
 
-  const mockEventVersions: EventVersions = {
-    currentVersion: mockCurrentVersion,
-    previousVersions: mockPreviousVersions,
-  };
+  let mockEventVersions: { currentVersion: EventVersionData; previousVersions: EventVersionData[] };
 
   beforeEach(async () => {
+    mockEventVersions = {
+      currentVersion: mockCurrentVersion,
+      previousVersions: mockPreviousVersions,
+    };
+
     mockEventsFacadeService = {
       getEventVersions: jest.fn().mockReturnValue(of(mockEventVersions)),
     } as unknown as jest.Mocked<EventsFacadeService>;
@@ -91,6 +69,35 @@ describe('ShowVersionsComponent', () => {
 
   it('should create the component', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should display source event ID when available', () => {
+    const sourceEventId = fixture.debugElement.query(By.css('#sourceEventId')).nativeElement.textContent;
+    expect(sourceEventId).toBe(mockEventVersions.currentVersion.event_id?.toString());
+  });
+
+  it('should display source event ID = 0', () => {
+    mockEventVersions.currentVersion.event_id = 0;
+    mockEventsFacadeService = {
+      getEventVersions: jest.fn().mockReturnValue(of(mockEventVersions)),
+    } as unknown as jest.Mocked<EventsFacadeService>;
+
+    fixture.detectChanges();
+
+    const sourceEventId = fixture.debugElement.query(By.css('#sourceEventId')).nativeElement.textContent;
+    expect(sourceEventId).toBe('0');
+  });
+
+  it('should display source event ID Not set when not available', () => {
+    mockEventVersions.currentVersion.event_id = undefined;
+    mockEventsFacadeService = {
+      getEventVersions: jest.fn().mockReturnValue(of(mockEventVersions)),
+    } as unknown as jest.Mocked<EventsFacadeService>;
+
+    fixture.detectChanges();
+
+    const sourceEventId = fixture.debugElement.query(By.css('#sourceEventId')).nativeElement.textContent;
+    expect(sourceEventId).toBe('Not set');
   });
 
   it('should have default columns defined', () => {

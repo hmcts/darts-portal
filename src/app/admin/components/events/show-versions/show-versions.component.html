@@ -19,7 +19,7 @@
   <app-govuk-heading tag="h1" size="l">All versions of this event</app-govuk-heading>
 
   <h2 class="govuk-heading-s">Source event ID</h2>
-  <p class="govuk-body">{{ id() }}</p>
+  <p id="sourceEventId" class="govuk-body">{{ currentVersion()?.event_id ?? 'Not set' }}</p>
 
   <app-govuk-heading tag="h2" size="m">Current version</app-govuk-heading>
   <app-data-table
