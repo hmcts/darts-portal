@@ -30,8 +30,9 @@ describe('Admin - Search screen', () => {
 
     cy.a11y();
 
-    cy.get('app-case-search-results td')
+    cy.get('app-case-search-results td.case_number a')
       .contains('123456')
+      .parent('td')
       .next('td')
       .should('contain', 'Courthouse 1')
       .next('td')
@@ -41,8 +42,9 @@ describe('Admin - Search screen', () => {
       .next('td')
       .should('contain', 'Multiple');
 
-    cy.get('app-case-search-results td')
+    cy.get('app-case-search-results td.case_number a')
       .contains('654321')
+      .parent('td')
       .next('td')
       .should('contain', 'Courthouse 2')
       .next('td')

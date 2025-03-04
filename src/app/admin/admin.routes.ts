@@ -13,6 +13,12 @@ export const ADMIN_ROUTES: Routes = [
     loadComponent: () => import('./components/search/search.component').then((c) => c.SearchComponent),
   },
   {
+    path: 'admin/case/:caseId',
+    title: 'DARTS Admin View Case File',
+    data: { allowedRoles: ['SUPER_ADMIN', 'SUPER_USER'] },
+    loadComponent: () => import('./components/case/case.component').then((c) => c.CaseComponent),
+  },
+  {
     path: 'admin/users',
     title: 'DARTS Admin Search Users',
     data: { allowedRoles: ['SUPER_ADMIN', 'SUPER_USER'] },
