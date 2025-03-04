@@ -1,9 +1,9 @@
 @if (caseFile$ | async; as caseFile) {
-  <a [routerLink]="['/admin/search']" class="govuk-back-link">Back</a>
+  <a [routerLink]="[backUrl]" class="govuk-back-link">Back</a>
 
   <app-case-file [caseFile]="caseFile" />
 
-  <app-tabs>
+  <!-- <app-tabs>
     <div *tab="'Hearings'"></div>
 
     <div *tab="'Audio'"></div>
@@ -15,7 +15,7 @@
     <div *tab="'Annotations'"></div>
 
     <div *tab="'Additional case details'"></div>
-  </app-tabs>
+  </app-tabs> -->
 } @else {
   <app-loading />
 }

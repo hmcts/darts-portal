@@ -1,3 +1,11 @@
+@if (!caseFile()?.isDataAnonymised) {
+  <app-reporting-restriction [restrictions]="caseFile()?.reportingRestrictions"></app-reporting-restriction>
+} @else {
+  @if (caseFile()?.retainUntilDateTime) {
+    <app-expired-banner [expiryDate]="caseFile()?.retainUntilDateTime!" />
+  }
+}
+
 <app-govuk-heading caption="Case">{{ caseFile()?.caseNumber }}</app-govuk-heading>
 
 <div govukSummaryContainer>
