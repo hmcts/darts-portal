@@ -71,7 +71,7 @@ describe('Case file screen', () => {
         .eq(6)
         .within(() => {
           cy.get('.govuk-summary-list__key').should('have.text', 'Retained until');
-          cy.get('.govuk-summary-list__value').first().should('have.text', '31 Jan 2030');
+          cy.get('.govuk-summary-list__value').first().should('have.text', '31 Jan 2020');
         });
 
       cy.get('.govuk-summary-list__row')
