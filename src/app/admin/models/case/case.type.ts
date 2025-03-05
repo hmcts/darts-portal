@@ -1,3 +1,4 @@
+import { ReportingRestriction } from '@core-types/index';
 import { DateTime } from 'luxon';
 
 export type AdminCase = {
@@ -11,13 +12,7 @@ export type AdminCase = {
   judges?: string[];
   prosecutors?: string[];
   defenders?: string[];
-  reportingRestrictions?: {
-    eventId: number;
-    eventName: string;
-    eventText: string;
-    hearingId: number;
-    eventTs: DateTime;
-  }[];
+  reportingRestrictions?: ReportingRestriction[];
   retainUntilDateTime?: DateTime;
   caseClosedDateTime?: DateTime;
   retentionDateTimeApplied?: DateTime;

@@ -27,15 +27,7 @@ export class AdminCaseService {
       judges: caseData.judges,
       prosecutors: caseData.prosecutors,
       defenders: caseData.defenders,
-      reportingRestrictions: caseData.reporting_restrictions
-        ? caseData.reporting_restrictions.map((reportingRestriction) => ({
-            eventId: reportingRestriction.event_id,
-            eventName: reportingRestriction.event_name,
-            eventText: reportingRestriction.event_text,
-            hearingId: reportingRestriction.hearing_id,
-            eventTs: DateTime.fromISO(reportingRestriction.event_ts),
-          }))
-        : [],
+      reportingRestrictions: caseData.reporting_restrictions ? caseData.reporting_restrictions : [],
       retainUntilDateTime: caseData.retain_until_date_time
         ? DateTime.fromISO(caseData.retain_until_date_time)
         : undefined,

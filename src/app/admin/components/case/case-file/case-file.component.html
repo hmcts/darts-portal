@@ -1,38 +1,54 @@
-<app-govuk-heading caption="Case">{{ caseFile()?.caseNumber }}</app-govuk-heading>
+@let case = caseFile();
+
+@if (!case?.isDataAnonymised) {
+  <app-reporting-restriction [restrictions]="case?.reportingRestrictions"></app-reporting-restriction>
+} @else {
+  @if (case?.retainUntilDateTime) {
+    <app-expired-banner [expiryDate]="case?.retainUntilDateTime!" />
+  }
+}
+
+<app-govuk-heading caption="Case">{{ case?.caseNumber }}</app-govuk-heading>
 
 <div govukSummaryContainer>
   <app-govuk-heading class="no-margin border-bottom" tag="h2" size="m">Case details</app-govuk-heading>
   <dl govukSummaryList>
     <div govukSummaryListRow>
       <dt govukSummaryKey>Case ID</dt>
-      <dd govukSummaryValue>{{ caseFile()?.caseNumber }}</dd>
+      <dd govukSummaryValue>{{ case?.caseNumber }}</dd>
     </div>
     <div govukSummaryListRow>
       <dt govukSummaryKey>Courthouse</dt>
-      <dd govukSummaryValue>{{ caseFile()?.courthouse?.displayName }}</dd>
+      <dd govukSummaryValue>{{ case?.courthouse?.displayName }}</dd>
     </div>
     <div govukSummaryListRow>
       <dt govukSummaryKey>Judge(s)</dt>
-      <dd govukSummaryValue>{{ caseFile()?.judges | join }}</dd>
+      <dd govukSummaryValue>{{ case?.judges | join }}</dd>
     </div>
     <div govukSummaryListRow>
       <dt govukSummaryKey>Defendant(s)</dt>
-      <dd govukSummaryValue>{{ caseFile()?.defendants | join }}</dd>
+      <dd govukSummaryValue>{{ case?.defendants | join }}</dd>
     </div>
     <div govukSummaryListRow>
       <dt govukSummaryKey>Defence</dt>
-      <dd govukSummaryValue>{{ caseFile()?.defenders | join }}</dd>
+      <dd govukSummaryValue>{{ case?.defenders | join }}</dd>
     </div>
     <div govukSummaryListRow>
       <dt govukSummaryKey>Prosecutor(s)</dt>
-      <dd govukSummaryValue>{{ caseFile()?.prosecutors | join }}</dd>
+      <dd govukSummaryValue>{{ case?.prosecutors | join }}</dd>
     </div>
 
     <div govukSummaryListRow>
       <dt govukSummaryKey>Retained until</dt>
-      <dd govukSummaryValue>{{ caseFile()?.retainUntilDateTime | dateTime: 'd MMM y' }}</dd>
+      <dd govukSummaryValue>
+        @if (case?.retainUntilDateTime) {
+          {{ case?.retainUntilDateTime | dateTime: 'd MMM y' }}
+        } @else {
+          No date applied
+        }
+      </dd>
       <dd govukSummaryAction>
-        <a class="govuk-link" [routerLink]="['/case', caseFile()?.id, 'retention']">View or change</a>
+        <a class="govuk-link" [routerLink]="['/case', case?.id, 'retention']">View or change</a>
       </dd>
     </div>
   </dl>

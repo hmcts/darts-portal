@@ -73,7 +73,7 @@ describe('Admin - Event details', () => {
     cy.get('h1.govuk-heading-l').should('contain.text', 'All versions of this event');
 
     cy.get('h2.govuk-heading-s').should('contain.text', 'Source event ID');
-    cy.get('p.govuk-body').should('contain.text', '111');
+    cy.get('#sourceEventId').should('contain.text', '2001');
 
     cy.get('h2.govuk-heading-m').contains('Current version').should('be.visible');
     cy.get('app-data-table')

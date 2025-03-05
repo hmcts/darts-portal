@@ -59,7 +59,7 @@ describe('CaseComponent', () => {
 
   describe('caseFile$ Observable', () => {
     it('should fetch case file and map user names correctly', (done) => {
-      component.caseFile$.subscribe((caseFile) => {
+      component.caseFile$?.subscribe((caseFile) => {
         expect(caseFile).toEqual({
           ...mockCaseFile,
           createdBy: 'Alice Johnson',
@@ -75,7 +75,7 @@ describe('CaseComponent', () => {
     it('should handle missing users and set fallback values', (done) => {
       mockUserAdminService.getUsersById.mockReturnValue(of([])); // No users returned
 
-      component.caseFile$.subscribe((caseFile) => {
+      component.caseFile$?.subscribe((caseFile) => {
         expect(caseFile).toEqual({
           ...mockCaseFile,
           createdBy: undefined,

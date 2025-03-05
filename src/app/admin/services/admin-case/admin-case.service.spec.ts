@@ -79,11 +79,11 @@ describe('AdminCaseService', () => {
         defenders: ['Mr Defender'],
         reportingRestrictions: [
           {
-            eventId: 123,
-            eventName: 'Verdict',
-            eventText: 'Manually entered text',
-            hearingId: 123,
-            eventTs: DateTime.fromISO('2024-01-01T00:00:00Z'),
+            event_id: 123,
+            event_name: 'Verdict',
+            event_text: 'Manually entered text',
+            hearing_id: 123,
+            event_ts: '2024-01-01T00:00:00Z',
           },
         ],
         retainUntilDateTime: DateTime.fromISO('2030-01-31T15:42:10.361Z'),
@@ -130,11 +130,11 @@ describe('AdminCaseService', () => {
         defenders: ['Mr Defender'],
         reportingRestrictions: [
           {
-            eventId: 123,
-            eventName: 'Verdict',
-            eventText: 'Manually entered text',
-            hearingId: 123,
-            eventTs: DateTime.fromISO('2024-01-01T00:00:00Z'),
+            event_id: 123,
+            event_name: 'Verdict',
+            event_text: 'Manually entered text',
+            hearing_id: 123,
+            event_ts: '2024-01-01T00:00:00Z',
           },
         ],
         retainUntilDateTime: DateTime.fromISO('2030-01-31T15:42:10.361Z'),

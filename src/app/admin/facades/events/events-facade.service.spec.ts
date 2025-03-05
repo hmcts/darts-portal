@@ -121,6 +121,7 @@ describe('EventsFacadeService', () => {
       const mockResponse: EventVersions = {
         currentVersion: {
           id: 1,
+          sourceId: 123,
           eventTs: DateTime.fromISO('2024-05-10T12:00:00Z'),
           eventMapping: { id: 1, name: 'Current Event' },
           courthouse: { id: 1, displayName: 'Current Courthouse' },
@@ -130,6 +131,7 @@ describe('EventsFacadeService', () => {
         previousVersions: [
           {
             id: 2,
+            sourceId: 0,
             eventTs: DateTime.fromISO('2024-04-10T10:00:00Z'),
             eventMapping: { id: 2, name: 'Previous Event' },
             courthouse: { id: 2, displayName: 'Previous Courthouse' },
@@ -153,6 +155,7 @@ describe('EventsFacadeService', () => {
       const expectedEventVersions = {
         currentVersion: {
           id: 1,
+          event_id: 123,
           timestamp: DateTime.fromISO('2024-05-10T12:00:00Z'),
           name: 'Current Event',
           courthouse: 'Current Courthouse',
@@ -162,6 +165,7 @@ describe('EventsFacadeService', () => {
         previousVersions: [
           {
             id: 2,
+            event_id: 0,
             timestamp: DateTime.fromISO('2024-04-10T10:00:00Z'),
             name: 'Previous Event',
             courthouse: 'Previous Courthouse',
@@ -180,6 +184,7 @@ describe('EventsFacadeService', () => {
       const mockEventVersions: EventVersions = {
         currentVersion: {
           id: 1,
+          sourceId: 456,
           eventTs: DateTime.fromISO('2024-05-10T12:00:00Z'),
           eventMapping: { id: 1, name: 'Event Name' },
           courthouse: { id: 1, displayName: 'Courthouse' },

@@ -78,7 +78,7 @@ const singleCase = {
       event_ts: '2024-01-01T00:00:00Z',
     },
   ],
-  retain_until_date_time: '2030-01-31T15:42:10.361Z',
+  retain_until_date_time: '2020-01-31T15:42:10.361Z',
   case_closed_date_time: '2023-07-20T15:42:10.361Z',
   retention_date_time_applied: '2023-07-22T15:42:10.361Z',
   retention_policy_applied: 'MANUAL',

@@ -1,5 +1,5 @@
 import { EventMapping } from '@admin-types/event-mappings/event-mapping.type';
-import { Event } from '@admin-types/events';
+import { Event, EventVersionData } from '@admin-types/events';
 import { EventVersions } from '@admin-types/events/event-versions';
 import { User } from '@admin-types/index';
 import { inject, Injectable } from '@angular/core';
@@ -35,9 +35,10 @@ export class EventsFacadeService {
     };
   }
 
-  private mapEventTableData(event: Event) {
+  private mapEventTableData(event: Event): EventVersionData {
     return {
       id: event.id,
+      event_id: event.sourceId,
       timestamp: event.eventTs,
       name: event.eventMapping.name,
       courthouse: event.courthouse.displayName,

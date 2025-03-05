@@ -1,10 +1,10 @@
 @if (caseFile$ | async; as caseFile) {
-  <a [routerLink]="['/admin/search']" class="govuk-back-link">Back</a>
+  <a [routerLink]="[backUrl]" class="govuk-back-link">Back</a>
 
   <app-case-file [caseFile]="caseFile" />
 
   <app-tabs>
-    <div *tab="'Hearings'; id: 'hearings-tab'"></div>
+    <!-- <div *tab="'Hearings'; id: 'hearings-tab'"></div>
 
     <div *tab="'Audio'; id: 'audio-tab'"></div>
 
@@ -12,7 +12,7 @@
 
     <div *tab="'Transcripts'; id: 'transcripts-tab'"></div>
 
-    <div *tab="'Annotations'; id: 'annotations-tab'"></div>
+    <div *tab="'Annotations'; id: 'annotations-tab'"></div> -->
 
     <div *tab="'Additional case details'; id: 'additional-tab'">
       <app-case-additional-details [caseFile]="caseFile"></app-case-additional-details>
