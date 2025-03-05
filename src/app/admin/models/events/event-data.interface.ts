@@ -1,3 +1,5 @@
+import { DateTime } from 'luxon';
+
 export interface EventData {
   id: number;
   documentum_id: string;
@@ -28,4 +30,14 @@ export interface EventData {
   last_modified_by: number;
   case_expired_at: string;
   is_current: boolean;
+}
+
+export interface EventVersionData {
+  id: number;
+  event_id?: number;
+  timestamp: DateTime;
+  name?: string;
+  courthouse: string;
+  courtroom: string;
+  text: string;
 }

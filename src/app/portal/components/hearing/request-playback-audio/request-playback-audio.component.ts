@@ -88,6 +88,20 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
       this.audioRequestForm.get('requestType')?.patchValue('PLAYBACK');
     }
     this.audioRequestForm.get('requestType')?.updateValueAndValidity();
+
+    // Ensure validation runs when `requestType` changes, but preserve `endTime` errors
+    this.audioRequestForm.get('requestType')?.valueChanges.subscribe(() => {
+      const endTimeCtrl = this.audioRequestForm.get('endTime');
+
+      if (!endTimeCtrl) return;
+      const endTimeErrors = { ...endTimeCtrl.errors };
+
+      endTimeCtrl.updateValueAndValidity();
+
+      if (endTimeErrors?.endTimeAfterStart) {
+        endTimeCtrl.setErrors(endTimeErrors);
+      }
+    });
   }
 
   get f() {
@@ -127,14 +141,14 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
     this.errorSummary = this.getErrorSummary();
 
     if (this.audioRequestForm.invalid) {
-      if (!this.audioRequestForm.controls.startTime.errors?.invalidTime) {
+      if (this.audioRequestForm.controls.startTime.errors?.invalidTime) {
         this.errorSummary.push({
           fieldId: 'start-time-hour-input',
           message: fieldErrors.startTime.invalidTime,
         });
       }
 
-      if (!this.audioRequestForm.controls.endTime.errors?.invalidTime) {
+      if (this.audioRequestForm.controls.endTime.errors?.invalidTime) {
         this.errorSummary.push({
           fieldId: 'end-time-hour-input',
           message: fieldErrors.endTime.invalidTime,
@@ -150,7 +164,6 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
       }
     }
 
-    // if (this.errorSummary.length > 0) this.validationErrorEvent.emit(this.errorSummary);
     if (this.errorSummary.length > 0) {
       const uniqueErrorMessages = [...new Map([...this.errorSummary].map((entry) => [entry.message, entry])).values()];
       this.validationErrorEvent.emit(uniqueErrorMessages);
