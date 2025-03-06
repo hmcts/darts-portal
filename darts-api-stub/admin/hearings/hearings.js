@@ -51,6 +51,38 @@ const hearings = [
   },
 ];
 
+const singleHearing = {
+  id: 1,
+  hearing_date: '2025-01-23',
+  scheduled_start_time: '08:00:00',
+  hearing_is_actual: true,
+  case: {
+    id: 1,
+    case_number: 'CASE1',
+    courthouse: {
+      id: 0,
+      display_name: 'Courthouse 12',
+    },
+    defendants: ['Joe Bloggs'],
+    prosecutors: ['Mrs Prosecutor'],
+    defenders: ['Mr Defender'],
+    judges: ['Mr Judge'],
+  },
+  courtroom: {
+    id: 0,
+    name: 'ROOM CD',
+  },
+  judges: ['Mr Judge'],
+  created_at: '2024-01-01T00:00:00Z',
+  created_by: 3,
+  last_modified_at: '2024-01-01T00:00:00Z',
+  last_modified_by: 2,
+};
+
+router.get('/:id', (req, res) => {
+  res.send(singleHearing);
+});
+
 router.post('/search', (req, res) => {
   if (req.body.case_number === 'NO_RESULTS') {
     res.send([]);

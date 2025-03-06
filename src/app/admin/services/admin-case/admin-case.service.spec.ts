@@ -1,6 +1,7 @@
 import { AdminCaseData } from '@admin-types/case/case.interface';
 import { AdminCase } from '@admin-types/case/case.type';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { DateTime } from 'luxon';
 import { AdminCaseService } from './admin-case.service';
@@ -48,8 +49,8 @@ describe('AdminCaseService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [AdminCaseService],
+      imports: [],
+      providers: [AdminCaseService, provideHttpClient(), provideHttpClientTesting()],
     });
 
     service = TestBed.inject(AdminCaseService);

@@ -1,12 +1,12 @@
 import { AdminCase } from '@admin-types/case/case.type';
 import { Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { ExpiredBannerComponent } from '@common/expired-banner/expired-banner.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
+import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
 import { GovukSummaryListDirectives } from '@directives/govuk-summary-list';
 import { DateTimePipe } from '@pipes/dateTime.pipe';
 import { JoinPipe } from '@pipes/join';
-import { ExpiredBannerComponent } from '../../../../core/components/common/expired-banner/expired-banner.component';
-import { ReportingRestrictionComponent } from '../../../../core/components/common/reporting-restriction/reporting-restriction.component';
 
 @Component({
   selector: 'app-case-file',
