@@ -14,13 +14,17 @@
 
     <!-- <div *tab="'Audio'"></div>
 
-    <div *tab="'Events'"></div>
+    <div *tab="'Events'; id: 'events-tab'"></div>
 
-    <div *tab="'Transcripts'"></div>
+    <div *tab="'Transcripts'; id: 'transcripts-tab'"></div>
 
-    <div *tab="'Annotations'"></div>
+    <div *tab="'Annotations'; id: 'annotations-tab'"></div> -->
 
-    <div *tab="'Additional case details'"></div> -->
+    <div *tab="'Additional case details'; id: 'additional-tab'">
+      @if (data.caseFile) {
+        <app-case-additional-details [caseFile]="data.caseFile"></app-case-additional-details>
+      }
+    </div>
   </app-tabs>
 } @else {
   <app-loading />
