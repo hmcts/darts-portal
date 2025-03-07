@@ -25,7 +25,7 @@
     </div>
     <div govukSummaryListRow>
       <dt govukSummaryKey>Case closed?</dt>
-      <dd govukSummaryValue>{{ case?.caseStatus ?? '-' }}</dd>
+      <dd govukSummaryValue>{{ case?.caseStatus === 'CLOSED' ? 'Yes' : 'No' }}</dd>
     </div>
     <div govukSummaryListRow>
       <dt govukSummaryKey>Date case closed</dt>
@@ -36,13 +36,13 @@
     <div govukSummaryListRow>
       <dt govukSummaryKey>Interpreter used?</dt>
       <dd govukSummaryValue>
-        {{ case?.isInterpreterUsed !== undefined ? (case?.isInterpreterUsed ? 'Yes' : 'No') : '-' }}
+        {{ case?.isInterpreterUsed ? 'Yes' : 'No' }}
       </dd>
     </div>
     <div govukSummaryListRow>
       <dt govukSummaryKey>Retention updated?</dt>
       <dd govukSummaryValue>
-        {{ case?.isRetentionUpdated !== undefined ? (case?.isRetentionUpdated ? 'Yes' : 'No') : '-' }}
+        {{ case?.isRetentionUpdated ? 'Yes' : 'No' }}
       </dd>
     </div>
     <div govukSummaryListRow>
@@ -54,7 +54,7 @@
     <div govukSummaryListRow>
       <dt govukSummaryKey>Case anonymised?</dt>
       <dd govukSummaryValue>
-        {{ case?.isDataAnonymised !== undefined ? (case?.isDataAnonymised ? 'Yes' : 'No') : '-' }}
+        {{ case?.isDataAnonymised ? 'Yes' : 'No' }}
       </dd>
     </div>
     <div govukSummaryListRow>
@@ -86,7 +86,7 @@
     <div govukSummaryListRow>
       <dt govukSummaryKey>Case deleted?</dt>
       <dd govukSummaryValue>
-        {{ case?.isDeleted !== undefined ? (case?.isDeleted ? 'Yes' : 'No') : '-' }}
+        {{ case?.isDeleted ? 'Yes' : 'No' }}
       </dd>
     </div>
     <div govukSummaryListRow>
