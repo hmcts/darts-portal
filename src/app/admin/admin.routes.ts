@@ -19,6 +19,12 @@ export const ADMIN_ROUTES: Routes = [
     loadComponent: () => import('./components/case/case.component').then((c) => c.CaseComponent),
   },
   {
+    path: 'admin/case/:caseId/hearing/:hearingId',
+    title: 'DARTS Admin View Hearing',
+    data: { allowedRoles: ['SUPER_ADMIN', 'SUPER_USER'] },
+    loadComponent: () => import('./components/hearing/hearing.component').then((c) => c.HearingComponent),
+  },
+  {
     path: 'admin/users',
     title: 'DARTS Admin Search Users',
     data: { allowedRoles: ['SUPER_ADMIN', 'SUPER_USER'] },
