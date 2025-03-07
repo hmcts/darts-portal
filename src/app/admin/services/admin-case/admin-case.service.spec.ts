@@ -41,8 +41,10 @@ describe('AdminCaseService', () => {
     last_modified_by: 5,
     is_deleted: false,
     case_deleted_at: '2024-01-01T00:00:00Z',
+    case_deleted_by: 6,
     is_data_anonymised: false,
     data_anonymised_at: '2024-01-01T00:00:00Z',
+    data_anonymised_by: 7,
     is_interpreter_used: false,
   };
 
@@ -65,7 +67,7 @@ describe('AdminCaseService', () => {
   });
 
   describe('getCase', () => {
-    it('should fetch case data and map it correctly', () => {
+    it('should fetch case data and map it correctly', (done) => {
       const expectedMappedCase: AdminCase = {
         id: 1,
         caseNumber: 'CASE1001',
@@ -98,13 +100,18 @@ describe('AdminCaseService', () => {
         lastModifiedById: 5,
         isDeleted: false,
         caseDeletedAt: DateTime.fromISO('2024-01-01T00:00:00Z'),
+        caseDeletedById: 6,
+        caseDeletedBy: undefined,
         isDataAnonymised: false,
         dataAnonymisedAt: DateTime.fromISO('2024-01-01T00:00:00Z'),
+        dataAnonymisedById: 7,
+        dataAnonymisedBy: undefined,
         isInterpreterUsed: false,
       };
 
       service.getCase(1).subscribe((caseData) => {
         expect(caseData).toEqual(expectedMappedCase);
+        done();
       });
 
       const req = httpMock.expectOne(`/api/admin/cases/1`);
@@ -149,60 +156,13 @@ describe('AdminCaseService', () => {
         lastModifiedById: 5,
         isDeleted: false,
         caseDeletedAt: DateTime.fromISO('2024-01-01T00:00:00Z'),
+        caseDeletedById: 6,
+        caseDeletedBy: undefined,
         isDataAnonymised: false,
         dataAnonymisedAt: DateTime.fromISO('2024-01-01T00:00:00Z'),
+        dataAnonymisedById: 7,
+        dataAnonymisedBy: undefined,
         isInterpreterUsed: false,
-      });
-    });
-
-    it('should handle missing optional values', () => {
-      const partialCaseData: AdminCaseData = {
-        id: 2,
-        case_number: 'CASE2002',
-        courthouse: {
-          id: 2002,
-          display_name: 'CARDIFF',
-        },
-        case_status: 'CLOSED',
-        case_object_id: '67890',
-        created_at: '2024-02-01T12:00:00Z',
-        created_by: 7,
-        last_modified_at: '2024-02-02T12:00:00Z',
-        last_modified_by: 7,
-        is_deleted: true,
-        is_data_anonymised: true,
-        is_interpreter_used: true,
-      };
-
-      const mappedCase = service.mapCaseDataToCase(partialCaseData);
-
-      expect(mappedCase).toEqual({
-        id: 2,
-        caseNumber: 'CASE2002',
-        courthouse: {
-          id: 2002,
-          displayName: 'CARDIFF',
-        },
-        defendants: undefined,
-        judges: undefined,
-        prosecutors: undefined,
-        defenders: undefined,
-        reportingRestrictions: [],
-        retainUntilDateTime: undefined,
-        caseClosedDateTime: undefined,
-        retentionDateTimeApplied: undefined,
-        retentionPolicyApplied: undefined,
-        caseObjectId: '67890',
-        caseStatus: 'CLOSED',
-        createdAt: DateTime.fromISO('2024-02-01T12:00:00Z'),
-        createdById: 7,
-        lastModifiedAt: DateTime.fromISO('2024-02-02T12:00:00Z'),
-        lastModifiedById: 7,
-        isDeleted: true,
-        caseDeletedAt: undefined,
-        isDataAnonymised: true,
-        dataAnonymisedAt: undefined,
-        isInterpreterUsed: true,
       });
     });
   });

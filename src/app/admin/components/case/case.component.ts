@@ -2,13 +2,17 @@ import { AdminCase } from '@admin-types/case/case.type';
 import { AsyncPipe } from '@angular/common';
 import { Component, inject, input, numberAttribute, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
+import { CaseHearingsTableComponent } from '@components/case/case-file/case-hearings-table/case-hearings-table.component';
 import { TabDirective } from '@directives/tab.directive';
+import { Hearing } from '@portal-types/hearing';
 import { AdminCaseService } from '@services/admin-case/admin-case.service';
+import { CaseService } from '@services/case/case.service';
 import { HistoryService } from '@services/history/history.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
-import { map, Observable, switchMap } from 'rxjs';
+import { catchError, combineLatest, map, Observable, of, switchMap } from 'rxjs';
 import { CaseAdditionalDetailsComponent } from './case-file/case-additional-details/case-additional-details.component';
 import { CaseFileComponent } from './case-file/case-file.component';
 
@@ -22,37 +26,60 @@ import { CaseFileComponent } from './case-file/case-file.component';
     TabsComponent,
     TabDirective,
     CaseAdditionalDetailsComponent,
+    GovukHeadingComponent,
+    CaseHearingsTableComponent,
   ],
   templateUrl: './case.component.html',
   styleUrl: './case.component.scss',
 })
 export class CaseComponent implements OnInit {
-  caseService = inject(AdminCaseService);
+  caseService = inject(CaseService);
   userAdminService = inject(UserAdminService);
+  caseAdminService = inject(AdminCaseService);
   historyService = inject(HistoryService);
   url = inject(Router).url;
 
   caseId = input(0, { transform: numberAttribute });
 
-  caseFile$: Observable<AdminCase> | null = null;
+  caseFile$!: Observable<AdminCase>;
+  hearings$!: Observable<Hearing[]>;
 
   backUrl = this.historyService.getBackUrl(this.url) ?? '/admin/search';
 
-  ngOnInit(): void {
-    this.caseFile$ = this.caseService.getCase(this.caseId()).pipe(
-      switchMap((caseFile) => {
-        return this.userAdminService.getUsersById([caseFile.createdById, caseFile.lastModifiedById]).pipe(
-          map((users) => {
-            const userMap = new Map(users.map((user) => [user.id, user.fullName]));
+  data$!: Observable<{ caseFile: AdminCase | null; hearings: Hearing[] }>;
 
-            return {
-              ...caseFile,
-              createdBy: userMap.get(caseFile.createdById),
-              lastModifiedBy: userMap.get(caseFile.lastModifiedById),
-            };
-          })
-        );
+  ngOnInit(): void {
+    this.caseFile$ = this.caseAdminService.getCase(this.caseId()).pipe(
+      switchMap((caseFile) => {
+        const userIds = [
+          caseFile.createdById,
+          caseFile.lastModifiedById,
+          caseFile.caseDeletedById,
+          caseFile.dataAnonymisedById,
+        ].filter(Boolean) as number[];
+
+        return userIds.length
+          ? this.userAdminService.getUsersById(userIds).pipe(
+              map((users) => {
+                const userMap = new Map(users.map((user) => [user.id, user.fullName]));
+                return {
+                  ...caseFile,
+                  createdBy: userMap.get(caseFile.createdById),
+                  lastModifiedBy: userMap.get(caseFile.lastModifiedById),
+                  caseDeletedBy: userMap.get(caseFile.caseDeletedById),
+                  dataAnonymisedBy: userMap.get(caseFile.dataAnonymisedById),
+                };
+              })
+            )
+          : of(caseFile);
       })
     );
+
+    this.hearings$ = this.caseService.getCaseHearings(this.caseId()).pipe(catchError(() => of([])));
+
+    this.data$ = combineLatest({
+      caseFile: this.caseFile$.pipe(catchError(() => of(null))),
+      hearings: this.hearings$,
+    });
   }
 }

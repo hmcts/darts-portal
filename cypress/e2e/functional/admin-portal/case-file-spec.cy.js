@@ -84,7 +84,7 @@ describe('Case file screen', () => {
     cy.a11y();
   });
 
-  describe('Case file tabs', () => {
+  describe('Additional case details tab', () => {
     it('should verify additional case details', () => {
       cy.visit('admin/case/1');
       cy.injectAxe();
@@ -96,99 +96,85 @@ describe('Case file screen', () => {
       cy.get('.govuk-summary-list')
         .eq(1)
         .within(() => {
-          cy.get('.govuk-summary-list__row')
-            .eq(0)
-            .within(() => {
-              cy.get('.govuk-summary-list__key').should('have.text', 'Database ID');
-              cy.get('.govuk-summary-list__value').should('contain.text', '1');
-            });
+          const expectedData = [
+            ['Database ID', '1'],
+            ['Case object ID', '12345'],
+            ['Case object name', 'NAME'],
+            ['Case type', 'Type A'],
+            ['Upload priority', '0'],
+            ['Case closed?', 'OPEN'],
+            ['Date case closed', '20/07/2023'],
+            ['Interpreter used?', 'No'],
+            ['Retention updated?', 'Yes'],
+            ['Retention retries?', '0'],
+            ['Case anonymised?', 'No'],
+            ['Case anonymised by', 'Phil Taylor'],
+            ['Date anonymised', '01/01/2024'],
+            ['Retention confidence score', '123'],
+            ['Retention confidence reason', 'Some reason'],
+            ['Retention confidence date updated', '01/01/2024'],
+            ['Case deleted?', 'No'],
+            ['Case deleted by', 'Trina Gulliver'],
+            ['Date deleted', '01/01/2024'],
+            ['Date created', '01/01/2024'],
+            ['Created by', 'Michael van Gerwen'],
+            ['Date last modified', '01/01/2024'],
+            ['Last modified by', 'Fallon Sherrock'],
+          ];
 
-          cy.get('.govuk-summary-list__row')
-            .eq(1)
-            .within(() => {
-              cy.get('.govuk-summary-list__key').should('have.text', 'Case object ID');
-              cy.get('.govuk-summary-list__value').should('contain.text', '12345');
-            });
-
-          cy.get('.govuk-summary-list__row')
-            .eq(2)
-            .within(() => {
-              cy.get('.govuk-summary-list__key').should('have.text', 'Case status');
-              cy.get('.govuk-summary-list__value').should('contain.text', 'OPEN');
-            });
-
-          cy.get('.govuk-summary-list__row')
-            .eq(3)
-            .within(() => {
-              cy.get('.govuk-summary-list__key').should('have.text', 'Date created');
-              cy.get('.govuk-summary-list__value').should('contain.text', '01/01/2024');
-            });
-
-          cy.get('.govuk-summary-list__row')
-            .eq(4)
-            .within(() => {
-              cy.get('.govuk-summary-list__key').should('have.text', 'Created by');
-              cy.get('.govuk-summary-list__value').should('contain.text', 'Phil Taylor');
-            });
-
-          cy.get('.govuk-summary-list__row')
-            .eq(5)
-            .within(() => {
-              cy.get('.govuk-summary-list__key').should('have.text', 'Date last modified');
-              cy.get('.govuk-summary-list__value').should('contain.text', '01/01/2024');
-            });
-
-          cy.get('.govuk-summary-list__row')
-            .eq(6)
-            .within(() => {
-              cy.get('.govuk-summary-list__key').should('have.text', 'Last modified by');
-              cy.get('.govuk-summary-list__value').should('contain.text', 'Phil Taylor');
-            });
-
-          cy.get('.govuk-summary-list__row')
-            .eq(7)
-            .within(() => {
-              cy.get('.govuk-summary-list__key').should('have.text', 'Date case closed');
-              cy.get('.govuk-summary-list__value').should('contain.text', '20/07/2023');
-            });
-
-          cy.get('.govuk-summary-list__row')
-            .eq(8)
-            .within(() => {
-              cy.get('.govuk-summary-list__key').should('have.text', 'Case deleted?');
-              cy.get('.govuk-summary-list__value').should('contain.text', 'No');
-            });
-
-          cy.get('.govuk-summary-list__row')
-            .eq(9)
-            .within(() => {
-              cy.get('.govuk-summary-list__key').should('have.text', 'Date deleted');
-              cy.get('.govuk-summary-list__value').should('contain.text', '01/01/2024');
-            });
-
-          cy.get('.govuk-summary-list__row')
-            .eq(10)
-            .within(() => {
-              cy.get('.govuk-summary-list__key').should('have.text', 'Case anonymised?');
-              cy.get('.govuk-summary-list__value').should('contain.text', 'No');
-            });
-
-          cy.get('.govuk-summary-list__row')
-            .eq(11)
-            .within(() => {
-              cy.get('.govuk-summary-list__key').should('have.text', 'Date anonymised');
-              cy.get('.govuk-summary-list__value').should('contain.text', '01/01/2024');
-            });
-
-          cy.get('.govuk-summary-list__row')
-            .eq(12)
-            .within(() => {
-              cy.get('.govuk-summary-list__key').should('have.text', 'Interpreter used?');
-              cy.get('.govuk-summary-list__value').should('contain.text', 'No');
-            });
+          expectedData.forEach(([key, value], index) => {
+            cy.get('.govuk-summary-list__row')
+              .eq(index)
+              .within(() => {
+                cy.get('.govuk-summary-list__key').should('have.text', key);
+                cy.get('.govuk-summary-list__value').should('contain.text', value);
+              });
+          });
         });
 
       cy.a11y();
+    });
+  });
+
+  describe('Hearing details tab', () => {
+    it('should show correct case hearing information', () => {
+      cy.visit('admin/case/1');
+
+      cy.get('app-govuk-heading').should('contain.text', 'Case').should('contain.text', 'CASE1001');
+
+      cy.get('#hearingsTable thead tr').within(() => {
+        cy.get('th').eq(0).should('contain.text', 'Hearing date');
+        cy.get('th').eq(1).should('contain.text', 'Judge');
+        cy.get('th').eq(2).should('contain.text', 'Courtroom');
+        cy.get('th').eq(3).should('contain.text', 'No. of transcripts');
+      });
+
+      cy.get('#hearingsTable tbody tr')
+        .eq(0)
+        .within(() => {
+          cy.get('td').eq(0).should('contain.text', '01 Sep 2023');
+          cy.get('td').eq(1).should('contain.text', 'HHJ M. Hussain KC');
+          cy.get('td').eq(2).should('contain.text', '3');
+          cy.get('td').eq(3).should('contain.text', '1');
+        });
+
+      cy.get('#hearingsTable tbody tr')
+        .eq(1)
+        .within(() => {
+          cy.get('td').eq(0).should('contain.text', '10 Oct 2023');
+          cy.get('td').eq(1).should('contain.text', 'Judge Jonny');
+          cy.get('td').eq(2).should('contain.text', '4');
+          cy.get('td').eq(3).should('contain.text', '2');
+        });
+
+      // TO DO: Need to update link once admin hearing file is in
+      cy.get('#hearingsTable tbody tr')
+        .eq(0)
+        .within(() => {
+          cy.get('td').eq(0).find('a').should('have.attr', 'href', '/case/1/hearing/1').click();
+        });
+
+      cy.url().should('include', '/case/1/hearing/1');
     });
   });
 });

@@ -1,12 +1,18 @@
-@if (caseFile$ | async; as caseFile) {
+@if (data$ | async; as data) {
   <a [routerLink]="[backUrl]" class="govuk-back-link">Back</a>
 
-  <app-case-file [caseFile]="caseFile" />
+  @if (data.caseFile) {
+    <app-case-file [caseFile]="data.caseFile" />
+  }
 
   <app-tabs>
-    <!-- <div *tab="'Hearings'; id: 'hearings-tab'"></div>
+    <div *tab="'Hearings'">
+      <!-- TO DO: Update link to admin hearing file once hearing screen is in -->
+      <app-govuk-heading tag="h2" size="m">Hearings</app-govuk-heading>
+      <app-case-hearings-table [hearings]="data.hearings" [caseId]="caseId()" />
+    </div>
 
-    <div *tab="'Audio'; id: 'audio-tab'"></div>
+    <!-- <div *tab="'Audio'"></div>
 
     <div *tab="'Events'; id: 'events-tab'"></div>
 
@@ -15,7 +21,9 @@
     <div *tab="'Annotations'; id: 'annotations-tab'"></div> -->
 
     <div *tab="'Additional case details'; id: 'additional-tab'">
-      <app-case-additional-details [caseFile]="caseFile"></app-case-additional-details>
+      @if (data.caseFile) {
+        <app-case-additional-details [caseFile]="data.caseFile"></app-case-additional-details>
+      }
     </div>
   </app-tabs>
 } @else {
