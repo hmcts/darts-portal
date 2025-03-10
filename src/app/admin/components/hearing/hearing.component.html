@@ -1,0 +1,14 @@
+<a [routerLink]="['/admin/search']" class="govuk-back-link">Back</a>
+
+@if (hearing$ | async; as hearing) {
+  <app-hearing-file [hearing]="hearing" />
+}
+<!-- <app-tabs>
+
+    <div *tab="'Audio'"></div>
+
+    <div *tab="'Events'"></div>
+
+    <div *tab="'Transcripts'"></div>
+
+  </app-tabs> -->
