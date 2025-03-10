@@ -83,4 +83,44 @@ describe('Case file screen', () => {
 
     cy.a11y();
   });
+
+  it('should show correct case hearing information', () => {
+    cy.visit('admin/case/1');
+
+    cy.get('app-govuk-heading').should('contain.text', 'Case').should('contain.text', 'CASE1001');
+
+    cy.get('#hearingsTable thead tr').within(() => {
+      cy.get('th').eq(0).should('contain.text', 'Hearing date');
+      cy.get('th').eq(1).should('contain.text', 'Judge');
+      cy.get('th').eq(2).should('contain.text', 'Courtroom');
+      cy.get('th').eq(3).should('contain.text', 'No. of transcripts');
+    });
+
+    cy.get('#hearingsTable tbody tr')
+      .eq(0)
+      .within(() => {
+        cy.get('td').eq(0).should('contain.text', '01 Sep 2023');
+        cy.get('td').eq(1).should('contain.text', 'HHJ M. Hussain KC');
+        cy.get('td').eq(2).should('contain.text', '3');
+        cy.get('td').eq(3).should('contain.text', '1');
+      });
+
+    cy.get('#hearingsTable tbody tr')
+      .eq(1)
+      .within(() => {
+        cy.get('td').eq(0).should('contain.text', '10 Oct 2023');
+        cy.get('td').eq(1).should('contain.text', 'Judge Jonny');
+        cy.get('td').eq(2).should('contain.text', '4');
+        cy.get('td').eq(3).should('contain.text', '2');
+      });
+
+    // TO DO: Need to update link once admin hearing file is in
+    cy.get('#hearingsTable tbody tr')
+      .eq(0)
+      .within(() => {
+        cy.get('td').eq(0).find('a').should('have.attr', 'href', '/case/1/hearing/1').click();
+      });
+
+    cy.url().should('include', '/case/1/hearing/1');
+  });
 });
