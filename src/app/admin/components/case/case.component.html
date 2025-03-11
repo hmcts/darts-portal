@@ -7,7 +7,6 @@
 
   <app-tabs>
     <div *tab="'Hearings'">
-      <!-- TO DO: Update link to admin hearing file once hearing screen is in -->
       <app-govuk-heading tag="h2" size="m">Hearings</app-govuk-heading>
       <app-case-hearings-table [hearings]="data.hearings" [caseId]="caseId()" />
     </div>

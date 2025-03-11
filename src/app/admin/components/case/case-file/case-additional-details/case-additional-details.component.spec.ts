@@ -24,7 +24,7 @@ describe('CaseAdditionalDetailsComponent', () => {
 
   describe('Case Details Display', () => {
     beforeEach(() => {
-      const caseFile = {
+      const caseFile: AdminCase = {
         id: 1,
         caseObjectId: '12345',
         caseObjectName: 'NAME',
@@ -35,20 +35,29 @@ describe('CaseAdditionalDetailsComponent', () => {
         isInterpreterUsed: false,
         isRetentionUpdated: true,
         retentionRetries: 0,
-        isDataAnonymised: false,
+        isDataAnonymised: true,
         dataAnonymisedBy: 'Phil Taylor',
         dataAnonymisedAt: DateTime.fromISO('2024-01-01T00:00:00Z'),
         retConfScore: 123,
         retConfReason: 'Some reason',
         retConfUpdatedTs: DateTime.fromISO('2024-01-01T00:00:00Z'),
-        isDeleted: false,
+        isDeleted: true,
         caseDeletedBy: 'Trina Gulliver',
         caseDeletedAt: DateTime.fromISO('2024-01-01T00:00:00Z'),
         createdAt: DateTime.fromISO('2024-01-01T00:00:00Z'),
         createdBy: 'Michael van Gerwen',
         lastModifiedAt: DateTime.fromISO('2024-01-01T00:00:00Z'),
         lastModifiedBy: 'Fallon Sherrock',
-      } as AdminCase;
+        caseNumber: '',
+        courthouse: {
+          id: 0,
+          displayName: '',
+        },
+        createdById: 0,
+        lastModifiedById: 0,
+        caseDeletedById: 0,
+        dataAnonymisedById: 0,
+      };
 
       fixture.componentRef.setInput('caseFile', caseFile);
       fixture.detectChanges();
@@ -66,13 +75,13 @@ describe('CaseAdditionalDetailsComponent', () => {
         ['Interpreter used?', 'No'],
         ['Retention updated?', 'Yes'],
         ['Retention retries?', '0'],
-        ['Case anonymised?', 'No'],
+        ['Case anonymised?', 'Yes'],
         ['Case anonymised by', 'Phil Taylor'],
         ['Date anonymised', '01/01/2024'],
         ['Retention confidence score', '123'],
         ['Retention confidence reason', 'Some reason'],
         ['Retention confidence date updated', '01/01/2024'],
-        ['Case deleted?', 'No'],
+        ['Case deleted?', 'Yes'],
         ['Case deleted by', 'Trina Gulliver'],
         ['Date deleted', '01/01/2024'],
         ['Date created', '01/01/2024'],
@@ -81,15 +90,13 @@ describe('CaseAdditionalDetailsComponent', () => {
         ['Last modified by', 'Fallon Sherrock'],
       ];
 
-      const summaryRows = fixture.debugElement.queryAll(By.css('.govuk-summary-list__row'));
-      expect(summaryRows.length).toBe(expectedData.length);
+      expectedData.forEach(([key, value]) => {
+        const row = fixture.debugElement
+          .queryAll(By.css('.govuk-summary-list__row'))
+          .find((row) => row.query(By.css('.govuk-summary-list__key'))?.nativeElement?.textContent.trim() === key);
 
-      expectedData.forEach(([key, value], index) => {
-        const row = summaryRows[index];
-        const keyElement = row.query(By.css('.govuk-summary-list__key')).nativeElement;
-        const valueElement = row.query(By.css('.govuk-summary-list__value')).nativeElement;
-
-        expect(keyElement.textContent.trim()).toBe(key);
+        expect(row).toBeTruthy();
+        const valueElement = row?.query(By.css('.govuk-summary-list__value'))?.nativeElement;
         expect(valueElement.textContent.trim()).toBe(value);
       });
     });
@@ -97,8 +104,7 @@ describe('CaseAdditionalDetailsComponent', () => {
 
   describe('Default Values for Missing Data', () => {
     beforeEach(() => {
-      const caseFile = {}; // Empty object to test default values
-      fixture.componentRef.setInput('caseFile', caseFile);
+      fixture.componentRef.setInput('caseFile', {} as AdminCase); // Empty object to test default values
       fixture.detectChanges();
     });
 
@@ -119,9 +125,7 @@ describe('CaseAdditionalDetailsComponent', () => {
         'Case deleted by',
         'Date deleted',
         'Date created',
-        'Created by',
         'Date last modified',
-        'Last modified by',
       ];
 
       expectedKeys.forEach((key) => {

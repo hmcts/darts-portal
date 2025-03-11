@@ -167,11 +167,10 @@ describe('Case file screen', () => {
           cy.get('td').eq(3).should('contain.text', '2');
         });
 
-      // TO DO: Need to update link once admin hearing file is in
       cy.get('#hearingsTable tbody tr')
         .eq(0)
         .within(() => {
-          cy.get('td').eq(0).find('a').should('have.attr', 'href', '/case/1/hearing/1').click();
+          cy.get('td').eq(0).find('a').should('have.attr', 'href', '/admin/case/1/hearing/1').click();
         });
 
       cy.url().should('include', '/case/1/hearing/1');

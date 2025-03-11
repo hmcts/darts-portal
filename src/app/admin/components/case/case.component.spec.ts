@@ -64,6 +64,8 @@ describe('CaseComponent', () => {
           ...mockCaseFile,
           createdBy: 'Alice Johnson',
           lastModifiedBy: 'Bob Smith',
+          dataAnonymisedBy: 'System',
+          caseDeletedBy: 'System',
         });
         done();
       });
@@ -78,8 +80,10 @@ describe('CaseComponent', () => {
       component.caseFile$?.subscribe((caseFile) => {
         expect(caseFile).toEqual({
           ...mockCaseFile,
-          createdBy: undefined,
-          lastModifiedBy: undefined,
+          createdBy: 'System',
+          lastModifiedBy: 'System',
+          dataAnonymisedBy: 'System',
+          caseDeletedBy: 'System',
         });
         done();
       });

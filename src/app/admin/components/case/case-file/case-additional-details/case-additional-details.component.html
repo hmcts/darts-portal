@@ -59,7 +59,7 @@
     </div>
     <div govukSummaryListRow>
       <dt govukSummaryKey>Case anonymised by</dt>
-      <dd govukSummaryValue>{{ case?.dataAnonymisedBy ?? '-' }}</dd>
+      <dd govukSummaryValue>{{ case?.isDataAnonymised ? case?.dataAnonymisedBy : '-' }}</dd>
     </div>
     <div govukSummaryListRow>
       <dt govukSummaryKey>Date anonymised</dt>
@@ -92,7 +92,7 @@
     <div govukSummaryListRow>
       <dt govukSummaryKey>Case deleted by</dt>
       <dd govukSummaryValue>
-        {{ case?.caseDeletedBy !== undefined ? case?.caseDeletedBy : '-' }}
+        {{ case?.isDeleted ? case?.caseDeletedBy : '-' }}
       </dd>
     </div>
     <div govukSummaryListRow>
@@ -105,7 +105,7 @@
     </div>
     <div govukSummaryListRow>
       <dt govukSummaryKey>Created by</dt>
-      <dd govukSummaryValue>{{ case?.createdBy ?? '-' }}</dd>
+      <dd govukSummaryValue>{{ case?.createdBy }}</dd>
     </div>
     <div govukSummaryListRow>
       <dt govukSummaryKey>Date last modified</dt>
@@ -115,7 +115,7 @@
     </div>
     <div govukSummaryListRow>
       <dt govukSummaryKey>Last modified by</dt>
-      <dd govukSummaryValue>{{ case?.lastModifiedBy ?? '-' }}</dd>
+      <dd govukSummaryValue>{{ case?.lastModifiedBy }}</dd>
     </div>
   </dl>
 </div>

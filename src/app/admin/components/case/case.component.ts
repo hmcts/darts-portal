@@ -64,14 +64,20 @@ export class CaseComponent implements OnInit {
                 const userMap = new Map(users.map((user) => [user.id, user.fullName]));
                 return {
                   ...caseFile,
-                  createdBy: userMap.get(caseFile.createdById),
-                  lastModifiedBy: userMap.get(caseFile.lastModifiedById),
-                  caseDeletedBy: userMap.get(caseFile.caseDeletedById),
-                  dataAnonymisedBy: userMap.get(caseFile.dataAnonymisedById),
+                  createdBy: userMap.get(caseFile.createdById) ?? 'System',
+                  lastModifiedBy: userMap.get(caseFile.lastModifiedById) ?? 'System',
+                  caseDeletedBy: userMap.get(caseFile.caseDeletedById) ?? 'System',
+                  dataAnonymisedBy: userMap.get(caseFile.dataAnonymisedById) ?? 'System',
                 };
               })
             )
-          : of(caseFile);
+          : of({
+              ...caseFile,
+              createdBy: 'System',
+              lastModifiedBy: 'System',
+              caseDeletedBy: 'System',
+              dataAnonymisedBy: 'System',
+            });
       })
     );
 
