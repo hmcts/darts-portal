@@ -159,7 +159,9 @@ describe('Admin - Search screen', () => {
     cy.a11y();
 
     cy.get('app-hearing-search-results td')
+      .find('a')
       .contains('123')
+      .parent()
       .next('td')
       .should('contain', '01/01/2024')
       .next('td')
@@ -168,7 +170,9 @@ describe('Admin - Search screen', () => {
       .should('contain', 'Room 1');
 
     cy.get('app-hearing-search-results td')
+      .find('a')
       .contains('456')
+      .parent()
       .next('td')
       .should('contain', '02/01/2024')
       .next('td')
@@ -177,7 +181,9 @@ describe('Admin - Search screen', () => {
       .should('contain', 'Room 2');
 
     cy.get('app-hearing-search-results td')
+      .find('a')
       .contains('789')
+      .parent()
       .next('td')
       .should('contain', '03/01/2024')
       .next('td')
