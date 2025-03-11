@@ -1,0 +1,19 @@
+<app-govuk-heading tag="h2" size="m">Events</app-govuk-heading>
+
+<app-data-table
+  caption="Events for this hearing"
+  [hiddenCaption]="true"
+  noDataMessage="There are no events for this hearing."
+  [columns]="columns"
+  [rows]="events()"
+>
+  <ng-template [tableRowTemplate]="events()" let-row>
+    <td>
+      <a class="govuk-link" [routerLink]="['/admin/events/', row.id]" [queryParams]="{ backUrl: url() }">
+        {{ row.id }}</a
+      >
+    </td>
+    <td>{{ row.timestamp | luxonDate: "dd MMM yyyy 'at' HH:mm:ss" }}</td>
+    <td>{{ row.name }}</td>
+  </ng-template>
+</app-data-table>

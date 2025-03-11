@@ -79,8 +79,31 @@ const singleHearing = {
   last_modified_by: 2,
 };
 
+const hearingAudios = [
+  {
+    id: 1,
+    start_at: '2024-06-11T07:55:18.404Z',
+    end_at: '2024-06-11T11:11:18.404Z',
+    filename: 'Test recording.mp3',
+    channel: 1,
+    total_channels: 4,
+  },
+  {
+    id: 2,
+    start_at: '2024-06-11T13:12:18.404Z',
+    end_at: '2024-06-11T19:33:18.404Z',
+    filename: 'Test recording 1.mp3',
+    channel: 2,
+    total_channels: 4,
+  },
+];
+
 router.get('/:id', (req, res) => {
   res.send(singleHearing);
+});
+
+router.get('/:id/audios', (req, res) => {
+  res.send(hearingAudios);
 });
 
 router.post('/search', (req, res) => {

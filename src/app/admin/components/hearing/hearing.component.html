@@ -1,14 +1,21 @@
 <a [routerLink]="['/admin/search']" class="govuk-back-link">Back</a>
 
-@if (hearing$ | async; as hearing) {
-  <app-hearing-file [hearing]="hearing" />
+@if (data$ | async; as data) {
+  @if (data.hearing) {
+    <app-hearing-file [hearing]="data.hearing" />
+  }
+
+  <app-tabs [default]="tab()" (tabChange)="onTabChange($event.name)">
+    <div *tab="'Audio'; id: 'audio-tab'">
+      <app-hearing-audios [url]="url" [audios]="data.audios!" />
+    </div>
+
+    <div *tab="'Events'; id: 'events-tab'">
+      <app-hearing-events [url]="url" [events]="data.events!" />
+    </div>
+
+    <div *tab="'Transcripts'; id: 'transcripts-tab'">
+      <app-hearing-transcripts [url]="url" [transcripts]="data.transcripts!" />
+    </div>
+  </app-tabs>
 }
-<!-- <app-tabs>
-
-    <div *tab="'Audio'"></div>
-
-    <div *tab="'Events'"></div>
-
-    <div *tab="'Transcripts'"></div>
-
-  </app-tabs> -->

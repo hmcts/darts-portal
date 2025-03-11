@@ -4,7 +4,7 @@ import { DateTime } from 'luxon';
 export type AdminHearing = {
   id: number;
   hearingDate: DateTime;
-  scheduledStartTime: DateTime;
+  scheduledStartTime: string;
   hearingIsActual: boolean;
   case: AdminCase;
   courtroom: {
