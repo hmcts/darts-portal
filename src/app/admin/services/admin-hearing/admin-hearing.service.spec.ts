@@ -1,6 +1,6 @@
 import { HearingAudioData } from '@admin-types/hearing/hearing-audio.interface';
 import { HearingAudio } from '@admin-types/hearing/hearing-audio.type';
-import { AdminHearingEventData } from '@admin-types/hearing/hearing-events.interface';
+import { AdminHearingEventData } from '@admin-types/hearing/hearing-events-data.type';
 import { AdminHearingEvent } from '@admin-types/hearing/hearing-events.type';
 import { AdminHearingData } from '@admin-types/hearing/hearing.interface';
 import { AdminHearing } from '@admin-types/hearing/hearing.type';
