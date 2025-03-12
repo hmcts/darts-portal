@@ -149,6 +149,32 @@ describe('CaseSearchFormComponent', () => {
         expect(fromFormControl.hasError('required')).toBe(false);
       });
     });
+
+    describe('keywords', () => {
+      let eventTextContainsFormControl: FormControl;
+
+      beforeEach(() => {
+        eventTextContainsFormControl = component.form.controls.eventTextContains;
+      });
+
+      it('allows 3 characters or more', () => {
+        eventTextContainsFormControl.setValue('abc');
+        expect(eventTextContainsFormControl.hasError('minlength')).toBe(false);
+      });
+
+      it('does not allow less than 3 characters', () => {
+        eventTextContainsFormControl.setValue('ab');
+        expect(eventTextContainsFormControl.hasError('minlength')).toBe(true);
+        expect(eventTextContainsFormControl.getError('minlength').requiredLength).toEqual(3);
+      });
+
+      it('allows empty', () => {
+        eventTextContainsFormControl.setValue('a');
+        expect(eventTextContainsFormControl.hasError('minlength')).toBe(true);
+        eventTextContainsFormControl.setValue('');
+        expect(eventTextContainsFormControl.hasError('minlength')).toBe(false);
+      });
+    });
   });
 
   describe('form submission', () => {

@@ -11,7 +11,8 @@ const DATE_INVALID = 'You have not entered a recognised date in the correct form
 const DATE_FUTURE = 'You have selected a date in the future. The hearing date must be in the past';
 const DEFENDANT_LENGTH = `Defendant's name must be less than or equal to 2000 characters`;
 const JUDGE_LENGTH = `Judge's name must be less than or equal to 2000 characters`;
-const KEYWORDS_LENGTH = 'Keywords must be less than or equal to 2000 characters';
+const KEYWORDS_MAX_LENGTH = 'Keywords must be less than or equal to 2000 characters';
+const KEYWORDS_MIN_LENGTH = 'Keywords must be greater than or equal to 3 characters';
 
 describe('Case search', () => {
   beforeEach(() => {
@@ -242,12 +243,20 @@ describe('Case search', () => {
     cy.get('.govuk-error-summary').should('contain', JUDGE_LENGTH);
     cy.get('a').contains('Clear search').click();
 
+    // keywords length check less than 3 characters
+    cy.contains('Advanced search').click();
+    cy.get('#keywords').type('ab');
+    cy.get('button').contains('Search').click({ force: true });
+    cy.get('.keyword-error').should('contain', KEYWORDS_MIN_LENGTH);
+    cy.get('.govuk-error-summary').should('contain', KEYWORDS_MIN_LENGTH);
+    cy.get('a').contains('Clear search').click();
+
     // keywords length check over 2k characters
     cy.contains('Advanced search').click();
     cy.get('#keywords').invoke('val', LONG_STRING_2K).type('1');
     cy.get('button').contains('Search').click({ force: true });
-    cy.get('.keyword-error').should('contain', KEYWORDS_LENGTH);
-    cy.get('.govuk-error-summary').should('contain', KEYWORDS_LENGTH);
+    cy.get('.keyword-error').should('contain', KEYWORDS_MAX_LENGTH);
+    cy.get('.govuk-error-summary').should('contain', KEYWORDS_MAX_LENGTH);
     cy.get('a').contains('Clear search').click();
   });
 
