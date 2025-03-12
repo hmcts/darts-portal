@@ -16,6 +16,7 @@ import { Hearing } from '@portal-types/index';
 export class CaseHearingsTableComponent {
   hearings = input<Hearing[]>([]);
   caseId = input<number>();
+  adminScreen = input(false);
 
   columns: DatatableColumn[] = [
     { name: 'Hearing date', prop: 'date', sortable: true },
