@@ -1,3 +1,6 @@
+@let isAdmin = adminScreen();
+@let id = caseId();
+
 <app-data-table
   id="hearingsTable"
   [rows]="hearings()"
@@ -7,7 +10,7 @@
 >
   <ng-template [tableRowTemplate]="hearings()" let-row>
     <td>
-      <a class="govuk-link" [routerLink]="['/admin/case', caseId(), 'hearing', row.id]">{{
+      <a class="govuk-link" [routerLink]="[isAdmin ? '/admin/case' : '/case', id, 'hearing', row.id]">{{
         row.date | luxonDate: 'dd MMM y'
       }}</a>
     </td>

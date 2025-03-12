@@ -8,7 +8,7 @@
   <app-tabs>
     <div *tab="'Hearings'">
       <app-govuk-heading tag="h2" size="m">Hearings</app-govuk-heading>
-      <app-case-hearings-table [hearings]="data.hearings" [caseId]="caseId()" />
+      <app-case-hearings-table [hearings]="data.hearings" [caseId]="caseId()" [adminScreen]="true" />
     </div>
 
     <!-- <div *tab="'Audio'"></div>
