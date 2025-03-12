@@ -254,7 +254,9 @@ const viewEvents = events.map((event) => ({
 
 router.get('/reset', (req, res) => {
   events.forEach((event) => {
-    event.is_data_anonymised = false;
+    if (event.id !== 333) {
+      event.is_data_anonymised = false;
+    }
   });
 
   viewEvents.forEach((event) => {
