@@ -7,20 +7,23 @@
 
   <app-tabs>
     <div *tab="'Hearings'">
-      <!-- TO DO: Update link to admin hearing file once hearing screen is in -->
       <app-govuk-heading tag="h2" size="m">Hearings</app-govuk-heading>
-      <app-case-hearings-table [hearings]="data.hearings" [caseId]="caseId()" />
+      <app-case-hearings-table [hearings]="data.hearings" [caseId]="caseId()" [adminScreen]="true" />
     </div>
 
     <!-- <div *tab="'Audio'"></div>
 
-    <div *tab="'Events'"></div>
+    <div *tab="'Events'; id: 'events-tab'"></div>
 
-    <div *tab="'Transcripts'"></div>
+    <div *tab="'Transcripts'; id: 'transcripts-tab'"></div>
 
-    <div *tab="'Annotations'"></div>
+    <div *tab="'Annotations'; id: 'annotations-tab'"></div> -->
 
-    <div *tab="'Additional case details'"></div> -->
+    <div *tab="'Additional case details'; id: 'additional-tab'">
+      @if (data.caseFile) {
+        <app-case-additional-details [caseFile]="data.caseFile"></app-case-additional-details>
+      }
+    </div>
   </app-tabs>
 } @else {
   <app-loading />

@@ -11,7 +11,9 @@ import { Hearing } from '@portal-types/hearing';
 import { AdminCaseService } from '@services/admin-case/admin-case.service';
 import { CaseService } from '@services/case/case.service';
 import { HistoryService } from '@services/history/history.service';
-import { catchError, combineLatest, Observable, of } from 'rxjs';
+import { UserAdminService } from '@services/user-admin/user-admin.service';
+import { catchError, combineLatest, map, Observable, of, switchMap } from 'rxjs';
+import { CaseAdditionalDetailsComponent } from './case-file/case-additional-details/case-additional-details.component';
 import { CaseFileComponent } from './case-file/case-file.component';
 
 @Component({
@@ -23,6 +25,7 @@ import { CaseFileComponent } from './case-file/case-file.component';
     AsyncPipe,
     TabsComponent,
     TabDirective,
+    CaseAdditionalDetailsComponent,
     GovukHeadingComponent,
     CaseHearingsTableComponent,
   ],
@@ -30,8 +33,9 @@ import { CaseFileComponent } from './case-file/case-file.component';
   styleUrl: './case.component.scss',
 })
 export class CaseComponent implements OnInit {
-  caseAdminService = inject(AdminCaseService);
   caseService = inject(CaseService);
+  userAdminService = inject(UserAdminService);
+  caseAdminService = inject(AdminCaseService);
   historyService = inject(HistoryService);
   url = inject(Router).url;
 
@@ -45,7 +49,38 @@ export class CaseComponent implements OnInit {
   data$!: Observable<{ caseFile: AdminCase | null; hearings: Hearing[] }>;
 
   ngOnInit(): void {
-    this.caseFile$ = this.caseAdminService.getCase(this.caseId());
+    this.caseFile$ = this.caseAdminService.getCase(this.caseId()).pipe(
+      switchMap((caseFile) => {
+        const userIds = [
+          caseFile.createdById,
+          caseFile.lastModifiedById,
+          caseFile.caseDeletedById,
+          caseFile.dataAnonymisedById,
+        ].filter(Boolean) as number[];
+
+        return userIds.length
+          ? this.userAdminService.getUsersById(userIds).pipe(
+              map((users) => {
+                const userMap = new Map(users.map((user) => [user.id, user.fullName]));
+                return {
+                  ...caseFile,
+                  createdBy: userMap.get(caseFile.createdById) ?? 'System',
+                  lastModifiedBy: userMap.get(caseFile.lastModifiedById) ?? 'System',
+                  caseDeletedBy: userMap.get(caseFile.caseDeletedById) ?? 'System',
+                  dataAnonymisedBy: userMap.get(caseFile.dataAnonymisedById) ?? 'System',
+                };
+              })
+            )
+          : of({
+              ...caseFile,
+              createdBy: 'System',
+              lastModifiedBy: 'System',
+              caseDeletedBy: 'System',
+              dataAnonymisedBy: 'System',
+            });
+      })
+    );
+
     this.hearings$ = this.caseService.getCaseHearings(this.caseId()).pipe(catchError(() => of([])));
 
     this.data$ = combineLatest({

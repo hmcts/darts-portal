@@ -29,8 +29,8 @@ export class AdminHearingService {
         id: data.case.id,
         caseNumber: data.case.case_number,
         courthouse: {
-          id: data.case.courthouse.id,
-          displayName: data.case.courthouse.display_name,
+          id: data.case.courthouse?.id ?? 0,
+          displayName: data.case.courthouse?.display_name ?? '',
         },
         defendants: data.case.defendants,
         prosecutors: data.case.prosecutors,

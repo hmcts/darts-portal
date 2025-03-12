@@ -6,7 +6,7 @@ export type AdminHearing = {
   hearingDate: DateTime;
   scheduledStartTime: string;
   hearingIsActual: boolean;
-  case: AdminCase;
+  case: Partial<AdminCase>;
   courtroom: {
     id: number;
     name: string;

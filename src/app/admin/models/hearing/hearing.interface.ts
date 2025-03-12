@@ -5,7 +5,7 @@ export interface AdminHearingData {
   hearing_date: string;
   scheduled_start_time: string;
   hearing_is_actual: boolean;
-  case: AdminCaseData;
+  case: Partial<AdminCaseData> & Required<Pick<AdminCaseData, 'id' | 'case_number' | 'courthouse'>>;
   courtroom: {
     id: number;
     name: string;

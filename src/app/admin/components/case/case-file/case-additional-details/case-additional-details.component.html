@@ -1,0 +1,121 @@
+@let case = caseFile();
+
+<div govukSummaryContainer>
+  <app-govuk-heading class="no-margin border-bottom" tag="h2" size="m">Additional case details</app-govuk-heading>
+  <dl govukSummaryList>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Database ID</dt>
+      <dd govukSummaryValue>{{ case?.id ?? '-' }}</dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Case object ID</dt>
+      <dd govukSummaryValue>{{ case?.caseObjectId ?? '-' }}</dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Case object name</dt>
+      <dd govukSummaryValue>{{ case?.caseObjectName ?? '-' }}</dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Case type</dt>
+      <dd govukSummaryValue>{{ case?.caseType ?? '-' }}</dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Upload priority</dt>
+      <dd govukSummaryValue>{{ case?.uploadPriority ?? '-' }}</dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Case closed?</dt>
+      <dd govukSummaryValue>{{ case?.caseStatus === 'CLOSED' ? 'Yes' : 'No' }}</dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Date case closed</dt>
+      <dd govukSummaryValue>
+        {{ case?.caseClosedDateTime ? (case?.caseClosedDateTime | dateTime: 'dd/MM/yyyy') : '-' }}
+      </dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Interpreter used?</dt>
+      <dd govukSummaryValue>
+        {{ case?.isInterpreterUsed ? 'Yes' : 'No' }}
+      </dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Retention updated?</dt>
+      <dd govukSummaryValue>
+        {{ case?.isRetentionUpdated ? 'Yes' : 'No' }}
+      </dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Retention retries?</dt>
+      <dd govukSummaryValue>
+        {{ case?.retentionRetries ?? '-' }}
+      </dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Case anonymised?</dt>
+      <dd govukSummaryValue>
+        {{ case?.isDataAnonymised ? 'Yes' : 'No' }}
+      </dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Case anonymised by</dt>
+      <dd govukSummaryValue>{{ case?.isDataAnonymised ? case?.dataAnonymisedBy : '-' }}</dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Date anonymised</dt>
+      <dd govukSummaryValue>
+        {{ case?.dataAnonymisedAt ? (case?.dataAnonymisedAt | dateTime: 'dd/MM/yyyy') : '-' }}
+      </dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Retention confidence score</dt>
+      <dd govukSummaryValue>
+        {{ case?.retConfScore ? case?.retConfScore : '-' }}
+      </dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Retention confidence reason</dt>
+      <dd govukSummaryValue>
+        {{ case?.retConfReason ? case?.retConfReason : '-' }}
+      </dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Retention confidence date updated</dt>
+      <dd govukSummaryValue>{{ case?.retConfUpdatedTs ? (case?.retConfUpdatedTs | dateTime: 'dd/MM/yyyy') : '-' }}</dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Case deleted?</dt>
+      <dd govukSummaryValue>
+        {{ case?.isDeleted ? 'Yes' : 'No' }}
+      </dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Case deleted by</dt>
+      <dd govukSummaryValue>
+        {{ case?.isDeleted ? case?.caseDeletedBy : '-' }}
+      </dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Date deleted</dt>
+      <dd govukSummaryValue>{{ case?.caseDeletedAt ? (case?.caseDeletedAt | dateTime: 'dd/MM/yyyy') : '-' }}</dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Date created</dt>
+      <dd govukSummaryValue>{{ case?.createdAt ? (case?.createdAt | dateTime: 'dd/MM/yyyy') : '-' }}</dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Created by</dt>
+      <dd govukSummaryValue>{{ case?.createdBy }}</dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Date last modified</dt>
+      <dd govukSummaryValue>
+        {{ case?.lastModifiedAt ? (case?.lastModifiedAt | dateTime: 'dd/MM/yyyy') : '-' }}
+      </dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Last modified by</dt>
+      <dd govukSummaryValue>{{ case?.lastModifiedBy }}</dd>
+    </div>
+  </dl>
+</div>
