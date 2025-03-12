@@ -13,6 +13,6 @@ export interface AdminEventSearchResultData {
     id: number;
     name: string;
   };
-  is_event_anonymised?: boolean;
+  is_data_anonymised?: boolean;
   is_case_expired?: boolean;
 }

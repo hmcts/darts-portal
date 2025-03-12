@@ -8,12 +8,12 @@ import { AdminMediaSearchResult } from '@admin-types/search/admin-media-search-r
 import { AdminMediaSearchResultData } from '@admin-types/search/admin-media-search-result-data.inerface';
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject, signal } from '@angular/core';
+import { AppInsightsService } from '@services/app-insights/app-insights.service';
+import { UserService } from '@services/user/user.service';
 import { formatDate } from '@utils/date.utils';
 import { DateTime } from 'luxon';
 import { Observable, catchError, finalize, map, of, tap } from 'rxjs';
 import { AdminSearchFormValues } from '../../components/search/search-form/search-form.component';
-import { AppInsightsService } from '@services/app-insights/app-insights.service';
-import { UserService } from '@services/user/user.service';
 
 export const ADMIN_CASE_SEARCH_PATH = '/api/admin/cases/search';
 export const ADMIN_EVENT_SEARCH_PATH = '/api/admin/events/search';
@@ -156,7 +156,7 @@ export class AdminSearchService {
       antecedentId: result.antecedent_id,
       courthouse: result.courthouse.display_name,
       courtroom: result.courtroom.name,
-      isEventAnonymised: result.is_event_anonymised,
+      isEventAnonymised: result.is_data_anonymised,
       isCaseExpired: result.is_case_expired,
     }));
   }
