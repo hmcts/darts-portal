@@ -30,6 +30,7 @@ export const CaseSearchFormErrorMessages: FormErrorMessages = {
     maxlength: `Defendant's name must be less than or equal to 2000 characters`,
   },
   eventTextContains: {
-    maxlength: `Keywords must be less than or equal to 2000 characters`,
+    minlength: 'Keywords must be greater than or equal to 3 characters',
+    maxlength: 'Keywords must be less than or equal to 2000 characters',
   },
 };
