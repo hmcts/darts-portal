@@ -50,6 +50,10 @@ export class HearingComponent implements OnInit {
 
   url = inject(Router).url;
 
+  cleanedUrl = this.getCleanedUrl();
+
+  backUrl = this.historyService.getBackUrl(this.url) ?? '/admin/search';
+
   hearingId = input(0, { transform: numberAttribute });
 
   hearing$!: Observable<AdminHearing>;
@@ -69,17 +73,21 @@ export class HearingComponent implements OnInit {
   ngOnInit(): void {
     this.hearing$ = this.adminHearingService.getHearing(this.hearingId()).pipe(
       switchMap((hearing) => {
-        return this.userAdminService.getUsersById([hearing.createdById, hearing.lastModifiedById]).pipe(
-          map((users) => {
-            const userMap = new Map(users.map((user) => [user.id, user.fullName]));
+        const userIds = [hearing.createdById, hearing.lastModifiedById].filter(Boolean) as number[];
 
-            return {
-              ...hearing,
-              createdBy: userMap.get(hearing.createdById),
-              lastModifiedBy: userMap.get(hearing.lastModifiedById),
-            };
-          })
-        );
+        return userIds.length > 0
+          ? this.userAdminService.getUsersById(userIds).pipe(
+              map((users) => {
+                const userMap = new Map(users.map((user) => [user.id, user.fullName]));
+
+                return {
+                  ...hearing,
+                  createdBy: userMap.get(hearing.createdById) ?? 'System',
+                  lastModifiedBy: userMap.get(hearing.lastModifiedById) ?? 'System',
+                };
+              })
+            )
+          : of({ ...hearing, createdBy: 'System', lastModifiedBy: 'System' });
       })
     );
 
@@ -97,5 +105,10 @@ export class HearingComponent implements OnInit {
 
   onTabChange(tab: string) {
     this.activeTabService.setActiveTab(this.activeTabKey, tab);
+  }
+
+  private getCleanedUrl(): string {
+    console.log(this.url.split('?')[0]);
+    return this.url.split('?')[0]; // Get URL without query params
   }
 }

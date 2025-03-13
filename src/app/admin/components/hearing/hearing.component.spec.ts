@@ -112,7 +112,7 @@ describe('HearingComponent', () => {
         { provide: UserAdminService, useValue: mockUserAdminService },
         { provide: ActiveTabService, useValue: mockActiveTabService },
         { provide: CaseService, useValue: mockCaseService },
-        { provide: HistoryService, useValue: {} },
+        { provide: HistoryService, useValue: { getBackUrl: jest.fn() } },
         DatePipe,
       ],
     }).compileComponents();
