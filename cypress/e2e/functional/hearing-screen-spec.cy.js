@@ -26,7 +26,7 @@ describe('Hearing Screen', () => {
   });
 
   it("doesn't have transcripts against a hearing", () => {
-    cy.get('#hearingsTable').contains('11 Oct 2023').click();
+    cy.get('#hearingsTable').contains('01 Dec 2023').click();
     cy.get('#hearing-transcripts-tab').click();
     cy.get('#no-data-message').should('contain', 'There are no transcripts for this hearing.');
   });

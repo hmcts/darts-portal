@@ -1,0 +1,21 @@
+<app-govuk-heading tag="h2" size="m">Audio</app-govuk-heading>
+
+<app-data-table
+  caption="Audio for this hearing"
+  [hiddenCaption]="true"
+  noDataMessage="There is no audio for this hearing."
+  [columns]="columns"
+  [rows]="audios()"
+>
+  <ng-template [tableRowTemplate]="audios()" let-row>
+    <td>
+      <a class="govuk-link" [routerLink]="['/admin/audio-file/', row.id]" [queryParams]="{ backUrl: url() }">
+        {{ row.id }}</a
+      >
+    </td>
+    <td>{{ row.filename }}</td>
+    <td>{{ row.startAt | luxonDate: 'h:mm a' }}</td>
+    <td>{{ row.endAt | luxonDate: 'h:mm a' }}</td>
+    <td>{{ row.channel }}</td>
+  </ng-template>
+</app-data-table>

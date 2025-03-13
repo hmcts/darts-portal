@@ -88,7 +88,7 @@ describe('Request audio functionality', () => {
     cy.get('.govuk-error-summary').should('contain', 'You must include an end time for your audio recording');
     cy.get('.govuk-error-summary').should('contain', 'You must select a request type');
 
-    cy.get('tbody .govuk-table__row:nth-child(8) input[type="checkbox"]').click();
+    cy.get('tbody .govuk-table__row:nth-child(9) input[type="checkbox"]').click();
     cy.get('#start-time-hour-input').should('have.value', '09');
     cy.get('#start-time-minutes-input').should('have.value', '32');
     cy.get('#start-time-seconds-input').should('have.value', '24');
@@ -122,7 +122,7 @@ describe('Request audio functionality', () => {
     cy.get('#hearingsTable').should('contain', '5 Jan 2024');
     cy.get('#hearingsTable a').contains('5 Jan 2024').click();
 
-    cy.get('#eventAudioTable .govuk-table__row:nth-child(8) .govuk-checkboxes__item').click();
+    cy.get('#eventAudioTable .govuk-table__row:nth-child(9) .govuk-checkboxes__item').click();
     cy.get('#start-time-hour-input').should('have.value', '10');
     cy.get('#start-time-minutes-input').should('have.value', '32');
     cy.get('#start-time-seconds-input').should('have.value', '24');

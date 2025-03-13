@@ -9,6 +9,7 @@ import { TabDirective } from '@directives/tab.directive';
 import { EventsFacadeService } from '@facades/events/events-facade.service';
 import { ActiveTabService } from '@services/active-tab/active-tab.service';
 import { FeatureFlagService } from '@services/app-config/feature-flag.service';
+import { HistoryService } from '@services/history/history.service';
 import { UserService } from '@services/user/user.service';
 import { optionalStringToBooleanOrNull } from '@utils/index';
 import { switchMap } from 'rxjs';
@@ -44,6 +45,9 @@ export class ViewEventComponent {
   router = inject(Router);
   isEventObfuscationEnabled = inject(FeatureFlagService).isEventObfuscationEnabled();
   activeTabService = inject(ActiveTabService);
+  historyService = inject(HistoryService);
+
+  backUrl = this.historyService.getBackUrl(this.router.url) ?? '/admin/search';
 
   id = input(0, { transform: numberAttribute });
   isObfuscationSuccess = input(null, { transform: optionalStringToBooleanOrNull });

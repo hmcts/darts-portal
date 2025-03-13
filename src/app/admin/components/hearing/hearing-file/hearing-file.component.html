@@ -1,0 +1,79 @@
+@let h = hearing();
+
+<app-govuk-heading caption="Hearing">{{ h?.hearingDate | luxonDate: 'd MMMM y' }}</app-govuk-heading>
+
+<div govukSummaryContainer>
+  <app-govuk-heading class="no-margin border-bottom" tag="h2" size="m">Hearing details</app-govuk-heading>
+  <dl govukSummaryList>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Case ID</dt>
+      <dd govukSummaryValue>
+        <a class="govuk-link" [routerLink]="['/admin/case', h?.case?.id]" [queryParams]="{ backUrl: getBackUrl() }">
+          {{ h?.case?.caseNumber }}
+        </a>
+      </dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Courthouse</dt>
+      <dd govukSummaryValue>{{ h?.case?.courthouse?.displayName }}</dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Courtroom</dt>
+      <dd govukSummaryValue>{{ h?.courtroom?.name }}</dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Hearing date</dt>
+      <dd govukSummaryValue>{{ h?.hearingDate | luxonDate: 'd MMM y' }}</dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Defendant(s)</dt>
+      <dd govukSummaryValue>{{ h?.case?.defendants | join }}</dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Defence</dt>
+      <dd govukSummaryValue>{{ h?.case?.defenders | join }}</dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Prosecutor(s)</dt>
+      <dd govukSummaryValue>{{ h?.case?.prosecutors | join }}</dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Judge(s)</dt>
+      <dd govukSummaryValue>{{ h?.case?.judges | join }}</dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Scheduled start time</dt>
+      <dd govukSummaryValue>
+        {{ h?.scheduledStartTime }}
+      </dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Hearing took place</dt>
+      <dd govukSummaryValue>{{ h?.hearingIsActual ? 'Yes' : 'No' }}</dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Date created</dt>
+      <dd govukSummaryValue>
+        {{ h?.createdAt | luxonDate: 'dd MMM yyyy HH:mm:ss' }}
+      </dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Created by</dt>
+      <dd govukSummaryValue>
+        {{ h?.createdBy }}
+      </dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Date last modified</dt>
+      <dd govukSummaryValue>
+        {{ h?.lastModifiedAt | luxonDate: 'dd MMM yyyy HH:mm:ss' }}
+      </dd>
+    </div>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Last modified by</dt>
+      <dd govukSummaryValue>
+        {{ h?.lastModifiedBy }}
+      </dd>
+    </div>
+  </dl>
+</div>

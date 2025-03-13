@@ -170,7 +170,11 @@ describe('Case file screen', () => {
       cy.get('#hearingsTable tbody tr')
         .eq(0)
         .within(() => {
-          cy.get('td').eq(0).find('a').should('have.attr', 'href', '/admin/case/1/hearing/1').click();
+          cy.get('td')
+            .eq(0)
+            .find('a')
+            .should('have.attr', 'href', '/admin/case/1/hearing/1?backUrl=%2Fadmin%2Fcase%2F1')
+            .click();
         });
 
       // TO DO: Uncomment once admin hearing file is in

@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DatePipe } from '@angular/common';
+import { provideRouter } from '@angular/router';
 import { DateTime } from 'luxon';
 import { HearingSearchResultsComponent } from './hearing-search-results.component';
 
@@ -11,7 +12,7 @@ describe('HearingSearchResultsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HearingSearchResultsComponent],
-      providers: [DatePipe],
+      providers: [DatePipe, provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HearingSearchResultsComponent);

@@ -30,10 +30,10 @@ export type AdminCase = {
   createdAt: DateTime;
   createdById: number;
   createdBy?: string;
-  lastModifiedAt: DateTime;
+  lastModifiedAt?: DateTime;
   lastModifiedById: number;
   lastModifiedBy?: string;
-  isDeleted: boolean;
+  isDeleted?: boolean;
   caseDeletedAt?: DateTime;
   caseDeletedById: number;
   caseDeletedBy?: string;

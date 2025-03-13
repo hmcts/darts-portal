@@ -1,0 +1,23 @@
+<app-govuk-heading tag="h2" size="m">Transcripts</app-govuk-heading>
+
+<app-data-table
+  caption="Transcripts for this hearing"
+  [hiddenCaption]="true"
+  noDataMessage="There are no transcripts for this hearing."
+  [columns]="columns"
+  [rows]="transcripts()"
+>
+  <ng-template [tableRowTemplate]="transcripts()" let-row>
+    <td>
+      <a class="govuk-link" [routerLink]="['/admin/transcripts/', row.id]" [queryParams]="{ backUrl: url() }">
+        {{ row.id }}</a
+      >
+    </td>
+    <td>{{ row.type }}</td>
+    <td>{{ row.requestedByName }}</td>
+    <td>{{ row.requestedOn | luxonDate: 'dd MMM yyyy' }}</td>
+    <td>
+      <app-govuk-tag [colour]="getTranscriptStatusColour(row.status)">{{ row.status }}</app-govuk-tag>
+    </td>
+  </ng-template>
+</app-data-table>

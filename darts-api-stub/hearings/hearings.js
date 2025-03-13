@@ -129,6 +129,12 @@ const events = [
     name: 'Case called on',
     text: 'Record: New Case',
   },
+  {
+    id: 333,
+    timestamp: '2023-11-13T11:01:50.000Z',
+    name: 'Case called on',
+    text: 'Record: New Case',
+  },
 ];
 
 // Fetch the annotations from the case module
@@ -218,6 +224,9 @@ router.get('/:hearingId/transcripts', (req, res) => {
       break;
     case '2':
       res.send(transcriptTwo);
+      break;
+    case '3':
+      res.send([...transcriptOne, ...transcriptTwo]);
       break;
     default:
       res.send([]);

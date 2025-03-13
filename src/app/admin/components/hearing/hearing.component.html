@@ -1,0 +1,21 @@
+<a [routerLink]="[backUrl]" class="govuk-back-link">Back</a>
+
+@if (data$ | async; as data) {
+  @if (data.hearing) {
+    <app-hearing-file [hearing]="data.hearing" />
+  }
+
+  <app-tabs [default]="tab()" (tabChange)="onTabChange($event.name)">
+    <div *tab="'Audio'; id: 'audio-tab'">
+      <app-hearing-audios [url]="cleanedUrl" [audios]="data.audios!" />
+    </div>
+
+    <div *tab="'Events'; id: 'events-tab'">
+      <app-hearing-events [url]="cleanedUrl" [events]="data.events!" />
+    </div>
+
+    <div *tab="'Transcripts'; id: 'transcripts-tab'">
+      <app-hearing-transcripts [url]="cleanedUrl" [transcripts]="data.transcripts!" />
+    </div>
+  </app-tabs>
+}
