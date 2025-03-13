@@ -47,9 +47,12 @@
           No date applied
         }
       </dd>
-      <dd govukSummaryAction>
-        <a class="govuk-link" [routerLink]="['/case', case?.id, 'retention']">View or change</a>
-      </dd>
+
+      @if (!case?.isDataAnonymised) {
+        <dd govukSummaryAction>
+          <a class="govuk-link" [routerLink]="['/case', case?.id, 'retention']">View or change</a>
+        </dd>
+      }
     </div>
   </dl>
 </div>
