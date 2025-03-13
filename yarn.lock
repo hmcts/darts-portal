@@ -7289,7 +7289,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.7.2, axios@npm:^1.7.9":
+"axios@npm:^1.7.2, axios@npm:^1.8.2":
   version: 1.8.3
   resolution: "axios@npm:1.8.3"
   dependencies:
@@ -16025,7 +16025,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rxjs@npm:^7.5.1, rxjs@npm:^7.8.1, rxjs@npm:~7.8.1":
+"rxjs@npm:^7.5.1, rxjs@npm:^7.8.1, rxjs@npm:^7.8.2, rxjs@npm:~7.8.1":
   version: 7.8.2
   resolution: "rxjs@npm:7.8.2"
   dependencies:
@@ -16793,8 +16793,8 @@ __metadata:
   linkType: hard
 
 "start-server-and-test@npm:^2.0.4":
-  version: 2.0.10
-  resolution: "start-server-and-test@npm:2.0.10"
+  version: 2.0.11
+  resolution: "start-server-and-test@npm:2.0.11"
   dependencies:
     arg: ^5.0.2
     bluebird: 3.7.2
@@ -16803,12 +16803,12 @@ __metadata:
     execa: 5.1.1
     lazy-ass: 1.6.0
     ps-tree: 1.2.0
-    wait-on: 8.0.2
+    wait-on: 8.0.3
   bin:
     server-test: src/bin/start.js
     start-server-and-test: src/bin/start.js
     start-test: src/bin/start.js
-  checksum: e70b4324f80778b726a1f2734dfcafda827b1bb3e7c0e5e69f8df470824d16e977f218fc0f08f9378bdedb8840b8e5a2a91cbfab3abf356bf6e1e17326a8b062
+  checksum: 7cd50cc4749d4307e654ac876425c4613e88c8c155bbdfa20be7aae0f06ce43b3831b6e77902e334ffe886c541d9d2c1998b9eaa6608963a0af6ef5b86257c20
   languageName: node
   linkType: hard
 
@@ -17894,18 +17894,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"wait-on@npm:8.0.2":
-  version: 8.0.2
-  resolution: "wait-on@npm:8.0.2"
+"wait-on@npm:8.0.3":
+  version: 8.0.3
+  resolution: "wait-on@npm:8.0.3"
   dependencies:
-    axios: ^1.7.9
+    axios: ^1.8.2
     joi: ^17.13.3
     lodash: ^4.17.21
     minimist: ^1.2.8
-    rxjs: ^7.8.1
+    rxjs: ^7.8.2
   bin:
     wait-on: bin/wait-on
-  checksum: 3b6388f991faec8d5226f7a1c0dbcf9852f536632f987dd65f27e7a070d03bfc67f051a4d208009e6dbbdb095a6f9109394c2dc88fec191a798983e0c8469471
+  checksum: 28b6984a5f42cf161dfa824f858b58ee9899d4b5428d4c086720e6e494b9caa3011991102a01e48f3ed3fdbfc3f2a6f32b56cf91b10955161b31222dc577935e
   languageName: node
   linkType: hard
 
