@@ -1,5 +1,5 @@
-import * as express from 'express';
 import config from 'config';
+import * as express from 'express';
 import { Request, Router } from 'express';
 
 import { createProxyMiddleware } from 'http-proxy-middleware';

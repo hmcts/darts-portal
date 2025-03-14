@@ -4,17 +4,21 @@ import {
   apiController,
   authenticationController,
   downloadController,
-  userController,
   stubDataController,
+  userController,
 } from './controllers';
 import { isAuthenticated } from './middleware';
 
 export default (disableAuthentication = false): Router => {
   const router = express.Router();
 
-  const checkAuthenticated = disableAuthentication
-    ? (req: Request, res: Response, next: NextFunction) => next()
-    : isAuthenticated;
+  const checkAuthenticated = async (req: Request, res: Response, next: NextFunction) => {
+    if (disableAuthentication) {
+      return next();
+    }
+    await isAuthenticated(req, res);
+    next();
+  };
 
   // authenticated routes
   // temporary API stubbing in place, should be removed onces all API endpoints are available

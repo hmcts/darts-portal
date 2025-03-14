@@ -1,3 +1,8 @@
+import axios from 'axios';
+import { Request } from 'express';
+import { DateTime } from 'luxon';
+import SecurityToken from 'server/types/classes/securityToken';
+
 export class AuthenticationUtils {
   //Returns payload of JWT
   static parseJwt(token: string) {
@@ -22,5 +27,25 @@ export class AuthenticationUtils {
     } catch (err) {
       return true;
     }
+  }
+
+  /**
+   * Checks if a session is valid (not expired and has a valid user).
+   */
+  static isValidSession(req: Request): boolean {
+    const expiry = req.session?.expiry;
+    const sessionExpired = expiry && DateTime.now() > DateTime.fromISO(expiry);
+    const userIdNotPresent = !req.session?.securityToken?.userState?.userId;
+
+    return !(sessionExpired || userIdNotPresent);
+  }
+
+  static async refreshJwt(url: string, refreshToken: string): Promise<SecurityToken> {
+    const { data } = await axios.post<SecurityToken>(
+      url,
+      { refresh_token: refreshToken },
+      { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
+    );
+    return data;
   }
 }
