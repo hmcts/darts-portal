@@ -26,7 +26,7 @@ export class Urls {
   }
 
   static getLogoutUrl(userType: 'internal' | 'external'): string {
-    return `${Urls.dartsApiUrl}${config.get<string>(`authentication.urlPaths.${userType}.logout`)}?redirect_uri=/logout-callback`;
+    return `${Urls.dartsApiUrl}${config.get<string>(`authentication.urlPaths.${userType}.logout`)}?redirect_uri=${config.get('hostname')}/auth/logout-callback`;
   }
 
   static getRefreshAccessTokenUrl(userType: 'internal' | 'external'): string {
