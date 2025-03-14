@@ -2,32 +2,19 @@ import axios from 'axios';
 import bodyParser from 'body-parser';
 import config from 'config';
 import * as express from 'express';
-import { DateTime } from 'luxon';
 import { NextFunction, Request, Response, Router } from 'express';
+import { DateTime } from 'luxon';
 import SecurityToken from '../types/classes/securityToken';
-import { AuthenticationUtils } from '../utils/authentication-utils';
+import { AuthenticationUtils, Urls } from '../utils';
 
 const ERROR_CODES = {
   RESET_PWD: 'AADB2C90118',
 };
 
-const EXTERNAL_USER_LOGIN = `${config.get('darts-api.url')}/external-user/login-or-refresh`;
-const EXTERNAL_USER_CALLBACK = `${config.get('darts-api.url')}/external-user/handle-oauth-code`;
-const EXTERNAL_USER_RESET_PWD = `${config.get('darts-api.url')}/external-user/reset-password`;
-const EXTERNAL_USER_LOGOUT = `${config.get('darts-api.url')}/external-user/logout`;
-
-const INTERNAL_USER_LOGIN = `${config.get('darts-api.url')}/internal-user/login-or-refresh`;
-const INTERNAL_USER_LOGOUT = `${config.get('darts-api.url')}/internal-user/logout`;
-const INTERNAL_USER_CALLBACK = `${config.get('darts-api.url')}/internal-user/handle-oauth-code`;
-
 function getLogin(type: 'internal' | 'external'): (_: Request, res: Response, next: NextFunction) => Promise<void> {
   return async (_: Request, res: Response, next: NextFunction) => {
     try {
-      const url =
-        type === 'internal'
-          ? `${INTERNAL_USER_LOGIN}?redirect_uri=${config.get('hostname')}/auth/internal/callback`
-          : `${EXTERNAL_USER_LOGIN}?redirect_uri=${config.get('hostname')}/auth/callback`;
-      const result = await axios(url);
+      const result = await axios(Urls.getLoginUrl(type));
       const loginRedirect = result.request.res.responseUrl;
       if (loginRedirect) {
         res.redirect(loginRedirect);
@@ -48,7 +35,7 @@ async function handleResetPassword(req: Request): Promise<string> {
       if (req.session.securityToken) {
         accessToken = req.session.securityToken.accessToken;
       }
-      const result = await axios(`${EXTERNAL_USER_RESET_PWD}?redirect_uri=${config.get('hostname')}/auth/callback`, {
+      const result = await axios(Urls.getResetPasswordUrl('external'), {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
       const resetPwdRedirect = result.request.res.responseUrl;
@@ -79,11 +66,7 @@ function postAuthCallback(
     }
 
     try {
-      const url =
-        type === 'internal'
-          ? `${INTERNAL_USER_CALLBACK}?redirect_uri=${config.get('hostname')}/auth/internal/callback`
-          : `${EXTERNAL_USER_CALLBACK}?redirect_uri=${config.get('hostname')}/auth/callback`;
-      const result = await axios.post<SecurityToken>(url, req.body, {
+      const result = await axios.post<SecurityToken>(Urls.getHandleOauthCodeUrl(type), req.body, {
         headers: { 'content-type': 'application/x-www-form-urlencoded' },
       });
       const securityToken = result.data;
@@ -120,9 +103,7 @@ function getLogout(): (_: Request, res: Response, next: NextFunction) => Promise
       if (req.session.securityToken) {
         accessToken = req.session.securityToken.accessToken;
       }
-
-      const logoutUrl = req.session.userType === 'internal' ? INTERNAL_USER_LOGOUT : EXTERNAL_USER_LOGOUT;
-      const result = await axios(`${logoutUrl}?redirect_uri=${config.get('hostname')}/auth/logout-callback`, {
+      const result = await axios(Urls.getLogoutUrl(req.session.userType!), {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
       const logoutRedirect = result.request.res.responseUrl;
@@ -154,14 +135,40 @@ function logoutCallback(): (req: Request, res: Response, next: NextFunction) => 
 }
 
 function getIsAuthenticated(disableAuthentication = false): (req: Request, res: Response) => void {
-  return (req: Request, res: Response) => {
+  return async (req: Request, res: Response) => {
     // don't allow caching of this endpoint
     res.header('Cache-Control', 'no-store, must-revalidate');
 
-    if (!AuthenticationUtils.isJwtExpired(req.session?.securityToken?.accessToken) || disableAuthentication) {
-      res.status(200).send(true);
+    if (disableAuthentication) {
+      return res.status(200).send(true);
+    }
+
+    if (!AuthenticationUtils.isValidSession(req)) {
+      console.log('Session expired or userId not found.');
+      return res.status(200).send(false);
+    }
+
+    if (AuthenticationUtils.isJwtExpired(req.session?.securityToken?.accessToken)) {
+      const refreshToken = req.session.securityToken?.refreshToken;
+      if (!refreshToken) {
+        return res.status(200).send(false);
+      }
+
+      const userType = req.session.userType;
+      try {
+        const securityToken = await AuthenticationUtils.refreshJwt(
+          Urls.getRefreshAccessTokenUrl(userType!),
+          refreshToken as string
+        );
+        req.session.securityToken = securityToken;
+        console.log('Refreshed access token using refresh token');
+        return res.status(200).send(true);
+      } catch (err) {
+        console.log('Error refreshing access token using refresh token', err);
+        return res.status(200).send(false);
+      }
     } else {
-      res.status(200).send(false);
+      return res.status(200).send(true);
     }
   };
 }
