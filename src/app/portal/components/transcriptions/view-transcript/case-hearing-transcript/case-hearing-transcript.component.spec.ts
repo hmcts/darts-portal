@@ -8,6 +8,7 @@ import { TranscriptionService } from '@services/transcription/transcription.serv
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
 import { CaseHearingTranscriptComponent } from './case-hearing-transcript.component';
+import { By } from '@angular/platform-browser';
 
 describe('CaseHearingTranscriptComponent', () => {
   let component: CaseHearingTranscriptComponent;
@@ -22,7 +23,7 @@ describe('CaseHearingTranscriptComponent', () => {
     },
   };
 
-  const mockTransctiptionDetails: TranscriptionDetails = {
+  const mockTranscriptionDetails: TranscriptionDetails = {
     caseId: 0,
     caseNumber: '',
     courthouse: '',
@@ -71,7 +72,7 @@ describe('CaseHearingTranscriptComponent', () => {
 
     fixture = TestBed.createComponent(CaseHearingTranscriptComponent);
     component = fixture.componentInstance;
-    component.transcript = mockTransctiptionDetails;
+    component.transcript = mockTranscriptionDetails;
     fixture.detectChanges();
   });
 
@@ -79,11 +80,33 @@ describe('CaseHearingTranscriptComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  describe('transcriptFileName', () => {
+    it('displays file name', () => {
+      const header = fixture.debugElement.query(By.css('.govuk-heading-l')).nativeElement.textContent;
+      expect(header).toContain(mockTranscriptionDetails.transcriptFileName);
+    });
+
+    it('handles undefined transcriptFileName', () => {
+      component.transcript = { ...mockTranscriptionDetails, transcriptFileName: undefined };
+      fixture.detectChanges();
+
+      const header = fixture.debugElement.query(By.css('.govuk-heading-l')).nativeElement.textContent;
+      expect(header).toContain('No transcription document has been uploaded for this request');
+    });
+  });
+
   describe('#onDownloadClicked', () => {
     it('calls downloadTranscriptDocument', () => {
       component.onDownloadClicked();
       expect(component.transcriptionService.downloadTranscriptDocument).toHaveBeenCalledWith('2');
       expect(component.fileDownloadService.saveAs).toHaveBeenCalledWith(blob, 'test-file-name.docx');
+    });
+
+    it('does not call downloadTranscriptDocument when fileName is not set', () => {
+      component.transcript = { ...mockTranscriptionDetails, transcriptFileName: undefined };
+      fixture.detectChanges();
+      component.onDownloadClicked();
+      expect(component.transcriptionService.downloadTranscriptDocument).not.toHaveBeenCalled();
     });
   });
 });

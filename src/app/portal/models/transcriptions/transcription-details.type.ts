@@ -18,7 +18,7 @@ export type TranscriptionDetails = {
   rejectionReason?: string;
   defendants: string[];
   judges: string[];
-  transcriptFileName: string;
+  transcriptFileName?: string;
   hearingDate: DateTime;
   urgency: Urgency;
   requestType: string;

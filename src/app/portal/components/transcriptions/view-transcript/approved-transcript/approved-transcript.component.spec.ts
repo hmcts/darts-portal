@@ -10,6 +10,7 @@ import { TranscriptionService } from '@services/transcription/transcription.serv
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
 import { ApprovedTranscriptComponent } from './approved-transcript.component';
+import { By } from '@angular/platform-browser';
 
 describe('ApprovedTranscriptComponent', () => {
   let component: ApprovedTranscriptComponent;
@@ -91,11 +92,34 @@ describe('ApprovedTranscriptComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  describe('transcriptFileName', () => {
+    it('displays file name', () => {
+      const header = fixture.debugElement.query(By.css('.govuk-heading-l')).nativeElement.textContent;
+      expect(header).toContain(mockTranscriptionDetails.transcriptFileName);
+    });
+
+    it('handles undefined transcriptFileName', () => {
+      component.transcript = { ...mockTranscriptionDetails, transcriptFileName: undefined };
+      component.ngOnInit();
+      fixture.detectChanges();
+
+      const header = fixture.debugElement.query(By.css('.govuk-heading-l')).nativeElement.textContent;
+      expect(header).toContain('No transcription document has been uploaded for this request');
+    });
+  });
+
   describe('#onDownloadClicked', () => {
     it('calls downloadTranscriptDocument', () => {
       component.onDownloadClicked();
       expect(component.transcriptionService.downloadTranscriptDocument).toHaveBeenCalledWith(12);
       expect(component.fileDownloadService.saveAs).toHaveBeenCalledWith(blob, 'C20220620001_0.docx');
+    });
+
+    it('does not call downloadTranscriptDocument when fileName is not set', () => {
+      component.transcript = { ...mockTranscriptionDetails, transcriptFileName: undefined };
+      component.ngOnInit();
+      component.onDownloadClicked();
+      expect(component.transcriptionService.downloadTranscriptDocument).not.toHaveBeenCalled();
     });
   });
 });

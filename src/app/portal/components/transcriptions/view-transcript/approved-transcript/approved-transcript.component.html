@@ -1,6 +1,6 @@
 <app-breadcrumb>
   <ng-container *breadcrumb="['/transcriptions']">Your transcripts</ng-container>
-  <ng-container *breadcrumb="['.']">{{ transcript.transcriptFileName }}</ng-container>
+  <ng-container *breadcrumb="['.']">{{ transcript.transcriptFileName ?? 'Document not found' }}</ng-container>
 </app-breadcrumb>
 
 <app-reporting-restriction
@@ -9,7 +9,9 @@
   [hearingId]="transcript.hearingId"
 />
 
-<app-govuk-heading caption="Transcript file"> {{ transcript.transcriptFileName }} </app-govuk-heading>
+<app-govuk-heading caption="Transcript file">
+  {{ transcript.transcriptFileName ?? 'No transcription document has been uploaded for this request' }}
+</app-govuk-heading>
 
 @if (transcript.status) {
   <app-govuk-tag [colour]="statusColours[transcript.status]">{{ transcript.status }}</app-govuk-tag>
@@ -19,4 +21,6 @@
 
 <app-details-table title="Request details" [details]="requestDetails" />
 
-<button id="download-button" class="govuk-button" (click)="onDownloadClicked()">Download transcript file</button>
+@if (transcript.transcriptFileName) {
+  <button id="download-button" class="govuk-button" (click)="onDownloadClicked()">Download transcript file</button>
+}

@@ -46,7 +46,7 @@ describe('MappingService', () => {
 
   describe('#mapAnnotationsDataToAnnotations', () => {
     it('should map correctly', () => {
-      const transcripts: AnnotationsData[] = [
+      const annotations: AnnotationsData[] = [
         {
           annotation_id: 1,
           hearing_id: 2,
@@ -64,7 +64,7 @@ describe('MappingService', () => {
           ],
         },
       ];
-      const result = service.mapAnnotationsDataToAnnotations(transcripts);
+      const result = service.mapAnnotationsDataToAnnotations(annotations);
       expect(result).toStrictEqual([
         {
           annotationId: 1,
