@@ -4,12 +4,11 @@ import { AssociatedHearing } from '@admin-types/transformed-media/associated-hea
 import { DecimalPipe } from '@angular/common';
 import { Component, inject, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { AssociatedCasesTableComponent } from '@common/associated-cases-table/associated-cases-table.component';
+import { AssociatedHearingsTableComponent } from '@common/associated-hearings-table/associated-hearings-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { BytesPipe } from '@pipes/bytes.pipe';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
-import { AssociatedCasesTableComponent } from '../associated-cases-table/associated-cases-table.component';
-import { AssociatedHearingsTableComponent } from '../associated-hearings-table/associated-hearings-table.component';
-
 @Component({
   selector: 'app-basic-audio-file-details',
   standalone: true,

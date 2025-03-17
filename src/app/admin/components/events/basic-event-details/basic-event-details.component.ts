@@ -3,10 +3,10 @@ import { AssociatedCase } from '@admin-types/transformed-media/associated-case';
 import { AssociatedHearing } from '@admin-types/transformed-media/associated-hearing';
 import { Component, inject, input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AssociatedCasesTableComponent } from '@common/associated-cases-table/associated-cases-table.component';
+import { AssociatedHearingsTableComponent } from '@common/associated-hearings-table/associated-hearings-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
-import { AssociatedCasesTableComponent } from '../../audio-file/associated-cases-table/associated-cases-table.component';
-import { AssociatedHearingsTableComponent } from '../../audio-file/associated-hearings-table/associated-hearings-table.component';
 
 @Component({
   selector: 'app-basic-event-details',
