@@ -32,3 +32,13 @@
     </dd>
   </div>
 </dl>
+
+<section id="associated-cases">
+  <app-govuk-heading class="no-margin border-bottom" tag="h2" size="m">Associated cases</app-govuk-heading>
+  <app-associated-cases-table [rows]="associatedCases" screen="event" [url]="cleanedUrl" />
+</section>
+
+<section id="associated-hearings">
+  <app-govuk-heading class="no-margin border-bottom" tag="h2" size="m">Associated hearings</app-govuk-heading>
+  <app-associated-hearings-table [rows]="associatedHearings" [url]="cleanedUrl" />
+</section>

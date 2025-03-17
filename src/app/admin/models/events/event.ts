@@ -20,6 +20,28 @@ export type Event = {
     id: number;
     name: string;
   };
+  cases?: {
+    id: number;
+    courthouse: {
+      id: number;
+      displayName: string;
+    };
+    caseNumber: string;
+  }[];
+  hearings?: {
+    id: number;
+    caseId: number;
+    caseNumber: string;
+    hearingDate: DateTime;
+    courthouse: {
+      id: number;
+      displayName: string;
+    };
+    courtroom: {
+      id: number;
+      name: string;
+    };
+  }[];
   version: string;
   chronicleId: string;
   antecedentId: string;

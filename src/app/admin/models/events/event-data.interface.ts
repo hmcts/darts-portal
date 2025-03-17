@@ -19,6 +19,28 @@ export interface EventData {
     id: number;
     name: string;
   };
+  cases?: {
+    id: number;
+    courthouse: {
+      id: number;
+      display_name: string;
+    };
+    case_number: string;
+  }[];
+  hearings?: {
+    id: number;
+    case_id: number;
+    case_number: string;
+    hearing_date: string;
+    courthouse: {
+      id: number;
+      display_name: string;
+    };
+    courtroom: {
+      id: number;
+      name: string;
+    };
+  }[];
   version: string;
   chronicle_id: string;
   antecedent_id: string;

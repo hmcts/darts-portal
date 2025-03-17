@@ -108,7 +108,6 @@ export class HearingComponent implements OnInit {
   }
 
   private getCleanedUrl(): string {
-    console.log(this.url.split('?')[0]);
     return this.url.split('?')[0]; // Get URL without query params
   }
 }

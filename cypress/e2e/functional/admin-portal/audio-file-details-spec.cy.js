@@ -48,6 +48,75 @@ describe('Admin - Audio file details screen', () => {
 
       cy.a11y();
     });
+
+    it('should display the associated cases table with correct data', () => {
+      cy.get('#associated-cases').within(() => {
+        cy.contains('h2', 'Associated cases').should('be.visible');
+
+        cy.get('table.govuk-table thead tr').within(() => {
+          cy.get('th').eq(0).should('contain.text', 'Case ID');
+          cy.get('th').eq(1).should('contain.text', 'Courthouse');
+          cy.get('th').eq(2).should('contain.text', 'Source');
+        });
+
+        cy.get('table.govuk-table tbody tr')
+          .eq(0)
+          .within(() => {
+            cy.get('.case-id').should('contain.text', 'CASE1');
+            cy.get('.courthouse').should('contain.text', 'Courthouse 321');
+            cy.get('.source').should('contain.text', 'Add Audio Metadata');
+          });
+
+        cy.get('table.govuk-table tbody tr')
+          .eq(1)
+          .within(() => {
+            cy.get('.case-id a')
+              .should('have.attr', 'href', '/admin/case/1?backUrl=%2Fadmin%2Faudio-file%2F1')
+              .and('contain.text', 'CASE2');
+            cy.get('.courthouse').should('contain.text', 'Courthouse 123');
+            cy.get('.source').should('contain.text', 'Source Type 3');
+          });
+      });
+
+      it('should display the associated hearings table with correct data', () => {
+        cy.get('#associated-hearings').within(() => {
+          cy.contains('h2', 'Associated hearings').should('be.visible');
+
+          cy.get('table.govuk-table thead tr').within(() => {
+            cy.get('th').eq(0).should('contain.text', 'Case ID');
+            cy.get('th').eq(1).should('contain.text', 'Hearing date');
+            cy.get('th').eq(2).should('contain.text', 'Courthouse');
+            cy.get('th').eq(3).should('contain.text', 'Courtroom');
+          });
+
+          cy.get('table.govuk-table tbody tr')
+            .eq(0)
+            .within(() => {
+              cy.get('.case-id a')
+                .should('have.attr', 'href', '/admin/case/0?backUrl=%2Fadmin%2Faudio-file%2F1')
+                .and('contain.text', 'CASE1');
+              cy.get('.hearing-date a')
+                .should('have.attr', 'href', '/admin/case/0/hearing/0?backUrl=%2Fadmin%2Faudio-file%2F1')
+                .and('contain.text', '11 Jun 2024');
+              cy.get('td').eq(2).should('contain.text', 'Courthouse 321');
+              cy.get('td').eq(3).should('contain.text', 'Courtroom 1');
+            });
+
+          cy.get('table.govuk-table tbody tr')
+            .eq(1)
+            .within(() => {
+              cy.get('.case-id a')
+                .should('have.attr', 'href', '/admin/case/1?backUrl=%2Fadmin%2Faudio-file%2F1')
+                .and('contain.text', 'CASE2');
+              cy.get('.hearing-date a')
+                .should('have.attr', 'href', '/admin/case/1/hearing/1?backUrl=%2Fadmin%2Faudio-file%2F1')
+                .and('contain.text', '11 Jun 2024');
+              cy.get('td').eq(2).should('contain.text', 'Courthouse 123');
+              cy.get('td').eq(3).should('contain.text', 'Courtroom 2');
+            });
+        });
+      });
+    });
   });
 
   describe('Advanced details', () => {

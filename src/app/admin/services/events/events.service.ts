@@ -54,6 +54,30 @@ export class EventsService {
         id: event.courtroom.id,
         name: event.courtroom.name,
       },
+      cases:
+        event.cases?.map((eventCase) => ({
+          id: eventCase.id,
+          courthouse: {
+            id: eventCase.courthouse.id,
+            displayName: eventCase.courthouse.display_name,
+          },
+          caseNumber: eventCase.case_number,
+        })) ?? undefined,
+      hearings:
+        event.hearings?.map((hearing) => ({
+          id: hearing.id,
+          caseId: hearing.case_id,
+          caseNumber: hearing.case_number,
+          hearingDate: DateTime.fromISO(hearing.hearing_date),
+          courthouse: {
+            id: hearing.courthouse.id,
+            displayName: hearing.courthouse.display_name,
+          },
+          courtroom: {
+            id: hearing.courtroom.id,
+            name: hearing.courtroom.name,
+          },
+        })) ?? undefined,
       version: event.version,
       chronicleId: event.chronicle_id,
       antecedentId: event.antecedent_id,

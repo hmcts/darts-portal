@@ -2,7 +2,7 @@
   <ng-template [tableRowTemplate]="rows()" let-row>
     <td class="case-id">
       @if (row.caseId) {
-        <a class="govuk-link" [routerLink]="['/case', row.caseId]">
+        <a class="govuk-link" [routerLink]="['/admin/case', row.caseId]" [queryParams]="{ backUrl: url() }">
           {{ row.caseNumber }}
         </a>
       } @else {
@@ -12,8 +12,10 @@
     <td class="courthouse">
       {{ row.courthouse }}
     </td>
-    <td class="source">
-      {{ row.source }}
-    </td>
+    @if (screen() === 'audio') {
+      <td class="source">
+        {{ row.source }}
+      </td>
+    }
   </ng-template>
 </app-data-table>
