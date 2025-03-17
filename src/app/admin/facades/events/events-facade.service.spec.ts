@@ -77,6 +77,32 @@ describe('EventsFacadeService', () => {
         createdAt: DateTime.fromISO('2024-05-05T11:00:00Z'),
         lastModifiedAt: DateTime.fromISO('2024-05-05T11:00:00Z'),
         isCurrentVersion: false,
+        cases: [
+          {
+            id: 0,
+            courthouse: {
+              id: 0,
+              displayName: '',
+            },
+            caseNumber: '',
+          },
+        ],
+        hearings: [
+          {
+            id: 0,
+            caseId: 0,
+            caseNumber: '',
+            hearingDate: DateTime.fromISO('2024-05-05T11:00:00Z'),
+            courthouse: {
+              id: 0,
+              displayName: '',
+            },
+            courtroom: {
+              id: 0,
+              name: '',
+            },
+          },
+        ],
       };
 
       const mockUsers: User[] = [

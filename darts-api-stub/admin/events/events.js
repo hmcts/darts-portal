@@ -17,6 +17,54 @@ const events = [
       id: 1,
       name: 'Room 1',
     },
+    cases: [
+      {
+        id: 1,
+        courthouse: {
+          id: 1,
+          display_name: 'Courthouse 1',
+        },
+        case_number: 'CASE1',
+      },
+      {
+        id: 2,
+        courthouse: {
+          id: 2,
+          display_name: 'Courthouse 2',
+        },
+        case_number: 'CASE12',
+      },
+    ],
+    hearings: [
+      {
+        id: 1,
+        case_id: 1,
+        case_number: 'CASE1',
+        hearing_date: '2024-06-11',
+        courthouse: {
+          id: 0,
+          display_name: 'Courthouse 1',
+        },
+        courtroom: {
+          id: 2,
+          name: 'Room 1',
+        },
+      },
+      {
+        id: 2,
+        case_id: 1,
+        case_number: 'CASE1',
+        hearing_date: '2024-06-11',
+        courthouse: {
+          id: 3,
+          display_name: 'Courthouse 1',
+        },
+        courtroom: {
+          id: 0,
+          name: 'Room 1',
+        },
+      },
+    ],
   },
   {
     id: 222,
@@ -34,6 +82,54 @@ const events = [
       id: 2,
       name: 'Room 2',
     },
+    cases: [
+      {
+        id: 1,
+        courthouse: {
+          id: 1,
+          display_name: 'Courthouse 1',
+        },
+        case_number: 'CASE1',
+      },
+      {
+        id: 2,
+        courthouse: {
+          id: 2,
+          display_name: 'Courthouse 2',
+        },
+        case_number: 'CASE12',
+      },
+    ],
+    hearings: [
+      {
+        id: 1,
+        case_id: 1,
+        case_number: 'CASE1',
+        hearing_date: '2024-06-11',
+        courthouse: {
+          id: 0,
+          display_name: 'Courthouse 1',
+        },
+        courtroom: {
+          id: 2,
+          name: 'Room 1',
+        },
+      },
+      {
+        id: 2,
+        case_id: 1,
+        case_number: 'CASE1',
+        hearing_date: '2024-06-11',
+        courthouse: {
+          id: 3,
+          display_name: 'Courthouse 1',
+        },
+        courtroom: {
+          id: 0,
+          name: 'Room 1',
+        },
+      },
+    ],
   },
   {
     id: 333,
@@ -53,6 +149,54 @@ const events = [
     },
     is_data_anonymised: true,
     is_case_expired: true,
+    cases: [
+      {
+        id: 1,
+        courthouse: {
+          id: 1,
+          display_name: 'Courthouse 1',
+        },
+        case_number: 'CASE1',
+      },
+      {
+        id: 2,
+        courthouse: {
+          id: 2,
+          display_name: 'Courthouse 2',
+        },
+        case_number: 'CASE12',
+      },
+    ],
+    hearings: [
+      {
+        id: 1,
+        case_id: 1,
+        case_number: 'CASE1',
+        hearing_date: '2024-06-11',
+        courthouse: {
+          id: 0,
+          display_name: 'Courthouse 1',
+        },
+        courtroom: {
+          id: 2,
+          name: 'Room 1',
+        },
+      },
+      {
+        id: 2,
+        case_id: 1,
+        case_number: 'CASE1',
+        hearing_date: '2024-06-11',
+        courthouse: {
+          id: 3,
+          display_name: 'Courthouse 1',
+        },
+        courtroom: {
+          id: 0,
+          name: 'Room 1',
+        },
+      },
+    ],
   },
 ];
 

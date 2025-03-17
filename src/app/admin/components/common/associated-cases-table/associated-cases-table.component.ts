@@ -14,10 +14,16 @@ import { TableRowTemplateDirective } from '@directives/table-row-template.direct
 })
 export class AssociatedCasesTableComponent {
   rows = input<AssociatedCase[]>([]);
+  screen = input<string>('audio');
+  url = input<string>('');
 
-  columns: DatatableColumn[] = [
+  private readonly baseColumns: DatatableColumn[] = [
     { name: 'Case ID', prop: 'caseId', sortable: true },
     { name: 'Courthouse', prop: 'courthouse', sortable: true },
     { name: 'Source', prop: 'source', sortable: true },
   ];
+
+  get columns(): DatatableColumn[] {
+    return this.screen() === 'audio' ? this.baseColumns : this.baseColumns.filter((col) => col.prop !== 'source');
+  }
 }

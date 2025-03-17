@@ -16,6 +16,8 @@ import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 export class AssociatedHearingsTableComponent {
   rows = input<AssociatedHearing[]>([]);
 
+  url = input<string>('');
+
   columns: DatatableColumn[] = [
     { name: 'Case ID', prop: 'caseId', sortable: true },
     { name: 'Hearing date', prop: 'hearingDate', sortable: true },
