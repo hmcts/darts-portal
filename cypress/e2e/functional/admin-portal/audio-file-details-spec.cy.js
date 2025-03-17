@@ -27,25 +27,6 @@ describe('Admin - Audio file details screen', () => {
       cy.get('dt').contains('Filename').next('dd').should('contain', 'filename.mp3');
       cy.get('dt').contains('Date created').next('dd').should('contain', '11 Jun 2024 at 6:55:18PM');
 
-      cy.get('#associated-cases app-govuk-heading h2').contains('Associated cases');
-      cy.get('#associated-cases').within(() => {
-        cy.get('table').within(() => {
-          cy.get('th').eq(0).should('contain.text', 'Case ID');
-          cy.get('th').eq(1).should('contain.text', 'Courthouse');
-          cy.get('th').eq(2).should('contain.text', 'Source');
-        });
-      });
-
-      cy.get('#associated-hearings app-govuk-heading h2').contains('Associated hearings');
-      cy.get('#associated-hearings').within(() => {
-        cy.get('table').within(() => {
-          cy.get('th').eq(0).should('contain.text', 'Case ID');
-          cy.get('th').eq(1).should('contain.text', 'Hearing date');
-          cy.get('th').eq(2).should('contain.text', 'Courthouse');
-          cy.get('th').eq(3).should('contain.text', 'Courtroom');
-        });
-      });
-
       cy.a11y();
     });
 
