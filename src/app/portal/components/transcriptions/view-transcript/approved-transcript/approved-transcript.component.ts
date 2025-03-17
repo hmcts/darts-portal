@@ -40,7 +40,7 @@ export class ApprovedTranscriptComponent implements OnInit {
   requestDetails = {};
 
   transcriptId = this.route.snapshot.params.transcriptId;
-  fileName = '';
+  fileName?: string;
 
   ngOnInit(): void {
     this.caseDetails = this.transcriptionService.getCaseDetailsFromTranscript(this.transcript);
@@ -49,8 +49,10 @@ export class ApprovedTranscriptComponent implements OnInit {
   }
 
   onDownloadClicked() {
-    this.transcriptionService.downloadTranscriptDocument(this.transcriptId).subscribe((blob: Blob) => {
-      this.fileDownloadService.saveAs(blob, this.fileName);
-    });
+    if (this.fileName) {
+      this.transcriptionService.downloadTranscriptDocument(this.transcriptId).subscribe((blob: Blob) => {
+        this.fileDownloadService.saveAs(blob, this.fileName as string);
+      });
+    }
   }
 }

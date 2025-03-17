@@ -55,7 +55,7 @@ describe('View Transcript', () => {
     cy.get('.govuk-button').should('contain', 'Request a new transcript');
     cy.get('.govuk-tag--green').should('contain', 'Complete');
     cy.contains('21 Oct 2023').parents('tr').contains('View').click();
-    cy.get('h1').should('contain', 'Document not found');
+    cy.get('h1').should('contain', 'No transcription document has been uploaded for this request');
     cy.get('.restriction').should('contain', 'Section 4(2) of the Contempt of Court Act 1981');
   });
 

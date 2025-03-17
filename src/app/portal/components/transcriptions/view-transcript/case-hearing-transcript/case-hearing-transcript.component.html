@@ -1,7 +1,7 @@
 <app-breadcrumb>
   <ng-container *breadcrumb="['/search']">Search</ng-container>
   <ng-container *breadcrumb="['/case', transcript.caseId.toString()]">{{ transcript.caseNumber }}</ng-container>
-  <ng-container *breadcrumb="['.']">{{ transcript.transcriptFileName }}</ng-container>
+  <ng-container *breadcrumb="['.']">{{ transcript.transcriptFileName ?? 'Document not found' }}</ng-container>
 </app-breadcrumb>
 
 <app-reporting-restriction
@@ -11,10 +11,14 @@
 ></app-reporting-restriction>
 
 <span class="govuk-caption-l">Transcript file</span>
-<h1 class="govuk-heading-l">{{ transcript.transcriptFileName }}</h1>
+<h1 class="govuk-heading-l">
+  {{ transcript.transcriptFileName ?? 'No transcription document has been uploaded for this request' }}
+</h1>
 
 <app-details-table title="Case details" [details]="caseDetails"></app-details-table>
 
 <app-details-table title="Transcript details" [details]="requestDetails"></app-details-table>
 
-<button id="download-button" class="govuk-button" (click)="onDownloadClicked()">Download transcript file</button>
+@if (transcript.transcriptFileName) {
+  <button id="download-button" class="govuk-button" (click)="onDownloadClicked()">Download transcript file</button>
+}
