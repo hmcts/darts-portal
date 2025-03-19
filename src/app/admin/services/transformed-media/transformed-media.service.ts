@@ -100,15 +100,6 @@ export class TransformedMediaService {
       .pipe(map((data) => this.mapAudioVersions(data)));
   }
 
-  private mapAudioVersions(data: AudioVersionsData): AudioVersions {
-    console.log(data);
-    return {
-      mediaObjectId: data.media_object_id,
-      currentVersion: this.mapAudioVersion(data.current_version),
-      previousVersions: data.previous_versions.map((audio) => this.mapAudioVersion(audio)),
-    };
-  }
-
   checkAssociatedAudioExists(
     mediaId: number,
     hearingIds: number[],
@@ -157,6 +148,14 @@ export class TransformedMediaService {
     this.isSearchFormSubmitted.set(false);
     this.isAdvancedSearch.set(false);
     this.searchFormValues.set({ ...defaultFormValues });
+  }
+
+  private mapAudioVersions(data: AudioVersionsData): AudioVersions {
+    return {
+      mediaObjectId: data.media_object_id,
+      currentVersion: this.mapAudioVersion(data.current_version),
+      previousVersions: data.previous_versions.map((audio) => this.mapAudioVersion(audio)),
+    };
   }
 
   private mapAudioVersion(data: AudioVersionData): AudioVersion {
