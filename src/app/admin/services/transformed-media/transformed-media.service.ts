@@ -4,6 +4,10 @@ import { FileHideOrDeleteFormValues } from '@admin-types/hidden-reasons/file-hid
 import { AudioFile, AudioFileData } from '@admin-types/index';
 import { AssociatedMedia } from '@admin-types/transformed-media/associated-media';
 import { AssociatedMediaData } from '@admin-types/transformed-media/associated-media-data.interface';
+import { AudioVersion } from '@admin-types/transformed-media/audio-version';
+import { AudioVersionData } from '@admin-types/transformed-media/audio-version-data.interface';
+import { AudioVersions } from '@admin-types/transformed-media/audio-versions';
+import { AudioVersionsData } from '@admin-types/transformed-media/audio-versions-data.interface';
 import { TransformedMediaAdmin } from '@admin-types/transformed-media/transformed-media-admin';
 import {
   TransformedMediaAdminData,
@@ -90,6 +94,21 @@ export class TransformedMediaService {
       .pipe(map((data) => this.mapAssociatedMedias(data)));
   }
 
+  getVersions(id: number): Observable<AudioVersions> {
+    return this.http
+      .get<AudioVersionsData>(`/api/admin/medias/${id}/versions`)
+      .pipe(map((data) => this.mapAudioVersions(data)));
+  }
+
+  private mapAudioVersions(data: AudioVersionsData): AudioVersions {
+    console.log(data);
+    return {
+      mediaObjectId: data.media_object_id,
+      currentVersion: this.mapAudioVersion(data.current_version),
+      previousVersions: data.previous_versions.map((audio) => this.mapAudioVersion(audio)),
+    };
+  }
+
   checkAssociatedAudioExists(
     mediaId: number,
     hearingIds: number[],
@@ -138,6 +157,27 @@ export class TransformedMediaService {
     this.isSearchFormSubmitted.set(false);
     this.isAdvancedSearch.set(false);
     this.searchFormValues.set({ ...defaultFormValues });
+  }
+
+  private mapAudioVersion(data: AudioVersionData): AudioVersion {
+    return {
+      id: data.id,
+      courthouse: {
+        id: data.courthouse.id,
+        displayName: data.courthouse.display_name,
+      },
+      courtroom: {
+        id: data.courtroom.id,
+        name: data.courtroom.name,
+      },
+      startAt: DateTime.fromISO(data.start_at),
+      endAt: DateTime.fromISO(data.end_at),
+      channel: data.channel,
+      chronicleId: data.chronicle_id,
+      antecedentId: data.antecedent_id,
+      isCurrent: data.is_current,
+      createdAt: DateTime.fromISO(data.created_at),
+    };
   }
 
   private mapHidePostRequest(body: FileHideOrDeleteFormValues) {

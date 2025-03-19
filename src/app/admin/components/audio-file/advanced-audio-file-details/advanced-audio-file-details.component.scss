@@ -1,3 +1,24 @@
 .details {
   max-width: 66%;
 }
+
+:host {
+  display: block;
+  width: 66%;
+}
+
+.no-border h2 {
+  border-bottom: none !important;
+  margin-bottom: 0;
+}
+
+.border {
+  border-bottom: 2px solid #000;
+  padding-bottom: 0.3rem;
+}
+
+.versions-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
