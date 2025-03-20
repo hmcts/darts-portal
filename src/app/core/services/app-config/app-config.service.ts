@@ -20,6 +20,7 @@ export interface AppConfig {
       enabled: string;
     };
   };
+  caseSearchTimeout: string;
 }
 
 const CONFIG_PATH = '/app/config';
@@ -28,7 +29,7 @@ const CONFIG_PATH = '/app/config';
 export class AppConfigService {
   private appConfig: AppConfig | undefined;
 
-  constructor(private http: HttpBackendClient) {}
+  constructor(private readonly http: HttpBackendClient) {}
 
   async loadAppConfig(): Promise<void> {
     this.appConfig = await lastValueFrom(this.http.get<AppConfig>(CONFIG_PATH));

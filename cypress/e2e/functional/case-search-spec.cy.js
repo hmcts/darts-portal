@@ -278,6 +278,15 @@ describe('Case search', () => {
     cy.get('app-search-error').should('contain', 'There are more than 500 results');
   });
 
+  it('timeout', () => {
+    cy.contains('Search').click();
+    cy.get('h1').should('contain', 'Search for a case');
+    cy.get('#case_number').type('TIMEOUT');
+    cy.get('button').contains('Search').click();
+
+    cy.get('app-search-error').should('contain', 'Your search has exceeded the allowed response time of 30 seconds');
+  });
+
   it('restore form values from previous search', () => {
     cy.contains('Search').click();
     cy.get('h1').should('contain', 'Search for a case');

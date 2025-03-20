@@ -12,6 +12,21 @@ describe('DynatraceService', () => {
   let service: DynatraceService;
   let cookiesService: CookiesService;
   let appConfigService: AppConfigService;
+  const mockConfig = {
+    dynatrace: { scriptUrl: 'https://dynatrace.com/script.js' },
+    appInsightsKey: 'X',
+    environment: 'env',
+    support: { name: 'name', emailAddress: 'email' },
+    features: {
+      manualDeletion: {
+        enabled: 'true',
+      },
+      eventObfuscation: {
+        enabled: 'true',
+      },
+    },
+    caseSearchTimeout: '30 seconds',
+  };
 
   beforeEach(() => {
     const mockCookiesService = {
@@ -47,20 +62,7 @@ describe('DynatraceService', () => {
       .spyOn(cookiesService, 'getCookiePolicy')
       .mockReturnValue({ dynatraceCookiesEnabled: true, appInsightsCookiesEnabled: false });
 
-    jest.spyOn(appConfigService, 'getAppConfig').mockReturnValue({
-      dynatrace: { scriptUrl: 'https://dynatrace.com/script.js' },
-      appInsightsKey: 'X',
-      environment: 'env',
-      support: { name: 'name', emailAddress: 'email' },
-      features: {
-        manualDeletion: {
-          enabled: 'true',
-        },
-        eventObfuscation: {
-          enabled: 'true',
-        },
-      },
-    });
+    jest.spyOn(appConfigService, 'getAppConfig').mockReturnValue(mockConfig);
 
     service.addDynatraceScript();
 
@@ -75,20 +77,7 @@ describe('DynatraceService', () => {
       .spyOn(cookiesService, 'getCookiePolicy')
       .mockReturnValue({ dynatraceCookiesEnabled: true, appInsightsCookiesEnabled: false });
 
-    jest.spyOn(appConfigService, 'getAppConfig').mockReturnValue({
-      dynatrace: { scriptUrl: 'https://dynatrace.com/script.js' },
-      appInsightsKey: 'X',
-      environment: 'env',
-      support: { name: 'name', emailAddress: 'email' },
-      features: {
-        manualDeletion: {
-          enabled: 'true',
-        },
-        eventObfuscation: {
-          enabled: 'true',
-        },
-      },
-    });
+    jest.spyOn(appConfigService, 'getAppConfig').mockReturnValue(mockConfig);
 
     const mockDtrum = {
       enable: jest.fn(),
@@ -111,20 +100,7 @@ describe('DynatraceService', () => {
       .spyOn(cookiesService, 'getCookiePolicy')
       .mockReturnValue({ dynatraceCookiesEnabled: false, appInsightsCookiesEnabled: false });
 
-    jest.spyOn(appConfigService, 'getAppConfig').mockReturnValue({
-      dynatrace: { scriptUrl: 'https://dynatrace.com/script.js' },
-      appInsightsKey: 'X',
-      environment: 'env',
-      support: { name: 'name', emailAddress: 'email' },
-      features: {
-        manualDeletion: {
-          enabled: 'true',
-        },
-        eventObfuscation: {
-          enabled: 'true',
-        },
-      },
-    });
+    jest.spyOn(appConfigService, 'getAppConfig').mockReturnValue(mockConfig);
 
     const mockDtrum = {
       enable: jest.fn(),

@@ -16,6 +16,7 @@ describe('SearchErrorComponent', () => {
         name: 'DARTS support',
         emailAddress: 'support@darts',
       },
+      caseSearchTimeout: '29 seconds',
     }),
   };
   let component: SearchErrorComponent;
@@ -81,6 +82,17 @@ describe('SearchErrorComponent', () => {
 
     const internalErrorComponent = debugElement.query(By.css('app-internal-error'));
     expect(internalErrorComponent).toBeTruthy();
+    expect(navigateByUrlSpy).not.toHaveBeenCalled();
+  });
+
+  it('should show appropriate error message for 504 timeouts', () => {
+    component.error = { status: 504, display: 'COMPONENT' } as ErrorMessage;
+    fixture.detectChanges();
+    const navigateByUrlSpy = jest.spyOn(mockRouter, 'navigateByUrl');
+
+    const errorHeading = debugElement.query(By.css('.govuk-heading-m')).nativeElement.textContent;
+    const timeout = appConfigServiceMock.getAppConfig().caseSearchTimeout;
+    expect(errorHeading).toBe(`Your search has exceeded the allowed response time of ${timeout}`);
     expect(navigateByUrlSpy).not.toHaveBeenCalled();
   });
 

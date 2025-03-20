@@ -9,7 +9,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 const regexIdPlaceholder = '\\d+';
 const regexWordPlaceholder = '\\w+';
 const subscribedEndpoints = [
-  { endpoint: '/api/cases/search', responses: [204, 400, 500] },
+  { endpoint: '/api/cases/search', responses: [204, 400, 500, 504] },
   { endpoint: '/api/audio-requests/playback', responses: [403, 404, 500, 502, 504] },
   { endpoint: '/api/transcriptions', responses: [409, 400] },
   { endpoint: '/api/audio-requests', responses: [403, 409] },

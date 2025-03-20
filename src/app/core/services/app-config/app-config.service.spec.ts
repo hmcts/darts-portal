@@ -35,6 +35,7 @@ describe('AppConfigService', () => {
           enabled: 'false',
         },
       },
+      caseSearchTimeout: '30 seconds',
     };
     jest.spyOn(httpClientSpy, 'get').mockReturnValue(of(testData));
     await appConfigService.loadAppConfig();

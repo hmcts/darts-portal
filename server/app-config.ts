@@ -8,4 +8,5 @@ export default () => ({
   environment: config.get('node-env'),
   dynatrace: config.get('dynatrace'),
   features: config.get('features'),
+  caseSearchTimeout: config.get('caseSearchTimeout'),
 });

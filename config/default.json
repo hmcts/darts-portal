@@ -27,6 +27,7 @@
       "enabled": "false"
     }
   },
+  "caseSearchTimeout": "30 seconds",
   "dynatrace": {
     "scriptUrl": null
   },
