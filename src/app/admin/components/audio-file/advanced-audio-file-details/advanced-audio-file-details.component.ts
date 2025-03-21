@@ -13,4 +13,5 @@ import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 })
 export class AdvancedAudioFileDetailsComponent {
   @Input() audioFile!: AudioFile;
+  @Input() isAdmin!: boolean;
 }
