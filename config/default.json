@@ -7,7 +7,22 @@
   },
   "authentication": {
     "azureAdB2cOriginHost": "*",
-    "azureAdB2cHostname": "http://localhost:3000"
+    "azureAdB2cHostname": "http://localhost:3000",
+    "urlPaths": {
+      "external": {
+        "login": "/external-user/login-or-refresh",
+        "handleOauthCode": "/external-user/handle-oauth-code",
+        "refreshAccessToken": "/external-user/refresh-access-token",
+        "resetPwd": "/external-user/reset-password",
+        "logout": "/external-user/logout"
+      },
+      "internal": {
+        "login": "/internal-user/login-or-refresh",
+        "handleOauthCode": "/internal-user/handle-oauth-code",
+        "refreshAccessToken": "/internal-user/refresh-access-token",
+        "logout": "/internal-user/logout"
+      }
+    }
   },
   "session": {
     "prefix": "darts-portal-session",
@@ -27,6 +42,7 @@
       "enabled": "false"
     }
   },
+  "caseSearchTimeout": "30 seconds",
   "dynatrace": {
     "scriptUrl": null
   },

@@ -1,23 +1,29 @@
-import { NextFunction, Request, Response } from 'express';
-import { AuthenticationUtils } from '../utils/authentication-utils';
-import { DateTime } from 'luxon';
+import { Request, Response } from 'express';
+import { AuthenticationUtils, Urls } from '../utils';
 
-export default (req: Request, res: Response, next: NextFunction): void => {
-  // temporary code for testing keep-alive request, to be removed
-  if (req.url === '/keep-alive-test' || req.url === '/keep-alive-test-stream') {
-    return next();
-  }
-  // temporary code for testing keep-alive request, to be removed
-
-  const expiry = req.session?.expiry;
-  const sessionExpired = expiry && DateTime.now() > DateTime.fromISO(expiry);
-  if (
-    AuthenticationUtils.isJwtExpired(req.session?.securityToken?.accessToken) ||
-    !req.session.securityToken?.userState?.userId ||
-    sessionExpired
-  ) {
+export default async (req: Request, res: Response): Promise<void> => {
+  if (!AuthenticationUtils.isValidSession(req)) {
+    console.log('Session expired or userId not found. IS-AUTHENTICATED.TS');
     res.sendStatus(401);
-  } else {
-    next();
+    return;
+  }
+
+  if (AuthenticationUtils.isJwtExpired(req.session?.securityToken?.accessToken)) {
+    const refreshToken = req.session?.securityToken?.refreshToken;
+    if (!refreshToken) {
+      res.sendStatus(401);
+      return;
+    }
+
+    try {
+      req.session.securityToken = await AuthenticationUtils.refreshJwt(
+        Urls.getRefreshAccessTokenUrl(req.session.userType!),
+        refreshToken
+      );
+      console.log('Refreshed access token using refresh token');
+    } catch (err) {
+      console.error('Error refreshing access token:', err);
+      res.sendStatus(401);
+    }
   }
 };

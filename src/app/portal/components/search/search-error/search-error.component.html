@@ -1,32 +1,44 @@
 <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
 
-<ng-container *ngIf="error">
-  <ng-container [ngSwitch]="error.detail?.type">
-    <div *ngSwitchCase="'CASE_100'">
+@if (error) {
+  @switch (error.detail?.type) {
+    @case ('CASE_100') {
       <h2 class="govuk-heading-m">There are more than 500 results</h2>
       <p class="govuk-body">Refine your search by:</p>
       <ul class="govuk-list govuk-list--bullet">
         <li>adding more information to your search</li>
         <li>using filters to restrict the number of results</li>
       </ul>
-    </div>
+    }
 
-    <div *ngSwitchCase="'CASE_101'">
+    @case ('CASE_101') {
       <h2 class="govuk-heading-m">No search results</h2>
       <p class="govuk-body">You need to enter some search terms and try again</p>
-    </div>
+    }
 
-    <div *ngSwitchCase="'CASE_102'">
+    @case ('CASE_102') {
       <h2 class="govuk-heading-m">We need more information to search for a case</h2>
       <p class="govuk-body">Refine your search by adding more information and try again.</p>
-    </div>
+    }
 
-    <div *ngSwitchDefault>
-      <h2 *ngIf="error.status !== 500" class="govuk-heading-m">An error has occurred. Please try again later.</h2>
-    </div>
-  </ng-container>
+    @default {
+      @if (error.status !== 500 && error.status !== 504) {
+        <h2 *ngIf="error.status !== 500 && error.status !== 504" class="govuk-heading-m">
+          An error has occurred. Please try again later.
+        </h2>
+      }
+    }
+  }
 
-  <ng-container *ngIf="error.status === 500">
+  @if (error.status === 500) {
     <app-internal-error></app-internal-error>
-  </ng-container>
-</ng-container>
+  }
+
+  @if (error.status === 504) {
+    <h2 class="govuk-heading-m">Your search has exceeded the allowed response time of {{ timeout }}</h2>
+    <p class="govuk-body">
+      To improve the results, please refine your search by including additional criteria, such as courthouse, hearing
+      date, or defendant name, and try again.
+    </p>
+  }
+}

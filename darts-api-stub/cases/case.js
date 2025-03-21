@@ -733,21 +733,22 @@ router.post('/search', (req, res) => {
     case 'INTERNAL_SERVER_ERROR':
       res.sendStatus(500);
       break;
+    case 'TIMEOUT':
+      res.sendStatus(504);
+      break;
     case 'TOO_MANY_RESULTS':
-      const resBody100 = {
+      res.status(400).send({
         type: 'CASE_100',
         title: 'Too many results have been returned. Please change search criteria.',
         status: 400,
-      };
-      res.status(400).send(resBody100);
+      });
       break;
     case 'UNKNOWN_ERROR':
-      const resBody103 = {
+      res.status(400).send({
         type: 'CASE_103',
-        title: 'The request is not valid..',
+        title: 'The request is not valid.',
         status: 400,
-      };
-      res.status(400).send(resBody103);
+      });
       break;
     case 'ALL':
       res.status(200).send(multipleCases);
@@ -768,11 +769,10 @@ router.get('/:caseId', (req, res) => {
   switch (req.params.caseId) {
     // this is returned by the API when a non-integer is passed as the case ID
     case '400':
-      const resBodyBadReq = {
+      res.status(400).send({
         title: 'Bad request',
         status: 400,
-      };
-      res.status(400).send(resBodyBadReq);
+      });
       break;
     case '403':
       res.status(403).send(resBodyAuth100);
@@ -866,8 +866,7 @@ router.get('/:caseId/annotations', (req, res) => {
       res.status(404).send(resBody404);
       break;
     default:
-      const annotations = getAnnotationsByCaseId(caseId);
-      res.send(annotations);
+      res.send(getAnnotationsByCaseId(caseId));
       break;
   }
 });
