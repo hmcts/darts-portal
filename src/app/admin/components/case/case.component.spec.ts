@@ -1,6 +1,8 @@
+import { AdminCase } from '@admin-types/case/case.type';
 import { User } from '@admin-types/index';
 import { provideHttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
 import { AdminCaseService } from '@services/admin-case/admin-case.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
@@ -91,5 +93,30 @@ describe('CaseComponent', () => {
       expect(mockCaseService.getCase).toHaveBeenCalledWith(component.caseId());
       expect(mockUserAdminService.getUsersById).toHaveBeenCalledWith([101, 102]);
     });
+  });
+
+  it('should render app-case-additional-details directly when isDataAnonymised is true', async () => {
+    const mockAnonymisedCaseFile = {
+      ...mockCaseFile,
+      isDataAnonymised: true,
+    };
+
+    mockCaseService.getCase.mockReturnValue(of(mockAnonymisedCaseFile as AdminCase));
+    mockUserAdminService.getUsersById.mockReturnValue(of([]));
+
+    fixture = TestBed.createComponent(CaseComponent);
+    component = fixture.componentInstance;
+
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    // app-tabs should not be present
+    const tabs = fixture.debugElement.query(By.css('app-tabs#case-tabs'));
+    expect(tabs).toBeNull();
+
+    // app-case-additional-details should be present
+    const details = fixture.debugElement.query(By.css('app-case-additional-details'));
+    expect(details).toBeTruthy();
   });
 });
