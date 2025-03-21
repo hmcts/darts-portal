@@ -29,5 +29,6 @@
   "dynatrace": {
     "scriptUrl": "DARTS_DYNATRACE_SCRIPT_URL"
   },
+  "caseSearchTimeout": "DARTS_PORTAL_CASE_SEARCH_TIMEOUT",
   "allowStubData": "DARTS_PORTAL_ALLOW_STUB_DATA"
 }
