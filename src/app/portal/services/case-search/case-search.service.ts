@@ -6,6 +6,20 @@ import { ErrorMessageService } from '@services/error/error-message.service';
 import { UserService } from '@services/user/user.service';
 import { BehaviorSubject, catchError, of, shareReplay, switchMap, tap } from 'rxjs';
 
+export const defaultFormValues: CaseSearchFormValues = {
+  courthouses: [],
+  caseNumber: '',
+  courtroom: '',
+  hearingDate: {
+    type: '',
+    specific: '',
+    from: '',
+    to: '',
+  },
+  judgeName: '',
+  defendantName: '',
+  eventTextContains: '',
+};
 @Injectable({
   providedIn: 'root',
 })
@@ -15,7 +29,7 @@ export class CaseSearchService {
   appInsightsService = inject(AppInsightsService);
   userService = inject(UserService);
 
-  private readonly previousSearchFormValues = signal<CaseSearchFormValues | null>(null);
+  private readonly previousSearchFormValues = signal<CaseSearchFormValues>({ ...defaultFormValues });
 
   private search$ = new BehaviorSubject<CaseSearchFormValues | null>(null);
 
@@ -52,7 +66,7 @@ export class CaseSearchService {
 
   clearSearch(): void {
     this.errorMsgService.clearErrorMessage();
-    this.previousSearchFormValues.set(null);
+    this.previousSearchFormValues.set({ ...defaultFormValues });
     this.search$.next(null);
   }
 

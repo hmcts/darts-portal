@@ -707,8 +707,9 @@ const getAnnotationsByCaseId = (caseId) => {
 router.post('/search', (req, res) => {
   const searchTerms = req.body;
   const notNullProperties = Object.keys(searchTerms).filter((x) => searchTerms[x] != undefined).length;
+
   // expected API response if searching for courthouse only
-  if (notNullProperties === 1 && searchTerms.courthouse) {
+  if (notNullProperties === 1 && searchTerms.courthouse_ids) {
     const resBody102 = {
       type: 'CASE_102',
       title: 'Search criteria is too broad, please add at least 1 more criteria to search for.',

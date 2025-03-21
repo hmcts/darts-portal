@@ -7,8 +7,9 @@ import { CaseSearchFormValues } from '@portal-types/case';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { ErrorMessageService } from '@services/error/error-message.service';
 import { ScrollService } from '@services/scroll/scroll.service';
+import { DateTime } from 'luxon';
 import { of } from 'rxjs';
-import { CaseSearchService } from '../../services/case-search/case-search.service';
+import { CaseSearchService, defaultFormValues } from '../../services/case-search/case-search.service';
 import { CaseSearchResultsComponent } from './case-search-results/case-search-results.component';
 import { SearchComponent } from './search.component';
 
@@ -26,7 +27,22 @@ const mockCourthouses = [
 
 const mockFormValues: CaseSearchFormValues = {
   caseNumber: '1',
-  courthouse: 'Reading',
+  courthouses: [
+    {
+      courthouseName: 'READING',
+      id: 0,
+      displayName: 'Reading',
+      code: 0,
+      createdDateTime: DateTime.fromISO('2022-09-16T00:00:00.000Z'),
+    },
+    {
+      courthouseName: 'SLOUGH',
+      id: 1,
+      displayName: 'Slough',
+      code: 1,
+      createdDateTime: DateTime.fromISO('2022-09-16T00:00:00.000Z'),
+    },
+  ],
   courtroom: '2',
   judgeName: 'Judy',
   defendantName: 'Dave',
@@ -51,7 +67,7 @@ describe('SearchComponent', () => {
       isAdvancedSearch: signal(false),
       isSubmitted: signal(false),
       isLoading: signal(false),
-      getPreviousSearchFormValues: () => signal(null),
+      getPreviousSearchFormValues: () => signal({ ...defaultFormValues }),
     } as unknown as CaseSearchService;
 
     const fakeCourtHouseService = {

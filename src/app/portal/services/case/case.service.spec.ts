@@ -11,11 +11,11 @@ import {
   CaseRetentionChange,
   CaseRetentionHistoryData,
   CaseSearchFormValues,
+  CaseSearchRequest,
   CaseSearchResult,
   CaseSearchResultData,
   Hearing,
   HearingData,
-  SearchFormValues,
   Transcript,
   TranscriptData,
 } from '@portal-types/index';
@@ -414,7 +414,22 @@ describe('CaseService', () => {
     it('for date ranges', fakeAsync(() => {
       const mockSearchForm: CaseSearchFormValues = {
         caseNumber: '123',
-        courthouse: 'Court A',
+        courthouses: [
+          {
+            id: 1,
+            displayName: 'Courthouse 1',
+            courthouseName: 'Courthouse 1',
+            code: 0,
+            createdDateTime: DateTime.fromISO('2023-06-10T11:23:24Z'),
+          },
+          {
+            id: 2,
+            displayName: 'Courthouse 2',
+            courthouseName: 'Courthouse 2',
+            code: 0,
+            createdDateTime: DateTime.fromISO('2023-06-10T11:23:24Z'),
+          },
+        ],
         courtroom: 'Room B',
         judgeName: 'Judge C',
         defendantName: 'Defendant D',
@@ -432,9 +447,9 @@ describe('CaseService', () => {
         expect(cases).toEqual(mockCases);
       });
 
-      const expectedBody: SearchFormValues = {
+      const expectedBody: CaseSearchRequest = {
         case_number: '123',
-        courthouse: 'COURT A',
+        courthouse_ids: [1, 2],
         courtroom: 'ROOM B',
         judge_name: 'Judge C',
         defendant_name: 'Defendant D',
@@ -457,7 +472,22 @@ describe('CaseService', () => {
     it('for specific date', () => {
       const mockSearchForm: CaseSearchFormValues = {
         caseNumber: '123',
-        courthouse: 'Court A',
+        courthouses: [
+          {
+            id: 1,
+            displayName: 'Courthouse 1',
+            courthouseName: 'Courthouse 1',
+            code: 0,
+            createdDateTime: DateTime.fromISO('2023-06-10T11:23:24Z'),
+          },
+          {
+            id: 2,
+            displayName: 'Courthouse 2',
+            courthouseName: 'Courthouse 2',
+            code: 0,
+            createdDateTime: DateTime.fromISO('2023-06-10T11:23:24Z'),
+          },
+        ],
         courtroom: 'Room B',
         judgeName: 'Judge C',
         defendantName: 'Defendant D',
@@ -475,9 +505,9 @@ describe('CaseService', () => {
         expect(cases).toEqual(mockCases);
       });
 
-      const expectedBody: SearchFormValues = {
+      const expectedBody: CaseSearchRequest = {
         case_number: '123',
-        courthouse: 'COURT A',
+        courthouse_ids: [1, 2],
         courtroom: 'ROOM B',
         judge_name: 'Judge C',
         defendant_name: 'Defendant D',
