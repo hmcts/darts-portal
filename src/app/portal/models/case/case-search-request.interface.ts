@@ -1,6 +1,6 @@
 export interface CaseSearchRequest {
   case_number: string | null;
-  courthouse: string | null;
+  courthouse_ids: number[];
   courtroom: string | null;
   judge_name: string | null;
   defendant_name: string | null;

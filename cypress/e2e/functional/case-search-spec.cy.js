@@ -24,7 +24,7 @@ describe('Case search', () => {
     cy.contains('Search').click();
     cy.get('h1').should('contain', 'Search for a case');
     cy.contains('Advanced search').click();
-    cy.get('#courthouse').type('Courthouse 1');
+    cy.get('#courthouse-autocomplete').click().type('Reading');
     cy.get('#courtroom').type('Courtroom 1');
     cy.get('#specific-date-radio').click({ force: true });
     cy.get('#specific').type('01/01/2021');
@@ -37,7 +37,7 @@ describe('Case search', () => {
     cy.get('a').contains('Clear search').click();
     cy.contains('Advanced search').click();
 
-    cy.get('#courthouse').should('have.value', '');
+    cy.get('#courthouse-autocomplete').should('have.value', '');
     cy.get('#courtroom').should('have.value', '');
     cy.get('#specific-date-radio').click({ force: true });
     cy.get('#specific').should('have.value', '');
@@ -102,7 +102,8 @@ describe('Case search', () => {
     cy.contains('Search').click();
     cy.get('h1').should('contain', 'Search for a case');
     cy.contains('Advanced search').click();
-    cy.get('#courthouse');
+    cy.get('#case_number').type('ALL');
+    cy.get('#courthouse-autocomplete');
     cy.get('#courtroom');
     cy.get('#specific-date-radio').click({ force: true });
     cy.get('#specific');
@@ -114,15 +115,16 @@ describe('Case search', () => {
     cy.get('#keywords');
     cy.get('button').contains('Search').click();
 
-    cy.get('#search-results').should('contain', '12 results');
+    cy.get('#search-results').should('contain', '16 results');
     cy.a11y();
+    cy.get('a').contains('Clear search').click();
   });
 
   it('courthouse only', () => {
     cy.contains('Search').click();
     cy.get('h1').should('contain', 'Search for a case');
     cy.contains('Advanced search').click();
-    cy.get('#courthouse').type('Reading');
+    cy.get('#courthouse-autocomplete').type('Reading');
     cy.get('button').contains('Search').click();
 
     cy.get('app-search-error').should('contain', 'We need more information to search for a case');
@@ -136,7 +138,7 @@ describe('Case search', () => {
     // courtroom only
     cy.get('#courtroom').type('3');
     cy.get('button').contains('Search').click();
-    cy.get('#courthouse-errors').should('contain', COURTHOUSE_MISSING);
+    cy.get('.courthouse-error').should('contain', COURTHOUSE_MISSING);
     cy.get('.govuk-error-summary').should('contain', COURTHOUSE_MISSING);
     cy.get('a').contains('Clear search').click();
 
@@ -283,7 +285,7 @@ describe('Case search', () => {
     cy.get('h1').should('contain', 'Search for a case');
     cy.contains('Advanced search').click();
     cy.get('#case_number').type('C20220620001');
-    cy.get('#courthouse').type('Cardiff');
+    cy.get('#courthouse-autocomplete').type('Cardiff');
     cy.get('#courtroom').type('2');
     cy.get('#specific-date-radio').click({ force: true });
     cy.get('#specific').type('03/07/2021');
@@ -311,7 +313,7 @@ describe('Case search', () => {
 
     // Should have previous form values and search results
     cy.get('#case_number').should('have.value', 'C20220620001');
-    cy.get('#courthouse').should('have.value', 'Cardiff');
+    cy.get('ul.govuk-list li.selected-courthouse').should('contain.text', 'Cardiff');
     cy.get('#courtroom').should('have.value', '2');
     cy.get('#specific').should('have.value', '03/07/2021');
     cy.get('#defendant').should('have.value', 'Dean');

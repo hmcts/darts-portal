@@ -1,14 +1,14 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { CaseSearchFormValues, CaseSearchResult } from '@portal-types/case';
-import { CaseService } from '@services/case/case.service';
-import { of, throwError } from 'rxjs';
-import { CaseSearchService } from './case-search.service';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
+import { CaseService } from '@services/case/case.service';
 import { UserService } from '@services/user/user.service';
+import { of, throwError } from 'rxjs';
+import { CaseSearchService, defaultFormValues } from './case-search.service';
 
 const mockFormValues: CaseSearchFormValues = {
   caseNumber: '',
-  courthouse: '',
+  courthouses: [],
   courtroom: '',
   hearingDate: {
     from: '',
@@ -153,7 +153,7 @@ describe('CaseSearchService', () => {
     it('clear previousSearchFormValues', () => {
       service.searchCases(mockFormValues);
       service.clearSearch();
-      expect(service.getPreviousSearchFormValues()()).toBeNull();
+      expect(service.getPreviousSearchFormValues()()).toEqual(defaultFormValues);
     });
 
     it('call search$ with null to clear search', fakeAsync(() => {
