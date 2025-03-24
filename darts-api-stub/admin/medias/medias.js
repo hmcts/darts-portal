@@ -446,6 +446,66 @@ const defaultMedia = {
   ],
 };
 
+const versions = {
+  media_object_id: 'media_12345',
+  current_version: {
+    id: 101,
+    courthouse: {
+      id: 5,
+      display_name: 'London Crown Court',
+    },
+    courtroom: {
+      id: 12,
+      name: 'Courtroom A',
+    },
+    start_at: '2024-06-11T08:30:00.000Z',
+    end_at: '2024-06-11T09:15:00.000Z',
+    channel: 3,
+    chronicle_id: 'chronicle_456',
+    antecedent_id: 'antecedent_789',
+    is_current: true,
+    created_at: '2024-06-11T10:00:00.000Z',
+  },
+  previous_versions: [
+    {
+      id: 100,
+      courthouse: {
+        id: 5,
+        display_name: 'London Crown Court',
+      },
+      courtroom: {
+        id: 11,
+        name: 'Courtroom B',
+      },
+      start_at: '2024-06-10T14:00:00.000Z',
+      end_at: '2024-06-10T14:45:00.000Z',
+      channel: 2,
+      chronicle_id: 'chronicle_123',
+      antecedent_id: 'antecedent_456',
+      is_current: false,
+      created_at: '2024-06-10T16:00:00.000Z',
+    },
+    {
+      id: 101,
+      courthouse: {
+        id: 5,
+        display_name: 'London Crown Court',
+      },
+      courtroom: {
+        id: 11,
+        name: 'Courtroom B',
+      },
+      start_at: '2024-06-10T14:00:00.000Z',
+      end_at: '2024-06-10T14:45:00.000Z',
+      channel: 2,
+      chronicle_id: 'chronicle_123',
+      antecedent_id: 'antecedent_456',
+      is_current: false,
+      created_at: '2024-06-10T16:00:00.000Z',
+    },
+  ],
+};
+
 let updatedMedia = [];
 let media = { ...defaultMedia };
 let markedForDeletionMedia = [...defaultMarkedForDeletionMedia];
@@ -515,6 +575,10 @@ router.post('/:id/hide', (req, res) => {
   }
 
   res.send(response);
+});
+
+router.get('/:id/versions', (req, res) => {
+  res.send(versions);
 });
 
 router.get('/:id', (req, res) => {

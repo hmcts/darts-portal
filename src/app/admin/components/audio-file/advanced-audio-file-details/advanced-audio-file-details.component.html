@@ -88,64 +88,74 @@
   </dl>
 </section>
 
-<section id="version-details" class="details">
-  <app-govuk-heading class="no-margin border-bottom" tag="h2" size="m">Version data</app-govuk-heading>
-  <dl class="govuk-summary-list">
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Version</dt>
-      <dd class="govuk-summary-list__value">
-        {{ audioFile.version }}
-      </dd>
-    </div>
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Chronicle ID</dt>
-      <dd class="govuk-summary-list__value">
-        {{ audioFile.chronicleId }}
-      </dd>
-    </div>
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Antecedent ID</dt>
-      <dd class="govuk-summary-list__value">
-        {{ audioFile.antecedentId }}
-      </dd>
-    </div>
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Retain until</dt>
-      <dd class="govuk-summary-list__value">
-        {{ audioFile.retainUntil | luxonDate: "dd MMM yyyy 'at' h:mm:ssa" }}
-      </dd>
-    </div>
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Date created</dt>
-      <dd class="govuk-summary-list__value">
-        {{ audioFile.createdAt | luxonDate: "dd MMM yyyy 'at' h:mm:ssa" }}
-      </dd>
-    </div>
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Created by</dt>
-      <dd class="govuk-summary-list__value">
-        @if (audioFile.createdBy) {
-          <a class="govuk-link" [routerLink]="['/admin/users', audioFile.createdById]">
-            {{ audioFile.createdBy }}
-          </a>
-        }
-      </dd>
-    </div>
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Date last modified</dt>
-      <dd class="govuk-summary-list__value">
-        {{ audioFile.lastModifiedAt | luxonDate: "dd MMM yyyy 'at' h:mm:ssa" }}
-      </dd>
-    </div>
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Last modified by</dt>
-      <dd class="govuk-summary-list__value">
-        @if (audioFile.lastModifiedBy) {
-          <a class="govuk-link" [routerLink]="['/admin/users', audioFile.lastModifiedById]">
-            {{ audioFile.lastModifiedBy }}
-          </a>
-        }
-      </dd>
-    </div>
-  </dl>
-</section>
+<div id="versions-details" class="versions-heading border">
+  <app-govuk-heading class="no-margin no-border" tag="h2" size="m">Version data</app-govuk-heading>
+  @if (isAdmin) {
+    <a
+      id="version-link"
+      class="govuk-link"
+      [routerLink]="['versions']"
+      [queryParams]="{ backUrl: '/admin/audio-file/' + audioFile.id }"
+    >
+      Show versions</a
+    >
+  }
+</div>
+<dl class="govuk-summary-list">
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Version</dt>
+    <dd class="govuk-summary-list__value">
+      {{ audioFile.version }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Chronicle ID</dt>
+    <dd class="govuk-summary-list__value">
+      {{ audioFile.chronicleId }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Antecedent ID</dt>
+    <dd class="govuk-summary-list__value">
+      {{ audioFile.antecedentId }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Retain until</dt>
+    <dd class="govuk-summary-list__value">
+      {{ audioFile.retainUntil | luxonDate: "dd MMM yyyy 'at' h:mm:ssa" }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Date created</dt>
+    <dd class="govuk-summary-list__value">
+      {{ audioFile.createdAt | luxonDate: "dd MMM yyyy 'at' h:mm:ssa" }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Created by</dt>
+    <dd class="govuk-summary-list__value">
+      @if (audioFile.createdBy) {
+        <a class="govuk-link" [routerLink]="['/admin/users', audioFile.createdById]">
+          {{ audioFile.createdBy }}
+        </a>
+      }
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Date last modified</dt>
+    <dd class="govuk-summary-list__value">
+      {{ audioFile.lastModifiedAt | luxonDate: "dd MMM yyyy 'at' h:mm:ssa" }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Last modified by</dt>
+    <dd class="govuk-summary-list__value">
+      @if (audioFile.lastModifiedBy) {
+        <a class="govuk-link" [routerLink]="['/admin/users', audioFile.lastModifiedById]">
+          {{ audioFile.lastModifiedBy }}
+        </a>
+      }
+    </dd>
+  </div>
+</dl>

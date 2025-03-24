@@ -27,14 +27,18 @@
   </div>
 
   @if (isAdmin) {
-    <app-tabs>
+    <app-tabs [default]="tab()" (tabChange)="onTabChange($event.name)">
       <app-basic-audio-file-details
-        *tab="'Basic details'"
+        *tab="tabNames.basic; screenReaderText: 'Basic audio file details'; id: 'basic-details-tab'"
         [audioFile]="data.audioFile"
         [associatedCases]="data.associatedCases"
         [associatedHearings]="data.associatedHearings"
       />
-      <app-advanced-audio-file-details *tab="'Advanced details'" [audioFile]="data.audioFile" />
+      <app-advanced-audio-file-details
+        *tab="tabNames.advanced; screenReaderText: 'Advanced audio file details'; id: 'advanced-details-tab'"
+        [isAdmin]="isAdmin"
+        [audioFile]="data.audioFile"
+      />
     </app-tabs>
   } @else {
     <app-basic-audio-file-details [audioFile]="data.audioFile" [associatedCases]="data.associatedCases" />

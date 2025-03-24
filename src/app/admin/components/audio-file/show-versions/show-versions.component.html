@@ -1,0 +1,64 @@
+@if (isLoading()) {
+  <app-loading />
+} @else {
+  @let currVersion = currentVersion();
+  @let prevVersions = previousVersions();
+
+  <ng-template #eventRowTemplate let-row>
+    @if (row) {
+      <td class="event-id">
+        <a
+          class="govuk-link"
+          [routerLink]="['/admin', 'audio-file', row.id]"
+          [queryParams]="{ backUrl: '/admin/audio-file/' + row.id + '/versions' }"
+        >
+          {{ row.id }}</a
+        >
+      </td>
+      <td>{{ row.courthouse.displayName }}</td>
+      <td>{{ row.courtroom.name }}</td>
+      <td>{{ row.startAt | luxonDate: "dd MMM yyyy 'at' HH:mm:ss" }}</td>
+      <td>{{ row.endAt | luxonDate: "dd MMM yyyy 'at' HH:mm:ss" }}</td>
+      <td>{{ row.channel }}</td>
+      <td>{{ row.antecedentId }}</td>
+      <td>{{ row.chronicleId }}</td>
+    }
+  </ng-template>
+
+  <a [routerLink]="[backUrl()]" class="govuk-back-link">Back</a>
+
+  <app-govuk-heading tag="h1" size="l">All versions of this audio</app-govuk-heading>
+
+  <h2 class="govuk-heading-s">Chronicle ID</h2>
+  <p id="chronicleId" class="govuk-body">{{ currVersion?.chronicleId ?? 'Not set' }}</p>
+
+  <app-govuk-heading tag="h2" size="m">Current version</app-govuk-heading>
+  <app-data-table
+    id="currentVersionTable"
+    [columns]="columns"
+    [rows]="[currVersion]"
+    caption="Current version of this audio"
+    noDataMessage="There is no current version of this audio."
+    [hiddenCaption]="true"
+  >
+    <ng-template [tableRowTemplate]="[currVersion]" let-row>
+      <ng-container *ngTemplateOutlet="eventRowTemplate; context: { $implicit: row }"></ng-container>
+    </ng-template>
+  </app-data-table>
+
+  <app-govuk-heading tag="h2" size="m">Previous versions</app-govuk-heading>
+  <app-data-table
+    id="previousVersionsTable"
+    [columns]="columns"
+    [rows]="prevVersions"
+    caption="Previous versions of this audio"
+    noDataMessage="There are no previous versions of this audio."
+    [hiddenCaption]="true"
+  >
+    <ng-template [tableRowTemplate]="prevVersions" let-row>
+      <ng-container *ngTemplateOutlet="eventRowTemplate; context: { $implicit: row }"></ng-container>
+    </ng-template>
+  </app-data-table>
+
+  <a [routerLink]="['../']" class="govuk-link">Back to audio details</a>
+}

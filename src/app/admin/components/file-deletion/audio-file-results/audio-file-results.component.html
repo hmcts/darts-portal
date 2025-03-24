@@ -18,7 +18,14 @@
       <td>{{ row.channel }}</td>
       <td>{{ row.totalChannels }}</td>
       <td>{{ row.isCurrent ? 'Yes' : 'No' }}</td>
-      <td>{{ row.versionCount }}</td>
+      <td>
+        <a
+          class="govuk-link"
+          [routerLink]="['/admin/audio-file', row.id, 'versions']"
+          [queryParams]="{ backUrl: '/admin/file-deletion' }"
+          >{{ row.versionCount }}</a
+        >
+      </td>
     </ng-template>
   </app-data-table>
 } @else {

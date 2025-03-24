@@ -6,6 +6,9 @@ import { FileHideData } from '@admin-types/hidden-reasons/file-hide-data.interfa
 import { FileHideOrDeleteFormValues } from '@admin-types/hidden-reasons/file-hide-or-delete-form-values';
 import { AssociatedMedia } from '@admin-types/transformed-media/associated-media';
 import { AssociatedMediaData } from '@admin-types/transformed-media/associated-media-data.interface';
+import { AudioVersionData } from '@admin-types/transformed-media/audio-version-data.interface';
+import { AudioVersions } from '@admin-types/transformed-media/audio-versions';
+import { AudioVersionsData } from '@admin-types/transformed-media/audio-versions-data.interface';
 import { TransformedMediaAdmin } from '@admin-types/transformed-media/transformed-media-admin';
 import { TransformedMediaRequest } from '@admin-types/transformed-media/transformed-media-request';
 import { TransformedMediaSearchFormValues } from '@admin-types/transformed-media/transformed-media-search-form.values';
@@ -181,6 +184,140 @@ describe('TransformedMediaService', () => {
       httpMock.expectOne({ url: '/api/admin/transformed-medias/search', method: 'POST' });
 
       expect(service.searchFormValues()).toEqual(mockCriteria);
+    });
+  });
+
+  describe('getVersions', () => {
+    it('should call GET /medias/{id}/versions and map the response correctly', () => {
+      const mockId = 1;
+      const mockResponse: AudioVersionsData = {
+        media_object_id: 'media_12345',
+        current_version: {
+          id: 101,
+          courthouse: { id: 5, display_name: 'London Crown Court' },
+          courtroom: { id: 12, name: 'Courtroom A' },
+          start_at: '2024-06-11T08:30:00.000Z',
+          end_at: '2024-06-11T09:15:00.000Z',
+          channel: 3,
+          chronicle_id: 'chronicle_456',
+          antecedent_id: 'antecedent_789',
+          is_current: true,
+          created_at: '2024-06-11T10:00:00.000Z',
+        },
+        previous_versions: [
+          {
+            id: 100,
+            courthouse: { id: 5, display_name: 'London Crown Court' },
+            courtroom: { id: 11, name: 'Courtroom B' },
+            start_at: '2024-06-10T14:00:00.000Z',
+            end_at: '2024-06-10T14:45:00.000Z',
+            channel: 2,
+            chronicle_id: 'chronicle_123',
+            antecedent_id: 'antecedent_456',
+            is_current: false,
+            created_at: '2024-06-10T16:00:00.000Z',
+          },
+        ],
+      };
+
+      const expectedMappedType: AudioVersions = {
+        mediaObjectId: 'media_12345',
+        currentVersion: {
+          id: 101,
+          courthouse: { id: 5, displayName: 'London Crown Court' },
+          courtroom: { id: 12, name: 'Courtroom A' },
+          startAt: DateTime.fromISO('2024-06-11T08:30:00.000Z'),
+          endAt: DateTime.fromISO('2024-06-11T09:15:00.000Z'),
+          channel: 3,
+          chronicleId: 'chronicle_456',
+          antecedentId: 'antecedent_789',
+          isCurrent: true,
+          createdAt: DateTime.fromISO('2024-06-11T10:00:00.000Z'),
+        },
+        previousVersions: [
+          {
+            id: 100,
+            courthouse: { id: 5, displayName: 'London Crown Court' },
+            courtroom: { id: 11, name: 'Courtroom B' },
+            startAt: DateTime.fromISO('2024-06-10T14:00:00.000Z'),
+            endAt: DateTime.fromISO('2024-06-10T14:45:00.000Z'),
+            channel: 2,
+            chronicleId: 'chronicle_123',
+            antecedentId: 'antecedent_456',
+            isCurrent: false,
+            createdAt: DateTime.fromISO('2024-06-10T16:00:00.000Z'),
+          },
+        ],
+      };
+
+      let result: AudioVersions | undefined;
+      service.getVersions(mockId).subscribe((versions) => {
+        result = versions;
+      });
+
+      const req = httpMock.expectOne({ url: `/api/admin/medias/${mockId}/versions`, method: 'GET' });
+      req.flush(mockResponse);
+
+      expect(result).toEqual(expectedMappedType);
+    });
+  });
+
+  describe('mapAudioVersions', () => {
+    it('should correctly map AudioVersionsData to AudioVersions', () => {
+      const mockData: AudioVersionsData = {
+        media_object_id: 'media_12345',
+        current_version: {
+          id: 101,
+          courthouse: { id: 5, display_name: 'London Crown Court' },
+          courtroom: { id: 12, name: 'Courtroom A' },
+          start_at: '2024-06-11T08:30:00.000Z',
+          end_at: '2024-06-11T09:15:00.000Z',
+          channel: 3,
+          chronicle_id: 'chronicle_456',
+          antecedent_id: 'antecedent_789',
+          is_current: true,
+          created_at: '2024-06-11T10:00:00.000Z',
+        },
+        previous_versions: [],
+      };
+
+      const result = service['mapAudioVersions'](mockData);
+
+      expect(result.mediaObjectId).toBe('media_12345');
+      expect(result.currentVersion.id).toBe(101);
+      expect(result.currentVersion.startAt).toEqual(DateTime.fromISO('2024-06-11T08:30:00.000Z'));
+    });
+  });
+
+  describe('mapAudioVersion', () => {
+    it('should correctly map AudioVersionData to AudioVersion', () => {
+      const mockData: AudioVersionData = {
+        id: 101,
+        courthouse: { id: 5, display_name: 'London Crown Court' },
+        courtroom: { id: 12, name: 'Courtroom A' },
+        start_at: '2024-06-11T08:30:00.000Z',
+        end_at: '2024-06-11T09:15:00.000Z',
+        channel: 3,
+        chronicle_id: 'chronicle_456',
+        antecedent_id: 'antecedent_789',
+        is_current: true,
+        created_at: '2024-06-11T10:00:00.000Z',
+      };
+
+      const result = service['mapAudioVersion'](mockData);
+
+      expect(result).toEqual({
+        id: 101,
+        courthouse: { id: 5, displayName: 'London Crown Court' },
+        courtroom: { id: 12, name: 'Courtroom A' },
+        startAt: DateTime.fromISO('2024-06-11T08:30:00.000Z'),
+        endAt: DateTime.fromISO('2024-06-11T09:15:00.000Z'),
+        channel: 3,
+        chronicleId: 'chronicle_456',
+        antecedentId: 'antecedent_789',
+        isCurrent: true,
+        createdAt: DateTime.fromISO('2024-06-11T10:00:00.000Z'),
+      });
     });
   });
 
