@@ -157,6 +157,7 @@ export class CaseSearchFormComponent implements OnInit {
       ...values,
       courthouses: values.courthouses.filter((c) => c.id !== courthouseId),
     }));
+    this.form.get('courthouses')?.markAsDirty();
   }
 
   clearSearch() {
