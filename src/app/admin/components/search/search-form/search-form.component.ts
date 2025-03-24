@@ -75,6 +75,7 @@ export class SearchFormComponent {
     const isAlreadySelected = this.formValues().courthouses.some((c) => c.id === selectedCourthouse?.id);
 
     if (courthouse && !isAlreadySelected) {
+      // TO DO; This line overwrites other fields https://tools.hmcts.net/jira/browse/DMP-4839
       this.formValues.update((values) => ({ ...values, courthouses: [...values.courthouses, courthouse] }));
     }
   }

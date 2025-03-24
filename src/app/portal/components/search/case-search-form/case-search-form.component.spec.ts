@@ -10,7 +10,7 @@ import { TODAY, TOMORROW, YESTERDAY } from '@utils/index';
 import { CaseSearchFormComponent } from './case-search-form.component';
 
 const mockFormValues: CaseSearchFormValues = {
-  courthouse: 'Cardiff',
+  courthouses: [],
   hearingDate: {
     type: 'specific',
     specific: '01/01/2022',
@@ -47,25 +47,25 @@ describe('CaseSearchFormComponent', () => {
   describe('form validation', () => {
     describe('courthouse and courtroom', () => {
       it('courthouse required when courtroom has a value', () => {
-        component.form.controls.courthouse.setValue('');
+        component.form.controls.courthouses.setValue([]);
         component.form.controls.courtroom.setValue('1');
-        expect(component.form.controls.courthouse.hasError('required')).toBe(true);
+        expect(component.form.controls.courthouses.hasError('required')).toBe(true);
       });
 
       it('courthouse not required when courtroom has no value', () => {
-        component.form.controls.courthouse.setValue('');
+        component.form.controls.courthouses.setValue([]);
         component.form.controls.courtroom.setValue('');
-        expect(component.form.controls.courthouse.hasError('required')).toBe(false);
+        expect(component.form.controls.courthouses.hasError('required')).toBe(false);
       });
 
       it('error messages should be displayed when courthouse is required', () => {
-        component.form.controls.courthouse.setValue('');
+        component.form.controls.courthouses.setValue([]);
         component.form.controls.courtroom.setValue('1');
 
         component.onSubmit();
         fixture.detectChanges();
 
-        const inlineError = fixture.debugElement.query(By.css('#courthouse-errors'));
+        const inlineError = fixture.debugElement.query(By.css('.courthouse-error'));
         expect(inlineError.nativeElement.textContent).toContain('You must also enter a courthouse');
       });
     });
@@ -211,20 +211,20 @@ describe('CaseSearchFormComponent', () => {
   describe('courthouse selection', () => {
     it('should handle courthouse selection correctly', () => {
       const courthouse = 'Test Courthouse';
-      component.onCourthouseSelected(courthouse);
+      //Assigned via id
+      component.updateSelectedCourthouses({ id: 1, name: courthouse });
 
-      const courthouseControl = component.form.get('courthouse');
-      expect(courthouseControl?.value).toBe(courthouse);
-      expect(courthouseControl?.dirty).toBe(true);
+      const courthouseControl = component.form.get('courthouses');
+      expect(courthouseControl?.value).toEqual([{ code: 'CARDIFF', displayName: 'Cardiff', id: 1, name: 'Cardiff' }]);
     });
   });
 
   describe('#getFieldErrorMessages', () => {
     it('should get inline error messages correctly', () => {
-      const fieldName = 'courthouse';
+      const fieldName = 'courthouses';
 
       component.form.controls[fieldName].setErrors({ required: true });
-      component.form.controls.courthouse.markAsTouched();
+      component.form.controls.courthouses.markAsTouched();
 
       const errorMessages: string[] = component.getFieldErrorMessages(fieldName);
 
@@ -234,12 +234,12 @@ describe('CaseSearchFormComponent', () => {
 
   describe('error summary', () => {
     it('should generate error summary correctly', () => {
-      component.form.controls.courthouse.setErrors({ required: true });
-      component.form.controls.courthouse.markAsTouched();
+      component.form.controls.courthouses.setErrors({ required: true });
+      component.form.controls.courthouses.markAsTouched();
 
       const errorSummary: ErrorSummaryEntry[] = component.generateErrorSummary();
 
-      expect(errorSummary).toEqual([{ fieldId: 'courthouse', message: 'You must also enter a courthouse' }]);
+      expect(errorSummary).toEqual([{ fieldId: 'courthouses', message: 'You must also enter a courthouse' }]);
     });
 
     it('error summary should contain no errors when form is valid and submitted', () => {
@@ -268,7 +268,7 @@ describe('CaseSearchFormComponent', () => {
   describe('restore form previous state', () => {
     it('should restore form values when previousFormValues is defined and range was previously selected', () => {
       const previousFormValues: CaseSearchFormValues = {
-        courthouse: 'Cardiff',
+        courthouses: [],
         hearingDate: {
           type: 'range',
           specific: '',
@@ -284,19 +284,16 @@ describe('CaseSearchFormComponent', () => {
 
       fixture.componentRef.setInput('formValues', previousFormValues);
       fixture.detectChanges();
-      component.restoreForm();
 
       expect(component.isAdvancedSearch).toBeTruthy();
-      expect(component.courthouse()).toEqual(previousFormValues.courthouse);
       expect(component.form.value).toEqual(previousFormValues);
-      expect(component.form.dirty).toBeTruthy();
       expect(component.isSubmitted).toBeTruthy();
     });
 
     it('should restore form values when previousFormValues is defined and specific date was previously selected', () => {
       const previousFormValues: CaseSearchFormValues = {
         caseNumber: '',
-        courthouse: 'Cardiff',
+        courthouses: [],
         hearingDate: {
           type: 'specific',
           specific: '2022-09-01',
@@ -312,13 +309,65 @@ describe('CaseSearchFormComponent', () => {
       fixture.componentRef.setInput('formValues', previousFormValues);
       fixture.detectChanges();
 
-      component.restoreForm();
-
       expect(component.isAdvancedSearch).toBeTruthy();
-      expect(component.courthouse()).toEqual(previousFormValues.courthouse);
       expect(component.form.value).toEqual(previousFormValues);
-      expect(component.form.dirty).toBeTruthy();
       expect(component.isSubmitted).toBeTruthy();
+    });
+  });
+
+  describe('removeSelectedCourthouse', () => {
+    it('should remove the selected courthouse from formValues', () => {
+      const updatedFormValues = {
+        ...mockFormValues,
+        courthouses: [
+          { id: 1, name: 'Cardiff', displayName: 'Cardiff', code: 'CARDIFF' },
+          { id: 2, name: 'Reading', displayName: 'Reading', code: 'READING' },
+        ],
+      };
+
+      fixture.componentRef.setInput('formValues', updatedFormValues);
+      fixture.detectChanges();
+
+      component.removeSelectedCourthouse(1);
+
+      expect(component.formValues().courthouses).toEqual([
+        { id: 2, name: 'Reading', displayName: 'Reading', code: 'READING' },
+      ]);
+    });
+  });
+
+  describe('clearSearch', () => {
+    it('should reset the form and internal state', () => {
+      const clearSpy = jest.spyOn(component.clear, 'emit');
+
+      // simulate filled form
+      component.form.patchValue({
+        caseNumber: '123',
+        courtroom: 'Room 1',
+        judgeName: 'Judy',
+      });
+      component.isSubmitted.set(true);
+      component.isAdvancedSearch.set(true);
+
+      component.clearSearch();
+
+      expect(component.form.value).toEqual({
+        courthouses: null,
+        caseNumber: '',
+        courtroom: '',
+        hearingDate: {
+          type: '',
+          specific: '',
+          from: '',
+          to: '',
+        },
+        judgeName: '',
+        defendantName: '',
+        eventTextContains: '',
+      });
+      expect(component.isSubmitted()).toBe(false);
+      expect(component.isAdvancedSearch()).toBe(false);
+      expect(clearSpy).toHaveBeenCalled();
     });
   });
 });

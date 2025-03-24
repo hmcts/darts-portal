@@ -1,7 +1,7 @@
 import { FormErrorMessages } from '@core-types/index';
 
 export const CaseSearchFormErrorMessages: FormErrorMessages = {
-  courthouse: {
+  courthouses: {
     required: 'You must also enter a courthouse',
   },
   courtroom: {

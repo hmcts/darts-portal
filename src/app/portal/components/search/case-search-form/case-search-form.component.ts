@@ -1,13 +1,14 @@
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
-import { Component, DestroyRef, inject, input, model, OnInit, output, signal, ViewChild } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, input, model, OnInit, output } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CourthouseComponent } from '@common/courthouse/courthouse.component';
+import { FormControl, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AutoCompleteComponent, AutoCompleteItem } from '@common/auto-complete/auto-complete.component';
 import { SpecificOrRangeDatePickerComponent } from '@common/specific-or-range-date-picker/specific-or-range-date-picker.component';
 import { CaseSearchFormErrorMessages } from '@constants/case-search-form-error-messages';
 import { ErrorSummaryEntry } from '@core-types/index';
 import { NestedKeys } from '@core-types/utils/nested-keys.type';
-import { CaseSearchForm, CaseSearchFormValues } from '@portal-types/index';
+import { CaseSearchFormValues } from '@portal-types/index';
+import { defaultFormValues } from '@services/case-search/case-search.service';
 import { ErrorMessageService } from '@services/error/error-message.service';
 import { FormService } from '@services/form/form.service';
 import { ScrollService } from '@services/scroll/scroll.service';
@@ -20,20 +21,18 @@ import { transformedMediaSearchDateValidators } from 'src/app/admin/components/t
 @Component({
   selector: 'app-case-search-form',
   standalone: true,
-  imports: [CourthouseComponent, ReactiveFormsModule, SpecificOrRangeDatePickerComponent],
+  imports: [ReactiveFormsModule, SpecificOrRangeDatePickerComponent, AutoCompleteComponent],
   templateUrl: './case-search-form.component.html',
   styleUrl: './case-search-form.component.scss',
 })
 export class CaseSearchFormComponent implements OnInit {
-  @ViewChild(CourthouseComponent) courthouseComponent!: CourthouseComponent;
-
   fb = inject(NonNullableFormBuilder);
   scrollService = inject(ScrollService);
   formService = inject(FormService);
   destroyRef = inject(DestroyRef);
   errorMsgService = inject(ErrorMessageService);
 
-  formValues = input<CaseSearchFormValues | null>(null);
+  formValues = model<CaseSearchFormValues>(defaultFormValues);
   courthouses = input<Courthouse[]>([]);
 
   isSubmitted = model(false);
@@ -43,16 +42,20 @@ export class CaseSearchFormComponent implements OnInit {
   validationError = output<ErrorSummaryEntry[]>();
   clear = output();
 
-  courthouse = signal('');
+  courthouseAutoCompleteItems = computed(() =>
+    this.courthouses()
+      .map((c) => ({ id: c.id, name: c.displayName }))
+      .filter((c) => !this.formValues()?.courthouses?.some((sc) => sc.id === c.id))
+  );
 
   datePatternValidator = Validators.pattern(/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/);
   dateValidators = [this.datePatternValidator, futureDateValidator];
 
   CaseSearchFormErrorMessages = CaseSearchFormErrorMessages;
 
-  form: CaseSearchForm = this.fb.group({
+  form = this.fb.group({
     caseNumber: [''],
-    courthouse: [''],
+    courthouses: new FormControl<Courthouse[]>([]),
     courtroom: ['', optionalMaxLengthValidator(64)],
     hearingDate: this.fb.group(
       {
@@ -83,8 +86,11 @@ export class CaseSearchFormComponent implements OnInit {
 
     this.setSpecificDateValidators();
     this.setDateRangeValidators();
+  }
 
-    this.restoreForm();
+  constructor() {
+    // if formValues are passed in update the form
+    effect(() => this.form.patchValue(this.formValues()));
   }
 
   onSubmit() {
@@ -129,32 +135,40 @@ export class CaseSearchFormComponent implements OnInit {
     return this.formService.getErrorSummaryRecursively(this.form, CaseSearchFormErrorMessages);
   }
 
-  onCourthouseSelected(courthouse: string) {
-    this.form.get('courthouse')?.patchValue(courthouse);
-    this.form.get('courthouse')?.markAsDirty();
+  updateSelectedCourthouses(selectedCourthouse: AutoCompleteItem | null) {
+    if (!selectedCourthouse) return;
+
+    const courthouse = this.courthouses().find((c) => c.id === selectedCourthouse.id);
+    if (!courthouse) return;
+
+    const updatedCourthouses = [...(this.form.value.courthouses ?? []), courthouse];
+
+    this.form.patchValue({ courthouses: updatedCourthouses });
+    this.form.get('courthouses')?.markAsDirty();
+
+    this.formValues.update(() => ({
+      ...(this.form.value as CaseSearchFormValues),
+      courthouses: updatedCourthouses,
+    }));
   }
 
-  restoreForm() {
-    const formValues = this.formValues();
-    if (formValues) {
-      if (formValues.courthouse) this.courthouse.set(formValues.courthouse);
-      this.form.patchValue(formValues);
-      this.form.markAsDirty();
-      this.form.markAllAsTouched();
-      this.isSubmitted.set(false);
-    }
+  removeSelectedCourthouse(courthouseId: number) {
+    this.formValues.update((values) => ({
+      ...values,
+      courthouses: values.courthouses.filter((c) => c.id !== courthouseId),
+    }));
+    this.form.get('courthouses')?.markAsDirty();
   }
 
   clearSearch() {
     this.form.reset();
-    this.courthouseComponent.reset();
     this.isSubmitted.set(false);
     this.isAdvancedSearch.set(false);
     this.clear.emit();
   }
 
   private setCourthouseValidators(courtroom: string) {
-    const courtHouseFormControl = this.form.get('courthouse');
+    const courtHouseFormControl = this.form.get('courthouses');
     if (courtroom) {
       courtHouseFormControl?.setValidators([Validators.required]);
     } else {

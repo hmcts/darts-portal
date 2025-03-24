@@ -20,15 +20,34 @@
       <span class="govuk-details__summary-text"> Advanced search </span>
     </summary>
     <div class="govuk-form-group govuk-details__text">
-      <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('courthouse')">
-        @if (courthouses().length) {
-          <app-courthouse-field
-            [courthouses]="courthouses()"
-            [courthouse]="courthouse()"
-            [isInvalid]="isControlInvalid('courthouse')"
-            [errors]="getFieldErrorMessages('courthouse')"
-            (courthouseSelect)="onCourthouseSelected($event)"
-          />
+      <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('courthouses')">
+        @for (error of getFieldErrorMessages('courthouses'); track error) {
+          <p class="govuk-error-message courthouse-error">
+            <span class="govuk-visually-hidden">Error:</span> {{ error }}
+          </p>
+        }
+
+        <app-auto-complete
+          [data]="courthouseAutoCompleteItems()"
+          label="Filter by courthouse"
+          dataType="courthouse"
+          (dataSelect)="updateSelectedCourthouses($event)"
+          [showAllValues]="true"
+        />
+
+        @if (formValues().courthouses.length > 0) {
+          <p class="govuk-body">Filter results for these courthouses</p>
+
+          <ul class="govuk-list">
+            @for (courthouse of formValues().courthouses; track courthouse.id) {
+              <li class="selected-courthouse">
+                <span aria-label="Courthouse name">{{ courthouse.displayName }}</span>
+                <a class="govuk-link" href="javascript:void(0)" (click)="removeSelectedCourthouse(courthouse.id)"
+                  >Remove</a
+                >
+              </li>
+            }
+          </ul>
         }
       </div>
 
@@ -48,7 +67,7 @@
           name="courtroom"
           type="text"
           aria-describedby="courtroom-search-hint"
-          [class.govuk-input--error]="isControlInvalid('courthouse')"
+          [class.govuk-input--error]="isControlInvalid('courtroom')"
         />
       </div>
 
