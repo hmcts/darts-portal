@@ -1,13 +1,14 @@
 import { NgTemplateOutlet } from '@angular/common';
 import { Component, computed, inject, input, numberAttribute } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { DatatableColumn } from '@core-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
+import { HistoryService } from '@services/history/history.service';
 import { TransformedMediaService } from '@services/transformed-media/transformed-media.service';
 import { switchMap } from 'rxjs';
 
@@ -28,8 +29,12 @@ import { switchMap } from 'rxjs';
 export class ShowVersionsComponent {
   route = inject(ActivatedRoute);
   transformedMediaService = inject(TransformedMediaService);
+  historyService = inject(HistoryService);
+  url = inject(Router).url;
 
   id = input(0, { transform: numberAttribute });
+
+  backUrl = computed(() => this.historyService.getBackUrl(this.url) ?? `/admin/audio-file/${this.id()}`);
 
   columns: DatatableColumn[] = [
     { name: 'Audio ID', prop: 'id', sortable: true },

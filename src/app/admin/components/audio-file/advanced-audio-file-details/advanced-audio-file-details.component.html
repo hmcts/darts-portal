@@ -91,7 +91,14 @@
 <div id="versions-details" class="versions-heading border">
   <app-govuk-heading class="no-margin no-border" tag="h2" size="m">Version data</app-govuk-heading>
   @if (isAdmin) {
-    <a id="version-link" class="govuk-link" [routerLink]="['versions']"> Show versions</a>
+    <a
+      id="version-link"
+      class="govuk-link"
+      [routerLink]="['versions']"
+      [queryParams]="{ backUrl: '/admin/audio-file/' + audioFile.id }"
+    >
+      Show versions</a
+    >
   }
 </div>
 <dl class="govuk-summary-list">

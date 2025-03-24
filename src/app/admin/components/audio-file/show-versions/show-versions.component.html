@@ -25,7 +25,7 @@
     }
   </ng-template>
 
-  <a [routerLink]="['../']" class="govuk-back-link">Back</a>
+  <a [routerLink]="[backUrl()]" class="govuk-back-link">Back</a>
 
   <app-govuk-heading tag="h1" size="l">All versions of this audio</app-govuk-heading>
 
@@ -38,6 +38,7 @@
     [columns]="columns"
     [rows]="[currVersion]"
     caption="Current version of this audio"
+    noDataMessage="There is no current version of this audio."
     [hiddenCaption]="true"
   >
     <ng-template [tableRowTemplate]="[currVersion]" let-row>
@@ -51,6 +52,7 @@
     [columns]="columns"
     [rows]="prevVersions"
     caption="Previous versions of this audio"
+    noDataMessage="There are no previous versions of this audio."
     [hiddenCaption]="true"
   >
     <ng-template [tableRowTemplate]="prevVersions" let-row>
