@@ -314,4 +314,60 @@ describe('CaseSearchFormComponent', () => {
       expect(component.isSubmitted).toBeTruthy();
     });
   });
+
+  describe('removeSelectedCourthouse', () => {
+    it('should remove the selected courthouse from formValues', () => {
+      const updatedFormValues = {
+        ...mockFormValues,
+        courthouses: [
+          { id: 1, name: 'Cardiff', displayName: 'Cardiff', code: 'CARDIFF' },
+          { id: 2, name: 'Reading', displayName: 'Reading', code: 'READING' },
+        ],
+      };
+
+      fixture.componentRef.setInput('formValues', updatedFormValues);
+      fixture.detectChanges();
+
+      component.removeSelectedCourthouse(1);
+
+      expect(component.formValues().courthouses).toEqual([
+        { id: 2, name: 'Reading', displayName: 'Reading', code: 'READING' },
+      ]);
+    });
+  });
+
+  describe('clearSearch', () => {
+    it('should reset the form and internal state', () => {
+      const clearSpy = jest.spyOn(component.clear, 'emit');
+
+      // simulate filled form
+      component.form.patchValue({
+        caseNumber: '123',
+        courtroom: 'Room 1',
+        judgeName: 'Judy',
+      });
+      component.isSubmitted.set(true);
+      component.isAdvancedSearch.set(true);
+
+      component.clearSearch();
+
+      expect(component.form.value).toEqual({
+        courthouses: null,
+        caseNumber: '',
+        courtroom: '',
+        hearingDate: {
+          type: '',
+          specific: '',
+          from: '',
+          to: '',
+        },
+        judgeName: '',
+        defendantName: '',
+        eventTextContains: '',
+      });
+      expect(component.isSubmitted()).toBe(false);
+      expect(component.isAdvancedSearch()).toBe(false);
+      expect(clearSpy).toHaveBeenCalled();
+    });
+  });
 });
