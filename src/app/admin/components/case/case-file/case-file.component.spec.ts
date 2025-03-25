@@ -19,6 +19,11 @@ describe('CaseFileComponent', () => {
     component = fixture.componentInstance;
   });
 
+  it('should create', () => {
+    fixture.detectChanges();
+    expect(component).toBeTruthy();
+  });
+
   describe('Conditional Rendering', () => {
     it('should show <app-reporting-restriction> and the retain link when isDataAnonymised is false', () => {
       const caseFile: AdminCase = {
