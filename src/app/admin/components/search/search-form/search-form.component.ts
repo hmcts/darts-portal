@@ -72,12 +72,17 @@ export class SearchFormComponent {
     if (!selectedCourthouse) return;
 
     const courthouse = this.courthouses().find((c) => c.id === selectedCourthouse.id);
-    const isAlreadySelected = this.formValues().courthouses.some((c) => c.id === selectedCourthouse?.id);
+    if (!courthouse) return;
 
-    if (courthouse && !isAlreadySelected) {
-      // TO DO; This line overwrites other fields https://tools.hmcts.net/jira/browse/DMP-4839
-      this.formValues.update((values) => ({ ...values, courthouses: [...values.courthouses, courthouse] }));
-    }
+    const updatedCourthouses = [...(this.form.value.courthouses ?? []), courthouse];
+
+    this.form.patchValue({ courthouses: updatedCourthouses });
+    this.form.get('courthouses')?.markAsDirty();
+
+    this.formValues.update(() => ({
+      ...(this.form.value as AdminSearchFormValues),
+      courthouses: updatedCourthouses,
+    }));
   }
 
   removeSelectedCourthouse(courthouseId: number) {

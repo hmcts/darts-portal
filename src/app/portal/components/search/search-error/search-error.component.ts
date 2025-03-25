@@ -9,7 +9,7 @@ import { HeaderService } from '@services/header/header.service';
 @Component({
   selector: 'app-search-error',
   standalone: true,
-  imports: [NgSwitchCase, NgSwitchDefault, NgSwitch, InternalErrorComponent, NgIf],
+  imports: [InternalErrorComponent, NgIf],
   templateUrl: './search-error.component.html',
   styleUrls: ['./search-error.component.scss'],
 })
