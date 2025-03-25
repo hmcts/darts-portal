@@ -120,7 +120,11 @@ router.post('/search', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-  res.send(singleCase);
+  if (req.params.id == 3) {
+    res.send({ ...singleCase, is_data_anonymised: true });
+  } else {
+    res.send(singleCase);
+  }
 });
 
 module.exports = router;

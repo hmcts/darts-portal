@@ -21,38 +21,39 @@
       <dt govukSummaryKey>Courthouse</dt>
       <dd govukSummaryValue>{{ case?.courthouse?.displayName }}</dd>
     </div>
-    <div govukSummaryListRow>
-      <dt govukSummaryKey>Judge(s)</dt>
-      <dd govukSummaryValue>{{ case?.judges | join }}</dd>
-    </div>
-    <div govukSummaryListRow>
-      <dt govukSummaryKey>Defendant(s)</dt>
-      <dd govukSummaryValue>{{ case?.defendants | join }}</dd>
-    </div>
-    <div govukSummaryListRow>
-      <dt govukSummaryKey>Defence</dt>
-      <dd govukSummaryValue>{{ case?.defenders | join }}</dd>
-    </div>
-    <div govukSummaryListRow>
-      <dt govukSummaryKey>Prosecutor(s)</dt>
-      <dd govukSummaryValue>{{ case?.prosecutors | join }}</dd>
-    </div>
 
-    <div govukSummaryListRow>
-      <dt govukSummaryKey>Retained until</dt>
-      <dd govukSummaryValue>
-        @if (case?.retainUntilDateTime) {
-          {{ case?.retainUntilDateTime | dateTime: 'd MMM y' }}
-        } @else {
-          No date applied
-        }
-      </dd>
+    @if (!case?.isDataAnonymised) {
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Judge(s)</dt>
+        <dd govukSummaryValue>{{ case?.judges | join }}</dd>
+      </div>
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Defendant(s)</dt>
+        <dd govukSummaryValue>{{ case?.defendants | join }}</dd>
+      </div>
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Defence</dt>
+        <dd govukSummaryValue>{{ case?.defenders | join }}</dd>
+      </div>
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Prosecutor(s)</dt>
+        <dd govukSummaryValue>{{ case?.prosecutors | join }}</dd>
+      </div>
 
-      @if (!case?.isDataAnonymised) {
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Retained until</dt>
+        <dd govukSummaryValue>
+          @if (case?.retainUntilDateTime) {
+            {{ case?.retainUntilDateTime | dateTime: 'd MMM y' }}
+          } @else {
+            No date applied
+          }
+        </dd>
+
         <dd govukSummaryAction>
           <a class="govuk-link" [routerLink]="['/case', case?.id, 'retention']">View or change</a>
         </dd>
-      }
-    </div>
+      </div>
+    }
   </dl>
 </div>
