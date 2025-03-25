@@ -1,4 +1,4 @@
-import { NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { AfterViewInit, Component, Input, NgZone, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { InternalErrorComponent } from '@components/error/internal-server/internal-error.component';
