@@ -64,6 +64,7 @@ export class CourthouseComponent implements AfterViewInit, OnChanges, OnInit {
   }
 
   reset() {
+    this.courthouse = '';
     this.configureAutocomplete();
   }
 
