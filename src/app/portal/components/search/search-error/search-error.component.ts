@@ -1,4 +1,4 @@
-import { NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { AfterViewInit, Component, Input, NgZone, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { InternalErrorComponent } from '@components/error/internal-server/internal-error.component';
@@ -9,7 +9,7 @@ import { HeaderService } from '@services/header/header.service';
 @Component({
   selector: 'app-search-error',
   standalone: true,
-  imports: [NgSwitchCase, NgSwitchDefault, NgSwitch, InternalErrorComponent, NgIf],
+  imports: [InternalErrorComponent, NgIf],
   templateUrl: './search-error.component.html',
   styleUrls: ['./search-error.component.scss'],
 })
