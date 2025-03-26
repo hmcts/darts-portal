@@ -74,7 +74,7 @@ router.get('', (req, res) => {
 router.post('', (req, res) => {
   switch (req.body?.case_id) {
     case undefined:
-      res.status(400).send("'case_id' is required");
+      res.status(422).send("'case_id' is required");
       return;
     case '3':
       res.sendStatus(403);
@@ -99,8 +99,8 @@ router.post('', (req, res) => {
         // Use the date that should be included
         retention.retention_date = DateTime.fromFormat(req.body.retention_date, dateFormat).startOf('day');
         if (!retention.retention_date.isValid) {
-          // If date is not in right format or not included, return 400
-          res.status(400).send({
+          // If date is not in right format or not included, return 422
+          res.status(422).send({
             title: 'Bad request',
             detail: `retention_date not in required format: '${dateFormat}'`,
           });

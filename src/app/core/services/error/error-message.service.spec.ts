@@ -41,12 +41,16 @@ describe('ErrorMessageService', () => {
       service.handleErrorMessage(error);
       expect(navigateSpy).not.toHaveBeenCalled();
 
-      const error1 = new HttpErrorResponse({ status: 400, url: '/api/cases/search' });
-      service.handleErrorMessage(error1);
+      const error400 = new HttpErrorResponse({ status: 400, url: '/api/cases/search' });
+      service.handleErrorMessage(error400);
       expect(navigateSpy).not.toHaveBeenCalled();
 
-      const error2 = new HttpErrorResponse({ status: 204, url: '/api/cases/search' });
-      service.handleErrorMessage(error2);
+      const error422 = new HttpErrorResponse({ status: 422, url: '/api/cases/search' });
+      service.handleErrorMessage(error422);
+      expect(navigateSpy).not.toHaveBeenCalled();
+
+      const success204 = new HttpErrorResponse({ status: 204, url: '/api/cases/search' });
+      service.handleErrorMessage(success204);
       expect(navigateSpy).not.toHaveBeenCalled();
     });
   });
