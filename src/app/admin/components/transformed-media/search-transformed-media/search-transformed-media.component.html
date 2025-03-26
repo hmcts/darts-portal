@@ -17,7 +17,7 @@
           <td>
             <a href="javascript:void(0)" class="govuk-link view-link" [routerLink]="[row.id]"> {{ row.id }}</a>
           </td>
-          <td>{{ row.caseNumber }}</td>
+          <td class="whitespace-pre">{{ row.caseNumber }}</td>
           <td>{{ row.courthouse }}</td>
           <td>{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
           <td>{{ row.owner }}</td>

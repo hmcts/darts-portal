@@ -1,6 +1,8 @@
 <app-breadcrumb>
   <ng-container *breadcrumb="['/transcriptions']">Your transcripts</ng-container>
-  <ng-container *breadcrumb="['.']">{{ transcript.caseNumber }}</ng-container>
+  <ng-container *breadcrumb="['.']"
+    ><span class="whitespace-pre">{{ transcript.caseNumber }}</span></ng-container
+  >
 </app-breadcrumb>
 
 <app-reporting-restriction
@@ -9,7 +11,7 @@
   [hearingId]="transcript.hearingId"
 />
 
-<app-govuk-heading caption="Transcript request"> {{ transcript.caseNumber }} </app-govuk-heading>
+<app-govuk-heading caption="Transcript request" class="whitespace-pre">{{ transcript.caseNumber }} </app-govuk-heading>
 
 @if (transcript.status) {
   <app-govuk-tag [colour]="statusColours[transcript.status]">{{ transcript.status }}</app-govuk-tag>

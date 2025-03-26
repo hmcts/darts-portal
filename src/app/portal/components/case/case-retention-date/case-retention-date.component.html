@@ -1,9 +1,9 @@
 <ng-container *ngIf="vm$ | async as vm; else loading">
   <app-breadcrumb *ngIf="state === 'Default' || state === 'Success'">
     <ng-container *breadcrumb="['/search']">Search</ng-container>
-    <ng-container *breadcrumb="['/case', vm.caseDetails.case_id.toString()]">{{
-      vm.caseDetails.case_number
-    }}</ng-container>
+    <ng-container *breadcrumb="['/case', vm.caseDetails.case_id.toString()]"
+      ><span class="whitespace-pre">{{ vm.caseDetails.case_number }}</span></ng-container
+    >
     <ng-container *breadcrumb>Case retention date</ng-container>
   </app-breadcrumb>
   <ng-container *ngIf="state === 'Default' || state === 'Success'">

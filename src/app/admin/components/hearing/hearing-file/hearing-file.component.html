@@ -8,9 +8,12 @@
     <div govukSummaryListRow>
       <dt govukSummaryKey>Case ID</dt>
       <dd govukSummaryValue>
-        <a class="govuk-link" [routerLink]="['/admin/case', h?.case?.id]" [queryParams]="{ backUrl: getBackUrl() }">
-          {{ h?.case?.caseNumber }}
-        </a>
+        <a
+          class="govuk-link whitespace-pre"
+          [routerLink]="['/admin/case', h?.case?.id]"
+          [queryParams]="{ backUrl: getBackUrl() }"
+          >{{ h?.case?.caseNumber }}</a
+        >
       </dd>
     </div>
     <div govukSummaryListRow>

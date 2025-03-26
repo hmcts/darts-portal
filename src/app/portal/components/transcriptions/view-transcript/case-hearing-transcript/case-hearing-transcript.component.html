@@ -1,6 +1,8 @@
 <app-breadcrumb>
   <ng-container *breadcrumb="['/search']">Search</ng-container>
-  <ng-container *breadcrumb="['/case', transcript.caseId.toString()]">{{ transcript.caseNumber }}</ng-container>
+  <ng-container *breadcrumb="['/case', transcript.caseId.toString()]"
+    ><span class="whitespace-pre">{{ transcript.caseNumber }}</span></ng-container
+  >
   <ng-container *breadcrumb="['.']">{{ transcript.transcriptFileName ?? 'Document not found' }}</ng-container>
 </app-breadcrumb>
 

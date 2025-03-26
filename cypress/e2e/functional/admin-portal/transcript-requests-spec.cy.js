@@ -74,7 +74,7 @@ describe('Admin - Transcript requests', () => {
       cy.get('#search').contains('Search').click();
 
       // navigate to transcript
-      cy.get('app-data-table td a').contains(1).click();
+      cy.get('app-data-table td a').contains('1').click();
 
       // go back to form and results
       cy.get('.govuk-back-link').click();

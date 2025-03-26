@@ -6,7 +6,7 @@
   }
 }
 
-<app-govuk-heading caption="Case ID">{{ caseFile.number }}</app-govuk-heading>
+<app-govuk-heading caption="Case ID" class="whitespace-pre">{{ caseFile.number }}</app-govuk-heading>
 <h2 class="govuk-heading-s">Courthouse</h2>
 <p class="govuk-body">{{ caseFile.courthouse }}</p>
 @if (!caseFile.isDataAnonymised) {

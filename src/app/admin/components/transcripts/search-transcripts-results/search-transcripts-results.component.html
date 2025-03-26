@@ -4,7 +4,7 @@
     <td>
       <a class="govuk-link" [routerLink]="[row.id]" [queryParams]="{ backUrl: '/admin/transcripts' }"> {{ row.id }}</a>
     </td>
-    <td>{{ row.caseNumber }}</td>
+    <td class="whitespace-pre">{{ row.caseNumber }}</td>
     <td>{{ row.courthouse }}</td>
     <td>{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
     <td>{{ row.requestedOn | luxonDate: 'dd MMM yyyy HH:mm' }}</td>

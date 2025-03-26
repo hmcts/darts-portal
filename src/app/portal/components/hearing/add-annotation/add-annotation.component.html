@@ -1,7 +1,9 @@
 @if (step === 1) {
   <app-breadcrumb>
-    <ng-container *breadcrumb="['/search']">Search</ng-container>
-    <ng-container *breadcrumb="['/case', caseId().toString()]">{{ caseNumber() }}</ng-container>
+    <ng-container *breadcrumb="['/search']">Search 2</ng-container>
+    <ng-container *breadcrumb="['/case', caseId().toString()]"
+      ><span class="whitespace-pre">{{ caseNumber() }}</span></ng-container
+    >
     <ng-container *breadcrumb="['../']">{{ hearing()?.date | luxonDate: 'd MMM y' }}</ng-container>
     <ng-container *breadcrumb="['.']">Add annotation</ng-container>
   </app-breadcrumb>

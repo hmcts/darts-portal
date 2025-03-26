@@ -8,7 +8,7 @@
 >
   <ng-template [tableRowTemplate]="hearings()" let-row>
     <td>
-      <a class="govuk-link" [routerLink]="['/admin/case', row.caseId, 'hearing', row.hearingId]">{{
+      <a class="govuk-link whitespace-pre" [routerLink]="['/admin/case', row.caseId, 'hearing', row.hearingId]">{{
         row.caseNumber
       }}</a>
     </td>
