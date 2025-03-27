@@ -4643,6 +4643,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@moebius/http-graceful-shutdown@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@moebius/http-graceful-shutdown@npm:1.1.0"
+  checksum: a394d15beabfa91d5cb572de48ab56c9400da4604c97d72587aecab93543232e846341bca915413753ea145a6296114236235da49ca6bfd294af07f0659f47bd
+  languageName: node
+  linkType: hard
+
 "@msgpackr-extract/msgpackr-extract-darwin-arm64@npm:3.0.3":
   version: 3.0.3
   resolution: "@msgpackr-extract/msgpackr-extract-darwin-arm64@npm:3.0.3"
@@ -8784,6 +8791,7 @@ __metadata:
     "@hmcts/properties-volume": ^1.1.0
     "@microsoft/applicationinsights-web": ^3.2.2
     "@ministryofjustice/frontend": ^3.0.0
+    "@moebius/http-graceful-shutdown": ^1.1.0
     "@types/body-parser": ^1.19.5
     "@types/config": ^3.3.4
     "@types/cookie-parser": ^1.4.7
