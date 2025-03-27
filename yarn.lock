@@ -502,8 +502,8 @@ __metadata:
   linkType: hard
 
 "@angular/cdk@npm:^19.0.0":
-  version: 19.2.6
-  resolution: "@angular/cdk@npm:19.2.6"
+  version: 19.2.7
+  resolution: "@angular/cdk@npm:19.2.7"
   dependencies:
     parse5: ^7.1.2
     tslib: ^2.3.0
@@ -511,10 +511,7 @@ __metadata:
     "@angular/common": ^19.0.0 || ^20.0.0
     "@angular/core": ^19.0.0 || ^20.0.0
     rxjs: ^6.5.3 || ^7.4.0
-  dependenciesMeta:
-    parse5:
-      optional: true
-  checksum: 3ef90718b01092e05cf6cc55bd63a6cec8027485803077f00a3b99cd43f078107f679f093e75dd09516344e17c9168bc8d2138c31c24788f77219d02e91de9d4
+  checksum: 58235454d27d66c4c91ce5ebc9c5dc8f6ba44d34c0447faddf521b5c3954f5aace98a30797c25f619698001fbf3bc802ed5ab392506a80cde86c8c23b1113fdc
   languageName: node
   linkType: hard
 
