@@ -2,7 +2,7 @@ import { TransformedMediaAdmin } from '@admin-types/transformed-media/transforme
 import { TransformedMediaSearchFormValues } from '@admin-types/transformed-media/transformed-media-search-form.values';
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DeleteComponent } from '@common/delete/delete.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -38,6 +38,7 @@ import {
     DataTableComponent,
     LuxonDatePipe,
     TableRowTemplateDirective,
+    RouterLink,
   ],
   templateUrl: './search-transformed-media.component.html',
   styleUrl: './search-transformed-media.component.scss',
@@ -124,6 +125,8 @@ export class SearchTransformedMediaComponent {
 
   onDelete() {
     if (this.selectedMedia().length > 0) {
+      //Arrange selected media descending by media ID
+      this.selectedMedia.set(this.selectedMedia().sort((a, b) => b.id - a.id));
       this.isDeleting.set(true);
     }
   }
