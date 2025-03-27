@@ -4629,14 +4629,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ministryofjustice/frontend@npm:^3.0.0":
-  version: 3.7.0
-  resolution: "@ministryofjustice/frontend@npm:3.7.0"
+"@ministryofjustice/frontend@npm:^4.0.0":
+  version: 4.0.1
+  resolution: "@ministryofjustice/frontend@npm:4.0.1"
   peerDependencies:
     govuk-frontend: 5.x
     jquery: 3.x
     moment: 2.x
-  checksum: a719f9713f98f05160e972bdfb4b93fa1daffa282048d1b8b97223880042e9a6f27bcd9db2266b4d61a64eb172bc50927853276153b36813b9c44d43540e6292
+  checksum: 50df5b785a1b0dcf1da959791fdf06ddfa33a7ad88e82fb87cd98df96f7f7c5580535a62fc946759a53e9aa0357bdf437c268ec28fbe96b41639c7cff06bad33
   languageName: node
   linkType: hard
 
@@ -8787,7 +8787,7 @@ __metadata:
     "@hmcts/nodejs-healthcheck": ^1.8.5
     "@hmcts/properties-volume": ^1.1.0
     "@microsoft/applicationinsights-web": ^3.2.2
-    "@ministryofjustice/frontend": ^3.0.0
+    "@ministryofjustice/frontend": ^4.0.0
     "@moebius/http-graceful-shutdown": ^1.1.0
     "@types/body-parser": ^1.19.5
     "@types/config": ^3.3.4
