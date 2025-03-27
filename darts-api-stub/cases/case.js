@@ -713,9 +713,9 @@ router.post('/search', (req, res) => {
     const resBody102 = {
       type: 'CASE_102',
       title: 'Search criteria is too broad, please add at least 1 more criteria to search for.',
-      status: 400,
+      status: 422,
     };
-    return res.status(400).send(resBody102);
+    return res.status(422).send(resBody102);
   }
   // yield many results by doing a judge search "Judge Judy"
   if (notNullProperties === 1 && searchTerms.judge_name) {
@@ -737,17 +737,17 @@ router.post('/search', (req, res) => {
       res.sendStatus(504);
       break;
     case 'TOO_MANY_RESULTS':
-      res.status(400).send({
+      res.status(422).send({
         type: 'CASE_100',
         title: 'Too many results have been returned. Please change search criteria.',
-        status: 400,
+        status: 422,
       });
       break;
     case 'UNKNOWN_ERROR':
-      res.status(400).send({
+      res.status(422).send({
         type: 'CASE_103',
         title: 'The request is not valid.',
-        status: 400,
+        status: 422,
       });
       break;
     case 'ALL':

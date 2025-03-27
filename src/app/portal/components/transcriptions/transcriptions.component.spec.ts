@@ -257,6 +257,7 @@ describe('TranscriptionsComponent', () => {
 
       expect(spy).toHaveBeenCalledWith([1, 2]);
     });
+
     it('should set isDeleting to false', () => {
       fixture.detectChanges();
       component.selectedRequests = [{} as TranscriptRequest];
@@ -266,9 +267,23 @@ describe('TranscriptionsComponent', () => {
 
       expect(component.isDeleting()).toEqual(false);
     });
+
     it('should navigate to /delete-error when a 400 is received and set isDeleting to false', () => {
       fixture.detectChanges();
       const errorResponse = new HttpErrorResponse({ status: 400, error: {} });
+      const routerSpy = jest.spyOn(component.router, 'navigate');
+      jest.spyOn(component.transcriptService, 'deleteRequest').mockReturnValue(throwError(() => errorResponse));
+      component.selectedRequests = [{ transcriptionId: 5 } as TranscriptRequest];
+
+      component.onDeleteConfirmed();
+
+      expect(component.isDeleting()).toEqual(false);
+      expect(routerSpy).toHaveBeenCalledWith(['transcriptions/delete-error']);
+    });
+
+    it('should navigate to /delete-error when a 422 is received and set isDeleting to false', () => {
+      fixture.detectChanges();
+      const errorResponse = new HttpErrorResponse({ status: 422, error: {} });
       const routerSpy = jest.spyOn(component.router, 'navigate');
       jest.spyOn(component.transcriptService, 'deleteRequest').mockReturnValue(throwError(() => errorResponse));
       component.selectedRequests = [{ transcriptionId: 5 } as TranscriptRequest];

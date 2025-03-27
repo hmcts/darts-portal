@@ -136,7 +136,7 @@ export class TranscriptionsComponent {
       },
       error: (error: HttpErrorResponse) => {
         this.isDeleting.set(false);
-        if (error.status === 400) {
+        if (error.status === 400 || error.status === 422) {
           this.router.navigate(['transcriptions/delete-error']);
         }
       },

@@ -738,7 +738,7 @@ router.patch('/', (req, res) => {
   req.body.forEach((item) => {
     // send 400 error for last requester transcription hide
     if (item.transcription_id === 5) {
-      status = 400;
+      status = 422;
     }
     const index = yourTranscriptionsStub.requester_transcriptions.findIndex(
       (x) => x.transcription_id == item.transcription_id

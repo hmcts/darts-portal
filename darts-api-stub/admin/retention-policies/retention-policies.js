@@ -120,7 +120,7 @@ router.patch('/:id', (req, res) => {
   const policyStart = DateTime.fromISO(req.body.policy_start_at);
 
   if (policyStart < DateTime.now()) {
-    return res.status(400).send({
+    return res.status(422).send({
       type: 'RETENTION_112',
     });
   }

@@ -9,17 +9,17 @@ import { BehaviorSubject, Observable } from 'rxjs';
 const regexIdPlaceholder = '\\d+';
 const regexWordPlaceholder = '\\w+';
 const subscribedEndpoints = [
-  { endpoint: '/api/cases/search', responses: [204, 400, 500, 504] },
+  { endpoint: '/api/cases/search', responses: [204, 400, 422, 500, 504] },
   { endpoint: '/api/audio-requests/playback', responses: [403, 404, 500, 502, 504] },
-  { endpoint: '/api/transcriptions', responses: [409, 400] },
+  { endpoint: '/api/transcriptions', responses: [409, 400, 422] },
   { endpoint: '/api/audio-requests', responses: [403, 409] },
   { endpoint: '/api/audio/preview', responses: [403, 404, 500, 502, 504] },
   { endpoint: '/api/retentions', responses: [403, 422] },
   { endpoint: '/api/admin/users', responses: [409] },
-  { endpoint: '/api/admin/retention-policy-types', responses: [400, 409] },
+  { endpoint: '/api/admin/retention-policy-types', responses: [400, 422, 409] },
   { endpoint: '/api/admin/event-mappings', responses: [409] },
   { endpoint: new RegExp(`/api/admin/medias/${regexIdPlaceholder}/hide`), responses: [409] },
-  { endpoint: new RegExp(`/api/admin/${regexWordPlaceholder}/search`), responses: [400] },
+  { endpoint: new RegExp(`/api/admin/${regexWordPlaceholder}/search`), responses: [400, 422] },
   { endpoint: new RegExp(`/api/hearings/${regexIdPlaceholder}/transcripts`), responses: [403] },
   { endpoint: new RegExp(`/api/admin/automated-tasks/${regexIdPlaceholder}/run`), responses: [404, 409] },
   { endpoint: new RegExp(`/api/cases/${regexIdPlaceholder}/hearings`), responses: [404] },
@@ -30,7 +30,7 @@ const subscribedEndpoints = [
 
 //Contains endpoints where errors will be ignored
 const ignoredEndpoints = [
-  { endpoint: 'api/audio-requests/not-accessed-count', responses: [0, 400, 401, 403, 404, 500, 502, 503, 504] },
+  { endpoint: 'api/audio-requests/not-accessed-count', responses: [0, 401, 403, 404, 500, 502, 503, 504] },
   { endpoint: 'api/transcriptions/transcriber-counts', responses: [0, 401, 403, 404, 500, 502, 503, 504] },
 ];
 
