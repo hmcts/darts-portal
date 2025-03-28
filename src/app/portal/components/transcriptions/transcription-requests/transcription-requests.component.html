@@ -10,7 +10,7 @@
     noDataMessage="There are no outstanding transcript requests."
   >
     <ng-template [tableRowTemplate]="rows" let-row>
-      <td>{{ row.caseNumber }}</td>
+      <td class="whitespace-pre">{{ row.caseNumber }}</td>
       <td>{{ row.courthouseName }}</td>
       <td>{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
       <td>{{ row.transcriptionType }}</td>

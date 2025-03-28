@@ -8,14 +8,14 @@
   }
 }
 
-<app-govuk-heading caption="Case">{{ case?.caseNumber }}</app-govuk-heading>
+<app-govuk-heading class="whitespace-pre" caption="Case">{{ case?.caseNumber }}</app-govuk-heading>
 
 <div govukSummaryContainer>
   <app-govuk-heading class="no-margin border-bottom" tag="h2" size="m">Case details</app-govuk-heading>
   <dl govukSummaryList>
     <div govukSummaryListRow>
       <dt govukSummaryKey>Case ID</dt>
-      <dd govukSummaryValue>{{ case?.caseNumber }}</dd>
+      <dd govukSummaryValue class="whitespace-pre">{{ case?.caseNumber }}</dd>
     </div>
     <div govukSummaryListRow>
       <dt govukSummaryKey>Courthouse</dt>

@@ -1,6 +1,6 @@
 <ng-template #tableTemplatePartial let-row>
-  <td>
-    <a class="govuk-link" [routerLink]="['/case', row.caseId]"> {{ row.caseNumber }}</a>
+  <td class="whitespace-pre">
+    <a class="govuk-link" [routerLink]="['/case', row.caseId]">{{ row.caseNumber }}</a>
   </td>
   <td>{{ row.courthouseName }}</td>
   <td>{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
@@ -151,7 +151,7 @@
       [hiddenCaption]="true"
     >
       <ng-template [tableRowTemplate]="selectedAudioRequests" let-row>
-        <td>{{ row.caseNumber }}</td>
+        <td class="whitespace-pre">{{ row.caseNumber }}</td>
         <td>{{ row.courthouseName }}</td>
         <td>{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
         <td>{{ row.startTime | luxonDate: 'hh:mm:ss' }}</td>

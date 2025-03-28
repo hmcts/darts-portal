@@ -15,7 +15,7 @@
         {{ row.transcriptionDocumentId }}</a
       >
     </td>
-    <td>{{ row.caseNumber }}</td>
+    <td class="whitespace-pre">{{ row.caseNumber }}</td>
     @if (showDeleteButton()) {
       <td>{{ row.hearingDate | luxonDate: 'd MMM yyyy' }}</td>
       <td>{{ row.courthouse }}</td>

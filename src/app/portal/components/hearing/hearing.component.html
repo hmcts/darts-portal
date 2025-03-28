@@ -9,7 +9,9 @@
 } @else {
   <ng-container *ngIf="data$ | async as vm; else loading">
     <app-breadcrumb *ngIf="state === 'Default'">
-      <ng-container *breadcrumb="['/case', vm.case.id.toString()]">{{ vm.case.number }}</ng-container>
+      <ng-container *breadcrumb="['/case', vm.case.id.toString()]"
+        ><span class="whitespace-pre">{{ vm.case.number }}</span></ng-container
+      >
       <ng-container *breadcrumb>{{ vm.hearing?.date | luxonDate: 'd MMM y' }}</ng-container>
     </app-breadcrumb>
 

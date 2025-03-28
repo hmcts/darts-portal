@@ -1,5 +1,5 @@
 <ng-template #tableRowTemplate let-row let-requestStatus="requestStatus">
-  <td>{{ row.caseNumber }}</td>
+  <td class="whitespace-pre">{{ row.caseNumber }}</td>
   <td>{{ row.courthouseName }}</td>
   <td>{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
   <td>{{ row.transcriptionType }}</td>

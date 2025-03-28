@@ -1,5 +1,5 @@
 <ng-template #tableTemplatePartial let-row>
-  <td>{{ row.caseNumber }}</td>
+  <td class="whitespace-pre">{{ row.caseNumber }}</td>
   <td>{{ row.courthouseName }}</td>
   <td>{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
   <td>{{ row.transcriptionType }}</td>
@@ -131,7 +131,7 @@
         [pageLimit]="15"
       >
         <ng-template [tableRowTemplate]="approverRequests" let-row>
-          <td>{{ row.caseNumber }}</td>
+          <td class="whitespace-pre">{{ row.caseNumber }}</td>
           <td>{{ row.courthouseName }}</td>
           <td>{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
           <td>{{ row.transcriptionType }}</td>

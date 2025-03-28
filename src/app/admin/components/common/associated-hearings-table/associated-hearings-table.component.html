@@ -1,8 +1,11 @@
 <app-data-table caption="Hearings associated with the audio" [hiddenCaption]="true" [columns]="columns" [rows]="rows()">
   <ng-template [tableRowTemplate]="rows()" let-row>
     <td class="case-id">
-      <a class="govuk-link" [routerLink]="['/admin/case', row.caseId]" [queryParams]="{ backUrl: url() }">
-        {{ row.caseNumber }}</a
+      <a
+        class="govuk-link whitespace-pre"
+        [routerLink]="['/admin/case', row.caseId]"
+        [queryParams]="{ backUrl: url() }"
+        >{{ row.caseNumber }}</a
       >
     </td>
     <td class="hearing-date">
