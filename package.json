@@ -61,7 +61,7 @@
     "@types/config": "^3.3.4",
     "accessible-autocomplete": "^3.0.0",
     "axios": "^1.7.2",
-    "body-parser": "^1.20.2",
+    "body-parser": "^2.0.0",
     "config": "^3.3.11",
     "connect-redis": "^8.0.0",
     "cookie-parser": "^1.4.6",
