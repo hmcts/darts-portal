@@ -182,7 +182,7 @@ describe('Admin - Transformed media screen', () => {
     it('goes back to form when cancelling delete', () => {
       cy.get('.govuk-checkboxes__input').first().click();
       cy.get('#delete-button').click();
-      cy.get('.govuk-link').click();
+      cy.get('.govuk-button-group .govuk-link').click();
       cy.get('.heading-caption').contains('Showing 1-3 of 3');
     });
 
@@ -210,13 +210,20 @@ describe('Admin - Transformed media screen', () => {
       cy.get('table.govuk-table tbody tr')
         .first()
         .within(() => {
-          cy.get('td').eq(0).should('have.text', '1'); // Media ID
-          cy.get('td').eq(1).should('have.text', 'CASE123'); // Case ID
-          cy.get('td').eq(2).should('have.text', 'Swansea'); // Courthouse
-          cy.get('td').eq(3).should('have.text', '01 Jan 2024'); // Hearing date
-          cy.get('td').eq(4).should('have.text', 'Eric Bristow'); // Owner
-          cy.get('td').eq(5).should('have.text', 'Eric Bristow'); // Requested by
-          cy.get('td').eq(6).should('have.text', '01 Jan 2024'); // Date requested
+          cy.get('td')
+            .eq(0)
+            .within(() => {
+              cy.get('a.govuk-link')
+                .should('contain.text', '3')
+                .should('have.attr', 'href')
+                .and('match', /\/admin\/transformed-media\/3$/); //Media ID
+            });
+          cy.get('td').eq(1).should('have.text', 'CASE789'); // Case ID
+          cy.get('td').eq(2).should('have.text', 'Cardiff'); // Courthouse
+          cy.get('td').eq(3).should('have.text', '01 Jan 2023'); // Hearing date
+          cy.get('td').eq(4).should('have.text', 'Trina Gulliver'); // Owner
+          cy.get('td').eq(5).should('have.text', 'Fallon Sherrock'); // Requested by
+          cy.get('td').eq(6).should('have.text', '01 Jan 2023'); // Date requested
         });
     });
   });

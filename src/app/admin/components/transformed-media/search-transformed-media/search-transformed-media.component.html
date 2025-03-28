@@ -1,7 +1,6 @@
 @if (isDeleting()) {
   <app-delete
     [numberOfItems]="selectedMedia().length"
-    deleteButtonTxt="Confirm"
     [isRedDeleteButton]="true"
     (confirm)="onDeleteConfirmed()"
     (cancelled)="onDeleteCancelled()"
@@ -15,7 +14,9 @@
         [columns]="deleteColumns"
       >
         <ng-template [tableRowTemplate]="selectedMedia()" let-row>
-          <td>{{ row.id }}</td>
+          <td>
+            <a href="javascript:void(0)" class="govuk-link view-link" [routerLink]="[row.id]"> {{ row.id }}</a>
+          </td>
           <td>{{ row.caseNumber }}</td>
           <td>{{ row.courthouse }}</td>
           <td>{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
