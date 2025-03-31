@@ -787,6 +787,35 @@ describe('DataTableComponent', () => {
     expect(component.selectedRows).not.toContain(MOCK_ROWS[0]);
   });
 
+  it('should replace selectedRows with the new row when singleRowSelect is true', () => {
+    const rowA = { id: 1 };
+    const rowB = { id: 2 };
+    component.singleRowSelect = true;
+    component.selectedRows = [rowA];
+
+    const rowSelectSpy = jest.spyOn(component.rowSelect, 'emit');
+    const selectedChangeSpy = jest.spyOn(component.selectedRowsChange, 'emit');
+
+    component.toggleRowSelection(rowB);
+
+    expect(component.selectedRows).toEqual([rowB]);
+    expect(rowSelectSpy).toHaveBeenCalledWith([rowB]);
+    expect(selectedChangeSpy).toHaveBeenCalledWith([rowB]);
+  });
+
+  it('should allow replacing even when same row is clicked twice (no toggle)', () => {
+    const rowA = { id: 1 };
+    component.singleRowSelect = true;
+    component.selectedRows = [rowA];
+
+    const rowSelectSpy = jest.spyOn(component.rowSelect, 'emit');
+
+    component.toggleRowSelection(rowA); // clicking again
+
+    expect(component.selectedRows).toEqual([rowA]);
+    expect(rowSelectSpy).toHaveBeenCalledWith([rowA]);
+  });
+
   it('should check if a row is selected', () => {
     component.selectedRows.push(MOCK_ROWS[0]);
 

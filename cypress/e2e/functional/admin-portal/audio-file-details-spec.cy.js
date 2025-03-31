@@ -195,33 +195,67 @@ describe('Admin - Audio file details screen', () => {
           cy.get('tbody tr')
             .eq(0)
             .within(() => {
-              cy.get('td').eq(0).should('contain.text', '100');
-              cy.get('td').eq(1).should('contain.text', 'London Crown Court');
-              cy.get('td').eq(2).should('contain.text', 'Courtroom B');
-              cy.get('td').eq(3).should('contain.text', '10 Jun 2024 at 15:00:00');
-              cy.get('td').eq(4).should('contain.text', '10 Jun 2024 at 15:45:00');
-              cy.get('td').eq(5).should('contain.text', '2');
-              cy.get('td').eq(6).should('contain.text', 'antecedent_456');
-              cy.get('td').eq(7).should('contain.text', 'chronicle_123');
+              cy.get('td').eq(1).should('contain.text', '100');
+              cy.get('td').eq(2).should('contain.text', 'London Crown Court');
+              cy.get('td').eq(3).should('contain.text', 'Courtroom B');
+              cy.get('td').eq(4).should('contain.text', '10 Jun 2024 at 15:00:00');
+              cy.get('td').eq(5).should('contain.text', '10 Jun 2024 at 15:45:00');
+              cy.get('td').eq(6).should('contain.text', '2');
+              cy.get('td').eq(7).should('contain.text', 'antecedent_456');
+              cy.get('td').eq(8).should('contain.text', 'chronicle_123');
             });
 
           cy.get('tbody tr')
             .eq(1)
             .within(() => {
-              cy.get('td').eq(0).should('contain.text', '101');
-              cy.get('td').eq(1).should('contain.text', 'London Crown Court');
-              cy.get('td').eq(2).should('contain.text', 'Courtroom B');
-              cy.get('td').eq(3).should('contain.text', '10 Jun 2024 at 15:00:00');
-              cy.get('td').eq(4).should('contain.text', '10 Jun 2024 at 15:45:00');
-              cy.get('td').eq(5).should('contain.text', '2');
-              cy.get('td').eq(6).should('contain.text', 'antecedent_456');
-              cy.get('td').eq(7).should('contain.text', 'chronicle_123');
+              cy.get('td').eq(1).should('contain.text', '101');
+              cy.get('td').eq(2).should('contain.text', 'London Crown Court');
+              cy.get('td').eq(3).should('contain.text', 'Courtroom B');
+              cy.get('td').eq(4).should('contain.text', '10 Jun 2024 at 15:00:00');
+              cy.get('td').eq(5).should('contain.text', '10 Jun 2024 at 15:45:00');
+              cy.get('td').eq(6).should('contain.text', '2');
+              cy.get('td').eq(7).should('contain.text', 'antecedent_456');
+              cy.get('td').eq(8).should('contain.text', 'chronicle_123');
             });
         });
 
       cy.get('a.govuk-link').contains('Back to audio details').should('be.visible').click();
 
       cy.url().should('eq', Cypress.config().baseUrl + '/admin/audio-file/1');
+    });
+
+    it('Sets new current version', () => {
+      cy.visit('/admin/audio-file/3/versions?backUrl=%2Fadmin%2Faudio-file%2F3');
+
+      cy.get('#previousVersionsTable .govuk-table__row:nth-child(1) .govuk-checkboxes__item').click();
+
+      cy.get('#setVersionButton').click();
+
+      //Verify elements
+      cy.contains(
+        'h1.govuk-heading-l',
+        'Are you sure you want to make this the current version of the audio file?'
+      ).should('be.visible');
+
+      cy.contains('dt', 'Audio ID').next('dd').should('contain.text', '100');
+      cy.contains('dt', 'Courthouse').next('dd').should('contain.text', 'Cardiff');
+      cy.contains('dt', 'Courtroom').next('dd').should('contain.text', 'Courtroom 1');
+      cy.contains('dt', 'Start time').next('dd').should('contain.text', '11 Jun 2024 at 11:55:18AM');
+      cy.contains('dt', 'End time').next('dd').should('contain.text', '11 Jun 2024 at 11:55:18AM');
+      cy.contains('dt', 'Channel number').next('dd').should('contain.text', '4');
+      cy.contains('dt', 'Total channels').next('dd').should('contain.text', '16');
+      cy.contains('dt', 'Media type').next('dd').should('contain.text', 'Audio');
+      cy.contains('dt', 'File type').next('dd').should('contain.text', 'Audio');
+      cy.contains('dt', 'File size').next('dd').should('contain.text', '117.74MB');
+      cy.contains('dt', 'Filename').next('dd').should('contain.text', 'filename.mp3');
+      cy.contains('dt', 'Date created').next('dd').should('contain.text', '11 Jun 2024 at 6:55:18PM');
+
+      cy.get('#confirm-button').should('contain.text', 'Confirm');
+      cy.get('#cancel-link').should('have.attr', 'href', '/admin/audio-file/3/versions').and('contain.text', 'Cancel');
+
+      cy.get('#confirm-button').click();
+
+      cy.get('.moj-banner--success').should('contain.text', 'Audio version updated');
     });
   });
 

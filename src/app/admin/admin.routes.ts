@@ -194,6 +194,15 @@ export const ADMIN_ROUTES: Routes = [
       import('./components/audio-file/show-versions/show-versions.component').then((c) => c.ShowVersionsComponent),
   },
   {
+    path: 'admin/audio-file/:id/versions/set-current',
+    title: 'DARTS Admin Set Current Audio Version',
+    data: { allowedRoles: ['SUPER_ADMIN'] },
+    loadComponent: () =>
+      import('./components/audio-file/set-current-version/set-current-version.component').then(
+        (c) => c.SetCurrentVersionComponent
+      ),
+  },
+  {
     path: 'admin/audio-file/:id/associated-audio/unhide-or-unmark-for-deletion',
     title: 'DARTS Admin Unhide or Unmark Associated Audio for Deletion',
     data: { allowedRoles: ['SUPER_ADMIN'] },

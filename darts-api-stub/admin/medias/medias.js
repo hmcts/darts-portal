@@ -626,6 +626,10 @@ router.get('/:id', (req, res) => {
   res.send(media);
 });
 
+router.patch('/:id', (req, res) => {
+  res.sendStatus(200);
+});
+
 router.post('/:id/approve-deletion', (req, res) => {
   const id = req.params.id;
 
