@@ -42,12 +42,12 @@
                 [routerLink]="action.url"
                 [fragment]="action.fragment"
                 [queryParams]="action.queryParams"
-                >{{ action.text }}<span class="govuk-visually-hidden">{{ detail.key }}</span></a
+                >{{ action.text }}<span class="govuk-visually-hidden"> {{ detail.key }}</span></a
               >
             }
             @if (action?.fn) {
               <a class="govuk-link" (click)="action?.fn()"
-                >{{ action.text }}<span class="govuk-visually-hidden">{{ detail.key }}</span></a
+                >{{ action.text }}<span class="govuk-visually-hidden"> {{ detail.key }}</span></a
               >
             }
           </dd>
