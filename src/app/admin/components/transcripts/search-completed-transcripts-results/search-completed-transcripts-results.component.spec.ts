@@ -46,6 +46,7 @@ describe('SearchCompletedTranscriptsResultsComponent', () => {
       const expected = [
         {
           id: 1,
+          caseId: 1,
           requestId: 0,
           caseNumber: 'caseNumber',
           courthouse: 'courthouse',

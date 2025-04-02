@@ -19,7 +19,16 @@
     <td>
       <a href="javascript:void(0)" class="govuk-link view-link" [routerLink]="[row.id]"> {{ row.id }}</a>
     </td>
-    <td class="whitespace-pre">{{ row.caseNumber }}</td>
+    <td class="whitespace-pre">
+      <a
+        href="javascript:void(0)"
+        class="govuk-link view-link"
+        [routerLink]="['/admin/case/', row.caseId]"
+        [queryParams]="{ backUrl: '/admin/transformed-media' }"
+      >
+        {{ row.caseNumber }}
+      </a>
+    </td>
     <td>{{ row.courthouse }}</td>
     <td>{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
     <td>{{ row.owner }}</td>
