@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DeleteComponent } from '@common/delete/delete.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
@@ -7,6 +7,7 @@ import { BreadcrumbComponent } from '@components/common/breadcrumb/breadcrumb.co
 import { LoadingComponent } from '@components/common/loading/loading.component';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { TabDirective } from '@directives/tab.directive';
+import { CaseEvent } from '@portal-types/events';
 import { ActiveTabService } from '@services/active-tab/active-tab.service';
 import { AnnotationService } from '@services/annotation/annotation.service';
 import { CaseService } from '@services/case/case.service';
@@ -40,7 +41,7 @@ import { CaseTranscriptsTableComponent } from './case-file/case-transcripts-tabl
   templateUrl: './case.component.html',
   styleUrls: ['./case.component.scss'],
 })
-export class CaseComponent {
+export class CaseComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private caseService = inject(CaseService);
   private mappingService = inject(MappingService);
@@ -52,7 +53,6 @@ export class CaseComponent {
   public caseId = this.route.snapshot.params.caseId;
   public caseFile$ = this.caseService.getCase(this.caseId).pipe(shareReplay(1));
   public hearings$ = this.caseService.getCaseHearings(this.caseId);
-  public events$ = this.caseService.getCaseEvents(this.caseId);
   public transcripts$ = this.caseService
     .getCaseTranscripts(this.caseId)
     .pipe(map((transcript) => this.mappingService.mapTranscriptRequestToRows(transcript)));
@@ -68,6 +68,9 @@ export class CaseComponent {
     })
   );
 
+  public events = signal<CaseEvent[] | null>(null);
+  private eventsLoaded = signal(false);
+
   private readonly screenId = 'case';
 
   selectedAnnotationsforDeletion: number[] = [];
@@ -78,8 +81,13 @@ export class CaseComponent {
     hearings: this.hearings$.pipe(catchError(() => of(null))),
     transcripts: this.transcripts$.pipe(catchError(() => of(null))),
     annotations: this.annotations$.pipe(catchError(() => of(null))),
-    events: this.events$.pipe(catchError(() => of(null))),
   });
+
+  ngOnInit(): void {
+    if (this.tab === 'Court log') {
+      this.loadEvents();
+    }
+  }
 
   onDeleteAnnotation(annotationId: number) {
     this.selectedAnnotationsforDeletion = [annotationId];
@@ -93,7 +101,6 @@ export class CaseComponent {
           hearings: this.hearings$,
           transcripts: this.transcripts$,
           annotations: this.annotations$,
-          events: this.events$,
         });
         this.selectedAnnotationsforDeletion = [];
         this.tab = 'All annotations';
@@ -116,5 +123,15 @@ export class CaseComponent {
 
   onTabChange($event: TabDirective) {
     this.tabsService.setActiveTab(this.screenId, $event.name);
+
+    //Only load events$ when Court log tab is clicked DMP-4897
+    if ($event.name === 'Court log' && !this.eventsLoaded()) {
+      this.loadEvents();
+    }
+  }
+
+  loadEvents() {
+    this.eventsLoaded.set(true);
+    this.caseService.getCaseEvents(this.caseId).subscribe((events) => this.events.set(events));
   }
 }
