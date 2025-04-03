@@ -274,7 +274,7 @@ describe('Admin - Transformed media screen', () => {
       cy.get('#media-details dd').contains('MP3');
 
       cy.get('#media-details dt').contains('File size');
-      cy.get('#media-details dd').contains('2MB');
+      cy.get('#media-details dd').contains('2.00MB');
 
       cy.get('#associated-audio-details h2').contains('Associated audio');
       cy.get('td.audio-id').first().contains('0');
