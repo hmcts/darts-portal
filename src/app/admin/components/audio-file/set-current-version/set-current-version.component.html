@@ -54,11 +54,7 @@
       <div govukSummaryListRow>
         <dt govukSummaryKey>File size</dt>
         <dd govukSummaryValue>
-          @if (audioFile.fileSizeBytes < bytesInMb) {
-            {{ audioFile.fileSizeBytes | bytes: 'KB' | number: '1.0-2' }}KB
-          } @else {
-            {{ audioFile.fileSizeBytes | bytes: 'MB' | number: '1.0-2' }}MB
-          }
+          {{ audioFile.fileSizeBytes | fileSize }}
         </dd>
       </div>
 

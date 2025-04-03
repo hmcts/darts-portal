@@ -1,6 +1,6 @@
 import { AudioVersion } from '@admin-types/transformed-media/audio-version';
 import { CommonModule, NgTemplateOutlet } from '@angular/common';
-import { Component, computed, inject, input, numberAttribute } from '@angular/core';
+import { Component, computed, inject, input, numberAttribute, OnInit } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
@@ -10,6 +10,7 @@ import { LoadingComponent } from '@common/loading/loading.component';
 import { DatatableColumn } from '@core-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
+import { HeaderService } from '@services/header/header.service';
 import { HistoryService } from '@services/history/history.service';
 import { TransformedMediaService } from '@services/transformed-media/transformed-media.service';
 import { map, switchMap } from 'rxjs';
@@ -30,7 +31,8 @@ import { map, switchMap } from 'rxjs';
   templateUrl: './show-versions.component.html',
   styleUrl: './show-versions.component.scss',
 })
-export class ShowVersionsComponent {
+export class ShowVersionsComponent implements OnInit {
+  headerService = inject(HeaderService);
   router = inject(Router);
   route = inject(ActivatedRoute);
   transformedMediaService = inject(TransformedMediaService);
@@ -63,6 +65,10 @@ export class ShowVersionsComponent {
   previousVersions = computed(() => this.versions()?.previousVersions ?? []);
 
   isLoading = computed(() => !(this.currentVersion() && this.previousVersions()));
+
+  ngOnInit(): void {
+    this.headerService.hideNavigation();
+  }
 
   onSelectedVersion(version: AudioVersion[]): void {
     this.selectedVersion = version.slice(0, 1);

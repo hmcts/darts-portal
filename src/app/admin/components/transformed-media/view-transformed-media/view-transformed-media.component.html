@@ -115,7 +115,7 @@
       </div>
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">File size</dt>
-        <dd class="govuk-summary-list__value">{{ data.transformedMedia.fileSizeBytes | bytes | number: '1.0-2' }}MB</dd>
+        <dd class="govuk-summary-list__value">{{ data.transformedMedia.fileSizeBytes | fileSize }}MB</dd>
       </div>
     </dl>
   </section>
