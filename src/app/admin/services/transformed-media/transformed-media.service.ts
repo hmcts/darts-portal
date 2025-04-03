@@ -74,6 +74,10 @@ export class TransformedMediaService {
     return this.http.get<AudioFileData>(`/api/admin/medias/${id}`).pipe(map((data) => this.mapAudioFileData(data)));
   }
 
+  setCurrentVersion(id: number) {
+    return this.http.patch<void>(`/api/admin/medias/${id}`, { is_current: true }, { responseType: 'text' as 'json' });
+  }
+
   getAssociatedMediaByTransformedMediaId(id: number): Observable<AssociatedMedia[]> {
     return this.http
       .get<AssociatedMediaData[]>('/api/admin/medias', { params: { transformed_media_id: id.toString() } })

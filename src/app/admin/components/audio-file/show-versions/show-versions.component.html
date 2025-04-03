@@ -27,6 +27,10 @@
 
   <a [routerLink]="[backUrl()]" class="govuk-back-link">Back</a>
 
+  @if (hasUpdatedVersion$ | async) {
+    <app-govuk-banner type="success">Audio version updated</app-govuk-banner>
+  }
+
   <app-govuk-heading tag="h1" size="l">All versions of this audio</app-govuk-heading>
 
   <h2 class="govuk-heading-s">Chronicle ID</h2>
@@ -46,10 +50,24 @@
     </ng-template>
   </app-data-table>
 
-  <app-govuk-heading tag="h2" size="m">Previous versions</app-govuk-heading>
+  <div class="action-container">
+    <app-govuk-heading tag="h2" size="m">Previous versions</app-govuk-heading>
+    <button
+      id="setVersionButton"
+      name="makeCurrentVersion"
+      class="govuk-button govuk-button--secondary"
+      (click)="onDelete()"
+    >
+      Make current version
+    </button>
+  </div>
   <app-data-table
+    [rowSelectable]="true"
+    [singleRowSelect]="true"
+    [(selectedRows)]="selectedVersion"
+    (rowSelect)="onSelectedVersion($event)"
     id="previousVersionsTable"
-    [columns]="columns"
+    [columns]="prevColumns"
     [rows]="prevVersions"
     caption="Previous versions of this audio"
     noDataMessage="There are no previous versions of this audio."

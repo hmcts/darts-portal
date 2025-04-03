@@ -1,0 +1,79 @@
+<app-govuk-heading> Are you sure you want to make this the current version of the audio file? </app-govuk-heading>
+
+@let audioFile = newVersion();
+
+@if (audioFile) {
+  <div govukSummaryContainer>
+    <app-govuk-heading class="no-margin border-bottom" tag="h2" size="m">Audio details</app-govuk-heading>
+    <dl govukSummaryList>
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Audio ID</dt>
+        <dd govukSummaryValue>{{ audioFile.id }}</dd>
+      </div>
+
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Courthouse</dt>
+        <dd govukSummaryValue>{{ audioFile.courthouse.displayName }}</dd>
+      </div>
+
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Courtroom</dt>
+        <dd govukSummaryValue>{{ audioFile.courtroom.name }}</dd>
+      </div>
+
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Start time</dt>
+        <dd govukSummaryValue>{{ audioFile.endAt | luxonDate: "dd MMM yyyy 'at' h:mm:ssa" }}</dd>
+      </div>
+
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>End time</dt>
+        <dd govukSummaryValue>{{ audioFile.endAt | luxonDate: "dd MMM yyyy 'at' h:mm:ssa" }}</dd>
+      </div>
+
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Channel number</dt>
+        <dd govukSummaryValue>{{ audioFile.channel }}</dd>
+      </div>
+
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Total channels</dt>
+        <dd govukSummaryValue>{{ audioFile.totalChannels }}</dd>
+      </div>
+
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Media type</dt>
+        <dd govukSummaryValue>{{ audioFile.mediaType }}</dd>
+      </div>
+
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>File type</dt>
+        <dd govukSummaryValue>{{ audioFile.mediaType }}</dd>
+      </div>
+
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>File size</dt>
+        <dd govukSummaryValue>
+          {{ audioFile.fileSizeBytes | fileSize }}
+        </dd>
+      </div>
+
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Filename</dt>
+        <dd govukSummaryValue>{{ audioFile.filename }}</dd>
+      </div>
+
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Date created</dt>
+        <dd govukSummaryValue>{{ audioFile.createdAt | luxonDate: "dd MMM yyyy 'at' h:mm:ssa" }}</dd>
+      </div>
+    </dl>
+  </div>
+
+  <div class="govuk-button-group">
+    <button id="confirm-button" class="govuk-button" (click)="setCurrentVersion()">Confirm</button>
+    <a id="cancel-link" class="govuk-link" href="javascript:void(0)" [routerLink]="['../']">Cancel</a>
+  </div>
+} @else {
+  <app-loading />
+}

@@ -40,6 +40,7 @@ export class DataTableComponent<TRow> implements OnChanges, OnInit {
   @Input() sortAndPaginateOnRowsChanged = true; // To maintain the sorting and pagination when rows are changed e.g. polling updates the data
   @Input() hiddenCaption = false;
   @Input() isHorizontalScroll = false;
+  @Input() singleRowSelect = false;
   @Output() rowSelect = new EventEmitter<TRow[]>();
 
   // Two way binding for selected rows
@@ -182,13 +183,16 @@ export class DataTableComponent<TRow> implements OnChanges, OnInit {
   }
 
   toggleRowSelection(row: TRow) {
-    const index = this.selectedRows.indexOf(row);
-    if (index === -1) {
-      // Row not selected, add it to the selection
-      this.selectedRows.push(row);
+    if (this.singleRowSelect) {
+      // In single select mode, replace the selection entirely
+      this.selectedRows = [row];
     } else {
-      // Row already selected, remove it from the selection
-      this.selectedRows.splice(index, 1);
+      const index = this.selectedRows.indexOf(row);
+      if (index === -1) {
+        this.selectedRows.push(row);
+      } else {
+        this.selectedRows.splice(index, 1);
+      }
     }
     this.rowSelect.emit(this.selectedRows);
     this.selectedRowsChange.emit(this.selectedRows);
