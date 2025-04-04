@@ -62,7 +62,7 @@ export class TranscriptFileBasicDetailComponent implements OnInit {
       'Approved on': transcript.approved ? this.luxonPipe.transform(transcript.approved, 'dd MMM yyyy') : undefined,
       'Request method': transcript.isManual ? 'Manual' : 'Automatic',
       'Request ID': [{ href: `/admin/transcripts/${transcript.transcriptionId}`, value: transcript.transcriptionId }],
-    Urgency: transcript.urgency.description,
+      Urgency: transcript.urgency.description,
       'Requested by': transcript.from,
       Instructions: transcript.requestorComments,
       'Judge approval': 'Yes',
