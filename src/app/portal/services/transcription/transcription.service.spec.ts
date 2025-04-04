@@ -495,7 +495,12 @@ describe('TranscriptionService', () => {
 
     it('should correctly transform TranscriptionDetails to a case details object', () => {
       const expectedResult = {
-        'Case ID': '123',
+        'Case ID': [
+          {
+            href: '/admin/case/1',
+            value: '123',
+          },
+        ],
         Courthouse: 'Swansea',
         'Judge(s)': ['Judge Judy', 'Judge Joe Brown'],
         'Defendant(s)': ['John Doe', 'Jane Doe'],
@@ -632,7 +637,12 @@ describe('TranscriptionService', () => {
       expect(assignDetails).toEqual({
         reportingRestrictions: [],
         caseDetails: {
-          'Case ID': '123',
+          'Case ID': [
+            {
+              href: '/admin/case/1',
+              value: '123',
+            },
+          ],
           Courthouse: 'Swansea',
           'Judge(s)': ['Judge Judy', 'Judge Joe Brown'],
           'Defendant(s)': ['John Doe', 'Jane Doe'],
@@ -690,7 +700,12 @@ describe('TranscriptionService', () => {
       expect(assignDetails).toEqual({
         reportingRestrictions: [],
         caseDetails: {
-          'Case ID': '123',
+          'Case ID': [
+            {
+              href: '/admin/case/1',
+              value: '123',
+            },
+          ],
           Courthouse: 'Swansea',
           'Judge(s)': ['Judge Judy', 'Judge Joe Brown'],
           'Defendant(s)': ['John Doe', 'Jane Doe'],
