@@ -69,49 +69,57 @@ export class FileDeletionService {
     };
   }
 
-  private resolveUsersAndReasons<T extends { hiddenById: number; reasonId: number }>(files: T[]): Observable<T[]> {
+  private resolveUsersAndReasons<T extends { hiddenById?: number; reasonId?: number }>(files: T[]): Observable<T[]> {
     const markedByName$ = this.mapHiddenByUsers(files);
     const reasonName$ = this.mapReasons(files);
 
     return forkJoin([markedByName$, reasonName$]).pipe(
       map(([markedByFiles, reasonFiles]) => {
         return files.map((file) => {
+          const markedHiddenBy = file.hiddenById
+            ? markedByFiles.find((f) => f.hiddenById === file.hiddenById)?.markedHiddenBy
+            : undefined;
+
+          const reasonName = file.reasonId
+            ? reasonFiles.find((f) => f.reasonId === file.reasonId)?.reasonName
+            : undefined;
+
           return {
             ...file,
-            markedHiddenBy: markedByFiles.find((f) => f.hiddenById === file.hiddenById)?.markedHiddenBy,
-            reasonName: reasonFiles.find((f) => f.reasonId === file.reasonId)?.reasonName,
+            markedHiddenBy,
+            reasonName,
           };
         });
       })
     );
   }
 
-  private mapHiddenByUsers<T extends { hiddenById: number }>(
+  private mapHiddenByUsers<T extends { hiddenById?: number }>(
     files: T[]
   ): Observable<(T & { markedHiddenBy: string })[]> {
-    const userIds = [...new Set(files.map((file) => file.hiddenById))] as number[];
+    const userIds = [...new Set(files.map((file) => file.hiddenById).filter((id): id is number => id !== undefined))];
 
     return this.userAdminService.getUsersById(userIds).pipe(
       map((users) => {
         return files.map((file) => {
-          const markedHiddenBy = users.find((u) => u.id === file.hiddenById);
+          const markedHiddenBy = file.hiddenById ? users.find((u) => u.id === file.hiddenById)?.fullName : undefined;
           return {
             ...file,
-            markedHiddenBy: markedHiddenBy?.fullName ?? 'System',
+            markedHiddenBy: markedHiddenBy ?? 'System',
           };
         });
       })
     );
   }
 
-  private mapReasons<T extends { reasonId: number }>(files: T[]): Observable<(T & { reasonName: string })[]> {
+  private mapReasons<T extends { reasonId?: number }>(files: T[]): Observable<(T & { reasonName: string })[]> {
     return this.transcriptionAdminService.getHiddenReasons().pipe(
       map((reasons) => {
         return files.map((file) => {
-          const hiddenReason = reasons.find((r) => r.id === file.reasonId);
+          const reasonName = file.reasonId ? reasons.find((r) => r.id === file.reasonId)?.displayName : undefined;
           return {
             ...file,
-            reasonName: hiddenReason?.displayName ?? 'Unknown',
+            reasonName: reasonName ?? 'Unknown',
           };
         });
       })

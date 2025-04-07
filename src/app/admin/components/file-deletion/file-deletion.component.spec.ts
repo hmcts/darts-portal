@@ -184,7 +184,7 @@ describe('FileDeletionComponent', () => {
             comments: 'Commenty comment',
             courthouse: 'Cardiff',
             courtroom: 'Room 1',
-            hearingDate: transcript.hearingDate.toISO(),
+            hearingDate: transcript.hearingDate!.toISO(),
             hiddenById: 3,
             reasonId: 4,
             ticketReference: 'REF123',

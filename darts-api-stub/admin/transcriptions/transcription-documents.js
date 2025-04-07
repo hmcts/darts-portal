@@ -182,6 +182,49 @@ const markedForDeletion = [
       comments: 'Lorem ipsum dolor sit amet',
     },
   },
+  //Added below objects as part of DMP-4976 bug fix
+  //case, hearing, courthouse, courtroom can be omitted
+  //admin action can be null
+  {
+    transcription_document_id: 3,
+    transcription: {
+      id: 2,
+    },
+    case: {
+      id: 2,
+      case_number: 'C0002',
+    },
+    hearing: {
+      id: 2,
+      hearing_date: '2022-02-02',
+    },
+    admin_action: null,
+  },
+  {
+    transcription_document_id: 4,
+    transcription: {
+      id: 2,
+    },
+    courthouse: {
+      id: 2,
+      display_name: 'Swansea',
+    },
+    courtroom: {
+      id: 2,
+      name: 'Courtroom 2',
+    },
+    admin_action: {
+      id: 2,
+      reason_id: 2,
+      hidden_by_id: 1,
+      hidden_at: '2024-01-01T00:00:00Z',
+      is_marked_for_manual_deletion: true,
+      marked_for_manual_deletion_by_id: 2,
+      marked_for_manual_deletion_at: '2024-01-01T00:00:00Z',
+      ticket_reference: 'REF456',
+      comments: 'Lorem ipsum dolor sit amet',
+    },
+  },
 ];
 
 let transcription = { ...defaultTranscription };

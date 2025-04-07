@@ -522,15 +522,15 @@ export class TranscriptionAdminService {
     return data.map((t) => ({
       transcriptionDocumentId: t.transcription_document_id,
       transcriptionId: t.transcription.id,
-      caseNumber: t.case.case_number,
-      hearingDate: DateTime.fromISO(t.hearing.hearing_date),
-      courthouse: t.courthouse.display_name,
-      courtroom: t.courtroom.name,
-      hiddenById: t.admin_action.hidden_by_id,
-      markedById: t.admin_action.marked_for_manual_deletion_by_id,
-      comments: t.admin_action.comments,
-      ticketReference: t.admin_action.ticket_reference,
-      reasonId: t.admin_action.reason_id,
+      caseNumber: t.case?.case_number,
+      hearingDate: t.hearing?.hearing_date ? DateTime.fromISO(t.hearing.hearing_date) : undefined,
+      courthouse: t.courthouse?.display_name,
+      courtroom: t.courtroom?.name,
+      hiddenById: t.admin_action?.hidden_by_id,
+      markedById: t.admin_action?.marked_for_manual_deletion_by_id,
+      comments: t.admin_action?.comments,
+      ticketReference: t.admin_action?.ticket_reference,
+      reasonId: t.admin_action?.reason_id,
     }));
   }
 }

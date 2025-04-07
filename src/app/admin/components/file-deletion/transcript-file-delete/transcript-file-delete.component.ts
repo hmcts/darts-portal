@@ -43,7 +43,11 @@ export class TranscriptFileDeleteComponent implements OnInit {
 
     this.transcriptFile = this.parseTranscriptFile(this.transcriptFileState);
 
-    if (this.transcriptFile && this.userService.hasMatchingUserId(this.transcriptFile.hiddenById)) {
+    if (
+      this.transcriptFile &&
+      this.transcriptFile.hiddenById &&
+      this.userService.hasMatchingUserId(this.transcriptFile.hiddenById)
+    ) {
       this.router.navigate(['/admin/file-deletion/unauthorised'], { state: { type: 'transcript' } });
     }
     this.headerService.hideNavigation();
@@ -77,7 +81,7 @@ export class TranscriptFileDeleteComponent implements OnInit {
   private parseTranscriptFile(transcript: typeof this.transcriptFileState): TranscriptionDocumentForDeletion {
     return {
       ...transcript,
-      hearingDate: DateTime.fromISO(transcript.hearingDate),
+      hearingDate: transcript.hearingDate ? DateTime.fromISO(transcript.hearingDate) : undefined,
     };
   }
 
