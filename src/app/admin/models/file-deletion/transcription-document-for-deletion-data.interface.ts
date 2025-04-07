@@ -5,21 +5,21 @@ export interface TranscriptionDocumentForDeletionData {
   transcription: {
     id: number;
   };
-  case: {
+  case?: {
     id: number;
     case_number: string;
   };
-  hearing: {
+  hearing?: {
     id: number;
     hearing_date: string;
   };
-  courthouse: {
+  courthouse?: {
     id: number;
     display_name: string;
   };
-  courtroom: {
+  courtroom?: {
     id: number;
     name: string;
   };
-  admin_action: AdminActionData;
+  admin_action: AdminActionData | null;
 }
