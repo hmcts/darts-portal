@@ -22,22 +22,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular-builders/common@npm:3.0.0":
-  version: 3.0.0
-  resolution: "@angular-builders/common@npm:3.0.0"
+"@angular-builders/common@npm:3.0.1":
+  version: 3.0.1
+  resolution: "@angular-builders/common@npm:3.0.1"
   dependencies:
     "@angular-devkit/core": ^19.0.0
     ts-node: ^10.0.0
     tsconfig-paths: ^4.1.0
-  checksum: d9808dce0be11c45d3f8bbab8800d3d84939f7cb1cef0b55024a53e292f296ad7c7c5a94e80bcfdbdbfae3dd34779c6ae6f402ac7abe9c4ecdcc5d285084cb06
+  checksum: b19bd02655cf43e0ca8c7c88cda5d37616f3fba2121a0448133a4e6bbbe4b2194eb32cb539d999d951b2dfcd9e6d1f899b49a67622979bf1353474388555076b
   languageName: node
   linkType: hard
 
 "@angular-builders/custom-webpack@npm:^19.0.0":
-  version: 19.0.0
-  resolution: "@angular-builders/custom-webpack@npm:19.0.0"
+  version: 19.0.1
+  resolution: "@angular-builders/custom-webpack@npm:19.0.1"
   dependencies:
-    "@angular-builders/common": 3.0.0
+    "@angular-builders/common": 3.0.1
     "@angular-devkit/architect": ">=0.1900.0 < 0.2000.0"
     "@angular-devkit/build-angular": ^19.0.0
     "@angular-devkit/core": ^19.0.0
@@ -45,7 +45,7 @@ __metadata:
     webpack-merge: ^6.0.0
   peerDependencies:
     "@angular/compiler-cli": ^19.0.0
-  checksum: 0f35f7febfd67fbac781d4d3d344cf5740738516772f4cd6e6e2bf8c04af915c586845f70976179db07813a5b421c5cf2d20d91530a3098ee02e9c69c186f69f
+  checksum: 0f82564514a5e83c063522f8a0fa9759b81faaa0f39ce9d8adbb774be31d40e062f4f69be40df593621b2e262621b3de5d19e479a786d502e2c8724dc32dc15a
   languageName: node
   linkType: hard
 
