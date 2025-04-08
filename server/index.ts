@@ -5,6 +5,7 @@ import config from 'config';
 propertiesVolume.addTo(config);
 
 const PORT = config.get('port');
+const NODE_ENV = config.get('node-env');
 const READY_MESSAGE = `> Ready on http://localhost:${PORT}`;
 
 const express = startServer();
@@ -13,18 +14,25 @@ const server = express.listen(PORT, () => {
 });
 
 async function stopServer() {
-  console.info('Express server shutdown signal received');
-  console.info('Express server closing down');
-  server.close(() => {
-    console.log('Express server closing down completed');
+  console.info('Server shutdown signal received');
+  console.info('Server closing down');
+  server.close(async () => {
+    console.log('Server closing down completed');
+    if (NODE_ENV === 'production') {
+      // 15s wait to match k8s liveness probe
+      await new Promise((res) => setTimeout(res, 15000));
+    }
+    console.log('Process exiting');
     process.exit(0);
   });
 }
 
-process.on('SIGINT', function () {
-  stopServer();
+process.on('SIGINT', async () => {
+  console.log('SIGINT received');
+  await stopServer();
 });
 
-process.on('SIGTERM', () => {
-  stopServer();
+process.on('SIGTERM', async () => {
+  console.log('SIGTERM received');
+  await stopServer();
 });
