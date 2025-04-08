@@ -127,11 +127,6 @@ describe('AdminSearchService', () => {
     });
 
     it('should handle HTTP error in getCases and return an empty array', fakeAsync(() => {
-      const mockError = new HttpErrorResponse({
-        status: 500,
-        error: { type: 'COMMON_105' },
-      });
-
       service.getCases(mockSearchFormValues).subscribe((res) => {
         expect(res).toEqual([]);
         expect(service.searchError()).toBe('COMMON_105');
@@ -204,11 +199,6 @@ describe('AdminSearchService', () => {
     });
 
     it('should handle HTTP error in getEvents and return an empty array', fakeAsync(() => {
-      const mockError = new HttpErrorResponse({
-        status: 500,
-        error: { type: 'COMMON_105' },
-      });
-
       service.getEvents(mockSearchFormValues).subscribe((res) => {
         expect(res).toEqual([]);
         expect(service.searchError()).toBe('COMMON_105');
@@ -278,11 +268,6 @@ describe('AdminSearchService', () => {
     });
 
     it('should handle HTTP error in getHearings and return an empty array', fakeAsync(() => {
-      const mockError = new HttpErrorResponse({
-        status: 500,
-        error: { type: 'COMMON_105' },
-      });
-
       service.getHearings(mockSearchFormValues).subscribe((res) => {
         expect(res).toEqual([]);
         expect(service.searchError()).toBe('COMMON_105');
@@ -354,11 +339,6 @@ describe('AdminSearchService', () => {
     });
 
     it('should handle HTTP error in getAudioMedia and return an empty array', fakeAsync(() => {
-      const mockError = new HttpErrorResponse({
-        status: 500,
-        error: { type: 'COMMON_105' },
-      });
-
       service.getAudioMedia(mockSearchFormValues).subscribe((res) => {
         expect(res).toEqual([]);
         expect(service.searchError()).toBe('COMMON_105');
