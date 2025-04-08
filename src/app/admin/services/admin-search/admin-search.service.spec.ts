@@ -125,6 +125,23 @@ describe('AdminSearchService', () => {
         hearing_start_at: '2021-01-01',
       });
     });
+
+    it('should handle HTTP error in getCases and return an empty array', fakeAsync(() => {
+      const mockError = new HttpErrorResponse({
+        status: 500,
+        error: { type: 'COMMON_105' },
+      });
+
+      service.getCases(mockSearchFormValues).subscribe((res) => {
+        expect(res).toEqual([]);
+        expect(service.searchError()).toBe('COMMON_105');
+      });
+
+      const req = httpMock.expectOne(ADMIN_CASE_SEARCH_PATH);
+      req.flush({ type: 'COMMON_105' }, { status: 500, statusText: 'Server Error' });
+
+      tick();
+    }));
   });
 
   describe('getEvents', () => {
@@ -185,6 +202,23 @@ describe('AdminSearchService', () => {
         hearing_start_at: '2021-01-01',
       });
     });
+
+    it('should handle HTTP error in getEvents and return an empty array', fakeAsync(() => {
+      const mockError = new HttpErrorResponse({
+        status: 500,
+        error: { type: 'COMMON_105' },
+      });
+
+      service.getEvents(mockSearchFormValues).subscribe((res) => {
+        expect(res).toEqual([]);
+        expect(service.searchError()).toBe('COMMON_105');
+      });
+
+      const req = httpMock.expectOne(ADMIN_EVENT_SEARCH_PATH);
+      req.flush({ type: 'COMMON_105' }, { status: 500, statusText: 'Server Error' });
+
+      tick();
+    }));
   });
 
   describe('getHearings', () => {
@@ -242,6 +276,23 @@ describe('AdminSearchService', () => {
         hearing_start_at: '2021-01-01',
       });
     });
+
+    it('should handle HTTP error in getHearings and return an empty array', fakeAsync(() => {
+      const mockError = new HttpErrorResponse({
+        status: 500,
+        error: { type: 'COMMON_105' },
+      });
+
+      service.getHearings(mockSearchFormValues).subscribe((res) => {
+        expect(res).toEqual([]);
+        expect(service.searchError()).toBe('COMMON_105');
+      });
+
+      const req = httpMock.expectOne(ADMIN_HEARING_SEARCH_PATH);
+      req.flush({ type: 'COMMON_105' }, { status: 500, statusText: 'Server Error' });
+
+      tick();
+    }));
   });
 
   describe('getAudioMedia', () => {
@@ -301,6 +352,23 @@ describe('AdminSearchService', () => {
         hearing_start_at: '2021-01-01',
       });
     });
+
+    it('should handle HTTP error in getAudioMedia and return an empty array', fakeAsync(() => {
+      const mockError = new HttpErrorResponse({
+        status: 500,
+        error: { type: 'COMMON_105' },
+      });
+
+      service.getAudioMedia(mockSearchFormValues).subscribe((res) => {
+        expect(res).toEqual([]);
+        expect(service.searchError()).toBe('COMMON_105');
+      });
+
+      const req = httpMock.expectOne(ADMIN_MEDIA_SEARCH_PATH);
+      req.flush({ type: 'COMMON_105' }, { status: 500, statusText: 'Server Error' });
+
+      tick();
+    }));
   });
 
   describe('mapAdminSearchFormValuesToSearchRequest', () => {
