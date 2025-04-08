@@ -5,8 +5,10 @@ import { AdminCaseSearchResult } from '@admin-types/search/admin-case-search-res
 import { AdminEventSearchResult } from '@admin-types/search/admin-event-search-result';
 import { AdminHearingSearchResult } from '@admin-types/search/admin-hearing-search-result';
 import { AdminMediaSearchResult } from '@admin-types/search/admin-media-search-result';
-import { provideHttpClient } from '@angular/common/http';
+import { HttpErrorResponse, provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { AppInsightsService } from '@services/app-insights/app-insights.service';
+import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
 import { AdminSearchFormValues } from '../../components/search/search-form/search-form.component';
 import {
@@ -16,8 +18,6 @@ import {
   ADMIN_MEDIA_SEARCH_PATH,
   AdminSearchService,
 } from './admin-search.service';
-import { AppInsightsService } from '@services/app-insights/app-insights.service';
-import { UserService } from '@services/user/user.service';
 
 const mockCaseSearchResponse = [
   {
@@ -374,11 +374,41 @@ describe('AdminSearchService', () => {
   });
 
   describe('handleSearchError', () => {
-    it('should set the error message', fakeAsync(() => {
-      service['handleSearchError']().subscribe((result) => {
+    it('should set searchError with the error type if provided', fakeAsync(() => {
+      const mockResponse = {
+        error: { type: 'COMMON_105' },
+      } as HttpErrorResponse;
+
+      service['handleSearchError'](mockResponse).subscribe((result) => {
         expect(result).toEqual([]);
-        expect(service.searchError()).toEqual('There are more than 1000 results. Refine your search.');
+        expect(service.searchError()).toBe('COMMON_105');
       });
+
+      tick();
+    }));
+
+    it('should set default error message if type is missing', fakeAsync(() => {
+      const mockResponse = {
+        error: {},
+      } as HttpErrorResponse;
+
+      service['handleSearchError'](mockResponse).subscribe((result) => {
+        expect(result).toEqual([]);
+        expect(service.searchError()).toBe('Error occurred while searching');
+      });
+
+      tick();
+    }));
+
+    it('should not set searchError if response is null', fakeAsync(() => {
+      // Clear any existing error first
+      service.searchError.set(null);
+
+      service['handleSearchError'](null).subscribe((result) => {
+        expect(result).toEqual([]);
+        expect(service.searchError()).toBeNull();
+      });
+
       tick();
     }));
   });

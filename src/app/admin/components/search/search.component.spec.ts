@@ -1,6 +1,7 @@
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { signal } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { CourthouseData } from '@core-types/courthouse/courthouse.interface';
 import { TabDirective } from '@directives/tab.directive';
 import { AdminSearchService, defaultFormValues } from '@services/admin-search/admin-search.service';
@@ -31,7 +32,7 @@ const fakeAdminSearchService = {
   formValues: signal({ ...defaultFormValues }),
   isLoading: signal(false),
   hasFormBeenSubmitted: signal(false),
-  searchError: signal(null),
+  searchError: signal<string | null>(null),
   cases: signal([]),
   events: signal([]),
   hearings: signal([]),
@@ -165,6 +166,40 @@ describe('SearchComponent', () => {
         ...mockFormValues,
         resultsFor: 'Hearings',
       });
+    });
+  });
+
+  describe('template rendering', () => {
+    beforeEach(() => {
+      fakeAdminSearchService.hasFormBeenSubmitted.set(true); // ensures tabs render
+      fixture.detectChanges();
+    });
+
+    it('should display COMMON_105 error message when searchError is COMMON_105', () => {
+      fakeAdminSearchService.searchError.set('COMMON_105');
+      fixture.detectChanges();
+
+      const heading = fixture.debugElement.query(By.css('h2.govuk-heading-m'));
+      const message = fixture.debugElement.query(By.css('#criteria-error p.govuk-body'));
+
+      expect(heading.nativeElement.textContent).toContain('We need more information to search');
+      expect(message.nativeElement.textContent).toContain('Refine your search by adding more information');
+    });
+
+    it('should display too many results message for other errors', () => {
+      fakeAdminSearchService.searchError.set('TOO_MANY_RESULTS');
+      fixture.detectChanges();
+
+      const errorSpan = fixture.debugElement.query(By.css('span[error]'));
+      expect(errorSpan.nativeElement.textContent).toContain('There are more than 1000 results');
+    });
+
+    it('should not display any error message when searchError is null', () => {
+      fakeAdminSearchService.searchError.set(null);
+      fixture.detectChanges();
+
+      const errorSpan = fixture.debugElement.query(By.css('span[error]'));
+      expect(errorSpan).toBeNull();
     });
   });
 });
