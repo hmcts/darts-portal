@@ -34,33 +34,27 @@ describe('CaseHearingsTableComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('goToHearingDetails', () => {
-    it('should navigate to admin path and clear admin tab when adminScreen is true', () => {
+  describe('clearStoredTabs', () => {
+    it('should clear admin tab when adminScreen is true', () => {
       fixture.componentRef.setInput('caseId', 123);
       fixture.componentRef.setInput('adminScreen', true);
 
       fixture.detectChanges();
 
-      component.goToHearingDetails(456);
+      component.clearStoredTabs();
 
       expect(activeTabServiceSpy.clearActiveTab).toHaveBeenCalledWith('admin-hearing-details');
-      expect(routerSpy.navigate).toHaveBeenCalledWith(['/admin/case', 123, 'hearing', 456], {
-        queryParams: { backUrl: '/admin/case/123' },
-      });
     });
 
-    it('should navigate to user path and clear user tab when adminScreen is false', () => {
+    it('should clear user tab when adminScreen is false', () => {
       fixture.componentRef.setInput('caseId', 789);
       fixture.componentRef.setInput('adminScreen', false);
 
       fixture.detectChanges();
 
-      component.goToHearingDetails(987);
+      component.clearStoredTabs();
 
       expect(activeTabServiceSpy.clearActiveTab).toHaveBeenCalledWith('hearing-screen');
-      expect(routerSpy.navigate).toHaveBeenCalledWith(['/case', 789, 'hearing', 987], {
-        queryParams: { backUrl: '/case/789' },
-      });
     });
   });
 });

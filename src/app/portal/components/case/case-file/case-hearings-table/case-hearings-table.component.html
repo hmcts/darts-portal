@@ -1,3 +1,6 @@
+@let isAdmin = adminScreen();
+@let id = caseId();
+
 <app-data-table
   id="hearingsTable"
   [rows]="hearings()"
@@ -7,7 +10,14 @@
 >
   <ng-template [tableRowTemplate]="hearings()" let-row>
     <td>
-      <a class="govuk-link" (click)="goToHearingDetails(row.id)"> {{ row.date | luxonDate: 'dd MMM y' }}</a>
+      <a
+        class="govuk-link"
+        (click)="clearStoredTabs()"
+        [routerLink]="[isAdmin ? '/admin/case' : '/case', id, 'hearing', row.id]"
+        [queryParams]="{ backUrl: '/admin/case/' + id }"
+      >
+        {{ row.date | luxonDate: 'dd MMM y' }}</a
+      >
     </td>
     <td>{{ row.judges }}</td>
     <td>{{ row.courtroom }}</td>
