@@ -19,7 +19,17 @@
       @if (searchService.isLoading()) {
         <app-loading />
       }
-      <span error>{{ searchService.searchError() }}</span>
+
+      @let errorCode = searchService.searchError();
+
+      @if (errorCode === 'COMMON_105') {
+        <div id="criteria-error" error>
+          <h2 class="govuk-heading-m">We need more information to search</h2>
+          <p class="govuk-body">Refine your search by adding more information and try again.</p>
+        </div>
+      } @else if (errorCode) {
+        <span error> There are more than 1000 results. Refine your search.</span>
+      }
 
       <div *tab="'Cases'">
         @if (searchService.cases().length && !searchService.isLoading()) {
