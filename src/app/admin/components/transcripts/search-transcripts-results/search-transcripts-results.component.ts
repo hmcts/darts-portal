@@ -40,6 +40,7 @@ export class SearchTranscriptsResultsComponent implements OnChanges {
   mapRows(results: Transcription[]) {
     return results.map((result) => ({
       id: result.id,
+      caseId: result.caseId,
       caseNumber: result.caseNumber,
       courthouse: result.courthouse.displayName,
       hearingDate: result.hearingDate,

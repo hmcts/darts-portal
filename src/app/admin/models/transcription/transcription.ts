@@ -5,6 +5,7 @@ import { TranscriptionStatus } from './transcription-status';
 
 export type Transcription = {
   id: number;
+  caseId: number;
   caseNumber: string;
   courthouse: Partial<Pick<Courthouse, 'id' | 'displayName' | 'courthouseName'>>;
   hearingDate: DateTime;

@@ -25,6 +25,7 @@ describe('SearchTranscriptsResultsComponent', () => {
     const results = [
       {
         id: 1,
+        caseId: 1,
         caseNumber: '123',
         courthouse: { displayName: 'Test courthouse name' },
         hearingDate: DateTime.fromISO('2021-01-01T00:00:00Z'),
@@ -36,6 +37,7 @@ describe('SearchTranscriptsResultsComponent', () => {
     const expected = [
       {
         id: 1,
+        caseId: 1,
         caseNumber: '123',
         courthouse: 'Test courthouse name',
         hearingDate: DateTime.fromISO('2021-01-01T00:00:00Z'),

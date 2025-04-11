@@ -449,6 +449,7 @@ export class TranscriptionAdminService {
   private mapTranscriptionDataToTranscription(data: TranscriptionData[]): Transcription[] {
     return data.map((transcriptionData) => ({
       id: transcriptionData.transcription_id,
+      caseId: transcriptionData.case_id,
       caseNumber: transcriptionData.case_number,
       courthouse: { id: transcriptionData.courthouse_id },
       hearingDate: DateTime.fromISO(transcriptionData.hearing_date),

@@ -11,6 +11,7 @@ import { DateTime } from 'luxon';
 
 export type TransformedMediaRow = {
   id: number;
+  caseId?: number;
   caseNumber?: string;
   courthouse?: string;
   hearingDate?: DateTime;
@@ -62,6 +63,7 @@ export class TransformedMediaSearchResultsComponent implements OnChanges {
   mapRows(results: TransformedMediaAdmin[]): TransformedMediaRow[] {
     return results.map((result) => ({
       id: result.id,
+      caseId: result.case.id,
       caseNumber: result.case.caseNumber,
       courthouse: result.courthouse?.displayName,
       hearingDate: result.hearing?.hearingDate,
