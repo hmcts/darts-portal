@@ -626,6 +626,10 @@ router.get('/:id', (req, res) => {
   res.send(media);
 });
 
+router.patch('/:id', (req, res) => {
+  res.sendStatus(200);
+});
+
 router.post('/:id/approve-deletion', (req, res) => {
   const id = req.params.id;
 
@@ -648,8 +652,13 @@ router.post('/search', (req, res) => {
     return;
   }
 
+  if (req.body.case_number === 'NO_CRITERIA') {
+    res.status(400).send({ type: 'COMMON_105', title: 'The search criteria is too broad', status: 400 });
+    return;
+  }
+
   if (req.body.case_number === 'TOO_MANY_RESULTS') {
-    res.status(422).send('Too many results found. Please refine your search.');
+    res.status(400).send({ type: 'AUDIO_116', title: 'Too many results', status: 400 });
     return;
   }
 

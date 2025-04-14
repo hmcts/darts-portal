@@ -1,11 +1,11 @@
 import { TransformedMediaAdmin } from '@admin-types/transformed-media/transformed-media-admin';
-import { AsyncPipe, DecimalPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
-import { BytesPipe } from '@pipes/bytes.pipe';
+import { FileSizePipe } from '@pipes/file-size.pipe';
 import { JoinPipe } from '@pipes/join';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { CaseService } from '@services/case/case.service';
@@ -23,14 +23,13 @@ import { AssociatedAudioTableComponent } from '../associated-audio-table/associa
   imports: [
     GovukHeadingComponent,
     LuxonDatePipe,
-    BytesPipe,
-    DecimalPipe,
     AsyncPipe,
     JoinPipe,
     RouterLink,
     GovukBannerComponent,
     AssociatedAudioTableComponent,
     LoadingComponent,
+    FileSizePipe,
   ],
 })
 export class ViewTransformedMediaComponent {

@@ -999,4 +999,24 @@ describe('TransformedMediaService', () => {
       expect(service.searchFormValues()).toEqual(defaultFormValues);
     });
   });
+
+  describe('setCurrentVersion', () => {
+    it('should send PATCH request to set audio as current version', () => {
+      const mockId = 1;
+
+      service.setCurrentVersion(mockId).subscribe((res) => {
+        expect(res).toBeUndefined(); // since responseType is text and returns void
+      });
+
+      const req = httpMock.expectOne({
+        url: `/api/admin/medias/${mockId}`,
+        method: 'PATCH',
+      });
+
+      expect(req.request.body).toEqual({ is_current: true });
+      expect(req.request.responseType).toEqual('text');
+
+      req.flush('OK');
+    });
+  });
 });

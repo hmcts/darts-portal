@@ -3,6 +3,7 @@ import { HttpResponse, provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
+import { TabDirective } from '@directives/tab.directive';
 import { AnnotationsData, Case, CaseEvent, Hearing, TranscriptData } from '@portal-types/index';
 import { AnnotationService } from '@services/annotation/annotation.service';
 import { CaseService } from '@services/case/case.service';
@@ -293,8 +294,79 @@ describe('CaseComponent', () => {
         hearings: null,
         transcripts: null,
         annotations: null,
-        events: null,
       });
     }));
+  });
+
+  describe('CaseComponent - Tab Logic', () => {
+    let component: CaseComponent;
+
+    beforeEach(() => {
+      fixture = setup();
+      component = fixture.componentInstance;
+    });
+
+    describe('#ngOnInit', () => {
+      it('should call loadEvents if Court log tab is the default', () => {
+        const loadEventsSpy = jest.spyOn(component, 'loadEvents');
+
+        component['tab'] = 'Court log';
+        component['eventsLoaded'].set(false); // Ensure not already loaded
+        component.ngOnInit();
+
+        expect(loadEventsSpy).toHaveBeenCalled();
+      });
+
+      it('should not call loadEvents if default tab is not Court log', () => {
+        const loadEventsSpy = jest.spyOn(component, 'loadEvents');
+
+        component['tab'] = 'Hearings';
+        component.ngOnInit();
+
+        expect(loadEventsSpy).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('#onTabChange', () => {
+      it('should update active tab in ActiveTabService', () => {
+        const setActiveTabSpy = jest.spyOn(component['tabsService'], 'setActiveTab');
+        const event: TabDirective = { name: 'Transcripts' } as TabDirective;
+
+        component.onTabChange(event);
+
+        expect(setActiveTabSpy).toHaveBeenCalledWith('case', 'Transcripts');
+      });
+
+      it('should call loadEvents only if tab is Court log and events not yet loaded', () => {
+        const loadEventsSpy = jest.spyOn(component, 'loadEvents');
+
+        component['eventsLoaded'].set(false);
+        const event: TabDirective = { name: 'Court log' } as TabDirective;
+
+        component.onTabChange(event);
+
+        expect(loadEventsSpy).toHaveBeenCalled();
+      });
+
+      it('should NOT call loadEvents if tab is not Court log', () => {
+        const loadEventsSpy = jest.spyOn(component, 'loadEvents');
+
+        const event: TabDirective = { name: 'Annotations' } as TabDirective;
+        component.onTabChange(event);
+
+        expect(loadEventsSpy).not.toHaveBeenCalled();
+      });
+
+      it('should NOT call loadEvents if events already loaded', () => {
+        const loadEventsSpy = jest.spyOn(component, 'loadEvents');
+
+        component['eventsLoaded'].set(true);
+        const event: TabDirective = { name: 'Court log' } as TabDirective;
+
+        component.onTabChange(event);
+
+        expect(loadEventsSpy).not.toHaveBeenCalled();
+      });
+    });
   });
 });

@@ -72,11 +72,13 @@ export class FileDeletionComponent {
   }
 
   onDeleteTranscript(transcript: TranscriptionDocumentForDeletion) {
-    if (this.userService.hasMatchingUserId(transcript.hiddenById)) {
+    if (transcript.hiddenById && this.userService.hasMatchingUserId(transcript.hiddenById)) {
       this.router.navigate(['/admin/file-deletion/unauthorised'], { state: { type: 'transcript' } });
     } else {
       this.router.navigate(['/admin/file-deletion/transcript', transcript.transcriptionDocumentId], {
-        state: { file: { ...transcript, hearingDate: transcript.hearingDate.toISO() } },
+        state: {
+          file: { ...transcript, hearingDate: transcript.hearingDate ? transcript.hearingDate.toISO() : undefined },
+        },
       });
     }
   }

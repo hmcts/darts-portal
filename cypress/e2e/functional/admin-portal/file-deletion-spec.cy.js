@@ -154,7 +154,7 @@ describe('Admin - Groups screen', () => {
       cy.get('.govuk-table__header').eq(5).should('contain', 'Marked by');
       cy.get('.govuk-table__header').eq(6).should('contain', 'Comments');
 
-      cy.get('.govuk-table__row').should('have.length', 3);
+      cy.get('.govuk-table__row').should('have.length', 5);
       cy.get('.govuk-table__row').eq(1).should('contain', '1');
       cy.get('.govuk-table__row').eq(2).should('contain', '2');
 

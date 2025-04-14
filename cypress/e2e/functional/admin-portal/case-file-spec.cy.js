@@ -177,8 +177,7 @@ describe('Case file screen', () => {
             .click();
         });
 
-      // TO DO: Uncomment once admin hearing file is in
-      // cy.url().should('include', '/admin/case/1/hearing/1');
+      cy.url().should('include', '/admin/case/1/hearing/1');
     });
   });
 });
