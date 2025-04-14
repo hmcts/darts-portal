@@ -206,10 +206,10 @@ describe('Admin - Transcript requests', () => {
       cy.get('#case-details').contains('Swansea');
 
       cy.get('#case-details').contains('Judge(s)');
-      cy.get('#case-details').contains('HHJ M. Hussain KC Ray Bob');
+      cy.get('#case-details').contains('HHJ M. Hussain KC, Ray Bob');
 
       cy.get('#case-details').contains('Defendant(s)');
-      cy.get('#case-details').contains('Defendant Dave Defendant Bob');
+      cy.get('#case-details').contains('Defendant Dave, Defendant Bob');
 
       cy.a11y();
     });

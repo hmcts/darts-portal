@@ -41,7 +41,7 @@ describe('ApproveTranscriptComponent', () => {
     requestorComments: 'Please expedite my request',
     rejectionReason: undefined,
     defendants: ['Defendant Dave', 'Defendant Bob'],
-    judges: ['HHJ M. Hussain KC\t', 'Ray Bob'],
+    judges: ['HHJ M. Hussain KC', 'Ray Bob'],
     transcriptFileName: 'C20220620001_0.docx',
     hearingDate: DateTime.fromISO('2023-11-08'),
     urgency: {
@@ -104,7 +104,7 @@ describe('ApproveTranscriptComponent', () => {
     const caseDetails = {
       'Case ID': 'C20220620001',
       Courthouse: 'Swansea',
-      'Judge(s)': ['HHJ M. Hussain KC\t', 'Ray Bob'],
+      'Judge(s)': ['HHJ M. Hussain KC', 'Ray Bob'],
       'Defendant(s)': ['Defendant Dave', 'Defendant Bob'],
     };
 
