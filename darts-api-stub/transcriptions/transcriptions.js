@@ -202,7 +202,7 @@ const defaultMockTranscriptionDetails = {
   requestor_comments: 'Please expedite my request',
   rejection_reason: 'This request will take longer to transcribe within the urgency level you require.',
   defendants: ['Defendant Dave', 'Defendant Bob'],
-  judges: ['HHJ M. Hussain KC	', 'Ray Bob'],
+  judges: ['HHJ M. Hussain KC', 'Ray Bob'],
   transcript_file_name: 'C20220620001_0.docx',
   hearing_date: '2023-11-08',
   transcription_urgency: {
@@ -252,7 +252,7 @@ const mockTranscriptionDetailsRejected = {
   requestor_comments: 'Please expedite my request',
   rejection_reason: 'This request will take longer to transcribe within the urgency level you require.',
   defendants: ['Defendant Dave', 'Defendant Bob'],
-  judges: ['HHJ M. Hussain KC	', 'Ray Bob'],
+  judges: ['HHJ M. Hussain KC', 'Ray Bob'],
   transcript_file_name: 'C20220620001_0.docx',
   hearing_date: '2023-11-08',
   transcription_urgency: {
@@ -299,7 +299,7 @@ const mockTranscriptionDetailsTwo = {
   received: '2023-11-17T12:53:07.468Z',
   requestor_comments: 'Please expedite my request',
   defendants: ['Defendant Dave', 'Defendant Bob'],
-  judges: ['HHJ M. Hussain KC	', 'Ray Bob'],
+  judges: ['HHJ M. Hussain KC', 'Ray Bob'],
   transcript_file_name: 'C20220620001_0.docx',
   hearing_date: '2023-08-07',
   request_type: 'Specified Times',
@@ -326,7 +326,7 @@ const mockTranscriptionDetailsNoName = {
   courtroom: '9',
   status: 'Awaiting Authorisation',
   defendants: ['Defendant Dave'],
-  judges: ['HHJ M. Hussain KC	'],
+  judges: ['HHJ M. Hussain KC'],
   hearing_date: '2023-11-08',
   transcription_urgency: {
     transcription_urgency_id: 1,

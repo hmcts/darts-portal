@@ -11,6 +11,7 @@ export class JoinPipe implements PipeTransform {
     }
 
     const separator = lineBreak ? '\n' : sep;
+
     return input.join(separator);
   }
 }

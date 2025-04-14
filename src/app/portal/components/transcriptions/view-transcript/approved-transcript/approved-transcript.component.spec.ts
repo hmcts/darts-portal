@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DatePipe } from '@angular/common';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { By } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { TranscriptionDetails } from '@portal-types/transcriptions/transcription-details.type';
 import { FileDownloadService } from '@services/file-download/file-download.service';
@@ -10,7 +11,6 @@ import { TranscriptionService } from '@services/transcription/transcription.serv
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
 import { ApprovedTranscriptComponent } from './approved-transcript.component';
-import { By } from '@angular/platform-browser';
 
 describe('ApprovedTranscriptComponent', () => {
   let component: ApprovedTranscriptComponent;
@@ -36,7 +36,7 @@ describe('ApprovedTranscriptComponent', () => {
     requestorComments: 'Please expedite my request',
     rejectionReason: 'This request will take longer to transcribe within the urgency level you require.',
     defendants: ['Defendant Dave', 'Defendant Bob'],
-    judges: ['HHJ M. Hussain KC	', 'Ray Bob'],
+    judges: ['HHJ M. Hussain KC', 'Ray Bob'],
     transcriptFileName: 'C20220620001_0.docx',
     hearingDate: DateTime.fromISO('2023-11-08'),
     urgency: {

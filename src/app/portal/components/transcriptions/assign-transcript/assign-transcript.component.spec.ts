@@ -56,7 +56,7 @@ describe('AssignTranscriptComponent', () => {
     requestorComments: 'Please expedite my request',
     rejectionReason: undefined,
     defendants: ['Defendant Dave', 'Defendant Bob'],
-    judges: ['HHJ M. Hussain KC\t', 'Ray Bob'],
+    judges: ['HHJ M. Hussain KC', 'Ray Bob'],
     transcriptFileName: 'C20220620001_0.docx',
     hearingDate: DateTime.fromISO('2023-11-08'),
     urgency: {

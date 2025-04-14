@@ -31,7 +31,7 @@ export class TranscriptFileBasicDetailComponent implements OnInit {
 
   private mapBasicTranscriptionDetails(transcript: TranscriptionDetails) {
     return {
-      'Case ID': [{ href: `/case/${transcript.caseId}`, value: transcript.caseNumber }],
+      'Case ID': [{ href: `/admin/case/${transcript.caseId}`, value: transcript.caseNumber }],
       'Hearing date':
         transcript.hearingId != null // intentional use of != to match undefined/null
           ? [

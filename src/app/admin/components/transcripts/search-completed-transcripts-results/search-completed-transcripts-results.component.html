@@ -12,7 +12,15 @@
       >
     </td>
     <td>{{ row.requestId }}</td>
-    <td class="whitespace-pre">{{ row.caseNumber }}</td>
+    <td class="whitespace-pre">
+      <a
+        href="#"
+        class="govuk-link"
+        [routerLink]="['/admin/case/', row.caseId]"
+        [queryParams]="{ backUrl: '/admin/transcripts' }"
+        >{{ row.caseNumber }}</a
+      >
+    </td>
     <td>{{ row.courthouse }}</td>
     <td>{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
     <td>{{ row.requestMethod ? 'Manual' : 'Automatic' }}</td>
