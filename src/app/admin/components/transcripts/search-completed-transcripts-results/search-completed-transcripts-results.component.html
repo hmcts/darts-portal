@@ -18,8 +18,7 @@
         class="govuk-link"
         [routerLink]="['/admin/case/', row.caseId]"
         [queryParams]="{ backUrl: '/admin/transcripts' }"
-      >
-        {{ row.caseNumber }}</a
+        >{{ row.caseNumber }}</a
       >
     </td>
     <td>{{ row.courthouse }}</td>

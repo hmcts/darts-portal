@@ -79,9 +79,8 @@
             class="govuk-link"
             [routerLink]="['/admin/case/', data.case.id]"
             [queryParams]="{ backUrl: '/admin/transformed-media/' + transformedMediaId }"
+            >{{ data.case.number }}</a
           >
-            {{ data.case.number }}
-          </a>
         </dd>
       </div>
       <div class="govuk-summary-list__row">

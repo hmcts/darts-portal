@@ -2,4 +2,37 @@
 
 <app-details-table id="request-details" title="Request details" [details]="requestDetails" />
 
-<app-details-table id="case-details" title="Case details" [details]="caseDetails" />
+<!-- TO DO: Remove above deprecated component, utilise Govuk details directive -->
+
+<div id="case-details" govukSummaryContainer>
+  <app-govuk-heading class="no-margin" tag="h2" size="m">Case details</app-govuk-heading>
+  <div class="heading-bottom govuk-!-margin-top-2"></div>
+  <dl govukSummaryList>
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Case ID</dt>
+      <dd govukSummaryValue>
+        <a
+          class="govuk-link"
+          [routerLink]="['/admin/case', transcript.caseId]"
+          [queryParams]="{ backUrl: '/admin/transcripts/' + transcript.transcriptionId }"
+          >{{ transcript.caseNumber }}</a
+        >
+      </dd>
+    </div>
+
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Courthouse</dt>
+      <dd govukSummaryValue>{{ transcript.courthouse }}</dd>
+    </div>
+
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Judge(s)</dt>
+      <dd govukSummaryValue>{{ transcript.judges | join }}</dd>
+    </div>
+
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Defendant(s)</dt>
+      <dd govukSummaryValue>{{ transcript.defendants | join }}</dd>
+    </div>
+  </dl>
+</div>
