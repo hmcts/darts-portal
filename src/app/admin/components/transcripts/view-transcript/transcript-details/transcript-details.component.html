@@ -27,12 +27,16 @@
 
     <div govukSummaryListRow>
       <dt govukSummaryKey>Judge(s)</dt>
-      <dd govukSummaryValue>{{ transcript.judges | join }}</dd>
+      <dd govukSummaryValue [preserveLineBreaks]="true">
+        {{ transcript.judges | join: undefined : undefined : true }}
+      </dd>
     </div>
 
     <div govukSummaryListRow>
       <dt govukSummaryKey>Defendant(s)</dt>
-      <dd govukSummaryValue>{{ transcript.defendants | join }}</dd>
+      <dd govukSummaryValue [preserveLineBreaks]="true">
+        {{ transcript.defendants | join: undefined : undefined : true }}
+      </dd>
     </div>
   </dl>
 </div>
