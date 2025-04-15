@@ -98,4 +98,36 @@ describe('SearchFormComponent', () => {
       expect(component.errors.emit).toHaveBeenCalled();
     });
   });
+
+  describe('logicError output', () => {
+    it('should emit COMMON_105 when date range exceeds one year', () => {
+      const logicErrorSpy = jest.spyOn(component.logicError, 'emit');
+
+      component.form.get('hearingDate.from')?.setValue('01/01/2020');
+      component.form.get('hearingDate.to')?.setValue('02/01/2021');
+      component.onSubmit();
+
+      expect(logicErrorSpy).toHaveBeenCalledWith('COMMON_105');
+    });
+
+    it('should not emit COMMON_105 when date range is less than or equal to one year', () => {
+      const logicErrorSpy = jest.spyOn(component.logicError, 'emit');
+
+      component.form.get('hearingDate.from')?.setValue('01/01/2021');
+      component.form.get('hearingDate.to')?.setValue('31/12/2021');
+      component.onSubmit();
+
+      expect(logicErrorSpy).not.toHaveBeenCalledWith('COMMON_105');
+    });
+
+    it('should not emit logicError if dates are missing', () => {
+      const logicErrorSpy = jest.spyOn(component.logicError, 'emit');
+
+      component.form.get('hearingDate.from')?.setValue('');
+      component.form.get('hearingDate.to')?.setValue('');
+      component.onSubmit();
+
+      expect(logicErrorSpy).not.toHaveBeenCalled();
+    });
+  });
 });
