@@ -20,4 +20,11 @@ export class ActiveTabService {
       [screenId]: tabName,
     }));
   }
+
+  clearActiveTab(screenId: string) {
+    this.state.update((tabs) => {
+      const { [screenId]: _, ...rest } = tabs;
+      return rest;
+    });
+  }
 }

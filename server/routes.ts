@@ -16,8 +16,12 @@ export default (disableAuthentication = false): Router => {
     if (disableAuthentication) {
       return next();
     }
-    await isAuthenticated(req, res);
-    next();
+    try {
+      await isAuthenticated(req);
+      next();
+    } catch (_) {
+      res.sendStatus(401);
+    }
   };
 
   // authenticated routes

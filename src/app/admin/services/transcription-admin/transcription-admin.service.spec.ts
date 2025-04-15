@@ -260,7 +260,7 @@ describe('TranscriptionAdminService', () => {
       requestor_comments: 'Please expedite my request',
       rejection_reason: 'This request will take longer to transcribe within the urgency level you require.',
       defendants: ['Defendant Dave', 'Defendant Bob'],
-      judges: ['HHJ M. Hussain KC	', 'Ray Bob'],
+      judges: ['HHJ M. Hussain KC', 'Ray Bob'],
       transcript_file_name: 'C20220620001_0.docx',
       hearing_date: '2023-11-08',
       transcription_urgency: {
@@ -303,7 +303,7 @@ describe('TranscriptionAdminService', () => {
       requestorComments: 'Please expedite my request',
       rejectionReason: 'This request will take longer to transcribe within the urgency level you require.',
       defendants: ['Defendant Dave', 'Defendant Bob'],
-      judges: ['HHJ M. Hussain KC\t', 'Ray Bob'],
+      judges: ['HHJ M. Hussain KC', 'Ray Bob'],
       transcriptFileName: 'C20220620001_0.docx',
       hearingDate: DateTime.fromISO('2023-11-08T00:00:00.000Z'),
       urgency: {

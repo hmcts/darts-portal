@@ -73,7 +73,15 @@
     <dl class="govuk-summary-list">
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Case ID</dt>
-        <dd class="govuk-summary-list__value whitespace-pre">{{ data.case.number }}</dd>
+        <dd class="govuk-summary-list__value whitespace-pre">
+          <a
+            href="javascript:void(0)"
+            class="govuk-link"
+            [routerLink]="['/admin/case/', data.case.id]"
+            [queryParams]="{ backUrl: '/admin/transformed-media/' + transformedMediaId }"
+            >{{ data.case.number }}</a
+          >
+        </dd>
       </div>
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Courthouse</dt>

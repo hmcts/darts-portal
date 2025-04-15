@@ -11,9 +11,9 @@ import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { TranscriptionDetails } from '@portal-types/transcriptions/transcription-details.type';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { DateTime } from 'luxon';
+import { throwError } from 'rxjs';
 import { of } from 'rxjs/internal/observable/of';
 import { UploadTranscriptComponent } from './upload-transcript.component';
-import { throwError } from 'rxjs';
 
 const MOCK_TRANSCRIPTION_DETAILS: TranscriptionDetails = {
   caseId: 1,
@@ -62,7 +62,7 @@ const MOCK_TABLE_DETAILS = {
   caseDetails: {
     'Case ID': '123',
     Courthouse: 'Swansea',
-    'Judge(s)': ['HHJ M. Hussain KC\t', 'Ray Bob'],
+    'Judge(s)': ['HHJ M. Hussain KC', 'Ray Bob'],
     'Defendant(s)': ['Defendant Dave', 'Defendant Bob'],
   },
   hearingDetails: {

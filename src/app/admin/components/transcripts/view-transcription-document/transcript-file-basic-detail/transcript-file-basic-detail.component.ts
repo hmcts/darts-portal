@@ -1,5 +1,5 @@
 import { TranscriptionDocument } from '@admin-types/transcription/transcription-document';
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { GovukSummaryListDirectives } from '@directives/govuk-summary-list';

@@ -43,13 +43,13 @@
       </div>
       <div govukSummaryListRow>
         <dt govukSummaryKey>Defendant(s)</dt>
-        <dd govukSummaryValue>
+        <dd govukSummaryValue [preserveLineBreaks]="true">
           {{ transcription.details.defendants | join: undefined : undefined : true }}
         </dd>
       </div>
       <div govukSummaryListRow>
         <dt govukSummaryKey>Judge(s)</dt>
-        <dd govukSummaryValue>
+        <dd govukSummaryValue [preserveLineBreaks]="true">
           {{ transcription.details.judges | join: undefined : undefined : true }}
         </dd>
       </div>
@@ -64,13 +64,13 @@
   <div govukSummaryContainer>
     <dl govukSummaryList>
       <div govukSummaryListRow>
-        <dt govukSummaryKey>Request Type</dt>
+        <dt govukSummaryKey>Request type</dt>
         <dd govukSummaryValue>{{ transcription.details.requestType }}</dd>
       </div>
       <div govukSummaryListRow>
         <dt govukSummaryKey>Audio for transcript</dt>
         <dd govukSummaryValue>
-          Start Time +
+          Start time
           {{ transcription.details.transcriptionStartTs | luxonDate: 'HH:mm:ss' }}
           - End time
           {{
@@ -85,6 +85,12 @@
         <dt govukSummaryKey>Requested date</dt>
         <dd govukSummaryValue>{{ transcription.details.received | luxonDate: 'dd MMM yyyy' }}</dd>
       </div>
+      @if (transcription.details.approved) {
+        <div govukSummaryListRow>
+          <dt govukSummaryKey>Approved on</dt>
+          <dd govukSummaryValue>{{ transcription.details.approved | luxonDate: 'dd MMM yyyy' }}</dd>
+        </div>
+      }
       <div govukSummaryListRow>
         <dt govukSummaryKey>Request method</dt>
         <dd govukSummaryValue>{{ transcription.details.isManual ? 'Manual' : 'Automatic' }}</dd>
@@ -99,7 +105,6 @@
             [queryParams]="{
               backUrl: '/admin/transcripts/document/' + transcription.document.transcriptionDocumentId,
             }"
-            ß
             >{{ transcription.details.transcriptionId }}</a
           >
         </dd>
@@ -128,7 +133,9 @@
       @if (transcription.details.legacyComments) {
         <div govukSummaryListRow>
           <dt govukSummaryKey>Migrated legacy data comments</dt>
-          <dd govukSummaryValue>{{ transcription.details.legacyComments }}</dd>
+          <dd govukSummaryValue [preserveLineBreaks]="true">
+            {{ transcription.details.legacyComments | join: undefined : undefined : true }}
+          </dd>
         </div>
       }
     </dl>

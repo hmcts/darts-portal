@@ -145,7 +145,12 @@ export class TranscriptionService {
 
   getCaseDetailsFromTranscript(transcript: TranscriptionDetails) {
     return {
-      'Case ID': transcript.caseNumber,
+      'Case ID': [
+        {
+          href: `/admin/case/${transcript.caseId}`,
+          value: transcript.caseNumber,
+        },
+      ],
       Courthouse: transcript.courthouse,
       'Judge(s)': transcript.judges,
       'Defendant(s)': transcript.defendants,

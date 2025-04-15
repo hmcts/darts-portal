@@ -93,7 +93,7 @@ export class HearingComponent implements OnInit {
   userState = this.route.snapshot.data.userState;
   transcripts: TranscriptsRow[] = [];
   rows: AudioEventRow[] = [];
-  readonly screenId = 'hearingScreen';
+  readonly screenId = 'hearing-screen';
   tab = this.activeTabService.activeTabs()[this.screenId] ?? 'Events and Audio';
   selectedAnnotationsforDeletion: number[] = [];
   statusColours = transcriptStatusTagColours;

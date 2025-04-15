@@ -6,7 +6,7 @@ import { AdminHearingSearchResult } from '@admin-types/search/admin-hearing-sear
 import { AdminHearingSearchResultData } from '@admin-types/search/admin-hearing-search-result-data.interface';
 import { AdminMediaSearchResult } from '@admin-types/search/admin-media-search-result';
 import { AdminMediaSearchResultData } from '@admin-types/search/admin-media-search-result-data.inerface';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject, signal } from '@angular/core';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
 import { UserService } from '@services/user/user.service';
@@ -71,7 +71,7 @@ export class AdminSearchService {
     this.logSearchEvent(SearchType.CASE, requestBody);
     return this.http.post<AdminCaseSearchResultData[]>(ADMIN_CASE_SEARCH_PATH, requestBody).pipe(
       map((results) => this.mapCaseDataToCaseSearchResult(results)),
-      catchError(() => this.handleSearchError()),
+      catchError((error) => this.handleSearchError(error)),
       tap((results) => this.cases.set(results)),
       finalize(() => this.isLoading.set(false))
     );
@@ -82,7 +82,7 @@ export class AdminSearchService {
     this.logSearchEvent(SearchType.EVENT, requestBody);
     return this.http.post<AdminEventSearchResultData[]>(ADMIN_EVENT_SEARCH_PATH, requestBody).pipe(
       map((results) => this.mapEventDataToEventSearchResult(results)),
-      catchError(() => this.handleSearchError()),
+      catchError((error) => this.handleSearchError(error)),
       tap((results) => this.events.set(results)),
       finalize(() => this.isLoading.set(false))
     );
@@ -93,7 +93,7 @@ export class AdminSearchService {
     this.logSearchEvent(SearchType.HEARING, requestBody);
     return this.http.post<AdminHearingSearchResultData[]>(ADMIN_HEARING_SEARCH_PATH, requestBody).pipe(
       map((results) => this.mapHearingDataToHearingSearchResult(results)),
-      catchError(() => this.handleSearchError()),
+      catchError((error) => this.handleSearchError(error)),
       tap((results) => this.hearings.set(results)),
       finalize(() => this.isLoading.set(false))
     );
@@ -104,7 +104,7 @@ export class AdminSearchService {
     this.logSearchEvent(SearchType.AUDIO, requestBody);
     return this.http.post<AdminMediaSearchResultData[]>(ADMIN_MEDIA_SEARCH_PATH, requestBody).pipe(
       map((results) => this.mapMediaDataToMediaSearchResult(results)),
-      catchError(() => this.handleSearchError()),
+      catchError((error) => this.handleSearchError(error)),
       tap((results) => this.audio.set(results)),
       finalize(() => this.isLoading.set(false))
     );
@@ -128,8 +128,11 @@ export class AdminSearchService {
     });
   }
 
-  private handleSearchError() {
-    this.searchError.set('There are more than 1000 results. Refine your search.');
+  private handleSearchError(response: HttpErrorResponse | null = null) {
+    if (response?.error) {
+      this.searchError.set(response.error.type ?? 'Error occurred while searching');
+    }
+
     return of([]);
   }
 
