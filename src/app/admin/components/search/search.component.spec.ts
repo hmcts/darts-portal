@@ -78,6 +78,34 @@ describe('SearchComponent', () => {
     });
   });
 
+  describe('onLogicError', () => {
+    it('should set COMMON_105 as search error and clear cases', () => {
+      const searchErrorSpy = jest.spyOn(component.searchService.searchError, 'set');
+      const clearCasesSpy = jest.spyOn(component.searchService.cases, 'set');
+
+      component.onLogicError('COMMON_105');
+
+      expect(searchErrorSpy).toHaveBeenCalledWith('COMMON_105');
+      expect(clearCasesSpy).toHaveBeenCalledWith([]);
+    });
+
+    it('should reset search error if null is passed', () => {
+      const searchErrorSpy = jest.spyOn(component.searchService.searchError, 'set');
+
+      component.onLogicError(null);
+
+      expect(searchErrorSpy).toHaveBeenCalledWith(null);
+    });
+
+    it('should reset search error if unknown error is passed', () => {
+      const searchErrorSpy = jest.spyOn(component.searchService.searchError, 'set');
+
+      component.onLogicError('SOME_OTHER_ERROR');
+
+      expect(searchErrorSpy).toHaveBeenCalledWith(null);
+    });
+  });
+
   describe('onSearch', () => {
     it('set flags', fakeAsync(() => {
       const isLoadingSpy = jest.spyOn(component.searchService.isLoading, 'set');

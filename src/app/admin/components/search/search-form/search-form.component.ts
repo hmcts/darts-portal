@@ -9,6 +9,7 @@ import { defaultFormValues } from '@services/admin-search/admin-search.service';
 import { FormService } from '@services/form/form.service';
 import { dateRangeValidator } from '@validators/date-range.validator';
 import { optionalMaxLengthValidator } from '@validators/optional-maxlength.validator';
+import { DateTime } from 'luxon';
 import { transformedMediaSearchDateValidators } from '../../transformed-media/search-transformed-media-form/search-transformed-media-form.component';
 
 export type AdminSearchFormValues = {
@@ -37,6 +38,7 @@ export class SearchFormComponent {
   courthouses = input<Courthouse[]>([]);
   search = output<AdminSearchFormValues>();
   errors = output<ErrorSummaryEntry[]>();
+  logicError = output<string | null>();
   clear = output<void>();
   formService = inject(FormService);
   fb = inject(FormBuilder);
@@ -107,6 +109,12 @@ export class SearchFormComponent {
 
   onSubmit() {
     this.form.markAllAsTouched();
+
+    if (this.isDateSpanMoreThanOneYear()) {
+      this.logicError.emit('COMMON_105');
+      return;
+    }
+
     if (!this.form.valid) {
       const errors = this.formService.getErrorSummaryRecursively(this.form, AdminSearchFormErrorMessages);
       this.errors.emit(errors);
@@ -121,5 +129,20 @@ export class SearchFormComponent {
   onClear() {
     this.errors.emit([]);
     this.clear.emit();
+  }
+
+  isDateSpanMoreThanOneYear(): boolean {
+    const hearingDate = this.form.get('hearingDate');
+    const from = hearingDate?.get('from')?.value;
+    const to = hearingDate?.get('to')?.value;
+
+    if (!from || !to) return false;
+
+    const fromDate = DateTime.fromFormat(from, 'dd/MM/yyyy');
+    const toDate = DateTime.fromFormat(to, 'dd/MM/yyyy');
+
+    if (!fromDate.isValid || !toDate.isValid) return false;
+
+    return toDate.diff(fromDate, 'days').days > 365;
   }
 }
