@@ -1,5 +1,5 @@
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
-import { Component, computed, effect, inject, input, model, output } from '@angular/core';
+import { Component, computed, inject, input, model, OnInit, output } from '@angular/core';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { AutoCompleteComponent, AutoCompleteItem } from '@common/auto-complete/auto-complete.component';
 import { SpecificOrRangeDatePickerComponent } from '@common/specific-or-range-date-picker/specific-or-range-date-picker.component';
@@ -32,7 +32,7 @@ type AdminSearchFormControl = keyof typeof AdminSearchFormErrorMessages;
   templateUrl: './search-form.component.html',
   styleUrl: './search-form.component.scss',
 })
-export class SearchFormComponent {
+export class SearchFormComponent implements OnInit {
   formValues = model<AdminSearchFormValues>(defaultFormValues);
   courthouses = input<Courthouse[]>([]);
   search = output<AdminSearchFormValues>();
@@ -57,9 +57,8 @@ export class SearchFormComponent {
     resultsFor: [''],
   });
 
-  constructor() {
-    // if formValues are passed in update the form
-    effect(() => this.form.patchValue(this.formValues()));
+  ngOnInit() {
+    this.form.patchValue(this.formValues());
   }
 
   courthouseAutoCompleteItems = computed(() =>

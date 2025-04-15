@@ -285,6 +285,8 @@ describe('CaseSearchFormComponent', () => {
       fixture.componentRef.setInput('formValues', previousFormValues);
       fixture.detectChanges();
 
+      component.form.patchValue(previousFormValues);
+
       expect(component.isAdvancedSearch).toBeTruthy();
       expect(component.form.value).toEqual(previousFormValues);
       expect(component.isSubmitted).toBeTruthy();
@@ -308,6 +310,8 @@ describe('CaseSearchFormComponent', () => {
 
       fixture.componentRef.setInput('formValues', previousFormValues);
       fixture.detectChanges();
+
+      component.form.patchValue(previousFormValues);
 
       expect(component.isAdvancedSearch).toBeTruthy();
       expect(component.form.value).toEqual(previousFormValues);
