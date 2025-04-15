@@ -1,11 +1,136 @@
 <div id="transcript-details">
-  @if (basicDetails) {
-    <app-details-table title="Basic details" [details]="basicDetails" />
-  }
+  <header>
+    <app-govuk-heading tag="h2" size="m">Basic details</app-govuk-heading>
+    <div><ng-content></ng-content></div>
+  </header>
+  <div govukSummaryContainer>
+    <dl govukSummaryList>
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Case ID</dt>
+        <dd govukSummaryValue>
+          <a
+            class="govuk-link"
+            [routerLink]="['/admin/case', transcription.details.caseId]"
+            [queryParams]="{ backUrl: '/admin/transcripts/document/' + transcription.document.transcriptionDocumentId }"
+            >{{ transcription.details.caseNumber }}</a
+          >
+        </dd>
+      </div>
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Hearing date</dt>
+        <dd govukSummaryValue>
+          @if (transcription.details.hearingId) {
+            <a
+              class="govuk-link"
+              [routerLink]="['/admin/case', transcription.details.caseId, 'hearing', transcription.details.hearingId]"
+              [queryParams]="{
+                backUrl: '/admin/transcripts/document/' + transcription.document.transcriptionDocumentId,
+              }"
+              >{{ transcription.details.hearingDate | luxonDate: 'dd MMM yyyy' }}</a
+            >
+          } @else {
+            {{ transcription.details.hearingDate | luxonDate: 'dd MMM yyyy' }}
+          }
+        </dd>
+      </div>
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Courthouse</dt>
+        <dd govukSummaryValue>{{ transcription.details.courthouse }}</dd>
+      </div>
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Courtroom</dt>
+        <dd govukSummaryValue>{{ transcription.details.courtroom }}</dd>
+      </div>
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Defendant(s)</dt>
+        <dd govukSummaryValue>
+          {{ transcription.details.defendants | join: undefined : undefined : true }}
+        </dd>
+      </div>
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Judge(s)</dt>
+        <dd govukSummaryValue>
+          {{ transcription.details.judges | join: undefined : undefined : true }}
+        </dd>
+      </div>
+    </dl>
+  </div>
 </div>
 
 <div id="request-details">
-  @if (requestDetails) {
-    <app-details-table title="Request details" [details]="requestDetails" />
-  }
+  <header>
+    <app-govuk-heading tag="h2" size="m">Request details</app-govuk-heading>
+  </header>
+  <div govukSummaryContainer>
+    <dl govukSummaryList>
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Request Type</dt>
+        <dd govukSummaryValue>{{ transcription.details.requestType }}</dd>
+      </div>
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Audio for transcript</dt>
+        <dd govukSummaryValue>
+          Start Time +
+          {{ transcription.details.transcriptionStartTs | luxonDate: 'HH:mm:ss' }}
+          - End time
+          {{
+            transcription.details.transcriptionEndTs
+              ? (transcription.details.transcriptionEndTs | luxonDate: 'HH:mm:ss')
+              : ''
+          }}
+        </dd>
+      </div>
+
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Requested date</dt>
+        <dd govukSummaryValue>{{ transcription.details.received | luxonDate: 'dd MMM yyyy' }}</dd>
+      </div>
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Request method</dt>
+        <dd govukSummaryValue>{{ transcription.details.isManual ? 'Manual' : 'Automatic' }}</dd>
+      </div>
+
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Request ID</dt>
+        <dd govukSummaryValue>
+          <a
+            class="govuk-link"
+            [routerLink]="['/admin/transcripts', transcription.details.transcriptionId]"
+            [queryParams]="{
+              backUrl: '/admin/transcripts/document/' + transcription.document.transcriptionDocumentId,
+            }"
+            ß
+            >{{ transcription.details.transcriptionId }}</a
+          >
+        </dd>
+      </div>
+
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Urgency</dt>
+        <dd govukSummaryValue>{{ transcription.details.urgency.description }}</dd>
+      </div>
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Requested by</dt>
+        <dd govukSummaryValue>{{ transcription.details.from }}</dd>
+      </div>
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Instructions</dt>
+        <dd govukSummaryValue>{{ transcription.details.requestorComments }}</dd>
+      </div>
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Judge approval</dt>
+        <dd govukSummaryValue>Yes</dd>
+      </div>
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Removed from user transcripts</dt>
+        <dd govukSummaryValue>{{ transcription.details.isRemovedFromUserTranscripts ? 'Yes' : 'No' }}</dd>
+      </div>
+      @if (transcription.details.legacyComments) {
+        <div govukSummaryListRow>
+          <dt govukSummaryKey>Migrated legacy data comments</dt>
+          <dd govukSummaryValue>{{ transcription.details.legacyComments }}</dd>
+        </div>
+      }
+    </dl>
+  </div>
 </div>

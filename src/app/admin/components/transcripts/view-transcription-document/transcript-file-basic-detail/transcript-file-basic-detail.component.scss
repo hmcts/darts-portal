@@ -1,3 +1,11 @@
-section.details {
+// TO DO: This should be handled by DMP-5002 using the summary header directive
+header {
   width: 66%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #000;
+  ::ng-deep * {
+    margin-bottom: 0.33rem;
+  }
 }

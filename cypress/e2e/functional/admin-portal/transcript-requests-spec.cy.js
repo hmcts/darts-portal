@@ -366,7 +366,10 @@ describe('Admin - Transcript requests', () => {
       cy.get('#request-details dd').eq(4).should('contain', 'Manual');
 
       cy.get('#request-details dt').eq(5).should('contain', 'Request ID');
-      cy.get('#request-details dd').eq(5).should('contain', '1');
+      cy.get('#request-details dd')
+        .eq(5)
+        .should('have.attr', 'href', '/admin/transcripts/1?backUrl=%2Fadmin%2Ftranscripts%2Fdocument%2F123')
+        .and('contain.text', '1');
 
       cy.get('#request-details dt').eq(6).should('contain', 'Urgency');
       cy.get('#request-details dd').eq(6).should('contain', 'Standard');
