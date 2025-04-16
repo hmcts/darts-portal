@@ -70,12 +70,12 @@
       <div govukSummaryListRow>
         <dt govukSummaryKey>Audio for transcript</dt>
         <dd govukSummaryValue>
-          Start time
-          {{ transcription.details.transcriptionStartTs | luxonDate: 'HH:mm:ss' }}
-          - End time
           {{
-            transcription.details.transcriptionEndTs
-              ? (transcription.details.transcriptionEndTs | luxonDate: 'HH:mm:ss')
+            transcription.details.transcriptionStartTs && transcription.details.transcriptionEndTs
+              ? 'Start time ' +
+                (transcription.details.transcriptionStartTs | luxonDate: 'HH:mm:ss') +
+                ' - End time ' +
+                (transcription.details.transcriptionEndTs | luxonDate: 'HH:mm:ss')
               : ''
           }}
         </dd>
