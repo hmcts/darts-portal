@@ -5,7 +5,8 @@
   [rows]="events()"
   [columns]="columns"
   [hiddenCaption]="true"
-  [pagination]="false"
+  [pagination]="pagination"
+  [pageLimit]="eventsPerPage"
   caption="Court log / events associated with case"
 >
   <ng-template [tableRowTemplate]="events()" let-row>

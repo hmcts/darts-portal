@@ -22,6 +22,9 @@
       "enabled": "EVENT_OBFUSCATION_ENABLED"
     }
   },
+  "pagination": {
+    "courtLogEventsPageLimit": "PAGINATION_COURTLOG_EVENTS_LIMIT"
+  },
   "support": {
     "name": "DARTS_SUPPORT_NAME",
     "emailAddress": "DARTS_SUPPORT_EMAIL_ADDRESS"

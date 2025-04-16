@@ -1,4 +1,5 @@
 const express = require('express');
+const { DateTime } = require('luxon');
 
 const router = express.Router();
 const { localArray } = require('../localArray');
@@ -877,6 +878,21 @@ router.get('/:caseId/events', (req, res) => {
   switch (caseId) {
     case '10':
       res.status(404).send(resBody404);
+      break;
+    case '16':
+      const manyEvents = Array.from({ length: 1020 }, (_, i) => {
+        const base = events[i % events.length];
+        const timestamp = DateTime.fromISO(base.timestamp).plus({ minutes: i }).toISO();
+
+        return {
+          ...base,
+          id: i + 1,
+          timestamp,
+          name: `Event ${i + 1} name`,
+          text: `Event ${i + 1} text`,
+        };
+      });
+      res.send(manyEvents);
       break;
     default:
       res.send(events);
