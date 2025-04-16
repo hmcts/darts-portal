@@ -75,7 +75,7 @@ export class AudioRequestService {
       start_time: DateTime.fromISO(audioRequest.start_time).toUTC().toISO(),
       end_time: DateTime.fromISO(audioRequest.end_time).toUTC().toISO(),
     }
-    return this.http.post<PostAudioResponse>(`api/audio-requests/${audioRequest.request_type?.toLowerCase()}`, payload);
+    return this.http.post<PostAudioResponse>(`api/audio-requests/${audioRequest.request_type.toLowerCase()}`, payload);
   }
 
   downloadAudio(transformedMediaId: number, requestType: AudioRequestType): Observable<Blob> {
