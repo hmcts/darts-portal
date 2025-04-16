@@ -468,10 +468,10 @@ describe('TranscriptionAdminService', () => {
     expect(result.Status?.action?.text).toBe('Change status');
     expect(result.Status?.action?.url).toBe('/admin/transcripts/1/change-status');
     expect(result.Status?.action?.queryParams).toEqual({ status: 'Approved', manual: true });
-    if (typeof result['Assigned to'][0] !== 'string') {
-      expect(result['Assigned to'][0].href).toBe('/admin/users/1');
-      expect(result['Assigned to'][0].value).toBe('John Doe');
-      expect(result['Assigned to'][0].caption).toBe('john.doe@example.com');
+    if (typeof result['Last actioned by'][0] !== 'string') {
+      expect(result['Last actioned by'][0].href).toBe('/admin/users/1');
+      expect(result['Last actioned by'][0].value).toBe('John Doe');
+      expect(result['Last actioned by'][0].caption).toBe('john.doe@example.com');
     }
     expect(result['Associated groups']).toEqual([
       { href: '/admin/groups/1', value: 'Group One' },
@@ -503,10 +503,10 @@ describe('TranscriptionAdminService', () => {
     expect(result.Status?.action?.text).toBe('Change status');
     expect(result.Status?.action?.url).toBe('/admin/transcripts/1/change-status');
     expect(result.Status?.action?.queryParams).toEqual({ status: 'Approved', manual: true });
-    if (typeof result['Assigned to'][0] !== 'string') {
-      expect(result['Assigned to'][0].href).toBe('/admin/users/1');
-      expect(result['Assigned to'][0].value).toBe('John Doe');
-      expect(result['Assigned to'][0].caption).toBe('john.doe@example.com');
+    if (typeof result['Last actioned by'][0] !== 'string') {
+      expect(result['Last actioned by'][0].href).toBe('/admin/users/1');
+      expect(result['Last actioned by'][0].value).toBe('John Doe');
+      expect(result['Last actioned by'][0].caption).toBe('john.doe@example.com');
     }
     expect(result['Associated groups']).toEqual(['Group One', 'Group Two']);
   });
@@ -574,7 +574,7 @@ describe('TranscriptionAdminService', () => {
 
     expect(result.Status?.value).toBe('Complete');
     expect(result.Status?.action).toBe(undefined);
-    expect(result['Assigned to']).toBe('Unassigned');
+    expect(result['Last actioned by']).toBe('Unassigned');
     expect(result['Associated groups']).toEqual(null);
   });
 
