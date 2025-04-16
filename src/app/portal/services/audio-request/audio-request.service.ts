@@ -74,7 +74,7 @@ export class AudioRequestService {
       requestor: audioRequest.requestor,
       start_time: DateTime.fromISO(audioRequest.start_time).toUTC().toISO(),
       end_time: DateTime.fromISO(audioRequest.end_time).toUTC().toISO(),
-    }
+    };
     return this.http.post<PostAudioResponse>(`api/audio-requests/${audioRequest.request_type.toLowerCase()}`, payload);
   }
 
