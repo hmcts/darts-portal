@@ -69,11 +69,13 @@ export class AudioRequestService {
   }
 
   requestAudio(audioRequest: PostAudioRequest): Observable<PostAudioResponse> {
-    return this.http.post<PostAudioResponse>(`api/audio-requests/${audioRequest.request_type.toLowerCase()}`, {
-      ...audioRequest,
+    const payload = {
+      hearing_id: audioRequest.hearing_id,
+      requestor: audioRequest.requestor,
       start_time: DateTime.fromISO(audioRequest.start_time).toUTC().toISO(),
       end_time: DateTime.fromISO(audioRequest.end_time).toUTC().toISO(),
-    });
+    }
+    return this.http.post<PostAudioResponse>(`api/audio-requests/${audioRequest.request_type?.toLowerCase()}`, payload);
   }
 
   downloadAudio(transformedMediaId: number, requestType: AudioRequestType): Observable<Blob> {
