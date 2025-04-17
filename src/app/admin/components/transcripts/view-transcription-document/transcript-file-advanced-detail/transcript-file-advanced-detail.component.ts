@@ -41,7 +41,7 @@ export class TranscriptFileAdvancedDetailComponent implements OnInit {
       'File size': `${this.bytesPipe.transform(document.fileSizeBytes)}MB`,
       'File type': document.fileType,
       Filename: document.fileName,
-      'Date uploaded': `${this.luxonPipe.transform(document.uploadedAt, this.dateFormat) || ''}`,
+      'Date uploaded': `${this.luxonPipe.transform(document.uploadedAt, this.dateFormat) ?? ''}`,
       'Uploaded by': [
         {
           href: `/admin/users/${document.uploadedBy}`,
@@ -54,11 +54,11 @@ export class TranscriptFileAdvancedDetailComponent implements OnInit {
           value: document.lastModifiedByName,
         },
       ],
-      'Date last modified': `${this.luxonPipe.transform(document.lastModifiedAt, this.dateFormat) || ''}`,
+      'Date last modified': `${this.luxonPipe.transform(document.lastModifiedAt, this.dateFormat) ?? ''}`,
       'Transcription hidden?': document.isHidden ? 'Yes' : 'No',
       'Hidden by': document.adminAction?.hiddenByName,
-      'Date hidden': `${this.luxonPipe.transform(document.adminAction?.hiddenAt, this.dateFormat) || ''}`,
-      'Retain until': `${this.luxonPipe.transform(document.retainUntil, this.dateFormat) || ''}`,
+      'Date hidden': `${this.luxonPipe.transform(document.adminAction?.hiddenAt, this.dateFormat) ?? ''}`,
+      'Retain until': `${this.luxonPipe.transform(document.retainUntil, this.dateFormat) ?? ''}`,
     };
   }
 }
