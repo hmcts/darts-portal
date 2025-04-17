@@ -3,6 +3,8 @@ const router = require('express').Router();
 const events = [
   {
     id: 111,
+    is_data_anonymised: false,
+    event_status: 4,
     created_at: '2024-01-01T04:14:51Z',
     event_ts: '2024-01-01T04:14:44Z',
     name: 'Event 1',

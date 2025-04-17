@@ -113,6 +113,8 @@ describe('Admin - Event details', () => {
           cy.get('dt').contains('Reporting restriction?').next('dd').should('contain.text', 'No');
           cy.get('dt').contains('Log entry?').next('dd').should('contain.text', 'No');
           cy.get('dt').contains('Is current?').next('dd').should('contain.text', 'Yes');
+          cy.get('dt').contains('Is data anonymised?').next('dd').should('contain.text', 'No');
+          cy.get('dt').contains('Event Status').next('dd').should('contain.text', '4');
         });
 
       cy.get('.versions-heading').within(() => {
