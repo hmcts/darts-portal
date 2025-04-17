@@ -73,6 +73,7 @@ describe('EventsFacadeService', () => {
         chronicleId: '',
         antecedentId: '',
         isDataAnonymised: false,
+        eventStatus: 4,
         eventTs: DateTime.fromISO('2024-05-05T11:00:00Z'),
         createdAt: DateTime.fromISO('2024-05-05T11:00:00Z'),
         lastModifiedAt: DateTime.fromISO('2024-05-05T11:00:00Z'),
