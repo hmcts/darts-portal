@@ -52,7 +52,6 @@ export class SearchTranscriptsFormComponent implements OnInit {
     caseId: ['', [optionalMaxLengthValidator(32)]],
     courthouse: [''],
     hearingDate: ['', transcriptSearchDateValidators],
-    owner: ['', [optionalMaxLengthValidator(2000)]],
     requestedBy: ['', [optionalMaxLengthValidator(2000)]],
     requestedDate: this.fb.group(
       {

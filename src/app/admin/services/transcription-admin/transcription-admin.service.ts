@@ -45,7 +45,6 @@ export const defaultFormValues = {
   caseId: '',
   courthouse: '',
   hearingDate: '',
-  owner: '',
   requestedBy: '',
   requestedDate: {
     type: '',
@@ -489,7 +488,6 @@ export class TranscriptionAdminService {
       case_number: values.caseId || null,
       courthouse_display_name: values.courthouse?.toUpperCase() || null,
       hearing_date: formatDate(values.hearingDate),
-      owner: values.owner || null,
       requested_by: values.requestedBy || null,
       requested_at_from: formatDate(values.requestedDate?.specific) ?? formatDate(values.requestedDate?.from),
       requested_at_to: formatDate(values.requestedDate?.specific) ?? formatDate(values.requestedDate?.to),
