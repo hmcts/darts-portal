@@ -82,6 +82,7 @@ export class EventsService {
       chronicleId: event.chronicle_id,
       antecedentId: event.antecedent_id,
       isDataAnonymised: event.is_data_anonymised,
+      eventStatus: event.event_status,
       eventTs: DateTime.fromISO(event.event_ts),
       createdAt: DateTime.fromISO(event.created_at),
       createdById: event.created_by,

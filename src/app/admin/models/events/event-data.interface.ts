@@ -45,6 +45,7 @@ export interface EventData {
   chronicle_id: string;
   antecedent_id: string;
   is_data_anonymised: boolean;
+  event_status: number;
   event_ts: string;
   created_at: string;
   created_by: number;
