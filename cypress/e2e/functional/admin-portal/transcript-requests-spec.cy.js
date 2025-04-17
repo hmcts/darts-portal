@@ -17,7 +17,6 @@ describe('Admin - Transcript requests', () => {
 
       cy.get('#courthouse').type('Slough');
       cy.get('#hearingDate').type('01/01/2022');
-      cy.get('#owner').type('Phil Taylor');
       cy.get('#requestedBy').type('Martin Adams');
       cy.get('#specific-date-radio').click();
       cy.get('#specific').type('01/01/2022');
@@ -31,7 +30,6 @@ describe('Admin - Transcript requests', () => {
       cy.get('#requestId').should('have.value', '');
       cy.get('#courthouse').should('have.value', '');
       cy.get('#hearingDate').should('have.value', '');
-      cy.get('#owner').should('have.value', '');
       cy.get('#requestedBy').should('have.value', '');
       cy.get('#specific-date-radio').click();
       cy.get('#specific').should('have.value', '');
@@ -65,7 +63,6 @@ describe('Admin - Transcript requests', () => {
       cy.get('#courthouse').type('Slough');
       cy.get('li').contains('Slough').click();
       cy.get('#hearingDate').type('01/01/2022');
-      cy.get('#owner').type('Phil Taylor');
       cy.get('#requestedBy').type('Martin Adams');
       cy.get('#specific-date-radio').click();
       cy.get('#specific').type('01/01/2022');
@@ -82,7 +79,6 @@ describe('Admin - Transcript requests', () => {
       cy.get('#requestId').should('have.value', '1');
       cy.get('#courthouse').should('have.value', 'Slough');
       cy.get('#hearingDate').should('have.value', '01/01/2022');
-      cy.get('#owner').should('have.value', 'Phil Taylor');
       cy.get('#requestedBy').should('have.value', 'Martin Adams');
       cy.get('#specific').should('have.value', '01/01/2022');
       cy.get('#requestMethodAll').should('be.checked');
@@ -92,20 +88,18 @@ describe('Admin - Transcript requests', () => {
 
     it('verifies form validation', () => {
       const invalidCaseId = '1234567890123456789012345678901234567890';
-      const invalidOwnerRequestedBy = LONG_STRING_2K;
+      const invalidRequestedBy = LONG_STRING_2K;
 
       cy.get('summary').contains('Advanced search').click();
 
       cy.get('#requestId').type('AAA');
       cy.get('#caseId').type(invalidCaseId);
-      cy.get('#owner').invoke('val', invalidOwnerRequestedBy).type('1');
-      cy.get('#requestedBy').invoke('val', invalidOwnerRequestedBy).type('1');
+      cy.get('#requestedBy').invoke('val', invalidRequestedBy).type('1');
 
       cy.get('#search').click({ force: true });
 
       cy.get('.govuk-error-summary__list').should('contain', 'Request ID must only contain numbers');
       cy.get('.govuk-error-summary__list').should('contain', 'Case ID must be less than or equal to 32 characters');
-      cy.get('.govuk-error-summary__list').should('contain', 'Owner must be less than or equal to 2000 characters');
       cy.get('.govuk-error-summary__list').should(
         'contain',
         'Requested by must be less than or equal to 2000 characters'
@@ -113,7 +107,6 @@ describe('Admin - Transcript requests', () => {
 
       cy.get('.requestid-name-error').should('contain', 'Request ID must only contain numbers');
       cy.get('.caseid-name-error').should('contain', 'Case ID must be less than or equal to 32 characters');
-      cy.get('.owner-name-error').should('contain', 'Owner must be less than or equal to 2000 characters');
       cy.get('.requestedby-name-error').should('contain', 'Requested by must be less than or equal to 2000 characters');
 
       cy.get('#requestId').clear().type('0');
@@ -130,7 +123,6 @@ describe('Admin - Transcript requests', () => {
 
       cy.get('#requestId').clear().type('1234');
       cy.get('#caseId').clear().type('ABC123CASE');
-      cy.get('#owner').clear().type('Terry Jenkins');
       cy.get('#requestedBy').clear().type('John Lowe');
 
       cy.get('#search').click();
@@ -284,7 +276,6 @@ describe('Admin - Transcript requests', () => {
 
       cy.get('#courthouse').type('Slough');
       cy.get('#hearingDate').type('01/01/2022');
-      cy.get('#owner').type('Phil Taylor');
       cy.get('#requestedBy').type('Martin Adams');
       cy.get('#specific-date-radio').click();
       cy.get('#specific').type('01/01/2022');
@@ -298,7 +289,6 @@ describe('Admin - Transcript requests', () => {
       cy.get('#caseId').should('have.value', '');
       cy.get('#courthouse').should('have.value', '');
       cy.get('#hearingDate').should('have.value', '');
-      cy.get('#owner').should('have.value', '');
       cy.get('#requestedBy').should('have.value', '');
       cy.get('#specific-date-radio').click();
       cy.get('#specific').should('have.value', '');
@@ -465,29 +455,25 @@ describe('Admin - Transcript requests', () => {
       cy.get('a').contains('Completed transcripts').click();
 
       const invalidCaseId = '1234567890123456789012345678901234567890';
-      const invalidOwnerRequestedBy = LONG_STRING_2K;
+      const invalidRequestedBy = LONG_STRING_2K;
 
       cy.get('summary').contains('Advanced search').click();
 
       cy.get('#caseId').type(invalidCaseId);
-      cy.get('#owner').invoke('val', invalidOwnerRequestedBy).type('1');
-      cy.get('#requestedBy').invoke('val', invalidOwnerRequestedBy).type('1');
+      cy.get('#requestedBy').invoke('val', invalidRequestedBy).type('1');
 
       cy.get('#search').click({ force: true });
 
       cy.get('.govuk-error-summary__list').should('contain', 'Case ID must be less than or equal to 32 characters');
-      cy.get('.govuk-error-summary__list').should('contain', 'Owner must be less than or equal to 2000 characters');
       cy.get('.govuk-error-summary__list').should(
         'contain',
         'Requested by must be less than or equal to 2000 characters'
       );
 
       cy.get('.caseid-name-error').should('contain', 'Case ID must be less than or equal to 32 characters');
-      cy.get('.owner-name-error').should('contain', 'Owner must be less than or equal to 2000 characters');
       cy.get('.requestedby-name-error').should('contain', 'Requested by must be less than or equal to 2000 characters');
 
       cy.get('#caseId').clear().type('123');
-      cy.get('#owner').clear().type('Terry Jenkins');
       cy.get('#requestedBy').clear().type('John Lowe');
 
       cy.get('#search').click();
