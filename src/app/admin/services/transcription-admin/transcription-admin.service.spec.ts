@@ -67,7 +67,6 @@ const emptySearchRequestBody = {
   case_number: null,
   courthouse_display_name: null,
   hearing_date: null,
-  owner: null,
   requested_at_from: null,
   requested_at_to: null,
   requested_by: null,
@@ -111,7 +110,6 @@ describe('TranscriptionAdminService', () => {
         caseId: '456',
         courthouse: 'Test Courthouse',
         hearingDate: '01/01/2022',
-        owner: 'Test Owner',
         requestedBy: 'Test Requester',
         requestedDate: { from: '01/01/2022', to: '31/01/2022' },
         requestMethod: 'manual',
@@ -122,7 +120,6 @@ describe('TranscriptionAdminService', () => {
         case_number: '456',
         courthouse_display_name: 'TEST COURTHOUSE',
         hearing_date: '2022-01-01',
-        owner: 'Test Owner',
         requested_by: 'Test Requester',
         requested_at_from: '2022-01-01',
         requested_at_to: '2022-01-31',
@@ -808,7 +805,6 @@ describe('TranscriptionAdminService', () => {
         requested_at_to: '2022-01-31',
         requested_by: 'Test Requester',
         is_manual_transcription: true,
-        owner: 'Test Owner',
       };
 
       service.searchCompletedTranscriptions(values).subscribe();
@@ -841,7 +837,6 @@ describe('TranscriptionAdminService', () => {
         requested_at_to: null,
         requested_by: null,
         is_manual_transcription: null,
-        owner: null,
       });
     });
 
