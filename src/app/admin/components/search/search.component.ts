@@ -93,6 +93,7 @@ export class SearchComponent {
   onLogicError(errorCode: string | null) {
     if (errorCode === 'COMMON_105') {
       this.searchService.searchError.set('COMMON_105');
+      this.searchService.hasFormBeenSubmitted.set(true);
       this.searchService.cases.set([]);
     } else {
       this.searchService.searchError.set(null);
