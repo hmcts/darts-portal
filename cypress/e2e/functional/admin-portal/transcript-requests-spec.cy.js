@@ -277,7 +277,7 @@ describe('Admin - Transcript requests', () => {
 
   describe('Search completed transcripts', () => {
     it('clears all input when clearing search', () => {
-      cy.get('a').contains('Completed transcripts').click();
+      cy.get('a').contains('Transcript documents').click();
       cy.get('#caseId').type('9');
 
       cy.get('summary').contains('Advanced search').click();
@@ -305,8 +305,8 @@ describe('Admin - Transcript requests', () => {
       cy.get('#requestMethodAll').should('not.be.checked');
     });
 
-    it('searches for completed transcripts', () => {
-      cy.get('a').contains('Completed transcripts').click();
+    it('searches for transcript documents', () => {
+      cy.get('a').contains('Transcript documents').click();
       cy.get('#search').contains('Search').click();
       cy.get('app-search-completed-transcripts-results').contains('C0001');
       cy.get('app-search-completed-transcripts-results').contains('Cardiff');
@@ -315,14 +315,14 @@ describe('Admin - Transcript requests', () => {
     });
 
     it('redirects to transcript on 1 result', () => {
-      cy.get('a').contains('Completed transcripts').click();
+      cy.get('a').contains('Transcript documents').click();
       cy.get('#caseId').clear().type('C0001');
       cy.get('#search').contains('Search').click();
       cy.url().should('include', '/admin/transcripts/document/0');
     });
 
     it('view completed transcript / transcript file details, hidden but not marked', () => {
-      cy.get('a').contains('Completed transcripts').click();
+      cy.get('a').contains('Transcript documents').click();
       cy.get('#caseId').clear().type('C0002');
       cy.get('#search').contains('Search').click();
 
@@ -462,7 +462,7 @@ describe('Admin - Transcript requests', () => {
     });
 
     it('verifies form validation', () => {
-      cy.get('a').contains('Completed transcripts').click();
+      cy.get('a').contains('Transcript documents').click();
 
       const invalidCaseId = '1234567890123456789012345678901234567890';
       const invalidOwnerRequestedBy = LONG_STRING_2K;
@@ -496,7 +496,7 @@ describe('Admin - Transcript requests', () => {
     });
 
     it('view completed transcript / transcript file details, hidden and marked for deletion', () => {
-      cy.get('a').contains('Completed transcripts').click();
+      cy.get('a').contains('Transcript documents').click();
       cy.get('#caseId').clear().type('C0003');
       cy.get('#search').contains('Search').click();
 
