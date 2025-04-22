@@ -128,6 +128,7 @@ export class SearchFormComponent implements OnInit {
   onClear() {
     this.errors.emit([]);
     this.clear.emit();
+    this.form.reset(defaultFormValues);
   }
 
   isDateSpanMoreThanOneYear(): boolean {
