@@ -107,7 +107,7 @@ describe('SearchFormComponent', () => {
       component.form.get('hearingDate.to')?.setValue('02/01/2021');
       component.onSubmit();
 
-      expect(logicErrorSpy).toHaveBeenCalledWith('COMMON_105');
+      expect(logicErrorSpy).toHaveBeenCalledWith({ code: 'COMMON_105', tabName: 'Cases' });
     });
 
     it('should not emit COMMON_105 when date range is less than or equal to one year', () => {

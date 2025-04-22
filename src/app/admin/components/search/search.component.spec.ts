@@ -83,7 +83,7 @@ describe('SearchComponent', () => {
       const searchErrorSpy = jest.spyOn(component.searchService.searchError, 'set');
       const clearCasesSpy = jest.spyOn(component.searchService.cases, 'set');
 
-      component.onLogicError('COMMON_105');
+      component.onLogicError({ code: 'COMMON_105', tabName: 'Cases' });
 
       expect(searchErrorSpy).toHaveBeenCalledWith('COMMON_105');
       expect(clearCasesSpy).toHaveBeenCalledWith([]);
@@ -92,7 +92,7 @@ describe('SearchComponent', () => {
     it('should reset search error if null is passed', () => {
       const searchErrorSpy = jest.spyOn(component.searchService.searchError, 'set');
 
-      component.onLogicError(null);
+      component.onLogicError({ code: null, tabName: 'Cases' });
 
       expect(searchErrorSpy).toHaveBeenCalledWith(null);
     });
@@ -100,9 +100,26 @@ describe('SearchComponent', () => {
     it('should reset search error if unknown error is passed', () => {
       const searchErrorSpy = jest.spyOn(component.searchService.searchError, 'set');
 
-      component.onLogicError('SOME_OTHER_ERROR');
+      component.onLogicError({ code: 'SOME_OTHER_ERROR', tabName: 'Cases' });
 
       expect(searchErrorSpy).toHaveBeenCalledWith(null);
+    });
+
+    it('should set resultsFor appropriately', () => {
+      component.onLogicError({ code: 'COMMON_105', tabName: 'Events' });
+
+      expect(component.searchService.formValues()).toEqual({
+        caseId: '',
+        courthouses: [],
+        courtroom: '',
+        hearingDate: {
+          from: '',
+          specific: '',
+          to: '',
+          type: '',
+        },
+        resultsFor: 'Events',
+      });
     });
   });
 

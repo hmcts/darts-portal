@@ -90,10 +90,11 @@ export class SearchComponent {
     this.onSearch(this.searchService.formValues());
   }
 
-  onLogicError(errorCode: string | null) {
-    if (errorCode === 'COMMON_105') {
+  onLogicError(error: { code: string | null; tabName: string }) {
+    if (error.code === 'COMMON_105') {
       this.searchService.searchError.set('COMMON_105');
       this.searchService.hasFormBeenSubmitted.set(true);
+      this.searchService.formValues.update((formValues) => ({ ...formValues, resultsFor: error.tabName }));
       this.searchService.cases.set([]);
     } else {
       this.searchService.searchError.set(null);

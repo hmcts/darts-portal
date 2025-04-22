@@ -38,7 +38,7 @@ export class SearchFormComponent implements OnInit {
   courthouses = input<Courthouse[]>([]);
   search = output<AdminSearchFormValues>();
   errors = output<ErrorSummaryEntry[]>();
-  logicError = output<string | null>();
+  logicError = output<{ code: string | null; tabName: string }>();
   clear = output<void>();
   formService = inject(FormService);
   fb = inject(FormBuilder);
@@ -110,7 +110,7 @@ export class SearchFormComponent implements OnInit {
     this.form.markAllAsTouched();
 
     if (this.isDateSpanMoreThanOneYear()) {
-      this.logicError.emit('COMMON_105');
+      this.logicError.emit({ code: 'COMMON_105', tabName: this.form.get('resultsFor')?.value || 'Cases' });
       return;
     }
 
