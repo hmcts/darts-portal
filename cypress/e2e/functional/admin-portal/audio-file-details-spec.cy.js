@@ -219,7 +219,7 @@ describe('Admin - Audio file details screen', () => {
             });
         });
 
-      cy.get('a.govuk-link').contains('Back').should('be.visible').click();
+      cy.get('a.govuk-back-link').contains('Back').should('be.visible').click();
 
       cy.url().should('eq', Cypress.config().baseUrl + '/admin/audio-file/1');
     });
