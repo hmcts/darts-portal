@@ -99,26 +99,6 @@
       </div>
       <div
         class="govuk-form-group"
-        [class.govuk-form-group--error]="form.controls.owner.invalid && form.controls.owner.touched"
-      >
-        <label class="govuk-label" for="owner"> Owner </label>
-        <!-- Inline Validation Errors -->
-        @for (error of getControlErrorMessage(['owner']); track error) {
-          <p class="govuk-error-message owner-name-error">
-            <span class="govuk-visually-hidden">Error:</span> {{ error }}
-          </p>
-        }
-        <input
-          formControlName="owner"
-          class="govuk-input govuk-input--width-20"
-          id="owner"
-          name="owner"
-          type="text"
-          [class.govuk-input--error]="form.controls.owner.errors && form.controls.owner.touched"
-        />
-      </div>
-      <div
-        class="govuk-form-group"
         [class.govuk-form-group--error]="form.controls.requestedBy.invalid && form.controls.requestedBy.touched"
       >
         <label class="govuk-label" for="requestedBy"> Requested by </label>

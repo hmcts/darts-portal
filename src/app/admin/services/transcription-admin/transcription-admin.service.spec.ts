@@ -67,7 +67,6 @@ const emptySearchRequestBody = {
   case_number: null,
   courthouse_display_name: null,
   hearing_date: null,
-  owner: null,
   requested_at_from: null,
   requested_at_to: null,
   requested_by: null,
@@ -111,7 +110,6 @@ describe('TranscriptionAdminService', () => {
         caseId: '456',
         courthouse: 'Test Courthouse',
         hearingDate: '01/01/2022',
-        owner: 'Test Owner',
         requestedBy: 'Test Requester',
         requestedDate: { from: '01/01/2022', to: '31/01/2022' },
         requestMethod: 'manual',
@@ -122,7 +120,6 @@ describe('TranscriptionAdminService', () => {
         case_number: '456',
         courthouse_display_name: 'TEST COURTHOUSE',
         hearing_date: '2022-01-01',
-        owner: 'Test Owner',
         requested_by: 'Test Requester',
         requested_at_from: '2022-01-01',
         requested_at_to: '2022-01-31',
@@ -468,10 +465,10 @@ describe('TranscriptionAdminService', () => {
     expect(result.Status?.action?.text).toBe('Change status');
     expect(result.Status?.action?.url).toBe('/admin/transcripts/1/change-status');
     expect(result.Status?.action?.queryParams).toEqual({ status: 'Approved', manual: true });
-    if (typeof result['Assigned to'][0] !== 'string') {
-      expect(result['Assigned to'][0].href).toBe('/admin/users/1');
-      expect(result['Assigned to'][0].value).toBe('John Doe');
-      expect(result['Assigned to'][0].caption).toBe('john.doe@example.com');
+    if (typeof result['Last actioned by'][0] !== 'string') {
+      expect(result['Last actioned by'][0].href).toBe('/admin/users/1');
+      expect(result['Last actioned by'][0].value).toBe('John Doe');
+      expect(result['Last actioned by'][0].caption).toBe('john.doe@example.com');
     }
     expect(result['Associated groups']).toEqual([
       { href: '/admin/groups/1', value: 'Group One' },
@@ -503,10 +500,10 @@ describe('TranscriptionAdminService', () => {
     expect(result.Status?.action?.text).toBe('Change status');
     expect(result.Status?.action?.url).toBe('/admin/transcripts/1/change-status');
     expect(result.Status?.action?.queryParams).toEqual({ status: 'Approved', manual: true });
-    if (typeof result['Assigned to'][0] !== 'string') {
-      expect(result['Assigned to'][0].href).toBe('/admin/users/1');
-      expect(result['Assigned to'][0].value).toBe('John Doe');
-      expect(result['Assigned to'][0].caption).toBe('john.doe@example.com');
+    if (typeof result['Last actioned by'][0] !== 'string') {
+      expect(result['Last actioned by'][0].href).toBe('/admin/users/1');
+      expect(result['Last actioned by'][0].value).toBe('John Doe');
+      expect(result['Last actioned by'][0].caption).toBe('john.doe@example.com');
     }
     expect(result['Associated groups']).toEqual(['Group One', 'Group Two']);
   });
@@ -574,7 +571,7 @@ describe('TranscriptionAdminService', () => {
 
     expect(result.Status?.value).toBe('Complete');
     expect(result.Status?.action).toBe(undefined);
-    expect(result['Assigned to']).toBe('Unassigned');
+    expect(result['Last actioned by']).toBe('Unassigned');
     expect(result['Associated groups']).toEqual(null);
   });
 
@@ -808,7 +805,6 @@ describe('TranscriptionAdminService', () => {
         requested_at_to: '2022-01-31',
         requested_by: 'Test Requester',
         is_manual_transcription: true,
-        owner: 'Test Owner',
       };
 
       service.searchCompletedTranscriptions(values).subscribe();
@@ -841,7 +837,6 @@ describe('TranscriptionAdminService', () => {
         requested_at_to: null,
         requested_by: null,
         is_manual_transcription: null,
-        owner: null,
       });
     });
 

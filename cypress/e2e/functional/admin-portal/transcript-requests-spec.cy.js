@@ -17,7 +17,6 @@ describe('Admin - Transcript requests', () => {
 
       cy.get('#courthouse').type('Slough');
       cy.get('#hearingDate').type('01/01/2022');
-      cy.get('#owner').type('Phil Taylor');
       cy.get('#requestedBy').type('Martin Adams');
       cy.get('#specific-date-radio').click();
       cy.get('#specific').type('01/01/2022');
@@ -31,7 +30,6 @@ describe('Admin - Transcript requests', () => {
       cy.get('#requestId').should('have.value', '');
       cy.get('#courthouse').should('have.value', '');
       cy.get('#hearingDate').should('have.value', '');
-      cy.get('#owner').should('have.value', '');
       cy.get('#requestedBy').should('have.value', '');
       cy.get('#specific-date-radio').click();
       cy.get('#specific').should('have.value', '');
@@ -65,7 +63,6 @@ describe('Admin - Transcript requests', () => {
       cy.get('#courthouse').type('Slough');
       cy.get('li').contains('Slough').click();
       cy.get('#hearingDate').type('01/01/2022');
-      cy.get('#owner').type('Phil Taylor');
       cy.get('#requestedBy').type('Martin Adams');
       cy.get('#specific-date-radio').click();
       cy.get('#specific').type('01/01/2022');
@@ -73,16 +70,12 @@ describe('Admin - Transcript requests', () => {
 
       cy.get('#search').contains('Search').click();
 
-      // navigate to transcript
-      cy.get('app-data-table td a').contains('1').click();
-
       // go back to form and results
       cy.get('.govuk-back-link').click();
 
       cy.get('#requestId').should('have.value', '1');
       cy.get('#courthouse').should('have.value', 'Slough');
       cy.get('#hearingDate').should('have.value', '01/01/2022');
-      cy.get('#owner').should('have.value', 'Phil Taylor');
       cy.get('#requestedBy').should('have.value', 'Martin Adams');
       cy.get('#specific').should('have.value', '01/01/2022');
       cy.get('#requestMethodAll').should('be.checked');
@@ -92,20 +85,18 @@ describe('Admin - Transcript requests', () => {
 
     it('verifies form validation', () => {
       const invalidCaseId = '1234567890123456789012345678901234567890';
-      const invalidOwnerRequestedBy = LONG_STRING_2K;
+      const invalidRequestedBy = LONG_STRING_2K;
 
       cy.get('summary').contains('Advanced search').click();
 
       cy.get('#requestId').type('AAA');
       cy.get('#caseId').type(invalidCaseId);
-      cy.get('#owner').invoke('val', invalidOwnerRequestedBy).type('1');
-      cy.get('#requestedBy').invoke('val', invalidOwnerRequestedBy).type('1');
+      cy.get('#requestedBy').invoke('val', invalidRequestedBy).type('1');
 
       cy.get('#search').click({ force: true });
 
       cy.get('.govuk-error-summary__list').should('contain', 'Request ID must only contain numbers');
       cy.get('.govuk-error-summary__list').should('contain', 'Case ID must be less than or equal to 32 characters');
-      cy.get('.govuk-error-summary__list').should('contain', 'Owner must be less than or equal to 2000 characters');
       cy.get('.govuk-error-summary__list').should(
         'contain',
         'Requested by must be less than or equal to 2000 characters'
@@ -113,7 +104,6 @@ describe('Admin - Transcript requests', () => {
 
       cy.get('.requestid-name-error').should('contain', 'Request ID must only contain numbers');
       cy.get('.caseid-name-error').should('contain', 'Case ID must be less than or equal to 32 characters');
-      cy.get('.owner-name-error').should('contain', 'Owner must be less than or equal to 2000 characters');
       cy.get('.requestedby-name-error').should('contain', 'Requested by must be less than or equal to 2000 characters');
 
       cy.get('#requestId').clear().type('0');
@@ -130,7 +120,6 @@ describe('Admin - Transcript requests', () => {
 
       cy.get('#requestId').clear().type('1234');
       cy.get('#caseId').clear().type('ABC123CASE');
-      cy.get('#owner').clear().type('Terry Jenkins');
       cy.get('#requestedBy').clear().type('John Lowe');
 
       cy.get('#search').click();
@@ -151,7 +140,7 @@ describe('Admin - Transcript requests', () => {
       cy.get('#status-details').contains('Status');
       cy.get('#status-details').contains('With Transcriber');
 
-      cy.get('#status-details').contains('Assigned to');
+      cy.get('#status-details').contains('Last actioned by');
       cy.get('#status-details').contains('Fallon Sherrock');
       cy.get('#status-details').contains('(fallon.sherrock@darts.local)');
 
@@ -206,10 +195,11 @@ describe('Admin - Transcript requests', () => {
       cy.get('#case-details').contains('Swansea');
 
       cy.get('#case-details').contains('Judge(s)');
-      cy.get('#case-details').contains('HHJ M. Hussain KC Ray Bob');
+      cy.get('#case-details').contains('HHJ M. Hussain KC');
 
       cy.get('#case-details').contains('Defendant(s)');
-      cy.get('#case-details').contains('Defendant Dave Defendant Bob');
+      cy.get('#case-details').contains('Defendant Dave');
+      cy.get('#case-details').contains('Defendant Bob');
 
       cy.a11y();
     });
@@ -225,7 +215,7 @@ describe('Admin - Transcript requests', () => {
     });
 
     it('transcript links to assigned user', () => {
-      cy.get('#status-details').contains('Assigned to').get('a').contains('Fallon Sherrock').click();
+      cy.get('#status-details').contains('Last actioned by').get('a').contains('Fallon Sherrock').click();
       cy.url().should('include', '/admin/users/2');
     });
 
@@ -284,7 +274,6 @@ describe('Admin - Transcript requests', () => {
 
       cy.get('#courthouse').type('Slough');
       cy.get('#hearingDate').type('01/01/2022');
-      cy.get('#owner').type('Phil Taylor');
       cy.get('#requestedBy').type('Martin Adams');
       cy.get('#specific-date-radio').click();
       cy.get('#specific').type('01/01/2022');
@@ -298,7 +287,6 @@ describe('Admin - Transcript requests', () => {
       cy.get('#caseId').should('have.value', '');
       cy.get('#courthouse').should('have.value', '');
       cy.get('#hearingDate').should('have.value', '');
-      cy.get('#owner').should('have.value', '');
       cy.get('#requestedBy').should('have.value', '');
       cy.get('#specific-date-radio').click();
       cy.get('#specific').should('have.value', '');
@@ -342,7 +330,8 @@ describe('Admin - Transcript requests', () => {
       cy.get('#transcript-details dd').eq(3).should('contain', '5');
 
       cy.get('#transcript-details dt').eq(4).should('contain', 'Defendant(s)');
-      cy.get('#transcript-details dd').eq(4).should('contain', 'Defendant Dave Defendant Bob');
+      cy.get('#transcript-details dd').eq(4).should('contain', 'Defendant Bob');
+      cy.get('#transcript-details dd').eq(4).should('contain', 'Defendant Dave');
 
       cy.get('#transcript-details dt').eq(5).should('contain', 'Judge(s)');
       cy.get('#transcript-details dd').eq(5).should('contain', 'Ray Bob');
@@ -366,7 +355,12 @@ describe('Admin - Transcript requests', () => {
       cy.get('#request-details dd').eq(4).should('contain', 'Manual');
 
       cy.get('#request-details dt').eq(5).should('contain', 'Request ID');
-      cy.get('#request-details dd').eq(5).should('contain', '1');
+
+      cy.get('#request-details dd')
+        .eq(5)
+        .find('a')
+        .should('contain', '1')
+        .and('have.attr', 'href', '/admin/transcripts/1?backUrl=%2Fadmin%2Ftranscripts%2Fdocument%2F123');
 
       cy.get('#request-details dt').eq(6).should('contain', 'Urgency');
       cy.get('#request-details dd').eq(6).should('contain', 'Standard');
@@ -384,7 +378,8 @@ describe('Admin - Transcript requests', () => {
       cy.get('#request-details dd').eq(10).should('contain', 'No');
 
       cy.get('#request-details dt').eq(11).should('contain', 'Migrated legacy data comments');
-      cy.get('#request-details dd').eq(11).should('contain', 'This is a legacy comment This is another legacy comment');
+      cy.get('#request-details dd').eq(11).should('contain', 'This is a legacy comment');
+      cy.get('#request-details dd').eq(11).should('contain', 'This is another legacy comment');
 
       // Advanced details
       cy.get('#advanced-tab').click();
@@ -465,29 +460,25 @@ describe('Admin - Transcript requests', () => {
       cy.get('a').contains('Transcript documents').click();
 
       const invalidCaseId = '1234567890123456789012345678901234567890';
-      const invalidOwnerRequestedBy = LONG_STRING_2K;
+      const invalidRequestedBy = LONG_STRING_2K;
 
       cy.get('summary').contains('Advanced search').click();
 
       cy.get('#caseId').type(invalidCaseId);
-      cy.get('#owner').invoke('val', invalidOwnerRequestedBy).type('1');
-      cy.get('#requestedBy').invoke('val', invalidOwnerRequestedBy).type('1');
+      cy.get('#requestedBy').invoke('val', invalidRequestedBy).type('1');
 
       cy.get('#search').click({ force: true });
 
       cy.get('.govuk-error-summary__list').should('contain', 'Case ID must be less than or equal to 32 characters');
-      cy.get('.govuk-error-summary__list').should('contain', 'Owner must be less than or equal to 2000 characters');
       cy.get('.govuk-error-summary__list').should(
         'contain',
         'Requested by must be less than or equal to 2000 characters'
       );
 
       cy.get('.caseid-name-error').should('contain', 'Case ID must be less than or equal to 32 characters');
-      cy.get('.owner-name-error').should('contain', 'Owner must be less than or equal to 2000 characters');
       cy.get('.requestedby-name-error').should('contain', 'Requested by must be less than or equal to 2000 characters');
 
       cy.get('#caseId').clear().type('123');
-      cy.get('#owner').clear().type('Terry Jenkins');
       cy.get('#requestedBy').clear().type('John Lowe');
 
       cy.get('#search').click();
