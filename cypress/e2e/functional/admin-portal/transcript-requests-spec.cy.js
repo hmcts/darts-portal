@@ -293,7 +293,7 @@ describe('Admin - Transcript requests', () => {
       cy.get('#requestMethodAll').should('not.be.checked');
     });
 
-    it('searches for transcript documents', () => {
+    it('searches for completed transcripts', () => {
       cy.get('a').contains('Transcript documents').click();
       cy.get('#search').contains('Search').click();
       cy.get('app-search-completed-transcripts-results').contains('C0001');
