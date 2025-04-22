@@ -8407,11 +8407,11 @@ __metadata:
   linkType: hard
 
 "connect-redis@npm:^8.0.0":
-  version: 8.0.2
-  resolution: "connect-redis@npm:8.0.2"
+  version: 8.0.3
+  resolution: "connect-redis@npm:8.0.3"
   peerDependencies:
     express-session: ">=1"
-  checksum: 879f774ff9a65397dea210c9f14ca9d4ceb3a1735462b0f4a4cb8946ba18f49fc9833474fe6af4e01223ca661838dd3d6a64fd2078ba2d1512c5085dcd01f31a
+  checksum: c0bfa312358dba0199d02dff784dfd8268e050b3779094dafb0a6bdf9577ca30cb612ace700697180a99c9aa21538ea8b8c0f5c66951b38aa26e325b33f758bc
   languageName: node
   linkType: hard
 
