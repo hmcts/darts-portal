@@ -70,9 +70,6 @@ describe('Admin - Transcript requests', () => {
 
       cy.get('#search').contains('Search').click();
 
-      // navigate to transcript
-      cy.get('app-data-table td a').contains('1').click();
-
       // go back to form and results
       cy.get('.govuk-back-link').click();
 
@@ -198,10 +195,11 @@ describe('Admin - Transcript requests', () => {
       cy.get('#case-details').contains('Swansea');
 
       cy.get('#case-details').contains('Judge(s)');
-      cy.get('#case-details').contains('HHJ M. Hussain KC Ray Bob');
+      cy.get('#case-details').contains('HHJ M. Hussain KC');
 
       cy.get('#case-details').contains('Defendant(s)');
-      cy.get('#case-details').contains('Defendant Dave Defendant Bob');
+      cy.get('#case-details').contains('Defendant Dave');
+      cy.get('#case-details').contains('Defendant Bob');
 
       cy.a11y();
     });
@@ -332,7 +330,8 @@ describe('Admin - Transcript requests', () => {
       cy.get('#transcript-details dd').eq(3).should('contain', '5');
 
       cy.get('#transcript-details dt').eq(4).should('contain', 'Defendant(s)');
-      cy.get('#transcript-details dd').eq(4).should('contain', 'Defendant Dave Defendant Bob');
+      cy.get('#transcript-details dd').eq(4).should('contain', 'Defendant Bob');
+      cy.get('#transcript-details dd').eq(4).should('contain', 'Defendant Dave');
 
       cy.get('#transcript-details dt').eq(5).should('contain', 'Judge(s)');
       cy.get('#transcript-details dd').eq(5).should('contain', 'Ray Bob');
@@ -356,7 +355,12 @@ describe('Admin - Transcript requests', () => {
       cy.get('#request-details dd').eq(4).should('contain', 'Manual');
 
       cy.get('#request-details dt').eq(5).should('contain', 'Request ID');
-      cy.get('#request-details dd').eq(5).should('contain', '1');
+
+      cy.get('#request-details dd')
+        .eq(5)
+        .find('a')
+        .should('contain', '1')
+        .and('have.attr', 'href', '/admin/transcripts/1?backUrl=%2Fadmin%2Ftranscripts%2Fdocument%2F123');
 
       cy.get('#request-details dt').eq(6).should('contain', 'Urgency');
       cy.get('#request-details dd').eq(6).should('contain', 'Standard');
@@ -374,7 +378,8 @@ describe('Admin - Transcript requests', () => {
       cy.get('#request-details dd').eq(10).should('contain', 'No');
 
       cy.get('#request-details dt').eq(11).should('contain', 'Migrated legacy data comments');
-      cy.get('#request-details dd').eq(11).should('contain', 'This is a legacy comment This is another legacy comment');
+      cy.get('#request-details dd').eq(11).should('contain', 'This is a legacy comment');
+      cy.get('#request-details dd').eq(11).should('contain', 'This is another legacy comment');
 
       // Advanced details
       cy.get('#advanced-tab').click();
