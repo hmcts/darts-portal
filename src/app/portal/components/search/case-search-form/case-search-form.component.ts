@@ -1,5 +1,5 @@
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
-import { Component, computed, DestroyRef, effect, inject, input, model, OnInit, output } from '@angular/core';
+import { Component, computed, DestroyRef, inject, input, model, OnInit, output } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AutoCompleteComponent, AutoCompleteItem } from '@common/auto-complete/auto-complete.component';
@@ -72,6 +72,8 @@ export class CaseSearchFormComponent implements OnInit {
   });
 
   ngOnInit() {
+    this.form.patchValue(this.formValues());
+
     this.form.controls.courtroom.valueChanges
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((courtroom) => this.setCourthouseValidators(courtroom));
@@ -86,11 +88,6 @@ export class CaseSearchFormComponent implements OnInit {
 
     this.setSpecificDateValidators();
     this.setDateRangeValidators();
-  }
-
-  constructor() {
-    // if formValues are passed in update the form
-    effect(() => this.form.patchValue(this.formValues()));
   }
 
   onSubmit() {
