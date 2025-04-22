@@ -119,9 +119,6 @@ export class AdminSearchService {
     this.isLoading.set(false);
     this.formValues.set({ ...defaultFormValues });
     this.hasFormBeenSubmitted.set(false);
-
-    console.log('Search cleared');
-    console.log(this.formValues()); //remove me
   }
 
   private logSearchEvent(type: SearchType, formValues: SearchRequestBody) {
