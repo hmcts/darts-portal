@@ -143,7 +143,7 @@ describe('Admin - Transcript requests', () => {
       cy.get('#status-details').contains('Status');
       cy.get('#status-details').contains('With Transcriber');
 
-      cy.get('#status-details').contains('Assigned to');
+      cy.get('#status-details').contains('Last actioned by');
       cy.get('#status-details').contains('Fallon Sherrock');
       cy.get('#status-details').contains('(fallon.sherrock@darts.local)');
 
@@ -217,7 +217,7 @@ describe('Admin - Transcript requests', () => {
     });
 
     it('transcript links to assigned user', () => {
-      cy.get('#status-details').contains('Assigned to').get('a').contains('Fallon Sherrock').click();
+      cy.get('#status-details').contains('Last actioned by').get('a').contains('Fallon Sherrock').click();
       cy.url().should('include', '/admin/users/2');
     });
 

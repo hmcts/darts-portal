@@ -273,7 +273,7 @@ export class TranscriptionAdminService {
 
     return {
       Status: processStatus(transcript.status),
-      'Assigned to': processAssignedTo(transcript.assignedTo),
+      'Last actioned by': processAssignedTo(transcript.assignedTo),
       'Associated groups': processGroups(transcript.assignedGroups, transcript.status),
     };
   }
