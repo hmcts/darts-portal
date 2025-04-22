@@ -109,10 +109,12 @@ describe('Admin - Event details', () => {
           cy.get('dt').contains('Message ID').next('dd').should('contain.text', '654321');
           cy.get('dt').contains('Type').next('dd').should('contain.text', '1000');
           cy.get('dt').contains('Subtype').next('dd').should('contain.text', '1001');
-          cy.get('dt').contains('Event Handler').next('dd').should('contain.text', 'StandardEventHandler');
+          cy.get('dt').contains('Event handler').next('dd').should('contain.text', 'StandardEventHandler');
           cy.get('dt').contains('Reporting restriction?').next('dd').should('contain.text', 'No');
           cy.get('dt').contains('Log entry?').next('dd').should('contain.text', 'No');
           cy.get('dt').contains('Is current?').next('dd').should('contain.text', 'Yes');
+          cy.get('dt').contains('Is data anonymised?').next('dd').should('contain.text', 'No');
+          cy.get('dt').contains('Event status').next('dd').should('contain.text', '4');
         });
 
       cy.get('.versions-heading').within(() => {

@@ -136,10 +136,12 @@ describe('Admin - Search screen', () => {
     cy.get('dt').contains('Message ID').next('dd').should('contain', '654321');
     cy.get('dt').contains('Type').next('dd').should('contain', '1000');
     cy.get('dt').contains('Subtype').next('dd').should('contain', '1001');
-    cy.get('dt').contains('Event Handler').next('dd').should('contain', 'StandardEventHandler');
+    cy.get('dt').contains('Event handler').next('dd').should('contain', 'StandardEventHandler');
     cy.get('dt').contains('Reporting restriction?').next('dd').should('contain', 'No');
     cy.get('dt').contains('Log entry?').next('dd').should('contain', 'No');
     cy.get('dt').contains('Is current?').next('dd').should('contain', 'Yes');
+    cy.get('dt').contains('Is data anonymised?').next('dd').should('contain.text', 'No');
+    cy.get('dt').contains('Event status').next('dd').should('contain.text', '4');
 
     // Version data
     cy.get('dt').contains('Version').next('dd').should('contain', 'v1');
