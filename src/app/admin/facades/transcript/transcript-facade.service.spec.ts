@@ -105,6 +105,11 @@ describe('TranscriptFacadeService', () => {
   });
 
   describe('#getHistory', () => {
+    const mockUsers = [
+      { id: 1, fullName: 'Test User 1', emailAddress: 'email1@test.com' } as User,
+      { id: 2, fullName: 'Test User 2', emailAddress: 'email2@test.com' } as User,
+    ];
+
     it('should return mapped workflows to timeline', fakeAsync(() => {
       const mockWorkflows: TranscriptionWorkflow[] = [
         {
@@ -120,8 +125,6 @@ describe('TranscriptFacadeService', () => {
           ],
         },
       ];
-
-      const mockUsers = [{ id: 1, fullName: 'Test User', emailAddress: 'email@test.com' } as User];
 
       const mockStatuses: TranscriptionStatus[] = [{ id: 1, displayName: 'Requested', type: 'Requested' }];
 
@@ -156,25 +159,18 @@ describe('TranscriptFacadeService', () => {
         },
       ];
 
-      const mockUsers = [
-        { id: 1, fullName: 'Test User 1', emailAddress: 'email1@test.com' } as User,
-        { id: 2, fullName: 'Test User 2', emailAddress: 'email2@test.com' } as User];
-
-      const mockStatuses: TranscriptionStatus[] = [{ id: 1, displayName: 'Requested', type: 'Requested' }];
-
       jest.spyOn(fakeTranscriptionAdminService, 'getTranscriptionWorkflows').mockReturnValue(of(mockWorkflows));
       jest.spyOn(fakeUserAdminService, 'getUsersById').mockReturnValue(of(mockUsers));
-      jest.spyOn(fakeTranscriptionAdminService, 'getTranscriptionStatuses').mockReturnValue(of(mockStatuses));
 
       service.getHistory(1).subscribe((history) =>
-          expect(history).toEqual([
-            {
-              title: 'Comment',
-              descriptionLines: ['Test Comment'],
-              dateTime: DateTime.fromISO('2021-01-01T00:00:00Z'),
-              user: { id: 2, fullName: 'Test User 2', emailAddress: 'email2@test.com' },
-            },
-          ])
+        expect(history).toEqual([
+          {
+            title: 'Comment',
+            descriptionLines: ['Test Comment'],
+            dateTime: DateTime.fromISO('2021-01-01T00:00:00Z'),
+            user: { id: 2, fullName: 'Test User 2', emailAddress: 'email2@test.com' },
+          },
+        ])
       );
       tick();
     }));
@@ -199,15 +195,8 @@ describe('TranscriptFacadeService', () => {
         },
       ];
 
-      const mockUsers = [
-        { id: 1, fullName: 'Test User 1', emailAddress: 'email1@test.com' } as User,
-        { id: 2, fullName: 'Test User 2', emailAddress: 'email2@test.com' } as User];
-
-      const mockStatuses: TranscriptionStatus[] = [{ id: 1, displayName: 'Requested', type: 'Requested' }];
-
       jest.spyOn(fakeTranscriptionAdminService, 'getTranscriptionWorkflows').mockReturnValue(of(mockWorkflows));
       jest.spyOn(fakeUserAdminService, 'getUsersById').mockReturnValue(of(mockUsers));
-      jest.spyOn(fakeTranscriptionAdminService, 'getTranscriptionStatuses').mockReturnValue(of(mockStatuses));
 
       service.getHistory(1).subscribe((history) =>
         expect(history).toEqual([
@@ -222,7 +211,7 @@ describe('TranscriptFacadeService', () => {
             descriptionLines: ['Test Comment 2'],
             dateTime: DateTime.fromISO('2024-01-01T00:00:00Z'),
             user: { id: 1, fullName: 'Test User 1', emailAddress: 'email1@test.com' },
-          }
+          },
         ])
       );
       tick();
