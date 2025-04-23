@@ -138,6 +138,9 @@ export class CaseSearchFormComponent implements OnInit {
     const courthouse = this.courthouses().find((c) => c.id === selectedCourthouse.id);
     if (!courthouse) return;
 
+    const alreadySelected = this.form.value.courthouses?.some((c) => c.id === courthouse.id);
+    if (alreadySelected) return;
+
     const updatedCourthouses = [...(this.form.value.courthouses ?? []), courthouse];
 
     this.form.patchValue({ courthouses: updatedCourthouses });
@@ -150,11 +153,15 @@ export class CaseSearchFormComponent implements OnInit {
   }
 
   removeSelectedCourthouse(courthouseId: number) {
-    this.formValues.update((values) => ({
-      ...values,
-      courthouses: values.courthouses.filter((c) => c.id !== courthouseId),
-    }));
+    const updatedCourthouses = this.form.value.courthouses?.filter((c) => c.id !== courthouseId) ?? [];
+
+    this.form.patchValue({ courthouses: updatedCourthouses });
     this.form.get('courthouses')?.markAsDirty();
+
+    this.formValues.update(() => ({
+      ...(this.form.value as CaseSearchFormValues),
+      courthouses: updatedCourthouses,
+    }));
   }
 
   clearSearch() {
