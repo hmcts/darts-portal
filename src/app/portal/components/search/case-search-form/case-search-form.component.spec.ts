@@ -356,7 +356,7 @@ describe('CaseSearchFormComponent', () => {
       component.clearSearch();
 
       expect(component.form.value).toEqual({
-        courthouses: null,
+        courthouses: [],
         caseNumber: '',
         courtroom: '',
         hearingDate: {

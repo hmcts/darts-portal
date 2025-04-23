@@ -204,7 +204,7 @@ export class CaseService {
 
     return {
       case_number: searchFormValues.caseNumber || null,
-      courthouse_ids: searchFormValues.courthouses.map((c) => c.id) ?? [],
+      courthouse_ids: (searchFormValues.courthouses || []).map((c) => c.id),
       courtroom: searchFormValues.courtroom.toUpperCase() || null,
       date_from: dateFrom || null,
       date_to: dateTo || null,
