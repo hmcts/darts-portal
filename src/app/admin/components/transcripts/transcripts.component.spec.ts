@@ -239,9 +239,9 @@ describe('TranscriptsComponent', () => {
     expect(component.transcriptService.searchCompletedTranscriptions).not.toHaveBeenCalled();
   }));
 
-  it('only search for completed transcripts if the tab is "Completed transcripts"', fakeAsync(() => {
+  it('only search for completed transcripts if the tab is "Transcript documents"', fakeAsync(() => {
     jest.spyOn(component.transcriptService, 'searchCompletedTranscriptions').mockReturnValue(of([]));
-    component['tab'] = signal('Completed transcripts');
+    component['tab'] = signal('Transcript documents');
     component.isSubmitted$.next(true);
     component.search$.next({});
 
@@ -264,7 +264,7 @@ describe('TranscriptsComponent', () => {
 
       component.completedResults$.subscribe((results) => (result = results));
 
-      component['tab'] = signal('Completed transcripts');
+      component['tab'] = signal('Transcript documents');
       component.search$.next({});
       component.isSubmitted$.next(true);
 
@@ -281,7 +281,7 @@ describe('TranscriptsComponent', () => {
 
       component.completedResults$.subscribe();
 
-      component['tab'] = signal('Completed transcripts');
+      component['tab'] = signal('Transcript documents');
       component.search$.next({});
       component.isSubmitted$.next(true);
 

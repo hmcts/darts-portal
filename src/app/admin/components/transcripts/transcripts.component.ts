@@ -59,7 +59,7 @@ export class TranscriptsComponent {
   loadingCompletedResults = signal(false);
 
   readonly TRANSCRIPT_REQUESTS_TAB = 'Transcript requests';
-  readonly COMPLETED_TRANSCRIPTS_TAB = 'Completed transcripts';
+  readonly COMPLETED_TRANSCRIPTS_TAB = 'Transcript documents';
 
   tab = computed(() => this.activeTabService.activeTabs()['search-transcripts'] ?? this.TRANSCRIPT_REQUESTS_TAB);
 

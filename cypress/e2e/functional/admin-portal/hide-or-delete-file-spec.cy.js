@@ -9,7 +9,7 @@ describe('Admin - Hide or delete file', () => {
   describe('Transcripts - hide file', () => {
     beforeEach(() => {
       cy.visit('/admin/transcripts');
-      cy.get('.moj-sub-navigation__link').contains('Completed transcripts').click();
+      cy.get('.moj-sub-navigation__link').contains('Transcript documents').click();
       cy.get('.govuk-button').contains('Search').click();
       cy.get('.govuk-link').contains('0').click();
       cy.get('.govuk-button').contains('Hide or delete').click();

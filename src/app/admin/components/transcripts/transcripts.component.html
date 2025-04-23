@@ -35,7 +35,7 @@
     </div>
 
     <div *tab="COMPLETED_TRANSCRIPTS_TAB">
-      <app-govuk-heading tag="h2">Completed transcripts</app-govuk-heading>
+      <app-govuk-heading tag="h2">Transcript documents</app-govuk-heading>
 
       <app-search-transcripts-form
         [courthouses]="courthouses"
@@ -53,7 +53,7 @@
         }
 
         @if (isLoadingCompletedResults) {
-          <app-loading text="Searching completed transcripts..." />
+          <app-loading text="Searching transcript documents..." />
         }
       </div>
     </div>
