@@ -12,7 +12,7 @@ import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.componen
 import { TabDirective } from '@directives/tab.directive';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { GroupsService } from '@services/groups/groups.service';
-import { BehaviorSubject, combineLatest, forkJoin, map, Observable, shareReplay, tap } from 'rxjs';
+import { BehaviorSubject, combineLatest, forkJoin, map, shareReplay, tap } from 'rxjs';
 import { GroupCourthousesComponent } from '../group-courthouses/group-courthouses.component';
 import { GroupUsersComponent } from '../group-users/group-users.component';
 
