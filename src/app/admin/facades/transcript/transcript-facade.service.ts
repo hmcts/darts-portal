@@ -35,9 +35,9 @@ export class TranscriptFacadeService {
       if (b.statusId === undefined && a.statusId === undefined) {
         return 0;
       } else if (b.statusId === undefined) {
-        return 1;
-      } else if (a.statusId === undefined) {
         return -1;
+      } else if (a.statusId === undefined) {
+        return 1;
       } else {
         return b.statusId - a.statusId;
       }

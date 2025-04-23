@@ -262,6 +262,68 @@ describe('TranscriptFacadeService', () => {
         expect(sortedWorkflows[1].statusId).toBe(1);
       });
 
+      it('if timestamps are equal and one statusId is undefined should have undefined statusId last', () => {
+        const workflows: TranscriptionWorkflow[] = [
+          {
+            workflowActor: 1,
+            workflowTimestamp: DateTime.fromISO('2021-01-01T00:00:00Z'),
+            comments: [],
+          },
+          {
+            workflowActor: 2,
+            statusId: 1,
+            workflowTimestamp: DateTime.fromISO('2021-01-01T00:00:00Z'),
+            comments: [],
+          },
+        ];
+
+        const sortedWorkflows = service.sortWorkflowsByTimestampAndStatus(workflows);
+
+        expect(sortedWorkflows[0].workflowActor).toBe(2);
+        expect(sortedWorkflows[1].workflowActor).toBe(1);
+      });
+
+      it('if timestamps are equal and one statusId is undefined should have undefined statusId last', () => {
+        const workflows: TranscriptionWorkflow[] = [
+          {
+            workflowActor: 1,
+            statusId: 1,
+            workflowTimestamp: DateTime.fromISO('2021-01-01T00:00:00Z'),
+            comments: [],
+          },
+          {
+            workflowActor: 2,
+            workflowTimestamp: DateTime.fromISO('2021-01-01T00:00:00Z'),
+            comments: [],
+          },
+        ];
+
+        const sortedWorkflows = service.sortWorkflowsByTimestampAndStatus(workflows);
+
+        expect(sortedWorkflows[0].workflowActor).toBe(1);
+        expect(sortedWorkflows[1].workflowActor).toBe(2);
+      });
+
+      it('if timestamps are equal and statusId are both undefined should not change order', () => {
+        const workflows: TranscriptionWorkflow[] = [
+          {
+            workflowActor: 1,
+            workflowTimestamp: DateTime.fromISO('2021-01-01T00:00:00Z'),
+            comments: [],
+          },
+          {
+            workflowActor: 2,
+            workflowTimestamp: DateTime.fromISO('2021-01-01T00:00:00Z'),
+            comments: [],
+          },
+        ];
+
+        const sortedWorkflows = service.sortWorkflowsByTimestampAndStatus(workflows);
+
+        expect(sortedWorkflows[0].workflowActor).toBe(1);
+        expect(sortedWorkflows[1].workflowActor).toBe(2);
+      });
+
       it('should handle empty workflows array', () => {
         const workflows: TranscriptionWorkflow[] = [];
 
