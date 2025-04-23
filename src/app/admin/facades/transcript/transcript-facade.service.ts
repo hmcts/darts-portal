@@ -32,7 +32,15 @@ export class TranscriptFacadeService {
       if (dateComparison !== 0) {
         return dateComparison;
       }
-      return b.statusId - a.statusId;
+      if (b.statusId === undefined && a.statusId === undefined) {
+        return 0;
+      } else if (b.statusId === undefined) {
+        return 1;
+      } else if (a.statusId === undefined) {
+        return -1;
+      } else {
+        return b.statusId - a.statusId;
+      }
     });
   }
 
@@ -96,11 +104,36 @@ export class TranscriptFacadeService {
     statuses: TranscriptionStatus[],
     users: User[]
   ): TimelineItem[] {
-    return workflows.map((workflow) => ({
-      title: statuses.find((s) => workflow.statusId === s.id)?.displayName || 'Comment',
-      descriptionLines: workflow.comments.map((c) => c.comment),
-      dateTime: workflow.workflowTimestamp,
-      user: users.find((u) => workflow.workflowActor === u.id) as Pick<User, 'id' | 'fullName' | 'emailAddress'>,
-    }));
+
+    const userMap = new Map<Number, User>
+    users.forEach((user) => userMap.set(user.id, user));
+
+    const statusMap = new Map<Number, TranscriptionStatus>
+    statuses.forEach((status) => statusMap.set(status.id, status));
+
+
+    const workflowTimelineData = workflows
+      .filter((workflow => workflow.statusId !== undefined))
+      .map((workflow) => ({
+        // @ts-ignore False positive statusId must be present at this stage
+        title: statusMap.get(workflow.statusId).displayName || 'Unknown',
+        descriptionLines: workflow.comments.map((c) => c.comment),
+        dateTime: workflow.workflowTimestamp,
+        user: userMap.get(workflow.workflowActor) as Pick<User, 'id' | 'fullName' | 'emailAddress'>,
+      }));
+
+    const commentTimelineData = workflows
+      .filter((workflow => workflow.statusId === undefined))
+      .flatMap((workflow) => workflow.comments)
+      .map((comment) => {
+        const user = userMap.get(comment.authorId);
+        return ({
+          title: 'Comment',
+          descriptionLines: [comment.comment],
+          dateTime: comment.commentedAt,
+          user: user as Pick<User, 'id' | 'fullName' | 'emailAddress'> || null,
+        });
+      });
+    return workflowTimelineData.concat(commentTimelineData);
   }
 }

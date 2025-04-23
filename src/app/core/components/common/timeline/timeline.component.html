@@ -4,15 +4,17 @@
       <div class="moj-timeline__header">
         <h2 class="moj-timeline__title">{{ item.title }}</h2>
 
-        <p class="moj-timeline__byline">
-          by
-          @if (item.user) {
-            <a class="govuk-link user-link" [routerLink]="['/admin/users', item.user.id]">{{ item.user.fullName }}</a>
-            ({{ item.user.emailAddress }})
-          } @else {
-            System
-          }
-        </p>
+        @if (item.user !== null) {
+          <p class="moj-timeline__byline">
+            by
+            @if (item.user) {
+              <a class="govuk-link user-link" [routerLink]="['/admin/users', item.user.id]">{{ item.user.fullName }}</a>
+              ({{ item.user.emailAddress }})
+            } @else {
+              System
+            }
+          </p>
+        }
       </div>
 
       <p class="moj-timeline__date">

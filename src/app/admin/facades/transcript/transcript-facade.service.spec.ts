@@ -141,6 +141,92 @@ describe('TranscriptFacadeService', () => {
       );
       tick();
     }));
+    it('should return mapped comments to timeline if workflow status not present', fakeAsync(() => {
+      const mockWorkflows: TranscriptionWorkflow[] = [
+        {
+          workflowActor: 1,
+          workflowTimestamp: DateTime.fromISO('2022-01-01T00:00:00Z'),
+          comments: [
+            {
+              comment: 'Test Comment',
+              commentedAt: DateTime.fromISO('2021-01-01T00:00:00Z'),
+              authorId: 2,
+            },
+          ],
+        },
+      ];
+
+      const mockUsers = [
+        { id: 1, fullName: 'Test User 1', emailAddress: 'email1@test.com' } as User,
+        { id: 2, fullName: 'Test User 2', emailAddress: 'email2@test.com' } as User];
+
+      const mockStatuses: TranscriptionStatus[] = [{ id: 1, displayName: 'Requested', type: 'Requested' }];
+
+      jest.spyOn(fakeTranscriptionAdminService, 'getTranscriptionWorkflows').mockReturnValue(of(mockWorkflows));
+      jest.spyOn(fakeUserAdminService, 'getUsersById').mockReturnValue(of(mockUsers));
+      jest.spyOn(fakeTranscriptionAdminService, 'getTranscriptionStatuses').mockReturnValue(of(mockStatuses));
+
+      service.getHistory(1).subscribe((history) =>
+          expect(history).toEqual([
+            {
+              title: 'Comment',
+              descriptionLines: ['Test Comment'],
+              dateTime: DateTime.fromISO('2021-01-01T00:00:00Z'),
+              user: { id: 2, fullName: 'Test User 2', emailAddress: 'email2@test.com' },
+            },
+          ])
+      );
+      tick();
+    }));
+
+    it('should return mapped comments to timeline if workflow status not present and multiple comments', fakeAsync(() => {
+      const mockWorkflows: TranscriptionWorkflow[] = [
+        {
+          workflowActor: 1,
+          workflowTimestamp: DateTime.fromISO('2022-01-01T00:00:00Z'),
+          comments: [
+            {
+              comment: 'Test Comment 1',
+              commentedAt: DateTime.fromISO('2021-01-01T00:00:00Z'),
+              authorId: 2,
+            },
+            {
+              comment: 'Test Comment 2',
+              commentedAt: DateTime.fromISO('2024-01-01T00:00:00Z'),
+              authorId: 1,
+            },
+          ],
+        },
+      ];
+
+      const mockUsers = [
+        { id: 1, fullName: 'Test User 1', emailAddress: 'email1@test.com' } as User,
+        { id: 2, fullName: 'Test User 2', emailAddress: 'email2@test.com' } as User];
+
+      const mockStatuses: TranscriptionStatus[] = [{ id: 1, displayName: 'Requested', type: 'Requested' }];
+
+      jest.spyOn(fakeTranscriptionAdminService, 'getTranscriptionWorkflows').mockReturnValue(of(mockWorkflows));
+      jest.spyOn(fakeUserAdminService, 'getUsersById').mockReturnValue(of(mockUsers));
+      jest.spyOn(fakeTranscriptionAdminService, 'getTranscriptionStatuses').mockReturnValue(of(mockStatuses));
+
+      service.getHistory(1).subscribe((history) =>
+        expect(history).toEqual([
+          {
+            title: 'Comment',
+            descriptionLines: ['Test Comment 1'],
+            dateTime: DateTime.fromISO('2021-01-01T00:00:00Z'),
+            user: { id: 2, fullName: 'Test User 2', emailAddress: 'email2@test.com' },
+          },
+          {
+            title: 'Comment',
+            descriptionLines: ['Test Comment 2'],
+            dateTime: DateTime.fromISO('2024-01-01T00:00:00Z'),
+            user: { id: 1, fullName: 'Test User 1', emailAddress: 'email1@test.com' },
+          }
+        ])
+      );
+      tick();
+    }));
 
     describe('#sortWorkflowsByTimestampAndStatus', () => {
       it('should sort workflows by timestamp in descending order', () => {
