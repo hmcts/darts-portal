@@ -104,16 +104,16 @@ export class TranscriptFacadeService {
     statuses: TranscriptionStatus[],
     users: User[]
   ): TimelineItem[] {
-    const userMap = new Map<Number, User>();
+    const userMap = new Map<number, User>();
     users.forEach((user) => userMap.set(user.id, user));
 
-    const statusMap = new Map<Number, TranscriptionStatus>();
+    const statusMap = new Map<number, TranscriptionStatus>();
     statuses.forEach((status) => statusMap.set(status.id, status));
 
     const workflowTimelineData = workflows
       .filter((workflow) => workflow.statusId !== undefined)
       .map((workflow) => ({
-        // @ts-ignore False positive statusId must be present at this stage
+        // @ts-expect-error False positive statusId must be present at this stage
         title: statusMap.get(workflow.statusId).displayName || 'Unknown',
         descriptionLines: workflow.comments.map((c) => c.comment),
         dateTime: workflow.workflowTimestamp,
