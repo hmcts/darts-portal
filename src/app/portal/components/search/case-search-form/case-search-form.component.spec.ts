@@ -5,6 +5,7 @@ import { FormControl } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ErrorSummaryEntry } from '@core-types/index';
 import { CaseSearchFormValues } from '@portal-types/case';
+import { defaultFormValues } from '@services/case-search/case-search.service';
 import { ErrorMessageService } from '@services/error/error-message.service';
 import { FormService } from '@services/form/form.service';
 import { TODAY, TOMORROW, YESTERDAY } from '@utils/index';
@@ -209,14 +210,45 @@ describe('CaseSearchFormComponent', () => {
     });
   });
 
-  describe('courthouse selection', () => {
-    it('should handle courthouse selection correctly', () => {
-      const courthouse = 'Test Courthouse';
-      //Assigned via id
-      component.updateSelectedCourthouses({ id: 1, name: courthouse });
+  describe('updateSelectedCourthouses', () => {
+    beforeEach(() => {
+      fixture.componentRef.setInput('courthouses', [{ id: 1, displayName: 'Courthouse 1' }]);
+      fixture.detectChanges();
+    });
 
-      const courthouseControl = component.form.get('courthouses');
-      expect(courthouseControl?.value).toEqual([{ code: 'CARDIFF', displayName: 'Cardiff', id: 1, name: 'Cardiff' }]);
+    it('should add courthouse to the form and signal if not already selected', () => {
+      component.updateSelectedCourthouses({ id: 1, name: 'Courthouse 1' });
+
+      expect(component.form.value.courthouses).toEqual([{ id: 1, displayName: 'Courthouse 1' }]);
+      expect(component.formValues().courthouses).toEqual([{ id: 1, displayName: 'Courthouse 1' }]);
+    });
+
+    it('should not add courthouse if already selected', () => {
+      component.formValues.set({
+        ...defaultFormValues,
+        courthouses: [{ id: 1, displayName: 'Courthouse 1' } as Courthouse],
+      });
+
+      component.form.patchValue({
+        courthouses: [{ id: 1, displayName: 'Courthouse 1' } as Courthouse],
+      });
+
+      component.updateSelectedCourthouses({ id: 1, name: 'Courthouse 1' });
+
+      expect(component.form.value.courthouses).toEqual([{ id: 1, displayName: 'Courthouse 1' }]);
+      expect(component.formValues().courthouses).toEqual([{ id: 1, displayName: 'Courthouse 1' }]);
+    });
+
+    it('should do nothing if selectedCourthouse is null', () => {
+      component.updateSelectedCourthouses(null);
+      expect(component.form.value.courthouses).toEqual([]);
+      expect(component.formValues().courthouses).toEqual([]);
+    });
+
+    it('should do nothing if selectedCourthouse is not found in courthouses list', () => {
+      component.updateSelectedCourthouses({ id: 999, name: 'Nonexistent' });
+      expect(component.form.value.courthouses).toEqual([]);
+      expect(component.formValues().courthouses).toEqual([]);
     });
   });
 
