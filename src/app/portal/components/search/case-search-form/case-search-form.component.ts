@@ -158,7 +158,7 @@ export class CaseSearchFormComponent implements OnInit {
   }
 
   clearSearch() {
-    this.form.reset();
+    this.form.reset(defaultFormValues);
     this.isSubmitted.set(false);
     this.isAdvancedSearch.set(false);
     this.clear.emit();
