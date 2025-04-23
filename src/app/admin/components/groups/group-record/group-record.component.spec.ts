@@ -1,12 +1,13 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { User } from '@admin-types/index';
-import { ActivatedRoute } from '@angular/router';
-import { CourthouseService } from '@services/courthouses/courthouses.service';
-import { GroupsService } from '@services/groups/groups.service';
-import { UserAdminService } from '@services/user-admin/user-admin.service';
-import { of } from 'rxjs';
-import { GroupRecordComponent } from './group-record.component';
+import {User} from '@admin-types/index';
+import {ActivatedRoute} from '@angular/router';
+import {CourthouseService} from '@services/courthouses/courthouses.service';
+import {GroupsService} from '@services/groups/groups.service';
+import {UserAdminService} from '@services/user-admin/user-admin.service';
+import {of} from 'rxjs';
+import {GroupRecordComponent} from './group-record.component';
+import {CourthouseData} from "@core-types/courthouse/courthouse.interface";
 
 describe('GroupRecordComponent', () => {
   let component: GroupRecordComponent;
@@ -16,7 +17,7 @@ describe('GroupRecordComponent', () => {
     await TestBed.configureTestingModule({
       imports: [GroupRecordComponent],
       providers: [
-        { provide: ActivatedRoute, useValue: { snapshot: { params: { id: '1' } } } },
+        {provide: ActivatedRoute, useValue: {snapshot: {params: {id: '1'}}}},
         {
           provide: GroupsService,
           useValue: {
@@ -25,7 +26,7 @@ describe('GroupRecordComponent', () => {
                 id: 1,
                 courthouseIds: [1, 2, 3],
                 userIds: [1, 2, 3],
-                role: { name: 'ADMIN', displayName: 'Admin' },
+                role: {name: 'ADMIN', displayName: 'Admin'},
                 description: ' test',
                 name: 'Group 1',
               })
@@ -36,20 +37,20 @@ describe('GroupRecordComponent', () => {
         },
         {
           provide: CourthouseService,
-          useValue: { getCourthouses: jest.fn().mockReturnValue(of([{ id: 1 }, { id: 2 }, { id: 3 }])) },
+          useValue: {getCourthouses: jest.fn().mockReturnValue(of([{id: 1}, {id: 2}, {id: 3}]))},
         },
         {
           provide: UserAdminService,
-          useValue: { getUsers: jest.fn().mockReturnValue(of([{ id: 1 }, { id: 2 }, { id: 3 }])) },
+          useValue: {getUsers: jest.fn().mockReturnValue(of([{id: 1}, {id: 2}, {id: 3}]))},
         },
         {
           provide: ActivatedRoute,
           useValue: {
             snapshot: {
-              params: { id: 1 },
-              queryParams: { tab: 'Courthouses' },
+              params: {id: 1},
+              queryParams: {tab: 'Courthouses'},
             },
-            queryParams: of({ removedUsers: '1' }),
+            queryParams: of({removedUsers: '1'}),
           },
         },
       ],
@@ -71,10 +72,47 @@ describe('GroupRecordComponent', () => {
   });
 
   it('should update courthouses when onUpdateCourthouses is called', () => {
-    const courthouseIds = [1, 2, 3];
     component.groupId = 1;
-    component.onUpdateCourthouses(courthouseIds);
-    expect(component.groupsService.assignCourthousesToGroup).toHaveBeenCalledWith(1, courthouseIds);
+    component.onUpdateCourthouses({
+      selectedCourthouses: [
+        {id: 1, display_name: 'Courthouse 1'} as unknown as CourthouseData,
+        {id: 2, display_name: 'Courthouse 2'} as unknown as CourthouseData,
+        {id: 3, display_name: 'Courthouse 3'} as unknown as CourthouseData,
+      ],
+      addedCourtHouse: undefined,
+      removedCourtHouse: undefined,
+    });
+    expect(component.groupsService.assignCourthousesToGroup).toHaveBeenCalledWith(1, [1, 2, 3]);
+  });
+
+  it('should update successBannerText with added court case when onUpdateCourthouses is called with addedCourtHouse argument', () => {
+    component.groupId = 1;
+    component.onUpdateCourthouses({
+      selectedCourthouses: [
+        {id: 1, display_name: 'Courthouse 1'} as unknown as CourthouseData,
+        {id: 2, display_name: 'Courthouse 2'} as unknown as CourthouseData,
+        {id: 3, display_name: 'Courthouse 3'} as unknown as CourthouseData,
+      ],
+      addedCourtHouse: {id: 1, display_name: 'Courthouse 1'} as unknown as CourthouseData,
+      removedCourtHouse: undefined,
+    });
+    expect(component.groupsService.assignCourthousesToGroup).toHaveBeenCalledWith(1, [1, 2, 3]);
+    expect(component.successBannerText()).toContain('Courthouse 1 added');
+  });
+
+  it('should update successBannerText with removed court case when onUpdateCourthouses is called with removedCourtHouse argument', () => {
+    component.groupId = 1;
+    component.onUpdateCourthouses({
+      selectedCourthouses: [
+        {id: 1, display_name: 'Courthouse 1'} as unknown as CourthouseData,
+        {id: 2, display_name: 'Courthouse 2'} as unknown as CourthouseData,
+        {id: 3, display_name: 'Courthouse 3'} as unknown as CourthouseData,
+      ],
+      addedCourtHouse: undefined,
+      removedCourtHouse: {id: 1, display_name: 'Courthouse 1'} as unknown as CourthouseData,
+    });
+    expect(component.groupsService.assignCourthousesToGroup).toHaveBeenCalledWith(1, [1, 2, 3]);
+    expect(component.successBannerText()).toContain('Courthouse 1 removed');
   });
 
   it('should update users when onUpdateUsers is called', () => {
@@ -86,17 +124,17 @@ describe('GroupRecordComponent', () => {
 
   it('should navigate to remove-users route when onRemoveUsers is called', () => {
     const groupUsers = [
-      { id: 1, fullName: 'John' },
-      { id: 2, fullName: 'Jane' },
+      {id: 1, fullName: 'John'},
+      {id: 2, fullName: 'Jane'},
     ] as User[];
     const userIdsToRemove: number[] = [1, 2];
     const routerSpy = jest.spyOn(component.router, 'navigate');
 
     component.groupId = 1;
-    component.onRemoveUsers({ groupUsers, userIdsToRemove });
+    component.onRemoveUsers({groupUsers, userIdsToRemove});
 
     expect(routerSpy).toHaveBeenCalledWith(['/admin/groups', 1, 'remove-users'], {
-      state: { groupUsers, userIdsToRemove },
+      state: {groupUsers, userIdsToRemove},
     });
   });
 });

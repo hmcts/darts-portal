@@ -12,12 +12,16 @@
   <app-govuk-banner type="success">Group created</app-govuk-banner>
 }
 
+@if (successBannerText()) {
+  <app-govuk-banner type="success">{{ successBannerText() }}</app-govuk-banner>
+}
+
 @if (vm$ | async; as vm) {
   <div class="heading-button-container">
     <app-govuk-heading caption="View group">Group details</app-govuk-heading>
     <button
-      class="govuk-button govuk-button--secondary"
-      (click)="router.navigate(['admin/groups', groupId, 'edit'], { state: { group: vm.group } })"
+            class="govuk-button govuk-button--secondary"
+            (click)="router.navigate(['admin/groups', groupId, 'edit'], { state: { group: vm.group } })"
     >
       Edit group details
     </button>
@@ -35,23 +39,23 @@
 
   <app-tabs [default]="tab">
     <app-group-courthouses
-      *tab="'Courthouses'; screenReaderText: 'Group courthouses'; id: 'group-courthouses'"
-      [globalAccess]="vm.group.globalAccess"
-      [allCourthouses]="vm.courthouses"
-      [selectedCourthouses]="vm.group.courthouses"
-      (update)="onUpdateCourthouses($event)"
+            *tab="'Courthouses'; screenReaderText: 'Group courthouses'; id: 'group-courthouses'"
+            [globalAccess]="vm.group.globalAccess"
+            [allCourthouses]="vm.courthouses"
+            [selectedCourthouses]="vm.group.courthouses"
+            (update)="onUpdateCourthouses($event)"
     />
 
     <app-group-users
-      *tab="'Users'; screenReaderText: 'Group users'; id: 'group-users'"
-      [allUsers]="vm.users"
-      [groupUsers]="vm.group.users"
-      (update)="onUpdateUsers($event)"
-      (remove)="onRemoveUsers($event)"
+            *tab="'Users'; screenReaderText: 'Group users'; id: 'group-users'"
+            [allUsers]="vm.users"
+            [groupUsers]="vm.group.users"
+            (update)="onUpdateUsers($event)"
+            (remove)="onRemoveUsers($event)"
     />
   </app-tabs>
 }
 
 @if (loading$ | async) {
-  <app-loading text="Loading group details" />
+  <app-loading text="Loading group details"/>
 }
