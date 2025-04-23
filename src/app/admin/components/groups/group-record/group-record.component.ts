@@ -1,20 +1,20 @@
-import {AsyncPipe} from '@angular/common';
-import {Component, inject, signal} from '@angular/core';
-import {ActivatedRoute, Router, RouterLink} from '@angular/router';
-import {GovukHeadingComponent} from '@common/govuk-heading/govuk-heading.component';
-import {LoadingComponent} from '@common/loading/loading.component';
-import {TabsComponent} from '@common/tabs/tabs.component';
-import {CourthouseData} from '@core-types/index';
-import {UserAdminService} from '@services/user-admin/user-admin.service';
+import { AsyncPipe } from '@angular/common';
+import { Component, inject, signal } from '@angular/core';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
+import { LoadingComponent } from '@common/loading/loading.component';
+import { TabsComponent } from '@common/tabs/tabs.component';
+import { CourthouseData } from '@core-types/index';
+import { UserAdminService } from '@services/user-admin/user-admin.service';
 
-import {User} from '@admin-types/index';
-import {GovukBannerComponent} from '@common/govuk-banner/govuk-banner.component';
-import {TabDirective} from '@directives/tab.directive';
-import {CourthouseService} from '@services/courthouses/courthouses.service';
-import {GroupsService} from '@services/groups/groups.service';
-import {BehaviorSubject, combineLatest, forkJoin, map, Observable, shareReplay, tap} from 'rxjs';
-import {GroupCourthousesComponent} from '../group-courthouses/group-courthouses.component';
-import {GroupUsersComponent} from '../group-users/group-users.component';
+import { User } from '@admin-types/index';
+import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
+import { TabDirective } from '@directives/tab.directive';
+import { CourthouseService } from '@services/courthouses/courthouses.service';
+import { GroupsService } from '@services/groups/groups.service';
+import { BehaviorSubject, combineLatest, forkJoin, map, Observable, shareReplay, tap } from 'rxjs';
+import { GroupCourthousesComponent } from '../group-courthouses/group-courthouses.component';
+import { GroupUsersComponent } from '../group-users/group-users.component';
 
 @Component({
   selector: 'app-group-record',
@@ -45,7 +45,7 @@ export class GroupRecordComponent {
   hasRemovedUsers$ = this.route.queryParams.pipe(map((params) => params.removedUsers));
   hasUpdatedGroup$ = this.route.queryParams.pipe(map((params) => params.updated));
   hasCreatedGroup$ = this.route.queryParams.pipe(map((params) => params.created));
-  successBannerText = signal("");
+  successBannerText = signal('');
 
   selectedCourthouses: CourthouseData[] = [];
 
@@ -70,12 +70,11 @@ export class GroupRecordComponent {
   }).pipe(tap(() => this.loading$.next(false)));
 
   onUpdateCourthouses(courthouseData: {
-    selectedCourthouses: CourthouseData[],
-    addedCourtHouse?: CourthouseData,
-    removedCourtHouse?: CourthouseData,
+    selectedCourthouses: CourthouseData[];
+    addedCourtHouse?: CourthouseData;
+    removedCourtHouse?: CourthouseData;
   }) {
-
-    const courthouseIds = courthouseData.selectedCourthouses.map(courthouse => courthouse.id);
+    const courthouseIds = courthouseData.selectedCourthouses.map((courthouse) => courthouse.id);
     this.groupsService.assignCourthousesToGroup(this.groupId, courthouseIds).subscribe();
 
     if (courthouseData.addedCourtHouse) {
@@ -92,7 +91,7 @@ export class GroupRecordComponent {
 
   onRemoveUsers(event: { groupUsers: User[]; userIdsToRemove: number[] }) {
     this.router.navigate(['/admin/groups', this.groupId, 'remove-users'], {
-      state: {groupUsers: event.groupUsers, userIdsToRemove: event.userIdsToRemove},
+      state: { groupUsers: event.groupUsers, userIdsToRemove: event.userIdsToRemove },
     });
   }
 }

@@ -1,7 +1,7 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {CourthouseData} from '@core-types/index';
-import {GroupCourthousesComponent} from './group-courthouses.component';
+import { CourthouseData } from '@core-types/index';
+import { GroupCourthousesComponent } from './group-courthouses.component';
 
 describe('GroupCourthousesComponent', () => {
   let component: GroupCourthousesComponent;
@@ -16,15 +16,14 @@ describe('GroupCourthousesComponent', () => {
     fixture = TestBed.createComponent(GroupCourthousesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    courthouseData = [{id: 1, name: 'Courthouse 1'} as unknown as CourthouseData];
+    courthouseData = [{ id: 1, name: 'Courthouse 1' } as unknown as CourthouseData];
     component.allCourthouses = courthouseData;
     component.ngOnInit();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    expect(component.allNotSelectedCourthouses())
-      .toContain(courthouseData[0]);
+    expect(component.allNotSelectedCourthouses()).toContain(courthouseData[0]);
   });
 
   it('should remove courthouse from allNotSelectedCourthouses when onAddCourthouse is called', () => {
@@ -37,10 +36,9 @@ describe('GroupCourthousesComponent', () => {
     expect(component.update.emit).toHaveBeenCalledWith({
       selectedCourthouses: courthouseData,
       addedCourtHouse: courthouseData[0],
-      removedCourtHouse: undefined
+      removedCourtHouse: undefined,
     });
   });
-
 
   it('should add courthouse to selectedCourthouses when onAddCourthouse is called', () => {
     const courthouseId = '1';
@@ -59,7 +57,7 @@ describe('GroupCourthousesComponent', () => {
 
   it('should not add courthouse to selectedCourthouses if it is already selected', () => {
     const courthouseId = '1';
-    const courthouseData = {id: 1, name: 'Courthouse 1'} as unknown as CourthouseData;
+    const courthouseData = { id: 1, name: 'Courthouse 1' } as unknown as CourthouseData;
     component.allCourthouses = [courthouseData];
     component.selectedCourthouses = [courthouseData];
     component.onAddCourthouse(courthouseId);
@@ -80,7 +78,7 @@ describe('GroupCourthousesComponent', () => {
     expect(component.update.emit).toHaveBeenCalledWith({
       selectedCourthouses: [],
       addedCourtHouse: undefined,
-      removedCourtHouse: courthouseData[0]
+      removedCourtHouse: courthouseData[0],
     });
   });
 
@@ -98,31 +96,31 @@ describe('GroupCourthousesComponent', () => {
     expect(component.update.emit).toHaveBeenCalledWith({
       selectedCourthouses: courthouseData,
       addedCourtHouse: undefined,
-      removedCourtHouse: undefined
+      removedCourtHouse: undefined,
     });
   });
 
   it('should emit selectedCourthouses and addedCourtHouse when emitCourthouse is called with addedCourtHouse arg', () => {
     component.selectedCourthouses = courthouseData;
     jest.spyOn(component.update, 'emit');
-    const addedCourtHouse = {id: 2, name: 'Courthouse 2'} as unknown as CourthouseData;
-    component.emitCourthouse({addedCourthouse: addedCourtHouse});
+    const addedCourtHouse = { id: 2, name: 'Courthouse 2' } as unknown as CourthouseData;
+    component.emitCourthouse({ addedCourthouse: addedCourtHouse });
     expect(component.update.emit).toHaveBeenCalledWith({
       selectedCourthouses: courthouseData,
       addedCourtHouse: addedCourtHouse,
-      removedCourtHouse: undefined
+      removedCourtHouse: undefined,
     });
   });
 
   it('should emit selectedCourthouses and removedCourtHouse when emitCourthouse is called with removedCourtHouse arg', () => {
     component.selectedCourthouses = courthouseData;
     jest.spyOn(component.update, 'emit');
-    const removedCourtHouse = {id: 2, name: 'Courthouse 2'} as unknown as CourthouseData;
-    component.emitCourthouse({removedCourthouse: removedCourtHouse});
+    const removedCourtHouse = { id: 2, name: 'Courthouse 2' } as unknown as CourthouseData;
+    component.emitCourthouse({ removedCourthouse: removedCourtHouse });
     expect(component.update.emit).toHaveBeenCalledWith({
       selectedCourthouses: courthouseData,
       addedCourtHouse: undefined,
-      removedCourtHouse: removedCourtHouse
+      removedCourtHouse: removedCourtHouse,
     });
   });
 });
