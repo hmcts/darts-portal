@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
+import { defaultFormValues } from '@services/admin-search/admin-search.service';
 import { SearchFormComponent } from './search-form.component';
 
 describe('SearchFormComponent', () => {
@@ -40,31 +41,71 @@ describe('SearchFormComponent', () => {
   });
 
   describe('updateSelectedCourthouses', () => {
-    it('add courthouse to selectedCourthouses', () => {
+    beforeEach(() => {
       fixture.componentRef.setInput('courthouses', [{ id: 1, displayName: 'Courthouse 1' }]);
+      fixture.detectChanges();
+    });
+
+    it('should add courthouse to the form and signal if not already selected', () => {
       component.updateSelectedCourthouses({ id: 1, name: 'Courthouse 1' });
+
+      expect(component.form.value.courthouses).toEqual([{ id: 1, displayName: 'Courthouse 1' }]);
       expect(component.formValues().courthouses).toEqual([{ id: 1, displayName: 'Courthouse 1' }]);
     });
 
-    it('do not add courthouse if already selected', () => {
-      fixture.componentRef.setInput('courthouses', [{ id: 1, displayName: 'Courthouse 1' }]);
-      component.formValues.update((v) => ({
-        ...v,
+    it('should not add courthouse if already selected', () => {
+      component.formValues.set({
+        ...defaultFormValues,
         courthouses: [{ id: 1, displayName: 'Courthouse 1' } as Courthouse],
-      }));
+      });
+
+      component.form.patchValue({
+        courthouses: [{ id: 1, displayName: 'Courthouse 1' } as Courthouse],
+      });
+
       component.updateSelectedCourthouses({ id: 1, name: 'Courthouse 1' });
+
+      expect(component.form.value.courthouses).toEqual([{ id: 1, displayName: 'Courthouse 1' }]);
       expect(component.formValues().courthouses).toEqual([{ id: 1, displayName: 'Courthouse 1' }]);
+    });
+
+    it('should do nothing if selectedCourthouse is null', () => {
+      component.updateSelectedCourthouses(null);
+      expect(component.form.value.courthouses).toEqual([]);
+      expect(component.formValues().courthouses).toEqual([]);
+    });
+
+    it('should do nothing if selectedCourthouse is not found in courthouses list', () => {
+      component.updateSelectedCourthouses({ id: 999, name: 'Nonexistent' });
+      expect(component.form.value.courthouses).toEqual([]);
+      expect(component.formValues().courthouses).toEqual([]);
     });
   });
 
   describe('removeSelectedCourthouse', () => {
-    it('remove courthouse from selectedCourthouses', () => {
-      component.formValues.update((v) => ({
-        ...v,
+    beforeEach(() => {
+      component.form.patchValue({
         courthouses: [{ id: 1, displayName: 'Courthouse 1' } as Courthouse],
-      }));
+      });
+      component.formValues.set({
+        ...component.formValues(),
+        courthouses: [{ id: 1, displayName: 'Courthouse 1' } as Courthouse],
+      });
+    });
+
+    it('should remove courthouse from form and signal', () => {
       component.removeSelectedCourthouse(1);
+
+      expect(component.form.value.courthouses).toEqual([]);
       expect(component.formValues().courthouses).toEqual([]);
+    });
+
+    it('should handle removal of non-existent courthouse gracefully', () => {
+      component.removeSelectedCourthouse(999);
+
+      // Should remain unchanged
+      expect(component.form.value.courthouses).toEqual([{ id: 1, displayName: 'Courthouse 1' }]);
+      expect(component.formValues().courthouses).toEqual([{ id: 1, displayName: 'Courthouse 1' }]);
     });
   });
 
