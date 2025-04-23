@@ -130,6 +130,7 @@ describe('SearchComponent', () => {
       const searchErrorSpy = jest.spyOn(component.searchService.searchError, 'set');
       const formValuesSpy = jest.spyOn(component.searchService.formValues, 'set');
 
+      component.setForm(mockFormValues);
       component.onSearch(mockFormValues);
 
       tick();
@@ -143,6 +144,7 @@ describe('SearchComponent', () => {
 
     describe('case search', () => {
       it('call getCases with correct values', () => {
+        component.setForm(mockFormValues);
         component.onSearch(mockFormValues);
         expect(fakeAdminSearchService.getCases).toHaveBeenCalledWith(mockFormValues);
       });
@@ -150,28 +152,30 @@ describe('SearchComponent', () => {
 
     describe('event search', () => {
       it('call getEvents with correct values', () => {
-        component.onSearch({ ...defaultFormValues, resultsFor: 'Events' } as AdminSearchFormValues);
-        expect(fakeAdminSearchService.getEvents).toHaveBeenCalledWith({ ...defaultFormValues, resultsFor: 'Events' });
+        const eventValues = { ...defaultFormValues, resultsFor: 'Events' } as AdminSearchFormValues;
+        component.setForm(eventValues);
+        component.onSearch(eventValues);
+        expect(fakeAdminSearchService.getEvents).toHaveBeenCalledWith(eventValues);
       });
     });
 
     describe('hearing search', () => {
       it('call getHearings with correct values', () => {
-        component.onSearch({ ...defaultFormValues, resultsFor: 'Hearings' } as AdminSearchFormValues);
-        expect(fakeAdminSearchService.getHearings).toHaveBeenCalledWith({
-          ...defaultFormValues,
-          resultsFor: 'Hearings',
-        });
+        const hearingValues = { ...defaultFormValues, resultsFor: 'Hearings' } as AdminSearchFormValues;
+        component.setForm(hearingValues);
+        component.onSearch(hearingValues);
+        expect(fakeAdminSearchService.getHearings).toHaveBeenCalledWith(hearingValues);
       });
     });
 
     describe('audio search', () => {
       it('call getAudio with correct values', () => {
-        component.onSearch({ ...defaultFormValues, resultsFor: 'Audio' } as AdminSearchFormValues);
-        expect(fakeAdminSearchService.getAudioMedia).toHaveBeenCalledWith({
-          ...defaultFormValues,
-          resultsFor: 'Audio',
-        });
+        const audioValues = { ...defaultFormValues, resultsFor: 'Audio' } as AdminSearchFormValues;
+
+        component.setForm(audioValues);
+        component.onSearch(audioValues);
+
+        expect(fakeAdminSearchService.getAudioMedia).toHaveBeenCalledWith(audioValues);
       });
     });
 
@@ -196,11 +200,6 @@ describe('SearchComponent', () => {
   });
 
   describe('tabChange', () => {
-    it('updates formValues', () => {
-      component.tabChange({ name: 'Cases' } as TabDirective);
-      expect(component.searchService.formValues().resultsFor).toBe('Cases');
-    });
-
     it('triggers search with last search form values', () => {
       const onSearchSpy = jest.spyOn(component, 'onSearch');
       component.searchService.formValues.set(mockFormValues);
@@ -211,6 +210,67 @@ describe('SearchComponent', () => {
         ...mockFormValues,
         resultsFor: 'Hearings',
       });
+    });
+
+    it('should call onLogicError if hearingDate span exceeds one year', () => {
+      const onLogicErrorSpy = jest.spyOn(component, 'onLogicError');
+
+      component.searchService.formValues.set({
+        ...defaultFormValues,
+        hearingDate: {
+          from: '01/01/2020',
+          to: '02/01/2021', // 367 days
+          specific: '',
+          type: 'range',
+        },
+        resultsFor: 'Cases',
+      });
+
+      component.tabChange({ name: 'Audio' } as TabDirective);
+
+      expect(onLogicErrorSpy).toHaveBeenCalledWith({
+        code: 'COMMON_105',
+        tabName: 'Audio',
+      });
+    });
+
+    it('should update resultsFor and trigger search if hearingDate span is valid', () => {
+      const onSearchSpy = jest.spyOn(component, 'onSearch');
+
+      component.searchService.formValues.set({
+        ...defaultFormValues,
+        hearingDate: {
+          from: '01/01/2022',
+          to: '31/12/2022',
+          specific: '',
+          type: 'range',
+        },
+        resultsFor: 'Cases',
+      });
+
+      component.tabChange({ name: 'Events' } as TabDirective);
+
+      expect(component.searchService.formValues().resultsFor).toBe('Events');
+      expect(onSearchSpy).toHaveBeenCalledWith({
+        ...defaultFormValues,
+        hearingDate: {
+          from: '01/01/2022',
+          to: '31/12/2022',
+          specific: '',
+          type: 'range',
+        },
+        resultsFor: 'Events',
+      });
+    });
+  });
+
+  describe('setForm', () => {
+    it('should set formValues on onFormSubmit', () => {
+      const formValuesSpy = jest.spyOn(component.searchService.formValues, 'set');
+
+      component.setForm(mockFormValues);
+
+      expect(formValuesSpy).toHaveBeenCalledWith(mockFormValues);
     });
   });
 

@@ -7,9 +7,9 @@ import { AdminSearchFormErrorMessages } from '@constants/admin-search-form-error
 import { ErrorSummaryEntry } from '@core-types/index';
 import { defaultFormValues } from '@services/admin-search/admin-search.service';
 import { FormService } from '@services/form/form.service';
+import { isDateSpanMoreThanOneYear } from '@utils/date-range.utils';
 import { dateRangeValidator } from '@validators/date-range.validator';
 import { optionalMaxLengthValidator } from '@validators/optional-maxlength.validator';
-import { DateTime } from 'luxon';
 import { transformedMediaSearchDateValidators } from '../../transformed-media/search-transformed-media-form/search-transformed-media-form.component';
 
 export type AdminSearchFormValues = {
@@ -36,6 +36,7 @@ type AdminSearchFormControl = keyof typeof AdminSearchFormErrorMessages;
 export class SearchFormComponent implements OnInit {
   formValues = model<AdminSearchFormValues>(defaultFormValues);
   courthouses = input<Courthouse[]>([]);
+  formState = output<AdminSearchFormValues>();
   search = output<AdminSearchFormValues>();
   errors = output<ErrorSummaryEntry[]>();
   logicError = output<{ code: string | null; tabName: string }>();
@@ -108,8 +109,9 @@ export class SearchFormComponent implements OnInit {
 
   onSubmit() {
     this.form.markAllAsTouched();
+    this.formState.emit(this.form.value as AdminSearchFormValues);
 
-    if (this.isDateSpanMoreThanOneYear()) {
+    if (this.isInvalidDate()) {
       this.logicError.emit({ code: 'COMMON_105', tabName: this.form.get('resultsFor')?.value || 'Cases' });
       return;
     }
@@ -131,18 +133,15 @@ export class SearchFormComponent implements OnInit {
     this.form.reset(defaultFormValues);
   }
 
-  isDateSpanMoreThanOneYear(): boolean {
+  isInvalidDate(): boolean {
     const hearingDate = this.form.get('hearingDate');
     const from = hearingDate?.get('from')?.value;
     const to = hearingDate?.get('to')?.value;
 
-    if (!from || !to) return false;
+    if (isDateSpanMoreThanOneYear(from, to)) {
+      return true;
+    }
 
-    const fromDate = DateTime.fromFormat(from, 'dd/MM/yyyy');
-    const toDate = DateTime.fromFormat(to, 'dd/MM/yyyy');
-
-    if (!fromDate.isValid || !toDate.isValid) return false;
-
-    return toDate.diff(fromDate, 'days').days > 365;
+    return false;
   }
 }
