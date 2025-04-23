@@ -6,6 +6,7 @@ import { SpecificOrRangeDatePickerComponent } from '@common/specific-or-range-da
 import { AdminSearchFormErrorMessages } from '@constants/admin-search-form-error-messages';
 import { ErrorSummaryEntry } from '@core-types/index';
 import { defaultFormValues } from '@services/admin-search/admin-search.service';
+import { CourthouseFormService } from '@services/courthouse-forms/courthouse-form.service';
 import { FormService } from '@services/form/form.service';
 import { isDateSpanMoreThanOneYear } from '@utils/date-range.utils';
 import { dateRangeValidator } from '@validators/date-range.validator';
@@ -39,6 +40,8 @@ export class SearchFormComponent implements OnInit {
   formState = output<AdminSearchFormValues>();
   search = output<AdminSearchFormValues>();
   errors = output<ErrorSummaryEntry[]>();
+  courthouseFormService = inject(CourthouseFormService);
+
   logicError = output<{ code: string | null; tabName: string }>();
   clear = output<void>();
   formService = inject(FormService);
@@ -71,35 +74,16 @@ export class SearchFormComponent implements OnInit {
   );
 
   updateSelectedCourthouses(selectedCourthouse: AutoCompleteItem | null) {
-    if (!selectedCourthouse) return;
-
-    const courthouse = this.courthouses().find((c) => c.id === selectedCourthouse.id);
-    if (!courthouse) return;
-
-    const alreadySelected = this.form.value.courthouses?.some((c) => c.id === courthouse.id);
-    if (alreadySelected) return;
-
-    const updatedCourthouses = [...(this.form.value.courthouses ?? []), courthouse];
-
-    this.form.patchValue({ courthouses: updatedCourthouses });
-    this.form.get('courthouses')?.markAsDirty();
-
-    this.formValues.update(() => ({
-      ...(this.form.value as AdminSearchFormValues),
-      courthouses: updatedCourthouses,
-    }));
+    this.courthouseFormService.updateSelectedCourthouse(
+      selectedCourthouse,
+      this.courthouses(),
+      this.form,
+      this.formValues
+    );
   }
 
   removeSelectedCourthouse(courthouseId: number) {
-    const updatedCourthouses = this.form.value.courthouses?.filter((c) => c.id !== courthouseId) ?? [];
-
-    this.form.patchValue({ courthouses: updatedCourthouses });
-    this.form.get('courthouses')?.markAsDirty();
-
-    this.formValues.update(() => ({
-      ...(this.form.value as AdminSearchFormValues),
-      courthouses: updatedCourthouses,
-    }));
+    this.courthouseFormService.removeSelectedCourthouse(courthouseId, this.form, this.formValues);
   }
 
   getFormControlErrorMessages(controlName: AdminSearchFormControl): string[] {
