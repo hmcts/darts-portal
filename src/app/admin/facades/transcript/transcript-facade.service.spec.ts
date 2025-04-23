@@ -138,7 +138,7 @@ describe('TranscriptFacadeService', () => {
             title: 'Requested',
             descriptionLines: ['Test Comment'],
             dateTime: DateTime.fromISO('2021-01-01T00:00:00Z'),
-            user: { id: 1, fullName: 'Test User', emailAddress: 'email@test.com' },
+            user: { id: 1, fullName: 'Test User 1', emailAddress: 'email1@test.com' },
           },
         ])
       );
