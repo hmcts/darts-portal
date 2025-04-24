@@ -9,7 +9,7 @@ import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
 import { TranscriptFacadeService } from './transcript-facade.service';
-import {TimelineItem} from "@core-types/timeline/timeline.type";
+import { TimelineItem } from '@core-types/timeline/timeline.type';
 
 describe('TranscriptFacadeService', () => {
   let service: TranscriptFacadeService;
@@ -201,7 +201,7 @@ describe('TranscriptFacadeService', () => {
             title: 'Comment',
             descriptionLines: ['Test Comment'],
             dateTime: DateTime.fromISO('2021-01-01T00:00:00Z'),
-            user:  { id: 1, fullName: 'Test User 1', emailAddress: 'email1@test.com' },
+            user: { id: 1, fullName: 'Test User 1', emailAddress: 'email1@test.com' },
           },
         ])
       );
@@ -285,25 +285,25 @@ describe('TranscriptFacadeService', () => {
       it('should sort workflows by dateTime in descending order', () => {
         const timelineItems: TimelineItem[] = [
           {
-            title: "a-title",
+            title: 'a-title',
             dateTime: DateTime.fromISO('2021-01-02T00:00:00Z'),
-            descriptionLines: ["a-description"],
+            descriptionLines: ['a-description'],
             user: {
               id: 1,
-              fullName: "a-name",
-              emailAddress: "a-email"
-            }
+              fullName: 'a-name',
+              emailAddress: 'a-email',
+            },
           },
           {
-            title: "a-title",
+            title: 'a-title',
             dateTime: DateTime.fromISO('2021-01-01T00:00:00Z'),
-            descriptionLines: ["a-description"],
+            descriptionLines: ['a-description'],
             user: {
               id: 1,
-              fullName: "a-name",
-              emailAddress: "a-email"
-            }
-          }
+              fullName: 'a-name',
+              emailAddress: 'a-email',
+            },
+          },
         ];
 
         const sortedTimelineItems = service.sortTimelineItemByTimestampAndStatus(timelineItems);
@@ -315,27 +315,26 @@ describe('TranscriptFacadeService', () => {
       it('should sort timelineItem by title if dateTime are equal', () => {
         const timelineItems: TimelineItem[] = [
           {
-            title: "b-title",
+            title: 'b-title',
             dateTime: DateTime.fromISO('2021-01-01T00:00:00Z'),
-            descriptionLines: ["a-description"],
+            descriptionLines: ['a-description'],
             user: {
               id: 1,
-              fullName: "a-name",
-              emailAddress: "a-email"
-            }
+              fullName: 'a-name',
+              emailAddress: 'a-email',
+            },
           },
           {
-            title: "a-title",
+            title: 'a-title',
             dateTime: DateTime.fromISO('2021-01-01T00:00:00Z'),
-            descriptionLines: ["a-description"],
+            descriptionLines: ['a-description'],
             user: {
               id: 1,
-              fullName: "a-name",
-              emailAddress: "a-email"
-            }
-          }
+              fullName: 'a-name',
+              emailAddress: 'a-email',
+            },
+          },
         ];
-
 
         const sortedTimelineItems = service.sortTimelineItemByTimestampAndStatus(timelineItems);
 

@@ -1,13 +1,13 @@
-import {SecurityGroup, TranscriptionStatus, User} from '@admin-types/index';
-import {TranscriptionAdminDetails} from '@admin-types/transcription/transcription-details';
-import {TranscriptionWorkflow} from '@admin-types/transcription/transcription-workflow';
-import {inject, Injectable} from '@angular/core';
-import {TimelineItem} from '@core-types/index';
-import {TranscriptionAdminService} from '@services/transcription-admin/transcription-admin.service';
-import {UserAdminService} from '@services/user-admin/user-admin.service';
-import {forkJoin, map, of, switchMap} from 'rxjs';
+import { SecurityGroup, TranscriptionStatus, User } from '@admin-types/index';
+import { TranscriptionAdminDetails } from '@admin-types/transcription/transcription-details';
+import { TranscriptionWorkflow } from '@admin-types/transcription/transcription-workflow';
+import { inject, Injectable } from '@angular/core';
+import { TimelineItem } from '@core-types/index';
+import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
+import { UserAdminService } from '@services/user-admin/user-admin.service';
+import { forkJoin, map, of, switchMap } from 'rxjs';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class TranscriptFacadeService {
   transcriptionAdminService = inject(TranscriptionAdminService);
   userAdminService = inject(UserAdminService);
@@ -20,7 +20,7 @@ export class TranscriptFacadeService {
           workflows: of(workflows),
           users: this.userAdminService.getUsersById(userIds),
           statuses: this.transcriptionAdminService.getTranscriptionStatuses(),
-        }).pipe(map(({workflows, statuses, users}) => this.mapWorkflowsToTimeline(workflows, statuses, users)));
+        }).pipe(map(({ workflows, statuses, users }) => this.mapWorkflowsToTimeline(workflows, statuses, users)));
       })
     );
   }
@@ -58,7 +58,7 @@ export class TranscriptFacadeService {
           users: this.userAdminService.getUsersById(userIds),
           securityGroups: this.transcriptionAdminService.getTranscriptionSecurityGroups(transcription.courthouseId!),
         }).pipe(
-          map(({users, securityGroups}) =>
+          map(({ users, securityGroups }) =>
             this.mapUsersAndSecurityGroupsToTranscription(users, securityGroups, transcription, workflowUserId)
           )
         );
@@ -113,12 +113,14 @@ export class TranscriptFacadeService {
 
     const commentTimelineData = workflows
       .filter((workflow) => workflow.statusId === undefined || !statusMap.get(workflow.statusId))
-      .flatMap((workflow) => workflow.comments.map(value => {
-        return {
-          comment: value,
-          workflow: workflow,
-        };
-      }))
+      .flatMap((workflow) =>
+        workflow.comments.map((value) => {
+          return {
+            comment: value,
+            workflow: workflow,
+          };
+        })
+      )
       .map((data) => {
         const comment = data.comment;
         let user = userMap.get(comment.authorId);
