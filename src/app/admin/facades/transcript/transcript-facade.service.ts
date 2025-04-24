@@ -1,13 +1,13 @@
-import { SecurityGroup, TranscriptionStatus, User } from '@admin-types/index';
-import { TranscriptionAdminDetails } from '@admin-types/transcription/transcription-details';
-import { TranscriptionWorkflow } from '@admin-types/transcription/transcription-workflow';
-import { inject, Injectable } from '@angular/core';
-import { TimelineItem } from '@core-types/index';
-import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
-import { UserAdminService } from '@services/user-admin/user-admin.service';
-import { forkJoin, map, of, switchMap } from 'rxjs';
+import {SecurityGroup, TranscriptionStatus, User} from '@admin-types/index';
+import {TranscriptionAdminDetails} from '@admin-types/transcription/transcription-details';
+import {TranscriptionWorkflow} from '@admin-types/transcription/transcription-workflow';
+import {inject, Injectable} from '@angular/core';
+import {TimelineItem} from '@core-types/index';
+import {TranscriptionAdminService} from '@services/transcription-admin/transcription-admin.service';
+import {UserAdminService} from '@services/user-admin/user-admin.service';
+import {forkJoin, map, of, switchMap} from 'rxjs';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class TranscriptFacadeService {
   transcriptionAdminService = inject(TranscriptionAdminService);
   userAdminService = inject(UserAdminService);
@@ -15,32 +15,23 @@ export class TranscriptFacadeService {
   getHistory(transcriptionId: number) {
     return this.transcriptionAdminService.getTranscriptionWorkflows(transcriptionId).pipe(
       switchMap((workflows) => {
-        const sortedWorkflows = this.sortWorkflowsByTimestampAndStatus(workflows);
         const userIds = workflows.map((workflow) => workflow.workflowActor);
         return forkJoin({
-          workflows: of(sortedWorkflows),
+          workflows: of(workflows),
           users: this.userAdminService.getUsersById(userIds),
           statuses: this.transcriptionAdminService.getTranscriptionStatuses(),
-        }).pipe(map(({ workflows, statuses, users }) => this.mapWorkflowsToTimeline(workflows, statuses, users)));
+        }).pipe(map(({workflows, statuses, users}) => this.mapWorkflowsToTimeline(workflows, statuses, users)));
       })
     );
   }
 
-  sortWorkflowsByTimestampAndStatus(workflows: TranscriptionWorkflow[]): TranscriptionWorkflow[] {
-    return workflows.sort((a, b) => {
-      const dateComparison = b.workflowTimestamp.toMillis() - a.workflowTimestamp.toMillis();
+  sortTimelineItemByTimestampAndStatus(timelineItems: TimelineItem[]): TimelineItem[] {
+    return timelineItems.sort((a, b) => {
+      const dateComparison = b.dateTime.toMillis() - a.dateTime.toMillis();
       if (dateComparison !== 0) {
         return dateComparison;
       }
-      if (b.statusId === undefined && a.statusId === undefined) {
-        return 0;
-      } else if (b.statusId === undefined) {
-        return -1;
-      } else if (a.statusId === undefined) {
-        return 1;
-      } else {
-        return b.statusId - a.statusId;
-      }
+      return a.title.localeCompare(b.title);
     });
   }
 
@@ -67,7 +58,7 @@ export class TranscriptFacadeService {
           users: this.userAdminService.getUsersById(userIds),
           securityGroups: this.transcriptionAdminService.getTranscriptionSecurityGroups(transcription.courthouseId!),
         }).pipe(
-          map(({ users, securityGroups }) =>
+          map(({users, securityGroups}) =>
             this.mapUsersAndSecurityGroupsToTranscription(users, securityGroups, transcription, workflowUserId)
           )
         );
@@ -121,17 +112,30 @@ export class TranscriptFacadeService {
       }));
 
     const commentTimelineData = workflows
-      .filter((workflow) => workflow.statusId === undefined)
-      .flatMap((workflow) => workflow.comments)
-      .map((comment) => {
-        const user = userMap.get(comment.authorId);
+      .filter((workflow) => workflow.statusId === undefined || !statusMap.get(workflow.statusId))
+      .flatMap((workflow) => workflow.comments.map(value => {
+        return {
+          comment: value,
+          workflow: workflow,
+        };
+      }))
+      .map((data) => {
+        const comment = data.comment;
+        let user = userMap.get(comment.authorId);
+        if (!user) {
+          user = userMap.get(data.workflow.workflowActor);
+        }
+        let dateTime = comment.commentedAt;
+        if (!dateTime) {
+          dateTime = data.workflow.workflowTimestamp;
+        }
         return {
           title: 'Comment',
           descriptionLines: [comment.comment],
-          dateTime: comment.commentedAt,
+          dateTime: dateTime,
           user: (user as Pick<User, 'id' | 'fullName' | 'emailAddress'>) || null,
         };
       });
-    return workflowTimelineData.concat(commentTimelineData);
+    return this.sortTimelineItemByTimestampAndStatus(workflowTimelineData.concat(commentTimelineData));
   }
 }
