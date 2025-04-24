@@ -147,7 +147,7 @@ export class TranscriptionService {
     return {
       'Case ID': [
         {
-          href: `/admin/case/${transcript.caseId}`,
+          href: `/case/${transcript.caseId}`,
           value: transcript.caseNumber,
         },
       ],

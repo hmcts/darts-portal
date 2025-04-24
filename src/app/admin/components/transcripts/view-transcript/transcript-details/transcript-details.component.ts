@@ -22,12 +22,10 @@ export class TranscriptDetailsComponent implements OnInit {
   @Input() transcript!: TranscriptionAdminDetails;
 
   requestDetails = {};
-  caseDetails = {};
   currentStatus = {};
 
   ngOnInit(): void {
     this.currentStatus = this.transcriptionAdminService.getCurrentStatusFromTranscript(this.transcript);
     this.requestDetails = this.transcriptionAdminService.getRequestDetailsFromTranscript(this.transcript);
-    this.caseDetails = this.transcriptionService.getCaseDetailsFromTranscript(this.transcript);
   }
 }

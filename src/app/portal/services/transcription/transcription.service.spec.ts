@@ -497,7 +497,7 @@ describe('TranscriptionService', () => {
       const expectedResult = {
         'Case ID': [
           {
-            href: '/admin/case/1',
+            href: '/case/1',
             value: '123',
           },
         ],
@@ -639,7 +639,7 @@ describe('TranscriptionService', () => {
         caseDetails: {
           'Case ID': [
             {
-              href: '/admin/case/1',
+              href: '/case/1',
               value: '123',
             },
           ],
@@ -702,7 +702,7 @@ describe('TranscriptionService', () => {
         caseDetails: {
           'Case ID': [
             {
-              href: '/admin/case/1',
+              href: '/case/1',
               value: '123',
             },
           ],
