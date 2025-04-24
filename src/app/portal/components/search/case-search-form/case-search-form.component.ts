@@ -9,6 +9,7 @@ import { ErrorSummaryEntry } from '@core-types/index';
 import { NestedKeys } from '@core-types/utils/nested-keys.type';
 import { CaseSearchFormValues } from '@portal-types/index';
 import { defaultFormValues } from '@services/case-search/case-search.service';
+import { CourthouseFormService } from '@services/courthouse-forms/courthouse-form.service';
 import { ErrorMessageService } from '@services/error/error-message.service';
 import { FormService } from '@services/form/form.service';
 import { ScrollService } from '@services/scroll/scroll.service';
@@ -31,6 +32,7 @@ export class CaseSearchFormComponent implements OnInit {
   formService = inject(FormService);
   destroyRef = inject(DestroyRef);
   errorMsgService = inject(ErrorMessageService);
+  courthouseFormService = inject(CourthouseFormService);
 
   formValues = model<CaseSearchFormValues>(defaultFormValues);
   courthouses = input<Courthouse[]>([]);
@@ -133,28 +135,16 @@ export class CaseSearchFormComponent implements OnInit {
   }
 
   updateSelectedCourthouses(selectedCourthouse: AutoCompleteItem | null) {
-    if (!selectedCourthouse) return;
-
-    const courthouse = this.courthouses().find((c) => c.id === selectedCourthouse.id);
-    if (!courthouse) return;
-
-    const updatedCourthouses = [...(this.form.value.courthouses ?? []), courthouse];
-
-    this.form.patchValue({ courthouses: updatedCourthouses });
-    this.form.get('courthouses')?.markAsDirty();
-
-    this.formValues.update(() => ({
-      ...(this.form.value as CaseSearchFormValues),
-      courthouses: updatedCourthouses,
-    }));
+    this.courthouseFormService.updateSelectedCourthouse(
+      selectedCourthouse,
+      this.courthouses(),
+      this.form,
+      this.formValues
+    );
   }
 
   removeSelectedCourthouse(courthouseId: number) {
-    this.formValues.update((values) => ({
-      ...values,
-      courthouses: values.courthouses.filter((c) => c.id !== courthouseId),
-    }));
-    this.form.get('courthouses')?.markAsDirty();
+    this.courthouseFormService.removeSelectedCourthouse(courthouseId, this.form, this.formValues);
   }
 
   clearSearch() {

@@ -10,6 +10,7 @@ import { TabDirective } from '@directives/tab.directive';
 import { AdminSearchService } from '@services/admin-search/admin-search.service';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { ScrollService } from '@services/scroll/scroll.service';
+import { isDateSpanMoreThanOneYear } from '@utils/date-range.utils';
 import { finalize, map } from 'rxjs';
 import { AudioSearchResultsComponent } from './audio-search-results/audio-search-results.component';
 import { EventSearchResultsComponent } from './event-search-results/event-search-results.component';
@@ -57,8 +58,11 @@ export class SearchComponent {
     this.scrollService.scrollTo(this.validationSummarySelector);
   }
 
-  onSearch(searchFormValues: AdminSearchFormValues) {
+  setForm(searchFormValues: AdminSearchFormValues) {
     this.searchService.formValues.set(searchFormValues);
+  }
+
+  onSearch(searchFormValues: AdminSearchFormValues) {
     this.searchService.hasFormBeenSubmitted.set(true);
     this.searchService.isLoading.set(true);
     this.searchService.searchError.set(null);
@@ -86,14 +90,22 @@ export class SearchComponent {
   isSearchOk = computed(() => !this.searchService.isLoading() && !this.searchService.searchError());
 
   tabChange(tab: TabDirective) {
+    const { from, to } = this.searchService.formValues().hearingDate;
+
+    if (isDateSpanMoreThanOneYear(from, to)) {
+      this.onLogicError({ code: 'COMMON_105', tabName: tab.name });
+      return;
+    }
+
     this.searchService.formValues.update((formValues) => ({ ...formValues, resultsFor: tab.name }));
     this.onSearch(this.searchService.formValues());
   }
 
-  onLogicError(errorCode: string | null) {
-    if (errorCode === 'COMMON_105') {
+  onLogicError(error: { code: string | null; tabName: string }) {
+    if (error.code === 'COMMON_105') {
       this.searchService.searchError.set('COMMON_105');
       this.searchService.hasFormBeenSubmitted.set(true);
+      this.searchService.formValues.update((formValues) => ({ ...formValues, resultsFor: error.tabName }));
       this.searchService.cases.set([]);
     } else {
       this.searchService.searchError.set(null);

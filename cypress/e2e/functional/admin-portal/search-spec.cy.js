@@ -318,4 +318,25 @@ describe('Admin - Search screen', () => {
 
     cy.get('.heading-caption').should('contain', 'Showing 1-3 of 3');
   });
+
+  it('should clear the form when "Clear search" is clicked', () => {
+    cy.get('input[name="caseId"]').type('123456');
+    cy.get('input[name="courtroom"]').type('1');
+    cy.get('input[name="resultsFor"][value="Hearings"]').check();
+
+    cy.get('#date-range-radio').check();
+    cy.get('input[name="from"]').type('01/01/2024');
+    cy.get('input[name="to"]').type('31/12/2024');
+
+    cy.get('input[name="caseId"]').should('have.value', '123456');
+    cy.get('input[name="courtroom"]').should('have.value', '1');
+    cy.get('input[name="resultsFor"][value="Hearings"]').should('be.checked');
+
+    cy.contains('a', 'Clear search').click();
+
+    cy.get('input[name="caseId"]').should('have.value', '');
+    cy.get('input[name="courtroom"]').should('have.value', '');
+    cy.get('#date-range-radio').should('not.be.checked');
+    cy.get('#cases-option').should('be.checked');
+  });
 });
