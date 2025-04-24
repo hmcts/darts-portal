@@ -32,6 +32,8 @@ const subscribedEndpoints = [
 const ignoredEndpoints = [
   { endpoint: 'api/audio-requests/not-accessed-count', responses: [0, 401, 403, 404, 500, 502, 503, 504] },
   { endpoint: 'api/transcriptions/transcriber-counts', responses: [0, 401, 403, 404, 500, 502, 503, 504] },
+  { endpoint: 'user/refresh-profile', responses: [0, 500, 502, 504] },
+  { endpoint: `auth/is-authenticated`, responses: [0, 500, 502, 504] },
 ];
 
 @Injectable({

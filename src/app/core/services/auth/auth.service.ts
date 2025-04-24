@@ -26,7 +26,11 @@ export class AuthService {
         this.isAuthenticated = isAuthenticated;
         return this.isAuthenticated;
       }),
-      catchError(() => {
+      catchError((error) => {
+        // catch 502 and 504 errors and don't update isAuthenticated
+        if ([502, 504].includes(error.status)) {
+          return of(this.isAuthenticated);
+        }
         this.isAuthenticated = false;
         return of(false);
       })
