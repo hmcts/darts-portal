@@ -214,7 +214,7 @@ describe('TranscriptFacadeService', () => {
           workflowActor: 1,
           workflowTimestamp: DateTime.fromISO('2022-01-01T00:00:00Z'),
           comments: [
-            // @ts-ignore
+            //@ts-expect-error legacy data could be missing commentedAt
             {
               comment: 'Test Comment',
               authorId: 2,
