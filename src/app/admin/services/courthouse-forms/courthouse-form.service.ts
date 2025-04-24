@@ -18,10 +18,10 @@ export class CourthouseFormService {
     const courthouse = courthouses.find((c) => c.id === selected.id);
     if (!courthouse) return;
 
-    const alreadySelected = form.value.courthouses?.some((c: { id: number }) => c.id === courthouse.id);
+    const alreadySelected = form.value.courthouses.some((c: { id: number }) => c.id === courthouse.id);
     if (alreadySelected) return;
 
-    const updatedCourthouses = [...(form.value.courthouses ?? []), courthouse];
+    const updatedCourthouses = [...form.value.courthouses, courthouse];
 
     form.patchValue({ courthouses: updatedCourthouses });
     form.get('courthouses')?.markAsDirty();
@@ -37,7 +37,7 @@ export class CourthouseFormService {
     form: FormGroup,
     formValuesSignal: WritableSignal<CaseSearchFormValues | AdminSearchFormValues>
   ): void {
-    const updatedCourthouses = form.value.courthouses?.filter((c: { id: number }) => c.id !== courthouseId) ?? [];
+    const updatedCourthouses = form.value.courthouses.filter((c: { id: number }) => c.id !== courthouseId);
 
     form.patchValue({ courthouses: updatedCourthouses });
     form.get('courthouses')?.markAsDirty();
