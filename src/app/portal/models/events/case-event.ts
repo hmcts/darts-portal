@@ -5,7 +5,7 @@ export type CaseEvent = {
   hearingId: number;
   hearingDate: DateTime;
   timestamp: DateTime;
-  name: string;
+  eventName: string;
   text: string;
   isDataAnonymised?: boolean;
 };

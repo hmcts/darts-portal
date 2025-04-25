@@ -37,41 +37,39 @@ describe('CaseEventsTableComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should enable pagination if events exceed eventsPerPage limit', () => {
-    const mockEvents = Array.from({ length: 10 }, (_, i) => ({
-      id: i + 1,
-      hearing_id: 1,
-      hearing_date: '2024-04-24',
-      timestamp: '2024-04-24T14:30:00Z',
-      name: `Event ${i + 1}`,
-      text: `Text ${i + 1}`,
-    }));
+  it('should emit pageChange when onPageChange is called', () => {
+    const pageChangeSpy = jest.spyOn(component.pageChange, 'emit');
 
-    fixture.componentRef.setInput('events', mockEvents);
-    fixture.detectChanges();
+    component.onPageChange(3);
 
-    component.ngOnInit();
-
-    expect(component.eventsPerPage).toBe(5);
-    expect(component.pagination).toBe(true);
+    expect(pageChangeSpy).toHaveBeenCalledWith(3);
   });
 
-  it('should disable pagination if events are within the eventsPerPage limit', () => {
-    const mockEvents = Array.from({ length: 3 }, (_, i) => ({
-      id: i + 1,
-      hearing_id: 1,
-      hearing_date: '2024-04-24',
-      timestamp: '2024-04-24T14:30:00Z',
-      name: `Event ${i + 1}`,
-      text: `Text ${i + 1}`,
-    }));
+  it('should emit sortChange when a valid sortBy is passed', () => {
+    const sortChangeSpy = jest.spyOn(component.sortChange, 'emit');
 
-    fixture.componentRef.setInput('events', mockEvents);
-    fixture.detectChanges();
+    component.onSortChange({ sortBy: 'hearingDate', sortOrder: 'asc' });
 
-    component.ngOnInit();
+    expect(sortChangeSpy).toHaveBeenCalledWith({
+      sortBy: 'hearingDate',
+      sortOrder: 'asc',
+    });
+  });
 
-    expect(component.eventsPerPage).toBe(5);
-    expect(component.pagination).toBe(false);
+  it('should not emit sortChange when sortBy is invalid', () => {
+    const sortChangeSpy = jest.spyOn(component.sortChange, 'emit');
+
+    component.onSortChange({ sortBy: 'invalidProp', sortOrder: 'desc' });
+
+    expect(sortChangeSpy).not.toHaveBeenCalled();
+  });
+
+  it('should define correct column structure', () => {
+    expect(component.columns).toEqual([
+      { name: 'Hearing date', prop: 'hearingDate', sortable: true },
+      { name: 'Time', prop: 'timestamp', sortable: true },
+      { name: 'Event', prop: 'eventName', sortable: true },
+      { name: 'Text', prop: 'text', sortable: false },
+    ]);
   });
 });

@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TabDirective } from '@directives/tab.directive';
 import { AnnotationsData, Case, CaseEvent, Hearing, TranscriptData } from '@portal-types/index';
 import { AnnotationService } from '@services/annotation/annotation.service';
+import { AppConfigService } from '@services/app-config/app-config.service';
 import { CaseService } from '@services/case/case.service';
 import { FileDownloadService } from '@services/file-download/file-download.service';
 import { UserService } from '@services/user/user.service';
@@ -40,7 +41,7 @@ describe('CaseComponent', () => {
       hearingId: 1,
       hearingDate: DateTime.fromISO('2023-09-01'),
       timestamp: DateTime.fromISO('2023-09-01T12:00:00'),
-      name: 'Hearing',
+      eventName: 'Hearing',
       text: 'Hearing 1',
     },
   ];
@@ -121,6 +122,13 @@ describe('CaseComponent', () => {
     getCaseTranscripts: jest.fn().mockReturnValue(mockTranscript),
     getCaseAnnotations: jest.fn().mockReturnValue(mockAnnotation),
     getCaseEvents: jest.fn().mockReturnValue(of([])),
+    getCaseEventsPaginated: jest.fn().mockReturnValue(
+      of({
+        data: mockEvents,
+        totalItems: 120,
+        currentPage: 1,
+      })
+    ),
   };
 
   const caseServiceMockError = {
@@ -159,6 +167,10 @@ describe('CaseComponent', () => {
     saveAs: jest.fn(),
   };
 
+  const fakeAppConfigService = {
+    getAppConfig: jest.fn().mockReturnValue({ pagination: { courtLogEventsPageLimit: 500 } }),
+  };
+
   const setup = (throwError = false) => {
     return TestBed.configureTestingModule({
       imports: [CaseComponent],
@@ -170,12 +182,13 @@ describe('CaseComponent', () => {
         { provide: UserService, useValue: fakeUserService },
         { provide: AnnotationService, useValue: fakeAnnotationService },
         { provide: FileDownloadService, useValue: fakeFileDownloadService },
+        { provide: AppConfigService, useValue: fakeAppConfigService },
         { provide: DatePipe },
       ],
     }).createComponent(CaseComponent);
   };
 
-  describe('Expired case', () => {
+  describe('CaseComponent - Base functionality and annotations', () => {
     let component: CaseComponent;
 
     beforeEach(() => {
@@ -256,7 +269,7 @@ describe('CaseComponent', () => {
     });
   });
 
-  describe('Expired case', () => {
+  describe('CaseComponent - Data stream loading and error handling', () => {
     let component: CaseComponent;
 
     it('should initialize data$ with the correct values', () => {
@@ -367,6 +380,77 @@ describe('CaseComponent', () => {
 
         expect(loadEventsSpy).not.toHaveBeenCalled();
       });
+    });
+  });
+
+  describe('CaseComponent - Court log pagination and sorting', () => {
+    let component: CaseComponent;
+
+    beforeEach(() => {
+      fixture = setup();
+      component = fixture.componentInstance;
+
+      // Set up test values
+      component.events.set(mockEvents);
+      component.eventsTotalItems.set(10);
+      component.eventsSort.set({ sortBy: 'timestamp', sortOrder: 'asc' });
+      component.eventsCurrentPage.set(1);
+      fixture.detectChanges();
+    });
+
+    it('should call getCaseEventsPaginated with correct params in loadEvents', () => {
+      const mockResponse = {
+        data: mockEvents,
+        totalItems: 120,
+        currentPage: 1,
+      };
+
+      const getCaseEventsPaginatedSpy = jest
+        .spyOn(caseServiceMock, 'getCaseEventsPaginated')
+        .mockReturnValue(of(mockResponse));
+
+      component.eventsSort.set({ sortBy: 'timestamp', sortOrder: 'asc' });
+      component.eventsCurrentPage.set(1);
+
+      component.loadEvents();
+
+      expect(getCaseEventsPaginatedSpy).toHaveBeenCalledWith(1, {
+        page_number: 1,
+        page_size: component.eventsPageLimit,
+        sort_by: 'timestamp',
+        sort_order: 'asc',
+      });
+
+      expect(component.events()).toEqual(mockResponse.data);
+      expect(component.eventsTotalItems()).toBe(120);
+      expect(component.eventsCurrentPage()).toBe(1);
+    });
+
+    it('should update current page and call loadEvents on onPageChange', () => {
+      const loadEventsSpy = jest.spyOn(component, 'loadEvents');
+
+      jest.spyOn(caseServiceMock, 'getCaseEventsPaginated').mockReturnValue(
+        of({
+          data: mockEvents,
+          totalItems: 120,
+          currentPage: 2,
+        })
+      );
+
+      component.onPageChange(2);
+
+      expect(component.eventsCurrentPage()).toBe(2);
+      expect(loadEventsSpy).toHaveBeenCalled();
+    });
+
+    it('should update sort and call loadEvents on onSortChange', () => {
+      const loadEventsSpy = jest.spyOn(component, 'loadEvents');
+      const sortParams = { sortBy: 'hearingDate', sortOrder: 'desc' } as const;
+
+      component.onSortChange(sortParams);
+
+      expect(component.eventsSort()).toEqual(sortParams);
+      expect(loadEventsSpy).toHaveBeenCalled();
     });
   });
 });

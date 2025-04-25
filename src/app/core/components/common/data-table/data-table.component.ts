@@ -41,6 +41,12 @@ export class DataTableComponent<TRow> implements OnChanges, OnInit {
   @Input() hiddenCaption = false;
   @Input() isHorizontalScroll = false;
   @Input() singleRowSelect = false;
+
+  @Input() backendPagination = false;
+  @Input() totalItems?: number;
+  @Output() pageChange = new EventEmitter<number>();
+  @Output() sortChange = new EventEmitter<{ sortBy: string; sortOrder: 'asc' | 'desc' }>();
+
   @Output() rowSelect = new EventEmitter<TRow[]>();
 
   // Two way binding for selected rows
@@ -78,6 +84,11 @@ export class DataTableComponent<TRow> implements OnChanges, OnInit {
 
     this.initialRows = [...this.rows];
 
+    if (this.backendPagination) {
+      this.pagedRows = this.rows;
+      return;
+    }
+
     if (!this.sortAndPaginateOnRowsChanged) {
       this.sorting.column = '';
       this.currentPage = 1;
@@ -90,7 +101,12 @@ export class DataTableComponent<TRow> implements OnChanges, OnInit {
 
   onPageChanged(page: number): void {
     this.currentPage = page;
-    this.updatePagedData();
+
+    if (this.backendPagination) {
+      this.pageChange.emit(page);
+    } else {
+      this.updatePagedData();
+    }
   }
 
   resetRows() {
@@ -106,13 +122,21 @@ export class DataTableComponent<TRow> implements OnChanges, OnInit {
   }
 
   sortTable(column: string, sortFn?: CustomSort<TRow>, order?: 'asc' | 'desc'): void {
-    this.resetRows();
-
     this.sorting = {
       column: column,
       order: order || this.sortOrder(column),
       sortFn: sortFn,
     };
+
+    if (this.backendPagination) {
+      this.sortChange.emit({
+        sortBy: column,
+        sortOrder: this.sorting.order,
+      });
+      return;
+    }
+
+    this.resetRows();
 
     if (sortFn) {
       this.rows = this.rows.toSorted((a: TRow, b: TRow) => sortFn(a, b, this.sorting.order));

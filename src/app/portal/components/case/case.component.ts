@@ -10,6 +10,7 @@ import { TabDirective } from '@directives/tab.directive';
 import { CaseEvent } from '@portal-types/events';
 import { ActiveTabService } from '@services/active-tab/active-tab.service';
 import { AnnotationService } from '@services/annotation/annotation.service';
+import { AppConfigService } from '@services/app-config/app-config.service';
 import { CaseService } from '@services/case/case.service';
 import { FileDownloadService } from '@services/file-download/file-download.service';
 import { MappingService } from '@services/mapping/mapping.service';
@@ -49,6 +50,7 @@ export class CaseComponent implements OnInit {
   private annotationService = inject(AnnotationService);
   private fileDownloadService = inject(FileDownloadService);
   private tabsService = inject(ActiveTabService);
+  private appConfig = inject(AppConfigService);
 
   public caseId = this.route.snapshot.params.caseId;
   public caseFile$ = this.caseService.getCase(this.caseId).pipe(shareReplay(1));
@@ -70,6 +72,11 @@ export class CaseComponent implements OnInit {
 
   public events = signal<CaseEvent[] | null>(null);
   private eventsLoaded = signal(false);
+
+  eventsPageLimit = this.appConfig.getAppConfig()?.pagination.courtLogEventsPageLimit || 500;
+  eventsSort = signal<{ sortBy: 'hearingDate' | 'timestamp' | 'eventName'; sortOrder: 'asc' | 'desc' } | null>(null);
+  eventsCurrentPage = signal(1);
+  eventsTotalItems = signal(0);
 
   private readonly screenId = 'case';
 
@@ -132,6 +139,28 @@ export class CaseComponent implements OnInit {
 
   loadEvents() {
     this.eventsLoaded.set(true);
-    this.caseService.getCaseEvents(this.caseId).subscribe((events) => this.events.set(events));
+
+    this.caseService
+      .getCaseEventsPaginated(this.caseId, {
+        page_number: this.eventsCurrentPage(),
+        page_size: this.eventsPageLimit,
+        sort_by: this.eventsSort()?.sortBy,
+        sort_order: this.eventsSort()?.sortOrder,
+      })
+      .subscribe((events) => {
+        this.events.set(events.data);
+        this.eventsTotalItems.set(events.totalItems);
+        this.eventsCurrentPage.set(events.currentPage);
+      });
+  }
+
+  onPageChange(page: number) {
+    this.eventsCurrentPage.set(page);
+    this.loadEvents();
+  }
+
+  onSortChange(sort: { sortBy: 'hearingDate' | 'timestamp' | 'eventName'; sortOrder: 'asc' | 'desc' }) {
+    this.eventsSort.set(sort);
+    this.loadEvents();
   }
 }

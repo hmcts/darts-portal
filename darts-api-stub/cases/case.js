@@ -874,13 +874,18 @@ router.get('/:caseId/annotations', (req, res) => {
 
 router.get('/:caseId/events', (req, res) => {
   const caseId = req.params?.caseId;
+  const pageNumber = parseInt(req.query.page_number) || null;
+  const pageSize = parseInt(req.query.page_size) || null;
+  const sortBy = req.query.sort_by;
+  const sortOrder = (req.query.sort_order || 'ASC').toUpperCase();
 
   switch (caseId) {
     case '10':
       res.status(404).send(resBody404);
       break;
+
     case '16':
-      const manyEvents = Array.from({ length: 1020 }, (_, i) => {
+      const manyEvents = Array.from({ length: 1520 }, (_, i) => {
         const base = events[i % events.length];
         const timestamp = DateTime.fromISO(base.timestamp).plus({ minutes: i }).toISO();
 
@@ -892,10 +897,46 @@ router.get('/:caseId/events', (req, res) => {
           text: `Event ${i + 1} text`,
         };
       });
-      res.send(manyEvents);
+
+      let sortedEvents = [...manyEvents];
+      const validSortFields = ['hearingDate', 'timestamp', 'eventName'];
+
+      if (sortBy && validSortFields.includes(sortBy)) {
+        sortedEvents.sort((a, b) => {
+          const valA = a[sortBy];
+          const valB = b[sortBy];
+
+          if (valA < valB) return sortOrder === 'ASC' ? -1 : 1;
+          if (valA > valB) return sortOrder === 'ASC' ? 1 : -1;
+          return 0;
+        });
+      }
+
+      if (pageNumber && pageSize) {
+        const start = (pageNumber - 1) * pageSize;
+        const pagedData = sortedEvents.slice(start, start + pageSize);
+
+        res.send({
+          current_page: pageNumber,
+          page_size: pageSize,
+          total_pages: Math.ceil(sortedEvents.length / pageSize),
+          total_items: sortedEvents.length,
+          data: pagedData,
+        });
+      } else {
+        res.send(sortedEvents);
+      }
+
       break;
+
     default:
-      res.send(events);
+      res.send({
+        current_page: pageNumber,
+        page_size: pageSize,
+        total_pages: 1,
+        total_items: events.length,
+        data: events,
+      });
       break;
   }
 });

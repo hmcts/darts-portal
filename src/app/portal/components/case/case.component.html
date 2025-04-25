@@ -23,7 +23,14 @@
 
         <div *tab="'Court log'">
           @if (events()) {
-            <app-case-events-table [events]="events()!" [caseId]="caseId" />
+            <app-case-events-table
+              [events]="events()!"
+              [caseId]="caseId"
+              [totalItems]="eventsTotalItems()"
+              [eventsPerPage]="eventsPageLimit"
+              (pageChange)="onPageChange($event)"
+              (sortChange)="onSortChange($event)"
+            />
           } @else {
             <app-loading text="Loading court log..."></app-loading>
           }
