@@ -4,7 +4,6 @@ nodejs:
   ingressHost: darts.{{ .Values.global.environment }}.apps.hmcts.net
   aadIdentityName: darts
   readinessPeriod: 5
-  readinessFailureThreshold: 2
   keyVaults:
     darts:
       secrets:
