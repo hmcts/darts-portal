@@ -15,13 +15,15 @@ const server = express.listen(PORT, () => {
 
 async function stopServer() {
   console.info('Server shutdown signal received');
+  global.isTerminating = true;
+  // small delay before closing the server
+  // allowing the readiness check to fail and traffic to the pod
+  if (NODE_ENV === 'production') {
+    await new Promise((res) => setTimeout(res, 10000));
+  }
   console.info('Server closing down');
   server.close(async () => {
     console.log('Server closing down completed');
-    if (NODE_ENV === 'production') {
-      // 15s wait to match k8s liveness probe
-      await new Promise((res) => setTimeout(res, 15000));
-    }
     console.log('Process exiting');
     process.exit(0);
   });
