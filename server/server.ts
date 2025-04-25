@@ -26,6 +26,9 @@ export const startServer = ({ disableAuthentication }: StartServerOptions = { di
 
   const healthConfig = {
     checks: {},
+    readinessChecks: {
+      shutdownCheck: healthCheck.raw(() => (global.isTerminating ? healthCheck.down() : healthCheck.up())),
+    },
     buildInfo: {},
   };
 
