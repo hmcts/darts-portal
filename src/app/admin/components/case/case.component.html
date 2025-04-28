@@ -12,13 +12,16 @@
         <app-case-hearings-table [hearings]="data.hearings" [caseId]="caseId()" [adminScreen]="true" />
       </div>
 
-      <!-- <div *tab="'Audio'"></div>
+      <!--  <div *tab="'Audio'"></div> -->
 
-    <div *tab="'Events'; id: 'events-tab'"></div>
+      <div *tab="'Events'; id: 'events-tab'">
+        <app-govuk-heading tag="h2" size="m">Events</app-govuk-heading>
+        <app-case-events-table [events]="data.events" [caseId]="caseId()" [adminScreen]="true" />
+      </div>
 
-    <div *tab="'Transcripts'; id: 'transcripts-tab'"></div>
+      <!-- <div *tab="'Transcripts'; id: 'transcripts-tab'"></div> -->
 
-    <div *tab="'Annotations'; id: 'annotations-tab'"></div> -->
+      <!-- <div *tab="'Annotations'; id: 'annotations-tab'"></div> -->
 
       <div *tab="'Additional case details'; id: 'additional-tab'">
         @if (data.caseFile) {

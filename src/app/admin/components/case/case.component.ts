@@ -5,8 +5,10 @@ import { Router, RouterLink } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
+import { CaseEventsTableComponent } from '@components/case/case-file/case-events-table/case-events-table.component';
 import { CaseHearingsTableComponent } from '@components/case/case-file/case-hearings-table/case-hearings-table.component';
 import { TabDirective } from '@directives/tab.directive';
+import { CaseEvent } from '@portal-types/events';
 import { Hearing } from '@portal-types/hearing';
 import { AdminCaseService } from '@services/admin-case/admin-case.service';
 import { CaseService } from '@services/case/case.service';
@@ -28,6 +30,7 @@ import { CaseFileComponent } from './case-file/case-file.component';
     CaseAdditionalDetailsComponent,
     GovukHeadingComponent,
     CaseHearingsTableComponent,
+    CaseEventsTableComponent,
   ],
   templateUrl: './case.component.html',
   styleUrl: './case.component.scss',
@@ -46,7 +49,7 @@ export class CaseComponent implements OnInit {
 
   backUrl = this.historyService.getBackUrl(this.url) ?? '/admin/search';
 
-  data$!: Observable<{ caseFile: AdminCase | null; hearings: Hearing[] }>;
+  data$!: Observable<{ caseFile: AdminCase | null; hearings: Hearing[]; events: CaseEvent[] }>;
 
   ngOnInit(): void {
     this.caseFile$ = this.caseAdminService.getCase(this.caseId()).pipe(
@@ -86,6 +89,7 @@ export class CaseComponent implements OnInit {
     this.data$ = combineLatest({
       caseFile: this.caseFile$.pipe(catchError(() => of(null))),
       hearings: this.hearings$,
+      events: this.caseService.getCaseEvents(this.caseId()).pipe(catchError(() => of([]))),
     });
   }
 }

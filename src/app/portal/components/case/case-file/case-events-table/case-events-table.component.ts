@@ -27,6 +27,7 @@ export class CaseEventsTableComponent {
 
   pageChange = output<number>();
   sortChange = output<{ sortBy: 'hearingDate' | 'timestamp' | 'eventName'; sortOrder: 'asc' | 'desc' }>();
+  adminScreen = input<boolean>(false);
 
   columns: DatatableColumn[] = [
     { name: 'Hearing date', prop: 'hearingDate', sortable: true },
