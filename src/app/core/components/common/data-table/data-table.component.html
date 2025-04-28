@@ -82,11 +82,11 @@
                 {{ column.name }}
               </span>
             </th>
-            <td
+            <th
               *ngIf="!column.sortable && !column.name"
               class="govuk-table__header"
               [ngStyle]="{ width: column.width }"
-            ></td>
+            ></th>
           </ng-container>
         </tr>
       </thead>

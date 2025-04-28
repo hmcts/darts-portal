@@ -182,14 +182,15 @@ describe('Admin - Audio file details screen', () => {
         .within(() => {
           cy.get('caption').should('contain.text', 'Previous versions of this audio');
           cy.get('thead').within(() => {
-            cy.get('th').eq(0).should('contain.text', 'Audio ID');
-            cy.get('th').eq(1).should('contain.text', 'Courthouse');
-            cy.get('th').eq(2).should('contain.text', 'Courtroom');
-            cy.get('th').eq(3).should('contain.text', 'Start time');
-            cy.get('th').eq(4).should('contain.text', 'End time');
-            cy.get('th').eq(5).should('contain.text', 'Channel');
-            cy.get('th').eq(6).should('contain.text', 'Antecedent ID');
-            cy.get('th').eq(7).should('contain.text', 'Chronicle ID');
+            cy.get('th').eq(0).should('contain.text', 'Select a checkbox');
+            cy.get('th').eq(1).should('contain.text', 'Audio ID');
+            cy.get('th').eq(2).should('contain.text', 'Courthouse');
+            cy.get('th').eq(3).should('contain.text', 'Courtroom');
+            cy.get('th').eq(4).should('contain.text', 'Start time');
+            cy.get('th').eq(5).should('contain.text', 'End time');
+            cy.get('th').eq(6).should('contain.text', 'Channel');
+            cy.get('th').eq(7).should('contain.text', 'Antecedent ID');
+            cy.get('th').eq(8).should('contain.text', 'Chronicle ID');
           });
 
           cy.get('tbody tr')
@@ -240,7 +241,7 @@ describe('Admin - Audio file details screen', () => {
       cy.contains('dt', 'Audio ID').next('dd').should('contain.text', '100');
       cy.contains('dt', 'Courthouse').next('dd').should('contain.text', 'Cardiff');
       cy.contains('dt', 'Courtroom').next('dd').should('contain.text', 'Courtroom 1');
-      cy.contains('dt', 'Start time').next('dd').should('contain.text', '11 Jun 2024 at 11:55:18AM');
+      cy.contains('dt', 'Start time').next('dd').should('contain.text', '11 Jun 2024 at 10:55:18AM');
       cy.contains('dt', 'End time').next('dd').should('contain.text', '11 Jun 2024 at 11:55:18AM');
       cy.contains('dt', 'Channel number').next('dd').should('contain.text', '4');
       cy.contains('dt', 'Total channels').next('dd').should('contain.text', '16');
