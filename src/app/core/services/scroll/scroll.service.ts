@@ -1,10 +1,10 @@
-import { ElementRef, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ScrollService {
-  scrollToElement(element: any) {
+  scrollToElement(element: HTMLElement | null) {
     setTimeout(() => {
       if (element) {
         element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });

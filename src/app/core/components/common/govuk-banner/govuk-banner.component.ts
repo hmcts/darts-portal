@@ -27,7 +27,7 @@ export class GovukBannerComponent implements AfterViewInit, OnDestroy {
     }
     const ngContent = this.elementRef.nativeElement;
 
-    this.observer = new MutationObserver((mutations) => {
+    this.observer = new MutationObserver(() => {
       this.focusBanner();
     });
 
