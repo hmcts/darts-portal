@@ -20,6 +20,9 @@ export interface AppConfig {
       enabled: string;
     };
   };
+  pagination: {
+    courtLogEventsPageLimit: number;
+  };
   caseSearchTimeout: string;
 }
 

@@ -113,6 +113,26 @@ describe('DataTableComponent', () => {
       // given 4 rows and an irrelevant page limit of 2, we expect all rows to display
       expect(component.pagedRows.length).toEqual(4);
     });
+
+    it('should emit pageChange when backendPagination is true', () => {
+      const pageChangeSpy = jest.spyOn(component.pageChange, 'emit');
+      component.backendPagination = true;
+
+      component.onPageChanged(2);
+
+      expect(pageChangeSpy).toHaveBeenCalledWith(2);
+    });
+
+    it('should update pagedRows when backendPagination is false', () => {
+      component.rows = MOCK_ROWS;
+      component.backendPagination = false;
+      component.pageLimit = 2;
+
+      component.onPageChanged(2);
+
+      expect(component.pagedRows.length).toBe(2);
+      expect(component.pagedRows).toEqual([MOCK_ROWS[2], MOCK_ROWS[3]]);
+    });
   });
 
   describe('Sorting', () => {
@@ -767,6 +787,36 @@ describe('DataTableComponent', () => {
 
       expect(component.sorting.column).toBe('');
     });
+
+    it('should emit sortChange when backendPagination is true', () => {
+      const sortChangeSpy = jest.spyOn(component.sortChange, 'emit');
+
+      component.backendPagination = true;
+      const column = 'case_number';
+
+      component.sortTable(column);
+
+      expect(sortChangeSpy).toHaveBeenCalledWith({
+        sortBy: column,
+        sortOrder: 'asc',
+      });
+    });
+
+    it('should not emit sortChange and sort locally when backendPagination is false', () => {
+      const sortChangeSpy = jest.spyOn(component.sortChange, 'emit');
+      const column = 'courtroom';
+
+      component.backendPagination = false;
+      component.rows = MOCK_ROWS;
+
+      component.ngOnChanges({ rows: {} } as unknown as SimpleChanges);
+
+      component.sortTable(column);
+
+      const typedRows = component.rows as { courtroom: string }[];
+      expect(sortChangeSpy).not.toHaveBeenCalled();
+      expect(typedRows[0].courtroom <= typedRows[1].courtroom).toBe(true);
+    });
   });
 
   it('should detect valid and invalid numbers in isNumeric for courtroom values', () => {
@@ -903,6 +953,15 @@ describe('DataTableComponent', () => {
         });
         expect(component.currentPage).toEqual(1);
       });
+    });
+
+    it('should assign pagedRows directly when backendPagination is true in ngOnChanges', () => {
+      component.backendPagination = true;
+      component.rows = MOCK_ROWS;
+
+      component.ngOnChanges({ rows: {} } as unknown as SimpleChanges);
+
+      expect(component.pagedRows).toEqual(MOCK_ROWS);
     });
   });
 

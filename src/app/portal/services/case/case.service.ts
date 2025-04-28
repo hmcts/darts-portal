@@ -2,6 +2,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CaseEvent } from '@portal-types/events/case-event';
 import { CaseEventData } from '@portal-types/events/case-event-data.interface';
+import { PaginatedCaseEventsData } from '@portal-types/events/paginated-case-events.interface';
+import { PaginatedCaseEvents } from '@portal-types/events/paginated-case-events.type';
 import {
   Annotations,
   AnnotationsData,
@@ -61,6 +63,41 @@ export class CaseService {
     return this.http
       .get<CaseEventData[]>(`${GET_CASE_PATH}/${caseId}/events`)
       .pipe(map((events) => this.mapCaseEventData(events)));
+  }
+
+  getCaseEventsPaginated(
+    caseId: number,
+    options: {
+      page_number: number;
+      page_size: number;
+      sort_by?: 'hearingDate' | 'timestamp' | 'eventName';
+      sort_order?: 'asc' | 'desc';
+    }
+  ): Observable<PaginatedCaseEvents> {
+    const params: Record<string, string | number> = {
+      page_number: options.page_number,
+      page_size: options.page_size,
+    };
+
+    if (options.sort_by) {
+      params.sort_by = options.sort_by;
+    }
+
+    if (options.sort_order) {
+      params.sort_order = options.sort_order.toUpperCase();
+    }
+
+    return this.http.get<PaginatedCaseEventsData>(`${GET_CASE_PATH}/${caseId}/events`, { params }).pipe(
+      map(
+        (response): PaginatedCaseEvents => ({
+          currentPage: response.current_page,
+          pageSize: response.page_size,
+          totalPages: response.total_pages,
+          totalItems: response.total_items,
+          data: this.mapCaseEventData(response.data),
+        })
+      )
+    );
   }
 
   getCaseAnnotations(caseId: number): Observable<Annotations[]> {
@@ -182,7 +219,7 @@ export class CaseService {
       hearingId: e.hearing_id,
       hearingDate: DateTime.fromISO(e.hearing_date),
       timestamp: DateTime.fromISO(e.timestamp),
-      name: e.name,
+      eventName: e.name,
       text: e.text,
       isDataAnonymised: e.is_data_anonymised,
     }));

@@ -42,6 +42,9 @@
       "enabled": "false"
     }
   },
+  "pagination": {
+    "courtLogEventsPageLimit": 500
+  },
   "caseSearchTimeout": "30 seconds",
   "dynatrace": {
     "scriptUrl": null

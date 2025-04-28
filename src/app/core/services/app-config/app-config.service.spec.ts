@@ -36,6 +36,9 @@ describe('AppConfigService', () => {
         },
       },
       caseSearchTimeout: '30 seconds',
+      pagination: {
+        courtLogEventsPageLimit: 500,
+      },
     };
     jest.spyOn(httpClientSpy, 'get').mockReturnValue(of(testData));
     await appConfigService.loadAppConfig();

@@ -132,13 +132,14 @@
       </tbody>
     </table>
   </div>
-  <app-pagination
-    *ngIf="pagination"
-    [currentPage]="currentPage"
-    [limit]="pageLimit"
-    [total]="rows.length"
-    (changePage)="onPageChanged($event)"
-  ></app-pagination>
+  @if (pagination) {
+    <app-pagination
+      [currentPage]="currentPage"
+      [limit]="pageLimit"
+      [total]="totalItems && backendPagination ? totalItems : rows.length"
+      (changePage)="onPageChanged($event)"
+    />
+  }
 } @else {
   <p id="no-data-message" [attr.aria-label]="noDataMessage" class="govuk-body" tabindex="0">{{ noDataMessage }}</p>
 }

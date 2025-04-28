@@ -25,6 +25,9 @@ describe('DynatraceService', () => {
         enabled: 'true',
       },
     },
+    pagination: {
+      courtLogEventsPageLimit: 500,
+    },
     caseSearchTimeout: '30 seconds',
   };
 

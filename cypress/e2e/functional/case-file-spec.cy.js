@@ -148,6 +148,20 @@ describe('Case file screen', () => {
         cy.contains('Court log').click();
         cy.get('.govuk-hint').contains('The event text has been anonymised in line with HMCTS policy');
       });
+
+      it('should load initial court log rows and paginate to next page', () => {
+        cy.visit('/case/16');
+        cy.contains('Court log').click();
+
+        cy.get('#court-log-table tbody .govuk-table__row').should('have.length.at.least', 1);
+
+        cy.get('.govuk-pagination__item--current').should('contain', '1');
+
+        cy.get('.govuk-pagination__next a').click();
+
+        cy.get('#court-log-table tbody .govuk-table__row').should('exist');
+        cy.get('.govuk-pagination__item--current').should('contain', '2');
+      });
     });
 
     describe('Transcripts Tab', () => {

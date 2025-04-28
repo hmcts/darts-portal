@@ -5,7 +5,11 @@
   [rows]="events()"
   [columns]="columns"
   [hiddenCaption]="true"
-  [pagination]="false"
+  [backendPagination]="true"
+  [pageLimit]="eventsPerPage()!"
+  [totalItems]="totalItems()"
+  (pageChange)="onPageChange($event)"
+  (sortChange)="onSortChange($event)"
   caption="Court log / events associated with case"
 >
   <ng-template [tableRowTemplate]="events()" let-row>
@@ -15,7 +19,7 @@
       }}</a>
     </td>
     <td>{{ row.timestamp | luxonDate: 'HH:mm:ss' }}</td>
-    <td>{{ row.name }}</td>
+    <td>{{ row.eventName }}</td>
     <td>
       @if (row.isDataAnonymised) {
         <p class="govuk-hint no-margin">The event text has been anonymised in line with HMCTS policy</p>

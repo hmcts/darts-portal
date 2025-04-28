@@ -1,6 +1,7 @@
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { PaginatedCaseEvents } from '@portal-types/events/paginated-case-events.type';
 import {
   Annotations,
   AnnotationsData,
@@ -790,17 +791,108 @@ describe('CaseService', () => {
         hearingId: 2,
         hearingDate: DateTime.fromISO('2023-10-12'),
         timestamp: DateTime.fromISO('2023-10-12T00:00:00Z'),
-        name: 'Event 1',
+        eventName: 'Event 1',
         text: 'Event 1 description',
+        isDataAnonymised: undefined,
       },
       {
         id: 2,
         hearingId: 2,
         hearingDate: DateTime.fromISO('2023-10-12'),
         timestamp: DateTime.fromISO('2023-10-12T00:00:00Z'),
-        name: 'Event 2',
+        eventName: 'Event 2',
         text: 'Event 2 description',
+        isDataAnonymised: undefined,
       },
     ]);
+  });
+
+  describe('#getCaseEventsPaginated', () => {
+    const mockCaseId = 123;
+    const mockPaginatedResponse = {
+      current_page: 2,
+      page_size: 10,
+      total_pages: 5,
+      total_items: 50,
+      data: [
+        {
+          id: 1,
+          hearing_id: 10,
+          hearing_date: '2024-06-01T00:00:00Z',
+          timestamp: '2024-06-01T10:00:00Z',
+          name: 'Event A',
+          text: 'Text A',
+          is_data_anonymised: false,
+        },
+      ],
+    };
+
+    it('should call API with correct query params and map response', () => {
+      let response: PaginatedCaseEvents | null = null;
+
+      service
+        .getCaseEventsPaginated(mockCaseId, {
+          page_number: 2,
+          page_size: 10,
+          sort_by: 'timestamp',
+          sort_order: 'asc',
+        })
+        .subscribe((res) => {
+          response = res;
+        });
+
+      const req = httpMock.expectOne((r) => {
+        return (
+          r.url === `${GET_CASE_PATH}/${mockCaseId}/events` &&
+          r.params.get('page_number') === '2' &&
+          r.params.get('page_size') === '10' &&
+          r.params.get('sort_by') === 'timestamp' &&
+          r.params.get('sort_order') === 'ASC'
+        );
+      });
+
+      expect(req.request.method).toBe('GET');
+      req.flush(mockPaginatedResponse);
+
+      expect(response).toEqual({
+        currentPage: 2,
+        pageSize: 10,
+        totalPages: 5,
+        totalItems: 50,
+        data: [
+          {
+            id: 1,
+            hearingId: 10,
+            hearingDate: DateTime.fromISO('2024-06-01T00:00:00Z'),
+            timestamp: DateTime.fromISO('2024-06-01T10:00:00Z'),
+            eventName: 'Event A',
+            text: 'Text A',
+            isDataAnonymised: false,
+          },
+        ],
+      });
+    });
+
+    it('should omit sort_by and sort_order when undefined', () => {
+      service
+        .getCaseEventsPaginated(mockCaseId, {
+          page_number: 1,
+          page_size: 25,
+        })
+        .subscribe();
+
+      const req = httpMock.expectOne((r) => {
+        return (
+          r.url === `${GET_CASE_PATH}/${mockCaseId}/events` &&
+          r.params.get('page_number') === '1' &&
+          r.params.get('page_size') === '25' &&
+          !r.params.has('sort_by') &&
+          !r.params.has('sort_order')
+        );
+      });
+
+      expect(req.request.method).toBe('GET');
+      req.flush({ ...mockPaginatedResponse });
+    });
   });
 });
