@@ -40,7 +40,6 @@ export class GroupCourthousesComponent implements OnInit {
   }
 
   updateCourthouseSelection() {
-    console.log(this.selectedCourthouses);
     const selectedIds = new Set(this.selectedCourthouses.map((courthouse) => courthouse.id));
     this.allNotSelectedCourthouses.set(this.allCourthouses.filter((courthouse) => !selectedIds.has(courthouse.id)));
   }

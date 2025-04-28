@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
@@ -33,7 +33,7 @@ import { GroupUsersComponent } from '../group-users/group-users.component';
   templateUrl: './group-record.component.html',
   styleUrl: './group-record.component.scss',
 })
-export class GroupRecordComponent {
+export class GroupRecordComponent implements OnInit {
   route = inject(ActivatedRoute);
   router = inject(Router);
   groupsService = inject(GroupsService);
@@ -42,9 +42,6 @@ export class GroupRecordComponent {
 
   groupId: number = +this.route.snapshot.params.id;
   tab = this.route.snapshot.queryParams.tab || 'Courthouses';
-  hasRemovedUsers$ = this.route.queryParams.pipe(map((params) => params.removedUsers));
-  hasUpdatedGroup$ = this.route.queryParams.pipe(map((params) => params.updated));
-  hasCreatedGroup$ = this.route.queryParams.pipe(map((params) => params.created));
   successBannerText = signal('');
 
   selectedCourthouses: CourthouseData[] = [];
@@ -68,6 +65,24 @@ export class GroupRecordComponent {
     courthouses: this.courthouses$,
     users: this.users$,
   }).pipe(tap(() => this.loading$.next(false)));
+
+  ngOnInit(): void {
+    this.route.queryParams.pipe(map((params) => params.removedUsers)).subscribe((value) => {
+      if (value) {
+        this.successBannerText.set(value + ' ' + (+value === 1 ? 'user' : 'users') + ' removed');
+      }
+    });
+    this.route.queryParams.pipe(map((params) => params.updated)).subscribe((value) => {
+      if (value) {
+        this.successBannerText.set('Group details updated');
+      }
+    });
+    this.route.queryParams.pipe(map((params) => params.created)).subscribe((value) => {
+      if (value) {
+        this.successBannerText.set('Group created');
+      }
+    });
+  }
 
   onUpdateCourthouses(courthouseData: {
     selectedCourthouses: CourthouseData[];
