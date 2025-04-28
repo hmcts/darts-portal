@@ -132,18 +132,11 @@
       </tbody>
     </table>
   </div>
-  @if (pagination && !backendPagination) {
+  @if (pagination) {
     <app-pagination
       [currentPage]="currentPage"
       [limit]="pageLimit"
-      [total]="rows.length"
-      (changePage)="onPageChanged($event)"
-    />
-  } @else if (backendPagination && totalItems) {
-    <app-pagination
-      [currentPage]="currentPage"
-      [limit]="pageLimit"
-      [total]="totalItems"
+      [total]="totalItems && backendPagination ? totalItems : rows.length"
       (changePage)="onPageChanged($event)"
     />
   }
