@@ -58,7 +58,7 @@ export class ShowVersionsComponent implements OnInit {
     { name: 'Chronicle ID', prop: 'chronicleId', sortable: true },
   ];
 
-  prevColumns = [{ name: '', prop: '', sortable: false }, ...this.columns];
+  prevColumns = [{ name: 'Select a checkbox', prop: '', sortable: false, hidden: true }, ...this.columns];
 
   versions = toSignal(toObservable(this.id).pipe(switchMap((id) => this.transformedMediaService.getVersions(id))));
   currentVersion = computed(() => this.versions()?.currentVersion);
