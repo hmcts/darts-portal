@@ -1,18 +1,21 @@
-import { Injectable } from '@angular/core';
+import { ElementRef, Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ScrollService {
-  scrollTo(selector: string) {
+  scrollToElement(element: any) {
     setTimeout(() => {
-      const element = document.querySelector<HTMLElement>(selector);
       if (element) {
         element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
       } else {
-        console.error(`Element with selector ${selector} not found`);
+        console.error(`Element ${element} not found`);
       }
     }, 100);
+  }
+
+  scrollTo(selector: string) {
+    this.scrollToElement(document.querySelector<HTMLElement>(selector));
   }
 
   scrollToTop() {

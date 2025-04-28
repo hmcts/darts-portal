@@ -1,4 +1,5 @@
-import {AfterViewInit, booleanAttribute, Component, ElementRef, Input, OnDestroy} from '@angular/core';
+import { AfterViewInit, booleanAttribute, Component, ElementRef, inject, Input, OnDestroy } from '@angular/core';
+import { ScrollService } from '@services/scroll/scroll.service';
 
 export type GovukBannerType = 'success' | 'warning' | 'information';
 
@@ -11,13 +12,14 @@ export type GovukBannerType = 'success' | 'warning' | 'information';
 })
 export class GovukBannerComponent implements AfterViewInit, OnDestroy {
   private observer!: MutationObserver;
+  scrollService = inject(ScrollService);
+
   @Input() text!: string;
   @Input() type: GovukBannerType = 'success';
   @Input() ariaLabel!: string;
-  @Input({transform: booleanAttribute}) focusOnChange: boolean = false;
+  @Input({ transform: booleanAttribute }) focusOnChange: boolean = false;
 
-  constructor(private elementRef: ElementRef) {
-  }
+  constructor(private elementRef: ElementRef) {}
 
   ngAfterViewInit() {
     if (!this.focusOnChange) {
@@ -44,9 +46,6 @@ export class GovukBannerComponent implements AfterViewInit, OnDestroy {
   }
 
   private focusBanner() {
-    this.elementRef.nativeElement.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start'
-    });
+    this.scrollService.scrollToElement(this.elementRef.nativeElement);
   }
 }
