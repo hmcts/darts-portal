@@ -1,7 +1,7 @@
 <a [routerLink]="['../']" class="govuk-back-link">Back</a>
 
 @if (successBannerText()) {
-  <app-govuk-banner type="success">{{ successBannerText() }}</app-govuk-banner>
+  <app-govuk-banner type="success" focusOnChange="true">{{ successBannerText() }}</app-govuk-banner>
 }
 
 @if (vm$ | async; as vm) {
