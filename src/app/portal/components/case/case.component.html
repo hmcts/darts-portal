@@ -23,6 +23,7 @@
 
         <div *tab="'Court log'">
           @if (events()) {
+            <app-govuk-heading tag="h2" size="m">Court log for this case</app-govuk-heading>
             <app-case-events-table
               [events]="events()!"
               [caseId]="caseId"

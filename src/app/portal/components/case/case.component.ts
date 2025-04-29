@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DeleteComponent } from '@common/delete/delete.component';
+import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { BreadcrumbComponent } from '@components/common/breadcrumb/breadcrumb.component';
 import { LoadingComponent } from '@components/common/loading/loading.component';
@@ -17,7 +18,11 @@ import { MappingService } from '@services/mapping/mapping.service';
 import { UserService } from '@services/user/user.service';
 import { catchError, combineLatest, map, of, shareReplay, switchMap } from 'rxjs';
 import { CaseAnnotationsTableComponent } from './case-file/case-annotations-table/case-annotations-table.component';
-import { CaseEventsTableComponent } from './case-file/case-events-table/case-events-table.component';
+import {
+  AdminCaseEventSortBy,
+  CaseEventSortBy,
+  CaseEventsTableComponent,
+} from './case-file/case-events-table/case-events-table.component';
 import { CaseFileComponent } from './case-file/case-file.component';
 import { CaseHearingsTableComponent } from './case-file/case-hearings-table/case-hearings-table.component';
 import { CaseTranscriptsTableComponent } from './case-file/case-transcripts-table/case-transcripts-table.component';
@@ -38,6 +43,7 @@ import { CaseTranscriptsTableComponent } from './case-file/case-transcripts-tabl
     CaseAnnotationsTableComponent,
     TabsComponent,
     TabDirective,
+    GovukHeadingComponent,
   ],
   templateUrl: './case.component.html',
   styleUrls: ['./case.component.scss'],
@@ -159,8 +165,17 @@ export class CaseComponent implements OnInit {
     this.loadEvents();
   }
 
-  onSortChange(sort: { sortBy: 'hearingDate' | 'timestamp' | 'eventName'; sortOrder: 'asc' | 'desc' }) {
-    this.eventsSort.set(sort);
+  onSortChange(sort: { sortBy: AdminCaseEventSortBy; sortOrder: 'asc' | 'desc' }) {
+    if (!this.isCaseEventSortBy(sort.sortBy)) return;
+
+    this.eventsSort.set({
+      sortBy: sort.sortBy,
+      sortOrder: sort.sortOrder,
+    });
     this.loadEvents();
+  }
+
+  private isCaseEventSortBy(value: string): value is CaseEventSortBy {
+    return ['hearingDate', 'timestamp', 'eventName'].includes(value);
   }
 }
