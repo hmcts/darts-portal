@@ -56,7 +56,7 @@ export class CaseComponent implements OnInit {
 
   events = signal<CaseEvent[] | null>(null);
 
-  eventsPageLimit = this.appConfig.getAppConfig()?.pagination.courtLogEventsPageLimit || 500;
+  eventsPageLimit = this.appConfig.getAppConfig()?.pagination.courtLogEventsPageLimit ?? 500;
   eventsSort = signal<{
     sortBy: AdminCaseEventSortBy;
     sortOrder: 'asc' | 'desc';
@@ -113,7 +113,9 @@ export class CaseComponent implements OnInit {
     this.loadEvents();
   }
 
+  //TO DO: This could be refactored to a shared case events loader service in future, very minor but SonarQube marks it as duplicate across admin/portal components
   private loadEvents(): void {
+    // NOSONAR - duplication accepted due to component-specific signals
     this.caseService
       .getCaseEventsPaginated(this.caseId(), {
         page_number: this.eventsCurrentPage(),
