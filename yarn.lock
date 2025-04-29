@@ -8838,7 +8838,7 @@ __metadata:
     express: ^5.0.1
     express-session: ^1.18.0
     govuk-frontend: ^5.4.0
-    http-proxy-middleware: ^3.0.0
+    http-proxy-middleware: ^3.0.5
     husky: ^9.0.0
     i: ^0.3.7
     ioredis: ^5.4.1
@@ -11238,7 +11238,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"http-proxy-middleware@npm:*, http-proxy-middleware@npm:^3.0.0":
+"http-proxy-middleware@npm:*, http-proxy-middleware@npm:^3.0.5":
   version: 3.0.5
   resolution: "http-proxy-middleware@npm:3.0.5"
   dependencies:

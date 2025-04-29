@@ -67,7 +67,7 @@
     "express": "^5.0.1",
     "express-session": "^1.18.0",
     "govuk-frontend": "^5.4.0",
-    "http-proxy-middleware": "^3.0.0",
+    "http-proxy-middleware": "^3.0.5",
     "ioredis": "^5.4.1",
     "luxon": "^3.4.4",
     "ngx-cookie-service": "^19.0.0",
