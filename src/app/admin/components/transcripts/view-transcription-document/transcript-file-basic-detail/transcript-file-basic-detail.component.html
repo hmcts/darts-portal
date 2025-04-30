@@ -83,12 +83,12 @@
 
       <div govukSummaryListRow>
         <dt govukSummaryKey>Requested date</dt>
-        <dd govukSummaryValue>{{ transcription.details.received | luxonDate: 'dd MMM yyyy' }}</dd>
+        <dd govukSummaryValue>{{ transcription.details.received | luxonDate: 'dd MMM yyyy HH:mm:ss' }}</dd>
       </div>
       @if (transcription.details.approved) {
         <div govukSummaryListRow>
           <dt govukSummaryKey>Approved on</dt>
-          <dd govukSummaryValue>{{ transcription.details.approved | luxonDate: 'dd MMM yyyy' }}</dd>
+          <dd govukSummaryValue>{{ transcription.details.approved | luxonDate: 'dd MMM yyyy HH:mm:ss' }}</dd>
         </div>
       }
       <div govukSummaryListRow>
