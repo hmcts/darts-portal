@@ -16,6 +16,7 @@ import { CaseEvent } from '@portal-types/events';
 import { Hearing } from '@portal-types/hearing';
 import { AdminCaseService } from '@services/admin-case/admin-case.service';
 import { AppConfigService } from '@services/app-config/app-config.service';
+import { CaseEventsLoaderService } from '@services/case-events-loader/case-events-loader.service';
 import { CaseService } from '@services/case/case.service';
 import { HistoryService } from '@services/history/history.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
@@ -42,6 +43,7 @@ import { CaseFileComponent } from './case-file/case-file.component';
 })
 export class CaseComponent implements OnInit {
   caseService = inject(CaseService);
+  caseEventsLoader = inject(CaseEventsLoaderService);
   userAdminService = inject(UserAdminService);
   caseAdminService = inject(AdminCaseService);
   historyService = inject(HistoryService);
@@ -113,27 +115,20 @@ export class CaseComponent implements OnInit {
     this.loadEvents();
   }
 
-  //TO DO: This could be refactored to a shared case events loader service in future, very minor but SonarQube marks it as duplicate across admin/portal components
-
   private loadEvents(): void {
-    // duplication accepted due to component-specific signals
-    this.caseService
-      .getCaseEventsPaginated(this.caseId(), {
-        page_number: this.eventsCurrentPage(), // NOSONAR
-        page_size: this.eventsPageLimit, // NOSONAR
-        sort_by: this.eventsSort()?.sortBy, // NOSONAR
-        sort_order: this.eventsSort()?.sortOrder, // NOSONAR
-      })
-      .subscribe((events) => {
-        this.events.set(events.data); // NOSONAR
-        this.eventsTotalItems.set(events.totalItems); // NOSONAR
-        this.eventsCurrentPage.set(events.currentPage); // NOSONAR
-      });
+    this.caseEventsLoader.load(this.caseId(), {
+      page: this.eventsCurrentPage(),
+      pageSize: this.eventsPageLimit,
+      sort: this.eventsSort(),
+      setEvents: this.events.set,
+      setTotalItems: this.eventsTotalItems.set,
+      setCurrentPage: this.eventsCurrentPage.set,
+    });
   }
 
   onPageChange(page: number) {
-    this.eventsCurrentPage.set(page); // NOSONAR
-    this.loadEvents(); // NOSONAR
+    this.eventsCurrentPage.set(page);
+    this.loadEvents();
   }
 
   onSortChange(sort: { sortBy: string; sortOrder: 'asc' | 'desc' }) {

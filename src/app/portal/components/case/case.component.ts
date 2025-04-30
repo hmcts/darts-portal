@@ -12,6 +12,7 @@ import { CaseEvent } from '@portal-types/events';
 import { ActiveTabService } from '@services/active-tab/active-tab.service';
 import { AnnotationService } from '@services/annotation/annotation.service';
 import { AppConfigService } from '@services/app-config/app-config.service';
+import { CaseEventsLoaderService } from '@services/case-events-loader/case-events-loader.service';
 import { CaseService } from '@services/case/case.service';
 import { FileDownloadService } from '@services/file-download/file-download.service';
 import { MappingService } from '@services/mapping/mapping.service';
@@ -51,6 +52,7 @@ import { CaseTranscriptsTableComponent } from './case-file/case-transcripts-tabl
 export class CaseComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private caseService = inject(CaseService);
+  private caseEventsLoader = inject(CaseEventsLoaderService);
   private mappingService = inject(MappingService);
   private userService = inject(UserService);
   private annotationService = inject(AnnotationService);
@@ -146,18 +148,14 @@ export class CaseComponent implements OnInit {
   loadEvents() {
     this.eventsLoaded.set(true);
 
-    this.caseService
-      .getCaseEventsPaginated(this.caseId, {
-        page_number: this.eventsCurrentPage(),
-        page_size: this.eventsPageLimit,
-        sort_by: this.eventsSort()?.sortBy,
-        sort_order: this.eventsSort()?.sortOrder,
-      })
-      .subscribe((events) => {
-        this.events.set(events.data);
-        this.eventsTotalItems.set(events.totalItems);
-        this.eventsCurrentPage.set(events.currentPage);
-      });
+    this.caseEventsLoader.load(this.caseId, {
+      page: this.eventsCurrentPage(),
+      pageSize: this.eventsPageLimit,
+      sort: this.eventsSort(),
+      setEvents: this.events.set,
+      setTotalItems: this.eventsTotalItems.set,
+      setCurrentPage: this.eventsCurrentPage.set,
+    });
   }
 
   onPageChange(page: number) {
