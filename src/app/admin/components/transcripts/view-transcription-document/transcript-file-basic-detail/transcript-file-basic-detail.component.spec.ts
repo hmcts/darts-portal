@@ -7,6 +7,8 @@ import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { TranscriptionDetails } from '@portal-types/index';
 import { DateTime } from 'luxon';
 import { TranscriptFileBasicDetailComponent } from './transcript-file-basic-detail.component';
+import { By } from '@angular/platform-browser';
+import { DebugElement } from '@angular/core';
 
 describe('TranscriptFileBasicDetailComponent', () => {
   let component: TranscriptFileBasicDetailComponent;
@@ -59,6 +61,8 @@ describe('TranscriptFileBasicDetailComponent', () => {
     transcriptionObjectId: 0,
     isManual: false,
     hearingId: 0,
+    received: DateTime.fromISO('2025-04-30T09:02:12.000Z'),
+    approved: DateTime.fromISO('2025-04-30T10:12:36.000Z'),
   };
 
   beforeEach(async () => {
@@ -82,5 +86,16 @@ describe('TranscriptFileBasicDetailComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should display times for requested and approved dates', () => {
+    expect(component).toBeTruthy();
+    const requestDetailsElements = fixture.debugElement.queryAll(By.css('#request-details .govuk-summary-list__row'));
+    const findByKey = (element: DebugElement, key: string) =>
+      element.query(By.css('.govuk-summary-list__key')).nativeElement.textContent === key;
+    const requested = requestDetailsElements.find((e) => findByKey(e, 'Requested date'));
+    const approved = requestDetailsElements.find((e) => findByKey(e, 'Approved on'));
+    expect(requested?.query(By.css('.govuk-summary-list__value')).nativeNode.textContent).toBe('30 Apr 2025 10:02:12');
+    expect(approved?.query(By.css('.govuk-summary-list__value')).nativeNode.textContent).toBe('30 Apr 2025 11:12:36');
   });
 });
