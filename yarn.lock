@@ -7356,7 +7356,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.7.2, axios@npm:^1.8.2":
+"axios@npm:^1.8.2, axios@npm:^1.9.0":
   version: 1.9.0
   resolution: "axios@npm:1.9.0"
   dependencies:
@@ -8824,7 +8824,7 @@ __metadata:
     "@typescript-eslint/types": ^8.8.1
     accessible-autocomplete: ^3.0.0
     axe-core: ^4.9.1
-    axios: ^1.7.2
+    axios: ^1.9.0
     bluebird: ^3.7.2
     body-parser: ^1.20.2
     concurrently: ^9.0.0
@@ -8838,7 +8838,7 @@ __metadata:
     express: ^5.0.1
     express-session: ^1.18.0
     govuk-frontend: ^5.4.0
-    http-proxy-middleware: ^3.0.0
+    http-proxy-middleware: ^3.0.5
     husky: ^9.0.0
     i: ^0.3.7
     ioredis: ^5.4.1
@@ -11238,7 +11238,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"http-proxy-middleware@npm:*, http-proxy-middleware@npm:^3.0.0":
+"http-proxy-middleware@npm:*, http-proxy-middleware@npm:^3.0.5":
   version: 3.0.5
   resolution: "http-proxy-middleware@npm:3.0.5"
   dependencies:
