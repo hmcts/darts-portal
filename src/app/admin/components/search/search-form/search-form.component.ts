@@ -38,7 +38,7 @@ export class SearchFormComponent implements OnInit {
   formValues = model<AdminSearchFormValues>(defaultFormValues);
   courthouses = input<Courthouse[]>([]);
   formState = output<AdminSearchFormValues>();
-  search = output<AdminSearchFormValues>();
+  searchOutput = output<AdminSearchFormValues>();
   errors = output<ErrorSummaryEntry[]>();
   courthouseFormService = inject(CourthouseFormService);
 
@@ -116,7 +116,7 @@ export class SearchFormComponent implements OnInit {
 
     this.errors.emit([]);
 
-    this.search.emit(this.form.value as AdminSearchFormValues);
+    this.searchOutput.emit(this.form.value as AdminSearchFormValues);
   }
 
   onClear() {
