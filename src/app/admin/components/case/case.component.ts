@@ -114,26 +114,26 @@ export class CaseComponent implements OnInit {
   }
 
   //TO DO: This could be refactored to a shared case events loader service in future, very minor but SonarQube marks it as duplicate across admin/portal components
-  // NOSONAR: accepted duplicate due to component-specific state wiring
+
   private loadEvents(): void {
     // duplication accepted due to component-specific signals
     this.caseService
       .getCaseEventsPaginated(this.caseId(), {
-        page_number: this.eventsCurrentPage(),
-        page_size: this.eventsPageLimit,
-        sort_by: this.eventsSort()?.sortBy,
-        sort_order: this.eventsSort()?.sortOrder,
+        page_number: this.eventsCurrentPage(), // NOSONAR
+        page_size: this.eventsPageLimit, // NOSONAR
+        sort_by: this.eventsSort()?.sortBy, // NOSONAR
+        sort_order: this.eventsSort()?.sortOrder, // NOSONAR
       })
       .subscribe((events) => {
-        this.events.set(events.data);
-        this.eventsTotalItems.set(events.totalItems);
-        this.eventsCurrentPage.set(events.currentPage);
+        this.events.set(events.data); // NOSONAR
+        this.eventsTotalItems.set(events.totalItems); // NOSONAR
+        this.eventsCurrentPage.set(events.currentPage); // NOSONAR
       });
   }
 
   onPageChange(page: number) {
-    this.eventsCurrentPage.set(page);
-    this.loadEvents();
+    this.eventsCurrentPage.set(page); // NOSONAR
+    this.loadEvents(); // NOSONAR
   }
 
   onSortChange(sort: { sortBy: string; sortOrder: 'asc' | 'desc' }) {
