@@ -114,8 +114,9 @@ export class CaseComponent implements OnInit {
   }
 
   //TO DO: This could be refactored to a shared case events loader service in future, very minor but SonarQube marks it as duplicate across admin/portal components
+  // NOSONAR: accepted duplicate due to component-specific state wiring
   private loadEvents(): void {
-    // NOSONAR - duplication accepted due to component-specific signals
+    // duplication accepted due to component-specific signals
     this.caseService
       .getCaseEventsPaginated(this.caseId(), {
         page_number: this.eventsCurrentPage(),
