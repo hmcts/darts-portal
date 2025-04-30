@@ -7,6 +7,7 @@ import { GroupsService } from '@services/groups/groups.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { of } from 'rxjs';
 import { GroupRecordComponent } from './group-record.component';
+import { CourthouseData } from '@core-types/courthouse/courthouse.interface';
 
 describe('GroupRecordComponent', () => {
   let component: GroupRecordComponent;
@@ -71,10 +72,47 @@ describe('GroupRecordComponent', () => {
   });
 
   it('should update courthouses when onUpdateCourthouses is called', () => {
-    const courthouseIds = [1, 2, 3];
     component.groupId = 1;
-    component.onUpdateCourthouses(courthouseIds);
-    expect(component.groupsService.assignCourthousesToGroup).toHaveBeenCalledWith(1, courthouseIds);
+    component.onUpdateCourthouses({
+      selectedCourthouses: [
+        { id: 1, display_name: 'Courthouse 1' } as unknown as CourthouseData,
+        { id: 2, display_name: 'Courthouse 2' } as unknown as CourthouseData,
+        { id: 3, display_name: 'Courthouse 3' } as unknown as CourthouseData,
+      ],
+      addedCourtHouse: undefined,
+      removedCourtHouse: undefined,
+    });
+    expect(component.groupsService.assignCourthousesToGroup).toHaveBeenCalledWith(1, [1, 2, 3]);
+  });
+
+  it('should update successBannerText with added court case when onUpdateCourthouses is called with addedCourtHouse argument', () => {
+    component.groupId = 1;
+    component.onUpdateCourthouses({
+      selectedCourthouses: [
+        { id: 1, display_name: 'Courthouse 1' } as unknown as CourthouseData,
+        { id: 2, display_name: 'Courthouse 2' } as unknown as CourthouseData,
+        { id: 3, display_name: 'Courthouse 3' } as unknown as CourthouseData,
+      ],
+      addedCourtHouse: { id: 1, display_name: 'Courthouse 1' } as unknown as CourthouseData,
+      removedCourtHouse: undefined,
+    });
+    expect(component.groupsService.assignCourthousesToGroup).toHaveBeenCalledWith(1, [1, 2, 3]);
+    expect(component.successBannerText()).toContain('Courthouse 1 added');
+  });
+
+  it('should update successBannerText with removed court case when onUpdateCourthouses is called with removedCourtHouse argument', () => {
+    component.groupId = 1;
+    component.onUpdateCourthouses({
+      selectedCourthouses: [
+        { id: 1, display_name: 'Courthouse 1' } as unknown as CourthouseData,
+        { id: 2, display_name: 'Courthouse 2' } as unknown as CourthouseData,
+        { id: 3, display_name: 'Courthouse 3' } as unknown as CourthouseData,
+      ],
+      addedCourtHouse: undefined,
+      removedCourtHouse: { id: 1, display_name: 'Courthouse 1' } as unknown as CourthouseData,
+    });
+    expect(component.groupsService.assignCourthousesToGroup).toHaveBeenCalledWith(1, [1, 2, 3]);
+    expect(component.successBannerText()).toContain('Courthouse 1 removed');
   });
 
   it('should update users when onUpdateUsers is called', () => {

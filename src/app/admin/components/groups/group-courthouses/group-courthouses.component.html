@@ -12,7 +12,7 @@
     <div class="select-button-container">
       <select class="govuk-select" id="select-courthouse" name="select-courthouse" #selectCourthouse>
         <option value="" disabled selected></option>
-        @for (courthouse of allCourthouses; track courthouse.id) {
+        @for (courthouse of allNotSelectedCourthouses(); track courthouse.id) {
           <option [value]="courthouse.id">
             {{ courthouse.display_name }}
           </option>

@@ -2,7 +2,7 @@
   "name": "darts-portal",
   "version": "0.0.0",
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "scripts": {
     "ng": "ng",
@@ -59,7 +59,7 @@
     "@ministryofjustice/frontend": "^3.0.0",
     "@types/config": "^3.3.4",
     "accessible-autocomplete": "^3.0.0",
-    "axios": "^1.7.2",
+    "axios": "^1.9.0",
     "body-parser": "^1.20.2",
     "config": "^3.3.11",
     "connect-redis": "^8.0.0",
@@ -67,7 +67,7 @@
     "express": "^5.0.1",
     "express-session": "^1.18.0",
     "govuk-frontend": "^5.4.0",
-    "http-proxy-middleware": "^3.0.0",
+    "http-proxy-middleware": "^3.0.5",
     "ioredis": "^5.4.1",
     "luxon": "^3.4.4",
     "ngx-cookie-service": "^19.0.0",
