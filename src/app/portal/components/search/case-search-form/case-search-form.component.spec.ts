@@ -202,7 +202,7 @@ describe('CaseSearchFormComponent', () => {
     });
 
     it('should emit form values when form is valid and submitted', () => {
-      const searchOutputSpy = jest.spyOn(component.search, 'emit');
+      const searchOutputSpy = jest.spyOn(component.searchOutput, 'emit');
       component.form.patchValue(mockFormValues);
       component.form.markAsDirty();
       component.onSubmit();

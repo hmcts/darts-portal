@@ -792,7 +792,7 @@ describe('CaseService', () => {
 
     expect(eventsResponse).toEqual([
       {
-        id: 1,
+        eventId: 1,
         hearingId: 2,
         hearingDate: DateTime.fromISO('2023-10-12'),
         timestamp: DateTime.fromISO('2023-10-12T00:00:00Z'),
@@ -801,7 +801,7 @@ describe('CaseService', () => {
         isDataAnonymised: undefined,
       },
       {
-        id: 2,
+        eventId: 2,
         hearingId: 2,
         hearingDate: DateTime.fromISO('2023-10-12'),
         timestamp: DateTime.fromISO('2023-10-12T00:00:00Z'),
@@ -866,7 +866,7 @@ describe('CaseService', () => {
         totalItems: 50,
         data: [
           {
-            id: 1,
+            eventId: 1,
             hearingId: 10,
             hearingDate: DateTime.fromISO('2024-06-01T00:00:00Z'),
             timestamp: DateTime.fromISO('2024-06-01T10:00:00Z'),

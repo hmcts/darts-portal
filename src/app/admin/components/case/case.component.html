@@ -26,6 +26,25 @@
         ></app-case-transcripts-table>
       </div>
 
+      <!--  <div *tab="'Audio'"></div> -->
+
+      <div *tab="'Events'; id: 'events-tab'">
+        @if (events()) {
+          <app-govuk-heading tag="h2" size="m">Events</app-govuk-heading>
+          <app-case-events-table
+            [events]="events()!"
+            [caseId]="caseId()"
+            [adminScreen]="true"
+            [totalItems]="eventsTotalItems()"
+            [eventsPerPage]="eventsPageLimit"
+            (pageChange)="onPageChange($event)"
+            (sortChange)="onSortChange($event)"
+          />
+        } @else {
+          <app-loading text="Loading events..."></app-loading>
+        }
+      </div>
+
       <!-- <div *tab="'Annotations'; id: 'annotations-tab'"></div> -->
 
       <div *tab="'Additional case details'; id: 'additional-tab'">

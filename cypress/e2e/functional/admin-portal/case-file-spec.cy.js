@@ -223,4 +223,43 @@ describe('Case file screen', () => {
         });
     });
   });
+
+  describe('Case file screen - Events tab', () => {
+    it('should render the Events tab with expected table headers and data', () => {
+      cy.visit('admin/case/1');
+
+      cy.get('#events-tab').click();
+
+      cy.get('h2.govuk-heading-m').should('contain.text', 'Events');
+
+      cy.get('#court-log-table').should('exist');
+
+      cy.get('#court-log-table thead tr').within(() => {
+        const expectedHeaders = ['Event ID', 'Hearing date', 'Time', 'Event', 'Courtroom', 'Text'];
+        expectedHeaders.forEach((header, index) => {
+          cy.get('th').eq(index).should('contain.text', header);
+        });
+      });
+
+      cy.get('#court-log-table tbody tr')
+        .first()
+        .within(() => {
+          cy.get('td').eq(0).find('a').should('have.attr', 'href').and('include', '/admin/events/1');
+          cy.get('td').eq(1).should('contain.text', '24 Apr 2024');
+          cy.get('td').eq(2).should('contain.text', '15:30:00');
+          cy.get('td').eq(3).should('contain.text', 'Event one name');
+          cy.get('td').eq(4).should('contain.text', 'Courtroom 101');
+          cy.get('td').eq(5).should('contain.text', 'Event one text');
+        });
+
+      cy.get('#court-log-table tbody tr')
+        .last()
+        .within(() => {
+          cy.get('td')
+            .eq(5)
+            .find('p.govuk-hint')
+            .should('contain.text', 'The event text has been anonymised in line with HMCTS policy');
+        });
+    });
+  });
 });

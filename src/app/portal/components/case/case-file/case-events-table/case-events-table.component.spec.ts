@@ -72,4 +72,36 @@ describe('CaseEventsTableComponent', () => {
       { name: 'Text', prop: 'text', sortable: false },
     ]);
   });
+
+  it('should emit sortChange for admin-only sortBy props when adminScreen is true', () => {
+    const sortChangeSpy = jest.spyOn(component.sortChange, 'emit');
+    fixture.componentRef.setInput('adminScreen', true);
+
+    component.onSortChange({ sortBy: 'eventId', sortOrder: 'desc' });
+
+    expect(sortChangeSpy).toHaveBeenCalledWith({
+      sortBy: 'eventId',
+      sortOrder: 'desc',
+    });
+  });
+
+  it('should NOT emit sortChange for admin-only sortBy props when adminScreen is false', () => {
+    const sortChangeSpy = jest.spyOn(component.sortChange, 'emit');
+    fixture.componentRef.setInput('adminScreen', false);
+
+    component.onSortChange({ sortBy: 'eventId', sortOrder: 'asc' });
+
+    expect(sortChangeSpy).not.toHaveBeenCalled();
+  });
+
+  it('should define correct admin column structure', () => {
+    expect(component.adminColumns).toEqual([
+      { name: 'Event ID', prop: 'eventId', sortable: true },
+      { name: 'Hearing date', prop: 'hearingDate', sortable: true },
+      { name: 'Time', prop: 'timestamp', sortable: true },
+      { name: 'Event', prop: 'eventName', sortable: true },
+      { name: 'Courtroom', prop: 'courtroom', sortable: true },
+      { name: 'Text', prop: 'text', sortable: true },
+    ]);
+  });
 });

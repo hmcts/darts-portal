@@ -661,6 +661,8 @@ const events = [
     timestamp: '2024-04-24T14:30:00Z',
     name: 'Event one name',
     text: 'Event one text',
+    is_data_anonymised: false,
+    courtroom: 'Courtroom 101',
   },
   {
     id: 2,
@@ -669,6 +671,8 @@ const events = [
     timestamp: '2024-04-24T14:31:00Z',
     name: 'Event two name',
     text: 'Event two text',
+    is_data_anonymised: false,
+    courtroom: 'Courtroom 2',
   },
   {
     id: 3,
@@ -677,6 +681,8 @@ const events = [
     timestamp: '2024-04-24T14:32:00Z',
     name: 'Event three name',
     text: 'Event three text',
+    is_data_anonymised: false,
+    courtroom: 'Courtroom 121',
   },
   {
     id: 4,
@@ -686,6 +692,7 @@ const events = [
     name: 'Event four name',
     text: 'Event four text',
     is_data_anonymised: true,
+    courtroom: 'Courtroom 121',
   },
 ];
 
@@ -910,7 +917,7 @@ router.get('/:caseId/events', (req, res) => {
       });
 
       let sortedEvents = [...manyEvents];
-      const validSortFields = ['hearingDate', 'timestamp', 'eventName'];
+      const validSortFields = ['hearingDate', 'timestamp', 'eventName', 'courtroom', 'text'];
 
       if (sortBy && validSortFields.includes(sortBy)) {
         sortedEvents.sort((a, b) => {

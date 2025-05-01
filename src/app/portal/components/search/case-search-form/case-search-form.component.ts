@@ -40,7 +40,7 @@ export class CaseSearchFormComponent implements OnInit {
   isSubmitted = model(false);
   isAdvancedSearch = model(false);
 
-  search = output<CaseSearchFormValues>();
+  searchOutput = output<CaseSearchFormValues>();
   validationError = output<ErrorSummaryEntry[]>();
   clear = output();
 
@@ -110,7 +110,7 @@ export class CaseSearchFormComponent implements OnInit {
       return;
     }
 
-    this.search.emit(this.form.value as CaseSearchFormValues);
+    this.searchOutput.emit(this.form.value as CaseSearchFormValues);
   }
 
   toggleAdvancedSearch(event: Event) {

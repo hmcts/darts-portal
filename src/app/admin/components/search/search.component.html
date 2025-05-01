@@ -6,7 +6,7 @@
   [courthouses]="courthouses()"
   [formValues]="searchService.formValues()"
   (formState)="setForm($event)"
-  (search)="onSearch($event)"
+  (searchOutput)="onSearch($event)"
   (clear)="searchService.clearSearch()"
   (errors)="onValidationErrors($event)"
   (logicError)="onLogicError($event)"

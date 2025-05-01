@@ -5,9 +5,11 @@ import { provideHttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
+import { PaginatedCaseEvents } from '@portal-types/events/paginated-case-events.type';
 import { Hearing } from '@portal-types/hearing';
 import { TranscriptsRow } from '@portal-types/transcriptions';
 import { AdminCaseService } from '@services/admin-case/admin-case.service';
+import { AppConfigService } from '@services/app-config/app-config.service';
 import { CaseService } from '@services/case/case.service';
 import { MappingService } from '@services/mapping/mapping.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
@@ -40,6 +42,10 @@ describe('CaseComponent', () => {
     { id: 102, fullName: 'Bob Smith' },
   ] as unknown as User[];
 
+  const mockAppConfigService = {
+    getAppConfig: jest.fn().mockReturnValue({ pagination: { courtLogEventsPageLimit: 500 } }),
+  };
+
   beforeEach(async () => {
     mockAdminCaseService = {
       getCase: jest.fn().mockReturnValue(of(mockCaseFile)),
@@ -66,6 +72,7 @@ describe('CaseComponent', () => {
         { provide: CaseService, useValue: mockCaseService },
         { provide: MappingService, useValue: mockMappingService },
         DatePipe,
+        { provide: AppConfigService, useValue: mockAppConfigService },
         provideHttpClient(),
         provideRouter([]),
       ],
@@ -175,5 +182,40 @@ describe('CaseComponent', () => {
       });
       done();
     });
+  });
+
+  it('should load events and update signals', () => {
+    const mockEvents = {
+      data: [{ id: 1, eventName: 'Mock Event' }],
+      totalItems: 123,
+      currentPage: 2,
+    } as unknown as PaginatedCaseEvents;
+
+    jest.spyOn(component['caseService'], 'getCaseEventsPaginated').mockReturnValue(of(mockEvents));
+
+    component.onPageChange(2);
+
+    expect(component.events()).toEqual(mockEvents.data);
+    expect(component.eventsTotalItems()).toBe(123);
+    expect(component.eventsCurrentPage()).toBe(2);
+  });
+
+  it('should update sort state and reload events on sort change', () => {
+    const sort = { sortBy: 'timestamp', sortOrder: 'desc' as const };
+    const loadEventsSpy = jest.spyOn(component as unknown as { loadEvents: () => void }, 'loadEvents');
+
+    component.onSortChange(sort);
+
+    expect(component.eventsSort()).toEqual(sort);
+    expect(loadEventsSpy).toHaveBeenCalled();
+  });
+
+  it('should update page and reload events on page change', () => {
+    const loadEventsSpy = jest.spyOn(component as unknown as { loadEvents: () => void }, 'loadEvents');
+
+    component.onPageChange(3);
+
+    expect(component.eventsCurrentPage()).toBe(3);
+    expect(loadEventsSpy).toHaveBeenCalled();
   });
 });
