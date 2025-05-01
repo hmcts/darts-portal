@@ -14,18 +14,6 @@
 
       <!-- <div *tab="'Audio'"></div> -->
 
-      <!-- <div *tab="'Events'; id: 'events-tab'"></div> -->
-
-      <div *tab="'Transcripts'; id: 'transcripts-tab'">
-        <app-govuk-heading tag="h2" size="m">Transcripts</app-govuk-heading>
-
-        <app-case-transcripts-table
-          [caseId]="caseId()"
-          [transcripts]="data.transcripts"
-          [adminScreen]="true"
-        ></app-case-transcripts-table>
-      </div>
-
       <!--  <div *tab="'Audio'"></div> -->
 
       <div *tab="'Events'; id: 'events-tab'">
@@ -43,6 +31,16 @@
         } @else {
           <app-loading text="Loading events..."></app-loading>
         }
+      </div>
+
+      <div *tab="'Transcripts'; id: 'transcripts-tab'">
+        <app-govuk-heading tag="h2" size="m">Transcripts</app-govuk-heading>
+
+        <app-case-transcripts-table
+          [caseId]="caseId()"
+          [transcripts]="data.transcripts"
+          [adminScreen]="true"
+        ></app-case-transcripts-table>
       </div>
 
       <!-- <div *tab="'Annotations'; id: 'annotations-tab'"></div> -->
