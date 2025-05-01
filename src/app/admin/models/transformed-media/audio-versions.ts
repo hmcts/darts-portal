@@ -2,6 +2,6 @@ import { AudioVersion } from './audio-version';
 
 export interface AudioVersions {
   mediaObjectId: string;
-  currentVersion: AudioVersion;
+  currentVersion: AudioVersion | null;
   previousVersions: AudioVersion[];
 }
