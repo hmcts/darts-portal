@@ -8,11 +8,14 @@ import { TabsComponent } from '@common/tabs/tabs.component';
 import { CaseHearingsTableComponent } from '@components/case/case-file/case-hearings-table/case-hearings-table.component';
 import { TabDirective } from '@directives/tab.directive';
 import { Hearing } from '@portal-types/hearing';
+import { TranscriptsRow } from '@portal-types/transcriptions';
 import { AdminCaseService } from '@services/admin-case/admin-case.service';
 import { CaseService } from '@services/case/case.service';
 import { HistoryService } from '@services/history/history.service';
+import { MappingService } from '@services/mapping/mapping.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { catchError, combineLatest, map, Observable, of, switchMap } from 'rxjs';
+import { CaseTranscriptsTableComponent } from '../../../portal/components/case/case-file/case-transcripts-table/case-transcripts-table.component';
 import { CaseAdditionalDetailsComponent } from './case-file/case-additional-details/case-additional-details.component';
 import { CaseFileComponent } from './case-file/case-file.component';
 
@@ -28,12 +31,14 @@ import { CaseFileComponent } from './case-file/case-file.component';
     CaseAdditionalDetailsComponent,
     GovukHeadingComponent,
     CaseHearingsTableComponent,
+    CaseTranscriptsTableComponent,
   ],
   templateUrl: './case.component.html',
   styleUrl: './case.component.scss',
 })
 export class CaseComponent implements OnInit {
   caseService = inject(CaseService);
+  mappingService = inject(MappingService);
   userAdminService = inject(UserAdminService);
   caseAdminService = inject(AdminCaseService);
   historyService = inject(HistoryService);
@@ -43,10 +48,11 @@ export class CaseComponent implements OnInit {
 
   caseFile$!: Observable<AdminCase>;
   hearings$!: Observable<Hearing[]>;
+  transcripts$!: Observable<TranscriptsRow[]>;
 
   backUrl = this.historyService.getBackUrl(this.url) ?? '/admin/search';
 
-  data$!: Observable<{ caseFile: AdminCase | null; hearings: Hearing[] }>;
+  data$!: Observable<{ caseFile: AdminCase | null; hearings: Hearing[]; transcripts: TranscriptsRow[] }>;
 
   ngOnInit(): void {
     this.caseFile$ = this.caseAdminService.getCase(this.caseId()).pipe(
@@ -82,10 +88,15 @@ export class CaseComponent implements OnInit {
     );
 
     this.hearings$ = this.caseService.getCaseHearings(this.caseId()).pipe(catchError(() => of([])));
+    this.transcripts$ = this.caseService.getCaseTranscripts(this.caseId()).pipe(
+      map((transcript) => this.mappingService.mapTranscriptRequestToRows(transcript)),
+      catchError(() => of([]))
+    );
 
     this.data$ = combineLatest({
       caseFile: this.caseFile$.pipe(catchError(() => of(null))),
       hearings: this.hearings$,
+      transcripts: this.transcripts$,
     });
   }
 }

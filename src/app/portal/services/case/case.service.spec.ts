@@ -61,6 +61,7 @@ describe('CaseService', () => {
       requested_on: '2023-10-12T00:00:00Z',
       requested_by_name: 'Joe Bloggs',
       status: 'Complete',
+      courtroom: '123',
     },
   ];
 
@@ -272,6 +273,7 @@ describe('CaseService', () => {
         requestedOn: DateTime.fromISO('2023-10-12T00:00:00Z'),
         status: 'Complete',
         type: 'Sentencing remarks',
+        courtroom: '123',
       },
     ]);
   });
@@ -298,6 +300,7 @@ describe('CaseService', () => {
         requestedOn: DateTime.fromISO('2023-10-12T00:00:00Z'),
         status: 'Complete',
         type: 'Sentencing remarks',
+        courtroom: '123',
       },
     ]);
   });
@@ -731,6 +734,7 @@ describe('CaseService', () => {
           requested_on: '2023-10-12T00:00:00Z',
           requested_by_name: 'Joe Bloggs',
           status: 'Complete',
+          courtroom: '1',
         },
       ];
       expect(service['mapTranscriptDataToTranscript'](data)).toEqual([
@@ -742,6 +746,7 @@ describe('CaseService', () => {
           requestedOn: DateTime.fromISO('2023-10-12T00:00:00Z'),
           status: 'Complete',
           requestedByName: 'Joe Bloggs',
+          courtroom: '1',
         },
       ]);
     });

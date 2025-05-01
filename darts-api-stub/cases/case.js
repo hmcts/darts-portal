@@ -475,6 +475,7 @@ const transcriptOne = [
     requested_on: '2024-01-01T00:00:00Z',
     requested_by_name: 'Scott Smith',
     status: 'Requested',
+    courtroom: '1',
   },
   {
     transcription_id: 1,
@@ -484,6 +485,7 @@ const transcriptOne = [
     requested_on: '2024-01-02T00:00:00Z',
     requested_by_name: 'Chris Evans',
     status: 'Awaiting Authorisation',
+    courtroom: '1',
   },
   {
     transcription_id: 1,
@@ -493,6 +495,7 @@ const transcriptOne = [
     requested_on: '2024-01-10T00:00:00Z',
     requested_by_name: 'Carl Edwards',
     status: 'Approved',
+    courtroom: '1',
   },
   {
     transcription_id: 1,
@@ -502,6 +505,7 @@ const transcriptOne = [
     requested_on: '2023-10-12T00:00:00Z',
     requested_by_name: 'Rhys Jones',
     status: 'Rejected',
+    courtroom: '1',
   },
   {
     transcription_id: 1,
@@ -511,6 +515,7 @@ const transcriptOne = [
     requested_on: '2023-11-11T00:00:00Z',
     requested_by_name: 'Jarred Collins',
     status: 'With Transcriber',
+    courtroom: '1',
   },
   {
     transcription_id: 1,
@@ -520,6 +525,7 @@ const transcriptOne = [
     requested_on: '2023-11-12T00:00:00Z',
     requested_by_name: 'Gary Jones',
     status: 'Complete',
+    courtroom: '1',
   },
   {
     transcription_id: 1,
@@ -529,6 +535,7 @@ const transcriptOne = [
     requested_on: '2023-10-16T00:00:00Z',
     requested_by_name: 'Phil Davies',
     status: 'Closed',
+    courtroom: '1',
   },
 ];
 
@@ -541,6 +548,7 @@ const transcriptTwo = [
     requested_on: '2023-10-12T00:00:00Z',
     requested_by_name: 'Joe Bloggs',
     status: 'Requested',
+    courtroom: '1',
   },
   {
     transcription_id: 1,
@@ -550,6 +558,7 @@ const transcriptTwo = [
     requested_on: '2023-10-12T00:00:00Z',
     requested_by_name: 'Joe Bloggs',
     status: 'Awaiting Authorisation',
+    courtroom: '1',
   },
   {
     transcription_id: 1,
@@ -559,6 +568,7 @@ const transcriptTwo = [
     requested_on: '2023-10-12T00:00:00Z',
     requested_by_name: 'Joe Bloggs',
     status: 'Complete',
+    courtroom: '1',
   },
   {
     transcription_id: 1,
@@ -568,6 +578,7 @@ const transcriptTwo = [
     requested_on: '2023-10-12T00:00:00Z',
     requested_by_name: 'Joe Bloggs',
     status: 'Rejected',
+    courtroom: '1',
   },
 ];
 

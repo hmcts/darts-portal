@@ -76,6 +76,7 @@ describe('CaseComponent', () => {
       requested_on: '2023-10-12T00:00:00Z',
       requested_by_name: 'Joe Bloggs',
       status: 'Rejected',
+      courtroom: 'Courtroom 1',
     },
     {
       transcription_id: 1,
@@ -85,6 +86,7 @@ describe('CaseComponent', () => {
       requested_on: '2023-10-12T00:00:00Z',
       requested_by_name: 'Joe Bloggs',
       status: 'Requested',
+      courtroom: 'Courtroom 1',
     },
     {
       transcription_id: 1,
@@ -94,6 +96,7 @@ describe('CaseComponent', () => {
       requested_on: '2023-10-12T00:00:00Z',
       requested_by_name: 'Joe Bloggs',
       status: 'Complete',
+      courtroom: 'Courtroom 1',
     },
   ]);
 
