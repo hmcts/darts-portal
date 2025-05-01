@@ -9,4 +9,5 @@ export interface TranscriptData {
   requested_on: string;
   requested_by_name: string;
   status: TranscriptStatus;
+  courtroom: string;
 }
