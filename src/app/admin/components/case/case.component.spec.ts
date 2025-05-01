@@ -211,11 +211,12 @@ describe('CaseComponent', () => {
     expect(loadEventsSpy).toHaveBeenCalled();
   });
 
-  it('should call setCurrentPage with 5 in onPageChange', () => {
-    const setPageSpy = jest.spyOn(component['eventsCurrentPage'], 'set');
+  it('should update page and reload events on page change', () => {
+    const loadEventsSpy = jest.spyOn(component as unknown as { loadEvents: () => void }, 'loadEvents');
 
-    component.onPageChange(5);
+    component.onPageChange(3);
 
-    expect(setPageSpy).toHaveBeenCalledWith(5);
+    expect(component.eventsCurrentPage()).toBe(3);
+    expect(loadEventsSpy).toHaveBeenCalled();
   });
 });
