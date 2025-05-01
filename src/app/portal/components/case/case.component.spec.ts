@@ -37,7 +37,7 @@ describe('CaseComponent', () => {
 
   const mockEvents: CaseEvent[] = [
     {
-      id: 1,
+      eventId: 1,
       hearingId: 1,
       hearingDate: DateTime.fromISO('2023-09-01'),
       timestamp: DateTime.fromISO('2023-09-01T12:00:00'),

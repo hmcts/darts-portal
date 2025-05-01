@@ -111,7 +111,7 @@ describe('SearchFormComponent', () => {
 
   describe('onSubmit', () => {
     it('log form value and selected courthouses', () => {
-      const searchSpy = jest.spyOn(component.search, 'emit');
+      const searchSpy = jest.spyOn(component.searchOutput, 'emit');
       component.form.get('caseId')?.setValue('123');
       component.form.get('courtroom')?.setValue('1');
       component.form.get('hearingDate.type')?.setValue('specific');

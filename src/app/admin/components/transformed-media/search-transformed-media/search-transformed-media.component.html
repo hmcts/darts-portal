@@ -37,7 +37,7 @@
       [courthouses]="courthouses"
       [formValues]="transformedMediaService.searchFormValues()"
       [(isAdvancedSearch)]="transformedMediaService.isAdvancedSearch"
-      (search)="onSearch($event)"
+      (searchOutput)="onSearch($event)"
       (clear)="onClear()"
       (errors)="onErrors($event)"
     />

@@ -17,7 +17,7 @@
       <app-search-transcripts-form
         [courthouses]="courthouses"
         [formValues]="formValues"
-        (search)="onSearch($event)"
+        (searchOutput)="onSearch($event)"
         (errors)="onErrors($event)"
         (clear)="clearSearch()"
         [(isAdvancedSearch)]="isAdvancedSearch"
@@ -41,7 +41,7 @@
         [courthouses]="courthouses"
         [isCompletedTranscriptSearch]="true"
         [formValues]="formValues"
-        (search)="onSearch($event)"
+        (searchOutput)="onSearch($event)"
         (errors)="onErrors($event)"
         (clear)="clearSearch()"
         [(isAdvancedSearch)]="isAdvancedSearch"

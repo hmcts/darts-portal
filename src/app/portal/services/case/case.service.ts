@@ -70,7 +70,7 @@ export class CaseService {
     options: {
       page_number: number;
       page_size: number;
-      sort_by?: 'hearingDate' | 'timestamp' | 'eventName';
+      sort_by?: 'hearingDate' | 'timestamp' | 'eventName' | 'courtroom' | 'text' | 'eventId';
       sort_order?: 'asc' | 'desc';
     }
   ): Observable<PaginatedCaseEvents> {
@@ -215,13 +215,14 @@ export class CaseService {
 
   private mapCaseEventData(events: CaseEventData[]) {
     return events.map((e) => ({
-      id: e.id,
+      eventId: e.id,
       hearingId: e.hearing_id,
       hearingDate: DateTime.fromISO(e.hearing_date),
       timestamp: DateTime.fromISO(e.timestamp),
       eventName: e.name,
       text: e.text,
       isDataAnonymised: e.is_data_anonymised,
+      courtroom: e.courtroom,
     }));
   }
 

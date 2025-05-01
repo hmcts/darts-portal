@@ -28,9 +28,9 @@ describe('SearchTranscriptsFormComponent', () => {
   });
 
   it('#onSubmit', () => {
-    jest.spyOn(component.search, 'emit');
+    jest.spyOn(component.searchOutput, 'emit');
     component.onSubmit();
-    expect(component.search.emit).toHaveBeenCalledWith(component.form.value);
+    expect(component.searchOutput.emit).toHaveBeenCalledWith(component.form.value);
   });
 
   it('#setInputValue', () => {

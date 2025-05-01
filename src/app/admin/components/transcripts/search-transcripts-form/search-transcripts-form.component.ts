@@ -65,7 +65,7 @@ export class SearchTranscriptsFormComponent implements OnInit {
     requestMethod: [''],
   });
 
-  search = output<typeof this.form.value>();
+  searchOutput = output<typeof this.form.value>();
   errors = output<ErrorSummaryEntry[]>();
   clear = output();
 
@@ -106,7 +106,7 @@ export class SearchTranscriptsFormComponent implements OnInit {
     }
 
     this.errors.emit([]);
-    this.search.emit(this.form.value);
+    this.searchOutput.emit(this.form.value);
   }
 
   getControlErrorMessage(controlPath: string[]): string[] {
