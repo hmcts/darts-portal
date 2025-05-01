@@ -44,5 +44,12 @@ export class ShowVersionsComponent {
   currentVersion = computed(() => this.versions()?.currentVersion);
   previousVersions = computed(() => this.versions()?.previousVersions ?? []);
 
-  isLoading = computed(() => !(this.currentVersion() && this.previousVersions()));
+  isLoading = computed(() => !(this.currentVersion() !== undefined && this.previousVersions()));
+
+  get sourceEventId() {
+    if (this.currentVersion()) {
+      return this.currentVersion()?.event_id ?? 'Not set';
+    }
+    return this.previousVersions().length > 0 ? this.previousVersions()[0].event_id : 'Not set';
+  }
 }

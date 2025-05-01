@@ -19,14 +19,15 @@
   <app-govuk-heading tag="h1" size="l">All versions of this event</app-govuk-heading>
 
   <h2 class="govuk-heading-s">Source event ID</h2>
-  <p id="sourceEventId" class="govuk-body">{{ currentVersion()?.event_id ?? 'Not set' }}</p>
+  <p id="sourceEventId" class="govuk-body">{{ sourceEventId }}</p>
 
   <app-govuk-heading tag="h2" size="m">Current version</app-govuk-heading>
   <app-data-table
     id="currentVersionTable"
     [columns]="columns"
-    [rows]="[currentVersion()]"
+    [rows]="currentVersion() ? [currentVersion()] : []"
     caption="Current version of this event"
+    noDataMessage="There is no current version of this event."
     [hiddenCaption]="true"
   >
     <ng-template [tableRowTemplate]="[currentVersion()]" let-row>
@@ -40,6 +41,7 @@
     [columns]="columns"
     [rows]="previousVersions()"
     caption="Previous versions of this event"
+    noDataMessage="There are no previous versions of this event."
     [hiddenCaption]="true"
   >
     <ng-template [tableRowTemplate]="previousVersions()" let-row>

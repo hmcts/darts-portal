@@ -119,4 +119,34 @@ describe('ShowVersionsComponent', () => {
     expect(component.previousVersions()).toEqual(mockEventVersions.previousVersions);
     expect(component.isLoading()).toBe(false);
   });
+
+  it('should display no data message when currentVersion is empty', () => {
+    mockEventsFacadeService.getEventVersions.mockReturnValue(
+      of({
+        currentVersion: null,
+        previousVersions: mockPreviousVersions,
+      })
+    );
+
+    fixture = TestBed.createComponent(ShowVersionsComponent);
+    fixture.detectChanges();
+
+    const previousVersionsTable = fixture.nativeElement.querySelector('#currentVersionTable');
+    expect(previousVersionsTable.textContent).toContain('There is no current version of this event.');
+  });
+
+  it('should display no data message when previousVersions is empty', () => {
+    mockEventsFacadeService.getEventVersions.mockReturnValue(
+      of({
+        currentVersion: mockCurrentVersion,
+        previousVersions: [],
+      })
+    );
+
+    fixture = TestBed.createComponent(ShowVersionsComponent);
+    fixture.detectChanges();
+
+    const previousVersionsTable = fixture.nativeElement.querySelector('#previousVersionsTable');
+    expect(previousVersionsTable.textContent).toContain('There are no previous versions of this event.');
+  });
 });
