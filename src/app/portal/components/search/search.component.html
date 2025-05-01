@@ -5,7 +5,7 @@
 <app-case-search-form
   [courthouses]="courthouses()"
   [formValues]="formValues()"
-  (search)="onSearch($event)"
+  (searchOutput)="onSearch($event)"
   (clear)="onClear()"
   (validationError)="onValidationError($event)"
   [(isAdvancedSearch)]="isAdvancedSearch"

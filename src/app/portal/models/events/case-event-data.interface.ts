@@ -6,4 +6,5 @@ export interface CaseEventData {
   name: string;
   text: string;
   is_data_anonymised?: boolean;
+  courtroom?: string;
 }

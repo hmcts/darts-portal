@@ -88,7 +88,7 @@ export class SearchTransformedMediaFormComponent implements OnInit {
     this.form.patchValue(this.formValues());
   }
 
-  @Output() search = new EventEmitter<typeof this.form.value>();
+  @Output() searchOutput = new EventEmitter<typeof this.form.value>();
   @Output() errors = new EventEmitter<ErrorSummaryEntry[]>();
   clear = output();
 
@@ -102,7 +102,7 @@ export class SearchTransformedMediaFormComponent implements OnInit {
     }
 
     this.errors.emit([]);
-    this.search.emit(this.form.value);
+    this.searchOutput.emit(this.form.value);
   }
 
   onClear() {

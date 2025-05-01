@@ -1,9 +1,7 @@
-<app-govuk-heading tag="h2" size="m">Court log for this case</app-govuk-heading>
-
 <app-data-table
   id="court-log-table"
   [rows]="events()"
-  [columns]="columns"
+  [columns]="adminScreen() ? adminColumns : columns"
   [hiddenCaption]="true"
   [backendPagination]="true"
   [pageLimit]="eventsPerPage()!"
@@ -13,19 +11,44 @@
   caption="Court log / events associated with case"
 >
   <ng-template [tableRowTemplate]="events()" let-row>
-    <td>
-      <a class="govuk-link" [routerLink]="['/case', caseId(), 'hearing', row.hearingId]">{{
-        row.hearingDate | luxonDate: 'dd MMM y'
-      }}</a>
-    </td>
-    <td>{{ row.timestamp | luxonDate: 'HH:mm:ss' }}</td>
-    <td>{{ row.eventName }}</td>
-    <td>
-      @if (row.isDataAnonymised) {
-        <p class="govuk-hint no-margin">The event text has been anonymised in line with HMCTS policy</p>
-      } @else {
-        {{ row.text }}
-      }
-    </td>
+    @if (adminScreen()) {
+      <td>
+        <a
+          class="govuk-link"
+          [routerLink]="['/admin/events', row.eventId]"
+          [queryParams]="{ backUrl: '/admin/case/' + caseId() }"
+        >
+          {{ row.eventId }}
+        </a>
+      </td>
+      <td>
+        {{ row.hearingDate | luxonDate: 'dd MMM y' }}
+      </td>
+      <td>{{ row.timestamp | luxonDate: 'HH:mm:ss' }}</td>
+      <td>{{ row.eventName }}</td>
+      <td>{{ row.courtroom }}</td>
+      <td>
+        @if (row.isDataAnonymised) {
+          <p class="govuk-hint no-margin">The event text has been anonymised in line with HMCTS policy</p>
+        } @else {
+          {{ row.text }}
+        }
+      </td>
+    } @else {
+      <td>
+        <a class="govuk-link" [routerLink]="['/case', caseId(), 'hearing', row.hearingId]">
+          {{ row.hearingDate | luxonDate: 'dd MMM y' }}
+        </a>
+      </td>
+      <td>{{ row.timestamp | luxonDate: 'HH:mm:ss' }}</td>
+      <td>{{ row.eventName }}</td>
+      <td>
+        @if (row.isDataAnonymised) {
+          <p class="govuk-hint no-margin">The event text has been anonymised in line with HMCTS policy</p>
+        } @else {
+          {{ row.text }}
+        }
+      </td>
+    }
   </ng-template>
 </app-data-table>
