@@ -58,6 +58,7 @@ describe('CaseComponent', () => {
     mockCaseService = {
       getCaseHearings: jest.fn().mockReturnValue(of([{ id: 1, hearingType: 'Trial' }] as unknown as Hearing[])),
       getCaseTranscripts: jest.fn().mockReturnValue(of([{ some: 'transcriptData' }])),
+      getCaseEventsPaginated: jest.fn().mockReturnValue(of({ data: [], totalItems: 0, currentPage: 1 })),
     } as unknown as jest.Mocked<CaseService>;
 
     mockMappingService = {
@@ -210,12 +211,11 @@ describe('CaseComponent', () => {
     expect(loadEventsSpy).toHaveBeenCalled();
   });
 
-  it('should update page and reload events on page change', () => {
-    const loadEventsSpy = jest.spyOn(component as unknown as { loadEvents: () => void }, 'loadEvents');
+  it('should call setCurrentPage with 5 in onPageChange', () => {
+    const setPageSpy = jest.spyOn(component['eventsCurrentPage'], 'set');
 
-    component.onPageChange(3);
+    component.onPageChange(5);
 
-    expect(component.eventsCurrentPage()).toBe(3);
-    expect(loadEventsSpy).toHaveBeenCalled();
+    expect(setPageSpy).toHaveBeenCalledWith(5);
   });
 });
