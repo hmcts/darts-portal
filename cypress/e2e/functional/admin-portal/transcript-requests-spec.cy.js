@@ -346,10 +346,10 @@ describe('Admin - Transcript requests', () => {
       cy.get('#request-details dd').eq(1).should('contain', 'Start time 14:00:00 - End time 17:00:00');
 
       cy.get('#request-details dt').eq(2).should('contain', 'Requested date');
-      cy.get('#request-details dd').eq(2).should('contain', '17 Nov 2023');
+      cy.get('#request-details dd').eq(2).should('contain', '17 Nov 2023 12:53:07');
 
       cy.get('#request-details dt').eq(3).should('contain', 'Approved on');
-      cy.get('#request-details dd').eq(3).should('contain', '17 Nov 2023');
+      cy.get('#request-details dd').eq(3).should('contain', '17 Nov 2023 14:53:07');
 
       cy.get('#request-details dt').eq(4).should('contain', 'Request method');
       cy.get('#request-details dd').eq(4).should('contain', 'Manual');
