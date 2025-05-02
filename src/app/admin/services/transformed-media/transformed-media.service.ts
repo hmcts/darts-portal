@@ -157,7 +157,7 @@ export class TransformedMediaService {
   private mapAudioVersions(data: AudioVersionsData): AudioVersions {
     return {
       mediaObjectId: data.media_object_id,
-      currentVersion: this.mapAudioVersion(data.current_version),
+      currentVersion: data.current_version ? this.mapAudioVersion(data.current_version) : null,
       previousVersions: data.previous_versions.map((audio) => this.mapAudioVersion(audio)),
     };
   }

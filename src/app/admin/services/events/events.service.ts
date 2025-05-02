@@ -29,7 +29,7 @@ export class EventsService {
 
   mapEventVersions(event: EventVersionsData): EventVersions {
     return {
-      currentVersion: this.mapEventDataToEvent(event.current_version),
+      currentVersion: event.current_version ? this.mapEventDataToEvent(event.current_version) : null,
       previousVersions: event.previous_versions.map((event) => this.mapEventDataToEvent(event)),
     };
   }

@@ -222,7 +222,7 @@ describe('EventsFacadeService', () => {
       };
 
       const result = service['mapEventVersions'](mockEventVersions);
-      expect(result.currentVersion.text).toBe('Current Event');
+      expect(result.currentVersion!.text).toBe('Current Event');
       expect(result.previousVersions.length).toBe(0);
     });
   });
