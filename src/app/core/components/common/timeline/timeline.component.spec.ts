@@ -1,11 +1,11 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {DatePipe} from '@angular/common';
-import {By} from '@angular/platform-browser';
-import {ActivatedRoute} from '@angular/router';
-import {TimelineItem} from '@core-types/index';
-import {DateTime} from 'luxon';
-import {TimelineComponent} from './timeline.component';
+import { DatePipe } from '@angular/common';
+import { By } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
+import { TimelineItem } from '@core-types/index';
+import { DateTime } from 'luxon';
+import { TimelineComponent } from './timeline.component';
 
 describe('TimelineComponent', () => {
   let component: TimelineComponent;
@@ -48,7 +48,7 @@ describe('TimelineComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TimelineComponent],
-      providers: [{provide: ActivatedRoute, useValue: {}}, DatePipe],
+      providers: [{ provide: ActivatedRoute, useValue: {} }, DatePipe],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TimelineComponent);

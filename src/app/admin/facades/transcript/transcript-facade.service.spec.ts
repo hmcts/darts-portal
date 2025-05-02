@@ -1,15 +1,15 @@
-import {fakeAsync, TestBed, tick} from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
-import {SecurityGroup, User} from '@admin-types/index';
-import {TranscriptionStatus} from '@admin-types/transcription';
-import {TranscriptionAdminDetails} from '@admin-types/transcription/transcription-details';
-import {TranscriptionWorkflow} from '@admin-types/transcription/transcription-workflow';
-import {TranscriptionAdminService} from '@services/transcription-admin/transcription-admin.service';
-import {UserAdminService} from '@services/user-admin/user-admin.service';
-import {DateTime} from 'luxon';
-import {of} from 'rxjs';
-import {TranscriptFacadeService} from './transcript-facade.service';
-import {TimelineItem} from '@core-types/timeline/timeline.type';
+import { SecurityGroup, User } from '@admin-types/index';
+import { TranscriptionStatus } from '@admin-types/transcription';
+import { TranscriptionAdminDetails } from '@admin-types/transcription/transcription-details';
+import { TranscriptionWorkflow } from '@admin-types/transcription/transcription-workflow';
+import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
+import { UserAdminService } from '@services/user-admin/user-admin.service';
+import { DateTime } from 'luxon';
+import { of } from 'rxjs';
+import { TranscriptFacadeService } from './transcript-facade.service';
+import { TimelineItem } from '@core-types/timeline/timeline.type';
 
 describe('TranscriptFacadeService', () => {
   let service: TranscriptFacadeService;
@@ -52,12 +52,12 @@ describe('TranscriptFacadeService', () => {
       getTranscriptionStatuses: jest.fn().mockReturnValue(of([])),
     } as unknown as TranscriptionAdminService;
 
-    fakeUserAdminService = {getUsersById: jest.fn()} as unknown as UserAdminService;
+    fakeUserAdminService = { getUsersById: jest.fn() } as unknown as UserAdminService;
 
     TestBed.configureTestingModule({
       providers: [
-        {provide: UserAdminService, useValue: fakeUserAdminService},
-        {provide: TranscriptionAdminService, useValue: fakeTranscriptionAdminService},
+        { provide: UserAdminService, useValue: fakeUserAdminService },
+        { provide: TranscriptionAdminService, useValue: fakeTranscriptionAdminService },
       ],
     });
     service = TestBed.inject(TranscriptFacadeService);
@@ -71,7 +71,7 @@ describe('TranscriptFacadeService', () => {
     it('should return mapped transcript if requester and courthouseId is present', fakeAsync(() => {
       mockTranscription = {
         ...mockTranscription,
-        requestor: {userId: 1, fullName: 'Test Requester', email: 'email@test.com'},
+        requestor: { userId: 1, fullName: 'Test Requester', email: 'email@test.com' },
         courthouseId: 1,
       };
 
@@ -79,15 +79,15 @@ describe('TranscriptFacadeService', () => {
       jest.spyOn(fakeTranscriptionAdminService, 'getLatestTranscriptionWorkflowActor').mockReturnValue(of(1));
       jest
         .spyOn(fakeUserAdminService, 'getUsersById')
-        .mockReturnValue(of([{id: 1, fullName: 'Test Assignee', emailAddress: 'email@email.com'} as User]));
+        .mockReturnValue(of([{ id: 1, fullName: 'Test Assignee', emailAddress: 'email@email.com' } as User]));
       jest
         .spyOn(fakeTranscriptionAdminService, 'getTranscriptionSecurityGroups')
-        .mockReturnValue(of([{id: 1} as SecurityGroup]));
+        .mockReturnValue(of([{ id: 1 } as SecurityGroup]));
 
       service.getTranscript(1).subscribe((result) =>
         expect(result).toEqual({
           ...mockTranscription,
-          assignedGroups: [{id: 1}],
+          assignedGroups: [{ id: 1 }],
           assignedTo: {
             email: 'email@email.com',
             fullName: 'Test Assignee',
@@ -107,8 +107,8 @@ describe('TranscriptFacadeService', () => {
 
   describe('#getHistory', () => {
     const mockUsers = [
-      {id: 1, fullName: 'Test User 1', emailAddress: 'email1@test.com'} as User,
-      {id: 2, fullName: 'Test User 2', emailAddress: 'email2@test.com'} as User,
+      { id: 1, fullName: 'Test User 1', emailAddress: 'email1@test.com' } as User,
+      { id: 2, fullName: 'Test User 2', emailAddress: 'email2@test.com' } as User,
     ];
 
     it('should return mapped workflows to timeline', fakeAsync(() => {
@@ -127,7 +127,7 @@ describe('TranscriptFacadeService', () => {
         },
       ];
 
-      const mockStatuses: TranscriptionStatus[] = [{id: 1, displayName: 'Requested', type: 'Requested'}];
+      const mockStatuses: TranscriptionStatus[] = [{ id: 1, displayName: 'Requested', type: 'Requested' }];
 
       jest.spyOn(fakeTranscriptionAdminService, 'getTranscriptionWorkflows').mockReturnValue(of(mockWorkflows));
       jest.spyOn(fakeUserAdminService, 'getUsersById').mockReturnValue(of(mockUsers));
@@ -139,7 +139,7 @@ describe('TranscriptFacadeService', () => {
             title: 'Requested',
             descriptionLines: ['Test Comment'],
             dateTime: DateTime.fromISO('2021-01-01T00:00:00Z'),
-            user: {id: 1, fullName: 'Test User 1', emailAddress: 'email1@test.com'},
+            user: { id: 1, fullName: 'Test User 1', emailAddress: 'email1@test.com' },
           },
         ])
       );
@@ -170,7 +170,7 @@ describe('TranscriptFacadeService', () => {
             title: 'Comment',
             descriptionLines: ['Test Comment'],
             dateTime: DateTime.fromISO('2021-01-01T00:00:00Z'),
-            user: {id: 2, fullName: 'Test User 2', emailAddress: 'email2@test.com'},
+            user: { id: 2, fullName: 'Test User 2', emailAddress: 'email2@test.com' },
           },
         ])
       );
@@ -201,7 +201,7 @@ describe('TranscriptFacadeService', () => {
             title: 'Comment',
             descriptionLines: ['Test Comment'],
             dateTime: DateTime.fromISO('2021-01-01T00:00:00Z'),
-            user: {id: 1, fullName: 'Test User 1', emailAddress: 'email1@test.com'},
+            user: { id: 1, fullName: 'Test User 1', emailAddress: 'email1@test.com' },
           },
         ])
       );
@@ -232,7 +232,7 @@ describe('TranscriptFacadeService', () => {
             title: 'Comment',
             descriptionLines: ['Test Comment'],
             dateTime: DateTime.fromISO('2022-01-01T00:00:00Z'),
-            user: {id: 2, fullName: 'Test User 2', emailAddress: 'email2@test.com'},
+            user: { id: 2, fullName: 'Test User 2', emailAddress: 'email2@test.com' },
           },
         ])
       );
@@ -268,13 +268,13 @@ describe('TranscriptFacadeService', () => {
             title: 'Comment',
             descriptionLines: ['Test Comment 2'],
             dateTime: DateTime.fromISO('2024-01-01T00:00:00Z'),
-            user: {id: 1, fullName: 'Test User 1', emailAddress: 'email1@test.com'},
+            user: { id: 1, fullName: 'Test User 1', emailAddress: 'email1@test.com' },
           },
           {
             title: 'Comment',
             descriptionLines: ['Test Comment 1'],
             dateTime: DateTime.fromISO('2021-01-01T00:00:00Z'),
-            user: {id: 2, fullName: 'Test User 2', emailAddress: 'email2@test.com'},
+            user: { id: 2, fullName: 'Test User 2', emailAddress: 'email2@test.com' },
           },
         ])
       );
@@ -292,7 +292,7 @@ describe('TranscriptFacadeService', () => {
               comment: 'Test Comment',
               commentedAt: DateTime.fromISO('2021-01-01T00:00:00Z'),
               //@ts-expect-error legacy data could be missing commentedAt
-              authorId:  null,
+              authorId: null,
             },
           ],
         },
