@@ -12,7 +12,7 @@
       <ng-container *breadcrumb="['/case', vm.case.id.toString()]"
         ><span class="whitespace-pre">{{ vm.case.number }}</span></ng-container
       >
-      <ng-container *breadcrumb>{{ vm.hearing?.date | luxonDate: 'd MMM y' }}</ng-container>
+      <ng-container *breadcrumb>{{ vm.hearing?.date | luxonDate: 'dd MMM y' }}</ng-container>
     </app-breadcrumb>
 
     <!-- Validation Error Summary Component -->
