@@ -22,7 +22,7 @@
       </td>
       <td>{{ row.courtroom }}</td>
       <td>{{ row.type }}</td>
-      <td>{{ row.requestedOn | luxonDate: 'dd MMM yyyy' }}</td>
+      <td>{{ row.requestedOn | luxonDate: 'dd MMM yyyy HH:mm:ss' }}</td>
       <td>{{ row.requestedBy }}</td>
       <td>
         <app-govuk-tag [colour]="statusColours[row.status]">{{ row.status }}</app-govuk-tag>

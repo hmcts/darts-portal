@@ -213,7 +213,7 @@ describe('Case file screen', () => {
           cy.get('td').eq(0).find('a').should('contain.text', '1');
           cy.get('td').eq(1).should('contain.text', '1');
           cy.get('td').eq(2).should('contain.text', 'Sentencing remarks');
-          cy.get('td').eq(3).should('contain.text', '01 Jan 2024');
+          cy.get('td').eq(3).should('contain.text', '01 Jan 2024 00:00:00');
           cy.get('td').eq(4).should('contain.text', 'Scott Smith');
           cy.get('td')
             .eq(5)
