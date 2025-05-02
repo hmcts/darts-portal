@@ -6,6 +6,7 @@ import {
   TransformedMediaRow,
   TransformedMediaSearchResultsComponent,
 } from './transformed-media-search-results.component';
+import { By } from '@angular/platform-browser';
 
 describe('TransformedMediaSearchResultsComponent', () => {
   let component: TransformedMediaSearchResultsComponent;
@@ -23,6 +24,12 @@ describe('TransformedMediaSearchResultsComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('displays no data message and not the delete button when no results exist', () => {
+    const noDataMsgElem = fixture.debugElement.query(By.css('#no-data-message')).nativeElement;
+    expect(noDataMsgElem.textContent).toBe('No data to display.');
+    expect(fixture.debugElement.query(By.css('#delete-button'))).toBeNull();
   });
 
   describe('ngOnChanges', () => {
