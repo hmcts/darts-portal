@@ -30,7 +30,7 @@ export class EventsFacadeService {
 
   private mapEventVersions(eventVersions: EventVersions) {
     return {
-      currentVersion: this.mapEventTableData(eventVersions.currentVersion),
+      currentVersion: eventVersions.currentVersion ? this.mapEventTableData(eventVersions.currentVersion) : null,
       previousVersions: eventVersions.previousVersions.map((event) => this.mapEventTableData(event)),
     };
   }

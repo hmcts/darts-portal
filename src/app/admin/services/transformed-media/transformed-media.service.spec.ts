@@ -284,8 +284,8 @@ describe('TransformedMediaService', () => {
       const result = service['mapAudioVersions'](mockData);
 
       expect(result.mediaObjectId).toBe('media_12345');
-      expect(result.currentVersion.id).toBe(101);
-      expect(result.currentVersion.startAt).toEqual(DateTime.fromISO('2024-06-11T08:30:00.000Z'));
+      expect(result.currentVersion!.id).toBe(101);
+      expect(result.currentVersion!.startAt).toEqual(DateTime.fromISO('2024-06-11T08:30:00.000Z'));
     });
   });
 

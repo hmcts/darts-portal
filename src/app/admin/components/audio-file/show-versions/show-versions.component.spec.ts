@@ -68,6 +68,22 @@ describe('ShowVersionsComponent', () => {
     expect(previousVersionsTable.textContent).toContain('There are no previous versions of this audio.');
   });
 
+  it('should display no data message when currentVersion is empty', () => {
+    mockTransformedMediaService.getVersions.mockReturnValue(
+      of({
+        mediaObjectId: 'ABC123',
+        currentVersion: null,
+        previousVersions: [],
+      })
+    );
+
+    fixture = TestBed.createComponent(ShowVersionsComponent);
+    fixture.detectChanges();
+
+    const previousVersionsTable = fixture.nativeElement.querySelector('#currentVersionTable');
+    expect(previousVersionsTable.textContent).toContain('There is no current version of this audio.');
+  });
+
   it('should store only the first selected version when multiple are selected', () => {
     const mockVersions = [{ id: 1 } as AudioVersion, { id: 2 } as AudioVersion];
 

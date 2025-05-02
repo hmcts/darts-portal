@@ -1,6 +1,6 @@
 import { Event } from './event';
 
 export type EventVersions = {
-  currentVersion: Event;
+  currentVersion: Event | null;
   previousVersions: Event[];
 };

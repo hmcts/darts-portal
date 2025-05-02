@@ -64,7 +64,14 @@ export class ShowVersionsComponent implements OnInit {
   currentVersion = computed(() => this.versions()?.currentVersion);
   previousVersions = computed(() => this.versions()?.previousVersions ?? []);
 
-  isLoading = computed(() => !(this.currentVersion() && this.previousVersions()));
+  isLoading = computed(() => !(this.currentVersion() !== undefined && this.previousVersions()));
+
+  get chronicleId() {
+    if (this.currentVersion()) {
+      return this.currentVersion()?.chronicleId ?? 'Not set';
+    }
+    return this.previousVersions()?.length ? this.previousVersions()[0].chronicleId : 'Not set';
+  }
 
   ngOnInit(): void {
     this.headerService.hideNavigation();

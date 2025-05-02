@@ -34,13 +34,13 @@
   <app-govuk-heading tag="h1" size="l">All versions of this audio</app-govuk-heading>
 
   <h2 class="govuk-heading-s">Chronicle ID</h2>
-  <p id="chronicleId" class="govuk-body">{{ currVersion?.chronicleId ?? 'Not set' }}</p>
+  <p id="chronicleId" class="govuk-body">{{ chronicleId }}</p>
 
   <app-govuk-heading tag="h2" size="m">Current version</app-govuk-heading>
   <app-data-table
     id="currentVersionTable"
     [columns]="columns"
-    [rows]="[currVersion]"
+    [rows]="currVersion ? [currVersion] : []"
     caption="Current version of this audio"
     noDataMessage="There is no current version of this audio."
     [hiddenCaption]="true"
