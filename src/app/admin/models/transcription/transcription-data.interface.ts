@@ -4,6 +4,7 @@ export interface TranscriptionData {
   case_number: string;
   courthouse_id: number;
   hearing_date: string;
+  hearing_id?: number;
   requested_at: string;
   approved_at?: string;
   transcription_status_id: number;

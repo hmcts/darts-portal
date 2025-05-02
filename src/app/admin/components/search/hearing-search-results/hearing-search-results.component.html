@@ -8,11 +8,13 @@
 >
   <ng-template [tableRowTemplate]="hearings()" let-row>
     <td>
-      <a class="govuk-link whitespace-pre" [routerLink]="['/admin/case', row.caseId, 'hearing', row.hearingId]">{{
-        row.caseNumber
-      }}</a>
+      <a class="govuk-link whitespace-pre" [routerLink]="['/admin/case', row.caseId]">{{ row.caseNumber }}</a>
     </td>
-    <td>{{ row.hearingDate | luxonDate: 'dd/MM/yyyy' }}</td>
+    <td>
+      <a class="govuk-link" [routerLink]="['/admin/case', row.caseId, 'hearing', row.hearingId]"
+        >{{ row.hearingDate | luxonDate: 'dd/MM/yyyy' }}
+      </a>
+    </td>
     <td>{{ row.courthouse }}</td>
     <td>{{ row.courtroom }}</td>
   </ng-template>
