@@ -1,9 +1,9 @@
-import { DateTime } from 'luxon';
 import { TestBed } from '@angular/core/testing';
+import { DateTime } from 'luxon';
 
-import { MappingService } from './mapping.service';
-import { Transcript } from '@portal-types/transcriptions/transcript.type';
 import { AnnotationsData } from '@portal-types/annotations/annotations-data.interface';
+import { Transcript } from '@portal-types/transcriptions/transcript.type';
+import { MappingService } from './mapping.service';
 
 describe('MappingService', () => {
   let service: MappingService;
@@ -28,6 +28,7 @@ describe('MappingService', () => {
           requestedOn: DateTime.fromISO('2024-01-01'),
           requestedByName: 'Mrs Test',
           status: 'Complete',
+          courtroom: '1',
         },
       ];
       const result = service.mapTranscriptRequestToRows(transcripts);
@@ -39,6 +40,8 @@ describe('MappingService', () => {
           requestedOn: DateTime.fromISO('2024-01-01'),
           status: 'Complete',
           type: 'TYPE',
+          courtroom: '1',
+          hearingId: 1,
         },
       ]);
     });

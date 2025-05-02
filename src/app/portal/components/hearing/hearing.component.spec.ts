@@ -122,6 +122,7 @@ describe('HearingComponent', () => {
       requestedOn: DateTime.fromISO('2023-10-12T00:00:00Z'),
       requestedByName: 'Joe Bloggs',
       status: 'With Transcriber',
+      courtroom: '123',
     },
     {
       id: 1,
@@ -131,6 +132,7 @@ describe('HearingComponent', () => {
       requestedOn: DateTime.fromISO('2023-10-12T00:00:00Z'),
       requestedByName: 'Joe Bloggs',
       status: 'With Transcriber',
+      courtroom: '123',
     },
   ]);
 

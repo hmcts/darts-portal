@@ -181,6 +181,49 @@ describe('Case file screen', () => {
     });
   });
 
+  describe('Transcripts tab', () => {
+    it('should render the transcripts tab and display transcript table', () => {
+      cy.visit('admin/case/1');
+      cy.injectAxe();
+
+      cy.get('#transcripts-tab').click();
+
+      cy.get('#transcripts-tab').should('have.attr', 'aria-current', 'page');
+
+      cy.get('app-govuk-heading h2').should('contain.text', 'Transcripts');
+
+      cy.get('#transcriptsTable').should('exist');
+
+      cy.get('#transcriptsTable tbody tr').should('have.length.at.least', 6);
+      cy.get('#transcriptsTable thead th').then((headers) => {
+        const headerTexts = [...headers].map((el) => el.innerText.trim());
+        expect(headerTexts).to.deep.equal([
+          'Transcript ID',
+          'Courtroom',
+          'Type',
+          'Requested on',
+          'Requested by',
+          'Status',
+        ]);
+      });
+
+      cy.get('#transcriptsTable tbody tr')
+        .first()
+        .within(() => {
+          cy.get('td').eq(0).find('a').should('contain.text', '1');
+          cy.get('td').eq(1).should('contain.text', '1');
+          cy.get('td').eq(2).should('contain.text', 'Sentencing remarks');
+          cy.get('td').eq(3).should('contain.text', '01 Jan 2024 00:00:00');
+          cy.get('td').eq(4).should('contain.text', 'Scott Smith');
+          cy.get('td')
+            .eq(5)
+            .find('.govuk-tag')
+            .should('contain.text', 'Requested')
+            .and('have.class', 'govuk-tag--blue');
+        });
+    });
+  });
+
   describe('Case file screen - Events tab', () => {
     it('should render the Events tab with expected table headers and data', () => {
       cy.visit('admin/case/1');

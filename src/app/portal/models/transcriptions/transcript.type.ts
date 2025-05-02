@@ -9,4 +9,5 @@ export type Transcript = {
   requestedOn: DateTime;
   requestedByName: string;
   status: TranscriptStatus;
+  courtroom: string;
 };
