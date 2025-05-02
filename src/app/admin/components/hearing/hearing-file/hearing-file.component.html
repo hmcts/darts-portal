@@ -1,6 +1,6 @@
 @let h = hearing();
 
-<app-govuk-heading caption="Hearing">{{ h?.hearingDate | luxonDate: 'd MMMM y' }}</app-govuk-heading>
+<app-govuk-heading caption="Hearing">{{ h?.hearingDate | luxonDate: 'dd MMMM y' }}</app-govuk-heading>
 
 <div govukSummaryContainer>
   <app-govuk-heading class="no-margin border-bottom" tag="h2" size="m">Hearing details</app-govuk-heading>
@@ -26,7 +26,7 @@
     </div>
     <div govukSummaryListRow>
       <dt govukSummaryKey>Hearing date</dt>
-      <dd govukSummaryValue>{{ h?.hearingDate | luxonDate: 'd MMM y' }}</dd>
+      <dd govukSummaryValue>{{ h?.hearingDate | luxonDate: 'dd MMM y' }}</dd>
     </div>
     <div govukSummaryListRow>
       <dt govukSummaryKey>Defendant(s)</dt>

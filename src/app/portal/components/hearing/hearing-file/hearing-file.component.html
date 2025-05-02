@@ -1,6 +1,6 @@
 <ng-container *ngIf="case && hearing">
   <div>
-    <app-govuk-heading caption="Hearing">{{ hearing.date | luxonDate: 'd MMM y' }}</app-govuk-heading>
+    <app-govuk-heading caption="Hearing">{{ hearing.date | luxonDate: 'dd MMM y' }}</app-govuk-heading>
     <h2 class="govuk-heading-s">Courthouse</h2>
     <p class="govuk-body">{{ case.courthouse }}</p>
     <h2 class="govuk-heading-s">Courtroom</h2>
