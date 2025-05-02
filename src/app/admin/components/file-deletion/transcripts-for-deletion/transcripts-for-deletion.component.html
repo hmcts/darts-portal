@@ -17,12 +17,12 @@
     </td>
     <td class="whitespace-pre">{{ row.caseNumber ?? '-' }}</td>
     @if (showDeleteButton()) {
-      <td>{{ row.hearingDate ? (row.hearingDate | luxonDate: 'd MMM yyyy') : '-' }}</td>
+      <td>{{ row.hearingDate ? (row.hearingDate | luxonDate: 'dd MMM yyyy') : '-' }}</td>
       <td>{{ row.courthouse ?? '-' }}</td>
       <td>{{ row.courtroom ?? '-' }}</td>
     } @else {
       <td>{{ row.courthouse ?? '-' }}</td>
-      <td>{{ row.hearingDate ? (row.hearingDate | luxonDate: 'd MMM yyyy') : '-' }}</td>
+      <td>{{ row.hearingDate ? (row.hearingDate | luxonDate: 'dd MMM yyyy') : '-' }}</td>
     }
     <td>{{ row.markedHiddenBy ?? '-' }}</td>
     <td>

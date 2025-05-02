@@ -39,8 +39,8 @@
     <ng-template [tableRowTemplate]="getAudioFileMarkedDeletionRows()" let-row>
       <td>{{ row.courthouse }}</td>
       <td>{{ row.courtroom }}</td>
-      <td>{{ row.startAt | luxonDate: 'd MMM yyyy hh:mm:ss' }}</td>
-      <td>{{ row.endAt | luxonDate: 'd MMM yyyy hh:mm:ss' }}</td>
+      <td>{{ row.startAt | luxonDate: 'dd MMM yyyy hh:mm:ss' }}</td>
+      <td>{{ row.endAt | luxonDate: 'dd MMM yyyy hh:mm:ss' }}</td>
       <td>{{ row.media?.length }}</td>
       <td>{{ row.markedHiddenBy }}</td>
       <td class="comments">

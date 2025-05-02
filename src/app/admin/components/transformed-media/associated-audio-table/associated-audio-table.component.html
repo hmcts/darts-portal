@@ -19,8 +19,8 @@
     </td>
     <td class="courthouse">{{ row.courthouseName }}</td>
     <td class="courtroom">{{ row.courtroomName }}</td>
-    <td class="start-time">{{ row.startAt | luxonDate: 'd MMM yyyy HH:mm:ss' }}</td>
-    <td class="end-time">{{ row.endAt | luxonDate: 'd MMM yyyy HH:mm:ss' }}</td>
+    <td class="start-time">{{ row.startAt | luxonDate: 'dd MMM yyyy HH:mm:ss' }}</td>
+    <td class="end-time">{{ row.endAt | luxonDate: 'dd MMM yyyy HH:mm:ss' }}</td>
     <td class="channel">{{ row.channel }}</td>
     <td class="is-current">{{ row.isCurrent ? 'Yes' : 'No' }}</td>
   </ng-template>

@@ -44,7 +44,7 @@
         <dt govukSummaryKey>Retained until</dt>
         <dd govukSummaryValue>
           @if (case?.retainUntilDateTime) {
-            {{ case?.retainUntilDateTime | dateTime: 'd MMM y' }}
+            {{ case?.retainUntilDateTime | dateTime: 'dd MMM y' }}
           } @else {
             No date applied
           }
