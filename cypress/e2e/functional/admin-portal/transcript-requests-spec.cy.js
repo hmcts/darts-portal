@@ -522,7 +522,7 @@ describe('Admin - Transcript requests', () => {
       cy.visit('/admin/transcripts/document/2');
 
       cy.get('app-expired-banner').contains(
-        'Expired: This case has passed its retention date on 2 Feb 2022. Data was deleted in line with HMCTS policy.'
+        'Expired: This case has passed its retention date on 02 Feb 2022. Data was deleted in line with HMCTS policy.'
       );
     });
   });
