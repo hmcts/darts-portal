@@ -172,6 +172,7 @@ export class CaseService {
       requestedOn: DateTime.fromISO(t.requested_on),
       requestedByName: t.requested_by_name,
       status: t.status === 'Approved' ? 'With Transcriber' : t.status,
+      courtroom: t.courtroom,
     }));
   }
 

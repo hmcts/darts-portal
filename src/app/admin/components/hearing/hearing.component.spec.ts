@@ -76,6 +76,7 @@ describe('HearingComponent', () => {
       status: 'Requested',
       hearingId: 2,
       hearingDate: DateTime.fromISO('2025-01-23'),
+      courtroom: '123',
     },
   ];
 

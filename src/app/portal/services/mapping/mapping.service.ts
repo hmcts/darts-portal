@@ -23,6 +23,8 @@ export class MappingService {
         requestedOn: transcript.requestedOn,
         requestedBy: transcript.requestedByName,
         status: transcript.status,
+        hearingId: transcript.hearingId,
+        courtroom: transcript.courtroom,
       };
     });
   }

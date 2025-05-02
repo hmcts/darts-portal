@@ -26,6 +26,8 @@ export class CaseTranscriptsTableComponent {
   transcripts = input<TranscriptsRow[]>([]);
   caseId = input<number>();
 
+  adminScreen = input<boolean>(false);
+
   statusColours = transcriptStatusTagColours;
 
   columns = [
@@ -35,5 +37,14 @@ export class CaseTranscriptsTableComponent {
     { name: 'Requested by', prop: 'requestedBy', sortable: true },
     { name: 'Status', prop: 'status', sortable: true },
     { name: '', prop: '' },
+  ];
+
+  adminColumns = [
+    { name: 'Transcript ID', prop: 'id', sortable: true },
+    { name: 'Courtroom', prop: 'courtroom', sortable: true },
+    { name: 'Type', prop: 'type', sortable: true },
+    { name: 'Requested on', prop: 'requestedOn', sortable: true },
+    { name: 'Requested by', prop: 'requestedBy', sortable: true },
+    { name: 'Status', prop: 'status', sortable: true },
   ];
 }

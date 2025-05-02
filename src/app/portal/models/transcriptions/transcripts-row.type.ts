@@ -8,4 +8,6 @@ export type TranscriptsRow = {
   requestedOn: DateTime;
   requestedBy: string;
   status: TranscriptStatus;
+  hearingId: number;
+  courtroom: string;
 };
