@@ -153,6 +153,40 @@ describe('Request audio functionality', () => {
     cy.a11y();
   });
 
+  it('should show an error screen if a 413 is returned', () => {
+    cy.get('#hearingsTable').should('contain', '10 Mar 2024');
+    cy.get('#hearingsTable a').contains('10 Mar 2024').click();
+
+    cy.get('#eventAudioTable .govuk-table__row:nth-child(2) .govuk-checkboxes__item').click();
+    cy.get('#start-time-hour-input').should('have.value', '10');
+    cy.get('#start-time-minutes-input').should('have.value', '32');
+    cy.get('#start-time-seconds-input').should('have.value', '24');
+    cy.get('#end-time-hour-input').should('have.value', '10');
+    cy.get('#end-time-minutes-input').should('have.value', '36');
+    cy.get('#end-time-seconds-input').should('have.value', '24');
+
+    cy.get('#download-radio').click({ force: true });
+
+    cy.get('.button > .govuk-button').contains('Get Audio').click();
+
+    cy.get('.govuk-grid-column-two-thirds > :nth-child(4)').should('contain', 'C20220620001');
+    cy.get('.govuk-grid-column-two-thirds > :nth-child(6)').should('contain', 'Swansea');
+    cy.get('.govuk-grid-column-two-thirds > :nth-child(8)').should('contain', 'Defendant Dave');
+    cy.get('.govuk-grid-column-two-thirds > :nth-child(11)').should('contain', '10 Mar 2024');
+    cy.get('.govuk-grid-column-two-thirds > :nth-child(13)').should('contain', '10:32:24');
+    cy.get('.govuk-grid-column-two-thirds > :nth-child(15)').should('contain', '10:36:24');
+
+    cy.get('.govuk-button-group > .govuk-button').contains('Confirm').click();
+
+    cy.get('#conflict-heading').should('contain', 'You cannot order this audio');
+    cy.get('#conflict-body-1').should(
+      'contain',
+      'Too many audio files for handheld audio. Please contact DTS-IT Service Desk to process your request.'
+    );
+    cy.get('.govuk-back-link').should('not.exist');
+    cy.a11y();
+  });
+
   it('should show an error when start time is after end time', () => {
     cy.get('#hearingsTable').should('contain', '1 Sep 2023');
     cy.get('#hearingsTable a').contains('1 Sep 2023').click();

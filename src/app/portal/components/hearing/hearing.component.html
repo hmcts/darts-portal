@@ -27,19 +27,29 @@
         [hearingId]="vm.hearing?.id"
       ></app-reporting-restriction>
     }
-    <ng-container *ngIf="vm.error">
-      <ng-container *ngIf="vm.error.status === 403 && state === 'OrderFailure'">
+    @if (vm.error) {
+      @if (vm.error.status === 403 && state === 'OrderFailure') {
         <app-forbidden header="You do not have permission to get audio for this courthouse." />
-      </ng-container>
-      <ng-container *ngIf="vm.error.status === 409 && state === 'OrderFailure'">
+      }
+      @if (vm.error.status === 409 && state === 'OrderFailure') {
         <h1 id="conflict-heading" class="govuk-heading-xl govuk-!-margin-bottom-8">You cannot order this audio</h1>
         <p id="conflict-body-1" class="govuk-body">You have already ordered this audio and the request is 'pending'.</p>
         <p id="conflict-body-2" class="govuk-body">
           You'll be able to order it when the order is marked as 'complete' in Your Audio.
         </p>
         <a class="govuk-link" href="javascript:void(0)" (click)="state = 'Default'">Go back</a>
-      </ng-container>
-    </ng-container>
+      }
+      @if (vm.error.status === 413 && state === 'OrderFailure') {
+        <h1 id="conflict-heading" class="govuk-heading-xl govuk-!-margin-bottom-8">You cannot order this audio</h1>
+        <p id="conflict-body-1" class="govuk-body">
+          Too many audio files for handheld audio. Please contact
+          <a href="mailto:{{ support?.emailAddress }}" class="govuk-link">{{ support?.name }}</a> to process your
+          request.
+        </p>
+        <p id="conflict-body-2" class="govuk-body"></p>
+        <a class="govuk-link" href="javascript:void(0)" (click)="state = 'Default'">Go back</a>
+      }
+    }
 
     <div [hidden]="state !== 'Default'">
       <app-hearing-file [case]="vm.case" [hearing]="vm.hearing"></app-hearing-file>

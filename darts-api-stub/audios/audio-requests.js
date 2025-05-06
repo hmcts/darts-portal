@@ -280,6 +280,9 @@ router.post('/download', (req, res) => {
     case 5:
       res.sendStatus(409);
       break;
+    case 6:
+      res.sendStatus(413);
+      break;
     default:
       res.send(audioRequestOne);
   }
@@ -292,6 +295,9 @@ router.post('/playback', (req, res) => {
       break;
     case 5:
       res.sendStatus(409);
+      break;
+    case 6:
+      res.sendStatus(413);
       break;
     default:
       res.send(audioRequestOne);
