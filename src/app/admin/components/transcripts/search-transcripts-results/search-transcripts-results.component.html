@@ -14,15 +14,19 @@
       >
     </td>
     <td>{{ row.courthouse }}</td>
-    <td>
-      <a
-        href="javascript:void(0)"
-        class="govuk-link"
-        [routerLink]="['/admin/case/', row.caseId, 'hearing', row.hearingId]"
-        [queryParams]="{ backUrl: '/admin/transcripts' }"
-        >{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}
-      </a>
-    </td>
+    @if (row.hearingId) {
+      <td>
+        <a
+          href="javascript:void(0)"
+          class="govuk-link"
+          [routerLink]="['/admin/case/', row.caseId, 'hearing', row.hearingId]"
+          [queryParams]="{ backUrl: '/admin/transcripts' }"
+          >{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}
+        </a>
+      </td>
+    } @else {
+      <td>{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
+    }
     <td>{{ row.requestedOn | luxonDate: 'dd MMM yyyy HH:mm' }}</td>
     <td>
       <app-govuk-tag [colour]="transcriptStatusClassMap[row.status]">{{ row.status }}</app-govuk-tag>

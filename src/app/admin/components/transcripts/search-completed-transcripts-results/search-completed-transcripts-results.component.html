@@ -22,7 +22,19 @@
       >
     </td>
     <td>{{ row.courthouse }}</td>
-    <td>{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
+    @if (row.hearingId) {
+      <td>
+        <a
+          href="javascript:void(0)"
+          class="govuk-link"
+          [routerLink]="['/admin/case/', row.caseId, 'hearing', row.hearingId]"
+          [queryParams]="{ backUrl: '/admin/transcripts' }"
+          >{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}
+        </a>
+      </td>
+    } @else {
+      <td>{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
+    }
     <td>{{ row.requestMethod ? 'Manual' : 'Automatic' }}</td>
     <td>{{ row.isHidden ? 'Yes' : 'No' }}</td>
   </ng-template>
