@@ -14,7 +14,6 @@ describe('TimelineComponent', () => {
   // 1 January 2021 at 12:00 AM
   const time = DateTime.fromISO('2021-01-01T00:00:00Z');
 
-  // @ts-ignore
   const MOCK_TIMELINE_ITEMS: TimelineItem[] = [
     {
       dateTime: time,
