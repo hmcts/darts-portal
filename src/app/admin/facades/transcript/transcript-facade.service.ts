@@ -15,10 +15,9 @@ export class TranscriptFacadeService {
   getHistory(transcriptionId: number) {
     return this.transcriptionAdminService.getTranscriptionWorkflows(transcriptionId).pipe(
       switchMap((workflows) => {
-        const sortedWorkflows = this.sortWorkflowsByTimestampAndStatus(workflows);
         const userIds = workflows.map((workflow) => workflow.workflowActor);
         return forkJoin({
-          workflows: of(sortedWorkflows),
+          workflows: of(workflows),
           users: this.userAdminService.getUsersById(userIds),
           statuses: this.transcriptionAdminService.getTranscriptionStatuses(),
         }).pipe(map(({ workflows, statuses, users }) => this.mapWorkflowsToTimeline(workflows, statuses, users)));
@@ -26,13 +25,13 @@ export class TranscriptFacadeService {
     );
   }
 
-  sortWorkflowsByTimestampAndStatus(workflows: TranscriptionWorkflow[]): TranscriptionWorkflow[] {
-    return workflows.sort((a, b) => {
-      const dateComparison = b.workflowTimestamp.toMillis() - a.workflowTimestamp.toMillis();
+  sortTimelineItemByTimestampAndStatus(timelineItems: TimelineItem[]): TimelineItem[] {
+    return timelineItems.sort((a, b) => {
+      const dateComparison = b.dateTime.toMillis() - a.dateTime.toMillis();
       if (dateComparison !== 0) {
         return dateComparison;
       }
-      return b.statusId - a.statusId;
+      return a.title.localeCompare(b.title);
     });
   }
 
@@ -96,11 +95,49 @@ export class TranscriptFacadeService {
     statuses: TranscriptionStatus[],
     users: User[]
   ): TimelineItem[] {
-    return workflows.map((workflow) => ({
-      title: statuses.find((s) => workflow.statusId === s.id)?.displayName || 'Comment',
-      descriptionLines: workflow.comments.map((c) => c.comment),
-      dateTime: workflow.workflowTimestamp,
-      user: users.find((u) => workflow.workflowActor === u.id) as Pick<User, 'id' | 'fullName' | 'emailAddress'>,
-    }));
+    const userMap = new Map<number, User>();
+    users.forEach((user) => userMap.set(user.id, user));
+
+    const statusMap = new Map<number, TranscriptionStatus>();
+    statuses.forEach((status) => statusMap.set(status.id, status));
+
+    const workflowTimelineData = workflows
+      .filter((workflow) => workflow.statusId !== undefined && statusMap.get(workflow.statusId))
+      .map((workflow) => ({
+        // @ts-expect-error False positive statusId must be present at this stage
+        title: statusMap.get(workflow.statusId).displayName || 'Unknown',
+        descriptionLines: workflow.comments.map((c) => c.comment),
+        dateTime: workflow.workflowTimestamp,
+        user: userMap.get(workflow.workflowActor) as Pick<User, 'id' | 'fullName' | 'emailAddress'>,
+      }));
+
+    const commentTimelineData = workflows
+      .filter((workflow) => workflow.statusId === undefined || !statusMap.get(workflow.statusId))
+      .flatMap((workflow) =>
+        workflow.comments.map((value) => {
+          return {
+            comment: value,
+            workflow: workflow,
+          };
+        })
+      )
+      .map((data) => {
+        const comment = data.comment;
+        let user = userMap.get(comment.authorId);
+        if (!user) {
+          user = userMap.get(data.workflow.workflowActor);
+        }
+        let dateTime = comment.commentedAt;
+        if (!dateTime) {
+          dateTime = data.workflow.workflowTimestamp;
+        }
+        return {
+          title: 'Comment',
+          descriptionLines: [comment.comment],
+          dateTime: dateTime,
+          user: (user as Pick<User, 'id' | 'fullName' | 'emailAddress'>) || null,
+        };
+      });
+    return this.sortTimelineItemByTimestampAndStatus(workflowTimelineData.concat(commentTimelineData));
   }
 }

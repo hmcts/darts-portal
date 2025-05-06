@@ -2,7 +2,7 @@ import { DateTime } from 'luxon';
 
 export type TranscriptionWorkflow = {
   workflowActor: number;
-  statusId: number;
+  statusId?: number;
   workflowTimestamp: DateTime;
   comments: TranscriptionWorkflowComment[];
 };
