@@ -35,6 +35,13 @@ describe('TimelineComponent', () => {
         emailAddress: 'beans@toast.com',
       },
     },
+    {
+      dateTime: time,
+      title: 'Title 2',
+      descriptionLines: ['Description 2'],
+      //@ts-expect-error legacy data could be missing user
+      user: null,
+    },
   ];
 
   beforeEach(async () => {
@@ -60,13 +67,17 @@ describe('TimelineComponent', () => {
       const itemElement = timelineItems[i];
       const titleElement = itemElement.query(By.css('.moj-timeline__title')).nativeElement;
       const descriptionElement = itemElement.query(By.css('.moj-timeline__description')).nativeElement;
-      const userElement = itemElement.query(By.css('.moj-timeline__byline')).nativeElement;
+      const userElement = itemElement.query(By.css('.moj-timeline__byline'))?.nativeElement;
       const dateTimeElement = itemElement.query(By.css('.moj-timeline__date')).nativeElement;
 
       expect(titleElement.textContent).toContain(item.title);
       expect(descriptionElement.textContent).toContain(item.descriptionLines[0]);
-      expect(userElement.textContent).toContain(item.user.fullName);
-      expect(userElement.textContent).toContain(item.user.emailAddress);
+      if (item.user !== null) {
+        expect(userElement.textContent).toContain(item.user.fullName);
+        expect(userElement.textContent).toContain(item.user.emailAddress);
+      } else {
+        expect(userElement).toBeUndefined();
+      }
       expect(dateTimeElement.textContent).toContain('1 January 2021 at 12:00 AM');
     });
   });
