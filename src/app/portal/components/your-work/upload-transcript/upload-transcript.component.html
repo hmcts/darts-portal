@@ -21,7 +21,7 @@
     <button
       id="get-audio-button"
       class="govuk-button govuk-button--secondary"
-      [routerLink]="['/case', vm.caseId, 'hearing', vm.hearingId]"
+      [routerLink]="vm.hearingId ? ['/case', vm.caseId, 'hearing', vm.hearingId] : ['/case', vm.caseId]"
       [queryParams]="vm.getAudioQueryParams"
     >
       Get audio for this request
