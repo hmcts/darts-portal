@@ -12,7 +12,7 @@ export type TranscriptionDocumentSearchResult = {
     displayName: string;
   };
   hearing: {
-    id: number;
+    id?: number;
     hearingDate: DateTime;
   };
   isManualTranscription: boolean;

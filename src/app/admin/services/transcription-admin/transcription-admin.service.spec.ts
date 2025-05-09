@@ -588,12 +588,14 @@ describe('TranscriptionAdminService', () => {
       received: DateTime.fromISO('2024-01-01T13:30:00Z'),
       approved: DateTime.fromISO('2024-01-01T15:30:00Z'),
       requestorComments: 'Need ASAP',
+      caseId: 1,
+      hearingId: 5,
     } as unknown as TranscriptionAdminDetails;
 
     const details = service.getRequestDetailsFromTranscript(transcript);
 
     expect(details).toEqual({
-      'Hearing date': '01 Jan 2024',
+      'Hearing date': [{ href: '/admin/case/1/hearing/5', value: '01 Jan 2024' }],
       'Request type': 'Type1',
       'Request method': 'Manual',
       'Request ID': 123,
@@ -620,12 +622,14 @@ describe('TranscriptionAdminService', () => {
       received: DateTime.fromISO('2024-01-01T13:30:00Z'),
       requestorComments: 'Need ASAP',
       legacyComments: ['Legacy comment 1', 'Legacy comment 2'],
+      caseId: 1,
+      hearingId: 5,
     } as unknown as TranscriptionAdminDetails;
 
     const details = service.getRequestDetailsFromTranscript(transcript);
 
     expect(details).toEqual({
-      'Hearing date': '01 Jan 2024',
+      'Hearing date': [{ href: '/admin/case/1/hearing/5', value: '01 Jan 2024' }],
       'Request type': 'Type1',
       'Request method': 'Manual',
       'Request ID': 123,

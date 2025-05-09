@@ -49,7 +49,14 @@
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Hearing date</dt>
         <dd class="govuk-summary-list__value">
-          {{ data.mediaRequest.hearing.hearingDate | luxonDate: 'dd MMMM yyyy' }}
+          <a
+            href="javascript:void(0)"
+            class="govuk-link"
+            [routerLink]="['/admin/case/', data.case.id, 'hearing', data.mediaRequest.hearing.id]"
+            [queryParams]="{ backUrl: '/admin/transformed-media/' + transformedMediaId }"
+          >
+            {{ data.mediaRequest.hearing.hearingDate | luxonDate: 'dd MMMM yyyy' }}
+          </a>
         </dd>
       </div>
       <div class="govuk-summary-list__row">

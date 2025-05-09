@@ -51,11 +51,27 @@ describe('SearchCompletedTranscriptsResultsComponent', () => {
           caseNumber: 'caseNumber',
           courthouse: 'courthouse',
           hearingDate: DateTime.fromISO('2021-01-01'),
+          hearingId: 1,
           requestMethod: true,
           isHidden: false,
         },
       ];
       expect(component.mapRows(results)).toEqual(expected);
+    });
+
+    it('should handle undefined hearing ID', () => {
+      const results: TranscriptionDocumentSearchResult[] = [
+        {
+          transcriptionDocumentId: 1,
+          case: { id: 1, caseNumber: 'caseNumber' },
+          courthouse: { id: 1, displayName: 'courthouse' },
+          hearing: { hearingDate: DateTime.fromISO('2021-01-01') },
+          isManualTranscription: true,
+          transcriptionId: 0,
+          isHidden: false,
+        },
+      ];
+      expect(component.mapRows(results)[0].hearingId).toBeUndefined();
     });
   });
 });

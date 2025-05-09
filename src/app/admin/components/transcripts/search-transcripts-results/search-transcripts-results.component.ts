@@ -44,6 +44,7 @@ export class SearchTranscriptsResultsComponent implements OnChanges {
       caseNumber: result.caseNumber,
       courthouse: result.courthouse.displayName,
       hearingDate: result.hearingDate,
+      hearingId: result.hearingId,
       requestedOn: result.requestedAt,
       status: result.status.displayName as TranscriptStatus,
       requestMethod: result.isManual,
