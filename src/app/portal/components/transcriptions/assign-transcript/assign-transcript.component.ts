@@ -87,7 +87,8 @@ export class AssignTranscriptComponent implements OnDestroy {
       }
 
       if (this.selectedOption.value === this.ASSIGN_GET_AUDIO) {
-        this.router.navigate(['/case', this.caseId, 'hearing', this.hearingId], {
+        const navTo = this.hearingId ? ['/case', this.caseId, 'hearing', this.hearingId] : ['/case', this.caseId];
+        this.router.navigate(navTo, {
           queryParams: this.getAudioQueryParams,
         });
         return;
