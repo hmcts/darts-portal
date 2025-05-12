@@ -36,7 +36,15 @@
       >
     </td>
     <td>{{ row.courthouse }}</td>
-    <td>{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
+    <td>
+      <a
+        href="javascript:void(0)"
+        class="govuk-link view-link"
+        [routerLink]="['/admin/case/', row.caseId, 'hearing', row.hearingId]"
+        [queryParams]="{ backUrl: '/admin/transformed-media' }"
+        >{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}
+      </a>
+    </td>
     <td>{{ row.owner }}</td>
     <td>{{ row.requestedBy }}</td>
     <td>{{ row.requestedDate | luxonDate: 'dd MMM yyyy' }}</td>
