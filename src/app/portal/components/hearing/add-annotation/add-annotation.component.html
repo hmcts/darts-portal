@@ -4,7 +4,7 @@
     <ng-container *breadcrumb="['/case', caseId().toString()]"
       ><span class="whitespace-pre">{{ caseNumber() }}</span></ng-container
     >
-    <ng-container *breadcrumb="['../']">{{ hearing()?.date | luxonDate: 'd MMM y' }}</ng-container>
+    <ng-container *breadcrumb="['../']">{{ hearing()?.date | luxonDate: 'dd MMM y' }}</ng-container>
     <ng-container *breadcrumb="['.']">Add annotation</ng-container>
   </app-breadcrumb>
 
