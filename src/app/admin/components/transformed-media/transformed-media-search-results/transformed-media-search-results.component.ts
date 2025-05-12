@@ -15,6 +15,7 @@ export type TransformedMediaRow = {
   caseNumber?: string;
   courthouse?: string;
   hearingDate?: DateTime;
+  hearingId?: number;
   owner?: string;
   requestedBy?: string;
   requestedDate?: DateTime;
@@ -67,6 +68,7 @@ export class TransformedMediaSearchResultsComponent implements OnChanges {
       caseNumber: result.case.caseNumber,
       courthouse: result.courthouse?.displayName,
       hearingDate: result.hearing?.hearingDate,
+      hearingId: result.hearing?.id,
       owner: result.mediaRequest.ownerUserName,
       requestedBy: result.mediaRequest.requestedByName,
       requestedDate: result.mediaRequest.requestedAt,

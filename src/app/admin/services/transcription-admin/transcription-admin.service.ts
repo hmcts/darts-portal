@@ -280,7 +280,12 @@ export class TranscriptionAdminService {
 
   getRequestDetailsFromTranscript(transcript: TranscriptionAdminDetails) {
     return {
-      'Hearing date': this.luxonPipe.transform(transcript.hearingDate, 'dd MMM yyyy'),
+      'Hearing date': [
+        {
+          href: `/admin/case/${transcript.caseId}/hearing/${transcript.hearingId}`,
+          value: this.luxonPipe.transform(transcript.hearingDate, 'dd MMM yyyy'),
+        },
+      ],
       'Request type': transcript.requestType,
       'Request method': transcript.isManual ? 'Manual' : 'Automated',
       'Request ID': transcript.transcriptionId,
@@ -452,6 +457,7 @@ export class TranscriptionAdminService {
       caseNumber: transcriptionData.case_number,
       courthouse: { id: transcriptionData.courthouse_id },
       hearingDate: DateTime.fromISO(transcriptionData.hearing_date),
+      hearingId: transcriptionData.hearing_id,
       requestedAt: DateTime.fromISO(transcriptionData.requested_at),
       approvedAt: transcriptionData.approved_at ? DateTime.fromISO(transcriptionData.approved_at) : undefined,
       status: { id: transcriptionData.transcription_status_id },
