@@ -24,7 +24,7 @@
       />
 
       <div class="results">
-        @if (results) {
+        @if (!isLoadingResults && results) {
           <app-search-transcripts-results [results]="results" />
         }
 
@@ -48,7 +48,7 @@
       />
 
       <div class="results">
-        @if (completedResults) {
+        @if (!isLoadingCompletedResults && completedResults) {
           <app-search-completed-transcripts-results [results]="completedResults" />
         }
 
