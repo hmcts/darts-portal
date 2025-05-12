@@ -11,7 +11,7 @@ export type TranscriptionDocumentSearchResult = {
     id: number;
     displayName: string;
   };
-  hearing: {
+  hearing?: {
     id?: number;
     hearingDate: DateTime;
   };
