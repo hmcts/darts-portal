@@ -6384,21 +6384,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>=10.0.0":
+"@types/node@npm:*, @types/node@npm:>=10.0.0, @types/node@npm:^22.0.0":
   version: 22.15.14
   resolution: "@types/node@npm:22.15.14"
   dependencies:
     undici-types: ~6.21.0
   checksum: bc3d2a28e1cc001171e861da1c6d46d21a40503a99815e293b501f804797c62a543165acff5e22e46ccff8b1659596be71423b0c0640089cc871ad8e9049fedd
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:^20.14.2":
-  version: 20.17.43
-  resolution: "@types/node@npm:20.17.43"
-  dependencies:
-    undici-types: ~6.19.2
-  checksum: 4d71df449a2718712bd75bf82ee0f52b069dd842322b7b7b62ced75b014b6d0b15c50357f72305cb65b28d29683a74a7a5e6c3260fdc800a2a42f717085fac37
   languageName: node
   linkType: hard
 
@@ -8862,7 +8853,7 @@ __metadata:
     "@types/http-proxy-middleware": ^1.0.0
     "@types/jest": ^29.5.12
     "@types/luxon": ^3.4.2
-    "@types/node": ^20.14.2
+    "@types/node": ^22.0.0
     "@types/nunjucks": ^3.2.6
     "@typescript-eslint/eslint-plugin": ^8.8.1
     "@typescript-eslint/parser": ^8.8.1
@@ -17840,13 +17831,6 @@ __metadata:
   version: 2.0.5
   resolution: "undefsafe@npm:2.0.5"
   checksum: f42ab3b5770fedd4ada175fc1b2eb775b78f609156f7c389106aafd231bfc210813ee49f54483d7191d7b76e483bc7f537b5d92d19ded27156baf57592eb02cc
-  languageName: node
-  linkType: hard
-
-"undici-types@npm:~6.19.2":
-  version: 6.19.6
-  resolution: "undici-types@npm:6.19.6"
-  checksum: e66df2447b6d93a48b0605a54269d8c3f228edcd1e9563229f6de37e48ed53b3e49b4bc965733643ed9717e0e0fa1ee664c929db91d787c9f488fb3f9e17c533
   languageName: node
   linkType: hard
 
