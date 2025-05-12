@@ -39,8 +39,8 @@ export class SearchCompletedTranscriptsResultsComponent implements OnChanges {
       caseId: result.case.id,
       caseNumber: result.case?.caseNumber,
       courthouse: result.courthouse?.displayName,
-      hearingDate: result.hearing.hearingDate,
-      hearingId: result.hearing.id,
+      hearingDate: result.hearing?.hearingDate,
+      hearingId: result.hearing?.id,
       requestMethod: result.isManualTranscription,
       isHidden: result.isHidden,
     }));
