@@ -1,0 +1,9 @@
+<div class="govuk-body">
+  @if (visibleItems().length) {
+    @for (item of visibleItems(); track item) {
+      {{ item }}<br />
+    }
+  } @else {
+    -
+  }
+</div>

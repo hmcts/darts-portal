@@ -109,10 +109,10 @@ const singleCaseFive = {
   courthouse: 'Swansea',
   courthouse_id: 5,
   case_number: 'C20220620005',
-  defendants: ['Defendant Dave'],
-  judges: ['Judge Judy'],
-  prosecutors: ['Patrick Prosecutor'],
-  defenders: ['Derek Defender'],
+  defendants: ['Defendant Dave', 'Defendant Derren'],
+  judges: ['Judge Judy', 'Judge Paul', 'Judge John', 'Judge James', 'Judge Judy'],
+  prosecutors: ['Patrick Prosecutor', 'Paddy Prosecutor'],
+  defenders: ['Derek Defender', 'Dileep Defender'],
 };
 
 const singleCaseTen = {
