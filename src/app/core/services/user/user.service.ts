@@ -46,6 +46,7 @@ export class UserService {
     return this.hasGlobalRole('SUPER_ADMIN');
   }
 
+  //AKA HMCTS Admin
   public isSuperUser(): boolean {
     return this.hasGlobalRole('SUPER_USER');
   }

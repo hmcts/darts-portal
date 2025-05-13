@@ -1,8 +1,10 @@
 <div class="heading-button-container">
   <app-govuk-heading>Groups</app-govuk-heading>
-  <button class="govuk-button govuk-button--secondary" (click)="router.navigate(['/admin/groups/create'])">
-    Create group
-  </button>
+  @if (isAdmin) {
+    <button class="govuk-button govuk-button--secondary" (click)="router.navigate(['/admin/groups/create'])">
+      Create group
+    </button>
+  }
 </div>
 
 @if (data$ | async; as data) {

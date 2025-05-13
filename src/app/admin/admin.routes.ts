@@ -85,7 +85,7 @@ export const ADMIN_ROUTES: Routes = [
   {
     path: 'admin/groups',
     title: 'DARTS Admin Search Groups',
-    data: { allowedRoles: ['SUPER_ADMIN'] },
+    data: { allowedRoles: ['SUPER_ADMIN', 'SUPER_USER'] },
     loadComponent: () => import('./components/groups/groups.component').then((c) => c.GroupsComponent),
   },
   {
@@ -100,7 +100,7 @@ export const ADMIN_ROUTES: Routes = [
   {
     path: 'admin/groups/:id',
     title: 'DARTS Admin View Group',
-    data: { allowedRoles: ['SUPER_ADMIN'] },
+    data: { allowedRoles: ['SUPER_ADMIN', 'SUPER_USER'] },
     loadComponent: () =>
       import('./components/groups/group-record/group-record.component').then((c) => c.GroupRecordComponent),
   },
