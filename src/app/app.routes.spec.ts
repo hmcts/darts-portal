@@ -37,6 +37,7 @@ describe('App Routes', () => {
     mockUserService = {
       userProfile$: of({ userId: 123, userName: 'Dean', roles: [{ roleId: 1, roleName: 'APPROVER' }], isActive: true }),
       hasRoles: jest.fn(),
+      hasGlobalRoles: jest.fn(),
       userState: userStateSignal,
     };
 
@@ -83,6 +84,7 @@ describe('App Routes', () => {
   APP_ROUTES.filter((route) => !route.redirectTo).forEach((route: Route) => {
     it(`navigate to "${route.path}" takes you to "/${route.path}" if user has roles`, async () => {
       jest.spyOn(mockUserService, 'hasRoles').mockReturnValue(true);
+      jest.spyOn(mockUserService, 'hasGlobalRoles').mockReturnValue(true);
       await router.navigate([route.path]);
       expect(location.path()).toEqual(`/${route.path}`);
     });
@@ -100,7 +102,7 @@ describe('App Routes', () => {
   // All admin routes should redirect to page not found if user does not have the admin role
   ADMIN_ROUTES.forEach((route: Route) => {
     it(`navigate to "${route.path}" redirects to "/page-not-found" if user does not have the admin role`, async () => {
-      jest.spyOn(mockUserService, 'hasRoles').mockReturnValue(false);
+      jest.spyOn(mockUserService, 'hasGlobalRoles').mockReturnValue(false);
       await router.navigate([route.path]);
       expect(location.path()).toEqual('/page-not-found');
     });

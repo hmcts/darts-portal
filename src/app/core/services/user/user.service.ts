@@ -82,6 +82,12 @@ export class UserService {
     return this.userState() ? roles.some((role) => this.userState()!.roles.some((x) => x.roleName === role)) : false;
   }
 
+  public hasGlobalRoles(roles: RoleName[]): boolean {
+    return this.userState()
+      ? roles.some((role) => this.userState()!.roles.some((x) => x.roleName === role && x.globalAccess))
+      : false;
+  }
+
   public hasCourthouse(role: RoleName, courthouseId: number): boolean {
     return this.userState()
       ? this.userState()!.roles.some((x) => x.roleName === role && x.courthouseIds?.includes(courthouseId))

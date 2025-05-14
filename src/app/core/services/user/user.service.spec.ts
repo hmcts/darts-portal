@@ -361,6 +361,46 @@ describe('UserService', () => {
     });
   });
 
+  describe('#hasGlobalRoles', () => {
+    it('returns false when userstate is not set', () => {
+      service.userState.set(null);
+      expect(service.hasGlobalRoles(['SUPER_ADMIN'])).toBeFalsy();
+    });
+
+    it('returns false when user does not have any roles', () => {
+      const admin: UserState = {
+        userName: '',
+        userId: 1,
+        roles: [{ roleId: 123, roleName: 'SUPER_ADMIN', globalAccess: true }],
+        isActive: true,
+      };
+      service.userState.set(admin);
+      expect(service.hasGlobalRoles(['SUPER_USER', 'JUDICIARY'])).toBeFalsy();
+    });
+
+    it('returns false when user has SUPER_ADMIN but not global access', () => {
+      const admin: UserState = {
+        userName: '',
+        userId: 1,
+        roles: [{ roleId: 123, roleName: 'SUPER_ADMIN', globalAccess: false }],
+        isActive: true,
+      };
+      service.userState.set(admin);
+      expect(service.hasGlobalRoles(['SUPER_ADMIN'])).toBeFalsy();
+    });
+
+    it('returns true when user has a role', () => {
+      const admin: UserState = {
+        userName: '',
+        userId: 1,
+        roles: [{ roleId: 123, roleName: 'SUPER_ADMIN', globalAccess: true }],
+        isActive: true,
+      };
+      service.userState.set(admin);
+      expect(service.hasGlobalRoles(['SUPER_ADMIN', 'SUPER_USER'])).toBeTruthy();
+    });
+  });
+
   describe('hasCourthouse', () => {
     it('should return true if user has access to a specific courthouse', () => {
       const courthouseId = 100;
