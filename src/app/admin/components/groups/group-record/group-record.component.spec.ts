@@ -1,13 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { User } from '@admin-types/index';
+import { provideHttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
+import { CourthouseData } from '@core-types/courthouse/courthouse.interface';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { GroupsService } from '@services/groups/groups.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { of } from 'rxjs';
 import { GroupRecordComponent } from './group-record.component';
-import { CourthouseData } from '@core-types/courthouse/courthouse.interface';
 
 describe('GroupRecordComponent', () => {
   let component: GroupRecordComponent;
@@ -53,6 +54,7 @@ describe('GroupRecordComponent', () => {
             queryParams: of({ removedUsers: '1' }),
           },
         },
+        provideHttpClient(),
       ],
     }).compileComponents();
 
