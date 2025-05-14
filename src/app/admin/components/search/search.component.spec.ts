@@ -37,6 +37,9 @@ const fakeAdminSearchService = {
   events: signal([]),
   hearings: signal([]),
   audio: signal([]),
+  fetchNewCases: jest.fn(),
+  fetchNewEvents: jest.fn(),
+  fetchNewAudio: jest.fn(),
 };
 
 describe('SearchComponent', () => {

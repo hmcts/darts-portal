@@ -26,6 +26,7 @@ describe('ChangeTranscriptStatusComponent', () => {
             updateTranscriptionStatus: jest.fn().mockReturnValue(of({})),
             getTranscriptionStatuses: jest.fn(),
             getAllowableTranscriptionStatuses: jest.fn().mockReturnValue(of([])),
+            fetchNewTranscriptions: { set: jest.fn() },
           },
         },
         { provide: HeaderService, useValue: { hideNavigation: jest.fn() } },

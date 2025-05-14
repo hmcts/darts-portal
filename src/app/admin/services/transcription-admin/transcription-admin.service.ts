@@ -69,6 +69,8 @@ export class TranscriptionAdminService {
   searchFormValues = signal<TranscriptionSearchFormValues>(defaultFormValues);
   isAdvancedSearch = signal(false);
   hasSearchFormBeenSubmitted$ = new BehaviorSubject<boolean>(false);
+  fetchNewTranscriptions = signal(false);
+  fetchNewCompletedTranscriptions = signal(false);
 
   search(formValues: TranscriptionSearchFormValues): Observable<Transcription[]> {
     const body = this.mapSearchFormValuesToSearchRequest(formValues);

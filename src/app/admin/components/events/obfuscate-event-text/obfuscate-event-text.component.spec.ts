@@ -1,10 +1,12 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { Event } from '@admin-types/events';
+import { provideHttpClient } from '@angular/common/http';
 import { By } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { EventsFacadeService } from '@facades/events/events-facade.service';
+import { AppInsightsService } from '@services/app-insights/app-insights.service';
 import { HeaderService } from '@services/header/header.service';
 import { of } from 'rxjs';
 import { ObfuscateEventTextComponent } from './obfuscate-event-text.component';
@@ -27,7 +29,9 @@ describe('ObfuscateEventTextComponent', () => {
           },
         },
         { provide: HeaderService, useValue: { hideNavigation: jest.fn() } },
+        { provide: AppInsightsService, useValue: { logEvent: jest.fn() } },
         provideRouter([]),
+        provideHttpClient(),
       ],
     });
 

@@ -45,6 +45,7 @@ export class TransformedMediaService {
   http = inject(HttpClient);
   mappingService = inject(MappingService);
 
+  fetchNewResults = signal(false);
   searchResults = signal<TransformedMediaAdmin[]>([]);
   searchFormValues = signal<TransformedMediaSearchFormValues>({ ...defaultFormValues });
   isSearchFormSubmitted = signal<boolean>(false);

@@ -116,6 +116,8 @@ describe('TranscriptsComponent', () => {
             completedSearchResults: signal([]),
             isAdvancedSearch: signal(false),
             hasSearchFormBeenSubmitted$: new BehaviorSubject<boolean>(false),
+            fetchNewTranscriptions: jest.fn(),
+            fetchNewCompletedTranscriptions: jest.fn(),
           },
         },
         {

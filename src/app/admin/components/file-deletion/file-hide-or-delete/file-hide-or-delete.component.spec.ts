@@ -6,6 +6,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
+import { AppInsightsService } from '@services/app-insights/app-insights.service';
 import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
 import { TransformedMediaService } from '@services/transformed-media/transformed-media.service';
 import { of } from 'rxjs';
@@ -95,6 +96,7 @@ describe('FileHideOrDeleteComponent', () => {
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: TranscriptionAdminService, useValue: fakeTranscriptionAdminService },
         { provide: TransformedMediaService, useValue: fakeTransformedMediaService },
+        { provide: AppInsightsService, useValue: { logEvent: jest.fn() } },
         { provide: Router, useValue: fakeRouter },
         DatePipe,
         LuxonDatePipe,

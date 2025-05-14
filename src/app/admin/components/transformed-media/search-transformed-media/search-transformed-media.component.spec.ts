@@ -78,6 +78,7 @@ describe('SearchTransformedMediaComponent', () => {
       isSearchFormSubmitted: signal<boolean>(false),
       searchResults: signal<TransformedMediaAdmin[]>([]),
       searchFormValues: signal<TransformedMediaSearchFormValues>(defaultFormValues),
+      fetchNewResults: signal<boolean>(false),
     };
 
     fakeUserAdminService = {

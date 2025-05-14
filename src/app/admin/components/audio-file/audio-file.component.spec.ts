@@ -3,8 +3,10 @@ import { FileHide } from '@admin-types/hidden-reasons/file-hide';
 import { HiddenReason } from '@admin-types/hidden-reasons/hidden-reason';
 import { AudioFile } from '@admin-types/index';
 import { DatePipe } from '@angular/common';
+import { provideHttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
+import { AppInsightsService } from '@services/app-insights/app-insights.service';
 import { CaseService } from '@services/case/case.service';
 import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
 import { TransformedMediaService } from '@services/transformed-media/transformed-media.service';
@@ -167,7 +169,9 @@ describe('AudioFileComponent', () => {
           provide: TranscriptionAdminService,
           useValue: { getHiddenReason: jest.fn().mockReturnValue(of({ displayName: 'because of reasons' })) },
         },
+        { provide: AppInsightsService, useValue: { logEvent: jest.fn() } },
         DatePipe,
+        provideHttpClient(),
       ],
     });
 
