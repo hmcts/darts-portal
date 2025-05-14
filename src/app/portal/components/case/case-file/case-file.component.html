@@ -13,17 +13,21 @@
   <div class="judges-heading govuk-!-justify-content-between govuk-!-align-items-start">
     <h2 class="govuk-heading-s govuk-!-margin-bottom-0">Judge(s)</h2>
     @if (judgeList.hasExtra()) {
-      <a
-        href="javascript:void(0)"
-        class="govuk-link govuk-details__summary govuk-!-font-size-16 judges-link"
-        (click)="judgeList.toggle()"
+      <details
+        class="govuk-details govuk-!-margin-bottom-0 govuk-!-margin-top-0"
+        [open]="judgeList.expanded()"
+        (toggle)="judgeList.toggle()"
       >
-        {{ judgeList.expanded() ? 'See less' : 'See more' }}
-      </a>
+        <summary class="govuk-details__summary govuk-!-padding-bottom-0 govuk-!-margin-bottom-0">
+          <span class="govuk-details__summary-text govuk-link govuk-!-font-size-16">
+            {{ judgeList.expanded() ? 'See less' : 'See more' }}
+          </span>
+        </summary>
+      </details>
     }
   </div>
 
-  <app-see-more-list #judgeList [items]="caseFile.judges" [limit]="2"></app-see-more-list>
+  <app-see-more-list #judgeList [items]="caseFile.judges" [limit]="JUDGE_DISPLAY_LIMIT"></app-see-more-list>
 
   <h2 class="govuk-heading-s">Prosecutor(s)</h2>
   <p class="govuk-body whitespace-pre">{{ caseFile.prosecutors | join: '\r\n' : '-' }}</p>
