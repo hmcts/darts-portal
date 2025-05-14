@@ -245,19 +245,22 @@ export class TranscriptionAdminService {
     };
 
     const processStatus = (status: string | undefined) => {
+      if (!status) {
+        return null;
+      }
+
       const changeStatuses = ['Awaiting Authorisation', 'With Transcriber', 'Requested', 'Approved'];
-      return status
-        ? changeStatuses.includes(status)
-          ? {
-              value: status,
-              action: {
-                text: 'Change status',
-                url: `/admin/transcripts/${transcript.transcriptionId}/change-status`,
-                queryParams: { manual: transcript.isManual, status },
-              },
-            }
-          : { value: status }
-        : null;
+      const canChangeStatus = this.userService.isAdmin() && changeStatuses.includes(status);
+      return canChangeStatus
+        ? {
+            value: status,
+            action: {
+              text: 'Change status',
+              url: `/admin/transcripts/${transcript.transcriptionId}/change-status`,
+              queryParams: { manual: transcript.isManual, status },
+            },
+          }
+        : { value: status };
     };
 
     const processAssignedTo = (assignedTo: AssignedTo | undefined) =>
