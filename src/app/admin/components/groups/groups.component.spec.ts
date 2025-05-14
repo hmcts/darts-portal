@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SecurityGroup } from '@admin-types/index';
+import { provideHttpClient } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { GroupsService } from '@services/groups/groups.service';
 import { of } from 'rxjs';
@@ -54,6 +55,7 @@ describe('GroupsComponent', () => {
       providers: [
         { provide: GroupsService, useValue: { getGroupsAndRoles: jest.fn().mockReturnValue(of(mockGroupsAndRoles)) } },
         provideRouter([]),
+        provideHttpClient(),
       ],
     }).compileComponents();
 

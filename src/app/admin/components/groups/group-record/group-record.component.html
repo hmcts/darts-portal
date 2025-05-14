@@ -7,12 +7,14 @@
 @if (vm$ | async; as vm) {
   <div class="heading-button-container">
     <app-govuk-heading caption="View group">Group details</app-govuk-heading>
-    <button
-      class="govuk-button govuk-button--secondary"
-      (click)="router.navigate(['admin/groups', groupId, 'edit'], { state: { group: vm.group } })"
-    >
-      Edit group details
-    </button>
+    @if (isAdmin) {
+      <button
+        class="govuk-button govuk-button--secondary"
+        (click)="router.navigate(['admin/groups', groupId, 'edit'], { state: { group: vm.group } })"
+      >
+        Edit group details
+      </button>
+    }
   </div>
 
   <app-govuk-heading tag="h2" size="s">Group name</app-govuk-heading>
@@ -28,6 +30,7 @@
   <app-tabs [default]="tab">
     <app-group-courthouses
       *tab="'Courthouses'; screenReaderText: 'Group courthouses'; id: 'group-courthouses'"
+      [isAdmin]="isAdmin"
       [globalAccess]="vm.group.globalAccess"
       [allCourthouses]="vm.courthouses"
       [selectedCourthouses]="vm.group.courthouses"
@@ -36,6 +39,7 @@
 
     <app-group-users
       *tab="'Users'; screenReaderText: 'Group users'; id: 'group-users'"
+      [isAdmin]="isAdmin"
       [allUsers]="vm.users"
       [groupUsers]="vm.group.users"
       (update)="onUpdateUsers($event)"

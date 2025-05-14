@@ -119,3 +119,40 @@ describe('Admin - Groups screen', () => {
     cy.request('/api/admin/security-groups/reset');
   });
 });
+
+describe('Admin - Groups screen as SUPER_USER', () => {
+  beforeEach(() => {
+    cy.login('superuser');
+    cy.visit('/admin/groups/2');
+    cy.injectAxe();
+  });
+
+  it('should display group details headings and content', () => {
+    cy.get('app-govuk-heading h1').should('contain.text', 'Group details');
+    cy.get('app-govuk-heading .govuk-caption-l').should('contain.text', 'View group');
+
+    cy.get('h2.govuk-heading-s').contains('Group name').should('exist');
+    cy.get('h2.govuk-heading-s').contains('Description').should('exist');
+    cy.get('h2.govuk-heading-s').contains('Role').should('exist');
+    cy.get('h2.govuk-heading-m').contains('Courthouses').should('exist');
+
+    cy.get('#group-name').should('contain.text', 'Opus Transcribers');
+    cy.get('#group-description').should('contain.text', 'Dummy description 2');
+    cy.get('#group-role').should('contain.text', 'Transcriber');
+  });
+
+  it('should NOT show admin-only actions', () => {
+    cy.contains('button', 'Edit group details').should('not.exist');
+
+    cy.get('select#select-courthouse').should('not.exist');
+    cy.contains('button', 'Add courthouse').should('not.exist');
+
+    cy.get('app-data-table').should('not.contain', 'Remove');
+
+    cy.get('#group-users').click();
+
+    cy.get('#users-autocomplete-container').should('not.exist');
+    cy.get('#add-user-button').should('not.exist');
+    cy.get('#remove-users-button').should('not.exist');
+  });
+});

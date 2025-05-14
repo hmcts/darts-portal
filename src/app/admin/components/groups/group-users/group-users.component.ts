@@ -16,6 +16,7 @@ type UserWithCheckboxLabel = User & { checkboxLabel?: string };
   styleUrl: './group-users.component.scss',
 })
 export class GroupUsersComponent implements OnInit {
+  @Input() isAdmin = false;
   @Input() allUsers: User[] = [];
   @Input({ transform: addCheckboxLabelToUsers }) groupUsers: UserWithCheckboxLabel[] = [];
   @Output() update = new EventEmitter<number[]>();

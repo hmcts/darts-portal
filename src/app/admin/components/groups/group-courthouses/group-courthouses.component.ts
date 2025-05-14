@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, signal, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, signal } from '@angular/core';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { CourthouseData } from '@core-types/index';
@@ -12,6 +12,7 @@ import { TableRowTemplateDirective } from '@directives/table-row-template.direct
   styleUrl: './group-courthouses.component.scss',
 })
 export class GroupCourthousesComponent implements OnInit {
+  @Input() isAdmin: boolean = false;
   @Input() globalAccess: boolean = false;
   @Input() allCourthouses: CourthouseData[] = [];
   @Input() selectedCourthouses: CourthouseData[] = [];

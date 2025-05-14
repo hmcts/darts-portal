@@ -10,6 +10,7 @@ import { DatatableColumn } from '@core-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { FormStateService } from '@services/form-state.service';
 import { GroupsService } from '@services/groups/groups.service';
+import { UserService } from '@services/user/user.service';
 import { BehaviorSubject, combineLatest, map, shareReplay, startWith, tap } from 'rxjs';
 
 @Component({
@@ -34,6 +35,7 @@ export class GroupsComponent {
   router = inject(Router);
   fb = inject(FormBuilder);
   formStateService = inject(FormStateService);
+  isAdmin = inject(UserService).isAdmin();
 
   previousformValues = signal(
     this.formStateService.getFormValues<{ search: string; role: string }>(this.groupSearchFormKey)
