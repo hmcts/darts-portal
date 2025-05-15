@@ -51,22 +51,28 @@ describe('Case file screen', () => {
       });
     });
 
-    it('should toggle judge list between expanded and collapsed states', () => {
+    it('should toggle judge list between expanded and collapsed states (with <details>)', () => {
       cy.contains('h2.govuk-heading-s', 'Judge(s)').should('exist');
 
-      cy.get('.judges-link').should('contain.text', 'See more').and('have.class', 'govuk-link');
+      cy.get('.govuk-details').should('not.have.attr', 'open');
+
+      cy.get('.govuk-details summary .govuk-details__summary-text').should('contain.text', 'See more');
 
       cy.get('app-see-more-list .govuk-body').children().filter('br').should('have.length', 2);
 
-      cy.get('.judges-link').click();
+      cy.get('.govuk-details summary').click();
 
-      cy.get('.judges-link').should('contain.text', 'See less');
+      cy.get('.govuk-details').should('have.attr', 'open');
+
+      cy.get('.govuk-details summary .govuk-details__summary-text').should('contain.text', 'See less');
 
       cy.get('app-see-more-list .govuk-body').children().filter('br').should('have.length.greaterThan', 2);
 
-      cy.get('.judges-link').click();
+      cy.get('.govuk-details summary').click();
 
-      cy.get('.judges-link').should('contain.text', 'See more');
+      cy.get('.govuk-details').should('not.have.attr', 'open');
+
+      cy.get('.govuk-details summary .govuk-details__summary-text').should('contain.text', 'See more');
 
       cy.get('app-see-more-list .govuk-body').children().filter('br').should('have.length', 2);
     });
