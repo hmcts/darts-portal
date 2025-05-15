@@ -56,8 +56,9 @@ export class CourthouseService {
     }
 
     return this.http.get<CourthouseData[]>(GET_COURTHOUSES_PATH).pipe(
-      tap((courthouses) => {
-        this.cachedCourthouses = courthouses;
+      map((courthouses) => courthouses.sort((a, b) => a.display_name.localeCompare(b.display_name))),
+      tap((sortedCourthouses) => {
+        this.cachedCourthouses = sortedCourthouses;
       }),
       catchError(() => {
         return of([]);
@@ -202,10 +203,7 @@ export class CourthouseService {
   }
 
   mapCourthouseDataToCourthouses(courthouses: CourthouseData[]): Courthouse[] {
-    return courthouses
-      .map((c) => this.mapCourthouseDataToCourthouse(c))
-      .filter((c) => c.displayName)
-      .sort((a, b) => a.displayName.localeCompare(b.displayName));
+    return courthouses.map((c) => this.mapCourthouseDataToCourthouse(c)).filter((c) => c.displayName);
   }
 
   mapCourthouseDataToCourthouse(courthouse: CourthouseData): Courthouse {
