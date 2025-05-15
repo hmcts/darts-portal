@@ -87,7 +87,13 @@ describe('TranscriptionAdminService', () => {
         TranscriptionAdminService,
         LuxonDatePipe,
         DatePipe,
-        { provide: UserService, useValue: { isAdmin: jest.fn().mockReturnValue(true) } },
+        {
+          provide: UserService,
+          useValue: {
+            isAdmin: jest.fn().mockReturnValue(true),
+            isSuperUser: jest.fn().mockReturnValue(true),
+          },
+        },
       ],
     });
     service = TestBed.inject(TranscriptionAdminService);
@@ -477,7 +483,7 @@ describe('TranscriptionAdminService', () => {
   });
 
   it('should return correct status and associated data based on transcript details for super user', () => {
-    userService.isAdmin.mockReturnValueOnce(false);
+    userService.isAdmin.mockReturnValue(false);
 
     const transcript = {
       transcriptionId: 1,
@@ -497,9 +503,7 @@ describe('TranscriptionAdminService', () => {
     const result = service.getCurrentStatusFromTranscript(transcript);
 
     expect(result.Status?.value).toBe('Approved');
-    expect(result.Status?.action?.text).toBe('Change status');
-    expect(result.Status?.action?.url).toBe('/admin/transcripts/1/change-status');
-    expect(result.Status?.action?.queryParams).toEqual({ status: 'Approved', manual: true });
+    expect(result.Status?.action).toBeUndefined();
     if (typeof result['Last actioned by'][0] !== 'string') {
       expect(result['Last actioned by'][0].href).toBe('/admin/users/1');
       expect(result['Last actioned by'][0].value).toBe('John Doe');
