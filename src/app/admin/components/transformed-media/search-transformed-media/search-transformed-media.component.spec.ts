@@ -3,8 +3,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { User } from '@admin-types/index';
 import { TransformedMediaAdmin } from '@admin-types/transformed-media/transformed-media-admin';
 import { TransformedMediaSearchFormValues } from '@admin-types/transformed-media/transformed-media-search-form.values';
+import { DatePipe } from '@angular/common';
 import { provideHttpClient } from '@angular/common/http';
 import { signal } from '@angular/core';
+import { provideRouter } from '@angular/router';
 import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { TransformedMediaService, defaultFormValues } from '@services/transformed-media/transformed-media.service';
@@ -97,6 +99,8 @@ describe('SearchTransformedMediaComponent', () => {
         { provide: CourthouseService, useValue: fakeCourthouseService },
         { provide: AudioRequestService, useValue: fakeAudioRequestService },
         provideHttpClient(),
+        provideRouter([]),
+        DatePipe,
       ],
     }).compileComponents();
 
@@ -198,6 +202,37 @@ describe('SearchTransformedMediaComponent', () => {
       component.isDeleting.set(true);
       component.onDeleteCancelled();
       expect(component.isDeleting()).toBe(false);
+    });
+  });
+
+  describe('fetchNewTransformedMedia on init', () => {
+    it('should not call onSearch if flag is false', () => {
+      fakeTransformedMediaService.fetchNewResults!.set(false);
+      fakeTransformedMediaService.searchFormValues!.set(defaultFormValues);
+      fakeTransformedMediaService.isSearchFormSubmitted!.set(true);
+
+      const onSearchSpy = jest.spyOn(SearchTransformedMediaComponent.prototype, 'onSearch');
+
+      fixture = TestBed.createComponent(SearchTransformedMediaComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+
+      expect(onSearchSpy).not.toHaveBeenCalled();
+    });
+
+    it('should call onSearch and reset fetchNewResults if flag is true', () => {
+      fakeTransformedMediaService.fetchNewResults!.set(true);
+      fakeTransformedMediaService.searchFormValues!.set(defaultFormValues);
+      fakeTransformedMediaService.isSearchFormSubmitted!.set(true);
+
+      const onSearchSpy = jest.spyOn(SearchTransformedMediaComponent.prototype, 'onSearch');
+
+      fixture = TestBed.createComponent(SearchTransformedMediaComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+
+      expect(onSearchSpy).toHaveBeenCalledWith(defaultFormValues);
+      expect(component.transformedMediaService.fetchNewResults()).toBe(false);
     });
   });
 });
