@@ -613,4 +613,23 @@ describe('CourthouseRecordComponent', () => {
       expect(results).toEqual(expectedResult);
     });
   });
+
+  describe('handleBack', () => {
+    it('should set isDeleting to false if isDeleting is true', () => {
+      component.isDeleting = true;
+
+      component.handleBack();
+
+      expect(component.isDeleting).toBe(false);
+    });
+
+    it('should navigate to /admin/courthouses if isDeleting is false', () => {
+      const navigateSpy = jest.spyOn(component.router, 'navigate');
+      component.isDeleting = false;
+
+      component.handleBack();
+
+      expect(navigateSpy).toHaveBeenCalledWith(['admin/courthouses']);
+    });
+  });
 });
