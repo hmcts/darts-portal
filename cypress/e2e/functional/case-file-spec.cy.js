@@ -32,6 +32,52 @@ describe('Case file screen', () => {
     });
   });
 
+  describe('Case file headings', () => {
+    beforeEach(() => {
+      cy.login();
+      cy.visit('/case/5');
+    });
+
+    it('should display all expected headings in the case file', () => {
+      cy.get('app-case-file').should('exist');
+
+      cy.get('app-govuk-heading h1').should('contain.text', 'C20220620005');
+      cy.get('app-govuk-heading .govuk-caption-l').should('contain.text', 'Case ID');
+
+      const headings = ['Courthouse', 'Judge(s)', 'Prosecutor(s)', 'Defence(s)', 'Defendant(s)', 'Retained until'];
+
+      headings.forEach((headingText) => {
+        cy.get('app-case-file h2').contains(headingText).should('exist');
+      });
+    });
+
+    it('should toggle judge list between expanded and collapsed states (with <details>)', () => {
+      cy.contains('h2.govuk-heading-s', 'Judge(s)').should('exist');
+
+      cy.get('.govuk-details').should('not.have.attr', 'open');
+
+      cy.get('.govuk-details summary .govuk-details__summary-text').should('contain.text', 'See more');
+
+      cy.get('app-see-more-list .govuk-body').children().filter('br').should('have.length', 2);
+
+      cy.get('.govuk-details summary').click();
+
+      cy.get('.govuk-details').should('have.attr', 'open');
+
+      cy.get('.govuk-details summary .govuk-details__summary-text').should('contain.text', 'See less');
+
+      cy.get('app-see-more-list .govuk-body').children().filter('br').should('have.length.greaterThan', 2);
+
+      cy.get('.govuk-details summary').click();
+
+      cy.get('.govuk-details').should('not.have.attr', 'open');
+
+      cy.get('.govuk-details summary .govuk-details__summary-text').should('contain.text', 'See more');
+
+      cy.get('app-see-more-list .govuk-body').children().filter('br').should('have.length', 2);
+    });
+  });
+
   describe('expired cases', () => {
     beforeEach(() => {
       cy.login();
