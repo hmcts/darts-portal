@@ -195,44 +195,41 @@ describe('CourthouseService', () => {
   });
 
   describe('#getCourthouses', () => {
-    it('should return cached value without firing request if cache exists', () => {
-      service['cachedCourthouses'] = courthouseData; // Set the cached data
+    it('should return cached value without firing request if cache exists', (done) => {
+      service['cachedCourthouses'] = courthouseData;
 
-      let courthouseList;
       service.getCourthouses().subscribe((courthouses: CourthouseData[]) => {
-        courthouseList = courthouses;
+        expect(courthouses).toEqual(courthouseData);
+        httpMock.expectNone(GET_COURTHOUSES_PATH);
+        done();
       });
-      expect(courthouseList).toEqual(courthouseData);
-
-      httpMock.expectNone(GET_COURTHOUSES_PATH);
     });
 
-    it('should return courthouses and send API request', () => {
+    it('should send API request and return sorted courthouses', (done) => {
       service.clearCourthouseCache();
 
-      let courthouses: CourthouseData[] = [];
-
+      const sortedCourthouses = courthouseData.toSorted((a, b) => a.display_name.localeCompare(b.display_name));
       service.getCourthouses().subscribe((response: CourthouseData[]) => {
-        courthouses = response;
+        expect(response).toEqual(sortedCourthouses);
+        done();
       });
-
-      expect(courthouses).toEqual([]);
 
       const req = httpMock.expectOne(GET_COURTHOUSES_PATH);
       expect(req.request.method).toBe('GET');
-      req.flush(courthouses);
+      req.flush(Array.from(courthouseData));
     });
 
-    it('should return empty array on error', () => {
-      let courthouses: CourthouseData[] = [];
+    it('should return empty array on error', (done) => {
+      service.clearCourthouseCache();
 
-      service.getCourthouses().subscribe((eventsResponse) => (courthouses = eventsResponse));
+      service.getCourthouses().subscribe((response) => {
+        expect(response).toEqual([]);
+        done();
+      });
 
       const req = httpMock.expectOne(GET_COURTHOUSES_PATH);
       expect(req.request.method).toBe('GET');
       req.flush(null, { status: 404, statusText: 'Not Found' });
-
-      expect(courthouses).toEqual([]);
     });
   });
 
@@ -426,31 +423,10 @@ describe('CourthouseService', () => {
   });
 
   describe('mapCourthouseDataToCourthouses', () => {
-    it('should map courthouse data to courthouses', () => {
-      const result = service.mapCourthouseDataToCourthouses([
-        {
-          id: 1,
-          courthouse_name: 'READING',
-          display_name: 'Reading',
-          code: 0,
-          region_id: 0,
-          created_date_time: '2023-08-18T09:48:29.728Z',
-          last_modified_date_time: '2023-08-18T09:48:29.728Z',
-          has_data: true,
-        },
-      ]);
+    it('should map courthouse data to courthouses and not sort', () => {
+      const result = service.mapCourthouseDataToCourthouses(courthouseData);
 
-      expect(result).toEqual([
-        {
-          id: 1,
-          courthouseName: 'READING',
-          displayName: 'Reading',
-          code: 0,
-          createdDateTime: DateTime.fromISO('2023-08-18T09:48:29.728Z'),
-          lastModifiedDateTime: DateTime.fromISO('2023-08-18T09:48:29.728Z'),
-          hasData: true,
-        },
-      ]);
+      expect(result).toEqual(courthouses.map((ch) => ({ ...ch, region: undefined, hasData: undefined })));
     });
   });
 });
