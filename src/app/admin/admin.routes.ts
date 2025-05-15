@@ -256,7 +256,7 @@ export const ADMIN_ROUTES: Routes = [
   {
     path: 'admin/transcripts/:transcriptionId/change-status',
     title: 'DARTS Admin Change Transcription Status',
-    data: { allowedRoles: ['SUPER_ADMIN', 'SUPER_USER'] },
+    data: { allowedRoles: ['SUPER_ADMIN'] },
     loadComponent: () =>
       import('./components/transcripts/change-transcript-status/change-transcript-status.component').then(
         (c) => c.ChangeTranscriptStatusComponent
