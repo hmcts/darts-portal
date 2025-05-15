@@ -32,15 +32,20 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: R
           if (!route.data?.allowedRoles) {
             return true;
           }
-          // if user has role, allow access
-          if (userService.hasRoles(route.data.allowedRoles)) {
-            return true;
-          } else {
-            if (isAdminRoute) {
+          // admin routes
+          if (isAdminRoute) {
+            if (userService.hasGlobalRoles(route.data.allowedRoles)) {
+              return true;
+            } else {
               // fail role check for admin, redirect to 404 page
               router.navigateByUrl('page-not-found');
               return false;
             }
+          }
+          // non-admin routes
+          if (userService.hasRoles(route.data.allowedRoles)) {
+            return true;
+          } else {
             // otherwise, redirect to forbidden page
             router.navigateByUrl('forbidden');
             return false;
