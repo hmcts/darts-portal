@@ -199,4 +199,12 @@ export class CourthouseRecordComponent {
     this.isDeleting = false;
     this.tab = 'Users';
   }
+
+  handleBack() {
+    if (this.isDeleting) {
+      this.isDeleting = false;
+    } else {
+      this.router.navigate(['admin/courthouses']);
+    }
+  }
 }

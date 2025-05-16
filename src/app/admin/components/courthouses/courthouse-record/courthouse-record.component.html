@@ -1,4 +1,4 @@
-<a [routerLink]="['../']" class="govuk-back-link">Back</a>
+<a (click)="handleBack()" href="javascript:void(0);" class="govuk-back-link">Back</a>
 
 @if (courthouse$ | async; as courthouse) {
   @if (isNewCourthouse$ | async) {
@@ -24,24 +24,26 @@
   }
 
   @if (isDeleting) {
-    <app-delete
-      [numberOfItems]="selectedUsers.length"
-      [title]="deleteScreenTitle(courthouse.displayName)"
-      deleteButtonTxt="Confirm"
-      [isRedDeleteButton]="false"
-      (confirm)="onDeleteConfirmed()"
-      (cancelled)="onDeleteCancelled()"
-    >
-      <div class="govuk-grid-column-one-half">
-        <app-data-table
-          caption="Selected user(s) to be removed from courthouse"
-          [hiddenCaption]="true"
-          id="deletionTable"
-          [rows]="selectedUsers"
-          [columns]="deleteColumns"
-        ></app-data-table>
-      </div>
-    </app-delete>
+    <div class="govuk-width-container">
+      <app-delete
+        [numberOfItems]="selectedUsers.length"
+        [title]="deleteScreenTitle(courthouse.displayName)"
+        deleteButtonTxt="Confirm"
+        [isRedDeleteButton]="false"
+        (confirm)="onDeleteConfirmed()"
+        (cancelled)="onDeleteCancelled()"
+      >
+        <div class="govuk-grid-column-one-half">
+          <app-data-table
+            caption="Selected user(s) to be removed from courthouse"
+            [hiddenCaption]="true"
+            id="deletionTable"
+            [rows]="selectedUsers"
+            [columns]="deleteColumns"
+          ></app-data-table>
+        </div>
+      </app-delete>
+    </div>
   } @else {
     <div class="govuk-width-container">
       <div class="govuk-main-wrapper">
