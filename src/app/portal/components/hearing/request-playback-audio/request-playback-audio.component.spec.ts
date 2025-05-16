@@ -4,7 +4,7 @@ import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
 
-import { SimpleChange } from '@angular/core';
+import { EventEmitter, SimpleChange } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { fieldErrors, RequestPlaybackAudioComponent } from './request-playback-audio.component';
 
@@ -511,6 +511,36 @@ describe('RequestPlaybackAudioComponent', () => {
       expect(component.audioRequestForm.controls.endTime.errors).toEqual({ unavailable: true });
       expect(component.audioRequestForm.errors).toEqual({ invalid: true });
       expect(validationErrorSpy).toHaveBeenCalledWith(errorSummaryEntry);
+    });
+  });
+
+  describe('clearFormEvent', () => {
+    it('should reset the form, clear errors, reset isSubmitted and emit empty validation errors', () => {
+      const clearEmitter = new EventEmitter<void>();
+      const validationSpy = jest.spyOn(component.validationErrorEvent, 'emit');
+
+      component.clearFormEvent = clearEmitter;
+
+      // Set up some form errors and state
+      component.audioRequestForm.controls.startTime.setErrors({ required: true });
+      component.audioRequestForm.controls.endTime.setErrors({ required: true });
+      component.audioRequestForm.setErrors({ invalid: true });
+      component.audioRequestForm.controls.requestType.setErrors({ required: true });
+      component.isSubmitted = true;
+      component.errorSummary = [{ fieldId: 'start-time-hour-input', message: 'required' }];
+
+      fixture.detectChanges();
+      component.ngOnInit();
+
+      clearEmitter.emit();
+
+      expect(component.audioRequestForm.get('startTime')?.errors).toBeNull();
+      expect(component.audioRequestForm.get('endTime')?.errors).toBeNull();
+      expect(component.audioRequestForm.get('requestType')?.errors).toBeNull();
+      expect(component.audioRequestForm.errors).toBeNull();
+      expect(component.isSubmitted).toBe(false);
+      expect(component.errorSummary).toEqual([]);
+      expect(validationSpy).toHaveBeenCalledWith([]);
     });
   });
 });

@@ -37,6 +37,8 @@
     [rowSelectable]="true"
     caption="Events and audio for this hearing"
     [hiddenCaption]="true"
+    [selectedRows]="selectedRows"
+    (selectedRowsChange)="selectedRows = $event"
     (rowSelect)="onRowSelect($event)"
     [sortAndPaginateOnRowsChanged]="false"
   >

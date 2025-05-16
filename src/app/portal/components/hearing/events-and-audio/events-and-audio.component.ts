@@ -36,6 +36,7 @@ export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
   @Input() audio: HearingAudio[] = [];
   @Input() events: HearingEvent[] = [];
   @Output() eventsSelect = new EventEmitter<AudioEventRow[]>();
+  @Input() clearFormEvent!: EventEmitter<void>;
   audioPreviewService = inject(AudioPreviewService);
 
   columns: DatatableColumn[] = [
@@ -57,11 +58,21 @@ export class EventsAndAudioComponent implements OnInit, OnChanges, OnDestroy {
   audioPreviewPath = audioPreviewPath;
 
   ngOnInit(): void {
+    if (this.clearFormEvent) {
+      this.clearFormEvent.subscribe(() => this.clearForm());
+    }
+
     this.subs.push(
       this.formChanges$.subscribe((valueChanges) => {
         this.onFilterChanged(valueChanges as string);
       })
     );
+  }
+
+  private clearForm() {
+    this.selectedOption.setValue('all', { emitEvent: true });
+    this.selectedRows = [];
+    this.eventsSelect.emit([]);
   }
 
   ngOnChanges(): void {
