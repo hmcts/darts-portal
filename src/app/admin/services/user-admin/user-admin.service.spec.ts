@@ -11,8 +11,6 @@ import { of } from 'rxjs';
 import { USER_ADMIN_PATH, USER_ADMIN_SEARCH_PATH, UserAdminService } from './user-admin.service';
 
 export const ADMIN_GET_USER = 'api/admin/users';
-export const ADMIN_GET_SECURITY_GROUPS = '/api/admin/security-groups';
-export const ADMIN_GET_SECURITY_ROLES = 'api/admin/security-roles';
 
 describe('UserAdminService', () => {
   let service: UserAdminService;
@@ -79,11 +77,10 @@ describe('UserAdminService', () => {
   });
 
   describe('getUsers', () => {
-    it('should fetch and map all users', () => {
-      const mockUserId = 1;
+    it('should fetch and map all users', (done) => {
       const mockUsersData: UserData[] = [
         {
-          id: mockUserId,
+          id: 1,
           last_login_at: '2020-01-01T00:00:00Z',
           last_modified_at: '2020-01-02T00:00:00Z',
           created_at: '2020-01-01T00:00:00Z',
@@ -93,38 +90,58 @@ describe('UserAdminService', () => {
           active: true,
           security_group_ids: [1, 2],
         },
+        {
+          id: 2,
+          last_login_at: '2020-01-01T00:00:00Z',
+          last_modified_at: '2020-01-02T00:00:00Z',
+          created_at: '2020-01-01T00:00:00Z',
+          full_name: 'John Doe 2',
+          email_address: 'john2@example.com',
+          description: 'A test use 2r',
+          active: true,
+          security_group_ids: [1, 2],
+        },
       ];
-
-      const mockUserData = mockUsersData[0];
 
       const mappedUsers: User[] = [
         {
-          id: mockUserId,
-          lastLoginAt: DateTime.fromISO(mockUserData.last_login_at),
-          lastModifiedAt: DateTime.fromISO(mockUserData.last_modified_at),
-          createdAt: DateTime.fromISO(mockUserData.created_at),
-          fullName: 'John Doe',
-          emailAddress: 'john@example.com',
-          description: 'A test user',
-          active: true,
-          securityGroupIds: [1, 2],
-          securityGroups: mockSecurityGroups,
+          id: mockUsersData[0].id,
+          lastLoginAt: DateTime.fromISO(mockUsersData[0].last_login_at),
+          lastModifiedAt: DateTime.fromISO(mockUsersData[0].last_modified_at),
+          createdAt: DateTime.fromISO(mockUsersData[0].created_at),
+          fullName: mockUsersData[0].full_name,
+          emailAddress: mockUsersData[0].email_address,
+          description: mockUsersData[0].description,
+          active: mockUsersData[0].active,
+          securityGroupIds: mockUsersData[0].security_group_ids,
+        },
+        {
+          id: mockUsersData[1].id,
+          lastLoginAt: DateTime.fromISO(mockUsersData[1].last_login_at),
+          lastModifiedAt: DateTime.fromISO(mockUsersData[1].last_modified_at),
+          createdAt: DateTime.fromISO(mockUsersData[1].created_at),
+          fullName: mockUsersData[1].full_name,
+          emailAddress: mockUsersData[1].email_address,
+          description: mockUsersData[1].description,
+          active: mockUsersData[1].active,
+          securityGroupIds: mockUsersData[1].security_group_ids,
         },
       ];
 
       service.getUsers().subscribe((res) => {
         expect(res).toEqual(mappedUsers);
+        done();
       });
 
       const req = httpMock.expectOne(USER_ADMIN_SEARCH_PATH);
-      req.flush(mockUserData);
+      req.flush(mockUsersData);
 
       expect(req.request.method).toEqual('POST');
     });
   });
 
   describe('getUser', () => {
-    it('should fetch and map user', () => {
+    it('should fetch and map user', (done) => {
       const mockUserId = 1;
       const mockUserData: UserData = {
         id: mockUserId,
@@ -151,13 +168,12 @@ describe('UserAdminService', () => {
         securityGroups: mockSecurityGroups,
       };
 
-      let result!: User;
-
-      service.getUser(mockUserId).subscribe((res) => (result = res));
+      service.getUser(mockUserId).subscribe((res) => {
+        expect(res).toEqual(mappedUser);
+        done();
+      });
 
       httpMock.expectOne(`${ADMIN_GET_USER}/${mockUserId}`).flush(mockUserData);
-
-      expect(result).toEqual(mappedUser);
     });
 
     it('should correctly map UserData to User', () => {
@@ -191,13 +207,14 @@ describe('UserAdminService', () => {
   });
 
   describe('searchUsers', () => {
-    it('should return an array of Users', () => {
+    it('should return an array of Users', (done) => {
       const mockQuery: UserSearchFormValues = {
         fullName: 'User',
       };
       const mockResponse = [
         {
           id: 1,
+          last_login_at: '2024-01-20T00:00:00.000000Z',
           last_modified_at: '2024-01-20T00:00:00.000000Z',
           created_at: '2024-01-20T00:00:00.000000Z',
           full_name: 'Darts User',
@@ -207,6 +224,7 @@ describe('UserAdminService', () => {
         },
         {
           id: 2,
+          last_login_at: '2023-01-20T00:00:00.000000Z',
           last_modified_at: '2023-01-20T00:00:00.000000Z',
           created_at: '2023-01-20T00:00:00.000000Z',
           full_name: 'Dev User',
@@ -216,8 +234,34 @@ describe('UserAdminService', () => {
         },
       ] as UserData[];
 
+      const expectedResponse = [
+        {
+          id: mockResponse[0].id,
+          lastLoginAt: DateTime.fromISO(mockResponse[0].last_login_at),
+          lastModifiedAt: DateTime.fromISO(mockResponse[0].last_modified_at),
+          createdAt: DateTime.fromISO(mockResponse[0].created_at),
+          fullName: mockResponse[0].full_name,
+          emailAddress: mockResponse[0].email_address,
+          description: mockResponse[0].description,
+          active: mockResponse[0].active,
+          securityGroupIds: mockResponse[0].security_group_ids,
+        },
+        {
+          id: mockResponse[1].id,
+          lastLoginAt: DateTime.fromISO(mockResponse[1].last_login_at),
+          lastModifiedAt: DateTime.fromISO(mockResponse[1].last_modified_at),
+          createdAt: DateTime.fromISO(mockResponse[1].created_at),
+          fullName: mockResponse[1].full_name,
+          emailAddress: mockResponse[1].email_address,
+          description: mockResponse[1].description,
+          active: mockResponse[1].active,
+          securityGroupIds: mockResponse[1].security_group_ids,
+        },
+      ] as User[];
+
       service.searchUsers(mockQuery).subscribe((users) => {
-        expect(users).toEqual(mockResponse);
+        expect(users).toEqual(expectedResponse);
+        done();
       });
 
       const req = httpMock.expectOne(USER_ADMIN_SEARCH_PATH);
