@@ -1,6 +1,6 @@
 import { AdminCase } from '@admin-types/case/case.type';
 import { AsyncPipe } from '@angular/common';
-import { Component, inject, input, numberAttribute, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, input, numberAttribute, OnInit, signal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -15,6 +15,7 @@ import { TabDirective } from '@directives/tab.directive';
 import { CaseEvent } from '@portal-types/events';
 import { Hearing } from '@portal-types/hearing';
 import { TranscriptsRow } from '@portal-types/transcriptions';
+import { ActiveTabService } from '@services/active-tab/active-tab.service';
 import { AdminCaseService } from '@services/admin-case/admin-case.service';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { CaseEventsLoaderService } from '@services/case-events-loader/case-events-loader.service';
@@ -46,6 +47,15 @@ import { CaseFileComponent } from './case-file/case-file.component';
   styleUrl: './case.component.scss',
 })
 export class CaseComponent implements OnInit {
+  private readonly activeTabKey = 'admin-case-details';
+
+  readonly tabNames = {
+    hearings: 'Hearings',
+    events: 'Events',
+    transcripts: 'Transcripts',
+    additional: 'Additional case details',
+  } as const;
+
   caseService = inject(CaseService);
   mappingService = inject(MappingService);
   caseEventsLoader = inject(CaseEventsLoaderService);
@@ -53,8 +63,10 @@ export class CaseComponent implements OnInit {
   caseAdminService = inject(AdminCaseService);
   historyService = inject(HistoryService);
   appConfig = inject(AppConfigService);
-
+  activeTabService = inject(ActiveTabService);
   url = inject(Router).url;
+
+  tab = computed(() => this.activeTabService.activeTabs()[this.activeTabKey] ?? this.tabNames.hearings);
 
   caseId = input(0, { transform: numberAttribute });
 
@@ -150,6 +162,10 @@ export class CaseComponent implements OnInit {
       });
       this.loadEvents();
     }
+  }
+
+  onTabChange(tab: string) {
+    this.activeTabService.setActiveTab(this.activeTabKey, tab);
   }
 
   private isAdminSortBy(value: string): value is AdminCaseEventSortBy {
