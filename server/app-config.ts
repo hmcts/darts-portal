@@ -10,4 +10,5 @@ export default () => ({
   features: config.get('features'),
   pagination: config.get('pagination'),
   caseSearchTimeout: config.get('caseSearchTimeout'),
+  version: config.get('version'),
 });
