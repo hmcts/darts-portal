@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { QueryList } from '@angular/core';
+import { EventEmitter, QueryList } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AudioPlayerComponent } from '@common/audio-player/audio-player.component';
 import { AudioEventRow, HearingAudio, HearingEvent } from '@portal-types/index';
@@ -449,6 +449,28 @@ describe('EventsAndAudioComponent', () => {
           type: 'event',
         },
       ]);
+    });
+  });
+
+  describe('clearFormEvent', () => {
+    it('should clear selected rows and reset filter when clearFormEvent is triggered', () => {
+      const clearFormEmitter = new EventEmitter<void>();
+      const emitSpy = jest.spyOn(component.eventsSelect, 'emit');
+
+      component.clearFormEvent = clearFormEmitter;
+      fixture.detectChanges();
+
+      component.selectedRows = [{ id: 1 } as AudioEventRow];
+      component.selectedOption.setValue('events');
+      emitSpy.mockClear();
+
+      component.ngOnInit();
+
+      clearFormEmitter.emit();
+
+      expect(component.selectedRows).toEqual([]);
+      expect(component.selectedOption.value).toBe('all');
+      expect(emitSpy).toHaveBeenCalledWith([]);
     });
   });
 });
