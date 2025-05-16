@@ -11,6 +11,7 @@ import { GovukTextareaComponent } from '@common/govuk-textarea/govuk-textarea.co
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { FileHideOrDeleteFormErrorMessages } from '@constants/file-hide-or-delete-error-messages';
 import { ErrorSummaryEntry } from '@core-types/index';
+import { AdminSearchService } from '@services/admin-search/admin-search.service';
 import { FormService } from '@services/form/form.service';
 import { HeaderService } from '@services/header/header.service';
 import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
@@ -42,6 +43,7 @@ export class FileHideOrDeleteComponent implements OnInit {
   transcriptionAdminService = inject(TranscriptionAdminService);
   transformedMediaService = inject(TransformedMediaService);
   formService = inject(FormService);
+  searchService = inject(AdminSearchService);
   title = inject(Title);
 
   errors: ErrorSummaryEntry[] = [];
@@ -126,6 +128,7 @@ export class FileHideOrDeleteComponent implements OnInit {
             })
           )
           .subscribe((associatedAudio) => {
+            this.searchService.fetchNewAudio.set(true);
             this.isSubmitted.set(true);
             // If there are associated audio files, show the associated audio files
             if (associatedAudio.exists) {
@@ -145,6 +148,7 @@ export class FileHideOrDeleteComponent implements OnInit {
   private hideTranscriptionDocument() {
     if (this.hideFormValues) {
       this.transcriptionAdminService.hideTranscriptionDocument(this.id, this.hideFormValues).subscribe(() => {
+        this.transcriptionAdminService.fetchNewCompletedTranscriptions.set(true);
         this.isSubmitted.set(true);
       });
     }

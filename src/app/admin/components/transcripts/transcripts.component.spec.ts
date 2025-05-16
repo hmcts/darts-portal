@@ -116,6 +116,8 @@ describe('TranscriptsComponent', () => {
             completedSearchResults: signal([]),
             isAdvancedSearch: signal(false),
             hasSearchFormBeenSubmitted$: new BehaviorSubject<boolean>(false),
+            fetchNewTranscriptions: signal(false),
+            fetchNewCompletedTranscriptions: signal(false),
           },
         },
         {
@@ -300,6 +302,51 @@ describe('TranscriptsComponent', () => {
       jest.spyOn(scrollService, 'scrollTo');
       component.onErrors([{ fieldId: '1', message: 'error' }]);
       expect(scrollService.scrollTo).toHaveBeenCalledWith('app-validation-error-summary');
+    });
+  });
+
+  describe('fetchNewTranscripts', () => {
+    beforeEach(() => {
+      component.transcriptService.searchFormValues.set(defaultFormValues);
+      component.transcriptService.hasSearchFormBeenSubmitted$.next(true);
+    });
+
+    it('should call searchCompletedTranscriptions and reset flag for COMPLETED_TRANSCRIPTIONS if flag is true', () => {
+      const completedSpy = jest.spyOn(component.transcriptService, 'searchCompletedTranscriptions');
+
+      component.transcriptService.fetchNewCompletedTranscriptions.set(true);
+      component.transcriptService.searchFormValues.set(defaultFormValues);
+      component.transcriptService.hasSearchFormBeenSubmitted$.next(true);
+      component['tab'] = signal('Transcript documents');
+
+      component.completedResults$.subscribe();
+
+      component['fetchNewTranscripts'](true, 'COMPLETED_TRANSCRIPTIONS');
+
+      expect(completedSpy).toHaveBeenCalledWith(defaultFormValues);
+      expect(component.transcriptService.fetchNewCompletedTranscriptions()).toBe(false);
+    });
+
+    it('should call search and reset flag for TRANSCRIPTIONS if flag is true', () => {
+      component.transcriptService.fetchNewTranscriptions.set(true);
+
+      const searchSpy = jest.spyOn(component.transcriptService, 'search');
+
+      component['fetchNewTranscripts'](true, 'TRANSCRIPTIONS');
+
+      expect(searchSpy).toHaveBeenCalledWith(defaultFormValues);
+      expect(component.transcriptService.fetchNewTranscriptions()).toBe(false);
+    });
+
+    it('should do nothing if flag is false', () => {
+      const searchSpy = jest.spyOn(component.transcriptService, 'search');
+      const completedSpy = jest.spyOn(component.transcriptService, 'searchCompletedTranscriptions');
+
+      component['fetchNewTranscripts'](false, 'TRANSCRIPTIONS');
+      component['fetchNewTranscripts'](false, 'COMPLETED_TRANSCRIPTIONS');
+
+      expect(searchSpy).not.toHaveBeenCalled();
+      expect(completedSpy).not.toHaveBeenCalled();
     });
   });
 });
