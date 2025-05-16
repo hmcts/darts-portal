@@ -8,4 +8,5 @@ export interface UserData {
   description: string;
   active: boolean;
   security_group_ids: number[];
+  is_system_user?: boolean;
 }

@@ -28,6 +28,7 @@ describe('UserRecordComponent', () => {
     description: '',
     active: true,
     securityGroupIds: [],
+    isSystemUser: false,
   };
 
   const mockQueryParams = new BehaviorSubject<{ [key: string]: boolean }>({ newUser: false });
