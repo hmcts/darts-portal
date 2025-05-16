@@ -20,23 +20,27 @@ export class UserAdminService {
   http = inject(HttpClient);
   groupsService = inject(GroupsService);
 
-  searchUsers(query: UserSearchFormValues): Observable<User[]> {
+  searchUsers(query: UserSearchFormValues, allowSystemUsers = false): Observable<User[]> {
     const body: UserSearchRequest = this.mapToUserSearchRequest(query);
-    return this.http.post<UserData[]>(USER_ADMIN_SEARCH_PATH, body).pipe(map((users) => this.mapUsers(users)));
+    return this.http
+      .post<UserData[]>(USER_ADMIN_SEARCH_PATH, body)
+      .pipe(map((users) => this.mapUsers(users, allowSystemUsers)));
   }
 
-  getUsers(): Observable<User[]> {
+  getUsers(allowSystemUsers = false): Observable<User[]> {
     return this.http
       .post<UserData[]>(USER_ADMIN_SEARCH_PATH, { full_name: null, email_address: null, active: null })
-      .pipe(map((users) => this.mapUsers(users)));
+      .pipe(map((users) => this.mapUsers(users, allowSystemUsers)));
   }
 
-  getUsersById(userIds: number[]): Observable<User[]> {
+  getUsersById(userIds: number[], allowSystemUsers = false): Observable<User[]> {
     if (!userIds?.length) {
       return of([]);
     }
     const params = new HttpParams().set('user_ids', [...new Set(userIds)].join(','));
-    return this.http.get<UserData[]>(USER_ADMIN_PATH, { params }).pipe(map((users) => this.mapUsers(users)));
+    return this.http
+      .get<UserData[]>(USER_ADMIN_PATH, { params })
+      .pipe(map((users) => this.mapUsers(users, allowSystemUsers)));
   }
 
   getUser(userId: number): Observable<User> {
@@ -115,11 +119,16 @@ export class UserAdminService {
       description: user.description,
       active: user.active,
       securityGroupIds: user.security_group_ids,
+      isSystemUser: user.is_system_user || false,
     };
   }
 
-  private mapUsers(users: UserData[]): User[] {
-    return users.map((user) => this.mapUser(user));
+  private mapUsers(users: UserData[], allowSystemUsers = false): User[] {
+    let foundUsers = users.map((user) => this.mapUser(user));
+    if (!allowSystemUsers) {
+      foundUsers = foundUsers.filter((value) => value.isSystemUser === undefined || !value.isSystemUser);
+    }
+    return foundUsers;
   }
 
   private mapUserWithSecurityGroups(user: UserData, securityGroups: SecurityGroup[]): User {

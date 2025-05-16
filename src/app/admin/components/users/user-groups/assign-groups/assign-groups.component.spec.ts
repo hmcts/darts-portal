@@ -41,6 +41,7 @@ const mockUser: User = {
   active: true,
   securityGroupIds: [1, 2],
   securityGroups: mockGroupsWithRoles,
+  isSystemUser: false,
 };
 
 describe('AssignGroupsComponent', () => {

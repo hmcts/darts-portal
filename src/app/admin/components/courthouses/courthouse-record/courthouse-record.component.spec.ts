@@ -492,6 +492,7 @@ describe('CourthouseRecordComponent', () => {
           description: 'Stub Active User',
           active: true,
           securityGroupIds: [1],
+          isSystemUser: false,
         },
         {
           id: 2,
@@ -503,6 +504,7 @@ describe('CourthouseRecordComponent', () => {
           description: 'Stub Active User',
           active: true,
           securityGroupIds: [1, 2],
+          isSystemUser: false,
         },
       ];
       const pGroupUserIds: number[] = [1];

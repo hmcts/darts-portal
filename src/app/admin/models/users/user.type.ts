@@ -12,4 +12,5 @@ export type User = {
   active: boolean;
   securityGroupIds: number[];
   securityGroups?: SecurityGroup[];
+  isSystemUser: boolean;
 };
