@@ -16,6 +16,7 @@ describe('DynatraceService', () => {
     dynatrace: { scriptUrl: 'https://dynatrace.com/script.js' },
     appInsightsKey: 'X',
     environment: 'env',
+    version: '0.0.1',
     support: { name: 'name', emailAddress: 'email' },
     features: {
       manualDeletion: {
