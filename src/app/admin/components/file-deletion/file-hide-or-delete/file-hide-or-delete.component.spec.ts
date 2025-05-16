@@ -1,12 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { FileHide } from '@admin-types/hidden-reasons/file-hide';
 import { AssociatedMedia } from '@admin-types/transformed-media/associated-media';
 import { DatePipe } from '@angular/common';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
-import { AppInsightsService } from '@services/app-insights/app-insights.service';
+import { AdminSearchService } from '@services/admin-search/admin-search.service';
 import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
 import { TransformedMediaService } from '@services/transformed-media/transformed-media.service';
 import { of } from 'rxjs';
@@ -85,7 +86,14 @@ describe('FileHideOrDeleteComponent', () => {
         audioFile: [{ id: 1 }] as AssociatedMedia[],
       })
     ),
+    hideAudioFile: jest.fn().mockReturnValue(of({} as FileHide)),
   } as unknown as TransformedMediaService;
+
+  const fakeAdminSearchService = {
+    fetchNewAudio: {
+      set: jest.fn(),
+    },
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -96,7 +104,7 @@ describe('FileHideOrDeleteComponent', () => {
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: TranscriptionAdminService, useValue: fakeTranscriptionAdminService },
         { provide: TransformedMediaService, useValue: fakeTransformedMediaService },
-        { provide: AppInsightsService, useValue: { logEvent: jest.fn() } },
+        { provide: AdminSearchService, useValue: fakeAdminSearchService },
         { provide: Router, useValue: fakeRouter },
         DatePipe,
         LuxonDatePipe,
@@ -195,5 +203,42 @@ describe('FileHideOrDeleteComponent', () => {
     );
     expect(component.isSubmitted()).toBe(true);
     expect(component.isAssociatedAudio()).toBe(true);
+  });
+
+  it('should set fetchNewAudio to true when hiding an audio file with no associated audio', () => {
+    component.fileType = 'audio_file';
+    component.associatedAudioSearch = {
+      hearingIds: [12322, 1232],
+      startAt: '2021-01-01T00:00:00Z',
+      endAt: '2021-01-01T00:00:00Z',
+    };
+
+    const formData = {
+      ticketReference: 'ABC123',
+      comments: 'Some comments',
+      reason: '1',
+    };
+
+    component.form.setValue(formData);
+
+    const expectedFormValues = {
+      ...formData,
+      reason: 1,
+    };
+
+    jest.spyOn(fakeTransformedMediaService, 'checkAssociatedAudioExists').mockReturnValue(
+      of({
+        exists: false,
+        audioFile: [],
+        media: [],
+      })
+    );
+
+    const hideAudioSpy = jest.spyOn(fakeTransformedMediaService, 'hideAudioFile').mockReturnValue(of({} as FileHide));
+
+    component.onSubmit();
+
+    expect(hideAudioSpy).toHaveBeenCalledWith(component.id, expectedFormValues);
+    expect(fakeAdminSearchService.fetchNewAudio.set).toHaveBeenCalledWith(true);
   });
 });

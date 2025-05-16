@@ -61,4 +61,15 @@ describe('ChangeTranscriptStatusComponent', () => {
     component.onSubmit();
     expect(routerSpy).toHaveBeenCalledWith(['/admin/transcripts', 1], { queryParams: { updatedStatus: true } });
   });
+
+  it('should set fetchNewTranscriptions to true on submit', () => {
+    const fetchNewSpy = jest.spyOn(component.transcriptionAdminService.fetchNewTranscriptions, 'set');
+
+    component.form.controls.status.setValue('2');
+    component.form.controls.comments.setValue('Some comment');
+
+    component.onSubmit();
+
+    expect(fetchNewSpy).toHaveBeenCalledWith(true);
+  });
 });
