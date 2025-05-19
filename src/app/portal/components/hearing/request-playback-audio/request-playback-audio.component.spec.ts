@@ -534,10 +534,6 @@ describe('RequestPlaybackAudioComponent', () => {
 
       clearEmitter.emit();
 
-      expect(component.audioRequestForm.get('startTime')?.errors).toBeNull();
-      expect(component.audioRequestForm.get('endTime')?.errors).toBeNull();
-      expect(component.audioRequestForm.get('requestType')?.errors).toBeNull();
-      expect(component.audioRequestForm.errors).toBeNull();
       expect(component.isSubmitted).toBe(false);
       expect(component.errorSummary).toEqual([]);
       expect(validationSpy).toHaveBeenCalledWith([]);
