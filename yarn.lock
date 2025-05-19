@@ -6336,6 +6336,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/js-yaml@npm:^4.0.9":
+  version: 4.0.9
+  resolution: "@types/js-yaml@npm:4.0.9"
+  checksum: e5e5e49b5789a29fdb1f7d204f82de11cb9e8f6cb24ab064c616da5d6e1b3ccfbf95aa5d1498a9fbd3b9e745564e69b4a20b6c530b5a8bbb2d4eb830cda9bc69
+  languageName: node
+  linkType: hard
+
 "@types/jsdom@npm:^20.0.0":
   version: 20.0.1
   resolution: "@types/jsdom@npm:20.0.1"
@@ -8852,6 +8859,7 @@ __metadata:
     "@types/express-session": ^1.17.7
     "@types/http-proxy-middleware": ^1.0.0
     "@types/jest": ^29.5.12
+    "@types/js-yaml": ^4.0.9
     "@types/luxon": ^3.4.2
     "@types/node": ^22.0.0
     "@types/nunjucks": ^3.2.6
@@ -8881,6 +8889,7 @@ __metadata:
     jest: ^29.7
     jest-environment-jsdom: ^29.7
     jest-preset-angular: ^14.1.1
+    js-yaml: ^4.1.0
     junit-report-merger: ^7.0.0
     lodash: ^4.17.21
     luxon: ^3.4.4

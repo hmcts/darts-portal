@@ -2,7 +2,6 @@
   "node-env": "development",
   "port": 3000,
   "hostname": "http://localhost:3000",
-  "version": "unknown",
   "darts-api": {
     "url": "http://localhost:4550"
   },

@@ -2,7 +2,6 @@
   "node-env": "NODE_ENV",
   "port": "DARTS_PORTAL_PORT",
   "hostname": "DARTS_PORTAL_URL",
-  "version": "PACKAGES_VERSION",
   "darts-api": {
     "url": "DARTS_API_URL"
   },
