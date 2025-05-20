@@ -6,15 +6,15 @@
   }
 
   @if (!data.caseFile?.isDataAnonymised) {
-    <app-tabs id="case-tabs">
-      <div *tab="'Hearings'">
+    <app-tabs id="case-tabs" [default]="tab()" (tabChange)="onTabChange($event.name)">
+      <div *tab="tabNames.hearings; screenReaderText: 'Case hearings tab'; id: 'hearings-tab'">
         <app-govuk-heading tag="h2" size="m">Hearings</app-govuk-heading>
         <app-case-hearings-table [hearings]="data.hearings" [caseId]="caseId()" [adminScreen]="true" />
       </div>
 
       <!-- <div *tab="'Audio'"></div> -->
 
-      <div *tab="'Events'; id: 'events-tab'">
+      <div *tab="tabNames.events; screenReaderText: 'Case events tab'; id: 'events-tab'">
         @if (events()) {
           <app-govuk-heading tag="h2" size="m">Events</app-govuk-heading>
           <app-case-events-table
@@ -31,7 +31,7 @@
         }
       </div>
 
-      <div *tab="'Transcripts'; id: 'transcripts-tab'">
+      <div *tab="tabNames.transcripts; screenReaderText: 'Case transcripts tab'; id: 'transcripts-tab'">
         <app-govuk-heading tag="h2" size="m">Transcripts</app-govuk-heading>
 
         <app-case-transcripts-table
@@ -43,7 +43,7 @@
 
       <!-- <div *tab="'Annotations'; id: 'annotations-tab'"></div> -->
 
-      <div *tab="'Additional case details'; id: 'additional-tab'">
+      <div *tab="tabNames.additional; screenReaderText: 'Additional case details tab'; id: 'additional-tab'">
         @if (data.caseFile) {
           <app-case-additional-details [caseFile]="data.caseFile"></app-case-additional-details>
         }
