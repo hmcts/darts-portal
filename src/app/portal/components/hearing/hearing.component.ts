@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, inject, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DeleteComponent } from '@common/delete/delete.component';
@@ -97,6 +97,8 @@ export class HearingComponent implements OnInit {
   tab = this.activeTabService.activeTabs()[this.screenId] ?? 'Events and Audio';
   selectedAnnotationsforDeletion: number[] = [];
   statusColours = transcriptStatusTagColours;
+
+  clearFormEmitter = new EventEmitter<void>();
 
   public transcripts$ = this.caseService.getHearingTranscripts(this.hearingId).pipe(
     map((transcript) => this.mappingService.mapTranscriptRequestToRows(transcript)),
@@ -240,11 +242,16 @@ export class HearingComponent implements OnInit {
     this.state = 'Default';
   }
 
+  private clearSelections() {
+    this.clearFormEmitter.emit();
+  }
+
   onOrderConfirm(requestObject: PostAudioRequest) {
     this.audioRequestService.requestAudio(requestObject).subscribe({
       next: (response: PostAudioResponse) => {
         this.requestId = response.request_id;
         this.state = 'OrderConfirmation';
+        this.clearSelections();
       },
       error: () => {
         this.state = 'OrderFailure';
