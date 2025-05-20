@@ -13,9 +13,12 @@
       <ng-template [tableBodyTemplate] let-row>
         <tr class="govuk-table__row">
           <td class="case_number whitespace-pre">
-            <a class="govuk-link" [routerLink]="adminPortal ? ['/admin', 'case', row.id] : ['/case', row.id]">{{
-              row.number
-            }}</a>
+            <a
+              class="govuk-link"
+              (click)="clearStoredTabs()"
+              [routerLink]="adminPortal ? ['/admin', 'case', row.id] : ['/case', row.id]"
+              >{{ row.number }}</a
+            >
           </td>
           <td class="courthouse">{{ row.courthouse }}</td>
           <td class="courtroom">{{ row.courtrooms | arrayDisplay }}</td>
