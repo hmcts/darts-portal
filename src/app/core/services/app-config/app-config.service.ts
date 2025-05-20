@@ -9,6 +9,7 @@ export interface AppConfig {
     emailAddress: string;
   };
   environment: string;
+  version: string;
   dynatrace: {
     scriptUrl: string;
   };

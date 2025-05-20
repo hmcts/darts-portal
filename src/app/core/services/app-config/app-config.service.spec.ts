@@ -26,6 +26,7 @@ describe('AppConfigService', () => {
         emailAddress: 'support@darts',
       },
       environment: 'development',
+      version: '0.0.1',
       dynatrace: { scriptUrl: 'script' },
       features: {
         manualDeletion: {
