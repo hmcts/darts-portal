@@ -70,6 +70,7 @@
             [userState]="userState"
             (audioRequest)="onAudioRequest($event)"
             (validationErrorEvent)="onValidationError($event)"
+            [clearFormEvent]="clearFormEmitter"
           ></app-request-playback-audio>
 
           <!-- Events & Audio Table-->
@@ -77,6 +78,7 @@
             [audio]="vm.audios"
             [events]="vm.events"
             (eventsSelect)="onEventsSelected($event)"
+            [clearFormEvent]="clearFormEmitter"
           ></app-events-and-audio>
         </div>
         <ng-container *ngIf="transcripts$ | async as transcripts">

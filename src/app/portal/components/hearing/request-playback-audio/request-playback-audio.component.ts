@@ -50,6 +50,7 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
   @Input() audios!: HearingAudio[];
   @Input() audioTimes: { startTime: DateTime; endTime: DateTime } | null = null;
   @Input() userState!: UserState;
+  @Input() clearFormEvent!: EventEmitter<void>;
   audioRequestForm: FormGroup;
   requestObj!: PostAudioRequest;
   @Output() audioRequest = new EventEmitter<PostAudioRequest>();
@@ -74,20 +75,13 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
       { validators: beforeTimeValidator }
     );
   }
-  ngOnInit(): void {
-    // Roles that allow selection of request type
-    this.requestTypeRequired =
-      this.userService.isCourthouseTranscriber(this.courthouseId) ||
-      this.userService.isAdmin() ||
-      this.userService.isSuperUser() ||
-      this.userService.isRCJAppeals();
 
-    if (this.requestTypeRequired) {
-      this.audioRequestForm.get('requestType')?.setValidators(Validators.required);
-    } else {
-      this.audioRequestForm.get('requestType')?.patchValue('PLAYBACK');
+  ngOnInit(): void {
+    if (this.clearFormEvent) {
+      this.clearFormEvent.subscribe(() => this.clearForm());
     }
-    this.audioRequestForm.get('requestType')?.updateValueAndValidity();
+
+    this.setRequestType();
 
     // Ensure validation runs when `requestType` changes, but preserve `endTime` errors
     this.audioRequestForm.get('requestType')?.valueChanges.subscribe(() => {
@@ -102,6 +96,41 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
         endTimeCtrl.setErrors(endTimeErrors);
       }
     });
+  }
+
+  setRequestType(): void {
+    // Roles that allow selection of request type
+    this.requestTypeRequired =
+      this.userService.isCourthouseTranscriber(this.courthouseId) ||
+      this.userService.isAdmin() ||
+      this.userService.isSuperUser() ||
+      this.userService.isRCJAppeals();
+
+    if (this.requestTypeRequired) {
+      this.audioRequestForm.get('requestType')?.setValidators(Validators.required);
+    } else {
+      this.audioRequestForm.get('requestType')?.patchValue('PLAYBACK');
+    }
+
+    this.audioRequestForm.get('requestType')?.updateValueAndValidity();
+  }
+
+  private clearForm(): void {
+    this.audioRequestForm.reset();
+
+    this.audioRequestForm.get('requestType')?.setErrors(null);
+    this.audioRequestForm.get('startTime')?.setErrors(null);
+    this.audioRequestForm.get('endTime')?.setErrors(null);
+    this.audioRequestForm.setErrors(null);
+
+    this.audioRequestForm.get('startTime')?.updateValueAndValidity();
+    this.audioRequestForm.get('endTime')?.updateValueAndValidity();
+    this.audioRequestForm.get('requestType')?.updateValueAndValidity();
+
+    this.isSubmitted = false;
+    this.errorSummary = [];
+
+    this.validationErrorEvent.emit([]);
   }
 
   get f() {
