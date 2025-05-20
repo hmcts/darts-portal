@@ -125,7 +125,7 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
 
     this.audioRequestForm.get('startTime')?.updateValueAndValidity();
     this.audioRequestForm.get('endTime')?.updateValueAndValidity();
-    this.audioRequestForm.get('requestType')?.updateValueAndValidity();
+    this.setRequestType();
 
     this.isSubmitted = false;
     this.errorSummary = [];
