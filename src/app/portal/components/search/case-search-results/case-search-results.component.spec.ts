@@ -42,4 +42,24 @@ describe('ResultsComponent', () => {
     component.ngOnChanges();
     expect(component.caption).toBe('2 results');
   });
+
+  describe('clearStoredTabs', () => {
+    it('should call clearActiveTab with "admin-case-details" when adminPortal is true', () => {
+      const clearSpy = jest.spyOn(component.activeTabService, 'clearActiveTab');
+      component.adminPortal = true;
+
+      component.clearStoredTabs();
+
+      expect(clearSpy).toHaveBeenCalledWith('admin-case-details');
+    });
+
+    it('should call clearActiveTab with "case" when adminPortal is false', () => {
+      const clearSpy = jest.spyOn(component.activeTabService, 'clearActiveTab');
+      component.adminPortal = false;
+
+      component.clearStoredTabs();
+
+      expect(clearSpy).toHaveBeenCalledWith('case');
+    });
+  });
 });
