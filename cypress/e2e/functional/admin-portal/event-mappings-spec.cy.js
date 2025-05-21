@@ -221,7 +221,7 @@ describe('Admin - Event mappings screen', () => {
       cy.get('.govuk-heading-l').contains('You cannot delete this event mapping');
       cy.get('.govuk-body').contains('This event mapping has been used and can no longer be deleted.');
       cy.get('.govuk-body').contains(
-        `You can make changes and create a new version, or you can select the event handler 'No mapping'.`
+        `You can make changes and create a new version, or you can select the event handler 'Darts Event Null Handler'.`
       );
 
       cy.get('.govuk-link').contains('Go back').click();
