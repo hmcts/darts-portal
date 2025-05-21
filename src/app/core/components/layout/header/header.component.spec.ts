@@ -2,13 +2,13 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Router, provideRouter } from '@angular/router';
+import { FeatureFlagService } from '@services/app-config/feature-flag.service';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
 import { AuthService } from '@services/auth/auth.service';
 import { CountNotificationService } from '@services/count-notification/count-notification.service';
 import { UserService } from '@services/user/user.service';
 import { of } from 'rxjs';
 import { HeaderComponent } from './header.component';
-import { FeatureFlagService } from '@services/app-config/feature-flag.service';
 
 @Component({ template: '' })
 class DummyComponent {}
@@ -63,7 +63,11 @@ describe('HeaderComponent', () => {
     expect(fakeAuthService.getAuthenticated).toHaveBeenCalled();
   });
 
-  it('should set unread audio count', () => {
+  it('should set unread audio count', async () => {
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
     const unreadCountElement: HTMLSpanElement = fixture.debugElement.query(
       By.css('#unreadAudioCountNotifications')
     ).nativeElement;
@@ -94,7 +98,10 @@ describe('HeaderComponent', () => {
       fixture.detectChanges();
     });
 
-    it('show admin navigation', () => {
+    it('show admin navigation', async () => {
+      fixture.detectChanges();
+      await fixture.whenStable();
+
       const adminNav = fixture.debugElement.query(By.css('#admin-nav'));
       expect(adminNav).toBeTruthy();
     });
@@ -159,7 +166,10 @@ describe('HeaderComponent', () => {
       fixture.detectChanges();
     });
 
-    it('show admin navigation', () => {
+    it('show admin navigation', async () => {
+      fixture.detectChanges();
+      await fixture.whenStable();
+
       const adminNav = fixture.debugElement.query(By.css('#admin-nav'));
       expect(adminNav).toBeTruthy();
     });
