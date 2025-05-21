@@ -4641,14 +4641,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ministryofjustice/frontend@npm:4.0.0":
-  version: 4.0.0
-  resolution: "@ministryofjustice/frontend@npm:4.0.0"
+"@ministryofjustice/frontend@npm:4.0.2":
+  version: 4.0.2
+  resolution: "@ministryofjustice/frontend@npm:4.0.2"
   peerDependencies:
     govuk-frontend: 5.x
     jquery: 3.x
     moment: 2.x
-  checksum: 203a8e02b6d3f39344372cc54532a4a2da23c67fd771e5d334a2d6c567406e67807168c3e9cfc21c145f657fae51465adfec35c6e27e2f83bd106dfd547416df
+  checksum: 0f72d2e959944e7fb6c6b7e28d55b0f0e56ed8227b17e93e4e7832425085b37f8fa05d494f6c35e072c91c98bdf5be7cc34decaf10509feb672af00055614cda
   languageName: node
   linkType: hard
 
@@ -8851,7 +8851,7 @@ __metadata:
     "@hmcts/nodejs-healthcheck": ^1.8.5
     "@hmcts/properties-volume": ^1.1.0
     "@microsoft/applicationinsights-web": ^3.2.2
-    "@ministryofjustice/frontend": 4.0.0
+    "@ministryofjustice/frontend": 4.0.2
     "@types/body-parser": ^1.19.5
     "@types/config": ^3.3.4
     "@types/cookie-parser": ^1.4.7
