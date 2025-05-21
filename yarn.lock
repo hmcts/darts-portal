@@ -4641,14 +4641,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ministryofjustice/frontend@npm:^4.0.0":
-  version: 4.0.2
-  resolution: "@ministryofjustice/frontend@npm:4.0.2"
+"@ministryofjustice/frontend@npm:4.0.0":
+  version: 4.0.0
+  resolution: "@ministryofjustice/frontend@npm:4.0.0"
   peerDependencies:
     govuk-frontend: 5.x
     jquery: 3.x
     moment: 2.x
-  checksum: 0f72d2e959944e7fb6c6b7e28d55b0f0e56ed8227b17e93e4e7832425085b37f8fa05d494f6c35e072c91c98bdf5be7cc34decaf10509feb672af00055614cda
+  checksum: 203a8e02b6d3f39344372cc54532a4a2da23c67fd771e5d334a2d6c567406e67807168c3e9cfc21c145f657fae51465adfec35c6e27e2f83bd106dfd547416df
   languageName: node
   linkType: hard
 
@@ -8851,7 +8851,7 @@ __metadata:
     "@hmcts/nodejs-healthcheck": ^1.8.5
     "@hmcts/properties-volume": ^1.1.0
     "@microsoft/applicationinsights-web": ^3.2.2
-    "@ministryofjustice/frontend": ^4.0.0
+    "@ministryofjustice/frontend": 4.0.0
     "@types/body-parser": ^1.19.5
     "@types/config": ^3.3.4
     "@types/cookie-parser": ^1.4.7
@@ -8881,7 +8881,7 @@ __metadata:
     eslint: ^9.5
     express: ^5.0.1
     express-session: ^1.18.0
-    govuk-frontend: ^5.4.0
+    govuk-frontend: ^5.9.1
     http-proxy-middleware: ^3.0.5
     husky: ^9.0.0
     i: ^0.3.7
@@ -11070,7 +11070,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"govuk-frontend@npm:^5.4.0":
+"govuk-frontend@npm:^5.9.1":
   version: 5.10.1
   resolution: "govuk-frontend@npm:5.10.1"
   checksum: 797046af4305191ae6a314337bac40cfed817b051e0f3efc16f37bb6d149a71b522ce54bc6bb8190ca780a9e5c04bd709c25c4cb13c34f8bf577b19cc6af2a4e
