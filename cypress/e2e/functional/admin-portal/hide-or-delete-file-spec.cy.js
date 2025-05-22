@@ -71,7 +71,7 @@ describe('Admin - Hide or delete file', () => {
       cy.get('.govuk-button').contains('Continue').click();
       cy.a11y();
 
-      cy.get('.caption.govuk-caption-l').contains('Transcript file');
+      cy.get('.caption.govuk-caption-l').contains('Transcript document ID');
       cy.get('.govuk-heading-l').contains('0');
     });
   });
