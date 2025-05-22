@@ -44,6 +44,7 @@ export class ChangeTranscriptStatusComponent implements OnInit {
     const comments = String(this.form.controls.comments.value);
 
     this.transcriptionAdminService.updateTranscriptionStatus(this.transcriptId, statusId, comments).subscribe(() => {
+      this.transcriptionAdminService.fetchNewTranscriptions.set(true);
       this.router.navigate(['/admin/transcripts', this.transcriptId], { queryParams: { updatedStatus: true } });
     });
   }

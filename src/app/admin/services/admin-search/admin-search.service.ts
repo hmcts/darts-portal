@@ -66,6 +66,11 @@ export class AdminSearchService {
   searchError = signal<string | null>(null);
   isLoading = signal<boolean>(false);
 
+  // TO DO: Implement fetchNewCases setting when admin case retention page is introduced
+  fetchNewCases = signal(false);
+  fetchNewEvents = signal(false);
+  fetchNewAudio = signal(false);
+
   getCases(formValues: AdminSearchFormValues): Observable<AdminCaseSearchResult[]> {
     const requestBody = this.mapAdminSearchFormValuesToSearchRequest(formValues);
     this.logSearchEvent(SearchType.CASE, requestBody);

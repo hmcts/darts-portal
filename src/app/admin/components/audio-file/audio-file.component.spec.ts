@@ -3,8 +3,10 @@ import { FileHide } from '@admin-types/hidden-reasons/file-hide';
 import { HiddenReason } from '@admin-types/hidden-reasons/hidden-reason';
 import { AudioFile } from '@admin-types/index';
 import { DatePipe } from '@angular/common';
+import { provideHttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
+import { AdminSearchService } from '@services/admin-search/admin-search.service';
 import { CaseService } from '@services/case/case.service';
 import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
 import { TransformedMediaService } from '@services/transformed-media/transformed-media.service';
@@ -167,7 +169,14 @@ describe('AudioFileComponent', () => {
           provide: TranscriptionAdminService,
           useValue: { getHiddenReason: jest.fn().mockReturnValue(of({ displayName: 'because of reasons' })) },
         },
+        {
+          provide: AdminSearchService,
+          useValue: {
+            fetchNewAudio: { set: jest.fn() },
+          },
+        },
         DatePipe,
+        provideHttpClient(),
       ],
     });
 
@@ -340,6 +349,29 @@ describe('AudioFileComponent', () => {
   });
 
   describe('hideOrUnhideFile', () => {
+    it('should set fetchNewAudio to true after unhiding the file', fakeAsync(() => {
+      const setFetchNewAudioSpy = jest.spyOn(component.searchService.fetchNewAudio, 'set');
+
+      const file = {
+        ...audioFile,
+        isHidden: true,
+        adminAction: {
+          ...audioFile.adminAction,
+          isMarkedForManualDeletion: false,
+        },
+      } as AudioFile;
+
+      jest
+        .spyOn(component.transformedMediaService, 'checkAssociatedAudioExists')
+        .mockReturnValue(of({ exists: false, audioFile: [], media: [] }));
+
+      fixture.detectChanges();
+      component.hideOrUnhideFile(file);
+      tick();
+
+      expect(setFetchNewAudioSpy).toHaveBeenCalledWith(true);
+    }));
+
     it('should route to associated audio unhide component if file has associated media', () => {
       const routerSpy = jest.spyOn(component.router, 'navigate');
       jest

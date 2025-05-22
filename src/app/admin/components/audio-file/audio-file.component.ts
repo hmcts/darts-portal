@@ -12,6 +12,7 @@ import { HiddenFileBannerComponent } from '@common/hidden-file-banner/hidden-fil
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { TabDirective } from '@directives/tab.directive';
 import { ActiveTabService } from '@services/active-tab/active-tab.service';
+import { AdminSearchService } from '@services/admin-search/admin-search.service';
 import { CaseService } from '@services/case/case.service';
 import { HistoryService } from '@services/history/history.service';
 import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
@@ -58,6 +59,8 @@ export class AudioFileComponent {
   transcriptionAdminService = inject(TranscriptionAdminService);
   historyService = inject(HistoryService);
   activeTabService = inject(ActiveTabService);
+  searchService = inject(AdminSearchService);
+
   url = inject(Router).url;
 
   tab = computed(() => this.activeTabService.activeTabs()[this.activeTabKey] ?? this.tabNames.basic);
@@ -196,6 +199,8 @@ export class AudioFileComponent {
           })
         )
         .subscribe(() => {
+          this.searchService.fetchNewAudio.set(true);
+
           this.data$ = forkJoin({
             audioFile: this.getAudioFile(),
             associatedCases: this.associatedCases$,
