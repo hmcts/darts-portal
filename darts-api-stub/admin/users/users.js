@@ -6,7 +6,7 @@ const { DateTime, Settings } = require('luxon');
 
 Settings.defaultZone = 'utc';
 
-generateSecurityGroupIds = (id, numberOfSecurityGroups) => {
+const generateSecurityGroupIds = (id, numberOfSecurityGroups) => {
   if (id <= numberOfSecurityGroups) {
     // first user has [1], the second user has [1,2], the third user has [1,2,3], etc.
     return Array.from({ length: id }, (_, i) => i + 1);
@@ -27,7 +27,7 @@ const DEFAULT_USERS = stubUsers.map((stubUser) => {
       : undefined,
     created_at: DateTime.fromISO('2020-01-01T00:00:00Z').plus({ days: stubUser.userState.userId * 10 }),
     full_name: stubUser.name,
-    email_address: stubUser.userState.userName,
+    email_address: stubUser.userState.email_address,
     active: stubUser.active,
     security_group_ids: generateSecurityGroupIds(stubUser.userState.userId, defaultSecurityGroups.length),
     rolled_back_transcript_requests: [1, 2, 3],
