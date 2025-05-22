@@ -172,10 +172,16 @@
   </div>
 </header>
 
-@if (isAuthenticated && (isVisible$ | async)) {
-  @if (isAdminNavigation()) {
-    <app-admin-navigation />
-  } @else {
-    <app-portal-navigation />
+@if (isVisible$ | async; as isVisible) {
+  @if (isVisible && isAuthenticated) {
+    @if (isAdminNavigation()) {
+      @defer {
+        <app-admin-navigation />
+      }
+    } @else {
+      @defer {
+        <app-portal-navigation />
+      }
+    }
   }
 }
