@@ -51,12 +51,16 @@ export class AssignGroupsComponent implements OnInit, OnDestroy {
     const selectedGroupIds = selectedGroups.map((group) => group.id);
     const usersHiddenGroupIds = this.usersHiddenGroups.map((group) => group.id);
 
+    const currentAssignedGroupIds = this.user.securityGroupIds ?? [];
+
+    const newGroupIds = selectedGroupIds.filter((id) => !currentAssignedGroupIds.includes(id));
+
     // put the hidden groups back in
     const groupsToAssign = selectedGroupIds.concat(usersHiddenGroupIds);
 
     this.userAdminService.assignGroups(this.user.id, groupsToAssign).subscribe(() =>
       this.router.navigate(['admin', 'users', this.user.id], {
-        queryParams: { assigned: selectedGroupIds.length, tab: 'Groups' },
+        queryParams: { assigned: newGroupIds.length, tab: 'Groups' },
       })
     );
   }
