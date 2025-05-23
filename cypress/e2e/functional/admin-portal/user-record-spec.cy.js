@@ -311,7 +311,7 @@ describe('Admin - User record screen', () => {
 
       cy.get('#assign-button').click();
 
-      cy.get('app-govuk-banner').should('contain', 'Assigned 3 groups');
+      cy.get('app-govuk-banner').should('contain', 'Assigned 1 group');
 
       cy.tableRowShouldContain('Judiciary', 'Approver');
       cy.tableRowShouldContain('Opus Transcribers', 'Transcriber');
