@@ -193,7 +193,7 @@ describe('Admin - Hearing file screen', () => {
     cy.contains('#transcripts-tab', 'Transcripts').click();
 
     cy.get('table.govuk-table thead tr').within(() => {
-      cy.get('th').eq(0).should('contain.text', 'Request ID');
+      cy.get('th').eq(0).should('contain.text', 'Transcript ID');
       cy.get('th').eq(1).should('contain.text', 'Type');
       cy.get('th').eq(2).should('contain.text', 'Requested by');
       cy.get('th').eq(3).should('contain.text', 'Requested on');
