@@ -188,9 +188,29 @@ describe('CaseSearchFormComponent', () => {
       expect(component.onSubmit).toHaveBeenCalled();
     });
 
-    it('call error message service if form is not dirty', () => {
-      const errorMsgServiceSpy = jest.spyOn(TestBed.inject(ErrorMessageService), 'setErrorMessage');
+    it('should call error message service if form values have not changed', () => {
+      const errorMsgService = TestBed.inject(ErrorMessageService);
+      const errorMsgServiceSpy = jest.spyOn(errorMsgService, 'setErrorMessage');
+
+      const formData = {
+        caseNumber: '',
+        courthouses: [],
+        courtroom: '',
+        hearingDate: {
+          type: '',
+          specific: '',
+          from: '',
+          to: '',
+        },
+        judgeName: '',
+        defendantName: '',
+        eventTextContains: '',
+      };
+
+      component.form.setValue(formData);
       component.form.markAsPristine();
+
+      component.formValues.set(formData);
 
       component.onSubmit();
 

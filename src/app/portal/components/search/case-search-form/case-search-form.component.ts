@@ -104,8 +104,9 @@ export class CaseSearchFormComponent implements OnInit {
     }
 
     // Prevent service call being spammed with no form values
-    if (!this.form.dirty) {
-      //Manually set ErrorMessage for this case
+    const hasChanged = JSON.stringify(this.form.value) !== JSON.stringify(this.formValues());
+
+    if (!hasChanged) {
       this.errorMsgService.setErrorMessage({ detail: { type: 'CASE_101' }, status: 204, display: 'COMPONENT' });
       return;
     }
