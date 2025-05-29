@@ -188,37 +188,55 @@ describe('CaseSearchFormComponent', () => {
       expect(component.onSubmit).toHaveBeenCalled();
     });
 
-    it('should call error message service if form values have not changed', () => {
-      const errorMsgService = TestBed.inject(ErrorMessageService);
-      const errorMsgServiceSpy = jest.spyOn(errorMsgService, 'setErrorMessage');
+    it('should trigger CASE_101 error if form is empty', () => {
+      const errorSpy = jest.spyOn(TestBed.inject(ErrorMessageService), 'setErrorMessage');
 
-      const formData = {
-        caseNumber: '',
-        courthouses: [],
-        courtroom: '',
-        hearingDate: {
-          type: '',
-          specific: '',
-          from: '',
-          to: '',
-        },
-        judgeName: '',
-        defendantName: '',
-        eventTextContains: '',
-      };
-
-      component.form.setValue(formData);
-      component.form.markAsPristine();
-
-      component.formValues.set(formData);
+      component.form.setValue({
+        ...defaultFormValues,
+        hearingDate: { type: '', specific: '', from: '', to: '' },
+      });
 
       component.onSubmit();
 
-      expect(errorMsgServiceSpy).toHaveBeenCalledWith({
+      expect(errorSpy).toHaveBeenCalledWith({
         detail: { type: 'CASE_101' },
         status: 204,
         display: 'COMPONENT',
       });
+    });
+
+    it('should skip duplicate submissions if form is unchanged', () => {
+      const emitSpy = jest.spyOn(component.searchOutput, 'emit');
+
+      const formData = {
+        ...mockFormValues,
+        hearingDate: { type: '', specific: '', from: '', to: '' },
+      };
+
+      component.form.setValue(formData);
+      component.lastSearch.set(formData);
+
+      component.onSubmit();
+
+      expect(emitSpy).not.toHaveBeenCalled();
+    });
+
+    it('should allow submission if form values change', () => {
+      const emitSpy = jest.spyOn(component.searchOutput, 'emit');
+
+      const initial = {
+        ...mockFormValues,
+        caseNumber: 'ABC123',
+        hearingDate: { type: '', specific: '', from: '', to: '' },
+      };
+      const updated = { ...initial, caseNumber: 'XYZ123' };
+
+      component.lastSearch.set(initial);
+      component.form.setValue(updated);
+
+      component.onSubmit();
+
+      expect(emitSpy).toHaveBeenCalledWith(updated);
     });
 
     it('should emit form values when form is valid and submitted', () => {

@@ -1,5 +1,5 @@
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
-import { Component, computed, DestroyRef, inject, input, model, OnInit, output } from '@angular/core';
+import { Component, computed, DestroyRef, inject, input, model, OnInit, output, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AutoCompleteComponent, AutoCompleteItem } from '@common/auto-complete/auto-complete.component';
@@ -35,6 +35,8 @@ export class CaseSearchFormComponent implements OnInit {
   courthouseFormService = inject(CourthouseFormService);
 
   formValues = model<CaseSearchFormValues>(defaultFormValues);
+  lastSearch = signal<CaseSearchFormValues | null>(null);
+
   courthouses = input<Courthouse[]>([]);
 
   isSubmitted = model(false);
@@ -103,15 +105,42 @@ export class CaseSearchFormComponent implements OnInit {
       return;
     }
 
-    // Prevent service call being spammed with no form values
-    const hasChanged = JSON.stringify(this.form.value) !== JSON.stringify(this.formValues());
+    const formData = this.form.value as CaseSearchFormValues;
 
-    if (!hasChanged) {
-      this.errorMsgService.setErrorMessage({ detail: { type: 'CASE_101' }, status: 204, display: 'COMPONENT' });
+    if (this.isFormEmpty(formData)) {
+      this.errorMsgService.setErrorMessage({
+        detail: { type: 'CASE_101' },
+        status: 204,
+        display: 'COMPONENT',
+      });
       return;
     }
 
-    this.searchOutput.emit(this.form.value as CaseSearchFormValues);
+    if (this.hasSameSearch(formData)) {
+      return;
+    }
+
+    this.lastSearch.set(formData);
+    this.searchOutput.emit(formData);
+  }
+
+  private hasSameSearch(formData: CaseSearchFormValues): boolean {
+    const previous = this.lastSearch();
+    return JSON.stringify(previous) === JSON.stringify(formData);
+  }
+
+  private isFormEmpty(formData: CaseSearchFormValues): boolean {
+    return (
+      !formData.caseNumber?.trim() &&
+      (!formData.courthouses || formData.courthouses.length === 0) &&
+      !formData.courtroom?.trim() &&
+      !formData.judgeName?.trim() &&
+      !formData.defendantName?.trim() &&
+      !formData.eventTextContains?.trim() &&
+      !formData.hearingDate?.specific?.trim() &&
+      !formData.hearingDate?.from?.trim() &&
+      !formData.hearingDate?.to?.trim()
+    );
   }
 
   toggleAdvancedSearch(event: Event) {
