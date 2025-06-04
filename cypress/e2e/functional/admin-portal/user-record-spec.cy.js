@@ -14,6 +14,10 @@ Cypress.Commands.add('checkGroup', (groupName) => {
   cy.get('.govuk-table__body').contains(groupName).parents('tr').find('input[type="checkbox"]').check();
 });
 
+Cypress.Commands.add('uncheckGroup', (groupName) => {
+  cy.get('.govuk-table__body').contains(groupName).parents('tr').find('input[type="checkbox"]').uncheck();
+});
+
 describe('Admin - User record screen', () => {
   beforeEach(() => {
     cy.login('admin');
@@ -337,9 +341,40 @@ describe('Admin - User record screen', () => {
 
       cy.get('app-govuk-banner').should('contain', 'Removed 1 group');
 
-      cy.get('.govuk-table__body').contains('Judiciary').should('not.exist');
-      cy.tableRowShouldContain('Opus Transcribers', 'Transcriber');
+      cy.tableRowShouldContain('Opus Transcriber', 'Transcriber');
+    });
+
+    it('Assigns and removes groups from user', () => {
+      cy.get('app-user-search-results').should('contain', 'Fallon Sherrock');
+      cy.contains('Fallon Sherrock').parents('tr').contains('View').click();
+
+      cy.get('#groups-tab').click();
+
+      cy.get('button').contains('Assign groups').click();
+
+      cy.get('h1').should('contain', 'Assign groups');
+      cy.get('h2').should('contain', '2 groups selected');
+
+      cy.selectedListShouldContain('Judiciary', 'Approver');
+      cy.selectedListShouldContain('Opus Transcribers', 'Transcriber');
+
+      cy.checkGroup('Super user (DARTS portal)');
+      cy.checkGroup('Cardiff Requesters');
+      cy.uncheckGroup('Opus Transcribers');
+
+      cy.a11y();
+
+      cy.get('#assign-button').click();
+
+      cy.get('app-govuk-banner').should('contain', 'Assigned 2 groups and removed 1 group');
+
+      cy.tableRowShouldContain('Judiciary', 'Approver');
+      cy.tableRowShouldContain('Cardiff Requesters', 'Requester');
       cy.tableRowShouldContain('Super user (DARTS portal)', 'Judge');
+    });
+
+    afterEach(() => {
+      cy.request('/api/admin/users/reset');
     });
   });
 

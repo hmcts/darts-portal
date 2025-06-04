@@ -63,7 +63,8 @@ export class AssignGroupsComponent implements OnInit, OnDestroy {
     const queryParams: Record<string, string | number> = { tab: 'Groups' };
     if (addedGroups.length > 0) {
       queryParams['assigned'] = addedGroups.length;
-    } else if (removedGroups.length > 0) {
+    }
+    if (removedGroups.length > 0) {
       queryParams['groupsRemoved'] = removedGroups.length;
     }
 
