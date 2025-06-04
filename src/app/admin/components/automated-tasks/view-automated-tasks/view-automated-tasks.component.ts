@@ -68,11 +68,15 @@ export class ViewAutomatedTasksComponent implements OnDestroy {
 
   private addUserDetailsToTask(task: AutomatedTaskDetails): Observable<AutomatedTaskDetails> {
     return this.userAdminService.getUsersById([task.createdBy, task.lastModifiedBy]).pipe(
-      map(([createdBy, lastModifiedBy]) => ({
-        ...task,
-        createdByFullName: createdBy?.fullName || 'System',
-        modifiedByFullName: lastModifiedBy?.fullName || createdBy?.fullName || 'System',
-      }))
+      map((users) => {
+        const createdBy = users.find((u) => u.id === task.createdBy);
+        const lastModifiedBy = users.find((u) => u.id === task.lastModifiedBy);
+        return {
+          ...task,
+          createdByFullName: createdBy?.fullName || 'System',
+          modifiedByFullName: lastModifiedBy?.fullName || createdBy?.fullName || 'System',
+        };
+      })
     );
   }
 
