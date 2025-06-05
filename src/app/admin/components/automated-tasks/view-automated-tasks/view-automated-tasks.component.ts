@@ -73,8 +73,8 @@ export class ViewAutomatedTasksComponent implements OnDestroy {
         const lastModifiedBy = users.find((u) => u.id === task.lastModifiedBy);
         return {
           ...task,
-          createdByFullName: createdBy?.fullName || 'System',
-          modifiedByFullName: lastModifiedBy?.fullName || createdBy?.fullName || 'System',
+          createdByFullName: createdBy?.fullName ?? 'System',
+          modifiedByFullName: lastModifiedBy?.fullName ?? createdBy?.fullName ?? 'System',
         };
       })
     );
