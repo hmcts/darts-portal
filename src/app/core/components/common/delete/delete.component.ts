@@ -18,6 +18,8 @@ export class DeleteComponent implements OnInit, OnDestroy {
   @Output() confirm = new EventEmitter();
   @Output() cancelled = new EventEmitter();
 
+  isDeleting = false;
+
   headerService = inject(HeaderService);
 
   ngOnInit(): void {
@@ -26,5 +28,15 @@ export class DeleteComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     setTimeout(() => this.headerService.showNavigation(), 0);
+  }
+
+  onConfirm(): void {
+    this.isDeleting = true;
+    this.confirm.emit();
+  }
+
+  onCancel(): void {
+    this.isDeleting = false;
+    this.cancelled.emit();
   }
 }
