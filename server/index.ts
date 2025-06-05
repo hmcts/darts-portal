@@ -19,7 +19,7 @@ async function stopServer() {
   // small delay before closing the server
   // allowing the readiness check to fail and traffic to the pod
   if (NODE_ENV === 'production') {
-    await new Promise((res) => setTimeout(res, 20000));
+    await new Promise((res) => setTimeout(res, 60000));
   }
   console.info('Server closing down');
   server.close(async () => {
