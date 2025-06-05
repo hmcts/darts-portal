@@ -332,7 +332,7 @@ describe('TranscriptionsComponent', () => {
     expect(table).toBeTruthy();
   });
 
-  it('No tabs, approver table if APPROVER only', () => {
+  it('Tabbed view if APPROVER only', () => {
     fixture.detectChanges();
 
     component.isRequester = false;
@@ -342,8 +342,23 @@ describe('TranscriptionsComponent', () => {
 
     const compiled = fixture.nativeElement;
     const tabs = compiled.querySelector('app-tabs');
-    const table = fixture.nativeElement.querySelector('#approver-table');
-    expect(tabs).toBeFalsy();
+    const table = compiled.querySelector('#in-progress-table');
+    expect(tabs).toBeTruthy();
+    expect(table).toBeTruthy();
+  });
+
+  it('Tabbed view if APPROVER and JUDGE', () => {
+    fixture.detectChanges();
+
+    component.isJudge = true;
+    component.isApprover = true;
+
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement;
+    const tabs = compiled.querySelector('app-tabs');
+    const table = compiled.querySelector('#in-progress-table');
+    expect(tabs).toBeTruthy();
     expect(table).toBeTruthy();
   });
 
