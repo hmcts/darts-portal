@@ -1,4 +1,7 @@
 export const AdminSearchFormErrorMessages = {
+  caseId: {
+    maxlength: 'Case ID must be less than or equal to 32 characters',
+  },
   courtroom: {
     maxlength: 'Courtroom name must be less than or equal to 64 characters',
   },

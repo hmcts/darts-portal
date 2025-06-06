@@ -49,7 +49,7 @@ export class SearchFormComponent implements OnInit {
 
   form = this.fb.nonNullable.group({
     courthouses: new FormControl<Courthouse[]>([]),
-    caseId: [''],
+    caseId: ['', optionalMaxLengthValidator(32)],
     courtroom: ['', optionalMaxLengthValidator(64)],
     hearingDate: this.fb.nonNullable.group(
       {
