@@ -141,7 +141,7 @@ export const PORTAL_ROUTES: Routes = [
       ),
   },
   {
-    path: 'transcriptions/transcripts/:transcriptId',
+    path: 'transcriptions/:transcriptId',
     title: 'DARTS View Transcript File',
     loadComponent: () =>
       import('../portal/components/transcriptions/view-transcript/view-transcript.component').then(

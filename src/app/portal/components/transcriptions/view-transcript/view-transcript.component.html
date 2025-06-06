@@ -4,7 +4,7 @@
     <app-case-hearing-transcript [transcript]="t" />
   }
 
-  @if (router.url.includes('transcriptions/transcripts/')) {
+  @if (router.url.includes('transcriptions/')) {
     @if (isTranscriptRejected()) {
       <app-rejected-transcript [transcript]="t" />
     } @else {
