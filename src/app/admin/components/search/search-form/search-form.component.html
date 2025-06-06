@@ -26,6 +26,10 @@
 
   <div class="govuk-form-group">
     <label class="govuk-label" for="caseId"> Case ID </label>
+    <!-- Inline Validation Errors -->
+    @for (error of getFormControlErrorMessages('caseId'); track error) {
+      <p class="govuk-error-message case-id-error"><span class="govuk-visually-hidden">Error:</span> {{ error }}</p>
+    }
     <input formControlName="caseId" class="govuk-input govuk-input--width-20" id="caseId" name="caseId" type="text" />
   </div>
 

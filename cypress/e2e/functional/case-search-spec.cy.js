@@ -5,6 +5,7 @@ import './commands';
 
 const TOMORROW = DateTime.now().plus({ days: 1 }).startOf('day').toFormat('dd/MM/yyyy');
 
+const CASE_ID_LENGTH = 'Case ID must be less than or equal to 32 characters';
 const COURTHOUSE_MISSING = 'You must also enter a courthouse';
 const COURTHOUSE_LENGTH = 'Courtroom must be less than or equal to 64 characters';
 const DATE_INVALID = 'You have not entered a recognised date in the correct format (for example 31/01/2023)';
@@ -135,7 +136,15 @@ describe('Case search', () => {
     cy.get('h1').should('contain', 'Search for a case');
     cy.contains('Advanced search').click();
 
+    // case id length check
+    cy.get('#case_number').type('123456789012345678901234567890123'); //33 characters
+    cy.get('button').contains('Search').click();
+    cy.get('.case-number-error').should('contain', CASE_ID_LENGTH);
+    cy.get('.govuk-error-summary').should('contain', CASE_ID_LENGTH);
+    cy.get('a').contains('Clear search').click();
+
     // courtroom only
+    cy.contains('Advanced search').click();
     cy.get('#courtroom').type('3');
     cy.get('button').contains('Search').click();
     cy.get('.courthouse-error').should('contain', COURTHOUSE_MISSING);
