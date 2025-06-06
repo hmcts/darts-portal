@@ -40,7 +40,7 @@ export class CaseTranscriptsTableComponent {
   ];
 
   adminColumns = [
-    { name: 'Transcript ID', prop: 'id', sortable: true },
+    { name: 'Request ID', prop: 'id', sortable: true },
     { name: 'Courtroom', prop: 'courtroom', sortable: true },
     { name: 'Type', prop: 'type', sortable: true },
     { name: 'Requested on', prop: 'requestedOn', sortable: true },
