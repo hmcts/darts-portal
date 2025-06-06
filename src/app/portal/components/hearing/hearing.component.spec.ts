@@ -162,6 +162,7 @@ describe('HearingComponent', () => {
   const mockUser: Observable<UserState> = of({
     userId: 123,
     userName: 'localdev01',
+    email_address: 'localdev01@test.com',
     roles: [
       {
         roleId: 123,

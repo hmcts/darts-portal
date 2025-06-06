@@ -16,7 +16,8 @@ const stubUsers = [
     code: 'requester',
     userState: {
       userId: 1,
-      userName: 'eric.bristow@darts.local',
+      userName: 'Eric Bristow',
+      email_address: 'eric.bristow@darts.local',
       roles: [REQUESTER],
       isActive: true,
     },
@@ -27,7 +28,8 @@ const stubUsers = [
     code: 'approver',
     userState: {
       userId: 2,
-      userName: 'fallon.sherrock@darts.local',
+      userName: 'Fallon Sherrock',
+      email_address: 'fallon.sherrock@darts.local',
       roles: [APPROVER],
       isActive: true,
     },
@@ -38,7 +40,8 @@ const stubUsers = [
     code: 'requester-approver',
     userState: {
       userId: 3,
-      userName: 'michael.vangerwen@darts.local',
+      userName: 'Michael van Gerwen',
+      email_address: 'michael.vangerwen@darts.local',
       roles: [REQUESTER, APPROVER],
       isActive: true,
     },
@@ -49,7 +52,8 @@ const stubUsers = [
     code: 'transcriber',
     userState: {
       userId: 4,
-      userName: 'trina.gulliver@darts.local',
+      userName: 'Trina Gulliver',
+      email_address: 'trina.gulliver@darts.local',
       roles: [TRANSCRIBER],
       isActive: true,
     },
@@ -60,7 +64,8 @@ const stubUsers = [
     code: 'admin',
     userState: {
       userId: 5,
-      userName: 'phil.taylor@darts.local',
+      userName: 'Phil Taylor',
+      email_address: 'phil.taylor@darts.local',
       roles: [REQUESTER, APPROVER, TRANSCRIBER, SUPER_ADMIN, SUPER_USER],
       isActive: true,
     },
@@ -71,7 +76,8 @@ const stubUsers = [
     code: 'judge',
     userState: {
       userId: 6,
-      userName: 'nigel.justice@darts.local',
+      userName: 'Nigel Justice',
+      email_address: 'nigel.justice@darts.local',
       roles: [GLOBAL_JUDGE],
       isActive: true,
     },
@@ -82,7 +88,8 @@ const stubUsers = [
     code: 'judge-approver',
     userState: {
       userId: 7,
-      userName: 'martin.adams@darts.local',
+      userName: 'Martin Adams',
+      email_address: 'martin.adams@darts.local',
       roles: [JUDGE, APPROVER],
       isActive: true,
     },
@@ -93,7 +100,8 @@ const stubUsers = [
     code: 'admin-only',
     userState: {
       userId: 8,
-      userName: 'luke.littler@darts.local',
+      userName: 'Luke Littler',
+      email_address: 'luke.littler@darts.local',
       roles: [SUPER_ADMIN],
       isActive: true,
     },
@@ -104,7 +112,8 @@ const stubUsers = [
     code: 'non-active',
     userState: {
       userId: 9,
-      userName: 'peter.wright@darts.local',
+      userName: 'Peter Wright',
+      email_address: 'peter.wright@darts.local',
       roles: [],
       isActive: false,
     },
@@ -115,7 +124,8 @@ const stubUsers = [
     code: 'translation-qa',
     userState: {
       userId: 10,
-      userName: 'john.lowe@darts.local',
+      userName: 'John Lowe',
+      email_address: 'john.lowe@darts.local',
       roles: [TRANSLATION_QA],
       isActive: true,
     },
@@ -126,7 +136,8 @@ const stubUsers = [
     code: 'superuser',
     userState: {
       userId: 11,
-      userName: 'gary.anderson@darts.local',
+      userName: 'Gary Anderson',
+      email_address: 'gary.anderson@darts.local',
       roles: [SUPER_USER],
       isActive: true,
     },
@@ -138,7 +149,8 @@ const stubUsers = [
     code: 'rcj-appeals',
     userState: {
       userId: 10,
-      userName: 'dennis.priestley@darts.local',
+      userName: 'Dennis Priestley',
+      email_address: 'dennis.priestley@darts.local',
       roles: [RCJ_APPEALS],
       isActive: true,
     },
