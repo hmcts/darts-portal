@@ -1,7 +1,7 @@
 import { TransformedMediaAdmin } from '@admin-types/transformed-media/transformed-media-admin';
 import { TransformedMediaSearchFormValues } from '@admin-types/transformed-media/transformed-media-search-form.values';
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DeleteComponent } from '@common/delete/delete.component';
@@ -43,7 +43,7 @@ import {
   templateUrl: './search-transformed-media.component.html',
   styleUrl: './search-transformed-media.component.scss',
 })
-export class SearchTransformedMediaComponent {
+export class SearchTransformedMediaComponent implements OnInit {
   transformedMediaService = inject(TransformedMediaService);
   courthouseService = inject(CourthouseService);
   router = inject(Router);
@@ -70,6 +70,22 @@ export class SearchTransformedMediaComponent {
     { name: 'Requested by', prop: 'requestedBy', sortable: true },
     { name: 'Date requested', prop: 'requestedDate', sortable: true },
   ];
+
+  ngOnInit(): void {
+    this.fetchNewTransformedMedia();
+  }
+
+  //Used to fetch new transformed media and bypass caching if an update action has been performed, e.g. owner change
+  private fetchNewTransformedMedia() {
+    const shouldFetch = this.transformedMediaService.fetchNewResults();
+    const formValues = this.transformedMediaService.searchFormValues();
+    const hasBeenSubmitted = this.transformedMediaService.isSearchFormSubmitted();
+
+    if (shouldFetch && formValues && hasBeenSubmitted) {
+      this.onSearch(formValues);
+      this.transformedMediaService.fetchNewResults.set(false);
+    }
+  }
 
   onErrors(errors: ErrorSummaryEntry[]) {
     this.errors.set(errors);
