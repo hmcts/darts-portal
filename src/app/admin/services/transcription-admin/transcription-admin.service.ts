@@ -263,20 +263,21 @@ export class TranscriptionAdminService {
         : { value: status };
     };
 
-    const processAssignedTo = (assignedTo: AssignedTo | undefined) =>
-      assignedTo?.userId
-        ? [
+    const processAssignedTo = (assignedTo: AssignedTo) => {
+      return assignedTo.isSystemUser
+        ? assignedTo.fullName
+        : [
             {
-              href: `/admin/users/${assignedTo.userId}`,
-              value: assignedTo.fullName,
-              caption: assignedTo.email,
+              href: `/admin/users/${assignedTo?.userId}`,
+              value: assignedTo?.fullName,
+              caption: assignedTo?.email,
             },
-          ]
-        : 'Unassigned';
+          ];
+    };
 
     return {
       Status: processStatus(transcript.status),
-      'Last actioned by': processAssignedTo(transcript.assignedTo),
+      'Last actioned by': transcript.assignedTo?.userId ? processAssignedTo(transcript.assignedTo) : 'Unassigned',
       'Associated groups': processGroups(transcript.assignedGroups, transcript.status),
     };
   }
@@ -300,13 +301,15 @@ export class TranscriptionAdminService {
             ' - End time ' +
             this.luxonPipe.transform(transcript.transcriptionEndTs, 'HH:mm:ss')
           : '',
-      'Requested by': [
-        {
-          href: `/admin/users/${transcript.requestor?.userId}`,
-          value: transcript.requestor?.fullName,
-          caption: transcript.requestor?.email,
-        },
-      ],
+      'Requested by': transcript.requestor?.isSystemUser
+        ? transcript.requestor?.fullName
+        : [
+            {
+              href: `/admin/users/${transcript.requestor?.userId}`,
+              value: transcript.requestor?.fullName,
+              caption: transcript.requestor?.email,
+            },
+          ],
       Received: this.luxonPipe.transform(transcript.received, 'dd MMM yyyy HH:mm:ss'),
       'Approved on': transcript.approved
         ? this.luxonPipe.transform(transcript.approved, 'dd MMM yyyy HH:mm:ss')
@@ -520,6 +523,7 @@ export class TranscriptionAdminService {
       requestor: {
         fullName: transcription.requestor?.user_full_name,
         userId: transcription.requestor?.user_id,
+        isSystemUser: transcription.requestor?.is_system_user,
       },
     };
   }
