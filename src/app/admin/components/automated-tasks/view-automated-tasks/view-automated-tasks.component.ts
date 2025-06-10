@@ -74,7 +74,7 @@ export class ViewAutomatedTasksComponent implements OnDestroy {
         return {
           ...task,
           createdByFullName: createdBy?.fullName ?? 'System',
-          modifiedByFullName: lastModifiedBy?.fullName ?? createdBy?.fullName ?? 'System',
+          modifiedByFullName: lastModifiedBy?.fullName ?? 'System',
         };
       })
     );
