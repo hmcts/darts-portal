@@ -296,10 +296,21 @@ describe('Admin - Search screen', () => {
   });
 
   it('verifies search validation', () => {
+    //Test max length of 32 characters for Case ID field with a 33 character string
+    cy.get('#caseId').type('123456789012345678901234567890123');
+    cy.get('#confirm-button').click();
+
+    //Verify error message
+    cy.get('.case-id-error').should('exist').should('contain', 'Case ID must be less than or equal to 32 characters');
+    cy.get('.govuk-error-summary__list').should('contain', 'Case ID must be less than or equal to 32 characters');
+
     // Test max length of 64 characters for Courtroom field with a 65 character string
     cy.get('#courtroom').type(';hK+aySS}Q+b4@qrMczv9n.Kt0cHxNGr=#ZD%_&ugBg6h_qgy[vQ)TzH6@nZ?W45#');
 
     cy.get('#confirm-button').click();
+
+    cy.get('#caseId').clear();
+    cy.get('#caseId').type('123456');
 
     //Verify error message
     cy.get('.courtroom-error')

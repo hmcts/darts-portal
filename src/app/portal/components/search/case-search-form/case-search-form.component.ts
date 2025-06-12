@@ -58,7 +58,7 @@ export class CaseSearchFormComponent implements OnInit {
   CaseSearchFormErrorMessages = CaseSearchFormErrorMessages;
 
   form = this.fb.group({
-    caseNumber: [''],
+    caseNumber: ['', optionalMaxLengthValidator(32)],
     courthouses: new FormControl<Courthouse[]>([]),
     courtroom: ['', optionalMaxLengthValidator(64)],
     hearingDate: this.fb.group(

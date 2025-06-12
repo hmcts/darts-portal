@@ -1,9 +1,12 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <div class="govuk-form-group">
+  <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid('caseNumber')">
     <label class="govuk-label" for="case_number"> Case ID </label>
     <div id="caseNumber-hint" class="govuk-hint">
       Also known as a case reference or court reference. There should be no spaces.
     </div>
+    @for (error of getFieldErrorMessages('caseNumber'); track error) {
+      <p class="govuk-error-message case-number-error"><span class="govuk-visually-hidden">Error:</span> {{ error }}</p>
+    }
     <input
       formControlName="caseNumber"
       minlength="1"
