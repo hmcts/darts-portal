@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { EventsFacadeService } from '@facades/events/events-facade.service';
+import { AdminSearchService } from '@services/admin-search/admin-search.service';
 import { HeaderService } from '@services/header/header.service';
 import { switchMap } from 'rxjs';
 
@@ -17,6 +18,7 @@ import { switchMap } from 'rxjs';
 export class ObfuscateEventTextComponent implements OnInit {
   router = inject(Router);
   headerService = inject(HeaderService);
+  searchService = inject(AdminSearchService);
   eventsFacadeService = inject(EventsFacadeService);
 
   id = input(0, { transform: numberAttribute });
@@ -28,7 +30,10 @@ export class ObfuscateEventTextComponent implements OnInit {
   }
 
   onContinue() {
-    this.eventsFacadeService.obfuscateEventText(this.id()).subscribe(() => this.navigateBackToEvent());
+    this.eventsFacadeService.obfuscateEventText(this.id()).subscribe(() => {
+      this.searchService.fetchNewEvents.set(true);
+      this.navigateBackToEvent();
+    });
   }
 
   navigateBackToEvent() {

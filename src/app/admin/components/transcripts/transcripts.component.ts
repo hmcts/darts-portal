@@ -1,6 +1,6 @@
 import { TranscriptionSearchFormValues } from '@admin-types/transcription';
 import { AsyncPipe } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -37,7 +37,7 @@ import { SearchTranscriptsResultsComponent } from './search-transcripts-results/
     ValidationErrorSummaryComponent,
   ],
 })
-export class TranscriptsComponent {
+export class TranscriptsComponent implements OnInit {
   transcriptService = inject(TranscriptionAdminService);
   courthouseService = inject(CourthouseService);
   scrollService = inject(ScrollService);
@@ -113,6 +113,29 @@ export class TranscriptsComponent {
     this.completedResults$.subscribe(
       (results) => results && this.transcriptService.completedSearchResults.set(results)
     );
+  }
+
+  ngOnInit(): void {
+    this.fetchNewTranscripts(this.transcriptService.fetchNewTranscriptions(), 'TRANSCRIPTIONS');
+    this.fetchNewTranscripts(this.transcriptService.fetchNewCompletedTranscriptions(), 'COMPLETED_TRANSCRIPTIONS');
+  }
+
+  //Used to fetch new transcripts and bypass caching if an update action has been performed, e.g. transcript status change
+  private fetchNewTranscripts(fetchFlag: boolean, type: 'TRANSCRIPTIONS' | 'COMPLETED_TRANSCRIPTIONS') {
+    if (!fetchFlag) return;
+
+    const formValues = this.transcriptService.searchFormValues();
+    const hasBeenSubmitted = this.transcriptService.hasSearchFormBeenSubmitted$.getValue();
+
+    if (formValues && hasBeenSubmitted) {
+      this.search$.next(formValues);
+
+      if (type === 'TRANSCRIPTIONS') {
+        this.transcriptService.fetchNewTranscriptions.set(false);
+      } else {
+        this.transcriptService.fetchNewCompletedTranscriptions.set(false);
+      }
+    }
   }
 
   onSearch(values: TranscriptionSearchFormValues) {

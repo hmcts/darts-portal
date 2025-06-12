@@ -27,6 +27,7 @@ describe('ChangeOwnerTransformedMediaComponent', () => {
           provide: TransformedMediaService,
           useValue: {
             changeMediaRequestOwner: jest.fn().mockReturnValue(of({})),
+            fetchNewResults: { set: jest.fn() },
           },
         },
         {
