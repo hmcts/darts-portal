@@ -11,7 +11,13 @@ describe('UserService', () => {
   let httpMock: HttpTestingController;
   let router: Router;
 
-  const mockUserState: UserState = { userName: 'test@test.com', userId: 1, roles: [], isActive: true };
+  const mockUserState: UserState = {
+    userName: 'test@test.com',
+    email_address: 'test@test.com',
+    userId: 1,
+    roles: [],
+    isActive: true,
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -66,6 +72,7 @@ describe('UserService', () => {
     it('returns true if the user has the Transcriber role', () => {
       const transcriber: UserState = {
         userName: 'test@test.com',
+        email_address: 'test@test.com',
         userId: 1,
         roles: [
           {
@@ -98,6 +105,7 @@ describe('UserService', () => {
     it('returns true if the user has the Approver role', () => {
       const approver: UserState = {
         userName: '',
+        email_address: 'approver@test.com',
         userId: 1,
         roles: [
           {
@@ -124,6 +132,7 @@ describe('UserService', () => {
     it('returns true if the user has the Judge role', () => {
       const judge: UserState = {
         userName: '',
+        email_address: 'judge@test.com',
         userId: 1,
         roles: [
           {
@@ -150,6 +159,7 @@ describe('UserService', () => {
     it('returns true if the user has the Requester role', () => {
       const requester: UserState = {
         userName: '',
+        email_address: 'requester@test.com',
         userId: 1,
         roles: [
           {
@@ -176,6 +186,7 @@ describe('UserService', () => {
     it('returns true if the user has the Translation QA role', () => {
       const translationQA: UserState = {
         userName: '',
+        email_address: 'translationqa@test.com',
         userId: 1,
         roles: [
           {
@@ -202,6 +213,7 @@ describe('UserService', () => {
     it('returns true if the user has the Super Admin role', () => {
       const adminUser: UserState = {
         userName: '',
+        email_address: 'admin@test.com',
         userId: 1,
         roles: [
           {
@@ -227,6 +239,7 @@ describe('UserService', () => {
     it('returns false if the user has non-global Super Admin role', () => {
       const adminUser: UserState = {
         userName: '',
+        email_address: 'admin@test.com',
         userId: 1,
         roles: [
           {
@@ -248,6 +261,7 @@ describe('UserService', () => {
     it('returns true if the user has the Super User role', () => {
       const superUser: UserState = {
         userName: '',
+        email_address: 'superuser@test.com',
         userId: 1,
         roles: [
           {
@@ -273,6 +287,7 @@ describe('UserService', () => {
     it('returns false if the user has non-global Super User role', () => {
       const adminUser: UserState = {
         userName: '',
+        email_address: 'admin@test.com',
         userId: 1,
         roles: [
           {
@@ -341,6 +356,7 @@ describe('UserService', () => {
     it('returns false when user does not have any roles', () => {
       const approver: UserState = {
         userName: '',
+        email_address: 'approver@test.com',
         userId: 1,
         roles: [{ roleId: 123, roleName: 'APPROVER' }],
         isActive: true,
@@ -352,6 +368,7 @@ describe('UserService', () => {
     it('returns true when user has a role', () => {
       const approver: UserState = {
         userName: '',
+        email_address: 'approver@test.com',
         userId: 1,
         roles: [{ roleId: 123, roleName: 'APPROVER' }],
         isActive: true,
@@ -370,6 +387,7 @@ describe('UserService', () => {
     it('returns false when user does not have any roles', () => {
       const admin: UserState = {
         userName: '',
+        email_address: 'admin@test.com',
         userId: 1,
         roles: [{ roleId: 123, roleName: 'SUPER_ADMIN', globalAccess: true }],
         isActive: true,
@@ -381,6 +399,7 @@ describe('UserService', () => {
     it('returns false when user has SUPER_ADMIN but not global access', () => {
       const admin: UserState = {
         userName: '',
+        email_address: 'admin@test.com',
         userId: 1,
         roles: [{ roleId: 123, roleName: 'SUPER_ADMIN', globalAccess: false }],
         isActive: true,
@@ -392,6 +411,7 @@ describe('UserService', () => {
     it('returns true when user has a role', () => {
       const admin: UserState = {
         userName: '',
+        email_address: 'admin@test.com',
         userId: 1,
         roles: [{ roleId: 123, roleName: 'SUPER_ADMIN', globalAccess: true }],
         isActive: true,
@@ -406,6 +426,7 @@ describe('UserService', () => {
       const courthouseId = 100;
       const judge: UserState = {
         userName: '',
+        email_address: 'judge@test.com',
         userId: 1,
         isActive: true,
         roles: [{ roleId: 123, roleName: 'JUDICIARY', courthouseIds: [courthouseId] }],
@@ -420,6 +441,7 @@ describe('UserService', () => {
       const courthouseId = 100;
       const judge: UserState = {
         userName: '',
+        email_address: 'judge@test.com',
         userId: 1,
         isActive: true,
         roles: [{ roleId: 123, roleName: 'JUDICIARY', courthouseIds: [200] }],
@@ -434,6 +456,7 @@ describe('UserService', () => {
       const courthouseId = 100;
       const judge: UserState = {
         userName: '',
+        email_address: 'judge@test.com',
         userId: 1,
         isActive: true,
         roles: [{ roleId: 123, roleName: 'JUDICIARY', courthouseIds: [200] }],
@@ -451,6 +474,7 @@ describe('UserService', () => {
 
       const transcriber: UserState = {
         userName: '',
+        email_address: 'transcriber@test.com',
         userId: 1,
         roles: [{ roleId: 123, roleName: 'TRANSCRIBER', globalAccess: false, courthouseIds: [courthouseId] }],
         isActive: true,
@@ -466,6 +490,7 @@ describe('UserService', () => {
 
       const judge: UserState = {
         userName: '',
+        email_address: 'judge@test.com',
         userId: 1,
         isActive: true,
         roles: [{ roleId: 123, roleName: 'JUDICIARY', globalAccess: false, courthouseIds: [200] }],
@@ -483,6 +508,7 @@ describe('UserService', () => {
 
       const judge: UserState = {
         userName: '',
+        email_address: 'judge@test.com',
         userId: 1,
         isActive: true,
         roles: [{ roleId: 123, roleName: 'JUDICIARY', globalAccess: false, courthouseIds: [courthouseId] }],
@@ -498,6 +524,7 @@ describe('UserService', () => {
 
       const judge: UserState = {
         userName: '',
+        email_address: 'judge@test.com',
         userId: 1,
         isActive: true,
         roles: [{ roleId: 123, roleName: 'JUDICIARY', globalAccess: true, courthouseIds: [200] }],
@@ -513,6 +540,7 @@ describe('UserService', () => {
 
       const judge: UserState = {
         userName: '',
+        email_address: 'judge@test.com',
         userId: 1,
         isActive: true,
         roles: [{ roleId: 123, roleName: 'JUDICIARY', globalAccess: false, courthouseIds: [200] }],
@@ -528,6 +556,7 @@ describe('UserService', () => {
     it('should return true if user is a global judge', () => {
       const judge: UserState = {
         userName: 'user',
+        email_address: 'judge@test.com',
         userId: 1,
         isActive: true,
         roles: [{ roleId: 123, roleName: 'JUDICIARY', globalAccess: true }],
@@ -541,6 +570,7 @@ describe('UserService', () => {
     it('should return false if user is not a global judge', () => {
       const judge: UserState = {
         userName: 'user',
+        email_address: 'judge@test.com',
         userId: 1,
         isActive: true,
         roles: [{ roleId: 123, roleName: 'JUDICIARY', globalAccess: false }],

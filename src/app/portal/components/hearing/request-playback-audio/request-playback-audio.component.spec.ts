@@ -13,7 +13,13 @@ describe('RequestPlaybackAudioComponent', () => {
   let fixture: ComponentFixture<RequestPlaybackAudioComponent>;
 
   beforeEach(() => {
-    const userState: UserState = { userName: 'test@test.com', userId: 123, roles: [], isActive: true };
+    const userState: UserState = {
+      userName: 'test@test.com',
+      email_address: 'test@test.com',
+      userId: 123,
+      roles: [],
+      isActive: true,
+    };
     const userServiceStub = {
       userProfile$: of(userState),
       isCourthouseTranscriber: jest.fn(),
@@ -35,7 +41,13 @@ describe('RequestPlaybackAudioComponent', () => {
         media_end_timestamp: '2023-07-31T15:45:00.000',
       },
     ];
-    component.userState = { userId: 1, userName: 'Dean', roles: [], isActive: true };
+    component.userState = {
+      userId: 1,
+      userName: 'Dean',
+      email_address: 'dean@teactacrtst.com',
+      roles: [],
+      isActive: true,
+    };
     component.validationErrorEvent.emit = jest.fn();
   });
 

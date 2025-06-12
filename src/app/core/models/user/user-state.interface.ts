@@ -5,4 +5,5 @@ export interface UserState {
   userName: string;
   roles: Role[];
   isActive: boolean;
+  email_address: string;
 }
