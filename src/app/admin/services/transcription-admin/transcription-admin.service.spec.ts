@@ -469,7 +469,6 @@ describe('TranscriptionAdminService', () => {
       } as unknown as TranscriptionAdminDetails;
 
       const result = service.getCurrentStatusFromTranscript(transcript);
-      console.log('result', result);
 
       expect(result.Status?.value).toBe('Approved');
       expect(result.Status?.action?.text).toBe('Change status');

@@ -97,7 +97,6 @@ describe('TranscriptFileAdvancedDetailComponent', () => {
 
   it('should setup links for non-system users', () => {
     expect(component).toBeTruthy();
-    console.log('data', component.advancedDetails);
     const lastModifiedBy = component.advancedDetails?.['Last modified by'];
     const uploadedBy = component.advancedDetails?.['Uploaded by'];
     const hiddenBy = component.advancedDetails?.['Hidden by'];
@@ -118,7 +117,6 @@ describe('TranscriptFileAdvancedDetailComponent', () => {
     }
     fixture.detectChanges();
     component.ngOnInit();
-    console.log('data', component.advancedDetails);
     const lastModifiedBy = component.advancedDetails?.['Last modified by'];
     const uploadedBy = component.advancedDetails?.['Uploaded by'];
     const hiddenBy = component.advancedDetails?.['Hidden by'];
