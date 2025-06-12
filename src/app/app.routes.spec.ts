@@ -35,7 +35,13 @@ describe('App Routes', () => {
     } as unknown as CaseService;
 
     mockUserService = {
-      userProfile$: of({ userId: 123, userName: 'Dean', roles: [{ roleId: 1, roleName: 'APPROVER' }], isActive: true }),
+      userProfile$: of({
+        userId: 123,
+        userName: 'Dean',
+        email_address: 'dean@test.com',
+        roles: [{ roleId: 1, roleName: 'APPROVER' }],
+        isActive: true,
+      }),
       hasRoles: jest.fn(),
       hasGlobalRoles: jest.fn(),
       userState: userStateSignal,
@@ -75,6 +81,7 @@ describe('App Routes', () => {
     mockUserService.userState?.set({
       userId: 123,
       userName: 'Dean',
+      email_address: 'dean@test.com',
       roles: [{ roleId: 1, roleName: 'APPROVER' }],
       isActive: true,
     });
