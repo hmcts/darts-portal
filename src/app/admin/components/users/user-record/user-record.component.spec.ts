@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { DateTime } from 'luxon';
+import { take } from 'rxjs';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { of } from 'rxjs/internal/observable/of';
 import { UserRecordComponent } from './user-record.component';
@@ -31,7 +32,7 @@ describe('UserRecordComponent', () => {
     isSystemUser: false,
   };
 
-  const mockQueryParams = new BehaviorSubject<{ [key: string]: boolean }>({ newUser: false });
+  const mockQueryParams = new BehaviorSubject<{ [key: string]: string | number | boolean }>({ newUser: false });
 
   beforeEach(async () => {
     fakeUserAdminService = {
@@ -126,6 +127,44 @@ describe('UserRecordComponent', () => {
 
       expect(routerSpy).not.toHaveBeenCalled();
       expect(component.activationError()).toBeTruthy();
+    });
+  });
+
+  describe('groupChanges$', () => {
+    it('should emit assigned and removed when both are present', (done) => {
+      mockQueryParams.next({ assigned: 2, groupsRemoved: 1 });
+
+      component.groupChanges$.pipe(take(1)).subscribe((changes) => {
+        expect(changes).toEqual({ assigned: 2, removed: 1 });
+        done();
+      });
+    });
+
+    it('should emit only assigned when groupsRemoved is missing', (done) => {
+      mockQueryParams.next({ assigned: 3 });
+
+      component.groupChanges$.pipe(take(1)).subscribe((changes) => {
+        expect(changes).toEqual({ assigned: 3, removed: undefined });
+        done();
+      });
+    });
+
+    it('should emit only removed when assigned is missing', (done) => {
+      mockQueryParams.next({ groupsRemoved: 2 });
+
+      component.groupChanges$.pipe(take(1)).subscribe((changes) => {
+        expect(changes).toEqual({ assigned: undefined, removed: 2 });
+        done();
+      });
+    });
+
+    it('should emit undefined values when neither assigned nor removed are present', (done) => {
+      mockQueryParams.next({});
+
+      component.groupChanges$.pipe(take(1)).subscribe((changes) => {
+        expect(changes).toEqual({ assigned: undefined, removed: undefined });
+        done();
+      });
     });
   });
 });
