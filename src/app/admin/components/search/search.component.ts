@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { GovukTabsComponent } from '@common/govuk-tabs/govuk-tabs.component';
@@ -35,7 +35,7 @@ import { AdminSearchFormValues, SearchFormComponent } from './search-form/search
     AudioSearchResultsComponent,
   ],
 })
-export class SearchComponent {
+export class SearchComponent implements OnInit {
   courthouseService = inject(CourthouseService);
   searchService = inject(AdminSearchService);
   scrollService = inject(ScrollService);
@@ -52,6 +52,34 @@ export class SearchComponent {
   courthouses = toSignal(this.courthouses$, {
     initialValue: [],
   });
+
+  ngOnInit(): void {
+    this.refetchIfFlagged();
+  }
+
+  private refetchIfFlagged() {
+    const values = this.searchService.formValues();
+    const hasBeenSubmitted = this.searchService.hasFormBeenSubmitted();
+
+    if (!hasBeenSubmitted || !values) return;
+
+    const { resultsFor } = values;
+
+    if (resultsFor === 'Cases' && this.searchService.fetchNewCases()) {
+      this.searchService.getCases(values).subscribe();
+      this.searchService.fetchNewCases.set(false);
+    }
+
+    if (resultsFor === 'Events' && this.searchService.fetchNewEvents()) {
+      this.searchService.getEvents(values).subscribe();
+      this.searchService.fetchNewEvents.set(false);
+    }
+
+    if (resultsFor === 'Audio' && this.searchService.fetchNewAudio()) {
+      this.searchService.getAudioMedia(values).subscribe();
+      this.searchService.fetchNewAudio.set(false);
+    }
+  }
 
   onValidationErrors(errors: ErrorSummaryEntry[]) {
     this.formValidationErrors.set(errors);

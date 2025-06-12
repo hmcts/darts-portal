@@ -37,6 +37,9 @@ const fakeAdminSearchService = {
   events: signal([]),
   hearings: signal([]),
   audio: signal([]),
+  fetchNewCases: signal(false),
+  fetchNewEvents: signal(false),
+  fetchNewAudio: signal(false),
 };
 
 describe('SearchComponent', () => {
@@ -305,6 +308,65 @@ describe('SearchComponent', () => {
 
       const errorSpan = fixture.debugElement.query(By.css('span[error]'));
       expect(errorSpan).toBeNull();
+    });
+  });
+
+  describe('refetchIfFlagged', () => {
+    beforeEach(() => {
+      fakeAdminSearchService.hasFormBeenSubmitted.set(true);
+    });
+
+    it('should call getCases and reset fetchNewCases if flag is true', () => {
+      fakeAdminSearchService.fetchNewCases.set(true);
+      component.searchService.formValues.set({ ...mockFormValues, resultsFor: 'Cases' });
+
+      component['refetchIfFlagged']();
+
+      expect(fakeAdminSearchService.getCases).toHaveBeenCalledWith(mockFormValues);
+      expect(fakeAdminSearchService.fetchNewCases()).toBe(false);
+    });
+
+    it('should call getEvents and reset fetchNewEvents if flag is true', () => {
+      fakeAdminSearchService.fetchNewEvents.set(true);
+      component.searchService.formValues.set({ ...mockFormValues, resultsFor: 'Events' });
+
+      component['refetchIfFlagged']();
+
+      expect(fakeAdminSearchService.getEvents).toHaveBeenCalledWith({
+        ...mockFormValues,
+        resultsFor: 'Events',
+      });
+      expect(fakeAdminSearchService.fetchNewEvents()).toBe(false);
+    });
+
+    it('should call getAudioMedia and reset fetchNewAudio if flag is true', () => {
+      fakeAdminSearchService.fetchNewAudio.set(true);
+      component.searchService.formValues.set({ ...mockFormValues, resultsFor: 'Audio' });
+
+      component['refetchIfFlagged']();
+
+      expect(fakeAdminSearchService.getAudioMedia).toHaveBeenCalledWith({
+        ...mockFormValues,
+        resultsFor: 'Audio',
+      });
+      expect(fakeAdminSearchService.fetchNewAudio()).toBe(false);
+    });
+
+    it('should not refetch anything if hasFormBeenSubmitted is false', () => {
+      fakeAdminSearchService.fetchNewCases.set(true);
+      fakeAdminSearchService.hasFormBeenSubmitted.set(false);
+      fakeAdminSearchService.formValues.set({ ...mockFormValues, resultsFor: 'Cases' });
+
+      const getCasesSpy = jest.spyOn(fakeAdminSearchService, 'getCases');
+
+      fixture.detectChanges();
+
+      getCasesSpy.mockClear();
+
+      component['refetchIfFlagged']();
+
+      expect(getCasesSpy).not.toHaveBeenCalled();
+      expect(fakeAdminSearchService.fetchNewCases()).toBe(true);
     });
   });
 });
