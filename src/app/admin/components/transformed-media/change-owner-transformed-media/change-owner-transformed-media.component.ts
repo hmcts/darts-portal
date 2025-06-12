@@ -50,6 +50,7 @@ export class ChangeOwnerTransformedMediaComponent implements OnInit {
     }
 
     this.transformedMediaService.changeMediaRequestOwner(this.mediaRequestId, this.selectedUser.id).subscribe(() => {
+      this.transformedMediaService.fetchNewResults.set(true);
       this.router.navigate(['/admin/transformed-media', this.transformedMediaId], {
         queryParams: { ownerChanged: this.selectedUser?.name.split('(')[0] }, // remove email address from name
       });

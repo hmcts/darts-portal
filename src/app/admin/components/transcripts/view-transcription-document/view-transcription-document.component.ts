@@ -130,6 +130,7 @@ export class ViewTranscriptionDocumentComponent {
   hideOrUnhideFile(document: TranscriptionDocument) {
     if (document.isHidden) {
       this.transcriptionAdminService.unhideTranscriptionDocument(this.transcriptionDocumentId).subscribe(() => {
+        this.transcriptionAdminService.fetchNewCompletedTranscriptions.set(true);
         this.transcription$ = this.getTranscriptionDocument();
       });
     } else {

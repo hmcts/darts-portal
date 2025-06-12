@@ -26,6 +26,7 @@ describe('ChangeTranscriptStatusComponent', () => {
             updateTranscriptionStatus: jest.fn().mockReturnValue(of({})),
             getTranscriptionStatuses: jest.fn(),
             getAllowableTranscriptionStatuses: jest.fn().mockReturnValue(of([])),
+            fetchNewTranscriptions: { set: jest.fn() },
           },
         },
         { provide: HeaderService, useValue: { hideNavigation: jest.fn() } },
@@ -59,5 +60,16 @@ describe('ChangeTranscriptStatusComponent', () => {
     component.form.controls.status.setValue('2');
     component.onSubmit();
     expect(routerSpy).toHaveBeenCalledWith(['/admin/transcripts', 1], { queryParams: { updatedStatus: true } });
+  });
+
+  it('should set fetchNewTranscriptions to true on submit', () => {
+    const fetchNewSpy = jest.spyOn(component.transcriptionAdminService.fetchNewTranscriptions, 'set');
+
+    component.form.controls.status.setValue('2');
+    component.form.controls.comments.setValue('Some comment');
+
+    component.onSubmit();
+
+    expect(fetchNewSpy).toHaveBeenCalledWith(true);
   });
 });
