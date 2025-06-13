@@ -1,6 +1,7 @@
 <div class="govuk-form-group" [class.govuk-form-group--error]="isInvalid">
   <label class="govuk-label" [for]="controlId()"> {{ label }} </label>
-  <p class="govuk-hint">{{ hint }}</p>
+  <p class="govuk-hint">{{ fileSizeHint }}</p>
+  <p class="govuk-hint">{{ fileTypeHint }}</p>
   @if (isInvalid) {
     <p [id]="controlErrorId()" class="govuk-error-message">
       <span class="govuk-visually-hidden">Error:</span> {{ errorMessage }}
