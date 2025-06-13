@@ -42,21 +42,32 @@ export class TranscriptFileAdvancedDetailComponent implements OnInit {
       'File type': document.fileType,
       Filename: document.fileName,
       'Date uploaded': `${this.luxonPipe.transform(document.uploadedAt, this.dateFormat) ?? ''}`,
-      'Uploaded by': [
-        {
-          href: `/admin/users/${document.uploadedBy}`,
-          value: document.uploadedByName,
-        },
-      ],
-      'Last modified by': [
-        {
-          href: `/admin/users/${document.lastModifiedBy}`,
-          value: document.lastModifiedByName,
-        },
-      ],
+      'Uploaded by': document.uploadedByObj?.isSystemUser
+        ? document.uploadedByObj.fullName
+        : [
+            {
+              href: `/admin/users/${document.uploadedByObj?.id}`,
+              value: document.uploadedByObj?.fullName,
+            },
+          ],
+      'Last modified by': document.lastModifiedByObj?.isSystemUser
+        ? document.lastModifiedByObj?.fullName
+        : [
+            {
+              href: `/admin/users/${document.lastModifiedByObj?.id}`,
+              value: document.lastModifiedByObj?.fullName,
+            },
+          ],
       'Date last modified': `${this.luxonPipe.transform(document.lastModifiedAt, this.dateFormat) ?? ''}`,
       'Transcription hidden?': document.isHidden ? 'Yes' : 'No',
-      'Hidden by': document.adminAction?.hiddenByName,
+      'Hidden by': document.adminAction?.hiddenByIsSystemUser
+        ? document.adminAction?.hiddenByName
+        : [
+            {
+              href: `/admin/users/${document.adminAction?.hiddenById}`,
+              value: document.adminAction?.hiddenByName,
+            },
+          ],
       'Date hidden': `${this.luxonPipe.transform(document.adminAction?.hiddenAt, this.dateFormat) ?? ''}`,
       'Retain until': `${this.luxonPipe.transform(document.retainUntil, this.dateFormat) ?? ''}`,
     };

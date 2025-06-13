@@ -125,21 +125,34 @@ export class AudioFileComponent {
       ]),
     ] as number[];
 
-    return this.userAdminService.getUsersById(userIds).pipe(
+    return this.userAdminService.getUsersById(userIds, true).pipe(
       map((users) => {
-        const createdBy = users.find((u) => u.id == audioFile.createdById)?.fullName;
-        const lastModifiedBy = users.find((u) => u.id == audioFile.lastModifiedById)?.fullName;
+        const createdBy = users.find((u) => u.id == audioFile.createdById);
+        const lastModifiedBy = users.find((u) => u.id == audioFile.lastModifiedById);
         const hiddenByName = users.find((u) => u.id == audioFile?.adminAction?.hiddenById)?.fullName;
+        const hiddenByIsSystemUser = users.find((u) => u.id == audioFile?.adminAction?.hiddenById)?.isSystemUser;
         const markedForManualDeletionBy = users.find(
           (u) => u.id == audioFile?.adminAction?.markedForManualDeletionById
         )?.fullName;
 
         return {
           ...audioFile,
-          createdBy,
-          lastModifiedBy,
+          createdBy: createdBy
+            ? {
+                id: createdBy.id,
+                fullName: createdBy.fullName,
+                isSystemUser: createdBy.isSystemUser,
+              }
+            : undefined,
+          lastModifiedBy: lastModifiedBy
+            ? {
+                id: lastModifiedBy.id,
+                fullName: lastModifiedBy.fullName,
+                isSystemUser: lastModifiedBy.isSystemUser,
+              }
+            : undefined,
           adminAction: audioFile.adminAction
-            ? { ...audioFile.adminAction, hiddenByName, markedForManualDeletionBy }
+            ? { ...audioFile.adminAction, hiddenByName, hiddenByIsSystemUser, markedForManualDeletionBy }
             : undefined,
         };
       })

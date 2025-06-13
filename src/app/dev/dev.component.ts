@@ -151,6 +151,7 @@ export class DevComponent implements OnInit {
         id: 1,
         fullName: 'John Smith',
         emailAddress: 'john@smith.com',
+        isSystemUser: false,
       },
     },
     {
@@ -161,6 +162,7 @@ export class DevComponent implements OnInit {
         id: 2,
         fullName: 'Jane Smith',
         emailAddress: 'jane@smith.com',
+        isSystemUser: false,
       },
     },
     {
@@ -171,6 +173,7 @@ export class DevComponent implements OnInit {
         id: 3,
         fullName: 'John Doe',
         emailAddress: 'john@doe.com',
+        isSystemUser: false,
       },
     },
   ];

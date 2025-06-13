@@ -37,7 +37,9 @@ export class UserAdminService {
     if (!userIds?.length) {
       return of([]);
     }
-    const params = new HttpParams().set('user_ids', [...new Set(userIds)].join(','));
+    const params = new HttpParams()
+      .set('user_ids', [...new Set(userIds)].join(','))
+      .set('include_system_users', allowSystemUsers);
     return this.http
       .get<UserData[]>(USER_ADMIN_PATH, { params })
       .pipe(map((users) => this.mapUsers(users, allowSystemUsers)));

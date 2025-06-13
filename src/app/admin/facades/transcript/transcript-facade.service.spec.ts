@@ -107,8 +107,8 @@ describe('TranscriptFacadeService', () => {
 
   describe('#getHistory', () => {
     const mockUsers = [
-      { id: 1, fullName: 'Test User 1', emailAddress: 'email1@test.com' } as User,
-      { id: 2, fullName: 'Test User 2', emailAddress: 'email2@test.com' } as User,
+      { id: 1, fullName: 'Test User 1', emailAddress: 'email1@test.com', isSystemUser: false } as User,
+      { id: 2, fullName: 'Test User 2', emailAddress: 'email2@test.com', isSystemUser: true } as User,
     ];
 
     it('should return mapped workflows to timeline', fakeAsync(() => {
@@ -139,7 +139,7 @@ describe('TranscriptFacadeService', () => {
             title: 'Requested',
             descriptionLines: ['Test Comment'],
             dateTime: DateTime.fromISO('2021-01-01T00:00:00Z'),
-            user: { id: 1, fullName: 'Test User 1', emailAddress: 'email1@test.com' },
+            user: { id: 1, fullName: 'Test User 1', emailAddress: 'email1@test.com', isSystemUser: false },
           },
         ])
       );
@@ -170,7 +170,7 @@ describe('TranscriptFacadeService', () => {
             title: 'Comment',
             descriptionLines: ['Test Comment'],
             dateTime: DateTime.fromISO('2021-01-01T00:00:00Z'),
-            user: { id: 2, fullName: 'Test User 2', emailAddress: 'email2@test.com' },
+            user: { id: 2, fullName: 'Test User 2', emailAddress: 'email2@test.com', isSystemUser: true },
           },
         ])
       );
@@ -201,7 +201,7 @@ describe('TranscriptFacadeService', () => {
             title: 'Comment',
             descriptionLines: ['Test Comment'],
             dateTime: DateTime.fromISO('2021-01-01T00:00:00Z'),
-            user: { id: 1, fullName: 'Test User 1', emailAddress: 'email1@test.com' },
+            user: { id: 1, fullName: 'Test User 1', emailAddress: 'email1@test.com', isSystemUser: false },
           },
         ])
       );
@@ -232,7 +232,7 @@ describe('TranscriptFacadeService', () => {
             title: 'Comment',
             descriptionLines: ['Test Comment'],
             dateTime: DateTime.fromISO('2022-01-01T00:00:00Z'),
-            user: { id: 2, fullName: 'Test User 2', emailAddress: 'email2@test.com' },
+            user: { id: 2, fullName: 'Test User 2', emailAddress: 'email2@test.com', isSystemUser: true },
           },
         ])
       );
@@ -268,13 +268,13 @@ describe('TranscriptFacadeService', () => {
             title: 'Comment',
             descriptionLines: ['Test Comment 2'],
             dateTime: DateTime.fromISO('2024-01-01T00:00:00Z'),
-            user: { id: 1, fullName: 'Test User 1', emailAddress: 'email1@test.com' },
+            user: { id: 1, fullName: 'Test User 1', emailAddress: 'email1@test.com', isSystemUser: false },
           },
           {
             title: 'Comment',
             descriptionLines: ['Test Comment 1'],
             dateTime: DateTime.fromISO('2021-01-01T00:00:00Z'),
-            user: { id: 2, fullName: 'Test User 2', emailAddress: 'email2@test.com' },
+            user: { id: 2, fullName: 'Test User 2', emailAddress: 'email2@test.com', isSystemUser: true },
           },
         ])
       );
@@ -325,6 +325,7 @@ describe('TranscriptFacadeService', () => {
             id: 1,
             fullName: 'a-name',
             emailAddress: 'a-email',
+            isSystemUser: false,
           },
         },
         {
@@ -335,6 +336,7 @@ describe('TranscriptFacadeService', () => {
             id: 1,
             fullName: 'a-name',
             emailAddress: 'a-email',
+            isSystemUser: false,
           },
         },
       ];
@@ -355,6 +357,7 @@ describe('TranscriptFacadeService', () => {
             id: 1,
             fullName: 'a-name',
             emailAddress: 'a-email',
+            isSystemUser: false,
           },
         },
         {
@@ -365,6 +368,7 @@ describe('TranscriptFacadeService', () => {
             id: 1,
             fullName: 'a-name',
             emailAddress: 'a-email',
+            isSystemUser: false,
           },
         },
       ];

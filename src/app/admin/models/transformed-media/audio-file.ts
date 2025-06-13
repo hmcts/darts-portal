@@ -1,5 +1,8 @@
 import { DateTime } from 'luxon';
 import { AdminAction } from './admin-action';
+import { User } from '@admin-types/users/user.type';
+
+type UserSubSet = Pick<User, 'id' | 'fullName' | 'isSystemUser'>;
 
 export type AudioFile = {
   id: number;
@@ -26,10 +29,10 @@ export type AudioFile = {
   retainUntil: DateTime;
   createdAt: DateTime;
   createdById: number;
-  createdBy?: string;
+  createdBy?: UserSubSet;
   lastModifiedAt: DateTime;
   lastModifiedById: number;
-  lastModifiedBy?: string;
+  lastModifiedBy?: UserSubSet;
   courthouse: {
     id: number;
     displayName: string;
