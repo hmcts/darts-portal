@@ -1,6 +1,9 @@
 import { FormErrorMessages } from '@core-types/index';
 
 export const CaseSearchFormErrorMessages: FormErrorMessages = {
+  caseNumber: {
+    maxlength: 'Case ID must be less than or equal to 32 characters',
+  },
   courthouses: {
     required: 'You must also enter a courthouse',
   },
