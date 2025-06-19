@@ -10,6 +10,11 @@ describe('Upload transcript', () => {
 
   it('shows "Upload transcript screen"', () => {
     cy.get('h1').should('contain', 'Transcript request');
+    cy.get('.govuk-hint').should('contain', 'Maximum file size 10MB');
+    cy.get('.govuk-hint').should(
+      'contain',
+      'Compatible file formats are .txt, .dot, .dotx, .doc, .docx, .pdf, .rtf, .zip or .odt'
+    );
     cy.a11y();
   });
 
