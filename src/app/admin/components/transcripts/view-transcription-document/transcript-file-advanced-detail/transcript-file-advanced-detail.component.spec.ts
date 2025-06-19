@@ -20,6 +20,11 @@ describe('TranscriptFileAdvancedDetailComponent', () => {
     fileSizeBytes: 0,
     uploadedAt: DateTime.fromISO('2020-01-01'),
     uploadedBy: 0,
+    uploadedByObj: {
+      id: 1,
+      fullName: 'Dean',
+      isSystemUser: false,
+    },
     isHidden: true,
     retainUntil: DateTime.fromISO('2020-01-01'),
     contentObjectId: '',
@@ -27,10 +32,17 @@ describe('TranscriptFileAdvancedDetailComponent', () => {
     clipId: '',
     lastModifiedAt: DateTime.fromISO('2020-01-01'),
     lastModifiedBy: 0,
+    lastModifiedByObj: {
+      id: 2,
+      fullName: 'Dave',
+      isSystemUser: false,
+    },
     adminAction: {
       id: 0,
       reasonId: 1,
       hiddenById: 0,
+      hiddenByName: 'Bob',
+      hiddenByIsSystemUser: false,
       hiddenAt: DateTime.fromISO('2020-01-01'),
       isMarkedForManualDeletion: false,
       markedForManualDeletionById: 0,
@@ -83,7 +95,33 @@ describe('TranscriptFileAdvancedDetailComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should setup links for non-system users', () => {
     expect(component).toBeTruthy();
+    const lastModifiedBy = component.advancedDetails?.['Last modified by'];
+    const uploadedBy = component.advancedDetails?.['Uploaded by'];
+    const hiddenBy = component.advancedDetails?.['Hidden by'];
+    expect(lastModifiedBy).toEqual([{ href: '/admin/users/2', value: 'Dave' }]);
+    expect(uploadedBy).toEqual([{ href: '/admin/users/1', value: 'Dean' }]);
+    expect(hiddenBy).toEqual([{ href: '/admin/users/0', value: 'Bob' }]);
+  });
+
+  it('should not setup links for system users', () => {
+    if (component.transcription.document.lastModifiedByObj) {
+      component.transcription.document.lastModifiedByObj.isSystemUser = true;
+    }
+    if (component.transcription.document.uploadedByObj) {
+      component.transcription.document.uploadedByObj.isSystemUser = true;
+    }
+    if (component.transcription.document.adminAction) {
+      component.transcription.document.adminAction.hiddenByIsSystemUser = true;
+    }
+    fixture.detectChanges();
+    component.ngOnInit();
+    const lastModifiedBy = component.advancedDetails?.['Last modified by'];
+    const uploadedBy = component.advancedDetails?.['Uploaded by'];
+    const hiddenBy = component.advancedDetails?.['Hidden by'];
+    expect(lastModifiedBy).toBe('Dave');
+    expect(uploadedBy).toBe('Dean');
+    expect(hiddenBy).toBe('Bob');
   });
 });

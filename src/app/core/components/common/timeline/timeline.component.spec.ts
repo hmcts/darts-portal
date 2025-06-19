@@ -23,6 +23,7 @@ describe('TimelineComponent', () => {
         id: 1,
         fullName: 'Gary Smith',
         emailAddress: 'gary@aol.com',
+        isSystemUser: false,
       },
     },
     {
@@ -33,6 +34,7 @@ describe('TimelineComponent', () => {
         id: 2,
         fullName: 'Max Payne',
         emailAddress: 'beans@toast.com',
+        isSystemUser: true,
       },
     },
     {
@@ -73,8 +75,12 @@ describe('TimelineComponent', () => {
       expect(titleElement.textContent).toContain(item.title);
       expect(descriptionElement.textContent).toContain(item.descriptionLines[0]);
       if (item.user !== null) {
-        expect(userElement.textContent).toContain(item.user.fullName);
-        expect(userElement.textContent).toContain(item.user.emailAddress);
+        if (item.user.isSystemUser) {
+          expect(userElement.textContent).toContain(item.user.fullName);
+        } else {
+          expect(userElement.textContent).toContain(item.user.fullName);
+          expect(userElement.textContent).toContain(item.user.emailAddress);
+        }
       } else {
         expect(userElement).toBeUndefined();
       }
@@ -87,10 +93,19 @@ describe('TimelineComponent', () => {
     expect(timelineItems.length).toBe(MOCK_TIMELINE_ITEMS.length);
   });
 
-  it('links to user record', () => {
+  it('links to user record for non-system user', () => {
     const timelineItems = fixture.debugElement.queryAll(By.css('.moj-timeline__item'));
     const firstItem = timelineItems[0];
     const firstItemUserLink = firstItem.query(By.css('.user-link'));
     expect(firstItemUserLink.nativeElement.getAttribute('href')).toBe('/admin/users/1');
+  });
+
+  it('does not link to user record for system user', () => {
+    const timelineItems = fixture.debugElement.queryAll(By.css('.moj-timeline__item'));
+    const secondItem = timelineItems[1];
+    const userElement = secondItem.query(By.css('.moj-timeline__byline'))?.nativeElement;
+    const secondItemUserLink = secondItem.query(By.css('.user-link'));
+    expect(secondItemUserLink).toBeNull();
+    expect(userElement.textContent).toContain('Max Payne');
   });
 });

@@ -108,20 +108,29 @@ export class ViewTranscriptionDocumentComponent {
       ]),
     ] as number[];
 
-    return this.userAdminService.getUsersById(userIds).pipe(
+    return this.userAdminService.getUsersById(userIds, true).pipe(
       map((users) => {
-        const uploadedByName = users.find((u) => u.id == document.uploadedBy)?.fullName;
-        const lastModifiedByName = users.find((u) => u.id == document.lastModifiedBy)?.fullName;
+        const lastModifiedBy = users.find((u) => u.id == document.lastModifiedBy);
+        const uploadedBy = users.find((u) => u.id == document.uploadedBy);
         const hiddenByName = users.find((u) => u.id == document.adminAction?.hiddenById)?.fullName;
+        const hiddenByIsSystemUser = users.find((u) => u.id == document.adminAction?.hiddenById)?.isSystemUser;
         const markedForManualDeletionBy = users.find(
           (u) => u.id == document.adminAction?.markedForManualDeletionById
         )?.fullName;
 
         return {
           ...document,
-          uploadedByName,
-          lastModifiedByName,
-          adminAction: { ...document.adminAction, hiddenByName, markedForManualDeletionBy },
+          uploadedByObj: {
+            id: uploadedBy?.id,
+            fullName: uploadedBy?.fullName,
+            isSystemUser: uploadedBy?.isSystemUser,
+          },
+          lastModifiedByObj: {
+            id: lastModifiedBy?.id,
+            fullName: lastModifiedBy?.fullName,
+            isSystemUser: lastModifiedBy?.isSystemUser,
+          },
+          adminAction: { ...document.adminAction, hiddenByName, hiddenByIsSystemUser, markedForManualDeletionBy },
         } as TranscriptionDocument;
       })
     );
