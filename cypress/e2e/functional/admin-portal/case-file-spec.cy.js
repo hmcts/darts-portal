@@ -198,7 +198,7 @@ describe('Case file screen', () => {
       cy.get('#transcriptsTable thead th').then((headers) => {
         const headerTexts = [...headers].map((el) => el.innerText.trim());
         expect(headerTexts).to.deep.equal([
-          'Transcript ID',
+          'Request ID',
           'Courtroom',
           'Type',
           'Requested on',
