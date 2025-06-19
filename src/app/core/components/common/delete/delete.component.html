@@ -12,9 +12,14 @@
 
 <div class="govuk-grid-column-two-thirds">
   <div class="govuk-button-group">
-    <button class="govuk-button" [ngClass]="isRedDeleteButton ? 'govuk-button--warning' : ''" (click)="confirm.emit()">
+    <button
+      class="govuk-button"
+      [ngClass]="isRedDeleteButton ? 'govuk-button--warning' : ''"
+      [disabled]="isDeleting"
+      (click)="onConfirm()"
+    >
       {{ deleteButtonTxt }}
     </button>
-    <a href="#" (click)="$event.preventDefault(); cancelled.emit()" class="govuk-link">{{ cancelButtonTxt }}</a>
+    <a href="#" (click)="$event.preventDefault(); onCancel()" class="govuk-link">{{ cancelButtonTxt }}</a>
   </div>
 </div>
