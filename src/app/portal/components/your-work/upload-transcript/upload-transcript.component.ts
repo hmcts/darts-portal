@@ -52,6 +52,7 @@ export class UploadTranscriptComponent implements OnDestroy {
     map((data: TranscriptionDetails) => {
       this.isManualRequest = data.isManual;
       return {
+        status: data.status,
         ...this.transcriptionService.getAssignDetailsFromTranscript(data),
         getAudioQueryParams:
           data.transcriptionStartTs && data.transcriptionEndTs
