@@ -39,7 +39,7 @@ describe('CaseTranscriptsTableComponent', () => {
     fixture.detectChanges();
 
     expect(component.adminColumns.length).toBe(6);
-    expect(component.adminColumns.map((col) => col.name)).toContain('Transcript ID');
+    expect(component.adminColumns.map((col) => col.name)).toContain('Request ID');
   });
 
   it('should bind the transcripts input correctly', () => {
