@@ -49,16 +49,28 @@ export class AssignGroupsComponent implements OnInit, OnDestroy {
 
   onAssign(selectedGroups: UserGroup[]) {
     const selectedGroupIds = selectedGroups.map((group) => group.id);
-    const usersHiddenGroupIds = this.usersHiddenGroups.map((group) => group.id);
+    const hiddenGroupIds = this.usersHiddenGroups.map((group) => group.id);
+    const originalGroupIds = this.user.securityGroups?.map((group) => group.id) ?? [];
 
-    // put the hidden groups back in
-    const groupsToAssign = selectedGroupIds.concat(usersHiddenGroupIds);
+    // Strip out hidden groups from the original so they're not counted in the diff
+    const visibleOriginalGroupIds = originalGroupIds.filter((id) => !hiddenGroupIds.includes(id));
 
-    this.userAdminService.assignGroups(this.user.id, groupsToAssign).subscribe(() =>
-      this.router.navigate(['admin', 'users', this.user.id], {
-        queryParams: { assigned: selectedGroupIds.length, tab: 'Groups' },
-      })
-    );
+    const addedGroups = selectedGroupIds.filter((id) => !visibleOriginalGroupIds.includes(id));
+    const removedGroups = visibleOriginalGroupIds.filter((id) => !selectedGroupIds.includes(id));
+
+    const allGroupsToAssign = selectedGroupIds.concat(hiddenGroupIds);
+
+    const queryParams: Record<string, string | number> = { tab: 'Groups' };
+    if (addedGroups.length > 0) {
+      queryParams['assigned'] = addedGroups.length;
+    }
+    if (removedGroups.length > 0) {
+      queryParams['groupsRemoved'] = removedGroups.length;
+    }
+
+    this.userAdminService.assignGroups(this.user.id, allGroupsToAssign).subscribe(() => {
+      this.router.navigate(['admin', 'users', this.user.id], { queryParams });
+    });
   }
 
   onCancel() {
