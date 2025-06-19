@@ -20,9 +20,11 @@ export class FileUploadComponent implements ControlValueAccessor {
   id = input('1');
   @Input() label = 'Upload file';
   @Input() hint = '';
+  @Input() fileSizeHint = '';
+  @Input() fileTypeHint = '';
   @Input() errorMessage = '';
   @Input() isInvalid = false;
-  @Input() allowedFileTypes = '.doc,.docx,.zip';
+  @Input() allowedFileTypes = '.doc,.docx';
 
   controlId = computed(() => `file-upload-${this.id()}`);
   controlErrorId = computed(() => `${this.controlId()}-error`);
