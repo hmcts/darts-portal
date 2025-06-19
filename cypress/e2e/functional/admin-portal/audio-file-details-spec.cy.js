@@ -246,7 +246,7 @@ describe('Admin - Audio file details screen', () => {
       cy.contains('dt', 'Channel number').next('dd').should('contain.text', '4');
       cy.contains('dt', 'Total channels').next('dd').should('contain.text', '16');
       cy.contains('dt', 'Media type').next('dd').should('contain.text', 'Audio');
-      cy.contains('dt', 'File type').next('dd').should('contain.text', 'Audio');
+      cy.contains('dt', 'File type').next('dd').should('contain.text', 'MP3');
       cy.contains('dt', 'File size').next('dd').should('contain.text', '117.74MB');
       cy.contains('dt', 'Filename').next('dd').should('contain.text', 'filename.mp3');
       cy.contains('dt', 'Date created').next('dd').should('contain.text', '11 Jun 2024 at 6:55:18PM');
