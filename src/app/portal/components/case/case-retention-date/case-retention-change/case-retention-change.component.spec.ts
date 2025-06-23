@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { HttpErrorResponse, provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RetentionPolicyErrorCode } from '@constants/retention-policy-error-codes';
 import { CaseService } from '@services/case/case.service';
 import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
@@ -105,9 +106,13 @@ describe('CaseRetentionComponent', () => {
 
     it('should show error message if user is NOT Admin or Judge and date is set before current retention date', () => {
       const errorResponse = new HttpErrorResponse({
-        error: { title: 'The retention date being applied is too early.' },
+        error: {
+          type: RetentionPolicyErrorCode.NO_PERMISSION_REDUCE_RETENTION,
+          title: 'The retention date being applied is too early.',
+        },
         status: 403,
       });
+
       jest.spyOn(mockCaseService, 'postCaseRetentionDateValidate').mockReturnValue(throwError(() => errorResponse));
       // Select date option
       component.retainOptionFormControl.patchValue('date');
@@ -127,7 +132,10 @@ describe('CaseRetentionComponent', () => {
 
     it('should show error message if user is Admin or Judge but date is set before original retention date', () => {
       const errorResponse = new HttpErrorResponse({
-        error: { latest_automated_retention_date: originalRetentionDate.toFormat(dateApiFormat) },
+        error: {
+          latest_automated_retention_date: originalRetentionDate.toFormat(dateApiFormat),
+          type: RetentionPolicyErrorCode.RETENTION_DATE_TOO_EARLY,
+        },
         status: 422,
       });
       jest.spyOn(mockCaseService, 'postCaseRetentionDateValidate').mockReturnValue(throwError(() => errorResponse));
@@ -150,7 +158,7 @@ describe('CaseRetentionComponent', () => {
     it('should show error message if date is set after the "permanent" date', () => {
       const maxYears = 99;
       const errorResponse = new HttpErrorResponse({
-        error: { max_duration: `${maxYears}Y0M0D` },
+        error: { max_duration: `${maxYears}Y0M0D`, type: RetentionPolicyErrorCode.RETENTION_DATE_TOO_LATE },
         status: 422,
       });
       jest.spyOn(mockCaseService, 'postCaseRetentionDateValidate').mockReturnValue(throwError(() => errorResponse));
@@ -272,6 +280,100 @@ describe('CaseRetentionComponent', () => {
       const testValue = '01/01/2024';
       component.setDateValue(testValue);
       expect(component.retainDateFormControl.value).toEqual(testValue);
+    });
+  });
+
+  describe('#handleRetentionError', () => {
+    it('should set errorDate and field error for RETENTION_DATE_TOO_LATE', () => {
+      const err = new HttpErrorResponse({
+        error: { type: RetentionPolicyErrorCode.RETENTION_DATE_TOO_LATE, max_duration: '99Y0M0D' },
+      });
+
+      component.handleRetentionError(err);
+
+      expect(component.errorDate).toContain('You cannot retain a case for more than');
+      expect(component.errors).toContainEqual({ fieldId: 'retention-date', message: component.errorDate });
+    });
+
+    it('should set errorDate and field error for RETENTION_DATE_TOO_EARLY', () => {
+      const earlyDate = DateTime.now().toFormat('yyyy-MM-dd');
+      const err = new HttpErrorResponse({
+        error: {
+          type: RetentionPolicyErrorCode.RETENTION_DATE_TOO_EARLY,
+          latest_automated_retention_date: earlyDate,
+        },
+      });
+
+      component.handleRetentionError(err);
+
+      expect(component.errorDate).toContain('You cannot set retention date earlier than');
+      expect(component.errors).toContainEqual({ fieldId: 'retention-date', message: component.errorDate });
+    });
+
+    it('should set errorDate and field error for NO_PERMISSION_REDUCE_RETENTION', () => {
+      const err = new HttpErrorResponse({
+        error: { type: RetentionPolicyErrorCode.NO_PERMISSION_REDUCE_RETENTION },
+      });
+
+      component.handleRetentionError(err);
+
+      expect(component.errorDate).toContain('You do not have permission');
+      expect(component.errors).toContainEqual({ fieldId: 'retention-date', message: component.errorDate });
+    });
+
+    it('should set errorDate and field error for CASE_NOT_CLOSED', () => {
+      const err = new HttpErrorResponse({
+        error: { type: RetentionPolicyErrorCode.CASE_NOT_CLOSED },
+      });
+
+      component.handleRetentionError(err);
+
+      expect(component.errorDate).toContain('The case must be closed');
+      expect(component.errors).toContainEqual({ fieldId: 'retention-date', message: component.errorDate });
+    });
+
+    it('should set errorDate and field error for NO_RETENTION_POLICIES_APPLIED', () => {
+      const err = new HttpErrorResponse({
+        error: { type: RetentionPolicyErrorCode.NO_RETENTION_POLICIES_APPLIED },
+      });
+
+      component.handleRetentionError(err);
+
+      expect(component.errorDate).toContain('Changes cannot be made');
+      expect(component.errors).toContainEqual({ fieldId: 'retention-date', message: component.errorDate });
+    });
+
+    it('should set errorDate and field error for CASE_RETENTION_PASSED', () => {
+      const err = new HttpErrorResponse({
+        error: { type: RetentionPolicyErrorCode.CASE_RETENTION_PASSED },
+      });
+
+      component.handleRetentionError(err);
+
+      expect(component.errorDate).toContain('This case has expired');
+      expect(component.errors).toContainEqual({ fieldId: 'retention-date', message: component.errorDate });
+    });
+
+    it('should set default errorDate and field error for unknown error type', () => {
+      const err = new HttpErrorResponse({
+        error: { type: 'UNKNOWN_TYPE' },
+      });
+
+      component.handleRetentionError(err);
+
+      expect(component.errorDate).toContain('There is a problem with the service');
+      expect(component.errors).toContainEqual({ fieldId: 'retention-date', message: component.errorDate });
+    });
+
+    it('should set default errorDate and field error for missing error type', () => {
+      const err = new HttpErrorResponse({
+        error: {},
+      });
+
+      component.handleRetentionError(err);
+
+      expect(component.errorDate).toContain('There is a problem with the service');
+      expect(component.errors).toContainEqual({ fieldId: 'retention-date', message: component.errorDate });
     });
   });
 });
