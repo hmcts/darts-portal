@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/module.d-CnjH8Dlt';
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DatepickerComponent } from '@common/datepicker/datepicker.component';
 import { GovukTextareaComponent } from '@common/govuk-textarea/govuk-textarea.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
+import { RetentionPolicyErrorCode } from '@constants/retention-policy-error-codes';
 import { CaseService } from '@services/case/case.service';
 import { DateTime, Duration } from 'luxon';
 import { CaseRetentionPageState } from 'src/app/portal/models/case/case-retention-page-state.type';
@@ -77,43 +79,56 @@ export class CaseRetentionChangeComponent {
     this.retainDateFormControl.setValue('');
   }
 
-  onConfirm() {
-    this.errors = [];
+  private validateRetainOption() {
     this.retainOptionFormControl.markAsDirty();
-    // Check an option has been selected
     if (!this.retainOptionFormControl.value) {
-      this.errors.push({
-        fieldId: 'change-radios',
-        message: this.errorNoOption,
-      });
+      this.setFieldError('change-radios', this.errorNoOption);
     }
-    // Check a reason has been provided
+  }
+
+  private validateRetainReason() {
     if (!this.retainReasonFormControl.value) {
       this.retainReasonFormControl.markAsDirty();
-      this.errors.push({
-        fieldId: 'change-reason',
-        message: this.errorNoReason,
-      });
+      this.setFieldError('change-reason', this.errorNoReason);
     }
-    const isPermanent = !(this.retainOptionFormControl.value === 'date');
-    // Check a date has been provided
+  }
+
+  private validateRetentionDate() {
+    const isPermanent = this.retainOptionFormControl.value !== 'date';
     if (!isPermanent) {
       this.onChangeDate();
       if (this.errorDate) {
-        this.errors.push({
-          fieldId: 'retention-date',
-          message: this.errorDate,
-        });
+        this.setFieldError('retention-date', this.errorDate);
       }
     }
+  }
+
+  private setFieldError(fieldId: string, message: string) {
+    this.errors.push({ fieldId, message });
+  }
+
+  onConfirm() {
+    this.errors = [];
+
+    this.validateRetainOption();
+    this.validateRetainReason();
+    this.validateRetentionDate();
+
+    if (this.errors.length) {
+      return;
+    }
+
+    const isPermanent = this.retainOptionFormControl.value !== 'date';
+    const formattedDate = this.retainDateFormControl.value
+      ? DateTime.fromFormat(this.retainDateFormControl.value, this.datePageFormat).toFormat(this.dateApiFormat)
+      : undefined;
+
     if (!this.errors.length) {
       // As long as there's no other errors, make the call
       this.caseService
         .postCaseRetentionDateValidate({
           case_id: this.caseId,
-          retention_date: this.retainDateFormControl.value
-            ? DateTime.fromFormat(this.retainDateFormControl.value, this.datePageFormat).toFormat(this.dateApiFormat)
-            : undefined,
+          retention_date: formattedDate,
           is_permanent_retention: isPermanent,
           // Comments do appear to be required for this call
           comments: this.retainReasonFormControl.value || '',
@@ -131,40 +146,65 @@ export class CaseRetentionChangeComponent {
               this.stateChange.emit('Confirm');
             }
           },
-          error: (err) => {
-            if (err?.error?.max_duration) {
-              // Sanitise the output to something human readable,
-              // For example: 1 Year, 2 Months and 3 Days
-              const max_duration_split = err.error.max_duration.split(/[A-Z]/);
-              const years = parseInt(max_duration_split[0]);
-              // Don't include months which are 0
-              const months = parseInt(max_duration_split[1]) || undefined;
-              // Don't include days which are 0
-              const days = parseInt(max_duration_split[2]) || undefined;
-              const duration = Duration.fromObject({
-                years,
-                months,
-                days,
-              });
-              this.errorDate = `You cannot retain a case for more than ${duration.toHuman({ listStyle: 'long' })} after the case closed`;
-            } else if (err?.error?.latest_automated_retention_date) {
-              // Sanitise the output to something human readable
-              const earliestDate = DateTime.fromFormat(err.error.latest_automated_retention_date, this.dateApiFormat, {
-                setZone: true,
-              });
-              this.errorDate = `You cannot set retention date earlier than ${earliestDate.toFormat(this.datePageFormat)}`;
-            } else {
-              // Otherwise, the only other error can be a permissions issue
-              this.errorDate = `You do not have permission to reduce the current retention date.\r\nPlease refer to the DARTS retention policy guidance.`;
-            }
-            this.errors.push({
-              fieldId: 'retention-date',
-              message: this.errorDate,
-            });
-            return;
-          },
+          error: (err) => this.handleRetentionError(err),
         });
     }
+  }
+
+  handleRetentionError(err: HttpErrorResponse) {
+    const code = err?.error?.type as RetentionPolicyErrorCode | undefined;
+
+    switch (code) {
+      case RetentionPolicyErrorCode.RETENTION_DATE_TOO_LATE: {
+        const maxDuration = err.error?.max_duration;
+        if (maxDuration) {
+          const d = maxDuration.match(/\d+/g) || [];
+          const duration = Duration.fromObject({
+            years: parseInt(d[0]),
+            months: parseInt(d[1]) || undefined,
+            days: parseInt(d[2]) || undefined,
+          });
+          this.errorDate = `You cannot retain a case for more than ${duration.toHuman({ listStyle: 'long' })} after the case closed`;
+        }
+        break;
+      }
+
+      case RetentionPolicyErrorCode.RETENTION_DATE_TOO_EARLY: {
+        const earliest = err.error?.latest_automated_retention_date;
+        if (earliest) {
+          const date = DateTime.fromFormat(earliest, this.dateApiFormat, { setZone: true });
+          this.errorDate = `You cannot set retention date earlier than ${date.toFormat(this.datePageFormat)}`;
+        }
+        break;
+      }
+
+      case RetentionPolicyErrorCode.NO_PERMISSION_REDUCE_RETENTION: {
+        this.errorDate = `You do not have permission to reduce the current retention date.\r\nPlease refer to the DARTS retention policy guidance.`;
+        break;
+      }
+
+      case RetentionPolicyErrorCode.CASE_NOT_CLOSED: {
+        this.errorDate = `The case must be closed before the retention period can be amended.`;
+        break;
+      }
+
+      case RetentionPolicyErrorCode.NO_RETENTION_POLICIES_APPLIED: {
+        this.errorDate = `Changes cannot be made to a retention date before a system retention period has been applied.`;
+        break;
+      }
+
+      case RetentionPolicyErrorCode.CASE_RETENTION_PASSED: {
+        this.errorDate = `This case has expired. It is not possible to make any changes to the retention date.`;
+        break;
+      }
+
+      default: {
+        this.errorDate = `There is a problem with the service. Try again or contact DTS-IT Service Desk if the problem persists`;
+        break;
+      }
+    }
+
+    this.setFieldError('retention-date', this.errorDate);
   }
 
   onCancel(event: Event) {
