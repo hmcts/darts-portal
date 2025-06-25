@@ -162,13 +162,21 @@ export const ADMIN_ROUTES: Routes = [
     loadComponent: () =>
       import('./components/events/view-event/view-event.component').then((c) => c.ViewEventComponent),
   },
-
   {
     path: 'admin/events/:id/versions',
     title: 'DARTS Admin View Event Versions',
     data: { allowedRoles: ['SUPER_ADMIN'] },
     loadComponent: () =>
       import('./components/events/show-versions/show-versions.component').then((c) => c.ShowVersionsComponent),
+  },
+  {
+    path: 'admin/events/:id/versions/set-current',
+    title: 'DARTS Admin Set Current Event Version',
+    data: { allowedRoles: ['SUPER_ADMIN'] },
+    loadComponent: () =>
+      import('./components/events/set-current-version/set-current-version.component').then(
+        (c) => c.SetCurrentVersionComponent
+      ),
   },
   {
     path: 'admin/events/:id/obfuscate',
