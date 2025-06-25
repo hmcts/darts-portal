@@ -27,6 +27,10 @@ export class EventsService {
       .pipe(map((versions) => this.mapEventVersions(versions)));
   }
 
+  setCurrentVersion(id: number) {
+    return this.http.patch<void>(`/api/admin/events/${id}`, { is_current: true }, { responseType: 'text' as 'json' });
+  }
+
   mapEventVersions(event: EventVersionsData): EventVersions {
     return {
       currentVersion: event.current_version ? this.mapEventDataToEvent(event.current_version) : null,

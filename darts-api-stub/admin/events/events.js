@@ -426,9 +426,13 @@ router.get('/:id', (req, res) => {
   const id = Number(req.params.id);
   const viewEvent = viewEvents.find((event) => event.id === Number(req.params.id));
   if (!viewEvent) {
-    return res.status(404).send('Event not found');
+    return res.send({ id: id, ...viewEvents[0] });
   }
   res.send(viewEvent);
+});
+
+router.patch('/:id', (req, res) => {
+  res.sendStatus(200);
 });
 
 router.get('/:id/versions', (req, res) => {
