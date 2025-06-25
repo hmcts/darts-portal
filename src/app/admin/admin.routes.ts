@@ -170,6 +170,16 @@ export const ADMIN_ROUTES: Routes = [
       import('./components/events/show-versions/show-versions.component').then((c) => c.ShowVersionsComponent),
   },
   {
+    path: 'admin/events/:id/obfuscate',
+    title: 'DARTS Admin Obfuscate Event Text',
+    data: { allowedRoles: ['SUPER_ADMIN'] },
+    loadComponent: () =>
+      import('./components/events/obfuscate-event-text/obfuscate-event-text.component').then(
+        (c) => c.ObfuscateEventTextComponent
+      ),
+    canActivate: [eventObfuscationGuard], // event obfuscation feature flag must be enabled
+  },
+  {
     path: 'admin/events/:id/versions/set-current',
     title: 'DARTS Admin Set Current Event Version',
     data: { allowedRoles: ['SUPER_ADMIN'] },
@@ -179,14 +189,13 @@ export const ADMIN_ROUTES: Routes = [
       ),
   },
   {
-    path: 'admin/events/:id/obfuscate',
-    title: 'DARTS Admin Obfuscate Event Text',
+    path: 'admin/audio-file/:id/versions/set-current',
+    title: 'DARTS Admin Set Current Audio Version',
     data: { allowedRoles: ['SUPER_ADMIN'] },
     loadComponent: () =>
-      import('./components/events/obfuscate-event-text/obfuscate-event-text.component').then(
-        (c) => c.ObfuscateEventTextComponent
+      import('./components/audio-file/set-current-version/set-current-version.component').then(
+        (c) => c.SetCurrentVersionComponent
       ),
-    canActivate: [eventObfuscationGuard], // event obfuscation feature flag must be enabled
   },
   {
     path: 'admin/audio-file/:id',
@@ -200,15 +209,6 @@ export const ADMIN_ROUTES: Routes = [
     data: { allowedRoles: ['SUPER_ADMIN'] },
     loadComponent: () =>
       import('./components/audio-file/show-versions/show-versions.component').then((c) => c.ShowVersionsComponent),
-  },
-  {
-    path: 'admin/audio-file/:id/versions/set-current',
-    title: 'DARTS Admin Set Current Audio Version',
-    data: { allowedRoles: ['SUPER_ADMIN'] },
-    loadComponent: () =>
-      import('./components/audio-file/set-current-version/set-current-version.component').then(
-        (c) => c.SetCurrentVersionComponent
-      ),
   },
   {
     path: 'admin/audio-file/:id/associated-audio/unhide-or-unmark-for-deletion',
