@@ -6,6 +6,7 @@ import { DatepickerComponent } from '@common/datepicker/datepicker.component';
 import { GovukTextareaComponent } from '@common/govuk-textarea/govuk-textarea.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { RetentionPolicyErrorCode } from '@constants/retention-policy-error-codes';
+import { AppConfigService } from '@services/app-config/app-config.service';
 import { CaseService } from '@services/case/case.service';
 import { DateTime, Duration } from 'luxon';
 import { CaseRetentionPageState } from 'src/app/portal/models/case/case-retention-page-state.type';
@@ -24,6 +25,8 @@ import { CaseRetentionPageState } from 'src/app/portal/models/case/case-retentio
   styleUrls: ['./case-retention-change.component.scss'],
 })
 export class CaseRetentionChangeComponent {
+  appConfig = inject(AppConfigService);
+
   @Input() caseId!: number;
   @Input() state!: CaseRetentionPageState;
 
@@ -40,6 +43,8 @@ export class CaseRetentionChangeComponent {
   retainDateFormControl = new FormControl();
   datePatternValidator = Validators.pattern(/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/);
   caseService = inject(CaseService);
+
+  supportName = this.appConfig.getAppConfig()?.support.name || 'DTS-IT Service Desk';
 
   retentionCharacterLimit = 200;
   errors: { fieldId: string; message: string }[] = [];
@@ -199,7 +204,7 @@ export class CaseRetentionChangeComponent {
       }
 
       default: {
-        this.errorDate = `There is a problem with the service. Try again or contact DTS-IT Service Desk if the problem persists`;
+        this.errorDate = `There is a problem with the service. Try again or contact ${this.supportName} if the problem persists`;
         break;
       }
     }
