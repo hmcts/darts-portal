@@ -3,6 +3,7 @@ import { HttpErrorResponse, provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RetentionPolicyErrorCode } from '@constants/retention-policy-error-codes';
+import { AppConfigService } from '@services/app-config/app-config.service';
 import { CaseService } from '@services/case/case.service';
 import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
@@ -29,6 +30,14 @@ describe('CaseRetentionComponent', () => {
     day: 1,
   });
 
+  const mockAppConfigService = {
+    getAppConfig: jest.fn().mockReturnValue({
+      support: {
+        name: 'DTS-IT Service Desk',
+      },
+    }),
+  };
+
   beforeEach(() => {
     mockUserService = {
       hasRoles: jest.fn(),
@@ -51,6 +60,7 @@ describe('CaseRetentionComponent', () => {
         { provide: UserService, useValue: mockUserService },
         { provide: DatePipe },
         { provide: CaseService, useValue: mockCaseService },
+        { provide: AppConfigService, useValue: mockAppConfigService },
       ],
     });
     fixture = TestBed.createComponent(CaseRetentionChangeComponent);
@@ -373,6 +383,8 @@ describe('CaseRetentionComponent', () => {
       component.handleRetentionError(err);
 
       expect(component.errorDate).toContain('There is a problem with the service');
+      expect(component.errorDate).toContain('DTS-IT Service Desk');
+
       expect(component.errors).toContainEqual({ fieldId: 'retention-date', message: component.errorDate });
     });
   });
