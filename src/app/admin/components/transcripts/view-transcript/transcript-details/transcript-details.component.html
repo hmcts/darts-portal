@@ -34,6 +34,37 @@
         }
       </dd>
     </div>
+
+    <div govukSummaryListRow>
+      <dt govukSummaryKey>Associated groups</dt>
+      <dd govukSummaryValue>
+        @if (
+          transcript.status !== 'Awaiting Authorisation' &&
+          transcript.status !== 'Requested' &&
+          transcript.assignedGroups?.length
+        ) {
+          @for (group of transcript.assignedGroups; track group.id) {
+            @if (group.displayName || group.name) {
+              @if (isAdmin) {
+                <div>
+                  <a
+                    class="govuk-link"
+                    [routerLink]="['/admin/groups', group.id]"
+                    [queryParams]="{ backUrl: '/admin/transcripts/' + transcript.transcriptionId }"
+                  >
+                    {{ group.displayName || group.name }}
+                  </a>
+                </div>
+              } @else {
+                <span>{{ group.displayName || group.name }}</span>
+              }
+            }
+          }
+        } @else {
+          -
+        }
+      </dd>
+    </div>
   </dl>
 </div>
 

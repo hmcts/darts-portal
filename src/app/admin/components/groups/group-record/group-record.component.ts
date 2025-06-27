@@ -12,6 +12,7 @@ import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.componen
 import { TabDirective } from '@directives/tab.directive';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { GroupsService } from '@services/groups/groups.service';
+import { HistoryService } from '@services/history/history.service';
 import { UserService } from '@services/user/user.service';
 import { BehaviorSubject, combineLatest, forkJoin, map, shareReplay, tap } from 'rxjs';
 import { GroupCourthousesComponent } from '../group-courthouses/group-courthouses.component';
@@ -40,7 +41,10 @@ export class GroupRecordComponent implements OnInit {
   groupsService = inject(GroupsService);
   userAdminService = inject(UserAdminService);
   courthouseService = inject(CourthouseService);
+  historyService = inject(HistoryService);
   isAdmin = inject(UserService).isAdmin();
+
+  backUrl = this.historyService.getBackUrl(this.router.url) ?? '/admin/groups';
 
   groupId: number = +this.route.snapshot.params.id;
   tab = this.route.snapshot.queryParams.tab || 'Courthouses';

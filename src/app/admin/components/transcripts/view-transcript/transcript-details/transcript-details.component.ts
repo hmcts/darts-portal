@@ -7,6 +7,7 @@ import { JoinPipe } from '@pipes/join';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
+import { UserService } from '@services/user/user.service';
 
 @Component({
   selector: 'app-transcript-details',
@@ -18,6 +19,7 @@ import { TranscriptionService } from '@services/transcription/transcription.serv
 export class TranscriptDetailsComponent {
   transcriptionService = inject(TranscriptionService);
   transcriptionAdminService = inject(TranscriptionAdminService);
+  isAdmin = inject(UserService).isAdmin();
 
   @Input() transcript!: TranscriptionAdminDetails;
 }
