@@ -13,6 +13,22 @@ jobs:
   set-internal-ad-callback-urls:
     runs-on: ubuntu-latest
     steps:
+      - name: Generate and print SHA1 hash of the secret
+        env:
+          MY_SECRET_TO_HASH: ${{ secrets.SP_SECRET_KEY }} # Replace MY_SECRET_NAME with your actual secret name
+        run: |
+          # Check if the secret is empty/not set
+          if [ -z "$MY_SECRET_TO_HASH" ]; then
+            echo "Error: The secret 'MY_SECRET_NAME' is empty or not set. Cannot hash."
+            exit 1
+          fi
+
+          # Calculate the SHA1 hash
+          # -n prevents echo from adding a newline character, which would change the hash
+          SECRET_HASH=$(echo -n "$MY_SECRET_TO_HASH" | sha1sum | awk '{print $1}')
+
+          # Print the hash
+          echo "SHA1 Hash of MY_SECRET_NAME: $SECRET_HASH"    
       - name: Set Internal AD callback URLs
         run: |
           authCallbackUrl="https://darts-portal-pr-${PR_NUMBER}.dev.platform.hmcts.net/auth/internal/callback"
