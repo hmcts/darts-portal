@@ -431,6 +431,15 @@ export const ADMIN_ROUTES: Routes = [
         './components/retention-policies/create-edit-retention-policy/create-edit-retention-policy.component'
       ).then((c) => c.CreateEditRetentionPolicyComponent),
   },
+  {
+    path: 'admin/system-configuration/node-registrations',
+    title: 'DARTS Admin Node Registrations',
+    data: { allowedRoles: ['SUPER_ADMIN'] },
+    loadComponent: () =>
+      import('./components/system-configuration/system-configuration.component').then(
+        (c) => c.SystemConfigurationComponent
+      ),
+  },
 ].map((route) => {
   const updatedRoute = {
     ...route,
