@@ -30,7 +30,7 @@ export class ViewTranscriptComponent {
 
   // url from Case: /case/{caseId}/transcripts/{transcriptId}
   // url from Hearing: /case/{caseId}/hearings/{hearingId}/transcripts/{transcriptId}
-  // url from Your Work: /transcriptions/transcripts/{transcriptId}
+  // url from Your Work: /transcriptions/{transcriptId}
   transcriptId = input(0, { transform: numberAttribute });
   caseId = input(0, { transform: numberAttribute });
   hearingId = input(0, { transform: numberAttribute });
