@@ -1,5 +1,5 @@
 import { AutomatedTask } from '@admin-types/automated-task/automated-task';
-import { Component, inject, signal, OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
@@ -23,6 +23,7 @@ export class AutomatedTasksComponent implements OnDestroy {
   route = inject(ActivatedRoute);
 
   isLoading = signal(true);
+
   automatedTasks = toSignal(this.automatedTasksService.getTasks().pipe(tap(() => this.isLoading.set(false))), {
     initialValue: [],
   });
