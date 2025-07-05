@@ -17,7 +17,7 @@
 
   <app-details-table title="Request details" [details]="vm.hearingDetails" />
 
-  @if (requestStatus !== 'COMPLETED') {
+  @if (requestStatus !== 'COMPLETED' && vm.status !== 'Complete') {
     <button
       id="get-audio-button"
       class="govuk-button govuk-button--secondary"
