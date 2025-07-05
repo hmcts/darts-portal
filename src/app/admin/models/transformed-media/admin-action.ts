@@ -5,6 +5,7 @@ export type AdminAction = {
   reasonId: number;
   hiddenById: number;
   hiddenByName?: string;
+  hiddenByIsSystemUser?: boolean;
   hiddenAt: DateTime;
   isMarkedForManualDeletion: boolean;
   markedForManualDeletionById: number;

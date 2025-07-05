@@ -18,7 +18,7 @@ export class TranscriptFacadeService {
         const userIds = workflows.map((workflow) => workflow.workflowActor);
         return forkJoin({
           workflows: of(workflows),
-          users: this.userAdminService.getUsersById(userIds),
+          users: this.userAdminService.getUsersById(userIds, true),
           statuses: this.transcriptionAdminService.getTranscriptionStatuses(),
         }).pipe(map(({ workflows, statuses, users }) => this.mapWorkflowsToTimeline(workflows, statuses, users)));
       })
@@ -55,7 +55,7 @@ export class TranscriptFacadeService {
           : [workflowUserId];
 
         return forkJoin({
-          users: this.userAdminService.getUsersById(userIds),
+          users: this.userAdminService.getUsersById(userIds, true),
           securityGroups: this.transcriptionAdminService.getTranscriptionSecurityGroups(transcription.courthouseId!),
         }).pipe(
           map(({ users, securityGroups }) =>
@@ -81,11 +81,13 @@ export class TranscriptFacadeService {
         email: requestor?.emailAddress,
         userId: transcription.requestor?.userId,
         fullName: transcription.requestor?.fullName,
+        isSystemUser: requestor?.isSystemUser,
       },
       assignedTo: {
         email: assignee?.emailAddress,
         userId: assignee?.id,
         fullName: assignee?.fullName,
+        isSystemUser: requestor?.isSystemUser,
       },
     };
   }
@@ -108,7 +110,7 @@ export class TranscriptFacadeService {
         title: statusMap.get(workflow.statusId).displayName || 'Unknown',
         descriptionLines: workflow.comments.map((c) => c.comment),
         dateTime: workflow.workflowTimestamp,
-        user: userMap.get(workflow.workflowActor) as Pick<User, 'id' | 'fullName' | 'emailAddress'>,
+        user: userMap.get(workflow.workflowActor) as Pick<User, 'id' | 'fullName' | 'emailAddress' | 'isSystemUser'>,
       }));
 
     const commentTimelineData = workflows
@@ -135,7 +137,7 @@ export class TranscriptFacadeService {
           title: 'Comment',
           descriptionLines: [comment.comment],
           dateTime: dateTime,
-          user: (user as Pick<User, 'id' | 'fullName' | 'emailAddress'>) || null,
+          user: (user as Pick<User, 'id' | 'fullName' | 'emailAddress' | 'isSystemUser'>) || null,
         };
       });
     return this.sortTimelineItemByTimestampAndStatus(workflowTimelineData.concat(commentTimelineData));

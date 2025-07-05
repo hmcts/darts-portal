@@ -39,7 +39,6 @@ const audioFile: AudioFile = {
     id: 0,
     reasonId: 0,
     hiddenById: 99,
-    hiddenByName: undefined,
     hiddenAt: dateTime,
     isMarkedForManualDeletion: false,
     markedForManualDeletionById: 99,
@@ -54,10 +53,8 @@ const audioFile: AudioFile = {
   retainUntil: dateTime,
   createdAt: dateTime,
   createdById: 99,
-  createdBy: undefined,
   lastModifiedAt: dateTime,
   lastModifiedById: 99,
-  lastModifiedBy: undefined,
   courthouse: {
     id: 0,
     displayName: '',
@@ -155,7 +152,9 @@ describe('AudioFileComponent', () => {
         { provide: UserService, useValue: { isAdmin: () => true } },
         {
           provide: UserAdminService,
-          useValue: { getUsersById: jest.fn().mockReturnValue(of([{ id: 99, fullName: 'full name' }])) },
+          useValue: {
+            getUsersById: jest.fn().mockReturnValue(of([{ id: 99, fullName: 'full name', isSystemUser: false }])),
+          },
         },
         {
           provide: TransformedMediaService,
@@ -212,11 +211,20 @@ describe('AudioFileComponent', () => {
     it('resolves user full name properties', fakeAsync(() => {
       const expected = {
         ...audioFile,
-        createdBy: 'full name',
-        lastModifiedBy: 'full name',
+        createdBy: {
+          id: 99,
+          fullName: 'full name',
+          isSystemUser: false,
+        },
+        lastModifiedBy: {
+          id: 99,
+          fullName: 'full name',
+          isSystemUser: false,
+        },
         adminAction: {
           ...audioFile.adminAction,
           hiddenByName: 'full name',
+          hiddenByIsSystemUser: false,
           markedForManualDeletionBy: 'full name',
         },
       };

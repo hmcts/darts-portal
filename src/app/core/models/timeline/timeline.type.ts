@@ -5,5 +5,5 @@ export type TimelineItem = {
   title: string;
   dateTime: DateTime;
   descriptionLines: string[];
-  user: Pick<User, 'id' | 'fullName' | 'emailAddress'>;
+  user: Pick<User, 'id' | 'fullName' | 'emailAddress' | 'isSystemUser'>;
 };
