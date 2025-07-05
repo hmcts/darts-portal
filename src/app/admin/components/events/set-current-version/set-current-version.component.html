@@ -1,0 +1,49 @@
+<app-govuk-heading> Are you sure you want to make this the current version of the event? </app-govuk-heading>
+
+@let event = newVersion();
+
+@if (event) {
+  <div govukSummaryContainer>
+    <app-govuk-heading class="no-margin border-bottom" tag="h2" size="m">Event details</app-govuk-heading>
+    <dl govukSummaryList>
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Event ID</dt>
+        <dd govukSummaryValue>{{ event.id }}</dd>
+      </div>
+
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Name</dt>
+        <dd govukSummaryValue>{{ event.eventMapping.name }}</dd>
+      </div>
+
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Text</dt>
+        <dd govukSummaryValue>{{ event.text }}</dd>
+      </div>
+
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Courthouse</dt>
+        <dd govukSummaryValue>{{ event.courthouse.displayName }}</dd>
+      </div>
+
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Courtroom</dt>
+        <dd govukSummaryValue>{{ event.courtroom.name }}</dd>
+      </div>
+
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Timestamp</dt>
+        <dd govukSummaryValue>{{ event.eventTs | luxonDate: "dd MMM yyyy 'at' h:mm:ssa" }}</dd>
+      </div>
+    </dl>
+  </div>
+
+  <div class="govuk-button-group">
+    <button id="confirm-button" class="govuk-button" [disabled]="isSubmitted" (click)="setCurrentVersion()">
+      Confirm
+    </button>
+    <a id="cancel-link" class="govuk-link" href="javascript:void(0)" [routerLink]="['../']">Cancel</a>
+  </div>
+} @else {
+  <app-loading />
+}
