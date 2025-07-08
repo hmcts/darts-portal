@@ -6285,11 +6285,11 @@ __metadata:
   linkType: hard
 
 "@types/express-session@npm:^1.17.7":
-  version: 1.18.1
-  resolution: "@types/express-session@npm:1.18.1"
+  version: 1.18.2
+  resolution: "@types/express-session@npm:1.18.2"
   dependencies:
     "@types/express": "*"
-  checksum: 380ddcbbc6a64686deafd4e2831c636d11a3252f051ebb4c49649abfab5ddf69c2b31e4ff97a2961cb02ef8c616feaa7ecaa4ad7b7f028c25d88fbfa437fb455
+  checksum: 317b749c2179f8d6b5b961e9da3deb8c730c06586cfbf92391c9f74c7981825bfa1b37942e7fe85e51a85c678809b614b2405c722c3474d4afd98686ee04d0ad
   languageName: node
   linkType: hard
 
