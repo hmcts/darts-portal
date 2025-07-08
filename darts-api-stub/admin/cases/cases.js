@@ -1,4 +1,5 @@
 const express = require('express');
+const { DateTime } = require('luxon');
 const router = express.Router();
 
 const caseSearchResults = [
@@ -134,6 +135,68 @@ router.get('/:id', (req, res) => {
   } else {
     res.send(singleCase);
   }
+});
+
+router.get('/:id/audios', (req, res) => {
+  const pageNumber = parseInt(req.query.page_number) || null;
+  const pageSize = parseInt(req.query.page_size) || null;
+  const sortBy = req.query.sort_by;
+  const sortOrder = (req.query.sort_order || 'ASC').toUpperCase();
+
+  const validSortFields = ['audioId', 'startTime', 'endTime', 'channel', 'courtroom'];
+  const startBase = DateTime.fromISO('2024-06-11T07:55:18.404Z');
+  const channels = [1, 2, 3, 4];
+  const totalAudios = 1650; // Total number of audios to generate
+
+  const generatedAudios = Array.from({ length: totalAudios }, (_, i) => {
+    const start_at = startBase.plus({ seconds: i * 30 });
+    const end_at = start_at.plus({ seconds: 29 });
+
+    return {
+      id: i + 1,
+      start_at: start_at.toISO(),
+      end_at: end_at.toISO(),
+      channel: channels[Math.floor(Math.random() * channels.length)],
+      courtroom: `Courtroom ${Math.floor(Math.random() * 5) + 1}`,
+    };
+  });
+
+  const sortFieldMap = {
+    audioId: 'id',
+    startTime: 'start_at',
+    endTime: 'end_at',
+    channel: 'channel',
+    courtroom: 'courtroom',
+  };
+
+  let sortedAudios = [...generatedAudios];
+  if (sortBy && sortFieldMap[sortBy]) {
+    const actualKey = sortFieldMap[sortBy];
+
+    sortedAudios.sort((a, b) => {
+      const valA = a[actualKey];
+      const valB = b[actualKey];
+
+      if (valA < valB) return sortOrder === 'ASC' ? -1 : 1;
+      if (valA > valB) return sortOrder === 'ASC' ? 1 : -1;
+      return 0;
+    });
+  }
+
+  if (pageNumber && pageSize) {
+    const start = (pageNumber - 1) * pageSize;
+    const pagedData = sortedAudios.slice(start, start + pageSize);
+
+    return res.send({
+      current_page: pageNumber,
+      page_size: pageSize,
+      total_pages: Math.ceil(sortedAudios.length / pageSize),
+      total_items: sortedAudios.length,
+      data: pagedData,
+    });
+  }
+
+  res.send(sortedAudios);
 });
 
 module.exports = router;

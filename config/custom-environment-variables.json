@@ -23,7 +23,8 @@
     }
   },
   "pagination": {
-    "courtLogEventsPageLimit": "PAGINATION_COURTLOG_EVENTS_LIMIT"
+    "courtLogEventsPageLimit": "PAGINATION_COURTLOG_EVENTS_LIMIT",
+    "caseAudiosPageLimit": "PAGINATION_CASE_AUDIOS_LIMIT"
   },
   "support": {
     "name": "DARTS_SUPPORT_NAME",
