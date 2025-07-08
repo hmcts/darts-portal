@@ -136,6 +136,60 @@ describe('Case file screen', () => {
     });
   });
 
+  describe('Audio details tab', () => {
+    beforeEach(() => {
+      cy.visit('admin/case/1');
+      cy.get('#audio-tab').click();
+    });
+
+    it('should display all expected column headers', () => {
+      cy.get('app-govuk-heading').should('contain.text', 'Audio');
+      const expectedHeaders = ['Audio ID', 'Courtroom', 'Start time', 'End time', 'Channel'];
+
+      cy.get('#case-audio-table thead th button')
+        .should('have.length', expectedHeaders.length)
+        .each(($el, index) => {
+          cy.wrap($el).should('contain.text', expectedHeaders[index]);
+        });
+    });
+
+    it('should render audio rows with links and valid courtroom/cell data', () => {
+      cy.get('#case-audio-table tbody tr').should('have.length', 500);
+
+      cy.get('#case-audio-table tbody tr').each(($row, index) => {
+        if (index < 10) {
+          cy.wrap($row).within(() => {
+            cy.get('td').eq(0).find('a').should('have.attr', 'href').and('include', '/admin/audio-file/');
+            cy.get('td').eq(1).should('contain.text', 'Courtroom');
+            cy.get('td').eq(2).invoke('text').should('match', /AM|PM/);
+            cy.get('td').eq(3).invoke('text').should('match', /AM|PM/);
+            cy.get('td').eq(4).invoke('text').should('match', /^\d+$/);
+          });
+        }
+      });
+    });
+
+    it('should display rows for page 1 and then update when navigating to page 2', () => {
+      cy.get('#case-audio-table tbody tr')
+        .first()
+        .find('td')
+        .eq(0)
+        .invoke('text')
+        .then((firstPageFirstId) => {
+          cy.get('a[data-test-page-button]').contains('2').click();
+
+          cy.get('#case-audio-table tbody tr')
+            .first()
+            .find('td')
+            .eq(0)
+            .invoke('text')
+            .should((secondPageFirstId) => {
+              expect(secondPageFirstId.trim()).not.to.equal(firstPageFirstId.trim());
+            });
+        });
+    });
+  });
+
   describe('Hearing details tab', () => {
     it('should show correct case hearing information', () => {
       cy.visit('admin/case/1');
