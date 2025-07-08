@@ -52,8 +52,14 @@ export class UserRecordComponent {
   user$ = this.userAdminSvc.getUser(this.route.snapshot.params.userId).pipe(shareReplay(1));
   isNewUser$ = this.route.queryParams.pipe(map((params) => !!params.newUser));
   isUpdatedUser$ = this.route.queryParams.pipe(map((params) => !!params.updated));
-  hasAssignedGroups$ = this.route.queryParams.pipe(map((params) => params.assigned));
-  hasRemovedGroups$ = this.route.queryParams.pipe(map((params) => params.groupsRemoved));
+
+  groupChanges$ = this.route.queryParams.pipe(
+    map((params) => ({
+      assigned: params.assigned,
+      removed: params.groupsRemoved,
+    }))
+  );
+
   isUserActivated$ = this.route.queryParams.pipe(map((params) => params.activated));
   isUserDeactivated$: Observable<number[]> = this.route.queryParams.pipe(
     map((params) => {

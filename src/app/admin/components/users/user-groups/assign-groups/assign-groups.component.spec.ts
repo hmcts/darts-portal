@@ -83,10 +83,37 @@ describe('AssignGroupsComponent', () => {
   });
 
   describe('onAssign', () => {
-    it('should assign groups', () => {
+    it('should assign groups and include assigned count in queryParams', () => {
       const spy = jest.spyOn(userAdminService, 'assignGroups');
-      component.onAssign([mockUserGroups[0]]);
-      expect(spy).toHaveBeenCalledWith(mockUser.id, [1]);
+      const navSpy = jest.spyOn(component.router, 'navigate');
+
+      const newGroup: UserGroup = {
+        id: 3,
+        name: 'Group 3',
+        role: 'Role 3',
+        displayState: true,
+      };
+
+      component.usersHiddenGroups = [mockGroupsWithRoles[1]];
+      component.onAssign([mockUserGroups[0], newGroup]);
+
+      expect(spy).toHaveBeenCalledWith(mockUser.id, [1, 3, 2]);
+      expect(navSpy).toHaveBeenCalledWith(['admin', 'users', mockUser.id], {
+        queryParams: { assigned: 1, tab: 'Groups' },
+      });
+    });
+
+    it('should assign groups and include groupsRemoved count in queryParams', () => {
+      const spy = jest.spyOn(userAdminService, 'assignGroups');
+      const navSpy = jest.spyOn(component.router, 'navigate');
+
+      component.usersHiddenGroups = [mockGroupsWithRoles[1]];
+      component.onAssign([]);
+
+      expect(spy).toHaveBeenCalledWith(mockUser.id, [2]);
+      expect(navSpy).toHaveBeenCalledWith(['admin', 'users', mockUser.id], {
+        queryParams: { groupsRemoved: 1, tab: 'Groups' },
+      });
     });
   });
 
