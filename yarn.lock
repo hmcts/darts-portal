@@ -88,13 +88,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular-devkit/architect@npm:^0.2000.0":
-  version: 0.2000.5
-  resolution: "@angular-devkit/architect@npm:0.2000.5"
+"@angular-devkit/architect@npm:^0.2001.0":
+  version: 0.2001.0
+  resolution: "@angular-devkit/architect@npm:0.2001.0"
   dependencies:
-    "@angular-devkit/core": 20.0.5
+    "@angular-devkit/core": 20.1.0
     rxjs: 7.8.2
-  checksum: 39c37ab3f8390d9aec660ef31857c804ba2c1308baf2bb3071049fcf25211a0a1d95c7056196d6dac07e83fb72c8cbd953f22fda40e4689fe149e9075dab72e5
+  checksum: 4701bf94cc4c9efa83ddc122ce13a0e856206bbdb1533a3174c2c1802d40e214423c53002acfb5c2a2820df40bea617a015d1d506134da86689f48b99e3a9b5a
   languageName: node
   linkType: hard
 
@@ -275,9 +275,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular-devkit/core@npm:20.0.5":
-  version: 20.0.5
-  resolution: "@angular-devkit/core@npm:20.0.5"
+"@angular-devkit/core@npm:20.1.0":
+  version: 20.1.0
+  resolution: "@angular-devkit/core@npm:20.1.0"
   dependencies:
     ajv: 8.17.1
     ajv-formats: 3.0.1
@@ -290,7 +290,7 @@ __metadata:
   peerDependenciesMeta:
     chokidar:
       optional: true
-  checksum: 59c13c03ab3edb74b2e2fb09338515634bc2a0f54291169c5e4a6d9d758687fe976fa04037141c28eaa00986ebd2a16fd7710cf182107a2c2c10888422dad26a
+  checksum: a41210a8009622b16515a9ce0b62328d0e51f830cc7e381d2dd3220176d5a20ba8ae792cfdf0c1f610af88fe367e312e88aed770a77ba28f27d6ce302481663c
   languageName: node
   linkType: hard
 
@@ -8939,7 +8939,7 @@ __metadata:
   dependencies:
     "@angular-builders/custom-webpack": ^19.0.0
     "@angular-builders/dev-server": ^7.3.1
-    "@angular-devkit/architect": ^0.2000.0
+    "@angular-devkit/architect": ^0.2001.0
     "@angular-eslint/builder": ^19.0.0
     "@angular-eslint/eslint-plugin": ^19.0.0
     "@angular-eslint/eslint-plugin-template": ^19.0.0
