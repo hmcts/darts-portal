@@ -1,3 +1,5 @@
+import { CaseAudioData, PaginatedCaseAudioData } from '@admin-types/case/case-audio/case-audio.interface';
+import { CaseAudio, PaginatedCaseAudio } from '@admin-types/case/case-audio/case-audio.type';
 import { AdminCaseData } from '@admin-types/case/case.interface';
 import { AdminCase } from '@admin-types/case/case.type';
 import { HttpClient } from '@angular/common/http';
@@ -13,6 +15,55 @@ export class AdminCaseService {
 
   getCase(id: number): Observable<AdminCase> {
     return this.http.get<AdminCaseData>(`/api/admin/cases/${id}`).pipe(map(this.mapCaseDataToCase));
+  }
+
+  getCaseAudio(
+    id: number,
+    options: {
+      page_number: number;
+      page_size: number;
+      sort_by?: 'audioId' | 'startTime' | 'endTime' | 'courtroom' | 'channel';
+      sort_order?: 'asc' | 'desc';
+    }
+  ): Observable<PaginatedCaseAudio> {
+    const params: Record<string, string | number> = {
+      page_number: options.page_number,
+      page_size: options.page_size,
+    };
+
+    if (options.sort_by) {
+      params.sort_by = options.sort_by;
+    }
+
+    if (options.sort_order) {
+      params.sort_order = options.sort_order.toUpperCase();
+    }
+
+    return this.http
+      .get<PaginatedCaseAudioData>(`/api/admin/cases/${id}/audios`, {
+        params,
+      })
+      .pipe(
+        map(
+          (response): PaginatedCaseAudio => ({
+            currentPage: response.current_page,
+            pageSize: response.page_size,
+            totalPages: response.total_pages,
+            totalItems: response.total_items,
+            data: this.mapCaseAudio(response.data),
+          })
+        )
+      );
+  }
+
+  private mapCaseAudio(audio: CaseAudioData[]): CaseAudio[] {
+    return audio.map((item) => ({
+      audioId: item.id,
+      startTime: DateTime.fromISO(item.start_at),
+      endTime: DateTime.fromISO(item.end_at),
+      channel: item.channel,
+      courtroom: item.courtroom,
+    }));
   }
 
   mapCaseDataToCase(caseData: AdminCaseData): AdminCase {

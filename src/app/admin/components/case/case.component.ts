@@ -1,3 +1,4 @@
+import { CaseAudio, PaginatedCaseAudio } from '@admin-types/case/case-audio/case-audio.type';
 import { AdminCase } from '@admin-types/case/case.type';
 import { AsyncPipe } from '@angular/common';
 import { Component, computed, inject, input, numberAttribute, OnInit, signal } from '@angular/core';
@@ -18,6 +19,7 @@ import { TranscriptsRow } from '@portal-types/transcriptions';
 import { ActiveTabService } from '@services/active-tab/active-tab.service';
 import { AdminCaseService } from '@services/admin-case/admin-case.service';
 import { AppConfigService } from '@services/app-config/app-config.service';
+import { CaseAudioLoaderService } from '@services/case-audio-loader/case-audio-loader.service';
 import { CaseEventsLoaderService } from '@services/case-events-loader/case-events-loader.service';
 import { CaseService } from '@services/case/case.service';
 import { HistoryService } from '@services/history/history.service';
@@ -26,6 +28,7 @@ import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { catchError, combineLatest, map, Observable, of, switchMap } from 'rxjs';
 import { CaseTranscriptsTableComponent } from '../../../portal/components/case/case-file/case-transcripts-table/case-transcripts-table.component';
 import { CaseAdditionalDetailsComponent } from './case-file/case-additional-details/case-additional-details.component';
+import { CaseAudioComponent, CaseAudioSortBy } from './case-file/case-audio/case-audio.component';
 import { CaseFileComponent } from './case-file/case-file.component';
 
 @Component({
@@ -42,6 +45,7 @@ import { CaseFileComponent } from './case-file/case-file.component';
     CaseHearingsTableComponent,
     CaseTranscriptsTableComponent,
     CaseEventsTableComponent,
+    CaseAudioComponent,
   ],
   templateUrl: './case.component.html',
   styleUrl: './case.component.scss',
@@ -54,11 +58,13 @@ export class CaseComponent implements OnInit {
     events: 'Events',
     transcripts: 'Transcripts',
     additional: 'Additional case details',
+    audio: 'Audio',
   } as const;
 
   caseService = inject(CaseService);
   mappingService = inject(MappingService);
   caseEventsLoader = inject(CaseEventsLoaderService);
+  caseAudioLoader = inject(CaseAudioLoaderService);
   userAdminService = inject(UserAdminService);
   caseAdminService = inject(AdminCaseService);
   historyService = inject(HistoryService);
@@ -73,6 +79,7 @@ export class CaseComponent implements OnInit {
   caseFile$!: Observable<AdminCase>;
   hearings$!: Observable<Hearing[]>;
   transcripts$!: Observable<TranscriptsRow[]>;
+  audio$!: Observable<PaginatedCaseAudio>;
 
   events = signal<CaseEvent[] | null>(null);
 
@@ -81,14 +88,32 @@ export class CaseComponent implements OnInit {
     sortBy: AdminCaseEventSortBy;
     sortOrder: 'asc' | 'desc';
   } | null>(null);
+
   eventsCurrentPage = signal(1);
   eventsTotalItems = signal(0);
   eventsSort$ = toObservable(this.eventsSort);
   eventsCurrentPage$ = toObservable(this.eventsCurrentPage);
 
+  audio = signal<CaseAudio[] | null>(null);
+
+  audioPageLimit = this.appConfig.getAppConfig()?.pagination.caseAudiosPageLimit ?? 500;
+  audioSort = signal<{
+    sortBy: CaseAudioSortBy;
+    sortOrder: 'asc' | 'desc';
+  } | null>(null);
+
+  audioCurrentPage = signal(1);
+  audioTotalItems = signal(0);
+  audioSort$ = toObservable(this.audioSort);
+  audioCurrentPage$ = toObservable(this.audioCurrentPage);
+
   backUrl = this.historyService.getBackUrl(this.url) ?? '/admin/search';
 
-  data$!: Observable<{ caseFile: AdminCase | null; hearings: Hearing[]; transcripts: TranscriptsRow[] }>;
+  data$!: Observable<{
+    caseFile: AdminCase | null;
+    hearings: Hearing[];
+    transcripts: TranscriptsRow[];
+  }>;
 
   ngOnInit(): void {
     this.caseFile$ = this.caseAdminService.getCase(this.caseId()).pipe(
@@ -136,6 +161,18 @@ export class CaseComponent implements OnInit {
     });
 
     this.loadEvents();
+    this.loadAudio();
+  }
+
+  private loadAudio(): void {
+    this.caseAudioLoader.load(this.caseId(), {
+      page: this.audioCurrentPage(),
+      pageSize: this.audioPageLimit,
+      sort: this.audioSort(),
+      setEvents: this.audio.set,
+      setTotalItems: this.audioTotalItems.set,
+      setCurrentPage: this.audioCurrentPage.set,
+    });
   }
 
   private loadEvents(): void {
@@ -149,13 +186,28 @@ export class CaseComponent implements OnInit {
     });
   }
 
-  onPageChange(page: number) {
-    this.eventsCurrentPage.set(page);
-    this.loadEvents();
+  onPageChange(type: 'audio' | 'events', page: number) {
+    if (type === 'audio') {
+      this.audioCurrentPage.set(page);
+      this.loadAudio();
+    }
+
+    if (type === 'events') {
+      this.eventsCurrentPage.set(page);
+      this.loadEvents();
+    }
   }
 
-  onSortChange(sort: { sortBy: string; sortOrder: 'asc' | 'desc' }) {
-    if (this.isAdminSortBy(sort.sortBy)) {
+  onSortChange(type: 'audio' | 'events', sort: { sortBy: string; sortOrder: 'asc' | 'desc' }) {
+    if (type === 'audio' && this.isAudioSortBy(sort.sortBy)) {
+      this.audioSort.set({
+        sortBy: sort.sortBy,
+        sortOrder: sort.sortOrder,
+      });
+      this.loadAudio();
+    }
+
+    if (type === 'events' && this.isAdminEventSortBy(sort.sortBy)) {
       this.eventsSort.set({
         sortBy: sort.sortBy,
         sortOrder: sort.sortOrder,
@@ -168,7 +220,11 @@ export class CaseComponent implements OnInit {
     this.activeTabService.setActiveTab(this.activeTabKey, tab);
   }
 
-  private isAdminSortBy(value: string): value is AdminCaseEventSortBy {
+  private isAdminEventSortBy(value: string): value is AdminCaseEventSortBy {
     return ['eventId', 'courtroom', 'text', 'hearingDate', 'timestamp', 'eventName'].includes(value);
+  }
+
+  private isAudioSortBy(value: string): value is CaseAudioSortBy {
+    return ['audioId', 'courtroom', 'startTime', 'endTime', 'channel'].includes(value);
   }
 }
