@@ -395,4 +395,20 @@ describe('EventsService', () => {
       expect(result.previousVersions.length).toBe(0);
     });
   });
+
+  describe('#setCurrentVersion', () => {
+    it('should send a PATCH request to set current event version', fakeAsync(() => {
+      const eventId = 123;
+
+      service.setCurrentVersion(eventId).subscribe();
+      tick();
+
+      const req = httpMock.expectOne(`/api/admin/events/${eventId}`);
+      expect(req.request.method).toBe('PATCH');
+      expect(req.request.body).toEqual({ is_current: true });
+      expect(req.request.responseType).toBe('text');
+
+      req.flush(null);
+    }));
+  });
 });
