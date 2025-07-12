@@ -68,6 +68,12 @@ describe('ViewAutomatedTasksComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('sets user names', () => {
+    const task = component.task();
+    expect(task?.createdByFullName).toBe('User 1');
+    expect(task?.modifiedByFullName).toBe('User 2');
+  });
+
   describe('armAttributeType is REPLAY', () => {
     it('displays arm replay start and end times', () => {
       component.task.set({

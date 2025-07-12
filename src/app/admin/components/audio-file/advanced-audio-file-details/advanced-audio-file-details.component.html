@@ -46,11 +46,15 @@
     @if (audioFile.adminAction) {
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Hidden by</dt>
-        <dd class="govuk-summary-list__value">
+        <dd class="govuk-summary-list__value" data-testid="hidden-by">
           @if (audioFile.adminAction.hiddenById) {
-            <a class="govuk-link" [routerLink]="['/admin/users', audioFile.adminAction.hiddenById]">
+            @if (audioFile.adminAction.hiddenByIsSystemUser) {
               {{ audioFile.adminAction.hiddenByName }}
-            </a>
+            } @else {
+              <a class="govuk-link" [routerLink]="['/admin/users', audioFile.adminAction.hiddenById]">
+                {{ audioFile.adminAction.hiddenByName }}
+              </a>
+            }
           }
         </dd>
       </div>
@@ -134,10 +138,12 @@
   </div>
   <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">Created by</dt>
-    <dd class="govuk-summary-list__value">
-      @if (audioFile.createdBy) {
-        <a class="govuk-link" [routerLink]="['/admin/users', audioFile.createdById]">
-          {{ audioFile.createdBy }}
+    <dd class="govuk-summary-list__value" data-testid="created-by">
+      @if (audioFile.createdBy?.isSystemUser) {
+        {{ audioFile.createdBy?.fullName }}
+      } @else {
+        <a class="govuk-link" [routerLink]="['/admin/users', audioFile.createdBy?.id]">
+          {{ audioFile.createdBy?.fullName }}
         </a>
       }
     </dd>
@@ -150,10 +156,12 @@
   </div>
   <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">Last modified by</dt>
-    <dd class="govuk-summary-list__value">
-      @if (audioFile.lastModifiedBy) {
-        <a class="govuk-link" [routerLink]="['/admin/users', audioFile.lastModifiedById]">
-          {{ audioFile.lastModifiedBy }}
+    <dd class="govuk-summary-list__value" data-testid="last-modified-by">
+      @if (audioFile.lastModifiedBy?.isSystemUser) {
+        {{ audioFile.lastModifiedBy?.fullName }}
+      } @else {
+        <a class="govuk-link" [routerLink]="['/admin/users', audioFile.lastModifiedBy?.id]">
+          {{ audioFile.lastModifiedBy?.fullName }}
         </a>
       }
     </dd>
