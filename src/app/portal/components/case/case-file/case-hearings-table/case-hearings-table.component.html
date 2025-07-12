@@ -14,7 +14,7 @@
         class="govuk-link"
         (click)="clearStoredTabs()"
         [routerLink]="[isAdmin ? '/admin/case' : '/case', id, 'hearing', row.id]"
-        [queryParams]="{ backUrl: '/admin/case/' + id }"
+        [queryParams]="isAdmin ? { backUrl: '/admin/case/' + id } : null"
       >
         {{ row.date | luxonDate: 'dd MMM y' }}</a
       >
