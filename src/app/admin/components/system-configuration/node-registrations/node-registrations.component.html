@@ -10,6 +10,7 @@
     [columns]="columns"
     [rows]="filteredNodeRegistrations()"
     [pageLimit]="25"
+    [isHorizontalScroll]="true"
   >
     <ng-template [tableRowTemplate]="filteredNodeRegistrations()" let-row>
       <td>{{ row.id }}</td>
