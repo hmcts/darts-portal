@@ -1,10 +1,11 @@
 import { EventMappingData } from '@admin-types/event-mappings/event-mapping.interface';
 import { EventMapping } from '@admin-types/event-mappings/event-mapping.type';
+import { DatePipe } from '@angular/common';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, provideRouter } from '@angular/router';
 import { ErrorMessageService } from '@services/error/error-message.service';
 import { EventMappingsService } from '@services/event-mappings/event-mappings.service';
 import { FormService } from '@services/form/form.service';
@@ -104,6 +105,8 @@ describe('AddUpdateEventMappingComponent', () => {
         { provide: ErrorMessageService, useValue: errorMessageService },
         { provide: HeaderService, useValue: headerService },
         { provide: FormService, useValue: formService },
+        DatePipe,
+        provideRouter([]),
       ],
     }).compileComponents();
 
@@ -186,5 +189,46 @@ describe('AddUpdateEventMappingComponent', () => {
     expect(component.uniqueTypeError).toEqual(false);
     component.setResponseErrors({ status: 409 });
     expect(component.uniqueTypeError).toEqual(true);
+  });
+
+  it('should set default form values in revision mode', () => {
+    component.isRevision = true;
+    component.id = 1;
+    component['setEventMapping'](eventMappings as unknown as EventMapping[]);
+
+    expect(component.form.value).toEqual({
+      type: '1000',
+      subType: '1001',
+      eventName: 'Event map 1',
+      eventHandler: 'StandardEventHandler',
+      withRestrictions: false,
+    });
+  });
+
+  it('should navigate away if event mapping is not found or is inactive', () => {
+    const navigateSpy = jest.spyOn(component.router, 'navigate');
+    component.isRevision = true;
+    component.id = 2;
+
+    component['setEventMapping'](eventMappings as unknown as EventMapping[]); // event with id 2 is inactive
+
+    expect(navigateSpy).toHaveBeenCalledWith([component.eventMappingsPath]);
+  });
+
+  it('should navigate away if id not found in mappings', () => {
+    const navigateSpy = jest.spyOn(component.router, 'navigate');
+    component.isRevision = true;
+    component.id = 999; // non-existent ID
+
+    component['setEventMapping'](eventMappings as unknown as EventMapping[]);
+
+    expect(navigateSpy).toHaveBeenCalledWith([component.eventMappingsPath]);
+  });
+
+  it('should not set uniqueTypeError if isRevision is true even when status is 409', () => {
+    component.isRevision = true;
+    component.setResponseErrors({ status: 409 });
+
+    expect(component.uniqueTypeError).toBe(false);
   });
 });

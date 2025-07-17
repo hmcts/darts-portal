@@ -10,14 +10,14 @@ import { LoadingComponent } from '@common/loading/loading.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { EventMappingFormErrorMessages } from '@constants/event-mapping-error-messages';
 import { ErrorMessage } from '@core-types/index';
+import { HumanizeInitCapPipe } from '@pipes/humanizeInitCap';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { ErrorMessageService } from '@services/error/error-message.service';
 import { EventMappingsService } from '@services/event-mappings/event-mappings.service';
 import { FormService } from '@services/form/form.service';
 import { HeaderService } from '@services/header/header.service';
 import { optionalMaxLengthValidator } from '@validators/optional-maxlength.validator';
-import { Subscription, combineLatest, map, tap } from 'rxjs';
-import { HumanizeInitCapPipe } from '@pipes/humanizeInitCap';
+import { Subscription, combineLatest, tap } from 'rxjs';
 
 @Component({
   selector: 'app-add-update-event-mapping',
@@ -45,19 +45,16 @@ export class AddUpdateEventMappingComponent implements OnInit {
   destroyRef = inject(DestroyRef);
   route = inject(ActivatedRoute);
 
-  private mappingTypes: Partial<EventMapping[]> = [];
-
   isSubmitted = false;
   isRevision = this.router.url.includes('/edit') || false;
-  id = +this.route.snapshot.params.id;
+  id = +this.route.snapshot.params.id || null;
 
   eventMappingsPath = 'admin/system-configuration/event-mappings';
 
   eventHandlers$ = this.eventMappingsService.getEventHandlers();
-  eventMappings$ = this.eventMappingsService.getEventMappings().pipe(
-    tap((eventMappings) => this.setEventMapping(eventMappings)),
-    map((eventMappings) => this.assignTypes(eventMappings))
-  );
+  eventMappings$ = this.eventMappingsService
+    .getEventMappings()
+    .pipe(tap((eventMappings) => this.setEventMapping(eventMappings)));
 
   error$ = this.errorMessageService.errorMessage$;
   uniqueTypeError = false;
@@ -81,10 +78,21 @@ export class AddUpdateEventMappingComponent implements OnInit {
 
   //Sets event mapping object if this is a revision
   private setEventMapping(eventMappings: EventMapping[]) {
-    if (this.id) {
-      this.eventMapping = eventMappings.find((eventMapping) => eventMapping.id === this.id)!;
-      this.setDefaultValues();
+    if (!this.isRevision) return;
+
+    if (!this.id) {
+      this.router.navigate([this.eventMappingsPath]);
+      return;
     }
+
+    this.eventMapping = eventMappings.find((e) => e.id === this.id)!;
+
+    if (!this.eventMapping || !this.eventMapping.isActive) {
+      this.router.navigate([this.eventMappingsPath]);
+      return;
+    }
+
+    this.setDefaultValues();
   }
 
   private setDefaultValues() {
@@ -148,12 +156,5 @@ export class AddUpdateEventMappingComponent implements OnInit {
       // Type and subtype combination must be unique
       this.uniqueTypeError = true;
     }
-  }
-
-  private assignTypes(eventMappings: EventMapping[]) {
-    const types = eventMappings.map(({ type, subType }) => ({ type, subType })) as Partial<EventMapping[]>;
-    this.mappingTypes = types;
-
-    return eventMappings;
   }
 }
