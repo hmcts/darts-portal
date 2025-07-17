@@ -7,7 +7,9 @@
         @if (item.user !== null) {
           <p class="moj-timeline__byline">
             by
-            @if (item.user) {
+            @if (item.user.isSystemUser) {
+              {{ item.user.fullName }}
+            } @else {
               <a
                 class="govuk-link user-link"
                 [queryParams]="backUrl ? { backUrl: backUrl } : null"
@@ -15,8 +17,6 @@
                 >{{ item.user.fullName }}</a
               >
               ({{ item.user.emailAddress }})
-            } @else {
-              System
             }
           </p>
         }

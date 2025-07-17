@@ -21,6 +21,7 @@ describe('AdvancedAudioFileDetailsComponent', () => {
     adminAction: {
       hiddenById: 1,
       hiddenByName: 'Admin User',
+      hiddenByIsSystemUser: false,
       hiddenAt: '2024-06-11T07:55:18.404Z',
       markedForManualDeletionAt: '2024-06-11T07:55:18.404Z',
       markedForManualDeletionById: 2,
@@ -31,10 +32,18 @@ describe('AdvancedAudioFileDetailsComponent', () => {
     antecedentId: 'antecedent_789',
     retainUntil: '2024-12-31T23:59:59.000Z',
     createdAt: '2024-06-01T12:30:00.000Z',
-    createdBy: 'John Doe',
+    createdBy: {
+      id: 100,
+      fullName: 'John Doe',
+      isSystemUser: false,
+    },
     createdById: 100,
     lastModifiedAt: '2024-06-02T14:00:00.000Z',
-    lastModifiedBy: 'Jane Smith',
+    lastModifiedBy: {
+      id: 101,
+      fullName: 'Jane Smith',
+      isSystemUser: false,
+    },
     lastModifiedById: 101,
   } as unknown as AudioFile;
 
@@ -47,10 +56,10 @@ describe('AdvancedAudioFileDetailsComponent', () => {
     fixture = TestBed.createComponent(AdvancedAudioFileDetailsComponent);
     component = fixture.componentInstance;
     component.audioFile = mockAudioFile;
+    fixture.detectChanges();
   });
 
   it('should create', () => {
-    fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 
@@ -70,6 +79,51 @@ describe('AdvancedAudioFileDetailsComponent', () => {
 
       const link = fixture.debugElement.query(By.css('#version-link'));
       expect(link).toBeNull();
+    });
+  });
+
+  describe('user links', () => {
+    it('provide links for non-system users', () => {
+      const hiddenBy = fixture.debugElement.query(By.css('[data-testid="hidden-by"]'));
+      const hiddenByLink = hiddenBy.query(By.css('a'));
+      const createdBy = fixture.debugElement.query(By.css('[data-testid="created-by"]'));
+      const createdByLink = createdBy.query(By.css('a'));
+      const lastModifiedBy = fixture.debugElement.query(By.css('[data-testid="last-modified-by"]'));
+      const lastModifiedByLink = lastModifiedBy.query(By.css('a'));
+
+      expect(hiddenByLink).toBeTruthy();
+      expect(hiddenByLink.nativeElement.getAttribute('href')).toBe('/admin/users/1');
+      expect(createdByLink).toBeTruthy();
+      expect(createdByLink.nativeElement.getAttribute('href')).toBe('/admin/users/100');
+      expect(lastModifiedByLink).toBeTruthy();
+      expect(lastModifiedByLink.nativeElement.getAttribute('href')).toBe('/admin/users/101');
+    });
+
+    it('do not provide links for system users', () => {
+      if (component.audioFile.adminAction) {
+        component.audioFile.adminAction.hiddenByIsSystemUser = true;
+      }
+      if (component.audioFile.createdBy) {
+        component.audioFile.createdBy.isSystemUser = true;
+      }
+      if (component.audioFile.lastModifiedBy) {
+        component.audioFile.lastModifiedBy.isSystemUser = true;
+      }
+      fixture.detectChanges();
+
+      const hiddenBy = fixture.debugElement.query(By.css('[data-testid="hidden-by"]'));
+      const hiddenByLink = hiddenBy.query(By.css('a'));
+      const createdBy = fixture.debugElement.query(By.css('[data-testid="created-by"]'));
+      const createdByLink = createdBy.query(By.css('a'));
+      const lastModifiedBy = fixture.debugElement.query(By.css('[data-testid="last-modified-by"]'));
+      const lastModifiedByLink = lastModifiedBy.query(By.css('a'));
+
+      expect(hiddenByLink).toBeNull();
+      expect(hiddenBy.nativeElement.textContent).toContain('Admin User');
+      expect(createdByLink).toBeNull();
+      expect(createdBy.nativeElement.textContent).toContain('John Doe');
+      expect(lastModifiedByLink).toBeNull();
+      expect(lastModifiedBy.nativeElement.textContent).toContain('Jane Smith');
     });
   });
 });

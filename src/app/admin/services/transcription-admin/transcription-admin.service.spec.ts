@@ -282,6 +282,7 @@ describe('TranscriptionAdminService', () => {
       requestor: {
         user_id: 1,
         user_full_name: 'Eric Bristow',
+        is_system_user: false,
       },
     } as TranscriptionAdminDetailsData;
 
@@ -324,6 +325,7 @@ describe('TranscriptionAdminService', () => {
       requestor: {
         fullName: 'Eric Bristow',
         userId: 1,
+        isSystemUser: false,
       },
     } as unknown as TranscriptionAdminDetails;
 
@@ -449,137 +451,154 @@ describe('TranscriptionAdminService', () => {
     expect(wflows[0].workflowTimestamp.toISO({ includeOffset: false })).toBe('2021-01-01T00:00:00.000');
   });
 
-  it('should return correct status and associated data based on transcript details', () => {
-    const transcript = {
-      transcriptionId: 1,
-      isManual: true,
-      status: 'Approved',
-      assignedTo: {
-        userId: 1,
-        fullName: 'John Doe',
-        email: 'john.doe@example.com',
-      },
-      assignedGroups: [
-        { id: 1, displayName: 'Group One' },
-        { id: 2, displayName: 'Group Two' },
-      ],
-    } as unknown as TranscriptionAdminDetails;
+  describe('getCurrentStatusFromTranscript', () => {
+    it('should return correct status and associated data based on transcript details', () => {
+      const transcript = {
+        transcriptionId: 1,
+        isManual: true,
+        status: 'Approved',
+        assignedTo: {
+          userId: 1,
+          fullName: 'John Doe',
+          email: 'john.doe@example.com',
+        },
+        assignedGroups: [
+          { id: 1, displayName: 'Group One' },
+          { id: 2, displayName: 'Group Two' },
+        ],
+      } as unknown as TranscriptionAdminDetails;
 
-    const result = service.getCurrentStatusFromTranscript(transcript);
+      const result = service.getCurrentStatusFromTranscript(transcript);
 
-    expect(result.Status?.value).toBe('Approved');
-    expect(result.Status?.action?.text).toBe('Change status');
-    expect(result.Status?.action?.url).toBe('/admin/transcripts/1/change-status');
-    expect(result.Status?.action?.queryParams).toEqual({ status: 'Approved', manual: true });
-    if (typeof result['Last actioned by'][0] !== 'string') {
-      expect(result['Last actioned by'][0].href).toBe('/admin/users/1');
-      expect(result['Last actioned by'][0].value).toBe('John Doe');
-      expect(result['Last actioned by'][0].caption).toBe('john.doe@example.com');
-    }
-    expect(result['Associated groups']).toEqual([
-      { href: '/admin/groups/1', value: 'Group One' },
-      { href: '/admin/groups/2', value: 'Group Two' },
-    ]);
+      expect(result.Status?.value).toBe('Approved');
+      expect(result.Status?.action?.text).toBe('Change status');
+      expect(result.Status?.action?.url).toBe('/admin/transcripts/1/change-status');
+      expect(result.Status?.action?.queryParams).toEqual({ status: 'Approved', manual: true });
+      expect(result['Last actioned by']).toEqual([
+        { href: '/admin/users/1', value: 'John Doe', caption: 'john.doe@example.com' },
+      ]);
+      expect(result['Associated groups']).toEqual([
+        { href: '/admin/groups/1', value: 'Group One' },
+        { href: '/admin/groups/2', value: 'Group Two' },
+      ]);
+    });
+
+    it('should return correct status and associated data based on transcript details for super user', () => {
+      userService.isAdmin.mockReturnValue(false);
+
+      const transcript = {
+        transcriptionId: 1,
+        isManual: true,
+        status: 'Approved',
+        assignedTo: {
+          userId: 1,
+          fullName: 'John Doe',
+          email: 'john.doe@example.com',
+        },
+        assignedGroups: [
+          { id: 1, displayName: 'Group One' },
+          { id: 2, displayName: 'Group Two' },
+        ],
+      } as unknown as TranscriptionAdminDetails;
+
+      const result = service.getCurrentStatusFromTranscript(transcript);
+
+      expect(result.Status?.value).toBe('Approved');
+      expect(result.Status?.action).toBeUndefined();
+      expect(result['Last actioned by']).toEqual([
+        { href: '/admin/users/1', value: 'John Doe', caption: 'john.doe@example.com' },
+      ]);
+      expect(result['Associated groups']).toEqual(['Group One', 'Group Two']);
+    });
+
+    it('return no associated groups for "Awaiting Authorisation" status', () => {
+      const transcript = {
+        transcriptionId: 1,
+        isManual: true,
+        status: 'Awaiting Authorisation',
+        assignedTo: {
+          userId: 1,
+          fullName: 'John Doe',
+          email: 'email@email.com',
+        },
+        assignedGroups: [
+          { id: 1, displayName: 'Group One' },
+          { id: 2, displayName: 'Group Two' },
+        ],
+      } as unknown as TranscriptionAdminDetails;
+
+      const result = service.getCurrentStatusFromTranscript(transcript);
+
+      expect(result.Status?.value).toBe('Awaiting Authorisation');
+      expect(result.Status?.action?.text).toBe('Change status');
+      expect(result.Status?.action?.url).toBe('/admin/transcripts/1/change-status');
+
+      expect(result['Associated groups']).toBeFalsy();
+    });
+
+    it('return no associated groups for "Requested" status', () => {
+      const transcript = {
+        transcriptionId: 1,
+        isManual: true,
+        status: 'Requested',
+        assignedTo: {
+          userId: 1,
+          fullName: 'John Doe',
+          email: 'a@a.com',
+        },
+        assignedGroups: [
+          { id: 1, displayName: 'Group One' },
+          { id: 2, displayName: 'Group Two' },
+        ],
+      } as unknown as TranscriptionAdminDetails;
+
+      const result = service.getCurrentStatusFromTranscript(transcript);
+
+      expect(result.Status?.value).toBe('Requested');
+      expect(result.Status?.action?.text).toBe('Change status');
+      expect(result.Status?.action?.url).toBe('/admin/transcripts/1/change-status');
+
+      expect(result['Associated groups']).toBeFalsy();
+    });
+
+    it('should return correct status and associated data based on empty/null transcript details', () => {
+      const transcript = {
+        transcriptionId: 1,
+        isManual: true,
+        status: 'Complete',
+        assignedTo: {},
+        assignedGroups: [],
+      } as unknown as TranscriptionAdminDetails;
+
+      const result = service.getCurrentStatusFromTranscript(transcript);
+
+      expect(result.Status?.value).toBe('Complete');
+      expect(result.Status?.action).toBe(undefined);
+      expect(result['Last actioned by']).toBe('Unassigned');
+      expect(result['Associated groups']).toEqual(null);
+    });
+
+    it('should return correct last actioned by for system users', () => {
+      const transcript = {
+        transcriptionId: 1,
+        isManual: true,
+        status: 'Complete',
+        assignedTo: {
+          userId: 1,
+          fullName: 'John Doe',
+          email: 'a@a.com',
+          isSystemUser: true,
+        },
+        assignedGroups: [],
+      } as unknown as TranscriptionAdminDetails;
+
+      const result = service.getCurrentStatusFromTranscript(transcript);
+
+      expect(result['Last actioned by']).toBe('John Doe');
+    });
   });
 
-  it('should return correct status and associated data based on transcript details for super user', () => {
-    userService.isAdmin.mockReturnValue(false);
-
-    const transcript = {
-      transcriptionId: 1,
-      isManual: true,
-      status: 'Approved',
-      assignedTo: {
-        userId: 1,
-        fullName: 'John Doe',
-        email: 'john.doe@example.com',
-      },
-      assignedGroups: [
-        { id: 1, displayName: 'Group One' },
-        { id: 2, displayName: 'Group Two' },
-      ],
-    } as unknown as TranscriptionAdminDetails;
-
-    const result = service.getCurrentStatusFromTranscript(transcript);
-
-    expect(result.Status?.value).toBe('Approved');
-    expect(result.Status?.action).toBeUndefined();
-    if (typeof result['Last actioned by'][0] !== 'string') {
-      expect(result['Last actioned by'][0].href).toBe('/admin/users/1');
-      expect(result['Last actioned by'][0].value).toBe('John Doe');
-      expect(result['Last actioned by'][0].caption).toBe('john.doe@example.com');
-    }
-    expect(result['Associated groups']).toEqual(['Group One', 'Group Two']);
-  });
-
-  it('return no associated groups for "Awaiting Authorisation" status', () => {
-    const transcript = {
-      transcriptionId: 1,
-      isManual: true,
-      status: 'Awaiting Authorisation',
-      assignedTo: {
-        userId: 1,
-        fullName: 'John Doe',
-        email: 'email@email.com',
-      },
-      assignedGroups: [
-        { id: 1, displayName: 'Group One' },
-        { id: 2, displayName: 'Group Two' },
-      ],
-    } as unknown as TranscriptionAdminDetails;
-
-    const result = service.getCurrentStatusFromTranscript(transcript);
-
-    expect(result.Status?.value).toBe('Awaiting Authorisation');
-    expect(result.Status?.action?.text).toBe('Change status');
-    expect(result.Status?.action?.url).toBe('/admin/transcripts/1/change-status');
-
-    expect(result['Associated groups']).toBeFalsy();
-  });
-
-  it('return no associated groups for "Requested" status', () => {
-    const transcript = {
-      transcriptionId: 1,
-      isManual: true,
-      status: 'Requested',
-      assignedTo: {
-        userId: 1,
-        fullName: 'John Doe',
-        email: 'a@a.com',
-      },
-      assignedGroups: [
-        { id: 1, displayName: 'Group One' },
-        { id: 2, displayName: 'Group Two' },
-      ],
-    } as unknown as TranscriptionAdminDetails;
-
-    const result = service.getCurrentStatusFromTranscript(transcript);
-
-    expect(result.Status?.value).toBe('Requested');
-    expect(result.Status?.action?.text).toBe('Change status');
-    expect(result.Status?.action?.url).toBe('/admin/transcripts/1/change-status');
-
-    expect(result['Associated groups']).toBeFalsy();
-  });
-
-  it('should return correct status and associated data based on empty/null transcript details', () => {
-    const transcript = {
-      transcriptionId: 1,
-      isManual: true,
-      status: 'Complete',
-      assignedTo: {},
-      assignedGroups: [],
-    } as unknown as TranscriptionAdminDetails;
-
-    const result = service.getCurrentStatusFromTranscript(transcript);
-
-    expect(result.Status?.value).toBe('Complete');
-    expect(result.Status?.action).toBe(undefined);
-    expect(result['Last actioned by']).toBe('Unassigned');
-    expect(result['Associated groups']).toEqual(null);
-  });
-
-  it('should format transcription details correctly', () => {
+  describe('getRequestDetailsFromTranscript', () => {
     const transcript = {
       hearingDate: DateTime.fromISO('2024-01-01T00:00:00Z'),
       requestType: 'Type1',
@@ -588,7 +607,7 @@ describe('TranscriptionAdminService', () => {
       urgency: { description: 'High' },
       transcriptionStartTs: DateTime.fromISO('2024-03-03T09:00:00Z'),
       transcriptionEndTs: DateTime.fromISO('2024-03-03T10:00:00Z'),
-      requestor: { userId: 1, fullName: 'John Doe', email: 'john@example.com' },
+      requestor: { userId: 1, fullName: 'John Doe', email: 'john@example.com', isSystemUser: false },
       received: DateTime.fromISO('2024-01-01T13:30:00Z'),
       approved: DateTime.fromISO('2024-01-01T15:30:00Z'),
       requestorComments: 'Need ASAP',
@@ -596,54 +615,56 @@ describe('TranscriptionAdminService', () => {
       hearingId: 5,
     } as unknown as TranscriptionAdminDetails;
 
-    const details = service.getRequestDetailsFromTranscript(transcript);
+    it('should format transcription details correctly', () => {
+      const details = service.getRequestDetailsFromTranscript(transcript);
 
-    expect(details).toEqual({
-      'Hearing date': [{ href: '/admin/case/1/hearing/5', value: '01 Jan 2024' }],
-      'Request type': 'Type1',
-      'Request method': 'Manual',
-      'Request ID': 123,
-      Urgency: 'High',
-      'Audio for transcript': 'Start time 09:00:00 - End time 10:00:00',
-      'Requested by': [{ href: '/admin/users/1', value: 'John Doe', caption: 'john@example.com' }],
-      Received: '01 Jan 2024 13:30:00',
-      'Approved on': '01 Jan 2024 15:30:00',
-      Instructions: 'Need ASAP',
-      'Judge approval': 'Yes',
+      expect(details).toEqual({
+        'Hearing date': [{ href: '/admin/case/1/hearing/5', value: '01 Jan 2024' }],
+        'Request type': 'Type1',
+        'Request method': 'Manual',
+        'Request ID': 123,
+        Urgency: 'High',
+        'Audio for transcript': 'Start time 09:00:00 - End time 10:00:00',
+        'Requested by': [{ href: '/admin/users/1', value: 'John Doe', caption: 'john@example.com' }],
+        Received: '01 Jan 2024 13:30:00',
+        'Approved on': '01 Jan 2024 15:30:00',
+        Instructions: 'Need ASAP',
+        'Judge approval': 'Yes',
+      });
     });
-  });
 
-  it('should include legacy comments if it exists', () => {
-    const transcript = {
-      hearingDate: DateTime.fromISO('2024-01-01T00:00:00Z'),
-      requestType: 'Type1',
-      isManual: true,
-      transcriptionId: 123,
-      urgency: { description: 'High' },
-      transcriptionStartTs: DateTime.fromISO('2024-03-03T09:00:00Z'),
-      transcriptionEndTs: DateTime.fromISO('2024-03-03T10:00:00Z'),
-      requestor: { userId: 1, fullName: 'John Doe', email: 'john@example.com' },
-      received: DateTime.fromISO('2024-01-01T13:30:00Z'),
-      requestorComments: 'Need ASAP',
-      legacyComments: ['Legacy comment 1', 'Legacy comment 2'],
-      caseId: 1,
-      hearingId: 5,
-    } as unknown as TranscriptionAdminDetails;
+    it('should include legacy comments if it exists', () => {
+      const details = service.getRequestDetailsFromTranscript({
+        ...transcript,
+        legacyComments: ['Legacy comment 1', 'Legacy comment 2'],
+      });
 
-    const details = service.getRequestDetailsFromTranscript(transcript);
+      expect(details).toEqual({
+        'Hearing date': [{ href: '/admin/case/1/hearing/5', value: '01 Jan 2024' }],
+        'Request type': 'Type1',
+        'Request method': 'Manual',
+        'Request ID': 123,
+        Urgency: 'High',
+        'Audio for transcript': 'Start time 09:00:00 - End time 10:00:00',
+        'Requested by': [{ href: '/admin/users/1', value: 'John Doe', caption: 'john@example.com' }],
+        Received: '01 Jan 2024 13:30:00',
+        'Approved on': '01 Jan 2024 15:30:00',
+        Instructions: 'Need ASAP',
+        'Judge approval': 'Yes',
+        'Migrated legacy data comments': ['Legacy comment 1', 'Legacy comment 2'],
+      });
+    });
 
-    expect(details).toEqual({
-      'Hearing date': [{ href: '/admin/case/1/hearing/5', value: '01 Jan 2024' }],
-      'Request type': 'Type1',
-      'Request method': 'Manual',
-      'Request ID': 123,
-      Urgency: 'High',
-      'Audio for transcript': 'Start time 09:00:00 - End time 10:00:00',
-      'Requested by': [{ href: '/admin/users/1', value: 'John Doe', caption: 'john@example.com' }],
-      Received: '01 Jan 2024 13:30:00',
-      Instructions: 'Need ASAP',
-      'Judge approval': 'Yes',
-      'Migrated legacy data comments': ['Legacy comment 1', 'Legacy comment 2'],
+    it('handles requester as system user and does not provide a link', () => {
+      const details = service.getRequestDetailsFromTranscript({
+        ...transcript,
+        requestor: {
+          ...transcript.requestor,
+          isSystemUser: true,
+        },
+      });
+
+      expect(details['Requested by']).toBe('John Doe');
     });
   });
 
