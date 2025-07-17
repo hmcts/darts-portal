@@ -1,7 +1,7 @@
 import { CourthouseUser, SecurityGroup, SecurityRole, User } from '@admin-types/index';
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DeleteComponent } from '@common/delete/delete.component';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
@@ -36,7 +36,6 @@ import { CourthouseUsersComponent } from '../courthouse-users/courthouse-users.c
     CourthouseUsersComponent,
     DeleteComponent,
     GovukTagComponent,
-    RouterLink,
   ],
 })
 export class CourthouseRecordComponent {
