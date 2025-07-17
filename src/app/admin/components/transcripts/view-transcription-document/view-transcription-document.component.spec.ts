@@ -19,10 +19,12 @@ const mockUsers: User[] = [
   {
     id: 1,
     fullName: 'Dean',
+    isSystemUser: true,
   },
   {
     id: 2,
     fullName: 'Dave',
+    isSystemUser: false,
   },
 ] as User[];
 
@@ -54,14 +56,13 @@ const mockTranscriptionDocument: TranscriptionDocument = {
   clipId: '',
   lastModifiedAt: DateTime.fromISO('2020-01-01'),
   lastModifiedBy: 1,
-  lastModifiedByName: 'Dean',
-  uploadedByName: 'Dave',
   adminAction: {
     id: 0,
     reasonId: 1,
     hiddenById: 1,
     markedForManualDeletionBy: 'Dave',
     hiddenByName: 'Dean',
+    hiddenByIsSystemUser: false,
     hiddenAt: DateTime.fromISO('2020-01-01'),
     isMarkedForManualDeletion: false,
     markedForManualDeletionById: 2,
@@ -172,7 +173,12 @@ describe('ViewTranscriptionDocumentComponent', () => {
   describe('transcription$', () => {
     it('should load the transcription document and associated audio', fakeAsync(() => {
       component.transcription$.subscribe((data) => {
-        expect(data.document).toEqual(mockTranscriptionDocument);
+        expect(data.document).toEqual({
+          ...mockTranscriptionDocument,
+          uploadedByObj: { id: 2, fullName: 'Dave', isSystemUser: false },
+          lastModifiedByObj: { id: 1, fullName: 'Dean', isSystemUser: true },
+          adminAction: { ...mockTranscriptionDocument.adminAction, hiddenByIsSystemUser: true },
+        });
         expect(data.details).toEqual(mockTranscriptionDetails);
         expect(data.fileBanner).toEqual({
           id: mockTranscriptionDocument.transcriptionId,

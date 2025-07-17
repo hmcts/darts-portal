@@ -712,7 +712,7 @@ describe('UserAdminService', () => {
       let result = [] as User[];
       service.getUsersById([mockUserId]).subscribe((res: User[]) => (result = res));
 
-      const req = httpMock.expectOne('api/admin/users?user_ids=1');
+      const req = httpMock.expectOne('api/admin/users?user_ids=1&include_system_users=false');
       req.flush(mockUsersData);
 
       expect(result).toEqual(mappedUsers);
@@ -776,7 +776,7 @@ describe('UserAdminService', () => {
       let result = [] as User[];
       service.getUsersById([mockUserId], true).subscribe((res: User[]) => (result = res));
 
-      const req = httpMock.expectOne('api/admin/users?user_ids=1');
+      const req = httpMock.expectOne('api/admin/users?user_ids=1&include_system_users=true');
       req.flush(mockUsersData);
 
       expect(result).toEqual(mappedUsers);

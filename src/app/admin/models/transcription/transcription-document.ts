@@ -1,5 +1,8 @@
-import { AdminAction } from '@admin-types/transformed-media/admin-action';
 import { DateTime } from 'luxon';
+import { AdminAction } from '@admin-types/transformed-media/admin-action';
+import { User } from '@admin-types/users/user.type';
+
+type UserSubSet = Pick<User, 'id' | 'fullName' | 'isSystemUser'>;
 
 export type TranscriptionDocument = {
   transcriptionDocumentId: number;
@@ -9,7 +12,7 @@ export type TranscriptionDocument = {
   fileSizeBytes: number;
   uploadedAt: DateTime;
   uploadedBy: number;
-  uploadedByName?: string;
+  uploadedByObj?: UserSubSet;
   isHidden: boolean;
   retainUntil: DateTime;
   contentObjectId: string;
@@ -17,6 +20,6 @@ export type TranscriptionDocument = {
   clipId: string;
   lastModifiedAt: DateTime;
   lastModifiedBy: number;
-  lastModifiedByName?: string;
+  lastModifiedByObj?: UserSubSet;
   adminAction?: AdminAction;
 };
