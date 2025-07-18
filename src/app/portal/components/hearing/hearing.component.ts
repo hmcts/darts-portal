@@ -229,21 +229,11 @@ export class HearingComponent implements OnInit {
   }
 
   onValidationError(errorSummary: ErrorSummaryEntry[]) {
-    this.errorSummary = Array.isArray(errorSummary) ? errorSummary : [];
-    if (
-      Array.isArray(this.errorSummary) &&
-      this.errorSummary.length > 0 &&
-      this.errorSummary[0] &&
-      typeof this.errorSummary[0].fieldId === 'string' &&
-      this.errorSummary[0].fieldId.trim() !== ''
-    ) {
-      setTimeout(() => {
-        const el = document.getElementById('error-' + this.errorSummary[0].fieldId);
-        if (el) {
-          el.focus();
-        }
-      });
-    }
+    if (this.errorSummary.length && this.errorSummary[0]?.fieldId) {
+    setTimeout(() => {
+      document.getElementById('error-' + this.errorSummary[0].fieldId)?.focus();
+    });
+}
   }
 
   onBack(event: Event) {
