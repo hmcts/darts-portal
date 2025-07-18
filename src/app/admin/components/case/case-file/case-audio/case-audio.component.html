@@ -1,0 +1,28 @@
+<app-data-table
+  [rows]="audios()"
+  [columns]="columns"
+  [hiddenCaption]="true"
+  [backendPagination]="true"
+  [pageLimit]="audiosPerPage()!"
+  [totalItems]="totalItems()"
+  (pageChange)="onPageChange($event)"
+  (sortChange)="onSortChange($event)"
+  caption="Audio associated with case"
+  id="case-audio-table"
+>
+  <ng-template [tableRowTemplate]="audios()" let-row>
+    <td>
+      <a
+        class="govuk-link"
+        [routerLink]="['/admin/audio-file', row.audioId]"
+        [queryParams]="{ backUrl: '/admin/case/' + caseId() }"
+      >
+        {{ row.audioId }}
+      </a>
+    </td>
+    <td>{{ row.courtroom }}</td>
+    <td>{{ row.startTime | luxonDate: "dd MMM yyyy 'at' h:mm:ssa" }}</td>
+    <td>{{ row.endTime | luxonDate: "dd MMM yyyy 'at' h:mm:ssa" }}</td>
+    <td>{{ row.channel }}</td>
+  </ng-template>
+</app-data-table>
