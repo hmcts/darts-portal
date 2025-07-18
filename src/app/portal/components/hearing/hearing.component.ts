@@ -229,11 +229,12 @@ export class HearingComponent implements OnInit {
   }
 
   onValidationError(errorSummary: ErrorSummaryEntry[]) {
+    this.errorSummary = errorSummary;
     if (this.errorSummary.length && this.errorSummary[0]?.fieldId) {
-    setTimeout(() => {
-      document.getElementById('error-' + this.errorSummary[0].fieldId)?.focus();
-    });
-}
+      setTimeout(() => {
+        document.getElementById('error-' + this.errorSummary[0].fieldId)?.focus();
+      });
+    }
   }
 
   onBack(event: Event) {
