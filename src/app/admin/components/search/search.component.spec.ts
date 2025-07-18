@@ -207,7 +207,6 @@ describe('SearchComponent', () => {
     });
 
     it('does not throw if error array is undefined, null, or malformed (fixes prod error)', () => {
-
       // undefined
       expect(() => component.onValidationErrors(undefined as any)).not.toThrow();
       expect(component.formValidationErrors() ?? []).toEqual([]);
@@ -226,7 +225,6 @@ describe('SearchComponent', () => {
       expect(() => component.onValidationErrors([{}] as any)).not.toThrow();
       expect(component.formValidationErrors()).toEqual([{}]);
     });
-    
   });
 
   describe('tabChange', () => {
