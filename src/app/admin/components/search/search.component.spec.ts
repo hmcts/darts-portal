@@ -200,6 +200,33 @@ describe('SearchComponent', () => {
       component.onValidationErrors([{ fieldId: 'error', message: 'error' }]);
       expect(scrollToSpy).toHaveBeenCalledWith(component.validationSummarySelector);
     });
+
+    it('does not throw if error array is empty (fixes TypeError)', () => {
+      expect(() => component.onValidationErrors([])).not.toThrow();
+      expect(component.formValidationErrors()).toEqual([]);
+    });
+
+    it('does not throw if error array is undefined, null, or malformed (fixes prod error)', () => {
+
+      // undefined
+      expect(() => component.onValidationErrors(undefined as any)).not.toThrow();
+      expect(component.formValidationErrors() ?? []).toEqual([]);
+
+      // null
+      expect(() => component.onValidationErrors(null as any)).not.toThrow();
+      expect(component.formValidationErrors() ?? []).toEqual([]);
+
+      // array with undefined/null/empty object
+      expect(() => component.onValidationErrors([undefined] as any)).not.toThrow();
+      expect(component.formValidationErrors()).toEqual([undefined]);
+
+      expect(() => component.onValidationErrors([null] as any)).not.toThrow();
+      expect(component.formValidationErrors()).toEqual([null]);
+
+      expect(() => component.onValidationErrors([{}] as any)).not.toThrow();
+      expect(component.formValidationErrors()).toEqual([{}]);
+    });
+    
   });
 
   describe('tabChange', () => {
