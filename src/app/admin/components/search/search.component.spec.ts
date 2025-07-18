@@ -10,6 +10,7 @@ import { ScrollService } from '@services/scroll/scroll.service';
 import { of } from 'rxjs';
 import { AdminSearchFormValues } from './search-form/search-form.component';
 import { SearchComponent } from './search.component';
+import { ErrorSummaryEntry } from '@core-types/index';
 
 const mockFormValues: AdminSearchFormValues = {
   caseId: '123',
@@ -208,21 +209,21 @@ describe('SearchComponent', () => {
 
     it('does not throw if error array is undefined, null, or malformed (fixes prod error)', () => {
       // undefined
-      expect(() => component.onValidationErrors(undefined as any)).not.toThrow();
+      expect(() => component.onValidationErrors(undefined as unknown as ErrorSummaryEntry[])).not.toThrow();
       expect(component.formValidationErrors() ?? []).toEqual([]);
 
       // null
-      expect(() => component.onValidationErrors(null as any)).not.toThrow();
+      expect(() => component.onValidationErrors(null as unknown as ErrorSummaryEntry[])).not.toThrow();
       expect(component.formValidationErrors() ?? []).toEqual([]);
 
       // array with undefined/null/empty object
-      expect(() => component.onValidationErrors([undefined] as any)).not.toThrow();
+      expect(() => component.onValidationErrors([undefined] as unknown as ErrorSummaryEntry[])).not.toThrow();
       expect(component.formValidationErrors()).toEqual([undefined]);
 
-      expect(() => component.onValidationErrors([null] as any)).not.toThrow();
+      expect(() => component.onValidationErrors([null] as unknown as ErrorSummaryEntry[])).not.toThrow();
       expect(component.formValidationErrors()).toEqual([null]);
 
-      expect(() => component.onValidationErrors([{}] as any)).not.toThrow();
+      expect(() => component.onValidationErrors([{}] as unknown as ErrorSummaryEntry[])).not.toThrow();
       expect(component.formValidationErrors()).toEqual([{}]);
     });
   });
