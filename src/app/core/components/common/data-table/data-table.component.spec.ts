@@ -1124,7 +1124,7 @@ describe('DataTableComponent', () => {
       describe('computedCaptionText', () => {
         beforeEach(() => {
           // Mock the page caption count
-          component.getCurrentPageCaptionCount = jest.fn(() => '1-5') as any;
+          component.getCurrentPageCaptionCount = jest.fn(() => '1-5');
         });
 
         it('should include result label in "results" mode', () => {
