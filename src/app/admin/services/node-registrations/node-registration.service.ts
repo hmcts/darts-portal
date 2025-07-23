@@ -34,12 +34,13 @@ export class NodeRegistrationService {
       nodeType: registration.node_type,
       createdAt: DateTime.fromISO(registration.created_at),
       createdBy: registration.created_by,
-      createdByName: userMap[registration.created_by] || '',
+      createdByName: userMap[registration.created_by] || 'System',
     }));
   }
 
   private getUserNamesByIds(userIds: number[]) {
-    return this.userService.getUsersById(userIds).pipe(
+    const returnSystemUsers = true;
+    return this.userService.getUsersById(userIds, returnSystemUsers).pipe(
       map((users) => {
         const userMap: Record<number, string> = {};
         users.forEach((user) => {
