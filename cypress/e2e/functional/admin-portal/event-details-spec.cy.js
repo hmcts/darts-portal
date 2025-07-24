@@ -177,51 +177,78 @@ describe('Admin - Event details', () => {
         .within(() => {
           cy.get('caption').should('contain.text', 'Previous versions of this event');
           cy.get('thead').within(() => {
-            cy.get('th').eq(0).should('contain.text', 'Event ID');
-            cy.get('th').eq(1).should('contain.text', 'Timestamp');
-            cy.get('th').eq(2).should('contain.text', 'Name');
-            cy.get('th').eq(3).should('contain.text', 'Courthouse');
-            cy.get('th').eq(4).should('contain.text', 'Courtroom');
-            cy.get('th').eq(5).should('contain.text', 'Text');
+            cy.get('th').eq(1).should('contain.text', 'Event ID');
+            cy.get('th').eq(2).should('contain.text', 'Timestamp');
+            cy.get('th').eq(3).should('contain.text', 'Name');
+            cy.get('th').eq(4).should('contain.text', 'Courthouse');
+            cy.get('th').eq(5).should('contain.text', 'Courtroom');
+            cy.get('th').eq(6).should('contain.text', 'Text');
           });
 
           cy.get('tbody tr')
             .eq(0)
             .within(() => {
-              cy.get('td').eq(0).should('contain.text', '1000');
-              cy.get('td').eq(1).should('contain.text', '10 Feb 2025 at 10:30:00');
-              cy.get('td').eq(2).should('contain.text', 'Judge Seated');
-              cy.get('td').eq(3).should('contain.text', 'Manchester Crown Court');
-              cy.get('td').eq(4).should('contain.text', 'Courtroom 3');
-              cy.get('td').eq(5).should('contain.text', 'Proceedings started at 10:00 AM with the judge presiding.');
+              cy.get('td').eq(1).should('contain.text', '1000');
+              cy.get('td').eq(2).should('contain.text', '10 Feb 2025 at 10:30:00');
+              cy.get('td').eq(3).should('contain.text', 'Judge Seated');
+              cy.get('td').eq(4).should('contain.text', 'Manchester Crown Court');
+              cy.get('td').eq(5).should('contain.text', 'Courtroom 3');
+              cy.get('td').eq(6).should('contain.text', 'Proceedings started at 10:00 AM with the judge presiding.');
             });
 
           cy.get('tbody tr')
             .eq(1)
             .within(() => {
-              cy.get('td').eq(0).should('contain.text', '999');
-              cy.get('td').eq(1).should('contain.text', '30 Jan 2025 at 09:00:00');
-              cy.get('td').eq(2).should('contain.text', 'Courtroom Prepared');
-              cy.get('td').eq(3).should('contain.text', 'Manchester Crown Court');
-              cy.get('td').eq(4).should('contain.text', 'Courtroom 3');
-              cy.get('td').eq(5).should('contain.text', 'Courtroom preparation completed, awaiting judge arrival.');
+              cy.get('td').eq(1).should('contain.text', '999');
+              cy.get('td').eq(2).should('contain.text', '30 Jan 2025 at 09:00:00');
+              cy.get('td').eq(3).should('contain.text', 'Courtroom Prepared');
+              cy.get('td').eq(4).should('contain.text', 'Manchester Crown Court');
+              cy.get('td').eq(5).should('contain.text', 'Courtroom 3');
+              cy.get('td').eq(6).should('contain.text', 'Courtroom preparation completed, awaiting judge arrival.');
             });
 
           cy.get('tbody tr')
             .eq(2)
             .within(() => {
-              cy.get('td').eq(0).should('contain.text', '998');
-              cy.get('td').eq(1).should('contain.text', '20 Jan 2025 at 08:00:00');
-              cy.get('td').eq(2).should('contain.text', 'Trial Scheduled');
-              cy.get('td').eq(3).should('contain.text', 'Manchester Crown Court');
-              cy.get('td').eq(4).should('contain.text', 'Courtroom 3');
-              cy.get('td').eq(5).should('contain.text', 'Case scheduled for upcoming trial session.');
+              cy.get('td').eq(1).should('contain.text', '998');
+              cy.get('td').eq(2).should('contain.text', '20 Jan 2025 at 08:00:00');
+              cy.get('td').eq(3).should('contain.text', 'Trial Scheduled');
+              cy.get('td').eq(4).should('contain.text', 'Manchester Crown Court');
+              cy.get('td').eq(5).should('contain.text', 'Courtroom 3');
+              cy.get('td').eq(6).should('contain.text', 'Case scheduled for upcoming trial session.');
             });
         });
 
       cy.get('a.govuk-link').contains('Back to event details').should('be.visible').click();
 
       cy.url().should('eq', Cypress.config().baseUrl + '/admin/events/111');
+    });
+
+    it('Sets new current version', () => {
+      cy.visit('/admin/events/3/versions?backUrl=%2Fadmin%2Fevents%2F3');
+
+      cy.get('#previousVersionsTable .govuk-table__row:nth-child(1) .govuk-checkboxes__item').click();
+
+      cy.get('#setVersionButton').click();
+
+      //Verify elements
+      cy.contains('h1.govuk-heading-l', 'Are you sure you want to make this the current version of the event?').should(
+        'be.visible'
+      );
+
+      cy.contains('dt', 'Event ID').next('dd').should('contain.text', '111');
+      cy.contains('dt', 'Name').next('dd').should('contain.text', 'Event map 1');
+      cy.contains('dt', 'Text').next('dd').should('contain.text', 'This is an event');
+      cy.contains('dt', 'Courthouse').next('dd').should('contain.text', 'Cardiff');
+      cy.contains('dt', 'Courtroom').next('dd').should('contain.text', 'Room 1');
+      cy.contains('dt', 'Timestamp').next('dd').should('contain.text', '01 Jan 2024 at 4:14:44AM');
+
+      cy.get('#confirm-button').should('contain.text', 'Confirm');
+      cy.get('#cancel-link').should('have.attr', 'href', '/admin/events/3/versions').and('contain.text', 'Cancel');
+
+      cy.get('#confirm-button').click();
+
+      cy.get('.moj-banner--success').should('contain.text', 'Event version updated');
     });
   });
 
