@@ -62,12 +62,12 @@ __metadata:
   linkType: hard
 
 "@angular-devkit/architect@npm:^0.2001.0":
-  version: 0.2001.1
-  resolution: "@angular-devkit/architect@npm:0.2001.1"
+  version: 0.2001.3
+  resolution: "@angular-devkit/architect@npm:0.2001.3"
   dependencies:
-    "@angular-devkit/core": 20.1.1
+    "@angular-devkit/core": 20.1.3
     rxjs: 7.8.2
-  checksum: 03d41aa6d2528d450601f1c757dfd5375647fa5eb7646f437ee2864354daf275b9663d72e038a9a281201cda2edebde2985c5ff4234e328fae4f72d2555889ce
+  checksum: 0fcfc98ad43ed2599b36df96fc0080085e4433224dac806cb26006befa35e69487186e94e3dd36407b275dc548284b58d6d431fe0e4a37b2e279df869fb0fcc8
   languageName: node
   linkType: hard
 
@@ -210,9 +210,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular-devkit/core@npm:20.1.1":
-  version: 20.1.1
-  resolution: "@angular-devkit/core@npm:20.1.1"
+"@angular-devkit/core@npm:20.1.3":
+  version: 20.1.3
+  resolution: "@angular-devkit/core@npm:20.1.3"
   dependencies:
     ajv: 8.17.1
     ajv-formats: 3.0.1
@@ -225,7 +225,7 @@ __metadata:
   peerDependenciesMeta:
     chokidar:
       optional: true
-  checksum: 86f87571beaf72fb77af456b3e004415d8da623fb8b4011249d72e07d775a262b77571f8eecfb1b7f7ad9eb6c7573c9e077a231916b6579a3ab6a370e59874b9
+  checksum: 7cbbb3d7d8d70d208f1f605079edbdff378bd9be0b9f0784804d3554fbd7cf97c7aa989f226f39ddd27288fa4544ad82ceea0093497201196c6e91bc1940835e
   languageName: node
   linkType: hard
 
