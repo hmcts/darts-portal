@@ -6410,7 +6410,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"body-parser@npm:1.20.3, body-parser@npm:^1.20.2":
+"body-parser@npm:1.20.3":
   version: 1.20.3
   resolution: "body-parser@npm:1.20.3"
   dependencies:
@@ -6430,7 +6430,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"body-parser@npm:^2.2.0":
+"body-parser@npm:^2.0.0, body-parser@npm:^2.2.0":
   version: 2.2.0
   resolution: "body-parser@npm:2.2.0"
   dependencies:
@@ -7504,7 +7504,7 @@ __metadata:
     axe-core: ^4.9.1
     axios: ^1.9.0
     bluebird: ^3.7.2
-    body-parser: ^1.20.2
+    body-parser: ^2.0.0
     concurrently: ^9.0.0
     config: ^3.3.11
     connect-redis: ^8.0.0
