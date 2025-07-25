@@ -167,4 +167,63 @@ describe('AdminCaseService', () => {
       });
     });
   });
+
+  describe('getCaseAudio', () => {
+    it('should fetch paginated audio and map it correctly', (done) => {
+      const mockResponse = {
+        current_page: 1,
+        page_size: 10,
+        total_pages: 2,
+        total_items: 15,
+        data: [
+          {
+            id: 100,
+            start_at: '2024-06-10T10:00:00Z',
+            end_at: '2024-06-10T11:00:00Z',
+            channel: 'CHANNEL_1',
+            courtroom: 'Courtroom A',
+          },
+        ],
+      };
+
+      service
+        .getCaseAudio(123, {
+          page_number: 1,
+          page_size: 10,
+          sort_by: 'startTime',
+          sort_order: 'desc',
+        })
+        .subscribe((result) => {
+          expect(result).toEqual({
+            currentPage: 1,
+            pageSize: 10,
+            totalPages: 2,
+            totalItems: 15,
+            data: [
+              {
+                audioId: 100,
+                startTime: DateTime.fromISO('2024-06-10T10:00:00Z'),
+                endTime: DateTime.fromISO('2024-06-10T11:00:00Z'),
+                channel: 'CHANNEL_1',
+                courtroom: 'Courtroom A',
+              },
+            ],
+          });
+          done();
+        });
+
+      const req = httpMock.expectOne((req) => {
+        return (
+          req.method === 'GET' &&
+          req.url === '/api/admin/cases/123/audios' &&
+          req.params.get('page_number') === '1' &&
+          req.params.get('page_size') === '10' &&
+          req.params.get('sort_by') === 'startTime' &&
+          req.params.get('sort_order') === 'DESC'
+        );
+      });
+
+      req.flush(mockResponse);
+    });
+  });
 });

@@ -23,6 +23,7 @@ export interface AppConfig {
   };
   pagination: {
     courtLogEventsPageLimit: number;
+    caseAudiosPageLimit?: number;
   };
   caseSearchTimeout: string;
 }
