@@ -68,6 +68,7 @@ app.use('/admin/hidden-reasons', require('./admin//transcriptions/hidden-reasons
 app.use('/admin/cases', require('./admin/cases/cases'));
 app.use('/admin/events', require('./admin/events/events'));
 app.use('/admin/hearings', require('./admin/hearings/hearings'));
+app.use('/admin/node-register-management', require('./admin/node-registrations/node-registrations'));
 
 // proxy non-stubbed routes to the actual API
 app.use(

@@ -1,0 +1,29 @@
+@if (!isLoading()) {
+  <app-govuk-heading tag="h2">DAR node registrations</app-govuk-heading>
+
+  <app-node-registration-form (courthouseFilter)="onFormChange($event)" />
+
+  <app-data-table
+    id="node-registrations-table"
+    caption="List of all node registrations"
+    [hiddenCaption]="true"
+    [columns]="columns"
+    [rows]="filteredNodeRegistrations()"
+    [pageLimit]="25"
+    [isHorizontalScroll]="true"
+  >
+    <ng-template [tableRowTemplate]="filteredNodeRegistrations()" let-row>
+      <td>{{ row.id }}</td>
+      <td>{{ row.courthouse }}</td>
+      <td>{{ row.courtroom }}</td>
+      <td>{{ row.ipAddress }}</td>
+      <td>{{ row.hostname }}</td>
+      <td>{{ row.macAddress }}</td>
+      <td>{{ row.nodeType }}</td>
+      <td>{{ row.createdAt | luxonDate: 'dd MMM yyyy h:mm:ss' }}</td>
+      <td>{{ row.createdByName }}</td>
+    </ng-template>
+  </app-data-table>
+} @else {
+  <app-loading />
+}
