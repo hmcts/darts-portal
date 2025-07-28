@@ -174,9 +174,7 @@
 
 @if (isVisible$ | async; as isVisible) {
   @if (isVisible && isAuthenticated) {
-    @let isAdmin = isAdminNavigation();
-
-    @if (isAdmin) {
+    @if (isAdminNavigation()) {
       @defer {
         <app-admin-navigation />
       }
