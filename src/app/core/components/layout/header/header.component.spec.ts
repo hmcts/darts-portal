@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Router, provideRouter } from '@angular/router';
+import { UserState } from '@core-types/index';
 import { FeatureFlagService } from '@services/app-config/feature-flag.service';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
 import { AuthService } from '@services/auth/auth.service';
@@ -35,6 +36,7 @@ describe('HeaderComponent', () => {
       isRequester: jest.fn(() => false),
       isAdmin: jest.fn(() => false),
       isSuperUser: jest.fn(() => false),
+      userState: signal({ userId: 1 } as UserState | null),
     };
 
     fakeFeatureFlagService = {
