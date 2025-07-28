@@ -173,7 +173,7 @@
 </header>
 
 @if (isVisible$ | async; as isVisible) {
-  @if (isVisible && isAuthenticated) {
+  @if (isVisible && isAuthenticated && userStateLoaded()) {
     @if (isAdminNavigation()) {
       @defer {
         <app-admin-navigation />
