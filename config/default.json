@@ -44,7 +44,7 @@
   },
   "pagination": {
     "courtLogEventsPageLimit": 500,
-    "caseAudiosPageLimit": 500
+    "caseAudiosPageLimit": 5
   },
   "caseSearchTimeout": "30 seconds",
   "dynatrace": {
