@@ -49,6 +49,7 @@ describe('CaseComponent', () => {
   beforeEach(async () => {
     mockAdminCaseService = {
       getCase: jest.fn().mockReturnValue(of(mockCaseFile)),
+      getCaseAudio: jest.fn().mockReturnValue(of([])),
     } as unknown as jest.Mocked<AdminCaseService>;
 
     mockUserAdminService = {
@@ -194,7 +195,7 @@ describe('CaseComponent', () => {
 
     jest.spyOn(component['caseService'], 'getCaseEventsPaginated').mockReturnValue(of(mockEvents));
 
-    component.onPageChange(2);
+    component.onPageChange('events', 2);
 
     expect(component.events()).toEqual(mockEvents.data);
     expect(component.eventsTotalItems()).toBe(123);
@@ -205,7 +206,7 @@ describe('CaseComponent', () => {
     const sort = { sortBy: 'timestamp', sortOrder: 'desc' as const };
     const loadEventsSpy = jest.spyOn(component as unknown as { loadEvents: () => void }, 'loadEvents');
 
-    component.onSortChange(sort);
+    component.onSortChange('events', sort);
 
     expect(component.eventsSort()).toEqual(sort);
     expect(loadEventsSpy).toHaveBeenCalled();
@@ -214,8 +215,52 @@ describe('CaseComponent', () => {
   it('should call setCurrentPage with 3 in onPageChange', () => {
     const setPageSpy = jest.spyOn(component['eventsCurrentPage'], 'set');
 
-    component.onPageChange(3);
+    component.onPageChange('events', 3);
 
     expect(setPageSpy).toHaveBeenCalledWith(3);
+  });
+
+  it('should update audio sort state and reload audio on sort change', () => {
+    const sort = { sortBy: 'startTime', sortOrder: 'asc' as const };
+    const loadAudioSpy = jest.spyOn(component as unknown as { loadAudio: () => void }, 'loadAudio');
+
+    component.onSortChange('audio', sort);
+
+    expect(component.audioSort()).toEqual(sort);
+    expect(loadAudioSpy).toHaveBeenCalled();
+  });
+
+  it('should ignore invalid audio sortBy fields', () => {
+    const sort = { sortBy: 'invalidField', sortOrder: 'asc' as const };
+    const loadAudioSpy = jest.spyOn(component as unknown as { loadAudio: () => void }, 'loadAudio');
+
+    component.onSortChange('audio', sort);
+
+    expect(component.audioSort()).toBeNull();
+    expect(loadAudioSpy).not.toHaveBeenCalled();
+  });
+
+  it('should update audio current page and reload audio on page change', () => {
+    const setAudioPageSpy = jest.spyOn(component['audioCurrentPage'], 'set');
+    const loadAudioSpy = jest.spyOn(component as unknown as { loadAudio: () => void }, 'loadAudio');
+
+    component.onPageChange('audio', 4);
+
+    expect(setAudioPageSpy).toHaveBeenCalledWith(4);
+    expect(loadAudioSpy).toHaveBeenCalled();
+  });
+
+  it('should ignore non-audio or non-event types in onSortChange and onPageChange', () => {
+    const loadAudioSpy = jest.spyOn(component as unknown as { loadAudio: () => void }, 'loadAudio');
+    const loadEventsSpy = jest.spyOn(component as unknown as { loadEvents: () => void }, 'loadEvents');
+
+    // @ts-expect-error: intentionally using invalid type to test guard
+    component.onSortChange('invalid', { sortBy: 'startTime', sortOrder: 'asc' });
+
+    // @ts-expect-error: same
+    component.onPageChange('invalid', 5);
+
+    expect(loadAudioSpy).not.toHaveBeenCalled();
+    expect(loadEventsSpy).not.toHaveBeenCalled();
   });
 });
