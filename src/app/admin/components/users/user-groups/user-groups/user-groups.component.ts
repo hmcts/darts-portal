@@ -20,6 +20,7 @@ export class UserGroupsComponent implements OnInit {
 
   @Input({ required: true }) user!: User;
   @Output() errors = new EventEmitter<ErrorSummaryEntry[]>();
+  @Input() disableEditing = false;
 
   groupColumns = [
     { name: 'Name', prop: 'name', sortable: false },
