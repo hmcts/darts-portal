@@ -161,12 +161,12 @@ describe('Admin - User record screen', () => {
 
   describe('Deactivate user', () => {
     it('when user has transcripts rolled back', () => {
-      cy.contains('Phil Taylor').parents('tr').contains('View').click();
+      cy.contains('Nigel Justice').parents('tr').contains('View').click();
 
       cy.get('button').contains('Deactivate user').click();
 
       cy.get('h1').should('contain', 'Deactivate user');
-      cy.get('h1').should('contain', 'Phil Taylor');
+      cy.get('h1').should('contain', 'Nigel Justice');
 
       cy.get('#deactivate-button').click();
 
@@ -246,18 +246,18 @@ describe('Admin - User record screen', () => {
     it('Change email flow', () => {
       cy.get('#allUsers').click();
       cy.get('button[type="submit"]').click();
-      cy.get('app-user-search-results').should('contain', 'phil.taylor@darts.local');
-      cy.contains('phil.taylor@darts.local').parents('tr').contains('View').click();
+      cy.get('app-user-search-results').should('contain', 'john.lowe@darts.local');
+      cy.contains('john.lowe@darts.local').parents('tr').contains('View').click();
 
       cy.get('button').contains('Edit user').click();
       cy.get('h1').should('contain', 'Edit user record');
 
-      cy.get('#fullName').should('have.value', 'Phil Taylor');
-      cy.get('#email').should('have.value', 'phil.taylor@darts.local');
+      cy.get('#fullName').should('have.value', 'John Lowe');
+      cy.get('#email').should('have.value', 'john.lowe@darts.local');
       cy.get('#description').should('have.value', 'Stub Active User');
 
-      cy.get('#fullName').clear().type('Phil Taylor EDIT');
-      cy.get('#email').clear().type('phil.taylor@darts.edit');
+      cy.get('#fullName').clear().type('John Lowe EDIT');
+      cy.get('#email').clear().type('john.lowe@darts.edit');
       cy.get('#description').clear().type('Stub Active User EDIT');
 
       cy.a11y();
@@ -274,8 +274,8 @@ describe('Admin - User record screen', () => {
 
       cy.get('app-govuk-banner').should('contain', 'User updated');
 
-      cy.contains('h1', 'Phil Taylor EDIT').should('exist');
-      cy.get('dd').contains('phil.taylor@darts.edit').should('be.visible');
+      cy.contains('h1', 'John Lowe EDIT').should('exist');
+      cy.get('dd').contains('john.lowe@darts.edit').should('be.visible');
       cy.get('dd').contains('Stub Active User EDIT').should('be.visible');
     });
   });
@@ -463,6 +463,30 @@ describe('Admin - User record screen', () => {
         });
 
       cy.a11y();
+    });
+  });
+
+  describe('Self edit permissions', () => {
+    it('should not display edit or deactivate buttons', () => {
+      cy.get('app-user-search-results').should('contain', 'Phil Taylor');
+      cy.contains('Phil Taylor').parents('tr').contains('View').click();
+
+      cy.contains('button', 'Edit user').should('not.exist');
+      cy.contains('button', 'Deactivate user').should('not.exist');
+    });
+
+    it('should not allow assigning or removing groups, and no checkboxes should be visible', () => {
+      cy.get('app-user-search-results').should('contain', 'Phil Taylor');
+      cy.contains('Phil Taylor').parents('tr').contains('View').click();
+
+      cy.contains('button', 'Assign groups').should('not.exist');
+      cy.contains('button', 'Remove groups').should('not.exist');
+
+      // Check that the "select all" checkbox in the table header is not present
+      cy.get('input#selectAll').should('not.exist');
+
+      // Check that row checkboxes are not visible
+      cy.get('table input[type="checkbox"]').should('not.exist');
     });
   });
 
