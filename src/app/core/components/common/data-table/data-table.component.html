@@ -1,38 +1,24 @@
 @if (rows.length) {
   <div [class.scrollable]="maxHeight" [style.max-height]="maxHeight" [class.moj-scrollable-pane]="isHorizontalScroll">
     <table class="govuk-table">
-      @if (captionType === 'heading' || captionType === 'results') {
-        <caption
-          class="heading-caption"
-          [ngClass]="{
-            'govuk-heading-m': captionType === 'results',
-            'govuk-caption-m': captionType !== 'results',
-          }"
-          [class.govuk-visually-hidden]="hiddenCaption"
-        >
-          Showing
-          {{
-            getCurrentPageCaptionCount()
-          }}
-          of
-          {{
-            rows.length
-          }}
+      <caption
+        [class.heading-caption]="isHeadingOrResultsCaption"
+        [class.govuk-heading-m]="captionType === 'results'"
+        [class.govuk-caption-m]="captionType === 'heading'"
+        [class.govuk-table__caption]="!isHeadingOrResultsCaption"
+        [class.govuk-table__caption--m]="!isHeadingOrResultsCaption"
+        [class.govuk-visually-hidden]="hiddenCaption"
+      >
+        @if (isHeadingOrResultsCaption) {
+          Showing {{ getCurrentPageCaptionCount() }} of {{ rows.length }}
           @if (caption) {
-            <span class="govuk-visually-hidden"> {{ caption }} </span>
+            <span class="govuk-visually-hidden">{{ caption }}</span>
           }
-          {{
-            captionType === 'results' ? (rows.length === 1 ? 'result' : 'results') : ''
-          }}
-        </caption>
-      }
-      @if (captionType !== 'heading' && captionType !== 'results') {
-        <caption class="govuk-table__caption govuk-table__caption--m" [class.govuk-visually-hidden]="hiddenCaption">
-          {{
-            caption
-          }}
-        </caption>
-      }
+          {{ captionType === 'results' ? (rows.length === 1 ? ' result' : ' results') : '' }}
+        } @else {
+          {{ caption }}
+        }
+      </caption>
       <thead class="govuk-table__head">
         <tr class="govuk-table__row header">
           <td *ngIf="rowSelectable && !singleRowSelect" class="govuk-table__header">
