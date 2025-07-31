@@ -127,7 +127,8 @@ router.post('', (req, res) => {
         ) {
           // If date is less than the latest retention date and user is not Admin or Judge
           res.status(403).send({
-            title: 'The retention date being applied is too early.',
+            type: 'RETENTION_100',
+            title: 'No permission to reduce retention.',
             detail: `You do not have permission to lower the retention date for caseId '${case_id}' before last retention date '${latestRetentionDate.toFormat(dateFormat)}'.`,
           });
           return;
@@ -135,6 +136,7 @@ router.post('', (req, res) => {
         if (retention.retention_date < earliestRetentionDate) {
           // If date is less than the original retention date
           res.status(422).send({
+            type: 'RETENTION_101',
             title: 'The retention date being applied is too early.',
             detail: `caseId '${case_id}' must have a retention date after the last completed automated retention date '${earliestRetentionDate.toFormat(dateFormat)}'.`,
             latest_automated_retention_date: earliestRetentionDate.toFormat(dateFormat),
