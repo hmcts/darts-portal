@@ -32,4 +32,8 @@ export class HeaderComponent implements DoCheck {
   isAdminNavigation() {
     return (this.userService.isAdmin() || this.userService.isSuperUser()) && this.router.url.startsWith('/admin');
   }
+
+  userStateLoaded() {
+    return this.userService.userState() !== null;
+  }
 }
