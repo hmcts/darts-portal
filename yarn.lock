@@ -7100,12 +7100,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"config@npm:^3.3.11":
-  version: 3.3.12
-  resolution: "config@npm:3.3.12"
+"config@npm:^4.0.0":
+  version: 4.1.0
+  resolution: "config@npm:4.1.0"
   dependencies:
     json5: ^2.2.3
-  checksum: db1b7718ffb0a8dc99cac003f31f6af99562362b8b25f2c72104465983d471e683ea25866308886723179248113a584e6ec3f67811e25e3c2b070bee592dd94d
+  checksum: 5dd4273aed0ea636d68dd873388775c705de2416e615ab994c561f7770e3483713b41909e1c1b2361f5a7e6ff9ad12b7dd5499d26b2f8a12e5cd6134bc688fe2
   languageName: node
   linkType: hard
 
@@ -7528,7 +7528,7 @@ __metadata:
     bluebird: ^3.7.2
     body-parser: ^2.0.0
     concurrently: ^9.0.0
-    config: ^3.3.11
+    config: ^4.0.0
     connect-redis: ^8.0.0
     cookie-parser: ^1.4.6
     cypress: ^13.13.0
