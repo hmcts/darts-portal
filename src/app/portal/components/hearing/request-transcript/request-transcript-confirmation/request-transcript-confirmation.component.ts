@@ -40,6 +40,7 @@ export class RequestTranscriptConfirmationComponent {
   authorisationFormControl = new FormControl(false, [Validators.required]);
 
   isSubmitted = false;
+  isRequested = false;
 
   get urgency() {
     return this.urgencies.find((u) => u.transcription_urgency_id === this.urgencyId)?.description;
@@ -67,9 +68,11 @@ export class RequestTranscriptConfirmationComponent {
     this.errors.emit([]);
 
     this.confirm.emit(this.moreDetailFormControl.value ?? '');
+    this.isRequested = true;
   }
 
   onCancel() {
+    this.isRequested = false;
     this.cancelled.emit();
   }
 }
