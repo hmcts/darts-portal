@@ -121,7 +121,7 @@ function getLogout(): (_: Request, res: Response, next: NextFunction) => Promise
 
 function logoutCallback(): (req: Request, res: Response, next: NextFunction) => void {
   return (req: Request, res: Response, next: NextFunction) => {
-    if (req.body.error) {
+    if (req.body && req.body.error) {
       console.error('Error received from Azure logout callback', req.body);
       return res.redirect('/login');
     }
