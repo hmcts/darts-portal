@@ -6174,7 +6174,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.8.2, axios@npm:^1.9.0":
+"axios@npm:^1.11.0, axios@npm:^1.9.0":
   version: 1.11.0
   resolution: "axios@npm:1.11.0"
   dependencies:
@@ -14616,8 +14616,8 @@ __metadata:
   linkType: hard
 
 "start-server-and-test@npm:^2.0.4":
-  version: 2.0.12
-  resolution: "start-server-and-test@npm:2.0.12"
+  version: 2.0.13
+  resolution: "start-server-and-test@npm:2.0.13"
   dependencies:
     arg: ^5.0.2
     bluebird: 3.7.2
@@ -14626,12 +14626,12 @@ __metadata:
     execa: 5.1.1
     lazy-ass: 1.6.0
     ps-tree: 1.2.0
-    wait-on: 8.0.3
+    wait-on: 8.0.4
   bin:
     server-test: src/bin/start.js
     start-server-and-test: src/bin/start.js
     start-test: src/bin/start.js
-  checksum: 6ed06b45f52a02b5d045156cb43b4baf7549b89887e2a510b3b8f011ddfa73511434ce864b4cd53ea7b7d15bc5f88f9e64fef178924f29bf401927b5b6c29688
+  checksum: d8f1a73b907d9258fab1319d52adc8573afc681bda870605543b97e8fb2239c79a84deb4d4d950b824c2cdff145303adad4d1f2059539210c2a6ff7b61b7a2b6
   languageName: node
   linkType: hard
 
@@ -15639,18 +15639,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"wait-on@npm:8.0.3":
-  version: 8.0.3
-  resolution: "wait-on@npm:8.0.3"
+"wait-on@npm:8.0.4":
+  version: 8.0.4
+  resolution: "wait-on@npm:8.0.4"
   dependencies:
-    axios: ^1.8.2
+    axios: ^1.11.0
     joi: ^17.13.3
     lodash: ^4.17.21
     minimist: ^1.2.8
     rxjs: ^7.8.2
   bin:
     wait-on: bin/wait-on
-  checksum: 28b6984a5f42cf161dfa824f858b58ee9899d4b5428d4c086720e6e494b9caa3011991102a01e48f3ed3fdbfc3f2a6f32b56cf91b10955161b31222dc577935e
+  checksum: 6e6b86b8ef72e355ba19e2404e77f7afd8f4f37186a08508c932d364a8298660b3bc49d5550468dd2dc5d2f36482bf5a521a67fb151d2e7f35fccbdd481322b7
   languageName: node
   linkType: hard
 
