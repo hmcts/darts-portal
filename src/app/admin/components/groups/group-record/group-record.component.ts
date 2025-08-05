@@ -119,7 +119,6 @@ export class GroupRecordComponent implements OnInit {
     const isEditingSelf = event.userIdsToRemove.some((id) => this.checkIfOwnUser(id));
     if (isEditingSelf) {
       this.setErrorSummary();
-      return;
     } else {
       this.errorSummary.set([]);
       this.router.navigate(['/admin/groups', this.groupId, 'remove-users'], {
