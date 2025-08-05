@@ -4,14 +4,16 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
-import { CourthouseData } from '@core-types/index';
+import { CourthouseData, ErrorSummaryEntry } from '@core-types/index';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
 
 import { User } from '@admin-types/index';
 import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
+import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { TabDirective } from '@directives/tab.directive';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { GroupsService } from '@services/groups/groups.service';
+import { ScrollService } from '@services/scroll/scroll.service';
 import { UserService } from '@services/user/user.service';
 import { BehaviorSubject, combineLatest, forkJoin, map, shareReplay, tap } from 'rxjs';
 import { GroupCourthousesComponent } from '../group-courthouses/group-courthouses.component';
@@ -30,6 +32,7 @@ import { GroupUsersComponent } from '../group-users/group-users.component';
     GroupUsersComponent,
     GovukBannerComponent,
     RouterLink,
+    ValidationErrorSummaryComponent,
   ],
   templateUrl: './group-record.component.html',
   styleUrl: './group-record.component.scss',
@@ -40,7 +43,9 @@ export class GroupRecordComponent implements OnInit {
   groupsService = inject(GroupsService);
   userAdminService = inject(UserAdminService);
   courthouseService = inject(CourthouseService);
-  isAdmin = inject(UserService).isAdmin();
+  userService = inject(UserService);
+  scrollService = inject(ScrollService);
+  isAdmin = this.userService.isAdmin();
 
   groupId: number = +this.route.snapshot.params.id;
   tab = this.route.snapshot.queryParams.tab || 'Courthouses';
@@ -50,8 +55,11 @@ export class GroupRecordComponent implements OnInit {
 
   loading$ = new BehaviorSubject<boolean>(true);
   group$ = this.groupsService.getGroupAndRole(this.groupId);
+
   users$ = this.userAdminService.getUsers().pipe(shareReplay(1));
   courthouses$ = this.courthouseService.getCourthouses().pipe(shareReplay(1));
+
+  errorSummary = signal<ErrorSummaryEntry[]>([]);
 
   groupWithCourthousesAndUsers$ = forkJoin([this.group$, this.courthouses$, this.users$]).pipe(
     map(([group, courthouses, users]) => ({
@@ -103,12 +111,40 @@ export class GroupRecordComponent implements OnInit {
   }
 
   onUpdateUsers(userIds: number[]) {
+    this.errorSummary.set([]);
     this.groupsService.assignUsersToGroup(this.groupId, userIds).subscribe();
   }
 
   onRemoveUsers(event: { groupUsers: User[]; userIdsToRemove: number[] }) {
-    this.router.navigate(['/admin/groups', this.groupId, 'remove-users'], {
-      state: { groupUsers: event.groupUsers, userIdsToRemove: event.userIdsToRemove },
-    });
+    const isEditingSelf = event.userIdsToRemove.some((id) => this.checkIfOwnUser(id));
+    if (isEditingSelf) {
+      this.setErrorSummary();
+      return;
+    } else {
+      this.errorSummary.set([]);
+      this.router.navigate(['/admin/groups', this.groupId, 'remove-users'], {
+        state: { groupUsers: event.groupUsers, userIdsToRemove: event.userIdsToRemove },
+      });
+    }
+  }
+
+  onValidationError(error: ErrorSummaryEntry) {
+    this.errorSummary.set([error]);
+    this.scrollService.scrollTo('app-validation-error-summary');
+  }
+
+  private setErrorSummary() {
+    this.scrollService.scrollTo('app-validation-error-summary');
+
+    this.errorSummary.set([
+      {
+        fieldId: 'group-users',
+        message: 'You cannot assign yourself to or remove yourself from any group.',
+      },
+    ]);
+  }
+
+  private checkIfOwnUser(userId: number): boolean {
+    return this.userService.hasMatchingUserId(userId);
   }
 }

@@ -55,7 +55,7 @@ const defaultSecurityGroups = [
     display_state: true,
     global_access: true,
     courthouse_ids: [1, 2, 3, 4, 5],
-    user_ids: [2],
+    user_ids: [2, 5],
     description: 'Dummy description 5',
   },
   {
