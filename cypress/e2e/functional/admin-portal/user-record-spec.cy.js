@@ -205,14 +205,14 @@ describe('Admin - User record screen', () => {
       cy.contains('Fallon Sherrock').parents('tr').contains('View').click();
       cy.get('button').contains('Deactivate user').click();
 
-      cy.get('app-govuk-heading').should('contain', 'You cannot deactivate this user');
+      cy.get('app-govuk-heading').should('contain', 'Deactivate user');
       cy.get('p.govuk-body').should(
         'contain',
-        'This is the only active user in the Super Admin (Admin Portal) group. '
+        'This is the only active user in this group. Deactivating this user will result in no active users in this group.'
       );
       cy.a11y();
 
-      cy.get('#back-button').click();
+      cy.get('#cancel-button').click();
 
       cy.get('h1').should('contain', 'Fallon Sherrock');
     });

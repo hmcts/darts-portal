@@ -179,6 +179,17 @@ const defaultSecurityGroups = [
     user_ids: [3],
     description: 'Dummy description 2',
   },
+  {
+    id: 17,
+    security_role_id: 5,
+    name: 'SUPER_ADMIN_2',
+    display_name: 'Super admin 2 (Admin portal)',
+    display_state: true,
+    global_access: true,
+    courthouse_ids: [1, 2, 3, 4, 5],
+    user_ids: [2],
+    description: 'Dummy description 9',
+  },
 ];
 
 let securityGroups = [...defaultSecurityGroups];

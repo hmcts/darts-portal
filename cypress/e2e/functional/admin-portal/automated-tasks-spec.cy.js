@@ -102,6 +102,7 @@ describe('Admin - Automated tasks screen', () => {
 
     it('runs inactive task with confirmation screen', () => {
       cy.get('app-data-table').contains('Task 4').parents('tr').get('a').contains('4').click();
+      cy.get(rowSelector).contains('Name').parent().get('dd').contains('Task 4');
       cy.get('.govuk-button').contains('Run task').click();
       cy.get('app-govuk-heading').contains('Are you sure you want to run the inactive task "Task 4"?');
       cy.get('.govuk-button').contains('Yes').click();
