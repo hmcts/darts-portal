@@ -86,7 +86,7 @@
     "on-headers": "^1.1.0"
   },
   "devDependencies": {
-    "@angular-builders/custom-webpack": "^19.0.0",
+    "@angular-builders/custom-webpack": "^20.0.0",
     "@angular-builders/dev-server": "^7.3.1",
     "@angular-devkit/architect": "^0.2001.0",
     "@angular-eslint/builder": "^19.0.0",
