@@ -16,15 +16,22 @@ describe('Login', () => {
     cy.contains('I work with the HM Courts and Tribunals Service').click();
     cy.contains('Continue').click();
 
-    cy.get('h1').should('contain', 'Stub login page');
-    cy.get('#login-admin').click();
+    // Handle the stub login page at localhost:4545
+    cy.origin('http://localhost:4545', () => {
+      cy.get('h1').should('contain', 'Stub login page');
+      cy.get('#login-admin').click();
+    });
+
+    cy.location('origin').should('eq', 'http://localhost:3000');
+
     cy.get('app-govuk-heading').should('contain', 'Search for a case');
 
-    cy.contains('Sign out').should('be.visible').click();
+    cy.contains('Sign out').click();
 
+    cy.get('h1').should('contain', 'Sign in to the DARTS Portal');
     cy.url().should('include', '/login');
 
-    // try to visit an authenticated route
+    // Try accessing an authenticated page
     cy.visit('/search');
     cy.url().should('include', '/login');
   });

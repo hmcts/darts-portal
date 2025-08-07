@@ -9,8 +9,12 @@ Cypress.Commands.add('login', (roleCode = 'admin', loginType = 'internal') => {
   }
   cy.contains('Continue').click();
 
-  cy.get('h1').should('contain', 'Stub login page');
-  cy.get(`#login-${roleCode}`).click();
+  // Cypress is now redirected to the stub login page on http://localhost:4545
+  cy.origin('http://localhost:4545', { args: { roleCode } }, ({ roleCode }) => {
+    cy.get('h1').should('contain', 'Stub login page');
+    cy.get(`#login-${roleCode}`).click();
+  });
+
   cy.get('app-govuk-heading').should('contain', 'Search for a case');
 });
 

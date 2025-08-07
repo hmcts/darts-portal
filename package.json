@@ -113,7 +113,7 @@
     "axe-core": "^4.9.1",
     "bluebird": "^3.7.2",
     "concurrently": "^9.0.0",
-    "cypress": "^13.13.0",
+    "cypress": "^14.0.0",
     "cypress-axe": "^1.5.0",
     "ejs": "^3.1.10",
     "eslint": "^9.5",
