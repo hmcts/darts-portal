@@ -1,5 +1,7 @@
 <a [routerLink]="['../']" class="govuk-back-link">Back</a>
 
+<app-validation-error-summary [errors]="errorSummary()" />
+
 @if (successBannerText()) {
   <app-govuk-banner type="success" focusOnChange="true">{{ successBannerText() }}</app-govuk-banner>
 }
@@ -44,6 +46,7 @@
       [groupUsers]="vm.group.users"
       (update)="onUpdateUsers($event)"
       (remove)="onRemoveUsers($event)"
+      (validationError)="onValidationError($event)"
     />
   </app-tabs>
 }

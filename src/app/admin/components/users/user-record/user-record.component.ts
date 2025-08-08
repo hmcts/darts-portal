@@ -45,9 +45,10 @@ export class UserRecordComponent {
   router = inject(Router);
   errors: ErrorSummaryEntry[] = [];
 
-  user$ = this.userAdminSvc.getUser(this.route.snapshot.params.userId).pipe(shareReplay(1));
+  user$ = this.userAdminSvc.getUser(+this.route.snapshot.params.userId).pipe(shareReplay(1));
   isNewUser$ = this.route.queryParams.pipe(map((params) => !!params.newUser));
   isUpdatedUser$ = this.route.queryParams.pipe(map((params) => !!params.updated));
+  isOwnAccount = this.userService.hasMatchingUserId(+this.route.snapshot.params.userId);
 
   groupChanges$ = this.route.queryParams.pipe(
     map((params) => ({
