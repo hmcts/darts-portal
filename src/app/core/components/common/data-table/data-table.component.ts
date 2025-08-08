@@ -307,6 +307,24 @@ export class DataTableComponent<TRow> implements OnChanges, OnInit {
 
     return `${earliestCaption}-${latestCaption}`;
   }
+
+  get isHeadingOrResultsCaption(): boolean {
+    return this.captionType === 'heading' || this.captionType === 'results';
+  }
+
+  get computedCaptionText(): string {
+    const countText = `Showing ${this.getCurrentPageCaptionCount()} of ${this.rows.length}`;
+    const typeText = this.captionType === 'results' ? (this.rows.length === 1 ? 'result' : 'results') : '';
+    return `${countText} ${typeText}`.trim();
+  }
+
+  get captionClass(): string {
+    return this.captionType === 'results' ? 'govuk-heading-m' : 'govuk-caption-m';
+  }
+
+  get isCaptionVisuallyHidden(): boolean {
+    return this.hiddenCaption;
+  }
 }
 
 export interface SortingInterface<Row> {
