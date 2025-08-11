@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform, inject } from '@angular/core';
 import { DateTime } from 'luxon';
 
 @Pipe({
@@ -7,7 +7,7 @@ import { DateTime } from 'luxon';
   standalone: true,
 })
 export class LuxonDatePipe implements PipeTransform {
-  constructor(private datePipe: DatePipe) {}
+  private datePipe = inject(DatePipe);
 
   transform(value: DateTime | undefined, format: string): string | null {
     if (!value?.isValid) {

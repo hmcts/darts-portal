@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { ControlContainer, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
@@ -11,12 +11,12 @@ import { ControlContainer, FormGroup, FormsModule, ReactiveFormsModule, Validato
   styleUrls: ['./time-input.component.scss'],
 })
 export class TimeInputComponent implements OnInit {
+  private controlContainer = inject(ControlContainer);
+
   form!: FormGroup;
   @Input() errors: string[] | null = null;
   @Input() isSubmitted = false;
   @Input() idStringPrepend!: string;
-
-  constructor(private controlContainer: ControlContainer) {}
 
   ngOnInit() {
     this.form = <FormGroup>this.controlContainer.control;

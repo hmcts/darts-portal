@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { ErrorMessage } from '@core-types/error/error-message.interface';
 import { HeaderService } from '@services/header/header.service';
@@ -40,13 +40,11 @@ const ignoredEndpoints = [
   providedIn: 'root',
 })
 export class ErrorMessageService {
+  private headerService = inject(HeaderService);
+  private router = inject(Router);
+
   private errorMessage: BehaviorSubject<ErrorMessage | null> = new BehaviorSubject<ErrorMessage | null>(null);
   readonly errorMessage$: Observable<ErrorMessage | null> = this.errorMessage.asObservable();
-
-  constructor(
-    private headerService: HeaderService,
-    private router: Router
-  ) {}
 
   handleErrorMessage(error: HttpErrorResponse) {
     if (!this.isIgnored(error) && error.error) {

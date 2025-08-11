@@ -1,36 +1,36 @@
-import { Component, ViewChild, TemplateRef } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TabDirective } from './tab.directive';
 
 @Component({
-  template: ` <ng-template [tab]="'Test Tab'">Tab Content</ng-template> `,
   standalone: true,
+  imports: [TabDirective],
+  template: `<ng-template [tab]="'Test Tab'" #tabRef>Tab Content</ng-template>`,
 })
 class TestComponent {
-  @ViewChild(TemplateRef, { static: true }) tabTemplate!: TemplateRef<unknown>;
+  @ViewChild(TabDirective) directiveInstance!: TabDirective;
+  @ViewChild('tabRef', { static: true }) tabTemplate!: TemplateRef<unknown>;
 }
 
 describe('TabDirective', () => {
-  let component: TestComponent;
   let fixture: ComponentFixture<TestComponent>;
+  let component: TestComponent;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [TabDirective, TestComponent],
-    });
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [TestComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(TestComponent);
     component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
-  it('should create an instance', () => {
-    const directive = new TabDirective(component.tabTemplate);
-    expect(directive).toBeTruthy();
+  it('should create the directive instance via ViewChild', () => {
+    expect(component.directiveInstance).toBeTruthy();
   });
 
-  it('should have a name input', () => {
-    const directive = new TabDirective(component.tabTemplate);
-    directive.name = 'Test Tab';
-    expect(directive.name).toBe('Test Tab');
+  it('should have a name input equal to "Test Tab"', () => {
+    expect(component.directiveInstance.name).toBe('Test Tab');
   });
 });

@@ -9,7 +9,7 @@ import {
   SecurityRoleData,
 } from '@admin-types/index';
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { CourthouseData } from '@core-types/index';
 import { DateTime } from 'luxon';
 import { Observable, catchError, forkJoin, map, of, switchMap, tap } from 'rxjs';
@@ -24,9 +24,9 @@ export const GET_SECURITY_ROLES_PATH = '/api/admin/security-roles';
   providedIn: 'root',
 })
 export class CourthouseService {
-  private cachedCourthouses: CourthouseData[] | null = null;
+  private readonly http = inject(HttpClient);
 
-  constructor(private readonly http: HttpClient) {}
+  private cachedCourthouses: CourthouseData[] | null = null;
 
   createCourthouse(courthouse: CreateUpdateCourthouseFormValues): Observable<CourthouseData> {
     return this.http

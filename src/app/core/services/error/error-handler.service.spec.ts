@@ -1,9 +1,10 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injector } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { AppInsightsService } from '@services/app-insights/app-insights.service';
-import { ErrorHandlerService, IGNORE_HTTP_STATUS_CODES, IMPORT_FAILED_MESSAGE } from './error-handler.service';
 import { AppConfig, AppConfigService } from '@services/app-config/app-config.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import { AppInsightsService } from '@services/app-insights/app-insights.service';
+import { WINDOW } from '@utils/tokens';
+import { ErrorHandlerService, IGNORE_HTTP_STATUS_CODES, IMPORT_FAILED_MESSAGE } from './error-handler.service';
 
 class MockWindow {
   location = {
@@ -39,7 +40,10 @@ describe('ErrorHandlerService', () => {
           },
         },
         Injector,
-        { provide: 'Window', useValue: mockWindow },
+        {
+          provide: WINDOW,
+          useValue: mockWindow,
+        },
       ],
     });
 

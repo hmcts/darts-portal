@@ -1,14 +1,17 @@
 import { DatePipe } from '@angular/common';
+import { TestBed } from '@angular/core/testing';
 import { DateTime } from 'luxon';
 import { LuxonDatePipe } from './luxon-date.pipe';
 
 describe('LuxonDatePipe', () => {
   let pipe: LuxonDatePipe;
-  let datePipe: DatePipe;
 
   beforeEach(() => {
-    datePipe = new DatePipe('en-GB');
-    pipe = new LuxonDatePipe(datePipe);
+    TestBed.configureTestingModule({
+      providers: [DatePipe],
+    });
+
+    pipe = TestBed.runInInjectionContext(() => new LuxonDatePipe());
   });
 
   it('should create an instance', () => {

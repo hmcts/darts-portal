@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { HttpClient, HttpErrorResponse, provideHttpClient } from '@angular/common/http';
+import { HttpErrorResponse, provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { signal } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
@@ -34,7 +34,6 @@ import { HearingComponent } from './hearing.component';
 
 describe('HearingComponent', () => {
   const fakeAppInsightsService = {};
-  let httpClientSpy: HttpClient;
   let mockRouter: Router;
   let caseService: CaseService;
   let hearingService: HearingService;
@@ -174,15 +173,10 @@ describe('HearingComponent', () => {
   });
 
   beforeEach(() => {
-    httpClientSpy = {
-      get: jest.fn(),
-    } as unknown as HttpClient;
-
     mockRouter = {
       navigateByUrl: jest.fn(),
     } as unknown as Router;
 
-    hearingService = new HearingService(httpClientSpy);
     audioRequestService = {
       requestAudio: jest.fn(),
     };
@@ -192,14 +186,6 @@ describe('HearingComponent', () => {
       getHearingTranscripts: jest.fn(),
       getHearingById: jest.fn(),
     } as unknown as CaseService;
-
-    jest.spyOn(caseService, 'getCase').mockReturnValue(of(cd1));
-    jest.spyOn(caseService, 'getCaseHearings').mockReturnValue(hd);
-    jest.spyOn(caseService, 'getHearingTranscripts').mockReturnValue(mockTranscript);
-    jest.spyOn(caseService, 'getHearingById').mockReturnValue(of(shd));
-    jest.spyOn(hearingService, 'getAudio').mockReturnValue(ad);
-    jest.spyOn(hearingService, 'getEvents').mockReturnValue(ed);
-    jest.spyOn(hearingService, 'getAnnotations').mockReturnValue(of(mockAnnotations));
 
     fakeUserService = {
       userProfile$: mockUser,
@@ -223,7 +209,7 @@ describe('HearingComponent', () => {
         provideRouter([]),
         { provide: AppInsightsService, useValue: fakeAppInsightsService },
         { provide: CaseService, useValue: caseService },
-        { provide: HearingService, useValue: hearingService },
+        { provide: HearingService },
         { provide: AudioRequestService, useValue: audioRequestService },
         { provide: HeaderService },
         { provide: UserService, useValue: fakeUserService },
@@ -236,6 +222,16 @@ describe('HearingComponent', () => {
         { provide: DatePipe },
       ],
     });
+
+    hearingService = TestBed.inject(HearingService);
+
+    jest.spyOn(caseService, 'getCase').mockReturnValue(of(cd1));
+    jest.spyOn(caseService, 'getCaseHearings').mockReturnValue(hd);
+    jest.spyOn(caseService, 'getHearingTranscripts').mockReturnValue(mockTranscript);
+    jest.spyOn(caseService, 'getHearingById').mockReturnValue(of(shd));
+    jest.spyOn(hearingService, 'getAudio').mockReturnValue(ad);
+    jest.spyOn(hearingService, 'getEvents').mockReturnValue(ed);
+    jest.spyOn(hearingService, 'getAnnotations').mockReturnValue(of(mockAnnotations));
   });
 
   describe('before component instantiation', () => {

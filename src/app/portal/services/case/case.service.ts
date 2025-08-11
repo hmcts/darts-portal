@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { CaseEvent } from '@portal-types/events/case-event';
 import { CaseEventData } from '@portal-types/events/case-event-data.interface';
 import { PaginatedCaseEventsData } from '@portal-types/events/paginated-case-events.interface';
@@ -38,7 +38,7 @@ export const GET_CASE_RETENTION_HISTORY = '/api/retentions';
   providedIn: 'root',
 })
 export class CaseService {
-  constructor(private readonly http: HttpClient) {}
+  private readonly http = inject(HttpClient);
 
   getHearingTranscripts(hearingId: number): Observable<Transcript[]> {
     const url = `${GET_HEARINGS_PATH}/${hearingId}/transcripts`;

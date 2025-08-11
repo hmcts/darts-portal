@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { AdminCaseEventSortBy } from '@components/case/case-file/case-events-table/case-events-table.component';
 import { CaseEvent } from '@portal-types/events';
 import { CaseService } from '@services/case/case.service';
 
 @Injectable({ providedIn: 'root' })
 export class CaseEventsLoaderService {
-  constructor(private caseService: CaseService) {}
+  private caseService = inject(CaseService);
 
   load(
     caseId: number,

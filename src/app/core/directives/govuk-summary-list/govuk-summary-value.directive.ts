@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, Input, OnInit, Renderer2, inject } from '@angular/core';
 
 @Directive({
   selector: '[govukSummaryValue]',
@@ -8,12 +8,10 @@ import { Directive, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
   },
 })
 export class GovukSummaryValueDirective implements OnInit {
-  @Input() preserveLineBreaks = false;
+  private el = inject(ElementRef);
+  private renderer = inject(Renderer2);
 
-  constructor(
-    private el: ElementRef,
-    private renderer: Renderer2
-  ) {}
+  @Input() preserveLineBreaks = false;
 
   ngOnInit(): void {
     if (this.preserveLineBreaks) {

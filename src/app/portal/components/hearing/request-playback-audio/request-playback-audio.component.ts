@@ -8,6 +8,7 @@ import {
   OnInit,
   Output,
   SimpleChanges,
+  inject,
 } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ErrorSummaryEntry, FormErrorMessages } from '@core-types/index';
@@ -45,6 +46,9 @@ export const fieldErrors: FormErrorMessages = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
+  private fb = inject(FormBuilder);
+  userService = inject(UserService);
+
   @Input() courthouseId!: number;
   @Input() hearing!: Hearing;
   @Input() audios!: HearingAudio[];
@@ -62,10 +66,7 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
 
   requestTypeRequired = false;
 
-  constructor(
-    private fb: FormBuilder,
-    public userService: UserService
-  ) {
+  constructor() {
     this.audioRequestForm = this.fb.group(
       {
         startTime: this.fb.group(timeInputFormControls, { validators: timeGroupValidator }),

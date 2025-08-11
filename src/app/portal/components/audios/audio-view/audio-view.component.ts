@@ -47,6 +47,8 @@ import { combineLatest, map, Observable } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AudioViewComponent implements OnDestroy {
+  private errorMsgService = inject(ErrorMessageService);
+
   @ViewChild(AudioPlayerComponent) audioPlayer!: AudioPlayerComponent;
 
   appConfigService = inject(AppConfigService);
@@ -88,7 +90,7 @@ export class AudioViewComponent implements OnDestroy {
     { fieldId: '', message: `Email ${this.support?.emailAddress} to request access` },
   ];
 
-  constructor(private errorMsgService: ErrorMessageService) {
+  constructor() {
     this.transformedMedia = this.router.getCurrentNavigation()?.extras?.state?.transformedMedia;
 
     if (this.isInvalidTransformedMedia(this.transformedMedia)) {

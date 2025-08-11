@@ -15,15 +15,13 @@ import { PortalNavigationComponent } from './portal-navigation/portal-navigation
   imports: [RouterLink, CommonModule, AdminNavigationComponent, PortalNavigationComponent],
 })
 export class HeaderComponent implements DoCheck {
+  private authService = inject(AuthService);
+  private headerService = inject(HeaderService);
+
   userService = inject(UserService);
   router = inject(Router);
   isAuthenticated = false;
   isVisible$ = this.headerService.isVisible$;
-
-  constructor(
-    private authService: AuthService,
-    private headerService: HeaderService
-  ) {}
 
   ngDoCheck() {
     this.isAuthenticated = this.authService.getAuthenticated();
