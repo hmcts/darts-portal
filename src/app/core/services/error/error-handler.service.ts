@@ -1,7 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { ErrorHandler, Inject, Injectable, Injector } from '@angular/core';
+import { ErrorHandler, Injectable, Injector, inject } from '@angular/core';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
+import { WINDOW } from '@utils/tokens';
 
 export const IMPORT_FAILED_MESSAGE = /Failed to fetch dynamically imported module/;
 export const IGNORE_HTTP_STATUS_CODES = [401, 422];
@@ -10,12 +11,8 @@ export const IGNORE_HTTP_STATUS_CODES = [401, 422];
   providedIn: 'root',
 })
 export class ErrorHandlerService extends ErrorHandler {
-  constructor(
-    private readonly injector: Injector,
-    @Inject('Window') private readonly window: Window
-  ) {
-    super();
-  }
+  private readonly injector = inject(Injector);
+  private window = inject(WINDOW);
 
   private handleImportModuleFailed() {
     const appConfigService = this.injector.get(AppConfigService);

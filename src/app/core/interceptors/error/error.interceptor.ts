@@ -1,15 +1,14 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { ErrorHandler, Inject, Injectable } from '@angular/core';
+import { ErrorHandler, Injectable, inject } from '@angular/core';
 import { ErrorMessageService } from '@services/error/error-message.service';
+import { WINDOW } from '@utils/tokens';
 import { Observable, catchError, throwError } from 'rxjs';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(
-    private errorHandlerService: ErrorHandler,
-    private errorMessageService: ErrorMessageService,
-    @Inject('Window') private window: Window
-  ) {}
+  private errorHandlerService = inject(ErrorHandler);
+  private errorMessageService = inject(ErrorMessageService);
+  private window = inject(WINDOW);
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(

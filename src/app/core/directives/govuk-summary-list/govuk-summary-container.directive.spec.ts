@@ -1,24 +1,27 @@
-import { ElementRef, Renderer2 } from '@angular/core';
+import { Component } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { GovukSummaryContainerDirective } from './govuk-summary-container.directive';
+@Component({
+  standalone: true,
+  imports: [GovukSummaryContainerDirective],
+  template: `<div govukSummaryContainer data-testid="target"></div>`,
+})
+class TestHostComponent {}
 
 describe('GovukSummaryContainerDirective', () => {
-  let mockElementRef: ElementRef;
-  let mockRenderer2: Renderer2;
+  let fixture: ComponentFixture<TestHostComponent>;
 
-  beforeEach(() => {
-    mockElementRef = {
-      nativeElement: document.createElement('div'),
-    } as ElementRef;
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [TestHostComponent],
+    }).compileComponents();
 
-    mockRenderer2 = {
-      setStyle: jest.fn(),
-    } as unknown as Renderer2;
+    fixture = TestBed.createComponent(TestHostComponent);
+    fixture.detectChanges();
   });
 
-  it('should create an instance and set width style', () => {
-    const directive = new GovukSummaryContainerDirective(mockElementRef, mockRenderer2);
-    expect(directive).toBeTruthy();
-
-    expect(mockRenderer2.setStyle).toHaveBeenCalledWith(mockElementRef.nativeElement, 'width', '66.6666666667%');
+  it('should apply the correct width style to the element', () => {
+    const el: HTMLElement = fixture.nativeElement.querySelector('[data-testid="target"]');
+    expect(el.style.width).toBe('66.6666666667%');
   });
 });
