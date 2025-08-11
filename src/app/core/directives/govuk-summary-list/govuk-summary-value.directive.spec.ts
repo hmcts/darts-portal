@@ -1,37 +1,42 @@
-import { ElementRef, Renderer2 } from '@angular/core';
+import { Component } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { GovukSummaryValueDirective } from './govuk-summary-value.directive';
 
+@Component({
+  standalone: true,
+  imports: [GovukSummaryValueDirective],
+  template: `<dd govukSummaryValue [preserveLineBreaks]="preserveLineBreaks" data-testid="target">Example</dd>`,
+})
+class TestHostComponent {
+  preserveLineBreaks = false;
+}
+
 describe('GovukSummaryValueDirective (Jest)', () => {
-  let mockElement: HTMLElement;
-  let mockElementRef: ElementRef;
-  let renderer: jest.Mocked<Renderer2>;
+  let fixture: ComponentFixture<TestHostComponent>;
+  let hostComponent: TestHostComponent;
 
-  beforeEach(() => {
-    mockElement = document.createElement('dd');
-    mockElementRef = new ElementRef(mockElement);
-    renderer = {
-      setStyle: jest.fn(),
-    } as unknown as jest.Mocked<Renderer2>;
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [TestHostComponent],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(TestHostComponent);
+    hostComponent = fixture.componentInstance;
   });
 
-  it('should create an instance', () => {
-    const directive = new GovukSummaryValueDirective(mockElementRef, renderer);
-    expect(directive).toBeTruthy();
+  it('should not apply white-space: pre-line when preserveLineBreaks is false', () => {
+    hostComponent.preserveLineBreaks = false;
+    fixture.detectChanges();
+
+    const dd = fixture.nativeElement.querySelector('[data-testid="target"]');
+    expect(getComputedStyle(dd).whiteSpace).not.toBe('pre-line');
   });
 
-  it('should not apply white-space style if preserveLineBreaks is false', () => {
-    const directive = new GovukSummaryValueDirective(mockElementRef, renderer);
-    directive.preserveLineBreaks = false;
-    directive.ngOnInit();
+  it('should apply white-space: pre-line when preserveLineBreaks is true', () => {
+    hostComponent.preserveLineBreaks = true;
+    fixture.detectChanges();
 
-    expect(renderer.setStyle).not.toHaveBeenCalled();
-  });
-
-  it('should apply white-space: pre-line if preserveLineBreaks is true', () => {
-    const directive = new GovukSummaryValueDirective(mockElementRef, renderer);
-    directive.preserveLineBreaks = true;
-    directive.ngOnInit();
-
-    expect(renderer.setStyle).toHaveBeenCalledWith(mockElement, 'white-space', 'pre-line');
+    const dd = fixture.nativeElement.querySelector('[data-testid="target"]');
+    expect(getComputedStyle(dd).whiteSpace).toBe('pre-line');
   });
 });

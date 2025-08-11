@@ -1,63 +1,68 @@
-import { HttpClient } from '@angular/common/http';
-import { of } from 'rxjs';
-
+import { provideHttpClient } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { TestBed } from '@angular/core/testing';
 import { AppConfig, AppConfigService } from './app-config.service';
 
 describe('AppConfigService', () => {
-  let httpClientSpy: HttpClient;
-  let appConfigService: AppConfigService;
+  let service: AppConfigService;
+  let httpMock: HttpTestingController;
 
   beforeEach(() => {
-    httpClientSpy = {
-      get: jest.fn(),
-    } as unknown as HttpClient;
-    appConfigService = new AppConfigService(httpClientSpy);
+    TestBed.configureTestingModule({
+      providers: [AppConfigService, provideHttpClient(), provideHttpClientTesting()],
+    });
+
+    service = TestBed.inject(AppConfigService);
+    httpMock = TestBed.inject(HttpTestingController);
+  });
+
+  afterEach(() => {
+    httpMock.verify();
   });
 
   it('should be created', () => {
-    expect(appConfigService).toBeTruthy();
+    expect(service).toBeTruthy();
   });
 
   it('loads app config', async () => {
-    const testData: AppConfig = {
-      appInsightsKey: 'Test Data',
+    const mockConfig: AppConfig = {
+      appInsightsKey: 'TestKey',
       support: {
-        name: 'DARTS support',
+        name: 'DARTS Support',
         emailAddress: 'support@darts',
       },
       environment: 'development',
       version: '0.0.1',
       dynatrace: { scriptUrl: 'script' },
       features: {
-        manualDeletion: {
-          enabled: 'false',
-        },
-        eventObfuscation: {
-          enabled: 'false',
-        },
+        manualDeletion: { enabled: 'false' },
+        eventObfuscation: { enabled: 'false' },
       },
       caseSearchTimeout: '30 seconds',
       pagination: {
         courtLogEventsPageLimit: 500,
       },
     };
-    jest.spyOn(httpClientSpy, 'get').mockReturnValue(of(testData));
-    await appConfigService.loadAppConfig();
 
-    expect(appConfigService.getAppConfig()).toEqual(testData);
+    const resultPromise = service.loadAppConfig();
+
+    const req = httpMock.expectOne('/app/config');
+    expect(req.request.method).toBe('GET');
+    req.flush(mockConfig);
+
+    await resultPromise;
+
+    expect(service.getAppConfig()).toEqual(mockConfig);
   });
 
-  it('#isDevelopment', () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (appConfigService as any).appConfig = {
-      appInsightsKey: 'Test Data',
-      support: {
-        name: 'DARTS support',
-        emailAddress: 'support@darts',
-      },
+  it('#isDevelopment should return true when environment is development', () => {
+    // @ts-expect-error testing private value directly
+    service['appConfig'] = {
+      appInsightsKey: 'key',
+      support: { name: '', emailAddress: '' },
       environment: 'development',
     };
-    const result = appConfigService.isDevelopment();
-    expect(result).toEqual(true);
+
+    expect(service.isDevelopment()).toBe(true);
   });
 });

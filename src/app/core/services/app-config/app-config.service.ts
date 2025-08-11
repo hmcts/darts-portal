@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpBackendClient } from '@extensions/HttpBackendClient';
 import { lastValueFrom } from 'rxjs';
 
@@ -32,9 +32,9 @@ const CONFIG_PATH = '/app/config';
 
 @Injectable()
 export class AppConfigService {
-  private appConfig: AppConfig | undefined;
+  private readonly http = inject(HttpBackendClient);
 
-  constructor(private readonly http: HttpBackendClient) {}
+  private appConfig: AppConfig | undefined;
 
   async loadAppConfig(): Promise<void> {
     this.appConfig = await lastValueFrom(this.http.get<AppConfig>(CONFIG_PATH));
