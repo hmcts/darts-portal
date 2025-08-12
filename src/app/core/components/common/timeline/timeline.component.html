@@ -10,7 +10,12 @@
             @if (item.user.isSystemUser) {
               {{ item.user.fullName }}
             } @else {
-              <a class="govuk-link user-link" [routerLink]="['/admin/users', item.user.id]">{{ item.user.fullName }}</a>
+              <a
+                class="govuk-link user-link"
+                [queryParams]="backUrl ? { backUrl: backUrl } : null"
+                [routerLink]="['/admin/users', item.user.id]"
+                >{{ item.user.fullName }}</a
+              >
               ({{ item.user.emailAddress }})
             }
           </p>
