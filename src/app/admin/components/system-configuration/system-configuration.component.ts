@@ -11,11 +11,13 @@ import { AutomatedTaskStatusComponent } from '../automated-tasks/automated-task-
 import { AutomatedTasksComponent } from '../automated-tasks/automated-tasks.component';
 import { RetentionPoliciesComponent } from '../retention-policies/retention-policies.component';
 import { EventMappingComponent } from './event-mappings/event-mappings.component';
+import { NodeRegistrationsComponent } from './node-registrations/node-registrations.component';
 
 const tabUrlMap: { [key: string]: string } = {
   'Retention policies': '/admin/system-configuration/retention-policies',
   'Event mappings': '/admin/system-configuration/event-mappings',
   'Automated tasks': '/admin/system-configuration/automated-tasks',
+  'DAR node registrations': '/admin/system-configuration/node-registrations',
 };
 @Component({
   selector: 'app-system-configuration',
@@ -32,6 +34,7 @@ const tabUrlMap: { [key: string]: string } = {
     AutomatedTasksComponent,
     AutomatedTaskStatusComponent,
     EventMappingComponent,
+    NodeRegistrationsComponent,
   ],
 })
 export class SystemConfigurationComponent {

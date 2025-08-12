@@ -323,6 +323,15 @@ export const ADMIN_ROUTES: Routes = [
       ),
   },
   {
+    path: 'admin/system-configuration/node-registrations',
+    title: 'DARTS Admin Node Registrations',
+    data: { allowedRoles: ['SUPER_ADMIN'] },
+    loadComponent: () =>
+      import('./components/system-configuration/system-configuration.component').then(
+        (c) => c.SystemConfigurationComponent
+      ),
+  },
+  {
     path: 'admin/system-configuration/retention-policies',
     title: 'DARTS Admin Retention Policies',
     data: { allowedRoles: ['SUPER_ADMIN'] },
