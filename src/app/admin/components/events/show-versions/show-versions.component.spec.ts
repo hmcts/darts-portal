@@ -1,14 +1,14 @@
+import { EventVersionData } from '@admin-types/events';
 import { DatePipe } from '@angular/common';
 import { provideHttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { ActivatedRoute, provideRouter } from '@angular/router';
 import { DatatableColumn } from '@core-types/index';
 import { EventsFacadeService } from '@facades/events/events-facade.service';
 import { DateTime } from 'luxon';
 import { of } from 'rxjs';
 import { ShowVersionsComponent } from './show-versions.component';
-import { By } from '@angular/platform-browser';
-import { EventVersionData } from '@admin-types/events';
 
 jest.mock('@facades/events/events-facade.service');
 describe('ShowVersionsComponent', () => {
@@ -148,5 +148,27 @@ describe('ShowVersionsComponent', () => {
 
     const previousVersionsTable = fixture.nativeElement.querySelector('#previousVersionsTable');
     expect(previousVersionsTable.textContent).toContain('There are no previous versions of this event.');
+  });
+
+  it('should update selectedVersion on row selection', () => {
+    const selectedRow: EventVersionData[] = [mockPreviousVersions[0]];
+    component.onSelectedVersion(selectedRow);
+    expect(component.selectedVersion).toEqual([mockPreviousVersions[0]]);
+  });
+
+  it('should not navigate on delete if no version is selected', () => {
+    const routerSpy = jest.spyOn(component.router, 'navigate');
+    component.selectedVersion = [];
+    component.onDelete();
+    expect(routerSpy).not.toHaveBeenCalled();
+  });
+
+  it('should navigate to set-current if a version is selected', () => {
+    const routerSpy = jest.spyOn(component.router, 'navigate');
+    component.selectedVersion = [mockPreviousVersions[0]];
+    component.onDelete();
+    expect(routerSpy).toHaveBeenCalledWith(['/admin/events', component.id(), 'versions', 'set-current'], {
+      state: { selectedEventId: mockPreviousVersions[0].id },
+    });
   });
 });

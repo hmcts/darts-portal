@@ -71,7 +71,9 @@
   </div>
 
   <div class="govuk-button-group">
-    <button id="confirm-button" class="govuk-button" (click)="setCurrentVersion()">Confirm</button>
+    <button id="confirm-button" class="govuk-button" [disabled]="isSubmitted" (click)="setCurrentVersion()">
+      Confirm
+    </button>
     <a id="cancel-link" class="govuk-link" href="javascript:void(0)" [routerLink]="['../']">Cancel</a>
   </div>
 } @else {

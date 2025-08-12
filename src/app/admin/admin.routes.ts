@@ -162,7 +162,6 @@ export const ADMIN_ROUTES: Routes = [
     loadComponent: () =>
       import('./components/events/view-event/view-event.component').then((c) => c.ViewEventComponent),
   },
-
   {
     path: 'admin/events/:id/versions',
     title: 'DARTS Admin View Event Versions',
@@ -181,6 +180,24 @@ export const ADMIN_ROUTES: Routes = [
     canActivate: [eventObfuscationGuard], // event obfuscation feature flag must be enabled
   },
   {
+    path: 'admin/events/:id/versions/set-current',
+    title: 'DARTS Admin Set Current Event Version',
+    data: { allowedRoles: ['SUPER_ADMIN'] },
+    loadComponent: () =>
+      import('./components/events/set-current-version/set-current-version.component').then(
+        (c) => c.SetCurrentVersionComponent
+      ),
+  },
+  {
+    path: 'admin/audio-file/:id/versions/set-current',
+    title: 'DARTS Admin Set Current Audio Version',
+    data: { allowedRoles: ['SUPER_ADMIN'] },
+    loadComponent: () =>
+      import('./components/audio-file/set-current-version/set-current-version.component').then(
+        (c) => c.SetCurrentVersionComponent
+      ),
+  },
+  {
     path: 'admin/audio-file/:id',
     title: 'DARTS Admin View Audio File',
     data: { allowedRoles: ['SUPER_ADMIN', 'SUPER_USER'] },
@@ -192,15 +209,6 @@ export const ADMIN_ROUTES: Routes = [
     data: { allowedRoles: ['SUPER_ADMIN'] },
     loadComponent: () =>
       import('./components/audio-file/show-versions/show-versions.component').then((c) => c.ShowVersionsComponent),
-  },
-  {
-    path: 'admin/audio-file/:id/versions/set-current',
-    title: 'DARTS Admin Set Current Audio Version',
-    data: { allowedRoles: ['SUPER_ADMIN'] },
-    loadComponent: () =>
-      import('./components/audio-file/set-current-version/set-current-version.component').then(
-        (c) => c.SetCurrentVersionComponent
-      ),
   },
   {
     path: 'admin/audio-file/:id/associated-audio/unhide-or-unmark-for-deletion',
