@@ -1,8 +1,9 @@
 import { NgClass, NgIf } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { AuthService } from '@services/auth/auth.service';
+import { WINDOW } from '@utils/tokens';
 
 @Component({
   selector: 'app-login',
@@ -12,6 +13,9 @@ import { AuthService } from '@services/auth/auth.service';
   imports: [NgIf, ReactiveFormsModule, NgClass, ValidationErrorSummaryComponent],
 })
 export class LoginComponent {
+  authService = inject(AuthService);
+  private window = inject(WINDOW);
+
   form = new FormGroup({
     userType: new FormControl('', Validators.required),
   });
@@ -24,11 +28,6 @@ export class LoginComponent {
         'Select whether you are an employee of HM Courts and Tribunals Service or you work with HM Courts and Tribunals Service.',
     },
   ];
-
-  constructor(
-    public authService: AuthService,
-    @Inject('Window') private window: Window
-  ) {}
 
   submit() {
     // preliminary code for internal vs external routing
