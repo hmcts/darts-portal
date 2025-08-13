@@ -18,7 +18,7 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "allowedCommonJsDependencies": ["moment"],
+            "allowedCommonJsDependencies": ["moment", "accessible-autocomplete"],
             "outputPath": {
               "base": "dist/darts-portal",
               "browser": ""
