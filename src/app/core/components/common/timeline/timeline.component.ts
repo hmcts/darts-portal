@@ -12,4 +12,5 @@ import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 })
 export class TimelineComponent {
   @Input() items: TimelineItem[] = [];
+  @Input() backUrl: string = '';
 }

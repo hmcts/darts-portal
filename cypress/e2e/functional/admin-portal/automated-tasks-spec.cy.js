@@ -91,6 +91,8 @@ describe('Admin - Automated tasks screen', () => {
       cy.get('.govuk-button').contains('Make inactive').click();
       cy.get('app-automated-task-status').contains('Task 1 is inactive: Task 1');
       cy.get('.govuk-tag.govuk-tag--grey').contains('Inactive');
+      cy.get(rowSelector).contains('Created by').parent().get('dd').contains('Eric Bristow');
+      cy.get(rowSelector).contains('Modified by').parent().get('dd').contains('Michael van Gerwen');
     });
 
     it('activates task', () => {

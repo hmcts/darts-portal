@@ -28,6 +28,10 @@ export class EventsFacadeService {
     return this.eventsService.getEventVersions(id).pipe(switchMap((event) => of(this.mapEventVersions(event))));
   }
 
+  setCurrentEventVersion(id: number) {
+    return this.eventsService.setCurrentVersion(id);
+  }
+
   private mapEventVersions(eventVersions: EventVersions) {
     return {
       currentVersion: eventVersions.currentVersion ? this.mapEventTableData(eventVersions.currentVersion) : null,

@@ -11,6 +11,7 @@ import { ValidationErrorSummaryComponent } from '@common/validation-error-summar
 import { ErrorSummaryEntry } from '@core-types/index';
 import { TabDirective } from '@directives/tab.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
+import { HistoryService } from '@services/history/history.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
 import { UserService } from '@services/user/user.service';
 import { Observable, shareReplay } from 'rxjs';
@@ -41,9 +42,12 @@ import { UserTranscriptsComponent } from '../user-transcripts/user-transcripts.c
 export class UserRecordComponent {
   userService = inject(UserService);
   userAdminSvc = inject(UserAdminService);
+  historyService = inject(HistoryService);
   route = inject(ActivatedRoute);
   router = inject(Router);
   errors: ErrorSummaryEntry[] = [];
+
+  backUrl = this.historyService.getBackUrl(this.router.url) ?? '/admin/users';
 
   user$ = this.userAdminSvc.getUser(+this.route.snapshot.params.userId).pipe(shareReplay(1));
   isNewUser$ = this.route.queryParams.pipe(map((params) => !!params.newUser));

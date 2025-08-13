@@ -9,7 +9,11 @@
 @if (transcript()) {
   <app-tabs>
     <app-transcript-details *tab="'Details'; id: 'details-tab'" [transcript]="transcript()!" />
-    <app-timeline *tab="'History'; id: 'history-tab'" [items]="history()" />
+    <app-timeline
+      *tab="'History'; id: 'history-tab'"
+      [items]="history()"
+      [backUrl]="`/admin/transcripts/${transcriptionId}`"
+    />
   </app-tabs>
 } @else {
   <app-loading text="Loading transcript request..." />

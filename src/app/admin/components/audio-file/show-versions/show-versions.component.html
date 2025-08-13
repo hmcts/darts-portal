@@ -52,14 +52,16 @@
 
   <div class="action-container">
     <app-govuk-heading tag="h2" size="m">Previous versions</app-govuk-heading>
-    <button
-      id="setVersionButton"
-      name="makeCurrentVersion"
-      class="govuk-button govuk-button--secondary"
-      (click)="onDelete()"
-    >
-      Make current version
-    </button>
+    @if (prevVersions.length) {
+      <button
+        id="setVersionButton"
+        name="makeCurrentVersion"
+        class="govuk-button govuk-button--secondary"
+        (click)="onDelete()"
+      >
+        Make current version
+      </button>
+    }
   </div>
   <app-data-table
     [rowSelectable]="true"

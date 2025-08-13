@@ -13,6 +13,7 @@ import { ValidationErrorSummaryComponent } from '@common/validation-error-summar
 import { TabDirective } from '@directives/tab.directive';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { GroupsService } from '@services/groups/groups.service';
+import { HistoryService } from '@services/history/history.service';
 import { ScrollService } from '@services/scroll/scroll.service';
 import { UserService } from '@services/user/user.service';
 import { BehaviorSubject, combineLatest, forkJoin, map, shareReplay, tap } from 'rxjs';
@@ -45,7 +46,10 @@ export class GroupRecordComponent implements OnInit {
   courthouseService = inject(CourthouseService);
   userService = inject(UserService);
   scrollService = inject(ScrollService);
+  historyService = inject(HistoryService);
   isAdmin = this.userService.isAdmin();
+
+  backUrl = this.historyService.getBackUrl(this.router.url) ?? '/admin/groups';
 
   groupId: number = +this.route.snapshot.params.id;
   tab = this.route.snapshot.queryParams.tab || 'Courthouses';
