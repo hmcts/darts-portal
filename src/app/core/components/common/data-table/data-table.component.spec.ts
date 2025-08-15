@@ -1090,6 +1090,62 @@ describe('DataTableComponent', () => {
           expect(sortTableSpy).not.toHaveBeenCalled();
         });
       });
+
+      describe('isHeadingOrResultsCaption', () => {
+        it('should return true for "heading" and "results"', () => {
+          component.captionType = 'heading';
+          expect(component.isHeadingOrResultsCaption).toBe(true);
+
+          component.captionType = 'results';
+          expect(component.isHeadingOrResultsCaption).toBe(true);
+        });
+
+        it('should return false for other values', () => {
+          component.captionType = 'something-else' as 'default' | 'heading' | 'results';
+          expect(component.isHeadingOrResultsCaption).toBe(false);
+        });
+      });
+
+      describe('captionClass', () => {
+        it('should return "govuk-heading-m" if captionType is "results"', () => {
+          component.captionType = 'results';
+          expect(component.captionClass).toBe('govuk-heading-m');
+        });
+
+        it('should return "govuk-caption-m" if captionType is not "results"', () => {
+          component.captionType = 'heading';
+          expect(component.captionClass).toBe('govuk-caption-m');
+
+          component.captionType = 'other' as 'default' | 'heading' | 'results';
+          expect(component.captionClass).toBe('govuk-caption-m');
+        });
+      });
+
+      describe('computedCaptionText', () => {
+        beforeEach(() => {
+          // Mock the page caption count
+          component.getCurrentPageCaptionCount = jest.fn(() => '1-5');
+        });
+
+        it('should include result label in "results" mode', () => {
+          component.captionType = 'results';
+          component.rows = [1, 2, 3];
+          expect(component.computedCaptionText).toBe('Showing 1-5 of 3 results');
+
+          component.rows = [1];
+          expect(component.computedCaptionText).toBe('Showing 1-5 of 1 result');
+        });
+
+        it('should not include result label in "heading" or other modes', () => {
+          component.captionType = 'heading';
+          component.rows = [1];
+          expect(component.computedCaptionText).toBe('Showing 1-5 of 1');
+
+          component.captionType = 'something-else' as 'default' | 'heading' | 'results';
+          component.rows = [1];
+          expect(component.computedCaptionText).toBe('Showing 1-5 of 1');
+        });
+      });
     });
   });
 });
