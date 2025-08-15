@@ -45,7 +45,7 @@
     }
 
     <div class="govuk-button-group">
-      <button id="submit-button" class="govuk-button" (click)="onComplete()">
+      <button id="submit-button" class="govuk-button" [disabled]="isUploading" (click)="onComplete()">
         @if (isManualRequest) {
           Attach file and complete
         } @else {

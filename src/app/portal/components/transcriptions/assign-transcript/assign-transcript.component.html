@@ -81,7 +81,9 @@
     </div>
 
     <div class="govuk-button-group">
-      <button id="submit-button" class="govuk-button" (click)="onAssignTranscript()">Continue</button>
+      <button id="submit-button" class="govuk-button" [disabled]="isAssigning" (click)="onAssignTranscript()">
+        Continue
+      </button>
       <a routerLink="../" class="govuk-link">Cancel</a>
     </div>
   </ng-template>

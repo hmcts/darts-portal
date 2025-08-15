@@ -51,6 +51,7 @@ export class AssignTranscriptComponent implements OnDestroy {
   caseNumber: string | null = null;
   getAudioQueryParams: { startTime: string | null; endTime: string | null } | null = null;
   isSubmitted = false;
+  isAssigning = false;
   errors: { fieldId: string; message: string }[] = [];
   error$ = this.errorMsgService.errorMessage$;
 
@@ -80,6 +81,7 @@ export class AssignTranscriptComponent implements OnDestroy {
       return;
     }
 
+    this.isAssigning = true;
     this.transcriptionService.assignTranscript(this.transcriptId).subscribe(() => {
       if (this.selectedOption.value === this.ASSIGN_TO_ME) {
         this.router.navigate(['/work']);
