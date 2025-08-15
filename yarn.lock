@@ -533,8 +533,8 @@ __metadata:
   linkType: hard
 
 "@angular/cdk@npm:^20.0.0":
-  version: 20.1.5
-  resolution: "@angular/cdk@npm:20.1.5"
+  version: 20.1.6
+  resolution: "@angular/cdk@npm:20.1.6"
   dependencies:
     parse5: ^8.0.0
     tslib: ^2.3.0
@@ -542,7 +542,7 @@ __metadata:
     "@angular/common": ^20.0.0 || ^21.0.0
     "@angular/core": ^20.0.0 || ^21.0.0
     rxjs: ^6.5.3 || ^7.4.0
-  checksum: 0925f25d8d6920fd1d1f4a4e69406cfbb29bf6fcce11fa76e75e90d42b0bdf12102480c2feb6f72fb76f28453df9967d5e2b6b03ea720cddd04251a3681d7858
+  checksum: 3e58a71a20b49429b3493b69cd05a8bc9317978f500719552c4478876d6eff731e132eb85201e219f7f76cbaa12a15dd29264c7a1bb8daf81396c36d4fd5bcc5
   languageName: node
   linkType: hard
 
