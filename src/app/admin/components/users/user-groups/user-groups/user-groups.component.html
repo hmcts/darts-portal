@@ -1,6 +1,6 @@
 <div class="assign-button-container">
   <app-govuk-heading tag="h2" size="m" class="no-margin">Groups</app-govuk-heading>
-  @if (userService.isAdmin()) {
+  @if (userService.isAdmin() && !disableEditing) {
     <button
       class="govuk-button"
       (click)="router.navigate(['admin/users/', user.id, 'assign-groups'], { state: { user } })"
@@ -11,7 +11,7 @@
 </div>
 
 @if (userGroups.length) {
-  @if (userService.isAdmin()) {
+  @if (userService.isAdmin() && !disableEditing) {
     <button
       id="remove-groups-button"
       type="button"
@@ -22,7 +22,7 @@
     </button>
   }
   <div class="govuk-form-group" [class.govuk-form-group--error]="removeError">
-    @if (userService.isAdmin()) {
+    @if (userService.isAdmin() && !disableEditing) {
       @if (removeError) {
         <p class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> Select one or more groups</p>
       }
@@ -36,7 +36,7 @@
       id="userGroupTable"
       [columns]="groupColumns"
       [rows]="userGroups"
-      [rowSelectable]="userService.isAdmin()"
+      [rowSelectable]="userService.isAdmin() && !disableEditing"
       [pageLimit]="15"
       [(selectedRows)]="selectedGroups"
     >

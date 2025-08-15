@@ -1,5 +1,43 @@
 import 'cypress-axe';
 import '../commands';
+
+describe('Admin - Groups screen as SUPER_USER', () => {
+  beforeEach(() => {
+    cy.login('superuser');
+    cy.visit('/admin/groups/2');
+    cy.injectAxe();
+  });
+
+  it('should display group details headings and content', () => {
+    cy.get('app-govuk-heading h1').should('contain.text', 'Group details');
+    cy.get('app-govuk-heading .govuk-caption-l').should('contain.text', 'View group');
+
+    cy.get('h2.govuk-heading-s').contains('Group name').should('exist');
+    cy.get('h2.govuk-heading-s').contains('Description').should('exist');
+    cy.get('h2.govuk-heading-s').contains('Role').should('exist');
+    cy.get('h2.govuk-heading-m').contains('Courthouses').should('exist');
+
+    cy.get('#group-name').should('contain.text', 'Opus Transcribers');
+    cy.get('#group-description').should('contain.text', 'Dummy description 2');
+    cy.get('#group-role').should('contain.text', 'Transcriber');
+  });
+
+  it('should NOT show admin-only actions', () => {
+    cy.contains('button', 'Edit group details').should('not.exist');
+
+    cy.get('select#select-courthouse').should('not.exist');
+    cy.contains('button', 'Add courthouse').should('not.exist');
+
+    cy.get('app-data-table').should('not.contain', 'Remove');
+
+    cy.get('#group-users').click();
+
+    cy.get('#users-autocomplete-container').should('not.exist');
+    cy.get('#add-user-button').should('not.exist');
+    cy.get('#remove-users-button').should('not.exist');
+  });
+});
+
 describe('Admin - Groups screen', () => {
   beforeEach(() => {
     cy.login('admin');
@@ -42,12 +80,47 @@ describe('Admin - Groups screen', () => {
     cy.get('a.moj-sub-navigation__link').contains('Users').click();
     cy.get('h2').should('contain', 'Users');
 
+    cy.get('#group-users-table').should('not.contain', 'Trina Gulliver');
+
+    cy.get('#users-autocomplete').click();
+    cy.get('li').contains('Trina Gulliver').click();
+
+    cy.get('button').contains('Add user').click();
+
+    cy.get('#group-users-table').should('contain', 'Trina Gulliver');
+  });
+
+  it('self-edit validation on user groups', () => {
+    //Adding user validation
+    cy.get('a.moj-sub-navigation__link').contains('Users').click();
+    cy.get('h2').should('contain', 'Users');
+
     cy.get('#group-users-table').should('not.contain', 'Phil Taylor');
 
     cy.get('#users-autocomplete').click();
     cy.get('li').contains('Phil Taylor').click();
 
     cy.get('button').contains('Add user').click();
+
+    cy.get('.govuk-error-summary')
+      .should('be.visible')
+      .and('contain.text', 'You cannot assign yourself to or remove yourself from any group');
+
+    cy.get('#group-users-table').should('not.contain', 'Phil Taylor');
+
+    //Removing user validation
+    cy.visit('/admin/groups/5');
+    cy.get('a.moj-sub-navigation__link').contains('Users').click();
+
+    cy.get('#group-users-table').should('contain', 'Phil Taylor');
+
+    cy.get('#group-users-table').contains('Phil Taylor').parents('tr').find('input').check();
+
+    cy.get('button').contains('Remove users').click();
+
+    cy.get('.govuk-error-summary')
+      .should('be.visible')
+      .and('contain.text', 'You cannot assign yourself to or remove yourself from any group');
 
     cy.get('#group-users-table').should('contain', 'Phil Taylor');
   });
@@ -56,9 +129,9 @@ describe('Admin - Groups screen', () => {
     cy.get('a.moj-sub-navigation__link').contains('Users').click();
     cy.get('h2').should('contain', 'Users');
 
-    cy.get('#group-users-table').should('contain', 'Phil Taylor');
+    cy.get('#group-users-table').should('contain', 'Fallon Sherrock');
 
-    cy.get('#group-users-table').contains('Phil Taylor').parents('tr').find('input').check();
+    cy.get('#group-users-table').contains('Fallon Sherrock').parents('tr').find('input').check();
 
     cy.get('button').contains('Remove users').click();
 
@@ -67,7 +140,7 @@ describe('Admin - Groups screen', () => {
     cy.get('button').contains('Yes - continue').click();
 
     cy.get('app-govuk-banner').should('contain', '1 user removed');
-    cy.get('#group-users-table').should('not.contain', 'Phil Taylor');
+    cy.get('#group-users-table').should('not.contain', 'Fallon Sherrock');
   });
 
   it('removes all users from group', () => {
@@ -115,44 +188,7 @@ describe('Admin - Groups screen', () => {
     cy.get('.fullName-error').should('contain', 'There is an existing group with this name');
   });
 
-  after(() => {
+  afterEach(() => {
     cy.request('/api/admin/security-groups/reset');
-  });
-});
-
-describe('Admin - Groups screen as SUPER_USER', () => {
-  beforeEach(() => {
-    cy.login('superuser');
-    cy.visit('/admin/groups/2');
-    cy.injectAxe();
-  });
-
-  it('should display group details headings and content', () => {
-    cy.get('app-govuk-heading h1').should('contain.text', 'Group details');
-    cy.get('app-govuk-heading .govuk-caption-l').should('contain.text', 'View group');
-
-    cy.get('h2.govuk-heading-s').contains('Group name').should('exist');
-    cy.get('h2.govuk-heading-s').contains('Description').should('exist');
-    cy.get('h2.govuk-heading-s').contains('Role').should('exist');
-    cy.get('h2.govuk-heading-m').contains('Courthouses').should('exist');
-
-    cy.get('#group-name').should('contain.text', 'Opus Transcribers');
-    cy.get('#group-description').should('contain.text', 'Dummy description 2');
-    cy.get('#group-role').should('contain.text', 'Transcriber');
-  });
-
-  it('should NOT show admin-only actions', () => {
-    cy.contains('button', 'Edit group details').should('not.exist');
-
-    cy.get('select#select-courthouse').should('not.exist');
-    cy.contains('button', 'Add courthouse').should('not.exist');
-
-    cy.get('app-data-table').should('not.contain', 'Remove');
-
-    cy.get('#group-users').click();
-
-    cy.get('#users-autocomplete-container').should('not.exist');
-    cy.get('#add-user-button').should('not.exist');
-    cy.get('#remove-users-button').should('not.exist');
   });
 });

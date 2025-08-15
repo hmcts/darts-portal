@@ -68,21 +68,23 @@
         <div class="govuk-grid-column-one-third">
           <div class="button-container govuk-button-group">
             @if (userService.isAdmin()) {
-              <button
-                type="submit"
-                class="edit-button govuk-button govuk-button--secondary"
-                (click)="router.navigate(['admin/users/edit', user.id], { state: { user } })"
-              >
-                Edit user
-              </button>
+              @if (!isOwnAccount) {
+                <button
+                  type="submit"
+                  class="edit-button govuk-button govuk-button--secondary"
+                  (click)="router.navigate(['admin/users/edit', user.id], { state: { user } })"
+                >
+                  Edit user
+                </button>
 
-              <button
-                type="button"
-                class="govuk-button govuk-button--secondary"
-                (click)="onActivateDeactivateUser(user)"
-              >
-                {{ !user.active ? 'Activate user' : 'Deactivate user' }}
-              </button>
+                <button
+                  type="button"
+                  class="govuk-button govuk-button--secondary"
+                  (click)="onActivateDeactivateUser(user)"
+                >
+                  {{ !user.active ? 'Activate user' : 'Deactivate user' }}
+                </button>
+              }
             } @else if (userService.isSuperUser() && user.active) {
               <button
                 type="button"
@@ -127,7 +129,7 @@
         </div>
 
         <div *tab="'Groups'; screenReaderText: 'User Groups'; id: 'groups-tab'">
-          <app-user-groups [user]="user" (errors)="errors = $event" />
+          <app-user-groups [user]="user" (errors)="errors = $event" [disableEditing]="isOwnAccount" />
         </div>
 
         <div
