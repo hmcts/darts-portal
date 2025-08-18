@@ -8045,11 +8045,11 @@ __metadata:
   linkType: hard
 
 "config@npm:^4.0.0":
-  version: 4.1.0
-  resolution: "config@npm:4.1.0"
+  version: 4.1.1
+  resolution: "config@npm:4.1.1"
   dependencies:
     json5: ^2.2.3
-  checksum: 5dd4273aed0ea636d68dd873388775c705de2416e615ab994c561f7770e3483713b41909e1c1b2361f5a7e6ff9ad12b7dd5499d26b2f8a12e5cd6134bc688fe2
+  checksum: 304e4e551886c78dfc9413cb3e7c44e3ac1a0219a5787c15343f5347623bea6452a5221ff5625dc361418f7add22a29a906da508b5a37dd7ef7924f844dfa641
   languageName: node
   linkType: hard
 
