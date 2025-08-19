@@ -12,7 +12,21 @@
         <app-case-hearings-table [hearings]="data.hearings" [caseId]="caseId()" [adminScreen]="true" />
       </div>
 
-      <!-- <div *tab="'Audio'"></div> -->
+      <div *tab="tabNames.audio; screenReaderText: 'Case audio tab'; id: 'audio-tab'">
+        @if (audio()) {
+          <app-govuk-heading tag="h2" size="m">Audio</app-govuk-heading>
+          <app-case-audio
+            [audios]="audio()!"
+            [caseId]="caseId()"
+            [totalItems]="audioTotalItems()"
+            [audiosPerPage]="audioPageLimit"
+            (pageChange)="onPageChange('audio', $event)"
+            (sortChange)="onSortChange('audio', $event)"
+          />
+        } @else {
+          <app-loading text="Loading audio..."></app-loading>
+        }
+      </div>
 
       <div *tab="tabNames.events; screenReaderText: 'Case events tab'; id: 'events-tab'">
         @if (events()) {
@@ -23,8 +37,8 @@
             [adminScreen]="true"
             [totalItems]="eventsTotalItems()"
             [eventsPerPage]="eventsPageLimit"
-            (pageChange)="onPageChange($event)"
-            (sortChange)="onSortChange($event)"
+            (pageChange)="onPageChange('events', $event)"
+            (sortChange)="onSortChange('events', $event)"
           />
         } @else {
           <app-loading text="Loading events..."></app-loading>
