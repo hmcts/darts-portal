@@ -1197,29 +1197,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/core@npm:7.28.3":
-  version: 7.28.3
-  resolution: "@babel/core@npm:7.28.3"
-  dependencies:
-    "@ampproject/remapping": ^2.2.0
-    "@babel/code-frame": ^7.27.1
-    "@babel/generator": ^7.28.3
-    "@babel/helper-compilation-targets": ^7.27.2
-    "@babel/helper-module-transforms": ^7.28.3
-    "@babel/helpers": ^7.28.3
-    "@babel/parser": ^7.28.3
-    "@babel/template": ^7.27.2
-    "@babel/traverse": ^7.28.3
-    "@babel/types": ^7.28.2
-    convert-source-map: ^2.0.0
-    debug: ^4.1.0
-    gensync: ^1.0.0-beta.2
-    json5: ^2.2.3
-    semver: ^6.3.1
-  checksum: d09132cd752730d219bdd29dbd65cb647151105bef6e615cfb6d57249f71a3d1aaf8a5beaa1c7ec54ad927962e4913ebc660f7f0c3e65c39bc171bc386285e50
-  languageName: node
-  linkType: hard
-
 "@babel/generator@npm:7.27.5":
   version: 7.27.5
   resolution: "@babel/generator@npm:7.27.5"
