@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { User } from '@admin-types/index';
+import { UserService } from '@services/user/user.service';
 import { GroupUsersComponent, addCheckboxLabelToUsers } from './group-users.component';
 
 describe('GroupUsersComponent', () => {
@@ -10,6 +11,15 @@ describe('GroupUsersComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [GroupUsersComponent],
+      providers: [
+        {
+          provide: UserService,
+          useValue: {
+            userState: () => ({ userId: 3 }),
+            isAdmin: () => true,
+          },
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(GroupUsersComponent);
@@ -56,6 +66,24 @@ describe('GroupUsersComponent', () => {
   });
 
   describe('#onAddUserToCourthouse', () => {
+    it('should emit validation error if trying to assign own user', () => {
+      const user3 = { id: 3, fullName: 'user 3', emailAddress: '' } as User;
+      component.userToAdd = user3;
+      component.groupUsers = [];
+      component.autoCompleteUsers = [{ id: 3, name: 'user 3' }];
+
+      const validationSpy = jest.spyOn(component.validationError, 'emit');
+
+      component.onAddUserToCourthouse();
+
+      expect(validationSpy).toHaveBeenCalledWith({
+        fieldId: 'group-users',
+        message: 'You cannot assign yourself to or remove yourself from any group.',
+      });
+
+      expect(component.userToAdd).toBeNull();
+    });
+
     it('should add user to groupUsers', () => {
       const user1 = { id: 1, fullName: 'user 1', emailAddress: '' } as User;
       component.userToAdd = user1;

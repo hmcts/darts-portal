@@ -2,11 +2,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { User } from '@admin-types/index';
 import { provideHttpClient } from '@angular/common/http';
+import { signal, WritableSignal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CourthouseData } from '@core-types/courthouse/courthouse.interface';
+import { UserState } from '@core-types/index';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { GroupsService } from '@services/groups/groups.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
+import { UserService } from '@services/user/user.service';
 import { of } from 'rxjs';
 import { GroupRecordComponent } from './group-record.component';
 
@@ -14,10 +17,22 @@ describe('GroupRecordComponent', () => {
   let component: GroupRecordComponent;
   let fixture: ComponentFixture<GroupRecordComponent>;
 
+  const mockUserState: WritableSignal<UserState | null> = signal({ userId: 3 } as UserState);
+
+  const userServiceMock: Partial<UserService> = {
+    hasMatchingUserId: jest.fn().mockReturnValue(true),
+    isAdmin: jest.fn().mockReturnValue(true),
+    userState: mockUserState,
+  };
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [GroupRecordComponent],
       providers: [
+        {
+          provide: UserService,
+          useValue: userServiceMock,
+        },
         { provide: ActivatedRoute, useValue: { snapshot: { params: { id: '1' } } } },
         {
           provide: GroupsService,
@@ -132,11 +147,46 @@ describe('GroupRecordComponent', () => {
     const userIdsToRemove: number[] = [1, 2];
     const routerSpy = jest.spyOn(component.router, 'navigate');
 
+    jest.spyOn(component.userService, 'hasMatchingUserId').mockReturnValue(false);
+
     component.groupId = 1;
     component.onRemoveUsers({ groupUsers, userIdsToRemove });
 
     expect(routerSpy).toHaveBeenCalledWith(['/admin/groups', 1, 'remove-users'], {
       state: { groupUsers, userIdsToRemove },
     });
+  });
+
+  it('should set error summary if trying to remove own user', () => {
+    jest.spyOn(userServiceMock, 'hasMatchingUserId').mockReturnValue(true);
+
+    const scrollSpy = jest.spyOn(component.scrollService, 'scrollTo');
+    const errorSpy = jest.spyOn(component.errorSummary, 'set');
+
+    const groupUsers = [{ id: 3, fullName: 'Self User' }] as User[];
+    const userIdsToRemove = [3];
+
+    component.onRemoveUsers({ groupUsers, userIdsToRemove });
+
+    expect(scrollSpy).toHaveBeenCalledWith('app-validation-error-summary');
+    expect(errorSpy).toHaveBeenCalledWith([
+      {
+        fieldId: 'group-users',
+        message: 'You cannot assign yourself to or remove yourself from any group.',
+      },
+    ]);
+  });
+
+  it('should set error summary and scroll to the error summary component', () => {
+    const scrollSpy = jest.spyOn(component.scrollService, 'scrollTo');
+    const error = {
+      fieldId: 'group-users',
+      message: 'You cannot assign yourself to or remove yourself from any group.',
+    };
+
+    component.onValidationError(error);
+
+    expect(component.errorSummary()).toEqual([error]);
+    expect(scrollSpy).toHaveBeenCalledWith('app-validation-error-summary');
   });
 });
