@@ -48,6 +48,8 @@ export class AddAnnotationComponent implements OnInit, OnDestroy {
   caseNumber = input('');
   errors = signal<ErrorSummaryEntry[]>([]);
 
+  isUploading = false;
+
   ids = computed(() => [this.caseId(), this.hearingId()]);
 
   hearing = toSignal(
@@ -80,6 +82,7 @@ export class AddAnnotationComponent implements OnInit, OnDestroy {
     this.fileControl.markAsTouched();
 
     if (this.fileControl.invalid) return;
+    this.isUploading = true;
 
     const comments = this.annotationComments.value;
 

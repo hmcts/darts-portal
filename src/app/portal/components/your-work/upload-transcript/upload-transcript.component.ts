@@ -46,6 +46,8 @@ export class UploadTranscriptComponent implements OnDestroy {
   errors: { fieldId: string; message: string }[] = [];
 
   isManualRequest = false;
+  isSubmitted = false;
+  isUploading = false;
   requestStatus: 'TO_DO' | 'COMPLETED' = this.router.getCurrentNavigation()?.extras?.state?.requestStatus;
 
   vm$ = this.transcriptionService.getTranscriptionDetails(this.requestId).pipe(
@@ -81,14 +83,13 @@ export class UploadTranscriptComponent implements OnDestroy {
     }
   });
 
-  isSubmitted = false;
-
   onComplete() {
     this.isSubmitted = true;
     this.fileControl.updateValueAndValidity();
     if (this.fileControl.invalid && this.isManualRequest) {
       return;
     }
+    this.isUploading = true;
     if (this.isManualRequest) {
       this.transcriptionService.uploadTranscript(this.requestId, this.fileControl.value!).subscribe({
         next: () => {
@@ -98,10 +99,14 @@ export class UploadTranscriptComponent implements OnDestroy {
           this.router.navigate(['/internal-error']);
           setTimeout(() => this.headerService.hideNavigation(), 0);
         },
+        complete: () => {
+          this.isUploading = false;
+        },
       });
     } else {
       this.transcriptionService.completeTranscriptionRequest(this.requestId).subscribe(() => {
         this.goToCompletedScreen();
+        this.isUploading = false;
       });
     }
   }
