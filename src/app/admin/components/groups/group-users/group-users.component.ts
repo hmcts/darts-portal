@@ -1,11 +1,12 @@
 import { User } from '@admin-types/index';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { AutoCompleteComponent, AutoCompleteItem } from '@common/auto-complete/auto-complete.component';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
-import { DatatableColumn } from '@core-types/index';
+import { DatatableColumn, ErrorSummaryEntry } from '@core-types/index';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
+import { UserService } from '@services/user/user.service';
 
 type UserWithCheckboxLabel = User & { checkboxLabel?: string };
 @Component({
@@ -16,11 +17,14 @@ type UserWithCheckboxLabel = User & { checkboxLabel?: string };
   styleUrl: './group-users.component.scss',
 })
 export class GroupUsersComponent implements OnInit {
+  userId = inject(UserService).userState()?.userId;
+
   @Input() isAdmin = false;
   @Input() allUsers: User[] = [];
   @Input({ transform: addCheckboxLabelToUsers }) groupUsers: UserWithCheckboxLabel[] = [];
   @Output() update = new EventEmitter<number[]>();
   @Output() remove = new EventEmitter<{ groupUsers: User[]; userIdsToRemove: number[] }>();
+  @Output() validationError = new EventEmitter<ErrorSummaryEntry>();
 
   userToAdd: User | null = null;
   usersToRemove: User[] = [];
@@ -49,10 +53,20 @@ export class GroupUsersComponent implements OnInit {
 
   onAddUserToCourthouse() {
     if (this.userToAdd) {
+      //Check against self-editing
+      if (this.userToAdd.id === this.userId) {
+        this.validationError.emit({
+          fieldId: 'group-users',
+          message: 'You cannot assign yourself to or remove yourself from any group.',
+        });
+        this.userToAdd = null;
+        return;
+      }
       // Add the user to the group
       this.groupUsers = [...this.groupUsers, this.userToAdd];
       // Remove the user from the autocomplete list
       this.autoCompleteUsers = this.autoCompleteUsers.filter((user) => user.id !== this.userToAdd?.id);
+
       this.update.emit(this.groupUsers.map((user) => user.id));
       this.userToAdd = null;
       this.invalidUserSubmitted = false;
