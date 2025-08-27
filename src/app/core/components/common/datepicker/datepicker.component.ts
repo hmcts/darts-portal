@@ -40,7 +40,7 @@ export class DatepickerComponent implements AfterViewChecked {
   ngAfterViewChecked(): void {
     const el = this.el.nativeElement.querySelector('[data-module="moj-date-picker"]');
     if (el && !el.hasAttribute('data-initialised')) {
-      new DatePicker(el);
+      void new DatePicker(el);
       el.setAttribute('data-initialised', 'true');
     }
   }
