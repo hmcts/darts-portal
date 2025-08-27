@@ -1,11 +1,15 @@
-import * as mojFrontend from '@ministryofjustice/frontend';
+const mockDatePicker = jest.fn();
+
+jest.mock('@ministryofjustice/frontend', () => {
+  return {
+    __esModule: true,
+    DatePicker: mockDatePicker,
+    initAll: jest.fn(),
+  };
+});
+
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DatepickerComponent } from './datepicker.component';
-
-// Mock the initAll function
-jest.mock('@ministryofjustice/frontend', () => ({
-  initAll: jest.fn(),
-}));
 
 describe('DatepickerComponent', () => {
   let fixture: ComponentFixture<DatepickerComponent>;
@@ -25,10 +29,9 @@ describe('DatepickerComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should initialise MoJ frontend', () => {
+  it('should instantiate DatePicker on view checked', () => {
     component.ngAfterViewChecked();
-    const spy = jest.spyOn(mojFrontend, 'initAll');
-    expect(spy).toHaveBeenCalled();
+    expect(mockDatePicker).toHaveBeenCalled();
   });
 
   describe('#areDateErrors', () => {

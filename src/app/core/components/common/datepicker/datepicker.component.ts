@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewChecked, Component, EventEmitter, Input, Output } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { initAll } from '@ministryofjustice/frontend';
+import { DatePicker } from '@ministryofjustice/frontend';
 import { DateTime } from 'luxon';
 
 @Component({
@@ -12,6 +12,8 @@ import { DateTime } from 'luxon';
   styleUrls: ['./datepicker.component.scss'],
 })
 export class DatepickerComponent implements AfterViewChecked {
+  el = inject(ElementRef);
+
   @Input({ required: true }) control!: FormControl;
   @Input() inputId: string | null = null;
   @Input() name: string | null = null;
@@ -36,6 +38,10 @@ export class DatepickerComponent implements AfterViewChecked {
   }
 
   ngAfterViewChecked(): void {
-    initAll();
+    const el = this.el.nativeElement.querySelector('[data-module="moj-date-picker"]');
+    if (el && !el.hasAttribute('data-initialised')) {
+      new DatePicker(el);
+      el.setAttribute('data-initialised', 'true');
+    }
   }
 }
