@@ -8628,12 +8628,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"connect-redis@npm:^8.0.0":
-  version: 8.1.0
-  resolution: "connect-redis@npm:8.1.0"
+"connect-redis@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "connect-redis@npm:9.0.0"
   peerDependencies:
     express-session: ">=1"
-  checksum: eb95b29a118a18e61e4fac42e21a24a5776f45b0bf5766557fb0bb819050212c5e90a687b0c3856f832676462907c5b218012b936c7d4a90a2bc4aa18d753448
+    redis: ">=5"
+  checksum: 1f3691d4feb419cb08fd4fa59dad03a03e07f3ef6d2bfaae5c27e4d4353bbf14f111d59980082741c1edd29100087f5d36f6a3b68e63e5c6b0f0bb39f2bde09e
   languageName: node
   linkType: hard
 
@@ -9061,7 +9062,7 @@ __metadata:
     body-parser: ^2.0.0
     concurrently: ^9.0.0
     config: ^4.0.0
-    connect-redis: ^8.0.0
+    connect-redis: ^9.0.0
     cookie-parser: ^1.4.6
     cypress: ^14.0.0
     cypress-axe: ^1.5.0
