@@ -147,18 +147,20 @@ export class TranscriptsComponent implements OnInit {
     this.scrollService.scrollTo('.results');
   }
 
-  clearSearch() {
+  clearSearch(persistResults = false) {
+    if (!persistResults) {
+      this.transcriptService.searchResults.set(null);
+      this.transcriptService.completedSearchResults.set(null);
+    }
     this.transcriptService.searchFormValues.set(defaultFormValues);
-    this.transcriptService.searchResults.set(null);
     this.transcriptService.isAdvancedSearch.set(false);
-    this.transcriptService.completedSearchResults.set(null);
     this.transcriptService.hasSearchFormBeenSubmitted$.next(false);
     this.search$.next(null);
     this.errors = [];
   }
 
   onTabChanged(tab: string) {
-    this.clearSearch();
+    this.clearSearch(true);
     this.activeTabService.setActiveTab('search-transcripts', tab);
   }
 

@@ -527,6 +527,36 @@ describe('Admin - Transcript requests', () => {
     });
   });
 
+  describe('Requests & documents results persist', () => {
+    it('should persist results between tabs', () => {
+      cy.get('#search').click();
+
+      cy.get('app-search-transcripts-results')
+        .find('tbody.govuk-table__body > tr.govuk-table__row')
+        .should('have.length', 7);
+
+      cy.get('a').contains('Transcript documents').click();
+
+      cy.get('#search').click();
+
+      cy.get('app-search-completed-transcripts-results')
+        .find('tbody.govuk-table__body > tr.govuk-table__row')
+        .should('have.length', 4);
+
+      cy.get('a').contains('Transcript requests').click();
+
+      cy.get('app-search-transcripts-results')
+        .find('tbody.govuk-table__body > tr.govuk-table__row')
+        .should('have.length', 7);
+
+      cy.get('a').contains('Transcript documents').click();
+
+      cy.get('app-search-completed-transcripts-results')
+        .find('tbody.govuk-table__body > tr.govuk-table__row')
+        .should('have.length', 4);
+    });
+  });
+
   after(() => {
     cy.request('/api/transcriptions/reset');
   });
