@@ -39,14 +39,7 @@
     <button type="submit" id="upload-button" class="govuk-button" [disabled]="isUploading" (click)="onComplete()">
       Upload
     </button>
-    <a
-      class="govuk-link"
-      href="javascript:void(0)"
-      routerLink="../"
-      (click)="isUploading = false"
-      [queryParams]="{ tab: 'Annotations' }"
-      >Cancel</a
-    >
+    <a class="govuk-link" href="javascript:void(0)" routerLink="../" (click)="isUploading = false">Cancel</a>
   </div>
 }
 <app-add-annotation-success [hidden]="!(step === 2)" />

@@ -27,7 +27,7 @@
   </div>
 
   @if (isAdmin) {
-    <app-tabs [default]="tab()" (tabChange)="onTabChange($event.name)">
+    <app-tabs screenId="audio-file-details" default="Basic details">
       <app-basic-audio-file-details
         *tab="tabNames.basic; screenReaderText: 'Basic audio file details'; id: 'basic-details-tab'"
         [audioFile]="data.audioFile"

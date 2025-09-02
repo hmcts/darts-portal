@@ -24,7 +24,6 @@ import {
   PostAudioResponse,
   TranscriptsRow,
 } from '@portal-types/index';
-import { ActiveTabService } from '@services/active-tab/active-tab.service';
 import { AnnotationService } from '@services/annotation/annotation.service';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { AudioRequestService } from '@services/audio-request/audio-request.service';
@@ -82,19 +81,19 @@ export class HearingComponent implements OnInit {
   userService = inject(UserService);
   mappingService = inject(MappingService);
   errorMsgService = inject(ErrorMessageService);
-  activeTabService = inject(ActiveTabService);
   title = inject(Title);
 
   audioTimes: { startTime: DateTime; endTime: DateTime } | null = null;
   private _state: HearingPageState = 'Default';
   public errorSummary: ErrorSummaryEntry[] = [];
-  hearingId = this.route.snapshot.params.hearingId as number;
-  caseId = this.route.snapshot.params.caseId;
+  hearingId = +this.route.snapshot.params.hearingId;
+  caseId = +this.route.snapshot.params.caseId;
   userState = this.route.snapshot.data.userState;
   transcripts: TranscriptsRow[] = [];
   rows: AudioEventRow[] = [];
-  readonly screenId = 'hearing-screen';
-  tab = this.activeTabService.activeTabs()[this.screenId] ?? 'Events and Audio';
+  get screenId() {
+    return `hearing-screen-${this.hearingId}`;
+  }
   selectedAnnotationsforDeletion: number[] = [];
   statusColours = transcriptStatusTagColours;
 
@@ -102,7 +101,8 @@ export class HearingComponent implements OnInit {
 
   public transcripts$ = this.caseService.getHearingTranscripts(this.hearingId).pipe(
     map((transcript) => this.mappingService.mapTranscriptRequestToRows(transcript)),
-    catchError(() => of(null))
+    catchError(() => of(null)),
+    shareReplay(1)
   );
 
   transcriptColumns: DatatableColumn[] = [
@@ -177,12 +177,6 @@ export class HearingComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const tab = this.route.snapshot.queryParams.tab;
-
-    if (tab === 'Transcripts' || tab === 'Annotations') {
-      this.tab = tab;
-    }
-
     const startTime = this.route.snapshot.queryParams.startTime;
     const endTime = this.route.snapshot.queryParams.endTime;
 
@@ -282,14 +276,12 @@ export class HearingComponent implements OnInit {
           error: this.error$,
         });
         this.selectedAnnotationsforDeletion = [];
-        this.tab = 'Annotations';
       });
     });
   }
 
   onDeleteCancelled() {
     this.selectedAnnotationsforDeletion = [];
-    this.tab = 'Annotations';
   }
 
   downloadAnnotationTemplate(caseId: string, hearingDate: DateTime = DateTime.now()) {
@@ -307,8 +299,7 @@ export class HearingComponent implements OnInit {
       .map((r) => ({ ...r, event_ts: '' })); // timestamp is not required in hearing screen
   }
 
-  onTabChange(tabName: string) {
-    this.activeTabService.setActiveTab(this.screenId, tabName);
+  onTabChange() {
     this.errorSummary = [];
   }
 

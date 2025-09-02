@@ -15,7 +15,7 @@
   <app-validation-error-summary id="error-summary" [errors]="errors()"></app-validation-error-summary>
 
   @if (data$ | async; as data) {
-    <app-tabs [default]="tab()" (tabChange)="onTabChanged($event.name)">
+    <app-tabs screenId="your-audio" [default]="tabNames.currentAudio" (tabChange)="onTabChanged()">
       <div *tab="tabNames.currentAudio; screenReaderText: 'Current audio files'; id: 'current-audio-tab'">
         <p *ngIf="!data.inProgressRows.length && !data.completedRows.length" class="govuk-body">
           There are no audio files in progress or ready

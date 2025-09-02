@@ -12,7 +12,6 @@
     <td>
       <a
         class="govuk-link"
-        (click)="clearStoredTabs()"
         [routerLink]="[isAdmin ? '/admin/case' : '/case', id, 'hearing', row.id]"
         [queryParams]="isAdmin ? { backUrl: '/admin/case/' + id } : null"
       >

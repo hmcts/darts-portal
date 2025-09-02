@@ -10,6 +10,7 @@ describe('AdvancedAudioFileDetailsComponent', () => {
   let fixture: ComponentFixture<AdvancedAudioFileDetailsComponent>;
 
   const mockAudioFile = {
+    id: 123,
     mediaObjectId: 'media_12345',
     contentObjectId: 'content_67890',
     clipId: 'clip_101112',
@@ -92,11 +93,17 @@ describe('AdvancedAudioFileDetailsComponent', () => {
       const lastModifiedByLink = lastModifiedBy.query(By.css('a'));
 
       expect(hiddenByLink).toBeTruthy();
-      expect(hiddenByLink.nativeElement.getAttribute('href')).toBe('/admin/users/1');
+      expect(hiddenByLink.nativeElement.getAttribute('href')).toBe(
+        '/admin/users/1?backUrl=%2Fadmin%2Faudio-file%2F123'
+      );
       expect(createdByLink).toBeTruthy();
-      expect(createdByLink.nativeElement.getAttribute('href')).toBe('/admin/users/100');
+      expect(createdByLink.nativeElement.getAttribute('href')).toBe(
+        '/admin/users/100?backUrl=%2Fadmin%2Faudio-file%2F123'
+      );
       expect(lastModifiedByLink).toBeTruthy();
-      expect(lastModifiedByLink.nativeElement.getAttribute('href')).toBe('/admin/users/101');
+      expect(lastModifiedByLink.nativeElement.getAttribute('href')).toBe(
+        '/admin/users/101?backUrl=%2Fadmin%2Faudio-file%2F123'
+      );
     });
 
     it('do not provide links for system users', () => {

@@ -25,7 +25,7 @@
   </div>
 
   @if (userService.isAdmin()) {
-    <app-tabs [default]="tab()" (tabChange)="onTabChange($event.name)">
+    <app-tabs screenId="event-details" default="Basic details">
       <app-basic-event-details
         [event]="e"
         *tab="tabNames.basic; screenReaderText: 'Basic event details'; id: 'basic-details-tab'"

@@ -173,11 +173,4 @@ describe('HearingComponent', () => {
       });
     });
   });
-
-  describe('onTabChange', () => {
-    it('should update the active tab in ActiveTabService', () => {
-      component.onTabChange('Events');
-      expect(mockActiveTabService.setActiveTab).toHaveBeenCalledWith('admin-hearing-details', 'Events');
-    });
-  });
 });
