@@ -538,14 +538,13 @@ __metadata:
   linkType: hard
 
 "@angular/animations@npm:^20.0.0":
-  version: 20.2.3
-  resolution: "@angular/animations@npm:20.2.3"
+  version: 20.2.4
+  resolution: "@angular/animations@npm:20.2.4"
   dependencies:
     tslib: ^2.3.0
   peerDependencies:
-    "@angular/common": 20.2.3
-    "@angular/core": 20.2.3
-  checksum: afb8ec14b1b2e87cbd06fae8e894921ee2f5f035ef3e0bd193493ecf01017cba98b02f3b0a8ea8f12f4fc63c2f1d2343d5a81d58a32e601187b3ddb0d39acd24
+    "@angular/core": 20.2.4
+  checksum: 91f04ef041f3e5f1eb7da810b5f6835d413c05979e38cba3391fd7fe3cefc29bf6a15b1c1df0c1b6aa75cd05fd8ebcab7f2386b529674aac1248966a7fe5320b
   languageName: node
   linkType: hard
 
@@ -752,20 +751,20 @@ __metadata:
   linkType: hard
 
 "@angular/common@npm:^20.0.0":
-  version: 20.2.3
-  resolution: "@angular/common@npm:20.2.3"
+  version: 20.2.4
+  resolution: "@angular/common@npm:20.2.4"
   dependencies:
     tslib: ^2.3.0
   peerDependencies:
-    "@angular/core": 20.2.3
+    "@angular/core": 20.2.4
     rxjs: ^6.5.3 || ^7.4.0
-  checksum: 8a3cc30d4acaf5f69945fae33f56bd9c9421f9cb017c987b53c60e4ffeee266ea5a9a8dee16e4a15bf556649a3b171475cd805b5871040a0b46228d2da5f4384
+  checksum: c2be3a21f5e1c5b11dcb2c78d489ab6acf3b45be8175d9b87d3bfe01dd2470633d4fae37dd778ca438a6787ff773d6b943d83e09a7d453ce3ace7675035a04b6
   languageName: node
   linkType: hard
 
 "@angular/compiler-cli@npm:^20.0.0":
-  version: 20.2.3
-  resolution: "@angular/compiler-cli@npm:20.2.3"
+  version: 20.2.4
+  resolution: "@angular/compiler-cli@npm:20.2.4"
   dependencies:
     "@babel/core": 7.28.3
     "@jridgewell/sourcemap-codec": ^1.4.14
@@ -776,7 +775,7 @@ __metadata:
     tslib: ^2.3.0
     yargs: ^18.0.0
   peerDependencies:
-    "@angular/compiler": 20.2.3
+    "@angular/compiler": 20.2.4
     typescript: ">=5.8 <6.0"
   peerDependenciesMeta:
     typescript:
@@ -784,26 +783,26 @@ __metadata:
   bin:
     ng-xi18n: bundles/src/bin/ng_xi18n.js
     ngc: bundles/src/bin/ngc.js
-  checksum: 72f09d1a4c6c942b1a8e3047c5f931ade9feaf31c670bf0db16b6c44db67b7b0dc0046e3557a24173c614a4c24aa939079d7b2be6c0ceb08b8cb2f23156f473d
+  checksum: b5062eb5f65425293676783a0cbdb7ab85fb765d589e86865aa6336808d2a9a1a71f80ebfd72729a79539ba14e140a4924fc6d655ad795209d5d307f7b9d720a
   languageName: node
   linkType: hard
 
 "@angular/compiler@npm:^20.0.0":
-  version: 20.2.3
-  resolution: "@angular/compiler@npm:20.2.3"
+  version: 20.2.4
+  resolution: "@angular/compiler@npm:20.2.4"
   dependencies:
     tslib: ^2.3.0
-  checksum: eadf2d15e48ff8fcb0c7ec6473319cf261f2dc6e6512a457c64b14d448860729a543c2cd8fa8b875ee714f2327ed6f22426c5e020586fc28ce23981d55354b86
+  checksum: ec9831501cb3f4b257884988d9d18186520b1a4231b047659c7ccbb08f4ff44b307e866deb443dcc503270b08a2c9ef4c2b794ec16ef415419a7d5f8cb5905cb
   languageName: node
   linkType: hard
 
 "@angular/core@npm:^20.0.0":
-  version: 20.2.3
-  resolution: "@angular/core@npm:20.2.3"
+  version: 20.2.4
+  resolution: "@angular/core@npm:20.2.4"
   dependencies:
     tslib: ^2.3.0
   peerDependencies:
-    "@angular/compiler": 20.2.3
+    "@angular/compiler": 20.2.4
     rxjs: ^6.5.3 || ^7.4.0
     zone.js: ~0.15.0
   peerDependenciesMeta:
@@ -811,65 +810,65 @@ __metadata:
       optional: true
     zone.js:
       optional: true
-  checksum: 8ffd2869db3621c9e8c076698ea5801263f9183f50d455dfd1538dbf345f1eb7548832af13b1f2a73d9b3a7805985418fb16689b360dcc7bf3db299699654d36
+  checksum: 9be7a7790ecbdb69d62607b36106985dc16a3ba003aba8ba745bed7293a1dfb787bf00e131b5936a23b3414902cf39a12f2eb1682429df564bcc3e87aa075590
   languageName: node
   linkType: hard
 
 "@angular/forms@npm:^20.0.0":
-  version: 20.2.3
-  resolution: "@angular/forms@npm:20.2.3"
+  version: 20.2.4
+  resolution: "@angular/forms@npm:20.2.4"
   dependencies:
     tslib: ^2.3.0
   peerDependencies:
-    "@angular/common": 20.2.3
-    "@angular/core": 20.2.3
-    "@angular/platform-browser": 20.2.3
+    "@angular/common": 20.2.4
+    "@angular/core": 20.2.4
+    "@angular/platform-browser": 20.2.4
     rxjs: ^6.5.3 || ^7.4.0
-  checksum: d6c39b04b29da7bede7bd574ad30b761a8dad0d48f10b985761cfb70a9281114b37c179f9dacba348e3b1f39d50ca62b7162f225ac3db2849eb260530812fa70
+  checksum: 76d26d8b19301288c9057adb6271d788b6feff2105393b8625d9ebc44beac8b297264673816842cdfdfd266ee4311183d2750acd691d1890c7c879c807a677e4
   languageName: node
   linkType: hard
 
 "@angular/platform-browser-dynamic@npm:^20.0.0":
-  version: 20.2.3
-  resolution: "@angular/platform-browser-dynamic@npm:20.2.3"
+  version: 20.2.4
+  resolution: "@angular/platform-browser-dynamic@npm:20.2.4"
   dependencies:
     tslib: ^2.3.0
   peerDependencies:
-    "@angular/common": 20.2.3
-    "@angular/compiler": 20.2.3
-    "@angular/core": 20.2.3
-    "@angular/platform-browser": 20.2.3
-  checksum: 1a09bfc8e970a295345dd315c11627dbde50b0a0d03b1bf154dbf3aa95c1e7ef0ddec87e843af1040af4060d4bcbe46ac57579d9169bcc4e51c1708afc99f6a4
+    "@angular/common": 20.2.4
+    "@angular/compiler": 20.2.4
+    "@angular/core": 20.2.4
+    "@angular/platform-browser": 20.2.4
+  checksum: 0197fb66d0284b926f3c09fc5869a826d4283269c2217d51bb25f4c3ddaf32f5f1f094d36fc699ec2f8eec7b08b39602d1223b5945d3f39f0779093a0e8de1f1
   languageName: node
   linkType: hard
 
 "@angular/platform-browser@npm:^20.0.0":
-  version: 20.2.3
-  resolution: "@angular/platform-browser@npm:20.2.3"
+  version: 20.2.4
+  resolution: "@angular/platform-browser@npm:20.2.4"
   dependencies:
     tslib: ^2.3.0
   peerDependencies:
-    "@angular/animations": 20.2.3
-    "@angular/common": 20.2.3
-    "@angular/core": 20.2.3
+    "@angular/animations": 20.2.4
+    "@angular/common": 20.2.4
+    "@angular/core": 20.2.4
   peerDependenciesMeta:
     "@angular/animations":
       optional: true
-  checksum: 602d300573362a80e9a79637144619358f399a1ea2f13a4905c64b7a3c51e4c52877d7a3be3e2a8aae2e8dbf90c7adc69bdd5699669ae1628a2506ca3e922148
+  checksum: 9458405eca6b8a54d9a2f7ff0e2a80a059d8a6661207719966e6bbc9e62a62a1f8d8f606fa0bcefd6727d35ce2bc558b2b860411e21874a65bbe2ae232c75380
   languageName: node
   linkType: hard
 
 "@angular/router@npm:^20.0.0":
-  version: 20.2.3
-  resolution: "@angular/router@npm:20.2.3"
+  version: 20.2.4
+  resolution: "@angular/router@npm:20.2.4"
   dependencies:
     tslib: ^2.3.0
   peerDependencies:
-    "@angular/common": 20.2.3
-    "@angular/core": 20.2.3
-    "@angular/platform-browser": 20.2.3
+    "@angular/common": 20.2.4
+    "@angular/core": 20.2.4
+    "@angular/platform-browser": 20.2.4
     rxjs: ^6.5.3 || ^7.4.0
-  checksum: 0be65f5157a9d684d600767957a49c268fd30827ae89a0013061fd4fbdec10436b468510d15ba871503d264701a6298b5cb445cf89e11e6aba36139f9f585f65
+  checksum: f0fc9dd3fccad0439c5681727c8c95632c67e3c21dcf9d3c6c7d2e84ca3b0e94aae2d150d56470fe7cb9dae3d0585fdc6b2369bee6b837eb1ddf963ceadbcd53
   languageName: node
   linkType: hard
 
