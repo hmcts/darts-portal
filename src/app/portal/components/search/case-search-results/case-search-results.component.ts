@@ -38,10 +38,4 @@ export class CaseSearchResultsComponent implements OnChanges {
       this.caption = `${this.cases.length} result${this.cases.length > 1 ? 's' : ''}`;
     }
   }
-
-  clearStoredTabs(): void {
-    //Required to ensure other cases don't use other active tabs
-    const screenId = this.adminPortal ? 'admin-case-details' : 'case';
-    this.activeTabService.clearActiveTab(screenId);
-  }
 }

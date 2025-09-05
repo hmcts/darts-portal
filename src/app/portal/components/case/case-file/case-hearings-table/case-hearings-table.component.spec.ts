@@ -33,28 +33,4 @@ describe('CaseHearingsTableComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
-  describe('clearStoredTabs', () => {
-    it('should clear admin tab when adminScreen is true', () => {
-      fixture.componentRef.setInput('caseId', 123);
-      fixture.componentRef.setInput('adminScreen', true);
-
-      fixture.detectChanges();
-
-      component.clearStoredTabs();
-
-      expect(activeTabServiceSpy.clearActiveTab).toHaveBeenCalledWith('admin-hearing-details');
-    });
-
-    it('should clear user tab when adminScreen is false', () => {
-      fixture.componentRef.setInput('caseId', 789);
-      fixture.componentRef.setInput('adminScreen', false);
-
-      fixture.detectChanges();
-
-      component.clearStoredTabs();
-
-      expect(activeTabServiceSpy.clearActiveTab).toHaveBeenCalledWith('hearing-screen');
-    });
-  });
 });

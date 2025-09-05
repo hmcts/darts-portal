@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, DestroyRef, effect, inject, signal } from '@angular/core';
+import { Component, DestroyRef, effect, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Title } from '@angular/platform-browser';
 import { Router, RouterLink } from '@angular/router';
@@ -16,7 +16,6 @@ import { TableRowTemplateDirective } from '@directives/table-row-template.direct
 import { UnreadIconDirective } from '@directives/unread-icon.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { MediaRequest, RequestedMedia, TransformedMedia } from '@portal-types/index';
-import { ActiveTabService } from '@services/active-tab/active-tab.service';
 import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { FileDownloadService } from '@services/file-download/file-download.service';
 import { HeaderService } from '@services/header/header.service';
@@ -56,8 +55,6 @@ const audiosErrorMessages: FormErrorMessages = {
   ],
 })
 export class AudiosComponent {
-  private readonly activeTabKey = 'current';
-
   readonly tabNames = {
     currentAudio: 'Current',
     expiredAudio: 'Expired',
@@ -70,13 +67,10 @@ export class AudiosComponent {
   router = inject(Router);
   destroyRef = inject(DestroyRef);
   title = inject(Title);
-  activeTabService = inject(ActiveTabService);
 
   private refresh$ = new BehaviorSubject<void>(undefined);
 
   selectedAudioRequests: TransformedMedia[] = [];
-
-  tab = computed(() => this.activeTabService.activeTabs()[this.activeTabKey] ?? this.tabNames.currentAudio);
 
   errors = signal<ErrorSummaryEntry[]>([]);
   isDeleting = signal(false);
@@ -253,9 +247,8 @@ export class AudiosComponent {
     this.isDeleting.set(false);
   }
 
-  onTabChanged(tab: string) {
+  onTabChanged() {
     this.clearSelectedAudio();
-    this.activeTabService.setActiveTab(this.activeTabKey, tab);
   }
 
   onClearClicked(event: MouseEvent, row: MediaRequest) {

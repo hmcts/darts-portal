@@ -1,10 +1,11 @@
-import { Component, input, output } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { Annotations } from '@portal-types/index';
+import { ActiveTabService } from '@services/active-tab/active-tab.service';
 
 @Component({
   selector: 'app-case-annotations-table',
@@ -14,6 +15,8 @@ import { Annotations } from '@portal-types/index';
   styleUrl: './case-annotations-table.component.scss',
 })
 export class CaseAnnotationsTableComponent {
+  activeTabService = inject(ActiveTabService);
+
   annotations = input<Annotations[]>([]);
   caseId = input<number>();
   deleteAnnotation = output<number>();
@@ -28,6 +31,10 @@ export class CaseAnnotationsTableComponent {
     { name: '', prop: '' },
     { name: '', prop: '' },
   ];
+
+  prefetchTab(hearingId: number, tab: string) {
+    this.activeTabService.setActiveTab(`hearing-screen-${hearingId}`, tab);
+  }
 
   onDownloadClicked(annotationId: number, annotationDocumentId: number, fileName: string) {
     this.downloadAnnotation.emit({ annotationId, annotationDocumentId, fileName });

@@ -17,7 +17,7 @@
 <app-govuk-heading tag="h1" size="xl">Files marked for deletion</app-govuk-heading>
 
 @if (!isLoading()) {
-  <app-tabs [default]="tab()" (tabChange)="onTabChange($event.name)">
+  <app-tabs [screenId]="'file-deletion'" [default]="tabNames.audioFiles">
     <div
       *tab="
         tabNames.audioFiles;

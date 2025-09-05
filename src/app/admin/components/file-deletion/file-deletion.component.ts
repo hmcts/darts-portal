@@ -8,7 +8,6 @@ import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.compo
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { TabDirective } from '@directives/tab.directive';
-import { ActiveTabService } from '@services/active-tab/active-tab.service';
 import { FileDeletionService } from '@services/file-deletion/file-deletion.service';
 import { UserService } from '@services/user/user.service';
 import { map } from 'rxjs';
@@ -32,8 +31,6 @@ import { TranscriptsForDeletionComponent } from './transcripts-for-deletion/tran
   styleUrl: './file-deletion.component.scss',
 })
 export class FileDeletionComponent {
-  private readonly activeTabKey = 'file-deletion';
-
   readonly tabNames = {
     audioFiles: 'Audio files',
     transcripts: 'Transcripts',
@@ -43,7 +40,6 @@ export class FileDeletionComponent {
   userService = inject(UserService);
   router = inject(Router);
   route = inject(ActivatedRoute);
-  activeTabService = inject(ActiveTabService);
 
   approvedForDeletion$ = this.route.queryParams.pipe(map((params) => !!params.approvedForDeletion));
   unmarkedAndUnhidden$ = this.route.queryParams.pipe(map((params) => !!params.unmarkedAndUnhidden));
@@ -55,11 +51,6 @@ export class FileDeletionComponent {
   audioCount = computed(() => this.audioFiles()?.length);
   transcriptCount = computed(() => this.transcripts()?.length);
   isLoading = computed(() => !(this.audioFiles() && this.transcripts()));
-  tab = computed(() => this.activeTabService.activeTabs()[this.activeTabKey] ?? this.tabNames.audioFiles);
-
-  onTabChange(tab: string) {
-    this.activeTabService.setActiveTab(this.activeTabKey, tab);
-  }
 
   onDeleteAudio(audio: AudioFileMarkedDeletion) {
     if (this.userService.hasMatchingUserId(audio.hiddenById)) {

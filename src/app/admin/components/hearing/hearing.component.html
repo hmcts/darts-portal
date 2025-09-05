@@ -5,7 +5,7 @@
     <app-hearing-file [hearing]="data.hearing" />
   }
 
-  <app-tabs [default]="tab()" (tabChange)="onTabChange($event.name)">
+  <app-tabs [default]="tabNames.audio" id="hearing-tabs" [screenId]="'admin-hearing' + hearingId()">
     <div *tab="'Audio'; id: 'audio-tab'">
       <app-hearing-audios [url]="cleanedUrl" [audios]="data.audios!" />
     </div>

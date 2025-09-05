@@ -3,7 +3,7 @@ import { AudioFile } from '@admin-types/index';
 import { AssociatedCase } from '@admin-types/transformed-media/associated-case';
 import { AssociatedHearing } from '@admin-types/transformed-media/associated-hearing';
 import { AsyncPipe } from '@angular/common';
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ExpiredBannerComponent } from '@common/expired-banner/expired-banner.component';
 import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
@@ -11,7 +11,6 @@ import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.compo
 import { HiddenFileBannerComponent } from '@common/hidden-file-banner/hidden-file-banner.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { TabDirective } from '@directives/tab.directive';
-import { ActiveTabService } from '@services/active-tab/active-tab.service';
 import { AdminSearchService } from '@services/admin-search/admin-search.service';
 import { CaseService } from '@services/case/case.service';
 import { HistoryService } from '@services/history/history.service';
@@ -44,8 +43,6 @@ import { BasicAudioFileDetailsComponent } from './basic-audio-file-details/basic
   ],
 })
 export class AudioFileComponent {
-  private readonly activeTabKey = 'audio-file-details';
-
   readonly tabNames = {
     basic: 'Basic details',
     advanced: 'Advanced details',
@@ -58,12 +55,9 @@ export class AudioFileComponent {
   transformedMediaService = inject(TransformedMediaService);
   transcriptionAdminService = inject(TranscriptionAdminService);
   historyService = inject(HistoryService);
-  activeTabService = inject(ActiveTabService);
   searchService = inject(AdminSearchService);
 
   url = inject(Router).url;
-
-  tab = computed(() => this.activeTabService.activeTabs()[this.activeTabKey] ?? this.tabNames.basic);
 
   mediaId = +this.router.getCurrentNavigation()?.extras.state?.mediaId;
 
@@ -235,9 +229,5 @@ export class AudioFileComponent {
 
   isAudioFileExpired(audioFile: AudioFile) {
     return audioFile.retainUntil < DateTime.now();
-  }
-
-  onTabChange(tab: string) {
-    this.activeTabService.setActiveTab(this.activeTabKey, tab);
   }
 }

@@ -44,7 +44,7 @@
   <app-govuk-heading>Your transcripts</app-govuk-heading>
 
   @if (isApprover) {
-    <app-tabs [default]="tab()" (tabChange)="onTabChange($event.name)">
+    <app-tabs screenId="your-transcripts" [default]="tabNames.transcriptRequests" (tabChange)="onTabChange()">
       <div *tab="'Transcript requests'">
         <ng-template [ngTemplateOutlet]="RequesterTemplate"></ng-template>
       </div>

@@ -16,7 +16,7 @@
     <app-case-file [caseFile]="data.caseFile" />
 
     @if (!data.caseFile.isDataAnonymised) {
-      <app-tabs [(default)]="tab" (tabChange)="onTabChange($event)">
+      <app-tabs [screenId]="'case' + caseId" default="Hearings" (tabChange)="onTabChange($event)">
         @if (data.hearings) {
           <app-case-hearings-table *tab="'Hearings'" [hearings]="data.hearings" [caseId]="caseId" />
         }
