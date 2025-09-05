@@ -1,6 +1,6 @@
 @if (rows.length) {
   <div [class.scrollable]="maxHeight" [style.max-height]="maxHeight" [class.moj-scrollable-pane]="isHorizontalScroll">
-    <table class="govuk-table">
+    <table class="govuk-table" data-module="moj-sortable-table">
       <caption
         [class.heading-caption]="isHeadingOrResultsCaption"
         [class.govuk-heading-m]="captionType === 'results'"
