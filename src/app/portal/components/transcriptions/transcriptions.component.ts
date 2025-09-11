@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { GovukTagComponent } from '@common/govuk-tag/govuk-tag.component';
@@ -16,7 +16,6 @@ import { TabDirective } from '@directives/tab.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { TranscriptRequest, TranscriptStatus } from '@portal-types/index';
-import { ActiveTabService } from '@services/active-tab/active-tab.service';
 import { SortService } from '@services/sort/sort.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { UserService } from '@services/user/user.service';
@@ -42,8 +41,6 @@ import { BehaviorSubject, combineLatest, map, shareReplay, switchMap } from 'rxj
   ],
 })
 export class TranscriptionsComponent {
-  private readonly activeTabKey = 'your-transcripts';
-
   readonly tabNames = {
     transcriptRequests: 'Transcript requests',
     transcriptReview: 'Transcript requests to authorise',
@@ -55,7 +52,6 @@ export class TranscriptionsComponent {
   sortService = inject(SortService);
   router = inject(Router);
   title = inject(Title);
-  activeTabService = inject(ActiveTabService);
   statusColours = transcriptStatusTagColours;
 
   columns: DatatableColumn[] = [
@@ -77,8 +73,6 @@ export class TranscriptionsComponent {
 
   isDeleting = signal(false);
   selectedRequests = [] as TranscriptRequest[];
-
-  tab = computed(() => this.activeTabService.activeTabs()[this.activeTabKey] ?? this.tabNames.transcriptRequests);
 
   eff = effect(() => {
     if (this.isDeleting()) {
@@ -147,9 +141,8 @@ export class TranscriptionsComponent {
     this.isDeleting.set(false);
   }
 
-  onTabChange(tab: string) {
+  onTabChange() {
     this.selectedRequests = [];
-    this.activeTabService.setActiveTab(this.activeTabKey, tab);
   }
 
   getColourByStatus(status: TranscriptStatus): TagColour {

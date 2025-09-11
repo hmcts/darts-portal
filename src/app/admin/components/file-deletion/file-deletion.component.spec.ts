@@ -137,25 +137,6 @@ describe('FileDeletionComponent', () => {
     expect(component.isLoading()).toBe(false);
   });
 
-  describe('onTabChange', () => {
-    it('should set the active tab', () => {
-      fixture.detectChanges();
-
-      component.onTabChange('Transcripts');
-
-      expect(component.tab()).toBe('Transcripts');
-    });
-
-    it('should set the active tab in the active tab service', () => {
-      fixture.detectChanges();
-      const setActiveTabSpy = jest.spyOn(component.activeTabService, 'setActiveTab');
-
-      component.onTabChange('Transcripts');
-
-      expect(setActiveTabSpy).toHaveBeenCalledWith('file-deletion', 'Transcripts');
-    });
-  });
-
   describe('onDeleteTranscript', () => {
     it('navigates to the unauthorised page if the user has hidden the transcript', () => {
       const transcript = transcriptionDocuments[0];

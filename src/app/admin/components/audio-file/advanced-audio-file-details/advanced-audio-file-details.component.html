@@ -51,7 +51,11 @@
             @if (audioFile.adminAction.hiddenByIsSystemUser) {
               {{ audioFile.adminAction.hiddenByName }}
             } @else {
-              <a class="govuk-link" [routerLink]="['/admin/users', audioFile.adminAction.hiddenById]">
+              <a
+                class="govuk-link"
+                [routerLink]="['/admin/users', audioFile.adminAction.hiddenById]"
+                [queryParams]="{ backUrl: '/admin/audio-file/' + audioFile.id }"
+              >
                 {{ audioFile.adminAction.hiddenByName }}
               </a>
             }
@@ -82,7 +86,11 @@
         <dt class="govuk-summary-list__key">Deleted by</dt>
         <dd class="govuk-summary-list__value">
           @if (audioFile.adminAction.markedForManualDeletionById) {
-            <a class="govuk-link" [routerLink]="['/admin/users', audioFile.adminAction.markedForManualDeletionById]">
+            <a
+              class="govuk-link"
+              [routerLink]="['/admin/users', audioFile.adminAction.markedForManualDeletionById]"
+              [queryParams]="{ backUrl: '/admin/audio-file/' + audioFile.id }"
+            >
               {{ audioFile.adminAction.markedForManualDeletionBy }}
             </a>
           }
@@ -142,7 +150,11 @@
       @if (audioFile.createdBy?.isSystemUser) {
         {{ audioFile.createdBy?.fullName }}
       } @else {
-        <a class="govuk-link" [routerLink]="['/admin/users', audioFile.createdBy?.id]">
+        <a
+          class="govuk-link"
+          [routerLink]="['/admin/users', audioFile.createdBy?.id]"
+          [queryParams]="{ backUrl: '/admin/audio-file/' + audioFile.id }"
+        >
           {{ audioFile.createdBy?.fullName }}
         </a>
       }
@@ -160,7 +172,11 @@
       @if (audioFile.lastModifiedBy?.isSystemUser) {
         {{ audioFile.lastModifiedBy?.fullName }}
       } @else {
-        <a class="govuk-link" [routerLink]="['/admin/users', audioFile.lastModifiedBy?.id]">
+        <a
+          class="govuk-link"
+          [routerLink]="['/admin/users', audioFile.lastModifiedBy?.id]"
+          [queryParams]="{ backUrl: '/admin/audio-file/' + audioFile.id }"
+        >
           {{ audioFile.lastModifiedBy?.fullName }}
         </a>
       }

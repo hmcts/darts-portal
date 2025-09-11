@@ -201,7 +201,7 @@ describe('AudiosComponent', () => {
     it('should set selectedAudioRequests to empty []', () => {
       component.selectedAudioRequests = [{} as TransformedMedia];
 
-      component.onTabChanged('Current');
+      component.onTabChanged();
 
       expect(component.selectedAudioRequests.length).toBe(0);
     });
