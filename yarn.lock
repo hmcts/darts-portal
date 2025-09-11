@@ -9091,7 +9091,7 @@ __metadata:
     junit-report-merger: ^7.0.0
     lodash: ^4.17.21
     luxon: ^3.4.4
-    ngx-cookie-service: ^19.0.0
+    ngx-cookie-service: ^20.0.0
     nodemon: ^3.1.3
     npm: ^11.0.0
     nunjucks: ^3.2.4
@@ -13969,15 +13969,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ngx-cookie-service@npm:^19.0.0":
-  version: 19.1.2
-  resolution: "ngx-cookie-service@npm:19.1.2"
+"ngx-cookie-service@npm:^20.0.0":
+  version: 20.1.0
+  resolution: "ngx-cookie-service@npm:20.1.0"
   dependencies:
     tslib: ^2.8.0
   peerDependencies:
-    "@angular/common": ^19.0.0
-    "@angular/core": ^19.0.0
-  checksum: 75bc5bf9d3e514fa9a844bd7b24a28f14c397028030d5d7a4ed2881c3bff043b3dbcdb1a3720da12bd052444ba32faa85f1a2b7de9610b6beedefd26bd69a2a6
+    "@angular/common": ^20.0.0
+    "@angular/core": ^20.0.0
+  checksum: afaba6a0ececabeae24f95d5bc53aad3b44a629ec524e2f5659795f6421e19913bb9091939873746be85f55415da5593773803ebf6fd041a864b7e6518d2fcc5
   languageName: node
   linkType: hard
 
