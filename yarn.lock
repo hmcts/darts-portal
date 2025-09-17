@@ -12273,8 +12273,8 @@ __metadata:
   linkType: hard
 
 "jest-preset-angular@npm:^15.0.0":
-  version: 15.0.0
-  resolution: "jest-preset-angular@npm:15.0.0"
+  version: 15.0.1
+  resolution: "jest-preset-angular@npm:15.0.1"
   dependencies:
     "@jest/environment-jsdom-abstract": ^30.0.0
     bs-logger: ^0.2.6
@@ -12286,15 +12286,15 @@ __metadata:
   peerDependencies:
     "@angular/compiler-cli": ">=18.0.0 <21.0.0"
     "@angular/core": ">=18.0.0 <21.0.0"
+    "@angular/platform-browser": ">=18.0.0 <21.0.0"
     "@angular/platform-browser-dynamic": ">=18.0.0 <21.0.0"
     jest: ^30.0.0
-    jest-environment-jsdom: ^30.0.0
     jsdom: ">=26.0.0"
     typescript: ">=5.5"
   dependenciesMeta:
     esbuild:
       optional: true
-  checksum: 9a17182b1f9d17c0400665140d7d41e5fb5167ba8bcb08c28883642cecfede6cfb51766caae5f1a47c72a60edc073c0fc5aa3be358408c6ca361deab35834238
+  checksum: 5e839cf90339af6a96453ffe87957f60568fd600baf6e721f70c1b1795e8efdf31952da62ad10b4450f5413a2042db51a7cabe2877b7db53cb0abec2d84ba9a8
   languageName: node
   linkType: hard
 
