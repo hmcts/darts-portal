@@ -20,7 +20,7 @@
 <app-govuk-heading>Your work</app-govuk-heading>
 
 @if (requesterRequests$ | async; as requests) {
-  <app-tabs [(default)]="tab" (tabChange)="onTabChange($event)">
+  <app-tabs screenId="your-work" default="'To do'">
     <div *tab="'To do'; id: 'todo-tab'; count: requests.todoRequests.length">
       <h2 class="govuk-heading-m">To do</h2>
       <app-data-table

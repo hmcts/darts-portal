@@ -1,14 +1,13 @@
 import { TranscriptionSearchFormValues } from '@admin-types/transcription';
 import { AsyncPipe } from '@angular/common';
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { TabDirective } from '@directives/tab.directive';
-import { ActiveTabService } from '@services/active-tab/active-tab.service';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
 import { ScrollService } from '@services/scroll/scroll.service';
 import {
@@ -41,7 +40,6 @@ export class TranscriptsComponent implements OnInit {
   transcriptService = inject(TranscriptionAdminService);
   courthouseService = inject(CourthouseService);
   scrollService = inject(ScrollService);
-  activeTabService = inject(ActiveTabService);
 
   router = inject(Router);
   errors: { fieldId: string; message: string }[] = [];
@@ -61,14 +59,21 @@ export class TranscriptsComponent implements OnInit {
   readonly TRANSCRIPT_REQUESTS_TAB = 'Transcript requests';
   readonly COMPLETED_TRANSCRIPTS_TAB = 'Transcript documents';
 
-  tab = computed(() => this.activeTabService.activeTabs()['search-transcripts'] ?? this.TRANSCRIPT_REQUESTS_TAB);
+  selectedTab = signal<string>(this.TRANSCRIPT_REQUESTS_TAB);
+  private selectedTab$ = toObservable(this.selectedTab);
 
-  results$ = combineLatest([this.search$, this.isSubmitted$, this.courthouses$, this.transcriptionStatuses$]).pipe(
+  results$ = combineLatest([
+    this.search$,
+    this.isSubmitted$,
+    this.courthouses$,
+    this.transcriptionStatuses$,
+    this.selectedTab$,
+  ]).pipe(
     tap(() => {
       this.loadingResults.set(true);
     }),
-    switchMap(([values, isSubmitted, courthouses, statuses]) => {
-      if (!values || !isSubmitted || this.tab() === this.COMPLETED_TRANSCRIPTS_TAB) {
+    switchMap(([values, isSubmitted, courthouses, statuses, selectedTab]) => {
+      if (!values || !isSubmitted || selectedTab === this.COMPLETED_TRANSCRIPTS_TAB) {
         return of(null);
       }
       return (
@@ -88,12 +93,12 @@ export class TranscriptsComponent implements OnInit {
     })
   );
 
-  completedResults$ = combineLatest([this.search$, this.isSubmitted$]).pipe(
+  completedResults$ = combineLatest([this.search$, this.isSubmitted$, this.selectedTab$]).pipe(
     tap(() => {
       this.loadingCompletedResults.set(true);
     }),
-    switchMap(([values, isSubmitted]) => {
-      if (!values || !isSubmitted || this.tab() === this.TRANSCRIPT_REQUESTS_TAB) {
+    switchMap(([values, isSubmitted, selectedTab]) => {
+      if (!values || !isSubmitted || selectedTab === this.TRANSCRIPT_REQUESTS_TAB) {
         return of(null);
       }
       return this.transcriptService.searchCompletedTranscriptions(values);
@@ -159,9 +164,8 @@ export class TranscriptsComponent implements OnInit {
     this.errors = [];
   }
 
-  onTabChanged(tab: string) {
-    this.clearSearch(true);
-    this.activeTabService.setActiveTab('search-transcripts', tab);
+  onTabChange(tab: TabDirective) {
+    this.selectedTab.set(tab.name);
   }
 
   onErrors(errors: { fieldId: string; message: string }[]) {

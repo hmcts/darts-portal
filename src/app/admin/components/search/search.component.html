@@ -14,7 +14,11 @@
 
 <div id="results">
   @if (searchService.hasFormBeenSubmitted()) {
-    <app-govuk-tabs [default]="searchService.formValues().resultsFor" (tabChange)="tabChange($event)">
+    <app-govuk-tabs
+      screenId="search-results"
+      [default]="searchService.formValues().resultsFor"
+      (tabChange)="tabChange($event)"
+    >
       <app-govuk-heading tabTitle tag="h2" size="s">
         {{ searchService.formValues().resultsFor }}
       </app-govuk-heading>
