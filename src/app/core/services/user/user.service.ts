@@ -11,7 +11,7 @@ export const REFRESH_USER_PROFILE_PATH = '/user/refresh-profile';
   providedIn: 'root',
 })
 export class UserService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   router = inject(Router);
 

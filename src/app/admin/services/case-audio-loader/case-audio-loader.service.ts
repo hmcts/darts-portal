@@ -1,5 +1,5 @@
 import { CaseAudio } from '@admin-types/case/case-audio/case-audio.type';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { AdminCaseService } from '@services/admin-case/admin-case.service';
 import { CaseAudioSortBy } from '../../components/case/case-file/case-audio/case-audio.component';
 
@@ -7,7 +7,7 @@ import { CaseAudioSortBy } from '../../components/case/case-file/case-audio/case
   providedIn: 'root',
 })
 export class CaseAudioLoaderService {
-  constructor(private caseService: AdminCaseService) {}
+  caseService = inject(AdminCaseService);
 
   load(
     caseId: number,

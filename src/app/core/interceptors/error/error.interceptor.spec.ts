@@ -2,6 +2,7 @@ import { HttpErrorResponse, HttpHandler, HttpRequest } from '@angular/common/htt
 import { ErrorHandler } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ErrorMessageService } from '@services/error/error-message.service';
+import { WINDOW } from '@utils/tokens';
 import { throwError } from 'rxjs';
 import { ErrorInterceptor } from './error.interceptor';
 
@@ -22,7 +23,7 @@ describe('ErrorInterceptor', () => {
         ErrorInterceptor,
         { provide: ErrorHandler, useValue: { handleError: jest.fn() } },
         { provide: ErrorMessageService, useValue: { handleErrorMessage: jest.fn() } },
-        { provide: 'Window', useValue: mockWindow },
+        { provide: WINDOW, useValue: mockWindow },
       ],
     });
     interceptor = TestBed.inject(ErrorInterceptor);

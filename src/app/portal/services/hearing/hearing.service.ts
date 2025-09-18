@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { AnnotationsData } from '@portal-types/annotations/annotations-data.interface';
 import { Annotations } from '@portal-types/annotations/annotations.type';
@@ -15,7 +15,7 @@ import { Observable, catchError, map, of, throwError } from 'rxjs';
   providedIn: 'root',
 })
 export class HearingService {
-  constructor(private readonly http: HttpClient) {}
+  private readonly http = inject(HttpClient);
 
   getEvents(hearingId: string | number): Observable<HearingEvent[]> {
     return this.http.get<HearingEvent[]>(`${GET_HEARINGS_PATH}/${hearingId}/events`).pipe(

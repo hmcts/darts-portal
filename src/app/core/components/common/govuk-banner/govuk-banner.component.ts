@@ -11,6 +11,8 @@ export type GovukBannerType = 'success' | 'warning' | 'information';
   styleUrls: ['./govuk-banner.component.scss'],
 })
 export class GovukBannerComponent implements AfterViewInit, OnDestroy {
+  private elementRef = inject(ElementRef);
+
   private observer!: MutationObserver;
   scrollService = inject(ScrollService);
 
@@ -18,8 +20,6 @@ export class GovukBannerComponent implements AfterViewInit, OnDestroy {
   @Input() type: GovukBannerType = 'success';
   @Input() ariaLabel!: string;
   @Input({ transform: booleanAttribute }) focusOnChange: boolean = false;
-
-  constructor(private elementRef: ElementRef) {}
 
   ngAfterViewInit() {
     if (!this.focusOnChange) {

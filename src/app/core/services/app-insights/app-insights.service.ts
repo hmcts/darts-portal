@@ -1,17 +1,17 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ApplicationInsights, ITelemetryItem } from '@microsoft/applicationinsights-web';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { CookiesService } from '@services/cookies/cookies.service';
 
 @Injectable()
 export class AppInsightsService {
+  private readonly appConfigService = inject(AppConfigService);
+  private cookieService = inject(CookiesService);
+
   appInsights: ApplicationInsights;
   private readonly cloudRoleName = 'DARTS portal';
 
-  constructor(
-    private readonly appConfigService: AppConfigService,
-    private cookieService: CookiesService
-  ) {
+  constructor() {
     this.appInsights = new ApplicationInsights({
       config: {
         instrumentationKey: this.appConfigService.getAppConfig()?.appInsightsKey,
