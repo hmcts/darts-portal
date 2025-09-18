@@ -59,7 +59,7 @@
     "@ministryofjustice/frontend": "^5.1.5",
     "@types/config": "^3.3.4",
     "accessible-autocomplete": "^3.0.0",
-    "axios": "^1.9.0",
+    "axios": "^1.12.2",
     "body-parser": "^2.0.0",
     "config": "^4.0.0",
     "connect-redis": "^8.0.0",
