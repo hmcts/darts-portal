@@ -1,13 +1,20 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "local>hmcts/.github:renovate-config",
-    "local>hmcts/.github//renovate/automerge-minor"
-  ],
+  "extends": ["local>hmcts/.github:renovate-config", "local>hmcts/.github//renovate/automerge-minor"],
   "packageRules": [
     {
       "matchPackageNames": ["@ministryofjustice/frontend"],
       "enabled": false
+    },
+    {
+      "matchPackageNames": ["connect-redis"],
+      "matchUpdateTypes": ["major"],
+      "dependencyDashboardApproval": true,
+      "automerge": false,
+      "prBodyNotes": [
+        "**Known breaking change:** `connect-redis` v9 drops `ioredis` support. If your app uses `ioredis`, stay on v8 or migrate to `redis@5+` before upgrading."
+      ],
+      "labels": ["pkg:connect-redis", "breaking-change"]
     }
   ]
 }
