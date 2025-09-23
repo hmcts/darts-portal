@@ -13,7 +13,7 @@
       <a
         class="govuk-link"
         [routerLink]="['/case', caseId(), 'hearing', row.hearingId]"
-        [queryParams]="{ tab: 'Annotations' }"
+        (click)="prefetchTab(row.hearingId, 'Annotations')"
         >{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</a
       >
     </td>

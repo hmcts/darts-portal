@@ -7,7 +7,6 @@ import { LoadingComponent } from '@common/loading/loading.component';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { TabDirective } from '@directives/tab.directive';
 import { EventsFacadeService } from '@facades/events/events-facade.service';
-import { ActiveTabService } from '@services/active-tab/active-tab.service';
 import { FeatureFlagService } from '@services/app-config/feature-flag.service';
 import { HistoryService } from '@services/history/history.service';
 import { UserService } from '@services/user/user.service';
@@ -44,7 +43,6 @@ export class ViewEventComponent {
   userService = inject(UserService);
   router = inject(Router);
   isEventObfuscationEnabled = inject(FeatureFlagService).isEventObfuscationEnabled();
-  activeTabService = inject(ActiveTabService);
   historyService = inject(HistoryService);
 
   backUrl = this.historyService.getBackUrl(this.router.url) ?? '/admin/search';
@@ -53,8 +51,6 @@ export class ViewEventComponent {
   isObfuscationSuccess = input(null, { transform: optionalStringToBooleanOrNull });
 
   event = toSignal(toObservable(this.id).pipe(switchMap((id) => this.eventsFacadeService.getEvent(id))));
-
-  tab = computed(() => this.activeTabService.activeTabs()[this.activeTabKey] ?? this.tabNames.basic);
 
   // event obfuscation feature flag must be enabled, user must be SUPER_ADMIN, event is not already obfuscated
   showObfuscateButton = computed(
@@ -65,9 +61,5 @@ export class ViewEventComponent {
 
   onObfuscateEventText() {
     this.router.navigate(['/admin/events', this.id(), 'obfuscate']);
-  }
-
-  onTabChange(tab: string) {
-    this.activeTabService.setActiveTab(this.activeTabKey, tab);
   }
 }

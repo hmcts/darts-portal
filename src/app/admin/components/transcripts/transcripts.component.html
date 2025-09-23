@@ -10,7 +10,7 @@
 <app-govuk-heading size="xl">Transcripts</app-govuk-heading>
 
 @if (courthouses) {
-  <app-tabs (tabChange)="onTabChanged($event.name)" [default]="tab()">
+  <app-tabs screenId="search-transcripts" [default]="TRANSCRIPT_REQUESTS_TAB" (tabChange)="onTabChange($event)">
     <div *tab="TRANSCRIPT_REQUESTS_TAB">
       <app-govuk-heading tag="h2">Transcript requests</app-govuk-heading>
 

@@ -6,7 +6,7 @@
   }
 
   @if (!data.caseFile?.isDataAnonymised) {
-    <app-tabs id="case-tabs" [default]="tab()" (tabChange)="onTabChange($event.name)">
+    <app-tabs id="case-tabs" [screenId]="'admin-case' + caseId()" [default]="tabNames.hearings">
       <div *tab="tabNames.hearings; screenReaderText: 'Case hearings tab'; id: 'hearings-tab'">
         <app-govuk-heading tag="h2" size="m">Hearings</app-govuk-heading>
         <app-case-hearings-table [hearings]="data.hearings" [caseId]="caseId()" [adminScreen]="true" />

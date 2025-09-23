@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DeleteComponent } from '@common/delete/delete.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -9,7 +9,6 @@ import { LoadingComponent } from '@components/common/loading/loading.component';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { TabDirective } from '@directives/tab.directive';
 import { CaseEvent } from '@portal-types/events';
-import { ActiveTabService } from '@services/active-tab/active-tab.service';
 import { AnnotationService } from '@services/annotation/annotation.service';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { CaseEventsLoaderService } from '@services/case-events-loader/case-events-loader.service';
@@ -49,7 +48,7 @@ import { CaseTranscriptsTableComponent } from './case-file/case-transcripts-tabl
   templateUrl: './case.component.html',
   styleUrls: ['./case.component.scss'],
 })
-export class CaseComponent implements OnInit {
+export class CaseComponent {
   private route = inject(ActivatedRoute);
   private caseService = inject(CaseService);
   private caseEventsLoader = inject(CaseEventsLoaderService);
@@ -57,7 +56,6 @@ export class CaseComponent implements OnInit {
   private userService = inject(UserService);
   private annotationService = inject(AnnotationService);
   private fileDownloadService = inject(FileDownloadService);
-  private tabsService = inject(ActiveTabService);
   private appConfig = inject(AppConfigService);
 
   public caseId = this.route.snapshot.params.caseId;
@@ -86,10 +84,8 @@ export class CaseComponent implements OnInit {
   eventsCurrentPage = signal(1);
   eventsTotalItems = signal(0);
 
-  private readonly screenId = 'case';
-
   selectedAnnotationsforDeletion: number[] = [];
-  tab = this.tabsService.activeTabs()[this.screenId] ?? 'Hearings';
+  tab = 'Hearings';
 
   data$ = combineLatest({
     caseFile: this.caseFile$,
@@ -97,12 +93,6 @@ export class CaseComponent implements OnInit {
     transcripts: this.transcripts$.pipe(catchError(() => of(null))),
     annotations: this.annotations$.pipe(catchError(() => of(null))),
   });
-
-  ngOnInit(): void {
-    if (this.tab === 'Court log') {
-      this.loadEvents();
-    }
-  }
 
   onDeleteAnnotation(annotationId: number) {
     this.selectedAnnotationsforDeletion = [annotationId];
@@ -137,7 +127,7 @@ export class CaseComponent implements OnInit {
   }
 
   onTabChange($event: TabDirective) {
-    this.tabsService.setActiveTab(this.screenId, $event.name);
+    this.tab = $event.name;
 
     //Only load events$ when Court log tab is clicked DMP-4897
     if ($event.name === 'Court log' && !this.eventsLoaded()) {

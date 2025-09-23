@@ -53,7 +53,7 @@
 
     <div [hidden]="state !== 'Default'">
       <app-hearing-file [case]="vm.case" [hearing]="vm.hearing"></app-hearing-file>
-      <app-tabs [default]="tab" (tabChange)="onTabChange($event.name)">
+      <app-tabs [screenId]="screenId" default="'Events and Audio'">
         <div *tab="'Events and Audio'">
           <!-- Hearing Screen -->
           <h2 id="events-audio-heading" class="govuk-heading-m">Events and audio recordings</h2>
@@ -81,106 +81,102 @@
             [clearFormEvent]="clearFormEmitter"
           ></app-events-and-audio>
         </div>
-        <ng-container *ngIf="transcripts$ | async as transcripts">
-          @if (transcripts) {
-            <div *tab="'Transcripts'; count: transcripts.length; id: 'hearing-transcripts-tab'">
-              <div class="flex-space-between">
-                <h2 class="govuk-heading-m">Transcripts for this hearing</h2>
-                @if (isUserAllowedToRequestTranscripts()) {
-                  <button
-                    class="govuk-button govuk-button--secondary"
-                    data-module="govuk-button"
-                    routerLink="./request-transcript"
+        <div *tab="'Transcripts'; count: (transcripts$ | async)?.length ?? 0; id: 'hearing-transcripts-tab'">
+          @if (transcripts$ | async; as transcripts) {
+            <div class="flex-space-between">
+              <h2 class="govuk-heading-m">Transcripts for this hearing</h2>
+              @if (isUserAllowedToRequestTranscripts()) {
+                <button
+                  class="govuk-button govuk-button--secondary"
+                  data-module="govuk-button"
+                  [routerLink]="['request-transcript']"
+                >
+                  Request a new transcript
+                </button>
+              }
+            </div>
+
+            <app-data-table
+              id="transcriptsTable"
+              [rows]="transcripts"
+              [columns]="transcriptColumns"
+              caption="Transcripts from this hearing"
+              [hiddenCaption]="true"
+              noDataMessage="There are no transcripts for this hearing."
+            >
+              <ng-template [tableRowTemplate]="transcripts" let-row>
+                <td>{{ row.type }}</td>
+                <td>{{ row.requestedOn | luxonDate: 'dd MMM yyyy HH:mm:ss' }}</td>
+                <td>{{ row.requestedBy }}</td>
+                <td>
+                  <app-govuk-tag [colour]="statusColours[row.status]">
+                    {{ row.status }}
+                  </app-govuk-tag>
+                </td>
+                <td>
+                  <a class="govuk-link" *ngIf="row.status === 'Complete'" [routerLink]="['transcripts', row.id]"
+                    >View</a
                   >
-                    Request a new transcript
-                  </button>
-                }
-              </div>
-
-              <app-data-table
-                id="transcriptsTable"
-                [rows]="transcripts"
-                [columns]="transcriptColumns"
-                caption="Transcripts from this hearing"
-                [hiddenCaption]="true"
-                noDataMessage="There are no transcripts for this hearing."
-              >
-                <ng-template [tableRowTemplate]="transcripts" let-row>
-                  <td>{{ row.type }}</td>
-                  <td>{{ row.requestedOn | luxonDate: 'dd MMM yyyy HH:mm:ss' }}</td>
-                  <td>{{ row.requestedBy }}</td>
-                  <td>
-                    <app-govuk-tag [colour]="statusColours[row.status]">
-                      {{ row.status }}
-                    </app-govuk-tag>
-                  </td>
-                  <td>
-                    <a class="govuk-link" *ngIf="row.status === 'Complete'" [routerLink]="['transcripts', row.id]"
-                      >View</a
-                    >
-                  </td>
-                </ng-template>
-              </app-data-table>
-            </div>
+                </td>
+              </ng-template>
+            </app-data-table>
           }
+        </div>
+        <div *tab="'Annotations'; id: 'annotations-tab'; count: vm.annotations?.length || 0">
           @if (vm.annotations) {
-            <div *tab="'Annotations'; id: 'annotations-tab'; count: vm.annotations.length">
-              <div class="flex-space-between">
-                <h2 class="govuk-heading-m">Annotations</h2>
-              </div>
-              <div class="govuk-button-group">
-                <button
-                  class="govuk-button govuk-button--secondary"
-                  [routerLink]="['./add-annotation']"
-                  [queryParams]="{
-                    caseNumber: vm.case.number,
-                  }"
-                >
-                  Upload annotation
-                </button>
-                <button
-                  (click)="downloadAnnotationTemplate(vm.case.number, vm.hearing?.date)"
-                  class="govuk-button govuk-button--secondary"
-                >
-                  Download annotation template
-                </button>
-              </div>
-
-              <app-data-table
-                id="annotationsTable"
-                [rows]="vm.annotations"
-                [columns]="annotationColumns"
-                caption="Annotations associated with the hearing"
-                [hiddenCaption]="true"
-                noDataMessage="There are no annotations for this hearing."
-              >
-                <ng-template [tableRowTemplate]="vm.annotations" let-row>
-                  <td>{{ row.fileName }}</td>
-                  <td>
-                    {{ row.fileType === 'DOC' || 'DOCX' ? 'Word Document' : '-' }}
-                  </td>
-                  <td>
-                    {{ row.uploadedTs | luxonDate: 'dd MMM yyyy' }}
-                  </td>
-                  <td>{{ row.annotationText }}</td>
-                  <td>
-                    <a
-                      class="govuk-link"
-                      href="javascript:void(0)"
-                      (click)="onDownloadClicked(row.annotationId, row.annotationDocumentId, row.fileName)"
-                      >Download</a
-                    >
-                  </td>
-                  <td>
-                    <a class="govuk-link" href="javascript:void(0)" (click)="onDeleteClicked(row.annotationId)"
-                      >Delete</a
-                    >
-                  </td>
-                </ng-template>
-              </app-data-table>
+            <div class="flex-space-between">
+              <h2 class="govuk-heading-m">Annotations</h2>
             </div>
+            <div class="govuk-button-group">
+              <button
+                class="govuk-button govuk-button--secondary"
+                [routerLink]="['./add-annotation']"
+                [queryParams]="{
+                  caseNumber: vm.case.number,
+                }"
+              >
+                Upload annotation
+              </button>
+              <button
+                (click)="downloadAnnotationTemplate(vm.case.number, vm.hearing?.date)"
+                class="govuk-button govuk-button--secondary"
+              >
+                Download annotation template
+              </button>
+            </div>
+
+            <app-data-table
+              id="annotationsTable"
+              [rows]="vm.annotations"
+              [columns]="annotationColumns"
+              caption="Annotations associated with the hearing"
+              [hiddenCaption]="true"
+              noDataMessage="There are no annotations for this hearing."
+            >
+              <ng-template [tableRowTemplate]="vm.annotations" let-row>
+                <td>{{ row.fileName }}</td>
+                <td>
+                  {{ row.fileType === 'DOC' || 'DOCX' ? 'Word Document' : '-' }}
+                </td>
+                <td>
+                  {{ row.uploadedTs | luxonDate: 'dd MMM yyyy' }}
+                </td>
+                <td>{{ row.annotationText }}</td>
+                <td>
+                  <a
+                    class="govuk-link"
+                    href="javascript:void(0)"
+                    (click)="onDownloadClicked(row.annotationId, row.annotationDocumentId, row.fileName)"
+                    >Download</a
+                  >
+                </td>
+                <td>
+                  <a class="govuk-link" href="javascript:void(0)" (click)="onDeleteClicked(row.annotationId)">Delete</a>
+                </td>
+              </ng-template>
+            </app-data-table>
           }
-        </ng-container>
+        </div>
       </app-tabs>
     </div>
 

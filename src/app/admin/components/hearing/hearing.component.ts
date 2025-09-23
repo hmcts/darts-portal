@@ -2,12 +2,11 @@ import { HearingAudio } from '@admin-types/hearing/hearing-audio.type';
 import { AdminHearingEvent } from '@admin-types/hearing/hearing-events.type';
 import { AdminHearing } from '@admin-types/hearing/hearing.type';
 import { AsyncPipe } from '@angular/common';
-import { Component, computed, inject, input, numberAttribute, OnInit } from '@angular/core';
+import { Component, inject, input, numberAttribute, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { TabDirective } from '@directives/tab.directive';
 import { Transcript } from '@portal-types/transcriptions';
-import { ActiveTabService } from '@services/active-tab/active-tab.service';
 import { AdminHearingService } from '@services/admin-hearing/admin-hearing.service';
 import { CaseService } from '@services/case/case.service';
 import { HistoryService } from '@services/history/history.service';
@@ -45,7 +44,6 @@ export class HearingComponent implements OnInit {
   adminHearingService = inject(AdminHearingService);
   historyService = inject(HistoryService);
   userAdminService = inject(UserAdminService);
-  activeTabService = inject(ActiveTabService);
   caseService = inject(CaseService);
 
   url = inject(Router).url;
@@ -67,8 +65,6 @@ export class HearingComponent implements OnInit {
     events: AdminHearingEvent[];
     transcripts: Transcript[];
   }>;
-
-  tab = computed(() => this.activeTabService.activeTabs()[this.activeTabKey] ?? this.tabNames.audio);
 
   ngOnInit(): void {
     this.hearing$ = this.adminHearingService.getHearing(this.hearingId()).pipe(
@@ -101,10 +97,6 @@ export class HearingComponent implements OnInit {
       events: this.events$,
       transcripts: this.transcripts$,
     });
-  }
-
-  onTabChange(tab: string) {
-    this.activeTabService.setActiveTab(this.activeTabKey, tab);
   }
 
   private getCleanedUrl(): string {
