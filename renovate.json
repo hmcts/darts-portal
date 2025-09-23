@@ -23,9 +23,9 @@
       "labels": ["renovate:major", "breaking-change"],
       "prHeader": "{{#if isMajor}}> ⚠️ **Major update**: {{depName}} {{currentVersion}} → {{newVersion}}{{/if}}",
       "prBodyNotes": [
-        "{{#if (and isMajor hasReleaseNotes)}}**Review these release notes for breaking changes:**{{/if}}",
-        "{{#if (and isMajor hasReleaseNotes)}}{{{releaseNotes}}}{{/if}}",
-        "{{#if (and isMajor (not hasReleaseNotes))}}No release notes found. Visit: {{url}}{{/if}}"
+        "{{#if isMajor}}{{#if hasReleaseNotes}}**Review these release notes for breaking changes:**{{/if}}{{/if}}",
+        "{{#if isMajor}}{{#if hasReleaseNotes}}{{{releaseNotes}}}{{/if}}{{/if}}",
+        "{{#if isMajor}}{{#unless hasReleaseNotes}}No release notes found. Visit: {{url}}{{/unless}}{{/if}}"
       ]
     }
   ]
