@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DatePipe } from '@angular/common';
+import { ValidationErrors } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute, provideRouter, Router } from '@angular/router';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
 import { FileUploadComponent } from '@common/file-upload/file-upload.component';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
@@ -105,16 +105,18 @@ describe('UploadTranscriptComponent', () => {
       getTranscriptionDetails: jest.fn().mockReturnValue(of(MOCK_TRANSCRIPTION_DETAILS)),
       uploadTranscript: jest.fn().mockReturnValue(of({})),
       completeTranscriptionRequest: jest.fn().mockReturnValue(of({})),
+      unfulfillTranscriptionRequest: jest.fn().mockReturnValue(of({})),
       getAssignDetailsFromTranscript: jest.fn().mockReturnValue(MOCK_TABLE_DETAILS),
     } as unknown as TranscriptionService;
 
     await TestBed.configureTestingModule({
-      imports: [UploadTranscriptComponent, RouterTestingModule],
+      imports: [UploadTranscriptComponent],
       providers: [
         { provide: TranscriptionService, useValue: fakeTranscriptionService },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         DatePipe,
         LuxonDatePipe,
+        provideRouter([]),
       ],
     }).compileComponents();
 
@@ -123,6 +125,8 @@ describe('UploadTranscriptComponent', () => {
 
     fixture = TestBed.createComponent(UploadTranscriptComponent);
     component = fixture.componentInstance;
+    component.requestId = 1;
+
     fixture.detectChanges();
   });
 
@@ -130,45 +134,146 @@ describe('UploadTranscriptComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should set fileControl value when a file is selected', () => {
-    const file = new File(['test'], 'test.txt', { type: 'text/plain' });
-    const fileControl = component.fileControl;
-    fileControl.setValue(file);
-    expect(fileControl.value).toEqual(file);
+  describe('Outcome: dynamic submit label', () => {
+    it('shows "Attach file and complete" when manual + complete', () => {
+      component.isManualRequest = true;
+      component.outcomeControl.setValue('complete');
+      expect(component.submitLabel).toBe('Attach file and complete');
+    });
+
+    it('shows "Mark as unfulfilled" when unfulfilled', () => {
+      component.outcomeControl.setValue('unfulfilled');
+      expect(component.submitLabel).toBe('Mark as unfulfilled');
+    });
+
+    it('shows "Complete transcript request" when automated', () => {
+      component.isManualRequest = false;
+      component.outcomeControl.setValue('complete');
+      expect(component.submitLabel).toBe('Complete transcript request');
+    });
   });
 
-  it('should mark fileControl as invalid when no file is selected', () => {
-    const fileControl = component.fileControl;
-    fileControl.setValue(null);
-    expect(fileControl.invalid).toBe(true);
+  describe('Outcome: switching to Unfulfilled', () => {
+    beforeEach(() => {
+      component.isManualRequest = true;
+      component.outcomeControl.setValue('complete');
+      component.onOutcomeChanged();
+    });
+
+    it('clears the selected file when switching to Unfulfilled', () => {
+      const file = new File(['x'], 'a.txt', { type: 'text/plain' });
+      component.fileControl.setValue(file);
+      component.outcomeControl.setValue('unfulfilled');
+      component.onOutcomeChanged();
+      expect(component.fileControl.value).toBeNull();
+    });
+
+    it('removes "required" validator when Unfulfilled', () => {
+      component.outcomeControl.setValue('unfulfilled');
+      component.onOutcomeChanged();
+      component.fileControl.setValue(null);
+      component.fileControl.updateValueAndValidity();
+      expect(component.fileControl.valid).toBeTruthy();
+      expect(component.fileControl.hasError('required')).toBeFalsy();
+    });
   });
 
-  it('should mark fileControl as valid when a file is selected', () => {
-    const file = new File(['test'], 'test.txt', { type: 'text/plain' });
-    const fileControl = component.fileControl;
-    fileControl.setValue(file);
-    expect(fileControl.valid).toBe(true);
+  describe('Unfulfilled payload mapping', () => {
+    beforeEach(() => {
+      component.outcomeControl.setValue('unfulfilled');
+    });
+
+    it('sends display label for non-"other" reasons', () => {
+      component.reasonControl.setValue('no_audio');
+      component.onComplete();
+
+      expect(fakeTranscriptionService.unfulfillTranscriptionRequest as jest.Mock).toHaveBeenCalledWith(
+        1,
+        'No audio / white noise'
+      );
+    });
+
+    it('sends details text when reason is "other"', () => {
+      component.reasonControl.setValue('other');
+      component.detailsControl.setValue('Mic failure, no capture');
+      component.onComplete();
+
+      expect(fakeTranscriptionService.unfulfillTranscriptionRequest as jest.Mock).toHaveBeenCalledWith(
+        1,
+        'Mic failure, no capture'
+      );
+    });
   });
 
-  it('should mark fileControl as required', () => {
-    const fileControl = component.fileControl;
-    fileControl.setValue(null);
-    expect(fileControl.hasError('required')).toBe(true);
+  describe('Template visibility', () => {
+    it('hides file upload when outcome is Unfulfilled', () => {
+      component.isManualRequest = true;
+      component.outcomeControl.setValue('unfulfilled');
+      fixture.detectChanges();
+
+      const fileUpload = fixture.debugElement.query(By.directive(FileUploadComponent));
+      expect(fileUpload).toBeFalsy();
+    });
+
+    it('shows comment textarea only when reason is "other"', () => {
+      component.outcomeControl.setValue('unfulfilled');
+      component.reasonControl.setValue('no_audio');
+      fixture.detectChanges();
+      expect(fixture.debugElement.query(By.css('#details'))).toBeFalsy();
+
+      component.reasonControl.setValue('other');
+      fixture.detectChanges();
+      expect(fixture.debugElement.query(By.css('#details'))).toBeTruthy();
+    });
   });
 
-  it('should mark fileControl as invalid when file size exceeds the maximum limit', () => {
-    const file = new File(['test'], 'test.txt', { type: 'text/plain' });
-    Object.defineProperty(file, 'size', { value: 12 * 1024 * 1024 }); // 12MB file size
-    const fileControl = component.fileControl;
-    fileControl.setValue(file);
-    expect(fileControl.hasError('maxFileSize')).toBe(true);
-  });
+  describe('UploadTranscriptComponent — fileControl validators', () => {
+    beforeEach(() => {
+      component.isManualRequest = true;
+      component.outcomeControl.setValue('complete');
+      component.onOutcomeChanged();
+    });
 
-  it('should mark fileControl as valid when file size is within the maximum limit', () => {
-    const file = new File(['test'], 'test.txt', { type: 'text/plain' });
-    const fileControl = component.fileControl;
-    fileControl.setValue(file);
-    expect(fileControl.valid).toBe(true);
+    it('should set fileControl value when a file is selected', () => {
+      const file = new File(['test'], 'test.txt', { type: 'text/plain' });
+      const fileControl = component.fileControl;
+      fileControl.setValue(file);
+      expect(fileControl.value).toEqual(file);
+    });
+
+    it('should mark fileControl as invalid when no file is selected', () => {
+      const fileControl = component.fileControl;
+      fileControl.setValue(null);
+      expect(fileControl.invalid).toBe(true);
+    });
+
+    it('should mark fileControl as valid when a file is selected', () => {
+      const file = new File(['test'], 'test.txt', { type: 'text/plain' });
+      const fileControl = component.fileControl;
+      fileControl.setValue(file);
+      expect(fileControl.valid).toBe(true);
+    });
+
+    it('should mark fileControl as required', () => {
+      const fileControl = component.fileControl;
+      fileControl.setValue(null);
+      expect(fileControl.hasError('required')).toBe(true);
+    });
+
+    it('should mark fileControl as invalid when file size exceeds the maximum limit', () => {
+      const file = new File(['test'], 'test.txt', { type: 'text/plain' });
+      Object.defineProperty(file, 'size', { value: 12 * 1024 * 1024 }); // 12MB file size
+      const fileControl = component.fileControl;
+      fileControl.setValue(file);
+      expect(fileControl.hasError('maxFileSize')).toBe(true);
+    });
+
+    it('should mark fileControl as valid when file size is within the maximum limit', () => {
+      const file = new File(['test'], 'test.txt', { type: 'text/plain' });
+      const fileControl = component.fileControl;
+      fileControl.setValue(file);
+      expect(fileControl.valid).toBe(true);
+    });
   });
 
   describe('validation errors', () => {
@@ -228,13 +333,6 @@ describe('UploadTranscriptComponent', () => {
       expect(fakeTranscriptionService.uploadTranscript).not.toHaveBeenCalled();
     });
 
-    it('should navigate to complete screen', () => {
-      const spy = jest.spyOn(component['router'], 'navigate');
-      component.fileControl.patchValue(new File(['test'], 'test.txt', { type: 'text/plain' }));
-      component.onComplete();
-      expect(spy).toHaveBeenCalledWith(['/work', 1, 'complete']);
-    });
-
     it('handles upload errors', () => {
       fakeTranscriptionService.uploadTranscript = jest.fn().mockReturnValue(throwError(() => new Error('Mock error')));
       const file = new File(['test'], 'test.txt', { type: 'text/plain' });
@@ -242,6 +340,25 @@ describe('UploadTranscriptComponent', () => {
       component.onComplete();
       expect(fakeTranscriptionService.uploadTranscript).toHaveBeenCalled();
       expect(router.navigate).toHaveBeenCalledWith(['/internal-error']);
+    });
+  });
+
+  describe('Navigation', () => {
+    it('navigates to /work/:id/complete after successful manual upload', () => {
+      component.isManualRequest = true;
+      component.fileControl.setValue(new File(['x'], 'a.txt', { type: 'text/plain' }));
+      const navSpy = jest.spyOn(component['router'], 'navigate');
+      component.onComplete();
+      expect(navSpy).toHaveBeenCalledWith(['/work', 1, 'complete']);
+    });
+
+    it('navigates to /work/:id/unfulfilled after unfulfilled submit', () => {
+      component.outcomeControl.setValue('unfulfilled');
+      component.reasonControl.setValue('inaudible');
+      const navSpy = jest.spyOn(component['router'], 'navigate');
+      component.onComplete();
+
+      expect(navSpy).toHaveBeenCalledWith(['/work', 1, 'unfulfilled']);
     });
   });
 
@@ -296,6 +413,67 @@ describe('UploadTranscriptComponent', () => {
       fixture.detectChanges();
       const uploadTranscriptButton = fixture.debugElement.query(By.directive(FileUploadComponent));
       expect(uploadTranscriptButton).toBeFalsy();
+    });
+  });
+
+  describe('getErrorMessage', () => {
+    it('returns null when errors is null/undefined/empty', () => {
+      const empty: ValidationErrors = {};
+      expect(component.getErrorMessage('file', null)).toBeNull();
+      expect(component.getErrorMessage('file', undefined)).toBeNull();
+      expect(component.getErrorMessage('file', empty)).toBeNull();
+    });
+
+    it('returns the mapped message for a single known key (required)', () => {
+      const errors: ValidationErrors = { required: true };
+      const msg = component.getErrorMessage('file', errors);
+      expect(msg).toBe(component.UploadTranscriptErrorMessages.file.required);
+    });
+
+    it('returns the mapped message for a single known key (maxlength)', () => {
+      const errors: ValidationErrors = { maxlength: { requiredLength: 200, actualLength: 210 } };
+      const msg = component.getErrorMessage('details', errors);
+      expect(msg).toBe(component.UploadTranscriptErrorMessages.details.maxlength);
+    });
+
+    it('returns the mapped message for a single known key (custom maxFileSize)', () => {
+      const errors: ValidationErrors = { maxFileSize: { max: 10 } };
+      const msg = component.getErrorMessage('file', errors);
+      expect(msg).toBe(component.UploadTranscriptErrorMessages.file.maxFileSize);
+    });
+
+    it('returns the FIRST mapped message when multiple keys are present (order matters)', () => {
+      // Insertion order determines Object.keys order for non-integer keys
+      const errors1: ValidationErrors = {
+        maxlength: { requiredLength: 200, actualLength: 250 },
+        required: true,
+      };
+      expect(component.getErrorMessage('details', errors1)).toBe(
+        component.UploadTranscriptErrorMessages.details.maxlength
+      );
+
+      const errors2: ValidationErrors = {
+        required: true,
+        maxlength: { requiredLength: 200, actualLength: 250 },
+      };
+      expect(component.getErrorMessage('details', errors2)).toBe(
+        component.UploadTranscriptErrorMessages.details.required
+      );
+    });
+
+    it('skips unknown keys and returns the first known message', () => {
+      const errors: ValidationErrors = {
+        someUnknownKey: true,
+        maxlength: { requiredLength: 200, actualLength: 205 },
+      };
+      expect(component.getErrorMessage('details', errors)).toBe(
+        component.UploadTranscriptErrorMessages.details.maxlength
+      );
+    });
+
+    it('returns null when only unknown keys are present', () => {
+      const errors: ValidationErrors = { totallyUnknown: true };
+      expect(component.getErrorMessage('reason', errors)).toBeNull();
     });
   });
 });

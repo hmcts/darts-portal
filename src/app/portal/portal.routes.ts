@@ -28,9 +28,18 @@ export const PORTAL_ROUTES: Routes = [
   {
     path: 'work/:requestId/complete',
     title: 'DARTS Completed Transcript Request',
-    data: { allowedRoles: ['TRANSCRIBER'] },
+    data: { allowedRoles: ['TRANSCRIBER'], outcome: 'complete' as const },
     loadComponent: () =>
-      import('../portal/components/your-work/completed-transcript/completed-transcript.component').then(
+      import('./components/your-work/completed-transcript/completed-transcript.component').then(
+        (c) => c.CompletedTranscriptComponent
+      ),
+  },
+  {
+    path: 'work/:requestId/unfulfilled',
+    title: 'DARTS Unfulfilled Transcript Request',
+    data: { allowedRoles: ['TRANSCRIBER'], outcome: 'unfulfilled' as const },
+    loadComponent: () =>
+      import('./components/your-work/completed-transcript/completed-transcript.component').then(
         (c) => c.CompletedTranscriptComponent
       ),
   },
