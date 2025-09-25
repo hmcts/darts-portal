@@ -171,7 +171,6 @@ export class UploadTranscriptComponent implements OnDestroy {
   }
 
   onOutcomeChanged(): void {
-    const wasUnfulfilled = !this.isUnfulfilled;
     this.syncFileValidators();
     if (this.isUnfulfilled) {
       // avoid accidental upload; also clears any file errors
