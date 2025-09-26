@@ -8,8 +8,11 @@ import * as path from 'path';
 import { appController, authController } from './controllers';
 import { session } from './middleware';
 
+import { initAppInsights } from './app-insights';
 import setHeaders from './middleware/set-headers';
 import routes from './routes';
+
+initAppInsights();
 
 /**
  * Options for starting the express server

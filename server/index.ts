@@ -1,3 +1,4 @@
+import appInsights from 'applicationinsights';
 import { startServer } from './server';
 
 import * as propertiesVolume from '@hmcts/properties-volume';
@@ -16,6 +17,14 @@ const server = express.listen(PORT, () => {
 async function stopServer() {
   console.info('Server shutdown signal received');
   global.isTerminating = true;
+
+  // give app insights a moment to send what’s buffered
+  await new Promise<void>((resolve) => {
+    appInsights.defaultClient?.flush();
+    // small guard if flush never calls back:
+    setTimeout(resolve, 1500);
+  });
+
   // small delay before closing the server
   // allowing the readiness check to fail and traffic to the pod
   if (NODE_ENV === 'production') {
