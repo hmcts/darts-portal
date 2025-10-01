@@ -4,6 +4,7 @@ import config from 'config';
 import * as express from 'express';
 import { NextFunction, Request, Response, Router } from 'express';
 import { DateTime } from 'luxon';
+import { trackException } from 'server/app-insights';
 import SecurityToken from '../types/classes/securityToken';
 import { AuthenticationUtils, Urls } from '../utils';
 
@@ -23,6 +24,7 @@ function getLogin(type: 'internal' | 'external'): (_: Request, res: Response, ne
       }
     } catch (err) {
       console.error(`Error on get ${type} login-or-refresh call`, err);
+      trackException(err as Error, { source: 'authentication', stage: 'getLogin' });
       next(err);
     }
   };
@@ -45,6 +47,7 @@ async function handleResetPassword(req: Request): Promise<string> {
       throw new Error('Reset password redirect not found');
     } catch (err) {
       console.error('Error on get reset-password call', err);
+      trackException(err as Error, { source: 'authentication', stage: 'handleResetPassword' });
       throw err;
     }
   }
@@ -61,6 +64,7 @@ function postAuthCallback(
         return res.redirect(resetPwdRedirect);
       } catch (err) {
         console.error('Error received from Azure login callback', req.body);
+        trackException(err as Error, { source: 'authentication', stage: 'postAuthCallback:handleResetPassword' });
         return res.redirect('/login');
       }
     }
@@ -87,6 +91,7 @@ function postAuthCallback(
       });
     } catch (err) {
       console.error('Error on authentication callback', err);
+      trackException(err as Error, { source: 'authentication', stage: 'postAuthCallback' });
       next(err);
     }
   };
@@ -114,6 +119,7 @@ function getLogout(): (_: Request, res: Response, next: NextFunction) => Promise
       }
     } catch (err) {
       console.error('Error on get logout call', err);
+      trackException(err as Error, { source: 'authentication', stage: 'getLogout' });
       next(err);
     }
   };
@@ -123,6 +129,7 @@ function logoutCallback(): (req: Request, res: Response, next: NextFunction) => 
   return (req: Request, res: Response, next: NextFunction) => {
     if (req.body && req.body.error) {
       console.error('Error received from Azure logout callback', req.body);
+      trackException(new Error(req.body.error), { source: 'authentication', stage: 'logoutCallback' });
       return res.redirect('/login');
     }
     req.session.destroy((err) => {

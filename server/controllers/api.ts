@@ -3,6 +3,7 @@ import * as express from 'express';
 import { Request, Router } from 'express';
 
 import { createProxyMiddleware } from 'http-proxy-middleware';
+import { trackException } from '../app-insights';
 
 function proxyMiddleware() {
   return createProxyMiddleware({
@@ -32,6 +33,12 @@ function proxyMiddleware() {
       },
       error: (err, req) => {
         console.error(`[ERROR] HTTP proxy middleware: method=${req.method}, url=${req.url}`, err);
+        trackException(err as Error, {
+          route: req.originalUrl,
+          method: req.method,
+          source: 'http-proxy-middleware',
+          stage: 'proxyError',
+        });
       },
     },
   });
