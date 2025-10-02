@@ -11,6 +11,8 @@ import { session } from './middleware';
 import setHeaders from './middleware/set-headers';
 import routes from './routes';
 
+//testing static check in pipeline
+
 /**
  * Options for starting the express server
  *
