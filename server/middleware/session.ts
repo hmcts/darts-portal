@@ -2,7 +2,7 @@ import config from 'config';
 import { RedisStore } from 'connect-redis';
 import session from 'express-session';
 import { Redis } from 'ioredis';
-import { trackException } from 'server/app-insights';
+import { trackException } from '../app-insights';
 
 export default () => {
   const sessionTtl: number = parseInt(config.get('session.ttlInSeconds'), 10);

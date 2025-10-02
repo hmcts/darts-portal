@@ -1,10 +1,13 @@
-import appInsights from 'applicationinsights';
-import { startServer } from './server';
-
 import * as propertiesVolume from '@hmcts/properties-volume';
 import config from 'config';
 propertiesVolume.addTo(config);
 
+import { flushNow, initAppInsights, trackException } from './app-insights';
+const aiOn = initAppInsights();
+
+import { startServer } from './server';
+
+import * as appInsights from 'applicationinsights';
 const PORT = config.get('port');
 const NODE_ENV = config.get('node-env');
 const READY_MESSAGE = `> Ready on http://localhost:${PORT}`;
@@ -12,6 +15,16 @@ const READY_MESSAGE = `> Ready on http://localhost:${PORT}`;
 const express = startServer();
 const server = express.listen(PORT, () => {
   console.log(READY_MESSAGE);
+});
+
+server.on('error', (err) => {
+  if (aiOn) {
+    trackException(err as Error, { stage: 'listen', port: String(PORT) });
+    flushNow(() => process.exit(1));
+  } else {
+    console.error('listen error', err);
+    process.exit(1);
+  }
 });
 
 async function stopServer() {
@@ -47,3 +60,17 @@ process.on('SIGTERM', async () => {
   console.log('SIGTERM received');
   await stopServer();
 });
+
+if (aiOn) {
+  process.on('uncaughtException', (err) => {
+    console.error('uncaughtException', err);
+    trackException(err as Error, { stage: 'uncaughtException' });
+    flushNow(() => process.exit(1));
+  });
+
+  process.on('unhandledRejection', (e: any) => {
+    console.error('unhandledRejection', e);
+    trackException(e instanceof Error ? e : new Error(String(e)), { stage: 'unhandledRejection' });
+    flushNow(() => process.exit(1));
+  });
+}

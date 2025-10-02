@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { trackException, trackTrace } from 'server/app-insights';
+import { trackException, trackTrace } from '../app-insights';
 import { AuthenticationUtils, Urls } from '../utils';
 
 export default async (req: Request): Promise<void> => {

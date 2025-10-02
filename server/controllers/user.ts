@@ -2,7 +2,7 @@ import axios, { AxiosError } from 'axios';
 import config from 'config';
 import * as express from 'express';
 import { Request, Response, Router } from 'express';
-import { trackException } from 'server/app-insights';
+import { trackException } from '../app-insights';
 
 async function postRefreshUserState(req: Request, res: Response): Promise<Response> {
   if (!req.session.securityToken) {

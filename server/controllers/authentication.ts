@@ -4,7 +4,7 @@ import config from 'config';
 import * as express from 'express';
 import { NextFunction, Request, Response, Router } from 'express';
 import { DateTime } from 'luxon';
-import { trackException } from 'server/app-insights';
+import { trackException } from '../app-insights';
 import SecurityToken from '../types/classes/securityToken';
 import { AuthenticationUtils, Urls } from '../utils';
 
