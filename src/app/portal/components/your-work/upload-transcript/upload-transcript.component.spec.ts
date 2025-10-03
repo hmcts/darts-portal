@@ -200,7 +200,7 @@ describe('UploadTranscriptComponent', () => {
 
       expect(fakeTranscriptionService.unfulfillTranscriptionRequest as jest.Mock).toHaveBeenCalledWith(
         1,
-        'Mic failure, no capture'
+        'Other - Mic failure, no capture'
       );
     });
   });

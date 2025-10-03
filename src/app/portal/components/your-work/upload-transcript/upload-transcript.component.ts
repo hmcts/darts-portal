@@ -212,7 +212,7 @@ export class UploadTranscriptComponent implements OnDestroy {
 
     const workflow_comment =
       reason === 'other'
-        ? (details ?? '') // Details is required if 'other'
+        ? 'Other - ' + (details ?? '') // Details is required if 'other'
         : this.REASON_DISPLAY[reason];
 
     return workflow_comment;
