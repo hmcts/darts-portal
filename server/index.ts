@@ -2,8 +2,12 @@ import * as propertiesVolume from '@hmcts/properties-volume';
 import config from 'config';
 propertiesVolume.addTo(config);
 
-import { flushNow, initAppInsights, trackException } from './app-insights';
-const aiOn = initAppInsights();
+import { flushNow, initAppInsights, trackException, trackTrace } from './app-insights';
+const aiOn = initAppInsights('DARTS Portal API');
+if (aiOn) {
+  // to be removed
+  trackTrace('AI startup smoke', { env: String(config.get('node-env')), source: 'index.ts' });
+}
 
 import { startServer } from './server';
 

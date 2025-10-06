@@ -8,7 +8,6 @@ import * as path from 'path';
 import { appController, authController } from './controllers';
 import { session } from './middleware';
 
-import { trackException, trackTrace } from './app-insights';
 import setHeaders from './middleware/set-headers';
 import routes from './routes';
 
@@ -42,14 +41,6 @@ export const startServer = ({ disableAuthentication }: StartServerOptions = { di
 
   healthCheck.addTo(appHealth, healthConfig);
   app.use(appHealth);
-
-  if (config.get('node-env') !== 'production') {
-    app.get('/_ai-smoke', (_req, res) => {
-      trackTrace('AI smoke trace', { env: 'dev', probe: 'manual' });
-      trackException(new Error('AI smoke exception'), { env: 'dev', probe: 'manual' });
-      res.status(204).end();
-    });
-  }
 
   app.use(
     '/assets',
