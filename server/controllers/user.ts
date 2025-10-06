@@ -1,8 +1,8 @@
 import axios, { AxiosError } from 'axios';
 import config from 'config';
 import * as express from 'express';
-import { Router, Request, Response } from 'express';
-
+import { Request, Response, Router } from 'express';
+import { trackException } from '../app-insights';
 async function postRefreshUserState(req: Request, res: Response): Promise<Response> {
   if (!req.session.securityToken) {
     return res.sendStatus(401);
@@ -23,6 +23,7 @@ async function postRefreshUserState(req: Request, res: Response): Promise<Respon
     return res.json(req.session.securityToken?.userState);
   } catch (err) {
     console.error(`Error getting userstate from API`, err);
+    trackException(err as Error, { source: 'user', stage: 'postRefreshUserState' });
     if (err instanceof AxiosError) {
       return res.sendStatus(err.status as number);
     }
