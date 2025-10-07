@@ -36,6 +36,16 @@ export function initAppInsights(roleName = 'DARTS Portal API') {
   }
 
   try {
+    const release = process.env.RELEASE_NAME || process.env.HELM_RELEASE || '';
+    const prFromRelease = release.match(/pr-(\d+)/i)?.[1];
+    const pr = process.env.CHANGE_ID || process.env.PR_NUMBER || prFromRelease || '';
+    const role = pr ? `DARTS Portal Node PR-${pr}` : roleName;
+    const instance = process.env.HOSTNAME || os.hostname();
+
+    process.env.OTEL_SERVICE_NAME = role;
+    process.env.APPLICATIONINSIGHTS_CLOUD_ROLE = role;
+    process.env.APPLICATIONINSIGHTS_CLOUD_ROLE_INSTANCE = instance;
+
     appInsights
       .setup(connFromIkey)
       .setAutoCollectRequests(false)
@@ -52,15 +62,8 @@ export function initAppInsights(roleName = 'DARTS Portal API') {
     client.config.samplingPercentage = process.env.AI_SAMPLING ? Number(process.env.AI_SAMPLING) : 100;
     client.config.enableUseDiskRetryCaching = true;
 
-    // derive PR number / release name
-    const release = process.env.RELEASE_NAME || process.env.HELM_RELEASE || '';
-    const prFromRelease = release.match(/pr-(\d+)/i)?.[1];
-    const pr = process.env.CHANGE_ID || process.env.PR_NUMBER || prFromRelease || '';
-
-    const role = pr ? `DARTS Portal Node PR-${pr}` : roleName;
-
     client.context.tags[client.context.keys.cloudRole] = role;
-    client.context.tags[client.context.keys.cloudRoleInstance] = process.env.HOSTNAME || os.hostname();
+    client.context.tags[client.context.keys.cloudRoleInstance] = instance;
 
     appInsights.start();
 
