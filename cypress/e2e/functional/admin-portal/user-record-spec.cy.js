@@ -385,14 +385,14 @@ describe('Admin - User record screen', () => {
 
       cy.get('#transcripts-tab').click();
 
-      cy.get('#transcripts-tab .count').should('contain', '1');
+      cy.get('#transcripts-tab .count').should('contain', '2');
 
       cy.contains('h2', 'Transcript requests').should('exist');
 
       cy.get('#showLastSixMonths').should('be.checked');
       cy.get('#showAll').should('not.be.checked');
 
-      cy.get('#transcriptRequestsTable tbody tr').should('have.length', 1);
+      cy.get('#transcriptRequestsTable tbody tr').should('have.length', 2);
 
       // Date 5 months prior using Luxon
       const requestedDate = DateTime.now()
@@ -422,9 +422,9 @@ describe('Admin - User record screen', () => {
       cy.get('#transcripts-tab').click();
 
       cy.get('#showAll').check();
-      cy.get('#transcripts-tab .count').should('contain', '7');
+      cy.get('#transcripts-tab .count').should('contain', '8');
 
-      cy.get('#transcriptRequestsTable tbody tr').should('have.length', 7);
+      cy.get('#transcriptRequestsTable tbody tr').should('have.length', 8);
       cy.get('#transcriptRequestsTable thead tr').within(() => {
         cy.get('th').eq(0).should('contain.text', 'Request ID');
         cy.get('th').eq(1).should('contain.text', 'Case ID');
