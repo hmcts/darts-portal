@@ -4,11 +4,11 @@ import { FormBuilder, FormControl, ReactiveFormsModule, ValidationErrors, Valida
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { GovukTextareaComponent } from '@common/govuk-textarea/govuk-textarea.component';
+import { ChangeTranscriptErrorMessages } from '@constants/change-transcript-error-messages';
 import { TranscriptStatus } from '@portal-types/index';
 import { HeaderService } from '@services/header/header.service';
-import { TranscriptionService } from '@services/transcription/transcription.service';
 import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
-import { ChangeTranscriptErrorMessages } from '@constants/change-transcript-error-messages';
+import { TranscriptionService } from '@services/transcription/transcription.service';
 
 type UnfulfilledReason = 'inaudible' | 'no_audio' | 'one_second' | 'other';
 
@@ -30,7 +30,6 @@ export class ChangeTranscriptStatusComponent implements OnInit {
   transcriptionAdminService = inject(TranscriptionAdminService);
   errors: { fieldId: string; message: string }[] = [];
 
-  requestId = inject(ActivatedRoute).snapshot.params.requestId;
   transcriptId = Number(this.route.snapshot.params.transcriptionId);
   transcriptStatus: TranscriptStatus = this.route.snapshot.queryParams.status;
   isManual = this.route.snapshot.queryParams.manual === 'true';
@@ -74,7 +73,7 @@ export class ChangeTranscriptStatusComponent implements OnInit {
 
     const workflow_comment =
       reason === 'other'
-        ? (details ?? '') // Details is required if 'other'
+        ? 'Other - ' + (details ?? '') // Details is required if 'other'
         : this.REASON_DISPLAY[reason];
 
     return workflow_comment;
@@ -82,7 +81,7 @@ export class ChangeTranscriptStatusComponent implements OnInit {
 
   private unfulfillTranscript() {
     this.transcriptionService
-      .unfulfillTranscriptionRequest(this.requestId, this.buildUnfulfilledReason())
+      .unfulfillTranscriptionRequest(this.transcriptId, this.buildUnfulfilledReason())
       .subscribe(() => {
         this.transcriptionAdminService.fetchNewTranscriptions.set(true);
         this.router.navigate(['/admin/transcripts', this.transcriptId], { queryParams: { updatedStatus: true } });
@@ -106,6 +105,7 @@ export class ChangeTranscriptStatusComponent implements OnInit {
         // Don't submit if reason or details are invalid
         return;
       }
+
       this.unfulfillTranscript();
       return;
     }
