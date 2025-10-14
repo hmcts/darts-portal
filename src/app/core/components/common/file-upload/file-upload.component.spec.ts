@@ -19,25 +19,61 @@ describe('FileUploadComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call onChange and onTouched when onFileChange is called', () => {
-    const files: File[] = [new File([], 'test.txt')];
+  it('valid file: calls onChange with file, onTouched, and clears isInvalid', () => {
+    const file = new File([], 'test.doc'); // allowed by default .doc,.docx
     const onChangeSpy = jest.spyOn(component, 'onChange');
     const onTouchedSpy = jest.spyOn(component, 'onTouched');
 
-    component.onFileChange(files);
+    component.isInvalid = true; // simulate prior error
+    component.onFileChange([file]);
 
-    expect(onChangeSpy).toHaveBeenCalledWith(files[0]);
+    expect(onChangeSpy).toHaveBeenCalledWith(file);
     expect(onTouchedSpy).toHaveBeenCalled();
+    expect(component.isInvalid).toBe(false);
   });
 
-  it('should clear file input value and call onFileChange with an empty array when onFileRemove is called', () => {
-    const fileInput = document.createElement('input');
-    fileInput.value = 'test.txt';
-    const onFileChangeSpy = jest.spyOn(component, 'onFileChange');
+  it('invalid file: clears input, sets error, sets isInvalid, calls onChange(null)', () => {
+    const file = new File([], 'bad.txt'); // not allowed
+    const fileInput = { value: 'bad.txt' } as unknown as HTMLInputElement;
+
+    const onChangeSpy = jest.spyOn(component, 'onChange');
+    const onTouchedSpy = jest.spyOn(component, 'onTouched');
+
+    component.errorMessage = '';
+    component.allowedFileTypes = '.doc,.docx';
+
+    component.onFileChange([file], fileInput);
+
+    expect(fileInput.value).toBe('');
+    expect(component.isInvalid).toBe(true);
+    expect(onChangeSpy).toHaveBeenCalledWith(null);
+    expect(onTouchedSpy).toHaveBeenCalled();
+    expect(component.errorMessage).toBe(`Invalid file type. Allowed types are ${component.allowedFileTypes}`);
+  });
+
+  it('invalid file: does not overwrite a custom errorMessage', () => {
+    const file = new File([], 'bad.txt');
+    const fileInput = { value: 'bad.txt' } as unknown as HTMLInputElement;
+
+    const customMsg = 'Only Word documents are allowed.';
+    component.errorMessage = customMsg;
+
+    component.onFileChange([file], fileInput);
+
+    expect(component.isInvalid).toBe(true);
+    expect(component.errorMessage).toBe(customMsg);
+  });
+
+  it('onFileRemove: clears the input and propagates null', () => {
+    const onChangeSpy = jest.spyOn(component, 'onChange');
+    const onTouchedSpy = jest.spyOn(component, 'onTouched');
+
+    const fileInput = { value: 'something.doc' } as unknown as HTMLInputElement;
 
     component.onFileRemove(fileInput);
 
     expect(fileInput.value).toBe('');
-    expect(onFileChangeSpy).toHaveBeenCalledWith([]);
+    expect(onChangeSpy).toHaveBeenCalledWith(null);
+    expect(onTouchedSpy).toHaveBeenCalled();
   });
 });

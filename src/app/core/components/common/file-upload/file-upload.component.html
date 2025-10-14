@@ -13,7 +13,7 @@
     [id]="controlId()"
     type="file"
     [attr.aria-describedby]="isInvalid ? controlErrorId : null"
-    (change)="onFileChange($any($event.target).files)"
+    (change)="onFileChange($any($event.target).files, fileInput)"
     [accept]="allowedFileTypes"
   />
   @if (fileInput?.files?.length) {

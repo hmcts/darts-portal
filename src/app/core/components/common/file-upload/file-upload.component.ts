@@ -33,8 +33,21 @@ export class FileUploadComponent implements ControlValueAccessor {
   onChange: (value: File | null) => void = () => {};
   onTouched: () => void = () => {};
 
-  onFileChange(files: File[]) {
-    const file = files[0] || null;
+  onFileChange(files: File[], fileInput?: HTMLInputElement) {
+    const file = files?.[0] ?? null;
+
+    if (file && !this.hasAllowedExtension(file)) {
+      if (!this.errorMessage) {
+        this.errorMessage = `Invalid file type. Allowed types are ${this.allowedFileTypes}`;
+      }
+      if (fileInput) fileInput.value = '';
+      this.isInvalid = true;
+      this.onChange(null);
+      this.onTouched();
+      return;
+    }
+
+    this.isInvalid = false;
     this.onChange(file);
     this.onTouched();
   }
@@ -54,5 +67,22 @@ export class FileUploadComponent implements ControlValueAccessor {
   onFileRemove(fileInput: HTMLInputElement) {
     fileInput.value = '';
     this.onFileChange([]);
+  }
+
+  private allowedExts(): Set<string> {
+    return new Set(
+      (this.allowedFileTypes || '')
+        .split(',')
+        .map((s) => s.trim().toLowerCase())
+        .filter(Boolean)
+        .map((s) => (s.startsWith('.') ? s : `.${s}`))
+    );
+  }
+
+  private hasAllowedExtension(file: File): boolean {
+    const name = (file?.name || '').toLowerCase();
+    const dot = name.lastIndexOf('.');
+    const ext = dot >= 0 ? name.slice(dot) : '';
+    return this.allowedExts().has(ext);
   }
 }
