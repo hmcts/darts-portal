@@ -76,4 +76,19 @@ describe('FileUploadComponent', () => {
     expect(onChangeSpy).toHaveBeenCalledWith(null);
     expect(onTouchedSpy).toHaveBeenCalled();
   });
+
+  it('valid .pdf with extended allow list passes validation and updates the value', () => {
+    component.allowedFileTypes = '.txt,.dot,.dotx,.doc,.docx,.pdf,.rtf,.zip,.odt';
+    const pdf = new File([], 'document.pdf');
+
+    const onChangeSpy = jest.spyOn(component, 'onChange');
+    const onTouchedSpy = jest.spyOn(component, 'onTouched');
+
+    component.isInvalid = true; // simulate previous error state
+    component.onFileChange([pdf]);
+
+    expect(onChangeSpy).toHaveBeenCalledWith(pdf);
+    expect(onTouchedSpy).toHaveBeenCalled();
+    expect(component.isInvalid).toBe(false);
+  });
 });
