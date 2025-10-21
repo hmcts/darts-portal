@@ -212,8 +212,21 @@ export class AudiosComponent {
 
       forkJoin(downloadRequests).subscribe({
         complete: () => {
+          const completedItems = [...this.selectedAudioRequests];
           this.clearSelectedAudio();
           this.isDownloading = false;
+
+          // update last accessed for each downloaded audio
+          const patchRequests = completedItems.map((audio) =>
+            this.audioService.patchAudioRequestLastAccess(audio.transformedMediaId)
+          );
+          if (patchRequests.length) {
+            forkJoin(patchRequests).subscribe({
+              complete: () => {
+                this.refresh$.next();
+              },
+            });
+          }
         },
         error: () => {
           this.errors.set([{ fieldId: 'bulkDownload', message: audiosErrorMessages.bulkDownload.error }]);

@@ -90,7 +90,9 @@
               </td>
               <!-- Partial template for duplicated cells -->
               <ng-container *ngTemplateOutlet="tableTemplatePartial; context: { $implicit: row }"></ng-container>
-              <td>{{ row.lastAccessedTs ? (row.lastAccessedTs | luxonDate: 'HH:mm:ss dd/MM/yyyy') : '-' }}</td>
+              <td class="last-accessed">
+                {{ row.lastAccessedTs ? (row.lastAccessedTs | luxonDate: 'HH:mm:ss dd/MM/yyyy') : '-' }}
+              </td>
               <td><app-govuk-tag colour="green"> READY </app-govuk-tag></td>
               <td><a href="#" (click)="onViewTransformedMedia($event, row)" class="govuk-link view-link">View</a></td>
             </ng-template>
