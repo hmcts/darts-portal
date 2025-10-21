@@ -220,13 +220,11 @@ export class AudiosComponent {
           const patchRequests = completedItems.map((audio) =>
             this.audioService.patchAudioRequestLastAccess(audio.transformedMediaId)
           );
-          if (patchRequests.length) {
-            forkJoin(patchRequests).subscribe({
-              complete: () => {
-                this.refresh$.next();
-              },
-            });
-          }
+          forkJoin(patchRequests).subscribe({
+            complete: () => {
+              this.refresh$.next();
+            },
+          });
         },
         error: () => {
           this.errors.set([{ fieldId: 'bulkDownload', message: audiosErrorMessages.bulkDownload.error }]);
