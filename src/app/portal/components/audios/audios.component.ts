@@ -212,7 +212,8 @@ export class AudiosComponent {
 
       forkJoin(downloadRequests).subscribe({
         complete: () => {
-          const completedItems = [...this.selectedAudioRequests];
+          // get audio requests that don't already have a last accessed timestamp
+          const completedItems = this.selectedAudioRequests.filter((audio) => !audio.lastAccessedTs);
           this.clearSelectedAudio();
           this.isDownloading = false;
 

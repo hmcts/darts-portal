@@ -142,7 +142,7 @@ const defaultMediaRequests = {
     },
     {
       case_id: 8,
-      media_request_id: 3,
+      media_request_id: 8,
       case_number: 'C8',
       courthouse_name: 'Reading',
       hearing_date: '2022-01-04',
@@ -159,7 +159,7 @@ const defaultMediaRequests = {
     },
     {
       case_id: 9,
-      media_request_id: 3,
+      media_request_id: 9,
       case_number: 'C9',
       courthouse_name: 'Reading',
       hearing_date: '2022-01-04',
