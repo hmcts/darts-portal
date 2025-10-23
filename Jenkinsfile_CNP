@@ -18,8 +18,14 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
   ]
 }
 
+def vaultOverrides = [
+  'preview': 'stg',
+  'spreview': 'stg',
+  'dev': 'stg'
+]
+
 def secrets = [
-  'darts-stg': [
+  'darts-${env}': [
     secret('DartsExternalUsersTestPassword', 'EXTERNAL_AUTOMATION_PASSWORD'),
     secret('DartsAdminUserName', 'TEST_ADMIN_USERNAME'),
   ],
@@ -28,6 +34,7 @@ def secrets = [
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 
 withPipeline(type, product, component) {
+  overrideVaultEnvironments(vaultOverrides)
   loadVaultSecrets(secrets)
 
   echo "BRANCH_NAME=${env.BRANCH_NAME} CHANGE_ID=${env.CHANGE_ID} ENVIRONMENT=${env.ENVIRONMENT} PIPELINE_ENV=${env.env}"
