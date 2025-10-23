@@ -1,4 +1,6 @@
 import 'cypress-axe';
+import { externalPortalLogin } from '../support/ad-login.js';
+
 Cypress.Commands.add('login', (roleCode = 'admin', loginType = 'internal') => {
   cy.visit('/login');
   cy.acceptCookies();
@@ -23,7 +25,23 @@ Cypress.Commands.add('logout', () => {
 });
 
 Cypress.Commands.add('acceptCookies', () => {
-  cy.get('button[name="cookies-accept"]').contains('Accept additional cookies').click();
+  cy.get('body').then(($b) => {
+    if ($b.find('button[name="cookies-accept"]').length) {
+      cy.get('button[name="cookies-accept"]').contains('Accept additional cookies').click({ force: true });
+    }
+  });
+});
+
+Cypress.Commands.add('realLogin', () => {
+  const PORTAL_ORIGIN = new URL(Cypress.config('baseUrl')).origin;
+
+  cy.visit('/login', { retryOnNetworkFailure: true });
+  cy.acceptCookies();
+
+  externalPortalLogin();
+
+  // Wait until we are no longer on B2C (full page nav back)
+  cy.location('origin', { timeout: 60_000 }).should('eq', PORTAL_ORIGIN);
 });
 
 Cypress.Commands.add('a11y', () => {
