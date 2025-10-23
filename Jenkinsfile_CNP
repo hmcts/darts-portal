@@ -1,6 +1,6 @@
 #!groovy
 
-@Library("Infrastructure")
+@Library('Infrastructure@dtspo-28286-inspect-kv-url')
 
 def type = "angular"
 def product = "darts"
