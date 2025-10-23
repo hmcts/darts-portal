@@ -42,18 +42,6 @@ withPipeline(type, product, component) {
 
   env.CYPRESS_AUTOMATION_PASSWORD = env.EXTERNAL_AUTOMATION_PASSWORD
 
-  echo "CYPRESS_AUTOMATION_PASSWORD length: ${env.CYPRESS_AUTOMATION_PASSWORD?.length()}"
-  echo "EXTERNAL_AUTOMATION_PASSWORD length: ${env.EXTERNAL_AUTOMATION_PASSWORD?.length()}"
-
-  if (!env.EXTERNAL_AUTOMATION_PASSWORD?.trim()) {
-    error """Key Vault secret not loaded.
-    Tried: darts-${env.env ?: env.ENVIRONMENT} (via override), darts-stg, darts-staging
-    Secret: DartsExternalUsersTestPassword
-    EnvVar: EXTERNAL_AUTOMATION_PASSWORD
-    Check vault name, secret name (case-sensitive), library env mapping, and access."""
-  }
-
-
   afterSuccess('build') {
     sh 'echo "EXTERNAL_AUTOMATION_PASSWORD length: ${#EXTERNAL_AUTOMATION_PASSWORD}"'
     sh 'echo "CYPRESS_AUTOMATION_PASSWORD length: ${#CYPRESS_AUTOMATION_PASSWORD}"'
@@ -64,7 +52,7 @@ withPipeline(type, product, component) {
     sh 'echo "[smokeTest:dev] AUT length: ${#AUTOMATION_PASSWORD}" || true'
     sh 'echo "[smokeTest:dev] CYP length: ${#CYPRESS_AUTOMATION_PASSWORD}" || true'
     sh 'node -e "console.log(\'Node sees CYP len:\',(process.env.CYPRESS_AUTOMATION_PASSWORD||\'\').length)"'
-}
+  }
 
   enableSlackNotifications('#darts-builds')
   disableCleanupOfHelmReleaseOnFailure()
@@ -74,6 +62,16 @@ withPipeline(type, product, component) {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/screenshots/**/*'
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/videos/**/*'
 
+    echo "CYPRESS_AUTOMATION_PASSWORD length: ${env.CYPRESS_AUTOMATION_PASSWORD?.length()}"
+    echo "EXTERNAL_AUTOMATION_PASSWORD length: ${env.EXTERNAL_AUTOMATION_PASSWORD?.length()}"
+
+    if (!env.EXTERNAL_AUTOMATION_PASSWORD?.trim()) {
+      error """Key Vault secret not loaded.
+      Tried: darts-${env.env ?: env.ENVIRONMENT} (via override), darts-stg, darts-staging
+      Secret: DartsExternalUsersTestPassword
+      EnvVar: EXTERNAL_AUTOMATION_PASSWORD
+      Check vault name, secret name (case-sensitive), library env mapping, and access."""
+    }
   }
 
   afterAlways('smokeTest:stg') {
