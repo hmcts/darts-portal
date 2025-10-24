@@ -19,7 +19,7 @@ export function externalPortalLogin() {
   clickButton('Continue');
 
   const user = EXTERNAL_EMAIL;
-  const pass = Cypress.env('EXTERNAL_AUTOMATION_PASSWORD') || Cypress.env('AUTOMATION_PASSWORD');
+  const pass = Cypress.env('AUTOMATION_PASSWORD');
 
   cy.origin(B2C_ORIGIN, { args: { user, pass } }, ({ user, pass }) => {
     const emailSel = 'input[name="signInName"], input[name="logonIdentifier"], #email, input[type="email"]';

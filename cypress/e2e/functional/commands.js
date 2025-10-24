@@ -3,12 +3,13 @@ import { externalPortalLogin } from '../support/ad-login.js';
 
 Cypress.Commands.add('login', (roleCode = 'admin', loginType = 'internal') => {
   cy.visit('/login');
-  cy.acceptCookies();
   if (loginType === 'internal') {
     cy.contains("I'm an employee of HM Courts and Tribunals Service").click();
   } else {
     cy.contains('I work with the HM Courts and Tribunals Service').click();
   }
+
+  cy.acceptCookies();
   cy.contains('Continue').click();
 
   // Cypress is now redirected to the stub login page on http://localhost:4545
