@@ -13,35 +13,14 @@ export function isDevPreview() {
 export function externalPortalLogin() {
   const B2C_ORIGIN = 'https://hmctsstgextid.b2clogin.com';
 
-  // Portal-side diagnostics
-  cy.intercept('GET', '**/oauth2/v2.0/authorize**').as('aadAuthorize');
   cy.intercept('GET', 'https://js.monitor.azure.com/**', { statusCode: 204, body: {} });
 
-  // Kick off login
   clickLabel('I work with the HM Courts and Tribunals Service');
   clickButton('Continue');
 
-  // Log authorize params
-  cy.wait('@aadAuthorize', { timeout: 60_000 }).then(({ request }) => {
-    const u = new URL(request.url);
-    const qs = new URLSearchParams(u.search);
-    const payload = {
-      clientId: qs.get('client_id'),
-      redirectUri: decodeURIComponent(qs.get('redirect_uri') || ''),
-      responseType: qs.get('response_type'),
-      responseMode: qs.get('response_mode'),
-      policy: qs.get('p') || qs.get('policy') || '(none)',
-    };
-    cy.wrap(payload).as('b2cAuth');
-    cy.log('B2C authorize: ' + JSON.stringify(payload));
-  });
-
   const user = EXTERNAL_EMAIL;
   const pass = Cypress.env('EXTERNAL_AUTOMATION_PASSWORD') || Cypress.env('AUTOMATION_PASSWORD');
-  expect(pass, 'external password env').to.be.a('string').and.to.have.length.of.at.least(6);
-  cy.log(`external password length: ${pass.length}`);
 
-  // IdP interactions must be inside cy.origin
   cy.origin(B2C_ORIGIN, { args: { user, pass } }, ({ user, pass }) => {
     const emailSel = 'input[name="signInName"], input[name="logonIdentifier"], #email, input[type="email"]';
     const passSel = 'input[name="password"], #password, input[type="password"]';
@@ -118,6 +97,4 @@ export function externalPortalLogin() {
       if (/\bContinue\b/i.test(t)) clickPrimary();
     });
   });
-
-  // Caller asserts we returned to portal.
 }

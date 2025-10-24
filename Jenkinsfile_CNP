@@ -1,6 +1,6 @@
 #!groovy
 
-@Library('Infrastructure@dtspo-28286-inspect-kv-url')
+@Library('Infrastructure')
 
 def type = "angular"
 def product = "darts"
@@ -20,14 +20,12 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 
 def vaultOverrides = [
   'preview': 'stg',
-  'spreview': 'stg',
   'dev': 'stg'
 ]
 
 def secrets = [
   'darts-${env}': [
     secret('DartsExternalUsersTestPassword', 'EXTERNAL_AUTOMATION_PASSWORD'),
-    secret('DartsAdminUserName', 'TEST_ADMIN_USERNAME'),
   ],
 ]
 
@@ -37,75 +35,33 @@ withPipeline(type, product, component) {
   overrideVaultEnvironments(vaultOverrides)
   loadVaultSecrets(secrets)
 
-  echo "BRANCH_NAME=${env.BRANCH_NAME} CHANGE_ID=${env.CHANGE_ID} ENVIRONMENT=${env.ENVIRONMENT} PIPELINE_ENV=${env.env}"
-  echo "TEST_ADMIN_USERNAME: ${env.TEST_ADMIN_USERNAME}" 
-
-  // env.CYPRESS_AUTOMATION_PASSWORD = env.EXTERNAL_AUTOMATION_PASSWORD
+  enableSlackNotifications('#darts-builds')
+  disableCleanupOfHelmReleaseOnFailure()
 
   before('smoketest:dev') {
     if (!env.CYPRESS_AUTOMATION_PASSWORD?.trim()) {
       env.CYPRESS_AUTOMATION_PASSWORD = env.EXTERNAL_AUTOMATION_PASSWORD
       steps.echo "Set CYPRESS_AUTOMATION_PASSWORD from EXTERNAL_AUTOMATION_PASSWORD"
     }
-    steps.sh 'node -e "console.log(\'Node sees CYP len:\',(process.env.CYPRESS_AUTOMATION_PASSWORD||\'\').length)"'
-    steps.sh 'node -e "console.log(\'Node sees EXT len:\',(process.env.EXTERNAL_AUTOMATION_PASSWORD||\'\').length)"'
   }
 
-  // before('smoketest:dev') {
-  //   steps.azureKeyVault(
-  //   credentialsId: 'azure-key-vault-sp',                 
-  //   keyVaultURL:   'https://darts-stg.vault.azure.net/',
-  //   secrets: [[
-  //     $class     : 'AzureKeyVaultSecret',
-  //     secretType : 'Secret',
-  //     name       : 'DartsExternalUsersTestPassword',     
-  //     envVariable: 'CYPRESS_AUTOMATION_PASSWORD'         
-  //     ]]
-  //   )
-  //   //if above works would need same in stg smoke
-
-  //   // Prove the agent process (and Node/Cypress) see it:
-  //   steps.sh 'echo "CYP len(shell): ${#CYPRESS_AUTOMATION_PASSWORD}"'
-  //   steps.sh 'node -e "console.log(\'Node sees len:\',(process.env.CYPRESS_AUTOMATION_PASSWORD||\'\').length)"'
-  // }
-
-  enableSlackNotifications('#darts-builds')
-  disableCleanupOfHelmReleaseOnFailure()
+  before('smoketest:stg') {
+    if (!env.CYPRESS_AUTOMATION_PASSWORD?.trim()) {
+      env.CYPRESS_AUTOMATION_PASSWORD = env.EXTERNAL_AUTOMATION_PASSWORD
+      steps.echo "Set CYPRESS_AUTOMATION_PASSWORD from EXTERNAL_AUTOMATION_PASSWORD"
+    }
+  }
 
   afterAlways('smoketest:dev') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'smoke-output/**/*'
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/screenshots/**/*'
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/videos/**/*'
-
-    echo "CYPRESS_AUTOMATION_PASSWORD length: ${env.CYPRESS_AUTOMATION_PASSWORD?.length()}"
-    echo "EXTERNAL_AUTOMATION_PASSWORD length: ${env.EXTERNAL_AUTOMATION_PASSWORD?.length()}"
-    echo "TEST_ADMIN_USERNAME: ${env.TEST_ADMIN_USERNAME}" 
-
-    if (!env.EXTERNAL_AUTOMATION_PASSWORD?.trim()) {
-      error """Key Vault secret not loaded.
-      Tried: darts-${env.env ?: env.ENVIRONMENT} (via override), darts-stg, darts-staging
-      Secret: DartsExternalUsersTestPassword
-      EnvVar: EXTERNAL_AUTOMATION_PASSWORD
-      Check vault name, secret name (case-sensitive), library env mapping, and access."""
-    }
   }
 
   afterAlways('smoketest:stg') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'smoke-output/**/*'
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/screenshots/**/*'
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/videos/**/*'
-
-    echo "CYPRESS_AUTOMATION_PASSWORD length: ${env.CYPRESS_AUTOMATION_PASSWORD?.length()}"
-    echo "EXTERNAL_AUTOMATION_PASSWORD length: ${env.EXTERNAL_AUTOMATION_PASSWORD?.length()}"
-    echo "TEST_ADMIN_USERNAME: ${env.TEST_ADMIN_USERNAME}" 
-
-    if (!env.EXTERNAL_AUTOMATION_PASSWORD?.trim()) {
-      error """Key Vault secret not loaded.
-      Tried: darts-${env.env ?: env.ENVIRONMENT} (via override), darts-stg, darts-staging
-      Secret: DartsExternalUsersTestPassword
-      EnvVar: EXTERNAL_AUTOMATION_PASSWORD
-      Check vault name, secret name (case-sensitive), library env mapping, and access."""
-    }
   }
 
   afterAlways('functionalTest:dev') {

@@ -15,24 +15,4 @@ describe('Smoke test', () => {
       cy.logout();
     });
   }
-
-  afterEach(() => {
-    const B2C_ORIGIN = 'https://hmctsstgextid.b2clogin.com';
-    cy.location('origin').then((origin) => {
-      if (origin === B2C_ORIGIN) {
-        cy.origin(B2C_ORIGIN, () => {
-          cy.screenshot('b2c-stuck');
-          cy.get('body')
-            .invoke('text')
-            .then((txt) => {
-              Cypress.log({ name: 'B2C stuck body', message: txt.slice(0, 500) });
-            });
-        });
-        const aliases = Cypress.state('aliases') || {};
-        if (aliases.b2cAuth) {
-          cy.get('@b2cAuth').then((p) => cy.log('B2C authorize captured: ' + JSON.stringify(p)));
-        }
-      }
-    });
-  });
 });

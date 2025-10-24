@@ -25,7 +25,7 @@
     "test:a11y": "echo 'Covered in functional testing' && exit 0",
     "cypress": "TZ='Europe/London' cypress open",
     "verify-stg-access": "ts-node -P ./scripts/tsconfig.json scripts/verify-stg-access.ts",
-    "test:smoke": "bash -lc 'mkdir -p smoke-output && DEBUG=cypress:server:*,cypress:launcher,cypress:server:routes,cypress:net-stubbing TERM=xterm-256color CI=1 cypress run --browser chrome --spec \"cypress/e2e/smoke/*-spec.cy.js\" --reporter junit --reporter-options \"mochaFile=smoke-output/smoke/test-output-[hash].xml\" --config \"video=true,screenshotOnRunFailure=true,trashAssetsBeforeRuns=false,pageLoadTimeout=120000,responseTimeout=90000,defaultCommandTimeout=10000,retries=1\" 2>&1 | tee smoke-output/console-debug.log' && yarn test:smoke:combine:reports",
+    "test:smoke": "bash -lc 'mkdir -p smoke-output && cypress run --spec \"cypress/e2e/smoke/*-spec.cy.js\" --browser chrome --reporter junit --reporter-options \"mochaFile=smoke-output/smoke/test-output-[hash].xml\" --config \"video=false,screenshotOnRunFailure=true,trashAssetsBeforeRuns=false\"' && yarn test:smoke:combine:reports",
     "test:smoke:combine:reports": "jrm smoke-output/smoke/smoke-test-result.xml \"smoke-output/smoke/*.xml\"",
     "test:up": "yarn build && ts-node -P ./scripts/tsconfig.json scripts/start-app.ts",
     "test:functional:cypress": "TZ='Europe/London' cypress run --spec 'cypress/e2e/functional/**/auth-spec.cy.js'",
