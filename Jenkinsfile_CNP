@@ -38,20 +38,6 @@ withPipeline(type, product, component) {
   enableSlackNotifications('#darts-builds')
   disableCleanupOfHelmReleaseOnFailure()
 
-  // before('smoketest:dev') {
-  //   if (!env.CYPRESS_AUTOMATION_PASSWORD?.trim()) {
-  //     env.CYPRESS_AUTOMATION_PASSWORD = env.EXTERNAL_AUTOMATION_PASSWORD
-  //     steps.echo "Set CYPRESS_AUTOMATION_PASSWORD from EXTERNAL_AUTOMATION_PASSWORD"
-  //   }
-  // }
-
-  // before('smoketest:stg') {
-  //   if (!env.CYPRESS_AUTOMATION_PASSWORD?.trim()) {
-  //     env.CYPRESS_AUTOMATION_PASSWORD = env.EXTERNAL_AUTOMATION_PASSWORD
-  //     steps.echo "Set CYPRESS_AUTOMATION_PASSWORD from EXTERNAL_AUTOMATION_PASSWORD"
-  //   }
-  // }
-
   afterAlways('smoketest:dev') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'smoke-output/**/*'
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/screenshots/**/*'
