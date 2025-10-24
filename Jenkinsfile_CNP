@@ -40,24 +40,39 @@ withPipeline(type, product, component) {
   echo "BRANCH_NAME=${env.BRANCH_NAME} CHANGE_ID=${env.CHANGE_ID} ENVIRONMENT=${env.ENVIRONMENT} PIPELINE_ENV=${env.env}"
   echo "TEST_ADMIN_USERNAME: ${env.TEST_ADMIN_USERNAME}" 
 
-  env.CYPRESS_AUTOMATION_PASSWORD = env.EXTERNAL_AUTOMATION_PASSWORD
+  // env.CYPRESS_AUTOMATION_PASSWORD = env.EXTERNAL_AUTOMATION_PASSWORD
 
-  afterSuccess('build') {
-    sh 'echo "EXTERNAL_AUTOMATION_PASSWORD length: ${#EXTERNAL_AUTOMATION_PASSWORD}"'
-    sh 'echo "CYPRESS_AUTOMATION_PASSWORD length: ${#CYPRESS_AUTOMATION_PASSWORD}"'
+  before('smoketest:dev') {
+    if (!env.CYPRESS_AUTOMATION_PASSWORD?.trim()) {
+      env.CYPRESS_AUTOMATION_PASSWORD = env.EXTERNAL_AUTOMATION_PASSWORD
+      steps.echo "Set CYPRESS_AUTOMATION_PASSWORD from EXTERNAL_AUTOMATION_PASSWORD"
+    }
+    steps.sh 'node -e "console.log(\'Node sees CYP len:\',(process.env.CYPRESS_AUTOMATION_PASSWORD||\'\').length)"'
+    steps.sh 'node -e "console.log(\'Node sees EXT len:\',(process.env.EXTERNAL_AUTOMATION_PASSWORD||\'\').length)"'
   }
 
-  before('smokeTest:dev') {
-    env.CYPRESS_AUTOMATION_PASSWORD = env.EXTERNAL_AUTOMATION_PASSWORD
-    sh 'echo "[smokeTest:dev] AUT length: ${#AUTOMATION_PASSWORD}" || true'
-    sh 'echo "[smokeTest:dev] CYP length: ${#CYPRESS_AUTOMATION_PASSWORD}" || true'
-    sh 'node -e "console.log(\'Node sees CYP len:\',(process.env.CYPRESS_AUTOMATION_PASSWORD||\'\').length)"'
-  }
+  // before('smoketest:dev') {
+  //   steps.azureKeyVault(
+  //   credentialsId: 'azure-key-vault-sp',                 
+  //   keyVaultURL:   'https://darts-stg.vault.azure.net/',
+  //   secrets: [[
+  //     $class     : 'AzureKeyVaultSecret',
+  //     secretType : 'Secret',
+  //     name       : 'DartsExternalUsersTestPassword',     
+  //     envVariable: 'CYPRESS_AUTOMATION_PASSWORD'         
+  //     ]]
+  //   )
+  //   //if above works would need same in stg smoke
+
+  //   // Prove the agent process (and Node/Cypress) see it:
+  //   steps.sh 'echo "CYP len(shell): ${#CYPRESS_AUTOMATION_PASSWORD}"'
+  //   steps.sh 'node -e "console.log(\'Node sees len:\',(process.env.CYPRESS_AUTOMATION_PASSWORD||\'\').length)"'
+  // }
 
   enableSlackNotifications('#darts-builds')
   disableCleanupOfHelmReleaseOnFailure()
 
-  afterAlways('smokeTest:dev') {
+  afterAlways('smoketest:dev') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'smoke-output/**/*'
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/screenshots/**/*'
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/videos/**/*'
@@ -75,7 +90,7 @@ withPipeline(type, product, component) {
     }
   }
 
-  afterAlways('smokeTest:stg') {
+  afterAlways('smoketest:stg') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'smoke-output/**/*'
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/screenshots/**/*'
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/videos/**/*'

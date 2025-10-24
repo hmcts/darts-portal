@@ -37,7 +37,7 @@ export function externalPortalLogin() {
   });
 
   const user = EXTERNAL_EMAIL;
-  const pass = Cypress.env('EXTERNAL_AUTOMATION_PASSWORD');
+  const pass = Cypress.env('EXTERNAL_AUTOMATION_PASSWORD') || Cypress.env('AUTOMATION_PASSWORD');
   expect(pass, 'external password env').to.be.a('string').and.to.have.length.of.at.least(6);
   cy.log(`external password length: ${pass.length}`);
 
