@@ -69,11 +69,11 @@
     "express-session": "^1.18.2",
     "govuk-frontend": "^5.9.1",
     "http-proxy-middleware": "^3.0.5",
-    "ioredis": "^5.4.1",
     "js-yaml": "^4.1.0",
     "luxon": "^3.4.4",
     "ngx-cookie-service": "^19.0.0",
     "nunjucks": "^3.2.4",
+    "redis": "^5.9.0",
     "rxjs": "~7.8.1",
     "tslib": "^2.6.3",
     "zone.js": "~0.15.0"
