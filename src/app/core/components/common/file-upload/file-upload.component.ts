@@ -29,6 +29,9 @@ export class FileUploadComponent implements ControlValueAccessor {
   controlId = computed(() => `file-upload-${this.id()}`);
   controlErrorId = computed(() => `${this.controlId()}-error`);
 
+  invalidExt = false;
+  extErrorMessage = '';
+
   // Implementing ControlValueAccessor interface boilerplate
   onChange: (value: File | null) => void = () => {};
   onTouched: () => void = () => {};
@@ -37,17 +40,16 @@ export class FileUploadComponent implements ControlValueAccessor {
     const file = files?.[0] ?? null;
 
     if (file && !this.hasAllowedExtension(file)) {
-      if (!this.errorMessage) {
-        this.errorMessage = `Invalid file type. Allowed types are ${this.allowedFileTypes}`;
-      }
+      this.invalidExt = true;
+      this.extErrorMessage = `Invalid file type. Allowed types are ${this.allowedFileTypes}`;
       if (fileInput) fileInput.value = '';
-      this.isInvalid = true;
       this.onChange(null);
       this.onTouched();
       return;
     }
 
-    this.isInvalid = false;
+    this.invalidExt = false;
+    this.extErrorMessage = '';
     this.onChange(file);
     this.onTouched();
   }

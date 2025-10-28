@@ -156,11 +156,13 @@ describe('AddAnnotationComponent', () => {
 
     describe('Error messages', () => {
       it('set error message when fileControl is required', () => {
+        component.isSubmitted = true;
         component.fileControl.setValue(null);
         expect(component.errors()[0].message).toBe('You need to upload a file');
       });
 
       it('set error message when filesize is too large', () => {
+        component.isSubmitted = true;
         const file = new File(['test'], 'test.txt', { type: 'text/plain' });
         Object.defineProperty(file, 'size', { value: 22 * 1024 * 1024 }); // 22MB file size
         component.fileControl.setValue(file);
@@ -169,6 +171,7 @@ describe('AddAnnotationComponent', () => {
       });
 
       it('does not set error message when fileControl is valid', () => {
+        component.isSubmitted = true;
         const file = new File(['test'], 'test.txt', { type: 'text/plain' });
         component.fileControl.setValue(file);
         expect(component.errors()).toEqual([]);
