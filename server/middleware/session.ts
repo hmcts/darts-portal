@@ -31,8 +31,12 @@ export default () => {
       });
 
       redis.on('error', (err) => {
-        console.error('REDIS ERROR', err);
-        trackException(err as Error, { source: 'redis' });
+        if (err.message.includes('Socket closed unexpectedly')) {
+          console.warn('Redis socket closed (will reconnect)');
+        } else {
+          console.error('REDIS ERROR', err);
+          trackException(err);
+        }
       });
     } catch (error) {
       console.error('Error connecting to Redis:', error);
