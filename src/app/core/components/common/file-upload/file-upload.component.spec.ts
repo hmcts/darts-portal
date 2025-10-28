@@ -94,8 +94,8 @@ describe('FileUploadComponent', () => {
     const fileInputStub = { value: 'something.doc' } as unknown as HTMLInputElement;
 
     // simulate previous local error
-    (component as any).invalidExt = true;
-    (component as any).extErrorMessage = 'Some error';
+    component.invalidExt = true;
+    component.extErrorMessage = 'Some error';
 
     component.onFileRemove(fileInputStub);
 
