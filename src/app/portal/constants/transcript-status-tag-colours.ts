@@ -9,4 +9,5 @@ export const transcriptStatusTagColours: { [K in TranscriptStatus]: TagColour } 
   'With Transcriber': 'purple',
   Complete: 'green',
   Closed: 'grey',
+  Unfulfilled: 'orange',
 };

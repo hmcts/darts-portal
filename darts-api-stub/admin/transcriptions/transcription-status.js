@@ -36,6 +36,11 @@ const MOCK_STATUSES = [
     type: 'Closed',
     display_name: 'Closed',
   },
+  {
+    id: 8,
+    type: 'Unfulfilled',
+    display_name: 'Unfulfilled',
+  },
 ];
 
 const router = express.Router();
