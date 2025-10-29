@@ -85,6 +85,17 @@ const transcripts = [
     is_manual_transcription: true,
     approved_at: '2023-01-06T13:00:00Z',
   },
+  {
+    transcription_id: 8,
+    case_id: 8,
+    case_number: 'C0000000008',
+    courthouse_id: 6,
+    hearing_date: '2022-01-06T11:00:00Z',
+    requested_at: DateTime.now().minus({ months: 5 }).toISO(),
+    transcription_status_id: 5,
+    is_manual_transcription: false,
+    approved_at: '2023-01-06T13:00:00Z',
+  },
 ];
 
 function authCheck(req, res) {

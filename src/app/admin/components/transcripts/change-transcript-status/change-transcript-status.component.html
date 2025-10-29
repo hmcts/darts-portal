@@ -11,14 +11,52 @@
     </select>
   </div>
 
-  <label id="comment-label" class="govuk-label" for="comments">Comment (optional)</label>
-  <app-govuk-textarea
-    [control]="form.controls.comments"
-    [id]="'comments'"
-    name="comments"
-    ariaDescribedBy="comment-label"
-    [maxCharacterLimit]="256"
-  ></app-govuk-textarea>
+  @if (isUnfulfilled) {
+    <div class="govuk-form-group" [class.govuk-form-group--error]="isSubmitted && reasonControl.invalid">
+      <label class="govuk-label" for="reason">Reason</label>
+      @if (isSubmitted && reasonControl.hasError('required')) {
+        <p class="govuk-error-message">
+          <span class="govuk-visually-hidden">Error: </span>{{ getErrorMessage('reason', reasonControl.errors) }}
+        </p>
+      }
+      <select id="reason" class="govuk-select" [formControl]="reasonControl">
+        <option value="" disabled selected>Select a reason</option>
+        @for (r of REASONS; track r) {
+          <option [ngValue]="r">{{ REASON_DISPLAY[r] }}</option>
+        }
+      </select>
+    </div>
+  }
+
+  @if (showOtherComment) {
+    <div class="govuk-form-group" [class.govuk-form-group--error]="isSubmitted && detailsControl.invalid">
+      <label class="govuk-label" for="details">Comment</label>
+      @if (isSubmitted && detailsControl.invalid) {
+        <p class="govuk-error-message">
+          <span class="govuk-visually-hidden">Error: </span>{{ getErrorMessage('details', detailsControl.errors) }}
+        </p>
+      }
+      <app-govuk-textarea
+        [control]="detailsControl"
+        [id]="'details'"
+        name="details"
+        ariaDescribedBy="details-label"
+        [maxCharacterLimit]="200"
+        [isInvalid]="isSubmitted && detailsControl.invalid"
+      />
+    </div>
+  }
+
+  @if (!isUnfulfilled) {
+    <label id="comment-label" class="govuk-label" for="comments">Comment (optional)</label>
+    <app-govuk-textarea
+      [control]="form.controls.comments"
+      [id]="'comments'"
+      name="comments"
+      ariaDescribedBy="comment-label"
+      [maxCharacterLimit]="256"
+    ></app-govuk-textarea>
+  }
 
   <div class="govuk-button-group">
     <button class="govuk-button" type="submit">Save changes</button>
