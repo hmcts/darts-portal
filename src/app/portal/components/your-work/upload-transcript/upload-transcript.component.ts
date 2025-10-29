@@ -1,5 +1,5 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
-import { Component, OnDestroy, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
@@ -18,10 +18,13 @@ import { HeaderService } from '@services/header/header.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { maxFileSizeValidator } from '@validators/max-file-size.validator';
 import { map } from 'rxjs/internal/operators/map';
+import {
+  getUnfulfilledReason,
+  REASON_DISPLAY,
+  UnfulfilledReason,
+} from 'src/app/admin/utils/unfulfilled-transcript.utils';
 
 type Outcome = 'complete' | 'unfulfilled';
-type UnfulfilledReason = 'inaudible' | 'no_audio' | 'one_second' | 'other';
-
 @Component({
   selector: 'app-upload-transcript',
   standalone: true,
@@ -59,12 +62,7 @@ export class UploadTranscriptComponent implements OnDestroy {
   isUploading = false;
   requestStatus: 'TO_DO' | 'COMPLETED' = this.router.getCurrentNavigation()?.extras?.state?.requestStatus;
 
-  REASON_DISPLAY: Record<UnfulfilledReason, string> = {
-    inaudible: 'Inaudible / unintelligible',
-    no_audio: 'No audio / white noise',
-    one_second: 'Audio is 1 second',
-    other: 'Other',
-  } as const;
+  REASON_DISPLAY = REASON_DISPLAY;
 
   readonly REASONS = Object.keys(this.REASON_DISPLAY) as UnfulfilledReason[];
 
@@ -206,25 +204,18 @@ export class UploadTranscriptComponent implements OnDestroy {
     return this.isManualRequest ? this.uploadTranscript() : this.completeTranscript();
   }
 
-  private buildUnfulfilledReason(): string {
+  private unfulfilledPayload(): string {
     const reason = this.reasonControl.value as UnfulfilledReason;
     const details = this.detailsControl.value?.trim();
 
-    const workflow_comment =
-      reason === 'other'
-        ? 'Other - ' + (details ?? '') // Details is required if 'other'
-        : this.REASON_DISPLAY[reason];
-
-    return workflow_comment;
+    return getUnfulfilledReason(reason, details);
   }
 
   private unfulfillTranscript() {
-    this.transcriptionService
-      .unfulfillTranscriptionRequest(this.requestId, this.buildUnfulfilledReason())
-      .subscribe(() => {
-        this.goToScreen('unfulfilled');
-        this.isUploading = false;
-      });
+    this.transcriptionService.unfulfillTranscriptionRequest(this.requestId, this.unfulfilledPayload()).subscribe(() => {
+      this.goToScreen('unfulfilled');
+      this.isUploading = false;
+    });
   }
 
   private completeTranscript() {

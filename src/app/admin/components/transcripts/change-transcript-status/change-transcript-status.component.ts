@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -9,11 +9,13 @@ import { TranscriptStatus } from '@portal-types/index';
 import { HeaderService } from '@services/header/header.service';
 import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
-
-type UnfulfilledReason = 'inaudible' | 'no_audio' | 'one_second' | 'other';
+import {
+  getUnfulfilledReason,
+  REASON_DISPLAY,
+  UnfulfilledReason,
+} from 'src/app/admin/utils/unfulfilled-transcript.utils';
 
 const UNFULFILLED_TRANSCRIPTION_STATUS_ID = 8;
-
 @Component({
   selector: 'app-change-transcript-status',
   standalone: true,
@@ -37,12 +39,7 @@ export class ChangeTranscriptStatusComponent implements OnInit {
 
   statuses$ = this.transcriptionAdminService.getAllowableTranscriptionStatuses(this.transcriptStatus, this.isManual);
 
-  REASON_DISPLAY: Record<UnfulfilledReason, string> = {
-    inaudible: 'Inaudible / unintelligible',
-    no_audio: 'No audio / white noise',
-    one_second: 'Audio is 1 second',
-    other: 'Other',
-  } as const;
+  REASON_DISPLAY = REASON_DISPLAY;
 
   readonly REASONS = Object.keys(this.REASON_DISPLAY) as UnfulfilledReason[];
 
@@ -67,21 +64,16 @@ export class ChangeTranscriptStatusComponent implements OnInit {
     return this.isUnfulfilled && this.reasonControl.value === 'other';
   }
 
-  private buildUnfulfilledReason(): string {
+  private unfulfilledPayload(): string {
     const reason = this.reasonControl.value as UnfulfilledReason;
     const details = this.detailsControl.value?.trim();
 
-    const workflow_comment =
-      reason === 'other'
-        ? 'Other - ' + (details ?? '') // Details is required if 'other'
-        : this.REASON_DISPLAY[reason];
-
-    return workflow_comment;
+    return getUnfulfilledReason(reason, details);
   }
 
   private unfulfillTranscript() {
     this.transcriptionService
-      .unfulfillTranscriptionRequest(this.transcriptId, this.buildUnfulfilledReason())
+      .unfulfillTranscriptionRequest(this.transcriptId, this.unfulfilledPayload())
       .subscribe(() => {
         this.transcriptionAdminService.fetchNewTranscriptions.set(true);
         this.router.navigate(['/admin/transcripts', this.transcriptId], { queryParams: { updatedStatus: true } });
