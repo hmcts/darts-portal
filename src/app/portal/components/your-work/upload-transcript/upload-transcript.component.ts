@@ -17,7 +17,13 @@ import { TranscriptionDetails } from '@portal-types/index';
 import { HeaderService } from '@services/header/header.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { maxFileSizeValidator } from '@validators/max-file-size.validator';
-import { map } from 'rxjs/internal/operators/map';
+import { map } from 'rxjs';
+import {
+  applyUnfulfilledValidators,
+  buildUnfulfilledErrors,
+  ErrorMessages,
+  firstError,
+} from 'src/app/admin/utils/unfulfilled-form.util';
 import {
   getUnfulfilledReason,
   REASON_DISPLAY,
@@ -132,40 +138,27 @@ export class UploadTranscriptComponent implements OnDestroy {
   private buildErrors(): { fieldId: string; message: string }[] {
     const errs: { fieldId: string; message: string }[] = [];
 
+    // file errors only in manual + complete
     if (!this.isUnfulfilled && this.isManualRequest) {
-      const fileMsg = this.getErrorMessage('file', this.fileControl.errors);
-      if (fileMsg) errs.push({ fieldId: 'file-upload-1', message: fileMsg });
+      const msg = firstError(UploadTranscriptErrorMessages as ErrorMessages, 'file', this.fileControl.errors);
+      if (msg) errs.push({ fieldId: 'file-upload-1', message: msg });
     }
 
-    if (this.isUnfulfilled) {
-      const reasonMsg = this.getErrorMessage('reason', this.reasonControl.errors);
-      if (reasonMsg) errs.push({ fieldId: 'reason', message: reasonMsg });
-
-      const detailsMsg = this.getErrorMessage('details', this.detailsControl.errors);
-      if (detailsMsg) errs.push({ fieldId: 'details', message: detailsMsg });
-    }
+    // unfulfilled section errors
+    errs.push(
+      ...buildUnfulfilledErrors(
+        UploadTranscriptErrorMessages as ErrorMessages,
+        this.isUnfulfilled,
+        this.reasonControl.errors,
+        this.detailsControl.errors
+      )
+    );
 
     return errs;
   }
 
   private applySubmitOnlyValidators(): void {
-    // reason required when unfulfilled
-    if (this.isUnfulfilled) {
-      this.reasonControl.setValidators([Validators.required]);
-    } else {
-      this.reasonControl.clearValidators();
-      this.reasonControl.setValue('', { emitEvent: false });
-    }
-    this.reasonControl.updateValueAndValidity({ emitEvent: false });
-
-    // details required only when 'other'; maxlength already present
-    const base = [Validators.maxLength(200)];
-    if (this.isUnfulfilled && this.reasonControl.value === 'other') {
-      this.detailsControl.setValidators([Validators.required, ...base]);
-    } else {
-      this.detailsControl.setValidators(base);
-    }
-    this.detailsControl.updateValueAndValidity({ emitEvent: false });
+    applyUnfulfilledValidators(this.isUnfulfilled, this.reasonControl, this.detailsControl, 200);
   }
 
   onOutcomeChanged(): void {
@@ -248,17 +241,7 @@ export class UploadTranscriptComponent implements OnDestroy {
     this.valueChangeSub.unsubscribe();
   }
 
-  getErrorMessage<K extends keyof typeof UploadTranscriptErrorMessages>(
-    field: K,
-    errors: ValidationErrors | null | undefined
-  ): string | null {
-    if (!errors) return null;
-    const map = UploadTranscriptErrorMessages[field];
-    // Show the first defined message for any present error key
-    for (const key of Object.keys(errors)) {
-      const msg = (map as Record<string, string | undefined>)[key];
-      if (msg) return msg;
-    }
-    return null;
+  getErrorMessage(field: 'file' | 'reason' | 'details', errors: ValidationErrors | null | undefined): string | null {
+    return firstError(UploadTranscriptErrorMessages as ErrorMessages, field, errors);
   }
 }

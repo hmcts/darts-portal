@@ -10,12 +10,18 @@ import { HeaderService } from '@services/header/header.service';
 import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import {
+  applyUnfulfilledValidators,
+  buildUnfulfilledErrors,
+  ErrorMessages,
+  firstError,
+} from 'src/app/admin/utils/unfulfilled-form.util';
+import {
   getUnfulfilledReason,
   REASON_DISPLAY,
+  UNFULFILLED_STATUS_ID,
   UnfulfilledReason,
 } from 'src/app/admin/utils/unfulfilled-transcript.utils';
 
-const UNFULFILLED_TRANSCRIPTION_STATUS_ID = 8;
 @Component({
   selector: 'app-change-transcript-status',
   standalone: true,
@@ -24,7 +30,7 @@ const UNFULFILLED_TRANSCRIPTION_STATUS_ID = 8;
   styleUrl: './change-transcript-status.component.scss',
 })
 export class ChangeTranscriptStatusComponent implements OnInit {
-  private transcriptionService = inject(TranscriptionService);
+  transcriptionService = inject(TranscriptionService);
   fb = inject(FormBuilder);
   router = inject(Router);
   route = inject(ActivatedRoute);
@@ -57,7 +63,7 @@ export class ChangeTranscriptStatusComponent implements OnInit {
   statusControl = this.form.controls.status;
 
   get isUnfulfilled(): boolean {
-    return Number(this.statusControl.value) === UNFULFILLED_TRANSCRIPTION_STATUS_ID;
+    return Number(this.statusControl.value) === UNFULFILLED_STATUS_ID;
   }
 
   get showOtherComment(): boolean {
@@ -111,50 +117,19 @@ export class ChangeTranscriptStatusComponent implements OnInit {
   }
 
   private applySubmitOnlyValidators(): void {
-    // reason required when unfulfilled
-    if (this.isUnfulfilled) {
-      this.reasonControl.setValidators([Validators.required]);
-    } else {
-      this.reasonControl.clearValidators();
-      this.reasonControl.setValue('', { emitEvent: false });
-    }
-    this.reasonControl.updateValueAndValidity({ emitEvent: false });
-
-    // details required only when 'other'; maxlength already present
-    const base = [Validators.maxLength(200)];
-    if (this.isUnfulfilled && this.reasonControl.value === 'other') {
-      this.detailsControl.setValidators([Validators.required, ...base]);
-    } else {
-      this.detailsControl.setValidators(base);
-    }
-    this.detailsControl.updateValueAndValidity({ emitEvent: false });
+    applyUnfulfilledValidators(this.isUnfulfilled, this.reasonControl, this.detailsControl, 200);
   }
 
   private buildErrors(): { fieldId: string; message: string }[] {
-    const errs: { fieldId: string; message: string }[] = [];
-
-    if (this.isUnfulfilled) {
-      const reasonMsg = this.getErrorMessage('reason', this.reasonControl.errors);
-      if (reasonMsg) errs.push({ fieldId: 'reason', message: reasonMsg });
-
-      const detailsMsg = this.getErrorMessage('details', this.detailsControl.errors);
-      if (detailsMsg) errs.push({ fieldId: 'details', message: detailsMsg });
-    }
-
-    return errs;
+    return buildUnfulfilledErrors(
+      ChangeTranscriptErrorMessages as ErrorMessages,
+      this.isUnfulfilled,
+      this.reasonControl.errors,
+      this.detailsControl.errors
+    );
   }
 
-  getErrorMessage<K extends keyof typeof ChangeTranscriptErrorMessages>(
-    field: K,
-    errors: ValidationErrors | null | undefined
-  ): string | null {
-    if (!errors) return null;
-    const map = ChangeTranscriptErrorMessages[field];
-    // Show the first defined message for any present error key
-    for (const key of Object.keys(errors)) {
-      const msg = (map as Record<string, string | undefined>)[key];
-      if (msg) return msg;
-    }
-    return null;
+  getErrorMessage(field: 'reason' | 'details', errors: ValidationErrors | null | undefined): string | null {
+    return firstError(ChangeTranscriptErrorMessages as ErrorMessages, field, errors);
   }
 }
