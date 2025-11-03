@@ -1,5 +1,9 @@
 // import the utils as before
-import { installGlobalErrorListenersOnce } from '@utils/global-error-listeners';
+import {
+  installGlobalErrorListenersOnce,
+  isChunkOrDynamicImportFailure,
+  looksLikeHashedScript,
+} from '@utils/global-error-listeners';
 
 describe('installGlobalErrorListenersOnce', () => {
   let handlers: Record<string, Array<(ev: Event) => void>>;
@@ -93,5 +97,58 @@ describe('installGlobalErrorListenersOnce', () => {
 
     guard = JSON.parse(sessionStorage.getItem('chunkReloadGuard') || '{"count":0,"ts":0}');
     expect(guard.count).toBe(2); // unchanged
+  });
+
+  it('installGlobalErrorListenersOnce: triggers on unhandledrejection', () => {
+    const cb = jest.fn();
+    installGlobalErrorListenersOnce(cb);
+
+    // Simulate a Promise rejection event-like object;
+    const rejectionLike = { reason: new Error('net::ERR_CONNECTION_ABORTED') };
+
+    // invoke the captured unhandledrejection handler
+    const lastUnhandled = handlers['unhandledrejection'][handlers['unhandledrejection'].length - 1];
+    lastUnhandled(rejectionLike as unknown as Event);
+
+    expect(cb).toHaveBeenCalledTimes(1);
+    const guard = JSON.parse(sessionStorage.getItem('chunkReloadGuard') || '{"count":0,"ts":0}');
+    expect(guard.count).toBe(1);
+  });
+
+  it('installGlobalErrorListenersOnce: readGuard catches bad JSON', () => {
+    // Write malformed JSON so readGuard hits the catch path
+    sessionStorage.setItem('chunkReloadGuard', '{not-json');
+
+    const cb = jest.fn();
+    installGlobalErrorListenersOnce(cb);
+
+    // Fire an error that matches a covered pattern
+    const errEv = new ErrorEvent('error', { message: 'Loading chunk 42 failed.' });
+    // invoke the captured handler
+    (handlers['error'][handlers['error'].length - 1] as (e: Event) => void)(errEv);
+
+    expect(cb).toHaveBeenCalledTimes(1);
+    const guard = JSON.parse(sessionStorage.getItem('chunkReloadGuard') || '{"count":0,"ts":0}');
+    expect(guard.count).toBe(1);
+    expect(typeof guard.ts).toBe('number');
+  });
+
+  it('looksLikeHashedScript: negative query/hash variants', () => {
+    expect(looksLikeHashedScript('/main.js?ver=abc')).toBe(false);
+    expect(looksLikeHashedScript('/vendor.js#123')).toBe(false);
+  });
+
+  it('isChunkOrDynamicImportFailure: event has target but not a hashed <script>', () => {
+    // target is a SCRIPT but src doesn't look hashed -> false
+    const script = document.createElement('script');
+    script.src = '/scripts/app.js';
+    const eventWithPlainScript = { target: script } as unknown as Event;
+    expect(isChunkOrDynamicImportFailure(eventWithPlainScript)).toBe(false);
+
+    // target is not a script (e.g., IMG) -> false
+    const img = document.createElement('img');
+    img.src = '/assets/pic.png';
+    const eventWithImg = { target: img } as unknown as Event;
+    expect(isChunkOrDynamicImportFailure(eventWithImg)).toBe(false);
   });
 });
