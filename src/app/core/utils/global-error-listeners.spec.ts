@@ -14,19 +14,13 @@ describe('installGlobalErrorListenersOnce', () => {
 
     jest
       .spyOn(window, 'addEventListener')
-      .mockImplementation(
-        (
-          type: string,
-          listener: EventListenerOrEventListenerObject,
-          _options?: boolean | AddEventListenerOptions
-        ): void => {
-          const fn: (ev: Event) => void =
-            typeof listener === 'function' ? (ev: Event) => listener(ev) : (ev: Event) => listener.handleEvent(ev);
+      .mockImplementation((type: string, listener: EventListenerOrEventListenerObject): void => {
+        const fn: (ev: Event) => void =
+          typeof listener === 'function' ? (ev: Event) => listener(ev) : (ev: Event) => listener.handleEvent(ev);
 
-          if (!handlers[type]) handlers[type] = [];
-          handlers[type].push(fn);
-        }
-      );
+        if (!handlers[type]) handlers[type] = [];
+        handlers[type].push(fn);
+      });
   });
 
   afterEach(() => {
