@@ -170,6 +170,12 @@ export class UploadTranscriptComponent implements OnDestroy {
     if (this.isSubmitted) this.errors = this.buildErrors();
   }
 
+  onReasonChanged(): void {
+    if (this.reasonControl.value !== 'other') {
+      this.detailsControl.setValue('', { emitEvent: false });
+    }
+  }
+
   onComplete() {
     this.isSubmitted = true;
 
