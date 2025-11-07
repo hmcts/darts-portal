@@ -4,7 +4,7 @@ export type Outcome = 'complete' | 'unfulfilled';
 export type ErrorField = 'file' | 'reason' | 'details';
 export type ErrorMessages = Record<ErrorField, Record<string, string>>;
 
-/** Reason required when unfulfilled; details required iff reason === 'other'. */
+/** Reason required when unfulfilled; details required if reason === 'other'. */
 export function applyUnfulfilledValidators(
   isUnfulfilled: boolean,
   reason: AbstractControl,
