@@ -118,6 +118,18 @@ describe('Upload transcript', () => {
       cy.get('#reason').select('Inaudible / unintelligible');
       cy.get('#details').should('not.exist');
     });
+
+    it('comment box clears when changing away from "Other"', () => {
+      cy.get('input#outcome-unfulfilled').check({ force: true });
+      cy.get('#reason').select('Other');
+      cy.get('#details').type('Some comment');
+      cy.get('#details').should('have.value', 'Some comment');
+
+      cy.get('#reason').select('Inaudible / unintelligible');
+      cy.get('#reason').select('Other');
+
+      cy.get('#details').should('have.value', '');
+    });
   });
 
   describe('Upload transcript — automated request (/work/8)', () => {
