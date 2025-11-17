@@ -135,5 +135,5 @@
     "typescript": "^5.5.3",
     "xunit-viewer": "^10.6.1"
   },
-  "packageManager": "yarn@3.8.7"
+  "packageManager": "yarn@4.11.0"
 }
