@@ -19,7 +19,7 @@
           <span class="govuk-visually-hidden">Error: </span>{{ getErrorMessage('reason', reasonControl.errors) }}
         </p>
       }
-      <select id="reason" class="govuk-select" [formControl]="reasonControl">
+      <select id="reason" class="govuk-select" [formControl]="reasonControl" (change)="onReasonChanged()">
         <option value="" disabled selected>Select a reason</option>
         @for (r of REASONS; track r) {
           <option [ngValue]="r">{{ REASON_DISPLAY[r] }}</option>

@@ -286,6 +286,22 @@ describe('Admin - Transcript requests', () => {
 
       cy.get('app-govuk-banner').contains('Status updated');
     });
+
+    it('comment box clears when changing away from "Other"', () => {
+      cy.get('app-search-transcripts-results').get('a').contains('6').click();
+      cy.get('a').contains('Change status').click();
+      cy.get('#status').select('Unfulfilled');
+
+      cy.get('#reason').select('Other');
+      cy.get('#details').type('Some comment');
+      cy.get('#details').should('have.value', 'Some comment');
+
+      cy.get('#reason').select('Inaudible / unintelligible');
+
+      cy.get('#reason').select('Other');
+
+      cy.get('#details').should('have.value', '');
+    });
   });
 
   describe('Search completed transcripts', () => {

@@ -116,6 +116,12 @@ export class ChangeTranscriptStatusComponent implements OnInit {
     });
   }
 
+  onReasonChanged(): void {
+    if (this.reasonControl.value !== 'other') {
+      this.detailsControl.setValue('', { emitEvent: false });
+    }
+  }
+
   private applySubmitOnlyValidators(): void {
     applyUnfulfilledValidators(this.isUnfulfilled, this.reasonControl, this.detailsControl, 200);
   }
