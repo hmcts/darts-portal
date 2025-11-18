@@ -8669,10 +8669,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:~12.1.0":
-  version: 12.1.0
-  resolution: "commander@npm:12.1.0"
-  checksum: 10/cdaeb672d979816853a4eed7f1310a9319e8b976172485c2a6b437ed0db0a389a44cfb222bfbde772781efa9f215bdd1b936f80d6b249485b465c6cb906e1f93
+"commander@npm:~14.0.0":
+  version: 14.0.2
+  resolution: "commander@npm:14.0.2"
+  checksum: 10/2d202db5e5f9bb770112a3c1579b893d17ac6f6d932183077308bdd96d0f87f0bbe6a68b5b9ed2cf3b2514be6bb7de637480703c0e2db9741ee1b383237deb26
   languageName: node
   linkType: hard
 
@@ -9192,7 +9192,7 @@ __metadata:
     jest-environment-jsdom: "npm:^29.7"
     jest-preset-angular: "npm:^15.0.0"
     js-yaml: "npm:^4.1.0"
-    junit-report-merger: "npm:^7.0.0"
+    junit-report-merger: "npm:^8.0.0"
     lodash: "npm:^4.17.21"
     luxon: "npm:^3.4.4"
     ngx-cookie-service: "npm:^19.0.0"
@@ -10480,7 +10480,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-glob@npm:3.3.3, fast-glob@npm:^3.3.2, fast-glob@npm:~3.3.0":
+"fast-glob@npm:3.3.3, fast-glob@npm:^3.3.2":
   version: 3.3.3
   resolution: "fast-glob@npm:3.3.3"
   dependencies:
@@ -12796,17 +12796,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"junit-report-merger@npm:^7.0.0":
-  version: 7.0.1
-  resolution: "junit-report-merger@npm:7.0.1"
+"junit-report-merger@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "junit-report-merger@npm:8.0.0"
   dependencies:
-    commander: "npm:~12.1.0"
-    fast-glob: "npm:~3.3.0"
+    commander: "npm:~14.0.0"
+    tinyglobby: "npm:^0.2.15"
     xmlbuilder2: "npm:3.1.1"
   bin:
     jrm: cli.js
     junit-report-merger: cli.js
-  checksum: 10/b33e7c5a45b6a41dfb8725ce86573aefbbf530394965b6fe67aa8b2e4d7744ce9a640c53a989c36c60cea06e4f6a5011525534f55db1bb3fbfaf84ff8cf440cf
+  checksum: 10/25e467fb3fc71f16c6881fb5900221cd8de28bd49a024d14b3fdb4315a9531cf86d5e042e3977c5c63d914ed371c46de97d0145a6124b400666e6be37128697d
   languageName: node
   linkType: hard
 
