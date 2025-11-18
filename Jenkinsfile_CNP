@@ -1,25 +1,50 @@
 #!groovy
 
-@Library("Infrastructure")
+@Library('Infrastructure')
 
 def type = "angular"
 def product = "darts"
 def component = "portal"
 
-def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 def branchesToSync = ['demo', 'perftest']
 
+static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
+  [
+    $class     : 'AzureKeyVaultSecret',
+    secretType : 'Secret',
+    name       : secretName,
+    version    : '',
+    envVariable: envVar,
+  ]
+}
+
+def vaultOverrides = [
+  'preview': 'stg',
+  'dev': 'stg'
+]
+
+def secrets = [
+  'darts-${env}': [
+    secret('DartsExternalUsersTestPassword', 'CYPRESS_AUTOMATION_PASSWORD'),
+  ],
+]
+
+def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
+
 withPipeline(type, product, component) {
+  overrideVaultEnvironments(vaultOverrides)
+  loadVaultSecrets(secrets)
+
   enableSlackNotifications('#darts-builds')
   disableCleanupOfHelmReleaseOnFailure()
 
-  afterAlways('smokeTest:dev') {
+  afterAlways('smoketest:dev') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'smoke-output/**/*'
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/screenshots/**/*'
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/videos/**/*'
   }
 
-  afterAlways('smokeTest:stg') {
+  afterAlways('smoketest:stg') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'smoke-output/**/*'
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/screenshots/**/*'
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'cypress/videos/**/*'

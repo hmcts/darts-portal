@@ -94,6 +94,7 @@ export class TranscriptionAdminService {
       'With Transcriber': isManual ? ['Approved', 'Closed'] : ['Approved', 'Closed', 'Complete'],
       Complete: [],
       Closed: [],
+      Unfulfilled: [],
     };
 
     return this.getTranscriptionStatuses().pipe(

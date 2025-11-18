@@ -5,4 +5,5 @@ export type TranscriptStatus =
   | 'Rejected'
   | 'With Transcriber'
   | 'Complete'
-  | 'Closed';
+  | 'Closed'
+  | 'Unfulfilled';
