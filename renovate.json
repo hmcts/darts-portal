@@ -1,13 +1,24 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "local>hmcts/.github:renovate-config",
-    "local>hmcts/.github//renovate/automerge-minor"
-  ],
+  "extends": ["local>hmcts/.github:renovate-config", "local>hmcts/.github//renovate/automerge-minor"],
   "packageRules": [
     {
       "matchPackageNames": ["@ministryofjustice/frontend"],
       "enabled": false
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "automerge": false,
+      "dependencyDashboardApproval": true,
+      "labels": ["renovate:major", "breaking-change"],
+      "prHeader": "{{#if isMajor}}> ⚠️ **Major update**: {{depName}} {{currentVersion}} → {{newVersion}}{{/if}}",
+      "prBodyNotes": [
+        "{{#if isMajor}}**Action required:** Add the `enable_keep_helm` label to this PR for deployment control.{{/if}}",
+        "{{#if isMajor}}**Action required:** Deploy and test the dev environment before approving/merging.{{/if}}",
+        "{{#if isMajor}}{{#if hasReleaseNotes}}**Review these release notes for breaking changes:**{{/if}}{{/if}}",
+        "{{#if isMajor}}{{#if hasReleaseNotes}}{{{releaseNotes}}}{{/if}}{{/if}}",
+        "{{#if isMajor}}{{#unless hasReleaseNotes}}No release notes found. Visit: {{url}}{{/unless}}{{/if}}"
+      ]
     }
   ]
 }

@@ -1,7 +1,7 @@
 import config from 'config';
 import { RedisStore } from 'connect-redis';
 import session from 'express-session';
-import { Redis } from 'ioredis';
+import { createClient, RedisClientType } from 'redis';
 import { trackException } from '../app-insights';
 
 export default () => {
@@ -11,7 +11,7 @@ export default () => {
     secret: config.get('secrets.darts.darts-portal-session-secret'),
     resave: false,
     saveUninitialized: true,
-    cookie: { sameSite: 'strict' },
+    cookie: { sameSite: 'strict', maxAge: sessionTtl * 1000 },
     name: config.get('session.cookieName'),
   };
 
@@ -21,22 +21,31 @@ export default () => {
       config.get('session.overriddenNotSecretRedisConnectionString') ||
       config.get('secrets.darts.redis-connection-string');
 
-    let redis: Redis | undefined;
+    let redis: RedisClientType | undefined;
     try {
-      redis = new Redis(redisConnectionString);
+      redis = createClient({ url: redisConnectionString });
+
+      redis.connect().catch((err) => {
+        console.error('REDIS CONNECT ERROR', err);
+        trackException(err as Error, { source: 'redis', stage: 'connect' });
+      });
 
       redis.on('error', (err) => {
-        console.error('REDIS ERROR', err);
-        trackException(err as Error, { source: 'ioredis' });
+        if (err.message.includes('Socket closed unexpectedly')) {
+          console.warn('Redis socket closed (will reconnect)');
+        } else {
+          console.error('REDIS ERROR', err);
+          trackException(err);
+        }
       });
     } catch (error) {
       console.error('Error connecting to Redis:', error);
-      trackException(error as Error, { source: 'ioredis' });
+      trackException(error as Error, { source: 'redis' });
     }
 
     if (!redis) {
       const e = new Error('Redis client not initialized');
-      trackException(e, { source: 'ioredis', stage: 'PreStore' });
+      trackException(e, { source: 'redis', stage: 'PreStore' });
     }
 
     try {
