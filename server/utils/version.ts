@@ -28,7 +28,7 @@ const versionFile = () => {
     const versionFileText = fs.readFileSync(versionFilePath, { encoding: 'utf8' });
     return yaml.load(versionFileText);
   } catch (err: any) {
-    // do nothing with the error and return default
+    //do nothing with the error and return default
     return defaultObj;
   }
 };
