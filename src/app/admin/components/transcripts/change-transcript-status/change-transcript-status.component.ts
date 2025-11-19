@@ -9,6 +9,7 @@ import { TranscriptStatus } from '@portal-types/index';
 import { HeaderService } from '@services/header/header.service';
 import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
+import { UnfullfillTranscriptComponent } from 'src/app/portal/components/transcriptions/unfulfill-transcript/unfulfill-transcript.component';
 import {
   applyUnfulfilledValidators,
   buildUnfulfilledErrors,
@@ -25,7 +26,14 @@ import {
 @Component({
   selector: 'app-change-transcript-status',
   standalone: true,
-  imports: [ReactiveFormsModule, GovukHeadingComponent, GovukTextareaComponent, AsyncPipe, RouterLink],
+  imports: [
+    ReactiveFormsModule,
+    GovukHeadingComponent,
+    GovukTextareaComponent,
+    AsyncPipe,
+    RouterLink,
+    UnfullfillTranscriptComponent,
+  ],
   templateUrl: './change-transcript-status.component.html',
   styleUrl: './change-transcript-status.component.scss',
 })
@@ -58,8 +66,8 @@ export class ChangeTranscriptStatusComponent implements OnInit {
     this.headerService.hideNavigation();
   }
 
-  reasonControl = new FormControl<UnfulfilledReason | ''>('');
-  detailsControl = new FormControl<string>('', [Validators.maxLength(200)]);
+  reasonControl = new FormControl<UnfulfilledReason | ''>('', { nonNullable: true });
+  detailsControl = new FormControl<string>('', { nonNullable: true, validators: [Validators.maxLength(200)] });
   statusControl = this.form.controls.status;
 
   get isUnfulfilled(): boolean {
@@ -116,12 +124,6 @@ export class ChangeTranscriptStatusComponent implements OnInit {
     });
   }
 
-  onReasonChanged(): void {
-    if (this.reasonControl.value !== 'other') {
-      this.detailsControl.setValue('', { emitEvent: false });
-    }
-  }
-
   private applySubmitOnlyValidators(): void {
     applyUnfulfilledValidators(this.isUnfulfilled, this.reasonControl, this.detailsControl, 200);
   }
@@ -137,5 +139,14 @@ export class ChangeTranscriptStatusComponent implements OnInit {
 
   getErrorMessage(field: 'reason' | 'details', errors: ValidationErrors | null | undefined): string | null {
     return firstError(ChangeTranscriptErrorMessages as ErrorMessages, field, errors);
+  }
+
+  onStatusChanged(): void {
+    const statusId = Number(this.statusControl.value);
+    if (statusId !== UNFULFILLED_STATUS_ID) {
+      // clear unfulfilled controls when switching away from unfulfilled
+      this.reasonControl.setValue('', { emitEvent: false });
+      this.detailsControl.setValue('', { emitEvent: false });
+    }
   }
 }

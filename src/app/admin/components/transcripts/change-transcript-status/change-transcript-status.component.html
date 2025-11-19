@@ -3,7 +3,7 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="govuk-form-group">
     <label class="govuk-label" for="status"> Select status </label>
-    <select class="govuk-select" id="status" formControlName="status">
+    <select class="govuk-select" id="status" formControlName="status" (change)="onStatusChanged()">
       <option value="" disabled selected>Select status</option>
       @for (status of statuses$ | async; track status) {
         <option value="{{ status.id }}">{{ status.displayName }}</option>
@@ -12,39 +12,13 @@
   </div>
 
   @if (isUnfulfilled) {
-    <div class="govuk-form-group" [class.govuk-form-group--error]="isSubmitted && reasonControl.invalid">
-      <label class="govuk-label" for="reason">Reason</label>
-      @if (isSubmitted && reasonControl.hasError('required')) {
-        <p class="govuk-error-message">
-          <span class="govuk-visually-hidden">Error: </span>{{ getErrorMessage('reason', reasonControl.errors) }}
-        </p>
-      }
-      <select id="reason" class="govuk-select" [formControl]="reasonControl" (change)="onReasonChanged()">
-        <option value="" disabled selected>Select a reason</option>
-        @for (r of REASONS; track r) {
-          <option [ngValue]="r">{{ REASON_DISPLAY[r] }}</option>
-        }
-      </select>
-    </div>
-  }
-
-  @if (showOtherComment) {
-    <div class="govuk-form-group" [class.govuk-form-group--error]="isSubmitted && detailsControl.invalid">
-      <label class="govuk-label" for="details">Comment</label>
-      @if (isSubmitted && detailsControl.invalid) {
-        <p class="govuk-error-message">
-          <span class="govuk-visually-hidden">Error: </span>{{ getErrorMessage('details', detailsControl.errors) }}
-        </p>
-      }
-      <app-govuk-textarea
-        [control]="detailsControl"
-        [id]="'details'"
-        name="details"
-        ariaDescribedBy="details-label"
-        [maxCharacterLimit]="200"
-        [isInvalid]="isSubmitted && detailsControl.invalid"
-      />
-    </div>
+    <app-unfulfilled-section
+      [reasonControl]="reasonControl"
+      [detailsControl]="detailsControl"
+      [isSubmitted]="isSubmitted"
+      [maxDetailsLength]="200"
+      [errorMessageFor]="getErrorMessage.bind(this)"
+    ></app-unfulfilled-section>
   }
 
   @if (!isUnfulfilled) {

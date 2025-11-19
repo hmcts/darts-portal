@@ -274,13 +274,13 @@ describe('Admin - Transcript requests', () => {
       cy.get('.govuk-error-message').should('contain', 'Select a reason to mark this request as unfulfilled');
 
       cy.get('#reason').select('Other');
-      cy.get('#details').should('exist');
+      cy.get('textarea#details').should('exist');
 
       cy.get('button').contains('Save changes').click();
 
       cy.get('.govuk-error-message').should('contain', 'Enter the reason for the unfulfilled request');
 
-      cy.get('#details').clear().type('Mic failure, no capture');
+      cy.get('textarea#details').clear().type('Mic failure, no capture');
 
       cy.get('button').contains('Save changes').click();
 
@@ -293,14 +293,14 @@ describe('Admin - Transcript requests', () => {
       cy.get('#status').select('Unfulfilled');
 
       cy.get('#reason').select('Other');
-      cy.get('#details').type('Some comment');
-      cy.get('#details').should('have.value', 'Some comment');
+      cy.get('textarea#details').type('Some comment');
+      cy.get('textarea#details').should('have.value', 'Some comment');
 
       cy.get('#reason').select('Inaudible / unintelligible');
 
       cy.get('#reason').select('Other');
 
-      cy.get('#details').should('have.value', '');
+      cy.get('textarea#details').should('have.value', '');
     });
   });
 

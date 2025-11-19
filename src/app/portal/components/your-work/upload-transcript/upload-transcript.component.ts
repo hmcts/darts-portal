@@ -6,7 +6,6 @@ import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
 import { FileUploadComponent } from '@common/file-upload/file-upload.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
-import { GovukTextareaComponent } from '@common/govuk-textarea/govuk-textarea.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
@@ -17,6 +16,7 @@ import { TranscriptionDetails } from '@portal-types/index';
 import { HeaderService } from '@services/header/header.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { maxFileSizeValidator } from '@validators/max-file-size.validator';
+import { UnfullfillTranscriptComponent } from 'src/app/portal/components/transcriptions/unfulfill-transcript/unfulfill-transcript.component';
 import { map } from 'rxjs';
 import {
   applyUnfulfilledValidators,
@@ -36,7 +36,6 @@ type Outcome = 'complete' | 'unfulfilled';
   standalone: true,
   imports: [
     DetailsTableComponent,
-    GovukTextareaComponent,
     BreadcrumbComponent,
     BreadcrumbDirective,
     GovukHeadingComponent,
@@ -47,6 +46,7 @@ type Outcome = 'complete' | 'unfulfilled';
     ReactiveFormsModule,
     AsyncPipe,
     LoadingComponent,
+    UnfullfillTranscriptComponent,
   ],
   templateUrl: './upload-transcript.component.html',
   styleUrl: './upload-transcript.component.scss',
@@ -91,8 +91,8 @@ export class UploadTranscriptComponent implements OnDestroy {
 
   fileControl = new FormControl<File | null>(null);
   outcomeControl = new FormControl<Outcome>('complete', { nonNullable: true });
-  reasonControl = new FormControl<UnfulfilledReason | ''>('');
-  detailsControl = new FormControl<string>('', [Validators.maxLength(200)]);
+  reasonControl = new FormControl<UnfulfilledReason | ''>('', { nonNullable: true });
+  detailsControl = new FormControl<string>('', { nonNullable: true, validators: [Validators.maxLength(200)] });
 
   form: FormGroup = this.fb.group({
     outcome: this.outcomeControl,
@@ -163,17 +163,16 @@ export class UploadTranscriptComponent implements OnDestroy {
 
   onOutcomeChanged(): void {
     this.syncFileValidators();
-    if (this.isUnfulfilled) {
-      // avoid accidental upload; also clears any file errors
+    if (!this.isUnfulfilled) {
+      // Reset unfulfilled controls when switching away from unfulfilled
+      this.reasonControl.setValue('', { emitEvent: false });
+      this.detailsControl.setValue('', { emitEvent: false });
+    } else {
+      // Switching to unfulfilled — avoid accidental upload; also clears any file errors
       this.fileControl.setValue(null, { emitEvent: false });
     }
-    if (this.isSubmitted) this.errors = this.buildErrors();
-  }
 
-  onReasonChanged(): void {
-    if (this.reasonControl.value !== 'other') {
-      this.detailsControl.setValue('', { emitEvent: false });
-    }
+    if (this.isSubmitted) this.errors = this.buildErrors();
   }
 
   onComplete() {
