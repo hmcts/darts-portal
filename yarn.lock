@@ -710,9 +710,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/cdk@npm:20.2.2":
-  version: 20.2.2
-  resolution: "@angular/cdk@npm:20.2.2"
+"@angular/cdk@npm:20.2.14":
+  version: 20.2.14
+  resolution: "@angular/cdk@npm:20.2.14"
   dependencies:
     parse5: "npm:^8.0.0"
     tslib: "npm:^2.3.0"
@@ -720,7 +720,7 @@ __metadata:
     "@angular/common": ^20.0.0 || ^21.0.0
     "@angular/core": ^20.0.0 || ^21.0.0
     rxjs: ^6.5.3 || ^7.4.0
-  checksum: 10/141d872686c2ad1dbede73fc27e19e90712071492eba4648cb8dd0516a96ee134845d430c41f393bdfc96f2062019465f6c202680087a942667793c8d6b73e16
+  checksum: 10/a2b8a2fc30dc2499b1da5e1c4f10390750475f28a3e5da2c4a5bf8d9ea251303533ea20e3975bc48e82d90b67206d5f1a68961492d59a1bdaaa2314fb11c0934
   languageName: node
   linkType: hard
 
@@ -9676,7 +9676,7 @@ __metadata:
     "@angular-eslint/template-parser": "npm:^20.0.0"
     "@angular/animations": "npm:20.2.2"
     "@angular/build": "npm:20.2.2"
-    "@angular/cdk": "npm:20.2.2"
+    "@angular/cdk": "npm:20.2.14"
     "@angular/cli": "npm:20.2.2"
     "@angular/common": "npm:20.2.2"
     "@angular/compiler": "npm:20.2.2"
