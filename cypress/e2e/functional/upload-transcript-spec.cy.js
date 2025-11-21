@@ -74,12 +74,12 @@ describe('Upload transcript', () => {
         cy.get('input#outcome-unfulfilled').check({ force: true });
 
         cy.get('#reason').select('Other');
-        cy.get('#details').should('exist');
+        cy.get('textarea#details').should('exist');
 
         cy.get('#submit-button').click();
         cy.get('.govuk-error-message').should('contain', 'Enter the reason for the unfulfilled request');
 
-        cy.get('#details').clear().type('Mic failure, no capture');
+        cy.get('textarea#details').clear().type('Mic failure, no capture');
         cy.get('#submit-button').click();
         cy.url().should('match', /\/work\/1\/unfulfilled$/);
       });
@@ -113,10 +113,21 @@ describe('Upload transcript', () => {
     it('comment box disappears when changing away from "Other"', () => {
       cy.get('input#outcome-unfulfilled').check({ force: true });
       cy.get('#reason').select('Other');
-      cy.get('#details').should('exist');
+      cy.get('textarea#details').should('exist');
 
       cy.get('#reason').select('Inaudible / unintelligible');
-      cy.get('#details').should('not.exist');
+      cy.get('textarea#details').should('not.exist');
+    });
+
+    it('comment box clears when changing away from "Other"', () => {
+      cy.get('input#outcome-unfulfilled').check({ force: true });
+      cy.get('#reason').select('Other');
+      cy.get('textarea#details').type('Some comment');
+      cy.get('textarea#details').should('have.value', 'Some comment');
+      cy.get('#reason').select('Inaudible / unintelligible');
+      cy.get('#reason').select('Other');
+
+      cy.get('textarea#details').should('have.value', '');
     });
   });
 
@@ -161,12 +172,12 @@ describe('Upload transcript', () => {
       cy.get('#reason').select('Other');
 
       // Comment box appears only for "Other"
-      cy.get('#details').should('exist');
+      cy.get('textarea#details').should('exist');
 
       cy.get('#submit-button').click();
       cy.get('.govuk-error-message').should('contain', 'Enter the reason for the unfulfilled request');
 
-      cy.get('#details').type('Automation service outage');
+      cy.get('textarea#details').type('Automation service outage');
       cy.get('#submit-button').click();
       cy.url().should('match', /\/work\/8\/unfulfilled$/);
     });

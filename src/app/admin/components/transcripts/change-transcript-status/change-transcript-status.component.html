@@ -3,7 +3,7 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="govuk-form-group">
     <label class="govuk-label" for="status"> Select status </label>
-    <select class="govuk-select" id="status" formControlName="status">
+    <select class="govuk-select" id="status" formControlName="status" (change)="onStatusChanged()">
       <option value="" disabled selected>Select status</option>
       @for (status of statuses$ | async; track status) {
         <option value="{{ status.id }}">{{ status.displayName }}</option>
@@ -11,14 +11,26 @@
     </select>
   </div>
 
-  <label id="comment-label" class="govuk-label" for="comments">Comment (optional)</label>
-  <app-govuk-textarea
-    [control]="form.controls.comments"
-    [id]="'comments'"
-    name="comments"
-    ariaDescribedBy="comment-label"
-    [maxCharacterLimit]="256"
-  ></app-govuk-textarea>
+  @if (isUnfulfilled) {
+    <app-unfulfilled-section
+      [reasonControl]="reasonControl"
+      [detailsControl]="detailsControl"
+      [isSubmitted]="isSubmitted"
+      [maxDetailsLength]="200"
+      [errorMessageFor]="getErrorMessage.bind(this)"
+    ></app-unfulfilled-section>
+  }
+
+  @if (!isUnfulfilled) {
+    <label id="comment-label" class="govuk-label" for="comments">Comment (optional)</label>
+    <app-govuk-textarea
+      [control]="form.controls.comments"
+      [id]="'comments'"
+      name="comments"
+      ariaDescribedBy="comment-label"
+      [maxCharacterLimit]="256"
+    ></app-govuk-textarea>
+  }
 
   <div class="govuk-button-group">
     <button class="govuk-button" type="submit">Save changes</button>

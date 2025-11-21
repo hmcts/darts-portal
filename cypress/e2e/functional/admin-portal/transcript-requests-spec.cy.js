@@ -250,10 +250,10 @@ describe('Admin - Transcript requests', () => {
   describe('Change status', () => {
     beforeEach(() => {
       cy.get('#search').contains('Search').click();
-      cy.get('app-search-transcripts-results').get('a').contains('6').click();
     });
 
     it('changes status', () => {
+      cy.get('app-search-transcripts-results').get('a').contains('6').click();
       cy.get('a').contains('Change status').click();
       cy.get('#status').select('Approved');
       cy.get('button').contains('Save changes').click();
@@ -262,6 +262,45 @@ describe('Admin - Transcript requests', () => {
       cy.get('#status-details').contains('Approved');
 
       cy.get('app-govuk-banner').contains('Status updated');
+    });
+
+    it('changes status to unfulfilled', () => {
+      cy.get('app-search-transcripts-results').get('a').contains('6').click();
+      cy.get('a').contains('Change status').click();
+      cy.get('#status').select('Unfulfilled');
+      cy.get('button').contains('Save changes').click();
+
+      //Validation
+      cy.get('.govuk-error-message').should('contain', 'Select a reason to mark this request as unfulfilled');
+
+      cy.get('#reason').select('Other');
+      cy.get('textarea#details').should('exist');
+
+      cy.get('button').contains('Save changes').click();
+
+      cy.get('.govuk-error-message').should('contain', 'Enter the reason for the unfulfilled request');
+
+      cy.get('textarea#details').clear().type('Mic failure, no capture');
+
+      cy.get('button').contains('Save changes').click();
+
+      cy.get('app-govuk-banner').contains('Status updated');
+    });
+
+    it('comment box clears when changing away from "Other"', () => {
+      cy.get('app-search-transcripts-results').get('a').contains('6').click();
+      cy.get('a').contains('Change status').click();
+      cy.get('#status').select('Unfulfilled');
+
+      cy.get('#reason').select('Other');
+      cy.get('textarea#details').type('Some comment');
+      cy.get('textarea#details').should('have.value', 'Some comment');
+
+      cy.get('#reason').select('Inaudible / unintelligible');
+
+      cy.get('#reason').select('Other');
+
+      cy.get('textarea#details').should('have.value', '');
     });
   });
 
@@ -533,7 +572,7 @@ describe('Admin - Transcript requests', () => {
 
       cy.get('app-search-transcripts-results')
         .find('tbody.govuk-table__body > tr.govuk-table__row')
-        .should('have.length', 7);
+        .should('have.length', 8);
 
       cy.get('a').contains('Transcript documents').click();
 
@@ -547,7 +586,7 @@ describe('Admin - Transcript requests', () => {
 
       cy.get('app-search-transcripts-results')
         .find('tbody.govuk-table__body > tr.govuk-table__row')
-        .should('have.length', 7);
+        .should('have.length', 8);
 
       cy.get('a').contains('Transcript documents').click();
 

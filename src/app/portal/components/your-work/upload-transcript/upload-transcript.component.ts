@@ -1,12 +1,11 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
-import { Component, OnDestroy, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
 import { FileUploadComponent } from '@common/file-upload/file-upload.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
-import { GovukTextareaComponent } from '@common/govuk-textarea/govuk-textarea.component';
 import { LoadingComponent } from '@common/loading/loading.component';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
@@ -17,17 +16,26 @@ import { TranscriptionDetails } from '@portal-types/index';
 import { HeaderService } from '@services/header/header.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
 import { maxFileSizeValidator } from '@validators/max-file-size.validator';
-import { map } from 'rxjs/internal/operators/map';
+import { UnfullfillTranscriptComponent } from 'src/app/portal/components/transcriptions/unfulfill-transcript/unfulfill-transcript.component';
+import { map } from 'rxjs';
+import {
+  applyUnfulfilledValidators,
+  buildUnfulfilledErrors,
+  ErrorMessages,
+  firstError,
+} from 'src/app/admin/utils/unfulfilled-form.util';
+import {
+  getUnfulfilledReason,
+  REASON_DISPLAY,
+  UnfulfilledReason,
+} from 'src/app/admin/utils/unfulfilled-transcript.utils';
 
 type Outcome = 'complete' | 'unfulfilled';
-type UnfulfilledReason = 'inaudible' | 'no_audio' | 'one_second' | 'other';
-
 @Component({
   selector: 'app-upload-transcript',
   standalone: true,
   imports: [
     DetailsTableComponent,
-    GovukTextareaComponent,
     BreadcrumbComponent,
     BreadcrumbDirective,
     GovukHeadingComponent,
@@ -38,6 +46,7 @@ type UnfulfilledReason = 'inaudible' | 'no_audio' | 'one_second' | 'other';
     ReactiveFormsModule,
     AsyncPipe,
     LoadingComponent,
+    UnfullfillTranscriptComponent,
   ],
   templateUrl: './upload-transcript.component.html',
   styleUrl: './upload-transcript.component.scss',
@@ -59,12 +68,7 @@ export class UploadTranscriptComponent implements OnDestroy {
   isUploading = false;
   requestStatus: 'TO_DO' | 'COMPLETED' = this.router.getCurrentNavigation()?.extras?.state?.requestStatus;
 
-  REASON_DISPLAY: Record<UnfulfilledReason, string> = {
-    inaudible: 'Inaudible / unintelligible',
-    no_audio: 'No audio / white noise',
-    one_second: 'Audio is 1 second',
-    other: 'Other',
-  } as const;
+  REASON_DISPLAY = REASON_DISPLAY;
 
   readonly REASONS = Object.keys(this.REASON_DISPLAY) as UnfulfilledReason[];
 
@@ -87,8 +91,8 @@ export class UploadTranscriptComponent implements OnDestroy {
 
   fileControl = new FormControl<File | null>(null);
   outcomeControl = new FormControl<Outcome>('complete', { nonNullable: true });
-  reasonControl = new FormControl<UnfulfilledReason | ''>('');
-  detailsControl = new FormControl<string>('', [Validators.maxLength(200)]);
+  reasonControl = new FormControl<UnfulfilledReason | ''>('', { nonNullable: true });
+  detailsControl = new FormControl<string>('', { nonNullable: true, validators: [Validators.maxLength(200)] });
 
   form: FormGroup = this.fb.group({
     outcome: this.outcomeControl,
@@ -134,48 +138,40 @@ export class UploadTranscriptComponent implements OnDestroy {
   private buildErrors(): { fieldId: string; message: string }[] {
     const errs: { fieldId: string; message: string }[] = [];
 
+    // file errors only in manual + complete
     if (!this.isUnfulfilled && this.isManualRequest) {
-      const fileMsg = this.getErrorMessage('file', this.fileControl.errors);
-      if (fileMsg) errs.push({ fieldId: 'file-upload-1', message: fileMsg });
+      const msg = firstError(UploadTranscriptErrorMessages as ErrorMessages, 'file', this.fileControl.errors);
+      if (msg) errs.push({ fieldId: 'file-upload-1', message: msg });
     }
 
-    if (this.isUnfulfilled) {
-      const reasonMsg = this.getErrorMessage('reason', this.reasonControl.errors);
-      if (reasonMsg) errs.push({ fieldId: 'reason', message: reasonMsg });
-
-      const detailsMsg = this.getErrorMessage('details', this.detailsControl.errors);
-      if (detailsMsg) errs.push({ fieldId: 'details', message: detailsMsg });
-    }
+    // unfulfilled section errors
+    errs.push(
+      ...buildUnfulfilledErrors(
+        UploadTranscriptErrorMessages as ErrorMessages,
+        this.isUnfulfilled,
+        this.reasonControl.errors,
+        this.detailsControl.errors
+      )
+    );
 
     return errs;
   }
 
   private applySubmitOnlyValidators(): void {
-    // reason required when unfulfilled
-    if (this.isUnfulfilled) {
-      this.reasonControl.setValidators([Validators.required]);
-    } else {
-      this.reasonControl.clearValidators();
-      this.reasonControl.setValue('', { emitEvent: false });
-    }
-    this.reasonControl.updateValueAndValidity({ emitEvent: false });
-
-    // details required only when 'other'; maxlength already present
-    const base = [Validators.maxLength(200)];
-    if (this.isUnfulfilled && this.reasonControl.value === 'other') {
-      this.detailsControl.setValidators([Validators.required, ...base]);
-    } else {
-      this.detailsControl.setValidators(base);
-    }
-    this.detailsControl.updateValueAndValidity({ emitEvent: false });
+    applyUnfulfilledValidators(this.isUnfulfilled, this.reasonControl, this.detailsControl, 200);
   }
 
   onOutcomeChanged(): void {
     this.syncFileValidators();
-    if (this.isUnfulfilled) {
-      // avoid accidental upload; also clears any file errors
+    if (!this.isUnfulfilled) {
+      // Reset unfulfilled controls when switching away from unfulfilled
+      this.reasonControl.setValue('', { emitEvent: false });
+      this.detailsControl.setValue('', { emitEvent: false });
+    } else {
+      // Switching to unfulfilled — avoid accidental upload; also clears any file errors
       this.fileControl.setValue(null, { emitEvent: false });
     }
+
     if (this.isSubmitted) this.errors = this.buildErrors();
   }
 
@@ -206,25 +202,18 @@ export class UploadTranscriptComponent implements OnDestroy {
     return this.isManualRequest ? this.uploadTranscript() : this.completeTranscript();
   }
 
-  private buildUnfulfilledReason(): string {
+  private unfulfilledPayload(): string {
     const reason = this.reasonControl.value as UnfulfilledReason;
     const details = this.detailsControl.value?.trim();
 
-    const workflow_comment =
-      reason === 'other'
-        ? 'Other - ' + (details ?? '') // Details is required if 'other'
-        : this.REASON_DISPLAY[reason];
-
-    return workflow_comment;
+    return getUnfulfilledReason(reason, details);
   }
 
   private unfulfillTranscript() {
-    this.transcriptionService
-      .unfulfillTranscriptionRequest(this.requestId, this.buildUnfulfilledReason())
-      .subscribe(() => {
-        this.goToScreen('unfulfilled');
-        this.isUploading = false;
-      });
+    this.transcriptionService.unfulfillTranscriptionRequest(this.requestId, this.unfulfilledPayload()).subscribe(() => {
+      this.goToScreen('unfulfilled');
+      this.isUploading = false;
+    });
   }
 
   private completeTranscript() {
@@ -257,17 +246,7 @@ export class UploadTranscriptComponent implements OnDestroy {
     this.valueChangeSub.unsubscribe();
   }
 
-  getErrorMessage<K extends keyof typeof UploadTranscriptErrorMessages>(
-    field: K,
-    errors: ValidationErrors | null | undefined
-  ): string | null {
-    if (!errors) return null;
-    const map = UploadTranscriptErrorMessages[field];
-    // Show the first defined message for any present error key
-    for (const key of Object.keys(errors)) {
-      const msg = (map as Record<string, string | undefined>)[key];
-      if (msg) return msg;
-    }
-    return null;
+  getErrorMessage(field: 'file' | 'reason' | 'details', errors: ValidationErrors | null | undefined): string | null {
+    return firstError(UploadTranscriptErrorMessages as ErrorMessages, field, errors);
   }
 }
