@@ -4,7 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { AppConfig, AppConfigService } from '@services/app-config/app-config.service';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
 import { WINDOW } from '@utils/tokens';
-import { ErrorHandlerService, IGNORE_HTTP_STATUS_CODES, IMPORT_FAILED_MESSAGE } from './error-handler.service';
+import { ErrorHandlerService, IGNORE_HTTP_STATUS_CODES } from './error-handler.service';
 
 class MockWindow {
   location = {
@@ -60,7 +60,7 @@ describe('ErrorHandlerService', () => {
   });
 
   describe('dynamic module import errors', () => {
-    const error = new Error(IMPORT_FAILED_MESSAGE.source);
+    const error = new Error('Failed to fetch dynamically imported module');
 
     it('reloads page if the version has changed', async () => {
       const loadConfigPromise = Promise.resolve();
