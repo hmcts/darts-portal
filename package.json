@@ -84,6 +84,7 @@
     "send": "^1.0.0",
     "cookie": "^1.0.0",
     "express/path-to-regexp": "^8.0.0",
+    "body-parser@^2.2.0": "2.2.1",
     "formidable": "^3.5.3",
     "on-headers": "^1.1.0"
   },
