@@ -9495,8 +9495,8 @@ __metadata:
   linkType: hard
 
 "cypress@npm:^15.0.0":
-  version: 15.6.0
-  resolution: "cypress@npm:15.6.0"
+  version: 15.7.1
+  resolution: "cypress@npm:15.7.1"
   dependencies:
     "@cypress/request": "npm:^3.0.9"
     "@cypress/xvfb": "npm:^1.2.4"
@@ -9534,7 +9534,6 @@ __metadata:
     process: "npm:^0.11.10"
     proxy-from-env: "npm:1.0.0"
     request-progress: "npm:^3.0.0"
-    semver: "npm:^7.7.1"
     supports-color: "npm:^8.1.1"
     systeminformation: "npm:5.27.7"
     tmp: "npm:~0.2.4"
@@ -9543,7 +9542,7 @@ __metadata:
     yauzl: "npm:^2.10.0"
   bin:
     cypress: bin/cypress
-  checksum: 10/3564caa990794b1f98ffd9b96edfcb25e83d5a5f0aa15c5ce7a2d21d9289ef2d9640032584e6882dbac9ddc35da332916bf6b2db275d217eec3881ec76f57d52
+  checksum: 10/bf78d8e0695a332b9b096b7c1102c7d14acd46da4d183b7599e267cac119967e7a47340cb487e0244b0bacf131b9e1731bc3549678d1b003401d1d38af1e9fbc
   languageName: node
   linkType: hard
 
@@ -16577,7 +16576,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:7.7.3, semver@npm:^7.0.0, semver@npm:^7.1.1, semver@npm:^7.3.5, semver@npm:^7.3.7, semver@npm:^7.5.3, semver@npm:^7.5.4, semver@npm:^7.6.0, semver@npm:^7.7.1, semver@npm:^7.7.2, semver@npm:^7.7.3":
+"semver@npm:7.7.3, semver@npm:^7.0.0, semver@npm:^7.1.1, semver@npm:^7.3.5, semver@npm:^7.3.7, semver@npm:^7.5.3, semver@npm:^7.5.4, semver@npm:^7.6.0, semver@npm:^7.7.2, semver@npm:^7.7.3":
   version: 7.7.3
   resolution: "semver@npm:7.7.3"
   bin:
