@@ -91,9 +91,12 @@ export class TranscriptionAdminService {
       'Awaiting Authorisation': isManual ? ['Requested', 'Closed'] : [],
       Approved: ['Closed'],
       Rejected: [],
-      'With Transcriber': isManual ? ['Approved', 'Closed'] : ['Approved', 'Closed', 'Complete'],
+      'With Transcriber': isManual
+        ? ['Approved', 'Closed', 'Unfulfilled']
+        : ['Approved', 'Closed', 'Complete', 'Unfulfilled'],
       Complete: [],
       Closed: [],
+      Unfulfilled: [],
     };
 
     return this.getTranscriptionStatuses().pipe(

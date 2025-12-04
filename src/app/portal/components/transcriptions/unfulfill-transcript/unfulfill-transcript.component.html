@@ -1,0 +1,40 @@
+<div class="govuk-form-group" [class.govuk-form-group--error]="isSubmitted && reasonControl.invalid">
+  <label class="govuk-label" for="reason">Reason</label>
+
+  @if (isSubmitted && reasonControl.hasError('required')) {
+    <ng-container>
+      <p class="govuk-error-message">
+        <span class="govuk-visually-hidden">Error: </span>
+        {{ errorMessageFor('reason', reasonControl.errors) }}
+      </p>
+    </ng-container>
+  }
+
+  <select id="reason" class="govuk-select" [formControl]="reasonControl" (change)="handleReasonChange()">
+    <option value="" disabled>Select a reason</option>
+    @for (r of reasons; track $index) {
+      <option [ngValue]="r">{{ REASON_DISPLAY[r] }}</option>
+    }
+  </select>
+</div>
+
+@if (reasonControl.value === 'other') {
+  <div class="govuk-form-group" [class.govuk-form-group--error]="isSubmitted && detailsControl.invalid">
+    <label class="govuk-label" for="details">Comment</label>
+    @if (isSubmitted && detailsControl.invalid) {
+      <p class="govuk-error-message">
+        <span class="govuk-visually-hidden">Error: </span>
+        {{ errorMessageFor('details', detailsControl.errors) }}
+      </p>
+    }
+
+    <app-govuk-textarea
+      [control]="detailsControl"
+      id="details"
+      name="details"
+      ariaDescribedBy="details-label"
+      [maxCharacterLimit]="maxDetailsLength"
+      [isInvalid]="isSubmitted && detailsControl.invalid"
+    ></app-govuk-textarea>
+  </div>
+}

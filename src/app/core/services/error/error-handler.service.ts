@@ -2,9 +2,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorHandler, Injectable, Injector, inject } from '@angular/core';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
+import { isChunkOrDynamicImportFailure } from '@utils/global-error-listeners';
 import { WINDOW } from '@utils/tokens';
 
-export const IMPORT_FAILED_MESSAGE = /Failed to fetch dynamically imported module/;
 export const IGNORE_HTTP_STATUS_CODES = [401, 422];
 
 @Injectable({
@@ -12,7 +12,7 @@ export const IGNORE_HTTP_STATUS_CODES = [401, 422];
 })
 export class ErrorHandlerService extends ErrorHandler {
   private readonly injector = inject(Injector);
-  private window = inject(WINDOW);
+  private readonly window = inject(WINDOW) as Window;
 
   private handleImportModuleFailed() {
     const appConfigService = this.injector.get(AppConfigService);
@@ -31,7 +31,11 @@ export class ErrorHandlerService extends ErrorHandler {
           this.window.location.href = '/internal-error';
         }
       })
-      .catch(this.handleException);
+      .catch((e) =>
+        this.handleException(
+          e instanceof Error || e instanceof HttpErrorResponse ? e : new Error('loadAppConfig failed')
+        )
+      );
   }
 
   private isHttpErrorResponse(error: Error | HttpErrorResponse): error is HttpErrorResponse {
@@ -61,10 +65,12 @@ export class ErrorHandlerService extends ErrorHandler {
   }
 
   override handleError(error: Error | HttpErrorResponse) {
-    if (IMPORT_FAILED_MESSAGE.test(error.message)) {
+    if (isChunkOrDynamicImportFailure(error)) {
       this.handleImportModuleFailed();
-    } else {
-      this.handleException(error);
+      return;
     }
+    this.handleException(
+      error instanceof Error || error instanceof HttpErrorResponse ? error : new Error('Unknown error')
+    );
   }
 }

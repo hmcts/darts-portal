@@ -49,6 +49,7 @@ export class AddAnnotationComponent implements OnInit, OnDestroy {
   errors = signal<ErrorSummaryEntry[]>([]);
 
   isUploading = false;
+  isSubmitted = false;
 
   ids = computed(() => [this.caseId(), this.hearingId()]);
 
@@ -63,23 +64,31 @@ export class AddAnnotationComponent implements OnInit, OnDestroy {
   annotationComments = new FormControl<string | null>(null);
   step = 1;
 
+  private syncErrorsFromControl() {
+    const errs = this.fileControl.errors;
+    const out: ErrorSummaryEntry[] = [];
+
+    if (errs?.['required']) {
+      out.push({ fieldId: 'file-upload-annotation', message: 'You need to upload a file' });
+    }
+    if (errs?.['maxFileSize']) {
+      out.push({ fieldId: 'file-upload-annotation', message: errs['maxFileSize'].message });
+    }
+
+    this.errors.set(out);
+  }
+
   fileControlSub = this.fileControl.events.subscribe(() => {
-    if (this.fileControl.valid) {
-      this.errors.set([]);
-      return;
-    }
-
-    if (this.fileControl.errors?.required) {
-      this.errors.set([{ fieldId: 'file-upload-annotation', message: 'You need to upload a file' }]);
-    }
-
-    if (this.fileControl.errors?.maxFileSize) {
-      this.errors.set([{ fieldId: 'file-upload-annotation', message: this.fileControl.errors?.maxFileSize.message }]);
+    if (this.isSubmitted || this.fileControl.touched) {
+      this.syncErrorsFromControl();
     }
   });
 
   onComplete() {
+    this.isSubmitted = true;
     this.fileControl.markAsTouched();
+    this.fileControl.updateValueAndValidity({ emitEvent: false });
+    this.syncErrorsFromControl();
 
     if (this.fileControl.invalid) return;
     this.isUploading = true;

@@ -116,6 +116,7 @@
             caption="Your expired audio requests"
             [hiddenCaption]="true"
             [rowSelectable]="true"
+            [(selectedRows)]="selectedAudioRequests"
             (rowSelect)="onSelectedAudio($event)"
           >
             <ng-template [tableRowTemplate]="data.expiredRows" let-row>

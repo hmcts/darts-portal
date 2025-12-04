@@ -23,6 +23,7 @@ import { Observable, map, shareReplay, switchMap, tap, timer } from 'rxjs';
 export const APPROVED_TRANSCRIPTION_STATUS_ID = 3;
 export const REJECTED_TRANSCRIPTION_STATUS_ID = 4;
 export const COMPLETED_TRANSCRIPTION_STATUS_ID = 6;
+export const UNFULFILLED_TRANSCRIPTION_STATUS_ID = 8;
 
 @Injectable({
   providedIn: 'root',
@@ -123,6 +124,13 @@ export class TranscriptionService {
     return this.http.patch(`/api/transcriptions/${transcriptId}`, {
       transcription_status_id: REJECTED_TRANSCRIPTION_STATUS_ID,
       workflow_comment: rejectReason,
+    });
+  }
+
+  unfulfillTranscriptionRequest(transcriptId: number, reason: string) {
+    return this.http.patch(`/api/transcriptions/${transcriptId}`, {
+      transcription_status_id: UNFULFILLED_TRANSCRIPTION_STATUS_ID,
+      workflow_comment: reason,
     });
   }
 

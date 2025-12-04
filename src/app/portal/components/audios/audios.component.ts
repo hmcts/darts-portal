@@ -71,6 +71,7 @@ export class AudiosComponent {
   private refresh$ = new BehaviorSubject<void>(undefined);
 
   selectedAudioRequests: TransformedMedia[] = [];
+  private selectedTransformedIds = new Set<number>();
 
   errors = signal<ErrorSummaryEntry[]>([]);
   isDeleting = signal(false);
@@ -149,7 +150,22 @@ export class AudiosComponent {
           }))
         )
       ),
-    });
+    }).pipe(
+      tap(({ completedRows, expiredRows }) => {
+        // build selected audio requests using stored selected IDs
+        const byId = new Map<number, TransformedMedia>(
+          [...completedRows, ...expiredRows].map((transformedMedia) => [
+            transformedMedia.transformedMediaId,
+            transformedMedia,
+          ])
+        );
+
+        this.selectedAudioRequests = [...this.selectedTransformedIds]
+          .map((transformedMediaId) => byId.get(transformedMediaId))
+          .filter((x): x is TransformedMedia => !!x);
+      }),
+      shareReplay(1)
+    );
   }
 
   onViewTransformedMedia(event: MouseEvent, transformedMedia: TransformedMedia) {
@@ -161,6 +177,7 @@ export class AudiosComponent {
 
   onSelectedAudio(selectedAudio: TransformedMedia[]) {
     this.selectedAudioRequests = selectedAudio;
+    this.selectedTransformedIds = new Set(selectedAudio.map((s) => s.transformedMediaId));
   }
 
   private clearSelectedAudio() {

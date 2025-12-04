@@ -27,7 +27,45 @@
       Get audio for this request
     </button>
 
-    @if (isManualRequest) {
+    @if (!isManualRequest) {
+      <p class="govuk-body">
+        This is an automated request. Send the transcript using your usual process for an automated request. Then, mark
+        the request as complete. If a transcript can’t be provided, select Unfulfilled and choose a reason.
+      </p>
+    }
+
+    <fieldset class="govuk-fieldset margin-bottom">
+      <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Outcome</legend>
+
+      <div class="govuk-radios">
+        <div class="govuk-radios__item">
+          <input
+            class="govuk-radios__input"
+            id="outcome-complete"
+            name="outcome"
+            type="radio"
+            [formControl]="outcomeControl"
+            [value]="'complete'"
+            (change)="onOutcomeChanged()"
+          />
+          <label class="govuk-label govuk-radios__label" for="outcome-complete">Complete</label>
+        </div>
+        <div class="govuk-radios__item">
+          <input
+            class="govuk-radios__input"
+            id="outcome-unfulfilled"
+            name="outcome"
+            type="radio"
+            [formControl]="outcomeControl"
+            [value]="'unfulfilled'"
+            (change)="onOutcomeChanged()"
+          />
+          <label class="govuk-label govuk-radios__label" for="outcome-unfulfilled">Unfulfilled</label>
+        </div>
+      </div>
+    </fieldset>
+
+    @if (isManualRequest && !isUnfulfilled) {
       <app-file-upload
         [formControl]="fileControl"
         [isInvalid]="this.fileControl.invalid && this.isSubmitted"
@@ -37,20 +75,21 @@
         fileTypeHint="Compatible file formats are .txt, .dot, .dotx, .doc, .docx, .pdf, .rtf, .zip or .odt"
         allowedFileTypes=".txt,.dot,.dotx,.doc,.docx,.pdf,.rtf,.zip,.odt"
       ></app-file-upload>
-    } @else {
-      <p class="govuk-body">
-        This is an automated request. Send the transcript using your usual process for an automated request. Then, mark
-        the request as complete.
-      </p>
+    }
+
+    @if (isUnfulfilled) {
+      <app-unfulfilled-section
+        [reasonControl]="reasonControl"
+        [detailsControl]="detailsControl"
+        [isSubmitted]="isSubmitted"
+        [maxDetailsLength]="200"
+        [errorMessageFor]="getErrorMessage.bind(this)"
+      ></app-unfulfilled-section>
     }
 
     <div class="govuk-button-group">
       <button id="submit-button" class="govuk-button" [disabled]="isUploading" (click)="onComplete()">
-        @if (isManualRequest) {
-          Attach file and complete
-        } @else {
-          Complete transcript request
-        }
+        {{ submitLabel }}
       </button>
       <a routerLink="../" class="govuk-link">Cancel</a>
     </div>
