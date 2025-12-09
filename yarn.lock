@@ -1164,7 +1164,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/msal-node@npm:^3.8.4":
+"@azure/msal-node@npm:^3.5.0":
   version: 3.8.4
   resolution: "@azure/msal-node@npm:3.8.4"
   dependencies:
