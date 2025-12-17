@@ -71,7 +71,7 @@
     "http-proxy-middleware": "^3.0.5",
     "js-yaml": "^4.1.0",
     "luxon": "^3.4.4",
-    "ngx-cookie-service": "^19.0.0",
+    "ngx-cookie-service": "^21.0.0",
     "nunjucks": "^3.2.4",
     "redis": "^5.9.0",
     "rxjs": "~7.8.1",
