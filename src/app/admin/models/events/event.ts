@@ -56,3 +56,4 @@ export type Event = {
   lastModifiedBy?: User;
   isCurrentVersion: boolean;
 };
+
