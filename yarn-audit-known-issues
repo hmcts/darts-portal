@@ -1,1 +1,0 @@
-{"value":"jws","children":{"ID":1111244,"Issue":"auth0/node-jws Improperly Verifies HMAC Signature","URL":"https://github.com/advisories/GHSA-869p-cjfg-cm3x","Severity":"high","Vulnerable Versions":"<3.2.3","Tree Versions":["3.2.2"],"Dependents":["jsonwebtoken@npm:9.0.2"]}}
