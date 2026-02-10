@@ -60,7 +60,7 @@
     "@types/config": "^3.3.4",
     "accessible-autocomplete": "^3.0.0",
     "applicationinsights": "^3.12.0",
-    "axios": "^1.12.2",
+    "axios": "1.13.5",
     "body-parser": "^2.2.1",
     "config": "^4.0.0",
     "connect-redis": "^9.0.0",
