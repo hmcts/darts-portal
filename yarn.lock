@@ -2699,10 +2699,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@dynatrace/dtrum-api-types@npm:1.291.1":
-  version: 1.291.1
-  resolution: "@dynatrace/dtrum-api-types@npm:1.291.1"
-  checksum: 10/65a8b2505e2a55f13dc18e49e79e41bea45cea76a4de5846450860fa5f4c3dd6005dc1b9d160cef438562bc1bac5343ac53e91ec881de7797448c68dcfa8a23c
+"@dynatrace/dtrum-api-types@npm:1.333.4":
+  version: 1.333.4
+  resolution: "@dynatrace/dtrum-api-types@npm:1.333.4"
+  checksum: 10/89f508d5d3a1da7b9bef65955a5a3e686ca36b678b481d05893062056e12ebc7e7dce1d9bbed194222c1dcb3fa81872da430dc784d344bd4463fef24178545f3
   languageName: node
   linkType: hard
 
@@ -9213,7 +9213,7 @@ __metadata:
     "@angular/platform-browser": "npm:20.3.15"
     "@angular/platform-browser-dynamic": "npm:20.3.15"
     "@angular/router": "npm:20.3.15"
-    "@dynatrace/dtrum-api-types": "npm:1.291.1"
+    "@dynatrace/dtrum-api-types": "npm:1.333.4"
     "@hmcts/nodejs-healthcheck": "npm:^1.8.5"
     "@hmcts/properties-volume": "npm:^1.1.0"
     "@microsoft/applicationinsights-web": "npm:^3.2.2"
