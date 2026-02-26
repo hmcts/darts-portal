@@ -229,8 +229,20 @@ export class AudiosComponent {
 
       forkJoin(downloadRequests).subscribe({
         complete: () => {
+          // get audio requests that don't already have a last accessed timestamp
+          const completedItems = this.selectedAudioRequests.filter((audio) => !audio.lastAccessedTs);
           this.clearSelectedAudio();
           this.isDownloading = false;
+
+          // update last accessed for each downloaded audio
+          const patchRequests = completedItems.map((audio) =>
+            this.audioService.patchAudioRequestLastAccess(audio.transformedMediaId)
+          );
+          forkJoin(patchRequests).subscribe({
+            complete: () => {
+              this.refresh$.next();
+            },
+          });
         },
         error: () => {
           this.errors.set([{ fieldId: 'bulkDownload', message: audiosErrorMessages.bulkDownload.error }]);

@@ -1,5 +1,8 @@
 import 'cypress-axe';
 import './commands';
+
+import { TODAY, TOMORROW, YESTERDAY } from '@utils/index';
+
 const path = require('path');
 const downloadsFolder = Cypress.config('downloadsFolder');
 const navigationSelector = '.moj-primary-navigation';
@@ -43,22 +46,22 @@ describe('Your audio', () => {
 
   it('should show correct Notification badge count', () => {
     //On landing page
-    cy.get('#unreadAudioCountNotifications').should('contain', '5');
+    cy.get('#unreadAudioCountNotifications').should('contain', '7');
     cy.contains('Your audio').click();
     //On specific Your audio page
-    cy.get('#unreadAudioCountNotifications').should('contain', '5');
+    cy.get('#unreadAudioCountNotifications').should('contain', '7');
   });
 
   it('should show correct number of Unread icons', () => {
     cy.contains('Your audio').click();
-    cy.get('#readyTable').get('.unread').should('have.length', 5);
+    cy.get('#readyTable').get('.unread').should('have.length', 7);
   });
 
   it('should reduce Notification count and unread icons when View is clicked', () => {
     cy.contains('Your audio').click();
     cy.contains('C3').parents('tr').contains('View').click();
 
-    cy.get('#unreadAudioCountNotifications').should('contain', '4');
+    cy.get('#unreadAudioCountNotifications').should('contain', '6');
   });
 
   it('View audio request and download', () => {
@@ -108,6 +111,25 @@ describe('Your audio', () => {
     cy.get('.govuk-button--secondary').contains('Bulk download').click();
 
     cy.get('.govuk-error-summary').contains('You must select at least one audio to download');
+    cy.a11y();
+  });
+
+  it('Bulk download and update last accessed and notification badge count', () => {
+    cy.contains('Your audio').click();
+    cy.contains('C8').parents('tr').find('.last-accessed').should('have.text', ' - ');
+    cy.contains('C9').parents('tr').find('.last-accessed').should('have.text', ' - ');
+
+    cy.contains('C8').parents('tr').find('input[type="checkbox"]').click({ force: true });
+    cy.contains('C9').parents('tr').find('input[type="checkbox"]').click({ force: true });
+    cy.get('.govuk-button--secondary').contains('Bulk download').click();
+
+    cy.readFile(path.join(downloadsFolder, 'C8.zip')).should('exist');
+    cy.readFile(path.join(downloadsFolder, 'C9.zip')).should('exist');
+
+    cy.contains('C8').parents('tr').find('.last-accessed').should('have.contain', TODAY);
+    cy.contains('C9').parents('tr').find('.last-accessed').should('have.contain', TODAY);
+
+    cy.get('#unreadAudioCountNotifications').should('contain', '3');
     cy.a11y();
   });
 
