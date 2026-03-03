@@ -6,8 +6,9 @@ import { MediaRequest, RequestedMedia, TransformedMedia } from '@portal-types/in
 import { AudioRequestService } from '@services/audio-request/audio-request.service';
 import { FileDownloadService } from '@services/file-download/file-download.service';
 import { DateTime } from 'luxon';
-import { of, throwError } from 'rxjs';
+import { BehaviorSubject, of, throwError } from 'rxjs';
 import { AudiosComponent } from './audios.component';
+import { fakeAsync, flush } from '@angular/core/testing';
 
 describe('AudiosComponent', () => {
   let component: AudiosComponent;
@@ -99,6 +100,7 @@ describe('AudiosComponent', () => {
     deleteTransformedMedia: jest.fn(),
     setAudioRequest: jest.fn(),
     downloadAudio: jest.fn().mockReturnValue(of(new Blob())),
+    patchAudioRequestLastAccess: jest.fn().mockReturnValue(of(void 0)),
   };
 
   const downloadService = {
@@ -250,6 +252,34 @@ describe('AudiosComponent', () => {
         state: { transformedMedia },
       });
     });
+  });
+  describe('#onDownloadConfirmed patch and refresh', () => {
+    it('patches lastAccess for downloaded audio then triggers a refresh', fakeAsync(() => {
+      component.selectedAudioRequests = [
+        { transformedMediaId: 1, transformedMediaFilename: 'a1.mp3', requestType: 'DOWNLOAD' } as TransformedMedia,
+        { transformedMediaId: 2, transformedMediaFilename: 'a2.mp3', requestType: 'DOWNLOAD' } as TransformedMedia,
+      ];
+
+      const downloadSpy = jest.spyOn(audioServiceStub, 'downloadAudio');
+      const patchSpy = jest.spyOn(audioServiceStub, 'patchAudioRequestLastAccess');
+      // access private refresh$ with a typed cast
+      const refresh$ = (component as unknown as { refresh$: BehaviorSubject<void> }).refresh$;
+      const refreshNextSpy = jest.spyOn(refresh$, 'next');
+
+      component.onDownloadConfirmed();
+      // Flush so forkJoins finish
+      flush();
+
+      expect(downloadSpy).toHaveBeenCalledTimes(2);
+      expect(downloadSpy).toHaveBeenNthCalledWith(1, 1, 'DOWNLOAD');
+      expect(downloadSpy).toHaveBeenNthCalledWith(2, 2, 'DOWNLOAD');
+
+      expect(patchSpy).toHaveBeenCalledTimes(2);
+      expect(patchSpy).toHaveBeenCalledWith(1);
+      expect(patchSpy).toHaveBeenCalledWith(2);
+
+      expect(refreshNextSpy).toHaveBeenCalledTimes(1);
+    }));
   });
 
   describe('#onDownloadConfirmed', () => {
