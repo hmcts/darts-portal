@@ -156,8 +156,13 @@ export class CaseComponent implements OnInit {
       transcripts: this.transcripts$,
     });
 
-    this.loadEvents();
-    this.loadAudio();
+    //only load events and audio if case is not anonymised
+    this.caseFile$.subscribe((caseFile) => {
+      if (caseFile && !caseFile.isDataAnonymised) {
+        this.loadEvents();
+        this.loadAudio();
+      }
+    });
   }
 
   private loadAudio(): void {

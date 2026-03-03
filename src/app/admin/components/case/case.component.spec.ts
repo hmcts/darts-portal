@@ -148,6 +148,13 @@ describe('CaseComponent', () => {
     // app-case-additional-details should be present
     const details = fixture.debugElement.query(By.css('app-case-additional-details'));
     expect(details).toBeTruthy();
+
+    //loadEvents and loadAudio should not have been called
+    const loadEventsSpy = jest.spyOn(component as unknown as { loadEvents: () => void }, 'loadEvents');
+    const loadAudioSpy = jest.spyOn(component as unknown as { loadAudio: () => void }, 'loadAudio');
+
+    expect(loadEventsSpy).not.toHaveBeenCalled();
+    expect(loadAudioSpy).not.toHaveBeenCalled();
   });
 
   it('should fetch hearings and expose them through hearings$', (done) => {
