@@ -109,6 +109,9 @@ describe('CaseComponent', () => {
     it('should handle missing users and set fallback values', (done) => {
       mockUserAdminService.getUsersById.mockReturnValue(of([])); // No users returned
 
+      fixture = TestBed.createComponent(CaseComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
       component.caseFile$?.subscribe((caseFile) => {
         expect(caseFile).toEqual({
           ...mockCaseFile,
