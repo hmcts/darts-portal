@@ -24,7 +24,7 @@ import { CaseService } from '@services/case/case.service';
 import { HistoryService } from '@services/history/history.service';
 import { MappingService } from '@services/mapping/mapping.service';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
-import { catchError, combineLatest, map, Observable, of, switchMap } from 'rxjs';
+import { catchError, combineLatest, map, Observable, of, switchMap, tap, shareReplay } from 'rxjs';
 import { CaseTranscriptsTableComponent } from '../../../portal/components/case/case-file/case-transcripts-table/case-transcripts-table.component';
 import { CaseAdditionalDetailsComponent } from './case-file/case-additional-details/case-additional-details.component';
 import { CaseAudioComponent, CaseAudioSortBy } from './case-file/case-audio/case-audio.component';
@@ -141,7 +141,14 @@ export class CaseComponent implements OnInit {
               caseDeletedBy: 'System',
               dataAnonymisedBy: 'System',
             });
-      })
+      }),
+      tap((caseFile) => {
+        if (caseFile && !caseFile.isDataAnonymised) {
+          this.loadEvents();
+          this.loadAudio();
+        }
+      }),
+      shareReplay(1)
     );
 
     this.hearings$ = this.caseService.getCaseHearings(this.caseId()).pipe(catchError(() => of([])));
@@ -155,9 +162,6 @@ export class CaseComponent implements OnInit {
       hearings: this.hearings$,
       transcripts: this.transcripts$,
     });
-
-    this.loadEvents();
-    this.loadAudio();
   }
 
   private loadAudio(): void {
