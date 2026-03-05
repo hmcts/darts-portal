@@ -4,15 +4,34 @@ import { By } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
 import { DateTime } from 'luxon';
 import { CaseFileComponent } from './case-file.component';
+import { DatePipe } from '@angular/common';
 
 describe('CaseFileComponent', () => {
   let component: CaseFileComponent;
   let fixture: ComponentFixture<CaseFileComponent>;
 
+  const mockCaseFile: AdminCase = {
+    id: 1,
+    caseNumber: 'CASEGMTBST',
+    courthouse: { id: 1001, displayName: 'SWANSEA' },
+    isDataAnonymised: false,
+    caseObjectId: '12345',
+    caseStatus: 'OPEN',
+    createdAt: DateTime.fromISO('2024-01-01T00:00:00Z'),
+    createdById: 5,
+    lastModifiedAt: DateTime.fromISO('2024-01-01T00:00:00Z'),
+    lastModifiedById: 5,
+    isDeleted: false,
+    caseDeletedById: 0,
+    dataAnonymisedById: 0,
+    isInterpreterUsed: false,
+    reportingRestrictions: [],
+  };
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CaseFileComponent],
-      providers: [provideRouter([])],
+      providers: [DatePipe,provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(CaseFileComponent);
@@ -119,6 +138,37 @@ describe('CaseFileComponent', () => {
 
       const shouldBeHidden = ['Judge(s)', 'Defendant(s)', 'Prosecutor(s)', 'Defence', 'Retained until'];
       shouldBeHidden.forEach((label) => expect(labels).not.toContain(label));
+    });
+  });
+
+  describe('Retained Until date display', () => {
+    function expectRetainedUntilDate(inputIso: string, expectedDate: string) {
+      fixture.componentRef.setInput('caseFile', {
+        ...mockCaseFile,
+        retainUntilDateTime: DateTime.fromISO(inputIso),
+      });
+      fixture.detectChanges();
+        const row = fixture.debugElement
+          .queryAll(By.css('.govuk-summary-list__row'))
+          .find((row) => row.query(By.css('.govuk-summary-list__key'))?.nativeElement?.textContent.trim() === 'Retained until');
+
+        expect(row).toBeTruthy();
+        const valueElement = row?.query(By.css('.govuk-summary-list__value'))?.nativeElement;
+        expect(valueElement.textContent.trim()).toBe(expectedDate);
+    }
+    
+    it('should display winter date correctly, i.e. +00:00', () => {
+      expectRetainedUntilDate(
+        '2030-02-10T23:23:24.858Z',
+        '10 Feb 2030'
+      );
+    });
+
+    it('should display summer BST date correctly, i.e. +01:00', () => {
+      expectRetainedUntilDate(
+        '2030-08-10T23:23:24.858Z',
+        '11 Aug 2030'
+      );
     });
   });
 });

@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Case } from '@portal-types/case/case.type';
 import { UserService } from '@services/user/user.service';
 import { CaseFileComponent } from './case-file.component';
+import { DateTime } from 'luxon';
+import { DatePipe } from '@angular/common';
 
 describe('CaseFileComponent', () => {
   let component: CaseFileComponent;
@@ -42,6 +44,7 @@ describe('CaseFileComponent', () => {
       providers: [
         { provide: UserService, useValue: fakeUserService },
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
+        DatePipe,
       ],
     });
     fixture = TestBed.createComponent(CaseFileComponent);
@@ -52,5 +55,33 @@ describe('CaseFileComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('Retained Until date display', () => {
+    function expectRetainedUntilDate(inputIso: string, expectedDate: string) {
+      component.caseFile = {
+        ...mockCaseFile,
+        retainUntilDateTime: DateTime.fromISO(inputIso),
+      };
+
+      fixture.detectChanges();
+
+      const retainedUntilText = fixture.nativeElement.querySelector('[data-testid="retained-until-value"]').textContent;
+      expect(retainedUntilText).toContain(expectedDate);
+    }
+    
+    it('should display winter date correctly, i.e. +00:00', () => {
+      expectRetainedUntilDate(
+        '2030-02-10T23:23:24.858Z',
+        '10 Feb 2030'
+      );
+    });
+
+    it('should display summer BST date correctly, i.e. +01:00', () => {
+      expectRetainedUntilDate(
+        '2030-08-10T23:23:24.858Z',
+        '11 Aug 2030'
+      );
+    });
   });
 });
