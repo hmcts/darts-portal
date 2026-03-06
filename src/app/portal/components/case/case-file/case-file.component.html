@@ -45,7 +45,7 @@
   userService.isSuperUser()
 ) {
   <h2 class="govuk-heading-s">Retained until</h2>
-  <p class="govuk-body" data-testid="retained-until-value">
+  <p class="govuk-body">
     @if (caseFile.retainUntilDateTime) {
       {{ caseFile.retainUntilDateTime | luxonDate: "dd MMM y" }}
     } @else {

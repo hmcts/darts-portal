@@ -66,8 +66,15 @@ describe('CaseFileComponent', () => {
 
       fixture.detectChanges();
 
-      const retainedUntilText = fixture.nativeElement.querySelector('[data-testid="retained-until-value"]').textContent;
-      expect(retainedUntilText).toContain(expectedDate);
+      const headings = Array.from(fixture.nativeElement.querySelectorAll('h2.govuk-heading-s')) as HTMLElement[];
+      const retainedUntilHeading = headings.find(h => (h.textContent || '').trim() === 'Retained until');
+      expect(retainedUntilHeading).toBeTruthy();
+
+      const retainedUntilP = retainedUntilHeading!.nextElementSibling as HTMLElement | null;
+      expect(retainedUntilP).toBeTruthy();
+
+      const retainedText = retainedUntilP!.textContent?.trim() ?? '';
+      expect(retainedText).toContain(expectedDate);
     }
     
     it('should display winter date correctly, i.e. +00:00', () => {
