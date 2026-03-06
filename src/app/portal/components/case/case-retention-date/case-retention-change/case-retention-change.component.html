@@ -78,7 +78,13 @@
       ></app-govuk-textarea>
     </div>
     <div class="govuk-button-group">
-      <button class="govuk-button" id="continue-button" data-module="govuk-button" (click)="onConfirm()">
+      <button
+        class="govuk-button"
+        id="continue-button"
+        data-module="govuk-button"
+        [disabled]="isSubmitting"
+        (click)="onConfirm()"
+      >
         Continue
       </button>
       <a href="#" (click)="onCancel($event)" class="govuk-link">Cancel</a>

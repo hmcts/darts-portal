@@ -35,6 +35,8 @@ export class CaseRetentionChangeComponent {
   @Output() retentionReasonChange = new EventEmitter<string>();
   @Output() retentionPermanentChange = new EventEmitter<boolean>();
 
+  isSubmitting = false;
+
   private datePageFormat = 'dd/MM/yyyy';
   private dateApiFormat = 'yyyy-MM-dd';
 
@@ -109,17 +111,23 @@ export class CaseRetentionChangeComponent {
   }
 
   private setFieldError(fieldId: string, message: string) {
+    this.errors = this.errors.filter((e) => e.fieldId !== fieldId);
     this.errors.push({ fieldId, message });
   }
 
   onConfirm() {
+    if (this.isSubmitting) {
+      return;
+    }
     this.errors = [];
+    this.isSubmitting = true;
 
     this.validateRetainOption();
     this.validateRetainReason();
     this.validateRetentionDate();
 
     if (this.errors.length) {
+      this.isSubmitting = false;
       return;
     }
 
@@ -151,7 +159,11 @@ export class CaseRetentionChangeComponent {
               this.stateChange.emit('Confirm');
             }
           },
-          error: (err) => this.handleRetentionError(err),
+          error: (err) => {
+            this.handleRetentionError(err);
+            this.isSubmitting = false;
+          },
+          complete: () => (this.isSubmitting = false),
         });
     }
   }

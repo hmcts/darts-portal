@@ -7,8 +7,9 @@ import { AppConfigService } from '@services/app-config/app-config.service';
 import { CaseService } from '@services/case/case.service';
 import { UserService } from '@services/user/user.service';
 import { DateTime } from 'luxon';
-import { of, throwError } from 'rxjs';
+import { of, Subject, throwError } from 'rxjs';
 import { CaseRetentionChangeComponent } from './case-retention-change.component';
+import { CaseRetentionChange } from 'src/app/portal/models/case/case-retention-change.interface';
 
 describe('CaseRetentionComponent', () => {
   let component: CaseRetentionChangeComponent;
@@ -79,6 +80,10 @@ describe('CaseRetentionComponent', () => {
     });
   });
 
+  it('should have isSubmitting false by default', () => {
+    expect(component.isSubmitting).toBe(false);
+  });
+
   describe('#onConfirm', () => {
     it('should check option selected', () => {
       // Populate reason
@@ -104,6 +109,7 @@ describe('CaseRetentionComponent', () => {
       component.onConfirm();
 
       expect(component.errors).toEqual(expected);
+      expect(component.isSubmitting).toBe(false);
     });
 
     it('should check reason populated', () => {
@@ -112,6 +118,7 @@ describe('CaseRetentionComponent', () => {
       const expected = [{ fieldId: 'change-reason', message: 'You must explain why you are making this change' }];
       component.onConfirm();
       expect(component.errors).toEqual(expected);
+      expect(component.isSubmitting).toBe(false);
     });
 
     it('should show error message if user is NOT Admin or Judge and date is set before current retention date', () => {
@@ -138,6 +145,7 @@ describe('CaseRetentionComponent', () => {
       expect(component.errorDate).toEqual(
         'You do not have permission to reduce the current retention date.\r\nPlease refer to the DARTS retention policy guidance.'
       );
+      expect(component.isSubmitting).toBe(false);
     });
 
     it('should show error message if user is Admin or Judge but date is set before original retention date', () => {
@@ -163,6 +171,7 @@ describe('CaseRetentionComponent', () => {
       expect(component.errorDate).toEqual(
         `You cannot set retention date earlier than ${originalRetentionDate.toFormat(datePageFormat)}`
       );
+      expect(component.isSubmitting).toBe(false);
     });
 
     it('should show error message if date is set after the "permanent" date', () => {
@@ -186,9 +195,13 @@ describe('CaseRetentionComponent', () => {
       expect(component.errorDate).toEqual(
         `You cannot retain a case for more than ${maxYears} years after the case closed`
       );
+      expect(component.isSubmitting).toBe(false);
     });
 
     it('should emit stateChange events if all is OK', () => {
+      const subject = new Subject<CaseRetentionChange>();
+      jest.spyOn(mockCaseService, 'postCaseRetentionDateValidate').mockReturnValueOnce(subject.asObservable());
+
       const testReason = 'This is the reason';
       // Select date option
       component.retainOptionFormControl.patchValue('date');
@@ -206,9 +219,22 @@ describe('CaseRetentionComponent', () => {
       // Confirm the date
       component.onConfirm();
 
+      expect(component.isSubmitting).toBe(true);
+      expect(mockCaseService.postCaseRetentionDateValidate).toHaveBeenCalledTimes(1);
+
+      // simulate response coming back from service
+      subject.next({
+        case_id: 123,
+        retention_date: currentRetentionDate.toFormat(dateApiFormat),
+        is_permanent_retention: false,
+        comments: testReason,
+      });
+      subject.complete();
+
       expect(stateChangeSpy).toHaveBeenCalledWith('Confirm');
       expect(retentionDateChangeSpy).toHaveBeenCalledWith(currentRetentionDate.toJSDate());
       expect(retentionReasonChange).toHaveBeenCalledWith(testReason);
+      expect(component.isSubmitting).toBe(false);
     });
   });
 
