@@ -31,7 +31,7 @@ describe('CaseFileComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CaseFileComponent],
-      providers: [DatePipe,provideRouter([])],
+      providers: [DatePipe, provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(CaseFileComponent);
@@ -148,27 +148,23 @@ describe('CaseFileComponent', () => {
         retainUntilDateTime: DateTime.fromISO(inputIso),
       });
       fixture.detectChanges();
-        const row = fixture.debugElement
-          .queryAll(By.css('.govuk-summary-list__row'))
-          .find((row) => row.query(By.css('.govuk-summary-list__key'))?.nativeElement?.textContent.trim() === 'Retained until');
+      const row = fixture.debugElement
+        .queryAll(By.css('.govuk-summary-list__row'))
+        .find(
+          (row) => row.query(By.css('.govuk-summary-list__key'))?.nativeElement?.textContent.trim() === 'Retained until'
+        );
 
-        expect(row).toBeTruthy();
-        const valueElement = row?.query(By.css('.govuk-summary-list__value'))?.nativeElement;
-        expect(valueElement.textContent.trim()).toBe(expectedDate);
+      expect(row).toBeTruthy();
+      const valueElement = row?.query(By.css('.govuk-summary-list__value'))?.nativeElement;
+      expect(valueElement.textContent.trim()).toBe(expectedDate);
     }
-    
+
     it('should display winter date correctly, i.e. +00:00', () => {
-      expectRetainedUntilDate(
-        '2030-02-10T23:23:24.858Z',
-        '10 Feb 2030'
-      );
+      expectRetainedUntilDate('2030-02-10T23:23:24.858Z', '10 Feb 2030');
     });
 
     it('should display summer BST date correctly, i.e. +01:00', () => {
-      expectRetainedUntilDate(
-        '2030-08-10T23:23:24.858Z',
-        '11 Aug 2030'
-      );
+      expectRetainedUntilDate('2030-08-10T23:23:24.858Z', '11 Aug 2030');
     });
   });
 });

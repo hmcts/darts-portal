@@ -171,9 +171,8 @@ describe('CaseAdditionalDetailsComponent', () => {
         retConfUpdatedTs: inputDate,
         caseDeletedAt: inputDate,
         createdAt: inputDate,
-        lastModifiedAt: inputDate
-      }
-      );
+        lastModifiedAt: inputDate,
+      });
       fixture.detectChanges();
 
       const expectedData = [
@@ -195,19 +194,13 @@ describe('CaseAdditionalDetailsComponent', () => {
         expect(valueElement.textContent.trim()).toBe(value);
       });
     }
-    
+
     it('should display winter date correctly, i.e. +00:00', () => {
-      expectDateDisplay(
-        DateTime.fromISO('2030-02-10T23:23:24.858Z'),
-        '10/02/2030'
-      );
+      expectDateDisplay(DateTime.fromISO('2030-02-10T23:23:24.858Z'), '10/02/2030');
     });
 
     it('should display summer BST date correctly, i.e. +01:00', () => {
-      expectDateDisplay(
-        DateTime.fromISO('2030-08-10T23:23:24.858Z'),
-        '11/08/2030'
-      );
+      expectDateDisplay(DateTime.fromISO('2030-08-10T23:23:24.858Z'), '11/08/2030');
     });
   });
 });

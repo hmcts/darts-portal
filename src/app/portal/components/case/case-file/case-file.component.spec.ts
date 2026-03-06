@@ -67,7 +67,7 @@ describe('CaseFileComponent', () => {
       fixture.detectChanges();
 
       const headings = Array.from(fixture.nativeElement.querySelectorAll('h2.govuk-heading-s')) as HTMLElement[];
-      const retainedUntilHeading = headings.find(h => (h.textContent || '').trim() === 'Retained until');
+      const retainedUntilHeading = headings.find((h) => (h.textContent || '').trim() === 'Retained until');
       expect(retainedUntilHeading).toBeTruthy();
 
       const retainedUntilP = retainedUntilHeading!.nextElementSibling as HTMLElement | null;
@@ -76,19 +76,13 @@ describe('CaseFileComponent', () => {
       const retainedText = retainedUntilP!.textContent?.trim() ?? '';
       expect(retainedText).toContain(expectedDate);
     }
-    
+
     it('should display winter date correctly, i.e. +00:00', () => {
-      expectRetainedUntilDate(
-        '2030-02-10T23:23:24.858Z',
-        '10 Feb 2030'
-      );
+      expectRetainedUntilDate('2030-02-10T23:23:24.858Z', '10 Feb 2030');
     });
 
     it('should display summer BST date correctly, i.e. +01:00', () => {
-      expectRetainedUntilDate(
-        '2030-08-10T23:23:24.858Z',
-        '11 Aug 2030'
-      );
+      expectRetainedUntilDate('2030-08-10T23:23:24.858Z', '11 Aug 2030');
     });
   });
 });

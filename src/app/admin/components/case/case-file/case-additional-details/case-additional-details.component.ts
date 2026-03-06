@@ -4,7 +4,6 @@ import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.compo
 import { GovukSummaryListDirectives } from '@directives/govuk-summary-list';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 
-
 @Component({
   selector: 'app-case-additional-details',
   imports: [GovukHeadingComponent, GovukSummaryListDirectives, LuxonDatePipe],
