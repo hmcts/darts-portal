@@ -5,7 +5,7 @@ import { ExpiredBannerComponent } from '@common/expired-banner/expired-banner.co
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
 import { SeeMoreListComponent } from '@common/see-more-list/see-more-list.component';
-import { DateTimePipe } from '@pipes/dateTime.pipe';
+import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { JoinPipe } from '@pipes/join';
 import { Case } from '@portal-types/case/case.type';
 import { UserService } from '@services/user/user.service';
@@ -18,7 +18,7 @@ import { UserService } from '@services/user/user.service';
     JoinPipe,
     ReportingRestrictionComponent,
     RouterLink,
-    DateTimePipe,
+    LuxonDatePipe,
     GovukHeadingComponent,
     ExpiredBannerComponent,
     SeeMoreListComponent,
