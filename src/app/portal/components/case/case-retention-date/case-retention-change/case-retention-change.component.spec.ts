@@ -236,6 +236,98 @@ describe('CaseRetentionComponent', () => {
       expect(retentionReasonChange).toHaveBeenCalledWith(testReason);
       expect(component.isSubmitting).toBe(false);
     });
+
+    it('should only submit once if confirmed multiple times', () => {
+      const subject = new Subject<CaseRetentionChange>();
+      jest.spyOn(mockCaseService, 'postCaseRetentionDateValidate').mockReturnValueOnce(subject.asObservable());
+
+      const testReason = 'This is the reason';
+      // Select date option
+      component.retainOptionFormControl.patchValue('date');
+      // Type in the current retention date
+      component.retainDateFormControl.patchValue(currentRetentionDate.toFormat(datePageFormat));
+      component.retainDateFormControl.markAsDirty();
+      // Add a reason
+      component.retainReasonFormControl.patchValue(testReason);
+      component.retainReasonFormControl.markAsDirty();
+
+      const stateChangeSpy = jest.spyOn(component.stateChange, 'emit');
+      const retentionDateChangeSpy = jest.spyOn(component.retentionDateChange, 'emit');
+      const retentionReasonChange = jest.spyOn(component.retentionReasonChange, 'emit');
+
+      // Confirm the date twice
+      component.onConfirm();
+      component.onConfirm();
+
+      expect(component.isSubmitting).toBe(true);
+
+      // simulate response coming back from service
+      subject.next({
+        case_id: 123,
+        retention_date: currentRetentionDate.toFormat(dateApiFormat),
+        is_permanent_retention: false,
+        comments: testReason,
+      });
+      subject.complete();
+
+      expect(mockCaseService.postCaseRetentionDateValidate).toHaveBeenCalledTimes(1);
+      expect(stateChangeSpy).toHaveBeenCalledWith('Confirm');
+      expect(retentionDateChangeSpy).toHaveBeenCalledWith(currentRetentionDate.toJSDate());
+      expect(retentionReasonChange).toHaveBeenCalledWith(testReason);
+      expect(component.isSubmitting).toBe(false);
+    });
+
+    it('should not submit if form is invalid if user confirms multiple times', () => {
+      // Select date option
+      component.retainOptionFormControl.patchValue('date');
+      // Type in an invalid date
+      component.retainDateFormControl.patchValue('INVALID_DATE');
+      component.retainDateFormControl.markAsDirty();
+      // Add a reason
+      component.retainReasonFormControl.patchValue('This is a reason');
+      component.retainReasonFormControl.markAsDirty();
+
+      // Confirm the date twice
+      component.onConfirm();
+      component.onConfirm();
+
+      expect(mockCaseService.postCaseRetentionDateValidate).toHaveBeenCalledTimes(0);
+      expect(component.isSubmitting).toBe(false);
+    });
+
+    it('should not submit on failed date validation if user confirms multiple times', () => {
+      const subject = new Subject<CaseRetentionChange>();
+      const maxYears = 99;
+      const errorResponse = new HttpErrorResponse({
+        error: { max_duration: `${maxYears}Y0M0D`, type: RetentionPolicyErrorCode.RETENTION_DATE_TOO_LATE },
+        status: 422,
+      });
+      jest.spyOn(mockCaseService, 'postCaseRetentionDateValidate').mockReturnValue(subject.asObservable());
+
+      // Select date option
+      component.retainOptionFormControl.patchValue('date');
+      // Type in a date that is higher than the original date
+      component.retainDateFormControl.patchValue('31/12/3000');
+      component.retainDateFormControl.markAsDirty();
+      // Add a reason
+      component.retainReasonFormControl.patchValue('This is a test');
+      component.retainReasonFormControl.markAsDirty();
+
+      // Confirm the date twice
+      component.onConfirm();
+      component.onConfirm();
+
+      // simulate error response coming back from service
+      subject.error(errorResponse);
+      subject.complete();
+
+      expect(mockCaseService.postCaseRetentionDateValidate).toHaveBeenCalledTimes(1);
+
+      expect(component.errorDate).toEqual(
+        `You cannot retain a case for more than ${maxYears} years after the case closed`
+      );
+      expect(component.isSubmitting).toBe(false);
+    });
   });
 
   describe('#onCancel', () => {
