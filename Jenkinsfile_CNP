@@ -1,6 +1,6 @@
 #!groovy
 
-@Library('Infrastructure@acr-login')
+@Library('Infrastructure')
 
 def type = "angular"
 def product = "darts"
