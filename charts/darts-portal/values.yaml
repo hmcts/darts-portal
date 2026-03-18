@@ -1,9 +1,9 @@
 nodejs:
   applicationPort: 3000
-  image: 'sdshmctspublic.azurecr.io/darts/portal:latest'
+  image: 'hmctsprod.azurecr.io/darts/portal:latest'
   ingressHost: darts.{{ .Values.global.environment }}.apps.hmcts.net
   aadIdentityName: darts
-  readinessPeriod: 5 
+  readinessPeriod: 5
   terminationGracePeriodSeconds: 65
   keyVaults:
     darts:
