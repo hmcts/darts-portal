@@ -1,3 +1,8 @@
+.moj-sub-navigation__link {
+  padding-right: 4px; // adjust for the 4px outline added to the .moj-notification-badge in MOJ Frontend
+}
+
 .moj-notification-badge {
   background-color: #1d70b8;
+  outline-color: #1d70b8;
 }
