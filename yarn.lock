@@ -790,22 +790,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/compiler@npm:20.3.16":
-  version: 20.3.16
-  resolution: "@angular/compiler@npm:20.3.16"
+"@angular/compiler@npm:20.3.18":
+  version: 20.3.18
+  resolution: "@angular/compiler@npm:20.3.18"
   dependencies:
     tslib: "npm:^2.3.0"
-  checksum: 10/2b5b324dbfe06f9be44e2355e9af2856ceebc57d70cf405dd2eb59687182e089c303c140ba9157b561534ab7f49552e8d2fcd4488a7850c1905c7799220079e3
+  checksum: 10/094f78f191648bf6d3c7bc07339f9f877915387a843ab3081b3a75cfc91a4c419ef14cb7f0d7dc2dd95c71a49a33b9f79329774ade154cd7e665309f9c4f47cd
   languageName: node
   linkType: hard
 
-"@angular/core@npm:20.3.17":
-  version: 20.3.17
-  resolution: "@angular/core@npm:20.3.17"
+"@angular/core@npm:20.3.18":
+  version: 20.3.18
+  resolution: "@angular/core@npm:20.3.18"
   dependencies:
     tslib: "npm:^2.3.0"
   peerDependencies:
-    "@angular/compiler": 20.3.17
+    "@angular/compiler": 20.3.18
     rxjs: ^6.5.3 || ^7.4.0
     zone.js: ~0.15.0
   peerDependenciesMeta:
@@ -813,7 +813,7 @@ __metadata:
       optional: true
     zone.js:
       optional: true
-  checksum: 10/48aeadf30410e02d972afc555c33e7ffcf1a0f715d1394f045d82e64794886751476a18263cdecef0a3a99d0855bcb50c43d94582df248ea1db4b6d4984d77dd
+  checksum: 10/86a5ff45af0f4c23cda0252a326cf0607fb00f39f569805d56e492f12e022fc9e266e8e8b6cb401bd371fd38c231accb0f4fcfe52b6c66e2f9c23636a692ca78
   languageName: node
   linkType: hard
 
@@ -9206,9 +9206,9 @@ __metadata:
     "@angular/cdk": "npm:20.2.14"
     "@angular/cli": "npm:20.3.16"
     "@angular/common": "npm:20.3.15"
-    "@angular/compiler": "npm:20.3.16"
+    "@angular/compiler": "npm:20.3.18"
     "@angular/compiler-cli": "npm:20.3.15"
-    "@angular/core": "npm:20.3.17"
+    "@angular/core": "npm:20.3.18"
     "@angular/forms": "npm:20.3.15"
     "@angular/platform-browser": "npm:20.3.15"
     "@angular/platform-browser-dynamic": "npm:20.3.15"
@@ -17232,10 +17232,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici@npm:7.18.2":
-  version: 7.18.2
-  resolution: "undici@npm:7.18.2"
-  checksum: 10/7d8b921717f5a11fe7e3631dd46ea6dbd80173bdbd454c0115d2c52595352b4a620a3e48c02c40e8f32a416b8bd0028b027cbc8ddebc2d9cdc7a283d50399e3c
+"undici@npm:7.24.0":
+  version: 7.24.0
+  resolution: "undici@npm:7.24.0"
+  checksum: 10/663f08fe940e6cea3633748c82a77e975ab61d7e1d3fd9951a13213c4ddbc5c8196f741b57b52d0df9d08a34092b6aa31eeaff8cd545a0a23cacd0523c21a398
   languageName: node
   linkType: hard
 
