@@ -116,7 +116,7 @@ describe('Case search', () => {
     cy.get('#keywords');
     cy.get('button').contains('Search').click();
 
-    cy.get('#search-results').should('contain', '16 results');
+    cy.get('#search-results').should('contain', '18 results');
     cy.a11y();
     cy.get('a').contains('Clear search').click();
   });

@@ -30,7 +30,7 @@
     <div govukSummaryListRow>
       <dt govukSummaryKey>Date case closed</dt>
       <dd govukSummaryValue>
-        {{ case?.caseClosedDateTime ? (case?.caseClosedDateTime | dateTime: 'dd/MM/yyyy') : '-' }}
+        {{ case?.caseClosedDateTime ? (case?.caseClosedDateTime | luxonDate: 'dd/MM/yyyy') : '-' }}
       </dd>
     </div>
     <div govukSummaryListRow>
@@ -64,7 +64,7 @@
     <div govukSummaryListRow>
       <dt govukSummaryKey>Date anonymised</dt>
       <dd govukSummaryValue>
-        {{ case?.dataAnonymisedAt ? (case?.dataAnonymisedAt | dateTime: 'dd/MM/yyyy') : '-' }}
+        {{ case?.dataAnonymisedAt ? (case?.dataAnonymisedAt | luxonDate: 'dd/MM/yyyy') : '-' }}
       </dd>
     </div>
     <div govukSummaryListRow>
@@ -81,7 +81,7 @@
     </div>
     <div govukSummaryListRow>
       <dt govukSummaryKey>Retention confidence date updated</dt>
-      <dd govukSummaryValue>{{ case?.retConfUpdatedTs ? (case?.retConfUpdatedTs | dateTime: 'dd/MM/yyyy') : '-' }}</dd>
+      <dd govukSummaryValue>{{ case?.retConfUpdatedTs ? (case?.retConfUpdatedTs | luxonDate: 'dd/MM/yyyy') : '-' }}</dd>
     </div>
     <div govukSummaryListRow>
       <dt govukSummaryKey>Case deleted?</dt>
@@ -97,11 +97,11 @@
     </div>
     <div govukSummaryListRow>
       <dt govukSummaryKey>Date deleted</dt>
-      <dd govukSummaryValue>{{ case?.caseDeletedAt ? (case?.caseDeletedAt | dateTime: 'dd/MM/yyyy') : '-' }}</dd>
+      <dd govukSummaryValue>{{ case?.caseDeletedAt ? (case?.caseDeletedAt | luxonDate: 'dd/MM/yyyy') : '-' }}</dd>
     </div>
     <div govukSummaryListRow>
       <dt govukSummaryKey>Date created</dt>
-      <dd govukSummaryValue>{{ case?.createdAt ? (case?.createdAt | dateTime: 'dd/MM/yyyy') : '-' }}</dd>
+      <dd govukSummaryValue>{{ case?.createdAt ? (case?.createdAt | luxonDate: 'dd/MM/yyyy') : '-' }}</dd>
     </div>
     <div govukSummaryListRow>
       <dt govukSummaryKey>Created by</dt>
@@ -110,7 +110,7 @@
     <div govukSummaryListRow>
       <dt govukSummaryKey>Date last modified</dt>
       <dd govukSummaryValue>
-        {{ case?.lastModifiedAt ? (case?.lastModifiedAt | dateTime: 'dd/MM/yyyy') : '-' }}
+        {{ case?.lastModifiedAt ? (case?.lastModifiedAt | luxonDate: 'dd/MM/yyyy') : '-' }}
       </dd>
     </div>
     <div govukSummaryListRow>

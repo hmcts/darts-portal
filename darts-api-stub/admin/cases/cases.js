@@ -2,6 +2,112 @@ const express = require('express');
 const { DateTime } = require('luxon');
 const router = express.Router();
 
+const singleCaseTwenty = {
+  id: 20,
+  courthouse: {
+    id: 2,
+    display_name: 'Reading',
+  },
+  courtrooms: [
+    {
+      id: 20,
+      name: 'Courtroom 20',
+    },
+  ],
+  case_number: 'C20220622020',
+  defendants: ['Defendant Dennis'],
+  judges: ['Judge Juliette'],
+  prosecutors: ['Paddy Prosecutor'],
+  defenders: ['Dileep Defender'],
+  reporting_restrictions: [
+    {
+      event_id: 123,
+      event_name: 'Verdict',
+      event_text: 'Manually entered text',
+      hearing_id: 123,
+      event_ts: '2024-01-01T00:00:00Z',
+    },
+  ],
+  retain_until_date_time: '2030-02-10T23:23:24.858Z',
+  case_closed_date_time: '2030-02-10T23:23:24.858Z',
+  is_retention_updated: true,
+  retention_retries: 0,
+  retention_date_time_applied: '2023-07-22T15:42:10.361Z',
+  retention_policy_applied: 'MANUAL',
+  ret_conf_score: 123,
+  ret_conf_reason: 'Some reason',
+  ret_conf_updated_ts: '2030-02-10T23:23:24.858Z',
+  case_object_id: '12345',
+  case_object_name: 'NAME',
+  case_type: 'Type A',
+  upload_priority: 0,
+  case_status: 'OPEN',
+  created_at: '2030-02-10T23:23:24.858Z',
+  created_by: 3,
+  last_modified_at: '2030-02-10T23:23:24.858Z',
+  last_modified_by: 2,
+  is_deleted: false,
+  case_deleted_at: '2030-02-10T23:23:24.858Z',
+  case_deleted_by: 4,
+  is_data_anonymised: false,
+  data_anonymised_at: '2030-02-10T23:23:24.858Z',
+  data_anonymised_by: 5,
+  is_interpreter_used: false,
+};
+
+const singleCaseTwentyOne = {
+  id: 21,
+  courthouse: {
+    id: 2,
+    display_name: 'Reading',
+  },
+  courtrooms: [
+    {
+      id: 21,
+      name: 'Courtroom 21',
+    },
+  ],
+  case_number: 'C20220622021',
+  defendants: ['Defendant Dennis'],
+  judges: ['Judge Julian'],
+  prosecutors: ['Paddy Prosecutor'],
+  defenders: ['Dileep Defender'],
+  reporting_restrictions: [
+    {
+      event_id: 123,
+      event_name: 'Verdict',
+      event_text: 'Manually entered text',
+      hearing_id: 123,
+      event_ts: '2024-01-01T00:00:00Z',
+    },
+  ],
+  retain_until_date_time: '2030-08-10T23:23:24.858Z',
+  case_closed_date_time: '2030-08-10T23:23:24.858Z',
+  is_retention_updated: true,
+  retention_retries: 0,
+  retention_date_time_applied: '2023-07-22T15:42:10.361Z',
+  retention_policy_applied: 'MANUAL',
+  ret_conf_score: 123,
+  ret_conf_reason: 'Some reason',
+  ret_conf_updated_ts: '2030-08-10T23:23:24.858Z',
+  case_object_id: '12345',
+  case_object_name: 'NAME',
+  case_type: 'Type A',
+  upload_priority: 0,
+  case_status: 'OPEN',
+  created_at: '2030-08-10T23:23:24.858Z',
+  created_by: 3,
+  last_modified_at: '2030-08-10T23:23:24.858Z',
+  last_modified_by: 2,
+  is_deleted: false,
+  case_deleted_at: '2030-08-10T23:23:24.858Z',
+  case_deleted_by: 4,
+  is_data_anonymised: false,
+  data_anonymised_at: '2030-08-10T23:23:24.858Z',
+  data_anonymised_by: 5,
+  is_interpreter_used: false,
+};
+
 const caseSearchResults = [
   {
     id: 1,
@@ -57,6 +163,8 @@ const caseSearchResults = [
     is_data_anonymised: true,
     data_anonymised_at: '2023-08-10T11:53:24.858Z',
   },
+  singleCaseTwenty,
+  singleCaseTwentyOne,
 ];
 
 const singleCase = {
@@ -130,10 +238,19 @@ router.post('/search', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-  if (req.params.id == 3) {
-    res.send({ ...singleCase, is_data_anonymised: true });
-  } else {
-    res.send(singleCase);
+  switch (req.params.id) {
+    case '3':
+      res.send({ ...singleCase, is_data_anonymised: true });
+      break;
+    case '20':
+      res.send(singleCaseTwenty);
+      break;
+    case '21':
+      res.send(singleCaseTwentyOne);
+      break;
+    default:
+      res.send(singleCase);
+      break;
   }
 });
 

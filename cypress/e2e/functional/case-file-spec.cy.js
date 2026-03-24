@@ -78,6 +78,26 @@ describe('Case file screen', () => {
     });
   });
 
+  describe('Winter/Summer date display', () => {
+    beforeEach(() => {
+      cy.login();
+    });
+
+    function verifyRetainedDate(caseId, retainedDate) {
+      cy.visit(`/case/${caseId}`);
+      cy.get('h2.govuk-heading-s').should('contain', 'Retained until');
+      cy.get('p.govuk-body').should('contain', retainedDate);
+    }
+
+    it('should display winter date of 10 Feb 2030', () => {
+      verifyRetainedDate(20, '10 Feb 2030');
+    });
+
+    it('should display summer date of 11 Aug 2030', () => {
+      verifyRetainedDate(21, '11 Aug 2030');
+    });
+  });
+
   describe('expired cases', () => {
     beforeEach(() => {
       cy.login();
