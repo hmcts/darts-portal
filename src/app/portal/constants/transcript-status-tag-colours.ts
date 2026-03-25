@@ -4,7 +4,7 @@ import { TranscriptStatus } from '@portal-types/index';
 export const transcriptStatusTagColours: { [K in TranscriptStatus]: TagColour } = {
   Requested: 'blue',
   'Awaiting Authorisation': 'yellow',
-  Approved: 'turquoise',
+  Approved: 'teal',
   Rejected: 'red',
   'With Transcriber': 'purple',
   Complete: 'green',
