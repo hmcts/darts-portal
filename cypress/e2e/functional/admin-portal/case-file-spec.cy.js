@@ -84,6 +84,51 @@ describe('Case file screen', () => {
     cy.a11y();
   });
 
+  describe('Winter/Summer date display', () => {
+    function verifyCaseDates(caseId, retainedDate, expectedDate) {
+      cy.visit(`admin/case/${caseId}`);
+
+      cy.get('.govuk-summary-list').within(() => {
+        cy.get('.govuk-summary-list__row')
+          .eq(6)
+          .within(() => {
+            cy.get('.govuk-summary-list__key').should('have.text', 'Retained until');
+            cy.get('.govuk-summary-list__value').first().should('contain.text', retainedDate);
+          });
+      });
+
+      cy.get('#additional-tab').click();
+
+      cy.contains('h2.govuk-heading-m', 'Additional case details').should('be.visible');
+
+      const expectedData = [
+        ['Date case closed', expectedDate],
+        ['Date anonymised', expectedDate],
+        ['Retention confidence date updated', expectedDate],
+        ['Date deleted', expectedDate],
+        ['Date created', expectedDate],
+        ['Date last modified', expectedDate],
+      ];
+
+      expectedData.forEach(([key, value]) => {
+        cy.contains('.govuk-summary-list__row', key)
+          .should('exist')
+          .within(() => {
+            cy.get('.govuk-summary-list__key').should('have.text', key);
+            cy.get('.govuk-summary-list__value').should('contain.text', value);
+          });
+      });
+    }
+
+    it('should display winter dates of 10 Feb 2030', () => {
+      verifyCaseDates(20, '10 Feb 2030', '10/02/2030');
+    });
+
+    it('should display summer dates of 11 Aug 2030', () => {
+      verifyCaseDates(21, '11 Aug 2030', '11/08/2030');
+    });
+  });
+
   describe('Additional case details tab', () => {
     it('should verify additional case details', () => {
       cy.visit('admin/case/1');

@@ -5,7 +5,7 @@ import { ExpiredBannerComponent } from '@common/expired-banner/expired-banner.co
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { ReportingRestrictionComponent } from '@common/reporting-restriction/reporting-restriction.component';
 import { GovukSummaryListDirectives } from '@directives/govuk-summary-list';
-import { DateTimePipe } from '@pipes/dateTime.pipe';
+import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { JoinPipe } from '@pipes/join';
 
 @Component({
@@ -13,7 +13,7 @@ import { JoinPipe } from '@pipes/join';
   imports: [
     GovukHeadingComponent,
     JoinPipe,
-    DateTimePipe,
+    LuxonDatePipe,
     RouterLink,
     GovukSummaryListDirectives,
     ReportingRestrictionComponent,
