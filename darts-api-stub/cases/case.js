@@ -129,6 +129,46 @@ const singleCaseTen = {
   data_anonymised_at: '2023-08-10T11:53:24.858Z',
 };
 
+const singleCaseTwenty = {
+  case_id: 20,
+  courthouse: 'Reading',
+  courthouse_id: 2,
+  case_number: 'C20220622020',
+  defendants: ['Defendant Dennis'],
+  judges: ['Judge Juliette'],
+  prosecutors: ['Paddy Prosecutor'],
+  defenders: ['Dileep Defender'],
+  retain_until_date_time: '2030-02-10T23:23:24.858Z',
+  hearings: [
+    {
+      id: 20,
+      date: '2023-08-10',
+      courtroom: '20',
+      judges: ['Judge Julian'],
+    },
+  ],
+};
+
+const singleCaseTwentyOne = {
+  case_id: 21,
+  courthouse: 'Reading',
+  courthouse_id: 2,
+  case_number: 'C20220622021',
+  defendants: ['Defendant Dennis'],
+  judges: ['Judge Julian'],
+  prosecutors: ['Paddy Prosecutor'],
+  defenders: ['Dileep Defender'],
+  retain_until_date_time: '2030-08-10T23:23:24.858Z',
+  hearings: [
+    {
+      id: 21,
+      date: '2023-08-10',
+      courtroom: '21',
+      judges: ['Judge Juliette'],
+    },
+  ],
+};
+
 const defaultCaseHearings = [
   {
     case_id: 2,
@@ -464,6 +504,8 @@ const multipleCases = [
       },
     ],
   },
+  singleCaseTwenty,
+  singleCaseTwentyOne,
 ];
 
 const transcriptOne = [
@@ -810,6 +852,12 @@ router.get('/:caseId', (req, res) => {
       break;
     case '10':
       res.send(singleCaseTen);
+      break;
+    case '20':
+      res.send(singleCaseTwenty);
+      break;
+    case '21':
+      res.send(singleCaseTwentyOne);
       break;
     default:
       res.send(singleCase);
