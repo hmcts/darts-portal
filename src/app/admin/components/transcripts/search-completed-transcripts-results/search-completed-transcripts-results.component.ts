@@ -24,10 +24,10 @@ export class SearchCompletedTranscriptsResultsComponent implements OnChanges {
     { name: 'Case ID', prop: 'caseNumber', sortable: true },
     { name: 'Courthouse', prop: 'courthouse', sortable: true },
     { name: 'Hearing date', prop: 'hearingDate', sortable: true },
+    { name: 'Date uploaded', prop: 'uploadedAt', sortable: true },
     { name: 'Request method', prop: 'requestMethod', sortable: true },
     { name: 'Is hidden', prop: 'isHidden', sortable: true },
   ];
-
   ngOnChanges() {
     this.rows = this.mapRows(this.results);
   }
@@ -40,6 +40,7 @@ export class SearchCompletedTranscriptsResultsComponent implements OnChanges {
       caseNumber: result.case?.caseNumber,
       courthouse: result.courthouse?.displayName,
       hearingDate: result.hearing?.hearingDate,
+      uploadedAt: result.uploadedAt,
       hearingId: result.hearing?.id,
       requestMethod: result.isManualTranscription,
       isHidden: result.isHidden,
