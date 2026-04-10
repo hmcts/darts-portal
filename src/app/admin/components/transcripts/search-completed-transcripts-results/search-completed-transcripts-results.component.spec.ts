@@ -35,6 +35,7 @@ describe('SearchCompletedTranscriptsResultsComponent', () => {
       const results: TranscriptionDocumentSearchResult[] = [
         {
           transcriptionDocumentId: 1,
+          uploadedAt: DateTime.fromISO('2021-01-02'),
           case: { id: 1, caseNumber: 'caseNumber' },
           courthouse: { id: 1, displayName: 'courthouse' },
           hearing: { id: 1, hearingDate: DateTime.fromISO('2021-01-01') },
@@ -46,6 +47,7 @@ describe('SearchCompletedTranscriptsResultsComponent', () => {
       const expected = [
         {
           id: 1,
+          uploadedAt: DateTime.fromISO('2021-01-02'),
           caseId: 1,
           requestId: 0,
           caseNumber: 'caseNumber',
@@ -63,6 +65,7 @@ describe('SearchCompletedTranscriptsResultsComponent', () => {
       const results: TranscriptionDocumentSearchResult[] = [
         {
           transcriptionDocumentId: 1,
+          uploadedAt: DateTime.fromISO('2021-01-02'),
           case: { id: 1, caseNumber: 'caseNumber' },
           courthouse: { id: 1, displayName: 'courthouse' },
           hearing: { hearingDate: DateTime.fromISO('2021-01-01') },
