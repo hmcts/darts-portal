@@ -80,6 +80,7 @@
   },
   "resolutions": {
     "@angular/*": "20.2.7",
+    "axios": "1.15.0",
     "micromatch": "^4.0.8",
     "send": "^1.0.0",
     "cookie": "^1.0.0",
