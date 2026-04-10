@@ -338,6 +338,7 @@ describe('Admin - Transcript requests', () => {
       cy.get('app-search-completed-transcripts-results').contains('C0001');
       cy.get('app-search-completed-transcripts-results').contains('Cardiff');
       cy.get('app-search-completed-transcripts-results').contains('01 Jan 2021');
+      cy.get('app-search-completed-transcripts-results').contains('01 Jan 2024');
       cy.get('app-search-completed-transcripts-results').contains('Manual');
     });
 
@@ -362,18 +363,21 @@ describe('Admin - Transcript requests', () => {
       cy.get('#transcript-details dt').eq(1).should('contain', 'Hearing date');
       cy.get('#transcript-details dd').eq(1).should('contain', '08 Nov 2023');
 
-      cy.get('#transcript-details dt').eq(2).should('contain', 'Courthouse');
-      cy.get('#transcript-details dd').eq(2).should('contain', 'Swansea');
+      cy.get('#transcript-details dt').eq(2).should('contain', 'Date uploaded');
+      cy.get('#transcript-details dd').eq(2).should('contain', '18 May 2008');
 
-      cy.get('#transcript-details dt').eq(3).should('contain', 'Courtroom');
-      cy.get('#transcript-details dd').eq(3).should('contain', '5');
+      cy.get('#transcript-details dt').eq(3).should('contain', 'Courthouse');
+      cy.get('#transcript-details dd').eq(3).should('contain', 'Swansea');
 
-      cy.get('#transcript-details dt').eq(4).should('contain', 'Defendant(s)');
-      cy.get('#transcript-details dd').eq(4).should('contain', 'Defendant Bob');
-      cy.get('#transcript-details dd').eq(4).should('contain', 'Defendant Dave');
+      cy.get('#transcript-details dt').eq(4).should('contain', 'Courtroom');
+      cy.get('#transcript-details dd').eq(4).should('contain', '5');
 
-      cy.get('#transcript-details dt').eq(5).should('contain', 'Judge(s)');
-      cy.get('#transcript-details dd').eq(5).should('contain', 'Ray Bob');
+      cy.get('#transcript-details dt').eq(5).should('contain', 'Defendant(s)');
+      cy.get('#transcript-details dd').eq(5).should('contain', 'Defendant Bob');
+      cy.get('#transcript-details dd').eq(5).should('contain', 'Defendant Dave');
+
+      cy.get('#transcript-details dt').eq(6).should('contain', 'Judge(s)');
+      cy.get('#transcript-details dd').eq(6).should('contain', 'Ray Bob');
 
       // request-details
       cy.get('#request-details').get('app-govuk-heading').contains('Request details');

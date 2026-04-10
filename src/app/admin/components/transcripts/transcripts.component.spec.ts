@@ -29,6 +29,7 @@ describe('TranscriptsComponent', () => {
     {
       transcriptionDocumentId: 0,
       transcriptionId: 0,
+      uploadedAt: DateTime.fromISO('2021-01-01'),
       case: {
         id: 0,
         caseNumber: 'caseNumber',
@@ -47,6 +48,7 @@ describe('TranscriptsComponent', () => {
     {
       transcriptionDocumentId: 1,
       transcriptionId: 1,
+      uploadedAt: DateTime.fromISO('2021-01-02'),
       case: {
         id: 1,
         caseNumber: 'caseNumber',
