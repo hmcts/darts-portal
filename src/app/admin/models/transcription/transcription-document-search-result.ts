@@ -3,6 +3,7 @@ import { DateTime } from 'luxon';
 export type TranscriptionDocumentSearchResult = {
   transcriptionDocumentId: number;
   transcriptionId: number;
+  uploadedAt: DateTime;
   case: {
     id: number;
     caseNumber: string;

@@ -35,6 +35,7 @@
     } @else {
       <td>{{ row.hearingDate | luxonDate: 'dd MMM yyyy' }}</td>
     }
+    <td>{{ row.uploadedAt | luxonDate: 'dd MMM yyyy' }}</td>
     <td>{{ row.requestMethod ? 'Manual' : 'Automatic' }}</td>
     <td>{{ row.isHidden ? 'Yes' : 'No' }}</td>
   </ng-template>

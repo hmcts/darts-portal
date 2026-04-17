@@ -1,6 +1,7 @@
 export interface TranscriptionDocumentSearchResultData {
   transcription_document_id: number;
   transcription_id: number;
+  uploaded_at: string;
   case: {
     id: number;
     case_number: string;
