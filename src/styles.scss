@@ -79,7 +79,14 @@ a.govuk-back-link:hover {
 }
 
 .moj-notification-badge {
-  background-color: #1d70b8;
+  --badge-outline-width: 4px;
+  --badge-color: #1d70b8;
+
+  outline-width: var(--badge-outline-width);
+  margin-right: var(--badge-outline-width);
+
+  background-color: var(--badge-color);
+  outline-color: var(--badge-color);
 }
 
 .margin-bottom {
