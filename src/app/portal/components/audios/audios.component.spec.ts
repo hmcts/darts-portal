@@ -168,7 +168,7 @@ describe('AudiosComponent', () => {
 
       component.onDeleteConfirmed();
 
-      expect(deleteSpy).toBeCalledTimes(3);
+      expect(deleteSpy).toHaveBeenCalledTimes(3);
       expect(deleteSpy).toHaveBeenCalledWith(1);
       expect(deleteSpy).toHaveBeenCalledWith(2);
       expect(deleteSpy).toHaveBeenCalledWith(3);

@@ -73,7 +73,7 @@ describe('OrderConfirmationComponent', () => {
       component.onReturnToSearch(event);
 
       expect(eventSpy).toHaveBeenCalled();
-      expect(showPrimaryNavigationSpy).toBeCalled();
+      expect(showPrimaryNavigationSpy).toHaveBeenCalled();
     });
   });
 

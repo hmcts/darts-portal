@@ -104,7 +104,7 @@ describe('AudioPlayerComponent', () => {
 
       fixture.detectChanges();
 
-      expect(audioPlayer.nativeElement.play).toBeCalled();
+      expect(audioPlayer.nativeElement.play).toHaveBeenCalled();
     });
 
     it('should pause the audio if shouldPlay is false', () => {
