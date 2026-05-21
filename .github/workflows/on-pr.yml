@@ -21,7 +21,7 @@ jobs:
           appId="dec3be30-6325-4335-b898-eb01985d6c90"
 
           az login --service-principal --username ${{ secrets.SP_CLIENT_ID}} -p=${{ secrets.SP_SECRET_KEY}} --tenant ${{ secrets.SP_TENANT_ID}} --allow-no-subscriptions
-        
+
           replyUrls=$(az ad app show --id "$appId" --query "web.redirectUris" -o json --only-show-errors)
           echo "Found callback URLs"
           echo $replyUrls
@@ -59,7 +59,7 @@ jobs:
           appId="363c11cb-48b9-44bf-9d06-9a3973f6f413"
 
           az login --service-principal --username ${{ secrets.SP_CLIENT_ID_B2C}} -p=${{ secrets.SP_SECRET_KEY_B2C}} --tenant ${{ secrets.SP_TENANT_ID_B2C}} --allow-no-subscriptions
-        
+
           replyUrls=$(az ad app show --id "$appId" --query "web.redirectUris" -o json --only-show-errors)
           echo "Found Reply URLs"
           echo $replyUrls
