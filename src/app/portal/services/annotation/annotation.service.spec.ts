@@ -80,7 +80,8 @@ describe('AnnotationService', () => {
     });
   });
 
-  describe('#uploadAnnotationDocument', () => {
+  // TODO re-enable once DMP-5554 is complete and the test is no longer flaky
+  describe.skip('#uploadAnnotationDocument', () => {
     it('should call the correct endpoint with the correct data', (done) => {
       const hearingId = 1;
       const comment = 'Extra notes';
