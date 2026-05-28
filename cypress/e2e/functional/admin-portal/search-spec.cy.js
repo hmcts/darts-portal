@@ -327,7 +327,7 @@ describe('Admin - Search screen', () => {
 
     cy.get('#confirm-button').click();
 
-    cy.get('.heading-caption').should('contain', 'Showing 1-5 of 5');
+    cy.get('.heading-caption').should('contain', 'Showing 1-6 of 6');
   });
 
   it('should clear the form when "Clear search" is clicked', () => {
