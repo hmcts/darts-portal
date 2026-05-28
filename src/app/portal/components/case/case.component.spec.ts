@@ -35,6 +35,20 @@ describe('CaseComponent', () => {
     retainUntil: '2023-08-10T11:23:24.858Z',
   };
 
+  const mockCaseFileExpired: Case = {
+    id: 1,
+    courthouse: 'Swansea',
+    courthouseId: 1,
+    number: 'CASE1001',
+    defendants: ['Defendant Dave', 'Defendant Debbie'],
+    judges: ['Judge Judy', 'Judge Jones'],
+    prosecutors: ['Polly Prosecutor'],
+    defenders: ['Derek Defender'],
+    retainUntil: '2023-08-10T11:23:24.858Z',
+    isDataAnonymised: true,
+    dataAnonymisedAt: DateTime.fromISO('2024-01-01T11:23:24.858Z'),
+  };
+
   const mockEvents: CaseEvent[] = [
     {
       eventId: 1,
@@ -57,7 +71,7 @@ describe('CaseComponent', () => {
     retainUntil: '2023-08-10T11:23:24.858Z',
   };
 
-  const mockSingleCaseTwoHearings: Observable<Hearing[]> = of([
+  const mockSingleCaseTwoHearingsValue: Hearing[] = [
     {
       id: 1,
       date: DateTime.fromISO('2023-09-01'),
@@ -65,7 +79,8 @@ describe('CaseComponent', () => {
       courtroom: '3',
       transcriptCount: 1,
     },
-  ]);
+  ];
+  const mockSingleCaseTwoHearings: Observable<Hearing[]> = of(mockSingleCaseTwoHearingsValue);
 
   const mockTranscript: Observable<TranscriptData[]> = of([
     {
@@ -134,12 +149,23 @@ describe('CaseComponent', () => {
     ),
   };
 
+  const caseServiceMockExpired = {
+    getCase: jest.fn().mockReturnValue(of(mockCaseFileExpired)),
+    getCaseHearings: jest.fn().mockReturnValue(mockSingleCaseTwoHearings),
+    getCaseTranscripts: jest.fn().mockReturnValue(mockTranscript),
+    getCaseAnnotations: jest.fn().mockReturnValue(mockAnnotation),
+    getCaseEvents: jest.fn().mockReturnValue(of([])),
+    getCaseEventsPaginated: jest.fn().mockReturnValue(
+      of({
+        data: mockEvents,
+        totalItems: 120,
+        currentPage: 1,
+      })
+    ),
+  };
+
   const caseServiceMockError = {
-    getCase: jest
-      .fn()
-      .mockReturnValue(
-        of({ ...mockCaseFile, isDataAnonymised: true, dataAnonymisedAt: DateTime.fromISO('2023-08-10T11:23:24.858Z') })
-      ),
+    getCase: jest.fn().mockReturnValue(of(mockCaseFile)),
     getCaseHearings: jest.fn().mockReturnValue(throwError(() => ({ status: 404 }) as unknown as HttpResponse<void>)),
     getCaseTranscripts: jest.fn().mockReturnValue(throwError(() => ({ status: 404 }) as unknown as HttpResponse<void>)),
     getCaseAnnotations: jest.fn().mockReturnValue(throwError(() => ({ status: 404 }) as unknown as HttpResponse<void>)),
@@ -174,14 +200,17 @@ describe('CaseComponent', () => {
     getAppConfig: jest.fn().mockReturnValue({ pagination: { courtLogEventsPageLimit: 500 } }),
   };
 
-  const setup = (throwError = false) => {
+  const setup = (throwError = false, expired = false) => {
     return TestBed.configureTestingModule({
       imports: [CaseComponent],
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
-        { provide: CaseService, useValue: !throwError ? caseServiceMock : caseServiceMockError },
+        {
+          provide: CaseService,
+          useValue: !throwError ? (expired ? caseServiceMockExpired : caseServiceMock) : caseServiceMockError,
+        },
         { provide: UserService, useValue: fakeUserService },
         { provide: AnnotationService, useValue: fakeAnnotationService },
         { provide: FileDownloadService, useValue: fakeFileDownloadService },
@@ -213,7 +242,9 @@ describe('CaseComponent', () => {
     });
 
     it('hearings$ should be set', () => {
-      expect(component.hearings$).toEqual(mockSingleCaseTwoHearings);
+      let result;
+      component.hearings$.subscribe((r) => (result = r));
+      expect(result).toEqual(mockSingleCaseTwoHearingsValue);
     });
 
     describe('#onDeleteClicked', () => {
@@ -272,6 +303,49 @@ describe('CaseComponent', () => {
     });
   });
 
+  describe('CaseComponent - Expired Case (isDataAnonymised) functionality', () => {
+    let component: CaseComponent;
+
+    beforeEach(() => {
+      component = setup(false, true).componentInstance;
+    });
+
+    it('should create', () => {
+      expect(component).toBeTruthy();
+    });
+
+    it('caseId should be set', () => {
+      expect(component.caseId).toEqual(1);
+    });
+
+    it('caseFile$ should be set', () => {
+      let result;
+      component.caseFile$.subscribe((r) => (result = r));
+      expect(result).toEqual(mockCaseFileExpired);
+    });
+
+    it('hearings$ should not be set if case has expired', () => {
+      let result;
+      component.hearings$.subscribe((r) => (result = r));
+      expect(result).toEqual(null);
+    });
+
+    it('transcripts$ should not be set if case has expired', () => {
+      let result;
+      component.transcripts$.subscribe((r) => (result = r));
+      expect(result).toEqual(null);
+    });
+
+    it('annotations$ should not be set if case has expired', () => {
+      let result;
+      component.annotations$.subscribe((r) => (result = r));
+      expect(result).toEqual(null);
+    });
+    expect(caseServiceMockExpired.getCaseHearings).not.toHaveBeenCalled();
+    expect(caseServiceMockExpired.getCaseTranscripts).not.toHaveBeenCalled();
+    expect(caseServiceMockExpired.getCaseAnnotations).not.toHaveBeenCalled();
+  });
+
   describe('CaseComponent - Data stream loading and error handling', () => {
     let component: CaseComponent;
 
@@ -290,7 +364,9 @@ describe('CaseComponent', () => {
       });
     });
 
-    it('should handle errors in caseService.getCaseHearings, caseService.getCaseTranscripts, caseService.getCaseAnnotations, and caseService.getCaseEvents', fakeAsync(() => {
+    it('should handle errors in caseService.getCaseHearings, caseService.getCaseTranscripts, caseService.getCaseAnnotations even if for some reason other than the case being expired', fakeAsync(() => {
+      fakeUserService.isAdmin.mockReturnValue(true);
+
       fixture = setup(true);
       component = fixture.componentInstance;
 
@@ -302,15 +378,15 @@ describe('CaseComponent', () => {
       tick();
 
       expect(result).toEqual({
-        caseFile: {
-          ...mockCaseFile,
-          isDataAnonymised: true,
-          dataAnonymisedAt: DateTime.fromISO('2023-08-10T11:23:24.858Z'),
-        },
+        caseFile: mockCaseFile,
         hearings: null,
         transcripts: null,
         annotations: null,
       });
+
+      expect(caseServiceMockError.getCaseHearings).toHaveBeenCalled();
+      expect(caseServiceMockError.getCaseTranscripts).toHaveBeenCalled();
+      expect(caseServiceMockError.getCaseAnnotations).toHaveBeenCalled();
     }));
   });
 
