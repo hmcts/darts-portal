@@ -60,13 +60,26 @@ export class CaseComponent {
 
   public caseId = this.route.snapshot.params.caseId;
   public caseFile$ = this.caseService.getCase(this.caseId).pipe(shareReplay(1));
-  public hearings$ = this.caseService.getCaseHearings(this.caseId);
-  public transcripts$ = this.caseService
-    .getCaseTranscripts(this.caseId)
-    .pipe(map((transcript) => this.mappingService.mapTranscriptRequestToRows(transcript)));
+
+  public hearings$ = this.caseFile$.pipe(
+    switchMap((c) => {
+      if (c.isDataAnonymised) return of(null);
+      return this.caseService.getCaseHearings(this.caseId);
+    })
+  );
+
+  public transcripts$ = this.caseFile$.pipe(
+    switchMap((c) => {
+      if (c.isDataAnonymised) return of(null);
+      return this.caseService
+        .getCaseTranscripts(this.caseId)
+        .pipe(map((transcript) => this.mappingService.mapTranscriptRequestToRows(transcript)));
+    })
+  );
 
   public annotations$ = this.caseFile$.pipe(
     switchMap((c) => {
+      if (c.isDataAnonymised) return of(null);
       if (!c.courthouseId) return of(null);
       if (this.userService.isCourthouseJudge(c.courthouseId) || this.userService.isAdmin()) {
         return this.caseService.getCaseAnnotations(this.caseId);

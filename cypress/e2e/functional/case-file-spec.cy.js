@@ -103,7 +103,26 @@ describe('Case file screen', () => {
       cy.login();
     });
 
-    it('should show limited information for an expired case', () => {
+    it('should show limited information for an expired case and not request hearings, transcripts or annotations from the server', () => {
+      let hearingsCalls = 0;
+      let transcriptsCalls = 0;
+      let annotationsCalls = 0;
+
+      cy.intercept('GET', '**/hearings**', (req) => {
+        hearingsCalls += 1;
+        req.reply({ statusCode: 200, body: [] });
+      });
+
+      cy.intercept('GET', '**/transcripts**', (req) => {
+        transcriptsCalls += 1;
+        req.reply({ statusCode: 200, body: [] });
+      });
+
+      cy.intercept('GET', '**/annotations**', (req) => {
+        annotationsCalls += 1;
+        req.reply({ statusCode: 200, body: [] });
+      });
+
       cy.visit('/case/10');
       cy.injectAxe();
       cy.get('h1').should('contain', 'C20220622031');
@@ -120,6 +139,12 @@ describe('Case file screen', () => {
         'contain',
         'This case has passed its retention date on 10 Aug 2023. Data was deleted in line with HMCTS policy.'
       );
+
+      cy.then(() => {
+        expect(hearingsCalls).to.eq(0);
+        expect(transcriptsCalls).to.eq(0);
+        expect(annotationsCalls).to.eq(0);
+      });
 
       cy.a11y();
     });
