@@ -150,7 +150,6 @@ describe('Case file screen', () => {
 
       cy.visit('admin/case/10');
       cy.injectAxe();
-
       cy.get('app-govuk-heading').should('contain.text', 'Case').should('contain.text', 'CASE1001');
 
       cy.then(() => {
