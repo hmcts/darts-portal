@@ -80,8 +80,7 @@ describe('AnnotationService', () => {
     });
   });
 
-  // TODO re-enable once DMP-5554 is complete and the test is no longer flaky
-  describe.skip('#uploadAnnotationDocument', () => {
+  describe('#uploadAnnotationDocument', () => {
     it('should call the correct endpoint with the correct data', (done) => {
       const hearingId = 1;
       const comment = 'Extra notes';
@@ -99,13 +98,16 @@ describe('AnnotationService', () => {
       const spyPost = jest.spyOn(service['http'], 'post');
 
       service.uploadAnnotationDocument(file, hearingId, comment).subscribe(() => {
-        expect(spyPost).toHaveBeenCalledWith(`/api/annotations`, formData);
+        expect(spyPost).toHaveBeenCalledWith(`/api/annotations`, expect.any(FormData));
         done();
       });
 
       const req = httpTestingController.expectOne(`/api/annotations`);
       expect(req.request.method).toBe('POST');
-      expect(req.request.body).toEqual(formData);
+      expect(req.request.body).toBeInstanceOf(FormData);
+      const body = req.request.body as FormData;
+      expect(body.get('file')).toEqual(formData.get('file'));
+      expect(body.get('annotation')).toEqual(formData.get('annotation'));
 
       req.flush({});
     });
