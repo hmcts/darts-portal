@@ -225,6 +225,7 @@ describe('AdminSearchService', () => {
             caseNumber: '654321',
             hearingId: 2,
             hearingDate: DateTime.fromFormat('2021-01-01', 'yyyy-MM-dd'),
+            isHearingAnonymised: false,
             courthouse: 'Courthouse 2',
             courtroom: 'Courtroom 2',
           },
@@ -240,6 +241,46 @@ describe('AdminSearchService', () => {
             case_number: '654321',
           },
           hearing_date: '2021-01-01',
+          is_data_anonymised: false,
+          courthouse: {
+            id: 2,
+            display_name: 'Courthouse 2',
+          },
+          courtroom: {
+            id: 2,
+            name: 'Courtroom 2',
+          },
+        },
+      ]);
+
+      tick();
+    }));
+
+    it('map anonymised hearings', fakeAsync(() => {
+      service.getHearings(mockSearchFormValues).subscribe((hearings) => {
+        expect(hearings).toEqual([
+          {
+            caseId: 2,
+            caseNumber: '654321',
+            hearingId: 2,
+            hearingDate: DateTime.fromFormat('2021-01-01', 'yyyy-MM-dd'),
+            isHearingAnonymised: true,
+            courthouse: 'Courthouse 2',
+            courtroom: 'Courtroom 2',
+          },
+        ]);
+      });
+
+      const req = httpMock.expectOne(ADMIN_HEARING_SEARCH_PATH);
+      req.flush([
+        {
+          id: 2,
+          case: {
+            id: 2,
+            case_number: '654321',
+          },
+          hearing_date: '2021-01-01',
+          is_data_anonymised: true,
           courthouse: {
             id: 2,
             display_name: 'Courthouse 2',

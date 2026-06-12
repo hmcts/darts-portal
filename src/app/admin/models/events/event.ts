@@ -33,6 +33,7 @@ export type Event = {
     caseId: number;
     caseNumber: string;
     hearingDate: DateTime;
+    isHearingAnonymised: boolean;
     courthouse: {
       id: number;
       displayName: string;

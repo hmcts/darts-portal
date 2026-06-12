@@ -32,6 +32,7 @@ export interface EventData {
     case_id: number;
     case_number: string;
     hearing_date: string;
+    is_data_anonymised: boolean;
     courthouse: {
       id: number;
       display_name: string;
