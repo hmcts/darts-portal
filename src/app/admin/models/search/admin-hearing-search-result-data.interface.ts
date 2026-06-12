@@ -13,4 +13,5 @@ export interface AdminHearingSearchResultData {
     id: number;
     name: string;
   };
+  is_data_anonymised: boolean;
 }

@@ -39,6 +39,42 @@ describe('TransformedMediaService', () => {
     expect(service).toBeTruthy();
   });
 
+  describe('getMediaById', () => {
+    it('maps hearing anonymisation', () => {
+      service.getMediaById(1).subscribe((audioFile) => {
+        expect(audioFile.hearings.map((hearing) => hearing.isHearingAnonymised)).toEqual([true, false]);
+      });
+
+      const req = httpMock.expectOne({ url: '/api/admin/medias/1', method: 'GET' });
+      req.flush({
+        id: 1,
+        file_size_bytes: 100,
+        filename: 'audio.mp3',
+        cases: [],
+        hearings: [
+          {
+            id: 1,
+            hearing_date: '2024-01-01',
+            is_data_anonymised: true,
+            case_id: 1,
+            case_number: 'CASE1',
+            courthouse: { id: 1, display_name: 'Courthouse 1' },
+            courtroom: { id: 1, name: 'Courtroom 1' },
+          },
+          {
+            id: 2,
+            hearing_date: '2024-01-02',
+            is_data_anonymised: false,
+            case_id: 2,
+            case_number: 'CASE2',
+            courthouse: { id: 2, display_name: 'Courthouse 2' },
+            courtroom: { id: 2, name: 'Courtroom 2' },
+          },
+        ],
+      });
+    });
+  });
+
   describe('searchTransformedMedia', () => {
     it('call search endpoint with mapped request body (specific date)', () => {
       const mockCriteria: TransformedMediaSearchFormValues = {

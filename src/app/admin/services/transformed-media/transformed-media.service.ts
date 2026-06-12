@@ -372,6 +372,7 @@ export class TransformedMediaService {
       hearings: data.hearings.map((hearing) => ({
         id: hearing.id,
         hearingDate: DateTime.fromISO(hearing.hearing_date),
+        isHearingAnonymised: hearing.is_data_anonymised,
         caseId: hearing.case_id,
         caseNumber: hearing.case_number,
         courthouse: {
