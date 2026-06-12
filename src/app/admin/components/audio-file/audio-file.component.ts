@@ -103,6 +103,7 @@ export class AudioFileComponent {
         hearingId: h.id,
         caseNumber: h.caseNumber ?? 'Unknown',
         hearingDate: h.hearingDate,
+        isHearingAnonymised: h.isHearingAnonymised,
         courthouse: h.courthouse.displayName ?? 'Unknown',
         courtroom: h.courtroom?.name ?? 'Unknown',
       }))

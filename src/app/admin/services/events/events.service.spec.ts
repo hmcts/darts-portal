@@ -129,6 +129,7 @@ describe('EventsService', () => {
             case_id: 201,
             case_number: 'CASE001',
             hearing_date: '2024-06-10T10:00:00Z',
+            is_data_anonymised: false,
             courthouse: { id: 5, display_name: 'Main Courthouse' },
             courtroom: { id: 10, name: 'Courtroom A' },
           },
@@ -174,6 +175,105 @@ describe('EventsService', () => {
             caseId: 201,
             caseNumber: 'CASE001',
             hearingDate: DateTime.fromISO('2024-06-10T10:00:00Z'),
+            isHearingAnonymised: false,
+            courthouse: { id: 5, displayName: 'Main Courthouse' },
+            courtroom: { id: 10, name: 'Courtroom A' },
+          },
+        ],
+        version: 'v1',
+        chronicleId: 'chron-101',
+        antecedentId: 'ant-101',
+        isDataAnonymised: false,
+        eventStatus: 4,
+        eventTs: DateTime.fromISO('2024-06-01T12:30:00Z'),
+        createdAt: DateTime.fromISO('2024-06-01T12:30:00Z'),
+        createdById: 1,
+        lastModifiedAt: DateTime.fromISO('2024-06-02T14:00:00Z'),
+        lastModifiedById: 2,
+        isCurrentVersion: true,
+      };
+
+      const mappedEvent = service.mapEventDataToEvent(mockEventData);
+
+      expect(mappedEvent).toEqual(expectedMappedEvent);
+    });
+
+    it('should correctly map cases and hearings from event data (anonymised hearing)', () => {
+      const mockEventData = {
+        id: 1,
+        documentum_id: 1,
+        source_id: 1,
+        message_id: 'msg-001',
+        text: 'Sample event text',
+        event_mapping: { id: 101, name: 'Event Mapping Name' },
+        is_log_entry: true,
+        courthouse: { id: 5, display_name: 'Main Courthouse' },
+        courtroom: { id: 10, name: 'Courtroom A' },
+        cases: [
+          {
+            id: 201,
+            case_number: 'CASE001',
+            courthouse: { id: 5, display_name: 'Main Courthouse' },
+          },
+          {
+            id: 202,
+            case_number: 'CASE002',
+            courthouse: { id: 6, display_name: 'Secondary Courthouse' },
+          },
+        ],
+        hearings: [
+          {
+            id: 301,
+            case_id: 201,
+            case_number: 'CASE001',
+            hearing_date: '2024-06-10T10:00:00Z',
+            is_data_anonymised: true,
+            courthouse: { id: 5, display_name: 'Main Courthouse' },
+            courtroom: { id: 10, name: 'Courtroom A' },
+          },
+        ],
+        version: 'v1',
+        chronicle_id: 'chron-101',
+        antecedent_id: 'ant-101',
+        is_data_anonymised: false,
+        event_ts: '2024-06-01T12:30:00Z',
+        event_status: 4,
+        created_at: '2024-06-01T12:30:00Z',
+        created_by: 1,
+        last_modified_at: '2024-06-02T14:00:00Z',
+        last_modified_by: 2,
+        is_current: true,
+      } as unknown as EventData;
+
+      const expectedMappedEvent = {
+        id: 1,
+        documentumId: 1,
+        sourceId: 1,
+        messageId: 'msg-001',
+        text: 'Sample event text',
+        eventMapping: { id: 101, name: 'Event Mapping Name' },
+        isLogEntry: true,
+        courthouse: { id: 5, displayName: 'Main Courthouse' },
+        courtroom: { id: 10, name: 'Courtroom A' },
+        cases: [
+          {
+            id: 201,
+            caseNumber: 'CASE001',
+            courthouse: { id: 5, displayName: 'Main Courthouse' },
+          },
+          {
+            id: 202,
+            caseNumber: 'CASE002',
+            courthouse: { id: 6, displayName: 'Secondary Courthouse' },
+          },
+        ],
+        hearings: [
+          {
+            id: 301,
+            caseId: 201,
+            caseNumber: 'CASE001',
+            hearingDate: DateTime.fromISO('2024-06-10T10:00:00Z'),
+            isHearingAnonymised: true,
             courthouse: { id: 5, displayName: 'Main Courthouse' },
             courtroom: { id: 10, name: 'Courtroom A' },
           },

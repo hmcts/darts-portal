@@ -67,6 +67,7 @@ const audioFile: AudioFile = {
     {
       id: 0,
       hearingDate: dateTime,
+      isHearingAnonymised: false,
       caseId: 0,
       caseNumber: 'C1',
       courthouse: {
@@ -81,6 +82,7 @@ const audioFile: AudioFile = {
     {
       id: 1,
       hearingDate: dateTime,
+      isHearingAnonymised: true,
       caseId: 1,
       caseNumber: 'C2',
       courthouse: {
@@ -296,6 +298,7 @@ describe('AudioFileComponent', () => {
           caseNumber: 'C1',
           courthouse: 'Courthouse 1',
           hearingDate: dateTime,
+          isHearingAnonymised: false,
           courtroom: 'Courtroom 1',
         },
         {
@@ -304,6 +307,7 @@ describe('AudioFileComponent', () => {
           caseNumber: 'C2',
           courthouse: 'Courthouse 2',
           hearingDate: dateTime,
+          isHearingAnonymised: true,
           courtroom: 'Courtroom 2',
         },
       ];

@@ -177,6 +177,7 @@ export class AdminSearchService {
       hearingDate: DateTime.fromFormat(result.hearing_date, 'yyyy-MM-dd'),
       courthouse: result.courthouse.display_name,
       courtroom: result.courtroom.name,
+      isHearingAnonymised: result.is_data_anonymised,
     }));
   }
 
