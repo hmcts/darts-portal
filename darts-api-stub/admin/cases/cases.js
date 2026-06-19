@@ -165,6 +165,24 @@ const caseSearchResults = [
   },
   singleCaseTwenty,
   singleCaseTwentyOne,
+  {
+    id: 10,
+    case_number: '1000010',
+    courthouse: {
+      id: 10,
+      display_name: 'C house 10',
+    },
+    courtrooms: [
+      {
+        id: 10,
+        name: 'C room 10',
+      },
+    ],
+    judges: ['Judge 10'],
+    defendants: ['Defendant 10'],
+    is_data_anonymised: true,
+    data_anonymised_at: '2023-01-01T11:00:00.000Z',
+  },
 ];
 
 const singleCase = {
@@ -240,6 +258,9 @@ router.post('/search', (req, res) => {
 router.get('/:id', (req, res) => {
   switch (req.params.id) {
     case '3':
+      res.send({ ...singleCase, is_data_anonymised: true });
+      break;
+    case '10':
       res.send({ ...singleCase, is_data_anonymised: true });
       break;
     case '20':

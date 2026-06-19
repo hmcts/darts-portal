@@ -73,6 +73,7 @@ export class EventsService {
           caseId: hearing.case_id,
           caseNumber: hearing.case_number,
           hearingDate: DateTime.fromISO(hearing.hearing_date),
+          isHearingAnonymised: hearing.is_data_anonymised,
           courthouse: {
             id: hearing.courthouse.id,
             displayName: hearing.courthouse.display_name,

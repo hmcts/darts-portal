@@ -47,6 +47,7 @@ export interface AudioFileData {
   hearings: {
     id: number;
     hearing_date: string;
+    is_data_anonymised: boolean;
     case_id: number;
     case_number: string;
     courthouse: {

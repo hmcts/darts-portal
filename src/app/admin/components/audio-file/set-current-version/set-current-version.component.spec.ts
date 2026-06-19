@@ -76,6 +76,7 @@ describe('SetCurrentVersionComponent', () => {
       {
         id: 1,
         hearingDate: DateTime.fromISO('2021-01-03T00:00:00.000Z'),
+        isHearingAnonymised: false,
         caseId: 1,
         caseNumber: 'CASE123',
         courthouse: {

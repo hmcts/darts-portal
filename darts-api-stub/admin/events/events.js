@@ -43,6 +43,7 @@ const events = [
         case_id: 1,
         case_number: 'CASE1',
         hearing_date: '2024-06-11',
+        is_data_anonymised: false,
         courthouse: {
           id: 0,
           display_name: 'Courthouse 1',
@@ -57,6 +58,7 @@ const events = [
         case_id: 1,
         case_number: 'CASE1',
         hearing_date: '2024-06-11',
+        is_data_anonymised: true,
         courthouse: {
           id: 3,
           display_name: 'Courthouse 1',
@@ -108,6 +110,7 @@ const events = [
         case_id: 1,
         case_number: 'CASE1',
         hearing_date: '2024-06-11',
+        is_data_anonymised: false,
         courthouse: {
           id: 0,
           display_name: 'Courthouse 1',
@@ -122,6 +125,7 @@ const events = [
         case_id: 1,
         case_number: 'CASE1',
         hearing_date: '2024-06-11',
+        is_data_anonymised: true,
         courthouse: {
           id: 3,
           display_name: 'Courthouse 1',
@@ -175,6 +179,7 @@ const events = [
         case_id: 1,
         case_number: 'CASE1',
         hearing_date: '2024-06-11',
+        is_data_anonymised: false,
         courthouse: {
           id: 0,
           display_name: 'Courthouse 1',
@@ -189,6 +194,7 @@ const events = [
         case_id: 1,
         case_number: 'CASE1',
         hearing_date: '2024-06-11',
+        is_data_anonymised: true,
         courthouse: {
           id: 3,
           display_name: 'Courthouse 1',

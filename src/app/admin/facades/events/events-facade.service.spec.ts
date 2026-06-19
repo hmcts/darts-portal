@@ -94,6 +94,7 @@ describe('EventsFacadeService', () => {
             caseId: 0,
             caseNumber: '',
             hearingDate: DateTime.fromISO('2024-05-05T11:00:00Z'),
+            isHearingAnonymised: false,
             courthouse: {
               id: 0,
               displayName: '',

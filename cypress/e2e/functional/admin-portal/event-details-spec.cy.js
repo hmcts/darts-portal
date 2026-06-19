@@ -85,12 +85,13 @@ describe('Admin - Event details', () => {
             cy.get('.case-id a')
               .should('have.attr', 'href', '/admin/case/1?backUrl=%2Fadmin%2Fevents%2F111')
               .and('contain.text', 'CASE1');
-            cy.get('.hearing-date a')
-              .should('have.attr', 'href', '/admin/case/1/hearing/2?backUrl=%2Fadmin%2Fevents%2F111')
-              .and('contain.text', '11 Jun 2024');
+            cy.get('.hearing-date').should('contain.text', '11 Jun 2024').find('a').should('not.exist');
             cy.get('td').eq(2).should('contain.text', 'Courthouse 1');
             cy.get('td').eq(3).should('contain.text', 'Room 1');
           });
+
+        cy.get('a[href*="/admin/case/1/hearing/2"]').should('not.exist');
+        cy.get('.expired-row').contains('This case has passed its retention date');
       });
     });
   });

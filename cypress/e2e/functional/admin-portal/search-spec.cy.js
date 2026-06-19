@@ -192,6 +192,18 @@ describe('Admin - Search screen', () => {
       .should('contain', 'Newport')
       .next('td')
       .should('contain', 'Room 3');
+
+    cy.get('app-hearing-search-results td')
+      .find('a')
+      .contains('444')
+      .parent()
+      .next('td')
+      .should('contain', '04/01/2024')
+      .find('a')
+      .should('not.exist');
+
+    cy.get('app-hearing-search-results').find('a[href*="/admin/case/4/hearing/4"]').should('not.exist');
+    cy.get('app-hearing-search-results .expired-row').contains('This case has passed its retention date');
   });
 
   it('audio search and results', () => {
@@ -327,7 +339,7 @@ describe('Admin - Search screen', () => {
 
     cy.get('#confirm-button').click();
 
-    cy.get('.heading-caption').should('contain', 'Showing 1-5 of 5');
+    cy.get('.heading-caption').should('contain', 'Showing 1-6 of 6');
   });
 
   it('should clear the form when "Clear search" is clicked', () => {
