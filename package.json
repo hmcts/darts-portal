@@ -68,7 +68,7 @@
     "express": "^5.2.0",
     "express-session": "^1.18.2",
     "govuk-frontend": "^5.9.1",
-    "http-proxy-middleware": "^3.0.5",
+    "http-proxy-middleware": "^3.0.7",
     "js-yaml": "^4.1.0",
     "luxon": "^3.4.4",
     "ngx-cookie-service": "^21.0.0",
