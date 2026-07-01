@@ -2,7 +2,7 @@
 # Manual changes might be lost - proceed with caution!
 
 __metadata:
-  version: 8
+  version: 10
   cacheKey: 10
 
 "@algolia/abtesting@npm:1.1.0":
@@ -17907,7 +17907,7 @@ __metadata:
   version: 9.0.3
   resolution: "wait-on@npm:9.0.3"
   dependencies:
-    axios: "npm:^1.13.5"
+    axios: "npm:^1.13.2"
     joi: "npm:^18.0.1"
     lodash: "npm:^4.17.21"
     minimist: "npm:^1.2.8"
