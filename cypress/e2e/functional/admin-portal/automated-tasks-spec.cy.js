@@ -112,10 +112,24 @@ describe('Admin - Automated tasks screen', () => {
     });
   });
 
+  describe('Change Cron expression', () => {
+    it('Success', () => {
+      cy.get('app-data-table').contains('Task 1').parents('tr').get('a').contains('1').click();
+      cy.contains('dt.govuk-summary-list__key', 'Cron expression')
+        .parents('div.govuk-summary-list__row')
+        .find('a.govuk-link')
+        .click();
+    });
+    //THIS WHOLE SECTION NEEDS TO BE FLESHED OUT//
+  });
+
   describe('Change batch size', () => {
     it('Success', () => {
       cy.get('app-data-table').contains('Task 1').parents('tr').get('a').contains('1').click();
-      cy.get('.govuk-link').contains('Change').click();
+      cy.contains('dt.govuk-summary-list__key', 'Batch size')
+        .parents('div.govuk-summary-list__row')
+        .find('a.govuk-link')
+        .click();
       cy.get('#batchSize').clear().type('2000');
       cy.get('.govuk-button').contains('Confirm').click();
       cy.get('app-govuk-banner').contains('Batch size successfully updated');
