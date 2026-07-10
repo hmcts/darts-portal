@@ -1,6 +1,6 @@
 #!groovy
 
-@Library("Infrastructure")
+@Library("Infrastructure@2.4.2") _
 
 def type = "angular"
 def product = "darts"
@@ -8,7 +8,7 @@ def component = "portal"
 
 withParameterizedPipeline(type, product, component, 'sbox', 'sbox') {
   enableSlackNotifications('#darts-builds')
-  
+
   afterAlways('build') {
     yarnBuilder.yarn('rebuild puppeteer')
     yarnBuilder.yarn('build')
