@@ -282,4 +282,45 @@ describe('AutomatedTasksService', () => {
       ]);
     });
   });
+
+  describe('changeFieldValue', () => {
+    it('calls PATCH "/api/admin/automated-tasks/:taskId" endpoint with the correct payload', () => {
+      service.changeFieldValue(1, 'batchSize', 100).subscribe();
+
+      const req = httpMock.expectOne('/api/admin/automated-tasks/1');
+      expect(req.request.method).toBe('PATCH');
+      expect(req.request.body).toEqual({ batchSize: 100 });
+
+      req.flush({});
+    });
+
+    it('converts DateTime to ISO string when value is a DateTime', () => {
+      const dateTimeValue = DateTime.fromISO('2024-01-01T00:00:00Z');
+
+      service.changeFieldValue(1, 'lastModifiedAt', dateTimeValue).subscribe();
+
+      const req = httpMock.expectOne('/api/admin/automated-tasks/1');
+      expect(req.request.method).toBe('PATCH');
+      expect(req.request.body).toEqual({ lastModifiedAt: dateTimeValue.toUTC().toISO() });
+
+      req.flush({});
+    });
+  });
+
+  describe('changeCronExpression', () => {
+    it('calls PATCH "/api/admin/automated-tasks/:taskId/edit-cron-expression" endpoint with the correct payload', () => {
+      service.changeCronExpression(1, '0 0 1 * * *').subscribe();
+      const req = httpMock.expectOne('/api/admin/automated-tasks/1/edit-cron-expression');
+      expect(req.request.method).toBe('PATCH');
+      expect(req.request.body).toEqual({ cron_expression: '0 0 1 * * *' });
+      req.flush({});
+    });
+  });
+
+  describe('clearLatestTaskStatus', () => {
+    it('clears the latest task status', () => {
+      service.clearLatestTaskStatus();
+      expect(service.getLatestTaskStatus()()).toBeNull();
+    });
+  });
 });
