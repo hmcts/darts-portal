@@ -270,4 +270,31 @@ describe('CaseRetentionDateComponent', () => {
       done();
     });
   });
+
+  describe('retention warning message', () => {
+    it('should show the retention warning text when a date exists', () => {
+      expect(fixture.nativeElement.textContent).toContain(
+        'Date applied is closure date + grace period, or manual retention date'
+      );
+    });
+
+    it('should show the empty state message when date applied does not exist', () => {
+      mockCaseService.getCase = jest.fn().mockReturnValue(
+        of({
+          ...mockCaseData,
+          retentionDateTimeApplied: undefined,
+        })
+      );
+
+      const emptyStateFixture = TestBed.createComponent(CaseRetentionDateComponent);
+      emptyStateFixture.detectChanges();
+
+      expect(emptyStateFixture.nativeElement.textContent).toContain(
+        'A retention policy has yet to be applied to this case.'
+      );
+      expect(emptyStateFixture.nativeElement.textContent).not.toContain(
+        'Date applied is closure date + grace period, or manual retention date'
+      );
+    });
+  });
 });

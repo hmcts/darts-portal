@@ -329,6 +329,32 @@ describe('Case file screen', () => {
         cy.get('p.govuk-body').should('contain', 'No date applied');
         cy.get('a.govuk-link').should('contain', 'View or change');
       });
+
+      it('should show warning message for valid role', () => {
+        //Defaults to valid role
+        cy.contains('Search').click();
+        cy.get('#case_number').type('C20220620001');
+        cy.get('button').contains('Search').click();
+        cy.contains('C20220620001').click();
+
+        cy.get('a.govuk-link').contains('View or change').click();
+
+        cy.get('.govuk-warning-text__text').should(
+          'contain',
+          'Date applied is closure date + grace period, or manual retention date'
+        );
+      });
+
+      it('should show no warning message for valid role', () => {
+        //Defaults to valid role
+        cy.contains('Search').click();
+        cy.get('#case_number').type('C20220620002');
+        cy.get('button').contains('Search').click();
+        cy.contains('C20220620002').click();
+
+        cy.get('a.govuk-link').contains('View or change').click();
+        cy.get('.govuk-warning-text__text').should('not.exist');
+      });
     });
 
     describe('invalid role', () => {
