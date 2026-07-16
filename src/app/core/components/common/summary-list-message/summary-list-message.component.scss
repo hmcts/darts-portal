@@ -1,0 +1,41 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.summary-list-message {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 15px;
+  border-radius: 16px;
+  background: rgba(29, 112, 184, 0.1);
+  font-family: 'GDS Transport', arial, sans-serif;
+  font-weight: 400;
+  margin-bottom: 0;
+}
+
+.summary-list-message .govuk-warning-text__icon {
+  position: static;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  margin: 0;
+  border: 3px solid #1d70b8;
+  border-radius: 50%;
+  background: transparent;
+  color: #1d70b8;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.summary-list-message .govuk-warning-text__text {
+  margin-left: 0;
+  padding-left: 15px;
+}
