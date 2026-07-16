@@ -25,8 +25,7 @@ describe('Case retention screen as standard user', () => {
       cy.get('a.govuk-breadcrumbs__link').should('contain', 'Case retention date');
       cy.get('h1.govuk-heading-l').should('contain', 'Case retention date');
       cy.get('#case-details').should('contain', 'Case details');
-      cy.get('#current-retention-details').should('contain', 'Current retention details');
-
+      cy.contains('h2.govuk-heading-m', 'Current retention details').should('exist');
       cy.get('dl dd').should('contain', '15 Aug 2023');
 
       cy.get('dl dt').should('contain', 'Retain case until');
