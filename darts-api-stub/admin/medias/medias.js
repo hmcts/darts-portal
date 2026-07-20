@@ -420,6 +420,7 @@ const defaultMedia = {
       case_id: 0,
       case_number: 'CASE1',
       hearing_date: '2024-06-11',
+      is_data_anonymised: false,
       courthouse: {
         id: 0,
         display_name: 'Courthouse 321',
@@ -434,6 +435,7 @@ const defaultMedia = {
       case_id: 1,
       case_number: 'CASE2',
       hearing_date: '2024-06-11',
+      is_data_anonymised: true,
       courthouse: {
         id: 1,
         display_name: 'Courthouse 123',

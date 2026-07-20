@@ -34,6 +34,16 @@
         </dd>
       </div>
       <div govukSummaryListRow>
+        <dt govukSummaryKey>Date uploaded</dt>
+        <dd govukSummaryValue>
+          {{
+            transcription.document.uploadedAt.isValid
+              ? (transcription.document.uploadedAt | luxonDate: 'dd MMM yyyy')
+              : '-'
+          }}
+        </dd>
+      </div>
+      <div govukSummaryListRow>
         <dt govukSummaryKey>Courthouse</dt>
         <dd govukSummaryValue>{{ transcription.details.courthouse }}</dd>
       </div>

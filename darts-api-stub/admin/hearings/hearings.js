@@ -4,6 +4,7 @@ const hearings = [
   {
     id: 1,
     hearing_date: '2024-01-01',
+    is_data_anonymised: false,
     case: {
       id: 1,
       case_number: '123',
@@ -20,6 +21,7 @@ const hearings = [
   {
     id: 2,
     hearing_date: '2024-01-02',
+    is_data_anonymised: false,
     case: {
       id: 2,
       case_number: '456',
@@ -36,6 +38,7 @@ const hearings = [
   {
     id: 3,
     hearing_date: '2024-01-03',
+    is_data_anonymised: false,
     case: {
       id: 3,
       case_number: '789',
@@ -49,11 +52,29 @@ const hearings = [
       name: 'Room 3',
     },
   },
+  {
+    id: 4,
+    hearing_date: '2024-01-04',
+    is_data_anonymised: true,
+    case: {
+      id: 4,
+      case_number: '444',
+    },
+    courthouse: {
+      id: 4,
+      display_name: 'Harrow',
+    },
+    courtroom: {
+      id: 4,
+      name: 'Room 4',
+    },
+  },
 ];
 
 const singleHearing = {
   id: 1,
   hearing_date: '2025-01-23',
+  is_data_anonymised: false,
   scheduled_start_time: '08:00:00',
   hearing_is_actual: true,
   case: {

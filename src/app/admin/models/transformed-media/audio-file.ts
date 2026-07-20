@@ -53,6 +53,7 @@ export type AudioFile = {
   hearings: {
     id: number;
     hearingDate: DateTime;
+    isHearingAnonymised: boolean;
     caseId: number;
     caseNumber: string;
     courthouse: {

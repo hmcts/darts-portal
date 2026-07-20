@@ -873,6 +873,7 @@ describe('TranscriptionAdminService', () => {
       const mockResponse: TranscriptionDocumentSearchResultData[] = [
         {
           transcription_document_id: 1,
+          uploaded_at: '2022-01-02T00:00:00Z',
           case: { id: 1, case_number: '123' },
           courthouse: { id: 1, display_name: 'Test Courthouse' },
           hearing: { id: 1, hearing_date: '2022-01-01T00:00:00Z' },
@@ -899,6 +900,7 @@ describe('TranscriptionAdminService', () => {
           isManualTranscription: true,
           transcriptionId: 0,
           transcriptionDocumentId: 1,
+          uploadedAt: DateTime.fromISO('2022-01-02T00:00:00Z'),
           isHidden: false,
         },
       ]);

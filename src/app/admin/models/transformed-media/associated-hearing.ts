@@ -5,6 +5,7 @@ export type AssociatedHearing = {
   hearingId: number;
   caseNumber: string;
   hearingDate: DateTime;
+  isHearingAnonymised: boolean;
   courthouse?: string;
   courtroom?: string;
 };

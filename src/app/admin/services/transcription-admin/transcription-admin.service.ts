@@ -425,6 +425,7 @@ export class TranscriptionAdminService {
     return data.map((transcriptionDocumentData) => ({
       transcriptionDocumentId: transcriptionDocumentData.transcription_document_id,
       transcriptionId: transcriptionDocumentData.transcription_id,
+      uploadedAt: DateTime.fromISO(transcriptionDocumentData.uploaded_at),
       ...(transcriptionDocumentData.case && {
         case: {
           id: transcriptionDocumentData.case.id,

@@ -2,8 +2,8 @@ function tabOrder() {
     if (document.getElementsByClassName('govuk-skip-link')[0]) {
         document.getElementsByClassName('govuk-skip-link')[0].tabIndex = 1;
     }
-    if (document.getElementsByClassName('govuk-header__link govuk-header__link--homepage')[0]) {
-        document.getElementsByClassName('govuk-header__link govuk-header__link--homepage')[0].tabIndex = 2;
+    if (document.getElementsByClassName('moj-header__link--homepage')[0]) {
+        document.getElementsByClassName('moj-header__link--homepage')[0].tabIndex = 2;
     }
     if (document.getElementById('cancel')) {
         document.getElementById('cancel').tabIndex = 3;

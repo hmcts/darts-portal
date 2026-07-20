@@ -128,38 +128,6 @@ describe('CaseComponent', () => {
     });
   });
 
-  it('should render app-case-additional-details directly when isDataAnonymised is true', async () => {
-    const mockAnonymisedCaseFile = {
-      ...mockCaseFile,
-      isDataAnonymised: true,
-    };
-
-    mockAdminCaseService.getCase.mockReturnValue(of(mockAnonymisedCaseFile as AdminCase));
-    mockUserAdminService.getUsersById.mockReturnValue(of([]));
-
-    fixture = TestBed.createComponent(CaseComponent);
-    component = fixture.componentInstance;
-
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
-
-    // app-tabs should not be present
-    const tabs = fixture.debugElement.query(By.css('app-tabs#case-tabs'));
-    expect(tabs).toBeNull();
-
-    // app-case-additional-details should be present
-    const details = fixture.debugElement.query(By.css('app-case-additional-details'));
-    expect(details).toBeTruthy();
-
-    //loadEvents and loadAudio should not have been called
-    const loadEventsSpy = jest.spyOn(component as unknown as { loadEvents: () => void }, 'loadEvents');
-    const loadAudioSpy = jest.spyOn(component as unknown as { loadAudio: () => void }, 'loadAudio');
-
-    expect(loadEventsSpy).not.toHaveBeenCalled();
-    expect(loadAudioSpy).not.toHaveBeenCalled();
-  });
-
   it('should fetch hearings and expose them through hearings$', (done) => {
     component.hearings$.subscribe((hearings) => {
       expect(hearings).toEqual([{ id: 1, hearingType: 'Trial' }]);
@@ -193,6 +161,79 @@ describe('CaseComponent', () => {
         transcripts: [{ id: 'row1' }],
       });
       done();
+    });
+  });
+
+  describe('Expired Case (isDataAnonymised=true) functionality', () => {
+    const mockAnonymisedCaseFile = {
+      ...mockCaseFile,
+      isDataAnonymised: true,
+    };
+    let expiredFixture: ComponentFixture<CaseComponent>;
+    let expiredComponent: CaseComponent;
+    let loadEventsSpy: jest.SpyInstance;
+    let loadAudioSpy: jest.SpyInstance;
+
+    beforeEach(async () => {
+      mockAdminCaseService.getCase.mockReturnValue(of(mockAnonymisedCaseFile as AdminCase));
+      mockUserAdminService.getUsersById.mockReturnValue(of([]));
+      mockCaseService.getCaseHearings.mockClear();
+      mockCaseService.getCaseTranscripts.mockClear();
+
+      expiredFixture = TestBed.createComponent(CaseComponent);
+      expiredComponent = expiredFixture.componentInstance;
+
+      loadEventsSpy = jest.spyOn(expiredComponent as unknown as { loadEvents: () => void }, 'loadEvents');
+      loadAudioSpy = jest.spyOn(expiredComponent as unknown as { loadAudio: () => void }, 'loadAudio');
+
+      expiredFixture.detectChanges();
+      await expiredFixture.whenStable();
+      expiredFixture.detectChanges();
+    });
+    afterEach(() => {
+      loadEventsSpy?.mockRestore();
+      loadAudioSpy?.mockRestore();
+    });
+
+    it('should not see app-tabs when case is expired', async () => {
+      const tabs = expiredFixture.debugElement.query(By.css('app-tabs#case-tabs'));
+      expect(tabs).toBeNull();
+    });
+
+    it('should see app-case-additional-details when case is expired', async () => {
+      const details = expiredFixture.debugElement.query(By.css('app-case-additional-details'));
+      expect(details).toBeTruthy();
+    });
+
+    it('should not have called loadEvents and loadAudio when case is expired', async () => {
+      expect(loadEventsSpy).not.toHaveBeenCalled();
+      expect(loadAudioSpy).not.toHaveBeenCalled();
+    });
+
+    it('should not fetch hearings when case is expired', () => {
+      expiredComponent.hearings$.subscribe((hearings) => {
+        expect(hearings).toEqual([]);
+      });
+      expect(mockCaseService.getCaseHearings).not.toHaveBeenCalled();
+    });
+
+    it('should not fetch transcripts when case is expired', () => {
+      expiredComponent.transcripts$.subscribe((transcripts) => {
+        expect(transcripts).toEqual([]);
+      });
+      expect(mockCaseService.getCaseTranscripts).not.toHaveBeenCalled();
+    });
+
+    it('should combine caseFile, empty hearings and transcripts into data$ when case is expired', () => {
+      expiredComponent.data$.subscribe((data) => {
+        expect(data).toEqual({
+          caseFile: expect.objectContaining({
+            isDataAnonymised: true,
+          }),
+          hearings: [],
+          transcripts: [],
+        });
+      });
     });
   });
 

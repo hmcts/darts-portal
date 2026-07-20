@@ -7,4 +7,5 @@ export type AdminHearingSearchResult = {
   hearingDate: DateTime;
   courthouse: string;
   courtroom: string;
+  isHearingAnonymised: boolean;
 };

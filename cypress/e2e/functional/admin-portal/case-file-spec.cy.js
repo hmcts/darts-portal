@@ -129,6 +129,38 @@ describe('Case file screen', () => {
     });
   });
 
+  describe('expired cases', () => {
+    beforeEach(() => {
+      cy.login();
+    });
+
+    it('should not request hearings or transcripts for an expired case', () => {
+      let hearingsCalls = 0;
+      let transcriptsCalls = 0;
+
+      cy.intercept('GET', '**/hearings**', (req) => {
+        hearingsCalls += 1;
+        req.reply({ statusCode: 200, body: [] });
+      });
+
+      cy.intercept('GET', '**/transcripts**', (req) => {
+        transcriptsCalls += 1;
+        req.reply({ statusCode: 200, body: [] });
+      });
+
+      cy.visit('admin/case/10');
+      cy.injectAxe();
+      cy.get('app-govuk-heading').should('contain.text', 'Case').should('contain.text', 'CASE1001');
+
+      cy.then(() => {
+        expect(hearingsCalls).to.eq(0);
+        expect(transcriptsCalls).to.eq(0);
+      });
+
+      cy.a11y();
+    });
+  });
+
   describe('Additional case details tab', () => {
     it('should verify additional case details', () => {
       cy.visit('admin/case/1');

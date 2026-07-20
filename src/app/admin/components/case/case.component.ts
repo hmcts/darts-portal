@@ -151,10 +151,21 @@ export class CaseComponent implements OnInit {
       shareReplay(1)
     );
 
-    this.hearings$ = this.caseService.getCaseHearings(this.caseId()).pipe(catchError(() => of([])));
-    this.transcripts$ = this.caseService.getCaseTranscripts(this.caseId()).pipe(
-      map((transcript) => this.mappingService.mapTranscriptRequestToRows(transcript)),
-      catchError(() => of([]))
+    this.hearings$ = this.caseFile$.pipe(
+      switchMap((c) => {
+        if (c.isDataAnonymised) return of([]);
+        return this.caseService.getCaseHearings(this.caseId()).pipe(catchError(() => of([])));
+      })
+    );
+
+    this.transcripts$ = this.caseFile$.pipe(
+      switchMap((c) => {
+        if (c.isDataAnonymised) return of([]);
+        return this.caseService.getCaseTranscripts(this.caseId()).pipe(
+          map((transcript) => this.mappingService.mapTranscriptRequestToRows(transcript)),
+          catchError(() => of([]))
+        );
+      })
     );
 
     this.data$ = combineLatest({

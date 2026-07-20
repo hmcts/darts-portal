@@ -7,6 +7,7 @@ const documents = [
     transcription_id: 0,
     is_manual_transcription: true,
     is_hidden: false,
+    uploaded_at: '2024-01-01T00:00:00Z',
     case: {
       id: 0,
       case_number: 'C0001',
@@ -34,6 +35,7 @@ const documents = [
   {
     transcription_document_id: 1,
     transcription_id: 1,
+    uploaded_at: '2024-01-02T00:00:00Z',
     is_manual_transcription: false,
     is_hidden: false,
     case: {
@@ -52,6 +54,7 @@ const documents = [
   {
     transcription_document_id: 2,
     transcription_id: 2,
+    uploaded_at: '2024-01-03T00:00:00Z',
     case: {
       id: 2,
       case_number: 'C0003',
@@ -70,6 +73,7 @@ const documents = [
   {
     transcription_document_id: 3,
     transcription_id: 7,
+    uploaded_at: '2024-01-04T00:00:00Z',
     case: {
       id: 3,
       case_number: 'C0004',
