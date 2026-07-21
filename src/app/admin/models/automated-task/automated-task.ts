@@ -31,11 +31,6 @@ export type AutomatedTaskDetailsState = AutomatedTaskDetails & {
   armReplayEndTs?: string;
 };
 
-export type CronExecutionData = {
-  executionNumber: string;
-  scheduledAt: string;
-};
-
 export type CronExecution = {
   executionNumber: string;
   scheduledAt: DateTime;

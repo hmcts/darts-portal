@@ -91,7 +91,7 @@ router.post('/:id/run', (req, res) => {
 
 router.post('/:id/edit-cron-expression', (req, res) => {
   const id = req.params.id;
-  const cronExpression = req.body?.cronExpression;
+  const cronExpression = req.body?.cron_expression;
 
   setTimeout(() => {
     switch (id) {
@@ -103,7 +103,7 @@ router.post('/:id/edit-cron-expression', (req, res) => {
             .plus({ days: i })
             .plus({ months: month })
             .toISO();
-          return { executionNumber: i + 1, scheduledAt: scheduledAt };
+          return { execution_number: i + 1, scheduled_at: scheduledAt };
         });
         return res.status(200).json(nextExecutions);
       case '2':
