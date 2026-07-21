@@ -259,14 +259,14 @@ describe('AutomatedTasksService', () => {
       service.getNextCronExecutionTimes(1, '0 0 1 * * *').subscribe();
       const req = httpMock.expectOne('/api/admin/automated-tasks/1/edit-cron-expression');
       expect(req.request.method).toBe('POST');
-      expect(req.request.body).toEqual({ cronExpression: '0 0 1 * * *' });
+      expect(req.request.body).toEqual({ cron_expression: '0 0 1 * * *' });
       req.flush([]);
     });
 
     it('maps the response to CronExecution[]', () => {
       const cronExecutions = [
-        { executionNumber: '1', scheduledAt: '2024-01-01T00:00:00Z' },
-        { executionNumber: '2', scheduledAt: '2024-01-02T00:00:00Z' },
+        { execution_number: '1', scheduled_at: '2024-01-01T00:00:00Z' },
+        { execution_number: '2', scheduled_at: '2024-01-02T00:00:00Z' },
       ];
 
       let result: CronExecution[] = [];

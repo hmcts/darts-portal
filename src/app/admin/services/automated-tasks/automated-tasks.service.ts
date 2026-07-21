@@ -1,11 +1,10 @@
-import {
-  AutomatedTask,
-  AutomatedTaskDetails,
-  CronExecution,
-  CronExecutionData,
-} from '@admin-types/automated-task/automated-task';
+import { AutomatedTask, AutomatedTaskDetails, CronExecution } from '@admin-types/automated-task/automated-task';
 import { AutomatedTaskStatus } from '@admin-types/automated-task/automated-task-status';
-import { AutomatedTaskData, AutomatedTaskDetailsData } from '@admin-types/automated-task/automated-task.interface';
+import {
+  AutomatedTaskData,
+  AutomatedTaskDetailsData,
+  CronExecutionData,
+} from '@admin-types/automated-task/automated-task.interface';
 import { HttpClient } from '@angular/common/http';
 import { Injectable, Signal, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
@@ -34,12 +33,14 @@ export class AutomatedTasksService {
 
   getNextCronExecutionTimes(taskId: number, cronExpression: string): Observable<CronExecution[]> {
     return this.http
-      .post<CronExecutionData[]>(`/api/admin/automated-tasks/${taskId}/edit-cron-expression`, { cronExpression })
+      .post<
+        CronExecutionData[]
+      >(`/api/admin/automated-tasks/${taskId}/edit-cron-expression`, { cron_expression: cronExpression })
       .pipe(
         map((data) =>
           data.map((run) => ({
-            executionNumber: run.executionNumber,
-            scheduledAt: DateTime.fromISO(run.scheduledAt),
+            executionNumber: run.execution_number,
+            scheduledAt: DateTime.fromISO(run.scheduled_at),
           }))
         )
       );
