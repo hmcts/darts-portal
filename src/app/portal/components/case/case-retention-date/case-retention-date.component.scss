@@ -2,3 +2,30 @@
   margin-top: 50px;
   margin-bottom: 50px;
 }
+
+.current-retention-details {
+  width: 66%;
+}
+
+.current-retention-details dl {
+  margin-bottom: 0;
+}
+
+.current-retention-details__message-row {
+  width: 100%;
+  box-sizing: border-box;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #b1b4b6;
+}
+
+// // TO DO: This should be handled by DMP-5002 using the summary header directive
+app-govuk-heading.list-heading {
+  display: block;
+  width: 66%;
+  border-bottom: 2px solid #000;
+}
+
+app-govuk-heading.list-heading ::ng-deep .govuk-heading-m {
+  margin-bottom: 0.66rem;
+}

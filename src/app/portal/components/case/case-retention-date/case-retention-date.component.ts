@@ -10,8 +10,13 @@ import { DetailsTableComponent } from '@components/common/details-table/details-
 import { GovukHeadingComponent } from '@components/common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@components/common/loading/loading.component';
 import { NotificationBannerComponent } from '@components/common/notification-banner/notification-banner.component';
+import { SummaryListMessageComponent } from '@components/common/summary-list-message/summary-list-message.component';
 import { DatatableColumn } from '@core-types/data-table/data-table-column.interface';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
+import { GovukSummaryKeyDirective } from '@directives/govuk-summary-list/govuk-summary-key.directive';
+import { GovukSummaryListDirective } from '@directives/govuk-summary-list/govuk-summary-list.directive';
+import { GovukSummaryListRowDirective } from '@directives/govuk-summary-list/govuk-summary-list-row.directive';
+import { GovukSummaryValueDirective } from '@directives/govuk-summary-list/govuk-summary-value.directive';
 import { TableRowTemplateDirective } from '@directives/table-row-template.directive';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { Case, CaseRetentionHistory, CaseRetentionPageState } from '@portal-types/index';
@@ -33,10 +38,15 @@ import { CaseRententionConfirmComponent } from './case-retention-confirm/case-re
     CommonModule,
     GovukHeadingComponent,
     DetailsTableComponent,
+    GovukSummaryListDirective,
+    GovukSummaryListRowDirective,
+    GovukSummaryKeyDirective,
+    GovukSummaryValueDirective,
     DataTableComponent,
     RouterLink,
     TableRowTemplateDirective,
     NotificationBannerComponent,
+    SummaryListMessageComponent,
     CaseRetentionChangeComponent,
     CaseRententionConfirmComponent,
     GovukBannerComponent,
@@ -56,6 +66,7 @@ export class CaseRetentionDateComponent implements OnInit {
   title = inject(Title);
 
   caseId = this.route.snapshot.params.caseId;
+  readonly retentionWarningText = 'Date applied is closure date + grace period, or manual retention date';
 
   retentionHistory$ = this.caseService.getCaseRetentionHistory(this.caseId);
   caseDetails$ = this.caseService.getCase(this.caseId).pipe(
