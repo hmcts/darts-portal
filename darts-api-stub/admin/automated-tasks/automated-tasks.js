@@ -61,6 +61,19 @@ const defaultAutomatedTasks = [
     last_modified_at: '2024-01-04T00:00:00Z',
     last_modified_by: 5,
   },
+  {
+    id: 5,
+    name: 'Task 5',
+    description: 'Cron expression not editable',
+    cron_expression: '0 0 5 * * *',
+    is_cron_editable: false,
+    batch_size: 100,
+    is_active: false,
+    created_at: '2024-01-05T00:00:00Z',
+    created_by: 5,
+    last_modified_at: '2024-01-05T00:00:00Z',
+    last_modified_by: 6,
+  },
 ];
 
 let automatedTasks = structuredClone(defaultAutomatedTasks);

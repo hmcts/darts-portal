@@ -119,15 +119,28 @@ describe('Admin - Automated tasks screen', () => {
         .parents('div.govuk-summary-list__row')
         .find('a.govuk-link')
         .click();
-      cy.get('#cronExpression').clear().type('	0 0 1 * * *');
+      cy.get('#cronExpression').clear().type('	2 2 2 * * *');
       cy.get('.govuk-button').contains('Continue').click();
 
       cy.get('dt.govuk-summary-list__key').contains('New cron expression');
-      cy.get('dd.govuk-summary-list__value').contains('0 0 1 * * *');
+      cy.get('dd.govuk-summary-list__value').contains('2 2 2 * * *');
       cy.get('caption.govuk-table__caption').contains('Next 15 cron execution times');
       cy.get('th.govuk-table__header').contains('Execution number');
       cy.get('th.govuk-table__header').contains('Scheduled at');
       cy.get('tbody.govuk-table__body tr.govuk-table__row').should('have.length', 15);
+      cy.get('.govuk-button').contains('Confirm').click();
+      cy.get('app-govuk-banner').contains('Cron expression successfully updated');
+      cy.get(rowSelector).contains('Cron expression').parents().get('dd').contains('2 2 2 * * *');
+    });
+  });
+
+  describe('Unable to change Cron expression', () => {
+    it('Success', () => {
+      cy.get('app-data-table').contains('Task 5').parents('tr').find('a').click();
+      cy.contains('dt.govuk-summary-list__key', 'Cron expression')
+        .parents('div.govuk-summary-list__row')
+        .find('a.govuk-link')
+        .should('not.exist');
     });
   });
 
