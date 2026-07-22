@@ -1,0 +1,75 @@
+<a [routerLink]="['../']" class="govuk-back-link">Back</a>
+
+<app-validation-error-summary [errors]="validationErrorSummary" />
+
+@if (task) {
+  <form [formGroup]="form">
+    <header>
+      <app-govuk-heading size="xl" caption="Automated task">{{ task.name }}</app-govuk-heading>
+    </header>
+
+    <app-govuk-tag [colour]="task.isActive ? 'blue' : 'grey'">
+      {{ task.isActive ? 'Active' : 'Inactive' }}
+    </app-govuk-tag>
+
+    @if (!isPreviewMode()) {
+      <div class="govuk-form-group" [class.govuk-form-group--error]="isControlInvalid()">
+        <label class="govuk-label" [for]="'cronExpression'">Cron expression</label>
+
+        @for (error of getErrorMessages(); track $index) {
+          <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ error }}</p>
+        }
+
+        <input
+          class="govuk-input govuk-input--width-20"
+          type="text"
+          [id]="'cronExpression'"
+          [formControlName]="'cronExpression'"
+          [class.govuk-input--error]="cronControl.errors && isContinued()"
+          autocomplete="off"
+          spellcheck="false"
+        />
+      </div>
+
+      <div class="govuk-button-group">
+        <button class="govuk-button" type="submit" (mousedown)="(false)" (click)="onContinue()">Continue</button>
+        <a [routerLink]="['../']" class="govuk-link">Cancel</a>
+      </div>
+    } @else {
+      <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">New cron expression</dt>
+          <dd class="govuk-summary-list__value">{{ cronControl.value }}</dd>
+        </div>
+      </dl>
+
+      @if (isPreviewLoaded() || hasPreviewErrored()) {
+        <app-data-table
+          caption="Next {{ cronExecutions.length }} cron execution times"
+          [hiddenCaption]="false"
+          [columns]="columns"
+          [rows]="cronExecutions"
+        >
+          <ng-template [tableRowTemplate]="cronExecutions" let-row>
+            <td>{{ row.executionNumber }}</td>
+            <td>{{ row.scheduledAt.toFormat("EEE d LLL yyyy 'at' HH:mm:ss") }}</td>
+          </ng-template>
+        </app-data-table>
+      } @else {
+        <app-loading />
+      }
+      <div class="govuk-button-group">
+        <button
+          class="govuk-button"
+          type="submit"
+          [disabled]="!isPreviewLoaded()"
+          (mousedown)="(false)"
+          (click)="onSubmit()"
+        >
+          Confirm
+        </button>
+        <a [routerLink]="['../']" class="govuk-link">Cancel</a>
+      </div>
+    }
+  </form>
+}

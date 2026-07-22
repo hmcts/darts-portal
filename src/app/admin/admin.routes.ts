@@ -422,6 +422,15 @@ export const ADMIN_ROUTES: Routes = [
       ),
   },
   {
+    path: 'admin/system-configuration/automated-tasks/:id/edit-cron-expression',
+    title: 'DARTS Admin Change Automated Task Cron Expression',
+    data: { allowedRoles: ['SUPER_ADMIN'] },
+    loadComponent: () =>
+      import('./components/automated-tasks/edit-cron-expression/edit-cron-expression.component').then(
+        (c) => c.EditCronExpressionComponent
+      ),
+  },
+  {
     path: 'admin/system-configuration/automated-tasks/:id/run',
     title: 'DARTS Admin Run Automated Task',
     data: { allowedRoles: ['SUPER_ADMIN'] },

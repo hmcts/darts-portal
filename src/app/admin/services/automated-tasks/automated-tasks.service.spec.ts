@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { AutomatedTask, AutomatedTaskDetails } from '@admin-types/automated-task/automated-task';
+import { AutomatedTask, AutomatedTaskDetails, CronExecution } from '@admin-types/automated-task/automated-task';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { DateTime } from 'luxon';
@@ -251,6 +251,76 @@ describe('AutomatedTasksService', () => {
         lastModifiedAt: DateTime.fromISO('2021-01-02T00:00:00Z'),
         lastModifiedBy: 3,
       });
+    });
+  });
+
+  describe('getNextCronExecutionTimes', () => {
+    it('calls POST "/api/admin/automated-tasks/:taskId/edit-cron-expression" endpoint', () => {
+      service.getNextCronExecutionTimes(1, '0 0 1 * * *').subscribe();
+      const req = httpMock.expectOne('/api/admin/automated-tasks/1/edit-cron-expression');
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body).toEqual({ cron_expression: '0 0 1 * * *' });
+      req.flush([]);
+    });
+
+    it('maps the response to CronExecution[]', () => {
+      const cronExecutions = [
+        { execution_number: '1', scheduled_at: '2024-01-01T00:00:00Z' },
+        { execution_number: '2', scheduled_at: '2024-01-02T00:00:00Z' },
+      ];
+
+      let result: CronExecution[] = [];
+
+      service.getNextCronExecutionTimes(1, '0 0 1 * * *').subscribe((executions) => (result = executions));
+
+      const req = httpMock.expectOne('/api/admin/automated-tasks/1/edit-cron-expression');
+      req.flush(cronExecutions);
+
+      expect(result).toEqual([
+        { executionNumber: '1', scheduledAt: DateTime.fromISO('2024-01-01T00:00:00Z') },
+        { executionNumber: '2', scheduledAt: DateTime.fromISO('2024-01-02T00:00:00Z') },
+      ]);
+    });
+  });
+
+  describe('changeFieldValue', () => {
+    it('calls PATCH "/api/admin/automated-tasks/:taskId" endpoint with the correct payload', () => {
+      service.changeFieldValue(1, 'batchSize', 100).subscribe();
+
+      const req = httpMock.expectOne('/api/admin/automated-tasks/1');
+      expect(req.request.method).toBe('PATCH');
+      expect(req.request.body).toEqual({ batchSize: 100 });
+
+      req.flush({});
+    });
+
+    it('converts DateTime to ISO string when value is a DateTime', () => {
+      const dateTimeValue = DateTime.fromISO('2024-01-01T00:00:00Z');
+
+      service.changeFieldValue(1, 'lastModifiedAt', dateTimeValue).subscribe();
+
+      const req = httpMock.expectOne('/api/admin/automated-tasks/1');
+      expect(req.request.method).toBe('PATCH');
+      expect(req.request.body).toEqual({ lastModifiedAt: dateTimeValue.toUTC().toISO() });
+
+      req.flush({});
+    });
+  });
+
+  describe('changeCronExpression', () => {
+    it('calls PATCH "/api/admin/automated-tasks/:taskId/edit-cron-expression" endpoint with the correct payload', () => {
+      service.changeCronExpression(1, '0 0 1 * * *').subscribe();
+      const req = httpMock.expectOne('/api/admin/automated-tasks/1/edit-cron-expression');
+      expect(req.request.method).toBe('PATCH');
+      expect(req.request.body).toEqual({ cron_expression: '0 0 1 * * *' });
+      req.flush({});
+    });
+  });
+
+  describe('clearLatestTaskStatus', () => {
+    it('clears the latest task status', () => {
+      service.clearLatestTaskStatus();
+      expect(service.getLatestTaskStatus()()).toBeNull();
     });
   });
 });
