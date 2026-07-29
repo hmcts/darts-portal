@@ -1,8 +1,41 @@
 import config from 'config';
 import { RedisStore } from 'connect-redis';
 import session from 'express-session';
-import { createClient, RedisClientType } from 'redis';
+import { isIP } from 'node:net';
+import { createClient, createCluster, RedisClientType, RedisClusterType } from 'redis';
 import { trackException } from '../app-insights';
+
+type RedisSessionClient = RedisClientType | RedisClusterType;
+
+export const createRedisSessionClient = (
+  redisConnectionString: string,
+  clusterEnabled: boolean
+): RedisSessionClient => {
+  if (!clusterEnabled) {
+    return createClient({ url: redisConnectionString });
+  }
+
+  const redisUrl = new URL(redisConnectionString);
+
+  return createCluster({
+    rootNodes: [{ url: redisConnectionString }],
+    defaults: {
+      username: redisUrl.username ? decodeURIComponent(redisUrl.username) : undefined,
+      password: redisUrl.password ? decodeURIComponent(redisUrl.password) : undefined,
+      socket: {
+        tls: redisUrl.protocol === 'rediss:',
+      },
+    },
+    nodeAddressMap: (address) => {
+      const [host, port] = address.split(':');
+
+      return {
+        host: isIP(host) ? redisUrl.hostname : host,
+        port: Number(port),
+      };
+    },
+  });
+};
 
 export default () => {
   const sessionTtl: number = parseInt(config.get('session.ttlInSeconds'), 10);
@@ -20,10 +53,11 @@ export default () => {
     const redisConnectionString: string =
       config.get('session.overriddenNotSecretRedisConnectionString') ||
       config.get('secrets.darts.redis-connection-string');
+    const redisClusterEnabled = config.get<string>('session.redisClusterEnabled') === 'true';
 
-    let redis: RedisClientType | undefined;
+    let redis: RedisSessionClient | undefined;
     try {
-      redis = createClient({ url: redisConnectionString });
+      redis = createRedisSessionClient(redisConnectionString, redisClusterEnabled);
 
       redis.connect().catch((err) => {
         console.error('REDIS CONNECT ERROR', err);
