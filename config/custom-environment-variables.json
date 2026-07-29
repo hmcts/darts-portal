@@ -12,6 +12,7 @@
   "session": {
     "prefix": "DARTS_SESSION_PREFIX",
     "ttlInSeconds": "DARTS_SESSION_TTL",
+    "redisClusterEnabled": "DARTS_SESSION_REDIS_CLUSTER_ENABLED",
     "overriddenNotSecretRedisConnectionString": "DARTS_SESSION_REDIS_CONNECTION_STRING"
   },
   "features": {
