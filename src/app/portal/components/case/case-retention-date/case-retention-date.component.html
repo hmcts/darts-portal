@@ -19,15 +19,34 @@
     <app-details-table id="case-details" title="Case details" [details]="vm.caseDetails.details"></app-details-table>
 
     @if (!vm.caseDetails.currentRetention['Date applied']) {
-      <app-govuk-heading tag="h2" size="m">Current retention details</app-govuk-heading>
-      <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
-      <p class="govuk-body">A retention policy has yet to be applied to this case.</p>
+      <div class="current-retention-details">
+        <app-govuk-heading tag="h2" size="m">Current retention details</app-govuk-heading>
+        <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
+        <p class="govuk-body">A retention policy has yet to be applied to this case.</p>
+      </div>
     } @else {
-      <app-details-table
-        id="current-retention-details"
-        title="Current retention details"
-        [details]="vm.caseDetails.currentRetention"
-      ></app-details-table>
+      <app-govuk-heading class="list-heading" tag="h2" size="m">Current retention details</app-govuk-heading>
+      <div class="current-retention-details">
+        <dl govukSummaryList>
+          <div govukSummaryListRow>
+            <dt govukSummaryKey>Date applied</dt>
+            <dd govukSummaryValue>{{ vm.caseDetails.currentRetention['Date applied'] }}</dd>
+          </div>
+        </dl>
+        <div class="current-retention-details__message-row">
+          <app-summary-list-message [message]="retentionWarningText"></app-summary-list-message>
+        </div>
+        <dl govukSummaryList>
+          <div govukSummaryListRow>
+            <dt govukSummaryKey>Retain case until</dt>
+            <dd govukSummaryValue>{{ vm.caseDetails.currentRetention['Retain case until'] }}</dd>
+          </div>
+          <div govukSummaryListRow>
+            <dt govukSummaryKey>DARTS Retention policy applied</dt>
+            <dd govukSummaryValue>{{ vm.caseDetails.currentRetention['DARTS Retention policy applied'] }}</dd>
+          </div>
+        </dl>
+      </div>
     }
 
     @if (!buttonGroupHide(vm.retentionHistory)) {
