@@ -753,15 +753,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/common@npm:20.3.25":
-  version: 20.3.25
-  resolution: "@angular/common@npm:20.3.25"
+"@angular/common@npm:20.3.27":
+  version: 20.3.27
+  resolution: "@angular/common@npm:20.3.27"
   dependencies:
     tslib: "npm:^2.3.0"
   peerDependencies:
-    "@angular/core": 20.3.25
+    "@angular/core": 20.3.27
     rxjs: ^6.5.3 || ^7.4.0
-  checksum: 10/c565d1654f48de091d47b6f021c7516b5042cfb572c198570c98513507be01991052fd189b0ec096478ff2f14b391b85ae352a161c0a0567526e7d868f559978
+  checksum: 10/9c4216e73b6e992a949fe829293d2e214df807296c8edc37bb57ee79dc81d108be8cb27ba4fffb23cccb936d1deeff45455946e6164b158bbcc685e1189c69ce
   languageName: node
   linkType: hard
 
@@ -9719,7 +9719,7 @@ __metadata:
     "@angular/build": "npm:20.3.16"
     "@angular/cdk": "npm:20.2.14"
     "@angular/cli": "npm:20.3.16"
-    "@angular/common": "npm:20.3.25"
+    "@angular/common": "npm:20.3.27"
     "@angular/compiler": "npm:20.3.25"
     "@angular/compiler-cli": "npm:20.3.15"
     "@angular/core": "npm:20.3.25"
