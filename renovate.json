@@ -1,6 +1,9 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["local>hmcts/.github:renovate-config"],
+  "extends": [
+    "local>hmcts/.github:renovate-config",
+    "local>hmcts/.github//renovate/automerge-minor"
+  ],
   "packageRules": [
     {
       "matchPackageNames": ["@ministryofjustice/frontend"],
@@ -9,7 +12,7 @@
     {
       "matchUpdateTypes": ["major"],
       "automerge": false,
-      "dependencyDashboardApproval": true,
+      "dependencyDashboardApproval": false,
       "labels": ["renovate:major", "breaking-change"],
       "prHeader": "{{#if isMajor}}> ⚠️ **Major update**: {{depName}} {{currentVersion}} → {{newVersion}}{{/if}}",
       "prBodyNotes": [
