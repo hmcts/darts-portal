@@ -296,7 +296,7 @@ describe('Admin - Search screen', () => {
     cy.get('.govuk-back-link').click();
 
     // Check form values are retained
-    cy.get('.selected-courthouse').should('contain', 'Cardiff');
+    cy.get('.selected-courthouse').should('contain', 'Bristol');
     cy.get('#caseId').should('have.value', '123456');
     cy.get('#courtroom').should('have.value', '1');
     cy.get('#specific-date-radio').should('be.checked');
