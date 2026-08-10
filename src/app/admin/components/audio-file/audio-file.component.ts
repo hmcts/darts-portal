@@ -166,20 +166,18 @@ export class AudioFileComponent {
       switchMap((audioFile) =>
         audioFile.adminAction
           ? this.transcriptionAdminService.getHiddenReason(audioFile.adminAction.reasonId).pipe(
-              map(
-                (reason): HiddenFileBanner => ({
-                  id: audioFile.id,
-                  isHidden: audioFile.isHidden,
-                  isApprovedForManualDeletion: audioFile.adminAction?.isMarkedForManualDeletion ?? false,
-                  markedForManualDeletionBy: audioFile.adminAction?.markedForManualDeletionBy ?? 'Unknown',
-                  isMarkedForDeletion: reason?.markedForDeletion ?? false,
-                  hiddenReason: reason?.displayName ?? 'Unknown',
-                  hiddenByName: audioFile.adminAction?.hiddenByName ?? 'Unknown',
-                  ticketReference: audioFile.adminAction?.ticketReference ?? 'Unknown',
-                  comments: audioFile.adminAction?.comments ?? 'Unknown',
-                  fileType: 'audio_file',
-                })
-              )
+              map((reason): HiddenFileBanner => ({
+                id: audioFile.id,
+                isHidden: audioFile.isHidden,
+                isApprovedForManualDeletion: audioFile.adminAction?.isMarkedForManualDeletion ?? false,
+                markedForManualDeletionBy: audioFile.adminAction?.markedForManualDeletionBy ?? 'Unknown',
+                isMarkedForDeletion: reason?.markedForDeletion ?? false,
+                hiddenReason: reason?.displayName ?? 'Unknown',
+                hiddenByName: audioFile.adminAction?.hiddenByName ?? 'Unknown',
+                ticketReference: audioFile.adminAction?.ticketReference ?? 'Unknown',
+                comments: audioFile.adminAction?.comments ?? 'Unknown',
+                fileType: 'audio_file',
+              }))
             )
           : of(null)
       )

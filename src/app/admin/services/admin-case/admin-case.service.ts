@@ -44,15 +44,13 @@ export class AdminCaseService {
         params,
       })
       .pipe(
-        map(
-          (response): PaginatedCaseAudio => ({
-            currentPage: response.current_page,
-            pageSize: response.page_size,
-            totalPages: response.total_pages,
-            totalItems: response.total_items,
-            data: this.mapCaseAudio(response.data),
-          })
-        )
+        map((response): PaginatedCaseAudio => ({
+          currentPage: response.current_page,
+          pageSize: response.page_size,
+          totalPages: response.total_pages,
+          totalItems: response.total_items,
+          data: this.mapCaseAudio(response.data),
+        }))
       );
   }
 

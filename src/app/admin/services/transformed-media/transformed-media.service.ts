@@ -93,9 +93,9 @@ export class TransformedMediaService {
 
   getAssociatedMediaByHearingId(ids: string, startAt: string, endAt: string): Observable<AssociatedMedia[]> {
     return this.http
-      .get<
-        AssociatedMediaData[]
-      >('/api/admin/medias', { params: { hearing_ids: ids, start_at: startAt, end_at: endAt } })
+      .get<AssociatedMediaData[]>('/api/admin/medias', {
+        params: { hearing_ids: ids, start_at: startAt, end_at: endAt },
+      })
       .pipe(map((data) => this.mapAssociatedMedias(data)));
   }
 
