@@ -12,6 +12,7 @@ export class TableRowTemplateDirective<TRow> {
     directive: TableRowTemplateDirective<TContextRow>,
     context: unknown
   ): context is TableRowTemplateContext<TContextRow> {
+    void context;
     return true;
   }
 }
