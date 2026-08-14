@@ -61,7 +61,7 @@ export default () => {
     }
 
     const isSecureHost = (config.get('hostname') as string).startsWith('https://');
-    if (isSecureHost && sessionMiddleware.cookie) {
+    if (isSecureHost && sessionMiddleware.cookie && typeof sessionMiddleware.cookie !== 'function') {
       sessionMiddleware.cookie.secure = true; // serve secure cookies
     }
   }
