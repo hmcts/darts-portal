@@ -345,8 +345,8 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
     this.requestObj = {
       hearing_id: this.hearing.id,
       requestor: this.userState.userId,
-      start_time: startDateTime.toISO({ suppressMilliseconds: true, includeOffset: false }),
-      end_time: endDateTime.toISO({ suppressMilliseconds: true, includeOffset: false }),
+      start_time: startDateTime.toISO({ suppressMilliseconds: true, includeOffset: false })!,
+      end_time: endDateTime.toISO({ suppressMilliseconds: true, includeOffset: false })!,
       request_type: this.audioRequestForm.get('requestType')?.value,
     };
 
