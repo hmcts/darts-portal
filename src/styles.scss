@@ -1,6 +1,5 @@
-$govuk-suppressed-warnings: ('govuk-typography-scale-14');
-@use 'govuk-frontend/dist/govuk/index' as govuk;
 @use '@ministryofjustice/frontend/moj/all' as moj;
+@use 'govuk-frontend/dist/govuk/index' as govuk;
 @use 'accessible-autocomplete' as autocomplete;
 
 // Override global container widths
