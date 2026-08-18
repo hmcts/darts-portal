@@ -217,18 +217,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular-devkit/architect@npm:0.2201.4":
-  version: 0.2201.4
-  resolution: "@angular-devkit/architect@npm:0.2201.4"
-  dependencies:
-    "@angular-devkit/core": "npm:22.1.4"
-    rxjs: "npm:7.8.2"
-  bin:
-    architect: bin/cli.js
-  checksum: 10/208e2b9dfa815cc4ebbdb12da2a7f9e14df85913bc67b4f74a58092a7762907691cb66bc964cb330b17b314c109959728a44f95f55275b832f138bf2fb6736b9
-  languageName: node
-  linkType: hard
-
 "@angular-devkit/build-angular@npm:^20.0.0":
   version: 20.3.10
   resolution: "@angular-devkit/build-angular@npm:20.3.10"
@@ -389,25 +377,6 @@ __metadata:
     chokidar:
       optional: true
   checksum: 10/6e4b316b8bc1e54ecebb505e9afc4951b6df483da5f3baa6553022cf42d1867854c935445202847bdf2341fd980794bd67555c4ed3e2f145b5218eba32d1c985
-  languageName: node
-  linkType: hard
-
-"@angular-devkit/core@npm:22.1.4":
-  version: 22.1.4
-  resolution: "@angular-devkit/core@npm:22.1.4"
-  dependencies:
-    ajv: "npm:8.20.0"
-    ajv-formats: "npm:3.0.1"
-    jsonc-parser: "npm:3.3.1"
-    picomatch: "npm:4.0.5"
-    rxjs: "npm:7.8.2"
-    source-map: "npm:0.7.6"
-  peerDependencies:
-    chokidar: ^5.0.0
-  peerDependenciesMeta:
-    chokidar:
-      optional: true
-  checksum: 10/68087c1efb7c10e17a95a3b6fae81952de877c7a743db7154f25d8e9a0ebef0be2cef35c6481629adaa0644b834ea717721f8212a7db0c42493f21b9e77aad3d
   languageName: node
   linkType: hard
 
@@ -8890,18 +8859,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ajv@npm:8.20.0":
-  version: 8.20.0
-  resolution: "ajv@npm:8.20.0"
-  dependencies:
-    fast-deep-equal: "npm:^3.1.3"
-    fast-uri: "npm:^3.0.1"
-    json-schema-traverse: "npm:^1.0.0"
-    require-from-string: "npm:^2.0.2"
-  checksum: 10/5ce59c0537f4c2aca9a758b412659ec70acb4d5dde971c10ecf21d2e3d799f99acdb4a08e1f5fb2e067c8542930398aae793bb996bb07d3feb81dae22fe2ada9
-  languageName: node
-  linkType: hard
-
 "ajv@npm:^6.14.0":
   version: 6.15.0
   resolution: "ajv@npm:6.15.0"
@@ -10472,7 +10429,6 @@ __metadata:
   resolution: "darts-portal@workspace:."
   dependencies:
     "@angular-builders/custom-webpack": "npm:^20.0.0"
-    "@angular-devkit/architect": "npm:0.2201.4"
     "@angular-eslint/builder": "npm:^20.0.0"
     "@angular-eslint/eslint-plugin": "npm:^20.0.0"
     "@angular-eslint/eslint-plugin-template": "npm:^20.0.0"
@@ -16256,13 +16212,6 @@ __metadata:
   version: 4.0.4
   resolution: "picomatch@npm:4.0.4"
   checksum: 10/f6ef80a3590827ce20378ae110ac78209cc4f74d39236370f1780f957b7ee41c12acde0e4651b90f39983506fd2f5e449994716f516db2e9752924aff8de93ce
-  languageName: node
-  linkType: hard
-
-"picomatch@npm:4.0.5":
-  version: 4.0.5
-  resolution: "picomatch@npm:4.0.5"
-  checksum: 10/8bad770af9dcdb7f94ad1a893adcbe08a97d75a18872f8fed37161d3124217471c402b3929f051532f795f4ff2e53dcebb1644df4c1a5f3a9c476fef3b9f8c51
   languageName: node
   linkType: hard
 
