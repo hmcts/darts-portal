@@ -1,10 +1,12 @@
 import { Injectable, inject } from '@angular/core';
-import { dtrum } from '@dynatrace/dtrum-api-types';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { CookiesService } from '@services/cookies/cookies.service';
 
 interface Window {
-  dtrum: dtrum;
+  dtrum?: {
+    enable(): void;
+    disable(): void;
+  };
 }
 
 @Injectable({

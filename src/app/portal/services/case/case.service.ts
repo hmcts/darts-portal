@@ -88,15 +88,13 @@ export class CaseService {
     }
 
     return this.http.get<PaginatedCaseEventsData>(`${GET_CASE_PATH}/${caseId}/events`, { params }).pipe(
-      map(
-        (response): PaginatedCaseEvents => ({
-          currentPage: response.current_page,
-          pageSize: response.page_size,
-          totalPages: response.total_pages,
-          totalItems: response.total_items,
-          data: this.mapCaseEventData(response.data),
-        })
-      )
+      map((response): PaginatedCaseEvents => ({
+        currentPage: response.current_page,
+        pageSize: response.page_size,
+        totalPages: response.total_pages,
+        totalItems: response.total_items,
+        data: this.mapCaseEventData(response.data),
+      }))
     );
   }
 

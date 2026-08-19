@@ -242,9 +242,9 @@ export const ADMIN_ROUTES: Routes = [
     title: 'DARTS Admin Change Media Request Owner',
     data: { allowedRoles: ['SUPER_ADMIN'] },
     loadComponent: () =>
-      import(
-        './components/transformed-media/change-owner-transformed-media/change-owner-transformed-media.component'
-      ).then((c) => c.ChangeOwnerTransformedMediaComponent),
+      import('./components/transformed-media/change-owner-transformed-media/change-owner-transformed-media.component').then(
+        (c) => c.ChangeOwnerTransformedMediaComponent
+      ),
   },
   {
     path: 'admin/transcripts',
@@ -345,18 +345,18 @@ export const ADMIN_ROUTES: Routes = [
     title: 'DARTS Admin Create Retention Policy',
     data: { allowedRoles: ['SUPER_ADMIN'] },
     loadComponent: () =>
-      import(
-        './components/retention-policies/create-edit-retention-policy/create-edit-retention-policy.component'
-      ).then((c) => c.CreateEditRetentionPolicyComponent),
+      import('./components/retention-policies/create-edit-retention-policy/create-edit-retention-policy.component').then(
+        (c) => c.CreateEditRetentionPolicyComponent
+      ),
   },
   {
     path: 'admin/system-configuration/retention-policies/:id/edit',
     title: 'DARTS Admin Edit Retention Policy',
     data: { allowedRoles: ['SUPER_ADMIN'] },
     loadComponent: () =>
-      import(
-        './components/retention-policies/create-edit-retention-policy/create-edit-retention-policy.component'
-      ).then((c) => c.CreateEditRetentionPolicyComponent),
+      import('./components/retention-policies/create-edit-retention-policy/create-edit-retention-policy.component').then(
+        (c) => c.CreateEditRetentionPolicyComponent
+      ),
   },
   {
     path: 'admin/system-configuration/event-mappings',
@@ -372,27 +372,27 @@ export const ADMIN_ROUTES: Routes = [
     title: 'DARTS Admin Add Event Mapping',
     data: { allowedRoles: ['SUPER_ADMIN'] },
     loadComponent: () =>
-      import(
-        './components/system-configuration/event-mappings/add-update-event-mapping/add-update-event-mapping.component'
-      ).then((c) => c.AddUpdateEventMappingComponent),
+      import('./components/system-configuration/event-mappings/add-update-event-mapping/add-update-event-mapping.component').then(
+        (c) => c.AddUpdateEventMappingComponent
+      ),
   },
   {
     path: 'admin/system-configuration/event-mappings/:id/edit',
     title: 'DARTS Admin Edit Event Mapping',
     data: { allowedRoles: ['SUPER_ADMIN'] },
     loadComponent: () =>
-      import(
-        './components/system-configuration/event-mappings/add-update-event-mapping/add-update-event-mapping.component'
-      ).then((c) => c.AddUpdateEventMappingComponent),
+      import('./components/system-configuration/event-mappings/add-update-event-mapping/add-update-event-mapping.component').then(
+        (c) => c.AddUpdateEventMappingComponent
+      ),
   },
   {
     path: 'admin/system-configuration/event-mappings/:id/delete',
     title: 'DARTS Admin Delete Event Mapping',
     data: { allowedRoles: ['SUPER_ADMIN'] },
     loadComponent: () =>
-      import(
-        './components/system-configuration/event-mappings/delete-event-mapping/delete-event-mapping.component'
-      ).then((c) => c.DeleteEventMappingComponent),
+      import('./components/system-configuration/event-mappings/delete-event-mapping/delete-event-mapping.component').then(
+        (c) => c.DeleteEventMappingComponent
+      ),
   },
   {
     path: 'admin/system-configuration/automated-tasks',
@@ -435,18 +435,18 @@ export const ADMIN_ROUTES: Routes = [
     title: 'DARTS Admin New Version Retention Policy',
     data: { allowedRoles: ['SUPER_ADMIN'] },
     loadComponent: () =>
-      import(
-        './components/retention-policies/create-edit-retention-policy/create-edit-retention-policy.component'
-      ).then((c) => c.CreateEditRetentionPolicyComponent),
+      import('./components/retention-policies/create-edit-retention-policy/create-edit-retention-policy.component').then(
+        (c) => c.CreateEditRetentionPolicyComponent
+      ),
   },
   {
     path: 'admin/system-configuration/retention-policies/:id/edit-revision',
     title: 'DARTS Admin Edit Revision Retention Policy',
     data: { allowedRoles: ['SUPER_ADMIN'] },
     loadComponent: () =>
-      import(
-        './components/retention-policies/create-edit-retention-policy/create-edit-retention-policy.component'
-      ).then((c) => c.CreateEditRetentionPolicyComponent),
+      import('./components/retention-policies/create-edit-retention-policy/create-edit-retention-policy.component').then(
+        (c) => c.CreateEditRetentionPolicyComponent
+      ),
   },
 ].map((route) => {
   const updatedRoute = {

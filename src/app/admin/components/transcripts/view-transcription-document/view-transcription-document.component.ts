@@ -80,20 +80,18 @@ export class ViewTranscriptionDocumentComponent {
   private getHiddenFileBanner(document: TranscriptionDocument): Observable<HiddenFileBanner | null> {
     return document.adminAction && document.isHidden
       ? this.transcriptionAdminService.getHiddenReason(document.adminAction.reasonId).pipe(
-          map(
-            (reason): HiddenFileBanner => ({
-              id: document.transcriptionId,
-              isHidden: document.isHidden,
-              isApprovedForManualDeletion: document.adminAction?.isMarkedForManualDeletion ?? false,
-              markedForManualDeletionBy: document.adminAction?.markedForManualDeletionBy ?? 'Unknown',
-              isMarkedForDeletion: reason?.markedForDeletion ?? false,
-              hiddenReason: reason?.displayName ?? 'Unknown',
-              hiddenByName: document.adminAction?.hiddenByName ?? 'Unknown',
-              ticketReference: document.adminAction?.ticketReference ?? 'Unknown',
-              comments: document.adminAction?.comments ?? 'Unknown',
-              fileType: 'transcription_document',
-            })
-          )
+          map((reason): HiddenFileBanner => ({
+            id: document.transcriptionId,
+            isHidden: document.isHidden,
+            isApprovedForManualDeletion: document.adminAction?.isMarkedForManualDeletion ?? false,
+            markedForManualDeletionBy: document.adminAction?.markedForManualDeletionBy ?? 'Unknown',
+            isMarkedForDeletion: reason?.markedForDeletion ?? false,
+            hiddenReason: reason?.displayName ?? 'Unknown',
+            hiddenByName: document.adminAction?.hiddenByName ?? 'Unknown',
+            ticketReference: document.adminAction?.ticketReference ?? 'Unknown',
+            comments: document.adminAction?.comments ?? 'Unknown',
+            fileType: 'transcription_document',
+          }))
         )
       : of(null);
   }
