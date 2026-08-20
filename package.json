@@ -94,7 +94,7 @@
     "undici": "7.29.0",
     "lodash": "^4.18.1",
     "axios": "1.19.0",
-    "uuid": "14.0.1"
+    "uuid": "14.0.2"
   },
   "devDependencies": {
     "@angular-builders/custom-webpack": "^20.0.0",
