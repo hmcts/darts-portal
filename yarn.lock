@@ -9762,6 +9762,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"chrome-remote-interface@npm:0.33.3":
+  version: 0.33.3
+  resolution: "chrome-remote-interface@npm:0.33.3"
+  dependencies:
+    commander: "npm:2.11.x"
+    ws: "npm:^7.2.0"
+  bin:
+    chrome-remote-interface: bin/client.js
+  checksum: 10/65d07afc8f97fad6326bd94f0c4ef004d76b16841015c72d09aefbfa4df62b47407067a01c886535a706c36b23070b40fc3edb96444665438efa1d4f65cc3db8
+  languageName: node
+  linkType: hard
+
 "chrome-trace-event@npm:^1.0.2":
   version: 1.0.4
   resolution: "chrome-trace-event@npm:1.0.4"
@@ -9984,6 +9996,13 @@ __metadata:
   dependencies:
     delayed-stream: "npm:~1.0.0"
   checksum: 10/2e969e637d05d09fa50b02d74c83a1186f6914aae89e6653b62595cc75a221464f884f55f231b8f4df7a49537fba60bdc0427acd2bf324c09a1dbb84837e36e4
+  languageName: node
+  linkType: hard
+
+"commander@npm:2.11.x":
+  version: 2.11.0
+  resolution: "commander@npm:2.11.0"
+  checksum: 10/d8940de4ce2886aa32ae27a1533d10ce46da8c6dcd965075462a6b8d17b01f596ec329e1430f84a123e52675403f0c2b11a6a5d144eb46146da9ae974edbc2c0
   languageName: node
   linkType: hard
 
@@ -10377,8 +10396,8 @@ __metadata:
   linkType: hard
 
 "cypress@npm:^15.0.0":
-  version: 15.20.1
-  resolution: "cypress@npm:15.20.1"
+  version: 15.21.0
+  resolution: "cypress@npm:15.21.0"
   dependencies:
     "@cypress/request": "npm:^4.0.0"
     "@cypress/xvfb": "npm:^1.2.4"
@@ -10391,6 +10410,7 @@ __metadata:
     buffer: "npm:^5.7.1"
     cachedir: "npm:^2.4.0"
     chalk: "npm:^4.1.0"
+    chrome-remote-interface: "npm:0.33.3"
     ci-info: "npm:^4.1.0"
     cli-table3: "npm:0.6.1"
     commander: "npm:^6.2.1"
@@ -10420,7 +10440,7 @@ __metadata:
     yauzl: "npm:^3.3.1"
   bin:
     cypress: bin/cypress
-  checksum: 10/40fefade18f22edcf3224d446be388ee791740f7b377bb717a70669ba5baa04b9c98a5bc24aa6e93e70d794f0648cb2a6bf57536d40b707ebfc09f6b2df1101f
+  checksum: 10/f242d433ca1107eb8d68ff3d63686f575e54675ab85f228b02f86214204a92dfcff2e4ca27af725fb220b9229eab17889cdde023b8f9c194b5bc95688a7eb102
   languageName: node
   linkType: hard
 
@@ -19563,6 +19583,21 @@ __metadata:
     imurmurhash: "npm:^0.1.4"
     signal-exit: "npm:^4.0.1"
   checksum: 10/ca8f12cc4de17756a3f35087c1985c45b5be1ac399b9dc33000ab8cdbacb210ce3adde5bc1a90acfa729fe5326d250cf4f91ef57143b25bcf342a267391f8754
+  languageName: node
+  linkType: hard
+
+"ws@npm:^7.2.0":
+  version: 7.5.13
+  resolution: "ws@npm:7.5.13"
+  peerDependencies:
+    bufferutil: ^4.0.1
+    utf-8-validate: ^5.0.2
+  peerDependenciesMeta:
+    bufferutil:
+      optional: true
+    utf-8-validate:
+      optional: true
+  checksum: 10/0873c813ce75c466b026ce0a4ce9a8b5b5f1dc9ef0dd7ae9690fa4025c66afb165d3a45550357080b29d66a0e3028cd13c72ccefc83ce10723b4822a574ebc99
   languageName: node
   linkType: hard
 
