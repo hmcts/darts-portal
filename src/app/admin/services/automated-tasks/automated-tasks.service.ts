@@ -1,6 +1,10 @@
-import { AutomatedTask, AutomatedTaskDetails } from '@admin-types/automated-task/automated-task';
+import { AutomatedTask, AutomatedTaskDetails, CronExecution } from '@admin-types/automated-task/automated-task';
 import { AutomatedTaskStatus } from '@admin-types/automated-task/automated-task-status';
-import { AutomatedTaskData, AutomatedTaskDetailsData } from '@admin-types/automated-task/automated-task.interface';
+import {
+  AutomatedTaskData,
+  AutomatedTaskDetailsData,
+  CronExecutionData,
+} from '@admin-types/automated-task/automated-task.interface';
 import { HttpClient } from '@angular/common/http';
 import { Injectable, Signal, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
@@ -25,6 +29,21 @@ export class AutomatedTasksService {
     return this.http
       .get<AutomatedTaskDetailsData>(`/api/admin/automated-tasks/${taskId}`)
       .pipe(map((task) => this.mapTaskDetails(task)));
+  }
+
+  getNextCronExecutionTimes(taskId: number, cronExpression: string): Observable<CronExecution[]> {
+    return this.http
+      .post<
+        CronExecutionData[]
+      >(`/api/admin/automated-tasks/${taskId}/edit-cron-expression`, { cron_expression: cronExpression })
+      .pipe(
+        map((data) =>
+          data.map((run) => ({
+            executionNumber: run.execution_number,
+            scheduledAt: DateTime.fromISO(run.scheduled_at),
+          }))
+        )
+      );
   }
 
   runTask({ id, name }: AutomatedTask) {
@@ -59,6 +78,10 @@ export class AutomatedTasksService {
   changeFieldValue(id: number, key: string, rawValue: number | string | DateTime) {
     const value = rawValue instanceof DateTime ? rawValue.toUTC().toISO() : rawValue;
     return this.http.patch<void>(`/api/admin/automated-tasks/${id}`, { [key]: value });
+  }
+
+  changeCronExpression(id: number, value: string) {
+    return this.http.patch<void>(`/api/admin/automated-tasks/${id}/edit-cron-expression`, { cron_expression: value });
   }
 
   getLatestTaskStatus(): Signal<AutomatedTaskStatus | null> {
