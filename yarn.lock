@@ -14591,15 +14591,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"libnpmpack@npm:^9.1.12":
-  version: 9.1.12
-  resolution: "libnpmpack@npm:9.1.12"
+"libnpmpack@npm:^9.1.13":
+  version: 9.1.13
+  resolution: "libnpmpack@npm:9.1.13"
   dependencies:
     "@npmcli/arborist": "npm:^9.9.1"
     "@npmcli/run-script": "npm:^10.0.0"
     npm-package-arg: "npm:^13.0.0"
     pacote: "npm:^21.0.2"
-  checksum: 10/aa5e9a66c9bab9008ca2f5086ad5313bb446141963bff986981177486f3911ce4cb2f0d20ba649e77f4da19311d14b70210c0be2b5cf6c31c38e0c05e0667209
+  checksum: 10/a362121d28ef7bbab03537c74e45c4d69bc0e3223e330044eace9aaea6513be82255d3d97bcb2b9a86e773269a268bf1d07a745eed57cc946836e50d75c09dfa
   languageName: node
   linkType: hard
 
@@ -15798,8 +15798,8 @@ __metadata:
   linkType: hard
 
 "npm@npm:^11.0.0":
-  version: 11.19.0
-  resolution: "npm@npm:11.19.0"
+  version: 11.19.1
+  resolution: "npm@npm:11.19.1"
   dependencies:
     "@isaacs/string-locale-compare": "npm:^1.1.0"
     "@npmcli/arborist": "npm:^9.9.1"
@@ -15831,7 +15831,7 @@ __metadata:
     libnpmexec: "npm:^10.3.2"
     libnpmfund: "npm:^7.0.26"
     libnpmorg: "npm:^8.0.1"
-    libnpmpack: "npm:^9.1.12"
+    libnpmpack: "npm:^9.1.13"
     libnpmpublish: "npm:^11.2.0"
     libnpmsearch: "npm:^9.0.1"
     libnpmteam: "npm:^8.0.2"
@@ -15860,7 +15860,7 @@ __metadata:
     spdx-expression-parse: "npm:^4.0.0"
     ssri: "npm:^13.0.1"
     supports-color: "npm:^10.2.2"
-    tar: "npm:^7.5.19"
+    tar: "npm:^7.5.22"
     text-table: "npm:~0.2.0"
     tiny-relative-date: "npm:^2.0.2"
     treeverse: "npm:^3.0.0"
@@ -15869,7 +15869,7 @@ __metadata:
   bin:
     npm: bin/npm-cli.js
     npx: bin/npx-cli.js
-  checksum: 10/86b910471104f306847d80c2903153ee42d213c8d3905c3d047e07ecae4994eb1b4ae5f10ac965d2b24c8b50858c9201346e6041b1e0c29f9cc69e4b1a1e519b
+  checksum: 10/e49f1f0cdac2d09bc49a6b7cb000cd34b52be1857954ef258cc79c3ea25f9f00846c60fd19a6a712c921134acfafc45633564de04614385d308e4ced6caf2901
   languageName: node
   linkType: hard
 
@@ -18420,7 +18420,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tar@npm:^7.5.19, tar@npm:^7.5.4":
+"tar@npm:^7.5.22, tar@npm:^7.5.4":
   version: 7.5.22
   resolution: "tar@npm:7.5.22"
   dependencies:
