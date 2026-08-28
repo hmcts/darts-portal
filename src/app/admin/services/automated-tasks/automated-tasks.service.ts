@@ -33,9 +33,9 @@ export class AutomatedTasksService {
 
   getNextCronExecutionTimes(taskId: number, cronExpression: string): Observable<CronExecution[]> {
     return this.http
-      .post<
-        CronExecutionData[]
-      >(`/api/admin/automated-tasks/${taskId}/edit-cron-expression`, { cron_expression: cronExpression })
+      .post<CronExecutionData[]>(`/api/admin/automated-tasks/${taskId}/edit-cron-expression`, {
+        cron_expression: cronExpression,
+      })
       .pipe(
         map((data) =>
           data.map((run) => ({
