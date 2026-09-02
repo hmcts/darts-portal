@@ -37,6 +37,15 @@ const defaultRetentionHistory = [
     status: 'COMPLETE',
   },
   {
+    case_id: 3,
+    retention_last_changed_date: '2024-01-13T12:15:00Z',
+    retention_date: '2033-03-23',
+    amended_by: 'Judge Samuel',
+    retention_policy_applied: 'Manual',
+    comments: 'Manual policy applied',
+    status: 'PENDING',
+  },
+  {
     case_id: 5,
     retention_last_changed_date: '2024-01-13T12:15:00Z',
     retention_date: '2066-03-25',
