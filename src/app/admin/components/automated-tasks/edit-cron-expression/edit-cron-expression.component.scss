@@ -1,0 +1,9 @@
+:host ::ng-deep {
+  .govuk-heading-xl {
+    margin-bottom: 0;
+  }
+}
+
+app-govuk-tag {
+  margin: 2rem 0;
+}
