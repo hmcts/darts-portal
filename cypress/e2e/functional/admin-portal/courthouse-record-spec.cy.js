@@ -276,7 +276,7 @@ describe('Admin - Courthouse record screen', () => {
     });
 
     after(() => {
-      cy.request('/api//admin/security-groups/reset');
+      cy.request('/api/admin/security-groups/reset');
     });
   });
 
