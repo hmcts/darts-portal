@@ -86,6 +86,7 @@ export class CaseRetentionDateComponent implements OnInit {
         },
         case_id: data.id,
         case_number: data.number,
+        closedDateTime: data.closedDateTime,
       };
       return caseDetails;
     })
@@ -126,11 +127,14 @@ export class CaseRetentionDateComponent implements OnInit {
     }
   }
 
-  infoBannerHide(rows: CaseRetentionHistory[]): boolean {
+  showOpenBanner(closedDateTime: Case['closedDateTime']): boolean {
+    return !closedDateTime;
+  }
+
+  showGraceBanner(rows: CaseRetentionHistory[]): boolean {
     if (rows.length) {
-      return this.getLatestDate(rows).status !== 'PENDING';
+      return this.getLatestDate(rows).status === 'PENDING';
     } else {
-      //Show banner if array is empty
       return false;
     }
   }

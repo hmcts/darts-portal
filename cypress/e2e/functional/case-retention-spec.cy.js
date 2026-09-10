@@ -30,11 +30,46 @@ describe('Case retention screen as standard user', () => {
 
       cy.get('dl dt').should('contain', 'Retain case until');
 
+      //Info banner not shown on closed cases outside of the grace period
+      cy.get('div.govuk-notification-banner').should('not.exist');
+
       //Button group, only shows on closed cases
       cy.get('.govuk-button-group').should('contain', 'Change retention date');
       cy.get('a.govuk-link').should('contain', 'Cancel');
 
       cy.get('#retentionTable').should('contain', '11 Oct 2023 01:18:00');
+      cy.a11y();
+    });
+  });
+
+  describe('Recently closed case retention screen', () => {
+    beforeEach(() => {
+      const caseNumber = 'C20220620003';
+      cy.contains('Search').click();
+      cy.get('#case_number').type(caseNumber);
+      cy.get('button').contains('Search').click();
+      cy.contains(caseNumber).click();
+      cy.contains('View or change').click();
+    });
+
+    it('Check page elements', () => {
+      //Breadcrumb
+      cy.get('a.govuk-breadcrumbs__link').should('contain', 'Case retention date');
+
+      //Info banner shown on recently closed cases
+      cy.get('div.govuk-notification-banner').should('contain', 'This case was recently closed');
+
+      cy.get('h1.govuk-heading-l').should('contain', 'Case retention date');
+      cy.get('#case-details').should('contain', 'Case details');
+
+      cy.get('p.govuk-body').should('contain', 'A retention policy has yet to be applied to this case.');
+
+      // Retention audit history should contain a pending row
+      cy.get('#retentionTable tbody tr').contains('PENDING').should('exist');
+
+      //Button group, should not be visible on open cases
+      cy.get('#retention-date-buttons').should('not.exist');
+
       cy.a11y();
     });
   });
@@ -53,8 +88,8 @@ describe('Case retention screen as standard user', () => {
       //Breadcrumb
       cy.get('a.govuk-breadcrumbs__link').should('contain', 'Case retention date');
 
-      //Info banner, shows on open or pending cases
-      cy.get('div.govuk-notification-banner').should('contain', 'This case is still open or was recently closed.');
+      //Info banner shown on open cases
+      cy.get('div.govuk-notification-banner').should('contain', 'This case is still open');
 
       cy.get('h1.govuk-heading-l').should('contain', 'Case retention date');
       cy.get('#case-details').should('contain', 'Case details');

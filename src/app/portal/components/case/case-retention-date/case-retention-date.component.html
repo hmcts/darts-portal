@@ -7,12 +7,28 @@
     <ng-container *breadcrumb>Case retention date</ng-container>
   </app-breadcrumb>
   <ng-container *ngIf="state === 'Default' || state === 'Success'">
-    <app-notification-banner
-      *ngIf="!infoBannerHide(vm.retentionHistory)"
-      heading="This case is still open or was recently closed."
-      body="The retention date for this case cannot be changed while the case is open or while a retention policy is
-    currently pending."
-    ></app-notification-banner>
+    @if (showOpenBanner(vm.caseDetails.closedDateTime)) {
+      <app-notification-banner heading="This case is still open">
+        If you expected this case to be closed, please check that a <strong>Case Closed</strong> event (XHIBIT) or
+        <strong>Archive Case</strong> event (Common Platform) has been added. <br /><br />
+        Any sentencing, appeal, or other case updates must be recorded before the final closure event. DARTS requires
+        these events to close the case and apply the correct retention period.
+        <br /><br />
+        <strong>Please note:</strong> there is a 7-day grace period before the application of retention will be
+        reflected in DARTS.
+      </app-notification-banner>
+    } @else if (showGraceBanner(vm.retentionHistory)) {
+      <app-notification-banner heading="This case was recently closed">
+        This case was recently closed in the case management system. However, the 7-day grace period for retention to be
+        applied has not yet passed.
+        <br /><br />
+        During this period, case closure changes may not be visible in DARTS.
+        <br /><br />
+        It can take up to 7 days for <strong>Case Closed</strong> and <strong>Archive Case</strong> events to reflect
+        retention in DARTS.
+      </app-notification-banner>
+    }
+
     <app-govuk-banner *ngIf="state === 'Success'" type="success">Case retention date changed.</app-govuk-banner>
     <app-govuk-heading>Case retention date</app-govuk-heading>
 

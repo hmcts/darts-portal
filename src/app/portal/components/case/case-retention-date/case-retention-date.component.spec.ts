@@ -142,19 +142,29 @@ describe('CaseRetentionDateComponent', () => {
     expect(result).toEqual(expectedDateString);
   });
 
-  describe('#infoBannerHide', () => {
+  describe('#showOpenBanner', () => {
+    it('should return true if the case closed date is missing', () => {
+      expect(component.showOpenBanner(undefined)).toBe(true);
+    });
+
+    it('should return false if the case closed date exists', () => {
+      expect(component.showOpenBanner(mockCaseData.closedDateTime)).toBe(false);
+    });
+  });
+
+  describe('#showGraceBanner', () => {
     it('should return false if rows array is empty', () => {
-      expect(component.infoBannerHide([])).toBe(false);
+      expect(component.showGraceBanner([])).toBe(false);
     });
 
-    it('should return true if the latest date status is not PENDING', () => {
+    it('should return false if the status of the latest row is not PENDING', () => {
       jest.spyOn(component, 'getLatestDate').mockReturnValue(mockRetentionHistoryVm[0]);
-      expect(component.infoBannerHide(mockRetentionHistoryVm)).toBe(true);
+      expect(component.showGraceBanner(mockRetentionHistoryVm)).toBe(false);
     });
 
-    it('should return false if the latest date status is PENDING', () => {
+    it('should return true if the status of the latest row is PENDING', () => {
       jest.spyOn(component, 'getLatestDate').mockReturnValue(mockRetentionHistoryVm[1]);
-      expect(component.infoBannerHide(mockRetentionHistoryVm)).toBe(false);
+      expect(component.showGraceBanner(mockRetentionHistoryVm)).toBe(true);
     });
   });
 
@@ -267,6 +277,7 @@ describe('CaseRetentionDateComponent', () => {
       });
       expect(caseDetails.case_id).toBe(1);
       expect(caseDetails.case_number).toBe('C20220620001');
+      expect(caseDetails.closedDateTime).toBe(mockCaseData.closedDateTime);
       done();
     });
   });

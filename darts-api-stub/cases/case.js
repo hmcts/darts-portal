@@ -104,6 +104,18 @@ const singleCaseTwo = {
   defenders: ['Derek Defender'],
 };
 
+const singleCaseThree = {
+  case_id: 3,
+  courthouse: 'Swansea',
+  courthouse_id: 3,
+  case_number: 'C20220620003',
+  defendants: ['Defendant Dave', 'Defendant Derren'],
+  judges: ['Judge Judy', 'Judge Paul', 'Judge John', 'Judge James', 'Judge Judy'],
+  prosecutors: ['Patrick Prosecutor', 'Paddy Prosecutor'],
+  defenders: ['Derek Defender', 'Dileep Defender'],
+  case_closed_date_time: '2023-08-15T14:57:24.858Z',
+};
+
 const singleCaseFive = {
   case_id: 5,
   courthouse: 'Swansea',
@@ -846,6 +858,9 @@ router.get('/:caseId', (req, res) => {
       break;
     case '2':
       res.send(singleCaseTwo);
+      break;
+    case '3':
+      res.send(singleCaseThree);
       break;
     case '5':
       res.send(singleCaseFive);
