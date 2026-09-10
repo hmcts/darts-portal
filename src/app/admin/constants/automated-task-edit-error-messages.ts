@@ -3,6 +3,9 @@ import { FormErrorMessages } from '@core-types/index';
 export const maxIntegerSize = 2147483647;
 
 export const AutomatedTaskEditFormErrorMessages: FormErrorMessages = {
+  cronExpression: {
+    required: 'Cron expression must be set',
+  },
   batchSize: {
     required: 'Batch size must be set',
     min: 'Batch size must be greater than 0',

@@ -74,6 +74,32 @@ describe('ViewAutomatedTasksComponent', () => {
     expect(task?.modifiedByFullName).toBe('User 2');
   });
 
+  describe('cron expression action', () => {
+    it('shows Change link when cron is editable', () => {
+      component.task.set({ ...task, isCronEditable: true });
+
+      fixture.detectChanges();
+
+      const rows = fixture.debugElement.queryAll(By.directive(GovukSummaryListRowDirective));
+      const cronRow = rows.find((row) => row.nativeElement.textContent.includes('Cron expression'));
+
+      expect(cronRow?.nativeElement.textContent).toContain('Change');
+      expect(cronRow?.query(By.css('a.govuk-link'))).toBeTruthy();
+    });
+
+    it('does not show Change link when cron is not editable', () => {
+      component.task.set({ ...task, isCronEditable: false });
+
+      fixture.detectChanges();
+
+      const rows = fixture.debugElement.queryAll(By.directive(GovukSummaryListRowDirective));
+      const cronRow = rows.find((row) => row.nativeElement.textContent.includes('Cron expression'));
+
+      expect(cronRow?.nativeElement.textContent).not.toContain('Change');
+      expect(cronRow?.query(By.css('a.govuk-link'))).toBeNull();
+    });
+  });
+
   describe('armAttributeType is REPLAY', () => {
     it('displays arm replay start and end times', () => {
       component.task.set({
