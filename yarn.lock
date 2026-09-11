@@ -10745,7 +10745,7 @@ __metadata:
     lodash: "npm:^4.18.1"
     luxon: "npm:^3.4.4"
     moment: "npm:2.30.1"
-    ngx-cookie-service: "npm:^20.0.0"
+    ngx-cookie-service: "npm:^22.0.0"
     nodemon: "npm:^3.1.3"
     npm: "npm:^11.0.0"
     nunjucks: "npm:^3.2.4"
@@ -15636,15 +15636,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ngx-cookie-service@npm:^20.0.0":
-  version: 20.1.1
-  resolution: "ngx-cookie-service@npm:20.1.1"
+"ngx-cookie-service@npm:^22.0.0":
+  version: 22.0.0
+  resolution: "ngx-cookie-service@npm:22.0.0"
   dependencies:
-    tslib: "npm:^2.8.0"
+    tslib: "npm:^2.8.1"
   peerDependencies:
-    "@angular/common": ^20.0.0
-    "@angular/core": ^20.0.0
-  checksum: 10/2ef9be3e4d0543a17e26a2c332dc7d254c11139ab5e04e21cb3a29213d79369895ef69bf6ec0510c0576fc29cc3d7d9f7ff160ebbad0a0269c7ac91159ebb697
+    "@angular/common": ^22.0.0
+    "@angular/core": ^22.0.0
+  checksum: 10/32c6739d3edb2d7719b2b43fdf14e798466e34aba990654b0e5c5f4ccd48073d089bb1bb3bc969fc23d208a293c60bf32ba90259496fcc576b4e335f5752ecc9
   languageName: node
   linkType: hard
 
@@ -18842,7 +18842,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:2.8.1, tslib@npm:^2.0.0, tslib@npm:^2.1.0, tslib@npm:^2.2.0, tslib@npm:^2.3.0, tslib@npm:^2.4.0, tslib@npm:^2.6.2, tslib@npm:^2.6.3, tslib@npm:^2.7.0, tslib@npm:^2.8.0, tslib@npm:^2.8.1":
+"tslib@npm:2.8.1, tslib@npm:^2.0.0, tslib@npm:^2.1.0, tslib@npm:^2.2.0, tslib@npm:^2.3.0, tslib@npm:^2.4.0, tslib@npm:^2.6.2, tslib@npm:^2.6.3, tslib@npm:^2.7.0, tslib@npm:^2.8.1":
   version: 2.8.1
   resolution: "tslib@npm:2.8.1"
   checksum: 10/3e2e043d5c2316461cb54e5c7fe02c30ef6dccb3384717ca22ae5c6b5bc95232a6241df19c622d9c73b809bea33b187f6dbc73030963e29950c2141bc32a79f7
