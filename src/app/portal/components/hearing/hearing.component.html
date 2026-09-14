@@ -122,8 +122,8 @@
             </app-data-table>
           }
         </div>
-        <div *tab="'Annotations'; id: 'annotations-tab'; count: vm.annotations?.length || 0">
-          @if (vm.annotations) {
+        @if (vm.annotations) {
+          <div *tab="'Annotations'; id: 'annotations-tab'; count: vm.annotations.length">
             <div class="flex-space-between">
               <h2 class="govuk-heading-m">Annotations</h2>
             </div>
@@ -175,8 +175,8 @@
                 </td>
               </ng-template>
             </app-data-table>
-          }
-        </div>
+          </div>
+        }
       </app-tabs>
     </div>
 
