@@ -1,14 +1,12 @@
-<ng-container *ngIf="data$ | async as vm; else loading">
+@if (data$ | async; as vm) {
   <app-validation-error-summary [errors]="getUniqueErrorSummary()" />
-
   <app-reporting-restriction
     class="margin-bottom"
     [restrictions]="vm.case.reportingRestrictions"
     [hearingId]="vm.hearing?.id"
   ></app-reporting-restriction>
-
-  <ng-container *ngIf="step() === 1">
-    <ng-container *ngIf="!vm.audioRows.length">
+  @if (step() === 1) {
+    @if (!vm.audioRows.length) {
       <h2 class="govuk-heading-m">Audio list</h2>
       <p class="govuk-body">There is no audio for this hearing date.</p>
       <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
@@ -20,8 +18,8 @@
           >Cancel and go back to the search results</a
         >
       </div>
-    </ng-container>
-    <ng-container *ngIf="vm.audioRows.length">
+    }
+    @if (vm.audioRows.length) {
       <app-govuk-heading>Request a new transcript</app-govuk-heading>
       <app-govuk-heading caption="Case ID" tag="h2" size="m" class="whitespace-pre">{{
         vm.case.number
@@ -32,19 +30,16 @@
       <p class="govuk-body">{{ vm.case.defendants | join }}</p>
       <h2 class="govuk-heading-s">Hearing Date</h2>
       <p class="govuk-body">{{ vm.hearing ? (vm.hearing.date | luxonDate: 'dd MMM y') : '' }}</p>
-
       <div
         class="govuk-form-group"
         [class.govuk-form-group--error]="isSubmitted && transcriptionTypeFormControl.invalid"
       >
         <label class="govuk-label" for="transcription-type"> Request Type </label>
-        <p
-          *ngIf="isSubmitted && transcriptionTypeFormControl.invalid"
-          id="transcription-type-error"
-          class="govuk-error-message"
-        >
-          <span class="govuk-visually-hidden">Error:</span> {{ getValidationMessage('transcription-type') }}
-        </p>
+        @if (isSubmitted && transcriptionTypeFormControl.invalid) {
+          <p id="transcription-type-error" class="govuk-error-message">
+            <span class="govuk-visually-hidden">Error:</span> {{ getValidationMessage('transcription-type') }}
+          </p>
+        }
         <select
           class="govuk-select"
           id="transcription-type"
@@ -53,16 +48,20 @@
           [class.govuk-select--error]="isSubmitted && transcriptionTypeFormControl.invalid"
         >
           <option value="" disabled selected>Please select</option>
-          <option *ngFor="let type of vm.transcriptionTypes" [value]="type.transcription_type_id">
-            {{ type.description }}
-          </option>
+          @for (type of vm.transcriptionTypes; track type) {
+            <option [value]="type.transcription_type_id">
+              {{ type.description }}
+            </option>
+          }
         </select>
       </div>
       <div class="govuk-form-group" [class.govuk-form-group--error]="isSubmitted && urgencyFormControl.invalid">
         <label class="govuk-label" for="urgency"> Urgency </label>
-        <p *ngIf="isSubmitted && urgencyFormControl.invalid" id="urgency-error" class="govuk-error-message">
-          <span class="govuk-visually-hidden">Error:</span> {{ getValidationMessage('urgency') }}
-        </p>
+        @if (isSubmitted && urgencyFormControl.invalid) {
+          <p id="urgency-error" class="govuk-error-message">
+            <span class="govuk-visually-hidden">Error:</span> {{ getValidationMessage('urgency') }}
+          </p>
+        }
         <select
           class="govuk-select"
           id="urgency"
@@ -71,14 +70,14 @@
           [class.govuk-select--error]="isSubmitted && urgencyFormControl.invalid"
         >
           <option value="" disabled selected>Please select</option>
-          <option *ngFor="let urgency of vm.urgencies" [value]="urgency.transcription_urgency_id">
-            {{ urgency.description }}
-          </option>
+          @for (urgency of vm.urgencies; track urgency) {
+            <option [value]="urgency.transcription_urgency_id">
+              {{ urgency.description }}
+            </option>
+          }
         </select>
       </div>
-
       <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
-
       <h2 class="govuk-heading-m">Audio list</h2>
       <app-data-table
         id="audio-table"
@@ -95,16 +94,13 @@
           <td>{{ row.name }}</td>
         </ng-template>
       </app-data-table>
-
       <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
-
       <div class="govuk-button-group">
         <button class="govuk-button" data-module="govuk-button" (click)="onNextStep()">Continue</button>
         <a class="govuk-link" routerLink="../" routerLinkActive="router-link-active">Cancel</a>
       </div>
-    </ng-container>
-  </ng-container>
-
+    }
+  }
   <app-request-times
     [audioRows]="vm.audioRows"
     [events]="vm.events"
@@ -115,7 +111,6 @@
     [hidden]="!(step() === 2)"
   >
   </app-request-times>
-
   <app-request-transcript-confirmation
     [case]="vm.case"
     [hearing]="vm.hearing!"
@@ -129,20 +124,16 @@
     (confirm)="onConfirm($event)"
     [hidden]="!(step() === 3) || vm.error?.status"
   ></app-request-transcript-confirmation>
-
   <app-request-transcript-success
     [transcriptRequestId]="transcriptRequestId"
     [hidden]="!(step() === 4) || vm.error?.status"
   ></app-request-transcript-success>
-
-  <ng-container *ngIf="vm.error && vm.error.detail">
+  @if (vm.error && vm.error.detail) {
     <app-request-transcript-exists
       [transcriptionId]="vm.error.detail.duplicate_transcription_id"
       [hidden]="!(vm.error.status === 409)"
     ></app-request-transcript-exists>
-  </ng-container>
-</ng-container>
-
-<ng-template #loading>
+  }
+} @else {
   <app-loading text="Loading hearing details..."></app-loading>
-</ng-template>
+}

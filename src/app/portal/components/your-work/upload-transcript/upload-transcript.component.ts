@@ -66,7 +66,7 @@ export class UploadTranscriptComponent implements OnDestroy {
   isManualRequest = false;
   isSubmitted = false;
   isUploading = false;
-  requestStatus: 'TO_DO' | 'COMPLETED' = this.router.getCurrentNavigation()?.extras?.state?.requestStatus;
+  requestStatus: 'TO_DO' | 'COMPLETED' = this.router.currentNavigation()?.extras?.state?.requestStatus;
 
   REASON_DISPLAY = REASON_DISPLAY;
 

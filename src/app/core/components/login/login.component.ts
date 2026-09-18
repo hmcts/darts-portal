@@ -1,4 +1,4 @@
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
@@ -10,7 +10,7 @@ import { WINDOW } from '@utils/tokens';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
   standalone: true,
-  imports: [NgIf, ReactiveFormsModule, NgClass, ValidationErrorSummaryComponent],
+  imports: [ReactiveFormsModule, NgClass, ValidationErrorSummaryComponent],
 })
 export class LoginComponent {
   authService = inject(AuthService);

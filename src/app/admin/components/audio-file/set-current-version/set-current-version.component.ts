@@ -29,7 +29,7 @@ export class SetCurrentVersionComponent implements OnInit {
   router = inject(Router);
   transformedMediaService = inject(TransformedMediaService);
 
-  selectedAudioId = this.router.getCurrentNavigation()?.extras?.state?.selectedAudioId;
+  selectedAudioId = this.router.currentNavigation()?.extras?.state?.selectedAudioId;
 
   isSubmitted = false;
 

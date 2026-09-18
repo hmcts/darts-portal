@@ -1,6 +1,6 @@
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { TransformedMediaSearchFormValues } from '@admin-types/transformed-media/transformed-media-search-form.values';
-import { CommonModule } from '@angular/common';
+
 import {
   Component,
   DestroyRef,
@@ -38,13 +38,7 @@ export const transformedMediaSearchDateValidators = [
   standalone: true,
   templateUrl: './search-transformed-media-form.component.html',
   styleUrl: './search-transformed-media-form.component.scss',
-  imports: [
-    ReactiveFormsModule,
-    SpecificOrRangeDatePickerComponent,
-    DatepickerComponent,
-    CourthouseComponent,
-    CommonModule,
-  ],
+  imports: [ReactiveFormsModule, SpecificOrRangeDatePickerComponent, DatepickerComponent, CourthouseComponent],
 })
 export class SearchTransformedMediaFormComponent implements OnInit {
   @ViewChild(CourthouseComponent) courthouseComponent!: CourthouseComponent;

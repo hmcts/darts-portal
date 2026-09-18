@@ -23,7 +23,7 @@ export class AssignGroupsComponent implements OnInit, OnDestroy {
   headerService = inject(HeaderService);
   groupsService = inject(GroupsService);
 
-  user = this.router.getCurrentNavigation()?.extras.state?.user as User;
+  user = this.router.currentNavigation()?.extras.state?.user as User;
 
   // store the hidden groups so we can put them back in when assigning
   usersHiddenGroups = this.user?.securityGroups?.filter((group) => !group.role?.displayState) ?? [];

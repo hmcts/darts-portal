@@ -1,4 +1,4 @@
-import { CommonModule, Location } from '@angular/common';
+import { Location } from '@angular/common';
 import { Component, inject, input } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -19,7 +19,6 @@ import { TranscriptDetailsComponent } from './transcript-details/transcript-deta
   templateUrl: './view-transcript.component.html',
   styleUrl: './view-transcript.component.scss',
   imports: [
-    CommonModule,
     TabsComponent,
     TabDirective,
     TranscriptDetailsComponent,

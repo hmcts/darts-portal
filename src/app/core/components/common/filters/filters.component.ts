@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, ElementRef, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Filter } from '@components/common/filters/filter.interface';
@@ -6,7 +5,7 @@ import { Filter } from '@components/common/filters/filter.interface';
 @Component({
   selector: 'app-filters',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './filters.component.html',
   styleUrl: './filters.component.scss',
 })

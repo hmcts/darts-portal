@@ -59,7 +59,7 @@ export class AudioFileComponent {
 
   url = inject(Router).url;
 
-  mediaId = +this.router.getCurrentNavigation()?.extras.state?.mediaId;
+  mediaId = +this.router.currentNavigation()?.extras.state?.mediaId;
 
   backUrl = this.historyService.getBackUrl(this.url) ?? '/admin';
 

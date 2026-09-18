@@ -40,7 +40,7 @@ export class AudioFileDeleteComponent implements OnInit {
   fileDeletionService = inject(FileDeletionService);
   transformedMediaService = inject(TransformedMediaService);
 
-  audioFileState = this.router.getCurrentNavigation()?.extras?.state?.file;
+  audioFileState = this.router.currentNavigation()?.extras?.state?.file;
   audioFile: AudioFileMarkedDeletion | null = null;
   medias: Media[] = [];
 
