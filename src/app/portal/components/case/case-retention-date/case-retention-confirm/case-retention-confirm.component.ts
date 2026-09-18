@@ -1,4 +1,4 @@
-import { CommonModule, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -10,7 +10,7 @@ import { CaseService } from 'src/app/portal/services/case/case.service';
 @Component({
   selector: 'app-case-retention-confirm',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, DetailsTableComponent],
+  imports: [ReactiveFormsModule, DetailsTableComponent],
   templateUrl: './case-retention-confirm.component.html',
   styleUrls: ['./case-retention-confirm.component.scss'],
 })

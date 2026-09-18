@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -14,13 +13,7 @@ import { CaseRetentionPageState } from 'src/app/portal/models/case/case-retentio
 @Component({
   selector: 'app-case-retention-change',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    ValidationErrorSummaryComponent,
-    GovukTextareaComponent,
-    DatepickerComponent,
-  ],
+  imports: [ReactiveFormsModule, ValidationErrorSummaryComponent, GovukTextareaComponent, DatepickerComponent],
   templateUrl: './case-retention-change.component.html',
   styleUrls: ['./case-retention-change.component.scss'],
 })

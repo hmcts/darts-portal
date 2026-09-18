@@ -18,8 +18,8 @@ export class RemoveGroupUsersComponent implements OnInit {
 
   groupId = +this.route.snapshot.params.id;
 
-  groupUsers: User[] = this.router.getCurrentNavigation()?.extras?.state?.groupUsers;
-  userIdsToRemove: number[] = this.router.getCurrentNavigation()?.extras?.state?.userIdsToRemove;
+  groupUsers: User[] = this.router.currentNavigation()?.extras?.state?.groupUsers;
+  userIdsToRemove: number[] = this.router.currentNavigation()?.extras?.state?.userIdsToRemove;
 
   ngOnInit(): void {
     if (!this.groupUsers || !this.userIdsToRemove) {

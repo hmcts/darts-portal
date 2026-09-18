@@ -1,5 +1,5 @@
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
-import { NgFor, NgIf } from '@angular/common';
+
 import {
   AfterViewInit,
   Component,
@@ -17,7 +17,7 @@ import accessibleAutocomplete, { AccessibleAutocompleteProps } from 'accessible-
 @Component({
   selector: 'app-courthouse-field',
   standalone: true,
-  imports: [NgIf, NgFor],
+  imports: [],
   templateUrl: './courthouse.component.html',
   styleUrls: ['./courthouse.component.scss'],
 })

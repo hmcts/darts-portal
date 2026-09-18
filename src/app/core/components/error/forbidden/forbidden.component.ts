@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { HeaderService } from '@services/header/header.service';
@@ -6,7 +5,7 @@ import { HeaderService } from '@services/header/header.service';
 @Component({
   selector: 'app-forbidden',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './forbidden.component.html',
   styleUrls: ['./forbidden.component.scss'],
 })

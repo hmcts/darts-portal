@@ -17,8 +17,8 @@ export class RemoveGroupsComponent {
   userAdminService = inject(UserAdminService);
   HeaderService = inject(HeaderService);
 
-  user = this.router.getCurrentNavigation()?.extras?.state?.user as User;
-  selectedGroups = this.router.getCurrentNavigation()?.extras?.state?.selectedGroups as SecurityGroup[];
+  user = this.router.currentNavigation()?.extras?.state?.user as User;
+  selectedGroups = this.router.currentNavigation()?.extras?.state?.selectedGroups as SecurityGroup[];
 
   constructor() {
     if (!this.user?.securityGroups || !this.selectedGroups) {

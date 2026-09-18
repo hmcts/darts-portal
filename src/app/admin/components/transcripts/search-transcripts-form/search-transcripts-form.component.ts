@@ -1,6 +1,6 @@
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { TranscriptionSearchFormValues } from '@admin-types/index';
-import { CommonModule } from '@angular/common';
+
 import { Component, DestroyRef, inject, input, model, OnInit, output, signal, ViewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CourthouseComponent } from '@common/courthouse/courthouse.component';
@@ -26,13 +26,7 @@ export const transcriptSearchDateValidators = [
   standalone: true,
   templateUrl: './search-transcripts-form.component.html',
   styleUrl: './search-transcripts-form.component.scss',
-  imports: [
-    ReactiveFormsModule,
-    DatepickerComponent,
-    SpecificOrRangeDatePickerComponent,
-    CourthouseComponent,
-    CommonModule,
-  ],
+  imports: [ReactiveFormsModule, DatepickerComponent, SpecificOrRangeDatePickerComponent, CourthouseComponent],
 })
 export class SearchTranscriptsFormComponent implements OnInit {
   @ViewChild(CourthouseComponent) courthouseComponent!: CourthouseComponent;

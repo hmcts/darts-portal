@@ -21,7 +21,7 @@ export class FileUnhideOrUndeleteComponent implements OnInit {
   route = inject(ActivatedRoute);
   headerService = inject(HeaderService);
 
-  media = this.router.getCurrentNavigation()?.extras.state?.media as AssociatedMedia[];
+  media = this.router.currentNavigation()?.extras.state?.media as AssociatedMedia[];
   errors = signal<ErrorSummaryEntry[]>([]);
 
   ngOnInit(): void {

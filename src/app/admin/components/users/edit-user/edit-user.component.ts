@@ -26,7 +26,7 @@ export class EditUserComponent implements OnInit {
   router = inject(Router);
   userAdminService = inject(UserAdminService);
 
-  user: User = this.router.getCurrentNavigation()?.extras?.state?.user ?? null;
+  user: User = this.router.currentNavigation()?.extras?.state?.user ?? null;
 
   errors: ErrorSummaryEntry[] = [];
 

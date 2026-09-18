@@ -20,7 +20,7 @@ export class RunAutomatedTaskComponent implements OnInit {
   automatedTasksService = inject(AutomatedTasksService);
   headerService = inject(HeaderService);
 
-  task?: AutomatedTask = this.router.getCurrentNavigation()?.extras?.state?.task;
+  task?: AutomatedTask = this.router.currentNavigation()?.extras?.state?.task;
   backUrl = this.historyService.getBackUrl(this.router.url) ?? '/admin/system-configuration/automated-tasks';
 
   constructor() {

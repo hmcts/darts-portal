@@ -87,7 +87,7 @@ export class EditAutomatedTaskComponent {
   formService = inject(FormService);
 
   task: AutomatedTaskDetails;
-  taskState: AutomatedTaskDetailsState = this.router.getCurrentNavigation()?.extras.state?.automatedTask;
+  taskState: AutomatedTaskDetailsState = this.router.currentNavigation()?.extras.state?.automatedTask;
   edit: EditType;
   dateLabel = '';
   validationErrorSummary: ErrorSummaryEntry[] = [];
@@ -97,7 +97,7 @@ export class EditAutomatedTaskComponent {
 
   constructor() {
     this.task = this.parseDateValues(this.taskState);
-    this.edit = this.router.getCurrentNavigation()?.extras.state?.edit;
+    this.edit = this.router.currentNavigation()?.extras.state?.edit;
 
     if (!this.taskState || !this.edit) {
       this.router.navigate(['../'], { relativeTo: this.route });

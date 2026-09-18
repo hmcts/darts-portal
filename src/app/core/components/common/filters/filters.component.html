@@ -26,17 +26,16 @@
           </div>
         </div>
 
-        <ng-container *ngFor="let selected of selectedFilters">
+        @for (selected of selectedFilters; track selected) {
           <h3 class="govuk-heading-s govuk-!-margin-bottom-0">{{ selected.displayName }}</h3>
-
           <ul class="moj-filter-tags">
-            <ng-container *ngFor="let value of selected.values">
+            @for (value of selected.values; track value) {
               <li>
                 <a class="moj-filter__tag" (click)="unselectFromTag(selected, value)"> {{ value }}</a>
               </li>
-            </ng-container>
+            }
           </ul>
-        </ng-container>
+        }
       </div>
     }
 

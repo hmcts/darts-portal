@@ -1,5 +1,5 @@
 import { TranscriptionDocumentForDeletion } from '@admin-types/file-deletion';
-import { CommonModule } from '@angular/common';
+
 import { Component, input, OnInit, output, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
@@ -10,7 +10,7 @@ import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 @Component({
   selector: 'app-transcripts-for-deletion',
   standalone: true,
-  imports: [LuxonDatePipe, DataTableComponent, RouterLink, TableRowTemplateDirective, CommonModule],
+  imports: [LuxonDatePipe, DataTableComponent, RouterLink, TableRowTemplateDirective],
   templateUrl: './transcripts-for-deletion.component.html',
   styleUrl: './transcripts-for-deletion.component.scss',
 })

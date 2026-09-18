@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
@@ -6,7 +5,7 @@ type Outcome = 'complete' | 'unfulfilled';
 @Component({
   selector: 'app-completed-transcript',
   standalone: true,
-  imports: [RouterLink, CommonModule],
+  imports: [RouterLink],
   templateUrl: './completed-transcript.component.html',
   styleUrl: './completed-transcript.component.scss',
 })

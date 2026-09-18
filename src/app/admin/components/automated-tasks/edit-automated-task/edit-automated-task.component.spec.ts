@@ -1,3 +1,4 @@
+import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AutomatedTaskDetails } from '@admin-types/automated-task/automated-task';
@@ -62,9 +63,17 @@ describe('ChangeBatchSizeComponent', () => {
     const taskState = createTaskState(task!);
     router = TestBed.inject(Router);
     routerNavigateSpy = jest.spyOn(router, 'navigate');
-    jest
-      .spyOn(router, 'getCurrentNavigation')
-      .mockReturnValue({ extras: { state: { automatedTask: taskState, edit: edit } } } as unknown as Navigation);
+    Object.defineProperty(router, 'currentNavigation', {
+      value: signal({
+        extras: {
+          state: {
+            automatedTask: taskState,
+            edit: edit,
+          },
+        },
+      } as unknown as Navigation),
+      configurable: true,
+    });
 
     fixture = TestBed.createComponent(EditAutomatedTaskComponent);
     component = fixture.componentInstance;

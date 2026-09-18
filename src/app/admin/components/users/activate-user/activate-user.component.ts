@@ -16,7 +16,7 @@ export class ActivateUserComponent {
   router = inject(Router);
   userAdminService = inject(UserAdminService);
 
-  user = this.router.getCurrentNavigation()?.extras?.state?.user as User;
+  user = this.router.currentNavigation()?.extras?.state?.user as User;
 
   activateUser() {
     this.userAdminService.activateUser(this.user.id).subscribe({

@@ -22,7 +22,7 @@ export class DeactivateUserComponent {
   groupsService = inject(GroupsService);
   headerService = inject(HeaderService);
 
-  user = this.router.getCurrentNavigation()?.extras?.state?.user as User;
+  user = this.router.currentNavigation()?.extras?.state?.user as User;
 
   isSuperAdminError = signal(false);
 

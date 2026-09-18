@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -8,7 +7,7 @@ import { TranscriptionService } from '@services/transcription/transcription.serv
 @Component({
   selector: 'app-approve-transcript-buttons',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, GovukTextareaComponent],
+  imports: [ReactiveFormsModule, RouterLink, GovukTextareaComponent],
   templateUrl: './approve-transcript-buttons.component.html',
   styleUrl: './approve-transcript-buttons.component.scss',
 })

@@ -1,3 +1,4 @@
+import { signal } from '@angular/core';
 import { AudioFile } from '@admin-types/index';
 import { DatePipe } from '@angular/common';
 import { provideHttpClient } from '@angular/common/http';
@@ -110,24 +111,35 @@ describe('SetCurrentVersionComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(SetCurrentVersionComponent);
-    component = fixture.componentInstance;
     router = TestBed.inject(Router);
     routerNavigateSpy = jest.spyOn(router, 'navigate');
   });
 
-  it('should create', () => {
-    jest
-      .spyOn(router, 'getCurrentNavigation')
-      .mockReturnValue({ extras: { state: { selectedAudioId: 1 } } } as unknown as Navigation);
+  const setup = (navigation: Navigation) => {
+    Object.defineProperty(router, 'currentNavigation', {
+      value: signal(navigation),
+      configurable: true,
+    });
+
+    fixture = TestBed.createComponent(SetCurrentVersionComponent);
+    component = fixture.componentInstance;
     fixture.detectChanges();
+  };
+
+  it('should create', () => {
+    setup({
+      extras: {
+        state: {
+          selectedAudioId: 1,
+        },
+      },
+    } as unknown as Navigation);
 
     expect(component).toBeTruthy();
   });
 
   it('should navigate away on ngOnInit if selectedAudioId is missing', () => {
-    jest.spyOn(router, 'getCurrentNavigation').mockReturnValue({} as unknown as Navigation);
-    fixture.detectChanges();
+    setup({} as unknown as Navigation);
 
     component.ngOnInit();
 

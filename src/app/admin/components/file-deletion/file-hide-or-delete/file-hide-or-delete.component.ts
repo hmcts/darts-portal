@@ -48,8 +48,8 @@ export class FileHideOrDeleteComponent implements OnInit {
 
   errors: ErrorSummaryEntry[] = [];
 
-  mediaId = this.router.getCurrentNavigation()?.extras.state?.mediaId ?? null;
-  fileType = this.router.getCurrentNavigation()?.extras?.state?.fileType ?? null;
+  mediaId = this.router.currentNavigation()?.extras.state?.mediaId ?? null;
+  fileType = this.router.currentNavigation()?.extras?.state?.fileType ?? null;
 
   associatedAudioSearch = this.fileType === 'audio_file' && this.getAssociatedAudioSearch();
   media: AssociatedMedia[] = [];
@@ -186,9 +186,9 @@ export class FileHideOrDeleteComponent implements OnInit {
   }
 
   private getAssociatedAudioSearch() {
-    const hearingIds = this.router.getCurrentNavigation()?.extras?.state?.hearings;
-    const startAt = this.router.getCurrentNavigation()?.extras?.state?.dates.startAt;
-    const endAt = this.router.getCurrentNavigation()?.extras?.state?.dates.endAt;
+    const hearingIds = this.router.currentNavigation()?.extras?.state?.hearings;
+    const startAt = this.router.currentNavigation()?.extras?.state?.dates.startAt;
+    const endAt = this.router.currentNavigation()?.extras?.state?.dates.endAt;
 
     return {
       hearingIds: hearingIds,

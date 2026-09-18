@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, computed, effect, inject, input, numberAttribute } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
@@ -15,13 +14,7 @@ import { RejectedTranscriptComponent } from './rejected-transcript/rejected-tran
   standalone: true,
   templateUrl: './view-transcript.component.html',
   styleUrls: ['./view-transcript.component.scss'],
-  imports: [
-    CommonModule,
-    LoadingComponent,
-    ApprovedTranscriptComponent,
-    RejectedTranscriptComponent,
-    CaseHearingTranscriptComponent,
-  ],
+  imports: [LoadingComponent, ApprovedTranscriptComponent, RejectedTranscriptComponent, CaseHearingTranscriptComponent],
 })
 export class ViewTranscriptComponent {
   router = inject(Router);

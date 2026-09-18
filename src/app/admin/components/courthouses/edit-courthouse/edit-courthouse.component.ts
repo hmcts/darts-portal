@@ -32,7 +32,7 @@ export class EditCourthouseComponent implements OnInit {
   headerService = inject(HeaderService);
   courthouseService = inject(CourthouseService);
 
-  courthouse: Courthouse = this.router.getCurrentNavigation()?.extras?.state?.courthouse ?? null;
+  courthouse: Courthouse = this.router.currentNavigation()?.extras?.state?.courthouse ?? null;
 
   errors: ErrorSummaryEntry[] = [];
 

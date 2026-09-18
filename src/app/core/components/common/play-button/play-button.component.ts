@@ -1,10 +1,9 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-play-button',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './play-button.component.html',
   styleUrls: ['./play-button.component.scss'],
 })

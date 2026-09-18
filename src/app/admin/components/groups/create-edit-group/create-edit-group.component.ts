@@ -30,7 +30,7 @@ export class CreateEditGroupComponent implements OnInit {
 
   data$ = combineLatest({ groups: this.groups$, roles: this.transcriberRoles$ });
 
-  group: SecurityGroup = this.router.getCurrentNavigation()?.extras?.state?.group as SecurityGroup;
+  group: SecurityGroup = this.router.currentNavigation()?.extras?.state?.group as SecurityGroup;
 
   isEdit = this.router.url.includes('edit');
 

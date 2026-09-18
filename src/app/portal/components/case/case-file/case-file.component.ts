@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ExpiredBannerComponent } from '@common/expired-banner/expired-banner.component';
@@ -14,7 +13,6 @@ import { UserService } from '@services/user/user.service';
   selector: 'app-case-file',
   standalone: true,
   imports: [
-    CommonModule,
     JoinPipe,
     ReportingRestrictionComponent,
     RouterLink,

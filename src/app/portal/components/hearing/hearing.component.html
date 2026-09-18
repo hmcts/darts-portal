@@ -7,20 +7,21 @@
     <app-data-table id="deletionTable" [rows]="selectedAnnotationsforDeletion"> </app-data-table>
   </app-delete>
 } @else {
-  <ng-container *ngIf="data$ | async as vm; else loading">
-    <app-breadcrumb *ngIf="state === 'Default'">
-      <ng-container *breadcrumb="['/case', vm.case.id.toString()]"
-        ><span class="whitespace-pre">{{ vm.case.number }}</span></ng-container
-      >
-      <ng-container *breadcrumb>{{ vm.hearing?.date | luxonDate: 'dd MMM y' }}</ng-container>
-    </app-breadcrumb>
-
+  @if (data$ | async; as vm) {
+    @if (state === 'Default') {
+      <app-breadcrumb>
+        <ng-container *breadcrumb="['/case', vm.case.id.toString()]"
+          ><span class="whitespace-pre">{{ vm.case.number }}</span></ng-container
+        >
+        <ng-container *breadcrumb>{{ vm.hearing?.date | luxonDate: 'dd MMM y' }}</ng-container>
+      </app-breadcrumb>
+    }
     <!-- Validation Error Summary Component -->
     <app-validation-error-summary [errors]="errorSummary"></app-validation-error-summary>
-
     <!-- Back Button -->
-    <a href="#" *ngIf="state === 'OrderSummary'" (click)="onBack($event)" class="govuk-back-link">Back</a>
-
+    @if (state === 'OrderSummary') {
+      <a href="#" (click)="onBack($event)" class="govuk-back-link">Back</a>
+    }
     @if (state !== 'OrderFailure') {
       <app-reporting-restriction
         [restrictions]="vm.case.reportingRestrictions"
@@ -50,18 +51,15 @@
         <a class="govuk-link" href="javascript:void(0)" (click)="state = 'Default'">Go back</a>
       }
     }
-
     <div [hidden]="state !== 'Default'">
       <app-hearing-file [case]="vm.case" [hearing]="vm.hearing"></app-hearing-file>
       <app-tabs [screenId]="screenId" default="'Events and Audio'">
         <div *tab="'Events and Audio'">
           <!-- Hearing Screen -->
           <h2 id="events-audio-heading" class="govuk-heading-m">Events and audio recordings</h2>
-
           @if (!vm.audios.length) {
             <p id="no-audio-error-message" class="govuk-error-message">There is no audio for this hearing date</p>
           }
-
           <app-request-playback-audio
             [courthouseId]="courthouseId!"
             [hearing]="vm.hearing!"
@@ -72,7 +70,6 @@
             (validationErrorEvent)="onValidationError($event)"
             [clearFormEvent]="clearFormEmitter"
           ></app-request-playback-audio>
-
           <!-- Events & Audio Table-->
           <app-events-and-audio
             [audio]="vm.audios"
@@ -95,7 +92,6 @@
                 </button>
               }
             </div>
-
             <app-data-table
               id="transcriptsTable"
               [rows]="transcripts"
@@ -114,9 +110,9 @@
                   </app-govuk-tag>
                 </td>
                 <td>
-                  <a class="govuk-link" *ngIf="row.status === 'Complete'" [routerLink]="['transcripts', row.id]"
-                    >View</a
-                  >
+                  @if (row.status === 'Complete') {
+                    <a class="govuk-link" [routerLink]="['transcripts', row.id]">View</a>
+                  }
                 </td>
               </ng-template>
             </app-data-table>
@@ -144,7 +140,6 @@
                 Download annotation template
               </button>
             </div>
-
             <app-data-table
               id="annotationsTable"
               [rows]="vm.annotations"
@@ -179,7 +174,6 @@
         </div>
       </app-tabs>
     </div>
-
     <!-- Summary / Confirmation Screen -->
     <div
       [hidden]="state !== 'OrderConfirmation' && state !== 'OrderSummary' && state !== 'OrderFailure'"
@@ -196,9 +190,7 @@
         (orderConfirm)="onOrderConfirm($event)"
       ></app-order-confirmation>
     </div>
-  </ng-container>
-
-  <ng-template #loading>
+  } @else {
     <app-loading text="Loading hearing details..."></app-loading>
-  </ng-template>
+  }
 }
