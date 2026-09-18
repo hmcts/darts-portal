@@ -30,7 +30,7 @@ export class TranscriptFileDeleteComponent implements OnInit {
   fileDeletionService = inject(FileDeletionService);
   transcriptionService = inject(TranscriptionAdminService);
 
-  transcriptFileState = this.router.getCurrentNavigation()?.extras?.state?.file;
+  transcriptFileState = this.router.currentNavigation()?.extras?.state?.file;
   transcriptFile: TranscriptionDocumentForDeletion | null = null;
 
   errorSummary: { fieldId: string; message: string }[] = [];

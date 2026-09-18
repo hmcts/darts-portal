@@ -1,3 +1,4 @@
+import { signal } from '@angular/core';
 import { TranscriptionDocumentForDeletion } from '@admin-types/file-deletion';
 import { DatePipe } from '@angular/common';
 import { provideHttpClient } from '@angular/common/http';
@@ -56,9 +57,12 @@ describe('TranscriptFileDeleteComponent', () => {
 
     router = TestBed.inject(Router);
 
-    jest.spyOn(router, 'getCurrentNavigation').mockReturnValue({
-      extras: { state: { file: noTranscript ? null : mockFileDeletion } },
-    } as unknown as Navigation);
+    Object.defineProperty(router, 'currentNavigation', {
+      value: signal({
+        extras: { state: { file: noTranscript ? null : mockFileDeletion } },
+      } as unknown as Navigation),
+      configurable: true,
+    });
 
     fixture = TestBed.createComponent(TranscriptFileDeleteComponent);
     component = fixture.componentInstance;

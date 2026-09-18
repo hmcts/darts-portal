@@ -16,7 +16,7 @@ export class UnauthorisedDeletionComponent implements OnInit {
   router = inject(Router);
   location = inject(Location);
 
-  type = this.router.getCurrentNavigation()?.extras?.state?.type;
+  type = this.router.currentNavigation()?.extras?.state?.type;
 
   ngOnInit(): void {
     if (this.type === 'transcript') {

@@ -1,6 +1,6 @@
 import { AudioFileMarkedDeletion } from '@admin-types/file-deletion/audio-file-marked-deletion.type';
 import { Media } from '@admin-types/file-deletion/media.type';
-import { CommonModule } from '@angular/common';
+
 import { Component, computed, inject, input, output } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
@@ -13,14 +13,7 @@ import { UserService } from '@services/user/user.service';
 @Component({
   selector: 'app-audio-file-results',
   standalone: true,
-  imports: [
-    DataTableComponent,
-    TableRowTemplateDirective,
-    RouterLink,
-    CommonModule,
-    LuxonDatePipe,
-    GovukSummaryListDirectives,
-  ],
+  imports: [DataTableComponent, TableRowTemplateDirective, RouterLink, LuxonDatePipe, GovukSummaryListDirectives],
   templateUrl: './audio-file-results.component.html',
   styleUrl: './audio-file-results.component.scss',
 })

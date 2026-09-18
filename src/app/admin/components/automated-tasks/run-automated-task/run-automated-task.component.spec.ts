@@ -1,3 +1,4 @@
+import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AutomatedTask } from '@admin-types/automated-task/automated-task';
@@ -41,9 +42,12 @@ describe('RunAutomatedTaskComponent', () => {
 
     routerNavigateSpy = jest.spyOn(router, 'navigate');
     hideNavigationSpy = jest.spyOn(headerService, 'hideNavigation');
-    jest.spyOn(router, 'getCurrentNavigation').mockReturnValue({
-      extras: { state: { task } },
-    } as unknown as Navigation);
+    Object.defineProperty(router, 'currentNavigation', {
+      value: signal({
+        extras: { state: { task } },
+      } as unknown as Navigation),
+      configurable: true,
+    });
 
     fixture = TestBed.createComponent(RunAutomatedTaskComponent);
     component = fixture.componentInstance;

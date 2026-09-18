@@ -1,5 +1,5 @@
 import { CourthouseUser } from '@admin-types/index';
-import { CommonModule } from '@angular/common';
+
 import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { Filter } from '@common/filters/filter.interface';
@@ -10,7 +10,7 @@ import { UserService } from '@services/user/user.service';
 @Component({
   selector: 'app-courthouse-users',
   standalone: true,
-  imports: [CommonModule, DataTableComponent, FiltersComponent],
+  imports: [DataTableComponent, FiltersComponent],
   templateUrl: './courthouse-users.component.html',
   styleUrl: './courthouse-users.component.scss',
 })

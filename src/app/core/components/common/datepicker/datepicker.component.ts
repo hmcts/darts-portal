@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { AfterViewChecked, Component, ElementRef, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DatePicker } from '@ministryofjustice/frontend';
@@ -7,7 +6,7 @@ import { DateTime } from 'luxon';
 @Component({
   selector: 'app-datepicker',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [ReactiveFormsModule, FormsModule],
   templateUrl: './datepicker.component.html',
   styleUrls: ['./datepicker.component.scss'],
 })

@@ -1,11 +1,10 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-request-transcript-exists',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [RouterLink],
   templateUrl: './request-transcript-exists.component.html',
   styleUrls: ['./request-transcript-exists.component.scss'],
 })

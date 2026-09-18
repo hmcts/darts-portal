@@ -23,7 +23,7 @@ export class SetCurrentVersionComponent implements OnInit {
 
   isSubmitted = false;
 
-  selectedEventId = this.router.getCurrentNavigation()?.extras?.state?.selectedEventId;
+  selectedEventId = this.router.currentNavigation()?.extras?.state?.selectedEventId;
 
   newVersion = toSignal(of(+this.selectedEventId).pipe(switchMap((id) => this.eventsFacadeService.getEvent(id))));
 

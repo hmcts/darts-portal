@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { ErrorHandler, inject, LOCALE_ID, provideAppInitializer } from '@angular/core';
+import { ErrorHandler, inject, LOCALE_ID, provideAppInitializer, provideZoneChangeDetection } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
 import { ErrorInterceptor } from '@interceptors/error/error.interceptor';
@@ -15,6 +15,7 @@ import { AppComponent } from './app/core/components/app/app.component';
 
 bootstrapApplication(AppComponent, {
   providers: [
+    provideZoneChangeDetection(),
     AppConfigService,
     provideAppInitializer(() => {
       return inject(AppConfigService).loadAppConfig();
