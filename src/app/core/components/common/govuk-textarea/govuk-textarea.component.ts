@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
@@ -6,6 +6,7 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
   standalone: true,
   imports: [FormsModule, ReactiveFormsModule],
   templateUrl: './govuk-textarea.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './govuk-textarea.component.scss',
 })
 export class GovukTextareaComponent {

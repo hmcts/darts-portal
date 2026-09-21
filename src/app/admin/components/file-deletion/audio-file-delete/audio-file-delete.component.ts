@@ -1,7 +1,7 @@
 import { AudioFileMarkedDeletion } from '@admin-types/file-deletion/audio-file-marked-deletion.type';
 import { Media } from '@admin-types/file-deletion/media.type';
 import { AssociatedMedia } from '@admin-types/transformed-media/associated-media';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
@@ -31,6 +31,7 @@ import { AudioFileResultsComponent } from '../audio-file-results/audio-file-resu
     JoinPipe,
   ],
   templateUrl: './audio-file-delete.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './audio-file-delete.component.scss',
 })
 export class AudioFileDeleteComponent implements OnInit {

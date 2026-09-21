@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ControlContainer, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
@@ -8,6 +8,7 @@ import { ControlContainer, FormGroup, FormsModule, ReactiveFormsModule, Validato
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './time-input.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./time-input.component.scss'],
 })
 export class TimeInputComponent implements OnInit {

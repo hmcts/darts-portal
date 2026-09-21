@@ -5,7 +5,7 @@
   [details]="{
     'Case ID': case.number,
     Courthouse: case.courthouse,
-    'Defendant(s)': case.defendants?.join(', '),
+    'Defendant(s)': $safeNavigationMigration(case.defendants?.join(', ')),
   }"
 />
 

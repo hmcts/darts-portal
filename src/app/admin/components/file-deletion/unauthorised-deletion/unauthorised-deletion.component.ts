@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -9,6 +9,7 @@ import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.compo
   standalone: true,
   imports: [GovukHeadingComponent],
   templateUrl: './unauthorised-deletion.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './unauthorised-deletion.component.scss',
 })
 export class UnauthorisedDeletionComponent implements OnInit {

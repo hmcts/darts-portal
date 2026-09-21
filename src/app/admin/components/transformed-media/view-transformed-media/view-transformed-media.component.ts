@@ -1,6 +1,6 @@
 import { TransformedMediaAdmin } from '@admin-types/transformed-media/transformed-media-admin';
 import { AsyncPipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -20,6 +20,7 @@ import { AssociatedAudioTableComponent } from '../associated-audio-table/associa
   standalone: true,
   templateUrl: './view-transformed-media.component.html',
   styleUrl: './view-transformed-media.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     GovukHeadingComponent,
     LuxonDatePipe,

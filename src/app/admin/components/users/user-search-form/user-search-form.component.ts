@@ -1,5 +1,5 @@
 import { UserSearchFormValues } from '@admin-types/users/user-search-form-values.type';
-import { Component, EventEmitter, inject, input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormErrorMessages } from '@core-types/index';
 import { optionalMaxLengthValidator } from '@validators/optional-maxlength.validator';
@@ -17,6 +17,7 @@ const controlErrors: FormErrorMessages = {
   standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './user-search-form.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './user-search-form.component.scss',
 })
 export class UserSearchFormComponent implements OnInit {

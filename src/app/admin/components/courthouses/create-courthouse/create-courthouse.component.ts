@@ -1,6 +1,6 @@
 import { CreateUpdateCourthouseFormValues } from '@admin-types/index';
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
@@ -24,6 +24,7 @@ import { CreateUpdateCourthouseFormComponent } from './create-update-courthouse-
     LoadingComponent,
   ],
   templateUrl: './create-courthouse.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './create-courthouse.component.scss',
 })
 export class CreateCourthouseComponent {

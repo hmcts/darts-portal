@@ -1,7 +1,18 @@
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { TranscriptionSearchFormValues } from '@admin-types/index';
 
-import { Component, DestroyRef, inject, input, model, OnInit, output, signal, ViewChild } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  inject,
+  input,
+  model,
+  OnInit,
+  output,
+  signal,
+  ViewChild,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CourthouseComponent } from '@common/courthouse/courthouse.component';
 import { DatepickerComponent } from '@common/datepicker/datepicker.component';
@@ -26,6 +37,7 @@ export const transcriptSearchDateValidators = [
   standalone: true,
   templateUrl: './search-transcripts-form.component.html',
   styleUrl: './search-transcripts-form.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ReactiveFormsModule, DatepickerComponent, SpecificOrRangeDatePickerComponent, CourthouseComponent],
 })
 export class SearchTranscriptsFormComponent implements OnInit {

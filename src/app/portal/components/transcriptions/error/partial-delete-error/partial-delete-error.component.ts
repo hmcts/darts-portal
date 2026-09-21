@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { HeaderService } from '@services/header/header.service';
@@ -8,6 +8,7 @@ import { HeaderService } from '@services/header/header.service';
   standalone: true,
   imports: [],
   templateUrl: './partial-delete-error.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './partial-delete-error.component.scss',
 })
 export class PartialDeleteErrorComponent implements OnInit, OnDestroy {

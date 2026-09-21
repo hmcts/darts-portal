@@ -1,4 +1,13 @@
-import { AfterViewInit, booleanAttribute, Component, ElementRef, inject, Input, OnDestroy } from '@angular/core';
+import {
+  AfterViewInit,
+  booleanAttribute,
+  Component,
+  ElementRef,
+  inject,
+  Input,
+  OnDestroy,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { ScrollService } from '@services/scroll/scroll.service';
 
 export type GovukBannerType = 'success' | 'warning' | 'information';
@@ -8,6 +17,7 @@ export type GovukBannerType = 'success' | 'warning' | 'information';
   standalone: true,
   imports: [],
   templateUrl: './govuk-banner.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./govuk-banner.component.scss'],
 })
 export class GovukBannerComponent implements AfterViewInit, OnDestroy {

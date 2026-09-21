@@ -1,5 +1,5 @@
 import { HearingAudio } from '@admin-types/hearing/hearing-audio.type';
-import { Component, input } from '@angular/core';
+import { Component, input, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -11,6 +11,7 @@ import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
   selector: 'app-hearing-audios',
   imports: [GovukHeadingComponent, DataTableComponent, RouterLink, LuxonDatePipe, TableRowTemplateDirective],
   templateUrl: './hearing-audios.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './hearing-audios.component.scss',
 })
 export class HearingAudiosComponent {

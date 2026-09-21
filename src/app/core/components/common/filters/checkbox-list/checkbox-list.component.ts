@@ -1,4 +1,14 @@
-import { Component, DestroyRef, EventEmitter, Input, OnInit, Output, forwardRef, inject } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  forwardRef,
+  inject,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   ControlValueAccessor,
@@ -17,6 +27,7 @@ import { CheckboxListItem } from './checkbox-list-item.type';
   imports: [ReactiveFormsModule],
   templateUrl: './checkbox-list.component.html',
   styleUrl: './checkbox-list.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

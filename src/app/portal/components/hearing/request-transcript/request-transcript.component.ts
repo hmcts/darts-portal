@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, OnDestroy, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -51,6 +51,7 @@ enum TranscriptionType {
     GovukHeadingComponent,
   ],
   templateUrl: './request-transcript.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./request-transcript.component.scss'],
 })
 export class RequestTranscriptComponent implements OnInit, OnDestroy {

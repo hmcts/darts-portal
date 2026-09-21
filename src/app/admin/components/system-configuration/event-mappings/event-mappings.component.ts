@@ -1,6 +1,6 @@
 import { EventMapping } from '@admin-types/event-mappings/event-mapping.type';
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -18,6 +18,7 @@ import { EventMappingForm, EventMappingFormComponent } from './event-mapping-for
   standalone: true,
   templateUrl: './event-mappings.component.html',
   styleUrl: './event-mappings.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     GovukHeadingComponent,
     EventMappingFormComponent,

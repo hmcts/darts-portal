@@ -1,5 +1,5 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, ContentChildren, QueryList } from '@angular/core';
+import { Component, ContentChildren, QueryList, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 
@@ -8,6 +8,7 @@ import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
   standalone: true,
   imports: [RouterLink, NgTemplateOutlet],
   templateUrl: './breadcrumb.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./breadcrumb.component.scss'],
 })
 export class BreadcrumbComponent {

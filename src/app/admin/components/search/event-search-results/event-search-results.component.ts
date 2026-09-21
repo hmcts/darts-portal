@@ -1,5 +1,5 @@
 import { AdminEventSearchResult } from '@admin-types/search/admin-event-search-result';
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, input, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DatatableColumn } from '@core-types/index';
@@ -11,6 +11,7 @@ import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
   standalone: true,
   imports: [DataTableComponent, TableBodyTemplateDirective, LuxonDatePipe, RouterLink],
   templateUrl: './event-search-results.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './event-search-results.component.scss',
 })
 export class EventSearchResultsComponent {

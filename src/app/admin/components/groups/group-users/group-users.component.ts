@@ -1,5 +1,5 @@
 import { User } from '@admin-types/index';
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import { AutoCompleteComponent, AutoCompleteItem } from '@common/auto-complete/auto-complete.component';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -14,6 +14,7 @@ type UserWithCheckboxLabel = User & { checkboxLabel?: string };
   standalone: true,
   imports: [GovukHeadingComponent, AutoCompleteComponent, DataTableComponent, TableRowTemplateDirective, LuxonDatePipe],
   templateUrl: './group-users.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './group-users.component.scss',
 })
 export class GroupUsersComponent implements OnInit {

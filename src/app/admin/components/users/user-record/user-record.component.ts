@@ -1,6 +1,6 @@
 import { User } from '@admin-types/index';
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
 import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
@@ -24,6 +24,7 @@ import { UserTranscriptsComponent } from '../user-transcripts/user-transcripts.c
   standalone: true,
   templateUrl: './user-record.component.html',
   styleUrl: './user-record.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     CommonModule,
     LuxonDatePipe,

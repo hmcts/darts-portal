@@ -1,5 +1,5 @@
 import { AutomatedTask } from '@admin-types/automated-task/automated-task';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { AutomatedTasksService } from '@services/automated-tasks/automated-tasks.service';
@@ -12,6 +12,7 @@ import { finalize } from 'rxjs';
   standalone: true,
   imports: [GovukHeadingComponent, RouterLink],
   templateUrl: './run-automated-task.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './run-automated-task.component.scss',
 })
 export class RunAutomatedTaskComponent implements OnInit {

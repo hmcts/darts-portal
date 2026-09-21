@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -20,6 +20,7 @@ import { Transcript, TranscriptStatus } from '@portal-types/transcriptions';
     TableRowTemplateDirective,
   ],
   templateUrl: './hearing-transcripts.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './hearing-transcripts.component.scss',
 })
 export class HearingTranscriptsComponent {
