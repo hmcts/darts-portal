@@ -72,7 +72,7 @@
     "js-yaml": "^5.2.2",
     "luxon": "^3.4.4",
     "moment": "2.31.0",
-    "ngx-cookie-service": "^20.0.0",
+    "ngx-cookie-service": "^21.3.1",
     "nunjucks": "^3.2.4",
     "redis": "^6.0.0",
     "rxjs": "~7.8.1",
@@ -97,7 +97,7 @@
     "uuid": "14.0.2"
   },
   "devDependencies": {
-    "@angular-builders/custom-webpack": "^20.0.0",
+    "@angular-builders/custom-webpack": "^21.1.0",
     "@angular-eslint/builder": "^20.0.0",
     "@angular-eslint/eslint-plugin": "^20.0.0",
     "@angular-eslint/eslint-plugin-template": "^20.0.0",
