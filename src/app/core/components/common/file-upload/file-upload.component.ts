@@ -1,4 +1,4 @@
-import { Component, Input, computed, forwardRef, input } from '@angular/core';
+import { Component, Input, computed, forwardRef, input, ChangeDetectionStrategy } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
@@ -7,6 +7,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@a
   imports: [ReactiveFormsModule],
   templateUrl: './file-upload.component.html',
   styleUrl: './file-upload.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

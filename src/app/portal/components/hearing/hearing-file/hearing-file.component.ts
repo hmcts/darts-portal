@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { JoinPipe } from '@pipes/join';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
@@ -9,6 +9,7 @@ import { Case, Hearing } from '@portal-types/index';
   standalone: true,
   imports: [JoinPipe, LuxonDatePipe, GovukHeadingComponent],
   templateUrl: './hearing-file.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./hearing-file.component.scss'],
 })
 export class HearingFileComponent {

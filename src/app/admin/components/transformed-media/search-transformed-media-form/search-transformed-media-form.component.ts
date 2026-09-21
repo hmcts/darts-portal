@@ -13,6 +13,7 @@ import {
   model,
   output,
   signal,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CourthouseComponent } from '@common/courthouse/courthouse.component';
@@ -38,6 +39,7 @@ export const transformedMediaSearchDateValidators = [
   standalone: true,
   templateUrl: './search-transformed-media-form.component.html',
   styleUrl: './search-transformed-media-form.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ReactiveFormsModule, SpecificOrRangeDatePickerComponent, DatepickerComponent, CourthouseComponent],
 })
 export class SearchTransformedMediaFormComponent implements OnInit {

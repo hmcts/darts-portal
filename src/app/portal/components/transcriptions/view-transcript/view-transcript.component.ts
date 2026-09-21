@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, input, numberAttribute } from '@angular/core';
+import { Component, computed, effect, inject, input, numberAttribute, ChangeDetectionStrategy } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { LoadingComponent } from '@components/common/loading/loading.component';
@@ -14,6 +14,7 @@ import { RejectedTranscriptComponent } from './rejected-transcript/rejected-tran
   standalone: true,
   templateUrl: './view-transcript.component.html',
   styleUrls: ['./view-transcript.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [LoadingComponent, ApprovedTranscriptComponent, RejectedTranscriptComponent, CaseHearingTranscriptComponent],
 })
 export class ViewTranscriptComponent {

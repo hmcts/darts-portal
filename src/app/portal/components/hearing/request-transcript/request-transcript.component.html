@@ -3,7 +3,7 @@
   <app-reporting-restriction
     class="margin-bottom"
     [restrictions]="vm.case.reportingRestrictions"
-    [hearingId]="vm.hearing?.id"
+    [hearingId]="$safeNavigationMigration(vm.hearing?.id)"
   ></app-reporting-restriction>
   @if (step() === 1) {
     @if (!vm.audioRows.length) {

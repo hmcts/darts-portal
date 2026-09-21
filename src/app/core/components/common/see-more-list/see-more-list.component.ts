@@ -1,9 +1,10 @@
-import { Component, computed, input, signal } from '@angular/core';
+import { Component, computed, input, signal, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-see-more-list',
   imports: [],
   templateUrl: './see-more-list.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './see-more-list.component.scss',
 })
 export class SeeMoreListComponent {

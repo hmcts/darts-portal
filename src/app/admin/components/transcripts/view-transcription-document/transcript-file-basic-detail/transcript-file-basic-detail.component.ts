@@ -1,5 +1,5 @@
 import { TranscriptionDocument } from '@admin-types/transcription/transcription-document';
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { GovukSummaryListDirectives } from '@directives/govuk-summary-list';
@@ -12,6 +12,7 @@ import { JoinPipe } from '@pipes/join';
   standalone: true,
   templateUrl: './transcript-file-basic-detail.component.html',
   styleUrl: './transcript-file-basic-detail.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [GovukHeadingComponent, GovukSummaryListDirectives, RouterLink, LuxonDatePipe, JoinPipe],
 })
 export class TranscriptFileBasicDetailComponent {

@@ -1,5 +1,5 @@
 import { AutomatedTaskStatus } from '@admin-types/automated-task/automated-task-status';
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, input, ChangeDetectionStrategy } from '@angular/core';
 import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
 
 @Component({
@@ -7,6 +7,7 @@ import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.componen
   standalone: true,
   imports: [GovukBannerComponent],
   templateUrl: './automated-task-status.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './automated-task-status.component.scss',
 })
 export class AutomatedTaskStatusComponent {

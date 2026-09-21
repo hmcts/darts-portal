@@ -3,7 +3,7 @@ import { AudioFile } from '@admin-types/index';
 import { AssociatedCase } from '@admin-types/transformed-media/associated-case';
 import { AssociatedHearing } from '@admin-types/transformed-media/associated-hearing';
 import { AsyncPipe } from '@angular/common';
-import { Component, inject, input } from '@angular/core';
+import { Component, inject, input, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ExpiredBannerComponent } from '@common/expired-banner/expired-banner.component';
 import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
@@ -29,6 +29,7 @@ import { BasicAudioFileDetailsComponent } from './basic-audio-file-details/basic
   standalone: true,
   templateUrl: './audio-file.component.html',
   styleUrl: './audio-file.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     GovukHeadingComponent,
     TabsComponent,

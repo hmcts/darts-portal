@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, NgZone, inject } from '@angular/core';
+import { AfterViewInit, Component, Input, NgZone, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { InternalErrorComponent } from '@components/error/internal-server/internal-error.component';
 import { ErrorMessage } from '@core-types/error/error-message.interface';
@@ -10,6 +10,7 @@ import { HeaderService } from '@services/header/header.service';
   standalone: true,
   imports: [InternalErrorComponent],
   templateUrl: './search-error.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./search-error.component.scss'],
 })
 export class SearchErrorComponent implements AfterViewInit {

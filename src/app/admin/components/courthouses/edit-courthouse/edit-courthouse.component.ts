@@ -1,7 +1,7 @@
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { CreateUpdateCourthouseFormValues, SecurityGroup } from '@admin-types/index';
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
@@ -25,6 +25,7 @@ import { CreateUpdateCourthouseFormComponent } from '../create-courthouse/create
     LoadingComponent,
   ],
   templateUrl: './edit-courthouse.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './edit-courthouse.component.scss',
 })
 export class EditCourthouseComponent implements OnInit {

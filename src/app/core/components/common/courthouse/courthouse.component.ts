@@ -11,6 +11,7 @@ import {
   Output,
   SimpleChanges,
   ViewChild,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import accessibleAutocomplete, { AccessibleAutocompleteProps } from 'accessible-autocomplete';
 
@@ -19,6 +20,7 @@ import accessibleAutocomplete, { AccessibleAutocompleteProps } from 'accessible-
   standalone: true,
   imports: [],
   templateUrl: './courthouse.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./courthouse.component.scss'],
 })
 export class CourthouseComponent implements AfterViewInit, OnChanges, OnInit {

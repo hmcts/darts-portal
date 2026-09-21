@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, inject, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ExpiredBannerComponent } from '@common/expired-banner/expired-banner.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -22,6 +22,7 @@ import { UserService } from '@services/user/user.service';
     SeeMoreListComponent,
   ],
   templateUrl: './case-file.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./case-file.component.scss'],
 })
 export class CaseFileComponent {

@@ -7,7 +7,7 @@
     [updateCourthouse]="{
       courthouseName: courthouse.courthouseName,
       displayName: courthouse.displayName,
-      regionId: courthouse.region?.id,
+      regionId: $safeNavigationMigration(courthouse.region?.id),
       securityGroupIds: getSecurityGroupIds(courthouse.securityGroups),
     }"
     [hasData]="courthouse.hasData || false"

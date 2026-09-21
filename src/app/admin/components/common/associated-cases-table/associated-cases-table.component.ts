@@ -1,5 +1,5 @@
 import { AssociatedCase } from '@admin-types/transformed-media/associated-case';
-import { Component, input } from '@angular/core';
+import { Component, input, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DatatableColumn } from '@core-types/index';
@@ -10,6 +10,7 @@ import { TableRowTemplateDirective } from '@directives/table-row-template.direct
   standalone: true,
   imports: [DataTableComponent, TableRowTemplateDirective, RouterLink],
   templateUrl: './associated-cases-table.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './associated-cases-table.component.scss',
 })
 export class AssociatedCasesTableComponent {

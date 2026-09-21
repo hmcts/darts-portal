@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -21,6 +21,7 @@ import { of, switchMap } from 'rxjs';
     FileSizePipe,
   ],
   templateUrl: './set-current-version.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './set-current-version.component.scss',
 })
 export class SetCurrentVersionComponent implements OnInit {

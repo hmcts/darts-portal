@@ -1,5 +1,5 @@
 import { AssociatedMedia } from '@admin-types/transformed-media/associated-media';
-import { Component, Input, inject, input, model } from '@angular/core';
+import { Component, Input, inject, input, model, ChangeDetectionStrategy } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DatatableColumn } from '@core-types/index';
@@ -11,6 +11,7 @@ import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
   standalone: true,
   imports: [DataTableComponent, TableRowTemplateDirective, LuxonDatePipe, RouterLink],
   templateUrl: './associated-audio-table.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './associated-audio-table.component.scss',
 })
 export class AssociatedAudioTableComponent {

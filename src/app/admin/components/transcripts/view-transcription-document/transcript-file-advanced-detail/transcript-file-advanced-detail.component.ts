@@ -1,5 +1,5 @@
 import { TranscriptionDocument } from '@admin-types/transcription';
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
 import { BytesPipe } from '@pipes/bytes.pipe';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
@@ -11,6 +11,7 @@ import { TranscriptionDetails } from '@portal-types/index';
   templateUrl: './transcript-file-advanced-detail.component.html',
   styleUrl: './transcript-file-advanced-detail.component.scss',
   imports: [DetailsTableComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [BytesPipe],
 })
 export class TranscriptFileAdvancedDetailComponent implements OnInit {

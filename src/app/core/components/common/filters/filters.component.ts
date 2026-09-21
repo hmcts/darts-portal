@@ -1,4 +1,13 @@
-import { Component, ElementRef, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  QueryList,
+  ViewChildren,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Filter } from '@components/common/filters/filter.interface';
 
@@ -7,6 +16,7 @@ import { Filter } from '@components/common/filters/filter.interface';
   standalone: true,
   imports: [FormsModule],
   templateUrl: './filters.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './filters.component.scss',
 })
 export class FiltersComponent {

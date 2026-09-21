@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Filter } from '@common/filters/filter.interface';
@@ -22,6 +22,7 @@ import { CheckboxListComponent } from './../core/components/common/filters/check
   standalone: true,
   templateUrl: './dev.component.html',
   styleUrl: './dev.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     FiltersComponent,
     TabsComponent,

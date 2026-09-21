@@ -1,6 +1,6 @@
 import { TranscriptionDocumentForDeletion } from '@admin-types/file-deletion';
 
-import { Component, input, OnInit, output, signal } from '@angular/core';
+import { Component, input, OnInit, output, signal, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DatatableColumn } from '@core-types/index';
@@ -12,6 +12,7 @@ import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
   standalone: true,
   imports: [LuxonDatePipe, DataTableComponent, RouterLink, TableRowTemplateDirective],
   templateUrl: './transcripts-for-deletion.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './transcripts-for-deletion.component.scss',
 })
 export class TranscriptsForDeletionComponent implements OnInit {

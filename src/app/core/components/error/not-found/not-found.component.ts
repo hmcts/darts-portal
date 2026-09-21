@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { HeaderService } from '@services/header/header.service';
 
@@ -7,6 +7,7 @@ import { HeaderService } from '@services/header/header.service';
   standalone: true,
   imports: [RouterModule],
   templateUrl: './not-found.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./not-found.component.scss'],
 })
 export class NotFoundComponent implements OnInit, OnDestroy {

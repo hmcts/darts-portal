@@ -1,6 +1,6 @@
 import { AudioFileMarkedDeletion, TranscriptionDocumentForDeletion } from '@admin-types/file-deletion';
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, ChangeDetectionStrategy } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
@@ -28,6 +28,7 @@ import { TranscriptsForDeletionComponent } from './transcripts-for-deletion/tran
     TranscriptsForDeletionComponent,
   ],
   templateUrl: './file-deletion.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './file-deletion.component.scss',
 })
 export class FileDeletionComponent {

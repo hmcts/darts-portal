@@ -1,6 +1,6 @@
 import { TransformedMediaAdmin } from '@admin-types/transformed-media/transformed-media-admin';
 import { DecimalPipe } from '@angular/common';
-import { Component, input, OnChanges, output } from '@angular/core';
+import { Component, input, OnChanges, output, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DatatableColumn } from '@core-types/index';
@@ -30,6 +30,7 @@ export type TransformedMediaRow = {
   standalone: true,
   imports: [DataTableComponent, RouterLink, LuxonDatePipe, TableRowTemplateDirective, BytesPipe, DecimalPipe],
   templateUrl: './transformed-media-search-results.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './transformed-media-search-results.component.scss',
 })
 export class TransformedMediaSearchResultsComponent implements OnChanges {

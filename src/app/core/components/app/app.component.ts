@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { NavigationEnd, NavigationStart, Router, RouterLink } from '@angular/router';
 import { AppInsightsService } from '@services/app-insights/app-insights.service';
 import { CookiesService } from '@services/cookies/cookies.service';
@@ -18,6 +18,7 @@ import { HeaderComponent } from '../layout/header/header.component';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [HeaderComponent, ContentComponent, FooterComponent, RouterLink, CookieBannerComponent],
 })
 export class AppComponent implements OnInit {

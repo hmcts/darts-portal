@@ -15,7 +15,7 @@
     class="govuk-file-upload"
     [id]="controlId()"
     type="file"
-    [attr.aria-describedby]="isInvalid ? controlErrorId : null"
+    [attr.aria-describedby]="isInvalid ? controlErrorId() : null"
     (change)="onFileChange($any($event.target).files, fileInput)"
     [accept]="allowedFileTypes"
   />

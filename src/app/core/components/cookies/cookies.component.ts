@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CookiesService } from '@services/cookies/cookies.service';
 
@@ -8,6 +8,7 @@ import { CookiesService } from '@services/cookies/cookies.service';
   standalone: true,
   templateUrl: './cookies.component.html',
   styleUrl: './cookies.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ReactiveFormsModule],
 })
 export class CookiesComponent implements OnInit {

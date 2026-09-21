@@ -1,6 +1,6 @@
 import { GroupFormValue, SecurityGroup } from '@admin-types/index';
 import { AsyncPipe } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
@@ -16,6 +16,7 @@ import { GroupFormComponent } from '../group-form/group-form.component';
   standalone: true,
   imports: [GroupFormComponent, GovukHeadingComponent, LoadingComponent, AsyncPipe, ValidationErrorSummaryComponent],
   templateUrl: './create-edit-group.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './create-edit-group.component.scss',
 })
 export class CreateEditGroupComponent implements OnInit {

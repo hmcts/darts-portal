@@ -13,6 +13,7 @@ import {
   model,
   output,
   signal,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -32,6 +33,7 @@ const controlError = [
   standalone: true,
   templateUrl: './associated-audio-hide-delete.component.html',
   styleUrl: './associated-audio-hide-delete.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [GovukHeadingComponent, AssociatedAudioTableComponent],
 })
 export class AssociatedAudioHideDeleteComponent implements OnInit {

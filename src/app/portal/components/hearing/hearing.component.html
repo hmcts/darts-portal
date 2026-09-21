@@ -13,7 +13,9 @@
         <ng-container *breadcrumb="['/case', vm.case.id.toString()]"
           ><span class="whitespace-pre">{{ vm.case.number }}</span></ng-container
         >
-        <ng-container *breadcrumb>{{ vm.hearing?.date | luxonDate: 'dd MMM y' }}</ng-container>
+        <ng-container *breadcrumb>{{
+          $safeNavigationMigration(vm.hearing?.date) | luxonDate: 'dd MMM y'
+        }}</ng-container>
       </app-breadcrumb>
     }
     <!-- Validation Error Summary Component -->
@@ -25,7 +27,7 @@
     @if (state !== 'OrderFailure') {
       <app-reporting-restriction
         [restrictions]="vm.case.reportingRestrictions"
-        [hearingId]="vm.hearing?.id"
+        [hearingId]="$safeNavigationMigration(vm.hearing?.id)"
       ></app-reporting-restriction>
     }
     @if (vm.error) {
@@ -134,7 +136,7 @@
                 Upload annotation
               </button>
               <button
-                (click)="downloadAnnotationTemplate(vm.case.number, vm.hearing?.date)"
+                (click)="downloadAnnotationTemplate(vm.case.number, $safeNavigationMigration(vm.hearing?.date))"
                 class="govuk-button govuk-button--secondary"
               >
                 Download annotation template

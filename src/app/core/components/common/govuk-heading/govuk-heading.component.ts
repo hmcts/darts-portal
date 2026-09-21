@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-govuk-heading',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './govuk-heading.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './govuk-heading.component.scss',
 })
 export class GovukHeadingComponent implements OnInit {

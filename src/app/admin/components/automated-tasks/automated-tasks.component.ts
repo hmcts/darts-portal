@@ -1,5 +1,5 @@
 import { AutomatedTask } from '@admin-types/automated-task/automated-task';
-import { Component, inject, OnDestroy, signal } from '@angular/core';
+import { Component, inject, OnDestroy, signal, ChangeDetectionStrategy } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
@@ -15,6 +15,7 @@ import { tap } from 'rxjs';
   standalone: true,
   imports: [GovukHeadingComponent, DataTableComponent, TableRowTemplateDirective, RouterLink, LoadingComponent],
   templateUrl: './automated-tasks.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './automated-tasks.component.scss',
 })
 export class AutomatedTasksComponent implements OnDestroy {

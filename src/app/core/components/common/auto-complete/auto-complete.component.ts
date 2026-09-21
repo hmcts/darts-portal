@@ -10,6 +10,7 @@ import {
   Output,
   SimpleChanges,
   ViewChild,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import accessibleAutocomplete, { AccessibleAutocompleteProps } from 'accessible-autocomplete';
 
@@ -23,6 +24,7 @@ export type AutoCompleteItem = {
   standalone: true,
   imports: [TitleCasePipe],
   templateUrl: './auto-complete.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './auto-complete.component.scss',
 })
 export class AutoCompleteComponent implements OnInit, AfterViewInit, OnChanges {

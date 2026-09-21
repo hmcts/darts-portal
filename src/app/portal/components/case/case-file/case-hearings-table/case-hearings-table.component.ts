@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DatatableColumn } from '@core-types/index';
@@ -11,6 +11,7 @@ import { Hearing } from '@portal-types/index';
   standalone: true,
   imports: [DataTableComponent, TableRowTemplateDirective, LuxonDatePipe, RouterLink],
   templateUrl: './case-hearings-table.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './case-hearings-table.component.scss',
 })
 export class CaseHearingsTableComponent {

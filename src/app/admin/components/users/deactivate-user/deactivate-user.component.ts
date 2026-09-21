@@ -1,6 +1,6 @@
 import { SecurityGroup, User } from '@admin-types/index';
 import { AsyncPipe } from '@angular/common';
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, effect, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
@@ -14,6 +14,7 @@ import { tap } from 'rxjs';
   standalone: true,
   imports: [GovukHeadingComponent, AsyncPipe, LoadingComponent],
   templateUrl: './deactivate-user.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './deactivate-user.component.scss',
 })
 export class DeactivateUserComponent {

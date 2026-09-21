@@ -1,6 +1,6 @@
 import { User } from '@admin-types/index';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { UserAdminService } from '@services/user-admin/user-admin.service';
@@ -10,6 +10,7 @@ import { UserAdminService } from '@services/user-admin/user-admin.service';
   standalone: true,
   imports: [GovukHeadingComponent],
   templateUrl: './activate-user.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './activate-user.component.scss',
 })
 export class ActivateUserComponent {

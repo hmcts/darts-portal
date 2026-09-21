@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
 @Component({
@@ -6,6 +6,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
   standalone: true,
   imports: [RouterLink],
   templateUrl: './request-transcript-exists.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./request-transcript-exists.component.scss'],
 })
 export class RequestTranscriptExistsComponent {
