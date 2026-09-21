@@ -1,4 +1,4 @@
-import { Component, inject, input, numberAttribute, OnInit } from '@angular/core';
+import { Component, inject, input, numberAttribute, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -13,6 +13,7 @@ import { switchMap } from 'rxjs';
   standalone: true,
   imports: [GovukHeadingComponent, RouterLink, LoadingComponent],
   templateUrl: './obfuscate-event-text.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './obfuscate-event-text.component.scss',
 })
 export class ObfuscateEventTextComponent implements OnInit {

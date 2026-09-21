@@ -9,6 +9,7 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "lib": ["esnext"],
+    "types": ["node"],
     "noImplicitAny": false
   }
 }

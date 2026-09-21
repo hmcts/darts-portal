@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, inject, input } from '@angular/core';
+import { Component, inject, input, ChangeDetectionStrategy } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
@@ -18,6 +18,7 @@ import { TranscriptDetailsComponent } from './transcript-details/transcript-deta
   standalone: true,
   templateUrl: './view-transcript.component.html',
   styleUrl: './view-transcript.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     TabsComponent,
     TabDirective,

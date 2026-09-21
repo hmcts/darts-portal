@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { HeaderService } from '@services/header/header.service';
 
@@ -7,6 +7,7 @@ import { HeaderService } from '@services/header/header.service';
   standalone: true,
   imports: [],
   templateUrl: './forbidden.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./forbidden.component.scss'],
 })
 export class ForbiddenComponent implements OnInit, OnDestroy {

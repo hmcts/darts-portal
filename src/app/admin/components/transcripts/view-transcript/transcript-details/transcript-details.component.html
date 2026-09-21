@@ -24,7 +24,7 @@
         @if (transcript.assignedTo?.userId) {
           <a
             class="govuk-link"
-            [routerLink]="['/admin/users', transcript.assignedTo?.userId]"
+            [routerLink]="['/admin/users', $safeNavigationMigration(transcript.assignedTo?.userId)]"
             [queryParams]="{ backUrl: '/admin/transcripts/' + transcript.transcriptionId }"
             >{{ transcript.assignedTo?.fullName }}</a
           >
@@ -132,7 +132,7 @@
       <dd govukSummaryValue>
         <a
           class="govuk-link"
-          [routerLink]="['/admin/users', transcript.requestor?.userId]"
+          [routerLink]="['/admin/users', $safeNavigationMigration(transcript.requestor?.userId)]"
           [queryParams]="{ backUrl: '/admin/transcripts/' + transcript.transcriptionId }"
           >{{ transcript.requestor?.fullName }}</a
         >

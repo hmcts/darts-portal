@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
@@ -12,6 +12,7 @@ import { CaseService } from 'src/app/portal/services/case/case.service';
   standalone: true,
   imports: [ReactiveFormsModule, DetailsTableComponent],
   templateUrl: './case-retention-confirm.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./case-retention-confirm.component.scss'],
 })
 export class CaseRententionConfirmComponent {

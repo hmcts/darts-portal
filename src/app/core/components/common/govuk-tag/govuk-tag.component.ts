@@ -1,4 +1,4 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, input, ChangeDetectionStrategy } from '@angular/core';
 import { TagColour } from '@core-types/index';
 
 @Component({
@@ -6,6 +6,7 @@ import { TagColour } from '@core-types/index';
   standalone: true,
   imports: [],
   templateUrl: './govuk-tag.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './govuk-tag.component.scss',
 })
 export class GovukTagComponent {

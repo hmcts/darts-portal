@@ -1,6 +1,6 @@
 import { CreateUpdateUserFormValues, User } from '@admin-types/index';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
@@ -20,6 +20,7 @@ import { EditEmailConfirmationComponent } from './edit-email-confirmation/edit-e
     EditEmailConfirmationComponent,
   ],
   templateUrl: './edit-user.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './edit-user.component.scss',
 })
 export class EditUserComponent implements OnInit {

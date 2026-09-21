@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 
 import { ReactiveFormsModule, FormControl, ValidationErrors } from '@angular/forms';
 import { GovukTextareaComponent } from '@common/govuk-textarea/govuk-textarea.component';
@@ -9,6 +9,7 @@ import { REASON_DISPLAY, UnfulfilledReason } from 'src/app/admin/utils/unfulfill
   standalone: true,
   imports: [ReactiveFormsModule, GovukTextareaComponent],
   templateUrl: './unfulfill-transcript.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./unfulfill-transcript.component.scss'],
 })
 export class UnfullfillTranscriptComponent {

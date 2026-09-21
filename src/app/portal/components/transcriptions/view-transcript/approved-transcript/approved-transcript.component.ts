@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GovukTagComponent } from '@common/govuk-tag/govuk-tag.component';
 import { BreadcrumbComponent } from '@components/common/breadcrumb/breadcrumb.component';
@@ -24,6 +24,7 @@ import { TranscriptionService } from '@services/transcription/transcription.serv
     GovukTagComponent,
   ],
   templateUrl: './approved-transcript.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './approved-transcript.component.scss',
 })
 export class ApprovedTranscriptComponent implements OnInit {

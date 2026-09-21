@@ -1,7 +1,7 @@
 import { TransformedMediaAdmin } from '@admin-types/transformed-media/transformed-media-admin';
 import { TransformedMediaSearchFormValues } from '@admin-types/transformed-media/transformed-media-search-form.values';
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DeleteComponent } from '@common/delete/delete.component';
@@ -41,6 +41,7 @@ import {
     RouterLink,
   ],
   templateUrl: './search-transformed-media.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './search-transformed-media.component.scss',
 })
 export class SearchTransformedMediaComponent implements OnInit {

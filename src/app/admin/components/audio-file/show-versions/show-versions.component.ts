@@ -1,6 +1,6 @@
 import { AudioVersion } from '@admin-types/transformed-media/audio-version';
 import { CommonModule, NgTemplateOutlet } from '@angular/common';
-import { Component, computed, inject, input, numberAttribute, OnInit } from '@angular/core';
+import { Component, computed, inject, input, numberAttribute, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
@@ -29,6 +29,7 @@ import { map, switchMap } from 'rxjs';
     CommonModule,
   ],
   templateUrl: './show-versions.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './show-versions.component.scss',
 })
 export class ShowVersionsComponent implements OnInit {

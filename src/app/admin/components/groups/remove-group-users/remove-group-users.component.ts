@@ -1,5 +1,5 @@
 import { User } from '@admin-types/index';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { GroupsService } from '@services/groups/groups.service';
@@ -9,6 +9,7 @@ import { GroupsService } from '@services/groups/groups.service';
   standalone: true,
   imports: [GovukHeadingComponent],
   templateUrl: './remove-group-users.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './remove-group-users.component.scss',
 })
 export class RemoveGroupUsersComponent implements OnInit {
