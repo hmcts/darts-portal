@@ -244,14 +244,13 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
   //Checks if audio exists within the range of the times
   private outsideAudioTimesValidation(startTime: DateTime, endTime: DateTime): void {
     const errorMessages: ErrorSummaryEntry[] = [];
-    let isAudioWithinRange = false;
 
     //Comparing only times not dates
     const startTimeOnly = startTime.set({ year: 0, month: 1, day: 1, millisecond: 0 });
     const endTimeOnly = endTime.set({ year: 0, month: 1, day: 1, millisecond: 0 });
 
     //Check there is at least one audio within start/end range
-    isAudioWithinRange = this.audios.some((audio) => {
+    const isAudioWithinRange = this.audios.some((audio) => {
       const audioStartTime = DateTime.fromISO(audio.media_start_timestamp).set({
         year: 0,
         month: 1,

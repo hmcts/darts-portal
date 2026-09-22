@@ -1,7 +1,6 @@
 import { Directive, Input, TemplateRef, inject } from '@angular/core';
 
 @Directive({
-  // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[tab]',
   standalone: true,
 })

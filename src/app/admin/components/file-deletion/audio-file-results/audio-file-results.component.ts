@@ -30,27 +30,23 @@ export class AudioFileResultsComponent {
   showDeleteButton = input(true);
 
   columns = computed<DatatableColumn[]>(() => {
-    let columns: DatatableColumn[] = [];
-
-    if (this.approveScreen()) {
-      columns = [
-        { prop: 'id', name: 'Audio ID' },
-        { prop: 'channel', name: 'Channel' },
-        { prop: 'totalChannels', name: 'Max channel' },
-        { prop: 'isCurrent', name: 'Is current?' },
-        { prop: 'versionCount', name: 'No. of versions' },
-      ];
-    } else {
-      columns = [
-        { prop: 'courthouse', name: 'Courthouse' },
-        { prop: 'courtroom', name: 'Courtroom' },
-        { prop: 'startTime', name: 'Start time' },
-        { prop: 'endTime', name: 'End time' },
-        { prop: 'channel', name: 'No. of channels' },
-        { prop: 'markedHiddenBy', name: 'Marked by' },
-        { prop: 'comments', name: 'Comments' },
-      ];
-    }
+    const columns: DatatableColumn[] = this.approveScreen()
+      ? [
+          { prop: 'id', name: 'Audio ID' },
+          { prop: 'channel', name: 'Channel' },
+          { prop: 'totalChannels', name: 'Max channel' },
+          { prop: 'isCurrent', name: 'Is current?' },
+          { prop: 'versionCount', name: 'No. of versions' },
+        ]
+      : [
+          { prop: 'courthouse', name: 'Courthouse' },
+          { prop: 'courtroom', name: 'Courtroom' },
+          { prop: 'startTime', name: 'Start time' },
+          { prop: 'endTime', name: 'End time' },
+          { prop: 'channel', name: 'No. of channels' },
+          { prop: 'markedHiddenBy', name: 'Marked by' },
+          { prop: 'comments', name: 'Comments' },
+        ];
 
     if (this.showDeleteButton()) {
       columns.push({ prop: '', name: 'Delete' });
