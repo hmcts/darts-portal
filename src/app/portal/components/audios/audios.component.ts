@@ -254,14 +254,10 @@ export class AudiosComponent {
   }
 
   onDeleteConfirmed() {
-    let deleteRequests: Observable<unknown>[] = [];
-    if (this.isAudioRequest) {
-      deleteRequests = this.selectedAudioRequests.map((s) => this.audioService.deleteAudioRequests(s.mediaRequestId));
-    } else {
-      deleteRequests = this.selectedAudioRequests.map((s) =>
-        this.audioService.deleteTransformedMedia(s.transformedMediaId)
-      );
-    }
+    const deleteRequests: Observable<unknown>[] = this.isAudioRequest
+      ? this.selectedAudioRequests.map((s) => this.audioService.deleteAudioRequests(s.mediaRequestId))
+      : this.selectedAudioRequests.map((s) => this.audioService.deleteTransformedMedia(s.transformedMediaId));
+
     forkJoin(deleteRequests).subscribe({
       next: () => this.isDeleting.set(false),
       error: () => this.isDeleting.set(false),
