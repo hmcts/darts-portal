@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ControlContainer, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
