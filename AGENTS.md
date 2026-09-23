@@ -140,4 +140,3 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 ### Ignore Unless Requested
 - Ignore typos in comments/docs unless critical.
 - Ignore pure formatting churn without semantic change.
-
