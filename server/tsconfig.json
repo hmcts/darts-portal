@@ -5,6 +5,7 @@
   },
   "compilerOptions": {
     "outDir": "../dist/server",
+    "rootDir": "..",
     "module": "commonjs",
     "moduleResolution": "node",
     "esModuleInterop": true,
