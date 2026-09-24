@@ -5,7 +5,11 @@ import { Observable, catchError, from, map, of } from 'rxjs';
 const PROBLEM_DETAIL_CONTENT_TYPES = ['application/problem+json', 'application/json+problem'];
 
 export function normalizeProblemDetailsError(error: unknown): Observable<unknown> {
-  if (!(error instanceof HttpErrorResponse) || !(error.error instanceof Blob) || !isProblemDetailsBlob(error.error)) {
+  if (
+    !(error instanceof HttpErrorResponse) ||
+    !(error.error instanceof Blob) ||
+    !isProblemDetailsBlobContentType(error.error)
+  ) {
     return of(error);
   }
 
@@ -16,7 +20,7 @@ export function normalizeProblemDetailsError(error: unknown): Observable<unknown
   );
 }
 
-function isProblemDetailsBlob(blob: Blob): boolean {
+function isProblemDetailsBlobContentType(blob: Blob): boolean {
   return PROBLEM_DETAIL_CONTENT_TYPES.some((contentType) => blob.type.includes(contentType));
 }
 

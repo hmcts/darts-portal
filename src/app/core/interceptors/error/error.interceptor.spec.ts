@@ -104,6 +104,7 @@ describe('ErrorInterceptor', () => {
     interceptor.intercept(request, next).subscribe({
       error: (error: HttpErrorResponse) => {
         expect(error.error).toEqual(problemDetails);
+        expect(error.error.max_duration).toBe('100Y0M0D');
         expect(errorMessageService.handleErrorMessage).toHaveBeenCalledWith(error);
         expect(errorHandler.handleError).toHaveBeenCalledWith(error);
         done();
