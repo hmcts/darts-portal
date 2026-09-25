@@ -58,6 +58,12 @@ const RCJ_APPEALS = {
   permissions,
 };
 
+const JUDICIAL_CONDUCT = {
+  roleId: 10,
+  roleName: 'JUDICIAL_CONDUCT',
+  permissions,
+};
+
 module.exports = {
   GLOBAL_JUDGE,
   JUDGE,
@@ -68,4 +74,5 @@ module.exports = {
   TRANSLATION_QA,
   SUPER_USER,
   RCJ_APPEALS,
+  JUDICIAL_CONDUCT,
 };

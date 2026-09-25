@@ -325,13 +325,36 @@ describe('HearingComponent', () => {
         expect(result).toStrictEqual(mockAnnotations);
       });
 
-      it('should not fetch annotations if user has no admin or courthouse judge role', () => {
+      it('should not fetch annotations or display the annotations tab if user has no admin or courthouse judge role', () => {
         jest.spyOn(caseService, 'getCase').mockReturnValue(of(cd1));
         jest.spyOn(fakeUserService, 'isAdmin').mockReturnValue(false);
         jest.spyOn(fakeUserService, 'isCourthouseJudge').mockReturnValue(false);
         fixture.detectChanges();
 
         expect(hearingService.getAnnotations).not.toHaveBeenCalled();
+
+        const annotationsTab = fixture.debugElement.query(By.css('#annotations-tab'));
+        expect(annotationsTab).toBeFalsy();
+      });
+
+      it('should display the annotations tab when the user has access but there are no annotations', () => {
+        jest.spyOn(hearingService, 'getAnnotations').mockReturnValue(of([]));
+        fixture.detectChanges();
+
+        expect(hearingService.getAnnotations).toHaveBeenCalled();
+
+        const annotationsTab = fixture.debugElement.query(By.css('#annotations-tab'));
+        expect(annotationsTab).toBeTruthy();
+      });
+
+      it('should display the annotations tab when the user has access and annotations exist', () => {
+        jest.spyOn(hearingService, 'getAnnotations').mockReturnValue(of(mockAnnotations));
+        fixture.detectChanges();
+
+        expect(hearingService.getAnnotations).toHaveBeenCalled();
+
+        const annotationsTab = fixture.debugElement.query(By.css('#annotations-tab'));
+        expect(annotationsTab).toBeTruthy();
       });
     });
 
