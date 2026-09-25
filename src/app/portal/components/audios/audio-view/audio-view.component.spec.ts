@@ -1,3 +1,4 @@
+import { signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { HttpErrorResponse, HttpResponse, provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
@@ -170,8 +171,10 @@ describe('AudioViewComponent', () => {
       });
 
       router = TestBed.inject(Router);
-      jest.spyOn(router, 'getCurrentNavigation').mockReturnValue(mockNavigationExtras as unknown as Navigation);
-
+      Object.defineProperty(router, 'currentNavigation', {
+        value: signal(mockNavigationExtras as unknown as Navigation),
+        configurable: true,
+      });
       fixture = TestBed.createComponent(AudioViewComponent);
       component = fixture.componentInstance;
       patchAudioRequestLastAccessSpy = jest.spyOn(fakeAudioRequestService, 'patchAudioRequestLastAccess');
@@ -304,7 +307,10 @@ describe('AudioViewComponent', () => {
         ],
       });
       router = TestBed.inject(Router);
-      jest.spyOn(router, 'getCurrentNavigation').mockReturnValue({} as unknown as Navigation);
+      Object.defineProperty(router, 'currentNavigation', {
+        value: signal({} as unknown as Navigation),
+        configurable: true,
+      });
       routerSpy = jest.spyOn(router, 'navigate');
       fixture = TestBed.createComponent(AudioViewComponent);
       component = fixture.componentInstance;
@@ -345,7 +351,10 @@ describe('AudioViewComponent', () => {
         ],
       });
       router = TestBed.inject(Router);
-      jest.spyOn(router, 'getCurrentNavigation').mockReturnValue(mockNavigationExtras as unknown as Navigation);
+      Object.defineProperty(router, 'currentNavigation', {
+        value: signal(mockNavigationExtras as unknown as Navigation),
+        configurable: true,
+      });
       routerSpy = jest.spyOn(router, 'navigate');
       fixture = TestBed.createComponent(AudioViewComponent);
       component = fixture.componentInstance;

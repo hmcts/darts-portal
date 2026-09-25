@@ -1,5 +1,5 @@
 import { AdminCase } from '@admin-types/case/case.type';
-import { Component, input } from '@angular/core';
+import { Component, input, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ExpiredBannerComponent } from '@common/expired-banner/expired-banner.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -20,6 +20,7 @@ import { JoinPipe } from '@pipes/join';
     ExpiredBannerComponent,
   ],
   templateUrl: './case-file.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './case-file.component.scss',
 })
 export class CaseFileComponent {

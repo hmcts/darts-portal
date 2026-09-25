@@ -1,6 +1,15 @@
 import { Region } from '@admin-types/courthouses/region.interface';
 import { CreateUpdateCourthouseFormValues, SecurityGroup } from '@admin-types/index';
-import { Component, DestroyRef, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  inject,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CourthouseData, ErrorSummaryEntry, FormErrorMessages } from '@core-types/index';
@@ -32,6 +41,7 @@ const controlErrors: FormErrorMessages = {
   standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './create-update-courthouse-form.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './create-update-courthouse-form.component.scss',
 })
 export class CreateUpdateCourthouseFormComponent implements OnInit {

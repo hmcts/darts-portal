@@ -1,7 +1,7 @@
 import { RetentionPolicyForm } from '@admin-types/index';
 import { AsyncPipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
@@ -24,6 +24,7 @@ export type RetentionFormContext = 'create' | 'edit' | 'create-revision' | 'edit
     ValidationErrorSummaryComponent,
   ],
   templateUrl: './create-edit-retention-policy.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './create-edit-retention-policy.component.scss',
 })
 export class CreateEditRetentionPolicyComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CookiesService } from '@services/cookies/cookies.service';
 
 @Component({
@@ -6,6 +6,7 @@ import { CookiesService } from '@services/cookies/cookies.service';
   standalone: true,
   imports: [],
   templateUrl: './cookie-banner.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './cookie-banner.component.scss',
 })
 export class CookieBannerComponent {

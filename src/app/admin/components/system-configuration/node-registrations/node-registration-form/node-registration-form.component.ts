@@ -1,10 +1,11 @@
-import { Component, inject, output } from '@angular/core';
+import { Component, inject, output, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-node-registration-form',
   imports: [ReactiveFormsModule],
   templateUrl: './node-registration-form.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './node-registration-form.component.scss',
 })
 export class NodeRegistrationFormComponent {

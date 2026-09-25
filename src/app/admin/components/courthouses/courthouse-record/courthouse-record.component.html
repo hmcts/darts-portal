@@ -92,7 +92,7 @@
               [details]="{
                 'Database ID': courthouse.id,
                 'Courthouse name': courthouse.courthouseName,
-                Region: courthouse.region?.name,
+                Region: $safeNavigationMigration(courthouse.region?.name),
                 Groups: formatSecurityGroupLinks(courthouse.securityGroups),
               }"
             ></app-details-table>

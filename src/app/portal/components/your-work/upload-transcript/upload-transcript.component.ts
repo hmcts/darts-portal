@@ -1,5 +1,5 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
-import { Component, inject, OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
@@ -49,6 +49,7 @@ type Outcome = 'complete' | 'unfulfilled';
     UnfullfillTranscriptComponent,
   ],
   templateUrl: './upload-transcript.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './upload-transcript.component.scss',
 })
 export class UploadTranscriptComponent implements OnDestroy {
@@ -66,7 +67,7 @@ export class UploadTranscriptComponent implements OnDestroy {
   isManualRequest = false;
   isSubmitted = false;
   isUploading = false;
-  requestStatus: 'TO_DO' | 'COMPLETED' = this.router.getCurrentNavigation()?.extras?.state?.requestStatus;
+  requestStatus: 'TO_DO' | 'COMPLETED' = this.router.currentNavigation()?.extras?.state?.requestStatus;
 
   REASON_DISPLAY = REASON_DISPLAY;
 

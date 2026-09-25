@@ -1,4 +1,4 @@
-import { Component, input, OnInit, output } from '@angular/core';
+import { Component, input, OnInit, output, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { FormErrorMessages } from '@core-types/index';
@@ -19,6 +19,7 @@ const controlErrors: FormErrorMessages = {
   standalone: true,
   imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './approve-reject-file-delete.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './approve-reject-file-delete.component.scss',
 })
 export class ApproveRejectFileDeleteComponent implements OnInit {

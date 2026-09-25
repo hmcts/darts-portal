@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { UserState } from '@core-types/user/user-state.interface';
@@ -12,6 +12,7 @@ import { HeaderService } from '@services/header/header.service';
   standalone: true,
   imports: [CommonModule, LuxonDatePipe, GovukHeadingComponent],
   templateUrl: './order-confirmation.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./order-confirmation.component.scss'],
 })
 export class OrderConfirmationComponent {

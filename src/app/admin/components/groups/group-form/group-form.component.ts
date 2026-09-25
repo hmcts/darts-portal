@@ -1,6 +1,6 @@
 import { GroupFormValue } from '@admin-types/groups/security-group-form-values.type';
 import { SecurityGroup, SecurityRole } from '@admin-types/index';
-import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ErrorSummaryEntry, FormErrorMessages } from '@core-types/index';
 import { groupNameExistsValidator } from '@validators/group-name.validator';
@@ -24,6 +24,7 @@ const formControlErrorMessages: FormErrorMessages = {
   standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './group-form.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './group-form.component.scss',
 })
 export class GroupFormComponent implements OnInit {

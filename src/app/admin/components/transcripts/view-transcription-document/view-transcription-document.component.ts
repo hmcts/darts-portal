@@ -1,7 +1,7 @@
 import { HiddenFileBanner } from '@admin-types/common/hidden-file-banner';
 import { TranscriptionDocument } from '@admin-types/transcription';
 import { AsyncPipe, CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ExpiredBannerComponent } from '@common/expired-banner/expired-banner.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -23,6 +23,7 @@ import { TranscriptFileBasicDetailComponent } from './transcript-file-basic-deta
   standalone: true,
   templateUrl: './view-transcription-document.component.html',
   styleUrl: './view-transcription-document.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     GovukHeadingComponent,
     RouterLink,

@@ -1,4 +1,13 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  inject,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ErrorSummaryEntry } from '@core-types/index';
 import { HeaderService } from '@services/header/header.service';
@@ -8,6 +17,7 @@ import { HeaderService } from '@services/header/header.service';
   standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './edit-email-confirmation.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './edit-email-confirmation.component.scss',
 })
 export class EditEmailConfirmationComponent implements OnInit, OnDestroy {

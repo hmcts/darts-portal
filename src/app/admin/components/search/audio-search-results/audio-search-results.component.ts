@@ -1,5 +1,5 @@
 import { AdminMediaSearchResult } from '@admin-types/search/admin-media-search-result';
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, input, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DatatableColumn } from '@core-types/index';
@@ -11,6 +11,7 @@ import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
   standalone: true,
   imports: [DataTableComponent, TableRowTemplateDirective, LuxonDatePipe, RouterLink],
   templateUrl: './audio-search-results.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './audio-search-results.component.scss',
 })
 export class AudioSearchResultsComponent {

@@ -1,4 +1,4 @@
-import { Component, inject, input, output } from '@angular/core';
+import { Component, inject, input, output, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DatatableColumn } from '@core-types/index';
@@ -15,6 +15,7 @@ export type AdminCaseEventSortBy = CaseEventSortBy | 'eventId' | 'courtroom' | '
   standalone: true,
   imports: [DataTableComponent, TableRowTemplateDirective, RouterLink, LuxonDatePipe],
   templateUrl: './case-events-table.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './case-events-table.component.scss',
 })
 export class CaseEventsTableComponent {

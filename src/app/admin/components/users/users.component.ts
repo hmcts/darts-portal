@@ -1,6 +1,6 @@
 import { UserSearchFormValues } from '@admin-types/users/user-search-form-values.type';
 import { AsyncPipe } from '@angular/common';
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
@@ -26,6 +26,7 @@ const defaultFormValues: UserSearchFormValues = {
   standalone: true,
   imports: [GovukHeadingComponent, UserSearchFormComponent, UserSearchResultsComponent, AsyncPipe, LoadingComponent],
   templateUrl: './users.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './users.component.scss',
 })
 export class UsersComponent {

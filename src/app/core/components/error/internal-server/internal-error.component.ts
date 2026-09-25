@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { ErrorMessageService } from '@services/error/error-message.service';
 
@@ -8,6 +8,7 @@ import { ErrorMessageService } from '@services/error/error-message.service';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './internal-error.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./internal-error.component.scss'],
 })
 export class InternalErrorComponent {

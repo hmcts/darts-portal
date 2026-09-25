@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
@@ -11,14 +10,7 @@ import { DateTime } from 'luxon';
 @Component({
   selector: 'app-request-transcript-confirmation',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    GovukTextareaComponent,
-    LuxonDatePipe,
-    DetailsTableComponent,
-    GovukHeadingComponent,
-  ],
+  imports: [ReactiveFormsModule, GovukTextareaComponent, LuxonDatePipe, DetailsTableComponent, GovukHeadingComponent],
   templateUrl: './request-transcript-confirmation.component.html',
   styleUrls: ['./request-transcript-confirmation.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

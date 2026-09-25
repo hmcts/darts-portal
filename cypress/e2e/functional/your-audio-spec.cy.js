@@ -1,8 +1,9 @@
 import 'cypress-axe';
 import './commands';
 
-import { TODAY, TOMORROW, YESTERDAY } from '@utils/index';
+import { DateTime } from 'luxon';
 
+const TODAY = DateTime.now().startOf('day').toFormat('dd/MM/yyyy');
 const path = require('path');
 const downloadsFolder = Cypress.config('downloadsFolder');
 const navigationSelector = '.moj-primary-navigation';

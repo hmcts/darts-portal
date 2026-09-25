@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DeleteComponent } from '@common/delete/delete.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -46,6 +46,7 @@ import { CaseTranscriptsTableComponent } from './case-file/case-transcripts-tabl
     GovukHeadingComponent,
   ],
   templateUrl: './case.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./case.component.scss'],
 })
 export class CaseComponent {

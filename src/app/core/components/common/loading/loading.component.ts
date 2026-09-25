@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { NgClass } from '@angular/common';
 
 @Component({
@@ -6,6 +6,7 @@ import { NgClass } from '@angular/common';
   standalone: true,
   imports: [NgClass],
   templateUrl: './loading.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./loading.component.scss'],
 })
 export class LoadingComponent {

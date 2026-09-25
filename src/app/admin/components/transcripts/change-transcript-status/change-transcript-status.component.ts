@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -35,6 +35,7 @@ import {
     UnfullfillTranscriptComponent,
   ],
   templateUrl: './change-transcript-status.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './change-transcript-status.component.scss',
 })
 export class ChangeTranscriptStatusComponent implements OnInit {

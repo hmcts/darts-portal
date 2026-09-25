@@ -1,5 +1,5 @@
 import { CourthouseSearchFormValues } from '@admin-types/courthouses/courthouse-search-form-values.type';
-import { Component, EventEmitter, OnInit, Output, inject, input } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, inject, input, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormErrorMessages } from '@core-types/index';
 import { optionalMaxLengthValidator } from '@validators/optional-maxlength.validator';
@@ -20,6 +20,7 @@ const controlErrors: FormErrorMessages = {
   standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './courthouse-search-form.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './courthouse-search-form.component.scss',
 })
 export class CourthouseSearchFormComponent implements OnInit {

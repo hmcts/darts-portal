@@ -1,4 +1,4 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, input, ChangeDetectionStrategy } from '@angular/core';
 import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { DateTime } from 'luxon';
@@ -8,6 +8,7 @@ import { DateTime } from 'luxon';
   standalone: true,
   imports: [LuxonDatePipe, GovukBannerComponent],
   templateUrl: './expired-banner.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './expired-banner.component.scss',
 })
 export class ExpiredBannerComponent {

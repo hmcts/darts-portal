@@ -1,5 +1,5 @@
 import { CaseAudio } from '@admin-types/case/case-audio/case-audio.type';
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DatatableColumn } from '@core-types/index';
@@ -12,6 +12,7 @@ export type CaseAudioSortBy = 'audioId' | 'courtroom' | 'startTime' | 'endTime' 
   selector: 'app-case-audio',
   imports: [DataTableComponent, LuxonDatePipe, RouterLink, TableRowTemplateDirective],
   templateUrl: './case-audio.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './case-audio.component.scss',
 })
 export class CaseAudioComponent {

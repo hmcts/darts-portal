@@ -1,13 +1,13 @@
-import { CommonModule } from '@angular/common';
-import { Component, Input, computed, forwardRef, input } from '@angular/core';
+import { Component, Input, computed, forwardRef, input, ChangeDetectionStrategy } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-file-upload',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './file-upload.component.html',
   styleUrl: './file-upload.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

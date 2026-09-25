@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, effect, inject, signal } from '@angular/core';
+import { Component, DestroyRef, effect, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Title } from '@angular/platform-browser';
 import { Router, RouterLink } from '@angular/router';
@@ -38,6 +38,7 @@ const audiosErrorMessages: FormErrorMessages = {
   templateUrl: './audios.component.html',
   styleUrls: ['./audios.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DataTableComponent,
     LoadingComponent,
@@ -253,14 +254,10 @@ export class AudiosComponent {
   }
 
   onDeleteConfirmed() {
-    let deleteRequests: Observable<unknown>[] = [];
-    if (this.isAudioRequest) {
-      deleteRequests = this.selectedAudioRequests.map((s) => this.audioService.deleteAudioRequests(s.mediaRequestId));
-    } else {
-      deleteRequests = this.selectedAudioRequests.map((s) =>
-        this.audioService.deleteTransformedMedia(s.transformedMediaId)
-      );
-    }
+    const deleteRequests: Observable<unknown>[] = this.isAudioRequest
+      ? this.selectedAudioRequests.map((s) => this.audioService.deleteAudioRequests(s.mediaRequestId))
+      : this.selectedAudioRequests.map((s) => this.audioService.deleteTransformedMedia(s.transformedMediaId));
+
     forkJoin(deleteRequests).subscribe({
       next: () => this.isDeleting.set(false),
       error: () => this.isDeleting.set(false),

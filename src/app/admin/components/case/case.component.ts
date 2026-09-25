@@ -1,7 +1,7 @@
 import { CaseAudio, PaginatedCaseAudio } from '@admin-types/case/case-audio/case-audio.type';
 import { AdminCase } from '@admin-types/case/case.type';
 import { AsyncPipe } from '@angular/common';
-import { Component, inject, input, numberAttribute, OnInit, signal } from '@angular/core';
+import { Component, inject, input, numberAttribute, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -47,6 +47,7 @@ import { CaseFileComponent } from './case-file/case-file.component';
     CaseAudioComponent,
   ],
   templateUrl: './case.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './case.component.scss',
 })
 export class CaseComponent implements OnInit {

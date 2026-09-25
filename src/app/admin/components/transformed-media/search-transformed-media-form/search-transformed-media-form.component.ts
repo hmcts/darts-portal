@@ -1,6 +1,6 @@
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { TransformedMediaSearchFormValues } from '@admin-types/transformed-media/transformed-media-search-form.values';
-import { CommonModule } from '@angular/common';
+
 import {
   Component,
   DestroyRef,
@@ -13,6 +13,7 @@ import {
   model,
   output,
   signal,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CourthouseComponent } from '@common/courthouse/courthouse.component';
@@ -38,13 +39,8 @@ export const transformedMediaSearchDateValidators = [
   standalone: true,
   templateUrl: './search-transformed-media-form.component.html',
   styleUrl: './search-transformed-media-form.component.scss',
-  imports: [
-    ReactiveFormsModule,
-    SpecificOrRangeDatePickerComponent,
-    DatepickerComponent,
-    CourthouseComponent,
-    CommonModule,
-  ],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  imports: [ReactiveFormsModule, SpecificOrRangeDatePickerComponent, DatepickerComponent, CourthouseComponent],
 })
 export class SearchTransformedMediaFormComponent implements OnInit {
   @ViewChild(CourthouseComponent) courthouseComponent!: CourthouseComponent;

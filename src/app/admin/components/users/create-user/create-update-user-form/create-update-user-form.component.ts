@@ -1,5 +1,14 @@
 import { CreateUpdateUserFormValues } from '@admin-types/index';
-import { Component, DestroyRef, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  inject,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ErrorSummaryEntry, FormErrorMessages } from '@core-types/index';
@@ -26,6 +35,7 @@ const controlErrors: FormErrorMessages = {
   standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './create-update-user-form.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './create-update-user-form.component.scss',
 })
 export class CreateUpdateUserFormComponent implements OnInit {

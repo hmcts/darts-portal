@@ -2,7 +2,7 @@ import { FileHideOrDeleteFormValues } from '@admin-types/hidden-reasons/file-hid
 import { HiddenReason } from '@admin-types/hidden-reasons/hidden-reason';
 import { AssociatedMedia } from '@admin-types/transformed-media/associated-media';
 import { CommonModule, Location } from '@angular/common';
-import { Component, OnInit, effect, inject, signal } from '@angular/core';
+import { Component, OnInit, effect, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -24,6 +24,7 @@ import { FileHideOrDeleteSuccessComponent } from '../file-hide-or-delete-success
   standalone: true,
   templateUrl: './file-hide-or-delete.component.html',
   styleUrl: './file-hide-or-delete.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     GovukHeadingComponent,
     GovukTextareaComponent,
@@ -48,8 +49,8 @@ export class FileHideOrDeleteComponent implements OnInit {
 
   errors: ErrorSummaryEntry[] = [];
 
-  mediaId = this.router.getCurrentNavigation()?.extras.state?.mediaId ?? null;
-  fileType = this.router.getCurrentNavigation()?.extras?.state?.fileType ?? null;
+  mediaId = this.router.currentNavigation()?.extras.state?.mediaId ?? null;
+  fileType = this.router.currentNavigation()?.extras?.state?.fileType ?? null;
 
   associatedAudioSearch = this.fileType === 'audio_file' && this.getAssociatedAudioSearch();
   media: AssociatedMedia[] = [];
@@ -186,9 +187,9 @@ export class FileHideOrDeleteComponent implements OnInit {
   }
 
   private getAssociatedAudioSearch() {
-    const hearingIds = this.router.getCurrentNavigation()?.extras?.state?.hearings;
-    const startAt = this.router.getCurrentNavigation()?.extras?.state?.dates.startAt;
-    const endAt = this.router.getCurrentNavigation()?.extras?.state?.dates.endAt;
+    const hearingIds = this.router.currentNavigation()?.extras?.state?.hearings;
+    const startAt = this.router.currentNavigation()?.extras?.state?.dates.startAt;
+    const endAt = this.router.currentNavigation()?.extras?.state?.dates.endAt;
 
     return {
       hearingIds: hearingIds,

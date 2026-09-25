@@ -9,6 +9,7 @@ import {
   Output,
   SimpleChanges,
   inject,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -32,6 +33,7 @@ import { RetentionFormContext } from '../create-edit-retention-policy/create-edi
   standalone: true,
   imports: [ReactiveFormsModule, DatepickerComponent, TimeInputComponent],
   templateUrl: './retention-policy-form.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './retention-policy-form.component.scss',
 })
 export class RetentionPolicyFormComponent implements OnInit, OnChanges {
