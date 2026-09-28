@@ -26,7 +26,7 @@ describe('App Routes', () => {
 
   beforeEach(() => {
     mockAuthService = {
-      checkIsAuthenticated: () => of(true),
+      checkIsAuthenticated: jest.fn().mockReturnValue(of(true)),
       getAuthenticated: jest.fn(),
     } as unknown as AuthService;
 
@@ -124,5 +124,46 @@ describe('App Routes', () => {
   it(`404 should navigate to page not found`, async () => {
     await router.navigate(['asdasdfsdfs']);
     expect(location.path()).toEqual('/page-not-found');
+  });
+
+  it('redirects to expired case when case data is anonymised', async () => {
+    jest.spyOn(mockUserService, 'hasRoles').mockReturnValue(true);
+    jest.spyOn(mockCaseService, 'getCase').mockReturnValue(
+      of({
+        id: 123,
+        number: 'T123',
+        isDataAnonymised: true,
+      })
+    );
+
+    await router.navigate(['/case/123/retention']);
+
+    expect(location.path()).toEqual('/expired-case');
+  });
+
+  it('redirects to page not found when manual deletion is disabled', async () => {
+    jest.spyOn(mockUserService, 'hasGlobalRoles').mockReturnValue(true);
+    jest.spyOn(mockFeatureFlagService, 'isManualDeletionEnabled').mockReturnValue(false);
+
+    await router.navigate(['/admin/file-deletion']);
+
+    expect(location.path()).toEqual('/page-not-found');
+  });
+
+  it('redirects to page not found when event obfuscation is disabled', async () => {
+    jest.spyOn(mockUserService, 'hasGlobalRoles').mockReturnValue(true);
+    jest.spyOn(mockFeatureFlagService, 'isEventObfuscationEnabled').mockReturnValue(false);
+
+    await router.navigate(['/admin/events/123/obfuscate']);
+
+    expect(location.path()).toEqual('/page-not-found');
+  });
+
+  it('redirects to login when user is not authenticated', async () => {
+    jest.spyOn(mockAuthService, 'checkIsAuthenticated').mockReturnValue(of(false));
+
+    await router.navigate(['/search']);
+
+    expect(location.path()).toEqual('/login');
   });
 });

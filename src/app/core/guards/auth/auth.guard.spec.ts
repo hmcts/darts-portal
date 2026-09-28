@@ -79,13 +79,17 @@ describe('authGuard', () => {
     expect(canActivate).toBeTruthy();
   });
 
-  it('should return false if not authenticated', () => {
+  it('should redirect to login if not authenticated', () => {
     prepareGuard({ checkAuthenticated: false });
-    let canActivate: boolean | undefined;
-    (executeGuard(mockRouteSnapshot, mockStateRouter) as Observable<boolean>).subscribe((isAuthenticated) => {
-      canActivate = isAuthenticated;
+    const router = TestBed.inject(Router);
+    let canActivate: boolean | UrlTree | undefined;
+
+    (executeGuard(mockRouteSnapshot, mockStateRouter) as Observable<boolean | UrlTree>).subscribe((result) => {
+      canActivate = result;
     });
-    expect(canActivate).toBeFalsy();
+
+    expect(router.parseUrl).toHaveBeenCalledWith('/login');
+    expect(canActivate).toEqual({ url: '/login' });
   });
 
   describe('non-admin routes', () => {
