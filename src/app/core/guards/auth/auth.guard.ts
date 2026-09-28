@@ -16,8 +16,7 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: R
     switchMap((isAuthenticated) => {
       if (!isAuthenticated) {
         localStorage.setItem('returnUrl', state.url);
-        router.navigateByUrl('login');
-        return of(false);
+        return of(router.parseUrl('/login'));
       } else {
         const returnUrl = localStorage.getItem('returnUrl');
         if (returnUrl) {
