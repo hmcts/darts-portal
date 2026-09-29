@@ -19,3 +19,8 @@ export interface AutomatedTaskDetailsData extends AutomatedTaskData {
   arm_replay_end_ts?: string;
   arm_attribute_type?: 'RPO' | 'REPLAY';
 }
+
+export interface CronExecutionData {
+  execution_number: string;
+  scheduled_at: string;
+}

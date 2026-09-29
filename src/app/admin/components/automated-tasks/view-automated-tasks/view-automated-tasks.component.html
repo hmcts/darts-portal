@@ -39,6 +39,11 @@
       <div govukSummaryListRow>
         <dt govukSummaryKey>Cron expression</dt>
         <dd govukSummaryValue>{{ task.cronExpression }}</dd>
+        @if (task.isCronEditable) {
+          <dd govukSummaryAction>
+            <a class="govuk-link" [routerLink]="['edit-cron-expression']" [state]="{ automatedTask: task }">Change</a>
+          </dd>
+        }
       </div>
 
       <div govukSummaryListRow>
