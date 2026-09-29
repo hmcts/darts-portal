@@ -61,7 +61,7 @@ To run darts-portal Angular & node.js frontend with [darts-api](https://github.c
 yarn dev
 ```
 
-The applications's home page will be available at https://localhost:3000.
+The application's home page will be available at https://localhost:3000.
 
 Note this is running both node.js and Angular and expects the ([darts-api](https://github.com/hmcts/darts-api)) to also be running locally to function correctly
 
