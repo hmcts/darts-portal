@@ -39,7 +39,7 @@ yarn dev:darts-api-stub
 
 ## 2. Run in staging environment
 
-To run darts-portal against staging API:
+To run darts-portal against staging API :
 
 ```bash
 yarn dev:darts-api-stg
