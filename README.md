@@ -1,7 +1,7 @@
-# DARTS portal 
- 
+# DARTS portal
+
 This is primarily an Angular app that runs through a node.js server. There are four main reasons for the node.js express server
- 
+
 - to serve the angular app when deployed in Kubernetes
 - to proxy API requests to internally-facing backend API services, such as the DARTS API
 - to handle auth / user session
@@ -37,7 +37,7 @@ To run darts-portal against node.js API stub:
 yarn dev:darts-api-stub
 ```
 
-## 2. Staging environment
+## 2. Run in staging environment
 
 To run darts-portal against staging API:
 
@@ -95,7 +95,7 @@ Run `yarn test` or `yarn test:watch` to execute the unit tests via [Jest](https:
 
 Run `yarn test:functional` to execute the end-to-end tests using Cypress, this includes accessibility checks via axe-core (WCAG22AA standards).
 
-Run `yarn cypress` to open the cypress console, very useful for debugging tests. 
+Run `yarn cypress` to open the cypress console, very useful for debugging tests.
 
 ## Angular code scaffolding
 
