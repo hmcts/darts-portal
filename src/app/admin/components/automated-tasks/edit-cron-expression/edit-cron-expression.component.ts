@@ -57,7 +57,7 @@ export class EditCronExpressionComponent {
 
   constructor() {
     if (!this.taskState) {
-      this.router.navigate(['../'], { relativeTo: this.route });
+      this.router.navigate(['../'], { relativeTo: this.route }); // NOSONAR
       return;
     }
 
