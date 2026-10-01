@@ -51,7 +51,7 @@
     "@angular/forms": "20.3.28",
     "@angular/platform-browser": "20.3.28",
     "@angular/platform-browser-dynamic": "20.3.28",
-    "@angular/router": "20.3.28",
+    "@angular/router": "20.3.32",
     "@dynatrace/dtrum-api-types": "1.349.1",
     "@hmcts/nodejs-healthcheck": "^1.8.5",
     "@hmcts/properties-volume": "^1.1.0",

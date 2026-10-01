@@ -821,17 +821,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/router@npm:20.3.28":
-  version: 20.3.28
-  resolution: "@angular/router@npm:20.3.28"
+"@angular/router@npm:20.3.32":
+  version: 20.3.32
+  resolution: "@angular/router@npm:20.3.32"
   dependencies:
     tslib: "npm:^2.3.0"
   peerDependencies:
-    "@angular/common": 20.3.28
-    "@angular/core": 20.3.28
-    "@angular/platform-browser": 20.3.28
+    "@angular/common": 20.3.32
+    "@angular/core": 20.3.32
+    "@angular/platform-browser": 20.3.32
     rxjs: ^6.5.3 || ^7.4.0
-  checksum: 10/94fe3a4ce68cc449259028da77770bd2b8bc2dfc8ec07dd43ba3ebe2a155bfca1b80a8796fb752c75b30d8fc78b71a4093f23580dcbc51dbc118641a5806946a
+  checksum: 10/4531312a2202547f4803ab2d34a5b40430c3303d7a704d655d43b35263878f4dbfb1891e5463e66df5f228d94d6c150ee242860b1eca39f081f202446e64ce8a
   languageName: node
   linkType: hard
 
@@ -10693,7 +10693,7 @@ __metadata:
     "@angular/forms": "npm:20.3.28"
     "@angular/platform-browser": "npm:20.3.28"
     "@angular/platform-browser-dynamic": "npm:20.3.28"
-    "@angular/router": "npm:20.3.28"
+    "@angular/router": "npm:20.3.32"
     "@dynatrace/dtrum-api-types": "npm:1.349.1"
     "@hmcts/nodejs-healthcheck": "npm:^1.8.5"
     "@hmcts/properties-volume": "npm:^1.1.0"
