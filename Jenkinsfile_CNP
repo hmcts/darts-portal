@@ -1,6 +1,6 @@
 #!groovy
 
-@Library("Infrastructure@2.11.0") _
+@Library("Infrastructure@fix/cache-cypress-binary") _
 
 def type = "angular"
 def product = "darts"
