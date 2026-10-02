@@ -1,6 +1,5 @@
-import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DatepickerComponent } from '@common/datepicker/datepicker.component';
 import { GovukTextareaComponent } from '@common/govuk-textarea/govuk-textarea.component';
@@ -14,14 +13,9 @@ import { CaseRetentionPageState } from 'src/app/portal/models/case/case-retentio
 @Component({
   selector: 'app-case-retention-change',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    ValidationErrorSummaryComponent,
-    GovukTextareaComponent,
-    DatepickerComponent,
-  ],
+  imports: [ReactiveFormsModule, ValidationErrorSummaryComponent, GovukTextareaComponent, DatepickerComponent],
   templateUrl: './case-retention-change.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./case-retention-change.component.scss'],
 })
 export class CaseRetentionChangeComponent {

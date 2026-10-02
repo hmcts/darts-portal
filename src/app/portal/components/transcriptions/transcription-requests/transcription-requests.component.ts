@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@components/common/data-table/data-table.component';
 import { LoadingComponent } from '@components/common/loading/loading.component';
@@ -15,6 +15,7 @@ import { TranscriptionService } from '@services/transcription/transcription.serv
   standalone: true,
   imports: [CommonModule, DataTableComponent, TableRowTemplateDirective, RouterLink, LoadingComponent, LuxonDatePipe],
   templateUrl: './transcription-requests.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './transcription-requests.component.scss',
 })
 export class TranscriptionRequestsComponent {

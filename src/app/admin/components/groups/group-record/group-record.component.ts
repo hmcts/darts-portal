@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
@@ -36,6 +36,7 @@ import { GroupUsersComponent } from '../group-users/group-users.component';
     ValidationErrorSummaryComponent,
   ],
   templateUrl: './group-record.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './group-record.component.scss',
 })
 export class GroupRecordComponent implements OnInit {

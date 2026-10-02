@@ -1,6 +1,6 @@
 import { SecurityGroup } from '@admin-types/index';
 import { AsyncPipe } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
@@ -26,6 +26,7 @@ import { BehaviorSubject, combineLatest, map, shareReplay, startWith, tap } from
     RouterLink,
   ],
   templateUrl: './groups.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './groups.component.scss',
 })
 export class GroupsComponent {

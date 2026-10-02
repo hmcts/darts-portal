@@ -23,9 +23,9 @@
 
     @default {
       @if (error.status !== 500 && error.status !== 504) {
-        <h2 *ngIf="error.status !== 500 && error.status !== 504" class="govuk-heading-m">
-          An error has occurred. Please try again later.
-        </h2>
+        @if (error.status !== 500 && error.status !== 504) {
+          <h2 class="govuk-heading-m">An error has occurred. Please try again later.</h2>
+        }
       }
     }
   }

@@ -12,8 +12,7 @@ export const expiredCaseGuard: CanActivateFn = (route: ActivatedRouteSnapshot) =
     map((caseDetails) => {
       if (caseDetails.isDataAnonymised) {
         // Redirect to expired case screen
-        router.navigate(['/expired-case']);
-        return false;
+        return router.parseUrl('/expired-case');
       }
       return true;
     })

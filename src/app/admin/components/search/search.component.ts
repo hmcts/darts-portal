@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { GovukTabsComponent } from '@common/govuk-tabs/govuk-tabs.component';
@@ -22,6 +22,7 @@ import { AdminSearchFormValues, SearchFormComponent } from './search-form/search
   standalone: true,
   templateUrl: './search.component.html',
   styleUrl: './search.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     GovukHeadingComponent,
     SearchFormComponent,

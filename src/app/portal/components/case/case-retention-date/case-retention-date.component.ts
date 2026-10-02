@@ -1,5 +1,5 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
@@ -31,6 +31,7 @@ import { CaseRententionConfirmComponent } from './case-retention-confirm/case-re
   standalone: true,
   templateUrl: './case-retention-date.component.html',
   styleUrl: './case-retention-date.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     BreadcrumbComponent,
     BreadcrumbDirective,

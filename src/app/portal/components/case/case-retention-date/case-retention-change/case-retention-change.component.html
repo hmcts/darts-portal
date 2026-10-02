@@ -7,9 +7,11 @@
       <h1 class="govuk-fieldset__heading">Select a new retention date</h1>
     </legend>
     <!-- Error message if date invalid -->
-    <div *ngIf="isOptionInvalid()" id="retention-option-errors">
-      <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ errorNoOption }}</p>
-    </div>
+    @if (isOptionInvalid()) {
+      <div id="retention-option-errors">
+        <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ errorNoOption }}</p>
+      </div>
+    }
     <div
       id="change-radios"
       class="govuk-radios govuk-details"
@@ -28,24 +30,25 @@
         />
         <label class="govuk-label govuk-radios__label" for="retention-option-date">Retain until a specific date</label>
       </div>
-      <div
-        *ngIf="retainOptionFormControl.value === 'date'"
-        class="govuk-form-group"
-        [class.govuk-details__text]="!isDateInvalid()"
-        [class.govuk-form-group--error]="isDateInvalid()"
-        id="change-date"
-        (change)="onChangeDate()"
-      >
-        <app-datepicker
-          inputId="retention-date"
-          name="retention-date"
-          label="Enter a date to retain the case until"
-          hint="Use dd/mm/yyyy format. For example, 31/01/2023."
-          [errors]="[errorDate]"
-          (dateChange)="setDateValue($event)"
-          [control]="retainDateFormControl"
-        />
-      </div>
+      @if (retainOptionFormControl.value === 'date') {
+        <div
+          class="govuk-form-group"
+          [class.govuk-details__text]="!isDateInvalid()"
+          [class.govuk-form-group--error]="isDateInvalid()"
+          id="change-date"
+          (change)="onChangeDate()"
+        >
+          <app-datepicker
+            inputId="retention-date"
+            name="retention-date"
+            label="Enter a date to retain the case until"
+            hint="Use dd/mm/yyyy format. For example, 31/01/2023."
+            [errors]="[errorDate]"
+            (dateChange)="setDateValue($event)"
+            [control]="retainDateFormControl"
+          />
+        </div>
+      }
       <div class="govuk-radios__item">
         <input
           class="govuk-radios__input"
@@ -65,9 +68,11 @@
       <label class="govuk-label govuk-!-font-weight-bold" for="change-reason">Why are you making this change?</label>
       <p class="govuk-hint">If you have a Service Now incident number, include it here.</p>
       <!-- Error message if reason invalid -->
-      <div *ngIf="isReasonInvalid()" id="change-reason-errors">
-        <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ errorNoReason }}</p>
-      </div>
+      @if (isReasonInvalid()) {
+        <div id="change-reason-errors">
+          <p class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>{{ errorNoReason }}</p>
+        </div>
+      }
       <app-govuk-textarea
         [id]="'change-reason'"
         [name]="'reason'"

@@ -1,5 +1,5 @@
 import { HiddenFileBanner } from '@admin-types/common/hidden-file-banner';
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { NotificationBannerComponent } from '@common/notification-banner/notification-banner.component';
 import { UserService } from '@services/user/user.service';
@@ -9,6 +9,7 @@ import { UserService } from '@services/user/user.service';
   standalone: true,
   imports: [NotificationBannerComponent],
   templateUrl: './hidden-file-banner.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './hidden-file-banner.component.scss',
 })
 export class HiddenFileBannerComponent {

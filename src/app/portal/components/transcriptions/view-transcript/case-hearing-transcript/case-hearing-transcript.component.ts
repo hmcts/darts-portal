@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BreadcrumbComponent } from '@components/common/breadcrumb/breadcrumb.component';
 import { DetailsTableComponent } from '@components/common/details-table/details-table.component';
@@ -13,6 +13,7 @@ import { TranscriptionService } from '@services/transcription/transcription.serv
   standalone: true,
   templateUrl: './case-hearing-transcript.component.html',
   styleUrl: './case-hearing-transcript.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ReportingRestrictionComponent, DetailsTableComponent, BreadcrumbComponent, BreadcrumbDirective],
 })
 export class CaseHearingTranscriptComponent implements OnInit {

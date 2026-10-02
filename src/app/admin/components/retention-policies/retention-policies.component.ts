@@ -1,6 +1,6 @@
 import { RetentionPolicy } from '@admin-types/index';
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -30,6 +30,7 @@ import { combineLatest, map, shareReplay } from 'rxjs';
     LoadingComponent,
   ],
   templateUrl: './retention-policies.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './retention-policies.component.scss',
 })
 export class RetentionPoliciesComponent {

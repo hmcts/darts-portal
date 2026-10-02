@@ -1,7 +1,7 @@
 import { CourthouseSearchFormValues } from '@admin-types/courthouses/courthouse-search-form-values.type';
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { CommonModule } from '@angular/common';
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { CourthouseService } from '@services/courthouses/courthouses.service';
@@ -16,6 +16,7 @@ import { CourthouseSearchResultsComponent } from './courthouse-search-results/co
   standalone: true,
   imports: [CommonModule, GovukHeadingComponent, CourthouseSearchFormComponent, CourthouseSearchResultsComponent],
   templateUrl: './courthouses.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './courthouses.component.scss',
 })
 export class CourthousesComponent {

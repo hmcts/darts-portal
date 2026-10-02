@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@components/common/loading/loading.component';
@@ -19,6 +19,7 @@ import { SearchErrorComponent } from './search-error/search-error.component';
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     CaseSearchResultsComponent,
     SearchErrorComponent,

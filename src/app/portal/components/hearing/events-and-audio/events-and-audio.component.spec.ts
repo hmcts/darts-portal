@@ -143,9 +143,7 @@ describe('EventsAndAudioComponent', () => {
     ];
 
     //assertion to check that the table is constructed correctly omitting the audioSourceUrl$ property
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     expect(component.rows.map(({ audioIsReady$, ...rest }) => rest)).toEqual(
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       expectedTable.map(({ audioIsReady$, ...rest }) => rest)
     );
   });

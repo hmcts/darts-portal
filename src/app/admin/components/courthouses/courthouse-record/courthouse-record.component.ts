@@ -1,6 +1,6 @@
 import { CourthouseUser, SecurityGroup, SecurityRole, User } from '@admin-types/index';
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DeleteComponent } from '@common/delete/delete.component';
@@ -24,6 +24,7 @@ import { CourthouseUsersComponent } from '../courthouse-users/courthouse-users.c
   standalone: true,
   templateUrl: './courthouse-record.component.html',
   styleUrl: './courthouse-record.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     CommonModule,
     LuxonDatePipe,

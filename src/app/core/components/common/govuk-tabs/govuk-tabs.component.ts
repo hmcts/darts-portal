@@ -1,5 +1,5 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { TabsComponent } from '@common/tabs/tabs.component';
 
 @Component({
@@ -7,6 +7,7 @@ import { TabsComponent } from '@common/tabs/tabs.component';
   standalone: true,
   imports: [NgTemplateOutlet],
   templateUrl: './govuk-tabs.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './govuk-tabs.component.scss',
 })
 export class GovukTabsComponent extends TabsComponent {}

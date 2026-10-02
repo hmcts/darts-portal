@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { FeatureFlagService } from '@services/app-config/feature-flag.service';
 import { manualDeletionGuard } from './manual-deletion.guard';
 
@@ -16,7 +16,7 @@ describe('manualDeletionGuard', () => {
         {
           provide: Router,
           useValue: {
-            navigateByUrl: jest.fn(),
+            parseUrl: jest.fn((url: string) => ({ url }) as unknown as UrlTree),
           },
         },
         {
@@ -35,30 +35,24 @@ describe('manualDeletionGuard', () => {
     expect(result).toBe(true);
   });
 
-  it('should return false if manual deletion is disabled', () => {
-    prepareGuard(false);
-    const result = executeGuard(mockRouteSnapshot, mockStateRouter);
-    expect(result).toBe(false);
-  });
-
-  it('should navigate to page-not-found if manual deletion is disabled', () => {
+  it('should redirect to page-not-found if manual deletion is disabled', () => {
     prepareGuard(false);
     const router = TestBed.inject(Router);
-    const navigateSpy = jest.spyOn(router, 'navigateByUrl');
 
-    executeGuard(mockRouteSnapshot, mockStateRouter);
+    const result = executeGuard(mockRouteSnapshot, mockStateRouter);
 
-    expect(navigateSpy).toHaveBeenCalledWith('page-not-found');
+    expect(router.parseUrl).toHaveBeenCalledWith('/page-not-found');
+    expect(result).toEqual({ url: '/page-not-found' });
   });
 
-  it('should not navigate if manual deletion is enabled', () => {
+  it('should not redirect if manual deletion is enabled', () => {
     prepareGuard(true);
     const router = TestBed.inject(Router);
-    const navigateSpy = jest.spyOn(router, 'navigateByUrl');
+    const parseUrlSpy = jest.spyOn(router, 'parseUrl');
 
     executeGuard(mockRouteSnapshot, mockStateRouter);
 
-    expect(navigateSpy).not.toHaveBeenCalled();
+    expect(parseUrlSpy).not.toHaveBeenCalled();
   });
 
   it('should call isManualDeletionEnabled on FeatureFlagService', () => {

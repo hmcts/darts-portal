@@ -1,3 +1,4 @@
+import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FileHide } from '@admin-types/hidden-reasons/file-hide';
@@ -5,7 +6,7 @@ import { AssociatedMedia } from '@admin-types/transformed-media/associated-media
 import { DatePipe } from '@angular/common';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Navigation, Router } from '@angular/router';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { AdminSearchService } from '@services/admin-search/admin-search.service';
 import { TranscriptionAdminService } from '@services/transcription-admin/transcription-admin.service';
@@ -61,7 +62,7 @@ describe('FileHideOrDeleteComponent', () => {
   } as unknown as ActivatedRoute;
 
   const fakeRouter = {
-    getCurrentNavigation: jest.fn().mockReturnValue({
+    currentNavigation: signal({
       extras: {
         state: {
           fileType: 'transcription_document',
@@ -69,7 +70,7 @@ describe('FileHideOrDeleteComponent', () => {
           dates: { startAt: '2021-01-01T00:00:00Z', endAt: '2021-01-01T00:00:00Z' },
         },
       },
-    }),
+    } as unknown as Navigation),
     navigate: jest.fn(),
   } as unknown as Router;
 

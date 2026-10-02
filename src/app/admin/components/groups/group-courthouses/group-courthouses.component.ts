@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, signal } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, signal, ChangeDetectionStrategy } from '@angular/core';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { CourthouseData } from '@core-types/index';
@@ -9,6 +9,7 @@ import { TableRowTemplateDirective } from '@directives/table-row-template.direct
   standalone: true,
   imports: [GovukHeadingComponent, DataTableComponent, TableRowTemplateDirective],
   templateUrl: './group-courthouses.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './group-courthouses.component.scss',
 })
 export class GroupCourthousesComponent implements OnInit {
