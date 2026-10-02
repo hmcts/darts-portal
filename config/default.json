@@ -28,6 +28,7 @@
     "prefix": "darts-portal-session",
     "ttlInSeconds": 28800,
     "cookieName": "darts_session",
+    "redisClusterEnabled": "false",
     "overriddenNotSecretRedisConnectionString": null
   },
   "support": {
