@@ -162,7 +162,7 @@ describe('App Routes', () => {
   it('redirects to login when user is not authenticated', async () => {
     jest.spyOn(mockAuthService, 'checkIsAuthenticated').mockReturnValue(of(false));
 
-    await router.navigate(['/search']);
+    await router.navigate(['/audios']);
 
     expect(location.path()).toEqual('/login');
   });
