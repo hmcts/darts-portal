@@ -13,5 +13,5 @@ def component = "portal"
 
 
 withNightlyPipeline(type, product, component) {
-
+  disableBuildCache()
 }
