@@ -70,7 +70,7 @@
     <div govukSummaryListRow>
       <dt govukSummaryKey>Retention confidence score</dt>
       <dd govukSummaryValue>
-        {{ case?.retConfScore ? case?.retConfScore : '-' }}
+        {{ case?.retConfScore ?? '-' }}
       </dd>
     </div>
     <div govukSummaryListRow>
