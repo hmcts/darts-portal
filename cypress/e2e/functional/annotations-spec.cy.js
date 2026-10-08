@@ -156,6 +156,44 @@ describe('Annotations', () => {
     cy.a11y();
   });
 
+  it('judicial-conduct users cannot see the all annotations tab on a case', () => {
+    cy.login('judicial-conduct');
+    cy.injectAxe();
+
+    cy.contains('Search').click();
+    cy.get('h1').should('contain', 'Search for a case');
+    cy.get('#case_number').type('C20220620001');
+    cy.get('button').contains('Search').click();
+
+    cy.contains('C20220620001').click();
+
+    cy.get('#transcripts-tab').should('exist');
+    cy.get('#annotations-tab').should('not.exist');
+
+    cy.a11y();
+  });
+
+  it('judicial-conduct users cannot see the annotations tab on a hearing', () => {
+    cy.login('judicial-conduct');
+    cy.injectAxe();
+
+    cy.contains('Search').click();
+    cy.get('h1').should('contain', 'Search for a case');
+    cy.get('#case_number').type('C20220620001');
+    cy.get('button').contains('Search').click();
+
+    cy.contains('C20220620001').click();
+
+    cy.contains('1 Dec 2023').click();
+
+    cy.get('h1').should('contain', 'Hearing');
+
+    cy.get('#hearing-transcripts-tab').should('exist');
+    cy.get('#annotations-tab').should('not.exist');
+
+    cy.a11y();
+  });
+
   it('download an annotation file at case level', () => {
     cy.login('judge');
     cy.injectAxe();

@@ -8,6 +8,7 @@ const {
   TRANSLATION_QA,
   SUPER_USER,
   RCJ_APPEALS,
+  JUDICIAL_CONDUCT,
 } = require('./roles');
 
 const stubUsers = [
@@ -143,7 +144,6 @@ const stubUsers = [
     },
     active: false,
   },
-
   {
     name: 'Dennis Priestley',
     code: 'rcj-appeals',
@@ -152,6 +152,18 @@ const stubUsers = [
       userName: 'Dennis Priestley',
       email_address: 'dennis.priestley@darts.local',
       roles: [RCJ_APPEALS],
+      isActive: true,
+    },
+    active: true,
+  },
+  {
+    name: 'Judy Campbell',
+    code: 'judicial-conduct',
+    userState: {
+      userId: 13,
+      userName: 'Judy Campbell',
+      email_address: 'judy.campbell@darts.local',
+      roles: [JUDICIAL_CONDUCT],
       isActive: true,
     },
     active: true,

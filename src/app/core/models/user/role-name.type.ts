@@ -7,4 +7,5 @@ export type RoleName =
   | 'RCJ_APPEALS'
   | 'MEDIA_IN_PERPETUITY'
   | 'SUPER_ADMIN'
-  | 'SUPER_USER';
+  | 'SUPER_USER'
+  | 'JUDICIAL_CONDUCT';

@@ -300,6 +300,35 @@ describe('Case file screen', () => {
     });
   });
 
+  describe('Judicial Conduct role', () => {
+    beforeEach(() => {
+      cy.login('judicial-conduct');
+
+      cy.contains('Search').click();
+      cy.get('#case_number').type('C20220620001');
+      cy.get('button').contains('Search').click();
+      cy.contains('C20220620001').click();
+    });
+
+    it('can access the Hearings tab and displays the hearings (AC1)', () => {
+      cy.get('a.moj-sub-navigation__link').contains('Hearings').should('be.visible').click();
+
+      cy.get('#hearingsTable').find('.govuk-table__row').should('be.visible').should('have.length', 7);
+    });
+
+    it('can access the Court Log tab and displays the court log (AC2)', () => {
+      cy.get('a.moj-sub-navigation__link').contains('Court log').should('be.visible').click();
+
+      cy.get('#court-log-table').find('.govuk-table__row').should('be.visible').should('have.length', 5);
+    });
+
+    it('can access the All Transcripts tab and displays the transcripts (AC3)', () => {
+      cy.get('a.moj-sub-navigation__link').contains('All Transcripts').should('be.visible').click();
+
+      cy.get('#transcriptsTable').find('tr').should('be.visible').should('have.length', 8); // 8 including header row
+    });
+  });
+
   describe('retention date', () => {
     describe('valid role', () => {
       beforeEach(() => {
