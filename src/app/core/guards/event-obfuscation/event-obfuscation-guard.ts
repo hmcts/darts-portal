@@ -10,7 +10,6 @@ export const eventObfuscationGuard: CanActivateFn = () => {
   if (featureFlagService.isEventObfuscationEnabled()) {
     return true;
   } else {
-    router.navigateByUrl('page-not-found');
-    return false;
+    return router.parseUrl('/page-not-found');
   }
 };

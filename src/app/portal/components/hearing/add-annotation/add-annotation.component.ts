@@ -1,4 +1,14 @@
-import { Component, OnDestroy, OnInit, computed, inject, input, numberAttribute, signal } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  computed,
+  inject,
+  input,
+  numberAttribute,
+  signal,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -33,6 +43,7 @@ import { AddAnnotationSuccessComponent } from './add-annotation-success/add-anno
     ValidationErrorSummaryComponent,
   ],
   templateUrl: './add-annotation.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './add-annotation.component.scss',
 })
 export class AddAnnotationComponent implements OnInit, OnDestroy {

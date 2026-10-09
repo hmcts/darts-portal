@@ -1,12 +1,12 @@
-import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-request-transcript-success',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [RouterLink],
   templateUrl: './request-transcript-success.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./request-transcript-success.component.scss'],
 })
 export class RequestTranscriptSuccessComponent {

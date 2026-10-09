@@ -1,24 +1,19 @@
-<ng-container *ngIf="!isDeleting && (data$ | async) as data">
+@if (!isDeleting && (data$ | async); as data) {
   <app-breadcrumb>
     <ng-container *breadcrumb="['../']">Your audio</ng-container>
     <ng-container *breadcrumb>{{ transformedMedia.transformedMediaFilename }}</ng-container>
   </app-breadcrumb>
-
   <app-reporting-restriction
     [restrictions]="data.case.reportingRestrictions"
     [hearingId]="transformedMedia.hearingId"
   ></app-reporting-restriction>
-
   <!-- Validation Error Summary Component -->
-  <ng-container *ngIf="data.error">
-    <app-validation-error-summary
-      *ngIf="data.error.status === 403"
-      [errors]="permissionErrors"
-    ></app-validation-error-summary>
-  </ng-container>
-
+  @if (data.error) {
+    @if (data.error.status === 403) {
+      <app-validation-error-summary [errors]="permissionErrors"></app-validation-error-summary>
+    }
+  }
   <app-govuk-heading caption="Audio File">{{ transformedMedia.transformedMediaFilename }}</app-govuk-heading>
-
   <h2 class="govuk-heading-m">Case details</h2>
   <div class="details-container">
     <div class="label-text-container">
@@ -34,8 +29,7 @@
       <p class="govuk-body">{{ data.case.defendants }}</p>
     </div>
   </div>
-
-  <ng-container *ngIf="transformedMedia">
+  @if (transformedMedia) {
     <h2 class="govuk-heading-m">Audio details</h2>
     <div class="details-container">
       <div class="label-text-container">
@@ -51,12 +45,10 @@
         <p class="govuk-body">{{ transformedMedia.endTime | luxonDate: 'HH:mm:ss' }}</p>
       </div>
     </div>
-  </ng-container>
-
+  }
   <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible" />
-
   @if (isAudioAvailable$ | async; as audioCode) {
-    <ng-container *ngIf="transformedMedia.requestType === 'PLAYBACK'">
+    @if (transformedMedia.requestType === 'PLAYBACK') {
       <h2 class="govuk-heading-l">Play all audio</h2>
       <app-audio-player
         (pause)="isAudioPlaying = false"
@@ -65,10 +57,8 @@
         [audioSource]="audioSource"
         [statusCode]="audioCode"
       ></app-audio-player>
-
       <h3 class="govuk-heading-m no-magin-bottom">Skip to event</h3>
       <p class="govuk-hint no-magin-top">Jump to a specific audio events within the audio file</p>
-
       <app-data-table [rows]="data.rows" [columns]="columns" [pagination]="true">
         <ng-template [tableRowTemplate]="data.rows" let-row let-index>
           <td class="play-cell">
@@ -90,17 +80,14 @@
           </td>
         </ng-template>
       </app-data-table>
-    </ng-container>
+    }
   }
-
   <div class="govuk-button-group">
     <button class="govuk-button" (click)="onDownloadClicked()" [disabled]="data.error">Download audio file</button>
   </div>
-
   <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
-
   <a href="#" (click)="$event.preventDefault(); isDeleting = true" class="govuk-link">Delete audio file</a>
-</ng-container>
+}
 
 @if (isDeleting && transformedMedia) {
   <app-delete [numberOfItems]="1" (confirm)="onDeleteConfirmed()" (cancelled)="isDeleting = false"></app-delete>

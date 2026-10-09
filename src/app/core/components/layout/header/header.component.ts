@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DoCheck, inject } from '@angular/core';
+import { Component, DoCheck, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '@services/auth/auth.service';
 import { HeaderService } from '@services/header/header.service';
@@ -12,6 +12,7 @@ import { PortalNavigationComponent } from './portal-navigation/portal-navigation
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [RouterLink, CommonModule, AdminNavigationComponent, PortalNavigationComponent],
 })
 export class HeaderComponent implements DoCheck {

@@ -16,8 +16,7 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: R
     switchMap((isAuthenticated) => {
       if (!isAuthenticated) {
         localStorage.setItem('returnUrl', state.url);
-        router.navigateByUrl('login');
-        return of(false);
+        return of(router.parseUrl('/login'));
       } else {
         const returnUrl = localStorage.getItem('returnUrl');
         if (returnUrl) {
@@ -38,8 +37,7 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: R
               return true;
             } else {
               // fail role check for admin, redirect to 404 page
-              router.navigateByUrl('page-not-found');
-              return false;
+              return router.parseUrl('/page-not-found');
             }
           }
           // non-admin routes
@@ -47,8 +45,7 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: R
             return true;
           } else {
             // otherwise, redirect to forbidden page
-            router.navigateByUrl('forbidden');
-            return false;
+            return router.parseUrl('/forbidden');
           }
         })
       );

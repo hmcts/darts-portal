@@ -1,5 +1,5 @@
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
-import { NgFor, NgIf } from '@angular/common';
+
 import {
   AfterViewInit,
   Component,
@@ -11,14 +11,16 @@ import {
   Output,
   SimpleChanges,
   ViewChild,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import accessibleAutocomplete, { AccessibleAutocompleteProps } from 'accessible-autocomplete';
 
 @Component({
   selector: 'app-courthouse-field',
   standalone: true,
-  imports: [NgIf, NgFor],
+  imports: [],
   templateUrl: './courthouse.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./courthouse.component.scss'],
 })
 export class CourthouseComponent implements AfterViewInit, OnChanges, OnInit {

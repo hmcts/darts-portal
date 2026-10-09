@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnChanges } from '@angular/core';
+import { Component, inject, Input, OnChanges, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DatatableColumn } from '@core-types/index';
@@ -12,6 +12,7 @@ import { ActiveTabService } from '@services/active-tab/active-tab.service';
   templateUrl: './case-search-results.component.html',
   styleUrls: ['./case-search-results.component.scss'],
   imports: [RouterLink, DataTableComponent, TableBodyTemplateDirective, ArrayDisplayPipe],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 export class CaseSearchResultsComponent implements OnChanges {

@@ -1,10 +1,12 @@
 @let case = caseFile();
 
 @if (!case?.isDataAnonymised) {
-  <app-reporting-restriction [restrictions]="case?.reportingRestrictions"></app-reporting-restriction>
+  <app-reporting-restriction
+    [restrictions]="$safeNavigationMigration(case?.reportingRestrictions)"
+  ></app-reporting-restriction>
 } @else {
   @if (case?.retainUntilDateTime) {
-    <app-expired-banner [expiryDate]="case?.retainUntilDateTime!" />
+    <app-expired-banner [expiryDate]="$safeNavigationMigration(case?.retainUntilDateTime)!" />
   }
 }
 
@@ -25,33 +27,35 @@
     @if (!case?.isDataAnonymised) {
       <div govukSummaryListRow>
         <dt govukSummaryKey>Judge(s)</dt>
-        <dd govukSummaryValue>{{ case?.judges | join }}</dd>
+        <dd govukSummaryValue>{{ $safeNavigationMigration(case?.judges) | join }}</dd>
       </div>
       <div govukSummaryListRow>
         <dt govukSummaryKey>Defendant(s)</dt>
-        <dd govukSummaryValue>{{ case?.defendants | join }}</dd>
+        <dd govukSummaryValue>{{ $safeNavigationMigration(case?.defendants) | join }}</dd>
       </div>
       <div govukSummaryListRow>
         <dt govukSummaryKey>Defence</dt>
-        <dd govukSummaryValue>{{ case?.defenders | join }}</dd>
+        <dd govukSummaryValue>{{ $safeNavigationMigration(case?.defenders) | join }}</dd>
       </div>
       <div govukSummaryListRow>
         <dt govukSummaryKey>Prosecutor(s)</dt>
-        <dd govukSummaryValue>{{ case?.prosecutors | join }}</dd>
+        <dd govukSummaryValue>{{ $safeNavigationMigration(case?.prosecutors) | join }}</dd>
       </div>
 
       <div govukSummaryListRow>
         <dt govukSummaryKey>Retained until</dt>
         <dd govukSummaryValue>
           @if (case?.retainUntilDateTime) {
-            {{ case?.retainUntilDateTime | luxonDate: 'dd MMM y' }}
+            {{ $safeNavigationMigration(case?.retainUntilDateTime) | luxonDate: 'dd MMM y' }}
           } @else {
             No date applied
           }
         </dd>
 
         <dd govukSummaryAction>
-          <a class="govuk-link" [routerLink]="['/case', case?.id, 'retention']">View or change</a>
+          <a class="govuk-link" [routerLink]="['/case', $safeNavigationMigration(case?.id), 'retention']"
+            >View or change</a
+          >
         </dd>
       </div>
     }

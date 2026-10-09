@@ -1,5 +1,5 @@
 import { AssociatedMedia } from '@admin-types/transformed-media/associated-media';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
 import { ErrorSummaryEntry } from '@core-types/index';
@@ -13,6 +13,7 @@ import { AssociatedAudioHideDeleteComponent } from '../../transformed-media/asso
   standalone: true,
   imports: [AssociatedAudioHideDeleteComponent, ValidationErrorSummaryComponent],
   templateUrl: './file-unhide-or-undelete.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './file-unhide-or-undelete.component.scss',
 })
 export class FileUnhideOrUndeleteComponent implements OnInit {
@@ -21,7 +22,7 @@ export class FileUnhideOrUndeleteComponent implements OnInit {
   route = inject(ActivatedRoute);
   headerService = inject(HeaderService);
 
-  media = this.router.getCurrentNavigation()?.extras.state?.media as AssociatedMedia[];
+  media = this.router.currentNavigation()?.extras.state?.media as AssociatedMedia[];
   errors = signal<ErrorSummaryEntry[]>([]);
 
   ngOnInit(): void {

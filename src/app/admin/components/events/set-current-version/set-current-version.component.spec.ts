@@ -1,3 +1,4 @@
+import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Event } from '@admin-types/events';
@@ -47,21 +48,41 @@ describe('SetCurrentVersionComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(SetCurrentVersionComponent);
-    component = fixture.componentInstance;
     router = TestBed.inject(Router);
     routerNavigateSpy = jest.spyOn(router, 'navigate');
   });
 
+  const setup = (navigation: Navigation) => {
+    Object.defineProperty(router, 'currentNavigation', {
+      value: signal(navigation),
+      configurable: true,
+    });
+
+    fixture = TestBed.createComponent(SetCurrentVersionComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  };
+
   it('should create', () => {
+    setup({
+      extras: {
+        state: {
+          selectedEventId: 123,
+        },
+      },
+    } as unknown as Navigation);
+
     expect(component).toBeTruthy();
   });
 
   it('should set isSubmitted true and navigate on setCurrentVersion', () => {
-    jest
-      .spyOn(router, 'getCurrentNavigation')
-      .mockReturnValue({ extras: { state: { selectedEventId: 123 } } } as unknown as Navigation);
-    fixture.detectChanges();
+    setup({
+      extras: {
+        state: {
+          selectedEventId: 123,
+        },
+      },
+    } as unknown as Navigation);
 
     component.setCurrentVersion();
 
@@ -73,10 +94,13 @@ describe('SetCurrentVersionComponent', () => {
   });
 
   it('should navigate back if no selectedEventId is present', () => {
-    jest
-      .spyOn(router, 'getCurrentNavigation')
-      .mockReturnValue({ extras: { state: { randomValue: 1 } } } as unknown as Navigation);
-    fixture.detectChanges();
+    setup({
+      extras: {
+        state: {
+          randomValue: 1,
+        },
+      },
+    } as unknown as Navigation);
 
     component.selectedEventId = undefined;
     component.ngOnInit();

@@ -1,5 +1,5 @@
 import { TranscriptionDocumentSearchResult } from '@admin-types/transcription';
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DatatableColumn } from '@core-types/index';
@@ -11,6 +11,7 @@ import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
   standalone: true,
   imports: [DataTableComponent, TableRowTemplateDirective, RouterLink, LuxonDatePipe],
   templateUrl: './search-completed-transcripts-results.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './search-completed-transcripts-results.component.scss',
 })
 export class SearchCompletedTranscriptsResultsComponent implements OnChanges {
