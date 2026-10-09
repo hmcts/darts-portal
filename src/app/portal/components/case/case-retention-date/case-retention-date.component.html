@@ -1,12 +1,14 @@
-<ng-container *ngIf="vm$ | async as vm; else loading">
-  <app-breadcrumb *ngIf="state === 'Default' || state === 'Success'">
-    <ng-container *breadcrumb="['/search']">Search</ng-container>
-    <ng-container *breadcrumb="['/case', vm.caseDetails.case_id.toString()]"
-      ><span class="whitespace-pre">{{ vm.caseDetails.case_number }}</span></ng-container
-    >
-    <ng-container *breadcrumb>Case retention date</ng-container>
-  </app-breadcrumb>
-  <ng-container *ngIf="state === 'Default' || state === 'Success'">
+@if (vm$ | async; as vm) {
+  @if (state === 'Default' || state === 'Success') {
+    <app-breadcrumb>
+      <ng-container *breadcrumb="['/search']">Search</ng-container>
+      <ng-container *breadcrumb="['/case', vm.caseDetails.case_id.toString()]"
+        ><span class="whitespace-pre">{{ vm.caseDetails.case_number }}</span></ng-container
+      >
+      <ng-container *breadcrumb>Case retention date</ng-container>
+    </app-breadcrumb>
+  }
+  @if (state === 'Default' || state === 'Success') {
     @if (showOpenBanner(vm.caseDetails.closedDateTime)) {
       <app-notification-banner heading="This case is still open">
         If you expected this case to be closed, please check that a <strong>Case Closed</strong> event (XHIBIT) or
@@ -28,12 +30,11 @@
         retention in DARTS.
       </app-notification-banner>
     }
-
-    <app-govuk-banner *ngIf="state === 'Success'" type="success">Case retention date changed.</app-govuk-banner>
+    @if (state === 'Success') {
+      <app-govuk-banner type="success">Case retention date changed.</app-govuk-banner>
+    }
     <app-govuk-heading>Case retention date</app-govuk-heading>
-
     <app-details-table id="case-details" title="Case details" [details]="vm.caseDetails.details"></app-details-table>
-
     @if (!vm.caseDetails.currentRetention['Date applied']) {
       <div class="current-retention-details">
         <app-govuk-heading tag="h2" size="m">Current retention details</app-govuk-heading>
@@ -64,7 +65,6 @@
         </dl>
       </div>
     }
-
     @if (!buttonGroupHide(vm.retentionHistory)) {
       <div id="retention-date-buttons" class="govuk-button-group">
         <button
@@ -78,7 +78,6 @@
         <a routerLink="../" routerLinkActive="router-link-active" class="govuk-link">Cancel</a>
       </div>
     }
-
     <ng-container>
       <h2 class="govuk-heading-m">Retention audit history</h2>
       <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
@@ -98,7 +97,6 @@
           <td>{{ row.amendedBy }}</td>
           <td>{{ row.retentionPolicyApplied }}</td>
           <td>{{ row.comments }}</td>
-
           <td>
             <div class="status-cell">
               <app-govuk-tag [colour]="row.status === 'COMPLETE' ? 'green' : 'yellow'">
@@ -109,9 +107,9 @@
         </ng-template>
       </app-data-table>
     </ng-container>
-  </ng-container>
+  }
   <!-- Summary / Confirmation Screen -->
-  <ng-container *ngIf="state === 'Change' || state === 'Confirm'">
+  @if (state === 'Change' || state === 'Confirm') {
     <div [hidden]="state === 'Confirm'" class="order-confirmation">
       <app-case-retention-change
         [state]="state"
@@ -135,9 +133,7 @@
         (stateChange)="onStateChanged($event)"
       ></app-case-retention-confirm>
     </div>
-  </ng-container>
-</ng-container>
-
-<ng-template #loading>
+  }
+} @else {
   <app-loading text="Loading case retention details..."></app-loading>
-</ng-template>
+}

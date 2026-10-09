@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { GovukTagComponent } from '@common/govuk-tag/govuk-tag.component';
 import { BreadcrumbComponent } from '@components/common/breadcrumb/breadcrumb.component';
@@ -16,7 +15,6 @@ import { TranscriptionService } from '@services/transcription/transcription.serv
   selector: 'app-rejected-transcript',
   standalone: true,
   imports: [
-    CommonModule,
     BreadcrumbComponent,
     BreadcrumbDirective,
     DetailsTableComponent,
@@ -26,6 +24,7 @@ import { TranscriptionService } from '@services/transcription/transcription.serv
     GovukTagComponent,
   ],
   templateUrl: './rejected-transcript.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './rejected-transcript.component.scss',
 })
 export class RejectedTranscriptComponent implements OnInit {

@@ -1,31 +1,24 @@
 @if (vm$ | async; as vm) {
-  <ng-container *ngIf="error$ | async as error; else transcript">
+  @if (error$ | async; as error) {
     <app-conflict
       header="This transcript request is no longer available"
       body="Another user may have already actioned this request."
       [link]="{ href: '/transcription-requests', text: 'Return to your transcript requests' }"
     ></app-conflict>
-  </ng-container>
-  <ng-template #transcript>
+  } @else {
     <app-breadcrumb>
       <ng-container *breadcrumb="['../']">Transcript requests</ng-container>
       <ng-container *breadcrumb="['.']">{{ vm.hearingDetails['Request ID'] }}</ng-container>
     </app-breadcrumb>
-
     <app-validation-error-summary [errors]="errors"></app-validation-error-summary>
-
     <app-reporting-restriction
       class="margin-bottom"
       [restrictions]="vm.reportingRestrictions"
       [hearingId]="vm.hearingId"
     ></app-reporting-restriction>
-
     <app-govuk-heading>Transcript request</app-govuk-heading>
-
     <app-details-table title="Case details" [details]="vm.caseDetails" />
-
     <app-details-table title="Request details" [details]="vm.hearingDetails" />
-
     <div class="govuk-form-group" [class.govuk-form-group--error]="selectedOption.invalid && isSubmitted">
       <fieldset class="govuk-fieldset">
         <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
@@ -79,14 +72,13 @@
         </div>
       </fieldset>
     </div>
-
     <div class="govuk-button-group">
       <button id="submit-button" class="govuk-button" [disabled]="isAssigning" (click)="onAssignTranscript()">
         Continue
       </button>
       <a routerLink="../" class="govuk-link">Cancel</a>
     </div>
-  </ng-template>
+  }
 } @else {
   <app-loading />
 }

@@ -1,4 +1,4 @@
-import { Component, inject, input, output } from '@angular/core';
+import { Component, inject, input, output, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -12,6 +12,7 @@ import { ActiveTabService } from '@services/active-tab/active-tab.service';
   standalone: true,
   imports: [DataTableComponent, TableRowTemplateDirective, RouterLink, GovukHeadingComponent, LuxonDatePipe],
   templateUrl: './case-annotations-table.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './case-annotations-table.component.scss',
 })
 export class CaseAnnotationsTableComponent {

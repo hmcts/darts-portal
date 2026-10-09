@@ -1,7 +1,7 @@
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { Transcription, TranscriptionStatus } from '@admin-types/transcription';
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
@@ -23,6 +23,7 @@ import { Observable, combineLatest, map, shareReplay, startWith, switchMap, tap 
   standalone: true,
   templateUrl: './user-transcripts.component.html',
   styleUrl: './user-transcripts.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DataTableComponent,
     GovukHeadingComponent,

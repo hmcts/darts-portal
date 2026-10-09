@@ -1,3 +1,4 @@
+import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SecurityGroup, User } from '@admin-types/index';
@@ -24,13 +25,16 @@ describe('DeactivateUserComponent', () => {
 
     const router = TestBed.inject(Router);
 
-    jest.spyOn(router, 'getCurrentNavigation').mockReturnValue({
-      extras: {
-        state: {
-          user: { id: 1 } as User,
+    Object.defineProperty(router, 'currentNavigation', {
+      value: signal({
+        extras: {
+          state: {
+            user: { id: 1 } as User,
+          },
         },
-      },
-    } as unknown as Navigation);
+      } as unknown as Navigation),
+      configurable: true,
+    });
 
     fixture = TestBed.createComponent(DeactivateUserComponent);
     component = fixture.componentInstance;

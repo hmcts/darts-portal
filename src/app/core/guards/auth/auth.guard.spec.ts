@@ -1,7 +1,14 @@
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot, UrlSegment } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  CanActivateFn,
+  Router,
+  RouterStateSnapshot,
+  UrlSegment,
+  UrlTree,
+} from '@angular/router';
 import { AuthService } from '@services/auth/auth.service';
 import { UserService } from '@services/user/user.service';
 import { Observable, of } from 'rxjs';
@@ -35,6 +42,7 @@ describe('authGuard', () => {
           provide: Router,
           useValue: {
             navigateByUrl: jest.fn(),
+            parseUrl: jest.fn((url: string) => ({ url }) as unknown as UrlTree),
           },
         },
         {
@@ -71,13 +79,17 @@ describe('authGuard', () => {
     expect(canActivate).toBeTruthy();
   });
 
-  it('should return false if not authenticated', () => {
+  it('should redirect to login if not authenticated', () => {
     prepareGuard({ checkAuthenticated: false });
-    let canActivate: boolean | undefined;
-    (executeGuard(mockRouteSnapshot, mockStateRouter) as Observable<boolean>).subscribe((isAuthenticated) => {
-      canActivate = isAuthenticated;
+    const router = TestBed.inject(Router);
+    let canActivate: boolean | UrlTree | undefined;
+
+    (executeGuard(mockRouteSnapshot, mockStateRouter) as Observable<boolean | UrlTree>).subscribe((result) => {
+      canActivate = result;
     });
-    expect(canActivate).toBeFalsy();
+
+    expect(router.parseUrl).toHaveBeenCalledWith('/login');
+    expect(canActivate).toEqual({ url: '/login' });
   });
 
   describe('non-admin routes', () => {
@@ -91,16 +103,16 @@ describe('authGuard', () => {
       expect(canActivate).toBeTruthy();
     });
 
-    it('should return false and redirect to forbidden page if authenticated and user does not have required role', () => {
+    it('should redirect to forbidden page if authenticated and user does not have required role', () => {
       prepareGuard({ checkAuthenticated: true, hasRoles: false });
-      const spy = jest.spyOn(TestBed.inject(Router), 'navigateByUrl');
+      const router = TestBed.inject(Router);
       mockRouteSnapshot.data.allowedRoles = ['APPROVER'];
-      let canActivate: boolean | undefined;
-      (executeGuard(mockRouteSnapshot, mockStateRouter) as Observable<boolean>).subscribe((isAuthenticated) => {
-        canActivate = isAuthenticated;
+      let canActivate: boolean | UrlTree | undefined;
+      (executeGuard(mockRouteSnapshot, mockStateRouter) as Observable<boolean | UrlTree>).subscribe((result) => {
+        canActivate = result;
       });
-      expect(canActivate).toBeFalsy();
-      expect(spy).toHaveBeenCalledWith('forbidden');
+      expect(router.parseUrl).toHaveBeenCalledWith('/forbidden');
+      expect(canActivate).toEqual({ url: '/forbidden' });
     });
   });
 
@@ -119,16 +131,16 @@ describe('authGuard', () => {
       expect(canActivate).toBeTruthy();
     });
 
-    it('should return false and redirect to page not found if authenticated and user does not have required role', () => {
+    it('should redirect to page not found if authenticated and user does not have required role', () => {
       prepareGuard({ checkAuthenticated: true, hasGlobalRoles: false });
-      const spy = jest.spyOn(TestBed.inject(Router), 'navigateByUrl');
+      const router = TestBed.inject(Router);
       mockRouteSnapshot.data.allowedRoles = ['SUPER_ADMIN'];
-      let canActivate: boolean | undefined;
-      (executeGuard(mockRouteSnapshot, mockStateRouter) as Observable<boolean>).subscribe((isAuthenticated) => {
-        canActivate = isAuthenticated;
+      let canActivate: boolean | UrlTree | undefined;
+      (executeGuard(mockRouteSnapshot, mockStateRouter) as Observable<boolean | UrlTree>).subscribe((result) => {
+        canActivate = result;
       });
-      expect(canActivate).toBeFalsy();
-      expect(spy).toHaveBeenCalledWith('page-not-found');
+      expect(router.parseUrl).toHaveBeenCalledWith('/page-not-found');
+      expect(canActivate).toEqual({ url: '/page-not-found' });
     });
   });
 });

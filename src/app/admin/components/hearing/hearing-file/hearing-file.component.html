@@ -1,6 +1,8 @@
 @let h = hearing();
 
-<app-govuk-heading caption="Hearing">{{ h?.hearingDate | luxonDate: 'dd MMMM y' }}</app-govuk-heading>
+<app-govuk-heading caption="Hearing">{{
+  $safeNavigationMigration(h?.hearingDate) | luxonDate: 'dd MMMM y'
+}}</app-govuk-heading>
 
 <div govukSummaryContainer>
   <app-govuk-heading class="no-margin border-bottom" tag="h2" size="m">Hearing details</app-govuk-heading>
@@ -10,7 +12,7 @@
       <dd govukSummaryValue>
         <a
           class="govuk-link whitespace-pre"
-          [routerLink]="['/admin/case', h?.case?.id]"
+          [routerLink]="['/admin/case', $safeNavigationMigration(h?.case?.id)]"
           [queryParams]="{ backUrl: getBackUrl() }"
           >{{ h?.case?.caseNumber }}</a
         >
@@ -26,23 +28,23 @@
     </div>
     <div govukSummaryListRow>
       <dt govukSummaryKey>Hearing date</dt>
-      <dd govukSummaryValue>{{ h?.hearingDate | luxonDate: 'dd MMM y' }}</dd>
+      <dd govukSummaryValue>{{ $safeNavigationMigration(h?.hearingDate) | luxonDate: 'dd MMM y' }}</dd>
     </div>
     <div govukSummaryListRow>
       <dt govukSummaryKey>Defendant(s)</dt>
-      <dd govukSummaryValue>{{ h?.case?.defendants | join }}</dd>
+      <dd govukSummaryValue>{{ $safeNavigationMigration(h?.case?.defendants) | join }}</dd>
     </div>
     <div govukSummaryListRow>
       <dt govukSummaryKey>Defence</dt>
-      <dd govukSummaryValue>{{ h?.case?.defenders | join }}</dd>
+      <dd govukSummaryValue>{{ $safeNavigationMigration(h?.case?.defenders) | join }}</dd>
     </div>
     <div govukSummaryListRow>
       <dt govukSummaryKey>Prosecutor(s)</dt>
-      <dd govukSummaryValue>{{ h?.case?.prosecutors | join }}</dd>
+      <dd govukSummaryValue>{{ $safeNavigationMigration(h?.case?.prosecutors) | join }}</dd>
     </div>
     <div govukSummaryListRow>
       <dt govukSummaryKey>Judge(s)</dt>
-      <dd govukSummaryValue>{{ h?.case?.judges | join }}</dd>
+      <dd govukSummaryValue>{{ $safeNavigationMigration(h?.case?.judges) | join }}</dd>
     </div>
     <div govukSummaryListRow>
       <dt govukSummaryKey>Scheduled start time</dt>
@@ -57,7 +59,7 @@
     <div govukSummaryListRow>
       <dt govukSummaryKey>Date created</dt>
       <dd govukSummaryValue>
-        {{ h?.createdAt | luxonDate: 'dd MMM yyyy HH:mm:ss' }}
+        {{ $safeNavigationMigration(h?.createdAt) | luxonDate: 'dd MMM yyyy HH:mm:ss' }}
       </dd>
     </div>
     <div govukSummaryListRow>
@@ -69,7 +71,7 @@
     <div govukSummaryListRow>
       <dt govukSummaryKey>Date last modified</dt>
       <dd govukSummaryValue>
-        {{ h?.lastModifiedAt | luxonDate: 'dd MMM yyyy HH:mm:ss' }}
+        {{ $safeNavigationMigration(h?.lastModifiedAt) | luxonDate: 'dd MMM yyyy HH:mm:ss' }}
       </dd>
     </div>
     <div govukSummaryListRow>

@@ -1,5 +1,5 @@
 import { CreateUpdateUserFormValues } from '@admin-types/index';
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
@@ -19,6 +19,7 @@ import { CreateUpdateUserFormComponent } from './create-update-user-form/create-
     CreateUpdateUserConfirmationComponent,
   ],
   templateUrl: './create-user.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './create-user.component.scss',
 })
 export class CreateUserComponent {

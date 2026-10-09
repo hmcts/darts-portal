@@ -1,7 +1,7 @@
 import { AudioFile } from '@admin-types/index';
 import { AssociatedCase } from '@admin-types/transformed-media/associated-case';
 import { AssociatedHearing } from '@admin-types/transformed-media/associated-hearing';
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { AssociatedCasesTableComponent } from '@common/associated-cases-table/associated-cases-table.component';
 import { AssociatedHearingsTableComponent } from '@common/associated-hearings-table/associated-hearings-table.component';
@@ -19,6 +19,7 @@ import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
     FileSizePipe,
   ],
   templateUrl: './basic-audio-file-details.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './basic-audio-file-details.component.scss',
 })
 export class BasicAudioFileDetailsComponent {

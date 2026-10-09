@@ -1,5 +1,5 @@
 import { SecurityGroup, User } from '@admin-types/index';
-import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -12,6 +12,7 @@ import { UserService } from '@services/user/user.service';
   standalone: true,
   imports: [DataTableComponent, GovukHeadingComponent, TableRowTemplateDirective],
   templateUrl: './user-groups.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './user-groups.component.scss',
 })
 export class UserGroupsComponent implements OnInit {

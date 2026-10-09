@@ -1,5 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { AfterContentInit, Component, computed, contentChildren, inject, input, model, output } from '@angular/core';
+import {
+  AfterContentInit,
+  Component,
+  computed,
+  contentChildren,
+  inject,
+  input,
+  model,
+  output,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { TabDirective } from '@directives/tab.directive';
 import { ActiveTabService } from '@services/active-tab/active-tab.service';
 
@@ -8,6 +18,7 @@ import { ActiveTabService } from '@services/active-tab/active-tab.service';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './tabs.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./tabs.component.scss'],
 })
 export class TabsComponent implements AfterContentInit {

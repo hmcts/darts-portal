@@ -1,7 +1,7 @@
 import { EventMappingFormValues } from '@admin-types/event-mappings/event-mapping-form-values.interface';
 import { EventMapping } from '@admin-types/event-mappings/event-mapping.type';
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -24,6 +24,7 @@ import { Subscription, combineLatest, tap } from 'rxjs';
   standalone: true,
   templateUrl: './add-update-event-mapping.component.html',
   styleUrl: './add-update-event-mapping.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ReactiveFormsModule,
     GovukHeadingComponent,

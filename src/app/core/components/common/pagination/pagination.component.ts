@@ -1,11 +1,11 @@
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, OnChanges, Output, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-pagination',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './pagination.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./pagination.component.scss'],
 })
 export class PaginationComponent implements OnChanges {
