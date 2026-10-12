@@ -2,7 +2,7 @@ import { DatePipe } from '@angular/common';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { ErrorHandler, inject, LOCALE_ID, provideAppInitializer, provideZoneChangeDetection } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
-import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
+import { provideRouter, RouteReuseStrategy, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
 import { ErrorInterceptor } from '@interceptors/error/error.interceptor';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { AppConfigService } from '@services/app-config/app-config.service';
@@ -12,6 +12,7 @@ import { installGlobalErrorListenersOnce } from '@utils/global-error-listeners';
 import { WINDOW } from '@utils/tokens';
 import { APP_ROUTES } from './app/app.routes';
 import { AppComponent } from './app/core/components/app/app.component';
+import { CaseRouteReuseStrategy } from './app/core/strategies/case-route-reuse.strategy';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -31,6 +32,10 @@ bootstrapApplication(AppComponent, {
       withInMemoryScrolling({ anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled' }),
       withComponentInputBinding()
     ),
+    {
+      provide: RouteReuseStrategy,
+      useClass: CaseRouteReuseStrategy,
+    },
     AppInsightsService,
     { provide: ErrorHandler, useClass: ErrorHandlerService },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
