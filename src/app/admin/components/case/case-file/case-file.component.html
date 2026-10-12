@@ -41,6 +41,28 @@
         <dt govukSummaryKey>Prosecutor(s)</dt>
         <dd govukSummaryValue>{{ $safeNavigationMigration(case?.prosecutors) | join }}</dd>
       </div>
+      <div govukSummaryListRow>
+        <dt govukSummaryKey>Linked case(s)</dt>
+        <dd govukSummaryValue>
+          @if (case?.linkedCases?.length) {
+            <ul class="govuk-list govuk-!-margin-bottom-2">
+              @for (linkedCase of case?.linkedCases ?? []; track linkedCase.case_id) {
+                <li>
+                  @if (linkedCase.active_link) {
+                    <a class="govuk-link" [routerLink]="['/admin/case', linkedCase.case_id]">
+                      {{ linkedCase.case_number }}
+                    </a>
+                  } @else {
+                    {{ linkedCase.case_number }}
+                  }
+                </li>
+              }
+            </ul>
+          } @else {
+            -
+          }
+        </dd>
+      </div>
 
       <div govukSummaryListRow>
         <dt govukSummaryKey>Retained until</dt>

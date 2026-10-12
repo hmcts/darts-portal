@@ -1,4 +1,5 @@
 import { ReportingRestriction } from '@core-types/reporting-restriction/reporting-restriction.interface';
+import { LinkedCase } from '@core-types/linked-case/linked-case.interface';
 import { Hearing } from '@portal-types/hearing/hearing.type';
 
 export interface CaseSearchResultData {
@@ -8,6 +9,7 @@ export interface CaseSearchResultData {
   defendants?: string[];
   judges?: string[];
   reporting_restriction?: string;
+  linked_cases?: LinkedCase[];
   hearings?: Hearing[];
   is_data_anonymised?: boolean;
   data_anonymised_at?: string;
@@ -22,6 +24,7 @@ export interface CaseData {
   defenders?: string[];
   judges?: string[];
   reporting_restrictions?: ReportingRestriction[];
+  linked_cases?: LinkedCase[];
   retain_until?: string;
   prosecutors?: string[];
   retain_until_date_time?: string;

@@ -35,6 +35,24 @@
   <p class="govuk-body whitespace-pre">{{ caseFile.defenders | join: '\r\n' : '-' }}</p>
   <h2 class="govuk-heading-s">Defendant(s)</h2>
   <p class="govuk-body whitespace-pre">{{ caseFile.defendants | join: '\r\n' : '-' }}</p>
+  <h2 class="govuk-heading-s">Linked case(s)</h2>
+  @if (caseFile.linkedCases?.length) {
+    <ul class="govuk-list govuk-!-margin-bottom-2">
+      @for (linkedCase of caseFile.linkedCases; track linkedCase.case_id) {
+        <li>
+          @if (linkedCase.active_link) {
+            <a class="govuk-link" [routerLink]="['/case', linkedCase.case_id]">
+              {{ linkedCase.case_number }}
+            </a>
+          } @else {
+            {{ linkedCase.case_number }}
+          }
+        </li>
+      }
+    </ul>
+  } @else {
+    <p class="govuk-body">-</p>
+  }
 }
 
 @if (
