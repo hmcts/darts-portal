@@ -28,6 +28,23 @@ describe('CaseFileComponent', () => {
     dataAnonymisedById: 0,
     isInterpreterUsed: false,
     reportingRestrictions: [],
+    linkedCases: [
+      {
+        case_id: 21,
+        case_number: 'C20220622021',
+        active_link: true,
+      },
+      {
+        case_id: 22,
+        case_number: 'C20220622022',
+        active_link: false,
+      },
+      {
+        case_id: 23,
+        case_number: 'C20220622023',
+        active_link: true,
+      },
+    ],
   };
 
   const featureFlags = { isEnabled: jest.fn() };
@@ -112,7 +129,7 @@ describe('CaseFileComponent', () => {
       expect(retainLink).toBeFalsy();
     });
 
-    it('should not render Judge/Defendant/Prosecutor rows when isDataAnonymised is true', () => {
+    it('should not render various rows such as Judge(s), Defendant(s) etc. when isDataAnonymised is true', () => {
       featureFlags.isEnabled.mockReturnValue(true);
       const caseFile: AdminCase = {
         id: 3,
@@ -147,6 +164,7 @@ describe('CaseFileComponent', () => {
         'Defendant(s)',
         'Prosecutor(s)',
         'Defence',
+        'Linked case(s)',
         'Retained until',
       ];
       shouldBeHidden.forEach((label) => expect(labels).not.toContain(label));
@@ -274,6 +292,79 @@ describe('CaseFileComponent', () => {
         .find((row) => row.query(By.css('dt'))?.nativeElement.textContent.trim() === LABELS.judgesAndMagistrates);
 
       expect(row?.query(By.css('dd')).nativeElement.textContent.trim()).toBe('Ben Lewis, Morgan Reed');
+    });
+  });
+  
+  describe('Linked cases', () => {
+    function getLinkedCasesValue(): HTMLElement {
+      const row = fixture.debugElement
+        .queryAll(By.css('.govuk-summary-list__row'))
+        .find(
+          (row) => row.query(By.css('.govuk-summary-list__key'))?.nativeElement.textContent.trim() === 'Linked case(s)'
+        );
+
+      expect(row).toBeTruthy();
+      const value = row?.query(By.css('.govuk-summary-list__value'))?.nativeElement as HTMLElement | undefined;
+      expect(value).toBeTruthy();
+
+      return value!;
+    }
+
+    it('should display all linked case numbers', () => {
+      fixture.componentRef.setInput('caseFile', mockCaseFile);
+      fixture.detectChanges();
+
+      const items = getLinkedCasesValue().querySelectorAll('li');
+
+      expect(items.length).toBe(3);
+      expect(items[0].textContent?.trim()).toBe('C20220622021');
+      expect(items[1].textContent?.trim()).toBe('C20220622022');
+      expect(items[2].textContent?.trim()).toBe('C20220622023');
+    });
+
+    it('should display active linked cases as hyperlinks', () => {
+      fixture.componentRef.setInput('caseFile', mockCaseFile);
+      fixture.detectChanges();
+
+      const links = getLinkedCasesValue().querySelectorAll('a.govuk-link');
+
+      expect(links.length).toBe(2);
+
+      expect(links[0].textContent?.trim()).toBe('C20220622021');
+      expect(links[0].getAttribute('href')).toBe('/admin/case/21');
+
+      expect(links[1].textContent?.trim()).toBe('C20220622023');
+      expect(links[1].getAttribute('href')).toBe('/admin/case/23');
+    });
+
+    it('should display inactive linked cases as plain text', () => {
+      fixture.componentRef.setInput('caseFile', mockCaseFile);
+      fixture.detectChanges();
+
+      const items = getLinkedCasesValue().querySelectorAll('li');
+
+      expect(items[1].textContent?.trim()).toBe('C20220622022');
+      expect(items[1].querySelector('a')).toBeNull();
+    });
+
+    it('should display a hyphen when there are no linked cases', () => {
+      fixture.componentRef.setInput('caseFile', {
+        ...mockCaseFile,
+        linkedCases: [],
+      });
+      fixture.detectChanges();
+
+      expect(getLinkedCasesValue().textContent?.trim()).toBe('-');
+    });
+
+    it('should display a hyphen when linked cases are undefined', () => {
+      fixture.componentRef.setInput('caseFile', {
+        ...mockCaseFile,
+        linkedCases: undefined,
+      });
+      fixture.detectChanges();
+
+      expect(getLinkedCasesValue().textContent?.trim()).toBe('-');
     });
   });
 });

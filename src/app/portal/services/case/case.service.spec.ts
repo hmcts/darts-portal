@@ -185,6 +185,7 @@ describe('CaseService', () => {
       retainUntil: '2023-08-10T11:23:24Z',
       closedDateTime: undefined,
       reportingRestrictions: [],
+      linkedCases: [],
       retainUntilDateTime: DateTime.fromISO('2023-07-10T11:23:24Z'),
       retentionDateTimeApplied: DateTime.fromISO('2023-06-10T11:23:24Z'),
       retentionPolicyApplied: 'MANUAL',
@@ -213,6 +214,7 @@ describe('CaseService', () => {
       retainUntil: '2023-08-10T11:23:24Z',
       closedDateTime: undefined,
       reportingRestrictions: [],
+      linkedCases: [],
       retainUntilDateTime: undefined,
       retentionDateTimeApplied: undefined,
       retentionPolicyApplied: 'MANUAL',
@@ -243,11 +245,62 @@ describe('CaseService', () => {
       retainUntil: '2023-08-10T11:23:24Z',
       closedDateTime: undefined,
       reportingRestrictions: [],
+      linkedCases: [],
       retainUntilDateTime: undefined,
       retentionDateTimeApplied: undefined,
       retentionPolicyApplied: 'MANUAL',
       isDataAnonymised: false,
       dataAnonymisedAt: undefined,
+    });
+  });
+
+  describe('Linked cases mapping', () => {
+    const mockLinkedCases = [
+      {
+        case_id: 21,
+        case_number: 'C20220622021',
+        active_link: true,
+      },
+      {
+        case_id: 22,
+        case_number: 'C20220622022',
+        active_link: false,
+      },
+      {
+        case_id: 23,
+        case_number: 'C20220622023',
+        active_link: true,
+      },
+    ];
+
+    it('should map multiple linked cases including active_link', () => {
+      const data: CaseData = {
+        ...mockCaseData,
+        linked_cases: mockLinkedCases,
+      };
+
+      const result = service['mapCaseDataToCase'](data);
+      expect(result.linkedCases).toEqual(mockLinkedCases);
+    });
+
+    it('should return an empty array when linked_cases is empty', () => {
+      const data: CaseData = {
+        ...mockCaseData,
+        linked_cases: [],
+      };
+
+      const result = service['mapCaseDataToCase'](data);
+      expect(result.linkedCases).toEqual([]);
+    });
+
+    it('should return an empty array when linked_cases is undefined', () => {
+      const data: CaseData = {
+        ...mockCaseData,
+        linked_cases: undefined,
+      };
+
+      const result = service['mapCaseDataToCase'](data);
+      expect(result.linkedCases).toEqual([]);
     });
   });
 
@@ -634,6 +687,7 @@ describe('CaseService', () => {
         judges: ['JUDGE'],
         number: '1',
         reportingRestriction: 'RESTRICTION',
+        linkedCases: [],
         courtrooms: [],
         isDataAnonymised: true,
         dataAnonymisedAt: DateTime.fromISO('2023-06-10T11:23:24Z'),
@@ -661,10 +715,58 @@ describe('CaseService', () => {
         judges: ['JUDGE'],
         number: '1',
         reportingRestriction: 'RESTRICTION',
+        linkedCases: [],
         courtrooms: [],
         isDataAnonymised: false,
         dataAnonymisedAt: undefined,
       });
+    });
+
+    it('should map linked cases including active_link', () => {
+      const linkedCases = [
+        {
+          case_id: 21,
+          case_number: 'C20220622021',
+          active_link: true,
+        },
+        {
+          case_id: 22,
+          case_number: 'C20220622022',
+          active_link: false,
+        },
+        {
+          case_id: 23,
+          case_number: 'C20220622023',
+          active_link: true,
+        },
+      ];
+
+      const data: CaseSearchResultData = {
+        case_id: 24,
+        case_number: 'C20220622024',
+        courthouse: 'Reading',
+        defendants: ['Defendant Dennis'],
+        judges: ['Judge Judy'],
+        linked_cases: linkedCases,
+      };
+
+      const result = service['mapCaseDataToCaseSearchResult'](data);
+      expect(result.linkedCases).toEqual(linkedCases);
+    });
+
+    it('should return an empty array when linked_cases is empty', () => {
+      const data: CaseSearchResultData = {
+        case_id: 24,
+        case_number: 'C20220622024',
+        courthouse: 'Reading',
+        defendants: ['Defendant Dennis'],
+        judges: ['Judge Judy'],
+        linked_cases: [],
+      };
+
+      const result = service['mapCaseDataToCaseSearchResult'](data);
+
+      expect(result.linkedCases).toEqual([]);
     });
 
     describe('maps courtrooms', () => {

@@ -27,6 +27,23 @@ describe('CaseFileComponent', () => {
         event_ts: '2023-08-10T09:00:00Z',
       },
     ],
+    linkedCases: [
+      {
+        case_id: 21,
+        case_number: 'C20220622021',
+        active_link: true,
+      },
+      {
+        case_id: 22,
+        case_number: 'C20220622022',
+        active_link: false,
+      },
+      {
+        case_id: 23,
+        case_number: 'C20220622023',
+        active_link: true,
+      },
+    ],
     retainUntil: '2023-08-10T11:23:24.858Z',
   };
   const mockActivatedRoute = {
@@ -83,6 +100,73 @@ describe('CaseFileComponent', () => {
 
     it('should display summer BST date correctly, i.e. +01:00', () => {
       expectRetainedUntilDate('2030-08-10T23:23:24.858Z', '11 Aug 2030');
+    });
+  });
+
+  describe('Linked cases', () => {
+    function getLinkedCasesList(): HTMLElement | null {
+      const headings = Array.from(fixture.nativeElement.querySelectorAll('h2.govuk-heading-s')) as HTMLElement[];
+      const linkedCasesHeading = headings.find((h) => (h.textContent || '').trim() === 'Linked case(s)');
+
+      expect(linkedCasesHeading).toBeTruthy();
+      return linkedCasesHeading!.nextElementSibling as HTMLElement | null;
+    }
+
+    it('should display all linked case numbers', () => {
+      const list = getLinkedCasesList();
+
+      expect(list).toBeTruthy();
+      const items = list!.querySelectorAll('li');
+
+      expect(items.length).toBe(3);
+      expect(items[0].textContent?.trim()).toBe('C20220622021');
+      expect(items[1].textContent?.trim()).toBe('C20220622022');
+      expect(items[2].textContent?.trim()).toBe('C20220622023');
+    });
+
+    it('should display active linked cases as hyperlinks', () => {
+      const list = getLinkedCasesList();
+      const links = list!.querySelectorAll('a.govuk-link');
+
+      expect(links.length).toBe(2);
+
+      expect(links[0].textContent?.trim()).toBe('C20220622021');
+      expect(links[0].getAttribute('href')).toBe('/case/21');
+
+      expect(links[1].textContent?.trim()).toBe('C20220622023');
+      expect(links[1].getAttribute('href')).toBe('/case/23');
+    });
+
+    it('should display inactive linked cases as plain text', () => {
+      const list = getLinkedCasesList();
+      const items = list!.querySelectorAll('li');
+
+      expect(items[1].textContent?.trim()).toBe('C20220622022');
+      expect(items[1].querySelector('a')).toBeNull();
+    });
+
+    it('should display a hyphen when there are no linked cases', () => {
+      component.caseFile = {
+        ...mockCaseFile,
+        linkedCases: [],
+      };
+
+      fixture.detectChanges();
+
+      const element = getLinkedCasesList();
+      expect(element?.textContent?.trim()).toBe('-');
+    });
+
+    it('should display a hyphen when linked cases are undefined', () => {
+      component.caseFile = {
+        ...mockCaseFile,
+        linkedCases: undefined,
+      };
+
+      fixture.detectChanges();
+
+      const element = getLinkedCasesList();
+      expect(element?.textContent?.trim()).toBe('-');
     });
   });
 });
