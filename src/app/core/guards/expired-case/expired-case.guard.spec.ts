@@ -3,14 +3,14 @@ import { ActivatedRouteSnapshot, CanActivateFn, RouterStateSnapshot } from '@ang
 
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { Router } from '@angular/router';
+import { Router, UrlTree } from '@angular/router';
 import { CaseService } from '@services/case/case.service';
 import { Observable, of } from 'rxjs';
 import { expiredCaseGuard } from './expired-case.guard';
 
 describe('expiredCaseGuard', () => {
   const routerMock = {
-    navigate: jest.fn(),
+    parseUrl: jest.fn((url: string) => ({ url }) as unknown as UrlTree),
   } as unknown as Router;
 
   const mockStateRouter = {
@@ -46,16 +46,16 @@ describe('expiredCaseGuard', () => {
     expect(canActivate).toBeTruthy();
   });
 
-  it('should return false and navigate to /expired-case if case data is anonymised', () => {
+  it('should redirect to /expired-case if case data is anonymised', () => {
     prepareGuard(true);
     const routeMock = { params: { caseId: '123' } } as unknown as ActivatedRouteSnapshot;
-    let canActivate: boolean | undefined;
+    let canActivate: boolean | UrlTree | undefined;
 
-    (executeGuard(routeMock, mockStateRouter) as Observable<boolean>).subscribe((result) => {
+    (executeGuard(routeMock, mockStateRouter) as Observable<boolean | UrlTree>).subscribe((result) => {
       canActivate = result;
     });
 
-    expect(canActivate).toBeFalsy();
-    expect(routerMock.navigate).toHaveBeenCalledWith(['/expired-case']);
+    expect(routerMock.parseUrl).toHaveBeenCalledWith('/expired-case');
+    expect(canActivate).toEqual({ url: '/expired-case' });
   });
 });

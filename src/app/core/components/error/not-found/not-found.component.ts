@@ -1,13 +1,13 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { HeaderService } from '@services/header/header.service';
 
 @Component({
   selector: 'app-not-found',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [RouterModule],
   templateUrl: './not-found.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./not-found.component.scss'],
 })
 export class NotFoundComponent implements OnInit, OnDestroy {

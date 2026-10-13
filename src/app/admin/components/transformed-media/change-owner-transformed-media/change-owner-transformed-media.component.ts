@@ -1,6 +1,6 @@
 import { User } from '@admin-types/index';
 import { AsyncPipe } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AutoCompleteComponent, AutoCompleteItem } from '@common/auto-complete/auto-complete.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -17,6 +17,7 @@ import { map } from 'rxjs';
   standalone: true,
   imports: [GovukHeadingComponent, AutoCompleteComponent, AsyncPipe, LoadingComponent, ValidationErrorSummaryComponent],
   templateUrl: './change-owner-transformed-media.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './change-owner-transformed-media.component.scss',
 })
 export class ChangeOwnerTransformedMediaComponent implements OnInit {

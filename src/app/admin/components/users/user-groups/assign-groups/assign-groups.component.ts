@@ -1,6 +1,6 @@
 import { SecurityGroup, User } from '@admin-types/index';
 import { AsyncPipe } from '@angular/common';
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { LoadingComponent } from '@common/loading/loading.component';
@@ -15,6 +15,7 @@ import { SecurityGroupSelectorComponent, UserGroup } from './security-group-sele
   standalone: true,
   imports: [SecurityGroupSelectorComponent, GovukHeadingComponent, AsyncPipe, LoadingComponent],
   templateUrl: './assign-groups.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './assign-groups.component.scss',
 })
 export class AssignGroupsComponent implements OnInit, OnDestroy {
@@ -23,7 +24,7 @@ export class AssignGroupsComponent implements OnInit, OnDestroy {
   headerService = inject(HeaderService);
   groupsService = inject(GroupsService);
 
-  user = this.router.getCurrentNavigation()?.extras.state?.user as User;
+  user = this.router.currentNavigation()?.extras.state?.user as User;
 
   // store the hidden groups so we can put them back in when assigning
   usersHiddenGroups = this.user?.securityGroups?.filter((group) => !group.role?.displayState) ?? [];

@@ -1,7 +1,7 @@
 import { Event } from '@admin-types/events';
 import { AssociatedCase } from '@admin-types/transformed-media/associated-case';
 import { AssociatedHearing } from '@admin-types/transformed-media/associated-hearing';
-import { Component, inject, input, OnInit } from '@angular/core';
+import { Component, inject, input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { AssociatedCasesTableComponent } from '@common/associated-cases-table/associated-cases-table.component';
 import { AssociatedHearingsTableComponent } from '@common/associated-hearings-table/associated-hearings-table.component';
@@ -13,6 +13,7 @@ import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
   standalone: true,
   imports: [LuxonDatePipe, GovukHeadingComponent, AssociatedCasesTableComponent, AssociatedHearingsTableComponent],
   templateUrl: './basic-event-details.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './basic-event-details.component.scss',
 })
 export class BasicEventDetailsComponent implements OnInit {

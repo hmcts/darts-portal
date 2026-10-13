@@ -1,5 +1,13 @@
-import { CommonModule } from '@angular/common';
-import { AfterViewChecked, Component, ElementRef, EventEmitter, inject, Input, Output } from '@angular/core';
+import {
+  AfterViewChecked,
+  Component,
+  ElementRef,
+  EventEmitter,
+  inject,
+  Input,
+  Output,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DatePicker } from '@ministryofjustice/frontend';
 import { DateTime } from 'luxon';
@@ -7,8 +15,9 @@ import { DateTime } from 'luxon';
 @Component({
   selector: 'app-datepicker',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [ReactiveFormsModule, FormsModule],
   templateUrl: './datepicker.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./datepicker.component.scss'],
 })
 export class DatepickerComponent implements AfterViewChecked {

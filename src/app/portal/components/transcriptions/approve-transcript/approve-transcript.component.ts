@@ -1,5 +1,5 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
@@ -31,6 +31,7 @@ import { ApproveTranscriptButtonsComponent } from './approve-transcript-buttons/
     BreadcrumbDirective,
   ],
   templateUrl: './approve-transcript.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './approve-transcript.component.scss',
 })
 export class ApproveTranscriptComponent implements OnInit, OnDestroy {

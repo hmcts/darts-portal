@@ -1,5 +1,5 @@
 import { AutomatedTaskDetails, AutomatedTaskDetailsState } from '@admin-types/automated-task/automated-task';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, NonNullableFormBuilder, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -77,6 +77,7 @@ export type EditType = keyof typeof EDIT_PROPERTY_MAP;
     DatepickerComponent,
   ],
   templateUrl: './edit-automated-task.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './edit-automated-task.component.scss',
 })
 export class EditAutomatedTaskComponent {
@@ -87,7 +88,7 @@ export class EditAutomatedTaskComponent {
   formService = inject(FormService);
 
   task: AutomatedTaskDetails;
-  taskState: AutomatedTaskDetailsState = this.router.getCurrentNavigation()?.extras.state?.automatedTask;
+  taskState: AutomatedTaskDetailsState = this.router.currentNavigation()?.extras.state?.automatedTask;
   edit: EditType;
   dateLabel = '';
   validationErrorSummary: ErrorSummaryEntry[] = [];
@@ -97,7 +98,7 @@ export class EditAutomatedTaskComponent {
 
   constructor() {
     this.task = this.parseDateValues(this.taskState);
-    this.edit = this.router.getCurrentNavigation()?.extras.state?.edit;
+    this.edit = this.router.currentNavigation()?.extras.state?.edit;
 
     if (!this.taskState || !this.edit) {
       this.router.navigate(['../'], { relativeTo: this.route });

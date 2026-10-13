@@ -152,7 +152,7 @@
       } @else {
         <a
           class="govuk-link"
-          [routerLink]="['/admin/users', audioFile.createdBy?.id]"
+          [routerLink]="['/admin/users', $safeNavigationMigration(audioFile.createdBy?.id)]"
           [queryParams]="{ backUrl: '/admin/audio-file/' + audioFile.id }"
         >
           {{ audioFile.createdBy?.fullName }}
@@ -174,7 +174,7 @@
       } @else {
         <a
           class="govuk-link"
-          [routerLink]="['/admin/users', audioFile.lastModifiedBy?.id]"
+          [routerLink]="['/admin/users', $safeNavigationMigration(audioFile.lastModifiedBy?.id)]"
           [queryParams]="{ backUrl: '/admin/audio-file/' + audioFile.id }"
         >
           {{ audioFile.lastModifiedBy?.fullName }}

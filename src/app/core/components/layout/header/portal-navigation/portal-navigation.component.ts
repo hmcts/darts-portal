@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CountNotificationService } from '@services/count-notification/count-notification.service';
 import { UserService } from '@services/user/user.service';
@@ -10,6 +10,7 @@ import { map, shareReplay } from 'rxjs';
   standalone: true,
   imports: [RouterLink, AsyncPipe, RouterLinkActive],
   templateUrl: './portal-navigation.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './portal-navigation.component.scss',
 })
 export class PortalNavigationComponent {

@@ -1,7 +1,7 @@
-<ng-container *ngIf="!rows.length">
+@if (!rows.length) {
   <h2 class="govuk-heading-m">There are no events or audio for this hearing</h2>
-</ng-container>
-<ng-container *ngIf="rows.length">
+}
+@if (rows.length) {
   <fieldset class="govuk-fieldset" aria-describedby="changedName-hint">
     <legend id="changedName-hint" class="govuk-hint">Select events to include in requests</legend>
     <div class="govuk-radios govuk-radios--inline govuk-radios--small" data-module="govuk-radios">
@@ -29,7 +29,6 @@
       </div>
     </div>
   </fieldset>
-
   <app-data-table
     id="eventAudioTable"
     [rows]="filteredRows"
@@ -43,7 +42,7 @@
     [sortAndPaginateOnRowsChanged]="false"
   >
     <ng-template [tableRowTemplate]="filteredRows" let-row let-index>
-      <ng-container *ngIf="row.type === 'audio'">
+      @if (row.type === 'audio') {
         <td class="audio-row">
           {{ row.timestamp | date: 'HH:mm:ss' }} - {{ row.media_end_timestamp | date: 'HH:mm:ss' }}
         </td>
@@ -81,11 +80,10 @@
             >
           }
         </td>
-      </ng-container>
-      <ng-container *ngIf="row.type === 'event'">
+      }
+      @if (row.type === 'event') {
         <td>{{ row.timestamp | date: 'HH:mm:ss' }}</td>
         <td>{{ row.name }}</td>
-
         <td>
           @if (row.is_data_anonymised) {
             <p class="govuk-hint no-margin">The event text has been anonymised in line with HMCTS policy.</p>
@@ -93,7 +91,7 @@
             {{ row.text }}
           }
         </td>
-      </ng-container>
+      }
     </ng-template>
   </app-data-table>
-</ng-container>
+}

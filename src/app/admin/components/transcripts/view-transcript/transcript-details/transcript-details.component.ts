@@ -1,5 +1,5 @@
 import { TranscriptionAdminDetails } from '@admin-types/transcription/transcription-details';
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, inject, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { GovukSummaryListDirectives } from '@directives/govuk-summary-list';
@@ -14,6 +14,7 @@ import { UserService } from '@services/user/user.service';
   standalone: true,
   templateUrl: './transcript-details.component.html',
   styleUrl: './transcript-details.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [GovukHeadingComponent, JoinPipe, RouterLink, GovukSummaryListDirectives, LuxonDatePipe],
 })
 export class TranscriptDetailsComponent {

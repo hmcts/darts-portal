@@ -1,5 +1,5 @@
 import { AsyncPipe, Location } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -24,6 +24,7 @@ const tabUrlMap: { [key: string]: string } = {
   standalone: true,
   templateUrl: './system-configuration.component.html',
   styleUrl: './system-configuration.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     GovukHeadingComponent,
     TabsComponent,

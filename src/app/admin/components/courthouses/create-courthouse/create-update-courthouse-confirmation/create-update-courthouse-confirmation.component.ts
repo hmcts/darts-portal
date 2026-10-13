@@ -1,6 +1,6 @@
 import { Region } from '@admin-types/courthouses/region.interface';
 import { CreateUpdateCourthouseFormValues, SecurityGroup } from '@admin-types/index';
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
 
@@ -9,6 +9,7 @@ import { DetailsTableComponent } from '@common/details-table/details-table.compo
   standalone: true,
   imports: [DetailsTableComponent],
   templateUrl: './create-update-courthouse-confirmation.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './create-update-courthouse-confirmation.component.scss',
 })
 export class CreateUpdateCourthouseConfirmationComponent {

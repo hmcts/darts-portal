@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DeleteComponent } from '@common/delete/delete.component';
@@ -14,6 +14,7 @@ import { EventMappingsService } from '@services/event-mappings/event-mappings.se
   standalone: true,
   templateUrl: './delete-event-mapping.component.html',
   styleUrl: './delete-event-mapping.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DeleteComponent,
     DataTableComponent,

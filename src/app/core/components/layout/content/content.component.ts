@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { initAll } from 'govuk-frontend';
 import { RouterOutlet } from '@angular/router';
 
@@ -7,6 +7,7 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './content.component.html',
   styleUrls: ['./content.component.css'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [RouterOutlet],
 })
 export class ContentComponent implements OnInit {

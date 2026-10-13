@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, numberAttribute } from '@angular/core';
+import { Component, computed, inject, input, numberAttribute, ChangeDetectionStrategy } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
 import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
@@ -29,6 +29,7 @@ import { BasicEventDetailsComponent } from '../basic-event-details/basic-event-d
     GovukBannerComponent,
   ],
   templateUrl: './view-event.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './view-event.component.scss',
 })
 export class ViewEventComponent {

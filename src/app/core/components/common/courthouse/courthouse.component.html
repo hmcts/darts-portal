@@ -1,29 +1,29 @@
 <label class="govuk-label" for="courthouse">{{ label }}</label>
 
 <!-- validation errors -->
-<div *ngIf="isInvalid" id="courthouse-errors">
-  <p *ngFor="let error of errors" class="govuk-error-message">
-    <span class="govuk-visually-hidden">Error:</span> {{ error }}
-  </p>
-</div>
+@if (isInvalid) {
+  <div id="courthouse-errors">
+    @for (error of errors; track error) {
+      <p class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> {{ error }}</p>
+    }
+  </div>
+}
 
 <!-- autocomplete -->
-<div
-  *ngIf="courthouses.length"
-  #courthouseAutocomplete
-  id="courthouse-autocomplete-container"
-  class="govuk-input--width-20"
-></div>
+@if (courthouses.length) {
+  <div #courthouseAutocomplete id="courthouse-autocomplete-container" class="govuk-input--width-20"></div>
+}
 
 <!-- fall back to standard input if there is no courthouses provided-->
-<input
-  *ngIf="!courthouses.length"
-  class="govuk-input govuk-input--width-10"
-  [class.govuk-input--error]="isInvalid"
-  id="courthouse"
-  name="courthouse"
-  type="text"
-  [value]="courthouse"
-  aria-describedby="courthouse-hint"
-  (keyup)="courthouseSelect.emit($any($event).target.value)"
-/>
+@if (!courthouses.length) {
+  <input
+    class="govuk-input govuk-input--width-10"
+    [class.govuk-input--error]="isInvalid"
+    id="courthouse"
+    name="courthouse"
+    type="text"
+    [value]="courthouse"
+    aria-describedby="courthouse-hint"
+    (keyup)="courthouseSelect.emit($any($event).target.value)"
+  />
+}

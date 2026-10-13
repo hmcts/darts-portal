@@ -1,5 +1,5 @@
 import { AutomatedTask, AutomatedTaskDetails } from '@admin-types/automated-task/automated-task';
-import { Component, inject, input, OnDestroy, signal } from '@angular/core';
+import { Component, inject, input, OnDestroy, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -24,6 +24,7 @@ import { AutomatedTaskStatusComponent } from '../automated-task-status/automated
     GovukSummaryListDirectives,
   ],
   templateUrl: './view-automated-tasks.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './view-automated-tasks.component.scss',
 })
 export class ViewAutomatedTasksComponent implements OnDestroy {

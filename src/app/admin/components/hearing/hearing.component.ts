@@ -2,7 +2,7 @@ import { HearingAudio } from '@admin-types/hearing/hearing-audio.type';
 import { AdminHearingEvent } from '@admin-types/hearing/hearing-events.type';
 import { AdminHearing } from '@admin-types/hearing/hearing.type';
 import { AsyncPipe } from '@angular/common';
-import { Component, inject, input, numberAttribute, OnInit } from '@angular/core';
+import { Component, inject, input, numberAttribute, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { TabsComponent } from '@common/tabs/tabs.component';
 import { TabDirective } from '@directives/tab.directive';
@@ -30,6 +30,7 @@ import { HearingTranscriptsComponent } from './hearing-file/hearing-transcripts/
     HearingTranscriptsComponent,
   ],
   templateUrl: './hearing.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './hearing.component.scss',
 })
 export class HearingComponent implements OnInit {

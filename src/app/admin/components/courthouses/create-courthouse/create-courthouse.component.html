@@ -1,14 +1,11 @@
-<ng-container *ngIf="vm$ | async as vm; else loading">
+@if (vm$ | async; as vm) {
   <app-validation-error-summary [errors]="errors" />
-
   @if (isConfirmation) {
     <a href="javascript:void(0)" (click)="onBack()" class="govuk-back-link">Back</a>
   }
-
   <app-govuk-heading caption="Create courthouse">
     {{ !this.isConfirmation ? 'Courthouse' : 'Check' }} details
   </app-govuk-heading>
-
   <app-create-update-courthouse-form
     (submitForm)="onSubmit($event)"
     (errors)="errors = $event"
@@ -18,7 +15,6 @@
     [companies]="vm.companies"
     [courthouses]="vm.courthouses"
   />
-
   <app-create-update-courthouse-confirmation
     [values]="formValues"
     (confirm)="onConfirmCourthouseDetails()"
@@ -28,7 +24,6 @@
     [regions]="vm.regions"
     [companies]="vm.companies"
   />
-</ng-container>
-<ng-template #loading>
+} @else {
   <app-loading text="Loading..."></app-loading>
-</ng-template>
+}

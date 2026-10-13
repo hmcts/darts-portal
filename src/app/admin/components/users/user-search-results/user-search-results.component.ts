@@ -1,5 +1,5 @@
 import { User } from '@admin-types/index';
-import { Component, input } from '@angular/core';
+import { Component, input, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukTagComponent } from '@common/govuk-tag/govuk-tag.component';
@@ -11,6 +11,7 @@ import { TableRowTemplateDirective } from '@directives/table-row-template.direct
   standalone: true,
   imports: [DataTableComponent, TableRowTemplateDirective, RouterLink, GovukTagComponent],
   templateUrl: './user-search-results.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './user-search-results.component.scss',
 })
 export class UserSearchResultsComponent {

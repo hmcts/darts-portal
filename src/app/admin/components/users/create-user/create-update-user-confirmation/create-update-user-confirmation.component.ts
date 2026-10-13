@@ -1,5 +1,5 @@
 import { CreateUpdateUserFormValues } from '@admin-types/index';
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, ChangeDetectionStrategy } from '@angular/core';
 import { DetailsTableComponent } from '@common/details-table/details-table.component';
 
 type userDetailsVM = {
@@ -13,6 +13,7 @@ type userDetailsVM = {
   standalone: true,
   imports: [DetailsTableComponent],
   templateUrl: './create-update-user-confirmation.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './create-update-user-confirmation.component.scss',
 })
 export class CreateUpdateUserConfirmationComponent implements OnChanges {

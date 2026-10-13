@@ -1,5 +1,5 @@
 import { SecurityGroup, User } from '@admin-types/index';
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { HeaderService } from '@services/header/header.service';
@@ -10,6 +10,7 @@ import { UserAdminService } from '@services/user-admin/user-admin.service';
   standalone: true,
   imports: [GovukHeadingComponent],
   templateUrl: './remove-groups.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './remove-groups.component.scss',
 })
 export class RemoveGroupsComponent {
@@ -17,8 +18,8 @@ export class RemoveGroupsComponent {
   userAdminService = inject(UserAdminService);
   HeaderService = inject(HeaderService);
 
-  user = this.router.getCurrentNavigation()?.extras?.state?.user as User;
-  selectedGroups = this.router.getCurrentNavigation()?.extras?.state?.selectedGroups as SecurityGroup[];
+  user = this.router.currentNavigation()?.extras?.state?.user as User;
+  selectedGroups = this.router.currentNavigation()?.extras?.state?.selectedGroups as SecurityGroup[];
 
   constructor() {
     if (!this.user?.securityGroups || !this.selectedGroups) {

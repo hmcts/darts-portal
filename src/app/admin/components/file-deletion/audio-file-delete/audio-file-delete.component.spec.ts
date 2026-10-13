@@ -1,3 +1,4 @@
+import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FileHide } from '@admin-types/hidden-reasons/file-hide';
@@ -77,9 +78,10 @@ describe('AudioFileDeleteComponent', () => {
 
     router = TestBed.inject(Router);
 
-    jest
-      .spyOn(router, 'getCurrentNavigation')
-      .mockReturnValue({ extras: { state: { isPermitted: true, file: audioFileState } } } as unknown as Navigation);
+    Object.defineProperty(router, 'currentNavigation', {
+      value: signal({ extras: { state: { isPermitted: true, file: audioFileState } } } as unknown as Navigation),
+      configurable: true,
+    });
 
     fixture = TestBed.createComponent(AudioFileDeleteComponent);
     component = fixture.componentInstance;

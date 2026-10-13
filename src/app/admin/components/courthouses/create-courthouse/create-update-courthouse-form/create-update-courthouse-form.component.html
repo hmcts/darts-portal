@@ -24,7 +24,7 @@
         id="courthouse-name"
         formControlName="courthouseName"
         [class.govuk-input--error]="isControlInvalid(courthouseNameControl)"
-        (input)="courthouseNameControl.setValue($any($event.target).value?.toUpperCase())"
+        (input)="courthouseNameControl.setValue($safeNavigationMigration($any($event.target).value?.toUpperCase()))"
       />
     }
   </div>

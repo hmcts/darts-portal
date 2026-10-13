@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -21,6 +21,7 @@ import { NodeRegistrationFormComponent } from './node-registration-form/node-reg
     NodeRegistrationFormComponent,
   ],
   templateUrl: './node-registrations.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './node-registrations.component.scss',
 })
 export class NodeRegistrationsComponent {

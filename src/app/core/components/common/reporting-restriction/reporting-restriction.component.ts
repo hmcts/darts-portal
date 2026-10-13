@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { GovukDetailsComponent } from '@common/govuk-details/govuk-details.component';
 import { ReportingRestriction } from '@core-types/index';
 
@@ -8,6 +8,7 @@ import { ReportingRestriction } from '@core-types/index';
   standalone: true,
   imports: [GovukDetailsComponent, DatePipe],
   templateUrl: './reporting-restriction.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./reporting-restriction.component.scss'],
 })
 export class ReportingRestrictionComponent implements OnInit {

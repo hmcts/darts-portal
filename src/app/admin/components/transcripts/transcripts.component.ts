@@ -1,6 +1,6 @@
 import { TranscriptionSearchFormValues } from '@admin-types/transcription';
 import { AsyncPipe } from '@angular/common';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -24,6 +24,7 @@ import { SearchTranscriptsResultsComponent } from './search-transcripts-results/
   standalone: true,
   templateUrl: './transcripts.component.html',
   styleUrl: './transcripts.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     GovukHeadingComponent,
     SearchTranscriptsFormComponent,

@@ -1,5 +1,16 @@
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
-import { Component, computed, DestroyRef, inject, input, model, OnInit, output, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  DestroyRef,
+  inject,
+  input,
+  model,
+  OnInit,
+  output,
+  signal,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AutoCompleteComponent, AutoCompleteItem } from '@common/auto-complete/auto-complete.component';
@@ -24,6 +35,7 @@ import { transformedMediaSearchDateValidators } from 'src/app/admin/components/t
   standalone: true,
   imports: [ReactiveFormsModule, SpecificOrRangeDatePickerComponent, AutoCompleteComponent],
   templateUrl: './case-search-form.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './case-search-form.component.scss',
 })
 export class CaseSearchFormComponent implements OnInit {

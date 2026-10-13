@@ -1,5 +1,5 @@
 import { Transcription } from '@admin-types/index';
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { GovukTagComponent } from '@common/govuk-tag/govuk-tag.component';
@@ -14,6 +14,7 @@ import { TranscriptStatus } from '@portal-types/index';
   standalone: true,
   imports: [DataTableComponent, TableRowTemplateDirective, LuxonDatePipe, RouterLink, GovukTagComponent],
   templateUrl: './search-transcripts-results.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './search-transcripts-results.component.scss',
 })
 export class SearchTranscriptsResultsComponent implements OnChanges {

@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
+import { Component, DestroyRef, Input, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlContainer, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { DatepickerComponent } from '@common/datepicker/datepicker.component';
@@ -10,6 +10,7 @@ import { TranscriptSearchFormErrorMessages } from '@constants/transcript-search-
   standalone: true,
   imports: [ReactiveFormsModule, DatepickerComponent, NgClass],
   templateUrl: './specific-or-range-date-picker.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './specific-or-range-date-picker.component.scss',
 })
 export class SpecificOrRangeDatePickerComponent implements OnInit {

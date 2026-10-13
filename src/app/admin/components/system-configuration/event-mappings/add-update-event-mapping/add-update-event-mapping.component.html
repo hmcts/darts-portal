@@ -119,7 +119,9 @@
       <div class="govuk-form-group">
         @if (isRevision) {
           <label class="govuk-label govuk-label--s">Date created</label>
-          <p id="read-only-created" class="govuk-body">{{ eventMapping?.createdAt | luxonDate: 'dd MMM yyyy' }}</p>
+          <p id="read-only-created" class="govuk-body">
+            {{ $safeNavigationMigration(eventMapping?.createdAt) | luxonDate: 'dd MMM yyyy' }}
+          </p>
         } @else {
           <div class="govuk-checkboxes" data-module="govuk-checkboxes">
             <div class="govuk-checkboxes__item">

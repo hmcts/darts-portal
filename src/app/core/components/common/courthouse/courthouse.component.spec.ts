@@ -51,7 +51,7 @@ describe('CourthouseComponent', () => {
       fixture.detectChanges();
 
       const error = fixture.debugElement.query(By.css('#courthouse-errors')).nativeElement;
-      expect(error.textContent).toBe('Error: Courthouse error ');
+      expect(error.textContent).toBe('Error: Courthouse error');
     });
 
     it('shows multiple errors', () => {
@@ -64,8 +64,8 @@ describe('CourthouseComponent', () => {
       const firstError = error[0].nativeElement.textContent;
       const secondError = error[1].nativeElement.textContent;
 
-      expect(firstError).toBe('Error: Courthouse error ');
-      expect(secondError).toBe('Error: Another error ');
+      expect(firstError).toBe('Error: Courthouse error');
+      expect(secondError).toBe('Error: Another error');
     });
 
     it('does not show error unless invalid', () => {

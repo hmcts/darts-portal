@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TimelineItem } from '@core-types/index';
 import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
@@ -8,6 +8,7 @@ import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
   standalone: true,
   imports: [LuxonDatePipe, RouterLink],
   templateUrl: './timeline.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './timeline.component.scss',
 })
 export class TimelineComponent {

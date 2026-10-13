@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, inject } from '@angular/core';
+import { Component, OnDestroy, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { BreadcrumbComponent } from '@common/breadcrumb/breadcrumb.component';
@@ -34,6 +34,7 @@ import { tap } from 'rxjs/internal/operators/tap';
     LoadingComponent,
   ],
   templateUrl: './assign-transcript.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './assign-transcript.component.scss',
 })
 export class AssignTranscriptComponent implements OnDestroy {

@@ -1,5 +1,5 @@
 import { TranscriptionDocumentForDeletion } from '@admin-types/file-deletion';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { ValidationErrorSummaryComponent } from '@common/validation-error-summary/validation-error-summary.component';
@@ -21,6 +21,7 @@ import { TranscriptsForDeletionComponent } from '../transcripts-for-deletion/tra
     ValidationErrorSummaryComponent,
   ],
   templateUrl: './transcript-file-delete.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './transcript-file-delete.component.scss',
 })
 export class TranscriptFileDeleteComponent implements OnInit {
@@ -30,7 +31,7 @@ export class TranscriptFileDeleteComponent implements OnInit {
   fileDeletionService = inject(FileDeletionService);
   transcriptionService = inject(TranscriptionAdminService);
 
-  transcriptFileState = this.router.getCurrentNavigation()?.extras?.state?.file;
+  transcriptFileState = this.router.currentNavigation()?.extras?.state?.file;
   transcriptFile: TranscriptionDocumentForDeletion | null = null;
 
   errorSummary: { fieldId: string; message: string }[] = [];

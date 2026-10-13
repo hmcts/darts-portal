@@ -1,5 +1,5 @@
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, input, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DatatableColumn } from '@core-types/index';
@@ -10,6 +10,7 @@ import { TableRowTemplateDirective } from '@directives/table-row-template.direct
   standalone: true,
   templateUrl: './courthouse-search-results.component.html',
   styleUrl: './courthouse-search-results.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [DataTableComponent, RouterLink, TableRowTemplateDirective],
 })
 export class CourthouseSearchResultsComponent {

@@ -1,3 +1,4 @@
+import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { User } from '@admin-types/index';
@@ -30,7 +31,10 @@ describe('EditUserComponent', () => {
 
     router = TestBed.inject(Router);
 
-    jest.spyOn(router, 'getCurrentNavigation').mockReturnValue(mockNavigationExtras as unknown as Navigation);
+    Object.defineProperty(router, 'currentNavigation', {
+      value: signal(mockNavigationExtras as unknown as Navigation),
+      configurable: true,
+    });
 
     fixture = TestBed.createComponent(EditUserComponent);
     component = fixture.componentInstance;

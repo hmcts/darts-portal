@@ -1,5 +1,5 @@
 import { CommonModule, KeyValue } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
 import { DetailsTableLink } from '@core-types/details-table/details-table-array.interface';
@@ -23,6 +23,7 @@ export type SummaryListAcion = {
   standalone: true,
   imports: [CommonModule, RouterLink, GovukHeadingComponent],
   templateUrl: './details-table.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './details-table.component.scss',
 })
 export class DetailsTableComponent<T extends object> {

@@ -1,3 +1,4 @@
+import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AssociatedMedia } from '@admin-types/transformed-media/associated-media';
@@ -111,9 +112,10 @@ describe('FileUnhideOrUndeleteComponent', () => {
 
     router = TestBed.inject(Router);
 
-    jest
-      .spyOn(router, 'getCurrentNavigation')
-      .mockReturnValue({ extras: { state: { media: media } } } as unknown as Navigation);
+    Object.defineProperty(router, 'currentNavigation', {
+      value: signal({ extras: { state: { media: media } } } as unknown as Navigation),
+      configurable: true,
+    });
 
     fixture = TestBed.createComponent(FileUnhideOrUndeleteComponent);
     component = fixture.componentInstance;

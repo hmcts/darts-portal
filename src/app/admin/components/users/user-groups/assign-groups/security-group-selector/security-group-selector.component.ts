@@ -1,5 +1,14 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, DestroyRef, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  inject,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { CheckboxListItem } from '@common/filters/checkbox-list/checkbox-list-item.type';
@@ -23,6 +32,7 @@ export type UserGroup = { id: number; name: string; role: string; displayState: 
     AsyncPipe,
   ],
   templateUrl: './security-group-selector.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './security-group-selector.component.scss',
 })
 export class SecurityGroupSelectorComponent implements OnInit {

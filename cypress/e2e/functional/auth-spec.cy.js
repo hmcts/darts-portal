@@ -35,4 +35,22 @@ describe('Login', () => {
     cy.visit('/search');
     cy.url().should('include', '/login');
   });
+
+  it('redirects a non-admin user from an admin route to page not found', () => {
+    cy.login('requester');
+
+    cy.visit('/admin/users/create');
+
+    cy.url().should('include', '/page-not-found');
+    cy.get('h1').should('contain', 'Page not found');
+  });
+
+  it('redirects a user without the required role to forbidden', () => {
+    cy.login('requester');
+
+    cy.visit('/work');
+
+    cy.url().should('include', '/forbidden');
+    cy.get('#forbidden-heading').should('contain', 'You do not have permission to access this page');
+  });
 });

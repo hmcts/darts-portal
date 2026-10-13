@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DeleteComponent } from '@common/delete/delete.component';
@@ -46,6 +46,7 @@ import { RequestPlaybackAudioComponent } from './request-playback-audio/request-
   standalone: true,
   templateUrl: './hearing.component.html',
   styleUrls: ['./hearing.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     CommonModule,
     HearingFileComponent,

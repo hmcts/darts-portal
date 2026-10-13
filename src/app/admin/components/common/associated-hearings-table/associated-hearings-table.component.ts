@@ -1,5 +1,5 @@
 import { AssociatedHearing } from '@admin-types/transformed-media/associated-hearing';
-import { Component, input } from '@angular/core';
+import { Component, input, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataTableComponent } from '@common/data-table/data-table.component';
 import { DatatableColumn } from '@core-types/index';
@@ -11,6 +11,7 @@ import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
   standalone: true,
   imports: [DataTableComponent, TableBodyTemplateDirective, LuxonDatePipe, RouterLink],
   templateUrl: './associated-hearings-table.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './associated-hearings-table.component.scss',
 })
 export class AssociatedHearingsTableComponent {

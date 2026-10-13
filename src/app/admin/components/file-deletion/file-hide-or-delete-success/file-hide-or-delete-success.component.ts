@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
 import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.component';
@@ -8,6 +8,7 @@ import { GovukHeadingComponent } from '@common/govuk-heading/govuk-heading.compo
   standalone: true,
   templateUrl: './file-hide-or-delete-success.component.html',
   styleUrl: './file-hide-or-delete-success.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [GovukBannerComponent, GovukHeadingComponent],
 })
 export class FileHideOrDeleteSuccessComponent {

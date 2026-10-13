@@ -1,5 +1,5 @@
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
-import { Component, computed, inject, input, model, OnInit, output } from '@angular/core';
+import { Component, computed, inject, input, model, OnInit, output, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { AutoCompleteComponent, AutoCompleteItem } from '@common/auto-complete/auto-complete.component';
 import { SpecificOrRangeDatePickerComponent } from '@common/specific-or-range-date-picker/specific-or-range-date-picker.component';
@@ -32,6 +32,7 @@ type AdminSearchFormControl = keyof typeof AdminSearchFormErrorMessages;
   standalone: true,
   imports: [AutoCompleteComponent, SpecificOrRangeDatePickerComponent, ReactiveFormsModule],
   templateUrl: './search-form.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './search-form.component.scss',
 })
 export class SearchFormComponent implements OnInit {

@@ -10,7 +10,6 @@ export const manualDeletionGuard: CanActivateFn = () => {
   if (featureFlagService.isManualDeletionEnabled()) {
     return true;
   } else {
-    router.navigateByUrl('page-not-found');
-    return false;
+    return router.parseUrl('/page-not-found');
   }
 };

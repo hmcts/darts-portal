@@ -1,5 +1,14 @@
 import { NgClass } from '@angular/common';
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  inject,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { HeaderService } from '@services/header/header.service';
 
 @Component({
@@ -7,6 +16,7 @@ import { HeaderService } from '@services/header/header.service';
   standalone: true,
   imports: [NgClass],
   templateUrl: './delete.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './delete.component.scss',
 })
 export class DeleteComponent implements OnInit, OnDestroy {

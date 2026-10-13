@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, effect, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { GovukTagComponent } from '@common/govuk-tag/govuk-tag.component';
@@ -26,6 +26,7 @@ import { BehaviorSubject, combineLatest, map, shareReplay, switchMap } from 'rxj
   templateUrl: './transcriptions.component.html',
   styleUrls: ['./transcriptions.component.scss'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DataTableComponent,
     LoadingComponent,

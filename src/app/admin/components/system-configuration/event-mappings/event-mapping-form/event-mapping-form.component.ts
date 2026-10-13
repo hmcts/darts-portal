@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { HumanizeInitCapPipe } from '@pipes/humanizeInitCap';
 
@@ -15,6 +15,7 @@ export type EventMappingForm = {
   standalone: true,
   templateUrl: './event-mapping-form.component.html',
   styleUrl: './event-mapping-form.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ReactiveFormsModule, HumanizeInitCapPipe],
 })
 export class EventMappingFormComponent implements OnInit {

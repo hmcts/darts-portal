@@ -1,12 +1,14 @@
-<ng-container *ngIf="error$ | async as error; else defaultContent">
+@if (error$ | async; as error) {
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 *ngIf="!error.display || error.display === 'PAGE'" class="govuk-heading-l" role="alert">
-            There is a problem with the service
-          </h1>
-          <h2 *ngIf="error.display === 'COMPONENT'" class="govuk-heading-l" role="alert">An error has occurred.</h2>
+          @if (!error.display || error.display === 'PAGE') {
+            <h1 class="govuk-heading-l" role="alert">There is a problem with the service</h1>
+          }
+          @if (error.display === 'COMPONENT') {
+            <h2 class="govuk-heading-l" role="alert">An error has occurred.</h2>
+          }
           <!-- We should add unique identification for support requests later on -->
           <p class="govuk-body">
             Try again or
@@ -17,8 +19,7 @@
       </div>
     </main>
   </div>
-</ng-container>
-<ng-template #defaultContent>
+} @else {
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
       <div class="govuk-grid-row">
@@ -33,4 +34,4 @@
       </div>
     </main>
   </div>
-</ng-template>
+}

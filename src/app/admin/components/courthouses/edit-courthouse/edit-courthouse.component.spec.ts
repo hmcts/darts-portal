@@ -1,3 +1,4 @@
+import { signal } from '@angular/core';
 import { Courthouse } from '@admin-types/courthouses/courthouse.type';
 import { Region } from '@admin-types/courthouses/region.interface';
 import { SecurityGroup } from '@admin-types/index';
@@ -34,7 +35,10 @@ describe('EditCourthouseComponent', () => {
 
     router = TestBed.inject(Router);
 
-    jest.spyOn(router, 'getCurrentNavigation').mockReturnValue(mockNavigationExtras as unknown as Navigation);
+    Object.defineProperty(router, 'currentNavigation', {
+      value: signal(mockNavigationExtras as unknown as Navigation),
+      configurable: true,
+    });
 
     fixture = TestBed.createComponent(EditCourthouseComponent);
     component = fixture.componentInstance;

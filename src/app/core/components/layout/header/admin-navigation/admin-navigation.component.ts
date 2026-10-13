@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { UserService } from '@services/user/user.service';
 import { FeatureFlagService } from '@services/app-config/feature-flag.service';
@@ -8,6 +8,7 @@ import { FeatureFlagService } from '@services/app-config/feature-flag.service';
   standalone: true,
   imports: [RouterLink, RouterLinkActive],
   templateUrl: './admin-navigation.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './admin-navigation.component.scss',
 })
 export class AdminNavigationComponent {
