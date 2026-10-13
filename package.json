@@ -83,7 +83,7 @@
     "@angular/*": "20.2.7",
     "micromatch": "^4.0.8",
     "send": "^1.0.0",
-    "cookie": "^1.0.0",
+    "cookie": "^2.0.0",
     "express/path-to-regexp": "^8.0.0",
     "body-parser@^2.2.0": "2.3.0",
     "formidable": "^3.5.3",
