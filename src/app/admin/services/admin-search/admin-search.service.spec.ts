@@ -103,6 +103,7 @@ describe('AdminSearchService', () => {
             courtrooms: ['Courtroom 2'],
             judges: ['Judge 3'],
             defendants: ['Defendant 3'],
+            linkedCases: [],
           },
         ]);
       });
@@ -112,6 +113,73 @@ describe('AdminSearchService', () => {
 
       tick();
     }));
+
+    describe('Linked cases mapping', () => {
+      const mockLinkedCases = [
+        {
+          case_id: 21,
+          case_number: 'C20220622021',
+          active_link: true,
+        },
+        {
+          case_id: 22,
+          case_number: 'C20220622022',
+          active_link: false,
+        },
+        {
+          case_id: 23,
+          case_number: 'C20220622023',
+          active_link: true,
+        },
+      ];
+
+      it('should map multiple linked cases including active_link', () => {
+        service.getCases(mockSearchFormValues).subscribe((cases) => {
+          expect(cases[0].linked_cases).toEqual(mockLinkedCases);
+        });
+
+        const req = httpMock.expectOne(ADMIN_CASE_SEARCH_PATH);
+
+        expect(req.request.method).toBe('POST');
+
+        req.flush([
+          {
+            ...mockCaseSearchResponse[0],
+            linked_cases: mockLinkedCases,
+          },
+        ]);
+      });
+
+      it('should return an empty array when linked_cases is empty', () => {
+        service.getCases(mockSearchFormValues).subscribe((cases) => {
+          expect(cases[0].linked_cases).toEqual([]);
+        });
+
+        const req = httpMock.expectOne(ADMIN_CASE_SEARCH_PATH);
+
+        req.flush([
+          {
+            ...mockCaseSearchResponse[0],
+            linked_cases: [],
+          },
+        ]);
+      });
+
+      it('should return an empty array when linked_cases is undefined', () => {
+        service.getCases(mockSearchFormValues).subscribe((cases) => {
+          expect(cases[0].linked_cases).toEqual([]);
+        });
+
+        const req = httpMock.expectOne(ADMIN_CASE_SEARCH_PATH);
+
+        req.flush([
+          {
+            ...mockCaseSearchResponse[0],
+            linked_cases: undefined,
+          },
+        ]);
+      });
+    });
 
     it('logs event', () => {
       service.getCases(mockSearchFormValues).subscribe();
