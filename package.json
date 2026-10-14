@@ -122,7 +122,7 @@
     "@typescript-eslint/parser": "^8.8.1",
     "@typescript-eslint/types": "^8.8.1",
     "@typescript-eslint/utils": "^8.8.1",
-    "angular-eslint": "22.5.0",
+    "angular-eslint": "22.6.0",
     "axe-core": "^4.9.1",
     "bluebird": "^3.7.2",
     "concurrently": "^10.0.0",
