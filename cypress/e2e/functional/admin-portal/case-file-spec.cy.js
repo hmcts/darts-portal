@@ -175,12 +175,16 @@ describe('Case file screen', () => {
         });
     }
 
-    it('should display "-" when retention confidence score is null', () => {
+    it('should display "-" when retention confidence score is undefined', () => {
       verifyRetentionConfidenceScore(20, '-');
     });
 
+    it('should display "-" when retention confidence score is null', () => {
+      verifyRetentionConfidenceScore(21, '-');
+    });
+
     it('should display "0" when retention confidence score is zero', () => {
-      verifyRetentionConfidenceScore(21, '0');
+      verifyRetentionConfidenceScore(22, '0');
     });
 
     it('should display "123" when retention confidence score is 123', () => {

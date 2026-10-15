@@ -86,7 +86,7 @@ const singleCaseTwentyOne = {
   retention_retries: 0,
   retention_date_time_applied: '2023-07-22T15:42:10.361Z',
   retention_policy_applied: 'MANUAL',
-  ret_conf_score: 0,
+  ret_conf_score: null,
   ret_conf_reason: 'Some reason',
   ret_conf_updated_ts: '2030-08-10T23:23:24.858Z',
   case_object_id: '12345',
@@ -105,6 +105,28 @@ const singleCaseTwentyOne = {
   data_anonymised_at: '2030-08-10T23:23:24.858Z',
   data_anonymised_by: 5,
   is_interpreter_used: false,
+};
+
+const singleCaseTwentyTwo = {
+  id: 22,
+  courthouse: {
+    id: 2,
+    display_name: 'Reading',
+  },
+  courtrooms: [
+    {
+      id: 22,
+      name: 'Courtroom 22',
+    },
+  ],
+  case_number: 'C20220622022',
+  defendants: ['Defendant Dave'],
+  judges: ['Judge Julian'],
+  prosecutors: ['Paddy Prosecutor'],
+  defenders: ['Dileep Defender'],
+  ret_conf_score: 0,
+  ret_conf_reason: 'Some reason',
+  ret_conf_updated_ts: '2030-08-10T23:23:24.858Z',
 };
 
 const caseSearchResults = [
@@ -164,6 +186,7 @@ const caseSearchResults = [
   },
   singleCaseTwenty,
   singleCaseTwentyOne,
+  singleCaseTwentyTwo,
   {
     id: 10,
     case_number: '1000010',
@@ -267,6 +290,9 @@ router.get('/:id', (req, res) => {
       break;
     case '21':
       res.send(singleCaseTwentyOne);
+      break;
+    case '22':
+      res.send(singleCaseTwentyTwo);
       break;
     default:
       res.send(singleCase);
