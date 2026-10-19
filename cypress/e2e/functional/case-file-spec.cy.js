@@ -44,7 +44,7 @@ describe('Case file screen', () => {
       cy.get('app-govuk-heading h1').should('contain.text', 'C20220620005');
       cy.get('app-govuk-heading .govuk-caption-l').should('contain.text', 'Case ID');
 
-      const headings = ['Courthouse', 'Judge(s)', 'Prosecutor(s)', 'Defence(s)', 'Defendant(s)', 'Retained until'];
+      const headings = ['Courthouse', 'Judiciary', 'Prosecutor(s)', 'Defence(s)', 'Defendant(s)', 'Retained until'];
 
       headings.forEach((headingText) => {
         cy.get('app-case-file h2').contains(headingText).should('exist');
@@ -52,7 +52,7 @@ describe('Case file screen', () => {
     });
 
     it('should toggle judge list between expanded and collapsed states (with <details>)', () => {
-      cy.contains('h2.govuk-heading-s', 'Judge(s)').should('exist');
+      cy.contains('h2.govuk-heading-s', 'Judiciary').should('exist');
 
       cy.get('.govuk-details').should('not.have.attr', 'open');
 
