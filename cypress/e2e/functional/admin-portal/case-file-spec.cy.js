@@ -99,14 +99,25 @@ describe('Case file screen', () => {
         .find('.govuk-summary-list__value');
     }
 
-    it('should display all linked cases with active and inactive links', () => {
+    it('should display all linked cases', () => {
       cy.visit('/admin/case/24');
 
       getLinkedCasesValue().within(() => {
         cy.get('li').should('have.length', 3);
         cy.contains('a', 'C20220622021').should('have.attr', 'href', '/admin/case/21');
-        cy.contains('li', 'C20220622022').should('not.have.descendants', 'a');
+        cy.contains('a', 'C20220622022').should('have.attr', 'href', '/admin/case/22');
         cy.contains('a', 'C20220622023').should('have.attr', 'href', '/admin/case/23');
+      });
+    });
+
+    it('should display linked cases when the case is anonymised', () => {
+      cy.visit('/admin/case/23');
+
+      cy.get('app-expired-banner').should('exist');
+
+      getLinkedCasesValue().within(() => {
+        cy.get('li').should('have.length', 1);
+        cy.contains('a', 'C20220622024').should('have.attr', 'href', '/admin/case/24');
       });
     });
 
@@ -126,15 +137,6 @@ describe('Case file screen', () => {
       cy.visit('/admin/case/20');
 
       getLinkedCasesValue().should('contain.text', '-');
-    });
-
-    it('should display inactive linked cases as plain text', () => {
-      cy.visit('/admin/case/22');
-
-      getLinkedCasesValue().within(() => {
-        cy.contains('li', 'C20220622024').should('exist').and('not.have.descendants', 'a');
-        cy.get('a').should('not.exist');
-      });
     });
 
     it('should have no accessibility violations in linked cases', () => {

@@ -30,17 +30,14 @@ describe('CaseFileComponent', () => {
       {
         case_id: 21,
         case_number: 'C20220622021',
-        active_link: true,
       },
       {
         case_id: 22,
         case_number: 'C20220622022',
-        active_link: false,
       },
       {
         case_id: 23,
         case_number: 'C20220622023',
-        active_link: true,
       },
     ],
   };
@@ -153,14 +150,7 @@ describe('CaseFileComponent', () => {
       const summaryKeys = fixture.debugElement.queryAll(By.css('.govuk-summary-list__key'));
       const labels = summaryKeys.map((el) => el.nativeElement.textContent.trim());
 
-      const shouldBeHidden = [
-        'Judge(s)',
-        'Defendant(s)',
-        'Prosecutor(s)',
-        'Defence',
-        'Linked case(s)',
-        'Retained until',
-      ];
+      const shouldBeHidden = ['Judge(s)', 'Defendant(s)', 'Prosecutor(s)', 'Defence', 'Retained until'];
       shouldBeHidden.forEach((label) => expect(labels).not.toContain(label));
     });
   });
@@ -207,11 +197,16 @@ describe('CaseFileComponent', () => {
       return value!;
     }
 
-    it('should display all linked case numbers', () => {
-      fixture.componentRef.setInput('caseFile', mockCaseFile);
+    it.each([true, false])('should display all linked case numbers when isDataAnonymised is %s', (isDataAnonymised) => {
+      fixture.componentRef.setInput('caseFile', {
+        ...mockCaseFile,
+        isDataAnonymised,
+      });
       fixture.detectChanges();
 
-      const items = getLinkedCasesValue().querySelectorAll('li');
+      const list = getLinkedCasesValue();
+      expect(list).toBeTruthy();
+      const items = list!.querySelectorAll('li');
 
       expect(items.length).toBe(3);
       expect(items[0].textContent?.trim()).toBe('C20220622021');
@@ -219,29 +214,22 @@ describe('CaseFileComponent', () => {
       expect(items[2].textContent?.trim()).toBe('C20220622023');
     });
 
-    it('should display active linked cases as hyperlinks', () => {
+    it('should display all linked cases as hyperlinks', () => {
       fixture.componentRef.setInput('caseFile', mockCaseFile);
       fixture.detectChanges();
 
       const links = getLinkedCasesValue().querySelectorAll('a.govuk-link');
 
-      expect(links.length).toBe(2);
+      expect(links.length).toBe(3);
 
       expect(links[0].textContent?.trim()).toBe('C20220622021');
       expect(links[0].getAttribute('href')).toBe('/admin/case/21');
 
-      expect(links[1].textContent?.trim()).toBe('C20220622023');
-      expect(links[1].getAttribute('href')).toBe('/admin/case/23');
-    });
+      expect(links[1].textContent?.trim()).toBe('C20220622022');
+      expect(links[1].getAttribute('href')).toBe('/admin/case/22');
 
-    it('should display inactive linked cases as plain text', () => {
-      fixture.componentRef.setInput('caseFile', mockCaseFile);
-      fixture.detectChanges();
-
-      const items = getLinkedCasesValue().querySelectorAll('li');
-
-      expect(items[1].textContent?.trim()).toBe('C20220622022');
-      expect(items[1].querySelector('a')).toBeNull();
+      expect(links[2].textContent?.trim()).toBe('C20220622023');
+      expect(links[2].getAttribute('href')).toBe('/admin/case/23');
     });
 
     it('should display a hyphen when there are no linked cases', () => {

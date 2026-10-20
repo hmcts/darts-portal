@@ -4,7 +4,7 @@ import { DateTime } from 'luxon';
 export type AdminCaseSearchResult = {
   id: number;
   number: string;
-  linked_cases?: LinkedCase[];
+  linkedCases?: LinkedCase[];
   courthouse: string;
   courtrooms: string[];
   judges: string[];
