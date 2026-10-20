@@ -35,13 +35,13 @@ describe('Case file screen', () => {
   describe('Case file headings', () => {
     beforeEach(() => {
       cy.login();
-      cy.visit('/case/5');
     });
 
     it('should display all expected headings in the case file', () => {
+      cy.visit('/case/21');
       cy.get('app-case-file').should('exist');
 
-      cy.get('app-govuk-heading h1').should('contain.text', 'C20220620005');
+      cy.get('app-govuk-heading h1').should('contain.text', 'C20220622021');
       cy.get('app-govuk-heading .govuk-caption-l').should('contain.text', 'Case ID');
 
       const headings = [
@@ -60,6 +60,8 @@ describe('Case file screen', () => {
     });
 
     it('should toggle judge list between expanded and collapsed states (with <details>)', () => {
+      cy.visit('/case/5');
+
       cy.contains('h2.govuk-heading-s', 'Judge(s)').should('exist');
 
       cy.get('.govuk-details').should('not.have.attr', 'open');
@@ -104,6 +106,19 @@ describe('Case file screen', () => {
         });
     });
 
+    it('should display linked cases when the case is anonymised', () => {
+      cy.visit('/case/23');
+
+      cy.get('#warning-message').should('contain.text', 'This case has passed its retention date');
+
+      cy.contains('h2.govuk-heading-s', 'Linked case(s)')
+        .next('ul')
+        .within(() => {
+          cy.get('li').should('have.length', 1);
+          cy.contains('a', 'C20220622024').should('have.attr', 'href', '/case/24');
+        });
+    });
+
     it('should navigate to a linked case and display its details', () => {
       cy.visit('/case/24');
 
@@ -116,9 +131,9 @@ describe('Case file screen', () => {
       cy.get('app-govuk-heading h1').should('contain.text', 'C20220622024');
     });
 
-    it('should display a hyphen when a case has no linked cases', () => {
+    it('should not display linked cases when a case has none', () => {
       cy.visit('/case/20');
-      cy.contains('h2.govuk-heading-s', 'Linked case(s)').next('p.govuk-body').should('contain.text', '-');
+      cy.contains('h2.govuk-heading-s', 'Linked case(s)').should('not.exist');
     });
 
     it('should display inactive linked cases as plain text', () => {

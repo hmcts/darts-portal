@@ -112,9 +112,15 @@ describe('CaseFileComponent', () => {
       return linkedCasesHeading!.nextElementSibling as HTMLElement | null;
     }
 
-    it('should display all linked case numbers', () => {
-      const list = getLinkedCasesList();
+    it.each([true, false])('should display all linked case numbers when isDataAnonymised is %s', (isDataAnonymised) => {
+      component.caseFile = {
+        ...mockCaseFile,
+        isDataAnonymised,
+      };
 
+      fixture.detectChanges();
+
+      const list = getLinkedCasesList();
       expect(list).toBeTruthy();
       const items = list!.querySelectorAll('li');
 
@@ -145,7 +151,7 @@ describe('CaseFileComponent', () => {
       expect(items[1].querySelector('a')).toBeNull();
     });
 
-    it('should display a hyphen when there are no linked cases', () => {
+    it('should not display linked cases when the array is empty', () => {
       component.caseFile = {
         ...mockCaseFile,
         linkedCases: [],
@@ -153,11 +159,12 @@ describe('CaseFileComponent', () => {
 
       fixture.detectChanges();
 
-      const element = getLinkedCasesList();
-      expect(element?.textContent?.trim()).toBe('-');
+      const headings = Array.from(fixture.nativeElement.querySelectorAll('h2.govuk-heading-s')) as HTMLElement[];
+      const linkedCasesHeading = headings.find((h) => (h.textContent || '').trim() === 'Linked case(s)');
+      expect(linkedCasesHeading).toBeUndefined();
     });
 
-    it('should display a hyphen when linked cases are undefined', () => {
+    it('should not display linked cases when the array is undefined', () => {
       component.caseFile = {
         ...mockCaseFile,
         linkedCases: undefined,
@@ -165,8 +172,9 @@ describe('CaseFileComponent', () => {
 
       fixture.detectChanges();
 
-      const element = getLinkedCasesList();
-      expect(element?.textContent?.trim()).toBe('-');
+      const headings = Array.from(fixture.nativeElement.querySelectorAll('h2.govuk-heading-s')) as HTMLElement[];
+      const linkedCasesHeading = headings.find((h) => (h.textContent || '').trim() === 'Linked case(s)');
+      expect(linkedCasesHeading).toBeUndefined();
     });
   });
 });

@@ -119,7 +119,6 @@ describe('AdminSearchService', () => {
         {
           case_id: 21,
           case_number: 'C20220622021',
-          active_link: true,
         },
         {
           case_id: 22,
@@ -133,13 +132,13 @@ describe('AdminSearchService', () => {
         },
       ];
 
-      it('should map multiple linked cases including active_link', () => {
+      it('should map multiple linked cases with active_link forced to true', () => {
+        let result: AdminCaseSearchResult[] | undefined;
         service.getCases(mockSearchFormValues).subscribe((cases) => {
-          expect(cases[0].linked_cases).toEqual(mockLinkedCases);
+          result = cases;
         });
 
         const req = httpMock.expectOne(ADMIN_CASE_SEARCH_PATH);
-
         expect(req.request.method).toBe('POST');
 
         req.flush([
@@ -148,11 +147,20 @@ describe('AdminSearchService', () => {
             linked_cases: mockLinkedCases,
           },
         ]);
+
+        expect(result).toBeDefined();
+        expect(result![0].linkedCases).toEqual(
+          mockLinkedCases.map((linkedCase) => ({
+            ...linkedCase,
+            active_link: true,
+          }))
+        );
       });
 
       it('should return an empty array when linked_cases is empty', () => {
+        let result: AdminCaseSearchResult[] | undefined;
         service.getCases(mockSearchFormValues).subscribe((cases) => {
-          expect(cases[0].linked_cases).toEqual([]);
+          result = cases;
         });
 
         const req = httpMock.expectOne(ADMIN_CASE_SEARCH_PATH);
@@ -163,11 +171,14 @@ describe('AdminSearchService', () => {
             linked_cases: [],
           },
         ]);
+        expect(result).toBeDefined();
+        expect(result![0].linkedCases).toEqual([]);
       });
 
       it('should return an empty array when linked_cases is undefined', () => {
+        let result: AdminCaseSearchResult[] | undefined;
         service.getCases(mockSearchFormValues).subscribe((cases) => {
-          expect(cases[0].linked_cases).toEqual([]);
+          result = cases;
         });
 
         const req = httpMock.expectOne(ADMIN_CASE_SEARCH_PATH);
@@ -178,6 +189,8 @@ describe('AdminSearchService', () => {
             linked_cases: undefined,
           },
         ]);
+        expect(result).toBeDefined();
+        expect(result![0].linkedCases).toEqual([]);
       });
     });
 

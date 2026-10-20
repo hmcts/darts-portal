@@ -75,13 +75,13 @@ describe('Admin - Search screen', () => {
         .find('td.linked_cases');
     }
 
-    it('should display multiple linked cases with active and inactive links', () => {
+    it('should display multiple linked cases as hyperlinks', () => {
       searchForCases();
 
       getLinkedCasesCell('C20220622024').within(() => {
         cy.get('li').should('have.length', 3);
         cy.contains('a', 'C20220622021').should('have.attr', 'href', '/admin/case/21');
-        cy.contains('li', 'C20220622022').should('not.have.descendants', 'a');
+        cy.contains('a', 'C20220622022').should('have.attr', 'href', '/admin/case/22');
         cy.contains('a', 'C20220622023').should('have.attr', 'href', '/admin/case/23');
       });
     });
@@ -92,15 +92,6 @@ describe('Admin - Search screen', () => {
       getLinkedCasesCell('C20220622024').contains('a', 'C20220622021').click();
       cy.url().should('include', '/admin/case/21');
       cy.get('app-govuk-heading h1').should('contain.text', 'C20220622021');
-    });
-
-    it('should display inactive linked cases as plain text', () => {
-      searchForCases();
-
-      getLinkedCasesCell('C20220622022').within(() => {
-        cy.contains('li', 'C20220622024').should('exist').and('not.have.descendants', 'a');
-        cy.get('a').should('not.exist');
-      });
     });
 
     it('should display a hyphen when there are no linked cases', () => {

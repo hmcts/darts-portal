@@ -84,7 +84,6 @@ const singleCaseTwentyOne = {
     {
       case_id: 24,
       case_number: 'C20220622024',
-      active_link: true,
     },
   ],
   retain_until_date_time: '2030-08-10T23:23:24.858Z',
@@ -138,7 +137,6 @@ const singleCaseTwentyTwo = {
     {
       case_id: 24,
       case_number: 'C20220622024',
-      active_link: false,
     },
   ],
 };
@@ -155,16 +153,18 @@ const singleCaseTwentyThree = {
       name: 'Courtroom 23',
     },
   ],
+  retain_until_date_time: '2020-01-31T15:42:10.361Z',
   case_number: 'C20220622023',
   defendants: ['Defendant Dennis'],
   judges: ['Judge Julian'],
   prosecutors: ['Paddy Prosecutor'],
   defenders: ['Dileep Defender'],
+  is_data_anonymised: true,
+  data_anonymised_at: '2023-01-01T11:00:00.000Z',
   linked_cases: [
     {
       case_id: 24,
       case_number: 'C20220622024',
-      active_link: true,
     },
   ],
 };
@@ -190,17 +190,14 @@ const singleCaseTwentyFour = {
     {
       case_id: 21,
       case_number: 'C20220622021',
-      active_link: true,
     },
     {
       case_id: 22,
       case_number: 'C20220622022',
-      active_link: false,
     },
     {
       case_id: 23,
       case_number: 'C20220622023',
-      active_link: true,
     },
   ],
 };

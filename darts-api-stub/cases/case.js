@@ -224,7 +224,9 @@ const singleCaseTwentyThree = {
   judges: ['Judge Julian'],
   prosecutors: ['Paddy Prosecutor'],
   defenders: ['Dileep Defender'],
-  retain_until_date_time: '2030-08-10T23:23:24.858Z',
+  retain_until_date_time: '2023-08-10T11:23:24.858Z',
+  is_data_anonymised: true,
+  data_anonymised_at: '2023-08-10T11:53:24.858Z',
   hearings: [
     {
       id: 23,
