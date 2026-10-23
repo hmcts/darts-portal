@@ -174,18 +174,21 @@ describe('AdminCaseService', () => {
         {
           case_id: 21,
           case_number: 'C20220622021',
+          active_link: true,
         },
         {
           case_id: 22,
           case_number: 'C20220622022',
+          active_link: false,
         },
         {
           case_id: 23,
           case_number: 'C20220622023',
+          active_link: true,
         },
       ];
 
-      it('should map multiple linked cases', () => {
+      it('should map multiple linked cases including active_link', () => {
         const data: AdminCaseData = {
           ...mockCaseData,
           linked_cases: mockLinkedCases,
