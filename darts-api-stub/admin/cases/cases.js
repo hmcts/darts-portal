@@ -85,6 +85,7 @@ const singleCaseTwentyOne = {
     {
       case_id: 24,
       case_number: 'C20220622024',
+      active_link: true,
     },
   ],
   retain_until_date_time: '2030-08-10T23:23:24.858Z',
@@ -135,6 +136,7 @@ const singleCaseTwentyTwo = {
     {
       case_id: 24,
       case_number: 'C20220622024',
+      active_link: false,
     },
   ],
 };
@@ -163,6 +165,7 @@ const singleCaseTwentyThree = {
     {
       case_id: 24,
       case_number: 'C20220622024',
+      active_link: true,
     },
   ],
 };
@@ -188,14 +191,17 @@ const singleCaseTwentyFour = {
     {
       case_id: 21,
       case_number: 'C20220622021',
+      active_link: true,
     },
     {
       case_id: 22,
       case_number: 'C20220622022',
+      active_link: false,
     },
     {
       case_id: 23,
       case_number: 'C20220622023',
+      active_link: true,
     },
   ],
 };

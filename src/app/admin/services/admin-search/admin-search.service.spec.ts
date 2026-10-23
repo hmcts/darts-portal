@@ -119,6 +119,7 @@ describe('AdminSearchService', () => {
         {
           case_id: 21,
           case_number: 'C20220622021',
+          active_link: true,
         },
         {
           case_id: 22,
@@ -132,7 +133,7 @@ describe('AdminSearchService', () => {
         },
       ];
 
-      it('should map multiple linked cases with active_link forced to true', () => {
+      it('should map multiple linked cases including active_link', () => {
         let result: AdminCaseSearchResult[] | undefined;
         service.getCases(mockSearchFormValues).subscribe((cases) => {
           result = cases;
@@ -149,12 +150,7 @@ describe('AdminSearchService', () => {
         ]);
 
         expect(result).toBeDefined();
-        expect(result![0].linkedCases).toEqual(
-          mockLinkedCases.map((linkedCase) => ({
-            ...linkedCase,
-            active_link: true,
-          }))
-        );
+        expect(result![0].linkedCases).toEqual(mockLinkedCases);
       });
 
       it('should return an empty array when linked_cases is empty', () => {

@@ -1,4 +1,4 @@
-import { AdminLinkedCase } from '@admin-types/linked-case/linked-case.interface';
+import { LinkedCase } from '@core-types/linked-case/linked-case.interface';
 
 export interface AdminCaseData {
   id: number;
@@ -18,7 +18,7 @@ export interface AdminCaseData {
     hearing_id: number;
     event_ts: string;
   }[];
-  linked_cases?: AdminLinkedCase[];
+  linked_cases?: LinkedCase[];
   retain_until_date_time?: string;
   case_closed_date_time?: string;
   is_retention_updated?: boolean;

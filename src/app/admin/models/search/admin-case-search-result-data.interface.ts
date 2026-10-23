@@ -1,9 +1,9 @@
-import { AdminLinkedCase } from '@admin-types/linked-case/linked-case.interface';
+import { LinkedCase } from '@core-types/linked-case/linked-case.interface';
 
 export interface AdminCaseSearchResultData {
   id: number;
   case_number: string;
-  linked_cases?: AdminLinkedCase[];
+  linked_cases?: LinkedCase[];
   courthouse: {
     id: number;
     display_name: string;
