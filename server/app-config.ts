@@ -8,6 +8,7 @@ export default () => ({
   environment: config.get('node-env'),
   dynatrace: config.get('dynatrace'),
   features: config.get('features'),
+  launchDarklyClientId: config.get('secrets.darts.LaunchDarklyClientId'),
   pagination: config.get('pagination'),
   caseSearchTimeout: config.get('caseSearchTimeout'),
   version: version(),

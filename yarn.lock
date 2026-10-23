@@ -4475,6 +4475,31 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@launchdarkly/js-client-sdk-common@npm:1.34.0":
+  version: 1.34.0
+  resolution: "@launchdarkly/js-client-sdk-common@npm:1.34.0"
+  dependencies:
+    "@launchdarkly/js-sdk-common": "npm:2.31.0"
+  checksum: 10/422bc8cc7dd48dfbcdbd43de4ca194212be1879a6f03f972c3452f237d0df3801989a5344d16a52671168c3251b5b09d06e56282317c91822fee2b063a6c4036
+  languageName: node
+  linkType: hard
+
+"@launchdarkly/js-client-sdk@npm:^4.13.0":
+  version: 4.13.0
+  resolution: "@launchdarkly/js-client-sdk@npm:4.13.0"
+  dependencies:
+    "@launchdarkly/js-client-sdk-common": "npm:1.34.0"
+  checksum: 10/1abcf60e1d92f8c0c8af55384a83b9bba0e42f62f4cb66857444d715df4e54fac98cc0109b8c807d70794ee3fb67637b553d087153f0dff473147cde3a71ac56
+  languageName: node
+  linkType: hard
+
+"@launchdarkly/js-sdk-common@npm:2.31.0":
+  version: 2.31.0
+  resolution: "@launchdarkly/js-sdk-common@npm:2.31.0"
+  checksum: 10/a91146200c70a82c852f2b9864d30faa0b9eac58cf9b8d7e11d4f7e01838a7ef4c218f80cef9e63d66e3a38c07c2c562c28b705b87c3bca0a0577d7dc2145f53
+  languageName: node
+  linkType: hard
+
 "@leichtgewicht/ip-codec@npm:^2.0.1":
   version: 2.0.5
   resolution: "@leichtgewicht/ip-codec@npm:2.0.5"
@@ -9953,6 +9978,7 @@ __metadata:
     "@eslint/js": "npm:^10.0.0"
     "@hmcts/nodejs-healthcheck": "npm:^1.8.5"
     "@hmcts/properties-volume": "npm:^1.1.0"
+    "@launchdarkly/js-client-sdk": "npm:^4.13.0"
     "@microsoft/applicationinsights-web": "npm:^3.2.2"
     "@ministryofjustice/frontend": "npm:^9.0.0"
     "@types/body-parser": "npm:^1.19.5"
