@@ -49,6 +49,7 @@
   "allowStubData": "DARTS_PORTAL_ALLOW_STUB_DATA",
   "secrets": {
     "darts": {
+      "LaunchDarklyClientId": "LAUNCHDARKLY_CLIENT_ID",
       "LaunchDarklySdkKey": "LAUNCHDARKLY_SDK_KEY"
     }
   }
