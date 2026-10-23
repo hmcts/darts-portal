@@ -1,5 +1,5 @@
 import { ReportingRestriction } from '@core-types/index';
-import { AdminLinkedCase } from '@admin-types/linked-case/linked-case.interface';
+import { LinkedCase } from '@core-types/linked-case/linked-case.interface';
 import { DateTime } from 'luxon';
 
 export type AdminCase = {
@@ -14,7 +14,7 @@ export type AdminCase = {
   prosecutors?: string[];
   defenders?: string[];
   reportingRestrictions?: ReportingRestriction[];
-  linkedCases?: AdminLinkedCase[];
+  linkedCases?: LinkedCase[];
   retainUntilDateTime?: DateTime;
   caseClosedDateTime?: DateTime;
   isRetentionUpdated?: boolean;
