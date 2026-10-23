@@ -10109,7 +10109,7 @@ __metadata:
     cookie-parser: "npm:^1.4.6"
     cypress: "npm:^15.0.0"
     cypress-axe: "npm:^1.5.0"
-    ejs: "npm:^6.0.0"
+    ejs: "npm:^7.0.0"
     eslint: "npm:^10.0.0"
     express: "npm:^5.2.0"
     express-session: "npm:^1.18.2"
@@ -10471,12 +10471,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ejs@npm:^6.0.0":
-  version: 6.0.1
-  resolution: "ejs@npm:6.0.1"
+"ejs@npm:^7.0.0":
+  version: 7.0.2
+  resolution: "ejs@npm:7.0.2"
   bin:
     ejs: bin/cli.js
-  checksum: 10/16ff6a9073256c6854607e8e5669f8b96b5b6e43e40dd58c6c85d43a13c4b0423ae1a78326fef2626777410b553b9c2071ab6fe07e14564345c493bc532f4714
+  checksum: 10/98db48445b0e6dc2a779f6dad9572fcce6e82901432635b4b436c4f1d23445c0b265959b379669b2d1909cf0c89a0bbd541ccb8e5f048202e2e960613e11b166
   languageName: node
   linkType: hard
 
