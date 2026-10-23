@@ -1,3 +1,4 @@
+import { createHmac } from 'node:crypto';
 import axios, { AxiosError } from 'axios';
 import config from 'config';
 import * as express from 'express';
@@ -31,8 +32,36 @@ async function postRefreshUserState(req: Request, res: Response): Promise<Respon
   }
 }
 
+/**
+ * Returns the logged-in user's ID in LaunchDarkly's context format, together with a signature.
+ * This is required for LaunchDarkly secure mode so the logged-in user gets their own flag
+ * values and cannot request another user's flags just by changing the user ID.
+ */
+export function getLaunchDarklyUserContext(req: Request, res: Response): Response {
+  res.set('Cache-Control', 'no-store');
+  const user = req.session?.securityToken?.userState;
+  if (!user || !Number.isSafeInteger(user.userId) || user.userId <= 0) {
+    return res.sendStatus(401);
+  }
+  if (!user.isActive) {
+    return res.sendStatus(403);
+  }
+
+  const sdkKey = config.get('secrets.darts.LaunchDarklySdkKey');
+  if (typeof sdkKey !== 'string' || !sdkKey.trim()) {
+    console.error('LaunchDarklySdkKey secret is either missing, empty, or not a string.');
+    return res.sendStatus(500);
+  }
+
+  const context = { kind: 'user', key: String(user.userId) };
+  const hash = createHmac('sha256', sdkKey.trim()).update(context.key, 'utf8').digest('hex');
+  return res.json({ context, hash });
+}
+
 export function init(): Router {
   const router = express.Router();
+
+  router.get('/launchdarkly-context', getLaunchDarklyUserContext);
 
   router.get('/profile', (req: Request, res: Response) => {
     res.json(req.session.securityToken?.userState);
