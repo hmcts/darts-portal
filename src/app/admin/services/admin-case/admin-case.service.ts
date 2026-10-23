@@ -77,6 +77,7 @@ export class AdminCaseService {
       prosecutors: caseData.prosecutors,
       defenders: caseData.defenders,
       reportingRestrictions: caseData.reporting_restrictions ? caseData.reporting_restrictions : [],
+      linkedCases: caseData.linked_cases ?? [],
       retainUntilDateTime: caseData.retain_until_date_time
         ? DateTime.fromISO(caseData.retain_until_date_time)
         : undefined,

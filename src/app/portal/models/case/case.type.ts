@@ -1,4 +1,5 @@
 import { ReportingRestriction } from '@core-types/reporting-restriction/reporting-restriction.interface';
+import { LinkedCase } from '@core-types/linked-case/linked-case.interface';
 import { Hearing } from '@portal-types/hearing/hearing.type';
 import { DateTime } from 'luxon';
 
@@ -9,6 +10,7 @@ export type CaseSearchResult = {
   defendants?: string[];
   judges?: string[];
   reportingRestriction?: string;
+  linkedCases?: LinkedCase[];
   hearings?: Hearing[];
   courtrooms?: string[];
   isDataAnonymised?: boolean;
@@ -24,6 +26,7 @@ export type Case = {
   defenders?: string[];
   judges?: string[];
   reportingRestrictions?: ReportingRestriction[];
+  linkedCases?: LinkedCase[];
   retainUntil?: string;
   prosecutors?: string[];
   retainUntilDateTime?: DateTime;
