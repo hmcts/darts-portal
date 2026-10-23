@@ -1,5 +1,9 @@
 {
   "allowStubData": "true",
+  "launchDarklyLocalOverride": false,
+  "launchDarklyLocalFlags": {
+    "updated-judge-label": false
+  },
   "features": {
     "manualDeletion": {
       "enabled": "true"
