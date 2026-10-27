@@ -1,6 +1,6 @@
 {
   "allowStubData": "true",
-  "launchDarklyLocalOverride": false,
+  "launchDarklyLocalOverride": true,
   "launchDarklyLocalFlags": {
     "updated-judge-label": false
   },
