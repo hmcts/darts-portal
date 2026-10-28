@@ -10,8 +10,9 @@ import {
   UrlTree,
 } from '@angular/router';
 import { AuthService } from '@services/auth/auth.service';
+import { FeatureFlagService } from '@services/app-config/feature-flag.service';
 import { UserService } from '@services/user/user.service';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { authGuard } from './auth.guard';
 
 describe('authGuard', () => {
@@ -36,6 +37,7 @@ describe('authGuard', () => {
     TestBed.configureTestingModule({
       imports: [],
       providers: [
+        { provide: FeatureFlagService, useValue: { loadUserFlags: jest.fn(() => of(undefined)), reset: jest.fn() } },
         provideHttpClient(),
         provideHttpClientTesting(),
         {
@@ -48,7 +50,7 @@ describe('authGuard', () => {
         {
           provide: UserService,
           useValue: {
-            userProfile$: of({}),
+            userProfile$: of({ userId: 123, email_address: 'user@example.test' }),
             hasRoles: jest.fn().mockReturnValue(hasRoles),
             hasGlobalRoles: jest.fn().mockReturnValue(hasGlobalRoles),
           },
@@ -90,6 +92,34 @@ describe('authGuard', () => {
 
     expect(router.parseUrl).toHaveBeenCalledWith('/login');
     expect(canActivate).toEqual({ url: '/login' });
+  });
+
+  it('should clear feature flags state when the session is no longer authenticated', () => {
+    prepareGuard({ checkAuthenticated: false });
+    const featureFlagService = TestBed.inject(FeatureFlagService);
+
+    (executeGuard(mockRouteSnapshot, mockStateRouter) as Observable<UrlTree>).subscribe();
+
+    expect(featureFlagService.reset).toHaveBeenCalled();
+  });
+
+  it("should wait for the current user's feature flag values to be ready to use before allowing navigation", () => {
+    prepareGuard({ checkAuthenticated: true });
+    const featureFlagService = TestBed.inject(FeatureFlagService);
+    const userFlagsReadyToUse = new Subject<void>();
+    jest.spyOn(featureFlagService, 'loadUserFlags').mockReturnValue(userFlagsReadyToUse);
+    const result = jest.fn();
+
+    (executeGuard(mockRouteSnapshot, mockStateRouter) as Observable<boolean>).subscribe(result);
+
+    expect(featureFlagService.loadUserFlags).toHaveBeenCalledWith(123);
+    expect(result).not.toHaveBeenCalled();
+    // Ready means the page can use LaunchDarkly values, cached values, or defaults. The loadUserFlags function
+    // will determine which to use and let this function know the user can procceed. It may update values in
+    // the background for later use.
+    userFlagsReadyToUse.next();
+    expect(result).toHaveBeenCalledWith(true);
+    userFlagsReadyToUse.complete();
   });
 
   describe('non-admin routes', () => {
