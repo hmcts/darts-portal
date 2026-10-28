@@ -102,3 +102,17 @@ Run `yarn cypress` to open the cypress console, very useful for debugging tests.
 Run `yarn ng generate component component-name` to generate a new component. You can also use `yarn ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
 Note the requirement for prefixing the `ng` commands with `yarn`
+
+## PR callback workflows
+
+The PR workflows register and remove portal callback URLs using these GitHub repository secrets:
+
+| App registration | Target app ID | Login client ID | Login secret key | Tenant |
+|------------------|---------------|-----------------|------------------|--------|
+| Internal Entra | `SP_APP_ID_PORTAL` | `SP_CLIENT_ID_PORTAL` | `SP_SECRET_KEY_PORTAL` | `SP_TENANT_ID` |
+| External B2C | `SP_APP_ID_PORTAL_B2C` | `SP_CLIENT_ID_PORTAL_B2C` | `SP_SECRET_KEY_PORTAL_B2C` | `SP_TENANT_ID_B2C` |
+
+Each target app ID must match the app registration used by the portal PR deployment.
+Each login service principal must be able to read and update its corresponding app registration.
+Callbacks are registered when a PR opens, reopens, or receives a push, and removed when it closes.
+To roll back, revert the workflow changes and restore the previous app registration configuration and secrets.
