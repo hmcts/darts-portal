@@ -127,3 +127,16 @@ export LAUNCHDARKLY_LOCAL_OVERRIDE=false
 export LAUNCHDARKLY_CLIENT_ID='launch-darkly-client-side-id'
 export LAUNCHDARKLY_SDK_KEY='launch-darkly-server-sdk-key'
 ```
+## PR callback workflows
+
+The PR workflows register and remove portal callback URLs using these GitHub repository secrets:
+
+| App registration | Target app ID | Login client ID | Login secret key | Tenant |
+|------------------|---------------|-----------------|------------------|--------|
+| Internal Entra | `SP_APP_ID_PORTAL` | `SP_CLIENT_ID_PORTAL` | `SP_SECRET_KEY_PORTAL` | `SP_TENANT_ID` |
+| External B2C | `SP_APP_ID_PORTAL_B2C` | `SP_CLIENT_ID_PORTAL_B2C` | `SP_SECRET_KEY_PORTAL_B2C` | `SP_TENANT_ID_B2C` |
+
+Each target app ID must match the app registration used by the portal PR deployment.
+Each login service principal must be able to read and update its corresponding app registration.
+Callbacks are registered when a PR opens, reopens, or receives a push, and removed when it closes.
+To roll back, revert the workflow changes and restore the previous app registration configuration and secrets.
