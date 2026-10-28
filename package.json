@@ -144,7 +144,7 @@
     "start-server-and-test": "^3.0.0",
     "ts-jest": "^29.1.5",
     "ts-node": "^10.9.2",
-    "typescript": "6.0.3",
+    "typescript": "7.0.2",
     "typescript-eslint": "8.72.1",
     "xunit-viewer": "^10.6.1"
   },
