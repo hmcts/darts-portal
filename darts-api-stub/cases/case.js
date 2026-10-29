@@ -179,6 +179,106 @@ const singleCaseTwentyOne = {
       judges: ['Judge Juliette'],
     },
   ],
+  linked_cases: [
+    {
+      case_id: 24,
+      case_number: 'C20220622024',
+      active_link: true,
+    },
+  ],
+};
+
+const singleCaseTwentyTwo = {
+  case_id: 22,
+  courthouse: 'Leeds',
+  courthouse_id: 14,
+  case_number: 'C20220622022',
+  defendants: ['Defendant Dave'],
+  judges: ['Judge Julian'],
+  prosecutors: ['Paddy Prosecutor'],
+  defenders: ['Dileep Defender'],
+  retain_until_date_time: '2030-08-10T23:23:24.858Z',
+  hearings: [
+    {
+      id: 22,
+      date: '2023-08-10',
+      courtroom: '22',
+      judges: ['Judge Juliette'],
+    },
+  ],
+  linked_cases: [
+    {
+      case_id: 24,
+      case_number: 'C20220622024',
+      active_link: false,
+    },
+  ],
+};
+
+const singleCaseTwentyThree = {
+  case_id: 23,
+  courthouse: 'York',
+  courthouse_id: 4,
+  case_number: 'C20220622023',
+  defendants: ['Defendant Dennis'],
+  judges: ['Judge Julian'],
+  prosecutors: ['Paddy Prosecutor'],
+  defenders: ['Dileep Defender'],
+  retain_until_date_time: '2023-08-10T11:23:24.858Z',
+  is_data_anonymised: true,
+  data_anonymised_at: '2023-08-10T11:53:24.858Z',
+  hearings: [
+    {
+      id: 23,
+      date: '2023-08-10',
+      courtroom: '23',
+      judges: ['Judge Juliette'],
+    },
+  ],
+  linked_cases: [
+    {
+      case_id: 24,
+      case_number: 'C20220622024',
+      active_link: true,
+    },
+  ],
+};
+
+const singleCaseTwentyFour = {
+  case_id: 24,
+  courthouse: 'Reading',
+  courthouse_id: 2,
+  case_number: 'C20220622024',
+  defendants: ['Defendant Dennis'],
+  judges: ['Judge Judy', 'Judge Julian', 'Judge John', 'Judge James', 'Judge Judy'],
+  prosecutors: ['Paddy Prosecutor'],
+  defenders: ['Dileep Defender'],
+  retain_until_date_time: '2030-08-10T23:23:24.858Z',
+  hearings: [
+    {
+      id: 24,
+      date: '2023-08-10',
+      courtroom: '24',
+      judges: ['Judge Juliette'],
+    },
+  ],
+  linked_cases: [
+    {
+      case_id: 21,
+      case_number: 'C20220622021',
+      active_link: true,
+    },
+    {
+      case_id: 22,
+      case_number: 'C20220622022',
+      active_link: false,
+    },
+    {
+      case_id: 23,
+      case_number: 'C20220622023',
+      active_link: true,
+    },
+  ],
 };
 
 const defaultCaseHearings = [
@@ -518,6 +618,9 @@ const multipleCases = [
   },
   singleCaseTwenty,
   singleCaseTwentyOne,
+  singleCaseTwentyTwo,
+  singleCaseTwentyThree,
+  singleCaseTwentyFour,
 ];
 
 const transcriptOne = [
@@ -791,7 +894,7 @@ router.post('/search', (req, res) => {
     return res.status(422).send(resBody102);
   }
   // yield many results by doing a judge search "Judge Judy"
-  if (notNullProperties === 1 && searchTerms.judge_name) {
+  if (notNullProperties === 2 && searchTerms.judge_name) {
     return res
       .status(200)
       .send(
@@ -801,6 +904,10 @@ router.post('/search', (req, res) => {
             c.hearings.find((h) => h.judges.includes(searchTerms.judge_name))
         )
       );
+  }
+  // also yield many results by doing a defendant search "Defendant Dennis"
+  if (notNullProperties === 2 && searchTerms.defendant_name) {
+    return res.status(200).send(multipleCases.filter((c) => c.defendants.includes(searchTerms.defendant_name)));
   }
   switch (req.body.case_number) {
     case 'INTERNAL_SERVER_ERROR':
@@ -873,6 +980,15 @@ router.get('/:caseId', (req, res) => {
       break;
     case '21':
       res.send(singleCaseTwentyOne);
+      break;
+    case '22':
+      res.send(singleCaseTwentyTwo);
+      break;
+    case '23':
+      res.send(singleCaseTwentyThree);
+      break;
+    case '24':
+      res.send(singleCaseTwentyFour);
       break;
     default:
       res.send(singleCase);

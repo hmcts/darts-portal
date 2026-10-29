@@ -70,12 +70,19 @@ describe('Case file screen', () => {
       cy.get('.govuk-summary-list__row')
         .eq(6)
         .within(() => {
+          cy.get('.govuk-summary-list__key').should('have.text', 'Linked case(s)');
+          cy.get('.govuk-summary-list__value').first().should('contain.text', '-');
+        });
+
+      cy.get('.govuk-summary-list__row')
+        .eq(7)
+        .within(() => {
           cy.get('.govuk-summary-list__key').should('have.text', 'Retained until');
           cy.get('.govuk-summary-list__value').first().should('contain.text', '31 Jan 2020');
         });
 
       cy.get('.govuk-summary-list__row')
-        .eq(6)
+        .eq(7)
         .within(() => {
           cy.get('.govuk-link').should('have.text', 'View or change').should('have.attr', 'href', '/case/1/retention');
         });
@@ -84,13 +91,79 @@ describe('Case file screen', () => {
     cy.a11y();
   });
 
+  describe('Linked cases', () => {
+    function getLinkedCasesValue() {
+      return cy
+        .contains('.govuk-summary-list__key', 'Linked case(s)')
+        .closest('.govuk-summary-list__row')
+        .find('.govuk-summary-list__value');
+    }
+
+    it('should display all linked cases with active and inactive links', () => {
+      cy.visit('/admin/case/24');
+
+      getLinkedCasesValue().within(() => {
+        cy.get('li').should('have.length', 3);
+        cy.contains('a', 'C20220622021').should('have.attr', 'href', '/admin/case/21');
+        cy.contains('li', 'C20220622022').should('not.have.descendants', 'a');
+        cy.contains('a', 'C20220622023').should('have.attr', 'href', '/admin/case/23');
+      });
+    });
+
+    it('should display linked cases when the case is anonymised', () => {
+      cy.visit('/admin/case/23');
+
+      cy.get('app-expired-banner').should('exist');
+
+      getLinkedCasesValue().within(() => {
+        cy.get('li').should('have.length', 1);
+        cy.contains('a', 'C20220622024').should('have.attr', 'href', '/admin/case/24');
+      });
+    });
+
+    it('should navigate to a linked case and display its details', () => {
+      cy.visit('/admin/case/24');
+
+      getLinkedCasesValue().contains('a', 'C20220622021').click();
+      cy.url().should('include', '/admin/case/21');
+      cy.get('app-govuk-heading h1').should('contain.text', 'C20220622021');
+
+      getLinkedCasesValue().contains('a', 'C20220622024').click();
+      cy.url().should('include', '/admin/case/24');
+      cy.get('app-govuk-heading h1').should('contain.text', 'C20220622024');
+    });
+
+    it('should display a hyphen when a case has no linked cases', () => {
+      cy.visit('/admin/case/20');
+
+      getLinkedCasesValue().should('contain.text', '-');
+    });
+
+    it('should display inactive linked cases as plain text', () => {
+      cy.visit('/admin/case/22');
+
+      getLinkedCasesValue().within(() => {
+        cy.contains('li', 'C20220622024').should('exist').and('not.have.descendants', 'a');
+        cy.get('a').should('not.exist');
+      });
+    });
+
+    it('should have no accessibility violations in linked cases', () => {
+      cy.visit('/admin/case/24');
+
+      cy.injectAxe();
+      getLinkedCasesValue().should('exist');
+      cy.a11y();
+    });
+  });
+
   describe('Winter/Summer date display', () => {
     function verifyCaseDates(caseId, retainedDate, expectedDate) {
       cy.visit(`admin/case/${caseId}`);
 
       cy.get('.govuk-summary-list').within(() => {
         cy.get('.govuk-summary-list__row')
-          .eq(6)
+          .eq(7)
           .within(() => {
             cy.get('.govuk-summary-list__key').should('have.text', 'Retained until');
             cy.get('.govuk-summary-list__value').first().should('contain.text', retainedDate);
