@@ -35,11 +35,12 @@ export class FeatureFlagService implements OnDestroy {
   }
 
   /**
-   * Fetches the user's feature flag values from launch darkly if there is a client Id and
-   * local overrides are disabled. It will try to connect once for each user until a reset
-   * or refresh allows another attempt.
-   * It is assumed this will be called each time the user navigates to
-   * a new authenticate page to keep the view of the page consistent while a user is on it.
+   * Updates a snapshot of the user's feature flag values to be used by the site. It will start a new connection to
+   * launch darkly if this is the first time the function has been called for the user to get their
+   * feature flag values. If it cannot connect to launch darkly in the allowed time, it will allow the call
+   * to continue which means the default values will be used instead when the feature flag value is checked.
+   * It is assumed this will be called each time the user navigates to a new authenticated page to keep the
+   * view of the page consistent while a user is on it.
    */
   loadUserFlags(userId: number): Observable<void> {
     if (this.config?.launchDarklyLocalOverride === true || !this.config?.launchDarklyClientId?.trim()) {
@@ -49,35 +50,15 @@ export class FeatureFlagService implements OnDestroy {
     // If someone logs in with as a different user, a new connection will be established
     // to ensure they get the feature flags for that user and not the previous one.
     if (this.userId !== userId) {
-      this.reset();
-      this.userId = userId;
-      const resetMarker = this.resetMarker;
-      const connectionAttempt = this.getLaunchDarklyUserContext().then((signedContext) => {
-        if (!signedContext || this.hasResetHappened(resetMarker)) {
-          // Stop if signing failed, as a connection will not be possible, or a reset made this
-          // attempt outdated, as the result is no longer needed.
-          return;
-        }
-        return this.startLaunchDarklyClient(signedContext.context, signedContext.hash);
-      });
-
-      // Create a limited wait for the first connection attempt so the user is not blocked from
-      // seeing the page if the connection is slow or fails. The attempt will continue in the
-      // background if the wait expires.
-      this.initialConnectionWait = this.waitForInitialConnection(
-        connectionAttempt,
-        this.config.launchDarklyInitialConnectionTimeoutMs
-      );
+      this.startLoadingUserFlagsForNewUser(userId, this.config.launchDarklyInitialConnectionTimeoutMs);
     }
 
     const resetMarker = this.resetMarker;
-    // Wait for the initial connection to complete or timeout before setting the page flags.
-    // If the initial wait has already finished, continue without waiting again.
+    // Wait for the initial connection to complete or timeout before setting the flag snapshot to be used.
+    // If the initial wait has already finished, this will update the snapshot without waiting again.
     return from(this.initialConnectionWait).pipe(
       tap(() => {
         if (!this.hasResetHappened(resetMarker)) {
-          // Only update the service's flag values at this point so the user gets a consistent
-          // view of an open page.
           this.featureFlagSnapshot = this.launchDarklyClient ? { ...this.launchDarklyClient.allFlags() } : {};
         }
       })
@@ -85,10 +66,11 @@ export class FeatureFlagService implements OnDestroy {
   }
 
   /**
-   * Returns whether the feature flag is enabled. If local overrides are enabled,
-   * the value is taken from the local flags. Otherwise, it uses the saved
-   * LaunchDarkly value for the page.
-   * If the flag is missing or its value is not a boolean, the default is used.
+   * Returns whether the feature flag is enabled or disabled.
+   *
+   * It will take the value from the current snapshot of launch darklys feature flags if available.
+   * If not, it will fallback to the default value for the feature flag. For local development,
+   * if local overrides are enabled, the value is taken from the local flags if available or default if not.
    */
   isEnabled(flagKey: keyof typeof FEATURE_FLAG_DEFAULTS): boolean {
     let featureFlagValue = this.featureFlagSnapshot[flagKey];
@@ -99,9 +81,8 @@ export class FeatureFlagService implements OnDestroy {
   }
 
   /**
-   * Closes the LaunchDarkly client and clears the current user, saved flag values,
-   * and initial wait. Changes the reset marker so any background work
-   * started before the reset is ignored if it completes afterwards.
+   * Closes the LaunchDarkly client and clears everything related to the the current user.
+   * The reset marker is also updated so any background work started before the reset can be ignored.
    */
   reset(): void {
     void this.launchDarklyClient?.close().catch(() => undefined);
@@ -120,29 +101,42 @@ export class FeatureFlagService implements OnDestroy {
     return this.appConfigService.getAppConfig();
   }
 
-  private hasResetHappened(resetMarker: symbol): boolean {
-    return this.resetMarker !== resetMarker;
-  }
-
   /**
-   * Waits for the connection attempt to finish or the timeout to expire.
-   * Reaching the timeout lets the page continue without cancelling the background attempt.
+   * Starts loading flags for a new user and sets the initial page wait.
    */
-  private waitForInitialConnection(connection: Promise<void>, timeoutMs: number): Promise<void> {
-    return new Promise<void>((resolve) => {
+  private startLoadingUserFlagsForNewUser(userId: number, timeoutMs: number): void {
+    this.reset(); //reset so no old flag information remains
+    this.userId = userId;
+    const resetMarker = this.resetMarker;
+    const connectionAttempt = this.getLaunchDarklyUserContext().then((signedContext) => {
+      if (!signedContext || this.hasResetHappened(resetMarker)) {
+        // Stop if signing failed, as a connection will not be possible, or if a reset has happened
+        // as the result is no longer needed.
+        return;
+      }
+      return this.startLaunchDarklyClient(signedContext.context, signedContext.hash);
+    });
+
+    // Create a limited wait for the first connection attempt so the user is not blocked from
+    // seeing the page if the connection is slow. The attempt will continue in the
+    // background if the wait expires.
+    this.initialConnectionWait = new Promise<void>((resolve) => {
       const timer = setTimeout(resolve, timeoutMs);
-      void connection.then(() => {
+      void connectionAttempt.then(() => {
         clearTimeout(timer);
         resolve();
       });
     });
   }
 
+  private hasResetHappened(resetMarker: symbol): boolean {
+    return this.resetMarker !== resetMarker;
+  }
+
   /**
-   * Gets the signed user context from the Portal server and checks that it contains
-   * the expected user ID and a non-empty hash. Returns undefined on failure so the page
-   * can use defaults. Another attempt requires a browser refresh or a reset, such as after
-   * logout or a user change.
+   * Gets the signed user context from the Portal server and checks that it contains the
+   * expected user ID and a non-empty hash. Returns undefined on failure so the page can use
+   * defaults. Another attempt requires a browser refresh or a reset, which would happen on logout.
    */
   private async getLaunchDarklyUserContext(): Promise<LaunchDarklyUserContext | undefined> {
     const expectedUserId = this.userId;
@@ -177,7 +171,7 @@ export class FeatureFlagService implements OnDestroy {
       // Streaming is set to true so it will recieve background updates to flag changes.
       this.launchDarklyClient = createClient(this.config.launchDarklyClientId.trim(), context, {
         streaming: true,
-        // SDK logs can include user context; use our own short warnings instead.
+        // SDK logs can include user context; use our own warnings instead.
         logger: basicLogger({ level: 'none' }),
       });
 
