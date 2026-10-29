@@ -162,6 +162,35 @@ describe('Case file screen', () => {
   });
 
   describe('Additional case details tab', () => {
+    function verifyRetentionConfidenceScore(caseId, expectedScore) {
+      cy.visit(`admin/case/${caseId}`);
+
+      cy.get('#additional-tab').click();
+
+      cy.contains('.govuk-summary-list__row', 'Retention confidence score')
+        .should('exist')
+        .within(() => {
+          cy.get('.govuk-summary-list__key').should('contain.text', 'Retention confidence score');
+          cy.get('.govuk-summary-list__value').should('contain.text', expectedScore);
+        });
+    }
+
+    it('should display "-" when retention confidence score is undefined', () => {
+      verifyRetentionConfidenceScore(20, '-');
+    });
+
+    it('should display "-" when retention confidence score is null', () => {
+      verifyRetentionConfidenceScore(21, '-');
+    });
+
+    it('should display "0" when retention confidence score is zero', () => {
+      verifyRetentionConfidenceScore(22, '0');
+    });
+
+    it('should display "123" when retention confidence score is 123', () => {
+      verifyRetentionConfidenceScore(1, '123');
+    });
+
     it('should verify additional case details', () => {
       cy.visit('admin/case/1');
       cy.injectAxe();
