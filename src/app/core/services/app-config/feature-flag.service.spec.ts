@@ -8,9 +8,7 @@ describe('FeatureFlagService', () => {
   let appConfigServiceMock: { getAppConfig: jest.Mock };
 
   beforeEach(() => {
-    appConfigServiceMock = {
-      getAppConfig: jest.fn(),
-    };
+    appConfigServiceMock = { getAppConfig: jest.fn() };
 
     TestBed.configureTestingModule({
       providers: [
@@ -21,6 +19,10 @@ describe('FeatureFlagService', () => {
     });
 
     service = TestBed.inject(FeatureFlagService);
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   it('should be created', () => {
@@ -132,6 +134,74 @@ describe('FeatureFlagService', () => {
         features: { eventObfuscation: { enabled: 0 } },
       });
       expect(service.isEventObfuscationEnabled()).toBe(false);
+    });
+  });
+
+  describe('reset', () => {
+    it('should close the existing LaunchDarkly client', () => {
+      const close = jest.fn().mockResolvedValue(undefined);
+      Object.assign(service, { launchDarklyClient: { close } });
+
+      service.reset();
+
+      expect(close).toHaveBeenCalledTimes(1);
+    });
+
+    it('should clear launchDarklyClient', () => {
+      Object.assign(service, { launchDarklyClient: { close: jest.fn().mockResolvedValue(undefined) } });
+
+      service.reset();
+
+      expect(service['launchDarklyClient']).toBeUndefined();
+    });
+
+    it('should clear userId', () => {
+      service['userId'] = 1;
+
+      service.reset();
+
+      expect(service['userId']).toBeUndefined();
+    });
+
+    it('should replace resetMarker with a new symbol', () => {
+      const previousResetMarker = service['resetMarker'];
+
+      service.reset();
+
+      expect(typeof service['resetMarker']).toBe('symbol');
+      expect(service['resetMarker']).not.toBe(previousResetMarker);
+    });
+
+    it('should replace initialConnectionWait with a resolved promise', async () => {
+      const pendingConnectionWait = new Promise<void>(() => undefined);
+      service['initialConnectionWait'] = pendingConnectionWait;
+
+      service.reset();
+
+      expect(service['initialConnectionWait']).not.toBe(pendingConnectionWait);
+      await expect(service['initialConnectionWait']).resolves.toBeUndefined();
+    });
+
+    it('should clear featureFlagSnapshot', () => {
+      service['featureFlagSnapshot'] = { 'test-flag': true };
+
+      service.reset();
+
+      expect(service['featureFlagSnapshot']).toEqual({});
+    });
+
+    it('should not fail when there is no LaunchDarkly client to close', () => {
+      expect(() => service.reset()).not.toThrow();
+    });
+  });
+
+  describe('ngOnDestroy', () => {
+    it('should call reset when the service is destroyed', () => {
+      const resetSpy = jest.spyOn(service, 'reset').mockImplementation(() => undefined);
+
+      service.ngOnDestroy();
+
+      expect(resetSpy).toHaveBeenCalledTimes(1);
     });
   });
 });
