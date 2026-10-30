@@ -1,8 +1,16 @@
 import { provideHttpClient } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { createClient } from '@launchdarkly/js-client-sdk';
 import { AppConfigService } from '@services/app-config/app-config.service';
+import { firstValueFrom } from 'rxjs';
 import { FEATURE_FLAG_DEFAULTS } from './feature-flag-defaults.constant';
 import { FeatureFlagService } from './feature-flag.service';
+
+jest.mock('@launchdarkly/js-client-sdk', () => ({
+  createClient: jest.fn(),
+  basicLogger: jest.fn(),
+}));
 
 jest.mock('./feature-flag-defaults.constant', () => ({
   FEATURE_FLAG_DEFAULTS: { 'test-flag': false },
@@ -18,6 +26,7 @@ describe('FeatureFlagService', () => {
     TestBed.configureTestingModule({
       providers: [
         provideHttpClient(),
+        provideHttpClientTesting(),
         FeatureFlagService,
         { provide: AppConfigService, useValue: appConfigServiceMock },
       ],
@@ -139,6 +148,67 @@ describe('FeatureFlagService', () => {
         features: { eventObfuscation: { enabled: 0 } },
       });
       expect(service.isEventObfuscationEnabled()).toBe(false);
+    });
+  });
+
+  describe('loadUserFlags', () => {
+    const userId = 1;
+
+    let config: {
+      launchDarklyClientId?: string;
+      launchDarklyInitialConnectionTimeoutMs: number;
+      launchDarklyLocalOverride: boolean;
+    };
+
+    beforeEach(() => {
+      config = {
+        launchDarklyClientId: 'test-client-id',
+        launchDarklyInitialConnectionTimeoutMs: 500,
+        launchDarklyLocalOverride: false,
+      };
+      appConfigServiceMock.getAppConfig.mockReturnValue(config);
+      jest.mocked(createClient).mockReset();
+    });
+
+    afterEach(() => {
+      TestBed.inject(HttpTestingController).verify();
+    });
+
+    it('should not create a LaunchDarkly client when local overrides are enabled', async () => {
+      config.launchDarklyLocalOverride = true;
+
+      await firstValueFrom(service.loadUserFlags(userId));
+
+      expect(createClient).not.toHaveBeenCalled();
+    });
+
+    it('should not create a LaunchDarkly client when no client ID is configured', async () => {
+      config.launchDarklyClientId = undefined;
+
+      await firstValueFrom(service.loadUserFlags(userId));
+
+      expect(createClient).not.toHaveBeenCalled();
+    });
+
+    it('should update the snapshot with the user\'s LaunchDarkly flag values when the initial connection succeeds', async () => {
+      const flagValues = { 'test-flag': true };
+      const allFlags = jest.fn().mockReturnValue({});
+      jest.mocked(createClient).mockReturnValueOnce({
+        start: jest.fn(async () => {
+          allFlags.mockReturnValue(flagValues);
+          return { status: 'complete' };
+        }),
+        allFlags,
+        close: jest.fn().mockResolvedValue(undefined),
+      } as unknown as ReturnType<typeof createClient>);
+
+      const userFlagsReadyToUse = firstValueFrom(service.loadUserFlags(userId));
+      TestBed.inject(HttpTestingController)
+        .expectOne('/user/launchdarkly-context')
+        .flush({ context: { kind: 'user', key: String(userId) }, hash: 'test-hash' });
+      await userFlagsReadyToUse;
+
+      expect(service['featureFlagSnapshot']).toEqual(flagValues);
     });
   });
 
