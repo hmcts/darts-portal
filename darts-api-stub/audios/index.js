@@ -141,6 +141,17 @@ router.get('/hearings/:hearingId/audios', (req, res) => {
       ];
       res.send(body6);
       break;
+    case '7':
+      const body7 = [
+        {
+          id: 1,
+          media_start_timestamp: '2023-06-21T07:32:24.620Z',
+          media_end_timestamp: '2023-06-21T07:36:24.620Z',
+          is_available: true,
+        },
+      ];
+      res.send(body7);
+      break;
     case '16':
       res.send([
         {

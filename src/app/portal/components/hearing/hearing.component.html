@@ -52,6 +52,15 @@
         <p id="conflict-body-2" class="govuk-body"></p>
         <a class="govuk-link" href="javascript:void(0)" (click)="state = 'Default'">Go back</a>
       }
+      @if (vm.error.status === 503 && state === 'OrderFailure') {
+        <h1 id="conflict-heading" class="govuk-heading-xl govuk-!-margin-bottom-8">You cannot order this audio</h1>
+        <p id="conflict-body-1" class="govuk-body">
+          The audio you have requested has been archived. The archive service is currently unavailable due to
+          maintenance, so we are unable to retrieve your recording at this time. Please try again later.
+        </p>
+        <p id="conflict-body-2" class="govuk-body"></p>
+        <a class="govuk-link" href="javascript:void(0)" (click)="state = 'Default'">Go back</a>
+      }
     }
     <div [hidden]="state !== 'Default'">
       <app-hearing-file [case]="vm.case" [hearing]="vm.hearing"></app-hearing-file>

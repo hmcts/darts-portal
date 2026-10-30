@@ -219,7 +219,7 @@ const defaultCaseHearings = [
     id: 3,
     date: '2023-10-11',
     courtroom: '9',
-    judges: ['Alex Jonny'],
+    judges: ['Alex Jonny (Simulate 403 audio error)'],
     transcript_count: 3,
   },
   {
@@ -235,7 +235,7 @@ const defaultCaseHearings = [
     id: 5,
     date: '2024-01-05',
     courtroom: '9',
-    judges: ['Fred Masey'],
+    judges: ['Fred Masey (Simulate 409 audio error)'],
     transcript_count: 53,
   },
   {
@@ -243,8 +243,16 @@ const defaultCaseHearings = [
     id: 6,
     date: '2024-03-10',
     courtroom: '11',
-    judges: ['Zach Attack'],
+    judges: ['Zach Attack (Simulate 413 audio error)'],
     transcript_count: 51,
+  },
+  {
+    case_id: 1,
+    id: 7,
+    date: '2024-05-07',
+    courtroom: '12',
+    judges: ['Alex Masey (Simulate 503 audio error)'],
+    transcript_count: 48,
   },
   {
     case_id: 16,
