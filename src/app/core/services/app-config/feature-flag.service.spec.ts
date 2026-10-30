@@ -190,7 +190,7 @@ describe('FeatureFlagService', () => {
       expect(createClient).not.toHaveBeenCalled();
     });
 
-    it('should update the snapshot with the user\'s LaunchDarkly flag values when the initial connection succeeds', async () => {
+    it("should update the snapshot with the user's LaunchDarkly flag values when the initial connection succeeds", async () => {
       const flagValues = { 'test-flag': true };
       const allFlags = jest.fn().mockReturnValue({});
       jest.mocked(createClient).mockReturnValueOnce({
