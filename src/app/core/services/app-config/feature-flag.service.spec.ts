@@ -1,7 +1,12 @@
 import { provideHttpClient } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { AppConfigService } from '@services/app-config/app-config.service';
+import { FEATURE_FLAG_DEFAULTS } from './feature-flag-defaults.constant';
 import { FeatureFlagService } from './feature-flag.service';
+
+jest.mock('./feature-flag-defaults.constant', () => ({
+  FEATURE_FLAG_DEFAULTS: { 'test-flag': false },
+}));
 
 describe('FeatureFlagService', () => {
   let service: FeatureFlagService;
@@ -134,6 +139,67 @@ describe('FeatureFlagService', () => {
         features: { eventObfuscation: { enabled: 0 } },
       });
       expect(service.isEventObfuscationEnabled()).toBe(false);
+    });
+  });
+
+  describe('isEnabled', () => {
+    const testFlag = 'test-flag' as keyof typeof FEATURE_FLAG_DEFAULTS;
+    let config: { launchDarklyLocalOverride: boolean; launchDarklyLocalFlags?: Record<string, unknown> };
+
+    beforeEach(() => {
+      jest.replaceProperty(FEATURE_FLAG_DEFAULTS, testFlag, false);
+      config = {
+        launchDarklyLocalOverride: false,
+        launchDarklyLocalFlags: { 'test-flag': false },
+      };
+      appConfigServiceMock.getAppConfig.mockReturnValue(config);
+      service['featureFlagSnapshot'] = { 'test-flag': false };
+    });
+
+    it('should return the value from the snapshot when local overrides are disabled', () => {
+      service['featureFlagSnapshot'] = { 'test-flag': true };
+
+      expect(service.isEnabled(testFlag)).toBe(true);
+    });
+
+    it('should return the value from the local flags when local overrides are enabled', () => {
+      config.launchDarklyLocalOverride = true;
+      config.launchDarklyLocalFlags = { 'test-flag': true };
+
+      expect(service.isEnabled(testFlag)).toBe(true);
+    });
+
+    it('should return the default value when the flag is missing from the snapshot', () => {
+      FEATURE_FLAG_DEFAULTS[testFlag] = true;
+      service['featureFlagSnapshot'] = {};
+
+      expect(service.isEnabled(testFlag)).toBe(true);
+    });
+
+    it.each([undefined, {}])(
+      'should return the default value when local overrides are enabled but the flag is missing - local flags: %p',
+      (localFlags) => {
+        FEATURE_FLAG_DEFAULTS[testFlag] = true;
+        config.launchDarklyLocalOverride = true;
+        config.launchDarklyLocalFlags = localFlags;
+
+        expect(service.isEnabled(testFlag)).toBe(true);
+      }
+    );
+
+    it.each([null, 'false', 0])('should return the default value for a non-boolean snapshot value - %p', (value) => {
+      FEATURE_FLAG_DEFAULTS[testFlag] = true;
+      service['featureFlagSnapshot'] = { 'test-flag': value };
+
+      expect(service.isEnabled(testFlag)).toBe(true);
+    });
+
+    it.each([null, 'false', 0])('should return the default value for a non-boolean local value - %p', (value) => {
+      FEATURE_FLAG_DEFAULTS[testFlag] = true;
+      config.launchDarklyLocalOverride = true;
+      config.launchDarklyLocalFlags = { 'test-flag': value };
+
+      expect(service.isEnabled(testFlag)).toBe(true);
     });
   });
 
