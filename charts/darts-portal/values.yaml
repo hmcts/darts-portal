@@ -11,6 +11,8 @@ nodejs:
         - AppInsightsInstrumentationKey
         - redis-connection-string
         - darts-portal-session-secret
+        - LaunchDarklyClientId
+        - LaunchDarklySdkKey
 
   environment:
     ALLOW_CONFIG_MUTATIONS: true

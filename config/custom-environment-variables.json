@@ -1,6 +1,18 @@
 {
   "node-env": "NODE_ENV",
   "port": "DARTS_PORTAL_PORT",
+  "launchDarklyInitialConnectionTimeoutMs": {
+    "__name": "LAUNCHDARKLY_INITIAL_CONNECTION_TIMEOUT_MS",
+    "__format": "number"
+  },
+  "launchDarklyLocalOverride": {
+    "__name": "LAUNCHDARKLY_LOCAL_OVERRIDE",
+    "__format": "boolean"
+  },
+  "launchDarklyLocalFlags": {
+    "__name": "LAUNCHDARKLY_LOCAL_FLAGS",
+    "__format": "json"
+  },
   "hostname": "DARTS_PORTAL_URL",
   "darts-api": {
     "url": "DARTS_API_URL"
@@ -34,5 +46,11 @@
     "scriptUrl": "DARTS_DYNATRACE_SCRIPT_URL"
   },
   "caseSearchTimeout": "DARTS_PORTAL_CASE_SEARCH_TIMEOUT",
-  "allowStubData": "DARTS_PORTAL_ALLOW_STUB_DATA"
+  "allowStubData": "DARTS_PORTAL_ALLOW_STUB_DATA",
+  "secrets": {
+    "darts": {
+      "LaunchDarklyClientId": "LAUNCHDARKLY_CLIENT_ID",
+      "LaunchDarklySdkKey": "LAUNCHDARKLY_SDK_KEY"
+    }
+  }
 }

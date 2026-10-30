@@ -1,6 +1,7 @@
 import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } from '@angular/router';
 import { AuthService } from '@services/auth/auth.service';
+import { FeatureFlagService } from '@services/app-config/feature-flag.service';
 import { UserService } from '@services/user/user.service';
 import { of } from 'rxjs/internal/observable/of';
 import { map } from 'rxjs/internal/operators/map';
@@ -10,11 +11,13 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: R
   const authService: AuthService = inject(AuthService);
   const userService: UserService = inject(UserService);
   const router = inject(Router);
+  const featureFlagService = inject(FeatureFlagService);
   const isAdminRoute = route.data?.allowedRoles?.includes('SUPER_ADMIN') && route.url[0].path === 'admin';
 
   return authService.checkIsAuthenticated().pipe(
     switchMap((isAuthenticated) => {
       if (!isAuthenticated) {
+        featureFlagService.reset();
         localStorage.setItem('returnUrl', state.url);
         return of(router.parseUrl('/login'));
       } else {
@@ -26,6 +29,8 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: R
       }
 
       return userService.userProfile$.pipe(
+        // Get the feature flags for the specific user before routing in case the user has access to a feature that is not available to all users.
+        switchMap((user) => featureFlagService.loadUserFlags(user.userId)),
         map(() => {
           // if route is not role protected, allow access
           if (!route.data?.allowedRoles) {

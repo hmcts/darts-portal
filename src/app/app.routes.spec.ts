@@ -48,6 +48,9 @@ describe('App Routes', () => {
     };
 
     mockFeatureFlagService = {
+      loadUserFlags: jest.fn(() => of(undefined)),
+      reset: jest.fn(),
+      isEnabled: jest.fn().mockReturnValue(false),
       isManualDeletionEnabled: jest.fn().mockReturnValue(true),
       isEventObfuscationEnabled: jest.fn().mockReturnValue(true),
     };
