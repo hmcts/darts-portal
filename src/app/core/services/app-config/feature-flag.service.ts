@@ -38,7 +38,8 @@ export class FeatureFlagService implements OnDestroy {
    * Updates a snapshot of the user's feature flag values to be used by the site. It will start a new connection to
    * launch darkly if this is the first time the function has been called for the user to get their
    * feature flag values. If it cannot connect to launch darkly in the allowed time, it will allow the call
-   * to continue which means the default values will be used instead when the feature flag value is checked.
+   * to continue which means either cached versions of the flags, if available, or default values will be 
+   * used instead when the feature flag value is checked.
    * It is assumed this will be called each time the user navigates to a new authenticated page to keep the
    * view of the page consistent while a user is on it.
    */

@@ -1,3 +1,4 @@
+import { provideHttpClient } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { AppConfigService } from '@services/app-config/app-config.service';
 import { FeatureFlagService } from './feature-flag.service';
@@ -12,7 +13,11 @@ describe('FeatureFlagService', () => {
     };
 
     TestBed.configureTestingModule({
-      providers: [FeatureFlagService, { provide: AppConfigService, useValue: appConfigServiceMock }],
+      providers: [
+        provideHttpClient(),
+        FeatureFlagService,
+        { provide: AppConfigService, useValue: appConfigServiceMock },
+      ],
     });
 
     service = TestBed.inject(FeatureFlagService);
