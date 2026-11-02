@@ -14,7 +14,7 @@ export class FeatureFlagService implements OnDestroy {
   private userId?: number; // User whose flags the current connection is loading.
   private resetMarker = Symbol(); // Replaced by reset() so old background results can be ignored in case user changes.
   private initialConnectionWait: Promise<void> = Promise.resolve(); // Shared page wait for the initial connection, limited by a timeout.
-  private featureFlagSnapshot: Record<string, unknown> = {}; // Snapshot used by the page, refreshed when loadUserFlags is called which is expected to be on navigation to any authenticated page.
+  private featureFlagSnapshot: Record<string, unknown> = {}; // Snapshot used by the page, refreshed when updateUserFlagSnapshot is called which is expected to be on navigation to any authenticated page.
 
   // Leave the existing environment-based flags as they are. These methods can be removed
   // if the flags are migrated to LaunchDarkly or are no longer needed.
@@ -43,7 +43,7 @@ export class FeatureFlagService implements OnDestroy {
    * It is assumed this will be called each time the user navigates to a new authenticated page to keep the
    * view of the page consistent while a user is on it.
    */
-  loadUserFlags(userId: number): Observable<void> {
+  updateUserFlagSnapshot(userId: number): Observable<void> {
     if (this.config?.launchDarklyLocalOverride === true || !this.config?.launchDarklyClientId?.trim()) {
       return of(undefined);
     }

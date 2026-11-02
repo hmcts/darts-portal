@@ -37,7 +37,10 @@ describe('authGuard', () => {
     TestBed.configureTestingModule({
       imports: [],
       providers: [
-        { provide: FeatureFlagService, useValue: { loadUserFlags: jest.fn(() => of(undefined)), reset: jest.fn() } },
+        {
+          provide: FeatureFlagService,
+          useValue: { updateUserFlagSnapshot: jest.fn(() => of(undefined)), reset: jest.fn() },
+        },
         provideHttpClient(),
         provideHttpClientTesting(),
         {
@@ -107,14 +110,14 @@ describe('authGuard', () => {
     prepareGuard({ checkAuthenticated: true });
     const featureFlagService = TestBed.inject(FeatureFlagService);
     const userFlagsReadyToUse = new Subject<void>();
-    jest.spyOn(featureFlagService, 'loadUserFlags').mockReturnValue(userFlagsReadyToUse);
+    jest.spyOn(featureFlagService, 'updateUserFlagSnapshot').mockReturnValue(userFlagsReadyToUse);
     const result = jest.fn();
 
     (executeGuard(mockRouteSnapshot, mockStateRouter) as Observable<boolean>).subscribe(result);
 
-    expect(featureFlagService.loadUserFlags).toHaveBeenCalledWith(123);
+    expect(featureFlagService.updateUserFlagSnapshot).toHaveBeenCalledWith(123);
     expect(result).not.toHaveBeenCalled();
-    // Ready means the page can use LaunchDarkly values, cached values, or defaults. The loadUserFlags function
+    // Ready means the page can use LaunchDarkly values, cached values, or defaults. The updateUserFlagSnapshot function
     // will determine which to use and let this function know the user can procceed. It may update values in
     // the background for later use.
     userFlagsReadyToUse.next();

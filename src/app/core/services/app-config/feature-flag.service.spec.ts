@@ -151,7 +151,7 @@ describe('FeatureFlagService', () => {
     });
   });
 
-  describe('loadUserFlags', () => {
+  describe('updateUserFlagSnapshot', () => {
     const userId = 1;
     const flagValues = { 'test-flag': true };
     const signedContext = { context: { kind: 'user', key: String(userId) }, hash: 'test-hash' };
@@ -169,7 +169,7 @@ describe('FeatureFlagService', () => {
       jest.useFakeTimers();
       config = {
         launchDarklyClientId: 'test-client-id',
-        launchDarklyInitialConnectionTimeoutMs: 500,
+        launchDarklyInitialConnectionTimeoutMs: 100,
         launchDarklyLocalOverride: false,
       };
       appConfigServiceMock.getAppConfig.mockReturnValue(config);
@@ -194,7 +194,7 @@ describe('FeatureFlagService', () => {
     it('should not create a LaunchDarkly client when local overrides are enabled', async () => {
       config.launchDarklyLocalOverride = true;
 
-      await firstValueFrom(service.loadUserFlags(userId));
+      await firstValueFrom(service.updateUserFlagSnapshot(userId));
 
       expect(createClient).not.toHaveBeenCalled();
     });
@@ -202,7 +202,7 @@ describe('FeatureFlagService', () => {
     it('should not create a LaunchDarkly client when app config is not available', async () => {
       appConfigServiceMock.getAppConfig.mockReturnValue(undefined);
 
-      await firstValueFrom(service.loadUserFlags(userId));
+      await firstValueFrom(service.updateUserFlagSnapshot(userId));
 
       expect(createClient).not.toHaveBeenCalled();
     });
@@ -212,22 +212,72 @@ describe('FeatureFlagService', () => {
       async (clientId) => {
         config.launchDarklyClientId = clientId;
 
-        await firstValueFrom(service.loadUserFlags(userId));
+        await firstValueFrom(service.updateUserFlagSnapshot(userId));
 
         expect(createClient).not.toHaveBeenCalled();
       }
     );
 
-    it('should create a LaunchDarkly client with the signed user context when loading flags for the first time', async () => {
-      const userFlagsReadyToUse = firstValueFrom(service.loadUserFlags(userId));
+    it('should not create a LaunchDarkly client when the signed context request fails', async () => {
+      jest.spyOn(console, 'warn').mockImplementation(() => undefined);
+
+      const userFlagsReadyToUse = firstValueFrom(service.updateUserFlagSnapshot(userId));
+      httpMock
+        .expectOne('/user/launchdarkly-context')
+        .flush(null, { status: 500, statusText: 'Internal Server Error' });
+      await userFlagsReadyToUse;
+
+      expect(createClient).not.toHaveBeenCalled();
+    });
+
+    it.each([
+      {
+        reason: 'context kind is not user',
+        response: { ...signedContext, context: { ...signedContext.context, kind: 'other' } },
+      },
+      {
+        reason: 'context user ID is different to the current users ID (2 instead of 1)',
+        response: { ...signedContext, context: { ...signedContext.context, key: '2' } },
+      },
+      { reason: 'context is missing', response: { ...signedContext, context: undefined } },
+      { reason: 'hash is missing', response: { ...signedContext, hash: undefined } },
+      { reason: 'hash is an empty string', response: { ...signedContext, hash: '' } },
+      { reason: 'hash is a number (123)', response: { ...signedContext, hash: 123 } },
+    ])('should not create a LaunchDarkly client when the signed context is invalid - $reason', async ({ response }) => {
+      jest.spyOn(console, 'warn').mockImplementation(() => undefined);
+
+      const userFlagsReadyToUse = firstValueFrom(service.updateUserFlagSnapshot(userId));
+      httpMock.expectOne('/user/launchdarkly-context').flush(response);
+      await userFlagsReadyToUse;
+
+      expect(createClient).not.toHaveBeenCalled();
+    });
+
+    it('should not create a LaunchDarkly client when the signed context arrives after a reset', async () => {
+      const userFlagsReadyToUse = firstValueFrom(service.updateUserFlagSnapshot(userId));
+      const contextRequest = httpMock.expectOne('/user/launchdarkly-context');
+
+      service.reset();
+      contextRequest.flush(signedContext);
+      await userFlagsReadyToUse;
+
+      expect(createClient).not.toHaveBeenCalled();
+    });
+
+    it('should create a LaunchDarkly client with the signed user context and streaming true when updating user flag snapshot for a user for the first time', async () => {
+      const userFlagsReadyToUse = firstValueFrom(service.updateUserFlagSnapshot(userId));
       httpMock.expectOne('/user/launchdarkly-context').flush(signedContext);
       await userFlagsReadyToUse;
 
-      expect(createClient).toHaveBeenCalledWith(config.launchDarklyClientId, signedContext.context, expect.any(Object));
+      expect(createClient).toHaveBeenCalledWith(
+        config.launchDarklyClientId,
+        signedContext.context,
+        expect.objectContaining({ streaming: true })
+      );
     });
 
-    it('should pass the signed hash to LaunchDarkly when starting the client', async () => {
-      const userFlagsReadyToUse = firstValueFrom(service.loadUserFlags(userId));
+    it('should pass the signed hash to LaunchDarkly when starting the LaunchDarkly client', async () => {
+      const userFlagsReadyToUse = firstValueFrom(service.updateUserFlagSnapshot(userId));
       httpMock.expectOne('/user/launchdarkly-context').flush(signedContext);
       await userFlagsReadyToUse;
 
@@ -236,27 +286,57 @@ describe('FeatureFlagService', () => {
       );
     });
 
-    it('should reuse the current client when loading flags again for the same user', async () => {
-      const userFlagsReadyToUse = firstValueFrom(service.loadUserFlags(userId));
-      httpMock.expectOne('/user/launchdarkly-context').flush(signedContext);
+    it('should not retry the signed context request when it has already failed for the same user', async () => {
+      jest.spyOn(console, 'warn').mockImplementation(() => undefined);
+      const userFlagsReadyToUse = firstValueFrom(service.updateUserFlagSnapshot(userId));
+      httpMock
+        .expectOne('/user/launchdarkly-context')
+        .flush(null, { status: 500, statusText: 'Internal Server Error' });
       await userFlagsReadyToUse;
 
-      await firstValueFrom(service.loadUserFlags(userId));
+      await firstValueFrom(service.updateUserFlagSnapshot(userId));
+
+      httpMock.expectNone('/user/launchdarkly-context');
+    });
+
+    it('should ignore the previous signed context when the user changes before it arrives', async () => {
+      const differentUserId = 2;
+      const previousUserFlagsReadyToUse = firstValueFrom(service.updateUserFlagSnapshot(userId));
+      const previousContextRequest = httpMock.expectOne('/user/launchdarkly-context');
+
+      const differentUserFlagsReadyToUse = firstValueFrom(service.updateUserFlagSnapshot(differentUserId));
+      httpMock.expectOne('/user/launchdarkly-context').flush({
+        context: { kind: 'user', key: String(differentUserId) },
+        hash: 'different-test-hash',
+      });
+      await differentUserFlagsReadyToUse;
+      previousContextRequest.flush(signedContext);
+      await previousUserFlagsReadyToUse;
 
       expect(createClient).toHaveBeenCalledTimes(1);
     });
 
-    it('should create a new client when loading flags for a different user', async () => {
+    it('should reuse the current LaunchDarkly client when updating the user flag snapshot for the same user', async () => {
+      const userFlagsReadyToUse = firstValueFrom(service.updateUserFlagSnapshot(userId));
+      httpMock.expectOne('/user/launchdarkly-context').flush(signedContext);
+      await userFlagsReadyToUse;
+
+      await firstValueFrom(service.updateUserFlagSnapshot(userId));
+
+      expect(createClient).toHaveBeenCalledTimes(1);
+    });
+
+    it('should create a new LaunchDarkly client when updating the user flag snapshot for a different user', async () => {
       const differentUserId = 2;
       const differentUserContext = {
         context: { kind: 'user', key: String(differentUserId) },
         hash: 'different-test-hash',
       };
-      const userFlagsReadyToUse = firstValueFrom(service.loadUserFlags(userId));
+      const userFlagsReadyToUse = firstValueFrom(service.updateUserFlagSnapshot(userId));
       httpMock.expectOne('/user/launchdarkly-context').flush(signedContext);
       await userFlagsReadyToUse;
 
-      const differentUserFlagsReadyToUse = firstValueFrom(service.loadUserFlags(differentUserId));
+      const differentUserFlagsReadyToUse = firstValueFrom(service.updateUserFlagSnapshot(differentUserId));
       httpMock.expectOne('/user/launchdarkly-context').flush(differentUserContext);
       await differentUserFlagsReadyToUse;
 
@@ -267,12 +347,65 @@ describe('FeatureFlagService', () => {
       );
     });
 
-    it('should clear the previous snapshot when flags start loading for a different user', async () => {
+    it("should update the snapshot with the user's flag values from the LaunchDarkly client when the initial connection succeeds", async () => {
+      const userFlagsReadyToUse = firstValueFrom(service.updateUserFlagSnapshot(userId));
+      httpMock.expectOne('/user/launchdarkly-context').flush(signedContext);
+      await userFlagsReadyToUse;
+
+      expect(service['featureFlagSnapshot']).toEqual(flagValues);
+    });
+
+    it('should update the snapshot with the latest flag values from the LaunchDarkly client when the LaunchDarkly client is already connected', async () => {
+      const userFlagsReadyToUse = firstValueFrom(service.updateUserFlagSnapshot(userId));
+      httpMock.expectOne('/user/launchdarkly-context').flush(signedContext);
+      await userFlagsReadyToUse;
+      launchDarklyClient.allFlags.mockReturnValue({ 'test-flag': false });
+
+      await firstValueFrom(service.updateUserFlagSnapshot(userId));
+
+      expect(service['featureFlagSnapshot']).toEqual({ 'test-flag': false });
+    });
+
+    it('should not update the snapshot when the LaunchDarkly client finishes connecting after the initial wait times out', async () => {
+      const clientFlagValues = { 'test-flag': false };
+      launchDarklyClient.allFlags.mockReturnValue(clientFlagValues);
+      launchDarklyClient.start.mockImplementation(
+        () =>
+          new Promise((resolve) => {
+            setTimeout(() => {
+              clientFlagValues['test-flag'] = true;
+              resolve({ status: 'complete' });
+            }, 2);
+          })
+      );
+
+      service.updateUserFlagSnapshot(userId).subscribe();
+      await jest.advanceTimersByTimeAsync(config.launchDarklyInitialConnectionTimeoutMs - 1);
+      httpMock.expectOne('/user/launchdarkly-context').flush(signedContext);
+      await jest.advanceTimersByTimeAsync(2);
+
+      expect(service['featureFlagSnapshot']).toEqual({ 'test-flag': false });
+    });
+
+    it('should use the available flag values from the LaunchDarkly client when the initial connection wait times out', async () => {
+      launchDarklyClient.start.mockImplementation(
+        () => new Promise((resolve) => setTimeout(() => resolve({ status: 'complete' }), 2))
+      );
+
+      service.updateUserFlagSnapshot(userId).subscribe();
+      await jest.advanceTimersByTimeAsync(config.launchDarklyInitialConnectionTimeoutMs - 1);
+      httpMock.expectOne('/user/launchdarkly-context').flush(signedContext);
+      await jest.advanceTimersByTimeAsync(1);
+
+      expect(service['featureFlagSnapshot']).toEqual(flagValues);
+    });
+
+    it('should clear the previous snapshot when updating the flags for a different user', async () => {
       const differentUserId = 2;
       service['userId'] = userId;
       service['featureFlagSnapshot'] = { 'test-flag': true };
 
-      const differentUserFlagsReadyToUse = firstValueFrom(service.loadUserFlags(differentUserId));
+      const differentUserFlagsReadyToUse = firstValueFrom(service.updateUserFlagSnapshot(differentUserId));
       const snapshotWhileLoading = { ...service['featureFlagSnapshot'] };
       httpMock
         .expectOne('/user/launchdarkly-context')
@@ -282,20 +415,70 @@ describe('FeatureFlagService', () => {
       expect(snapshotWhileLoading).toEqual({});
     });
 
-    it("should update the snapshot with the user's LaunchDarkly flag values when the initial connection succeeds", async () => {
-      const userFlagsReadyToUse = firstValueFrom(service.loadUserFlags(userId));
+    it('should leave the snapshot empty when creating the LaunchDarkly client throws an error', async () => {
+      jest.spyOn(console, 'warn').mockImplementation(() => undefined);
+      jest.mocked(createClient).mockImplementationOnce(() => {
+        throw new Error('Client creation failed');
+      });
+
+      const userFlagsReadyToUse = firstValueFrom(service.updateUserFlagSnapshot(userId));
+      httpMock.expectOne('/user/launchdarkly-context').flush(signedContext);
+      await userFlagsReadyToUse;
+
+      expect(service['featureFlagSnapshot']).toEqual({});
+    });
+
+    it('should leave the snapshot empty when starting the LaunchDarkly client rejects and no flag values are available', async () => {
+      jest.spyOn(console, 'warn').mockImplementation(() => undefined);
+      launchDarklyClient.start.mockRejectedValue(new Error('Startup failed'));
+      launchDarklyClient.allFlags.mockReturnValue({});
+
+      const userFlagsReadyToUse = firstValueFrom(service.updateUserFlagSnapshot(userId));
+      httpMock.expectOne('/user/launchdarkly-context').flush(signedContext);
+      await userFlagsReadyToUse;
+
+      expect(service['featureFlagSnapshot']).toEqual({});
+    });
+
+    it('should use available flag values when starting the LaunchDarkly client rejects and flag values are available', async () => {
+      jest.spyOn(console, 'warn').mockImplementation(() => undefined);
+      launchDarklyClient.start.mockRejectedValue(new Error('Startup failed'));
+
+      const userFlagsReadyToUse = firstValueFrom(service.updateUserFlagSnapshot(userId));
       httpMock.expectOne('/user/launchdarkly-context').flush(signedContext);
       await userFlagsReadyToUse;
 
       expect(service['featureFlagSnapshot']).toEqual(flagValues);
     });
 
-    it('should complete the initial wait for user flags when a connection to LaunchDarkly is established', async () => {
-      config.launchDarklyInitialConnectionTimeoutMs = 100;
+    it('should use available flag values when starting the LaunchDarkly client returns a failed result and flag values are available', async () => {
+      jest.spyOn(console, 'warn').mockImplementation(() => undefined);
+      launchDarklyClient.start.mockResolvedValue({ status: 'failed', error: new Error('Startup failed') });
+
+      const userFlagsReadyToUse = firstValueFrom(service.updateUserFlagSnapshot(userId));
+      httpMock.expectOne('/user/launchdarkly-context').flush(signedContext);
+      await userFlagsReadyToUse;
+
+      expect(service['featureFlagSnapshot']).toEqual(flagValues);
+    });
+
+    it('should not change the snapshot when an earlier flag load finishes after reset', async () => {
+      const userFlagsReadyToUse = firstValueFrom(service.updateUserFlagSnapshot(userId));
+      const contextRequest = httpMock.expectOne('/user/launchdarkly-context');
+
+      service.reset();
+      service['featureFlagSnapshot'] = flagValues;
+      contextRequest.flush(signedContext);
+      await userFlagsReadyToUse;
+
+      expect(service['featureFlagSnapshot']).toEqual(flagValues);
+    });
+
+    it('should complete the initial wait for user flags when the LaunchDarkly client connects within the timeout', async () => {
       const complete = jest.fn();
 
-      service.loadUserFlags(userId).subscribe({ complete });
-      await jest.advanceTimersByTimeAsync(25);
+      service.updateUserFlagSnapshot(userId).subscribe({ complete });
+      await jest.advanceTimersByTimeAsync(config.launchDarklyInitialConnectionTimeoutMs - 1);
 
       expect(complete).not.toHaveBeenCalled();
 
@@ -306,10 +489,9 @@ describe('FeatureFlagService', () => {
     });
 
     it('should complete the initial wait for user flags when the timeout is reached before the user context is returned', async () => {
-      config.launchDarklyInitialConnectionTimeoutMs = 100;
       const complete = jest.fn();
 
-      service.loadUserFlags(userId).subscribe({ complete });
+      service.updateUserFlagSnapshot(userId).subscribe({ complete });
       await jest.advanceTimersByTimeAsync(config.launchDarklyInitialConnectionTimeoutMs - 1);
 
       expect(complete).not.toHaveBeenCalled();
@@ -323,252 +505,57 @@ describe('FeatureFlagService', () => {
       await jest.runAllTimersAsync();
     });
 
-    it('should complete the initial wait for user flags when the timeout is reached before LaunchDarkly connects', async () => {
-      config.launchDarklyInitialConnectionTimeoutMs = 100;
-      const contextRequestDelayMs = 25;
+    it('should complete the initial wait for user flags when the timeout is reached before the LaunchDarkly client connects', async () => {
       const complete = jest.fn();
       launchDarklyClient.start.mockImplementation(
-        () => new Promise((resolve) => setTimeout(() => resolve({ status: 'complete' }), 200))
+        () => new Promise((resolve) => setTimeout(() => resolve({ status: 'complete' }), 2)) // 2 ensures this finishes 1ms after the timeout
       );
 
-      service.loadUserFlags(userId).subscribe({ complete });
-      await jest.advanceTimersByTimeAsync(contextRequestDelayMs);
+      service.updateUserFlagSnapshot(userId).subscribe({ complete });
+      await jest.advanceTimersByTimeAsync(config.launchDarklyInitialConnectionTimeoutMs - 1);
       httpMock.expectOne('/user/launchdarkly-context').flush(signedContext);
-      await jest.advanceTimersByTimeAsync(config.launchDarklyInitialConnectionTimeoutMs - contextRequestDelayMs - 1);
+      await jest.advanceTimersByTimeAsync(0);
 
       expect(complete).not.toHaveBeenCalled();
 
       await jest.advanceTimersByTimeAsync(1);
 
       expect(complete).toHaveBeenCalledTimes(1);
-
-      await jest.runAllTimersAsync();
     });
 
-    it('should use available SDK flag values when the initial connection wait times out', async () => {
-      config.launchDarklyInitialConnectionTimeoutMs = 100;
-      launchDarklyClient.allFlags.mockReturnValue(flagValues);
-      launchDarklyClient.start.mockImplementation(
-        () => new Promise((resolve) => setTimeout(() => resolve({ status: 'complete' }), 200))
-      );
-
-      service.loadUserFlags(userId).subscribe();
-      httpMock.expectOne('/user/launchdarkly-context').flush(signedContext);
-      await jest.advanceTimersByTimeAsync(config.launchDarklyInitialConnectionTimeoutMs);
-      const snapshotAtTimeout = { ...service['featureFlagSnapshot'] };
-      await jest.advanceTimersByTimeAsync(200);
-
-      expect(snapshotAtTimeout).toEqual(flagValues);
-    });
-
-    it('should share the initial wait when flags are requested again for the same user before it finishes', async () => {
-      config.launchDarklyInitialConnectionTimeoutMs = 100;
-      const timeAlreadyWaitedMs = 25;
+    it('should share the initial wait when flags are requested for the same user before it finishes', async () => {
       const complete = jest.fn();
       launchDarklyClient.start.mockImplementation(
-        () => new Promise((resolve) => setTimeout(() => resolve({ status: 'complete' }), 200))
+        () => new Promise((resolve) => setTimeout(() => resolve({ status: 'complete' }), 2))
       );
-      service.loadUserFlags(userId).subscribe();
+      service.updateUserFlagSnapshot(userId).subscribe();
+      await jest.advanceTimersByTimeAsync(config.launchDarklyInitialConnectionTimeoutMs - 1);
       httpMock.expectOne('/user/launchdarkly-context').flush(signedContext);
-      await jest.advanceTimersByTimeAsync(timeAlreadyWaitedMs);
 
-      service.loadUserFlags(userId).subscribe({ complete });
-      await jest.advanceTimersByTimeAsync(config.launchDarklyInitialConnectionTimeoutMs - timeAlreadyWaitedMs - 1);
+      service.updateUserFlagSnapshot(userId).subscribe({ complete });
+      await jest.advanceTimersByTimeAsync(0);
 
       expect(complete).not.toHaveBeenCalled();
 
       await jest.advanceTimersByTimeAsync(1);
 
       expect(complete).toHaveBeenCalledTimes(1);
-
-      await jest.runAllTimersAsync();
     });
 
-    it('should not wait again when the initial connection wait for the same user has already finished', async () => {
-      config.launchDarklyInitialConnectionTimeoutMs = 100;
+    it('should not wait when the initial connection wait for the same user has already finished', async () => {
       const complete = jest.fn();
       launchDarklyClient.start.mockImplementation(
-        () => new Promise((resolve) => setTimeout(() => resolve({ status: 'complete' }), 200))
+        () => new Promise((resolve) => setTimeout(() => resolve({ status: 'complete' }), 2))
       );
-      service.loadUserFlags(userId).subscribe();
+      service.updateUserFlagSnapshot(userId).subscribe();
+      await jest.advanceTimersByTimeAsync(config.launchDarklyInitialConnectionTimeoutMs - 1);
       httpMock.expectOne('/user/launchdarkly-context').flush(signedContext);
-      await jest.advanceTimersByTimeAsync(config.launchDarklyInitialConnectionTimeoutMs);
+      await jest.advanceTimersByTimeAsync(1);
 
-      service.loadUserFlags(userId).subscribe({ complete });
+      service.updateUserFlagSnapshot(userId).subscribe({ complete });
       await jest.advanceTimersByTimeAsync(0);
 
       expect(complete).toHaveBeenCalledTimes(1);
-
-      await jest.runAllTimersAsync();
-    });
-
-    it('should keep the current snapshot unchanged when LaunchDarkly finishes connecting after the initial wait times out', async () => {
-      config.launchDarklyInitialConnectionTimeoutMs = 100;
-      const sdkFlagValues = { 'test-flag': false };
-      launchDarklyClient.allFlags.mockReturnValue(sdkFlagValues);
-      launchDarklyClient.start.mockImplementation(
-        () =>
-          new Promise((resolve) => {
-            setTimeout(() => {
-              sdkFlagValues['test-flag'] = true;
-              resolve({ status: 'complete' });
-            }, 200);
-          })
-      );
-
-      service.loadUserFlags(userId).subscribe();
-      httpMock.expectOne('/user/launchdarkly-context').flush(signedContext);
-      await jest.advanceTimersByTimeAsync(200);
-
-      expect(service['featureFlagSnapshot']).toEqual({ 'test-flag': false });
-    });
-
-    it('should update the existing snapshot with the latest flag values when loadUserFlags is called', async () => {
-      const sdkFlagValues = { 'test-flag': false };
-      launchDarklyClient.allFlags.mockReturnValue(sdkFlagValues);
-      const userFlagsReadyToUse = firstValueFrom(service.loadUserFlags(userId));
-      httpMock.expectOne('/user/launchdarkly-context').flush(signedContext);
-      await userFlagsReadyToUse;
-      sdkFlagValues['test-flag'] = true;
-
-      await firstValueFrom(service.loadUserFlags(userId));
-
-      expect(service['featureFlagSnapshot']).toEqual({ 'test-flag': true });
-    });
-
-    it('should not create a LaunchDarkly client when the signed context request fails', async () => {
-      jest.spyOn(console, 'warn').mockImplementation(() => undefined);
-
-      const userFlagsReadyToUse = firstValueFrom(service.loadUserFlags(userId));
-      httpMock
-        .expectOne('/user/launchdarkly-context')
-        .flush(null, { status: 500, statusText: 'Internal Server Error' });
-      await userFlagsReadyToUse;
-
-      expect(createClient).not.toHaveBeenCalled();
-    });
-
-    it.each([
-      {
-        reason: 'context kind is organisation',
-        response: { ...signedContext, context: { ...signedContext.context, kind: 'organisation' } },
-      },
-      {
-        reason: 'context user ID is 2 instead of 1',
-        response: { ...signedContext, context: { ...signedContext.context, key: '2' } },
-      },
-      { reason: 'context is missing', response: { ...signedContext, context: undefined } },
-      { reason: 'hash is missing', response: { ...signedContext, hash: undefined } },
-      { reason: 'hash is an empty string', response: { ...signedContext, hash: '' } },
-      { reason: 'hash is a number (123)', response: { ...signedContext, hash: 123 } },
-    ])('should not create a LaunchDarkly client when the signed context is invalid - $reason', async ({ response }) => {
-      jest.spyOn(console, 'warn').mockImplementation(() => undefined);
-
-      const userFlagsReadyToUse = firstValueFrom(service.loadUserFlags(userId));
-      httpMock.expectOne('/user/launchdarkly-context').flush(response);
-      await userFlagsReadyToUse;
-
-      expect(createClient).not.toHaveBeenCalled();
-    });
-
-    it('should not retry the signed context request when it has already failed for the same user', async () => {
-      jest.spyOn(console, 'warn').mockImplementation(() => undefined);
-      const userFlagsReadyToUse = firstValueFrom(service.loadUserFlags(userId));
-      httpMock
-        .expectOne('/user/launchdarkly-context')
-        .flush(null, { status: 500, statusText: 'Internal Server Error' });
-      await userFlagsReadyToUse;
-
-      await firstValueFrom(service.loadUserFlags(userId));
-
-      httpMock.expectNone('/user/launchdarkly-context');
-    });
-
-    it('should leave the snapshot empty when creating the LaunchDarkly client throws an error', async () => {
-      jest.spyOn(console, 'warn').mockImplementation(() => undefined);
-      jest.mocked(createClient).mockImplementationOnce(() => {
-        throw new Error('Client creation failed');
-      });
-
-      const userFlagsReadyToUse = firstValueFrom(service.loadUserFlags(userId));
-      httpMock.expectOne('/user/launchdarkly-context').flush(signedContext);
-      await userFlagsReadyToUse;
-
-      expect(service['featureFlagSnapshot']).toEqual({});
-    });
-
-    it('should use available SDK flag values when starting the client returns a failed result', async () => {
-      jest.spyOn(console, 'warn').mockImplementation(() => undefined);
-      launchDarklyClient.start.mockResolvedValue({ status: 'failed', error: new Error('Startup failed') });
-
-      const userFlagsReadyToUse = firstValueFrom(service.loadUserFlags(userId));
-      httpMock.expectOne('/user/launchdarkly-context').flush(signedContext);
-      await userFlagsReadyToUse;
-
-      expect(service['featureFlagSnapshot']).toEqual(flagValues);
-    });
-
-    it('should use available SDK flag values when starting the client rejects', async () => {
-      jest.spyOn(console, 'warn').mockImplementation(() => undefined);
-      launchDarklyClient.start.mockRejectedValue(new Error('Startup failed'));
-
-      const userFlagsReadyToUse = firstValueFrom(service.loadUserFlags(userId));
-      httpMock.expectOne('/user/launchdarkly-context').flush(signedContext);
-      await userFlagsReadyToUse;
-
-      expect(service['featureFlagSnapshot']).toEqual(flagValues);
-    });
-
-    it('should leave the snapshot empty when starting the client rejects and no SDK flag values are available', async () => {
-      jest.spyOn(console, 'warn').mockImplementation(() => undefined);
-      launchDarklyClient.start.mockRejectedValue(new Error('Startup failed'));
-      launchDarklyClient.allFlags.mockReturnValue({});
-
-      const userFlagsReadyToUse = firstValueFrom(service.loadUserFlags(userId));
-      httpMock.expectOne('/user/launchdarkly-context').flush(signedContext);
-      await userFlagsReadyToUse;
-
-      expect(service['featureFlagSnapshot']).toEqual({});
-    });
-
-    it('should not create a LaunchDarkly client when the signed context arrives after a reset', async () => {
-      const userFlagsReadyToUse = firstValueFrom(service.loadUserFlags(userId));
-      const contextRequest = httpMock.expectOne('/user/launchdarkly-context');
-
-      service.reset();
-      contextRequest.flush(signedContext);
-      await userFlagsReadyToUse;
-
-      expect(createClient).not.toHaveBeenCalled();
-    });
-
-    it('should ignore the previous signed context when the user changes before it arrives', async () => {
-      const differentUserId = 2;
-      const previousUserFlagsReadyToUse = firstValueFrom(service.loadUserFlags(userId));
-      const previousContextRequest = httpMock.expectOne('/user/launchdarkly-context');
-
-      const differentUserFlagsReadyToUse = firstValueFrom(service.loadUserFlags(differentUserId));
-      httpMock.expectOne('/user/launchdarkly-context').flush({
-        context: { kind: 'user', key: String(differentUserId) },
-        hash: 'different-test-hash',
-      });
-      await differentUserFlagsReadyToUse;
-      previousContextRequest.flush(signedContext);
-      await previousUserFlagsReadyToUse;
-
-      expect(createClient).toHaveBeenCalledTimes(1);
-    });
-
-    it('should not change the snapshot when an earlier flag load finishes after reset', async () => {
-      const userFlagsReadyToUse = firstValueFrom(service.loadUserFlags(userId));
-      const contextRequest = httpMock.expectOne('/user/launchdarkly-context');
-
-      service.reset();
-      service['featureFlagSnapshot'] = flagValues;
-      contextRequest.flush(signedContext);
-      await userFlagsReadyToUse;
-
-      expect(service['featureFlagSnapshot']).toEqual(flagValues);
     });
   });
 

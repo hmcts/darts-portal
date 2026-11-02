@@ -30,7 +30,7 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: R
 
       return userService.userProfile$.pipe(
         // Get the feature flags for the specific user before routing in case the user has access to a feature that is not available to all users.
-        switchMap((user) => featureFlagService.loadUserFlags(user.userId)),
+        switchMap((user) => featureFlagService.updateUserFlagSnapshot(user.userId)),
         map(() => {
           // if route is not role protected, allow access
           if (!route.data?.allowedRoles) {
