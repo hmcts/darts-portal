@@ -2,6 +2,13 @@ nodejs:
   # Don't modify below here
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
+  keyVaults:
+    darts:
+      secrets:
+        - name: DevLaunchDarklyClientId
+          alias: LaunchDarklyClientId
+        - name: DevLaunchDarklySdkKey
+          alias: LaunchDarklySdkKey
   environment:
     DARTS_API_URL: https://darts-api.staging.platform.hmcts.net
     DARTS_PORTAL_URL: https://${SERVICE_FQDN}
