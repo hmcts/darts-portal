@@ -5,6 +5,12 @@ nodejs:
   keyVaults:
     darts:
       secrets:
+        - name: AppInsightsInstrumentationKey
+          alias: AppInsightsInstrumentationKey
+        - name: redis-connection-string
+          alias: redis-connection-string
+        - name: darts-portal-session-secret
+          alias: darts-portal-session-secret
         - name: DevLaunchDarklyClientId
           alias: LaunchDarklyClientId
         - name: DevLaunchDarklySdkKey
