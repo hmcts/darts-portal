@@ -3,6 +3,10 @@ import { HttpBackendClient } from '@extensions/HttpBackendClient';
 import { lastValueFrom } from 'rxjs';
 
 export interface AppConfig {
+  launchDarklyClientId: string;
+  launchDarklyInitialConnectionTimeoutMs: number;
+  launchDarklyLocalOverride: boolean;
+  launchDarklyLocalFlags: Record<string, boolean>;
   appInsightsKey: string;
   support: {
     name: string;

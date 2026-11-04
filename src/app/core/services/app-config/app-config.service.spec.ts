@@ -26,6 +26,10 @@ describe('AppConfigService', () => {
 
   it('loads app config', async () => {
     const mockConfig: AppConfig = {
+      launchDarklyClientId: '',
+      launchDarklyInitialConnectionTimeoutMs: 500,
+      launchDarklyLocalOverride: false,
+      launchDarklyLocalFlags: { 'test-flag': false },
       appInsightsKey: 'TestKey',
       support: {
         name: 'DARTS Support',

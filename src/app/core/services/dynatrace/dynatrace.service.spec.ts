@@ -13,6 +13,10 @@ describe('DynatraceService', () => {
   let cookiesService: CookiesService;
   let appConfigService: AppConfigService;
   const mockConfig = {
+    launchDarklyClientId: '',
+    launchDarklyInitialConnectionTimeoutMs: 500,
+    launchDarklyLocalOverride: false,
+    launchDarklyLocalFlags: {},
     dynatrace: { scriptUrl: 'https://dynatrace.com/script.js' },
     appInsightsKey: 'X',
     environment: 'env',

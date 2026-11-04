@@ -102,3 +102,28 @@ Run `yarn cypress` to open the cypress console, very useful for debugging tests.
 Run `yarn ng generate component component-name` to generate a new component. You can also use `yarn ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
 Note the requirement for prefixing the `ng` commands with `yarn`
+
+## Feature Flags
+[Launch Darkly](https://launchdarkly.com/) is used for feature flags in DARTS. The detailed instructions on how to set it up from scratch can be found in Confluence.
+
+### Adding a new flag
+Detailed instruction about how to setup a new feature flag can be found in Confluence. As a quick guide:
+1. Create the flag in launch darkly
+1. Add the key to [feature flag defaults](src/app/core/services/app-config/feature-flag-defaults.constant.ts) along with it's default value (currently feature flags are assumed to have a boolean value).
+1. Add the key to the list of dev overrides [development.json](config/development.json) with the value to use by default in dev.
+1. Use the following code where the value is needed.
+```ts
+private featureFlagService = inject(FeatureFlagService);
+
+this.featureFlagService.isEnabled('your-flag-key');
+```
+
+### Local development
+By default local development will use the local overrides, which means it will not connect to Launch Darkly and instead use values for the feature flags set in [development.json](config/development.json). This allows developers to test out varaitions of feature flags by changing thier values here instead of in Launch Darkly.
+
+If there is a need to connect to Launch Darkly at any point, then local overrides should be set to false and the SDK and client ID for Launch Darkly need to be set. This can be set with env vars before running the application:
+```bash
+export LAUNCHDARKLY_LOCAL_OVERRIDE=false
+export LAUNCHDARKLY_CLIENT_ID='launch-darkly-client-side-id'
+export LAUNCHDARKLY_SDK_KEY='launch-darkly-server-sdk-key'
+```

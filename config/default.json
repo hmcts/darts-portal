@@ -1,6 +1,9 @@
 {
   "node-env": "development",
   "port": 3000,
+  "launchDarklyInitialConnectionTimeoutMs": 500,
+  "launchDarklyLocalOverride": false,
+  "launchDarklyLocalFlags": {},
   "hostname": "http://localhost:3000",
   "darts-api": {
     "url": "http://localhost:4550"
@@ -55,7 +58,9 @@
     "darts": {
       "AppInsightsInstrumentationKey": "00000000-0000-0000-0000-000000000000",
       "redis-connection-string": "redis://localhost:6379",
-      "darts-portal-session-secret": "supersecret"
+      "darts-portal-session-secret": "supersecret",
+      "LaunchDarklyClientId": "",
+      "LaunchDarklySdkKey": ""
     }
   }
 }

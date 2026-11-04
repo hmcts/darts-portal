@@ -5,12 +5,7 @@
     "outDir": "./out-tsc/spec",
     "esModuleInterop": true,
     "module": "CommonJs",
-    "types": [
-     "jest",
-    ]
+    "types": ["jest", "express-session"]
   },
-  "include": [
-    "src/**/*.spec.ts",
-    "src/**/*.d.ts"
-  ]
+  "include": ["src/**/*.spec.ts", "src/**/*.d.ts", "server/**/*.spec.ts", "server/**/*.d.ts"]
 }
