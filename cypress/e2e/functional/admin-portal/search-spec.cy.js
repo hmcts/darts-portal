@@ -34,6 +34,8 @@ describe('Admin - Search screen', () => {
       .contains('123456')
       .parent('td')
       .next('td')
+      .should('contain', '-')
+      .next('td')
       .should('contain', 'Courthouse 1')
       .next('td')
       .should('contain', 'Multiple')
@@ -46,6 +48,8 @@ describe('Admin - Search screen', () => {
       .contains('654321')
       .parent('td')
       .next('td')
+      .should('contain', '-')
+      .next('td')
       .should('contain', 'Courthouse 2')
       .next('td')
       .should('contain', 'Courtroom 2')
@@ -55,6 +59,60 @@ describe('Admin - Search screen', () => {
       .should('contain', 'Defendant 3');
 
     cy.get('.expired-row').contains('This case has passed its retention date');
+  });
+
+  describe('Linked cases', () => {
+    function searchForCases() {
+      cy.get('#confirm-button').click();
+      cy.get('app-case-search-results tbody tr').should('exist');
+    }
+
+    function getLinkedCasesCell(caseNumber) {
+      return cy
+        .get('app-case-search-results td.case_number a.govuk-link')
+        .contains(caseNumber)
+        .closest('tr')
+        .find('td.linked_cases');
+    }
+
+    it('should display multiple linked cases with active and inactive links', () => {
+      searchForCases();
+
+      getLinkedCasesCell('C20220622024').within(() => {
+        cy.get('li').should('have.length', 3);
+        cy.contains('a', 'C20220622021').should('have.attr', 'href', '/admin/case/21');
+        cy.contains('li', 'C20220622022').should('not.have.descendants', 'a');
+        cy.contains('a', 'C20220622023').should('have.attr', 'href', '/admin/case/23');
+      });
+    });
+
+    it('should navigate to a linked case from search results', () => {
+      searchForCases();
+
+      getLinkedCasesCell('C20220622024').contains('a', 'C20220622021').click();
+      cy.url().should('include', '/admin/case/21');
+      cy.get('app-govuk-heading h1').should('contain.text', 'C20220622021');
+    });
+
+    it('should display inactive linked cases as plain text', () => {
+      searchForCases();
+
+      getLinkedCasesCell('C20220622022').within(() => {
+        cy.contains('li', 'C20220622024').should('exist').and('not.have.descendants', 'a');
+        cy.get('a').should('not.exist');
+      });
+    });
+
+    it('should display a hyphen when there are no linked cases', () => {
+      searchForCases();
+      getLinkedCasesCell('C20220622020').should('contain.text', '-');
+    });
+
+    it('should have no accessibility violations in linked case search results', () => {
+      searchForCases();
+      getLinkedCasesCell('C20220622024').should('exist');
+      cy.a11y();
+    });
   });
 
   it('event search and results', () => {
@@ -339,7 +397,7 @@ describe('Admin - Search screen', () => {
 
     cy.get('#confirm-button').click();
 
-    cy.get('.heading-caption').should('contain', 'Showing 1-6 of 6');
+    cy.get('.heading-caption').should('contain', 'Showing 1-9 of 9');
   });
 
   it('should clear the form when "Clear search" is clicked', () => {

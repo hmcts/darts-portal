@@ -99,6 +99,58 @@ describe('Case search', () => {
     cy.get('.govuk-table__row .defendants').contains('Multiple');
   });
 
+  describe('Linked cases', () => {
+    function searchForCase(caseNumber) {
+      cy.contains('Search').click();
+      cy.get('#case_number').type(caseNumber);
+      cy.get('button').contains('Search').click();
+    }
+
+    function getLinkedCasesCell() {
+      return cy.get('#search-results tbody tr.govuk-table__row td.linked_cases');
+    }
+
+    it('should display multiple linked cases with active and inactive links', () => {
+      searchForCase('C20220622024');
+
+      getLinkedCasesCell().within(() => {
+        cy.get('li').should('have.length', 3);
+
+        cy.contains('a', 'C20220622021').should('have.attr', 'href', '/case/21');
+        cy.contains('li', 'C20220622022').should('not.have.descendants', 'a');
+        cy.contains('a', 'C20220622023').should('have.attr', 'href', '/case/23');
+      });
+    });
+
+    it('should navigate to a linked case from search results', () => {
+      searchForCase('C20220622024');
+
+      getLinkedCasesCell().contains('a', 'C20220622021').click();
+      cy.url().should('include', '/case/21');
+      cy.get('app-govuk-heading h1').should('contain.text', 'C20220622021');
+    });
+
+    it('should display inactive linked cases as plain text', () => {
+      searchForCase('C20220622022');
+
+      getLinkedCasesCell().within(() => {
+        cy.contains('li', 'C20220622024').should('exist').and('not.have.descendants', 'a');
+        cy.get('a').should('not.exist');
+      });
+    });
+
+    it('should display a hyphen when there are no linked cases', () => {
+      searchForCase('C20220622020');
+      getLinkedCasesCell().should('contain.text', '-');
+    });
+
+    it('should have no accessibility violations in linked case search results', () => {
+      searchForCase('C20220622024');
+      getLinkedCasesCell().should('exist');
+      cy.a11y();
+    });
+  });
+
   it('advanced search fields and multiple results', () => {
     cy.contains('Search').click();
     cy.get('h1').should('contain', 'Search for a case');
@@ -116,7 +168,7 @@ describe('Case search', () => {
     cy.get('#keywords');
     cy.get('button').contains('Search').click();
 
-    cy.get('#search-results').should('contain', '18 results');
+    cy.get('#search-results').should('contain', '21 results');
     cy.a11y();
     cy.get('a').contains('Clear search').click();
   });

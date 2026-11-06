@@ -8,6 +8,16 @@
   border-top: hidden;
 }
 
+// Override global table cell alignment (vertical-align: middle !important) in styles.scss
+.case_number,
+.linked_cases,
+.courthouse,
+.courtroom,
+.judges,
+.defendants {
+  vertical-align: top !important;
+}
+
 .expired-icon {
   fill: #d0331b;
   margin-left: 5px;

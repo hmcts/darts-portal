@@ -89,6 +89,7 @@ describe('AdminCaseService', () => {
             event_ts: '2024-01-01T00:00:00Z',
           },
         ],
+        linkedCases: [],
         retainUntilDateTime: DateTime.fromISO('2030-01-31T15:42:10.361Z'),
         caseClosedDateTime: DateTime.fromISO('2023-07-20T15:42:10.361Z'),
         retentionDateTimeApplied: DateTime.fromISO('2023-07-22T15:42:10.361Z'),
@@ -145,6 +146,7 @@ describe('AdminCaseService', () => {
             event_ts: '2024-01-01T00:00:00Z',
           },
         ],
+        linkedCases: [],
         retainUntilDateTime: DateTime.fromISO('2030-01-31T15:42:10.361Z'),
         caseClosedDateTime: DateTime.fromISO('2023-07-20T15:42:10.361Z'),
         retentionDateTimeApplied: DateTime.fromISO('2023-07-22T15:42:10.361Z'),
@@ -164,6 +166,56 @@ describe('AdminCaseService', () => {
         dataAnonymisedById: 7,
         dataAnonymisedBy: undefined,
         isInterpreterUsed: false,
+      });
+    });
+
+    describe('Linked cases mapping', () => {
+      const mockLinkedCases = [
+        {
+          case_id: 21,
+          case_number: 'C20220622021',
+          active_link: true,
+        },
+        {
+          case_id: 22,
+          case_number: 'C20220622022',
+          active_link: false,
+        },
+        {
+          case_id: 23,
+          case_number: 'C20220622023',
+          active_link: true,
+        },
+      ];
+
+      it('should map multiple linked cases including active_link', () => {
+        const data: AdminCaseData = {
+          ...mockCaseData,
+          linked_cases: mockLinkedCases,
+        };
+
+        const result = service.mapCaseDataToCase(data);
+        expect(result.linkedCases).toEqual(mockLinkedCases);
+      });
+
+      it('should return an empty array when linked_cases is empty', () => {
+        const data: AdminCaseData = {
+          ...mockCaseData,
+          linked_cases: [],
+        };
+
+        const result = service.mapCaseDataToCase(data);
+        expect(result.linkedCases).toEqual([]);
+      });
+
+      it('should return an empty array when linked_cases is undefined', () => {
+        const data: AdminCaseData = {
+          ...mockCaseData,
+          linked_cases: undefined,
+        };
+
+        const result = service.mapCaseDataToCase(data);
+        expect(result.linkedCases).toEqual([]);
       });
     });
   });
