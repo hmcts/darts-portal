@@ -4612,39 +4612,39 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@launchdarkly/eventsource@npm:0.2.2":
-  version: 0.2.2
-  resolution: "@launchdarkly/eventsource@npm:0.2.2"
-  checksum: 10/da1d74386566d22c08bb9bddbd96321869aebc630c550b3248817cd1a0b3c8352de5a2f50aa5677346a8ac08736a2f1bb9cf1d0edaca7c7ada2b86adf4033788
+"@launchdarkly/eventsource@npm:0.2.3":
+  version: 0.2.3
+  resolution: "@launchdarkly/eventsource@npm:0.2.3"
+  checksum: 10/c4471480ce8ea5faca10378961972daefa20af996302e7b51d37febf581702bbcd4907ec451e0812f2842dda37e8f39d1de745be4145e473f0a97a26d9c6dcdc
   languageName: node
   linkType: hard
 
-"@launchdarkly/js-client-sdk-common@npm:1.35.0":
-  version: 1.35.0
-  resolution: "@launchdarkly/js-client-sdk-common@npm:1.35.0"
+"@launchdarkly/js-client-sdk-common@npm:1.35.1":
+  version: 1.35.1
+  resolution: "@launchdarkly/js-client-sdk-common@npm:1.35.1"
   dependencies:
-    "@launchdarkly/js-sdk-common": "npm:2.32.0"
-  checksum: 10/7f6bb35aa85ae0de59516a21d3e7f5a6f58d3e38896ccb6374cedf670f3103fb18644c26bf5da300d62450f38ebf055e1a478f9665a4d6b53dff2458218e8437
+    "@launchdarkly/js-sdk-common": "npm:2.32.1"
+  checksum: 10/064ff8a49e686ac6b3cffcd903c7a43bf628959d6229d9c3acec8fa7a6ed5ee915a62bba15cdffb69d14ff5c32e3e3acf7798f9c7bcdd3a1a8aabeb2d73b9fd0
   languageName: node
   linkType: hard
 
 "@launchdarkly/js-client-sdk@npm:^4.13.0":
-  version: 4.14.0
-  resolution: "@launchdarkly/js-client-sdk@npm:4.14.0"
+  version: 4.14.1
+  resolution: "@launchdarkly/js-client-sdk@npm:4.14.1"
   dependencies:
-    "@launchdarkly/eventsource": "npm:0.2.2"
-    "@launchdarkly/js-client-sdk-common": "npm:1.35.0"
+    "@launchdarkly/eventsource": "npm:0.2.3"
+    "@launchdarkly/js-client-sdk-common": "npm:1.35.1"
   dependenciesMeta:
     "@launchdarkly/eventsource":
       optional: true
-  checksum: 10/a918cc06189902392348cb5231664816846743a2f4c0aa8158a3852b4b727c024fdb438801dd2b9bc2b2e6f07ea12e66fccb0d93d4620bfd46878305ea4f0823
+  checksum: 10/cc9def1191072ecbfc74dfba74e53079223cf5ce5361c5d1c954e9b918c1c516c72d96262dedf7b976aea71d4b78953c0d791894fde94abd5f187c9f70b55637
   languageName: node
   linkType: hard
 
-"@launchdarkly/js-sdk-common@npm:2.32.0":
-  version: 2.32.0
-  resolution: "@launchdarkly/js-sdk-common@npm:2.32.0"
-  checksum: 10/4f4d9173d4129fec38d3641a99069c27d3c8b8046e47ca81d234258be2bde46b1ddea3ccac67059a48e4c486be4b1b20781d2b21ae9961170ae8a4848da52d41
+"@launchdarkly/js-sdk-common@npm:2.32.1":
+  version: 2.32.1
+  resolution: "@launchdarkly/js-sdk-common@npm:2.32.1"
+  checksum: 10/761d774764106464c2d45ea37d1a8e816506d3aecf035d5b619133317ae3d623966ffd619fdf01fb7ef06595fb4aca7b1c5d88411327b0b3b923f95b97a12ad3
   languageName: node
   linkType: hard
 
