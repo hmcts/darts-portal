@@ -81,6 +81,13 @@ const singleCaseTwentyOne = {
       event_ts: '2024-01-01T00:00:00Z',
     },
   ],
+  linked_cases: [
+    {
+      case_id: 24,
+      case_number: 'C20220622024',
+      active_link: true,
+    },
+  ],
   retain_until_date_time: '2030-08-10T23:23:24.858Z',
   case_closed_date_time: '2030-08-10T23:23:24.858Z',
   is_retention_updated: true,
@@ -106,6 +113,97 @@ const singleCaseTwentyOne = {
   data_anonymised_at: '2030-08-10T23:23:24.858Z',
   data_anonymised_by: 5,
   is_interpreter_used: false,
+};
+
+const singleCaseTwentyTwo = {
+  id: 22,
+  courthouse: {
+    id: 2,
+    display_name: 'Reading',
+  },
+  courtrooms: [
+    {
+      id: 22,
+      name: 'Courtroom 22',
+    },
+  ],
+  case_number: 'C20220622022',
+  defendants: ['Defendant Dave'],
+  judges: ['Judge Julian'],
+  prosecutors: ['Paddy Prosecutor'],
+  defenders: ['Dileep Defender'],
+  linked_cases: [
+    {
+      case_id: 24,
+      case_number: 'C20220622024',
+      active_link: false,
+    },
+  ],
+};
+
+const singleCaseTwentyThree = {
+  id: 23,
+  courthouse: {
+    id: 2,
+    display_name: 'Reading',
+  },
+  courtrooms: [
+    {
+      id: 23,
+      name: 'Courtroom 23',
+    },
+  ],
+  retain_until_date_time: '2020-01-31T15:42:10.361Z',
+  case_number: 'C20220622023',
+  defendants: ['Defendant Dennis'],
+  judges: ['Judge Julian'],
+  prosecutors: ['Paddy Prosecutor'],
+  defenders: ['Dileep Defender'],
+  is_data_anonymised: true,
+  data_anonymised_at: '2023-01-01T11:00:00.000Z',
+  linked_cases: [
+    {
+      case_id: 24,
+      case_number: 'C20220622024',
+      active_link: true,
+    },
+  ],
+};
+
+const singleCaseTwentyFour = {
+  id: 24,
+  courthouse: {
+    id: 2,
+    display_name: 'Reading',
+  },
+  courtrooms: [
+    {
+      id: 24,
+      name: 'Courtroom 24',
+    },
+  ],
+  case_number: 'C20220622024',
+  defendants: ['Defendant Dennis'],
+  judges: ['Judge Julian'],
+  prosecutors: ['Paddy Prosecutor'],
+  defenders: ['Dileep Defender'],
+  linked_cases: [
+    {
+      case_id: 21,
+      case_number: 'C20220622021',
+      active_link: true,
+    },
+    {
+      case_id: 22,
+      case_number: 'C20220622022',
+      active_link: false,
+    },
+    {
+      case_id: 23,
+      case_number: 'C20220622023',
+      active_link: true,
+    },
+  ],
 };
 
 const caseSearchResults = [
@@ -165,6 +263,9 @@ const caseSearchResults = [
   },
   singleCaseTwenty,
   singleCaseTwentyOne,
+  singleCaseTwentyTwo,
+  singleCaseTwentyThree,
+  singleCaseTwentyFour,
   {
     id: 10,
     case_number: '1000010',
@@ -268,6 +369,15 @@ router.get('/:id', (req, res) => {
       break;
     case '21':
       res.send(singleCaseTwentyOne);
+      break;
+    case '22':
+      res.send(singleCaseTwentyTwo);
+      break;
+    case '23':
+      res.send(singleCaseTwentyThree);
+      break;
+    case '24':
+      res.send(singleCaseTwentyFour);
       break;
     default:
       res.send(singleCase);
