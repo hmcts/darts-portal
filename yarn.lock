@@ -866,21 +866,22 @@ __metadata:
   linkType: hard
 
 "@azure/identity@npm:^4.13.0, @azure/identity@npm:^4.13.1":
-  version: 4.13.1
-  resolution: "@azure/identity@npm:4.13.1"
+  version: 4.14.1
+  resolution: "@azure/identity@npm:4.14.1"
   dependencies:
     "@azure/abort-controller": "npm:^2.0.0"
     "@azure/core-auth": "npm:^1.9.0"
     "@azure/core-client": "npm:^1.9.2"
+    "@azure/core-process": "npm:^1.0.0"
     "@azure/core-rest-pipeline": "npm:^1.17.0"
     "@azure/core-tracing": "npm:^1.0.0"
     "@azure/core-util": "npm:^1.11.0"
     "@azure/logger": "npm:^1.0.0"
     "@azure/msal-browser": "npm:^5.5.0"
-    "@azure/msal-node": "npm:^5.1.0"
-    open: "npm:^10.1.0"
+    "@azure/msal-node": "npm:^7.1.0"
+    open: "npm:^11.0.0"
     tslib: "npm:^2.2.0"
-  checksum: 10/f07734f811d734d29b49ad7f8345a53d680b90d075dcd9bfbc28e2e18bda3f1688de4faf44cc4727302c9aa91c13d4444ac2de6edb88a79c99c9efc660137609
+  checksum: 10/c1b6cb9fa210661b79b8413522a6e7527e376a72d120b0931a643bfae6fb27417296700d65ddb5a0a7f54e8e9213aae7f91f48e21532f8dd5da30abbd60d9755
   languageName: node
   linkType: hard
 
@@ -1007,13 +1008,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/msal-node@npm:^5.1.0":
-  version: 5.4.0
-  resolution: "@azure/msal-node@npm:5.4.0"
+"@azure/msal-common@npm:16.16.1":
+  version: 16.16.1
+  resolution: "@azure/msal-common@npm:16.16.1"
+  checksum: 10/f0121a677c983b2e587e8eb43105d43c59acc49eb2a599946bfc253fb37113991bc0379dc7918ec52104384091b8aebaae3b09b6c7f79ae7285309ade3d0fd7a
+  languageName: node
+  linkType: hard
+
+"@azure/msal-node@npm:^7.1.0":
+  version: 7.2.1
+  resolution: "@azure/msal-node@npm:7.2.1"
   dependencies:
-    "@azure/msal-common": "npm:16.11.1"
+    "@azure/msal-common": "npm:16.16.1"
     jsonwebtoken: "npm:^9.0.0"
-  checksum: 10/a04f971dad660bc29af97ec68af2ec1efbfc3853f20e2cf1857ff4f8af491bd52771ca02ba22f0b955a0cf73a4d03ddbd6873747f7732205430ad35c832b9fe9
+  checksum: 10/3d21c9bd79af9df264716b60a7e88a5ce01629e45eec7ad71916d6eb85176d12815e52caa5ea9867de8f7efe95b9624a0606605493f240c0275bd49cd2e745cc
   languageName: node
   linkType: hard
 
@@ -10620,16 +10628,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"default-browser@npm:^5.2.1":
-  version: 5.4.0
-  resolution: "default-browser@npm:5.4.0"
-  dependencies:
-    bundle-name: "npm:^4.1.0"
-    default-browser-id: "npm:^5.0.0"
-  checksum: 10/cac0222ca5c9a3387d25337228689652ab33679a6566995c7194a75af7e554e91ec9ac92a70bfaa8e8089eae9f466ae99267bb38601282aade89b200f50a765c
-  languageName: node
-  linkType: hard
-
 "default-browser@npm:^5.5.1":
   version: 5.5.1
   resolution: "default-browser@npm:5.5.1"
@@ -15518,18 +15516,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"open@npm:^10.1.0":
-  version: 10.2.0
-  resolution: "open@npm:10.2.0"
-  dependencies:
-    default-browser: "npm:^5.2.1"
-    define-lazy-prop: "npm:^3.0.0"
-    is-inside-container: "npm:^1.0.0"
-    wsl-utils: "npm:^0.1.0"
-  checksum: 10/e6ad9474734eac3549dcc7d85e952394856ccaee48107c453bd6a725b82e3b8ed5f427658935df27efa76b411aeef62888edea8a9e347e8e7c82632ec966b30e
-  languageName: node
-  linkType: hard
-
 "optionator@npm:^0.9.3":
   version: 0.9.4
   resolution: "optionator@npm:0.9.4"
@@ -19516,15 +19502,6 @@ __metadata:
     utf-8-validate:
       optional: true
   checksum: 10/1fa65bfadc0dc73674638482b448e2a8cf1833d0acc2263fd27bf74b98f6f2917b2db8263b460a1ff37b6c2b8b892eba0e0eca33325a1ed7a8fe187f38550b40
-  languageName: node
-  linkType: hard
-
-"wsl-utils@npm:^0.1.0":
-  version: 0.1.0
-  resolution: "wsl-utils@npm:0.1.0"
-  dependencies:
-    is-wsl: "npm:^3.1.0"
-  checksum: 10/de4c92187e04c3c27b4478f410a02e81c351dc85efa3447bf1666f34fc80baacd890a6698ec91995631714086992036013286aea3d77e6974020d40a08e00aec
   languageName: node
   linkType: hard
 
