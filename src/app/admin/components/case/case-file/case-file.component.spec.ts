@@ -5,6 +5,8 @@ import { provideRouter } from '@angular/router';
 import { DateTime } from 'luxon';
 import { CaseFileComponent } from './case-file.component';
 import { DatePipe } from '@angular/common';
+import { FeatureFlagService } from '@services/app-config/feature-flag.service';
+import { LABELS } from '@constants/labels.constant';
 
 describe('CaseFileComponent', () => {
   let component: CaseFileComponent;
@@ -28,10 +30,13 @@ describe('CaseFileComponent', () => {
     reportingRestrictions: [],
   };
 
+  const featureFlags = { isEnabled: jest.fn() };
+
   beforeEach(async () => {
+    featureFlags.isEnabled.mockReturnValue(false);
     await TestBed.configureTestingModule({
       imports: [CaseFileComponent],
-      providers: [DatePipe, provideRouter([])],
+      providers: [DatePipe, provideRouter([]), { provide: FeatureFlagService, useValue: featureFlags }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(CaseFileComponent);
@@ -108,6 +113,7 @@ describe('CaseFileComponent', () => {
     });
 
     it('should not render Judge/Defendant/Prosecutor rows when isDataAnonymised is true', () => {
+      featureFlags.isEnabled.mockReturnValue(true);
       const caseFile: AdminCase = {
         id: 3,
         caseNumber: 'CASE3003',
@@ -136,8 +142,28 @@ describe('CaseFileComponent', () => {
       const summaryKeys = fixture.debugElement.queryAll(By.css('.govuk-summary-list__key'));
       const labels = summaryKeys.map((el) => el.nativeElement.textContent.trim());
 
-      const shouldBeHidden = ['Judge(s)', 'Defendant(s)', 'Prosecutor(s)', 'Defence', 'Retained until'];
+      const shouldBeHidden = [
+        LABELS.judgesAndMagistrates,
+        'Defendant(s)',
+        'Prosecutor(s)',
+        'Defence',
+        'Retained until',
+      ];
       shouldBeHidden.forEach((label) => expect(labels).not.toContain(label));
+    });
+
+    it('should hide the label and names when the case is anonymised and the updated-judge-label flag is disabled', () => {
+      featureFlags.isEnabled.mockReturnValue(false);
+      fixture.componentRef.setInput('caseFile', {
+        ...mockCaseFile,
+        isDataAnonymised: true,
+        judges: ['Zoe Taylor'],
+      });
+
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.textContent).not.toContain('Judge(s)');
+      expect(fixture.nativeElement.textContent).not.toContain('Zoe Taylor');
     });
   });
 
@@ -165,6 +191,89 @@ describe('CaseFileComponent', () => {
 
     it('should display summer BST date correctly, i.e. +01:00', () => {
       expectRetainedUntilDate('2030-08-10T23:23:24.858Z', '11 Aug 2030');
+    });
+  });
+
+  describe('Judges and magistrates label and content', () => {
+    let names: string[];
+
+    beforeEach(() => {
+      names = ['Zoe Taylor', 'Alex Brown', 'Morgan Reed'];
+    });
+
+    it.each([
+      { enabled: false, expected: 'Judge(s)', judges: [], description: 'an empty list' },
+      { enabled: false, expected: 'Judge(s)', judges: undefined, description: 'undefined' },
+      { enabled: true, expected: LABELS.judgesAndMagistrates, judges: [], description: 'an empty list' },
+      { enabled: true, expected: LABELS.judgesAndMagistrates, judges: undefined, description: 'undefined' },
+    ])(
+      'should display the label and a blank value when names are $description and the updated-judge-label flag is $enabled',
+      ({ enabled, expected, judges }) => {
+        featureFlags.isEnabled.mockReturnValue(enabled);
+        fixture.componentRef.setInput('caseFile', { ...mockCaseFile, judges });
+
+        fixture.detectChanges();
+
+        const row = fixture.debugElement
+          .queryAll(By.css('.govuk-summary-list__row'))
+          .find((row) => row.query(By.css('dt'))?.nativeElement.textContent.trim() === expected);
+
+        expect(row?.query(By.css('dd')).nativeElement.textContent.trim()).toBe('');
+      }
+    );
+
+    it('should display names in the order they are provided with spaces and commas when the updated-judge-label flag is disabled', () => {
+      featureFlags.isEnabled.mockReturnValue(false);
+      fixture.componentRef.setInput('caseFile', { ...mockCaseFile, judges: names });
+
+      fixture.detectChanges();
+
+      const row = fixture.debugElement
+        .queryAll(By.css('.govuk-summary-list__row'))
+        .find((row) => row.query(By.css('dt'))?.nativeElement.textContent.trim() === 'Judge(s)');
+
+      expect(row?.query(By.css('dd')).nativeElement.textContent.trim()).toBe('Zoe Taylor, Alex Brown, Morgan Reed');
+    });
+
+    it('should display names alphabetically with spaces and commas when the updated-judge-label flag is enabled', () => {
+      featureFlags.isEnabled.mockReturnValue(true);
+      fixture.componentRef.setInput('caseFile', {
+        ...mockCaseFile,
+        judges: names,
+      });
+
+      fixture.detectChanges();
+
+      const row = fixture.debugElement
+        .queryAll(By.css('.govuk-summary-list__row'))
+        .find((row) => row.query(By.css('dt'))?.nativeElement.textContent.trim() === LABELS.judgesAndMagistrates);
+
+      expect(row?.query(By.css('dd')).nativeElement.textContent.trim()).toBe('Alex Brown, Morgan Reed, Zoe Taylor');
+    });
+
+    it('should preserve the original names when displaying them alphabetically', () => {
+      const originalNames = [...names];
+      featureFlags.isEnabled.mockReturnValue(true);
+      fixture.componentRef.setInput('caseFile', { ...mockCaseFile, judges: names });
+
+      fixture.detectChanges();
+
+      expect(names).toEqual(originalNames);
+    });
+
+    it('should display names alphabetically for the new case when switching to another case', () => {
+      featureFlags.isEnabled.mockReturnValue(true);
+      fixture.componentRef.setInput('caseFile', { ...mockCaseFile, judges: names });
+
+      fixture.detectChanges();
+      fixture.componentRef.setInput('caseFile', { ...mockCaseFile, id: 2, judges: ['Morgan Reed', 'Ben Lewis'] });
+      fixture.detectChanges();
+
+      const row = fixture.debugElement
+        .queryAll(By.css('.govuk-summary-list__row'))
+        .find((row) => row.query(By.css('dt'))?.nativeElement.textContent.trim() === LABELS.judgesAndMagistrates);
+
+      expect(row?.query(By.css('dd')).nativeElement.textContent.trim()).toBe('Ben Lewis, Morgan Reed');
     });
   });
 });
