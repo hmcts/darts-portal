@@ -224,54 +224,6 @@ describe('Case file screen', () => {
     cy.a11y();
   });
 
-  it('should display hearing details and links when updated-judge-label is enabled', () => {
-    // Remove this override when updated-judge-label is removed.
-    setUpdatedJudgeLabelFlag(true);
-    cy.visit('admin/case/1');
-    cy.wait('@getJudgeLabelConfig');
-
-    cy.get('app-govuk-heading').should('contain.text', 'Case').should('contain.text', 'CASE1001');
-
-    cy.get('#hearingsTable thead tr').within(() => {
-      cy.get('th').eq(0).should('contain.text', 'Hearing date');
-      cy.get('th[aria-label="Judge(s)/Magistrates column header"]').should(($heading) => {
-        expect($heading.text().trim()).to.equal('Judge(s)/Magistrates');
-      });
-      cy.get('th').eq(2).should('contain.text', 'Courtroom');
-      cy.get('th').eq(3).should('contain.text', 'No. of transcripts');
-    });
-
-    cy.get('#hearingsTable tbody tr')
-      .eq(0)
-      .within(() => {
-        cy.get('td').eq(0).should('contain.text', '01 Sep 2023');
-        cy.get('td').eq(1).should('contain.text', 'HHJ M. Hussain KC');
-        cy.get('td').eq(2).should('contain.text', '3');
-        cy.get('td').eq(3).should('contain.text', '1');
-      });
-
-    cy.get('#hearingsTable tbody tr')
-      .eq(1)
-      .within(() => {
-        cy.get('td').eq(0).should('contain.text', '10 Oct 2023');
-        cy.get('td').eq(1).should('contain.text', 'Judge Jonny');
-        cy.get('td').eq(2).should('contain.text', '4');
-        cy.get('td').eq(3).should('contain.text', '2');
-      });
-
-    cy.get('#hearingsTable tbody tr')
-      .eq(0)
-      .within(() => {
-        cy.get('td')
-          .eq(0)
-          .find('a')
-          .should('have.attr', 'href', '/admin/case/1/hearing/1?backUrl=%2Fadmin%2Fcase%2F1')
-          .click();
-      });
-
-    cy.url().should('include', '/admin/case/1/hearing/1');
-  });
-
   describe('Winter/Summer date display', () => {
     function verifyCaseDates(caseId, retainedDate, expectedDate) {
       cy.visit(`admin/case/${caseId}`);
@@ -481,6 +433,56 @@ describe('Case file screen', () => {
               expect(secondPageFirstId.trim()).not.to.equal(firstPageFirstId.trim());
             });
         });
+    });
+  });
+
+  describe('Hearing details tab', () => {
+    it('should display hearing details and links when updated-judge-label is enabled', () => {
+      // Remove this override when updated-judge-label is removed.
+      setUpdatedJudgeLabelFlag(true);
+      cy.visit('admin/case/1');
+      cy.wait('@getJudgeLabelConfig');
+
+      cy.get('app-govuk-heading').should('contain.text', 'Case').should('contain.text', 'CASE1001');
+
+      cy.get('#hearingsTable thead tr').within(() => {
+        cy.get('th').eq(0).should('contain.text', 'Hearing date');
+        cy.get('th[aria-label="Judge(s)/Magistrates column header"]').should(($heading) => {
+          expect($heading.text().trim()).to.equal('Judge(s)/Magistrates');
+        });
+        cy.get('th').eq(2).should('contain.text', 'Courtroom');
+        cy.get('th').eq(3).should('contain.text', 'No. of transcripts');
+      });
+
+      cy.get('#hearingsTable tbody tr')
+        .eq(0)
+        .within(() => {
+          cy.get('td').eq(0).should('contain.text', '01 Sep 2023');
+          cy.get('td').eq(1).should('contain.text', 'HHJ M. Hussain KC');
+          cy.get('td').eq(2).should('contain.text', '3');
+          cy.get('td').eq(3).should('contain.text', '1');
+        });
+
+      cy.get('#hearingsTable tbody tr')
+        .eq(1)
+        .within(() => {
+          cy.get('td').eq(0).should('contain.text', '10 Oct 2023');
+          cy.get('td').eq(1).should('contain.text', 'Judge Jonny');
+          cy.get('td').eq(2).should('contain.text', '4');
+          cy.get('td').eq(3).should('contain.text', '2');
+        });
+
+      cy.get('#hearingsTable tbody tr')
+        .eq(0)
+        .within(() => {
+          cy.get('td')
+            .eq(0)
+            .find('a')
+            .should('have.attr', 'href', '/admin/case/1/hearing/1?backUrl=%2Fadmin%2Fcase%2F1')
+            .click();
+        });
+
+      cy.url().should('include', '/admin/case/1/hearing/1');
     });
   });
 
