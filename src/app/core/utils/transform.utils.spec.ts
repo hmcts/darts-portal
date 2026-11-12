@@ -7,7 +7,7 @@ describe('sortNamesAlphabetically', () => {
     expect(result).toEqual([]);
   });
 
-  it('should return an empty array when no names are supplied', () => {
+  it('should return an empty array when names is undefined', () => {
     const result = sortNamesAlphabetically(undefined);
 
     expect(result).toEqual([]);

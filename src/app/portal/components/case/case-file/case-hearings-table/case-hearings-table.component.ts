@@ -35,7 +35,7 @@ export class CaseHearingsTableComponent {
   });
 
   // Remove when user portal is updated to use the new judge label format and bind the template to formattedHearings instead.
-  get displayedHearings(): Hearing[] {
+  get tableHearings(): Hearing[] {
     return this.adminScreen() ? this.formattedHearings() : this.hearings();
   }
 

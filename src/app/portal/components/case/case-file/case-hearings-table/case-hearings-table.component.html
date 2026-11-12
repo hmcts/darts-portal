@@ -3,12 +3,12 @@
 
 <app-data-table
   id="hearingsTable"
-  [rows]="displayedHearings"
+  [rows]="tableHearings"
   [columns]="columns()"
   [hiddenCaption]="true"
   caption="Hearings associated with case"
 >
-  <ng-template [tableRowTemplate]="displayedHearings" let-row>
+  <ng-template [tableRowTemplate]="tableHearings" let-row>
     <td>
       <a
         class="govuk-link"
