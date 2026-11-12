@@ -24,7 +24,7 @@ export class CaseHearingsTableComponent {
   adminScreen = input(false);
 
   private readonly formattedHearings = computed(() => {
-    // This ensures the updated feature flag values will be used when changing to anothercase.
+    // This ensures the updated feature flag values will be used when changing to another case.
     // It can be removed when the updated-judge-label flag is removed and the sortNamesAlphabetically function is used instead.
     this.caseId();
 
