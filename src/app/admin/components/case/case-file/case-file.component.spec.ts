@@ -202,13 +202,13 @@ describe('CaseFileComponent', () => {
     });
 
     it.each([
-      { enabled: false, expected: 'Judge(s)', judges: [], description: 'an empty list' },
-      { enabled: false, expected: 'Judge(s)', judges: undefined, description: 'undefined' },
-      { enabled: true, expected: LABELS.judgesAndMagistrates, judges: [], description: 'an empty list' },
-      { enabled: true, expected: LABELS.judgesAndMagistrates, judges: undefined, description: 'undefined' },
+      { enabled: false, expectedLabel: 'Judge(s)', judges: [], description: 'an empty list' },
+      { enabled: false, expectedLabel: 'Judge(s)', judges: undefined, description: 'undefined' },
+      { enabled: true, expectedLabel: LABELS.judgesAndMagistrates, judges: [], description: 'an empty list' },
+      { enabled: true, expectedLabel: LABELS.judgesAndMagistrates, judges: undefined, description: 'undefined' },
     ])(
       'should display the label and a blank value when names are $description and the updated-judge-label flag is $enabled',
-      ({ enabled, expected, judges }) => {
+      ({ enabled, expectedLabel, judges }) => {
         featureFlags.isEnabled.mockReturnValue(enabled);
         fixture.componentRef.setInput('caseFile', { ...mockCaseFile, judges });
 
@@ -216,7 +216,7 @@ describe('CaseFileComponent', () => {
 
         const row = fixture.debugElement
           .queryAll(By.css('.govuk-summary-list__row'))
-          .find((row) => row.query(By.css('dt'))?.nativeElement.textContent.trim() === expected);
+          .find((row) => row.query(By.css('dt'))?.nativeElement.textContent.trim() === expectedLabel);
 
         expect(row?.query(By.css('dd')).nativeElement.textContent.trim()).toBe('');
       }

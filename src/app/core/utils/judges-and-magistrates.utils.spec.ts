@@ -49,7 +49,6 @@ describe('getJudgesAndMagistratesNames', () => {
 
   it('should get the state of the updated-judge-label feature flag', () => {
     getJudgesAndMagistratesNames(featureFlags, []);
-
     expect(featureFlags.isEnabled).toHaveBeenCalledWith('updated-judge-label');
   });
 
