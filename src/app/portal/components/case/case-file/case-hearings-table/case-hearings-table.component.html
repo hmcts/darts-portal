@@ -3,12 +3,12 @@
 
 <app-data-table
   id="hearingsTable"
-  [rows]="hearings()"
-  [columns]="columns"
+  [rows]="displayedHearings"
+  [columns]="columns()"
   [hiddenCaption]="true"
   caption="Hearings associated with case"
 >
-  <ng-template [tableRowTemplate]="hearings()" let-row>
+  <ng-template [tableRowTemplate]="displayedHearings" let-row>
     <td>
       <a
         class="govuk-link"
@@ -18,7 +18,7 @@
         {{ row.date | luxonDate: 'dd MMM y' }}</a
       >
     </td>
-    <td>{{ row.judges }}</td>
+    <td>{{ row.judges | join: judgesAndMagistratesSeparator }}</td>
     <td>{{ row.courtroom }}</td>
     <td>{{ row.transcriptCount }}</td>
   </ng-template>
