@@ -25,6 +25,7 @@ export interface AppConfig {
       enabled: string;
     };
   };
+  armDownForMaintenance: string;
   pagination: {
     courtLogEventsPageLimit: number;
     caseAudiosPageLimit?: number;

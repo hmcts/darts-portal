@@ -203,7 +203,7 @@ describe('RequestPlaybackAudioComponent', () => {
         fixture.detectChanges();
         component.onSubmit();
         expect(component.requestObj).toEqual(expectedResult);
-        expect(audioRequestSpy).toHaveBeenCalledWith(component.requestObj);
+        expect(audioRequestSpy).toHaveBeenCalledWith({ request: component.requestObj, hasArchivedAudio: false });
       });
 
       it('overlapping', () => {
@@ -231,7 +231,7 @@ describe('RequestPlaybackAudioComponent', () => {
         fixture.detectChanges();
         component.onSubmit();
         expect(component.requestObj).toEqual(expectedResult);
-        expect(audioRequestSpy).toHaveBeenCalledWith(component.requestObj);
+        expect(audioRequestSpy).toHaveBeenCalledWith({ request: component.requestObj, hasArchivedAudio: false });
       });
 
       it('overlapping start', () => {
@@ -259,7 +259,7 @@ describe('RequestPlaybackAudioComponent', () => {
         fixture.detectChanges();
         component.onSubmit();
         expect(component.requestObj).toEqual(expectedResult);
-        expect(audioRequestSpy).toHaveBeenCalledWith(component.requestObj);
+        expect(audioRequestSpy).toHaveBeenCalledWith({ request: component.requestObj, hasArchivedAudio: false });
       });
 
       it('overlapping end', () => {
@@ -287,7 +287,7 @@ describe('RequestPlaybackAudioComponent', () => {
         fixture.detectChanges();
         component.onSubmit();
         expect(component.requestObj).toEqual(expectedResult);
-        expect(audioRequestSpy).toHaveBeenCalledWith(component.requestObj);
+        expect(audioRequestSpy).toHaveBeenCalledWith({ request: component.requestObj, hasArchivedAudio: false });
       });
 
       it('within', () => {
@@ -315,7 +315,84 @@ describe('RequestPlaybackAudioComponent', () => {
         fixture.detectChanges();
         component.onSubmit();
         expect(component.requestObj).toEqual(expectedResult);
-        expect(audioRequestSpy).toHaveBeenCalledWith(component.requestObj);
+        expect(audioRequestSpy).toHaveBeenCalledWith({ request: component.requestObj, hasArchivedAudio: false });
+      });
+    });
+
+    describe('with archived audio', () => {
+      let audioRequestSpy: jest.SpyInstance;
+
+      beforeEach(() => {
+        audioRequestSpy = jest.spyOn(component.audioRequest, 'emit');
+        component.hearing = {
+          id: 1,
+          date: DateTime.fromISO('2023-09-01'),
+          judges: ['HHJ M. Hussain KC'],
+          courtroom: '3',
+          transcriptCount: 1,
+        };
+
+        component.audios = [
+          {
+            id: 1,
+            media_start_timestamp: '2023-09-01T10:00:00',
+            media_end_timestamp: '2023-09-01T10:30:00',
+            is_archived: true,
+          },
+          {
+            id: 2,
+            media_start_timestamp: '2023-09-01T10:30:00',
+            media_end_timestamp: '2023-09-01T11:00:00',
+            is_archived: false,
+          },
+        ];
+      });
+
+      const setTimes = (start: string, end: string) => {
+        const [startHour, startMinute, startSecond] = start.split(':');
+        const [endHour, endMinute, endSecond] = end.split(':');
+
+        component.audioRequestForm.setValue({
+          startTime: {
+            hours: startHour,
+            minutes: startMinute,
+            seconds: startSecond,
+          },
+          endTime: {
+            hours: endHour,
+            minutes: endMinute,
+            seconds: endSecond,
+          },
+          requestType: 'PLAYBACK',
+        });
+      };
+
+      it.each([
+        ['10:10:00', '10:20:00', true],
+        ['10:40:00', '10:50:00', false],
+        ['10:15:00', '10:45:00', true],
+        ['10:30:00', '10:45:00', true],
+        ['09:00:00', '10:00:00', true],
+      ])('should check for archived audio between %s and %s', (start, end, hasArchivedAudio) => {
+        setTimes(start, end);
+
+        fixture.detectChanges();
+        component.onSubmit();
+
+        expect(audioRequestSpy).toHaveBeenCalledWith({
+          request: component.requestObj,
+          hasArchivedAudio,
+        });
+      });
+
+      it('should not emit a request when no audio exists in the selected range', () => {
+        setTimes('11:10:00', '11:20:00');
+
+        fixture.detectChanges();
+        component.onSubmit();
+
+        expect(audioRequestSpy).not.toHaveBeenCalled();
+        expect(component.audioRequestForm.errors).toEqual({ invalid: true });
       });
     });
 
@@ -523,6 +600,29 @@ describe('RequestPlaybackAudioComponent', () => {
       expect(component.audioRequestForm.controls.endTime.errors).toEqual({ unavailable: true });
       expect(component.audioRequestForm.errors).toEqual({ invalid: true });
       expect(validationErrorSpy).toHaveBeenCalledWith(errorSummaryEntry);
+    });
+  });
+
+  describe('formChanged', () => {
+    it('should emit when a start time is changed', () => {
+      fixture.detectChanges();
+      const formChangedSpy = jest.spyOn(component.formChanged, 'emit');
+      component.audioRequestForm.get('startTime.hours')?.setValue('10');
+      expect(formChangedSpy).toHaveBeenCalled();
+    });
+
+    it('should emit when an end time is changed', () => {
+      fixture.detectChanges();
+      const formChangedSpy = jest.spyOn(component.formChanged, 'emit');
+      component.audioRequestForm.get('endTime.hours')?.setValue('10');
+      expect(formChangedSpy).toHaveBeenCalled();
+    });
+
+    it('should emit when request type is changed', () => {
+      fixture.detectChanges();
+      const formChangedSpy = jest.spyOn(component.formChanged, 'emit');
+      component.audioRequestForm.get('requestType')?.setValue('DOWNLOAD');
+      expect(formChangedSpy).toHaveBeenCalled();
     });
   });
 

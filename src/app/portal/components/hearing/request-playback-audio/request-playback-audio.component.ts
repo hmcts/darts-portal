@@ -8,6 +8,7 @@ import {
   OnInit,
   Output,
   SimpleChanges,
+  DestroyRef,
   inject,
 } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -19,6 +20,7 @@ import { beforeTimeValidator } from '@validators/before-time.validator';
 import { timeGroupValidator } from '@validators/time-group.validator';
 import { DateTime } from 'luxon';
 import { TimeInputComponent, timeInputFormControls } from './time-input/time-input.component';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 export const fieldErrors: FormErrorMessages = {
   startTime: {
@@ -57,14 +59,14 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
   @Input() clearFormEvent!: EventEmitter<void>;
   audioRequestForm: FormGroup;
   requestObj!: PostAudioRequest;
-  @Output() audioRequest = new EventEmitter<PostAudioRequest>();
+  @Output() audioRequest = new EventEmitter<{ request: PostAudioRequest; hasArchivedAudio: boolean }>();
   @Output() validationErrorEvent = new EventEmitter<ErrorSummaryEntry[]>();
+  @Output() formChanged = new EventEmitter<void>();
   public isSubmitted = false;
   errorSummary: ErrorSummaryEntry[] = [];
-
   fieldErrors = fieldErrors;
-
   requestTypeRequired = false;
+  private readonly destroyRef = inject(DestroyRef);
 
   constructor() {
     this.audioRequestForm = this.fb.group(
@@ -96,6 +98,10 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
       if (endTimeErrors?.endTimeAfterStart) {
         endTimeCtrl.setErrors(endTimeErrors);
       }
+    });
+
+    this.audioRequestForm.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
+      this.formChanged.emit();
     });
   }
 
@@ -241,36 +247,23 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
       .flat();
   }
 
+  //Checks if specified audio is within (or adjoining) the given start and end times
+  private isAudioWithinTimeRange(audio: HearingAudio, startTime: DateTime, endTime: DateTime): boolean {
+    // Compare times independently of their dates (or milliseconds)
+    const startTimeOnly = startTime.set({ year: 0, month: 1, day: 1, millisecond: 0 });
+    const endTimeOnly = endTime.set({ year: 0, month: 1, day: 1, millisecond: 0 });
+    const audioStart = DateTime.fromISO(audio.media_start_timestamp).set({ year: 0, month: 1, day: 1, millisecond: 0 });
+    const audioEnd = DateTime.fromISO(audio.media_end_timestamp).set({ year: 0, month: 1, day: 1, millisecond: 0 });
+
+    return startTimeOnly <= audioEnd && endTimeOnly >= audioStart;
+  }
+
   //Checks if audio exists within the range of the times
   private outsideAudioTimesValidation(startTime: DateTime, endTime: DateTime): void {
     const errorMessages: ErrorSummaryEntry[] = [];
 
-    //Comparing only times not dates
-    const startTimeOnly = startTime.set({ year: 0, month: 1, day: 1, millisecond: 0 });
-    const endTimeOnly = endTime.set({ year: 0, month: 1, day: 1, millisecond: 0 });
-
-    //Check there is at least one audio within start/end range
-    const isAudioWithinRange = this.audios.some((audio) => {
-      const audioStartTime = DateTime.fromISO(audio.media_start_timestamp).set({
-        year: 0,
-        month: 1,
-        day: 1,
-        millisecond: 0,
-      });
-      const audioEndTime = DateTime.fromISO(audio.media_end_timestamp).set({
-        year: 0,
-        month: 1,
-        day: 1,
-        millisecond: 0,
-      });
-      return (
-        (startTimeOnly <= audioStartTime && endTimeOnly >= audioStartTime) ||
-        (startTimeOnly <= audioEndTime && endTimeOnly >= audioEndTime) ||
-        (startTimeOnly >= audioStartTime && endTimeOnly <= audioEndTime)
-      );
-    });
-
-    if (!isAudioWithinRange) {
+    const hasAudioWithinRange = this.audios.some((audio) => this.isAudioWithinTimeRange(audio, startTime, endTime));
+    if (!hasAudioWithinRange) {
       this.audioRequestForm.controls.startTime.setErrors({ unavailable: true });
       this.audioRequestForm.controls.endTime.setErrors({ unavailable: true });
       this.audioRequestForm.setErrors({ invalid: true });
@@ -295,6 +288,11 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
       ];
       this.validationErrorEvent.emit(uniqueErrorMessages);
     }
+  }
+
+  //Checks if archived audio exists within the range of the times
+  private hasArchivedAudioInRange(startTime: DateTime, endTime: DateTime): boolean {
+    return this.audios.some((audio) => audio.is_archived && this.isAudioWithinTimeRange(audio, startTime, endTime));
   }
 
   private clearErrors(): void {
@@ -349,6 +347,9 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
       request_type: this.audioRequestForm.get('requestType')?.value,
     };
 
-    this.audioRequest.emit(this.requestObj);
+    this.audioRequest.emit({
+      request: this.requestObj,
+      hasArchivedAudio: this.hasArchivedAudioInRange(startDateTime, endDateTime),
+    });
   }
 }

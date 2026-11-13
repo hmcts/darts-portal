@@ -45,6 +45,7 @@
       "enabled": "false"
     }
   },
+  "armDownForMaintenance": "false",
   "pagination": {
     "courtLogEventsPageLimit": 500,
     "caseAudiosPageLimit": 500

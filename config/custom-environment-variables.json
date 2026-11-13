@@ -34,6 +34,7 @@
       "enabled": "EVENT_OBFUSCATION_ENABLED"
     }
   },
+  "armDownForMaintenance": "ARM_DOWN_FOR_MAINTENANCE",
   "pagination": {
     "courtLogEventsPageLimit": "PAGINATION_COURTLOG_EVENTS_LIMIT",
     "caseAudiosPageLimit": "PAGINATION_CASE_AUDIOS_LIMIT"

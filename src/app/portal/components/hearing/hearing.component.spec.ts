@@ -82,6 +82,7 @@ describe('HearingComponent', () => {
   const appConfigServiceMock = {
     getAppConfig: () => ({
       appInsightsKey: 'XXXXXXXX',
+      armDownForMaintenance: 'false',
       support: {
         name: 'DARTS support',
         emailAddress: 'support@darts',
@@ -405,9 +406,128 @@ describe('HearingComponent', () => {
           end_time: '2023-09-01T15:32:24Z',
           request_type: 'DOWNLOAD',
         };
-        component.onAudioRequest(mockRequestObject);
+        component.onAudioRequest({ request: mockRequestObject, hasArchivedAudio: false });
         expect(component.requestObject).toEqual(mockRequestObject);
         expect(component.state).toEqual('OrderSummary');
+      });
+
+      it.each([
+        ['true', true, true],
+        ['true', false, false],
+        ['false', true, false],
+        ['false', false, false],
+      ])(
+        'when maintenance is %s and archived audio is %s, warning should be %s',
+        (armDown, hasArchivedAudio, expectedWarning) => {
+          jest.spyOn(appConfigServiceMock, 'getAppConfig').mockReturnValue({
+            appInsightsKey: 'XXXXXXXX',
+            armDownForMaintenance: armDown,
+            support: {
+              name: 'DARTS support',
+              emailAddress: 'support@darts',
+            },
+          });
+
+          fixture.detectChanges();
+
+          const mockRequestObject: PostAudioRequest = {
+            hearing_id: 1,
+            requestor: 1,
+            start_time: '2023-09-01T02:00:00Z',
+            end_time: '2023-09-01T15:32:24Z',
+            request_type: 'DOWNLOAD',
+          };
+
+          component.onAudioRequest({
+            request: mockRequestObject,
+            hasArchivedAudio,
+          });
+
+          expect(component.armMaintenanceError).toBe(expectedWarning);
+          expect(component.state).toEqual(expectedWarning ? 'Default' : 'OrderSummary');
+        }
+      );
+
+      it('should display the maintenance banner when ARM is down and archived audio is requested', () => {
+        jest.spyOn(appConfigServiceMock, 'getAppConfig').mockReturnValue({
+          appInsightsKey: 'XXXXXXXX',
+          armDownForMaintenance: 'true',
+          support: {
+            name: 'DARTS support',
+            emailAddress: 'support@darts',
+          },
+        });
+
+        fixture.detectChanges();
+
+        const mockRequestObject: PostAudioRequest = {
+          hearing_id: 1,
+          requestor: 1,
+          start_time: '2023-09-01T02:00:00Z',
+          end_time: '2023-09-01T15:32:24Z',
+          request_type: 'DOWNLOAD',
+        };
+
+        component.onAudioRequest({
+          request: mockRequestObject,
+          hasArchivedAudio: true,
+        });
+
+        fixture.detectChanges();
+
+        const banner = fixture.debugElement.query(By.css('app-govuk-banner'));
+
+        expect(banner).toBeTruthy();
+        expect(banner.nativeElement.textContent).toContain(component.armMaintenanceMessage);
+      });
+
+      it.each(['PLAYBACK', 'DOWNLOAD'] as const)(
+        'should display maintenance warning for %s requests',
+        (requestType) => {
+          jest.spyOn(appConfigServiceMock, 'getAppConfig').mockReturnValue({
+            appInsightsKey: 'XXXXXXXX',
+            armDownForMaintenance: 'true',
+            support: {
+              name: 'DARTS support',
+              emailAddress: 'support@darts',
+            },
+          });
+
+          fixture.detectChanges();
+
+          const mockRequestObject: PostAudioRequest = {
+            hearing_id: 1,
+            requestor: 1,
+            start_time: '2023-09-01T02:00:00Z',
+            end_time: '2023-09-01T15:32:24Z',
+            request_type: requestType,
+          };
+
+          component.onAudioRequest({
+            request: mockRequestObject,
+            hasArchivedAudio: true,
+          });
+
+          expect(component.armMaintenanceError).toBe(true);
+          expect(component.state).toBe('Default');
+        }
+      );
+    });
+
+    describe('#onAudioFormChanged', () => {
+      it('should clear the maintenance warning when the audio form changes', () => {
+        fixture.detectChanges();
+
+        component.armMaintenanceError = true;
+        fixture.detectChanges();
+
+        expect(fixture.debugElement.query(By.css('app-govuk-banner'))).toBeTruthy();
+
+        component.onAudioFormChanged();
+        fixture.detectChanges();
+
+        expect(component.armMaintenanceError).toBe(false);
+        expect(fixture.debugElement.query(By.css('app-govuk-banner'))).toBeFalsy();
       });
     });
 
