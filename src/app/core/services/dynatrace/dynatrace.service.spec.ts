@@ -30,6 +30,7 @@ describe('DynatraceService', () => {
         enabled: 'true',
       },
     },
+    armDownForMaintenance: 'false',
     pagination: {
       courtLogEventsPageLimit: 500,
       caseAudiosPageLimit: 500,

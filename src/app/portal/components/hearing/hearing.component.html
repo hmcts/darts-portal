@@ -20,6 +20,14 @@
     }
     <!-- Validation Error Summary Component -->
     <app-validation-error-summary [errors]="errorSummary"></app-validation-error-summary>
+
+    <!-- Warning Summary Component -->
+    @if (armMaintenanceError) {
+      <app-govuk-banner type="warning" [focusOnChange]="true">
+        {{ armMaintenanceMessage }}
+      </app-govuk-banner>
+    }
+
     <!-- Back Button -->
     @if (state === 'OrderSummary') {
       <a href="#" (click)="onBack($event)" class="govuk-back-link">Back</a>
@@ -70,6 +78,7 @@
             [userState]="userState"
             (audioRequest)="onAudioRequest($event)"
             (validationErrorEvent)="onValidationError($event)"
+            (formChanged)="onAudioFormChanged()"
             [clearFormEvent]="clearFormEmitter"
           ></app-request-playback-audio>
           <!-- Events & Audio Table-->

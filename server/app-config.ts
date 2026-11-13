@@ -8,6 +8,7 @@ export default () => ({
   environment: config.get('node-env'),
   dynatrace: config.get('dynatrace'),
   features: config.get('features'),
+  armDownForMaintenance: config.get('armDownForMaintenance'),
   launchDarklyClientId: config.get('secrets.darts.LaunchDarklyClientId'),
   launchDarklyInitialConnectionTimeoutMs: config.get('launchDarklyInitialConnectionTimeoutMs'),
   launchDarklyLocalOverride: config.get('launchDarklyLocalOverride'),
