@@ -127,3 +127,23 @@ export LAUNCHDARKLY_LOCAL_OVERRIDE=false
 export LAUNCHDARKLY_CLIENT_ID='launch-darkly-client-side-id'
 export LAUNCHDARKLY_SDK_KEY='launch-darkly-server-sdk-key'
 ```
+## PR callback workflows
+
+The PR workflows register and remove portal callback URLs using these GitHub repository secrets:
+
+| App registration | Target app ID | Login client ID | Login secret key | Tenant |
+|------------------|---------------|-----------------|------------------|--------|
+| Internal Entra | `SP_APP_ID_PORTAL` | `SP_CLIENT_ID_PORTAL` | `SP_SECRET_KEY_PORTAL` | `SP_TENANT_ID` |
+| External B2C | `SP_APP_ID_PORTAL_B2C` | `SP_CLIENT_ID_B2C` | `SP_SECRET_KEY_B2C` | `SP_TENANT_ID_B2C` |
+
+Each target app ID must match the app registration used by the portal PR deployment.
+Each login service principal must be able to read and update its corresponding app registration.
+External B2C callbacks in both repositories use one management service principal.
+Make `SP_CLIENT_ID_B2C` and `SP_SECRET_KEY_B2C` available to both repositories with the same values;
+the principal must be able to read and update both external app registrations.
+Keep `SP_TENANT_ID_B2C` as the external tenant ID and retain separate target IDs:
+`SP_APP_ID_API_B2C` in `hmcts/darts-api` and `SP_APP_ID_PORTAL_B2C` in `hmcts/darts-portal`.
+The target IDs still match the deployed application client IDs; runtime Helm credentials do not change.
+The previous per-repository B2C login client ID and secret variables are no longer used by the callback workflows.
+Callbacks are registered when a PR opens, reopens, or receives a push, and removed when it closes.
+To roll back, revert the workflow changes and restore the previous app registration configuration and secrets.
