@@ -530,9 +530,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/cdk@npm:22.2.6":
-  version: 22.2.6
-  resolution: "@angular/cdk@npm:22.2.6"
+"@angular/cdk@npm:22.2.7":
+  version: 22.2.7
+  resolution: "@angular/cdk@npm:22.2.7"
   dependencies:
     parse5: "npm:^8.0.0"
     tslib: "npm:^2.3.0"
@@ -542,7 +542,7 @@ __metadata:
     "@angular/forms": ^22.0.0 || ^23.0.0
     "@angular/platform-browser": ^22.0.0 || ^23.0.0
     rxjs: ^6.5.3 || ^7.4.0
-  checksum: 10/75d1dd57d9f0e07737eac7d63b84e063f2e2ae8aaa38c5021c3ba68b092edfeea8210225916e4236aff51e139ac26f31e1d4f4d1599eb87827c10165c069ce61
+  checksum: 10/bb1b8d71137b01e61528181e7eeec701d0d8d5d5f1cdcf11dc011a7c2425353002c6ff038fc6236693935e3678733c7bb9af9c04df0fdb709095675edbb06f49
   languageName: node
   linkType: hard
 
@@ -10414,7 +10414,7 @@ __metadata:
     "@angular-eslint/template-parser": "npm:^22.5.0"
     "@angular/animations": "npm:22.2.5"
     "@angular/build": "npm:22.2.6"
-    "@angular/cdk": "npm:22.2.6"
+    "@angular/cdk": "npm:22.2.7"
     "@angular/cli": "npm:22.2.6"
     "@angular/common": "npm:22.2.5"
     "@angular/compiler": "npm:22.2.5"
@@ -16281,11 +16281,11 @@ __metadata:
   linkType: hard
 
 "prettier@npm:^3.3.3":
-  version: 3.9.10
-  resolution: "prettier@npm:3.9.10"
+  version: 3.10.0
+  resolution: "prettier@npm:3.10.0"
   bin:
     prettier: bin/prettier.cjs
-  checksum: 10/5d0118add4b44eb9d50c114f5c525451cc92be9da300ad0552787472535a3f23884baed3223d9b577bb7d1152eb58aeccfcc2b4541c0cf2274c0b4d328e36834
+  checksum: 10/c87442be0b480bc968cbd44d5984fd2ccf1d0b2a94aa3f35ffccc8751cf25751360adce3884d08b0f52c403fa75bfdf64bacdd2802d9fc1e0efee7456cf4ef36
   languageName: node
   linkType: hard
 
