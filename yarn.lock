@@ -10477,7 +10477,7 @@ __metadata:
     lodash: "npm:^4.18.1"
     luxon: "npm:^3.4.4"
     moment: "npm:2.31.0"
-    ngx-cookie-service: "npm:22.0.0"
+    ngx-cookie-service: "npm:22.2.0"
     nodemon: "npm:^3.1.3"
     npm: "npm:^11.0.0"
     nunjucks: "npm:^3.2.4"
@@ -15068,15 +15068,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ngx-cookie-service@npm:22.0.0":
-  version: 22.0.0
-  resolution: "ngx-cookie-service@npm:22.0.0"
+"ngx-cookie-service@npm:22.2.0":
+  version: 22.2.0
+  resolution: "ngx-cookie-service@npm:22.2.0"
   dependencies:
     tslib: "npm:^2.8.1"
   peerDependencies:
     "@angular/common": ^22.0.0
     "@angular/core": ^22.0.0
-  checksum: 10/32c6739d3edb2d7719b2b43fdf14e798466e34aba990654b0e5c5f4ccd48073d089bb1bb3bc969fc23d208a293c60bf32ba90259496fcc576b4e335f5752ecc9
+  checksum: 10/5d510993cd9c68192835165e696b0a59a80bb03f5a0308cca6599391f3a3e0a68e0b97da797ac2c97bfe00fbf8fee5c5d15d7406493afdedb02ab53f39984e7d
   languageName: node
   linkType: hard
 

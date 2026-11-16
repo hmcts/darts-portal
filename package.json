@@ -73,7 +73,7 @@
     "js-yaml": "^5.2.2",
     "luxon": "^3.4.4",
     "moment": "2.31.0",
-    "ngx-cookie-service": "22.0.0",
+    "ngx-cookie-service": "22.2.0",
     "nunjucks": "^3.2.4",
     "redis": "^6.0.0",
     "rxjs": "~7.8.1",
