@@ -12276,15 +12276,15 @@ __metadata:
   linkType: hard
 
 "http-proxy-middleware@npm:*, http-proxy-middleware@npm:^4.0.0, http-proxy-middleware@npm:^4.1.1":
-  version: 4.2.1
-  resolution: "http-proxy-middleware@npm:4.2.1"
+  version: 4.2.2
+  resolution: "http-proxy-middleware@npm:4.2.2"
   dependencies:
     debug: "npm:^4.4.3"
-    httpxy: "npm:^0.5.4"
+    httpxy: "npm:^0.5.6"
     is-glob: "npm:^4.0.3"
     is-plain-obj: "npm:^4.1.0"
     micromatch: "npm:^4.0.8"
-  checksum: 10/c924486ffebcf47fab25a52a75359379b6283b4b7fd5eb5db3f6499ab3848715f3dfd2c17639db39c6c7b46330b2b83c163526beb5b0d78809abbb451c49e12d
+  checksum: 10/bfd40263620b327be51e64748851ba23606842f428411ed3db602604e232853fa771c81bf4a1967bf98b0b9abcadad8fd343acbd20fa7de86fb57397baa04592
   languageName: node
   linkType: hard
 
@@ -12347,6 +12347,13 @@ __metadata:
   version: 0.5.5
   resolution: "httpxy@npm:0.5.5"
   checksum: 10/6ad32b51d509480f7cb37b30197efeb05cb8c6f4806b052e7b05cf02577d59b48f92d0f4e52874e0d38fd3a7863aed13c2b06c521346b06db3f33a014af2bd52
+  languageName: node
+  linkType: hard
+
+"httpxy@npm:^0.5.6":
+  version: 0.5.6
+  resolution: "httpxy@npm:0.5.6"
+  checksum: 10/7984d2d57456098ac873ebbda7554ff3847ca8f222b8bd9de44c0fdb4326b8feaf95d935b8e65cb14493a73d4553f048d3b003abd2564ba406d4a69b4d0d00a4
   languageName: node
   linkType: hard
 
