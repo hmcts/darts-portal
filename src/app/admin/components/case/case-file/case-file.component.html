@@ -26,8 +26,8 @@
 
     @if (!case?.isDataAnonymised) {
       <div govukSummaryListRow>
-        <dt govukSummaryKey>Judge(s)</dt>
-        <dd govukSummaryValue>{{ $safeNavigationMigration(case?.judges) | join }}</dd>
+        <dt govukSummaryKey>{{ judgesAndMagistratesLabel }}</dt>
+        <dd govukSummaryValue>{{ judgesAndMagistratesNames | join }}</dd>
       </div>
       <div govukSummaryListRow>
         <dt govukSummaryKey>Defendant(s)</dt>
