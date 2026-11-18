@@ -11,7 +11,7 @@
 <p class="govuk-body">{{ caseFile.courthouse }}</p>
 @if (!caseFile.isDataAnonymised) {
   <div class="judges-heading govuk-!-justify-content-between govuk-!-align-items-start">
-    <h2 class="govuk-heading-s govuk-!-margin-bottom-0">Judge(s)</h2>
+    <h2 class="govuk-heading-s govuk-!-margin-bottom-0">{{ judgesAndMagistratesLabel }}</h2>
     @if (judgeList.hasExtra()) {
       <details
         class="govuk-details govuk-!-margin-bottom-0 govuk-!-margin-top-0"
@@ -27,7 +27,7 @@
     }
   </div>
 
-  <app-see-more-list #judgeList [items]="caseFile.judges" [limit]="JUDGE_DISPLAY_LIMIT"></app-see-more-list>
+  <app-see-more-list #judgeList [items]="judgesAndMagistratesNames" [limit]="JUDGE_DISPLAY_LIMIT"></app-see-more-list>
 
   <h2 class="govuk-heading-s">Prosecutor(s)</h2>
   <p class="govuk-body whitespace-pre">{{ caseFile.prosecutors | join: '\r\n' : '-' }}</p>

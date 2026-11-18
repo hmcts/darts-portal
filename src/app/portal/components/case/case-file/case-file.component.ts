@@ -8,6 +8,8 @@ import { LuxonDatePipe } from '@pipes/luxon-date.pipe';
 import { JoinPipe } from '@pipes/join';
 import { Case } from '@portal-types/case/case.type';
 import { UserService } from '@services/user/user.service';
+import { FeatureFlagService } from '@services/app-config/feature-flag.service';
+import { getJudgesAndMagistratesLabel, getJudgesAndMagistratesNames } from '@utils/judges-and-magistrates.utils';
 
 @Component({
   selector: 'app-case-file',
@@ -26,9 +28,18 @@ import { UserService } from '@services/user/user.service';
   styleUrls: ['./case-file.component.scss'],
 })
 export class CaseFileComponent {
+  private readonly featureFlagService = inject(FeatureFlagService);
   userService = inject(UserService);
 
   JUDGE_DISPLAY_LIMIT = 2;
 
   @Input() public caseFile!: Case;
+
+  get judgesAndMagistratesNames(): string[] | undefined {
+    return getJudgesAndMagistratesNames(this.featureFlagService, this.caseFile?.judges);
+  }
+
+  get judgesAndMagistratesLabel(): string {
+    return getJudgesAndMagistratesLabel(this.featureFlagService, 'Judge(s)');
+  }
 }
