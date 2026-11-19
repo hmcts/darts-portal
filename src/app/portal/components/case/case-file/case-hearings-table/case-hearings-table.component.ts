@@ -23,7 +23,7 @@ export class CaseHearingsTableComponent {
   caseId = input<number>();
   adminScreen = input(false);
 
-  private readonly formattedHearings = computed(() => {
+  readonly formattedHearings = computed(() => {
     // This ensures the updated feature flag values will be used when changing to another case.
     // It can be removed when the updated-judge-label flag is removed and the sortNamesAlphabetically function is used instead.
     this.caseId();
@@ -34,14 +34,9 @@ export class CaseHearingsTableComponent {
     }));
   });
 
-  // Remove when user portal is updated to use the new judge label format and bind the template to formattedHearings instead.
-  get tableHearings(): Hearing[] {
-    return this.adminScreen() ? this.formattedHearings() : this.hearings();
-  }
-
   // Remove this when updated-judge-label flag is removed and use the separator directly in the template.
   get judgesAndMagistratesSeparator(): string {
-    return this.adminScreen() && this.featureFlagService.isEnabled('updated-judge-label') ? ', ' : ',';
+    return this.featureFlagService.isEnabled('updated-judge-label') ? ', ' : ',';
   }
 
   readonly columns = computed<DatatableColumn[]>(() => {
@@ -52,7 +47,7 @@ export class CaseHearingsTableComponent {
     return [
       { name: 'Hearing date', prop: 'date', sortable: true },
       {
-        name: this.adminScreen() ? getJudgesAndMagistratesLabel(this.featureFlagService, 'Judge') : 'Judge',
+        name: getJudgesAndMagistratesLabel(this.featureFlagService, 'Judge'),
         prop: 'judges',
         sortable: true,
       },
