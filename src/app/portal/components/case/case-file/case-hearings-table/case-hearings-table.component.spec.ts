@@ -170,21 +170,45 @@ describe('CaseHearingsTableComponent', () => {
   // Tests can be removed once the updated-judge-label flag is removed.
   describe('Case navigation', () => {
     it.each([
-      { adminScreen: true, initial: false, next: true, oldLabel: 'Judge', newLabel: LABELS.judgesAndMagistrates },
-      { adminScreen: true, initial: true, next: false, oldLabel: LABELS.judgesAndMagistrates, newLabel: 'Judge' },
-      { adminScreen: false, initial: false, next: true, oldLabel: 'Judge', newLabel: LABELS.judgesAndMagistrates },
-      { adminScreen: false, initial: true, next: false, oldLabel: LABELS.judgesAndMagistrates, newLabel: 'Judge' },
+      {
+        adminScreen: true,
+        initialFlagState: false,
+        nextFlagState: true,
+        oldLabel: 'Judge',
+        newLabel: LABELS.judgesAndMagistrates,
+      },
+      {
+        adminScreen: true,
+        initialFlagState: true,
+        nextFlagState: false,
+        oldLabel: LABELS.judgesAndMagistrates,
+        newLabel: 'Judge',
+      },
+      {
+        adminScreen: false,
+        initialFlagState: false,
+        nextFlagState: true,
+        oldLabel: 'Judge',
+        newLabel: LABELS.judgesAndMagistrates,
+      },
+      {
+        adminScreen: false,
+        initialFlagState: true,
+        nextFlagState: false,
+        oldLabel: LABELS.judgesAndMagistrates,
+        newLabel: 'Judge',
+      },
     ])(
-      'should display "$newLabel" as the column heading and use it in the accessible sort label when switching cases, adminScreen is $adminScreen and the updated-judge-label flag changes from $initial to $next',
-      ({ adminScreen, initial, next, oldLabel, newLabel }) => {
-        featureFlags.isEnabled.mockReturnValue(initial);
+      'should display "$newLabel" as the column heading and use it in the accessible sort label when switching cases, adminScreen is $adminScreen and the updated-judge-label flag changes from $initialFlagState to $nextFlagState',
+      ({ adminScreen, initialFlagState, nextFlagState, oldLabel, newLabel }) => {
+        featureFlags.isEnabled.mockReturnValue(initialFlagState);
         fixture.componentRef.setInput('adminScreen', adminScreen);
 
         fixture.detectChanges();
 
         expect(getColumnHeading(oldLabel).textContent?.trim()).toBe(oldLabel);
 
-        featureFlags.isEnabled.mockReturnValue(next);
+        featureFlags.isEnabled.mockReturnValue(nextFlagState);
         fixture.componentRef.setInput('caseId', 2);
         fixture.detectChanges();
 
