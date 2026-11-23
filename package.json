@@ -149,5 +149,5 @@
     "typescript-eslint": "8.73.0",
     "xunit-viewer": "^10.6.1"
   },
-  "packageManager": "yarn@4.18.1"
+  "packageManager": "yarn@4.19.0"
 }
