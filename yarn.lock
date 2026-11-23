@@ -4650,25 +4650,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@launchdarkly/js-client-sdk-common@npm:1.35.3":
-  version: 1.35.3
-  resolution: "@launchdarkly/js-client-sdk-common@npm:1.35.3"
+"@launchdarkly/js-client-sdk-common@npm:1.35.4":
+  version: 1.35.4
+  resolution: "@launchdarkly/js-client-sdk-common@npm:1.35.4"
   dependencies:
     "@launchdarkly/js-sdk-common": "npm:2.32.3"
-  checksum: 10/c0c7be2b3eb230c619b937b0b8982a889a6c91544d63ecb8ff78012b631c6298b65b8f20a3a20f9f7494e9fc65f30eaca29ea5764554e74bd025e8986810641b
+  checksum: 10/478b0e843e31bcfa554e3b4ed57759bbf2a3aed55704a8b285dde5462321acc76ab8a66a1ec281d244ca543aff1db76c50f693477dba20b02d2fd18f66c87704
   languageName: node
   linkType: hard
 
 "@launchdarkly/js-client-sdk@npm:^4.13.0":
-  version: 4.14.3
-  resolution: "@launchdarkly/js-client-sdk@npm:4.14.3"
+  version: 4.14.4
+  resolution: "@launchdarkly/js-client-sdk@npm:4.14.4"
   dependencies:
     "@launchdarkly/eventsource": "npm:0.2.5"
-    "@launchdarkly/js-client-sdk-common": "npm:1.35.3"
+    "@launchdarkly/js-client-sdk-common": "npm:1.35.4"
   dependenciesMeta:
     "@launchdarkly/eventsource":
       optional: true
-  checksum: 10/2d219352004eb2609811ad52efe63b88d7aeca82c4600a08f2fd1f38c0762ada6e0bef586c8685aac0f263cae4d26dd94c3fcd0166bed47bcfa6790e7a09e2cb
+  checksum: 10/ff573cb7002b7287879874c76c6bb609f7d9cf68efb0bc1b4c12d33045fe0df724a7be58ee1632fbdac9fb87b70ea11a134cc2ddb1f63a92e1143f181ba1b5ce
   languageName: node
   linkType: hard
 
