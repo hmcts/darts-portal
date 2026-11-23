@@ -40,6 +40,8 @@ import { EventsAndAudioComponent } from './events-and-audio/events-and-audio.com
 import { HearingFileComponent } from './hearing-file/hearing-file.component';
 import { OrderConfirmationComponent } from './order-confirmation/order-confirmation.component';
 import { RequestPlaybackAudioComponent } from './request-playback-audio/request-playback-audio.component';
+import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
+import { ARM_MAINTENANCE_AUDIO_MESSAGE } from '@constants/arm-maintenance-messages';
 
 @Component({
   selector: 'app-hearing',
@@ -83,6 +85,9 @@ export class HearingComponent implements OnInit {
   mappingService = inject(MappingService);
   errorMsgService = inject(ErrorMessageService);
   title = inject(Title);
+  armMaintenanceError = false;
+
+  readonly armMaintenanceMessage = ARM_MAINTENANCE_AUDIO_MESSAGE;
 
   audioTimes: { startTime: DateTime; endTime: DateTime } | null = null;
   private _state: HearingPageState = 'Default';

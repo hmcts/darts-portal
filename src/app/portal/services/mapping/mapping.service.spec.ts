@@ -3,6 +3,7 @@ import { DateTime } from 'luxon';
 
 import { AnnotationsData } from '@portal-types/annotations/annotations-data.interface';
 import { Transcript } from '@portal-types/transcriptions/transcript.type';
+import { TranscriptionDetailsData } from '@portal-types/transcriptions/transcription-details.interface';
 import { MappingService } from './mapping.service';
 
 describe('MappingService', () => {
@@ -44,6 +45,44 @@ describe('MappingService', () => {
           hearingId: 1,
         },
       ]);
+    });
+  });
+
+  describe('#mapBaseTranscriptionDetails', () => {
+    it.each([
+      [true, true],
+      [false, false],
+      [undefined, false],
+    ])('should map is_archived %s to isArchived %s', (isArchived, expected) => {
+      const transcription: TranscriptionDetailsData = {
+        case_id: 1,
+        case_number: 'C20220620001',
+        courthouse: 'Swansea',
+        courtroom: '5',
+        courthouse_id: 1,
+        status: 'Complete',
+        defendants: ['Defendant Dave'],
+        judges: ['HHJ M. Hussain KC'],
+        transcript_file_name: 'C20220620001_0.docx',
+        hearing_date: '2023-09-01',
+        transcription_id: 9,
+        transcription_object_id: 109,
+        is_manual: true,
+        hearing_id: 1,
+        transcription_urgency: {
+          transcription_urgency_id: 1,
+          description: 'Standard',
+          priority_order: 4,
+        },
+        request_type: 'Specified Times',
+        transcription_start_ts: '2023-06-26T13:00:00Z',
+        transcription_end_ts: '2023-06-26T16:00:00Z',
+        is_archived: isArchived,
+      };
+
+      const result = service.mapBaseTranscriptionDetails(transcription);
+
+      expect(result.isArchived).toBe(expected);
     });
   });
 

@@ -11,6 +11,9 @@ import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { TranscriptionDetails } from '@portal-types/index';
 import { FileDownloadService } from '@services/file-download/file-download.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
+import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
+import { AppConfigService } from '@services/app-config/app-config.service';
+import { ARM_MAINTENANCE_TRANSCRIPT_MESSAGE } from '@constants/arm-maintenance-messages';
 
 @Component({
   selector: 'app-approved-transcript',
@@ -22,6 +25,7 @@ import { TranscriptionService } from '@services/transcription/transcription.serv
     GovukHeadingComponent,
     ReportingRestrictionComponent,
     GovukTagComponent,
+    GovukBannerComponent,
   ],
   templateUrl: './approved-transcript.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
@@ -32,8 +36,13 @@ export class ApprovedTranscriptComponent implements OnInit {
   route = inject(ActivatedRoute);
   transcriptionService = inject(TranscriptionService);
   fileDownloadService = inject(FileDownloadService);
+  appConfigService = inject(AppConfigService);
 
   @Input() transcript!: TranscriptionDetails;
+
+  armMaintenanceError = false;
+
+  readonly armMaintenanceMessage = ARM_MAINTENANCE_TRANSCRIPT_MESSAGE;
 
   statusColours = transcriptStatusTagColours;
   caseDetails = {};
@@ -49,6 +58,15 @@ export class ApprovedTranscriptComponent implements OnInit {
   }
 
   onDownloadClicked() {
+    this.armMaintenanceError = false;
+
+    const armDown = this.appConfigService.getAppConfig()?.armDownForMaintenance === 'true';
+
+    if (armDown && this.transcript.isArchived) {
+      this.armMaintenanceError = true;
+      return;
+    }
+
     if (this.fileName) {
       this.transcriptionService.downloadTranscriptDocument(this.transcriptId).subscribe((blob: Blob) => {
         this.fileDownloadService.saveAs(blob, this.fileName as string);

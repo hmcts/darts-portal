@@ -32,4 +32,5 @@ export type TranscriptionDetails = {
   requestor?: Requestor;
   legacyComments?: string[];
   approved?: DateTime;
+  isArchived: boolean;
 };

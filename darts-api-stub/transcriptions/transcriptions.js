@@ -95,6 +95,22 @@ const defaultYourTranscriptionsStub = {
       },
       requested_ts: '2024-02-21T15:00:00Z',
     },
+    {
+      transcription_id: 9,
+      case_id: 1,
+      case_number: 'C20220620001',
+      courthouse_name: 'Swansea',
+      hearing_date: '2023-09-01',
+      transcription_type: 'Court log',
+      status: 'Complete',
+      transcription_urgency: {
+        transcription_urgency_id: 1,
+        description: 'Standard',
+        priority_order: 4,
+      },
+      requested_ts: '2023-11-17T12:53:07Z',
+      approved_ts: '2023-11-17T14:53:07Z',
+    },
   ],
   approver_transcriptions: [
     {
@@ -226,6 +242,15 @@ const defaultMockTranscriptionDetails = {
   approved: '2023-11-17T14:53:07.468Z',
 };
 let mockTranscriptionDetails = { ...defaultMockTranscriptionDetails };
+
+const mockArchivedTranscriptionDetails = {
+  ...defaultMockTranscriptionDetails,
+  transcription_id: 9,
+  hearing_id: 1,
+  hearing_date: '2023-09-01',
+  status: 'Complete',
+  is_archived: true,
+};
 
 const mockTranscriptionDetailsRejected = {
   case_id: 1,
@@ -660,6 +685,9 @@ router.get('/:transcriptId', (req, res) => {
       break;
     case '8':
       res.status(200).send({ ...mockTranscriptionDetails, is_manual: false, status: 'With Transcriber' });
+      break;
+    case '9':
+      res.status(200).send(mockArchivedTranscriptionDetails);
       break;
     case '':
     default:

@@ -7,6 +7,9 @@ import { BreadcrumbDirective } from '@directives/breadcrumb.directive';
 import { TranscriptionDetails } from '@portal-types/transcriptions/transcription-details.type';
 import { FileDownloadService } from '@services/file-download/file-download.service';
 import { TranscriptionService } from '@services/transcription/transcription.service';
+import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
+import { AppConfigService } from '@services/app-config/app-config.service';
+import { ARM_MAINTENANCE_TRANSCRIPT_MESSAGE } from '@constants/arm-maintenance-messages';
 
 @Component({
   selector: 'app-case-hearing-transcript',
@@ -14,17 +17,28 @@ import { TranscriptionService } from '@services/transcription/transcription.serv
   templateUrl: './case-hearing-transcript.component.html',
   styleUrl: './case-hearing-transcript.component.scss',
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [ReportingRestrictionComponent, DetailsTableComponent, BreadcrumbComponent, BreadcrumbDirective],
+  imports: [
+    ReportingRestrictionComponent,
+    DetailsTableComponent,
+    BreadcrumbComponent,
+    BreadcrumbDirective,
+    GovukBannerComponent,
+  ],
 })
 export class CaseHearingTranscriptComponent implements OnInit {
   route = inject(ActivatedRoute);
   transcriptionService = inject(TranscriptionService);
   fileDownloadService = inject(FileDownloadService);
+  appConfigService = inject(AppConfigService);
 
   @Input() fileName!: string;
   @Input() transcript!: TranscriptionDetails;
 
   transcriptId = this.route.snapshot.params.transcriptId;
+
+  armMaintenanceError = false;
+
+  readonly armMaintenanceMessage = ARM_MAINTENANCE_TRANSCRIPT_MESSAGE;
 
   caseDetails = {};
   requestDetails = {};
@@ -34,7 +48,16 @@ export class CaseHearingTranscriptComponent implements OnInit {
     this.requestDetails = this.transcriptionService.getHearingRequestDetailsFromTranscript(this.transcript);
   }
 
-  onDownloadClicked() {
+  onDownloadClicked(): void {
+    this.armMaintenanceError = false;
+
+    const armDown = this.appConfigService.getAppConfig()?.armDownForMaintenance === 'true';
+
+    if (armDown && this.transcript.isArchived) {
+      this.armMaintenanceError = true;
+      return;
+    }
+
     if (this.transcript.transcriptFileName) {
       this.transcriptionService.downloadTranscriptDocument(this.transcriptId).subscribe((blob: Blob) => {
         this.fileDownloadService.saveAs(blob, this.transcript.transcriptFileName as string);

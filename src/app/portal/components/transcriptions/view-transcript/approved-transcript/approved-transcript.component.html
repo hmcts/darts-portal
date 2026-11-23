@@ -3,6 +3,12 @@
   <ng-container *breadcrumb="['.']">{{ transcript.transcriptFileName ?? 'Document not found' }}</ng-container>
 </app-breadcrumb>
 
+@if (armMaintenanceError) {
+  <app-govuk-banner type="warning" [focusOnChange]="true">
+    {{ armMaintenanceMessage }}
+  </app-govuk-banner>
+}
+
 <app-reporting-restriction
   class="margin-bottom"
   [restrictions]="transcript.caseReportingRestrictions"
@@ -22,5 +28,7 @@
 <app-details-table title="Request details" [details]="requestDetails" />
 
 @if (transcript.transcriptFileName) {
-  <button id="download-button" class="govuk-button" (click)="onDownloadClicked()">Download transcript file</button>
+  <button id="download-button" class="govuk-button" [disabled]="armMaintenanceError" (click)="onDownloadClicked()">
+    Download transcript file
+  </button>
 }

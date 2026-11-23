@@ -81,6 +81,7 @@ export class MappingService {
         : undefined,
       legacyComments: transcription.legacy_comments ? transcription.legacy_comments : undefined,
       approved: transcription.approved ? DateTime.fromISO(transcription.approved) : undefined,
+      isArchived: transcription.is_archived ?? false,
     };
   }
 

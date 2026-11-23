@@ -45,6 +45,15 @@ const transcriptOne = [
     requested_by_name: 'Joe Bloggs',
     status: 'Complete',
   },
+  {
+    transcription_id: 9,
+    hearing_id: 1,
+    hearing_date: '2023-09-01',
+    type: 'Court log',
+    requested_on: '2023-11-17T12:53:07Z',
+    requested_by_name: 'Eric Bristow',
+    status: 'Complete',
+  },
 ];
 
 const transcriptTwo = [
