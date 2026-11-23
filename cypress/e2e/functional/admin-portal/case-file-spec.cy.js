@@ -90,12 +90,19 @@ describe('Case file screen', () => {
         cy.get('.govuk-summary-list__row')
           .eq(6)
           .within(() => {
+            cy.get('.govuk-summary-list__key').should('have.text', 'Linked case(s)');
+            cy.get('.govuk-summary-list__value').first().should('contain.text', '-');
+          });
+
+        cy.get('.govuk-summary-list__row')
+          .eq(7)
+          .within(() => {
             cy.get('.govuk-summary-list__key').should('have.text', 'Retained until');
             cy.get('.govuk-summary-list__value').first().should('contain.text', '31 Jan 2020');
           });
 
         cy.get('.govuk-summary-list__row')
-          .eq(6)
+          .eq(7)
           .within(() => {
             cy.get('.govuk-link')
               .should('have.text', 'View or change')
