@@ -293,7 +293,7 @@ describe('CaseFileComponent', () => {
       expect(row?.query(By.css('dd')).nativeElement.textContent.trim()).toBe('Ben Lewis, Morgan Reed');
     });
   });
-  
+
   describe('Linked cases', () => {
     function getLinkedCasesValue(): HTMLElement {
       const row = fixture.debugElement
