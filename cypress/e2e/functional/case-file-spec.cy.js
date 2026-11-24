@@ -109,7 +109,7 @@ describe('Case file screen', () => {
       cy.get('app-see-more-list .govuk-body').children().filter('br').should('have.length', 2);
     });
 
-    it('should display "Judge(s)/Magistrates" and alphabetical hearing names with commas and spaces when updated-judge-label is enabled', () => {
+    it('should display "Judge(s)/Magistrates" label and alphabetical judge/magistrate names with commas and spaces when updated-judge-label is enabled', () => {
       cy.get('#hearingsTable th[aria-label="Judge(s)/Magistrates column header"]').should(($heading) => {
         expect($heading.text().trim()).to.equal('Judge(s)/Magistrates');
       });
@@ -151,7 +151,7 @@ describe('Case file screen', () => {
       });
     });
 
-    it('should display "Judge" and preserve hearing name order and comma-only separators when updated-judge-label is disabled', () => {
+    it('should display "Judge" label and preserve judge/magistrate name order and comma-only separators when updated-judge-label is disabled', () => {
       cy.get('#hearingsTable th[aria-label="Judge column header"]').should(($heading) => {
         expect($heading.text().trim()).to.equal('Judge');
       });

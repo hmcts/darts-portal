@@ -88,7 +88,7 @@ describe('CaseHearingsTableComponent', () => {
 
   describe('Names and formatting', () => {
     it.each([true, false])(
-      'should display hearing names alphabetically with spaces and commas when adminScreen is %s and the updated-judge-label flag is enabled',
+      'should display the judges/magistrates names for a hearing alphabetically with spaces and commas when adminScreen is %s and the updated-judge-label flag is enabled',
       (adminScreen) => {
         featureFlags.isEnabled.mockReturnValue(true);
         fixture.componentRef.setInput('adminScreen', adminScreen);
@@ -102,7 +102,7 @@ describe('CaseHearingsTableComponent', () => {
     );
 
     it.each([true, false])(
-      'should preserve the original names when displaying them alphabetically and adminScreen is %s',
+      'should preserve the original judges/magistrates names when displaying them alphabetically and adminScreen is %s',
       (adminScreen) => {
         const originalNames = [...hearing.judges];
         featureFlags.isEnabled.mockReturnValue(true);
@@ -115,7 +115,7 @@ describe('CaseHearingsTableComponent', () => {
     );
 
     it.each([true, false])(
-      'should preserve the supplied name order and comma-only separators when adminScreen is %s and the updated-judge-label flag is disabled',
+      'should preserve the supplied judges/magistrates name order and comma-only separators when adminScreen is %s and the updated-judge-label flag is disabled',
       (adminScreen) => {
         featureFlags.isEnabled.mockReturnValue(false);
         fixture.componentRef.setInput('adminScreen', adminScreen);
@@ -140,7 +140,7 @@ describe('CaseHearingsTableComponent', () => {
     );
 
     it.each([true, false])(
-      "should display each hearing's own names alphabetically with spaces and commas when adminScreen is %s and the updated-judge-label flag is enabled",
+      "should display each hearing's judges/magistrates names alphabetically with spaces and commas when adminScreen is %s and the updated-judge-label flag is enabled",
       (adminScreen) => {
         featureFlags.isEnabled.mockReturnValue(true);
         fixture.componentRef.setInput('adminScreen', adminScreen);
