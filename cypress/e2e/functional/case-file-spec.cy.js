@@ -63,7 +63,7 @@ describe('Case file screen', () => {
       cy.wait(['@getJudgeLabelConfig', '@getCaseHearings']);
     });
 
-    it('should display the case headings when updated-judge-label is enabled', () => {
+    it('should display the case headings in the case file when updated-judge-label is enabled', () => {
       cy.get('app-case-file').should('exist');
 
       cy.get('app-govuk-heading h1').should('contain.text', 'C20220620005');
@@ -136,7 +136,7 @@ describe('Case file screen', () => {
       cy.wait(['@getJudgeLabelConfig', '@getCaseHearings']);
     });
 
-    it('should display the case headings when updated-judge-label is disabled', () => {
+    it('should display the case headings in the case file when updated-judge-label is disabled', () => {
       cy.get('app-case-file').should('exist');
 
       cy.get('app-govuk-heading h1').should('contain.text', 'C20220620005');
