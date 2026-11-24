@@ -102,7 +102,7 @@ describe('CaseHearingsTableComponent', () => {
     );
 
     it.each([true, false])(
-      'should preserve the original judges/magistrates names when displaying them alphabetically and adminScreen is %s',
+      'should preserve the original judges/magistrates name order when displaying them alphabetically and adminScreen is %s',
       (adminScreen) => {
         const originalNames = [...hearing.judges];
         featureFlags.isEnabled.mockReturnValue(true);
