@@ -114,13 +114,10 @@ describe('CaseHearingsTableComponent', () => {
       }
     );
 
-    it.each([
-      [true, false],
-      [false, false],
-    ])(
-      'should preserve the supplied name order and comma-only separators when adminScreen is %s and the updated-judge-label flag is %s',
-      (adminScreen, enabled) => {
-        featureFlags.isEnabled.mockReturnValue(enabled);
+    it.each([true, false])(
+      'should preserve the supplied name order and comma-only separators when adminScreen is %s and the updated-judge-label flag is disabled',
+      (adminScreen) => {
+        featureFlags.isEnabled.mockReturnValue(false);
         fixture.componentRef.setInput('adminScreen', adminScreen);
 
         fixture.detectChanges();
