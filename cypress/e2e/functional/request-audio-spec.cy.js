@@ -300,7 +300,7 @@ describe('ARM maintenance', () => {
     'The audio you have requested has been archived. ' +
     'The archive service is currently unavailable due to maintenance, ' +
     'so we are unable to retrieve your recording at this time. ' +
-    'Please try again later.';
+    'Please try again tomorrow.';
 
   beforeEach(() => {
     // Enable ARM maintenance before the application loads its configuration

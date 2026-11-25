@@ -91,7 +91,7 @@ export class HearingComponent implements OnInit {
     'The audio you have requested has been archived. ' +
     'The archive service is currently unavailable due to maintenance, ' +
     'so we are unable to retrieve your recording at this time. ' +
-    'Please try again later.';
+    'Please try again tomorrow.';
 
   audioTimes: { startTime: DateTime; endTime: DateTime } | null = null;
   private _state: HearingPageState = 'Default';
