@@ -64,7 +64,7 @@
     "axios": "1.21.1",
     "body-parser": "^2.2.1",
     "config": "^5.0.0",
-    "connect-redis": "^10.0.0",
+    "connect-redis": "^11.0.0",
     "cookie-parser": "^1.4.6",
     "express": "^5.2.0",
     "express-session": "^1.18.2",
