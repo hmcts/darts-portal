@@ -2,6 +2,27 @@ import 'cypress-axe';
 import './commands';
 
 describe('Case file screen', () => {
+  // Remove this helper and its setup calls when updated-judge-label is removed.
+  function setUpdatedJudgeLabelFlag(enabled) {
+    cy.intercept('GET', '/app/config', (req) => {
+      req.continue((res) => {
+        res.body.launchDarklyLocalOverride = true;
+        res.body.launchDarklyLocalFlags = {
+          ...res.body.launchDarklyLocalFlags,
+          'updated-judge-label': enabled,
+        };
+      });
+    }).as('getJudgeLabelConfig');
+  }
+
+  function stubHearingNames() {
+    cy.intercept('GET', '/api/cases/5/hearings', (req) => {
+      req.continue((res) => {
+        res.body[0].judges = ['Zoe Taylor', 'Alex Brown', 'Morgan Reed'];
+      });
+    }).as('getCaseHearings');
+  }
+
   describe('error scenarios', () => {
     beforeEach(() => {
       cy.login();
@@ -35,25 +56,36 @@ describe('Case file screen', () => {
   describe('Case file headings', () => {
     beforeEach(() => {
       cy.login();
+      setUpdatedJudgeLabelFlag(true);
+      stubHearingNames();
+
       cy.visit('/case/5');
+      cy.wait(['@getJudgeLabelConfig', '@getCaseHearings']);
     });
 
-    it('should display all expected headings in the case file', () => {
+    it('should display the case headings in the case file when updated-judge-label is enabled', () => {
       cy.get('app-case-file').should('exist');
 
       cy.get('app-govuk-heading h1').should('contain.text', 'C20220620005');
       cy.get('app-govuk-heading .govuk-caption-l').should('contain.text', 'Case ID');
 
-      const headings = ['Courthouse', 'Judge(s)', 'Prosecutor(s)', 'Defence(s)', 'Defendant(s)', 'Retained until'];
+      const headings = [
+        'Courthouse',
+        'Judge(s)/Magistrates',
+        'Prosecutor(s)',
+        'Defence(s)',
+        'Defendant(s)',
+        'Retained until',
+      ];
 
       headings.forEach((headingText) => {
-        cy.get('app-case-file h2').contains(headingText).should('exist');
+        cy.get('app-case-file h2')
+          .filter((_, heading) => heading.textContent.trim() === headingText)
+          .should('have.length', 1);
       });
     });
 
     it('should toggle judge list between expanded and collapsed states (with <details>)', () => {
-      cy.contains('h2.govuk-heading-s', 'Judge(s)').should('exist');
-
       cy.get('.govuk-details').should('not.have.attr', 'open');
 
       cy.get('.govuk-details summary .govuk-details__summary-text').should('contain.text', 'See more');
@@ -75,6 +107,63 @@ describe('Case file screen', () => {
       cy.get('.govuk-details summary .govuk-details__summary-text').should('contain.text', 'See more');
 
       cy.get('app-see-more-list .govuk-body').children().filter('br').should('have.length', 2);
+    });
+
+    it('should display "Judge(s)/Magistrates" label and alphabetical judge/magistrate names with commas and spaces when updated-judge-label is enabled', () => {
+      cy.get('#hearingsTable th[aria-label="Judge(s)/Magistrates column header"]').should(($heading) => {
+        expect($heading.text().trim()).to.equal('Judge(s)/Magistrates');
+      });
+      cy.get('#hearingsTable th[aria-label="Judge(s)/Magistrates column header"]').then(($heading) => {
+        cy.get('#hearingsTable tbody tr')
+          .first()
+          .find('td')
+          .eq($heading[0].cellIndex)
+          .should(($cell) => {
+            expect($cell.text().trim()).to.equal('Alex Brown, Morgan Reed, Zoe Taylor');
+          });
+      });
+    });
+  });
+
+  // Remove this group when updated-judge-label is removed.
+  describe('Case file headings - updated-judge-label disabled', () => {
+    beforeEach(() => {
+      cy.login();
+      setUpdatedJudgeLabelFlag(false);
+      stubHearingNames();
+
+      cy.visit('/case/5');
+      cy.wait(['@getJudgeLabelConfig', '@getCaseHearings']);
+    });
+
+    it('should display the case headings in the case file when updated-judge-label is disabled', () => {
+      cy.get('app-case-file').should('exist');
+
+      cy.get('app-govuk-heading h1').should('contain.text', 'C20220620005');
+      cy.get('app-govuk-heading .govuk-caption-l').should('contain.text', 'Case ID');
+
+      const headings = ['Courthouse', 'Judge(s)', 'Prosecutor(s)', 'Defence(s)', 'Defendant(s)', 'Retained until'];
+
+      headings.forEach((headingText) => {
+        cy.get('app-case-file h2')
+          .filter((_, heading) => heading.textContent.trim() === headingText)
+          .should('have.length', 1);
+      });
+    });
+
+    it('should display "Judge" label and preserve judge/magistrate name order and comma-only separators when updated-judge-label is disabled', () => {
+      cy.get('#hearingsTable th[aria-label="Judge column header"]').should(($heading) => {
+        expect($heading.text().trim()).to.equal('Judge');
+      });
+      cy.get('#hearingsTable th[aria-label="Judge column header"]').then(($heading) => {
+        cy.get('#hearingsTable tbody tr')
+          .first()
+          .find('td')
+          .eq($heading[0].cellIndex)
+          .should(($cell) => {
+            expect($cell.text().trim()).to.equal('Zoe Taylor,Alex Brown,Morgan Reed');
+          });
+      });
     });
   });
 
