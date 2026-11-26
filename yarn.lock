@@ -8110,11 +8110,11 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:*, @types/node@npm:>=10.0.0, @types/node@npm:>=13.7.0, @types/node@npm:^26.0.0":
-  version: 26.6.6
-  resolution: "@types/node@npm:26.6.6"
+  version: 26.6.9
+  resolution: "@types/node@npm:26.6.9"
   dependencies:
     undici-types: "npm:~8.9.0"
-  checksum: 10/07c6c6fc1f5cc89c700ac9ebcebd42b000fef234bf0b80e9461a8f077105f15faf16df95b83745e0c0e37338d1fbc28cb402ef27b5787fd7a57b492c926ff7ae
+  checksum: 10/8a03db9c0c151bd9f1cc116ad8eeb3fac51ee429538ba49edc84b598cf277af5261017171137ba4d947bd942129e46a7d90622dd68a355e440e54e73730ff4dc
   languageName: node
   linkType: hard
 
