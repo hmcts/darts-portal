@@ -485,7 +485,9 @@ describe('ARM maintenance', () => {
     cy.contains('button', 'Get Audio').click();
 
     // Existing validation error should appear
-    cy.get('.govuk-error-summary').should('be.visible').and('contain.text', 'Enter a time in the correct format (for example 15:11:11)');
+    cy.get('.govuk-error-summary')
+      .should('be.visible')
+      .and('contain.text', 'Enter a time in the correct format (for example 15:11:11)');
 
     // ARM maintenance warning should not appear
     cy.get('app-govuk-banner').should('not.exist');
