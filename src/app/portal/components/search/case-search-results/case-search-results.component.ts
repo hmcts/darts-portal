@@ -26,6 +26,7 @@ export class CaseSearchResultsComponent implements OnChanges {
 
   columns: DatatableColumn[] = [
     { name: 'Case ID', prop: 'number', sortable: true },
+    { name: 'Linked case(s)', prop: 'linkedCases', sortable: false },
     { name: 'Courthouse', prop: 'courthouse', sortable: true },
     { name: 'Courtroom', prop: 'courtroom', sortable: false },
     { name: 'Judge(s)', prop: 'judges', sortable: false },

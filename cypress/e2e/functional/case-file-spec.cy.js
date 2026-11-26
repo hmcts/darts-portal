@@ -35,16 +35,24 @@ describe('Case file screen', () => {
   describe('Case file headings', () => {
     beforeEach(() => {
       cy.login();
-      cy.visit('/case/5');
     });
 
     it('should display all expected headings in the case file', () => {
+      cy.visit('/case/21');
       cy.get('app-case-file').should('exist');
 
-      cy.get('app-govuk-heading h1').should('contain.text', 'C20220620005');
+      cy.get('app-govuk-heading h1').should('contain.text', 'C20220622021');
       cy.get('app-govuk-heading .govuk-caption-l').should('contain.text', 'Case ID');
 
-      const headings = ['Courthouse', 'Judge(s)', 'Prosecutor(s)', 'Defence(s)', 'Defendant(s)', 'Retained until'];
+      const headings = [
+        'Courthouse',
+        'Judge(s)',
+        'Prosecutor(s)',
+        'Defence(s)',
+        'Defendant(s)',
+        'Linked case(s)',
+        'Retained until',
+      ];
 
       headings.forEach((headingText) => {
         cy.get('app-case-file h2').contains(headingText).should('exist');
@@ -52,6 +60,8 @@ describe('Case file screen', () => {
     });
 
     it('should toggle judge list between expanded and collapsed states (with <details>)', () => {
+      cy.visit('/case/5');
+
       cy.contains('h2.govuk-heading-s', 'Judge(s)').should('exist');
 
       cy.get('.govuk-details').should('not.have.attr', 'open');
@@ -75,6 +85,74 @@ describe('Case file screen', () => {
       cy.get('.govuk-details summary .govuk-details__summary-text').should('contain.text', 'See more');
 
       cy.get('app-see-more-list .govuk-body').children().filter('br').should('have.length', 2);
+    });
+  });
+
+  describe('Linked cases', () => {
+    beforeEach(() => {
+      cy.login();
+    });
+
+    it('should display all linked cases with active and inactive links', () => {
+      cy.visit('/case/24');
+
+      cy.contains('h2.govuk-heading-s', 'Linked case(s)')
+        .next('ul')
+        .within(() => {
+          cy.get('li').should('have.length', 3);
+          cy.contains('a', 'C20220622021').should('have.attr', 'href', '/case/21');
+          cy.contains('li', 'C20220622022').should('not.have.descendants', 'a');
+          cy.contains('a', 'C20220622023').should('have.attr', 'href', '/case/23');
+        });
+    });
+
+    it('should display linked cases when the case is anonymised', () => {
+      cy.visit('/case/23');
+
+      cy.get('#warning-message').should('contain.text', 'This case has passed its retention date');
+
+      cy.contains('h2.govuk-heading-s', 'Linked case(s)')
+        .next('ul')
+        .within(() => {
+          cy.get('li').should('have.length', 1);
+          cy.contains('a', 'C20220622024').should('have.attr', 'href', '/case/24');
+        });
+    });
+
+    it('should navigate to a linked case and display its details', () => {
+      cy.visit('/case/24');
+
+      cy.contains('h2.govuk-heading-s', 'Linked case(s)').next('ul').contains('a', 'C20220622021').click();
+      cy.url().should('include', '/case/21');
+      cy.get('app-govuk-heading h1').should('contain.text', 'C20220622021');
+
+      cy.contains('h2.govuk-heading-s', 'Linked case(s)').next('ul').contains('a', 'C20220622024').click();
+      cy.url().should('include', '/case/24');
+      cy.get('app-govuk-heading h1').should('contain.text', 'C20220622024');
+    });
+
+    it('should not display linked cases when a case has none', () => {
+      cy.visit('/case/20');
+      cy.contains('h2.govuk-heading-s', 'Linked case(s)').should('not.exist');
+    });
+
+    it('should display inactive linked cases as plain text', () => {
+      cy.visit('/case/22');
+
+      cy.contains('h2.govuk-heading-s', 'Linked case(s)')
+        .next('ul')
+        .within(() => {
+          cy.contains('li', 'C20220622024').should('exist').and('not.have.descendants', 'a');
+          cy.get('a').should('not.exist');
+        });
+    });
+
+    it('should have no accessibility violations in linked cases', () => {
+      cy.visit('/case/24');
+
+      cy.injectAxe();
+      cy.contains('h2.govuk-heading-s', 'Linked case(s)').should('exist');
+      cy.a11y();
     });
   });
 

@@ -145,6 +145,7 @@ export class AdminSearchService {
     return results.map((result) => ({
       id: result.id,
       number: result.case_number,
+      linkedCases: result.linked_cases ?? [],
       courthouse: result.courthouse.display_name,
       courtrooms: result.courtrooms.map((c) => c.name),
       judges: result.judges,
