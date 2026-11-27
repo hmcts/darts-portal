@@ -99,7 +99,9 @@
           class="govuk-grid-column-one-quarter button"
           [ngClass]="{ 'error-box-button': audioRequestForm.invalid && isSubmitted }"
         >
-          <button type="submit" class="govuk-button" data-module="govuk-button">Get Audio</button>
+          <button type="submit" class="govuk-button" [disabled]="armMaintenanceError" data-module="govuk-button">
+            Get Audio
+          </button>
         </div>
       </div>
     </form>

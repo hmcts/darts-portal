@@ -42,6 +42,7 @@ describe('AppConfigService', () => {
         manualDeletion: { enabled: 'false' },
         eventObfuscation: { enabled: 'false' },
       },
+      armDownForMaintenance: 'false',
       caseSearchTimeout: '30 seconds',
       pagination: {
         courtLogEventsPageLimit: 500,

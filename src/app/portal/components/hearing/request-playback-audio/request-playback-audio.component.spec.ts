@@ -74,7 +74,7 @@ describe('RequestPlaybackAudioComponent', () => {
     });
   });
 
-  describe('#ngOnChanges', () =>
+  describe('#ngOnChanges', () => {
     it('should call setTimes if requestAudioTimes has been set', () => {
       const audioTimes = {
         startTime: DateTime.fromISO('2023-07-31T02:00:00.620'),
@@ -84,7 +84,31 @@ describe('RequestPlaybackAudioComponent', () => {
       component.ngOnChanges({ audioTimes: new SimpleChange(null, audioTimes, false) });
       fixture.detectChanges();
       expect(setTimesSpy).toHaveBeenCalled();
-    }));
+    });
+
+    it('should preserve the form values when armMaintenanceError changes', () => {
+      fixture.detectChanges();
+
+      const initialForm = {
+        startTime: { hours: '02', minutes: '00', seconds: '00' },
+        endTime: { hours: '15', minutes: '32', seconds: '24' },
+        requestType: 'PLAYBACK',
+      };
+
+      component.audioRequestForm.setValue(initialForm);
+
+      const setTimesSpy = jest.spyOn(component, 'setTimes');
+      const formChangedSpy = jest.spyOn(component.formChanged, 'emit');
+
+      component.ngOnChanges({
+        armMaintenanceError: new SimpleChange(false, true, false),
+      });
+
+      expect(setTimesSpy).not.toHaveBeenCalled();
+      expect(formChangedSpy).not.toHaveBeenCalled();
+      expect(component.audioRequestForm.value).toEqual(initialForm);
+    });
+  });
 
   it('should reset the start and end times on the form if requestAudioTimes is empty', () => {
     const initialForm = {
@@ -203,7 +227,7 @@ describe('RequestPlaybackAudioComponent', () => {
         fixture.detectChanges();
         component.onSubmit();
         expect(component.requestObj).toEqual(expectedResult);
-        expect(audioRequestSpy).toHaveBeenCalledWith(component.requestObj);
+        expect(audioRequestSpy).toHaveBeenCalledWith({ request: component.requestObj, hasArchivedAudio: false });
       });
 
       it('overlapping', () => {
@@ -231,7 +255,7 @@ describe('RequestPlaybackAudioComponent', () => {
         fixture.detectChanges();
         component.onSubmit();
         expect(component.requestObj).toEqual(expectedResult);
-        expect(audioRequestSpy).toHaveBeenCalledWith(component.requestObj);
+        expect(audioRequestSpy).toHaveBeenCalledWith({ request: component.requestObj, hasArchivedAudio: false });
       });
 
       it('overlapping start', () => {
@@ -259,7 +283,7 @@ describe('RequestPlaybackAudioComponent', () => {
         fixture.detectChanges();
         component.onSubmit();
         expect(component.requestObj).toEqual(expectedResult);
-        expect(audioRequestSpy).toHaveBeenCalledWith(component.requestObj);
+        expect(audioRequestSpy).toHaveBeenCalledWith({ request: component.requestObj, hasArchivedAudio: false });
       });
 
       it('overlapping end', () => {
@@ -287,7 +311,7 @@ describe('RequestPlaybackAudioComponent', () => {
         fixture.detectChanges();
         component.onSubmit();
         expect(component.requestObj).toEqual(expectedResult);
-        expect(audioRequestSpy).toHaveBeenCalledWith(component.requestObj);
+        expect(audioRequestSpy).toHaveBeenCalledWith({ request: component.requestObj, hasArchivedAudio: false });
       });
 
       it('within', () => {
@@ -315,7 +339,84 @@ describe('RequestPlaybackAudioComponent', () => {
         fixture.detectChanges();
         component.onSubmit();
         expect(component.requestObj).toEqual(expectedResult);
-        expect(audioRequestSpy).toHaveBeenCalledWith(component.requestObj);
+        expect(audioRequestSpy).toHaveBeenCalledWith({ request: component.requestObj, hasArchivedAudio: false });
+      });
+    });
+
+    describe('with archived audio', () => {
+      let audioRequestSpy: jest.SpyInstance;
+
+      beforeEach(() => {
+        audioRequestSpy = jest.spyOn(component.audioRequest, 'emit');
+        component.hearing = {
+          id: 1,
+          date: DateTime.fromISO('2023-09-01'),
+          judges: ['HHJ M. Hussain KC'],
+          courtroom: '3',
+          transcriptCount: 1,
+        };
+
+        component.audios = [
+          {
+            id: 1,
+            media_start_timestamp: '2023-09-01T10:00:00',
+            media_end_timestamp: '2023-09-01T10:30:00',
+            is_archived: true,
+          },
+          {
+            id: 2,
+            media_start_timestamp: '2023-09-01T10:30:00',
+            media_end_timestamp: '2023-09-01T11:00:00',
+            is_archived: false,
+          },
+        ];
+      });
+
+      const setTimes = (start: string, end: string) => {
+        const [startHour, startMinute, startSecond] = start.split(':');
+        const [endHour, endMinute, endSecond] = end.split(':');
+
+        component.audioRequestForm.setValue({
+          startTime: {
+            hours: startHour,
+            minutes: startMinute,
+            seconds: startSecond,
+          },
+          endTime: {
+            hours: endHour,
+            minutes: endMinute,
+            seconds: endSecond,
+          },
+          requestType: 'PLAYBACK',
+        });
+      };
+
+      it.each([
+        ['10:10:00', '10:20:00', true],
+        ['10:40:00', '10:50:00', false],
+        ['10:15:00', '10:45:00', true],
+        ['10:30:00', '10:45:00', true],
+        ['09:00:00', '10:00:00', true],
+      ])('should check for archived audio between %s and %s', (start, end, hasArchivedAudio) => {
+        setTimes(start, end);
+
+        fixture.detectChanges();
+        component.onSubmit();
+
+        expect(audioRequestSpy).toHaveBeenCalledWith({
+          request: component.requestObj,
+          hasArchivedAudio,
+        });
+      });
+
+      it('should not emit a request when no audio exists in the selected range', () => {
+        setTimes('11:10:00', '11:20:00');
+
+        fixture.detectChanges();
+        component.onSubmit();
+
+        expect(audioRequestSpy).not.toHaveBeenCalled();
+        expect(component.audioRequestForm.errors).toEqual({ invalid: true });
       });
     });
 
@@ -523,6 +624,54 @@ describe('RequestPlaybackAudioComponent', () => {
       expect(component.audioRequestForm.controls.endTime.errors).toEqual({ unavailable: true });
       expect(component.audioRequestForm.errors).toEqual({ invalid: true });
       expect(validationErrorSpy).toHaveBeenCalledWith(errorSummaryEntry);
+    });
+  });
+
+  describe('Get Audio button', () => {
+    it('should disable the Get Audio button when armMaintenanceError is true', () => {
+      fixture.componentRef.setInput('armMaintenanceError', true);
+      fixture.detectChanges();
+
+      const button: HTMLButtonElement = fixture.nativeElement.querySelector('button[type="submit"]');
+
+      expect(button.disabled).toBe(true);
+    });
+
+    it('should re-enable the Get Audio button when armMaintenanceError becomes false', () => {
+      fixture.componentRef.setInput('armMaintenanceError', true);
+      fixture.detectChanges();
+
+      const button: HTMLButtonElement = fixture.nativeElement.querySelector('button[type="submit"]');
+
+      expect(button.disabled).toBe(true);
+
+      fixture.componentRef.setInput('armMaintenanceError', false);
+      fixture.detectChanges();
+
+      expect(button.disabled).toBe(false);
+    });
+  });
+
+  describe('formChanged', () => {
+    it('should emit when a start time is changed', () => {
+      fixture.detectChanges();
+      const formChangedSpy = jest.spyOn(component.formChanged, 'emit');
+      component.audioRequestForm.get('startTime.hours')?.setValue('10');
+      expect(formChangedSpy).toHaveBeenCalled();
+    });
+
+    it('should emit when an end time is changed', () => {
+      fixture.detectChanges();
+      const formChangedSpy = jest.spyOn(component.formChanged, 'emit');
+      component.audioRequestForm.get('endTime.hours')?.setValue('10');
+      expect(formChangedSpy).toHaveBeenCalled();
+    });
+
+    it('should emit when request type is changed', () => {
+      fixture.detectChanges();
+      const formChangedSpy = jest.spyOn(component.formChanged, 'emit');
+      component.audioRequestForm.get('requestType')?.setValue('DOWNLOAD');
+      expect(formChangedSpy).toHaveBeenCalled();
     });
   });
 

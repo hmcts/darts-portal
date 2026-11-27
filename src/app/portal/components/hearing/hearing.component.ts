@@ -40,6 +40,8 @@ import { EventsAndAudioComponent } from './events-and-audio/events-and-audio.com
 import { HearingFileComponent } from './hearing-file/hearing-file.component';
 import { OrderConfirmationComponent } from './order-confirmation/order-confirmation.component';
 import { RequestPlaybackAudioComponent } from './request-playback-audio/request-playback-audio.component';
+import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-hearing',
@@ -67,6 +69,7 @@ import { RequestPlaybackAudioComponent } from './request-playback-audio/request-
     LuxonDatePipe,
     DeleteComponent,
     GovukTagComponent,
+    GovukBannerComponent,
   ],
 })
 export class HearingComponent implements OnInit {
@@ -83,6 +86,13 @@ export class HearingComponent implements OnInit {
   mappingService = inject(MappingService);
   errorMsgService = inject(ErrorMessageService);
   title = inject(Title);
+  armMaintenanceError = false;
+
+  readonly armMaintenanceMessage =
+    'The audio you have requested has been archived. ' +
+    'The archive service is currently unavailable due to maintenance, ' +
+    'so we are unable to retrieve your recording at this time. ' +
+    'Please try again tomorrow.';
 
   audioTimes: { startTime: DateTime; endTime: DateTime } | null = null;
   private _state: HearingPageState = 'Default';
@@ -214,9 +224,22 @@ export class HearingComponent implements OnInit {
     }
   }
 
-  onAudioRequest(requestObject: PostAudioRequest) {
-    this.requestObject = requestObject;
+  onAudioRequest(event: { request: PostAudioRequest; hasArchivedAudio: boolean }) {
+    this.armMaintenanceError = false;
+
+    const armDown = this.appConfigService.getAppConfig()?.armDownForMaintenance === 'true';
+
+    if (armDown && event.hasArchivedAudio) {
+      this.armMaintenanceError = true;
+      return;
+    }
+
+    this.requestObject = event.request;
     this.state = 'OrderSummary';
+  }
+
+  onAudioFormChanged(): void {
+    this.armMaintenanceError = false;
   }
 
   onStateChanged(state: HearingPageState) {
@@ -248,7 +271,12 @@ export class HearingComponent implements OnInit {
         this.state = 'OrderConfirmation';
         this.clearSelections();
       },
-      error: () => {
+      error: (error: HttpErrorResponse) => {
+        if (error.status === 503) {
+          this.state = 'Default';
+          this.armMaintenanceError = true;
+          return;
+        }
         this.state = 'OrderFailure';
       },
     });
