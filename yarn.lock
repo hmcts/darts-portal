@@ -7787,13 +7787,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/body-parser@npm:*, @types/body-parser@npm:^1.19.5":
+"@types/body-parser@npm:*":
   version: 1.19.6
   resolution: "@types/body-parser@npm:1.19.6"
   dependencies:
     "@types/connect": "npm:*"
     "@types/node": "npm:*"
   checksum: 10/33041e88eae00af2cfa0827e951e5f1751eafab2a8b6fce06cd89ef368a988907996436b1325180edaeddd1c0c7d0d0d4c20a6c9ff294a91e0039a9db9e9b658
+  languageName: node
+  linkType: hard
+
+"@types/body-parser@npm:^2.0.0":
+  version: 2.2.0
+  resolution: "@types/body-parser@npm:2.2.0"
+  dependencies:
+    "@types/connect": "npm:*"
+    "@types/node": "npm:*"
+  checksum: 10/de050982fef8a31c163c4f30522a84ef52c9db0464b8d0e973cc9593b58e592bde2b4224a9aa1ff3c2f71999cb1009a1f580a2cad8cd50399862fe620113e89a
   languageName: node
   linkType: hard
 
@@ -10684,7 +10694,7 @@ __metadata:
     "@launchdarkly/js-client-sdk": "npm:^4.13.0"
     "@microsoft/applicationinsights-web": "npm:^3.2.2"
     "@ministryofjustice/frontend": "npm:^9.0.0"
-    "@types/body-parser": "npm:^1.19.5"
+    "@types/body-parser": "npm:^2.0.0"
     "@types/config": "npm:^3.3.4"
     "@types/cookie-parser": "npm:^1.4.7"
     "@types/express": "npm:^5.0.0"
