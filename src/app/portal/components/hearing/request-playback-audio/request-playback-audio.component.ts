@@ -57,6 +57,7 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
   @Input() audioTimes: { startTime: DateTime; endTime: DateTime } | null = null;
   @Input() userState!: UserState;
   @Input() clearFormEvent!: EventEmitter<void>;
+  @Input() armMaintenanceError: boolean = false;
   audioRequestForm: FormGroup;
   requestObj!: PostAudioRequest;
   @Output() audioRequest = new EventEmitter<{ request: PostAudioRequest; hasArchivedAudio: boolean }>();
@@ -222,6 +223,7 @@ export class RequestPlaybackAudioComponent implements OnChanges, OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (!changes.audioTimes) return;
     if (changes.audioTimes?.currentValue !== null) {
       this.setTimes();
     } else {

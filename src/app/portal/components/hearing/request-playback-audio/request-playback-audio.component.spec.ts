@@ -74,7 +74,7 @@ describe('RequestPlaybackAudioComponent', () => {
     });
   });
 
-  describe('#ngOnChanges', () =>
+  describe('#ngOnChanges', () => {
     it('should call setTimes if requestAudioTimes has been set', () => {
       const audioTimes = {
         startTime: DateTime.fromISO('2023-07-31T02:00:00.620'),
@@ -84,7 +84,31 @@ describe('RequestPlaybackAudioComponent', () => {
       component.ngOnChanges({ audioTimes: new SimpleChange(null, audioTimes, false) });
       fixture.detectChanges();
       expect(setTimesSpy).toHaveBeenCalled();
-    }));
+    });
+
+    it('should preserve the form values when armMaintenanceError changes', () => {
+      fixture.detectChanges();
+
+      const initialForm = {
+        startTime: { hours: '02', minutes: '00', seconds: '00' },
+        endTime: { hours: '15', minutes: '32', seconds: '24' },
+        requestType: 'PLAYBACK',
+      };
+
+      component.audioRequestForm.setValue(initialForm);
+
+      const setTimesSpy = jest.spyOn(component, 'setTimes');
+      const formChangedSpy = jest.spyOn(component.formChanged, 'emit');
+
+      component.ngOnChanges({
+        armMaintenanceError: new SimpleChange(false, true, false),
+      });
+
+      expect(setTimesSpy).not.toHaveBeenCalled();
+      expect(formChangedSpy).not.toHaveBeenCalled();
+      expect(component.audioRequestForm.value).toEqual(initialForm);
+    });
+  });
 
   it('should reset the start and end times on the form if requestAudioTimes is empty', () => {
     const initialForm = {
@@ -600,6 +624,31 @@ describe('RequestPlaybackAudioComponent', () => {
       expect(component.audioRequestForm.controls.endTime.errors).toEqual({ unavailable: true });
       expect(component.audioRequestForm.errors).toEqual({ invalid: true });
       expect(validationErrorSpy).toHaveBeenCalledWith(errorSummaryEntry);
+    });
+  });
+
+  describe('Get Audio button', () => {
+    it('should disable the Get Audio button when armMaintenanceError is true', () => {
+      fixture.componentRef.setInput('armMaintenanceError', true);
+      fixture.detectChanges();
+
+      const button: HTMLButtonElement = fixture.nativeElement.querySelector('button[type="submit"]');
+
+      expect(button.disabled).toBe(true);
+    });
+
+    it('should re-enable the Get Audio button when armMaintenanceError becomes false', () => {
+      fixture.componentRef.setInput('armMaintenanceError', true);
+      fixture.detectChanges();
+
+      const button: HTMLButtonElement = fixture.nativeElement.querySelector('button[type="submit"]');
+
+      expect(button.disabled).toBe(true);
+
+      fixture.componentRef.setInput('armMaintenanceError', false);
+      fixture.detectChanges();
+
+      expect(button.disabled).toBe(false);
     });
   });
 

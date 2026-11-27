@@ -35,6 +35,16 @@ describe('ErrorMessageService', () => {
       expect(navigateSpy).not.toHaveBeenCalled();
     });
 
+    it.each(['/api/audio-requests/playback', '/api/audio-requests/download'])(
+      'should not change route when a 503 is returned from %s',
+      (url) => {
+        const error = new HttpErrorResponse({ status: 503, url });
+        const navigateSpy = jest.spyOn(mockRouter, 'navigateByUrl');
+        service.handleErrorMessage(error);
+        expect(navigateSpy).not.toHaveBeenCalled();
+      }
+    );
+
     it('should not change route on the subscribed endpoints, for case search', () => {
       const error = new HttpErrorResponse({ status: 500, url: '/api/cases/search' });
       const navigateSpy = jest.spyOn(mockRouter, 'navigateByUrl');
@@ -74,6 +84,15 @@ describe('ErrorMessageService', () => {
   describe('Global error handling', () => {
     it('should route to internal-error page on 500 response', () => {
       const error = new HttpErrorResponse({ status: 500 });
+      const navigateSpy = jest.spyOn(mockRouter, 'navigateByUrl');
+
+      service.handleErrorMessage(error);
+
+      expect(navigateSpy).toHaveBeenCalledWith('internal-error');
+    });
+
+    it('should route to internal-error page on 503 response from an unsubscribed endpoint', () => {
+      const error = new HttpErrorResponse({ status: 503, url: '/api/courthouses' });
       const navigateSpy = jest.spyOn(mockRouter, 'navigateByUrl');
 
       service.handleErrorMessage(error);

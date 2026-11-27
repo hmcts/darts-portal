@@ -609,6 +609,46 @@ describe('HearingComponent', () => {
         expect(component.requestId).toEqual(1234);
       });
 
+      it.each(['PLAYBACK', 'DOWNLOAD'] as const)(
+        'should return to the hearing screen and display the maintenance warning when a 503 is returned for %s',
+        (requestType) => {
+          const errorResponse = new HttpErrorResponse({
+            error: 'Service Unavailable',
+            status: 503,
+            url: '/api/audio-requests',
+          });
+
+          jest.spyOn(audioRequestService, 'requestAudio').mockReturnValue(throwError(() => errorResponse));
+
+          fixture.detectChanges();
+
+          const mockRequestObject: PostAudioRequest = {
+            hearing_id: 7,
+            requestor: 1,
+            start_time: '2023-09-01T02:00:00Z',
+            end_time: '2023-09-01T15:32:24Z',
+            request_type: requestType,
+          };
+
+          component.state = 'OrderSummary';
+
+          const clearFormSpy = jest.spyOn(component.clearFormEmitter, 'emit');
+
+          component.onOrderConfirm(mockRequestObject);
+
+          fixture.detectChanges();
+
+          expect(component.state).toBe('Default');
+          expect(component.armMaintenanceError).toBe(true);
+          expect(clearFormSpy).not.toHaveBeenCalled();
+
+          const banner = fixture.debugElement.query(By.css('app-govuk-banner'));
+
+          expect(banner).toBeTruthy();
+          expect(banner.nativeElement.textContent).toContain(component.armMaintenanceMessage);
+        }
+      );
+
       describe('#onDownloadClicked', () => {
         const blob = new Blob();
         const fileName = 'filename.docx';
@@ -686,6 +726,7 @@ describe('HearingComponent', () => {
           };
           component.onOrderConfirm(mockRequestObject);
           expect(component.state).toEqual('OrderFailure');
+          expect(component.armMaintenanceError).toBe(false);
           expect(mockRouter.navigateByUrl).not.toHaveBeenCalled();
         });
       });

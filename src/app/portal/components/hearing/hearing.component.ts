@@ -41,6 +41,7 @@ import { HearingFileComponent } from './hearing-file/hearing-file.component';
 import { OrderConfirmationComponent } from './order-confirmation/order-confirmation.component';
 import { RequestPlaybackAudioComponent } from './request-playback-audio/request-playback-audio.component';
 import { GovukBannerComponent } from '@common/govuk-banner/govuk-banner.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-hearing',
@@ -270,7 +271,12 @@ export class HearingComponent implements OnInit {
         this.state = 'OrderConfirmation';
         this.clearSelections();
       },
-      error: () => {
+      error: (error: HttpErrorResponse) => {
+        if (error.status === 503) {
+          this.state = 'Default';
+          this.armMaintenanceError = true;
+          return;
+        }
         this.state = 'OrderFailure';
       },
     });

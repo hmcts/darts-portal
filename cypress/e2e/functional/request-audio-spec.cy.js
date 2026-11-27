@@ -3,6 +3,12 @@ import './commands';
 
 const previewLinkSelector = 'a[data-cy="preview-link-button"]';
 
+const maintenanceMessage =
+  'The audio you have requested has been archived. ' +
+  'The archive service is currently unavailable due to maintenance, ' +
+  'so we are unable to retrieve your recording at this time. ' +
+  'Please try again tomorrow.';
+
 describe('Request audio functionality', () => {
   beforeEach(() => {
     cy.login();
@@ -187,6 +193,48 @@ describe('Request audio functionality', () => {
     cy.a11y();
   });
 
+  ['playback', 'download'].forEach((requestType) => {
+    it(`should show the maintenance warning if a 503 is returned for ${requestType}`, () => {
+      cy.intercept('POST', `**/api/audio-requests/${requestType}`).as('audioRequest');
+      cy.get('#hearingsTable a').contains('7 May 2024').click();
+
+      // Enter valid times for hearing 7 (08:32:24-08:36:24 BST)
+      cy.get('#start-time-hour-input').clear().type('08');
+      cy.get('#start-time-minutes-input').clear().type('32');
+      cy.get('#start-time-seconds-input').clear().type('24');
+      cy.get('#end-time-hour-input').clear().type('08');
+      cy.get('#end-time-minutes-input').clear().type('36');
+      cy.get('#end-time-seconds-input').clear().type('24');
+      cy.get(`#${requestType}-radio`).check({ force: true });
+
+      cy.contains('button', 'Get Audio').should('be.enabled').click();
+      cy.get('app-govuk-banner').should('not.exist');
+      cy.contains('button', 'Confirm').should('be.visible').click();
+      cy.wait('@audioRequest').its('response.statusCode').should('eq', 503);
+
+      cy.get('app-govuk-banner').should('be.visible').and('contain.text', maintenanceMessage);
+      cy.contains('button', 'Confirm').should('not.exist');
+      cy.contains('button', 'Get Audio').should('be.visible').and('be.disabled');
+      cy.get('.govuk-error-summary').should('not.exist');
+
+      // Verify that the original request is preserved
+      cy.get('#start-time-hour-input').should('have.value', '08');
+      cy.get('#start-time-minutes-input').should('have.value', '32');
+      cy.get('#start-time-seconds-input').should('have.value', '24');
+      cy.get('#end-time-hour-input').should('have.value', '08');
+      cy.get('#end-time-minutes-input').should('have.value', '36');
+      cy.get('#end-time-seconds-input').should('have.value', '24');
+      cy.get(`#${requestType}-radio`).should('be.checked');
+      cy.a11y();
+
+      // Changing the request clears the warning and re-enables Get Audio
+      cy.get('#start-time-minutes-input').clear().type('33');
+      cy.get('app-govuk-banner').should('not.exist');
+      cy.contains('button', 'Get Audio').should('be.enabled');
+      cy.get('#start-time-minutes-input').should('have.value', '33');
+    });
+  });
+
   it('should show an error when start time is after end time', () => {
     cy.get('#hearingsTable').should('contain', '1 Sep 2023');
     cy.get('#hearingsTable a').contains('1 Sep 2023').click();
@@ -296,12 +344,6 @@ describe('Request audio functionality', () => {
 });
 
 describe('ARM maintenance', () => {
-  const maintenanceMessage =
-    'The audio you have requested has been archived. ' +
-    'The archive service is currently unavailable due to maintenance, ' +
-    'so we are unable to retrieve your recording at this time. ' +
-    'Please try again tomorrow.';
-
   beforeEach(() => {
     // Enable ARM maintenance before the application loads its configuration
     cy.intercept('GET', '**/app/config', (req) => {
@@ -344,6 +386,7 @@ describe('ARM maintenance', () => {
 
     // Verify the maintenance warning
     cy.get('app-govuk-banner').should('be.visible').and('contain.text', maintenanceMessage);
+    cy.contains('button', 'Get Audio').should('be.disabled');
 
     // Verify the entered times are preserved
     cy.get('#start-time-hour-input').should('have.value', '21');
@@ -401,6 +444,7 @@ describe('ARM maintenance', () => {
 
     // Verify maintenance warning
     cy.get('app-govuk-banner').should('be.visible').and('contain.text', maintenanceMessage);
+    cy.contains('button', 'Get Audio').should('be.disabled');
 
     // Verify the entered times and request type are preserved
     cy.get('#start-time-hour-input').should('have.value', '21');
@@ -430,27 +474,33 @@ describe('ARM maintenance', () => {
     // Request audio and verify maintenance warning
     cy.contains('button', 'Get Audio').click();
     cy.get('app-govuk-banner').should('be.visible').and('contain.text', maintenanceMessage);
+    cy.contains('button', 'Get Audio').should('be.disabled');
 
     // Edit the start time and hence the maintenance warning should disappear but time retained
     cy.get('#start-time-minutes-input').clear().type('52');
     cy.get('app-govuk-banner').should('not.exist');
+    cy.contains('button', 'Get Audio').should('be.enabled');
     cy.get('#start-time-minutes-input').should('have.value', '52');
 
     // Request audio again and warning should reappear
     cy.contains('button', 'Get Audio').click();
     cy.get('app-govuk-banner').should('be.visible').and('contain.text', maintenanceMessage);
+    cy.contains('button', 'Get Audio').should('be.disabled');
 
     // Switch from Playback Only to Download and  warning should disappear
     cy.get('#download-radio').check({ force: true });
     cy.get('app-govuk-banner').should('not.exist');
+    cy.contains('button', 'Get Audio').should('be.enabled');
 
     // Request audio again and warning should reappear
     cy.contains('button', 'Get Audio').click();
     cy.get('app-govuk-banner').should('be.visible').and('contain.text', maintenanceMessage);
+    cy.contains('button', 'Get Audio').should('be.disabled');
 
     // Select an audio record from the Events and Audio table and warning should disappear
     cy.get('#eventAudioTable .govuk-table__row:nth-child(12) .govuk-checkboxes__item').click();
     cy.get('app-govuk-banner').should('not.exist');
+    cy.contains('button', 'Get Audio').should('be.enabled');
 
     // Verify the selected recording has updated the times
     cy.get('#start-time-hour-input').should('have.value', '21');
@@ -461,6 +511,7 @@ describe('ARM maintenance', () => {
     // Request audio again and warning should reappear
     cy.contains('button', 'Get Audio').click();
     cy.get('app-govuk-banner').should('be.visible').and('contain.text', maintenanceMessage);
+    cy.contains('button', 'Get Audio').should('be.disabled');
 
     // The request should not proceed to Order Summary
     cy.contains('button', 'Confirm').should('not.exist');
@@ -491,6 +542,7 @@ describe('ARM maintenance', () => {
 
     // ARM maintenance warning should not appear
     cy.get('app-govuk-banner').should('not.exist');
+    cy.contains('button', 'Get Audio').should('be.enabled');
 
     // Invalid time should remain available for correction
     cy.get('#start-time-hour-input').should('have.value', '25');
